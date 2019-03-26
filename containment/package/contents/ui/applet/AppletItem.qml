@@ -566,7 +566,7 @@ Item {
                 property bool rectangled: canBeHovered && !lockZoom
 
                 ShortcutBadge{
-                   // anchors.fill: wrapper
+                    anchors.fill: parent
                 }
             }
         }

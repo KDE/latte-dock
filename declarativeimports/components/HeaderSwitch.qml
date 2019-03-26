@@ -36,8 +36,24 @@ import "private" as Private
 Item {
     id: item
 
+    Layout.rightMargin: {
+        if (level === 1) {
+            return Qt.application.layoutDirection === Qt.RightToLeft ? 0 : 2 * units.smallSpacing
+        }
+
+        return 0;
+    }
+    Layout.leftMargin: {
+        if (level === 1) {
+            return Qt.application.layoutDirection === Qt.RightToLeft ? 2 * units.smallSpacing : 0
+        }
+
+        return 0;
+    }
+
     property int level:1
     property bool checked: false
+    property bool isFirstSubCategory: false
 
     readonly property int implicitWidth: row.width
 
@@ -73,6 +89,7 @@ Item {
             text: item.text
             enabled: item.checked
             visible: level === 2
+            isFirstSubCategory: item.isFirstSubCategory
         }
 
         PlasmaComponents.Label {

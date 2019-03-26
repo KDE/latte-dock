@@ -57,7 +57,6 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.topMargin: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
             visible: false //dialog.highLevel
 
@@ -68,6 +67,7 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
 
                 LatteComponents.ComboBox {
@@ -140,343 +140,331 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             //Layout.topMargin: dialog.highLevel ? 0 : units.smallSpacing
             Layout.topMargin: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
+
             spacing: units.smallSpacing
 
             LatteComponents.Header {
                 text: i18n("Items")
             }
 
-            LatteComponents.SubHeader {
-                text: i18nc("items effects", "Size")
-                isFirstSubCategory: true
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
+            ColumnLayout {
                 Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-                enabled: proportionSizeSlider.value === 1
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 0
 
-                PlasmaComponents.Label {
-                    text: i18nc("absolute size","Absolute")
-                    horizontalAlignment: Text.AlignLeft
+                LatteComponents.SubHeader {
+                    text: i18nc("items effects", "Size")
+                    isFirstSubCategory: true
                 }
 
-                LatteComponents.Slider {
-                    id: appletsSizeSlider
+                RowLayout {
                     Layout.fillWidth: true
-                    value: plasmoid.configuration.iconSize
-                    from: 16
-                    to: 128
-                    stepSize: dialog.highLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 1 : 8
-                    wheelEnabled: false
+                    spacing: units.smallSpacing
+                    enabled: proportionSizeSlider.value === 1
 
-                    function updateIconSize() {
-                        if (!pressed) {
-                            plasmoid.configuration.iconSize = value
-                            syncGeometry.restart()
-                        }
+                    PlasmaComponents.Label {
+                        text: i18nc("absolute size","Absolute")
+                        horizontalAlignment: Text.AlignLeft
                     }
 
-                    onPressedChanged: {
-                        updateIconSize()
-                    }
+                    LatteComponents.Slider {
+                        id: appletsSizeSlider
+                        Layout.fillWidth: true
+                        value: plasmoid.configuration.iconSize
+                        from: 16
+                        to: 128
+                        stepSize: dialog.highLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 1 : 8
+                        wheelEnabled: false
 
-                    Component.onCompleted: {
-                        valueChanged.connect(updateIconSize);
-
-                        if (plasmoid.configuration.iconSize>128) {
-                            to = plasmoid.configuration.iconSize + 64
-                        } else {
-                            to = 128
-                        }
-                    }
-
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updateIconSize);
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: appletsSizeSlider.value + " px."
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-                visible: dialog.expertLevel || plasmoid.configuration.proportionIconSize>0
-
-                PlasmaComponents.Label {
-                    text: i18nc("relative size", "Relative")
-                    horizontalAlignment: Text.AlignLeft
-                    enabled: proportionSizeSlider.value !== proportionSizeSlider.from
-                }
-
-                LatteComponents.Slider {
-                    id: proportionSizeSlider
-                    Layout.fillWidth: true
-                    value: plasmoid.configuration.proportionIconSize
-                    from: 1.0
-                    to: 10
-                    stepSize: 0.5
-                    wheelEnabled: false
-
-                    function updateProportionIconSize() {
-                        if (!pressed) {
-                            if(value===1) {
-                                plasmoid.configuration.proportionIconSize = -1;
-                            } else {
-                                plasmoid.configuration.proportionIconSize = value;
+                        function updateIconSize() {
+                            if (!pressed) {
+                                plasmoid.configuration.iconSize = value
+                                syncGeometry.restart()
                             }
                         }
-                    }
 
-                    onPressedChanged: {
-                        updateProportionIconSize();
-                    }
+                        onPressedChanged: {
+                            updateIconSize()
+                        }
 
-                    Component.onCompleted: {
-                        valueChanged.connect(updateProportionIconSize)
-                    }
+                        Component.onCompleted: {
+                            valueChanged.connect(updateIconSize);
 
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updateProportionIconSize)
-                    }
-                }
+                            if (plasmoid.configuration.iconSize>128) {
+                                to = plasmoid.configuration.iconSize + 64
+                            } else {
+                                to = 128
+                            }
+                        }
 
-                PlasmaComponents.Label {
-                    text: proportionSizeSlider.value !== proportionSizeSlider.from ?
-                              proportionSizeSlider.value.toFixed(1) + " %" : "--- %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                    enabled: proportionSizeSlider.value !== proportionSizeSlider.from
-                }
-            }
-
-            LatteComponents.SubHeader {
-                text: i18nc("items effects", "Effects")
-                //isFirstSubCategory: true
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-                enabled: plasmoid.configuration.durationTime > 0
-
-                PlasmaComponents.Label {
-                    text: i18n("Zoom On Hover")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                LatteComponents.Slider {
-                    Layout.fillWidth: true
-                    id: zoomSlider
-
-                    value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
-                    from: 1
-                    to: 2
-                    stepSize: 0.05
-                    wheelEnabled: false
-
-                    function updateZoomLevel() {
-                        if (!pressed) {
-                            var result = Math.round((value - 1) * 20)
-                            plasmoid.configuration.zoomLevel = result
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updateIconSize);
                         }
                     }
 
-                    onPressedChanged: {
-                        updateZoomLevel()
-                    }
-
-                    Component.onCompleted: {
-                        valueChanged.connect(updateZoomLevel)
-                    }
-
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updateZoomLevel)
+                    PlasmaComponents.Label {
+                        text: appletsSizeSlider.value + " px."
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     }
                 }
 
-                PlasmaComponents.Label {
-                    text: Number((zoomSlider.value * 100) - 100).toFixed(0) + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: units.smallSpacing
+                    visible: dialog.expertLevel || plasmoid.configuration.proportionIconSize>0
+
+                    PlasmaComponents.Label {
+                        text: i18nc("relative size", "Relative")
+                        horizontalAlignment: Text.AlignLeft
+                        enabled: proportionSizeSlider.value !== proportionSizeSlider.from
+                    }
+
+                    LatteComponents.Slider {
+                        id: proportionSizeSlider
+                        Layout.fillWidth: true
+                        value: plasmoid.configuration.proportionIconSize
+                        from: 1.0
+                        to: 10
+                        stepSize: 0.5
+                        wheelEnabled: false
+
+                        function updateProportionIconSize() {
+                            if (!pressed) {
+                                if(value===1) {
+                                    plasmoid.configuration.proportionIconSize = -1;
+                                } else {
+                                    plasmoid.configuration.proportionIconSize = value;
+                                }
+                            }
+                        }
+
+                        onPressedChanged: {
+                            updateProportionIconSize();
+                        }
+
+                        Component.onCompleted: {
+                            valueChanged.connect(updateProportionIconSize)
+                        }
+
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updateProportionIconSize)
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        text: proportionSizeSlider.value !== proportionSizeSlider.from ?
+                                  proportionSizeSlider.value.toFixed(1) + " %" : "--- %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                        enabled: proportionSizeSlider.value !== proportionSizeSlider.from
+                    }
+                }
+
+                LatteComponents.SubHeader {
+                    text: i18nc("items effects", "Effects")
+                    //isFirstSubCategory: true
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: units.smallSpacing
+                    enabled: plasmoid.configuration.durationTime > 0
+
+                    PlasmaComponents.Label {
+                        text: i18n("Zoom On Hover")
+                        horizontalAlignment: Text.AlignLeft
+                    }
+
+                    LatteComponents.Slider {
+                        Layout.fillWidth: true
+                        id: zoomSlider
+
+                        value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
+                        from: 1
+                        to: 2
+                        stepSize: 0.05
+                        wheelEnabled: false
+
+                        function updateZoomLevel() {
+                            if (!pressed) {
+                                var result = Math.round((value - 1) * 20)
+                                plasmoid.configuration.zoomLevel = result
+                            }
+                        }
+
+                        onPressedChanged: {
+                            updateZoomLevel()
+                        }
+
+                        Component.onCompleted: {
+                            valueChanged.connect(updateZoomLevel)
+                        }
+
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updateZoomLevel)
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        text: Number((zoomSlider.value * 100) - 100).toFixed(0) + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    }
                 }
             }
-
-            /*
-            LatteExtraControls.SubHeader {
-                visible: dialog.expertLevel
-                text: i18nc("automatic options", "Automatic")
-                isFirstSubCategory: true
-            }
-
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Decrease size automatically when needed")
-                checked: plasmoid.configuration.autoDecreaseIconSize
-                tooltip: i18n("Items size is decreased automatically when the contents exceed the maximum length \n\nHint: this option is disabled when plasma taskmanagers are present")
-                enabled: !(latteView.tasksPresent() && !latteView.latteTasksPresent());
-                visible: dialog.expertLevel
-
-                onClicked: {
-                    plasmoid.configuration.autoDecreaseIconSize = checked
-                }
-            }*/
         }
         //! END: Items
 
         //! BEGIN: Length
         ColumnLayout {
             Layout.fillWidth: true
-            Layout.rightMargin: units.smallSpacing * 2
+
             spacing: units.smallSpacing
 
             LatteComponents.Header {
                 text: i18n("Length")
             }
 
-            RowLayout {
-                Layout.fillWidth: true
+            ColumnLayout {
                 Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 0
 
-                PlasmaComponents.Label {
-                    text: i18n("Maximum")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                LatteComponents.Slider {
+                RowLayout {
                     Layout.fillWidth: true
-                    id: maxLengthSlider
 
-                    value: plasmoid.configuration.maxLength
-                    from: 30
-                    to: 100
-                    stepSize: 2
-                    wheelEnabled: false
+                    spacing: units.smallSpacing
 
-                    function updateMaxLength() {
-                        if (!pressed) {
-                            plasmoid.configuration.maxLength = value;
-                            var newTotal = Math.abs(plasmoid.configuration.offset) + value;
+                    PlasmaComponents.Label {
+                        text: i18n("Maximum")
+                        horizontalAlignment: Text.AlignLeft
+                    }
 
-                            //centered and justify alignments based on offset and get out of the screen in some cases
-                            var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                                                 || (plasmoid.configuration.panelPosition === Latte.Types.Justify))
-                                    && ((Math.abs(plasmoid.configuration.offset) + value/2) > 50);
+                    LatteComponents.Slider {
+                        Layout.fillWidth: true
+                        id: maxLengthSlider
 
-                            if (newTotal > 100 || centeredCheck) {
-                                if ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                                        || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) {
+                        value: plasmoid.configuration.maxLength
+                        from: 30
+                        to: 100
+                        stepSize: 2
+                        wheelEnabled: false
 
-                                    var suggestedValue = (plasmoid.configuration.offset<0) ? Math.min(0, -(100-value)): Math.max(0, 100-value);
+                        function updateMaxLength() {
+                            if (!pressed) {
+                                plasmoid.configuration.maxLength = value;
+                                var newTotal = Math.abs(plasmoid.configuration.offset) + value;
 
-                                    if ((Math.abs(suggestedValue) + value/2) > 50) {
-                                        if (suggestedValue < 0) {
-                                            suggestedValue = - (50 - value/2);
-                                        } else {
-                                            suggestedValue = 50 - value/2;
+                                //centered and justify alignments based on offset and get out of the screen in some cases
+                                var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                                                     || (plasmoid.configuration.panelPosition === Latte.Types.Justify))
+                                        && ((Math.abs(plasmoid.configuration.offset) + value/2) > 50);
+
+                                if (newTotal > 100 || centeredCheck) {
+                                    if ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                                            || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) {
+
+                                        var suggestedValue = (plasmoid.configuration.offset<0) ? Math.min(0, -(100-value)): Math.max(0, 100-value);
+
+                                        if ((Math.abs(suggestedValue) + value/2) > 50) {
+                                            if (suggestedValue < 0) {
+                                                suggestedValue = - (50 - value/2);
+                                            } else {
+                                                suggestedValue = 50 - value/2;
+                                            }
                                         }
-                                    }
 
-                                    plasmoid.configuration.offset = suggestedValue;
-                                } else {
-                                    plasmoid.configuration.offset = Math.max(0, 100-value);
+                                        plasmoid.configuration.offset = suggestedValue;
+                                    } else {
+                                        plasmoid.configuration.offset = Math.max(0, 100-value);
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    onPressedChanged: {
-                        updateMaxLength();
-                    }
+                        onPressedChanged: {
+                            updateMaxLength();
+                        }
 
-                    Component.onCompleted: {
-                        valueChanged.connect(updateMaxLength)
-                    }
+                        Component.onCompleted: {
+                            valueChanged.connect(updateMaxLength)
+                        }
 
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updateMaxLength)
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: maxLengthSlider.value + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-                visible: dialog.expertLevel
-
-                PlasmaComponents.Label {
-                    text: i18n("Offset")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                LatteComponents.Slider {
-                    Layout.fillWidth: true
-                    id: offsetSlider
-
-                    value: plasmoid.configuration.offset
-                    from: ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                           || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ? -20 :  0
-                    to: ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                         || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ? 20 :  40
-                    stepSize: 2
-                    wheelEnabled: false
-
-                    function updateOffset() {
-                        if (!pressed) {
-                            plasmoid.configuration.offset = value;
-                            var newTotal = Math.abs(value) + plasmoid.configuration.maxLength;
-
-                            //centered and justify alignments based on offset and get out of the screen in some cases
-                            var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                                                 || (plasmoid.configuration.panelPosition === Latte.Types.Justify))
-                                    && ((Math.abs(value) + plasmoid.configuration.maxLength/2) > 50);
-                            if (newTotal > 100 || centeredCheck) {
-                                plasmoid.configuration.maxLength = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                                                                    || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ?
-                                            2*(50 - Math.abs(value)) :100 - Math.abs(value);
-                            }
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updateMaxLength)
                         }
                     }
 
-                    onPressedChanged: {
-                        updateOffset();
-                    }
-
-                    Component.onCompleted: {
-                        valueChanged.connect(updateOffset);
-                    }
-
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updateOffset);
+                    PlasmaComponents.Label {
+                        text: maxLengthSlider.value + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     }
                 }
 
-                PlasmaComponents.Label {
-                    text: offsetSlider.value + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: units.smallSpacing
+                    visible: dialog.expertLevel
+
+                    PlasmaComponents.Label {
+                        text: i18n("Offset")
+                        horizontalAlignment: Text.AlignLeft
+                    }
+
+                    LatteComponents.Slider {
+                        Layout.fillWidth: true
+                        id: offsetSlider
+
+                        value: plasmoid.configuration.offset
+                        from: ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                               || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ? -20 :  0
+                        to: ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                             || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ? 20 :  40
+                        stepSize: 2
+                        wheelEnabled: false
+
+                        function updateOffset() {
+                            if (!pressed) {
+                                plasmoid.configuration.offset = value;
+                                var newTotal = Math.abs(value) + plasmoid.configuration.maxLength;
+
+                                //centered and justify alignments based on offset and get out of the screen in some cases
+                                var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                                                     || (plasmoid.configuration.panelPosition === Latte.Types.Justify))
+                                        && ((Math.abs(value) + plasmoid.configuration.maxLength/2) > 50);
+                                if (newTotal > 100 || centeredCheck) {
+                                    plasmoid.configuration.maxLength = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                                                                        || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ?
+                                                2*(50 - Math.abs(value)) :100 - Math.abs(value);
+                                }
+                            }
+                        }
+
+                        onPressedChanged: {
+                            updateOffset();
+                        }
+
+                        Component.onCompleted: {
+                            valueChanged.connect(updateOffset);
+                        }
+
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updateOffset);
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        text: offsetSlider.value + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    }
                 }
             }
         }
@@ -486,7 +474,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             id: marginsColumn
             Layout.fillWidth: true
-            Layout.rightMargin: units.smallSpacing * 2
+
             spacing: units.smallSpacing
             visible: dialog.expertLevel
 
@@ -496,89 +484,96 @@ PlasmaComponents.Page {
                 text: i18n("Margins")
             }
 
-            RowLayout {
-                Layout.fillWidth: true
+            ColumnLayout{
                 Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 0
 
-                PlasmaComponents.Label {
-                    text: i18n("Length")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                LatteComponents.Slider {
-                    id: lengthExtMarginSlider
+                RowLayout {
                     Layout.fillWidth: true
 
-                    value: plasmoid.configuration.lengthExtMargin
-                    from: 0
-                    to: marginsColumn.maxMargin
-                    stepSize: 1
-                    wheelEnabled: false
+                    spacing: units.smallSpacing
 
-                    onPressedChanged: {
-                        if (!pressed) {
-                            plasmoid.configuration.lengthExtMargin = value;
+                    PlasmaComponents.Label {
+                        text: i18n("Length")
+                        horizontalAlignment: Text.AlignLeft
+                    }
+
+                    LatteComponents.Slider {
+                        id: lengthExtMarginSlider
+                        Layout.fillWidth: true
+
+                        value: plasmoid.configuration.lengthExtMargin
+                        from: 0
+                        to: marginsColumn.maxMargin
+                        stepSize: 1
+                        wheelEnabled: false
+
+                        onPressedChanged: {
+                            if (!pressed) {
+                                plasmoid.configuration.lengthExtMargin = value;
+                            }
                         }
+                    }
+
+                    PlasmaComponents.Label {
+                        text: lengthExtMarginSlider.value + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     }
                 }
 
-                PlasmaComponents.Label {
-                    text: lengthExtMarginSlider.value + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                }
-            }
-
-            LatteComponents.HeaderSwitch {
-                id: shrinkThickMargins
-                Layout.fillWidth: true
-                Layout.minimumHeight: implicitHeight
-
-                checked: !plasmoid.configuration.shrinkThickMargins
-                level: 2
-                text: i18n("Thickness")
-                tooltip: i18n("Enable/disable thickness margins")
-
-                onPressed: {
-                    plasmoid.configuration.shrinkThickMargins = !plasmoid.configuration.shrinkThickMargins;
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-                enabled: !plasmoid.configuration.shrinkThickMargins
-
-                PlasmaComponents.Label {
-                    text: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? i18n("Height") : i18n("Width")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                LatteComponents.Slider {
-                    id: thickMarginSlider
+                LatteComponents.HeaderSwitch {
+                    id: shrinkThickMargins
                     Layout.fillWidth: true
+                    Layout.minimumHeight: implicitHeight
+                    Layout.bottomMargin: units.smallSpacing
 
-                    value: plasmoid.configuration.thickMargin
-                    from: 0
-                    to: 40
-                    stepSize: 1
-                    wheelEnabled: false
+                    checked: !plasmoid.configuration.shrinkThickMargins
+                    level: 2
+                    text: i18n("Thickness")
+                    tooltip: i18n("Enable/disable thickness margins")
+                    isFirstSubCategory: true
 
-                    onPressedChanged: {
-                        if (!pressed) {
-                            plasmoid.configuration.thickMargin = value;
-                        }
+                    onPressed: {
+                        plasmoid.configuration.shrinkThickMargins = !plasmoid.configuration.shrinkThickMargins;
                     }
                 }
 
-                PlasmaComponents.Label {
-                    text: thickMarginSlider.value + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: units.smallSpacing
+                    enabled: !plasmoid.configuration.shrinkThickMargins
+
+                    PlasmaComponents.Label {
+                        text: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? i18n("Height") : i18n("Width")
+                        horizontalAlignment: Text.AlignLeft
+                    }
+
+                    LatteComponents.Slider {
+                        id: thickMarginSlider
+                        Layout.fillWidth: true
+
+                        value: plasmoid.configuration.thickMargin
+                        from: 0
+                        to: 40
+                        stepSize: 1
+                        wheelEnabled: false
+
+                        onPressedChanged: {
+                            if (!pressed) {
+                                plasmoid.configuration.thickMargin = value;
+                            }
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        text: thickMarginSlider.value + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    }
                 }
             }
         }
@@ -587,7 +582,6 @@ PlasmaComponents.Page {
         //! BEGIN: Colors
         ColumnLayout {
             spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
 
             LatteComponents.Header {
@@ -598,6 +592,7 @@ PlasmaComponents.Page {
             GridLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 columnSpacing: 2
                 rowSpacing: units.smallSpacing
                 columns: 3
@@ -706,7 +701,6 @@ PlasmaComponents.Page {
         //! BEGIN: Background
         ColumnLayout {
             Layout.fillWidth: true
-            Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
             enabled: Latte.WindowSystem.compositingActive
 
@@ -725,227 +719,227 @@ PlasmaComponents.Page {
                 }
             }
 
-            RowLayout {
-                Layout.fillWidth: true
+            ColumnLayout {
                 Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 0
 
-                PlasmaComponents.Label {
-                    enabled: showBackground.checked
-                    text: i18n("Size")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                LatteComponents.Slider {
-                    id: panelSizeSlider
+                RowLayout {
                     Layout.fillWidth: true
-                    enabled: showBackground.checked
 
-                    value: plasmoid.configuration.panelSize
-                    from: 0
-                    to: 100
-                    stepSize: 1
-                    wheelEnabled: false
 
-                    function updatePanelSize() {
-                        if (!pressed)
-                            plasmoid.configuration.panelSize = value
+                    PlasmaComponents.Label {
+                        enabled: showBackground.checked
+                        text: i18n("Size")
+                        horizontalAlignment: Text.AlignLeft
                     }
 
-                    onPressedChanged: {
-                        updatePanelSize();
+                    LatteComponents.Slider {
+                        id: panelSizeSlider
+                        Layout.fillWidth: true
+                        enabled: showBackground.checked
+
+                        value: plasmoid.configuration.panelSize
+                        from: 0
+                        to: 100
+                        stepSize: 1
+                        wheelEnabled: false
+
+                        function updatePanelSize() {
+                            if (!pressed)
+                                plasmoid.configuration.panelSize = value
+                        }
+
+                        onPressedChanged: {
+                            updatePanelSize();
+                        }
+
+                        Component.onCompleted: {
+                            valueChanged.connect(updatePanelSize)
+                        }
+
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updatePanelSize)
+                        }
                     }
 
-                    Component.onCompleted: {
-                        valueChanged.connect(updatePanelSize)
-                    }
-
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updatePanelSize)
+                    PlasmaComponents.Label {
+                        enabled: showBackground.checked
+                        text: panelSizeSlider.value + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     }
                 }
 
-                PlasmaComponents.Label {
-                    enabled: showBackground.checked
-                    text: panelSizeSlider.value + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-
-                PlasmaComponents.Label {
-                    text: i18n("Opacity")
-                    horizontalAlignment: Text.AlignLeft
-                    enabled: transparencySlider.enabled
-                }
-
-                LatteComponents.Slider {
-                    id: transparencySlider
+                RowLayout {
                     Layout.fillWidth: true
-                    enabled: showBackground.checked //&& !blockOpacityAdjustment
 
-                    value: plasmoid.configuration.panelTransparency
-                    from: 0
-                    to: 100
-                    stepSize: 1
-                    wheelEnabled: false
+                    PlasmaComponents.Label {
+                        text: i18n("Opacity")
+                        horizontalAlignment: Text.AlignLeft
+                        enabled: transparencySlider.enabled
+                    }
 
-                    /*property bool blockOpacityAdjustment: (plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
+                    LatteComponents.Slider {
+                        id: transparencySlider
+                        Layout.fillWidth: true
+                        enabled: showBackground.checked //&& !blockOpacityAdjustment
+
+                        value: plasmoid.configuration.panelTransparency
+                        from: 0
+                        to: 100
+                        stepSize: 1
+                        wheelEnabled: false
+
+                        /*property bool blockOpacityAdjustment: (plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
                                                           || (solidBackground.checked
                                                               && !plasmoid.configuration.solidBackgroundForMaximized
                                                               && !plasmoid.configuration.backgroundOnlyOnMaximized)*/
 
-                    function updatePanelTransparency() {
-                        if (!pressed)
-                            plasmoid.configuration.panelTransparency = value
+                        function updatePanelTransparency() {
+                            if (!pressed)
+                                plasmoid.configuration.panelTransparency = value
+                        }
+
+                        onPressedChanged: {
+                            updatePanelTransparency();
+                        }
+
+                        Component.onCompleted: {
+                            valueChanged.connect(updatePanelTransparency);
+                        }
+
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updatePanelTransparency);
+                        }
                     }
 
-                    onPressedChanged: {
-                        updatePanelTransparency();
-                    }
-
-                    Component.onCompleted: {
-                        valueChanged.connect(updatePanelTransparency);
-                    }
-
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updatePanelTransparency);
+                    PlasmaComponents.Label {
+                        enabled: transparencySlider.enabled
+                        text: transparencySlider.value + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     }
                 }
 
-                PlasmaComponents.Label {
-                    enabled: transparencySlider.enabled
-                    text: transparencySlider.value + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                LatteComponents.SubHeader {
+                    visible: dialog.expertLevel
+                    isFirstSubCategory: true
+                    text: i18n("Options")
                 }
-            }
 
-            LatteComponents.SubHeader {
-                visible: dialog.expertLevel
-                isFirstSubCategory: true
-                text: i18n("Options")
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                spacing: 2
-                visible: dialog.expertLevel
-
-                PlasmaComponents.Button {
-                    id: panelBlur
+                RowLayout {
                     Layout.fillWidth: true
-                    text: i18n("Blur")
-                    checked: plasmoid.configuration.blurEnabled
-                    checkable: true
+                    spacing: 2
+                    visible: dialog.expertLevel
+
+                    PlasmaComponents.Button {
+                        id: panelBlur
+                        Layout.fillWidth: true
+                        text: i18n("Blur")
+                        checked: plasmoid.configuration.blurEnabled
+                        checkable: true
+                        enabled: showBackground.checked
+                        tooltip: i18n("Background is blurred underneath")
+
+                        onClicked: {
+                            plasmoid.configuration.blurEnabled  = checked
+                        }
+                    }
+
+                    PlasmaComponents.Button {
+                        id: panelShadows
+                        Layout.fillWidth: true
+                        text: i18n("Shadows")
+                        checked: plasmoid.configuration.panelShadows
+                        checkable: true
+                        enabled: showBackground.checked
+                        tooltip: i18n("Background shows its shadows")
+
+                        onClicked: {
+                            plasmoid.configuration.panelShadows  = checked
+                        }
+                    }
+
+                    PlasmaComponents.Button {
+                        id: solidBackground
+                        Layout.fillWidth: true
+                        text: i18n("Outline")
+                        checked: plasmoid.configuration.panelOutline
+                        checkable: true
+                        enabled: showBackground.checked && Latte.WindowSystem.compositingActive
+                        tooltip: i18n("Background draws a line for its borders. You can set the line size from Latte Preferences")
+
+                        onClicked: {
+                            plasmoid.configuration.panelOutline = !plasmoid.configuration.panelOutline;
+                        }
+                    }
+                }
+
+                LatteComponents.SubHeader {
+                    visible: dialog.expertLevel
+                    text: i18nc("dynamic visibility for background", "Dynamic Visibility")
+                }
+
+                LatteComponents.CheckBox {
+                    id: solidForMaximizedChk
+                    Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
+                    text: i18n("Prefer opaque background when touching any window")
+                    checked: plasmoid.configuration.solidBackgroundForMaximized
+                    tooltip: i18n("Background removes its transparency setting when a window is touching")
                     enabled: showBackground.checked
-                    tooltip: i18n("Background is blurred underneath")
+                    visible: dialog.expertLevel
 
                     onClicked: {
-                        plasmoid.configuration.blurEnabled  = checked
+                        plasmoid.configuration.solidBackgroundForMaximized = checked;
                     }
                 }
 
-                PlasmaComponents.Button {
-                    id: panelShadows
-                    Layout.fillWidth: true
-                    text: i18n("Shadows")
-                    checked: plasmoid.configuration.panelShadows
-                    checkable: true
+                PlasmaComponents.CheckBox {
+                    id: onlyOnMaximizedChk
+                    text: i18n("Hide background when not needed")
+                    checked: plasmoid.configuration.backgroundOnlyOnMaximized
+                    tooltip: i18n("Background becomes hidden except when a window is touching or the desktop background is busy")
                     enabled: showBackground.checked
-                    tooltip: i18n("Background shows its shadows")
+                    visible: dialog.expertLevel
 
                     onClicked: {
-                        plasmoid.configuration.panelShadows  = checked
+                        plasmoid.configuration.backgroundOnlyOnMaximized = checked;
                     }
                 }
 
-                PlasmaComponents.Button {
-                    id: solidBackground
-                    Layout.fillWidth: true
-                    text: i18n("Outline")
-                    checked: plasmoid.configuration.panelOutline
-                    checkable: true
-                    enabled: showBackground.checked && Latte.WindowSystem.compositingActive
-                    tooltip: i18n("Background draws a line for its borders. You can set the line size from Latte Preferences")
+                PlasmaComponents.CheckBox {
+                    id: hideShadowsOnMaximizedChk
+                    text: i18n("Hide background shadow for maximized windows")
+                    checked: plasmoid.configuration.disablePanelShadowForMaximized
+                    tooltip: i18n("Background shadows become hidden when an active maximized window is touching the view")
+                    enabled: showBackground.checked
+                    visible: dialog.expertLevel
 
                     onClicked: {
-                        plasmoid.configuration.panelOutline = !plasmoid.configuration.panelOutline;
+                        plasmoid.configuration.disablePanelShadowForMaximized = checked;
                     }
                 }
-            }
 
-            LatteComponents.SubHeader {
-                visible: dialog.expertLevel
-                text: i18nc("dynamic visibility for background", "Dynamic Visibility")
-            }
-
-            LatteComponents.CheckBox {
-                id: solidForMaximizedChk
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
-                text: i18n("Prefer opaque background when touching any window")
-                checked: plasmoid.configuration.solidBackgroundForMaximized
-                tooltip: i18n("Background removes its transparency setting when a window is touching")
-                enabled: showBackground.checked
-                visible: dialog.expertLevel
-
-                onClicked: {
-                    plasmoid.configuration.solidBackgroundForMaximized = checked;
+                LatteComponents.SubHeader {
+                    visible: dialog.expertLevel
+                    text: i18n("Exceptions")
                 }
-            }
 
-            PlasmaComponents.CheckBox {
-                id: onlyOnMaximizedChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Hide background when not needed")
-                checked: plasmoid.configuration.backgroundOnlyOnMaximized
-                tooltip: i18n("Background becomes hidden except when a window is touching or the desktop background is busy")
-                enabled: showBackground.checked
-                visible: dialog.expertLevel
+                LatteComponents.CheckBox {
+                    id: solidForPopupsChk
+                    Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
+                    text: i18n("Prefer Plasma background and colors for expanded applets")
+                    checked: plasmoid.configuration.plasmaBackgroundForPopups
+                    tooltip: i18n("Background becomes opaque in plasma style when applets are expanded")
+                    enabled: showBackground.checked
+                    visible: dialog.expertLevel
 
-                onClicked: {
-                    plasmoid.configuration.backgroundOnlyOnMaximized = checked;
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: hideShadowsOnMaximizedChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Hide background shadow for maximized windows")
-                checked: plasmoid.configuration.disablePanelShadowForMaximized
-                tooltip: i18n("Background shadows become hidden when an active maximized window is touching the view")
-                enabled: showBackground.checked
-                visible: dialog.expertLevel
-
-                onClicked: {
-                    plasmoid.configuration.disablePanelShadowForMaximized = checked;
-                }
-            }
-
-            LatteComponents.SubHeader {
-                visible: dialog.expertLevel
-                text: i18n("Exceptions")
-            }
-
-            LatteComponents.CheckBox {
-                id: solidForPopupsChk
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
-                text: i18n("Prefer Plasma background and colors for expanded applets")
-                checked: plasmoid.configuration.plasmaBackgroundForPopups
-                tooltip: i18n("Background becomes opaque in plasma style when applets are expanded")
-                enabled: showBackground.checked
-                visible: dialog.expertLevel
-
-                onClicked: {
-                    plasmoid.configuration.plasmaBackgroundForPopups = checked;
+                    onClicked: {
+                        plasmoid.configuration.plasmaBackgroundForPopups = checked;
+                    }
                 }
             }
         }

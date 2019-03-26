@@ -49,7 +49,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.topMargin: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
+
             spacing: units.smallSpacing
 
             LatteComponents.HeaderSwitch {
@@ -73,6 +73,8 @@ PlasmaComponents.Page {
 
             ColumnLayout {
                 Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 0
 
                 RowLayout{
                     enabled: showAppletShadow.checked
@@ -167,135 +169,134 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     }
                 }
-            }
 
-            LatteComponents.SubHeader {
-                isFirstSubCategory: true
-                text: i18n("Color")
-            }
-
-            RowLayout {
-                id: shadowColorRow
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                spacing: 2
-                enabled: showAppletShadow.checked
-
-                readonly property string defaultShadow: "080808"
-                readonly property string themeShadow: {
-                    var strC = String(theme.textColor);
-
-                    return strC.indexOf("#") === 0 ? strC.substr(1) : strC;
+                LatteComponents.SubHeader {
+                    isFirstSubCategory: true
+                    text: i18n("Color")
                 }
 
-                ExclusiveGroup {
-                    id: shadowColorGroup
+                RowLayout {
+                    id: shadowColorRow
+                    Layout.fillWidth: true
+                    spacing: 2
+                    enabled: showAppletShadow.checked
 
-                    property bool inStartup: true
+                    readonly property string defaultShadow: "080808"
+                    readonly property string themeShadow: {
+                        var strC = String(theme.textColor);
 
-                    onCurrentChanged: {
-                        if (inStartup) {
-                            return;
-                        }
-
-                        if (current === defaultShadowBtn) {
-                            plasmoid.configuration.shadowColorType = Latte.Types.DefaultColorShadow;
-                        } else if (current === themeShadowBtn) {
-                            plasmoid.configuration.shadowColorType = Latte.Types.ThemeColorShadow;
-                        } else if (current === userShadowBtn) {
-                            plasmoid.configuration.shadowColorType = Latte.Types.UserColorShadow;
-                        }
+                        return strC.indexOf("#") === 0 ? strC.substr(1) : strC;
                     }
 
-                    Component.onCompleted: inStartup = false;
-                }
+                    ExclusiveGroup {
+                        id: shadowColorGroup
 
-                PlasmaComponents.Button {
-                    id: defaultShadowBtn
-                    Layout.fillWidth: true
+                        property bool inStartup: true
 
-                    text: i18nc("default shadow", "Default")
-                    checked: plasmoid.configuration.shadowColorType === Latte.Types.DefaultColorShadow
-                    checkable: true
-                    exclusiveGroup: shadowColorGroup
-                    tooltip: i18n("Default shadow for applets")
-                }
+                        onCurrentChanged: {
+                            if (inStartup) {
+                                return;
+                            }
 
-                PlasmaComponents.Button {
-                    id: themeShadowBtn
-                    Layout.fillWidth: true
+                            if (current === defaultShadowBtn) {
+                                plasmoid.configuration.shadowColorType = Latte.Types.DefaultColorShadow;
+                            } else if (current === themeShadowBtn) {
+                                plasmoid.configuration.shadowColorType = Latte.Types.ThemeColorShadow;
+                            } else if (current === userShadowBtn) {
+                                plasmoid.configuration.shadowColorType = Latte.Types.UserColorShadow;
+                            }
+                        }
 
-                    text: i18nc("theme shadow", "Theme")
-                    checked: plasmoid.configuration.shadowColorType === Latte.Types.ThemeColorShadow
-                    checkable: true
-                    exclusiveGroup: shadowColorGroup
-                    tooltip: i18n("Shadow from theme color palette")
-                }
+                        Component.onCompleted: inStartup = false;
+                    }
 
-                //overlayed button
-                PlasmaComponents.Button {
-                    id: userShadowBtn
-                    Layout.fillWidth: true
-                    height: parent.height
-                    text: " "
+                    PlasmaComponents.Button {
+                        id: defaultShadowBtn
+                        Layout.fillWidth: true
 
-                    checkable: true
-                    checked: plasmoid.configuration.shadowColorType === Latte.Types.UserColorShadow
-                    tooltip: i18n("Use set shadow color")
-                    exclusiveGroup: shadowColorGroup
+                        text: i18nc("default shadow", "Default")
+                        checked: plasmoid.configuration.shadowColorType === Latte.Types.DefaultColorShadow
+                        checkable: true
+                        exclusiveGroup: shadowColorGroup
+                        tooltip: i18n("Default shadow for applets")
+                    }
 
-                    Rectangle{
-                        anchors.fill: parent
-                        anchors.margins: 1.5*units.smallSpacing
+                    PlasmaComponents.Button {
+                        id: themeShadowBtn
+                        Layout.fillWidth: true
 
-                        color: "#" + plasmoid.configuration.shadowColor;
+                        text: i18nc("theme shadow", "Theme")
+                        checked: plasmoid.configuration.shadowColorType === Latte.Types.ThemeColorShadow
+                        checkable: true
+                        exclusiveGroup: shadowColorGroup
+                        tooltip: i18n("Shadow from theme color palette")
+                    }
 
-                        opacity: shadowColorRow.enabled ? 1 : 0.6
+                    //overlayed button
+                    PlasmaComponents.Button {
+                        id: userShadowBtn
+                        Layout.fillWidth: true
+                        height: parent.height
+                        text: " "
+
+                        checkable: true
+                        checked: plasmoid.configuration.shadowColorType === Latte.Types.UserColorShadow
+                        tooltip: i18n("Use set shadow color")
+                        exclusiveGroup: shadowColorGroup
 
                         Rectangle{
                             anchors.fill: parent
-                            color: "transparent"
-                            border.width: 1
-                            border.color: theme.textColor
-                            opacity: parent.opacity - 0.4
-                        }
+                            anchors.margins: 1.5*units.smallSpacing
 
-                        MouseArea{
-                            anchors.fill: parent
-                            onClicked: {
-                                shadowColorGroup.current = userShadowBtn;
-                                viewConfig.setSticker(true);
-                                colorDialogLoader.showDialog = true;
+                            color: "#" + plasmoid.configuration.shadowColor;
+
+                            opacity: shadowColorRow.enabled ? 1 : 0.6
+
+                            Rectangle{
+                                anchors.fill: parent
+                                color: "transparent"
+                                border.width: 1
+                                border.color: theme.textColor
+                                opacity: parent.opacity - 0.4
                             }
-                        }
-                    }
 
-                    Loader{
-                        id:colorDialogLoader
-                        property bool showDialog: false
-                        active: showDialog
-
-                        sourceComponent: ColorDialog {
-                            title: i18n("Please choose shadow color")
-                            showAlphaChannel: false
-
-                            onAccepted: {
-                                //console.log("You chose: " + String(color));
-                                var strC = String(color);
-                                if (strC.indexOf("#") === 0) {
-                                    plasmoid.configuration.shadowColor = strC.substr(1);
+                            MouseArea{
+                                anchors.fill: parent
+                                onClicked: {
+                                    shadowColorGroup.current = userShadowBtn;
+                                    viewConfig.setSticker(true);
+                                    colorDialogLoader.showDialog = true;
                                 }
+                            }
+                        }
 
-                                colorDialogLoader.showDialog = false;
-                                viewConfig.setSticker(false);
-                            }
-                            onRejected: {
-                                colorDialogLoader.showDialog = false;
-                                viewConfig.setSticker(false);
-                            }
-                            Component.onCompleted: {
-                                color = String("#" + plasmoid.configuration.shadowColor);
-                                visible = true;
+                        Loader{
+                            id:colorDialogLoader
+                            property bool showDialog: false
+                            active: showDialog
+
+                            sourceComponent: ColorDialog {
+                                title: i18n("Please choose shadow color")
+                                showAlphaChannel: false
+
+                                onAccepted: {
+                                    //console.log("You chose: " + String(color));
+                                    var strC = String(color);
+                                    if (strC.indexOf("#") === 0) {
+                                        plasmoid.configuration.shadowColor = strC.substr(1);
+                                    }
+
+                                    colorDialogLoader.showDialog = false;
+                                    viewConfig.setSticker(false);
+                                }
+                                onRejected: {
+                                    colorDialogLoader.showDialog = false;
+                                    viewConfig.setSticker(false);
+                                }
+                                Component.onCompleted: {
+                                    color = String("#" + plasmoid.configuration.shadowColor);
+                                    visible = true;
+                                }
                             }
                         }
                     }
@@ -308,7 +309,6 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.topMargin: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
             LatteComponents.HeaderSwitch {
@@ -327,18 +327,18 @@ PlasmaComponents.Page {
             }
 
             ColumnLayout {
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 spacing: 0
                 enabled: plasmoid.configuration.animationsEnabled
 
                 LatteComponents.SubHeader {
-                    Layout.leftMargin: units.smallSpacing * 2
                     isFirstSubCategory: true
                     text: i18n("Speed")
                 }
 
                 ColumnLayout {
                     Layout.fillWidth: true
-                    Layout.leftMargin: units.smallSpacing * 2
                     spacing: 0
 
                     RowLayout {
@@ -385,11 +385,10 @@ PlasmaComponents.Page {
                     }
 
                     ColumnLayout {
-                        spacing: units.smallSpacing
+                        spacing: 0
                         visible: latteView.latteTasksArePresent
 
                         LatteComponents.SubHeader {
-                            Layout.leftMargin: units.smallSpacing * 2
                             text: i18n("Tasks")
                         }
 
@@ -446,7 +445,6 @@ PlasmaComponents.Page {
         //! BEGIN: Active Indicator General Settings
         ColumnLayout{
             spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
 
             LatteComponents.HeaderSwitch {
                 id: indicatorsSwitch
@@ -464,6 +462,7 @@ PlasmaComponents.Page {
 
             ColumnLayout {
                 Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
                 enabled: indicatorsSwitch.checked
 
@@ -613,7 +612,6 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.topMargin: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing
             spacing: units.smallSpacing
             visible: latteView.indicator.providesConfigUi
             enabled: latteView.indicator.enabled
@@ -626,6 +624,7 @@ PlasmaComponents.Page {
                 id: indicatorSpecificOptions
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing
                 spacing: 0
 
                 Component.onCompleted: {

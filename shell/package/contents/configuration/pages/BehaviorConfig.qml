@@ -515,7 +515,6 @@ PlasmaComponents.Page {
         //! BEGIN: Actions
         ColumnLayout {
             spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
 
             LatteComponents.Header {
@@ -524,6 +523,7 @@ PlasmaComponents.Page {
 
             ColumnLayout {
                 Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 spacing: 0
 
                 LatteComponents.SubHeader {
@@ -613,7 +613,7 @@ PlasmaComponents.Page {
         //! BEGIN: Adjust
         ColumnLayout {
             spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
+
             visible: dialog.expertLevel
             enabled: latteView.visibility.mode !== Latte.Types.AlwaysVisible && latteView.visibility.mode !== Latte.Types.WindowsGoBelow
 
@@ -621,46 +621,49 @@ PlasmaComponents.Page {
                 text: i18n("Environment")
             }
 
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Activate KWin edge after hiding")
-                checked: latteView.visibility.enableKWinEdges
-                tooltip: i18n("After the view becomes hidden, KWin is informed to track user feedback. For example an edge visual hint is shown whenever the mouse approaches the hidden view")
 
-                onClicked: {
-                    latteView.visibility.enableKWinEdges = checked;
+            ColumnLayout {
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 0
+
+                PlasmaComponents.CheckBox {
+                    text: i18n("Activate KWin edge after hiding")
+                    checked: latteView.visibility.enableKWinEdges
+                    tooltip: i18n("After the view becomes hidden, KWin is informed to track user feedback. For example an edge visual hint is shown whenever the mouse approaches the hidden view")
+
+                    onClicked: {
+                        latteView.visibility.enableKWinEdges = checked;
+                    }
                 }
-            }
 
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Can be above fullscreen windows")
-                checked: latteView.byPassWM
+                PlasmaComponents.CheckBox {
+                    text: i18n("Can be above fullscreen windows")
+                    checked: latteView.byPassWM
 
-                tooltip: i18n("BypassWindowManagerHint flag for the window. The view will be above all windows even those set as 'Always On Top'")
+                    tooltip: i18n("BypassWindowManagerHint flag for the window. The view will be above all windows even those set as 'Always On Top'")
 
-                onCheckedChanged: {
-                    latteView.byPassWM = checked;
+                    onCheckedChanged: {
+                        latteView.byPassWM = checked;
+                    }
                 }
-            }
 
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Raise on desktop change")
-                checked: latteView.visibility.raiseOnDesktop
+                PlasmaComponents.CheckBox {
+                    text: i18n("Raise on desktop change")
+                    checked: latteView.visibility.raiseOnDesktop
 
-                onClicked: {
-                    latteView.visibility.raiseOnDesktop = checked
+                    onClicked: {
+                        latteView.visibility.raiseOnDesktop = checked
+                    }
                 }
-            }
 
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Raise on activity change")
-                checked: latteView.visibility.raiseOnActivity
+                PlasmaComponents.CheckBox {
+                    text: i18n("Raise on activity change")
+                    checked: latteView.visibility.raiseOnActivity
 
-                onClicked: {
-                    latteView.visibility.raiseOnActivity = checked
+                    onClicked: {
+                        latteView.visibility.raiseOnActivity = checked
+                    }
                 }
             }
         }
