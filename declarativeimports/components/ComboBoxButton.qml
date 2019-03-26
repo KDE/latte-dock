@@ -42,14 +42,19 @@ PlasmaComponents.Button {
     property bool checkable: false
 
     property bool comboBoxEnabled: true
+    property bool comboBoxBlankSpaceForEmptyIcons: false
     property string comboBoxTextRole: ""
+    property string comboBoxIconRole: ""
 
     LatteComponents.ComboBox {
         id: mainComboBox
         anchors.fill: parent
         enabled: comboBoxEnabled
 
+        iconRole: comboBoxIconRole
         textRole: comboBoxTextRole
+
+        blankSpaceForEmptyIcons: comboBoxBlankSpaceForEmptyIcons
     }
 
     //overlayed button

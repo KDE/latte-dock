@@ -42,10 +42,15 @@ T.ComboBox {
 
     wheelEnabled: false
 
+    property bool blankSpaceForEmptyIcons: false
+    property string iconRole
+
     delegate: ItemDelegate {
         width: control.popup.width
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
+        icon: control.iconRole ? (Array.isArray(control.model) ? modelData[control.iconRole] : model[control.iconRole]) : ''
         highlighted: mouseArea.pressed ? listView.currentIndex == index : control.currentIndex == index
+        blankSpaceForEmptyIcons: control.blankSpaceForEmptyIcons
         property bool separatorVisible: false
     }
 

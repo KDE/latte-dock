@@ -28,6 +28,9 @@ import org.kde.latte.components 1.0 as LatteComponents
 LatteComponents.ComboBoxButton{
     buttonText: "Unity"
     comboBoxTextRole: "name"
+    comboBoxIconRole: "icon"
+    comboBoxBlankSpaceForEmptyIcons: true
+
     property string type: "org.kde.latte.unity"
 
     Component.onCompleted: reloadModel();
@@ -43,12 +46,6 @@ LatteComponents.ComboBoxButton{
             var pluginIds = latteView.indicator.customPluginIds;
             var pluginNames = latteView.indicator.customPluginNames;
 
-            console.log(latteView.indicator.customPluginsCount);
-            console.log(latteView.indicator.customPluginIds);
-            console.log(latteView.indicator.customPluginNames);
-            console.log(pluginIds);
-            console.log(pluginNames);
-
             for(var i=0; i<pluginIds.length; ++i) {
                 var element = {pluginId: pluginIds[i], name: pluginNames[i], icon: ''};
                 actionsModel.append(element);
@@ -56,7 +53,7 @@ LatteComponents.ComboBoxButton{
         }
 
         //! download
-        var downloadElement = {pluginId: 'more:', name: 'More...', icon: ''};
+        var downloadElement = {pluginId: 'more:', name: 'More...', icon: 'favorites'};
         actionsModel.append(downloadElement);
 
         comboBox.model = actionsModel;

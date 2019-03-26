@@ -18,6 +18,7 @@
  */
 
 import QtQuick 2.5
+import QtQuick.Layouts 1.3
 import QtQuick.Templates 2.2 as T
 import org.kde.plasma.core 2.0 as PlasmaCore
 import "private" as Private
@@ -27,7 +28,7 @@ T.CheckDelegate {
 
     implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
     implicitHeight: Math.max(contentItem.implicitHeight,
-                                      indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding
+                             indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding
     hoverEnabled: true
 
     topPadding: margin
@@ -36,19 +37,41 @@ T.CheckDelegate {
     rightPadding: margin
     spacing: units.smallSpacing
 
+    property bool blankSpaceForEmptyIcons: false
+    property string icon
+
     readonly property int margin: 4
 
-    contentItem: Label {
-        leftPadding: control.mirrored ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
-        rightPadding: !control.mirrored ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
+    contentItem: RowLayout {
+        Layout.leftMargin: control.mirrored ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
+        Layout.rightMargin: !control.mirrored ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
+        spacing: units.smallSpacing
 
-        text: control.text
-        font: control.font
-        color: theme.viewTextColor
-        elide: Text.ElideRight
-        visible: control.text
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
+        PlasmaCore.IconItem {
+            height: parent.height
+            width: parent.height
+            source: control.icon
+            visible: icon
+        }
+
+        Rectangle {
+            //blank space when no icon is shown
+            Layout.minimumHeight: parent.height
+            Layout.minimumWidth: parent.height
+            visible: !icon && control.blankSpaceForEmptyIcons
+            color: "transparent"
+        }
+
+        Label {
+            Layout.fillWidth: true
+            text: control.text
+            font: control.font
+            color: theme.viewTextColor
+            elide: Text.ElideRight
+            visible: control.text
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
     }
 
     //background: Private.DefaultListItemBackground {}
