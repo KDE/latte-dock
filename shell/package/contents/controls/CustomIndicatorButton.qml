@@ -31,6 +31,7 @@ LatteComponents.ComboBoxButton{
     comboBoxTextRole: "name"
     comboBoxIconRole: "icon"
     comboBoxBlankSpaceForEmptyIcons: true
+    comboBoxForcePressed: latteView.indicator.type === type
 
     property string type: "org.kde.latte.unity"
 

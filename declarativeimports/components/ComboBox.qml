@@ -43,6 +43,7 @@ T.ComboBox {
     wheelEnabled: false
 
     property bool blankSpaceForEmptyIcons: false
+    property bool forcePressed: false
     property int minimumPopUpWidth: 150
     property string iconRole
 
@@ -206,7 +207,7 @@ T.ComboBox {
         imagePath: editable ? "widgets/lineedit" : "widgets/button"
         prefix: editable
                 ? "base"
-                : (control.pressed ? "pressed" : "normal")
+                : (control.pressed || control.forcePressed ? "pressed" : "normal")
         Private.TextFieldFocus {
             visible: parent.editable
             z: -1

@@ -43,6 +43,7 @@ PlasmaComponents.Button {
 
     property bool comboBoxEnabled: true
     property bool comboBoxBlankSpaceForEmptyIcons: false
+    property bool comboBoxForcePressed: false
     property int comboBoxMinimumPopUpWidth: 150
     property string comboBoxTextRole: ""
     property string comboBoxIconRole: ""
@@ -56,6 +57,7 @@ PlasmaComponents.Button {
         textRole: comboBoxTextRole
 
         blankSpaceForEmptyIcons: comboBoxBlankSpaceForEmptyIcons
+        forcePressed: comboBoxForcePressed
 
         minimumPopUpWidth: comboBoxMinimumPopUpWidth
     }
@@ -74,8 +76,31 @@ PlasmaComponents.Button {
         width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
         height: mainComboBox.height
 
-        text: buttonText
+        text: checkable && !labelMetrics.exceeds? "" : buttonText
         iconSource: buttonIconSource
         tooltip: buttonToolTip
+    }
+
+    Label{
+        anchors.fill: parent
+        visible: mainButton.checkable && !labelMetrics.exceeds
+        text: buttonText
+        font: mainButton.font
+        color: theme.buttonTextColor
+
+        elide: Text.ElideRight
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+    }
+
+    Label{
+        id: labelMetrics
+        text: root.buttonText
+        opacity: 0
+        elide: Text.ElideNone
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+
+        readonly property bool exceeds: width>mainButton.width
     }
 }
