@@ -546,8 +546,28 @@ Item {
             }
 
             //! Applet Shortcut Visual Badge
-            ShortcutBadge{
-                anchors.fill: wrapper
+            Item {
+                anchors.centerIn: parent
+                width: {
+                    if (root.isHorizontal) {
+                        return rectangled ? root.iconSize * wrapper.zoomScale : wrapper.width
+                    } else {
+                        return root.iconSize * wrapper.zoomScale
+                    }
+                }
+                height: {
+                    if (root.isHorizontal) {
+                        return root.iconSize * wrapper.zoomScale
+                    } else {
+                        return rectangled ? root.iconSize * wrapper.zoomScale : wrapper.height
+                    }
+                }
+
+                property bool rectangled: canBeHovered && !lockZoom
+
+                ShortcutBadge{
+                   // anchors.fill: wrapper
+                }
             }
         }
 

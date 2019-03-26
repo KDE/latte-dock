@@ -58,7 +58,9 @@ Loader{
 
         LatteComponents.BadgeText {
             id: taskNumber
-            anchors.centerIn: parent
+            anchors.left: parent.left
+            anchors.top: parent.top
+            //anchors.centerIn: parent
             minimumWidth: 0.4 * (wrapper.mScale * root.iconSize)
             height: Math.max(24, 0.4 * (wrapper.mScale * root.iconSize))
 
@@ -69,7 +71,7 @@ Loader{
             showText: true
 
             proportion: 0
-            radiusPerCentage: 50
+            radiusPerCentage: 100
         }
     }
 }

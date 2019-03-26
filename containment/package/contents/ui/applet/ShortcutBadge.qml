@@ -97,14 +97,16 @@ Loader{
 
         LatteComponents.BadgeText {
             id: appletNumber
-            anchors.centerIn: parent
+            anchors.top: parent.top
+            anchors.left: parent.left
+            //anchors.centerIn: parent
 
             minimumWidth: 0.4 * (wrapper.zoomScale * root.iconSize)
             height: Math.max(24, 0.4 * (wrapper.zoomScale * root.iconSize))
 
             border.color: root.minimizedDotColor
             proportion: 0
-            radiusPerCentage: 50
+            radiusPerCentage: 100
             showNumber: false
             showText: true
             textValue: appletNumberLoader.badgeString

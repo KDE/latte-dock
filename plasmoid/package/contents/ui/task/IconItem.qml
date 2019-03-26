@@ -284,7 +284,7 @@ Item{
             property bool showProgress: root.showProgressBadge && taskIcon.smartLauncherItem && !taskItem.isSeparator
                                         && taskIcon.smartLauncherItem.progressVisible
 
-            property bool showAudio: root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator
+            property bool showAudio: (root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator) && !shortcutBadge.active
 
             Behavior on activateProgress {
                 NumberAnimation { duration: root.durationTime*2*units.longDuration }
@@ -530,7 +530,9 @@ Item{
         }
         //! Effects
 
-        ShortcutBadge{}
+        ShortcutBadge{
+            id: shortcutBadge
+        }
     }
 
     VisualAddItem{
