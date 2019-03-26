@@ -481,7 +481,11 @@ PlasmaComponents.Page {
                         id: indicatorStyleGroup
                         onCurrentChanged: {
                             if (current.checked) {
-                                latteView.indicator.type = current.type
+                                if (current === customIndicator.button) {
+                                    latteView.indicator.type = customIndicator.type
+                                } else {
+                                    latteView.indicator.type = current.type
+                                }
                             }
                         }
                     }
@@ -509,6 +513,7 @@ PlasmaComponents.Page {
                     }
 
                     LatteExtraControls.CustomIndicatorButton {
+                        id: customIndicator
                         Layout.fillWidth: true
                         checked: parent.type === type
                         checkable: true

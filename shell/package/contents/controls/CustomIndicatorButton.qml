@@ -26,6 +26,7 @@ import org.kde.latte.components 1.0 as LatteComponents
 
 
 LatteComponents.ComboBoxButton{
+    id: custom
     buttonText: "Unity"
     comboBoxTextRole: "name"
     comboBoxIconRole: "icon"
@@ -58,7 +59,7 @@ LatteComponents.ComboBoxButton{
 
         comboBox.model = actionsModel;
 
-        if (latteView.indicator.customPluginsCount > 0) {
+        if (custom.type === latteView.indicator.type) {
             comboBox.currentIndex = 0;
         } else {
             comboBox.currentIndex = -1;
