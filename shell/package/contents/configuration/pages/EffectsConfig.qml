@@ -31,6 +31,8 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte 0.2 as Latte
 import org.kde.latte.components 1.0 as LatteComponents
 
+import "../../controls" as LatteExtraControls
+
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
@@ -506,7 +508,16 @@ PlasmaComponents.Page {
                         readonly property string type: "org.kde.latte.plasma"
                     }
 
-                    PlasmaComponents.Button {
+                    LatteExtraControls.CustomIndicatorButton {
+                        Layout.fillWidth: true
+                        checked: parent.type === type
+                        checkable: true
+                        buttonExclusiveGroup:  indicatorStyleGroup
+                        buttonToolTip: i18n("Use %0 style for your indicators and download more custom indicators to use").arg(buttonText)
+                    }
+
+
+                    /*PlasmaComponents.Button {
                         Layout.fillWidth: true
                         text: i18nc("unity indicator style", "Unity")
                         checked: parent.type === type
@@ -515,7 +526,7 @@ PlasmaComponents.Page {
                         tooltip: i18n("Use Unity style for your indicators")
 
                         readonly property string type: "org.kde.latte.unity"
-                    }
+                    }*/
                 }
 
                 LatteComponents.SubHeader {

@@ -59,6 +59,11 @@ class Indicator: public QObject
 
     Q_PROPERTY(QString type READ type WRITE setType NOTIFY pluginChanged)
 
+    /* Custom plugins */
+    Q_PROPERTY(int customPluginsCount READ customPluginsCount NOTIFY customPluginsChanged)
+    Q_PROPERTY(QStringList customPluginIds READ customPluginIds NOTIFY customPluginsChanged)
+    Q_PROPERTY(QStringList customPluginNames READ customPluginNames NOTIFY customPluginsChanged)
+
     /**
      * Configuration object: each config key will be a writable property of this object. property bindings work.
      */
@@ -91,6 +96,10 @@ public:
     QString type() const;
     void setType(QString type);
 
+    int customPluginsCount() const;
+    QStringList customPluginIds() const;
+    QStringList customPluginNames() const;
+
     QObject *configuration() const;
     QQmlComponent *component() const;
     QQmlComponent *plasmaComponent() const;
@@ -101,6 +110,7 @@ public slots:
     Q_INVOKABLE void configUiFor(QString type, QQuickItem *parent);
 
 signals:
+    void customPluginsChanged();
     void enabledChanged();
     void enabledForAppletsChanged();
     void latteTasksArePresentChanged();

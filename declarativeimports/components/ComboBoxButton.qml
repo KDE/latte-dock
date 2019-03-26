@@ -36,13 +36,20 @@ PlasmaComponents.Button {
     property string buttonText:""
     property string buttonIconSource:""
     property string buttonToolTip: ""
+    property QtObject buttonExclusiveGroup: null
+
+    property bool checked: false
+    property bool checkable: false
 
     property bool comboBoxEnabled: true
+    property string comboBoxTextRole: ""
 
     LatteComponents.ComboBox {
         id: mainComboBox
         anchors.fill: parent
         enabled: comboBoxEnabled
+
+        textRole: comboBoxTextRole
     }
 
     //overlayed button
@@ -52,6 +59,9 @@ PlasmaComponents.Button {
         anchors.right: Qt.application.layoutDirection === Qt.RightToLeft ? parent.right : undefined
         LayoutMirroring.enabled: false
         enabled: buttonEnabled
+        checked: root.checked
+        checkable: root.checkable
+        exclusiveGroup: buttonExclusiveGroup
 
         width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
         height: mainComboBox.height

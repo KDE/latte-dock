@@ -44,6 +44,22 @@ Factory::~Factory()
 {
 }
 
+int Factory::customPluginsCount()
+{
+    return m_customPluginIds.count();
+}
+
+QStringList Factory::customPluginIds()
+{
+    return m_customPluginIds;
+}
+
+QStringList Factory::customPluginNames()
+{
+    return m_customPluginNames;
+}
+
+
 KPluginMetaData Factory::metadata(QString pluginId)
 {
     if (m_plugins.contains(pluginId)) {
@@ -58,6 +74,8 @@ void Factory::reload()
     QStringList standardPaths = Latte::Importer::standardPaths();
 
     m_plugins.clear();
+    m_customPluginIds.clear();
+    m_customPluginNames.clear();
 
     foreach(auto path, standardPaths) {
         QDir standard(path + "/latte/indicators");
@@ -76,6 +94,13 @@ void Factory::reload()
 
                         if (metadata.isValid() && QFileInfo(uiFile).exists() && !m_plugins.contains(metadata.pluginId())) {
                             m_plugins[metadata.pluginId()] = metadata;
+
+                            if ((metadata.pluginId() != "org.kde.latte.default")
+                                    && (metadata.pluginId() != "org.kde.latte.plasma")) {
+                                m_customPluginIds << metadata.pluginId();
+                                m_customPluginNames << metadata.name();
+                            }
+
                             QString pluginPath = metadata.fileName().remove("metadata.desktop");
                             qDebug() << " Indicator Package Loaded ::: " << metadata.name() << " [" << metadata.pluginId() << "]" << " - [" <<pluginPath<<"]";
                             /*qDebug() << " Indicator value ::: " << metadata.pluginId();
@@ -89,6 +114,8 @@ void Factory::reload()
             }
         }
     }
+
+    emit customPluginsChanged();
 }
 
 }

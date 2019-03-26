@@ -48,6 +48,8 @@ Indicator::Indicator(Latte::View *parent)
 
     connect(m_view, &Latte::View::latteTasksArePresentChanged, this, &Indicator::latteTasksArePresentChanged);
 
+    connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::customPluginsChanged, this, &Indicator::customPluginsChanged);
+
     load(m_type);
 
     loadPlasmaComponent();
@@ -175,6 +177,21 @@ void Indicator::setType(QString type)
     }
 
     load(type);
+}
+
+int Indicator::customPluginsCount() const
+{
+    return m_corona->indicatorFactory()->customPluginsCount();
+}
+
+QStringList Indicator::customPluginIds() const
+{
+    return m_corona->indicatorFactory()->customPluginIds();
+}
+
+QStringList Indicator::customPluginNames() const
+{
+    return m_corona->indicatorFactory()->customPluginNames();
 }
 
 QQmlComponent *Indicator::component() const

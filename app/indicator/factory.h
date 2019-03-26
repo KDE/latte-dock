@@ -39,11 +39,20 @@ public:
 
     void reload();
 
+    int customPluginsCount();
+    QStringList customPluginIds();
+    QStringList customPluginNames();
+
     KPluginMetaData metadata(QString pluginId);
+
+signals:
+    void customPluginsChanged();
 
 private:
     QHash<QString, KPluginMetaData> m_plugins;
 
+    QStringList m_customPluginIds;
+    QStringList m_customPluginNames;
 };
 
 }
