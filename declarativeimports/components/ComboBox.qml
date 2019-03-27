@@ -46,10 +46,12 @@ T.ComboBox {
     property bool forcePressed: false
     property int minimumPopUpWidth: 150
     property int popUpRelativeX: 0
+    property string enabledRole
     property string iconRole
 
     delegate: ItemDelegate {
         width: control.popup.width
+        enabled: control.enabledRole ? (Array.isArray(control.model) ? modelData[control.enabledRole] : model[control.enabledRole]) : true
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
         icon: control.iconRole ? (Array.isArray(control.model) ? modelData[control.iconRole] : model[control.iconRole]) : ''
         highlighted: mouseArea.pressed ? listView.currentIndex == index : control.currentIndex == index

@@ -46,6 +46,7 @@ T.CheckDelegate {
         Layout.leftMargin: control.mirrored ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
         Layout.rightMargin: !control.mirrored ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
         spacing: units.smallSpacing
+        enabled: control.enabled
 
         PlasmaCore.IconItem {
             height: parent.height
@@ -77,6 +78,7 @@ T.CheckDelegate {
     //background: Private.DefaultListItemBackground {}
     background: Rectangle {
         visible: control.ListView.view ? control.ListView.view.highlight === null : true
+        enabled: control.enabled
         opacity: {
             if (control.highlighted || control.pressed) {
                 return 0.7;
@@ -86,6 +88,7 @@ T.CheckDelegate {
 
             return 0;
         }
+
         color: theme.highlightColor
     }
 }

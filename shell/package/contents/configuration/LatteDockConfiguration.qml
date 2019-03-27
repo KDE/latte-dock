@@ -459,6 +459,9 @@ FocusScope {
             function updateEnabled() {
                 var screenFreeEdges = latteView.managedLayout.qmlFreeEdges(latteView.positioner.currentScreenId);
                 actionsComboBtn.buttonEnabled = latteView.managedLayout.viewsCount<4 && screenFreeEdges.length > 0
+                if (actionsModel.count > 0) {
+                    actionsModel.get(0).enabled = actionsComboBtn.buttonEnabled;
+                }
                 removeView.enabled = latteView.managedLayout.viewsCount>1 /*&& !(latteView.managedLayout.viewsWithTasks()===1 && latteView.tasksPresent())*/
             }
 
@@ -473,8 +476,9 @@ FocusScope {
                 buttonIconSource: "list-add"
                 buttonToolTip: i18n("Add a new dock")
 
-                comboBoxEnabled: buttonEnabled
+                comboBoxEnabled: true
                 comboBoxBlankSpaceForEmptyIcons: true
+                comboBoxEnabledRole: "enabled"
                 comboBoxTextRole: "name"
                 comboBoxIconRole: "icon"
                 comboBoxMinimumPopUpWidth: actionsModel.count > 1 ? dialog.width / 2 : 150
@@ -495,6 +499,7 @@ FocusScope {
 
                     Component.onCompleted:{
                         actionsComboBtn.addModel();
+                        actionButtons.updateEnabled();
                     }
 
                     onActivated: {
@@ -525,7 +530,7 @@ FocusScope {
                 function addModel() {
                     actionsModel.clear();
 
-                    var copy = {actionId: 'copy:', name: i18n("Copy Dock"), icon: 'edit-copy'};
+                    var copy = {actionId: 'copy:', enabled: true, name: i18n("Copy Dock"), icon: 'edit-copy'};
                     actionsModel.append(copy);
 
                     var tempActiveLayouts = layoutManager.activeLayoutsNames();
@@ -548,7 +553,7 @@ FocusScope {
 
                 function emptyModel() {
                     actionsModel.clear();
-                    var copy = {actionId: 'copy:', name: i18n("Copy Dock"), icon: 'edit-copy'};
+                    var copy = {actionId: 'copy:', enabled: true, name: i18n("Copy Dock"), icon: 'edit-copy'};
                     actionsModel.append(copy);
                     actionsComboBtn.comboBox.currentIndex = -1;
                 }

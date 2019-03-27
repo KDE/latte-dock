@@ -49,6 +49,7 @@ Rectangle {
     property bool comboBoxBlankSpaceForEmptyIcons: false
     property bool comboBoxForcePressed: false
     property int comboBoxMinimumPopUpWidth: 150
+    property string comboBoxEnabledRole: ""
     property string comboBoxTextRole: ""
     property string comboBoxIconRole: ""
 
@@ -81,6 +82,7 @@ Rectangle {
 
         enabled: comboBoxEnabled
 
+        enabledRole: comboBoxEnabledRole
         iconRole: comboBoxIconRole
         textRole: comboBoxTextRole
 
