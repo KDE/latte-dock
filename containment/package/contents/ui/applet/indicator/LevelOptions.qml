@@ -19,7 +19,21 @@
 
 import QtQuick 2.7
 
+import org.kde.latte 0.2 as Latte
+
 Item {
-    readonly property Item level: parent && parent.hasOwnProperty("level") ? parent.level : null
-    readonly property Item indicator: parent && parent.hasOwnProperty("level") ? parent.level.bridge : null
+    id: level
+
+    property bool isBackground: true
+    property bool isForeground: false
+
+    property Item bridge
+
+    onIsBackgroundChanged: {
+        isForeground = !isBackground;
+    }
+
+    onIsForegroundChanged: {
+        isBackground = !isForeground;
+    }
 }

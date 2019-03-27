@@ -427,16 +427,20 @@ MouseArea{
 
             Indicator.Loader{
                 id: indicatorBackLayer
-                bridge: indicatorBridge
-                isBackground: true
+                level: Indicator.LevelOptions {
+                    isBackground: true
+                    bridge: indicatorBridge
+                }
             }
 
             Wrapper{id: wrapper}
 
             Indicator.Loader{
                 id: indicatorFrontLayer
-                bridge: indicatorBridge
-                isBackground: false
+                level: Indicator.LevelOptions {
+                    isForeground: true
+                    bridge: indicatorBridge
+                }
             }
         }
 

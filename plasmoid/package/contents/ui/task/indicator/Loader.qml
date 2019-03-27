@@ -34,11 +34,7 @@ Loader {
     anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
     anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-    property bool isBackground: true
-    readonly property bool isForeground: !isBackground
-    property Item bridge
-
-    active: bridge && bridge.active && (isBackground || (isForeground && indicators.info.providesFrontLayer))
+    active: level.bridge && level.bridge.active && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
     sourceComponent: indicators.indicatorComponent
 
     width: {
@@ -61,4 +57,6 @@ Loader {
 
     property real visualLockedWidth: root.iconSize + root.internalWidthMargins
     property real visualLockedHeight: root.iconSize + root.internalHeightMargins
+
+    property Item level
 }

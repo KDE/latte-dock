@@ -61,10 +61,11 @@ Item{
         opacity: 0
         active: managerIndicator.isEnabled
 
-        readonly property bool isBackground: true
-        readonly property bool isForeground: false
-        readonly property Item bridge: AppletIndicator.Bridge{
-            appletIsValid: false
+        readonly property Item level: AppletIndicator.LevelOptions {
+            isBackground: true
+            bridge: AppletIndicator.Bridge{
+                appletIsValid: false
+            }
         }
 
         sourceComponent: managerIndicator.indicatorComponent

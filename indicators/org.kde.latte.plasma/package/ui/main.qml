@@ -31,7 +31,7 @@ LatteComponents.IndicatorItem {
     Loader{
         id: backLayer
         anchors.fill: parent
-        active: attributes.isBackground
+        active: level.isBackground
 
         sourceComponent: BackLayer{}
     }
@@ -40,7 +40,7 @@ LatteComponents.IndicatorItem {
     Loader{
         id: frontLayer
         anchors.fill: parent
-        active: attributes.isForeground && !indicator.isApplet && indicator.isGroup
+        active: level.isForeground && !indicator.isApplet && indicator.isGroup
 
         sourceComponent: FrontLayer{}
     }

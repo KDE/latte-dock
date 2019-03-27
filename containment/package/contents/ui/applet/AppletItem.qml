@@ -507,8 +507,10 @@ Item {
             //! Indicator Back Layer
             Indicator.Loader{
                 id: indicatorBackLayer
-                bridge: indicatorBridge
-                isBackground: true
+                level: Indicator.LevelOptions {
+                    isBackground: true
+                    bridge: indicatorBridge
+                }
             }
 
             ItemWrapper{
@@ -541,8 +543,10 @@ Item {
             //! Indicator Front Layer
             Indicator.Loader{
                 id: indicatorFrontLayer
-                bridge: indicatorBridge
-                isBackground: false
+                level: Indicator.LevelOptions {
+                    isForeground: true
+                    bridge: indicatorBridge
+                }
             }
 
             //! Applet Shortcut Visual Badge

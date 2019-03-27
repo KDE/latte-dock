@@ -21,11 +21,11 @@ import QtQuick 2.7
 
 import org.kde.latte 0.2 as Latte
 
-Loader{
+Loader {
     id: indicatorLoader
     anchors.fill: parent
 
-    active: bridge && bridge.active && (isBackground || (isForeground && indicators.info.providesFrontLayer))
+    active: level.bridge && level.bridge.active && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
     sourceComponent: {
         if (!indicators.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
             return indicators.plasmaStyleComponent;
@@ -34,7 +34,5 @@ Loader{
         return indicators.indicatorComponent;
     }
 
-    property bool isBackground: true
-    readonly property bool isForeground: !isBackground
-    property Item bridge
+    property Item level
 }
