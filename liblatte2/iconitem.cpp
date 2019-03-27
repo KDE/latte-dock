@@ -48,7 +48,8 @@ IconItem::IconItem(QQuickItem *parent)
       m_active(false),
       m_textureChanged(false),
       m_sizeChanged(false),
-      m_usesPlasmaTheme(false)
+      m_usesPlasmaTheme(false),
+      m_colorGroup(Plasma::Theme::NormalColorGroup)
 {
     setFlag(ItemHasContents, true);
     connect(KIconLoader::global(), SIGNAL(iconLoaderSettingsChanged()),
@@ -103,7 +104,7 @@ void IconItem::setSource(const QVariant &source)
         } else {
             if (!m_svgIcon) {
                 m_svgIcon = std::make_unique<Plasma::Svg>(this);
-                m_svgIcon->setColorGroup(Plasma::Theme::NormalColorGroup);
+                m_svgIcon->setColorGroup(m_colorGroup);
                 m_svgIcon->setStatus(Plasma::Svg::Normal);
                 m_svgIcon->setUsingRenderingCache(false);
                 m_svgIcon->setDevicePixelRatio((window() ? window()->devicePixelRatio() : qApp->devicePixelRatio()));
@@ -221,6 +222,27 @@ void IconItem::setLastValidSourceName(QString name)
 
     emit lastValidSourceNameChanged();
 }
+
+void IconItem::setColorGroup(Plasma::Theme::ColorGroup group)
+{
+    if (m_colorGroup == group) {
+        return;
+    }
+
+    m_colorGroup = group;
+
+    if (m_svgIcon) {
+        m_svgIcon->setColorGroup(group);
+    }
+
+    emit colorGroupChanged();
+}
+
+Plasma::Theme::ColorGroup IconItem::colorGroup() const
+{
+    return m_colorGroup;
+}
+
 
 void IconItem::setOverlays(const QStringList &overlays)
 {

@@ -57,6 +57,12 @@ class IconItem : public QQuickItem
     Q_PROPERTY(QVariant source READ source WRITE setSource NOTIFY sourceChanged)
 
     /**
+     * Specifies the color group to use for this icon
+     * This only applies to icons loaded from the plasma theme
+     */
+    Q_PROPERTY(Plasma::Theme::ColorGroup colorGroup READ colorGroup WRITE setColorGroup NOTIFY colorGroupChanged)
+
+    /**
       * Specifies the overlay(s) for this icon
       */
     Q_PROPERTY(QStringList overlays READ overlays WRITE setOverlays NOTIFY overlaysChanged)
@@ -111,6 +117,9 @@ public:
     void setSource(const QVariant &source);
     QVariant source() const;
 
+    void setColorGroup(Plasma::Theme::ColorGroup group);
+    Plasma::Theme::ColorGroup colorGroup() const;
+
     void setOverlays(const QStringList &overlays);
     QStringList overlays() const;
 
@@ -148,6 +157,7 @@ public:
 signals:
     void activeChanged();
     void backgroundColorChanged();
+    void colorGroupChanged();
     void glowColorChanged();
     void lastValidSourceNameChanged();
     void overlaysChanged();
@@ -205,6 +215,9 @@ private:
     QString m_lastColorsSourceId;
 
     QStringList m_overlays;
+
+    Plasma::Theme::ColorGroup m_colorGroup;
+
     //this contains the raw variant it was passed
     QVariant m_source;
 

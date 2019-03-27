@@ -74,6 +74,7 @@ Item {
                 anchors.centerIn: parent
                 width: 0.9*parent.width
                 height: width
+                colorGroup: PlasmaCore.Theme.ButtonColorGroup
                 usesPlasmaTheme: true
 
                 //opacity: taskItem.playingAudio && !taskItem.muted ? 1 : 0.85
