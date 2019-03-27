@@ -116,7 +116,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         enabled: showAppletShadow.checked
-                        text: shadowSizeSlider.value + " %"
+                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(shadowSizeSlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -163,7 +163,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         enabled: showAppletShadow.checked
-                        text: shadowOpacitySlider.value + " %"
+                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(shadowOpacitySlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -572,7 +572,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: lengthIntMarginSlider.value + " %"
+                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(lengthIntMarginSlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
