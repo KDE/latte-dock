@@ -51,6 +51,7 @@ T.CheckDelegate {
         PlasmaCore.IconItem {
             height: parent.height
             width: parent.height
+            colorGroup: PlasmaCore.Theme.ButtonColorGroup
             source: control.icon
             visible: icon
         }
