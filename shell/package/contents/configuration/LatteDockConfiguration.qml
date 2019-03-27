@@ -535,9 +535,10 @@ FocusScope {
 
                     if (tempActiveLayouts.length > 0) {
                         activeLayoutsNames = tempActiveLayouts;
+                        var iconArrow = Qt.application.layoutDirection === Qt.RightToLeft ? 'arrow-left' : 'arrow-right';
 
                         for(var i=0; i<activeLayoutsNames.length; ++i) {
-                            var layout = {actionId: 'move:', name: i18n("Move to: %0").arg(activeLayoutsNames[i]), icon: 'arrow-right'};
+                            var layout = {actionId: 'move:', name: i18n("Move to: %0").arg(activeLayoutsNames[i]), icon: iconArrow};
                             actionsModel.append(layout);
                         }
                     }
