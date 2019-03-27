@@ -82,9 +82,9 @@ T.CheckDelegate {
         enabled: control.enabled
         opacity: {
             if (control.highlighted || control.pressed) {
-                return 0.7;
+                return 0.6;
             } else if (control.hovered && !control.pressed) {
-                return 0.4;
+                return 0.3;
             }
 
             return 0;
