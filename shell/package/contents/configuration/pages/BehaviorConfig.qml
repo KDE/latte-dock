@@ -427,6 +427,7 @@ PlasmaComponents.Page {
                     property int mode: Latte.Types.DodgeMaximized
                 }
                 PlasmaComponents.Button {
+                    id: dodgeAllWindowsBtn
                     Layout.fillWidth: true
                     text: i18n("Dodge All Windows")
                     checked: parent.mode === mode
@@ -436,6 +437,7 @@ PlasmaComponents.Page {
                     property int mode: Latte.Types.DodgeAllWindows
                 }
                 PlasmaComponents.Button {
+                    id: windowsGoBelowBtn
                     Layout.fillWidth: true
                     text: i18n("Windows Go Below")
                     checked: parent.mode === mode
@@ -460,52 +462,63 @@ PlasmaComponents.Page {
                 text: i18n("Delay")
             }
 
-            //! ghost object to provide full space to Delay ColumnLayout
-            Label {
-                Layout.fillWidth: true
-                text: " "
-                height: 0
-            }
-
             RowLayout {
-                Layout.fillWidth: false
+                Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: units.smallSpacing
 
                 spacing: 2
 
-                PlasmaComponents.Label {
-                    Layout.fillWidth: false
-                    Layout.rightMargin: Qt.application.layoutDirection === Qt.RightToLeft ? 0 : units.smallSpacing
-                    Layout.leftMargin: Qt.application.layoutDirection === Qt.RightToLeft ? units.smallSpacing : 0
-                    horizontalAlignment: Text.AlignRight
-                    text: i18n("Show")
-                }
-                LatteComponents.TextField {
-                    Layout.preferredWidth: width
-                    text: latteView.visibility.timerShow
+                RowLayout {
+                    Layout.minimumWidth: dodgeAllWindowsBtn.width
+                    Layout.preferredWidth: Layout.minimumWidth
+                    Layout.maximumWidth: Layout.minimumWidth
+                    spacing: 0
 
-                    onValueChanged: {
-                        latteView.visibility.timerShow = value
+                    RowLayout{
+                        Layout.alignment: Qt.AlignHCenter
+
+                        PlasmaComponents.Label {
+                            Layout.leftMargin: Qt.application.layoutDirection === Qt.RightToLeft ? units.smallSpacing : 0
+                            Layout.rightMargin: Qt.application.layoutDirection === Qt.RightToLeft ? 0 : units.smallSpacing
+                            text: i18n("Show ")
+                        }
+
+                        LatteComponents.TextField {
+                            Layout.preferredWidth: width
+                            text: latteView.visibility.timerShow
+
+                            onValueChanged: {
+                                latteView.visibility.timerShow = value
+                            }
+                        }
                     }
                 }
 
-                PlasmaComponents.Label {
-                    Layout.fillWidth: false
-                    Layout.leftMargin: Qt.application.layoutDirection === Qt.RightToLeft ?
-                                           units.smallSpacing : units.largeSpacing
-                    Layout.rightMargin: Qt.application.layoutDirection === Qt.RightToLeft ?
-                                            units.largeSpacing : units.smallSpacing
-                    horizontalAlignment: Text.AlignRight
-                    text: i18n("Hide")
-                }
-                LatteComponents.TextField{
-                    Layout.preferredWidth: width
-                    text: latteView.visibility.timerHide
+                RowLayout {
+                    Layout.minimumWidth: windowsGoBelowBtn.width
+                    Layout.preferredWidth: Layout.minimumWidth
+                    Layout.maximumWidth: Layout.minimumWidth
+                    spacing: 0
 
-                    onValueChanged: {
-                        latteView.visibility.timerHide = value
+                    RowLayout {
+                        Layout.alignment: Qt.AlignHCenter
+
+                        PlasmaComponents.Label {
+                            Layout.leftMargin: Qt.application.layoutDirection === Qt.RightToLeft ? units.smallSpacing : 0
+                            Layout.rightMargin: Qt.application.layoutDirection === Qt.RightToLeft ? 0 : units.smallSpacing
+                            text: i18n("Hide")
+                        }
+
+                        LatteComponents.TextField{
+                            Layout.preferredWidth: width
+                            text: latteView.visibility.timerHide
+
+                            onValueChanged: {
+                                latteView.visibility.timerHide = value
+                            }
+                        }
                     }
                 }
             }
