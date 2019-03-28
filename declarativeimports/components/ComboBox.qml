@@ -44,6 +44,7 @@ T.ComboBox {
 
     property bool blankSpaceForEmptyIcons: false
     property bool forcePressed: false
+    property bool popUpAlignRight: true
     property int minimumPopUpWidth: 150
     property int popUpRelativeX: 0
     property string enabledRole
@@ -263,17 +264,39 @@ T.ComboBox {
 
     popup: T.Popup {
         x: {
-            if (popUpRelativeX !== 0) {
-                return control.mirrored ? -(width - popUpRelativeX) : popUpRelativeX
+            if (!control.mirrored) {
+                if (popUpRelativeX !== 0) {
+                    var adjustedX = exceedsContent && control.popUpAlignRight ? -(width - control.width) : popUpRelativeX;
+                    return  adjustedX;
+                } else {
+                    return 0;
+                }
+            } else {
+                //! mirrored case
+                if (exceedsContent && control.popUpAlignRight) {
+                    var adjustedX = width - control.width - popUpRelativeX;
+                    return  -adjustedX;
+                } else {
+                    return 0;
+                }
             }
-
-            return control.mirrored ? control.width - width : 0
         }
         y: control.height
         width: Math.max(control.width, control.minimumPopUpWidth)
         implicitHeight: contentItem.implicitHeight
         topMargin: 6
         bottomMargin: 6
+
+        readonly property bool exceedsContent: control.width < width
+
+        /*onVisibleChanged: {
+            if (visible) {
+                console.log("  mirrored:" + control.mirrored);
+                console.log("  exceeds: " + exceedsContent);
+                console.log("  popupAR: " + control.popUpAlignRight);
+                console.log("  popupRX: " + popUpRelativeX);
+            }
+        }*/
 
         contentItem: ListView {
             id: listView

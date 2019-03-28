@@ -27,12 +27,14 @@ import org.kde.latte.components 1.0 as LatteComponents
 
 LatteComponents.ComboBoxButton{
     id: custom
-    buttonText: "Unity"
+
     comboBoxTextRole: "name"
     comboBoxIconRole: "icon"
     comboBoxBlankSpaceForEmptyIcons: true
     comboBoxForcePressed: latteView.indicator.type === type
+    comboBoxPopUpAlignRight: Qt.application.layoutDirection !== Qt.RightToLeft
 
+    buttonText: "Unity"
     property string type: "org.kde.latte.unity"
 
     Component.onCompleted: reloadModel();
@@ -54,9 +56,7 @@ LatteComponents.ComboBoxButton{
             }
         }
 
-        //! download
-        var downloadElement = {pluginId: 'more:', name: 'More...', icon: 'favorites'};
-        actionsModel.append(downloadElement);
+        appendDefaults();
 
         comboBox.model = actionsModel;
 
@@ -68,15 +68,21 @@ LatteComponents.ComboBoxButton{
     }
 
     function emptyModel() {
-        var actions = []
-        //! download
-        var downloadElement = {pluginId: 'more:', name: 'More...', icon: ''};
-
-        actionsModel.append(emptyElement);
-        actionsModel.append(downloadElement);
+        actionsModel.clear();
+        appendDefaults();
 
         comboBox.model = actionsModel;
         comboBox.currentIndex = -1;
+    }
+
+    function appendDefaults() {
+        //! add
+        var addElement = {pluginId: 'add:', name: 'Add Indicator...', icon: 'list-add'};
+        actionsModel.append(addElement);
+
+        //! download
+        var downloadElement = {pluginId: 'download:', name: 'Get New Indicators...', icon: 'favorites'};
+        actionsModel.append(downloadElement);
     }
 
 }

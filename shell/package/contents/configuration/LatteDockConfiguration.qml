@@ -478,6 +478,7 @@ FocusScope {
 
                 comboBoxEnabled: true
                 comboBoxBlankSpaceForEmptyIcons: true
+                comboBoxPopUpAlignRight: Qt.application.layoutDirection === Qt.RightToLeft
                 comboBoxEnabledRole: "enabled"
                 comboBoxTextRole: "name"
                 comboBoxIconRole: "icon"

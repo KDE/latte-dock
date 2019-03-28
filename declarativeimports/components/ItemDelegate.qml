@@ -49,8 +49,12 @@ T.CheckDelegate {
         enabled: control.enabled
 
         PlasmaCore.IconItem {
-            height: parent.height
-            width: parent.height
+            Layout.minimumWidth: parent.height
+            Layout.maximumWidth: parent.height
+            Layout.minimumHeight: parent.height
+            Layout.maximumHeight: parent.height
+            //height: parent.height - 2*control.margin
+            //width: parent.height -  2*control.margin
             colorGroup: PlasmaCore.Theme.ButtonColorGroup
             source: control.icon
             visible: icon

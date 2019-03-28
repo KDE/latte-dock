@@ -48,6 +48,7 @@ Rectangle {
     property bool comboBoxEnabled: true
     property bool comboBoxBlankSpaceForEmptyIcons: false
     property bool comboBoxForcePressed: false
+    property bool comboBoxPopUpAlignRight: true
     property int comboBoxMinimumPopUpWidth: 150
     property string comboBoxEnabledRole: ""
     property string comboBoxTextRole: ""
@@ -88,7 +89,10 @@ Rectangle {
 
         blankSpaceForEmptyIcons: comboBoxBlankSpaceForEmptyIcons
         forcePressed: comboBoxForcePressed
-        popUpRelativeX: Qt.application.layoutDirection === Qt.RightToLeft ? root.width : -(parent.width - width)
+        popUpAlignRight: comboBoxPopUpAlignRight
+        popUpRelativeX: Qt.application.layoutDirection === Qt.RightToLeft ?
+                            (popUpAlignRight ? root.width - width : 0) :
+                            (popUpAlignRight ? width : -(root.width - width))
 
         minimumPopUpWidth: Math.max(comboBoxMinimumPopUpWidth, root.width)
     }
