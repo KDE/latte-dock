@@ -58,6 +58,7 @@ class Indicator: public QObject
     Q_PROPERTY(float padding READ padding WRITE setPadding NOTIFY paddingChanged)
 
     Q_PROPERTY(QString type READ type WRITE setType NOTIFY pluginChanged)
+    Q_PROPERTY(QString customType READ customType NOTIFY customPluginChanged)
 
     /* Custom plugins */
     Q_PROPERTY(int customPluginsCount READ customPluginsCount NOTIFY customPluginsChanged)
@@ -96,6 +97,8 @@ public:
     QString type() const;
     void setType(QString type);
 
+    QString customType() const;
+
     int customPluginsCount() const;
     QStringList customPluginIds() const;
     QStringList customPluginNames() const;
@@ -113,6 +116,7 @@ signals:
     void customPluginsChanged();
     void enabledChanged();
     void enabledForAppletsChanged();
+    void customPluginChanged();
     void latteTasksArePresentChanged();
     void paddingChanged();
     void plasmaComponentChanged();
@@ -127,6 +131,8 @@ private:
 
     void setPluginIsReady(bool ready);
     void setProvidesConfigUi(bool provides);
+
+    void setCustomType(QString type);
 
     void loadPlasmaComponent();
     void updateComponent();
@@ -143,6 +149,7 @@ private:
 
     QString m_pluginPath;
     QString m_type{"org.kde.latte.default"};
+    QString m_customType;
 
     QPointer<QQmlComponent> m_component;
     QPointer<QQmlComponent> m_plasmaComponent;

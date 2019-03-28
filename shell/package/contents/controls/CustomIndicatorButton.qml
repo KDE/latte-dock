@@ -37,8 +37,7 @@ LatteComponents.ComboBoxButton{
     comboBoxForcePressed: latteView.indicator.type === type
     comboBoxPopUpAlignRight: Qt.application.layoutDirection !== Qt.RightToLeft
 
-    buttonText: "Unity"
-    property string type: "org.kde.latte.unity"
+    property string type: ""
 
     Component.onCompleted: {
         reloadModel();

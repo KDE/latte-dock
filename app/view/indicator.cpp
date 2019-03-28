@@ -50,6 +50,12 @@ Indicator::Indicator(Latte::View *parent)
 
     connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::customPluginsChanged, this, &Indicator::customPluginsChanged);
 
+    connect(this, &Indicator::pluginChanged, [this]() {
+        if ((m_type != "org.kde.latte.default") && m_type != "org.kde.latte.plasma") {
+            setCustomType(m_type);
+        }
+    });
+
     load(m_type);
 
     loadPlasmaComponent();
@@ -177,6 +183,21 @@ void Indicator::setType(QString type)
     }
 
     load(type);
+}
+
+QString Indicator::customType() const
+{
+    return m_customType;
+}
+
+void Indicator::setCustomType(QString type)
+{
+    if (m_customType == type) {
+        return;
+    }
+
+    m_customType = type;
+    emit customPluginChanged();
 }
 
 int Indicator::customPluginsCount() const
@@ -341,6 +362,7 @@ void Indicator::updateScheme()
 void Indicator::loadConfig()
 {
     auto config = m_view->containment()->config().group("Indicator");
+    m_customType = config.readEntry("customType", QString());
     m_enabled = config.readEntry("enabled", true);
     m_enabledForApplets = config.readEntry("enabledForApplets", true);
     m_padding = config.readEntry("padding", (float)0.08);
@@ -351,6 +373,7 @@ void Indicator::loadConfig()
 void Indicator::saveConfig()
 {
     auto config = m_view->containment()->config().group("Indicator");
+    config.writeEntry("customType", m_customType);
     config.writeEntry("enabled", m_enabled);
     config.writeEntry("enabledForApplets", m_enabledForApplets);
     config.writeEntry("padding", m_padding);
