@@ -27,7 +27,10 @@ import org.kde.latte.components 1.0 as LatteComponents
 
 LatteComponents.ComboBoxButton{
     id: custom
+    checkable: true
 
+    buttonToolTip: checked ? i18n("Use %0 style for your indicators").arg(buttonText) :
+                             i18n("Download indicator styles from the internet")
     comboBoxTextRole: "name"
     comboBoxIconRole: "icon"
     comboBoxBlankSpaceForEmptyIcons: true
@@ -37,10 +40,29 @@ LatteComponents.ComboBoxButton{
     buttonText: "Unity"
     property string type: "org.kde.latte.unity"
 
-    Component.onCompleted: reloadModel();
+    Component.onCompleted: {
+        reloadModel();
+        updateButtonInformation();
+    }
 
     ListModel {
         id: actionsModel
+    }
+
+    Connections{
+        target: latteView.indicator
+        onCustomPluginsCountChanged: custom.updateButtonInformation()
+    }
+
+    function updateButtonInformation() {
+        if (latteView.indicator.customPluginsCount === 0) {
+            custom.buttonText = i18n("Download");
+            custom.checkable = false;
+        } else {
+            custom.checkable = true;
+            custom.buttonText = actionsModel.get(0).name;
+            custom.type = actionsModel.get(0).pluginId;
+        }
     }
 
     function reloadModel() {
@@ -77,11 +99,11 @@ LatteComponents.ComboBoxButton{
 
     function appendDefaults() {
         //! add
-        var addElement = {pluginId: 'add:', name: 'Add Indicator...', icon: 'list-add'};
+        var addElement = {pluginId: 'add:', name: i18n('Add Indicator...'), icon: 'list-add'};
         actionsModel.append(addElement);
 
         //! download
-        var downloadElement = {pluginId: 'download:', name: 'Get New Indicators...', icon: 'favorites'};
+        var downloadElement = {pluginId: 'download:', name: i18n('Get New Indicators...'), icon: 'favorites'};
         actionsModel.append(downloadElement);
     }
 

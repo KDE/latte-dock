@@ -518,10 +518,8 @@ PlasmaComponents.Page {
                         implicitWidth: latteBtn.implicitWidth
                         implicitHeight: latteBtn.implicitHeight
 
-                        checked: parent.type === type
-                        checkable: true
+                        checked: checkable ? parent.type === type : false
                         buttonExclusiveGroup:  indicatorStyleGroup
-                        buttonToolTip: i18n("Use %0 style for your indicators and download more custom indicators to use").arg(buttonText)
                         comboBoxMinimumPopUpWidth: 1.5 * customIndicator.width
                     }
                 }
