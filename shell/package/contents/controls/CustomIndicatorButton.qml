@@ -65,6 +65,8 @@ LatteComponents.ComboBoxButton{
                 latteView.indicator.addIndicator();
             } else if (item.pluginId === "download:") {
                 latteView.indicator.downloadIndicator();
+            } else {
+                latteView.indicator.type = item.pluginId;
             }
 
             custom.updateButtonInformation();
@@ -77,8 +79,16 @@ LatteComponents.ComboBoxButton{
             custom.checkable = false;
         } else {
             custom.checkable = true;
-            custom.buttonText = actionsModel.get(0).name;
-            custom.type = actionsModel.get(0).pluginId;
+
+            var curCustomIndex = latteView.indicator.customPluginIds.indexOf(latteView.indicator.customType);
+
+            if (curCustomIndex>=0) {
+                custom.buttonText = actionsModel.get(curCustomIndex).name;
+                custom.type = actionsModel.get(curCustomIndex).pluginId;
+            } else {
+                custom.buttonText = actionsModel.get(0).name;
+                custom.type = actionsModel.get(0).pluginId;
+            }
         }
     }
 
