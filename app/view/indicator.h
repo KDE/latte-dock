@@ -112,6 +112,7 @@ public:
 public slots:
     Q_INVOKABLE void configUiFor(QString type, QQuickItem *parent);
     Q_INVOKABLE void addIndicator();
+    Q_INVOKABLE void downloadIndicator();
 
 signals:
     void customPluginsChanged();

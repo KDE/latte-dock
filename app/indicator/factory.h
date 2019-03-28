@@ -26,6 +26,7 @@
 // Qt
 #include <QHash>
 #include <QObject>
+#include <QWidget>
 
 class KPluginMetaData;
 
@@ -48,6 +49,8 @@ public:
 
     KPluginMetaData metadata(QString pluginId);
 
+    void downloadIndicator();
+
     //! metadata record
     static bool metadataAreValid(KPluginMetaData &metadata);
     //! metadata file
@@ -63,6 +66,8 @@ private:
 
     QStringList m_customPluginIds;
     QStringList m_customPluginNames;
+
+    QWidget *m_parentWidget;
 };
 
 }

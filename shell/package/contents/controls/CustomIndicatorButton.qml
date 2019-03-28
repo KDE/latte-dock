@@ -63,8 +63,11 @@ LatteComponents.ComboBoxButton{
             var item = actionsModel.get(index);
             if (item.pluginId === "add:") {
                 latteView.indicator.addIndicator();
-                custom.updateButtonInformation();
+            } else if (item.pluginId === "download:") {
+                latteView.indicator.downloadIndicator();
             }
+
+            custom.updateButtonInformation();
         }
     }
 

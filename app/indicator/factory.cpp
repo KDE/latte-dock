@@ -35,6 +35,7 @@
 #include <KArchive/KZip>
 #include <KArchive/KArchiveEntry>
 #include <KArchive/KArchiveDirectory>
+#include <KNewStuff3/KNS3/DownloadDialog>
 
 namespace Latte {
 namespace Indicator {
@@ -42,6 +43,7 @@ namespace Indicator {
 Factory::Factory(QObject *parent)
     : QObject(parent)
 {
+    m_parentWidget = new QWidget();
     reload();
 
     qDebug() << m_plugins["org.kde.latte.default"].name();
@@ -49,6 +51,7 @@ Factory::Factory(QObject *parent)
 
 Factory::~Factory()
 {
+    m_parentWidget->deleteLater();
 }
 
 int Factory::customPluginsCount()
@@ -201,6 +204,29 @@ Latte::Types::ImportExportState Factory::importIndicatorFile(QString compressedF
 
     showNotificationError();
     return Latte::Types::Failed;
+}
+
+void Factory::downloadIndicator()
+{
+    KNS3::DownloadDialog dialog(QStringLiteral("latte-indicators.knsrc"), m_parentWidget);
+
+    dialog.exec();
+
+    bool layoutAdded{false};
+
+    if (!dialog.changedEntries().isEmpty() || !dialog.installedEntries().isEmpty()) {
+        /*foreach (auto entry, dialog.installedEntries()) {
+            foreach (auto entryFile, entry.installedFiles()) {
+                Importer::LatteFileVersion version = Importer::fileVersion(entryFile);
+
+                if (version == Importer::LayoutVersion2) {
+                    layoutAdded = true;
+                    addLayoutForFile(entryFile);
+                    break;
+                }
+            }
+        }*/
+    }
 }
 
 }

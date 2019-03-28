@@ -390,6 +390,14 @@ void Indicator::addIndicator()
     fileDialog->open();
 }
 
+void Indicator::downloadIndicator()
+{
+    //! call asynchronously in order to not crash when view settings window
+    //! loses focus and it closes
+    QTimer::singleShot(0, [this]() {
+        m_corona->indicatorFactory()->downloadIndicator();
+    });
+}
 
 void Indicator::loadConfig()
 {

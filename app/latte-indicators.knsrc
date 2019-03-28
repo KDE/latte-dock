@@ -1,0 +1,7 @@
+[KNewStuff3]
+Name=Latte Indicators
+
+ProvidersUrl=https://download.kde.org/ocs/providers.xml
+Categories=Latte Indicators
+TargetDir=latte/indicators
+Uncompress=always
