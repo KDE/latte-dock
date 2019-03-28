@@ -25,9 +25,16 @@
 // Qt
 #include <QDebug>
 #include <QDir>
+#include <QTemporaryDir>
 
 // KDE
+#include <KLocalizedString>
+#include <KNotification>
 #include <KPluginMetaData>
+#include <KArchive/KTar>
+#include <KArchive/KZip>
+#include <KArchive/KArchiveEntry>
+#include <KArchive/KArchiveDirectory>
 
 namespace Latte {
 namespace Indicator {
@@ -86,13 +93,12 @@ void Factory::reload()
             foreach (auto pluginDir, pluginDirs) {
                 if (pluginDir != "." && pluginDir != "..") {
                     QString metadataFile = standard.absolutePath() + "/" + pluginDir + "/metadata.desktop";
+                    KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(metadataFile);
 
-                    if (QFileInfo(metadataFile).exists()) {
-
-                        KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(metadataFile);
+                    if (metadataAreValid(metadata)) {
                         QString uiFile = standard.absolutePath() + "/" + pluginDir + "/package/" + metadata.value("X-Latte-MainScript");
 
-                        if (metadata.isValid() && QFileInfo(uiFile).exists() && !m_plugins.contains(metadata.pluginId())) {
+                        if (QFileInfo(uiFile).exists() && !m_plugins.contains(metadata.pluginId())) {
                             m_plugins[metadata.pluginId()] = metadata;
 
                             if ((metadata.pluginId() != "org.kde.latte.default")
@@ -116,6 +122,85 @@ void Factory::reload()
     }
 
     emit customPluginsChanged();
+}
+
+bool Factory::metadataAreValid(KPluginMetaData &metadata)
+{
+    return metadata.isValid()
+            && metadata.category() == "Latte Indicator"
+            && !metadata.value("X-Latte-MainScript").isEmpty();
+}
+
+bool Factory::metadataAreValid(QString &file)
+{
+    if (QFileInfo(file).exists()) {
+        KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(file);
+        return metadataAreValid(metadata);
+    }
+
+    return false;
+}
+
+
+Latte::Types::ImportExportState Factory::importIndicatorFile(QString compressedFile)
+{
+    auto showNotificationError = []() {
+        auto notification = new KNotification("import-fail", KNotification::CloseOnTimeout);
+        notification->setText(i18n("Failed to import indicator"));
+        notification->sendEvent();
+    };
+
+    auto showNotificationSucceed = [](QString name, bool updated) {
+        auto notification = new KNotification("import-done", KNotification::CloseOnTimeout);
+        notification->setText(updated ? i18nc("indicator_name, imported updated","%0 indicator updated successfully").arg(name) :
+                                        i18nc("indicator_name, imported success","%0 indicator installed successfully").arg(name));
+        notification->sendEvent();
+    };
+
+    KArchive *archive;
+
+    KZip *zipArchive = new KZip(compressedFile);
+    zipArchive->open(QIODevice::ReadOnly);
+
+    //! if the file isnt a zip archive
+    if (!zipArchive->isOpen()) {
+        delete zipArchive;
+
+        KTar *tarArchive = new KTar(compressedFile, QStringLiteral("application/x-tar"));
+        tarArchive->open(QIODevice::ReadOnly);
+
+        if (!tarArchive->isOpen()) {
+            delete tarArchive;
+            showNotificationError();
+            return Latte::Types::Failed;
+        } else {
+            archive = tarArchive;
+        }
+    } else {
+        archive = zipArchive;
+    }
+
+    QTemporaryDir archiveTempDir;
+    archive->directory()->copyTo(archiveTempDir.path());
+
+    //metadata file
+    QString metadataFile = archiveTempDir.path() + "/metadata.desktop";
+    KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(metadataFile);
+
+    if (metadataAreValid(metadata)) {
+        QStringList standardPaths = Latte::Importer::standardPaths();
+        QString installPath = standardPaths[0] + "/latte/indicators/" + metadata.pluginId();
+
+        bool updated{QDir(installPath).exists()};
+
+        archive->directory()->copyTo(installPath);
+        showNotificationSucceed(metadata.name(), updated);
+
+        return Latte::Types::Installed;
+    }
+
+    showNotificationError();
+    return Latte::Types::Failed;
 }
 
 }

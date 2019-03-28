@@ -52,7 +52,7 @@ Comment[zh_TW]=Latte Dock
 IconName=latte-dock
 
 [Event/import-done]
-Name=Configuration imported successfully
+Name=Imported successfully
 Name[ar]=استوردتُ الضّّبط بنجاح
 Name[ca]=La configuració s'ha importat amb èxit
 Name[ca@valencia]=La configuració s'ha importat amb èxit
@@ -80,7 +80,7 @@ Name[zh_TW]=設定匯入成功
 Action=Popup
 
 [Event/import-fail]
-Name=Failed to import configuration
+Name=Failed to import
 Name[ar]=فشل استيراد الضّبط
 Name[ca]=Ha fallat en importar la configuració
 Name[ca@valencia]=Ha fallat en importar la configuració
@@ -108,7 +108,7 @@ Name[zh_TW]=匯入設定失敗
 Action=Popup
 
 [Event/export-done]
-Name=Configuration exported successfully
+Name=Exported successfully
 Name[ar]=صدّرتُ الضّبط بنجاح
 Name[ca]=La configuració s'ha exportat amb èxit
 Name[ca@valencia]=La configuració s'ha exportat amb èxit
@@ -136,7 +136,7 @@ Name[zh_TW]=設定匯出成功
 Action=Popup
 
 [Event/export-fail]
-Name=Failed to export configuration
+Name=Failed to export
 Name[ar]=فشل تصدير الضّبط
 Name[ca]=Ha fallat en exportar la configuració
 Name[ca@valencia]=Ha fallat en exportar la configuració

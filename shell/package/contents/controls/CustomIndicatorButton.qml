@@ -50,7 +50,10 @@ LatteComponents.ComboBoxButton{
 
     Connections{
         target: latteView.indicator
-        onCustomPluginsCountChanged: custom.updateButtonInformation()
+        onCustomPluginsCountChanged: {
+            custom.reloadModel();
+            custom.updateButtonInformation()
+        }
     }
 
     Connections{
@@ -60,6 +63,7 @@ LatteComponents.ComboBoxButton{
             var item = actionsModel.get(index);
             if (item.pluginId === "add:") {
                 latteView.indicator.addIndicator();
+                custom.updateButtonInformation();
             }
         }
     }
@@ -76,7 +80,7 @@ LatteComponents.ComboBoxButton{
     }
 
     function reloadModel() {
-        var actions = [];
+        actionsModel.clear();
 
         if (latteView.indicator.customPluginsCount > 0) {
             var pluginIds = latteView.indicator.customPluginIds;

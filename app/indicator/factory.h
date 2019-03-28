@@ -20,6 +20,9 @@
 #ifndef INDICATORFACTORY_H
 #define INDICATORFACTORY_H
 
+// local
+#include "../../liblatte2/types.h"
+
 // Qt
 #include <QHash>
 #include <QObject>
@@ -45,6 +48,13 @@ public:
 
     KPluginMetaData metadata(QString pluginId);
 
+    //! metadata record
+    static bool metadataAreValid(KPluginMetaData &metadata);
+    //! metadata file
+    static bool metadataAreValid(QString &file);
+
+    //! imports an indicator compressed file
+    static Latte::Types::ImportExportState importIndicatorFile(QString compressedFile);
 signals:
     void customPluginsChanged();
 

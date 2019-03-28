@@ -23,6 +23,7 @@
 #include "view.h"
 #include "../lattecorona.h"
 #include "../indicator/factory.h"
+#include "../../liblatte2/types.h"
 
 // Qt
 #include <QFileDialog>
@@ -380,7 +381,10 @@ void Indicator::addIndicator()
     connect(fileDialog, &QFileDialog::finished, fileDialog, &QFileDialog::deleteLater);
 
     connect(fileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
-        qDebug() << "  indicator file ::: " << file;
+        qDebug() << "Trying to import indicator file ::: " << file;
+        if (m_corona->indicatorFactory()->importIndicatorFile(file) != Latte::Types::Failed) {
+            m_corona->indicatorFactory()->reload();
+        }
     });
 
     fileDialog->open();
