@@ -24,11 +24,14 @@
 #include "../lattecorona.h"
 #include "../indicator/factory.h"
 
+// Qt
+#include <QFileDialog>
+
 // KDE
+#include <KLocalizedString>
 #include <KPluginMetaData>
 #include <KDeclarative/ConfigPropertyMap>
 #include <KDeclarative/QmlObjectSharedEngine>
-
 
 namespace Latte {
 namespace ViewPart {
@@ -358,6 +361,31 @@ void Indicator::updateScheme()
         prevConfiguration->deleteLater();
     }
 }
+
+void Indicator::addIndicator()
+{
+    QFileDialog *fileDialog = new QFileDialog(nullptr
+                                              , i18nc("add indicator", "Add Indicator")
+                                              , QDir::homePath()
+                                              , QStringLiteral("indicator.latte"));
+
+    fileDialog->setFileMode(QFileDialog::AnyFile);
+    fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog->setDefaultSuffix("indicator.latte");
+
+    QStringList filters;
+    filters << QString(i18nc("add indicator file", "Latte Indicator") + "(*.indicator.latte)");
+    fileDialog->setNameFilters(filters);
+
+    connect(fileDialog, &QFileDialog::finished, fileDialog, &QFileDialog::deleteLater);
+
+    connect(fileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
+        qDebug() << "  indicator file ::: " << file;
+    });
+
+    fileDialog->open();
+}
+
 
 void Indicator::loadConfig()
 {

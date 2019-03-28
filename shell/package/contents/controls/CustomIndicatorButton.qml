@@ -53,6 +53,17 @@ LatteComponents.ComboBoxButton{
         onCustomPluginsCountChanged: custom.updateButtonInformation()
     }
 
+    Connections{
+        target: custom.comboBox
+
+        onActivated: {
+            var item = actionsModel.get(index);
+            if (item.pluginId === "add:") {
+                latteView.indicator.addIndicator();
+            }
+        }
+    }
+
     function updateButtonInformation() {
         if (latteView.indicator.customPluginsCount === 0) {
             custom.buttonText = i18n("Download");
