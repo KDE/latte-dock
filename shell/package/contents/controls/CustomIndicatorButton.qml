@@ -57,6 +57,18 @@ LatteComponents.ComboBoxButton{
     }
 
     Connections{
+        target: custom.button
+
+        onClicked: {
+            if (custom.type === "download:") {
+                latteView.indicator.downloadIndicator();
+            } else {
+                latteView.indicator.type = custom.type;
+            }
+        }
+    }
+
+    Connections{
         target: custom.comboBox
 
         onActivated: {
@@ -76,6 +88,7 @@ LatteComponents.ComboBoxButton{
     function updateButtonInformation() {
         if (latteView.indicator.customPluginsCount === 0) {
             custom.buttonText = i18n("Download");
+            custom.type = "download:";
             custom.checkable = false;
         } else {
             custom.checkable = true;

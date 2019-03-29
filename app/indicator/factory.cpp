@@ -25,6 +25,8 @@
 // Qt
 #include <QDebug>
 #include <QDir>
+#include <QDirIterator>
+#include <QProcess>
 #include <QTemporaryDir>
 
 // KDE
@@ -187,7 +189,24 @@ Latte::Types::ImportExportState Factory::importIndicatorFile(QString compressedF
     archive->directory()->copyTo(archiveTempDir.path());
 
     //metadata file
+    QString packagePath = archiveTempDir.path();
     QString metadataFile = archiveTempDir.path() + "/metadata.desktop";
+
+    if (!QFileInfo(metadataFile).exists()){
+        QDirIterator iter(archiveTempDir.path(), QDir::Dirs | QDir::NoDotAndDotDot);
+
+        while(iter.hasNext() ) {
+            QString currentPath = iter.next();
+
+            QString tempMetadata = currentPath + "/metadata.desktop";
+
+            if (QFileInfo(tempMetadata).exists()) {
+                metadataFile = tempMetadata;
+                packagePath = currentPath;
+            }
+        }
+    }
+
     KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(metadataFile);
 
     if (metadataAreValid(metadata)) {
@@ -196,9 +215,17 @@ Latte::Types::ImportExportState Factory::importIndicatorFile(QString compressedF
 
         bool updated{QDir(installPath).exists()};
 
-        archive->directory()->copyTo(installPath);
-        showNotificationSucceed(metadata.name(), updated);
+        if (QDir(installPath).exists()) {
+            QDir(installPath).removeRecursively();
+        }
 
+        //! Identify Plasma Desktop version
+        QProcess process;
+        process.start(QString("mv " +packagePath + " " + installPath));
+        process.waitForFinished();
+        QString output(process.readAllStandardOutput());
+
+        showNotificationSucceed(metadata.name(), updated);
         return Latte::Types::Installed;
     }
 
