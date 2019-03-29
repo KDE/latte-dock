@@ -46,8 +46,6 @@ void IndicatorPackage::initPackage(KPackage::Package *package)
     package->addDirectoryDefinition("data", QStringLiteral("data"), i18n("Data Files"));
     package->addDirectoryDefinition("scripts", QStringLiteral("code"), i18n("Executable Scripts"));
     package->addDirectoryDefinition("translations", QStringLiteral("locale"), i18n("Translations"));
-
-    qDebug() << "package is valid" << package->isValid();
 }
 
 }
