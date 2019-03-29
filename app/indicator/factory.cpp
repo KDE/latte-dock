@@ -215,17 +215,7 @@ void Factory::downloadIndicator()
     bool layoutAdded{false};
 
     if (!dialog.changedEntries().isEmpty() || !dialog.installedEntries().isEmpty()) {
-        /*foreach (auto entry, dialog.installedEntries()) {
-            foreach (auto entryFile, entry.installedFiles()) {
-                Importer::LatteFileVersion version = Importer::fileVersion(entryFile);
-
-                if (version == Importer::LayoutVersion2) {
-                    layoutAdded = true;
-                    addLayoutForFile(entryFile);
-                    break;
-                }
-            }
-        }*/
+        reload();
     }
 }
 

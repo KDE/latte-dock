@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Indicator
+Type=Service
+X-KDE-ServiceTypes=KPackage/PackageStructure
+X-KDE-Library=latte_packagestructure_indicator
+X-KDE-PluginInfo-Author=Michail Vourlakos
+X-KDE-PluginInfo-Email=mvourlakos@gmail.com
+X-KDE-PluginInfo-Name=Latte/Indicator
+X-KDE-PluginInfo-Version=1
+X-KDE-ParentApp=org.kde.latte-dock

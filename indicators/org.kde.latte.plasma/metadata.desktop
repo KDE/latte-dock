@@ -15,9 +15,12 @@ Comment[nl]=Plasma stijlindicator van Latte
 Comment[uk]=Індикатор стилю Плазми Латте
 Comment[x-test]=xxLatte Plasma style indicatorxx
 
+Encoding=UTF-8
 Type=Service
 Icon=latte-dock
 X-Plasma-API=declarativeappletscript
+X-KDE-ServiceTypes=Latte/Indicator
+
 X-Latte-MainScript=ui/main.qml
 
 X-KDE-PluginInfo-Author=Michail Vourlakos

@@ -3,5 +3,6 @@ Name=Latte Indicators
 
 ProvidersUrl=https://download.kde.org/ocs/providers.xml
 Categories=Latte Indicators
-TargetDir=latte/indicators
-Uncompress=always
+StandardResource=tmp
+InstallationCommand=kpackagetool5 --install %f --type Latte/Indicator
+UninstallCommand=kpackagetool5 --remove %f --type Latte/Indicator

@@ -1,0 +1,18 @@
+[Desktop Entry]
+Type=ServiceType
+X-KDE-ServiceType=Latte/Indicator
+
+Comment=Latte indicator
+
+[PropertyDef::X-Latte-API]
+Type=QString
+
+[PropertyDef::X-Latte-MainScript]
+Type=QString
+
+[PropertyDef::X-Latte-ConfigUi]
+Type=QString
+
+[PropertyDef::X-Latte-ConfigXml]
+Type=QString
+

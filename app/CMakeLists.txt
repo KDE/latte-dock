@@ -92,3 +92,5 @@ install(FILES dbus/org.kde.LatteDock.xml DESTINATION ${KDE_INSTALL_DBUSINTERFACE
 install(FILES lattedock.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
 install(FILES latte-layouts.knsrc DESTINATION  ${CONFIG_INSTALL_DIR})
 install(FILES latte-indicators.knsrc DESTINATION  ${CONFIG_INSTALL_DIR})
+
+add_subdirectory(packageplugins)

@@ -257,6 +257,7 @@ void Indicator::load(QString type)
         //! create all indicators with the new type
         setPluginIsReady(true);
     } else if (type!="org.kde.latte.default") {
+        qDebug() << " Indicator metadata are not valid : " << type;
         setType("org.kde.latte.default");
     }
 }

@@ -31,9 +31,12 @@ Comment[nl]=Standaard indicator van Latte
 Comment[uk]=Типовий індикатор Латте
 Comment[x-test]=xxLatte default indicatorxx
 
+Encoding=UTF-8
 Type=Service
 Icon=latte-dock
 X-Plasma-API=declarativeappletscript
+X-KDE-ServiceTypes=Latte/Indicator
+
 X-Latte-MainScript=ui/main.qml
 X-Latte-ConfigUi=config/config.qml
 X-Latte-ConfigXml=config/main.xml
