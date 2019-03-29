@@ -72,13 +72,15 @@ LatteComponents.ComboBoxButton{
         target: custom.comboBox
 
         onActivated: {
-            var item = actionsModel.get(index);
-            if (item.pluginId === "add:") {
-                latteView.indicator.addIndicator();
-            } else if (item.pluginId === "download:") {
-                latteView.indicator.downloadIndicator();
-            } else {
-                latteView.indicator.type = item.pluginId;
+            if (index>=0) {
+                var item = actionsModel.get(index);
+                if (item.pluginId === "add:") {
+                    latteView.indicator.addIndicator();
+                } else if (item.pluginId === "download:") {
+                    latteView.indicator.downloadIndicator();
+                } else {
+                    latteView.indicator.type = item.pluginId;
+                }
             }
 
             custom.updateButtonInformation();

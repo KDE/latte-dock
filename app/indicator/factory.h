@@ -67,6 +67,8 @@ private:
     QStringList m_customPluginIds;
     QStringList m_customPluginNames;
 
+    QStringList m_watchedPaths;
+
     QWidget *m_parentWidget;
 };
 

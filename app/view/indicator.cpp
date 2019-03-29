@@ -383,9 +383,7 @@ void Indicator::addIndicator()
 
     connect(fileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
         qDebug() << "Trying to import indicator file ::: " << file;
-        if (m_corona->indicatorFactory()->importIndicatorFile(file) != Latte::Types::Failed) {
-            m_corona->indicatorFactory()->reload();
-        }
+        m_corona->indicatorFactory()->importIndicatorFile(file);
     });
 
     fileDialog->open();

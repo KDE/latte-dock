@@ -30,6 +30,7 @@
 #include <QTemporaryDir>
 
 // KDE
+#include <KDirWatch>
 #include <KLocalizedString>
 #include <KNotification>
 #include <KPluginMetaData>
@@ -46,7 +47,25 @@ Factory::Factory(QObject *parent)
     : QObject(parent)
 {
     m_parentWidget = new QWidget();
+
+    m_watchedPaths = Latte::Importer::standardPaths();
+
+    for(int i=0; i<m_watchedPaths.count(); ++i) {
+        m_watchedPaths[i] = m_watchedPaths[i] + "/latte/indicators";
+    }
+
     reload();
+
+    //! track paths for changes
+    for(const auto &dir : m_watchedPaths) {
+        KDirWatch::self()->addDir(dir);
+    }
+
+    connect(KDirWatch::self(), &KDirWatch::dirty, this, [ & ](const QString & path) {
+        if (m_watchedPaths.contains(path)) {
+            reload();
+        }
+    });
 
     qDebug() << m_plugins["org.kde.latte.default"].name();
 }
@@ -83,14 +102,12 @@ KPluginMetaData Factory::metadata(QString pluginId)
 
 void Factory::reload()
 {
-    QStringList standardPaths = Latte::Importer::standardPaths();
-
     m_plugins.clear();
     m_customPluginIds.clear();
     m_customPluginNames.clear();
 
-    foreach(auto path, standardPaths) {
-        QDir standard(path + "/latte/indicators");
+    for(const auto &path : m_watchedPaths) {
+        QDir standard(path);
 
         if (standard.exists()) {
             QStringList pluginDirs = standard.entryList(QStringList(),QDir::AllDirs | QDir::NoSymLinks);
@@ -238,12 +255,6 @@ void Factory::downloadIndicator()
     KNS3::DownloadDialog dialog(QStringLiteral("latte-indicators.knsrc"), m_parentWidget);
 
     dialog.exec();
-
-    bool layoutAdded{false};
-
-    if (!dialog.changedEntries().isEmpty() || !dialog.installedEntries().isEmpty()) {
-        reload();
-    }
 }
 
 }
