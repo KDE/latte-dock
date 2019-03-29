@@ -48,6 +48,8 @@ Item{
     readonly property bool inAttention: false
     readonly property bool inRemoving: false
 
+    readonly property bool isRectangled: appletIsValid ? appletItem.isRectangled : true
+
     readonly property bool hasActive: isActive
     readonly property bool hasMinimized: false
     readonly property bool hasShown: false
@@ -65,8 +67,21 @@ Item{
     readonly property QtObject palette: colorizerManager.applyTheme
 
     //!icon colors
-    property color iconBackgroundColor: appletIsValid ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : "black"
-    property color iconGlowColor: appletIsValid ? appletItem.wrapperAlias.overlayIconLoader.glowColor : "white"
+    property color iconBackgroundColor: {
+        if (appletIsValid) {
+            return isRectangled ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : colorizerManager.buttonFocusColor;
+        }
+
+        return "black";
+    }
+
+    property color iconGlowColor:{
+        if (appletIsValid) {
+            return isRectangled ? appletItem.wrapperAlias.overlayIconLoader.glowColor : colorizerManager.focusGlowColor;
+        }
+
+        return "white";
+    }
 
     //! grouped options
     readonly property Item shared: indicators
