@@ -68,8 +68,8 @@ Item {
     readonly property QtObject palette: enforceLattePalette ? latteBridge.palette.applyTheme : theme
 
     //!icon colors
-    property color backgroundColor: taskIsValid ? taskItem.wrapperAlias.backgroundColor : "black"
-    property color glowColor: taskIsValid ? taskItem.wrapperAlias.glowColor : "white"
+    property color iconBackgroundColor: taskIsValid ? taskItem.wrapperAlias.backgroundColor : "black"
+    property color iconGlowColor: taskIsValid ? taskItem.wrapperAlias.glowColor : "white"
 
     //! grouped options
     readonly property Item shared: indicators ? indicators : emptyOptions

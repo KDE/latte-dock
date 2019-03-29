@@ -65,8 +65,8 @@ Item{
     readonly property QtObject palette: colorizerManager.applyTheme
 
     //!icon colors
-    property color backgroundColor: appletIsValid ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : "black"
-    property color glowColor: appletIsValid ? appletItem.wrapperAlias.overlayIconLoader.glowColor : "white"
+    property color iconBackgroundColor: appletIsValid ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : "black"
+    property color iconGlowColor: appletIsValid ? appletItem.wrapperAlias.overlayIconLoader.glowColor : "white"
 
     //! grouped options
     readonly property Item shared: indicators
