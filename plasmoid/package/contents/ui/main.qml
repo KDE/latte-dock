@@ -62,6 +62,7 @@ Item {
     property bool plasma515: Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,14,90)
 
     property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
+    property bool inConfigureAppletsMode: latteView ? latteView.inConfigureAppletsMode : true
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && !indicators.isEnabled
     property bool dropNewLauncher: false

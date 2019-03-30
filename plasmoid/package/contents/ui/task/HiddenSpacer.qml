@@ -74,7 +74,7 @@ Item{
             return;
         }
 
-        if (root.editMode) {
+        if (root.editMode && root.inConfigureAppletsMode) {
             neighbourSeparator = false;
         } else if (latteView && index!==-1) {
             if (!rightSpacer) {
@@ -102,6 +102,7 @@ Item{
     Connections{
         target: root
         onEditModeChanged: hiddenSpacer.updateNeighbour();
+        onInConfigureAppletsModeChanged: hiddenSpacer.updateNeighbour();
         onLatteViewChanged: hiddenSpacer.updateNeighbour();
         // onInternalSeparatorHiddenChanged: hiddenSpacer.updateNeighbour();
         onSeparatorsUpdated: hiddenSpacer.updateNeighbour();
