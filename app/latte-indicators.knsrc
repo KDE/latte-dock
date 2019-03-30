@@ -1,5 +1,10 @@
 [KNewStuff3]
 Name=Latte Indicators
+Name[ca]=Indicadors del Latte
+Name[nl]=Indicatoren van Latte
+Name[pt]=Indicadores do Latte
+Name[uk]=Індикатори Латте
+Name[x-test]=xxLatte Indicatorsxx
 
 ProvidersUrl=https://download.kde.org/ocs/providers.xml
 Categories=Latte Indicators

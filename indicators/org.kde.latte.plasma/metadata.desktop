@@ -2,6 +2,7 @@
 Name=Plasma
 Name[ca]=Plasma
 Name[ca@valencia]=Plasma
+Name[fr]=Plasma
 Name[gl]=Plasma
 Name[nl]=Plasma
 Name[pt]=Plasma
@@ -12,6 +13,7 @@ Comment[ca]=Indicador a l'estil Plasma del Latte
 Comment[ca@valencia]=Indicador a l'estil Plasma del Latte
 Comment[gl]=Indicador de estilo Plasma de Latte
 Comment[nl]=Plasma stijlindicator van Latte
+Comment[pt]=Indicador de estilo do Plasma no Latte
 Comment[uk]=Індикатор стилю Плазми Латте
 Comment[x-test]=xxLatte Plasma style indicatorxx
 
