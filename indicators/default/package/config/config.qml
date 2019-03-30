@@ -190,25 +190,27 @@ ColumnLayout {
             text: i18n("Tasks")
         }
 
-        PlasmaComponents.CheckBox {
-            id: threeColorsWindows
-            text: i18n("Different color for minimized windows")
-            checked: indicator.configuration.minimizedTaskColoredDifferently
+        LatteComponents.CheckBoxesColumn {
+            PlasmaComponents.CheckBox {
+                id: threeColorsWindows
+                text: i18n("Different color for minimized windows")
+                checked: indicator.configuration.minimizedTaskColoredDifferently
 
-            onClicked: {
-                indicator.configuration.minimizedTaskColoredDifferently = checked;
+                onClicked: {
+                    indicator.configuration.minimizedTaskColoredDifferently = checked;
+                }
             }
-        }
 
-        PlasmaComponents.CheckBox {
-            id: dotsOnActive
-            text: i18n("Show an extra dot for grouped windows when active")
-            checked: indicator.configuration.extraDotOnActive
-            tooltip: i18n("Grouped windows show both a line and a dot when one of them is active and the Line Active Indicator is enabled")
-            enabled: indicator.configuration.activeStyle === 0 /*Line*/
+            PlasmaComponents.CheckBox {
+                id: dotsOnActive
+                text: i18n("Show an extra dot for grouped windows when active")
+                checked: indicator.configuration.extraDotOnActive
+                tooltip: i18n("Grouped windows show both a line and a dot when one of them is active and the Line Active Indicator is enabled")
+                enabled: indicator.configuration.activeStyle === 0 /*Line*/
 
-            onClicked: {
-                indicator.configuration.extraDotOnActive = checked;
+                onClicked: {
+                    indicator.configuration.extraDotOnActive = checked;
+                }
             }
         }
     }

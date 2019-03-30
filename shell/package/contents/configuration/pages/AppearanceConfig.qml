@@ -255,7 +255,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         text: proportionSizeSlider.value !== proportionSizeSlider.from ?
-                                 i18nc("number in percentage, e.g. 85 %","%0 %").arg(proportionSizeSlider.value.toFixed(1)) : i18nc("no value in percentage","--- %")
+                                  i18nc("number in percentage, e.g. 85 %","%0 %").arg(proportionSizeSlider.value.toFixed(1)) : i18nc("no value in percentage","--- %")
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -883,43 +883,45 @@ PlasmaComponents.Page {
                     text: i18nc("dynamic visibility for background", "Dynamic Visibility")
                 }
 
-                LatteComponents.CheckBox {
-                    id: solidForMaximizedChk
-                    Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
-                    text: i18n("Prefer opaque background when touching any window")
-                    checked: plasmoid.configuration.solidBackgroundForMaximized
-                    tooltip: i18n("Background removes its transparency setting when a window is touching")
-                    enabled: showBackground.checked
-                    visible: dialog.expertLevel
+                LatteComponents.CheckBoxesColumn {
+                    LatteComponents.CheckBox {
+                        id: solidForMaximizedChk
+                        Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
+                        text: i18n("Prefer opaque background when touching any window")
+                        checked: plasmoid.configuration.solidBackgroundForMaximized
+                        tooltip: i18n("Background removes its transparency setting when a window is touching")
+                        enabled: showBackground.checked
+                        visible: dialog.expertLevel
 
-                    onClicked: {
-                        plasmoid.configuration.solidBackgroundForMaximized = checked;
+                        onClicked: {
+                            plasmoid.configuration.solidBackgroundForMaximized = checked;
+                        }
                     }
-                }
 
-                PlasmaComponents.CheckBox {
-                    id: onlyOnMaximizedChk
-                    text: i18n("Hide background when not needed")
-                    checked: plasmoid.configuration.backgroundOnlyOnMaximized
-                    tooltip: i18n("Background becomes hidden except when a window is touching or the desktop background is busy")
-                    enabled: showBackground.checked
-                    visible: dialog.expertLevel
+                    PlasmaComponents.CheckBox {
+                        id: onlyOnMaximizedChk
+                        text: i18n("Hide background when not needed")
+                        checked: plasmoid.configuration.backgroundOnlyOnMaximized
+                        tooltip: i18n("Background becomes hidden except when a window is touching or the desktop background is busy")
+                        enabled: showBackground.checked
+                        visible: dialog.expertLevel
 
-                    onClicked: {
-                        plasmoid.configuration.backgroundOnlyOnMaximized = checked;
+                        onClicked: {
+                            plasmoid.configuration.backgroundOnlyOnMaximized = checked;
+                        }
                     }
-                }
 
-                PlasmaComponents.CheckBox {
-                    id: hideShadowsOnMaximizedChk
-                    text: i18n("Hide background shadow for maximized windows")
-                    checked: plasmoid.configuration.disablePanelShadowForMaximized
-                    tooltip: i18n("Background shadows become hidden when an active maximized window is touching the view")
-                    enabled: showBackground.checked
-                    visible: dialog.expertLevel
+                    PlasmaComponents.CheckBox {
+                        id: hideShadowsOnMaximizedChk
+                        text: i18n("Hide background shadow for maximized windows")
+                        checked: plasmoid.configuration.disablePanelShadowForMaximized
+                        tooltip: i18n("Background shadows become hidden when an active maximized window is touching the view")
+                        enabled: showBackground.checked
+                        visible: dialog.expertLevel
 
-                    onClicked: {
-                        plasmoid.configuration.disablePanelShadowForMaximized = checked;
+                        onClicked: {
+                            plasmoid.configuration.disablePanelShadowForMaximized = checked;
+                        }
                     }
                 }
 

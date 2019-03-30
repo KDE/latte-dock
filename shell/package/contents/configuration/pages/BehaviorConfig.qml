@@ -583,39 +583,40 @@ PlasmaComponents.Page {
                     text: i18n("Items")
                 }
 
-                PlasmaComponents.CheckBox {
-                    id: titleTooltipsChk
-                    text: i18n("Show title tooltips on hovering")
-                    checked: plasmoid.configuration.titleTooltips
+                LatteComponents.CheckBoxesColumn {
+                    PlasmaComponents.CheckBox {
+                        id: titleTooltipsChk
+                        text: i18n("Show title tooltips on hovering")
+                        checked: plasmoid.configuration.titleTooltips
 
-                    onClicked: {
-                        plasmoid.configuration.titleTooltips = checked;
+                        onClicked: {
+                            plasmoid.configuration.titleTooltips = checked;
+                        }
                     }
-                }
 
-                PlasmaComponents.CheckBox {
-                    id: mouseWheelChk
-                    text: i18n("Activate through mouse wheel")
-                    checked: plasmoid.configuration.mouseWheelActions
-                    tooltip: i18n("Enable/Disable the mouse wheel action")
-                    visible: dialog.highLevel
+                    PlasmaComponents.CheckBox {
+                        id: mouseWheelChk
+                        text: i18n("Activate through mouse wheel")
+                        checked: plasmoid.configuration.mouseWheelActions
+                        tooltip: i18n("Enable/Disable the mouse wheel action")
+                        visible: dialog.highLevel
 
-                    onClicked: {
-                        plasmoid.configuration.mouseWheelActions = checked
+                        onClicked: {
+                            plasmoid.configuration.mouseWheelActions = checked
+                        }
                     }
-                }
 
-                PlasmaComponents.CheckBox {
-                    text: i18n("🅰 Activate based on position through global shortcuts")
-                    checked: latteView.isPreferredForShortcuts || (!latteView.managedLayout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
-                    //enabled: shortcutsEngine.basedOnPositionEnabled
+                    PlasmaComponents.CheckBox {
+                        Layout.maximumHeight: mouseWheelChk.height
+                        text: i18n("🅰 Activate based on position through global shortcuts")
+                        checked: latteView.isPreferredForShortcuts || (!latteView.managedLayout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
+                        tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
 
-                    tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
-
-                    onClicked: {
-                        latteView.isPreferredForShortcuts = checked
-                        if (!latteView.managedLayout.preferredForShortcutsTouched) {
-                            latteView.managedLayout.preferredForShortcutsTouched = true
+                        onClicked: {
+                            latteView.isPreferredForShortcuts = checked
+                            if (!latteView.managedLayout.preferredForShortcutsTouched) {
+                                latteView.managedLayout.preferredForShortcutsTouched = true
+                            }
                         }
                     }
                 }
@@ -635,10 +636,9 @@ PlasmaComponents.Page {
             }
 
 
-            ColumnLayout {
+            LatteComponents.CheckBoxesColumn {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-                spacing: 0
 
                 PlasmaComponents.CheckBox {
                     text: i18n("Activate KWin edge after hiding")

@@ -56,10 +56,9 @@ PlasmaComponents.Page {
                 text: i18n("Badges")
             }
 
-            ColumnLayout{
+            LatteComponents.CheckBoxesColumn {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-                spacing: 0
 
                 PlasmaComponents.CheckBox {
                     text: i18n("Unread messages from tasks")
@@ -113,10 +112,9 @@ PlasmaComponents.Page {
                 text: i18n("Interaction")
             }
 
-            ColumnLayout {
+            LatteComponents.CheckBoxesColumn {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-                spacing: 0
 
                 PlasmaComponents.CheckBox {
 
@@ -166,11 +164,9 @@ PlasmaComponents.Page {
                 text: i18n("Filters")
             }
 
-            ColumnLayout {
+            LatteComponents.CheckBoxesColumn {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-                spacing: 0
-
 
                 PlasmaComponents.CheckBox {
                     id: showOnlyCurrentScreen

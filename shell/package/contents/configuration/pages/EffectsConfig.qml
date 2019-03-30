@@ -392,48 +392,50 @@ PlasmaComponents.Page {
                             text: i18n("Tasks")
                         }
 
-                        PlasmaComponents.CheckBox {
-                            text: i18n("Bounce launchers when triggered")
-                            checked: plasmoid.configuration.animationLauncherBouncing
+                        LatteComponents.CheckBoxesColumn {
+                            PlasmaComponents.CheckBox {
+                                text: i18n("Bounce launchers when triggered")
+                                checked: plasmoid.configuration.animationLauncherBouncing
 
-                            onClicked: {
-                                plasmoid.configuration.animationLauncherBouncing = !plasmoid.configuration.animationLauncherBouncing;
+                                onClicked: {
+                                    plasmoid.configuration.animationLauncherBouncing = !plasmoid.configuration.animationLauncherBouncing;
+                                }
                             }
-                        }
 
-                        PlasmaComponents.CheckBox {
-                            text: i18n("Bounce tasks that need attention")
-                            checked: plasmoid.configuration.animationWindowInAttention
+                            PlasmaComponents.CheckBox {
+                                text: i18n("Bounce tasks that need attention")
+                                checked: plasmoid.configuration.animationWindowInAttention
 
-                            onClicked: {
-                                plasmoid.configuration.animationWindowInAttention = !plasmoid.configuration.animationWindowInAttention;
+                                onClicked: {
+                                    plasmoid.configuration.animationWindowInAttention = !plasmoid.configuration.animationWindowInAttention;
+                                }
                             }
-                        }
 
-                        PlasmaComponents.CheckBox {
-                            text: i18n("Slide in and out single windows")
-                            checked: plasmoid.configuration.animationNewWindowSliding
+                            PlasmaComponents.CheckBox {
+                                text: i18n("Slide in and out single windows")
+                                checked: plasmoid.configuration.animationNewWindowSliding
 
-                            onClicked: {
-                                plasmoid.configuration.animationNewWindowSliding = !plasmoid.configuration.animationNewWindowSliding;
+                                onClicked: {
+                                    plasmoid.configuration.animationNewWindowSliding = !plasmoid.configuration.animationNewWindowSliding;
+                                }
                             }
-                        }
 
-                        PlasmaComponents.CheckBox {
-                            text: i18n("Grouped tasks bounce their new windows")
-                            checked: plasmoid.configuration.animationWindowAddedInGroup
+                            PlasmaComponents.CheckBox {
+                                text: i18n("Grouped tasks bounce their new windows")
+                                checked: plasmoid.configuration.animationWindowAddedInGroup
 
-                            onClicked: {
-                                plasmoid.configuration.animationWindowAddedInGroup = !plasmoid.configuration.animationWindowAddedInGroup;
+                                onClicked: {
+                                    plasmoid.configuration.animationWindowAddedInGroup = !plasmoid.configuration.animationWindowAddedInGroup;
+                                }
                             }
-                        }
 
-                        PlasmaComponents.CheckBox {
-                            text: i18n("Grouped tasks slide out their closed windows")
-                            checked: plasmoid.configuration.animationWindowRemovedFromGroup
+                            PlasmaComponents.CheckBox {
+                                text: i18n("Grouped tasks slide out their closed windows")
+                                checked: plasmoid.configuration.animationWindowRemovedFromGroup
 
-                            onClicked: {
-                                plasmoid.configuration.animationWindowRemovedFromGroup = !plasmoid.configuration.animationWindowRemovedFromGroup;
+                                onClicked: {
+                                    plasmoid.configuration.animationWindowRemovedFromGroup = !plasmoid.configuration.animationWindowRemovedFromGroup;
+                                }
                             }
                         }
                     }
@@ -572,23 +574,25 @@ PlasmaComponents.Page {
                     text: i18n("Options")
                 }
 
-                PlasmaComponents.CheckBox {
-                    text: i18n("Show indicators for applets")
-                    checked: latteView.indicator.enabledForApplets
-                    tooltip: i18n("Indicators are shown for applets")
+                LatteComponents.CheckBoxesColumn {
+                    PlasmaComponents.CheckBox {
+                        text: i18n("Show indicators for applets")
+                        checked: latteView.indicator.enabledForApplets
+                        tooltip: i18n("Indicators are shown for applets")
 
-                    onClicked: {
-                        latteView.indicator.enabledForApplets = !latteView.indicator.enabledForApplets;
+                        onClicked: {
+                            latteView.indicator.enabledForApplets = !latteView.indicator.enabledForApplets;
+                        }
                     }
-                }
 
-                PlasmaComponents.CheckBox {
-                    text: i18n("Reverse indicator style")
-                    checked: latteView.indicator.reversed
-                    tooltip: i18n("Reverse indicator style e.g. from bottom to top")
+                    PlasmaComponents.CheckBox {
+                        text: i18n("Reverse indicator style")
+                        checked: latteView.indicator.reversed
+                        tooltip: i18n("Reverse indicator style e.g. from bottom to top")
 
-                    onClicked: {
-                        latteView.indicator.reversed = !latteView.indicator.reversed;
+                        onClicked: {
+                            latteView.indicator.reversed = !latteView.indicator.reversed;
+                        }
                     }
                 }
             }
@@ -604,7 +608,7 @@ PlasmaComponents.Page {
             enabled: latteView.indicator.enabled
 
             LatteComponents.Header {
-                text: i18n("%0 Indicator Options").arg(indicatorStyleGroup.current.text)
+                text: i18n("%0 Indicator Options").arg(indicatorStyleGroup.current === customIndicator.button ? customIndicator.buttonText : indicatorStyleGroup.current.text)
             }
 
             ColumnLayout {

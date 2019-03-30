@@ -2,6 +2,7 @@ module org.kde.latte.components
 
 BadgeText 1.0 BadgeText.qml
 CheckBox 1.0 CheckBox.qml
+CheckBoxesColumn 1.0 CheckBoxesColumn.qml
 ComboBox 1.0 ComboBox.qml
 ComboBoxButton 1.0 ComboBoxButton.qml
 ExternalShadow 1.0 ExternalShadow.qml
