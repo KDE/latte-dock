@@ -537,7 +537,7 @@ PlasmaComponents.Page {
                     spacing: units.smallSpacing
 
                     PlasmaComponents.Label {
-                        text: i18n("Internal")
+                        text: i18n("Length")
                         horizontalAlignment: Text.AlignLeft
                     }
 
