@@ -29,7 +29,7 @@ MouseArea {
     property int winId // FIXME Legacy
     property Item rootTask
 
-    acceptedButtons: Qt.LeftButton | Qt.RightButton
+    acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
     hoverEnabled: true
     enabled: Latte.WindowSystem.isPlatformWayland ||
              (!Latte.WindowSystem.isPlatformWayland && winId != 0)
@@ -37,6 +37,8 @@ MouseArea {
     onClicked: {
         if (mouse.button == Qt.LeftButton) {
             tasksModel.requestActivate(modelIndex);
+        } else if (mouse.button == Qt.MiddleButton) {
+            tasksModel.requestClose(modelIndex);
         } else {
             root.createContextMenu(rootTask, modelIndex).show();
         }
