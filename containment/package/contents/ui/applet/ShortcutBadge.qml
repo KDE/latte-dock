@@ -97,10 +97,14 @@ Loader{
 
         LatteComponents.BadgeText {
             id: appletNumber
-            anchors.top: parent.top
-            anchors.left: parent.left
-            //anchors.centerIn: parent
 
+            // when iconSize < 48, height is always = 24, height / iconSize > 50%
+            // we prefer center aligned badges to top-left aligned ones
+            property bool centerInParent: root.iconSize < 48
+
+            anchors.left: centerInParent? undefined : parent.left
+            anchors.top: centerInParent? undefined : parent.top
+            anchors.centerIn: centerInParent? parent : undefined
             minimumWidth: 0.4 * (wrapper.zoomScale * root.iconSize)
             height: Math.max(24, 0.4 * (wrapper.zoomScale * root.iconSize))
 
