@@ -87,6 +87,10 @@ Column {
                || (playbackLoader.active && playbackLoader.item.containsMouse());
     }
 
+    function isTaskActive() {
+        return (isGroup ? isActive : (parentTask ? parentTask.isActive : false));
+    }
+
     // launcher icon + text labels + close button
     RowLayout {
         id: header
@@ -437,9 +441,9 @@ Column {
         Rectangle{
             width: parent.width
             height: 2
-            color: theme.buttonFocusColor
+            color: isTaskActive() ? theme.buttonFocusColor : theme.buttonHoverColor
             anchors.bottom: parent.bottom
-            visible: isGroup ? isActive : (parentTask ? parentTask.isActive : false)
+            visible: isTaskActive() || area2.containsMouse
         }
     }
 
