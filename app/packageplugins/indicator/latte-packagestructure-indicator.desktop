@@ -1,5 +1,13 @@
 [Desktop Entry]
 Name=Indicator
+Name[ca]=Indicador
+Name[en_GB]=Indicator
+Name[gl]=Indicador
+Name[nl]=Indicator
+Name[pt]=Indicador
+Name[sv]=Indikator
+Name[uk]=Індикатор
+Name[x-test]=xxIndicatorxx
 Type=Service
 X-KDE-ServiceTypes=KPackage/PackageStructure
 X-KDE-Library=latte_packagestructure_indicator

@@ -3,6 +3,14 @@ Type=ServiceType
 X-KDE-ServiceType=Latte/Indicator
 
 Comment=Latte indicator
+Comment[ca]=Indicador del Latte
+Comment[en_GB]=Latte indicator
+Comment[gl]=Indicador de Latte
+Comment[nl]=Indicator van Latte
+Comment[pt]=Indicador do Latte
+Comment[sv]=Latte indikator
+Comment[uk]=Індикатор Латте
+Comment[x-test]=xxLatte indicatorxx
 
 [PropertyDef::X-Latte-API]
 Type=QString
