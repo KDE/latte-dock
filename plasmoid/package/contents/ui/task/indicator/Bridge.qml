@@ -48,6 +48,7 @@ Item {
     readonly property bool isGroup: taskIsValid ? taskItem.isGroupParent : false
     readonly property bool isHovered: taskIsValid ? taskItem.containsMouse : false
     readonly property bool isMinimized: taskIsValid ? taskItem.isMinimized : false
+    readonly property bool isPressed: taskIsValid ? taskItem.pressed : false
     readonly property bool inAttention: taskIsValid ? taskItem.inAttention : false
     readonly property bool inRemoving: taskIsValid ? taskItem.inRemoveStage : false
 
