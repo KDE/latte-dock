@@ -64,6 +64,7 @@ class Indicator: public QObject
     Q_PROPERTY(int customPluginsCount READ customPluginsCount NOTIFY customPluginsChanged)
     Q_PROPERTY(QStringList customPluginIds READ customPluginIds NOTIFY customPluginsChanged)
     Q_PROPERTY(QStringList customPluginNames READ customPluginNames NOTIFY customPluginsChanged)
+    Q_PROPERTY(QStringList customLocalPluginIds READ customLocalPluginIds NOTIFY customPluginsChanged)
 
     /**
      * Configuration object: each config key will be a writable property of this object. property bindings work.
@@ -102,6 +103,7 @@ public:
     int customPluginsCount() const;
     QStringList customPluginIds() const;
     QStringList customPluginNames() const;
+    QStringList customLocalPluginIds() const;
 
     QObject *configuration() const;
     QQmlComponent *component() const;
@@ -113,6 +115,7 @@ public slots:
     Q_INVOKABLE void configUiFor(QString type, QQuickItem *parent);
     Q_INVOKABLE void addIndicator();
     Q_INVOKABLE void downloadIndicator();
+    Q_INVOKABLE void removeIndicator(QString pluginId);
 
 signals:
     void customPluginsChanged();

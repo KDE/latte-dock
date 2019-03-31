@@ -21,6 +21,9 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Templates 2.2 as T
 import org.kde.plasma.core 2.0 as PlasmaCore
+
+import org.kde.latte.components 1.0 as LatteComponents
+
 import "private" as Private
 
 T.CheckDelegate {
@@ -39,7 +42,10 @@ T.CheckDelegate {
 
     property bool blankSpaceForEmptyIcons: false
     property string icon
+    property string iconToolTip
+    property bool iconOnlyWhenHovered
 
+    readonly property bool isHovered: hovered || iconMouseArea.containsMouse
     readonly property int margin: 4
 
     contentItem: RowLayout {
@@ -48,23 +54,43 @@ T.CheckDelegate {
         spacing: units.smallSpacing
         enabled: control.enabled
 
-        PlasmaCore.IconItem {
+        Rectangle {
             Layout.minimumWidth: parent.height
             Layout.maximumWidth: parent.height
             Layout.minimumHeight: parent.height
             Layout.maximumHeight: parent.height
-            //height: parent.height - 2*control.margin
-            //width: parent.height -  2*control.margin
-            colorGroup: PlasmaCore.Theme.ButtonColorGroup
-            source: control.icon
-            visible: icon
+            visible: icon && (!control.iconOnlyWhenHovered || (control.iconOnlyWhenHovered && control.isHovered))
+            color: control.iconToolTip && iconMouseArea.containsMouse ? theme.highlightColor : "transparent"
+
+            PlasmaCore.IconItem {
+                id: iconElement
+                anchors.fill: parent
+                colorGroup: PlasmaCore.Theme.ButtonColorGroup
+                source: control.icon
+            }
+
+            LatteComponents.ToolTip{
+                parent: iconElement
+                text: iconToolTip
+                visible: iconMouseArea.containsMouse
+                delay: 6 * units.longDuration
+            }
+
+            MouseArea {
+                id: iconMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                visible: control.iconToolTip
+
+                onClicked: control.ListView.view.iconClicked(index);
+            }
         }
 
         Rectangle {
             //blank space when no icon is shown
             Layout.minimumHeight: parent.height
             Layout.minimumWidth: parent.height
-            visible: !icon && control.blankSpaceForEmptyIcons
+            visible: control.blankSpaceForEmptyIcons && (!icon || (control.iconOnlyWhenHovered && !control.isHovered) )
             color: "transparent"
         }
 
@@ -87,7 +113,7 @@ T.CheckDelegate {
         opacity: {
             if (control.highlighted || control.pressed) {
                 return 0.6;
-            } else if (control.hovered && !control.pressed) {
+            } else if (control.isHovered && !control.pressed) {
                 return 0.3;
             }
 

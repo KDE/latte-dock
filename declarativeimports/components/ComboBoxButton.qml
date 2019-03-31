@@ -53,6 +53,10 @@ Rectangle {
     property string comboBoxEnabledRole: ""
     property string comboBoxTextRole: ""
     property string comboBoxIconRole: ""
+    property string comboBoxIconToolTipRole: ""
+    property string comboBoxIconOnlyWhenHoveredRole: ""
+
+    signal iconClicked(int index);
 
     PlasmaComponents.Button {
         id: mainButton
@@ -86,6 +90,8 @@ Rectangle {
         enabledRole: comboBoxEnabledRole
         iconRole: comboBoxIconRole
         textRole: comboBoxTextRole
+        iconToolTipRole: comboBoxIconToolTipRole
+        iconOnlyWhenHoveredRole: comboBoxIconOnlyWhenHoveredRole
 
         blankSpaceForEmptyIcons: comboBoxBlankSpaceForEmptyIcons
         forcePressed: comboBoxForcePressed
@@ -95,6 +101,8 @@ Rectangle {
                             (popUpAlignRight ? width : -(root.width - width))
 
         minimumPopUpWidth: Math.max(comboBoxMinimumPopUpWidth, root.width)
+
+        onIconClicked: root.iconClicked(index);
     }
 
     Label{

@@ -41,15 +41,17 @@ public:
     Factory(QObject *parent);
     ~Factory() override;
 
-    void reload();
-
     int customPluginsCount();
     QStringList customPluginIds();
     QStringList customPluginNames();
+    QStringList customLocalPluginIds();
 
     KPluginMetaData metadata(QString pluginId);
 
     void downloadIndicator();
+    void removeIndicator(QString id);
+
+    bool pluginExists(QString id) const;
 
     //! metadata record
     static bool metadataAreValid(KPluginMetaData &metadata);
@@ -62,10 +64,14 @@ signals:
     void customPluginsChanged();
 
 private:
+    void reload();
+
+private:
     QHash<QString, KPluginMetaData> m_plugins;
 
     QStringList m_customPluginIds;
     QStringList m_customPluginNames;
+    QStringList m_customLocalPluginIds;
 
     QStringList m_watchedPaths;
 

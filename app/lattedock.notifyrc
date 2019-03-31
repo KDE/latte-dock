@@ -99,6 +99,14 @@ Name[uk]=Не вдалося експортувати
 Name[x-test]=xxFailed to exportxx
 Action=Popup
 
+[Event/remove-done]
+Name=Removed successfully
+Action=Popup
+
+[Event/remove-fail]
+Name=Failed to remove
+Action=Popup
+
 [Event/switch-layout]
 Name=Switch to layout
 Name[ca]=Commuta a la disposició

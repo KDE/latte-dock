@@ -33,6 +33,8 @@ LatteComponents.ComboBoxButton{
                              i18n("Download indicator styles from the internet")
     comboBoxTextRole: "name"
     comboBoxIconRole: "icon"
+    comboBoxIconToolTipRole: "iconToolTip"
+    comboBoxIconOnlyWhenHoveredRole: "iconOnlyWhenHovered"
     comboBoxBlankSpaceForEmptyIcons: true
     comboBoxForcePressed: latteView.indicator.type === type
     comboBoxPopUpAlignRight: Qt.application.layoutDirection !== Qt.RightToLeft
@@ -85,6 +87,17 @@ LatteComponents.ComboBoxButton{
 
             custom.updateButtonInformation();
         }
+
+        onIconClicked: {
+            if (index>=0) {
+                var item = actionsModel.get(index);
+                var pluginId = item.pluginId;
+                if (latteView.indicator.customLocalPluginIds.indexOf(pluginId)>=0) {
+                    latteView.indicator.removeIndicator(pluginId);
+                    custom.comboBox.popup.close();
+                }
+            }
+        }
     }
 
     function updateButtonInformation() {
@@ -113,9 +126,22 @@ LatteComponents.ComboBoxButton{
         if (latteView.indicator.customPluginsCount > 0) {
             var pluginIds = latteView.indicator.customPluginIds;
             var pluginNames = latteView.indicator.customPluginNames;
+            var localPluginIds = latteView.indicator.customLocalPluginIds;
 
             for(var i=0; i<pluginIds.length; ++i) {
-                var element = {pluginId: pluginIds[i], name: pluginNames[i], icon: ''};
+                var canBeRemoved = localPluginIds.indexOf(pluginIds[i])>=0;
+                var iconString = canBeRemoved ? 'remove' : '';
+                var iconTip = canBeRemoved ? i18n('Remove indicator') : '';
+                var iconOnlyForHovered = canBeRemoved ? true : false;
+
+                var element = {
+                    pluginId: pluginIds[i],
+                    name: pluginNames[i],
+                    icon: iconString,
+                    iconToolTip: iconTip,
+                    iconOnlyWhenHovered: iconOnlyForHovered
+                };
+
                 actionsModel.append(element);
             }
         }
@@ -141,11 +167,23 @@ LatteComponents.ComboBoxButton{
 
     function appendDefaults() {
         //! add
-        var addElement = {pluginId: 'add:', name: i18n('Add Indicator...'), icon: 'list-add'};
+        var addElement = {
+            pluginId: 'add:',
+            name: i18n('Add Indicator...'),
+            icon: 'list-add',
+            iconToolTip: '',
+            iconOnlyWhenHovered: false
+        };
         actionsModel.append(addElement);
 
         //! download
-        var downloadElement = {pluginId: 'download:', name: i18n('Get New Indicators...'), icon: 'favorites'};
+        var downloadElement = {
+            pluginId: 'download:',
+            name: i18n('Get New Indicators...'),
+            icon: 'favorites',
+            iconToolTip: '',
+            iconOnlyWhenHovered: false
+        };
         actionsModel.append(downloadElement);
     }
 
