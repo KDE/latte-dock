@@ -225,6 +225,8 @@ DragDrop.DropArea {
     property int panelTransparency: plasmoid.configuration.panelTransparency //user set
     property int currentPanelTransparency: 0 //application override
 
+    readonly property real currentPanelOpacity: currentPanelTransparency/100
+
     property bool panelShadowsActive: {
         if (!userShowPanelBackground) {
             return false;

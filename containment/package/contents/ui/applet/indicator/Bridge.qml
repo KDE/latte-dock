@@ -61,6 +61,7 @@ Item{
     readonly property int maxIconSize: root.maxIconSize
     readonly property int durationTime: root.durationTime
     readonly property real scaleFactor: appletIsValid ? appletItem.wrapperAlias.zoomScale : 1
+    readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
     readonly property bool usePlasmaTabsStyle: !indicators.enabledForApplets

@@ -210,6 +210,8 @@ Item {
     property int tasksWidth: mouseHandler.width
     property int userPanelPosition: latteView ? latteView.panelAlignment : plasmoid.configuration.plasmoidPosition
 
+    readonly property real currentPanelOpacity: latteView ? latteView.currentPanelTransparency / 100 : 1
+
     //! Animations
     property bool animationsEnabled: latteView ? latteView.animationsEnabled : durationTime !== 0
     property bool animationLauncherBouncing: latteView ? latteView.animationLauncherBouncing : durationTime !== 0
