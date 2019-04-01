@@ -79,7 +79,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
 
-        text: "Rearrange and configure your widgets"
+        text: i18n("Rearrange and configure your widgets")
         tooltip: i18n("Feel free to move around your widgets and configure them from their tooltips")
         reverseIcon: plasmoid.location === PlasmaCore.Types.RightEdge
 
