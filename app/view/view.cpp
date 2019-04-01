@@ -26,6 +26,7 @@
 #include "positioner.h"
 #include "visibilitymanager.h"
 #include "settings/primaryconfigview.h"
+#include "settings/secondaryconfigview.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
 #include "../layout/layout.h"
@@ -1001,12 +1002,15 @@ bool View::event(QEvent *e)
         case QEvent::Enter:
             m_containsMouse = true;
 
-            if (m_configView && KWindowSystem::isPlatformX11()) {
+            if (m_configView) {
                 ViewPart::PrimaryConfigView *primaryConfigView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
                 if (primaryConfigView) {
                     if (primaryConfigView->secondaryWindow()) {
-                        primaryConfigView->secondaryWindow()->requestActivate();
+                        ViewPart::SecondaryConfigView *secConfigView = qobject_cast<ViewPart::SecondaryConfigView *>(primaryConfigView->secondaryWindow());
+                        if (secConfigView) {
+                            secConfigView->requestActivate();
+                        }
                     }
 
                     primaryConfigView->requestActivate();

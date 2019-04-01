@@ -212,6 +212,16 @@ QRect PrimaryConfigView::geometryWhenVisible() const
     return m_geometryWhenVisible;
 }
 
+void PrimaryConfigView::requestActivate()
+{
+    if (KWindowSystem::isPlatformWayland() && m_shellSurface) {
+        WindowId wid = m_corona->wm()->winIdFor("latte-dock", geometry());
+        m_corona->wm()->requestActivate(wid);
+    } else {
+        QQuickView::requestActivate();
+    }
+}
+
 void PrimaryConfigView::syncGeometry()
 {
     if (!m_latteView || !m_latteView->managedLayout() || !m_latteView->containment() || !rootObject()) {
@@ -406,7 +416,7 @@ void PrimaryConfigView::setupWaylandIntegration()
             return;
         }
 
-        qDebug() << "wayland dock window surface was created...";
+        qDebug() << "wayland primary settings surface was created...";
 
         m_shellSurface = interface->createSurface(s, this);
         m_shellSurface->setSkipTaskbar(true);

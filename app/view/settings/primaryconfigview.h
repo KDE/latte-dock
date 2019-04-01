@@ -85,10 +85,11 @@ public:
     ~PrimaryConfigView() override;
 
     void init() override;
+    void requestActivate();
+
     Qt::WindowFlags wFlags() const;
 
     bool showInlineProperties() const;
-
     bool sticker() const;
 
     int complexity() const;

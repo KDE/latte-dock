@@ -321,7 +321,6 @@ bool WaylandInterface::isOnCurrentActivity(WindowId wid) const
 
     //TODO: Not yet implemented
     return it != m_windowManagement->windows().constEnd() && true;
-
 }
 
 WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
@@ -367,6 +366,20 @@ KWayland::Client::PlasmaWindow *WaylandInterface::windowFor(WindowId wid) const
     return *it;
 }
 
+WindowId WaylandInterface::winIdFor(QString appId, QRect geometry) const
+{
+    auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&appId, &geometry](PlasmaWindow * w) noexcept {
+        return w->isValid() && w->appId() == appId && w->geometry() == geometry;
+    });
+
+    if (it == m_windowManagement->windows().constEnd()) {
+        return 0;
+    }
+
+    return (*it)->internalId();
+}
+
+
 bool WaylandInterface::windowCanBeDragged(WindowId wid) const
 {
     WindowInfoWrap winfo = requestInfo(wid);
@@ -376,6 +389,15 @@ bool WaylandInterface::windowCanBeDragged(WindowId wid) const
 void WaylandInterface::releaseMouseEventFor(WindowId wid) const
 {
     // this isnt really needed under wayland
+}
+
+void WaylandInterface::requestActivate(WindowId wid) const
+{
+    auto w = windowFor(wid);
+
+    if (w) {
+        w->requestActivate();
+    }
 }
 
 void WaylandInterface::requestMoveWindow(WindowId wid, QPoint from) const

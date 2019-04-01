@@ -355,6 +355,16 @@ void XWindowInterface::releaseMouseEventFor(WindowId wid) const
     xcb_send_event( connection, false, wid.toInt(), XCB_EVENT_MASK_BUTTON_RELEASE, reinterpret_cast<const char*>(&releaseEvent));
 }
 
+void XWindowInterface::requestActivate(WindowId wid) const
+{
+    KWindowSystem::activateWindow(wid.toInt());
+}
+
+WindowId XWindowInterface::winIdFor(QString appId, QRect geometry) const
+{
+    return activeWindow();
+}
+
 void XWindowInterface::requestMoveWindow(WindowId wid, QPoint from) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);

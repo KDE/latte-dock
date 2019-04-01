@@ -71,6 +71,7 @@ public:
     ~SecondaryConfigView() override;
 
     void init();
+    void requestActivate();
     Qt::WindowFlags wFlags() const;
 
     QRect geometryWhenVisible() const;
