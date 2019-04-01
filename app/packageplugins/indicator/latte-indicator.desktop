@@ -4,6 +4,7 @@ X-KDE-ServiceType=Latte/Indicator
 
 Comment=Latte indicator
 Comment[ca]=Indicador del Latte
+Comment[ca@valencia]=Indicador del Latte
 Comment[en_GB]=Latte indicator
 Comment[gl]=Indicador de Latte
 Comment[nl]=Indicator van Latte
