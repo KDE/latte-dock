@@ -332,13 +332,12 @@ void Indicator::configUiFor(QString type, QQuickItem *parent)
 
         if (!uiPath.isEmpty()) {
             m_lastCreatedConfigUi = new KDeclarative::QmlObjectSharedEngine(parent);
+            m_lastCreatedConfigUi->setTranslationDomain(QLatin1String("latte_indicator_") + m_metadata.pluginId());
             m_lastCreatedConfigUi->setInitializationDelayed(true);
             uiPath = m_pluginPath + "package/" + uiPath;
             m_lastCreatedConfigUi->setSource(QUrl::fromLocalFile(uiPath));
             m_lastCreatedConfigUi->rootContext()->setContextProperty(QStringLiteral("indicator"), this);
             m_lastCreatedConfigUi->completeInitialization();
-
-            m_lastCreatedConfigUi->setTranslationDomain(QLatin1String("latte_indicator_") + m_metadata.pluginId());
 
             QQuickItem *qmlItem = qobject_cast<QQuickItem*>(m_lastCreatedConfigUi->rootObject());
             qmlItem->setParentItem(parent);
