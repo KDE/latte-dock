@@ -51,7 +51,9 @@ LatteComponents.IndicatorItem{
     readonly property bool reversedEnabled: indicator && indicator.general ? indicator.general.reversed : false
 
     //! Configuration Options
-    readonly property bool configurationEnabled: (indicator!==null) && (indicator.configuration !== null)
+    readonly property bool configurationEnabled: (indicator!==null)
+                                                 && (indicator.configuration !== null)
+                                                 && (indicator.configuration.glow3D !== undefined)
 
     readonly property bool extraDotOnActive: configurationEnabled ? indicator.configuration.extraDotOnActive : true
     readonly property bool minimizedTaskColoredDifferently: configurationEnabled ? indicator.configuration.minimizedTaskColoredDifferently : false

@@ -288,10 +288,11 @@ Item {
                 color: "white"
             } */
     onLatteViewChanged: {
-        if (latteView)
+        if (latteView) {
             plasmoid.configuration.isInLatteDock = true;
-        else
+        } else {
             plasmoid.configuration.isInLatteDock = false;
+        }
     }
 
 
