@@ -52,9 +52,6 @@ Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
     loadConfig();
 
     connect(this, &Theme::outlineWidthChanged, this, &Theme::saveConfig);
-    connect(this, &Theme::userSetRoundnessChanged, this, &Theme::saveConfig);
-
-    connect(this, &Theme::userSetRoundnessChanged, this, &Theme::roundnessChanged);
 
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::hasShadowChanged);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::load);
@@ -64,8 +61,7 @@ Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
 void Theme::load()
 {
     loadThemePaths();
-  //  loadRoundness();
-    loadRoundnessFromSvgs();
+    loadRoundness();
 }
 
 Theme::~Theme()
@@ -89,11 +85,6 @@ bool Theme::isLightTheme() const
 bool Theme::isDarkTheme() const
 {
     return !m_isLightTheme;
-}
-
-bool Theme::themeHasExtendedInfo() const
-{
-    return m_themeHasExtendedInfo;
 }
 
 int Theme::bottomEdgeRoundness() const
@@ -129,22 +120,6 @@ void Theme::setOutlineWidth(int width)
 
     m_outlineWidth = width;
     emit outlineWidthChanged();
-}
-
-int Theme::userThemeRoundness() const
-{
-    return m_userRoundness;
-}
-
-void Theme::setUserThemeRoundness(int roundness)
-{
-    if (m_userRoundness == roundness) {
-        return;
-    }
-
-    m_userRoundness = roundness;
-
-    emit userSetRoundnessChanged();
 }
 
 float Theme::backgroundMaxOpacity() const
@@ -343,7 +318,7 @@ int Theme::roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge)
     return round;
 }
 
-void Theme::loadRoundnessFromSvgs()
+void Theme::loadRoundness()
 {
     Plasma::FrameSvg *svg = new Plasma::FrameSvg(this);
     svg->setImagePath(QStringLiteral("widgets/panel-background"));
@@ -391,6 +366,8 @@ void Theme::loadRoundnessFromSvgs()
     emit roundnessChanged();
 }
 
+/*DEPRECATED CAN BE REMOVED*/
+/*
 void Theme::loadRoundness()
 {
     if (!m_corona) {
@@ -432,6 +409,7 @@ void Theme::loadRoundness()
 
     emit roundnessChanged();
 }
+*/
 
 void Theme::loadThemePaths()
 {
@@ -610,13 +588,11 @@ void Theme::loadThemeLightness()
 
 void Theme::loadConfig()
 {
-    setUserThemeRoundness(m_themeGroup.readEntry("userSetPlasmaThemeRoundness", -1));
     setOutlineWidth(m_themeGroup.readEntry("outlineWidth", 1));
 }
 
 void Theme::saveConfig()
 {
-    m_themeGroup.writeEntry("userSetPlasmaThemeRoundness", m_userRoundness);
     m_themeGroup.writeEntry("outlineWidth", m_outlineWidth);
 
     m_themeGroup.sync();

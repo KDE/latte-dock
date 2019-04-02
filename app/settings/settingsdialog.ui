@@ -444,8 +444,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>885</width>
-            <height>613</height>
+            <width>894</width>
+            <height>594</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -983,84 +983,6 @@ This tracker is used in order to not lose any screen related update.</string>
                 <string>Plasma Theme</string>
                </property>
               </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_12">
-               <item>
-                <spacer name="horizontalSpacer_12">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Fixed</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLabel" name="plasmaRoundnessLbl">
-                 <property name="toolTip">
-                  <string>Roundness used from Latte elements in order to feel part of the current plasma theme</string>
-                 </property>
-                 <property name="text">
-                  <string>Background roundness</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSpinBox" name="themeRoundnessSpinBox">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>200</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Roundness used from Latte elements in order to feel part of the current plasma theme 
-when there are no other roundness information.</string>
-                 </property>
-                 <property name="specialValueText">
-                  <string/>
-                 </property>
-                 <property name="suffix">
-                  <string> px.</string>
-                 </property>
-                 <property name="minimum">
-                  <number>-1</number>
-                 </property>
-                 <property name="maximum">
-                  <number>32</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_13">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Fixed</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
              </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_15">

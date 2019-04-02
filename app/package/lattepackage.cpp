@@ -64,8 +64,6 @@ void Package::initPackage(KPackage::Package *package)
     package->addFileDefinition("preset4", QStringLiteral("presets/Extended.layout.latte"), i18n("extended preset file"));
     package->addFileDefinition("preset10", QStringLiteral("presets/multiple-layouts_hidden.layout.latte"), i18n("multiple layouts hidden file"));
 
-    package->addFileDefinition("themesExtendedInfo", QStringLiteral("themes/themesExtendedInforc"), i18n("a file that contains extended information for plasma themes"));
-
     package->addFileDefinition("backgroundTracer", QStringLiteral("scripting/BackgroundTracer.qml"), i18n("a qml file that is used to publish broadcasted backgrounds"));
 
     package->setFallbackPackage(fallback);

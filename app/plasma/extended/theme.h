@@ -82,9 +82,6 @@ public:
     int outlineWidth() const;
     void setOutlineWidth(int width);
 
-    int userThemeRoundness() const;
-    void setUserThemeRoundness(int roundness);
-
     float backgroundMaxOpacity() const;
 
     SchemeColors *defaultTheme() const;
@@ -99,7 +96,6 @@ signals:
     void outlineWidthChanged();
     void roundnessChanged();
     void themeChanged();
-    void userSetRoundnessChanged();
 
 private slots:
     void loadConfig();
@@ -109,7 +105,6 @@ private slots:
 private:
     void loadThemePaths();
     void loadRoundness();
-    void loadRoundnessFromSvgs();
 
     void setOriginalSchemeFile(const QString &file);
     void parseThemeSvgFiles();
@@ -118,19 +113,15 @@ private:
     void updateReversedScheme();
     void updateReversedSchemeValues();
 
-    bool themeHasExtendedInfo() const;
-
     int roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge);
 private:
     bool m_isLightTheme{false};
-    bool m_themeHasExtendedInfo{false};
 
     int m_bottomEdgeRoundness{0};
     int m_leftEdgeRoundness{0};
     int m_topEdgeRoundness{0};
     int m_rightEdgeRoundness{0};
     int m_outlineWidth{1};
-    int m_userRoundness{-1};
 
     float m_backgroundMaxOpacity{1};
 
