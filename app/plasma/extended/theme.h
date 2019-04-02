@@ -36,6 +36,7 @@
 #include <KSharedConfig>
 
 // Plasma
+#include <Plasma/FrameSvg>
 #include <Plasma/Theme>
 
 namespace Latte {
@@ -108,6 +109,7 @@ private slots:
 private:
     void loadThemePaths();
     void loadRoundness();
+    void loadRoundnessFromSvgs();
 
     void setOriginalSchemeFile(const QString &file);
     void parseThemeSvgFiles();
@@ -118,6 +120,7 @@ private:
 
     bool themeHasExtendedInfo() const;
 
+    int roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge);
 private:
     bool m_isLightTheme{false};
     bool m_themeHasExtendedInfo{false};

@@ -64,7 +64,8 @@ Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
 void Theme::load()
 {
     loadThemePaths();
-    loadRoundness();
+  //  loadRoundness();
+    loadRoundnessFromSvgs();
 }
 
 Theme::~Theme()
@@ -97,22 +98,22 @@ bool Theme::themeHasExtendedInfo() const
 
 int Theme::bottomEdgeRoundness() const
 {
-    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_bottomEdgeRoundness : qMax(0, m_userRoundness));
+    return m_bottomEdgeRoundness;
 }
 
 int Theme::leftEdgeRoundness() const
 {
-    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_leftEdgeRoundness : qMax(0, m_userRoundness));
+    return m_leftEdgeRoundness;
 }
 
 int Theme::topEdgeRoundness() const
 {
-    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_topEdgeRoundness : qMax(0, m_userRoundness));
+    return m_topEdgeRoundness;
 }
 
 int Theme::rightEdgeRoundness() const
 {
-    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_rightEdgeRoundness : qMax(0, m_userRoundness));
+    return m_rightEdgeRoundness;
 }
 
 int Theme::outlineWidth() const
@@ -263,7 +264,7 @@ void Theme::updateReversedSchemeValues()
                 KConfigGroup reversedGroup(reversedPtr, groupName);
 
                 if (reversedGroup.keyList().contains("BackgroundNormal")
-                    && reversedGroup.keyList().contains("ForegroundNormal")) {
+                        && reversedGroup.keyList().contains("ForegroundNormal")) {
                     //! reverse usual text/background values
                     KConfigGroup originalGroup(originalPtr, groupName);
 
@@ -280,9 +281,9 @@ void Theme::updateReversedSchemeValues()
         KConfigGroup originalViewGroup(originalPtr, "Colors:View");
 
         if (reversedWMGroup.keyList().contains("activeBackground")
-            && reversedWMGroup.keyList().contains("activeForeground")
-            && reversedWMGroup.keyList().contains("inactiveBackground")
-            && reversedWMGroup.keyList().contains("inactiveForeground")) {
+                && reversedWMGroup.keyList().contains("activeForeground")
+                && reversedWMGroup.keyList().contains("inactiveBackground")
+                && reversedWMGroup.keyList().contains("inactiveForeground")) {
             //! reverse usual wm titlebar values
             KConfigGroup originalGroup(originalPtr, "WM");
             reversedWMGroup.writeEntry("activeBackground", originalViewGroup.readEntry("ForegroundNormal", QColor()));
@@ -293,7 +294,7 @@ void Theme::updateReversedSchemeValues()
         }
 
         if (reversedWMGroup.keyList().contains("activeBlend")
-            && reversedWMGroup.keyList().contains("inactiveBlend")) {
+                && reversedWMGroup.keyList().contains("inactiveBlend")) {
             KConfigGroup originalGroup(originalPtr, "WM");
             reversedWMGroup.writeEntry("activeBlend", originalGroup.readEntry("inactiveBlend", QColor()));
             reversedWMGroup.writeEntry("inactiveBlend", originalGroup.readEntry("activeBlend", QColor()));
@@ -308,6 +309,87 @@ void Theme::updateReversedSchemeValues()
     }
 }
 
+int Theme::roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge)
+{
+    int discovY{edge == Plasma::Types::TopEdge ? svg->mask().boundingRect().bottom() : svg->mask().boundingRect().top()};
+    int discovX{edge == Plasma::Types::LeftEdge ? svg->mask().boundingRect().right() : svg->mask().boundingRect().left()};
+
+    int round{0};
+
+    if (edge == Plasma::Types::BottomEdge || edge == Plasma::Types::RightEdge || edge == Plasma::Types::TopEdge) {
+        //! TOPLEFT corner
+        //! first LEFT pixel found
+        for (int x=0; x<50; ++x) {
+            if (!svg->mask().contains(QPoint(x, discovY))) {
+                discovX++;
+                round++;
+            } else {
+                break;
+            }
+        }
+    } else if (edge == Plasma::Types::LeftEdge) {
+        //! it should be TOPRIGHT corner in that case
+        //! first RIGHT pixel found
+        for (int x=svg->mask().boundingRect().right(); x>50; --x) {
+            if (!svg->mask().contains(QPoint(x, discovY))) {
+                discovX--;
+                round++;
+            } else {
+                break;
+            }
+        }
+    }
+
+    return round;
+}
+
+void Theme::loadRoundnessFromSvgs()
+{
+    Plasma::FrameSvg *svg = new Plasma::FrameSvg(this);
+    svg->setImagePath(QStringLiteral("widgets/panel-background"));
+    svg->setEnabledBorders(Plasma::FrameSvg::AllBorders);
+
+    //! bottom roundness
+    if (svg->hasElementPrefix("south")) {
+        svg->setElementPrefix("south");
+    }
+    svg->resizeFrame(QSize(100,00));
+    m_bottomEdgeRoundness = roundness(svg, Plasma::Types::BottomEdge);
+
+    //! left roundness
+    if (svg->hasElementPrefix("west")) {
+        svg->setElementPrefix("west");
+    } else {
+        svg->setElementPrefix("");
+    }
+    svg->resizeFrame(QSize(100,00));
+    m_leftEdgeRoundness = roundness(svg, Plasma::Types::LeftEdge);
+
+    //! top roundness
+    if (svg->hasElementPrefix("north")) {
+        svg->setElementPrefix("north");
+    } else {
+        svg->setElementPrefix("");
+    }
+    svg->resizeFrame(QSize(100,00));
+    m_topEdgeRoundness = roundness(svg, Plasma::Types::TopEdge);
+
+    //! right roundness
+    if (svg->hasElementPrefix("east")) {
+        svg->setElementPrefix("east");
+    } else {
+        svg->setElementPrefix("");
+    }
+    svg->resizeFrame(QSize(100,00));
+    m_rightEdgeRoundness = roundness(svg, Plasma::Types::RightEdge);
+
+    qDebug() << " MASK ::: " << svg->mask();
+    qDebug() << " BOUNDING RECT ::: " << svg->mask().boundingRect();
+    qDebug() << " ROUNDNESS ::: " << m_bottomEdgeRoundness << " _ " << m_leftEdgeRoundness << " _ " << m_topEdgeRoundness << " _ " << m_rightEdgeRoundness;
+    svg->deleteLater();
+
+    emit roundnessChanged();
+}
 
 void Theme::loadRoundness()
 {
@@ -445,38 +527,38 @@ void Theme::parseThemeSvgFiles()
     QString styleSvgStr;
 
     if (svgFile.open(QIODevice::ReadOnly)) {
-       QTextStream in(&svgFile);
-       bool centerIdFound{false};
-       bool styleFound{false};
+        QTextStream in(&svgFile);
+        bool centerIdFound{false};
+        bool styleFound{false};
 
-       while (!in.atEnd() && !styleFound) {
-          QString line = in.readLine();
+        while (!in.atEnd() && !styleFound) {
+            QString line = in.readLine();
 
-          //! each time a rect starts then style can be reset
-          if (line.contains("<rect")) {
-              styleSvgStr = "";
-          }
+            //! each time a rect starts then style can be reset
+            if (line.contains("<rect")) {
+                styleSvgStr = "";
+            }
 
-          //! identify the id "center
-          if (line.contains("id=\"center\"")) {
-              centerIdFound = true;
-          }
+            //! identify the id "center
+            if (line.contains("id=\"center\"")) {
+                centerIdFound = true;
+            }
 
-          //! if valid style for center exists we can break
-          if (centerIdFound && !styleSvgStr.isEmpty()) {
-              break;
-          }
+            //! if valid style for center exists we can break
+            if (centerIdFound && !styleSvgStr.isEmpty()) {
+                break;
+            }
 
-          if (centerIdFound && line.contains("style=\"") ) {
-              styleSvgStr = line;
-          }
+            if (centerIdFound && line.contains("style=\"") ) {
+                styleSvgStr = line;
+            }
 
-          //! when end of "center" you can break
-          if (centerIdFound && line.contains("/rect>")) {
-              break;
-          }
-       }
-       svgFile.close();
+            //! when end of "center" you can break
+            if (centerIdFound && line.contains("/rect>")) {
+                break;
+            }
+        }
+        svgFile.close();
     }
 
     if (!styleSvgStr.isEmpty()) {
