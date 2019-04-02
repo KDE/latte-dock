@@ -105,10 +105,18 @@ Action=Popup
 
 [Event/remove-done]
 Name=Removed successfully
+Name[ca]=S'ha eliminat amb èxit
+Name[nl]=Met succes verwijderd
+Name[uk]=Успішно вилучено
+Name[x-test]=xxRemoved successfullyxx
 Action=Popup
 
 [Event/remove-fail]
 Name=Failed to remove
+Name[ca]=Ha fallat en eliminar
+Name[nl]=Verwijderen is mislukt
+Name[uk]=Не вдалося вилучити
+Name[x-test]=xxFailed to removexx
 Action=Popup
 
 [Event/switch-layout]
