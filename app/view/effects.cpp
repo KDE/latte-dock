@@ -198,28 +198,49 @@ QRegion Effects::subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *win
 {
     QRegion subtractedMask = initialRegion;
 
+    int start;
+    int length;
+
+    if (m_view->formFactor() == Plasma::Types::Horizontal) {
+        if (KWindowSystem::isPlatformX11()) {
+            start = window->x();
+            length = window->width();
+        } else {
+            start = m_view->x();
+            length = m_view->width();
+        }
+    } else {
+        if (KWindowSystem::isPlatformX11()) {
+            start = window->y();
+            length = window->height();
+        } else {
+            start = m_view->y();
+            length = m_view->height();
+        }
+    }
+
     if (m_settingsMaskSubtracted && window) {
         QRect windowMask;
         //! we need to subtrack the mask areas that overlap with underlying window
         switch (m_view->location()) {
             case Plasma::Types::TopEdge:
-                windowMask.setTopLeft(QPoint(window->x() - m_view->x(), m_mask.y() + m_mask.height() - m_editShadow));
-                windowMask.setSize(QSize(window->width(), m_editShadow));
+                windowMask.setTopLeft(QPoint(start - m_view->x(), m_mask.y() + m_mask.height() - m_editShadow));
+                windowMask.setSize(QSize(length, m_editShadow));
                 break;
 
             case Plasma::Types::LeftEdge:
-                windowMask.setTopLeft(QPoint(m_mask.right() + 1 - m_editShadow, window->y() - m_view->y()));
-                windowMask.setSize(QSize(m_editShadow, window->height()));
+                windowMask.setTopLeft(QPoint(m_mask.right() + 1 - m_editShadow, start - m_view->y()));
+                windowMask.setSize(QSize(m_editShadow, length));
                 break;
 
             case Plasma::Types::RightEdge:
-                windowMask.setTopLeft(QPoint(m_mask.x(), window->y() - m_view->y()));
-                windowMask.setSize(QSize(m_editShadow, window->height()));
+                windowMask.setTopLeft(QPoint(m_mask.x(), start - m_view->y()));
+                windowMask.setSize(QSize(m_editShadow, length));
                 break;
 
             case Plasma::Types::BottomEdge:
-                windowMask.setTopLeft(QPoint(window->x() - m_view->x(), m_mask.y()));
-                windowMask.setSize(QSize(window->width(), m_editShadow));
+                windowMask.setTopLeft(QPoint(start - m_view->x(), m_mask.y()));
+                windowMask.setSize(QSize(length, m_editShadow));
                 break;
 
             default:
