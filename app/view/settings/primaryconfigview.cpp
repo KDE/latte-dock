@@ -247,7 +247,7 @@ void PrimaryConfigView::syncGeometry()
     switch (m_latteView->formFactor()) {
     case Plasma::Types::Horizontal: {
         xPos = (m_complexity == Latte::Types::ExpertSettings) ?
-                    m_latteView->x() + m_latteView->width() - size.width() :
+                    availGeometry.x() + availGeometry.width() - size.width() :
                     scrGeometry.center().x() - size.width() / 2;
 
         if (location == Plasma::Types::TopEdge) {
