@@ -170,7 +170,7 @@ LatteComponents.ComboBoxButton{
         var addElement = {
             pluginId: 'add:',
             name: i18n('Add Indicator...'),
-            icon: 'list-add',
+            icon: 'document-import',
             iconToolTip: '',
             iconOnlyWhenHovered: false
         };
@@ -180,7 +180,7 @@ LatteComponents.ComboBoxButton{
         var downloadElement = {
             pluginId: 'download:',
             name: i18n('Get New Indicators...'),
-            icon: 'favorites',
+            icon: 'get-hot-new-stuff',
             iconToolTip: '',
             iconOnlyWhenHovered: false
         };
