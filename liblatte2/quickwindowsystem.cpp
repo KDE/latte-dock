@@ -31,9 +31,7 @@
 #include <plasma/version.h>
 
 // X11
-#if HAVE_X11
-    #include <KWindowSystem>
-#endif
+#include <KWindowSystem>
 
 namespace Latte {
 

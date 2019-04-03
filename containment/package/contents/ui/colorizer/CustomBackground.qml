@@ -58,7 +58,7 @@ Item{
         return i;
     }
 
-    readonly property bool drawWithoutRoundness: noOfBorders === 1 || !Latte.WindowSystem.compositingActive
+    readonly property bool drawWithoutRoundness: noOfBorders === 1
 
     Binding{
         target: main

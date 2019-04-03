@@ -73,8 +73,9 @@ DragDrop.DropArea {
     property bool autoDecreaseIconSize: !containsOnlyPlasmaTasks && layoutsContainer.fillApplets<=0
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: {
-        if (!latteView || !latteView.visibility)
+        if (!latteView || !latteView.visibility) {
             return false;
+        }
 
         return (visibilityManager.panelIsBiggerFromIconSize && (maxZoomFactor === 1.0)
                 && (latteView.visibility.mode === Latte.Types.AlwaysVisible || latteView.visibility.mode === Latte.Types.WindowsGoBelow)

@@ -37,6 +37,9 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
+// X11
+#include <KWindowSystem>
+
 #define DEFAULTCOLORSCHEME "default.colors"
 #define REVERSEDCOLORSCHEME "reversed.colors"
 
@@ -49,8 +52,27 @@ Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
 {
     m_corona = qobject_cast<Latte::Corona *>(parent);
 
+    //! compositing tracking
+    if (KWindowSystem::isPlatformWayland()) {
+        //! TODO: Wayland compositing active
+        m_compositing = true;
+    } else {
+        connect(KWindowSystem::self(), &KWindowSystem::compositingChanged
+                , this, [&](bool enabled) {
+            if (m_compositing == enabled)
+                return;
+
+            m_compositing = enabled;
+            emit compositingChanged();
+        });
+
+        m_compositing = KWindowSystem::compositingActive();
+    }
+    //!
+
     loadConfig();
 
+    connect(this, &Theme::compositingChanged, this, &Theme::roundnessChanged);
     connect(this, &Theme::outlineWidthChanged, this, &Theme::saveConfig);
 
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::hasShadowChanged);
@@ -89,22 +111,22 @@ bool Theme::isDarkTheme() const
 
 int Theme::bottomEdgeRoundness() const
 {
-    return m_bottomEdgeRoundness;
+    return m_compositing ? m_bottomEdgeRoundness : m_solidBottomEdgeRoundness;
 }
 
 int Theme::leftEdgeRoundness() const
 {
-    return m_leftEdgeRoundness;
+    return m_compositing ? m_leftEdgeRoundness : m_solidLeftEdgeRoundness;
 }
 
 int Theme::topEdgeRoundness() const
 {
-    return m_topEdgeRoundness;
+    return m_compositing ? m_topEdgeRoundness : m_solidTopEdgeRoundness;
 }
 
 int Theme::rightEdgeRoundness() const
 {
-    return m_rightEdgeRoundness;
+    return m_compositing ? m_rightEdgeRoundness : m_solidRightEdgeRoundness;
 }
 
 int Theme::outlineWidth() const
@@ -286,8 +308,8 @@ void Theme::updateReversedSchemeValues()
 
 int Theme::roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge)
 {
-    int discovY{edge == Plasma::Types::TopEdge ? svg->mask().boundingRect().bottom() : svg->mask().boundingRect().top()};
-    int discovX{edge == Plasma::Types::LeftEdge ? svg->mask().boundingRect().right() : svg->mask().boundingRect().left()};
+    int discovY = (edge == Plasma::Types::TopEdge ? svg->mask().boundingRect().bottom() : svg->mask().boundingRect().top());
+    int discovX = (edge == Plasma::Types::LeftEdge ? svg->mask().boundingRect().right() : svg->mask().boundingRect().left());
 
     int round{0};
 
@@ -315,22 +337,22 @@ int Theme::roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge)
         }
     }
 
-    //! this needs investigation (the *2) I dont know if it is really needed
+    //! this needs investigation (the x2) I dont know if it is really needed
     //! but it gives me the impression that returns better results
     return round*2;
 }
 
-void Theme::loadRoundness()
+void Theme::loadCompositingRoundness()
 {
     Plasma::FrameSvg *svg = new Plasma::FrameSvg(this);
     svg->setImagePath(QStringLiteral("widgets/panel-background"));
     svg->setEnabledBorders(Plasma::FrameSvg::AllBorders);
+    svg->resizeFrame(QSize(100,100));
 
     //! bottom roundness
     if (svg->hasElementPrefix("south")) {
         svg->setElementPrefix("south");
     }
-    svg->resizeFrame(QSize(100,00));
     m_bottomEdgeRoundness = roundness(svg, Plasma::Types::BottomEdge);
 
     //! left roundness
@@ -339,7 +361,6 @@ void Theme::loadRoundness()
     } else {
         svg->setElementPrefix("");
     }
-    svg->resizeFrame(QSize(100,100));
     m_leftEdgeRoundness = roundness(svg, Plasma::Types::LeftEdge);
 
     //! top roundness
@@ -348,7 +369,6 @@ void Theme::loadRoundness()
     } else {
         svg->setElementPrefix("");
     }
-    svg->resizeFrame(QSize(100,00));
     m_topEdgeRoundness = roundness(svg, Plasma::Types::TopEdge);
 
     //! right roundness
@@ -357,61 +377,67 @@ void Theme::loadRoundness()
     } else {
         svg->setElementPrefix("");
     }
-    svg->resizeFrame(QSize(100,00));
     m_rightEdgeRoundness = roundness(svg, Plasma::Types::RightEdge);
 
-    qDebug() << " MASK ::: " << svg->mask();
-    qDebug() << " BOUNDING RECT ::: " << svg->mask().boundingRect();
-    qDebug() << " ROUNDNESS ::: " << m_bottomEdgeRoundness << " _ " << m_leftEdgeRoundness << " _ " << m_topEdgeRoundness << " _ " << m_rightEdgeRoundness;
-    svg->deleteLater();
+    qDebug() << " COMPOSITING MASK ::: " << svg->mask();
+    qDebug() << " COMPOSITING MASK BOUNDING RECT ::: " << svg->mask().boundingRect();
+    qDebug() << " COMPOSITING ROUNDNESS ::: " << m_bottomEdgeRoundness << " _ " << m_leftEdgeRoundness << " _ " << m_topEdgeRoundness << " _ " << m_rightEdgeRoundness;
 
-    emit roundnessChanged();
+    svg->deleteLater();
 }
 
-/*DEPRECATED CAN BE REMOVED*/
-/*
+void Theme::loadNonCompositingRoundness()
+{
+    Plasma::FrameSvg *svg = new Plasma::FrameSvg(this);
+    svg->setImagePath(QStringLiteral("opaque/dialogs/background"));
+    svg->setEnabledBorders(Plasma::FrameSvg::AllBorders);
+    svg->resizeFrame(QSize(100,100));
+
+    //! bottom roundness
+    if (svg->hasElementPrefix("south")) {
+        svg->setElementPrefix("south");
+    }
+    m_solidBottomEdgeRoundness = roundness(svg, Plasma::Types::BottomEdge);
+
+    //! left roundness
+    if (svg->hasElementPrefix("west")) {
+        svg->setElementPrefix("west");
+    } else {
+        svg->setElementPrefix("");
+    }
+    m_solidLeftEdgeRoundness = roundness(svg, Plasma::Types::LeftEdge);
+
+    //! top roundness
+    if (svg->hasElementPrefix("north")) {
+        svg->setElementPrefix("north");
+    } else {
+        svg->setElementPrefix("");
+    }
+    m_solidTopEdgeRoundness = roundness(svg, Plasma::Types::TopEdge);
+
+    //! right roundness
+    if (svg->hasElementPrefix("east")) {
+        svg->setElementPrefix("east");
+    } else {
+        svg->setElementPrefix("");
+    }
+    m_solidRightEdgeRoundness = roundness(svg, Plasma::Types::RightEdge);
+
+    qDebug() << " NON-COMPOSITING MASK ::: " << svg->mask();
+    qDebug() << " NON-COMPOSITING MASK BOUNDING RECT ::: " << svg->mask().boundingRect();
+    qDebug() << " NON-COMPOSITING ROUNDNESS ::: " <<
+                m_solidBottomEdgeRoundness << " _ " << m_solidLeftEdgeRoundness << " _ " << m_solidTopEdgeRoundness << " _ " << m_solidRightEdgeRoundness;
+
+    svg->deleteLater();
+}
+
 void Theme::loadRoundness()
 {
-    if (!m_corona) {
-        return;
-    }
-
-    QString extendedInfoFilePath = m_corona->kPackage().filePath("themesExtendedInfo");
-
-    KSharedConfigPtr extInfoPtr = KSharedConfig::openConfig(extendedInfoFilePath);
-    KConfigGroup roundGroup(extInfoPtr, "Roundness");
-
-    m_themeHasExtendedInfo = false;
-
-    foreach (auto key, roundGroup.keyList()) {
-        if (m_theme.themeName().toUpper().startsWith(key.toUpper())) {
-            QStringList rs = roundGroup.readEntry(key, QStringList());
-            qDebug() << "roundness ::: " << rs;
-
-            if (rs.size() > 0) {
-                m_themeHasExtendedInfo = true;
-
-                if (rs.size() <= 3) {
-                    //assign same roundness for all edges
-                    m_bottomEdgeRoundness = rs[0].toInt();
-                    m_leftEdgeRoundness = m_bottomEdgeRoundness;
-                    m_topEdgeRoundness = m_bottomEdgeRoundness;
-                    m_rightEdgeRoundness = m_bottomEdgeRoundness;
-                } else if (rs.size() >= 4) {
-                    m_bottomEdgeRoundness = rs[0].toInt();
-                    m_leftEdgeRoundness = rs[1].toInt();
-                    m_topEdgeRoundness = rs[2].toInt();
-                    m_rightEdgeRoundness = rs[3].toInt();
-                }
-            }
-
-            break;
-        }
-    }
+    loadCompositingRoundness();
+    loadNonCompositingRoundness();
 
     emit roundnessChanged();
 }
-*/
 
 void Theme::loadThemePaths()
 {

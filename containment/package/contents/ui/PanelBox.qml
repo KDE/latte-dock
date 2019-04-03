@@ -529,7 +529,7 @@ Item{
         //! Outline drawing
         Loader{
             anchors.fill: solidBackground
-            active: root.panelOutline && Latte.WindowSystem.compositingActive
+            active: root.panelOutline
             sourceComponent: Colorizer.CustomBackground{
                 backgroundColor: "transparent"
                 borderColor: colorizerManager.outlineColor
