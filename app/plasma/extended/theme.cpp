@@ -294,7 +294,7 @@ int Theme::roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge)
     if (edge == Plasma::Types::BottomEdge || edge == Plasma::Types::RightEdge || edge == Plasma::Types::TopEdge) {
         //! TOPLEFT corner
         //! first LEFT pixel found
-        for (int x=0; x<50; ++x) {
+        for (int x=svg->mask().boundingRect().left(); x<50; ++x) {
             if (!svg->mask().contains(QPoint(x, discovY))) {
                 discovX++;
                 round++;
@@ -315,7 +315,9 @@ int Theme::roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge)
         }
     }
 
-    return round;
+    //! this needs investigation (the *2) I dont know if it is really needed
+    //! but it gives me the impression that returns better results
+    return round*2;
 }
 
 void Theme::loadRoundness()
@@ -337,7 +339,7 @@ void Theme::loadRoundness()
     } else {
         svg->setElementPrefix("");
     }
-    svg->resizeFrame(QSize(100,00));
+    svg->resizeFrame(QSize(100,100));
     m_leftEdgeRoundness = roundness(svg, Plasma::Types::LeftEdge);
 
     //! top roundness
