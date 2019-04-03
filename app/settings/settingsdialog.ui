@@ -243,7 +243,7 @@
                  <string comment="remove layout">Remove</string>
                 </property>
                 <property name="icon">
-                 <iconset theme="list-remove">
+                 <iconset theme="delete">
                   <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
@@ -381,7 +381,7 @@
                  <string comment="download layout">Download</string>
                 </property>
                 <property name="icon">
-                 <iconset theme="favorites">
+                 <iconset theme="get-hot-new-stuff">
                   <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
@@ -444,8 +444,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>894</width>
-            <height>594</height>
+            <width>496</width>
+            <height>575</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
