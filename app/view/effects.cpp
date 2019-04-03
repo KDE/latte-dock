@@ -241,7 +241,7 @@ QRegion Effects::subtractedMask()
 
         ViewPart::PrimaryConfigView *primaryConfig = qobject_cast<ViewPart::PrimaryConfigView *>(m_view->configView());
 
-        if (primaryConfig && primaryConfig->secondaryWindow()) {
+        if (primaryConfig && m_view->formFactor() == Plasma::Types::Horizontal && primaryConfig->secondaryWindow()) {
             subMask = subtrackedMaskFromWindow(subMask, primaryConfig->secondaryWindow());
         }
     }
