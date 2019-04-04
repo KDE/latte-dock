@@ -72,31 +72,47 @@ Item {
 
     signal pressed();
 
-    RowLayout {
+    Item {
         id: row
         width: parent.width
+        height: textElement.height
         anchors.verticalCenter: parent.verticalCenter
 
-        LatteExtraControls.Header {
-            id: headerText
-            text: item.text
-            enabled: item.checked
-            visible: level === 1
+        RowLayout {
+            id: textElement
+            anchors.left: level !== 2 ? parent.left : undefined
+            anchors.horizontalCenter: level === 2 ? parent.horizontalCenter : undefined
+            anchors.verticalCenter: parent.verticalCenter
+
+            LatteExtraControls.Header {
+                id: headerText
+                text: item.text
+                enabled: item.checked
+                visible: level === 1
+            }
+
+            LatteExtraControls.SubHeader {
+                id: subHeaderText
+                text: item.text
+                enabled: item.checked
+                visible: level === 2
+                isFirstSubCategory: item.isFirstSubCategory
+            }
+
+            PlasmaComponents.Label {
+                id: labelText
+                text: item.text
+                enabled: item.checked
+                visible: level > 2
+            }
         }
 
-        LatteExtraControls.SubHeader {
-            id: subHeaderText
-            text: item.text
-            enabled: item.checked
-            visible: level === 2
-            isFirstSubCategory: item.isFirstSubCategory
-        }
+        MouseArea {
+            id: textMouseArea
+            anchors.fill: textElement
+            hoverEnabled: true
 
-        PlasmaComponents.Label {
-            id: labelText
-            text: item.text
-            enabled: item.checked
-            visible: level > 2
+            onClicked: item.pressed();
         }
     }
 
@@ -107,20 +123,20 @@ Item {
         checked: item.checked
 
         style: Private.SwitchStyle {}
-    }
 
-    MouseArea {
-        id: itemMouseArea
-        anchors.fill: parent
-        hoverEnabled: true
+        MouseArea {
+            id: switchMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
 
-        onClicked: item.pressed();
+            onClicked: item.pressed();
+        }
     }
 
     ToolTip{
         parent: itemSwitch
         text: item.tooltip
-        visible: itemMouseArea.containsMouse && text !==""
+        visible: (switchMouseArea.containsMouse || textMouseArea.containsMouse) && text !==""
         delay: 7 * units.longDuration
     }
 }
