@@ -118,7 +118,7 @@ PrimaryConfigView::~PrimaryConfigView()
 
     deleteSecondaryWindow();
 
-    foreach (auto var, connections) {
+    for (const auto &var : connections) {
         QObject::disconnect(var);
     }
 

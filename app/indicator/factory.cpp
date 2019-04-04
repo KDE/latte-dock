@@ -123,7 +123,7 @@ void Factory::reload()
         if (standard.exists()) {
             QStringList pluginDirs = standard.entryList(QStringList(),QDir::AllDirs | QDir::NoSymLinks);
 
-            foreach (auto pluginDir, pluginDirs) {
+            for (const auto &pluginDir : pluginDirs) {
                 if (pluginDir != "." && pluginDir != "..") {
                     QString metadataFile = standard.absolutePath() + "/" + pluginDir + "/metadata.desktop";
                     KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(metadataFile);

@@ -915,7 +915,7 @@ void View::removeTasksPlasmoid()
         return;
     }
 
-    foreach (Plasma::Applet *applet, containment()->applets()) {
+    for (const Plasma::Applet *applet : containment()->applets()) {
         KPluginMetaData meta = applet->kPackage().metadata();
 
         if (meta.pluginId() == "org.kde.latte.plasmoid") {
@@ -937,7 +937,7 @@ bool View::tasksPresent()
         return false;
     }
 
-    foreach (Plasma::Applet *applet, this->containment()->applets()) {
+    for (const Plasma::Applet *applet : this->containment()->applets()) {
         const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
 
         if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
@@ -959,7 +959,7 @@ bool View::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
         QString data = mimeData->data(QStringLiteral("text/x-plasmoidservicename"));
         const QStringList appletNames = data.split('\n', QString::SkipEmptyParts);
 
-        foreach (const QString &appletName, appletNames) {
+        for (const QString &appletName : appletNames) {
             if (appletName == name)
                 return true;
         }
@@ -1064,7 +1064,7 @@ void View::deactivateApplets()
         return;
     }
 
-    foreach (auto applet, containment()->applets()) {
+    for (const auto applet : containment()->applets()) {
         PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
         if (ai) {
@@ -1079,7 +1079,7 @@ void View::toggleAppletExpanded(const int id)
         return;
     }
 
-    foreach (auto applet, containment()->applets()) {
+    for (const auto applet : containment()->applets()) {
         if (applet->id() == id) {
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
@@ -1118,7 +1118,7 @@ QVariantList View::containmentActions()
         plugin->restore(pluginConfig);
     }
 
-    foreach (QAction *ac, plugin->contextualActions()) {
+    for (QAction *ac : plugin->contextualActions()) {
         actions << QVariant::fromValue<QAction *>(ac);
     }
 

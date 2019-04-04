@@ -402,7 +402,7 @@ bool WindowsTracker::isTouchingViewEdge(const WindowInfoWrap &winfo)
 
 void WindowsTracker::cleanupFaultyWindows()
 {
-    foreach (auto key, m_windows.keys()) {
+    for (const auto &key : m_windows.keys()) {
         auto winfo = m_windows[key];
 
         //! garbage windows removing

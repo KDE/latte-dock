@@ -256,7 +256,7 @@ void Theme::updateReversedSchemeValues()
     KSharedConfigPtr reversedPtr = KSharedConfig::openConfig(m_reversedSchemePath);
 
     if (originalPtr && reversedPtr) {
-        foreach (auto groupName, reversedPtr->groupList()) {
+        for (const auto &groupName : reversedPtr->groupList()) {
             if (groupName != "Colors:Button") {
                 KConfigGroup reversedGroup(reversedPtr, groupName);
 
@@ -579,7 +579,7 @@ void Theme::parseThemeSvgFiles()
         float opacity{1};
         float fillOpacity{1};
 
-        foreach (QString value, styleValues) {
+        for (QString &value : styleValues) {
             if (value.startsWith("opacity:")) {
                 opacity = value.remove(0,8).toFloat();
             }

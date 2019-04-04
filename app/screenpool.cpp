@@ -68,7 +68,7 @@ void ScreenPool::load()
     }
 
     //restore the known ids to connector mappings
-    foreach (const QString &key, m_configGroup.keyList()) {
+    for (const QString &key : m_configGroup.keyList()) {
         QString connector = m_configGroup.readEntry(key, QString());
         qDebug() << "connector :" << connector << " - " << key;
 
@@ -210,7 +210,7 @@ int ScreenPool::firstAvailableId() const
 
     //find the first integer not stored in m_connectorForId
     //m_connectorForId is the only map, so the ids are sorted
-    foreach (int existingId, m_connectorForId.keys()) {
+    for (const int &existingId : m_connectorForId.keys()) {
         if (i != existingId) {
             return i;
         }
@@ -231,7 +231,7 @@ bool ScreenPool::screenExists(int id)
     if (id != -1 && knownIds().contains(id)) {
         QString scrName = connector(id);
 
-        foreach (auto scr, qGuiApp->screens()) {
+        for (const auto scr : qGuiApp->screens()) {
             if (scr->name() == scrName) {
                 return true;
             }
@@ -249,7 +249,7 @@ QScreen *ScreenPool::screenForId(int id)
     if (id != -1 && knownIds().contains(id)) {
         QString scrName = connector(id);
 
-        foreach (auto scr, screens) {
+        for (const auto scr : screens) {
             if (scr->name() == scrName) {
                 return scr;
             }

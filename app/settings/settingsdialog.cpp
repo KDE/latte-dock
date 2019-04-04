@@ -108,7 +108,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
     QStringList colors;
 
-    foreach (auto file, files) {
+    for (auto &file : files) {
         int colorEnd = file.lastIndexOf("print.jpg");
         QString color = file.remove(colorEnd, 9);
         colors.append(color);
@@ -249,7 +249,7 @@ SettingsDialog::~SettingsDialog()
     m_inMemoryButtons->deleteLater();
     m_mouseSensitivityButtons->deleteLater();
 
-    foreach (auto tempDir, m_tempDirectories) {
+    for (const auto &tempDir : m_tempDirectories) {
         QDir tDir(tempDir);
 
         if (tDir.exists() && tempDir.startsWith("/tmp/")) {
@@ -297,7 +297,7 @@ void SettingsDialog::on_newButton_clicked()
     qDebug() << Q_FUNC_INFO;
 
     //! find Default preset path
-    foreach (auto preset, m_corona->layoutManager()->presetsPaths()) {
+    for (const auto &preset : m_corona->layoutManager()->presetsPaths()) {
         QString presetName = Layout::layoutName(preset);
 
         if (presetName == "Default") {
@@ -371,8 +371,8 @@ void SettingsDialog::on_downloadButton_clicked()
     bool layoutAdded{false};
 
     if (!dialog.changedEntries().isEmpty() || !dialog.installedEntries().isEmpty()) {
-        foreach (auto entry, dialog.installedEntries()) {
-            foreach (auto entryFile, entry.installedFiles()) {
+        for (const auto &entry : dialog.installedEntries()) {
+            for (const auto &entryFile : entry.installedFiles()) {
                 Importer::LatteFileVersion version = Importer::fileVersion(entryFile);
 
                 if (version == Importer::LayoutVersion2) {
@@ -533,7 +533,7 @@ bool SettingsDialog::importLayoutsFromV1ConfigFile(QString file)
 
         const auto archiveRootDir = archive.directory();
 
-        foreach (auto &name, archiveRootDir->entries()) {
+        for (const auto &name : archiveRootDir->entries()) {
             auto fileEntry = archiveRootDir->file(name);
             fileEntry->copyTo(tempDir.absolutePath());
         }
@@ -739,7 +739,7 @@ void SettingsDialog::restoreDefaults()
 
     if (ui->tabWidget->currentIndex() == 0) {
         //! Default layouts missing from layouts list
-        foreach (auto preset, m_corona->layoutManager()->presetsPaths()) {
+        for (const auto &preset : m_corona->layoutManager()->presetsPaths()) {
             QString presetName = Layout::layoutName(preset);
             QByteArray presetNameChars = presetName.toUtf8();
             const char *prset_str = presetNameChars.data();
@@ -832,7 +832,7 @@ void SettingsDialog::loadSettings()
         m_corona->layoutManager()->syncActiveLayoutsToOriginalFiles();
     }
 
-    foreach (auto layout, m_corona->layoutManager()->layouts()) {
+    for (const auto layout : m_corona->layoutManager()->layouts()) {
         QString layoutPath = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
         m_initLayoutPaths.append(layoutPath);
 
@@ -1190,7 +1190,7 @@ void SettingsDialog::updateApplyButtonsState()
 
         bool layoutMissing{false};
 
-        foreach (auto preset, m_corona->layoutManager()->presetsPaths()) {
+        for (const auto &preset : m_corona->layoutManager()->presetsPaths()) {
             QString presetName = Layout::layoutName(preset);
             QByteArray presetNameChars = presetName.toUtf8();
             const char *prset_str = presetNameChars.data();
@@ -1282,7 +1282,7 @@ void SettingsDialog::recalculateAvailableActivities()
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QStringList assigned = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
-        foreach (auto activity, assigned) {
+        for (const auto &activity : assigned) {
             if (tempActivities.contains(activity)) {
                 tempActivities.removeAll(activity);
             }
@@ -1368,7 +1368,7 @@ bool SettingsDialog::saveAllChanges()
     QHash<QString, Layout *> activeLayoutsToRename;
 
     //! remove layouts that have been removed from the user
-    foreach (auto initLayout, m_initLayoutPaths) {
+    for (const auto &initLayout : m_initLayoutPaths) {
         if (!idExistsInModel(initLayout)) {
             QFile(initLayout).remove();
 
@@ -1392,7 +1392,7 @@ bool SettingsDialog::saveAllChanges()
         QStringList cleanedActivities;
 
         //!update only activities that are valid
-        foreach (auto activity, lActivities) {
+        for (const auto &activity : lActivities) {
             if (knownActivities.contains(activity)) {
                 cleanedActivities.append(activity);
             }
@@ -1491,7 +1491,7 @@ bool SettingsDialog::saveAllChanges()
     QString orphanedLayout;
 
     if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-        foreach (auto newLayoutName, activeLayoutsToRename.keys()) {
+        for (const auto &newLayoutName : activeLayoutsToRename.keys()) {
             qDebug() << " Active Layout Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
             Layout *layout = activeLayoutsToRename[newLayoutName];
             layout->renameLayout(newLayoutName);

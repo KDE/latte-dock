@@ -57,8 +57,8 @@ QList<Plasma::Applet *> LaunchersSignals::lattePlasmoids(QString layoutName)
         containments = *(layout->containments());
     }
 
-    foreach (auto containment, containments) {
-        for (auto *applet : containment->applets()) {
+    for(const auto containment : containments) {
+        for(auto *applet : containment->applets()) {
             KPluginMetaData meta = applet->kPackage().metadata();
 
             if (meta.pluginId() == "org.kde.latte.plasmoid") {
@@ -80,7 +80,7 @@ void LaunchersSignals::addLauncher(QString layoutName, int launcherGroup, QStrin
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    foreach (auto applet, lattePlasmoids(lName)) {
+    for(const auto applet : lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = appletInterface->childItems();
 
@@ -114,7 +114,7 @@ void LaunchersSignals::removeLauncher(QString layoutName, int launcherGroup, QSt
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    foreach (auto applet, lattePlasmoids(lName)) {
+    for(const auto applet : lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = appletInterface->childItems();
 
@@ -148,7 +148,7 @@ void LaunchersSignals::addLauncherToActivity(QString layoutName, int launcherGro
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    foreach (auto applet, lattePlasmoids(lName)) {
+    for(const auto applet : lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = appletInterface->childItems();
 
@@ -182,7 +182,7 @@ void LaunchersSignals::removeLauncherFromActivity(QString layoutName, int launch
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    foreach (auto applet, lattePlasmoids(lName)) {
+    for(const auto applet : lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = appletInterface->childItems();
 
@@ -216,7 +216,7 @@ void LaunchersSignals::urlsDropped(QString layoutName, int launcherGroup, QStrin
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    foreach (auto applet, lattePlasmoids(lName)) {
+    for(const auto applet : lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = appletInterface->childItems();
 
@@ -250,7 +250,7 @@ void LaunchersSignals::moveTask(QString layoutName, int senderId, int launcherGr
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    foreach (auto applet, lattePlasmoids(lName)) {
+    for(const auto applet : lattePlasmoids(lName)) {
         if (applet->id() != senderId) {
             if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
                 const auto &childItems = appletInterface->childItems();
@@ -286,7 +286,7 @@ void LaunchersSignals::validateLaunchersOrder(QString layoutName, int senderId, 
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    foreach (auto applet, lattePlasmoids(lName)) {
+    for(const auto applet : lattePlasmoids(lName)) {
         if (applet->id() != senderId) {
             if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
                 const auto &childItems = appletInterface->childItems();

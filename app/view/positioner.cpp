@@ -155,7 +155,7 @@ bool Positioner::setCurrentScreen(const QString id)
     QScreen *nextScreen{qGuiApp->primaryScreen()};
 
     if (id != "primary") {
-        foreach (auto scr, qGuiApp->screens()) {
+        for (const auto scr : qGuiApp->screens()) {
             if (scr && scr->name() == id) {
                 nextScreen = scr;
                 break;
@@ -237,14 +237,14 @@ void Positioner::reconsiderScreen()
     qDebug() << "reconsiderScreen() called...";
     qDebug() << "  Delayer  ";
 
-    foreach (auto scr, qGuiApp->screens()) {
+    for (const auto scr : qGuiApp->screens()) {
         qDebug() << "      D, found screen: " << scr->name();
     }
 
     bool screenExists{false};
 
     //!check if the associated screen is running
-    foreach (auto scr, qGuiApp->screens()) {
+    for (const auto scr : qGuiApp->screens()) {
         if (m_screenToFollowId == scr->name()
             || (m_view->onPrimary() && scr == qGuiApp->primaryScreen())) {
             screenExists = true;
@@ -277,7 +277,7 @@ void Positioner::reconsiderScreen()
         //! 2.an explicit dock must be always on the correct associated screen
         //! there are cases that window manager misplaces the dock, this function
         //! ensures that this dock will return at its correct screen
-        foreach (auto scr, qGuiApp->screens()) {
+        for (const auto scr : qGuiApp->screens()) {
             if (scr && scr->name() == m_screenToFollowId) {
                 qDebug() << "reached case 2: updating the explicit screen for dock...";
                 setScreenToFollow(scr);

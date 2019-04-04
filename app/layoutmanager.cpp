@@ -127,7 +127,7 @@ void LayoutManager::load()
 void LayoutManager::unload()
 {
     //! Unload all Layouts
-    foreach (auto layout, m_activeLayouts) {
+    for (const auto layout : m_activeLayouts) {
         if (memoryUsage() == Types::MultipleLayouts && layout->isOriginalLayout()) {
             layout->syncToLayoutFile(true);
         }
@@ -220,7 +220,7 @@ QStringList LayoutManager::menuLayouts() const
     if (!fixedMenuLayouts.contains(currentLayoutName()) && memoryUsage() == Types::SingleLayout) {
         fixedMenuLayouts.prepend(currentLayoutName());
     } else if (memoryUsage() == Types::MultipleLayouts) {
-        foreach (auto layout, m_activeLayouts) {
+        for (const auto layout : m_activeLayouts) {
             if (layout->isOriginalLayout() && !fixedMenuLayouts.contains(layout->name())) {
                 fixedMenuLayouts.prepend(layout->name());
             }
@@ -254,7 +254,7 @@ QStringList LayoutManager::orphanedActivities()
 {
     QStringList orphans;
 
-    foreach (auto activity, activities()) {
+    for (const auto &activity : activities()) {
         if (m_assignedLayouts[activity].isEmpty()) {
             orphans.append(activity);
         }
@@ -313,7 +313,7 @@ void LayoutManager::addView(Plasma::Containment *containment, bool forceLoading,
 
 bool LayoutManager::latteViewExists(Latte::View *view) const
 {
-    foreach (auto layout, m_activeLayouts) {
+    for (const auto layout : m_activeLayouts) {
         for (auto it = layout->latteViews()->constBegin(), end = layout->latteViews()->constEnd(); it != end; ++it) {
             if (it.value() == view) {
                 return true;
@@ -378,13 +378,13 @@ Layout *LayoutManager::currentLayout() const
     if (memoryUsage() == Types::SingleLayout) {
         return m_activeLayouts.at(0);
     } else {
-        foreach (auto layout, m_activeLayouts) {
+        for (auto layout : m_activeLayouts) {
             if (layout->activities().contains(m_corona->m_activityConsumer->currentActivity())) {
                 return layout;
             }
         }
 
-        foreach (auto layout, m_activeLayouts) {
+        for (auto layout : m_activeLayouts) {
             if ((layout->name() != Layout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
                 return layout;
             }
@@ -396,7 +396,7 @@ Layout *LayoutManager::currentLayout() const
 
 void LayoutManager::updateCurrentLayoutNameInMultiEnvironment()
 {
-    foreach (auto layout, m_activeLayouts) {
+    for (const auto layout : m_activeLayouts) {
         if (layout->isOriginalLayout() && layout->activities().contains(m_corona->activitiesConsumer()->currentActivity())) {
             m_currentLayoutNameInMultiEnvironment = layout->name();
             emit currentLayoutNameChanged();
@@ -404,7 +404,7 @@ void LayoutManager::updateCurrentLayoutNameInMultiEnvironment()
         }
     }
 
-    foreach (auto layout, m_activeLayouts) {
+    for (const auto layout : m_activeLayouts) {
         if (layout->isOriginalLayout() && layout->activities().isEmpty()) {
             m_currentLayoutNameInMultiEnvironment = layout->name();
             emit currentLayoutNameChanged();
@@ -485,13 +485,13 @@ void LayoutManager::loadLayouts()
     filter.append(QString("*.layout.latte"));
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
 
-    foreach (auto layout, files) {
+    for (const auto &layout : files) {
         Layout layoutSets(this, layoutDir.absolutePath() + "/" + layout);
 
         QStringList validActivityIds = validActivities(layoutSets.activities());
         layoutSets.setActivities(validActivityIds);
 
-        foreach (auto activity, validActivityIds) {
+        for (const auto &activity : validActivityIds) {
             m_assignedLayouts[activity] = layoutSets.name();
         }
 
@@ -559,7 +559,7 @@ void LayoutManager::loadLatteLayout(QString layoutPath)
 
         qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << tasksWillBeLoaded;
 
-        foreach (auto containment, m_corona->containments()) {
+        for (const auto containment : m_corona->containments()) {
             //! forceDockLoading is used when a latte configuration based on the
             //! current running screens does not provide a dock containing tasks.
             //! in such case the lowest latte containment containing tasks is loaded
@@ -582,7 +582,7 @@ void LayoutManager::cleanupOnStartup(QString path)
 
     QStringList deprecatedActionGroup;
 
-    foreach (auto actId, actionGroups.groupList()) {
+    for (const auto &actId : actionGroups.groupList()) {
         QString pluginId = actionGroups.group(actId).readEntry("RightButton;NoModifier", "");
 
         if (pluginId == "org.kde.contextmenu") {
@@ -590,7 +590,7 @@ void LayoutManager::cleanupOnStartup(QString path)
         }
     }
 
-    foreach (auto pId, deprecatedActionGroup) {
+    for (const auto &pId : deprecatedActionGroup) {
         qDebug() << "!!!!!!!!!!!!!!!!  !!!!!!!!!!!! !!!!!!! REMOVING :::: " << pId;
         actionGroups.group(pId).deleteGroup();
     }
@@ -599,7 +599,7 @@ void LayoutManager::cleanupOnStartup(QString path)
 
     QStringList removeContaimentsList;
 
-    foreach (auto cId, containmentGroups.groupList()) {
+    for (const auto &cId : containmentGroups.groupList()) {
         QString pluginId = containmentGroups.group(cId).readEntry("plugin", "");
 
         if (pluginId == "org.kde.desktopcontainment") { //!must remove ghost containments first
@@ -607,7 +607,7 @@ void LayoutManager::cleanupOnStartup(QString path)
         }
     }
 
-    foreach (auto cId, removeContaimentsList) {
+    for (const auto &cId : removeContaimentsList) {
         containmentGroups.group(cId).deleteGroup();
     }
 
@@ -629,7 +629,7 @@ void LayoutManager::importLatteLayout(QString layoutPath)
 
 void LayoutManager::hideAllViews()
 {
-    foreach (auto layout, m_activeLayouts) {
+    for (const auto layout : m_activeLayouts) {
         if (layout->isOriginalLayout()) {
             emit currentLayoutIsSwitching(layout->name());
         }
@@ -671,7 +671,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
     //! send the layouts that will be changed. This signal creates the
     //! nice animation that hides these docks/panels
     if (previousMemoryUsage != -1) {
-        foreach (auto layout, m_activeLayouts) {
+        for (const auto layout : m_activeLayouts) {
             if (layout->isOriginalLayout()) {
                 emit currentLayoutIsSwitching(layout->name());
             }
@@ -694,7 +694,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 
             Layout *activeForOrphans{nullptr};
 
-            foreach (auto fromLayout, m_activeLayouts) {
+            for (const auto fromLayout : m_activeLayouts) {
                 if (fromLayout->isOriginalLayout() && fromLayout->activities().isEmpty()) {
                     activeForOrphans = fromLayout;
                     break;
@@ -770,7 +770,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                     QStringList assignedActivities = orphanedLayout ? orphanedActivities() : layout.activities();
 
                     if (!orphanedLayout) {
-                        foreach (auto assignedActivity, assignedActivities) {
+                        for (const auto &assignedActivity : assignedActivities) {
                             //! Starting the activities must be done asynchronous because otherwise
                             //! the activity manager cant close multiple activities
                             QTimer::singleShot(i * 1000, [this, assignedActivity, lastUsedActivity]() {
@@ -789,7 +789,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                         }
                     } else {
                         //! orphaned layout
-                        foreach (auto assignedActivity, assignedActivities) {
+                        for (const auto &assignedActivity : assignedActivities) {
                             if (lastUsedActivity == assignedActivity) {
                                 lastUsedActivityFound = true;
                             }
@@ -845,7 +845,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
         layoutForOrphans = m_corona->universalSettings()->lastNonAssignedLayoutName();
     }
 
-    foreach (auto activity, runningActivities()) {
+    for (const auto &activity : runningActivities()) {
         if (!m_assignedLayouts[activity].isEmpty()) {
             if (!layoutsToLoad.contains(m_assignedLayouts[activity])) {
                 layoutsToLoad.append(m_assignedLayouts[activity]);
@@ -855,7 +855,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
         }
     }
 
-    foreach (auto layout, m_activeLayouts) {
+    for (const auto layout : m_activeLayouts) {
         QString tempLayoutName;
 
         if (!layoutsToLoad.contains(layout->name()) && layout->name() != layoutForOrphans) {
@@ -871,7 +871,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
     }
 
     //! Unload no needed Layouts
-    foreach (auto layoutName, layoutsToUnload) {
+    for (const auto &layoutName : layoutsToUnload) {
         if (layoutName != Layout::MultipleLayoutsName) {
             Layout *layout = activeLayout(layoutName);
             int posLayout = activeLayoutPos(layoutName);
@@ -906,7 +906,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
     }
 
     //! Add needed Layouts based on Activities
-    foreach (auto layoutName, layoutsToLoad) {
+    for (const auto &layoutName : layoutsToLoad) {
         if (!activeLayout(layoutName)) {
             Layout *newLayout = new Layout(this, QString(layoutPath(layoutName)), layoutName);
 
@@ -934,7 +934,7 @@ void LayoutManager::pauseLayout(QString layoutName)
         if (layout && !layout->activities().isEmpty()) {
             int i = 0;
 
-            foreach (auto activityId, layout->activities()) {
+            for (const auto &activityId : layout->activities()) {
                 //! Stopping the activities must be done asynchronous because otherwise
                 //! the activity manager cant close multiple activities
                 QTimer::singleShot(i * 1000, [this, activityId]() {
@@ -950,7 +950,7 @@ void LayoutManager::pauseLayout(QString layoutName)
 void LayoutManager::syncActiveLayoutsToOriginalFiles()
 {
     if (memoryUsage() == Types::MultipleLayouts) {
-        foreach (auto layout, m_activeLayouts) {
+        for (const auto layout : m_activeLayouts) {
             if (layout->isOriginalLayout()) {
                 layout->syncToLayoutFile();
             }
@@ -966,7 +966,7 @@ void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containm
 
     auto containments = m_corona->config()->group("Containments");
 
-    foreach (auto conId, containmentsIds) {
+    for (const auto &conId : containmentsIds) {
         qDebug() << "unloads ::: " << conId;
         KConfigGroup containment = containments.group(conId);
         containment.deleteGroup();
@@ -978,7 +978,7 @@ void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containm
 
 void LayoutManager::syncLatteViewsToScreens()
 {
-    foreach (auto layout, m_activeLayouts) {
+    for (const auto layout : m_activeLayouts) {
         layout->syncLatteViewsToScreens();
     }
 }
@@ -1013,7 +1013,7 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
 //! in it will be loaded taking into account also the screens are present.
 bool LayoutManager::heuresticForLoadingViewWithTasks(int *firstContainmentWithTasks)
 {
-    foreach (auto containment, m_corona->containments()) {
+    for (const auto containment : m_corona->containments()) {
         QString plugin = containment->pluginMetaData().pluginId();
 
         if (plugin == "org.kde.latte.containment") {
@@ -1025,7 +1025,7 @@ bool LayoutManager::heuresticForLoadingViewWithTasks(int *firstContainmentWithTa
 
             bool containsTasks = false;
 
-            foreach (auto applet, containment->applets()) {
+            for (const  auto applet : containment->applets()) {
                 const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
 
                 if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
@@ -1043,7 +1043,7 @@ bool LayoutManager::heuresticForLoadingViewWithTasks(int *firstContainmentWithTa
                     if (lastScreen >= 0) {
                         QString connector = m_corona->screenPool()->connector(lastScreen);
 
-                        foreach (auto scr, qGuiApp->screens()) {
+                        for (const auto scr : qGuiApp->screens()) {
                             if (scr && scr->name() == connector) {
                                 return true;
                                 break;
@@ -1120,7 +1120,7 @@ QStringList LayoutManager::validActivities(QStringList currentList)
 {
     QStringList validIds;
 
-    foreach (auto activity, currentList) {
+    for (const auto &activity : currentList) {
         if (activities().contains(activity)) {
             validIds.append(activity);
         }
@@ -1172,7 +1172,7 @@ void LayoutManager::hideLatteSettingsDialog()
 
 void LayoutManager::showInfoWindow(QString info, int duration, QStringList activities)
 {
-    foreach (auto screen, qGuiApp->screens()) {
+    for (const auto screen : qGuiApp->screens()) {
         InfoView *infoView = new InfoView(m_corona, info, screen);
 
         infoView->show();

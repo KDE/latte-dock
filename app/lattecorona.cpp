@@ -304,7 +304,7 @@ void Corona::cleanConfig()
     auto containmentsEntries = config()->group("Containments");
     bool changed = false;
 
-    foreach (auto cId, containmentsEntries.groupList()) {
+    for(const auto &cId : containmentsEntries.groupList()) {
         if (!containmentExists(cId.toUInt())) {
             //cleanup obsolete containments
             containmentsEntries.group(cId).deleteGroup();
@@ -314,7 +314,7 @@ void Corona::cleanConfig()
             //cleanup obsolete applets of running containments
             auto appletsEntries = containmentsEntries.group(cId).group("Applets");
 
-            foreach (auto appletId, appletsEntries.groupList()) {
+            for(const auto &appletId : appletsEntries.groupList()) {
                 if (!appletExists(cId.toUInt(), appletId.toUInt())) {
                     appletsEntries.group(appletId).deleteGroup();
                     changed = true;
@@ -332,7 +332,7 @@ void Corona::cleanConfig()
 
 bool Corona::containmentExists(uint id) const
 {
-    foreach (auto containment, containments()) {
+    for(const auto containment : containments()) {
         if (id == containment->id()) {
             return true;
         }
@@ -345,7 +345,7 @@ bool Corona::appletExists(uint containmentId, uint appletId) const
 {
     Plasma::Containment *containment = nullptr;
 
-    foreach (auto cont, containments()) {
+    for(const auto cont : containments()) {
         if (containmentId == cont->id()) {
             containment = cont;
             break;
@@ -356,7 +356,7 @@ bool Corona::appletExists(uint containmentId, uint appletId) const
         return false;
     }
 
-    foreach (auto applet, containment->applets()) {
+    for(const auto applet : containment->applets()) {
         if (applet->id() == appletId) {
             return true;
         }
@@ -425,7 +425,7 @@ QRect Corona::screenGeometry(int id) const
     if (m_screenPool->knownIds().contains(id))
         screenName = m_screenPool->connector(id);
 
-    foreach (auto scr, screens) {
+    for(const auto scr : screens) {
         if (scr->name() == screenName) {
             screen = scr;
             break;
@@ -450,7 +450,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
     if (m_screenPool->knownIds().contains(id))
         screenName = m_screenPool->connector(id);
 
-    foreach (auto scr, screens) {
+    for(auto scr : screens) {
         if (scr->name() == screenName) {
             screen = scr;
             break;
@@ -576,7 +576,7 @@ QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> m
     if (m_screenPool->knownIds().contains(id)) {
         QString scrName = m_screenPool->connector(id);
 
-        foreach (auto scr, screens) {
+        for(const auto scr : screens) {
             if (scr->name() == scrName) {
                 screen = scr;
                 break;
@@ -913,7 +913,7 @@ QStringList Corona::containmentsIds()
 {
     QStringList ids;
 
-    foreach (auto containment, containments()) {
+    for(const auto containment : containments()) {
         ids << QString::number(containment->id());
     }
 
@@ -924,7 +924,7 @@ QStringList Corona::appletsIds()
 {
     QStringList ids;
 
-    foreach (auto containment, containments()) {
+    for(const auto containment : containments()) {
         auto applets = containment->config().group("Applets");
         ids << applets.groupList();
     }
@@ -1001,7 +1001,7 @@ QStringList Corona::contextMenuData()
     data << m_layoutManager->currentLayoutName();
     data << QString::number((int)viewType);
 
-    foreach (auto layoutName, m_layoutManager->menuLayouts()) {
+    for(const auto &layoutName : m_layoutManager->menuLayouts()) {
         if (m_layoutManager->activeLayout(layoutName)) {
             data << QString("1," + layoutName);
         } else {

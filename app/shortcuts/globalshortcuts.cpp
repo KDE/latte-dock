@@ -229,7 +229,7 @@ void GlobalShortcuts::activateLauncherMenu()
         sortedViews = currentLayout->sortedLatteViews();
     }
 
-    foreach (auto view, sortedViews) {
+    for (const auto view : sortedViews) {
         const auto applets = view->containment()->applets();
 
         for (auto applet : applets) {
@@ -393,7 +393,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
         sortedViews = currentLayout->sortedLatteViews();
     }
 
-    foreach (auto view, sortedViews) {
+    for (const auto view : sortedViews) {
         if (view->managedLayout()->preferredForShortcutsTouched() && !view->isPreferredForShortcuts()) {
             continue;
         }
@@ -627,7 +627,7 @@ void GlobalShortcuts::showViews()
     Latte::View *viewWithTasks{nullptr};
     Latte::View *viewWithMeta{nullptr};
 
-    foreach (auto view, sortedViews) {
+    for(const auto view : sortedViews) {
         if (!viewWithTasks && (!view->managedLayout()->preferredForShortcutsTouched() || view->isPreferredForShortcuts()) && isCapableToShowShortcutBadges(view)) {
             viewWithTasks = view;
             break;
@@ -636,7 +636,7 @@ void GlobalShortcuts::showViews()
 
     //! show Meta if it is not already shown for Tasks Latte View
     if (!viewWithTasks || applicationLauncherId(viewWithTasks->containment()) == -1) {
-        foreach (auto view, sortedViews) {
+        for(const auto view : sortedViews) {
             if (!viewWithMeta && m_corona->universalSettings()->metaForwardedToLatte() && applicationLauncherId(view->containment()) > -1) {
                 viewWithMeta = view;
                 break;
@@ -686,7 +686,7 @@ void GlobalShortcuts::showViews()
         viewFound = true;
 
         if (!m_hideViewsTimer.isActive()) {
-            foreach (auto view, viewsWithShortcuts) {
+            for(const auto view : viewsWithShortcuts) {
                 if (view != viewWithTasks && view != viewWithMeta) {
                     if (invokeShowShortcuts(view->containment(), false, false)) {
                         m_hideViews.append(view);
@@ -709,7 +709,7 @@ void GlobalShortcuts::showViews()
 
 bool GlobalShortcuts::viewsToHideAreValid()
 {
-    foreach (auto view, m_hideViews) {
+    for(const auto view : m_hideViews) {
         if (!m_corona->layoutManager()->latteViewExists(view)) {
             return false;
         }
@@ -764,7 +764,7 @@ void GlobalShortcuts::hideViewsTimerSlot()
         m_lastInvokedAction = Q_NULLPTR;
 
         if (viewsToHideAreValid()) {
-            foreach (auto latteView, m_hideViews) {
+            for(const auto latteView : m_hideViews) {
                 latteView->visibility()->setBlockHiding(false);
             }
 

@@ -151,7 +151,7 @@ int main(int argc, char **argv)
         if (layouts.count() > 0) {
             qInfo() << i18n("Available layouts that can be used to start Latte:");
 
-            foreach (auto layout, layouts) {
+            for (const auto &layout : layouts) {
                 qInfo() << "     " << layout;
             }
         } else {

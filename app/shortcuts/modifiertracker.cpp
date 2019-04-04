@@ -99,7 +99,7 @@ void ModifierTracker::unblockModifierTracking(Qt::Key key)
 
 bool ModifierTracker::noModifierPressed()
 {
-    foreach(Qt::Key modifier, m_pressed.keys()) {
+    for (const Qt::Key &modifier : m_pressed.keys()) {
         if ( m_pressed[modifier]) {
             return false;
         }
@@ -128,7 +128,7 @@ bool ModifierTracker::sequenceModifierPressed(const QKeySequence &seq)
 
 bool ModifierTracker::singleModifierPressed(Qt::Key key)
 {
-    foreach(Qt::Key modifier, m_pressed.keys()) {
+    for (const Qt::Key &modifier : m_pressed.keys()) {
         if ( (modifier != key && m_pressed[modifier])
              || (modifier == key && !m_pressed[modifier]) ) {
             return false;

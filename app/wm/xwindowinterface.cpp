@@ -73,7 +73,7 @@ XWindowInterface::XWindowInterface(QObject *parent)
             , this, &XWindowInterface::currentActivityChanged);
 
     // fill windows list
-    foreach (const auto &wid, KWindowSystem::self()->windows()) {
+    for (const auto &wid : KWindowSystem::self()->windows()) {
         addWindow(wid);
     }
 }

@@ -93,7 +93,7 @@ void Layout::syncToLayoutFile(bool removeLayoutId)
 
     qDebug() << " LAYOUT :: " << m_layoutName << " is syncing its original file.";
 
-    foreach (auto containment, m_containments) {
+    for (const auto containment : m_containments) {
         if (removeLayoutId) {
             containment->config().writeEntry("layoutId", "");
         }
@@ -124,11 +124,11 @@ void Layout::unloadContainments()
              << " ,latteViews in memory ::: " << m_latteViews.size()
              << " ,hidden latteViews in memory :::  " << m_waitingLatteViews.size();
 
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         view->disconnectSensitiveSignals();
     }
 
-    foreach (auto view, m_waitingLatteViews) {
+    for (const auto view : m_waitingLatteViews) {
         view->disconnectSensitiveSignals();
     }
 
@@ -137,7 +137,7 @@ void Layout::unloadContainments()
     QList<Plasma::Containment *> systrays;
 
     //!identify systrays and unload them first
-    foreach (auto containment, m_containments) {
+    for (const auto containment : m_containments) {
         if (Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent())) {
             systrays.append(containment);
         }
@@ -199,7 +199,7 @@ void Layout::initToCorona(Latte::Corona *corona)
         m_shortcuts = new LayoutPart::Shortcuts(this);
     }
 
-    foreach (auto containment, m_corona->containments()) {
+    for (const auto containment : m_corona->containments()) {
         if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {
             addContainment(containment);
         } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
@@ -429,7 +429,7 @@ void Layout::renameLayout(QString newName)
 
     //! thus this is a linked file
     if (m_corona) {
-        foreach (auto containment, m_containments) {
+        for (const auto containment : m_containments) {
             containment->config().writeEntry("layoutId", m_layoutName);
         }
     }
@@ -618,13 +618,13 @@ bool Layout::layoutIsBroken() const
         ids << containmentsEntries.groupList();
         conts << ids;
 
-        foreach (auto cId, containmentsEntries.groupList()) {
+        for (const auto &cId : containmentsEntries.groupList()) {
             auto appletsEntries = containmentsEntries.group(cId).group("Applets");
 
             QStringList validAppletIds;
             bool updated{false};
 
-            foreach (auto appletId, appletsEntries.groupList()) {
+            for (const auto &appletId : appletsEntries.groupList()) {
                 KConfigGroup appletGroup = appletsEntries.group(appletId);
 
                 if (appletGroupIsValid(appletGroup)) {
@@ -645,11 +645,11 @@ bool Layout::layoutIsBroken() const
             applets << validAppletIds;
         }
     } else {
-        foreach (auto containment, m_containments) {
+        for (const auto containment : m_containments) {
             ids << QString::number(containment->id());
             conts << QString::number(containment->id());
 
-            foreach (auto applet, containment->applets()) {
+            for (const auto applet : containment->applets()) {
                 ids << QString::number(applet->id());
                 applets << QString::number(applet->id());
             }
@@ -681,7 +681,7 @@ bool Layout::layoutIsBroken() const
         qDebug() << "Containments :: " << conts;
         qDebug() << "Applets :: " << applets;
 
-        foreach (QString c, conts) {
+        for (const QString &c : conts) {
             if (applets.contains(c)) {
                 qDebug() << "Error: Same applet and containment id found ::: " << c;
             }
@@ -700,16 +700,16 @@ bool Layout::layoutIsBroken() const
         if (!m_corona) {
             KConfigGroup containmentsEntries = KConfigGroup(lFile, "Containments");
 
-            foreach (auto cId, containmentsEntries.groupList()) {
+            for (const auto &cId : containmentsEntries.groupList()) {
                 auto appletsEntries = containmentsEntries.group(cId).group("Applets");
 
                 qDebug() << " CONTAINMENT : " << cId << " APPLETS : " << appletsEntries.groupList();
             }
         } else {
-            foreach (auto containment, m_containments) {
+            for (const auto containment : m_containments) {
                 QStringList appletsIds;
 
-                foreach (auto applet, containment->applets()) {
+                for (const auto applet : containment->applets()) {
                     appletsIds << QString::number(applet->id());
                 }
 
@@ -818,7 +818,7 @@ QHash<const Plasma::Containment *, Latte::View *> *Layout::latteViews()
 
 Types::ViewType Layout::latteViewType(int containmentId) const
 {
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         if (view->containment() && view->containment()->id() == containmentId) {
             return view->type();
         }
@@ -839,7 +839,7 @@ QList<Latte::View *> Layout::sortedLatteViews()
     QList<Latte::View *> sortedViews;
 
     //! create views list to be sorted out
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         sortedViews.append(view);
     }
 
@@ -969,10 +969,10 @@ QList<Latte::View *> Layout::viewsWithPlasmaShortcuts()
 
     QList<int> appletsWithShortcuts = m_corona->globalShortcuts()->shortcutsTracker()->appletsWithPlasmaShortcuts();
 
-    foreach(auto appletId, appletsWithShortcuts) {
-        foreach(auto view, m_latteViews) {
+    for (const auto &appletId : appletsWithShortcuts) {
+        for (const auto view : m_latteViews) {
             bool found{false};
-            foreach(auto applet, view->containment()->applets()) {
+            for (const auto applet : view->containment()->applets()) {
                 if (appletId == applet->id()) {
                     if (!views.contains(view)) {
                         views.append(view);
@@ -1142,7 +1142,7 @@ void Layout::addView(Plasma::Containment *containment, bool forceOnPrimary, int 
         qDebug() << "add dock - connector : " << connector;
         bool found{false};
 
-        foreach (auto scr, qGuiApp->screens()) {
+        for (const auto scr : qGuiApp->screens()) {
             if (scr && scr->name() == connector) {
                 found = true;
                 nextScreen = scr;
@@ -1167,7 +1167,7 @@ void Layout::addView(Plasma::Containment *containment, bool forceOnPrimary, int 
         QString connector = m_corona->screenPool()->connector(id);
         qDebug() << "add dock - connector : " << connector;
 
-        foreach (auto view, m_latteViews) {
+        for (const auto view : m_latteViews) {
             auto testContainment = view->containment();
 
             int testScreenId = testContainment->screen();
@@ -1289,7 +1289,7 @@ void Layout::copyView(Plasma::Containment *containment)
     QString systrayAppletId;
     auto applets = containment->config().group("Applets");
 
-    foreach (auto applet, applets.groupList()) {
+    for (const auto &applet : applets.groupList()) {
         KConfigGroup appletSettings = applets.group(applet).group("Configuration");
 
         int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
@@ -1305,7 +1305,7 @@ void Layout::copyView(Plasma::Containment *containment)
     if (systrayId != -1) {
         Plasma::Containment *systray{nullptr};
 
-        foreach (auto containment, m_corona->containments()) {
+        for (const auto containment : m_corona->containments()) {
             if (containment->id() == systrayId) {
                 systray = containment;
                 break;
@@ -1359,7 +1359,7 @@ void Layout::copyView(Plasma::Containment *containment)
         qDebug() << "COPY DOCK SCREEN ::: " << dockScrId;
 
         if (dockScrId != -1 && screens.count() > 1) {
-            foreach (auto scr, screens) {
+            for (const auto scr : screens) {
                 copyScrId = m_corona->screenPool()->id(scr->name());
 
                 //the screen must exist and not be the same with the original dock
@@ -1420,7 +1420,7 @@ void Layout::appletCreated(Plasma::Applet *applet)
     if (systrayId != -1) {
         uint sId = (uint)systrayId;
 
-        foreach (auto containment, m_corona->containments()) {
+        for (const auto containment : m_corona->containments()) {
             if (containment->id() == sId) {
                 containment->config().writeEntry("layoutId", m_layoutName);
             }
@@ -1535,13 +1535,13 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
     //KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
 
     //! Record the containment and applet ids
-    foreach (auto cId, investigate_conts.groupList()) {
+    for (const auto &cId : investigate_conts.groupList()) {
         toInvestigateContainmentIds << cId;
         auto appletsEntries = investigate_conts.group(cId).group("Applets");
         toInvestigateAppletIds << appletsEntries.groupList();
 
         //! investigate for systrays
-        foreach (auto appletId, appletsEntries.groupList()) {
+        for (const auto &appletId : appletsEntries.groupList()) {
             KConfigGroup appletSettings = appletsEntries.group(appletId).group("Configuration");
 
             int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
@@ -1558,14 +1558,14 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
     }
 
     //! Reassign containment and applet ids to unique ones
-    foreach (auto contId, toInvestigateContainmentIds) {
+    for (const auto &contId : toInvestigateContainmentIds) {
         QString newId = availableId(allIds, assignedIds, 12);
 
         assignedIds << newId;
         assigned[contId] = newId;
     }
 
-    foreach (auto appId, toInvestigateAppletIds) {
+    for (const auto &appId : toInvestigateAppletIds) {
         QString newId = availableId(allIds, assignedIds, 40);
 
         assignedIds << newId;
@@ -1575,7 +1575,7 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
     qDebug() << "ALL CORONA IDS ::: " << allIds;
     qDebug() << "FULL ASSIGNMENTS ::: " << assigned;
 
-    foreach (auto cId, toInvestigateContainmentIds) {
+    for (const auto &cId : toInvestigateContainmentIds) {
         QString value = assigned[cId];
 
         if (assigned.contains(value)) {
@@ -1589,7 +1589,7 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
         }
     }
 
-    foreach (auto aId, toInvestigateAppletIds) {
+    for (const auto &aId : toInvestigateAppletIds) {
         QString value = assigned[aId];
 
         if (assigned.contains(value)) {
@@ -1606,13 +1606,13 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
     qDebug() << "FIXED FULL ASSIGNMENTS ::: " << assigned;
 
     //! update applet ids in their containment order and in MultipleLayouts update also the layoutId
-    foreach (auto cId, investigate_conts.groupList()) {
+    for (const auto &cId : investigate_conts.groupList()) {
         //! Update options that contain applet ids
         //! (appletOrder) and (lockedZoomApplets) and (userBlocksColorizingApplets)
         QStringList options;
         options << "appletOrder" << "lockedZoomApplets" << "userBlocksColorizingApplets";
 
-        foreach (auto settingStr, options) {
+        for (const auto &settingStr : options) {
             QString order1 = investigate_conts.group(cId).group("General").readEntry(settingStr, QString());
 
             if (!order1.isEmpty()) {
@@ -1634,7 +1634,7 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
     }
 
     //! must update also the systray id in its applet
-    foreach (auto systrayId, toInvestigateSystrayContIds) {
+    for (const auto &systrayId : toInvestigateSystrayContIds) {
         KConfigGroup systrayParentContainment = investigate_conts.group(systrayParentContainmentIds[systrayId]);
         systrayParentContainment.group("Applets").group(systrayAppletIds[systrayId]).group("Configuration").writeEntry("SystrayContainmentId", assigned[systrayId]);
         systrayParentContainment.sync();
@@ -1646,7 +1646,7 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
     KSharedConfigPtr file2Ptr = KSharedConfig::openConfig(tempFile);
     KConfigGroup fixedNewContainmets = KConfigGroup(file2Ptr, "Containments");
 
-    foreach (auto contId, investigate_conts.groupList()) {
+    for (const auto &contId : investigate_conts.groupList()) {
         QString pluginId = investigate_conts.group(contId).readEntry("plugin", "");
 
         if (pluginId != "org.kde.desktopcontainment") { //!don't add ghost containments
@@ -1655,7 +1655,7 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
 
             newContainmentGroup.group("Applets").deleteGroup();
 
-            foreach (auto appId, investigate_conts.group(contId).group("Applets").groupList()) {
+            for (const auto &appId : investigate_conts.group(contId).group("Applets").groupList()) {
                 KConfigGroup appletGroup = investigate_conts.group(contId).group("Applets").group(appId);
                 KConfigGroup newAppletGroup = fixedNewContainmets.group(assigned[contId]).group("Applets").group(assigned[appId]);
                 appletGroup.copyTo(&newAppletGroup);
@@ -1679,7 +1679,7 @@ QList<Plasma::Containment *> Layout::importLayoutFile(QString file)
     QList<Plasma::Containment *> importedDocks;
     //QList<Plasma::Containment *> systrays;
 
-    foreach (auto containment, newContainments) {
+    for (const auto containment : newContainments) {
         if (isLatteContainment(containment)) {
             qDebug() << "new latte containment id: " << containment->id();
             importedDocks << containment;
@@ -1688,7 +1688,7 @@ QList<Plasma::Containment *> Layout::importLayoutFile(QString file)
 
     ///after systrays were found we must update in latte the relevant ids
     /*if (!systrays.isEmpty()) {
-        foreach (auto systray, systrays) {
+        for (const auto systray : systrays) {
             qDebug() << "systray found with id : " << systray->id();
             Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(systray->parent());
 
@@ -1752,7 +1752,7 @@ void Layout::syncLatteViewsToScreens()
     QString prmScreenName = qGuiApp->primaryScreen()->name();
 
     //! first step: primary docks must be placed in primary screen free edges
-    foreach (auto containment, m_containments) {
+    for (const auto containment : m_containments) {
         if (isLatteContainment(containment)) {
             int screenId = 0;
 
@@ -1787,7 +1787,7 @@ void Layout::syncLatteViewsToScreens()
     }
 
     //! second step: explicit docks must be placed in their screens if the screen edge is free
-    foreach (auto containment, m_containments) {
+    for (const auto containment : m_containments) {
         if (isLatteContainment(containment)) {
             int screenId = 0;
 
@@ -1830,7 +1830,7 @@ void Layout::syncLatteViewsToScreens()
     qDebug() << "FUTURESHOWNVIEWS MUST BE :: " << futureShownViews;
 
     //! add views
-    foreach (auto containment, m_containments) {
+    for (const auto containment : m_containments) {
         int screenId = containment->screen();
 
         if (screenId == -1) {
@@ -1844,7 +1844,7 @@ void Layout::syncLatteViewsToScreens()
     }
 
     //! remove views
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         if (view->containment() && !futureShownViews.contains(view->containment()->id())) {
             qDebug() << "syncLatteViewsToScreens: view must be deleted... for containment:" << view->containment()->id() << " at screen:" << view->positioner()->currentScreenName();
             auto viewToDelete = m_latteViews.take(view->containment());
@@ -1854,7 +1854,7 @@ void Layout::syncLatteViewsToScreens()
     }
 
     //! reconsider views
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         if (view->containment() && futureShownViews.contains(view->containment()->id())) {
             //! if the dock will not be deleted its a very good point to reconsider
             //! if the screen in which is running is the correct one
@@ -1875,7 +1875,7 @@ void Layout::assignToLayout(Latte::View *latteView, QList<Plasma::Containment *>
         m_latteViews[latteView->containment()] = latteView;
         m_containments << containments;
 
-        foreach (auto containment, containments) {
+        for (const auto containment : containments) {
             containment->config().writeEntry("layoutId", name());
 
             connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
@@ -1904,7 +1904,7 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *latteView)
 
     containments << latteView->containment();
 
-    foreach (auto containment, m_containments) {
+    for (const auto containment : m_containments) {
         Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
 
         //! add systrays from that latteView
@@ -1916,7 +1916,7 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *latteView)
         }
     }
 
-    foreach (auto containment, containments) {
+    for (const auto containment : containments) {
         m_containments.removeAll(containment);
     }
 
@@ -1951,7 +1951,7 @@ QList<Plasma::Types::Location> Layout::availableEdgesForView(QScreen *scr, Latte
         return edges;
     }
 
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         //! make sure that availabe edges takes into account only views that should be excluded,
         //! this is why the forView should not be excluded
         if (view && view != forView && view->positioner()->currentScreenName() == scr->name()) {
@@ -1972,7 +1972,7 @@ QList<int> Layout::qmlFreeEdges(int screen) const
     const auto edges = freeEdges(screen);
     QList<int> edgesInt;
 
-    foreach (Plasma::Types::Location edge, edges) {
+    for (const Plasma::Types::Location &edge : edges) {
         edgesInt.append(static_cast<int>(edge));
     }
 
@@ -1989,7 +1989,7 @@ QList<Plasma::Types::Location> Layout::freeEdges(QScreen *scr) const
         return edges;
     }
 
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         if (view && view->positioner()->currentScreenName() == scr->name()) {
             edges.removeOne(view->location());
         }
@@ -2010,7 +2010,7 @@ QList<Plasma::Types::Location> Layout::freeEdges(int screen) const
 
     QScreen *scr = m_corona->screenPool()->screenForId(screen);
 
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         if (view && scr && view->positioner()->currentScreenName() == scr->name()) {
             edges.removeOne(view->location());
         }
@@ -2025,7 +2025,7 @@ bool Layout::explicitDockOccupyEdge(int screen, Plasma::Types::Location location
         return false;
     }
 
-    foreach (auto containment, m_containments) {
+    for (const auto containment : m_containments) {
         if (isLatteContainment(containment)) {
             bool onPrimary = containment->config().readEntry("onPrimary", true);
             int id = containment->lastScreen();
@@ -2046,7 +2046,7 @@ bool Layout::primaryDockOccupyEdge(Plasma::Types::Location location) const
         return false;
     }
 
-    foreach (auto containment, m_containments) {
+    for (const auto containment : m_containments) {
         if (isLatteContainment(containment)) {
             bool onPrimary = containment->config().readEntry("onPrimary", true);
             Plasma::Types::Location contLocation = containment->location();
@@ -2081,7 +2081,7 @@ int Layout::viewsWithTasks() const
 
     int result = 0;
 
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         if (view->tasksPresent()) {
             result++;
         }
@@ -2100,7 +2100,7 @@ int Layout::viewsCount(int screen) const
 
     int docks{0};
 
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         if (view && view->screen() == scr && !view->containment()->destroyed()) {
             ++docks;
         }
@@ -2117,7 +2117,7 @@ int Layout::viewsCount(QScreen *screen) const
 
     int docks{0};
 
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         if (view && view->screen() == screen && !view->containment()->destroyed()) {
             ++docks;
         }
@@ -2134,7 +2134,7 @@ int Layout::viewsCount() const
 
     int docks{0};
 
-    foreach (auto view, m_latteViews) {
+    for (const auto view : m_latteViews) {
         if (view && view->containment() && !view->containment()->destroyed()) {
             ++docks;
         }

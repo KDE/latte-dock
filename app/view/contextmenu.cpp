@@ -126,7 +126,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
             updateAppletContainsMethod();
         }
 
-        foreach (Plasma::Applet *appletTemp, m_latteView->containment()->applets()) {
+        for (const Plasma::Applet *appletTemp : m_latteView->containment()->applets()) {
             PlasmaQuick::AppletQuickItem *ai = appletTemp->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             bool appletContainsMouse = false;
@@ -153,7 +153,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                     Plasma::Containment *cont = containmentById(systrayId.toInt());
 
                     if (cont) {
-                        foreach (Plasma::Applet *appletCont, cont->applets()) {
+                        for (const Plasma::Applet *appletCont : cont->applets()) {
                             PlasmaQuick::AppletQuickItem *ai2 = appletCont->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
                             if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(m_latteView->contentItem(), event->pos()))) {
@@ -330,7 +330,7 @@ void ContextMenu::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, Q
         return;
     }
 
-    foreach (QAction *action, applet->contextualActions()) {
+    for (QAction *action : applet->contextualActions()) {
         if (action) {
             desktopMenu->addAction(action);
         }
@@ -379,8 +379,8 @@ void ContextMenu::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, Q
         if (enabled) {
             //if there is only one, don't create a submenu
             // if (enabled < 2) {
-            foreach (QAction *action, containmentAction->menu()->actions()) {
-                if (action->isVisible()) {
+            for (QAction *action : containmentAction->menu()->actions()) {
+                if (action && action->isVisible()) {
                     desktopMenu->addAction(action);
                 }
             }
@@ -439,7 +439,7 @@ void ContextMenu::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 
     QList<QAction *> actions = plugin->contextualActions();
 
-    foreach (auto act, actions) {
+    for (const QAction *act : actions) {
         if (act->menu()) {
             //this is a workaround where Qt now creates the menu widget
             //in .exec before oxygen can polish it and set the following attribute
@@ -459,7 +459,7 @@ void ContextMenu::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 
 Plasma::Containment *ContextMenu::containmentById(uint id)
 {
-    foreach (auto containment, m_latteView->corona()->containments()) {
+    for (const auto containment : m_latteView->corona()->containments()) {
         if (id == containment->id()) {
             return containment;
         }

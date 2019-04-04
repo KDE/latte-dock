@@ -94,7 +94,7 @@ SecondaryConfigView::~SecondaryConfigView()
 {
     qDebug() << "SecDockConfigView deleting ...";
 
-    foreach (auto var, connections) {
+    for (const auto &var : connections) {
         QObject::disconnect(var);
     }
 

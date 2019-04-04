@@ -78,7 +78,7 @@ QString standardPath(QString subPath, bool localfirst)
     QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
 
     if (localfirst) {
-        foreach (auto pt, paths) {
+        for (const auto &pt : paths) {
             QString ptF = pt + "/" +subPath;
             if (QFileInfo(ptF).exists()) {
                 return ptF;

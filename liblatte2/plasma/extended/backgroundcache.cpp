@@ -180,8 +180,8 @@ void BackgroundCache::reload()
 
     m_initialized = true;
 
-    foreach (auto activity, updates.keys()) {
-        foreach (auto screen, updates[activity]) {
+    for (const auto &activity : updates.keys()) {
+        for (const auto &screen : updates[activity]) {
             emit backgroundChanged(activity, screen);
         }
     }

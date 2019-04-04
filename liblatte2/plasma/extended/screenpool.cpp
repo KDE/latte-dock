@@ -75,7 +75,7 @@ void ScreenPool::load()
 
     bool updated{false};
 
-    foreach (auto screenId, m_screensGroup.keyList()) {
+    for (const auto &screenId : m_screensGroup.keyList()) {
         QString screenName =  m_screensGroup.readEntry(screenId, QString());
         if (screenId != 0) {
             int scrId = screenId.toInt();
@@ -94,7 +94,7 @@ void ScreenPool::load()
 
     if (updated) {
         qDebug() << "---------------- Plasma Screen Ids ------------------";
-        foreach (auto id, m_connectorForId.keys()) {
+        for (const auto &id : m_connectorForId.keys()) {
             qDebug() << id << "  __  " << m_connectorForId[id];
         }
         qDebug() << "----------------  ---------------  ------------------";

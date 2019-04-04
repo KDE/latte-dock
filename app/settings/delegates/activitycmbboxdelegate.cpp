@@ -60,7 +60,7 @@ QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptio
 
     QStringList shownActivities;
 
-    foreach (auto activity, activities) {
+    for (const auto &activity : activities) {
         if (assignedActivities.contains(activity) || availableActivities.contains(activity)) {
             shownActivities.append(activity);
         }

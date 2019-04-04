@@ -428,7 +428,7 @@ bool WaylandInterface::isPlasmaDesktop(const KWayland::Client::PlasmaWindow *w) 
 
     bool hasScreenGeometry{false};
 
-    foreach(auto scr, qGuiApp->screens()) {
+    for (const auto scr : qGuiApp->screens()) {
         if (!w->geometry().isEmpty() && w->geometry() == scr->geometry()) {
             hasScreenGeometry = true;
             break;

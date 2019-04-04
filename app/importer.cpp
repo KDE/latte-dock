@@ -72,7 +72,7 @@ bool Importer::updateOldConfiguration()
         KConfigGroup externalSettings = KConfigGroup(extFileConfig, "External");
         QStringList userLayouts = externalSettings.readEntry("userLayouts", QStringList());
 
-        foreach (auto userConfig, userLayouts) {
+        for(const auto &userConfig : userLayouts) {
             qDebug() << "user layout : " << userConfig;
             importOldConfiguration(userConfig);
         }
@@ -101,7 +101,7 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
 
     //! first copy the latte containments that correspond to the correct session
     //! and find also the systrays that should be copied also
-    foreach (auto containmentId, containments.groupList()) {
+    for(const auto &containmentId : containments.groupList()) {
         KConfigGroup containmentGroup = containments.group(containmentId);
 
         QString plugin = containmentGroup.readEntry("plugin", QString());
@@ -121,7 +121,7 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
         if (shouldImport) {
             auto applets = containments.group(containmentId).group("Applets");
 
-            foreach (auto applet, applets.groupList()) {
+            for(const auto &applet : applets.groupList()) {
                 KConfigGroup appletSettings = applets.group(applet).group("Configuration");
 
                 int systrayId = appletSettings.readEntry("SystrayContainmentId", "-1").toInt();
@@ -146,7 +146,7 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
     }
 
     //! copy also the systrays that were discovered
-    foreach (auto containmentId, containments.groupList()) {
+    for(const auto &containmentId : containments.groupList()) {
         int cId = containmentId.toInt();
 
         if (systrays.contains(cId)) {
@@ -206,7 +206,7 @@ QString Importer::standardPath(QString subPath, bool localfirst)
     QStringList paths = standardPaths(localfirst);
 
     if (localfirst) {
-        foreach (auto pt, paths) {
+        for(const auto &pt : paths) {
             QString ptF = pt + "/" +subPath;
             if (QFileInfo(ptF).exists()) {
                 return ptF;
@@ -307,7 +307,7 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
         if (!tempDir.exists())
             tempDir.mkpath(tempDir.absolutePath());
 
-        foreach (auto &name, rootDir->entries()) {
+        for(const auto &name : rootDir->entries()) {
             auto fileEntry = rootDir->file(name);
 
             if (fileEntry && (fileEntry->name() == "lattedockrc"
@@ -355,7 +355,7 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
     KConfigGroup m_screensGroup = KConfigGroup(oldScreensConfig, "ScreenConnectors");
 
     //restore the known ids to connector mappings
-    foreach (const QString &key, m_screensGroup.keyList()) {
+    for(const QString &key : m_screensGroup.keyList()) {
         QString connector = m_screensGroup.readEntry(key, QString());
         int id = key.toInt();
 
@@ -381,7 +381,7 @@ bool Importer::exportFullConfiguration(QString file)
 
     archive.addLocalFile(QString(QDir::homePath() + "/.config/lattedockrc"), QStringLiteral("lattedockrc"));
 
-    foreach (auto layoutName, availableLayouts()) {
+    for(const auto &layoutName : availableLayouts()) {
         archive.addLocalFile(layoutFilePath(layoutName), QString("latte/" + layoutName + ".layout.latte"));
     }
 
@@ -538,7 +538,7 @@ QStringList Importer::availableLayouts()
 
     QStringList layoutNames;
 
-    foreach (auto file, files) {
+    for(const auto &file : files) {
         layoutNames.append(Layout::layoutName(file));
     }
 
@@ -598,7 +598,7 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
     //! layoutName and its Containments
     QHash<QString, QStringList> linkedLayoutContainmentGroups;
 
-    foreach (auto cId, linkedContainments.groupList()) {
+    for(const auto &cId : linkedContainments.groupList()) {
         QString layoutName = linkedContainments.group(cId).readEntry("layoutId", QString());
 
         if (!layoutName.isEmpty()) {
@@ -610,7 +610,7 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
 
     QStringList updatedLayouts;
 
-    foreach (auto layoutName, linkedLayoutContainmentGroups.uniqueKeys()) {
+    for(const auto &layoutName : linkedLayoutContainmentGroups.uniqueKeys()) {
         if (layoutName != Layout::MultipleLayoutsName && layoutExists(layoutName)) {
             updatedLayouts << layoutName;
             KSharedConfigPtr layoutFilePtr = KSharedConfig::openConfig(layoutFilePath(layoutName));
@@ -620,7 +620,7 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
             origLayoutContainments.deleteGroup();
 
             //Update containments
-            foreach (auto cId, linkedLayoutContainmentGroups[layoutName]) {
+            for(const auto &cId : linkedLayoutContainmentGroups[layoutName]) {
                 KConfigGroup newContainment = origLayoutContainments.group(cId);
                 linkedContainments.group(cId).copyTo(&newContainment);
                 linkedContainments.group(cId).deleteGroup();
@@ -631,7 +631,7 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
     }
 
     //! clear all remaining ghost containments
-    foreach (auto cId, linkedContainments.groupList()) {
+    for(const auto &cId : linkedContainments.groupList()) {
         linkedContainments.group(cId).deleteGroup();
     }
 
