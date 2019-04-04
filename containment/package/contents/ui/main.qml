@@ -326,11 +326,11 @@ DragDrop.DropArea {
 
     property real thickMarginFactor: {
         if (shrinkThickMargins) {
-            return 0;
+            return indicators.info.minThicknessPadding;
         }
 
         //0.075 old statesLineSize and 0.06 old default thickMargin
-        return  plasmoid.configuration.thickMargin / 100;
+        return  Math.max(indicators.info.minThicknessPadding, plasmoid.configuration.thickMargin / 100)
     }
     property int thickMargin: thickMarginFactor * root.iconSize
 

@@ -34,7 +34,7 @@ Item{
     readonly property bool isEnabled: latteView && latteView.indicator ? (latteView.indicator.enabled && latteView.indicator.pluginIsReady) : false
     readonly property bool enabledForApplets: latteView && latteView.indicator ? latteView.indicator.enabledForApplets : true
     readonly property bool reversed: latteView && latteView.indicator ? latteView.indicator.reversed : false
-    readonly property real padding: latteView && latteView.indicator ? latteView.indicator.padding: 0.08
+    readonly property real padding: Math.max(info.minLengthPadding, latteView && latteView.indicator ? latteView.indicator.padding : 0.08)
     readonly property string type: latteView && latteView.indicator ? latteView.indicator.type : "org.kde.latte.default"
 
     readonly property Component plasmaStyleComponent: latteView && latteView.indicator ? latteView.indicator.plasmaComponent : null
@@ -49,6 +49,22 @@ Item{
         readonly property int extraMaskThickness: {
             if (metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("extraMaskThickness")) {
                 return metricsLoader.item.extraMaskThickness;
+            }
+
+            return 0;
+        }
+
+        readonly property real minThicknessPadding: {
+            if (metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("minThicknessPadding")) {
+                return metricsLoader.item.minThicknessPadding;
+            }
+
+            return 0;
+        }
+
+        readonly property real minLengthPadding: {
+            if (metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("minLengthPadding")) {
+                return metricsLoader.item.minLengthPadding;
             }
 
             return 0;
