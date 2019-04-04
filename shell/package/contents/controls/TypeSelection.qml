@@ -115,6 +115,7 @@ Grid {
                 plasmoid.configuration.panelShadows = true;
                 plasmoid.configuration.shadows = 0;
                 plasmoid.configuration.zoomLevel = 0;
+                plasmoid.configuration.titleTooltips = false;
                 plasmoid.configuration.activeIndicator = Latte.Types.NoneIndicator;
                 //plasmoid.configuration.autoDecreaseIconSize = false;
 

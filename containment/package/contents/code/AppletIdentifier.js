@@ -42,7 +42,7 @@ function reconsiderAppletIconItem(){
         identifyKicker();
     } else if (applet.pluginName === "org.kde.plasma.simplemenu") {
         identifySimpleMenu();
-    } else if (applet.pluginName === "org.kde.plasma.userswitcher"&& !root.behaveAsPlasmaPanel && !container.lockZoom) {
+    } else if (applet.pluginName === "org.kde.plasma.userswitcher"&& !root.behaveAsPlasmaPanel && !container.originalAppletBehavior) {
         identifyUserSwitcher();
     } else if (applet.pluginName === "org.kde.comexpertise.plasma.kdeconnect.sms") {
         identifyKdeConnectSms();
@@ -160,7 +160,7 @@ function identifyUserSwitcher() {
     for(var i=0; i<level0.length; ++i){
         var level1 = level0[i].children;
         for(var j=0; j<level1.length; ++j){
-            if (applet.pluginName === "org.kde.plasma.userswitcher" && !root.behaveAsPlasmaPanel && !container.lockZoom) {
+            if (applet.pluginName === "org.kde.plasma.userswitcher" && !root.behaveAsPlasmaPanel && !container.originalAppletBehavior) {
                 if (typeOf(level1[j], "QQuickMouseArea")) {
                     var level2 = level1[j].children;
                     for(var k=0; k<level2.length; ++k){

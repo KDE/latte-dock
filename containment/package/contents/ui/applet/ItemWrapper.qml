@@ -308,7 +308,7 @@ Item{
             else if(applet
                     && ( applet.Layout.maximumHeight < root.iconSize
                         || applet.Layout.preferredHeight > root.iconSize
-                        || appletItem.lockZoom)
+                        || appletItem.originalAppletBehavior)
                     && root.isVertical
                     && !disableScaleWidth
                     && !communicator.overlayLatteIconIsActive) {
@@ -322,7 +322,7 @@ Item{
                 } else if (applet.Layout.minimumHeight > root.iconSize){
                     layoutHeight = applet.Layout.minimumHeight;
                 } else if ((applet.Layout.preferredHeight > root.iconSize)
-                           || (appletItem.lockZoom && applet.Layout.preferredHeight > 0 )){
+                           || (appletItem.originalAppletBehavior && applet.Layout.preferredHeight > 0 )){
                     layoutHeight = applet.Layout.preferredHeight;
                 } else{
                     layoutHeight = root.iconSize;
@@ -360,7 +360,7 @@ Item{
             else if(applet
                     && ( applet.Layout.maximumWidth < root.iconSize
                         || applet.Layout.preferredWidth > root.iconSize
-                        || appletItem.lockZoom)
+                        || appletItem.originalAppletBehavior)
                     && root.isHorizontal
                     && !disableScaleHeight
                     && !communicator.overlayLatteIconIsActive){
@@ -375,7 +375,7 @@ Item{
                 } else if (applet.Layout.minimumWidth > root.iconSize){
                     layoutWidth = applet.Layout.minimumWidth;
                 } else if ((applet.Layout.preferredWidth > root.iconSize)
-                           || (appletItem.lockZoom && applet.Layout.preferredWidth > 0 )){
+                           || (appletItem.originalAppletBehavior && applet.Layout.preferredWidth > 0 )){
                     layoutWidth = applet.Layout.preferredWidth;
                 } else{
                     layoutWidth = root.iconSize;
@@ -534,7 +534,7 @@ Item{
 
         active: appletItem.applet && !appletColorizer.mustBeShown
                 && (((plasmoid.configuration.shadows === 1 /*Locked Applets*/
-                      && (!appletItem.canBeHovered || (appletItem.lockZoom && (applet.pluginName !== root.plasmoidName))) )
+                      && (!appletItem.canBeHovered || (appletItem.originalAppletBehavior && (applet.pluginName !== root.plasmoidName))) )
                      || (plasmoid.configuration.shadows === 2 /*All Applets*/
                          && (applet.pluginName !== root.plasmoidName)))
                     || (root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
@@ -661,7 +661,7 @@ Item{
 
     function signalUpdateScale(nIndex, nScale, step){
         if(appletItem && !appletItem.containsMouse && (appletItem.index === nIndex)){
-            if ( ((canBeHovered && !lockZoom ) || appletItem.latteApplet)
+            if ( ((canBeHovered && !appletItem.originalAppletBehavior) || appletItem.latteApplet)
                     && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)
                     //&& (index != currentLayout.hoveredIndex)
                     ){

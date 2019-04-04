@@ -1161,7 +1161,7 @@ DragDrop.DropArea {
         for(var i=0; i<applets.length; ++i){
             var applet = applets[i];
 
-            if(applet && applet.containsMouse && !applet.lockZoom && applet.canBeHovered){
+            if(applet && applet.containsMouse && !applet.originalAppletBehavior && applet.canBeHovered){
                 return true;
             }
         }
@@ -1171,7 +1171,7 @@ DragDrop.DropArea {
         for(var i=0; i<applets.length; ++i){
             var applet = applets[i];
 
-            if(applet && applet.containsMouse && !applet.lockZoom && applet.canBeHovered){
+            if(applet && applet.containsMouse && !applet.originalAppletBehavior && applet.canBeHovered){
                 return true;
             }
         }
@@ -1182,7 +1182,7 @@ DragDrop.DropArea {
         for(var i=0; i<applets.length; ++i){
             var applet = applets[i];
 
-            if(applet && applet.containsMouse && !applet.lockZoom && applet.canBeHovered){
+            if(applet && applet.containsMouse && !applet.originalAppletBehavior && applet.canBeHovered){
                 return true;
             }
         }
