@@ -100,6 +100,15 @@ LatteComponents.ComboBoxButton{
         }
     }
 
+    Connections{
+        target: custom.comboBox.popup
+        onVisibleChanged: {
+            if (visible) {
+                custom.selectChosenType();
+            }
+        }
+    }
+
     function updateButtonInformation() {
         if (latteView.indicator.customPluginsCount === 0) {
             custom.buttonText = i18n("Download");
@@ -151,9 +160,25 @@ LatteComponents.ComboBoxButton{
         comboBox.model = actionsModel;
 
         if (custom.type === latteView.indicator.type) {
-            comboBox.currentIndex = 0;
+            selectChosenType();
         } else {
             comboBox.currentIndex = -1;
+        }
+    }
+
+    function selectChosenType() {
+        var found = false;
+
+        for (var i=0; i<actionsModel.count; ++i) {
+            if (actionsModel.get(i).pluginId === custom.type) {
+                found = true;
+                custom.comboBox.currentIndex = i;
+                break;
+            }
+        }
+
+        if (!found) {
+            custom.comboBox.currentIndex = -1;
         }
     }
 
