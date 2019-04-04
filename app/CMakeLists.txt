@@ -28,6 +28,7 @@ set(lattedock-app_SRCS
     view/contextmenu.cpp
     view/effects.cpp
     view/indicator.cpp
+    view/indicatorinfo.cpp
     view/panelshadows.cpp
     view/positioner.cpp
     view/screenedgeghostwindow.cpp

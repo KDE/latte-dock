@@ -20,6 +20,7 @@
 #include "indicator.h"
 
 // local
+#include "indicatorinfo.h"
 #include "view.h"
 #include "../lattecorona.h"
 #include "../indicator/factory.h"
@@ -39,7 +40,8 @@ namespace ViewPart {
 
 Indicator::Indicator(Latte::View *parent)
     : QObject(parent),
-      m_view(parent)
+      m_view(parent),
+      m_info(new IndicatorPart::Info(this))
 {
     m_corona = qobject_cast<Latte::Corona *>(m_view->corona());
     loadConfig();
@@ -83,6 +85,10 @@ Indicator::~Indicator()
 
     if (m_configuration) {
         m_configuration->deleteLater();
+    }
+
+    if (m_info) {
+        m_info->deleteLater();
     }
 }
 
@@ -230,19 +236,9 @@ QStringList Indicator::customLocalPluginIds() const
     return m_corona->indicatorFactory()->customLocalPluginIds();
 }
 
-QQuickItem *Indicator::info() const
+IndicatorPart::Info *Indicator::info() const
 {
     return m_info;
-}
-
-void Indicator::setIndicatorInfo(QQuickItem *info)
-{
-    if (m_info == info) {
-        return;
-    }
-
-    m_info = info;
-    emit infoChanged();
 }
 
 QQmlComponent *Indicator::component() const

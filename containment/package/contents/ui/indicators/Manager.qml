@@ -71,15 +71,6 @@ Item{
         }
     }
 
-    Connections {
-        target: root
-        onLatteViewChanged: {
-            if (latteView) {
-                latteView.indicator.setIndicatorInfo(indicators.info)
-            }
-        }
-    }
-
     //! Metrics and values provided from an invisible indicator
     Loader{
         id: metricsLoader
@@ -94,6 +85,42 @@ Item{
         }
 
         sourceComponent: managerIndicator.indicatorComponent
+    }
+
+    //! Bindings in order to inform View::Indicator::Info
+    Binding{
+        target: latteView && latteView.indicator ? latteView.indicator.info : null
+        property:"needsIconColors"
+        when: latteView && latteView.indicator
+        value: managerIndicator.info.needsIconColors
+    }
+
+    Binding{
+        target: latteView && latteView.indicator ? latteView.indicator.info : null
+        property:"providesFrontLayer"
+        when: latteView && latteView.indicator
+        value: managerIndicator.info.providesFrontLayer
+    }
+
+    Binding{
+        target: latteView && latteView.indicator ? latteView.indicator.info : null
+        property:"extraMaskThickness"
+        when: latteView && latteView.indicator
+        value: managerIndicator.info.extraMaskThickness
+    }
+
+    Binding{
+        target: latteView && latteView.indicator ? latteView.indicator.info : null
+        property:"minLengthPadding"
+        when: latteView && latteView.indicator
+        value: managerIndicator.info.minLengthPadding
+    }
+
+    Binding{
+        target: latteView && latteView.indicator ? latteView.indicator.info : null
+        property:"minThicknessPadding"
+        when: latteView && latteView.indicator
+        value: managerIndicator.info.minThicknessPadding
     }
 }
 

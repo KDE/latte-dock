@@ -20,6 +20,9 @@
 #ifndef VIEWINDICATOR_H
 #define VIEWINDICATOR_H
 
+// local
+#include "indicatorinfo.h"
+
 // Qt
 #include <QObject>
 #include <QPointer>
@@ -66,8 +69,6 @@ class Indicator: public QObject
     Q_PROPERTY(QStringList customPluginNames READ customPluginNames NOTIFY customPluginsChanged)
     Q_PROPERTY(QStringList customLocalPluginIds READ customLocalPluginIds NOTIFY customPluginsChanged)
 
-    Q_PROPERTY(QQuickItem *info READ info NOTIFY infoChanged)
-
     /**
      * Configuration object: each config key will be a writable property of this object. property bindings work.
      */
@@ -75,6 +76,11 @@ class Indicator: public QObject
 
     Q_PROPERTY(QQmlComponent *component READ component NOTIFY pluginChanged)
     Q_PROPERTY(QQmlComponent *plasmaComponent READ plasmaComponent NOTIFY plasmaComponentChanged)
+
+    /**
+      * Information provided from the indicator itself
+      */
+    Q_PROPERTY(Latte::ViewPart::IndicatorPart::Info *info READ info NOTIFY infoChanged)
 
 public:
     Indicator(Latte::View *parent);
@@ -107,7 +113,7 @@ public:
     QStringList customPluginNames() const;
     QStringList customLocalPluginIds() const;
 
-    QQuickItem *info() const;
+    IndicatorPart::Info *info() const;
 
     QObject *configuration() const;
     QQmlComponent *component() const;
@@ -120,7 +126,6 @@ public slots:
     Q_INVOKABLE void addIndicator();
     Q_INVOKABLE void downloadIndicator();
     Q_INVOKABLE void removeIndicator(QString pluginId);
-    Q_INVOKABLE void setIndicatorInfo(QQuickItem *info);
 
 signals:
     void customPluginsChanged();
@@ -171,7 +176,7 @@ private:
 
     KPluginMetaData m_metadata;
 
-    QPointer<QQuickItem> m_info;
+    QPointer<IndicatorPart::Info> m_info;
 
     QPointer<KDeclarative::ConfigPropertyMap> m_configuration;
     QPointer<KDeclarative::QmlObjectSharedEngine> m_lastCreatedConfigUi;
