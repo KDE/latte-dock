@@ -27,6 +27,10 @@ namespace Latte {
 namespace ViewPart {
 namespace IndicatorPart {
 
+/**
+ * Information provided by indicator itself in order to provide a nice experience
+ **/
+
 class Info: public QObject
 {
     Q_OBJECT
