@@ -550,6 +550,7 @@ PlasmaComponents.Page {
                         to: maxMargin
                         stepSize: 1
                         wheelEnabled: false
+                        minimumInternalValue: latteView.indicator.info.minLengthPadding * 100
 
                         readonly property int maxMargin: 25
 
@@ -561,10 +562,12 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(lengthIntMarginSlider.value)
+                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(currentValue)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+                        readonly property int currentValue: Math.max(lengthIntMarginSlider.minimumInternalValue, lengthIntMarginSlider.value)
                     }
                 }
 

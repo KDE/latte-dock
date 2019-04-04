@@ -71,6 +71,15 @@ Item{
         }
     }
 
+    Connections {
+        target: root
+        onLatteViewChanged: {
+            if (latteView) {
+                latteView.indicator.setIndicatorInfo(indicators.info)
+            }
+        }
+    }
+
     //! Metrics and values provided from an invisible indicator
     Loader{
         id: metricsLoader

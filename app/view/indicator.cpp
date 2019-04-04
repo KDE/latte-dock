@@ -230,6 +230,21 @@ QStringList Indicator::customLocalPluginIds() const
     return m_corona->indicatorFactory()->customLocalPluginIds();
 }
 
+QQuickItem *Indicator::info() const
+{
+    return m_info;
+}
+
+void Indicator::setIndicatorInfo(QQuickItem *info)
+{
+    if (m_info == info) {
+        return;
+    }
+
+    m_info = info;
+    emit infoChanged();
+}
+
 QQmlComponent *Indicator::component() const
 {
     return m_component;

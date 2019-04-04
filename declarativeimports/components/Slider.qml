@@ -40,10 +40,40 @@ T.Slider {
 
     snapMode: T.Slider.SnapOnRelease
 
+    readonly property bool minimumInternalValueIsSet: (minimumInternalValue!==from && minimumInternalValue !== -10000)
+    property int minimumInternalValue: -10000
+
     PlasmaCore.Svg {
         id: grooveSvg
         imagePath: "widgets/slider"
         colorGroup: PlasmaCore.ColorScope.colorGroup
+    }
+
+    PlasmaCore.FrameSvgItem {
+        id: minimumValueGroove
+        imagePath: "widgets/slider"
+        prefix: "groove-highlight"
+        x: limitedX - width/2
+        y: parent.height/2 - height/2
+        width: parent.height * 0.6
+        height: 2
+        rotation: 90
+        visible: minimumInternalValueIsSet
+
+        readonly property int limitedX: limitedPer * parent.width
+        readonly property real limitedPer: ((minimumInternalValue-from)/(to-from))
+
+        opacity: {
+            if (control.enabled && minimumInternalValueIsSet && value < minimumInternalValue) {
+                return 0.3
+            }
+
+            if (control.enabled) {
+                return 1;
+            }
+
+            return 0.4;
+        }
     }
 
     handle: Item {
@@ -85,13 +115,24 @@ T.Slider {
         scale: horizontal && control.mirrored ? -1 : 1
 
         PlasmaCore.FrameSvgItem {
+            id: grooveHighlight
             imagePath: "widgets/slider"
             prefix: "groove-highlight"
             x: parent.horizontal ? 0 : (parent.width - width) / 2
             y: parent.horizontal ? (parent.height - height) / 2 : control.visualPosition * parent.height
             width: parent.horizontal ? control.position * parent.width + invisibleSpacer : parent.width
             height: parent.horizontal ? parent.height : control.position * parent.height + invisibleSpacer
-            opacity: control.enabled ? 1 : 0.4
+            opacity: {
+                if (control.enabled && minimumInternalValueIsSet && value < minimumInternalValue) {
+                    return 0.3
+                }
+
+                if (control.enabled) {
+                    return 1;
+                }
+
+                return 0.4;
+            }
 
             property int invisibleSpacer: control.position === 0 ? 4 : 0
         }

@@ -66,6 +66,8 @@ class Indicator: public QObject
     Q_PROPERTY(QStringList customPluginNames READ customPluginNames NOTIFY customPluginsChanged)
     Q_PROPERTY(QStringList customLocalPluginIds READ customLocalPluginIds NOTIFY customPluginsChanged)
 
+    Q_PROPERTY(QQuickItem *info READ info NOTIFY infoChanged)
+
     /**
      * Configuration object: each config key will be a writable property of this object. property bindings work.
      */
@@ -105,6 +107,8 @@ public:
     QStringList customPluginNames() const;
     QStringList customLocalPluginIds() const;
 
+    QQuickItem *info() const;
+
     QObject *configuration() const;
     QQmlComponent *component() const;
     QQmlComponent *plasmaComponent() const;
@@ -116,12 +120,14 @@ public slots:
     Q_INVOKABLE void addIndicator();
     Q_INVOKABLE void downloadIndicator();
     Q_INVOKABLE void removeIndicator(QString pluginId);
+    Q_INVOKABLE void setIndicatorInfo(QQuickItem *info);
 
 signals:
     void customPluginsChanged();
     void enabledChanged();
     void enabledForAppletsChanged();
     void customPluginChanged();
+    void infoChanged();
     void latteTasksArePresentChanged();
     void paddingChanged();
     void plasmaComponentChanged();
@@ -164,6 +170,8 @@ private:
     QPointer<Latte::View> m_view;
 
     KPluginMetaData m_metadata;
+
+    QPointer<QQuickItem> m_info;
 
     QPointer<KDeclarative::ConfigPropertyMap> m_configuration;
     QPointer<KDeclarative::QmlObjectSharedEngine> m_lastCreatedConfigUi;
