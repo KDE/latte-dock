@@ -152,7 +152,7 @@ void PrimaryConfigView::init()
     KDeclarative::KDeclarative kdeclarative;
     kdeclarative.setDeclarativeEngine(engine());
     kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));
-    kdeclarative.setupBindings();
+    //kdeclarative.setupBindings();
 
     QByteArray tempFilePath = "lattedockconfigurationui";
 
