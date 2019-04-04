@@ -472,7 +472,7 @@ Item {
         id: appletMouseAreaBottom
         anchors.fill: parent
         propagateComposedEvents: true
-        visible: (!appletMouseArea.visible || !appletMouseArea.enabled) && !root.editMode
+        visible: (!appletMouseArea.visible || !appletMouseArea.enabled) && !root.editMode && !lockZoom
 
         property bool pressed: false
 
