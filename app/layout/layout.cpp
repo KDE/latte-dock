@@ -21,7 +21,6 @@
 #include "layout.h"
 
 // local
-#include "shortcuts.h"
 #include "../importer.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
@@ -70,10 +69,6 @@ Layout::Layout(QObject *parent, QString layoutFile, QString assignedName)
 
 Layout::~Layout()
 {
-    if (m_shortcuts) {
-        m_shortcuts->deleteLater();
-    }
-
     if (!m_layoutFile.isEmpty()) {
         m_layoutGroup.sync();
     }
@@ -194,10 +189,6 @@ void Layout::initToCorona(Latte::Corona *corona)
     }
 
     m_corona = corona;
-
-    if (!m_shortcuts) {
-        m_shortcuts = new LayoutPart::Shortcuts(this);
-    }
 
     for (const auto containment : m_corona->containments()) {
         if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {

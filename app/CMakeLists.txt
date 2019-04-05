@@ -11,7 +11,6 @@ set(lattedock-app_SRCS
     screenpool.cpp
     indicator/factory.cpp
     layout/layout.cpp
-    layout/shortcuts.cpp
     package/lattepackage.cpp
     plasma/extended/screenpool.cpp
     plasma/extended/theme.cpp
