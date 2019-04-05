@@ -294,23 +294,6 @@ void LayoutManager::setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage)
     m_corona->universalSettings()->setLayoutsMemoryUsage(memoryUsage);
 }
 
-void LayoutManager::addView(Plasma::Containment *containment, bool forceLoading, int explicitScreen)
-{
-    if (memoryUsage() == Types::SingleLayout) {
-        m_activeLayouts.at(0)->addView(containment, forceLoading, explicitScreen);
-    } else if (memoryUsage() == Types::MultipleLayouts) {
-        QString layoutId = containment->config().readEntry("layoutId", QString());
-
-        if (!layoutId.isEmpty()) {
-            auto layout = activeLayout(layoutId);
-
-            if (layout) {
-                layout->addView(containment, forceLoading, explicitScreen);
-            }
-        }
-    }
-}
-
 bool LayoutManager::latteViewExists(Latte::View *view) const
 {
     for (const auto layout : m_activeLayouts) {

@@ -75,7 +75,6 @@ public:
     void load();
     void loadLayoutOnStartup(QString layoutName);
     void unload();
-    void addView(Plasma::Containment *containment, bool forceLoading = false, int explicitScreen = -1);
     void hideAllViews();
     void pauseLayout(QString layoutName);
     void syncLatteViewsToScreens();
