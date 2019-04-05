@@ -29,7 +29,7 @@
 #include "settings/secondaryconfigview.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
-#include "../layout/layout.h"
+#include "../layout/activelayout.h"
 #include "../plasma/extended/theme.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
@@ -762,12 +762,12 @@ void View::applyActivitiesToWindows()
     }
 }
 
-Layout *View::managedLayout() const
+Latte::ActiveLayout *View::managedLayout() const
 {
     return m_managedLayout;
 }
 
-void View::setManagedLayout(Layout *layout)
+void View::setManagedLayout(Latte::ActiveLayout *layout)
 {
     if (m_managedLayout == layout) {
         return;
@@ -791,8 +791,8 @@ void View::setManagedLayout(Layout *layout)
             }
         });
 
-        connectionsManagedLayout[0] = connect(m_managedLayout, &Layout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
-        connectionsManagedLayout[1] = connect(m_managedLayout, &Latte::Layout::configViewCreated, this, &View::configViewCreated);
+        connectionsManagedLayout[0] = connect(m_managedLayout, &Latte::ActiveLayout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
+        connectionsManagedLayout[1] = connect(m_managedLayout, &Latte::ActiveLayout::configViewCreated, this, &View::configViewCreated);
     }
 
     Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
@@ -807,7 +807,7 @@ void View::setManagedLayout(Layout *layout)
             }
         });
 
-        connectionsManagedLayout[3] = connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
+        connectionsManagedLayout[3] = connect(m_managedLayout, &ActiveLayout::activitiesChanged, this, [&]() {
             if (m_managedLayout) {
                 applyActivitiesToWindows();
                 emit activitiesChanged();
@@ -858,7 +858,7 @@ void View::moveToLayout(QString layoutName)
     Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
     if (latteCorona && containments.size() > 0) {
-        Layout *newLayout = latteCorona->layoutManager()->activeLayout(layoutName);
+        ActiveLayout *newLayout = latteCorona->layoutManager()->activeLayout(layoutName);
 
         if (newLayout) {
             newLayout->assignToLayout(this, containments);

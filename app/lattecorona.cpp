@@ -28,6 +28,7 @@
 #include "layoutmanager.h"
 #include "screenpool.h"
 #include "indicator/factory.h"
+#include "layout/activelayout.h"
 #include "shortcuts/globalshortcuts.h"
 #include "package/lattepackage.h"
 #include "plasma/extended/screenpool.h"
@@ -463,10 +464,10 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
     QHash<const Plasma::Containment *, Latte::View *> *views;
 
     if (forLayout.isEmpty()) {
-        Layout *currentLayout = m_layoutManager->currentLayout();
+        Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
         views = currentLayout ? currentLayout->latteViews() : nullptr;
     } else {
-        Layout *activeLayout = m_layoutManager->activeLayout(forLayout);
+        Latte::ActiveLayout *activeLayout = m_layoutManager->activeLayout(forLayout);
         views = activeLayout ? activeLayout->latteViews() : nullptr;
     }
 
@@ -593,7 +594,7 @@ QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> m
 
     auto available = screen->geometry();
 
-    Layout *currentLayout = m_layoutManager->currentLayout();
+    Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
     QHash<const Plasma::Containment *, Latte::View *> *views;
 
     if (currentLayout) {
@@ -743,7 +744,7 @@ int Corona::screenForContainment(const Plasma::Containment *containment) const
         }
     }
 
-    Layout *currentLayout = m_layoutManager->currentLayout();
+    Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
     QHash<const Plasma::Containment *, Latte::View *> *views;
 
     if (currentLayout) {
@@ -785,7 +786,7 @@ void Corona::showAlternativesForApplet(Plasma::Applet *applet)
         return;
     }
 
-    Layout *currentLayout = m_layoutManager->currentLayout();
+    Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
     QHash<const Plasma::Containment *, Latte::View *> *views;
 
     if (currentLayout) {
@@ -880,7 +881,7 @@ void Corona::loadDefaultLayout()
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                  Types::TopEdge, Types::RightEdge};
 
-    Layout *currentLayout = m_layoutManager->activeLayout(m_layoutManager->currentLayoutName());
+    Latte::ActiveLayout *currentLayout = m_layoutManager->activeLayout(m_layoutManager->currentLayoutName());
 
     if (currentLayout) {
         edges = currentLayout->freeEdges(defaultContainment->screen());
@@ -991,7 +992,7 @@ QStringList Corona::contextMenuData()
     QStringList data;
     Types::ViewType viewType{Types::DockView};
 
-    Layout *currentLayout = m_layoutManager->currentLayout();
+    Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
 
     if (currentLayout) {
         viewType = currentLayout->latteViewType(m_contextMenuViewId);

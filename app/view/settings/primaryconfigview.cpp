@@ -26,7 +26,7 @@
 #include "../view.h"
 #include "../../lattecorona.h"
 #include "../../layoutmanager.h"
-#include "../../layout/layout.h"
+#include "../../layout/activelayout.h"
 #include "../../settings/universalsettings.h"
 #include "../../shortcuts/globalshortcuts.h"
 #include "../../shortcuts/shortcutstracker.h"

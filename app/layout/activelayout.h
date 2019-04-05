@@ -18,10 +18,11 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef LAYOUT_H
-#define LAYOUT_H
+#ifndef ACTIVELAYOUT_H
+#define ACTIVELAYOUT_H
 
 // local
+#include "genericlayout.h"
 #include "../../liblatte2/types.h"
 
 // Qt
@@ -53,7 +54,7 @@ namespace Latte {
 //! This class is responsible to hold the settings for a specific layout.
 //! It also updates always the relevant layout configuration concerning
 //! its general settings (no the containments)
-class Layout : public QObject
+class ActiveLayout : public Layout::GenericLayout
 {
     Q_OBJECT
     Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
@@ -71,8 +72,8 @@ class Layout : public QObject
     Q_PROPERTY(bool preferredForShortcutsTouched READ preferredForShortcutsTouched WRITE setPreferredForShortcutsTouched NOTIFY preferredForShortcutsTouchedChanged)
 
 public:
-    Layout(QObject *parent, QString layoutFile, QString layoutName = QString());
-    ~Layout() override;
+    ActiveLayout(QObject *parent, QString layoutFile, QString layoutName = QString());
+    ~ActiveLayout() override;
 
     static const QString MultipleLayoutsName;
 
@@ -280,4 +281,4 @@ private:
 
 }
 
-#endif // LAYOUT_H
+#endif //ACTIVELAYOUT_H

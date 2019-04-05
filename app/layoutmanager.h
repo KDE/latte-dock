@@ -45,7 +45,7 @@ class Controller;
 namespace Latte {
 class Corona;
 class Importer;
-class Layout;
+class ActiveLayout;
 class LaunchersSignals;
 class View;
 }
@@ -97,11 +97,11 @@ public:
 
     //! returns an active layout with that #id (name), it returns null if such
     //! layout cant be found
-    Layout *activeLayout(QString id) const;
+    ActiveLayout *activeLayout(QString id) const;
     int activeLayoutPos(QString id) const;
 
     //! returns the current and active layout based on activities and user preferences
-    Layout *currentLayout() const;
+    ActiveLayout *currentLayout() const;
 
     LaunchersSignals *launchersSignals();
 
@@ -144,7 +144,7 @@ private slots:
     void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
 
 private:
-    void addLayout(Layout *layout);
+    void addLayout(ActiveLayout *layout);
     void cleanupOnStartup(QString path); //!remove deprecated or oldstyle config options
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
     void confirmDynamicSwitch();
@@ -187,7 +187,7 @@ private:
     Importer *m_importer{nullptr};
     LaunchersSignals *m_launchersSignals{nullptr};
 
-    QList<Layout *> m_activeLayouts;
+    QList<ActiveLayout *> m_activeLayouts;
 
     KActivities::Controller *m_activitiesController;
 

@@ -10,7 +10,9 @@ set(lattedock-app_SRCS
     schemecolors.cpp
     screenpool.cpp
     indicator/factory.cpp
-    layout/layout.cpp
+    layout/abstractlayout.cpp
+    layout/activelayout.cpp
+    layout/genericlayout.cpp
     package/lattepackage.cpp
     plasma/extended/screenpool.cpp
     plasma/extended/theme.cpp

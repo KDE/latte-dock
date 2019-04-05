@@ -25,7 +25,7 @@
 #include "shortcutstracker.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
-#include "../layout/layout.h"
+#include "../layout/activelayout.h"
 #include "../settings/universalsettings.h"
 #include "../view/view.h"
 
@@ -223,7 +223,7 @@ void GlobalShortcuts::activateLauncherMenu()
     }
 
     QList<Latte::View *> sortedViews;
-    Layout *currentLayout = m_corona->layoutManager()->currentLayout();
+    ActiveLayout *currentLayout = m_corona->layoutManager()->currentLayout();
 
     if (currentLayout) {
         sortedViews = currentLayout->sortedLatteViews();
@@ -387,7 +387,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
     QList<Latte::View *> sortedViews;
-    Layout *currentLayout = m_corona->layoutManager()->currentLayout();
+    ActiveLayout *currentLayout = m_corona->layoutManager()->currentLayout();
 
     if (currentLayout) {
         sortedViews = currentLayout->sortedLatteViews();
@@ -461,7 +461,7 @@ void GlobalShortcuts::updateViewItemBadge(QString identifier, QString value)
     };
 
     QHash<const Plasma::Containment *, Latte::View *> *views;
-    Layout *currentLayout = m_corona->layoutManager()->currentLayout();
+    ActiveLayout *currentLayout = m_corona->layoutManager()->currentLayout();
 
     if (currentLayout) {
         views = currentLayout->latteViews();
@@ -618,7 +618,7 @@ void GlobalShortcuts::showViews()
     };
 
     QList<Latte::View *> sortedViews;
-    Layout *currentLayout = m_corona->layoutManager()->currentLayout();
+    ActiveLayout *currentLayout = m_corona->layoutManager()->currentLayout();
 
     if (currentLayout) {
         sortedViews = currentLayout->sortedLatteViews();
@@ -722,7 +722,7 @@ bool GlobalShortcuts::viewsToHideAreValid()
 void GlobalShortcuts::showSettings()
 {
     QList<Latte::View *> sortedViews;
-    Layout *currentLayout = m_corona->layoutManager()->currentLayout();
+    ActiveLayout *currentLayout = m_corona->layoutManager()->currentLayout();
 
     if (currentLayout) {
         sortedViews = currentLayout->sortedLatteViews();

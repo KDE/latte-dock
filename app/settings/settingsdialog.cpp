@@ -27,7 +27,7 @@
 #include "universalsettings.h"
 #include "ui_settingsdialog.h"
 #include "../lattecorona.h"
-#include "../layout/layout.h"
+#include "../layout/activelayout.h"
 #include "../liblatte2/types.h"
 #include "../plasma/extended/theme.h"
 #include "delegates/checkboxdelegate.h"
@@ -298,7 +298,7 @@ void SettingsDialog::on_newButton_clicked()
 
     //! find Default preset path
     for (const auto &preset : m_corona->layoutManager()->presetsPaths()) {
-        QString presetName = Layout::layoutName(preset);
+        QString presetName = ActiveLayout::layoutName(preset);
 
         if (presetName == "Default") {
             QByteArray presetNameChars = presetName.toUtf8();
@@ -326,7 +326,7 @@ void SettingsDialog::on_copyButton_clicked()
         QString lName = (m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole)).toString();
 
         if (Importer::layoutExists(lName)) {
-            Layout *layout = m_corona->layoutManager()->activeLayout(lName);
+            ActiveLayout *layout = m_corona->layoutManager()->activeLayout(lName);
 
             if (layout && layout->isOriginalLayout()) {
                 layout->syncToLayoutFile();
@@ -352,7 +352,7 @@ void SettingsDialog::on_copyButton_clicked()
         QFile(copiedId).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
     }
 
-    Layout *settings = new Layout(this, copiedId);
+    ActiveLayout *settings = new ActiveLayout(this, copiedId);
     m_layouts[copiedId] = settings;
 
     insertLayoutInfoAtRow(row + 1, copiedId, color, textColor, layoutName, menu, disabledBorders, QStringList(), false);
@@ -621,7 +621,7 @@ void SettingsDialog::on_exportButton_clicked()
                 QFile(file).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
             }
 
-            Layout layoutS(this, file);
+            ActiveLayout layoutS(this, file);
             layoutS.setActivities(QStringList());
             layoutS.clearLastUsedActivity();
 
@@ -740,7 +740,7 @@ void SettingsDialog::restoreDefaults()
     if (ui->tabWidget->currentIndex() == 0) {
         //! Default layouts missing from layouts list
         for (const auto &preset : m_corona->layoutManager()->presetsPaths()) {
-            QString presetName = Layout::layoutName(preset);
+            QString presetName = ActiveLayout::layoutName(preset);
             QByteArray presetNameChars = presetName.toUtf8();
             const char *prset_str = presetNameChars.data();
             presetName = i18n(prset_str);
@@ -765,7 +765,7 @@ void SettingsDialog::restoreDefaults()
 void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory, bool showNotification)
 {
     if (layoutName.isEmpty()) {
-        layoutName = Layout::layoutName(file);
+        layoutName = ActiveLayout::layoutName(file);
     }
 
     QString copiedId;
@@ -785,11 +785,11 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
     }
 
     if (m_layouts.contains(copiedId)) {
-        Layout *oldSettings = m_layouts.take(copiedId);
+        ActiveLayout *oldSettings = m_layouts.take(copiedId);
         delete oldSettings;
     }
 
-    Layout *settings = new Layout(this, copiedId);
+    ActiveLayout *settings = new ActiveLayout(this, copiedId);
     m_layouts[copiedId] = settings;
 
     QString id = copiedId;
@@ -836,7 +836,7 @@ void SettingsDialog::loadSettings()
         QString layoutPath = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
         m_initLayoutPaths.append(layoutPath);
 
-        Layout *layoutSets = new Layout(this, layoutPath);
+        ActiveLayout *layoutSets = new ActiveLayout(this, layoutPath);
         m_layouts[layoutPath] = layoutSets;
 
         QString background = layoutSets->background();
@@ -859,7 +859,7 @@ void SettingsDialog::loadSettings()
             ui->layoutsView->selectRow(i - 1);
         }
 
-        Layout *activeLayout = m_corona->layoutManager()->activeLayout(layoutSets->name());
+        ActiveLayout *activeLayout = m_corona->layoutManager()->activeLayout(layoutSets->name());
 
         if ((activeLayout && activeLayout->layoutIsBroken()) || (!activeLayout && layoutSets->layoutIsBroken())) {
             brokenLayouts.append(layoutSets->name());
@@ -1105,7 +1105,7 @@ void SettingsDialog::on_pauseButton_clicked()
     ui->pauseButton->setEnabled(false);
 
     QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
-    Layout *layout = m_layouts[id];
+    ActiveLayout *layout = m_layouts[id];
 
     if (layout) {
         m_corona->layoutManager()->pauseLayout(layout->name());
@@ -1126,7 +1126,7 @@ void SettingsDialog::layoutsChanged()
                 font.setBold(true);
                 // ui->layoutsView->selectRow(i);
             } else {
-                Layout *layout = m_corona->layoutManager()->activeLayout(name);
+                ActiveLayout *layout = m_corona->layoutManager()->activeLayout(name);
 
                 if (layout && (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts)) {
                     font.setBold(true);
@@ -1191,7 +1191,7 @@ void SettingsDialog::updateApplyButtonsState()
         bool layoutMissing{false};
 
         for (const auto &preset : m_corona->layoutManager()->presetsPaths()) {
-            QString presetName = Layout::layoutName(preset);
+            QString presetName = ActiveLayout::layoutName(preset);
             QByteArray presetNameChars = presetName.toUtf8();
             const char *prset_str = presetNameChars.data();
             presetName = i18n(prset_str);
@@ -1249,7 +1249,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
         QStringList lActivities = m_model->data(m_model->index(currentRow, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
-        Layout *layout = m_layouts[id];
+        Latte::ActiveLayout *layout = m_layouts[id];
 
         if (!lActivities.isEmpty() && layout && m_corona->layoutManager()->activeLayout(layout->name())) {
             ui->pauseButton->setEnabled(true);
@@ -1365,7 +1365,7 @@ bool SettingsDialog::saveAllChanges()
 
     QString switchToLayout;
 
-    QHash<QString, Layout *> activeLayoutsToRename;
+    QHash<QString, ActiveLayout *> activeLayoutsToRename;
 
     //! remove layouts that have been removed from the user
     for (const auto &initLayout : m_initLayoutPaths) {
@@ -1373,7 +1373,7 @@ bool SettingsDialog::saveAllChanges()
             QFile(initLayout).remove();
 
             if (m_layouts.contains(initLayout)) {
-                Layout *removedLayout = m_layouts.take(initLayout);
+                ActiveLayout *removedLayout = m_layouts.take(initLayout);
                 delete removedLayout;
             }
         }
@@ -1399,9 +1399,9 @@ bool SettingsDialog::saveAllChanges()
         }
 
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
-        Layout *activeLayout = m_corona->layoutManager()->activeLayout(m_layouts[id]->name());
+        ActiveLayout *activeLayout = m_corona->layoutManager()->activeLayout(m_layouts[id]->name());
 
-        Layout *layout = activeLayout ? activeLayout : m_layouts[id];
+        ActiveLayout *layout = activeLayout ? activeLayout : m_layouts[id];
 
         //! unlock read-only layout
         if (!layout->isWritable()) {
@@ -1470,7 +1470,7 @@ bool SettingsDialog::saveAllChanges()
         QString newFile = QDir::homePath() + "/.config/latte/" + toRenameNames[i] + ".layout.latte";
         QFile(toRenamePaths[i]).rename(newFile);
 
-        Layout *nLayout = new Layout(this, newFile);
+        ActiveLayout *nLayout = new ActiveLayout(this, newFile);
         m_layouts[newFile] = nLayout;
 
         for (int j = 0; j < m_model->rowCount(); ++j) {
@@ -1493,7 +1493,7 @@ bool SettingsDialog::saveAllChanges()
     if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         for (const auto &newLayoutName : activeLayoutsToRename.keys()) {
             qDebug() << " Active Layout Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
-            Layout *layout = activeLayoutsToRename[newLayoutName];
+            ActiveLayout *layout = activeLayoutsToRename[newLayoutName];
             layout->renameLayout(newLayoutName);
 
             //! that means it is an active layout for orphaned Activities
@@ -1509,8 +1509,8 @@ bool SettingsDialog::saveAllChanges()
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
         bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
 
-        Layout *activeLayout = m_corona->layoutManager()->activeLayout(m_layouts[id]->name());
-        Layout *layout = activeLayout ? activeLayout : m_layouts[id];
+        ActiveLayout *activeLayout = m_corona->layoutManager()->activeLayout(m_layouts[id]->name());
+        ActiveLayout *layout = activeLayout ? activeLayout : m_layouts[id];
 
         if (layout && locked && layout->isWritable()) {
             layout->lock();

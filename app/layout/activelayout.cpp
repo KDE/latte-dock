@@ -18,7 +18,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "layout.h"
+#include "activelayout.h"
 
 // local
 #include "../importer.h"
@@ -47,10 +47,10 @@
 
 namespace Latte {
 
-const QString Layout::MultipleLayoutsName = ".multiple-layouts_hidden";
+const QString ActiveLayout::MultipleLayoutsName = ".multiple-layouts_hidden";
 
-Layout::Layout(QObject *parent, QString layoutFile, QString assignedName)
-    : QObject(parent)
+ActiveLayout::ActiveLayout(QObject *parent, QString layoutFile, QString assignedName)
+    : Layout::GenericLayout(parent)
 {
     qDebug() << "Layout file to create object: " << layoutFile << " with name: " << assignedName;
 
@@ -67,14 +67,14 @@ Layout::Layout(QObject *parent, QString layoutFile, QString assignedName)
     }
 }
 
-Layout::~Layout()
+ActiveLayout::~ActiveLayout()
 {
     if (!m_layoutFile.isEmpty()) {
         m_layoutGroup.sync();
     }
 }
 
-void Layout::syncToLayoutFile(bool removeLayoutId)
+void ActiveLayout::syncToLayoutFile(bool removeLayoutId)
 {
     if (!m_corona || !isWritable()) {
         return;
@@ -105,15 +105,15 @@ void Layout::syncToLayoutFile(bool removeLayoutId)
     oldContainments.sync();
 }
 
-void Layout::unloadContainments()
+void ActiveLayout::unloadContainments()
 {
     if (!m_corona) {
         return;
     }
 
     //!disconnect signals in order to avoid crashes when the layout is unloading
-    disconnect(this, &Layout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
-    disconnect(this, &Layout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
+    disconnect(this, &ActiveLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
+    disconnect(this, &ActiveLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
 
     qDebug() << "Layout - " + name() + " unload: containments ... size ::: " << m_containments.size()
              << " ,latteViews in memory ::: " << m_latteViews.size()
@@ -154,7 +154,7 @@ void Layout::unloadContainments()
     }
 }
 
-void Layout::unloadLatteViews()
+void ActiveLayout::unloadLatteViews()
 {
     if (!m_corona) {
         return;
@@ -168,21 +168,21 @@ void Layout::unloadLatteViews()
     m_waitingLatteViews.clear();
 }
 
-void Layout::init()
+void ActiveLayout::init()
 {
-    connect(this, &Layout::activitiesChanged, this, &Layout::saveConfig);
-    connect(this, &Layout::backgroundChanged, this, &Layout::saveConfig);
-    connect(this, &Layout::versionChanged, this, &Layout::saveConfig);
-    connect(this, &Layout::colorChanged, this, &Layout::textColorChanged);
-    connect(this, &Layout::disableBordersForMaximizedWindowsChanged, this, &Layout::saveConfig);
-    connect(this, &Layout::showInMenuChanged, this, &Layout::saveConfig);
-    connect(this, &Layout::textColorChanged, this, &Layout::saveConfig);
-    connect(this, &Layout::launchersChanged, this, &Layout::saveConfig);
-    connect(this, &Layout::lastUsedActivityChanged, this, &Layout::saveConfig);
-    connect(this, &Layout::preferredForShortcutsTouchedChanged, this, &Layout::saveConfig);
+    connect(this, &ActiveLayout::activitiesChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &ActiveLayout::backgroundChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &ActiveLayout::versionChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &ActiveLayout::colorChanged, this, &ActiveLayout::textColorChanged);
+    connect(this, &ActiveLayout::disableBordersForMaximizedWindowsChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &ActiveLayout::showInMenuChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &ActiveLayout::textColorChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &ActiveLayout::launchersChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &ActiveLayout::lastUsedActivityChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &ActiveLayout::preferredForShortcutsTouchedChanged, this, &ActiveLayout::saveConfig);
 }
 
-void Layout::initToCorona(Latte::Corona *corona)
+void ActiveLayout::initToCorona(Latte::Corona *corona)
 {
     if (m_corona) {
         return;
@@ -228,24 +228,24 @@ void Layout::initToCorona(Latte::Corona *corona)
         updateLastUsedActivity();
     }
 
-    connect(m_corona, &Plasma::Corona::containmentAdded, this, &Layout::addContainment);
+    connect(m_corona, &Plasma::Corona::containmentAdded, this, &ActiveLayout::addContainment);
 
     connect(m_corona->m_activityConsumer, &KActivities::Consumer::currentActivityChanged,
-            this, &Layout::updateLastUsedActivity);
+            this, &ActiveLayout::updateLastUsedActivity);
 
     //!connect signals after adding the containment
-    connect(this, &Layout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
-    connect(this, &Layout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
+    connect(this, &ActiveLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
+    connect(this, &ActiveLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
 
     emit viewsCountChanged();
 }
 
-int Layout::version() const
+int ActiveLayout::version() const
 {
     return m_version;
 }
 
-void Layout::setVersion(int ver)
+void ActiveLayout::setVersion(int ver)
 {
     if (m_version == ver) {
         return;
@@ -256,12 +256,12 @@ void Layout::setVersion(int ver)
     emit versionChanged();
 }
 
-bool Layout::blockAutomaticLatteViewCreation() const
+bool ActiveLayout::blockAutomaticLatteViewCreation() const
 {
     return m_blockAutomaticLatteViewCreation;
 }
 
-void Layout::setBlockAutomaticLatteViewCreation(bool block)
+void ActiveLayout::setBlockAutomaticLatteViewCreation(bool block)
 {
     if (m_blockAutomaticLatteViewCreation == block) {
         return;
@@ -270,12 +270,12 @@ void Layout::setBlockAutomaticLatteViewCreation(bool block)
     m_blockAutomaticLatteViewCreation = block;
 }
 
-bool Layout::disableBordersForMaximizedWindows() const
+bool ActiveLayout::disableBordersForMaximizedWindows() const
 {
     return m_disableBordersForMaximizedWindows;
 }
 
-void Layout::setDisableBordersForMaximizedWindows(bool disable)
+void ActiveLayout::setDisableBordersForMaximizedWindows(bool disable)
 {
     if (m_disableBordersForMaximizedWindows == disable) {
         return;
@@ -287,7 +287,7 @@ void Layout::setDisableBordersForMaximizedWindows(bool disable)
     emit disableBordersForMaximizedWindowsChanged();
 }
 
-bool Layout::kwin_disabledMaximizedBorders() const
+bool ActiveLayout::kwin_disabledMaximizedBorders() const
 {
     //! Identify Plasma Desktop version
     QProcess process;
@@ -300,7 +300,7 @@ bool Layout::kwin_disabledMaximizedBorders() const
     return (output == "true");
 }
 
-void Layout::kwin_setDisabledMaximizedBorders(bool disable)
+void ActiveLayout::kwin_setDisabledMaximizedBorders(bool disable)
 {
     if (kwin_disabledMaximizedBorders() == disable) {
         return;
@@ -321,12 +321,12 @@ void Layout::kwin_setDisabledMaximizedBorders(bool disable)
 
 }
 
-bool Layout::showInMenu() const
+bool ActiveLayout::showInMenu() const
 {
     return m_showInMenu;
 }
 
-void Layout::setShowInMenu(bool show)
+void ActiveLayout::setShowInMenu(bool show)
 {
     if (m_showInMenu == show) {
         return;
@@ -336,7 +336,7 @@ void Layout::setShowInMenu(bool show)
     emit showInMenuChanged();
 }
 
-bool Layout::isWritable() const
+bool ActiveLayout::isWritable() const
 {
     QFileInfo layoutFileInfo(m_layoutFile);
 
@@ -347,7 +347,7 @@ bool Layout::isWritable() const
     }
 }
 
-void Layout::lock()
+void ActiveLayout::lock()
 {
     QFileInfo layoutFileInfo(m_layoutFile);
 
@@ -356,7 +356,7 @@ void Layout::lock()
     }
 }
 
-void Layout::unlock()
+void ActiveLayout::unlock()
 {
     QFileInfo layoutFileInfo(m_layoutFile);
 
@@ -365,12 +365,12 @@ void Layout::unlock()
     }
 }
 
-QString Layout::background() const
+QString ActiveLayout::background() const
 {
     return m_background;
 }
 
-void Layout::setBackground(QString path)
+void ActiveLayout::setBackground(QString path)
 {
     if (path == m_background) {
         return;
@@ -390,12 +390,12 @@ void Layout::setBackground(QString path)
     emit backgroundChanged();
 }
 
-QString Layout::name() const
+QString ActiveLayout::name() const
 {
     return m_layoutName;
 }
 
-void Layout::setName(QString name)
+void ActiveLayout::setName(QString name)
 {
     if (m_layoutName == name) {
         return;
@@ -408,7 +408,7 @@ void Layout::setName(QString name)
     emit nameChanged();
 }
 
-void Layout::renameLayout(QString newName)
+void ActiveLayout::renameLayout(QString newName)
 {
     if (m_layoutFile != Importer::layoutFilePath(newName)) {
         setFile(Importer::layoutFilePath(newName));
@@ -426,12 +426,12 @@ void Layout::renameLayout(QString newName)
     }
 }
 
-QString Layout::color() const
+QString ActiveLayout::color() const
 {
     return m_color;
 }
 
-void Layout::setColor(QString color)
+void ActiveLayout::setColor(QString color)
 {
     if (m_color == color) {
         return;
@@ -441,7 +441,7 @@ void Layout::setColor(QString color)
     emit colorChanged();
 }
 
-QString Layout::textColor() const
+QString ActiveLayout::textColor() const
 {
     //! the user is in default layout theme
     if (m_background.isEmpty()) {
@@ -475,7 +475,7 @@ QString Layout::textColor() const
     return "#" + m_textColor;
 }
 
-void Layout::setTextColor(QString color)
+void ActiveLayout::setTextColor(QString color)
 {
     //! remove # if someone is trying to set it this way
     if (color.startsWith("#")) {
@@ -490,12 +490,12 @@ void Layout::setTextColor(QString color)
     emit textColorChanged();
 }
 
-QString Layout::file() const
+QString ActiveLayout::file() const
 {
     return m_layoutFile;
 }
 
-void Layout::setFile(QString file)
+void ActiveLayout::setFile(QString file)
 {
     if (m_layoutFile == file) {
         return;
@@ -511,12 +511,12 @@ void Layout::setFile(QString file)
     emit fileChanged();
 }
 
-QStringList Layout::launchers() const
+QStringList ActiveLayout::launchers() const
 {
     return m_launchers;
 }
 
-void Layout::setLaunchers(QStringList launcherList)
+void ActiveLayout::setLaunchers(QStringList launcherList)
 {
     if (m_launchers == launcherList)
         return;
@@ -526,12 +526,12 @@ void Layout::setLaunchers(QStringList launcherList)
     emit launchersChanged();
 }
 
-QStringList Layout::activities() const
+QStringList ActiveLayout::activities() const
 {
     return m_activities;
 }
 
-void Layout::setActivities(QStringList activities)
+void ActiveLayout::setActivities(QStringList activities)
 {
     if (m_activities == activities) {
         return;
@@ -542,12 +542,12 @@ void Layout::setActivities(QStringList activities)
     emit activitiesChanged();
 }
 
-bool Layout::preferredForShortcutsTouched() const
+bool ActiveLayout::preferredForShortcutsTouched() const
 {
     return m_preferredForShortcutsTouched;
 }
 
-void Layout::setPreferredForShortcutsTouched(bool touched)
+void ActiveLayout::setPreferredForShortcutsTouched(bool touched)
 {
     if (m_preferredForShortcutsTouched == touched) {
         return;
@@ -557,18 +557,18 @@ void Layout::setPreferredForShortcutsTouched(bool touched)
     emit preferredForShortcutsTouchedChanged();
 }
 
-QStringList Layout::unloadedContainmentsIds()
+QStringList ActiveLayout::unloadedContainmentsIds()
 {
     return m_unloadedContainmentsIds;
 }
 
-bool Layout::isActiveLayout() const
+bool ActiveLayout::isActiveLayout() const
 {
     if (!m_corona) {
         return false;
     }
 
-    Layout *activeLayout = m_corona->layoutManager()->activeLayout(m_layoutName);
+    ActiveLayout *activeLayout = m_corona->layoutManager()->activeLayout(m_layoutName);
 
     if (activeLayout) {
         return true;
@@ -577,12 +577,12 @@ bool Layout::isActiveLayout() const
     }
 }
 
-bool Layout::isOriginalLayout() const
+bool ActiveLayout::isOriginalLayout() const
 {
     return m_layoutName != MultipleLayoutsName;
 }
 
-bool Layout::appletGroupIsValid(KConfigGroup appletGroup) const
+bool ActiveLayout::appletGroupIsValid(KConfigGroup appletGroup) const
 {
     return !( appletGroup.keyList().count() == 0
               && appletGroup.groupList().count() == 1
@@ -591,7 +591,7 @@ bool Layout::appletGroupIsValid(KConfigGroup appletGroup) const
               && appletGroup.group("Configuration").hasKey("PreloadWeight") );
 }
 
-bool Layout::layoutIsBroken() const
+bool ActiveLayout::layoutIsBroken() const
 {
     if (m_layoutFile.isEmpty() || !QFile(m_layoutFile).exists()) {
         return false;
@@ -663,7 +663,7 @@ bool Layout::layoutIsBroken() const
             qDebug() << "   --- file : " << m_layoutFile;
         } else {
             if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-                qDebug() << "   --- in multiple layouts hidden file : " << Importer::layoutFilePath(Layout::MultipleLayoutsName);
+                qDebug() << "   --- in multiple layouts hidden file : " << Importer::layoutFilePath(ActiveLayout::MultipleLayoutsName);
             } else {
                 qDebug() << "   --- in layout file : " << m_layoutFile;
             }
@@ -715,7 +715,7 @@ bool Layout::layoutIsBroken() const
 }
 
 
-QString Layout::layoutName(const QString &fileName)
+QString ActiveLayout::layoutName(const QString &fileName)
 {
     int lastSlash = fileName.lastIndexOf("/");
     QString tempLayoutFile = fileName;
@@ -727,7 +727,7 @@ QString Layout::layoutName(const QString &fileName)
     return layoutName;
 }
 
-void Layout::loadConfig()
+void ActiveLayout::loadConfig()
 {
     m_version = m_layoutGroup.readEntry("version", 2);
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
@@ -752,7 +752,7 @@ void Layout::loadConfig()
     emit activitiesChanged();
 }
 
-void Layout::saveConfig()
+void ActiveLayout::saveConfig()
 {
     qDebug() << "layout is saving... for layout:" << m_layoutName;
     m_layoutGroup.writeEntry("version", m_version);
@@ -771,7 +771,7 @@ void Layout::saveConfig()
 
 //! Containments Actions
 
-void Layout::addContainment(Plasma::Containment *containment)
+void ActiveLayout::addContainment(Plasma::Containment *containment)
 {
     if (!containment || m_containments.contains(containment)) {
         return;
@@ -798,16 +798,16 @@ void Layout::addContainment(Plasma::Containment *containment)
             qDebug() << "delaying LatteView creation for containment :: " << containment->id();
         }
 
-        connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
+        connect(containment, &QObject::destroyed, this, &ActiveLayout::containmentDestroyed);
     }
 }
 
-QHash<const Plasma::Containment *, Latte::View *> *Layout::latteViews()
+QHash<const Plasma::Containment *, Latte::View *> *ActiveLayout::latteViews()
 {
     return &m_latteViews;
 }
 
-Types::ViewType Layout::latteViewType(int containmentId) const
+Types::ViewType ActiveLayout::latteViewType(int containmentId) const
 {
     for (const auto view : m_latteViews) {
         if (view->containment() && view->containment()->id() == containmentId) {
@@ -818,14 +818,14 @@ Types::ViewType Layout::latteViewType(int containmentId) const
     return Types::DockView;
 }
 
-Latte::View *Layout::highestPriorityView()
+Latte::View *ActiveLayout::highestPriorityView()
 {
     QList<Latte::View *> views = sortedLatteViews();
 
     return views.count() > 0 ? views[0] : nullptr;
 }
 
-QList<Latte::View *> Layout::sortedLatteViews()
+QList<Latte::View *> ActiveLayout::sortedLatteViews()
 {
     QList<Latte::View *> sortedViews;
 
@@ -879,7 +879,7 @@ QList<Latte::View *> Layout::sortedLatteViews()
     return sortedViews;
 }
 
-bool Layout::viewAtLowerScreenPriority(Latte::View *test, Latte::View *base)
+bool ActiveLayout::viewAtLowerScreenPriority(Latte::View *test, Latte::View *base)
 {
     if (!base || ! test) {
         return true;
@@ -917,7 +917,7 @@ bool Layout::viewAtLowerScreenPriority(Latte::View *test, Latte::View *base)
     return false;
 }
 
-bool Layout::viewAtLowerEdgePriority(Latte::View *test, Latte::View *base)
+bool ActiveLayout::viewAtLowerEdgePriority(Latte::View *test, Latte::View *base)
 {
     if (!base || ! test) {
         return true;
@@ -945,12 +945,12 @@ bool Layout::viewAtLowerEdgePriority(Latte::View *test, Latte::View *base)
         return false;
 }
 
-QList<Plasma::Containment *> *Layout::containments()
+QList<Plasma::Containment *> *ActiveLayout::containments()
 {
     return &m_containments;
 }
 
-QList<Latte::View *> Layout::viewsWithPlasmaShortcuts()
+QList<Latte::View *> ActiveLayout::viewsWithPlasmaShortcuts()
 {
     QList<Latte::View *> views;
 
@@ -982,7 +982,7 @@ QList<Latte::View *> Layout::viewsWithPlasmaShortcuts()
     return views;
 }
 
-const QStringList Layout::appliedActivities()
+const QStringList ActiveLayout::appliedActivities()
 {
     if (!m_corona) {
         return {};
@@ -1001,18 +1001,18 @@ const QStringList Layout::appliedActivities()
     }
 }
 
-QString Layout::lastUsedActivity()
+QString ActiveLayout::lastUsedActivity()
 {
     return m_lastUsedActivity;
 }
 
-void Layout::clearLastUsedActivity()
+void ActiveLayout::clearLastUsedActivity()
 {
     m_lastUsedActivity = "";
     emit lastUsedActivityChanged();
 }
 
-void Layout::updateLastUsedActivity()
+void ActiveLayout::updateLastUsedActivity()
 {
     if (!m_corona) {
         return;
@@ -1035,7 +1035,7 @@ void Layout::updateLastUsedActivity()
     }
 }
 
-void Layout::destroyedChanged(bool destroyed)
+void ActiveLayout::destroyedChanged(bool destroyed)
 {
     if (!m_corona) {
         return;
@@ -1057,7 +1057,7 @@ void Layout::destroyedChanged(bool destroyed)
     emit viewsCountChanged();
 }
 
-void Layout::containmentDestroyed(QObject *cont)
+void ActiveLayout::containmentDestroyed(QObject *cont)
 {
     if (!m_corona) {
         return;
@@ -1089,7 +1089,7 @@ void Layout::containmentDestroyed(QObject *cont)
     }
 }
 
-void Layout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen)
+void ActiveLayout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen)
 {
     qDebug() << "Layout :::: " << m_layoutName << " ::: addView was called... m_containments :: " << m_containments.size();
 
@@ -1217,14 +1217,14 @@ void Layout::addView(Plasma::Containment *containment, bool forceOnPrimary, int 
         latteView->setOnPrimary(true);
     }
 
-    //  connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
-    connect(containment, &Plasma::Applet::destroyedChanged, this, &Layout::destroyedChanged);
+    //  connect(containment, &QObject::destroyed, this, &ActiveLayout::containmentDestroyed);
+    connect(containment, &Plasma::Applet::destroyedChanged, this, &ActiveLayout::destroyedChanged);
     connect(containment, &Plasma::Applet::locationChanged, m_corona, &Latte::Corona::viewLocationChanged);
     connect(containment, &Plasma::Containment::appletAlternativesRequested
             , m_corona, &Latte::Corona::showAlternativesForApplet, Qt::QueuedConnection);
 
     if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-        connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
+        connect(containment, &Plasma::Containment::appletCreated, this, &ActiveLayout::appletCreated);
     }
 
     //! Qt 5.9 creates a crash for this in wayland, that is why the check is used
@@ -1239,7 +1239,7 @@ void Layout::addView(Plasma::Containment *containment, bool forceOnPrimary, int 
     emit viewsCountChanged();
 }
 
-void Layout::addNewView()
+void ActiveLayout::addNewView()
 {
     if (!m_corona) {
         return;
@@ -1248,7 +1248,7 @@ void Layout::addNewView()
     m_corona->loadDefaultLayout();
 }
 
-void Layout::copyView(Plasma::Containment *containment)
+void ActiveLayout::copyView(Plasma::Containment *containment)
 {
     if (!containment || !m_corona)
         return;
@@ -1400,7 +1400,7 @@ void Layout::copyView(Plasma::Containment *containment)
     setBlockAutomaticLatteViewCreation(false);
 }
 
-void Layout::appletCreated(Plasma::Applet *applet)
+void ActiveLayout::appletCreated(Plasma::Applet *applet)
 {
     //! In Multiple Layout the orphaned systrays must be assigned to layouts
     //! when the user adds them
@@ -1421,7 +1421,7 @@ void Layout::appletCreated(Plasma::Applet *applet)
     }
 }
 
-void Layout::importToCorona()
+void ActiveLayout::importToCorona()
 {
     if (!m_corona) {
         return;
@@ -1468,7 +1468,7 @@ void Layout::importToCorona()
     importLayoutFile(temp2File);
 }
 
-QString Layout::availableId(QStringList all, QStringList assigned, int base)
+QString ActiveLayout::availableId(QStringList all, QStringList assigned, int base)
 {
     bool found = false;
 
@@ -1487,7 +1487,7 @@ QString Layout::availableId(QStringList all, QStringList assigned, int base)
     return QString("");
 }
 
-QString Layout::newUniqueIdsLayoutFromFile(QString file)
+QString ActiveLayout::newUniqueIdsLayoutFromFile(QString file)
 {
     if (!m_corona) {
         return QString();
@@ -1659,7 +1659,7 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
     return tempFile;
 }
 
-QList<Plasma::Containment *> Layout::importLayoutFile(QString file)
+QList<Plasma::Containment *> ActiveLayout::importLayoutFile(QString file)
 {
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
     auto newContainments = m_corona->importLayout(KConfigGroup(filePtr, ""));
@@ -1697,7 +1697,7 @@ QList<Plasma::Containment *> Layout::importLayoutFile(QString file)
     return importedDocks;
 }
 
-void Layout::recreateView(Plasma::Containment *containment)
+void ActiveLayout::recreateView(Plasma::Containment *containment)
 {
     if (!m_corona) {
         return;
@@ -1728,7 +1728,7 @@ void Layout::recreateView(Plasma::Containment *containment)
 
 //! the central functions that updates loading/unloading latteviews
 //! concerning screen changed (for multi-screen setups mainly)
-void Layout::syncLatteViewsToScreens()
+void ActiveLayout::syncLatteViewsToScreens()
 {
     if (!m_corona) {
         return;
@@ -1856,7 +1856,7 @@ void Layout::syncLatteViewsToScreens()
     qDebug() << "end of, syncLatteViewsToScreens ....";
 }
 
-void Layout::assignToLayout(Latte::View *latteView, QList<Plasma::Containment *> containments)
+void ActiveLayout::assignToLayout(Latte::View *latteView, QList<Plasma::Containment *> containments)
 {
     if (!m_corona) {
         return;
@@ -1869,9 +1869,9 @@ void Layout::assignToLayout(Latte::View *latteView, QList<Plasma::Containment *>
         for (const auto containment : containments) {
             containment->config().writeEntry("layoutId", name());
 
-            connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
-            connect(containment, &Plasma::Applet::destroyedChanged, this, &Layout::destroyedChanged);
-            connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
+            connect(containment, &QObject::destroyed, this, &ActiveLayout::containmentDestroyed);
+            connect(containment, &Plasma::Applet::destroyedChanged, this, &ActiveLayout::destroyedChanged);
+            connect(containment, &Plasma::Containment::appletCreated, this, &ActiveLayout::appletCreated);
         }
 
         latteView->setManagedLayout(this);
@@ -1885,7 +1885,7 @@ void Layout::assignToLayout(Latte::View *latteView, QList<Plasma::Containment *>
     }
 }
 
-QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *latteView)
+QList<Plasma::Containment *> ActiveLayout::unassignFromLayout(Latte::View *latteView)
 {
     QList<Plasma::Containment *> containments;
 
@@ -1901,9 +1901,9 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *latteView)
         //! add systrays from that latteView
         if (parentApplet && parentApplet->containment() && parentApplet->containment() == latteView->containment()) {
             containments << containment;
-            disconnect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
-            disconnect(containment, &Plasma::Applet::destroyedChanged, this, &Layout::destroyedChanged);
-            disconnect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
+            disconnect(containment, &QObject::destroyed, this, &ActiveLayout::containmentDestroyed);
+            disconnect(containment, &Plasma::Applet::destroyedChanged, this, &ActiveLayout::destroyedChanged);
+            disconnect(containment, &Plasma::Containment::appletCreated, this, &ActiveLayout::appletCreated);
         }
     }
 
@@ -1923,7 +1923,7 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *latteView)
     return containments;
 }
 
-bool Layout::latteViewExists(Plasma::Containment *containment)
+bool ActiveLayout::latteViewExists(Plasma::Containment *containment)
 {
     if (!m_corona) {
         return false;
@@ -1932,7 +1932,7 @@ bool Layout::latteViewExists(Plasma::Containment *containment)
     return m_latteViews.keys().contains(containment);
 }
 
-QList<Plasma::Types::Location> Layout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
+QList<Plasma::Types::Location> ActiveLayout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
@@ -1953,7 +1953,7 @@ QList<Plasma::Types::Location> Layout::availableEdgesForView(QScreen *scr, Latte
     return edges;
 }
 
-QList<int> Layout::qmlFreeEdges(int screen) const
+QList<int> ActiveLayout::qmlFreeEdges(int screen) const
 {
     if (!m_corona) {
         const QList<int> emptyEdges;
@@ -1970,7 +1970,7 @@ QList<int> Layout::qmlFreeEdges(int screen) const
     return edgesInt;
 }
 
-QList<Plasma::Types::Location> Layout::freeEdges(QScreen *scr) const
+QList<Plasma::Types::Location> ActiveLayout::freeEdges(QScreen *scr) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
@@ -1989,7 +1989,7 @@ QList<Plasma::Types::Location> Layout::freeEdges(QScreen *scr) const
     return edges;
 }
 
-QList<Plasma::Types::Location> Layout::freeEdges(int screen) const
+QList<Plasma::Types::Location> ActiveLayout::freeEdges(int screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
@@ -2010,7 +2010,7 @@ QList<Plasma::Types::Location> Layout::freeEdges(int screen) const
     return edges;
 }
 
-bool Layout::explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const
+bool ActiveLayout::explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const
 {
     if (!m_corona) {
         return false;
@@ -2031,7 +2031,7 @@ bool Layout::explicitDockOccupyEdge(int screen, Plasma::Types::Location location
     return false;
 }
 
-bool Layout::primaryDockOccupyEdge(Plasma::Types::Location location) const
+bool ActiveLayout::primaryDockOccupyEdge(Plasma::Types::Location location) const
 {
     if (!m_corona) {
         return false;
@@ -2051,7 +2051,7 @@ bool Layout::primaryDockOccupyEdge(Plasma::Types::Location location) const
     return false;
 }
 
-bool Layout::isLatteContainment(Plasma::Containment *containment) const
+bool ActiveLayout::isLatteContainment(Plasma::Containment *containment) const
 {
     if (!containment) {
         return false;
@@ -2064,7 +2064,7 @@ bool Layout::isLatteContainment(Plasma::Containment *containment) const
     return false;
 }
 
-int Layout::viewsWithTasks() const
+int ActiveLayout::viewsWithTasks() const
 {
     if (!m_corona) {
         return 0;
@@ -2081,7 +2081,7 @@ int Layout::viewsWithTasks() const
     return result;
 }
 
-int Layout::viewsCount(int screen) const
+int ActiveLayout::viewsCount(int screen) const
 {
     if (!m_corona) {
         return 0;
@@ -2100,7 +2100,7 @@ int Layout::viewsCount(int screen) const
     return docks;
 }
 
-int Layout::viewsCount(QScreen *screen) const
+int ActiveLayout::viewsCount(QScreen *screen) const
 {
     if (!m_corona) {
         return 0;
@@ -2117,7 +2117,7 @@ int Layout::viewsCount(QScreen *screen) const
     return docks;
 }
 
-int Layout::viewsCount() const
+int ActiveLayout::viewsCount() const
 {
     if (!m_corona) {
         return 0;

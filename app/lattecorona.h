@@ -202,7 +202,7 @@ private:
     KWayland::Client::PlasmaShell *m_waylandCorona{nullptr};
 
     friend class GlobalShortcuts;
-    friend class Layout;
+    friend class ActiveLayout;
     friend class LayoutManager;
     friend class LaunchersSignals;
 };

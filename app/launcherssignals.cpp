@@ -23,7 +23,7 @@
 // local
 #include "lattecorona.h"
 #include "layoutmanager.h"
-#include "layout/layout.h"
+#include "layout/activelayout.h"
 
 // Qt
 #include <QQuickItem>
@@ -48,7 +48,7 @@ QList<Plasma::Applet *> LaunchersSignals::lattePlasmoids(QString layoutName)
 {
     QList<Plasma::Applet *> applets;
 
-    Layout *layout = m_manager->activeLayout(layoutName);
+    ActiveLayout *layout = m_manager->activeLayout(layoutName);
     QList<Plasma::Containment *> containments;
 
     if (layoutName.isEmpty()) {

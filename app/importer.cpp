@@ -24,7 +24,7 @@
 #include "lattecorona.h"
 #include "layoutmanager.h"
 #include "screenpool.h"
-#include "layout/layout.h"
+#include "layout/activelayout.h"
 #include "settings/universalsettings.h"
 #include "../liblatte2/types.h"
 
@@ -169,7 +169,7 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
     }
 
     //! update also the layout settings correctly
-    Layout newLayout(this, newLayoutPath, newName);
+    Latte::ActiveLayout newLayout(this, newLayoutPath, newName);
     newLayout.setVersion(2);
     newLayout.setLaunchers(layoutLaunchers);
 
@@ -513,7 +513,7 @@ QString Importer::importLayoutHelper(QString fileName)
         return QString();
     }
 
-    QString newLayoutName = Layout::layoutName(fileName);
+    QString newLayoutName = Latte::ActiveLayout::layoutName(fileName);
     newLayoutName = uniqueLayoutName(newLayoutName);
 
     QString newPath = QDir::homePath() + "/.config/latte/" + newLayoutName + ".layout.latte";
@@ -539,7 +539,7 @@ QStringList Importer::availableLayouts()
     QStringList layoutNames;
 
     for(const auto &file : files) {
-        layoutNames.append(Layout::layoutName(file));
+        layoutNames.append(ActiveLayout::layoutName(file));
     }
 
     return layoutNames;
@@ -591,7 +591,7 @@ QString Importer::uniqueLayoutName(QString name)
 
 QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
 {
-    QString linkedFilePath = QDir::homePath() + "/.config/latte/" + Layout::MultipleLayoutsName + ".layout.latte";
+    QString linkedFilePath = QDir::homePath() + "/.config/latte/" + ActiveLayout::MultipleLayoutsName + ".layout.latte";
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(linkedFilePath);
     KConfigGroup linkedContainments = KConfigGroup(filePtr, "Containments");
 
@@ -611,7 +611,7 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
     QStringList updatedLayouts;
 
     for(const auto &layoutName : linkedLayoutContainmentGroups.uniqueKeys()) {
-        if (layoutName != Layout::MultipleLayoutsName && layoutExists(layoutName)) {
+        if (layoutName != ActiveLayout::MultipleLayoutsName && layoutExists(layoutName)) {
             updatedLayouts << layoutName;
             KSharedConfigPtr layoutFilePtr = KSharedConfig::openConfig(layoutFilePath(layoutName));
             KConfigGroup origLayoutContainments = KConfigGroup(layoutFilePtr, "Containments");

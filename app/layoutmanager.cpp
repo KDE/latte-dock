@@ -25,7 +25,7 @@
 #include "infoview.h"
 #include "launcherssignals.h"
 #include "screenpool.h"
-#include "layout/layout.h"
+#include "layout/activelayout.h"
 #include "settings/settingsdialog.h"
 #include "settings/universalsettings.h"
 #include "view/view.h"
@@ -71,7 +71,7 @@ LayoutManager::~LayoutManager()
     m_launchersSignals->deleteLater();
 
     while (!m_activeLayouts.isEmpty()) {
-        Layout *layout = m_activeLayouts.at(0);
+        ActiveLayout *layout = m_activeLayouts.at(0);
         m_activeLayouts.removeFirst();
         layout->unloadContainments();
         layout->unloadLatteViews();
@@ -105,7 +105,7 @@ void LayoutManager::load()
     }
 
     //! Check if the multiple-layouts hidden file is present, add it if it isnt
-    if (!QFile(QDir::homePath() + "/.config/latte/" + Layout::MultipleLayoutsName + ".layout.latte").exists()) {
+    if (!QFile(QDir::homePath() + "/.config/latte/" + ActiveLayout::MultipleLayoutsName + ".layout.latte").exists()) {
         importPreset(MultipleLayoutsPresetId, false);
     }
 
@@ -194,7 +194,7 @@ QString LayoutManager::defaultLayoutName() const
 {
     QByteArray presetNameOrig = QString("preset" + QString::number(1)).toUtf8();
     QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
-    QString presetName = Layout::layoutName(presetPath);
+    QString presetName = ActiveLayout::layoutName(presetPath);
     QByteArray presetNameChars = presetName.toUtf8();
     presetName = i18n(presetNameChars);
 
@@ -315,7 +315,7 @@ QStringList LayoutManager::activeLayoutsNames()
         names << currentLayoutName();
     } else {
         for (int i = 0; i < m_activeLayouts.size(); ++i) {
-            Layout *layout = m_activeLayouts.at(i);
+            ActiveLayout *layout = m_activeLayouts.at(i);
 
             if (layout->isOriginalLayout()) {
                 names << layout->name();
@@ -328,10 +328,10 @@ QStringList LayoutManager::activeLayoutsNames()
 }
 
 
-Layout *LayoutManager::activeLayout(QString id) const
+ActiveLayout *LayoutManager::activeLayout(QString id) const
 {
     for (int i = 0; i < m_activeLayouts.size(); ++i) {
-        Layout *layout = m_activeLayouts.at(i);
+        ActiveLayout *layout = m_activeLayouts.at(i);
 
         if (layout->name() == id) {
 
@@ -345,7 +345,7 @@ Layout *LayoutManager::activeLayout(QString id) const
 int LayoutManager::activeLayoutPos(QString id) const
 {
     for (int i = 0; i < m_activeLayouts.size(); ++i) {
-        Layout *layout = m_activeLayouts.at(i);
+        ActiveLayout *layout = m_activeLayouts.at(i);
 
         if (layout->name() == id) {
 
@@ -356,7 +356,7 @@ int LayoutManager::activeLayoutPos(QString id) const
     return -1;
 }
 
-Layout *LayoutManager::currentLayout() const
+ActiveLayout *LayoutManager::currentLayout() const
 {
     if (memoryUsage() == Types::SingleLayout) {
         return m_activeLayouts.at(0);
@@ -368,7 +368,7 @@ Layout *LayoutManager::currentLayout() const
         }
 
         for (auto layout : m_activeLayouts) {
-            if ((layout->name() != Layout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
+            if ((layout->name() != ActiveLayout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
                 return layout;
             }
         }
@@ -469,7 +469,7 @@ void LayoutManager::loadLayouts()
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
 
     for (const auto &layout : files) {
-        Layout layoutSets(this, layoutDir.absolutePath() + "/" + layout);
+        ActiveLayout layoutSets(this, layoutDir.absolutePath() + "/" + layout);
 
         QStringList validActivityIds = validActivities(layoutSets.activities());
         layoutSets.setActivities(validActivityIds);
@@ -619,7 +619,7 @@ void LayoutManager::hideAllViews()
     }
 }
 
-void LayoutManager::addLayout(Layout *layout)
+void LayoutManager::addLayout(ActiveLayout *layout)
 {
     if (!m_activeLayouts.contains(layout)) {
         m_activeLayouts.append(layout);
@@ -635,7 +635,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 
     //! First Check If that Layout is already present
     if (memoryUsage() == Types::MultipleLayouts && previousMemoryUsage == -1) {
-        Layout *layout = activeLayout(layoutName);
+        ActiveLayout *layout = activeLayout(layoutName);
 
         if (layout) {
 
@@ -670,12 +670,12 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
     if (!lPath.isEmpty()) {
         if (memoryUsage() == Types::SingleLayout) {
             emit currentLayoutIsSwitching(currentLayoutName());
-        } else if (memoryUsage() == Types::MultipleLayouts && layoutName != Layout::MultipleLayoutsName) {
-            Layout toLayout(this, lPath);
+        } else if (memoryUsage() == Types::MultipleLayouts && layoutName != ActiveLayout::MultipleLayoutsName) {
+            ActiveLayout toLayout(this, lPath);
 
             QStringList toActivities = toLayout.activities();
 
-            Layout *activeForOrphans{nullptr};
+            ActiveLayout *activeForOrphans{nullptr};
 
             for (const auto fromLayout : m_activeLayouts) {
                 if (fromLayout->isOriginalLayout() && fromLayout->activities().isEmpty()) {
@@ -701,13 +701,13 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 
             bool initializingMultipleLayouts{false};
 
-            if (memoryUsage() == Types::MultipleLayouts && !activeLayout(Layout::MultipleLayoutsName)) {
+            if (memoryUsage() == Types::MultipleLayouts && !activeLayout(ActiveLayout::MultipleLayoutsName)) {
                 initializingMultipleLayouts = true;
             }
 
             if (memoryUsage() == Types::SingleLayout || initializingMultipleLayouts || previousMemoryUsage == Types::MultipleLayouts) {
                 while (!m_activeLayouts.isEmpty()) {
-                    Layout *layout = m_activeLayouts.at(0);
+                    ActiveLayout *layout = m_activeLayouts.at(0);
                     m_activeLayouts.removeFirst();
 
                     if (layout->isOriginalLayout() && previousMemoryUsage == Types::MultipleLayouts) {
@@ -725,11 +725,11 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                 }
 
                 if (initializingMultipleLayouts) {
-                    fixedLayoutName = QString(Layout::MultipleLayoutsName);
+                    fixedLayoutName = QString(ActiveLayout::MultipleLayoutsName);
                     fixedLPath = layoutPath(fixedLayoutName);
                 }
 
-                Layout *newLayout = new Layout(this, fixedLPath, fixedLayoutName);
+                ActiveLayout *newLayout = new ActiveLayout(this, fixedLPath, fixedLayoutName);
                 addLayout(newLayout);
                 loadLatteLayout(fixedLPath);
 
@@ -742,7 +742,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                     //! a Layout that is assigned to specific activities but this
                     //! layout isnt loaded (this means neither of its activities are running)
                     //! is such case we just activate these Activities
-                    Layout layout(this, Importer::layoutFilePath(layoutName));
+                    ActiveLayout layout(this, Importer::layoutFilePath(layoutName));
 
                     int i = 0;
                     bool lastUsedActivityFound{false};
@@ -820,7 +820,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
     QStringList layoutsToUnload;
     QStringList layoutsToLoad;
-    layoutsToLoad << Layout::MultipleLayoutsName;
+    layoutsToLoad << ActiveLayout::MultipleLayoutsName;
 
     bool allRunningActivitiesWillBeReserved{true};
 
@@ -855,8 +855,8 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
     //! Unload no needed Layouts
     for (const auto &layoutName : layoutsToUnload) {
-        if (layoutName != Layout::MultipleLayoutsName) {
-            Layout *layout = activeLayout(layoutName);
+        if (layoutName != ActiveLayout::MultipleLayoutsName) {
+            ActiveLayout *layout = activeLayout(layoutName);
             int posLayout = activeLayoutPos(layoutName);
 
             if (posLayout >= 0) {
@@ -878,7 +878,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
     //! Add Layout for orphan activities
     if (!allRunningActivitiesWillBeReserved) {
         if (!activeLayout(layoutForOrphans)) {
-            Layout *newLayout = new Layout(this, layoutPath(layoutForOrphans), layoutForOrphans);
+            ActiveLayout *newLayout = new ActiveLayout(this, layoutPath(layoutForOrphans), layoutForOrphans);
 
             if (newLayout) {
                 qDebug() << "ACTIVATING ORPHANED LAYOUT ::::: " << layoutForOrphans;
@@ -891,7 +891,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
     //! Add needed Layouts based on Activities
     for (const auto &layoutName : layoutsToLoad) {
         if (!activeLayout(layoutName)) {
-            Layout *newLayout = new Layout(this, QString(layoutPath(layoutName)), layoutName);
+            ActiveLayout *newLayout = new ActiveLayout(this, QString(layoutPath(layoutName)), layoutName);
 
             if (newLayout) {
                 qDebug() << "ACTIVATING LAYOUT ::::: " << layoutName;
@@ -912,7 +912,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 void LayoutManager::pauseLayout(QString layoutName)
 {
     if (memoryUsage() == Types::MultipleLayouts) {
-        Layout *layout = activeLayout(layoutName);
+        ActiveLayout *layout = activeLayout(layoutName);
 
         if (layout && !layout->activities().isEmpty()) {
             int i = 0;
@@ -1074,7 +1074,7 @@ void LayoutManager::importPreset(int presetNo, bool newInstanceIfPresent)
 
     QByteArray presetNameOrig = QString("preset" + QString::number(presetNo)).toUtf8();
     QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
-    QString presetName = Layout::layoutName(presetPath);
+    QString presetName = ActiveLayout::layoutName(presetPath);
     QByteArray presetNameChars = presetName.toUtf8();
     presetName = i18n(presetNameChars);
 

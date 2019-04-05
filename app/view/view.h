@@ -29,7 +29,7 @@
 #include "windowstracker.h"
 #include "settings/primaryconfigview.h"
 #include "../shortcuts/globalshortcuts.h"
-#include "../layout/layout.h"
+#include "../layout/activelayout.h"
 #include "../plasma/quick/containmentview.h"
 #include "../plasma/quick/configview.h"
 #include "../../liblatte2/types.h"
@@ -58,7 +58,7 @@ class PlasmaShellSurface;
 }
 
 namespace Latte {
-class Layout;
+class ActiveLayout;
 
 namespace ViewPart {
 class ContextMenu;
@@ -97,7 +97,7 @@ class View : public PlasmaQuick::ContainmentView
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
-    Q_PROPERTY(Layout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
+    Q_PROPERTY(Latte::ActiveLayout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Latte::ViewPart::Indicator *indicator READ indicator NOTIFY indicatorChanged)
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
@@ -184,8 +184,8 @@ public:
     ViewPart::VisibilityManager *visibility() const;
     ViewPart::WindowsTracker *windowsTracker() const;
 
-    Layout *managedLayout() const;
-    void setManagedLayout(Layout *layout);
+    Latte::ActiveLayout *managedLayout() const;
+    void setManagedLayout(Latte::ActiveLayout *layout);
 
     KWayland::Client::PlasmaShellSurface *surface();
 
@@ -304,7 +304,7 @@ private:
     QRect m_localGeometry;
     QRect m_absGeometry;
 
-    Layout *m_managedLayout{nullptr};
+    Latte::ActiveLayout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
 
     QPointer<ViewPart::ContextMenu> m_contextMenu;
