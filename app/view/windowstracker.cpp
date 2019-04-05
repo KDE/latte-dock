@@ -258,6 +258,10 @@ void WindowsTracker::updateFlags()
     WindowId activeTouchWinId;
 
     for (const auto &winfo : m_windows) {
+        if (winfo.isPlasmaDesktop()) {
+            continue;
+        }
+
         if (isActive(winfo)) {
             foundActive = true;
         }
