@@ -120,6 +120,7 @@ public:
     QQmlComponent *plasmaComponent() const;
 
     void load(QString type);
+    void unloadIndicators();
 
 public slots:
     Q_INVOKABLE void configUiFor(QString type, QQuickItem *parent);

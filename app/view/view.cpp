@@ -147,6 +147,10 @@ View::~View()
 {
     m_inDelete = true;
 
+    if (m_indicator) {
+        m_indicator->unloadIndicators();
+    }
+
     disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &View::availableScreenRectChanged);
     disconnect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), this, SLOT(statusChanged(Plasma::Types::ItemStatus)));
 
@@ -177,12 +181,12 @@ View::~View()
         delete m_positioner;
     }
 
-    if (m_indicator) {
-        delete m_indicator;
-    }
-
     if (m_effects) {
         delete m_effects;
+    }
+
+    if (m_indicator) {
+        delete m_indicator;
     }
 
     if (m_visibility) {

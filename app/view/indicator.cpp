@@ -360,6 +360,11 @@ void Indicator::configUiFor(QString type, QQuickItem *parent)
     }
 }
 
+void Indicator::unloadIndicators()
+{
+    setPluginIsReady(false);
+}
+
 void Indicator::updateScheme()
 {
     auto prevConfigLoader = m_configLoader;
