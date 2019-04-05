@@ -65,6 +65,8 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
 
+    connections << connect(m_parent, &PrimaryConfigView::availableScreenGeometryChanged, this, &SecondaryConfigView::syncGeometry);
+
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_latteView->screen());
         setFlags(wFlags());
