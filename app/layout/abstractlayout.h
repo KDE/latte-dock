@@ -35,16 +35,30 @@ class AbstractLayout : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
 
+    Q_PROPERTY(bool preferredForShortcutsTouched READ preferredForShortcutsTouched WRITE setPreferredForShortcutsTouched NOTIFY preferredForShortcutsTouchedChanged)
+
     Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
+    Q_PROPERTY(QString lastUsedActivity READ lastUsedActivity NOTIFY lastUsedActivityChanged)
     Q_PROPERTY(QString textColor READ textColor NOTIFY textColorChanged)
+
+    Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
 
 public:
     AbstractLayout(QObject *parent, QString layoutFile, QString assignedName = QString());
     ~AbstractLayout() override;
 
+    static const QString MultipleLayoutsName;
+
     int version() const;
     void setVersion(int ver);
+
+    bool preferredForShortcutsTouched() const;
+    void setPreferredForShortcutsTouched(bool touched);
+
+    QString lastUsedActivity();
+    void clearLastUsedActivity(); //!e.g. when we export a layout
+    void updateLastUsedActivity();
 
     QString name() const;
     QString file() const;
@@ -58,6 +72,9 @@ public:
     QString textColor() const;
     void setTextColor(QString color);
 
+    QStringList launchers() const;
+    void setLaunchers(QStringList launcherList);
+
 // STATIC
     static QString layoutName(const QString &fileName);
 
@@ -65,7 +82,10 @@ signals:
     void backgroundChanged();
     void colorChanged();
     void fileChanged();
+    void lastUsedActivityChanged();
+    void launchersChanged();
     void nameChanged();
+    void preferredForShortcutsTouchedChanged();
     void textColorChanged();
     void versionChanged();
 
@@ -80,16 +100,21 @@ protected:
 
 protected:
     bool m_loadedCorrectly{false};
+    bool m_preferredForShortcutsTouched{false};
 
     //if version doesn't exist it is and old layout file
     int m_version{2};
 
     QString m_background;
     QString m_color;
+    QString m_lastUsedActivity; //the last used activity for this layout
+
     QString m_textColor;
 
     QString m_layoutFile;
     QString m_layoutName;
+
+    QStringList m_launchers;
 
     KConfigGroup m_layoutGroup;
 };

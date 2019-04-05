@@ -23,6 +23,7 @@
 
 // local
 #include "plasma/quick/configview.h"
+#include "layout/genericlayout.h"
 #include "../liblatte2/types.h"
 
 // Qt
@@ -69,6 +70,9 @@ class LaunchersSignals;
 namespace Indicator{
 class Factory;
 }
+namespace Layout{
+class GenericLayout;
+}
 namespace PlasmaExtended{
 class ScreenPool;
 class Theme;
@@ -107,6 +111,9 @@ public:
 
     void closeApplication();
 
+    KActivities::Consumer *activityConsumer() const;
+    KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
+
     AbstractWindowInterface *wm() const;
     KActivities::Consumer *activitiesConsumer() const;
     GlobalShortcuts *globalShortcuts() const;
@@ -118,8 +125,6 @@ public:
 
     PlasmaExtended::ScreenPool *plasmaScreenPool() const;
     PlasmaExtended::Theme *themeExtended() const;
-
-    KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
 
     //! these functions are used from context menu through containmentactions
     void switchToLayout(QString layout);
@@ -202,9 +207,9 @@ private:
     KWayland::Client::PlasmaShell *m_waylandCorona{nullptr};
 
     friend class GlobalShortcuts;
-    friend class ActiveLayout;
     friend class LayoutManager;
     friend class LaunchersSignals;
+    friend class Layout::GenericLayout;
 };
 
 }

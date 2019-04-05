@@ -295,6 +295,11 @@ void Corona::setupWaylandIntegration()
     connection->roundtrip();
 }
 
+KActivities::Consumer *Corona::activityConsumer() const
+{
+    return m_activityConsumer;
+}
+
 KWayland::Client::PlasmaShell *Corona::waylandCoronaInterface() const
 {
     return m_waylandCorona;

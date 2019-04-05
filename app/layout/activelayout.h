@@ -53,26 +53,14 @@ namespace Latte {
 class ActiveLayout : public Layout::GenericLayout
 {
     Q_OBJECT
-    Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
-
-    Q_PROPERTY(int viewsCount READ viewsCount NOTIFY viewsCountChanged)
-
-    Q_PROPERTY(QString lastUsedActivity READ lastUsedActivity NOTIFY lastUsedActivityChanged)
-    Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
-    Q_PROPERTY(QStringList activities READ activities WRITE setActivities NOTIFY activitiesChanged)
-
-    Q_PROPERTY(bool preferredForShortcutsTouched READ preferredForShortcutsTouched WRITE setPreferredForShortcutsTouched NOTIFY preferredForShortcutsTouchedChanged)
+  //  Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
+   // Q_PROPERTY(QStringList activities READ activities WRITE setActivities NOTIFY activitiesChanged)
 
 public:
     ActiveLayout(QObject *parent, QString layoutFile, QString layoutName = QString());
     ~ActiveLayout() override;
 
-    static const QString MultipleLayoutsName;
-
     void initToCorona(Latte::Corona *corona);
-    void syncToLayoutFile(bool removeLayoutId = false);
-    void unloadContainments();
-    void unloadLatteViews();
 
     bool disableBordersForMaximizedWindows() const;
     void setDisableBordersForMaximizedWindows(bool disable);
@@ -80,161 +68,37 @@ public:
     bool showInMenu() const;
     void setShowInMenu(bool show);
 
-    bool layoutIsBroken() const;
-
     //!this layout is loaded and running
     bool isActiveLayout() const;
     //!it is original layout compared to pseudo-layouts that are combinations of multiple-original layouts
     bool isOriginalLayout() const;
 
-    bool isWritable() const;
-
-    bool latteViewExists(Plasma::Containment *containment);
-
-    QString lastUsedActivity();
-    void clearLastUsedActivity(); //!e.g. when we export a layout
-
     QStringList activities() const;
     void setActivities(QStringList activities);
 
-    QStringList launchers() const;
-    void setLaunchers(QStringList launcherList);
-
-    void renameLayout(QString newName);
-
-    QStringList unloadedContainmentsIds();
-
-    //! this function needs the layout to have first set the corona through initToCorona() function
-    void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1);
-    void copyView(Plasma::Containment *containment);
-    void recreateView(Plasma::Containment *containment);
-
-    void syncLatteViewsToScreens();
-    void importToCorona();
-
-    const QStringList appliedActivities();
-
-    QList<Plasma::Containment *> *containments();
-
-    QHash<const Plasma::Containment *, Latte::View *> *latteViews();
-    QList<Latte::View *> sortedLatteViews();
-    QList<Latte::View *> viewsWithPlasmaShortcuts();
-
-    Types::ViewType latteViewType(int containmentId) const;
-
-    Latte::View *highestPriorityView();
-
-    //! Bind this latteView and its relevant containments(including systrays)
-    //! to this layout. It is used for moving a Latte::View from layout to layout)
-    void assignToLayout(Latte::View *latteView, QList<Plasma::Containment *> containments);
-
-    //! Unassign that latteView from this layout (this is used for moving a latteView
-    //! from layout to layout) and returns all the containments relevant to
-    //! that latteView
-    QList<Plasma::Containment *> unassignFromLayout(Latte::View *latteView);
-
-    //! Available edges for specific view in that screen
-    QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;
-
-    //! All free edges in that screen
-    QList<Plasma::Types::Location> freeEdges(QScreen *scr) const;
-    QList<Plasma::Types::Location> freeEdges(int screen) const;
-
-    //! make it only read-only
-    void lock();
-    //! make it writable which it should be the default
-    void unlock();
-
-    int viewsCount(int screen) const;
-    int viewsCount(QScreen *screen) const;
-    int viewsCount() const;
-
-    bool preferredForShortcutsTouched() const;
-    void setPreferredForShortcutsTouched(bool touched);
-
-public slots:
-    Q_INVOKABLE int viewsWithTasks() const;
-
-    //change <Plasma::Types::Location> to <int> types
-    Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;
-
-    Q_INVOKABLE void addNewView();
+    const QStringList appliedActivities() override;
 
 signals:
     void activitiesChanged();
     void disableBordersForMaximizedWindowsChanged();
-    void lastUsedActivityChanged();
-    void launchersChanged();
     void showInMenuChanged();
-    void viewsCountChanged();
-
-    //! used from LatteView(s) in order to exist only one each time that has the highest priority
-    //! to use the global shortcuts activations
-    void preferredViewForShortcutsChanged(Latte::View *view);
-    void preferredForShortcutsTouchedChanged();
-
-    //! used from ConfigView(s) in order to be informed which is one should be shown
-    void configViewCreated(QQuickView *configView);
 
 private slots:
     void loadConfig();
     void saveConfig();
 
-    void addContainment(Plasma::Containment *containment);
-    void appletCreated(Plasma::Applet *applet);
-    void destroyedChanged(bool destroyed);
-    void containmentDestroyed(QObject *cont);
-    void updateLastUsedActivity();
-
 private:
     void init();
     void importLocalLayout(QString file);
-
-    bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
-    bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
-
-    //! It can be used in order for LatteViews to not be created automatically when
-    //! their corresponding containments are created e.g. copyView functionality
-    bool blockAutomaticLatteViewCreation() const;
-    void setBlockAutomaticLatteViewCreation(bool block);
-
-    bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const;
-    bool primaryDockOccupyEdge(Plasma::Types::Location location) const;
-
-    //! Check if a containment is a latte dock/panel
-    bool isLatteContainment(Plasma::Containment *containment) const;
-    //! Check if an applet config group is valid or belongs to removed applet
-    bool appletGroupIsValid(KConfigGroup appletGroup) const;
+    void updateLastUsedActivity();
 
     bool kwin_disabledMaximizedBorders() const;
     void kwin_setDisabledMaximizedBorders(bool disable);
 
-    QString availableId(QStringList all, QStringList assigned, int base);
-    //! provides a new file path based the provided file. The new file
-    //! has updated ids for containments and applets based on the corona
-    //! loaded ones
-    QString newUniqueIdsLayoutFromFile(QString file);
-    //! imports a layout file and returns the containments for the docks
-    QList<Plasma::Containment *> importLayoutFile(QString file);
-
 private:
-    bool m_blockAutomaticLatteViewCreation{false};
     bool m_disableBordersForMaximizedWindows{false};
     bool m_showInMenu{false};
-
-    QString m_lastUsedActivity; //the last used activity for this layout
     QStringList m_activities;
-    QStringList m_launchers;
-    bool m_preferredForShortcutsTouched{false};
-
-    QStringList m_unloadedContainmentsIds;
-
-    Latte::Corona *m_corona{nullptr};
-
-    QList<Plasma::Containment *> m_containments;
-
-    QHash<const Plasma::Containment *, Latte::View *> m_latteViews;
-    QHash<const Plasma::Containment *, Latte::View *> m_waitingLatteViews;
 };
 
 }

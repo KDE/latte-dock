@@ -27,6 +27,8 @@
 namespace Latte {
 namespace Layout {
 
+const QString AbstractLayout::MultipleLayoutsName = ".multiple-layouts_hidden";
+
 AbstractLayout::AbstractLayout(QObject *parent, QString layoutFile, QString assignedName)
     : QObject(parent)
 {
@@ -54,14 +56,12 @@ AbstractLayout::~AbstractLayout()
 void AbstractLayout::init()
 {
     connect(this, &AbstractLayout::backgroundChanged, this, &AbstractLayout::saveConfig);
-    connect(this, &AbstractLayout::versionChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::colorChanged, this, &AbstractLayout::textColorChanged);
-//    connect(this, &ActiveLayout::disableBordersForMaximizedWindowsChanged, this, &ActiveLayout::saveConfig);
-//    connect(this, &ActiveLayout::showInMenuChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &AbstractLayout::lastUsedActivityChanged, this, &AbstractLayout::saveConfig);
+    connect(this, &AbstractLayout::launchersChanged, this, &AbstractLayout::saveConfig);
+    connect(this, &AbstractLayout::preferredForShortcutsTouchedChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::textColorChanged, this, &AbstractLayout::saveConfig);
-//    connect(this, &ActiveLayout::launchersChanged, this, &ActiveLayout::saveConfig);
-//    connect(this, &ActiveLayout::lastUsedActivityChanged, this, &ActiveLayout::saveConfig);
-//    connect(this, &ActiveLayout::preferredForShortcutsTouchedChanged, this, &ActiveLayout::saveConfig);*/
+    connect(this, &AbstractLayout::versionChanged, this, &AbstractLayout::saveConfig);
 }
 
 int AbstractLayout::version() const
@@ -78,6 +78,22 @@ void AbstractLayout::setVersion(int ver)
     m_version = ver;
 
     emit versionChanged();
+}
+
+
+bool AbstractLayout::preferredForShortcutsTouched() const
+{
+    return m_preferredForShortcutsTouched;
+}
+
+void AbstractLayout::setPreferredForShortcutsTouched(bool touched)
+{
+    if (m_preferredForShortcutsTouched == touched) {
+        return;
+    }
+
+    m_preferredForShortcutsTouched = touched;
+    emit preferredForShortcutsTouchedChanged();
 }
 
 QString AbstractLayout::background() const
@@ -160,6 +176,17 @@ void AbstractLayout::setColor(QString color)
     emit colorChanged();
 }
 
+QString AbstractLayout::lastUsedActivity()
+{
+    return m_lastUsedActivity;
+}
+
+void AbstractLayout::clearLastUsedActivity()
+{
+    m_lastUsedActivity = "";
+    emit lastUsedActivityChanged();
+}
+
 QString AbstractLayout::textColor() const
 {
     //! the user is in default layout theme
@@ -209,6 +236,21 @@ void AbstractLayout::setTextColor(QString color)
     emit textColorChanged();
 }
 
+QStringList AbstractLayout::launchers() const
+{
+    return m_launchers;
+}
+
+void AbstractLayout::setLaunchers(QStringList launcherList)
+{
+    if (m_launchers == launcherList)
+        return;
+
+    m_launchers = launcherList;
+
+    emit launchersChanged();
+}
+
 
 QString AbstractLayout::layoutName(const QString &fileName)
 {
@@ -226,13 +268,10 @@ void AbstractLayout::loadConfig()
 {
     m_version = m_layoutGroup.readEntry("version", 2);
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
-  //  m_disableBordersForMaximizedWindows = m_layoutGroup.readEntry("disableBordersForMaximizedWindows", false);
-  //  m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
     m_textColor = m_layoutGroup.readEntry("textColor", QString("fcfcfc"));
-  //  m_activities = m_layoutGroup.readEntry("activities", QStringList());
-  //  m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
-  //  m_lastUsedActivity = m_layoutGroup.readEntry("lastUsedActivity", QString());
-  //  m_preferredForShortcutsTouched = m_layoutGroup.readEntry("preferredForShortcutsTouched", false);
+    m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
+    m_lastUsedActivity = m_layoutGroup.readEntry("lastUsedActivity", QString());
+    m_preferredForShortcutsTouched = m_layoutGroup.readEntry("preferredForShortcutsTouched", false);
 
     QString back = m_layoutGroup.readEntry("background", "");
 
@@ -251,15 +290,12 @@ void AbstractLayout::saveConfig()
 {
     qDebug() << "abstract layout is saving... for layout:" << m_layoutName;
     m_layoutGroup.writeEntry("version", m_version);
-//    m_layoutGroup.writeEntry("showInMenu", m_showInMenu);
     m_layoutGroup.writeEntry("color", m_color);
- //   m_layoutGroup.writeEntry("disableBordersForMaximizedWindows", m_disableBordersForMaximizedWindows);
- //   m_layoutGroup.writeEntry("launchers", m_launchers);
+    m_layoutGroup.writeEntry("launchers", m_launchers);
     m_layoutGroup.writeEntry("background", m_background);
- //   m_layoutGroup.writeEntry("activities", m_activities);
- //   m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
+    m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
     m_layoutGroup.writeEntry("textColor", m_textColor);
-  //  m_layoutGroup.writeEntry("preferredForShortcutsTouched", m_preferredForShortcutsTouched);
+    m_layoutGroup.writeEntry("preferredForShortcutsTouched", m_preferredForShortcutsTouched);
 
     m_layoutGroup.sync();
 }

@@ -22,9 +22,26 @@
 
 // local
 #include "abstractlayout.h"
+#include "../../liblatte2/types.h"
 
 // Qt
 #include <QObject>
+#include <QQuickView>
+#include <QScreen>
+
+// Plasma
+#include <Plasma>
+
+namespace Plasma {
+class Applet;
+class Containment;
+class Types;
+}
+
+namespace Latte {
+class Corona;
+class View;
+}
 
 namespace Latte {
 namespace Layout {
@@ -32,10 +49,125 @@ namespace Layout {
 class GenericLayout : public AbstractLayout
 {
     Q_OBJECT
+    Q_PROPERTY(int viewsCount READ viewsCount NOTIFY viewsCountChanged)
 
 public:
     GenericLayout(QObject *parent, QString layoutFile, QString assignedName = QString());
     ~GenericLayout() override;
+
+    virtual const QStringList appliedActivities() = 0; // to move at an interface
+
+    void importToCorona();
+    bool initToCorona(Latte::Corona *corona);
+
+    bool isWritable() const;
+    bool layoutIsBroken() const;
+
+    int viewsCount(int screen) const;
+    int viewsCount(QScreen *screen) const;
+    int viewsCount() const;
+
+    QStringList unloadedContainmentsIds();
+
+    Types::ViewType latteViewType(int containmentId) const;
+    QList<Plasma::Containment *> *containments();
+
+    Latte::View *highestPriorityView();
+    QList<Latte::View *> sortedLatteViews();
+    QList<Latte::View *> viewsWithPlasmaShortcuts();
+    QHash<const Plasma::Containment *, Latte::View *> *latteViews();
+
+    void syncToLayoutFile(bool removeLayoutId = false);
+
+    void lock(); //! make it only read-only
+    void renameLayout(QString newName);
+    void syncLatteViewsToScreens();
+    void unloadContainments();
+    void unloadLatteViews();
+    void unlock(); //! make it writable which it should be the default
+
+    //! this function needs the layout to have first set the corona through initToCorona() function
+    void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1);
+    void copyView(Plasma::Containment *containment);
+    void recreateView(Plasma::Containment *containment);
+    bool latteViewExists(Plasma::Containment *containment);
+
+    //! Available edges for specific view in that screen
+    QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;
+    //! All free edges in that screen
+    QList<Plasma::Types::Location> freeEdges(QScreen *scr) const;
+    QList<Plasma::Types::Location> freeEdges(int screen) const;
+
+    //! Bind this latteView and its relevant containments(including systrays)
+    //! to this layout. It is used for moving a Latte::View from layout to layout)
+    void assignToLayout(Latte::View *latteView, QList<Plasma::Containment *> containments);
+    //! Unassign that latteView from this layout (this is used for moving a latteView
+    //! from layout to layout) and returns all the containments relevant to
+    //! that latteView
+    QList<Plasma::Containment *> unassignFromLayout(Latte::View *latteView);
+
+    //!             STATIC                       !//
+    //! Check if a containment is a latte dock/panel
+    static bool isLatteContainment(Plasma::Containment *containment);
+    //! Check if an applet config group is valid or belongs to removed applet
+    static bool appletGroupIsValid(KConfigGroup appletGroup);
+
+public slots:
+    Q_INVOKABLE void addNewView();
+    Q_INVOKABLE int viewsWithTasks() const;
+    Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;  //change <Plasma::Types::Location> to <int> types
+
+signals:
+    void activitiesChanged(); // to move at an interface
+
+    void viewsCountChanged();
+
+    //! used from ConfigView(s) in order to be informed which is one should be shown
+    void configViewCreated(QQuickView *configView);
+
+    //! used from LatteView(s) in order to exist only one each time that has the highest priority
+    //! to use the global shortcuts activations
+    void preferredViewForShortcutsChanged(Latte::View *view);
+
+private slots:
+    void addContainment(Plasma::Containment *containment);
+    void appletCreated(Plasma::Applet *applet);
+    void destroyedChanged(bool destroyed);
+    void containmentDestroyed(QObject *cont);
+
+protected:
+    Latte::Corona *m_corona{nullptr};
+
+    QList<Plasma::Containment *> m_containments;
+
+    QHash<const Plasma::Containment *, Latte::View *> m_latteViews;
+    QHash<const Plasma::Containment *, Latte::View *> m_waitingLatteViews;
+
+private:
+    //! It can be used in order for LatteViews to not be created automatically when
+    //! their corresponding containments are created e.g. copyView functionality
+    bool blockAutomaticLatteViewCreation() const;
+    void setBlockAutomaticLatteViewCreation(bool block);
+
+    bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const;
+    bool primaryDockOccupyEdge(Plasma::Types::Location location) const;
+
+    bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
+    bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
+
+    //! STORAGE !////
+    QString availableId(QStringList all, QStringList assigned, int base);
+    //! provides a new file path based the provided file. The new file
+    //! has updated ids for containments and applets based on the corona
+    //! loaded ones
+    QString newUniqueIdsLayoutFromFile(QString file);
+    //! imports a layout file and returns the containments for the docks
+    QList<Plasma::Containment *> importLayoutFile(QString file);
+
+private:
+    bool m_blockAutomaticLatteViewCreation{false};
+
+    QStringList m_unloadedContainmentsIds;
 };
 
 }
