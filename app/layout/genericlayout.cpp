@@ -19,11 +19,14 @@
 
 #include "genericlayout.h"
 
+// local
+#include "abstractlayout.h"
+
 namespace Latte {
 namespace Layout {
 
-GenericLayout::GenericLayout(QObject *parent) :
-    AbstractLayout (parent)
+GenericLayout::GenericLayout(QObject *parent, QString layoutFile, QString assignedName)
+    : AbstractLayout (parent, layoutFile, assignedName)
 {
 }
 

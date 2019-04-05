@@ -23,18 +23,75 @@
 // Qt
 #include <QObject>
 
+// KDE
+#include <KConfigGroup>
+#include <KSharedConfig>
+
 namespace Latte {
 namespace Layout {
 
 class AbstractLayout : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString name READ name NOTIFY nameChanged)
+
+    Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)
+    Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
+    Q_PROPERTY(QString textColor READ textColor NOTIFY textColorChanged)
 
 public:
-    AbstractLayout(QObject *parent);
+    AbstractLayout(QObject *parent, QString layoutFile, QString assignedName = QString());
     ~AbstractLayout() override;
 
+    int version() const;
+    void setVersion(int ver);
+
+    QString name() const;
+    QString file() const;
+
+    QString background() const;
+    void setBackground(QString path);
+
+    QString color() const;
+    void setColor(QString color);
+
+    QString textColor() const;
+    void setTextColor(QString color);
+
+// STATIC
+    static QString layoutName(const QString &fileName);
+
+signals:
+    void backgroundChanged();
+    void colorChanged();
+    void fileChanged();
+    void nameChanged();
+    void textColorChanged();
+    void versionChanged();
+
+protected slots:
+    void loadConfig();
+    void saveConfig();
+
 protected:
+    void init();
+    void setName(QString name);
+    void setFile(QString file);
+
+protected:
+    bool m_loadedCorrectly{false};
+
+    //if version doesn't exist it is and old layout file
+    int m_version{2};
+
+    QString m_background;
+    QString m_color;
+    QString m_textColor;
+
+    QString m_layoutFile;
+    QString m_layoutName;
+
+    KConfigGroup m_layoutGroup;
 };
 
 }

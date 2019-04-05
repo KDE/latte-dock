@@ -50,18 +50,9 @@ namespace Latte {
 const QString ActiveLayout::MultipleLayoutsName = ".multiple-layouts_hidden";
 
 ActiveLayout::ActiveLayout(QObject *parent, QString layoutFile, QString assignedName)
-    : Layout::GenericLayout(parent)
+    : Layout::GenericLayout(parent, layoutFile, assignedName)
 {
-    qDebug() << "Layout file to create object: " << layoutFile << " with name: " << assignedName;
-
-    if (QFile(layoutFile).exists()) {
-        if (assignedName.isEmpty()) {
-            assignedName =  layoutName(layoutFile);
-        }
-
-        //!this order is important because setFile initializes also the m_layoutGroup
-        setFile(layoutFile);
-        setName(assignedName);
+    if (m_loadedCorrectly) {
         loadConfig();
         init();
     }
@@ -171,12 +162,8 @@ void ActiveLayout::unloadLatteViews()
 void ActiveLayout::init()
 {
     connect(this, &ActiveLayout::activitiesChanged, this, &ActiveLayout::saveConfig);
-    connect(this, &ActiveLayout::backgroundChanged, this, &ActiveLayout::saveConfig);
-    connect(this, &ActiveLayout::versionChanged, this, &ActiveLayout::saveConfig);
-    connect(this, &ActiveLayout::colorChanged, this, &ActiveLayout::textColorChanged);
     connect(this, &ActiveLayout::disableBordersForMaximizedWindowsChanged, this, &ActiveLayout::saveConfig);
     connect(this, &ActiveLayout::showInMenuChanged, this, &ActiveLayout::saveConfig);
-    connect(this, &ActiveLayout::textColorChanged, this, &ActiveLayout::saveConfig);
     connect(this, &ActiveLayout::launchersChanged, this, &ActiveLayout::saveConfig);
     connect(this, &ActiveLayout::lastUsedActivityChanged, this, &ActiveLayout::saveConfig);
     connect(this, &ActiveLayout::preferredForShortcutsTouchedChanged, this, &ActiveLayout::saveConfig);
@@ -238,22 +225,6 @@ void ActiveLayout::initToCorona(Latte::Corona *corona)
     connect(this, &ActiveLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
 
     emit viewsCountChanged();
-}
-
-int ActiveLayout::version() const
-{
-    return m_version;
-}
-
-void ActiveLayout::setVersion(int ver)
-{
-    if (m_version == ver) {
-        return;
-    }
-
-    m_version = ver;
-
-    emit versionChanged();
 }
 
 bool ActiveLayout::blockAutomaticLatteViewCreation() const
@@ -365,49 +336,6 @@ void ActiveLayout::unlock()
     }
 }
 
-QString ActiveLayout::background() const
-{
-    return m_background;
-}
-
-void ActiveLayout::setBackground(QString path)
-{
-    if (path == m_background) {
-        return;
-    }
-
-    if (!path.isEmpty() && !QFileInfo(path).exists()) {
-        return;
-    }
-
-    m_background = path;
-
-    //! initialize the text color also
-    if (path.isEmpty()) {
-        setTextColor(QString());
-    }
-
-    emit backgroundChanged();
-}
-
-QString ActiveLayout::name() const
-{
-    return m_layoutName;
-}
-
-void ActiveLayout::setName(QString name)
-{
-    if (m_layoutName == name) {
-        return;
-    }
-
-    qDebug() << "Layout name:" << name;
-
-    m_layoutName = name;
-
-    emit nameChanged();
-}
-
 void ActiveLayout::renameLayout(QString newName)
 {
     if (m_layoutFile != Importer::layoutFilePath(newName)) {
@@ -424,91 +352,6 @@ void ActiveLayout::renameLayout(QString newName)
             containment->config().writeEntry("layoutId", m_layoutName);
         }
     }
-}
-
-QString ActiveLayout::color() const
-{
-    return m_color;
-}
-
-void ActiveLayout::setColor(QString color)
-{
-    if (m_color == color) {
-        return;
-    }
-
-    m_color = color;
-    emit colorChanged();
-}
-
-QString ActiveLayout::textColor() const
-{
-    //! the user is in default layout theme
-    if (m_background.isEmpty()) {
-        if (m_color == "blue") {
-            return "#D7E3FF";
-        } else if (m_color == "brown") {
-            return "#F1DECB";
-        } else if (m_color == "darkgrey") {
-            return "#ECECEC";
-        } else if (m_color == "gold") {
-            return "#7C3636";
-        } else if (m_color == "green") {
-            return "#4D7549";
-        } else if (m_color == "lightskyblue") {
-            return "#0C2A43";
-        } else if (m_color == "orange") {
-            return "#6F3902";
-        } else if (m_color == "pink") {
-            return "#743C46";
-        } else if (m_color == "purple") {
-            return "#ECD9FF";
-        }  else if (m_color == "red") {
-            return "#F3E4E4";
-        }  else if (m_color == "wheat") {
-            return "#6A4E25";
-        }  else {
-            return "#FCFCFC";
-        }
-    }
-
-    return "#" + m_textColor;
-}
-
-void ActiveLayout::setTextColor(QString color)
-{
-    //! remove # if someone is trying to set it this way
-    if (color.startsWith("#")) {
-        color.remove(0, 1);
-    }
-
-    if (m_textColor == color) {
-        return;
-    }
-
-    m_textColor = color;
-    emit textColorChanged();
-}
-
-QString ActiveLayout::file() const
-{
-    return m_layoutFile;
-}
-
-void ActiveLayout::setFile(QString file)
-{
-    if (m_layoutFile == file) {
-        return;
-    }
-
-    qDebug() << "Layout file:" << file;
-
-    m_layoutFile = file;
-
-    KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_layoutFile);
-    m_layoutGroup = KConfigGroup(filePtr, "LayoutSettings");
-
-    emit fileChanged();
 }
 
 QStringList ActiveLayout::launchers() const
@@ -714,56 +557,26 @@ bool ActiveLayout::layoutIsBroken() const
     return false;
 }
 
-
-QString ActiveLayout::layoutName(const QString &fileName)
-{
-    int lastSlash = fileName.lastIndexOf("/");
-    QString tempLayoutFile = fileName;
-    QString layoutName = tempLayoutFile.remove(0, lastSlash + 1);
-
-    int ext = layoutName.lastIndexOf(".layout.latte");
-    layoutName = layoutName.remove(ext, 13);
-
-    return layoutName;
-}
-
 void ActiveLayout::loadConfig()
 {
-    m_version = m_layoutGroup.readEntry("version", 2);
-    m_color = m_layoutGroup.readEntry("color", QString("blue"));
     m_disableBordersForMaximizedWindows = m_layoutGroup.readEntry("disableBordersForMaximizedWindows", false);
     m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
-    m_textColor = m_layoutGroup.readEntry("textColor", QString("fcfcfc"));
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
     m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
     m_lastUsedActivity = m_layoutGroup.readEntry("lastUsedActivity", QString());
     m_preferredForShortcutsTouched = m_layoutGroup.readEntry("preferredForShortcutsTouched", false);
-
-    QString back = m_layoutGroup.readEntry("background", "");
-
-    if (!back.isEmpty()) {
-        if (QFileInfo(back).exists()) {
-            m_background = back;
-        } else {
-            m_layoutGroup.writeEntry("background", QString());
-        }
-    }
 
     emit activitiesChanged();
 }
 
 void ActiveLayout::saveConfig()
 {
-    qDebug() << "layout is saving... for layout:" << m_layoutName;
-    m_layoutGroup.writeEntry("version", m_version);
+    qDebug() << "active layout is saving... for layout:" << m_layoutName;
     m_layoutGroup.writeEntry("showInMenu", m_showInMenu);
-    m_layoutGroup.writeEntry("color", m_color);
     m_layoutGroup.writeEntry("disableBordersForMaximizedWindows", m_disableBordersForMaximizedWindows);
     m_layoutGroup.writeEntry("launchers", m_launchers);
-    m_layoutGroup.writeEntry("background", m_background);
     m_layoutGroup.writeEntry("activities", m_activities);
     m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
-    m_layoutGroup.writeEntry("textColor", m_textColor);
     m_layoutGroup.writeEntry("preferredForShortcutsTouched", m_preferredForShortcutsTouched);
 
     m_layoutGroup.sync();

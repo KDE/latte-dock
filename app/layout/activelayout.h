@@ -31,10 +31,6 @@
 #include <QQuickView>
 #include <QScreen>
 
-// KDE
-#include <KConfigGroup>
-#include <KSharedConfig>
-
 // Plasma
 #include <Plasma>
 
@@ -61,11 +57,7 @@ class ActiveLayout : public Layout::GenericLayout
 
     Q_PROPERTY(int viewsCount READ viewsCount NOTIFY viewsCountChanged)
 
-    Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)
-    Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(QString lastUsedActivity READ lastUsedActivity NOTIFY lastUsedActivityChanged)
-    Q_PROPERTY(QString name READ name NOTIFY nameChanged)
-    Q_PROPERTY(QString textColor READ textColor NOTIFY textColorChanged)
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
     Q_PROPERTY(QStringList activities READ activities WRITE setActivities NOTIFY activitiesChanged)
 
@@ -99,31 +91,14 @@ public:
 
     bool latteViewExists(Plasma::Containment *containment);
 
-    int version() const;
-    void setVersion(int ver);
-
-    QString background() const;
-    void setBackground(QString path);
-
-    QString color() const;
-    void setColor(QString color);
-
     QString lastUsedActivity();
     void clearLastUsedActivity(); //!e.g. when we export a layout
-
-    QString name() const;
-    QString file() const;
-
-    QString textColor() const;
-    void setTextColor(QString color);
 
     QStringList activities() const;
     void setActivities(QStringList activities);
 
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
-
-    static QString layoutName(const QString &fileName);
 
     void renameLayout(QString newName);
 
@@ -187,16 +162,10 @@ public slots:
 
 signals:
     void activitiesChanged();
-    void backgroundChanged();
-    void colorChanged();
     void disableBordersForMaximizedWindowsChanged();
-    void fileChanged();
     void lastUsedActivityChanged();
     void launchersChanged();
-    void nameChanged();
-    void versionChanged();
     void showInMenuChanged();
-    void textColorChanged();
     void viewsCountChanged();
 
     //! used from LatteView(s) in order to exist only one each time that has the highest priority
@@ -218,10 +187,8 @@ private slots:
     void updateLastUsedActivity();
 
 private:
-    void importLocalLayout(QString file);
     void init();
-    void setName(QString name);
-    void setFile(QString file);
+    void importLocalLayout(QString file);
 
     bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
@@ -254,15 +221,8 @@ private:
     bool m_blockAutomaticLatteViewCreation{false};
     bool m_disableBordersForMaximizedWindows{false};
     bool m_showInMenu{false};
-    //if version doesn't exist it is and old layout file
-    int m_version{2};
 
-    QString m_background;
-    QString m_color;
     QString m_lastUsedActivity; //the last used activity for this layout
-    QString m_layoutFile;
-    QString m_layoutName;
-    QString m_textColor;
     QStringList m_activities;
     QStringList m_launchers;
     bool m_preferredForShortcutsTouched{false};
@@ -270,8 +230,6 @@ private:
     QStringList m_unloadedContainmentsIds;
 
     Latte::Corona *m_corona{nullptr};
-
-    KConfigGroup m_layoutGroup;
 
     QList<Plasma::Containment *> m_containments;
 

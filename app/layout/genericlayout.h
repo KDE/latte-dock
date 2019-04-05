@@ -34,7 +34,7 @@ class GenericLayout : public AbstractLayout
     Q_OBJECT
 
 public:
-    GenericLayout(QObject *parent);
+    GenericLayout(QObject *parent, QString layoutFile, QString assignedName = QString());
     ~GenericLayout() override;
 };
 
