@@ -315,6 +315,14 @@ FocusScope {
                     Layout.rightMargin: units.smallSpacing * 2
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
 
+                    function switchMode() {
+                        if (dialog.basicLevel || dialog.advancedLevel) {
+                            viewConfig.complexity = Latte.Types.ExpertSettings;
+                        } else if (dialog.expertLevel) {
+                            viewConfig.complexity = Latte.Types.BasicSettings;
+                        }
+                    }
+
                     PlasmaComponents.Label {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignRight
@@ -323,23 +331,40 @@ FocusScope {
                     PlasmaComponents.Label {
                         id: complexityLbl
                         Layout.alignment: Qt.AlignRight
-                        opacity: dialog.basicLevel ? 0.3 : 1
+                      //  opacity: dialog.basicLevel ? basicOpacity : 1
 
                         //! TODO: the term here is not accurate because the expert settings mode
                         //! is used currently. In the future this term will be rethought if
                         //! it must remain or be changed
                         text: i18nc("advanced settings", "Advanced")
 
+                        readonly property real textColorBrightness: colorBrightness(theme.textColor)
+                        readonly property real basicOpacity: textColorBrightness > 127 ? 0.7 : 0.3
+
+                        color: {
+                            if (dialog.basicLevel) {
+                                return textColorBrightness > 127 ? Qt.darker(theme.textColor, 1.4) : Qt.lighter(theme.textColor, 2.8);
+                            }
+
+                            return theme.textColor;
+                        }
+
+                        function colorBrightness(color) {
+                            return colorBrightnessFromRGB(color.r * 255, color.g * 255, color.b * 255);
+                        }
+
+                        // formula for brightness according to:
+                        // https://www.w3.org/TR/AERT/#color-contrast
+                        function colorBrightnessFromRGB(r, g, b) {
+                            return (r * 299 + g * 587 + b * 114) / 1000
+                        }
+
                         MouseArea {
                             id: complexityMouseArea
                             anchors.fill: parent
                             hoverEnabled: true
                             onClicked: {
-                                if (dialog.basicLevel || dialog.advancedLevel) {
-                                    viewConfig.complexity = Latte.Types.ExpertSettings;
-                                } else if (dialog.expertLevel) {
-                                    viewConfig.complexity = Latte.Types.BasicSettings;
-                                }
+                                complexitySettings.switchMode();
                             }
                         }
                     }
@@ -350,11 +375,7 @@ FocusScope {
 
                         onPressedChanged: {
                             if(pressed){
-                                if (dialog.basicLevel || dialog.advancedLevel) {
-                                    viewConfig.complexity = Latte.Types.ExpertSettings;
-                                } else if (dialog.expertLevel) {
-                                    viewConfig.complexity = Latte.Types.BasicSettings;
-                                }
+                                complexitySettings.switchMode();
                             }
                         }
                     }
