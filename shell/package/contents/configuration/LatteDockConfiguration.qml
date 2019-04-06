@@ -528,11 +528,18 @@ FocusScope {
                     onClicked: latteView.managedLayout.addNewView();
                 }
 
+                Connections{
+                    target: latteView
+                    onTypeChanged: actionsComboBtn.updateCopyText()
+                }
+
                 function addModel() {
                     actionsModel.clear();
 
-                    var copy = {actionId: 'copy:', enabled: true, name: i18n("Copy Dock"), icon: 'edit-copy'};
+                    var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
                     actionsModel.append(copy);
+
+                    updateCopyText();
 
                     var tempActiveLayouts = layoutManager.activeLayoutsNames();
                     var currentLayoutIndex = tempActiveLayouts.indexOf(latteView.managedLayout.name);
@@ -554,9 +561,15 @@ FocusScope {
 
                 function emptyModel() {
                     actionsModel.clear();
-                    var copy = {actionId: 'copy:', enabled: true, name: i18n("Copy Dock"), icon: 'edit-copy'};
+                    var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
                     actionsModel.append(copy);
+                    updateCopyText();
                     actionsComboBtn.comboBox.currentIndex = -1;
+                }
+
+                function updateCopyText() {
+                    var copyText = latteView.type === Latte.Types.DockView ? i18n("Copy Dock") : i18n("Copy Panel")
+                    actionsModel.get(0).name = copyText;
                 }
             }
 
