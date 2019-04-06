@@ -83,12 +83,22 @@ Item {
         tooltip: i18n("Feel free to move around your widgets and configure them from their tooltips")
         reverseIcon: plasmoid.location === PlasmaCore.Types.RightEdge
 
-        textColor: settingsRoot.textColor
-        backgroundColor: "transparent"
-        checkedTextColor: colorizerManager.highlightedTextColor
-        checkedBackgroundColor: colorizerManager.highlightColor
+        textColor: containsMouse ? colorizerManager.buttonTextColor : settingsRoot.textColor
+        backgroundColor: containsMouse ? hoveredBackground : normalBackground// "transparent"
+        checkedTextColor: colorizerManager.buttonTextColor
+        checkedBackgroundColor: colorizerManager.buttonFocusColor
 
         checked: root.inConfigureAppletsMode
+
+        property color normalBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
+                                                 colorizerManager.buttonHoverColor.g,
+                                                 colorizerManager.buttonHoverColor.b,
+                                                 0.4)
+
+        property color hoveredBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
+                                                  colorizerManager.buttonHoverColor.g,
+                                                  colorizerManager.buttonHoverColor.b,
+                                                  0.8)
 
         onPressed: {
             if (Latte.WindowSystem.compositingActive) {
