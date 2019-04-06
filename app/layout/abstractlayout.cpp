@@ -24,6 +24,9 @@
 #include <QDebug>
 #include <QFile>
 
+// KDE
+#include <KSharedConfig>
+
 namespace Latte {
 namespace Layout {
 

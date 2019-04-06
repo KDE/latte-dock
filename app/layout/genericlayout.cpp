@@ -21,6 +21,7 @@
 
 // local
 #include "abstractlayout.h"
+#include "storage.h"
 #include "../importer.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
@@ -31,9 +32,6 @@
 
 // Qt
 #include <QDebug>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
 #include <QScreen>
 
 // Plasma
@@ -48,7 +46,8 @@ namespace Latte {
 namespace Layout {
 
 GenericLayout::GenericLayout(QObject *parent, QString layoutFile, QString assignedName)
-    : AbstractLayout (parent, layoutFile, assignedName)
+    : AbstractLayout (parent, layoutFile, assignedName),
+      m_storage(new Storage(this))
 {
 }
 
@@ -117,19 +116,6 @@ void GenericLayout::unloadLatteViews()
     qDeleteAll(m_waitingLatteViews);
     m_latteViews.clear();
     m_waitingLatteViews.clear();
-}
-
-bool GenericLayout::isLatteContainment(Plasma::Containment *containment)
-{
-    if (!containment) {
-        return false;
-    }
-
-    if (containment->pluginMetaData().pluginId() == "org.kde.latte.containment") {
-        return true;
-    }
-
-    return false;
 }
 
 bool GenericLayout::blockAutomaticLatteViewCreation() const
@@ -278,6 +264,11 @@ QStringList GenericLayout::unloadedContainmentsIds()
     return m_unloadedContainmentsIds;
 }
 
+Latte::Corona *GenericLayout::corona()
+{
+    return m_corona;
+}
+
 Types::ViewType GenericLayout::latteViewType(int containmentId) const
 {
     for (const auto view : m_latteViews) {
@@ -421,7 +412,7 @@ bool GenericLayout::viewAtLowerEdgePriority(Latte::View *test, Latte::View *base
         return false;
 }
 
-QList<Plasma::Containment *> *GenericLayout::containments()
+const QList<Plasma::Containment *> *GenericLayout::containments()
 {
     return &m_containments;
 }
@@ -604,7 +595,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
 
     qDebug() << "step 1...";
 
-    if (!isLatteContainment(containment))
+    if (!m_storage->isLatteContainment(containment))
         return;
 
     qDebug() << "step 2...";
@@ -802,7 +793,7 @@ void GenericLayout::assignToLayout(Latte::View *latteView, QList<Plasma::Contain
 
     //! sync the original layout file for integrity
     if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-        syncToLayoutFile(false);
+        m_storage->syncToLayoutFile(false);
     }
 }
 
@@ -838,7 +829,7 @@ QList<Plasma::Containment *> GenericLayout::unassignFromLayout(Latte::View *latt
 
     //! sync the original layout file for integrity
     if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-        syncToLayoutFile(false);
+        m_storage->syncToLayoutFile(false);
     }
 
     return containments;
@@ -911,7 +902,7 @@ bool GenericLayout::explicitDockOccupyEdge(int screen, Plasma::Types::Location l
     }
 
     for (const auto containment : m_containments) {
-        if (isLatteContainment(containment)) {
+        if (m_storage->isLatteContainment(containment)) {
             bool onPrimary = containment->config().readEntry("onPrimary", true);
             int id = containment->lastScreen();
             Plasma::Types::Location contLocation = containment->location();
@@ -932,7 +923,7 @@ bool GenericLayout::primaryDockOccupyEdge(Plasma::Types::Location location) cons
     }
 
     for (const auto containment : m_containments) {
-        if (isLatteContainment(containment)) {
+        if (m_storage->isLatteContainment(containment)) {
             bool onPrimary = containment->config().readEntry("onPrimary", true);
             Plasma::Types::Location contLocation = containment->location();
 
@@ -964,7 +955,7 @@ void GenericLayout::syncLatteViewsToScreens()
 
     //! first step: primary docks must be placed in primary screen free edges
     for (const auto containment : m_containments) {
-        if (isLatteContainment(containment)) {
+        if (m_storage->isLatteContainment(containment)) {
             int screenId = 0;
 
             //! valid screen id
@@ -999,7 +990,7 @@ void GenericLayout::syncLatteViewsToScreens()
 
     //! second step: explicit docks must be placed in their screens if the screen edge is free
     for (const auto containment : m_containments) {
-        if (isLatteContainment(containment)) {
+        if (m_storage->isLatteContainment(containment)) {
             int screenId = 0;
 
             //! valid screen id
@@ -1077,615 +1068,42 @@ void GenericLayout::syncLatteViewsToScreens()
 }
 
 
-
-//////////////////////////////////////////////STORAGE/////////////////////////
-/// //////////////////////to be moved in its own CLASS
+//! STORAGE
 
 bool GenericLayout::isWritable() const
 {
-    QFileInfo layoutFileInfo(m_layoutFile);
-
-    if (layoutFileInfo.exists() && !layoutFileInfo.isWritable()) {
-        return false;
-    } else {
-        return true;
-    }
+    return m_storage->isWritable();
 }
 
 void GenericLayout::lock()
 {
-    QFileInfo layoutFileInfo(m_layoutFile);
-
-    if (layoutFileInfo.exists() && layoutFileInfo.isWritable()) {
-        QFile(m_layoutFile).setPermissions(QFileDevice::ReadUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
-    }
+    m_storage->lock();
 }
 
 void GenericLayout::unlock()
 {
-    QFileInfo layoutFileInfo(m_layoutFile);
-
-    if (layoutFileInfo.exists() && !layoutFileInfo.isWritable()) {
-        QFile(m_layoutFile).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
-    }
+    m_storage->unlock();
 }
 
 void GenericLayout::syncToLayoutFile(bool removeLayoutId)
 {
-    if (!m_corona || !isWritable()) {
-        return;
-    }
-
-    KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_layoutFile);
-
-    KConfigGroup oldContainments = KConfigGroup(filePtr, "Containments");
-    oldContainments.deleteGroup();
-    oldContainments.sync();
-
-    qDebug() << " LAYOUT :: " << m_layoutName << " is syncing its original file.";
-
-    for (const auto containment : m_containments) {
-        if (removeLayoutId) {
-            containment->config().writeEntry("layoutId", "");
-        }
-
-        KConfigGroup newGroup = oldContainments.group(QString::number(containment->id()));
-        containment->config().copyTo(&newGroup);
-
-        if (!removeLayoutId) {
-            newGroup.writeEntry("layoutId", "");
-            newGroup.sync();
-        }
-    }
-
-    oldContainments.sync();
+    m_storage->syncToLayoutFile(removeLayoutId);
 }
 
 void GenericLayout::copyView(Plasma::Containment *containment)
 {
-    if (!containment || !m_corona)
-        return;
-
-    qDebug() << "copying containment layout";
-    //! Setting mutable for create a containment
-    m_corona->setImmutability(Plasma::Types::Mutable);
-
-    QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
-
-    //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
-    QFile copyFile(temp1File);
-
-    if (copyFile.exists())
-        copyFile.remove();
-
-
-    KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1File);
-    KConfigGroup copied_conts = KConfigGroup(newFile, "Containments");
-    KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
-    KConfigGroup copied_systray;
-
-    // toCopyContainmentIds << QString::number(containment->id());
-    //  toCopyAppletIds << containment->config().group("Applets").groupList();
-    containment->config().copyTo(&copied_c1);
-
-    //!investigate if there is a systray in the containment to copy also
-    int systrayId = -1;
-    QString systrayAppletId;
-    auto applets = containment->config().group("Applets");
-
-    for (const auto &applet : applets.groupList()) {
-        KConfigGroup appletSettings = applets.group(applet).group("Configuration");
-
-        int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
-
-        if (tSysId != -1) {
-            systrayId = tSysId;
-            systrayAppletId = applet;
-            qDebug() << "systray was found in the containment... ::: " << tSysId;
-            break;
-        }
-    }
-
-    if (systrayId != -1) {
-        Plasma::Containment *systray{nullptr};
-
-        for (const auto containment : m_corona->containments()) {
-            if (containment->id() == systrayId) {
-                systray = containment;
-                break;
-            }
-        }
-
-        if (systray) {
-            copied_systray = KConfigGroup(&copied_conts, QString::number(systray->id()));
-            //  toCopyContainmentIds << QString::number(systray->id());
-            //  toCopyAppletIds << systray->config().group("Applets").groupList();
-            systray->config().copyTo(&copied_systray);
-        }
-    }
-
-    //! end of systray specific code
-
-    //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(temp1File);
-
-
-    //! Don't create LatteView when the containment is created because we must update
-    //! its screen settings first
-    setBlockAutomaticLatteViewCreation(true);
-    //! Finally import the configuration
-    QList<Plasma::Containment *> importedDocks = importLayoutFile(temp2File);
-
-    Plasma::Containment *newContainment{nullptr};
-
-    if (importedDocks.size() == 1) {
-        newContainment = importedDocks[0];
-    }
-
-    if (!newContainment || !newContainment->kPackage().isValid()) {
-        qWarning() << "the requested containment plugin can not be located or loaded";
-        return;
-    }
-
-    auto config = newContainment->config();
-
-    //in multi-screen environment the copied dock is moved to alternative screens first
-    const auto screens = qGuiApp->screens();
-    auto dock = m_latteViews[containment];
-
-    bool setOnExplicitScreen = false;
-
-    int dockScrId = -1;
-    int copyScrId = -1;
-
-    if (dock) {
-        dockScrId = dock->positioner()->currentScreenId();
-        qDebug() << "COPY DOCK SCREEN ::: " << dockScrId;
-
-        if (dockScrId != -1 && screens.count() > 1) {
-            for (const auto scr : screens) {
-                copyScrId = m_corona->screenPool()->id(scr->name());
-
-                //the screen must exist and not be the same with the original dock
-                if (copyScrId > -1 && copyScrId != dockScrId) {
-                    QList<Plasma::Types::Location> fEdges = freeEdges(copyScrId);
-
-                    if (fEdges.contains((Plasma::Types::Location)containment->location())) {
-                        ///set this containment to an explicit screen
-                        config.writeEntry("onPrimary", false);
-                        config.writeEntry("lastScreen", copyScrId);
-                        newContainment->setLocation(containment->location());
-
-                        qDebug() << "COPY DOCK SCREEN NEW SCREEN ::: " << copyScrId;
-
-                        setOnExplicitScreen = true;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    if (!setOnExplicitScreen) {
-        QList<Plasma::Types::Location> edges = freeEdges(newContainment->screen());
-
-        if (edges.count() > 0) {
-            newContainment->setLocation(edges.at(0));
-        } else {
-            newContainment->setLocation(Plasma::Types::BottomEdge);
-        }
-
-        config.writeEntry("onPrimary", false);
-        config.writeEntry("lastScreen", dockScrId);
-    }
-
-    newContainment->config().sync();
-
-    if (setOnExplicitScreen && copyScrId > -1) {
-        qDebug() << "Copy Dock in explicit screen ::: " << copyScrId;
-        addView(newContainment, false, copyScrId);
-        newContainment->reactToScreenChange();
-    } else {
-        qDebug() << "Copy Dock in current screen...";
-        addView(newContainment, false, dockScrId);
-    }
-
-    setBlockAutomaticLatteViewCreation(false);
+    m_storage->copyView(containment);
 }
 
 void GenericLayout::importToCorona()
 {
-    if (!m_corona) {
-        return;
-    }
-
-    //! Setting mutable for create a containment
-    m_corona->setImmutability(Plasma::Types::Mutable);
-
-    QString temp1FilePath = QDir::homePath() + "/.config/lattedock.copy1.bak";
-    //! we need to copy first the layout file because the kde cache
-    //! may not have yet been updated (KSharedConfigPtr)
-    //! this way we make sure at the latest changes stored in the layout file
-    //! will be also available when changing to Multiple Layouts
-    QString tempLayoutFilePath = QDir::homePath() + "/.config/lattedock.layout.bak";
-
-    //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
-    QFile tempLayoutFile(tempLayoutFilePath);
-    QFile copyFile(temp1FilePath);
-    QFile layoutOriginalFile(m_layoutFile);
-
-    if (tempLayoutFile.exists()) {
-        tempLayoutFile.remove();
-    }
-
-    if (copyFile.exists())
-        copyFile.remove();
-
-    layoutOriginalFile.copy(tempLayoutFilePath);
-
-    KSharedConfigPtr filePtr = KSharedConfig::openConfig(tempLayoutFilePath);
-    KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1FilePath);
-    KConfigGroup copyGroup = KConfigGroup(newFile, "Containments");
-    KConfigGroup current_containments = KConfigGroup(filePtr, "Containments");
-
-    current_containments.copyTo(&copyGroup);
-
-    copyGroup.sync();
-
-    //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(temp1FilePath);
-
-
-    //! Finally import the configuration
-    importLayoutFile(temp2File);
-}
-
-bool GenericLayout::appletGroupIsValid(KConfigGroup appletGroup)
-{
-    return !( appletGroup.keyList().count() == 0
-              && appletGroup.groupList().count() == 1
-              && appletGroup.groupList().at(0) == "Configuration"
-              && appletGroup.group("Configuration").keyList().count() == 1
-              && appletGroup.group("Configuration").hasKey("PreloadWeight") );
+    m_storage->importToCorona();
 }
 
 bool GenericLayout::layoutIsBroken() const
 {
-    if (m_layoutFile.isEmpty() || !QFile(m_layoutFile).exists()) {
-        return false;
-    }
-
-    QStringList ids;
-    QStringList conts;
-    QStringList applets;
-
-    KSharedConfigPtr lFile = KSharedConfig::openConfig(m_layoutFile);
-
-
-    if (!m_corona) {
-        KConfigGroup containmentsEntries = KConfigGroup(lFile, "Containments");
-        ids << containmentsEntries.groupList();
-        conts << ids;
-
-        for (const auto &cId : containmentsEntries.groupList()) {
-            auto appletsEntries = containmentsEntries.group(cId).group("Applets");
-
-            QStringList validAppletIds;
-            bool updated{false};
-
-            for (const auto &appletId : appletsEntries.groupList()) {
-                KConfigGroup appletGroup = appletsEntries.group(appletId);
-
-                if (appletGroupIsValid(appletGroup)) {
-                    validAppletIds << appletId;
-                } else {
-                    updated = true;
-                    //! heal layout file by removing applet config records that are not used any more
-                    qDebug() << "Layout: " << name() << " removing deprecated applet : " << appletId;
-                    appletsEntries.deleteGroup(appletId);
-                }
-            }
-
-            if (updated) {
-                appletsEntries.sync();
-            }
-
-            ids << validAppletIds;
-            applets << validAppletIds;
-        }
-    } else {
-        for (const auto containment : m_containments) {
-            ids << QString::number(containment->id());
-            conts << QString::number(containment->id());
-
-            for (const auto applet : containment->applets()) {
-                ids << QString::number(applet->id());
-                applets << QString::number(applet->id());
-            }
-        }
-    }
-
-    QSet<QString> idsSet = QSet<QString>::fromList(ids);
-
-    /* a different way to count duplicates
-    QMap<QString, int> countOfStrings;
-
-    for (int i = 0; i < ids.count(); i++) {
-        countOfStrings[ids[i]]++;
-    }*/
-
-    if (idsSet.count() != ids.count()) {
-        qDebug() << "   ----   ERROR - BROKEN LAYOUT :: " << m_layoutName << " ----";
-
-        if (!m_corona) {
-            qDebug() << "   --- file : " << m_layoutFile;
-        } else {
-            if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-                qDebug() << "   --- in multiple layouts hidden file : " << Importer::layoutFilePath(AbstractLayout::MultipleLayoutsName);
-            } else {
-                qDebug() << "   --- in layout file : " << m_layoutFile;
-            }
-        }
-
-        qDebug() << "Containments :: " << conts;
-        qDebug() << "Applets :: " << applets;
-
-        for (const QString &c : conts) {
-            if (applets.contains(c)) {
-                qDebug() << "Error: Same applet and containment id found ::: " << c;
-            }
-        }
-
-        for (int i = 0; i < ids.count(); ++i) {
-            for (int j = i + 1; j < ids.count(); ++j) {
-                if (ids[i] == ids[j]) {
-                    qDebug() << "Error: Applets with same id ::: " << ids[i];
-                }
-            }
-        }
-
-        qDebug() << "  -- - -- - -- - -- - - -- - - - - -- - - - - ";
-
-        if (!m_corona) {
-            KConfigGroup containmentsEntries = KConfigGroup(lFile, "Containments");
-
-            for (const auto &cId : containmentsEntries.groupList()) {
-                auto appletsEntries = containmentsEntries.group(cId).group("Applets");
-
-                qDebug() << " CONTAINMENT : " << cId << " APPLETS : " << appletsEntries.groupList();
-            }
-        } else {
-            for (const auto containment : m_containments) {
-                QStringList appletsIds;
-
-                for (const auto applet : containment->applets()) {
-                    appletsIds << QString::number(applet->id());
-                }
-
-                qDebug() << " CONTAINMENT : " << containment->id() << " APPLETS : " << appletsIds.join(",");
-            }
-        }
-
-        return true;
-    }
-
-    return false;
+    return m_storage->layoutIsBroken();
 }
-
-QString GenericLayout::availableId(QStringList all, QStringList assigned, int base)
-{
-    bool found = false;
-
-    int i = base;
-
-    while (!found && i < 32000) {
-        QString iStr = QString::number(i);
-
-        if (!all.contains(iStr) && !assigned.contains(iStr)) {
-            return iStr;
-        }
-
-        i++;
-    }
-
-    return QString("");
-}
-
-QString GenericLayout::newUniqueIdsLayoutFromFile(QString file)
-{
-    if (!m_corona) {
-        return QString();
-    }
-
-    QString tempFile = QDir::homePath() + "/.config/lattedock.copy2.bak";
-
-    QFile copyFile(tempFile);
-
-    if (copyFile.exists())
-        copyFile.remove();
-
-    //! BEGIN updating the ids in the temp file
-    QStringList allIds;
-    allIds << m_corona->containmentsIds();
-    allIds << m_corona->appletsIds();
-
-    QStringList toInvestigateContainmentIds;
-    QStringList toInvestigateAppletIds;
-    QStringList toInvestigateSystrayContIds;
-
-    //! first is the systray containment id
-    QHash<QString, QString> systrayParentContainmentIds;
-    QHash<QString, QString> systrayAppletIds;
-
-    //qDebug() << "Ids:" << allIds;
-
-    //qDebug() << "to copy containments: " << toCopyContainmentIds;
-    //qDebug() << "to copy applets: " << toCopyAppletIds;
-
-    QStringList assignedIds;
-    QHash<QString, QString> assigned;
-
-    KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
-    KConfigGroup investigate_conts = KConfigGroup(filePtr, "Containments");
-    //KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
-
-    //! Record the containment and applet ids
-    for (const auto &cId : investigate_conts.groupList()) {
-        toInvestigateContainmentIds << cId;
-        auto appletsEntries = investigate_conts.group(cId).group("Applets");
-        toInvestigateAppletIds << appletsEntries.groupList();
-
-        //! investigate for systrays
-        for (const auto &appletId : appletsEntries.groupList()) {
-            KConfigGroup appletSettings = appletsEntries.group(appletId).group("Configuration");
-
-            int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
-
-            //! It is a systray !!!
-            if (tSysId != -1) {
-                QString tSysIdStr = QString::number(tSysId);
-                toInvestigateSystrayContIds << tSysIdStr;
-                systrayParentContainmentIds[tSysIdStr] = cId;
-                systrayAppletIds[tSysIdStr] = appletId;
-                qDebug() << "systray was found in the containment...";
-            }
-        }
-    }
-
-    //! Reassign containment and applet ids to unique ones
-    for (const auto &contId : toInvestigateContainmentIds) {
-        QString newId = availableId(allIds, assignedIds, 12);
-
-        assignedIds << newId;
-        assigned[contId] = newId;
-    }
-
-    for (const auto &appId : toInvestigateAppletIds) {
-        QString newId = availableId(allIds, assignedIds, 40);
-
-        assignedIds << newId;
-        assigned[appId] = newId;
-    }
-
-    qDebug() << "ALL CORONA IDS ::: " << allIds;
-    qDebug() << "FULL ASSIGNMENTS ::: " << assigned;
-
-    for (const auto &cId : toInvestigateContainmentIds) {
-        QString value = assigned[cId];
-
-        if (assigned.contains(value)) {
-            QString value2 = assigned[value];
-
-            if (cId != assigned[cId] && !value2.isEmpty() && cId == value2) {
-                qDebug() << "PROBLEM APPEARED !!!! FOR :::: " << cId << " .. fixed ..";
-                assigned[cId] = cId;
-                assigned[value] = value;
-            }
-        }
-    }
-
-    for (const auto &aId : toInvestigateAppletIds) {
-        QString value = assigned[aId];
-
-        if (assigned.contains(value)) {
-            QString value2 = assigned[value];
-
-            if (aId != assigned[aId] && !value2.isEmpty() && aId == value2) {
-                qDebug() << "PROBLEM APPEARED !!!! FOR :::: " << aId << " .. fixed ..";
-                assigned[aId] = aId;
-                assigned[value] = value;
-            }
-        }
-    }
-
-    qDebug() << "FIXED FULL ASSIGNMENTS ::: " << assigned;
-
-    //! update applet ids in their containment order and in MultipleLayouts update also the layoutId
-    for (const auto &cId : investigate_conts.groupList()) {
-        //! Update options that contain applet ids
-        //! (appletOrder) and (lockedZoomApplets) and (userBlocksColorizingApplets)
-        QStringList options;
-        options << "appletOrder" << "lockedZoomApplets" << "userBlocksColorizingApplets";
-
-        for (const auto &settingStr : options) {
-            QString order1 = investigate_conts.group(cId).group("General").readEntry(settingStr, QString());
-
-            if (!order1.isEmpty()) {
-                QStringList order1Ids = order1.split(";");
-                QStringList fixedOrder1Ids;
-
-                for (int i = 0; i < order1Ids.count(); ++i) {
-                    fixedOrder1Ids.append(assigned[order1Ids[i]]);
-                }
-
-                QString fixedOrder1 = fixedOrder1Ids.join(";");
-                investigate_conts.group(cId).group("General").writeEntry(settingStr, fixedOrder1);
-            }
-        }
-
-        if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-            investigate_conts.group(cId).writeEntry("layoutId", m_layoutName);
-        }
-    }
-
-    //! must update also the systray id in its applet
-    for (const auto &systrayId : toInvestigateSystrayContIds) {
-        KConfigGroup systrayParentContainment = investigate_conts.group(systrayParentContainmentIds[systrayId]);
-        systrayParentContainment.group("Applets").group(systrayAppletIds[systrayId]).group("Configuration").writeEntry("SystrayContainmentId", assigned[systrayId]);
-        systrayParentContainment.sync();
-    }
-
-    investigate_conts.sync();
-
-    //! Copy To Temp 2 File And Update Correctly The Ids
-    KSharedConfigPtr file2Ptr = KSharedConfig::openConfig(tempFile);
-    KConfigGroup fixedNewContainmets = KConfigGroup(file2Ptr, "Containments");
-
-    for (const auto &contId : investigate_conts.groupList()) {
-        QString pluginId = investigate_conts.group(contId).readEntry("plugin", "");
-
-        if (pluginId != "org.kde.desktopcontainment") { //!don't add ghost containments
-            KConfigGroup newContainmentGroup = fixedNewContainmets.group(assigned[contId]);
-            investigate_conts.group(contId).copyTo(&newContainmentGroup);
-
-            newContainmentGroup.group("Applets").deleteGroup();
-
-            for (const auto &appId : investigate_conts.group(contId).group("Applets").groupList()) {
-                KConfigGroup appletGroup = investigate_conts.group(contId).group("Applets").group(appId);
-                KConfigGroup newAppletGroup = fixedNewContainmets.group(assigned[contId]).group("Applets").group(assigned[appId]);
-                appletGroup.copyTo(&newAppletGroup);
-            }
-        }
-    }
-
-    fixedNewContainmets.sync();
-
-    return tempFile;
-}
-
-QList<Plasma::Containment *> GenericLayout::importLayoutFile(QString file)
-{
-    KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
-    auto newContainments = m_corona->importLayout(KConfigGroup(filePtr, ""));
-
-    ///Find latte and systray containments
-    qDebug() << " imported containments ::: " << newContainments.length();
-
-    QList<Plasma::Containment *> importedDocks;
-    //QList<Plasma::Containment *> systrays;
-
-    for (const auto containment : newContainments) {
-        if (isLatteContainment(containment)) {
-            qDebug() << "new latte containment id: " << containment->id();
-            importedDocks << containment;
-        }
-    }
-
-    return importedDocks;
-}
-
-//////////////////////////////////////// STORAGE ////////////////////////////////
-
 
 }
 }

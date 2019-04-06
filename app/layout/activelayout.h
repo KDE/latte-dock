@@ -23,26 +23,12 @@
 
 // local
 #include "genericlayout.h"
-#include "../../liblatte2/types.h"
 
 // Qt
 #include <QObject>
-#include <QPointer>
-#include <QQuickView>
-#include <QScreen>
-
-// Plasma
-#include <Plasma>
-
-namespace Plasma {
-class Applet;
-class Containment;
-class Types;
-}
 
 namespace Latte {
 class Corona;
-class View;
 }
 
 namespace Latte {
@@ -53,8 +39,6 @@ namespace Latte {
 class ActiveLayout : public Layout::GenericLayout
 {
     Q_OBJECT
-  //  Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
-   // Q_PROPERTY(QStringList activities READ activities WRITE setActivities NOTIFY activitiesChanged)
 
 public:
     ActiveLayout(QObject *parent, QString layoutFile, QString layoutName = QString());

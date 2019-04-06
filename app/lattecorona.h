@@ -23,7 +23,7 @@
 
 // local
 #include "plasma/quick/configview.h"
-#include "layout/genericlayout.h"
+#include "layout/storage.h"
 #include "../liblatte2/types.h"
 
 // Qt
@@ -71,7 +71,7 @@ namespace Indicator{
 class Factory;
 }
 namespace Layout{
-class GenericLayout;
+class Storage;
 }
 namespace PlasmaExtended{
 class ScreenPool;
@@ -138,6 +138,7 @@ public slots:
     void loadDefaultLayout() override;
     void setBackgroundFromBroadcast(QString activity, QString screenName, QString filename);
     void setBroadcastedBackgroundsEnabled(QString activity, QString screenName, bool enabled);
+    void showAlternativesForApplet(Plasma::Applet *applet);
     //! values are separated with a "-" character
     void windowColorScheme(QString windowIdAndScheme);
     void updateDockItemBadge(QString identifier, QString value);
@@ -151,7 +152,6 @@ signals:
 
 private slots:
     void alternativesVisibilityChanged(bool visible);
-    void showAlternativesForApplet(Plasma::Applet *applet);
     void load();
 
     void addOutput(QScreen *screen);
@@ -209,7 +209,7 @@ private:
     friend class GlobalShortcuts;
     friend class LayoutManager;
     friend class LaunchersSignals;
-    friend class Layout::GenericLayout;
+    friend class Layout::Storage;
 };
 
 }

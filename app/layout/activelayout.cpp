@@ -24,20 +24,14 @@
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
 #include "../settings/universalsettings.h"
+#include "../../liblatte2/types.h"
 
 // Qt
-#include <QDir>
-#include <QFile>
 #include <QtDBus/QtDBus>
 
 // KDE
-#include <KSharedConfig>
+#include <KConfigGroup>
 #include <KActivities/Consumer>
-
-// Plasma
-#include <Plasma>
-#include <Plasma/Applet>
-#include <Plasma/Containment>
 
 namespace Latte {
 

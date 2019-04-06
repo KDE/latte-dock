@@ -24,7 +24,7 @@
 #include "lattecorona.h"
 #include "layoutmanager.h"
 #include "screenpool.h"
-#include "layout/activelayout.h"
+#include "layout/abstractlayout.h"
 #include "settings/universalsettings.h"
 #include "../liblatte2/types.h"
 
@@ -169,11 +169,11 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
     }
 
     //! update also the layout settings correctly
-    Latte::ActiveLayout newLayout(this, newLayoutPath, newName);
+    Layout::AbstractLayout newLayout(this, newLayoutPath, newName);
     newLayout.setVersion(2);
     newLayout.setLaunchers(layoutLaunchers);
 
-    newLayout.setShowInMenu(true);
+    //newLayout.setShowInMenu(true);
 
     if (alternative) {
         newLayout.setColor("purple");
@@ -513,7 +513,7 @@ QString Importer::importLayoutHelper(QString fileName)
         return QString();
     }
 
-    QString newLayoutName = Latte::ActiveLayout::layoutName(fileName);
+    QString newLayoutName = Layout::AbstractLayout::layoutName(fileName);
     newLayoutName = uniqueLayoutName(newLayoutName);
 
     QString newPath = QDir::homePath() + "/.config/latte/" + newLayoutName + ".layout.latte";
@@ -539,7 +539,7 @@ QStringList Importer::availableLayouts()
     QStringList layoutNames;
 
     for(const auto &file : files) {
-        layoutNames.append(ActiveLayout::layoutName(file));
+        layoutNames.append(Layout::AbstractLayout::layoutName(file));
     }
 
     return layoutNames;
@@ -591,7 +591,7 @@ QString Importer::uniqueLayoutName(QString name)
 
 QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
 {
-    QString linkedFilePath = QDir::homePath() + "/.config/latte/" + ActiveLayout::MultipleLayoutsName + ".layout.latte";
+    QString linkedFilePath = QDir::homePath() + "/.config/latte/" + Layout::AbstractLayout::MultipleLayoutsName + ".layout.latte";
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(linkedFilePath);
     KConfigGroup linkedContainments = KConfigGroup(filePtr, "Containments");
 
@@ -611,7 +611,7 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
     QStringList updatedLayouts;
 
     for(const auto &layoutName : linkedLayoutContainmentGroups.uniqueKeys()) {
-        if (layoutName != ActiveLayout::MultipleLayoutsName && layoutExists(layoutName)) {
+        if (layoutName != Layout::AbstractLayout::MultipleLayoutsName && layoutExists(layoutName)) {
             updatedLayouts << layoutName;
             KSharedConfigPtr layoutFilePtr = KSharedConfig::openConfig(layoutFilePath(layoutName));
             KConfigGroup origLayoutContainments = KConfigGroup(layoutFilePtr, "Containments");

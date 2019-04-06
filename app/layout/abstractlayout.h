@@ -25,7 +25,6 @@
 
 // KDE
 #include <KConfigGroup>
-#include <KSharedConfig>
 
 namespace Latte {
 namespace Layout {

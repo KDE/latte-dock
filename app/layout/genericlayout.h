@@ -27,6 +27,7 @@
 // Qt
 #include <QObject>
 #include <QQuickView>
+#include <QPointer>
 #include <QScreen>
 
 // Plasma
@@ -41,6 +42,12 @@ class Types;
 namespace Latte {
 class Corona;
 class View;
+}
+
+namespace Latte {
+namespace Layout {
+class Storage;
+}
 }
 
 namespace Latte {
@@ -70,7 +77,7 @@ public:
     QStringList unloadedContainmentsIds();
 
     Types::ViewType latteViewType(int containmentId) const;
-    QList<Plasma::Containment *> *containments();
+    const QList<Plasma::Containment *> *containments();
 
     Latte::View *highestPriorityView();
     QList<Latte::View *> sortedLatteViews();
@@ -106,12 +113,6 @@ public:
     //! that latteView
     QList<Plasma::Containment *> unassignFromLayout(Latte::View *latteView);
 
-    //!             STATIC                       !//
-    //! Check if a containment is a latte dock/panel
-    static bool isLatteContainment(Plasma::Containment *containment);
-    //! Check if an applet config group is valid or belongs to removed applet
-    static bool appletGroupIsValid(KConfigGroup appletGroup);
-
 public slots:
     Q_INVOKABLE void addNewView();
     Q_INVOKABLE int viewsWithTasks() const;
@@ -135,6 +136,8 @@ private slots:
     void destroyedChanged(bool destroyed);
     void containmentDestroyed(QObject *cont);
 
+    Latte::Corona *corona();
+
 protected:
     Latte::Corona *m_corona{nullptr};
 
@@ -155,19 +158,14 @@ private:
     bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
 
-    //! STORAGE !////
-    QString availableId(QStringList all, QStringList assigned, int base);
-    //! provides a new file path based the provided file. The new file
-    //! has updated ids for containments and applets based on the corona
-    //! loaded ones
-    QString newUniqueIdsLayoutFromFile(QString file);
-    //! imports a layout file and returns the containments for the docks
-    QList<Plasma::Containment *> importLayoutFile(QString file);
-
 private:
     bool m_blockAutomaticLatteViewCreation{false};
 
     QStringList m_unloadedContainmentsIds;
+
+    QPointer<Storage> m_storage;
+
+    friend class Storage;
 };
 
 }

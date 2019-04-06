@@ -13,6 +13,7 @@ set(lattedock-app_SRCS
     layout/abstractlayout.cpp
     layout/activelayout.cpp
     layout/genericlayout.cpp
+    layout/storage.cpp
     package/lattepackage.cpp
     plasma/extended/screenpool.cpp
     plasma/extended/theme.cpp
