@@ -186,7 +186,7 @@ void SecondaryConfigView::syncGeometry()
     switch (m_latteView->containment()->formFactor()) {
     case Plasma::Types::Horizontal: {
         if (qApp->isLeftToRight()) {
-            xPos = availGeometry.x() + size.width();
+            xPos = availGeometry.x() + secondaryConfigSpacing;
         } else {
             xPos = availGeometry.x() + availGeometry.width() - size.width() - secondaryConfigSpacing;
         }
