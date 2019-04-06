@@ -7,9 +7,9 @@ set(latteplugin_SRCS
     iconitem.cpp
     quickwindowsystem.cpp
     types.cpp
-    plasma/extended/backgroundcache.cpp
-    plasma/extended/screenpool.cpp
 )
+
+add_subdirectory(plasma/extended)
 
 add_library(latte2plugin SHARED ${latteplugin_SRCS})
 

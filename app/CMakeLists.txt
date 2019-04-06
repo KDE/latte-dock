@@ -9,42 +9,19 @@ set(lattedock-app_SRCS
     layoutmanager.cpp
     schemecolors.cpp
     screenpool.cpp
-    indicator/factory.cpp
-    layout/abstractlayout.cpp
-    layout/activelayout.cpp
-    layout/genericlayout.cpp
-    layout/storage.cpp
-    package/lattepackage.cpp
-    plasma/extended/screenpool.cpp
-    plasma/extended/theme.cpp
-    settings/settingsdialog.cpp
-    settings/universalsettings.cpp
-    settings/delegates/activitycmbboxdelegate.cpp
-    settings/delegates/checkboxdelegate.cpp
-    settings/delegates/colorcmbboxdelegate.cpp
-    settings/delegates/colorcmbboxitemdelegate.cpp
-    settings/delegates/layoutnamedelegate.cpp
-    shortcuts/globalshortcuts.cpp
-    shortcuts/modifiertracker.cpp
-    shortcuts/shortcutstracker.cpp
-    view/contextmenu.cpp
-    view/effects.cpp
-    view/indicator.cpp
-    view/indicatorinfo.cpp
-    view/panelshadows.cpp
-    view/positioner.cpp
-    view/screenedgeghostwindow.cpp
-    view/view.cpp
-    view/visibilitymanager.cpp
-    view/windowstracker.cpp
-    view/settings/primaryconfigview.cpp
-    view/settings/secondaryconfigview.cpp
-    wm/abstractwindowinterface.cpp
-    wm/waylandinterface.cpp
-    wm/windowinfowrap.cpp
-    wm/xwindowinterface.cpp
     main.cpp
 )
+
+add_subdirectory(indicator)
+add_subdirectory(layout)
+add_subdirectory(package)
+add_subdirectory(plasma/extended)
+add_subdirectory(settings)
+add_subdirectory(settings/delegates)
+add_subdirectory(shortcuts)
+add_subdirectory(view)
+add_subdirectory(view/settings)
+add_subdirectory(wm)
 
 set(latte_dbusXML dbus/org.kde.LatteDock.xml)
 qt5_add_dbus_adaptor(lattedock-app_SRCS ${latte_dbusXML} lattecorona.h Latte::Corona lattedockadaptor)

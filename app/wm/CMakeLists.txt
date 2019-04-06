@@ -1,0 +1,8 @@
+set(lattedock-app_SRCS
+    ${lattedock-app_SRCS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/abstractwindowinterface.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/waylandinterface.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/windowinfowrap.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/xwindowinterface.cpp
+    PARENT_SCOPE
+)

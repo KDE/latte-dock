@@ -1,0 +1,9 @@
+set(lattedock-app_SRCS
+    ${lattedock-app_SRCS}   
+    ${CMAKE_CURRENT_SOURCE_DIR}/activitycmbboxdelegate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/checkboxdelegate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/colorcmbboxdelegate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/colorcmbboxitemdelegate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/layoutnamedelegate.cpp
+    PARENT_SCOPE
+)
