@@ -936,21 +936,28 @@ bool GenericLayout::primaryDockOccupyEdge(Plasma::Types::Location location) cons
     return false;
 }
 
-
-//! the central functions that updates loading/unloading latteviews
-//! concerning screen changed (for multi-screen setups mainly)
-void GenericLayout::syncLatteViewsToScreens()
+bool GenericLayout::mapContainsId(const ViewsMap *map, uint viewId) const
 {
-    if (!m_corona) {
-        return;
+    for(const auto &scr : map->keys()) {
+        for(const auto &edge : (*map)[scr].keys()) {
+            if ((*map)[scr][edge] == viewId) {
+                return true;
+            }
+        }
     }
 
-    qDebug() << "start of, syncLatteViewsToScreens ....";
-    qDebug() << "LAYOUT ::: " << name();
-    qDebug() << "screen count changed -+-+ " << qGuiApp->screens().size();
+    return false;
+}
 
-    QHash<QString, QList<Plasma::Types::Location>> futureDocksLocations;
-    QList<uint> futureShownViews;
+//! screen name, location, containmentId
+ViewsMap GenericLayout::validViewsMap()
+{
+    ViewsMap map;
+
+    if (!m_corona) {
+        return map;
+    }
+
     QString prmScreenName = qGuiApp->primaryScreen()->name();
 
     //! first step: primary docks must be placed in primary screen free edges
@@ -981,9 +988,8 @@ void GenericLayout::syncLatteViewsToScreens()
             //! valid location
             Plasma::Types::Location location = containment->location();
 
-            if (onPrimary && !futureDocksLocations[prmScreenName].contains(location)) {
-                futureDocksLocations[prmScreenName].append(location);
-                futureShownViews.append(containment->id());
+            if (onPrimary && !map[prmScreenName].contains(location)) {
+                map[prmScreenName][location] = containment->id();
             }
         }
     }
@@ -1019,17 +1025,37 @@ void GenericLayout::syncLatteViewsToScreens()
             if (!onPrimary) {
                 QString expScreenName = m_corona->screenPool()->connector(screenId);
 
-                if (m_corona->screenPool()->screenExists(screenId) && !futureDocksLocations[expScreenName].contains(location)) {
-                    futureDocksLocations[expScreenName].append(location);
-                    futureShownViews.append(containment->id());
+                if (m_corona->screenPool()->screenExists(screenId) && !map[expScreenName].contains(location)) {
+                    map[expScreenName][location] = containment->id();
                 }
             }
         }
     }
 
+    return map;
+}
+
+
+//! the central functions that updates loading/unloading latteviews
+//! concerning screen changed (for multi-screen setups mainly)
+void GenericLayout::syncLatteViewsToScreens()
+{
+    if (!m_corona) {
+        return;
+    }
+
+    qDebug() << "START of SyncLatteViewsToScreens ....";
+    qDebug() << "LAYOUT ::: " << name();
+    qDebug() << "screen count changed -+-+ " << qGuiApp->screens().size();
+
+    //QHash<QString, QList<Plasma::Types::Location>> futureDocksLocations;
+    //QList<uint> futureShownViews;
+
+    QHash<QString, QHash<Plasma::Types::Location, uint>> viewsMap = validViewsMap();
+    QString prmScreenName = qGuiApp->primaryScreen()->name();
+
     qDebug() << "PRIMARY SCREEN :: " << prmScreenName;
-    qDebug() << "LATTEVIEWS MUST BE PRESENT AT :: " << futureDocksLocations;
-    qDebug() << "FUTURESHOWNVIEWS MUST BE :: " << futureShownViews;
+    qDebug() << "LATTEVIEWS MAP :: " << viewsMap;
 
     //! add views
     for (const auto containment : m_containments) {
@@ -1039,7 +1065,7 @@ void GenericLayout::syncLatteViewsToScreens()
             screenId = containment->lastScreen();
         }
 
-        if (!latteViewExists(containment) && futureShownViews.contains(containment->id())) {
+        if (!latteViewExists(containment) && mapContainsId(&viewsMap, containment->id())) {
             qDebug() << "syncLatteViewsToScreens: view must be added... for containment:" << containment->id() << " at screen:" << m_corona->screenPool()->connector(screenId);
             addView(containment);
         }
@@ -1047,7 +1073,7 @@ void GenericLayout::syncLatteViewsToScreens()
 
     //! remove views
     for (const auto view : m_latteViews) {
-        if (view->containment() && !futureShownViews.contains(view->containment()->id())) {
+        if (view->containment() && !mapContainsId(&viewsMap, view->containment()->id())) {
             qDebug() << "syncLatteViewsToScreens: view must be deleted... for containment:" << view->containment()->id() << " at screen:" << view->positioner()->currentScreenName();
             auto viewToDelete = m_latteViews.take(view->containment());
             viewToDelete->disconnectSensitiveSignals();
@@ -1057,7 +1083,7 @@ void GenericLayout::syncLatteViewsToScreens()
 
     //! reconsider views
     for (const auto view : m_latteViews) {
-        if (view->containment() && futureShownViews.contains(view->containment()->id())) {
+        if (view->containment() && !mapContainsId(&viewsMap, view->containment()->id())) {
             //! if the dock will not be deleted its a very good point to reconsider
             //! if the screen in which is running is the correct one
             view->reconsiderScreen();

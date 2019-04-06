@@ -53,6 +53,10 @@ class Storage;
 namespace Latte {
 namespace Layout {
 
+//! This is  views map in the following structure:
+//! SCREEN_NAME -> EDGE -> VIEWID
+typedef QHash<QString, QHash<Plasma::Types::Location, uint>> ViewsMap;
+
 class GenericLayout : public AbstractLayout
 {
     Q_OBJECT
@@ -83,6 +87,7 @@ public:
     QList<Latte::View *> sortedLatteViews();
     QList<Latte::View *> viewsWithPlasmaShortcuts();
     QHash<const Plasma::Containment *, Latte::View *> *latteViews();
+    ViewsMap validViewsMap();
 
     void syncToLayoutFile(bool removeLayoutId = false);
 
@@ -157,6 +162,8 @@ private:
 
     bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
+
+    bool mapContainsId(const ViewsMap *map, uint viewId) const;
 
 private:
     bool m_blockAutomaticLatteViewCreation{false};
