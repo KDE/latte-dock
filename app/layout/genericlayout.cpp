@@ -757,6 +757,15 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
 
     qDebug() << "Layout ::::: " << name() << " added containments ::: " << m_containments.size();
 
+    //! last used activity
+    if (m_layoutName != MultipleLayoutsName) {
+        updateLastUsedActivity();
+    }
+
+    //! signals
+    connect(m_corona->activityConsumer(), &KActivities::Consumer::currentActivityChanged,
+            this, &GenericLayout::updateLastUsedActivity);
+
     connect(m_corona, &Plasma::Corona::containmentAdded, this, &GenericLayout::addContainment);
 
     //!connect signals after adding the containment
@@ -766,6 +775,29 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
     emit viewsCountChanged();
 
     return true;
+}
+
+void GenericLayout::updateLastUsedActivity()
+{
+    if (!m_corona) {
+        return;
+    }
+
+    if (!m_lastUsedActivity.isEmpty() && !m_corona->layoutManager()->activities().contains(m_lastUsedActivity)) {
+        clearLastUsedActivity();
+    }
+
+    QString currentId = m_corona->activitiesConsumer()->currentActivity();
+
+    QStringList appliedActivitiesIds = appliedActivities();
+
+    if (m_lastUsedActivity != currentId
+        && (appliedActivitiesIds.contains(currentId)
+            || m_corona->layoutManager()->memoryUsage() == Types::SingleLayout)) {
+        m_lastUsedActivity = currentId;
+
+        emit lastUsedActivityChanged();
+    }
 }
 
 void GenericLayout::assignToLayout(Latte::View *latteView, QList<Plasma::Containment *> containments)

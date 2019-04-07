@@ -25,7 +25,9 @@
 #include "infoview.h"
 #include "launcherssignals.h"
 #include "screenpool.h"
+#include "layout/abstractlayout.h"
 #include "layout/activelayout.h"
+#include "layout/toplayout.h"
 #include "settings/settingsdialog.h"
 #include "settings/universalsettings.h"
 #include "view/view.h"
@@ -73,6 +75,14 @@ LayoutManager::~LayoutManager()
     while (!m_activeLayouts.isEmpty()) {
         ActiveLayout *layout = m_activeLayouts.at(0);
         m_activeLayouts.removeFirst();
+        layout->unloadContainments();
+        layout->unloadLatteViews();
+        layout->deleteLater();
+    }
+
+    while (!m_topLayouts.isEmpty()) {
+        TopLayout *layout = m_topLayouts.at(0);
+        m_topLayouts.removeFirst();
         layout->unloadContainments();
         layout->unloadLatteViews();
         layout->deleteLater();
@@ -126,7 +136,7 @@ void LayoutManager::load()
 
 void LayoutManager::unload()
 {
-    //! Unload all Layouts
+    //! Unload all active Layouts
     for (const auto layout : m_activeLayouts) {
         if (memoryUsage() == Types::MultipleLayouts && layout->isOriginalLayout()) {
             layout->syncToLayoutFile(true);
@@ -141,14 +151,19 @@ void LayoutManager::unload()
 
         layout->deleteLater();
     }
+    m_activeLayouts.clear();
 
     //! Cleanup pseudo-layout from Containments
     if (memoryUsage() == Types::MultipleLayouts) {
-        //    auto containmentsEntries = m_corona->config()->group("Containments");
-        //  containmentsEntries.deleteGroup();
-        //  containmentsEntries.sync();
+        for (const auto layout : m_topLayouts) {
+            layout->syncToLayoutFile(true);
+            layout->unloadContainments();
+            layout->unloadLatteViews();
+            clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
+            layout->deleteLater();
+        }
+        m_topLayouts.clear();
     }
-
 
     //! Remove no-needed temp files
     QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
@@ -354,6 +369,42 @@ int LayoutManager::activeLayoutPos(QString id) const
     }
 
     return -1;
+}
+
+TopLayout *LayoutManager::topLayout(QString id) const
+{
+    for (int i = 0; i < m_topLayouts.size(); ++i) {
+        TopLayout *layout = m_topLayouts.at(i);
+
+        if (layout->name() == id) {
+            return layout;
+        }
+    }
+
+    return nullptr;
+}
+
+bool LayoutManager::assignActiveToTopLayout(ActiveLayout *active, QString id)
+{
+    if (memoryUsage() == Types::SingleLayout) {
+        return false;
+    }
+
+    for (int i = 0; i < m_topLayouts.size(); ++i) {
+        TopLayout *layout = m_topLayouts.at(i);
+
+        if (layout->name() == id) {
+            layout->addActiveLayout(active);
+            return true;
+        }
+    }
+
+    //! If TopLayout was not found, we must create it
+    TopLayout *top = new TopLayout(active, this, Importer::layoutFilePath(id));
+    m_topLayouts.append(top);
+    top->importToCorona();
+
+    return true;
 }
 
 ActiveLayout *LayoutManager::currentLayout() const

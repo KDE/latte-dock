@@ -29,6 +29,7 @@
 
 namespace Latte {
 class Corona;
+class TopLayout;
 }
 
 namespace Latte {
@@ -57,6 +58,9 @@ public:
     //!it is original layout compared to pseudo-layouts that are combinations of multiple-original layouts
     bool isOriginalLayout() const;
 
+    QString topLayoutName() const;
+    void setTopLayoutName(QString name);
+
     QStringList activities() const;
     void setActivities(QStringList activities);
 
@@ -66,15 +70,17 @@ signals:
     void activitiesChanged();
     void disableBordersForMaximizedWindowsChanged();
     void showInMenuChanged();
+    void topLayoutNameChanged();
 
 private slots:
     void loadConfig();
     void saveConfig();
 
+    void setTopLayout(TopLayout *layout);
+
 private:
     void init();
     void importLocalLayout(QString file);
-    void updateLastUsedActivity();
 
     bool kwin_disabledMaximizedBorders() const;
     void kwin_setDisabledMaximizedBorders(bool disable);
@@ -82,7 +88,10 @@ private:
 private:
     bool m_disableBordersForMaximizedWindows{false};
     bool m_showInMenu{false};
+    QString m_topLayoutName;
     QStringList m_activities;
+
+    QPointer<TopLayout> m_topLayout;
 };
 
 }

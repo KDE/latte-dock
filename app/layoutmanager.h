@@ -47,6 +47,7 @@ class Corona;
 class Importer;
 class ActiveLayout;
 class LaunchersSignals;
+class TopLayout;
 class View;
 }
 
@@ -99,10 +100,10 @@ public:
     //! layout cant be found
     ActiveLayout *activeLayout(QString id) const;
     int activeLayoutPos(QString id) const;
+    TopLayout *topLayout(QString id) const;
 
     //! returns the current and active layout based on activities and user preferences
     ActiveLayout *currentLayout() const;
-
     LaunchersSignals *launchersSignals();
 
     QStringList activities();
@@ -111,6 +112,8 @@ public:
 
     void importDefaultLayout(bool newInstanceIfPresent = false);
     void importPresets(bool includeDefault = false);
+
+    bool assignActiveToTopLayout(ActiveLayout *active, QString id);
 
 public slots:
     void showAboutDialog();
@@ -188,6 +191,7 @@ private:
     LaunchersSignals *m_launchersSignals{nullptr};
 
     QList<ActiveLayout *> m_activeLayouts;
+    QList<TopLayout *> m_topLayouts;
 
     KActivities::Controller *m_activitiesController;
 

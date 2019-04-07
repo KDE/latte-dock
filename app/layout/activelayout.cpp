@@ -21,6 +21,7 @@
 #include "activelayout.h"
 
 // local
+#include "toplayout.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
 #include "../settings/universalsettings.h"
@@ -56,6 +57,7 @@ void ActiveLayout::init()
     connect(this, &ActiveLayout::activitiesChanged, this, &ActiveLayout::saveConfig);
     connect(this, &ActiveLayout::disableBordersForMaximizedWindowsChanged, this, &ActiveLayout::saveConfig);
     connect(this, &ActiveLayout::showInMenuChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &ActiveLayout::topLayoutNameChanged, this, &ActiveLayout::saveConfig);
 }
 
 void ActiveLayout::initToCorona(Latte::Corona *corona)
@@ -81,13 +83,12 @@ void ActiveLayout::initToCorona(Latte::Corona *corona)
             });
         }
 
-        if (m_layoutName != MultipleLayoutsName) {
-            updateLastUsedActivity();
+        //! Request the TopLayout in case there is one and Latte is functioning in MultipleLayouts mode
+        if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts && !m_topLayoutName.isEmpty()) {
+            if (m_corona->layoutManager()->assignActiveToTopLayout(this, m_topLayoutName)) {
+                setTopLayout(m_corona->layoutManager()->topLayout(m_topLayoutName));
+            }
         }
-
-        connect(m_corona->activityConsumer(), &KActivities::Consumer::currentActivityChanged,
-                this, &ActiveLayout::updateLastUsedActivity);
-
     }
 }
 
@@ -173,27 +174,32 @@ void ActiveLayout::setActivities(QStringList activities)
     emit activitiesChanged();
 }
 
-void ActiveLayout::updateLastUsedActivity()
+QString ActiveLayout::topLayoutName() const
 {
-    if (!m_corona) {
+    return m_topLayoutName;
+}
+
+void ActiveLayout::setTopLayoutName(QString name)
+{
+    if (m_topLayoutName == name) {
         return;
     }
 
-    if (!m_lastUsedActivity.isEmpty() && !m_corona->layoutManager()->activities().contains(m_lastUsedActivity)) {
-        clearLastUsedActivity();
+    m_topLayoutName = name;
+    emit topLayoutNameChanged();
+}
+
+void ActiveLayout::setTopLayout(TopLayout *layout)
+{
+    if (m_topLayout != layout) {
+        return;
     }
+    disconnect(m_topLayout, &GenericLayout::viewsCountChanged, this, &GenericLayout::viewsCountChanged);
 
-    QString currentId = m_corona->activitiesConsumer()->currentActivity();
+    m_topLayout = layout;
 
-    QStringList appliedActivitiesIds = appliedActivities();
-
-    if (m_lastUsedActivity != currentId
-        && (appliedActivitiesIds.contains(currentId)
-            || m_corona->layoutManager()->memoryUsage() == Types::SingleLayout)) {
-        m_lastUsedActivity = currentId;
-
-        emit lastUsedActivityChanged();
-    }
+    connect(m_topLayout, &GenericLayout::viewsCountChanged, this, &GenericLayout::viewsCountChanged);
+    emit viewsCountChanged();
 }
 
 bool ActiveLayout::isActiveLayout() const
@@ -220,6 +226,7 @@ void ActiveLayout::loadConfig()
 {
     m_disableBordersForMaximizedWindows = m_layoutGroup.readEntry("disableBordersForMaximizedWindows", false);
     m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
+    m_topLayoutName = m_layoutGroup.readEntry("topLayoutName", QString());
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
 
     emit activitiesChanged();
@@ -230,6 +237,7 @@ void ActiveLayout::saveConfig()
     qDebug() << "active layout is saving... for layout:" << m_layoutName;
     m_layoutGroup.writeEntry("showInMenu", m_showInMenu);
     m_layoutGroup.writeEntry("disableBordersForMaximizedWindows", m_disableBordersForMaximizedWindows);
+    m_layoutGroup.writeEntry("topLayoutName", m_topLayoutName);
     m_layoutGroup.writeEntry("activities", m_activities);
 
     m_layoutGroup.sync();

@@ -57,7 +57,6 @@ public:
 
     QString lastUsedActivity();
     void clearLastUsedActivity(); //!e.g. when we export a layout
-    void updateLastUsedActivity();
 
     QString name() const;
     QString file() const;

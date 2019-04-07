@@ -78,6 +78,8 @@ public:
     int viewsCount(QScreen *screen) const;
     int viewsCount() const;
 
+    Latte::Corona *corona();
+
     QStringList unloadedContainmentsIds();
 
     Types::ViewType latteViewType(int containmentId) const;
@@ -141,8 +143,6 @@ private slots:
     void destroyedChanged(bool destroyed);
     void containmentDestroyed(QObject *cont);
 
-    Latte::Corona *corona();
-
 protected:
     Latte::Corona *m_corona{nullptr};
 
@@ -152,6 +152,8 @@ protected:
     QHash<const Plasma::Containment *, Latte::View *> m_waitingLatteViews;
 
 private:
+    void updateLastUsedActivity();
+
     //! It can be used in order for LatteViews to not be created automatically when
     //! their corresponding containments are created e.g. copyView functionality
     bool blockAutomaticLatteViewCreation() const;
