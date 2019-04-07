@@ -307,14 +307,9 @@ QList<Latte::View *> GenericLayout::latteViews()
     return m_latteViews.values();
 }
 
-QList<Latte::View *> GenericLayout::sortedLatteViews()
+QList<Latte::View *> GenericLayout::sortedLatteViews(QList<Latte::View *> views)
 {
-    QList<Latte::View *> sortedViews;
-
-    //! create views list to be sorted out
-    for (const auto view : m_latteViews) {
-        sortedViews.append(view);
-    }
+    QList<Latte::View *> sortedViews = views.isEmpty() ? latteViews() : views;
 
     qDebug() << " -------- ";
 

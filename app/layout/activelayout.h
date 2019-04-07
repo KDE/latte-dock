@@ -69,6 +69,19 @@ public:
     const QStringList appliedActivities() override;
     QList<Latte::View *> latteViews() override;
 
+    int viewsCount(int screen) const override;
+    int viewsCount(QScreen *screen) const override;
+    int viewsCount() const override;
+
+    //! Available edges for specific view in that screen
+    QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const override;
+    //! All free edges in that screen
+    QList<Plasma::Types::Location> freeEdges(QScreen *scr) const override;
+    QList<Plasma::Types::Location> freeEdges(int screen) const override;
+
+    QList<Latte::View *> sortedLatteViews(QList<Latte::View *> views = QList<Latte::View *>()) override;
+    QList<Latte::View *> viewsWithPlasmaShortcuts() override;
+
 signals:
     void activitiesChanged();
     void disableBordersForMaximizedWindowsChanged();

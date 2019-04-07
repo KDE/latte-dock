@@ -51,9 +51,24 @@ public:
     //! OVERRIDE GeneralLayout implementations
     bool isCurrent() const override;
 
+    int viewsCount(int screen) const override;
+    int viewsCount(QScreen *screen) const override;
+    int viewsCount() const override;
+
+    //! Available edges for specific view in that screen
+    QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const override;
+    //! All free edges in that screen
+    QList<Plasma::Types::Location> freeEdges(QScreen *scr) const override;
+    QList<Plasma::Types::Location> freeEdges(int screen) const override;
+
+    QList<Latte::View *> sortedLatteViews(QList<Latte::View *> views = QList<Latte::View *>()) override;
+
 public slots:
     void addActiveLayout(ActiveLayout *layout);
     void removeActiveLayout(ActiveLayout *layout);
+
+private:
+    ActiveLayout *currentActiveLayout() const;
 
 private:
     QList<ActiveLayout *> m_activeLayouts;
@@ -62,4 +77,4 @@ private:
 
 }
 
-#endif
+#endif //TOPLAYOUT_H

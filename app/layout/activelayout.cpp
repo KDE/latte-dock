@@ -24,7 +24,9 @@
 #include "toplayout.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
+#include "../screenpool.h"
 #include "../settings/universalsettings.h"
+#include "../view/view.h"
 #include "../../liblatte2/types.h"
 
 // Qt
@@ -286,6 +288,157 @@ QList<Latte::View *> ActiveLayout::latteViews()
     return Layout::GenericLayout::latteViews();
 }
 
+int ActiveLayout::viewsCount(int screen) const
+{
+    if (!m_corona) {
+        return 0;
+    }
 
+    int views = Layout::GenericLayout::viewsCount(screen);
+
+    if (m_topLayout) {
+        QScreen *scr = m_corona->screenPool()->screenForId(screen);
+
+        for (const auto view : m_topLayout->latteViews()) {
+            if (view && view->screen() == scr && !view->containment()->destroyed()) {
+                ++views;
+            }
+        }
+    }
+
+    return views;
+}
+
+int ActiveLayout::viewsCount(QScreen *screen) const
+{
+    if (!m_corona) {
+        return 0;
+    }
+
+    int views = Layout::GenericLayout::viewsCount(screen);
+
+    if (m_topLayout) {
+        for (const auto view : m_topLayout->latteViews()) {
+            if (view && view->screen() == screen && !view->containment()->destroyed()) {
+                ++views;
+            }
+        }
+    }
+
+    return views;
+}
+
+int ActiveLayout::viewsCount() const
+{
+    if (!m_corona) {
+        return 0;
+    }
+
+    int views = Layout::GenericLayout::viewsCount();
+
+    if (m_topLayout) {
+        for (const auto view : m_topLayout->latteViews()) {
+            if (view && view->containment() && !view->containment()->destroyed()) {
+                ++views;
+            }
+        }
+    }
+
+    return views;
+}
+
+QList<Plasma::Types::Location> ActiveLayout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
+{
+    using Plasma::Types;
+    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
+                Types::TopEdge, Types::RightEdge};
+
+    if (!m_corona) {
+        return edges;
+    }
+
+    edges = Layout::GenericLayout::availableEdgesForView(scr, forView);
+
+    if (m_topLayout) {
+        for (const auto view : m_topLayout->latteViews()) {
+            //! make sure that availabe edges takes into account only views that should be excluded,
+            //! this is why the forView should not be excluded
+            if (view && view != forView && view->positioner()->currentScreenName() == scr->name()) {
+                edges.removeOne(view->location());
+            }
+        }
+    }
+
+    return edges;
+}
+
+QList<Plasma::Types::Location> ActiveLayout::freeEdges(QScreen *scr) const
+{
+    using Plasma::Types;
+    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
+                Types::TopEdge, Types::RightEdge};
+
+    if (!m_corona) {
+        return edges;
+    }
+
+    edges = Layout::GenericLayout::freeEdges(scr);
+
+    if (m_topLayout) {
+        for (const auto view : m_topLayout->latteViews()) {
+            if (view && view->positioner()->currentScreenName() == scr->name()) {
+                edges.removeOne(view->location());
+            }
+        }
+    }
+
+    return edges;
+}
+
+QList<Plasma::Types::Location> ActiveLayout::freeEdges(int screen) const
+{
+    using Plasma::Types;
+    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
+                Types::TopEdge, Types::RightEdge};
+
+    if (!m_corona) {
+        return edges;
+    }
+
+    edges = Layout::GenericLayout::freeEdges(screen);
+    QScreen *scr = m_corona->screenPool()->screenForId(screen);
+
+    if (m_topLayout) {
+        for (const auto view : m_topLayout->latteViews()) {
+            if (view && scr && view->positioner()->currentScreenName() == scr->name()) {
+                edges.removeOne(view->location());
+            }
+        }
+    }
+
+    return edges;
+}
+
+QList<Latte::View *> ActiveLayout::sortedLatteViews(QList<Latte::View *> views)
+{
+    QList<Latte::View *> combined = latteViews();
+
+    if (m_topLayout) {
+        combined << m_topLayout->latteViews();
+    }
+
+    return Layout::GenericLayout::sortedLatteViews(combined);
+}
+
+QList<Latte::View *> ActiveLayout::viewsWithPlasmaShortcuts()
+{
+    QList<Latte::View *> combined = Layout::GenericLayout::viewsWithPlasmaShortcuts();
+
+    if (m_topLayout) {
+        combined << m_topLayout->viewsWithPlasmaShortcuts();
+    }
+
+    return combined;
+}
 
 }

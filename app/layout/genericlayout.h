@@ -75,9 +75,9 @@ public:
     bool isWritable() const;
     bool layoutIsBroken() const;
 
-    int viewsCount(int screen) const;
-    int viewsCount(QScreen *screen) const;
-    int viewsCount() const;
+    virtual int viewsCount(int screen) const;
+    virtual int viewsCount(QScreen *screen) const;
+    virtual int viewsCount() const;
 
     Latte::Corona *corona();
 
@@ -88,10 +88,10 @@ public:
 
     Latte::View *highestPriorityView();
     Latte::View *viewForContainment(const Plasma::Containment *containment);
-    QList<Latte::View *> sortedLatteViews();
-    QList<Latte::View *> viewsWithPlasmaShortcuts();
+    virtual QList<Latte::View *> sortedLatteViews(QList<Latte::View *> views = QList<Latte::View *>());
+    virtual QList<Latte::View *> viewsWithPlasmaShortcuts();
     virtual QList<Latte::View *> latteViews();
-    ViewsMap validViewsMap();
+    virtual ViewsMap validViewsMap();
 
     void syncToLayoutFile(bool removeLayoutId = false);
 
@@ -109,10 +109,10 @@ public:
     bool latteViewExists(Plasma::Containment *containment);
 
     //! Available edges for specific view in that screen
-    QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;
+    virtual QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;
     //! All free edges in that screen
-    QList<Plasma::Types::Location> freeEdges(QScreen *scr) const;
-    QList<Plasma::Types::Location> freeEdges(int screen) const;
+    virtual QList<Plasma::Types::Location> freeEdges(QScreen *scr) const;
+    virtual QList<Plasma::Types::Location> freeEdges(int screen) const;
 
     //! Bind this latteView and its relevant containments(including systrays)
     //! to this layout. It is used for moving a Latte::View from layout to layout)
@@ -125,7 +125,7 @@ public:
 public slots:
     Q_INVOKABLE void addNewView();
     Q_INVOKABLE int viewsWithTasks() const;
-    Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;  //change <Plasma::Types::Location> to <int> types
+    virtual Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;  //change <Plasma::Types::Location> to <int> types
 
 signals:
     void activitiesChanged(); // to move at an interface

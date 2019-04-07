@@ -26,6 +26,13 @@
 // KDE
 #include <KConfigGroup>
 
+// Plasma
+#include <Plasma>
+
+namespace Plasma {
+class Types;
+}
+
 namespace Latte {
 namespace Layout {
 
@@ -75,6 +82,8 @@ public:
 
 // STATIC
     static QString layoutName(const QString &fileName);
+    static QList<Plasma::Types::Location> combinedFreeEdges(const QList<Plasma::Types::Location> &edges1,
+                                                            const QList<Plasma::Types::Location> &edges2);
 
 signals:
     void backgroundChanged();
