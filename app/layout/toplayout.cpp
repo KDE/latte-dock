@@ -56,13 +56,8 @@ void TopLayout::addActiveLayout(ActiveLayout *layout)
     if (layout != nullptr && !m_activeLayouts.contains(layout)) {
         m_activeLayouts.append(layout);
 
-        connect(layout, &QObject::destroyed, this, [&]() {
-            disconnect(layout, &GenericLayout::activitiesChanged, this, &GenericLayout::activitiesChanged);
-            removeActiveLayout(layout);
-        });
-
         connect(layout, &GenericLayout::activitiesChanged, this, &GenericLayout::activitiesChanged);
-
+        emit activitiesChanged();
         emit viewsCountChanged();
     }
 }
@@ -70,9 +65,16 @@ void TopLayout::addActiveLayout(ActiveLayout *layout)
 void TopLayout::removeActiveLayout(ActiveLayout *layout)
 {
     if (m_activeLayouts.contains(layout)) {
+        qDebug() << "TOPLAYOUT <" << name() << "> : Removing active layout, " << layout->name();
+
         m_activeLayouts.removeAll(layout);
+
+        disconnect(layout, &GenericLayout::activitiesChanged, this, &GenericLayout::activitiesChanged);
         emit activitiesChanged();
-        emit viewsCountChanged();
+
+        //! viewsCount signal is not needed to be trigerred here because
+        //! in such case the views number has not been changed for the rest
+        //! active layouts
     }
 }
 

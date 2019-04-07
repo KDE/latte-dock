@@ -64,6 +64,8 @@ public:
     QStringList activities() const;
     void setActivities(QStringList activities);
 
+    //! overrides
+    void unloadContainments() override;
     const QStringList appliedActivities() override;
 
 signals:

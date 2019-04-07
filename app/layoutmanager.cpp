@@ -72,21 +72,7 @@ LayoutManager::~LayoutManager()
     m_importer->deleteLater();
     m_launchersSignals->deleteLater();
 
-    while (!m_activeLayouts.isEmpty()) {
-        ActiveLayout *layout = m_activeLayouts.at(0);
-        m_activeLayouts.removeFirst();
-        layout->unloadContainments();
-        layout->unloadLatteViews();
-        layout->deleteLater();
-    }
-
-    while (!m_topLayouts.isEmpty()) {
-        TopLayout *layout = m_topLayouts.at(0);
-        m_topLayouts.removeFirst();
-        layout->unloadContainments();
-        layout->unloadLatteViews();
-        layout->deleteLater();
-    }
+    unload();
 
     m_activitiesController->deleteLater();
 }
@@ -115,7 +101,7 @@ void LayoutManager::load()
     }
 
     //! Check if the multiple-layouts hidden file is present, add it if it isnt
-    if (!QFile(QDir::homePath() + "/.config/latte/" + ActiveLayout::MultipleLayoutsName + ".layout.latte").exists()) {
+    if (!QFile(QDir::homePath() + "/.config/latte/" + Layout::AbstractLayout::MultipleLayoutsName + ".layout.latte").exists()) {
         importPreset(MultipleLayoutsPresetId, false);
     }
 
@@ -125,7 +111,7 @@ void LayoutManager::load()
             this, &LayoutManager::currentActivityChanged);
 
     connect(m_corona->m_activityConsumer, &KActivities::Consumer::runningActivitiesChanged,
-    this, [&]() {
+            this, [&]() {
         if (memoryUsage() == Types::MultipleLayouts) {
             syncMultipleLayoutsToActivities();
         }
@@ -136,33 +122,44 @@ void LayoutManager::load()
 
 void LayoutManager::unload()
 {
-    //! Unload all active Layouts
-    for (const auto layout : m_activeLayouts) {
-        if (memoryUsage() == Types::MultipleLayouts && layout->isOriginalLayout()) {
+    bool multipleMode{activeLayout(Layout::AbstractLayout::MultipleLayoutsName)};
+
+    //! Unload all ActiveLayouts
+    while (!m_activeLayouts.isEmpty()) {
+        ActiveLayout *layout = m_activeLayouts.at(0);
+        m_activeLayouts.removeFirst();
+
+        if (layout->isOriginalLayout() && multipleMode) {
             layout->syncToLayoutFile(true);
         }
 
         layout->unloadContainments();
         layout->unloadLatteViews();
 
-        if (memoryUsage() == Types::MultipleLayouts && layout->isOriginalLayout()) {
-            clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
+        if (layout->isOriginalLayout() && multipleMode) {
+            clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds(), true);
         }
 
-        layout->deleteLater();
+        delete layout;
     }
-    m_activeLayouts.clear();
 
-    //! Cleanup pseudo-layout from Containments
-    if (memoryUsage() == Types::MultipleLayouts) {
-        for (const auto layout : m_topLayouts) {
+    //! Unload all TopLayouts
+    while (!m_topLayouts.isEmpty()) {
+        TopLayout *layout = m_topLayouts.at(0);
+        m_topLayouts.removeFirst();
+
+        if (multipleMode) {
             layout->syncToLayoutFile(true);
-            layout->unloadContainments();
-            layout->unloadLatteViews();
-            clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
-            layout->deleteLater();
         }
-        m_topLayouts.clear();
+
+        layout->unloadContainments();
+        layout->unloadLatteViews();
+
+        if (multipleMode) {
+            clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds(), true);
+        }
+
+        delete layout;
     }
 
     //! Remove no-needed temp files
@@ -419,7 +416,7 @@ ActiveLayout *LayoutManager::currentLayout() const
         }
 
         for (auto layout : m_activeLayouts) {
-            if ((layout->name() != ActiveLayout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
+            if ((layout->name() != Layout::AbstractLayout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
                 return layout;
             }
         }
@@ -684,7 +681,8 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
         return false;
     }
 
-    //! First Check If that Layout is already present
+    //! First Check If that Layout is already present and in that case
+    //! we can just switch to the proper Activity
     if (memoryUsage() == Types::MultipleLayouts && previousMemoryUsage == -1) {
         ActiveLayout *layout = activeLayout(layoutName);
 
@@ -710,6 +708,10 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                 emit currentLayoutIsSwitching(layout->name());
             }
         }
+
+        for (const auto layout : m_topLayouts) {
+            emit currentLayoutIsSwitching(layout->name());
+        }
     }
 
     QString lPath = layoutPath(layoutName);
@@ -720,8 +722,8 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 
     if (!lPath.isEmpty()) {
         if (memoryUsage() == Types::SingleLayout) {
-            emit currentLayoutIsSwitching(currentLayoutName());
-        } else if (memoryUsage() == Types::MultipleLayouts && layoutName != ActiveLayout::MultipleLayoutsName) {
+          //  emit currentLayoutIsSwitching(currentLayoutName());
+        } else if (memoryUsage() == Types::MultipleLayouts && layoutName != Layout::AbstractLayout::MultipleLayoutsName) {
             ActiveLayout toLayout(this, lPath);
 
             QStringList toActivities = toLayout.activities();
@@ -752,31 +754,15 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 
             bool initializingMultipleLayouts{false};
 
-            if (memoryUsage() == Types::MultipleLayouts && !activeLayout(ActiveLayout::MultipleLayoutsName)) {
+            if (memoryUsage() == Types::MultipleLayouts && !activeLayout(Layout::AbstractLayout::MultipleLayoutsName)) {
                 initializingMultipleLayouts = true;
             }
 
             if (memoryUsage() == Types::SingleLayout || initializingMultipleLayouts || previousMemoryUsage == Types::MultipleLayouts) {
-                while (!m_activeLayouts.isEmpty()) {
-                    ActiveLayout *layout = m_activeLayouts.at(0);
-                    m_activeLayouts.removeFirst();
-
-                    if (layout->isOriginalLayout() && previousMemoryUsage == Types::MultipleLayouts) {
-                        layout->syncToLayoutFile(true);
-                    }
-
-                    layout->unloadContainments();
-                    layout->unloadLatteViews();
-
-                    if (layout->isOriginalLayout() && previousMemoryUsage == Types::MultipleLayouts) {
-                        clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds(), true);
-                    }
-
-                    delete layout;
-                }
+                unload();
 
                 if (initializingMultipleLayouts) {
-                    fixedLayoutName = QString(ActiveLayout::MultipleLayoutsName);
+                    fixedLayoutName = QString(Layout::AbstractLayout::MultipleLayoutsName);
                     fixedLPath = layoutPath(fixedLayoutName);
                 }
 
@@ -830,7 +816,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                         }
 
                         if ((!lastUsedActivityFound && assignedActivities.count() == 0)
-                            || !assignedActivities.contains(m_corona->m_activityConsumer->currentActivity())) {
+                                || !assignedActivities.contains(m_corona->m_activityConsumer->currentActivity())) {
 
                             //! Starting the activities must be done asynchronous because otherwise
                             //! the activity manager cant close multiple activities
@@ -871,7 +857,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
     QStringList layoutsToUnload;
     QStringList layoutsToLoad;
-    layoutsToLoad << ActiveLayout::MultipleLayoutsName;
+    layoutsToLoad << Layout::AbstractLayout::MultipleLayoutsName;
 
     bool allRunningActivitiesWillBeReserved{true};
 
@@ -906,7 +892,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
     //! Unload no needed Layouts
     for (const auto &layoutName : layoutsToUnload) {
-        if (layoutName != ActiveLayout::MultipleLayoutsName) {
+        if (layoutName != Layout::AbstractLayout::MultipleLayoutsName) {
             ActiveLayout *layout = activeLayout(layoutName);
             int posLayout = activeLayoutPos(layoutName);
 

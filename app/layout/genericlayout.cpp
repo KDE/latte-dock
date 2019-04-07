@@ -64,6 +64,7 @@ void GenericLayout::unloadContainments()
     //!disconnect signals in order to avoid crashes when the layout is unloading
     disconnect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
     disconnect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
+    disconnect(m_corona->activityConsumer(), &KActivities::Consumer::currentActivityChanged, this, &GenericLayout::updateLastUsedActivity);
 
     qDebug() << "Layout - " + name() + " unload: containments ... size ::: " << m_containments.size()
              << " ,latteViews in memory ::: " << m_latteViews.size()

@@ -743,7 +743,7 @@ void View::setFontPixelSize(int size)
 
 void View::applyActivitiesToWindows()
 {
-    if (m_visibility) {
+    if (m_visibility && m_managedLayout) {
         QStringList activities = m_managedLayout->appliedActivities();
         m_windowsTracker->setWindowOnActivities(*this, activities);
 

@@ -96,7 +96,7 @@ public:
     void lock(); //! make it only read-only
     void renameLayout(QString newName);
     void syncLatteViewsToScreens();
-    void unloadContainments();
+    virtual void unloadContainments();
     void unloadLatteViews();
     void unlock(); //! make it writable which it should be the default
 

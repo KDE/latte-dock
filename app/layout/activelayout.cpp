@@ -52,6 +52,16 @@ ActiveLayout::~ActiveLayout()
     }
 }
 
+void ActiveLayout::unloadContainments()
+{
+    Layout::GenericLayout::unloadContainments();
+
+    if (m_topLayout) {
+        disconnect(m_topLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
+        m_topLayout->removeActiveLayout(this);
+    }
+}
+
 void ActiveLayout::init()
 {
     connect(this, &ActiveLayout::activitiesChanged, this, &ActiveLayout::saveConfig);
@@ -191,14 +201,14 @@ void ActiveLayout::setTopLayoutName(QString name)
 
 void ActiveLayout::setTopLayout(TopLayout *layout)
 {
-    if (m_topLayout != layout) {
+    if (m_topLayout == layout) {
         return;
     }
-    disconnect(m_topLayout, &GenericLayout::viewsCountChanged, this, &GenericLayout::viewsCountChanged);
+    disconnect(m_topLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
 
     m_topLayout = layout;
 
-    connect(m_topLayout, &GenericLayout::viewsCountChanged, this, &GenericLayout::viewsCountChanged);
+    connect(m_topLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
     emit viewsCountChanged();
 }
 
@@ -261,5 +271,7 @@ const QStringList ActiveLayout::appliedActivities()
         return {"0"};
     }
 }
+
+
 
 }
