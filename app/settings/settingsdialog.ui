@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>936</width>
-    <height>710</height>
+    <width>850</width>
+    <height>636</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -95,6 +95,9 @@
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
             <widget class="QTableView" name="layoutsView">
+             <property name="showDropIndicator" stdset="0">
+              <bool>true</bool>
+             </property>
              <property name="alternatingRowColors">
               <bool>true</bool>
              </property>
@@ -444,8 +447,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>496</width>
-            <height>575</height>
+            <width>894</width>
+            <height>594</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">

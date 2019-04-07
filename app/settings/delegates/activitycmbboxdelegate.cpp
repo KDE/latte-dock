@@ -133,6 +133,8 @@ void ActivityCmbBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleO
 void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOptions = option;
+    //! Remove the focus dotted lines
+    myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
     painter->save();
 
     QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();

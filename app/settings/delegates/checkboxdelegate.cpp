@@ -37,10 +37,14 @@ CheckBoxDelegate::CheckBoxDelegate(QObject *parent)
 
 void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStandardItemModel *model = (QStandardItemModel *) index.model();
-    QStyledItemDelegate::paint(painter, option, model->index(index.row(), HIDDENTEXTCOLUMN));
+    QStyleOptionViewItem adjustedOption = option;
+    //! Remove the focus dotted lines
+    adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
 
-    QStyledItemDelegate::paint(painter, option, index);
+    QStandardItemModel *model = (QStandardItemModel *) index.model();
+    QStyledItemDelegate::paint(painter, adjustedOption, model->index(index.row(), HIDDENTEXTCOLUMN));
+
+    QStyledItemDelegate::paint(painter, adjustedOption, index);
 }
 
 bool CheckBoxDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,

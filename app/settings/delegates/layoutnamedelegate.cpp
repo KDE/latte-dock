@@ -40,9 +40,14 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 {
     bool isLocked = index.data(Qt::UserRole).toBool();
 
+    QStyleOptionViewItem adjustedOption = option;
+    //! Remove the focus dotted lines
+    adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
+
     if (isLocked) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
         QString nameText = index.data(Qt::DisplayRole).toString();
+        bool selected = ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected));
 
         //! font metrics
         QFontMetrics fm(option.font);
@@ -54,9 +59,9 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         QRect destinationS(option.rect.x(), option.rect.y(), startWidth, thick);
         QRect destinationE(option.rect.x() + option.rect.width() - thick, option.rect.y(), endWidth, thick);
 
-        QStyleOptionViewItem myOptionS = option;
-        QStyleOptionViewItem myOptionE = option;
-        QStyleOptionViewItem myOptionMain = option;
+        QStyleOptionViewItem myOptionS = adjustedOption;
+        QStyleOptionViewItem myOptionE = adjustedOption;
+        QStyleOptionViewItem myOptionMain = adjustedOption;
         myOptionS.rect = destinationS;
         myOptionE.rect = destinationE;
         myOptionMain.rect.setX(option.rect.x() + startWidth);
@@ -67,82 +72,22 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         //! draw background at edges
         QStyledItemDelegate::paint(painter, myOptionS, model->index(index.row(), HIDDENTEXTCOLUMN));
 
-        //! Lock Icon 1: Unicode character attempt
-        /*QString s = QChar(0x2318);
-          QString s = QChar(0x2757);
-          myOptionE.text = s;*/
         QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), HIDDENTEXTCOLUMN));
 
-        //! Lock Icon 2: QIcon attempt that doesn't change color
+        //! Lock Icon
         QIcon lockIcon = QIcon::fromTheme("object-locked");
 
+        QIcon::Mode mode = selected ? QIcon::Selected : QIcon::Normal;
+
         if (qApp->layoutDirection() == Qt::RightToLeft) {
-            painter->drawPixmap(destinationS, lockIcon.pixmap(thick, thick));
+            painter->drawPixmap(destinationS, lockIcon.pixmap(thick, thick, mode));
         } else {
-            painter->drawPixmap(destinationE, lockIcon.pixmap(thick, thick));
+            painter->drawPixmap(destinationE, lockIcon.pixmap(thick, thick, mode));
         }
-
-        //! Lock Icon 3: QIcon and change colors attempt
-        /*QIcon lockIcon = QIcon::fromTheme("object-locked");
-        QPixmap origPixmap = lockIcon.pixmap(thick, thick);
-        QPixmap lockPixmap = origPixmap;
-
-        QBrush nBrush;
-
-        if ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected)) {
-            nBrush = option.palette.brush(QPalette::Active, QPalette::HighlightedText);
-        } else {
-            nBrush = option.palette.brush(QPalette::Inactive, QPalette::Text);
-        }
-
-        lockPixmap.fill(nBrush.color());
-        lockPixmap.setMask(origPixmap.createMaskFromColor(Qt::transparent));
-
-        painter->drawPixmap(destinationE, lockPixmap);*/
-
-        //! Lock Icon 4: Plasma::Svg and change color group attempt
-        /*Plasma::Svg svgIcon;
-
-        svgIcon.setStatus(Plasma::Svg::Normal);
-        svgIcon.setUsingRenderingCache(false);
-        svgIcon.setDevicePixelRatio(qApp->devicePixelRatio());
-
-        //! find path
-        //try to load from iconloader an svg with Plasma::Svg
-        const auto *iconTheme = KIconLoader::global()->theme();
-        QString iconPath;
-
-        if (iconTheme) {
-            iconPath = iconTheme->iconPath("object-locked" + QLatin1String(".svg")
-                                           , thick
-                                           , KIconLoader::MatchBest);
-
-            if (iconPath.isEmpty()) {
-                iconPath = iconTheme->iconPath("object-locked" + QLatin1String(".svgz")
-                                               , thick
-                                               , KIconLoader::MatchBest);
-            }
-        } else {
-            qWarning() << "KIconLoader has no theme set";
-        }
-
-        if (!iconPath.isEmpty()) {
-            svgIcon.setImagePath(iconPath);
-
-            if ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected)) {
-                svgIcon.setColorGroup(Plasma::Theme::ComplementaryColorGroup);
-            } else {
-                svgIcon.setColorGroup(Plasma::Theme::NormalColorGroup);
-            }
-
-            svgIcon.resize(thick, thick);
-        }
-
-        painter->drawPixmap(destinationE, svgIcon.pixmap());*/
 
         return;
     }
 
-    QStyledItemDelegate::paint(painter, option, index);
+    QStyledItemDelegate::paint(painter, adjustedOption, index);
 }
 
