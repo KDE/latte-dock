@@ -86,9 +86,10 @@ public:
     const QList<Plasma::Containment *> *containments();
 
     Latte::View *highestPriorityView();
+    Latte::View *viewForContainment(const Plasma::Containment *containment);
     QList<Latte::View *> sortedLatteViews();
     QList<Latte::View *> viewsWithPlasmaShortcuts();
-    QHash<const Plasma::Containment *, Latte::View *> *latteViews();
+    virtual QList<Latte::View *> latteViews();
     ViewsMap validViewsMap();
 
     void syncToLayoutFile(bool removeLayoutId = false);

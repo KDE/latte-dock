@@ -207,7 +207,7 @@ QList<Plasma::Types::Location> GenericLayout::freeEdges(QScreen *scr) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
+                Types::TopEdge, Types::RightEdge};
 
     if (!m_corona) {
         return edges;
@@ -226,7 +226,7 @@ QList<Plasma::Types::Location> GenericLayout::freeEdges(int screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
+                Types::TopEdge, Types::RightEdge};
 
     if (!m_corona) {
         return edges;
@@ -285,12 +285,21 @@ Latte::View *GenericLayout::highestPriorityView()
 {
     QList<Latte::View *> views = sortedLatteViews();
 
-    return views.count() > 0 ? views[0] : nullptr;
+    return (views.count() > 0 ? views[0] : nullptr);
 }
 
-QHash<const Plasma::Containment *, Latte::View *> *GenericLayout::latteViews()
+Latte::View *GenericLayout::viewForContainment(const Plasma::Containment *containment)
 {
-    return &m_latteViews;
+    if (m_latteViews.contains(containment)) {
+        return m_latteViews[containment];
+    }
+
+    return nullptr;
+}
+
+QList<Latte::View *> GenericLayout::latteViews()
+{
+    return m_latteViews.values();
 }
 
 QList<Latte::View *> GenericLayout::sortedLatteViews()
@@ -793,8 +802,8 @@ void GenericLayout::updateLastUsedActivity()
     QStringList appliedActivitiesIds = appliedActivities();
 
     if (m_lastUsedActivity != currentId
-        && (appliedActivitiesIds.contains(currentId)
-            || m_corona->layoutManager()->memoryUsage() == Types::SingleLayout)) {
+            && (appliedActivitiesIds.contains(currentId)
+                || m_corona->layoutManager()->memoryUsage() == Types::SingleLayout)) {
         m_lastUsedActivity = currentId;
 
         emit lastUsedActivityChanged();
@@ -911,7 +920,7 @@ QList<Plasma::Types::Location> GenericLayout::availableEdgesForView(QScreen *scr
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
+                Types::TopEdge, Types::RightEdge};
 
     if (!m_corona) {
         return edges;

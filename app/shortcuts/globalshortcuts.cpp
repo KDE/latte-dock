@@ -460,16 +460,16 @@ void GlobalShortcuts::updateViewItemBadge(QString identifier, QString value)
         return false;
     };
 
-    QHash<const Plasma::Containment *, Latte::View *> *views;
     ActiveLayout *currentLayout = m_corona->layoutManager()->currentLayout();
+    QList<Latte::View *> views;
 
     if (currentLayout) {
         views = currentLayout->latteViews();
     }
 
     // update badges in all Latte Tasks plasmoids
-    for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
-        updateBadgeForTaskInContainment(it.key(), identifier, value);
+    for (const auto &view : views) {
+        updateBadgeForTaskInContainment(view->containment(), identifier, value);
     }
 }
 

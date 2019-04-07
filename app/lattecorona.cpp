@@ -276,12 +276,12 @@ void Corona::setupWaylandIntegration()
     registry->create(connection);
 
     connect(registry, &Registry::plasmaShellAnnounced, this
-    , [this, registry](quint32 name, quint32 version) {
+            , [this, registry](quint32 name, quint32 version) {
         m_waylandCorona = registry->createPlasmaShell(name, version, this);
     });
 
     QObject::connect(registry, &KWayland::Client::Registry::plasmaWindowManagementAnnounced,
-    [this, registry](quint32 name, quint32 version) {
+                     [this, registry](quint32 name, quint32 version) {
         KWayland::Client::PlasmaWindowManagement *pwm = registry->createPlasmaWindowManagement(name, version, this);
 
         WaylandInterface *wI = qobject_cast<WaylandInterface *>(m_wm);
@@ -466,94 +466,92 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
     if (!screen)
         return QRegion();
 
-    QHash<const Plasma::Containment *, Latte::View *> *views;
+    QList<Latte::View *> views;
 
     if (forLayout.isEmpty()) {
         Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
-        views = currentLayout ? currentLayout->latteViews() : nullptr;
+        views = currentLayout->latteViews();
     } else {
         Latte::ActiveLayout *activeLayout = m_layoutManager->activeLayout(forLayout);
-        views = activeLayout ? activeLayout->latteViews() : nullptr;
+        views = activeLayout->latteViews();
     }
 
     QRegion available(screen->geometry());
 
-    if (views) {
-        for (const auto *view : *views) {
-            if (view && view->containment() && view->screen() == screen
+    for (const auto *view : views) {
+        if (view && view->containment() && view->screen() == screen
                 && view->visibility() && (view->visibility()->mode() != Latte::Types::AutoHide)) {
-                int realThickness = view->normalThickness() - view->effects()->innerShadow();
+            int realThickness = view->normalThickness() - view->effects()->innerShadow();
 
-                // Usually availableScreenRect is used by the desktop,
-                // but Latte don't have desktop, then here just
-                // need calculate available space for top and bottom location,
-                // because the left and right are those who dodge others views
-                switch (view->location()) {
-                    case Plasma::Types::TopEdge:
-                        if (view->behaveAsPlasmaPanel()) {
-                            available -= view->geometry();
-                        } else {
-                            QRect realGeometry;
-                            int realWidth = view->maxLength() * view->width();
+            // Usually availableScreenRect is used by the desktop,
+            // but Latte don't have desktop, then here just
+            // need calculate available space for top and bottom location,
+            // because the left and right are those who dodge others views
+            switch (view->location()) {
+            case Plasma::Types::TopEdge:
+                if (view->behaveAsPlasmaPanel()) {
+                    available -= view->geometry();
+                } else {
+                    QRect realGeometry;
+                    int realWidth = view->maxLength() * view->width();
 
-                            switch (view->alignment()) {
-                                case Latte::Types::Left:
-                                    realGeometry = QRect(view->x(), view->y(),
-                                                         realWidth, realThickness);
-                                    break;
-
-                                case Latte::Types::Center:
-                                case Latte::Types::Justify:
-                                    realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2), view->y(),
-                                                         realWidth, realThickness);
-                                    break;
-
-                                case Latte::Types::Right:
-                                    realGeometry = QRect(view->geometry().right() - realWidth + 1, view->y(),
-                                                         realWidth, realThickness);
-                                    break;
-                            }
-
-                            available -= realGeometry;
-                        }
-
+                    switch (view->alignment()) {
+                    case Latte::Types::Left:
+                        realGeometry = QRect(view->x(), view->y(),
+                                             realWidth, realThickness);
                         break;
 
-                    case Plasma::Types::BottomEdge:
-                        if (view->behaveAsPlasmaPanel()) {
-                            available -= view->geometry();
-                        } else {
-                            QRect realGeometry;
-                            int realWidth = view->maxLength() * view->width();
-                            int realY = view->geometry().bottom() - realThickness + 1;
-
-                            switch (view->alignment()) {
-                                case Latte::Types::Left:
-                                    realGeometry = QRect(view->x(), realY,
-                                                         realWidth, realThickness);
-                                    break;
-
-                                case Latte::Types::Center:
-                                case Latte::Types::Justify:
-                                    realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2),
-                                                         realY, realWidth, realThickness);
-                                    break;
-
-                                case Latte::Types::Right:
-                                    realGeometry = QRect(view->geometry().right() - realWidth + 1, realY,
-                                                         realWidth, realThickness);
-                                    break;
-                            }
-
-                            available -= realGeometry;
-                        }
-
+                    case Latte::Types::Center:
+                    case Latte::Types::Justify:
+                        realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2), view->y(),
+                                             realWidth, realThickness);
                         break;
 
-                    default:
-                        //! bypass clang warnings
+                    case Latte::Types::Right:
+                        realGeometry = QRect(view->geometry().right() - realWidth + 1, view->y(),
+                                             realWidth, realThickness);
                         break;
+                    }
+
+                    available -= realGeometry;
                 }
+
+                break;
+
+            case Plasma::Types::BottomEdge:
+                if (view->behaveAsPlasmaPanel()) {
+                    available -= view->geometry();
+                } else {
+                    QRect realGeometry;
+                    int realWidth = view->maxLength() * view->width();
+                    int realY = view->geometry().bottom() - realThickness + 1;
+
+                    switch (view->alignment()) {
+                    case Latte::Types::Left:
+                        realGeometry = QRect(view->x(), realY,
+                                             realWidth, realThickness);
+                        break;
+
+                    case Latte::Types::Center:
+                    case Latte::Types::Justify:
+                        realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2),
+                                             realY, realWidth, realThickness);
+                        break;
+
+                    case Latte::Types::Right:
+                        realGeometry = QRect(view->geometry().right() - realWidth + 1, realY,
+                                             realWidth, realThickness);
+                        break;
+                    }
+
+                    available -= realGeometry;
+                }
+
+                break;
+
+            default:
+                //! bypass clang warnings
+                break;
             }
         }
     }
@@ -600,43 +598,41 @@ QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> m
     auto available = screen->geometry();
 
     Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
-    QHash<const Plasma::Containment *, Latte::View *> *views;
+    QList<Latte::View *> views;
 
     if (currentLayout) {
         views = currentLayout->latteViews();
     }
 
-    if (views) {
-        for (const auto *view : *views) {
-            if (view && view->containment() && view->screen() == screen
+    for (const auto *view : views) {
+        if (view && view->containment() && view->screen() == screen
                 && ((allEdges || edges.contains(view->location()))
                     && (allModes || (view->visibility() && modes.contains(view->visibility()->mode()))))) {
 
-                // Usually availableScreenRect is used by the desktop,
-                // but Latte don't have desktop, then here just
-                // need calculate available space for top and bottom location,
-                // because the left and right are those who dodge others docks
-                switch (view->location()) {
-                    case Plasma::Types::TopEdge:
-                        available.setTop(view->y() + view->normalThickness());
-                        break;
+            // Usually availableScreenRect is used by the desktop,
+            // but Latte don't have desktop, then here just
+            // need calculate available space for top and bottom location,
+            // because the left and right are those who dodge others docks
+            switch (view->location()) {
+            case Plasma::Types::TopEdge:
+                available.setTop(view->y() + view->normalThickness());
+                break;
 
-                    case Plasma::Types::BottomEdge:
-                        available.setBottom(view->y() + view->height() - view->normalThickness());
-                        break;
+            case Plasma::Types::BottomEdge:
+                available.setBottom(view->y() + view->height() - view->normalThickness());
+                break;
 
-                    case Plasma::Types::LeftEdge:
-                        available.setLeft(view->x() + view->normalThickness());
-                        break;
+            case Plasma::Types::LeftEdge:
+                available.setLeft(view->x() + view->normalThickness());
+                break;
 
-                    case Plasma::Types::RightEdge:
-                        available.setRight(view->x() + view->width() - view->normalThickness());
-                        break;
+            case Plasma::Types::RightEdge:
+                available.setRight(view->x() + view->width() - view->normalThickness());
+                break;
 
-                    default:
-                        //! bypass clang warnings
-                        break;
-                }
+            default:
+                //! bypass clang warnings
+                break;
             }
         }
     }
@@ -750,15 +746,7 @@ int Corona::screenForContainment(const Plasma::Containment *containment) const
     }
 
     Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
-    QHash<const Plasma::Containment *, Latte::View *> *views;
-
-    if (currentLayout) {
-        views = currentLayout->latteViews();
-    }
-
-    //if the panel views already exist, base upon them
-
-    Latte::View *view = views ? views->value(containment) : nullptr;
+    Latte::View *view = currentLayout->viewForContainment(containment);
 
     if (view && view->screen()) {
         return m_screenPool->id(view->screen()->name());
@@ -774,8 +762,8 @@ int Corona::screenForContainment(const Plasma::Containment *containment) const
     for (auto screen : qGuiApp->screens()) {
         // containment->lastScreen() == m_screenPool->id(screen->name()) to check if the lastScreen refers to a screen that exists/it's known
         if (containment->lastScreen() == m_screenPool->id(screen->name()) &&
-            (containment->activity() == m_activityConsumer->currentActivity() ||
-             containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
+                (containment->activity() == m_activityConsumer->currentActivity() ||
+                 containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
             return containment->lastScreen();
         }
     }
@@ -792,13 +780,7 @@ void Corona::showAlternativesForApplet(Plasma::Applet *applet)
     }
 
     Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
-    QHash<const Plasma::Containment *, Latte::View *> *views;
-
-    if (currentLayout) {
-        views = currentLayout->latteViews();
-    }
-
-    Latte::View *latteView = (*views)[applet->containment()];
+    Latte::View *latteView = currentLayout->viewForContainment(applet->containment());
 
     KDeclarative::QmlObjectSharedEngine *qmlObj{nullptr};
 
@@ -884,7 +866,7 @@ void Corona::loadDefaultLayout()
 
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
+                Types::TopEdge, Types::RightEdge};
 
     Latte::ActiveLayout *currentLayout = m_layoutManager->activeLayout(m_layoutManager->currentLayoutName());
 

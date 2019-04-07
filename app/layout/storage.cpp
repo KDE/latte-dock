@@ -261,7 +261,7 @@ void Storage::copyView(Plasma::Containment *containment)
 
     //in multi-screen environment the copied dock is moved to alternative screens first
     const auto screens = qGuiApp->screens();
-    auto dock = (*m_layout->latteViews())[containment];
+    auto dock =  m_layout->viewForContainment(containment);
 
     bool setOnExplicitScreen = false;
 

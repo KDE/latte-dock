@@ -309,8 +309,8 @@ void LayoutManager::setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage)
 bool LayoutManager::latteViewExists(Latte::View *view) const
 {
     for (const auto layout : m_activeLayouts) {
-        for (auto it = layout->latteViews()->constBegin(), end = layout->latteViews()->constEnd(); it != end; ++it) {
-            if (it.value() == view) {
+        for (const auto &v : layout->latteViews()) {
+            if (v == view) {
                 return true;
             }
         }
