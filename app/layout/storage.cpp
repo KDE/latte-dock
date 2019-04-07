@@ -96,7 +96,7 @@ void Storage::unlock()
 
 void Storage::importToCorona()
 {
-    if (m_layout->corona()) {
+    if (!m_layout->corona()) {
         return;
     }
 
