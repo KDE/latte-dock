@@ -64,9 +64,10 @@ public:
     QStringList activities() const;
     void setActivities(QStringList activities);
 
-    //! overrides
+    //! OVERRIDE GeneralLayout implementations
     void unloadContainments() override;
     const QStringList appliedActivities() override;
+    QList<Latte::View *> latteViews() override;
 
 signals:
     void activitiesChanged();

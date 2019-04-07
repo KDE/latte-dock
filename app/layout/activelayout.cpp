@@ -242,6 +242,8 @@ void ActiveLayout::loadConfig()
     emit activitiesChanged();
 }
 
+//! OVERRIDES
+
 void ActiveLayout::saveConfig()
 {
     qDebug() << "active layout is saving... for layout:" << m_layoutName;
@@ -270,6 +272,18 @@ const QStringList ActiveLayout::appliedActivities()
     } else {
         return {"0"};
     }
+}
+
+QList<Latte::View *> ActiveLayout::latteViews()
+{
+    if (m_topLayout) {
+        QList<Latte::View *> views = Layout::GenericLayout::latteViews();
+        views << m_topLayout->latteViews();
+
+        return views;
+    }
+
+    return Layout::GenericLayout::latteViews();
 }
 
 
