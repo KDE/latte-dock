@@ -48,6 +48,9 @@ public:
 
     const QStringList appliedActivities();
 
+    //! OVERRIDE GeneralLayout implementations
+    bool isCurrent() const override;
+
 public slots:
     void addActiveLayout(ActiveLayout *layout);
     void removeActiveLayout(ActiveLayout *layout);

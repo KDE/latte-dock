@@ -71,6 +71,7 @@ public:
     void importToCorona();
     bool initToCorona(Latte::Corona *corona);
 
+    virtual bool isCurrent() const;
     bool isWritable() const;
     bool layoutIsBroken() const;
 

@@ -133,6 +133,11 @@ void GenericLayout::setBlockAutomaticLatteViewCreation(bool block)
     m_blockAutomaticLatteViewCreation = block;
 }
 
+bool GenericLayout::isCurrent() const
+{
+    return name() == m_corona->layoutManager()->currentLayoutName();
+}
+
 int GenericLayout::viewsCount(int screen) const
 {
     if (!m_corona) {

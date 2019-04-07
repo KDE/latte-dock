@@ -36,6 +36,17 @@ TopLayout::~TopLayout()
 {
 }
 
+bool TopLayout::isCurrent() const
+{
+    for (const auto  &layout : m_activeLayouts) {
+        if (layout->isCurrent()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 const QStringList TopLayout::appliedActivities()
 {
     if (!m_corona) {

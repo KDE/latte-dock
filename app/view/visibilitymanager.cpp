@@ -244,7 +244,7 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
 {
     bool multipleLayoutsAndCurrent = (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
                                       && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
-                                      && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName());
+                                      && m_latteView->managedLayout()->isCurrent());
 
     if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
         wm->setViewStruts(*m_latteView, m_viewGeometry, m_latteView->location());
