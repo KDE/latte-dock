@@ -137,11 +137,8 @@ signals:
     //! to use the global shortcuts activations
     void preferredViewForShortcutsChanged(Latte::View *view);
 
-private slots:
-    void addContainment(Plasma::Containment *containment);
-    void appletCreated(Plasma::Applet *applet);
-    void destroyedChanged(bool destroyed);
-    void containmentDestroyed(QObject *cont);
+protected:
+    void updateLastUsedActivity();
 
 protected:
     Latte::Corona *m_corona{nullptr};
@@ -151,9 +148,13 @@ protected:
     QHash<const Plasma::Containment *, Latte::View *> m_latteViews;
     QHash<const Plasma::Containment *, Latte::View *> m_waitingLatteViews;
 
-private:
-    void updateLastUsedActivity();
+private slots:
+    void addContainment(Plasma::Containment *containment);
+    void appletCreated(Plasma::Applet *applet);
+    void destroyedChanged(bool destroyed);
+    void containmentDestroyed(QObject *cont);
 
+private:
     //! It can be used in order for LatteViews to not be created automatically when
     //! their corresponding containments are created e.g. copyView functionality
     bool blockAutomaticLatteViewCreation() const;

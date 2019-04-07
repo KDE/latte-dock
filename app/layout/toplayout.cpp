@@ -59,6 +59,8 @@ void TopLayout::addActiveLayout(ActiveLayout *layout)
         connect(layout, &GenericLayout::activitiesChanged, this, &GenericLayout::activitiesChanged);
         emit activitiesChanged();
         emit viewsCountChanged();
+
+        updateLastUsedActivity();
     }
 }
 
