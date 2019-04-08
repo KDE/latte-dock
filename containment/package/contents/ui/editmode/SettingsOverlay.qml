@@ -37,7 +37,7 @@ Item{
     readonly property bool containsMouse: headerSettings.containsMouse || ruler.containsMouse
                                           || tooltipMouseArea.containsMouse || editBackMouseArea.containsMouse
     readonly property int thickness: ruler.thickness + headerSettings.thickness + spacing * 3
-    readonly property int spacing: 5
+    readonly property int spacing: 4
 
     property int textShadow: {
         if (textColorIsDark)  {
@@ -73,8 +73,8 @@ Item{
 
     MaximumLength.Ruler {
         id: ruler
-        thicknessMargin: headerSettings.thickness + spacing
-        thickMargin: spacing
+        thicknessMargin: headerSettings.thickness + 3 * spacing
+        thickMargin: 3
     }
 
     //! Tooltip

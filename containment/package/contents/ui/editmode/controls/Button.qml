@@ -52,14 +52,14 @@ Item{
 
     Rectangle {
         id: visibleButton
-        width: buttonRow.width + 2*margin
-        height: buttonRow.height + 2*margin
+        width: buttonRow.width + 4 * margin
+        height: buttonRow.height + 2 * margin
         radius: 2
         color: appliedBackgroundColor
      //   border.width: 1
      //   border.color: checked ? appliedBackgroundColor : appliedTextColor
 
-        readonly property int margin: 3
+        readonly property int margin: units.smallSpacing
 
         RowLayout{
             id: buttonRow

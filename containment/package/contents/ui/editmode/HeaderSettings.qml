@@ -93,12 +93,12 @@ Item {
         property color normalBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
                                                  colorizerManager.buttonHoverColor.g,
                                                  colorizerManager.buttonHoverColor.b,
-                                                 0.4)
+                                                 0.3)
 
         property color hoveredBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
                                                   colorizerManager.buttonHoverColor.g,
                                                   colorizerManager.buttonHoverColor.b,
-                                                  0.8)
+                                                  0.7)
 
         onPressed: {
             if (Latte.WindowSystem.compositingActive) {
