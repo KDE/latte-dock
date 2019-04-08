@@ -65,6 +65,7 @@ public:
     void setActivities(QStringList activities);
 
     //! OVERRIDE GeneralLayout implementations
+    void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr);
     void syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap = nullptr) override;
     void unloadContainments() override;
     const QStringList appliedActivities() override;

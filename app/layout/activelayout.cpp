@@ -244,8 +244,6 @@ void ActiveLayout::loadConfig()
     emit activitiesChanged();
 }
 
-//! OVERRIDES
-
 void ActiveLayout::saveConfig()
 {
     qDebug() << "active layout is saving... for layout:" << m_layoutName;
@@ -255,6 +253,19 @@ void ActiveLayout::saveConfig()
     m_layoutGroup.writeEntry("activities", m_activities);
 
     m_layoutGroup.sync();
+}
+
+//! OVERRIDES
+
+void ActiveLayout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen, Layout::ViewsMap *occupied)
+{
+    if (m_topLayout) {
+        //! consider already occupied edges from TopLayout
+        Layout::ViewsMap ocMap = m_topLayout->validViewsMap();
+        Layout::GenericLayout::addView(containment, forceOnPrimary, explicitScreen, &ocMap);
+    } else {
+        Layout::GenericLayout::addView(containment, forceOnPrimary, explicitScreen, occupied);
+    }
 }
 
 const QStringList ActiveLayout::appliedActivities()

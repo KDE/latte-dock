@@ -598,7 +598,7 @@ void GenericLayout::addNewView()
     m_corona->addViewForLayout(name());
 }
 
-void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen)
+void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen, Layout::ViewsMap *occupied)
 {
     qDebug() << "Layout :::: " << m_layoutName << " ::: addView was called... m_containments :: " << m_containments.size();
 
@@ -634,12 +634,20 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
         id = explicitScreen;
     }
 
-    qDebug() << "add dock - containment id: " << containment->id() << " ,screen : " << id << " - " << m_corona->screenPool()->connector(id)
-             << " ,onprimary:" << onPrimary << " - " << qGuiApp->primaryScreen()->name() << " ,forceOnPrimary:" << forceOnPrimary;
+    Plasma::Types::Location edge = containment->location();
+
+    qDebug() << "Adding view - containment id:" << containment->id() << " ,screen :" << id << " - " << m_corona->screenPool()->connector(id)
+             << " ,onprimary:" << onPrimary << " - "  << " edge:" << edge << " ,screenName:" << qGuiApp->primaryScreen()->name() << " ,forceOnPrimary:" << forceOnPrimary;
+
+    QString connector = m_corona->screenPool()->connector(id);
+    if (occupied && (*occupied).contains(connector) && (*occupied)[connector].contains(edge)) {
+        qDebug() << "Rejected : adding view because the edge is already occupied by a higher priority view ! : " << (*occupied)[connector][edge];
+        return;
+    }
 
     if (id >= 0 && !onPrimary && !forceOnPrimary) {
         QString connector = m_corona->screenPool()->connector(id);
-        qDebug() << "add dock - connector : " << connector;
+        qDebug() << "Add view - connector : " << connector;
         bool found{false};
 
         for (const auto scr : qGuiApp->screens()) {
@@ -651,20 +659,19 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
         }
 
         if (!found) {
-            qDebug() << "reject : adding explicit dock, screen not available ! : " << connector;
+            qDebug() << "Rejected : adding explicit view, screen not available ! : " << connector;
             return;
         }
 
         //! explicit dock can not be added at explicit screen when that screen is the same with
         //! primary screen and that edge is already occupied by a primary dock
         if (nextScreen == qGuiApp->primaryScreen() && primaryDockOccupyEdge(containment->location())) {
-            qDebug() << "reject : adding explicit dock, primary dock occupies edge at screen ! : " << connector;
+            qDebug() << "Rejected : adding explicit view, primary dock occupies edge at screen ! : " << connector;
             return;
         }
     }
 
     if (id >= 0 && onPrimary) {
-        QString connector = m_corona->screenPool()->connector(id);
         qDebug() << "add dock - connector : " << connector;
 
         for (const auto view : m_latteViews) {
@@ -688,18 +695,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
         }
     }
 
-    /* old behavior to not add primary docks on explicit one
-        else if (onPrimary) {
-        if (explicitDockOccupyEdge(m_corona->screenPool()->primaryScreenId(), containment->location())) {
-            qDebug() << "CORONA ::: adding dock rejected, the edge is occupied by explicit dock ! : " <<  containment->location();
-            //we must check that an onPrimary dock should never catch up the same edge on
-            //the same screen with an explicit dock
-            return;
-        }
-    }*/
-
-    qDebug() << "Adding dock for container...";
-    qDebug() << "onPrimary: " << onPrimary << "screen!!! :" << nextScreen->name();
+    qDebug() << "Adding view passed ALL checks" << " ,onPrimary:" << onPrimary << " ,screen:" << nextScreen->name() << " !!!";
 
     //! it is used to set the correct flag during the creation
     //! of the window... This of course is also used during

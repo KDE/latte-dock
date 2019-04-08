@@ -103,7 +103,7 @@ public:
     void unlock(); //! make it writable which it should be the default
 
     //! this function needs the layout to have first set the corona through initToCorona() function
-    void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1);
+    virtual void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr);
     void copyView(Plasma::Containment *containment);
     void recreateView(Plasma::Containment *containment);
     bool latteViewExists(Plasma::Containment *containment);
