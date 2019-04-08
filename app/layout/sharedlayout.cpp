@@ -17,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "toplayout.h"
+#include "sharedlayout.h"
 
 // local
 #include "activelayout.h"
@@ -28,23 +28,23 @@
 
 namespace Latte {
 
-TopLayout::TopLayout(ActiveLayout *assigned, QObject *parent, QString layoutFile, QString layoutName)
+SharedLayout::SharedLayout(ActiveLayout *assigned, QObject *parent, QString layoutFile, QString layoutName)
     : Layout::GenericLayout (parent, layoutFile, layoutName)
 {
     initToCorona(assigned->corona());
 
-    connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, &TopLayout::updateLastUsedActiveLayout);
+    connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, &SharedLayout::updateLastUsedActiveLayout);
 
     addActiveLayout(assigned);
     updateLastUsedActiveLayout();
 }
 
 
-TopLayout::~TopLayout()
+SharedLayout::~SharedLayout()
 {
 }
 
-bool TopLayout::isCurrent() const
+bool SharedLayout::isCurrent() const
 {
     for (const auto  &layout : m_activeLayouts) {
         if (layout->isCurrent()) {
@@ -55,7 +55,7 @@ bool TopLayout::isCurrent() const
     return false;
 }
 
-const QStringList TopLayout::appliedActivities()
+const QStringList SharedLayout::appliedActivities()
 {
     if (!m_corona) {
         return {};
@@ -70,7 +70,7 @@ const QStringList TopLayout::appliedActivities()
     return activities;
 }
 
-void TopLayout::updateLastUsedActiveLayout()
+void SharedLayout::updateLastUsedActiveLayout()
 {
     for (const auto  &layout : m_activeLayouts) {
         if (layout->isCurrent()) {
@@ -80,7 +80,7 @@ void TopLayout::updateLastUsedActiveLayout()
     }
 }
 
-ActiveLayout *TopLayout::currentActiveLayout() const
+ActiveLayout *SharedLayout::currentActiveLayout() const
 {
     //! first the current active one
     for (const auto  &layout : m_activeLayouts) {
@@ -99,7 +99,7 @@ ActiveLayout *TopLayout::currentActiveLayout() const
     return nullptr;
 }
 
-void TopLayout::addActiveLayout(ActiveLayout *layout)
+void SharedLayout::addActiveLayout(ActiveLayout *layout)
 {
     if (layout != nullptr && !m_activeLayouts.contains(layout)) {
         m_activeLayouts.append(layout);
@@ -112,10 +112,10 @@ void TopLayout::addActiveLayout(ActiveLayout *layout)
     }
 }
 
-void TopLayout::removeActiveLayout(ActiveLayout *layout)
+void SharedLayout::removeActiveLayout(ActiveLayout *layout)
 {
     if (m_activeLayouts.contains(layout)) {
-        qDebug() << "TOPLAYOUT <" << name() << "> : Removing active layout, " << layout->name();
+        qDebug() << "SHAREDLAYOUT <" << name() << "> : Removing active layout, " << layout->name();
 
         m_activeLayouts.removeAll(layout);
 
@@ -129,7 +129,7 @@ void TopLayout::removeActiveLayout(ActiveLayout *layout)
 }
 
 //! OVERRIDE
-int TopLayout::viewsCount(int screen) const
+int SharedLayout::viewsCount(int screen) const
 {
     if (!m_corona) {
         return 0;
@@ -144,7 +144,7 @@ int TopLayout::viewsCount(int screen) const
     return Layout::GenericLayout::viewsCount(screen);
 }
 
-int TopLayout::viewsCount(QScreen *screen) const
+int SharedLayout::viewsCount(QScreen *screen) const
 {
     if (!m_corona) {
         return 0;
@@ -159,7 +159,7 @@ int TopLayout::viewsCount(QScreen *screen) const
     return Layout::GenericLayout::viewsCount(screen);;
 }
 
-int TopLayout::viewsCount() const
+int SharedLayout::viewsCount() const
 {
     if (!m_corona) {
         return 0;
@@ -174,7 +174,7 @@ int TopLayout::viewsCount() const
     return Layout::GenericLayout::viewsCount();
 }
 
-QList<Plasma::Types::Location> TopLayout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
+QList<Plasma::Types::Location> SharedLayout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
@@ -187,7 +187,7 @@ QList<Plasma::Types::Location> TopLayout::availableEdgesForView(QScreen *scr, La
     return Layout::GenericLayout::availableEdgesForView(scr, forView);
 }
 
-QList<Plasma::Types::Location> TopLayout::freeEdges(QScreen *scr) const
+QList<Plasma::Types::Location> SharedLayout::freeEdges(QScreen *scr) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
@@ -206,7 +206,7 @@ QList<Plasma::Types::Location> TopLayout::freeEdges(QScreen *scr) const
     return Layout::GenericLayout::freeEdges(scr);
 }
 
-QList<Plasma::Types::Location> TopLayout::freeEdges(int screen) const
+QList<Plasma::Types::Location> SharedLayout::freeEdges(int screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
@@ -225,7 +225,7 @@ QList<Plasma::Types::Location> TopLayout::freeEdges(int screen) const
     return Layout::GenericLayout::freeEdges(screen);
 }
 
-QList<Latte::View *> TopLayout::sortedLatteViews(QList<Latte::View *> views)
+QList<Latte::View *> SharedLayout::sortedLatteViews(QList<Latte::View *> views)
 {
     ActiveLayout *current = currentActiveLayout();
 

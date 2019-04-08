@@ -17,8 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef TOPLAYOUT_H
-#define TOPLAYOUT_H
+#ifndef SHAREDLAYOUT_H
+#define SHAREDLAYOUT_H
 
 // local
 #include "genericlayout.h"
@@ -33,18 +33,18 @@ class ActiveLayout;
 
 namespace Latte {
 
-//! TopLayout is a layout that exists only as long as it belongs to one or
+//! SharedLayout is a layout that exists only as long as it belongs to one or
 //! more ActiveLayout(s). It is a layer above an active or more layouts and can
 //! be used from ActiveLayouts to share Latte:View(s) . Much of its functionality
 //! is provided by the ActiveLayouts it belongs to. For example the activities
 //! that its views should be shown is identified only from the active layouts
 //! it belongs to
 
-class TopLayout : public Layout::GenericLayout
+class SharedLayout : public Layout::GenericLayout
 {
 public:
-    TopLayout(ActiveLayout *assigned, QObject *parent, QString layoutFile, QString layoutName = QString());
-    ~TopLayout() override;
+    SharedLayout(ActiveLayout *assigned, QObject *parent, QString layoutFile, QString layoutName = QString());
+    ~SharedLayout() override;
 
     const QStringList appliedActivities();
     ActiveLayout *currentActiveLayout() const;
@@ -80,4 +80,4 @@ private:
 
 }
 
-#endif //TOPLAYOUT_H
+#endif //SHAREDLAYOUT_H

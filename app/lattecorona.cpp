@@ -30,7 +30,7 @@
 #include "indicator/factory.h"
 #include "layout/activelayout.h"
 #include "layout/genericlayout.h"
-#include "layout/toplayout.h"
+#include "layout/sharedlayout.h"
 #include "shortcuts/globalshortcuts.h"
 #include "package/lattepackage.h"
 #include "plasma/extended/screenpool.h"
@@ -477,13 +477,12 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
         Layout::GenericLayout *generic = m_layoutManager->activeLayout(forLayout);
 
         if (!generic) {
-            //! identify best active layout to be used for metrics
-            //! active layouts are always considering their top layouts
-            //! for their metrics
-            TopLayout *topLayout = m_layoutManager->topLayout(forLayout);
+            //! Identify best active layout to be used for metrics calculations.
+            //! Active layouts are always take into account their shared layouts for their metrics
+            SharedLayout *sharedLayout = m_layoutManager->sharedLayout(forLayout);
 
-            if (topLayout) {
-                generic = topLayout->currentActiveLayout();
+            if (sharedLayout) {
+                generic = sharedLayout->currentActiveLayout();
             }
         }
 

@@ -47,7 +47,7 @@ class Corona;
 class Importer;
 class ActiveLayout;
 class LaunchersSignals;
-class TopLayout;
+class SharedLayout;
 class View;
 namespace Layout {
 class GenericLayout;
@@ -103,8 +103,8 @@ public:
     //! layout cant be found
     ActiveLayout *activeLayout(QString id) const;
     int activeLayoutPos(QString id) const;
-    TopLayout *topLayout(QString id) const;
-    //! return an active or top layout with #id (name), it returns null if such
+    SharedLayout *sharedLayout(QString id) const;
+    //! return an active or shared layout with #id (name), it returns null if such
     //! loaded layout was not found
     Layout::GenericLayout *layout(QString id) const;
 
@@ -119,7 +119,7 @@ public:
     void importDefaultLayout(bool newInstanceIfPresent = false);
     void importPresets(bool includeDefault = false);
 
-    bool assignActiveToTopLayout(ActiveLayout *active, QString id);
+    bool assignActiveToSharedLayout(ActiveLayout *active, QString id);
 
 public slots:
     void showAboutDialog();
@@ -197,7 +197,7 @@ private:
     LaunchersSignals *m_launchersSignals{nullptr};
 
     QList<ActiveLayout *> m_activeLayouts;
-    QList<TopLayout *> m_topLayouts;
+    QList<SharedLayout *> m_sharedLayouts;
 
     KActivities::Controller *m_activitiesController;
 

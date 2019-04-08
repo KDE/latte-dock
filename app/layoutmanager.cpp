@@ -28,7 +28,7 @@
 #include "layout/abstractlayout.h"
 #include "layout/activelayout.h"
 #include "layout/genericlayout.h"
-#include "layout/toplayout.h"
+#include "layout/sharedlayout.h"
 #include "settings/settingsdialog.h"
 #include "settings/universalsettings.h"
 #include "view/view.h"
@@ -144,10 +144,10 @@ void LayoutManager::unload()
         delete layout;
     }
 
-    //! Unload all TopLayouts
-    while (!m_topLayouts.isEmpty()) {
-        TopLayout *layout = m_topLayouts.at(0);
-        m_topLayouts.removeFirst();
+    //! Unload all SharedLayouts
+    while (!m_sharedLayouts.isEmpty()) {
+        SharedLayout *layout = m_sharedLayouts.at(0);
+        m_sharedLayouts.removeFirst();
 
         if (multipleMode) {
             layout->syncToLayoutFile(true);
@@ -345,7 +345,7 @@ Layout::GenericLayout *LayoutManager::layout(QString id) const
     Layout::GenericLayout *l = activeLayout(id);
 
     if (!l) {
-        l = topLayout(id);
+        l = sharedLayout(id);
     }
 
     return l;
@@ -380,10 +380,10 @@ int LayoutManager::activeLayoutPos(QString id) const
     return -1;
 }
 
-TopLayout *LayoutManager::topLayout(QString id) const
+SharedLayout *LayoutManager::sharedLayout(QString id) const
 {
-    for (int i = 0; i < m_topLayouts.size(); ++i) {
-        TopLayout *layout = m_topLayouts.at(i);
+    for (int i = 0; i < m_sharedLayouts.size(); ++i) {
+        SharedLayout *layout = m_sharedLayouts.at(i);
 
         if (layout->name() == id) {
             return layout;
@@ -393,14 +393,14 @@ TopLayout *LayoutManager::topLayout(QString id) const
     return nullptr;
 }
 
-bool LayoutManager::assignActiveToTopLayout(ActiveLayout *active, QString id)
+bool LayoutManager::assignActiveToSharedLayout(ActiveLayout *active, QString id)
 {
     if (memoryUsage() == Types::SingleLayout) {
         return false;
     }
 
-    for (int i = 0; i < m_topLayouts.size(); ++i) {
-        TopLayout *layout = m_topLayouts.at(i);
+    for (int i = 0; i < m_sharedLayouts.size(); ++i) {
+        SharedLayout *layout = m_sharedLayouts.at(i);
 
         if (layout->name() == id) {
             layout->addActiveLayout(active);
@@ -409,9 +409,9 @@ bool LayoutManager::assignActiveToTopLayout(ActiveLayout *active, QString id)
         }
     }
 
-    //! If TopLayout was not found, we must create it
-    TopLayout *top = new TopLayout(active, this, Importer::layoutFilePath(id));
-    m_topLayouts.append(top);
+    //! If SharedLayout was not found, we must create it
+    SharedLayout *top = new SharedLayout(active, this, Importer::layoutFilePath(id));
+    m_sharedLayouts.append(top);
     top->importToCorona();
  //   syncLatteViewsToScreens();
 
@@ -723,7 +723,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
             }
         }
 
-        for (const auto layout : m_topLayouts) {
+        for (const auto layout : m_sharedLayouts) {
             emit currentLayoutIsSwitching(layout->name());
         }
     }
@@ -1012,7 +1012,7 @@ void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containm
 
 void LayoutManager::syncLatteViewsToScreens()
 {
-    for (const auto layout : m_topLayouts) {
+    for (const auto layout : m_sharedLayouts) {
         layout->syncLatteViewsToScreens();
     }
 

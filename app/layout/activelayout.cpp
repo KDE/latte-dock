@@ -21,7 +21,7 @@
 #include "activelayout.h"
 
 // local
-#include "toplayout.h"
+#include "sharedlayout.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
 #include "../screenpool.h"
@@ -58,9 +58,9 @@ void ActiveLayout::unloadContainments()
 {
     Layout::GenericLayout::unloadContainments();
 
-    if (m_topLayout) {
-        disconnect(m_topLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
-        m_topLayout->removeActiveLayout(this);
+    if (m_sharedLayout) {
+        disconnect(m_sharedLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
+        m_sharedLayout->removeActiveLayout(this);
     }
 }
 
@@ -68,8 +68,8 @@ void ActiveLayout::init()
 {
     connect(this, &ActiveLayout::activitiesChanged, this, &ActiveLayout::saveConfig);
     connect(this, &ActiveLayout::disableBordersForMaximizedWindowsChanged, this, &ActiveLayout::saveConfig);
+    connect(this, &ActiveLayout::sharedLayoutNameChanged, this, &ActiveLayout::saveConfig);
     connect(this, &ActiveLayout::showInMenuChanged, this, &ActiveLayout::saveConfig);
-    connect(this, &ActiveLayout::topLayoutNameChanged, this, &ActiveLayout::saveConfig);
 }
 
 void ActiveLayout::initToCorona(Latte::Corona *corona)
@@ -95,10 +95,10 @@ void ActiveLayout::initToCorona(Latte::Corona *corona)
             });
         }
 
-        //! Request the TopLayout in case there is one and Latte is functioning in MultipleLayouts mode
-        if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts && !m_topLayoutName.isEmpty()) {
-            if (m_corona->layoutManager()->assignActiveToTopLayout(this, m_topLayoutName)) {
-                setTopLayout(m_corona->layoutManager()->topLayout(m_topLayoutName));
+        //! Request the SharedLayout in case there is one and Latte is functioning in MultipleLayouts mode
+        if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts && !m_sharedLayoutName.isEmpty()) {
+            if (m_corona->layoutManager()->assignActiveToSharedLayout(this, m_sharedLayoutName)) {
+                setSharedLayout(m_corona->layoutManager()->sharedLayout(m_sharedLayoutName));
             }
         }
     }
@@ -186,31 +186,31 @@ void ActiveLayout::setActivities(QStringList activities)
     emit activitiesChanged();
 }
 
-QString ActiveLayout::topLayoutName() const
+QString ActiveLayout::sharedLayoutName() const
 {
-    return m_topLayoutName;
+    return m_sharedLayoutName;
 }
 
-void ActiveLayout::setTopLayoutName(QString name)
+void ActiveLayout::setSharedLayoutName(QString name)
 {
-    if (m_topLayoutName == name) {
+    if (m_sharedLayoutName == name) {
         return;
     }
 
-    m_topLayoutName = name;
-    emit topLayoutNameChanged();
+    m_sharedLayoutName = name;
+    emit sharedLayoutNameChanged();
 }
 
-void ActiveLayout::setTopLayout(TopLayout *layout)
+void ActiveLayout::setSharedLayout(SharedLayout *layout)
 {
-    if (m_topLayout == layout) {
+    if (m_sharedLayout == layout) {
         return;
     }
-    disconnect(m_topLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
+    disconnect(m_sharedLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
 
-    m_topLayout = layout;
+    m_sharedLayout = layout;
 
-    connect(m_topLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
+    connect(m_sharedLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
     emit viewsCountChanged();
 }
 
@@ -238,7 +238,7 @@ void ActiveLayout::loadConfig()
 {
     m_disableBordersForMaximizedWindows = m_layoutGroup.readEntry("disableBordersForMaximizedWindows", false);
     m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
-    m_topLayoutName = m_layoutGroup.readEntry("topLayoutName", QString());
+    m_sharedLayoutName = m_layoutGroup.readEntry("sharedLayout", QString());
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
 
     emit activitiesChanged();
@@ -249,7 +249,7 @@ void ActiveLayout::saveConfig()
     qDebug() << "active layout is saving... for layout:" << m_layoutName;
     m_layoutGroup.writeEntry("showInMenu", m_showInMenu);
     m_layoutGroup.writeEntry("disableBordersForMaximizedWindows", m_disableBordersForMaximizedWindows);
-    m_layoutGroup.writeEntry("topLayoutName", m_topLayoutName);
+    m_layoutGroup.writeEntry("sharedLayout", m_sharedLayoutName);
     m_layoutGroup.writeEntry("activities", m_activities);
 
     m_layoutGroup.sync();
@@ -259,9 +259,9 @@ void ActiveLayout::saveConfig()
 
 void ActiveLayout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen, Layout::ViewsMap *occupied)
 {
-    if (m_topLayout) {
-        //! consider already occupied edges from TopLayout
-        Layout::ViewsMap ocMap = m_topLayout->validViewsMap();
+    if (m_sharedLayout) {
+        //! consider already occupied edges from SharedLayout
+        Layout::ViewsMap ocMap = m_sharedLayout->validViewsMap();
         Layout::GenericLayout::addView(containment, forceOnPrimary, explicitScreen, &ocMap);
     } else {
         Layout::GenericLayout::addView(containment, forceOnPrimary, explicitScreen, occupied);
@@ -289,9 +289,9 @@ const QStringList ActiveLayout::appliedActivities()
 
 QList<Latte::View *> ActiveLayout::latteViews()
 {
-    if (m_topLayout) {
+    if (m_sharedLayout) {
         QList<Latte::View *> views = Layout::GenericLayout::latteViews();
-        views << m_topLayout->latteViews();
+        views << m_sharedLayout->latteViews();
 
         return views;
     }
@@ -307,10 +307,10 @@ int ActiveLayout::viewsCount(int screen) const
 
     int views = Layout::GenericLayout::viewsCount(screen);
 
-    if (m_topLayout) {
+    if (m_sharedLayout) {
         QScreen *scr = m_corona->screenPool()->screenForId(screen);
 
-        for (const auto view : m_topLayout->latteViews()) {
+        for (const auto view : m_sharedLayout->latteViews()) {
             if (view && view->screen() == scr && !view->containment()->destroyed()) {
                 ++views;
             }
@@ -328,8 +328,8 @@ int ActiveLayout::viewsCount(QScreen *screen) const
 
     int views = Layout::GenericLayout::viewsCount(screen);
 
-    if (m_topLayout) {
-        for (const auto view : m_topLayout->latteViews()) {
+    if (m_sharedLayout) {
+        for (const auto view : m_sharedLayout->latteViews()) {
             if (view && view->screen() == screen && !view->containment()->destroyed()) {
                 ++views;
             }
@@ -347,8 +347,8 @@ int ActiveLayout::viewsCount() const
 
     int views = Layout::GenericLayout::viewsCount();
 
-    if (m_topLayout) {
-        for (const auto view : m_topLayout->latteViews()) {
+    if (m_sharedLayout) {
+        for (const auto view : m_sharedLayout->latteViews()) {
             if (view && view->containment() && !view->containment()->destroyed()) {
                 ++views;
             }
@@ -370,8 +370,8 @@ QList<Plasma::Types::Location> ActiveLayout::availableEdgesForView(QScreen *scr,
 
     edges = Layout::GenericLayout::availableEdgesForView(scr, forView);
 
-    if (m_topLayout) {
-        for (const auto view : m_topLayout->latteViews()) {
+    if (m_sharedLayout) {
+        for (const auto view : m_sharedLayout->latteViews()) {
             //! make sure that availabe edges takes into account only views that should be excluded,
             //! this is why the forView should not be excluded
             if (view && view != forView && view->positioner()->currentScreenName() == scr->name()) {
@@ -395,8 +395,8 @@ QList<Plasma::Types::Location> ActiveLayout::freeEdges(QScreen *scr) const
 
     edges = Layout::GenericLayout::freeEdges(scr);
 
-    if (m_topLayout) {
-        for (const auto view : m_topLayout->latteViews()) {
+    if (m_sharedLayout) {
+        for (const auto view : m_sharedLayout->latteViews()) {
             if (view && view->positioner()->currentScreenName() == scr->name()) {
                 edges.removeOne(view->location());
             }
@@ -419,8 +419,8 @@ QList<Plasma::Types::Location> ActiveLayout::freeEdges(int screen) const
     edges = Layout::GenericLayout::freeEdges(screen);
     QScreen *scr = m_corona->screenPool()->screenForId(screen);
 
-    if (m_topLayout) {
-        for (const auto view : m_topLayout->latteViews()) {
+    if (m_sharedLayout) {
+        for (const auto view : m_sharedLayout->latteViews()) {
             if (view && scr && view->positioner()->currentScreenName() == scr->name()) {
                 edges.removeOne(view->location());
             }
@@ -441,8 +441,8 @@ QList<Latte::View *> ActiveLayout::viewsWithPlasmaShortcuts()
 {
     QList<Latte::View *> combined = Layout::GenericLayout::viewsWithPlasmaShortcuts();
 
-    if (m_topLayout) {
-        combined << m_topLayout->viewsWithPlasmaShortcuts();
+    if (m_sharedLayout) {
+        combined << m_sharedLayout->viewsWithPlasmaShortcuts();
     }
 
     return combined;
@@ -450,8 +450,8 @@ QList<Latte::View *> ActiveLayout::viewsWithPlasmaShortcuts()
 
 void ActiveLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
 {
-    if (m_topLayout) {
-        Layout::ViewsMap map = m_topLayout->validViewsMap();
+    if (m_sharedLayout) {
+        Layout::ViewsMap map = m_sharedLayout->validViewsMap();
         Layout::GenericLayout::syncLatteViewsToScreens(&map);
     } else {
         Layout::GenericLayout::syncLatteViewsToScreens();
