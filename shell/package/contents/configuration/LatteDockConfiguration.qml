@@ -479,7 +479,7 @@ FocusScope {
 
             function updateEnabled() {
                 var screenFreeEdges = latteView.managedLayout.qmlFreeEdges(latteView.positioner.currentScreenId);
-                actionsComboBtn.buttonEnabled = latteView.managedLayout.viewsCount<4 && screenFreeEdges.length > 0
+                actionsComboBtn.buttonEnabled = screenFreeEdges.length > 0;
                 if (actionsModel.count > 0) {
                     actionsModel.get(0).enabled = actionsComboBtn.buttonEnabled;
                 }

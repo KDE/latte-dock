@@ -22,6 +22,7 @@
 // local
 #include "activelayout.h"
 #include "../lattecorona.h"
+#include "../layoutmanager.h"
 #include "../screenpool.h"
 #include "../view/view.h"
 
@@ -31,7 +32,11 @@ TopLayout::TopLayout(ActiveLayout *assigned, QObject *parent, QString layoutFile
     : Layout::GenericLayout (parent, layoutFile, layoutName)
 {
     initToCorona(assigned->corona());
+
+    connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, &TopLayout::updateLastUsedActiveLayout);
+
     addActiveLayout(assigned);
+    updateLastUsedActiveLayout();
 }
 
 
@@ -65,10 +70,28 @@ const QStringList TopLayout::appliedActivities()
     return activities;
 }
 
-ActiveLayout *TopLayout::currentActiveLayout() const
+void TopLayout::updateLastUsedActiveLayout()
 {
     for (const auto  &layout : m_activeLayouts) {
         if (layout->isCurrent()) {
+            m_lastUsedActiveLayout = layout->name();
+            break;
+        }
+    }
+}
+
+ActiveLayout *TopLayout::currentActiveLayout() const
+{
+    //! first the current active one
+    for (const auto  &layout : m_activeLayouts) {
+        if (layout->isCurrent()) {
+            return layout;
+        }
+    }
+
+    //! the last used
+    for (const auto  &layout : m_activeLayouts) {
+        if (layout->name() == m_lastUsedActiveLayout) {
             return layout;
         }
     }
@@ -204,12 +227,10 @@ QList<Plasma::Types::Location> TopLayout::freeEdges(int screen) const
 
 QList<Latte::View *> TopLayout::sortedLatteViews(QList<Latte::View *> views)
 {
-    QList<Latte::View *> combined = latteViews();
-
     ActiveLayout *current = currentActiveLayout();
 
     if (current) {
-        return current->latteViews();
+        return current->sortedLatteViews();
     }
 
     return Layout::GenericLayout::sortedLatteViews();

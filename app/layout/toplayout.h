@@ -47,6 +47,7 @@ public:
     ~TopLayout() override;
 
     const QStringList appliedActivities();
+    ActiveLayout *currentActiveLayout() const;
 
     //! OVERRIDE GeneralLayout implementations
     bool isCurrent() const override;
@@ -67,10 +68,12 @@ public slots:
     void addActiveLayout(ActiveLayout *layout);
     void removeActiveLayout(ActiveLayout *layout);
 
-private:
-    ActiveLayout *currentActiveLayout() const;
+private slots:
+    void updateLastUsedActiveLayout();
 
 private:
+    QString m_lastUsedActiveLayout;
+
     QList<ActiveLayout *> m_activeLayouts;
 
 };

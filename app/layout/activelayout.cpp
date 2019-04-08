@@ -421,13 +421,9 @@ QList<Plasma::Types::Location> ActiveLayout::freeEdges(int screen) const
 
 QList<Latte::View *> ActiveLayout::sortedLatteViews(QList<Latte::View *> views)
 {
-    QList<Latte::View *> combined = latteViews();
+    QList<Latte::View *> vws = latteViews();
 
-    if (m_topLayout) {
-        combined << m_topLayout->latteViews();
-    }
-
-    return Layout::GenericLayout::sortedLatteViews(combined);
+    return Layout::GenericLayout::sortedLatteViews(vws);
 }
 
 QList<Latte::View *> ActiveLayout::viewsWithPlasmaShortcuts()
