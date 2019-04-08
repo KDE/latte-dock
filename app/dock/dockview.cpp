@@ -1461,6 +1461,8 @@ void DockView::setManagedLayout(Layout *layout)
 
     m_managedLayout = layout;
 
+    //! Do not add signals when layout = nullptr which is happening
+    //! during layout unloading for both Single and Multiple modes
     if (m_managedLayout) {
         //! Sometimes the activity isnt completely ready, by adding a delay
         //! we try to catch up
@@ -1471,58 +1473,58 @@ void DockView::setManagedLayout(Layout *layout)
                 emit activitiesChanged();
             }
         });
+
+        DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
+
+        if (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+            connectionsManagedLayout[0] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
+                if (m_managedLayout && m_visibility) {
+                    qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
+                             << " - activities: " << m_managedLayout->appliedActivities();
+                    applyActivitiesToWindows();
+                    emit activitiesChanged();
+                }
+            });
+
+            connectionsManagedLayout[1] = connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
+                if (m_managedLayout) {
+                    applyActivitiesToWindows();
+                    emit activitiesChanged();
+                }
+            });
+
+            connectionsManagedLayout[2] = connect(dockCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
+                if (m_managedLayout) {
+                    applyActivitiesToWindows();
+                    emit activitiesChanged();
+                }
+            });
+
+            //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
+            //! disappearing! With this they reappear!!!
+            connectionsManagedLayout[3] = connect(this, &QWindow::visibleChanged, this, [&]() {
+                if (!isVisible() && m_managedLayout) {
+                    QTimer::singleShot(100, [this]() {
+                        if (m_managedLayout && containment() && !containment()->destroyed()) {
+                            setVisible(true);
+                            applyActivitiesToWindows();
+                            emit activitiesChanged();
+                        }
+                    });
+
+                    QTimer::singleShot(1500, [this]() {
+                        if (m_managedLayout && containment() && !containment()->destroyed()) {
+                            setVisible(true);
+                            applyActivitiesToWindows();
+                            emit activitiesChanged();
+                        }
+                    });
+                }
+            });
+        }
+
+        emit managedLayoutChanged();
     }
-
-    DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
-
-    if (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
-        connectionsManagedLayout[0] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
-            if (m_managedLayout && m_visibility) {
-                qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
-                         << " - activities: " << m_managedLayout->appliedActivities();
-                applyActivitiesToWindows();
-                emit activitiesChanged();
-            }
-        });
-
-        connectionsManagedLayout[1] = connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
-            if (m_managedLayout) {
-                applyActivitiesToWindows();
-                emit activitiesChanged();
-            }
-        });
-
-        connectionsManagedLayout[2] = connect(dockCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
-            if (m_managedLayout) {
-                applyActivitiesToWindows();
-                emit activitiesChanged();
-            }
-        });
-
-        //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
-        //! disappearing! With this they reappear!!!
-        connectionsManagedLayout[3] = connect(this, &QWindow::visibleChanged, this, [&]() {
-            if (!isVisible() && m_managedLayout) {
-                QTimer::singleShot(100, [this]() {
-                    if (m_managedLayout && containment() && !containment()->destroyed()) {
-                        setVisible(true);
-                        applyActivitiesToWindows();
-                        emit activitiesChanged();
-                    }
-                });
-
-                QTimer::singleShot(1500, [this]() {
-                    if (m_managedLayout && containment() && !containment()->destroyed()) {
-                        setVisible(true);
-                        applyActivitiesToWindows();
-                        emit activitiesChanged();
-                    }
-                });
-            }
-        });
-    }
-
-    emit managedLayoutChanged();
 }
 
 void DockView::moveToLayout(QString layoutName)
