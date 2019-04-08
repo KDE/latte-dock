@@ -595,6 +595,8 @@ void Positioner::initSignalingForLocationChangeSliding()
                 m_view->showSettingsWindow();
 
                 if (m_view->managedLayout()) {
+                    //! This is needed in case the edge is occupied and the occupying
+                    //! view must be deleted
                     m_view->managedLayout()->syncLatteViewsToScreens();
                 }
             });
@@ -613,6 +615,8 @@ void Positioner::initSignalingForLocationChangeSliding()
                 m_view->showSettingsWindow();
 
                 if (m_view->managedLayout()) {
+                    //! This is needed in case the edge is occupied and the occupying
+                    //! view must be deleted
                     m_view->managedLayout()->syncLatteViewsToScreens();
                 }
             });
