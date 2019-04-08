@@ -112,14 +112,13 @@ int TopLayout::viewsCount(int screen) const
         return 0;
     }
 
-    int views  = Layout::GenericLayout::viewsCount(screen);
     ActiveLayout *current = currentActiveLayout();
 
     if (current) {
-        views += current->viewsCount(screen);
+        return current->viewsCount(screen);
     }
 
-    return views;
+    return Layout::GenericLayout::viewsCount(screen);
 }
 
 int TopLayout::viewsCount(QScreen *screen) const
@@ -128,14 +127,13 @@ int TopLayout::viewsCount(QScreen *screen) const
         return 0;
     }
 
-    int views = Layout::GenericLayout::viewsCount(screen);
     ActiveLayout *current = currentActiveLayout();
 
     if (current) {
-        views += current->viewsCount(screen);
+        return current->viewsCount(screen);
     }
 
-    return views;
+    return Layout::GenericLayout::viewsCount(screen);;
 }
 
 int TopLayout::viewsCount() const
@@ -143,15 +141,14 @@ int TopLayout::viewsCount() const
     if (!m_corona) {
         return 0;
     }
-
-    int views  = Layout::GenericLayout::viewsCount();
+    
     ActiveLayout *current = currentActiveLayout();
 
     if (current) {
-        views += current->viewsCount();
+        return current->viewsCount();
     }
 
-    return views;
+    return Layout::GenericLayout::viewsCount();
 }
 
 QList<Plasma::Types::Location> TopLayout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
@@ -164,20 +161,7 @@ QList<Plasma::Types::Location> TopLayout::availableEdgesForView(QScreen *scr, La
         return edges;
     }
 
-    edges = Layout::GenericLayout::availableEdgesForView(scr, forView);
-
-    ActiveLayout *current = currentActiveLayout();
-    if (current) {
-        for (const auto view : current->latteViews()) {
-            //! make sure that availabe edges takes into account only views that should be excluded,
-            //! this is why the forView should not be excluded
-            if (view && view != forView && view->positioner()->currentScreenName() == scr->name()) {
-                edges.removeOne(view->location());
-            }
-        }
-    }
-
-    return edges;
+    return Layout::GenericLayout::availableEdgesForView(scr, forView);
 }
 
 QList<Plasma::Types::Location> TopLayout::freeEdges(QScreen *scr) const
@@ -190,19 +174,13 @@ QList<Plasma::Types::Location> TopLayout::freeEdges(QScreen *scr) const
         return edges;
     }
 
-    edges = Layout::GenericLayout::freeEdges(scr);
-
     ActiveLayout *current = currentActiveLayout();
 
     if (current) {
-        for (const auto view : current->latteViews()) {
-            if (view && view->positioner()->currentScreenName() == scr->name()) {
-                edges.removeOne(view->location());
-            }
-        }
+        return current->freeEdges(scr);
     }
 
-    return edges;
+    return Layout::GenericLayout::freeEdges(scr);
 }
 
 QList<Plasma::Types::Location> TopLayout::freeEdges(int screen) const
@@ -215,19 +193,13 @@ QList<Plasma::Types::Location> TopLayout::freeEdges(int screen) const
         return edges;
     }
 
-    edges = Layout::GenericLayout::freeEdges(screen);
-    QScreen *scr = m_corona->screenPool()->screenForId(screen);
     ActiveLayout *current = currentActiveLayout();
 
     if (current) {
-        for (const auto view : current->latteViews()) {
-            if (view && scr && view->positioner()->currentScreenName() == scr->name()) {
-                edges.removeOne(view->location());
-            }
-        }
+        return current->freeEdges(screen);
     }
 
-    return edges;
+    return Layout::GenericLayout::freeEdges(screen);
 }
 
 QList<Latte::View *> TopLayout::sortedLatteViews(QList<Latte::View *> views)
@@ -237,10 +209,10 @@ QList<Latte::View *> TopLayout::sortedLatteViews(QList<Latte::View *> views)
     ActiveLayout *current = currentActiveLayout();
 
     if (current) {
-        combined << current->latteViews();
+        return current->latteViews();
     }
 
-    return Layout::GenericLayout::sortedLatteViews(combined);
+    return Layout::GenericLayout::sortedLatteViews();
 }
 
 }

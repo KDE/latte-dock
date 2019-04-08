@@ -91,13 +91,13 @@ public:
     virtual QList<Latte::View *> sortedLatteViews(QList<Latte::View *> views = QList<Latte::View *>());
     virtual QList<Latte::View *> viewsWithPlasmaShortcuts();
     virtual QList<Latte::View *> latteViews();
-    virtual ViewsMap validViewsMap();
+    ViewsMap validViewsMap(ViewsMap *occupiedMap = nullptr);
+    virtual void syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap = nullptr);
 
     void syncToLayoutFile(bool removeLayoutId = false);
 
     void lock(); //! make it only read-only
     void renameLayout(QString newName);
-    void syncLatteViewsToScreens();
     virtual void unloadContainments();
     void unloadLatteViews();
     void unlock(); //! make it writable which it should be the default

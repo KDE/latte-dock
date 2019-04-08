@@ -71,6 +71,7 @@ namespace Indicator{
 class Factory;
 }
 namespace Layout{
+class GenericLayout;
 class Storage;
 }
 namespace PlasmaExtended{
@@ -134,6 +135,7 @@ public:
 
 public slots:
     void aboutApplication();
+    void addViewForLayout(QString layoutName);
     void activateLauncherMenu();
     void loadDefaultLayout() override;
     void setBackgroundFromBroadcast(QString activity, QString screenName, QString filename);

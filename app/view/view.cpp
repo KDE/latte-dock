@@ -253,7 +253,7 @@ bool View::inDelete() const
 
 void View::disconnectSensitiveSignals()
 {
-    disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &View::availableScreenRectChanged);
+    disconnect(corona() , &Plasma::Corona::availableScreenRectChanged, this, &View::availableScreenRectChanged);
     setManagedLayout(nullptr);
 
     if (m_windowsTracker) {
@@ -794,58 +794,58 @@ void View::setManagedLayout(Layout::GenericLayout *layout)
 
         connectionsManagedLayout[0] = connect(m_managedLayout, &Layout::GenericLayout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
         connectionsManagedLayout[1] = connect(m_managedLayout, &Layout::GenericLayout::configViewCreated, this, &View::configViewCreated);
+
+        Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
+
+        if (latteCorona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+            connectionsManagedLayout[2] = connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
+                if (m_managedLayout && m_visibility) {
+                    qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
+                             << " - activities: " << m_managedLayout->appliedActivities();
+                    applyActivitiesToWindows();
+                    emit activitiesChanged();
+                }
+            });
+
+            connectionsManagedLayout[3] = connect(m_managedLayout, &Layout::GenericLayout::activitiesChanged, this, [&]() {
+                if (m_managedLayout) {
+                    applyActivitiesToWindows();
+                    emit activitiesChanged();
+                }
+            });
+
+            connectionsManagedLayout[4] = connect(latteCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
+                if (m_managedLayout) {
+                    applyActivitiesToWindows();
+                    emit activitiesChanged();
+                }
+            });
+
+            //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
+            //! disappearing! With this they reappear!!!
+            connectionsManagedLayout[5] = connect(this, &QWindow::visibleChanged, this, [&]() {
+                if (!isVisible() && m_managedLayout) {
+                    QTimer::singleShot(100, [this]() {
+                        if (m_managedLayout && containment() && !containment()->destroyed()) {
+                            setVisible(true);
+                            applyActivitiesToWindows();
+                            emit activitiesChanged();
+                        }
+                    });
+
+                    QTimer::singleShot(1500, [this]() {
+                        if (m_managedLayout && containment() && !containment()->destroyed()) {
+                            setVisible(true);
+                            applyActivitiesToWindows();
+                            emit activitiesChanged();
+                        }
+                    });
+                }
+            });
+        }
+
+        emit managedLayoutChanged();
     }
-
-    Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
-
-    if (latteCorona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-        connectionsManagedLayout[2] = connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
-            if (m_managedLayout && m_visibility) {
-                qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
-                         << " - activities: " << m_managedLayout->appliedActivities();
-                applyActivitiesToWindows();
-                emit activitiesChanged();
-            }
-        });
-
-        connectionsManagedLayout[3] = connect(m_managedLayout, &Layout::GenericLayout::activitiesChanged, this, [&]() {
-            if (m_managedLayout) {
-                applyActivitiesToWindows();
-                emit activitiesChanged();
-            }
-        });
-
-        connectionsManagedLayout[4] = connect(latteCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
-            if (m_managedLayout) {
-                applyActivitiesToWindows();
-                emit activitiesChanged();
-            }
-        });
-
-        //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
-        //! disappearing! With this they reappear!!!
-        connectionsManagedLayout[5] = connect(this, &QWindow::visibleChanged, this, [&]() {
-            if (!isVisible() && m_managedLayout) {
-                QTimer::singleShot(100, [this]() {
-                    if (m_managedLayout && containment() && !containment()->destroyed()) {
-                        setVisible(true);
-                        applyActivitiesToWindows();
-                        emit activitiesChanged();
-                    }
-                });
-
-                QTimer::singleShot(1500, [this]() {
-                    if (m_managedLayout && containment() && !containment()->destroyed()) {
-                        setVisible(true);
-                        applyActivitiesToWindows();
-                        emit activitiesChanged();
-                    }
-                });
-            }
-        });
-    }
-
-    emit managedLayoutChanged();
 }
 
 void View::moveToLayout(QString layoutName)

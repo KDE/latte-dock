@@ -27,6 +27,7 @@
 #include "screenpool.h"
 #include "layout/abstractlayout.h"
 #include "layout/activelayout.h"
+#include "layout/genericlayout.h"
 #include "layout/toplayout.h"
 #include "settings/settingsdialog.h"
 #include "settings/universalsettings.h"
@@ -339,6 +340,17 @@ QStringList LayoutManager::activeLayoutsNames()
 
 }
 
+Layout::GenericLayout *LayoutManager::layout(QString id) const
+{
+    Layout::GenericLayout *l = activeLayout(id);
+
+    if (!l) {
+        l = topLayout(id);
+    }
+
+    return l;
+}
+
 
 ActiveLayout *LayoutManager::activeLayout(QString id) const
 {
@@ -392,6 +404,7 @@ bool LayoutManager::assignActiveToTopLayout(ActiveLayout *active, QString id)
 
         if (layout->name() == id) {
             layout->addActiveLayout(active);
+         //   syncLatteViewsToScreens();
             return true;
         }
     }
@@ -400,6 +413,7 @@ bool LayoutManager::assignActiveToTopLayout(ActiveLayout *active, QString id)
     TopLayout *top = new TopLayout(active, this, Importer::layoutFilePath(id));
     m_topLayouts.append(top);
     top->importToCorona();
+ //   syncLatteViewsToScreens();
 
     return true;
 }
@@ -998,6 +1012,10 @@ void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containm
 
 void LayoutManager::syncLatteViewsToScreens()
 {
+    for (const auto layout : m_topLayouts) {
+        layout->syncLatteViewsToScreens();
+    }
+
     for (const auto layout : m_activeLayouts) {
         layout->syncLatteViewsToScreens();
     }

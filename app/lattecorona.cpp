@@ -29,6 +29,7 @@
 #include "screenpool.h"
 #include "indicator/factory.h"
 #include "layout/activelayout.h"
+#include "layout/genericlayout.h"
 #include "shortcuts/globalshortcuts.h"
 #include "package/lattepackage.h"
 #include "plasma/extended/screenpool.h"
@@ -846,7 +847,7 @@ void Corona::alternativesVisibilityChanged(bool visible)
     }
 }
 
-void Corona::loadDefaultLayout()
+void Corona::addViewForLayout(QString layoutName)
 {
     qDebug() << "loading default layout";
     //! Setting mutable for create a containment
@@ -868,7 +869,7 @@ void Corona::loadDefaultLayout()
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                 Types::TopEdge, Types::RightEdge};
 
-    Latte::ActiveLayout *currentLayout = m_layoutManager->activeLayout(m_layoutManager->currentLayoutName());
+    Layout::GenericLayout *currentLayout = m_layoutManager->layout(layoutName);
 
     if (currentLayout) {
         edges = currentLayout->freeEdges(defaultContainment->screen());
@@ -881,7 +882,7 @@ void Corona::loadDefaultLayout()
     }
 
     if (m_layoutManager->memoryUsage() == Latte::Types::MultipleLayouts) {
-        config.writeEntry("layoutId", m_layoutManager->currentLayoutName());
+        config.writeEntry("layoutId", layoutName);
     }
 
     defaultContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
@@ -895,6 +896,11 @@ void Corona::loadDefaultLayout()
 
     defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
+}
+
+void Corona::loadDefaultLayout()
+{
+    addViewForLayout(m_layoutManager->currentLayoutName());
 }
 
 QStringList Corona::containmentsIds()

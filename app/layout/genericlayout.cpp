@@ -135,6 +135,10 @@ void GenericLayout::setBlockAutomaticLatteViewCreation(bool block)
 
 bool GenericLayout::isCurrent() const
 {
+    if (!m_corona) {
+        return false;
+    }
+
     return name() == m_corona->layoutManager()->currentLayoutName();
 }
 
@@ -591,7 +595,7 @@ void GenericLayout::addNewView()
         return;
     }
 
-    m_corona->loadDefaultLayout();
+    m_corona->addViewForLayout(name());
 }
 
 void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen)
@@ -978,7 +982,7 @@ bool GenericLayout::primaryDockOccupyEdge(Plasma::Types::Location location) cons
     return false;
 }
 
-bool GenericLayout::mapContainsId(const ViewsMap *map, uint viewId) const
+bool GenericLayout::mapContainsId(const Layout::ViewsMap *map, uint viewId) const
 {
     for(const auto &scr : map->keys()) {
         for(const auto &edge : (*map)[scr].keys()) {
@@ -992,12 +996,16 @@ bool GenericLayout::mapContainsId(const ViewsMap *map, uint viewId) const
 }
 
 //! screen name, location, containmentId
-ViewsMap GenericLayout::validViewsMap()
+Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
 {
-    ViewsMap map;
+    Layout::ViewsMap map;
 
     if (!m_corona) {
         return map;
+    }
+
+    if (occupiedMap != nullptr) {
+        map = (*occupiedMap);
     }
 
     QString prmScreenName = qGuiApp->primaryScreen()->name();
@@ -1080,7 +1088,7 @@ ViewsMap GenericLayout::validViewsMap()
 
 //! the central functions that updates loading/unloading latteviews
 //! concerning screen changed (for multi-screen setups mainly)
-void GenericLayout::syncLatteViewsToScreens()
+void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
 {
     if (!m_corona) {
         return;
@@ -1090,10 +1098,12 @@ void GenericLayout::syncLatteViewsToScreens()
     qDebug() << "LAYOUT ::: " << name();
     qDebug() << "screen count changed -+-+ " << qGuiApp->screens().size();
 
-    //QHash<QString, QList<Plasma::Types::Location>> futureDocksLocations;
-    //QList<uint> futureShownViews;
+    Layout::ViewsMap viewsMap = validViewsMap(occupiedMap);
 
-    QHash<QString, QHash<Plasma::Types::Location, uint>> viewsMap = validViewsMap();
+    if (occupiedMap != nullptr) {
+        qDebug() << "Occupied map used :: " << *occupiedMap;
+    }
+
     QString prmScreenName = qGuiApp->primaryScreen()->name();
 
     qDebug() << "PRIMARY SCREEN :: " << prmScreenName;
@@ -1114,20 +1124,29 @@ void GenericLayout::syncLatteViewsToScreens()
     }
 
     //! remove views
-    for (const auto view : m_latteViews) {
-        if (view->containment() && !mapContainsId(&viewsMap, view->containment()->id())) {
-            qDebug() << "syncLatteViewsToScreens: view must be deleted... for containment:" << view->containment()->id() << " at screen:" << view->positioner()->currentScreenName();
-            auto viewToDelete = m_latteViews.take(view->containment());
-            viewToDelete->disconnectSensitiveSignals();
-            viewToDelete->deleteLater();
+    QList<Plasma::Containment *> viewsToDelete;
+
+    for (auto view : m_latteViews) {
+        auto containment = view->containment();
+        if (containment && !mapContainsId(&viewsMap, containment->id())) {
+            viewsToDelete << containment;
         }
+    }
+
+    while(!viewsToDelete.isEmpty()) {
+        auto containment = viewsToDelete.takeFirst();
+        auto view = m_latteViews.take(containment);
+        qDebug() << "syncLatteViewsToScreens: view must be deleted... for containment:" << containment->id() << " at screen:" << view->positioner()->currentScreenName();
+        view->disconnectSensitiveSignals();
+        view->deleteLater();
     }
 
     //! reconsider views
     for (const auto view : m_latteViews) {
-        if (view->containment() && !mapContainsId(&viewsMap, view->containment()->id())) {
+        if (view->containment() && mapContainsId(&viewsMap, view->containment()->id())) {
             //! if the dock will not be deleted its a very good point to reconsider
             //! if the screen in which is running is the correct one
+            qDebug() << "syncLatteViewsToScreens: view must consider its screen... for containment:" << view->containment()->id() << " at screen:" << view->positioner()->currentScreenName();
             view->reconsiderScreen();
         }
     }

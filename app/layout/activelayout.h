@@ -65,6 +65,7 @@ public:
     void setActivities(QStringList activities);
 
     //! OVERRIDE GeneralLayout implementations
+    void syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap = nullptr) override;
     void unloadContainments() override;
     const QStringList appliedActivities() override;
     QList<Latte::View *> latteViews() override;

@@ -441,4 +441,14 @@ QList<Latte::View *> ActiveLayout::viewsWithPlasmaShortcuts()
     return combined;
 }
 
+void ActiveLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
+{
+    if (m_topLayout) {
+        Layout::ViewsMap map = m_topLayout->validViewsMap();
+        Layout::GenericLayout::syncLatteViewsToScreens(&map);
+    } else {
+        Layout::GenericLayout::syncLatteViewsToScreens();
+    }
+}
+
 }

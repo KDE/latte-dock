@@ -49,6 +49,9 @@ class ActiveLayout;
 class LaunchersSignals;
 class TopLayout;
 class View;
+namespace Layout {
+class GenericLayout;
+}
 }
 
 namespace Latte {
@@ -101,6 +104,9 @@ public:
     ActiveLayout *activeLayout(QString id) const;
     int activeLayoutPos(QString id) const;
     TopLayout *topLayout(QString id) const;
+    //! return an active or top layout with #id (name), it returns null if such
+    //! loaded layout was not found
+    Layout::GenericLayout *layout(QString id) const;
 
     //! returns the current and active layout based on activities and user preferences
     ActiveLayout *currentLayout() const;
