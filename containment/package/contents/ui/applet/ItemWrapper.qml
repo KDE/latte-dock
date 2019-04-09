@@ -34,7 +34,7 @@ Item{
     id: wrapper
 
     width: {
-        if (appletItem.isInternalViewSplitter && !root.editMode)
+        if (appletItem.isInternalViewSplitter && !root.inConfigureAppletsMode)
             return 0;
 
         if (isSeparator && root.parabolicEffectEnabled && root.isHorizontal) {
@@ -65,7 +65,7 @@ Item{
     }
 
     height: {
-        if (appletItem.isInternalViewSplitter && !root.editMode)
+        if (appletItem.isInternalViewSplitter && !root.inConfigureAppletsMode)
             return 0;
 
         if (isSeparator && root.parabolicEffectEnabled && root.isVertical) {
@@ -493,7 +493,7 @@ Item{
 
     Loader{
         anchors.fill: _wrapperContainer
-        active: appletItem.isInternalViewSplitter && root.editMode
+        active: appletItem.isInternalViewSplitter && root.inConfigureAppletsMode
 
         rotation: root.isVertical ? 90 : 0
 

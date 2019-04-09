@@ -38,8 +38,8 @@ Item {
     id: appletItem
 
     visible: false
-    width: isInternalViewSplitter && !root.editMode ? 0 : computeWidth
-    height: isInternalViewSplitter && !root.editMode ? 0 : computeHeight
+    width: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeWidth
+    height: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeHeight
 
     property bool animationsEnabled: true
     property bool animationWasSent: false  //protection flag for animation broadcasting
