@@ -247,13 +247,6 @@ FocusScope {
                 width: Qt.application.layoutDirection !== Qt.RightToLeft ? logo.width + latteTxt.width + units.smallSpacing : logo.width + units.smallSpacing
                 height: logo.height
 
-                LatteComponents.ToolTip{
-                    parent: logo
-                    text: i18n("Open Latte settings window")
-                    visible: aboutMouseArea.containsMouse
-                    delay: 7 * units.longDuration
-                }
-
                 Latte.IconItem {
                     id: logo
 
@@ -264,8 +257,9 @@ FocusScope {
                     source: "latte-dock"
                     // animated: true
                     usesPlasmaTheme: false
-                    active: aboutMouseArea.containsMouse
+                    active: aboutArea.hovered
                 }
+
                 PlasmaComponents.Label {
                     id: latteTxtMetrics
                     text: "Latte"
@@ -290,14 +284,17 @@ FocusScope {
                     }
                 }
 
-                MouseArea {
-                    id: aboutMouseArea
-                    acceptedButtons: Qt.LeftButton
+                PlasmaComponents.Button{
+                    id: aboutArea
+                    //! Used as tooltip
                     anchors.fill: parent
-                    hoverEnabled: true
-
-                    readonly property int preferencesPage: Latte.Types.PreferencesPage
-                    onClicked: layoutManager.showLatteSettingsDialog(preferencesPage)
+                    opacity: 0
+                    tooltip: i18n("Open Latte settings window")
+                    onPressedChanged: {
+                        if (pressed) {
+                            layoutManager.showLatteSettingsDialog(Latte.Types.PreferencesPage)
+                        }
+                    }
                 }
 
                 Rectangle {
@@ -307,7 +304,7 @@ FocusScope {
                     width: parent.width + 4
                     height: 2
                     color: theme.highlightColor
-                    visible: aboutMouseArea.containsMouse
+                    visible: aboutArea.hovered
                 }
             }
 

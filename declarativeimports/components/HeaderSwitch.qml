@@ -107,12 +107,12 @@ Item {
             }
         }
 
-        MouseArea {
-            id: textMouseArea
-            anchors.fill: textElement
-            hoverEnabled: true
-
-            onClicked: item.pressed();
+        PlasmaComponents.Button {
+            //tooltip ghost
+            anchors.fill: parent
+            tooltip: item.tooltip
+            opacity: 0
+            onPressedChanged: item.pressed();
         }
     }
 
@@ -124,19 +124,12 @@ Item {
 
         style: Private.SwitchStyle {}
 
-        MouseArea {
-            id: switchMouseArea
+        PlasmaComponents.Button {
+            //tooltip ghost
             anchors.fill: parent
-            hoverEnabled: true
-
-            onClicked: item.pressed();
+            tooltip: item.tooltip
+            opacity: 0
+            onPressedChanged: item.pressed();
         }
-    }
-
-    ToolTip{
-        parent: itemSwitch
-        text: item.tooltip
-        visible: (switchMouseArea.containsMouse || textMouseArea.containsMouse) && text !==""
-        delay: 7 * units.longDuration
     }
 }
