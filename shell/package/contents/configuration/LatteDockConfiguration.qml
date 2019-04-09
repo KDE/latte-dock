@@ -62,13 +62,13 @@ FocusScope {
     property int proposedWidth: 0.84 * proposedHeight + units.smallSpacing * 2
     property int proposedHeight: 36 * theme.mSize(theme.defaultFont).height
 
-    //! user set scales based on its preference, e.g. 96% of the proposed size
-    property int userScaleWidth: plasmoid.configuration.windowWidthScale
-    property int userScaleHeight: plasmoid.configuration.windowHeightScale
-
     //! chosen size to be applied, if the user has set or not a different scale for the settings window
-    property int chosenWidth: userScaleWidth !== 100 ? (userScaleWidth/100) * proposedWidth : proposedWidth
-    property int chosenHeight: userScaleHeight !== 100 ? (userScaleHeight/100) * heightLevel * proposedHeight : heightLevel * proposedHeight
+    property int chosenWidth: userScaleWidth !== 1 ? userScaleWidth * proposedWidth : proposedWidth
+    property int chosenHeight: userScaleHeight !== 1 ? userScaleHeight * heightLevel * proposedHeight : heightLevel * proposedHeight
+
+    //! user set scales based on its preference, e.g. 96% of the proposed size
+    property real userScaleWidth: 1
+    property real userScaleHeight: 1
 
     readonly property real heightLevel: (dialog.expertLevel ? 100 : 1)
 
@@ -105,6 +105,20 @@ FocusScope {
         }
     }
 
+    Component.onCompleted: {
+        updateScales();
+    }
+
+    Connections {
+        target: latteView.positioner
+        onCurrentScreenNameChanged: dialog.updateScales();
+    }
+
+    function updateScales() {
+        userScaleWidth = universalSettings.screenWidthScale(latteView.positioner.currentScreenName);
+        userScaleHeight = universalSettings.screenHeightScale(latteView.positioner.currentScreenName);
+    }
+
     PlasmaCore.FrameSvgItem{
         anchors.fill: parent
         imagePath: "dialogs/background"
@@ -117,8 +131,10 @@ FocusScope {
         hoverEnabled: true
 
         property bool blockWheel: false
+        property bool updatingWidthScale: false
+        property bool updatingHeightScale: false
         property bool wheelTriggeredOnce: false
-        property int scaleStep: 4
+        property real scaleStep: 0.04
 
         onContainsMouseChanged: {
             if (!containsMouse) {
@@ -127,9 +143,15 @@ FocusScope {
         }
 
         onWheel: {
-            if (blockWheel || !(wheel.modifiers & Qt.MetaModifier)){
+            var metaModifier = (wheel.modifiers & Qt.MetaModifier);
+            var ctrlModifier = (wheel.modifiers & Qt.ControlModifier);
+
+            if (blockWheel || !(metaModifier || ctrlModifier)){
                 return;
             }
+
+            updatingWidthScale = metaModifier || (dialog.expertLevel && ctrlModifier);
+            updatingHeightScale = !dialog.expertLevel && ctrlModifier;
 
             blockWheel = true;
             wheelTriggeredOnce = true;
@@ -139,13 +161,27 @@ FocusScope {
 
             //positive direction
             if (angle > 12) {
-                plasmoid.configuration.windowWidthScale = plasmoid.configuration.windowWidthScale + scaleStep;
-                plasmoid.configuration.windowHeightScale = plasmoid.configuration.windowHeightScale + scaleStep;
+                var scales;
+                if (updatingWidthScale) {
+                    userScaleWidth = userScaleWidth + scaleStep;
+                }
+
+                if (updatingHeightScale) {
+                    userScaleHeight = userScaleHeight + scaleStep;
+                }
+
+                universalSettings.setScreenScales(latteView.positioner.currentScreenName, userScaleWidth, userScaleHeight);
                 viewConfig.syncGeometry();
                 //negative direction
             } else if (angle < -12) {
-                plasmoid.configuration.windowWidthScale = plasmoid.configuration.windowWidthScale - scaleStep;
-                plasmoid.configuration.windowHeightScale = plasmoid.configuration.windowHeightScale - scaleStep;
+                if (updatingWidthScale) {
+                    userScaleWidth = userScaleWidth - scaleStep;
+                }
+
+                if (updatingHeightScale) {
+                    userScaleHeight = userScaleHeight - scaleStep;
+                }
+                universalSettings.setScreenScales(latteView.positioner.currentScreenName, userScaleWidth, userScaleHeight);
                 viewConfig.syncGeometry();
             }
         }
@@ -154,7 +190,9 @@ FocusScope {
     PlasmaComponents.Label{
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
-        text: i18nc("view settings window scale","Window scale at %0%").arg(userScaleWidth)
+        text: backgroundMouseArea.updatingWidthScale ?
+                  i18nc("view settings width scale","Width scale at %0%").arg(userScaleWidth * 100) :
+                  i18nc("view settings height scale","Height scale at %0%").arg(userScaleHeight * 100)
         visible: backgroundMouseArea.containsMouse && backgroundMouseArea.wheelTriggeredOnce
     }
 

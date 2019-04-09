@@ -245,14 +245,6 @@
     <entry name="configurationSticker" type="Bool">
         <default>false</default>
     </entry>
-    <entry name="windowWidthScale" type="Int">
-      <default>100</default>
-      <label>user set dock settings window width scale</label>
-    </entry>
-    <entry name="windowHeightScale" type="Int">
-      <default>100</default>
-      <label>user set dock settings window height scale</label>
-    </entry>
 <!-- Animations -->
     <entry name="animationsEnabled" type="Bool">
         <default>true</default>

@@ -58,6 +58,8 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::screenTrackerIntervalChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
+
+    connect(this, &UniversalSettings::screenScalesChanged, this, &UniversalSettings::saveScalesConfig);
 }
 
 UniversalSettings::~UniversalSettings()
@@ -74,6 +76,9 @@ void UniversalSettings::load()
     if (!autostartUserSet && !autostart()) {
         setAutostart(true);
     }
+
+    //! init screen scales
+    m_screenScalesGroup = m_universalGroup.group("ScreenScales");
 
     //! load configuration
     loadConfig();
@@ -374,6 +379,42 @@ void UniversalSettings::setMouseSensitivity(Types::MouseSensitivity sensitivity)
     emit mouseSensitivityChanged();
 }
 
+float UniversalSettings::screenWidthScale(QString screenName) const
+{
+    if (!m_screenScales.contains(screenName)) {
+        return 1;
+    }
+
+    return m_screenScales[screenName].first;
+}
+
+float UniversalSettings::screenHeightScale(QString screenName) const
+{
+    if (!m_screenScales.contains(screenName)) {
+        return 1;
+    }
+
+    return m_screenScales[screenName].second;
+}
+
+void UniversalSettings::setScreenScales(QString screenName, float widthScale, float heightScale)
+{
+    if (!m_screenScales.contains(screenName)) {
+        m_screenScales[screenName].first = widthScale;
+        m_screenScales[screenName].second = heightScale;
+    } else {
+        if (m_screenScales[screenName].first == widthScale
+                && m_screenScales[screenName].second == heightScale) {
+            return;
+        }
+
+        m_screenScales[screenName].first = widthScale;
+        m_screenScales[screenName].second = heightScale;
+    }
+
+    emit screenScalesChanged();
+}
+
 void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
@@ -389,6 +430,8 @@ void UniversalSettings::loadConfig()
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
     m_memoryUsage = static_cast<Types::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Types::SingleLayout));
     m_mouseSensitivity = static_cast<Types::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Types::HighSensitivity));
+
+    loadScalesConfig();
 }
 
 void UniversalSettings::saveConfig()
@@ -443,6 +486,28 @@ QScreen *UniversalSettings::atScreens(QQmlListProperty<QScreen> *property, int i
 {
     Q_UNUSED(property)
     return qGuiApp->screens().at(index);
+}
+
+void UniversalSettings::loadScalesConfig()
+{
+    for (const auto &screenName : m_screenScalesGroup.keyList()) {
+        QString scalesStr = m_screenScalesGroup.readEntry(screenName, QString());
+        QStringList scales = scalesStr.split(";");
+        if (scales.count() == 2) {
+            m_screenScales[screenName] = qMakePair(scales[0].toFloat(), scales[1].toFloat());
+        }
+    }
+}
+
+void UniversalSettings::saveScalesConfig()
+{
+    for (const auto &screenName : m_screenScales.keys()) {
+        QStringList scales;
+        scales << QString::number(m_screenScales[screenName].first) << QString::number(m_screenScales[screenName].second);
+        m_screenScalesGroup.writeEntry(screenName, scales.join(";"));
+    }
+
+    m_screenScalesGroup.sync();
 }
 
 }

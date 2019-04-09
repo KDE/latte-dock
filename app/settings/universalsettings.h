@@ -29,6 +29,7 @@
 #include <QObject>
 #include <QAbstractItemModel>
 #include <QHash>
+#include <QPair>
 #include <QPointer>
 #include <QQmlListProperty>
 #include <QScreen>
@@ -38,8 +39,12 @@
 #include <KSharedConfig>
 
 namespace Latte {
-
 class LayoutManager;
+}
+
+namespace Latte {
+//width_scale, height_scale
+typedef QPair<float, float> ScreenScales;
 
 //! This class holds all the settings that are universally available
 //! independent of layouts
@@ -113,6 +118,10 @@ public slots:
     Q_INVOKABLE QString splitterIconPath();
     Q_INVOKABLE QString trademarkIconPath();
 
+    Q_INVOKABLE float screenWidthScale(QString screenName) const;
+    Q_INVOKABLE float screenHeightScale(QString screenName) const;
+    Q_INVOKABLE void setScreenScales(QString screenName, float widthScale, float heightScale);
+
 signals:
     void autostartChanged();
     void canDisableBordersChanged();
@@ -125,13 +134,16 @@ signals:
     void layoutsMemoryUsageChanged();
     void metaPressAndHoldEnabledChanged();
     void mouseSensitivityChanged();
+    void screenScalesChanged();
     void screenTrackerIntervalChanged();
     void showInfoWindowChanged();
     void versionChanged();
 
 private slots:
     void loadConfig();
+    void loadScalesConfig();
     void saveConfig();
+    void saveScalesConfig();
 
 private:
     void cleanupSettings();
@@ -163,8 +175,12 @@ private:
     Types::LayoutsMemoryUsage m_memoryUsage;
     Types::MouseSensitivity m_mouseSensitivity{Types::HighSensitivity};
 
+    //! ScreenName, <width_scale, height_scale>
+    QHash<QString, ScreenScales> m_screenScales;
+
     QPointer<Latte::Corona> m_corona;
 
+    KConfigGroup m_screenScalesGroup;
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;
 
