@@ -33,8 +33,8 @@ Item{
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
     readonly property bool useMaxLength: (plasmoid.configuration.panelPosition === Latte.Types.Justify)
-                                         && ((!root.editMode && !root.behaveAsPlasmaPanel )
-                                             || (behaveAsPlasmaPanel && root.editMode))
+                                         && ((!root.inConfigureAppletsMode && !root.behaveAsPlasmaPanel )
+                                             || (behaveAsPlasmaPanel && root.inConfigureAppletsMode))
 
     property int allCount: root.latteApplet ? _mainLayout.count-1+latteApplet.tasksCount : _mainLayout.count
     property int currentSpot: -1000
@@ -315,7 +315,7 @@ Item{
             value: {
                 //! in EditMode we must update that size because the user may add new applets
                 //! and the contents may go out of bounds
-                if (!visibilityManager || (!visibilityManager.normalState && !root.editMode))
+                if (!visibilityManager || (!visibilityManager.normalState && !root.inConfigureAppletsMode))
                     return;
 
                 var space = 0;

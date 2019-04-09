@@ -113,7 +113,7 @@ DragDrop.DropArea {
                                           && !(hasExpandedApplet && !plasmaBackgroundForPopups)
                                           && latteView.windowsTracker.existsWindowTouching)
                                         || (hasExpandedApplet && plasmaBackgroundForPopups) ))
-                                    || !Latte.WindowSystem.compositingActive
+                                   || !Latte.WindowSystem.compositingActive
 
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
                                          && latteView && latteView.visibility
@@ -349,9 +349,9 @@ DragDrop.DropArea {
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Types.Center : (root.isVertical ? Latte.Types.Top : Latte.Types.Left)
     //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Types.Justify ? plasmoid.configuration.panelPosition : layoutsContainer.mainLayoutPosition
 
-    property int panelAlignment: !root.editMode ? plasmoid.configuration.panelPosition :
-                                                  ( plasmoid.configuration.panelPosition === Latte.Types.Justify ?
-                                                       Latte.Types.Center : plasmoid.configuration.panelPosition )
+    property int panelAlignment: !root.inConfigureAppletsMode ? plasmoid.configuration.panelPosition :
+                                                                ( plasmoid.configuration.panelPosition === Latte.Types.Justify ?
+                                                                     Latte.Types.Center : plasmoid.configuration.panelPosition )
 
     property real zoomFactor: Latte.WindowSystem.compositingActive ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
@@ -571,14 +571,16 @@ DragDrop.DropArea {
             layoutsContainer.updateSizeForAppletsInFill();
         }
 
-        updateLayouts();
-
         //! This is used in case the dndspacer has been left behind
         //! e.g. the user drops a folder and a context menu is appearing
         //! but the user decides to not make a choice for the applet type
         if (dndSpacer.parent !== root) {
             dndSpacer.parent = root;
         }
+    }
+
+    onInConfigureAppletsModeChanged: {
+        updateLayouts();
     }
 
     onLatteViewChanged: {
@@ -631,7 +633,7 @@ DragDrop.DropArea {
                 }
             } else {
                 var isSeparator = ( latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
-                                    || latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.separator") );
+                                   || latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.separator") );
 
                 if (isSeparator && root.latteAppletContainer.containsPos(event)) {
                     confirmedDragEntered = true
@@ -667,7 +669,7 @@ DragDrop.DropArea {
                 }
             } else {
                 var isSeparator = ( latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
-                                    || latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.separator") );
+                                   || latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.separator") );
 
                 if (isSeparator && root.latteAppletContainer.containsPos(event)) {
                     confirmedDragEntered = true
@@ -898,7 +900,7 @@ DragDrop.DropArea {
         ///Notice: they are set here because if they are set with a binding
         ///they break the !immutable experience, the latteView becomes too small
         ///to add applets
-     /*   if (plasmoid.immutable) {
+        /*   if (plasmoid.immutable) {
             if(root.isHorizontal) {
                 root.Layout.preferredWidth = (plasmoid.configuration.panelPosition === Latte.Types.Justify ?
                                                   layoutsContainer.width + 0.5*iconMargin : layoutsContainer.mainLayout.width + iconMargin);
@@ -1449,7 +1451,7 @@ DragDrop.DropArea {
     }
 
     function updateLayouts(){
-        if(!root.editMode){
+        if(!root.inConfigureAppletsMode){
             //    console.log("update layout - internal view splitters count:"+internalViewSplittersCount());
             if (internalViewSplittersCount() === 2) {
                 var splitter = -1;
@@ -1481,8 +1483,7 @@ DragDrop.DropArea {
                     item.parent = layoutsContainer.endLayout;
                 }
             }
-        }
-        else{
+        } else{
             if (internalViewSplittersCount() === 2) {
                 var totalChildren1 = layoutsContainer.mainLayout.children.length;
                 for (var i=totalChildren1-1; i>=0; --i) {
