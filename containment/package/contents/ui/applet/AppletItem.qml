@@ -139,6 +139,12 @@ Item {
             console.log(computeHeight);
     }*/
 
+    transitions: Transition {
+        ParentAnimation {
+            NumberAnimation { properties: "x,y"; duration: 1000 }
+        }
+    }
+
     /// BEGIN functions
     function activateAppletForNeutralAreas(mouse){
         //if the event is at the active indicator or spacers area then try to expand the applet,

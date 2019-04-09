@@ -49,6 +49,8 @@ FocusScope {
 
     readonly property bool highLevel: advancedLevel || expertLevel
 
+    readonly property bool inConfigureAppletsMode: plasmoid.configuration.inConfigureAppletsMode || !Latte.WindowSystem.compositingActive
+
     //! max size based on screen resolution
     //!    TODO: if we can access availableScreenGeometry.height this can be improved, currently
     //!    we use 100px. or 50px. in order to give space for othe views to be shown and to have also

@@ -218,8 +218,8 @@ function initializationPhase(availableSpace, sizePerApplet, noOfApplets){
 
 
 function updateSizeForAppletsInFill() {
-    if ((visibilityManager.normalState && !root.editMode)
-            || (behaveAsPlasmaPanel && root.editMode)) {
+    if ((visibilityManager.normalState && !root.inConfigureAppletsMode)
+            || (behaveAsPlasmaPanel && root.inConfigureAppletsMode)) {
         // console.log("-------------");
         // console.log("s1...");
         var noA = startLayout.fillApplets + mainLayout.fillApplets + endLayout.fillApplets;

@@ -287,6 +287,7 @@ PlasmaComponents.Page {
             }
 
             RowLayout {
+                id: alignmentRow
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
@@ -295,18 +296,34 @@ PlasmaComponents.Page {
 
                 property int panelPosition: plasmoid.configuration.panelPosition
 
+                property bool addSplittersSent: false
+                property bool removeSplittersSent: true
+
                 onPanelPositionChanged: {
-                    if (panelPosition === Latte.Types.Justify)
-                        latteView.addInternalViewSplitter()
-                    else
-                        latteView.removeInternalViewSplitter()
+                    updateSplitters();
+                }
+
+                Connections {
+                    target: dialog
+                    onInConfigureAppletsModeChanged:  {
+                        alignmentRow.updateSplitters();
+                    }
                 }
 
                 Component.onCompleted: {
-                    if (panelPosition === Latte.Types.Justify)
+                    updateSplitters();
+                }
+
+                function updateSplitters() {
+                    if (!addSplittersSent && dialog.inConfigureAppletsMode && panelPosition === Latte.Types.Justify) {
+                        addSplittersSent = true;
                         latteView.addInternalViewSplitter()
-                    else
+                        removeSplittersSent = false;
+                    } else if(!removeSplittersSent && (panelPosition !== Latte.Types.Justify || !dialog.inConfigureAppletsMode)) {
+                        removeSplittersSent = true;
                         latteView.removeInternalViewSplitter()
+                        addSplittersSent = false;
+                    }
                 }
 
                 ExclusiveGroup {
@@ -357,6 +374,14 @@ PlasmaComponents.Page {
                     exclusiveGroup: alignmentGroup
 
                     property int position: Latte.Types.Justify
+
+                    onClicked: {
+                        if (!alignmentRow.addSplittersSent) {
+                            alignmentRow.addSplittersSent = true;
+                            latteView.addInternalViewSplitter()
+                            alignmentRow.removeSplittersSent = false;
+                        }
+                    }
                 }
             }
         }

@@ -1003,6 +1003,9 @@ DragDrop.DropArea {
     function addInternalViewSplitters(){
         addInternalViewSplitter(-1);
         addInternalViewSplitter(-1);
+
+        console.log("Adding splitters... : " + internalViewSplittersCount());
+        updateLayouts();
     }
 
     function addInternalViewSplitter(pos){
@@ -1197,11 +1200,26 @@ DragDrop.DropArea {
     }
 
     function removeInternalViewSplitters(){
+        for (var container in layoutsContainer.startLayout.children) {
+            var item = layoutsContainer.mainLayout.children[container];
+            if(item && item.isInternalViewSplitter)
+                item.destroy();
+        }
+
         for (var container in layoutsContainer.mainLayout.children) {
             var item = layoutsContainer.mainLayout.children[container];
             if(item && item.isInternalViewSplitter)
                 item.destroy();
         }
+
+        for (var container in layoutsContainer.endLayout.children) {
+            var item = layoutsContainer.mainLayout.children[container];
+            if(item && item.isInternalViewSplitter)
+                item.destroy();
+        }
+
+        console.log("Removed splitters... : " + internalViewSplittersCount());
+        updateLayouts();
 
         LayoutManager.save();
     }
@@ -1451,9 +1469,11 @@ DragDrop.DropArea {
     }
 
     function updateLayouts(){
-        if(!root.inConfigureAppletsMode){
+        console.log(" Updating layouts... " + internalViewSplittersCount());
+        if(!root.inConfigureAppletsMode && root.panelAlignment === Latte.Types.Justify){
             //    console.log("update layout - internal view splitters count:"+internalViewSplittersCount());
             if (internalViewSplittersCount() === 2) {
+                console.log(" Updating layouts... Step 1..");
                 var splitter = -1;
                 var splitter2 = -1;
 
@@ -1485,6 +1505,7 @@ DragDrop.DropArea {
             }
         } else{
             if (internalViewSplittersCount() === 2) {
+                console.log(" Updating layouts... Step 2..");
                 var totalChildren1 = layoutsContainer.mainLayout.children.length;
                 for (var i=totalChildren1-1; i>=0; --i) {
                     var item1 = layoutsContainer.mainLayout.children[0];
