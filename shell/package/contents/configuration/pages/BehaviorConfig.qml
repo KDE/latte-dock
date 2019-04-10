@@ -294,37 +294,7 @@ PlasmaComponents.Page {
                 LayoutMirroring.enabled: false
                 spacing: 2
 
-                property int panelPosition: plasmoid.configuration.panelPosition
-
-                property bool addSplittersSent: false
-                property bool removeSplittersSent: true
-
-                onPanelPositionChanged: {
-                    updateSplitters();
-                }
-
-                Connections {
-                    target: dialog
-                    onInConfigureAppletsModeChanged:  {
-                        alignmentRow.updateSplitters();
-                    }
-                }
-
-                Component.onCompleted: {
-                    updateSplitters();
-                }
-
-                function updateSplitters() {
-                    if (!addSplittersSent && dialog.inConfigureAppletsMode && panelPosition === Latte.Types.Justify) {
-                        addSplittersSent = true;
-                        latteView.addInternalViewSplitter()
-                        removeSplittersSent = false;
-                    } else if(!removeSplittersSent && (panelPosition !== Latte.Types.Justify || !dialog.inConfigureAppletsMode)) {
-                        removeSplittersSent = true;
-                        latteView.removeInternalViewSplitter()
-                        addSplittersSent = false;
-                    }
-                }
+                readonly property int panelPosition: plasmoid.configuration.panelPosition
 
                 ExclusiveGroup {
                     id: alignmentGroup
@@ -374,14 +344,6 @@ PlasmaComponents.Page {
                     exclusiveGroup: alignmentGroup
 
                     property int position: Latte.Types.Justify
-
-                    onClicked: {
-                        if (!alignmentRow.addSplittersSent) {
-                            alignmentRow.addSplittersSent = true;
-                            latteView.addInternalViewSplitter()
-                            alignmentRow.removeSplittersSent = false;
-                        }
-                    }
                 }
             }
         }

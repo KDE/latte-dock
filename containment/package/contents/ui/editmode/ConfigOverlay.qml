@@ -343,7 +343,7 @@ MouseArea {
                 lockButton.visible = !currentApplet.isInternalViewSplitter && (currentApplet.applet.pluginName !== "org.kde.plasma.systemtray")
                         && (currentApplet.applet.pluginName !== root.plasmoidName)
                         && !currentApplet.isSeparator
-                colorizingButton.visible = root.colorizerEnabled && !currentApplet.appletBlocksColorizing;
+                colorizingButton.visible = root.colorizerEnabled && !currentApplet.appletBlocksColorizing && !currentApplet.isInternalViewSplitter;
 
                 label.text = currentApplet.isInternalViewSplitter ? i18n("Justify Splitter") : currentApplet.applet.title;
             }

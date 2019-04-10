@@ -60,46 +60,48 @@ function restore() {
         root.addApplet(appletsOrder[i], -1, -1)
     }
 
-   // console.log("splitters restored:"+plasmoid.configuration.splitterPosition+ " - " + plasmoid.configuration.splitterPosition2);
-    //add the splitters in the correct position if they exist
+    if (plasmoid.configuration.panelPosition === 10 /*Justify*/) {
+        // console.log("splitters restored:"+plasmoid.configuration.splitterPosition+ " - " + plasmoid.configuration.splitterPosition2);
+        //add the splitters in the correct position if they exist
 
-    var validSplitter1 = -1;
+        var validSplitter1 = -1;
 
-    if(plasmoid.configuration.splitterPosition !== -1){
-        var missingApplets = 0;
+        if(plasmoid.configuration.splitterPosition !== -1){
+            var missingApplets = 0;
 
-        for (var i=0; i<plasmoid.configuration.splitterPosition; ++i) {
-            if (appletsOrder[i] === undefined) {
-                missingApplets = missingApplets + 1;
+            for (var i=0; i<plasmoid.configuration.splitterPosition; ++i) {
+                if (appletsOrder[i] === undefined) {
+                    missingApplets = missingApplets + 1;
+                }
             }
+
+            validSplitter1 = plasmoid.configuration.splitterPosition-missingApplets;
+
+            // console.log("INTERNAL SPLITTER 1 ::: " + plasmoid.configuration.splitterPosition);
+            // console.log("UNDEFINEDSPLITTER 1 ::: " + missingApplets);
+            // console.log("VALID    SPLITTER 1 ::: " + validSplitter1);
+
+            root.addInternalViewSplitter(validSplitter1);
         }
 
-        validSplitter1 = plasmoid.configuration.splitterPosition-missingApplets;
+        if(plasmoid.configuration.splitterPosition2 !== -1){
+            var missingApplets2 = 0;
+            var spacers = plasmoid.configuration.splitterPosition !== -1 ? 1 : 0;
 
-        // console.log("INTERNAL SPLITTER 1 ::: " + plasmoid.configuration.splitterPosition);
-        // console.log("UNDEFINEDSPLITTER 1 ::: " + missingApplets);
-        // console.log("VALID    SPLITTER 1 ::: " + validSplitter1);
-
-        root.addInternalViewSplitter(validSplitter1);
-    }
-
-    if(plasmoid.configuration.splitterPosition2 !== -1){
-        var missingApplets2 = 0;
-        var spacers = plasmoid.configuration.splitterPosition !== -1 ? 1 : 0;
-
-        for (var i=0; i<plasmoid.configuration.splitterPosition2-spacers; ++i) {
-            if (appletsOrder[i] === undefined) {
-                missingApplets2 = missingApplets2 + 1;
+            for (var i=0; i<plasmoid.configuration.splitterPosition2-spacers; ++i) {
+                if (appletsOrder[i] === undefined) {
+                    missingApplets2 = missingApplets2 + 1;
+                }
             }
+
+            var validSplitter2 = plasmoid.configuration.splitterPosition2-missingApplets2;
+
+            // console.log("INTERNAL SPLITTER 2 ::: " + plasmoid.configuration.splitterPosition2);
+            // console.log("UNDEFINEDSPLITTER 2 ::: " + missingApplets2);
+            // console.log("VALID    SPLITTER 2 ::: " + validSplitter2);
+
+            root.addInternalViewSplitter(validSplitter2);
         }
-
-        var validSplitter2 = plasmoid.configuration.splitterPosition2-missingApplets2;
-
-        // console.log("INTERNAL SPLITTER 2 ::: " + plasmoid.configuration.splitterPosition2);
-        // console.log("UNDEFINEDSPLITTER 2 ::: " + missingApplets2);
-        // console.log("VALID    SPLITTER 2 ::: " + validSplitter2);
-
-        root.addInternalViewSplitter(validSplitter2);
     }
 
     //rewrite, so if in the orders there were now invalid ids or if some were missing creates a correct list instead
@@ -108,8 +110,9 @@ function restore() {
 
     inRestore = false;
 
-    //update layouts in case there is a splitter in them
-    root.updateLayouts();
+    if (plasmoid.configuration.panelPosition === 10/*Justify*/) {
+        root.splitMainLayoutToLayouts();
+    }
 }
 
 function restoreOptions() {
@@ -191,11 +194,7 @@ function save() {
         }
     }
 
-    if(!splitterExists && !inRestore)
-        plasmoid.configuration.splitterPosition = -1;
-
-    if(!splitterExists2 && !inRestore)
-        plasmoid.configuration.splitterPosition2 = -1;
+    console.log("SAVING SPLITTERS :: " + plasmoid.configuration.splitterPosition + " _ " + plasmoid.configuration.splitterPosition2);
 
     //console.log("splitters saved:"+plasmoid.configuration.splitterPosition+ " - " + plasmoid.configuration.splitterPosition2);
 
@@ -316,9 +315,9 @@ function insertAfterForLayout(tLayout, item1, item2) {
 
 function insertAtIndex(item, position) {
     var addToEnd = false;
-    if (position < 0 || (position > layout.children.length)) {
+    if (position < 0 || (position > layout.children.length && !item.isInternalViewSplitter)) {
         return;
-    } else if (position === layout.children.length) {
+    } else if (position >= layout.children.length) {
         addToEnd = true;
     }
 
@@ -394,7 +393,7 @@ function insertAtCoordinates(item, x, y) {
     if (!child) {
         // check if dragging takes place after the end of the layout
         if ( ((root.isVertical && y > layout.height)||(root.isHorizontal && x > layout.width))
-              && layout.children.length>0  ){
+                && layout.children.length>0  ){
             child = layout.children[layout.children.length-1];
         } else {
             child = layout.children[0];
@@ -452,13 +451,13 @@ function insertAtLayoutCoordinates(tLayout, item, x, y) {
         var neededSpace = 1.5 * (root.iconSize + root.lengthMargin);
         if ( (((root.isVertical && (y - neededSpace) <= tLayout.height) && y>=0)
               ||(root.isHorizontal && (x - neededSpace) <= tLayout.width) && x>=0)
-              && tLayout.children.length>0  ){
+                && tLayout.children.length>0  ){
             child = tLayout.children[layout.children.length-1];
-        // check if dragging takes place before the start of the layout
+            // check if dragging takes place before the start of the layout
         } else if ( ((root.isVertical && (y >= -neededSpace) && (y<=neededSpace))
-                  ||(root.isHorizontal && (x >= -neededSpace)  && (x<=neededSpace)))
-                  && tLayout.children.length>0  ){
-                child = tLayout.children[0];
+                     ||(root.isHorizontal && (x >= -neededSpace)  && (x<=neededSpace)))
+                   && tLayout.children.length>0  ){
+            child = tLayout.children[0];
         } else {
             return -1;
             //child = tLayout.children[0];

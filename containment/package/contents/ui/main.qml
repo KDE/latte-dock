@@ -353,6 +353,8 @@ DragDrop.DropArea {
                                                                 ( plasmoid.configuration.panelPosition === Latte.Types.Justify ?
                                                                      Latte.Types.Center : plasmoid.configuration.panelPosition )
 
+    property int panelUserSetAlignment: plasmoid.configuration.panelPosition
+
     property real zoomFactor: Latte.WindowSystem.compositingActive ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
@@ -580,14 +582,38 @@ DragDrop.DropArea {
     }
 
     onInConfigureAppletsModeChanged: {
-        updateLayouts();
+        if (inConfigureAppletsMode && panelUserSetAlignment===Latte.Types.Justify) {
+            joinLayoutsToMainLayout();
+        } else if (!inConfigureAppletsMode) {
+            splitMainLayoutToLayouts();
+        }
+    }
+
+    //! It is used only when the user chooses different alignment types
+    //! and not during startup
+    onPanelUserSetAlignmentChanged: {
+        if (!root.editMode) {
+            return;
+        }
+
+        if (!inConfigureAppletsMode){
+            if (panelUserSetAlignment===Latte.Types.Justify) {
+                addInternalViewSplitters();
+                splitMainLayoutToLayouts();
+            } else {
+                joinLayoutsToMainLayout();
+            }
+        } else {
+            if (panelUserSetAlignment===Latte.Types.Justify) {
+                addInternalViewSplitters();
+            } else {
+                removeInternalViewSplitters();
+            }
+        }
     }
 
     onLatteViewChanged: {
         if (latteView) {
-            latteView.onAddInternalViewSplitter.connect(addInternalViewSplitters);
-            latteView.onRemoveInternalViewSplitter.connect(removeInternalViewSplitters);
-
             latteView.onXChanged.connect(visibilityManager.updateMaskArea);
             latteView.onYChanged.connect(visibilityManager.updateMaskArea);
             latteView.onWidthChanged.connect(visibilityManager.updateMaskArea);
@@ -797,9 +823,6 @@ DragDrop.DropArea {
         console.debug("Destroying Latte Dock Containment ui...");
 
         if (latteView) {
-            latteView.onAddInternalViewSplitter.disconnect(addInternalViewSplitters);
-            latteView.onRemoveInternalViewSplitter.disconnect(removeInternalViewSplitters);
-
             latteView.onXChanged.disconnect(visibilityManager.updateMaskArea);
             latteView.onYChanged.disconnect(visibilityManager.updateMaskArea);
             latteView.onWidthChanged.disconnect(visibilityManager.updateMaskArea);
@@ -822,6 +845,7 @@ DragDrop.DropArea {
 
     Containment.onAppletAdded: {
         addApplet(applet, x, y);
+        console.log(applet.pluginName);
         LayoutManager.save();
         updateIndexes();
     }
@@ -842,6 +866,7 @@ DragDrop.DropArea {
             lastSpacer.parent = layoutsContainer.mainLayout;
         }
 
+        console.log(applet.pluginName);
         LayoutManager.save();
 
         updateIndexes();
@@ -1001,11 +1026,10 @@ DragDrop.DropArea {
     }
 
     function addInternalViewSplitters(){
-        addInternalViewSplitter(-1);
-        addInternalViewSplitter(-1);
-
-        console.log("Adding splitters... : " + internalViewSplittersCount());
-        updateLayouts();
+        if (internalViewSplittersCount() === 0) {
+            addInternalViewSplitter(plasmoid.configuration.splitterPosition);
+            addInternalViewSplitter(plasmoid.configuration.splitterPosition2);
+        }
     }
 
     function addInternalViewSplitter(pos){
@@ -1021,8 +1045,6 @@ DragDrop.DropArea {
             } else {
                 LayoutManager.insertAtIndex(container, Math.floor(layoutsContainer.mainLayout.count / 2));
             }
-
-            LayoutManager.save();
         }
     }
 
@@ -1112,21 +1134,21 @@ DragDrop.DropArea {
         for (var container in layoutsContainer.startLayout.children) {
             var item = layoutsContainer.startLayout.children[container];
             if(item && item.isInternalViewSplitter) {
-                splitters++;
+                splitters = splitters + 1;
             }
         }
 
         for (var container in layoutsContainer.mainLayout.children) {
             var item = layoutsContainer.mainLayout.children[container];
             if(item && item.isInternalViewSplitter) {
-                splitters++;
+                splitters = splitters + 1;
             }
         }
 
         for (var container in layoutsContainer.endLayout.children) {
             var item = layoutsContainer.endLayout.children[container];
             if(item && item.isInternalViewSplitter) {
-                splitters++;
+                splitters = splitters + 1;
             }
         }
 
@@ -1200,28 +1222,32 @@ DragDrop.DropArea {
     }
 
     function removeInternalViewSplitters(){
-        for (var container in layoutsContainer.startLayout.children) {
-            var item = layoutsContainer.mainLayout.children[container];
-            if(item && item.isInternalViewSplitter)
-                item.destroy();
+        if (internalViewSplittersCount() > 0) {
+            console.log("Removing splitters... : " + internalViewSplittersCount());
+
+            for (var container in layoutsContainer.startLayout.children) {
+                var item = layoutsContainer.startLayout.children[container];
+                if(item && item.isInternalViewSplitter) {
+                    item.destroy();
+                }
+            }
+
+            for (var container in layoutsContainer.mainLayout.children) {
+                var item = layoutsContainer.mainLayout.children[container];
+                if(item && item.isInternalViewSplitter) {
+                    item.destroy();
+                }
+            }
+
+            for (var container in layoutsContainer.endLayout.children) {
+                var item = layoutsContainer.endLayout.children[container];
+                if(item && item.isInternalViewSplitter) {
+                    item.destroy();
+                }
+            }
+
+            console.log("Removed splitters... : " + internalViewSplittersCount());
         }
-
-        for (var container in layoutsContainer.mainLayout.children) {
-            var item = layoutsContainer.mainLayout.children[container];
-            if(item && item.isInternalViewSplitter)
-                item.destroy();
-        }
-
-        for (var container in layoutsContainer.endLayout.children) {
-            var item = layoutsContainer.mainLayout.children[container];
-            if(item && item.isInternalViewSplitter)
-                item.destroy();
-        }
-
-        console.log("Removed splitters... : " + internalViewSplittersCount());
-        updateLayouts();
-
-        LayoutManager.save();
     }
 
     function setHoveredIndex(ind) {
@@ -1468,63 +1494,61 @@ DragDrop.DropArea {
         layoutsContainer.updateSizeForAppletsInFill();
     }
 
-    function updateLayouts(){
-        console.log(" Updating layouts... " + internalViewSplittersCount());
-        if(!root.inConfigureAppletsMode && root.panelAlignment === Latte.Types.Justify){
-            //    console.log("update layout - internal view splitters count:"+internalViewSplittersCount());
-            if (internalViewSplittersCount() === 2) {
-                console.log(" Updating layouts... Step 1..");
-                var splitter = -1;
-                var splitter2 = -1;
+    function splitMainLayoutToLayouts() {
+        if (internalViewSplittersCount() === 2) {
+            console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
+            var splitter = -1;
+            var splitter2 = -1;
 
-                var totalChildren = layoutsContainer.mainLayout.children.length;
-                for (var i=0; i<totalChildren; ++i) {
-                    var item = layoutsContainer.mainLayout.children[i];
+            var totalChildren = layoutsContainer.mainLayout.children.length;
+            for (var i=0; i<totalChildren; ++i) {
+                var item = layoutsContainer.mainLayout.children[i];
 
-                    if(item.isInternalViewSplitter && splitter === -1) {
-                        splitter = i;
-                    } else if (item.isInternalViewSplitter && splitter>=0 && splitter2 === -1) {
-                        splitter2 = i;
-                    }
-                }
-
-                // console.log("update layouts 1:"+splitter + " - "+splitter2);
-                for (var i=0; i<=splitter; ++i){
-                    var item = layoutsContainer.mainLayout.children[0];
-                    item.parent = layoutsContainer.startLayout;
-                }
-
-                splitter2 = splitter2 - splitter - 1;
-                // console.log("update layouts 2:"+splitter + " - "+splitter2);
-
-                totalChildren = layoutsContainer.mainLayout.children.length;
-                for (var i=splitter2+1; i<totalChildren; ++i){
-                    var item = layoutsContainer.mainLayout.children[splitter2+1];
-                    item.parent = layoutsContainer.endLayout;
+                if(item.isInternalViewSplitter && splitter === -1) {
+                    splitter = i;
+                } else if (item.isInternalViewSplitter && splitter>=0 && splitter2 === -1) {
+                    splitter2 = i;
                 }
             }
-        } else{
-            if (internalViewSplittersCount() === 2) {
-                console.log(" Updating layouts... Step 2..");
-                var totalChildren1 = layoutsContainer.mainLayout.children.length;
-                for (var i=totalChildren1-1; i>=0; --i) {
-                    var item1 = layoutsContainer.mainLayout.children[0];
-                    item1.parent = layoutsContainer.startLayout;
-                }
 
-                var totalChildren2 = layoutsContainer.endLayout.children.length;
-
-                for (var i=totalChildren2-1; i>=0; --i) {
-                    var item2 = layoutsContainer.endLayout.children[0];
-                    item2.parent = layoutsContainer.startLayout;
-                }
-
-                var totalChildrenL = layoutsContainer.startLayout.children.length;
-                for (var i=totalChildrenL-1; i>=0; --i) {
-                    var itemL = layoutsContainer.startLayout.children[0];
-                    itemL.parent = layoutsContainer.mainLayout;
-                }
+            // console.log("update layouts 1:"+splitter + " - "+splitter2);
+            for (var i=0; i<=splitter; ++i){
+                var item = layoutsContainer.mainLayout.children[0];
+                item.parent = layoutsContainer.startLayout;
             }
+
+            splitter2 = splitter2 - splitter - 1;
+            // console.log("update layouts 2:"+splitter + " - "+splitter2);
+
+            totalChildren = layoutsContainer.mainLayout.children.length;
+            for (var i=splitter2+1; i<totalChildren; ++i){
+                var item = layoutsContainer.mainLayout.children[splitter2+1];
+                item.parent = layoutsContainer.endLayout;
+            }
+        }
+
+        updateIndexes();
+    }
+
+    function joinLayoutsToMainLayout() {
+        console.log("LAYOUTS: Moving applets from THREE to MAIN Layout mode...");
+        var totalChildren1 = layoutsContainer.mainLayout.children.length;
+        for (var i=totalChildren1-1; i>=0; --i) {
+            var item1 = layoutsContainer.mainLayout.children[0];
+            item1.parent = layoutsContainer.startLayout;
+        }
+
+        var totalChildren2 = layoutsContainer.endLayout.children.length;
+
+        for (var i=totalChildren2-1; i>=0; --i) {
+            var item2 = layoutsContainer.endLayout.children[0];
+            item2.parent = layoutsContainer.startLayout;
+        }
+
+        var totalChildrenL = layoutsContainer.startLayout.children.length;
+        for (var i=totalChildrenL-1; i>=0; --i) {
+            var itemL = layoutsContainer.startLayout.children[0];
+            itemL.parent = layoutsContainer.mainLayout;
         }
 
         updateIndexes();

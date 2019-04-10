@@ -225,8 +225,6 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
 
 signals:
-    void addInternalViewSplitter();
-    void removeInternalViewSplitter();
     void eventTriggered(QEvent *ev);
 
     void activitiesChanged();
