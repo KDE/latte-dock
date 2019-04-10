@@ -106,6 +106,7 @@ PlasmaComponents.Page {
 
         //! BEGIN: Tasks Interaction
         ColumnLayout {
+            Layout.topMargin: dialog.basicLevel ? units.smallSpacing : 0
             spacing: units.smallSpacing
 
             LatteComponents.Header {
