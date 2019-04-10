@@ -21,6 +21,7 @@
 #include "primaryconfigview.h"
 
 // local
+#include <config-latte.h>
 #include "secondaryconfigview.h"
 #include "../panelshadows_p.h"
 #include "../view.h"
@@ -152,9 +153,12 @@ void PrimaryConfigView::init()
     KDeclarative::KDeclarative kdeclarative;
     kdeclarative.setDeclarativeEngine(engine());
     kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));
+#if KF5_VERSION_MINOR >= 45
     kdeclarative.setupContext();
     kdeclarative.setupEngine(engine());
-    //kdeclarative.setupBindings();
+#else
+    kdeclarative.setupBindings();
+#endif
 
     QByteArray tempFilePath = "lattedockconfigurationui";
 

@@ -44,6 +44,12 @@ if(X11_FOUND AND XCB_XCB_FOUND)
     set(HAVE_X11 ON)
 endif()
 
+string(REGEX MATCH "\\.([^]]+)\\." KF5_VERSION_MINOR ${KF5_VERSION})
+string(REGEX REPLACE "\\." "" KF5_VERSION_MINOR ${KF5_VERSION_MINOR})
+
+message(STATUS "KF5 VERSION : ${KF5_VERSION}")
+message(STATUS "KF5 VERSION MINOR : ${KF5_VERSION_MINOR}")
+
 include(ECMQMLModules)
 ecm_find_qmlmodule(QtQuick 2.7)
 ecm_find_qmlmodule(QtQuick.Layouts 1.3)
