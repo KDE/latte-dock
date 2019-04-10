@@ -357,6 +357,13 @@ Item{
             return no;
         }
 
+        onCountChanged: {
+            if (root.editMode) {
+                //! this is mainly used when removing/adding internal view splitters
+                //! in order to not break the parabolic effect from wrong indexes
+                root.updateIndexes();
+            }
+        }
         onFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
         onShownAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
         onSizeWithNoFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();

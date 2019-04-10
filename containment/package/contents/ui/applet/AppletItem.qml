@@ -160,28 +160,30 @@ Item {
         index = -1;
 
         for(var i=0; i<layoutsContainer.startLayout.count; ++i){
-            if(layoutsContainer.startLayout.children[i] === appletItem){
+            var child = layoutsContainer.startLayout.children[i];
+            if (child === appletItem){
                 index = layoutsContainer.startLayout.beginIndex + i;
                 break;
             }
         }
 
         for(var i=0; i<layoutsContainer.mainLayout.count; ++i){
-            if(layoutsContainer.mainLayout.children[i] === appletItem){
+            var child = layoutsContainer.mainLayout.children[i];
+            if (child === appletItem){
                 index = layoutsContainer.mainLayout.beginIndex + i;
                 break;
             }
         }
 
         for(var i=0; i<layoutsContainer.endLayout.count; ++i){
-            if(layoutsContainer.endLayout.children[i] === appletItem){
+            var child = layoutsContainer.endLayout.children[i];
+            if (child === appletItem){
                 //create a very high index in order to not need to exchange hovering messages
                 //between layoutsContainer.mainLayout and layoutsContainer.endLayout
                 index = layoutsContainer.endLayout.beginIndex + i;
                 break;
             }
         }
-
 
         if(appletItem.latteApplet){
             if(index===layoutsContainer.startLayout.beginIndex || index===layoutsContainer.mainLayout.beginIndex || index===layoutsContainer.endLayout.beginIndex)
@@ -234,6 +236,12 @@ Item {
             else{
                 appletItem.canBeHovered = true;
             }
+        }
+    }
+
+    function slotDestroyInternalViewSplitters() {
+        if (isInternalViewSplitter) {
+            destroy();
         }
     }
 
@@ -330,6 +338,7 @@ Item {
         checkIndex();
         root.updateIndexes.connect(checkIndex);
         root.clearZoomSignal.connect(clearZoom);
+        root.destroyInternalViewSplitters.connect(slotDestroyInternalViewSplitters);
     }
 
     Component.onDestruction: {
@@ -348,6 +357,7 @@ Item {
 
         root.updateIndexes.disconnect(checkIndex);
         root.clearZoomSignal.disconnect(clearZoom);
+        root.destroyInternalViewSplitters.disconnect(slotDestroyInternalViewSplitters);
 
         if (appletItem.latteApplet) {
             appletItem.latteApplet.signalAnimationsNeedBothAxis.disconnect(slotAnimationsNeedBothAxis);

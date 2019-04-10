@@ -46,6 +46,7 @@ DragDrop.DropArea {
 
     //// BEGIN SIGNALS
     signal clearZoomSignal();
+    signal destroyInternalViewSplitters();
     signal separatorsUpdated();
     signal signalActivateEntryAtIndex(int entryIndex);
     signal signalNewInstanceForEntryAtIndex(int entryIndex);
@@ -587,6 +588,8 @@ DragDrop.DropArea {
         } else if (!inConfigureAppletsMode) {
             splitMainLayoutToLayouts();
         }
+
+        updateIndexes();
     }
 
     //! It is used only when the user chooses different alignment types
@@ -602,14 +605,17 @@ DragDrop.DropArea {
                 splitMainLayoutToLayouts();
             } else {
                 joinLayoutsToMainLayout();
+                root.destroyInternalViewSplitters();
             }
         } else {
             if (panelUserSetAlignment===Latte.Types.Justify) {
                 addInternalViewSplitters();
             } else {
-                removeInternalViewSplitters();
+                root.destroyInternalViewSplitters();
             }
         }
+
+        updateIndexes();
     }
 
     onLatteViewChanged: {
@@ -1221,35 +1227,6 @@ DragDrop.DropArea {
         return (latteView.visibility.containsMouse && !rootMouseArea.containsMouse && mouseInCanBeHoveredApplet());
     }
 
-    function removeInternalViewSplitters(){
-        if (internalViewSplittersCount() > 0) {
-            console.log("Removing splitters... : " + internalViewSplittersCount());
-
-            for (var container in layoutsContainer.startLayout.children) {
-                var item = layoutsContainer.startLayout.children[container];
-                if(item && item.isInternalViewSplitter) {
-                    item.destroy();
-                }
-            }
-
-            for (var container in layoutsContainer.mainLayout.children) {
-                var item = layoutsContainer.mainLayout.children[container];
-                if(item && item.isInternalViewSplitter) {
-                    item.destroy();
-                }
-            }
-
-            for (var container in layoutsContainer.endLayout.children) {
-                var item = layoutsContainer.endLayout.children[container];
-                if(item && item.isInternalViewSplitter) {
-                    item.destroy();
-                }
-            }
-
-            console.log("Removed splitters... : " + internalViewSplittersCount());
-        }
-    }
-
     function setHoveredIndex(ind) {
         layoutsContainer.hoveredIndex = ind;
     }
@@ -1526,8 +1503,6 @@ DragDrop.DropArea {
                 item.parent = layoutsContainer.endLayout;
             }
         }
-
-        updateIndexes();
     }
 
     function joinLayoutsToMainLayout() {
@@ -1550,8 +1525,6 @@ DragDrop.DropArea {
             var itemL = layoutsContainer.startLayout.children[0];
             itemL.parent = layoutsContainer.mainLayout;
         }
-
-        updateIndexes();
     }
     //END functions
 
