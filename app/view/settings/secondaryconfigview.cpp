@@ -73,7 +73,12 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
         setFlags(wFlags());
 
         if (KWindowSystem::isPlatformX11()) {
+#if KF5_VERSION_MINOR >= 45
             KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager | NET::SkipSwitcher);
+#else
+            KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
+#endif
+
             KWindowSystem::setOnAllDesktops(winId(), true);
         }
 
@@ -339,7 +344,9 @@ void SecondaryConfigView::setupWaylandIntegration()
 
         m_shellSurface = interface->createSurface(s, this);
         m_shellSurface->setSkipTaskbar(true);
+#if KF5_VERSION_MINOR >= 47
         m_shellSurface->setSkipSwitcher(true);
+#endif
 
         syncGeometry();
     }
