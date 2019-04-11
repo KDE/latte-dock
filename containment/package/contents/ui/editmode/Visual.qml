@@ -159,6 +159,11 @@ Item{
                                                 "You can use mouse wheel to change background opacity of %0%").arg(Math.round(plasmoid.configuration.editBackgroundOpacity * 100))
 
         onWheel: {
+            processWheel(wheel);
+        }
+
+
+        function processWheel(wheel) {
             if (wheelIsBlocked) {
                 return;
             }
@@ -172,6 +177,15 @@ Item{
                 plasmoid.configuration.editBackgroundOpacity = Math.min(100, plasmoid.configuration.editBackgroundOpacity + opacityStep)
             } else if (angle < -10) {
                 plasmoid.configuration.editBackgroundOpacity = Math.max(0, plasmoid.configuration.editBackgroundOpacity - opacityStep)
+            }
+        }
+
+        Connections {
+            target: root
+            onEmptyAreasWheel: {
+                if (root.editMode && !root.inConfigureAppletsMode) {
+                    editBackMouseArea.processWheel(wheel);
+                }
             }
         }
 

@@ -98,6 +98,11 @@ Loader {
         }
 
         onWheel: {
+            if (root.scrollAction === Latte.Types.ScrollNone) {
+                root.emptyAreasWheel(wheel);
+                return;
+            }
+
             var delta = 0;
 
             if (wheel.angleDelta.y>=0 && wheel.angleDelta.x>=0) {

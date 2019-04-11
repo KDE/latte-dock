@@ -48,6 +48,7 @@ DragDrop.DropArea {
     //// BEGIN SIGNALS
     signal clearZoomSignal();
     signal destroyInternalViewSplitters();
+    signal emptyAreasWheel(QtObject wheel);
     signal separatorsUpdated();
     signal signalActivateEntryAtIndex(int entryIndex);
     signal signalNewInstanceForEntryAtIndex(int entryIndex);
