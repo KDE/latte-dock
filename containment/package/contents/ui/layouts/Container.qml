@@ -165,6 +165,10 @@ Item{
     onXChanged: root.updateEffectsArea();
     onYChanged: root.updateEffectsArea();
 
+    EnvironmentActions {
+        active: root.scrollAction !== Latte.Types.ScrollNone
+    }
+
     Grid{
         id:_startLayout
 
