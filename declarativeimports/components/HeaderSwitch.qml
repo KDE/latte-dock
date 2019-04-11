@@ -109,10 +109,14 @@ Item {
 
         PlasmaComponents.Button {
             //tooltip ghost
-            anchors.fill: parent
+            anchors.fill: textElement
             tooltip: item.tooltip
             opacity: 0
-            onPressedChanged: item.pressed();
+            onPressedChanged: {
+                if (pressed) {
+                    item.pressed();
+                }
+            }
         }
     }
 
@@ -129,7 +133,11 @@ Item {
             anchors.fill: parent
             tooltip: item.tooltip
             opacity: 0
-            onPressedChanged: item.pressed();
+            onPressedChanged: {
+                if (pressed) {
+                    item.pressed();
+                }
+            }
         }
     }
 }
