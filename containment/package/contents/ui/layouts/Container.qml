@@ -26,7 +26,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte 0.2 as Latte
 
-import "../code/HeuristicTools.js" as HeuristicTools
+import "../../code/HeuristicTools.js" as HeuristicTools
 
 Item{
     id: layoutsContainer

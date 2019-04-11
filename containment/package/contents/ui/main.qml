@@ -35,6 +35,7 @@ import "applet" as Applet
 import "colorizer" as Colorizer
 import "editmode" as EditMode
 import "indicators" as Indicators
+import "layouts" as Layouts
 import "../code/LayoutManager.js" as LayoutManager
 
 DragDrop.DropArea {
@@ -1824,7 +1825,7 @@ DragDrop.DropArea {
 
     VisibilityManager{ id: visibilityManager }
 
-    LayoutsContainer {
+    Layouts.Container {
         id: layoutsContainer
     }
 
