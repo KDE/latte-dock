@@ -65,6 +65,10 @@ Loader {
         }
 
         onPressed: {
+            if (!root.dragActiveWindowEnabled) {
+                return;
+            }
+
             if (latteView.windowsTracker.activeWindowCanBeDragged()) {
                 lastPressX = mouse.x;
                 lastPressY = mouse.y;
@@ -78,6 +82,10 @@ Loader {
         }
 
         onPositionChanged: {
+            if (!root.dragActiveWindowEnabled) {
+                return;
+            }
+
             var stepX = Math.abs(lastPressX-mouse.x);
             var stepY = Math.abs(lastPressY-mouse.y);
             var threshold = 5;
@@ -91,6 +99,10 @@ Loader {
         }
 
         onDoubleClicked: {
+            if (!root.dragActiveWindowEnabled) {
+                return;
+            }
+
             dragWindowTimer.stop();
             restoreGrabberTimer.stop();
             latteView.windowsTracker.requestToggleMaximizeForActiveWindow();

@@ -530,38 +530,51 @@ PlasmaComponents.Page {
                     text: i18n("Empty Area")
                 }
 
-                RowLayout {
-                    Layout.topMargin: units.smallSpacing
+                ColumnLayout {
+                    RowLayout {
+                        Layout.topMargin: units.smallSpacing
 
-                    PlasmaComponents.Label {
-                        text: i18n("Mouse wheel")
+                        PlasmaComponents.Label {
+                            text: i18n("Mouse wheel")
+                        }
+
+                        LatteComponents.ComboBox {
+                            id: scrollAction
+                            Layout.fillWidth: true
+                            model: [i18nc("none scroll actions", "None Action"),
+                                i18n("Cycle Through Desktops"),
+                                i18n("Cycle Through Activities"),
+                                i18n("Cycle Through Tasks")]
+
+                            currentIndex: plasmoid.configuration.scrollAction
+
+                            onCurrentIndexChanged: {
+                                switch(currentIndex) {
+                                case Latte.Types.ScrollNone:
+                                    plasmoid.configuration.scrollAction = Latte.Types.ScrollNone;
+                                    break;
+                                case Latte.Types.ScrollDesktops:
+                                    plasmoid.configuration.scrollAction = Latte.Types.ScrollDesktops;
+                                    break;
+                                case Latte.Types.ScrollActivities:
+                                    plasmoid.configuration.scrollAction = Latte.Types.ScrollActivities;
+                                    break;
+                                case Latte.Types.ScrollTasks:
+                                    plasmoid.configuration.scrollAction = Latte.Types.ScrollTasks;
+                                    break;
+                                }
+                            }
+                        }
                     }
 
-                    LatteComponents.ComboBox {
-                        id: scrollAction
-                        Layout.fillWidth: true
-                        model: [i18nc("none scroll actions", "None Action"),
-                            i18n("Cycle Through Desktops"),
-                            i18n("Cycle Through Activities"),
-                            i18n("Cycle Through Tasks")]
+                    PlasmaComponents.CheckBox {
+                        text: i18n("Drag and maximize/restore active window")
+                        checked: plasmoid.configuration.dragActiveWindowEnabled
+                        tooltip: i18n("Drag/Maximize/Restore active window with double-click and dragging actions")
+                        visible: dialog.highLevel
 
-                        currentIndex: plasmoid.configuration.scrollAction
-
-                        onCurrentIndexChanged: {
-                            switch(currentIndex) {
-                            case Latte.Types.ScrollNone:
-                                plasmoid.configuration.scrollAction = Latte.Types.ScrollNone;
-                                break;
-                            case Latte.Types.ScrollDesktops:
-                                plasmoid.configuration.scrollAction = Latte.Types.ScrollDesktops;
-                                break;
-                            case Latte.Types.ScrollActivities:
-                                plasmoid.configuration.scrollAction = Latte.Types.ScrollActivities;
-                                break;
-                            case Latte.Types.ScrollTasks:
-                                plasmoid.configuration.scrollAction = Latte.Types.ScrollTasks;
-                                break;
-                            }
+                        onClicked: {
+                            plasmoid.configuration.dragActiveWindowEnabled = !plasmoid.configuration.dragActiveWindowEnabled;
                         }
                     }
                 }
@@ -621,7 +634,6 @@ PlasmaComponents.Page {
             LatteComponents.Header {
                 text: i18n("Environment")
             }
-
 
             LatteComponents.CheckBoxesColumn {
                 Layout.leftMargin: units.smallSpacing * 2

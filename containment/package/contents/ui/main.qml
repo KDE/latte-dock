@@ -151,6 +151,7 @@ DragDrop.DropArea {
     readonly property bool parabolicEffectEnabled: zoomFactor>1 && !inConfigureAppletsMode
 
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
+    property bool dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled
     property bool immutable: plasmoid.immutable
     property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Types.Justify) && (plasmoid.configuration.maxLength===100)
     property bool inSlidingIn: visibilityManager ? visibilityManager.inSlidingIn : false

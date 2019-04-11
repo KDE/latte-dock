@@ -155,6 +155,10 @@
     <entry name="offset" type="Int">
       <default>0</default>
     </entry>
+    <entry name="dragActiveWindowEnabled" type="Bool">
+      <default>false</default>
+      <label>Drag and maximize/restore active window from empty areas</label>
+    </entry>
     <entry name="leftClickAction" type="Enum">
       <choices>
             <choice name="None"/>

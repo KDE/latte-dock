@@ -80,6 +80,10 @@ Grid {
                 plasmoid.configuration.activeIndicator = Latte.Types.InternalsIndicator;
                 //plasmoid.configuration.autoDecreaseIconSize = true;
 
+                //! Empty Areas
+                plasmoid.configuration.dragActiveWindowEnabled = false;
+                plasmoid.configuration.scrollAction = Latte.Types.ScrollNone;
+
                 //! Animations
                 plasmoid.configuration.animationLauncherBouncing = true;
                 plasmoid.configuration.animationWindowInAttention = true;
@@ -118,6 +122,9 @@ Grid {
                 plasmoid.configuration.titleTooltips = false;
                 plasmoid.configuration.activeIndicator = Latte.Types.NoneIndicator;
                 //plasmoid.configuration.autoDecreaseIconSize = false;
+
+                //! Empty Areas
+                plasmoid.configuration.dragActiveWindowEnabled = true;
 
                 //! Animations
                 plasmoid.configuration.animationLauncherBouncing = false;
