@@ -166,7 +166,7 @@ Item{
     onYChanged: root.updateEffectsArea();
 
     EnvironmentActions {
-        active: root.scrollAction !== Latte.Types.ScrollNone
+        active: true //root.scrollAction !== Latte.Types.ScrollNone // it should have an option to activate/deactivate the dragging active window etc.
     }
 
     Grid{

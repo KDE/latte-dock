@@ -194,7 +194,6 @@ void WindowsTracker::setEnabled(bool active)
             }
 
             m_windows[wid] = m_wm->requestInfo(wid);
-            m_lastActiveWindowWid = wid;
 
             updateFlags();
         });
@@ -271,6 +270,7 @@ void WindowsTracker::updateFlags()
 
         if (isActive(winfo)) {
             foundActive = true;
+            m_lastActiveWindowWid = winfo.wid();
         }
 
         if (isActiveInCurrentScreen(winfo)) {
@@ -432,7 +432,13 @@ void WindowsTracker::setWindowOnActivities(QWindow &window, const QStringList &a
 
 void WindowsTracker::requestToggleMaximizeForActiveWindow()
 {
-    WindowInfoWrap actInfo = m_wm->requestInfoActive();
+    WindowInfoWrap actInfo;
+
+    if (m_windows.contains(m_lastActiveWindowWid)) {
+        actInfo = m_windows[m_lastActiveWindowWid];
+    } else {
+        actInfo = m_wm->requestInfoActive();
+    }
 
     //active window can be toggled only when it is in the same screen
     if (actInfo.isValid() && !actInfo.geometry().isNull() && m_latteView->screenGeometry().contains(actInfo.geometry().center())) {
@@ -442,7 +448,13 @@ void WindowsTracker::requestToggleMaximizeForActiveWindow()
 
 void WindowsTracker::requestMoveActiveWindow(int localX, int localY)
 {
-    WindowInfoWrap actInfo = m_wm->requestInfoActive();
+    WindowInfoWrap actInfo;
+
+    if (m_windows.contains(m_lastActiveWindowWid)) {
+        actInfo = m_windows[m_lastActiveWindowWid];
+    } else {
+        actInfo = m_wm->requestInfoActive();
+    }
 
     //active window can be dragged only when it is in the same screen
     if (actInfo.isValid() && !actInfo.geometry().isNull() && m_latteView->screenGeometry().contains(actInfo.geometry().center())) {
@@ -462,7 +474,13 @@ void WindowsTracker::requestMoveActiveWindow(int localX, int localY)
 
 bool WindowsTracker::activeWindowCanBeDragged()
 {
-    WindowInfoWrap actInfo = m_wm->requestInfoActive();
+    WindowInfoWrap actInfo;
+
+    if (m_windows.contains(m_lastActiveWindowWid)) {
+        actInfo = m_windows[m_lastActiveWindowWid];
+    } else {
+        actInfo = m_wm->requestInfoActive();
+    }
 
     //active window can be dragged only when it is in the same screen
     if (actInfo.isValid() && !actInfo.geometry().isNull() && m_latteView->screenGeometry().contains(actInfo.geometry().center())) {
