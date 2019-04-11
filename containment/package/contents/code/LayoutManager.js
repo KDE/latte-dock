@@ -112,6 +112,7 @@ function restore() {
 
     if (plasmoid.configuration.panelPosition === 10/*Justify*/) {
         root.splitMainLayoutToLayouts();
+        root.updateIndexes();
     }
 }
 
