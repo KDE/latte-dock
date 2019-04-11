@@ -191,6 +191,7 @@ void Effects::setSettingsMaskSubtracted(bool enabled)
     }
 
     m_settingsMaskSubtracted = enabled;
+
     emit settingsMaskSubtractedChanged();
 }
 

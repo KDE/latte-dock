@@ -96,6 +96,7 @@ public slots:
     void updateShadows();
     void updateEffects();
     void updateEnabledBorders();
+    void updateMask();
 
 signals:
     void animationsBlockedChanged();
@@ -111,7 +112,6 @@ signals:
 
 private slots:
     void init();
-    void updateMask();
 
 private:
     QRegion subtractedMask();
