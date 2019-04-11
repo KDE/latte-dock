@@ -320,6 +320,7 @@ Item{
         normalState = ((root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0))
                 || (latteView.visibility.isHidden && !latteView.visibility.containsMouse && root.animationsNeedThickness == 0);
 
+
         // debug maskArea criteria
         if (debugMagager) {
             console.log(root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " +
@@ -524,8 +525,10 @@ Item{
             }
         }
 
+        var validIconSize = (root.iconSize===root.maxIconSize || root.iconSize === root.automaticIconSizeBasedSize);
+
         //console.log("reached updating geometry ::: "+dock.maskArea);
-        if(normalState){
+        if((normalState && validIconSize) || (root.editMode && validIconSize)){
 
             var tempGeometry = Qt.rect(latteView.effects.mask.x, latteView.effects.mask.y, latteView.effects.mask.width, latteView.effects.mask.height);
 

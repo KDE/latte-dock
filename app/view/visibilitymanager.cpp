@@ -139,27 +139,16 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
             }
 
-            if (m_latteView->containment() && !m_latteView->inEditMode() && m_latteView->screen()) {
+            if (m_latteView->containment() && m_latteView->screen()) {
                 updateStrutsBasedOnLayoutsAndActivities();
             }
 
-            connections[0] = connect(m_latteView->containment(), &Plasma::Containment::locationChanged
-            , this, [&]() {
-                if (m_latteView->inEditMode())
-                    wm->removeViewStruts(*m_latteView);
-            });
-            connections[1] = connect(m_latteView, &Latte::View::inEditModeChanged
-            , this, [&]() {
-                if (!m_latteView->inEditMode() && !m_latteView->positioner()->inLocationChangeAnimation() && m_latteView->screen())
-                    wm->setViewStruts(*m_latteView, m_viewGeometry, m_latteView->containment()->location());
-            });
-
             if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-                connections[2] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
+                connections[0] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
 
-                connections[3] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
+                connections[1] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
             }
@@ -444,12 +433,12 @@ void VisibilityManager::updateHiddenState()
 
 void VisibilityManager::setViewGeometry(const QRect &geometry)
 {
-    if (!m_latteView->containment())
+    if (!m_latteView->containment() || m_viewGeometry == geometry)
         return;
 
     m_viewGeometry = geometry;
 
-    if (m_mode == Types::AlwaysVisible && !m_latteView->inEditMode() && m_latteView->screen()) {
+    if (m_mode == Types::AlwaysVisible && m_latteView->screen()) {
         updateStrutsBasedOnLayoutsAndActivities();
     }
 }
