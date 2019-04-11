@@ -57,8 +57,9 @@ Item{
     property int thicknessZoom: ((root.iconSize+root.thickMargins+extraThickMask) * root.maxZoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
     property int thicknessMidOriginal: Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (root.maxZoomFactor-1)))*(root.maxIconSize+root.maxThickMargin)) //needed in some animations
-    property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
-                                              thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow
+    property int thicknessNormalOriginal: root.thickMargins + root.iconSize //this way we always have the same thickness published at all states
+    /*property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
+                                               thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow*/
 
     property int thicknessNormalOriginalValue: root.maxIconSize + (root.maxThickMargin * 2) + extraThickMask + 1
     property int thicknessZoomOriginal: Math.max( ((root.maxIconSize+(root.maxThickMargin * 2)) * root.maxZoomFactor) + extraThickMask + 2,
@@ -532,7 +533,7 @@ Item{
             //before updating the localDockGeometry
             if ((!latteView.behaveAsPlasmaPanel || root.editMode)
                     && Latte.WindowSystem.compositingActive) {
-                var fixedThickness = root.realPanelThickness;
+                var fixedThickness = root.editMode ? root.iconSize + root.thickMargins : root.realPanelThickness;
 
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                     tempGeometry.width = fixedThickness;
