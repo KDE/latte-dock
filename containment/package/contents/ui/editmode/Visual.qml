@@ -36,6 +36,8 @@ Item{
     height: root.isVertical ? (latteView ? latteView.height : root.height) :
                               visibilityManager.thicknessEditMode
 
+    visible: visibilityManager.inSlidingIn || visibilityManager.inSlidingOut || editAnimationEnded
+
     readonly property int settingsThickness: settingsOverlay.thickness
 
     property int speed: Latte.WindowSystem.compositingActive ? root.durationTime*2.8*units.longDuration : 10

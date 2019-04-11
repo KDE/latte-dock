@@ -57,7 +57,7 @@ Item{
     property int thicknessZoom: ((root.iconSize+root.thickMargins+extraThickMask) * root.maxZoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
     property int thicknessMidOriginal: Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (root.maxZoomFactor-1)))*(root.maxIconSize+root.maxThickMargin)) //needed in some animations
-    property int thicknessNormalOriginal: root.thickMargins + root.iconSize //this way we always have the same thickness published at all states
+    property int thicknessNormalOriginal: root.maxIconSize + (root.maxThickMargin * 2) //this way we always have the same thickness published at all states
     /*property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
                                                thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow*/
 
@@ -95,10 +95,13 @@ Item{
         value: thicknessZoomOriginal
     }
 
+    property bool validIconSize: (root.iconSize===root.maxIconSize || root.iconSize === root.automaticIconSizeBasedSize)
+    property bool inPublishingState: validIconSize && !inSlidingIn && !inSlidingOut && !inTempHiding && !inForceHiding
+
     Binding{
         target: latteView
         property:"normalThickness"
-        when: latteView
+        when: latteView && inPublishingState
         value: thicknessNormalOriginal
     }
 
@@ -528,8 +531,7 @@ Item{
         var validIconSize = (root.iconSize===root.maxIconSize || root.iconSize === root.automaticIconSizeBasedSize);
 
         //console.log("reached updating geometry ::: "+dock.maskArea);
-        if((normalState && validIconSize) || (root.editMode && validIconSize)){
-
+        if(inPublishingState && (normalState || root.editMode)) {
             var tempGeometry = Qt.rect(latteView.effects.mask.x, latteView.effects.mask.y, latteView.effects.mask.width, latteView.effects.mask.height);
 
             //the shadows size must be removed from the maskArea
