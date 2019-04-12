@@ -132,7 +132,10 @@ Item{
     property int layoutWidth
     property int layoutHeight
 
-    property real center:(width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
+    property real center:root.isHorizontal ?
+                             (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2 :
+                             (height + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
+
     property real zoomScale: 1
 
     property int index: appletItem.index
