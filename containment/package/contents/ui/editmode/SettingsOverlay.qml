@@ -34,8 +34,8 @@ import "../../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: settingsRoot
-    readonly property bool containsMouse: headerSettings.containsMouse || ruler.containsMouse
-                                          || tooltipMouseArea.containsMouse || editBackMouseArea.containsMouse
+    readonly property bool containsMouse: false /*headerSettings.containsMouse || ruler.containsMouse
+                                          || tooltipMouseArea.containsMouse || editBackMouseArea.containsMouse*/
     readonly property int thickness: ruler.thickness + headerSettings.thickness + spacing * 3
     readonly property int spacing: 4
 
@@ -76,67 +76,4 @@ Item{
         thicknessMargin: headerSettings.thickness + 3 * spacing
         thickMargin: 3
     }
-
-    //! Tooltip
-    onContainsMouseChanged: {
-        if (containsMouse) {
-            hideTooltipTimer.stop();
-            tooltip.visible = true;
-        } else {
-            hideTooltipTimer.restart();
-        }
-    }
-
-    Binding{
-        target: settingsRoot
-        property: "tooltip"
-        value: {
-            if (ruler.containsMouse) {
-                return ruler.tooltip;
-            } else if (headerSettings.containsMouse) {
-                return headerSettings.tooltip;
-            } else if (editBackMouseArea.containsMouse) {
-                return editBackMouseArea.tooltip;
-            }
-        }
-    }
-
-    Timer {
-        id: hideTooltipTimer
-        interval: units.longDuration * 2
-        onTriggered: {
-            if (!settingsRoot.containsMouse) {
-                tooltip.visible = false;
-            }
-        }
-    }
-
-    PlasmaCore.Dialog {
-        id: tooltip
-        visualParent: titleTooltipParent
-
-        flags: Qt.WindowStaysOnTopHint | Qt.ToolTip
-        location: plasmoid.location
-
-        mainItem: MouseArea {
-            id: tooltipMouseArea
-            Layout.minimumWidth: label.width + (2 * units.smallSpacing)
-            Layout.preferredWidth: Layout.minimumWidth
-            Layout.maximumWidth: Layout.minimumWidth
-
-            Layout.minimumHeight: label.height
-            Layout.preferredHeight: Layout.minimumHeight
-            Layout.maximumHeight: Layout.minimumHeight
-            hoverEnabled: true
-
-            PlasmaComponents.Label {
-                id: label
-                anchors.centerIn: parent
-                textFormat: Text.PlainText
-                maximumLineCount: 1
-                text: settingsRoot.tooltip
-            }
-        }
-    }
-
 }

@@ -328,4 +328,10 @@ Item{
         id: rulerMouseArea
         anchors.fill: parent
     }
+
+    PlasmaComponents.Button {
+        anchors.fill: parent
+        opacity: 0
+        tooltip: rulerItem.tooltip
+    }
 }

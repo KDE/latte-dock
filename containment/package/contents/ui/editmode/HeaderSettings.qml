@@ -106,4 +106,16 @@ Item {
             }
         }
     }
+
+    PlasmaComponents.Button {
+        anchors.fill: rearrangeBtn
+        opacity: 0
+        tooltip: headerSettings.tooltip
+
+        onPressedChanged: {
+            if (Latte.WindowSystem.compositingActive && pressed) {
+                plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
+            }
+        }
+    }
 }
