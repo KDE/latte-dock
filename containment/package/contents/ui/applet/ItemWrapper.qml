@@ -570,7 +570,7 @@ Item{
         anchors.fill: _wrapperContainer
         source: _wrapperContainer
 
-        enabled: opacity != 0 ? true : false
+        enabled: !indicators.info.providesHoveredAnimation && opacity != 0 ? true : false
         opacity: appletMouseArea.containsMouse ? 1 : 0
         brightness: 0.25
         contrast: 0.15

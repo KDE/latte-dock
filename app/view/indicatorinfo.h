@@ -35,6 +35,9 @@ class Info: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool needsIconColors READ needsIconColors WRITE setNeedsIconColors NOTIFY needsIconColorsChanged)
+    Q_PROPERTY(bool needsMouseEventCoordinates READ needsMouseEventCoordinates WRITE setNeedsMouseEventCoordinates NOTIFY needsMouseEventCoordinatesChanged)
+    Q_PROPERTY(bool providesClickedAnimation READ providesClickedAnimation WRITE setProvidesClickedAnimation NOTIFY providesClickedAnimationChanged)
+    Q_PROPERTY(bool providesHoveredAnimation READ providesHoveredAnimation WRITE setProvidesHoveredAnimation NOTIFY providesHoveredAnimationChanged)
     Q_PROPERTY(bool providesFrontLayer READ providesFrontLayer WRITE setProvidesFrontLayer NOTIFY providesFrontLayerChanged)
 
     Q_PROPERTY(int extraMaskThickness READ extraMaskThickness WRITE setExtraMaskThickness NOTIFY extraMaskThicknessChanged)
@@ -48,6 +51,15 @@ public:
 
     bool needsIconColors() const;
     void setNeedsIconColors(bool needs);
+
+    bool needsMouseEventCoordinates() const;
+    void setNeedsMouseEventCoordinates(bool needs);
+
+    bool providesClickedAnimation() const;
+    void setProvidesClickedAnimation(bool provides);
+
+    bool providesHoveredAnimation() const;
+    void setProvidesHoveredAnimation(bool provides);
 
     bool providesFrontLayer() const;
     void setProvidesFrontLayer(bool front);
@@ -66,10 +78,16 @@ signals:
     void minLengthPaddingChanged();
     void minThicknessPaddingChanged();
     void needsIconColorsChanged();
+    void needsMouseEventCoordinatesChanged();
+    void providesClickedAnimationChanged();
+    void providesHoveredAnimationChanged();
     void providesFrontLayerChanged();
 
 private:
     bool m_needsIconColors{false};
+    bool m_needsMouseEventCoordinates{false};
+    bool m_providesClickedAnimation{false};
+    bool m_providesHoveredAnimation{false};
     bool m_providesFrontLayer{false};
 
     int m_extraMaskThickness{0};

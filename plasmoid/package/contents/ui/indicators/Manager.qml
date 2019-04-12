@@ -41,8 +41,13 @@ Item{
 
     readonly property Item info: Item{
         readonly property bool needsIconColors: false
+        readonly property bool needsMouseEventCoordinates: false
         readonly property bool providesFrontLayer: false
+        readonly property bool providesHoveredAnimation: false
+        readonly property bool providesClickedAnimation: false
         readonly property int extraMaskThickness: 0
+        readonly property real minThicknessPadding: 0
+        readonly property real minLengthPadding:0
     }
 
     IndicatorOptions.Latte {

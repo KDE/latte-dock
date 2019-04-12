@@ -66,7 +66,7 @@ SequentialAnimation{
 
 
     onPressedChanged: {
-        if( !running && pressed&&
+        if(!running && pressed && !indicators.info.providesClickedAnimation &&
                 ((taskItem.lastButtonClicked == Qt.LeftButton)||(taskItem.lastButtonClicked == Qt.MidButton)) ){
             //taskItem.animationStarted();
             start();

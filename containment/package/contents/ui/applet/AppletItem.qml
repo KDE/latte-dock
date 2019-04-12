@@ -41,6 +41,8 @@ Item {
     width: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeWidth
     height: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeHeight
 
+    signal mousePressed(int x, int y);
+
     property bool animationsEnabled: true
     property bool animationWasSent: false  //protection flag for animation broadcasting
     property bool canBeHovered: true
@@ -653,7 +655,7 @@ Item {
         anchors.fill: parent
         enabled: applet && !latteApplet && canBeHovered && !originalAppletBehavior && !communicator.parabolicEffectLocked
         hoverEnabled: latteApplet ? false : true
-        propagateComposedEvents: true
+       // propagateComposedEvents: true
 
         //! a way must be found in order for this be enabled
         //! only to support springloading for plasma 5.10
@@ -772,6 +774,7 @@ Item {
         }
 
         onPressed: {
+            appletItem.mousePressed(mouse.x, mouse.y);
             appletItem.activateAppletForNeutralAreas(mouse);
 
             pressed = true;
@@ -899,7 +902,7 @@ Item {
     SequentialAnimation{
         id: clickedAnimation
         alwaysRunToEnd: true
-        running: (appletMouseArea.pressed || appletMouseAreaBottom.pressed) && (root.durationTime > 0)
+        running: (appletMouseArea.pressed || appletMouseAreaBottom.pressed) && (root.durationTime > 0) && !indicators.info.providesClickedAnimation
 
         onStopped: {
             appletMouseArea.pressed = false;

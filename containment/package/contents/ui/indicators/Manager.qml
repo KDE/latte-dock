@@ -43,8 +43,18 @@ Item{
     readonly property Item info: Item{
         readonly property bool needsIconColors: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("needsIconColors")
                                                 && metricsLoader.item.needsIconColors
+
+        readonly property bool needsMouseEventCoordinates: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("needsMouseEventCoordinates")
+                                                         && metricsLoader.item.needsMouseEventCoordinates
+
         readonly property bool providesFrontLayer: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("providesFrontLayer")
                                                    && metricsLoader.item.providesFrontLayer
+
+        readonly property bool providesHoveredAnimation: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("providesHoveredAnimation")
+                                                         && metricsLoader.item.providesHoveredAnimation
+
+        readonly property bool providesClickedAnimation: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("providesClickedAnimation")
+                                                         && metricsLoader.item.providesClickedAnimation
 
         readonly property int extraMaskThickness: {
             if (metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("extraMaskThickness")) {
@@ -93,6 +103,27 @@ Item{
         property:"needsIconColors"
         when: latteView && latteView.indicator
         value: managerIndicator.info.needsIconColors
+    }
+
+    Binding{
+        target: latteView && latteView.indicator ? latteView.indicator.info : null
+        property:"needsMouseEventCoordinates"
+        when: latteView && latteView.indicator
+        value: managerIndicator.info.needsMouseEventCoordinates
+    }
+
+    Binding{
+        target: latteView && latteView.indicator ? latteView.indicator.info : null
+        property:"providesClickedAnimation"
+        when: latteView && latteView.indicator
+        value: managerIndicator.info.providesClickedAnimation
+    }
+
+    Binding{
+        target: latteView && latteView.indicator ? latteView.indicator.info : null
+        property:"providesHoveredAnimation"
+        when: latteView && latteView.indicator
+        value: managerIndicator.info.providesHoveredAnimation
     }
 
     Binding{

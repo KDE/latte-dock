@@ -19,11 +19,19 @@
 
 import QtQuick 2.7
 
+import org.kde.plasma.core 2.0 as PlasmaCore
+
 import org.kde.latte 0.2 as Latte
 
 Loader {
     id: indicatorLoader
-    anchors.fill: parent
+    anchors.bottom: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+    anchors.top: (plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+    anchors.left: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+    anchors.right: (plasmoid.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
+
+    anchors.horizontalCenter: root.isHorizontal ? parent.horizontalCenter : undefined
+    anchors.verticalCenter: root.isVertical ? parent.verticalCenter : undefined
 
     active: level.bridge && level.bridge.active && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
     sourceComponent: {
@@ -34,5 +42,37 @@ Loader {
         return indicators.indicatorComponent;
     }
 
+    width: {
+        if (locked) {
+            return visualLockedWidth;
+        }
+
+        return root.isHorizontal ? appletItem.wrapperAlias.width - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin : appletItem.wrapperAlias.width;
+    }
+
+    height: {
+        if (locked) {
+            return visualLockedHeight;
+        }
+
+        return root.vertical ? appletItem.wrapperAlias.height - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin : appletItem.wrapperAlias.height;
+    }
+
+    readonly property bool locked: appletItem.lockZoom || root.zoomFactor === 1
+
+    property real visualLockedWidth: root.iconSize + root.internalWidthMargins
+    property real visualLockedHeight: root.iconSize + root.internalHeightMargins
+
+    //! Communications !//
+
     property Item level
+
+    Connections {
+        target: appletItem
+        enabled: indicators.info.needsMouseEventCoordinates
+        onMousePressed: {
+            var fixedPos = indicatorLoader.mapFromItem(appletItem, x, y);
+            level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y));
+        }
+    }
 }

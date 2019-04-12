@@ -48,6 +48,51 @@ void Info::setNeedsIconColors(bool needs)
     emit needsIconColorsChanged();
 }
 
+bool Info::needsMouseEventCoordinates() const
+{
+    return m_needsMouseEventCoordinates;
+}
+
+void Info::setNeedsMouseEventCoordinates(bool needs)
+{
+    if (m_needsMouseEventCoordinates == needs) {
+        return;
+    }
+
+    m_needsMouseEventCoordinates = needs;
+    emit needsMouseEventCoordinatesChanged();
+}
+
+bool Info::providesClickedAnimation() const
+{
+    return m_providesClickedAnimation;
+}
+
+void Info::setProvidesClickedAnimation(bool provides)
+{
+    if (m_providesClickedAnimation == provides) {
+        return;
+    }
+
+    m_providesClickedAnimation = provides;
+    emit providesClickedAnimationChanged();
+}
+
+bool Info::providesHoveredAnimation() const
+{
+    return m_providesHoveredAnimation;
+}
+
+void Info::setProvidesHoveredAnimation(bool provides)
+{
+    if (m_providesHoveredAnimation == provides) {
+        return;
+    }
+
+    m_providesHoveredAnimation = provides;
+    emit providesHoveredAnimationChanged();
+}
+
 bool Info::providesFrontLayer() const
 {
     return m_providesFrontLayer;

@@ -512,7 +512,7 @@ Item{
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
             visible: !isSeparator
 
-            opacity: taskItem.containsMouse && !clickedAnimation.running ? 1 : 0
+            opacity: taskItem.containsMouse && !clickedAnimation.running && !indicators.info.providesHoveredAnimation ? 1 : 0
             brightness: 0.30
             contrast: 0.1
 

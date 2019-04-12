@@ -58,5 +58,16 @@ Loader {
     property real visualLockedWidth: root.iconSize + root.internalWidthMargins
     property real visualLockedHeight: root.iconSize + root.internalHeightMargins
 
+    //! Connections !//
+
     property Item level
+
+    Connections {
+        target: taskItem
+        enabled: indicators.info.needsMouseEventCoordinates
+        onPressed: {
+            var fixedPos = indicatorLoader.mapFromItem(taskItem, mouse.x, mouse.y);
+            level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y));
+        }
+    }
 }

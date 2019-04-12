@@ -349,6 +349,12 @@ DragDrop.DropArea {
     property int lengthMargin: lengthIntMargin + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
 
+    property int widthMargins: root.isVertical ? thickMargins : lengthMargins
+    property int heightMargins: root.isHorizontal ? thickMargins : lengthMargins
+
+    property int internalWidthMargins: root.isVertical ? thickMargins : 2 * lengthIntMargin
+    property int internalHeightMargins: root.isHorizontal ? thickMargins : 2 * lengthIntMargin
+
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Types.Center : (root.isVertical ? Latte.Types.Top : Latte.Types.Left)
     //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Types.Justify ? plasmoid.configuration.panelPosition : layoutsContainer.mainLayoutPosition
