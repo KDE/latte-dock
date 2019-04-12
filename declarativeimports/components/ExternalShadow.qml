@@ -31,10 +31,15 @@ Item{
     property int shadowSize: 7
     property real shadowOpacity: 1
 
+    readonly property bool isHorizontal : (shadowDirection !== PlasmaCore.Types.LeftEdge) && (shadowDirection !== PlasmaCore.Types.RightEdge)
+
+    readonly property int implicitWidth: shadow.width
+    readonly property int implicitHeight: shadow.height
+
     Item{
         id: shadow
-        width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? shadowRoot.width + 2*shadowSize : shadowSize
-        height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? shadowSize: shadowRoot.height + 2*shadowSize
+        width: isHorizontal ? shadowRoot.width + 2*shadowSize : shadowSize
+        height: isHorizontal ? shadowSize: shadowRoot.height + 2*shadowSize
         opacity: shadowOpacity
 
         clip: true
