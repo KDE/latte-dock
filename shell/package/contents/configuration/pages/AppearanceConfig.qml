@@ -889,7 +889,7 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBoxesColumn {
                     LatteComponents.CheckBox {
                         id: solidForMaximizedChk
-                        Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
+                        Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Prefer opaque background when touching any window")
                         checked: plasmoid.configuration.solidBackgroundForMaximized
                         tooltip: i18n("Background removes its transparency setting when a window is touching")

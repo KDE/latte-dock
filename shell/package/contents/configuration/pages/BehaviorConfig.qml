@@ -128,7 +128,7 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    text: i18n("Screen:")
+                    text: i18n("Screen")
                     Layout.alignment: Qt.AlignRight
                 }
 
@@ -183,6 +183,8 @@ PlasmaComponents.Page {
                 LayoutMirroring.enabled: false
                 spacing: 2
 
+                readonly property int buttonSize: (dialog.optionsWidth - (spacing * 3)) / 4
+
                 Connections{
                     target: latteView
                     onDockLocationChanged: locationLayout.lockReservedEdges();
@@ -223,7 +225,8 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Button {
                     id: bottomEdgeBtn
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("bottom location", "Bottom")
                     iconSource: "arrow-down"
                     checked: latteView.location === edge
@@ -236,7 +239,8 @@ PlasmaComponents.Page {
                 }
                 PlasmaComponents.Button {
                     id: leftEdgeBtn
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("left location", "Left")
                     iconSource: "arrow-left"
                     checked: latteView.location === edge
@@ -249,7 +253,8 @@ PlasmaComponents.Page {
                 }
                 PlasmaComponents.Button {
                     id: topEdgeBtn
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("top location", "Top")
                     iconSource: "arrow-up"
                     checked: latteView.location === edge
@@ -262,7 +267,8 @@ PlasmaComponents.Page {
                 }
                 PlasmaComponents.Button {
                     id: rightEdgeBtn
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("right location", "Right")
                     iconSource: "arrow-right"
                     checked: latteView.location === edge
@@ -295,6 +301,7 @@ PlasmaComponents.Page {
                 spacing: 2
 
                 readonly property int panelPosition: plasmoid.configuration.panelPosition
+                readonly property int buttonSize: (dialog.optionsWidth - (spacing * 3)) / 4
 
                 ExclusiveGroup {
                     id: alignmentGroup
@@ -305,7 +312,8 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: panelIsVertical ? i18nc("top alignment", "Top") : i18nc("left alignment", "Left")
                     iconSource: panelIsVertical ? "format-align-vertical-top" : "format-justify-left"
                     checked: parent.panelPosition === position
@@ -315,7 +323,8 @@ PlasmaComponents.Page {
                     property int position: panelIsVertical ? Latte.Types.Top : Latte.Types.Left
                 }
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("center alignment", "Center")
                     iconSource: panelIsVertical ? "format-align-vertical-center" : "format-justify-center"
                     checked: parent.panelPosition === position
@@ -325,7 +334,8 @@ PlasmaComponents.Page {
                     property int position: Latte.Types.Center
                 }
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: panelIsVertical ? i18nc("bottom alignment", "Bottom") : i18nc("right alignment", "Right")
                     iconSource: panelIsVertical ? "format-align-vertical-bottom" : "format-justify-right"
                     checked: parent.panelPosition === position
@@ -336,7 +346,8 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("justify alignment", "Justify")
                     iconSource: "format-justify-fill"
                     checked: parent.panelPosition === position
@@ -368,6 +379,7 @@ PlasmaComponents.Page {
                 columns: 2
 
                 property int mode: latteView.visibility.mode
+                readonly property int buttonSize: (dialog.optionsWidth - (columnSpacing)) / 2
 
                 ExclusiveGroup {
                     id: visibilityGroup
@@ -378,7 +390,8 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Always Visible")
                     checked: parent.mode === mode
                     checkable: true
@@ -387,7 +400,8 @@ PlasmaComponents.Page {
                     property int mode: Latte.Types.AlwaysVisible
                 }
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Auto Hide")
                     checked: parent.mode === mode
                     checkable: true
@@ -396,7 +410,8 @@ PlasmaComponents.Page {
                     property int mode: Latte.Types.AutoHide
                 }
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Dodge Active")
                     checked: parent.mode === mode
                     checkable: true
@@ -405,7 +420,8 @@ PlasmaComponents.Page {
                     property int mode: Latte.Types.DodgeActive
                 }
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Dodge Maximized")
                     checked: parent.mode === mode
                     checkable: true
@@ -415,7 +431,8 @@ PlasmaComponents.Page {
                 }
                 PlasmaComponents.Button {
                     id: dodgeAllWindowsBtn
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Dodge All Windows")
                     checked: parent.mode === mode
                     checkable: true
@@ -425,7 +442,8 @@ PlasmaComponents.Page {
                 }
                 PlasmaComponents.Button {
                     id: windowsGoBelowBtn
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Windows Go Below")
                     checked: parent.mode === mode
                     checkable: true
@@ -449,23 +467,31 @@ PlasmaComponents.Page {
                 text: i18n("Delay")
             }
 
-            RowLayout {
-                Layout.fillWidth: true
+            Flow {
+                width: dialog.optionsWidth
+                Layout.minimumWidth: dialog.optionsWidth
+                Layout.maximumWidth: dialog.optionsWidth
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 Layout.topMargin: units.smallSpacing
 
                 spacing: 2
 
-                RowLayout {
-                    Layout.minimumWidth: dodgeAllWindowsBtn.width
-                    Layout.preferredWidth: Layout.minimumWidth
-                    Layout.maximumWidth: Layout.minimumWidth
-                    spacing: 0
+                readonly property bool overlap: showContainer.overlap || hideContainer.overlap
+
+                Item {
+                    id: showContainer
+                    width: parent.overlap ? dialog.optionsWidth : oneLineWidth
+                    height: childrenRect.height
+                    implicitWidth: width
+                    implicitHeight: height
+
+                    readonly property bool overlap: oneLineWidth > dodgeAllWindowsBtn.width
+                    readonly property int oneLineWidth: Math.max(dodgeAllWindowsBtn.width, showTimerRow.width)
 
                     RowLayout{
-                        Layout.alignment: Qt.AlignHCenter
-
+                        id: showTimerRow
+                        anchors.horizontalCenter: parent.horizontalCenter
                         PlasmaComponents.Label {
                             Layout.leftMargin: Qt.application.layoutDirection === Qt.RightToLeft ? units.smallSpacing : 0
                             Layout.rightMargin: Qt.application.layoutDirection === Qt.RightToLeft ? 0 : units.smallSpacing
@@ -483,14 +509,19 @@ PlasmaComponents.Page {
                     }
                 }
 
-                RowLayout {
-                    Layout.minimumWidth: windowsGoBelowBtn.width
-                    Layout.preferredWidth: Layout.minimumWidth
-                    Layout.maximumWidth: Layout.minimumWidth
-                    spacing: 0
+                Item {
+                    id: hideContainer
+                    width: parent.overlap ? dialog.optionsWidth : oneLineWidth
+                    height: childrenRect.height
+                    implicitWidth: width
+                    implicitHeight: height
+
+                    readonly property bool overlap: oneLineWidth > windowsGoBelowBtn.width
+                    readonly property int oneLineWidth: Math.max(windowsGoBelowBtn.width, hideTimerRow.width)
 
                     RowLayout {
-                        Layout.alignment: Qt.AlignHCenter
+                        id: hideTimerRow
+                        anchors.horizontalCenter: parent.horizontalCenter
 
                         PlasmaComponents.Label {
                             Layout.leftMargin: Qt.application.layoutDirection === Qt.RightToLeft ? units.smallSpacing : 0
@@ -567,7 +598,8 @@ PlasmaComponents.Page {
                         }
                     }
 
-                    PlasmaComponents.CheckBox {
+                    LatteComponents.CheckBox {
+                        Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Drag and maximize/restore active window")
                         checked: plasmoid.configuration.dragActiveWindowEnabled
                         tooltip: i18n("Drag/Maximize/Restore active window with double-click and dragging actions")
@@ -584,8 +616,9 @@ PlasmaComponents.Page {
                 }
 
                 LatteComponents.CheckBoxesColumn {
-                    PlasmaComponents.CheckBox {
+                    LatteComponents.CheckBox {
                         id: titleTooltipsChk
+                        Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Show title tooltips on hovering")
                         checked: plasmoid.configuration.titleTooltips
 
@@ -594,8 +627,9 @@ PlasmaComponents.Page {
                         }
                     }
 
-                    PlasmaComponents.CheckBox {
+                    LatteComponents.CheckBox {
                         id: mouseWheelChk
+                        Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Activate through mouse wheel")
                         checked: plasmoid.configuration.mouseWheelActions
                         tooltip: i18n("Enable/Disable the mouse wheel action")
@@ -606,7 +640,8 @@ PlasmaComponents.Page {
                         }
                     }
 
-                    PlasmaComponents.CheckBox {
+                    LatteComponents.CheckBox {
+                        Layout.maximumWidth: dialog.optionsWidth
                         Layout.maximumHeight: mouseWheelChk.height
                         text: i18n("🅰 Activate based on position through global shortcuts")
                         checked: latteView.isPreferredForShortcuts || (!latteView.managedLayout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
@@ -639,7 +674,8 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
 
-                PlasmaComponents.CheckBox {
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Activate KWin edge after hiding")
                     checked: latteView.visibility.enableKWinEdges
                     tooltip: i18n("After the view becomes hidden, KWin is informed to track user feedback. For example an edge visual hint is shown whenever the mouse approaches the hidden view")
@@ -649,7 +685,8 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Can be above fullscreen windows")
                     checked: latteView.byPassWM
 
@@ -660,7 +697,8 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Raise on desktop change")
                     checked: latteView.visibility.raiseOnDesktop
 
@@ -669,7 +707,8 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Raise on activity change")
                     checked: latteView.visibility.raiseOnActivity
 
