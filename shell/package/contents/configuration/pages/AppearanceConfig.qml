@@ -158,7 +158,8 @@ PlasmaComponents.Page {
                 }
 
                 RowLayout {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
                     enabled: proportionSizeSlider.value === 1
 
@@ -211,7 +212,8 @@ PlasmaComponents.Page {
                 }
 
                 RowLayout {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
                     visible: dialog.expertLevel || plasmoid.configuration.proportionIconSize>0
 
@@ -269,7 +271,8 @@ PlasmaComponents.Page {
                 }
 
                 RowLayout {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
                     enabled: plasmoid.configuration.durationTime > 0
 
@@ -335,8 +338,8 @@ PlasmaComponents.Page {
                 spacing: 0
 
                 RowLayout {
-                    Layout.fillWidth: true
-
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
 
                     PlasmaComponents.Label {
@@ -408,7 +411,8 @@ PlasmaComponents.Page {
                 }
 
                 RowLayout {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
                     visible: dialog.expertLevel
 
@@ -490,7 +494,8 @@ PlasmaComponents.Page {
                 spacing: 0
 
                 RowLayout {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
 
                     spacing: units.smallSpacing
 
@@ -526,7 +531,8 @@ PlasmaComponents.Page {
 
                 LatteComponents.HeaderSwitch {
                     id: shrinkThickMargins
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
                     Layout.minimumHeight: implicitHeight
                     Layout.bottomMargin: units.smallSpacing
 
@@ -542,7 +548,8 @@ PlasmaComponents.Page {
                 }
 
                 RowLayout {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
                     enabled: !plasmoid.configuration.shrinkThickMargins
 
@@ -593,7 +600,8 @@ PlasmaComponents.Page {
             }
 
             GridLayout {
-                Layout.fillWidth: true
+                Layout.minimumWidth: dialog.optionsWidth
+                Layout.maximumWidth: Layout.minimumWidth
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 columnSpacing: 2
@@ -602,6 +610,8 @@ PlasmaComponents.Page {
 
                 property int themeColors: plasmoid.configuration.themeColors
                 property int windowColors: plasmoid.configuration.windowColors
+
+                readonly property int buttonSize: (dialog.optionsWidth - (columnSpacing*2)) / 3
 
                 ExclusiveGroup {
                     id: themeColorsGroup
@@ -628,7 +638,8 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Plasma")
                     checked: parent.themeColors === colors
                     checkable: true
@@ -639,7 +650,8 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Reverse")
                     checked: parent.themeColors === colors
                     checkable: true
@@ -650,7 +662,8 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Smart")
                     checked: parent.themeColors === colors
                     checkable: true
@@ -666,7 +679,8 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("None")
                     checked: parent.windowColors === colors
                     checkable: true
@@ -677,7 +691,8 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Active")
                     checked: parent.windowColors === colors
                     checkable: true
@@ -688,7 +703,8 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Touching")
                     checked: parent.windowColors === colors
                     checkable: true
@@ -709,7 +725,8 @@ PlasmaComponents.Page {
 
             LatteComponents.HeaderSwitch {
                 id: showBackground
-                Layout.fillWidth: true
+                Layout.minimumWidth: dialog.optionsWidth + 2 *units.smallSpacing
+                Layout.maximumWidth: Layout.minimumWidth
                 Layout.minimumHeight: implicitHeight
                 Layout.bottomMargin: units.smallSpacing
 
@@ -728,8 +745,8 @@ PlasmaComponents.Page {
                 spacing: 0
 
                 RowLayout {
-                    Layout.fillWidth: true
-
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
 
                     PlasmaComponents.Label {
                         enabled: showBackground.checked
@@ -776,7 +793,8 @@ PlasmaComponents.Page {
                 }
 
                 RowLayout {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
 
                     PlasmaComponents.Label {
                         text: i18n("Opacity")
@@ -838,9 +856,12 @@ PlasmaComponents.Page {
                     spacing: 2
                     visible: dialog.expertLevel
 
+                    readonly property int buttonSize: (dialog.optionsWidth - (spacing*2)) / 3
+
                     PlasmaComponents.Button {
                         id: panelBlur
-                        Layout.fillWidth: true
+                        Layout.minimumWidth: parent.buttonSize
+                        Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("Blur")
                         checked: plasmoid.configuration.blurEnabled
                         checkable: true
@@ -854,7 +875,8 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Button {
                         id: panelShadows
-                        Layout.fillWidth: true
+                        Layout.minimumWidth: parent.buttonSize
+                        Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("Shadows")
                         checked: plasmoid.configuration.panelShadows
                         checkable: true
@@ -868,7 +890,8 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Button {
                         id: solidBackground
-                        Layout.fillWidth: true
+                        Layout.minimumWidth: parent.buttonSize
+                        Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("Outline")
                         checked: plasmoid.configuration.panelOutline
                         checkable: true
@@ -901,8 +924,9 @@ PlasmaComponents.Page {
                         }
                     }
 
-                    PlasmaComponents.CheckBox {
+                    LatteComponents.CheckBox {
                         id: onlyOnMaximizedChk
+                        Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Hide background when not needed")
                         checked: plasmoid.configuration.backgroundOnlyOnMaximized
                         tooltip: i18n("Background becomes hidden except when a window is touching or the desktop background is busy")
@@ -914,8 +938,9 @@ PlasmaComponents.Page {
                         }
                     }
 
-                    PlasmaComponents.CheckBox {
+                    LatteComponents.CheckBox {
                         id: hideShadowsOnMaximizedChk
+                        Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Hide background shadow for maximized windows")
                         checked: plasmoid.configuration.disablePanelShadowForMaximized
                         tooltip: i18n("Background shadows become hidden when an active maximized window is touching the view")
@@ -935,7 +960,7 @@ PlasmaComponents.Page {
 
                 LatteComponents.CheckBox {
                     id: solidForPopupsChk
-                    Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Prefer Plasma background and colors for expanded applets")
                     checked: plasmoid.configuration.plasmaBackgroundForPopups
                     tooltip: i18n("Background becomes opaque in plasma style when applets are expanded")
