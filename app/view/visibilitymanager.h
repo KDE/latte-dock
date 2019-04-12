@@ -104,6 +104,10 @@ public:
     //! called for windowTracker to reset values
     void activeWindowDraggingStarted();
 
+public slots:
+    Q_INVOKABLE void hide();
+    Q_INVOKABLE void show();
+
 signals:
     void mustBeShown();
     void mustBeHide();

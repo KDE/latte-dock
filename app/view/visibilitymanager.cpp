@@ -34,6 +34,7 @@
 #include <QDebug>
 
 // KDE
+#include <KWindowSystem>
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
 
@@ -363,6 +364,21 @@ void VisibilityManager::updateGhostWindowState()
         }
     }
 }
+
+void VisibilityManager::hide()
+{
+    if (KWindowSystem::isPlatformX11()) {
+        m_latteView->setVisible(false);
+    }
+}
+
+void VisibilityManager::show()
+{
+    if (KWindowSystem::isPlatformX11()) {
+        m_latteView->setVisible(true);
+    }
+}
+
 
 void VisibilityManager::raiseView(bool raise)
 {

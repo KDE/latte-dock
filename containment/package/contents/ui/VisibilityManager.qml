@@ -311,6 +311,17 @@ Item{
         latteView.positioner.hideDockDuringLocationChangeFinished();
     }
 
+    function sendSlidingOutAnimationEnded() {
+        latteView.visibility.hide();
+        latteView.visibility.isHidden = true;
+
+        if (visibilityManager.debugMagager) {
+            console.log("hiding animation ended...");
+        }
+
+        sendHideDockDuringLocationChangeFinished();
+    }
+
     ///test maskArea
     function updateMaskArea() {
         if (!latteView || blockUpdateMask) {
@@ -641,16 +652,13 @@ Item{
         }
 
         onStopped: {
-            latteView.visibility.isHidden = true;
-
-            if (manager.debugMagager) {
-                console.log("hiding animation ended...");
-            }
-
+            //! Trying to move the ending part of the signals at the end of editing animation
             if (!manager.inTempHiding) {
-                updateMaskArea();
+                manager.updateMaskArea();
             } else {
-                sendHideDockDuringLocationChangeFinished();
+                if (!editModeVisual.inEditMode) {
+                    manager.sendSlidingOutAnimationEnded();
+                }
             }
         }
 
@@ -683,6 +691,8 @@ Item{
         }
 
         onStarted: {
+            latteView.visibility.show();
+
             if (manager.debugMagager) {
                 console.log("showing animation started...");
             }

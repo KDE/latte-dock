@@ -414,8 +414,11 @@ Item{
                             editVisual.animationSent = false;
                         }
 
+                        //! That part was at the end of the Containers sliding-out animation
+                        //! but it looks much better here
+
                         if (visibilityManager.inTempHiding) {
-                            visibilityManager.sendHideDockDuringLocationChangeFinished();
+                            visibilityManager.sendSlidingOutAnimationEnded();
                         }
                     }
                 }
