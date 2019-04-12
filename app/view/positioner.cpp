@@ -555,8 +555,8 @@ void Positioner::resizeWindow(QRect availableScreenRect)
     m_view->setMaximumSize(size);
     m_view->resize(size);
 
-    if (m_view->formFactor() == Plasma::Types::Horizontal && m_view->corona()) {
-        emit m_view->corona()->availableScreenRectChanged();
+    if (m_view->formFactor() == Plasma::Types::Horizontal) {
+        emit windowSizeChanged();
     }
 }
 

@@ -63,8 +63,6 @@ void Effects::init()
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateShadows);
     connect(m_view, &Latte::View::configWindowGeometryChanged, this, &Effects::updateMask);
-
-    connect(this, SIGNAL(innerShadowChanged()), m_view->corona(), SIGNAL(availableScreenRectChanged()));
 }
 
 bool Effects::animationsBlocked() const

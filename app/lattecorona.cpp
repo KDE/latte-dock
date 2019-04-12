@@ -199,6 +199,9 @@ void Corona::load()
 
         m_activitiesStarting = false;
 
+        connect(this, &Corona::availableScreenRectChangedFrom, this, &Plasma::Corona::availableScreenRectChanged);
+        connect(this, &Corona::availableScreenRegionChangedFrom, this, &Plasma::Corona::availableScreenRegionChanged);
+
         connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Corona::primaryOutputChanged, Qt::UniqueConnection);
         connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &Corona::screenCountChanged);
 

@@ -70,6 +70,7 @@ public slots:
 signals:
     void currentScreenChanged();
     void screenGeometryChanged();
+    void windowSizeChanged();
 
     //! these two signals are used from config ui and containment ui
     //! in order to orchestrate an animated hiding/showing of dock

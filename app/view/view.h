@@ -58,6 +58,7 @@ class PlasmaShellSurface;
 }
 
 namespace Latte {
+class Corona;
 class GenericLayout;
 
 namespace ViewPart {
@@ -262,7 +263,7 @@ signals:
     void absGeometryChanged(const QRect &geometry);
 
 private slots:
-    void availableScreenRectChanged();
+    void availableScreenRectChangedFrom(View *origin);
     void configViewCreated(QQuickView *configView);
     void hideWindowsForSlidingOut();
     void preferredViewForShortcutsChangedSlot(Latte::View *view);
@@ -314,6 +315,8 @@ private:
 
     //! Connections to release and bound for the managed layout
     std::array<QMetaObject::Connection, 6> connectionsManagedLayout;
+
+    QPointer<Latte::Corona> m_corona;
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };

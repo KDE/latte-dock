@@ -67,6 +67,7 @@ class GlobalShortcuts;
 class UniversalSettings;
 class LayoutManager;
 class LaunchersSignals;
+class View;
 namespace Indicator{
 class Factory;
 }
@@ -151,6 +152,8 @@ signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
     void viewLocationChanged();
     void raiseViewsTemporaryChanged();
+    void availableScreenRectChangedFrom(Latte::View *origin);
+    void availableScreenRegionChangedFrom(Latte::View *origin);
 
 private slots:
     void alternativesVisibilityChanged(bool visible);

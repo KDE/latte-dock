@@ -137,10 +137,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
 
-    auto *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
+    m_corona = qobject_cast<Latte::Corona *>(this->corona());
 
-    if (latteCorona) {
-        connect(latteCorona, &Latte::Corona::viewLocationChanged, this, &View::dockLocationChanged);
+    if (m_corona) {
+        connect(m_corona, &Latte::Corona::viewLocationChanged, this, &View::dockLocationChanged);
     }
 }
 
@@ -152,7 +152,7 @@ View::~View()
         m_indicator->unloadIndicators();
     }
 
-    disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &View::availableScreenRectChanged);
+    disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFrom);
     disconnect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), this, SLOT(statusChanged(Plasma::Types::ItemStatus)));
 
     qDebug() << "dock view deleting...";
@@ -210,29 +210,36 @@ void View::init()
     connect(this, &QQuickWindow::heightChanged, this, &View::heightChanged);
     connect(this, &QQuickWindow::heightChanged, this, &View::updateAbsDockGeometry);
 
-    connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &View::availableScreenRectChanged);
+    connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFrom);
 
     connect(this, &View::byPassWMChanged, this, &View::saveConfig);
     connect(this, &View::isPreferredForShortcutsChanged, this, &View::saveConfig);
     connect(this, &View::onPrimaryChanged, this, &View::saveConfig);
     connect(this, &View::typeChanged, this, &View::saveConfig);
 
-    connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
+    connect(this, &View::normalThicknessChanged, this, [&]() {
+        emit m_corona->availableScreenRectChangedFrom(this);
+    });
 
+    connect(m_effects, &ViewPart::Effects::innerShadowChanged, this, [&]() {
+        emit m_corona->availableScreenRectChangedFrom(this);
+    });
     connect(m_positioner, &ViewPart::Positioner::onHideWindowsForSlidingOut, this, &View::hideWindowsForSlidingOut);
     connect(m_positioner, &ViewPart::Positioner::screenGeometryChanged, this, &View::screenGeometryChanged);
+    connect(m_positioner, &ViewPart::Positioner::windowSizeChanged, this, [&]() {
+        emit m_corona->availableScreenRectChangedFrom(this);
+    });
+
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
 
     ///!!!!!
     rootContext()->setContextProperty(QStringLiteral("latteView"), this);
 
-    auto *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
-
-    if (latteCorona) {
-        rootContext()->setContextProperty(QStringLiteral("layoutManager"), latteCorona->layoutManager());
-        rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), latteCorona->globalShortcuts()->shortcutsTracker());
-        rootContext()->setContextProperty(QStringLiteral("themeExtended"), latteCorona->themeExtended());
-        rootContext()->setContextProperty(QStringLiteral("universalSettings"), latteCorona->universalSettings());
+    if (m_corona) {
+        rootContext()->setContextProperty(QStringLiteral("layoutManager"), m_corona->layoutManager());
+        rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), m_corona->globalShortcuts()->shortcutsTracker());
+        rootContext()->setContextProperty(QStringLiteral("themeExtended"), m_corona->themeExtended());
+        rootContext()->setContextProperty(QStringLiteral("universalSettings"), m_corona->universalSettings());
     }
 
     setSource(corona()->kPackage().filePath("lattedockui"));
@@ -253,7 +260,7 @@ bool View::inDelete() const
 
 void View::disconnectSensitiveSignals()
 {
-    disconnect(corona() , &Plasma::Corona::availableScreenRectChanged, this, &View::availableScreenRectChanged);
+    disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFrom);
     setManagedLayout(nullptr);
 
     if (m_windowsTracker) {
@@ -261,14 +268,15 @@ void View::disconnectSensitiveSignals()
     }
 }
 
-void View::availableScreenRectChanged()
+void View::availableScreenRectChangedFrom(View *origin)
 {
-    if (m_inDelete)
+    if (m_inDelete || origin == this)
         return;
 
     if (formFactor() == Plasma::Types::Vertical) {
         m_positioner->syncGeometry();
     }
+
 }
 
 void View::setupWaylandIntegration()
@@ -442,8 +450,8 @@ void View::updateAbsDockGeometry(bool bypassChecks)
 
     //! this is needed in order to update correctly the screenGeometries
     if (visibility() && corona() && visibility()->mode() == Types::AlwaysVisible) {
-        emit corona()->availableScreenRectChanged();
-        emit corona()->availableScreenRegionChanged();
+        emit m_corona->availableScreenRectChangedFrom(this);
+        emit m_corona->availableScreenRegionChangedFrom(this);
     }
 }
 

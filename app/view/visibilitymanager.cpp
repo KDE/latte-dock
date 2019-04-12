@@ -57,7 +57,9 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     }
 
     if (m_corona) {
-        connect(this, &VisibilityManager::modeChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
+        connect(this, &VisibilityManager::modeChanged, this, [&]() {
+            emit m_corona->availableScreenRectChangedFrom(m_latteView);
+        });
     }
 
     m_timerStartUp.setInterval(5000);
