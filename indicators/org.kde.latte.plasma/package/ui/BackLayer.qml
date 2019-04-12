@@ -29,29 +29,27 @@ PlasmaCore.FrameSvgItem {
 
     imagePath: indicator.usePlasmaTabsStyle ? "widgets/tabbar" : "widgets/tasks"
 
+    rotation: indicator.shared.reversed ? 180 : 0
+
     prefix: {
         if (indicator.usePlasmaTabsStyle) {
             if (!indicator.isActive) {
                 return "";
             }
 
-            if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !indicator.shared.reversed)
-                    || (plasmoid.location === PlasmaCore.Types.RightEdge && indicator.shared.reversed)) {
+            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
                 return "west-active-tab";
             }
 
-            if ((plasmoid.location === PlasmaCore.Types.TopEdge && !indicator.shared.reversed)
-                    || (plasmoid.location === PlasmaCore.Types.BottomEdge && indicator.shared.reversed)) {
+            if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                 return "north-active-tab";
             }
 
-            if ((plasmoid.location === PlasmaCore.Types.RightEdge && !indicator.shared.reversed)
-                    || (plasmoid.location === PlasmaCore.Types.LeftEdge && indicator.shared.reversed)) {
+            if (plasmoid.location === PlasmaCore.Types.RightEdge) {
                 return "east-active-tab";
             }
 
-            if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !indicator.shared.reversed)
-                    || (plasmoid.location === PlasmaCore.Types.TopEdge && indicator.shared.reversed)) {
+            if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
                 return "south-active-tab";
             }
 
@@ -64,23 +62,19 @@ PlasmaCore.FrameSvgItem {
     function taskPrefix(prefix) {
         var effectivePrefix;
 
-        if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !indicator.shared.reversed)
-                || (plasmoid.location === PlasmaCore.Types.RightEdge && indicator.shared.reversed)) {
+        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
             effectivePrefix = "west-" + prefix;
         }
 
-        if ((plasmoid.location === PlasmaCore.Types.TopEdge && !indicator.shared.reversed)
-                || (plasmoid.location === PlasmaCore.Types.BottomEdge && indicator.shared.reversed)) {
+        if (plasmoid.location === PlasmaCore.Types.TopEdge) {
             effectivePrefix = "north-" + prefix;
         }
 
-        if ((plasmoid.location === PlasmaCore.Types.RightEdge && !indicator.shared.reversed)
-                || (plasmoid.location === PlasmaCore.Types.LeftEdge && indicator.shared.reversed)) {
+        if (plasmoid.location === PlasmaCore.Types.RightEdge) {
             effectivePrefix = "east-" + prefix;
         }
 
-        if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !indicator.shared.reversed)
-                || (plasmoid.location === PlasmaCore.Types.TopEdge && indicator.shared.reversed)) {
+        if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
             effectivePrefix = "south-" + prefix;
         }
 
