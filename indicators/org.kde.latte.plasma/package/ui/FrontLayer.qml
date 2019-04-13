@@ -88,7 +88,7 @@ Item {
             radius: width/2
             height: width
 
-            color: indicator.palette.buttonFocusColor
+            color: theme.buttonFocusColor
         }
     }
     
@@ -111,7 +111,7 @@ Item {
             PropertyAnimation {
                 target: clickedRectangle
                 property: "width"
-                to: indicator.currentIconSize * indicator.scaleFactor * 3
+                to: Math.max(relevantItem.width, relevantItem.height) * indicator.scaleFactor * 2
                 duration: 700
                 easing.type: Easing.Linear
             }
