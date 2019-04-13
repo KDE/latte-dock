@@ -48,7 +48,7 @@ LatteComponents.IndicatorItem{
     property color notActiveColor: indicator.isMinimized ? minimizedColor : isActiveColor
 
     //! Common Options
-    readonly property bool reversedEnabled: indicator.shared.reversed
+    readonly property bool reversedEnabled: indicator.configuration.reversed
 
     //! Configuration Options
     readonly property bool extraDotOnActive: indicator.configuration.extraDotOnActive

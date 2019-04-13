@@ -625,8 +625,9 @@ PlasmaComponents.Page {
                 id: indicatorSpecificOptions
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing
+                Layout.rightMargin: units.smallSpacing * 2
                 spacing: 0
+                readonly property int optionsWidth: dialog.optionsWidth
 
                 Component.onCompleted: {
                     latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);

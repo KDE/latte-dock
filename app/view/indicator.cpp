@@ -347,6 +347,7 @@ void Indicator::configUiFor(QString type, QQuickItem *parent)
             m_lastCreatedConfigUi->setInitializationDelayed(true);
             uiPath = m_pluginPath + "package/" + uiPath;
             m_lastCreatedConfigUi->setSource(QUrl::fromLocalFile(uiPath));
+            m_lastCreatedConfigUi->rootContext()->setContextProperty(QStringLiteral("dialog"), parent);
             m_lastCreatedConfigUi->rootContext()->setContextProperty(QStringLiteral("indicator"), this);
             m_lastCreatedConfigUi->completeInitialization();
 

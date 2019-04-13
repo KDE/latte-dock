@@ -31,6 +31,7 @@ import org.kde.latte 0.2 as Latte
 import org.kde.latte.components 1.0 as LatteComponents
 
 ColumnLayout {
+    id: root
     Layout.fillWidth: true
 
     LatteComponents.SubHeader {
@@ -43,6 +44,9 @@ ColumnLayout {
 
         property int indicatorType: indicator.configuration.activeStyle
 
+        readonly property int buttonsCount: 2
+        readonly property int buttonSize: (dialog.optionsWidth - (spacing * buttonsCount-1)) / buttonsCount
+
         ExclusiveGroup {
             id: activeIndicatorTypeGroup
             onCurrentChanged: {
@@ -53,8 +57,8 @@ ColumnLayout {
         }
 
         PlasmaComponents.Button {
-            Layout.fillWidth: true
-
+            Layout.minimumWidth: parent.buttonSize
+            Layout.maximumWidth: Layout.minimumWidth
             text: i18nc("line indicator","Line")
             checked: parent.indicatorType === indicatorType
             checkable: true
@@ -65,8 +69,8 @@ ColumnLayout {
         }
 
         PlasmaComponents.Button {
-            Layout.fillWidth: true
-
+            Layout.minimumWidth: parent.buttonSize
+            Layout.maximumWidth: Layout.minimumWidth
             text: i18nc("dot indicator", "Dot")
             checked: parent.indicatorType === indicatorType
             checkable: true
@@ -100,6 +104,9 @@ ColumnLayout {
 
         property int option: indicator.configuration.glowApplyTo
 
+        readonly property int buttonsCount: 2
+        readonly property int buttonSize: (dialog.optionsWidth - (spacing * buttonsCount-1)) / buttonsCount
+
         ExclusiveGroup {
             id: glowGroup
             onCurrentChanged: {
@@ -109,7 +116,8 @@ ColumnLayout {
         }
 
         PlasmaComponents.Button {
-            Layout.fillWidth: true
+            Layout.minimumWidth: parent.buttonSize
+            Layout.maximumWidth: Layout.minimumWidth
             text: i18nc("glow only to active task/applet indicators","On Active")
             checked: parent.option === option
             checkable: true
@@ -120,7 +128,8 @@ ColumnLayout {
         }
 
         PlasmaComponents.Button {
-            Layout.fillWidth: true
+            Layout.minimumWidth: parent.buttonSize
+            Layout.maximumWidth: Layout.minimumWidth
             text: i18nc("glow to all task/applet indicators","All")
             checked: parent.option === option
             checkable: true
@@ -191,8 +200,8 @@ ColumnLayout {
         }
 
         LatteComponents.CheckBoxesColumn {
-            PlasmaComponents.CheckBox {
-                id: threeColorsWindows
+            LatteComponents.CheckBox {
+                Layout.maximumWidth: dialog.optionsWidth
                 text: i18n("Different color for minimized windows")
                 checked: indicator.configuration.minimizedTaskColoredDifferently
 
@@ -201,8 +210,8 @@ ColumnLayout {
                 }
             }
 
-            PlasmaComponents.CheckBox {
-                id: dotsOnActive
+            LatteComponents.CheckBox {
+                Layout.maximumWidth: dialog.optionsWidth
                 text: i18n("Show an extra dot for grouped windows when active")
                 checked: indicator.configuration.extraDotOnActive
                 tooltip: i18n("Grouped windows show both a line and a dot when one of them is active and the Line Active Indicator is enabled")
@@ -211,6 +220,21 @@ ColumnLayout {
                 onClicked: {
                     indicator.configuration.extraDotOnActive = checked;
                 }
+            }
+        }
+
+        LatteComponents.SubHeader {
+            enabled: indicator.configuration.glowApplyTo!==0/*None*/
+            text: i18n("Options")
+        }
+
+        LatteComponents.CheckBox {
+            Layout.maximumWidth: dialog.optionsWidth
+            text: i18n("Reverse indicator style")
+            checked: indicator.configuration.reversed
+
+            onClicked: {
+                indicator.configuration.reversed = !indicator.configuration.reversed;
             }
         }
     }

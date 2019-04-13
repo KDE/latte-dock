@@ -37,6 +37,9 @@
     <entry name="glowOpacity" type="Double">
        <default>0.35</default>
     </entry>
+    <entry name="reversed" type="Bool">
+       <default>false</default>
+    </entry>
   </group>
 </kcfg>
 
