@@ -653,7 +653,7 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: applet && !isLattePlasmoid && !originalAppletBehavior && !communicator.parabolicEffectLocked
+        enabled: visible
         hoverEnabled: latteApplet ? false : true
        // propagateComposedEvents: true
 
@@ -661,7 +661,7 @@ Item {
         //! only to support springloading for plasma 5.10
         //! also on this is based the tooltips behavior by enabling it
         //! plasma tooltips are disabled
-        visible: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator
+        visible: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.parabolicEffectLocked
 
         property bool blockWheel: false
         property bool pressed: false
