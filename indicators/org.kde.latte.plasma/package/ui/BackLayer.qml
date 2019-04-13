@@ -30,7 +30,7 @@ PlasmaCore.FrameSvgItem {
     imagePath: indicator.usePlasmaTabsStyle ? "widgets/tabbar" : "widgets/tasks"
     rotation: root.reversedEnabled ? 180 : 0
 
-    opacity: state === "hovered" ? 0.5 : 1
+    opacity: state === "hovered" ? 0.9 : 1
 
     prefix: {
         if (indicator.usePlasmaTabsStyle) {
