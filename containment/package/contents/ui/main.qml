@@ -82,7 +82,8 @@ DragDrop.DropArea {
 
         return (visibilityManager.panelIsBiggerFromIconSize && (maxZoomFactor === 1.0)
                 && (latteView.visibility.mode === Latte.Types.AlwaysVisible || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
-                && (plasmoid.configuration.panelPosition === Latte.Types.Justify));
+                && (plasmoid.configuration.panelPosition === Latte.Types.Justify)
+                && !root.editMode);
     }
 
     property int viewType: {
@@ -283,9 +284,10 @@ DragDrop.DropArea {
     //FIXME: this is not needed any more probably
     property int previousAllTasks: -1    //is used to forbid updateAutomaticIconSize when hovering
     property int offset: {
-        /*if (behaveAsPlasmaPanel) {
+        if (behaveAsPlasmaPanel) {
             return 0;
-        }*/
+        }
+
         if (root.isHorizontal) {
             return width * (plasmoid.configuration.offset/100);
         } else {

@@ -32,9 +32,9 @@ Item{
     id: layoutsContainer
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
-    readonly property bool useMaxLength: (plasmoid.configuration.panelPosition === Latte.Types.Justify)
-                                         && ((!root.inConfigureAppletsMode && !root.behaveAsPlasmaPanel )
-                                             || (behaveAsPlasmaPanel && root.inConfigureAppletsMode))
+    readonly property bool useMaxLength: (plasmoid.configuration.panelPosition === Latte.Types.Justify && !root.inConfigureAppletsMode)
+                                      /*   && ((!root.inConfigureAppletsMode && !root.behaveAsPlasmaPanel )
+                                             || (behaveAsPlasmaPanel && root.inConfigureAppletsMode))*/
 
     property int allCount: root.latteApplet ? _mainLayout.count-1+latteApplet.tasksCount : _mainLayout.count
     property int currentSpot: -1000
@@ -51,7 +51,7 @@ Item{
         property: "x"
         value: {
             if ( latteView && root.isHorizontal && useMaxLength ){
-                return ((latteView.width/2) - (root.maxLength/2)); // + root.offset)
+                return ((latteView.width/2) - (root.maxLength/2) + root.offset);
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
                     return;
@@ -79,7 +79,7 @@ Item{
         property: "y"
         value: {
             if ( latteView && root.isVertical && useMaxLength ) {
-                return ((latteView.height/2) - (root.maxLength/2));// + root.offset);
+                return ((latteView.height/2) - (root.maxLength/2) + root.offset);
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
                     return;
@@ -380,6 +380,8 @@ Item{
             }
         }
 
+        readonly property int appliedOffset: root.panelAlignment === Latte.Types.Justify ? 0 : root.offset
+
         //////////////////////////BEGIN states
         //user set Panel Positions
         // 0-Center, 1-Left, 2-Right, 3-Top, 4-Bottom
@@ -396,7 +398,7 @@ Item{
                 PropertyChanges{
                     target: _mainLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
                     anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: appliedOffset;
                 }
             },
             State {
@@ -439,7 +441,7 @@ Item{
                 PropertyChanges{
                     target: _mainLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
                     anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: appliedOffset;
                 }
             },
             State {
@@ -482,7 +484,7 @@ Item{
                 PropertyChanges{
                     target: _mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
                     anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: root.offset; anchors.verticalCenterOffset: 0;
+                    anchors.horizontalCenterOffset: appliedOffset; anchors.verticalCenterOffset: 0;
                 }
             },
             State {
@@ -529,7 +531,7 @@ Item{
                 PropertyChanges{
                     target: _mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
                     anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: root.offset; anchors.verticalCenterOffset: 0;
+                    anchors.horizontalCenterOffset: appliedOffset; anchors.verticalCenterOffset: 0;
                 }
             },
             State {

@@ -151,7 +151,7 @@ Item{
         target: latteView
         property: "maxLength"
         when: latteView
-        value: root.editMode ? 1 : plasmoid.configuration.maxLength/100
+        value: root.inConfigureAppletsMode ? 1 : plasmoid.configuration.maxLength/100
     }
 
     Binding{
