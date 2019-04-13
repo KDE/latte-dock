@@ -600,6 +600,7 @@ PlasmaComponents.Page {
 
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
+                        Layout.topMargin: units.smallSpacing
                         text: i18n("Drag and maximize/restore active window")
                         checked: plasmoid.configuration.dragActiveWindowEnabled
                         tooltip: i18n("Drag/Maximize/Restore active window with double-click and dragging actions")
@@ -642,7 +643,7 @@ PlasmaComponents.Page {
 
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
-                        Layout.maximumHeight: mouseWheelChk.height
+                       // Layout.maximumHeight: mouseWheelChk.height
                         text: i18n("🅰 Activate based on position through global shortcuts")
                         checked: latteView.isPreferredForShortcuts || (!latteView.managedLayout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
                         tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")

@@ -222,20 +222,20 @@ ColumnLayout {
                 }
             }
         }
+    }
 
-        LatteComponents.SubHeader {
-            enabled: indicator.configuration.glowApplyTo!==0/*None*/
-            text: i18n("Options")
-        }
+    LatteComponents.SubHeader {
+        enabled: indicator.configuration.glowApplyTo!==0/*None*/
+        text: i18n("Options")
+    }
 
-        LatteComponents.CheckBox {
-            Layout.maximumWidth: dialog.optionsWidth
-            text: i18n("Reverse indicator style")
-            checked: indicator.configuration.reversed
+    LatteComponents.CheckBox {
+        Layout.maximumWidth: dialog.optionsWidth
+        text: i18n("Reverse indicator style")
+        checked: indicator.configuration.reversed
 
-            onClicked: {
-                indicator.configuration.reversed = !indicator.configuration.reversed;
-            }
+        onClicked: {
+            indicator.configuration.reversed = !indicator.configuration.reversed;
         }
     }
 }
