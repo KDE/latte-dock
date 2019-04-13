@@ -576,6 +576,7 @@ Item{
         opacity: appletMouseArea.containsMouse ? 1 : 0
         brightness: 0.25
         contrast: 0.15
+        visible: !indicators.info.providesHoveredAnimation
 
         Behavior on opacity {
             NumberAnimation { duration: root.durationTime*units.longDuration }
@@ -587,7 +588,7 @@ Item{
         anchors.fill: _wrapperContainer
         source: _wrapperContainer
 
-        visible: clickedAnimation.running
+        visible: clickedAnimation.running && !indicators.info.providesClickedAnimation
     }
 
     /*   onHeightChanged: {

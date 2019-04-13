@@ -58,16 +58,16 @@ Item {
             PropertyAnimation {
                 target: clickedRectangle
                 property: "width"
-                to: indicator.currentIconSize * 3
+                to: indicator.currentIconSize * indicator.scaleFactor * 3
                 duration: 700
-                easing.type: Easing.OutQuad
+                easing.type: Easing.Linear
             }
             PropertyAnimation {
                 target: clickedRectangle
                 property: "opacity"
                 to: 0
                 duration: 700
-                easing.type: Easing.OutQuad
+                easing.type: Easing.Linear
             }
         }
     }
