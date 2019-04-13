@@ -33,6 +33,8 @@ X-Plasma-API=declarativeappletscript
 X-KDE-ServiceTypes=Latte/Indicator
 
 X-Latte-MainScript=ui/main.qml
+X-Latte-ConfigUi=config/config.qml
+X-Latte-ConfigXml=config/main.xml
 
 X-KDE-PluginInfo-Author=Michail Vourlakos
 X-KDE-PluginInfo-Email=mvourlakos@gmail.com

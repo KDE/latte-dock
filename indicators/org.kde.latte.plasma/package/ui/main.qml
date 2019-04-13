@@ -27,10 +27,21 @@ import org.kde.latte.components 1.0 as LatteComponents
 LatteComponents.IndicatorItem {
     id: root
 
+    //! options published
     readonly property bool needsMouseEventCoordinates: true
-    readonly property bool providesClickedAnimation: true
+    readonly property bool providesClickedAnimation: clickedAnimationEnabled
     readonly property bool providesHoveredAnimation: true
     readonly property bool providesFrontLayer: true
+
+    //! config options
+    readonly property bool clickedAnimationEnabled: indicator && indicator.configuration
+                                                    && indicator.configuration.clickedAnimationEnabled !== undefined
+                                                    && indicator.configuration.clickedAnimationEnabled
+
+    readonly property bool reversedEnabled: indicator && indicator.configuration
+                                            && indicator.configuration.reversed !== undefined
+                                            && indicator.configuration.reversed
+
 
     //! Background Layer
     Loader{
@@ -45,7 +56,7 @@ LatteComponents.IndicatorItem {
     Loader{
         id: frontLayer
         anchors.fill: parent
-        active: level.isForeground //&& !indicator.isApplet && indicator.isGroup
+        active: (level.isForeground && !indicator.isApplet && indicator.isGroup) || providesClickedAnimation
 
         sourceComponent: FrontLayer{}
     }

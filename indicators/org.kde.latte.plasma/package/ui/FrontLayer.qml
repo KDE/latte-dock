@@ -17,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
+import QtQuick 2.7
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -127,6 +127,7 @@ Item {
 
     Connections {
         target: level
+        enabled: root.clickedAnimationEnabled
         onMousePressed: {
             var fixedX = 0;
             var fixedY = 0;
