@@ -393,7 +393,8 @@ PlasmaComponents.Page {
                         }
 
                         LatteComponents.CheckBoxesColumn {
-                            PlasmaComponents.CheckBox {
+                            LatteComponents.CheckBox {
+                                Layout.maximumWidth: dialog.optionsWidth
                                 text: i18n("Bounce launchers when triggered")
                                 checked: plasmoid.configuration.animationLauncherBouncing
 
@@ -402,7 +403,8 @@ PlasmaComponents.Page {
                                 }
                             }
 
-                            PlasmaComponents.CheckBox {
+                            LatteComponents.CheckBox {
+                                Layout.maximumWidth: dialog.optionsWidth
                                 text: i18n("Bounce tasks that need attention")
                                 checked: plasmoid.configuration.animationWindowInAttention
 
@@ -411,7 +413,8 @@ PlasmaComponents.Page {
                                 }
                             }
 
-                            PlasmaComponents.CheckBox {
+                            LatteComponents.CheckBox {
+                                Layout.maximumWidth: dialog.optionsWidth
                                 text: i18n("Slide in and out single windows")
                                 checked: plasmoid.configuration.animationNewWindowSliding
 
@@ -420,7 +423,8 @@ PlasmaComponents.Page {
                                 }
                             }
 
-                            PlasmaComponents.CheckBox {
+                            LatteComponents.CheckBox {
+                                Layout.maximumWidth: dialog.optionsWidth
                                 text: i18n("Grouped tasks bounce their new windows")
                                 checked: plasmoid.configuration.animationWindowAddedInGroup
 
@@ -429,7 +433,8 @@ PlasmaComponents.Page {
                                 }
                             }
 
-                            PlasmaComponents.CheckBox {
+                            LatteComponents.CheckBox {
+                                Layout.maximumWidth: dialog.optionsWidth
                                 text: i18n("Grouped tasks slide out their closed windows")
                                 checked: plasmoid.configuration.animationWindowRemovedFromGroup
 
@@ -578,7 +583,8 @@ PlasmaComponents.Page {
                 }
 
                 LatteComponents.CheckBoxesColumn {
-                    PlasmaComponents.CheckBox {
+                    LatteComponents.CheckBox {
+                        Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Show indicators for applets")
                         checked: latteView.indicator.enabledForApplets
                         tooltip: i18n("Indicators are shown for applets")
@@ -588,7 +594,8 @@ PlasmaComponents.Page {
                         }
                     }
 
-                    PlasmaComponents.CheckBox {
+                    LatteComponents.CheckBox {
+                        Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Reverse indicator style")
                         checked: latteView.indicator.reversed
                         tooltip: i18n("Reverse indicator style e.g. from bottom to top")
