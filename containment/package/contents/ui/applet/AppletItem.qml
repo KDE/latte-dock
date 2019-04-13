@@ -95,7 +95,8 @@ Item {
                                                                                            ||((index === layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-2)&&(layoutsContainer.mainLayout.count>2))
                                                                                            ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
 
-    readonly property bool originalAppletBehavior: ((root.zoomFactor === 1 || !canBeHovered) && !root.titleTooltips) || lockZoom
+    readonly property bool originalAppletBehavior: ((root.zoomFactor === 1 || !canBeHovered) && !(root.titleTooltips || indicators.enabledForApplets ))
+                                                   || lockZoom
     readonly property bool isRectangled: communicator.overlayLatteIconIsActive
 
     property int animationTime: appliedDurationTime * (1.2 *units.shortDuration)

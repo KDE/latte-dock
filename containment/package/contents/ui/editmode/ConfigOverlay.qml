@@ -406,7 +406,7 @@ MouseArea {
                             id: lockButton
                             checkable: true
                             iconSource: checked ? "lock" : "unlock"
-                            tooltip: i18n("Lock/Unlock the parabolic effect for this applet")
+                            tooltip: i18n("Forces Plasma original applet behavior and tooltips.\nParabolic effect will be disabled.")
 
                             onCheckedChanged: {
                                 currentApplet.lockZoom = checked;
