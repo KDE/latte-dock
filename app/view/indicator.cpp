@@ -49,7 +49,6 @@ Indicator::Indicator(Latte::View *parent)
     connect(this, &Indicator::enabledChanged, this, &Indicator::saveConfig);
     connect(this, &Indicator::enabledForAppletsChanged, this, &Indicator::saveConfig);
     connect(this, &Indicator::paddingChanged, this, &Indicator::saveConfig);
-    connect(this, &Indicator::reversedChanged, this, &Indicator::saveConfig);
     connect(this, &Indicator::pluginChanged, this, &Indicator::saveConfig);
 
     connect(m_view, &Latte::View::latteTasksArePresentChanged, this, &Indicator::latteTasksArePresentChanged);
@@ -140,21 +139,6 @@ void Indicator::setProvidesConfigUi(bool provides)
 
     m_providesConfigUi = provides;
     emit providesConfigUiChanged();
-}
-
-bool Indicator::reversed() const
-{
-    return m_reversed;
-}
-
-void Indicator::setReversed(bool reversed)
-{
-    if (m_reversed == reversed) {
-        return;
-    }
-
-    m_reversed = reversed;
-    emit reversedChanged();
 }
 
 float Indicator::padding() const
@@ -440,7 +424,6 @@ void Indicator::loadConfig()
     m_enabled = config.readEntry("enabled", true);
     m_enabledForApplets = config.readEntry("enabledForApplets", true);
     m_padding = config.readEntry("padding", (float)0.08);
-    m_reversed = config.readEntry("reversed", false);
     m_type = config.readEntry("type", "org.kde.latte.default");
 }
 
@@ -451,7 +434,6 @@ void Indicator::saveConfig()
     config.writeEntry("enabled", m_enabled);
     config.writeEntry("enabledForApplets", m_enabledForApplets);
     config.writeEntry("padding", m_padding);
-    config.writeEntry("reversed", m_reversed);
     config.writeEntry("type", m_type);
 
     config.sync();

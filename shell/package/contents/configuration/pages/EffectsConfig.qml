@@ -593,17 +593,6 @@ PlasmaComponents.Page {
                             latteView.indicator.enabledForApplets = !latteView.indicator.enabledForApplets;
                         }
                     }
-
-                    LatteComponents.CheckBox {
-                        Layout.maximumWidth: dialog.optionsWidth
-                        text: i18n("Reverse indicator style")
-                        checked: latteView.indicator.reversed
-                        tooltip: i18n("Reverse indicator style e.g. from bottom to top")
-
-                        onClicked: {
-                            latteView.indicator.reversed = !latteView.indicator.reversed;
-                        }
-                    }
                 }
             }
         }

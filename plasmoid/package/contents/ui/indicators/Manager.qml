@@ -34,7 +34,6 @@ Item{
     readonly property Item configuration: explicitOptions
 
     readonly property bool isEnabled: true
-    readonly property bool reversed: plasmoid.configuration.reverseLinesPosition
     readonly property string type: "org.kde.latte.default"
 
     readonly property Component indicatorComponent: latteStyleIndicator

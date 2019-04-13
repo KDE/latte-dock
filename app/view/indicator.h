@@ -56,7 +56,6 @@ class Indicator: public QObject
     Q_PROPERTY(bool latteTasksArePresent READ latteTasksArePresent NOTIFY latteTasksArePresentChanged)
     Q_PROPERTY(bool pluginIsReady READ pluginIsReady NOTIFY pluginIsReadyChanged)
     Q_PROPERTY(bool providesConfigUi READ providesConfigUi NOTIFY providesConfigUiChanged)
-    Q_PROPERTY(bool reversed READ reversed WRITE setReversed NOTIFY reversedChanged)
 
     Q_PROPERTY(float padding READ padding WRITE setPadding NOTIFY paddingChanged)
 
@@ -96,9 +95,6 @@ public:
     bool providesConfigUi() const;
 
     bool pluginIsReady();
-
-    bool reversed() const;
-    void setReversed(bool reversed);
 
     float padding() const;
     void setPadding(float padding);
@@ -140,7 +136,6 @@ signals:
     void pluginChanged();
     void pluginIsReadyChanged();
     void providesConfigUiChanged();
-    void reversedChanged();
 
 private:
     void loadConfig();
@@ -160,7 +155,6 @@ private:
     bool m_enabledForApplets{true};
     bool m_pluginIsReady{false};
     bool m_providesConfigUi{true};
-    bool m_reversed{false};
 
     float m_padding{0.08};
 

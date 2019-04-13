@@ -33,7 +33,6 @@ Item{
 
     readonly property bool isEnabled: latteView && latteView.indicator ? (latteView.indicator.enabled && latteView.indicator.pluginIsReady) : false
     readonly property bool enabledForApplets: latteView && latteView.indicator ? latteView.indicator.enabledForApplets : true
-    readonly property bool reversed: latteView && latteView.indicator ? latteView.indicator.reversed : false
     readonly property real padding: Math.max(info.minLengthPadding, latteView && latteView.indicator ? latteView.indicator.padding : 0.08)
     readonly property string type: latteView && latteView.indicator ? latteView.indicator.type : "org.kde.latte.default"
 

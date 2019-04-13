@@ -98,9 +98,6 @@
     <entry name="durationTime" type="Int">
       <default>2</default>
     </entry>
-    <entry name="reverseLinesPosition" type="Bool">
-      <default>false</default>
-    </entry>
     <entry name="showWindowActions" type="Bool">
       <default>false</default>
     </entry>
