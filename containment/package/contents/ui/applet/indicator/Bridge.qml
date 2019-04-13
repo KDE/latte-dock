@@ -88,14 +88,4 @@ Item{
     //! grouped options
     readonly property Item shared: indicators
     readonly property QtObject configuration: indicators.configuration
-
-    Connections {
-        target: appletIsValid /*&& indicators.info.needsMouseEventCoordinates*/ ? appletItem : null
-        onMousePressed: {
-            console.log(x + " _ " + y);
-            var fixedPos = level.mapFromItem(appletItem, x, y);
-            console.log("f: " + fixedPos.x + " _ " + fixedPos.y);
-            level.mousePressed(fixedPos.x, fixedPos.y);
-        }
-    }
 }

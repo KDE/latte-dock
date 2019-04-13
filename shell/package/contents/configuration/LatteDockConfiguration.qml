@@ -68,7 +68,7 @@ FocusScope {
     property int chosenWidth: userScaleWidth !== 1 ? userScaleWidth * proposedWidth : proposedWidth
     property int chosenHeight: userScaleHeight !== 1 ? userScaleHeight * heightLevel * proposedHeight : heightLevel * proposedHeight
 
-    readonly property int optionsWidth: appliedWidth - units.smallSpacing * 9
+    readonly property int optionsWidth: appliedWidth - units.smallSpacing * 10
 
     //! user set scales based on its preference, e.g. 96% of the proposed size
     property real userScaleWidth: 1

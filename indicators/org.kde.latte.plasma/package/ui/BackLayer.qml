@@ -28,8 +28,9 @@ PlasmaCore.FrameSvgItem {
     property string basePrefix: "normal"
 
     imagePath: indicator.usePlasmaTabsStyle ? "widgets/tabbar" : "widgets/tasks"
-
     rotation: indicator.shared.reversed ? 180 : 0
+
+    opacity: state === "hovered" ? 0.5 : 1
 
     prefix: {
         if (indicator.usePlasmaTabsStyle) {

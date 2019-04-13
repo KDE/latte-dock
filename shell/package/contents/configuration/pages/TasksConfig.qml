@@ -60,7 +60,8 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
 
-                PlasmaComponents.CheckBox {
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Unread messages from tasks")
                     checked: plasmoid.configuration.showInfoBadge
                     tooltip: i18n("Show unread messages or information from tasks")
@@ -70,7 +71,8 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Progress information for tasks")
                     checked: plasmoid.configuration.showProgressBadge
                     tooltip: i18n("Show a progress animation for tasks e.g. when copying files with Dolphin")
@@ -80,7 +82,8 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Audio playing from tasks")
                     checked: plasmoid.configuration.showAudioBadge
                     tooltip: i18n("Show audio playing from tasks")
@@ -90,7 +93,8 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Change volume when scrolling audio badge")
                     checked: plasmoid.configuration.audioBadgeActionsEnabled
                     enabled: plasmoid.configuration.showAudioBadge
@@ -117,8 +121,8 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
 
-                PlasmaComponents.CheckBox {
-
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Add launchers only in the Tasks Area")
                     checked: plasmoid.configuration.addLaunchersInTaskManager
                     tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
@@ -128,8 +132,9 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
+                LatteComponents.CheckBox {
                     id: windowActionsChk
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show window actions in the context menu")
                     checked: plasmoid.configuration.showWindowActions
                     visible: dialog.highLevel
@@ -140,8 +145,9 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
+                LatteComponents.CheckBox {
                     id: unifyGlobalShortcutsChk
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("🅰 Based on position shortcuts apply only for tasks")
                     checked: !plasmoid.configuration.unifiedGlobalShortcuts
                     tooltip: i18n("Based on position global shortcuts are enabled only for tasks and not for applets")
@@ -169,9 +175,8 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
 
-                PlasmaComponents.CheckBox {
-                    id: showOnlyCurrentScreen
-
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current screen")
                     checked: plasmoid.configuration.showOnlyCurrentScreen
 
@@ -180,8 +185,8 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
-                    id: showOnlyCurrentDesktop
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current desktop")
                     checked: plasmoid.configuration.showOnlyCurrentDesktop
 
@@ -190,8 +195,8 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
-                    id: showOnlyCurrentActivity
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current activity")
                     checked: plasmoid.configuration.showOnlyCurrentActivity
 
@@ -200,8 +205,8 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
-                    id: showWindowsOnlyFromLaunchersChk
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from launchers")
                     checked: plasmoid.configuration.showWindowsOnlyFromLaunchers
                     visible: dialog.highLevel
@@ -211,8 +216,8 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
-                    id: groupTasksChk
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Group tasks of the same application")
                     checked: plasmoid.configuration.groupTasksByDefault
                     tooltip: i18n("By default group tasks of the same application")
@@ -252,6 +257,9 @@ PlasmaComponents.Page {
 
                     property int group: plasmoid.configuration.launchersGroup
 
+                    readonly property int buttonsCount: layoutGroupButton.visible ? 3 : 2
+                    readonly property int buttonSize: (dialog.optionsWidth - (spacing * buttonsCount-1)) / buttonsCount
+
                     ExclusiveGroup {
                         id: launchersGroup
                         onCurrentChanged: {
@@ -263,7 +271,8 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Button {
-                        Layout.fillWidth: true
+                        Layout.minimumWidth: parent.buttonSize
+                        Layout.maximumWidth: Layout.minimumWidth
                         text: i18nc("unique launchers group","Unique")
                         checked: parent.group === group
                         checkable: true
@@ -274,7 +283,9 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Button {
-                        Layout.fillWidth: true
+                        id: layoutGroupButton
+                        Layout.minimumWidth: parent.buttonSize
+                        Layout.maximumWidth: Layout.minimumWidth
                         text: i18nc("layout launchers group","Layout")
                         checked: parent.group === group
                         checkable: true
@@ -287,7 +298,8 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Button {
-                        Layout.fillWidth: true
+                        Layout.minimumWidth: parent.buttonSize
+                        Layout.maximumWidth: Layout.minimumWidth
                         text: i18nc("global launchers group","Global")
                         checked: parent.group === group
                         checkable: true
@@ -317,6 +329,8 @@ PlasmaComponents.Page {
 
                 GridLayout {
                     columns: 2
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
 
                     Layout.topMargin: units.smallSpacing
                     enabled: !disableAllWindowsFunctionality
@@ -361,6 +375,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
+                        id: middleClickText
                         text: i18n("Middle Click")
                     }
 
@@ -426,48 +441,67 @@ PlasmaComponents.Page {
                             }
                         }
                     }
+
+                    RowLayout {
+                        spacing: units.smallSpacing
+                        enabled: !disableAllWindowsFunctionality
+
+                        Layout.minimumWidth: middleClickText.width
+                        Layout.maximumWidth: middleClickText.width
+
+                        LatteComponents.ComboBox {
+                            id: modifier
+                            Layout.fillWidth: true
+                            model: ["Shift", "Ctrl", "Alt", "Meta"]
+
+                            currentIndex: plasmoid.configuration.modifier
+                            onCurrentIndexChanged: plasmoid.configuration.modifier = currentIndex
+                        }
+
+                        PlasmaComponents.Label {
+                            text: "+"
+                        }
+                    }
+
+                    RowLayout {
+                        spacing: units.smallSpacing
+                        enabled: !disableAllWindowsFunctionality
+
+                        readonly property int maxSize: 0.4 * dialog.optionsWidth
+
+                        LatteComponents.ComboBox {
+                            id: modifierClick
+                            Layout.preferredWidth: 0.7 * parent.maxSize
+                            Layout.maximumWidth: parent.maxSize
+                            model: [i18n("Left Click"), i18n("Middle Click"), i18n("Right Click")]
+
+                            currentIndex: plasmoid.configuration.modifierClick
+                            onCurrentIndexChanged: plasmoid.configuration.modifierClick = currentIndex
+                        }
+
+                        PlasmaComponents.Label {
+                            text: "="
+                        }
+
+                        LatteComponents.ComboBox {
+                            id: modifierClickAction
+                            Layout.fillWidth: true
+                            model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
+                                i18n("New Instance"), i18n("Minimize/Restore Window or Group"),  i18n("Cycle Through Tasks"), i18n("Toggle Task Grouping")]
+
+                            currentIndex: plasmoid.configuration.modifierClickAction
+                            onCurrentIndexChanged: plasmoid.configuration.modifierClickAction = currentIndex
+                        }
+                    }
                 }
 
                 RowLayout {
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
                     Layout.topMargin: units.smallSpacing
                     spacing: units.smallSpacing
                     enabled: !disableAllWindowsFunctionality
 
-                    LatteComponents.ComboBox {
-                        id: modifier
-                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 5
-                        model: ["Shift", "Ctrl", "Alt", "Meta"]
-
-                        currentIndex: plasmoid.configuration.modifier
-                        onCurrentIndexChanged: plasmoid.configuration.modifier = currentIndex
-                    }
-
-                    PlasmaComponents.Label {
-                        text: "+"
-                    }
-
-                    LatteComponents.ComboBox {
-                        id: modifierClick
-                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 10
-                        model: [i18n("Left Click"), i18n("Middle Click"), i18n("Right Click")]
-
-                        currentIndex: plasmoid.configuration.modifierClick
-                        onCurrentIndexChanged: plasmoid.configuration.modifierClick = currentIndex
-                    }
-
-                    PlasmaComponents.Label {
-                        text: "="
-                    }
-
-                    LatteComponents.ComboBox {
-                        id: modifierClickAction
-                        Layout.fillWidth: true
-                        model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
-                            i18n("New Instance"), i18n("Minimize/Restore Window or Group"),  i18n("Cycle Through Tasks"), i18n("Toggle Task Grouping")]
-
-                        currentIndex: plasmoid.configuration.modifierClickAction
-                        onCurrentIndexChanged: plasmoid.configuration.modifierClickAction = currentIndex
-                    }
                 }
             }
         }
@@ -483,10 +517,11 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.Button {
+                Layout.minimumWidth: dialog.optionsWidth
+                Layout.maximumWidth: Layout.minimumWidth
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 Layout.topMargin: units.smallSpacing
-                Layout.fillWidth: true
 
                 text: i18n("Remove Latte Tasks Applet")
                 enabled: latteView.latteTasksArePresent

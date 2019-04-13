@@ -25,6 +25,11 @@ import org.kde.latte 0.2 as Latte
 import org.kde.latte.components 1.0 as LatteComponents
 
 LatteComponents.IndicatorItem {
+    id: root
+
+    readonly property bool needsMouseEventCoordinates: true
+    readonly property bool providesClickedAnimation: true
+    readonly property bool providesHoveredAnimation: true
     readonly property bool providesFrontLayer: true
 
     //! Background Layer
@@ -40,7 +45,7 @@ LatteComponents.IndicatorItem {
     Loader{
         id: frontLayer
         anchors.fill: parent
-        active: level.isForeground && !indicator.isApplet && indicator.isGroup
+        active: level.isForeground //&& !indicator.isApplet && indicator.isGroup
 
         sourceComponent: FrontLayer{}
     }
