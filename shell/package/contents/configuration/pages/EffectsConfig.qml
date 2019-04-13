@@ -552,7 +552,7 @@ PlasmaComponents.Page {
                         wheelEnabled: false
                         minimumInternalValue: latteView.indicator.info.minLengthPadding * 100
 
-                        readonly property int maxMargin: 25
+                        readonly property int maxMargin: 80
 
                         onPressedChanged: {
                             if (!pressed) {

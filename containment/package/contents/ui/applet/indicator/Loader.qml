@@ -42,21 +42,11 @@ Loader {
         return indicators.indicatorComponent;
     }
 
-    width: {
-        if (locked) {
-            return visualLockedWidth;
-        }
+    width: root.isHorizontal ? appletItem.wrapperAlias.width - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin
+                             : appletItem.wrapperAlias.width;
 
-        return root.isHorizontal ? appletItem.wrapperAlias.width - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin : appletItem.wrapperAlias.width;
-    }
-
-    height: {
-        if (locked) {
-            return visualLockedHeight;
-        }
-
-        return root.vertical ? appletItem.wrapperAlias.height - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin : appletItem.wrapperAlias.height;
-    }
+    height: root.vertical ? appletItem.wrapperAlias.height - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin :
+                            appletItem.wrapperAlias.height;
 
     readonly property bool locked: appletItem.lockZoom || root.zoomFactor === 1
 
