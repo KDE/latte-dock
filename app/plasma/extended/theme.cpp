@@ -257,7 +257,7 @@ void Theme::updateReversedSchemeValues()
 
     if (originalPtr && reversedPtr) {
         for (const auto &groupName : reversedPtr->groupList()) {
-            if (groupName != "Colors:Button") {
+            if (groupName != "Colors:Button" && groupName != "Colors:Selection") {
                 KConfigGroup reversedGroup(reversedPtr, groupName);
 
                 if (reversedGroup.keyList().contains("BackgroundNormal")

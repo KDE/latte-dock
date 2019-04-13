@@ -88,7 +88,7 @@ Item {
             radius: width/2
             height: width
 
-            color: theme.buttonFocusColor
+            color: theme.highlightColor
         }
     }
     
@@ -97,7 +97,7 @@ Item {
         ScriptAction{
             script: {
                 clickedRectangle.width = 0;
-                clickedRectangle.opacity = 0.85;
+                clickedRectangle.opacity = 0.75;
                 clickedRectangle.anchors.rightMargin = 0;
                 clickedRectangle.anchors.leftMargin = 0;
                 clickedRectangle.anchors.topMargin = 0;
