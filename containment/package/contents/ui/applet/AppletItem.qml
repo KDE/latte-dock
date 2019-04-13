@@ -95,7 +95,7 @@ Item {
                                                                                            ||((index === layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-2)&&(layoutsContainer.mainLayout.count>2))
                                                                                            ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
 
-    readonly property bool originalAppletBehavior: (root.zoomFactor === 1 || !canBeHovered && !root.titleTooltips) || lockZoom
+    readonly property bool originalAppletBehavior: ((root.zoomFactor === 1 || !canBeHovered) && !root.titleTooltips) || lockZoom
     readonly property bool isRectangled: communicator.overlayLatteIconIsActive
 
     property int animationTime: appliedDurationTime * (1.2 *units.shortDuration)
@@ -653,7 +653,7 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: applet && !latteApplet && canBeHovered && !originalAppletBehavior && !communicator.parabolicEffectLocked
+        enabled: applet && !isLattePlasmoid && !originalAppletBehavior && !communicator.parabolicEffectLocked
         hoverEnabled: latteApplet ? false : true
        // propagateComposedEvents: true
 
@@ -661,8 +661,7 @@ Item {
         //! only to support springloading for plasma 5.10
         //! also on this is based the tooltips behavior by enabling it
         //! plasma tooltips are disabled
-        visible: applet && !appletItem.latteApplet && !originalAppletBehavior && !communicator.parabolicEffectLocked
-                 && canBeHovered && !appletItem.isSeparator
+        visible: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator
 
         property bool blockWheel: false
         property bool pressed: false
