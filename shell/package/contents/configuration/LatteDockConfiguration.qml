@@ -140,12 +140,6 @@ FocusScope {
         property bool wheelTriggeredOnce: false
         property real scaleStep: 0.04
 
-        onContainsMouseChanged: {
-            if (!containsMouse) {
-                wheelTriggeredOnce = false;
-            }
-        }
-
         onWheel: {
             var metaModifier = (wheel.modifiers & Qt.MetaModifier);
             var ctrlModifier = (wheel.modifiers & Qt.ControlModifier);
@@ -191,13 +185,26 @@ FocusScope {
         }
     }
 
+    PlasmaComponents.Button {
+        id: backgroundMouseAreaTooltip
+        anchors.fill: parent
+        opacity: 0
+        tooltip: i18n("You can use Ctrl/Meta + Scroll Wheel to alter the window size")
+
+        onHoveredChanged: {
+            if (!hovered) {
+                backgroundMouseArea.wheelTriggeredOnce = false;
+            }
+        }
+    }
+
     PlasmaComponents.Label{
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         text: backgroundMouseArea.updatingWidthScale ?
                   i18nc("view settings width scale","Width scale at %0%").arg(userScaleWidth * 100) :
                   i18nc("view settings height scale","Height scale at %0%").arg(userScaleHeight * 100)
-        visible: backgroundMouseArea.containsMouse && backgroundMouseArea.wheelTriggeredOnce
+        visible: backgroundMouseAreaTooltip.hovered && backgroundMouseArea.wheelTriggeredOnce
     }
 
     //! A timer is needed in order to handle also touchpads that probably
