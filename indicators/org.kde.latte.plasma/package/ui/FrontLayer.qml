@@ -111,9 +111,13 @@ Item {
             PropertyAnimation {
                 target: clickedRectangle
                 property: "width"
-                to: Math.max(relevantItem.width, relevantItem.height) * indicator.scaleFactor * 2
+                //! Dont animate above for length
+                to: maxLength * multiplier
                 duration: 700
                 easing.type: Easing.Linear
+
+                readonly property int multiplier: indicator.scaleFactor * 2
+                readonly property int maxLength: Math.min(indicator.currentIconSize*10, Math.max(relevantItem.width, relevantItem.height))
             }
             PropertyAnimation {
                 target: clickedRectangle
@@ -171,9 +175,6 @@ Item {
                     clickedCenter.anchors.topMargin = fixedY;
                 }
             }
-
-
-
 
             clickedCenter.anchors.verticalCenterOffset = fixedY;
 

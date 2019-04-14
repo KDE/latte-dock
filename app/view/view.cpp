@@ -40,6 +40,7 @@
 
 // Qt
 #include <QAction>
+#include <QMouseEvent>
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QQmlProperty>
@@ -68,7 +69,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
       m_contextMenu(new ViewPart::ContextMenu(this)),
       m_effects(new ViewPart::Effects(this)),
       m_positioner(new ViewPart::Positioner(this)) //needs to be created after Effects because it catches some of its signals
-{
+{   
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
@@ -1007,7 +1008,7 @@ ViewPart::WindowsTracker *View::windowsTracker() const
 }
 
 bool View::event(QEvent *e)
-{
+{   
     if (!m_inDelete) {
         emit eventTriggered(e);
 
@@ -1034,6 +1035,17 @@ bool View::event(QEvent *e)
         case QEvent::Leave:
             m_containsMouse = false;
             engine()->trimComponentCache();
+            break;
+
+        case QEvent::MouseButtonPress:
+            if (auto mouseEvent = dynamic_cast<QMouseEvent *>(e)) {
+                emit mousePressed(mouseEvent->x(), mouseEvent->y(), mouseEvent->button());
+            }
+            break;
+        case QEvent::MouseButtonRelease:
+            if (auto mouseEvent = dynamic_cast<QMouseEvent *>(e)) {
+                emit mouseReleased(mouseEvent->x(), mouseEvent->y(), mouseEvent->button());
+            }
             break;
 
         case QEvent::PlatformSurface:

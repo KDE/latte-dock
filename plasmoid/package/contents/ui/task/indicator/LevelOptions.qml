@@ -24,7 +24,8 @@ import org.kde.latte 0.2 as Latte
 Item {
     id: level
 
-    signal mousePressed(int x, int y);
+    signal mousePressed(int x, int y, int button);
+    signal mouseReleased(int x, int y, int button);
 
     property bool isBackground: true
     property bool isForeground: false

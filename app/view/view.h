@@ -227,6 +227,8 @@ protected:
 
 signals:
     void eventTriggered(QEvent *ev);
+    void mousePressed(const int x, const int y, const int button);
+    void mouseReleased(const int x, const int y, const int button);
 
     void activitiesChanged();
     void alternativesIsShownChanged();
@@ -290,6 +292,7 @@ private:
     bool m_isPreferredForShortcuts{false};
     bool m_latteTasksArePresent{false};
     bool m_onPrimary{true};
+
     int m_fontPixelSize{ -1};
     int m_editThickness{24};
     int m_maxThickness{24};

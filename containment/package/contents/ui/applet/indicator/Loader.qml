@@ -62,7 +62,12 @@ Loader {
         enabled: indicators.info.needsMouseEventCoordinates
         onMousePressed: {
             var fixedPos = indicatorLoader.mapFromItem(appletItem, x, y);
-            level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y));
+            level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
+        }
+
+        onMouseReleased: {
+            var fixedPos = indicatorLoader.mapFromItem(appletItem, x, y);
+            level.mouseReleased(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
         }
     }
 }

@@ -1052,6 +1052,7 @@ void Corona::setBroadcastedBackgroundsEnabled(QString activity, QString screenNa
 inline void Corona::qmlRegisterTypes() const
 {
     qmlRegisterType<QScreen>();
+    qmlRegisterType<Latte::View>();
 }
 
 }

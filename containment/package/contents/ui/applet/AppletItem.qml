@@ -18,7 +18,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.1
+import QtQuick 2.7
 import QtQuick.Layouts 1.1
 import QtGraphicalEffects 1.0
 
@@ -41,7 +41,8 @@ Item {
     width: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeWidth
     height: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeHeight
 
-    signal mousePressed(int x, int y);
+    signal mousePressed(int x, int y, int button);
+    signal mouseReleased(int x, int y, int button);
 
     property bool animationsEnabled: true
     property bool animationWasSent: false  //protection flag for animation broadcasting
@@ -134,8 +135,8 @@ Item {
     property Item communicatorAlias: communicator
     property Item wrapperAlias: wrapper
 
-    property alias containsMouse: appletMouseArea.containsMouse
-    property alias pressed: appletMouseArea.pressed
+    property bool containsMouse: appletMouseArea.containsMouse || appletMouseAreaBottom.containsMouse
+    property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
 
     /*onComputeHeightChanged: {
         if(index==0)
@@ -448,6 +449,30 @@ Item {
         }
     }
 
+    Connections {
+        id: viewSignalsConnector
+        target: root.latteView ? root.latteView : null
+        enabled: !appletItem.isLattePlasmoid && !appletItem.isSeparator && !appletItem.isSpacer && !appletItem.isHidden
+
+        property bool pressed: false
+
+        onMousePressed: {
+            if (appletItem.containsPos(Qt.point(x, y))) {
+                viewSignalsConnector.pressed = true;
+                var local = appletItem.mapFromItem(root, x, y);
+                appletItem.mousePressed(local.x, local.y, button);
+            }
+        }
+
+        onMouseReleased: {
+            if (appletItem.containsPos(Qt.point(x, y))) {
+                viewSignalsConnector.pressed = false;
+                var local = appletItem.mapFromItem(root, x, y);
+                appletItem.mouseReleased(local.x, local.y, button);
+            }
+        }
+    }
+
     ///END connections
 
     //! It is used for any communication needed with the underlying applet
@@ -494,16 +519,12 @@ Item {
         propagateComposedEvents: true
         visible: (!appletMouseArea.visible || !appletMouseArea.enabled) && !root.editMode && !originalAppletBehavior
 
-        property bool pressed: false
-
         onPressed: {
             appletItem.activateAppletForNeutralAreas(mouse);
-            pressed = true;
             mouse.accepted = false;
         }
 
         onReleased: {
-            pressed = false;
             mouse.accepted = false;
         }
     }
@@ -665,10 +686,8 @@ Item {
         visible: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.parabolicEffectLocked
 
         property bool blockWheel: false
-        property bool pressed: false
 
         onClicked: {
-            pressed = false;
             mouse.accepted = false;
         }
 
@@ -728,7 +747,6 @@ Item {
         }
 
         onPositionChanged: {
-            //  if(!pressed){
             if (originalAppletBehavior || !canBeHovered) {
                 mouse.accepted = false;
                 return;
@@ -774,17 +792,14 @@ Item {
         }
 
         onPressed: {
-            appletItem.mousePressed(mouse.x, mouse.y);
             appletItem.activateAppletForNeutralAreas(mouse);
 
-            pressed = true;
             //! this is needed for some applets is order to be activated/deactivated correctly
             //! such case is the "Application Menu". (bug #928)
             mouse.accepted = false;
         }
 
         onReleased: {
-            pressed = false;
             mouse.accepted = false;
         }
 
@@ -902,12 +917,7 @@ Item {
     SequentialAnimation{
         id: clickedAnimation
         alwaysRunToEnd: true
-        running: (appletMouseArea.pressed || appletMouseAreaBottom.pressed) && (root.durationTime > 0) && !indicators.info.providesClickedAnimation
-
-        onStopped: {
-            appletMouseArea.pressed = false;
-            appletMouseAreaBottom.pressed = false;
-        }
+        running: (appletItem.pressed) && (root.durationTime > 0) && !indicators.info.providesClickedAnimation
 
         ParallelAnimation{
             PropertyAnimation {
