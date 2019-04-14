@@ -41,7 +41,9 @@ Item{
     property bool previousNormalState : false // this is only for debugging purposes
     property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelThickness >= (root.iconSize + root.thickMargin))
 
-    property int animationSpeed: Latte.WindowSystem.compositingActive ? root.appliedDurationTime * 1.2 * units.longDuration : 0
+    property int animationSpeed: Latte.WindowSystem.compositingActive ?
+                                     (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : root.appliedDurationTime * 1.4 * units.longDuration) : 0
+
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
     property bool inTempHiding: false

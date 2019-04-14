@@ -37,11 +37,11 @@ Item{
     height: root.isVertical ? (latteView ? latteView.height : root.height) :
                               visibilityManager.thicknessEditMode
 
-    visible: visibilityManager.inSlidingIn || visibilityManager.inSlidingOut || editAnimationEnded
+    visible: editVisual.inEditMode
 
     readonly property int settingsThickness: settingsOverlay.thickness
 
-    property int speed: Latte.WindowSystem.compositingActive ? root.durationTime*2.8*units.longDuration : 10
+    property int speed: Latte.WindowSystem.compositingActive ? root.durationTime*3.6*units.longDuration : 10
     property int thickness: visibilityManager.thicknessEditMode + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow //- visibilityManager.thicknessEditMode
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.width)://root.maxLength) :
@@ -349,21 +349,28 @@ Item{
                     }
                 }
 
+                PauseAnimation{
+                    id: pauseAnimation
+                    //! give the time to CREATE the settings windows and not break
+                    //! the sliding in animation
+                    duration: root.animationsEnabled ? 100 : 0
+                }
+
                 ParallelAnimation{
                     PropertyAnimation {
                         target: imageTiler
                         property: "opacity"
                         to: plasmoid.configuration.inConfigureAppletsMode ? 1 : editVisual.maxOpacity
-                        duration: editVisual.speed / 2
-                        easing.type: Easing.OutQuad
+                        duration: editVisual.speed - pauseAnimation.duration
+                        easing.type: Easing.InQuad
                     }
 
                     PropertyAnimation {
                         target: editVisual
                         property: root.isHorizontal ? "y" : "x"
                         to: editVisual.farEdge ? editVisual.rootThickness - editVisual.thickness : 0
-                        duration: editVisual.speed
-                        easing.type: Easing.OutQuad
+                        duration: editVisual.speed - pauseAnimation.duration
+                        easing.type: Easing.Linear
                     }
                 }
 
@@ -388,19 +395,26 @@ Item{
                     }
                 }
 
+                PauseAnimation{
+                    id: pauseAnimation2
+                    //! give the time to DELETE the settings windows and not break
+                    //! the sliding out animation
+                    duration: root.animationsEnabled ? 100 : 0
+                }
+
                 ParallelAnimation{
                     PropertyAnimation {
                         target: editVisual
                         property: root.isHorizontal ? "y" : "x"
                         to: editVisual.farEdge ? editVisual.rootThickness : -editVisual.thickness
-                        duration: editVisual.speed
-                        easing.type: Easing.InQuad
+                        duration: editVisual.speed - pauseAnimation2.duration
+                        easing.type: Easing.Linear
                     }
                     PropertyAnimation {
                         target: imageTiler
                         property: "opacity"
                         to: 0
-                        duration: editVisual.speed
+                        duration: editVisual.speed - pauseAnimation2.duration
                         easing.type: Easing.InQuad
                     }
                 }
