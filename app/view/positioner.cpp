@@ -398,8 +398,8 @@ void Positioner::validateDockGeometry()
 QRect Positioner::maximumNormalGeometry()
 {
     int xPos = 0;
-    int yPos = 0;
-    int maxHeight = m_view->maxLength() * m_view->screen()->geometry().height();
+    int yPos = m_view->screen()->geometry().y();;
+    int maxHeight = m_view->screen()->geometry().height();
     int maxWidth = m_view->normalThickness();
     QRect maxGeometry;
     maxGeometry.setRect(0, 0, maxWidth, maxHeight);
@@ -407,43 +407,11 @@ QRect Positioner::maximumNormalGeometry()
     switch (m_view->location()) {
         case Plasma::Types::LeftEdge:
             xPos = m_view->screen()->geometry().x();
-
-            switch (m_view->alignment()) {
-                case Latte::Types::Top:
-                    yPos = m_view->screen()->geometry().y();
-                    break;
-
-                case Latte::Types::Center:
-                case Latte::Types::Justify:
-                    yPos = qMax(m_view->screen()->geometry().center().y() - maxHeight / 2, m_view->screen()->geometry().y());
-                    break;
-
-                case Latte::Types::Bottom:
-                    yPos = m_view->screen()->geometry().bottom() - maxHeight + 1;
-                    break;
-            }
-
             maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
             break;
 
         case Plasma::Types::RightEdge:
             xPos = m_view->screen()->geometry().right() - maxWidth + 1;
-
-            switch (m_view->alignment()) {
-                case Latte::Types::Top:
-                    yPos = m_view->screen()->geometry().y();
-                    break;
-
-                case Latte::Types::Center:
-                case Latte::Types::Justify:
-                    yPos = qMax(m_view->screen()->geometry().center().y() - maxHeight / 2, m_view->screen()->geometry().y());
-                    break;
-
-                case Latte::Types::Bottom:
-                    yPos = m_view->screen()->geometry().bottom() - maxHeight + 1;
-                    break;
-            }
-
             maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
             break;
 
@@ -498,7 +466,7 @@ void Positioner::updatePosition(QRect availableScreenRect)
             break;
 
         case Plasma::Types::RightEdge:
-            if (m_view->behaveAsPlasmaPanel() && !m_view->mask().isNull()) {
+            if (m_view->behaveAsPlasmaPanel()) {
                 position = {availableScreenRect.right() - cleanThickness + 1,
                             availableScreenRect.y() + length(availableScreenRect.height())
                            };
@@ -509,7 +477,7 @@ void Positioner::updatePosition(QRect availableScreenRect)
             break;
 
         case Plasma::Types::LeftEdge:
-            if (m_view->behaveAsPlasmaPanel() && !m_view->mask().isNull()) {
+            if (m_view->behaveAsPlasmaPanel()) {
                 position = {availableScreenRect.x(), availableScreenRect.y() + length(availableScreenRect.height())};
             } else {
                 position = {availableScreenRect.x(), availableScreenRect.y()};
