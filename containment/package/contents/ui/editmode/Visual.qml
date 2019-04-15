@@ -50,6 +50,7 @@ Item{
     property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
     property bool editAnimationEnded: false
+    property bool editAnimationInFullThickness: false
     property bool plasmaEditMode: plasmoid.userConfiguring
     property bool inEditMode: false
 
@@ -377,6 +378,7 @@ Item{
                 ScriptAction{
                     script:{
                         editVisual.editAnimationEnded = true;
+                        editVisual.editAnimationInFullThickness = true;
                         updateEffectsArea();
                         updateAutomaticIconSize();
                         visibilityManager.updateMaskArea();
@@ -390,6 +392,7 @@ Item{
             SequentialAnimation{
                 ScriptAction{
                     script: {
+                        editVisual.editAnimationInFullThickness = false;
                         //! remove kwin effects when starting the animation
                         latteView.effects.rect = Qt.rect(-1, -1, 0, 0);
                     }

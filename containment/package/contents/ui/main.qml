@@ -562,7 +562,7 @@ DragDrop.DropArea {
     }
 
     Behavior on offset {
-        enabled: editModeVisual.plasmaEditMode
+        enabled: editModeVisual.editAnimationInFullThickness
         NumberAnimation {
             id: offsetAnimation
 
@@ -626,6 +626,7 @@ DragDrop.DropArea {
             }
         }
 
+        LayoutManager.save();
         updateIndexes();
     }
 
