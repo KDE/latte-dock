@@ -367,7 +367,7 @@ DragDrop.DropArea {
 
     property int panelUserSetAlignment: plasmoid.configuration.panelPosition
 
-    property real zoomFactor: Latte.WindowSystem.compositingActive ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
+    property real zoomFactor: Latte.WindowSystem.compositingActive && root.animationsEnabled ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 

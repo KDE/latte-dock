@@ -282,9 +282,9 @@ PlasmaComponents.Page {
                     }
 
                     LatteComponents.Slider {
-                        Layout.fillWidth: true
                         id: zoomSlider
-
+                        Layout.fillWidth: true
+                        enabled: plasmoid.configuration.animationsEnabled
                         value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
                         from: 1
                         to: 2
