@@ -128,12 +128,6 @@ PrimaryConfigView::~PrimaryConfigView()
     for (const auto &var : connections) {
         QObject::disconnect(var);
     }
-
-    if (m_shellSurface) {
-        delete m_shellSurface;
-        m_shellSurface = nullptr;
-    }
-
 }
 
 void PrimaryConfigView::init()
@@ -379,14 +373,16 @@ void PrimaryConfigView::showEvent(QShowEvent *ev)
 void PrimaryConfigView::hideEvent(QHideEvent *ev)
 {
     if (!m_latteView) {
-        QQuickWindow::hideEvent(ev);
+        deleteLater();
+        //QQuickWindow::hideEvent(ev);
         return;
     }
 
-    if (m_latteView->containment())
+    if (m_latteView->containment()) {
         m_latteView->containment()->setUserConfiguring(false);
+    }
 
-    QQuickWindow::hideEvent(ev);
+   // QQuickWindow::hideEvent(ev);
 
     const auto mode = m_latteView->visibility()->mode();
 
@@ -474,7 +470,6 @@ bool PrimaryConfigView::event(QEvent *e)
                     delete m_shellSurface;
                     m_shellSurface = nullptr;
                     qDebug() << "WAYLAND config window surface was deleted...";
-                    PanelShadows::self()->removeWindow(this);
                 }
 
                 break;

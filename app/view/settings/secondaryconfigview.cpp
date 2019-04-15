@@ -105,12 +105,6 @@ SecondaryConfigView::~SecondaryConfigView()
     for (const auto &var : connections) {
         QObject::disconnect(var);
     }
-
-    if (m_shellSurface) {
-        delete m_shellSurface;
-        m_shellSurface = nullptr;
-    }
-
 }
 
 void SecondaryConfigView::init()
@@ -371,7 +365,6 @@ bool SecondaryConfigView::event(QEvent *e)
                     delete m_shellSurface;
                     m_shellSurface = nullptr;
                     qDebug() << "WAYLAND secondary config window surface was deleted...";
-                    PanelShadows::self()->removeWindow(this);
                 }
 
                 break;
