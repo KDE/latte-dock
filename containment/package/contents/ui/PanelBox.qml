@@ -48,7 +48,7 @@ Item{
     }
 
     property int panelWidth: {
-        if (root.behaveAsPlasmaPanel && !root.editMode) {
+        if (root.behaveAsPlasmaPanel && Latte.WindowSystem.compositingActive && !root.editMode) {
             return root.width;
         } else {
             if ((root.panelAlignment === Latte.Types.Justify) && root.isHorizontal) {
@@ -60,7 +60,7 @@ Item{
     }
 
     property int panelHeight: {
-        if (root.behaveAsPlasmaPanel && !root.editMode) {
+        if (root.behaveAsPlasmaPanel && Latte.WindowSystem.compositingActive && !root.editMode) {
             return root.height;
         } else {
             if ((root.panelAlignment === Latte.Types.Justify) && root.isVertical) {
