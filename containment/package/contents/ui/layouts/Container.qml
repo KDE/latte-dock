@@ -33,7 +33,7 @@ Item{
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
     readonly property bool useMaxLength: (plasmoid.configuration.panelPosition === Latte.Types.Justify && !root.inConfigureAppletsMode)
-                                      /*   && ((!root.inConfigureAppletsMode && !root.behaveAsPlasmaPanel )
+    /*   && ((!root.inConfigureAppletsMode && !root.behaveAsPlasmaPanel )
                                              || (behaveAsPlasmaPanel && root.inConfigureAppletsMode))*/
 
     property int allCount: root.latteApplet ? _mainLayout.count-1+latteApplet.tasksCount : _mainLayout.count
@@ -169,533 +169,91 @@ Item{
         active: root.scrollAction !== Latte.Types.ScrollNone || root.dragActiveWindowEnabled
     }
 
-    Grid{
-        id:_startLayout
-
-        columns: root.isVertical ? 1 : 0
-        columnSpacing: 0
-        flow: isHorizontal ? Grid.LeftToRight : Grid.TopToBottom
-        rows: root.isHorizontal ? 1 : 0
-        rowSpacing: 0
-
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
-
-        property int beginIndex: 0
-        property int count: children.length
-
-        //it is used in calculations for fillWidth,fillHeight applets
-        property int sizeWithNoFillApplets: 0
-
-        Binding{
-            target: _startLayout
-            property:"sizeWithNoFillApplets"
-            when: _startLayout
-            value: {
-                if (!visibilityManager || !visibilityManager.normalState)
-                    return;
-
-                var space = 0;
-                for (var i=0; i<_startLayout.children.length; ++i){
-                    if (_startLayout.children[i] && !_startLayout.children[i].needsFillSpace && !_startLayout.children[i].isHidden) {
-                        space = root.isHorizontal ? space + _startLayout.children[i].width : space + _startLayout.children[i].height;
-                    }
-                }
-
-                return space;
+    AppletsContainer {
+        id: _startLayout
+        beginIndex: 0
+        offset: root.totalPanelEdgeSpacing/2
+        alignment: {
+            switch(plasmoid.location) {
+            case PlasmaCore.Types.BottomEdge: return Latte.Types.BottomEdgeLeftAlign;
+            case PlasmaCore.Types.TopEdge: return Latte.Types.TopEdgeLeftAlign;
+            case PlasmaCore.Types.LeftEdge: return Latte.Types.LeftEdgeTopAlign;
+            case PlasmaCore.Types.RightEdge: return Latte.Types.RightEdgeTopAlign;
             }
+
+            return Latte.Types.BottomEdgeLeftAlign;
         }
-
-        property int shownApplets: {
-            var res = 0;
-
-            for (var i=0; i<children.length; ++i){
-                if (children[i] && children[i].applet
-                        && (children[i].applet.status === PlasmaCore.Types.HiddenStatus || children[i].isInternalViewSplitter)) {
-                    //do nothing
-                } else if (children[i] && children[i].applet){
-                    res = res + 1;
-                }
-            }
-
-            return res;
-        }
-
-        //it is used in calculations for fillWidth,fillHeight applets
-        property int fillApplets:{
-            var no = 0;
-            for (var i=0; i<children.length; ++i){
-                if (children[i] && children[i].needsFillSpace) {
-                    //console.log("fill :::: " + children[i].applet.pluginName);
-                    no++;
-                }
-            }
-
-            return no;
-        }
-
-        onFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
-        onShownAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
-        onSizeWithNoFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
-
-        states:[
-            State {
-                name: "bottom"
-                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Types.Justify)
-
-                AnchorChanges {
-                    target: _startLayout
-                    anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _startLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom;
-                    anchors.leftMargin: root.totalPanelEdgeSpacing/2;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                }
-            },
-            State {
-                name: "left"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Justify)
-
-                AnchorChanges {
-                    target: _startLayout
-                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _startLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.totalPanelEdgeSpacing/2;    anchors.bottomMargin:0;
-                }
-            },
-            State {
-                name: "right"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Justify)
-
-                AnchorChanges {
-                    target: _startLayout
-                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _startLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.totalPanelEdgeSpacing/2;    anchors.bottomMargin:0;
-                }
-            },
-            State {
-                name: "top"
-                when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Types.Justify)
-
-                AnchorChanges {
-                    target: _startLayout
-                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _startLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop;
-                    anchors.leftMargin: root.totalPanelEdgeSpacing/2;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                }
-            }
-        ]
     }
 
-    // This is the main Layout, in contrary with the others
-    Grid{
+    AppletsContainer {
         id: _mainLayout
+        beginIndex: 100
+        offset: centered ? appliedOffset : root.offsetFixed
 
-        columns: root.isVertical ? 1 : 0
-        columnSpacing: 0
-        flow: isHorizontal ? Grid.LeftToRight : Grid.TopToBottom
-        rows: root.isHorizontal ? 1 : 0
-        rowSpacing: 0
-
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
-
-        property int beginIndex: 100
-        property int count: children.length
-        //it is used in calculations for fillWidth,fillHeight applets
-        property int sizeWithNoFillApplets: 0
-
-        Binding{
-            target: _mainLayout
-            property:"sizeWithNoFillApplets"
-            when: _mainLayout
-            value: {
-                //! in EditMode we must update that size because the user may add new applets
-                //! and the contents may go out of bounds
-                if (!visibilityManager || (!visibilityManager.normalState && !root.inConfigureAppletsMode))
-                    return;
-
-                var space = 0;
-                for (var i=0; i<_mainLayout.children.length; ++i){
-                    if (_mainLayout.children[i] && !_mainLayout.children[i].needsFillSpace && !_mainLayout.children[i].isHidden) {
-                        space = root.isHorizontal ? space + _mainLayout.children[i].width : space + _mainLayout.children[i].height;
-                    }
-                }
-
-                return space;
-            }
-        }
-
-        property int shownApplets: {
-            var res = 0;
-
-            for (var i=0; i<children.length; ++i){
-                if (children[i] && children[i].applet
-                        && (children[i].applet.status === PlasmaCore.Types.HiddenStatus || children[i].isInternalViewSplitter)) {
-                    //do nothing
-                } else if (children[i] && children[i].applet){
-                    res = res + 1;
-                }
-            }
-
-            return res;
-        }
-
-        //it is used in calculations for fillWidth,fillHeight applets
-        property int fillApplets:{
-            var no = 0;
-            for (var i=0; i<children.length; ++i){
-                if (children[i] && children[i].needsFillSpace) {
-                    //console.log("fill :::: " + children[i].applet.pluginName);
-                    no++;
-                }
-            }
-
-            return no;
-        }
-
-        onCountChanged: {
-            if (root.editMode) {
-                //! this is mainly used when removing/adding internal view splitters
-                //! in order to not break the parabolic effect from wrong indexes
-                root.updateIndexes();
-            }
-        }
-        onFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
-        onShownAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
-        onSizeWithNoFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
-
-        transitions: Transition {
-            enabled: editModeVisual.plasmaEditMode
-            AnchorAnimation {
-                duration: 0.8 * root.animationTime
-                easing.type: Easing.OutCubic
-            }
-        }
-
+        readonly property bool centered: (root.panelAlignment === Latte.Types.Center) || (root.panelAlignment === Latte.Types.Justify)
+        readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
         readonly property int appliedOffset: root.panelAlignment === Latte.Types.Justify ? 0 : root.offset
 
-        //////////////////////////BEGIN states
-        //user set Panel Positions
-        // 0-Center, 1-Left, 2-Right, 3-Top, 4-Bottom
-        states: [
-            ///Left Edge
-            State {
-                name: "leftCenter"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&((root.panelAlignment === Latte.Types.Center)||(root.panelAlignment === Latte.Types.Justify))
+        alignment: {
+            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                if (centered) return Latte.Types.LeftEdgeCenterAlign;
+                if (root.panelAlignment === Latte.Types.Top) return Latte.Types.LeftEdgeTopAlign;
+                if (root.panelAlignment === Latte.Types.Bottom) return Latte.Types.LeftEdgeBottomAlign;
+            }
 
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: appliedOffset;
-                }
-            },
-            State {
-                name: "leftTop"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Top)
+            if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                if (centered) return Latte.Types.RightEdgeCenterAlign;
+                if (root.panelAlignment === Latte.Types.Top) return Latte.Types.RightEdgeTopAlign;
+                if (root.panelAlignment === Latte.Types.Bottom) return Latte.Types.RightEdgeBottomAlign;
+            }
 
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offsetFixed;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            },
-            State {
-                name: "leftBottom"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Bottom)
+            if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                if (centered) return Latte.Types.BottomEdgeCenterAlign;
 
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
+                if ((root.panelAlignment === Latte.Types.Left && !reversed)
+                        || (root.panelAlignment === Latte.Types.Right && reversed)) {
+                    return Latte.Types.BottomEdgeLeftAlign;
                 }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offsetFixed;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            },
-            ///Right Edge
-            State {
-                name: "rightCenter"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&((root.panelAlignment === Latte.Types.Center)||(root.panelAlignment === Latte.Types.Justify))
 
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: appliedOffset;
-                }
-            },
-            State {
-                name: "rightTop"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Top)
-
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offsetFixed;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            },
-            State {
-                name: "rightBottom"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Bottom)
-
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offsetFixed;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            },
-            ///Bottom Edge
-            State {
-                name: "bottomCenter"
-                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&((root.panelAlignment === Latte.Types.Center)||(root.panelAlignment === Latte.Types.Justify))
-
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: appliedOffset; anchors.verticalCenterOffset: 0;
-                }
-            },
-            State {
-                name: "bottomLeft"
-                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                      &&(((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                         || ((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
-
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                    anchors.leftMargin: root.offsetFixed;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            },
-            State {
-                name: "bottomRight"
-                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                      &&(((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                         ||((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
-
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                    anchors.leftMargin: 0;    anchors.rightMargin:root.offsetFixed;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            },
-            ///Top Edge
-            State {
-                name: "topCenter"
-                when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&((root.panelAlignment === Latte.Types.Center)||(root.panelAlignment === Latte.Types.Justify))
-
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: appliedOffset; anchors.verticalCenterOffset: 0;
-                }
-            },
-            State {
-                name: "topLeft"
-                when: (plasmoid.location === PlasmaCore.Types.TopEdge)
-                      &&(((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                         || ((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
-
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                    anchors.leftMargin: root.offsetFixed;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            },
-            State {
-                name: "topRight"
-                when: (plasmoid.location === PlasmaCore.Types.TopEdge)
-                      &&(((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                         ||((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
-
-                AnchorChanges {
-                    target: _mainLayout
-                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                    anchors.leftMargin: 0;    anchors.rightMargin:root.offsetFixed;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                if ((root.panelAlignment === Latte.Types.Right && !reversed)
+                        || (root.panelAlignment === Latte.Types.Left && reversed)) {
+                    return Latte.Types.BottomEdgeRightAlign;
                 }
             }
-        ]
-        ////////////////END states
 
+            if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                if (centered) return Latte.Types.TopEdgeCenterAlign;
+
+                if ((root.panelAlignment === Latte.Types.Left && !reversed)
+                        || (root.panelAlignment === Latte.Types.Right && reversed)) {
+                    return Latte.Types.TopEdgeLeftAlign;
+                }
+
+                if ((root.panelAlignment === Latte.Types.Right && !reversed)
+                        || (root.panelAlignment === Latte.Types.Left && reversed)) {
+                    return Latte.Types.TopEdgeRightAlign;
+                }
+            }
+
+            return Latte.Types.BottomEdgeCenterAlign;
+        }
     }
 
-    Grid{
-        id:_endLayout
-
-        columns: root.isVertical ? 1 : 0
-        columnSpacing: 0
-        flow: isHorizontal ? Grid.LeftToRight : Grid.TopToBottom
-        rows: root.isHorizontal ? 1 : 0
-        rowSpacing: 0
-
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
-
-        property int beginIndex: 200
-        property int count: children.length
-
-        //it is used in calculations for fillWidth,fillHeight applets
-        property int sizeWithNoFillApplets: 0
-
-        Binding{
-            target: _endLayout
-            property:"sizeWithNoFillApplets"
-            when: _endLayout
-            value: {
-                if (!visibilityManager || !visibilityManager.normalState)
-                    return;
-
-                var space = 0;
-                for (var i=0; i<_endLayout.children.length; ++i){
-                    if (_endLayout.children[i] && !_endLayout.children[i].needsFillSpace && !_endLayout.children[i].isHidden) {
-                        space = root.isHorizontal ? space + _endLayout.children[i].width : space + _endLayout.children[i].height;
-                    }
-                }
-
-                return space;
+    AppletsContainer {
+        id: _endLayout
+        beginIndex: 200
+        offset: root.totalPanelEdgeSpacing/2
+        alignment: {
+            switch(plasmoid.location) {
+            case PlasmaCore.Types.BottomEdge: return Latte.Types.BottomEdgeRightAlign;
+            case PlasmaCore.Types.TopEdge: return Latte.Types.TopEdgeRightAlign;
+            case PlasmaCore.Types.LeftEdge: return Latte.Types.LeftEdgeBottomAlign;
+            case PlasmaCore.Types.RightEdge: return Latte.Types.RightEdgeBottomAlign;
             }
+
+            return Latte.Types.BottomEdgeLeftAlign;
         }
-
-        property int shownApplets: {
-            var res = 0;
-
-            for (var i=0; i<children.length; ++i){
-                if (children[i] && children[i].applet
-                        && (children[i].applet.status === PlasmaCore.Types.HiddenStatus || children[i].isInternalViewSplitter)) {
-                    //do nothing
-                } else if (children[i] && children[i].applet){
-                    res = res + 1;
-                }
-            }
-
-            return res;
-        }
-
-        //it is used in calculations for fillWidth,fillHeight applets
-        property int fillApplets:{
-            var no = 0;
-            for (var i=0; i<children.length; ++i){
-                if (children[i] && children[i].needsFillSpace) {
-                    //console.log("fill :::: " + children[i].applet.pluginName);
-                    no++;
-                }
-            }
-
-            return no;
-        }
-
-        onFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
-        onShownAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
-        onSizeWithNoFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
-
-        states:[
-            State {
-                name: "bottom"
-                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Types.Justify)
-
-                AnchorChanges {
-                    target: _endLayout
-                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _endLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                    anchors.leftMargin: 0;    anchors.rightMargin:root.totalPanelEdgeSpacing/2;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                }
-            },
-            State {
-                name: "left"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Justify)
-
-                AnchorChanges {
-                    target: _endLayout
-                    anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _endLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.totalPanelEdgeSpacing/2;
-                }
-            },
-            State {
-                name: "right"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Justify)
-
-                AnchorChanges {
-                    target: _endLayout
-                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _endLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.totalPanelEdgeSpacing/2;
-                }
-            },
-            State {
-                name: "top"
-                when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Types.Justify)
-
-                AnchorChanges {
-                    target: _endLayout
-                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: _endLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                    anchors.leftMargin: 0;    anchors.rightMargin:root.totalPanelEdgeSpacing/2;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                }
-            }
-        ]
     }
-
 
     function updateSizeForAppletsInFill() {
         if (!updateSizeForAppletsInFillTimer.running) {

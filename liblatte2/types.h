@@ -66,6 +66,23 @@ public:
     };
     Q_ENUM(Alignment);
 
+    enum EdgesAndAlignments
+    {
+        BottomEdgeCenterAlign = 0,
+        BottomEdgeLeftAlign,
+        BottomEdgeRightAlign,
+        TopEdgeCenterAlign,
+        TopEdgeLeftAlign,
+        TopEdgeRightAlign,
+        LeftEdgeCenterAlign,
+        LeftEdgeTopAlign,
+        LeftEdgeBottomAlign,
+        RightEdgeCenterAlign,
+        RightEdgeTopAlign,
+        RightEdgeBottomAlign
+    };
+    Q_ENUM(EdgesAndAlignments);
+
     enum SessionType
     {
         DefaultSession = 0,

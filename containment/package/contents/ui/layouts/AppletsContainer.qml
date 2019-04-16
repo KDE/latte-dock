@@ -38,7 +38,6 @@ Grid {
     property int alignment: Latte.Types.BottomEdgeCenterAlign
     property int beginIndex: 0
     property int offset: 0
-    property int lastMargin: 0
 
     readonly property int count: children.length
 
