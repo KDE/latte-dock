@@ -346,7 +346,7 @@ Item{
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 
-            imagePath: Latte.WindowSystem.compositingActive ? "widgets/panel-background" : "opaque/dialogs/background"
+            imagePath: "widgets/panel-background"
 
             onWidthChanged: updateEffectsArea();
             onHeightChanged: updateEffectsArea();

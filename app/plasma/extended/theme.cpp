@@ -111,22 +111,22 @@ bool Theme::isDarkTheme() const
 
 int Theme::bottomEdgeRoundness() const
 {
-    return m_compositing ? m_bottomEdgeRoundness : m_solidBottomEdgeRoundness;
+    return m_bottomEdgeRoundness;
 }
 
 int Theme::leftEdgeRoundness() const
 {
-    return m_compositing ? m_leftEdgeRoundness : m_solidLeftEdgeRoundness;
+    return m_leftEdgeRoundness;
 }
 
 int Theme::topEdgeRoundness() const
 {
-    return m_compositing ? m_topEdgeRoundness : m_solidTopEdgeRoundness;
+    return m_topEdgeRoundness;
 }
 
 int Theme::rightEdgeRoundness() const
 {
-    return m_compositing ? m_rightEdgeRoundness : m_solidRightEdgeRoundness;
+    return m_rightEdgeRoundness;
 }
 
 int Theme::outlineWidth() const
@@ -386,55 +386,9 @@ void Theme::loadCompositingRoundness()
     svg->deleteLater();
 }
 
-void Theme::loadNonCompositingRoundness()
-{
-    Plasma::FrameSvg *svg = new Plasma::FrameSvg(this);
-    svg->setImagePath(QStringLiteral("opaque/dialogs/background"));
-    svg->setEnabledBorders(Plasma::FrameSvg::AllBorders);
-    svg->resizeFrame(QSize(100,100));
-
-    //! bottom roundness
-    if (svg->hasElementPrefix("south")) {
-        svg->setElementPrefix("south");
-    }
-    m_solidBottomEdgeRoundness = roundness(svg, Plasma::Types::BottomEdge);
-
-    //! left roundness
-    if (svg->hasElementPrefix("west")) {
-        svg->setElementPrefix("west");
-    } else {
-        svg->setElementPrefix("");
-    }
-    m_solidLeftEdgeRoundness = roundness(svg, Plasma::Types::LeftEdge);
-
-    //! top roundness
-    if (svg->hasElementPrefix("north")) {
-        svg->setElementPrefix("north");
-    } else {
-        svg->setElementPrefix("");
-    }
-    m_solidTopEdgeRoundness = roundness(svg, Plasma::Types::TopEdge);
-
-    //! right roundness
-    if (svg->hasElementPrefix("east")) {
-        svg->setElementPrefix("east");
-    } else {
-        svg->setElementPrefix("");
-    }
-    m_solidRightEdgeRoundness = roundness(svg, Plasma::Types::RightEdge);
-
-    qDebug() << " NON-COMPOSITING MASK ::: " << svg->mask();
-    qDebug() << " NON-COMPOSITING MASK BOUNDING RECT ::: " << svg->mask().boundingRect();
-    qDebug() << " NON-COMPOSITING ROUNDNESS ::: " <<
-                m_solidBottomEdgeRoundness << " _ " << m_solidLeftEdgeRoundness << " _ " << m_solidTopEdgeRoundness << " _ " << m_solidRightEdgeRoundness;
-
-    svg->deleteLater();
-}
-
 void Theme::loadRoundness()
 {
     loadCompositingRoundness();
-    loadNonCompositingRoundness();
 
     emit roundnessChanged();
 }

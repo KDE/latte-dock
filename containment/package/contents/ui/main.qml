@@ -1836,7 +1836,7 @@ DragDrop.DropArea {
 
     VisibilityManager{ id: visibilityManager }
 
-    Layouts.Container {
+    Layouts.LayoutsContainer {
         id: layoutsContainer
     }
 

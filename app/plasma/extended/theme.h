@@ -107,7 +107,6 @@ private:
     void loadThemePaths();
     void loadRoundness();
     void loadCompositingRoundness();
-    void loadNonCompositingRoundness();
 
     void setOriginalSchemeFile(const QString &file);
     void parseThemeSvgFiles();
@@ -125,11 +124,6 @@ private:
     int m_leftEdgeRoundness{0};
     int m_topEdgeRoundness{0};
     int m_rightEdgeRoundness{0};
-
-    int m_solidBottomEdgeRoundness{0};
-    int m_solidLeftEdgeRoundness{0};
-    int m_solidTopEdgeRoundness{0};
-    int m_solidRightEdgeRoundness{0};
 
     int m_outlineWidth{1};
 

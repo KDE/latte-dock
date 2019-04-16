@@ -260,6 +260,12 @@ Item{
         }
     }
 
+    Connections{
+        target: themeExtended ? themeExtended : null
+        onRoundnessChanged: latteView.effects.forceMaskRedraw();
+        onThemeChanged: latteView.effects.forceMaskRedraw();
+    }
+
     onNormalStateChanged: {
         if (normalState) {
             root.updateAutomaticIconSize();

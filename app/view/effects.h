@@ -92,6 +92,8 @@ public:
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
 public slots:
+    Q_INVOKABLE void forceMaskRedraw();
+
     void clearShadows();
     void updateShadows();
     void updateEffects();

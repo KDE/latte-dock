@@ -312,6 +312,19 @@ void Effects::setMask(QRect area)
     emit maskChanged();
 }
 
+void Effects::forceMaskRedraw()
+{
+    if (m_background) {
+        delete m_background;
+    }
+
+    m_background = new Plasma::FrameSvg(this);
+    m_background->setImagePath(QStringLiteral("widgets/panel-background"));
+    m_background->setEnabledBorders(m_enabledBorders);
+
+    updateMask();
+}
+
 void Effects::updateMask()
 {
     if (KWindowSystem::compositingActive()) {
@@ -326,12 +339,16 @@ void Effects::updateMask()
         //! rounded corners to be shown correctly
         //! the enabledBorders check was added because there was cases
         //! that the mask region wasn't calculated correctly after location changes
-        if (!m_background || m_background->enabledBorders() != m_enabledBorders) {
+        if (!m_background) {
+            if (m_background && m_background->enabledBorders() != m_enabledBorders) {
+                delete m_background;
+            }
+
             m_background = new Plasma::FrameSvg(this);
         }
 
-        if (m_background->imagePath() != "opaque/dialogs/background") {
-            m_background->setImagePath(QStringLiteral("opaque/dialogs/background"));
+        if (m_background->imagePath() != "widgets/panel-background") {
+            m_background->setImagePath(QStringLiteral("widgets/panel-background"));
         }
 
         m_background->setEnabledBorders(m_enabledBorders);
