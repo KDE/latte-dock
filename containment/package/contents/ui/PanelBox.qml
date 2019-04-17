@@ -72,10 +72,10 @@ Item{
     }
 
     property int spacing: {
-        if (!Latte.WindowSystem.compositingActive) {
+        if (root.panelAlignment === Latte.Types.Justify && plasmoid.configuration.maxLength === 100) {
             return 0;
-        } else if (root.panelAlignment === Latte.Types.Justify && plasmoid.configuration.maxLength === 100) {
-            return 0;
+        } else if (!Latte.WindowSystem.compositingActive) {
+            return root.panelEdgeSpacing/2;
         } else if (root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify || root.offset!==0) {
             return root.panelEdgeSpacing/2;
         } else {
