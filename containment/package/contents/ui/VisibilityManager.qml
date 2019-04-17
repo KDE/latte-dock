@@ -238,8 +238,7 @@ Item{
                || ((root.backgroundOnlyOnMaximized
                     || plasmoid.configuration.solidBackgroundForMaximized
                     || root.disablePanelShadowMaximized
-                    || root.windowColors !== Latte.Types.NoneWindowColors)
-                   && Latte.WindowSystem.compositingActive)
+                    || root.windowColors !== Latte.Types.NoneWindowColors))
     }
 
     Connections{

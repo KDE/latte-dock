@@ -116,7 +116,7 @@ Loader{
     readonly property color textColor: {
         if (latteView && latteView.managedLayout
                 && root.inConfigureAppletsMode
-                && !Latte.WindowSystem.compositingActive
+                && Latte.WindowSystem.compositingActive
                 && root.panelTransparency<40
                 && (root.themeColors === Latte.Types.SmartThemeColors)) {
             return latteView.managedLayout.textColor;
@@ -141,6 +141,10 @@ Loader{
 
     readonly property string scheme: {
         if (root.inConfigureAppletsMode && (root.themeColors === Latte.Types.SmartThemeColors)) {
+            if (!Latte.WindowSystem.compositingActive && applyTheme !== theme) {
+                return applyTheme.schemeFile;
+            }
+
             //! in edit mode (that is shown the edit visual without opacity)
             //! take care the applets that need a proper color scheme to paint themselves
             if ((editModeTextColorIsBright && themeExtended.isLightTheme)
