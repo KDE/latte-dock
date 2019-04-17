@@ -457,17 +457,17 @@ Item {
         property bool pressed: false
 
         onMousePressed: {
-            if (appletItem.containsPos(Qt.point(x, y))) {
+            if (appletItem.containsPos(pos)) {
                 viewSignalsConnector.pressed = true;
-                var local = appletItem.mapFromItem(root, x, y);
+                var local = appletItem.mapFromItem(root, pos.x, pos.y);
                 appletItem.mousePressed(local.x, local.y, button);
             }
         }
 
         onMouseReleased: {
-            if (appletItem.containsPos(Qt.point(x, y))) {
+            if (appletItem.containsPos(pos)) {
                 viewSignalsConnector.pressed = false;
-                var local = appletItem.mapFromItem(root, x, y);
+                var local = appletItem.mapFromItem(root, pos.x, pos.y);
                 appletItem.mouseReleased(local.x, local.y, button);
             }
         }

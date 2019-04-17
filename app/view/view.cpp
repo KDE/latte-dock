@@ -1039,12 +1039,12 @@ bool View::event(QEvent *e)
 
         case QEvent::MouseButtonPress:
             if (auto mouseEvent = dynamic_cast<QMouseEvent *>(e)) {
-                emit mousePressed(mouseEvent->x(), mouseEvent->y(), mouseEvent->button());
+                emit mousePressed(mouseEvent->pos(), mouseEvent->button());
             }
             break;
         case QEvent::MouseButtonRelease:
             if (auto mouseEvent = dynamic_cast<QMouseEvent *>(e)) {
-                emit mouseReleased(mouseEvent->x(), mouseEvent->y(), mouseEvent->button());
+                emit mouseReleased(mouseEvent->pos(), mouseEvent->button());
             }
             break;
 

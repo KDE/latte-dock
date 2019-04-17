@@ -227,8 +227,8 @@ protected:
 
 signals:
     void eventTriggered(QEvent *ev);
-    void mousePressed(const int x, const int y, const int button);
-    void mouseReleased(const int x, const int y, const int button);
+    void mousePressed(const QPoint pos, const int button);
+    void mouseReleased(const QPoint pos, const int button);
 
     void activitiesChanged();
     void alternativesIsShownChanged();
