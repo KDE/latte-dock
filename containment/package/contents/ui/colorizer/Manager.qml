@@ -114,7 +114,10 @@ Loader{
 
     readonly property color backgroundColor:applyTheme.backgroundColor
     readonly property color textColor: {
-        if (latteView && latteView.managedLayout && root.inConfigureAppletsMode && root.panelTransparency<40
+        if (latteView && latteView.managedLayout
+                && root.inConfigureAppletsMode
+                && !Latte.WindowSystem.compositingActive
+                && root.panelTransparency<40
                 && (root.themeColors === Latte.Types.SmartThemeColors)) {
             return latteView.managedLayout.textColor;
         }
