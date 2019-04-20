@@ -30,6 +30,7 @@ Item{
     property int shadowDirection: PlasmaCore.Types.BottomEdge
     property int shadowSize: 7
     property real shadowOpacity: 1
+    property color shadowColor: "#040404"
 
     readonly property bool isHorizontal : (shadowDirection !== PlasmaCore.Types.LeftEdge) && (shadowDirection !== PlasmaCore.Types.RightEdge)
 
@@ -55,7 +56,7 @@ Item{
                 radius: shadowSize
                 fast: true
                 samples: 2 * radius
-                color: "#040404"
+                color: shadowRoot.shadowColor
             }
         }
 
@@ -67,8 +68,7 @@ Item{
 
                 AnchorChanges {
                     target: editShadow
-                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined;
-                        horizontalCenter:parent.horizontalCenter; verticalCenter:parent.undefined}
+                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined}
                 }
                 PropertyChanges{
                     target: editShadow
@@ -82,8 +82,7 @@ Item{
 
                 AnchorChanges {
                     target: editShadow
-                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;
-                        horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                    anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined}
                 }
                 PropertyChanges{
                     target: editShadow
@@ -97,8 +96,7 @@ Item{
 
                 AnchorChanges {
                     target: editShadow
-                    anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
-                        horizontalCenter:undefined; verticalCenter:undefined}
+                    anchors{ top:parent.top; bottom: undefined; left:parent.left; right:undefined}
                 }
                 PropertyChanges{
                     target: editShadow
@@ -112,8 +110,7 @@ Item{
 
                 AnchorChanges {
                     target: editShadow
-                    anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
-                        horizontalCenter:undefined; verticalCenter:undefined}
+                    anchors{top:parent.top; bottom:undefined; left:undefined; right:parent.right}
                 }
                 PropertyChanges{
                     target: editShadow

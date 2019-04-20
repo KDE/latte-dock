@@ -89,6 +89,7 @@ Item {
         checkedBackgroundColor: colorizerManager.buttonFocusColor
 
         checked: root.inConfigureAppletsMode
+        hoveredExternal: rearrangeTooltipBtn.hovered
 
         property color normalBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
                                                  colorizerManager.buttonHoverColor.g,
@@ -108,6 +109,7 @@ Item {
     }
 
     PlasmaComponents.Button {
+        id: rearrangeTooltipBtn
         anchors.fill: rearrangeBtn
         opacity: 0
         tooltip: headerSettings.tooltip

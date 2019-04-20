@@ -575,7 +575,6 @@ MouseArea{
             restoreAnimation.stop();
         }
 
-        // console.log("entered task:" + icList.hoveredIndex);
         if (icList.hoveredIndex === -1 && root.dockHoveredIndex ===-1) {
             root.startDirectRenderDelayerDuringEntering();
         }
@@ -834,7 +833,7 @@ MouseArea{
         }
     }
 
-    onWheel: {
+    onWheel: {      
         if (isSeparator || !root.mouseWheelActions || wheelIsBlocked || inBouncingAnimation
                 || (latteView && (latteView.dockIsHidden || latteView.inSlidingIn || latteView.inSlidingOut))){
 
@@ -848,38 +847,46 @@ MouseArea{
 
         //positive direction
         if (angle > 12) {
-            if (isLauncher || root.disableAllWindowsFunctionality) {
-                wrapper.runLauncherAnimation();
-            } else if (isGroupParent) {
-                subWindows.activateNextTask();
+            if (root.scrollingEnabled && scrollableList.contentsExceed) {
+                scrollableList.increasePos();
             } else {
-                var taskIndex = modelIndex();
+                if (isLauncher || root.disableAllWindowsFunctionality) {
+                    wrapper.runLauncherAnimation();
+                } else if (isGroupParent) {
+                    subWindows.activateNextTask();
+                } else {
+                    var taskIndex = modelIndex();
 
-                if (isMinimized) {
-                    tasksModel.requestToggleMinimized(taskIndex);
+                    if (isMinimized) {
+                        tasksModel.requestToggleMinimized(taskIndex);
+                    }
+
+                    tasksModel.requestActivate(taskIndex);
                 }
 
-                tasksModel.requestActivate(taskIndex);
+                hidePreviewWindow();
             }
-
-            hidePreviewWindow();
-            //negative direction
         } else if (angle < -12) {
-            if (isLauncher || root.disableAllWindowsFunctionality) {
-                // do nothing
-            } else if (isGroupParent) {
-                subWindows.activatePreviousTask();
+            //negative direction
+            if (root.scrollingEnabled && scrollableList.contentsExceed) {
+                scrollableList.decreasePos();
             } else {
-                var taskIndex = modelIndex();
+                if (isLauncher || root.disableAllWindowsFunctionality) {
+                    // do nothing
+                } else if (isGroupParent) {
+                    subWindows.activatePreviousTask();
+                } else {
+                    var taskIndex = modelIndex();
 
-                if (isMinimized) {
-                    tasksModel.requestToggleMinimized(taskIndex);
+                    if (isMinimized) {
+                        tasksModel.requestToggleMinimized(taskIndex);
+                    }
+
+                    tasksModel.requestActivate(taskIndex);
                 }
 
-                tasksModel.requestActivate(taskIndex);
+                hidePreviewWindow();
             }
-
-            hidePreviewWindow();
         }
     }
 

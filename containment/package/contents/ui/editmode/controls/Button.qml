@@ -35,11 +35,12 @@ Item{
     signal pressed();
 
     property bool checked: false
+    property bool hoveredExternal: false
     property bool reverseIcon: false
     property string text: "Default Text"
     property string tooltip: ""
 
-    readonly property bool containsMouse: buttonMouseArea.containsMouse
+    readonly property bool containsMouse: buttonMouseArea.containsMouse || hoveredExternal
     readonly property int implicitHeight: visibleButton.height
 
     readonly property color appliedTextColor: checked ? checkedTextColor : textColor

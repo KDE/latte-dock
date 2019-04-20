@@ -41,16 +41,19 @@ import "../code/ColorizerTools.js" as ColorizerTools
 Item {
     id:root
 
-    // Layout.fillHeight: userPanelPosition === 0 ? true : false
-    // Layout.fillWidth: userPanelPosition === 0 ? true : false
+    Layout.fillWidth: scrollingEnabled && !root.vertical ? true : false
+    Layout.fillHeight: scrollingEnabled && root.vertical ? true : false
 
     ///IMPORTANT: These values must be tested when the Now Dock Panel support
     ///also the four new anchors. A small issue is shown between the animation
     /// of the now dock plasmoid and the neighbour widgets...
-    Layout.minimumWidth: (userPanelPosition !== 0)&&(!latteView) ? clearWidth : -1
-    Layout.minimumHeight: (userPanelPosition !== 0)&&(!latteView) ? clearHeight : -1
-    Layout.preferredWidth: (userPanelPosition !== 0)&&(!latteView) ? tasksWidth : -1
-    Layout.preferredHeight: (userPanelPosition !== 0)&&(!latteView) ? tasksHeight : -1
+    Layout.minimumWidth: -1 //(userPanelPosition !== 0)&&(!latteView) ? clearWidth : -1
+    Layout.minimumHeight: -1 //(userPanelPosition !== 0)&&(!latteView) ? clearHeight : -1
+    Layout.preferredWidth: tasksWidth   //(userPanelPosition !== 0)&&(!latteView) ? tasksWidth : tasksWidth
+    Layout.preferredHeight: tasksHeight //(userPanelPosition !== 0)&&(!latteView) ? tasksHeight : tasksHeight
+    Layout.maximumWidth: -1
+    Layout.maximumHeight: -1
+
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft && !root.vertical
     LayoutMirroring.childrenInherit: true
 
@@ -77,8 +80,7 @@ Item {
     property bool useThemePanel: plasmoid.configuration.useThemePanel
     property bool taskInAnimation: noTasksInAnimation > 0 ? true : false
     property bool transparentPanel: plasmoid.configuration.transparentPanel
-    property bool vertical: ((root.position === PlasmaCore.Types.LeftPositioned) ||
-                             (root.position === PlasmaCore.Types.RightPositioned)) ? true : false
+    property bool vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical ? true : false
 
     property int clearWidth
     property int clearHeight
@@ -170,6 +172,8 @@ Item {
                                              plasmoid.configuration.showToolTips
     property bool showWindowActions: latteView ? latteView.showWindowActions : plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: latteView ? latteView.showWindowsOnlyFromLaunchers : false
+
+    property bool scrollingEnabled: true
 
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
@@ -1058,14 +1062,6 @@ Item {
     Item{
         id:barLine
 
-        /*    anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
-
-        anchors.horizontalCenter: !parent.vertical ? parent.horizontalCenter : undefined
-        anchors.verticalCenter: parent.vertical ? parent.verticalCenter : undefined */
-
         width: ( icList.orientation === Qt.Horizontal ) ? icList.width + spacing : smallSize
         height: ( icList.orientation === Qt.Vertical ) ? icList.height + spacing : smallSize
 
@@ -1151,13 +1147,13 @@ Item {
 
         MouseHandler {
             id: mouseHandler
-            anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? icList.bottom : undefined
-            anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? icList.top : undefined
-            anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? icList.left : undefined
-            anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? icList.right : undefined
+            anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? scrollableList.bottom : undefined
+            anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? scrollableList.top : undefined
+            anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? scrollableList.left : undefined
+            anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? scrollableList.right : undefined
 
-            anchors.horizontalCenter: !root.vertical ? icList.horizontalCenter : undefined
-            anchors.verticalCenter: root.vertical ? icList.verticalCenter : undefined
+            anchors.horizontalCenter: !root.vertical ? scrollableList.horizontalCenter : undefined
+            anchors.verticalCenter: root.vertical ? scrollableList.verticalCenter : undefined
 
             width: root.vertical ? maxSize : icList.width
             height: root.vertical ? icList.height : maxSize
@@ -1209,94 +1205,159 @@ Item {
             }
         }
 
+        ScrollableList {
+            id: scrollableList
+            width: !root.vertical ? Math.min(root.width, icList.width) : thickness
+            height: root.vertical ? Math.min(root.height, icList.height) : thickness
+            contentWidth: icList.width
+            contentHeight: icList.height
 
-        ListView {
-            id:icList
-            boundsBehavior: Flickable.StopAtBounds
+            readonly property bool centered: userPanelPosition === Latte.Types.Center
+            readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
 
-            property int currentSpot : -1000
-            property int hoveredIndex : -1
-            property int previousCount : 0
+            property int thickness: !thickAnimated ? root.thickMargins + root.iconSize : (root.thickMargins + root.iconSize) * root.zoomFactor
 
-            property int tasksCount: tasksModel.count
+            readonly property bool thickAnimated: latteView && (latteView.animationsNeedBothAxis>0 || latteView.animationsNeedThickness>0)
 
-            property bool directRender: false
+            //onCurrentPosChanged: console.log("CP :: "+ currentPos + " icW:"+icList.width + " rw: "+root.width + " w:" +width);
 
-            //   onTasksCountChanged: updateImplicits();
+            alignment: {
+                if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                    if (centered) return Latte.Types.LeftEdgeCenterAlign;
+                    if (root.panelAlignment === Latte.Types.Top) return Latte.Types.LeftEdgeTopAlign;
+                    if (root.panelAlignment === Latte.Types.Bottom) return Latte.Types.LeftEdgeBottomAlign;
+                }
 
-            //  property int count: children ? children.length : 0
-            /*   anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-            anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-            anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-            anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+                if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                    if (centered) return Latte.Types.RightEdgeCenterAlign;
+                    if (root.panelAlignment === Latte.Types.Top) return Latte.Types.RightEdgeTopAlign;
+                    if (root.panelAlignment === Latte.Types.Bottom) return Latte.Types.RightEdgeBottomAlign;
+                }
 
-            anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-            anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined  */
+                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                    if (centered) return Latte.Types.BottomEdgeCenterAlign;
 
-            width: !root.vertical ? contentWidth : mouseHandler.maxSize
-            height: root.vertical ? contentHeight : mouseHandler.maxSize
+                    if ((root.panelAlignment === Latte.Types.Left && !reversed)
+                            || (root.panelAlignment === Latte.Types.Right && reversed)) {
+                        return Latte.Types.BottomEdgeLeftAlign;
+                    }
 
-            orientation: Qt.Horizontal
+                    if ((root.panelAlignment === Latte.Types.Right && !reversed)
+                            || (root.panelAlignment === Latte.Types.Left && reversed)) {
+                        return Latte.Types.BottomEdgeRightAlign;
+                    }
+                }
 
-            delegate: Task.TaskItem{}
+                if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                    if (centered) return Latte.Types.TopEdgeCenterAlign;
 
-            /* Rectangle{
-                anchors.fill: parent
-                border.width: 1
-                border.color: "red"
+                    if ((root.panelAlignment === Latte.Types.Left && !reversed)
+                            || (root.panelAlignment === Latte.Types.Right && reversed)) {
+                        return Latte.Types.TopEdgeLeftAlign;
+                    }
+
+                    if ((root.panelAlignment === Latte.Types.Right && !reversed)
+                            || (root.panelAlignment === Latte.Types.Left && reversed)) {
+                        return Latte.Types.TopEdgeRightAlign;
+                    }
+                }
+
+                return Latte.Types.BottomEdgeCenterAlign;
+            }
+
+            layer.enabled: contentsExceed && root.scrollingEnabled
+            layer.effect: OpacityMask {
+                maskSource: ScrollOpacityMask{
+                    width: scrollableList.width + root.lengthMargins
+                    height: scrollableList.height
+                }
+            }
+
+            Rectangle {
+                id: listViewBase
+                x: !root.vertical ? icList.width / 2 : 0
+                y: !root.vertical ? 0 : icList.height / 2
+                width: !root.vertical ? 1 : scrollableList.width
+                height: !root.vertical ? scrollableList.height : 1
                 color: "transparent"
-            } */
+                border.width: 1
+                border.color: "transparent"//"purple"
 
-            //the duration of this animation should be as small as possible
-            //it fixes a small issue with the dragging an item to change it's
-            //position, if the duration is too big there is a point in the
-            //list that an item is going back and forth too fast
+                ListView {
+                    id:icList
+                    width: !root.vertical ? contentWidth : mouseHandler.maxSize
+                    height: root.vertical ? contentHeight : mouseHandler.maxSize
+                    boundsBehavior: Flickable.StopAtBounds
+                    orientation: Qt.Horizontal
+                    delegate: Task.TaskItem{}
 
-            //more of a trouble
-            moveDisplaced: Transition {
-                NumberAnimation { properties: "x,y"; duration: root.durationTime*units.longDuration; easing.type: Easing.Linear }
-            }
+                    property int currentSpot : -1000
+                    property int hoveredIndex : -1
+                    property int previousCount : 0
 
-            ///this transition can not be used with dragging !!!! I breaks
-            ///the lists indexes !!!!!
-            /* move:  Transition {
-                NumberAnimation { properties: "x,y"; duration: 400; easing.type: Easing.Linear }
-            } */
+                    property int tasksCount: tasksModel.count
 
-            function childAtPos(x, y){
-                var tasks = icList.contentItem.children;
+                    property bool directRender: false
 
-                for(var i=0; i<tasks.length; ++i){
-                    var task = tasks[i];
+                    //the duration of this animation should be as small as possible
+                    //it fixes a small issue with the dragging an item to change it's
+                    //position, if the duration is too big there is a point in the
+                    //list that an item is going back and forth too fast
 
-                    var choords = mapFromItem(task,0, 0);
+                    //more of a trouble
+                    moveDisplaced: Transition {
+                        NumberAnimation { properties: "x,y"; duration: root.durationTime*units.longDuration; easing.type: Easing.Linear }
+                    }
 
-                    if( (task.objectName==="TaskItem") && (x>=choords.x) && (x<=choords.x+task.width)
-                            && (y>=choords.y) && (y<=choords.y+task.height)){
-                        return task;
+                    ///this transition can not be used with dragging !!!! I breaks
+                    ///the lists indexes !!!!!
+                    ///move: Transition {
+                    ///    NumberAnimation { properties: "x,y"; duration: 400; easing.type: Easing.Linear }
+                    ///}
+
+                    function childAtPos(x, y){
+                        var tasks = icList.contentItem.children;
+
+                        for(var i=0; i<tasks.length; ++i){
+                            var task = tasks[i];
+
+                            var choords = mapFromItem(task,0, 0);
+
+                            if( (task.objectName==="TaskItem") && (x>=choords.x) && (x<=choords.x+task.width)
+                                    && (y>=choords.y) && (y<=choords.y+task.height)){
+                                return task;
+                            }
+                        }
+
+                        return null;
+                    }
+
+                    function childAtIndex(position) {
+                        var tasks = icList.contentItem.children;
+
+                        if (position < 0)
+                            return;
+
+                        for(var i=0; i<tasks.length; ++i){
+                            var task = tasks[i];
+
+                            if (task.lastValidIndex === position
+                                    || (task.lastValidIndex === -1 && task.itemIndex === position )) {
+                                return task;
+                            }
+                        }
+
+                        return undefined;
                     }
                 }
-
-                return null;
             }
+        } // ScrollableList
 
-            function childAtIndex(position) {
-                var tasks = icList.contentItem.children;
-
-                if (position < 0)
-                    return;
-
-                for(var i=0; i<tasks.length; ++i){
-                    var task = tasks[i];
-
-                    if (task.lastValidIndex === position
-                            || (task.lastValidIndex === -1 && task.itemIndex === position )) {
-                        return task;
-                    }
-                }
-
-                return undefined;
-            }
+        ScrollEdgeShadows {
+            id: scrollShadows
+            width: !root.vertical ? scrollableList.width : thickness
+            height: !root.vertical ? thickness : scrollableList.height
+            visible: scrollableList.contentsExceed
         }
 
         Task.VisualAddItem{
@@ -1306,6 +1367,7 @@ Item {
             visible: opacity == 0 ? false : true
             opacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 1 : 0
         }
+
     }
 
     //// helpers
