@@ -546,6 +546,9 @@ MouseArea{
 
     onIsActiveChanged: {
         checkWindowsStates();
+        if (isActive) {
+            scrollableList.focusOn(taskItem);
+        }
     }
 
     onIsForcedHiddenChanged: root.hiddenTasksUpdated();

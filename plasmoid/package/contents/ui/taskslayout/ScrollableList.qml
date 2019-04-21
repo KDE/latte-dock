@@ -99,19 +99,54 @@ Flickable{
     }
 
     function increasePos() {
+        increasePosWithStep(scrollStep);
+    }
+
+    function decreasePos() {
+        decreasePosWithStep(scrollStep);
+    }
+
+    function increasePosWithStep(step) {
         if (!root.vertical) {
-            contentX = Math.min(scrollLastPos, contentX + scrollStep);
+            contentX = Math.min(scrollLastPos, contentX + step);
         } else {
-            contentY = Math.min(scrollLastPos, contentY + scrollStep);
+            contentY = Math.min(scrollLastPos, contentY + step);
         }
 
     }
 
-    function decreasePos() {
+    function decreasePosWithStep(step) {
         if (!root.vertical) {
-            contentX = Math.max(scrollFirstPos, contentX - scrollStep);
+            contentX = Math.max(scrollFirstPos, contentX - step);
         } else {
-            contentY = Math.max(scrollFirstPos, contentY - scrollStep);
+            contentY = Math.max(scrollFirstPos, contentY - step);
+        }
+    }
+
+    function focusOn(task) {
+        if (!contentsExceed) {
+            return;
+        }
+
+        var cP = task.mapToItem(scrollableList, 0, 0);
+        var distance = 0;
+
+        if (!root.vertical) {
+            if (cP.x < 0) {
+                distance = Math.abs(cP.x - root.iconSize);
+                decreasePosWithStep(distance);
+            } else if ((cP.x+task.width) > scrollableList.width) {
+                distance = Math.abs(cP.x - scrollableList.width + task.width + root.iconSize);
+                increasePosWithStep(distance);
+            }
+        } else {
+            if (cP.y < 0) {
+                distance = Math.abs(cP.y - root.iconSize);
+                decreasePosWithStep(distance);
+            } else if ((cP.y+task.height) > scrollableList.height) {
+                distance = Math.abs(cP.y - scrollableList.height + task.height + root.iconSize);
+                increasePosWithStep(distance);
+            }
         }
     }
 
@@ -134,7 +169,7 @@ Flickable{
     Behavior on contentX {
         NumberAnimation {
             id: horizontalAnimation
-            duration: root.durationTime*units.longDuration
+            duration: root.durationTime*1.7*units.longDuration
             easing.type: Easing.OutQuad
         }
     }
@@ -142,7 +177,7 @@ Flickable{
     Behavior on contentY {
         NumberAnimation {
             id: verticalAnimation
-            duration: root.durationTime*units.longDuration
+            duration: root.durationTime*1.7*units.longDuration
             easing.type: Easing.OutQuad
         }
     }
