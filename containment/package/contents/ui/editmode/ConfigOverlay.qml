@@ -340,7 +340,7 @@ MouseArea {
                         && currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
                 closeButton.visible = !currentApplet.isInternalViewSplitter && currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled
                         && !(currentApplet.applet.pluginName===root.plasmoidName && latteView && latteView.managedLayout.viewsWithTasks()===1 && latteView.tasksPresent());
-                lockButton.visible = !currentApplet.isInternalViewSplitter && (currentApplet.applet.pluginName !== "org.kde.plasma.systemtray")
+                lockButton.visible = !currentApplet.isInternalViewSplitter
                         && (currentApplet.applet.pluginName !== root.plasmoidName)
                         && !currentApplet.isSeparator
                 colorizingButton.visible = root.colorizerEnabled && !currentApplet.appletBlocksColorizing && !currentApplet.isInternalViewSplitter;
