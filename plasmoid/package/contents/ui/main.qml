@@ -33,8 +33,9 @@ import org.kde.activities 0.1 as Activities
 
 import org.kde.latte 0.2 as Latte
 
-import "listlayout" as ListLayout
+import "previews" as Previews
 import "task" as Task
+import "taskslayout" as TasksLayout
 import "../code/tools.js" as TaskTools
 import "../code/activitiesTools.js" as ActivitiesTools
 import "../code/ColorizerTools.js" as ColorizerTools
@@ -538,7 +539,7 @@ Item {
 
     /////Window previews///////////
 
-    ToolTipDelegate2 {
+    Previews.ToolTipDelegate2 {
         id: toolTipDelegate
         visible: false
     }
@@ -1146,7 +1147,7 @@ Item {
         }
 
 
-        ListLayout.MouseHandler {
+        TasksLayout.MouseHandler {
             id: mouseHandler
             anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? scrollableList.bottom : undefined
             anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? scrollableList.top : undefined
@@ -1206,7 +1207,7 @@ Item {
             }
         }
 
-        ListLayout.ScrollableList {
+        TasksLayout.ScrollableList {
             id: scrollableList
             width: !root.vertical ? Math.min(root.width, icList.width) : thickness
             height: root.vertical ? Math.min(root.height, icList.height) : thickness
@@ -1268,7 +1269,7 @@ Item {
 
             layer.enabled: contentsExceed && root.scrollingEnabled
             layer.effect: OpacityMask {
-                maskSource: ListLayout.ScrollOpacityMask{
+                maskSource: TasksLayout.ScrollOpacityMask{
                     width: scrollableList.width + root.lengthMargins
                     height: scrollableList.height
                 }
@@ -1354,7 +1355,7 @@ Item {
             }
         } // ScrollableList
 
-        ListLayout.ScrollEdgeShadows {
+        TasksLayout.ScrollEdgeShadows {
             id: scrollShadows
             width: !root.vertical ? scrollableList.width : thickness
             height: !root.vertical ? thickness : scrollableList.height
