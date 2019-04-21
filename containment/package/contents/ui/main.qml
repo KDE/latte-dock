@@ -189,6 +189,7 @@ DragDrop.DropArea {
     property int animationsNeedBothAxis:0 //animations need space in both axes, e.g zooming a task
     property int animationsNeedLength: 0 // animations need length, e.g. adding a task
     property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
+    readonly property bool thickAnimated: animationsNeedBothAxis>0 || animationsNeedThickness>0
 
     property int animationTime: durationTime*2.8*units.longDuration
 

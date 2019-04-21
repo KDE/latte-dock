@@ -1252,9 +1252,8 @@ Item {
             contentWidth: icList.width
             contentHeight: icList.height
 
-            property int thickness: !thickAnimated ? root.thickMargins + root.iconSize : (root.thickMargins + root.iconSize) * root.zoomFactor
-
-            readonly property bool thickAnimated: latteView && (latteView.animationsNeedBothAxis>0 || latteView.animationsNeedThickness>0)
+            property int thickness: latteView && !latteView.thickAnimated ?
+                                        root.thickMargins + root.iconSize : (root.thickMargins + root.iconSize) * root.zoomFactor
 
             //onCurrentPosChanged: console.log("CP :: "+ currentPos + " icW:"+icList.width + " rw: "+root.width + " w:" +width);
 
