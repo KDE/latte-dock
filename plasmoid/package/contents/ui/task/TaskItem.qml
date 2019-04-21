@@ -1398,7 +1398,7 @@ MouseArea{
     Connections {
         target: scrollableList
         onAnimationsFinishedChanged: {
-            if (!scrollableList.animationsFinished) {
+            if (scrollableList.animationsFinished) {
                 taskItem.slotPublishGeometries();
             }
         }
