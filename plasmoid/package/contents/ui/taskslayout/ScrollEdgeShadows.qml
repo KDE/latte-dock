@@ -30,6 +30,8 @@ Item {
     readonly property int thickness: latteView ? latteView.realPanelSize : root.iconSize + root.thickMargins
     readonly property color appliedColor: root.appShadowColorSolid
 
+    property Item flickable
+
     LinearGradient {
         id: firstGradient
         width: !root.vertical ? gradientLength : shadowsContainer.thickness
@@ -74,8 +76,8 @@ Item {
             }
             AnchorChanges {
                 target: shadowsContainer
-                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;
-                    horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                anchors{ top:undefined; bottom:flickable.bottom; left:undefined; right:undefined;
+                    horizontalCenter:flickable.horizontalCenter; verticalCenter:undefined}
             }
         },
         State {
@@ -94,8 +96,8 @@ Item {
             }
             AnchorChanges {
                 target: shadowsContainer
-                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined;
-                    horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                anchors{ top:flickable.top; bottom:undefined; left:undefined; right:undefined;
+                    horizontalCenter:flickable.horizontalCenter; verticalCenter:undefined}
             }
         },
         State {
@@ -114,8 +116,8 @@ Item {
             }
             AnchorChanges {
                 target: shadowsContainer
-                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
-                    horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                anchors{ top:undefined; bottom:undefined; left:flickable.left; right:undefined;
+                    horizontalCenter:undefined; verticalCenter:flickable.verticalCenter}
             }
         },
         State {
@@ -134,8 +136,8 @@ Item {
             }
             AnchorChanges {
                 target: shadowsContainer
-                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
-                    horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:flickable.right;
+                    horizontalCenter:undefined; verticalCenter:flickable.verticalCenter}
             }
         }
     ]

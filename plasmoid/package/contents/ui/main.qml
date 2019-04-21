@@ -214,7 +214,8 @@ Item {
 
     property int tasksHeight: mouseHandler.height
     property int tasksWidth: mouseHandler.width
-    property int userPanelPosition: latteView ? latteView.panelAlignment : plasmoid.configuration.plasmoidPosition
+    //updated from Binding
+    property int userPanelPosition
 
     readonly property real currentPanelOpacity: latteView ? latteView.currentPanelTransparency / 100 : 1
 
@@ -361,6 +362,36 @@ Item {
         id: indicatorsStandaloneLoader
         active: !latteView && !plasmoid.configuration.isInLatteDock
         source: "indicators/Manager.qml"
+    }
+
+    Binding {
+        target: root
+        property: "userPanelPosition"
+        value: {
+            if (latteView) {
+                if (latteView.panelUserSetAlignment === -1) {
+                    return;
+                }
+
+                if (inConfigureAppletsMode) {
+                    return Latte.Types.Center;
+                } else if (latteView.panelUserSetAlignment === Latte.Types.Justify) {
+                        if (latteView.latteAppletPos>=0 && latteView.latteAppletPos<100) {
+                            return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Latte.Types.Left : Latte.Types.Top;
+                        } else if (latteView.latteAppletPos>=100 && latteView.latteAppletPos<200) {
+                            return Latte.Types.Center;
+                        } else if (latteView.latteAppletPos>=200) {
+                            return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Latte.Types.Right : Latte.Types.Bottom;
+                        }
+
+                        return Latte.Types.Center;
+                }
+
+                return latteView.panelUserSetAlignment;
+            }
+
+            return plasmoid.configuration.plasmoidPosition;
+        }
     }
 
     /////
@@ -1067,7 +1098,7 @@ Item {
         width: ( icList.orientation === Qt.Horizontal ) ? icList.width + spacing : smallSize
         height: ( icList.orientation === Qt.Vertical ) ? icList.height + spacing : smallSize
 
-        property int spacing: root.iconSize / 2
+        property int spacing: latteView ? 0 : root.iconSize / 2
         property int smallSize: Math.max(0.10 * root.iconSize, 16)
 
         Behavior on opacity{
@@ -1207,15 +1238,19 @@ Item {
             }
         }
 
+       /* Rectangle {
+            anchors.fill: scrollableList
+            color: "transparent"
+            border.width: 1
+            border.color: "blue"
+        } */
+
         TasksLayout.ScrollableList {
             id: scrollableList
             width: !root.vertical ? Math.min(root.width, icList.width) : thickness
             height: root.vertical ? Math.min(root.height, icList.height) : thickness
             contentWidth: icList.width
             contentHeight: icList.height
-
-            readonly property bool centered: userPanelPosition === Latte.Types.Center
-            readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
 
             property int thickness: !thickAnimated ? root.thickMargins + root.iconSize : (root.thickMargins + root.iconSize) * root.zoomFactor
 
@@ -1231,15 +1266,8 @@ Item {
                 }
             }
 
-            Rectangle {
+            TasksLayout.ScrollPositioner {
                 id: listViewBase
-                x: !root.vertical ? icList.width / 2 : 0
-                y: !root.vertical ? 0 : icList.height / 2
-                width: !root.vertical ? 1 : scrollableList.width
-                height: !root.vertical ? scrollableList.height : 1
-                color: "transparent"
-                border.width: 1
-                border.color: "transparent"//"purple"
 
                 ListView {
                     id:icList
@@ -1308,7 +1336,7 @@ Item {
                         return undefined;
                     }
                 }
-            }
+            } // ScrollPositioner
         } // ScrollableList
 
         TasksLayout.ScrollEdgeShadows {
@@ -1316,7 +1344,9 @@ Item {
             width: !root.vertical ? scrollableList.width : thickness
             height: !root.vertical ? thickness : scrollableList.height
             visible: scrollableList.contentsExceed
-        }
+
+            flickable: scrollableList
+        } // ScrollEdgeShadows
 
         Task.VisualAddItem{
             id: newDroppedLauncherVisual
@@ -2017,11 +2047,11 @@ Item {
     //user set Panel Positions
     // 0-Center, 1-Left, 2-Right, 3-Top, 4-Bottom
     states: [
-
         ///Bottom Edge
         State {
             name: "bottomCenter"
-            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Types.Center)
+            when: ((plasmoid.location===PlasmaCore.Types.BottomEdge || plasmoid.location===PlasmaCore.Types.Floating)
+                   && root.userPanelPosition===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -2034,7 +2064,8 @@ Item {
         },
         State {
             name: "bottomLeft"
-            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Types.Left)
+            when: ((plasmoid.location===PlasmaCore.Types.BottomEdge || plasmoid.location===PlasmaCore.Types.Floating)
+                   && root.userPanelPosition===Latte.Types.Left)
 
             AnchorChanges {
                 target: barLine
@@ -2047,7 +2078,8 @@ Item {
         },
         State {
             name: "bottomRight"
-            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Types.Right)
+            when: ((plasmoid.location===PlasmaCore.Types.BottomEdge || plasmoid.location===PlasmaCore.Types.Floating)
+                   && root.userPanelPosition===Latte.Types.Right)
 
             AnchorChanges {
                 target: barLine
@@ -2061,7 +2093,7 @@ Item {
         ///Top Edge
         State {
             name: "topCenter"
-            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Types.Center)
+            when: (plasmoid.location===PlasmaCore.Types.TopEdge && root.userPanelPosition===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -2074,7 +2106,7 @@ Item {
         },
         State {
             name: "topLeft"
-            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Types.Left)
+            when: (plasmoid.location===PlasmaCore.Types.TopEdge && root.userPanelPosition===Latte.Types.Left)
 
             AnchorChanges {
                 target: barLine
@@ -2087,7 +2119,7 @@ Item {
         },
         State {
             name: "topRight"
-            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Types.Right)
+            when: (plasmoid.location===PlasmaCore.Types.TopEdge && root.userPanelPosition===Latte.Types.Right)
 
             AnchorChanges {
                 target: barLine
@@ -2101,7 +2133,7 @@ Item {
         ////Left Edge
         State {
             name: "leftCenter"
-            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Types.Center)
+            when: (plasmoid.location===PlasmaCore.Types.LeftEdge && root.userPanelPosition===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -2114,7 +2146,7 @@ Item {
         },
         State {
             name: "leftTop"
-            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Types.Top)
+            when: (plasmoid.location===PlasmaCore.Types.LeftEdge && root.userPanelPosition===Latte.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -2127,7 +2159,7 @@ Item {
         },
         State {
             name: "leftBottom"
-            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Types.Bottom)
+            when: (plasmoid.location===PlasmaCore.Types.LeftEdge && root.userPanelPosition===Latte.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -2141,7 +2173,7 @@ Item {
         ///Right Edge
         State {
             name: "rightCenter"
-            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Types.Center)
+            when: (plasmoid.location===PlasmaCore.Types.RightEdge && root.userPanelPosition===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -2154,7 +2186,7 @@ Item {
         },
         State {
             name: "rightTop"
-            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Types.Top)
+            when: (plasmoid.location===PlasmaCore.Types.RightEdge && root.userPanelPosition===Latte.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -2167,7 +2199,7 @@ Item {
         },
         State {
             name: "rightBottom"
-            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Types.Bottom)
+            when: (plasmoid.location===PlasmaCore.Types.RightEdge && root.userPanelPosition===Latte.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
