@@ -296,6 +296,8 @@ Item {
             } */
     onLatteViewChanged: {
         if (latteView) {
+            plasmoid.action("configure").visible = false;
+            plasmoid.action("remove").visible = false;
             plasmoid.configuration.isInLatteDock = true;
         } else {
             plasmoid.configuration.isInLatteDock = false;
