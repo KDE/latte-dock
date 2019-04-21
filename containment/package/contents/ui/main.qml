@@ -409,6 +409,7 @@ DragDrop.DropArea {
     property bool showAudioBadge: plasmoid.configuration.showAudioBadge
     property bool audioBadgeActionsEnabled: plasmoid.configuration.audioBadgeActionsEnabled
 
+    property bool scrollingTasksEnabled: plasmoid.configuration.scrollingTasksEnabled
     property bool showWindowActions: plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers
     property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen

@@ -133,9 +133,21 @@ PlasmaComponents.Page {
                 }
 
                 LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
+                    text: i18n("Support scrolling when items overflow")
+                    checked: plasmoid.configuration.scrollingTasksEnabled
+                    tooltip: i18n("When items overflow the user is able to scroll between them.\nTake note that automatic icon decrease mechanism will be disabled.")
+                    visible: dialog.highLevel
+
+                    onClicked: {
+                        plasmoid.configuration.scrollingTasksEnabled = !plasmoid.configuration.scrollingTasksEnabled;
+                    }
+                }
+
+                LatteComponents.CheckBox {
                     id: windowActionsChk
                     Layout.maximumWidth: dialog.optionsWidth
-                    text: i18n("Show window actions in the context menu")
+                    text: i18n("Window actions in the context menu")
                     checked: plasmoid.configuration.showWindowActions
                     visible: dialog.highLevel
                     enabled: !disableAllWindowsFunctionality

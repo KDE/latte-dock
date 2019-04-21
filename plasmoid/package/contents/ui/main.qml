@@ -163,6 +163,8 @@ Item {
     property bool mouseWheelActions: latteView ? latteView.mouseWheelActions : true
     property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : zoomFactor>1 && !root.editMode
 
+    property bool scrollingEnabled: latteView ? latteView.scrollingTasksEnabled : false
+
     property bool showInfoBadge: latteView ? latteView.showInfoBadge : plasmoid.configuration.showInfoBadge
     property bool showProgressBadge: latteView ? latteView.showProgressBadge : plasmoid.configuration.showInfoBadge
     property bool showAudioBadge: latteView ? latteView.showAudioBadge : plasmoid.configuration.showAudioBadge
@@ -174,8 +176,6 @@ Item {
                                              plasmoid.configuration.showToolTips
     property bool showWindowActions: latteView ? latteView.showWindowActions : plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: latteView ? latteView.showWindowsOnlyFromLaunchers : false
-
-    property bool scrollingEnabled: true
 
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
