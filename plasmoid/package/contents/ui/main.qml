@@ -1223,50 +1223,6 @@ Item {
 
             //onCurrentPosChanged: console.log("CP :: "+ currentPos + " icW:"+icList.width + " rw: "+root.width + " w:" +width);
 
-            alignment: {
-                if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    if (centered) return Latte.Types.LeftEdgeCenterAlign;
-                    if (root.panelAlignment === Latte.Types.Top) return Latte.Types.LeftEdgeTopAlign;
-                    if (root.panelAlignment === Latte.Types.Bottom) return Latte.Types.LeftEdgeBottomAlign;
-                }
-
-                if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    if (centered) return Latte.Types.RightEdgeCenterAlign;
-                    if (root.panelAlignment === Latte.Types.Top) return Latte.Types.RightEdgeTopAlign;
-                    if (root.panelAlignment === Latte.Types.Bottom) return Latte.Types.RightEdgeBottomAlign;
-                }
-
-                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    if (centered) return Latte.Types.BottomEdgeCenterAlign;
-
-                    if ((root.panelAlignment === Latte.Types.Left && !reversed)
-                            || (root.panelAlignment === Latte.Types.Right && reversed)) {
-                        return Latte.Types.BottomEdgeLeftAlign;
-                    }
-
-                    if ((root.panelAlignment === Latte.Types.Right && !reversed)
-                            || (root.panelAlignment === Latte.Types.Left && reversed)) {
-                        return Latte.Types.BottomEdgeRightAlign;
-                    }
-                }
-
-                if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                    if (centered) return Latte.Types.TopEdgeCenterAlign;
-
-                    if ((root.panelAlignment === Latte.Types.Left && !reversed)
-                            || (root.panelAlignment === Latte.Types.Right && reversed)) {
-                        return Latte.Types.TopEdgeLeftAlign;
-                    }
-
-                    if ((root.panelAlignment === Latte.Types.Right && !reversed)
-                            || (root.panelAlignment === Latte.Types.Left && reversed)) {
-                        return Latte.Types.TopEdgeRightAlign;
-                    }
-                }
-
-                return Latte.Types.BottomEdgeCenterAlign;
-            }
-
             layer.enabled: contentsExceed && root.scrollingEnabled
             layer.effect: OpacityMask {
                 maskSource: TasksLayout.ScrollOpacityMask{

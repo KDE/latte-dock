@@ -29,7 +29,6 @@ Flickable{
     flickableDirection: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Flickable.HorizontalFlick : Flickable.VerticalFlick
     interactive: false
 
-    property int alignment: Latte.Types.BottomEdgeCenterAlign
     property int offset: 0
 
     readonly property bool contentsExceed:  !root.vertical ? Math.floor(contentWidth) > width : Math.floor(contentHeight) > height
@@ -50,6 +49,51 @@ Flickable{
     readonly property int scrollStep: root.iconSize * 1.5
 
     readonly property int currentPos: !root.vertical ? contentX : contentY
+
+    readonly property int alignment: {
+        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+            if (centered) return Latte.Types.LeftEdgeCenterAlign;
+            if (root.panelAlignment === Latte.Types.Top) return Latte.Types.LeftEdgeTopAlign;
+            if (root.panelAlignment === Latte.Types.Bottom) return Latte.Types.LeftEdgeBottomAlign;
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+            if (centered) return Latte.Types.RightEdgeCenterAlign;
+            if (root.panelAlignment === Latte.Types.Top) return Latte.Types.RightEdgeTopAlign;
+            if (root.panelAlignment === Latte.Types.Bottom) return Latte.Types.RightEdgeBottomAlign;
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+            if (centered) return Latte.Types.BottomEdgeCenterAlign;
+
+            if ((root.panelAlignment === Latte.Types.Left && !reversed)
+                    || (root.panelAlignment === Latte.Types.Right && reversed)) {
+                return Latte.Types.BottomEdgeLeftAlign;
+            }
+
+            if ((root.panelAlignment === Latte.Types.Right && !reversed)
+                    || (root.panelAlignment === Latte.Types.Left && reversed)) {
+                return Latte.Types.BottomEdgeRightAlign;
+            }
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+            if (centered) return Latte.Types.TopEdgeCenterAlign;
+
+            if ((root.panelAlignment === Latte.Types.Left && !reversed)
+                    || (root.panelAlignment === Latte.Types.Right && reversed)) {
+                return Latte.Types.TopEdgeLeftAlign;
+            }
+
+            if ((root.panelAlignment === Latte.Types.Right && !reversed)
+                    || (root.panelAlignment === Latte.Types.Left && reversed)) {
+                return Latte.Types.TopEdgeRightAlign;
+            }
+        }
+
+        return Latte.Types.BottomEdgeCenterAlign;
+    }
+
 
     function increasePos() {
         if (!root.vertical) {
