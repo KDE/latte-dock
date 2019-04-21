@@ -58,7 +58,6 @@ Item {
     }
 
     states: [
-        ///Left Edge
         State {
             name: "bottom"
             when: plasmoid.location === PlasmaCore.Types.BottomEdge
@@ -80,6 +79,26 @@ Item {
             }
         },
         State {
+            name: "top"
+            when: plasmoid.location === PlasmaCore.Types.TopEdge
+
+            AnchorChanges {
+                target: firstGradient
+                anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined;
+                    horizontalCenter:undefined; verticalCenter:undefined}
+            }
+            AnchorChanges {
+                target: lastGradient
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right;
+                    horizontalCenter:undefined; verticalCenter:undefined}
+            }
+            AnchorChanges {
+                target: shadowsContainer
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined;
+                    horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+        },
+        State {
             name: "left"
             when: plasmoid.location === PlasmaCore.Types.LeftEdge
 
@@ -96,6 +115,26 @@ Item {
             AnchorChanges {
                 target: shadowsContainer
                 anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
+                    horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+        },
+        State {
+            name: "right"
+            when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+            AnchorChanges {
+                target: firstGradient
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right;
+                    horizontalCenter:undefined; verticalCenter:undefined}
+            }
+            AnchorChanges {
+                target: lastGradient
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right;
+                    horizontalCenter:undefined; verticalCenter:undefined}
+            }
+            AnchorChanges {
+                target: shadowsContainer
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
                     horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
         }
