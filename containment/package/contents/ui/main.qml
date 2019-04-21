@@ -387,7 +387,7 @@ DragDrop.DropArea {
     property Item latteApplet
     readonly property Item indicatorsManager: indicators
     readonly property Item parabolicManager: _parabolicManager
-
+    readonly property Item maskManager: visibilityManager
 
     property QtObject latteView: null
     property QtObject shortcutsEngine: null
