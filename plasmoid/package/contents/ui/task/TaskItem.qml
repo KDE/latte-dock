@@ -609,6 +609,8 @@ MouseArea{
             }
         }
 
+        scrollableList.autoScrollFor(taskItem);
+
         if (root.latteView && root.latteView.isHalfShown) {
             return;
         }

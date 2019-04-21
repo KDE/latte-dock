@@ -51,8 +51,9 @@ Flickable{
     readonly property int scrollFirstPos: 0
     readonly property int scrollLastPos: contentsExtraSpace
     readonly property int scrollStep: root.iconSize * 1.5
-
     readonly property int currentPos: !root.vertical ? contentX : contentY
+
+    readonly property int autoScrollTriggerLength: root.iconSize + root.lengthMargins/2
 
     readonly property int alignment: {
         if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -148,6 +149,39 @@ Flickable{
                 increasePosWithStep(distance);
             }
         }
+    }
+
+    function autoScrollFor(task) {
+        //! It has TWO IN-QUESTION issues that may have been solved by the
+        //! initial checks
+        //! 1. when the user uses the mouse wheel at the first or the last task
+        //!    the autoscrolling forcefully returns the view to boundaries
+        //! 2. when parabolic effect is activated the experience is not that smooth
+        //!    at the view boundaries, parabolic effect AND autoscroll at the
+        //!    boundaries create animation breakage
+
+        if (!contentsExceed || root.tasksCount < 3
+                || (task.itemIndex===parabolicManager.lastRealTaskIndex && root.zoomFactor>1)) {
+            //last task with parabolic effect breaks the autoscolling behavior
+            return;
+        }
+
+        var cP = task.mapToItem(scrollableList, 0, 0);
+
+        if (!root.vertical) {
+            if (currentPos !== scrollFirstPos && cP.x < autoScrollTriggerLength) {
+                decreasePosWithStep(root.iconSize*1.5);
+            } else if (currentPos !== scrollLastPos && (cP.x+task.width > (scrollableList.width-autoScrollTriggerLength))) {
+                increasePosWithStep(root.iconSize*1.5);
+            }
+        } else {
+            if (currentPos !== scrollFirstPos && cP.y < autoScrollTriggerLength) {
+                decreasePosWithStep(root.iconSize*1.5);
+            } else if (currentPos !== scrollLastPos && (cP.y+task.height > (scrollableList.height-autoScrollTriggerLength))) {
+                increasePosWithStep(root.iconSize*1.5);
+            }
+        }
+
     }
 
     onContentsExtraSpaceChanged: {
