@@ -28,7 +28,7 @@ import org.kde.taskmanager 0.1 as TaskManager
 
 import org.kde.latte 0.2 as Latte
 
-import "../code/tools.js" as TaskTools
+import "../../code/tools.js" as TaskTools
 
 Item {
     // signal urlDropped(url url)
