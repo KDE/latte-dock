@@ -31,6 +31,7 @@ Flickable{
 
     property int offset: 0
 
+    readonly property bool animationsFinished: !horizontalAnimation.running && !verticalAnimation.running
     readonly property bool centered: userPanelPosition === Latte.Types.Center
     readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
 
@@ -132,6 +133,7 @@ Flickable{
 
     Behavior on contentX {
         NumberAnimation {
+            id: horizontalAnimation
             duration: root.durationTime*units.longDuration
             easing.type: Easing.OutQuad
         }
@@ -139,6 +141,7 @@ Flickable{
 
     Behavior on contentY {
         NumberAnimation {
+            id: verticalAnimation
             duration: root.durationTime*units.longDuration
             easing.type: Easing.OutQuad
         }

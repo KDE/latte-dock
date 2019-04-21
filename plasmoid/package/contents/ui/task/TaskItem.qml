@@ -1192,17 +1192,47 @@ MouseArea{
                     || (latteView && currentLayout && latteView.universalLayoutManager &&
                         currentLayout.name === latteView.universalLayoutManager.currentLayoutName))) {
             var globalChoords = backend.globalRect(taskItem);
+            var limits = backend.globalRect(scrollableList);
+
+            //! Limit the published geometries boundaries at scrolling area boundaries
+            var adjX = Math.min(limits.x+limits.width, Math.max(limits.x, globalChoords.x));
+            var adjY = Math.min(limits.y+limits.height, Math.max(limits.y, globalChoords.y));
+
+            var length = root.iconSize * wrapper.mScale;
 
             //! Magic Lamp effect doesn't like coordinates outside the screen and
             //! width,heights of zero value... So we now normalize the geometries
             //! sent in order to avoid such circumstances
             if (root.vertical) {
+                if (adjY !== globalChoords.y) {
+                    if (((globalChoords.y+globalChoords.height) < limits.y) || (globalChoords.y)>(limits.y+limits.height)) {
+                        //! totally out of boundaries
+                        length = 4;
+                    } else {
+                        //! semi-part out of boundaries
+                        length = Math.max(4, Math.abs(adjY - globalChoords.y));
+                    }
+                }
+
                 globalChoords.width = 1;
-                globalChoords.height = Math.max(root.iconSize, taskItem.height);
+                globalChoords.height = length;
             } else {
+                if (adjX !== globalChoords.x) {
+                    if (((globalChoords.x+globalChoords.width) < limits.x) || (globalChoords.x)>(limits.x+limits.width)) {
+                        //! totally out of boundaries
+                        length = 4;
+                    } else {
+                        //! semi-part out of boundaries
+                        length = Math.max(4, Math.abs(adjX - globalChoords.x));
+                    }
+                }
+
                 globalChoords.height = 1;
-                globalChoords.width = Math.max(root.iconSize, taskItem.width);
+                globalChoords.width = length;
             }
+
+            globalChoords.x = adjX;
+            globalChoords.y = adjY;
 
             if (root.position === PlasmaCore.Types.BottomPositioned) {
                 globalChoords.y = plasmoid.screenGeometry.y+plasmoid.screenGeometry.height-1;
@@ -1358,6 +1388,15 @@ MouseArea{
         onDockHoveredIndexChanged: {
             if ((restoreAnimation.running) && (root.dockHoveredIndex !== -1)) {
                 restoreAnimation.stop();
+            }
+        }
+    }
+
+    Connections {
+        target: scrollableList
+        onAnimationsFinishedChanged: {
+            if (!scrollableList.animationsFinished) {
+                taskItem.slotPublishGeometries();
             }
         }
     }
