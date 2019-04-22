@@ -51,7 +51,7 @@ Item {
                                             && !isSpacer && !isInternalViewSplitter
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
     property bool needsFillSpace: { //fill flag, it is used in calculations for fillWidth,fillHeight applets
-        if (!applet || !applet.Layout ||  (applet && applet.pluginName === "org.kde.plasma.panelspacer"))
+        if (!applet || !applet.Layout)
             return false;
 
         if (((root.isHorizontal && applet.Layout.fillWidth===true)
@@ -230,7 +230,7 @@ Item {
 
             if ( (((applet && root.isHorizontal && (applet.width > maxSize || applet.Layout.minimumWidth > maxOfMinSize))
                    || (applet && root.isVertical && (applet.height > maxSize || applet.Layout.minimumHeight > maxOfMinSize)))
-                  && (applet && applet.pluginName !== "org.kde.plasma.panelspacer" && (applet.pluginName !== "org.kde.latte.spacer"))
+                  && !appletItem.isSpacer
                   && !communicator.canShowOverlaiedLatteIcon)
                     || isSystray
                     || appletItem.needsFillSpace) {

@@ -32,9 +32,15 @@ Item{
 
     property bool neighbourSeparator: false;
 
-    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && !appletItem.latteApplet ? (2+root.lengthMargin) : 0
+    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && !appletItem.latteApplet && root.zoomFactor>1 ? (2+root.lengthMargin) : 0
 
-    property real nHiddenSize: (nScale > 0) ? (appletItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace
+    property real nHiddenSize: {
+        if (isSeparator || isSpacer) {
+            return 0;
+        }
+
+        return (nScale > 0) ? (appletItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace
+    }
 
     property bool rightSpacer: false
 

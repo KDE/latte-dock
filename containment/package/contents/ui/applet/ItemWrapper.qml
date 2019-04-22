@@ -49,7 +49,7 @@ Item{
 
                 var constrainedWidth = MathTools.bound(applet.Layout.minimumWidth, applet.Layout.preferredWidth, maximumValue);
 
-                return root.editMode ? Math.max(constrainedWidth, root.iconSize) : constrainedWidth;
+                return root.inConfigureAppletsMode ? Math.max(constrainedWidth, root.iconSize) : constrainedWidth;
             }
 
             if(appletItem.sizeForFill>-1){
@@ -60,7 +60,7 @@ Item{
         if (appletItem.latteApplet) {
             return latteApplet.tasksWidth;
         } else {
-            return scaledWidth;
+            return (root.isHorizontal && root.inConfigureAppletsMode) ? Math.max(root.iconSize, scaledWidth) : scaledWidth;
         }
     }
 
@@ -80,7 +80,7 @@ Item{
 
                 var constrainedHeight = MathTools.bound(applet.Layout.minimumHeight, applet.Layout.preferredHeight, maximumValue);
 
-                return root.editMode ? Math.max(constrainedHeight, root.iconSize) : constrainedHeight;
+                return root.inConfigureAppletsMode ? Math.max(constrainedHeight, root.iconSize) : constrainedHeight;
             }
 
             if (appletItem.sizeForFill>-1){
@@ -91,7 +91,7 @@ Item{
         if (appletItem.latteApplet) {
             return latteApplet.tasksHeight;
         } else {
-            return scaledHeight;
+            return (root.isVertical && root.inConfigureAppletsMode) ? Math.max(root.iconSize, scaledHeight) : scaledHeight;
         }
     }
 
@@ -99,7 +99,7 @@ Item{
 
     property bool disableScaleWidth: false
     property bool disableScaleHeight: false
-    property bool editMode: root.editMode
+    property bool editMode: root.inConfigureAppletsMode
 
     property int appletWidth: applet ?  applet.width : -1
     property int appletHeight: applet ?  applet.height : -1
@@ -295,13 +295,10 @@ Item{
         if (isLattePlasmoid) {
             return;
         } else if (appletItem.isInternalViewSplitter){
-            if(!root.editMode)
+            if(!root.inConfigureAppletsMode)
                 layoutHeight = 0;
             else
                 layoutHeight = root.iconSize;
-        }
-        else if(applet && applet.pluginName === "org.kde.plasma.panelspacer"){
-            layoutHeight = root.iconSize;
         }
         else if(appletItem.isSystray && root.isHorizontal){
             layoutHeight = root.iconSize;
@@ -318,9 +315,8 @@ Item{
                     && !disableScaleWidth
                     && !communicator.overlayLatteIconIsActive) {
 
-                if (!appletItem.isSpacer) {
-                    disableScaleHeight = true;
-                }
+                disableScaleHeight = true;
+
                 //this way improves performance, probably because during animation the preferred sizes update a lot
                 if((applet.Layout.maximumHeight < root.iconSize)){
                     layoutHeight = applet.Layout.maximumHeight;
@@ -347,13 +343,10 @@ Item{
         if (isLattePlasmoid) {
             return;
         } else if (appletItem.isInternalViewSplitter){
-            if(!root.editMode)
+            if(!root.inConfigureAppletsMode)
                 layoutWidth = 0;
             else
                 layoutWidth = root.iconSize;
-        }
-        else if(applet && applet.pluginName === "org.kde.plasma.panelspacer"){
-            layoutWidth = root.iconSize;
         }
         else if(appletItem.isSystray && root.isVertical){
             layoutWidth = root.iconSize;
@@ -370,9 +363,8 @@ Item{
                     && !disableScaleHeight
                     && !communicator.overlayLatteIconIsActive){
 
-                if (!appletItem.isSpacer) {
-                    disableScaleWidth = true;
-                }
+                disableScaleWidth = true;
+
                 //this way improves performance, probably because during animation the preferred sizes update a lot
                 if((applet.Layout.maximumWidth < root.iconSize)){
                     //   return applet.Layout.maximumWidth;
