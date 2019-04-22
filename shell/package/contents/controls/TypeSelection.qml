@@ -33,9 +33,9 @@ import org.kde.latte 0.2 as Latte
 Grid {
     id: typeRow
 
-    width: horizontal ? content.width - 6*units.smallSpacing : maxWidth - 2*units.smallSpacing
-    anchors.leftMargin: units.smallSpacing
-    anchors.rightMargin: units.smallSpacing
+    width: horizontal ? content.width - 4*units.smallSpacing : 9 * theme.defaultFont.pixelSize
+    anchors.leftMargin: horizontal ? units.smallSpacing : 0
+    anchors.rightMargin: horizontal ? units.smallSpacing : 0
 
     Layout.minimumWidth: width
     Layout.maximumWidth: width

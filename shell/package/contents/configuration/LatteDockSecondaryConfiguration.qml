@@ -40,10 +40,8 @@ import "../controls" as LatteExtraControls
 FocusScope {
     id: dialog
 
-    property int maxWidth: Math.max(9 * theme.defaultFont.pixelSize, 2.3 * height)
-
-    width: maxWidth + units.smallSpacing * 2
-    height: typeSettings.height + units.smallSpacing * 2
+    width: typeSettings.width + units.smallSpacing * 4
+    height: typeSettings.height + units.smallSpacing * 4
     Layout.minimumWidth: width
     Layout.minimumHeight: height
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
