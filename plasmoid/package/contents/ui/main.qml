@@ -592,37 +592,29 @@ Item {
         property bool signalSent: false
         property Item activeItem: null
 
-        onVisibleChanged: {
-            if (visible) {
-                windowsPreviewCheckerToNotShowTimer.start();
-            }
-
-            mainItem.visible = visible;
-        }
+        Component.onCompleted: mainItem.visible = true;
 
         function hide(debug){
             // console.log("on hide previews event called: "+debug);
-            showPreviewWinTimer.stop();
 
             if (latteView && signalSent) {
                 //it is used to unblock dock hiding
                 root.signalActionsBlockHiding(-1);
                 signalSent = false;
-                //root.signalDraggingState(false);
             }
-
-            windowsPreviewDlg.activeItem = null;
 
             if (!root.contextMenu)
                 root.disableRestoreZoom = false;
 
-            visible = false;
+            hidePreviewWinTimer.start();
         }
 
         function show(taskItem){
             if (root.disableAllWindowsFunctionality) {
                 return;
             }
+
+            hidePreviewWinTimer.stop();
 
             // console.log("preview show called...");
             if ((!activeItem || (activeItem !== taskItem)) && !root.contextMenu) {
@@ -634,10 +626,6 @@ Item {
                     root.signalPreviewsShown();
                 }
 
-                //used to initialize windows previews buffers from task to task
-                if (!Latte.WindowSystem.isPlatformWayland) {
-                    visible = false;
-                }
                 activeItem = taskItem;
                 toolTipDelegate.parentTask = taskItem;
 
@@ -645,35 +633,32 @@ Item {
                     //it is used to block dock hiding
                     root.signalActionsBlockHiding(1);
                     signalSent = true;
-                    //root.signalDraggingState(true);
                 }
 
-                if (!Latte.WindowSystem.isPlatformWayland) {
-                    showPreviewWinTimer.start();
-                } else {
-                    visible = true;
-                }
+                //! Workaround in order to update properly the previews thumbnails
+                //! when switching between single thumbnail to another single thumbnail
+                mainItem.visible = false;
+                visible = true;
+                mainItem.visible = true;
             }
         }
     }
 
-    //! I cant find another way to fix the issue with window thumbnails
-    //! there are many cases that not correct previews are shown are
-    //! no previews in cases that they should (X11 related)
+    //! Delay windows previews hiding
     Timer {
-        id: showPreviewWinTimer
-        interval: 50
+        id: hidePreviewWinTimer
+        interval: 350
         onTriggered: {
-            windowsPreviewDlg.visible = true;
-
-            if (latteView && latteView.debugModeTimers) {
-                console.log("plasmoid timer: showPreviewTimer called...");
-            }
+            windowsPreviewDlg.visible = false;
+            windowsPreviewDlg.mainItem.visible = false;
+            windowsPreviewDlg.activeItem = null;
         }
     }
 
     //! Timer to fix #811, rare cases that both a window preview and context menu are
-    //! shown
+    //! shown. It is mostly used under wayland in order to avoid crashes. When the context
+    //! menu will be shown there is a chance that previews window has already appeared in that
+    //! case the previews window must become hidden
     Timer {
         id: windowsPreviewCheckerToNotShowTimer
         interval: 250
