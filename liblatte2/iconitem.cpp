@@ -369,7 +369,9 @@ QSGNode *IconItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *update
             delete oldNode;
 
         textureNode = new ManagedTextureNode;
-        textureNode->setTexture(QSharedPointer<QSGTexture>(window()->createTextureFromImage(m_iconPixmap.toImage())));
+        textureNode->setTexture(QSharedPointer<QSGTexture>(window()->createTextureFromImage(m_iconPixmap.toImage(), QQuickWindow::TextureCanUseAtlas)));
+        textureNode->setFiltering(smooth() ? QSGTexture::Linear : QSGTexture::Nearest);
+
         m_sizeChanged = true;
         m_textureChanged = false;
     }

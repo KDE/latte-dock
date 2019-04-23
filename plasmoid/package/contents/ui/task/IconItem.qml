@@ -150,14 +150,20 @@ Item{
 
             anchors.centerIn: parent
 
-            width: Math.round(newTempSize) //+ 2*taskIcon.shadowSize
+            //! WORKAROUND: When the parabolic effect is disabled zoom=1.0 and no
+            //! Shadows are enabled for Items then many task icons look pixelated.
+            //! I dont know how multiplying the width *1.002 helps the situation
+            //! but it does. After adding any multipier e.g. *1.002 the pixelated
+            //! icons are gone
+            width: Math.round(newTempSize)*1.002
             height: Math.round(width)
             source: decoration
+            smooth: root.zoomFactor === 1 ? true : false
             providesColors: indicators.info.needsIconColors
 
             opacity: root.enableShadows ? 0 : 1
             visible: !taskItem.isSeparator && !badgesLoader.active
-            //visible: !root.enableShadows
+
 
             onValidChanged: {
                 if (!valid && (source === decoration || source === "unknown")) {
