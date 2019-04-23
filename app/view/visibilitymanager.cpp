@@ -50,7 +50,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     m_latteView = qobject_cast<Latte::View *>(view);
     m_corona = qobject_cast<Latte::Corona *>(view->corona());
-    wm = m_corona->wm();
+    m_wm = m_corona->wm();
 
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
@@ -83,14 +83,14 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         }
     });
     connect(&m_timerHide, &QTimer::timeout, this, [&]() {
-        if (!m_blockHiding && !m_isHidden && !dragEnter) {
+        if (!m_blockHiding && !m_isHidden && !m_dragEnter) {
             //   qDebug() << "must be hide";
             emit mustBeHide();
         }
     });
 
-    wm->setViewExtraFlags(*m_latteView);
-    wm->addView(m_latteView->winId());
+    m_wm->setViewExtraFlags(*m_latteView);
+    m_wm->addView(m_latteView->winId());
 
     restoreConfig();
 }
@@ -98,11 +98,11 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 VisibilityManager::~VisibilityManager()
 {
     qDebug() << "VisibilityManager deleting...";
-    wm->removeViewStruts(*m_latteView);
-    wm->removeView(m_latteView->winId());
+    m_wm->removeViewStruts(*m_latteView);
+    m_wm->removeView(m_latteView->winId());
 
-    if (edgeGhostWindow) {
-        edgeGhostWindow->deleteLater();
+    if (m_edgeGhostWindow) {
+        m_edgeGhostWindow->deleteLater();
     }
 }
 
@@ -119,7 +119,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     Q_ASSERT_X(m_mode != Types::None, staticMetaObject.className(), "set visibility to Types::None");
 
     // clear mode
-    for (auto &c : connections) {
+    for (auto &c : m_connections) {
         disconnect(c);
     }
 
@@ -127,7 +127,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
     if (m_mode == Types::AlwaysVisible) {
         //! remove struts for old always visible mode
-        wm->removeViewStruts(*m_latteView);
+        m_wm->removeViewStruts(*m_latteView);
     }
 
     m_timerShow.stop();
@@ -140,15 +140,17 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
             m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
         }
 
-        connections[0] = connect(wm, &WindowSystem::currentDesktopChanged, this, [&] {
-            if (raiseOnDesktopChange)
+        m_connections[0] = connect(m_wm, &WindowSystem::currentDesktopChanged, this, [&] {
+            if (m_raiseOnDesktopChange) {
                 raiseViewTemporarily();
+            }
         });
-        connections[1] = connect(wm, &WindowSystem::currentActivityChanged, this, [&]() {
-            if (raiseOnActivityChange)
+        m_connections[1] = connect(m_wm, &WindowSystem::currentActivityChanged, this, [&]() {
+            if (m_raiseOnActivityChange) {
                 raiseViewTemporarily();
-            else
+            } else {
                 updateHiddenState();
+            }
         });
 
         base = 2;
@@ -166,11 +168,11 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
             }
 
             if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-                connections[base] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
+                m_connections[base] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
 
-                connections[base+1] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
+                m_connections[base+1] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
             }
@@ -180,7 +182,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
         case Types::AutoHide: {
-            connections[base] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
+            m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
                 raiseView(m_containsMouse);
             });
 
@@ -189,9 +191,9 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
         case Types::DodgeActive: {
-            connections[base] = connect(this, &VisibilityManager::containsMouseChanged
+            m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged
                                      , this, &VisibilityManager::dodgeActive);
-            connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowTouchingChanged
+            m_connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowTouchingChanged
                                      , this, &VisibilityManager::dodgeActive);
 
             dodgeActive();
@@ -199,9 +201,9 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
         case Types::DodgeMaximized: {
-            connections[base] = connect(this, &VisibilityManager::containsMouseChanged
+            m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged
                                      , this, &VisibilityManager::dodgeMaximized);
-            connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowMaximizedChanged
+            m_connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowMaximizedChanged
                                      , this, &VisibilityManager::dodgeActive);
 
             dodgeMaximized();
@@ -209,10 +211,10 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
         case Types::DodgeAllWindows: {
-            connections[base] = connect(this, &VisibilityManager::containsMouseChanged
+            m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged
                                      , this, &VisibilityManager::dodgeAllWindows);
 
-            connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::existsWindowTouchingChanged
+            m_connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::existsWindowTouchingChanged
                                      , this, &VisibilityManager::dodgeAllWindows);
         }
         break;
@@ -238,37 +240,37 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
                                       && m_latteView->managedLayout()->isCurrent());
 
     if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
-        wm->setViewStruts(*m_latteView, m_latteView->absoluteGeometry(), m_latteView->location());
+        m_wm->setViewStruts(*m_latteView, m_latteView->absoluteGeometry(), m_latteView->location());
     } else {
-        wm->removeViewStruts(*m_latteView);
+        m_wm->removeViewStruts(*m_latteView);
     }
 }
 
 bool VisibilityManager::raiseOnDesktop() const
 {
-    return raiseOnDesktopChange;
+    return m_raiseOnDesktopChange;
 }
 
 void VisibilityManager::setRaiseOnDesktop(bool enable)
 {
-    if (enable == raiseOnDesktopChange)
+    if (enable == m_raiseOnDesktopChange)
         return;
 
-    raiseOnDesktopChange = enable;
+    m_raiseOnDesktopChange = enable;
     emit raiseOnDesktopChanged();
 }
 
 bool VisibilityManager::raiseOnActivity() const
 {
-    return raiseOnActivityChange;
+    return m_raiseOnActivityChange;
 }
 
 void VisibilityManager::setRaiseOnActivity(bool enable)
 {
-    if (enable == raiseOnActivityChange)
+    if (enable == m_raiseOnActivityChange)
         return;
 
-    raiseOnActivityChange = enable;
+    m_raiseOnActivityChange = enable;
     emit raiseOnActivityChanged();
 }
 
@@ -345,7 +347,7 @@ void VisibilityManager::setTimerHide(int msec)
 
 bool VisibilityManager::supportsKWinEdges() const
 {
-    return (edgeGhostWindow != nullptr);
+    return (m_edgeGhostWindow != nullptr);
 }
 
 void VisibilityManager::updateGhostWindowState()
@@ -357,9 +359,9 @@ void VisibilityManager::updateGhostWindowState()
                                  && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName()));
 
         if (inCurrentLayout) {
-            wm->setEdgeStateFor(edgeGhostWindow, m_isHidden);
+            m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
         } else {
-            wm->setEdgeStateFor(edgeGhostWindow, false);
+            m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
         }
     }
 }
@@ -390,11 +392,11 @@ void VisibilityManager::raiseView(bool raise)
         if (!m_timerShow.isActive()) {
             m_timerShow.start();
         }
-    } else if (!dragEnter) {
+    } else if (!m_dragEnter) {
         m_timerShow.stop();
 
-        if (hideNow) {
-            hideNow = false;
+        if (m_hideNow) {
+            m_hideNow = false;
             emit mustBeHide();
         } else if (!m_timerHide.isActive()) {
             m_timerHide.start();
@@ -404,10 +406,10 @@ void VisibilityManager::raiseView(bool raise)
 
 void VisibilityManager::raiseViewTemporarily()
 {
-    if (raiseTemporarily)
+    if (m_raiseTemporarily)
         return;
 
-    raiseTemporarily = true;
+    m_raiseTemporarily = true;
     m_timerHide.stop();
     m_timerShow.stop();
 
@@ -415,15 +417,15 @@ void VisibilityManager::raiseViewTemporarily()
         emit mustBeShown();
 
     QTimer::singleShot(qBound(1800, 2 * m_timerHide.interval(), 3000), this, [&]() {
-        raiseTemporarily = false;
-        hideNow = true;
+        m_raiseTemporarily = false;
+        m_hideNow = true;
         updateHiddenState();
     });
 }
 
 void VisibilityManager::updateHiddenState()
 {
-    if (dragEnter)
+    if (m_dragEnter)
         return;
 
     switch (m_mode) {
@@ -450,8 +452,8 @@ void VisibilityManager::updateHiddenState()
 
 void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activities)
 {
-    if (edgeGhostWindow) {
-        wm->setWindowOnActivities(*edgeGhostWindow, activities);
+    if (m_edgeGhostWindow) {
+        m_wm->setWindowOnActivities(*m_edgeGhostWindow, activities);
     }
 }
 
@@ -463,7 +465,7 @@ void VisibilityManager::activeWindowDraggingStarted()
 
 void VisibilityManager::dodgeActive()
 {
-    if (raiseTemporarily)
+    if (m_raiseTemporarily)
         return;
 
     //!don't send false raiseView signal when containing mouse
@@ -477,7 +479,7 @@ void VisibilityManager::dodgeActive()
 
 void VisibilityManager::dodgeMaximized()
 {
-    if (raiseTemporarily)
+    if (m_raiseTemporarily)
         return;
 
     //!don't send false raiseView signal when containing mouse
@@ -491,7 +493,7 @@ void VisibilityManager::dodgeMaximized()
 
 void VisibilityManager::dodgeAllWindows()
 {
-    if (raiseTemporarily)
+    if (m_raiseTemporarily)
         return;
 
     if (m_containsMouse) {
@@ -510,11 +512,11 @@ void VisibilityManager::saveConfig()
 
     auto config = m_latteView->containment()->config();
 
-    config.writeEntry("enableKWinEdges", enableKWinEdgesFromUser);
+    config.writeEntry("enableKWinEdges", m_enableKWinEdgesFromUser);
     config.writeEntry("timerShow", m_timerShow.interval());
     config.writeEntry("timerHide", m_timerHide.interval());
-    config.writeEntry("raiseOnDesktopChange", raiseOnDesktopChange);
-    config.writeEntry("raiseOnActivityChange", raiseOnActivityChange);
+    config.writeEntry("raiseOnDesktopChange", m_raiseOnDesktopChange);
+    config.writeEntry("raiseOnActivityChange", m_raiseOnActivityChange);
 
     m_latteView->containment()->configNeedsSaving();
 }
@@ -531,7 +533,7 @@ void VisibilityManager::restoreConfig()
     emit timerShowChanged();
     emit timerHideChanged();
 
-    enableKWinEdgesFromUser = config.readEntry("enableKWinEdges", true);
+    m_enableKWinEdgesFromUser = config.readEntry("enableKWinEdges", true);
     emit enableKWinEdgesChanged();
 
     setRaiseOnDesktop(config.readEntry("raiseOnDesktopChange", false));
@@ -596,7 +598,7 @@ void VisibilityManager::viewEventManager(QEvent *ev)
             break;
 
         case QEvent::DragEnter:
-            dragEnter = true;
+            m_dragEnter = true;
 
             if (m_isHidden)
                 emit mustBeShown();
@@ -605,12 +607,12 @@ void VisibilityManager::viewEventManager(QEvent *ev)
 
         case QEvent::DragLeave:
         case QEvent::Drop:
-            dragEnter = false;
+            m_dragEnter = false;
             updateHiddenState();
             break;
 
         case QEvent::Show:
-            wm->setViewExtraFlags(*m_latteView);
+            m_wm->setViewExtraFlags(*m_latteView);
             break;
 
         default:
@@ -621,16 +623,16 @@ void VisibilityManager::viewEventManager(QEvent *ev)
 //! KWin Edges Support functions
 bool VisibilityManager::enableKWinEdges() const
 {
-    return enableKWinEdgesFromUser;
+    return m_enableKWinEdgesFromUser;
 }
 
 void VisibilityManager::setEnableKWinEdges(bool enable)
 {
-    if (enableKWinEdgesFromUser == enable) {
+    if (m_enableKWinEdgesFromUser == enable) {
         return;
     }
 
-    enableKWinEdgesFromUser = enable;
+    m_enableKWinEdgesFromUser = enable;
 
     emit enableKWinEdgesChanged();
 
@@ -643,9 +645,9 @@ void VisibilityManager::updateKWinEdgesSupport()
         || m_mode == Types::DodgeActive
         || m_mode == Types::DodgeAllWindows
         || m_mode == Types::DodgeMaximized) {
-        if (enableKWinEdgesFromUser) {
+        if (m_enableKWinEdgesFromUser) {
             createEdgeGhostWindow();
-        } else if (!enableKWinEdgesFromUser) {
+        } else if (!m_enableKWinEdgesFromUser) {
             deleteEdgeGhostWindow();
         }
     } else if (m_mode == Types::AlwaysVisible
@@ -656,12 +658,12 @@ void VisibilityManager::updateKWinEdgesSupport()
 
 void VisibilityManager::createEdgeGhostWindow()
 {
-    if (!edgeGhostWindow) {
-        edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
+    if (!m_edgeGhostWindow) {
+        m_edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
 
-        wm->setViewExtraFlags(*edgeGhostWindow);
+        m_wm->setViewExtraFlags(*m_edgeGhostWindow);
 
-        connect(edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
+        connect(m_edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
                 raiseView(true);
             } else {
@@ -670,18 +672,18 @@ void VisibilityManager::createEdgeGhostWindow()
             }
         });
 
-        connectionsKWinEdges[0] = connect(wm, &WindowSystem::currentActivityChanged,
+        m_connectionsKWinEdges[0] = connect(m_wm, &WindowSystem::currentActivityChanged,
         this, [&]() {
             bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout ||
                                     (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
                                      && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
                                      && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName()));
 
-            if (edgeGhostWindow) {
+            if (m_edgeGhostWindow) {
                 if (inCurrentLayout) {
-                    wm->setEdgeStateFor(edgeGhostWindow, m_isHidden);
+                    m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
                 } else {
-                    wm->setEdgeStateFor(edgeGhostWindow, false);
+                    m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
                 }
             }
         });
@@ -692,11 +694,11 @@ void VisibilityManager::createEdgeGhostWindow()
 
 void VisibilityManager::deleteEdgeGhostWindow()
 {
-    if (edgeGhostWindow) {
-        edgeGhostWindow->deleteLater();
-        edgeGhostWindow = nullptr;
+    if (m_edgeGhostWindow) {
+        m_edgeGhostWindow->deleteLater();
+        m_edgeGhostWindow = nullptr;
 
-        for (auto &c : connectionsKWinEdges) {
+        for (auto &c : m_connectionsKWinEdges) {
             disconnect(c);
         }
 

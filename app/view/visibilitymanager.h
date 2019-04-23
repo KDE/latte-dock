@@ -151,27 +151,27 @@ private slots:
     void dodgeMaximized();
 
 private:
-    AbstractWindowInterface *wm;
+    AbstractWindowInterface *m_wm;
     Types::Visibility m_mode{Types::None};
-    std::array<QMetaObject::Connection, 5> connections;
+    std::array<QMetaObject::Connection, 5> m_connections;
 
     QTimer m_timerShow;
     QTimer m_timerHide;
     QTimer m_timerStartUp;
 
     bool m_isHidden{false};
-    bool dragEnter{false};
+    bool m_dragEnter{false};
     bool m_blockHiding{false};
     bool m_containsMouse{false};
-    bool raiseTemporarily{false};
-    bool raiseOnDesktopChange{false};
-    bool raiseOnActivityChange{false};
-    bool hideNow{false};
+    bool m_raiseTemporarily{false};
+    bool m_raiseOnDesktopChange{false};
+    bool m_raiseOnActivityChange{false};
+    bool m_hideNow{false};
 
     //! KWin Edges
-    bool enableKWinEdgesFromUser{true};
-    std::array<QMetaObject::Connection, 1> connectionsKWinEdges;
-    ScreenEdgeGhostWindow *edgeGhostWindow{nullptr};
+    bool m_enableKWinEdgesFromUser{true};
+    std::array<QMetaObject::Connection, 1> m_connectionsKWinEdges;
+    ScreenEdgeGhostWindow *m_edgeGhostWindow{nullptr};
 
     Latte::Corona *m_corona{nullptr};
     Latte::View *m_latteView{nullptr};
