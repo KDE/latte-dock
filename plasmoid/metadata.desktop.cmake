@@ -1,6 +1,22 @@
 [Desktop Entry]
 Name=Latte Tasks
+Name[ca]=Tasques del Latte
+Name[en_GB]=Latte Tasks
+Name[gl]=Tarefas de Latte
+Name[nl]=Latte-taken
+Name[pt]=Tarefas do Latte
+Name[sv]=Latte aktiviteter
+Name[uk]=Завдання Латте
+Name[x-test]=xxLatte Tasksxx
 Comment=Tasks plasmoid from Latte Dock
+Comment[ca]=Plasmoide de tasques del Latte Dock
+Comment[en_GB]=Tasks plasmoid from Latte Dock
+Comment[gl]=Plasmoides de tarefas da doca Latte
+Comment[nl]=Plasmoid voor taken uit Latte Dock
+Comment[pt]=Plasmóide de tarefas da Área Acoplável do Latte
+Comment[sv]=Aktivitetsplasmoid för Latte dockningsfönster
+Comment[uk]=Плазмоїд завдань з панелі Латте
+Comment[x-test]=xxTasks plasmoid from Latte Dockxx
 
 Type=Service
 Icon=latte-dock
