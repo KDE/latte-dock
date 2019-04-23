@@ -22,6 +22,7 @@ import QtQuick 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 Item {
     id: background
@@ -52,22 +53,21 @@ Item {
             }
         ]
 
-        Rectangle {
+        LatteComponents.BadgeText {
             anchors.centerIn: parent
             width: 0.8 * parent.width
             height: width
-            radius: width/2
+            minimumWidth: width
+            maximumWidth: width
+
+            fullCircle: true
+            showNumber: false
+            showText: true
 
             color: theme.backgroundColor
-            Rectangle {
-                anchors.fill: parent
-                color: "transparent"
-                border.width: 1
-                border.color: root.minimizedDotColor
-                radius: width/2
-
-                //opacity: taskItem.playingAudio && !taskItem.muted && taskItem.volume>0 ? 1 : 0.85
-            }
+            borderColor: root.lightTextColor
+            proportion: 0
+            radiusPerCentage: 100
 
             Latte.IconItem{
                 id: audioStreamIcon

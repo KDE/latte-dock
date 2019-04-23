@@ -51,8 +51,11 @@ Rectangle {
 
     color: theme.backgroundColor
     radius: (radiusPerCentage / 100) * (height / 2)
-    border.width: 1 //Math.max(1,width/64)
+    border.width: 0 //Math.max(1,width/64)
 
+    property int borderWidth: 1
+    property real borderOpacity: 1
+    property color borderColor: theme.textColor
     property color textColor: theme.textColor
     property color highlightedColor: theme.buttonFocusColor
 
@@ -80,8 +83,8 @@ Rectangle {
         // edge bleeding fix
         readonly property double filler: 0.01
 
-        width: parent.width - 2 * parent.border.width
-        height: parent.height - 2 * parent.border.width
+        width: parent.width - 2 * parent.borderWidth
+        height: parent.height - 2 * parent.borderWidth
         opacity: proportion > 0 ? 1 : 0
 
         anchors.centerIn: parent
@@ -150,12 +153,12 @@ Rectangle {
 
     Rectangle{
         anchors.fill: parent
-        anchors.topMargin: parent.border.width
-        anchors.bottomMargin: parent.border.width
-        anchors.leftMargin: parent.border.width
-        anchors.rightMargin: parent.border.width
+        anchors.topMargin: parent.borderWidth
+        anchors.bottomMargin: parent.borderWidth
+        anchors.leftMargin: parent.borderWidth
+        anchors.rightMargin: parent.borderWidth
         color: "transparent"
-        border.width: parent.border.width+1
+        border.width: parent.borderWidth > 0 ? parent.borderWidth+1 : 0
         border.color: "black"
         radius: parent.radius
         opacity: 0.4
@@ -163,10 +166,11 @@ Rectangle {
 
     Rectangle{
         anchors.fill: parent
-        border.width: parent.border.width
-        border.color: parent.border.color
+        border.width: parent.borderWidth
+        border.color: parent.borderColor
         color: "transparent"
         radius: parent.radius
+        opacity: parent.borderOpacity
     }
 }
 

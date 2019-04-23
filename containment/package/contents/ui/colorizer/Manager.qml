@@ -34,6 +34,9 @@ Loader{
 
     readonly property bool backgroundIsBusy: item ? item.isBusy : false
 
+    readonly property real originalThemeTextColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
+    readonly property color originalLightTextColor: originalThemeTextColorBrightness > 127.5 ? theme.textColor : theme.backgroundColor
+
     readonly property real themeTextColorBrightness: ColorizerTools.colorBrightness(textColor)
     readonly property real backgroundColorBrightness: ColorizerTools.colorBrightness(backgroundColor)
     readonly property color minimizedDotColor: themeTextColorBrightness > 127.5 ? Qt.darker(textColor, 1.7) : Qt.lighter(textColor, 8)

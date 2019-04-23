@@ -59,7 +59,6 @@ Item {
         LatteComponents.BadgeText {
             id: progressCircle
             anchors.centerIn: parent
-            border.color: textColor
             minimumWidth: Math.min(0.8 * parent.height, maximumWidth)
             maximumWidth: {
                 if (showsAudioBadge) {
@@ -85,6 +84,7 @@ Item {
 
             color: theme.backgroundColor
             textColor: showsInfoBadge ? root.lightTextColor : theme.textColor
+            borderColor: root.lightTextColor
 
             highlightedColor: {
                 if (showsInfoBadge) {

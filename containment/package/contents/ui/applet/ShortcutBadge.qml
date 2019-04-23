@@ -108,7 +108,7 @@ Loader{
             minimumWidth: 0.4 * (wrapper.zoomScale * root.iconSize)
             height: Math.max(24, 0.4 * (wrapper.zoomScale * root.iconSize))
 
-            border.color: root.minimizedDotColor
+            borderColor: colorizerManager.originalLightTextColor
             proportion: 0
             radiusPerCentage: 100
             showNumber: false

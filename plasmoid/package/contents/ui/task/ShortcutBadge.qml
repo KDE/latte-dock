@@ -58,7 +58,6 @@ Loader{
 
         LatteComponents.BadgeText {
             id: taskNumber
-
             // when iconSize < 48, height is always = 24, height / iconSize > 50%
             // we prefer center aligned badges to top-left aligned ones
             property bool centerInParent: root.iconSize < 48
@@ -69,8 +68,8 @@ Loader{
             minimumWidth: 0.4 * (wrapper.mScale * root.iconSize)
             height: Math.max(24, 0.4 * (wrapper.mScale * root.iconSize))
 
-            border.color: root.minimizedDotColor
             textValue: shorcutBadge.badgeString
+            borderColor: root.lightTextColor
 
             showNumber: false
             showText: true
