@@ -166,6 +166,10 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
             }
 
+            connections[0] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
+                raiseView(m_containsMouse);
+            });
+
             raiseView(m_containsMouse);
         }
         break;
@@ -176,11 +180,12 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
             }
 
-            connections[0] = connect(wm, &WindowSystem::activeWindowChanged
+            connections[0] = connect(this, &VisibilityManager::containsMouseChanged
                                      , this, &VisibilityManager::dodgeActive);
-            connections[1] = connect(wm, &WindowSystem::windowChanged
+            connections[1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowTouchingChanged
                                      , this, &VisibilityManager::dodgeActive);
-            dodgeActive(wm->activeWindow());
+
+            dodgeActive();
         }
         break;
 
@@ -190,11 +195,12 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
             }
 
-            connections[0] = connect(wm, &WindowSystem::activeWindowChanged
+            connections[0] = connect(this, &VisibilityManager::containsMouseChanged
                                      , this, &VisibilityManager::dodgeMaximized);
-            connections[1] = connect(wm, &WindowSystem::windowChanged
-                                     , this, &VisibilityManager::dodgeMaximized);
-            dodgeMaximized(wm->activeWindow());
+            connections[1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowMaximizedChanged
+                                     , this, &VisibilityManager::dodgeActive);
+
+            dodgeMaximized();
         }
         break;
 
@@ -433,11 +439,11 @@ void VisibilityManager::updateHiddenState()
             break;
 
         case Types::DodgeActive:
-            dodgeActive(wm->activeWindow());
+            dodgeActive();
             break;
 
         case Types::DodgeMaximized:
-            dodgeMaximized(wm->activeWindow());
+            dodgeMaximized();
             break;
 
         case Types::DodgeAllWindows:
@@ -474,7 +480,7 @@ void VisibilityManager::activeWindowDraggingStarted()
     updateHiddenState();
 }
 
-void VisibilityManager::dodgeActive(WindowId wid)
+void VisibilityManager::dodgeActive()
 {
     if (raiseTemporarily)
         return;
@@ -485,27 +491,10 @@ void VisibilityManager::dodgeActive(WindowId wid)
         return;
     }
 
-    auto winfo = wm->requestInfo(wid);
-
-    if (!winfo.isValid() || !winfo.isActive()) {
-        winfo = wm->requestInfo(wm->activeWindow());
-
-        if (!winfo.isValid()) {
-            //! very rare case that window manager doesn't have any active window at all
-            raiseView(true);
-            return;
-        }
-    }
-
-    //! don't send false raiseView signal when containing mouse, // Johan comment
-    //! I don't know why that wasn't winfo.wid() //active window, but just wid//the window that made the call
-    if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
-        bool overlaps{intersects(winfo)};
-        raiseView(!overlaps);
-    }
+    raiseView(!m_latteView->windowsTracker()->activeWindowTouching());
 }
 
-void VisibilityManager::dodgeMaximized(WindowId wid)
+void VisibilityManager::dodgeMaximized()
 {
     if (raiseTemporarily)
         return;
@@ -516,36 +505,7 @@ void VisibilityManager::dodgeMaximized(WindowId wid)
         return;
     }
 
-    auto winfo = wm->requestInfo(wid);
-
-    if (!winfo.isValid() || !winfo.isActive()) {
-        winfo = wm->requestInfo(wm->activeWindow());
-
-        if (!winfo.isValid()) {
-            //! very rare case that window manager doesn't have any active window at all
-            raiseView(true);
-            return;
-        }
-    }
-
-    auto intersectsMaxVert = [&]() noexcept -> bool {
-        return ((winfo.isMaxVert()
-                 || (m_latteView->screen() && m_latteView->screen()->availableSize().height() <= winfo.geometry().height()))
-                && intersects(winfo));
-    };
-
-    auto intersectsMaxHoriz = [&]() noexcept -> bool {
-        return ((winfo.isMaxHoriz()
-                 || (m_latteView->screen() && m_latteView->screen()->availableSize().width() <= winfo.geometry().width()))
-                && intersects(winfo));
-    };
-
-    //! don't send false raiseView signal when containing mouse, // Johan comment
-    //! I don't know why that wasn't winfo.wid() //active window, but just wid//the window that made the call
-    if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
-        bool overlapsMaximized{m_latteView->formFactor() == Plasma::Types::Vertical ? intersectsMaxHoriz() : intersectsMaxVert()};
-        raiseView(!overlapsMaximized);
-    }
+    raiseView(!m_latteView->windowsTracker()->activeWindowMaximized());
 }
 
 void VisibilityManager::dodgeAllWindows()

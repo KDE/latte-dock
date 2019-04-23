@@ -233,8 +233,10 @@ Item{
     Binding{
         target: latteView && latteView.windowsTracker ? latteView.windowsTracker : null
         property: "enabled"
-        when: latteView && latteView.windowsTracker
-        value: (latteView && latteView.visibility && latteView.visibility.mode === Latte.Types.DodgeAllWindows)
+        when: latteView && latteView.windowsTracker && latteView.visibility
+        value: (latteView && latteView.visibility
+                && !(latteView.visibility.mode === Latte.Types.AlwaysVisible
+                     || latteView.visibility.mode === Latte.Types.WindowsGoBelow))
                || ((root.backgroundOnlyOnMaximized
                     || plasmoid.configuration.solidBackgroundForMaximized
                     || root.disablePanelShadowMaximized

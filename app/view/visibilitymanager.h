@@ -146,14 +146,13 @@ private:
     void setViewGeometry(const QRect &rect);
 
     void windowAdded(WindowId id);
-    void dodgeActive(WindowId id);
-    void dodgeMaximized(WindowId id);
-
     void updateStrutsBasedOnLayoutsAndActivities();
     void viewEventManager(QEvent *ev);
 
 private slots:
     void dodgeAllWindows();
+    void dodgeActive();
+    void dodgeMaximized();
 
 private:
     AbstractWindowInterface *wm;

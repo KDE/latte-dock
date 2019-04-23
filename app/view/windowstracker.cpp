@@ -359,9 +359,22 @@ bool WindowsTracker::isActiveInCurrentScreen(const WindowInfoWrap &winfo)
 
 bool WindowsTracker::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
 {
+    auto viewIntersectsMaxVert = [&]() noexcept -> bool {
+        return ((winfo.isMaxVert()
+                 || (m_latteView->screen() && m_latteView->screen()->availableSize().height() <= winfo.geometry().height()))
+                && m_latteView->visibility()->intersects(winfo));
+    };
+
+    auto viewIntersectsMaxHoriz = [&]() noexcept -> bool {
+        return ((winfo.isMaxHoriz()
+                 || (m_latteView->screen() && m_latteView->screen()->availableSize().width() <= winfo.geometry().width()))
+                && m_latteView->visibility()->intersects(winfo));
+    };
+
     //! updated implementation to identify the screen that the maximized window is present
     //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
-    return (winfo.isValid() && !winfo.isMinimized() && winfo.isMaximized()
+    return (winfo.isValid() && !winfo.isMinimized()
+            && (winfo.isMaximized() || viewIntersectsMaxVert() || viewIntersectsMaxHoriz())
             && m_availableScreenGeometry.contains(winfo.geometry().center()));
 }
 
