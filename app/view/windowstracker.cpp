@@ -168,35 +168,35 @@ void WindowsTracker::setEnabled(bool active)
         m_windows.clear();
 
         for (const auto &wid : m_wm->windows()) {
-             m_windows.insert(wid, m_wm->requestInfo(wid));
+            m_windows.insert(wid, m_wm->requestInfo(wid));
         }
 
         m_connections[0] = connect(m_corona, &Plasma::Corona::availableScreenRectChanged,
-                                              this, &WindowsTracker::updateAvailableScreenGeometry);
+                                   this, &WindowsTracker::updateAvailableScreenGeometry);
 
         m_connections[1] = connect(m_wm, &WindowSystem::windowChanged, this, [&](WindowId wid) {
-            m_windows[wid] = m_wm->requestInfo(wid);
-            updateFlags();
-        });
+                m_windows[wid] = m_wm->requestInfo(wid);
+                updateFlags();
+    });
 
         m_connections[2] = connect(m_wm, &WindowSystem::windowRemoved, this, [&](WindowId wid) {
-            m_windows.remove(wid);
-        });
+                m_windows.remove(wid);
+    });
 
         m_connections[3] = connect(m_wm, &WindowSystem::windowAdded, this, [&](WindowId wid) {
-            m_windows.insert(wid, m_wm->requestInfo(wid));
-            updateFlags();
-        });
+                m_windows.insert(wid, m_wm->requestInfo(wid));
+                updateFlags();
+    });
 
         m_connections[4] = connect(m_wm, &WindowSystem::activeWindowChanged, this, [&](WindowId wid) {
-            if (m_windows.contains(m_lastActiveWindowWid)) {
+                if (m_windows.contains(m_lastActiveWindowWid)) {
                 m_windows[m_lastActiveWindowWid] = m_wm->requestInfo(m_lastActiveWindowWid);
-            }
+    }
 
-            m_windows[wid] = m_wm->requestInfo(wid);
+                m_windows[wid] = m_wm->requestInfo(wid);
 
-            updateFlags();
-        });
+                updateFlags();
+    });
 
         m_connections[5] = connect(m_wm, &WindowSystem::currentDesktopChanged, this, [&] {
             updateFlags();
@@ -264,7 +264,7 @@ void WindowsTracker::updateFlags()
     WindowId activeTouchWinId;
 
     for (const auto &winfo : m_windows) {
-        if (winfo.isPlasmaDesktop()) {
+        if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo)) {
             continue;
         }
 
@@ -341,53 +341,38 @@ void WindowsTracker::updateFlags()
     }
 }
 
+bool WindowsTracker::inCurrentDesktopActivity(const WindowInfoWrap &winfo)
+{
+    return (winfo.isValid() && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid()));
+}
+
 bool WindowsTracker::isActive(const WindowInfoWrap &winfo)
 {
-    if (winfo.isValid() && winfo.isActive() && !winfo.isMinimized()
-            && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid())) {
-        return true;
-    }
-
-    return false;
+    return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized());
 }
 
 bool WindowsTracker::isActiveInCurrentScreen(const WindowInfoWrap &winfo)
 {
-    if (winfo.isValid() && winfo.isActive() && !winfo.isMinimized()
-            && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid())
-            && m_availableScreenGeometry.contains(winfo.geometry().center())) {
-        return true;
-    }
-
-    return false;
+    return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized()
+            && m_availableScreenGeometry.contains(winfo.geometry().center()));
 }
 
 bool WindowsTracker::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
 {
     //! updated implementation to identify the screen that the maximized window is present
     //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
-
-    if (winfo.isValid() && !winfo.isMinimized() && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid())) {
-        if (winfo.isMaximized() && m_availableScreenGeometry.contains(winfo.geometry().center())) {
-            return true;
-        }
-    }
-
-    return false;
+    return (winfo.isValid() && !winfo.isMinimized() && winfo.isMaximized()
+            && m_availableScreenGeometry.contains(winfo.geometry().center()));
 }
 
 bool WindowsTracker::isTouchingView(const WindowInfoWrap &winfo)
 {
-    if (winfo.isValid() && !winfo.isMinimized() && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid())) {
-        return m_latteView->visibility()->intersects(winfo);
-    }
-
-    return false;
+    return (winfo.isValid() && !winfo.isMinimized() && m_latteView->visibility()->intersects(winfo));
 }
 
 bool WindowsTracker::isTouchingViewEdge(const WindowInfoWrap &winfo)
 {
-    if (winfo.isValid() && !winfo.isMinimized() && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid())) {
+    if (winfo.isValid() && !winfo.isMinimized()) {
         bool touchingViewEdge{false};
 
         QRect screenGeometry = m_latteView->screenGeometry();
