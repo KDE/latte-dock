@@ -466,7 +466,7 @@ void WindowsTracker::requestMoveActiveWindow(int localX, int localY)
             m_wm->releaseMouseEventFor(m_latteView->winId());
         });
 
-        m_latteView->visibility()->activeWindowDraggingStarted();
+        emit activeWindowDraggingStarted();
     }
 }
 

@@ -80,6 +80,10 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
             emit mustBeHide();
         }
     });
+
+    connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowDraggingStarted,
+            this, &VisibilityManager::activeWindowDraggingStarted);
+
     wm->setViewExtraFlags(*m_latteView);
     wm->addView(m_latteView->winId());
 
@@ -114,44 +118,54 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         disconnect(c);
     }
 
+    int base{0};
+
     if (m_mode == Types::AlwaysVisible) {
+        //! remove struts for old always visible mode
         wm->removeViewStruts(*m_latteView);
-    } else {
-        connections[3] = connect(wm, &WindowSystem::currentDesktopChanged
-        , this, [&] {
-            if (raiseOnDesktopChange)
-                raiseViewTemporarily();
-        });
-        connections[4] = connect(wm, &WindowSystem::currentActivityChanged
-        , this, [&]() {
-            if (raiseOnActivityChange)
-                raiseViewTemporarily();
-            else
-                updateHiddenState();
-        });
     }
 
     m_timerShow.stop();
     m_timerHide.stop();
     m_mode = mode;
 
+    if (mode != Types::AlwaysVisible && mode != Types::WindowsGoBelow) {
+        //set wayland visibility mode
+        if (m_latteView->surface()) {
+            m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
+        }
+
+        connections[0] = connect(wm, &WindowSystem::currentDesktopChanged, this, [&] {
+            if (raiseOnDesktopChange)
+                raiseViewTemporarily();
+        });
+        connections[1] = connect(wm, &WindowSystem::currentActivityChanged, this, [&]() {
+            if (raiseOnActivityChange)
+                raiseViewTemporarily();
+            else
+                updateHiddenState();
+        });
+
+        base = 2;
+    } else {
+        //set wayland visibility mode
+        if (m_latteView->surface()) {
+            m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
+        }
+    }
+
     switch (m_mode) {
         case Types::AlwaysVisible: {
-            //set wayland visibility mode
-            if (m_latteView->surface()) {
-                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
-            }
-
             if (m_latteView->containment() && m_latteView->screen()) {
                 updateStrutsBasedOnLayoutsAndActivities();
             }
 
             if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-                connections[0] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
+                connections[base] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
 
-                connections[1] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
+                connections[base+1] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
             }
@@ -161,12 +175,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
         case Types::AutoHide: {
-            //set wayland visibility mode
-            if (m_latteView->surface()) {
-                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
-            }
-
-            connections[0] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
+            connections[base] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
                 raiseView(m_containsMouse);
             });
 
@@ -175,14 +184,9 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
         case Types::DodgeActive: {
-            //set wayland visibility mode
-            if (m_latteView->surface()) {
-                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
-            }
-
-            connections[0] = connect(this, &VisibilityManager::containsMouseChanged
+            connections[base] = connect(this, &VisibilityManager::containsMouseChanged
                                      , this, &VisibilityManager::dodgeActive);
-            connections[1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowTouchingChanged
+            connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowTouchingChanged
                                      , this, &VisibilityManager::dodgeActive);
 
             dodgeActive();
@@ -190,14 +194,9 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
         case Types::DodgeMaximized: {
-            //set wayland visibility mode
-            if (m_latteView->surface()) {
-                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
-            }
-
-            connections[0] = connect(this, &VisibilityManager::containsMouseChanged
+            connections[base] = connect(this, &VisibilityManager::containsMouseChanged
                                      , this, &VisibilityManager::dodgeMaximized);
-            connections[1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowMaximizedChanged
+            connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowMaximizedChanged
                                      , this, &VisibilityManager::dodgeActive);
 
             dodgeMaximized();
@@ -205,30 +204,19 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
         case Types::DodgeAllWindows: {
-            //set wayland visibility mode
-            if (m_latteView->surface()) {
-                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
-            }
-
-            connections[0] = connect(this, &VisibilityManager::containsMouseChanged
+            connections[base] = connect(this, &VisibilityManager::containsMouseChanged
                                      , this, &VisibilityManager::dodgeAllWindows);
 
-            connections[1] = connect(m_latteView->windowsTracker(), &WindowsTracker::existsWindowTouchingChanged
+            connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::existsWindowTouchingChanged
                                      , this, &VisibilityManager::dodgeAllWindows);
         }
         break;
 
         case Types::WindowsGoBelow:
-
-            //set wayland visibility mode
-            if (m_latteView->surface()) {
-                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
-            }
-
-            break;
+        break;
 
         default:
-            break;
+        break;
     }
 
     m_latteView->containment()->config().writeEntry("visibility", static_cast<int>(m_mode));
@@ -621,8 +609,6 @@ void VisibilityManager::viewEventManager(QEvent *ev)
 
         case QEvent::Leave:
             setContainsMouse(false);
-            updateHiddenState();
-
             break;
 
         case QEvent::DragEnter:

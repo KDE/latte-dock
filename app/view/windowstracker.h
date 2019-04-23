@@ -68,6 +68,7 @@ public:
 
 signals:
     void enabledChanged();
+    void activeWindowDraggingStarted();
     void activeWindowMaximizedChanged();
     void activeWindowTouchingChanged();
     void existsWindowActiveChanged();
