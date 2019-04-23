@@ -59,7 +59,7 @@ Item {
         LatteComponents.BadgeText {
             id: progressCircle
             anchors.centerIn: parent
-            border.color: root.minimizedDotColor
+            border.color: textColor
             minimumWidth: Math.min(0.8 * parent.height, maximumWidth)
             maximumWidth: {
                 if (showsAudioBadge) {
@@ -83,9 +83,18 @@ Item {
             fullCircle: true
             showNumber: true
 
-            /*textWithBackgroundColor: ( (taskItem.badgeIndicator > 0)
-                                      || (taskIcon.smartLauncherItem && taskIcon.smartLauncherItem.countVisible && !taskIcon.smartLauncherItem.progressVisible) )
-                                     && proportion>0*/
+            color: theme.backgroundColor
+            textColor: showsInfoBadge ? root.lightTextColor : theme.textColor
+
+            highlightedColor: {
+                if (showsInfoBadge) {
+                    return theme.negativeTextColor
+                }
+
+                return theme.buttonFocusColor;
+            }
+
+
             textWithBackgroundColor: false
 
             proportion: {
@@ -99,6 +108,9 @@ Item {
 
                 return 0;
             }
+
+            readonly property bool showsInfoBadge: ((taskItem.badgeIndicator > 0)
+                                                    || (taskIcon.smartLauncherItem && taskIcon.smartLauncherItem.countVisible && !taskIcon.smartLauncherItem.progressVisible))
 
             readonly property bool showsAudioBadge: root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator
         }

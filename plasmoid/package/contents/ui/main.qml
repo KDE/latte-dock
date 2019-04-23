@@ -103,14 +103,19 @@ Item {
     property int internalWidthMargins: root.vertical ? thickMargins : 2 * lengthIntMargin
     property int internalHeightMargins: !root.vertical ? thickMargins : 2 * lengthIntMargin
 
-    property real textColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
+    property real textColorBrightness: ColorizerTools.colorBrightness(themeTextColor)
     property color minimizedDotColor: {
         if (latteView) {
             return latteView.minimizedDotColor;
         }
 
-        return textColorBrightness > 127.5 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
+        return textColorBrightness > 127.5 ? Qt.darker(themeTextColor, 1.7) : Qt.lighter(themeBackgroundColor, 7)
     }
+
+    property color themeTextColor: theme.textColor
+    property color themeBackgroundColor: theme.backgroundColor
+
+    property color lightTextColor: textColorBrightness > 127.5 ? themeTextColor : themeBackgroundColor
 
     //a small badgers record (id,value)
     //in order to track badgers when there are changes

@@ -47,14 +47,14 @@ Rectangle {
     property double partSize: height / 2
     property double pi2: Math.PI * 2
 
-    property color alphaBackColor: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.45)
-    property color alphaBackColor2: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.8)
-
     width: Math.max(minimumWidth, valueText.width + 4*units.smallSpacing)
 
-    color: theme.backgroundColor //mainItemContainer.badgeIndicator > 0 ? alphaBackColor2 : alphaBackColor
+    color: theme.backgroundColor
     radius: (radiusPerCentage / 100) * (height / 2)
-    border.width: Math.max(1,width/64)
+    border.width: 1 //Math.max(1,width/64)
+
+    property color textColor: theme.textColor
+    property color highlightedColor: theme.buttonFocusColor
 
     onProportionChanged: {
         //  console.log(previousProportion + " - "+proportion);
@@ -86,7 +86,7 @@ Rectangle {
 
         anchors.centerIn: parent
 
-        property color drawColor:  theme.buttonFocusColor; //mainItemContainer.badgeIndicator > 0 ? theme.buttonFocusColor : theme.highlightColor;
+        property color drawColor: highlightedColor
 
         onDrawColorChanged: requestPaint();
 
@@ -144,7 +144,7 @@ Rectangle {
         }
         font.pixelSize: 0.62 * parent.height
         font.bold: true
-        color: textWithBackgroundColor ? theme.backgroundColor : theme.textColor
+        color: textWithBackgroundColor ? parent.color : parent.textColor
         visible: showNumber || showText
     }
 
@@ -155,9 +155,10 @@ Rectangle {
         anchors.leftMargin: parent.border.width
         anchors.rightMargin: parent.border.width
         color: "transparent"
-        border.width: parent.border.width
-        border.color: parent.alphaBackColor2
+        border.width: parent.border.width+1
+        border.color: "black"
         radius: parent.radius
+        opacity: 0.4
     }
 
     Rectangle{

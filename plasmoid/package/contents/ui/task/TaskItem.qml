@@ -1361,7 +1361,7 @@ MouseArea{
     function updateBadge() {
         var badger = root.getBadger(launcherUrl);
 
-        if (badger && !isLauncher) {
+        if (badger) {
             badgeIndicator = parseInt(badger.value);
         } else {
             badgeIndicator = 0;
