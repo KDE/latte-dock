@@ -93,8 +93,6 @@ public:
     int timerHide() const;
     void setTimerHide(int msec);
 
-    bool intersects(const WindowInfoWrap &winfo);
-
     //! KWin Edges Support functions
     bool enableKWinEdges() const;
     void setEnableKWinEdges(bool enable);
@@ -143,8 +141,6 @@ private:
     void updateKWinEdgesSupport();
     void updateGhostWindowState();
 
-    void setViewGeometry(const QRect &rect);
-
     void windowAdded(WindowId id);
     void updateStrutsBasedOnLayoutsAndActivities();
     void viewEventManager(QEvent *ev);
@@ -162,7 +158,7 @@ private:
     QTimer m_timerShow;
     QTimer m_timerHide;
     QTimer m_timerStartUp;
-    QRect m_viewGeometry;
+
     bool m_isHidden{false};
     bool dragEnter{false};
     bool m_blockHiding{false};

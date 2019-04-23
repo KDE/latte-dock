@@ -105,7 +105,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(Latte::ViewPart::VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(Latte::ViewPart::WindowsTracker *windowsTracker READ windowsTracker NOTIFY windowsTrackerChanged)
 
-    Q_PROPERTY(QRect absoluteGeometry READ absGeometry NOTIFY absGeometryChanged)
+    Q_PROPERTY(QRect absoluteGeometry READ absoluteGeometry NOTIFY absoluteGeometryChanged)
     Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
 
@@ -168,7 +168,7 @@ public:
     int alignment() const;
     void setAlignment(int alignment);
 
-    QRect absGeometry() const;
+    QRect absoluteGeometry() const;
     QRect screenGeometry() const;
 
     QRect localGeometry() const;
@@ -211,7 +211,7 @@ public slots:
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
     Q_INVOKABLE bool tasksPresent();
 
-    void updateAbsDockGeometry(bool bypassChecks = false);
+    void updateAbsoluteGeometry(bool bypassChecks = false);
 
     Q_INVOKABLE void disableGrabItemBehavior();
     Q_INVOKABLE void restoreGrabItemBehavior();
@@ -262,7 +262,7 @@ signals:
     void xChanged();
     void yChanged();
 
-    void absGeometryChanged(const QRect &geometry);
+    void absoluteGeometryChanged(const QRect &geometry);
 
 private slots:
     void availableScreenRectChangedFrom(View *origin);
@@ -304,7 +304,7 @@ private:
     Types::ViewType m_type{Types::DockView};
 
     QRect m_localGeometry;
-    QRect m_absGeometry;
+    QRect m_absoluteGeometry;
 
     Layout::GenericLayout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;

@@ -72,7 +72,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
     connect(this, &QQuickView::widthChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
     connect(this, &QQuickView::heightChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
 
-    connect(m_latteView, &Latte::View::absGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
+    connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_latteView, &Latte::View::screenGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_latteView, &Latte::View::locationChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_latteView, &QQuickView::screenChanged, this, [this]() {
@@ -150,25 +150,25 @@ void ScreenEdgeGhostWindow::updateGeometry()
     int thickness{KWindowSystem::compositingActive() ? 4 : 2};
 
     if (m_latteView->location() == Plasma::Types::BottomEdge) {
-        newGeometry.setX(m_latteView->absGeometry().left());
+        newGeometry.setX(m_latteView->absoluteGeometry().left());
         newGeometry.setY(m_latteView->screenGeometry().bottom() - thickness);
     } else if (m_latteView->location() == Plasma::Types::TopEdge) {
-        newGeometry.setX(m_latteView->absGeometry().left());
+        newGeometry.setX(m_latteView->absoluteGeometry().left());
         newGeometry.setY(m_latteView->screenGeometry().top());
     } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
         newGeometry.setX(m_latteView->screenGeometry().left());
-        newGeometry.setY(m_latteView->absGeometry().top());
+        newGeometry.setY(m_latteView->absoluteGeometry().top());
     } else if (m_latteView->location() == Plasma::Types::RightEdge) {
         newGeometry.setX(m_latteView->screenGeometry().right() - thickness);
-        newGeometry.setY(m_latteView->absGeometry().top());
+        newGeometry.setY(m_latteView->absoluteGeometry().top());
     }
 
     if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
-        newGeometry.setWidth(qMin(m_latteView->absGeometry().width(), m_latteView->screenGeometry().width() - 1));
+        newGeometry.setWidth(qMin(m_latteView->absoluteGeometry().width(), m_latteView->screenGeometry().width() - 1));
         newGeometry.setHeight(thickness + 1);
     } else {
         newGeometry.setWidth(thickness + 1);
-        newGeometry.setHeight(qMin(m_latteView->absGeometry().height(), m_latteView->screenGeometry().height() - 1));
+        newGeometry.setHeight(qMin(m_latteView->absoluteGeometry().height(), m_latteView->screenGeometry().height() - 1));
     }
 
     m_calculatedGeometry = newGeometry;

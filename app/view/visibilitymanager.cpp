@@ -53,8 +53,16 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     wm = m_corona->wm();
 
     if (m_latteView) {
-        connect(m_latteView, &Latte::View::absGeometryChanged, this, &VisibilityManager::setViewGeometry);
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
+
+        connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, [&]() {
+            if (m_mode == Types::AlwaysVisible && m_latteView->screen()) {
+                updateStrutsBasedOnLayoutsAndActivities();
+            }
+        });
+
+        connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowDraggingStarted,
+                this, &VisibilityManager::activeWindowDraggingStarted);
     }
 
     if (m_corona) {
@@ -80,9 +88,6 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
             emit mustBeHide();
         }
     });
-
-    connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowDraggingStarted,
-            this, &VisibilityManager::activeWindowDraggingStarted);
 
     wm->setViewExtraFlags(*m_latteView);
     wm->addView(m_latteView->winId());
@@ -233,7 +238,7 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
                                       && m_latteView->managedLayout()->isCurrent());
 
     if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
-        wm->setViewStruts(*m_latteView, m_viewGeometry, m_latteView->location());
+        wm->setViewStruts(*m_latteView, m_latteView->absoluteGeometry(), m_latteView->location());
     } else {
         wm->removeViewStruts(*m_latteView);
     }
@@ -443,18 +448,6 @@ void VisibilityManager::updateHiddenState()
     }
 }
 
-void VisibilityManager::setViewGeometry(const QRect &geometry)
-{
-    if (!m_latteView->containment() || m_viewGeometry == geometry)
-        return;
-
-    m_viewGeometry = geometry;
-
-    if (m_mode == Types::AlwaysVisible && m_latteView->screen()) {
-        updateStrutsBasedOnLayoutsAndActivities();
-    }
-}
-
 void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activities)
 {
     if (edgeGhostWindow) {
@@ -508,15 +501,6 @@ void VisibilityManager::dodgeAllWindows()
     bool windowIntersects{m_latteView->windowsTracker()->activeWindowTouching() || m_latteView->windowsTracker()->existsWindowTouching()};
 
     raiseView(!windowIntersects);
-}
-
-bool VisibilityManager::intersects(const WindowInfoWrap &winfo)
-{
-    return (!winfo.isMinimized()
-            && wm->isOnCurrentDesktop(winfo.wid())
-            && wm->isOnCurrentActivity(winfo.wid())
-            && winfo.geometry().intersects(m_viewGeometry)
-            && !winfo.isShaded());
 }
 
 void VisibilityManager::saveConfig()

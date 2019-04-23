@@ -346,6 +346,11 @@ bool WindowsTracker::inCurrentDesktopActivity(const WindowInfoWrap &winfo)
     return (winfo.isValid() && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid()));
 }
 
+bool WindowsTracker::intersects(const WindowInfoWrap &winfo)
+{
+    return (!winfo.isMinimized() && !winfo.isShaded() && winfo.geometry().intersects(m_latteView->absoluteGeometry()));
+}
+
 bool WindowsTracker::isActive(const WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized());
@@ -362,13 +367,13 @@ bool WindowsTracker::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
     auto viewIntersectsMaxVert = [&]() noexcept -> bool {
         return ((winfo.isMaxVert()
                  || (m_latteView->screen() && m_latteView->screen()->availableSize().height() <= winfo.geometry().height()))
-                && m_latteView->visibility()->intersects(winfo));
+                && intersects(winfo));
     };
 
     auto viewIntersectsMaxHoriz = [&]() noexcept -> bool {
         return ((winfo.isMaxHoriz()
                  || (m_latteView->screen() && m_latteView->screen()->availableSize().width() <= winfo.geometry().width()))
-                && m_latteView->visibility()->intersects(winfo));
+                && intersects(winfo));
     };
 
     //! updated implementation to identify the screen that the maximized window is present
@@ -380,7 +385,7 @@ bool WindowsTracker::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
 
 bool WindowsTracker::isTouchingView(const WindowInfoWrap &winfo)
 {
-    return (winfo.isValid() && !winfo.isMinimized() && m_latteView->visibility()->intersects(winfo));
+    return (winfo.isValid() && intersects(winfo));
 }
 
 bool WindowsTracker::isTouchingViewEdge(const WindowInfoWrap &winfo)

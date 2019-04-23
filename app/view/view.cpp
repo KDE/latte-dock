@@ -203,13 +203,13 @@ View::~View()
 void View::init()
 {
     connect(this, &QQuickWindow::xChanged, this, &View::xChanged);
-    connect(this, &QQuickWindow::xChanged, this, &View::updateAbsDockGeometry);
+    connect(this, &QQuickWindow::xChanged, this, &View::updateAbsoluteGeometry);
     connect(this, &QQuickWindow::yChanged, this, &View::yChanged);
-    connect(this, &QQuickWindow::yChanged, this, &View::updateAbsDockGeometry);
+    connect(this, &QQuickWindow::yChanged, this, &View::updateAbsoluteGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &View::widthChanged);
-    connect(this, &QQuickWindow::widthChanged, this, &View::updateAbsDockGeometry);
+    connect(this, &QQuickWindow::widthChanged, this, &View::updateAbsoluteGeometry);
     connect(this, &QQuickWindow::heightChanged, this, &View::heightChanged);
-    connect(this, &QQuickWindow::heightChanged, this, &View::updateAbsDockGeometry);
+    connect(this, &QQuickWindow::heightChanged, this, &View::updateAbsoluteGeometry);
 
     connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFrom);
 
@@ -428,10 +428,10 @@ void View::setLocalGeometry(const QRect &geometry)
 
     m_localGeometry = geometry;
     emit localGeometryChanged();
-    updateAbsDockGeometry();
+    updateAbsoluteGeometry();
 }
 
-void View::updateAbsDockGeometry(bool bypassChecks)
+void View::updateAbsoluteGeometry(bool bypassChecks)
 {
     //! there was a -1 in height and width here. The reason of this
     //! if I remember correctly was related to multi-screen but I cant
@@ -443,14 +443,18 @@ void View::updateAbsDockGeometry(bool bypassChecks)
     QRect absGeometry {x() + m_localGeometry.x(), y() + m_localGeometry.y()
                 , m_localGeometry.width(), m_localGeometry.height()};
 
-    if (m_absGeometry == absGeometry && !bypassChecks)
+    if (m_absoluteGeometry == absGeometry && !bypassChecks) {
         return;
+    }
 
-    m_absGeometry = absGeometry;
-    emit absGeometryChanged(m_absGeometry);
+    if (m_absoluteGeometry != absGeometry) {
+        m_absoluteGeometry = absGeometry;
+        emit absoluteGeometryChanged(m_absoluteGeometry);
+    }
 
     //! this is needed in order to update correctly the screenGeometries
     if (visibility() && corona() && visibility()->mode() == Types::AlwaysVisible) {
+        //! main use of BYPASSCKECKS is from Positioner when the view changes screens
         emit m_corona->availableScreenRectChangedFrom(this);
         emit m_corona->availableScreenRegionChangedFrom(this);
     }
@@ -704,9 +708,9 @@ void View::setAlignment(int alignment)
     emit alignmentChanged();
 }
 
-QRect View::absGeometry() const
+QRect View::absoluteGeometry() const
 {
-    return m_absGeometry;
+    return m_absoluteGeometry;
 }
 
 QRect View::screenGeometry() const

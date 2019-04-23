@@ -99,7 +99,7 @@ void Positioner::init()
     connect(m_view, &Latte::View::maxLengthChanged, this, &Positioner::syncGeometry);
     connect(m_view, &Latte::View::offsetChanged, this, &Positioner::syncGeometry);
 
-    connect(m_view, &Latte::View::absGeometryChanged, this, [&]() {
+    connect(m_view, &Latte::View::absoluteGeometryChanged, this, [&]() {
         if (m_view->behaveAsPlasmaPanel()) {
             syncGeometry();
         }
@@ -219,7 +219,7 @@ void Positioner::setScreenToFollow(QScreen *scr, bool updateScreenId)
 
     connect(scr, &QScreen::geometryChanged, this, &Positioner::screenGeometryChanged);
     syncGeometry();
-    m_view->updateAbsDockGeometry(true);
+    m_view->updateAbsoluteGeometry(true);
     qDebug() << "setScreenToFollow() ended...";
 
     emit screenGeometryChanged();
@@ -298,7 +298,7 @@ void Positioner::screenChanged(QScreen *scr)
     //! and even though the geometry has been set correctly the offsets
     //! of the screen must be updated to the new ones
     if (m_view->visibility() && m_view->visibility()->mode() == Latte::Types::AlwaysVisible) {
-        m_view->updateAbsDockGeometry(true);
+        m_view->updateAbsoluteGeometry(true);
     }
 }
 
