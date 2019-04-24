@@ -67,6 +67,7 @@ Name[pt]=Importado com sucesso
 Name[sv]=Import lyckades
 Name[uk]=Успішно імпортовано
 Name[x-test]=xxImported successfullyxx
+Name[zh_TW]=匯入成功
 Action=Popup
 
 [Event/import-fail]
@@ -84,6 +85,7 @@ Name[pt]=Não foi possível importar
 Name[sv]=Misslyckades importera
 Name[uk]=Не вдалося імпортувати
 Name[x-test]=xxFailed to importxx
+Name[zh_TW]=無法匯入
 Action=Popup
 
 [Event/export-done]
@@ -101,6 +103,7 @@ Name[pt]=Exportada com sucesso
 Name[sv]=Export lyckades
 Name[uk]=Успішно експортовано
 Name[x-test]=xxExported successfullyxx
+Name[zh_TW]=匯出成功
 Action=Popup
 
 [Event/export-fail]
@@ -118,6 +121,7 @@ Name[pt]=Não foi possível exportar
 Name[sv]=Misslyckades exportera
 Name[uk]=Не вдалося експортувати
 Name[x-test]=xxFailed to exportxx
+Name[zh_TW]=無法匯出
 Action=Popup
 
 [Event/remove-done]
@@ -135,6 +139,7 @@ Name[pt]=Removido com sucesso
 Name[sv]=Borttagning lyckades
 Name[uk]=Успішно вилучено
 Name[x-test]=xxRemoved successfullyxx
+Name[zh_TW]=移除成功
 Action=Popup
 
 [Event/remove-fail]
@@ -152,6 +157,7 @@ Name[pt]=Não foi possível remover
 Name[sv]=Misslyckades ta bort
 Name[uk]=Не вдалося вилучити
 Name[x-test]=xxFailed to removexx
+Name[zh_TW]=無法移除
 Action=Popup
 
 [Event/switch-layout]

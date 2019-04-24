@@ -16,6 +16,7 @@ Name[pt_BR]=Plasma
 Name[sv]=Plasma
 Name[uk]=Плазма
 Name[x-test]=xxPlasmaxx
+Name[zh_TW]=Plasma
 Comment=Latte Plasma style indicator
 Comment[ca]=Indicador a l'estil Plasma del Latte
 Comment[ca@valencia]=Indicador a l'estil Plasma del Latte
@@ -30,6 +31,7 @@ Comment[pt_BR]=Indicador de estilo do Plasma no Latte
 Comment[sv]=Latte Plasmastilindikator
 Comment[uk]=Індикатор стилю Плазми Латте
 Comment[x-test]=xxLatte Plasma style indicatorxx
+Comment[zh_TW]=Latte Plasma 樣式指示器
 
 Encoding=UTF-8
 Type=Service

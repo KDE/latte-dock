@@ -16,6 +16,7 @@ Comment[pt_BR]=Indicador do Latte
 Comment[sv]=Latte indikator
 Comment[uk]=Індикатор Латте
 Comment[x-test]=xxLatte indicatorxx
+Comment[zh_TW]=Latte 指示器
 
 [PropertyDef::X-Latte-API]
 Type=QString

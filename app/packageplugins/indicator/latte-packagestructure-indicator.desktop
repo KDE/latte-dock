@@ -13,6 +13,7 @@ Name[pt_BR]=Indicador
 Name[sv]=Indikator
 Name[uk]=Індикатор
 Name[x-test]=xxIndicatorxx
+Name[zh_TW]=指示器
 Type=Service
 X-KDE-ServiceTypes=KPackage/PackageStructure
 X-KDE-Library=latte_packagestructure_indicator

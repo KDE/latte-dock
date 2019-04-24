@@ -8,6 +8,7 @@ Name[pt]=Tarefas do Latte
 Name[sv]=Latte aktiviteter
 Name[uk]=Завдання Латте
 Name[x-test]=xxLatte Tasksxx
+Name[zh_TW]=Latte 任務
 Comment=Tasks plasmoid from Latte Dock
 Comment[ca]=Plasmoide de tasques del Latte Dock
 Comment[en_GB]=Tasks plasmoid from Latte Dock
@@ -17,6 +18,7 @@ Comment[pt]=Plasmóide de tarefas da Área Acoplável do Latte
 Comment[sv]=Aktivitetsplasmoid för Latte dockningsfönster
 Comment[uk]=Плазмоїд завдань з панелі Латте
 Comment[x-test]=xxTasks plasmoid from Latte Dockxx
+Comment[zh_TW]=來自 Latte Dock 的任務 Plasmoid
 
 Type=Service
 Icon=latte-dock
