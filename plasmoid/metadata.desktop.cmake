@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Latte Tasks
 Name[ca]=Tasques del Latte
+Name[ca@valencia]=Tasques del Latte
 Name[en_GB]=Latte Tasks
 Name[gl]=Tarefas de Latte
 Name[nl]=Latte-taken
@@ -12,6 +13,7 @@ Name[x-test]=xxLatte Tasksxx
 Name[zh_TW]=Latte 任務
 Comment=Tasks plasmoid from Latte Dock
 Comment[ca]=Plasmoide de tasques del Latte Dock
+Comment[ca@valencia]=Plasmoide de tasques del Latte Dock
 Comment[en_GB]=Tasks plasmoid from Latte Dock
 Comment[gl]=Plasmoides de tarefas da doca Latte
 Comment[nl]=Plasmoid voor taken uit Latte Dock
