@@ -237,6 +237,14 @@ Item{
 
             return Latte.Types.BottomEdgeCenterAlign;
         }
+
+        transitions: Transition {
+            enabled: editModeVisual.plasmaEditMode
+            AnchorAnimation {
+                duration: 0.8 * root.animationTime
+                easing.type: Easing.OutCubic
+            }
+        }
     }
 
     AppletsContainer {
