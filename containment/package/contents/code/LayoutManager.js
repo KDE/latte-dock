@@ -478,7 +478,7 @@ function insertAtLayoutCoordinates(tLayout, item, x, y) {
 function insertAtCoordinates2(item, x, y) {
     var pos = -1;
 
-    if (!root.editMode) {
+    if (!root.inConfigureAppletsMode) {
         var layoutPosS = layoutS.mapFromItem(root, x, y);
         pos = insertAtLayoutCoordinates(layoutS, item, layoutPosS.x, layoutPosS.y);
 

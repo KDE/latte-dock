@@ -1084,7 +1084,7 @@ bool View::event(QEvent *e)
         }
     }
 
-    return ContainmentView::event(e);;
+    return ContainmentView::event(e);
 }
 
 void View::deactivateApplets()
