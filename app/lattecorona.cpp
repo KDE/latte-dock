@@ -503,7 +503,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
     for (const auto *view : views) {
         if (view && view->containment() && view->screen() == screen
                 && view->visibility() && (view->visibility()->mode() != Latte::Types::AutoHide)) {
-            int realThickness = view->normalThickness() - view->effects()->innerShadow();
+            int realThickness = view->normalThickness();
 
             // Usually availableScreenRect is used by the desktop,
             // but Latte don't have desktop, then here just
