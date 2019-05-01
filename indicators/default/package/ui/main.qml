@@ -123,7 +123,7 @@ LatteComponents.IndicatorItem{
                 showBorder: glowEnabled && glow3D
 
                 property int stateWidth: indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width
-                property int stateHeight: indicator.isGroup ? root.height - secondPoint.height : root.width - spacer.height
+                property int stateHeight: indicator.isGroup ? root.height - secondPoint.height : root.height - spacer.height
 
                 property int animationTime: indicator.durationTime* (0.7*units.longDuration)
 
