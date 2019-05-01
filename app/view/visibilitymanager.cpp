@@ -248,7 +248,6 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
         if (m_publishedStruts != computedStruts) {
             m_publishedStruts = computedStruts;
             m_wm->setViewStruts(*m_latteView, m_publishedStruts, m_latteView->location());
-            qDebug() << "STRUTS :::: " << computedStruts;
         }
     } else {
         m_wm->removeViewStruts(*m_latteView);
