@@ -854,6 +854,8 @@ MouseArea{
 
         //positive direction
         if (angle > 12) {
+            slotPublishGeometries();
+
             if (root.scrollingEnabled && scrollableList.contentsExceed) {
                 scrollableList.increasePos();
             } else {
@@ -874,6 +876,8 @@ MouseArea{
                 hidePreviewWindow();
             }
         } else if (angle < -12) {
+            slotPublishGeometries();
+
             //negative direction
             if (root.scrollingEnabled && scrollableList.contentsExceed) {
                 scrollableList.decreasePos();
