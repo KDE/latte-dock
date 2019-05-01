@@ -104,6 +104,7 @@ Item{
     property color backgroundColor: taskIconItem.backgroundColor
     property color glowColor: taskIconItem.glowColor
 
+    property Item visualIconItem: taskIconItem.visualIconItem
     property Item titleTooltipVisualParent: taskIconItem.titleTooltipVisualParent
     property Item previewsTooltipVisualParent: taskIconItem.previewsTootipVisualParent
 

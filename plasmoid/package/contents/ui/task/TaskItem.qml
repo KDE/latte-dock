@@ -738,6 +738,8 @@ MouseArea{
             }
         }
 
+        slotPublishGeometries();
+
         var modAccepted = modifierAccepted(mouse);
 
         if ((mouse.button == Qt.LeftButton)||(mouse.button == Qt.MidButton) || modAccepted) {
@@ -1196,7 +1198,7 @@ MouseArea{
                 && (!latteView
                     || (latteView && currentLayout && latteView.universalLayoutManager &&
                         currentLayout.name === latteView.universalLayoutManager.currentLayoutName))) {
-            var globalChoords = backend.globalRect(taskItem);
+            var globalChoords = backend.globalRect(wrapper.visualIconItem);
             var limits = backend.globalRect(scrollableList);
 
             //! Limit the published geometries boundaries at scrolling area boundaries

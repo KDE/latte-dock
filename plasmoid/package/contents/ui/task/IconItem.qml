@@ -69,6 +69,7 @@ Item{
     property QtObject buffers: null
     property QtObject smartLauncherItem: null
 
+    property Item visualIconItem: iconImageBuffer
     property Item titleTooltipVisualParent: titleTooltipParent
     property Item previewsTootipVisualParent: previewsTooltipParent
 
