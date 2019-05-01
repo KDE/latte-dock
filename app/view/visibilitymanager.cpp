@@ -125,6 +125,8 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
     int base{0};
 
+    m_publishedStruts = QRect();
+
     if (m_mode == Types::AlwaysVisible) {
         //! remove struts for old always visible mode
         m_wm->removeViewStruts(*m_latteView);
