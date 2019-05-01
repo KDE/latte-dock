@@ -1257,7 +1257,7 @@ Item {
             layer.enabled: contentsExceed && root.scrollingEnabled
             layer.effect: OpacityMask {
                 maskSource: TasksLayout.ScrollOpacityMask{
-                    width: scrollableList.width + root.lengthMargins
+                    width: scrollableList.width
                     height: scrollableList.height
                 }
             }
