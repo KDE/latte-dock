@@ -110,6 +110,8 @@ signals:
     void mustBeShown();
     void mustBeHide();
 
+    void slideInFinished();
+
     void modeChanged();
     void raiseOnDesktopChanged();
     void raiseOnActivityChanged();
@@ -132,8 +134,6 @@ private:
 
     void raiseView(bool raise);
     void raiseViewTemporarily();
-    void updateHiddenState();
-
 
     //! KWin Edges Support functions
     void createEdgeGhostWindow();
@@ -151,6 +151,7 @@ private slots:
     void dodgeAllWindows();
     void dodgeActive();
     void dodgeMaximized();
+    void updateHiddenState();
 
 private:
     AbstractWindowInterface *m_wm;

@@ -721,6 +721,8 @@ Item{
             if (manager.debugMagager) {
                 console.log("showing animation ended...");
             }
+
+            latteView.visibility.slideInFinished();
         }
 
         function init() {
