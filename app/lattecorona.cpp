@@ -433,8 +433,9 @@ QRect Corona::screenGeometry(int id) const
 
     QString screenName;
 
-    if (m_screenPool->knownIds().contains(id))
+    if (m_screenPool->hasId(id)) {
         screenName = m_screenPool->connector(id);
+    }
 
     for(const auto scr : screens) {
         if (scr->name() == screenName) {
@@ -458,8 +459,9 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
 
     QString screenName;
 
-    if (m_screenPool->knownIds().contains(id))
+    if (m_screenPool->hasId(id)) {
         screenName = m_screenPool->connector(id);
+    }
 
     for(auto scr : screens) {
         if (scr->name() == screenName) {
@@ -597,7 +599,7 @@ QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> m
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
 
-    if (m_screenPool->knownIds().contains(id)) {
+    if (m_screenPool->hasId(id)) {
         QString scrName = m_screenPool->connector(id);
 
         for(const auto scr : screens) {

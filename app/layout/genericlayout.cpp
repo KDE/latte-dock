@@ -636,25 +636,27 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
 
     Plasma::Types::Location edge = containment->location();
 
-    qDebug() << "Adding view - containment id:" << containment->id() << " ,screen :" << id << " - " << m_corona->screenPool()->connector(id)
+    QString connector = m_corona->screenPool()->hasId(id) ? m_corona->screenPool()->connector(id) : "";
+
+    qDebug() << "Adding view - containment id:" << containment->id() << " ,screen :" << id << " - " << connector
              << " ,onprimary:" << onPrimary << " - "  << " edge:" << edge << " ,screenName:" << qGuiApp->primaryScreen()->name() << " ,forceOnPrimary:" << forceOnPrimary;
 
-    QString connector = m_corona->screenPool()->connector(id);
-    if (occupied && (*occupied).contains(connector) && (*occupied)[connector].contains(edge)) {
+    if (occupied && m_corona->screenPool()->hasId(id) && (*occupied).contains(connector) && (*occupied)[connector].contains(edge)) {
         qDebug() << "Rejected : adding view because the edge is already occupied by a higher priority view ! : " << (*occupied)[connector][edge];
         return;
     }
 
     if (id >= 0 && !onPrimary && !forceOnPrimary) {
-        QString connector = m_corona->screenPool()->connector(id);
         qDebug() << "Add view - connector : " << connector;
         bool found{false};
 
-        for (const auto scr : qGuiApp->screens()) {
-            if (scr && scr->name() == connector) {
-                found = true;
-                nextScreen = scr;
-                break;
+        if (m_corona->screenPool()->hasId(id)) {
+            for (const auto scr : qGuiApp->screens()) {
+                if (scr && scr->name() == connector) {
+                    found = true;
+                    nextScreen = scr;
+                    break;
+                }
             }
         }
 

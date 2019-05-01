@@ -43,6 +43,7 @@ public:
     void load();
     ~ScreenPool() override;
 
+    bool hasId(int id);
     bool screenExists(int id);
     int primaryScreenId() const;
 

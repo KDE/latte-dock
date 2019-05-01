@@ -195,7 +195,7 @@ int ScreenPool::id(const QString &connector) const
 }
 
 QString ScreenPool::connector(int id) const
-{
+{   
     Q_ASSERT(m_connectorForId.contains(id));
 
     return m_connectorForId.value(id);
@@ -224,6 +224,11 @@ int ScreenPool::firstAvailableId() const
 QList <int> ScreenPool::knownIds() const
 {
     return m_connectorForId.keys();
+}
+
+bool ScreenPool::hasId(int id)
+{
+    return ((id!=-1) && m_connectorForId.keys().contains(id));
 }
 
 bool ScreenPool::screenExists(int id)

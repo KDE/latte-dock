@@ -1078,7 +1078,7 @@ bool LayoutManager::heuresticForLoadingViewWithTasks(int *firstContainmentWithTa
                 if (onPrimary) {
                     return true;
                 } else {
-                    if (lastScreen >= 0) {
+                    if (m_corona->screenPool()->hasId(lastScreen)) {
                         QString connector = m_corona->screenPool()->connector(lastScreen);
 
                         for (const auto scr : qGuiApp->screens()) {
