@@ -116,7 +116,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     if (m_mode == mode)
         return;
 
-    Q_ASSERT_X(m_mode != Types::None, staticMetaObject.className(), "set visibility to Types::None");
+    Q_ASSERT_X(mode != Types::None, staticMetaObject.className(), "set visibility to Types::None");
 
     // clear mode
     for (auto &c : m_connections) {
