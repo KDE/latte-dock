@@ -243,10 +243,47 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
                                       && m_latteView->managedLayout()->isCurrent());
 
     if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
-        m_wm->setViewStruts(*m_latteView, m_latteView->absoluteGeometry(), m_latteView->location());
+        QRect computedStruts = acceptableStruts();
+
+        if (m_publishedStruts != computedStruts) {
+            m_publishedStruts = computedStruts;
+            m_wm->setViewStruts(*m_latteView, m_publishedStruts, m_latteView->location());
+            qDebug() << "STRUTS :::: " << computedStruts;
+        }
     } else {
         m_wm->removeViewStruts(*m_latteView);
     }
+}
+
+QRect VisibilityManager::acceptableStruts()
+{
+    QRect calcs;
+
+    switch (m_latteView->location()) {
+        case Plasma::Types::TopEdge: {
+            calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->width(), m_latteView->normalThickness());
+            break;
+        }
+
+        case Plasma::Types::BottomEdge: {
+            int y = m_latteView->y() + m_latteView->height() - m_latteView->normalThickness();
+            calcs = QRect(m_latteView->x(), y, m_latteView->width(), m_latteView->normalThickness());
+            break;
+        }
+
+        case Plasma::Types::LeftEdge: {
+            calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->normalThickness(), m_latteView->height());
+            break;
+        }
+
+        case Plasma::Types::RightEdge: {
+            int x = m_latteView->x() + m_latteView->width() - m_latteView->normalThickness();
+            calcs = QRect(x, m_latteView->y(), m_latteView->normalThickness(), m_latteView->height());
+            break;
+        }
+    }
+
+    return calcs;
 }
 
 bool VisibilityManager::raiseOnDesktop() const

@@ -145,6 +145,8 @@ private:
     void updateStrutsBasedOnLayoutsAndActivities();
     void viewEventManager(QEvent *ev);
 
+    QRect acceptableStruts();
+
 private slots:
     void dodgeAllWindows();
     void dodgeActive();
@@ -167,6 +169,8 @@ private:
     bool m_raiseOnDesktopChange{false};
     bool m_raiseOnActivityChange{false};
     bool m_hideNow{false};
+
+    QRect m_publishedStruts;
 
     //! KWin Edges
     bool m_enableKWinEdgesFromUser{true};
