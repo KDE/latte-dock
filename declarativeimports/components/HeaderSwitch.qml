@@ -87,14 +87,14 @@ Item {
             LatteExtraControls.Header {
                 id: headerText
                 text: item.text
-                enabled: item.checked
+                enabled: item.checked && item.enabled
                 visible: level === 1
             }
 
             LatteExtraControls.SubHeader {
                 id: subHeaderText
                 text: item.text
-                enabled: item.checked
+                enabled: item.checked && item.enabled
                 visible: level === 2
                 isFirstSubCategory: item.isFirstSubCategory
             }
@@ -102,7 +102,7 @@ Item {
             PlasmaComponents.Label {
                 id: labelText
                 text: item.text
-                enabled: item.checked
+                enabled: item.checked && item.enabled
                 visible: level > 2
             }
         }
@@ -125,6 +125,7 @@ Item {
         anchors.verticalCenter: row.verticalCenter
         anchors.right: row.right
         checked: item.checked
+        enabled: item.enabled
 
         style: Private.SwitchStyle {}
 
