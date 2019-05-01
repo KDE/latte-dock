@@ -86,6 +86,25 @@ Item {
 
     property bool firstChildOfStartLayout: (index === layoutsContainer.startLayout.beginIndex)
     property bool lastChildOfEndLayout: ((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1))
+
+    readonly property bool atScreenEdge: {
+        if (root.isHorizontal) {
+            if (firstChildOfStartLayout) {
+                return latteView && latteView.x === latteView.screenGeometry.x;
+            } else if (lastChildOfEndLayout) {
+                return latteView && ((latteView.x + latteView.width) === (latteView.screenGeometry.x + latteView.screenGeometry.width));
+            }
+        } else {
+            if (firstChildOfStartLayout) {
+                return latteView && latteView.y === latteView.screenGeometry.y;
+            } else if (lastChildOfEndLayout) {
+                return latteView && ((latteView.y + latteView.height) === (latteView.screenGeometry.y + latteView.screenGeometry.height));
+            }
+        }
+
+        return false;
+    }
+
     //applet is in starting edge
     /*property bool startEdge: index < layoutsContainer.endLayout.beginIndex ? (index === 0)&&(layoutsContainer.mainLayout.count > 1) :
                                                                (index === layoutsContainer.endLayout.beginIndex)&&(layoutsContainer.endLayout.count > 1)*/

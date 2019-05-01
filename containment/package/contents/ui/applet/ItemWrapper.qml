@@ -117,10 +117,10 @@ Item{
 
     property int marginWidth: root.isVertical ?
                                   root.thickMargins :
-                                  (root.inFullJustify && (appletItem.firstChildOfStartLayout || appletItem.lastChildOfEndLayout ) ? 0 : localLengthMargins)  //Fitt's Law
+                                  (root.inFullJustify && atScreenEdge ? 0 : localLengthMargins)  //Fitt's Law
     property int marginHeight: root.isHorizontal ?
                                    root.thickMargins :
-                                   (root.inFullJustify && (appletItem.firstChildOfStartLayout || appletItem.lastChildOfEndLayout ) ? 0 : localLengthMargins)  //Fitt's Law
+                                   (root.inFullJustify && atScreenEdge ? 0 : localLengthMargins)  //Fitt's Law
 
     property int localLengthMargins: isSpacer || isSeparator ? 0 : root.lengthMargins
 
