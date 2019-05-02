@@ -160,13 +160,10 @@ private:
     void clearSharedLayoutsFromAssigned();
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
     void confirmDynamicSwitch();
+
     //! it is used just in order to provide translations for the presets
     void ghostForTranslatedPresets();
-    //! This function figures in the beginning if a view with tasks
-    //! in it will be loaded taking into account also the screens are present.
-    //! returns true if it will be loaded, false otherwise
-    //! firstContainmentWithTasks = the first containment containing a taskmanager plasmoid
-    bool heuresticForLoadingViewWithTasks(int *firstContainmentWithTasks);
+
     void importLatteLayout(QString layoutPath);
     void importPreset(int presetNo, bool newInstanceIfPresent = false);
     void loadLatteLayout(QString layoutPath);

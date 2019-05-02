@@ -639,31 +639,6 @@ void LayoutManager::loadLatteLayout(QString layoutPath)
         cleanupOnStartup(layoutPath);
         qDebug() << "LOADING CORONA LAYOUT:" << layoutPath;
         m_corona->loadLayout(layoutPath);
-
-        //! ~~~ ADDING LATTEVIEWS AND ENFORCE LOADING IF TASKS ARENT PRESENT BASED ON SCREENS ~~~ !//
-
-        //! this is used to record the first dock having tasks in it. It is used
-        //! to specify which dock will be loaded on startup if a case that no "dock
-        //! with tasks" will be loaded otherwise. Currently the older one dock wins
-        /*int firstContainmentWithTasks = -1;
-
-        //! this is used to check if a dock with tasks in it will be loaded on startup
-        bool tasksWillBeLoaded =  heuresticForLoadingDockWithTasks(&firstContainmentWithTasks);
-
-        qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << tasksWillBeLoaded;
-
-        for (const auto containment : m_corona->containments()) {
-            //! forceDockLoading is used when a latte configuration based on the
-            //! current running screens does not provide a dock containing tasks.
-            //! in such case the lowest latte containment containing tasks is loaded
-            //! and it forcefully becomes primary dock
-            if (!tasksWillBeLoaded && firstContainmentWithTasks == containment->id()) {
-                tasksWillBeLoaded = true; //this protects by loading more than one dock at startup
-                addDock(containment, true);
-            } else {
-                addDock(containment);
-            }
-        }*/
     }
 }
 
@@ -1094,56 +1069,6 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
 
     return newLayoutPath;
 }
-
-//! This function figures in the beginning if a view with tasks
-//! in it will be loaded taking into account also the screens are present.
-bool LayoutManager::heuresticForLoadingViewWithTasks(int *firstContainmentWithTasks)
-{
-    for (const auto containment : m_corona->containments()) {
-        QString plugin = containment->pluginMetaData().pluginId();
-
-        if (plugin == "org.kde.latte.containment") {
-            bool onPrimary = containment->config().readEntry("onPrimary", true);
-            int lastScreen =  containment->lastScreen();
-
-            qDebug() << "containment values: " << onPrimary << " - " << lastScreen;
-
-
-            bool containsTasks = false;
-
-            for (const  auto applet : containment->applets()) {
-                const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
-
-                if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
-                    containsTasks = true;
-                    break;
-                }
-            }
-
-            if (containsTasks) {
-                *firstContainmentWithTasks = containment->id();
-
-                if (onPrimary) {
-                    return true;
-                } else {
-                    if (m_corona->screenPool()->hasId(lastScreen)) {
-                        QString connector = m_corona->screenPool()->connector(lastScreen);
-
-                        for (const auto scr : qGuiApp->screens()) {
-                            if (scr && scr->name() == connector) {
-                                return true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    return false;
-}
-
 
 void LayoutManager::importDefaultLayout(bool newInstanceIfPresent)
 {
