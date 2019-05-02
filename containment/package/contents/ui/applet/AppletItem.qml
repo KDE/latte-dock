@@ -244,18 +244,17 @@ Item {
                 return;
             }
 
-            var maxSize = root.iconSize;
-            var maxOfMinSize = root.iconSize + root.thickMargins;
+            var maxSize = root.iconSize + root.thickMargins;
+            var maxForMinimumSize = root.iconSize + root.thickMargins;
 
-            if ( (((applet && root.isHorizontal && (applet.width > maxSize || applet.Layout.minimumWidth > maxOfMinSize))
-                   || (applet && root.isVertical && (applet.height > maxSize || applet.Layout.minimumHeight > maxOfMinSize)))
+            if ( (((applet && root.isHorizontal && (applet.width > maxSize || applet.Layout.minimumWidth > maxForMinimumSize))
+                   || (applet && root.isVertical && (applet.height > maxSize || applet.Layout.minimumHeight > maxForMinimumSize)))
                   && !appletItem.isSpacer
                   && !communicator.canShowOverlaiedLatteIcon)
                     || isSystray
                     || appletItem.needsFillSpace) {
                 appletItem.canBeHovered = false;
-            }
-            else{
+            } else {
                 appletItem.canBeHovered = true;
             }
         }
