@@ -42,6 +42,8 @@ namespace Latte {
 
 class SharedLayout : public Layout::GenericLayout
 {
+    Q_OBJECT
+
 public:
     SharedLayout(ActiveLayout *assigned, QObject *parent, QString layoutFile, QString layoutName = QString());
     ~SharedLayout() override;
@@ -69,6 +71,9 @@ public:
 public slots:
     void addActiveLayout(ActiveLayout *layout);
     void removeActiveLayout(ActiveLayout *layout);
+
+signals:
+    void layoutDestroyed(SharedLayout *layout);
 
 private slots:
     void updateLastUsedActiveLayout();

@@ -145,9 +145,13 @@ void LayoutManager::unload()
     }
 
     //! Unload all SharedLayouts
-    while (!m_sharedLayouts.isEmpty()) {
+    //! DEPRECATED as now SharedLayouts are unloading themselves when
+    //! they have no active layouts assigned to them
+    /*while (!m_sharedLayouts.isEmpty()) {
         SharedLayout *layout = m_sharedLayouts.at(0);
         m_sharedLayouts.removeFirst();
+
+        unloadSharedLayout(layout);
 
         if (multipleMode) {
             layout->syncToLayoutFile(true);
@@ -161,7 +165,7 @@ void LayoutManager::unload()
         }
 
         delete layout;
-    }
+    }*/
 
     //! Remove no-needed temp files
     QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
@@ -176,6 +180,22 @@ void LayoutManager::unload()
     if (file2.exists())
         file2.remove();
 }
+
+void LayoutManager::unloadSharedLayout(SharedLayout *layout)
+{
+    if (m_sharedLayouts.contains(layout)) {
+        disconnect(layout, &SharedLayout::layoutDestroyed, this, &LayoutManager::unloadSharedLayout);
+        int pos = m_sharedLayouts.indexOf(layout);
+        SharedLayout *shared = m_sharedLayouts.takeAt(pos);
+        shared->syncToLayoutFile(true);
+        shared->unloadContainments();
+        shared->unloadLatteViews();
+        clearUnloadedContainmentsFromLinkedFile(shared->unloadedContainmentsIds(), true);
+
+        delete layout;
+    }
+}
+
 
 Latte::Corona *LayoutManager::corona()
 {
@@ -423,7 +443,6 @@ bool LayoutManager::assignActiveToSharedLayout(ActiveLayout *active, QString id)
 
         if (layout->name() == id) {
             layout->addActiveLayout(active);
-            //   syncLatteViewsToScreens();
             return true;
         }
     }
@@ -432,7 +451,8 @@ bool LayoutManager::assignActiveToSharedLayout(ActiveLayout *active, QString id)
     SharedLayout *top = new SharedLayout(active, this, Importer::layoutFilePath(id));
     m_sharedLayouts.append(top);
     top->importToCorona();
-    //   syncLatteViewsToScreens();
+
+    connect(top, &SharedLayout::layoutDestroyed, this, &LayoutManager::unloadSharedLayout);
 
     return true;
 }

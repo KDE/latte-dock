@@ -42,6 +42,7 @@ SharedLayout::SharedLayout(ActiveLayout *assigned, QObject *parent, QString layo
 
 SharedLayout::~SharedLayout()
 {
+    qDebug() << " SHARED LAYOUT destroying ::: " << name();
 }
 
 bool SharedLayout::isCurrent() const
@@ -122,11 +123,16 @@ void SharedLayout::removeActiveLayout(ActiveLayout *layout)
 {
     if (m_activeLayouts.contains(layout)) {
         qDebug() << "SHAREDLAYOUT <" << name() << "> : Removing active layout, " << layout->name();
-
         m_activeLayouts.removeAll(layout);
 
         disconnect(layout, &GenericLayout::activitiesChanged, this, &GenericLayout::activitiesChanged);
-        emit activitiesChanged();
+
+        if (m_activeLayouts.count() > 0) {
+            emit activitiesChanged();
+        } else {
+            //! all assigned layouts have been unloaded so the shared layout should be destroyed also
+            emit layoutDestroyed(this);
+        }
 
         //! viewsCount signal is not needed to be trigerred here because
         //! in such case the views number has not been changed for the rest

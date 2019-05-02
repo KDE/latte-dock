@@ -153,6 +153,7 @@ private slots:
     void currentActivityChanged(const QString &id);
     void showInfoWindowChanged();
     void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
+    void unloadSharedLayout(SharedLayout *layout);
 
 private:
     void addLayout(ActiveLayout *layout);
