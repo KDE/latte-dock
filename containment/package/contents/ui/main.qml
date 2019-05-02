@@ -979,7 +979,7 @@ DragDrop.DropArea {
         // don't show applet if it chooses to be hidden but still make it
         // accessible in the panelcontroller
         container.visible = Qt.binding(function() {
-            return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring)
+            return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && root.inConfigureAppletsMode)
         })
 
         addContainerInLayout(container, applet, x, y);
