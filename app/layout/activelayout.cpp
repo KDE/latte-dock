@@ -22,6 +22,7 @@
 
 // local
 #include "sharedlayout.h"
+#include "importer.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
 #include "../screenpool.h"
@@ -198,7 +199,7 @@ QString ActiveLayout::sharedLayoutName() const
 
 void ActiveLayout::setSharedLayoutName(QString name)
 {
-    if (m_sharedLayoutName == name) {
+    if (m_sharedLayoutName == name || !Importer::layoutExists(name)) {
         return;
     }
 
@@ -242,9 +243,14 @@ bool ActiveLayout::isOriginalLayout() const
 void ActiveLayout::loadConfig()
 {
     m_disableBordersForMaximizedWindows = m_layoutGroup.readEntry("disableBordersForMaximizedWindows", false);
-    m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
-    m_sharedLayoutName = m_layoutGroup.readEntry("sharedLayout", QString());
+    m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);     
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
+
+    QString sharedLayoutName = m_layoutGroup.readEntry("sharedLayout", QString());
+
+    if (Importer::layoutExists(sharedLayoutName)) {
+        m_sharedLayoutName = sharedLayoutName;
+    }
 
     emit activitiesChanged();
 }
