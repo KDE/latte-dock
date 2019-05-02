@@ -172,7 +172,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         }
 
 
-        m_connections[base] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
+        m_connections[base] = connect(m_corona->layoutManager(),  &LayoutManager::currentLayoutNameChanged, this, [&]() {
             if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities();
             }
@@ -254,6 +254,7 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
             m_wm->setViewStruts(*m_latteView, m_publishedStruts, m_latteView->location());
         }
     } else {
+        m_publishedStruts = QRect();
         m_wm->removeViewStruts(*m_latteView);
     }
 }
