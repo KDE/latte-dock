@@ -170,6 +170,11 @@ void ActiveLayout::setShowInMenu(bool show)
     emit showInMenuChanged();
 }
 
+Layout::Type ActiveLayout::type() const
+{
+    return Layout::Type::Active;
+}
+
 QStringList ActiveLayout::activities() const
 {
     return m_activities;

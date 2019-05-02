@@ -55,6 +55,11 @@ GenericLayout::~GenericLayout()
 {
 }
 
+Type GenericLayout::type() const
+{
+    return Type::Generic;
+}
+
 void GenericLayout::unloadContainments()
 {
     if (!m_corona) {

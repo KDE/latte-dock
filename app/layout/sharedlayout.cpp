@@ -55,6 +55,12 @@ bool SharedLayout::isCurrent() const
     return false;
 }
 
+Layout::Type SharedLayout::type() const
+{
+    return Layout::Type::Shared;
+}
+
+
 const QStringList SharedLayout::appliedActivities()
 {
     if (!m_corona) {

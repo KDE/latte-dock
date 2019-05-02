@@ -35,6 +35,21 @@ class Types;
 
 namespace Latte {
 namespace Layout {
+Q_NAMESPACE
+
+enum Type {
+    Abstract = 0,
+    Generic,
+    Active,
+    Shared
+};
+Q_ENUM_NS(Type);
+
+}
+}
+
+namespace Latte {
+namespace Layout {
 
 class AbstractLayout : public QObject
 {
@@ -79,6 +94,8 @@ public:
 
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
+
+    virtual Type type() const;
 
 // STATIC
     static QString layoutName(const QString &fileName);

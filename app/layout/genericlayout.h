@@ -62,7 +62,7 @@ class GenericLayout : public AbstractLayout
     Q_OBJECT
     Q_PROPERTY(int viewsCount READ viewsCount NOTIFY viewsCountChanged)
 
-public:
+public:   
     GenericLayout(QObject *parent, QString layoutFile, QString assignedName = QString());
     ~GenericLayout() override;
 
@@ -78,6 +78,8 @@ public:
     virtual int viewsCount(int screen) const;
     virtual int viewsCount(QScreen *screen) const;
     virtual int viewsCount() const;
+
+    Type type() const override;
 
     Latte::Corona *corona();
 
