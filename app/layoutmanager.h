@@ -136,6 +136,7 @@ public slots:
     Q_INVOKABLE QString newLayout(QString layoutName, QString preset = i18n("Default"));
 
     Q_INVOKABLE QStringList activeLayoutsNames();
+    Q_INVOKABLE QStringList sharedLayoutsNames();
 
 signals:
     void activeLayoutsChanged();

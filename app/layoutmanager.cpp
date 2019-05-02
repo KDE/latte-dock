@@ -340,6 +340,18 @@ QStringList LayoutManager::activeLayoutsNames()
 
 }
 
+QStringList LayoutManager::sharedLayoutsNames()
+{
+    QStringList names;
+
+    for (int i = 0; i < m_sharedLayouts.size(); ++i) {
+        SharedLayout *layout = m_sharedLayouts.at(i);
+        names << layout->name();
+    }
+
+    return names;
+}
+
 Layout::GenericLayout *LayoutManager::layout(QString id) const
 {
     Layout::GenericLayout *l = activeLayout(id);
@@ -404,7 +416,7 @@ bool LayoutManager::assignActiveToSharedLayout(ActiveLayout *active, QString id)
 
         if (layout->name() == id) {
             layout->addActiveLayout(active);
-         //   syncLatteViewsToScreens();
+            //   syncLatteViewsToScreens();
             return true;
         }
     }
@@ -413,7 +425,7 @@ bool LayoutManager::assignActiveToSharedLayout(ActiveLayout *active, QString id)
     SharedLayout *top = new SharedLayout(active, this, Importer::layoutFilePath(id));
     m_sharedLayouts.append(top);
     top->importToCorona();
- //   syncLatteViewsToScreens();
+    //   syncLatteViewsToScreens();
 
     return true;
 }
@@ -736,7 +748,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 
     if (!lPath.isEmpty()) {
         if (memoryUsage() == Types::SingleLayout) {
-          //  emit currentLayoutIsSwitching(currentLayoutName());
+            //  emit currentLayoutIsSwitching(currentLayoutName());
         } else if (memoryUsage() == Types::MultipleLayouts && layoutName != Layout::AbstractLayout::MultipleLayoutsName) {
             ActiveLayout toLayout(this, lPath);
 

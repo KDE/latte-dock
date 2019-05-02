@@ -552,6 +552,7 @@ FocusScope {
                 comboBoxMinimumPopUpWidth: actionsModel.count > 1 ? dialog.width / 2 : 150
 
                 property var activeLayoutsNames;
+                property var sharedLayoutsNames;
 
                 Component.onCompleted: {
                     comboBox.model = actionsModel;
@@ -574,7 +575,9 @@ FocusScope {
                         if (index==0) {
                             latteView.copyView();
                         } else if (index>=1) {
-                            latteView.positioner.hideDockDuringMovingToLayout(activeLayoutsNames[index-1]);
+                            var layouts = actionsComboBtn.sharedLayoutsNames.concat(actionsComboBtn.activeLayoutsNames);
+
+                            latteView.positioner.hideDockDuringMovingToLayout(layouts[index-1]);
                         }
 
                         actionsComboBtn.comboBox.currentIndex = -1;
@@ -609,16 +612,35 @@ FocusScope {
                     updateCopyText();
 
                     var tempActiveLayouts = layoutManager.activeLayoutsNames();
-                    var currentLayoutIndex = tempActiveLayouts.indexOf(latteView.managedLayout.name);
+                    var tempSharedLayouts = layoutManager.sharedLayoutsNames();
 
-                    tempActiveLayouts.splice(currentLayoutIndex,1);
+                    if (tempSharedLayouts.length > 0) {
+                        var curIndex = tempSharedLayouts.indexOf(latteView.managedLayout.name);
+                        if (curIndex >=0) {
+                            tempSharedLayouts.splice(curIndex,1);
+                        }
+
+                        sharedLayoutsNames = tempSharedLayouts;
+                        var icon = "document-share";
+
+                        for(var i=0; i<sharedLayoutsNames.length; ++i) {
+                            var layout = {actionId: 'move:', enabled: true, name: i18n("Move to: %0").arg(sharedLayoutsNames[i]), icon: icon};
+                            actionsModel.append(layout);
+                        }
+                    }
+
 
                     if (tempActiveLayouts.length > 0) {
+                        var curIndex = tempActiveLayouts.indexOf(latteView.managedLayout.name);
+                        if (curIndex >=0) {
+                            tempActiveLayouts.splice(curIndex,1);
+                        }
+
                         activeLayoutsNames = tempActiveLayouts;
                         var iconArrow = Qt.application.layoutDirection === Qt.RightToLeft ? 'arrow-left' : 'arrow-right';
 
                         for(var i=0; i<activeLayoutsNames.length; ++i) {
-                            var layout = {actionId: 'move:', name: i18n("Move to: %0").arg(activeLayoutsNames[i]), icon: iconArrow};
+                            var layout = {actionId: 'move:', enabled: true, name: i18n("Move to: %0").arg(activeLayoutsNames[i]), icon: iconArrow};
                             actionsModel.append(layout);
                         }
                     }
