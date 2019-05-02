@@ -95,6 +95,7 @@ public:
     QStringList layouts() const;
     QStringList menuLayouts() const;
     QStringList presetsPaths() const;
+    QStringList storedSharedLayouts() const;
 
     Types::LayoutsMemoryUsage memoryUsage() const;
     void setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage);
@@ -186,6 +187,7 @@ private:
     QStringList m_layouts;
     QStringList m_menuLayouts;
     QStringList m_presetsPaths;
+    QStringList m_sharedLayoutIds;
 
     QHash<const QString, QString> m_assignedLayouts;
 

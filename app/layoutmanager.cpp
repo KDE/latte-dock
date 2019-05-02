@@ -352,6 +352,11 @@ QStringList LayoutManager::sharedLayoutsNames()
     return names;
 }
 
+QStringList LayoutManager::storedSharedLayouts() const
+{
+    return m_sharedLayoutIds;
+}
+
 Layout::GenericLayout *LayoutManager::layout(QString id) const
 {
     Layout::GenericLayout *l = activeLayout(id);
@@ -536,6 +541,7 @@ void LayoutManager::loadLayouts()
     m_menuLayouts.clear();
     m_presetsPaths.clear();
     m_assignedLayouts.clear();
+    m_sharedLayoutIds.clear();
 
     QDir layoutDir(QDir::homePath() + "/.config/latte");
     QStringList filter;
@@ -543,19 +549,25 @@ void LayoutManager::loadLayouts()
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
 
     for (const auto &layout : files) {
-        ActiveLayout layoutSets(this, layoutDir.absolutePath() + "/" + layout);
+        ActiveLayout activeLayout(this, layoutDir.absolutePath() + "/" + layout);
 
-        QStringList validActivityIds = validActivities(layoutSets.activities());
-        layoutSets.setActivities(validActivityIds);
+        QStringList validActivityIds = validActivities(activeLayout.activities());
+        activeLayout.setActivities(validActivityIds);
 
         for (const auto &activity : validActivityIds) {
-            m_assignedLayouts[activity] = layoutSets.name();
+            m_assignedLayouts[activity] = activeLayout.name();
         }
 
-        m_layouts.append(layoutSets.name());
+        m_layouts.append(activeLayout.name());
 
-        if (layoutSets.showInMenu()) {
-            m_menuLayouts.append(layoutSets.name());
+        if (activeLayout.showInMenu()) {
+            m_menuLayouts.append(activeLayout.name());
+        }
+
+        QString sharedName = activeLayout.sharedLayoutName();
+
+        if (!sharedName.isEmpty() && !m_sharedLayoutIds.contains(sharedName)) {
+            m_sharedLayoutIds << sharedName;
         }
     }
 
