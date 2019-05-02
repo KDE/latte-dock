@@ -157,6 +157,7 @@ private slots:
 private:
     void addLayout(ActiveLayout *layout);
     void cleanupOnStartup(QString path); //!remove deprecated or oldstyle config options
+    void clearSharedLayoutsFromAssigned();
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
     void confirmDynamicSwitch();
     //! it is used just in order to provide translations for the presets
