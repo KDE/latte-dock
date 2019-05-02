@@ -412,7 +412,9 @@ SharedLayout *LayoutManager::sharedLayout(QString id) const
 
 bool LayoutManager::assignActiveToSharedLayout(ActiveLayout *active, QString id)
 {
-    if (memoryUsage() == Types::SingleLayout) {
+    if (memoryUsage() == Types::SingleLayout || activeLayout(id)) {
+        //! if memory is functioning to SINGLE mode OR shared layout has already
+        //! been loaded as ActiveLayout
         return false;
     }
 
