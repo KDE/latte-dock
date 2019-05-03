@@ -18,8 +18,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef ACTIVELAYOUT_H
-#define ACTIVELAYOUT_H
+#ifndef CENTRALLAYOUT_H
+#define CENTRALLAYOUT_H
 
 // local
 #include "genericlayout.h"
@@ -34,16 +34,24 @@ class SharedLayout;
 
 namespace Latte {
 
-//! This class is responsible to hold the settings for a specific layout.
-//! It also updates always the relevant layout configuration concerning
-//! its general settings (no the containments)
-class ActiveLayout : public Layout::GenericLayout
+//! CentralLayout is a very IMPORTANT layout that is responsible for specific Activities or not
+//! and it is used for all memory modes (SINGLE/MULTIPLE) at all times.
+//!
+//! It holds all the important settings in order to provide specific
+//! behavior for the Activities is assigned at.
+//! for example: activities for which its views should be shown,
+//! if the maximized windows will be borderless,
+//! if the layout will be shown at user layout contextmenu,
+//! which shared layout will be used on top of that layout.
+//!
+
+class CentralLayout : public Layout::GenericLayout
 {
     Q_OBJECT
 
 public:
-    ActiveLayout(QObject *parent, QString layoutFile, QString layoutName = QString());
-    ~ActiveLayout() override;
+    CentralLayout(QObject *parent, QString layoutFile, QString layoutName = QString());
+    ~CentralLayout() override;
 
     void initToCorona(Latte::Corona *corona);
 
@@ -54,9 +62,9 @@ public:
     void setShowInMenu(bool show);
 
     //!this layout is loaded and running
-    bool isActiveLayout() const;
+    bool isCentralLayout() const;
     //!it is original layout compared to pseudo-layouts that are combinations of multiple-original layouts
-    bool isOriginalLayout() const;
+    bool isPseudoLayout() const;
 
     QString sharedLayoutName() const;
     void setSharedLayoutName(QString name);
@@ -116,4 +124,4 @@ private:
 
 }
 
-#endif //ACTIVELAYOUT_H
+#endif //CENTRALLAYOUT_H

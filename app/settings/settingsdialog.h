@@ -43,7 +43,7 @@ class Controller;
 
 namespace Latte {
 class Corona;
-class ActiveLayout;
+class CentralLayout;
 }
 
 namespace Latte {
@@ -127,7 +127,7 @@ private:
     QStandardItemModel *m_model{nullptr};
     Ui::SettingsDialog *ui;
 
-    QHash<const QString, Latte::ActiveLayout *> m_layouts;
+    QHash<const QString, Latte::CentralLayout *> m_layouts;
 
     QList<int> o_settings;
     QStringList o_settingsLayouts;

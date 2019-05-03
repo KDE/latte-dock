@@ -28,7 +28,7 @@
 #include "layoutmanager.h"
 #include "screenpool.h"
 #include "indicator/factory.h"
-#include "layout/activelayout.h"
+#include "layout/centrallayout.h"
 #include "layout/genericlayout.h"
 #include "layout/sharedlayout.h"
 #include "shortcuts/globalshortcuts.h"
@@ -476,10 +476,10 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
     QList<Latte::View *> views;
 
     if (forLayout.isEmpty()) {
-        Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
+        Latte::CentralLayout *currentLayout = m_layoutManager->currentLayout();
         views = currentLayout->latteViews();
     } else {
-        Layout::GenericLayout *generic = m_layoutManager->activeLayout(forLayout);
+        Layout::GenericLayout *generic = m_layoutManager->centralLayout(forLayout);
 
         if (!generic) {
             //! Identify best active layout to be used for metrics calculations.
@@ -487,7 +487,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
             SharedLayout *sharedLayout = m_layoutManager->sharedLayout(forLayout);
 
             if (sharedLayout) {
-                generic = sharedLayout->currentActiveLayout();
+                generic = sharedLayout->currentCentralLayout();
             }
         }
 
@@ -619,7 +619,7 @@ QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> m
 
     auto available = screen->geometry();
 
-    Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
+    Latte::CentralLayout *currentLayout = m_layoutManager->currentLayout();
     QList<Latte::View *> views;
 
     if (currentLayout) {
@@ -767,7 +767,7 @@ int Corona::screenForContainment(const Plasma::Containment *containment) const
         }
     }
 
-    Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
+    Latte::CentralLayout *currentLayout = m_layoutManager->currentLayout();
     Latte::View *view = currentLayout->viewForContainment(containment);
 
     if (view && view->screen()) {
@@ -801,7 +801,7 @@ void Corona::showAlternativesForApplet(Plasma::Applet *applet)
         return;
     }
 
-    Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
+    Latte::CentralLayout *currentLayout = m_layoutManager->currentLayout();
     Latte::View *latteView = currentLayout->viewForContainment(applet->containment());
 
     KDeclarative::QmlObjectSharedEngine *qmlObj{nullptr};
@@ -1006,7 +1006,7 @@ QStringList Corona::contextMenuData()
     QStringList data;
     Types::ViewType viewType{Types::DockView};
 
-    Latte::ActiveLayout *currentLayout = m_layoutManager->currentLayout();
+    Latte::CentralLayout *currentLayout = m_layoutManager->currentLayout();
 
     if (currentLayout) {
         viewType = currentLayout->latteViewType(m_contextMenuViewId);
@@ -1017,7 +1017,7 @@ QStringList Corona::contextMenuData()
     data << QString::number((int)viewType);
 
     for(const auto &layoutName : m_layoutManager->menuLayouts()) {
-        if (m_layoutManager->activeLayout(layoutName)) {
+        if (m_layoutManager->centralLayout(layoutName)) {
             data << QString("1," + layoutName);
         } else {
             data << QString("0," + layoutName);

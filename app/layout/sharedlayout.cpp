@@ -20,7 +20,7 @@
 #include "sharedlayout.h"
 
 // local
-#include "activelayout.h"
+#include "centrallayout.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
 #include "../screenpool.h"
@@ -28,15 +28,15 @@
 
 namespace Latte {
 
-SharedLayout::SharedLayout(ActiveLayout *assigned, QObject *parent, QString layoutFile, QString layoutName)
+SharedLayout::SharedLayout(CentralLayout *assigned, QObject *parent, QString layoutFile, QString layoutName)
     : Layout::GenericLayout (parent, layoutFile, layoutName)
 {
     initToCorona(assigned->corona());
 
-    connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, &SharedLayout::updateLastUsedActiveLayout);
+    connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, &SharedLayout::updateLastUsedCentralLayout);
 
-    addActiveLayout(assigned);
-    updateLastUsedActiveLayout();
+    addCentralLayout(assigned);
+    updateLastUsedCentralLayout();
 }
 
 
@@ -47,7 +47,7 @@ SharedLayout::~SharedLayout()
 
 bool SharedLayout::isCurrent() const
 {
-    for (const auto  &layout : m_activeLayouts) {
+    for (const auto  &layout : m_centralLayouts) {
         if (layout->isCurrent()) {
             return true;
         }
@@ -70,35 +70,35 @@ const QStringList SharedLayout::appliedActivities()
 
     QStringList activities;
 
-    for (const auto  &layout : m_activeLayouts) {
+    for (const auto  &layout : m_centralLayouts) {
         activities << layout->appliedActivities();
     }
 
     return activities;
 }
 
-void SharedLayout::updateLastUsedActiveLayout()
+void SharedLayout::updateLastUsedCentralLayout()
 {
-    for (const auto  &layout : m_activeLayouts) {
+    for (const auto  &layout : m_centralLayouts) {
         if (layout->isCurrent()) {
-            m_lastUsedActiveLayout = layout->name();
+            m_lastUsedCentralLayout = layout->name();
             break;
         }
     }
 }
 
-ActiveLayout *SharedLayout::currentActiveLayout() const
+CentralLayout *SharedLayout::currentCentralLayout() const
 {
     //! first the current active one
-    for (const auto  &layout : m_activeLayouts) {
+    for (const auto  &layout : m_centralLayouts) {
         if (layout->isCurrent()) {
             return layout;
         }
     }
 
     //! the last used
-    for (const auto  &layout : m_activeLayouts) {
-        if (layout->name() == m_lastUsedActiveLayout) {
+    for (const auto  &layout : m_centralLayouts) {
+        if (layout->name() == m_lastUsedCentralLayout) {
             return layout;
         }
     }
@@ -106,10 +106,10 @@ ActiveLayout *SharedLayout::currentActiveLayout() const
     return nullptr;
 }
 
-void SharedLayout::addActiveLayout(ActiveLayout *layout)
+void SharedLayout::addCentralLayout(CentralLayout *layout)
 {
-    if (layout != nullptr && !m_activeLayouts.contains(layout)) {
-        m_activeLayouts.append(layout);
+    if (layout != nullptr && !m_centralLayouts.contains(layout)) {
+        m_centralLayouts.append(layout);
 
         connect(layout, &GenericLayout::activitiesChanged, this, &GenericLayout::activitiesChanged);
         emit activitiesChanged();
@@ -119,15 +119,15 @@ void SharedLayout::addActiveLayout(ActiveLayout *layout)
     }
 }
 
-void SharedLayout::removeActiveLayout(ActiveLayout *layout)
+void SharedLayout::removeCentralLayout(CentralLayout *layout)
 {
-    if (m_activeLayouts.contains(layout)) {
+    if (m_centralLayouts.contains(layout)) {
         qDebug() << "SHAREDLAYOUT <" << name() << "> : Removing active layout, " << layout->name();
-        m_activeLayouts.removeAll(layout);
+        m_centralLayouts.removeAll(layout);
 
         disconnect(layout, &GenericLayout::activitiesChanged, this, &GenericLayout::activitiesChanged);
 
-        if (m_activeLayouts.count() > 0) {
+        if (m_centralLayouts.count() > 0) {
             emit activitiesChanged();
         } else {
             //! all assigned layouts have been unloaded so the shared layout should be destroyed also
@@ -147,7 +147,7 @@ int SharedLayout::viewsCount(int screen) const
         return 0;
     }
 
-    ActiveLayout *current = currentActiveLayout();
+    CentralLayout *current = currentCentralLayout();
 
     if (current) {
         return current->viewsCount(screen);
@@ -162,7 +162,7 @@ int SharedLayout::viewsCount(QScreen *screen) const
         return 0;
     }
 
-    ActiveLayout *current = currentActiveLayout();
+    CentralLayout *current = currentCentralLayout();
 
     if (current) {
         return current->viewsCount(screen);
@@ -177,7 +177,7 @@ int SharedLayout::viewsCount() const
         return 0;
     }
     
-    ActiveLayout *current = currentActiveLayout();
+    CentralLayout *current = currentCentralLayout();
 
     if (current) {
         return current->viewsCount();
@@ -209,7 +209,7 @@ QList<Plasma::Types::Location> SharedLayout::freeEdges(QScreen *scr) const
         return edges;
     }
 
-    ActiveLayout *current = currentActiveLayout();
+    CentralLayout *current = currentCentralLayout();
 
     if (current) {
         return current->freeEdges(scr);
@@ -228,7 +228,7 @@ QList<Plasma::Types::Location> SharedLayout::freeEdges(int screen) const
         return edges;
     }
 
-    ActiveLayout *current = currentActiveLayout();
+    CentralLayout *current = currentCentralLayout();
 
     if (current) {
         return current->freeEdges(screen);
@@ -239,7 +239,7 @@ QList<Plasma::Types::Location> SharedLayout::freeEdges(int screen) const
 
 QList<Latte::View *> SharedLayout::sortedLatteViews(QList<Latte::View *> views)
 {
-    ActiveLayout *current = currentActiveLayout();
+    CentralLayout *current = currentCentralLayout();
 
     if (current) {
         return current->sortedLatteViews();

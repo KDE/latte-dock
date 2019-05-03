@@ -45,7 +45,7 @@ class Controller;
 namespace Latte {
 class Corona;
 class Importer;
-class ActiveLayout;
+class CentralLayout;
 class LaunchersSignals;
 class SharedLayout;
 class View;
@@ -100,17 +100,17 @@ public:
     Types::LayoutsMemoryUsage memoryUsage() const;
     void setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage);
 
-    //! returns an active layout with that #id (name), it returns null if such
+    //! returns an central layout with that #id (name), it returns null if such
     //! layout cant be found
-    ActiveLayout *activeLayout(QString id) const;
-    int activeLayoutPos(QString id) const;
+    CentralLayout *centralLayout(QString id) const;
+    int centralLayoutPos(QString id) const;
     SharedLayout *sharedLayout(QString id) const;
-    //! return an active or shared layout with #id (name), it returns null if such
+    //! return an central or shared layout with #id (name), it returns null if such
     //! loaded layout was not found
     Layout::GenericLayout *layout(QString id) const;
 
-    //! returns the current and active layout based on activities and user preferences
-    ActiveLayout *currentLayout() const;
+    //! returns the current and central layout based on activities and user preferences
+    CentralLayout *currentLayout() const;
     LaunchersSignals *launchersSignals();
 
     QStringList activities();
@@ -120,7 +120,7 @@ public:
     void importDefaultLayout(bool newInstanceIfPresent = false);
     void importPresets(bool includeDefault = false);
 
-    bool assignActiveToSharedLayout(ActiveLayout *active, QString id);
+    bool registerAtSharedLayout(CentralLayout *central, QString id);
 
 public slots:
     void showAboutDialog();
@@ -136,11 +136,11 @@ public slots:
     //! creates a new layout with layoutName based on the preset
     Q_INVOKABLE QString newLayout(QString layoutName, QString preset = i18n("Default"));
 
-    Q_INVOKABLE QStringList activeLayoutsNames();
+    Q_INVOKABLE QStringList centralLayoutsNames();
     Q_INVOKABLE QStringList sharedLayoutsNames();
 
 signals:
-    void activeLayoutsChanged();
+    void centralLayoutsChanged();
     void currentLayoutChanged();
     void currentLayoutNameChanged();
     void launchersSignalsChanged();
@@ -156,7 +156,7 @@ private slots:
     void unloadSharedLayout(SharedLayout *layout);
 
 private:
-    void addLayout(ActiveLayout *layout);
+    void addLayout(CentralLayout *layout);
     void cleanupOnStartup(QString path); //!remove deprecated or oldstyle config options
     void clearSharedLayoutsFromAssigned();
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
@@ -198,7 +198,7 @@ private:
     Importer *m_importer{nullptr};
     LaunchersSignals *m_launchersSignals{nullptr};
 
-    QList<ActiveLayout *> m_activeLayouts;
+    QList<CentralLayout *> m_centralLayouts;
     QList<SharedLayout *> m_sharedLayouts;
 
     KActivities::Controller *m_activitiesController;

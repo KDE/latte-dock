@@ -27,17 +27,17 @@
 #include <QObject>
 
 namespace Latte {
-class ActiveLayout;
+class CentralLayout;
 }
 
 
 namespace Latte {
 
 //! SharedLayout is a layout that exists only as long as it belongs to one or
-//! more ActiveLayout(s). It is a layer above an active or more layouts and can
-//! be used from ActiveLayouts to share Latte:View(s) . Much of its functionality
-//! is provided by the ActiveLayouts it belongs to. For example the activities
-//! that its views should be shown is identified only from the active layouts
+//! more CentralLayout(s). It is a layer above a central or more layouts and can
+//! be used from CentralLayouts to share Latte:View(s) . Much of its functionality
+//! is provided by the CentralLayouts it belongs to. For example the activities
+//! that its views should be shown is identified only from the central layouts
 //! it belongs to
 
 class SharedLayout : public Layout::GenericLayout
@@ -45,11 +45,11 @@ class SharedLayout : public Layout::GenericLayout
     Q_OBJECT
 
 public:
-    SharedLayout(ActiveLayout *assigned, QObject *parent, QString layoutFile, QString layoutName = QString());
+    SharedLayout(CentralLayout *assigned, QObject *parent, QString layoutFile, QString layoutName = QString());
     ~SharedLayout() override;
 
     const QStringList appliedActivities();
-    ActiveLayout *currentActiveLayout() const;
+    CentralLayout *currentCentralLayout() const;
 
     //! OVERRIDE GeneralLayout implementations
     bool isCurrent() const override;
@@ -69,19 +69,19 @@ public:
     QList<Latte::View *> sortedLatteViews(QList<Latte::View *> views = QList<Latte::View *>()) override;
 
 public slots:
-    void addActiveLayout(ActiveLayout *layout);
-    void removeActiveLayout(ActiveLayout *layout);
+    void addCentralLayout(CentralLayout *layout);
+    void removeCentralLayout(CentralLayout *layout);
 
 signals:
     void layoutDestroyed(SharedLayout *layout);
 
 private slots:
-    void updateLastUsedActiveLayout();
+    void updateLastUsedCentralLayout();
 
 private:
-    QString m_lastUsedActiveLayout;
+    QString m_lastUsedCentralLayout;
 
-    QList<ActiveLayout *> m_activeLayouts;
+    QList<CentralLayout *> m_centralLayouts;
 
 };
 

@@ -29,7 +29,6 @@
 #include "settings/secondaryconfigview.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
-#include "../layout/activelayout.h"
 #include "../layout/genericlayout.h"
 #include "../plasma/extended/theme.h"
 #include "../screenpool.h"

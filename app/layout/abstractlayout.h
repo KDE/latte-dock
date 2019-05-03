@@ -40,7 +40,7 @@ Q_NAMESPACE
 enum Type {
     Abstract = 0,
     Generic,
-    Active,
+    Central,
     Shared
 };
 Q_ENUM_NS(Type);
