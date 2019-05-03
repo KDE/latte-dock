@@ -5,5 +5,6 @@ set(lattedock-app_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/colorcmbboxdelegate.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/colorcmbboxitemdelegate.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/layoutnamedelegate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/sharedcmbboxdelegate.cpp
     PARENT_SCOPE
 )

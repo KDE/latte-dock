@@ -69,6 +69,7 @@ const int NAMECOLUMN = 3;
 const int MENUCOLUMN = 4;
 const int BORDERSCOLUMN = 5;
 const int ACTIVITYCOLUMN = 6;
+const int SHAREDCOLUMN = 7;
 
 const int SCREENTRACKERDEFAULTVALUE = 2500;
 const int OUTLINEDEFAULTWIDTH = 1;
