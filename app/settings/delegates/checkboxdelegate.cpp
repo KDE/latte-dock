@@ -19,6 +19,9 @@
 
 #include "checkboxdelegate.h"
 
+// local
+#include "../settingsdialog.h"
+
 // Qt
 #include <QApplication>
 #include <QDebug>
@@ -33,6 +36,11 @@ const int HIDDENTEXTCOLUMN = 1;
 CheckBoxDelegate::CheckBoxDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
 {
+    auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
+
+    if (settingsDialog) {
+        m_settingsDialog = settingsDialog;
+    }
 }
 
 void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -51,12 +59,42 @@ void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         QPalette palette;
         QPen pen(Qt::DashDotDotLine);
 
-        pen.setWidth(2); pen.setColor(palette.linkVisited().color());
-        int ver = option.rect.y()+option.rect.height()/2;
+        pen.setWidth(2); pen.setColor(palette.text().color());
+        int y = option.rect.y()+option.rect.height()/2;
+
+        bool inMenu = m_settingsDialog->isMenuCell(index.column());
+        int space = inMenu ? option.rect.height() / 2 : 0;
 
         painter->setPen(pen);
-        painter->drawLine(option.rect.x(), ver,
-                          option.rect.x()+option.rect.width(), ver);
+
+        if (qApp->layoutDirection() == Qt::LeftToRight) {
+            painter->drawLine(option.rect.x() + space, y,
+                              option.rect.x() + option.rect.width(), y);
+
+            if (inMenu) {
+                int xm = option.rect.x() + space;
+                int thick = option.rect.height() / 2;
+                int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
+
+                pen.setStyle(Qt::SolidLine);
+                painter->setPen(pen);
+                painter->drawLine(xm, ym, xm, ym + thick);
+            }
+
+        } else {
+            painter->drawLine(option.rect.x(), y,
+                              option.rect.x()+option.rect.width() - space, y);
+
+            if (inMenu) {
+                int xm = option.rect.x() + option.rect.width() - space;
+                int thick = option.rect.height() / 2;
+                int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
+
+                pen.setStyle(Qt::SolidLine);
+                painter->setPen(pen);
+                painter->drawLine(xm, ym, xm, ym + thick);
+            }
+        }
     }
 }
 

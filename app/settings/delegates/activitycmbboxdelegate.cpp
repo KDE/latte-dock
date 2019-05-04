@@ -187,12 +187,36 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         QPalette palette;
         QPen pen(Qt::DashDotDotLine);
 
-        pen.setWidth(2); pen.setColor(palette.linkVisited().color());
-        int ver = option.rect.y()+option.rect.height()/2;
+        pen.setWidth(2); pen.setColor(palette.text().color());
+        int y = option.rect.y()+option.rect.height()/2;
+
+        int space = option.rect.height() / 2;
 
         painter->setPen(pen);
-        painter->drawLine(option.rect.x(), ver,
-                          option.rect.x()+option.rect.width(), ver);
+
+        if (qApp->layoutDirection() == Qt::LeftToRight) {
+            painter->drawLine(option.rect.x(), y,
+                              option.rect.x()+option.rect.width() - space, y);
+
+            int xm = option.rect.x() + option.rect.width() - space;
+            int thick = option.rect.height() / 2;
+            int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
+
+            pen.setStyle(Qt::SolidLine);
+            painter->setPen(pen);
+            painter->drawLine(xm, ym, xm, ym + thick);
+        } else {
+            painter->drawLine(option.rect.x() + space, y,
+                              option.rect.x() + option.rect.width(), y);
+
+            int xm = option.rect.x() + space;
+            int thick = option.rect.height() / 2;
+            int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
+
+            pen.setStyle(Qt::SolidLine);
+            painter->setPen(pen);
+            painter->drawLine(xm, ym, xm, ym + thick);
+        }
     }
 }
 

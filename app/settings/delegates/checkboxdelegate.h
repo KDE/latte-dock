@@ -23,6 +23,10 @@
 // Qt
 #include <QStyledItemDelegate>
 
+namespace Latte {
+class SettingsDialog;
+}
+
 class CheckBoxDelegate : public QStyledItemDelegate
 {
 public:
@@ -30,6 +34,9 @@ public:
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+
+private:
+    Latte::SettingsDialog *m_settingsDialog{nullptr};
 };
 
 #endif

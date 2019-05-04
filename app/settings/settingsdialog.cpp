@@ -1630,6 +1630,11 @@ bool SettingsDialog::nameExistsInModel(QString name)
     return false;
 }
 
+bool SettingsDialog::isMenuCell(int column) const
+{
+    return column == MENUCOLUMN;
+}
+
 bool SettingsDialog::isShared(int row) const
 {
     if (row >=0 ) {

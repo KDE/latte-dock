@@ -58,6 +58,7 @@ public:
     void setCurrentPage(Types::LatteConfigPage page);
 
     bool isShared(int row) const;
+    bool isMenuCell(int column) const;
 
     QStringList activities();
     QStringList availableActivities();
