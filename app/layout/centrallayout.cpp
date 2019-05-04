@@ -220,26 +220,6 @@ void CentralLayout::setSharedLayout(SharedLayout *layout)
     emit viewsCountChanged();
 }
 
-bool CentralLayout::isCentralLayout() const
-{
-    if (!m_corona) {
-        return false;
-    }
-
-    CentralLayout *centralLayout = m_corona->layoutManager()->centralLayout(m_layoutName);
-
-    if (centralLayout) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool CentralLayout::isPseudoLayout() const
-{
-    return m_layoutName == MultipleLayoutsName;
-}
-
 void CentralLayout::loadConfig()
 {
     m_disableBordersForMaximizedWindows = m_layoutGroup.readEntry("disableBordersForMaximizedWindows", false);

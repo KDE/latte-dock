@@ -180,6 +180,8 @@ private:
     QStringList validActivities(QStringList currentList);
 
 private:
+    bool m_multipleModeInitialized{false};
+
     QString m_currentLayoutNameInMultiEnvironment;
     QString m_shouldSwitchToLayout;
 

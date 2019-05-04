@@ -123,21 +123,19 @@ void LayoutManager::load()
 
 void LayoutManager::unload()
 {
-    bool multipleMode{centralLayout(Layout::AbstractLayout::MultipleLayoutsName)};
-
     //! Unload all CentralLayouts
     while (!m_centralLayouts.isEmpty()) {
         CentralLayout *layout = m_centralLayouts.at(0);
         m_centralLayouts.removeFirst();
 
-        if (!layout->isPseudoLayout() && multipleMode) {
+        if (m_multipleModeInitialized) {
             layout->syncToLayoutFile(true);
         }
 
         layout->unloadContainments();
         layout->unloadLatteViews();
 
-        if (!layout->isPseudoLayout() && multipleMode) {
+        if (m_multipleModeInitialized) {
             clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds(), true);
         }
 
@@ -166,6 +164,8 @@ void LayoutManager::unload()
 
         delete layout;
     }*/
+
+    m_multipleModeInitialized = false;
 
     //! Remove no-needed temp files
     QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
@@ -254,7 +254,7 @@ QStringList LayoutManager::menuLayouts() const
         fixedMenuLayouts.prepend(currentLayoutName());
     } else if (memoryUsage() == Types::MultipleLayouts) {
         for (const auto layout : m_centralLayouts) {
-            if (!layout->isPseudoLayout() && !fixedMenuLayouts.contains(layout->name())) {
+            if (!fixedMenuLayouts.contains(layout->name())) {
                 fixedMenuLayouts.prepend(layout->name());
             }
         }
@@ -349,10 +349,7 @@ QStringList LayoutManager::centralLayoutsNames()
     } else {
         for (int i = 0; i < m_centralLayouts.size(); ++i) {
             CentralLayout *layout = m_centralLayouts.at(i);
-
-            if (!layout->isPseudoLayout()) {
-                names << layout->name();
-            }
+            names << layout->name();
         }
     }
 
@@ -469,7 +466,7 @@ CentralLayout *LayoutManager::currentLayout() const
         }
 
         for (auto layout : m_centralLayouts) {
-            if ((layout->name() != Layout::AbstractLayout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
+            if (layout->activities().isEmpty()) {
                 return layout;
             }
         }
@@ -481,7 +478,7 @@ CentralLayout *LayoutManager::currentLayout() const
 void LayoutManager::updateCurrentLayoutNameInMultiEnvironment()
 {
     for (const auto layout : m_centralLayouts) {
-        if (!layout->isPseudoLayout() && layout->activities().contains(m_corona->activitiesConsumer()->currentActivity())) {
+        if (layout->activities().contains(m_corona->activitiesConsumer()->currentActivity())) {
             m_currentLayoutNameInMultiEnvironment = layout->name();
             emit currentLayoutNameChanged();
             return;
@@ -489,7 +486,7 @@ void LayoutManager::updateCurrentLayoutNameInMultiEnvironment()
     }
 
     for (const auto layout : m_centralLayouts) {
-        if (!layout->isPseudoLayout() && layout->activities().isEmpty()) {
+        if (layout->activities().isEmpty()) {
             m_currentLayoutNameInMultiEnvironment = layout->name();
             emit currentLayoutNameChanged();
             return;
@@ -571,6 +568,11 @@ void LayoutManager::loadLayouts()
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
 
     for (const auto &layout : files) {
+        if (layout.contains(Layout::AbstractLayout::MultipleLayoutsName)) {
+            //! IMPORTANT: DONT ADD MultipleLayouts hidden file in layouts list
+            continue;
+        }
+
         CentralLayout centralLayout(this, layoutDir.absolutePath() + "/" + layout);
 
         QStringList validActivityIds = validActivities(centralLayout.activities());
@@ -720,9 +722,7 @@ void LayoutManager::importLatteLayout(QString layoutPath)
 void LayoutManager::hideAllViews()
 {
     for (const auto layout : m_centralLayouts) {
-        if (!layout->isPseudoLayout()) {
-            emit currentLayoutIsSwitching(layout->name());
-        }
+        emit currentLayoutIsSwitching(layout->name());
     }
 }
 
@@ -763,9 +763,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
     //! nice animation that hides these docks/panels
     if (previousMemoryUsage != -1) {
         for (const auto layout : m_centralLayouts) {
-            if (!layout->isPseudoLayout()) {
-                emit currentLayoutIsSwitching(layout->name());
-            }
+            emit currentLayoutIsSwitching(layout->name());
         }
 
         for (const auto layout : m_sharedLayouts) {
@@ -790,7 +788,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
             CentralLayout *centralForOrphans{nullptr};
 
             for (const auto fromLayout : m_centralLayouts) {
-                if (!fromLayout->isPseudoLayout() && fromLayout->activities().isEmpty()) {
+                if (fromLayout->activities().isEmpty()) {
                     centralForOrphans = fromLayout;
                     break;
                 }
@@ -813,7 +811,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 
             bool initializingMultipleLayouts{false};
 
-            if (memoryUsage() == Types::MultipleLayouts && !centralLayout(Layout::AbstractLayout::MultipleLayoutsName)) {
+            if (memoryUsage() == Types::MultipleLayouts && !m_multipleModeInitialized) {
                 initializingMultipleLayouts = true;
             }
 
@@ -825,9 +823,16 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                     fixedLPath = layoutPath(fixedLayoutName);
                 }
 
-                CentralLayout *newLayout = new CentralLayout(this, fixedLPath, fixedLayoutName);
-                addLayout(newLayout);
+                if (fixedLayoutName != Layout::AbstractLayout::MultipleLayoutsName) {
+                    CentralLayout *newLayout = new CentralLayout(this, fixedLPath, fixedLayoutName);
+                    addLayout(newLayout);
+                }
+
                 loadLatteLayout(fixedLPath);
+
+                if (initializingMultipleLayouts) {
+                    m_multipleModeInitialized = true;
+                }
 
                 emit centralLayoutsChanged();
             }
@@ -916,7 +921,6 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
     QStringList layoutsToUnload;
     QStringList layoutsToLoad;
-    layoutsToLoad << Layout::AbstractLayout::MultipleLayoutsName;
 
     bool allRunningActivitiesWillBeReserved{true};
 
@@ -951,23 +955,18 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
     //! Unload no needed Layouts
     for (const auto &layoutName : layoutsToUnload) {
-        if (layoutName != Layout::AbstractLayout::MultipleLayoutsName) {
-            CentralLayout *layout = centralLayout(layoutName);
-            int posLayout = centralLayoutPos(layoutName);
+        CentralLayout *layout = centralLayout(layoutName);
+        int posLayout = centralLayoutPos(layoutName);
 
-            if (posLayout >= 0) {
-                qDebug() << "REMOVING LAYOUT ::::: " << layoutName;
-                m_centralLayouts.removeAt(posLayout);
+        if (posLayout >= 0) {
+            qDebug() << "REMOVING LAYOUT ::::: " << layoutName;
+            m_centralLayouts.removeAt(posLayout);
 
-                if (!layout->isPseudoLayout()) {
-                    layout->syncToLayoutFile(true);
-                }
-
-                layout->unloadContainments();
-                layout->unloadLatteViews();
-                clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
-                delete layout;
-            }
+            layout->syncToLayoutFile(true);
+            layout->unloadContainments();
+            layout->unloadLatteViews();
+            clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
+            delete layout;
         }
     }
 
@@ -994,7 +993,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
                 addLayout(newLayout);
                 newLayout->importToCorona();
 
-                if (!newLayout->isPseudoLayout() && m_corona->universalSettings()->showInfoWindow()) {
+                if (m_corona->universalSettings()->showInfoWindow()) {
                     showInfoWindow(i18n("Activating layout: <b>%0</b> ...").arg(newLayout->name()), 5000, newLayout->appliedActivities());
                 }
             }
@@ -1030,9 +1029,7 @@ void LayoutManager::syncActiveLayoutsToOriginalFiles()
 {
     if (memoryUsage() == Types::MultipleLayouts) {
         for (const auto layout : m_centralLayouts) {
-            if (!layout->isPseudoLayout()) {
-                layout->syncToLayoutFile();
-            }
+            layout->syncToLayoutFile();
         }
 
         for (const auto layout : m_sharedLayouts) {

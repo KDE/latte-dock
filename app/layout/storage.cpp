@@ -556,7 +556,6 @@ bool Storage::layoutIsBroken() const
 
     KSharedConfigPtr lFile = KSharedConfig::openConfig(m_layout->file());
 
-
     if (!m_layout->corona()) {
         KConfigGroup containmentsEntries = KConfigGroup(lFile, "Containments");
         ids << containmentsEntries.groupList();
@@ -613,12 +612,12 @@ bool Storage::layoutIsBroken() const
         qDebug() << "   ----   ERROR - BROKEN LAYOUT :: " << m_layout->name() << " ----";
 
         if (!m_layout->corona()) {
-            qDebug() << "   --- file : " << m_layout->file();
+            qDebug() << "   --- storaged file : " << m_layout->file();
         } else {
             if (m_layout->corona()->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
                 qDebug() << "   --- in multiple layouts hidden file : " << Importer::layoutFilePath(AbstractLayout::MultipleLayoutsName);
             } else {
-                qDebug() << "   --- in layout file : " << m_layout->file();
+                qDebug() << "   --- in active layout file : " << m_layout->file();
             }
         }
 

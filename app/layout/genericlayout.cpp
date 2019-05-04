@@ -138,6 +138,21 @@ void GenericLayout::setBlockAutomaticLatteViewCreation(bool block)
     m_blockAutomaticLatteViewCreation = block;
 }
 
+bool GenericLayout::isActive() const
+{
+    if (!m_corona) {
+        return false;
+    }
+
+    GenericLayout *generic = m_corona->layoutManager()->layout(m_layoutName);
+
+    if (generic) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 bool GenericLayout::isCurrent() const
 {
     if (!m_corona) {
@@ -774,10 +789,7 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
 
     qDebug() << "Layout ::::: " << name() << " added containments ::: " << m_containments.size();
 
-    //! last used activity
-    if (m_layoutName != MultipleLayoutsName) {
-        updateLastUsedActivity();
-    }
+    updateLastUsedActivity();
 
     //! signals
     connect(m_corona->activityConsumer(), &KActivities::Consumer::currentActivityChanged,

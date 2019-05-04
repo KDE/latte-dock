@@ -27,6 +27,7 @@
 #include "universalsettings.h"
 #include "ui_settingsdialog.h"
 #include "../lattecorona.h"
+#include "../layout/genericlayout.h"
 #include "../layout/centrallayout.h"
 #include "../liblatte2/types.h"
 #include "../plasma/extended/theme.h"
@@ -325,12 +326,9 @@ void SettingsDialog::on_copyButton_clicked()
     if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         QString lName = (m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole)).toString();
 
-        if (Importer::layoutExists(lName)) {
-            CentralLayout *layout = m_corona->layoutManager()->centralLayout(lName);
-
-            if (layout && !layout->isPseudoLayout()) {
-                layout->syncToLayoutFile();
-            }
+        Layout::GenericLayout *generic = m_corona->layoutManager()->layout(lName);
+        if (generic) {
+            generic->syncToLayoutFile();
         }
     }
 
@@ -836,50 +834,35 @@ void SettingsDialog::loadSettings()
         QString layoutPath = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
         m_initLayoutPaths.append(layoutPath);
 
-        CentralLayout *layoutSets = new CentralLayout(this, layoutPath);
-        m_layouts[layoutPath] = layoutSets;
+        CentralLayout *central = new CentralLayout(this, layoutPath);
+        m_layouts[layoutPath] = central;
 
-        QString background = layoutSets->background();
+        QString background = central->background();
 
         if (background.isEmpty()) {
-            insertLayoutInfoAtRow(i, layoutPath, layoutSets->color(), QString(), layoutSets->name(),
-                                  layoutSets->showInMenu(), layoutSets->disableBordersForMaximizedWindows(),
-                                  layoutSets->activities(), !layoutSets->isWritable());
+            insertLayoutInfoAtRow(i, layoutPath, central->color(), QString(), central->name(),
+                                  central->showInMenu(), central->disableBordersForMaximizedWindows(),
+                                  central->activities(), !central->isWritable());
         } else {
-            insertLayoutInfoAtRow(i, layoutPath, background, layoutSets->textColor(), layoutSets->name(),
-                                  layoutSets->showInMenu(), layoutSets->disableBordersForMaximizedWindows(),
-                                  layoutSets->activities(), !layoutSets->isWritable());
+            insertLayoutInfoAtRow(i, layoutPath, background, central->textColor(), central->name(),
+                                  central->showInMenu(), central->disableBordersForMaximizedWindows(),
+                                  central->activities(), !central->isWritable());
         }
 
         qDebug() << "counter:" << i << " total:" << m_model->rowCount();
 
         i++;
 
-        if (layoutSets->name() == m_corona->layoutManager()->currentLayoutName()) {
+        if (central->name() == m_corona->layoutManager()->currentLayoutName()) {
             ui->layoutsView->selectRow(i - 1);
         }
 
-        CentralLayout *centralLayout = m_corona->layoutManager()->centralLayout(layoutSets->name());
+        Layout::GenericLayout *generic = m_corona->layoutManager()->layout(central->name());
 
-        if ((centralLayout && centralLayout->layoutIsBroken()) || (!centralLayout && layoutSets->layoutIsBroken())) {
-            brokenLayouts.append(layoutSets->name());
+        if ((generic && generic->layoutIsBroken()) || (!generic && central->layoutIsBroken())) {
+            brokenLayouts.append(central->name());
         }
     }
-
-
-    //! Check Multiple Layouts Integrity
-    /*if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-        m_corona->layoutManager()->syncActiveLayoutsToOriginalFiles();
-
-        QString multipleLayoutPath = QDir::homePath() + "/.config/latte/" + Layout::MultipleLayoutsName + ".layout.latte";
-        Layout multipleHiddenLayouts(this, multipleLayoutPath, "Multiple Layouts File");
-
-        if (multipleHiddenLayouts.layoutIsBroken()) {
-            qDebug() << "Integrity Error ::: Multiple Layouts Hidden file is broken!!!!";
-            brokenLayouts.append(multipleHiddenLayouts.name());
-        }
-    }*/
-
 
     recalculateAvailableActivities();
 

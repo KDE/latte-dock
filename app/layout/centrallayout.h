@@ -61,11 +61,6 @@ public:
     bool showInMenu() const;
     void setShowInMenu(bool show);
 
-    //!this layout is loaded and running
-    bool isCentralLayout() const;
-    //!it is original layout compared to pseudo-layouts that are combinations of multiple-original layouts
-    bool isPseudoLayout() const;
-
     QString sharedLayoutName() const;
     void setSharedLayoutName(QString name);
 
