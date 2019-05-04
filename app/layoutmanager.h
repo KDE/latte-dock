@@ -158,7 +158,7 @@ private slots:
 private:
     void addLayout(CentralLayout *layout);
     void cleanupOnStartup(QString path); //!remove deprecated or oldstyle config options
-    void clearSharedLayoutsFromAssigned();
+    void clearSharedLayoutsFromCentralLists();
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
     void confirmDynamicSwitch();
 

@@ -595,8 +595,8 @@ void LayoutManager::loadLayouts()
         }
     }
 
-    //! Shared Layouts should not be used for Activities->Layouts assignment
-    clearSharedLayoutsFromAssigned();
+    //! Shared Layouts should not be used for Activities->Layouts assignments or published lists
+    clearSharedLayoutsFromCentralLists();
 
     m_presetsPaths.append(m_corona->kPackage().filePath("preset1"));
     m_presetsPaths.append(m_corona->kPackage().filePath("preset2"));
@@ -607,11 +607,15 @@ void LayoutManager::loadLayouts()
     emit menuLayoutsChanged();
 }
 
-void LayoutManager::clearSharedLayoutsFromAssigned()
+void LayoutManager::clearSharedLayoutsFromCentralLists()
 {
     QStringList unassign;
 
     for(const QString &name : m_sharedLayoutIds) {
+        //! remove from ContextMenu
+        m_menuLayouts.removeAll(name);
+
+        //! remove from layouts assigned to activities
         QHashIterator<const QString, QString> i(m_assignedLayouts);
 
         while (i.hasNext()) {
@@ -626,6 +630,8 @@ void LayoutManager::clearSharedLayoutsFromAssigned()
     for(const QString &activity : unassign) {
         m_assignedLayouts.remove(activity);
     }
+
+
 }
 
 void LayoutManager::loadLayoutOnStartup(QString layoutName)
