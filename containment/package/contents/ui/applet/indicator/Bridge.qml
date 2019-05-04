@@ -49,7 +49,7 @@ Item{
     readonly property bool inAttention: false
     readonly property bool inRemoving: false
 
-    readonly property bool isRectangled: appletIsValid ? appletItem.isRectangled : true
+    readonly property bool isSquare: appletIsValid ? appletItem.isSquare : true
 
     readonly property bool hasActive: isActive
     readonly property bool hasMinimized: false
@@ -71,7 +71,7 @@ Item{
     //!icon colors
     property color iconBackgroundColor: {
         if (appletIsValid) {
-            return isRectangled ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : colorizerManager.buttonFocusColor;
+            return isSquare ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : colorizerManager.buttonFocusColor;
         }
 
         return "black";
@@ -79,7 +79,7 @@ Item{
 
     property color iconGlowColor:{
         if (appletIsValid) {
-            return isRectangled ? appletItem.wrapperAlias.overlayIconLoader.glowColor : colorizerManager.focusGlowColor;
+            return isSquare ? appletItem.wrapperAlias.overlayIconLoader.glowColor : colorizerManager.focusGlowColor;
         }
 
         return "white";

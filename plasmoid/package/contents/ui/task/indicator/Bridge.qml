@@ -52,7 +52,7 @@ Item {
     readonly property bool inAttention: taskIsValid ? taskItem.inAttention : false
     readonly property bool inRemoving: taskIsValid ? taskItem.inRemoveStage : false
 
-    readonly property bool isRectangled: true
+    readonly property bool isSquare: true
 
     readonly property bool hasActive: taskIsValid ? taskItem.hasActive : false
     readonly property bool hasMinimized: taskIsValid? taskItem.hasMinimized : false

@@ -116,7 +116,7 @@ Item {
                                                                                            ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
 
     readonly property bool originalAppletBehavior: ((root.zoomFactor === 1 || !canBeHovered) && !root.titleTooltips) || lockZoom
-    readonly property bool isRectangled: communicator.overlayLatteIconIsActive
+    readonly property bool isSquare: communicator.overlayLatteIconIsActive
 
     property int animationTime: appliedDurationTime * (1.2 *units.shortDuration)
     property int hoveredIndex: layoutsContainer.hoveredIndex
