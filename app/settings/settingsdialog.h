@@ -57,6 +57,8 @@ public:
 
     void setCurrentPage(Types::LatteConfigPage page);
 
+    bool isShared(int row) const;
+
     QStringList activities();
     QStringList availableActivities();
     QStringList availableSharesFor(int row);
@@ -102,7 +104,7 @@ private:
     bool idExistsInModel(QString id);
     bool importLayoutsFromV1ConfigFile(QString file);
     bool nameExistsInModel(QString name);
-    bool saveAllChanges();
+    bool saveAllChanges();    
 
     int rowForId(QString id);
     int rowForName(QString layoutName);

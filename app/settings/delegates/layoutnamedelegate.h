@@ -23,12 +23,19 @@
 // Qt
 #include <QStyledItemDelegate>
 
+namespace Latte {
+class SettingsDialog;
+}
+
 class LayoutNameDelegate : public QStyledItemDelegate
 {
 public:
     LayoutNameDelegate(QObject *parent = 0);
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+private:
+    Latte::SettingsDialog *m_settingsDialog{nullptr};
 };
 
 #endif

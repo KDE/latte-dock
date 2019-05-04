@@ -1630,6 +1630,18 @@ bool SettingsDialog::nameExistsInModel(QString name)
     return false;
 }
 
+bool SettingsDialog::isShared(int row) const
+{
+    if (row >=0 ) {
+        QStringList shares = m_model->data(m_model->index(row, SHAREDCOLUMN), Qt::UserRole).toStringList();
+        if (!shares.isEmpty()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 int SettingsDialog::ascendingRowFor(QString name)
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {

@@ -19,6 +19,9 @@
 
 #include "layoutnamedelegate.h"
 
+// local
+#include "../settingsdialog.h"
+
 // Qt
 #include <QApplication>
 #include <QBitmap>
@@ -34,17 +37,25 @@ const int HIDDENTEXTCOLUMN = 1;
 LayoutNameDelegate::LayoutNameDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
 {
+    auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
+
+    if (settingsDialog) {
+        m_settingsDialog = settingsDialog;
+    }
 }
 
 void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     bool isLocked = index.data(Qt::UserRole).toBool();
+    bool isShared = m_settingsDialog->isShared(index.row());
+
+    bool showTwoIcons = isLocked && isShared;
 
     QStyleOptionViewItem adjustedOption = option;
     //! Remove the focus dotted lines
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
 
-    if (isLocked) {
+    if (isLocked || isShared) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
         QString nameText = index.data(Qt::DisplayRole).toString();
         bool selected = ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected));
@@ -53,11 +64,13 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         QFontMetrics fm(option.font);
         int textWidth = fm.width(nameText);
         int thick = option.rect.height();
-        int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? thick : qBound(0, option.rect.width() - textWidth - thick, thick);
-        int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? qBound(0, option.rect.width() - textWidth - thick, thick) : thick;
+        int length = showTwoIcons ? (2 * thick + 2) : thick;
+
+        int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? length : qBound(0, option.rect.width() - textWidth - length, length);
+        int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? qBound(0, option.rect.width() - textWidth - length, length) : length;
 
         QRect destinationS(option.rect.x(), option.rect.y(), startWidth, thick);
-        QRect destinationE(option.rect.x() + option.rect.width() - thick, option.rect.y(), endWidth, thick);
+        QRect destinationE(option.rect.x() + option.rect.width() - endWidth, option.rect.y(), endWidth, thick);
 
         QStyleOptionViewItem myOptionS = adjustedOption;
         QStyleOptionViewItem myOptionE = adjustedOption;
@@ -75,14 +88,23 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), HIDDENTEXTCOLUMN));
 
         //! Lock Icon
-        QIcon lockIcon = QIcon::fromTheme("object-locked");
-
+        QIcon firstIcon = isLocked && !showTwoIcons ? QIcon::fromTheme("object-locked") : QIcon::fromTheme("document-share");
         QIcon::Mode mode = selected ? QIcon::Selected : QIcon::Normal;
 
         if (qApp->layoutDirection() == Qt::RightToLeft) {
-            painter->drawPixmap(destinationS, lockIcon.pixmap(thick, thick, mode));
+            painter->drawPixmap(QRect(option.rect.x(), option.rect.y(), thick, thick), firstIcon.pixmap(thick, thick, mode));
+
+            if (showTwoIcons) {
+                QIcon secondIcon = QIcon::fromTheme("object-locked");
+                painter->drawPixmap(QRect(option.rect.x() + thick + 2, option.rect.y(), thick, thick), secondIcon.pixmap(thick, thick, mode));
+            }
         } else {
-            painter->drawPixmap(destinationE, lockIcon.pixmap(thick, thick, mode));
+            painter->drawPixmap(QRect(option.rect.x() + option.rect.width() - endWidth, option.rect.y(), thick, thick), firstIcon.pixmap(thick, thick, mode));
+
+            if (showTwoIcons) {
+                QIcon secondIcon = QIcon::fromTheme("object-locked");
+                painter->drawPixmap(QRect(option.rect.x() + option.rect.width() - thick, option.rect.y(), thick, thick), secondIcon.pixmap(thick, thick, mode));
+            }
         }
 
         return;
