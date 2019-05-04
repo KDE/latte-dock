@@ -913,12 +913,15 @@ void SettingsDialog::loadSettings()
     recalculateAvailableActivities();
 
     m_model->setHorizontalHeaderItem(IDCOLUMN, new QStandardItem(QString("#path")));
-    m_model->setHorizontalHeaderItem(COLORCOLUMN, new QStandardItem(QString(i18nc("column for layout background", "Background"))));
+    m_model->setHorizontalHeaderItem(COLORCOLUMN, new QStandardItem(QIcon::fromTheme("games-config-background"),
+                                                                    QString(i18nc("column for layout background", "Background"))));
     m_model->setHorizontalHeaderItem(NAMECOLUMN, new QStandardItem(QString(i18nc("column for layout name", "Name"))));
     m_model->setHorizontalHeaderItem(MENUCOLUMN, new QStandardItem(QString(i18nc("column for layout to show in menu", "In Menu"))));
     m_model->setHorizontalHeaderItem(BORDERSCOLUMN, new QStandardItem(QString(i18nc("column for layout to hide borders for maximized windows", "Borderless"))));
-    m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QString(i18nc("column for layout to show which activities is assigned to", "Activities"))));
-    m_model->setHorizontalHeaderItem(SHAREDCOLUMN, new QStandardItem(QString(i18nc("column for shared layout to show which layouts is assigned to", "Shared To"))));
+    m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QIcon::fromTheme("preferences-activities"),
+                                                                       QString(i18nc("column for layout to show which activities is assigned to", "Activities"))));
+    m_model->setHorizontalHeaderItem(SHAREDCOLUMN, new QStandardItem(QIcon::fromTheme("document-share"),
+                                                                     QString(i18nc("column for shared layout to show which layouts is assigned to", "Shared To"))));
 
     //! this line should be commented for debugging layouts window functionality
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
