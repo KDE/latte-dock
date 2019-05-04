@@ -287,6 +287,31 @@ QStringList SettingsDialog::availableActivities()
     return m_availableActivities;
 }
 
+QStringList SettingsDialog::availableSharesFor(int row)
+{
+    QStringList availables;
+    QStringList regs;
+
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+        QStringList shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
+
+        if (i != row) {
+            if (shares.isEmpty()) {
+                availables << name;
+            } else {
+                regs << shares;
+            }
+        }
+    }
+
+    for (const auto r : regs) {
+        availables.removeAll(r);
+    }
+
+    return availables;
+}
+
 void SettingsDialog::setCurrentPage(Types::LatteConfigPage page)
 {
     if (page == Types::LayoutPage) {
@@ -878,7 +903,7 @@ void SettingsDialog::loadSettings()
     qDebug() << "SHARES MAP ::: " << m_sharesMap;
 
     for(QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
-        int sharedPos = rowForId(QString(QDir::homePath() + "/.config/latte/" + i.key() + ".layout.latte"));
+        int sharedPos = rowForName(i.key());
 
         if (sharedPos >= 0) {
             m_model->setData(m_model->index(sharedPos, SHAREDCOLUMN), i.value(), Qt::UserRole);
@@ -984,6 +1009,7 @@ QStringList SettingsDialog::currentLayoutsSettings()
         bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
         bool borders = m_model->data(m_model->index(i, BORDERSCOLUMN), Qt::DisplayRole).toString() == CheckMark;
         QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+        QStringList shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
 
         layoutSettings << id;
         layoutSettings << color;
@@ -993,6 +1019,7 @@ QStringList SettingsDialog::currentLayoutsSettings()
         layoutSettings << QString::number((int)menu);
         layoutSettings << QString::number((int)borders);
         layoutSettings << lActivities;
+        layoutSettings << shares;
     }
 
     return layoutSettings;
@@ -1593,6 +1620,19 @@ int SettingsDialog::rowForId(QString id)
         QString rowId = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
 
         if (rowId == id) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+int SettingsDialog::rowForName(QString layoutName)
+{
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString rowName = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+
+        if (rowName == layoutName) {
             return i;
         }
     }

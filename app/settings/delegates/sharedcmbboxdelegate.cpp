@@ -54,39 +54,24 @@ QWidget *SharedCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionV
     //! setEditorData (const) function
     editor->setFocusPolicy(Qt::StrongFocus);
 
-    /*
-    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
-    QStringList availableActivities = m_settingsDialog->availableActivities();
-    QStringList activities = m_settingsDialog->activities();
+    QStringList assignedShares = index.model()->data(index, Qt::UserRole).toStringList();
+    QStringList availableShares = m_settingsDialog->availableSharesFor(index.row());
 
-    QStringList shownActivities;
-
-    for (const auto &activity : activities) {
-        if (assignedActivities.contains(activity) || availableActivities.contains(activity)) {
-            shownActivities.append(activity);
-        }
-    }
-
-    for (unsigned int i = 0; i < shownActivities.count(); ++i) {
-
-        KActivities::Info info(shownActivities[i]);
-
+    for (unsigned int i = 0; i < availableShares.count(); ++i) {
         QString indicator = "    ";
 
-        if (assignedActivities.contains(shownActivities[i])) {
+        if (assignedShares.contains(availableShares[i])) {
             indicator = QString::fromUtf8("\u2714") + " ";
         }
 
-        if (info.state() != KActivities::Info::Invalid) {
-            editor->addItem(QIcon::fromTheme(info.icon()), QString(indicator + info.name()), QVariant(shownActivities[i]));
-        }
+        editor->addItem(QString(indicator + availableShares[i]), QVariant(availableShares[i]));
     }
 
     connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
         editor->setFocusPolicy(Qt::ClickFocus);
         editor->clearFocus();
     });
-*/
+
     return editor;
 }
 

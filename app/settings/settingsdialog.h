@@ -59,6 +59,7 @@ public:
 
     QStringList activities();
     QStringList availableActivities();
+    QStringList availableSharesFor(int row);
 
     void requestImagesDialog(int row);
     void requestColorsDialog(int row);
@@ -103,6 +104,7 @@ private:
     bool saveAllChanges();
 
     int rowForId(QString id);
+    int rowForName(QString layoutName);
     int ascendingRowFor(QString name);
 
     QString uniqueTempDirectory();
