@@ -285,6 +285,19 @@
                </widget>
               </item>
               <item>
+               <widget class="QPushButton" name="sharedButton">
+                <property name="toolTip">
+                 <string>Share that layout with other central layouts</string>
+                </property>
+                <property name="text">
+                 <string>Shared</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="document-share"/>
+                </property>
+               </widget>
+              </item>
+              <item>
                <spacer name="verticalSpacer_2">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -447,8 +460,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>894</width>
-            <height>594</height>
+            <width>799</width>
+            <height>575</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
