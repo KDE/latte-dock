@@ -102,6 +102,7 @@ private:
     bool nameExistsInModel(QString name);
     bool saveAllChanges();
 
+    int rowForId(QString id);
     int ascendingRowFor(QString name);
 
     QString uniqueTempDirectory();
@@ -127,6 +128,8 @@ private:
     QStandardItemModel *m_model{nullptr};
     Ui::SettingsDialog *ui;
 
+    //! ShareLayout #id, Shares LayoutIds
+    QHash<const QString, QStringList> m_sharesMap;
     QHash<const QString, Latte::CentralLayout *> m_layouts;
 
     QList<int> o_settings;

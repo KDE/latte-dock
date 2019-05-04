@@ -35,6 +35,7 @@
 #include "delegates/colorcmbboxdelegate.h"
 #include "delegates/activitycmbboxdelegate.h"
 #include "delegates/layoutnamedelegate.h"
+#include "delegates/sharedcmbboxdelegate.h"
 
 // Qt
 #include <QButtonGroup>
@@ -121,6 +122,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new SharedCmbBoxDelegate(this));
 
     m_inMemoryButtons = new QButtonGroup(this);
     m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Types::SingleLayout);
@@ -823,6 +825,7 @@ void SettingsDialog::loadSettings()
 {
     m_initLayoutPaths.clear();
     m_model->clear();
+    m_sharesMap.clear();
 
     int i = 0;
     QStringList brokenLayouts;
@@ -840,6 +843,7 @@ void SettingsDialog::loadSettings()
 
         QString background = central->background();
 
+        //! add central layout properties
         if (background.isEmpty()) {
             insertLayoutInfoAtRow(i, layoutPath, central->color(), QString(), central->name(),
                                   central->showInMenu(), central->disableBordersForMaximizedWindows(),
@@ -848,6 +852,12 @@ void SettingsDialog::loadSettings()
             insertLayoutInfoAtRow(i, layoutPath, background, central->textColor(), central->name(),
                                   central->showInMenu(), central->disableBordersForMaximizedWindows(),
                                   central->activities(), !central->isWritable());
+        }
+
+        //! create initial SHARES maps
+        QString shared = central->sharedLayoutName();
+        if (!shared.isEmpty()) {
+            m_sharesMap[shared].append(layout);
         }
 
         qDebug() << "counter:" << i << " total:" << m_model->rowCount();
@@ -865,6 +875,16 @@ void SettingsDialog::loadSettings()
         }
     }
 
+    qDebug() << "SHARES MAP ::: " << m_sharesMap;
+
+    for(QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
+        int sharedPos = rowForId(QString(QDir::homePath() + "/.config/latte/" + i.key() + ".layout.latte"));
+
+        if (sharedPos >= 0) {
+            m_model->setData(m_model->index(sharedPos, SHAREDCOLUMN), i.value(), Qt::UserRole);
+        }
+    }
+
     recalculateAvailableActivities();
 
     m_model->setHorizontalHeaderItem(IDCOLUMN, new QStandardItem(QString("#path")));
@@ -873,6 +893,7 @@ void SettingsDialog::loadSettings()
     m_model->setHorizontalHeaderItem(MENUCOLUMN, new QStandardItem(QString(i18nc("column for layout to show in menu", "In Menu"))));
     m_model->setHorizontalHeaderItem(BORDERSCOLUMN, new QStandardItem(QString(i18nc("column for layout to hide borders for maximized windows", "Borderless"))));
     m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QString(i18nc("column for layout to show which activities is assigned to", "Activities"))));
+    m_model->setHorizontalHeaderItem(SHAREDCOLUMN, new QStandardItem(QString(i18nc("column for shared layout to show which layouts is assigned to", "Shared To"))));
 
     //! this line should be commented for debugging layouts window functionality
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
@@ -1005,6 +1026,8 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
 
     QStandardItem *activitiesItem = new QStandardItem(activities.join(","));
 
+    QStandardItem *sharesItem = new QStandardItem();
+
     QList<QStandardItem *> items;
 
     items.append(pathItem);
@@ -1014,6 +1037,7 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
     items.append(menuItem);
     items.append(bordersItem);
     items.append(activitiesItem);
+    items.append(sharesItem);
 
     if (row > m_model->rowCount() - 1) {
         m_model->appendRow(items);
@@ -1561,6 +1585,19 @@ int SettingsDialog::ascendingRowFor(QString name)
     }
 
     return m_model->rowCount();
+}
+
+int SettingsDialog::rowForId(QString id)
+{
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString rowId = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
+
+        if (rowId == id) {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 QString SettingsDialog::uniqueTempDirectory()
