@@ -41,10 +41,23 @@ void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     //! Remove the focus dotted lines
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
 
-    QStandardItemModel *model = (QStandardItemModel *) index.model();
-    QStyledItemDelegate::paint(painter, adjustedOption, model->index(index.row(), HIDDENTEXTCOLUMN));
+    if (adjustedOption.state & QStyle::State_Enabled) {
+        QStandardItemModel *model = (QStandardItemModel *) index.model();
+        QStyledItemDelegate::paint(painter, adjustedOption, model->index(index.row(), HIDDENTEXTCOLUMN));
 
-    QStyledItemDelegate::paint(painter, adjustedOption, index);
+        QStyledItemDelegate::paint(painter, adjustedOption, index);
+    } else {
+        // Disabled
+        QPalette palette;
+        QPen pen(Qt::DashDotDotLine);
+
+        pen.setWidth(2); pen.setColor(palette.linkVisited().color());
+        int ver = option.rect.y()+option.rect.height()/2;
+
+        painter->setPen(pen);
+        painter->drawLine(option.rect.x(), ver,
+                          option.rect.x()+option.rect.width(), ver);
+    }
 }
 
 bool CheckBoxDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,

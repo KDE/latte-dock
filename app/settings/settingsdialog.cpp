@@ -951,6 +951,7 @@ void SettingsDialog::loadSettings()
     }
 
     updatePerLayoutButtonsState();
+    updateSharedLayoutsStates();
 
     ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
     ui->infoWindowChkBox->setChecked(m_corona->universalSettings()->showInfoWindow());
@@ -1199,6 +1200,8 @@ void SettingsDialog::itemChanged(QStandardItem *item)
             font.setItalic(false);
             m_model->setData(m_model->index(currentRow, NAMECOLUMN), font, Qt::FontRole);
         }
+    } else if (item->column() == SHAREDCOLUMN) {
+        updateSharedLayoutsStates();
     }
 
     updateApplyButtonsState();
@@ -1310,6 +1313,29 @@ void SettingsDialog::updatePerLayoutButtonsState()
         ui->lockedButton->setChecked(true);
     } else {
         ui->lockedButton->setChecked(false);
+    }
+}
+
+void SettingsDialog::updateSharedLayoutsStates()
+{
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QStringList shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
+
+        if (shares.isEmpty()) {
+            QStandardItem *item = m_model->item(i, MENUCOLUMN);
+            item->setEnabled(true);
+            item = m_model->item(i, BORDERSCOLUMN);
+            item->setEnabled(true);
+            item = m_model->item(i,ACTIVITYCOLUMN);
+            item->setEnabled(true);
+        } else {
+            QStandardItem *item = m_model->item(i, MENUCOLUMN);
+            item->setEnabled(false);
+            item = m_model->item(i, BORDERSCOLUMN);
+            item->setEnabled(false);
+            item = m_model->item(i,ACTIVITYCOLUMN);
+            item->setEnabled(false);
+        }
     }
 }
 

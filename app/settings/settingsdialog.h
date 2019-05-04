@@ -96,6 +96,7 @@ private:
     void insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu, bool disabledBorders,
                                QStringList activities, bool locked = false);
     void updateApplyButtonsState();
+    void updateSharedLayoutsStates();
 
     bool dataAreAccepted();
     bool idExistsInModel(QString id);

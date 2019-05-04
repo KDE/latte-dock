@@ -135,51 +135,65 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
     QStyleOptionViewItem myOptions = option;
     //! Remove the focus dotted lines
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
-    painter->save();
 
-    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
+    if (myOptions.state & QStyle::State_Enabled) {
+        painter->save();
 
-    if (assignedActivities.count() > 0) {
-        myOptions.text = assignedActivitiesText(index);
+        QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
 
-        QTextDocument doc;
-        QString css;
-        QString activitiesText = myOptions.text;
+        if (assignedActivities.count() > 0) {
+            myOptions.text = assignedActivitiesText(index);
 
-        QBrush nBrush;
+            QTextDocument doc;
+            QString css;
+            QString activitiesText = myOptions.text;
 
-        if ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected)) {
-            nBrush = option.palette.brush(QPalette::Active, QPalette::HighlightedText);
+            QBrush nBrush;
+
+            if ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected)) {
+                nBrush = option.palette.brush(QPalette::Active, QPalette::HighlightedText);
+            } else {
+                nBrush = option.palette.brush(QPalette::Inactive, QPalette::Text);
+            }
+
+            css = QString("body { color : %1; }").arg(nBrush.color().name());
+
+            doc.setDefaultStyleSheet(css);
+            doc.setHtml("<body>" + myOptions.text + "</body>");
+
+            myOptions.text = "";
+            myOptions.widget->style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
+
+            //we need an offset to be in the same vertical center of TextEdit
+            int offsetY = ((myOptions.rect.height() - doc.size().height()) / 2);
+
+            if ((qApp->layoutDirection() == Qt::RightToLeft) && !activitiesText.isEmpty()) {
+                int textWidth = doc.size().width();
+
+                painter->translate(qMax(myOptions.rect.left(), myOptions.rect.right() - textWidth), myOptions.rect.top() + offsetY + 1);
+            } else {
+                painter->translate(myOptions.rect.left(), myOptions.rect.top() + offsetY + 1);
+            }
+
+            QRect clip(0, 0, myOptions.rect.width(), myOptions.rect.height());
+            doc.drawContents(painter, clip);
         } else {
-            nBrush = option.palette.brush(QPalette::Inactive, QPalette::Text);
+            QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
         }
 
-        css = QString("body { color : %1; }").arg(nBrush.color().name());
-
-        doc.setDefaultStyleSheet(css);
-        doc.setHtml("<body>" + myOptions.text + "</body>");
-
-        myOptions.text = "";
-        myOptions.widget->style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
-
-        //we need an offset to be in the same vertical center of TextEdit
-        int offsetY = ((myOptions.rect.height() - doc.size().height()) / 2);
-
-        if ((qApp->layoutDirection() == Qt::RightToLeft) && !activitiesText.isEmpty()) {
-            int textWidth = doc.size().width();
-
-            painter->translate(qMax(myOptions.rect.left(), myOptions.rect.right() - textWidth), myOptions.rect.top() + offsetY + 1);
-        } else {
-            painter->translate(myOptions.rect.left(), myOptions.rect.top() + offsetY + 1);
-        }
-
-        QRect clip(0, 0, myOptions.rect.width(), myOptions.rect.height());
-        doc.drawContents(painter, clip);
+        painter->restore();
     } else {
-        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
-    }
+        // Disabled
+        QPalette palette;
+        QPen pen(Qt::DashDotDotLine);
 
-    painter->restore();
+        pen.setWidth(2); pen.setColor(palette.linkVisited().color());
+        int ver = option.rect.y()+option.rect.height()/2;
+
+        painter->setPen(pen);
+        painter->drawLine(option.rect.x(), ver,
+                          option.rect.x()+option.rect.width(), ver);
+    }
 }
 
 QString ActivityCmbBoxDelegate::assignedActivitiesText(const QModelIndex &index) const
