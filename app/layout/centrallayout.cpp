@@ -212,11 +212,20 @@ void CentralLayout::setSharedLayout(SharedLayout *layout)
     if (m_sharedLayout == layout) {
         return;
     }
-    disconnect(m_sharedLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
+    //! drop old signals
+    for (const auto &sc : m_sharedConnections) {
+        QObject::disconnect(sc);
+    }
+    m_sharedConnections.clear();
 
     m_sharedLayout = layout;
 
-    connect(m_sharedLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
+    //! attach new signals
+    m_sharedConnections << connect(m_sharedLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
+    m_sharedConnections << connect(m_sharedLayout, &Layout::AbstractLayout::nameChanged, this, [this]() {
+        setSharedLayoutName(m_sharedLayout->name());
+    });
+
     emit viewsCountChanged();
 }
 

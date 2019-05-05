@@ -115,6 +115,8 @@ private:
     QStringList m_activities;
 
     QPointer<SharedLayout> m_sharedLayout;
+
+    QList<QMetaObject::Connection> m_sharedConnections;
 };
 
 }

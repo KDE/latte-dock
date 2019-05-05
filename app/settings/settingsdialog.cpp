@@ -1448,7 +1448,7 @@ bool SettingsDialog::saveAllChanges()
 
     QString switchToLayout;
 
-    QHash<QString, CentralLayout *> centralLayoutsToRename;
+    QHash<QString, Layout::GenericLayout *> activeLayoutsToRename;
 
     //! remove layouts that have been removed from the user
     for (const auto &initLayout : m_initLayoutPaths) {
@@ -1482,61 +1482,65 @@ bool SettingsDialog::saveAllChanges()
         }
 
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
-        CentralLayout *centralLayout = m_corona->layoutManager()->centralLayout(m_layouts[id]->name());
-
-        CentralLayout *layout = centralLayout ? centralLayout : m_layouts[id];
+        //! update the generic parts of the layouts
+        Layout::GenericLayout *genericActive= m_corona->layoutManager()->layout(m_layouts[id]->name());
+        Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
 
         //! unlock read-only layout
-        if (!layout->isWritable()) {
-            layout->unlock();
+        if (!generic->isWritable()) {
+            generic->unlock();
         }
 
         if (color.startsWith("/")) {
             //it is image file in such case
-            if (color != layout->background()) {
-                layout->setBackground(color);
+            if (color != generic->background()) {
+                generic->setBackground(color);
             }
 
-            if (layout->textColor() != textColor) {
-                layout->setTextColor(textColor);
+            if (generic->textColor() != textColor) {
+                generic->setTextColor(textColor);
             }
         } else {
-            if (color != layout->color()) {
-                layout->setColor(color);
-                layout->setBackground(QString());
-                layout->setTextColor(QString());
+            if (color != generic->color()) {
+                generic->setColor(color);
+                generic->setBackground(QString());
+                generic->setTextColor(QString());
             }
         }
 
-        if (layout->showInMenu() != menu) {
-            layout->setShowInMenu(menu);
+        //! update only the Central-specific layout parts
+        CentralLayout *centralActive= m_corona->layoutManager()->centralLayout(m_layouts[id]->name());
+        CentralLayout *central = centralActive ? centralActive : m_layouts[id];
+
+        if (central->showInMenu() != menu) {
+            central->setShowInMenu(menu);
         }
 
-        if (layout->disableBordersForMaximizedWindows() != disabledBorders) {
-            layout->setDisableBordersForMaximizedWindows(disabledBorders);
+        if (central->disableBordersForMaximizedWindows() != disabledBorders) {
+            central->setDisableBordersForMaximizedWindows(disabledBorders);
         }
 
-        if (layout->activities() != cleanedActivities) {
-            layout->setActivities(cleanedActivities);
+        if (central->activities() != cleanedActivities) {
+            central->setActivities(cleanedActivities);
         }
 
         //! If the layout name changed OR the layout path is a temporary one
-        if (layout->name() != name || (id.startsWith("/tmp/"))) {
+        if (generic->name() != name || (id.startsWith("/tmp/"))) {
             //! If the layout is Active in MultipleLayouts
-            if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts && centralLayout) {
-                qDebug() << " Active Layout Should Be Renamed From : " << layout->name() << " TO :: " << name;
-                centralLayoutsToRename[name] = layout;
+            if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts && generic->isActive()) {
+                qDebug() << " Active Layout Should Be Renamed From : " << generic->name() << " TO :: " << name;
+                activeLayoutsToRename[name] = generic;
             }
 
-            QString tempFile = layoutTempDir.path() + "/" + QString(layout->name() + ".layout.latte");
+            QString tempFile = layoutTempDir.path() + "/" + QString(generic->name() + ".layout.latte");
             qDebug() << "new temp file ::: " << tempFile;
 
-            if ((m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) && (layout->name() == m_corona->layoutManager()->currentLayoutName())) {
+            if ((m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) && (generic->name() == m_corona->layoutManager()->currentLayoutName())) {
                 switchToLayout = name;
             }
 
-            layout = m_layouts.take(id);
-            delete layout;
+            generic = m_layouts.take(id);
+            delete generic;
 
             QFile(id).rename(tempFile);
 
@@ -1556,6 +1560,7 @@ bool SettingsDialog::saveAllChanges()
         CentralLayout *nLayout = new CentralLayout(this, newFile);
         m_layouts[newFile] = nLayout;
 
+        //! updating the #SETTINGSID in the model for the layout that was renamed
         for (int j = 0; j < m_model->rowCount(); ++j) {
             QString tId = m_model->data(m_model->index(j, IDCOLUMN), Qt::DisplayRole).toString();
 
@@ -1574,14 +1579,18 @@ bool SettingsDialog::saveAllChanges()
     QString orphanedLayout;
 
     if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-        for (const auto &newLayoutName : centralLayoutsToRename.keys()) {
-            qDebug() << " Active Layout Is Renamed From : " << centralLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
-            CentralLayout *layout = centralLayoutsToRename[newLayoutName];
-            layout->renameLayout(newLayoutName);
+        for (const auto &newLayoutName : activeLayoutsToRename.keys()) {
+            Layout::GenericLayout *layout = activeLayoutsToRename[newLayoutName];
+            qDebug() << " Active Layout of Type: " << layout->type() << " Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
+            layout->renameLayout(newLayoutName);            
 
-            //! that means it is an active layout for orphaned Activities
-            if (layout->activities().isEmpty()) {
-                orphanedLayout = newLayoutName;
+            if (layout->type() == Layout::Type::Central) {
+                CentralLayout *central = qobject_cast<CentralLayout *>(layout);
+
+                if (central->activities().isEmpty()) {
+                    //! that means it is an active layout for orphaned Activities
+                    orphanedLayout = newLayoutName;
+                }
             }
         }
     }
@@ -1592,11 +1601,11 @@ bool SettingsDialog::saveAllChanges()
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
         bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
 
-        CentralLayout *centralLayout = m_corona->layoutManager()->centralLayout(m_layouts[id]->name());
-        CentralLayout *layout = centralLayout ? centralLayout : m_layouts[id];
+        Layout::GenericLayout *generic = m_corona->layoutManager()->layout(m_layouts[id]->name());
+        Layout::GenericLayout *layout = generic ? generic : m_layouts[id];
 
-        if (layout && locked && layout->isWritable()) {
-            layout->lock();
+        if (generic && locked && generic->isWritable()) {
+            generic->lock();
         }
     }
 

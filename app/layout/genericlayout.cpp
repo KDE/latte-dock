@@ -593,19 +593,19 @@ void GenericLayout::destroyedChanged(bool destroyed)
 
 void GenericLayout::renameLayout(QString newName)
 {
+    if (!m_corona || m_corona->layoutManager()->memoryUsage() != Types::MultipleLayouts) {
+        return;
+    }
+
     if (m_layoutFile != Importer::layoutFilePath(newName)) {
         setFile(Importer::layoutFilePath(newName));
     }
 
-    if (m_layoutName != newName) {
-        setName(newName);
-    }
+    setName(newName);
 
-    //! thus this is a linked file
-    if (m_corona) {
-        for (const auto containment : m_containments) {
-            containment->config().writeEntry("layoutId", m_layoutName);
-        }
+    for (const auto containment : m_containments) {
+        qDebug() << "Cont ID :: " << containment->id();
+        containment->config().writeEntry("layoutId", m_layoutName);
     }
 }
 
