@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>850</width>
-    <height>636</height>
+    <height>663</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -293,7 +293,11 @@
                  <string>Shared</string>
                 </property>
                 <property name="icon">
-                 <iconset theme="document-share"/>
+                 <iconset theme="document-share">
+                  <normaloff>.</normaloff>.</iconset>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -460,7 +464,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>799</width>
+            <width>496</width>
             <height>575</height>
            </rect>
           </property>

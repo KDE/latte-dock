@@ -1300,6 +1300,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
     QString nameInModel = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
     QString originalName = m_layouts.contains(id) ? m_layouts[id]->name() : "";
     bool lockedInModel = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::UserRole).toBool();
+    bool sharedInModel = !m_model->data(m_model->index(currentRow, SHAREDCOLUMN), Qt::UserRole).toStringList().isEmpty();
 
     //! Switch Button
     if (id.startsWith("/tmp/") || originalName != nameInModel) {
@@ -1335,10 +1336,18 @@ void SettingsDialog::updatePerLayoutButtonsState()
         ui->removeButton->setEnabled(true);
     }
 
+    //! Layout Locked Button
     if (lockedInModel) {
         ui->lockedButton->setChecked(true);
     } else {
         ui->lockedButton->setChecked(false);
+    }
+
+    //! Layout Shared Button
+    if (sharedInModel) {
+        ui->sharedButton->setChecked(true);
+    } else {
+        ui->sharedButton->setChecked(false);
     }
 }
 
