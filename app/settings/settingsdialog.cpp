@@ -29,6 +29,7 @@
 #include "../lattecorona.h"
 #include "../layout/genericlayout.h"
 #include "../layout/centrallayout.h"
+#include "../layout/sharedlayout.h"
 #include "../liblatte2/types.h"
 #include "../plasma/extended/theme.h"
 #include "delegates/activitiesdelegate.h"
@@ -1632,8 +1633,15 @@ bool SettingsDialog::saveAllChanges()
         }
     }
 
+    //! update SharedLayouts that are Active
+    if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+        updateActiveShares();
+    }
+
+    //! reload layouts in layoutmanager
     m_corona->layoutManager()->loadLayouts();
 
+    //! send to layout manager in which layout to switch
     Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
 
     if (m_corona->layoutManager()->memoryUsage() != inMemoryOption) {
@@ -1655,12 +1663,87 @@ bool SettingsDialog::saveAllChanges()
     return true;
 }
 
+void SettingsDialog::updateActiveShares()
+{
+    QHash<const QString, QStringList> currentSharesMap;
+
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        if (isShared(i)) {
+            QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
+            QStringList shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
+            currentSharesMap[id] = shares;
+        }
+    }
+
+    qDebug() << " CURRENT SHARES MAP :: " << currentSharesMap;
+
+    QHash<CentralLayout *, SharedLayout *> unassign;
+
+    for (QHash<const QString, QStringList>::iterator i=currentSharesMap.begin(); i!=currentSharesMap.end(); ++i) {
+        SharedLayout *shared = m_corona->layoutManager()->sharedLayout(nameForId(i.key()));
+        if (shared) {
+            qDebug() << " SHARED :: " << shared->name();
+            for (const auto &centralId : i.value()) {
+                CentralLayout *central = m_corona->layoutManager()->centralLayout(nameForId(centralId));
+                qDebug() << " CENTRAL NAME :: " << nameForId(centralId);
+                if (central) {
+                    //! Assign this Central Layout at a different Shared Layout
+                    SharedLayout *oldShared = central->sharedLayout();
+                    if (shared != oldShared) {
+                        shared->addCentralLayout(central);
+                        central->setSharedLayout(shared);
+                        if (oldShared) {
+                            //! CENTRAL layout that changed from one ACTIVESHARED layout to another
+                            unassign[central] = shared;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //! CENTRAL Layouts that wont have any SHARED Layout any more
+    for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
+        for (const auto &centralId : i.value()) {
+            if (!mapHasRecord(centralId, currentSharesMap)) {
+                CentralLayout *central = m_corona->layoutManager()->centralLayout(nameForId(centralId));
+                if (central && central->sharedLayout()) {
+                    central->sharedLayout()->removeCentralLayout(central);
+                    central->setSharedLayout(nullptr);
+                }
+            }
+        }
+    }
+
+    //! Unassing from Shared Layouts Central ones that are not assigned any more
+    //! IMPORTANT: This must be done after all the ASSIGNMENTS in order to avoid
+    //! to unload a SharedLayout that it should not
+    for (QHash<CentralLayout *, SharedLayout *>::iterator i=unassign.begin(); i!=unassign.end(); ++i) {
+        i.value()->removeCentralLayout(i.key());
+    }
+
+    //! TODO : (active) SharedLayouts that become Active should be unloaded first
+    m_sharesMap.clear();
+    m_sharesMap = currentSharesMap;
+}
+
 bool SettingsDialog::idExistsInModel(QString id)
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString rowId = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
 
         if (rowId == id) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool SettingsDialog::mapHasRecord(const QString &record, QHash<const QString, QStringList> &map)
+{
+    for (QHash<const QString, QStringList>::iterator i=map.begin(); i!=map.end(); ++i) {
+        if (i.value().contains(record)) {
             return true;
         }
     }

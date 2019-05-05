@@ -60,7 +60,7 @@ void CentralLayout::unloadContainments()
     Layout::GenericLayout::unloadContainments();
 
     if (m_sharedLayout) {
-        disconnect(m_sharedLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
+        disconnectSharedConnections();
         m_sharedLayout->removeCentralLayout(this);
     }
 }
@@ -207,26 +207,44 @@ void CentralLayout::setSharedLayoutName(QString name)
     emit sharedLayoutNameChanged();
 }
 
+SharedLayout *CentralLayout::sharedLayout() const
+{
+    return m_sharedLayout;
+}
+
 void CentralLayout::setSharedLayout(SharedLayout *layout)
 {
     if (m_sharedLayout == layout) {
         return;
     }
+
+    disconnectSharedConnections();
+
+    m_sharedLayout = layout;
+
+    if (layout) {
+        setSharedLayoutName(m_sharedLayout->name());
+
+        //! attach new signals
+        m_sharedConnections << connect(m_sharedLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
+        m_sharedConnections << connect(m_sharedLayout, &Layout::AbstractLayout::nameChanged, this, [this]() {
+            setSharedLayoutName(m_sharedLayout->name());
+        });
+    } else {
+        setSharedLayoutName(QString());
+    }
+
+    emit viewsCountChanged();
+}
+
+void CentralLayout::disconnectSharedConnections()
+{
     //! drop old signals
     for (const auto &sc : m_sharedConnections) {
         QObject::disconnect(sc);
     }
+
     m_sharedConnections.clear();
-
-    m_sharedLayout = layout;
-
-    //! attach new signals
-    m_sharedConnections << connect(m_sharedLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
-    m_sharedConnections << connect(m_sharedLayout, &Layout::AbstractLayout::nameChanged, this, [this]() {
-        setSharedLayoutName(m_sharedLayout->name());
-    });
-
-    emit viewsCountChanged();
 }
 
 void CentralLayout::loadConfig()

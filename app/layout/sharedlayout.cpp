@@ -111,6 +111,7 @@ void SharedLayout::addCentralLayout(CentralLayout *layout)
     if (layout != nullptr && !m_centralLayouts.contains(layout)) {
         m_centralLayouts.append(layout);
 
+        qDebug() << " ADDING Central : " << layout->name() << " at Shared: " << name();
         connect(layout, &GenericLayout::activitiesChanged, this, &GenericLayout::activitiesChanged);
         emit activitiesChanged();
         emit viewsCountChanged();

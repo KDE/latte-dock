@@ -67,6 +67,9 @@ public:
     QStringList activities() const;
     void setActivities(QStringList activities);
 
+    SharedLayout *sharedLayout() const;
+    void setSharedLayout(SharedLayout *layout);
+
     //! OVERRIDE GeneralLayout implementations
     void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr);
     void syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap = nullptr) override;
@@ -96,10 +99,10 @@ signals:
     void sharedLayoutNameChanged();
 
 private slots:
+    void disconnectSharedConnections();
+
     void loadConfig();
     void saveConfig();
-
-    void setSharedLayout(SharedLayout *layout);
 
 private:
     void init();

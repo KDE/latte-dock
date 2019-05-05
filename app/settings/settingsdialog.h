@@ -103,10 +103,12 @@ private:
                                QStringList activities, bool locked = false);
     void updateApplyButtonsState();
     void updateSharedLayoutsStates();
+    void updateActiveShares();
 
     bool dataAreAccepted();
     bool idExistsInModel(QString id);
     bool importLayoutsFromV1ConfigFile(QString file);
+    bool mapHasRecord(const QString &record, QHash<const QString, QStringList> &map);
     bool nameExistsInModel(QString name);
     bool saveAllChanges();    
 
