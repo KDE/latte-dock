@@ -59,7 +59,8 @@ QWidget *SharedDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
     menu->setMinimumWidth(option.rect.width());
 
     for (unsigned int i = 0; i < availableShares.count(); ++i) {
-        QAction *action = new QAction(availableShares[i]);
+        QAction *action = new QAction(m_settingsDialog->nameForId(availableShares[i]));
+        action->setData(availableShares[i]);
         action->setCheckable(true);
         action->setChecked(assignedShares.contains(availableShares[i]));
         menu->addAction(action);
@@ -86,7 +87,7 @@ void SharedDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
     QStringList assignedLayouts;
     foreach (QAction *action, button->menu()->actions()) {
         if (action->isChecked()) {
-            assignedLayouts << action->text().replace("&","");
+            assignedLayouts << action->data().toString();
         }
     }
 
@@ -105,7 +106,12 @@ void SharedDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
     painter->save();
 
-    QStringList assignedLayouts = index.model()->data(index, Qt::UserRole).toStringList();
+    QStringList assignedLayoutsIds = index.model()->data(index, Qt::UserRole).toStringList();
+    QStringList assignedLayouts;
+
+    for (const auto &id : assignedLayoutsIds) {
+        assignedLayouts << m_settingsDialog->nameForId(id);
+    }
 
     if (assignedLayouts.count() > 0) {
         myOptions.text = joined(assignedLayouts);
@@ -160,7 +166,7 @@ void SharedDelegate::updateButtonText(QWidget *editor) const
 
     foreach (QAction *action, button->menu()->actions()) {
         if (action->isChecked()) {
-            assignedLayouts << action->text().replace("&","");
+            assignedLayouts << m_settingsDialog->nameForId(action->data().toString());
         }
     }
 

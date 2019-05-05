@@ -181,12 +181,12 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     });
 
     connect(m_inMemoryButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
-    [ = ](int id, bool checked) {
+            [ = ](int id, bool checked) {
         updateApplyButtonsState();
     });
 
     connect(m_mouseSensitivityButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
-    [ = ](int id, bool checked) {
+            [ = ](int id, bool checked) {
         updateApplyButtonsState();
     });
 
@@ -222,7 +222,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     //! update all layouts view when runningActivities changed. This way we update immediately
     //! the running Activities in Activities checkboxes which are shown as bold
     connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
-    this, [&]() {
+            this, [&]() {
         ui->layoutsView->update();
     });
 
@@ -265,7 +265,7 @@ SettingsDialog::~SettingsDialog()
 void SettingsDialog::blockDeleteOnActivityStopped()
 {
     connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
-    this, [&]() {
+            this, [&]() {
         m_blockDeleteOnReject = true;
         m_activityClosedTimer.start();
     });
@@ -293,12 +293,12 @@ QStringList SettingsDialog::availableSharesFor(int row)
     QStringList regs;
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+        QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
         QStringList shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
 
         if (i != row) {
             if (shares.isEmpty()) {
-                availables << name;
+                availables << id;
             } else {
                 regs << shares;
             }
@@ -466,8 +466,8 @@ void SettingsDialog::on_importButton_clicked()
 
 
     QFileDialog *fileDialog = new QFileDialog(this, i18nc("import layout/configuration", "Import Layout/Configuration")
-            , QDir::homePath()
-            , QStringLiteral("layout.latte"));
+                                              , QDir::homePath()
+                                              , QStringLiteral("layout.latte"));
 
     fileDialog->setFileMode(QFileDialog::AnyFile);
     fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
@@ -482,7 +482,7 @@ void SettingsDialog::on_importButton_clicked()
             , fileDialog, &QFileDialog::deleteLater);
 
     connect(fileDialog, &QFileDialog::fileSelected
-    , this, [&](const QString & file) {
+            , this, [&](const QString & file) {
         Importer::LatteFileVersion version = Importer::fileVersion(file);
         qDebug() << "VERSION :::: " << version;
 
@@ -493,7 +493,7 @@ void SettingsDialog::on_importButton_clicked()
             msg->setIcon(QMessageBox::Warning);
             msg->setWindowTitle(i18n("Import: Configuration file version v0.1"));
             msg->setText(
-                i18n("You are going to import an old version <b>v0.1</b> configuration file.<br><b>Be careful</b>, importing the entire configuration <b>will erase all</b> your current configuration!!!<br><br> <i>Alternative, you can <b>import safely</b> from this file<br><b>only the contained layouts...</b></i>"));
+                        i18n("You are going to import an old version <b>v0.1</b> configuration file.<br><b>Be careful</b>, importing the entire configuration <b>will erase all</b> your current configuration!!!<br><br> <i>Alternative, you can <b>import safely</b> from this file<br><b>only the contained layouts...</b></i>"));
             msg->setStandardButtons(QMessageBox::Cancel);
 
             QPushButton *fullBtn = new QPushButton(msg);
@@ -513,12 +513,12 @@ void SettingsDialog::on_importButton_clicked()
             msg->open();
 
             connect(layoutsBtn, &QPushButton::clicked
-            , this, [ &, file](bool check) {
+                    , this, [ &, file](bool check) {
                 importLayoutsFromV1ConfigFile(file);
             });
 
             connect(fullBtn, &QPushButton::clicked
-            , this, [ &, file](bool check) {
+                    , this, [ &, file](bool check) {
                 //!NOTE: Restart latte for import the new configuration
                 QProcess::startDetached(qGuiApp->applicationFilePath() + " --import-full \"" + file + "\"");
                 qGuiApp->exit();
@@ -528,7 +528,7 @@ void SettingsDialog::on_importButton_clicked()
             msg->setIcon(QMessageBox::Warning);
             msg->setWindowTitle(i18n("Import: Configuration file version v0.2"));
             msg->setText(
-                i18n("You are going to import a <b>v0.2</b> configuration file.<br><b>Be careful</b>, importing <b>will erase all</b> your current configuration!!!<br><br><i>Would you like to proceed?</i>"));
+                        i18n("You are going to import a <b>v0.2</b> configuration file.<br><b>Be careful</b>, importing <b>will erase all</b> your current configuration!!!<br><br><i>Would you like to proceed?</i>"));
             msg->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msg->setDefaultButton(QMessageBox::No);
 
@@ -604,7 +604,7 @@ void SettingsDialog::on_exportButton_clicked()
     m_corona->layoutManager()->syncActiveLayoutsToOriginalFiles();
 
     QFileDialog *fileDialog = new QFileDialog(this, i18nc("export layout/configuration", "Export Layout/Configuration")
-            , QDir::homePath(), QStringLiteral("layout.latte"));
+                                              , QDir::homePath(), QStringLiteral("layout.latte"));
 
     fileDialog->setFileMode(QFileDialog::AnyFile);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
@@ -623,7 +623,7 @@ void SettingsDialog::on_exportButton_clicked()
             , fileDialog, &QFileDialog::deleteLater);
 
     connect(fileDialog, &QFileDialog::fileSelected
-    , this, [ &, layoutExported](const QString & file) {
+            , this, [ &, layoutExported](const QString & file) {
         auto showNotificationError = []() {
             auto notification = new KNotification("export-fail", KNotification::CloseOnTimeout);
             notification->setText(i18nc("export layout", "Failed to export layout"));
@@ -657,7 +657,7 @@ void SettingsDialog::on_exportButton_clicked()
             notification->setText(i18nc("export layout", "Layout exported successfully"));
 
             connect(notification, &KNotification::action1Activated
-            , this, [file]() {
+                    , this, [file]() {
                 QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
             });
 
@@ -676,7 +676,7 @@ void SettingsDialog::on_exportButton_clicked()
                 notification->setText(i18nc("import/export config", "Full Configuration exported successfully"));
 
                 connect(notification, &KNotification::action1Activated
-                , this, [file]() {
+                        , this, [file]() {
                     QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
                 });
 
@@ -882,7 +882,7 @@ void SettingsDialog::loadSettings()
         //! create initial SHARES maps
         QString shared = central->sharedLayoutName();
         if (!shared.isEmpty()) {
-            m_sharesMap[shared].append(layout);
+            m_sharesMap[shared].append(layoutPath);
         }
 
         qDebug() << "counter:" << i << " total:" << m_model->rowCount();
@@ -900,10 +900,29 @@ void SettingsDialog::loadSettings()
         }
     }
 
+    //! update SHARES map keys in order to use the #settingsid(s)
+    QStringList forremoval;
+
+    //! remove these records after updating
+    for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
+        forremoval << i.key();
+    }
+
+    //! update keys
+    for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
+        QString shareid = idForRow(rowForName(i.key()));
+        m_sharesMap[shareid] = i.value();
+    }
+
+    //! remove deprecated keys
+    for (const auto &key : forremoval) {
+        m_sharesMap.remove(key);
+    }
+
     qDebug() << "SHARES MAP ::: " << m_sharesMap;
 
-    for(QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
-        int sharedPos = rowForName(i.key());
+    for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
+        int sharedPos = rowForId(i.key());
 
         if (sharedPos >= 0) {
             m_model->setData(m_model->index(sharedPos, SHAREDCOLUMN), i.value(), Qt::UserRole);
@@ -1031,7 +1050,7 @@ QStringList SettingsDialog::currentLayoutsSettings()
 
 
 void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu,
-        bool disabledBorders, QStringList activities, bool locked)
+                                           bool disabledBorders, QStringList activities, bool locked)
 {
     QStandardItem *pathItem = new QStandardItem(path);
 
@@ -1213,7 +1232,7 @@ void SettingsDialog::updateApplyButtonsState()
 
     //! Ok, Apply Buttons
     if ((o_settings != currentSettings())
-        || (o_settingsLayouts != currentLayoutsSettings())) {
+            || (o_settingsLayouts != currentLayoutsSettings())) {
         changed = true;
     }
 
@@ -1252,13 +1271,13 @@ void SettingsDialog::updateApplyButtonsState()
         //! Defaults for general Latte settings
 
         if (!ui->autostartChkBox->isChecked()
-            || ui->metaPressChkBox->isChecked()
-            || !ui->metaPressHoldChkBox->isChecked()
-            || !ui->infoWindowChkBox->isChecked()
-            || ui->noBordersForMaximizedChkBox->isChecked()
-            || !ui->highSensitivityBtn->isChecked()
-            || ui->screenTrackerSpinBox->value() != SCREENTRACKERDEFAULTVALUE
-            || ui->outlineSpinBox->value() != OUTLINEDEFAULTWIDTH ) {
+                || ui->metaPressChkBox->isChecked()
+                || !ui->metaPressHoldChkBox->isChecked()
+                || !ui->infoWindowChkBox->isChecked()
+                || ui->noBordersForMaximizedChkBox->isChecked()
+                || !ui->highSensitivityBtn->isChecked()
+                || ui->screenTrackerSpinBox->value() != SCREENTRACKERDEFAULTVALUE
+                || ui->outlineSpinBox->value() != OUTLINEDEFAULTWIDTH ) {
             ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
         } else {
             ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
@@ -1301,9 +1320,9 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
     //! Remove Layout Button
     if (originalName != nameInModel
-        || (originalName == m_corona->layoutManager()->currentLayoutName())
-        || (m_corona->layoutManager()->centralLayout(originalName))
-        || lockedInModel) {
+            || (originalName == m_corona->layoutManager()->currentLayoutName())
+            || (m_corona->layoutManager()->centralLayout(originalName))
+            || lockedInModel) {
         ui->removeButton->setEnabled(false);
     } else {
         ui->removeButton->setEnabled(true);
@@ -1660,7 +1679,7 @@ int SettingsDialog::ascendingRowFor(QString name)
     return m_model->rowCount();
 }
 
-int SettingsDialog::rowForId(QString id)
+int SettingsDialog::rowForId(QString id) const
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString rowId = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
@@ -1673,7 +1692,7 @@ int SettingsDialog::rowForId(QString id)
     return -1;
 }
 
-int SettingsDialog::rowForName(QString layoutName)
+int SettingsDialog::rowForName(QString layoutName) const
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString rowName = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
@@ -1684,6 +1703,17 @@ int SettingsDialog::rowForName(QString layoutName)
     }
 
     return -1;
+}
+
+QString SettingsDialog::idForRow(int row) const
+{
+    return m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
+}
+
+QString SettingsDialog::nameForId(QString id) const
+{
+    int row = rowForId(id);
+    return m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString();
 }
 
 QString SettingsDialog::uniqueTempDirectory()

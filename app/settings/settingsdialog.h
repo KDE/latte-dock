@@ -60,6 +60,9 @@ public:
     bool isShared(int row) const;
     bool isMenuCell(int column) const;
 
+    QString nameForId(QString id) const;
+    QString idForRow(int row) const;
+
     QStringList activities();
     QStringList availableActivities();
     QStringList availableSharesFor(int row);
@@ -107,8 +110,8 @@ private:
     bool nameExistsInModel(QString name);
     bool saveAllChanges();    
 
-    int rowForId(QString id);
-    int rowForName(QString layoutName);
+    int rowForId(QString id) const;
+    int rowForName(QString layoutName) const;
     int ascendingRowFor(QString name);
 
     QString uniqueTempDirectory();
@@ -134,7 +137,7 @@ private:
     QStandardItemModel *m_model{nullptr};
     Ui::SettingsDialog *ui;
 
-    //! ShareLayout #id, Shares LayoutIds
+    //! SharedLayout #settingsid, Shares #settingsid
     QHash<const QString, QStringList> m_sharesMap;
     QHash<const QString, Latte::CentralLayout *> m_layouts;
 
