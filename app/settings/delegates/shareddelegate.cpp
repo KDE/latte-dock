@@ -17,25 +17,27 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "sharedcmbboxdelegate.h"
+#include "shareddelegate.h"
 
 // local
+#include "persistentmenu.h"
 #include "../settingsdialog.h"
 
 // Qt
+#include <QAction>
 #include <QApplication>
 #include <QComboBox>
 #include <QDebug>
+#include <QMenu>
 #include <QWidget>
 #include <QModelIndex>
 #include <QPainter>
+#include <QPushButton>
 #include <QString>
 #include <QTextDocument>
 
-// KDE
-#include <KActivities/Info>
 
-SharedCmbBoxDelegate::SharedCmbBoxDelegate(QObject *parent)
+SharedDelegate::SharedDelegate(QObject *parent)
     : QItemDelegate(parent)
 {
     auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
@@ -45,78 +47,58 @@ SharedCmbBoxDelegate::SharedCmbBoxDelegate(QObject *parent)
     }
 }
 
-QWidget *SharedCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *SharedDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QComboBox *editor =  new QComboBox(parent);
-
-    //! use focusPolicy as flag in order to update activities only when the user is clicking in the popup
-    //! it was the only way I found to communicate between the activated (const) signal and the
-    //! setEditorData (const) function
-    editor->setFocusPolicy(Qt::StrongFocus);
-
     QStringList assignedShares = index.model()->data(index, Qt::UserRole).toStringList();
     QStringList availableShares = m_settingsDialog->availableSharesFor(index.row());
 
+    QPushButton *button = new QPushButton(parent);
+    PersistentMenu *menu = new PersistentMenu(button);
+    button->setMenu(menu);
+
+    menu->setMinimumWidth(option.rect.width());
+
     for (unsigned int i = 0; i < availableShares.count(); ++i) {
-        QString indicator = "    ";
+        QAction *action = new QAction(availableShares[i]);
+        action->setCheckable(true);
+        action->setChecked(assignedShares.contains(availableShares[i]));
+        menu->addAction(action);
 
-        if (assignedShares.contains(availableShares[i])) {
-            indicator = QString::fromUtf8("\u2714") + " ";
+        connect(action, &QAction::toggled, this, [this, button]() {
+            updateButtonText(button);
+        });
+    }
+
+    updateButtonText(button);
+
+    return button;
+}
+
+void SharedDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+    updateButtonText(editor);
+}
+
+void SharedDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+    QPushButton *button = static_cast<QPushButton *>(editor);
+
+    QStringList assignedLayouts;
+    foreach (QAction *action, button->menu()->actions()) {
+        if (action->isChecked()) {
+            assignedLayouts << action->text().replace("&","");
         }
-
-        editor->addItem(QString(indicator + availableShares[i]), QVariant(availableShares[i]));
-    }
-
-    connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
-        editor->setFocusPolicy(Qt::ClickFocus);
-        editor->clearFocus();
-    });
-
-    return editor;
-}
-
-void SharedCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
-{
-    QComboBox *comboBox = static_cast<QComboBox *>(editor);
-    QStringList assignedLayouts = index.model()->data(index, Qt::UserRole).toStringList();
-
-    int pos = -1;
-
-    if (assignedLayouts.count() > 0) {
-        pos = comboBox->findData(QVariant(assignedLayouts[0]));
-    }
-
-    comboBox->setCurrentIndex(pos);
-}
-
-void SharedCmbBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
-{
-    QComboBox *comboBox = static_cast<QComboBox *>(editor);
-
-    if (editor->focusPolicy() != Qt::ClickFocus) {
-        return;
-    }
-
-    editor->setFocusPolicy(Qt::StrongFocus);
-
-    QStringList assignedLayouts = index.model()->data(index, Qt::UserRole).toStringList();
-    QString selectedLayout = comboBox->currentData().toString();
-
-    if (assignedLayouts.contains(selectedLayout)) {
-        assignedLayouts.removeAll(selectedLayout);
-    } else {
-        assignedLayouts.append(selectedLayout);
     }
 
     model->setData(index, assignedLayouts, Qt::UserRole);
 }
 
-void SharedCmbBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void SharedDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     editor->setGeometry(option.rect);
 }
 
-void SharedCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void SharedDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOptions = option;
     //! Remove the focus dotted lines
@@ -126,7 +108,7 @@ void SharedCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QStringList assignedLayouts = index.model()->data(index, Qt::UserRole).toStringList();
 
     if (assignedLayouts.count() > 0) {
-        myOptions.text = assignedLayoutsText(index);
+        myOptions.text = joined(assignedLayouts);
 
         QTextDocument doc;
         QString css;
@@ -168,21 +150,24 @@ void SharedCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->restore();
 }
 
-QString SharedCmbBoxDelegate::assignedLayoutsText(const QModelIndex &index) const
+void SharedDelegate::updateButtonText(QWidget *editor) const
 {
-    QStringList assignedLayouts = index.model()->data(index, Qt::UserRole).toStringList();
+    if (!editor) {
+        return;
+    }
+    QPushButton *button = static_cast<QPushButton *>(editor);
+    QStringList assignedLayouts;
 
-    QString finalText;
-
-    if (assignedLayouts.count() > 0) {
-        for (int i = 0; i < assignedLayouts.count(); ++i) {
-            if (i > 0) {
-                finalText += ", ";
-            }
-
-            finalText += assignedLayouts[i];
+    foreach (QAction *action, button->menu()->actions()) {
+        if (action->isChecked()) {
+            assignedLayouts << action->text().replace("&","");
         }
     }
 
-    return finalText;
+    button->setText(joined(assignedLayouts));
+}
+
+QString SharedDelegate::joined(const QStringList &texts) const
+{
+    return texts.join(", ");
 }

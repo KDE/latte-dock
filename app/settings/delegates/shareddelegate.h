@@ -17,12 +17,13 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SHAREDCMBBOXDELEGATE_H
-#define SHAREDCMBBOXDELEGATE_H
+#ifndef SHAREDDELEGATE_H
+#define SHAREDDELEGATE_H
 
 // Qt
 #include <QItemDelegate>
 
+class QMenu;
 class QModelIndex;
 class QWidget;
 class QVariant;
@@ -32,11 +33,11 @@ class LayoutManager;
 class SettingsDialog;
 }
 
-class SharedCmbBoxDelegate : public QItemDelegate
+class SharedDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
-    SharedCmbBoxDelegate(QObject *parent);
+    SharedDelegate(QObject *parent);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
@@ -45,9 +46,13 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
-    QString assignedLayoutsText(const QModelIndex &index) const;
+    void updateButtonText(QWidget *editor) const;
 
+    QString joined(const QStringList &texts) const;
+
+private:
     Latte::SettingsDialog *m_settingsDialog{nullptr};
+
 };
 
 #endif

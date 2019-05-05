@@ -35,7 +35,7 @@
 #include "delegates/colorcmbboxdelegate.h"
 #include "delegates/activitycmbboxdelegate.h"
 #include "delegates/layoutnamedelegate.h"
-#include "delegates/sharedcmbboxdelegate.h"
+#include "delegates/shareddelegate.h"
 
 // Qt
 #include <QButtonGroup>
@@ -122,7 +122,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
-    ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new SharedCmbBoxDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new SharedDelegate(this));
 
     m_inMemoryButtons = new QButtonGroup(this);
     m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Types::SingleLayout);
