@@ -1105,7 +1105,7 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
 
     QFont font;
 
-    if (m_corona->layoutManager()->centralLayout(name)) {
+    if (m_corona->layoutManager()->layout(name)) {
         font.setBold(true);
     } else {
         font.setBold(false);
@@ -1212,13 +1212,20 @@ void SettingsDialog::itemChanged(QStandardItem *item)
         QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
         QFont font = qvariant_cast<QFont>(m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::FontRole));
 
+        if (m_corona->layoutManager()->layout(m_layouts[id]->name())) {
+            font.setBold(true);
+        } else {
+            font.setBold(false);
+        }
+
         if (m_layouts[id]->name() != name) {
             font.setItalic(true);
-            m_model->setData(m_model->index(currentRow, NAMECOLUMN), font, Qt::FontRole);
         } else {
             font.setItalic(false);
-            m_model->setData(m_model->index(currentRow, NAMECOLUMN), font, Qt::FontRole);
         }
+
+        m_model->setData(m_model->index(currentRow, NAMECOLUMN), font, Qt::FontRole);
+
     } else if (item->column() == SHAREDCOLUMN) {
         updateSharedLayoutsStates();
     }
@@ -1591,6 +1598,13 @@ bool SettingsDialog::saveAllChanges()
                     //! that means it is an active layout for orphaned Activities
                     orphanedLayout = newLayoutName;
                 }
+            }
+
+            //! broadcast the name change
+            int row = rowForName(newLayoutName);
+            QStandardItem *item = m_model->item(row, NAMECOLUMN);
+            if (item) {
+                emit itemChanged(item);
             }
         }
     }
