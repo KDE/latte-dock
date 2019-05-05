@@ -1618,8 +1618,8 @@ bool SettingsDialog::saveAllChanges()
         Layout::GenericLayout *generic = m_corona->layoutManager()->layout(m_layouts[id]->name());
         Layout::GenericLayout *layout = generic ? generic : m_layouts[id];
 
-        if (generic && locked && generic->isWritable()) {
-            generic->lock();
+        if (layout && locked && layout->isWritable()) {
+            layout->lock();
         }
     }
 
