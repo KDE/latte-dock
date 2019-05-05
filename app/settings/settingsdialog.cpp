@@ -1599,7 +1599,7 @@ bool SettingsDialog::saveAllChanges()
         for (const auto &newLayoutName : activeLayoutsToRename.keys()) {
             Layout::GenericLayout *layout = activeLayoutsToRename[newLayoutName];
             qDebug() << " Active Layout of Type: " << layout->type() << " Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
-            layout->renameLayout(newLayoutName);            
+            layout->renameLayout(newLayoutName);
 
             if (layout->type() == Layout::Type::Central) {
                 CentralLayout *central = qobject_cast<CentralLayout *>(layout);
@@ -1681,21 +1681,26 @@ void SettingsDialog::updateActiveShares()
 
     for (QHash<const QString, QStringList>::iterator i=currentSharesMap.begin(); i!=currentSharesMap.end(); ++i) {
         SharedLayout *shared = m_corona->layoutManager()->sharedLayout(nameForId(i.key()));
-        if (shared) {
-            qDebug() << " SHARED :: " << shared->name();
-            for (const auto &centralId : i.value()) {
-                CentralLayout *central = m_corona->layoutManager()->centralLayout(nameForId(centralId));
-                qDebug() << " CENTRAL NAME :: " << nameForId(centralId);
-                if (central) {
-                    //! Assign this Central Layout at a different Shared Layout
-                    SharedLayout *oldShared = central->sharedLayout();
-                    if (shared != oldShared) {
-                        shared->addCentralLayout(central);
-                        central->setSharedLayout(shared);
-                        if (oldShared) {
-                            //! CENTRAL layout that changed from one ACTIVESHARED layout to another
-                            unassign[central] = shared;
-                        }
+        qDebug() << " SHARED :: " << nameForId(i.key());
+        for (const auto &centralId : i.value()) {
+            CentralLayout *central = m_corona->layoutManager()->centralLayout(nameForId(centralId));
+            qDebug() << " CENTRAL NAME :: " << nameForId(centralId);
+            if (central) {
+                //! Assign this Central Layout at a different Shared Layout
+                SharedLayout *oldShared = central->sharedLayout();
+
+                if (!shared) {
+                    //Shared not loaded and it must be loaded before proceed
+                    m_corona->layoutManager()->registerAtSharedLayout(central, nameForId(i.key()));
+                    shared = m_corona->layoutManager()->sharedLayout(nameForId(i.key()));
+                }
+
+                if (shared != oldShared) {
+                    shared->addCentralLayout(central);
+                    central->setSharedLayout(shared);
+                    if (oldShared) {
+                        //! CENTRAL layout that changed from one ACTIVESHARED layout to another
+                        unassign[central] = shared;
                     }
                 }
             }

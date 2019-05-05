@@ -199,7 +199,7 @@ QString CentralLayout::sharedLayoutName() const
 
 void CentralLayout::setSharedLayoutName(QString name)
 {
-    if (m_sharedLayoutName == name || !Importer::layoutExists(name)) {
+    if (m_sharedLayoutName == name || (!Importer::layoutExists(name) && !name.isEmpty())) {
         return;
     }
 
