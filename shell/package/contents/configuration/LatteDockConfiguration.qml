@@ -551,7 +551,7 @@ FocusScope {
                 comboBoxIconRole: "icon"
                 comboBoxMinimumPopUpWidth: actionsModel.count > 1 ? dialog.width / 2 : 150
 
-                property var activeLayoutsNames;
+                property var centralLayoutsNames;
                 property var sharedLayoutsNames;
 
                 Component.onCompleted: {
@@ -575,7 +575,7 @@ FocusScope {
                         if (index==0) {
                             latteView.copyView();
                         } else if (index>=1) {
-                            var layouts = actionsComboBtn.sharedLayoutsNames.concat(actionsComboBtn.activeLayoutsNames);
+                            var layouts = actionsComboBtn.sharedLayoutsNames.concat(actionsComboBtn.centralLayoutsNames);
 
                             latteView.positioner.hideDockDuringMovingToLayout(layouts[index-1]);
                         }
@@ -611,7 +611,7 @@ FocusScope {
 
                     updateCopyText();
 
-                    var tempActiveLayouts = layoutManager.activeLayoutsNames();
+                    var tempCentralLayouts = layoutManager.centralLayoutsNames();
                     var tempSharedLayouts = layoutManager.sharedLayoutsNames();
 
                     if (tempSharedLayouts.length > 0) {
@@ -630,17 +630,17 @@ FocusScope {
                     }
 
 
-                    if (tempActiveLayouts.length > 0) {
-                        var curIndex = tempActiveLayouts.indexOf(latteView.managedLayout.name);
+                    if (tempCentralLayouts.length > 0) {
+                        var curIndex = tempCentralLayouts.indexOf(latteView.managedLayout.name);
                         if (curIndex >=0) {
-                            tempActiveLayouts.splice(curIndex,1);
+                            tempCentralLayouts.splice(curIndex,1);
                         }
 
-                        activeLayoutsNames = tempActiveLayouts;
+                        centralLayoutsNames = tempCentralLayouts;
                         var iconArrow = Qt.application.layoutDirection === Qt.RightToLeft ? 'arrow-left' : 'arrow-right';
 
-                        for(var i=0; i<activeLayoutsNames.length; ++i) {
-                            var layout = {actionId: 'move:', enabled: true, name: i18n("Move to: %0").arg(activeLayoutsNames[i]), icon: iconArrow};
+                        for(var i=0; i<centralLayoutsNames.length; ++i) {
+                            var layout = {actionId: 'move:', enabled: true, name: i18n("Move to: %0").arg(centralLayoutsNames[i]), icon: iconArrow};
                             actionsModel.append(layout);
                         }
                     }

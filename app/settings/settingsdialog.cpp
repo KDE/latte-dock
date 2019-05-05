@@ -1714,6 +1714,7 @@ void SettingsDialog::updateActiveShares()
                 CentralLayout *central = m_corona->layoutManager()->centralLayout(nameForId(centralId));
                 if (central && central->sharedLayout()) {
                     central->sharedLayout()->removeCentralLayout(central);
+                    central->setSharedLayoutName(QString());
                     central->setSharedLayout(nullptr);
                 }
             }
