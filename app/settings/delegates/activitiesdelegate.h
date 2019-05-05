@@ -17,8 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef ACTIVITYCMBBOXDELEGATE_H
-#define ACTIVITYCMBBOXDELEGATE_H
+#ifndef ACTIVITIESDELEGATE_H
+#define ACTIVITIESDELEGATE_H
 
 // Qt
 #include <QItemDelegate>
@@ -32,11 +32,11 @@ class LayoutManager;
 class SettingsDialog;
 }
 
-class ActivityCmbBoxDelegate : public QItemDelegate
+class ActivitiesDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
-    ActivityCmbBoxDelegate(QObject *parent);
+    ActivitiesDelegate(QObject *parent);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
@@ -45,9 +45,13 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
-    QString assignedActivitiesText(const QModelIndex &index) const;
+    void updateButton(QWidget *editor) const;
 
+    QString joinedActivities(const QStringList &activities, bool boldForActive = true) const;
+
+private:
     Latte::SettingsDialog *m_settingsDialog{nullptr};
+
 };
 
 #endif

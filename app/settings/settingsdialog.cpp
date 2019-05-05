@@ -31,9 +31,9 @@
 #include "../layout/centrallayout.h"
 #include "../liblatte2/types.h"
 #include "../plasma/extended/theme.h"
+#include "delegates/activitiesdelegate.h"
 #include "delegates/checkboxdelegate.h"
 #include "delegates/colorcmbboxdelegate.h"
-#include "delegates/activitycmbboxdelegate.h"
 #include "delegates/layoutnamedelegate.h"
 #include "delegates/shareddelegate.h"
 
@@ -121,7 +121,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new ColorCmbBoxDelegate(this, iconsPath, colors));
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new CheckBoxDelegate(this));
-    ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivitiesDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new SharedDelegate(this));
 
     m_inMemoryButtons = new QButtonGroup(this);

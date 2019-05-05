@@ -17,25 +17,27 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "activitycmbboxdelegate.h"
+#include "activitiesdelegate.h"
 
 // local
+#include "persistentmenu.h"
 #include "../settingsdialog.h"
 
 // Qt
 #include <QApplication>
-#include <QComboBox>
 #include <QDebug>
 #include <QWidget>
+#include <QMenu>
 #include <QModelIndex>
 #include <QPainter>
+#include <QPushButton>
 #include <QString>
 #include <QTextDocument>
 
 // KDE
 #include <KActivities/Info>
 
-ActivityCmbBoxDelegate::ActivityCmbBoxDelegate(QObject *parent)
+ActivitiesDelegate::ActivitiesDelegate(QObject *parent)
     : QItemDelegate(parent)
 {
     auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
@@ -45,14 +47,12 @@ ActivityCmbBoxDelegate::ActivityCmbBoxDelegate(QObject *parent)
     }
 }
 
-QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *ActivitiesDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QComboBox *editor =  new QComboBox(parent);
-
-    //! use focusPolicy as flag in order to update activities only when the user is clicking in the popup
-    //! it was the only way I found to communicate between the activated (const) signal and the
-    //! setEditorData (const) function
-    editor->setFocusPolicy(Qt::StrongFocus);
+    QPushButton *button = new QPushButton(parent);
+    PersistentMenu *menu = new PersistentMenu(button);
+    button->setMenu(menu);
+    menu->setMinimumWidth(option.rect.width());
 
     QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
     QStringList availableActivities = m_settingsDialog->availableActivities();
@@ -67,70 +67,56 @@ QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptio
     }
 
     for (unsigned int i = 0; i < shownActivities.count(); ++i) {
-
         KActivities::Info info(shownActivities[i]);
 
-        QString indicator = "    ";
-
-        if (assignedActivities.contains(shownActivities[i])) {
-            indicator = QString::fromUtf8("\u2714") + " ";
-        }
-
         if (info.state() != KActivities::Info::Invalid) {
-            editor->addItem(QIcon::fromTheme(info.icon()), QString(indicator + info.name()), QVariant(shownActivities[i]));
+            QAction *action = new QAction(info.name());
+            action->setData(shownActivities[i]);
+            action->setCheckable(true);
+            action->setChecked(assignedActivities.contains(shownActivities[i]));
+
+            if ((info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
+                QFont font = action->font();
+                font.setBold(true);
+                action->setFont(font);
+            }
+
+            menu->addAction(action);
+
+            connect(action, &QAction::toggled, this, [this, button]() {
+                updateButton(button);
+            });
         }
     }
 
-    connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
-        editor->setFocusPolicy(Qt::ClickFocus);
-        editor->clearFocus();
-    });
-
-    return editor;
+    return button;
 }
 
-void ActivityCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void ActivitiesDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    QComboBox *comboBox = static_cast<QComboBox *>(editor);
-    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
-
-    int pos = -1;
-
-    if (assignedActivities.count() > 0) {
-        pos = comboBox->findData(QVariant(assignedActivities[0]));
-    }
-
-    comboBox->setCurrentIndex(pos);
+    updateButton(editor);
 }
 
-void ActivityCmbBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void ActivitiesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-    QComboBox *comboBox = static_cast<QComboBox *>(editor);
+    QPushButton *button = static_cast<QPushButton *>(editor);
 
-    if (editor->focusPolicy() != Qt::ClickFocus) {
-        return;
-    }
-
-    editor->setFocusPolicy(Qt::StrongFocus);
-
-    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
-    QString selectedActivity = comboBox->currentData().toString();
-
-    if (assignedActivities.contains(selectedActivity)) {
-        assignedActivities.removeAll(selectedActivity);
-    } else {
-        assignedActivities.append(selectedActivity);
+    QStringList assignedActivities;
+    foreach (QAction *action, button->menu()->actions()) {
+        if (action->isChecked()) {
+            assignedActivities << action->data().toString();
+        }
     }
 
     model->setData(index, assignedActivities, Qt::UserRole);
 }
 
-void ActivityCmbBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void ActivitiesDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     editor->setGeometry(option.rect);
 }
 
-void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void ActivitiesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOptions = option;
     //! Remove the focus dotted lines
@@ -142,7 +128,7 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
 
         if (assignedActivities.count() > 0) {
-            myOptions.text = assignedActivitiesText(index);
+            myOptions.text = joinedActivities(assignedActivities);
 
             QTextDocument doc;
             QString css;
@@ -220,31 +206,48 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
     }
 }
 
-QString ActivityCmbBoxDelegate::assignedActivitiesText(const QModelIndex &index) const
+QString ActivitiesDelegate::joinedActivities(const QStringList &activities, bool boldForActive) const
 {
-    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
-
     QString finalText;
 
-    if (assignedActivities.count() > 0) {
-        for (int i = 0; i < assignedActivities.count(); ++i) {
-            KActivities::Info info(assignedActivities[i]);
+    int i = 0;
 
-            if (info.state() != KActivities::Info::Invalid) {
-                if (i > 0) {
-                    finalText += ", ";
-                }
+    for (const auto &activityId : activities) {
+        KActivities::Info info(activityId);
 
-                bool isActive{false};
-
-                if ((info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
-                    isActive = true;
-                }
-
-                finalText += isActive ? "<b>" + info.name() + "</b>" : info.name();
+        if (info.state() != KActivities::Info::Invalid) {
+            if (i > 0) {
+                finalText += ", ";
             }
+            i++;
+
+            bool isActive{false};
+
+            if (boldForActive && (info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
+                isActive = true;
+            }
+
+            finalText += isActive ? "<b>" + info.name() + "</b>" : info.name();
         }
     }
 
     return finalText;
 }
+
+void ActivitiesDelegate::updateButton(QWidget *editor) const
+{
+    if (!editor) {
+        return;
+    }
+    QPushButton *button = static_cast<QPushButton *>(editor);
+    QStringList assignedActivities;
+
+    foreach (QAction *action, button->menu()->actions()) {
+        if (action->isChecked()) {
+            assignedActivities << action->data().toString();
+        }
+    }
+
+    button->setText(joinedActivities(assignedActivities,false));
+}
+
