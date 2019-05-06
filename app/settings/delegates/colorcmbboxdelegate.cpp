@@ -73,10 +73,10 @@ QWidget *ColorCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionVi
         showTextColor = true;
     }
 
-    editor->addItem(" " + i18n("Select image..."), "select_image");
+    editor->addItem(" " + i18n("Custom background..."), "select_image");
 
     if (showTextColor) {
-        editor->addItem(" " + i18n("Text color..."), "text_color");
+        editor->addItem(" " + i18n("Custom text color..."), "text_color");
     }
 
     connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
