@@ -21,6 +21,7 @@
 
 // local
 #include "../settingsdialog.h"
+#include "../tools/settingstools.h"
 
 // Qt
 #include <QApplication>
@@ -58,7 +59,7 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     if (isLocked || isShared) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
         QString nameText = index.data(Qt::DisplayRole).toString();
-        bool selected = ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected));
+        bool selected = Latte::isSelected(option);
 
         //! font metrics
         QFontMetrics fm(option.font);

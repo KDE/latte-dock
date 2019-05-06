@@ -22,6 +22,7 @@
 // local
 #include "persistentmenu.h"
 #include "../settingsdialog.h"
+#include "../tools/settingstools.h"
 
 // Qt
 #include <QAction>
@@ -120,13 +121,8 @@ void SharedDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         QString css;
         QString activitiesText = myOptions.text;
 
-        QBrush nBrush;
-
-        if ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected)) {
-            nBrush = option.palette.brush(QPalette::Active, QPalette::HighlightedText);
-        } else {
-            nBrush = option.palette.brush(QPalette::Inactive, QPalette::Text);
-        }
+        QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
+        QBrush nBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
 
         css = QString("body { color : %1; }").arg(nBrush.color().name());
 
