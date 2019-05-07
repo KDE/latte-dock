@@ -461,6 +461,45 @@ void SettingsDialog::on_lockedButton_clicked()
     updateApplyButtonsState();
 }
 
+void SettingsDialog::on_sharedButton_clicked()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    int row = ui->layoutsView->currentIndex().row();
+
+    if (row < 0) {
+        return;
+    }
+
+    if (isShared(row)) {
+        m_model->setData(m_model->index(row, SHAREDCOLUMN), QStringList(), Qt::UserRole);
+    } else {
+        bool assigned{false};
+        QStringList assignedList;
+
+        QStringList availableShares = availableSharesFor(row);
+
+        for (const auto &id : availableShares) {
+            QString name = nameForId(id);
+            if (m_corona->layoutManager()->layout(name)) {
+                assignedList << id;
+                m_model->setData(m_model->index(row, SHAREDCOLUMN), assignedList, Qt::UserRole);
+                assigned = true;
+                break;
+            }
+        }
+
+        if (!assigned && availableShares.count()>0) {
+            assignedList << availableShares[0];
+            m_model->setData(m_model->index(row, SHAREDCOLUMN), assignedList, Qt::UserRole);
+            assigned = true;
+        }
+    }
+
+    updatePerLayoutButtonsState();
+    updateApplyButtonsState();
+}
+
 void SettingsDialog::on_importButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
