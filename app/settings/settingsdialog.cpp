@@ -1185,7 +1185,7 @@ void SettingsDialog::layoutsChanged()
                 font.setBold(true);
                 // ui->layoutsView->selectRow(i);
             } else {
-                CentralLayout *layout = m_corona->layoutManager()->centralLayout(name);
+                Layout::GenericLayout *layout = m_corona->layoutManager()->layout(name);
 
                 if (layout && (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts)) {
                     font.setBold(true);
@@ -1679,6 +1679,8 @@ void SettingsDialog::updateActiveShares()
 
     QHash<CentralLayout *, SharedLayout *> unassign;
 
+    //! CENTRAL (active) layouts that update their (active) SHARED layouts
+    //! AND load SHARED layouts that are NOT ACTIVE
     for (QHash<const QString, QStringList>::iterator i=currentSharesMap.begin(); i!=currentSharesMap.end(); ++i) {
         SharedLayout *shared = m_corona->layoutManager()->sharedLayout(nameForId(i.key()));
         qDebug() << " SHARED :: " << nameForId(i.key());
