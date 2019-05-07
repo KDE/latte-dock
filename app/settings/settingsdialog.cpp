@@ -243,7 +243,7 @@ SettingsDialog::~SettingsDialog()
     if (m_corona && m_corona->universalSettings()) {
         m_corona->universalSettings()->setLayoutsWindowSize(size());
 
-        QStringList columnWidths;
+        QStringList columnWidths;       
         columnWidths << QString::number(ui->layoutsView->columnWidth(COLORCOLUMN));
         columnWidths << QString::number(ui->layoutsView->columnWidth(NAMECOLUMN));
         columnWidths << QString::number(ui->layoutsView->columnWidth(MENUCOLUMN));
@@ -996,11 +996,10 @@ void SettingsDialog::loadSettings()
 
     QStringList columnWidths = m_corona->universalSettings()->layoutsColumnWidths();
 
-    if (!columnWidths.isEmpty() && columnWidths.count() == 4) {
-        ui->layoutsView->setColumnWidth(COLORCOLUMN, columnWidths[0].toInt());
-        ui->layoutsView->setColumnWidth(NAMECOLUMN, columnWidths[1].toInt());
-        ui->layoutsView->setColumnWidth(MENUCOLUMN, columnWidths[2].toInt());
-        ui->layoutsView->setColumnWidth(BORDERSCOLUMN, columnWidths[3].toInt());
+    if (!columnWidths.isEmpty()) {
+        for (int i=0; i<qMin(columnWidths.count(),4); ++i) {
+            ui->layoutsView->setColumnWidth(COLORCOLUMN+i, columnWidths[i].toInt());
+        }
     }
 
     if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {
