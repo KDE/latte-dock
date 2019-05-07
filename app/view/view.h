@@ -306,6 +306,12 @@ private:
     QRect m_localGeometry;
     QRect m_absoluteGeometry;
 
+    //! HACK: Timers in order to handle KWin faulty
+    //! behavior that hides Views when closing Activities
+    //! with no actual reason
+    QTimer m_visibleHackTimer1;
+    QTimer m_visibleHackTimer2;
+
     Layout::GenericLayout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
 
@@ -317,7 +323,7 @@ private:
     QPointer<ViewPart::WindowsTracker> m_windowsTracker;
 
     //! Connections to release and bound for the managed layout
-    std::array<QMetaObject::Connection, 6> connectionsManagedLayout;
+    std::array<QMetaObject::Connection, 8> connectionsManagedLayout;
 
     QPointer<Latte::Corona> m_corona;
 

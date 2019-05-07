@@ -148,6 +148,14 @@ View::~View()
 {
     m_inDelete = true;
 
+    //! clear managedLayout connections
+    m_visibleHackTimer1.stop();
+    m_visibleHackTimer2.stop();
+    for (auto &c : connectionsManagedLayout) {
+        disconnect(c);
+    }
+
+    //! unload indicators
     if (m_indicator) {
         m_indicator->unloadIndicators();
     }
@@ -833,27 +841,39 @@ void View::setManagedLayout(Layout::GenericLayout *layout)
                 }
             });
 
-            //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
-            //! disappearing! With this they reappear!!!
-            connectionsManagedLayout[5] = connect(this, &QWindow::visibleChanged, this, [&]() {
-                if (!isVisible() && m_managedLayout) {
-                    QTimer::singleShot(100, [this]() {
-                        if (m_managedLayout && containment() && !containment()->destroyed()) {
-                            setVisible(true);
-                            applyActivitiesToWindows();
-                            emit activitiesChanged();
-                        }
-                    });
+            //! BEGIN OF KWIN HACK
+            //! IMPORTANT ::: Fixing KWin Faulty Behavior that KWin hides ALL Views when an Activity stops
+            //! with no reason!!
 
-                    QTimer::singleShot(1500, [this]() {
-                        if (m_managedLayout && containment() && !containment()->destroyed()) {
-                            setVisible(true);
-                            applyActivitiesToWindows();
-                            emit activitiesChanged();
-                        }
-                    });
+            m_visibleHackTimer1.setInterval(100);
+            m_visibleHackTimer2.setInterval(1500);
+            m_visibleHackTimer1.setSingleShot(true);
+            m_visibleHackTimer2.setSingleShot(true);
+
+            connectionsManagedLayout[5] = connect(this, &QWindow::visibleChanged, this, [&]() {
+                if (m_managedLayout && !inDelete() & !isVisible()) {
+                    m_visibleHackTimer1.start();
+                    m_visibleHackTimer2.start();
                 }
             });
+
+            connectionsManagedLayout[6] = connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
+                if (m_managedLayout && !inDelete() & !isVisible()) {
+                    setVisible(true);
+                    applyActivitiesToWindows();
+                    emit activitiesChanged();
+                }
+            });
+
+            connectionsManagedLayout[7] = connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
+                if (m_managedLayout && !inDelete() && !isVisible()) {
+                    setVisible(true);
+                    applyActivitiesToWindows();
+                    emit activitiesChanged();
+                }
+            });
+
+            //! END OF KWIN HACK
         }
 
         emit managedLayoutChanged();
