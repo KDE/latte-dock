@@ -1679,6 +1679,14 @@ void SettingsDialog::updateActiveShares()
 
     QHash<CentralLayout *, SharedLayout *> unassign;
 
+    //! CENTRAL (active) layouts that will become SHARED must be unloaded first
+    for (QHash<const QString, QStringList>::iterator i=currentSharesMap.begin(); i!=currentSharesMap.end(); ++i) {
+        CentralLayout *central = m_corona->layoutManager()->centralLayout(nameForId(i.key()));
+        if (central) {
+            m_corona->layoutManager()->unloadCentralLayout(central);
+        }
+    }
+
     //! CENTRAL (active) layouts that update their (active) SHARED layouts
     //! AND load SHARED layouts that are NOT ACTIVE
     for (QHash<const QString, QStringList>::iterator i=currentSharesMap.begin(); i!=currentSharesMap.end(); ++i) {

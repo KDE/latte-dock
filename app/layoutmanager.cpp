@@ -126,44 +126,8 @@ void LayoutManager::unload()
     //! Unload all CentralLayouts
     while (!m_centralLayouts.isEmpty()) {
         CentralLayout *layout = m_centralLayouts.at(0);
-        m_centralLayouts.removeFirst();
-
-        if (m_multipleModeInitialized) {
-            layout->syncToLayoutFile(true);
-        }
-
-        layout->unloadContainments();
-        layout->unloadLatteViews();
-
-        if (m_multipleModeInitialized) {
-            clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds(), true);
-        }
-
-        delete layout;
+        unloadCentralLayout(layout);
     }
-
-    //! Unload all SharedLayouts
-    //! DEPRECATED as now SharedLayouts are unloading themselves when
-    //! they have no central layouts assigned to them
-    /*while (!m_sharedLayouts.isEmpty()) {
-        SharedLayout *layout = m_sharedLayouts.at(0);
-        m_sharedLayouts.removeFirst();
-
-        unloadSharedLayout(layout);
-
-        if (multipleMode) {
-            layout->syncToLayoutFile(true);
-        }
-
-        layout->unloadContainments();
-        layout->unloadLatteViews();
-
-        if (multipleMode) {
-            clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds(), true);
-        }
-
-        delete layout;
-    }*/
 
     m_multipleModeInitialized = false;
 
@@ -179,6 +143,28 @@ void LayoutManager::unload()
 
     if (file2.exists())
         file2.remove();
+}
+
+void LayoutManager::unloadCentralLayout(CentralLayout *layout)
+{
+    int pos = m_centralLayouts.indexOf(layout);
+
+    if (pos>=0) {
+        CentralLayout *central = m_centralLayouts.takeAt(0);
+
+        if (m_multipleModeInitialized) {
+            central->syncToLayoutFile(true);
+        }
+
+        central->unloadContainments();
+        central->unloadLatteViews();
+
+        if (m_multipleModeInitialized) {
+            clearUnloadedContainmentsFromLinkedFile(central->unloadedContainmentsIds(), true);
+        }
+
+        delete central;
+    }
 }
 
 void LayoutManager::unloadSharedLayout(SharedLayout *layout)

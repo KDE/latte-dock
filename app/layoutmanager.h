@@ -79,6 +79,8 @@ public:
     void load();
     void loadLayoutOnStartup(QString layoutName);
     void unload();
+    void unloadCentralLayout(CentralLayout *layout);
+
     void hideAllViews();
     void pauseLayout(QString layoutName);
     void syncLatteViewsToScreens();
