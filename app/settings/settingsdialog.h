@@ -57,6 +57,7 @@ public:
 
     void setCurrentPage(Types::LatteConfigPage page);
 
+    bool inMultipleLayoutsLook() const;
     bool isShared(int row) const;
     bool isMenuCell(int column) const;
 
@@ -104,6 +105,7 @@ private:
                                QStringList activities, bool locked = false);
     void updateApplyButtonsState();
     void updateSharedLayoutsStates();
+    void updateSharedLayoutsUiElements();
     void updateActiveShares();
 
     bool dataAreAccepted();

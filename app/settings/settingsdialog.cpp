@@ -184,6 +184,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     connect(m_inMemoryButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
             [ = ](int id, bool checked) {
         updateApplyButtonsState();
+        updateSharedLayoutsStates();
+        updateSharedLayoutsUiElements();
     });
 
     connect(m_mouseSensitivityButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
@@ -248,6 +250,19 @@ SettingsDialog::~SettingsDialog()
         columnWidths << QString::number(ui->layoutsView->columnWidth(NAMECOLUMN));
         columnWidths << QString::number(ui->layoutsView->columnWidth(MENUCOLUMN));
         columnWidths << QString::number(ui->layoutsView->columnWidth(BORDERSCOLUMN));
+
+        Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
+
+        if (inMemoryOption == Latte::Types::MultipleLayouts) {
+            columnWidths << QString::number(ui->layoutsView->columnWidth(ACTIVITYCOLUMN));
+        } else {
+            //! In Single Mode, keed recorded value for ACTIVITYCOLUMN
+            QStringList currentWidths = m_corona->universalSettings()->layoutsColumnWidths();
+            if (currentWidths.count()>=5) {
+                columnWidths << currentWidths[4];
+            }
+        }
+
         m_corona->universalSettings()->setLayoutsColumnWidths(columnWidths);
     }
 
@@ -1028,6 +1043,7 @@ void SettingsDialog::loadSettings()
     o_settings = currentSettings();
     o_settingsLayouts = currentLayoutsSettings();
     updateApplyButtonsState();
+    updateSharedLayoutsUiElements();
 
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
@@ -1392,24 +1408,52 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
 void SettingsDialog::updateSharedLayoutsStates()
 {
+    bool inMultiple{inMultipleLayoutsLook()};
+
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QStringList shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
 
-        if (shares.isEmpty()) {
+        if (shares.isEmpty() || !inMultiple) {
             QStandardItem *item = m_model->item(i, MENUCOLUMN);
             item->setEnabled(true);
             item = m_model->item(i, BORDERSCOLUMN);
             item->setEnabled(true);
-            item = m_model->item(i,ACTIVITYCOLUMN);
+            item = m_model->item(i, ACTIVITYCOLUMN);
             item->setEnabled(true);
         } else {
             QStandardItem *item = m_model->item(i, MENUCOLUMN);
             item->setEnabled(false);
             item = m_model->item(i, BORDERSCOLUMN);
             item->setEnabled(false);
-            item = m_model->item(i,ACTIVITYCOLUMN);
+            item = m_model->item(i, ACTIVITYCOLUMN);
             item->setEnabled(false);
         }
+
+        //! refresh LayoutName
+        QStandardItem *nameItem = m_model->item(i, NAMECOLUMN);
+        nameItem->setEnabled(false);
+        nameItem->setEnabled(true);
+    }  
+}
+
+void SettingsDialog::updateSharedLayoutsUiElements()
+{
+    //! UI Elements that need to be enabled/disabled
+
+    Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
+    if (inMemoryOption == Latte::Types::MultipleLayouts) {
+        ui->layoutsView->setColumnHidden(SHAREDCOLUMN, false);
+        ui->sharedButton->setVisible(true);
+
+        //! column widths
+        QStringList cWidths = m_corona->universalSettings()->layoutsColumnWidths();
+
+        if (cWidths.count()>=5) {
+            ui->layoutsView->setColumnWidth(ACTIVITYCOLUMN, cWidths[4].toInt());
+        }
+    } else {
+        ui->layoutsView->setColumnHidden(SHAREDCOLUMN, true);
+        ui->sharedButton->setVisible(false);
     }
 }
 
@@ -1816,6 +1860,12 @@ bool SettingsDialog::nameExistsInModel(QString name)
     }
 
     return false;
+}
+
+bool SettingsDialog::inMultipleLayoutsLook() const
+{
+    Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
+    return inMemoryOption == Latte::Types::MultipleLayouts;
 }
 
 bool SettingsDialog::isMenuCell(int column) const

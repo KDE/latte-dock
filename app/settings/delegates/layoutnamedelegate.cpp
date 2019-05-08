@@ -48,7 +48,7 @@ LayoutNameDelegate::LayoutNameDelegate(QObject *parent)
 void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     bool isLocked = index.data(Qt::UserRole).toBool();
-    bool isShared = m_settingsDialog->isShared(index.row());
+    bool isShared = m_settingsDialog->isShared(index.row()) && m_settingsDialog->inMultipleLayoutsLook();
 
     bool showTwoIcons = isLocked && isShared;
 
