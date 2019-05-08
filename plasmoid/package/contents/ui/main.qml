@@ -246,6 +246,9 @@ Item {
     property alias tasksCount: tasksModel.count
     property alias hoveredIndex: icList.hoveredIndex
 
+    readonly property bool viewLayoutIsCurrent: latteView && currentLayout && latteView.universalLayoutManager
+                                            && currentLayout.name === latteView.universalLayoutManager.currentLayoutName
+    readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
     property QtObject currentLayout : latteView && latteView.managedLayout ? latteView.managedLayout : null
 
     property var badgesForActivate: latteView ? latteView.badgesForActivate : []
@@ -722,7 +725,7 @@ Item {
         id: tasksModel
 
         virtualDesktop: virtualDesktopInfo.currentDesktop
-        screenGeometry: plasmoid.screenGeometry
+        screenGeometry: root.screenGeometry
         // comment in order to support LTS Plasma 5.8
         // screen: plasmoid.screen
         activity: activityInfo.currentActivity

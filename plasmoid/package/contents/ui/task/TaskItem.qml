@@ -1198,10 +1198,7 @@ MouseArea{
     function slotPublishGeometries() {
         //! this way we make sure that layouts that are in different activities that the current layout
         //! don't publish their geometries
-        if ( canPublishGeometries
-                && (!latteView
-                    || (latteView && currentLayout && latteView.universalLayoutManager &&
-                        currentLayout.name === latteView.universalLayoutManager.currentLayoutName))) {
+        if ( canPublishGeometries && (!latteView || root.viewLayoutIsCurrent)) {
             var globalChoords = backend.globalRect(wrapper.visualIconItem);
             var limits = backend.globalRect(scrollableList);
 
@@ -1246,13 +1243,13 @@ MouseArea{
             globalChoords.y = adjY;
 
             if (root.position === PlasmaCore.Types.BottomPositioned) {
-                globalChoords.y = plasmoid.screenGeometry.y+plasmoid.screenGeometry.height-1;
+                globalChoords.y = root.screenGeometry.y+root.screenGeometry.height-1;
             } else if (root.position === PlasmaCore.Types.TopPositioned) {
-                globalChoords.y = plasmoid.screenGeometry.y+1;
+                globalChoords.y = root.screenGeometry.y+1;
             } else if (root.position === PlasmaCore.Types.LeftPositioned) {
-                globalChoords.x = plasmoid.screenGeometry.x+1;
+                globalChoords.x = root.screenGeometry.x+1;
             } else if (root.position === PlasmaCore.Types.RightPositioned) {
-                globalChoords.x = plasmoid.screenGeometry.x+plasmoid.screenGeometry.width - 1;
+                globalChoords.x = root.screenGeometry.x+root.screenGeometry.width - 1;
             }
 
             tasksModel.requestPublishDelegateGeometry(taskItem.modelIndex(), globalChoords, taskItem);
