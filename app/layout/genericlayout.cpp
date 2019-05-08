@@ -735,7 +735,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
 
     latteView->init();
     latteView->setContainment(containment);
-    latteView->setManagedLayout(this);
+    latteView->setLayout(this);
 
     //! force this special dock case to become primary
     //! even though it isnt
@@ -847,7 +847,7 @@ void GenericLayout::assignToLayout(Latte::View *latteView, QList<Plasma::Contain
             connect(containment, &Plasma::Containment::appletCreated, this, &GenericLayout::appletCreated);
         }
 
-        latteView->setManagedLayout(this);
+        latteView->setLayout(this);
 
         emit viewsCountChanged();
     }

@@ -246,13 +246,15 @@ Item {
     property alias tasksCount: tasksModel.count
     property alias hoveredIndex: icList.hoveredIndex
 
-    readonly property bool viewLayoutIsCurrent: latteView && currentLayout && latteView.universalLayoutManager
-                                            && currentLayout.name === latteView.universalLayoutManager.currentLayoutName
     readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
-    property QtObject currentLayout : latteView && latteView.managedLayout ? latteView.managedLayout : null
+
+    readonly property bool viewLayoutIsCurrent: latteView && viewLayout && latteView.universalLayoutManager
+                                            && viewLayout.name === latteView.universalLayoutManager.currentLayoutName
+    readonly property string viewLayoutName: viewLayout ? viewLayout.name : ""
+    readonly property QtObject viewLayout : latteView && latteView.viewLayout ? latteView.viewLayout : null
 
     property var badgesForActivate: latteView ? latteView.badgesForActivate : []
-    property var managedLayoutName: currentLayout ? currentLayout.name : ""
+
 
     property Item latteView: null
     readonly property Item indicators: latteView ? latteView.indicatorsManager : indicatorsStandaloneLoader.item
@@ -448,14 +450,14 @@ Item {
         var launch = [];
         var launchersList = [];
 
-        if (currentLayout) {
+        if (viewLayout) {
             if (latteView && latteView.universalLayoutManager
-                    && latteView.managedLayout && latteView.universalSettings
+                    && latteView.viewLayout && latteView.universalSettings
                     && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
                         || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
                 if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
-                    launchersList = latteView.managedLayout.launchers;
+                    launchersList = latteView.viewLayout.launchers;
                 } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
                     launchersList = latteView.universalSettings.launchers;
                 }
@@ -714,8 +716,8 @@ Item {
 
     property bool loadLaunchersFirstTime: false;
 
-    onCurrentLayoutChanged: {
-        if (currentLayout && !loadLaunchersFirstTime) {
+    onViewLayoutChanged: {
+        if (viewLayout && !loadLaunchersFirstTime) {
             tasksModel.updateLaunchersList();
             loadLaunchersFirstTime = true;
         }
@@ -746,7 +748,7 @@ Item {
                     && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
                         || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
                 if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
-                    tasksModel.launcherList = latteView.managedLayout.launchers;
+                    tasksModel.launcherList = latteView.viewLayout.launchers;
                 } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
                     tasksModel.launcherList = latteView.universalSettings.launchers;
                 }
@@ -771,21 +773,21 @@ Item {
         }
 
         onLauncherListChanged: {
-            if (currentLayout) {
+            if (viewLayout) {
                 if (latteView && latteView.universalLayoutManager
-                        && latteView.managedLayout && latteView.universalSettings
+                        && latteView.viewLayout && latteView.universalSettings
                         && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
                             || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
                     if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
-                        latteView.managedLayout.launchers = launcherList;
+                        latteView.viewLayout.launchers = launcherList;
                     } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
                         latteView.universalSettings.launchers = launcherList;
                     }
 
                     if (inDraggingPhase) {
                         if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                            latteView.universalLayoutManager.launchersSignals.validateLaunchersOrder(root.managedLayoutName,
+                            latteView.universalLayoutManager.launchersSignals.validateLaunchersOrder(root.viewLayoutName,
                                                                                                      plasmoid.id,
                                                                                                      latteView.launchersGroup,
                                                                                                      currentLauncherList());
@@ -823,12 +825,12 @@ Item {
             //var loadedLaunchers = ActivitiesTools.restoreLaunchers();
             ActivitiesTools.importLaunchersToNewArchitecture();
 
-            if (currentLayout && latteView.universalSettings
+            if (viewLayout && latteView.universalSettings
                     && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
                         || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
                 if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
-                    launcherList = latteView.managedLayout.launchers;
+                    launcherList = latteView.viewLayout.launchers;
                 } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
                     launcherList = latteView.universalSettings.launchers;
                 }
@@ -1222,7 +1224,7 @@ Item {
             onUrlsDropped: {
                 //! inform synced docks for new dropped launchers
                 if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
-                    latteView.universalLayoutManager.launchersSignals.urlsDropped(root.managedLayoutName,
+                    latteView.universalLayoutManager.launchersSignals.urlsDropped(root.viewLayoutName,
                                                                                   latteView.launchersGroup, urls);
                     return;
                 }
@@ -1638,7 +1640,7 @@ Item {
             parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
             if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteView.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
+                latteView.universalLayoutManager.launchersSignals.addLauncher(root.viewLayoutName,
                                                                               latteView.launchersGroup, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
@@ -1863,7 +1865,7 @@ Item {
 
         if (separatorName !== "") {
             if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteView.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
+                latteView.universalLayoutManager.launchersSignals.removeLauncher(root.viewLayoutName,
                                                                                  latteView.launchersGroup, separatorName);
             } else {
                 root.launcherForRemoval = separatorName;

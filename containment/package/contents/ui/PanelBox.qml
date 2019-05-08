@@ -278,9 +278,9 @@ Item{
                     visible: false
 
                     fillMode: Image.Tile
-                    source: hasBackground ? latteView.managedLayout.background : "../icons/"+editModeVisual.layoutColor+"print.jpg"
+                    source: hasBackground ? latteView.layout.background : "../icons/"+editModeVisual.layoutColor+"print.jpg"
 
-                    readonly property bool hasBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
+                    readonly property bool hasBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                               true : false
                 }
 

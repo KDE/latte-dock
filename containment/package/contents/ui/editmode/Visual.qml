@@ -56,7 +56,7 @@ Item{
 
     property rect efGeometry
 
-    property string layoutColor: latteView && latteView.managedLayout ? latteView.managedLayout.color : "blue"
+    property string layoutColor: latteView && latteView.layout ? latteView.layout.color : "blue"
 
     readonly property real appliedOpacity: imageTiler.opacity
     readonly property real maxOpacity: root.inConfigureAppletsMode ? 1 : plasmoid.configuration.editBackgroundOpacity
@@ -127,9 +127,9 @@ Item{
         opacity: 0
 
         fillMode: Image.Tile
-        source: hasBackground ? latteView.managedLayout.background : "../../icons/"+editVisual.layoutColor+"print.jpg"
+        source: hasBackground ? latteView.layout.background : "../../icons/"+editVisual.layoutColor+"print.jpg"
 
-        readonly property bool hasBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
+        readonly property bool hasBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                   true : false
 
         Connections {

@@ -85,16 +85,16 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
         connect(this, &QWindow::visibleChanged, this, [&]() {
             //! IMPORTANT!!! ::: This fixes a bug when closing an Activity all views from all Activities are
             //!  disappearing! With this they reappear!!!
-            if (m_latteView && m_latteView->managedLayout()) {
+            if (m_latteView && m_latteView->layout()) {
                 if (!isVisible()) {
                     QTimer::singleShot(100, [this]() {
-                        if (!m_inDelete && m_latteView && m_latteView->managedLayout() && !isVisible()) {
+                        if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
                             setVisible(true);
                         }
                     });
 
                     QTimer::singleShot(1500, [this]() {
-                        if (!m_inDelete && m_latteView && m_latteView->managedLayout() && !isVisible()) {
+                        if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
                             setVisible(true);
                         }
                     });

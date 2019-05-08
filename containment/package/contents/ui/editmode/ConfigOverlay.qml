@@ -339,7 +339,7 @@ MouseArea {
                 configureButton.visible = !currentApplet.isInternalViewSplitter && (currentApplet.applet.pluginName !== root.plasmoidName)
                         && currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
                 closeButton.visible = !currentApplet.isInternalViewSplitter && currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled
-                        && !(currentApplet.applet.pluginName===root.plasmoidName && latteView && latteView.managedLayout.viewsWithTasks()===1 && latteView.tasksPresent());
+                        && !(currentApplet.applet.pluginName===root.plasmoidName && latteView && latteView.layout.viewsWithTasks()===1 && latteView.tasksPresent());
                 lockButton.visible = !currentApplet.isInternalViewSplitter
                         && (currentApplet.applet.pluginName !== root.plasmoidName)
                         && !currentApplet.isSeparator

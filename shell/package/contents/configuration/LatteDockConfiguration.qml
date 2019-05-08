@@ -519,17 +519,17 @@ FocusScope {
             spacing: units.largeSpacing
 
             Connections{
-                target: latteView.managedLayout
+                target: latteView.layout
                 onViewsCountChanged: actionButtons.updateEnabled();
             }
 
             function updateEnabled() {
-                var screenFreeEdges = latteView.managedLayout.qmlFreeEdges(latteView.positioner.currentScreenId);
+                var screenFreeEdges = latteView.layout.qmlFreeEdges(latteView.positioner.currentScreenId);
                 actionsComboBtn.buttonEnabled = screenFreeEdges.length > 0;
                 if (actionsModel.count > 0) {
                     actionsModel.get(0).enabled = actionsComboBtn.buttonEnabled;
                 }
-                removeView.enabled = latteView.managedLayout.viewsCount>1 /*&& !(latteView.managedLayout.viewsWithTasks()===1 && latteView.tasksPresent())*/
+                removeView.enabled = latteView.layout.viewsCount>1 /*&& !(latteView.layout.viewsWithTasks()===1 && latteView.tasksPresent())*/
             }
 
             LatteComponents.ComboBoxButton {
@@ -595,7 +595,7 @@ FocusScope {
                 Connections{
                     target: actionsComboBtn.button
 
-                    onClicked: latteView.managedLayout.addNewView();
+                    onClicked: latteView.layout.addNewView();
                 }
 
                 Connections{
@@ -615,7 +615,7 @@ FocusScope {
                     var tempSharedLayouts = layoutManager.sharedLayoutsNames();
 
                     if (tempSharedLayouts.length > 0) {
-                        var curIndex = tempSharedLayouts.indexOf(latteView.managedLayout.name);
+                        var curIndex = tempSharedLayouts.indexOf(latteView.layout.name);
                         if (curIndex >=0) {
                             tempSharedLayouts.splice(curIndex,1);
                         }
@@ -631,7 +631,7 @@ FocusScope {
 
 
                     if (tempCentralLayouts.length > 0) {
-                        var curIndex = tempCentralLayouts.indexOf(latteView.managedLayout.name);
+                        var curIndex = tempCentralLayouts.indexOf(latteView.layout.name);
                         if (curIndex >=0) {
                             tempCentralLayouts.splice(curIndex,1);
                         }
@@ -668,7 +668,7 @@ FocusScope {
 
                 text: i18n("Remove")
                 iconSource: "delete"
-                opacity: latteView.managedLayout.viewsCount > 1 ? 1 : 0
+                opacity: latteView.layout.viewsCount > 1 ? 1 : 0
                 tooltip: i18n("Remove current dock")
 
                 onClicked: latteView.removeView()

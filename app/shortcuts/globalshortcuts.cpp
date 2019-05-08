@@ -394,7 +394,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
     }
 
     for (const auto view : sortedViews) {
-        if (view->managedLayout()->preferredForShortcutsTouched() && !view->isPreferredForShortcuts()) {
+        if (view->layout()->preferredForShortcutsTouched() && !view->isPreferredForShortcuts()) {
             continue;
         }
 
@@ -628,7 +628,7 @@ void GlobalShortcuts::showViews()
     Latte::View *viewWithMeta{nullptr};
 
     for(const auto view : sortedViews) {
-        if (!viewWithTasks && (!view->managedLayout()->preferredForShortcutsTouched() || view->isPreferredForShortcuts()) && isCapableToShowShortcutBadges(view)) {
+        if (!viewWithTasks && (!view->layout()->preferredForShortcutsTouched() || view->isPreferredForShortcuts()) && isCapableToShowShortcutBadges(view)) {
             viewWithTasks = view;
             break;
         }

@@ -148,10 +148,10 @@ View::~View()
 {
     m_inDelete = true;
 
-    //! clear managedLayout connections
+    //! clear Layout connections
     m_visibleHackTimer1.stop();
     m_visibleHackTimer2.stop();
-    for (auto &c : connectionsManagedLayout) {
+    for (auto &c : connectionsLayout) {
         disconnect(c);
     }
 
@@ -269,7 +269,7 @@ bool View::inDelete() const
 void View::disconnectSensitiveSignals()
 {
     disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFrom);
-    setManagedLayout(nullptr);
+    setLayout(nullptr);
 
     if (m_windowsTracker) {
         m_windowsTracker->setEnabled(false);
@@ -327,12 +327,12 @@ void View::reconsiderScreen()
 
 void View::copyView()
 {
-    m_managedLayout->copyView(containment());
+    m_layout->copyView(containment());
 }
 
 void View::removeView()
 {
-    if (m_managedLayout && m_managedLayout->viewsCount() > 1) {
+    if (m_layout && m_layout->viewsCount() > 1) {
         QAction *removeAct = this->containment()->actions()->action(QStringLiteral("remove"));
 
         if (removeAct) {
@@ -611,8 +611,8 @@ void View::setIsPreferredForShortcuts(bool preferred)
 
     emit isPreferredForShortcutsChanged();
 
-    if (m_isPreferredForShortcuts && m_managedLayout) {
-        emit m_managedLayout->preferredViewForShortcutsChanged(this);
+    if (m_isPreferredForShortcuts && m_layout) {
+        emit m_layout->preferredViewForShortcutsChanged(this);
     }
 }
 
@@ -763,8 +763,8 @@ void View::setFontPixelSize(int size)
 
 void View::applyActivitiesToWindows()
 {
-    if (m_visibility && m_managedLayout) {
-        QStringList activities = m_managedLayout->appliedActivities();
+    if (m_visibility && m_layout) {
+        QStringList activities = m_layout->appliedActivities();
         m_windowsTracker->setWindowOnActivities(*this, activities);
 
         if (m_configView) {
@@ -783,59 +783,59 @@ void View::applyActivitiesToWindows()
     }
 }
 
-Layout::GenericLayout *View::managedLayout() const
+Layout::GenericLayout *View::layout() const
 {
-    return m_managedLayout;
+    return m_layout;
 }
 
-void View::setManagedLayout(Layout::GenericLayout *layout)
+void View::setLayout(Layout::GenericLayout *layout)
 {
-    if (m_managedLayout == layout) {
+    if (m_layout == layout) {
         return;
     }
 
     // clear mode
-    for (auto &c : connectionsManagedLayout) {
+    for (auto &c : connectionsLayout) {
         disconnect(c);
     }
 
-    m_managedLayout = layout;
+    m_layout = layout;
 
-    if (m_managedLayout) {
+    if (m_layout) {
         //! Sometimes the activity isnt completely ready, by adding a delay
         //! we try to catch up
         QTimer::singleShot(100, [this]() {
-            if (m_managedLayout && m_visibility) {
-                qDebug() << "DOCK VIEW FROM LAYOUT ::: " << m_managedLayout->name() << " - activities: " << m_managedLayout->appliedActivities();
+            if (m_layout && m_visibility) {
+                qDebug() << "DOCK VIEW FROM LAYOUT ::: " << m_layout->name() << " - activities: " << m_layout->appliedActivities();
                 applyActivitiesToWindows();
                 emit activitiesChanged();
             }
         });
 
-        connectionsManagedLayout[0] = connect(m_managedLayout, &Layout::GenericLayout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
-        connectionsManagedLayout[1] = connect(m_managedLayout, &Layout::GenericLayout::configViewCreated, this, &View::configViewCreated);
+        connectionsLayout[0] = connect(m_layout, &Layout::GenericLayout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
+        connectionsLayout[1] = connect(m_layout, &Layout::GenericLayout::configViewCreated, this, &View::configViewCreated);
 
         Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
         if (latteCorona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-            connectionsManagedLayout[2] = connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
-                if (m_managedLayout && m_visibility) {
-                    qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
-                             << " - activities: " << m_managedLayout->appliedActivities();
+            connectionsLayout[2] = connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
+                if (m_layout && m_visibility) {
+                    qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_layout->name()
+                             << " - activities: " << m_layout->appliedActivities();
                     applyActivitiesToWindows();
                     emit activitiesChanged();
                 }
             });
 
-            connectionsManagedLayout[3] = connect(m_managedLayout, &Layout::GenericLayout::activitiesChanged, this, [&]() {
-                if (m_managedLayout) {
+            connectionsLayout[3] = connect(m_layout, &Layout::GenericLayout::activitiesChanged, this, [&]() {
+                if (m_layout) {
                     applyActivitiesToWindows();
                     emit activitiesChanged();
                 }
             });
 
-            connectionsManagedLayout[4] = connect(latteCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
-                if (m_managedLayout) {
+            connectionsLayout[4] = connect(latteCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
+                if (m_layout) {
                     applyActivitiesToWindows();
                     emit activitiesChanged();
                 }
@@ -850,23 +850,23 @@ void View::setManagedLayout(Layout::GenericLayout *layout)
             m_visibleHackTimer1.setSingleShot(true);
             m_visibleHackTimer2.setSingleShot(true);
 
-            connectionsManagedLayout[5] = connect(this, &QWindow::visibleChanged, this, [&]() {
-                if (m_managedLayout && !inDelete() & !isVisible()) {
+            connectionsLayout[5] = connect(this, &QWindow::visibleChanged, this, [&]() {
+                if (m_layout && !inDelete() & !isVisible()) {
                     m_visibleHackTimer1.start();
                     m_visibleHackTimer2.start();
                 }
             });
 
-            connectionsManagedLayout[6] = connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
-                if (m_managedLayout && !inDelete() & !isVisible()) {
+            connectionsLayout[6] = connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
+                if (m_layout && !inDelete() & !isVisible()) {
                     setVisible(true);
                     applyActivitiesToWindows();
                     emit activitiesChanged();
                 }
             });
 
-            connectionsManagedLayout[7] = connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
-                if (m_managedLayout && !inDelete() && !isVisible()) {
+            connectionsLayout[7] = connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
+                if (m_layout && !inDelete() && !isVisible()) {
                     setVisible(true);
                     applyActivitiesToWindows();
                     emit activitiesChanged();
@@ -876,17 +876,17 @@ void View::setManagedLayout(Layout::GenericLayout *layout)
             //! END OF KWIN HACK
         }
 
-        emit managedLayoutChanged();
+        emit layoutChanged();
     }
 }
 
 void View::moveToLayout(QString layoutName)
 {
-    if (!m_managedLayout) {
+    if (!m_layout) {
         return;
     }
 
-    QList<Plasma::Containment *> containments = m_managedLayout->unassignFromLayout(this);
+    QList<Plasma::Containment *> containments = m_layout->unassignFromLayout(this);
 
     Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
@@ -1186,8 +1186,8 @@ void View::restoreGrabItemBehavior()
 }
 
 bool View::isHighestPriorityView() {
-    if (m_managedLayout) {
-        return this == m_managedLayout->highestPriorityView();
+    if (m_layout) {
+        return this == m_layout->highestPriorityView();
     }
 
     return false;

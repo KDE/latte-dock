@@ -58,7 +58,7 @@ Loader{
     }
 
     readonly property bool editModeTextColorIsBright: ColorizerTools.colorBrightness(editModeTextColor) > 127.5
-    readonly property color editModeTextColor: latteView && latteView.managedLayout ? latteView.managedLayout.textColor : "white"
+    readonly property color editModeTextColor: latteView && latteView.layout ? latteView.layout.textColor : "white"
 
     readonly property bool mustBeShown: (applyTheme && applyTheme !== theme) || (root.inConfigureAppletsMode && (root.themeColors === Latte.Types.SmartThemeColors))
 
@@ -117,12 +117,12 @@ Loader{
 
     readonly property color backgroundColor:applyTheme.backgroundColor
     readonly property color textColor: {
-        if (latteView && latteView.managedLayout
+        if (latteView && latteView.layout
                 && root.inConfigureAppletsMode
                 && Latte.WindowSystem.compositingActive
                 && root.panelTransparency<40
                 && (root.themeColors === Latte.Types.SmartThemeColors)) {
-            return latteView.managedLayout.textColor;
+            return latteView.layout.textColor;
         }
 
         return applyTheme.textColor;
@@ -177,7 +177,7 @@ Loader{
     }
 
     sourceComponent: Latte.BackgroundTracker {
-        activity: managedLayout ? managedLayout.lastUsedActivity : ""
+        activity: viewLayout ? viewLayout.lastUsedActivity : ""
         location: plasmoid.location
         screenName: latteView && latteView.positioner ? latteView.positioner.currentScreenName : ""
     }

@@ -191,7 +191,7 @@ PlasmaComponents.Page {
                 }
 
                 Connections{
-                    target: latteView.managedLayout
+                    target: latteView.layout
                     onViewsCountChanged: locationLayout.lockReservedEdges();
                 }
 
@@ -215,7 +215,7 @@ PlasmaComponents.Page {
                 }
 
                 function lockReservedEdges() {
-                    var edges = latteView.managedLayout.qmlFreeEdges(latteView.positioner.currentScreenId);
+                    var edges = latteView.layout.qmlFreeEdges(latteView.positioner.currentScreenId);
 
                     bottomEdgeBtn.edgeIsFree = (edges.indexOf(bottomEdgeBtn.edge)>=0);
                     topEdgeBtn.edgeIsFree = (edges.indexOf(topEdgeBtn.edge)>=0);
@@ -645,13 +645,13 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: dialog.optionsWidth
                        // Layout.maximumHeight: mouseWheelChk.height
                         text: i18n("🅰 Activate based on position through global shortcuts")
-                        checked: latteView.isPreferredForShortcuts || (!latteView.managedLayout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
+                        checked: latteView.isPreferredForShortcuts || (!latteView.layout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
                         tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
 
                         onClicked: {
                             latteView.isPreferredForShortcuts = checked
-                            if (!latteView.managedLayout.preferredForShortcutsTouched) {
-                                latteView.managedLayout.preferredForShortcutsTouched = true
+                            if (!latteView.layout.preferredForShortcutsTouched) {
+                                latteView.layout.preferredForShortcutsTouched = true
                             }
                         }
                     }

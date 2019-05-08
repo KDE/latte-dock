@@ -162,7 +162,7 @@ Item {
                     tasksModel.move(pos, insertAt);
                   //! disable syncing for moving launchers action in favor of validatorOrder launchersSignal
                   /*  if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                        latteView.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
+                        latteView.universalLayoutManager.launchersSignals.moveTask(root.viewLayoutName,
                                                                                    plasmoid.id,
                                                                                    latteView.launchersGroup, pos, insertAt);
                     }*/

@@ -168,8 +168,8 @@ bool Positioner::setCurrentScreen(const QString id)
     }
 
     if (nextScreen) {
-        if (m_view->managedLayout()) {
-            auto freeEdges = m_view->managedLayout()->freeEdges(nextScreen);
+        if (m_view->layout()) {
+            auto freeEdges = m_view->layout()->freeEdges(nextScreen);
 
             if (!freeEdges.contains(m_view->location())) {
                 return false;
@@ -261,7 +261,7 @@ void Positioner::reconsiderScreen()
         QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                      Types::TopEdge, Types::RightEdge};
 
-        edges = m_view->managedLayout() ? m_view->managedLayout()->availableEdgesForView(qGuiApp->primaryScreen(), m_view) : edges;
+        edges = m_view->layout() ? m_view->layout()->availableEdgesForView(qGuiApp->primaryScreen(), m_view) : edges;
 
         //change to primary screen only if the specific edge is free
         qDebug() << "updating the primary screen for dock...";
@@ -339,7 +339,7 @@ void Positioner::syncGeometry()
         QRect availableScreenRect{m_view->screen()->geometry()};
 
         if (m_view->formFactor() == Plasma::Types::Vertical) {
-            QString layoutName = m_view->managedLayout() ? m_view->managedLayout()->name() : QString();
+            QString layoutName = m_view->layout() ? m_view->layout()->name() : QString();
             auto latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
             int fixedScreen = m_view->onPrimary() ? latteCorona->screenPool()->primaryScreenId() : m_view->containment()->screen();
 
@@ -562,10 +562,10 @@ void Positioner::initSignalingForLocationChangeSliding()
                 emit showDockAfterLocationChangeFinished();
                 m_view->showSettingsWindow();
 
-                if (m_view->managedLayout()) {
+                if (m_view->layout()) {
                     //! This is needed in case the edge is occupied and the occupying
                     //! view must be deleted
-                    m_view->managedLayout()->syncLatteViewsToScreens();
+                    m_view->layout()->syncLatteViewsToScreens();
                 }
             });
         }
@@ -582,10 +582,10 @@ void Positioner::initSignalingForLocationChangeSliding()
                 emit showDockAfterScreenChangeFinished();
                 m_view->showSettingsWindow();
 
-                if (m_view->managedLayout()) {
+                if (m_view->layout()) {
                     //! This is needed in case the edge is occupied and the occupying
                     //! view must be deleted
-                    m_view->managedLayout()->syncLatteViewsToScreens();
+                    m_view->layout()->syncLatteViewsToScreens();
                 }
             });
         }
@@ -594,8 +594,8 @@ void Positioner::initSignalingForLocationChangeSliding()
     //! signals to handle the sliding-in/out during moving to another layout
     connect(this, &Positioner::hideDockDuringMovingToLayoutStarted, this, &Positioner::onHideWindowsForSlidingOut);
 
-    connect(m_view, &View::managedLayoutChanged, this, [&]() {
-        if (!m_moveToLayout.isEmpty() && m_view->managedLayout()) {
+    connect(m_view, &View::layoutChanged, this, [&]() {
+        if (!m_moveToLayout.isEmpty() && m_view->layout()) {
             m_moveToLayout = "";
             QTimer::singleShot(100, [this]() {
                 m_view->effects()->setAnimationsBlocked(false);

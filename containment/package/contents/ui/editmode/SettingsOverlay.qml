@@ -55,7 +55,7 @@ Item{
         if (imageTiler.opacity <= 0.4) {
             return colorizerManager.applyColor;
         } else {
-            return latteView && latteView.managedLayout ? latteView.managedLayout.textColor : "#D7E3FF";
+            return latteView && latteView.layout ? latteView.layout.textColor : "#D7E3FF";
         }
     }
 

@@ -114,8 +114,8 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
         connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &PrimaryConfigView::raiseDocksTemporaryChanged);
     }
 
-    if (m_latteView->managedLayout()) {
-        emit m_latteView->managedLayout()->configViewCreated(this);
+    if (m_latteView->layout()) {
+        emit m_latteView->layout()->configViewCreated(this);
     }
 }
 
@@ -239,7 +239,7 @@ void PrimaryConfigView::requestActivate()
 
 void PrimaryConfigView::syncGeometry()
 {
-    if (!m_latteView || !m_latteView->managedLayout() || !m_latteView->containment() || !rootObject()) {
+    if (!m_latteView || !m_latteView->layout() || !m_latteView->containment() || !rootObject()) {
         return;
     }
 
@@ -391,10 +391,10 @@ void PrimaryConfigView::hideEvent(QHideEvent *ev)
         //! mode changed to AlwaysVisible OR WindowsGoBelow FROM Dodge mode
         if (m_originalByPassWM) {
             //! if original by pass is active
-            m_latteView->managedLayout()->recreateView(m_latteView->containment());
+            m_latteView->layout()->recreateView(m_latteView->containment());
         }
     } else if (m_latteView->byPassWM() != m_originalByPassWM) {
-        m_latteView->managedLayout()->recreateView(m_latteView->containment());
+        m_latteView->layout()->recreateView(m_latteView->containment());
     }
 
     deleteLater();
@@ -595,8 +595,8 @@ void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
 
     //! when the layout/global launchers list is empty then the current dock launchers are used for them
     //! as a start point
-    if (m_corona &&  m_latteView->managedLayout()) {
-        if ((group == Types::LayoutLaunchers && m_latteView->managedLayout()->launchers().isEmpty())
+    if (m_corona &&  m_latteView->layout()) {
+        if ((group == Types::LayoutLaunchers && m_latteView->layout()->launchers().isEmpty())
                 || (group == Types::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
 
             Plasma::Containment *c = m_latteView->containment();
@@ -633,7 +633,7 @@ void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
 
                                 if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
                                     if (group == Types::LayoutLaunchers) {
-                                        m_latteView->managedLayout()->setLaunchers(launchers.toStringList());
+                                        m_latteView->layout()->setLaunchers(launchers.toStringList());
                                     } else if (group == Types::GlobalLaunchers) {
                                         m_corona->universalSettings()->setLaunchers(launchers.toStringList());
                                     }

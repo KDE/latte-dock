@@ -166,7 +166,7 @@ void SecondaryConfigView::requestActivate()
 
 void SecondaryConfigView::syncGeometry()
 {
-    if (!m_latteView || !m_latteView->managedLayout() || !m_latteView->containment() || !m_parent || !rootObject()) {
+    if (!m_latteView || !m_latteView->layout() || !m_latteView->containment() || !m_parent || !rootObject()) {
         return;
     }
 

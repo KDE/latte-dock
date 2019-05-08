@@ -98,7 +98,7 @@ class View : public PlasmaQuick::ContainmentView
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
-    Q_PROPERTY(Latte::Layout::GenericLayout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
+    Q_PROPERTY(Latte::Layout::GenericLayout *layout READ layout WRITE setLayout NOTIFY layoutChanged)
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Latte::ViewPart::Indicator *indicator READ indicator NOTIFY indicatorChanged)
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
@@ -185,8 +185,8 @@ public:
     ViewPart::VisibilityManager *visibility() const;
     ViewPart::WindowsTracker *windowsTracker() const;
 
-    Layout::GenericLayout *managedLayout() const;
-    void setManagedLayout(Layout::GenericLayout *layout);
+    Layout::GenericLayout *layout() const;
+    void setLayout(Layout::GenericLayout *layout);
 
     KWayland::Client::PlasmaShellSurface *surface();
 
@@ -247,8 +247,8 @@ signals:
     void indicatorChanged();
     void isPreferredForShortcutsChanged();
     void latteTasksArePresentChanged();
+    void layoutChanged();
     void localGeometryChanged();
-    void managedLayoutChanged();
     void maxLengthChanged();
     void maxThicknessChanged();
     void normalThicknessChanged();
@@ -312,7 +312,7 @@ private:
     QTimer m_visibleHackTimer1;
     QTimer m_visibleHackTimer2;
 
-    Layout::GenericLayout *m_managedLayout{nullptr};
+    Layout::GenericLayout *m_layout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
 
     QPointer<ViewPart::ContextMenu> m_contextMenu;
@@ -322,8 +322,8 @@ private:
     QPointer<ViewPart::VisibilityManager> m_visibility;
     QPointer<ViewPart::WindowsTracker> m_windowsTracker;
 
-    //! Connections to release and bound for the managed layout
-    std::array<QMetaObject::Connection, 8> connectionsManagedLayout;
+    //! Connections to release and bound for the assigned layout
+    std::array<QMetaObject::Connection, 8> connectionsLayout;
 
     QPointer<Latte::Corona> m_corona;
 

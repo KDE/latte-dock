@@ -145,7 +145,7 @@ DragDrop.DropArea {
                 && item.pluginName !== "org.kde.activeWindowControl");
     })
 
-    readonly property bool hasUserSpecifiedBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
+    readonly property bool hasUserSpecifiedBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                            true : false
 
     readonly property bool inConfigureAppletsMode: root.editMode && (plasmoid.configuration.inConfigureAppletsMode || !Latte.WindowSystem.compositingActive)
@@ -394,7 +394,7 @@ DragDrop.DropArea {
     property QtObject themeExtended: null
     property QtObject universalSettings: null
     property QtObject universalLayoutManager: null
-    property QtObject managedLayout: latteView && latteView.managedLayout ? latteView.managedLayout : null
+    property QtObject viewLayout: latteView && latteView.layout ? latteView.layout : null
 
     // TO BE DELETED, if not needed: property int counter:0;
 
@@ -1769,7 +1769,7 @@ DragDrop.DropArea {
         sourceComponent: Image{
             anchors.fill: parent
             fillMode: Image.Tile
-            source: root.hasUserSpecifiedBackground ? latteView.managedLayout.background : "../icons/wheatprint.jpg"
+            source: root.hasUserSpecifiedBackground ? latteView.layout.background : "../icons/wheatprint.jpg"
         }
     }
 
