@@ -564,6 +564,7 @@ void GenericLayout::containmentDestroyed(QObject *cont)
 
             view->deleteLater();
 
+            emit viewEdgeChanged();
             emit viewsCountChanged();
         }
     }
@@ -588,6 +589,7 @@ void GenericLayout::destroyedChanged(bool destroyed)
         m_latteViews[sender] = m_waitingLatteViews.take(static_cast<Plasma::Containment *>(sender));
     }
 
+    emit viewEdgeChanged();
     emit viewsCountChanged();
 }
 
@@ -616,6 +618,7 @@ void GenericLayout::addNewView()
     }
 
     m_corona->addViewForLayout(name());
+    emit viewEdgeChanged();
 }
 
 void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen, Layout::ViewsMap *occupied)

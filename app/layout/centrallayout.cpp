@@ -230,6 +230,9 @@ void CentralLayout::setSharedLayout(SharedLayout *layout)
         m_sharedConnections << connect(m_sharedLayout, &Layout::AbstractLayout::nameChanged, this, [this]() {
             setSharedLayoutName(m_sharedLayout->name());
         });
+        m_sharedConnections << connect(m_sharedLayout, &Layout::GenericLayout::viewEdgeChanged, this, [this]() {
+            syncLatteViewsToScreens();
+        });
     } else {
         setSharedLayoutName(QString());
     }

@@ -189,20 +189,20 @@ int SharedLayout::viewsCount() const
 
 QList<Plasma::Types::Location> SharedLayout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
 {
-    using Plasma::Types;
+ /*   using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                 Types::TopEdge, Types::RightEdge};
 
     if (!m_corona) {
         return edges;
-    }
+    }*/
 
     return Layout::GenericLayout::availableEdgesForView(scr, forView);
 }
 
 QList<Plasma::Types::Location> SharedLayout::freeEdges(QScreen *scr) const
 {
-    using Plasma::Types;
+ /*   using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                 Types::TopEdge, Types::RightEdge};
 
@@ -214,14 +214,14 @@ QList<Plasma::Types::Location> SharedLayout::freeEdges(QScreen *scr) const
 
     if (current) {
         return current->freeEdges(scr);
-    }
+    }*/
 
     return Layout::GenericLayout::freeEdges(scr);
 }
 
 QList<Plasma::Types::Location> SharedLayout::freeEdges(int screen) const
 {
-    using Plasma::Types;
+  /*  using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                 Types::TopEdge, Types::RightEdge};
 
@@ -233,7 +233,7 @@ QList<Plasma::Types::Location> SharedLayout::freeEdges(int screen) const
 
     if (current) {
         return current->freeEdges(screen);
-    }
+    }*/
 
     return Layout::GenericLayout::freeEdges(screen);
 }
