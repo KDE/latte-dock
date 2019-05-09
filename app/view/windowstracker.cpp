@@ -24,6 +24,7 @@
 #include "view.h"
 #include "../lattecorona.h"
 #include "../layouts/manager.h"
+#include "../wm/schemecolors.h"
 #include "../../liblatte2/types.h"
 
 namespace Latte {
@@ -119,12 +120,12 @@ void WindowsTracker::setExistsWindowTouching(bool windowTouching)
     emit existsWindowTouchingChanged();
 }
 
-SchemeColors *WindowsTracker::activeWindowScheme() const
+Latte::SchemeColors *WindowsTracker::activeWindowScheme() const
 {
     return m_activeScheme;
 }
 
-void WindowsTracker::setActiveWindowScheme(SchemeColors *scheme)
+void WindowsTracker::setActiveWindowScheme(Latte::SchemeColors *scheme)
 {
     if (m_activeScheme == scheme) {
         return;
@@ -135,12 +136,12 @@ void WindowsTracker::setActiveWindowScheme(SchemeColors *scheme)
     emit activeWindowSchemeChanged();
 }
 
-SchemeColors *WindowsTracker::touchingWindowScheme() const
+Latte::SchemeColors *WindowsTracker::touchingWindowScheme() const
 {
     return m_touchingScheme;
 }
 
-void WindowsTracker::setTouchingWindowScheme(SchemeColors *scheme)
+void WindowsTracker::setTouchingWindowScheme(Latte::SchemeColors *scheme)
 {
     if (m_touchingScheme == scheme) {
         return;

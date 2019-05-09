@@ -21,7 +21,7 @@
 #include "schemecolors.h"
 
 // local
-#include "layouts/importer.h"
+#include "../layouts/importer.h"
 
 // Qt
 #include <QDebug>

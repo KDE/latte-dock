@@ -21,9 +21,6 @@
 #ifndef PLASMATHEMEEXTENDED_H
 #define PLASMATHEMEEXTENDED_H
 
-// local
-#include "schemecolors.h"
-
 // C++
 #include <array>
 
@@ -41,6 +38,7 @@
 
 namespace Latte {
 class Corona;
+class SchemeColors;
 }
 
 namespace Latte {
@@ -62,9 +60,9 @@ class Theme: public QObject
 
     Q_PROPERTY(float backgroundMaxOpacity READ backgroundMaxOpacity NOTIFY backgroundMaxOpacityChanged)
 
-    Q_PROPERTY(SchemeColors *defaultTheme READ defaultTheme NOTIFY themeChanged)
-    Q_PROPERTY(SchemeColors *lightTheme READ lightTheme NOTIFY themeChanged)
-    Q_PROPERTY(SchemeColors *darkTheme READ darkTheme NOTIFY themeChanged)
+    Q_PROPERTY(Latte::SchemeColors *defaultTheme READ defaultTheme NOTIFY themeChanged)
+    Q_PROPERTY(Latte::SchemeColors *lightTheme READ lightTheme NOTIFY themeChanged)
+    Q_PROPERTY(Latte::SchemeColors *darkTheme READ darkTheme NOTIFY themeChanged)
 
 public:
     Theme(KSharedConfig::Ptr config, QObject *parent);
@@ -84,9 +82,9 @@ public:
 
     float backgroundMaxOpacity() const;
 
-    SchemeColors *defaultTheme() const;
-    SchemeColors *lightTheme() const;
-    SchemeColors *darkTheme() const;
+    Latte::SchemeColors *defaultTheme() const;
+    Latte::SchemeColors *lightTheme() const;
+    Latte::SchemeColors *darkTheme() const;
 
     void load();
 
@@ -142,8 +140,8 @@ private:
     Plasma::Theme m_theme;
 
     Latte::Corona *m_corona{nullptr};
-    SchemeColors *m_defaultScheme{nullptr};
-    SchemeColors *m_reversedScheme{nullptr};
+    Latte::SchemeColors *m_defaultScheme{nullptr};
+    Latte::SchemeColors *m_reversedScheme{nullptr};
 };
 
 }

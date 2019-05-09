@@ -4,7 +4,6 @@ set(lattedock-app_SRCS
     alternativeshelper.cpp
     infoview.cpp
     lattecorona.cpp
-    schemecolors.cpp
     screenpool.cpp
     main.cpp
 )

@@ -23,7 +23,6 @@
 
 // local
 #include "../plasma/quick/containmentview.h"
-#include "../schemecolors.h"
 #include "../wm/abstractwindowinterface.h"
 #include "../wm/windowinfowrap.h"
 #include "../../liblatte2/types.h"

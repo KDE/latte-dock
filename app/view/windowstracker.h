@@ -21,7 +21,6 @@
 #define WINDOWSTRACKER_H
 
 // local
-#include "../schemecolors.h"
 #include "../wm/abstractwindowinterface.h"
 #include "../wm/windowinfowrap.h"
 
@@ -29,9 +28,10 @@
 #include <QObject>
 
 namespace Latte{
-    class AbstractWindowInterface;
-    class Corona;
-    class View;
+class AbstractWindowInterface;
+class Corona;
+class SchemeColors;
+class View;
 }
 
 namespace Latte {
@@ -45,8 +45,8 @@ class WindowsTracker : public QObject {
     Q_PROPERTY(bool existsWindowActive READ existsWindowActive NOTIFY existsWindowActiveChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
     Q_PROPERTY(bool existsWindowTouching READ existsWindowTouching NOTIFY existsWindowTouchingChanged)
-    Q_PROPERTY(SchemeColors *activeWindowScheme READ activeWindowScheme NOTIFY activeWindowSchemeChanged)
-    Q_PROPERTY(SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
+    Q_PROPERTY(Latte::SchemeColors *activeWindowScheme READ activeWindowScheme NOTIFY activeWindowSchemeChanged)
+    Q_PROPERTY(Latte::SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
 
 public:
     explicit WindowsTracker(Latte::View *parent);
@@ -61,8 +61,8 @@ public:
     bool existsWindowMaximized() const;
     bool existsWindowTouching() const;
 
-    SchemeColors *activeWindowScheme() const;
-    SchemeColors *touchingWindowScheme() const;
+    Latte::SchemeColors *activeWindowScheme() const;
+    Latte::SchemeColors *touchingWindowScheme() const;
 
     void setWindowOnActivities(QWindow &window, const QStringList &activities);
 
@@ -88,8 +88,8 @@ private:
     void setExistsWindowActive(bool windowActive);
     void setExistsWindowMaximized(bool windowMaximized);
     void setExistsWindowTouching(bool windowTouching);
-    void setActiveWindowScheme(SchemeColors *scheme);
-    void setTouchingWindowScheme(SchemeColors *scheme);
+    void setActiveWindowScheme(Latte::SchemeColors *scheme);
+    void setTouchingWindowScheme(Latte::SchemeColors *scheme);
     void updateAvailableScreenGeometry();
     void updateFlags();
 
@@ -120,8 +120,8 @@ private:
     std::array<QMetaObject::Connection, 7> m_connections;
     QMap<WindowId, WindowInfoWrap> m_windows;
 
-    SchemeColors *m_activeScheme{nullptr};
-    SchemeColors *m_touchingScheme{nullptr};
+    Latte::SchemeColors *m_activeScheme{nullptr};
+    Latte::SchemeColors *m_touchingScheme{nullptr};
 
     Latte::AbstractWindowInterface *m_wm;
     Latte::Corona *m_corona{nullptr};
