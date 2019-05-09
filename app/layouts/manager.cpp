@@ -23,9 +23,9 @@
 #include "manager.h"
 
 // local
+#include "launcherssignals.h"
 #include "../importer.h"
 #include "../infoview.h"
-#include "../launcherssignals.h"
 #include "../screenpool.h"
 #include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"

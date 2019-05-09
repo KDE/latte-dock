@@ -38,6 +38,7 @@ class Manager;
 }
 
 namespace Latte {
+namespace Layouts {
 
 //! in order to support property the launcher groups Layout and Global
 //! the latte plasmoids must communicate between them with signals when
@@ -70,6 +71,7 @@ private:
     Layouts::Manager *m_manager{nullptr};
 };
 
+}
 }
 
 #endif

@@ -46,11 +46,13 @@ namespace Latte {
 class Corona;
 class Importer;
 class CentralLayout;
-class LaunchersSignals;
 class SharedLayout;
 class View;
 namespace Layout {
 class GenericLayout;
+}
+namespace Layouts {
+class LaunchersSignals;
 }
 }
 

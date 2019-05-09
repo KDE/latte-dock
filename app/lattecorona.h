@@ -65,7 +65,6 @@ class AbstractWindowInterface;
 class ScreenPool;
 class GlobalShortcuts;
 class UniversalSettings;
-class LaunchersSignals;
 class View;
 namespace Indicator{
 class Factory;
@@ -75,6 +74,7 @@ class GenericLayout;
 class Storage;
 }
 namespace Layouts{
+class LaunchersSignals;
 class Manager;
 }
 namespace PlasmaExtended{
@@ -214,8 +214,8 @@ private:
     KWayland::Client::PlasmaShell *m_waylandCorona{nullptr};
 
     friend class GlobalShortcuts;
-    friend class LaunchersSignals;
     friend class Layout::Storage;
+    friend class Layouts::LaunchersSignals;
     friend class Layouts::Manager;
 };
 

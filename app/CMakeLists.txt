@@ -5,7 +5,6 @@ set(lattedock-app_SRCS
     importer.cpp
     infoview.cpp
     lattecorona.cpp
-    launcherssignals.cpp
     schemecolors.cpp
     screenpool.cpp
     main.cpp

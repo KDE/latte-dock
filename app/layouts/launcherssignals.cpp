@@ -21,9 +21,9 @@
 #include "launcherssignals.h"
 
 // local
-#include "lattecorona.h"
-#include "layout/centrallayout.h"
-#include "layouts/manager.h"
+#include "../lattecorona.h"
+#include "../layout/centrallayout.h"
+#include "../layouts/manager.h"
 
 // Qt
 #include <QQuickItem>
@@ -33,6 +33,7 @@
 #include <Plasma/Containment>
 
 namespace Latte {
+namespace Layouts {
 
 LaunchersSignals::LaunchersSignals(QObject *parent)
     : QObject(parent)
@@ -312,4 +313,5 @@ void LaunchersSignals::validateLaunchersOrder(QString layoutName, int senderId, 
     }
 }
 
+}
 } //end of namespace
