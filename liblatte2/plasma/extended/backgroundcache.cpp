@@ -349,8 +349,8 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
 
         bool areaBusy = areaIsBusy(minBrightness, maxBrightness);
 
-        qDebug() << " Hints for Background image: " << imageFile;
-        qDebug() << " Brightness: " << brightness << " Busy: " << areaBusy << " minBright:" << minBrightness << " maxBright:" << maxBrightness;
+        qDebug() << " Hints for Background image | " << imageFile << " at Edge : " << location;
+        qDebug() << " Hints for Background image | Brightness: " << brightness << " Busy: " << areaBusy << " minBright:" << minBrightness << " maxBright:" << maxBrightness;
 
         if (!m_hintsCache.keys().contains(imageFile)) {
             m_hintsCache[imageFile] = EdgesHash();
