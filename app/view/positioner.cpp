@@ -567,6 +567,8 @@ void Positioner::initSignalingForLocationChangeSliding()
                     //! view must be deleted
                     m_view->layout()->syncLatteViewsToScreens();
                 }
+
+                emit edgeChanged();
             });
         }
     });
@@ -587,6 +589,8 @@ void Positioner::initSignalingForLocationChangeSliding()
                     //! view must be deleted
                     m_view->layout()->syncLatteViewsToScreens();
                 }
+
+                emit edgeChanged();
             });
         }
     });
@@ -601,6 +605,7 @@ void Positioner::initSignalingForLocationChangeSliding()
                 m_view->effects()->setAnimationsBlocked(false);
                 emit showDockAfterMovingToLayoutFinished();
                 m_view->showSettingsWindow();
+                emit edgeChanged();
             });
         }
     });

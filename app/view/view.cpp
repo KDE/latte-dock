@@ -802,6 +802,16 @@ void View::setLayout(Layout::GenericLayout *layout)
     m_layout = layout;
 
     if (m_layout) {
+        connectionsLayout << connect(containment(), &Plasma::Applet::destroyedChanged, m_layout, &Layout::GenericLayout::destroyedChanged);
+        connectionsLayout << connect(containment(), &Plasma::Applet::locationChanged, m_corona, &Latte::Corona::viewLocationChanged);
+        connectionsLayout << connect(containment(), &Plasma::Containment::appletAlternativesRequested, m_corona, &Latte::Corona::showAlternativesForApplet, Qt::QueuedConnection);
+
+        if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+            connectionsLayout << connect(containment(), &Plasma::Containment::appletCreated, m_layout, &Layout::GenericLayout::appletCreated);
+        }
+
+        connectionsLayout << connect(m_positioner, &Latte::ViewPart::Positioner::edgeChanged, m_layout, &Layout::GenericLayout::viewEdgeChanged);
+
         //! Sometimes the activity isnt completely ready, by adding a delay
         //! we try to catch up
         QTimer::singleShot(100, [this]() {
@@ -812,13 +822,13 @@ void View::setLayout(Layout::GenericLayout *layout)
             }
         });
 
-        connectionsLayout[0] = connect(m_layout, &Layout::GenericLayout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
-        connectionsLayout[1] = connect(m_layout, &Layout::GenericLayout::configViewCreated, this, &View::configViewCreated);
+        connectionsLayout << connect(m_layout, &Layout::GenericLayout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
+        connectionsLayout << connect(m_layout, &Layout::GenericLayout::configViewCreated, this, &View::configViewCreated);
 
         Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
         if (latteCorona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-            connectionsLayout[2] = connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
+            connectionsLayout << connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
                 if (m_layout && m_visibility) {
                     qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_layout->name()
                              << " - activities: " << m_layout->appliedActivities();
@@ -827,14 +837,14 @@ void View::setLayout(Layout::GenericLayout *layout)
                 }
             });
 
-            connectionsLayout[3] = connect(m_layout, &Layout::GenericLayout::activitiesChanged, this, [&]() {
+            connectionsLayout << connect(m_layout, &Layout::GenericLayout::activitiesChanged, this, [&]() {
                 if (m_layout) {
                     applyActivitiesToWindows();
                     emit activitiesChanged();
                 }
             });
 
-            connectionsLayout[4] = connect(latteCorona->layoutsManager(), &Layouts::Manager::layoutsChanged, this, [&]() {
+            connectionsLayout << connect(latteCorona->layoutsManager(), &Layouts::Manager::layoutsChanged, this, [&]() {
                 if (m_layout) {
                     applyActivitiesToWindows();
                     emit activitiesChanged();
@@ -850,14 +860,14 @@ void View::setLayout(Layout::GenericLayout *layout)
             m_visibleHackTimer1.setSingleShot(true);
             m_visibleHackTimer2.setSingleShot(true);
 
-            connectionsLayout[5] = connect(this, &QWindow::visibleChanged, this, [&]() {
+            connectionsLayout << connect(this, &QWindow::visibleChanged, this, [&]() {
                 if (m_layout && !inDelete() & !isVisible()) {
                     m_visibleHackTimer1.start();
                     m_visibleHackTimer2.start();
                 }
             });
 
-            connectionsLayout[6] = connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
+            connectionsLayout << connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
                 if (m_layout && !inDelete() & !isVisible()) {
                     setVisible(true);
                     applyActivitiesToWindows();
@@ -865,7 +875,7 @@ void View::setLayout(Layout::GenericLayout *layout)
                 }
             });
 
-            connectionsLayout[7] = connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
+            connectionsLayout << connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
                 if (m_layout && !inDelete() && !isVisible()) {
                     setVisible(true);
                     applyActivitiesToWindows();

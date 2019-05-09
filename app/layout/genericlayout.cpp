@@ -735,7 +735,6 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
 
     latteView->init();
     latteView->setContainment(containment);
-    latteView->setLayout(this);
 
     //! force this special dock case to become primary
     //! even though it isnt
@@ -744,15 +743,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
         latteView->setOnPrimary(true);
     }
 
-    //  connect(containment, &QObject::destroyed, this, &GenericLayout::containmentDestroyed);
-    connect(containment, &Plasma::Applet::destroyedChanged, this, &GenericLayout::destroyedChanged);
-    connect(containment, &Plasma::Applet::locationChanged, m_corona, &Latte::Corona::viewLocationChanged);
-    connect(containment, &Plasma::Containment::appletAlternativesRequested
-            , m_corona, &Latte::Corona::showAlternativesForApplet, Qt::QueuedConnection);
-
-    if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-        connect(containment, &Plasma::Containment::appletCreated, this, &GenericLayout::appletCreated);
-    }
+    latteView->setLayout(this);
 
     //! Qt 5.9 creates a crash for this in wayland, that is why the check is used
     //! but on the other hand we need this for copy to work correctly and show
@@ -842,9 +833,13 @@ void GenericLayout::assignToLayout(Latte::View *latteView, QList<Plasma::Contain
         for (const auto containment : containments) {
             containment->config().writeEntry("layoutId", name());
 
-            connect(containment, &QObject::destroyed, this, &GenericLayout::containmentDestroyed);
-            connect(containment, &Plasma::Applet::destroyedChanged, this, &GenericLayout::destroyedChanged);
-            connect(containment, &Plasma::Containment::appletCreated, this, &GenericLayout::appletCreated);
+            if (latteView->containment() != containment) {
+                //! assign signals only to systrays
+                //! the View::setLayout() is responsible for the View::Containment signals
+                connect(containment, &QObject::destroyed, this, &GenericLayout::containmentDestroyed);
+                connect(containment, &Plasma::Applet::destroyedChanged, this, &GenericLayout::destroyedChanged);
+                connect(containment, &Plasma::Containment::appletCreated, this, &GenericLayout::appletCreated);
+            }
         }
 
         latteView->setLayout(this);
@@ -874,6 +869,8 @@ QList<Plasma::Containment *> GenericLayout::unassignFromLayout(Latte::View *latt
         //! add systrays from that latteView
         if (parentApplet && parentApplet->containment() && parentApplet->containment() == latteView->containment()) {
             containments << containment;
+            //! unassign signals only to systrays
+            //! the View::setLayout() is responsible for the View::Containment signals
             disconnect(containment, &QObject::destroyed, this, &GenericLayout::containmentDestroyed);
             disconnect(containment, &Plasma::Applet::destroyedChanged, this, &GenericLayout::destroyedChanged);
             disconnect(containment, &Plasma::Containment::appletCreated, this, &GenericLayout::appletCreated);

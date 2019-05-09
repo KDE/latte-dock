@@ -132,8 +132,8 @@ public slots:
 
 signals:
     void activitiesChanged(); // to move at an interface
-
     void viewsCountChanged();
+    void viewEdgeChanged();
 
     //! used from ConfigView(s) in order to be informed which is one should be shown
     void configViewCreated(QQuickView *configView);
@@ -181,6 +181,7 @@ private:
     QPointer<Storage> m_storage;
 
     friend class Storage;
+    friend class Latte::View;
 };
 
 }

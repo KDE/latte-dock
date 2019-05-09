@@ -323,7 +323,7 @@ private:
     QPointer<ViewPart::WindowsTracker> m_windowsTracker;
 
     //! Connections to release and bound for the assigned layout
-    std::array<QMetaObject::Connection, 8> connectionsLayout;
+    QList<QMetaObject::Connection> connectionsLayout;
 
     QPointer<Latte::Corona> m_corona;
 

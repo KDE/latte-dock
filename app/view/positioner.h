@@ -69,6 +69,7 @@ public slots:
 
 signals:
     void currentScreenChanged();
+    void edgeChanged();
     void screenGeometryChanged();
     void windowSizeChanged();
 
