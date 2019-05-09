@@ -2,7 +2,6 @@ set(lattedock-app_SRCS
     ../liblatte2/commontools.cpp
     ../liblatte2/types.cpp
     alternativeshelper.cpp
-    importer.cpp
     infoview.cpp
     lattecorona.cpp
     schemecolors.cpp

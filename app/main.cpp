@@ -20,8 +20,8 @@
 
 // local
 #include "config-latte.h"
-#include "importer.h"
 #include "lattecorona.h"
+#include "layouts/importer.h"
 #include "../liblatte2/types.h"
 
 // C++
@@ -146,7 +146,7 @@ int main(int argc, char **argv)
 
     //! print available-layouts
     if (parser.isSet(QStringLiteral("available-layouts"))) {
-        QStringList layouts = Latte::Importer::availableLayouts();
+        QStringList layouts = Latte::Layouts::Importer::availableLayouts();
 
         if (layouts.count() > 0) {
             qInfo() << i18n("Available layouts that can be used to start Latte:");
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
     } else if (parser.isSet(QStringLiteral("layout"))) {
         layoutNameOnStartup = parser.value(QStringLiteral("layout"));
 
-        if (!Latte::Importer::layoutExists(layoutNameOnStartup)) {
+        if (!Latte::Layouts::Importer::layoutExists(layoutNameOnStartup)) {
             qInfo() << i18nc("layout missing", "This layout doesn't exist in the system.");
             qGuiApp->exit();
             return 0;
@@ -216,7 +216,7 @@ int main(int argc, char **argv)
 
     //! import-full option
     if (parser.isSet(QStringLiteral("import-full"))) {
-        bool imported = Latte::Importer::importHelper(parser.value(QStringLiteral("import-full")));
+        bool imported = Latte::Layouts::Importer::importHelper(parser.value(QStringLiteral("import-full")));
 
         if (!imported) {
             qInfo() << i18n("The configuration cannot be imported");
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
 
     //! import-layout option
     if (parser.isSet(QStringLiteral("import-layout"))) {
-        QString importedLayout = Latte::Importer::importLayoutHelper(parser.value(QStringLiteral("import-layout")));
+        QString importedLayout = Latte::Layouts::Importer::importLayoutHelper(parser.value(QStringLiteral("import-layout")));
 
         if (importedLayout.isEmpty()) {
             qInfo() << i18n("The layout cannot be imported");

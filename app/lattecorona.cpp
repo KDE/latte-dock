@@ -22,13 +22,13 @@
 
 // local
 #include "alternativeshelper.h"
-#include "importer.h"
 #include "lattedockadaptor.h"
 #include "screenpool.h"
 #include "indicator/factory.h"
 #include "layout/centrallayout.h"
 #include "layout/genericlayout.h"
 #include "layout/sharedlayout.h"
+#include "layouts/importer.h"
 #include "layouts/manager.h"
 #include "layouts/launcherssignals.h"
 #include "shortcuts/globalshortcuts.h"

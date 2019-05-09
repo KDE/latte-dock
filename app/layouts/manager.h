@@ -44,7 +44,6 @@ class Controller;
 
 namespace Latte {
 class Corona;
-class Importer;
 class CentralLayout;
 class SharedLayout;
 class View;
@@ -52,6 +51,7 @@ namespace Layout {
 class GenericLayout;
 }
 namespace Layouts {
+class Importer;
 class LaunchersSignals;
 }
 }

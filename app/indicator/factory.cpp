@@ -20,7 +20,7 @@
 #include "factory.h"
 
 // local
-#include "../importer.h"
+#include "../layouts/importer.h"
 
 // Qt
 #include <QDebug>
@@ -49,7 +49,7 @@ Factory::Factory(QObject *parent)
 {
     m_parentWidget = new QWidget();
 
-    m_watchedPaths = Latte::Importer::standardPaths();
+    m_watchedPaths = Latte::Layouts::Importer::standardPaths();
 
     for(int i=0; i<m_watchedPaths.count(); ++i) {
         m_watchedPaths[i] = m_watchedPaths[i] + "/latte/indicators";
@@ -242,7 +242,7 @@ Latte::Types::ImportExportState Factory::importIndicatorFile(QString compressedF
     KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(metadataFile);
 
     if (metadataAreValid(metadata)) {
-        QStringList standardPaths = Latte::Importer::standardPaths();
+        QStringList standardPaths = Latte::Layouts::Importer::standardPaths();
         QString installPath = standardPaths[0] + "/latte/indicators/" + metadata.pluginId();
 
         bool updated{QDir(installPath).exists()};

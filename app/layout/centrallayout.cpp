@@ -22,9 +22,9 @@
 
 // local
 #include "sharedlayout.h"
-#include "importer.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
+#include "../layouts/importer.h"
 #include "../layouts/manager.h"
 #include "../settings/universalsettings.h"
 #include "../view/view.h"
@@ -199,7 +199,7 @@ QString CentralLayout::sharedLayoutName() const
 
 void CentralLayout::setSharedLayoutName(QString name)
 {
-    if (m_sharedLayoutName == name || (!Importer::layoutExists(name) && !name.isEmpty())) {
+    if (m_sharedLayoutName == name || (!Layouts::Importer::layoutExists(name) && !name.isEmpty())) {
         return;
     }
 
@@ -255,7 +255,7 @@ void CentralLayout::loadConfig()
 
     QString sharedLayoutName = m_layoutGroup.readEntry("sharedLayout", QString());
 
-    if (Importer::layoutExists(sharedLayoutName)) {
+    if (Layouts::Importer::layoutExists(sharedLayoutName)) {
         m_sharedLayoutName = sharedLayoutName;
     }
 

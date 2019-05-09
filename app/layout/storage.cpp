@@ -20,10 +20,10 @@
 #include "storage.h"
 
 // local
-#include "../importer.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../layouts/manager.h"
+#include "../layouts/importer.h"
 #include "../view/view.h"
 // Qt
 #include <QDir>
@@ -615,7 +615,7 @@ bool Storage::layoutIsBroken() const
             qDebug() << "   --- storaged file : " << m_layout->file();
         } else {
             if (m_layout->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-                qDebug() << "   --- in multiple layouts hidden file : " << Importer::layoutFilePath(AbstractLayout::MultipleLayoutsName);
+                qDebug() << "   --- in multiple layouts hidden file : " << Layouts::Importer::layoutFilePath(AbstractLayout::MultipleLayoutsName);
             } else {
                 qDebug() << "   --- in active layout file : " << m_layout->file();
             }

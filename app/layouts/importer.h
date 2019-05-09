@@ -31,6 +31,7 @@ class Manager;
 }
 
 namespace Latte {
+namespace Layouts {
 
 //! This class is responsible to import/export configurations
 //! and of course to import old configuration to new architecture
@@ -106,6 +107,7 @@ private:
     Layouts::Manager *m_manager;
 };
 
+}
 }
 
 #endif // IMPORTER_H

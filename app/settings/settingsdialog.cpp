@@ -22,13 +22,13 @@
 #include "settingsdialog.h"
 
 // local
-#include "importer.h"
 #include "universalsettings.h"
 #include "ui_settingsdialog.h"
 #include "../lattecorona.h"
 #include "../layout/genericlayout.h"
 #include "../layout/centrallayout.h"
 #include "../layout/sharedlayout.h"
+#include "../layouts/importer.h"
 #include "../layouts/manager.h"
 #include "../liblatte2/types.h"
 #include "../plasma/extended/theme.h"
@@ -415,9 +415,9 @@ void SettingsDialog::on_downloadButton_clicked()
     if (!dialog.changedEntries().isEmpty() || !dialog.installedEntries().isEmpty()) {
         for (const auto &entry : dialog.installedEntries()) {
             for (const auto &entryFile : entry.installedFiles()) {
-                Importer::LatteFileVersion version = Importer::fileVersion(entryFile);
+                Layouts::Importer::LatteFileVersion version = Layouts::Importer::fileVersion(entryFile);
 
-                if (version == Importer::LayoutVersion2) {
+                if (version == Layouts::Importer::LayoutVersion2) {
                     layoutAdded = true;
                     addLayoutForFile(entryFile);
                     break;
@@ -538,12 +538,12 @@ void SettingsDialog::on_importButton_clicked()
 
     connect(fileDialog, &QFileDialog::fileSelected
             , this, [&](const QString & file) {
-        Importer::LatteFileVersion version = Importer::fileVersion(file);
+        Layouts::Importer::LatteFileVersion version = Layouts::Importer::fileVersion(file);
         qDebug() << "VERSION :::: " << version;
 
-        if (version == Importer::LayoutVersion2) {
+        if (version == Layouts::Importer::LayoutVersion2) {
             addLayoutForFile(file);
-        } else if (version == Importer::ConfigVersion1) {
+        } else if (version == Layouts::Importer::ConfigVersion1) {
             auto msg = new QMessageBox(this);
             msg->setIcon(QMessageBox::Warning);
             msg->setWindowTitle(i18n("Import: Configuration file version v0.1"));
@@ -578,7 +578,7 @@ void SettingsDialog::on_importButton_clicked()
                 QProcess::startDetached(qGuiApp->applicationFilePath() + " --import-full \"" + file + "\"");
                 qGuiApp->exit();
             });
-        } else if (version == Importer::ConfigVersion2) {
+        } else if (version == Layouts::Importer::ConfigVersion2) {
             auto msg = new QMessageBox(this);
             msg->setIcon(QMessageBox::Warning);
             msg->setWindowTitle(i18n("Import: Configuration file version v0.2"));
@@ -619,7 +619,7 @@ bool SettingsDialog::importLayoutsFromV1ConfigFile(QString file)
             fileEntry->copyTo(tempDir.absolutePath());
         }
 
-        QString name = Importer::nameOfConfigFile(file);
+        QString name = Layouts::Importer::nameOfConfigFile(file);
 
         QString applets(tempDir.absolutePath() + "/" + "lattedock-appletsrc");
 

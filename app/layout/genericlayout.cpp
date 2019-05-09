@@ -22,9 +22,9 @@
 // local
 #include "abstractlayout.h"
 #include "storage.h"
-#include "../importer.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
+#include "../layouts/importer.h"
 #include "../layouts/manager.h"
 #include "../shortcuts/shortcutstracker.h"
 #include "../view/view.h"
@@ -597,8 +597,8 @@ void GenericLayout::renameLayout(QString newName)
         return;
     }
 
-    if (m_layoutFile != Importer::layoutFilePath(newName)) {
-        setFile(Importer::layoutFilePath(newName));
+    if (m_layoutFile != Layouts::Importer::layoutFilePath(newName)) {
+        setFile(Layouts::Importer::layoutFilePath(newName));
     }
 
     setName(newName);

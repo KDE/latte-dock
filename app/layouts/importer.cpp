@@ -21,11 +21,11 @@
 #include "importer.h"
 
 // local
-#include "lattecorona.h"
-#include "screenpool.h"
-#include "layout/abstractlayout.h"
-#include "layouts/manager.h"
-#include "settings/universalsettings.h"
+#include "manager.h"
+#include "../lattecorona.h"
+#include "../screenpool.h"
+#include "../layout/abstractlayout.h"
+#include "../settings/universalsettings.h"
 #include "../liblatte2/types.h"
 
 // Qt
@@ -41,6 +41,7 @@
 #include <KNotification>
 
 namespace Latte {
+namespace Layouts {
 
 Importer::Importer(QObject *parent)
     : QObject(parent)
@@ -640,4 +641,5 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
     return updatedLayouts;
 }
 
+}
 }
