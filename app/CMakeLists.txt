@@ -6,7 +6,6 @@ set(lattedock-app_SRCS
     infoview.cpp
     lattecorona.cpp
     launcherssignals.cpp
-    layoutmanager.cpp
     schemecolors.cpp
     screenpool.cpp
     main.cpp
@@ -14,6 +13,7 @@ set(lattedock-app_SRCS
 
 add_subdirectory(indicator)
 add_subdirectory(layout)
+add_subdirectory(layouts)
 add_subdirectory(package)
 add_subdirectory(plasma/extended)
 add_subdirectory(settings)

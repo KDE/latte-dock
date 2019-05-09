@@ -28,7 +28,6 @@ class QWidget;
 class QVariant;
 
 namespace Latte {
-class LayoutManager;
 class SettingsDialog;
 }
 

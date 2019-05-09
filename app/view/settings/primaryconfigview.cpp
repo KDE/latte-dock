@@ -27,7 +27,7 @@
 #include "../panelshadows_p.h"
 #include "../view.h"
 #include "../../lattecorona.h"
-#include "../../layoutmanager.h"
+#include "../../layouts/manager.h"
 #include "../../layout/genericlayout.h"
 #include "../../settings/universalsettings.h"
 #include "../../shortcuts/globalshortcuts.h"
@@ -147,7 +147,7 @@ void PrimaryConfigView::init()
 
     if (m_corona) {
         rootContext()->setContextProperty(QStringLiteral("universalSettings"), m_corona->universalSettings());
-        rootContext()->setContextProperty(QStringLiteral("layoutManager"), m_corona->layoutManager());
+        rootContext()->setContextProperty(QStringLiteral("layoutsManager"), m_corona->layoutsManager());
     }
 
     KDeclarative::KDeclarative kdeclarative;

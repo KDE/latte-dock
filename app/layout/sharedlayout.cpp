@@ -22,8 +22,8 @@
 // local
 #include "centrallayout.h"
 #include "../lattecorona.h"
-#include "../layoutmanager.h"
 #include "../screenpool.h"
+#include "../layouts/manager.h"
 #include "../view/view.h"
 
 namespace Latte {
@@ -33,7 +33,7 @@ SharedLayout::SharedLayout(CentralLayout *assigned, QObject *parent, QString lay
 {
     initToCorona(assigned->corona());
 
-    connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, &SharedLayout::updateLastUsedCentralLayout);
+    connect(m_corona->layoutsManager(), &Layouts::Manager::currentLayoutNameChanged, this, &SharedLayout::updateLastUsedCentralLayout);
 
     addCentralLayout(assigned);
     updateLastUsedCentralLayout();

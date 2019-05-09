@@ -18,8 +18,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef LAYOUTMANAGER_H
-#define LAYOUTMANAGER_H
+#ifndef LAYOUTSMANAGER_H
+#define LAYOUTSMANAGER_H
 
 // local
 #include "launcherssignals.h"
@@ -55,10 +55,11 @@ class GenericLayout;
 }
 
 namespace Latte {
+namespace Layouts {
 
 //! This class is responsible to manipulate all layouts.
 //! add,remove,rename, update configurations etc.
-class LayoutManager : public QObject
+class Manager : public QObject
 {
     Q_OBJECT
 
@@ -70,8 +71,8 @@ class LayoutManager : public QObject
     Q_PROPERTY(LaunchersSignals *launchersSignals READ launchersSignals NOTIFY launchersSignalsChanged)
 
 public:
-    LayoutManager(QObject *parent = nullptr);
-    ~LayoutManager() override;
+    Manager(QObject *parent = nullptr);
+    ~Manager() override;
 
     Latte::Corona *corona();
     Importer *importer();
@@ -207,10 +208,10 @@ private:
 
     KActivities::Controller *m_activitiesController;
 
-
-    friend class SettingsDialog;
+    friend class Latte::SettingsDialog;
 };
 
 }
+}
 
-#endif // LAYOUTMANAGER_H
+#endif // LAYOUTSMANAGER_H

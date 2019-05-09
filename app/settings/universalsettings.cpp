@@ -22,7 +22,7 @@
 
 // local
 #include "../importer.h"
-#include "../layoutmanager.h"
+#include "../layouts/manager.h"
 
 // Qt
 #include <QDebug>

@@ -393,7 +393,7 @@ DragDrop.DropArea {
     property QtObject shortcutsEngine: null
     property QtObject themeExtended: null
     property QtObject universalSettings: null
-    property QtObject universalLayoutManager: null
+    property QtObject layoutsManager: null
     property QtObject viewLayout: latteView && latteView.layout ? latteView.layout : null
 
     // TO BE DELETED, if not needed: property int counter:0;

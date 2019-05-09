@@ -24,8 +24,8 @@
 #include "storage.h"
 #include "../importer.h"
 #include "../lattecorona.h"
-#include "../layoutmanager.h"
 #include "../screenpool.h"
+#include "../layouts/manager.h"
 #include "../shortcuts/shortcutstracker.h"
 #include "../view/view.h"
 #include "../view/positioner.h"
@@ -144,7 +144,7 @@ bool GenericLayout::isActive() const
         return false;
     }
 
-    GenericLayout *generic = m_corona->layoutManager()->layout(m_layoutName);
+    GenericLayout *generic = m_corona->layoutsManager()->layout(m_layoutName);
 
     if (generic) {
         return true;
@@ -159,7 +159,7 @@ bool GenericLayout::isCurrent() const
         return false;
     }
 
-    return name() == m_corona->layoutManager()->currentLayoutName();
+    return name() == m_corona->layoutsManager()->currentLayoutName();
 }
 
 int GenericLayout::viewsCount(int screen) const
@@ -493,10 +493,10 @@ void GenericLayout::addContainment(Plasma::Containment *containment)
 
     bool containmentInLayout{false};
 
-    if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {
+    if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
         m_containments.append(containment);
         containmentInLayout = true;
-    } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+    } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
         QString layoutId = containment->config().readEntry("layoutId", QString());
 
         if (!layoutId.isEmpty() && (layoutId == m_layoutName)) {
@@ -593,7 +593,7 @@ void GenericLayout::destroyedChanged(bool destroyed)
 
 void GenericLayout::renameLayout(QString newName)
 {
-    if (!m_corona || m_corona->layoutManager()->memoryUsage() != Types::MultipleLayouts) {
+    if (!m_corona || m_corona->layoutsManager()->memoryUsage() != Types::MultipleLayouts) {
         return;
     }
 
@@ -750,7 +750,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     connect(containment, &Plasma::Containment::appletAlternativesRequested
             , m_corona, &Latte::Corona::showAlternativesForApplet, Qt::QueuedConnection);
 
-    if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+    if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
         connect(containment, &Plasma::Containment::appletCreated, this, &GenericLayout::appletCreated);
     }
 
@@ -776,9 +776,9 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
     m_corona = corona;
 
     for (const auto containment : m_corona->containments()) {
-        if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {
+        if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
             addContainment(containment);
-        } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+        } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
             QString layoutId = containment->config().readEntry("layoutId", QString());
 
             if (!layoutId.isEmpty() && (layoutId == m_layoutName)) {
@@ -812,7 +812,7 @@ void GenericLayout::updateLastUsedActivity()
         return;
     }
 
-    if (!m_lastUsedActivity.isEmpty() && !m_corona->layoutManager()->activities().contains(m_lastUsedActivity)) {
+    if (!m_lastUsedActivity.isEmpty() && !m_corona->layoutsManager()->activities().contains(m_lastUsedActivity)) {
         clearLastUsedActivity();
     }
 
@@ -822,7 +822,7 @@ void GenericLayout::updateLastUsedActivity()
 
     if (m_lastUsedActivity != currentId
             && (appliedActivitiesIds.contains(currentId)
-                || m_corona->layoutManager()->memoryUsage() == Types::SingleLayout)) {
+                || m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout)) {
         m_lastUsedActivity = currentId;
 
         emit lastUsedActivityChanged();
@@ -853,7 +853,7 @@ void GenericLayout::assignToLayout(Latte::View *latteView, QList<Plasma::Contain
     }
 
     //! sync the original layout file for integrity
-    if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+    if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
         m_storage->syncToLayoutFile(false);
     }
 }
@@ -889,7 +889,7 @@ QList<Plasma::Containment *> GenericLayout::unassignFromLayout(Latte::View *latt
     }
 
     //! sync the original layout file for integrity
-    if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+    if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
         m_storage->syncToLayoutFile(false);
     }
 

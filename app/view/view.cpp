@@ -28,8 +28,8 @@
 #include "settings/primaryconfigview.h"
 #include "settings/secondaryconfigview.h"
 #include "../lattecorona.h"
-#include "../layoutmanager.h"
 #include "../layout/genericlayout.h"
+#include "../layouts/manager.h"
 #include "../plasma/extended/theme.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
@@ -165,7 +165,7 @@ View::~View()
 
     qDebug() << "dock view deleting...";
     rootContext()->setContextProperty(QStringLiteral("dock"), nullptr);
-    rootContext()->setContextProperty(QStringLiteral("layoutManager"), nullptr);
+    rootContext()->setContextProperty(QStringLiteral("layoutsManager"), nullptr);
     rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), nullptr);
     rootContext()->setContextProperty(QStringLiteral("themeExtended"), nullptr);
     rootContext()->setContextProperty(QStringLiteral("universalSettings"), nullptr);
@@ -244,7 +244,7 @@ void View::init()
     rootContext()->setContextProperty(QStringLiteral("latteView"), this);
 
     if (m_corona) {
-        rootContext()->setContextProperty(QStringLiteral("layoutManager"), m_corona->layoutManager());
+        rootContext()->setContextProperty(QStringLiteral("layoutsManager"), m_corona->layoutsManager());
         rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), m_corona->globalShortcuts()->shortcutsTracker());
         rootContext()->setContextProperty(QStringLiteral("themeExtended"), m_corona->themeExtended());
         rootContext()->setContextProperty(QStringLiteral("universalSettings"), m_corona->universalSettings());
@@ -817,7 +817,7 @@ void View::setLayout(Layout::GenericLayout *layout)
 
         Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
-        if (latteCorona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+        if (latteCorona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
             connectionsLayout[2] = connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
                 if (m_layout && m_visibility) {
                     qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_layout->name()
@@ -834,7 +834,7 @@ void View::setLayout(Layout::GenericLayout *layout)
                 }
             });
 
-            connectionsLayout[4] = connect(latteCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
+            connectionsLayout[4] = connect(latteCorona->layoutsManager(), &Layouts::Manager::layoutsChanged, this, [&]() {
                 if (m_layout) {
                     applyActivitiesToWindows();
                     emit activitiesChanged();
@@ -891,7 +891,7 @@ void View::moveToLayout(QString layoutName)
     Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
     if (latteCorona && containments.size() > 0) {
-        Layout::GenericLayout *newLayout = latteCorona->layoutManager()->layout(layoutName);
+        Layout::GenericLayout *newLayout = latteCorona->layoutsManager()->layout(layoutName);
 
         if (newLayout) {
             newLayout->assignToLayout(this, containments);

@@ -23,7 +23,7 @@
 #include "positioner.h"
 #include "view.h"
 #include "../lattecorona.h"
-#include "../layoutmanager.h"
+#include "../layouts/manager.h"
 #include "../../liblatte2/types.h"
 
 namespace Latte {
@@ -203,7 +203,7 @@ void WindowsTracker::setEnabled(bool active)
         });
 
         m_connections[6] = connect(m_wm, &WindowSystem::currentActivityChanged, this, [&] {
-            if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+            if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
                 //! this is needed in MultipleLayouts because there is a chance that multiple
                 //! layouts are providing different available screen geometries in different Activities
                 updateAvailableScreenGeometry();

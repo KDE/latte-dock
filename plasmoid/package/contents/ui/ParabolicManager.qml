@@ -537,8 +537,8 @@ Item {
 
             tasksModel.move(from, to);
             if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteView.universalLayoutManager.launchersSignals.moveTask(root.viewLayoutName,
-                                                                           plasmoid.id, latteView.launchersGroup, from, to);
+                latteView.layoutsManager.launchersSignals.moveTask(root.viewLayoutName,
+                                                                   plasmoid.id, latteView.launchersGroup, from, to);
             }
             delayedLaynchersSyncTimer.start();
         }

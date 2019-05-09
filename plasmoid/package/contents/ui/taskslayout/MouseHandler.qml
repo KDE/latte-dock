@@ -160,9 +160,9 @@ Item {
 
                     var pos = root.dragSource.itemIndex;
                     tasksModel.move(pos, insertAt);
-                  //! disable syncing for moving launchers action in favor of validatorOrder launchersSignal
-                  /*  if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                        latteView.universalLayoutManager.launchersSignals.moveTask(root.viewLayoutName,
+                    //! disable syncing for moving launchers action in favor of validatorOrder launchersSignal
+                    /*  if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                        latteView.layoutsManager.launchersSignals.moveTask(root.viewLayoutName,
                                                                                    plasmoid.id,
                                                                                    latteView.launchersGroup, pos, insertAt);
                     }*/

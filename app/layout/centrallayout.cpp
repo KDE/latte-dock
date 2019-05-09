@@ -24,8 +24,8 @@
 #include "sharedlayout.h"
 #include "importer.h"
 #include "../lattecorona.h"
-#include "../layoutmanager.h"
 #include "../screenpool.h"
+#include "../layouts/manager.h"
 #include "../settings/universalsettings.h"
 #include "../view/view.h"
 #include "../../liblatte2/types.h"
@@ -85,21 +85,21 @@ void CentralLayout::initToCorona(Latte::Corona *corona)
         });
 
 
-        if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout && m_corona->universalSettings()->canDisableBorders()) {
+        if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout && m_corona->universalSettings()->canDisableBorders()) {
             kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
-        } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-            connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, [&]() {
+        } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+            connect(m_corona->layoutsManager(), &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
                 if (m_corona->universalSettings()->canDisableBorders()
-                    && m_corona->layoutManager()->currentLayoutName() == name()) {
+                    && m_corona->layoutsManager()->currentLayoutName() == name()) {
                     kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
                 }
             });
         }
 
         //! Request the SharedLayout in case there is one and Latte is functioning in MultipleLayouts mode
-        if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts && !m_sharedLayoutName.isEmpty()) {
-            if (m_corona->layoutManager()->registerAtSharedLayout(this, m_sharedLayoutName)) {
-                setSharedLayout(m_corona->layoutManager()->sharedLayout(m_sharedLayoutName));
+        if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts && !m_sharedLayoutName.isEmpty()) {
+            if (m_corona->layoutsManager()->registerAtSharedLayout(this, m_sharedLayoutName)) {
+                setSharedLayout(m_corona->layoutsManager()->sharedLayout(m_sharedLayoutName));
             }
         }
     }
@@ -292,11 +292,11 @@ const QStringList CentralLayout::appliedActivities()
         return {};
     }
 
-    if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {
+    if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
         return {"0"};
-    } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+    } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
         if (m_activities.isEmpty()) {
-            return m_corona->layoutManager()->orphanedActivities();
+            return m_corona->layoutsManager()->orphanedActivities();
         } else {
             return m_activities;
         }

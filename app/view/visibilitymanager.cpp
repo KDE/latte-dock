@@ -25,8 +25,8 @@
 #include "screenedgeghostwindow.h"
 #include "view.h"
 #include "../lattecorona.h"
-#include "../layoutmanager.h"
 #include "../screenpool.h"
+#include "../layouts/manager.h"
 #include "../wm/windowinfowrap.h"
 #include "../../liblatte2/extras.h"
 
@@ -172,14 +172,14 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         }
 
 
-        m_connections[base] = connect(m_corona->layoutManager(),  &LayoutManager::currentLayoutNameChanged, this, [&]() {
-            if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+        m_connections[base] = connect(m_corona->layoutsManager(),  &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
+            if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities();
             }
         });
 
         m_connections[base+1] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
-            if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+            if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities();
             }
         });
@@ -242,11 +242,11 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
 void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
 {
-    bool multipleLayoutsAndCurrent = (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
+    bool multipleLayoutsAndCurrent = (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts
                                       && m_latteView->layout() && !m_latteView->positioner()->inLocationChangeAnimation()
                                       && m_latteView->layout()->isCurrent());
 
-    if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
+    if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
         QRect computedStruts = acceptableStruts();
 
         if (m_publishedStruts != computedStruts) {
@@ -397,10 +397,10 @@ bool VisibilityManager::supportsKWinEdges() const
 void VisibilityManager::updateGhostWindowState()
 {
     if (supportsKWinEdges()) {
-        bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout ||
-                                (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
+        bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout ||
+                                (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts
                                  && m_latteView->layout() && !m_latteView->positioner()->inLocationChangeAnimation()
-                                 && m_latteView->layout()->name() == m_corona->layoutManager()->currentLayoutName()));
+                                 && m_latteView->layout()->name() == m_corona->layoutsManager()->currentLayoutName()));
 
         if (inCurrentLayout) {
             m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
@@ -718,10 +718,10 @@ void VisibilityManager::createEdgeGhostWindow()
 
         m_connectionsKWinEdges[0] = connect(m_wm, &WindowSystem::currentActivityChanged,
                                             this, [&]() {
-            bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout ||
-                                    (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
+            bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout ||
+                                    (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts
                                      && m_latteView->layout() && !m_latteView->positioner()->inLocationChangeAnimation()
-                                     && m_latteView->layout()->name() == m_corona->layoutManager()->currentLayoutName()));
+                                     && m_latteView->layout()->name() == m_corona->layoutsManager()->currentLayoutName()));
 
             if (m_edgeGhostWindow) {
                 if (inCurrentLayout) {

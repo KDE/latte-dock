@@ -301,7 +301,7 @@ FocusScope {
                     tooltip: i18n("Open Latte settings window")
                     onPressedChanged: {
                         if (pressed) {
-                            layoutManager.showLatteSettingsDialog(Latte.Types.PreferencesPage)
+                            layoutsManager.showLatteSettingsDialog(Latte.Types.PreferencesPage)
                         }
                     }
                 }
@@ -611,8 +611,8 @@ FocusScope {
 
                     updateCopyText();
 
-                    var tempCentralLayouts = layoutManager.centralLayoutsNames();
-                    var tempSharedLayouts = layoutManager.sharedLayoutsNames();
+                    var tempCentralLayouts = layoutsManager.centralLayoutsNames();
+                    var tempSharedLayouts = layoutsManager.sharedLayoutsNames();
 
                     if (tempSharedLayouts.length > 0) {
                         var curIndex = tempSharedLayouts.indexOf(latteView.layout.name);

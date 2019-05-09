@@ -25,7 +25,9 @@
 #include <QObject>
 
 namespace Latte {
-class LayoutManager;
+namespace Layouts {
+class Manager;
+}
 }
 
 namespace Latte {
@@ -101,7 +103,7 @@ private:
     //! the new layout path and an empty string if it cant
     QString layoutCanBeImported(QString oldAppletsPath, QString newName, QString exportDirectory = QString());
 
-    LayoutManager *m_manager;
+    Layouts::Manager *m_manager;
 };
 
 }

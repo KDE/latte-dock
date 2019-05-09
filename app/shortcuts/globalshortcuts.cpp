@@ -24,8 +24,8 @@
 #include "modifiertracker.h"
 #include "shortcutstracker.h"
 #include "../lattecorona.h"
-#include "../layoutmanager.h"
 #include "../layout/centrallayout.h"
+#include "../layouts/manager.h"
 #include "../settings/universalsettings.h"
 #include "../view/view.h"
 
@@ -118,7 +118,7 @@ void GlobalShortcuts::init()
     KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_W));
     connect(layoutsAction, &QAction::triggered, this, [this]() {
         m_modifierTracker->cancelMetaPressed();
-        m_corona->layoutManager()->showLatteSettingsDialog(Types::LayoutPage);
+        m_corona->layoutsManager()->showLatteSettingsDialog(Types::LayoutPage);
     });
 
     //show the latter universal settings
@@ -128,7 +128,7 @@ void GlobalShortcuts::init()
     KGlobalAccel::setGlobalShortcut(universalSettingsAction, QKeySequence(Qt::META + Qt::Key_E));
     connect(universalSettingsAction, &QAction::triggered, this, [this]() {
         m_modifierTracker->cancelMetaPressed();
-        m_corona->layoutManager()->showLatteSettingsDialog(Types::PreferencesPage);
+        m_corona->layoutsManager()->showLatteSettingsDialog(Types::PreferencesPage);
     });
 
     KActionCollection *taskbarActions = new KActionCollection(m_corona);
@@ -223,7 +223,7 @@ void GlobalShortcuts::activateLauncherMenu()
     }
 
     QList<Latte::View *> sortedViews;
-    CentralLayout *currentLayout = m_corona->layoutManager()->currentLayout();
+    CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
 
     if (currentLayout) {
         sortedViews = currentLayout->sortedLatteViews();
@@ -387,7 +387,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
     QList<Latte::View *> sortedViews;
-    CentralLayout *currentLayout = m_corona->layoutManager()->currentLayout();
+    CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
 
     if (currentLayout) {
         sortedViews = currentLayout->sortedLatteViews();
@@ -460,7 +460,7 @@ void GlobalShortcuts::updateViewItemBadge(QString identifier, QString value)
         return false;
     };
 
-    CentralLayout *currentLayout = m_corona->layoutManager()->currentLayout();
+    CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
     QList<Latte::View *> views;
 
     if (currentLayout) {
@@ -618,7 +618,7 @@ void GlobalShortcuts::showViews()
     };
 
     QList<Latte::View *> sortedViews;
-    CentralLayout *currentLayout = m_corona->layoutManager()->currentLayout();
+    CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
 
     if (currentLayout) {
         sortedViews = currentLayout->sortedLatteViews();
@@ -710,7 +710,7 @@ void GlobalShortcuts::showViews()
 bool GlobalShortcuts::viewsToHideAreValid()
 {
     for(const auto view : m_hideViews) {
-        if (!m_corona->layoutManager()->latteViewExists(view)) {
+        if (!m_corona->layoutsManager()->latteViewExists(view)) {
             return false;
         }
 
@@ -722,7 +722,7 @@ bool GlobalShortcuts::viewsToHideAreValid()
 void GlobalShortcuts::showSettings()
 {
     QList<Latte::View *> sortedViews;
-    CentralLayout *currentLayout = m_corona->layoutManager()->currentLayout();
+    CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
 
     if (currentLayout) {
         sortedViews = currentLayout->sortedLatteViews();

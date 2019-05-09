@@ -65,7 +65,6 @@ class AbstractWindowInterface;
 class ScreenPool;
 class GlobalShortcuts;
 class UniversalSettings;
-class LayoutManager;
 class LaunchersSignals;
 class View;
 namespace Indicator{
@@ -74,6 +73,9 @@ class Factory;
 namespace Layout{
 class GenericLayout;
 class Storage;
+}
+namespace Layouts{
+class Manager;
 }
 namespace PlasmaExtended{
 class ScreenPool;
@@ -121,7 +123,7 @@ public:
     GlobalShortcuts *globalShortcuts() const;
     ScreenPool *screenPool() const;
     UniversalSettings *universalSettings() const;
-    LayoutManager *layoutManager() const;
+    Layouts::Manager *layoutsManager() const;
 
     Indicator::Factory *indicatorFactory() const;
 
@@ -202,9 +204,9 @@ private:
     ScreenPool *m_screenPool{nullptr};
     UniversalSettings *m_universalSettings{nullptr};
     GlobalShortcuts *m_globalShortcuts{nullptr};
-    LayoutManager *m_layoutManager{nullptr};
 
     Indicator::Factory *m_indicatorFactory{nullptr};
+    Layouts::Manager *m_layoutsManager{nullptr};
 
     PlasmaExtended::ScreenPool *m_plasmaScreenPool{nullptr};
     PlasmaExtended::Theme *m_themeExtended{nullptr};
@@ -212,9 +214,9 @@ private:
     KWayland::Client::PlasmaShell *m_waylandCorona{nullptr};
 
     friend class GlobalShortcuts;
-    friend class LayoutManager;
     friend class LaunchersSignals;
     friend class Layout::Storage;
+    friend class Layouts::Manager;
 };
 
 }

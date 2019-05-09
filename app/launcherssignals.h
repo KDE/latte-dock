@@ -32,7 +32,9 @@ class Applet;
 }
 
 namespace Latte {
-class LayoutManager;
+namespace Layouts {
+class Manager;
+}
 }
 
 namespace Latte {
@@ -65,7 +67,7 @@ private:
     QList<Plasma::Applet *> lattePlasmoids(QString layoutName);
 
 private:
-    LayoutManager *m_manager{nullptr};
+    Layouts::Manager *m_manager{nullptr};
 };
 
 }

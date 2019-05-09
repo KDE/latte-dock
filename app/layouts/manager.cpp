@@ -2,6 +2,8 @@
 *  Copyright 2017  Smith AR <audoban@openmailbox.org>
 *                  Michail Vourlakos <mvourlakos@gmail.com>
 *
+*            2019  Michail Vourlakos <mvourlakos@gmail.com>
+*
 *  This file is part of Latte-Dock
 *
 *  Latte-Dock is free software; you can redistribute it and/or
@@ -18,20 +20,20 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "layoutmanager.h"
+#include "manager.h"
 
 // local
-#include "importer.h"
-#include "infoview.h"
-#include "launcherssignals.h"
-#include "screenpool.h"
-#include "layout/abstractlayout.h"
-#include "layout/centrallayout.h"
-#include "layout/genericlayout.h"
-#include "layout/sharedlayout.h"
-#include "settings/settingsdialog.h"
-#include "settings/universalsettings.h"
-#include "view/view.h"
+#include "../importer.h"
+#include "../infoview.h"
+#include "../launcherssignals.h"
+#include "../screenpool.h"
+#include "../layout/abstractlayout.h"
+#include "../layout/centrallayout.h"
+#include "../layout/genericlayout.h"
+#include "../layout/sharedlayout.h"
+#include "../settings/settingsdialog.h"
+#include "../settings/universalsettings.h"
+#include "../view/view.h"
 
 // Qt
 #include <QDir>
@@ -47,10 +49,11 @@
 #include <KNotification>
 
 namespace Latte {
+namespace Layouts {
 
 const int MultipleLayoutsPresetId = 10;
 
-LayoutManager::LayoutManager(QObject *parent)
+Manager::Manager(QObject *parent)
     : QObject(parent),
       m_importer(new Importer(this)),
       m_launchersSignals(new LaunchersSignals(this)),
@@ -59,16 +62,16 @@ LayoutManager::LayoutManager(QObject *parent)
     m_corona = qobject_cast<Latte::Corona *>(parent);
 
     if (m_corona) {
-        connect(m_corona->universalSettings(), &UniversalSettings::currentLayoutNameChanged, this, &LayoutManager::currentLayoutNameChanged);
-        connect(m_corona->universalSettings(), &UniversalSettings::showInfoWindowChanged, this, &LayoutManager::showInfoWindowChanged);
+        connect(m_corona->universalSettings(), &UniversalSettings::currentLayoutNameChanged, this, &Manager::currentLayoutNameChanged);
+        connect(m_corona->universalSettings(), &UniversalSettings::showInfoWindowChanged, this, &Manager::showInfoWindowChanged);
 
         m_dynamicSwitchTimer.setSingleShot(true);
         showInfoWindowChanged();
-        connect(&m_dynamicSwitchTimer, &QTimer::timeout, this, &LayoutManager::confirmDynamicSwitch);
+        connect(&m_dynamicSwitchTimer, &QTimer::timeout, this, &Manager::confirmDynamicSwitch);
     }
 }
 
-LayoutManager::~LayoutManager()
+Manager::~Manager()
 {
     m_importer->deleteLater();
     m_launchersSignals->deleteLater();
@@ -78,7 +81,7 @@ LayoutManager::~LayoutManager()
     m_activitiesController->deleteLater();
 }
 
-void LayoutManager::load()
+void Manager::load()
 {
     int configVer = m_corona->universalSettings()->version();
     qDebug() << "Universal Settings version : " << configVer;
@@ -109,7 +112,7 @@ void LayoutManager::load()
     qDebug() << "Latte is loading  its layouts...";
 
     connect(m_corona->m_activityConsumer, &KActivities::Consumer::currentActivityChanged,
-            this, &LayoutManager::currentActivityChanged);
+            this, &Manager::currentActivityChanged);
 
     connect(m_corona->m_activityConsumer, &KActivities::Consumer::runningActivitiesChanged,
             this, [&]() {
@@ -121,7 +124,7 @@ void LayoutManager::load()
     loadLayouts();
 }
 
-void LayoutManager::unload()
+void Manager::unload()
 {
     //! Unload all CentralLayouts
     while (!m_centralLayouts.isEmpty()) {
@@ -145,7 +148,7 @@ void LayoutManager::unload()
         file2.remove();
 }
 
-void LayoutManager::unloadCentralLayout(CentralLayout *layout)
+void Manager::unloadCentralLayout(CentralLayout *layout)
 {
     int pos = m_centralLayouts.indexOf(layout);
 
@@ -167,10 +170,10 @@ void LayoutManager::unloadCentralLayout(CentralLayout *layout)
     }
 }
 
-void LayoutManager::unloadSharedLayout(SharedLayout *layout)
+void Manager::unloadSharedLayout(SharedLayout *layout)
 {
     if (m_sharedLayouts.contains(layout)) {
-        disconnect(layout, &SharedLayout::layoutDestroyed, this, &LayoutManager::unloadSharedLayout);
+        disconnect(layout, &SharedLayout::layoutDestroyed, this, &Manager::unloadSharedLayout);
         int pos = m_sharedLayouts.indexOf(layout);
         SharedLayout *shared = m_sharedLayouts.takeAt(pos);
         shared->syncToLayoutFile(true);
@@ -183,22 +186,22 @@ void LayoutManager::unloadSharedLayout(SharedLayout *layout)
 }
 
 
-Latte::Corona *LayoutManager::corona()
+Latte::Corona *Manager::corona()
 {
     return m_corona;
 }
 
-Importer *LayoutManager::importer()
+Importer *Manager::importer()
 {
     return m_importer;
 }
 
-LaunchersSignals *LayoutManager::launchersSignals()
+LaunchersSignals *Manager::launchersSignals()
 {
     return m_launchersSignals;
 }
 
-QString LayoutManager::currentLayoutName() const
+QString Manager::currentLayoutName() const
 {
     if (memoryUsage() == Types::SingleLayout) {
         return m_corona->universalSettings()->currentLayoutName();
@@ -209,7 +212,7 @@ QString LayoutManager::currentLayoutName() const
     return QString();
 }
 
-QString LayoutManager::defaultLayoutName() const
+QString Manager::defaultLayoutName() const
 {
     QByteArray presetNameOrig = QString("preset" + QString::number(1)).toUtf8();
     QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
@@ -220,17 +223,17 @@ QString LayoutManager::defaultLayoutName() const
     return presetName;
 }
 
-bool LayoutManager::layoutExists(QString layoutName) const
+bool Manager::layoutExists(QString layoutName) const
 {
     return m_layouts.contains(layoutName);
 }
 
-QStringList LayoutManager::layouts() const
+QStringList Manager::layouts() const
 {
     return m_layouts;
 }
 
-QStringList LayoutManager::menuLayouts() const
+QStringList Manager::menuLayouts() const
 {
     QStringList fixedMenuLayouts = m_menuLayouts;
 
@@ -249,7 +252,7 @@ QStringList LayoutManager::menuLayouts() const
     return fixedMenuLayouts;
 }
 
-void LayoutManager::setMenuLayouts(QStringList layouts)
+void Manager::setMenuLayouts(QStringList layouts)
 {
     if (m_menuLayouts == layouts) {
         return;
@@ -259,17 +262,17 @@ void LayoutManager::setMenuLayouts(QStringList layouts)
     emit menuLayoutsChanged();
 }
 
-QStringList LayoutManager::activities()
+QStringList Manager::activities()
 {
     return m_corona->m_activityConsumer->activities();
 }
 
-QStringList LayoutManager::runningActivities()
+QStringList Manager::runningActivities()
 {
     return m_corona->m_activityConsumer->runningActivities();
 }
 
-QStringList LayoutManager::orphanedActivities()
+QStringList Manager::orphanedActivities()
 {
     QStringList orphans;
 
@@ -282,12 +285,12 @@ QStringList LayoutManager::orphanedActivities()
     return orphans;
 }
 
-QStringList LayoutManager::presetsPaths() const
+QStringList Manager::presetsPaths() const
 {
     return m_presetsPaths;
 }
 
-QString LayoutManager::layoutPath(QString layoutName)
+QString Manager::layoutPath(QString layoutName)
 {
     QString path = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
 
@@ -298,22 +301,22 @@ QString LayoutManager::layoutPath(QString layoutName)
     return path;
 }
 
-Types::LayoutsMemoryUsage LayoutManager::memoryUsage() const
+Types::LayoutsMemoryUsage Manager::memoryUsage() const
 {
     return m_corona->universalSettings()->layoutsMemoryUsage();
 }
 
-int LayoutManager::layoutsMemoryUsage()
+int Manager::layoutsMemoryUsage()
 {
     return (int)m_corona->universalSettings()->layoutsMemoryUsage();
 }
 
-void LayoutManager::setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage)
+void Manager::setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage)
 {
     m_corona->universalSettings()->setLayoutsMemoryUsage(memoryUsage);
 }
 
-bool LayoutManager::latteViewExists(Latte::View *view) const
+bool Manager::latteViewExists(Latte::View *view) const
 {
     for (const auto layout : m_centralLayouts) {
         for (const auto &v : layout->latteViews()) {
@@ -326,7 +329,7 @@ bool LayoutManager::latteViewExists(Latte::View *view) const
     return false;
 }
 
-QStringList LayoutManager::centralLayoutsNames()
+QStringList Manager::centralLayoutsNames()
 {
     QStringList names;
 
@@ -343,7 +346,7 @@ QStringList LayoutManager::centralLayoutsNames()
 
 }
 
-QStringList LayoutManager::sharedLayoutsNames()
+QStringList Manager::sharedLayoutsNames()
 {
     QStringList names;
 
@@ -355,12 +358,12 @@ QStringList LayoutManager::sharedLayoutsNames()
     return names;
 }
 
-QStringList LayoutManager::storedSharedLayouts() const
+QStringList Manager::storedSharedLayouts() const
 {
     return m_sharedLayoutIds;
 }
 
-Layout::GenericLayout *LayoutManager::layout(QString id) const
+Layout::GenericLayout *Manager::layout(QString id) const
 {
     Layout::GenericLayout *l = centralLayout(id);
 
@@ -372,7 +375,7 @@ Layout::GenericLayout *LayoutManager::layout(QString id) const
 }
 
 
-CentralLayout *LayoutManager::centralLayout(QString id) const
+CentralLayout *Manager::centralLayout(QString id) const
 {
     for (int i = 0; i < m_centralLayouts.size(); ++i) {
         CentralLayout *layout = m_centralLayouts.at(i);
@@ -386,7 +389,7 @@ CentralLayout *LayoutManager::centralLayout(QString id) const
     return nullptr;
 }
 
-int LayoutManager::centralLayoutPos(QString id) const
+int Manager::centralLayoutPos(QString id) const
 {
     for (int i = 0; i < m_centralLayouts.size(); ++i) {
         CentralLayout *layout = m_centralLayouts.at(i);
@@ -400,7 +403,7 @@ int LayoutManager::centralLayoutPos(QString id) const
     return -1;
 }
 
-SharedLayout *LayoutManager::sharedLayout(QString id) const
+SharedLayout *Manager::sharedLayout(QString id) const
 {
     for (int i = 0; i < m_sharedLayouts.size(); ++i) {
         SharedLayout *layout = m_sharedLayouts.at(i);
@@ -413,7 +416,7 @@ SharedLayout *LayoutManager::sharedLayout(QString id) const
     return nullptr;
 }
 
-bool LayoutManager::registerAtSharedLayout(CentralLayout *central, QString id)
+bool Manager::registerAtSharedLayout(CentralLayout *central, QString id)
 {
     if (memoryUsage() == Types::SingleLayout || centralLayout(id)) {
         //! if memory is functioning to SINGLE mode OR shared layout has already
@@ -435,12 +438,12 @@ bool LayoutManager::registerAtSharedLayout(CentralLayout *central, QString id)
     m_sharedLayouts.append(top);
     top->importToCorona();
 
-    connect(top, &SharedLayout::layoutDestroyed, this, &LayoutManager::unloadSharedLayout);
+    connect(top, &SharedLayout::layoutDestroyed, this, &Manager::unloadSharedLayout);
 
     return true;
 }
 
-CentralLayout *LayoutManager::currentLayout() const
+CentralLayout *Manager::currentLayout() const
 {
     if (memoryUsage() == Types::SingleLayout) {
         return m_centralLayouts.at(0);
@@ -461,7 +464,7 @@ CentralLayout *LayoutManager::currentLayout() const
     return nullptr;
 }
 
-void LayoutManager::updateCurrentLayoutNameInMultiEnvironment()
+void Manager::updateCurrentLayoutNameInMultiEnvironment()
 {
     for (const auto layout : m_centralLayouts) {
         if (layout->activities().contains(m_corona->activitiesConsumer()->currentActivity())) {
@@ -480,7 +483,7 @@ void LayoutManager::updateCurrentLayoutNameInMultiEnvironment()
     }
 }
 
-void LayoutManager::currentActivityChanged(const QString &id)
+void Manager::currentActivityChanged(const QString &id)
 {
     if (memoryUsage() == Types::SingleLayout) {
         qDebug() << "activity changed :: " << id;
@@ -493,7 +496,7 @@ void LayoutManager::currentActivityChanged(const QString &id)
     }
 }
 
-void LayoutManager::showInfoWindowChanged()
+void Manager::showInfoWindowChanged()
 {
     if (m_corona->universalSettings()->showInfoWindow()) {
         m_dynamicSwitchTimer.setInterval(1800);
@@ -502,7 +505,7 @@ void LayoutManager::showInfoWindowChanged()
     }
 }
 
-QString LayoutManager::shouldSwitchToLayout(QString activityId)
+QString Manager::shouldSwitchToLayout(QString activityId)
 {
     if (m_assignedLayouts.contains(activityId) && m_assignedLayouts[activityId] != currentLayoutName()) {
         return m_assignedLayouts[activityId];
@@ -514,7 +517,7 @@ QString LayoutManager::shouldSwitchToLayout(QString activityId)
     return QString();
 }
 
-void LayoutManager::confirmDynamicSwitch()
+void Manager::confirmDynamicSwitch()
 {
     QString tempShouldSwitch = shouldSwitchToLayout(m_corona->m_activityConsumer->currentActivity());
 
@@ -540,7 +543,7 @@ void LayoutManager::confirmDynamicSwitch()
     }
 }
 
-void LayoutManager::loadLayouts()
+void Manager::loadLayouts()
 {
     m_layouts.clear();
     m_menuLayouts.clear();
@@ -593,7 +596,7 @@ void LayoutManager::loadLayouts()
     emit menuLayoutsChanged();
 }
 
-void LayoutManager::clearSharedLayoutsFromCentralLists()
+void Manager::clearSharedLayoutsFromCentralLists()
 {
     QStringList unassign;
 
@@ -620,7 +623,7 @@ void LayoutManager::clearSharedLayoutsFromCentralLists()
 
 }
 
-void LayoutManager::loadLayoutOnStartup(QString layoutName)
+void Manager::loadLayoutOnStartup(QString layoutName)
 {
     // if (memoryUsage() == Types::MultipleLayouts) {
     QStringList layouts = m_importer->checkRepairMultipleLayoutsLinkedFile();
@@ -642,7 +645,7 @@ void LayoutManager::loadLayoutOnStartup(QString layoutName)
     switchToLayout(layoutName);
 }
 
-void LayoutManager::loadLatteLayout(QString layoutPath)
+void Manager::loadLatteLayout(QString layoutPath)
 {
     qDebug() << " -------------------------------------------------------------------- ";
     qDebug() << " -------------------------------------------------------------------- ";
@@ -658,7 +661,7 @@ void LayoutManager::loadLatteLayout(QString layoutPath)
     }
 }
 
-void LayoutManager::cleanupOnStartup(QString path)
+void Manager::cleanupOnStartup(QString path)
 {
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(path);
 
@@ -701,24 +704,24 @@ void LayoutManager::cleanupOnStartup(QString path)
 }
 
 
-void LayoutManager::showAboutDialog()
+void Manager::showAboutDialog()
 {
     m_corona->aboutApplication();
 }
 
-void LayoutManager::importLatteLayout(QString layoutPath)
+void Manager::importLatteLayout(QString layoutPath)
 {
     //! This might not be needed as it is Layout responsibility
 }
 
-void LayoutManager::hideAllViews()
+void Manager::hideAllViews()
 {
     for (const auto layout : m_centralLayouts) {
         emit currentLayoutIsSwitching(layout->name());
     }
 }
 
-void LayoutManager::addLayout(CentralLayout *layout)
+void Manager::addLayout(CentralLayout *layout)
 {
     if (!m_centralLayouts.contains(layout)) {
         m_centralLayouts.append(layout);
@@ -726,7 +729,7 @@ void LayoutManager::addLayout(CentralLayout *layout)
     }
 }
 
-bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
+bool Manager::switchToLayout(QString layoutName, int previousMemoryUsage)
 {
     if (m_centralLayouts.size() > 0 && currentLayoutName() == layoutName && previousMemoryUsage == -1) {
         return false;
@@ -906,7 +909,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
     return true;
 }
 
-void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
+void Manager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 {
     qDebug() << "   ----  --------- ------    syncMultipleLayoutsToActivities       -------   ";
     qDebug() << "   ----  --------- ------    -------------------------------       -------   ";
@@ -996,7 +999,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
     emit centralLayoutsChanged();
 }
 
-void LayoutManager::pauseLayout(QString layoutName)
+void Manager::pauseLayout(QString layoutName)
 {
     if (memoryUsage() == Types::MultipleLayouts) {
         CentralLayout *layout = centralLayout(layoutName);
@@ -1017,7 +1020,7 @@ void LayoutManager::pauseLayout(QString layoutName)
     }
 }
 
-void LayoutManager::syncActiveLayoutsToOriginalFiles()
+void Manager::syncActiveLayoutsToOriginalFiles()
 {
     if (memoryUsage() == Types::MultipleLayouts) {
         for (const auto layout : m_centralLayouts) {
@@ -1030,7 +1033,7 @@ void LayoutManager::syncActiveLayoutsToOriginalFiles()
     }
 }
 
-void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks)
+void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks)
 {
     if (!m_corona || (memoryUsage() == Types::SingleLayout && !bypassChecks)) {
         return;
@@ -1048,7 +1051,7 @@ void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containm
 }
 
 
-void LayoutManager::syncLatteViewsToScreens()
+void Manager::syncLatteViewsToScreens()
 {
     for (const auto layout : m_sharedLayouts) {
         layout->syncLatteViewsToScreens();
@@ -1059,7 +1062,7 @@ void LayoutManager::syncLatteViewsToScreens()
     }
 }
 
-QString LayoutManager::newLayout(QString layoutName, QString preset)
+QString Manager::newLayout(QString layoutName, QString preset)
 {
     QDir layoutDir(QDir::homePath() + "/.config/latte");
     QStringList filter;
@@ -1085,7 +1088,7 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
     return newLayoutPath;
 }
 
-void LayoutManager::importDefaultLayout(bool newInstanceIfPresent)
+void Manager::importDefaultLayout(bool newInstanceIfPresent)
 {
     importPreset(1, newInstanceIfPresent);
 
@@ -1094,7 +1097,7 @@ void LayoutManager::importDefaultLayout(bool newInstanceIfPresent)
     }
 }
 
-void LayoutManager::importPresets(bool includeDefault)
+void Manager::importPresets(bool includeDefault)
 {
     int start = 1;
 
@@ -1107,7 +1110,7 @@ void LayoutManager::importPresets(bool includeDefault)
     }
 }
 
-void LayoutManager::importPreset(int presetNo, bool newInstanceIfPresent)
+void Manager::importPreset(int presetNo, bool newInstanceIfPresent)
 {
     QDir configDir(QDir::homePath() + "/.config");
 
@@ -1142,7 +1145,7 @@ void LayoutManager::importPreset(int presetNo, bool newInstanceIfPresent)
     }
 }
 
-QStringList LayoutManager::validActivities(QStringList currentList)
+QStringList Manager::validActivities(QStringList currentList)
 {
     QStringList validIds;
 
@@ -1155,7 +1158,7 @@ QStringList LayoutManager::validActivities(QStringList currentList)
     return validIds;
 }
 
-bool LayoutManager::layoutIsAssigned(QString layoutName)
+bool Manager::layoutIsAssigned(QString layoutName)
 {
     QHashIterator<const QString, QString> i(m_assignedLayouts);
 
@@ -1170,7 +1173,7 @@ bool LayoutManager::layoutIsAssigned(QString layoutName)
     return false;
 }
 
-void LayoutManager::showLatteSettingsDialog(int page)
+void Manager::showLatteSettingsDialog(int page)
 {
     if (!m_latteSettingsDialog) {
         m_latteSettingsDialog = new SettingsDialog(nullptr, m_corona);
@@ -1188,7 +1191,7 @@ void LayoutManager::showLatteSettingsDialog(int page)
     m_latteSettingsDialog->activateWindow();
 }
 
-void LayoutManager::hideLatteSettingsDialog()
+void Manager::hideLatteSettingsDialog()
 {
     if (m_latteSettingsDialog) {
         m_latteSettingsDialog->deleteLater();
@@ -1196,7 +1199,7 @@ void LayoutManager::hideLatteSettingsDialog()
     }
 }
 
-void LayoutManager::showInfoWindow(QString info, int duration, QStringList activities)
+void Manager::showInfoWindow(QString info, int duration, QStringList activities)
 {
     for (const auto screen : qGuiApp->screens()) {
         InfoView *infoView = new InfoView(m_corona, info, screen);
@@ -1211,7 +1214,7 @@ void LayoutManager::showInfoWindow(QString info, int duration, QStringList activ
 }
 
 //! it is used just in order to provide translations for the presets
-void LayoutManager::ghostForTranslatedPresets()
+void Manager::ghostForTranslatedPresets()
 {
     QString preset1 = i18n("Default");
     QString preset2 = i18n("Plasma");
@@ -1219,4 +1222,5 @@ void LayoutManager::ghostForTranslatedPresets()
     QString preset4 = i18n("Extended");
 }
 
+}
 }

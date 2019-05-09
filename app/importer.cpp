@@ -22,9 +22,9 @@
 
 // local
 #include "lattecorona.h"
-#include "layoutmanager.h"
 #include "screenpool.h"
 #include "layout/abstractlayout.h"
+#include "layouts/manager.h"
 #include "settings/universalsettings.h"
 #include "../liblatte2/types.h"
 
@@ -45,7 +45,7 @@ namespace Latte {
 Importer::Importer(QObject *parent)
     : QObject(parent)
 {
-    m_manager = qobject_cast<LayoutManager *>(parent);
+    m_manager = qobject_cast<Layouts::Manager *>(parent);
 }
 
 Importer::~Importer()

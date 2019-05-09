@@ -22,8 +22,8 @@
 
 // local
 #include "lattecorona.h"
-#include "layoutmanager.h"
 #include "layout/centrallayout.h"
+#include "layouts/manager.h"
 
 // Qt
 #include <QQuickItem>
@@ -37,7 +37,7 @@ namespace Latte {
 LaunchersSignals::LaunchersSignals(QObject *parent)
     : QObject(parent)
 {
-    m_manager = qobject_cast<LayoutManager *>(parent);
+    m_manager = qobject_cast<Layouts::Manager *>(parent);
 }
 
 LaunchersSignals::~LaunchersSignals()

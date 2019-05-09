@@ -22,8 +22,8 @@
 // local
 #include "../importer.h"
 #include "../lattecorona.h"
-#include "../layoutmanager.h"
 #include "../screenpool.h"
+#include "../layouts/manager.h"
 #include "../view/view.h"
 // Qt
 #include <QDir>
@@ -495,7 +495,7 @@ QString Storage::newUniqueIdsLayoutFromFile(QString file)
             }
         }
 
-        if (m_layout->corona()->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+        if (m_layout->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
             investigate_conts.group(cId).writeEntry("layoutId", m_layout->name());
         }
     }
@@ -614,7 +614,7 @@ bool Storage::layoutIsBroken() const
         if (!m_layout->corona()) {
             qDebug() << "   --- storaged file : " << m_layout->file();
         } else {
-            if (m_layout->corona()->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
+            if (m_layout->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
                 qDebug() << "   --- in multiple layouts hidden file : " << Importer::layoutFilePath(AbstractLayout::MultipleLayoutsName);
             } else {
                 qDebug() << "   --- in active layout file : " << m_layout->file();

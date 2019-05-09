@@ -80,20 +80,20 @@ PlasmaComponents.Page {
                     Component.onCompleted: loadLayouts();
 
                     Connections {
-                        target:layoutManager
+                        target:layoutsManager
                         onMenuLayoutsChanged: layoutCmb.loadLayouts();
                     }
 
                     function loadLayouts(){
-                        layouts = layoutManager.menuLayouts;
+                        layouts = layoutsManager.menuLayouts;
                         layoutTexts = [];
 
                         //if current layout isnt at the menu layouts
-                        if (layouts.indexOf(layoutManager.currentLayoutName) === -1) {
+                        if (layouts.indexOf(layoutsManager.currentLayoutName) === -1) {
                             if (Qt.application.layoutDirection === Qt.RightToLeft) {
-                                layoutTexts.push( layoutManager.currentLayoutName + " ✔ ");
+                                layoutTexts.push( layoutsManager.currentLayoutName + " ✔ ");
                             } else {
-                                layoutTexts.push( " ✔ "+layoutManager.currentLayoutName);
+                                layoutTexts.push( " ✔ "+layoutsManager.currentLayoutName);
                             }
                         }
 
@@ -103,7 +103,7 @@ PlasmaComponents.Page {
                             var selText1 = "     ";
                             var selText2 = "     ";
 
-                            if (layouts[i] === layoutManager.currentLayoutName) {
+                            if (layouts[i] === layoutsManager.currentLayoutName) {
                                 selText1 = " ✔ ";
                                 activeLayout = i;
                             }
@@ -120,7 +120,7 @@ PlasmaComponents.Page {
                     }
 
                     onActivated: {
-                        layoutManager.switchToLayout(layouts[index]);
+                        layoutsManager.switchToLayout(layouts[index]);
                     }
                 }
 
@@ -129,7 +129,7 @@ PlasmaComponents.Page {
                     iconSource: "document-edit"
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
-                    onClicked: layoutManager.showLatteSettingsDialog()
+                    onClicked: layoutsManager.showLatteSettingsDialog()
                 }
             }
         }

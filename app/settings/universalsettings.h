@@ -39,7 +39,9 @@
 #include <KSharedConfig>
 
 namespace Latte {
-class LayoutManager;
+namespace Layouts {
+class Manager;
+}
 }
 
 namespace Latte {
@@ -184,7 +186,7 @@ private:
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;
 
-    friend class LayoutManager;
+    friend class Layouts::Manager;
     friend class Latte::Corona;
 };
 

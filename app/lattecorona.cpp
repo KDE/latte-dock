@@ -25,12 +25,12 @@
 #include "importer.h"
 #include "lattedockadaptor.h"
 #include "launcherssignals.h"
-#include "layoutmanager.h"
 #include "screenpool.h"
 #include "indicator/factory.h"
 #include "layout/centrallayout.h"
 #include "layout/genericlayout.h"
 #include "layout/sharedlayout.h"
+#include "layouts/manager.h"
 #include "shortcuts/globalshortcuts.h"
 #include "package/lattepackage.h"
 #include "plasma/extended/screenpool.h"
@@ -88,7 +88,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_globalShortcuts(new GlobalShortcuts(this)),
       m_plasmaScreenPool(new PlasmaExtended::ScreenPool(this)),
       m_themeExtended(new PlasmaExtended::Theme(KSharedConfig::openConfig(), this)),
-      m_layoutManager(new LayoutManager(this))
+      m_layoutsManager(new Layouts::Manager(this))
 {
     //! create the window manager
 
@@ -148,7 +148,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
 Corona::~Corona()
 {
     //! BEGIN: Give the time to slide-out views when closing
-    m_layoutManager->hideAllViews();
+    m_layoutsManager->hideAllViews();
 
     //! Don't delay the destruction under wayland in any case
     //! because it creates a crash with kwin effects
@@ -167,17 +167,17 @@ Corona::~Corona()
 
     m_viewsScreenSyncTimer.stop();
 
-    if (m_layoutManager->memoryUsage() == Types::SingleLayout) {
+    if (m_layoutsManager->memoryUsage() == Types::SingleLayout) {
         cleanConfig();
     }
 
     qDebug() << "Latte Corona - unload: containments ...";
 
-    m_layoutManager->unload();
+    m_layoutsManager->unload();
 
     m_wm->deleteLater();
     m_globalShortcuts->deleteLater();
-    m_layoutManager->deleteLater();
+    m_layoutsManager->deleteLater();
     m_screenPool->deleteLater();
     m_universalSettings->deleteLater();
     m_plasmaScreenPool->deleteLater();
@@ -195,7 +195,7 @@ void Corona::load()
 {
     if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running) && m_activitiesStarting) {
         disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
-        m_layoutManager->load();
+        m_layoutsManager->load();
 
         m_activitiesStarting = false;
 
@@ -207,7 +207,7 @@ void Corona::load()
 
         connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &Corona::screenCountChanged);
 
-        QString assignedLayout = m_layoutManager->shouldSwitchToLayout(m_activityConsumer->currentActivity());
+        QString assignedLayout = m_layoutsManager->shouldSwitchToLayout(m_activityConsumer->currentActivity());
 
         QString loadLayoutName = "";
 
@@ -218,13 +218,13 @@ void Corona::load()
                 loadLayoutName = m_universalSettings->currentLayoutName();
             }
 
-            if (!m_layoutManager->layoutExists(loadLayoutName)) {
-                loadLayoutName = m_layoutManager->defaultLayoutName();
-                m_layoutManager->importDefaultLayout(false);
+            if (!m_layoutsManager->layoutExists(loadLayoutName)) {
+                loadLayoutName = m_layoutsManager->defaultLayoutName();
+                m_layoutsManager->importDefaultLayout(false);
             }
         } else if (m_defaultLayoutOnStartup) {
-            loadLayoutName = m_layoutManager->importer()->uniqueLayoutName(m_layoutManager->defaultLayoutName());
-            m_layoutManager->importDefaultLayout(true);
+            loadLayoutName = m_layoutsManager->importer()->uniqueLayoutName(m_layoutsManager->defaultLayoutName());
+            m_layoutsManager->importDefaultLayout(true);
         } else {
             loadLayoutName = m_layoutNameOnStartUp;
         }
@@ -239,7 +239,7 @@ void Corona::load()
             m_universalSettings->setLayoutsMemoryUsage(Types::SingleLayout);
         }
 
-        m_layoutManager->loadLayoutOnStartup(loadLayoutName);
+        m_layoutsManager->loadLayoutOnStartup(loadLayoutName);
 
 
         //! load screens signals such screenGeometryChanged in order to support
@@ -396,11 +396,6 @@ UniversalSettings *Corona::universalSettings() const
     return m_universalSettings;
 }
 
-LayoutManager *Corona::layoutManager() const
-{
-    return m_layoutManager;
-}
-
 AbstractWindowInterface *Corona::wm() const
 {
     return m_wm;
@@ -409,6 +404,11 @@ AbstractWindowInterface *Corona::wm() const
 Indicator::Factory *Corona::indicatorFactory() const
 {
     return m_indicatorFactory;
+}
+
+Layouts::Manager *Corona::layoutsManager() const
+{
+    return m_layoutsManager;
 }
 
 PlasmaExtended::ScreenPool *Corona::plasmaScreenPool() const
@@ -476,15 +476,15 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
     QList<Latte::View *> views;
 
     if (forLayout.isEmpty()) {
-        Latte::CentralLayout *currentLayout = m_layoutManager->currentLayout();
+        Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
         views = currentLayout->latteViews();
     } else {
-        Layout::GenericLayout *generic = m_layoutManager->centralLayout(forLayout);
+        Layout::GenericLayout *generic = m_layoutsManager->centralLayout(forLayout);
 
         if (!generic) {
             //! Identify best active layout to be used for metrics calculations.
             //! Active layouts are always take into account their shared layouts for their metrics
-            SharedLayout *sharedLayout = m_layoutManager->sharedLayout(forLayout);
+            SharedLayout *sharedLayout = m_layoutsManager->sharedLayout(forLayout);
 
             if (sharedLayout) {
                 generic = sharedLayout->currentCentralLayout();
@@ -492,7 +492,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
         }
 
         if (!generic) {
-            generic = m_layoutManager->currentLayout();
+            generic = m_layoutsManager->currentLayout();
         }
 
         views = generic->latteViews();
@@ -619,7 +619,7 @@ QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> m
 
     auto available = screen->geometry();
 
-    Latte::CentralLayout *currentLayout = m_layoutManager->currentLayout();
+    Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
     QList<Latte::View *> views;
 
     if (currentLayout) {
@@ -706,7 +706,7 @@ void Corona::screenCountChanged()
 //! concerning screen changed (for multi-screen setups mainly)
 void Corona::syncLatteViewsToScreens()
 {
-    m_layoutManager->syncLatteViewsToScreens();
+    m_layoutsManager->syncLatteViewsToScreens();
 }
 
 int Corona::primaryScreenId() const
@@ -719,8 +719,8 @@ void Corona::closeApplication()
     //! this code must be called asynchronously because it is called
     //! also from qml (Settings window).
     QTimer::singleShot(5, [this]() {
-        m_layoutManager->hideLatteSettingsDialog();
-        m_layoutManager->hideAllViews();
+        m_layoutsManager->hideLatteSettingsDialog();
+        m_layoutsManager->hideAllViews();
     });
 
     //! give the time for the views to hide themselves
@@ -767,7 +767,7 @@ int Corona::screenForContainment(const Plasma::Containment *containment) const
         }
     }
 
-    Latte::CentralLayout *currentLayout = m_layoutManager->currentLayout();
+    Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
     Latte::View *view = currentLayout->viewForContainment(containment);
 
     if (view && view->screen()) {
@@ -801,7 +801,7 @@ void Corona::showAlternativesForApplet(Plasma::Applet *applet)
         return;
     }
 
-    Latte::CentralLayout *currentLayout = m_layoutManager->currentLayout();
+    Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
     Latte::View *latteView = currentLayout->viewForContainment(applet->containment());
 
     KDeclarative::QmlObjectSharedEngine *qmlObj{nullptr};
@@ -890,7 +890,7 @@ void Corona::addViewForLayout(QString layoutName)
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                 Types::TopEdge, Types::RightEdge};
 
-    Layout::GenericLayout *currentLayout = m_layoutManager->layout(layoutName);
+    Layout::GenericLayout *currentLayout = m_layoutsManager->layout(layoutName);
 
     if (currentLayout) {
         edges = currentLayout->freeEdges(defaultContainment->screen());
@@ -902,7 +902,7 @@ void Corona::addViewForLayout(QString layoutName)
         defaultContainment->setLocation(Plasma::Types::BottomEdge);
     }
 
-    if (m_layoutManager->memoryUsage() == Latte::Types::MultipleLayouts) {
+    if (m_layoutsManager->memoryUsage() == Latte::Types::MultipleLayouts) {
         config.writeEntry("layoutId", layoutName);
     }
 
@@ -921,7 +921,7 @@ void Corona::addViewForLayout(QString layoutName)
 
 void Corona::loadDefaultLayout()
 {
-    addViewForLayout(m_layoutManager->currentLayoutName());
+    addViewForLayout(m_layoutsManager->currentLayoutName());
 }
 
 QStringList Corona::containmentsIds()
@@ -981,7 +981,7 @@ void Corona::updateDockItemBadge(QString identifier, QString value)
 
 void Corona::switchToLayout(QString layout)
 {
-    m_layoutManager->switchToLayout(layout);
+    m_layoutsManager->switchToLayout(layout);
 }
 
 void Corona::showSettingsWindow(int page)
@@ -992,7 +992,7 @@ void Corona::showSettingsWindow(int page)
         p = static_cast<Types::LatteConfigPage>(page);
     }
 
-    m_layoutManager->showLatteSettingsDialog(p);
+    m_layoutsManager->showLatteSettingsDialog(p);
 }
 
 void Corona::setContextMenuView(int id)
@@ -1006,18 +1006,18 @@ QStringList Corona::contextMenuData()
     QStringList data;
     Types::ViewType viewType{Types::DockView};
 
-    Latte::CentralLayout *currentLayout = m_layoutManager->currentLayout();
+    Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
 
     if (currentLayout) {
         viewType = currentLayout->latteViewType(m_contextMenuViewId);
     }
 
-    data << QString::number((int)m_layoutManager->memoryUsage());
-    data << m_layoutManager->currentLayoutName();
+    data << QString::number((int)m_layoutsManager->memoryUsage());
+    data << m_layoutsManager->currentLayoutName();
     data << QString::number((int)viewType);
 
-    for(const auto &layoutName : m_layoutManager->menuLayouts()) {
-        if (m_layoutManager->centralLayout(layoutName)) {
+    for(const auto &layoutName : m_layoutsManager->menuLayouts()) {
+        if (m_layoutsManager->centralLayout(layoutName)) {
             data << QString("1," + layoutName);
         } else {
             data << QString("0," + layoutName);

@@ -250,7 +250,7 @@ Item{
     }
 
     Connections{
-        target: universalLayoutManager
+        target: layoutsManager
         onCurrentLayoutIsSwitching: {
             if (Latte.WindowSystem.compositingActive && latteView && latteView.layout && latteView.layout.name === layoutName) {
                 manager.inTempHiding = true;

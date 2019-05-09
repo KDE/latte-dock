@@ -248,8 +248,8 @@ Item {
 
     readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
-    readonly property bool viewLayoutIsCurrent: latteView && viewLayout && latteView.universalLayoutManager
-                                            && viewLayout.name === latteView.universalLayoutManager.currentLayoutName
+    readonly property bool viewLayoutIsCurrent: latteView && viewLayout && latteView.layoutsManager
+                                            && viewLayout.name === latteView.layoutsManager.currentLayoutName
     readonly property string viewLayoutName: viewLayout ? viewLayout.name : ""
     readonly property QtObject viewLayout : latteView && latteView.viewLayout ? latteView.viewLayout : null
 
@@ -349,7 +349,7 @@ Item {
 
 
     Connections{
-        target: latteView && latteView.universalLayoutManager ? latteView.universalLayoutManager : null
+        target: latteView && latteView.layoutsManager ? latteView.layoutsManager : null
 
         onCurrentLayoutNameChanged: root.publishTasksGeometries();
     }
@@ -451,7 +451,7 @@ Item {
         var launchersList = [];
 
         if (viewLayout) {
-            if (latteView && latteView.universalLayoutManager
+            if (latteView && latteView.layoutsManager
                     && latteView.viewLayout && latteView.universalSettings
                     && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
                         || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
@@ -774,7 +774,7 @@ Item {
 
         onLauncherListChanged: {
             if (viewLayout) {
-                if (latteView && latteView.universalLayoutManager
+                if (latteView && latteView.layoutsManager
                         && latteView.viewLayout && latteView.universalSettings
                         && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
                             || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
@@ -787,7 +787,7 @@ Item {
 
                     if (inDraggingPhase) {
                         if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                            latteView.universalLayoutManager.launchersSignals.validateLaunchersOrder(root.viewLayoutName,
+                            latteView.layoutsManager.launchersSignals.validateLaunchersOrder(root.viewLayoutName,
                                                                                                      plasmoid.id,
                                                                                                      latteView.launchersGroup,
                                                                                                      currentLauncherList());
@@ -1224,7 +1224,7 @@ Item {
             onUrlsDropped: {
                 //! inform synced docks for new dropped launchers
                 if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
-                    latteView.universalLayoutManager.launchersSignals.urlsDropped(root.viewLayoutName,
+                    latteView.layoutsManager.launchersSignals.urlsDropped(root.viewLayoutName,
                                                                                   latteView.launchersGroup, urls);
                     return;
                 }
@@ -1640,7 +1640,7 @@ Item {
             parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
             if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteView.universalLayoutManager.launchersSignals.addLauncher(root.viewLayoutName,
+                latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
                                                                               latteView.launchersGroup, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
@@ -1853,7 +1853,7 @@ Item {
             parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
             if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteView.universalLayoutManager.launchersSignals.addLauncher(latteView.launchersGroup, separatorName);
+                latteView.layoutsManager.launchersSignals.addLauncher(latteView.launchersGroup, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
             }
@@ -1865,7 +1865,7 @@ Item {
 
         if (separatorName !== "") {
             if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteView.universalLayoutManager.launchersSignals.removeLauncher(root.viewLayoutName,
+                latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
                                                                                  latteView.launchersGroup, separatorName);
             } else {
                 root.launcherForRemoval = separatorName;

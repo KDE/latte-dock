@@ -100,7 +100,7 @@ PlasmaCore.FrameSvgItem {
                 viewLayout.shortcutsEngine = shortcutsEngine;
                 viewLayout.themeExtended = themeExtended;
                 viewLayout.universalSettings = universalSettings;
-                viewLayout.universalLayoutManager = layoutManager;
+                viewLayout.layoutsManager = layoutsManager;
             }
         }
     }

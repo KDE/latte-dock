@@ -23,7 +23,6 @@
 #include "view.h"
 #include "visibilitymanager.h"
 #include "../lattecorona.h"
-#include "../layoutmanager.h"
 
 // Qt
 #include <QMouseEvent>
