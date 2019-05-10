@@ -1825,6 +1825,46 @@ void SettingsDialog::updateActiveShares()
     m_sharesMap = currentSharesMap;
 }
 
+void SettingsDialog::addActivityInCurrent(const QString &activityId)
+{
+    int currentRow = ui->layoutsView->currentIndex().row();
+    QStringList activities = m_model->data(m_model->index(currentRow, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+    if (!activities.contains(activityId)) {
+        activities << activityId;
+        m_model->setData(m_model->index(currentRow, ACTIVITYCOLUMN), activities, Qt::UserRole);
+    }
+}
+
+void SettingsDialog::removeActivityFromCurrent(const QString &activityId)
+{
+    int currentRow = ui->layoutsView->currentIndex().row();
+    QStringList activities = m_model->data(m_model->index(currentRow, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+    if (activities.contains(activityId)) {
+        activities.removeAll(activityId);
+        m_model->setData(m_model->index(currentRow, ACTIVITYCOLUMN), activities, Qt::UserRole);
+    }
+}
+
+void SettingsDialog::addShareInCurrent(const QString &layoutId)
+{
+    int currentRow = ui->layoutsView->currentIndex().row();
+    QStringList shares = m_model->data(m_model->index(currentRow, SHAREDCOLUMN), Qt::UserRole).toStringList();
+    if (!shares.contains(layoutId)) {
+        shares << layoutId;
+        m_model->setData(m_model->index(currentRow, SHAREDCOLUMN), shares, Qt::UserRole);
+    }
+}
+
+void SettingsDialog::removeShareFromCurrent(const QString &layoutId)
+{
+    int currentRow = ui->layoutsView->currentIndex().row();
+    QStringList shares = m_model->data(m_model->index(currentRow, SHAREDCOLUMN), Qt::UserRole).toStringList();
+    if (shares.contains(layoutId)) {
+        shares.removeAll(layoutId);
+        m_model->setData(m_model->index(currentRow, SHAREDCOLUMN), shares, Qt::UserRole);
+    }
+}
+
 bool SettingsDialog::idExistsInModel(QString id)
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
@@ -1866,6 +1906,11 @@ bool SettingsDialog::inMultipleLayoutsLook() const
 {
     Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
     return inMemoryOption == Latte::Types::MultipleLayouts;
+}
+
+bool SettingsDialog::isActive(QString layoutName) const
+{
+    return (m_corona->layoutsManager()->layout(layoutName) != nullptr);
 }
 
 bool SettingsDialog::isMenuCell(int column) const

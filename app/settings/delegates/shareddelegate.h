@@ -47,7 +47,7 @@ public:
 private:
     void updateButtonText(QWidget *editor) const;
 
-    QString joined(const QStringList &texts) const;
+    QString joined(const QStringList &layouts, bool boldForActive = false) const;
 
 private:
     Latte::SettingsDialog *m_settingsDialog{nullptr};

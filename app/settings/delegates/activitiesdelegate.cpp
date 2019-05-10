@@ -84,8 +84,14 @@ QWidget *ActivitiesDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 
             menu->addAction(action);
 
-            connect(action, &QAction::toggled, this, [this, button]() {
+            connect(action, &QAction::toggled, this, [this, button, action]() {
                 updateButton(button);
+
+                if (action->isChecked()) {
+                    m_settingsDialog->addActivityInCurrent(action->data().toString());
+                } else {
+                    m_settingsDialog->removeActivityFromCurrent(action->data().toString());
+                }
             });
         }
     }

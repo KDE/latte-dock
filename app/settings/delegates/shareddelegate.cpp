@@ -66,8 +66,14 @@ QWidget *SharedDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
         action->setChecked(assignedShares.contains(availableShares[i]));
         menu->addAction(action);
 
-        connect(action, &QAction::toggled, this, [this, button]() {
+        connect(action, &QAction::toggled, this, [this, button, action]() {
             updateButtonText(button);
+
+            if (action->isChecked()) {
+                m_settingsDialog->addShareInCurrent(action->data().toString());
+            } else {
+                m_settingsDialog->removeShareFromCurrent(action->data().toString());
+            }
         });
     }
 
@@ -115,11 +121,11 @@ void SharedDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     }
 
     if (assignedLayouts.count() > 0) {
-        myOptions.text = joined(assignedLayouts);
+        myOptions.text = joined(assignedLayouts, true);
 
         QTextDocument doc;
         QString css;
-        QString activitiesText = myOptions.text;
+        QString sharesText = myOptions.text;
 
         QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
         QBrush nBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
@@ -135,7 +141,7 @@ void SharedDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         //we need an offset to be in the same vertical center of TextEdit
         int offsetY = ((myOptions.rect.height() - doc.size().height()) / 2);
 
-        if ((qApp->layoutDirection() == Qt::RightToLeft) && !activitiesText.isEmpty()) {
+        if ((qApp->layoutDirection() == Qt::RightToLeft) && !sharesText.isEmpty()) {
             int textWidth = doc.size().width();
 
             painter->translate(qMax(myOptions.rect.left(), myOptions.rect.right() - textWidth), myOptions.rect.top() + offsetY + 1);
@@ -169,7 +175,26 @@ void SharedDelegate::updateButtonText(QWidget *editor) const
     button->setText(joined(assignedLayouts));
 }
 
-QString SharedDelegate::joined(const QStringList &texts) const
+QString SharedDelegate::joined(const QStringList &layouts, bool boldForActive) const
 {
-    return texts.join(", ");
+    QString finalText;
+
+    int i = 0;
+
+    for (const auto &layoutName : layouts) {
+        if (i > 0) {
+            finalText += ", ";
+        }
+        i++;
+
+        bool isActive{false};
+
+        if (boldForActive && m_settingsDialog->isActive(layoutName)) {
+            isActive = true;
+        }
+
+        finalText += isActive ? "<b>" + layoutName + "</b>" : layoutName;
+    }
+
+    return finalText;
 }

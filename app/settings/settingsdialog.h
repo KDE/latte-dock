@@ -57,7 +57,13 @@ public:
 
     void setCurrentPage(Types::LatteConfigPage page);
 
+    void addActivityInCurrent(const QString &activityId);
+    void removeActivityFromCurrent(const QString &activityId);
+    void addShareInCurrent(const QString &layoutId);
+    void removeShareFromCurrent(const QString &layoutId);
+
     bool inMultipleLayoutsLook() const;
+    bool isActive(QString layoutName) const;
     bool isShared(int row) const;
     bool isMenuCell(int column) const;
 
