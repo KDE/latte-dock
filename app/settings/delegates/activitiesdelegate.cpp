@@ -73,6 +73,7 @@ QWidget *ActivitiesDelegate::createEditor(QWidget *parent, const QStyleOptionVie
         if (info.state() != KActivities::Info::Invalid) {
             QAction *action = new QAction(info.name());
             action->setData(shownActivities[i]);
+            action->setIcon(QIcon::fromTheme(info.icon()));
             action->setCheckable(true);
             action->setChecked(assignedActivities.contains(shownActivities[i]));
 

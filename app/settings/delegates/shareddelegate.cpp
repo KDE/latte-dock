@@ -60,10 +60,18 @@ QWidget *SharedDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
     menu->setMinimumWidth(option.rect.width());
 
     for (unsigned int i = 0; i < availableShares.count(); ++i) {
-        QAction *action = new QAction(m_settingsDialog->nameForId(availableShares[i]));
+        QString layoutName = m_settingsDialog->nameForId(availableShares[i]);
+        QAction *action = new QAction(layoutName);
         action->setData(availableShares[i]);
         action->setCheckable(true);
         action->setChecked(assignedShares.contains(availableShares[i]));
+
+        if (m_settingsDialog->isActive(layoutName)) {
+            QFont font = action->font();
+            font.setBold(true);
+            action->setFont(font);
+        }
+
         menu->addAction(action);
 
         connect(action, &QAction::toggled, this, [this, button, action]() {
