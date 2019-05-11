@@ -654,7 +654,9 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
         id = containment->lastScreen();
     }
 
-    if (explicitScreen > -1) {
+    if (onPrimary) {
+        id = m_corona->screenPool()->primaryScreenId();
+    } else if (explicitScreen > -1) {
         id = explicitScreen;
     }
 

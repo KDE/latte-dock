@@ -284,6 +284,7 @@ void CentralLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     if (m_sharedLayout) {
         //! consider already occupied edges from SharedLayout
         Layout::ViewsMap ocMap = m_sharedLayout->validViewsMap();
+        qDebug() << " HIGH PRIORITY ALREADY OCCUPIED EDGES :: " << ocMap;
         Layout::GenericLayout::addView(containment, forceOnPrimary, explicitScreen, &ocMap);
     } else {
         Layout::GenericLayout::addView(containment, forceOnPrimary, explicitScreen, occupied);
