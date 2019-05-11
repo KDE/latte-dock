@@ -94,9 +94,6 @@ public:
     virtual bool windowCanBeDragged(WindowId wid) const = 0;
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;
 
-    void addView(WindowId wid);
-    void removeView(WindowId wid);
-
     SchemeColors *schemeForWindow(WindowId wId);
     void setColorSchemeForWindow(WindowId wId, QString scheme);
 
@@ -110,7 +107,6 @@ signals:
 
 protected:
     std::list<WindowId> m_windows;
-    std::list<WindowId> m_views;
     QPointer<KActivities::Consumer> m_activities;
 
 private slots:

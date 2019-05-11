@@ -438,10 +438,6 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
 
 void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
 {
-    //! if the view changed is ignored
-    if (std::find(m_views.cbegin(), m_views.cend(), wid) != m_views.cend())
-        return;
-
     const auto winType = KWindowInfo(wid, NET::WMWindowType).windowType(NET::DesktopMask);
     const auto winClass = KWindowInfo(wid, 0, NET::WM2WindowClass).windowClassName();
 

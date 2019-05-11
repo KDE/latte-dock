@@ -92,8 +92,6 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         }
     });
 
-    m_wm->addView(m_latteView->winId());
-
     restoreConfig();
 }
 
@@ -101,7 +99,6 @@ VisibilityManager::~VisibilityManager()
 {
     qDebug() << "VisibilityManager deleting...";
     m_wm->removeViewStruts(*m_latteView);
-    m_wm->removeView(m_latteView->winId());
 
     if (m_edgeGhostWindow) {
         m_edgeGhostWindow->deleteLater();

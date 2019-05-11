@@ -68,20 +68,6 @@ AbstractWindowInterface::~AbstractWindowInterface()
     m_schemes.clear();
 }
 
-void AbstractWindowInterface::addView(WindowId wid)
-{
-    m_views.push_back(wid);
-}
-
-void AbstractWindowInterface::removeView(WindowId wid)
-{
-    auto it = std::find(m_views.begin(), m_views.end(), wid);
-
-    if (it != m_views.end())
-        m_views.erase(it);
-}
-
-
 //! Scheme support for windows
 void AbstractWindowInterface::updateDefaultScheme()
 {
