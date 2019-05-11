@@ -238,6 +238,7 @@ void CentralLayout::setSharedLayout(SharedLayout *layout)
         setSharedLayoutName(QString());
     }
 
+    syncLatteViewsToScreens();
     emit viewsCountChanged();
 }
 
