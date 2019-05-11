@@ -92,7 +92,6 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         }
     });
 
-    m_wm->setViewExtraFlags(*m_latteView);
     m_wm->addView(m_latteView->winId());
 
     restoreConfig();
@@ -654,10 +653,6 @@ void VisibilityManager::viewEventManager(QEvent *ev)
     case QEvent::Drop:
         m_dragEnter = false;
         updateHiddenState();
-        break;
-
-    case QEvent::Show:
-        m_wm->setViewExtraFlags(*m_latteView);
         break;
 
     default:

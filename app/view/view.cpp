@@ -86,8 +86,6 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         setFlags(flags);
     }
 
-    KWindowSystem::setOnAllDesktops(winId(), true);
-
     if (targetScreen)
         m_positioner->setScreenToFollow(targetScreen);
     else
@@ -1106,6 +1104,10 @@ bool View::event(QEvent *e)
                 }
             }
 
+            break;
+
+        case QEvent::Show:
+            m_corona->wm()->setViewExtraFlags(*this);
             break;
 
         default:
