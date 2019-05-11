@@ -20,6 +20,10 @@
 
 #include "abstractwindowinterface.h"
 
+// local
+#include "windowstracker.h"
+#include "../lattecorona.h"
+
 // Qt
 #include <QObject>
 #include <QDir>
@@ -35,6 +39,9 @@ namespace WindowSystem {
 AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
     : QObject(parent)
 {
+    m_corona = qobject_cast<Latte::Corona *>(parent);
+    m_windowsTracker = new WindowsTracker(this);
+
     updateDefaultScheme();
 
     connect(this, &AbstractWindowInterface::windowRemoved, this, [&](WindowId wid) {
@@ -66,6 +73,8 @@ AbstractWindowInterface::~AbstractWindowInterface()
     m_schemes.take("kdeglobals");
     qDeleteAll(m_schemes);
     m_schemes.clear();
+
+    m_windowsTracker->deleteLater();
 }
 
 //! Scheme support for windows
@@ -89,6 +98,11 @@ void AbstractWindowInterface::updateDefaultScheme()
     }
 }
 
+Latte::Corona *AbstractWindowInterface::corona()
+{
+    return m_corona;
+}
+
 SchemeColors *AbstractWindowInterface::schemeForWindow(WindowId wid)
 {
     if (!m_windowScheme.contains(wid)) {
@@ -98,6 +112,11 @@ SchemeColors *AbstractWindowInterface::schemeForWindow(WindowId wid)
     }
 
     return nullptr;
+}
+
+WindowsTracker *AbstractWindowInterface::windowsTracker()
+{
+    return m_windowsTracker;
 }
 
 void AbstractWindowInterface::setColorSchemeForWindow(WindowId wid, QString scheme)

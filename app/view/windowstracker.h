@@ -22,7 +22,6 @@
 
 // local
 #include "../wm/abstractwindowinterface.h"
-#include "../wm/windowinfowrap.h"
 
 // Qt
 #include <QObject>
@@ -86,50 +85,13 @@ public slots:
     Q_INVOKABLE bool activeWindowCanBeDragged();
 
 private:
-    void setActiveWindowMaximized(bool activeMaximized);
-    void setActiveWindowTouching(bool activeTouching);
-    void setExistsWindowActive(bool windowActive);
-    void setExistsWindowMaximized(bool windowMaximized);
-    void setExistsWindowTouching(bool windowTouching);
-    void setActiveWindowScheme(WindowSystem::SchemeColors *scheme);
-    void setTouchingWindowScheme(WindowSystem::SchemeColors *scheme);
-    void updateAvailableScreenGeometry();
-    void updateFlags();
-
-    //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
-    //! this is a garbage collector to collect such windows in order to not break the windows array validity.
-    void cleanupFaultyWindows();
-
-    bool intersects(const WindowSystem::WindowInfoWrap &winfo);
-    bool inCurrentDesktopActivity(const WindowSystem::WindowInfoWrap &winfo);
-    bool isActive(const WindowSystem::WindowInfoWrap &winfo);
-    bool isActiveInCurrentScreen(const WindowSystem::WindowInfoWrap &winfo);
-    bool isMaximizedInCurrentScreen(const WindowSystem::WindowInfoWrap &winfo);
-    bool isTouchingViewEdge(const WindowSystem::WindowInfoWrap &winfo);
-    bool isTouchingView(const WindowSystem::WindowInfoWrap &winfo);
+    void init();
 
 private:
-    bool m_enabled{false};
-    bool m_activeWindowIsMaximizedFlag{false};
-    bool m_activeWindowIsTouchingFlag{false};
-    bool m_windowIsActiveFlag{false};
-    bool m_windowIsTouchingFlag{false};
-    bool m_windowIsMaximizedFlag{false};
-
-    QRect m_availableScreenGeometry;
-
-    WindowSystem::WindowId m_lastActiveWindowWid;
-
-    std::array<QMetaObject::Connection, 7> m_connections;
-    QMap<WindowSystem::WindowId, WindowSystem::WindowInfoWrap> m_windows;
-
     Latte::Corona *m_corona{nullptr};
     Latte::View *m_latteView{nullptr};
 
     WindowSystem::AbstractWindowInterface *m_wm;
-
-    WindowSystem::SchemeColors *m_activeScheme{nullptr};
-    WindowSystem::SchemeColors *m_touchingScheme{nullptr};
 };
 
 }

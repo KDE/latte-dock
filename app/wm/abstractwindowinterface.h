@@ -48,6 +48,13 @@
 #include <Plasma>
 
 namespace Latte {
+class Corona;
+namespace WindowSystem {
+class WindowsTracker;
+}
+}
+
+namespace Latte {
 namespace WindowSystem {
 
 class AbstractWindowInterface : public QObject
@@ -94,7 +101,9 @@ public:
     virtual bool windowCanBeDragged(WindowId wid) const = 0;
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;
 
+    Latte::Corona *corona();
     SchemeColors *schemeForWindow(WindowId wId);
+    WindowsTracker *windowsTracker();
     void setColorSchemeForWindow(WindowId wId, QString scheme);
 
 signals:
@@ -118,6 +127,9 @@ private:
 
     //! window id and its corresponding scheme file
     QMap<WindowId, QString> m_windowScheme;
+
+    Latte::Corona *m_corona;
+    WindowsTracker *m_windowsTracker;
 };
 
 }
