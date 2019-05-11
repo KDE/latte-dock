@@ -23,6 +23,7 @@
 
 // local
 #include "launcherssignals.h"
+#include "synchronizer.h"
 #include "settings/settingsdialog.h"
 
 // Qt
@@ -38,10 +39,6 @@ class Containment;
 class Types;
 }
 
-namespace KActivities {
-class Controller;
-}
-
 namespace Latte {
 class Corona;
 class CentralLayout;
@@ -53,6 +50,7 @@ class GenericLayout;
 namespace Layouts {
 class Importer;
 class LaunchersSignals;
+class Synchronizer;
 }
 }
 
@@ -81,8 +79,8 @@ public:
 
     void load();
     void loadLayoutOnStartup(QString layoutName);
+    void showInfoWindow(QString info, int duration, QStringList activities = {"0"});
     void unload();
-    void unloadCentralLayout(CentralLayout *layout);
 
     void hideAllViews();
     void pauseLayout(QString layoutName);
@@ -116,7 +114,8 @@ public:
 
     //! returns the current and central layout based on activities and user preferences
     CentralLayout *currentLayout() const;
-    LaunchersSignals *launchersSignals();
+    LaunchersSignals *launchersSignals() const;
+    Synchronizer *synchronizer() const;
 
     QStringList activities();
     QStringList runningActivities();
@@ -154,63 +153,30 @@ signals:
 
     void currentLayoutIsSwitching(QString layoutName);
 
-private slots:
-    void currentActivityChanged(const QString &id);
-    void showInfoWindowChanged();
-    void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
-    void unloadSharedLayout(SharedLayout *layout);
-
 private:
-    void addLayout(CentralLayout *layout);
     void cleanupOnStartup(QString path); //!remove deprecated or oldstyle config options
-    void clearSharedLayoutsFromCentralLists();
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
-    void confirmDynamicSwitch();
 
     //! it is used just in order to provide translations for the presets
     void ghostForTranslatedPresets();
 
-    void importLatteLayout(QString layoutPath);
     void importPreset(int presetNo, bool newInstanceIfPresent = false);
     void loadLatteLayout(QString layoutPath);
-    void loadLayouts();
+
     void setMenuLayouts(QStringList layouts);
-    void showInfoWindow(QString info, int duration, QStringList activities = {"0"});
-    void updateCurrentLayoutNameInMultiEnvironment();
-
-    bool layoutIsAssigned(QString layoutName);
-
-    QString layoutPath(QString layoutName);
-
-    QStringList validActivities(QStringList currentList);
 
 private:
-    bool m_multipleModeInitialized{false};
-
-    QString m_currentLayoutNameInMultiEnvironment;
-    QString m_shouldSwitchToLayout;
-
-    QStringList m_layouts;
-    QStringList m_menuLayouts;
     QStringList m_presetsPaths;
-    QStringList m_sharedLayoutIds;
-
-    QHash<const QString, QString> m_assignedLayouts;
-
-    QTimer m_dynamicSwitchTimer;
 
     QPointer<Latte::SettingsDialog> m_latteSettingsDialog;
 
     Latte::Corona *m_corona{nullptr};
     Importer *m_importer{nullptr};
     LaunchersSignals *m_launchersSignals{nullptr};
-
-    QList<CentralLayout *> m_centralLayouts;
-    QList<SharedLayout *> m_sharedLayouts;
-
-    KActivities::Controller *m_activitiesController;
+    Synchronizer *m_synchronizer{nullptr};
 
     friend class Latte::SettingsDialog;
+    friend class Synchronizer;
 };
 
 }

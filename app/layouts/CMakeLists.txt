@@ -3,5 +3,6 @@ set(lattedock-app_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/importer.cpp        
     ${CMAKE_CURRENT_SOURCE_DIR}/launcherssignals.cpp    
     ${CMAKE_CURRENT_SOURCE_DIR}/manager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/synchronizer.cpp
     PARENT_SCOPE
 )

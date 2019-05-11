@@ -30,6 +30,7 @@
 #include "../layout/sharedlayout.h"
 #include "../layouts/importer.h"
 #include "../layouts/manager.h"
+#include "../layouts/synchronizer.h"
 #include "../liblatte2/types.h"
 #include "../plasma/extended/theme.h"
 #include "delegates/activitiesdelegate.h"
@@ -1721,7 +1722,7 @@ bool SettingsDialog::saveAllChanges()
     }
 
     //! reload layouts in layoutsmanager
-    m_corona->layoutsManager()->loadLayouts();
+    m_corona->layoutsManager()->synchronizer()->loadLayouts();
 
     //! send to layout manager in which layout to switch
     Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
@@ -1738,7 +1739,7 @@ bool SettingsDialog::saveAllChanges()
         if (!switchToLayout.isEmpty()) {
             m_corona->layoutsManager()->switchToLayout(switchToLayout);
         } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-            m_corona->layoutsManager()->syncMultipleLayoutsToActivities(orphanedLayout);
+            m_corona->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities(orphanedLayout);
         }
     }
 
@@ -1765,7 +1766,8 @@ void SettingsDialog::updateActiveShares()
     for (QHash<const QString, QStringList>::iterator i=currentSharesMap.begin(); i!=currentSharesMap.end(); ++i) {
         CentralLayout *central = m_corona->layoutsManager()->centralLayout(nameForId(i.key()));
         if (central) {
-            m_corona->layoutsManager()->unloadCentralLayout(central);
+            //IMPORTANT !!!!! REENABLE WHEN THE CODE IS MOVED!!!!
+            //m_corona->layoutsManager()->synchronizer()->unloadCentralLayout(central);
         }
     }
 
