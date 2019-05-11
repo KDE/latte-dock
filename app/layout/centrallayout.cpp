@@ -26,6 +26,7 @@
 #include "../screenpool.h"
 #include "../layouts/importer.h"
 #include "../layouts/manager.h"
+#include "../layouts/synchronizer.h"
 #include "../settings/universalsettings.h"
 #include "../view/view.h"
 #include "../../liblatte2/types.h"
@@ -98,8 +99,8 @@ void CentralLayout::initToCorona(Latte::Corona *corona)
 
         //! Request the SharedLayout in case there is one and Latte is functioning in MultipleLayouts mode
         if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts && !m_sharedLayoutName.isEmpty()) {
-            if (m_corona->layoutsManager()->registerAtSharedLayout(this, m_sharedLayoutName)) {
-                setSharedLayout(m_corona->layoutsManager()->sharedLayout(m_sharedLayoutName));
+            if (m_corona->layoutsManager()->synchronizer()->registerAtSharedLayout(this, m_sharedLayoutName)) {
+                setSharedLayout(m_corona->layoutsManager()->synchronizer()->sharedLayout(m_sharedLayoutName));
             }
         }
     }
@@ -299,7 +300,7 @@ const QStringList CentralLayout::appliedActivities()
         return {"0"};
     } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
         if (m_activities.isEmpty()) {
-            return m_corona->layoutsManager()->orphanedActivities();
+            return m_corona->layoutsManager()->synchronizer()->orphanedActivities();
         } else {
             return m_activities;
         }

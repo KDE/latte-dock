@@ -26,6 +26,7 @@
 #include "../screenpool.h"
 #include "../layouts/importer.h"
 #include "../layouts/manager.h"
+#include "../layouts/synchronizer.h"
 #include "../shortcuts/shortcutstracker.h"
 #include "../view/view.h"
 #include "../view/positioner.h"
@@ -144,7 +145,7 @@ bool GenericLayout::isActive() const
         return false;
     }
 
-    GenericLayout *generic = m_corona->layoutsManager()->layout(m_layoutName);
+    GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(m_layoutName);
 
     if (generic) {
         return true;
@@ -806,7 +807,7 @@ void GenericLayout::updateLastUsedActivity()
         return;
     }
 
-    if (!m_lastUsedActivity.isEmpty() && !m_corona->layoutsManager()->activities().contains(m_lastUsedActivity)) {
+    if (!m_lastUsedActivity.isEmpty() && !m_corona->layoutsManager()->synchronizer()->activities().contains(m_lastUsedActivity)) {
         clearLastUsedActivity();
     }
 

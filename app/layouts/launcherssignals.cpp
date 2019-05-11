@@ -24,6 +24,7 @@
 #include "../lattecorona.h"
 #include "../layout/centrallayout.h"
 #include "../layouts/manager.h"
+#include "../layouts/synchronizer.h"
 
 // Qt
 #include <QQuickItem>
@@ -49,7 +50,7 @@ QList<Plasma::Applet *> LaunchersSignals::lattePlasmoids(QString layoutName)
 {
     QList<Plasma::Applet *> applets;
 
-    CentralLayout *layout = m_manager->centralLayout(layoutName);
+    CentralLayout *layout = m_manager->synchronizer()->centralLayout(layoutName);
     QList<Plasma::Containment *> containments;
 
     if (layoutName.isEmpty()) {

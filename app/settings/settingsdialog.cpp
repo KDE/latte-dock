@@ -296,7 +296,7 @@ void SettingsDialog::blockDeleteOnActivityStopped()
 
 QStringList SettingsDialog::activities()
 {
-    return m_corona->layoutsManager()->activities();
+    return m_corona->layoutsManager()->synchronizer()->activities();
 }
 
 QStringList SettingsDialog::availableActivities()
@@ -371,7 +371,7 @@ void SettingsDialog::on_copyButton_clicked()
     if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
         QString lName = (m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole)).toString();
 
-        Layout::GenericLayout *generic = m_corona->layoutsManager()->layout(lName);
+        Layout::GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(lName);
         if (generic) {
             generic->syncToLayoutFile();
         }
@@ -446,7 +446,7 @@ void SettingsDialog::on_removeButton_clicked()
 
     QString layoutName = m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString();
 
-    if (m_corona->layoutsManager()->centralLayout(layoutName)) {
+    if (m_corona->layoutsManager()->synchronizer()->centralLayout(layoutName)) {
         return;
     }
 
@@ -497,7 +497,7 @@ void SettingsDialog::on_sharedButton_clicked()
 
         for (const auto &id : availableShares) {
             QString name = nameForId(id);
-            if (m_corona->layoutsManager()->layout(name)) {
+            if (m_corona->layoutsManager()->synchronizer()->layout(name)) {
                 assignedList << id;
                 m_model->setData(m_model->index(row, SHAREDCOLUMN), assignedList, Qt::UserRole);
                 assigned = true;
@@ -657,7 +657,7 @@ void SettingsDialog::on_exportButton_clicked()
     //! this is needed because the export method can export also the full configuration
     qDebug() << Q_FUNC_INFO;
 
-    m_corona->layoutsManager()->syncActiveLayoutsToOriginalFiles();
+    m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
 
     QFileDialog *fileDialog = new QFileDialog(this, i18nc("export layout/configuration", "Export Layout/Configuration")
                                               , QDir::homePath(), QStringLiteral("layout.latte"));
@@ -912,7 +912,7 @@ void SettingsDialog::loadSettings()
     QStringList brokenLayouts;
 
     if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-        m_corona->layoutsManager()->syncActiveLayoutsToOriginalFiles();
+        m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
     }
 
     for (const auto layout : m_corona->layoutsManager()->layouts()) {
@@ -949,7 +949,7 @@ void SettingsDialog::loadSettings()
             ui->layoutsView->selectRow(i - 1);
         }
 
-        Layout::GenericLayout *generic = m_corona->layoutsManager()->layout(central->name());
+        Layout::GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(central->name());
 
         if ((generic && generic->layoutIsBroken()) || (!generic && central->layoutIsBroken())) {
             brokenLayouts.append(central->name());
@@ -1161,7 +1161,7 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
 
     QFont font;
 
-    if (m_corona->layoutsManager()->layout(name)) {
+    if (m_corona->layoutsManager()->synchronizer()->layout(name)) {
         font.setBold(true);
     } else {
         font.setBold(false);
@@ -1222,7 +1222,7 @@ void SettingsDialog::on_pauseButton_clicked()
     CentralLayout *layout = m_layouts[id];
 
     if (layout) {
-        m_corona->layoutsManager()->pauseLayout(layout->name());
+        m_corona->layoutsManager()->synchronizer()->pauseLayout(layout->name());
     }
 }
 
@@ -1240,7 +1240,7 @@ void SettingsDialog::layoutsChanged()
                 font.setBold(true);
                 // ui->layoutsView->selectRow(i);
             } else {
-                Layout::GenericLayout *layout = m_corona->layoutsManager()->layout(name);
+                Layout::GenericLayout *layout = m_corona->layoutsManager()->synchronizer()->layout(name);
 
                 if (layout && (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts)) {
                     font.setBold(true);
@@ -1268,7 +1268,7 @@ void SettingsDialog::itemChanged(QStandardItem *item)
         QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
         QFont font = qvariant_cast<QFont>(m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::FontRole));
 
-        if (m_corona->layoutsManager()->layout(m_layouts[id]->name())) {
+        if (m_corona->layoutsManager()->synchronizer()->layout(m_layouts[id]->name())) {
             font.setBold(true);
         } else {
             font.setBold(false);
@@ -1375,7 +1375,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
         Latte::CentralLayout *layout = m_layouts[id];
 
-        if (!lActivities.isEmpty() && layout && m_corona->layoutsManager()->centralLayout(layout->name())) {
+        if (!lActivities.isEmpty() && layout && m_corona->layoutsManager()->synchronizer()->centralLayout(layout->name())) {
             ui->pauseButton->setEnabled(true);
         } else {
             ui->pauseButton->setEnabled(false);
@@ -1385,7 +1385,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
     //! Remove Layout Button
     if (originalName != nameInModel
             || (originalName == m_corona->layoutsManager()->currentLayoutName())
-            || (m_corona->layoutsManager()->centralLayout(originalName))
+            || (m_corona->layoutsManager()->synchronizer()->centralLayout(originalName))
             || lockedInModel) {
         ui->removeButton->setEnabled(false);
     } else {
@@ -1460,7 +1460,7 @@ void SettingsDialog::updateSharedLayoutsUiElements()
 
 void SettingsDialog::recalculateAvailableActivities()
 {
-    QStringList tempActivities = m_corona->layoutsManager()->activities();
+    QStringList tempActivities = m_corona->layoutsManager()->synchronizer()->activities();
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QStringList assigned = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
@@ -1583,7 +1583,7 @@ bool SettingsDialog::saveAllChanges()
 
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
         //! update the generic parts of the layouts
-        Layout::GenericLayout *genericActive= m_corona->layoutsManager()->layout(m_layouts[id]->name());
+        Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(m_layouts[id]->name());
         Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
 
         //! unlock read-only layout
@@ -1609,7 +1609,7 @@ bool SettingsDialog::saveAllChanges()
         }
 
         //! update only the Central-specific layout parts
-        CentralLayout *centralActive= m_corona->layoutsManager()->centralLayout(m_layouts[id]->name());
+        CentralLayout *centralActive= m_corona->layoutsManager()->synchronizer()->centralLayout(m_layouts[id]->name());
         CentralLayout *central = centralActive ? centralActive : m_layouts[id];
 
         if (central->showInMenu() != menu) {
@@ -1708,7 +1708,7 @@ bool SettingsDialog::saveAllChanges()
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
         bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
 
-        Layout::GenericLayout *generic = m_corona->layoutsManager()->layout(m_layouts[id]->name());
+        Layout::GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(m_layouts[id]->name());
         Layout::GenericLayout *layout = generic ? generic : m_layouts[id];
 
         if (layout && locked && layout->isWritable()) {
@@ -1851,7 +1851,7 @@ bool SettingsDialog::inMultipleLayoutsLook() const
 
 bool SettingsDialog::isActive(QString layoutName) const
 {
-    return (m_corona->layoutsManager()->layout(layoutName) != nullptr);
+    return (m_corona->layoutsManager()->synchronizer()->layout(layoutName) != nullptr);
 }
 
 bool SettingsDialog::isMenuCell(int column) const

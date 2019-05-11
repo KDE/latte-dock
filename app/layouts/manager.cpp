@@ -29,18 +29,13 @@
 #include "../screenpool.h"
 #include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"
-#include "../layout/genericlayout.h"
-#include "../layout/sharedlayout.h"
 #include "../settings/settingsdialog.h"
 #include "../settings/universalsettings.h"
-#include "../view/view.h"
 
 // Qt
 #include <QDir>
 #include <QFile>
 #include <QMessageBox>
-#include <QQmlProperty>
-#include <QtDBus>
 
 // KDE
 #include <KLocalizedString>
@@ -178,11 +173,6 @@ QString Manager::defaultLayoutName() const
     return presetName;
 }
 
-bool Manager::layoutExists(QString layoutName) const
-{
-    return m_synchronizer->layoutExists(layoutName);
-}
-
 QStringList Manager::layouts() const
 {
     return m_synchronizer->layouts();
@@ -196,21 +186,6 @@ QStringList Manager::menuLayouts() const
 void Manager::setMenuLayouts(QStringList layouts)
 {
     m_synchronizer->setMenuLayouts(layouts);
-}
-
-QStringList Manager::activities()
-{
-    return m_synchronizer->activities();
-}
-
-QStringList Manager::runningActivities()
-{
-    return m_synchronizer->runningActivities();
-}
-
-QStringList Manager::orphanedActivities()
-{
-    return m_synchronizer->orphanedActivities();
 }
 
 QStringList Manager::presetsPaths() const
@@ -233,11 +208,6 @@ void Manager::setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage)
     m_corona->universalSettings()->setLayoutsMemoryUsage(memoryUsage);
 }
 
-bool Manager::latteViewExists(Latte::View *view) const
-{
-    return m_synchronizer->latteViewExists(view);
-}
-
 QStringList Manager::centralLayoutsNames()
 {
     return m_synchronizer->centralLayoutsNames();
@@ -253,32 +223,6 @@ QStringList Manager::storedSharedLayouts() const
     return m_synchronizer->storedSharedLayouts();
 }
 
-Layout::GenericLayout *Manager::layout(QString id) const
-{
-    return m_synchronizer->layout(id);
-}
-
-
-CentralLayout *Manager::centralLayout(QString id) const
-{
-    return m_synchronizer->centralLayout(id);
-}
-
-int Manager::centralLayoutPos(QString id) const
-{
-    return m_synchronizer->centralLayoutPos(id);
-}
-
-SharedLayout *Manager::sharedLayout(QString id) const
-{
-    return m_synchronizer->sharedLayout(id);
-}
-
-bool Manager::registerAtSharedLayout(CentralLayout *central, QString id)
-{
-    return m_synchronizer->registerAtSharedLayout(central, id);
-}
-
 CentralLayout *Manager::currentLayout() const
 {
     return m_synchronizer->currentLayout();
@@ -287,11 +231,6 @@ CentralLayout *Manager::currentLayout() const
 bool Manager::switchToLayout(QString layoutName, int previousMemoryUsage)
 {
     return m_synchronizer->switchToLayout(layoutName, previousMemoryUsage);
-}
-
-QString Manager::shouldSwitchToLayout(QString activityId)
-{
-    return m_synchronizer->shouldSwitchToLayout(activityId);
 }
 
 void Manager::loadLayoutOnStartup(QString layoutName)
@@ -377,21 +316,6 @@ void Manager::showAboutDialog()
     m_corona->aboutApplication();
 }
 
-void Manager::hideAllViews()
-{
-    m_synchronizer->hideAllViews();
-}
-
-void Manager::pauseLayout(QString layoutName)
-{
-    m_synchronizer->pauseLayout(layoutName);
-}
-
-void Manager::syncActiveLayoutsToOriginalFiles()
-{
-    m_synchronizer->syncActiveLayoutsToOriginalFiles();
-}
-
 void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks)
 {
     if (!m_corona || (memoryUsage() == Types::SingleLayout && !bypassChecks)) {
@@ -407,12 +331,6 @@ void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsId
     }
 
     containments.sync();
-}
-
-
-void Manager::syncLatteViewsToScreens()
-{
-    m_synchronizer->syncLatteViewsToScreens();
 }
 
 QString Manager::newLayout(QString layoutName, QString preset)

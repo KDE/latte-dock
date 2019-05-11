@@ -26,6 +26,7 @@
 #include "../lattecorona.h"
 #include "../layout/centrallayout.h"
 #include "../layouts/manager.h"
+#include "../layouts/synchronizer.h"
 #include "../settings/universalsettings.h"
 #include "../view/view.h"
 
@@ -710,7 +711,7 @@ void GlobalShortcuts::showViews()
 bool GlobalShortcuts::viewsToHideAreValid()
 {
     for(const auto view : m_hideViews) {
-        if (!m_corona->layoutsManager()->latteViewExists(view)) {
+        if (!m_corona->layoutsManager()->synchronizer()->latteViewExists(view)) {
             return false;
         }
 

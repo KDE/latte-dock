@@ -49,6 +49,16 @@ namespace Layouts {
 //! SHARED LAYOUT NAME -> CENTRAL LAYOUT NAMES acting as SHARES
 typedef QHash<const QString, QStringList> SharesMap;
 
+
+//! Layouts::Synchronizer is a very IMPORTANT class which is responsible
+//! for all ACTIVE layouts, meaning layouts that have been loaded
+//! in memory.
+//!
+//! The main task of Synchronizer is to load/unload layouts based
+//! on "user preferences"/"activities settings"/"application current
+//! phase" (e.g. startup/closing)
+//!
+
 class Synchronizer : public QObject {
     Q_OBJECT
 

@@ -30,6 +30,7 @@
 #include "layout/sharedlayout.h"
 #include "layouts/importer.h"
 #include "layouts/manager.h"
+#include "layouts/synchronizer.h"
 #include "layouts/launcherssignals.h"
 #include "shortcuts/globalshortcuts.h"
 #include "package/lattepackage.h"
@@ -148,7 +149,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
 Corona::~Corona()
 {
     //! BEGIN: Give the time to slide-out views when closing
-    m_layoutsManager->hideAllViews();
+    m_layoutsManager->synchronizer()->hideAllViews();
 
     //! Don't delay the destruction under wayland in any case
     //! because it creates a crash with kwin effects
@@ -208,7 +209,7 @@ void Corona::load()
 
         connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &Corona::screenCountChanged);
 
-        QString assignedLayout = m_layoutsManager->shouldSwitchToLayout(m_activityConsumer->currentActivity());
+        QString assignedLayout = m_layoutsManager->synchronizer()->shouldSwitchToLayout(m_activityConsumer->currentActivity());
 
         QString loadLayoutName = "";
 
@@ -219,7 +220,7 @@ void Corona::load()
                 loadLayoutName = m_universalSettings->currentLayoutName();
             }
 
-            if (!m_layoutsManager->layoutExists(loadLayoutName)) {
+            if (!m_layoutsManager->synchronizer()->layoutExists(loadLayoutName)) {
                 loadLayoutName = m_layoutsManager->defaultLayoutName();
                 m_layoutsManager->importDefaultLayout(false);
             }
@@ -480,12 +481,12 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
         Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
         views = currentLayout->latteViews();
     } else {
-        Layout::GenericLayout *generic = m_layoutsManager->centralLayout(forLayout);
+        Layout::GenericLayout *generic = m_layoutsManager->synchronizer()->centralLayout(forLayout);
 
         if (!generic) {
             //! Identify best active layout to be used for metrics calculations.
             //! Active layouts are always take into account their shared layouts for their metrics
-            SharedLayout *sharedLayout = m_layoutsManager->sharedLayout(forLayout);
+            SharedLayout *sharedLayout = m_layoutsManager->synchronizer()->sharedLayout(forLayout);
 
             if (sharedLayout) {
                 generic = sharedLayout->currentCentralLayout();
@@ -707,7 +708,7 @@ void Corona::screenCountChanged()
 //! concerning screen changed (for multi-screen setups mainly)
 void Corona::syncLatteViewsToScreens()
 {
-    m_layoutsManager->syncLatteViewsToScreens();
+    m_layoutsManager->synchronizer()->syncLatteViewsToScreens();
 }
 
 int Corona::primaryScreenId() const
@@ -721,7 +722,7 @@ void Corona::closeApplication()
     //! also from qml (Settings window).
     QTimer::singleShot(5, [this]() {
         m_layoutsManager->hideLatteSettingsDialog();
-        m_layoutsManager->hideAllViews();
+        m_layoutsManager->synchronizer()->hideAllViews();
     });
 
     //! give the time for the views to hide themselves
@@ -891,7 +892,7 @@ void Corona::addViewForLayout(QString layoutName)
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                 Types::TopEdge, Types::RightEdge};
 
-    Layout::GenericLayout *currentLayout = m_layoutsManager->layout(layoutName);
+    Layout::GenericLayout *currentLayout = m_layoutsManager->synchronizer()->layout(layoutName);
 
     if (currentLayout) {
         edges = currentLayout->freeEdges(defaultContainment->screen());
@@ -1018,7 +1019,7 @@ QStringList Corona::contextMenuData()
     data << QString::number((int)viewType);
 
     for(const auto &layoutName : m_layoutsManager->menuLayouts()) {
-        if (m_layoutsManager->centralLayout(layoutName)) {
+        if (m_layoutsManager->synchronizer()->centralLayout(layoutName)) {
             data << QString("1," + layoutName);
         } else {
             data << QString("0," + layoutName);

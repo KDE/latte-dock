@@ -42,11 +42,6 @@ class Types;
 namespace Latte {
 class Corona;
 class CentralLayout;
-class SharedLayout;
-class View;
-namespace Layout {
-class GenericLayout;
-}
 namespace Layouts {
 class Importer;
 class LaunchersSignals;
@@ -57,8 +52,19 @@ class Synchronizer;
 namespace Latte {
 namespace Layouts {
 
-//! This class is responsible to manipulate all layouts.
-//! add,remove,rename, update configurations etc.
+//! Layouts::Manager is a very IMPORTANT class which is responsible to
+//! to provide the qml accessible Layouts manipulation API and at the
+//! same time to interact with Latte::Corona in order
+//! to update correctly the underlying Layouts files by using also
+//! its Importer object
+//!
+//! This class is responsible both for ACTIVE/PASSIVE Layouts.
+//!
+//! ACTIVE Layout is consider one layout that is loaded and active in memory
+//! PASSIVE Layouts is consider one layout that is not loaded/active in memory
+//! and its properties are just stored in the filesystem
+//!
+
 class Manager : public QObject
 {
     Q_OBJECT
@@ -82,16 +88,6 @@ public:
     void showInfoWindow(QString info, int duration, QStringList activities = {"0"});
     void unload();
 
-    void hideAllViews();
-    void pauseLayout(QString layoutName);
-    void syncLatteViewsToScreens();
-    void syncActiveLayoutsToOriginalFiles();
-
-    bool latteViewExists(Latte::View *view) const;
-    bool layoutExists(QString layoutName) const;
-
-    QString shouldSwitchToLayout(QString activityId);
-
     QString currentLayoutName() const;
     QString defaultLayoutName() const;
 
@@ -103,28 +99,13 @@ public:
     Types::LayoutsMemoryUsage memoryUsage() const;
     void setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage);
 
-    //! returns an central layout with that #id (name), it returns null if such
-    //! layout cant be found
-    CentralLayout *centralLayout(QString id) const;
-    int centralLayoutPos(QString id) const;
-    SharedLayout *sharedLayout(QString id) const;
-    //! return an central or shared layout with #id (name), it returns null if such
-    //! loaded layout was not found
-    Layout::GenericLayout *layout(QString id) const;
-
     //! returns the current and central layout based on activities and user preferences
     CentralLayout *currentLayout() const;
     LaunchersSignals *launchersSignals() const;
     Synchronizer *synchronizer() const;
 
-    QStringList activities();
-    QStringList runningActivities();
-    QStringList orphanedActivities(); //! These are activities that haven't been assigned to specific layout
-
     void importDefaultLayout(bool newInstanceIfPresent = false);
     void importPresets(bool includeDefault = false);
-
-    bool registerAtSharedLayout(CentralLayout *central, QString id);
 
 public slots:
     void showAboutDialog();
