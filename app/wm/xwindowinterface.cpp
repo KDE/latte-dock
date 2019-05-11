@@ -45,38 +45,17 @@ XWindowInterface::XWindowInterface(QObject *parent)
     : AbstractWindowInterface(parent)
 {
     m_activities = new KActivities::Consumer(this);
-    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged
-            , this, &AbstractWindowInterface::activeWindowChanged);
+    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AbstractWindowInterface::activeWindowChanged);
+    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &AbstractWindowInterface::windowAdded);
+    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &AbstractWindowInterface::windowRemoved);
+    connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged, this, &XWindowInterface::currentDesktopChanged);
+
     connect(KWindowSystem::self()
             , static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>
             (&KWindowSystem::windowChanged)
             , this, &XWindowInterface::windowChangedProxy);
 
-    auto addWindow = [&](WindowId wid) {
-        if (std::find(m_windows.cbegin(), m_windows.cend(), wid) == m_windows.cend()) {
-            if (isValidWindow(KWindowInfo(wid.value<WId>(), NET::WMWindowType))) {
-                m_windows.push_back(wid);
-                emit windowAdded(wid);
-            }
-        }
-    };
-
-    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, addWindow);
-    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WindowId wid) noexcept {
-        if (std::find(m_windows.cbegin(), m_windows.cend(), wid) != m_windows.end()) {
-            m_windows.remove(wid);
-            emit windowRemoved(wid);
-        }
-    });
-    connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
-            , this, &XWindowInterface::currentDesktopChanged);
-    connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged
-            , this, &XWindowInterface::currentActivityChanged);
-
-    // fill windows list
-    for (const auto &wid : KWindowSystem::self()->windows()) {
-        addWindow(wid);
-    }
+    connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged, this, &XWindowInterface::currentActivityChanged);
 }
 
 XWindowInterface::~XWindowInterface()
@@ -170,11 +149,6 @@ void XWindowInterface::removeViewStruts(QWindow &view) const
 WindowId XWindowInterface::activeWindow() const
 {
     return KWindowSystem::self()->activeWindow();
-}
-
-const std::list<WindowId> &XWindowInterface::windows() const
-{
-    return m_windows;
 }
 
 void XWindowInterface::setKeepAbove(const QDialog &dialog, bool above) const

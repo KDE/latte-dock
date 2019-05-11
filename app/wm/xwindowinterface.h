@@ -55,7 +55,6 @@ public:
     WindowInfoWrap requestInfoActive() const override;
     bool isOnCurrentDesktop(WindowId wid) const override;
     bool isOnCurrentActivity(WindowId wid) const override;
-    const std::list<WindowId> &windows() const override;
 
     void setKeepAbove(const QDialog &dialog, bool above = true) const override;
     void skipTaskBar(const QDialog &dialog) const override;

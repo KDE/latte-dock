@@ -188,11 +188,6 @@ WindowId WaylandInterface::activeWindow() const
     return wid ? wid->internalId() : 0;
 }
 
-const std::list<WindowId> &WaylandInterface::windows() const
-{
-    return m_windows;
-}
-
 void WaylandInterface::setKeepAbove(const QDialog &dialog, bool above) const
 {
     if (above) {
@@ -462,7 +457,6 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
 
     connect(w, &PlasmaWindow::unmapped, this, [ &, win = w]() noexcept {
         mapper->removeMappings(win);
-        m_windows.remove(win->internalId());
         emit windowRemoved(win->internalId());
     });
 
@@ -485,8 +479,6 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
             emit windowChanged(pW->internalId());
         }
     });
-
-    m_windows.push_back(w->internalId());
 
     emit windowAdded(w->internalId());
 }

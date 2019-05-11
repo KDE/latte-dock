@@ -87,7 +87,6 @@ public:
     virtual WindowInfoWrap requestInfoActive() const = 0;
     virtual bool isOnCurrentDesktop(WindowId wid) const = 0;
     virtual bool isOnCurrentActivity(WindowId wid) const = 0;
-    virtual const std::list<WindowId> &windows() const = 0;
 
     virtual void setKeepAbove(const QDialog &dialog, bool above = true) const = 0;
     virtual void skipTaskBar(const QDialog &dialog) const = 0;
@@ -115,7 +114,6 @@ signals:
     void currentActivityChanged();
 
 protected:
-    std::list<WindowId> m_windows;
     QPointer<KActivities::Consumer> m_activities;
 
 private:
