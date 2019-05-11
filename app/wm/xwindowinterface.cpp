@@ -335,7 +335,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 bool XWindowInterface::windowCanBeDragged(WindowId wid) const
 {
     WindowInfoWrap winfo = requestInfo(wid);
-    return (winfo.isValid() && !winfo.isPlasmaDesktop() && !winfo.hasSkipTaskbar());
+    return (winfo.isValid() && !winfo.isMinimized() && !winfo.isPlasmaDesktop() && !winfo.hasSkipTaskbar());
 }
 
 void XWindowInterface::releaseMouseEventFor(WindowId wid) const
