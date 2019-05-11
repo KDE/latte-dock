@@ -236,7 +236,8 @@ Item{
         when: latteView && latteView.windowsTracker && latteView.visibility
         value: (latteView && latteView.visibility
                 && !(latteView.visibility.mode === Latte.Types.AlwaysVisible
-                     || latteView.visibility.mode === Latte.Types.WindowsGoBelow))
+                     || latteView.visibility.mode === Latte.Types.WindowsGoBelow
+                     || latteView.visibility.mode === Latte.Types.AutoHide))
                || ((root.backgroundOnlyOnMaximized
                     || plasmoid.configuration.solidBackgroundForMaximized
                     || root.disablePanelShadowMaximized

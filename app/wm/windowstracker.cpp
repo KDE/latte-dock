@@ -91,6 +91,21 @@ void WindowsTracker::init()
     });
 }
 
+void WindowsTracker::initViewHints(Latte::View *view)
+{
+    if (!m_views.contains(view)) {
+        return;
+    }
+
+    setActiveWindowMaximized(view, false);
+    setActiveWindowTouching(view, false);
+    setExistsWindowActive(view, false);
+    setExistsWindowTouching(view, false);
+    setExistsWindowMaximized(view, false);
+    setActiveWindowScheme(view, nullptr);
+    setTouchingWindowScheme(view, nullptr);
+}
+
 void WindowsTracker::addView(Latte::View *view)
 {
     if (m_views.contains(view)) {
@@ -135,7 +150,7 @@ void WindowsTracker::setEnabled(Latte::View *view, const bool enabled)
     if (enabled) {
         updateHints(view);
     } else {
-        //! INITIALIZE ALL HINTS !!!
+        initViewHints(view);
     }
 
     emit enabledChanged(view);
@@ -502,6 +517,13 @@ void WindowsTracker::updateHints(Latte::View *view)
     } else {
         setTouchingWindowScheme(view, nullptr);
     }
+
+    //! Debug
+    //qDebug() << "TRACKING | SCREEN: " << view->positioner()->currentScreenId() << " , EDGE:" << view->location() << " , ENABLED:" << enabled(view);
+    //qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
+    //qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
+    //         << " , existsWindowTouching:"<<existsWindowTouching(view);
+
 }
 
 

@@ -90,6 +90,7 @@ private slots:
 
 private:
     void init();
+    void initViewHints(Latte::View *view);
     void cleanupFaultyWindows();
 
     void updateViewsHints();
