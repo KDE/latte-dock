@@ -21,17 +21,10 @@
 #include "abstractwindowinterface.h"
 
 // local
+#include "schemestracker.h"
 #include "windowstracker.h"
 #include "../lattecorona.h"
 
-// Qt
-#include <QObject>
-#include <QDir>
-#include <QQuickWindow>
-
-// KDE
-#include <KDirWatch>
-#include <KWindowSystem>
 
 namespace Latte {
 namespace WindowSystem {
@@ -41,61 +34,13 @@ AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
 {
     m_corona = qobject_cast<Latte::Corona *>(parent);
     m_windowsTracker = new WindowsTracker(this);
-
-    updateDefaultScheme();
-
-    connect(this, &AbstractWindowInterface::windowRemoved, this, [&](WindowId wid) {
-        m_windowScheme.remove(wid);
-    });
-
-    //! track for changing default scheme
-    QString kdeSettingsFile = QDir::homePath() + "/.config/kdeglobals";
-
-    KDirWatch::self()->addFile(kdeSettingsFile);
-
-    connect(KDirWatch::self(), &KDirWatch::dirty, this, [ &, kdeSettingsFile](const QString & path) {
-        if (path == kdeSettingsFile) {
-            this->updateDefaultScheme();
-        }
-    });
-
-    connect(KDirWatch::self(), &KDirWatch::created, this, [ &, kdeSettingsFile](const QString & path) {
-        if (path == kdeSettingsFile) {
-            this->updateDefaultScheme();
-        }
-    });
+    m_schemesTracker = new SchemesTracker(this);
 }
 
 AbstractWindowInterface::~AbstractWindowInterface()
 {
-    m_windowScheme.clear();
-    //! it is just a reference to a real scheme file
-    m_schemes.take("kdeglobals");
-    qDeleteAll(m_schemes);
-    m_schemes.clear();
-
+    m_schemesTracker->deleteLater();
     m_windowsTracker->deleteLater();
-}
-
-//! Scheme support for windows
-void AbstractWindowInterface::updateDefaultScheme()
-{
-    QString defaultSchemePath = SchemeColors::possibleSchemeFile("kdeglobals");
-
-    qDebug() << " Windows default color scheme :: " << defaultSchemePath;
-
-    SchemeColors *dScheme;
-
-    if (!m_schemes.contains(defaultSchemePath)) {
-        dScheme = new SchemeColors(this, defaultSchemePath);
-        m_schemes[defaultSchemePath] = dScheme;
-    } else {
-        dScheme = m_schemes[defaultSchemePath];
-    }
-
-    if (!m_schemes.contains("kdeglobals") || m_schemes["kdeglobals"]->schemeFile() != defaultSchemePath) {
-        m_schemes["kdeglobals"] = dScheme;
-    }
 }
 
 Latte::Corona *AbstractWindowInterface::corona()
@@ -103,46 +48,14 @@ Latte::Corona *AbstractWindowInterface::corona()
     return m_corona;
 }
 
-SchemeColors *AbstractWindowInterface::schemeForWindow(WindowId wid)
+SchemesTracker *AbstractWindowInterface::schemesTracker()
 {
-    if (!m_windowScheme.contains(wid)) {
-        return m_schemes["kdeglobals"];
-    } else {
-        return m_schemes[m_windowScheme[wid]];
-    }
-
-    return nullptr;
+    return m_schemesTracker;
 }
 
 WindowsTracker *AbstractWindowInterface::windowsTracker()
 {
     return m_windowsTracker;
-}
-
-void AbstractWindowInterface::setColorSchemeForWindow(WindowId wid, QString scheme)
-{
-    if (scheme == "kdeglobals" && !m_windowScheme.contains(wid)) {
-        //default scheme does not have to be set
-        return;
-    }
-
-    if (scheme == "kdeglobals") {
-        //! a window that previously had an explicit set scheme now is set back to default scheme
-        m_windowScheme.remove(wid);
-    } else {
-        QString schemeFile = SchemeColors::possibleSchemeFile(scheme);
-
-        if (!m_schemes.contains(schemeFile)) {
-            //! when this scheme file has not been loaded yet
-            m_schemes[schemeFile] = new SchemeColors(this, schemeFile);
-        }
-
-        m_windowScheme[wid] = schemeFile;
-    }
-
-    if (wid == activeWindow()) {
-        emit activeWindowChanged(wid);
-    }
 }
 
 }

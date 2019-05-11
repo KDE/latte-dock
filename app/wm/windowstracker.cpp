@@ -22,6 +22,7 @@
 // local
 #include "abstractwindowinterface.h"
 #include "schemecolors.h"
+#include "schemestracker.h"
 #include "../lattecorona.h"
 #include "../layouts/manager.h"
 #include "../view/view.h"
@@ -506,14 +507,14 @@ void WindowsTracker::updateHints(Latte::View *view)
     setExistsWindowTouching(view, (foundTouchInCurScreen || foundActiveTouchInCurScreen));
 
     //! update color schemes for active and touching windows
-    setActiveWindowScheme(view, (foundActiveInCurScreen ? m_wm->schemeForWindow(activeWinId) : nullptr));
+    setActiveWindowScheme(view, (foundActiveInCurScreen ? m_wm->schemesTracker()->schemeForWindow(activeWinId) : nullptr));
 
     if (foundActiveTouchInCurScreen) {
-        setTouchingWindowScheme(view, m_wm->schemeForWindow(activeTouchWinId));
+        setTouchingWindowScheme(view, m_wm->schemesTracker()->schemeForWindow(activeTouchWinId));
     } else if (foundMaximizedInCurScreen) {
-        setTouchingWindowScheme(view, m_wm->schemeForWindow(maxWinId));
+        setTouchingWindowScheme(view, m_wm->schemesTracker()->schemeForWindow(maxWinId));
     } else if (foundTouchInCurScreen) {
-        setTouchingWindowScheme(view, m_wm->schemeForWindow(touchWinId));
+        setTouchingWindowScheme(view, m_wm->schemesTracker()->schemeForWindow(touchWinId));
     } else {
         setTouchingWindowScheme(view, nullptr);
     }

@@ -39,6 +39,7 @@
 #include "settings/universalsettings.h"
 #include "view/view.h"
 #include "wm/abstractwindowinterface.h"
+#include "wm/schemestracker.h"
 #include "wm/waylandinterface.h"
 #include "wm/xwindowinterface.h"
 
@@ -967,10 +968,10 @@ void Corona::windowColorScheme(QString windowIdAndScheme)
             //! otherwise the active window id may not be the same with the one trigerred
             //! the color scheme dbus signal
             QString windowIdStr = m_wm->activeWindow().toString();
-            m_wm->setColorSchemeForWindow(windowIdStr.toUInt(), schemeStr);
+            m_wm->schemesTracker()->setColorSchemeForWindow(windowIdStr.toUInt(), schemeStr);
         });
     } else {
-        m_wm->setColorSchemeForWindow(windowIdStr.toUInt(), schemeStr);
+        m_wm->schemesTracker()->setColorSchemeForWindow(windowIdStr.toUInt(), schemeStr);
     }
 }
 

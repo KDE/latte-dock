@@ -50,6 +50,7 @@
 namespace Latte {
 class Corona;
 namespace WindowSystem {
+class SchemesTracker;
 class WindowsTracker;
 }
 }
@@ -102,9 +103,8 @@ public:
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;
 
     Latte::Corona *corona();
-    SchemeColors *schemeForWindow(WindowId wId);
+    SchemesTracker *schemesTracker();
     WindowsTracker *windowsTracker();
-    void setColorSchemeForWindow(WindowId wId, QString scheme);
 
 signals:
     void activeWindowChanged(WindowId wid);
@@ -118,17 +118,9 @@ protected:
     std::list<WindowId> m_windows;
     QPointer<KActivities::Consumer> m_activities;
 
-private slots:
-    void updateDefaultScheme();
-
 private:
-    //! scheme file and its loaded colors
-    QMap<QString, SchemeColors *> m_schemes;
-
-    //! window id and its corresponding scheme file
-    QMap<WindowId, QString> m_windowScheme;
-
     Latte::Corona *m_corona;
+    SchemesTracker *m_schemesTracker;
     WindowsTracker *m_windowsTracker;
 };
 
