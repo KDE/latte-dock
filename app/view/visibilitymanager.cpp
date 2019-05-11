@@ -27,7 +27,7 @@
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../layouts/manager.h"
-#include "../wm/windowinfowrap.h"
+#include "../wm/abstractwindowinterface.h"
 #include "../../liblatte2/extras.h"
 
 // Qt
@@ -145,12 +145,12 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
             m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
         }
 
-        m_connections[0] = connect(m_wm, &WindowSystem::currentDesktopChanged, this, [&] {
+        m_connections[0] = connect(m_wm, &WindowSystem::AbstractWindowInterface::currentDesktopChanged, this, [&] {
             if (m_raiseOnDesktopChange) {
                 raiseViewTemporarily();
             }
         });
-        m_connections[1] = connect(m_wm, &WindowSystem::currentActivityChanged, this, [&]() {
+        m_connections[1] = connect(m_wm, &WindowSystem::AbstractWindowInterface::currentActivityChanged, this, [&]() {
             if (m_raiseOnActivityChange) {
                 raiseViewTemporarily();
             } else {
@@ -717,7 +717,7 @@ void VisibilityManager::createEdgeGhostWindow()
             }
         });
 
-        m_connectionsKWinEdges[0] = connect(m_wm, &WindowSystem::currentActivityChanged,
+        m_connectionsKWinEdges[0] = connect(m_wm, &WindowSystem::AbstractWindowInterface::currentActivityChanged,
                                             this, [&]() {
             bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout ||
                                     (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts

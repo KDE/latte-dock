@@ -157,7 +157,7 @@ QRect SecondaryConfigView::geometryWhenVisible() const
 void SecondaryConfigView::requestActivate()
 {
     if (KWindowSystem::isPlatformWayland() && m_shellSurface) {
-        WindowId wid = m_corona->wm()->winIdFor("latte-dock", geometry());
+        WindowSystem::WindowId wid = m_corona->wm()->winIdFor("latte-dock", geometry());
         m_corona->wm()->requestActivate(wid);
     } else {
         QQuickView::requestActivate();
@@ -245,23 +245,23 @@ void SecondaryConfigView::syncSlideEffect()
         return;
     }
 
-    auto slideLocation = WindowSystem::Slide::None;
+    auto slideLocation = WindowSystem::AbstractWindowInterface::Slide::None;
 
     switch (m_latteView->containment()->location()) {
     case Plasma::Types::TopEdge:
-        slideLocation = WindowSystem::Slide::Top;
+        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Top;
         break;
 
     case Plasma::Types::RightEdge:
-        slideLocation = WindowSystem::Slide::Right;
+        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Right;
         break;
 
     case Plasma::Types::BottomEdge:
-        slideLocation = WindowSystem::Slide::Bottom;
+        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Bottom;
         break;
 
     case Plasma::Types::LeftEdge:
-        slideLocation = WindowSystem::Slide::Left;
+        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Left;
         break;
 
     default:

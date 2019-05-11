@@ -61,7 +61,6 @@ class PlasmaShell;
 }
 
 namespace Latte {
-class AbstractWindowInterface;
 class ScreenPool;
 class GlobalShortcuts;
 class UniversalSettings;
@@ -80,6 +79,9 @@ class Manager;
 namespace PlasmaExtended{
 class ScreenPool;
 class Theme;
+}
+namespace WindowSystem{
+class AbstractWindowInterface;
 }
 }
 
@@ -118,17 +120,18 @@ public:
     KActivities::Consumer *activityConsumer() const;
     KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
 
-    AbstractWindowInterface *wm() const;
     KActivities::Consumer *activitiesConsumer() const;
     GlobalShortcuts *globalShortcuts() const;
     ScreenPool *screenPool() const;
     UniversalSettings *universalSettings() const;
-    Layouts::Manager *layoutsManager() const;
+    Layouts::Manager *layoutsManager() const;   
 
     Indicator::Factory *indicatorFactory() const;
 
     PlasmaExtended::ScreenPool *plasmaScreenPool() const;
     PlasmaExtended::Theme *themeExtended() const;
+
+    WindowSystem::AbstractWindowInterface *wm() const;
 
     //! these functions are used from context menu through containmentactions
     void switchToLayout(QString layout);
@@ -200,7 +203,6 @@ private:
     KActivities::Consumer *m_activityConsumer;
     QPointer<KAboutApplicationDialog> aboutDialog;
 
-    AbstractWindowInterface *m_wm{nullptr};
     ScreenPool *m_screenPool{nullptr};
     UniversalSettings *m_universalSettings{nullptr};
     GlobalShortcuts *m_globalShortcuts{nullptr};
@@ -210,6 +212,8 @@ private:
 
     PlasmaExtended::ScreenPool *m_plasmaScreenPool{nullptr};
     PlasmaExtended::Theme *m_themeExtended{nullptr};
+
+    WindowSystem::AbstractWindowInterface *m_wm{nullptr};
 
     KWayland::Client::PlasmaShell *m_waylandCorona{nullptr};
 

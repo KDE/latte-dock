@@ -48,9 +48,7 @@
 #include <Plasma>
 
 namespace Latte {
-
-class XWindowInterface;
-class WaylandInterface;
+namespace WindowSystem {
 
 class AbstractWindowInterface : public QObject
 {
@@ -124,11 +122,9 @@ private:
 
     //! window id and its corresponding scheme file
     QMap<WindowId, QString> m_windowScheme;
-
 };
 
-// namespace alias
-using WindowSystem = AbstractWindowInterface;
-
 }
+}
+
 #endif // ABSTRACTWINDOWINTERFACE_H

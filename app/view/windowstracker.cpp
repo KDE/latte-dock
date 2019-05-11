@@ -120,12 +120,12 @@ void WindowsTracker::setExistsWindowTouching(bool windowTouching)
     emit existsWindowTouchingChanged();
 }
 
-Latte::SchemeColors *WindowsTracker::activeWindowScheme() const
+WindowSystem::SchemeColors *WindowsTracker::activeWindowScheme() const
 {
     return m_activeScheme;
 }
 
-void WindowsTracker::setActiveWindowScheme(Latte::SchemeColors *scheme)
+void WindowsTracker::setActiveWindowScheme(WindowSystem::SchemeColors *scheme)
 {
     if (m_activeScheme == scheme) {
         return;
@@ -136,12 +136,12 @@ void WindowsTracker::setActiveWindowScheme(Latte::SchemeColors *scheme)
     emit activeWindowSchemeChanged();
 }
 
-Latte::SchemeColors *WindowsTracker::touchingWindowScheme() const
+WindowSystem::SchemeColors *WindowsTracker::touchingWindowScheme() const
 {
     return m_touchingScheme;
 }
 
-void WindowsTracker::setTouchingWindowScheme(Latte::SchemeColors *scheme)
+void WindowsTracker::setTouchingWindowScheme(WindowSystem::SchemeColors *scheme)
 {
     if (m_touchingScheme == scheme) {
         return;
@@ -175,21 +175,21 @@ void WindowsTracker::setEnabled(bool active)
         m_connections[0] = connect(m_corona, &Plasma::Corona::availableScreenRectChanged,
                                    this, &WindowsTracker::updateAvailableScreenGeometry);
 
-        m_connections[1] = connect(m_wm, &WindowSystem::windowChanged, this, [&](WindowId wid) {
+        m_connections[1] = connect(m_wm, &WindowSystem::AbstractWindowInterface::windowChanged, this, [&](WindowSystem::WindowId wid) {
                 m_windows[wid] = m_wm->requestInfo(wid);
                 updateFlags();
     });
 
-        m_connections[2] = connect(m_wm, &WindowSystem::windowRemoved, this, [&](WindowId wid) {
+        m_connections[2] = connect(m_wm, &WindowSystem::AbstractWindowInterface::windowRemoved, this, [&](WindowSystem::WindowId wid) {
                 m_windows.remove(wid);
     });
 
-        m_connections[3] = connect(m_wm, &WindowSystem::windowAdded, this, [&](WindowId wid) {
+        m_connections[3] = connect(m_wm, &WindowSystem::AbstractWindowInterface::windowAdded, this, [&](WindowSystem::WindowId wid) {
                 m_windows.insert(wid, m_wm->requestInfo(wid));
                 updateFlags();
     });
 
-        m_connections[4] = connect(m_wm, &WindowSystem::activeWindowChanged, this, [&](WindowId wid) {
+        m_connections[4] = connect(m_wm, &WindowSystem::AbstractWindowInterface::activeWindowChanged, this, [&](WindowSystem::WindowId wid) {
                 if (m_windows.contains(m_lastActiveWindowWid)) {
                 m_windows[m_lastActiveWindowWid] = m_wm->requestInfo(m_lastActiveWindowWid);
     }
@@ -199,11 +199,11 @@ void WindowsTracker::setEnabled(bool active)
                 updateFlags();
     });
 
-        m_connections[5] = connect(m_wm, &WindowSystem::currentDesktopChanged, this, [&] {
+        m_connections[5] = connect(m_wm, &WindowSystem::AbstractWindowInterface::currentDesktopChanged, this, [&] {
             updateFlags();
         });
 
-        m_connections[6] = connect(m_wm, &WindowSystem::currentActivityChanged, this, [&] {
+        m_connections[6] = connect(m_wm, &WindowSystem::AbstractWindowInterface::currentActivityChanged, this, [&] {
             if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
                 //! this is needed in MultipleLayouts because there is a chance that multiple
                 //! layouts are providing different available screen geometries in different Activities
@@ -259,10 +259,10 @@ void WindowsTracker::updateFlags()
     //! maybe a garbage collector here is a good idea!!!
     bool existsFaultyWindow{false};
 
-    WindowId maxWinId;
-    WindowId activeWinId;
-    WindowId touchWinId;
-    WindowId activeTouchWinId;
+    WindowSystem::WindowId maxWinId;
+    WindowSystem::WindowId activeWinId;
+    WindowSystem::WindowId touchWinId;
+    WindowSystem::WindowId activeTouchWinId;
 
     for (const auto &winfo : m_windows) {
         if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo)) {
@@ -342,28 +342,28 @@ void WindowsTracker::updateFlags()
     }
 }
 
-bool WindowsTracker::inCurrentDesktopActivity(const WindowInfoWrap &winfo)
+bool WindowsTracker::inCurrentDesktopActivity(const WindowSystem::WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid()));
 }
 
-bool WindowsTracker::intersects(const WindowInfoWrap &winfo)
+bool WindowsTracker::intersects(const WindowSystem::WindowInfoWrap &winfo)
 {
     return (!winfo.isMinimized() && !winfo.isShaded() && winfo.geometry().intersects(m_latteView->absoluteGeometry()));
 }
 
-bool WindowsTracker::isActive(const WindowInfoWrap &winfo)
+bool WindowsTracker::isActive(const WindowSystem::WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized());
 }
 
-bool WindowsTracker::isActiveInCurrentScreen(const WindowInfoWrap &winfo)
+bool WindowsTracker::isActiveInCurrentScreen(const WindowSystem::WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized()
             && m_availableScreenGeometry.contains(winfo.geometry().center()));
 }
 
-bool WindowsTracker::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
+bool WindowsTracker::isMaximizedInCurrentScreen(const WindowSystem::WindowInfoWrap &winfo)
 {
     auto viewIntersectsMaxVert = [&]() noexcept -> bool {
         return ((winfo.isMaxVert()
@@ -384,12 +384,12 @@ bool WindowsTracker::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
             && m_availableScreenGeometry.contains(winfo.geometry().center()));
 }
 
-bool WindowsTracker::isTouchingView(const WindowInfoWrap &winfo)
+bool WindowsTracker::isTouchingView(const WindowSystem::WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && intersects(winfo));
 }
 
-bool WindowsTracker::isTouchingViewEdge(const WindowInfoWrap &winfo)
+bool WindowsTracker::isTouchingViewEdge(const WindowSystem::WindowInfoWrap &winfo)
 {
     if (winfo.isValid() && !winfo.isMinimized()) {
         bool touchingViewEdge{false};
@@ -436,7 +436,7 @@ void WindowsTracker::setWindowOnActivities(QWindow &window, const QStringList &a
 
 void WindowsTracker::requestToggleMaximizeForActiveWindow()
 {
-    WindowInfoWrap actInfo;
+    WindowSystem::WindowInfoWrap actInfo;
 
     if (m_windows.contains(m_lastActiveWindowWid)) {
         actInfo = m_windows[m_lastActiveWindowWid];
@@ -452,7 +452,7 @@ void WindowsTracker::requestToggleMaximizeForActiveWindow()
 
 void WindowsTracker::requestMoveActiveWindow(int localX, int localY)
 {
-    WindowInfoWrap actInfo;
+    WindowSystem::WindowInfoWrap actInfo;
 
     if (m_windows.contains(m_lastActiveWindowWid)) {
         actInfo = m_windows[m_lastActiveWindowWid];
@@ -478,7 +478,7 @@ void WindowsTracker::requestMoveActiveWindow(int localX, int localY)
 
 bool WindowsTracker::activeWindowCanBeDragged()
 {
-    WindowInfoWrap actInfo;
+    WindowSystem::WindowInfoWrap actInfo;
 
     if (m_windows.contains(m_lastActiveWindowWid)) {
         actInfo = m_windows[m_lastActiveWindowWid];

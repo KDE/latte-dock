@@ -149,17 +149,17 @@ float Theme::backgroundMaxOpacity() const
     return m_backgroundMaxOpacity;
 }
 
-Latte::SchemeColors *Theme::defaultTheme() const
+WindowSystem::SchemeColors *Theme::defaultTheme() const
 {
     return m_defaultScheme;
 }
 
-Latte::SchemeColors *Theme::lightTheme() const
+WindowSystem::SchemeColors *Theme::lightTheme() const
 {
     return m_isLightTheme ? m_defaultScheme : m_reversedScheme;
 }
 
-Latte::SchemeColors *Theme::darkTheme() const
+WindowSystem::SchemeColors *Theme::darkTheme() const
 {
     return !m_isLightTheme ? m_defaultScheme : m_reversedScheme;
 }
@@ -200,12 +200,12 @@ void Theme::updateDefaultScheme()
     updateDefaultSchemeValues();
 
     if (m_defaultScheme) {
-        disconnect(m_defaultScheme, &Latte::SchemeColors::colorsChanged, this, &Theme::loadThemeLightness);
+        disconnect(m_defaultScheme, &WindowSystem::SchemeColors::colorsChanged, this, &Theme::loadThemeLightness);
         m_defaultScheme->deleteLater();
     }
 
-    m_defaultScheme = new Latte::SchemeColors(this, m_defaultSchemePath, true);
-    connect(m_defaultScheme, &Latte::SchemeColors::colorsChanged, this, &Theme::loadThemeLightness);
+    m_defaultScheme = new WindowSystem::SchemeColors(this, m_defaultSchemePath, true);
+    connect(m_defaultScheme, &WindowSystem::SchemeColors::colorsChanged, this, &Theme::loadThemeLightness);
 
     qDebug() << "plasma theme default colors ::: " << m_defaultSchemePath;
 }
@@ -244,7 +244,7 @@ void Theme::updateReversedScheme()
         m_reversedScheme->deleteLater();
     }
 
-    m_reversedScheme = new Latte::SchemeColors(this, m_reversedSchemePath, true);
+    m_reversedScheme = new WindowSystem::SchemeColors(this, m_reversedSchemePath, true);
 
     qDebug() << "plasma theme reversed colors ::: " << m_reversedSchemePath;
 }
@@ -299,7 +299,7 @@ void Theme::updateReversedSchemeValues()
         }
 
         //! update scheme name
-        QString originalSchemeName = Latte::SchemeColors::schemeName(m_originalSchemePath);
+        QString originalSchemeName = WindowSystem::SchemeColors::schemeName(m_originalSchemePath);
         KConfigGroup generalGroup(reversedPtr, "General");
         generalGroup.writeEntry("Name", originalSchemeName + "_reversed");
         generalGroup.sync();
@@ -426,17 +426,17 @@ void Theme::loadThemePaths()
 
         m_kdeConnections[0] = connect(KDirWatch::self(), &KDirWatch::dirty, this, [ &, kdeSettingsFile](const QString & path) {
             if (path == kdeSettingsFile) {
-                this->setOriginalSchemeFile(Latte::SchemeColors::possibleSchemeFile("kdeglobals"));
+                this->setOriginalSchemeFile(WindowSystem::SchemeColors::possibleSchemeFile("kdeglobals"));
             }
         });
 
         m_kdeConnections[1] = connect(KDirWatch::self(), &KDirWatch::created, this, [ &, kdeSettingsFile](const QString & path) {
             if (path == kdeSettingsFile) {
-                this->setOriginalSchemeFile(Latte::SchemeColors::possibleSchemeFile("kdeglobals"));
+                this->setOriginalSchemeFile(WindowSystem::SchemeColors::possibleSchemeFile("kdeglobals"));
             }
         });
 
-        setOriginalSchemeFile(Latte::SchemeColors::possibleSchemeFile("kdeglobals"));
+        setOriginalSchemeFile(WindowSystem::SchemeColors::possibleSchemeFile("kdeglobals"));
     }
 
     //! this is probably not needed at all in order to provide full transparency for all

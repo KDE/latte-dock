@@ -94,9 +94,9 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
     //! create the window manager
 
     if (KWindowSystem::isPlatformWayland()) {
-        m_wm = new WaylandInterface(this);
+        m_wm = new WindowSystem::WaylandInterface(this);
     } else {
-        m_wm = new XWindowInterface(this);
+        m_wm = new WindowSystem::XWindowInterface(this);
     }
 
     setupWaylandIntegration();
@@ -291,7 +291,7 @@ void Corona::setupWaylandIntegration()
                      [this, registry](quint32 name, quint32 version) {
         KWayland::Client::PlasmaWindowManagement *pwm = registry->createPlasmaWindowManagement(name, version, this);
 
-        WaylandInterface *wI = qobject_cast<WaylandInterface *>(m_wm);
+        WindowSystem::WaylandInterface *wI = qobject_cast<WindowSystem::WaylandInterface *>(m_wm);
 
         if (wI) {
             wI->initWindowManagement(pwm);
@@ -398,7 +398,7 @@ UniversalSettings *Corona::universalSettings() const
     return m_universalSettings;
 }
 
-AbstractWindowInterface *Corona::wm() const
+WindowSystem::AbstractWindowInterface *Corona::wm() const
 {
     return m_wm;
 }

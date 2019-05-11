@@ -27,6 +27,7 @@
 #include <QVariant>
 
 namespace Latte {
+namespace WindowSystem {
 
 using WindowId = QVariant;
 
@@ -313,6 +314,7 @@ inline void WindowInfoWrap::setWid(WindowId wid) noexcept
 }
 
 // END: definitions
+}
 }
 
 #endif // WINDOWINFOWRAP_H

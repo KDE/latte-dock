@@ -39,6 +39,7 @@
 #include <xcb/xcb.h>
 
 namespace Latte {
+namespace WindowSystem {
 
 XWindowInterface::XWindowInterface(QObject *parent)
     : AbstractWindowInterface(parent)
@@ -487,4 +488,5 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     emit windowChanged(wid);
 }
 
+}
 }

@@ -23,8 +23,6 @@
 
 // local
 #include "../plasma/quick/containmentview.h"
-#include "../wm/abstractwindowinterface.h"
-#include "../wm/windowinfowrap.h"
 #include "../../liblatte2/types.h"
 
 // Qt
@@ -39,6 +37,9 @@ class Corona;
 class View;
 namespace ViewPart {
 class ScreenEdgeGhostWindow;
+}
+namespace WindowSystem {
+class AbstractWindowInterface;
 }
 }
 
@@ -141,7 +142,6 @@ private:
     void updateKWinEdgesSupport();
     void updateGhostWindowState();
 
-    void windowAdded(WindowId id);
     void updateStrutsBasedOnLayoutsAndActivities();
     void viewEventManager(QEvent *ev);
 
@@ -154,7 +154,7 @@ private slots:
     void updateHiddenState();
 
 private:
-    AbstractWindowInterface *m_wm;
+    WindowSystem::AbstractWindowInterface *m_wm;
     Types::Visibility m_mode{Types::None};
     std::array<QMetaObject::Connection, 5> m_connections;
 

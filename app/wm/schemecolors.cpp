@@ -34,6 +34,7 @@
 #include <KSharedConfig>
 
 namespace Latte {
+namespace WindowSystem {
 
 SchemeColors::SchemeColors(QObject *parent, QString scheme, bool plasmaTheme) :
     QObject(parent),
@@ -246,4 +247,5 @@ void SchemeColors::updateScheme()
     emit colorsChanged();
 }
 
+}
 }

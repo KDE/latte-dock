@@ -28,10 +28,13 @@
 #include <QObject>
 
 namespace Latte{
-class AbstractWindowInterface;
 class Corona;
-class SchemeColors;
 class View;
+
+namespace WindowSystem {
+class AbstractWindowInterface;
+class SchemeColors;
+}
 }
 
 namespace Latte {
@@ -45,8 +48,8 @@ class WindowsTracker : public QObject {
     Q_PROPERTY(bool existsWindowActive READ existsWindowActive NOTIFY existsWindowActiveChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
     Q_PROPERTY(bool existsWindowTouching READ existsWindowTouching NOTIFY existsWindowTouchingChanged)
-    Q_PROPERTY(Latte::SchemeColors *activeWindowScheme READ activeWindowScheme NOTIFY activeWindowSchemeChanged)
-    Q_PROPERTY(Latte::SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
+    Q_PROPERTY(Latte::WindowSystem::SchemeColors *activeWindowScheme READ activeWindowScheme NOTIFY activeWindowSchemeChanged)
+    Q_PROPERTY(Latte::WindowSystem::SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
 
 public:
     explicit WindowsTracker(Latte::View *parent);
@@ -61,8 +64,8 @@ public:
     bool existsWindowMaximized() const;
     bool existsWindowTouching() const;
 
-    Latte::SchemeColors *activeWindowScheme() const;
-    Latte::SchemeColors *touchingWindowScheme() const;
+    WindowSystem::SchemeColors *activeWindowScheme() const;
+    WindowSystem::SchemeColors *touchingWindowScheme() const;
 
     void setWindowOnActivities(QWindow &window, const QStringList &activities);
 
@@ -88,8 +91,8 @@ private:
     void setExistsWindowActive(bool windowActive);
     void setExistsWindowMaximized(bool windowMaximized);
     void setExistsWindowTouching(bool windowTouching);
-    void setActiveWindowScheme(Latte::SchemeColors *scheme);
-    void setTouchingWindowScheme(Latte::SchemeColors *scheme);
+    void setActiveWindowScheme(WindowSystem::SchemeColors *scheme);
+    void setTouchingWindowScheme(WindowSystem::SchemeColors *scheme);
     void updateAvailableScreenGeometry();
     void updateFlags();
 
@@ -97,13 +100,13 @@ private:
     //! this is a garbage collector to collect such windows in order to not break the windows array validity.
     void cleanupFaultyWindows();
 
-    bool intersects(const WindowInfoWrap &winfo);
-    bool inCurrentDesktopActivity(const WindowInfoWrap &winfo);
-    bool isActive(const WindowInfoWrap &winfo);
-    bool isActiveInCurrentScreen(const WindowInfoWrap &winfo);
-    bool isMaximizedInCurrentScreen(const WindowInfoWrap &winfo);
-    bool isTouchingViewEdge(const WindowInfoWrap &winfo);
-    bool isTouchingView(const WindowInfoWrap &winfo);
+    bool intersects(const WindowSystem::WindowInfoWrap &winfo);
+    bool inCurrentDesktopActivity(const WindowSystem::WindowInfoWrap &winfo);
+    bool isActive(const WindowSystem::WindowInfoWrap &winfo);
+    bool isActiveInCurrentScreen(const WindowSystem::WindowInfoWrap &winfo);
+    bool isMaximizedInCurrentScreen(const WindowSystem::WindowInfoWrap &winfo);
+    bool isTouchingViewEdge(const WindowSystem::WindowInfoWrap &winfo);
+    bool isTouchingView(const WindowSystem::WindowInfoWrap &winfo);
 
 private:
     bool m_enabled{false};
@@ -115,17 +118,18 @@ private:
 
     QRect m_availableScreenGeometry;
 
-    WindowId m_lastActiveWindowWid;
+    WindowSystem::WindowId m_lastActiveWindowWid;
 
     std::array<QMetaObject::Connection, 7> m_connections;
-    QMap<WindowId, WindowInfoWrap> m_windows;
+    QMap<WindowSystem::WindowId, WindowSystem::WindowInfoWrap> m_windows;
 
-    Latte::SchemeColors *m_activeScheme{nullptr};
-    Latte::SchemeColors *m_touchingScheme{nullptr};
-
-    Latte::AbstractWindowInterface *m_wm;
     Latte::Corona *m_corona{nullptr};
     Latte::View *m_latteView{nullptr};
+
+    WindowSystem::AbstractWindowInterface *m_wm;
+
+    WindowSystem::SchemeColors *m_activeScheme{nullptr};
+    WindowSystem::SchemeColors *m_touchingScheme{nullptr};
 };
 
 }

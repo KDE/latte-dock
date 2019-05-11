@@ -20,10 +20,6 @@
 
 #include "abstractwindowinterface.h"
 
-// local
-#include "xwindowinterface.h"
-#include "waylandinterface.h"
-
 // Qt
 #include <QObject>
 #include <QDir>
@@ -34,6 +30,7 @@
 #include <KWindowSystem>
 
 namespace Latte {
+namespace WindowSystem {
 
 AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
     : QObject(parent)
@@ -143,5 +140,6 @@ void AbstractWindowInterface::setColorSchemeForWindow(WindowId wid, QString sche
     }
 }
 
+}
 }
 

@@ -39,16 +39,17 @@
 #include <KWindowInfo>
 #include <KWindowEffects>
 
+
 namespace Latte {
-
 class Corona;
-
 namespace Private {
-/**
- * @brief this class is use for create the struts inside wayland
- */
+//! this class is used to create the struts inside wayland
 class GhostWindow;
 }
+}
+
+namespace Latte {
+namespace WindowSystem {
 
 class WaylandInterface : public AbstractWindowInterface
 {
@@ -106,7 +107,7 @@ private:
     Latte::Corona *m_corona{nullptr};
 };
 
-
+}
 }
 
 #endif // WAYLANDINTERFACE_H

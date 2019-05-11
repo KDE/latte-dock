@@ -38,7 +38,9 @@
 
 namespace Latte {
 class Corona;
+namespace WindowSystem {
 class SchemeColors;
+}
 }
 
 namespace Latte {
@@ -60,9 +62,9 @@ class Theme: public QObject
 
     Q_PROPERTY(float backgroundMaxOpacity READ backgroundMaxOpacity NOTIFY backgroundMaxOpacityChanged)
 
-    Q_PROPERTY(Latte::SchemeColors *defaultTheme READ defaultTheme NOTIFY themeChanged)
-    Q_PROPERTY(Latte::SchemeColors *lightTheme READ lightTheme NOTIFY themeChanged)
-    Q_PROPERTY(Latte::SchemeColors *darkTheme READ darkTheme NOTIFY themeChanged)
+    Q_PROPERTY(Latte::WindowSystem::SchemeColors *defaultTheme READ defaultTheme NOTIFY themeChanged)
+    Q_PROPERTY(Latte::WindowSystem::SchemeColors *lightTheme READ lightTheme NOTIFY themeChanged)
+    Q_PROPERTY(Latte::WindowSystem::SchemeColors *darkTheme READ darkTheme NOTIFY themeChanged)
 
 public:
     Theme(KSharedConfig::Ptr config, QObject *parent);
@@ -82,9 +84,9 @@ public:
 
     float backgroundMaxOpacity() const;
 
-    Latte::SchemeColors *defaultTheme() const;
-    Latte::SchemeColors *lightTheme() const;
-    Latte::SchemeColors *darkTheme() const;
+    WindowSystem::SchemeColors *defaultTheme() const;
+    WindowSystem::SchemeColors *lightTheme() const;
+    WindowSystem::SchemeColors *darkTheme() const;
 
     void load();
 
@@ -140,8 +142,8 @@ private:
     Plasma::Theme m_theme;
 
     Latte::Corona *m_corona{nullptr};
-    Latte::SchemeColors *m_defaultScheme{nullptr};
-    Latte::SchemeColors *m_reversedScheme{nullptr};
+    WindowSystem::SchemeColors *m_defaultScheme{nullptr};
+    WindowSystem::SchemeColors *m_reversedScheme{nullptr};
 };
 
 }

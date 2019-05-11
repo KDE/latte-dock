@@ -26,6 +26,7 @@
 #include <QColor>
 
 namespace Latte {
+namespace WindowSystem {
 
 class SchemeColors: public QObject
 {
@@ -106,6 +107,7 @@ private:
     QColor m_buttonFocusColor;
 };
 
+}
 }
 
 #endif

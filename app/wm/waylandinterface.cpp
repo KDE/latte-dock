@@ -51,7 +51,7 @@ class Private::GhostWindow : public QRasterWindow
     Q_OBJECT
 
 public:
-    GhostWindow(WaylandInterface *waylandInterface)
+    GhostWindow(WindowSystem::WaylandInterface *waylandInterface)
         : m_waylandInterface(waylandInterface) {
         setFlags(Qt::FramelessWindowHint
                  | Qt::WindowStaysOnTopHint
@@ -93,8 +93,10 @@ public:
     }
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
-    WaylandInterface *m_waylandInterface{nullptr};
+    WindowSystem::WaylandInterface *m_waylandInterface{nullptr};
 };
+
+namespace WindowSystem {
 
 WaylandInterface::WaylandInterface(QObject *parent)
     : AbstractWindowInterface(parent)
@@ -489,6 +491,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
     emit windowAdded(w->internalId());
 }
 
+}
 }
 
 #include "waylandinterface.moc"

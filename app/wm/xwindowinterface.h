@@ -33,6 +33,7 @@
 #include <KWindowEffects>
 
 namespace Latte {
+namespace WindowSystem {
 
 class XWindowInterface : public AbstractWindowInterface
 {
@@ -77,6 +78,7 @@ private:
     WindowId m_desktopId;
 };
 
+}
 }
 
 #endif // XWINDOWINTERFACE_H
