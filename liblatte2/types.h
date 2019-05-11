@@ -224,14 +224,6 @@ public:
     };
     Q_ENUM(SettingsComplexity);
 
-    enum WindowsTracking
-    {
-        NoTracking = 0,
-        TrackActiveWindow,
-        TrackAllWindows
-    };
-    Q_ENUM(WindowsTracking);
-
     enum ImportExportState
     {
         Failed = 0,
