@@ -87,7 +87,8 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_universalSettings(new UniversalSettings(KSharedConfig::openConfig(), this)),
       m_globalShortcuts(new GlobalShortcuts(this)),
       m_plasmaScreenPool(new PlasmaExtended::ScreenPool(this)),
-      m_themeExtended(new PlasmaExtended::Theme(KSharedConfig::openConfig(), this))
+      m_themeExtended(new PlasmaExtended::Theme(KSharedConfig::openConfig(), this)),
+      m_layoutsManager(new Layouts::Manager(this))
 {
     //! create the window manager
 
@@ -197,7 +198,6 @@ void Corona::load()
 
         disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
 
-        m_layoutsManager = new Layouts::Manager(this);
         m_layoutsManager->load();
 
         connect(this, &Corona::availableScreenRectChangedFrom, this, &Plasma::Corona::availableScreenRectChanged);

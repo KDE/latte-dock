@@ -45,6 +45,10 @@ class Controller;
 namespace Latte {
 namespace Layouts {
 
+//! This is a Shares map in the following structure:
+//! SHARED LAYOUT NAME -> CENTRAL LAYOUT NAMES acting as SHARES
+typedef QHash<const QString, QStringList> SharesMap;
+
 class Synchronizer : public QObject {
     Q_OBJECT
 
@@ -60,6 +64,7 @@ public:
     void syncActiveLayoutsToOriginalFiles();
     void syncLatteViewsToScreens();
     void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
+    void syncActiveShares(SharesMap &sharesMap);
 
     bool latteViewExists(Latte::View *view) const;
     bool layoutExists(QString layoutName) const;
@@ -113,6 +118,7 @@ private:
     void unloadSharedLayout(SharedLayout *layout);
 
     bool layoutIsAssigned(QString layoutName);
+    bool mapHasRecord(const QString &record, SharesMap &map);
 
     QString layoutPath(QString layoutName);
 

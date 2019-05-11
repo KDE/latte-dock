@@ -1717,9 +1717,7 @@ bool SettingsDialog::saveAllChanges()
     }
 
     //! update SharedLayouts that are Active
-    if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-        updateActiveShares();
-    }
+    syncActiveShares();
 
     //! reload layouts in layoutsmanager
     m_corona->layoutsManager()->synchronizer()->loadLayouts();
@@ -1746,85 +1744,37 @@ bool SettingsDialog::saveAllChanges()
     return true;
 }
 
-void SettingsDialog::updateActiveShares()
+void SettingsDialog::syncActiveShares()
 {
-    QHash<const QString, QStringList> currentSharesMap;
+    if (m_corona->layoutsManager()->memoryUsage() != Types::MultipleLayouts) {
+        return;
+    }
+
+    QHash<const QString, QStringList> currentSharesIdMap;
+    Layouts::SharesMap  currentSharesNamesMap;
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
         if (isShared(i)) {
             QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
-            QStringList shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
-            currentSharesMap[id] = shares;
-        }
-    }
+            QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+            QStringList shareIds = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
+            QStringList shareNames;
 
-    qDebug() << " CURRENT SHARES MAP :: " << currentSharesMap;
-
-    QHash<CentralLayout *, SharedLayout *> unassign;
-
-    //! CENTRAL (active) layouts that will become SHARED must be unloaded first
-    for (QHash<const QString, QStringList>::iterator i=currentSharesMap.begin(); i!=currentSharesMap.end(); ++i) {
-        CentralLayout *central = m_corona->layoutsManager()->centralLayout(nameForId(i.key()));
-        if (central) {
-            //IMPORTANT !!!!! REENABLE WHEN THE CODE IS MOVED!!!!
-            //m_corona->layoutsManager()->synchronizer()->unloadCentralLayout(central);
-        }
-    }
-
-    //! CENTRAL (active) layouts that update their (active) SHARED layouts
-    //! AND load SHARED layouts that are NOT ACTIVE
-    for (QHash<const QString, QStringList>::iterator i=currentSharesMap.begin(); i!=currentSharesMap.end(); ++i) {
-        SharedLayout *shared = m_corona->layoutsManager()->sharedLayout(nameForId(i.key()));
-        qDebug() << " SHARED :: " << nameForId(i.key());
-        for (const auto &centralId : i.value()) {
-            CentralLayout *central = m_corona->layoutsManager()->centralLayout(nameForId(centralId));
-            qDebug() << " CENTRAL NAME :: " << nameForId(centralId);
-            if (central) {
-                //! Assign this Central Layout at a different Shared Layout
-                SharedLayout *oldShared = central->sharedLayout();
-
-                if (!shared) {
-                    //Shared not loaded and it must be loaded before proceed
-                    m_corona->layoutsManager()->registerAtSharedLayout(central, nameForId(i.key()));
-                    shared = m_corona->layoutsManager()->sharedLayout(nameForId(i.key()));
-                }
-
-                if (shared != oldShared) {
-                    shared->addCentralLayout(central);
-                    central->setSharedLayout(shared);
-                    if (oldShared) {
-                        //! CENTRAL layout that changed from one ACTIVESHARED layout to another
-                        unassign[central] = shared;
-                    }
-                }
+            for (const auto &shareid : shareIds) {
+                QString shareName = nameForId(shareid);
+                shareNames << shareName;
             }
+
+            currentSharesIdMap[id] = shareIds;
+            currentSharesNamesMap[name] = shareNames;
         }
     }
 
-    //! CENTRAL Layouts that wont have any SHARED Layout any more
-    for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
-        for (const auto &centralId : i.value()) {
-            if (!mapHasRecord(centralId, currentSharesMap)) {
-                CentralLayout *central = m_corona->layoutsManager()->centralLayout(nameForId(centralId));
-                if (central && central->sharedLayout()) {
-                    central->sharedLayout()->removeCentralLayout(central);
-                    central->setSharedLayoutName(QString());
-                    central->setSharedLayout(nullptr);
-                }
-            }
-        }
-    }
+    qDebug() << " CURRENT SHARES ID MAP  :: " << currentSharesIdMap;
+    m_corona->layoutsManager()->synchronizer()->syncActiveShares(currentSharesNamesMap);
 
-    //! Unassing from Shared Layouts Central ones that are not assigned any more
-    //! IMPORTANT: This must be done after all the ASSIGNMENTS in order to avoid
-    //! to unload a SharedLayout that it should not
-    for (QHash<CentralLayout *, SharedLayout *>::iterator i=unassign.begin(); i!=unassign.end(); ++i) {
-        i.value()->removeCentralLayout(i.key());
-    }
-
-    //! TODO : (active) SharedLayouts that become Active should be unloaded first
     m_sharesMap.clear();
-    m_sharesMap = currentSharesMap;
+    m_sharesMap = currentSharesIdMap;
 }
 
 void SettingsDialog::addActivityInCurrent(const QString &activityId)
@@ -1873,17 +1823,6 @@ bool SettingsDialog::idExistsInModel(QString id)
         QString rowId = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
 
         if (rowId == id) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool SettingsDialog::mapHasRecord(const QString &record, QHash<const QString, QStringList> &map)
-{
-    for (QHash<const QString, QStringList>::iterator i=map.begin(); i!=map.end(); ++i) {
-        if (i.value().contains(record)) {
             return true;
         }
     }

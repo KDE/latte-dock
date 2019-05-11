@@ -54,10 +54,11 @@ const int MultipleLayoutsPresetId = 10;
 Manager::Manager(QObject *parent)
     : QObject(parent),
       m_importer(new Importer(this)),
-      m_launchersSignals(new LaunchersSignals(this)),
-      m_synchronizer(new Synchronizer(this))
+      m_launchersSignals(new LaunchersSignals(this))
 {
     m_corona = qobject_cast<Latte::Corona *>(parent);
+    //! needs to be created AFTER corona assignment
+    m_synchronizer = new Synchronizer(this);
 
     if (m_corona) {
         connect(m_corona->universalSettings(), &UniversalSettings::currentLayoutNameChanged, this, &Manager::currentLayoutNameChanged);
