@@ -1196,6 +1196,7 @@ void GenericLayout::syncToLayoutFile(bool removeLayoutId)
 void GenericLayout::copyView(Plasma::Containment *containment)
 {
     m_storage->copyView(containment);
+    emit viewEdgeChanged();
 }
 
 void GenericLayout::importToCorona()
