@@ -669,11 +669,14 @@ Item{
                     manager.sendSlidingOutAnimationEnded();
                 }
             }
+
+            latteView.visibility.slideOutFinished();
         }
 
         function init() {
-            if (!latteView.visibility.blockHiding)
+            if (!latteView.visibility.blockHiding) {
                 start();
+            }
         }
     }
 

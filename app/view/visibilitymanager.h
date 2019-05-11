@@ -109,6 +109,7 @@ signals:
     void mustBeShown();
     void mustBeHide();
 
+    void slideOutFinished();
     void slideInFinished();
 
     void modeChanged();

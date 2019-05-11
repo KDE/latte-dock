@@ -53,6 +53,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     m_wm = m_corona->wm();
 
     connect(this, &VisibilityManager::slideInFinished, this, &VisibilityManager::updateHiddenState);
+    connect(this, &VisibilityManager::slideOutFinished, this, &VisibilityManager::updateHiddenState);
 
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
