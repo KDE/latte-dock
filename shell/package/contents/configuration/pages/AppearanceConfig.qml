@@ -564,7 +564,7 @@ PlasmaComponents.Page {
 
                         value: plasmoid.configuration.thickMargin
                         from: 0
-                        to: 40
+                        to: 60
                         stepSize: 1
                         wheelEnabled: false
                         minimumInternalValue: latteView.indicator.info.minThicknessPadding * 100
