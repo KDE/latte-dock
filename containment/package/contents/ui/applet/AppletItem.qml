@@ -934,7 +934,8 @@ Item {
     SequentialAnimation{
         id: clickedAnimation
         alwaysRunToEnd: true
-        running: (appletItem.pressed) && (root.durationTime > 0) && !indicators.info.providesClickedAnimation
+        running: appletItem.isSquare && !originalAppletBehavior && appletItem.pressed
+                 && (root.durationTime > 0) && !indicators.info.providesClickedAnimation
 
         ParallelAnimation{
             PropertyAnimation {
