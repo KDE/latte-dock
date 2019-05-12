@@ -551,8 +551,8 @@ FocusScope {
                 comboBoxIconRole: "icon"
                 comboBoxMinimumPopUpWidth: actionsModel.count > 1 ? dialog.width / 2 : 150
 
-                property var centralLayoutsNames;
-                property var sharedLayoutsNames;
+                property var centralLayoutsNames: []
+                property var sharedLayoutsNames: []
 
                 Component.onCompleted: {
                     comboBox.model = actionsModel;
