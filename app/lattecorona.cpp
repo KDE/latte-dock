@@ -39,6 +39,7 @@
 #include "settings/universalsettings.h"
 #include "view/view.h"
 #include "wm/abstractwindowinterface.h"
+#include "wm/schemecolors.h"
 #include "wm/schemestracker.h"
 #include "wm/waylandinterface.h"
 #include "wm/xwindowinterface.h"
@@ -1058,6 +1059,7 @@ inline void Corona::qmlRegisterTypes() const
 {
     qmlRegisterType<QScreen>();
     qmlRegisterType<Latte::View>();
+    qmlRegisterType<Latte::WindowSystem::SchemeColors>();
 }
 
 }
