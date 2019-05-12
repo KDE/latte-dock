@@ -418,18 +418,22 @@ void Manager::importPreset(int presetNo, bool newInstanceIfPresent)
 
 void Manager::showLatteSettingsDialog(int page)
 {
+    bool created{false};
+
     if (!m_latteSettingsDialog) {
         m_latteSettingsDialog = new SettingsDialog(nullptr, m_corona);
+        created = true;
     }
-
     m_latteSettingsDialog->show();
 
     if (m_latteSettingsDialog->isMinimized()) {
         m_latteSettingsDialog->showNormal();
     }
 
-    Types::LatteConfigPage configPage = static_cast<Types::LatteConfigPage>(page);
-    m_latteSettingsDialog->setCurrentPage(configPage);
+    if (!created) {
+        Types::LatteConfigPage configPage = static_cast<Types::LatteConfigPage>(page);
+        m_latteSettingsDialog->toggleCurrentPage();
+    }
 
     m_latteSettingsDialog->activateWindow();
 }

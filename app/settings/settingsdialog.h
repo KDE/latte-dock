@@ -55,7 +55,7 @@ public:
     SettingsDialog(QWidget *parent, Latte::Corona *corona);
     ~SettingsDialog();
 
-    void setCurrentPage(Types::LatteConfigPage page);
+    void toggleCurrentPage();
 
     void addActivityInCurrent(const QString &activityId);
     void removeActivityFromCurrent(const QString &activityId);

@@ -105,7 +105,7 @@ void GlobalShortcuts::init()
 
     //show-cycle between Latte settings windows
     QAction *settingsAction = generalActions->addAction(QStringLiteral("show view settings"));
-    settingsAction->setText(i18n("Show Latte View Settings"));
+    settingsAction->setText(i18n("Show Latte Dock/Panel Settings"));
     KGlobalAccel::setGlobalShortcut(settingsAction, QKeySequence(Qt::META + Qt::Key_A));
     connect(settingsAction, &QAction::triggered, this, [this] {
         m_modifierTracker->cancelMetaPressed();
@@ -113,23 +113,13 @@ void GlobalShortcuts::init()
     });
 
     //show the layouts editor
-    QAction *layoutsAction = generalActions->addAction(QStringLiteral("show layout settings"));
-    layoutsAction->setText(i18n("Show Layout Settings"));
+    QAction *layoutsAction = generalActions->addAction(QStringLiteral("show latte global settings"));
+    layoutsAction->setText(i18n("Show Latte Global Settings"));
     layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_W));
     KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_W));
     connect(layoutsAction, &QAction::triggered, this, [this]() {
         m_modifierTracker->cancelMetaPressed();
         m_corona->layoutsManager()->showLatteSettingsDialog(Types::LayoutPage);
-    });
-
-    //show the latter universal settings
-    QAction *universalSettingsAction = generalActions->addAction(QStringLiteral("show latte universal settings"));
-    universalSettingsAction->setText(i18n("Show Latte Settings"));
-    universalSettingsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_E));
-    KGlobalAccel::setGlobalShortcut(universalSettingsAction, QKeySequence(Qt::META + Qt::Key_E));
-    connect(universalSettingsAction, &QAction::triggered, this, [this]() {
-        m_modifierTracker->cancelMetaPressed();
-        m_corona->layoutsManager()->showLatteSettingsDialog(Types::PreferencesPage);
     });
 
     KActionCollection *taskbarActions = new KActionCollection(m_corona);

@@ -329,12 +329,12 @@ QStringList SettingsDialog::availableSharesFor(int row)
     return availables;
 }
 
-void SettingsDialog::setCurrentPage(Types::LatteConfigPage page)
+void SettingsDialog::toggleCurrentPage()
 {
-    if (page == Types::LayoutPage) {
-        ui->tabWidget->setCurrentIndex(0);
-    } else if (page == Types::PreferencesPage) {
+    if (ui->tabWidget->currentIndex() == 0) {
         ui->tabWidget->setCurrentIndex(1);
+    } else {
+        ui->tabWidget->setCurrentIndex(0);
     }
 }
 
