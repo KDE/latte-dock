@@ -193,7 +193,9 @@ void ActivitiesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
             pen.setStyle(Qt::SolidLine);
             painter->setPen(pen);
-            painter->drawLine(xm, ym, xm, ym + thick);
+
+            //! draw ending cirlce
+            painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
         } else {
             painter->drawLine(option.rect.x() + space, y,
                               option.rect.x() + option.rect.width(), y);
@@ -204,7 +206,9 @@ void ActivitiesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
             pen.setStyle(Qt::SolidLine);
             painter->setPen(pen);
-            painter->drawLine(xm, ym, xm, ym + thick);
+
+            //! draw ending cirlce
+            painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
         }
     }
 }
