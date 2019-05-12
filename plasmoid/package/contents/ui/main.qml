@@ -1336,6 +1336,20 @@ Item {
 
                         return undefined;
                     }
+
+                    function launcherModelIndex(url) {
+                        var tasks = icList.contentItem.children;
+
+                        for(var i=0; i<tasks.length; ++i){
+                            var task = tasks[i];
+
+                            if (task && (task.launcherUrl===url)) {
+                                return task.itemIndex;
+                            }
+                        }
+
+                        return -1;
+                    }
                 }
             } // ScrollPositioner
         } // ScrollableList
@@ -1421,7 +1435,7 @@ Item {
 
     Timer{
         id:launchersOrderValidatorTimer
-        interval: 200
+        interval: 400
 
         property var launchers: []
 
@@ -1501,9 +1515,16 @@ Item {
                                 restart();
                                 return;
                             }
+                            var launcherModelIndex = icList.launcherModelIndex(currentLaunchers[i]);
 
-                            console.log(" moving:" +i + " _ " + p );
-                            tasksModel.move(i, p);
+                            if (launcherModelIndex === -1) {
+                                console.log(" launcher was not found in model, syncing stopped...");
+                                stop();
+                                return;
+                            }
+
+                            console.log(" moving:" +launcherModelIndex + " _ " + p );
+                            tasksModel.move(launcherModelIndex, p);
                             restart();
                             return;
                         }
@@ -1518,9 +1539,16 @@ Item {
                                 restart();
                                 return;
                             }
+                            var launcherModelIndex = icList.launcherModelIndex(currentLaunchers[i]);
 
-                            console.log(" moving:" +i + " _ " + p );
-                            tasksModel.move(i, p);
+                            if (launcherModelIndex === -1) {
+                                console.log(" launcher was not found in model, syncing stopped...");
+                                stop();
+                                return;
+                            }
+
+                            console.log(" moving:" +launcherModelIndex + " _ " + p );
+                            tasksModel.move(launcherModelIndex, p);
                             restart();
                             return;
                         }
