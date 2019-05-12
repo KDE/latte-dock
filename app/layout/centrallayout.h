@@ -75,6 +75,7 @@ public:
     void syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap = nullptr) override;
     void unloadContainments() override;
     const QStringList appliedActivities() override;
+    Types::ViewType latteViewType(int containmentId) const override;
     QList<Latte::View *> latteViews() override;
 
     int viewsCount(int screen) const override;

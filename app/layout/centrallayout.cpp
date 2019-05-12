@@ -454,6 +454,21 @@ QList<Plasma::Types::Location> CentralLayout::freeEdges(int screen) const
     return edges;
 }
 
+Types::ViewType CentralLayout::latteViewType(int containmentId) const
+{
+    for (const auto view : m_latteViews) {
+        if (view->containment() && view->containment()->id() == containmentId) {
+            return view->type();
+        }
+    }
+
+    if (m_sharedLayout) {
+        return m_sharedLayout->latteViewType(containmentId);
+    }
+
+    return Types::DockView;
+}
+
 QList<Latte::View *> CentralLayout::sortedLatteViews(QList<Latte::View *> views)
 {
     QList<Latte::View *> vws = latteViews();
