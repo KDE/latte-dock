@@ -74,10 +74,11 @@ public:
     void syncActiveLayoutsToOriginalFiles();
     void syncLatteViewsToScreens();
     void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
-    void syncActiveShares(SharesMap &sharesMap);
+    void syncActiveShares(SharesMap &sharesMap, QStringList &deprecatedShares);
 
     bool latteViewExists(Latte::View *view) const;
     bool layoutExists(QString layoutName) const;
+    bool mapHasRecord(const QString &record, SharesMap &map);
     bool registerAtSharedLayout(CentralLayout *central, QString id);
     //! switch to specified layout, default previousMemoryUsage means that it didn't change
     bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);
@@ -128,7 +129,6 @@ private:
     void unloadSharedLayout(SharedLayout *layout);
 
     bool layoutIsAssigned(QString layoutName);
-    bool mapHasRecord(const QString &record, SharesMap &map);
 
     QString layoutPath(QString layoutName);
 

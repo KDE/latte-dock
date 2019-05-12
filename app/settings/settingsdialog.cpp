@@ -1770,8 +1770,19 @@ void SettingsDialog::syncActiveShares()
         }
     }
 
+    QStringList deprecatedShares;
+
+    for (const auto &oldSharesIds : m_sharesMap) {
+        for(const auto &oldId : oldSharesIds) {
+            QString oldShareName = nameForId(oldId);
+            if (!m_corona->layoutsManager()->synchronizer()->mapHasRecord(oldShareName, currentSharesNamesMap)) {
+                deprecatedShares << oldShareName;
+            }
+        }
+    }
+
     qDebug() << " CURRENT SHARES ID MAP  :: " << currentSharesIdMap;
-    m_corona->layoutsManager()->synchronizer()->syncActiveShares(currentSharesNamesMap);
+    m_corona->layoutsManager()->synchronizer()->syncActiveShares(currentSharesNamesMap, deprecatedShares);
 
     m_sharesMap.clear();
     m_sharesMap = currentSharesIdMap;

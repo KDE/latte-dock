@@ -875,15 +875,27 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForOrphans)
     emit centralLayoutsChanged();
 }
 
-void Synchronizer::syncActiveShares(SharesMap &sharesMap)
+void Synchronizer::syncActiveShares(SharesMap &sharesMap, QStringList &deprecatedShares)
 {
     if (m_manager->memoryUsage() != Types::MultipleLayouts) {
         return;
     }
 
     qDebug() << " CURRENT SHARES MAP :: " << sharesMap;
+    qDebug() << " DEPRECATED SHARES :: " << deprecatedShares;
 
     QHash<CentralLayout *, SharedLayout *> unassign;
+
+    //! CENTRAL (inactive) layouts that must update their SharedLayoutName because they
+    //! were unassigned from a Shared Layout
+    for (const auto &share : deprecatedShares) {
+        CentralLayout *central = centralLayout(share);
+        if (!central) {
+            //! Central Layout is not loaded
+            CentralLayout centralInStorage(this, Importer::layoutFilePath(share));
+            centralInStorage.setSharedLayoutName(QString());
+        }
+    }
 
     //! CENTRAL (active) layouts that will become SHARED must be unloaded first
     for (SharesMap::iterator i=sharesMap.begin(); i!=sharesMap.end(); ++i) {
@@ -919,6 +931,10 @@ void Synchronizer::syncActiveShares(SharesMap &sharesMap)
                         unassign[central] = shared;
                     }
                 }
+            } else {
+                //! Central Layout is not loaded
+                CentralLayout centralInStorage(this, Importer::layoutFilePath(centralName));
+                centralInStorage.setSharedLayoutName(i.key());
             }
         }
     }
