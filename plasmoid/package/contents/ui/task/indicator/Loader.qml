@@ -35,7 +35,12 @@ Loader {
     anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
     active: level.bridge && level.bridge.active && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
-    sourceComponent: indicators.indicatorComponent
+    sourceComponent: {
+        if (!indicators) {
+            return;
+        }
+        return indicators.indicatorComponent;
+    }
 
     width: {
         if (locked) {
@@ -64,7 +69,7 @@ Loader {
 
     Connections {
         target: taskItem
-        enabled: indicators.info.needsMouseEventCoordinates
+        enabled: indicators ? indicators.info.needsMouseEventCoordinates : false
         onPressed: {
             var fixedPos = indicatorLoader.mapFromItem(taskItem, mouse.x, mouse.y);
             level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), mouse.button);

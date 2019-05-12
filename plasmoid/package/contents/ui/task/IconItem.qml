@@ -161,7 +161,7 @@ Item{
             height: Math.round(width) * 1.0002
             source: decoration
             smooth: root.zoomFactor === 1 ? true : false
-            providesColors: indicators.info.needsIconColors
+            providesColors: indicators ? indicators.info.needsIconColors : false
 
             opacity: root.enableShadows ? 0 : 1
             visible: !taskItem.isSeparator && !badgesLoader.active

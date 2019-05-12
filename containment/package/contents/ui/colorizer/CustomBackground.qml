@@ -187,6 +187,8 @@ Item{
                                 return centerStep;
                             }
                         }
+
+                        return 0;
                     }
                     anchors.horizontalCenterOffset: {
                         //left edge and right edge
