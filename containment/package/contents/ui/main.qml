@@ -1830,7 +1830,7 @@ DragDrop.DropArea {
             Rectangle{
                 anchors.fill: parent
                 color: "yellow"
-                opacity: 0.30
+                opacity: 0.06
             }
         }
     }

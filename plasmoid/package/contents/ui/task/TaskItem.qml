@@ -225,6 +225,19 @@ MouseArea{
         NumberAnimation { duration: root.durationTime*units.longDuration }
     }
 
+    Loader{
+        anchors.fill: parent
+        active: latteView && latteView.debugMode
+
+        sourceComponent: Rectangle{
+            anchors.fill: parent
+            color: "transparent"
+            border.color:  "blue"
+            border.width: 1
+        }
+    }
+
+
     SubWindows{
         id: subWindows
 
