@@ -82,31 +82,41 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 
 
     if (!KWindowSystem::isPlatformWayland()) {
-        connect(this, &QWindow::visibleChanged, this, [&]() {
-            //! IMPORTANT!!! ::: This fixes a bug when closing an Activity all views from all Activities are
-            //!  disappearing! With this they reappear!!!
-            if (m_latteView && m_latteView->layout()) {
-                if (!isVisible()) {
-                    QTimer::singleShot(100, [this]() {
-                        if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
-                            setVisible(true);
-                        }
-                    });
+        //! IMPORTANT!!! ::: This fixes a bug when closing an Activity all views from all Activities are
+        //!  disappearing! With this code parts they reappear!!!
+        m_visibleHackTimer1.setInterval(400);
+        m_visibleHackTimer2.setInterval(2500);
+        m_visibleHackTimer1.setSingleShot(true);
+        m_visibleHackTimer2.setSingleShot(true);
 
-                    QTimer::singleShot(1500, [this]() {
-                        if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
-                            setVisible(true);
-                        }
-                    });
-                } else {
-                    //! For some reason when the window is hidden in the edge under X11 afterwards
-                    //! is losing its window flags
-                    if (!m_inDelete) {
-                        KWindowSystem::setType(winId(), NET::Dock);
-                        KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
-                        KWindowSystem::setOnAllDesktops(winId(), true);
-                    }
-                }
+        connectionsHack << connect(this, &QWindow::visibleChanged, this, [&]() {
+            if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
+                m_visibleHackTimer1.start();
+                m_visibleHackTimer2.start();
+            } else if (!m_inDelete) {
+                //! For some reason when the window is hidden in the edge under X11 afterwards
+                //! is losing its window flags
+                KWindowSystem::setType(winId(), NET::Dock);
+                KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
+                KWindowSystem::setOnAllDesktops(winId(), true);
+            }
+        });
+
+        connectionsHack << connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
+            if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
+                setVisible(true);
+                //qDebug() << "Ghost Edge:: Enforce reshow from timer 1...";
+            } else {
+                //qDebug() << "Ghost Edge:: No needed reshow from timer 1...";
+            }
+        });
+
+        connectionsHack << connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
+            if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
+                setVisible(true);
+                //qDebug() << "Ghost Edge:: Enforce reshow from timer 2...";
+            } else {
+                //qDebug() << "Ghost Edge:: No needed reshow from timer 2...";
             }
         });
     }
@@ -123,6 +133,13 @@ ScreenEdgeGhostWindow::~ScreenEdgeGhostWindow()
 {
     m_inDelete = true;
     m_latteView = nullptr;
+
+    // clear mode
+    m_visibleHackTimer1.stop();
+    m_visibleHackTimer2.stop();
+    for (auto &c : connectionsHack) {
+        disconnect(c);
+    }
 
     if (m_shellSurface) {
         delete m_shellSurface;
@@ -147,7 +164,12 @@ KWayland::Client::PlasmaShellSurface *ScreenEdgeGhostWindow::surface()
 void ScreenEdgeGhostWindow::updateGeometry()
 {
     QRect newGeometry;
-    int thickness{KWindowSystem::compositingActive() ? 4 : 2};
+    int thickness;
+    if (KWindowSystem::compositingActive()) {
+        thickness == 4;
+    } else {
+        thickness == 2;
+    };
 
     if (m_latteView->location() == Plasma::Types::BottomEdge) {
         newGeometry.setX(m_latteView->absoluteGeometry().left());
@@ -179,8 +201,8 @@ void ScreenEdgeGhostWindow::updateGeometry()
 void ScreenEdgeGhostWindow::fixGeometry()
 {
     if (!m_calculatedGeometry.isEmpty()
-        && (m_calculatedGeometry.x() != x() || m_calculatedGeometry.y() != y()
-            || m_calculatedGeometry.width() != width() || m_calculatedGeometry.height() != height())) {
+            && (m_calculatedGeometry.x() != x() || m_calculatedGeometry.y() != y()
+                || m_calculatedGeometry.width() != width() || m_calculatedGeometry.height() != height())) {
         setMinimumSize(m_calculatedGeometry.size());
         setMaximumSize(m_calculatedGeometry.size());
         resize(m_calculatedGeometry.size());

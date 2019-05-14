@@ -244,6 +244,7 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
                                       && m_latteView->layout()->isCurrent());
 
     if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
+        qDebug() << "UPDATING struts for ::: " << m_latteView->layout()->name();
         QRect computedStruts = acceptableStruts();
 
         if (m_publishedStruts != computedStruts) {
@@ -251,6 +252,11 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
             m_wm->setViewStruts(*m_latteView, m_publishedStruts, m_latteView->location());
         }
     } else {
+        if (m_latteView->layout()) {
+            qDebug() << "REMOVING struts for ::: " << m_latteView->layout()->name();
+        } else {
+            qDebug() << "REMOVING struts from NULL layout...";
+        }
         m_publishedStruts = QRect();
         m_wm->removeViewStruts(*m_latteView);
     }
