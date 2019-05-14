@@ -853,8 +853,8 @@ void View::setLayout(Layout::GenericLayout *layout)
             //! IMPORTANT ::: Fixing KWin Faulty Behavior that KWin hides ALL Views when an Activity stops
             //! with no reason!!
 
-            m_visibleHackTimer1.setInterval(100);
-            m_visibleHackTimer2.setInterval(1500);
+            m_visibleHackTimer1.setInterval(400);
+            m_visibleHackTimer2.setInterval(2500);
             m_visibleHackTimer1.setSingleShot(true);
             m_visibleHackTimer2.setSingleShot(true);
 
@@ -869,7 +869,10 @@ void View::setLayout(Layout::GenericLayout *layout)
                 if (m_layout && !inDelete() & !isVisible()) {
                     setVisible(true);
                     applyActivitiesToWindows();
+                    //qDebug() << "View:: Enforce reshow from timer 1...";
                     emit activitiesChanged();
+                } else {
+                    //qDebug() << "View:: No needed reshow from timer 1...";
                 }
             });
 
@@ -877,7 +880,10 @@ void View::setLayout(Layout::GenericLayout *layout)
                 if (m_layout && !inDelete() && !isVisible()) {
                     setVisible(true);
                     applyActivitiesToWindows();
+                    //qDebug() << "View:: Enforce reshow from timer 2...";
                     emit activitiesChanged();
+                } else {
+                    //qDebug() << "View:: No needed reshow from timer 2...";
                 }
             });
 
