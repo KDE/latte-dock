@@ -171,13 +171,13 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
         m_connections[base] = connect(m_corona->layoutsManager(),  &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
             if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-                updateStrutsBasedOnLayoutsAndActivities();
+                updateStrutsBasedOnLayoutsAndActivities(true);
             }
         });
 
         m_connections[base+1] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
             if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-                updateStrutsBasedOnLayoutsAndActivities();
+                updateStrutsBasedOnLayoutsAndActivities(true);
             }
         });
 
@@ -237,26 +237,24 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     emit modeChanged();
 }
 
-void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
+void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate)
 {
     bool multipleLayoutsAndCurrent = (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts
                                       && m_latteView->layout() && !m_latteView->positioner()->inLocationChangeAnimation()
                                       && m_latteView->layout()->isCurrent());
 
     if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
-        qDebug() << "UPDATING struts for ::: " << m_latteView->layout()->name();
         QRect computedStruts = acceptableStruts();
-
-        if (m_publishedStruts != computedStruts) {
+        if (m_publishedStruts != computedStruts || forceUpdate) {
+            //! Force update is needed when very important events happen in DE and there is a chance
+            //! that previously even though struts where sent the DE did not accept them.
+            //! Such a case is when STOPPING an Activity and windows faulty become invisible even
+            //! though they should not. In such case setting struts when the windows are hidden
+            //! the struts do not take any effect
             m_publishedStruts = computedStruts;
             m_wm->setViewStruts(*m_latteView, m_publishedStruts, m_latteView->location());
         }
     } else {
-        if (m_latteView->layout()) {
-            qDebug() << "REMOVING struts for ::: " << m_latteView->layout()->name();
-        } else {
-            qDebug() << "REMOVING struts from NULL layout...";
-        }
         m_publishedStruts = QRect();
         m_wm->removeViewStruts(*m_latteView);
     }

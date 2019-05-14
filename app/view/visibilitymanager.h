@@ -142,7 +142,7 @@ private:
     void updateKWinEdgesSupport();
     void updateGhostWindowState();
 
-    void updateStrutsBasedOnLayoutsAndActivities();
+    void updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate = false);
     void viewEventManager(QEvent *ev);
 
     QRect acceptableStruts();
