@@ -64,7 +64,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Unread messages from tasks")
                     checked: plasmoid.configuration.showInfoBadge
-                    tooltip: i18n("Show unread messages or information from tasks")
+                    tooltip: i18n("Show unread messages or notifications from tasks")
 
                     onClicked: {
                         plasmoid.configuration.showInfoBadge = checked
