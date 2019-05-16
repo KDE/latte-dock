@@ -1084,7 +1084,9 @@ bool View::event(QEvent *e)
                 emit mouseReleased(mouseEvent->pos(), mouseEvent->button());
             }
             break;
-
+       /* case QEvent::DragMove:
+            qDebug() << "DRAG MOVING>>>>>>";
+            break;*/
         case QEvent::PlatformSurface:
             if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
                 switch (pe->surfaceEventType()) {

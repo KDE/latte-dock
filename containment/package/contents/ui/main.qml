@@ -100,6 +100,11 @@ DragDrop.DropArea {
     property bool blurEnabled: plasmoid.configuration.blurEnabled && (!forceTransparentPanel || forcePanelForBusyBackground)
 
     property bool confirmedDragEntered: false
+    property bool dragIsTask: false
+    property bool dragIsSeparator: false
+    property bool dragIsLatteTasks: false
+    property bool dragOnlyLaunchers: false
+
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
     property bool dockContainsMouse: latteView && latteView.visibility ? latteView.visibility.containsMouse : false
 
@@ -661,26 +666,39 @@ DragDrop.DropArea {
     }
 
     onDragEnter: {
-        if (plasmoid.immutable || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
+        var isTask = event !== undefined
+                && event.mimeData !== undefined
+                && event.mimeData.formats !== undefined
+                && event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0;
+
+        var isSeparator = event !== undefined
+                && event.mimeData !== undefined
+                && ( latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
+                    || latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.separator") );
+
+        var isLatteTasks = event !== undefined
+                && event.mimeData !== undefined
+                && latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid");
+
+        dragIsTask = isTask;
+        dragIsSeparator = isSeparator;
+        dragIsLatteTasks = isLatteTasks;
+
+        if (dragIsTask || plasmoid.immutable || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
             event.ignore();
             return;
         }
 
-        if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0) {
-            return;
-        }
-
         if (latteApplet) {
-            if (latteApplet.launchersDrop(event)) {
+            dragOnlyLaunchers = latteApplet.launchersDrop(event);
+
+            if (dragOnlyLaunchers) {
                 root.addLaunchersMessage = true;
                 if (root.addLaunchersInTaskManager) {
                     return;
                 }
             } else {
-                var isSeparator = ( latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
-                                   || latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.separator") );
-
-                if (isSeparator && root.latteAppletContainer.containsPos(event)) {
+                if (dragIsSeparator && root.latteAppletContainer.containsPos(event)) {
                     confirmedDragEntered = true
                     dndSpacer.opacity = 0;
                     dndSpacer.parent = root;
@@ -694,29 +712,25 @@ DragDrop.DropArea {
             slotAnimationsNeedLength(1);
         }
 
-        if (!latteApplet || (latteApplet && !latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
+        if (!latteApplet || (latteApplet && !dragIsLatteTasks)) {
             LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
             dndSpacer.opacity = 1;
         }
     }
 
     onDragMove: {
-        if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0
-                || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
+        if (dragIsTask) {
             return;
         }
 
         if (latteApplet) {
-            if (latteApplet.launchersDrop(event)) {
+            if (dragOnlyLaunchers) {
                 root.addLaunchersMessage = true;
                 if (root.addLaunchersInTaskManager) {
                     return;
                 }
             } else {
-                var isSeparator = ( latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
-                                   || latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.separator") );
-
-                if (isSeparator && root.latteAppletContainer.containsPos(event)) {
+                if (dragIsSeparator && root.latteAppletContainer.containsPos(event)) {
                     confirmedDragEntered = true
                     dndSpacer.opacity = 0;
                     dndSpacer.parent = root;
@@ -725,13 +739,17 @@ DragDrop.DropArea {
             }
         }
 
-        if (!latteApplet || (latteApplet && !latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
+        if (!latteApplet || (latteApplet && !dragIsLatteTasks)) {
             LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
             dndSpacer.opacity = 1;
         }
     }
 
     onDragLeave: {
+        dragIsTask = false;
+        dragIsSeparator = false;
+        dragIsLatteTasks = false;
+        dragOnlyLaunchers = false;
 
         if (confirmedDragEntered) {
             slotAnimationsNeedLength(-1);
@@ -744,17 +762,15 @@ DragDrop.DropArea {
     }
 
     onDrop: {
-        if (dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
+        if (dragIsTask || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
             return;
         }
 
-        if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") < 0) {
-            if (latteApplet && latteApplet.launchersDrop(event) && root.addLaunchersInTaskManager) {
-                latteApplet.launchersDropped(event.mimeData.urls);
-            } else if (!latteApplet || (latteApplet && !latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
-                plasmoid.processMimeData(event.mimeData, event.x, event.y);
-                event.accept(event.proposedAction);
-            }
+        if (latteApplet && dragOnlyLaunchers && root.addLaunchersInTaskManager) {
+            latteApplet.launchersDropped(event.mimeData.urls);
+        } else if (!latteApplet || (latteApplet && !dragIsLatteTasks)) {
+            plasmoid.processMimeData(event.mimeData, event.x, event.y);
+            event.accept(event.proposedAction);
         }
 
         if (confirmedDragEntered) {
