@@ -103,7 +103,8 @@ Item {
                     root.dropNewLauncher = true;
                     return;
                 } else {
-                    event.ignore();
+                    return;
+                    //event.ignore();
                 }
 
                 if (createLaunchers) {

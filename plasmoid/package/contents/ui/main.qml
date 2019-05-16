@@ -150,6 +150,10 @@ Item {
             return ((iconSize + heightMargins) * zoomFactor) - maxSeparatorLength;
     }
 
+    readonly property bool dragAreaEnabled: latteView ? (root.dragSource !== null
+                                                         || latteView.dragIsSeparator
+                                                         || latteView.dragIsTask)
+                                                      : true
 
     //! it is used to play the animation correct when the user removes a launcher
     property string launcherForRemoval: ""
@@ -249,7 +253,7 @@ Item {
     readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
     readonly property bool viewLayoutIsCurrent: latteView && viewLayout && latteView.layoutsManager
-                                            && viewLayout.name === latteView.layoutsManager.currentLayoutName
+                                                && viewLayout.name === latteView.layoutsManager.currentLayoutName
     readonly property string viewLayoutName: viewLayout ? viewLayout.name : ""
     readonly property QtObject viewLayout : latteView && latteView.viewLayout ? latteView.viewLayout : null
 
@@ -388,15 +392,15 @@ Item {
                 if (inConfigureAppletsMode) {
                     return Latte.Types.Center;
                 } else if (latteView.panelUserSetAlignment === Latte.Types.Justify) {
-                        if (latteView.latteAppletPos>=0 && latteView.latteAppletPos<100) {
-                            return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Latte.Types.Left : Latte.Types.Top;
-                        } else if (latteView.latteAppletPos>=100 && latteView.latteAppletPos<200) {
-                            return Latte.Types.Center;
-                        } else if (latteView.latteAppletPos>=200) {
-                            return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Latte.Types.Right : Latte.Types.Bottom;
-                        }
-
+                    if (latteView.latteAppletPos>=0 && latteView.latteAppletPos<100) {
+                        return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Latte.Types.Left : Latte.Types.Top;
+                    } else if (latteView.latteAppletPos>=100 && latteView.latteAppletPos<200) {
                         return Latte.Types.Center;
+                    } else if (latteView.latteAppletPos>=200) {
+                        return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Latte.Types.Right : Latte.Types.Bottom;
+                    }
+
+                    return Latte.Types.Center;
                 }
 
                 return latteView.panelUserSetAlignment;
@@ -788,9 +792,9 @@ Item {
                     if (inDraggingPhase) {
                         if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
                             latteView.layoutsManager.launchersSignals.validateLaunchersOrder(root.viewLayoutName,
-                                                                                                     plasmoid.id,
-                                                                                                     latteView.launchersGroup,
-                                                                                                     currentLauncherList());
+                                                                                             plasmoid.id,
+                                                                                             latteView.launchersGroup,
+                                                                                             currentLauncherList());
                         }
                     }
                 } else {
@@ -1190,6 +1194,8 @@ Item {
 
             target: icList
 
+            visible: root.dragAreaEnabled
+
             property int maxSize: (((root.hoveredIndex>=0 || dockHoveredIndex>=0 ) || windowPreviewIsShown) && !root.dragSource) ?
                                       root.zoomFactor * (root.iconSize + root.thickMargins) :
                                       root.iconSize + root.thickMargins
@@ -1225,7 +1231,7 @@ Item {
                 //! inform synced docks for new dropped launchers
                 if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
                     latteView.layoutsManager.launchersSignals.urlsDropped(root.viewLayoutName,
-                                                                                  latteView.launchersGroup, urls);
+                                                                          latteView.launchersGroup, urls);
                     return;
                 }
 
@@ -1235,7 +1241,7 @@ Item {
             }
         }
 
-       /* Rectangle {
+        /* Rectangle {
             anchors.fill: scrollableList
             color: "transparent"
             border.width: 1
@@ -1669,7 +1675,7 @@ Item {
 
             if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
-                                                                              latteView.launchersGroup, separatorName);
+                                                                      latteView.launchersGroup, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
             }
@@ -1894,7 +1900,7 @@ Item {
         if (separatorName !== "") {
             if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
-                                                                                 latteView.launchersGroup, separatorName);
+                                                                         latteView.launchersGroup, separatorName);
             } else {
                 root.launcherForRemoval = separatorName;
                 tasksModel.requestRemoveLauncher(separatorName);

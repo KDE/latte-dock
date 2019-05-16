@@ -683,6 +683,7 @@ DragDrop.DropArea {
         dragIsTask = isTask;
         dragIsSeparator = isSeparator;
         dragIsLatteTasks = isLatteTasks;
+        dragOnlyLaunchers = latteApplet ? latteApplet.launchersDrop(event) : false;
 
         if (dragIsTask || plasmoid.immutable || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
             event.ignore();
@@ -690,11 +691,12 @@ DragDrop.DropArea {
         }
 
         if (latteApplet) {
-            dragOnlyLaunchers = latteApplet.launchersDrop(event);
-
             if (dragOnlyLaunchers) {
                 root.addLaunchersMessage = true;
-                if (root.addLaunchersInTaskManager) {
+                if (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event)) {
+                    confirmedDragEntered = true
+                    dndSpacer.opacity = 0;
+                    dndSpacer.parent = root;
                     return;
                 }
             } else {
@@ -723,10 +725,13 @@ DragDrop.DropArea {
             return;
         }
 
-        if (latteApplet) {
+        if (latteApplet && (dragOnlyLaunchers || dragIsSeparator)) {
             if (dragOnlyLaunchers) {
                 root.addLaunchersMessage = true;
-                if (root.addLaunchersInTaskManager) {
+                if (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event)) {
+                    confirmedDragEntered = true
+                    dndSpacer.opacity = 0;
+                    dndSpacer.parent = root;
                     return;
                 }
             } else {
@@ -746,10 +751,10 @@ DragDrop.DropArea {
     }
 
     onDragLeave: {
-        dragIsTask = false;
+       /* dragIsTask = false;
         dragIsSeparator = false;
         dragIsLatteTasks = false;
-        dragOnlyLaunchers = false;
+        dragOnlyLaunchers = false;*/
 
         if (confirmedDragEntered) {
             slotAnimationsNeedLength(-1);
@@ -766,7 +771,7 @@ DragDrop.DropArea {
             return;
         }
 
-        if (latteApplet && dragOnlyLaunchers && root.addLaunchersInTaskManager) {
+        if (latteApplet && dragOnlyLaunchers && (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event))) {
             latteApplet.launchersDropped(event.mimeData.urls);
         } else if (!latteApplet || (latteApplet && !dragIsLatteTasks)) {
             plasmoid.processMimeData(event.mimeData, event.x, event.y);
