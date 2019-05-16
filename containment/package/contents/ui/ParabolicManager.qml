@@ -176,7 +176,7 @@ Item {
         //!when there isnt a single task
         if (latteApplet && (root.latteApplet.parabolicManager.firstRealTaskIndex !== root.latteApplet.parabolicManager.lastRealTaskIndex)) {
             if (gTaskIndex === -1 && lTaskIndex === -1){
-                latteApplet.parabolicManager.clearTasksGreaterThan(0);
+                latteApplet.parabolicManager.clearTasksGreaterThan(-1);
             } else {
                 if (gTaskIndex > -1)
                     latteApplet.parabolicManager.clearTasksGreaterThan(gTaskIndex);

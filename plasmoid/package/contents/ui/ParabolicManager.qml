@@ -202,7 +202,7 @@ Item {
             if (lAppletId > -1)
                 latteView.parabolicManager.clearAppletsLowerThan(lAppletId);
             else
-                latteView.parabolicManager.clearAppletsLowerThan(latteView.latteAppletPos-1);
+                latteView.parabolicManager.clearAppletsLowerThan(latteView.latteAppletPos);
         }
 
         return {leftScale:leftScale, rightScale:rightScale};
