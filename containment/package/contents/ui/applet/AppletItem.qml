@@ -115,6 +115,7 @@ Item {
                                                                                            ||((index === layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-2)&&(layoutsContainer.mainLayout.count>2))
                                                                                            ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
 
+    readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.parabolicEffectLocked
     readonly property bool originalAppletBehavior: ((root.zoomFactor === 1 || !canBeHovered) && !root.titleTooltips) || lockZoom
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
 
@@ -153,7 +154,7 @@ Item {
     property Item communicatorAlias: communicator
     property Item wrapperAlias: wrapper
 
-    property bool containsMouse: appletMouseArea.containsMouse || appletMouseAreaBottom.containsMouse
+    property bool containsMouse: appletMouseArea.containsMouse /*|| appletMouseAreaBottom.containsMouse*/
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
 
     /*onComputeHeightChanged: {
@@ -173,8 +174,18 @@ Item {
         //unfortunately for other applets there is no other way to activate them yet
         //for example the icon-only applets
         var choords = mapToItem(appletItem.appletWrapper, mouse.x, mouse.y);
-        if (choords.x<0 || choords.y<0 || choords.x>=appletItem.appletWrapper.width || choords.y>=appletItem.appletWrapper.height) {
+
+        var wrapperContainsMouse = choords.x>=0 && choords.y>=0 && choords.x<appletItem.appletWrapper.width && choords.y<appletItem.appletWrapper.height;
+        var appletItemContainsMouse = mouse.x>=0 && mouse.y>=0 && mouse.x<width && mouse.y<height;
+
+        //console.log(" APPLET :: " + mouse.x +  " _ " + mouse.y);
+        //console.log(" WRAPPER :: " + choords.x + " _ " + choords.y);
+
+        if (appletItemContainsMouse && !wrapperContainsMouse) {
+            //console.log("PASSED");
             latteView.toggleAppletExpanded(applet.id);
+        } else {
+            //console.log("REJECTED");
         }
     }
 
@@ -477,7 +488,9 @@ Item {
             if (appletItem.containsPos(pos)) {
                 viewSignalsConnector.pressed = true;
                 var local = appletItem.mapFromItem(root, pos.x, pos.y);
+
                 appletItem.mousePressed(local.x, local.y, button);
+                appletItem.activateAppletForNeutralAreas(local);
             }
         }
 
@@ -530,6 +543,9 @@ Item {
         border.color: "green"
         border.width: 1
     }*/
+
+
+  /* DEPRECATED in favor of VIEW::MouseSignalsTracking
     MouseArea{
         id: appletMouseAreaBottom
         anchors.fill: parent
@@ -544,7 +560,7 @@ Item {
         onReleased: {
             mouse.accepted = false;
         }
-    }
+    }*/
 
     //! Main Applet Shown Area
     Flow{
@@ -694,19 +710,15 @@ Item {
         anchors.fill: parent
         enabled: visible
         hoverEnabled: latteApplet ? false : true
-       // propagateComposedEvents: true
+        propagateComposedEvents: true
 
         //! a way must be found in order for this be enabled
         //! only to support springloading for plasma 5.10
         //! also on this is based the tooltips behavior by enabling it
         //! plasma tooltips are disabled
-        visible: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.parabolicEffectLocked
+        visible: acceptMouseEvents
 
         property bool blockWheel: false
-
-        onClicked: {
-            mouse.accepted = false;
-        }
 
         onEntered: {
             if (containsMouse && !originalAppletBehavior && !communicator.parabolicEffectLocked && appletItem.canBeHovered){
@@ -805,18 +817,6 @@ Item {
                 }
             }
 
-            mouse.accepted = false;
-        }
-
-        onPressed: {
-            appletItem.activateAppletForNeutralAreas(mouse);
-
-            //! this is needed for some applets is order to be activated/deactivated correctly
-            //! such case is the "Application Menu". (bug #928)
-            mouse.accepted = false;
-        }
-
-        onReleased: {
             mouse.accepted = false;
         }
 
