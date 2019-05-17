@@ -1086,6 +1086,7 @@ bool View::event(QEvent *e)
 
         case QEvent::Leave:
             m_containsMouse = false;
+            setContainsDrag(false);
             engine()->trimComponentCache();
             break;
 
@@ -1094,7 +1095,6 @@ bool View::event(QEvent *e)
             break;
 
         case QEvent::DragLeave:
-        case QEvent::Drop:
             setContainsDrag(false);
             break;
 

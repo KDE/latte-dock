@@ -59,18 +59,29 @@ DragDrop.DropArea {
     }
 
     function clearInfo() {
-        dragArea.dragInfo.entered = false;
-        dragArea.dragInfo.isTask = false;
-        dragArea.dragInfo.isPlasmoid = false;
-        dragArea.dragInfo.isSeparator = false;
-        dragArea.dragInfo.isLatteTasks = false;
-        dragArea.dragInfo.onlyLaunchers = false;
+        clearInfoTimer.start();
+    }
 
-        dndSpacer.parent = root;
-        dndSpacer.opacity = 0;
+    //! Give the time when an applet is dropped to be positioned properly
+    Timer {
+        id: clearInfoTimer
+        interval: 500
+
+        onTriggered: {
+            dragArea.dragInfo.entered = false;
+            dragArea.dragInfo.isTask = false;
+            dragArea.dragInfo.isPlasmoid = false;
+            dragArea.dragInfo.isSeparator = false;
+            dragArea.dragInfo.isLatteTasks = false;
+            dragArea.dragInfo.onlyLaunchers = false;
+
+            dndSpacer.parent = root;
+            dndSpacer.opacity = 0;
+        }
     }
 
     onDragEnter: {
+        clearInfoTimer.stop();
         var isTask = event !== undefined
                 && event.mimeData !== undefined
                 && event.mimeData.formats !== undefined
@@ -122,11 +133,6 @@ DragDrop.DropArea {
             }
         }
 
-       // if (!dragInfo.entered) {
-       //     dragInfo.entered = true;
-       //     slotAnimationsNeedLength(1);
-//        }
-
         if (!dragResistaner.running && (!latteApplet || (latteApplet && !dragInfo.isLatteTasks))) {
             if (!isForeground) {
                 dragResistaner.start();
@@ -138,6 +144,7 @@ DragDrop.DropArea {
     }
 
     onDragMove: {
+        clearInfoTimer.stop();
         if (dragInfo.isTask) {
             return;
         }
@@ -186,12 +193,11 @@ DragDrop.DropArea {
     }
 
     onDrop: {
-        if (dragInfo.entered) {
-            slotAnimationsNeedLength(-1);
-            dragInfo.entered = false;
-        }
-
         if (dragInfo.isTask || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
+            if (dragInfo.entered) {
+                slotAnimationsNeedLength(-1);
+                dragInfo.entered = false;
+            }
             return;
         }
 
@@ -204,5 +210,10 @@ DragDrop.DropArea {
 
         root.addLaunchersMessage = false;
         dndSpacer.opacity = 0;
+
+        if (dragInfo.entered) {
+            slotAnimationsNeedLength(-1);
+            dragInfo.entered = false;
+        }
     }
 }
