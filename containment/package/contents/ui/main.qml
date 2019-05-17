@@ -106,8 +106,8 @@ Item {
         property bool isLatteTasks: backDropArea.dragInfo.isLatteTasks || foreDropArea.dragInfo.isLatteTasks
         property bool onlyLaunchers: backDropArea.dragInfo.onlyLaunchers || foreDropArea.dragInfo.onlyLaunchers
 
-      //  onIsPlasmoidChanged: console.log("isPlasmoid :: " + backDropArea.dragInfo.isPlasmoid + " _ " + foreDropArea.dragInfo.isPlasmoid );
-      //  onEnteredChanged: console.log("entered :: " + backDropArea.dragInfo.entered + " _ " + foreDropArea.dragInfo.entered );
+        //  onIsPlasmoidChanged: console.log("isPlasmoid :: " + backDropArea.dragInfo.isPlasmoid + " _ " + foreDropArea.dragInfo.isPlasmoid );
+        //  onEnteredChanged: console.log("entered :: " + backDropArea.dragInfo.entered + " _ " + foreDropArea.dragInfo.entered );
     }
 
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
@@ -1739,10 +1739,12 @@ Item {
         DragDropArea {
             id: foreDropArea
             anchors.fill: parent
-            visible: latteView && latteView.containsDrag && root.dragInfo.isPlasmoid && !root.dragInfo.isSeparator
+            visible: latteView && latteView.containsDrag
+                     && ((root.dragInfo.isPlasmoid && !root.dragInfo.isSeparator)
+                         || (root.addLaunchersInTaskManager && root.dragInfo.onlyLaunchers))
             isForeground: true
 
-           /* Rectangle {
+            /* Rectangle {
                 anchors.fill: parent
                 color: "blue"
                 opacity: 0.5
