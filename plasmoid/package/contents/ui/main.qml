@@ -150,9 +150,11 @@ Item {
             return ((iconSize + heightMargins) * zoomFactor) - maxSeparatorLength;
     }
 
+    readonly property alias containsDrag: mouseHandler.containsDrag
     readonly property bool dragAreaEnabled: latteView ? (root.dragSource !== null
-                                                         || latteView.dragIsSeparator
-                                                         || latteView.dragIsTask)
+                                                         || latteView.dragInfo.isSeparator
+                                                         || latteView.dragInfo.isTask
+                                                         || !latteView.dragInfo.isPlasmoid)
                                                       : true
 
     //! it is used to play the animation correct when the user removes a launcher
@@ -1371,10 +1373,15 @@ Item {
 
         Task.VisualAddItem{
             id: newDroppedLauncherVisual
-            anchors.fill: mouseHandler
+            width: !root.vertical ? length : thickness
+            height: !root.vertical ? thickness : length
+            anchors.centerIn: mouseHandler
+
+            readonly property int length: root.iconSize + root.lengthMargins
+            readonly property int thickness: root.iconSize + root.thickMargins
 
             visible: opacity == 0 ? false : true
-            opacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 1 : 0
+            opacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 0.7 : 0
         }
 
     }

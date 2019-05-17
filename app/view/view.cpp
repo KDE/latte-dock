@@ -509,6 +509,21 @@ void View::setAlternativesIsShown(bool show)
     emit alternativesIsShownChanged();
 }
 
+bool View::containsDrag() const
+{
+    return m_containsDrag;
+}
+
+void View::setContainsDrag(bool contains)
+{
+    if (m_containsDrag == contains) {
+        return;
+    }
+
+    m_containsDrag = contains;
+    emit containsDragChanged();
+}
+
 bool View::containsMouse() const
 {
     return m_containsMouse;
@@ -1072,6 +1087,15 @@ bool View::event(QEvent *e)
         case QEvent::Leave:
             m_containsMouse = false;
             engine()->trimComponentCache();
+            break;
+
+        case QEvent::DragEnter:
+            setContainsDrag(true);
+            break;
+
+        case QEvent::DragLeave:
+        case QEvent::Drop:
+            setContainsDrag(false);
             break;
 
         case QEvent::MouseButtonPress:

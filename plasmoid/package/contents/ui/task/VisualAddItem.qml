@@ -22,23 +22,31 @@ import QtQuick 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import "../../code/ColorizerTools.js" as ColorizerTools
+
 Item{
     Rectangle{
-        anchors.fill: parent
+        width: Math.min(parent.width, parent.height)
+        height: width
+        anchors.centerIn: parent
 
-        anchors.bottom: (root.position === PlasmaCore.Types.TopPositioned) ? parent.bottom : undefined
-        anchors.top: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.top : undefined
-        anchors.left: (root.position === PlasmaCore.Types.RightPositioned) ? parent.left : undefined
-        anchors.right: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.right : undefined
+        radius: Math.max(width,height)/2
 
-        radius: root.iconSize/10
-
-        property color tempColor: "#aa222222"
-        color: tempColor
+        color: theme.backgroundColor // "#aa222222"
         border.width: 1
-        border.color: "#ff656565"
+        border.color: outlineColor // "#ff656565"
 
-        property int crossSize: Math.min(parent.width/2, parent.height/2)
+        property int crossSize: Math.min(0.4*parent.width, 0.4 * parent.height)
+
+        readonly property color outlineColorBase: theme.backgroundColor
+        readonly property real outlineColorBaseBrightness: ColorizerTools.colorBrightness(outlineColorBase)
+        readonly property color outlineColor: {
+            if (outlineColorBaseBrightness > 127.5) {
+                return Qt.darker(outlineColorBase, 1.5);
+            } else {
+                return Qt.lighter(outlineColorBase, 2.2);
+            }
+        }
 
         Rectangle{width: parent.crossSize; height: 4; anchors.centerIn: parent; color: theme.highlightColor}
         Rectangle{width: 4; height: parent.crossSize; anchors.centerIn: parent; color: theme.highlightColor}

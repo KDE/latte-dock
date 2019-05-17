@@ -26,7 +26,6 @@ import QtGraphicalEffects 1.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
-import org.kde.draganddrop 2.0 as DragDrop
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
@@ -38,7 +37,7 @@ import "indicators" as Indicators
 import "layouts" as Layouts
 import "../code/LayoutManager.js" as LayoutManager
 
-DragDrop.DropArea {
+Item {
     id: root
     objectName: "containmentViewLayout"
 
@@ -99,11 +98,17 @@ DragDrop.DropArea {
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && (!forceTransparentPanel || forcePanelForBusyBackground)
 
-    property bool confirmedDragEntered: false
-    property bool dragIsTask: false
-    property bool dragIsSeparator: false
-    property bool dragIsLatteTasks: false
-    property bool dragOnlyLaunchers: false
+    readonly property Item dragInfo: Item {
+        property bool entered: backDropArea.dragInfo.entered || foreDropArea.dragInfo.entered
+        property bool isTask: backDropArea.dragInfo.isTask || foreDropArea.dragInfo.isTask
+        property bool isPlasmoid: backDropArea.dragInfo.isPlasmoid || foreDropArea.dragInfo.isPlasmoid
+        property bool isSeparator: backDropArea.dragInfo.isSeparator || foreDropArea.dragInfo.isSeparator
+        property bool isLatteTasks: backDropArea.dragInfo.isLatteTasks || foreDropArea.dragInfo.isLatteTasks
+        property bool onlyLaunchers: backDropArea.dragInfo.onlyLaunchers || foreDropArea.dragInfo.onlyLaunchers
+
+      //  onIsPlasmoidChanged: console.log("isPlasmoid :: " + backDropArea.dragInfo.isPlasmoid + " _ " + foreDropArea.dragInfo.isPlasmoid );
+      //  onEnteredChanged: console.log("entered :: " + backDropArea.dragInfo.entered + " _ " + foreDropArea.dragInfo.entered );
+    }
 
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
     property bool dockContainsMouse: latteView && latteView.visibility ? latteView.visibility.containsMouse : false
@@ -393,6 +398,7 @@ DragDrop.DropArea {
     readonly property Item indicatorsManager: indicators
     readonly property Item parabolicManager: _parabolicManager
     readonly property Item maskManager: visibilityManager
+    readonly property Item layoutsContainerItem: layoutsContainer
 
     property QtObject latteView: null
     property QtObject shortcutsEngine: null
@@ -663,130 +669,6 @@ DragDrop.DropArea {
         if (!dockContainsMouse) {
             initializeHoveredIndexes();
         }
-    }
-
-    onDragEnter: {
-        var isTask = event !== undefined
-                && event.mimeData !== undefined
-                && event.mimeData.formats !== undefined
-                && event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0;
-
-        var isSeparator = event !== undefined
-                && event.mimeData !== undefined
-                && ( latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
-                    || latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.separator") );
-
-        var isLatteTasks = event !== undefined
-                && event.mimeData !== undefined
-                && latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid");
-
-        dragIsTask = isTask;
-        dragIsSeparator = isSeparator;
-        dragIsLatteTasks = isLatteTasks;
-        dragOnlyLaunchers = latteApplet ? latteApplet.launchersDrop(event) : false;
-
-        if (dragIsTask || plasmoid.immutable || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
-            event.ignore();
-            return;
-        }
-
-        if (latteApplet) {
-            if (dragOnlyLaunchers) {
-                root.addLaunchersMessage = true;
-                if (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event)) {
-                    confirmedDragEntered = true
-                    dndSpacer.opacity = 0;
-                    dndSpacer.parent = root;
-                    return;
-                }
-            } else {
-                if (dragIsSeparator && root.latteAppletContainer.containsPos(event)) {
-                    confirmedDragEntered = true
-                    dndSpacer.opacity = 0;
-                    dndSpacer.parent = root;
-                    return;
-                }
-            }
-        }
-
-        if (!confirmedDragEntered) {
-            confirmedDragEntered = true;
-            slotAnimationsNeedLength(1);
-        }
-
-        if (!latteApplet || (latteApplet && !dragIsLatteTasks)) {
-            LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
-            dndSpacer.opacity = 1;
-        }
-    }
-
-    onDragMove: {
-        if (dragIsTask) {
-            return;
-        }
-
-        if (latteApplet && (dragOnlyLaunchers || dragIsSeparator)) {
-            if (dragOnlyLaunchers) {
-                root.addLaunchersMessage = true;
-                if (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event)) {
-                    confirmedDragEntered = true
-                    dndSpacer.opacity = 0;
-                    dndSpacer.parent = root;
-                    return;
-                }
-            } else {
-                if (dragIsSeparator && root.latteAppletContainer.containsPos(event)) {
-                    confirmedDragEntered = true
-                    dndSpacer.opacity = 0;
-                    dndSpacer.parent = root;
-                    return;
-                }
-            }
-        }
-
-        if (!latteApplet || (latteApplet && !dragIsLatteTasks)) {
-            LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
-            dndSpacer.opacity = 1;
-        }
-    }
-
-    onDragLeave: {
-       /* dragIsTask = false;
-        dragIsSeparator = false;
-        dragIsLatteTasks = false;
-        dragOnlyLaunchers = false;*/
-
-        if (confirmedDragEntered) {
-            slotAnimationsNeedLength(-1);
-            confirmedDragEntered = false;
-        }
-
-        root.addLaunchersMessage = false;
-        dndSpacer.opacity = 0;
-        dndSpacer.parent = root;
-    }
-
-    onDrop: {
-        if (dragIsTask || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
-            return;
-        }
-
-        if (latteApplet && dragOnlyLaunchers && (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event))) {
-            latteApplet.launchersDropped(event.mimeData.urls);
-        } else if (!latteApplet || (latteApplet && !dragIsLatteTasks)) {
-            plasmoid.processMimeData(event.mimeData, event.x, event.y);
-            event.accept(event.proposedAction);
-        }
-
-        if (confirmedDragEntered) {
-            slotAnimationsNeedLength(-1);
-            confirmedDragEntered = false;
-        }
-
-        root.addLaunchersMessage = false;
-        dndSpacer.opacity = 0;
-        //! this line is very important because it positions correctly the new applets
-        //dndSpacer.parent = root;
     }
 
     onMaxLengthChanged: {
@@ -1201,6 +1083,10 @@ DragDrop.DropArea {
         if (latteApplet) {
             latteApplet.initializeHoveredIndex();
         }
+    }
+
+    function layoutManager() {
+        return LayoutManager;
     }
 
     function layoutManagerInsertBefore(place, item) {
@@ -1799,17 +1685,6 @@ DragDrop.DropArea {
         //   z: root.behaveAsPlasmaPanel ? 1 : 0
     }
 
-    Item{
-        id: panelBox
-
-        anchors.fill:layoutsContainer
-        // z: root.behaveAsPlasmaPanel ? 0 : 1
-
-        PanelBox{
-            id: panelBoxBackground
-        }
-    }
-
     Item {
         id: lastSpacer
         parent: layoutsContainer.mainLayout
@@ -1824,22 +1699,6 @@ DragDrop.DropArea {
             border.color: "yellow"
             border.width: 1
         }
-    }
-
-    Item {
-        id: dndSpacer
-
-        property int normalSize: root.iconSize + root.thickMargins - 1
-
-        width: normalSize
-        height: normalSize
-
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
-        opacity: 0
-        z:10
-
-        AddWidgetVisual{}
     }
 
     Loader{
@@ -1858,12 +1717,58 @@ DragDrop.DropArea {
 
     VisibilityManager{ id: visibilityManager }
 
-    Layouts.LayoutsContainer {
-        id: layoutsContainer
+    DragDropArea {
+        id: backDropArea
+        anchors.fill: parent
+
+        Item{
+            id: panelBox
+
+            anchors.fill: layoutsContainer
+            // z: root.behaveAsPlasmaPanel ? 0 : 1
+
+            PanelBox{
+                id: panelBoxBackground
+            }
+        }
+
+        Layouts.LayoutsContainer {
+            id: layoutsContainer
+        }
+
+        DragDropArea {
+            id: foreDropArea
+            anchors.fill: parent
+            visible: latteView && latteView.containsDrag && root.dragInfo.isPlasmoid && !root.dragInfo.isSeparator
+            isForeground: true
+
+           /* Rectangle {
+                anchors.fill: parent
+                color: "blue"
+                opacity: 0.5
+            }*/
+        }
     }
 
     Colorizer.Manager {
         id: colorizerManager
+    }
+
+    Item {
+        id: dndSpacer
+
+        width: root.isHorizontal ? length : thickness
+        height: root.isHorizontal ? thickness : length
+
+        readonly property int length: root.iconSize + root.lengthMargins
+        readonly property int thickness: root.iconSize + root.thickMargins
+
+        Layout.preferredWidth: width
+        Layout.preferredHeight: height
+        opacity: 0
+        z:1500
+
+        AddWidgetVisual{}
     }
 
     ///////////////END UI elements

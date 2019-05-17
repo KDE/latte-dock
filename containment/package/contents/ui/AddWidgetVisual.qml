@@ -20,21 +20,34 @@
 
 import QtQuick 2.1
 
+import "../code/ColorizerTools.js" as ColorizerTools
+
 Item{
     id: newDroppedLauncherVisual
     anchors.fill: parent
 
     Rectangle{
-        anchors.fill: parent
+        width: Math.min(parent.width, parent.height)
+        height: width
+        anchors.centerIn: parent
 
-        radius: root.iconSize/10
+        radius: Math.max(width,height)/2
 
-        property color tempColor: "#aa222222"
-        color: tempColor
+        color: theme.backgroundColor // "#aa222222"
         border.width: 1
-        border.color: "#ff656565"
+        border.color: outlineColor // "#ff656565"
 
-        property int crossSize: Math.min(parent.width/2, parent.height/2)
+        property int crossSize: Math.min(0.4*parent.width, 0.4 * parent.height)
+
+        readonly property color outlineColorBase: theme.backgroundColor
+        readonly property real outlineColorBaseBrightness: ColorizerTools.colorBrightness(outlineColorBase)
+        readonly property color outlineColor: {
+            if (outlineColorBaseBrightness > 127.5) {
+                return Qt.darker(outlineColorBase, 1.5);
+            } else {
+                return Qt.lighter(outlineColorBase, 2.2);
+            }
+        }
 
         Rectangle{width: parent.crossSize; height: 4; radius:2; anchors.centerIn: parent; color: theme.highlightColor}
         Rectangle{width: 4; height: parent.crossSize; radius:2; anchors.centerIn: parent; color: theme.highlightColor}

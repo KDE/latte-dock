@@ -157,16 +157,53 @@ Item {
     property bool containsMouse: appletMouseArea.containsMouse /*|| appletMouseAreaBottom.containsMouse*/
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
 
-    /*onComputeHeightChanged: {
-        if(index==0)
-            console.log(computeHeight);
-    }*/
 
-    transitions: Transition {
-        ParentAnimation {
-            NumberAnimation { properties: "x,y"; duration: 1000 }
+    //// BEGIN :: Animate Applet when a new applet is dragged in the view
+
+    //when the applet moves caused by its resize, don't animate.
+    //this is completely heuristic, but looks way less "jumpy"
+    property bool movingForResize: false
+    property int oldX: x
+    property int oldY: y
+
+    onXChanged: {
+        if (movingForResize || !root.dragInfo.entered) {
+            movingForResize = false;
+            return;
         }
+        translation.x = oldX - x
+        translation.y = oldY - y
+        translAnim.running = true
+        oldX = x
+        oldY = y
     }
+
+    onYChanged: {
+        if (movingForResize || !root.dragInfo.entered) {
+            movingForResize = false;
+            return;
+        }
+        translation.x = oldX - x
+        translation.y = oldY - y
+        translAnim.running = true
+        oldX = x
+        oldY = y
+    }
+
+    transform: Translate {
+        id: translation
+    }
+
+    NumberAnimation {
+        id: translAnim
+        duration: units.longDuration
+        easing.type: Easing.InOutQuad
+        target: translation
+        properties: "x,y"
+        to: 0
+    }
+
+    //// END :: Animate Applet when a new applet is dragged in the view
 
     /// BEGIN functions
     function activateAppletForNeutralAreas(mouse){

@@ -214,7 +214,7 @@ Item{
 
         updateLayoutWidth();
     }
-    onAppletMinimumHeightChanged: {
+    onAppletMinimumHeightChanged: {       
         if(zoomScale === 1) {
             checkCanBeHovered();
         }
@@ -287,6 +287,8 @@ Item{
     }
 
     function updateLayoutHeight(){
+        appletItem.movingForResize = true;
+
         if (appletItem.needsFillSpace && root.isVertical) {
             layoutsContainer.updateSizeForAppletsInFill();
             return;
@@ -335,6 +337,8 @@ Item{
     }
 
     function updateLayoutWidth(){
+        appletItem.movingForResize = true;
+
         if (appletItem.needsFillSpace && root.isHorizontal) {
             layoutsContainer.updateSizeForAppletsInFill();
             return;

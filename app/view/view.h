@@ -77,6 +77,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(bool alternativesIsShown READ alternativesIsShown NOTIFY alternativesIsShownChanged)
     Q_PROPERTY(bool behaveAsPlasmaPanel READ behaveAsPlasmaPanel WRITE setBehaveAsPlasmaPanel NOTIFY behaveAsPlasmaPanelChanged)
     Q_PROPERTY(bool byPassWM READ byPassWM WRITE setByPassWM NOTIFY byPassWMChanged)
+    Q_PROPERTY(bool containsDrag READ containsDrag NOTIFY containsDragChanged)
     Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
     //! Because Latte uses animations, changing to edit mode it may be different than
     //! when the isUserConfiguring changes value
@@ -131,6 +132,7 @@ public:
     bool behaveAsPlasmaPanel() const;
     void setBehaveAsPlasmaPanel(bool behavior);
 
+    bool containsDrag() const;
     bool containsMouse() const;
 
     bool contextMenuIsShown() const;
@@ -236,6 +238,7 @@ signals:
     void behaveAsPlasmaPanelChanged();
     void byPassWMChanged();
     void configWindowGeometryChanged(); // is called from config windows
+    void containsDragChanged();
     void contextMenuIsShownChanged();
     void dockLocationChanged();
     void editThicknessChanged();
@@ -280,12 +283,15 @@ private:
     void setupWaylandIntegration();
     void updateAppletContainsMethod();
 
+    void setContainsDrag(bool contains);
+
 private:
     Plasma::Containment *containmentById(uint id);
 
     bool m_alternativesIsShown{false};
     bool m_behaveAsPlasmaPanel{false};
     bool m_byPassWM{true};
+    bool m_containsDrag{false};
     bool m_containsMouse{false};
     bool m_inDelete{false};
     bool m_inEditMode{false};

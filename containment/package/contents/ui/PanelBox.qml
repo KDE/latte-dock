@@ -54,7 +54,7 @@ Item{
             if ((root.panelAlignment === Latte.Types.Justify) && root.isHorizontal) {
                 return root.maxLength;
             } else {
-                return layoutsContainer.mainLayout.width + spacing;
+                return layoutsContainerItem.mainLayout.width + spacing;
             }
         }
     }
@@ -66,7 +66,7 @@ Item{
             if ((root.panelAlignment === Latte.Types.Justify) && root.isVertical) {
                 return root.maxLength;
             } else {
-                return layoutsContainer.mainLayout.height + spacing;
+                return layoutsContainerItem.mainLayout.height + spacing;
             }
         }
     }

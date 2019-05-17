@@ -32,15 +32,16 @@ import "../../code/tools.js" as TaskTools
 
 Item {
     // signal urlDropped(url url)
+    id: dArea
     signal urlsDropped(var urls)
 
     property Item target
     property Item ignoredItem
     property bool moved: false
+    property bool containsDrag: false
 
     property alias hoveredItem: dropHandler.hoveredItem
     property alias onlyLaunchers: dropHandler.onlyLaunchers
-
 
     Timer {
         id: ignoreItemTimer
@@ -84,6 +85,8 @@ Item {
         }
 
         onDragEnter:{
+            dArea.containsDrag = true;
+
             if(root.dragSource == null){
                 onlyLaunchers = false;
                 droppingSeparator = false;
@@ -114,6 +117,7 @@ Item {
         }
 
         onDragMove: {
+            dArea.containsDrag = true;
             /* if(root.dragSource == null){
                 root.dropNewLauncher = true;
             } */
@@ -191,6 +195,7 @@ Item {
         }
 
         onDragLeave: {
+            dArea.containsDrag = false;
             hoveredItem = null;
             root.setHoveredIndex(-1);
             root.dropNewLauncher = false;
@@ -201,6 +206,7 @@ Item {
 
         onDrop: {
             // Reject internal drops.
+            dArea.containsDrag = false;
             root.dropNewLauncher = false;
             onlyLaunchers = false;
             root.separatorsUpdated();

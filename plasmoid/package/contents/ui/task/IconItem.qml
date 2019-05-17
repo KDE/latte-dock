@@ -561,11 +561,18 @@ Item{
 
     VisualAddItem{
         id: dropFilesVisual
-        anchors.fill: iconGraphic
+        width: !root.vertical ? length : thickness
+        height: !root.vertical ? thickness : length
+        anchors.centerIn: parent
+
+        readonly property int length: root.iconSize + root.lengthMargins
+        readonly property int thickness: root.iconSize + root.thickMargins
+
+        //anchors.fill: iconGraphic
 
         visible: opacity == 0 ? false : true
         opacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
-                 && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 1 : 0
+                 && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 0.7 : 0
     }
 
     Component.onDestruction: {
