@@ -420,7 +420,7 @@ Item {
     }
 
     function launchersDropped(urls){
-        mouseHandler.urlsDroppedOnArea(urls);
+        mouseHandler.urlsDropped(urls);
     }
 
     ///UPDATE
@@ -1229,7 +1229,7 @@ Item {
                 tasksModel.requestOpenUrls(hoveredItem.modelIndex(), urlsList);
             }
 
-            onUrlsDropped: {
+            onUrlsDropped: {               
                 //! inform synced docks for new dropped launchers
                 if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
                     latteView.layoutsManager.launchersSignals.urlsDropped(root.viewLayoutName,
