@@ -624,7 +624,7 @@ PlasmaComponents.Page {
                         checked: plasmoid.configuration.titleTooltips
 
                         onClicked: {
-                            plasmoid.configuration.titleTooltips = checked;
+                            plasmoid.configuration.titleTooltips = !plasmoid.configuration.titleTooltips;
                         }
                     }
 
