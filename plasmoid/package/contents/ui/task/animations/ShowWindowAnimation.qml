@@ -82,6 +82,10 @@ SequentialAnimation{
     onStopped: {
         taskItem.inAddRemoveAnimation = false;
 
+        if (tasksExtendedManager.toBeAddedLauncherExists(taskItem.launcherUrl)) {
+            tasksExtendedManager.removeToBeAddedLauncher(taskItem.launcherUrl);
+        }
+
         if(taskItem.isWindow || taskItem.isStartup){
             taskInitComponent.createObject(wrapper);
             if (taskItem.isDemandingAttention){
@@ -114,7 +118,7 @@ SequentialAnimation{
         var hasShownLauncher = ((tasksModel.launcherPosition(taskItem.launcherUrl) !== -1)
                                     || (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) !== -1) );
 
-        var launcherIsAlreadyShown = hasShownLauncher && isLauncher && !root.inActivityChange;
+        var launcherIsAlreadyShown = hasShownLauncher && isLauncher && !root.inActivityChange && !tasksExtendedManager.toBeAddedLauncherExists(taskItem.launcherUrl) ;
 
         //Animation Add/Remove (2) - when is window with no launcher, animations enabled
         //Animation Add/Remove (3) - when is launcher with no window, animations enabled

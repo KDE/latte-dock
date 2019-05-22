@@ -50,6 +50,10 @@ Item {
     //! launcher, pos)
     property variant launchersToBeMoved: []
 
+    //! Launchers that are added from user actions. They can be used in order
+    //! to be provide adding animations
+    property variant launchersToBeAdded: []
+
     //! Tasks that change state (launcher,startup,window) and
     //! at the next state must look the same concerning the parabolic effect:
     //! (id, mScale)
@@ -64,6 +68,8 @@ Item {
 
     /// WAITING LAUNCHERS
     function addWaitingLauncher(launch){
+        arraysGarbageCollectorTimer.restart();
+
         if (waitingLauncherExists(launch)) {
             return;
         }
@@ -73,7 +79,7 @@ Item {
 
     function removeWaitingLauncher(launch){
         for(var i=0; i<waitingLaunchers.length; ++i){
-            if (equalsWaitingLauncher(waitingLaunchers[i], launch)) {
+            if (equals(waitingLaunchers[i], launch)) {
                 waitingLaunchers.splice(i,1);
                 waitingLauncherRemoved(launch);
                 return;
@@ -83,7 +89,7 @@ Item {
 
     function waitingLauncherExists(launch){
         for(var i=0; i<waitingLaunchers.length; ++i){
-            if (equalsWaitingLauncher(waitingLaunchers[i], launch)) {
+            if (equals(waitingLaunchers[i], launch)) {
                 return true;
             }
         }
@@ -91,7 +97,7 @@ Item {
         return false;
     }
 
-    function equalsWaitingLauncher(waitingLauncher, launcher) {
+    function equals(waitingLauncher, launcher) {
         var equals = ( launcher !== ""
                       && waitingLauncher !== ""
                       && (launcher.indexOf(waitingLauncher) >= 0 || waitingLauncher.indexOf(launcher) >= 0));
@@ -103,8 +109,49 @@ Item {
         return waitingLaunchers.length;
     }
 
+    function printWaitingLaunchers() {
+        console.log("WAITING LAUNCHERS ::: " + waitingLaunchers);
+    }
+
+    //! LAUNCHERSTOBEADDED
+    function addToBeAddedLauncher(launcher){
+        arraysGarbageCollectorTimer.restart();
+
+        if (toBeAddedLauncherExists(launcher)) {
+            return;
+        }
+
+        launchersToBeAdded.push(launcher);
+    }
+
+    function removeToBeAddedLauncher(launcher){
+        for(var i=0; i<launchersToBeAdded.length; ++i){
+            if (equals(launchersToBeAdded[i], launcher)) {
+                launchersToBeAdded.splice(i,1);
+                return;
+            }
+        }
+    }
+
+    function toBeAddedLauncherExists(launcher) {
+        for(var i=0; i<launchersToBeAdded.length; ++i){
+            if (equals(launchersToBeAdded[i], launcher)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    function printToBeAddedLaunchers() {
+        console.log("TO BE ADDED LAUNCHERS ::: " + launchersToBeAdded);
+    }
+
     //! IMMEDIATELAUNCHERS
     function addImmediateLauncher(launch){
+        arraysGarbageCollectorTimer.restart();
+
         if (!immediateLauncherExists(launch)) {
             //console.log("Immediate Launcher Added::: "+launch);
             immediateLaunchers.push(launch);
@@ -129,6 +176,10 @@ Item {
         }
 
         return false;
+    }
+
+    function printImmediateLaunchers() {
+        console.log("IMMEDIATE LAUNCHERS ::: " + immediateLaunchers);
     }
     //!
 
@@ -155,6 +206,8 @@ Item {
     }
 
     function setFrozenTask(identifier, scale) {
+        arraysGarbageCollectorTimer.restart();
+
         var frozenTaskExists = false;
         console.log("SET FROZEN :: "+identifier+" - "+scale);
         var frozenTask = getFrozenTask(identifier);
@@ -166,21 +219,24 @@ Item {
         }
     }
 
+    function printFrozenTasks() {
+        var fzTasks= "";
+
+        for(var i=0; i<frozenTasks.length; ++i) {
+            fzTasks = frozenTasks[i].id + "," + frozenTasks[i].mScale + "__";
+        }
+
+        console.log("FROZEN TASKS ::: " + fzTasks);
+    }
 
     //! LAUNCHERSTOBEMOVED
 
     //! launchersToBeMoved, new launchers to have been added and must be repositioned
     function addLauncherToBeMoved(launcherUrl, toPos) {
+        arraysGarbageCollectorTimer.restart();
+
         if (!isLauncherToBeMoved(launcherUrl)) {
             launchersToBeMoved.push({launcher: launcherUrl, pos: Math.max(0,toPos)});
-            //console.log("-add launcher-");
-            //printLaunchersToBeMoved()
-        }
-    }
-
-    function printLaunchersToBeMoved(){
-        for (var j=0; j<launchersToBeMoved.length; ++j){
-            console.log(launchersToBeMoved[j].launcher+ " - "+launchersToBeMoved[j].pos);
         }
     }
 
@@ -237,6 +293,16 @@ Item {
         return (posOfLauncherToBeMoved(launcher) >= 0);
     }
 
+    function printToBeMovedLaunchers() {
+        var tbmLaunchers= "";
+
+        for(var i=0; i<launchersToBeMoved.length; ++i) {
+            tbmLaunchers = launchersToBeMoved[i].launcher + "," + launchersToBeMoved[i].pos + "__";
+        }
+
+        console.log("TO BE MOVED LAUNCHERS ::: " + tbmLaunchers);
+    }
+
     //!Trying to avoid a binding loop in TaskItem for modelLauncherUrl
     Timer {
         id: launchersToBeMovedTimer
@@ -247,17 +313,7 @@ Item {
         property string launcherUrl: ""
 
         onTriggered: {
-            //console.log("to be moved: "+launcherUrl + " - " + from +" -> "+to)
-
             tasksModel.move(from, to);
-            /*if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteView.layoutsManager.launchersSignals.moveTask(root.viewLayoutName,
-                                                                   plasmoid.id,
-                                                                   latteView.launchersGroup,
-                                                                   from,
-                                                                   to);
-            }*/
-
             delayedLaynchersSyncTimer.start();
         }
     }
@@ -269,5 +325,29 @@ Item {
         id: delayedLaynchersSyncTimer
         interval: 450
         onTriggered: tasksModel.syncLaunchers();
+    }
+
+
+    //! Timer to clean up all arrays used from TasksExtendedManager after a specified interval
+    //! The arrays may have ghost records that were not used from animations or other plasmoid parts.
+    //! Each record of the arrays is usually only a matter of secs to be used, cleaning them after
+    //! a big interval from the last addition it is safe
+    Timer {
+        id: arraysGarbageCollectorTimer
+        interval: 7 * 1000
+        onTriggered: {
+            console.log(" TASKS EXTENDED MANAGER Garbage Collector...");
+            tasksExtManager.printImmediateLaunchers();
+            tasksExtManager.printToBeAddedLaunchers();
+            tasksExtManager.printToBeMovedLaunchers();
+            tasksExtManager.printWaitingLaunchers();
+            tasksExtManager.printFrozenTasks();
+
+            immediateLaunchers.splice(0, immediateLaunchers.length);
+            launchersToBeAdded.splice(0, launchersToBeAdded.length);
+            launchersToBeMoved.splice(0, launchersToBeMoved.length);
+            waitingLaunchers.splice(0, waitingLaunchers.length);
+            frozenTasks.splice(0, frozenTasks.length);
+        }
     }
 }

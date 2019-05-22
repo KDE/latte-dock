@@ -1929,6 +1929,10 @@ Item {
             url = url.substring( 0, url.indexOf("?iconData=" ) );
         }
 
+        var path = url;
+        var filename = path.split("/").pop();
+        tasksExtendedManager.addToBeAddedLauncher(filename);
+
         tasksModel.requestAddLauncher(url);
         launchersUpdatedFor(url);
         tasksModel.syncLaunchers();
