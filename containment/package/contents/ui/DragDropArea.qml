@@ -30,7 +30,7 @@ DragDrop.DropArea {
     property bool isForeground: false
 
     readonly property Item dragInfo: Item {
-        property bool entered: false
+        readonly property bool entered: latteView && latteView.containsDrag
         property bool isTask: false
         property bool isPlasmoid: false
         property bool isSeparator: false
@@ -68,7 +68,6 @@ DragDrop.DropArea {
         interval: 1500
 
         onTriggered: {
-            dragArea.dragInfo.entered = false;
             dragArea.dragInfo.isTask = false;
             dragArea.dragInfo.isPlasmoid = false;
             dragArea.dragInfo.isSeparator = false;
@@ -108,7 +107,6 @@ DragDrop.DropArea {
         dragInfo.isLatteTasks = isLatteTasks;
         dragInfo.onlyLaunchers = latteApplet ? latteApplet.launchersDrop(event) : false;
 
-        dragInfo.entered = true;
         slotAnimationsNeedLength(1);
 
         if (dragInfo.isTask || plasmoid.immutable || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
@@ -153,14 +151,12 @@ DragDrop.DropArea {
             if (dragInfo.onlyLaunchers) {
                 root.addLaunchersMessage = true;
                 if (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event)) {
-                    dragInfo.entered = true
                     dndSpacer.opacity = 0;
                     dndSpacer.parent = root;
                     return;
                 }
             } else {
                 if ((dragInfo.isSeparator || !dragInfo.isPlasmoid) && root.latteAppletContainer.containsPos(event)) {
-                    dragInfo.entered = true
                     dndSpacer.opacity = 0;
                     dndSpacer.parent = root;
                     return;
@@ -186,7 +182,6 @@ DragDrop.DropArea {
     onDragLeave: {
         if (dragInfo.entered) {
             slotAnimationsNeedLength(-1);
-            dragInfo.entered = false;
         }
 
         root.addLaunchersMessage = false;
@@ -196,7 +191,6 @@ DragDrop.DropArea {
         if (dragInfo.isTask || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
             if (dragInfo.entered) {
                 slotAnimationsNeedLength(-1);
-                dragInfo.entered = false;
             }
             return;
         }
@@ -213,7 +207,6 @@ DragDrop.DropArea {
 
         if (dragInfo.entered) {
             slotAnimationsNeedLength(-1);
-            dragInfo.entered = false;
         }
     }
 }

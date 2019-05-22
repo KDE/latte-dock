@@ -1723,9 +1723,7 @@ Item {
 
         Item{
             id: panelBox
-
             anchors.fill: layoutsContainer
-            // z: root.behaveAsPlasmaPanel ? 0 : 1
 
             PanelBox{
                 id: panelBoxBackground
