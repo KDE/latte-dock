@@ -59,13 +59,13 @@ DragDrop.DropArea {
     }
 
     function clearInfo() {
-        clearInfoTimer.start();
+        clearInfoTimer.restart();
     }
 
     //! Give the time when an applet is dropped to be positioned properly
     Timer {
         id: clearInfoTimer
-        interval: 500
+        interval: 1500
 
         onTriggered: {
             dragArea.dragInfo.entered = false;
