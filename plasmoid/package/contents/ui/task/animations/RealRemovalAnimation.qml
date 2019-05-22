@@ -51,8 +51,8 @@ SequentialAnimation {
             //! When a window is removed and afterwards its launcher must be shown immediately!
             if (!enabledAnimation && taskItem.isWindow && !taskItem.isSeparator
                     && tasksModel.launcherPosition(taskItem.launcherUrl) !== -1
-                    && !root.immediateLauncherExists(taskItem.launcherUrl)){
-                root.addImmediateLauncher(taskItem.launcherUrl);
+                    && !tasksExtendedManager.immediateLauncherExists(taskItem.launcherUrl)){
+                tasksExtendedManager.addImmediateLauncher(taskItem.launcherUrl);
             }
 
             //trying to fix the ListView nasty behavior
@@ -92,7 +92,7 @@ SequentialAnimation {
 
             if (wrapper.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation
                     && !taskItem.inBouncingAnimation && Latte.WindowSystem.compositingActive) {
-                parabolicManager.setFrozenTask(taskItem.launcherUrl, wrapper.mScale);
+                tasksExtendedManager.setFrozenTask(taskItem.launcherUrl, wrapper.mScale);
             }
         }
     }
@@ -186,7 +186,7 @@ SequentialAnimation {
 
             //send signal that the launcher is really removing
             if (taskItem.inBouncingAnimation) {
-                root.removeWaitingLauncher(taskItem.launcherUrl);
+                tasksExtendedManager.removeWaitingLauncher(taskItem.launcherUrl);
                 root.setGlobalDirectRender(false);
             }
         }

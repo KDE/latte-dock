@@ -93,7 +93,7 @@ SequentialAnimation{
     onStopped: {
         if (!taskItem.inRemoveStage) {
             taskItem.inBouncingAnimation = false;
-            root.removeWaitingLauncher(taskItem.launcherUrl);
+            tasksExtendedManager.removeWaitingLauncher(taskItem.launcherUrl);
         }
 
         root.setGlobalDirectRender(false);

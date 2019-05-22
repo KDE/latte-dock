@@ -122,7 +122,7 @@ SequentialAnimation{
                           && taskItem.isWindow
                           && Latte.WindowSystem.compositingActive);
 
-        var animation3 = (!root.immediateLauncherExists(taskItem.launcherUrl)
+        var animation3 = (!tasksExtendedManager.immediateLauncherExists(taskItem.launcherUrl)
                           && taskItem.isLauncher
                           && Latte.WindowSystem.compositingActive);
 
@@ -139,8 +139,8 @@ SequentialAnimation{
         //var hideStartup =  launcherExists && taskItem.isStartup; //! fix #976
         var hideWindow =  root.showWindowsOnlyFromLaunchers && !launcherExists && taskItem.isWindow;
 
-        if (root.immediateLauncherExists(taskItem.launcherUrl) && taskItem.isLauncher) {
-            root.removeImmediateLauncher(taskItem.launcherUrl);
+        if (tasksExtendedManager.immediateLauncherExists(taskItem.launcherUrl) && taskItem.isLauncher) {
+            tasksExtendedManager.removeImmediateLauncher(taskItem.launcherUrl);
         }
 
         //if (hideStartup || hideWindow) { //fix #976
@@ -169,11 +169,11 @@ SequentialAnimation{
             start();
         } else {
             isForcedHidden = false;
-            var frozenTask = parabolicManager.getFrozenTask(taskItem.launcherUrl);
+            var frozenTask = tasksExtendedManager.getFrozenTask(taskItem.launcherUrl);
 
             if (frozenTask && frozenTask.mScale>1) {
                 wrapper.mScale = frozenTask.mScale;
-                parabolicManager.removeFrozenTask(taskItem.launcherUrl);
+                tasksExtendedManager.removeFrozenTask(taskItem.launcherUrl);
             } else {
                 wrapper.tempScaleWidth = 1;
                 wrapper.tempScaleHeight = 1;

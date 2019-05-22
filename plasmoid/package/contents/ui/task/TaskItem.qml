@@ -570,7 +570,7 @@ MouseArea{
         if (isSeparator) {
             root.separatorsUpdated();
 
-            if (parabolicManager.isLauncherToBeMoved(launcherUrl) && itemIndex>=0) {
+            if (tasksExtendedManager.isLauncherToBeMoved(launcherUrl) && itemIndex>=0) {
                 parabolicManager.moveLauncherToCorrectPos(launcherUrl, itemIndex);
             }
         } else {
@@ -1097,7 +1097,7 @@ MouseArea{
         // if ((lastButtonClicked == Qt.LeftButton)||(lastButtonClicked == Qt.MidButton)){
         if (Latte.WindowSystem.compositingActive) {
             inBouncingAnimation = true;
-            root.addWaitingLauncher(taskItem.launcherUrl);
+            tasksExtendedManager.addWaitingLauncher(taskItem.launcherUrl);
         }
 
         if (root.disableAllWindowsFunctionality) {
@@ -1442,8 +1442,8 @@ MouseArea{
 
         if (!Latte.WindowSystem.compositingActive) {
             visible = true;
-        } else if ( (isWindow || isStartup || isLauncher) && root.waitingLauncherExists(launcherUrl)) {
-            root.waitingLauncherRemoved.connect(slotWaitingLauncherRemoved);
+        } else if ( (isWindow || isStartup || isLauncher) && tasksExtendedManager.waitingLauncherExists(launcherUrl)) {
+            tasksExtendedManager.waitingLauncherRemoved.connect(slotWaitingLauncherRemoved);
             visible = false;
         } else if (hideStartup){
             visible = false;
@@ -1456,13 +1456,14 @@ MouseArea{
     }
 
     Component.onDestruction: {
-        root.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);
         root.draggingFinished.disconnect(handlerDraggingFinished);
         root.clearZoomSignal.disconnect(clearZoom);
         root.publishTasksGeometries.disconnect(slotPublishGeometries);
         root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
         root.mimicEnterForParabolic.disconnect(slotMimicEnterForParabolic);
         root.launchersUpdatedFor.disconnect(slotLaunchersChangedFor);
+
+        tasksExtendedManager.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);
 
         wrapper.sendEndOfNeedBothAxisAnimation();
     }

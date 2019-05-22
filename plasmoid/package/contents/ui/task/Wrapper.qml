@@ -189,7 +189,7 @@ Item{
 
     function signalUpdateScale(nIndex, nScale, step){
         if (!taskItem.containsMouse && (index === nIndex)
-                && (taskItem.hoverEnabled || inMimicParabolicAnimation)&&(waitingLaunchers.length===0)){
+                && (taskItem.hoverEnabled || inMimicParabolicAnimation)&&(tasksExtendedManager.waitingLaunchersLength()===0)){
             if (taskItem.inAttentionAnimation) {
                 var subSpacerScale = (nScale-1)/2;
 

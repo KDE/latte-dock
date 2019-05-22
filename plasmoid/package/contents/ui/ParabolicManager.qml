@@ -38,15 +38,6 @@ Item {
     property int lastRealTaskIndex: -1
     property int countRealTasks: -1
 
-    //tasks that change state (launcher,startup,window) and
-    //at the next state must look the same
-    //(id, mScale)
-    property variant frozenTasks: []
-
-    //new launchers in order to be moved in correct place
-    //(launcher, pos)
-    property variant launchersToBeMoved: []
-
     Connections{
         target: root
         onTasksCountChanged: parManager.updateTasksEdgesIndexes();
@@ -241,41 +232,6 @@ Item {
         return false;
     }
 
-    //! Frozen Tasks functions
-
-    function getFrozenTask(identifier) {
-        for(var i=0; i<frozenTasks.length; ++i) {
-            if (frozenTasks[i].id === identifier) {
-                return frozenTasks[i];
-            }
-        }
-    }
-
-    function removeFrozenTask(identifier) {
-        var taskIndex = -1;
-        for(var i=0; i<frozenTasks.length; ++i) {
-            if (frozenTasks[i].id === identifier) {
-                taskIndex = i;
-            }
-        }
-
-        if (taskIndex > -1) {
-            frozenTasks.splice(taskIndex, 1);
-        }
-    }
-
-    function setFrozenTask(identifier, scale) {
-        var frozenTaskExists = false;
-        console.log("SET FROZEN :: "+identifier+" - "+scale);
-        var frozenTask = getFrozenTask(identifier);
-
-        if (frozenTask) {
-            frozenTask.mScale = scale;
-        } else {
-            frozenTasks.push({id: identifier, mScale: scale});
-        }
-    }
-
     function availableLowerIndex(from) {
         var next = from;
 
@@ -453,103 +409,5 @@ Item {
             return separators[arrayPos].launcherUrl;
         else
             return "";
-    }
-
-    //! launchersToBeMoved, new launchers to have been added and must be repositioned
-    function addLauncherToBeMoved(launcherUrl, toPos) {
-        if (!isLauncherToBeMoved(launcherUrl)) {
-            launchersToBeMoved.push({launcher: launcherUrl, pos: Math.max(0,toPos)});
-            //console.log("-add launcher-");
-            //printLaunchersToBeMoved()
-        }
-    }
-
-    function printLaunchersToBeMoved(){
-        for (var j=0; j<launchersToBeMoved.length; ++j){
-            console.log(launchersToBeMoved[j].launcher+ " - "+launchersToBeMoved[j].pos);
-        }
-    }
-
-    function moveLauncherToCorrectPos(launcherUrl, from) {
-        if (isLauncherToBeMoved(launcherUrl)) {
-            launchersToBeMovedTimer.from = from;
-            launchersToBeMovedTimer.to = posOfLauncherToBeMoved(launcherUrl);
-            launchersToBeMovedTimer.launcherUrl = launcherUrl
-
-            removeLauncherToBeMoved(launcherUrl);
-            launchersToBeMovedTimer.start();
-        }
-    }
-
-    function removeLauncherToBeMoved(launcherUrl) {
-        if (isLauncherToBeMoved(launcherUrl)) {
-            var sLength = launchersToBeMoved.length;
-            var index = -1;
-
-            for (var i=0; i<sLength; ++i) {
-                //!safety checker
-                if (i>=launchersToBeMoved.length)
-                    return -1;
-
-                if (launchersToBeMoved[i].launcher === launcherUrl) {
-                    index = i;
-                    break;
-                }
-            }
-
-            if (index > -1) {
-                // console.log("removing launcher to be moved:: "+launcherUrl);
-                launchersToBeMoved.splice(index, 1);
-            }
-        }
-    }
-
-    function posOfLauncherToBeMoved(launcherUrl) {
-        var sLength = launchersToBeMoved.length;
-
-        for (var i=0; i<sLength; ++i) {
-            //!safety checker
-            if (i>=launchersToBeMoved.length)
-                return -1;
-
-            if (launchersToBeMoved[i].launcher === launcherUrl)
-                return launchersToBeMoved[i].pos;
-        }
-
-        return -1;
-    }
-
-    function isLauncherToBeMoved(launcher) {
-        return (posOfLauncherToBeMoved(launcher) >= 0);
-    }
-
-    //!Trying to avoid a binding loop in TaskItem for modelLauncherUrl
-    Timer {
-        id: launchersToBeMovedTimer
-        interval: 50
-        property int from: -1
-        property int to: -1
-
-        property string launcherUrl: ""
-
-        onTriggered: {
-            //console.log("to be moved: "+launcherUrl + " - " + from +" -> "+to)
-
-            tasksModel.move(from, to);
-            if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteView.layoutsManager.launchersSignals.moveTask(root.viewLayoutName,
-                                                                   plasmoid.id, latteView.launchersGroup, from, to);
-            }
-            delayedLaynchersSyncTimer.start();
-        }
-    }
-
-    //! delay a bit  the launchers syncing in order to avoid a crash
-    //! the crash was caused from ParabolicManager when adding and moving a launcher (e.g. internal separator)
-    //! and there were more than one synced docks
-    Timer {
-        id: delayedLaynchersSyncTimer
-        interval: 200
-        onTriggered: tasksModel.syncLaunchers();
     }
 }

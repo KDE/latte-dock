@@ -122,18 +122,13 @@ Item {
     //in launcher reference from libtaskmanager
     property variant badgers:[]
     property variant launchersOnActivities: []
-    property variant waitingLaunchers: []
-
-    //! launchers that are shown after a window removal and must be shown
-    //! immediately because they are already present!
-    property variant immediateLaunchers: []
 
     //global plasmoid reference to the context menu
     property QtObject contextMenu: null
     property QtObject contextMenuComponent: Qt.createComponent("ContextMenu.qml");
     property Item dragSource: null
     property Item parabolicManager: _parabolicManager
-
+    property Item tasksExtendedManager: _tasksExtendedManager
 
     //separator calculations based on audoban's design
     property int maxSeparatorLength: {
@@ -300,7 +295,6 @@ Item {
     signal updateScale(int delegateIndex, real newScale, real step)
     signal mimicEnterForParabolic();
     signal publishTasksGeometries();
-    signal waitingLauncherRemoved(string launch);
     signal windowsHovered(variant winIds, bool hovered)
 
     //onAnimationsChanged: console.log(animations);
@@ -506,68 +500,6 @@ Item {
 
         return launch;
     }
-
-    /// waiting launchers... this is used in order to check
-    /// a window or startup if its launcher is playing its animation
-    function addWaitingLauncher(launch){
-        for(var i=0; i<waitingLaunchers.length; ++i){
-            if (waitingLaunchers[i]===launch) {
-                return;
-            }
-        }
-
-        waitingLaunchers.push(launch);
-    }
-
-    function removeWaitingLauncher(launch){
-        for(var i=0; i<waitingLaunchers.length; ++i){
-            if (waitingLaunchers[i]===launch) {
-                waitingLaunchers.splice(i,1);
-                waitingLauncherRemoved(launch);
-                return;
-            }
-        }
-    }
-
-    function waitingLauncherExists(launch){
-        for(var i=0; i<waitingLaunchers.length; ++i){
-            if (waitingLaunchers[i]===launch) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    //! ImmediateLaunchers
-    function addImmediateLauncher(launch){
-        if (!immediateLauncherExists(launch)) {
-            //console.log("Immediate Launcher Added::: "+launch);
-            immediateLaunchers.push(launch);
-        }
-    }
-
-    function removeImmediateLauncher(launch){
-        for(var i=0; i<immediateLaunchers.length; ++i){
-            if (immediateLaunchers[i]===launch) {
-                immediateLaunchers.splice(i,1);
-                //console.log("Immediate Launcher Removed::: "+launch);
-                return;
-            }
-        }
-    }
-
-    function immediateLauncherExists(launch){
-        for(var i=0; i<immediateLaunchers.length; ++i){
-            if (immediateLaunchers[i]===launch) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    //!
 
     function hidePreview(){
         windowsPreviewDlg.hide(11);
@@ -995,6 +927,10 @@ Item {
 
     ParabolicManager{
         id: _parabolicManager
+    }
+
+    TasksExtendedManager {
+        id: _tasksExtendedManager
     }
 
     /*  IconsModel{
@@ -1678,7 +1614,7 @@ Item {
         var separatorName = parabolicManager.freeAvailableSeparatorName();
 
         if (separatorName !== "") {
-            parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
+            tasksExtendedManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
             if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
@@ -1891,7 +1827,7 @@ Item {
         var separatorName = parabolicManager.freeAvailableSeparatorName();
 
         if (separatorName !== "") {
-            parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
+            tasksExtendedManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
             if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteView.layoutsManager.launchersSignals.addLauncher(latteView.launchersGroup, separatorName);
@@ -2004,7 +1940,7 @@ Item {
     }
 
     function setGlobalDirectRender(value) {
-        if (waitingLaunchers.length > 0)
+        if (tasksExtendedManager.waitingLaunchersLength() > 0)
             return;
 
         if (latteView) {

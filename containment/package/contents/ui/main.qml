@@ -1295,7 +1295,7 @@ Item {
     }
 
     function setGlobalDirectRender(value) {
-        if (latteApplet && latteApplet.waitingLaunchers.length > 0)
+        if (latteApplet && latteApplet.tasksExtendedManager.waitingLaunchersLength() > 0)
             return;
 
         if (value === true) {
