@@ -183,11 +183,20 @@ Item {
             movingForResize = false;
             return;
         }
-        translation.x = oldX - x
-        translation.y = oldY - y
-        translAnim.running = true
-        oldX = x
-        oldY = y
+
+        if (!root.isVertical) {
+            translation.x = oldX - x;
+        } else {
+            translation.y = oldY - y;
+        }
+
+        translAnim.running = true;
+
+        if (!root.isVertical) {
+            oldX = x;
+        } else {
+            oldY = y;
+        }
     }
 
     transform: Translate {
