@@ -160,7 +160,7 @@ Flickable{
         //!    at the view boundaries, parabolic effect AND autoscroll at the
         //!    boundaries create animation breakage
 
-        if (!contentsExceed || root.tasksCount < 3
+        if (!root.autoScrollTasksEnabled || !contentsExceed || root.tasksCount < 3
                 || (task.itemIndex===parabolicManager.lastRealTaskIndex && root.zoomFactor>1)) {
             //last task with parabolic effect breaks the autoscolling behavior
             return;

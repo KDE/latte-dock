@@ -107,6 +107,14 @@ public:
     };
     Q_ENUM(ClickAction);
 
+    enum ManualScrollType
+    {
+        ManualScrollDisabled = 0,
+        ManualScrollOnlyParallel,
+        ManualScrollVerticalHorizontal
+    };
+    Q_ENUM(ManualScrollType);
+
     enum ScrollAction
     {
         ScrollNone = 0,

@@ -622,7 +622,9 @@ MouseArea{
             }
         }
 
-        scrollableList.autoScrollFor(taskItem);
+        if (root.autoScrollTasksEnabled) {
+            scrollableList.autoScrollFor(taskItem);
+        }
 
         if (root.latteView && root.latteView.isHalfShown) {
             return;
@@ -853,25 +855,43 @@ MouseArea{
         }
     }
 
-    onWheel: {      
-        if (isSeparator || !root.mouseWheelActions || wheelIsBlocked || inBouncingAnimation
+    onWheel: {
+        if (isSeparator
+                || wheelIsBlocked
+                || !(root.mouseWheelActions || manualScrollTasksEnabled)
+                || inBouncingAnimation
                 || (latteView && (latteView.dockIsHidden || latteView.inSlidingIn || latteView.inSlidingOut))){
 
             return;
         }
 
-        var angle = wheel.angleDelta.y / 8;
+        var angleVertical = wheel.angleDelta.y / 8;
+        var angleHorizontal = wheel.angleDelta.x / 8;
 
         wheelIsBlocked = true;
         scrollDelayer.start();
 
-        //positive direction
-        if (angle > 12) {
+        var verticalDirection = (Math.abs(angleVertical) > Math.abs(angleHorizontal));
+        var mainAngle = verticalDirection ? angleVertical : angleHorizontal;
+
+        var positiveDirection = (mainAngle > 12);
+        var negativeDirection = (mainAngle < -12);
+
+        var parallelScrolling = (verticalDirection && plasmoid.formFactor === PlasmaCore.Types.Vertical)
+                || (!verticalDirection && plasmoid.formFactor === PlasmaCore.Types.Horizontal);
+
+        if (positiveDirection) {
             slotPublishGeometries();
 
-            if (root.scrollingEnabled && scrollableList.contentsExceed) {
+            var overflowScrollingAccepted = (root.manualScrollTasksEnabled
+                                             && scrollableList.contentsExceed
+                                             && (root.manualScrollTasksType === Latte.Types.ManualScrollVerticalHorizontal
+                                                 || (root.manualScrollTasksType === Latte.Types.ManualScrollOnlyParallel && parallelScrolling)) );
+
+
+            if (overflowScrollingAccepted) {
                 scrollableList.increasePos();
-            } else {
+            } else if (root.mouseWheelActions){
                 if (isLauncher || root.disableAllWindowsFunctionality) {
                     wrapper.runLauncherAnimation();
                 } else if (isGroupParent) {
@@ -888,13 +908,18 @@ MouseArea{
 
                 hidePreviewWindow();
             }
-        } else if (angle < -12) {
+        } else if (negativeDirection) {
             slotPublishGeometries();
 
-            //negative direction
-            if (root.scrollingEnabled && scrollableList.contentsExceed) {
+            var overflowScrollingAccepted = (root.manualScrollTasksEnabled
+                                             && scrollableList.contentsExceed
+                                             && (root.manualScrollTasksType === Latte.Types.ManualScrollVerticalHorizontal
+                                                 || (root.manualScrollTasksType === Latte.Types.ManualScrollOnlyParallel && parallelScrolling)) );
+
+
+            if (overflowScrollingAccepted) {
                 scrollableList.decreasePos();
-            } else {
+            } else if (root.mouseWheelActions){
                 if (isLauncher || root.disableAllWindowsFunctionality) {
                     // do nothing
                 } else if (isGroupParent) {

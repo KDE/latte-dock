@@ -169,7 +169,10 @@ Item {
     property bool mouseWheelActions: latteView ? latteView.mouseWheelActions : true
     property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : zoomFactor>1 && !root.editMode
 
-    property bool scrollingEnabled: latteView ? latteView.scrollingTasksEnabled : false
+    property bool scrollingEnabled: latteView ? latteView.scrollTasksEnabled : false
+    property bool autoScrollTasksEnabled: latteView ? (scrollingEnabled && latteView.autoScrollTasksEnabled) : false
+    property bool manualScrollTasksEnabled: latteView ? (scrollingEnabled &&  manualScrollTasksType !== Latte.Types.ManualScrollDisabled) : Latte.Types.ManualScrollDisabled
+    property int manualScrollTasksType: latteView ? latteView.manualScrollTasksType : 0
 
     property bool showInfoBadge: latteView ? latteView.showInfoBadge : plasmoid.configuration.showInfoBadge
     property bool showProgressBadge: latteView ? latteView.showProgressBadge : plasmoid.configuration.showInfoBadge

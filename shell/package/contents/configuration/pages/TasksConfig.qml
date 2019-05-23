@@ -133,18 +133,6 @@ PlasmaComponents.Page {
                 }
 
                 LatteComponents.CheckBox {
-                    Layout.maximumWidth: dialog.optionsWidth
-                    text: i18n("Support scrolling when items overflow")
-                    checked: plasmoid.configuration.scrollingTasksEnabled
-                    tooltip: i18n("When items overflow the user is able to scroll between them.\nTake note that automatic icon decrease mechanism will be disabled.")
-                    visible: dialog.highLevel
-
-                    onClicked: {
-                        plasmoid.configuration.scrollingTasksEnabled = !plasmoid.configuration.scrollingTasksEnabled;
-                    }
-                }
-
-                LatteComponents.CheckBox {
                     id: windowActionsChk
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Window actions in the context menu")
@@ -325,6 +313,88 @@ PlasmaComponents.Page {
         }
         //! END: Launchers Group
 
+        //! BEGIN: Scrolling
+        ColumnLayout {
+            spacing: units.smallSpacing
+            visible: dialog.expertLevel
+
+            LatteComponents.HeaderSwitch {
+                id: scrollingHeader
+                Layout.minimumWidth: dialog.optionsWidth + 2 *units.smallSpacing
+                Layout.maximumWidth: Layout.minimumWidth
+                Layout.minimumHeight: implicitHeight
+                Layout.bottomMargin: units.smallSpacing
+                enabled: Latte.WindowSystem.compositingActive
+
+                checked: plasmoid.configuration.scrollTasksEnabled
+                text: i18n("Scrolling")
+                tooltip: i18n("Enable tasks scrolling when they overflow and exceed the available space");
+
+                onPressed: {
+                    plasmoid.configuration.scrollTasksEnabled = !plasmoid.configuration.scrollTasksEnabled;;
+                }
+            }
+
+            ColumnLayout {
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 0
+                enabled: scrollingHeader.checked
+
+                GridLayout {
+                    columns: 2
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
+
+                    Layout.topMargin: units.smallSpacing
+
+                    PlasmaComponents.Label {
+                        Layout.fillWidth: true
+                        text: i18n("Manual")
+                    }
+
+                    LatteComponents.ComboBox {
+                        id: manualScrolling
+                        Layout.minimumWidth: leftClickAction.width
+                        Layout.maximumWidth: leftClickAction.width
+                        model: [i18nc("disabled manual scrolling", "Disabled scrolling"),
+                            dialog.panelIsVertical ? i18n("Only vertical scrolling") : i18n("Only horizontal scrolling"),
+                            i18n("Horizonal and vertical scrolling")]
+
+                        currentIndex: plasmoid.configuration.manualScrollTasksType
+                        onCurrentIndexChanged: plasmoid.configuration.manualScrollTasksType = currentIndex;
+                    }
+
+                    PlasmaComponents.Label {
+                        id: autoScrollText
+                        Layout.fillWidth: true
+                        text: i18n("Automatic")
+                    }
+
+                    LatteComponents.ComboBox {
+                        id: autoScrolling
+                        Layout.minimumWidth: leftClickAction.width
+                        Layout.maximumWidth: leftClickAction.width
+                        model: [
+                            i18n("Disabled"),
+                            i18n("Enabled")
+                        ]
+
+                        currentIndex: plasmoid.configuration.autoScrollTasksEnabled
+                        onCurrentIndexChanged: {
+                            if (currentIndex === 0) {
+                                plasmoid.configuration.autoScrollTasksEnabled = false;
+                            } else {
+                                plasmoid.configuration.autoScrollTasksEnabled = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //! END: Scolling
+
+
         //! BEGIN: Actions
         ColumnLayout {
             spacing: units.smallSpacing
@@ -348,6 +418,7 @@ PlasmaComponents.Page {
                     enabled: !disableAllWindowsFunctionality
 
                     PlasmaComponents.Label {
+                        id: leftClickLbl
                         text: i18n("Left Click")
                     }
 

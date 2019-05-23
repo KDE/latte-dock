@@ -420,7 +420,10 @@ Item {
     property bool showAudioBadge: plasmoid.configuration.showAudioBadge
     property bool audioBadgeActionsEnabled: plasmoid.configuration.audioBadgeActionsEnabled
 
-    property bool scrollingTasksEnabled: plasmoid.configuration.scrollingTasksEnabled
+    property bool scrollTasksEnabled: plasmoid.configuration.scrollTasksEnabled
+    property bool autoScrollTasksEnabled: plasmoid.configuration.autoScrollTasksEnabled
+    property int manualScrollTasksType: plasmoid.configuration.manualScrollTasksType
+
     property bool showWindowActions: plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers
     property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen

@@ -324,8 +324,19 @@
     <entry name="mouseWheelActions" type="Bool">
       <default>true</default>
     </entry>
-    <entry name="scrollingTasksEnabled" type="Bool">
+    <entry name="scrollTasksEnabled" type="Bool">
       <default>false</default>
+    </entry>
+    <entry name="autoScrollTasksEnabled" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="manualScrollTasksType" type="Enum">
+      <choices>
+            <choice name="Disabled"/>
+            <choice name="Parallel"/>
+            <choice name="VerticalHorizontal"/>
+      </choices>
+      <default>1</default>
     </entry>
     <entry name="unifiedGlobalShortcuts" type="Bool">
       <default>true</default>
