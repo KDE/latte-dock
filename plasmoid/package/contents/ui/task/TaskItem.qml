@@ -1107,7 +1107,7 @@ MouseArea{
             return model.GenericName;
         });
         toolTipDelegate.virtualDesktopParent = Qt.binding(function() {
-            return (model.VirtualDesktops !== undefined && model.VirtualDesktops.length === 0) ? model.VirtualDesktops : [0];
+            return (model.VirtualDesktops !== undefined && model.VirtualDesktops.length > 0) ? model.VirtualDesktops : [0];
         });
         toolTipDelegate.isOnAllVirtualDesktopsParent = Qt.binding(function() {
             return model.IsOnAllVirtualDesktops == true;
