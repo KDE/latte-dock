@@ -62,7 +62,7 @@ PlasmaComponents.Page {
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
-                    text: i18n("Unread messages from tasks")
+                    text: i18n("Notifications from tasks")
                     checked: plasmoid.configuration.showInfoBadge
                     tooltip: i18n("Show unread messages or notifications from tasks")
 
