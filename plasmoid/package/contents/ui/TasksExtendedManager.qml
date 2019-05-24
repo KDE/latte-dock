@@ -334,7 +334,7 @@ Item {
     //! a big interval from the last addition it is safe
     Timer {
         id: arraysGarbageCollectorTimer
-        interval: 7 * 1000
+        interval: 30 * 1000
         onTriggered: {
             console.log(" TASKS EXTENDED MANAGER Garbage Collector...");
             tasksExtManager.printImmediateLaunchers();
