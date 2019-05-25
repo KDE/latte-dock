@@ -238,6 +238,28 @@ QList<Plasma::Types::Location> SharedLayout::freeEdges(int screen) const
     return Layout::GenericLayout::freeEdges(screen);
 }
 
+void SharedLayout::setLastConfigViewFor(Latte::View *view)
+{
+    CentralLayout *current = currentCentralLayout();
+
+    if (current) {
+        return current->setLastConfigViewFor(view);
+    }
+
+    return GenericLayout::setLastConfigViewFor(view);
+}
+
+Latte::View *SharedLayout::lastConfigViewFor() const
+{
+    CentralLayout *current = currentCentralLayout();
+
+    if (current) {
+        return current->lastConfigViewFor();
+    }
+
+    return GenericLayout::lastConfigViewFor();
+}
+
 QList<Latte::View *> SharedLayout::sortedLatteViews(QList<Latte::View *> views)
 {
     CentralLayout *current = currentCentralLayout();

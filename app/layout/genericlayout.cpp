@@ -318,6 +318,21 @@ Latte::View *GenericLayout::highestPriorityView()
     return (views.count() > 0 ? views[0] : nullptr);
 }
 
+Latte::View *GenericLayout::lastConfigViewFor() const
+{
+    return m_lastConfigViewFor;
+}
+
+void GenericLayout::setLastConfigViewFor(Latte::View *view)
+{
+    if (m_lastConfigViewFor == view) {
+        return;
+    }
+
+    m_lastConfigViewFor = view;
+    emit lastConfigViewForChanged(view);
+}
+
 Latte::View *GenericLayout::viewForContainment(const Plasma::Containment *containment)
 {
     if (m_latteViews.contains(containment)) {
@@ -610,21 +625,6 @@ void GenericLayout::renameLayout(QString newName)
         qDebug() << "Cont ID :: " << containment->id();
         containment->config().writeEntry("layoutId", m_layoutName);
     }
-}
-
-Latte::View *GenericLayout::lastConfigViewFor()
-{
-    return m_lastConfigViewFor;
-}
-
-void GenericLayout::setLastConfigViewFor(Latte::View *view)
-{
-    if (m_lastConfigViewFor == view) {
-        return;
-    }
-
-    m_lastConfigViewFor = view;
-    emit lastConfigViewForChanged(view);
 }
 
 void GenericLayout::addNewView()

@@ -105,8 +105,8 @@ public:
     void unloadLatteViews();
     void unlock(); //! make it writable which it should be the default
 
-    void setLastConfigViewFor(Latte::View *view);
-    Latte::View *lastConfigViewFor();
+    virtual void setLastConfigViewFor(Latte::View *view);
+    virtual Latte::View *lastConfigViewFor() const;
 
     //! this function needs the layout to have first set the corona through initToCorona() function
     virtual void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr);
