@@ -725,7 +725,7 @@ void GlobalShortcuts::showSettings()
 
         //! check if there is a view with opened settings window
         for (int i = 0; i < sortedViews.size(); ++i) {
-            if (sortedViews[i]->settingsWindowIsShown()) {
+            if (sortedViews[i] == currentLayout->lastConfigViewFor()) {
                 openSettings = i;
                 break;
             }

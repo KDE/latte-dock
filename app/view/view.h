@@ -269,7 +269,7 @@ signals:
 
 private slots:
     void availableScreenRectChangedFrom(View *origin);
-    void configViewCreated(QQuickView *configView);
+    void configViewCreatedFor(Latte::View *view);
     void hideWindowsForSlidingOut();
     void preferredViewForShortcutsChangedSlot(Latte::View *view);
     void statusChanged(Plasma::Types::ItemStatus);

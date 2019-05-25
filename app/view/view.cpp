@@ -836,7 +836,7 @@ void View::setLayout(Layout::GenericLayout *layout)
         });
 
         connectionsLayout << connect(m_layout, &Layout::GenericLayout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
-        connectionsLayout << connect(m_layout, &Layout::GenericLayout::configViewCreated, this, &View::configViewCreated);
+        connectionsLayout << connect(m_layout, &Layout::GenericLayout::lastConfigViewForChanged, this, &View::configViewCreatedFor);
 
         Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
@@ -947,9 +947,9 @@ void View::setBlockHiding(bool block)
     }
 }
 
-void View::configViewCreated(QQuickView *configView)
+void View::configViewCreatedFor(Latte::View *view)
 {
-    if (m_configView && m_configView!=configView) {
+    if (view!=this && m_configView) {
         //! for each layout only one dock should show its configuration windows
         //! otherwise we could reach a point that because a settings window
         //! is below another Latte View its options are not reachable

@@ -612,6 +612,21 @@ void GenericLayout::renameLayout(QString newName)
     }
 }
 
+Latte::View *GenericLayout::lastConfigViewFor()
+{
+    return m_lastConfigViewFor;
+}
+
+void GenericLayout::setLastConfigViewFor(Latte::View *view)
+{
+    if (m_lastConfigViewFor == view) {
+        return;
+    }
+
+    m_lastConfigViewFor = view;
+    emit lastConfigViewForChanged(view);
+}
+
 void GenericLayout::addNewView()
 {
     if (!m_corona) {

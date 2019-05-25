@@ -67,6 +67,8 @@ public:
     QStringList activities() const;
     void setActivities(QStringList activities);
 
+    Latte::View *lastSettingsView();
+
     SharedLayout *sharedLayout() const;
     void setSharedLayout(SharedLayout *layout);
 
@@ -117,6 +119,8 @@ private:
     bool m_showInMenu{false};
     QString m_sharedLayoutName;
     QStringList m_activities;
+
+    QPointer<Latte::View> m_lastSettingsView;
 
     QPointer<SharedLayout> m_sharedLayout;
 

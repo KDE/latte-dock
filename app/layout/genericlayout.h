@@ -105,6 +105,9 @@ public:
     void unloadLatteViews();
     void unlock(); //! make it writable which it should be the default
 
+    void setLastConfigViewFor(Latte::View *view);
+    Latte::View *lastConfigViewFor();
+
     //! this function needs the layout to have first set the corona through initToCorona() function
     virtual void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr);
     void copyView(Plasma::Containment *containment);
@@ -136,7 +139,7 @@ signals:
     void viewEdgeChanged();
 
     //! used from ConfigView(s) in order to be informed which is one should be shown
-    void configViewCreated(QQuickView *configView);
+    void lastConfigViewForChanged(Latte::View *view);
 
     //! used from LatteView(s) in order to exist only one each time that has the highest priority
     //! to use the global shortcuts activations
@@ -175,6 +178,8 @@ private:
 
 private:
     bool m_blockAutomaticLatteViewCreation{false};
+
+    QPointer<Latte::View> m_lastConfigViewFor;
 
     QStringList m_unloadedContainmentsIds;
 

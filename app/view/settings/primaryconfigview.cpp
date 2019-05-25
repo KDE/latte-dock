@@ -115,7 +115,7 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
     }
 
     if (m_latteView->layout()) {
-        emit m_latteView->layout()->configViewCreated(this);
+        emit m_latteView->layout()->setLastConfigViewFor(m_latteView);
     }
 }
 
