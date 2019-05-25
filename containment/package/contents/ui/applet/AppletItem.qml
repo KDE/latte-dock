@@ -167,7 +167,7 @@ Item {
     property int oldY: y
 
     onXChanged: {
-        if (movingForResize || !root.dragInfo.entered) {
+        if (!foreDropArea.visible || movingForResize || !root.dragInfo.entered) {
             movingForResize = false;
             return;
         }
@@ -192,7 +192,7 @@ Item {
     }
 
     onYChanged: {
-        if (movingForResize || !root.dragInfo.entered) {
+        if (!foreDropArea.visible || movingForResize || !root.dragInfo.entered) {
             movingForResize = false;
             return;
         }

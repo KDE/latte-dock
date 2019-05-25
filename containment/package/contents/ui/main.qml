@@ -1723,6 +1723,9 @@ Item {
     DragDropArea {
         id: backDropArea
         anchors.fill: parent
+        readonly property bool higherPriority: latteView && latteView.containsDrag
+                                               && ((root.dragInfo.isPlasmoid && root.dragInfo.isSeparator)
+                                               || (foreDropArea.dragInfo.computationsAreValid && !root.dragInfo.isPlasmoid && !root.dragInfo.onlyLaunchers))
 
         Item{
             id: panelBox
@@ -1740,9 +1743,7 @@ Item {
         DragDropArea {
             id: foreDropArea
             anchors.fill: parent
-            visible: latteView && latteView.containsDrag
-                     && ((root.dragInfo.isPlasmoid && !root.dragInfo.isSeparator)
-                         || (root.addLaunchersInTaskManager && root.dragInfo.onlyLaunchers))
+            visible: !backDropArea.higherPriority
             isForeground: true
 
             /* Rectangle {

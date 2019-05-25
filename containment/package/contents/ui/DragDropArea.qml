@@ -36,6 +36,8 @@ DragDrop.DropArea {
         property bool isSeparator: false
         property bool isLatteTasks: false
         property bool onlyLaunchers: false
+
+        property bool computationsAreValid: false
     }
 
     Connections{
@@ -65,9 +67,11 @@ DragDrop.DropArea {
     //! Give the time when an applet is dropped to be positioned properly
     Timer {
         id: clearInfoTimer
-        interval: 1500
+        interval: 100 //dragArea.isForeground ? 100 : 500
 
         onTriggered: {
+            dragArea.dragInfo.computationsAreValid = false;
+
             dragArea.dragInfo.isTask = false;
             dragArea.dragInfo.isPlasmoid = false;
             dragArea.dragInfo.isSeparator = false;
@@ -106,6 +110,7 @@ DragDrop.DropArea {
         dragInfo.isSeparator = isSeparator;
         dragInfo.isLatteTasks = isLatteTasks;
         dragInfo.onlyLaunchers = latteApplet ? latteApplet.launchersDrop(event) : false;
+        dragInfo.computationsAreValid = true;
 
         slotAnimationsNeedLength(1);
 
@@ -185,6 +190,11 @@ DragDrop.DropArea {
         }
 
         root.addLaunchersMessage = false;
+
+        if (!isForeground) {
+            dndSpacer.opacity = 0;
+            dndSpacer.parent = root;
+        }
     }
 
     onDrop: {

@@ -571,7 +571,7 @@ MouseArea{
             root.separatorsUpdated();
 
             if (tasksExtendedManager.isLauncherToBeMoved(launcherUrl) && itemIndex>=0) {
-                parabolicManager.moveLauncherToCorrectPos(launcherUrl, itemIndex);
+                tasksExtendedManager.moveLauncherToCorrectPos(launcherUrl, itemIndex);
             }
         } else {
             root.separatorsUpdated();
