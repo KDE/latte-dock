@@ -221,7 +221,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     });
 
     connect(aboutAction, &QAction::triggered, m_corona, &Latte::Corona::aboutApplication);
-    connect(quitAction, &QAction::triggered, m_corona, &Latte::Corona::closeApplication);
+    connect(quitAction, &QAction::triggered, this, [&]() {
+        close();
+        m_corona->closeApplication();
+    });
 
     //! update all layouts view when runningActivities changed. This way we update immediately
     //! the running Activities in Activities checkboxes which are shown as bold

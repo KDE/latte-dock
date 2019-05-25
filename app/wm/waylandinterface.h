@@ -22,6 +22,7 @@
 #define WAYLANDINTERFACE_H
 
 // local
+#include <config-latte.h>
 #include "abstractwindowinterface.h"
 #include "windowinfowrap.h"
 
@@ -88,6 +89,11 @@ public:
 
     void initWindowManagement(KWayland::Client::PlasmaWindowManagement *windowManagement);
 
+#if KF5_VERSION_MINOR >= 52
+    //! VirtualDesktopsSupport
+    void initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement);
+#endif
+
 private:
     void init();
     bool isValidWindow(const KWayland::Client::PlasmaWindow *w) const;
@@ -96,12 +102,26 @@ private:
     KWayland::Client::PlasmaWindow *windowFor(WindowId wid) const;
     KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
 
+#if KF5_VERSION_MINOR >= 52
+    //! VirtualDesktopsSupport
+    void setCurrentDesktop(QString desktop);
+    void addDesktop(const QString &id, quint32 position);
+#endif
+
+private:
     QSignalMapper *mapper{nullptr};
 
     friend class Private::GhostWindow;
     mutable QMap<WindowId, Private::GhostWindow *> m_ghostWindows;
 
     KWayland::Client::PlasmaWindowManagement *m_windowManagement{nullptr};
+
+#if KF5_VERSION_MINOR >= 52
+    //! VirtualDesktopsSupport
+    KWayland::Client::PlasmaVirtualDesktopManagement *m_virtualDesktopManagement{nullptr};
+    QString m_currentDesktop;
+    QStringList m_desktops;
+#endif
 
     Latte::Corona *m_corona{nullptr};
 };

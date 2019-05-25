@@ -39,6 +39,10 @@
 #include <KWindowInfo>
 #include <KWayland/Client/surface.h>
 
+#if KF5_VERSION_MINOR >= 52
+#include <KWayland/Client/plasmavirtualdesktop.h>
+#endif
+
 // X11
 #include <NETWM>
 
@@ -120,17 +124,77 @@ void WaylandInterface::init()
 
 void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManagement *windowManagement)
 {
+    if (m_windowManagement == windowManagement) {
+        return;
+    }
+
     m_windowManagement = windowManagement;
 
     connect(m_windowManagement, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
     connect(m_windowManagement, &PlasmaWindowManagement::activeWindowChanged, this, [&]() noexcept {
-        auto w = m_windowManagement->activeWindow();
-        if (!w || (w && (!isPlasmaDesktop(w) && w->appId() != QLatin1String("latte-dock")))) {
-            emit activeWindowChanged(w ? w->internalId() : 0);
-        }
+                auto w = m_windowManagement->activeWindow();
+                if (!w || (w && (!isPlasmaDesktop(w) && w->appId() != QLatin1String("latte-dock")))) {
+                    emit activeWindowChanged(w ? w->internalId() : 0);
+                }
 
-    }, Qt::QueuedConnection);
+            }, Qt::QueuedConnection);
 }
+
+#if KF5_VERSION_MINOR >= 52
+void WaylandInterface::initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement)
+{
+    if (m_virtualDesktopManagement == virtualDesktopManagement) {
+        return;
+    }
+
+    m_virtualDesktopManagement = virtualDesktopManagement;
+
+    connect(m_virtualDesktopManagement, &KWayland::Client::PlasmaVirtualDesktopManagement::desktopCreated, this,
+            [this](const QString &id, quint32 position) {
+        addDesktop(id, position);
+    });
+
+    connect(m_virtualDesktopManagement, &KWayland::Client::PlasmaVirtualDesktopManagement::desktopRemoved, this,
+            [this](const QString &id) {
+        m_desktops.removeAll(id);
+
+        if (m_currentDesktop == id) {
+            setCurrentDesktop(QString());
+        }
+    });
+}
+
+void WaylandInterface::addDesktop(const QString &id, quint32 position)
+{
+    if (m_desktops.contains(id)) {
+        return;
+    }
+
+    m_desktops.append(id);
+
+    const KWayland::Client::PlasmaVirtualDesktop *desktop = m_virtualDesktopManagement->getVirtualDesktop(id);
+
+    QObject::connect(desktop, &KWayland::Client::PlasmaVirtualDesktop::activated, this,
+                     [desktop, this]() {
+        setCurrentDesktop(desktop->id());
+    }
+    );
+
+    if (desktop->isActive()) {
+        setCurrentDesktop(id);
+    }
+}
+
+void WaylandInterface::setCurrentDesktop(QString desktop)
+{
+    if (m_currentDesktop == desktop) {
+        return;
+    }
+
+    m_currentDesktop = desktop;
+    emit currentDesktopChanged();
+}
+#endif
 
 KWayland::Client::PlasmaShell *WaylandInterface::waylandCoronaInterface() const
 {
@@ -150,18 +214,18 @@ void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::T
     auto w = m_ghostWindows[view.winId()];
 
     switch (location) {
-        case Plasma::Types::TopEdge:
-        case Plasma::Types::BottomEdge:
-            w->setGeometry({rect.x() + rect.width() / 2, rect.y(), 1, rect.height()});
-            break;
+    case Plasma::Types::TopEdge:
+    case Plasma::Types::BottomEdge:
+        w->setGeometry({rect.x() + rect.width() / 2, rect.y(), 1, rect.height()});
+        break;
 
-        case Plasma::Types::LeftEdge:
-        case Plasma::Types::RightEdge:
-            w->setGeometry({rect.x(), rect.y() + rect.height() / 2, rect.width(), 1});
-            break;
+    case Plasma::Types::LeftEdge:
+    case Plasma::Types::RightEdge:
+        w->setGeometry({rect.x(), rect.y() + rect.height() / 2, rect.width(), 1});
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
 }
@@ -207,24 +271,24 @@ void WaylandInterface::slideWindow(QWindow &view, AbstractWindowInterface::Slide
     auto slideLocation = KWindowEffects::NoEdge;
 
     switch (location) {
-        case Slide::Top:
-            slideLocation = KWindowEffects::TopEdge;
-            break;
+    case Slide::Top:
+        slideLocation = KWindowEffects::TopEdge;
+        break;
 
-        case Slide::Bottom:
-            slideLocation = KWindowEffects::BottomEdge;
-            break;
+    case Slide::Bottom:
+        slideLocation = KWindowEffects::BottomEdge;
+        break;
 
-        case Slide::Left:
-            slideLocation = KWindowEffects::LeftEdge;
-            break;
+    case Slide::Left:
+        slideLocation = KWindowEffects::LeftEdge;
+        break;
 
-        case Slide::Right:
-            slideLocation = KWindowEffects::RightEdge;
-            break;
+    case Slide::Right:
+        slideLocation = KWindowEffects::RightEdge;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     KWindowEffects::slideWindow(view.winId(), slideLocation, -1);
@@ -244,10 +308,10 @@ void WaylandInterface::setEdgeStateFor(QWindow *view, bool active) const
     }
 
     if (window->parentView()->surface() && window->parentView()->visibility()
-        && (window->parentView()->visibility()->mode() == Types::DodgeActive
-            || window->parentView()->visibility()->mode() == Types::DodgeMaximized
-            || window->parentView()->visibility()->mode() == Types::DodgeAllWindows
-            || window->parentView()->visibility()->mode() == Types::AutoHide)) {
+            && (window->parentView()->visibility()->mode() == Types::DodgeActive
+                || window->parentView()->visibility()->mode() == Types::DodgeMaximized
+                || window->parentView()->visibility()->mode() == Types::DodgeAllWindows
+                || window->parentView()->visibility()->mode() == Types::AutoHide)) {
         if (active) {
             window->showWithMask();
             window->surface()->requestHideAutoHidingPanel();
@@ -298,26 +362,23 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
 bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
 {
     if (!m_windowManagement) {
-        return false;
+        return true;
     }
 
-    auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
-        return w->isValid() && w->internalId() == wid;
-    });
+#if KF5_VERSION_MINOR >= 52
+    auto window = windowFor(wid);
+    if (window) {
+        QStringList wvds = window->plasmaVirtualDesktops();
+        return (wvds.isEmpty() || (!wvds.isEmpty() && wvds.contains(m_currentDesktop)));
+    }
+#endif
 
-    //qDebug() << "desktop:" << (it != m_windowManagement->windows().constEnd() ? (*it)->virtualDesktop() : -1) << KWindowSystem::currentDesktop();
-    //return true;
-    return it != m_windowManagement->windows().constEnd() && ((*it)->virtualDesktop() == KWindowSystem::currentDesktop() || (*it)->isOnAllDesktops());
+    return true;
 }
 
 bool WaylandInterface::isOnCurrentActivity(WindowId wid) const
 {
-    auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
-        return w->isValid() && w->internalId() == wid;
-    });
-
-    //TODO: Not yet implemented
-    return it != m_windowManagement->windows().constEnd() && true;
+    return true;
 }
 
 WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
@@ -353,8 +414,8 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
 KWayland::Client::PlasmaWindow *WaylandInterface::windowFor(WindowId wid) const
 {
     auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
-        return w->isValid() && w->internalId() == wid;
-    });
+            return w->isValid() && w->internalId() == wid;
+});
 
     if (it == m_windowManagement->windows().constEnd()) {
         return nullptr;
@@ -460,18 +521,30 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
         emit windowRemoved(win->internalId());
     });
 
-    connect(w, SIGNAL(activeChanged()), mapper, SLOT(map()));
-    connect(w, SIGNAL(fullscreenChanged()), mapper, SLOT(map()));
-    connect(w, SIGNAL(geometryChanged()), mapper, SLOT(map()));
-    connect(w, SIGNAL(maximizedChanged()), mapper, SLOT(map()));
-    connect(w, SIGNAL(minimizedChanged()), mapper, SLOT(map()));
-    connect(w, SIGNAL(shadedChanged()), mapper, SLOT(map()));
-    connect(w, SIGNAL(skipTaskbarChanged()), mapper, SLOT(map()));
-    connect(w, SIGNAL(onAllDesktopsChanged()), mapper, SLOT(map()));
-    connect(w, SIGNAL(virtualDesktopChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(activeChanged()), mapper, SLOT(map()) );
+    connect(w, SIGNAL(fullscreenChanged()), mapper, SLOT(map()) );
+    connect(w, SIGNAL(geometryChanged()), mapper, SLOT(map()) );
+    connect(w, SIGNAL(maximizedChanged()), mapper, SLOT(map()) );
+    connect(w, SIGNAL(minimizedChanged()), mapper, SLOT(map()) );
+    connect(w, SIGNAL(shadedChanged()), mapper, SLOT(map()) );
+    connect(w, SIGNAL(skipTaskbarChanged()), mapper, SLOT(map()) );
+    connect(w, SIGNAL(onAllDesktopsChanged()), mapper, SLOT(map()) );
+    connect(w, SIGNAL(virtualDesktopChanged()), mapper, SLOT(map()) );
+
+#if KF5_VERSION_MINOR >= 52
+    connect(w, &KWayland::Client::PlasmaWindow::plasmaVirtualDesktopEntered, this,
+            [w, this] {
+        mapper->map(w);
+    });
+
+    connect(w, &KWayland::Client::PlasmaWindow::plasmaVirtualDesktopLeft, this,
+            [w, this] {
+        mapper->map(w);
+    });
+#endif
 
     connect(mapper, static_cast<void (QSignalMapper::*)(QObject *)>(&QSignalMapper::mapped)
-    , this, [&](QObject * w) noexcept {
+            , this, [&](QObject * w) noexcept {
         //qDebug() << "window changed:" << qobject_cast<PlasmaWindow *>(w)->appId();
         PlasmaWindow *pW = qobject_cast<PlasmaWindow*>(w);
 

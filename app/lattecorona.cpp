@@ -300,6 +300,19 @@ void Corona::setupWaylandIntegration()
         }
     });
 
+#if KF5_VERSION_MINOR >= 52
+    QObject::connect(registry, &KWayland::Client::Registry::plasmaVirtualDesktopManagementAnnounced,
+                     [this, registry] (quint32 name, quint32 version) {
+        KWayland::Client::PlasmaVirtualDesktopManagement *vdm = registry->createPlasmaVirtualDesktopManagement(name, version, this);
+
+        WindowSystem::WaylandInterface *wI = qobject_cast<WindowSystem::WaylandInterface *>(m_wm);
+
+        if (wI) {
+            wI->initVirtualDesktopManagement(vdm);
+        }
+    });
+#endif
+
     registry->setup();
     connection->roundtrip();
 }
@@ -722,13 +735,13 @@ void Corona::closeApplication()
 {
     //! this code must be called asynchronously because it is called
     //! also from qml (Settings window).
-    QTimer::singleShot(5, [this]() {
+    QTimer::singleShot(300, [this]() {
         m_layoutsManager->hideLatteSettingsDialog();
         m_layoutsManager->synchronizer()->hideAllViews();
     });
 
     //! give the time for the views to hide themselves
-    QTimer::singleShot(500, [this]() {
+    QTimer::singleShot(800, [this]() {
         qGuiApp->quit();
     });
 }
