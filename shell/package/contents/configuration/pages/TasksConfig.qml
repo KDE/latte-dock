@@ -359,7 +359,7 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: leftClickAction.width
                         model: [i18nc("disabled manual scrolling", "Disabled scrolling"),
                             dialog.panelIsVertical ? i18n("Only vertical scrolling") : i18n("Only horizontal scrolling"),
-                            i18n("Horizonal and vertical scrolling")]
+                            i18n("Horizontal and vertical scrolling")]
 
                         currentIndex: plasmoid.configuration.manualScrollTasksType
                         onCurrentIndexChanged: plasmoid.configuration.manualScrollTasksType = currentIndex;
