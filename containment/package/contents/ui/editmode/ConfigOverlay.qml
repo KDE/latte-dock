@@ -394,7 +394,7 @@ MouseArea {
                             id: colorizingButton
                             checkable: true
                             iconSource: "color-picker"
-                            tooltip: i18n("Enable/Disable painting  for this applet")
+                            tooltip: i18n("Enable painting  for this applet")
 
                             onCheckedChanged: {
                                 currentApplet.userBlocksColorizing = !checked;
@@ -406,7 +406,7 @@ MouseArea {
                             id: lockButton
                             checkable: true
                             iconSource: checked ? "lock" : "unlock"
-                            tooltip: i18n("Enable/Disable parabolic effect for this applet")
+                            tooltip: i18n("Disable parabolic effect for this applet")
 
                             onCheckedChanged: {
                                 currentApplet.lockZoom = checked;
