@@ -318,8 +318,13 @@ Latte::View *GenericLayout::highestPriorityView()
     return (views.count() > 0 ? views[0] : nullptr);
 }
 
-Latte::View *GenericLayout::lastConfigViewFor() const
+Latte::View *GenericLayout::lastConfigViewFor()
 {
+    if (!latteViews().contains(m_lastConfigViewFor)) {
+        m_lastConfigViewFor = nullptr;
+        return nullptr;
+    }
+
     return m_lastConfigViewFor;
 }
 

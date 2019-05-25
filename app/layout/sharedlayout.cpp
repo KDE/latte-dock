@@ -249,7 +249,7 @@ void SharedLayout::setLastConfigViewFor(Latte::View *view)
     return GenericLayout::setLastConfigViewFor(view);
 }
 
-Latte::View *SharedLayout::lastConfigViewFor() const
+Latte::View *SharedLayout::lastConfigViewFor()
 {
     CentralLayout *current = currentCentralLayout();
 

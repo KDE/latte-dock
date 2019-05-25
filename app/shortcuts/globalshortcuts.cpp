@@ -96,7 +96,7 @@ void GlobalShortcuts::init()
 
     //show-hide the main view in the primary screen
     QAction *showAction = generalActions->addAction(QStringLiteral("show latte view"));
-    showAction->setText(i18n("Show Latte View"));
+    showAction->setText(i18n("Show Latte Dock/Panel"));
     showAction->setShortcut(QKeySequence(Qt::META + '`'));
     KGlobalAccel::setGlobalShortcut(showAction, QKeySequence(Qt::META + '`'));
     connect(showAction, &QAction::triggered, this, [this]() {
@@ -105,7 +105,7 @@ void GlobalShortcuts::init()
 
     //show-cycle between Latte settings windows
     QAction *settingsAction = generalActions->addAction(QStringLiteral("show view settings"));
-    settingsAction->setText(i18n("Show Latte Dock/Panel Settings"));
+    settingsAction->setText(i18n("Cycle Through Dock/Panel Settings Windows"));
     KGlobalAccel::setGlobalShortcut(settingsAction, QKeySequence(Qt::META + Qt::Key_A));
     connect(settingsAction, &QAction::triggered, this, [this] {
         m_modifierTracker->cancelMetaPressed();
