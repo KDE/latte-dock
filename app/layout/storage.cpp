@@ -305,7 +305,7 @@ void Storage::copyView(Plasma::Containment *containment)
             newContainment->setLocation(Plasma::Types::BottomEdge);
         }
 
-        config.writeEntry("onPrimary", false);
+        config.writeEntry("onPrimary", true);
         config.writeEntry("lastScreen", dockScrId);
     }
 
