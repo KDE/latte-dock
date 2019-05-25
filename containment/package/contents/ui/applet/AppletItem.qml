@@ -171,11 +171,24 @@ Item {
             movingForResize = false;
             return;
         }
-        translation.x = oldX - x
-        translation.y = oldY - y
+
+        if (!root.isVertical) {
+            translation.x = oldX - x;
+            translation.y = 0;
+        } else {
+            translation.y = oldY - y;
+            translation.x = 0;
+        }
+
         translAnim.running = true
-        oldX = x
-        oldY = y
+
+        if (!root.isVertical) {
+            oldX = x;
+            oldY = 0;
+        } else {
+            oldY = y;
+            oldX = 0;
+        }
     }
 
     onYChanged: {
@@ -186,16 +199,20 @@ Item {
 
         if (!root.isVertical) {
             translation.x = oldX - x;
+            translation.y = 0;
         } else {
             translation.y = oldY - y;
+            translation.x = 0;
         }
 
         translAnim.running = true;
 
         if (!root.isVertical) {
             oldX = x;
+            oldY = 0;
         } else {
             oldY = y;
+            oldX = 0;
         }
     }
 

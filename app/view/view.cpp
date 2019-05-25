@@ -1095,6 +1095,7 @@ bool View::event(QEvent *e)
             break;
 
         case QEvent::DragLeave:
+        case QEvent::Drop:
             setContainsDrag(false);
             break;
 
