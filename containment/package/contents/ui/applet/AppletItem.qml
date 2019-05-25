@@ -25,7 +25,6 @@ import QtGraphicalEffects 1.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 
 import org.kde.latte 0.2 as Latte
@@ -728,43 +727,10 @@ Item {
         height: width
     }
 
-    //! The Launchers Area Indicator
-    Rectangle{
+    Loader {
         anchors.fill: parent
-        radius: root.iconSize/10
-
-        property color tempColor: "#aa222222"
-        color: tempColor
-        border.width: 1
-        border.color: "#ff656565"
-
-        opacity: latteApplet && root.addLaunchersMessage ? 1 : 0
-
-        Behavior on opacity{
-            NumberAnimation { duration: 2*root.durationTime*appletItem.animationTime }
-        }
-
-        PlasmaExtras.Heading {
-            width: parent.width
-            height: parent.height
-
-            text: i18n("Tasks Area")
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            wrapMode: Text.WordWrap
-            elide: Text.ElideRight
-            fontSizeMode: Text.Fit
-            color: colorizerManager.textColor
-
-            rotation: {
-                if (root.isHorizontal)
-                    return 0;
-                else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
-                    return -90;
-                else if (plasmoid.location === PlasmaCore.Types.RightEdge)
-                    return 90;
-            }
-        }
+        active: isLattePlasmoid
+        sourceComponent: TasksArea{}
     }
 
     MouseArea{

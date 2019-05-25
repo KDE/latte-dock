@@ -24,7 +24,6 @@ import "../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: newDroppedLauncherVisual
-    anchors.fill: parent
 
     Rectangle{
         width: Math.min(parent.width, parent.height)
@@ -33,9 +32,9 @@ Item{
 
         radius: Math.max(width,height)/2
 
-        color: theme.backgroundColor // "#aa222222"
+        color: theme.backgroundColor
         border.width: 1
-        border.color: outlineColor // "#ff656565"
+        border.color: outlineColor
 
         property int crossSize: Math.min(0.4*parent.width, 0.4 * parent.height)
 

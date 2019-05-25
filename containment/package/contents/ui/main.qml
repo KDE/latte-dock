@@ -1772,7 +1772,9 @@ Item {
         opacity: 0
         z:1500
 
-        AddWidgetVisual{}
+        AddWidgetVisual{
+            anchors.fill: parent
+        }
     }
 
     ///////////////END UI elements
