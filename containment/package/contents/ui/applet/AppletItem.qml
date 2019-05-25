@@ -116,7 +116,7 @@ Item {
                                                                                            ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
 
     readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.parabolicEffectLocked
-    readonly property bool originalAppletBehavior: ((root.zoomFactor === 1 || !canBeHovered) && !root.titleTooltips) || lockZoom
+    readonly property bool originalAppletBehavior: root.zoomFactor === 1 || (root.zoomFactor>1 && canBeHovered && lockZoom)
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
 
     property int animationTime: appliedDurationTime * (1.2 *units.shortDuration)
