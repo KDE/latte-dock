@@ -121,8 +121,10 @@ DragDrop.DropArea {
 
         if (latteApplet && (dragInfo.onlyLaunchers || dragInfo.isSeparator || !dragInfo.isPlasmoid)) {
             if (dragInfo.onlyLaunchers) {
-                root.addLaunchersMessage = true;
-                if (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event)) {
+                var hoversLatteTasks = root.latteAppletContainer.containsPos(event);
+                root.addLaunchersMessage = root.addLaunchersInTaskManager || (!root.addLaunchersInTaskManager && hoversLatteTasks);
+
+                if (root.addLaunchersInTaskManager || hoversLatteTasks) {
                     dndSpacer.opacity = 0;
                     dndSpacer.parent = root;
                     return;
@@ -154,8 +156,10 @@ DragDrop.DropArea {
 
         if (latteApplet && (dragInfo.onlyLaunchers || dragInfo.isSeparator || !dragInfo.isPlasmoid)) {
             if (dragInfo.onlyLaunchers) {
-                root.addLaunchersMessage = true;
-                if (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event)) {
+                var hoversLatteTasks = root.latteAppletContainer.containsPos(event);
+                root.addLaunchersMessage = root.addLaunchersInTaskManager || (!root.addLaunchersInTaskManager && hoversLatteTasks);
+
+                if (root.addLaunchersInTaskManager || hoversLatteTasks) {
                     dndSpacer.opacity = 0;
                     dndSpacer.parent = root;
                     return;
