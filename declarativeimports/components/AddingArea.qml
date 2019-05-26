@@ -23,14 +23,11 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-import "../" as RootElements
+import "code/ColorizerTools.js" as ColorizerTools
 
 Rectangle{
-    anchors.fill: parent
-    radius: root.iconSize/10
-    opacity: root.addLaunchersMessage ? 1 : 0
-
-    color: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.75)
+    id: addingArea
+    color: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, backgroundOpacity)
     border.width: 1
     border.color: outlineColor
 
@@ -44,8 +41,13 @@ Rectangle{
         }
     }
 
+    property real backgroundOpacity: 0.75
+    property real duration: 2
+    property string title: ""
+
+
     Behavior on opacity{
-        NumberAnimation { duration: 2*root.durationTime*appletItem.animationTime }
+        NumberAnimation { duration: 2*addingArea.duration*appletItem.animationTime }
     }
 
     PlasmaExtras.Heading {
@@ -53,7 +55,7 @@ Rectangle{
         width: parent.width
         height: parent.height * 0.4
 
-        text: i18n("Tasks Area")
+        text: title
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.WordWrap
@@ -62,7 +64,7 @@ Rectangle{
         color: theme.textColor
 
         rotation: {
-            if (root.isHorizontal)
+            if (plasmoid.formFactor === PlasmaCore.Types.Horizontal)
                 return 0;
             else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
                 return -90;
@@ -71,7 +73,7 @@ Rectangle{
         }
     }
 
-    RootElements.AddWidgetVisual {
+    AddItem {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: heading.bottom
         anchors.topMargin: units.smallSpacing

@@ -29,6 +29,7 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 import "applet" as Applet
 import "colorizer" as Colorizer
@@ -1772,7 +1773,7 @@ Item {
         opacity: 0
         z:1500
 
-        AddWidgetVisual{
+        LatteComponents.AddItem{
             anchors.fill: parent
         }
     }

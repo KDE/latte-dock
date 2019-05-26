@@ -1,6 +1,5 @@
 /*
-*  Copyright 2016  Smith AR <audoban@openmailbox.org>
-*                  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2019  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -20,10 +19,14 @@
 
 import QtQuick 2.1
 
-import "../code/ColorizerTools.js" as ColorizerTools
+import org.kde.plasma.plasmoid 2.0
+
+import "code/ColorizerTools.js" as ColorizerTools
 
 Item{
-    id: newDroppedLauncherVisual
+    id: addItem
+
+    property real backgroundOpacity: 1
 
     Rectangle{
         width: Math.min(parent.width, parent.height)
@@ -32,7 +35,7 @@ Item{
 
         radius: Math.max(width,height)/2
 
-        color: theme.backgroundColor
+        color: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, backgroundOpacity)
         border.width: 1
         border.color: outlineColor
 

@@ -28,7 +28,9 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
+
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 import "animations" as TaskAnimations
 
@@ -559,8 +561,10 @@ Item{
         }
     }
 
-    VisualAddItem{
+    Loader {
         id: dropFilesVisual
+        active: applyOpacity>0
+
         width: !root.vertical ? length : thickness
         height: !root.vertical ? thickness : length
         anchors.centerIn: parent
@@ -568,11 +572,13 @@ Item{
         readonly property int length: root.iconSize + root.lengthMargins
         readonly property int thickness: root.iconSize + root.thickMargins
 
-        //anchors.fill: iconGraphic
+        readonly property real applyOpacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
+                                             && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 0.7 : 0
 
-        visible: opacity == 0 ? false : true
-        opacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
-                 && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 0.7 : 0
+        sourceComponent: LatteComponents.AddItem {
+            anchors.fill: parent
+            backgroundOpacity: dropFilesVisual.applyOpacity
+        }
     }
 
     Component.onDestruction: {

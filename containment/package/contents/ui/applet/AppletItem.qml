@@ -28,6 +28,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 import "colorizer" as Colorizer
 import "communicator" as Communicator
@@ -730,7 +731,15 @@ Item {
     Loader {
         anchors.fill: parent
         active: isLattePlasmoid
-        sourceComponent: TasksArea{}
+        sourceComponent: LatteComponents.AddingArea{
+            anchors.fill: parent
+            radius: root.iconSize/10
+            opacity: root.addLaunchersMessage ? 1 : 0
+            backgroundOpacity: 0.75
+            duration: root.durationTime
+
+            title: i18n("Tasks Area")
+        }
     }
 
     MouseArea{

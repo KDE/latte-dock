@@ -32,6 +32,7 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 import org.kde.activities 0.1 as Activities
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 import "previews" as Previews
 import "task" as Task
@@ -1310,19 +1311,16 @@ Item {
             flickable: scrollableList
         } // ScrollEdgeShadows
 
-        Task.VisualAddItem{
+        LatteComponents.AddingArea {
             id: newDroppedLauncherVisual
-            width: !root.vertical ? length : thickness
-            height: !root.vertical ? thickness : length
-            anchors.centerIn: mouseHandler
+            anchors.fill: mouseHandler
+            visible: backgroundOpacity > 0
+            radius: root.iconSize/10
+            backgroundOpacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 0.75 : 0
+            duration: root.durationTime
 
-            readonly property int length: root.iconSize + root.lengthMargins
-            readonly property int thickness: root.iconSize + root.thickMargins
-
-            visible: opacity == 0 ? false : true
-            opacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 0.7 : 0
+            title: i18n("Tasks Area")
         }
-
     }
 
     //// helpers
