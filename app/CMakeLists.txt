@@ -33,22 +33,23 @@ target_link_libraries(latte-dock
     Qt5::DBus
     Qt5::Quick
     Qt5::Qml
-    KF5::I18n
+    KF5::Activities 
+    KF5::Archive    
+    KF5::CoreAddons    
+    KF5::Crash    
     KF5::DBusAddons
     KF5::Declarative
-    KF5::CoreAddons
     KF5::GuiAddons
     KF5::GlobalAccel
-    KF5::Archive
-    KF5::Crash
-    KF5::XmlGui
-    KF5::Plasma
-    KF5::PlasmaQuick
-    KF5::Activities
+    KF5::I18n
+    KF5::IconThemes
     KF5::Notifications
-    KF5::NewStuff
-    KF5::QuickAddons
+    KF5::NewStuff   
+    KF5::QuickAddons    
+    KF5::Plasma
+    KF5::PlasmaQuick    
     KF5::WaylandClient
+    KF5::XmlGui    
 )
 
 if(HAVE_X11)

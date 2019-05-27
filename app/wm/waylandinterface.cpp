@@ -356,6 +356,8 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
 
     winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
 
+    winfoWrap.setDisplay(w->title());
+
     return winfoWrap;
 }
 
@@ -422,6 +424,18 @@ KWayland::Client::PlasmaWindow *WaylandInterface::windowFor(WindowId wid) const
     }
 
     return *it;
+}
+
+QIcon WaylandInterface::iconFor(WindowId wid) const
+{
+    auto window = windowFor(wid);
+
+    if (window) {
+        return window->icon();
+    }
+
+
+    return QIcon();
 }
 
 WindowId WaylandInterface::winIdFor(QString appId, QRect geometry) const
@@ -522,6 +536,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
     });
 
     connect(w, SIGNAL(activeChanged()), mapper, SLOT(map()) );
+    connect(w, SIGNAL(titleChanged()), mapper, SLOT(map()) );
     connect(w, SIGNAL(fullscreenChanged()), mapper, SLOT(map()) );
     connect(w, SIGNAL(geometryChanged()), mapper, SLOT(map()) );
     connect(w, SIGNAL(maximizedChanged()), mapper, SLOT(map()) );

@@ -23,6 +23,7 @@
 
 // Qt
 #include <QWindow>
+#include <QIcon>
 #include <QRect>
 #include <QVariant>
 
@@ -119,6 +120,12 @@ public:
     inline QRect geometry() const noexcept;
     inline void setGeometry(const QRect &geometry) noexcept;
 
+    inline QString display() const noexcept;
+    inline void setDisplay(const QString &display) noexcept;
+
+    inline QIcon icon() const noexcept;
+    inline void setIcon(const QIcon &icon) noexcept;
+
     inline WindowId wid() const noexcept;
     inline void setWid(WindowId wid) noexcept;
 
@@ -136,6 +143,10 @@ private:
     bool m_isPlasmaDesktop : 1;
     bool m_isKeepAbove: 1;
     bool m_hasSkipTaskbar: 1;
+
+    QString m_display;
+
+    QIcon m_icon;
 };
 
 // BEGIN: definitions
@@ -153,6 +164,8 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
+    m_display = rhs.m_display;
+    m_icon = rhs.m_icon;
     return *this;
 }
 
@@ -170,6 +183,8 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noex
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
+    m_display = rhs.m_display;
+    m_icon = rhs.m_icon;
     return *this;
 }
 
@@ -291,6 +306,26 @@ inline bool WindowInfoWrap::hasSkipTaskbar() const noexcept
 inline void WindowInfoWrap::setHasSkipTaskbar(bool skipTaskbar) noexcept
 {
     m_hasSkipTaskbar = skipTaskbar;
+}
+
+inline QString WindowInfoWrap::display() const noexcept
+{
+    return m_display;
+}
+
+inline void WindowInfoWrap::setDisplay(const QString &display) noexcept
+{
+    m_display = display;
+}
+
+inline QIcon WindowInfoWrap::icon() const noexcept
+{
+    return m_icon;
+}
+
+inline void WindowInfoWrap::setIcon(const QIcon &icon) noexcept
+{
+    m_icon = icon;
 }
 
 inline QRect WindowInfoWrap::geometry() const noexcept

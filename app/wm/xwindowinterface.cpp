@@ -33,6 +33,7 @@
 // KDE
 #include <KWindowSystem>
 #include <KWindowInfo>
+#include <KIconThemes/KIconLoader>
 
 // X11
 #include <NETWM>
@@ -278,10 +279,12 @@ bool XWindowInterface::isOnCurrentActivity(WindowId wid) const
 
 WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 {
-    const KWindowInfo winfo{wid.value<WId>(), NET::WMFrameExtents
+    const KWindowInfo winfo{wid.value<WId>(),NET::WMFrameExtents
                             | NET::WMWindowType
                             | NET::WMGeometry
-                            | NET::WMState};
+                            | NET::WMState
+                            | NET::WMName
+                            | NET::WMVisibleName};
 
     WindowInfoWrap winfoWrap;
 
@@ -297,6 +300,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setGeometry(winfo.frameGeometry());
         winfoWrap.setIsKeepAbove(winfo.hasState(NET::KeepAbove));
         winfoWrap.setHasSkipTaskbar(winfo.hasState(NET::SkipTaskbar));
+        winfoWrap.setDisplay(winfo.visibleName());
     } else if (m_desktopId == wid) {
         winfoWrap.setIsValid(true);
         winfoWrap.setIsPlasmaDesktop(true);
@@ -338,6 +342,18 @@ void XWindowInterface::releaseMouseEventFor(WindowId wid) const
 void XWindowInterface::requestActivate(WindowId wid) const
 {
     KWindowSystem::activateWindow(wid.toInt());
+}
+
+QIcon XWindowInterface::iconFor(WindowId wid) const
+{
+    QIcon icon;
+
+    icon.addPixmap(KWindowSystem::icon(wid.value<WId>(), KIconLoader::SizeSmall, KIconLoader::SizeSmall, false));
+    icon.addPixmap(KWindowSystem::icon(wid.value<WId>(), KIconLoader::SizeSmallMedium, KIconLoader::SizeSmallMedium, false));
+    icon.addPixmap(KWindowSystem::icon(wid.value<WId>(), KIconLoader::SizeMedium, KIconLoader::SizeMedium, false));
+    icon.addPixmap(KWindowSystem::icon(wid.value<WId>(), KIconLoader::SizeLarge, KIconLoader::SizeLarge, false));
+
+    return icon;
 }
 
 WindowId XWindowInterface::winIdFor(QString appId, QRect geometry) const
@@ -437,12 +453,18 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
 
     //! accept only the following NET:Properties changed signals
     //! NET::WMState, NET::WMGeometry, NET::ActiveWindow
-    if (!((prop1 & NET::WMState) || (prop1 & NET::WMGeometry) || (prop1 & NET::ActiveWindow))) {
+    if ( !(prop1 & NET::WMState)
+          && !(prop1 & NET::WMGeometry)
+          && !(prop1 & NET::ActiveWindow)
+          && !(prop1 & (NET::WMName | NET::WMVisibleName)) ) {
         return;
     }
 
     //! when only WMState changed we can whitelist the acceptable states
-    if ((prop1 & NET::WMState) && !(prop1 & NET::WMGeometry) && !(prop1 & NET::ActiveWindow)) {
+    if ((prop1 & NET::WMState)
+            && !(prop1 & NET::WMGeometry)
+            && !(prop1 & NET::ActiveWindow)
+            && !(prop1 & NET::WMVisibleName)) {
         KWindowInfo info(wid, NET::WMState);
 
         if (info.valid()) {

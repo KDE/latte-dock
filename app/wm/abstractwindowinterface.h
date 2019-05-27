@@ -99,6 +99,7 @@ public:
     virtual void requestToggleMaximized(WindowId wid) const = 0;
     virtual void requestMoveWindow(WindowId wid, QPoint from) const = 0;
     virtual bool windowCanBeDragged(WindowId wid) const = 0;
+    virtual QIcon iconFor(WindowId wid) const = 0;
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;
 
     Latte::Corona *corona();
