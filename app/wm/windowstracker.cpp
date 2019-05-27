@@ -453,7 +453,6 @@ void WindowsTracker::updateHints(Latte::View *view)
 
         if (isActiveInViewScreen(view, winfo)) {
             m_views[view].lastActiveWindow = winfo.wid();
-            qDebug() << " a w d :: " << winfo.display();
             foundActiveInCurScreen = true;
             activeWinId = winfo.wid();
         }

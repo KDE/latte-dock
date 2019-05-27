@@ -40,6 +40,7 @@
 #include <QPoint>
 #include <QPointer>
 #include <QScreen>
+#include <QTimer>
 
 // KDE
 #include <KActivities/Consumer>
@@ -117,10 +118,19 @@ signals:
 protected:
     QPointer<KActivities::Consumer> m_activities;
 
+    //! Sending too fast plenty of signals for the same window
+    //! has no reason and can create HIGH CPU usage. This Timer
+    //! can delay the batch sending of signals for the same window
+    WindowId m_windowChangedWaiting;
+    QTimer m_windowWaitingTimer;
+
+    void considerWindowChanged(WindowId wid);
+
 private:
     Latte::Corona *m_corona;
     SchemesTracker *m_schemesTracker;
     WindowsTracker *m_windowsTracker;
+
 };
 
 }

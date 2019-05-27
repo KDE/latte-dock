@@ -564,7 +564,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
         PlasmaWindow *pW = qobject_cast<PlasmaWindow*>(w);
 
         if (pW && !isPlasmaDesktop(pW) && pW->appId() != QLatin1String("latte-dock")) {
-            emit windowChanged(pW->internalId());
+            considerWindowChanged(pW->internalId());
         }
     });
 

@@ -35,10 +35,25 @@ AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
     m_corona = qobject_cast<Latte::Corona *>(parent);
     m_windowsTracker = new WindowsTracker(this);
     m_schemesTracker = new SchemesTracker(this);
+
+    m_windowWaitingTimer.setInterval(150);
+    m_windowWaitingTimer.setSingleShot(true);
+
+    connect(&m_windowWaitingTimer, &QTimer::timeout, this, [&]() {
+        WindowId wid = m_windowChangedWaiting;
+        m_windowChangedWaiting = QVariant();
+        emit windowChanged(wid);
+    });
+
+    connect(this, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
+        qDebug() << "WINDOW CHANGED ::: " << wid;
+    });
 }
 
 AbstractWindowInterface::~AbstractWindowInterface()
 {
+    m_windowWaitingTimer.stop();
+
     m_schemesTracker->deleteLater();
     m_windowsTracker->deleteLater();
 }
@@ -56,6 +71,33 @@ SchemesTracker *AbstractWindowInterface::schemesTracker()
 WindowsTracker *AbstractWindowInterface::windowsTracker()
 {
     return m_windowsTracker;
+}
+
+void AbstractWindowInterface::considerWindowChanged(WindowId wid)
+{
+    //! Consider if the windowChanged signal should be sent DIRECTLY or WAIT
+
+    if (m_windowChangedWaiting == wid && m_windowWaitingTimer.isActive()) {
+        //! window should be sent later
+        m_windowWaitingTimer.start();
+        return;
+    }
+
+    if (m_windowChangedWaiting != wid && !m_windowWaitingTimer.isActive()) {
+        //! window should be sent later
+        m_windowChangedWaiting = wid;
+        m_windowWaitingTimer.start();
+    }
+
+    if (m_windowChangedWaiting != wid && m_windowWaitingTimer.isActive()) {
+        m_windowWaitingTimer.stop();
+        //! sent previous waiting window
+        emit (m_windowChangedWaiting);
+
+        //! retrigger waiting for the upcoming window
+        m_windowChangedWaiting = wid;
+        m_windowWaitingTimer.start();
+    }
 }
 
 }
