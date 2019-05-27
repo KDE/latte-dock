@@ -591,6 +591,10 @@ void VisibilityManager::restoreConfig()
         setMode(Types::AlwaysVisible);
     } else {
         connect(&m_timerStartUp, &QTimer::timeout, this, [&]() {
+            if (!m_latteView || !m_latteView->containment()) {
+                return;
+            }
+
             auto fMode = static_cast<Types::Visibility>(m_latteView->containment()->config().readEntry("visibility", static_cast<int>(Types::DodgeActive)));
             qDebug() << "Loading visibility mode:" << fMode << " on startup...";
             setMode(fMode);
