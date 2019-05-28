@@ -185,15 +185,17 @@ Item {
         clearTasksLowerThan(aLId1-1);
 
         if (latteView){
-            if (gAppletId > -1)
+            if (gAppletId > -1) {
                 latteView.parabolicManager.clearAppletsGreaterThan(gAppletId);
-            else
+             } else if (index < lastRealTaskIndex && lastRealTaskIndex!==-1) {
                 latteView.parabolicManager.clearAppletsGreaterThan(latteView.latteAppletPos);
+            }
 
-            if (lAppletId > -1)
+            if (lAppletId > -1) {
                 latteView.parabolicManager.clearAppletsLowerThan(lAppletId);
-            else
+            } else if (index > firstRealTaskIndex && firstRealTaskIndex!==-1) {
                 latteView.parabolicManager.clearAppletsLowerThan(latteView.latteAppletPos);
+            }
         }
 
         return {leftScale:leftScale, rightScale:rightScale};
