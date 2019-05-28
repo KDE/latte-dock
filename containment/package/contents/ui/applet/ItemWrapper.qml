@@ -115,12 +115,8 @@ Item{
 
     property int iconSize: root.iconSize
 
-    property int marginWidth: root.isVertical ?
-                                  root.thickMargins :
-                                  (root.inFullJustify && atScreenEdge ? 0 : localLengthMargins)  //Fitt's Law
-    property int marginHeight: root.isHorizontal ?
-                                   root.thickMargins :
-                                   (root.inFullJustify && atScreenEdge ? 0 : localLengthMargins)  //Fitt's Law
+    property int marginWidth: root.isVertical ? root.thickMargins : localLengthMargins
+    property int marginHeight: root.isHorizontal ? root.thickMargins : localLengthMargins
 
     property int localLengthMargins: isSpacer || isSeparator ? 0 : root.lengthMargins
 
