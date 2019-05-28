@@ -116,7 +116,10 @@ Item {
                                                                                            ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
 
     readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.parabolicEffectLocked
-    readonly property bool originalAppletBehavior: root.zoomFactor === 1 || (root.zoomFactor>1 && canBeHovered && lockZoom)
+    readonly property bool originalAppletBehavior: root.zoomFactor === 1
+                                                   || (root.zoomFactor>1 && !canBeHovered)
+                                                   || (root.zoomFactor>1 && canBeHovered && lockZoom)
+
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
 
     property int animationTime: appliedDurationTime * (1.2 *units.shortDuration)
@@ -321,12 +324,12 @@ Item {
             var maxSize = root.iconSize + root.thickMargins;
             var maxForMinimumSize = root.iconSize + root.thickMargins;
 
-            if ( (((applet && root.isHorizontal && (applet.width > maxSize || applet.Layout.minimumWidth > maxForMinimumSize))
-                   || (applet && root.isVertical && (applet.height > maxSize || applet.Layout.minimumHeight > maxForMinimumSize)))
-                  && !appletItem.isSpacer
-                  && !communicator.canShowOverlaiedLatteIcon)
-                    || isSystray
-                    || appletItem.needsFillSpace) {
+            if ( isSystray
+                    || appletItem.needsFillSpace
+                    || (((applet && root.isHorizontal && (applet.width > maxSize || applet.Layout.minimumWidth > maxForMinimumSize))
+                         || (applet && root.isVertical && (applet.height > maxSize || applet.Layout.minimumHeight > maxForMinimumSize)))
+                        && !appletItem.isSpacer
+                        && !communicator.canShowOverlaiedLatteIcon) ) {
                 appletItem.canBeHovered = false;
             } else {
                 appletItem.canBeHovered = true;
@@ -408,6 +411,10 @@ Item {
             parabolicManager.setSeparator(index, -1);
         }
 
+    }
+
+    onIsSystrayChanged: {
+        checkCanBeHovered();
     }
 
     onLatteAppletChanged: {
@@ -608,7 +615,7 @@ Item {
     }*/
 
 
-  /* DEPRECATED in favor of VIEW::MouseSignalsTracking
+    /* DEPRECATED in favor of VIEW::MouseSignalsTracking
     MouseArea{
         id: appletMouseAreaBottom
         anchors.fill: parent
