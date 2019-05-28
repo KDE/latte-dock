@@ -62,7 +62,7 @@ FocusScope {
 
     //! propose size based on font size
     property int proposedWidth: 0.82 * proposedHeight + units.smallSpacing * 2
-    property int proposedHeight: 35 * theme.mSize(theme.defaultFont).height
+    property int proposedHeight: 36 * theme.mSize(theme.defaultFont).height
 
     //! chosen size to be applied, if the user has set or not a different scale for the settings window
     property int chosenWidth: userScaleWidth !== 1 ? userScaleWidth * proposedWidth : proposedWidth
