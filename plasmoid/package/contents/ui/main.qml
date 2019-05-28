@@ -44,8 +44,8 @@ import "../code/ColorizerTools.js" as ColorizerTools
 Item {
     id:root
 
-    Layout.fillWidth: scrollingEnabled && !root.vertical ? true : false
-    Layout.fillHeight: scrollingEnabled && root.vertical ? true : false
+    Layout.fillWidth: scrollingEnabled && !root.vertical
+    Layout.fillHeight: scrollingEnabled && root.vertical
 
     ///IMPORTANT: These values must be tested when the Now Dock Panel support
     ///also the four new anchors. A small issue is shown between the animation
