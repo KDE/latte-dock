@@ -172,7 +172,7 @@ bool Factory::metadataAreValid(QString &file)
 {
     if (QFileInfo(file).exists()) {
         KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(file);
-        return metadataAreValid(metadata);
+        return metadata.isValid();
     }
 
     return false;
