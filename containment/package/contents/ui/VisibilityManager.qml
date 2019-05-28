@@ -72,7 +72,7 @@ Item{
     property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness
 
     //! is used to increase the mask thickness
-    readonly property int marginBetweenContentsAndRuler: 10
+    readonly property int marginBetweenContentsAndRuler: root.editMode ? 10 : 0
     property int extraThickMask: marginBetweenContentsAndRuler + Math.max(indicatorsExtraThickMask, shadowsExtraThickMask)
     //! this is set from indicators when they need extra thickness mask size
     readonly property int indicatorsExtraThickMask: indicators.info.extraMaskThickness
