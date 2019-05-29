@@ -22,4 +22,30 @@ import QtQuick 2.7
 Item {
     readonly property Item level: parent && parent.hasOwnProperty("level") ? parent.level : null
     readonly property Item indicator: parent && parent.hasOwnProperty("level") ? parent.level.bridge : null
+
+    //! indicator is using main colors from icon e.g. unity style
+    property bool needsIconColors: false
+    //! indicator is using the mouse events coordinates e.g. for animations
+    property bool needsMouseEventCoordinates: false
+    //! indicator provides also foreground layer that should be drawn on top of the Items icons
+    property bool providesFrontLayer: false
+    //! indicator provides its own hovering animations. Latte should not provide
+    //! any hovering animation in that case
+    property bool providesHoveredAnimation: false
+    //! indicator provides its own clicked animations. Latte should not provide
+    //! any clicked animation in that case
+    property bool providesClickedAnimation: false
+
+    //! this indicator visuals go out of the regular mask thickness and this variable sets
+    //! the pixels needed outside of the mask thickness e.g. a glow
+    property int extraMaskThickness: 0
+
+    //! this indicator specifies a minimum thickness padding in order to be drawn correctly.
+    //! Values below the specified value are ignored. This value is a percentage,
+    //! e.g 0.06 -> 6%
+    property real minThicknessPadding: 0
+    //! this indicator specifies a minimum length padding in order to be drawn correctly.
+    //! Values below the specified value are ignored. This value is a percentage,
+    //! e.g 0.06 -> 6%
+    property real minLengthPadding: 0
 }

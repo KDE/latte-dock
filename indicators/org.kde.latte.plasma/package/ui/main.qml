@@ -27,11 +27,10 @@ import org.kde.latte.components 1.0 as LatteComponents
 LatteComponents.IndicatorItem {
     id: root
 
-    //! options published
-    readonly property bool needsMouseEventCoordinates: true
-    readonly property bool providesClickedAnimation: clickedAnimationEnabled
-    readonly property bool providesHoveredAnimation: true
-    readonly property bool providesFrontLayer: true
+    needsMouseEventCoordinates: true
+    providesClickedAnimation: clickedAnimationEnabled
+    providesHoveredAnimation: true
+    providesFrontLayer: true
 
     //! config options
     readonly property bool clickedAnimationEnabled: indicator && indicator.configuration

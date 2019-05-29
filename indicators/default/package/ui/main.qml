@@ -30,10 +30,10 @@ import org.kde.latte.components 1.0 as LatteComponents
 
 LatteComponents.IndicatorItem{
     id: root
+    extraMaskThickness: reversedEnabled && glowEnabled ? 1.7 * (factor * indicator.maxIconSize) : 0
 
     readonly property real factor: 0.08
     readonly property int size: factor * indicator.currentIconSize
-    readonly property int extraMaskThickness: reversedEnabled && glowEnabled ? 1.7 * (factor * indicator.maxIconSize) : 0
 
     property real textColorBrightness: colorBrightness(theme.textColor)
 
