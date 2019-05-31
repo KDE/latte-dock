@@ -464,12 +464,17 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
         return true;
     }
 
-    constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::PopupMenuMask | NET::NormalMask | NET::DialogMask;
+    constexpr auto types = NET::DesktopMask | NET::DockMask | NET::MenuMask | NET::SplashMask | NET::PopupMenuMask | NET::NormalMask | NET::DialogMask;
     NET::WindowType winType = winfo.windowType(types);
     const auto winClass = KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName();
 
     //! ignore latte related windows from tracking
     if (winClass == "latte-dock") {
+        return false;
+    }
+
+    //! reject desktop window
+    if (winType != -1 && (winType & NET::Desktop)) {
         return false;
     }
 

@@ -322,7 +322,7 @@ bool Windows::isValidFor(WindowId wid) const
         return false;
     }
 
-    return m_windows[wid].isValid();
+    return m_windows[wid].isValid() && !m_windows[wid].isPlasmaDesktop();
 }
 
 QIcon Windows::iconFor(WindowId wid)
