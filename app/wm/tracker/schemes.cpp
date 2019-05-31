@@ -17,12 +17,11 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "schemestracker.h"
+#include "schemes.h"
 
 // local
-#include "abstractwindowinterface.h"
-#include "schemecolors.h"
-#include "../lattecorona.h"
+#include "../abstractwindowinterface.h"
+#include "../../lattecorona.h"
 
 // Qt
 #include <QDir>
@@ -33,15 +32,16 @@
 
 namespace Latte {
 namespace WindowSystem {
+namespace Tracker {
 
-SchemesTracker::SchemesTracker(AbstractWindowInterface *parent)
+Schemes::Schemes(AbstractWindowInterface *parent)
     : QObject(parent)
 {
     m_wm = parent;
     init();
 }
 
-SchemesTracker::~SchemesTracker()
+Schemes::~Schemes()
 {
     m_windowScheme.clear();
     //! it is just a reference to a real scheme file
@@ -50,7 +50,7 @@ SchemesTracker::~SchemesTracker()
     m_schemes.clear();
 }
 
-void SchemesTracker::init()
+void Schemes::init()
 {
     updateDefaultScheme();
 
@@ -77,7 +77,7 @@ void SchemesTracker::init()
 }
 
 //! Scheme support for windows
-void SchemesTracker::updateDefaultScheme()
+void Schemes::updateDefaultScheme()
 {
     QString defaultSchemePath = SchemeColors::possibleSchemeFile("kdeglobals");
 
@@ -97,7 +97,7 @@ void SchemesTracker::updateDefaultScheme()
     }
 }
 
-SchemeColors *SchemesTracker::schemeForWindow(WindowId wid)
+SchemeColors *Schemes::schemeForWindow(WindowId wid)
 {
     if (!m_windowScheme.contains(wid)) {
         return m_schemes["kdeglobals"];
@@ -108,7 +108,7 @@ SchemeColors *SchemesTracker::schemeForWindow(WindowId wid)
     return nullptr;
 }
 
-void SchemesTracker::setColorSchemeForWindow(WindowId wid, QString scheme)
+void Schemes::setColorSchemeForWindow(WindowId wid, QString scheme)
 {
     if (scheme == "kdeglobals" && !m_windowScheme.contains(wid)) {
         //default scheme does not have to be set
@@ -134,5 +134,6 @@ void SchemesTracker::setColorSchemeForWindow(WindowId wid, QString scheme)
     }
 }
 
+}
 }
 }

@@ -51,8 +51,10 @@
 namespace Latte {
 class Corona;
 namespace WindowSystem {
-class SchemesTracker;
-class WindowsTracker;
+namespace Tracker {
+class Schemes;
+class Windows;
+}
 }
 }
 
@@ -104,8 +106,8 @@ public:
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;
 
     Latte::Corona *corona();
-    SchemesTracker *schemesTracker();
-    WindowsTracker *windowsTracker();
+    Tracker::Schemes *schemesTracker();
+    Tracker::Windows *windowsTracker();
 
 signals:
     void activeWindowChanged(WindowId wid);
@@ -128,9 +130,8 @@ protected:
 
 private:
     Latte::Corona *m_corona;
-    SchemesTracker *m_schemesTracker;
-    WindowsTracker *m_windowsTracker;
-
+    Tracker::Schemes *m_schemesTracker;
+    Tracker::Windows *m_windowsTracker;
 };
 
 }

@@ -20,6 +20,7 @@ add_subdirectory(shortcuts)
 add_subdirectory(view)
 add_subdirectory(view/settings)
 add_subdirectory(wm)
+add_subdirectory(wm/tracker)
 
 set(latte_dbusXML dbus/org.kde.LatteDock.xml)
 qt5_add_dbus_adaptor(lattedock-app_SRCS ${latte_dbusXML} lattecorona.h Latte::Corona lattedockadaptor)

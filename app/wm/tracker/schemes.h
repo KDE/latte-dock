@@ -20,7 +20,8 @@
 #ifndef SCHEMESTRACKER_H
 #define SCHEMESTRACKER_H
 
-#include "windowinfowrap.h"
+// local
+#include "../windowinfowrap.h"
 
 // Qt
 #include <QObject>
@@ -35,13 +36,14 @@ class SchemeColors;
 
 namespace Latte {
 namespace WindowSystem {
+namespace Tracker {
 
-class SchemesTracker : public QObject {
+class Schemes : public QObject {
     Q_OBJECT
 
 public:
-    SchemesTracker(AbstractWindowInterface *parent);
-    ~SchemesTracker() override;
+    Schemes(AbstractWindowInterface *parent);
+    ~Schemes() override;
 
     SchemeColors *schemeForWindow(WindowId wId);
     void setColorSchemeForWindow(WindowId wId, QString scheme);
@@ -56,12 +58,13 @@ private:
      AbstractWindowInterface *m_wm;
 
      //! scheme file and its loaded colors
-     QMap<QString, SchemeColors *> m_schemes;
+     QMap<QString, Latte::WindowSystem::SchemeColors *> m_schemes;
 
      //! window id and its corresponding scheme file
      QMap<WindowId, QString> m_windowScheme;
 };
 
+}
 }
 }
 

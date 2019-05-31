@@ -40,9 +40,10 @@
 #include "view/view.h"
 #include "wm/abstractwindowinterface.h"
 #include "wm/schemecolors.h"
-#include "wm/schemestracker.h"
 #include "wm/waylandinterface.h"
 #include "wm/xwindowinterface.h"
+#include "wm/tracker/schemes.h"
+#include "wm/tracker/windows.h"
 
 // Qt
 #include <QAction>

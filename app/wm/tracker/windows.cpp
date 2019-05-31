@@ -17,22 +17,23 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "windowstracker.h"
+#include "windows.h"
 
 // local
-#include "abstractwindowinterface.h"
-#include "schemecolors.h"
-#include "schemestracker.h"
-#include "../lattecorona.h"
-#include "../layouts/manager.h"
-#include "../view/view.h"
-#include "../view/positioner.h"
-#include "../../liblatte2/types.h"
+#include "schemes.h"
+#include "../abstractwindowinterface.h"
+#include "../schemecolors.h"
+#include "../../lattecorona.h"
+#include "../../layouts/manager.h"
+#include "../../view/view.h"
+#include "../../view/positioner.h"
+#include "../../../liblatte2/types.h"
 
 namespace Latte {
 namespace WindowSystem {
+namespace Tracker {
 
-WindowsTracker::WindowsTracker(AbstractWindowInterface *parent)
+Windows::Windows(AbstractWindowInterface *parent)
     : QObject(parent)
 {
     m_wm = parent;
@@ -40,13 +41,13 @@ WindowsTracker::WindowsTracker(AbstractWindowInterface *parent)
     init();
 }
 
-WindowsTracker::~WindowsTracker()
+Windows::~Windows()
 {
 }
 
-void WindowsTracker::init()
+void Windows::init()
 {
-    connect(m_wm->corona(), &Plasma::Corona::availableScreenRectChanged, this, &WindowsTracker::updateAvailableScreenGeometries);
+    connect(m_wm->corona(), &Plasma::Corona::availableScreenRectChanged, this, &Windows::updateAvailableScreenGeometries);
 
     connect(m_wm, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
         m_windows[wid] = m_wm->requestInfo(wid);
@@ -92,7 +93,7 @@ void WindowsTracker::init()
     });
 }
 
-void WindowsTracker::initViewHints(Latte::View *view)
+void Windows::initViewHints(Latte::View *view)
 {
     if (!m_views.contains(view)) {
         return;
@@ -107,7 +108,7 @@ void WindowsTracker::initViewHints(Latte::View *view)
     setTouchingWindowScheme(view, nullptr);
 }
 
-void WindowsTracker::addView(Latte::View *view)
+void Windows::addView(Latte::View *view)
 {
     if (m_views.contains(view)) {
         return;
@@ -120,7 +121,7 @@ void WindowsTracker::addView(Latte::View *view)
     updateHints(view);
 }
 
-void WindowsTracker::removeView(Latte::View *view)
+void Windows::removeView(Latte::View *view)
 {
     if (!m_views.contains(view)) {
         return;
@@ -131,7 +132,7 @@ void WindowsTracker::removeView(Latte::View *view)
 
 //! Views Properties And Hints
 
-bool WindowsTracker::enabled(Latte::View *view)
+bool Windows::enabled(Latte::View *view)
 {
     if (!m_views.contains(view)) {
         return false;
@@ -140,7 +141,7 @@ bool WindowsTracker::enabled(Latte::View *view)
     return m_views[view].enabled;
 }
 
-void WindowsTracker::setEnabled(Latte::View *view, const bool enabled)
+void Windows::setEnabled(Latte::View *view, const bool enabled)
 {
     if (!m_views.contains(view) || m_views[view].enabled == enabled) {
         return;
@@ -157,7 +158,7 @@ void WindowsTracker::setEnabled(Latte::View *view, const bool enabled)
     emit enabledChanged(view);
 }
 
-bool WindowsTracker::activeWindowMaximized(Latte::View *view) const
+bool Windows::activeWindowMaximized(Latte::View *view) const
 {
     if (!m_views.contains(view)) {
         return false;
@@ -166,7 +167,7 @@ bool WindowsTracker::activeWindowMaximized(Latte::View *view) const
     return m_views[view].activeWindowMaximized;
 }
 
-void WindowsTracker::setActiveWindowMaximized(Latte::View *view, bool activeMaximized)
+void Windows::setActiveWindowMaximized(Latte::View *view, bool activeMaximized)
 {
     if (!m_views.contains(view) || m_views[view].activeWindowMaximized == activeMaximized) {
         return;
@@ -176,7 +177,7 @@ void WindowsTracker::setActiveWindowMaximized(Latte::View *view, bool activeMaxi
     emit activeWindowMaximizedChanged(view);
 }
 
-bool WindowsTracker::activeWindowTouching(Latte::View *view) const
+bool Windows::activeWindowTouching(Latte::View *view) const
 {
     if (!m_views.contains(view)) {
         return false;
@@ -185,7 +186,7 @@ bool WindowsTracker::activeWindowTouching(Latte::View *view) const
     return m_views[view].activeWindowTouching;
 }
 
-void WindowsTracker::setActiveWindowTouching(Latte::View *view, bool activeTouching)
+void Windows::setActiveWindowTouching(Latte::View *view, bool activeTouching)
 {
     if (!m_views.contains(view) || m_views[view].activeWindowTouching == activeTouching) {
         return;
@@ -195,7 +196,7 @@ void WindowsTracker::setActiveWindowTouching(Latte::View *view, bool activeTouch
     emit activeWindowTouchingChanged(view);
 }
 
-bool WindowsTracker::existsWindowActive(Latte::View *view) const
+bool Windows::existsWindowActive(Latte::View *view) const
 {
     if (!m_views.contains(view)) {
         return false;
@@ -204,7 +205,7 @@ bool WindowsTracker::existsWindowActive(Latte::View *view) const
     return m_views[view].existsWindowActive;
 }
 
-void WindowsTracker::setExistsWindowActive(Latte::View *view, bool windowActive)
+void Windows::setExistsWindowActive(Latte::View *view, bool windowActive)
 {
     if (!m_views.contains(view) || m_views[view].existsWindowActive == windowActive) {
         return;
@@ -214,7 +215,7 @@ void WindowsTracker::setExistsWindowActive(Latte::View *view, bool windowActive)
     emit existsWindowActiveChanged(view);
 }
 
-bool WindowsTracker::existsWindowMaximized(Latte::View *view) const
+bool Windows::existsWindowMaximized(Latte::View *view) const
 {
     if (!m_views.contains(view)) {
         return false;
@@ -223,7 +224,7 @@ bool WindowsTracker::existsWindowMaximized(Latte::View *view) const
     return m_views[view].existsWindowMaximized;
 }
 
-void WindowsTracker::setExistsWindowMaximized(Latte::View *view, bool windowMaximized)
+void Windows::setExistsWindowMaximized(Latte::View *view, bool windowMaximized)
 {
     if (!m_views.contains(view) || m_views[view].existsWindowMaximized == windowMaximized) {
         return;
@@ -233,7 +234,7 @@ void WindowsTracker::setExistsWindowMaximized(Latte::View *view, bool windowMaxi
     emit existsWindowMaximizedChanged(view);
 }
 
-bool WindowsTracker::existsWindowTouching(Latte::View *view) const
+bool Windows::existsWindowTouching(Latte::View *view) const
 {
     if (!m_views.contains(view)) {
         return false;
@@ -242,7 +243,7 @@ bool WindowsTracker::existsWindowTouching(Latte::View *view) const
     return m_views[view].existsWindowTouching;
 }
 
-void WindowsTracker::setExistsWindowTouching(Latte::View *view, bool windowTouching)
+void Windows::setExistsWindowTouching(Latte::View *view, bool windowTouching)
 {
     if (!m_views.contains(view) || m_views[view].existsWindowTouching == windowTouching) {
         return;
@@ -252,7 +253,7 @@ void WindowsTracker::setExistsWindowTouching(Latte::View *view, bool windowTouch
     emit existsWindowTouchingChanged(view);
 }
 
-SchemeColors *WindowsTracker::activeWindowScheme(Latte::View *view) const
+SchemeColors *Windows::activeWindowScheme(Latte::View *view) const
 {
     if (!m_views.contains(view)) {
         return nullptr;
@@ -261,7 +262,7 @@ SchemeColors *WindowsTracker::activeWindowScheme(Latte::View *view) const
     return m_views[view].activeWindowScheme;
 }
 
-void WindowsTracker::setActiveWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme)
+void Windows::setActiveWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme)
 {
     if (!m_views.contains(view) || m_views[view].activeWindowScheme == scheme) {
         return;
@@ -271,7 +272,7 @@ void WindowsTracker::setActiveWindowScheme(Latte::View *view, WindowSystem::Sche
     emit activeWindowSchemeChanged(view);
 }
 
-SchemeColors *WindowsTracker::touchingWindowScheme(Latte::View *view) const
+SchemeColors *Windows::touchingWindowScheme(Latte::View *view) const
 {
     if (!m_views.contains(view)) {
         return nullptr;
@@ -280,7 +281,7 @@ SchemeColors *WindowsTracker::touchingWindowScheme(Latte::View *view) const
     return m_views[view].touchingWindowScheme;
 }
 
-void WindowsTracker::setTouchingWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme)
+void Windows::setTouchingWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme)
 {
     if (!m_views.contains(view) || m_views[view].touchingWindowScheme == scheme) {
         return;
@@ -290,7 +291,7 @@ void WindowsTracker::setTouchingWindowScheme(Latte::View *view, WindowSystem::Sc
     emit touchingWindowSchemeChanged(view);
 }
 
-WindowInfoWrap WindowsTracker::lastActiveWindowInfo(Latte::View *view)
+WindowInfoWrap Windows::lastActiveWindowInfo(Latte::View *view)
 {
     WindowInfoWrap info;
     if (!m_views.contains(view)) {
@@ -307,28 +308,28 @@ WindowInfoWrap WindowsTracker::lastActiveWindowInfo(Latte::View *view)
 
 //! Windows Criteria Functions
 
-bool WindowsTracker::inCurrentDesktopActivity(const WindowInfoWrap &winfo)
+bool Windows::inCurrentDesktopActivity(const WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid()));
 }
 
-bool WindowsTracker::intersects(Latte::View *view, const WindowInfoWrap &winfo)
+bool Windows::intersects(Latte::View *view, const WindowInfoWrap &winfo)
 {
     return (!winfo.isMinimized() && !winfo.isShaded() && winfo.geometry().intersects(view->absoluteGeometry()));
 }
 
-bool WindowsTracker::isActive(const WindowInfoWrap &winfo)
+bool Windows::isActive(const WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized());
 }
 
-bool WindowsTracker::isActiveInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
+bool Windows::isActiveInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized()
             && m_views[view].availableScreenGeometry.contains(winfo.geometry().center()));
 }
 
-bool WindowsTracker::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
+bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
 {
     auto viewIntersectsMaxVert = [&]() noexcept -> bool {
         return ((winfo.isMaxVert()
@@ -349,12 +350,12 @@ bool WindowsTracker::isMaximizedInViewScreen(Latte::View *view, const WindowInfo
             && m_views[view].availableScreenGeometry.contains(winfo.geometry().center()));
 }
 
-bool WindowsTracker::isTouchingView(Latte::View *view, const WindowSystem::WindowInfoWrap &winfo)
+bool Windows::isTouchingView(Latte::View *view, const WindowSystem::WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && intersects(view, winfo));
 }
 
-bool WindowsTracker::isTouchingViewEdge(Latte::View *view, const WindowInfoWrap &winfo)
+bool Windows::isTouchingViewEdge(Latte::View *view, const WindowInfoWrap &winfo)
 {
     if (winfo.isValid() && !winfo.isMinimized()) {
         bool touchingViewEdge{false};
@@ -382,7 +383,7 @@ bool WindowsTracker::isTouchingViewEdge(Latte::View *view, const WindowInfoWrap 
     return false;
 }
 
-void WindowsTracker::cleanupFaultyWindows()
+void Windows::cleanupFaultyWindows()
 {
     for (const auto &key : m_windows.keys()) {
         auto winfo = m_windows[key];
@@ -396,7 +397,7 @@ void WindowsTracker::cleanupFaultyWindows()
 }
 
 
-void WindowsTracker::updateAvailableScreenGeometries()
+void Windows::updateAvailableScreenGeometries()
 {
     for (const auto view : m_views.keys()) {
         if (m_views[view].enabled) {
@@ -412,7 +413,7 @@ void WindowsTracker::updateAvailableScreenGeometries()
     }
 }
 
-void WindowsTracker::updateViewsHints()
+void Windows::updateViewsHints()
 {
     for (const auto view : m_views.keys()) {
         if (m_views[view].enabled) {
@@ -421,7 +422,7 @@ void WindowsTracker::updateViewsHints()
     }
 }
 
-void WindowsTracker::updateHints(Latte::View *view)
+void Windows::updateHints(Latte::View *view)
 {
     if (!m_views.contains(view)) {
         return;
@@ -527,6 +528,6 @@ void WindowsTracker::updateHints(Latte::View *view)
 
 }
 
-
+}
 }
 }

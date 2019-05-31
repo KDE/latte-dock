@@ -21,8 +21,8 @@
 #include "abstractwindowinterface.h"
 
 // local
-#include "schemestracker.h"
-#include "windowstracker.h"
+#include "tracker/schemes.h"
+#include "tracker/windows.h"
 #include "../lattecorona.h"
 
 
@@ -33,8 +33,8 @@ AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
     : QObject(parent)
 {
     m_corona = qobject_cast<Latte::Corona *>(parent);
-    m_windowsTracker = new WindowsTracker(this);
-    m_schemesTracker = new SchemesTracker(this);
+    m_windowsTracker = new Tracker::Windows(this);
+    m_schemesTracker = new Tracker::Schemes(this);
 
     m_windowWaitingTimer.setInterval(150);
     m_windowWaitingTimer.setSingleShot(true);
@@ -63,12 +63,12 @@ Latte::Corona *AbstractWindowInterface::corona()
     return m_corona;
 }
 
-SchemesTracker *AbstractWindowInterface::schemesTracker()
+Tracker::Schemes *AbstractWindowInterface::schemesTracker()
 {
     return m_schemesTracker;
 }
 
-WindowsTracker *AbstractWindowInterface::windowsTracker()
+Tracker::Windows *AbstractWindowInterface::windowsTracker()
 {
     return m_windowsTracker;
 }

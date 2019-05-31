@@ -21,7 +21,7 @@
 #define WINDOWSYSTEMWINDOWSTRACKER_H
 
 // local
-#include "windowinfowrap.h"
+#include "../windowinfowrap.h"
 
 // Qt
 #include <QObject>
@@ -39,6 +39,7 @@ class SchemeColors;
 
 namespace Latte {
 namespace WindowSystem {
+namespace Tracker {
 
 struct ViewHints {
     bool enabled{false};
@@ -53,12 +54,12 @@ struct ViewHints {
     SchemeColors *touchingWindowScheme{nullptr};
 };
 
-class WindowsTracker : public QObject {
+class Windows : public QObject {
     Q_OBJECT
 
 public:
-    WindowsTracker(AbstractWindowInterface *parent);
-    ~WindowsTracker() override;
+    Windows(AbstractWindowInterface *parent);
+    ~Windows() override;
 
     void addView(Latte::View *view);
     void removeView(Latte::View *view);
@@ -119,6 +120,7 @@ private:
 
 };
 
+}
 }
 }
 
