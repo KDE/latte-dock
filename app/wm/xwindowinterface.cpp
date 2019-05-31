@@ -360,7 +360,7 @@ QUrl XWindowInterface::windowUrl(WindowId wid) const
 bool XWindowInterface::windowCanBeDragged(WindowId wid) const
 {
     WindowInfoWrap winfo = requestInfo(wid);
-    return (winfo.isValid() && !winfo.isMinimized() && !winfo.isPlasmaDesktop() && !winfo.hasSkipTaskbar());
+    return (winfo.isValid() && !winfo.isMinimized() && !winfo.isPlasmaDesktop());
 }
 
 void XWindowInterface::releaseMouseEventFor(WindowId wid) const

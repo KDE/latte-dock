@@ -441,7 +441,7 @@ WindowId WaylandInterface::winIdFor(QString appId, QRect geometry) const
 bool WaylandInterface::windowCanBeDragged(WindowId wid) const
 {
     WindowInfoWrap winfo = requestInfo(wid);
-    return (winfo.isValid() && !winfo.isMinimized() && !winfo.isPlasmaDesktop() && !winfo.hasSkipTaskbar());
+    return (winfo.isValid() && !winfo.isMinimized() && !winfo.isPlasmaDesktop());
 }
 
 void WaylandInterface::releaseMouseEventFor(WindowId wid) const
