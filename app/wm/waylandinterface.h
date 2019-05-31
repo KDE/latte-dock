@@ -85,6 +85,7 @@ public:
     bool windowCanBeDragged(WindowId wid) const;
     QIcon iconFor(WindowId wid) const;
     WindowId winIdFor(QString appId, QRect geometry) const override;
+    AppData appDataFor(WindowId wid) const override;
 
     void setEdgeStateFor(QWindow *view, bool active) const override;
 

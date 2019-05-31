@@ -23,6 +23,7 @@
 
 // local
 #include "schemecolors.h"
+#include "tasktools.h"
 #include "windowinfowrap.h"
 #include "../liblatte2/types.h"
 #include "../liblatte2/extras.h"
@@ -43,6 +44,7 @@
 #include <QTimer>
 
 // KDE
+#include <KSharedConfig>
 #include <KActivities/Consumer>
 
 // Plasma
@@ -104,6 +106,7 @@ public:
     virtual bool windowCanBeDragged(WindowId wid) const = 0;
     virtual QIcon iconFor(WindowId wid) const = 0;
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;
+    virtual AppData appDataFor(WindowId wid) const = 0;
 
     Latte::Corona *corona();
     Tracker::Schemes *schemesTracker();
@@ -125,6 +128,9 @@ protected:
     //! can delay the batch sending of signals for the same window
     WindowId m_windowChangedWaiting;
     QTimer m_windowWaitingTimer;
+
+    //! Plasma taskmanager rules ile
+    KSharedConfig::Ptr rulesConfig;
 
     void considerWindowChanged(WindowId wid);
 

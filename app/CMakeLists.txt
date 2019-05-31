@@ -49,6 +49,7 @@ target_link_libraries(latte-dock
     KF5::QuickAddons    
     KF5::Plasma
     KF5::PlasmaQuick    
+    KF5::ProcessCore
     KF5::WaylandClient
     KF5::XmlGui    
 )

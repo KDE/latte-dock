@@ -32,6 +32,7 @@
 #include <KWindowInfo>
 #include <KWindowEffects>
 
+
 namespace Latte {
 namespace WindowSystem {
 
@@ -67,7 +68,8 @@ public:
     void requestMoveWindow(WindowId wid, QPoint from) const override;
     bool windowCanBeDragged(WindowId wid) const override;
     QIcon iconFor(WindowId wid) const override;
-    WindowId winIdFor(QString appId, QRect geometry) const override;
+    WindowId winIdFor(QString appId, QRect geometry) const override;   
+    AppData appDataFor(WindowId wid) const override;
 
     void setEdgeStateFor(QWindow *view, bool active) const override;
 
@@ -75,6 +77,9 @@ private:
     bool isValidWindow(const KWindowInfo &winfo) const;
     void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
 
+    QUrl windowUrl(WindowId wid) const;
+
+private:
     WindowId m_desktopId;
 };
 

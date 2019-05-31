@@ -67,6 +67,9 @@ public:
     SchemeColors *touchingWindowScheme(Latte::View *view) const;
     LastActiveWindow *lastActiveWindow(Latte::View *view);
 
+    QIcon iconFor(WindowId wid);
+    QString appNameFor(WindowId wid);
+
     AbstractWindowInterface *wm();
 
 signals:

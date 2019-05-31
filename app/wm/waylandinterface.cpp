@@ -389,6 +389,14 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
     return winfoWrap;
 }
 
+AppData WaylandInterface::appDataFor(WindowId wid) const
+{
+    auto window = windowFor(wid);
+
+    const AppData &data = appDataFromUrl(windowUrlFromMetadata(window->appId(),
+                    window->pid(), rulesConfig));
+}
+
 KWayland::Client::PlasmaWindow *WaylandInterface::windowFor(WindowId wid) const
 {
     auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {

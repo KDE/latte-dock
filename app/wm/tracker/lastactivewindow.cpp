@@ -21,7 +21,9 @@
 
 // local
 #include "trackedinfo.h"
+#include "windows.h"
 #include "../abstractwindowinterface.h"
+#include "../tasktools.h"
 
 // Qt
 #include <QDebug>
@@ -33,27 +35,13 @@ namespace Tracker {
 
 LastActiveWindow::LastActiveWindow(TrackedInfo *parent)
     : QObject(parent),
+      m_windowsTracker(parent->wm()->windowsTracker()),
       m_wm(parent->wm())
 {
 }
 
 LastActiveWindow::~LastActiveWindow()
 {
-}
-
-QString LastActiveWindow::display() const
-{
-    return m_display;
-}
-
-void LastActiveWindow::setDisplay(QString display)
-{
-    if (m_display == display) {
-        return;
-    }
-
-    m_display = display;
-    emit displayChanged();
 }
 
 bool LastActiveWindow::isActive() const
@@ -176,6 +164,36 @@ void LastActiveWindow::setGeometry(QRect geometry)
     emit geometryChanged();
 }
 
+QString LastActiveWindow::appName() const
+{
+    return m_appName;
+}
+
+void LastActiveWindow::setAppName(QString appName)
+{
+    if (m_appName == appName) {
+        return;
+    }
+
+    m_appName = appName;
+    emit appNameChanged();
+}
+
+QString LastActiveWindow::display() const
+{
+    return m_display;
+}
+
+void LastActiveWindow::setDisplay(QString display)
+{
+    if (m_display == display) {
+        return;
+    }
+
+    m_display = display;
+    emit displayChanged();
+}
+
 QIcon LastActiveWindow::icon() const
 {
     return m_icon;
@@ -204,18 +222,28 @@ void LastActiveWindow::setWinId(QVariant winId)
 
 void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 {
-    if (m_winId != info.wid()) {
-        setIcon(m_wm->iconFor(info.wid()));
-    }
-
     setWinId(info.wid());
 
     setActive(info.isActive());
     setIsMinimized(info.isMinimized());
     setIsMaximized(info.isMaxVert() || info.isMaxHoriz());
 
+    setAppName(info.appName());
     setDisplay(info.display());
     setGeometry(info.geometry());
+
+    if (info.appName().isEmpty()) {
+        setAppName(m_windowsTracker->appNameFor(info.wid()));
+    } else {
+        setAppName(info.appName());
+    }
+
+    if (info.icon().isNull()) {
+        setIcon(m_windowsTracker->iconFor(info.wid()));
+    } else {
+        setIcon(info.icon());
+    }
+
 }
 
 }

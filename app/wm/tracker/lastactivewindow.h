@@ -32,6 +32,7 @@ namespace WindowSystem {
 class AbstractWindowInterface;
 namespace Tracker {
 class TrackedInfo;
+class Windows;
 }
 }
 }
@@ -53,6 +54,7 @@ class LastActiveWindow : public QObject {
     Q_PROPERTY(bool isShaded READ isShaded NOTIFY isShadedChanged)
     Q_PROPERTY(bool hasSkipTaskbar READ hasSkipTaskbar NOTIFY hasSkipTaskbarChanged)
 
+    Q_PROPERTY(QString appName READ appName NOTIFY appNameChanged)
     Q_PROPERTY(QString display READ display NOTIFY displayChanged)
     Q_PROPERTY(QRect geometry READ geometry NOTIFY geometryChanged)
 
@@ -72,7 +74,9 @@ public:
     bool isShaded() const;
     bool hasSkipTaskbar() const;
 
+    QString appName() const;
     QString display() const;
+
     QRect geometry() const;
     QIcon icon() const;
 
@@ -90,7 +94,9 @@ signals:
     void isShadedChanged();
     void hasSkipTaskbarChanged();
 
+    void appNameChanged();
     void displayChanged();
+
     void geometryChanged();
     void winIdChanged();
 
@@ -103,9 +109,10 @@ private:
     void setIsShaded(bool shaded);
     void setHasSkipTaskbar(bool skip);
 
+    void setAppName(QString appName);
     void setDisplay(QString display);
-    void setGeometry(QRect geometry);
 
+    void setGeometry(QRect geometry);
     void setIcon(QIcon icon);
 
     void setWinId(QVariant winId);
@@ -119,13 +126,16 @@ private:
     bool m_isShaded{false};
     bool m_hasSkipTaskbar{false};
 
+    QString m_appName;
     QString m_display;
+
     QRect m_geometry;
     QIcon m_icon;
 
     QVariant m_winId;
 
     AbstractWindowInterface *m_wm{nullptr};
+    Tracker::Windows *m_windowsTracker{nullptr};
 
 };
 

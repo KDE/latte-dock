@@ -21,6 +21,7 @@
 #include "xwindowinterface.h"
 
 // local
+#include "tasktools.h"
 #include "view/screenedgeghostwindow.h"
 #include "view/view.h"
 #include "../liblatte2/extras.h"
@@ -31,6 +32,7 @@
 #include <QtX11Extras/QX11Info>
 
 // KDE
+#include <KDesktopFile>
 #include <KWindowSystem>
 #include <KWindowInfo>
 #include <KIconThemes/KIconLoader>
@@ -46,6 +48,7 @@ XWindowInterface::XWindowInterface(QObject *parent)
     : AbstractWindowInterface(parent)
 {
     m_activities = new KActivities::Consumer(this);
+
     connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AbstractWindowInterface::activeWindowChanged);
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &AbstractWindowInterface::windowAdded);
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &AbstractWindowInterface::windowRemoved);
@@ -312,6 +315,47 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 
     return winfoWrap;
 }
+
+AppData XWindowInterface::appDataFor(WindowId wid) const
+{
+    return appDataFromUrl(windowUrl(wid));
+}
+
+QUrl XWindowInterface::windowUrl(WindowId wid) const
+{
+    const KWindowInfo info(wid.value<WId>(), 0, NET::WM2WindowClass | NET::WM2DesktopFileName);
+
+    QString desktopFile = QString::fromUtf8(info.desktopFileName());
+
+    if (!desktopFile.isEmpty()) {
+        KService::Ptr service = KService::serviceByStorageId(desktopFile);
+
+        if (service) {
+            const QString &menuId = service->menuId();
+
+            // applications: URLs are used to refer to applications by their KService::menuId
+            // (i.e. .desktop file name) rather than the absolute path to a .desktop file.
+            if (!menuId.isEmpty()) {
+                return QUrl(QStringLiteral("applications:") + menuId);
+            }
+
+            return QUrl::fromLocalFile(service->entryPath());
+        }
+
+        if (!desktopFile.endsWith(QLatin1String(".desktop"))) {
+            desktopFile.append(QLatin1String(".desktop"));
+        }
+
+        if (KDesktopFile::isDesktopFile(desktopFile) && QFile::exists(desktopFile)) {
+            return QUrl::fromLocalFile(desktopFile);
+        }
+    }
+
+    return windowUrlFromMetadata(info.windowClassClass(),
+        NETWinInfo(QX11Info::connection(), wid.value<WId>(), QX11Info::appRootWindow(), NET::WMPid, NET::Properties2()).pid(),
+        rulesConfig, info.windowClassName());
+}
+
 
 bool XWindowInterface::windowCanBeDragged(WindowId wid) const
 {

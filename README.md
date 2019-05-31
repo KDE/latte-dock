@@ -47,6 +47,8 @@ We recommend that you use at least **Plasma 5.12.0**
  KF5GlobalAccel >= 5.38.0
  KF5Crash >= 5.38.0
 
+ KSysGuard
+
  For X11 support:
     KF5WindowSystem >= 5.38.0
     Qt5X11Extras >= 5.7.0

@@ -316,6 +316,44 @@ LastActiveWindow *Windows::lastActiveWindow(Latte::View *view)
     return m_views[view]->lastActiveWindow();
 }
 
+QIcon Windows::iconFor(WindowId wid)
+{
+    if (!m_windows.contains(wid)) {
+        return QIcon();
+    }
+
+    if (m_windows[wid].icon().isNull()) {
+        AppData data = m_wm->appDataFor(wid);
+
+        QIcon icon = data.icon;
+
+        if (icon.isNull()) {
+            icon = m_wm->iconFor(wid);
+        }
+
+        m_windows[wid].setIcon(icon);
+        return icon;
+    }
+
+    return m_windows[wid].icon();
+}
+
+QString Windows::appNameFor(WindowId wid)
+{
+    if (!m_windows.contains(wid)) {
+        return QString();
+    }
+
+    if (m_windows[wid].appName().isEmpty()) {
+        AppData data = m_wm->appDataFor(wid);
+
+        m_windows[wid].setAppName(data.name);
+        return data.name;
+    }
+
+    return m_windows[wid].appName();
+}
+
 //! Windows Criteria Functions
 
 bool Windows::inCurrentDesktopActivity(const WindowInfoWrap &winfo)
