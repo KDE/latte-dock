@@ -316,6 +316,15 @@ LastActiveWindow *Windows::lastActiveWindow(Latte::View *view)
     return m_views[view]->lastActiveWindow();
 }
 
+bool Windows::isValidFor(WindowId wid) const
+{
+    if (!m_windows.contains(wid)) {
+        return false;
+    }
+
+    return m_windows[wid].isValid();
+}
+
 QIcon Windows::iconFor(WindowId wid)
 {
     if (!m_windows.contains(wid)) {

@@ -70,7 +70,7 @@ Tracker::Schemes *AbstractWindowInterface::schemesTracker()
     return m_schemesTracker;
 }
 
-Tracker::Windows *AbstractWindowInterface::windowsTracker()
+Tracker::Windows *AbstractWindowInterface::windowsTracker() const
 {
     return m_windowsTracker;
 }

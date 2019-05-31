@@ -25,6 +25,7 @@
 #include "schemecolors.h"
 #include "tasktools.h"
 #include "windowinfowrap.h"
+#include "tracker/windows.h"
 #include "../liblatte2/types.h"
 #include "../liblatte2/extras.h"
 
@@ -110,7 +111,7 @@ public:
 
     Latte::Corona *corona();
     Tracker::Schemes *schemesTracker();
-    Tracker::Windows *windowsTracker();
+    Tracker::Windows *windowsTracker() const;
 
 signals:
     void activeWindowChanged(WindowId wid);

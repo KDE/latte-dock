@@ -449,6 +449,10 @@ void XWindowInterface::requestToggleMaximized(WindowId wid) const
 
 bool XWindowInterface::isValidWindow(WindowId wid) const
 {
+    if (windowsTracker()->isValidFor(wid)) {
+        return true;
+    }
+
     const KWindowInfo winfo{wid.value<WId>(), NET::WMWindowType};
 
     return isValidWindow(winfo);
@@ -456,6 +460,10 @@ bool XWindowInterface::isValidWindow(WindowId wid) const
 
 bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
 {
+    if (windowsTracker()->isValidFor(winfo.win())) {
+        return true;
+    }
+
     constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::PopupMenuMask | NET::NormalMask | NET::DialogMask;
     NET::WindowType winType = winfo.windowType(types);
     const auto winClass = KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName();
