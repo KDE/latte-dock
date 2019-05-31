@@ -282,6 +282,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
     const KWindowInfo winfo{wid.value<WId>(),NET::WMFrameExtents
                             | NET::WMWindowType
                             | NET::WMGeometry
+                            | NET::WMDesktop
                             | NET::WMState
                             | NET::WMName
                             | NET::WMVisibleName};
@@ -297,6 +298,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsMaxHoriz(winfo.hasState(NET::MaxHoriz));
         winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
         winfoWrap.setIsShaded(winfo.hasState(NET::Shaded));
+        winfoWrap.setIsOnAllDesktops(winfo.onAllDesktops());
         winfoWrap.setGeometry(winfo.frameGeometry());
         winfoWrap.setIsKeepAbove(winfo.hasState(NET::KeepAbove));
         winfoWrap.setHasSkipTaskbar(winfo.hasState(NET::SkipTaskbar));

@@ -332,33 +332,7 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
 
     if (!w) return {};
 
-    WindowInfoWrap winfoWrap;
-
-    winfoWrap.setIsValid(true);
-
-    winfoWrap.setWid(w->internalId());
-
-    winfoWrap.setIsActive(w->isActive());
-
-    winfoWrap.setIsMinimized(w->isMinimized());
-
-    winfoWrap.setIsMaxVert(w->isMaximized());
-
-    winfoWrap.setIsMaxHoriz(w->isMaximized());
-
-    winfoWrap.setIsFullscreen(w->isFullscreen());
-
-    winfoWrap.setIsShaded(w->isShaded());
-
-    winfoWrap.setGeometry(w->geometry());
-
-    winfoWrap.setIsKeepAbove(w->isKeepAbove());
-
-    winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
-
-    winfoWrap.setDisplay(w->title());
-
-    return winfoWrap;
+    return  requestInfo(w->internalId());
 }
 
 bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
@@ -403,8 +377,10 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
             winfoWrap.setIsMaxHoriz(w->isMaximized());
             winfoWrap.setIsFullscreen(w->isFullscreen());
             winfoWrap.setIsShaded(w->isShaded());
+            winfoWrap.setIsOnAllDesktops(w->isOnAllDesktops());
             winfoWrap.setGeometry(w->geometry());
             winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
+            winfoWrap.setDisplay(w->title());
         }
     } else {
         return {};
