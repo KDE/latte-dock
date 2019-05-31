@@ -447,10 +447,17 @@ void XWindowInterface::requestToggleMaximized(WindowId wid) const
     }
 }
 
+bool XWindowInterface::isValidWindow(WindowId wid) const
+{
+    const KWindowInfo winfo{wid.value<WId>(), NET::WMWindowType};
+
+    return isValidWindow(winfo);
+}
+
 bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
 {
-    constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::NormalMask;
-    auto winType = winfo.windowType(types);
+    constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::PopupMenuMask | NET::NormalMask | NET::DialogMask;
+    NET::WindowType winType = winfo.windowType(types);
     const auto winClass = KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName();
 
     //! ignore latte related windows from tracking
@@ -469,7 +476,16 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
         }
     }
 
-    return !((winType & NET::Menu) || (winType & NET::Dock) || (winType & NET::Splash));
+    bool isMenu = ((winType & NET::Menu) == true);
+    bool isDock = ((winType & NET::Dock) == true);
+    bool isPopup = ((winType & NET::PopupMenu) == true);
+    bool isSplash = ((winType & NET::Splash) == true);
+
+    //! GTK2+ dialogs case e.g. inkscape, gimp2, etc...
+    //! are both Popups and Splash types, this is why
+    //! we can not black list them here
+
+    return !(isMenu || isDock);
 }
 
 void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
@@ -521,6 +537,12 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
         } else {
             return;
         }
+    }
+
+    //! ignore windows that do not respect normal windows types
+    if (!isValidWindow(wid)) {
+        qDebug() << "rejected window...";
+        return;
     }
 
     considerWindowChanged(wid);

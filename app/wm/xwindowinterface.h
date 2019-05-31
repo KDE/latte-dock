@@ -74,6 +74,7 @@ public:
     void setEdgeStateFor(QWindow *view, bool active) const override;
 
 private:
+    bool isValidWindow(WindowId wid) const;
     bool isValidWindow(const KWindowInfo &winfo) const;
     void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
 

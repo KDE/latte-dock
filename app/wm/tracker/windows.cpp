@@ -573,7 +573,6 @@ void Windows::updateHints(Latte::View *view)
     //qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
     //qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
     //         << " , existsWindowTouching:"<<existsWindowTouching(view);
-
 }
 
 }
