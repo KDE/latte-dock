@@ -34,25 +34,16 @@ class View;
 namespace WindowSystem {
 class AbstractWindowInterface;
 class SchemeColors;
+namespace Tracker {
+class LastActiveWindow;
+class TrackedInfo;
+}
 }
 }
 
 namespace Latte {
 namespace WindowSystem {
 namespace Tracker {
-
-struct ViewHints {
-    bool enabled{false};
-    bool activeWindowMaximized{false};
-    bool activeWindowTouching{false};
-    bool existsWindowActive{false};
-    bool existsWindowMaximized{false};
-    bool existsWindowTouching{false};
-    QRect availableScreenGeometry;
-    WindowId lastActiveWindow;
-    SchemeColors *activeWindowScheme{nullptr};
-    SchemeColors *touchingWindowScheme{nullptr};
-};
 
 class Windows : public QObject {
     Q_OBJECT
@@ -74,7 +65,7 @@ public:
     bool existsWindowTouching(Latte::View *view) const;
     SchemeColors *activeWindowScheme(Latte::View *view) const;
     SchemeColors *touchingWindowScheme(Latte::View *view) const;
-    WindowInfoWrap lastActiveWindowInfo(Latte::View *view);
+    LastActiveWindow *lastActiveWindow(Latte::View *view);
 
 signals:
     void enabledChanged(const Latte::View *view);
@@ -115,7 +106,7 @@ private:
 
 private:
     AbstractWindowInterface *m_wm;
-    QHash<Latte::View *, ViewHints> m_views;
+    QHash<Latte::View *, TrackedInfo *> m_views;
     QMap<WindowId, WindowInfoWrap > m_windows;
 
 };

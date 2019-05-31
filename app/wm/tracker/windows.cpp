@@ -20,7 +20,9 @@
 #include "windows.h"
 
 // local
+#include "lastactivewindow.h"
 #include "schemes.h"
+#include "trackedinfo.h"
 #include "../abstractwindowinterface.h"
 #include "../schemecolors.h"
 #include "../../lattecorona.h"
@@ -43,6 +45,13 @@ Windows::Windows(AbstractWindowInterface *parent)
 
 Windows::~Windows()
 {
+    //! clear all the m_views tracking information
+    for (QHash<Latte::View *, TrackedInfo *>::iterator i=m_views.begin(); i!=m_views.end(); ++i) {
+        i.value()->deleteLater();
+        m_views[i.key()] = nullptr;
+    }
+
+    m_views.clear();
 }
 
 void Windows::init()
@@ -68,9 +77,10 @@ void Windows::init()
 
     connect(m_wm, &AbstractWindowInterface::activeWindowChanged, this, [&](WindowId wid) {
         for (const auto view : m_views.keys()) {
-            WindowId lastWinId = m_views[view].lastActiveWindow;
+            WindowId lastWinId = m_views[view]->lastActiveWindow()->winId();
             if (m_windows.contains(lastWinId)) {
                 m_windows[lastWinId] = m_wm->requestInfo(lastWinId);
+                m_views[view]->lastActiveWindow()->setInformation(m_windows[lastWinId]);
             }
         }
 
@@ -114,8 +124,7 @@ void Windows::addView(Latte::View *view)
         return;
     }
 
-    ViewHints hints;
-    m_views[view] = hints;
+    m_views[view] = new TrackedInfo(this);
 
     updateAvailableScreenGeometries();
     updateHints(view);
@@ -127,6 +136,7 @@ void Windows::removeView(Latte::View *view)
         return;
     }
 
+    m_views[view]->deleteLater();
     m_views.remove(view);
 }
 
@@ -138,16 +148,16 @@ bool Windows::enabled(Latte::View *view)
         return false;
     }
 
-    return m_views[view].enabled;
+    return m_views[view]->enabled();
 }
 
 void Windows::setEnabled(Latte::View *view, const bool enabled)
 {
-    if (!m_views.contains(view) || m_views[view].enabled == enabled) {
+    if (!m_views.contains(view) || m_views[view]->enabled() == enabled) {
         return;
     }
 
-    m_views[view].enabled = enabled;
+    m_views[view]->setEnabled(enabled);
 
     if (enabled) {
         updateHints(view);
@@ -164,16 +174,16 @@ bool Windows::activeWindowMaximized(Latte::View *view) const
         return false;
     }
 
-    return m_views[view].activeWindowMaximized;
+    return m_views[view]->activeWindowMaximized();
 }
 
 void Windows::setActiveWindowMaximized(Latte::View *view, bool activeMaximized)
 {
-    if (!m_views.contains(view) || m_views[view].activeWindowMaximized == activeMaximized) {
+    if (!m_views.contains(view) || m_views[view]->activeWindowMaximized() == activeMaximized) {
         return;
     }
 
-    m_views[view].activeWindowMaximized = activeMaximized;
+    m_views[view]->setActiveWindowMaximized(activeMaximized);
     emit activeWindowMaximizedChanged(view);
 }
 
@@ -183,16 +193,16 @@ bool Windows::activeWindowTouching(Latte::View *view) const
         return false;
     }
 
-    return m_views[view].activeWindowTouching;
+    return m_views[view]->activeWindowTouching();
 }
 
 void Windows::setActiveWindowTouching(Latte::View *view, bool activeTouching)
 {
-    if (!m_views.contains(view) || m_views[view].activeWindowTouching == activeTouching) {
+    if (!m_views.contains(view) || m_views[view]->activeWindowTouching() == activeTouching) {
         return;
     }
 
-    m_views[view].activeWindowTouching = activeTouching;
+    m_views[view]->setActiveWindowTouching(activeTouching);
     emit activeWindowTouchingChanged(view);
 }
 
@@ -202,16 +212,16 @@ bool Windows::existsWindowActive(Latte::View *view) const
         return false;
     }
 
-    return m_views[view].existsWindowActive;
+    return m_views[view]->existsWindowActive();
 }
 
 void Windows::setExistsWindowActive(Latte::View *view, bool windowActive)
 {
-    if (!m_views.contains(view) || m_views[view].existsWindowActive == windowActive) {
+    if (!m_views.contains(view) || m_views[view]->existsWindowActive() == windowActive) {
         return;
     }
 
-    m_views[view].existsWindowActive = windowActive;
+    m_views[view]->setExistsWindowActive(windowActive);
     emit existsWindowActiveChanged(view);
 }
 
@@ -221,16 +231,16 @@ bool Windows::existsWindowMaximized(Latte::View *view) const
         return false;
     }
 
-    return m_views[view].existsWindowMaximized;
+    return m_views[view]->existsWindowMaximized();
 }
 
 void Windows::setExistsWindowMaximized(Latte::View *view, bool windowMaximized)
 {
-    if (!m_views.contains(view) || m_views[view].existsWindowMaximized == windowMaximized) {
+    if (!m_views.contains(view) || m_views[view]->existsWindowMaximized() == windowMaximized) {
         return;
     }
 
-    m_views[view].existsWindowMaximized = windowMaximized;
+    m_views[view]->setExistsWindowMaximized(windowMaximized);
     emit existsWindowMaximizedChanged(view);
 }
 
@@ -240,16 +250,16 @@ bool Windows::existsWindowTouching(Latte::View *view) const
         return false;
     }
 
-    return m_views[view].existsWindowTouching;
+    return m_views[view]->existsWindowTouching();
 }
 
 void Windows::setExistsWindowTouching(Latte::View *view, bool windowTouching)
 {
-    if (!m_views.contains(view) || m_views[view].existsWindowTouching == windowTouching) {
+    if (!m_views.contains(view) || m_views[view]->existsWindowTouching() == windowTouching) {
         return;
     }
 
-    m_views[view].existsWindowTouching = windowTouching;
+    m_views[view]->setExistsWindowTouching(windowTouching);
     emit existsWindowTouchingChanged(view);
 }
 
@@ -259,16 +269,16 @@ SchemeColors *Windows::activeWindowScheme(Latte::View *view) const
         return nullptr;
     }
 
-    return m_views[view].activeWindowScheme;
+    return m_views[view]->activeWindowScheme();
 }
 
 void Windows::setActiveWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme)
 {
-    if (!m_views.contains(view) || m_views[view].activeWindowScheme == scheme) {
+    if (!m_views.contains(view) || m_views[view]->activeWindowScheme() == scheme) {
         return;
     }
 
-    m_views[view].activeWindowScheme = scheme;
+    m_views[view]->setActiveWindowScheme(scheme);
     emit activeWindowSchemeChanged(view);
 }
 
@@ -278,32 +288,26 @@ SchemeColors *Windows::touchingWindowScheme(Latte::View *view) const
         return nullptr;
     }
 
-    return m_views[view].touchingWindowScheme;
+    return m_views[view]->touchingWindowScheme();
 }
 
 void Windows::setTouchingWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme)
 {
-    if (!m_views.contains(view) || m_views[view].touchingWindowScheme == scheme) {
+    if (!m_views.contains(view) || m_views[view]->touchingWindowScheme() == scheme) {
         return;
     }
 
-    m_views[view].touchingWindowScheme = scheme;
+    m_views[view]->setTouchingWindowScheme(scheme);
     emit touchingWindowSchemeChanged(view);
 }
 
-WindowInfoWrap Windows::lastActiveWindowInfo(Latte::View *view)
+LastActiveWindow *Windows::lastActiveWindow(Latte::View *view)
 {
-    WindowInfoWrap info;
     if (!m_views.contains(view)) {
-        return info;
+        return nullptr;
     }
 
-    if (!m_windows.contains(m_views[view].lastActiveWindow)) {
-        m_views[view].lastActiveWindow = info.wid();
-        return info;
-    }
-
-    return m_wm->requestInfo(m_views[view].lastActiveWindow);
+    return m_views[view]->lastActiveWindow();
 }
 
 //! Windows Criteria Functions
@@ -326,7 +330,7 @@ bool Windows::isActive(const WindowInfoWrap &winfo)
 bool Windows::isActiveInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized()
-            && m_views[view].availableScreenGeometry.contains(winfo.geometry().center()));
+            && m_views[view]->availableScreenGeometry().contains(winfo.geometry().center()));
 }
 
 bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
@@ -347,7 +351,7 @@ bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &w
     //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
     return (winfo.isValid() && !winfo.isMinimized()
             && (winfo.isMaximized() || viewIntersectsMaxVert() || viewIntersectsMaxHoriz())
-            && m_views[view].availableScreenGeometry.contains(winfo.geometry().center()));
+            && m_views[view]->availableScreenGeometry().contains(winfo.geometry().center()));
 }
 
 bool Windows::isTouchingView(Latte::View *view, const WindowSystem::WindowInfoWrap &winfo)
@@ -361,7 +365,7 @@ bool Windows::isTouchingViewEdge(Latte::View *view, const WindowInfoWrap &winfo)
         bool touchingViewEdge{false};
 
         QRect screenGeometry = view->screenGeometry();
-        QRect availableScreenGeometry = m_views[view].availableScreenGeometry;
+        QRect availableScreenGeometry = m_views[view]->availableScreenGeometry();
 
         bool inCurrentScreen{screenGeometry.contains(winfo.geometry().topLeft()) || screenGeometry.contains(winfo.geometry().bottomRight())};
 
@@ -400,12 +404,12 @@ void Windows::cleanupFaultyWindows()
 void Windows::updateAvailableScreenGeometries()
 {
     for (const auto view : m_views.keys()) {
-        if (m_views[view].enabled) {
+        if (m_views[view]->enabled()) {
             int currentScrId = view->positioner()->currentScreenId();
             QRect tempAvailableScreenGeometry = m_wm->corona()->availableScreenRectWithCriteria(currentScrId, {Types::AlwaysVisible}, {});
 
-            if (tempAvailableScreenGeometry != m_views[view].availableScreenGeometry) {
-                m_views[view].availableScreenGeometry = tempAvailableScreenGeometry;
+            if (tempAvailableScreenGeometry != m_views[view]->availableScreenGeometry()) {
+                m_views[view]->setAvailableScreenGeometry(tempAvailableScreenGeometry);
 
                 updateHints(view);
             }
@@ -416,7 +420,7 @@ void Windows::updateAvailableScreenGeometries()
 void Windows::updateViewsHints()
 {
     for (const auto view : m_views.keys()) {
-        if (m_views[view].enabled) {
+        if (m_views[view]->enabled()) {
             updateHints(view);
         }
     }
@@ -453,7 +457,7 @@ void Windows::updateHints(Latte::View *view)
         }
 
         if (isActiveInViewScreen(view, winfo)) {
-            m_views[view].lastActiveWindow = winfo.wid();
+            m_views[view]->lastActiveWindow()->setInformation(winfo);
             foundActiveInCurScreen = true;
             activeWinId = winfo.wid();
         }

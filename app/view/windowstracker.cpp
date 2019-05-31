@@ -26,6 +26,7 @@
 #include "../layouts/manager.h"
 #include "../wm/schemecolors.h"
 #include "../wm/tracker/windows.h"
+#include "../wm/tracker/lastactivewindow.h"
 #include "../../liblatte2/types.h"
 
 namespace Latte {
@@ -155,27 +156,27 @@ void WindowsTracker::setWindowOnActivities(QWindow &window, const QStringList &a
 
 void WindowsTracker::requestToggleMaximizeForActiveWindow()
 {
-    WindowSystem::WindowInfoWrap actInfo = m_wm->windowsTracker()->lastActiveWindowInfo(m_latteView);
+    Latte::WindowSystem::Tracker::LastActiveWindow *actInfo = m_wm->windowsTracker()->lastActiveWindow(m_latteView);
 
     //active window can be toggled only when it is in the same screen
-    if (actInfo.isValid() && !actInfo.geometry().isNull() && m_latteView->screenGeometry().contains(actInfo.geometry().center())) {
-        m_wm->requestToggleMaximized(actInfo.wid());
+    if (actInfo && !actInfo->geometry().isNull() && m_latteView->screenGeometry().contains(actInfo->geometry().center())) {
+        m_wm->requestToggleMaximized(actInfo->winId());
     }
 }
 
 void WindowsTracker::requestMoveActiveWindow(int localX, int localY)
 {
-    WindowSystem::WindowInfoWrap actInfo = m_wm->windowsTracker()->lastActiveWindowInfo(m_latteView);
+    Latte::WindowSystem::Tracker::LastActiveWindow *actInfo = m_wm->windowsTracker()->lastActiveWindow(m_latteView);
 
     //active window can be dragged only when it is in the same screen
-    if (actInfo.isValid() && !actInfo.geometry().isNull() && m_latteView->screenGeometry().contains(actInfo.geometry().center())) {
+    if (actInfo && !actInfo->geometry().isNull() && m_latteView->screenGeometry().contains(actInfo->geometry().center())) {
         QPoint globalPoint{m_latteView->x() + localX, m_latteView->y() + localY};
 
-        m_wm->requestMoveWindow(actInfo.wid(), globalPoint);
+        m_wm->requestMoveWindow(actInfo->winId(), globalPoint);
 
         //! This timer is needed because otherwise the mouse position
         //! in the dragged window changes to TopLeft corner
-        QTimer::singleShot(250, this, [&, actInfo, globalPoint]() {
+        QTimer::singleShot(250, this, [&]() {
             m_wm->releaseMouseEventFor(m_latteView->winId());
         });
 
@@ -185,11 +186,11 @@ void WindowsTracker::requestMoveActiveWindow(int localX, int localY)
 
 bool WindowsTracker::activeWindowCanBeDragged()
 {
-    WindowSystem::WindowInfoWrap actInfo = m_wm->windowsTracker()->lastActiveWindowInfo(m_latteView);
+    Latte::WindowSystem::Tracker::LastActiveWindow *actInfo = m_wm->windowsTracker()->lastActiveWindow(m_latteView);
 
     //active window can be dragged only when it is in the same screen
-    if (actInfo.isValid() && !actInfo.geometry().isNull() && m_latteView->screenGeometry().contains(actInfo.geometry().center())) {
-        return m_wm->windowCanBeDragged(actInfo.wid());
+    if (actInfo && !actInfo->geometry().isNull() && m_latteView->screenGeometry().contains(actInfo->geometry().center())) {
+        return m_wm->windowCanBeDragged(actInfo->winId());
     }
 
     return false;
