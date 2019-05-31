@@ -63,7 +63,9 @@ public:
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
-        , m_isOnAllDesktops(o.m_isOnAllDesktops) {
+        , m_isOnAllDesktops(o.m_isOnAllDesktops)
+        , m_appName(o.m_appName)
+        , m_display(o.m_display) {
     }
 
     WindowInfoWrap(WindowInfoWrap &&o) noexcept
@@ -79,7 +81,9 @@ public:
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
-        , m_isOnAllDesktops(o.m_isOnAllDesktops) {
+        , m_isOnAllDesktops(o.m_isOnAllDesktops)
+        , m_appName(o.m_appName)
+        , m_display(o.m_display) {
     }
 
     inline WindowInfoWrap &operator=(WindowInfoWrap &&rhs) noexcept;
@@ -126,6 +130,9 @@ public:
     inline QRect geometry() const noexcept;
     inline void setGeometry(const QRect &geometry) noexcept;
 
+    inline QString appName() const noexcept;
+    inline void setAppName(const QString &appName) noexcept;
+
     inline QString display() const noexcept;
     inline void setDisplay(const QString &display) noexcept;
 
@@ -151,6 +158,7 @@ private:
     bool m_hasSkipTaskbar: 1;
     bool m_isOnAllDesktops: 1;
 
+    QString m_appName;
     QString m_display;
 
     QIcon m_icon;
@@ -172,6 +180,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
+    m_appName = rhs.m_appName;
     m_display = rhs.m_display;
     m_icon = rhs.m_icon;
     return *this;
@@ -192,6 +201,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noex
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
+    m_appName = rhs.m_appName;
     m_display = rhs.m_display;
     m_icon = rhs.m_icon;
     return *this;
@@ -325,6 +335,16 @@ inline bool WindowInfoWrap::isOnAllDesktops() const noexcept
 inline void WindowInfoWrap::setIsOnAllDesktops(bool alldesktops) noexcept
 {
     m_isOnAllDesktops = alldesktops;
+}
+
+inline QString WindowInfoWrap::appName() const noexcept
+{
+    return m_appName;
+}
+
+inline void WindowInfoWrap::setAppName(const QString &appName) noexcept
+{
+    m_appName = appName;
 }
 
 inline QString WindowInfoWrap::display() const noexcept
