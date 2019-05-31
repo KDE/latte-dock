@@ -29,6 +29,7 @@
 
 namespace Latte {
 namespace WindowSystem {
+class AbstractWindowInterface;
 namespace Tracker {
 class TrackedInfo;
 }
@@ -55,6 +56,8 @@ class LastActiveWindow : public QObject {
     Q_PROPERTY(QString display READ display NOTIFY displayChanged)
     Q_PROPERTY(QRect geometry READ geometry NOTIFY geometryChanged)
 
+    Q_PROPERTY(QIcon icon READ icon NOTIFY iconChanged)
+
     Q_PROPERTY(QVariant winId READ winId NOTIFY winIdChanged)
 
 public:
@@ -71,11 +74,14 @@ public:
 
     QString display() const;
     QRect geometry() const;
+    QIcon icon() const;
+
     QVariant winId() const;
 
     void setInformation(const WindowInfoWrap &info);
 
 signals:
+    void iconChanged();
     void isActiveChanged();
     void isMinimizedChanged();
     void isMaximizedChanged();
@@ -99,6 +105,9 @@ private:
 
     void setDisplay(QString display);
     void setGeometry(QRect geometry);
+
+    void setIcon(QIcon icon);
+
     void setWinId(QVariant winId);
 
 private:
@@ -112,7 +121,11 @@ private:
 
     QString m_display;
     QRect m_geometry;
+    QIcon m_icon;
+
     QVariant m_winId;
+
+    AbstractWindowInterface *m_wm{nullptr};
 
 };
 

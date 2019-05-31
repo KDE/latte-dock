@@ -67,6 +67,8 @@ public:
     SchemeColors *touchingWindowScheme(Latte::View *view) const;
     LastActiveWindow *lastActiveWindow(Latte::View *view);
 
+    AbstractWindowInterface *wm();
+
 signals:
     void enabledChanged(const Latte::View *view);
     void activeWindowMaximizedChanged(const Latte::View *view);

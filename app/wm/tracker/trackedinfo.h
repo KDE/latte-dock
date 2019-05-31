@@ -94,6 +94,8 @@ public:
     SchemeColors *touchingWindowScheme() const;
     void setTouchingWindowScheme(SchemeColors *scheme);
 
+    AbstractWindowInterface *wm();
+
 signals:
     void lastActiveWindowChanged();
 
@@ -111,6 +113,8 @@ private:
 
     SchemeColors *m_activeWindowScheme{nullptr};
     SchemeColors *m_touchingWindowScheme{nullptr};
+
+    AbstractWindowInterface *m_wm{nullptr};
 };
 
 }

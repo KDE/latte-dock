@@ -21,6 +21,7 @@
 
 // local
 #include "trackedinfo.h"
+#include "../abstractwindowinterface.h"
 
 // Qt
 #include <QDebug>
@@ -31,7 +32,8 @@ namespace Tracker {
 
 
 LastActiveWindow::LastActiveWindow(TrackedInfo *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_wm(parent->wm())
 {
 }
 
@@ -174,6 +176,17 @@ void LastActiveWindow::setGeometry(QRect geometry)
     emit geometryChanged();
 }
 
+QIcon LastActiveWindow::icon() const
+{
+    return m_icon;
+}
+
+void LastActiveWindow::setIcon(QIcon icon)
+{
+    m_icon = icon;
+    emit iconChanged();
+}
+
 QVariant LastActiveWindow::winId() const
 {
     return m_winId;
@@ -191,6 +204,10 @@ void LastActiveWindow::setWinId(QVariant winId)
 
 void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 {
+    if (m_winId != info.wid()) {
+        setIcon(m_wm->iconFor(info.wid()));
+    }
+
     setWinId(info.wid());
 
     setActive(info.isActive());

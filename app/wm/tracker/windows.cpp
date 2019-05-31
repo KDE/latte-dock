@@ -118,6 +118,12 @@ void Windows::initViewHints(Latte::View *view)
     setTouchingWindowScheme(view, nullptr);
 }
 
+AbstractWindowInterface *Windows::wm()
+{
+    return m_wm;
+}
+
+
 void Windows::addView(Latte::View *view)
 {
     if (m_views.contains(view)) {

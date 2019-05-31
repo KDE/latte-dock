@@ -29,7 +29,8 @@ namespace Tracker {
 
 
 TrackedInfo::TrackedInfo(Tracker::Windows *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_wm(parent->wm())
 {
     m_lastActiveWindow = new LastActiveWindow(this);
 
@@ -176,6 +177,11 @@ void TrackedInfo::setTouchingWindowScheme(SchemeColors *scheme)
     }
 
     m_touchingWindowScheme = scheme;
+}
+
+AbstractWindowInterface *TrackedInfo::wm()
+{
+    return m_wm;
 }
 
 }
