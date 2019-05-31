@@ -46,7 +46,8 @@ public:
         , m_isShaded(false)
         , m_isPlasmaDesktop(false)
         , m_isKeepAbove(false)
-        , m_hasSkipTaskbar(false) {
+        , m_hasSkipTaskbar(false)
+        , m_isOnAllDesktops(false) {
     }
 
     WindowInfoWrap(const WindowInfoWrap &o) noexcept
@@ -61,7 +62,8 @@ public:
         , m_isShaded(o.m_isShaded)
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
-        , m_hasSkipTaskbar(o.m_hasSkipTaskbar) {
+        , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
+        , m_isOnAllDesktops(o.m_isOnAllDesktops) {
     }
 
     WindowInfoWrap(WindowInfoWrap &&o) noexcept
@@ -76,7 +78,8 @@ public:
         , m_isShaded(o.m_isShaded)
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
-        , m_hasSkipTaskbar(o.m_hasSkipTaskbar) {
+        , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
+        , m_isOnAllDesktops(o.m_isOnAllDesktops) {
     }
 
     inline WindowInfoWrap &operator=(WindowInfoWrap &&rhs) noexcept;
@@ -117,6 +120,9 @@ public:
     inline bool hasSkipTaskbar() const noexcept;
     inline void setHasSkipTaskbar(bool skipTaskbar) noexcept;
 
+    inline bool isOnAllDesktops() const noexcept;
+    inline void setIsOnAllDesktops(bool alldesktops) noexcept;
+
     inline QRect geometry() const noexcept;
     inline void setGeometry(const QRect &geometry) noexcept;
 
@@ -143,6 +149,7 @@ private:
     bool m_isPlasmaDesktop : 1;
     bool m_isKeepAbove: 1;
     bool m_hasSkipTaskbar: 1;
+    bool m_isOnAllDesktops: 1;
 
     QString m_display;
 
@@ -164,6 +171,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
+    m_isOnAllDesktops = rhs.m_isOnAllDesktops;
     m_display = rhs.m_display;
     m_icon = rhs.m_icon;
     return *this;
@@ -183,6 +191,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noex
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
+    m_isOnAllDesktops = rhs.m_isOnAllDesktops;
     m_display = rhs.m_display;
     m_icon = rhs.m_icon;
     return *this;
@@ -306,6 +315,16 @@ inline bool WindowInfoWrap::hasSkipTaskbar() const noexcept
 inline void WindowInfoWrap::setHasSkipTaskbar(bool skipTaskbar) noexcept
 {
     m_hasSkipTaskbar = skipTaskbar;
+}
+
+inline bool WindowInfoWrap::isOnAllDesktops() const noexcept
+{
+    return m_isOnAllDesktops;
+}
+
+inline void WindowInfoWrap::setIsOnAllDesktops(bool alldesktops) noexcept
+{
+    m_isOnAllDesktops = alldesktops;
 }
 
 inline QString WindowInfoWrap::display() const noexcept
