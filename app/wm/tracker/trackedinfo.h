@@ -41,20 +41,6 @@ class Windows;
 namespace Latte {
 namespace WindowSystem {
 namespace Tracker {
-/*
- *
- *  bool enabled{false};
-    bool activeWindowMaximized{false};
-    bool activeWindowTouching{false};
-    bool existsWindowActive{false};
-    bool existsWindowMaximized{false};
-    bool existsWindowTouching{false};
-    QRect availableScreenGeometry;
-    WindowId lastActiveWindow;
-    SchemeColors *activeWindowScheme{nullptr};
-    SchemeColors *touchingWindowScheme{nullptr};
- *
- */
 
 class TrackedInfo : public QObject {
     Q_OBJECT

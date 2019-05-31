@@ -42,6 +42,7 @@
 #include "wm/schemecolors.h"
 #include "wm/waylandinterface.h"
 #include "wm/xwindowinterface.h"
+#include "wm/tracker/lastactivewindow.h"
 #include "wm/tracker/schemes.h"
 #include "wm/tracker/windows.h"
 
@@ -1074,6 +1075,7 @@ inline void Corona::qmlRegisterTypes() const
     qmlRegisterType<QScreen>();
     qmlRegisterType<Latte::View>();
     qmlRegisterType<Latte::WindowSystem::SchemeColors>();
+    qmlRegisterType<Latte::WindowSystem::Tracker::LastActiveWindow>();
 }
 
 }

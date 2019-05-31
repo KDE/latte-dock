@@ -80,6 +80,8 @@ Item{
     // @since: 0.9
     readonly property int iconSize: root.iconSize
 
+    readonly property QtObject windowsTracker: latteView ? latteView.windowsTracker : null
+
     property Item actions: Actions{}
 
     Connections {

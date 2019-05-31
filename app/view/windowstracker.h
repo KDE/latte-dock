@@ -33,6 +33,9 @@ class View;
 namespace WindowSystem {
 class AbstractWindowInterface;
 class SchemeColors;
+namespace Tracker {
+class LastActiveWindow;
+}
 }
 }
 
@@ -50,6 +53,8 @@ class WindowsTracker : public QObject {
     Q_PROPERTY(Latte::WindowSystem::SchemeColors *activeWindowScheme READ activeWindowScheme NOTIFY activeWindowSchemeChanged)
     Q_PROPERTY(Latte::WindowSystem::SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
 
+    Q_PROPERTY(Latte::WindowSystem::Tracker::LastActiveWindow *lastActiveWindow READ lastActiveWindow NOTIFY lastActiveWindowChanged)
+
 public:
     explicit WindowsTracker(Latte::View *parent);
     virtual ~WindowsTracker();
@@ -66,6 +71,8 @@ public:
     WindowSystem::SchemeColors *activeWindowScheme() const;
     WindowSystem::SchemeColors *touchingWindowScheme() const;
 
+    WindowSystem::Tracker::LastActiveWindow *lastActiveWindow();
+
     void setWindowOnActivities(QWindow &window, const QStringList &activities);
 
 signals:
@@ -78,6 +85,8 @@ signals:
     void existsWindowTouchingChanged();
     void activeWindowSchemeChanged();
     void touchingWindowSchemeChanged();
+
+    void lastActiveWindowChanged();
 
 public slots:
     Q_INVOKABLE void requestToggleMaximizeForActiveWindow();

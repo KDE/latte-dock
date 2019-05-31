@@ -43,6 +43,8 @@ WindowsTracker::WindowsTracker(Latte::View *parent)
 
     init();
     m_wm->windowsTracker()->addView(m_latteView);
+
+    emit lastActiveWindowChanged();
 }
 
 WindowsTracker::~WindowsTracker()
@@ -145,6 +147,11 @@ bool WindowsTracker::enabled() const
 void WindowsTracker::setEnabled(bool active)
 {
     m_wm->windowsTracker()->setEnabled(m_latteView, active);
+}
+
+WindowSystem::Tracker::LastActiveWindow *WindowsTracker::lastActiveWindow()
+{
+    return m_wm->windowsTracker()->lastActiveWindow(m_latteView);
 }
 
 
