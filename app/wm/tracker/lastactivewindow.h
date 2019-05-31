@@ -34,7 +34,9 @@ class TrackedInfo;
 }
 }
 }
-
+/*
+        , m_hasSkipTaskbar(false)
+ */
 
 namespace Latte {
 namespace WindowSystem {
@@ -42,6 +44,16 @@ namespace Tracker {
 
 class LastActiveWindow : public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool isActive READ isActive NOTIFY isActiveChanged)
+    Q_PROPERTY(bool isMinimized READ isMinimized NOTIFY isMinimizedChanged)
+    Q_PROPERTY(bool isMaximized READ isMaximized NOTIFY isMaximizedChanged)
+    Q_PROPERTY(bool isFullScreen READ isFullScreen NOTIFY isFullScreenChanged)
+    Q_PROPERTY(bool isKeepAbove READ isKeepAbove NOTIFY isKeepAboveChanged)
+    Q_PROPERTY(bool isShaded READ isShaded NOTIFY isShadedChanged)
+    Q_PROPERTY(bool hasSkipTaskbar READ hasSkipTaskbar NOTIFY hasSkipTaskbarChanged)
+
+    Q_PROPERTY(QString display READ display NOTIFY displayChanged)
+    Q_PROPERTY(QRect geometry READ geometry NOTIFY geometryChanged)
 
     Q_PROPERTY(QVariant winId READ winId NOTIFY winIdChanged)
 
@@ -49,21 +61,56 @@ public:
     LastActiveWindow(TrackedInfo *parent);
     ~LastActiveWindow() override;
 
+    bool isActive() const;
+    bool isMinimized() const;
+    bool isMaximized() const;
+    bool isFullScreen() const;
+    bool isKeepAbove() const;
+    bool isShaded() const;
+    bool hasSkipTaskbar() const;
+
+    QString display() const;
     QRect geometry() const;
     QVariant winId() const;
-
 
     void setInformation(const WindowInfoWrap &info);
 
 signals:
+    void isActiveChanged();
+    void isMinimizedChanged();
+    void isMaximizedChanged();
+    void isFullScreenChanged();
+    void isKeepAboveChanged();
+    void isShadedChanged();
+    void hasSkipTaskbarChanged();
+
+    void displayChanged();
     void geometryChanged();
     void winIdChanged();
 
 private:
+    void setActive(bool active);
+    void setIsMinimized(bool minimized);
+    void setIsMaximized(bool maximized);
+    void setIsFullScreen(bool fullscreen);
+    void setIsKeepAbove(bool above);
+    void setIsShaded(bool shaded);
+    void setHasSkipTaskbar(bool skip);
+
+    void setDisplay(QString display);
     void setGeometry(QRect geometry);
     void setWinId(QVariant winId);
 
 private:
+    bool m_isActive{false};
+    bool m_isMinimized{false};
+    bool m_isMaximized{false};
+    bool m_isFullScreen{false};
+    bool m_isKeepAbove{false};
+    bool m_isShaded{false};
+    bool m_hasSkipTaskbar{false};
+
+    QString m_display;
     QRect m_geometry;
     QVariant m_winId;
 
