@@ -454,6 +454,26 @@ void XWindowInterface::requestMoveWindow(WindowId wid, QPoint from) const
     ri.moveResizeRequest(wInfo.wid().toUInt(), validX, validY, NET::Move);
 }
 
+void XWindowInterface::requestToggleIsOnAllDesktops(WindowId wid) const
+{
+    WindowInfoWrap wInfo = requestInfo(wid);
+
+    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+        return;
+    }
+
+    if (KWindowSystem::numberOfDesktops() <= 1) {
+        return;
+    }
+
+    if (wInfo.isOnAllDesktops()) {
+        KWindowSystem::setOnDesktop(wid.toUInt(), KWindowSystem::currentDesktop());
+        KWindowSystem::forceActiveWindow(wid.toUInt());
+    } else {
+        KWindowSystem::setOnAllDesktops(wid.toUInt(), true);
+    }
+}
+
 void XWindowInterface::requestToggleKeepAbove(WindowId wid) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);
@@ -611,24 +631,6 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
           && !(prop1 & NET::WMDesktop)
           && !(prop1 & (NET::WMName | NET::WMVisibleName)) ) {
         return;
-    }
-
-    //! when only WMState changed we can whitelist the acceptable states
-    if ((prop1 & NET::WMState)
-            && !(prop1 & NET::WMGeometry)
-            && !(prop1 & NET::ActiveWindow)
-            && !(prop1 & NET::WMDesktop)
-            && !(prop1 & (NET::WMName | NET::WMVisibleName)) ) {
-        KWindowInfo info(wid, NET::WMState);
-
-        if (info.valid()) {
-            if ( !info.hasState(NET::KeepAbove) && !info.hasState(NET::Sticky) && !info.hasState(NET::Shaded)
-                && !info.hasState(NET::FullScreen) && !info.hasState(NET::Hidden)) {
-                return;
-            }
-        } else {
-            return;
-        }
     }
 
     //! ignore windows that do not respect normal windows types

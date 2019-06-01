@@ -89,6 +89,7 @@ public slots:
     Q_INVOKABLE void requestActivate();
     Q_INVOKABLE void requestClose();
     Q_INVOKABLE void requestMove(int localX, int localY);
+    Q_INVOKABLE void requestToggleIsOnAllDesktops();
     Q_INVOKABLE void requestToggleKeepAbove();
     Q_INVOKABLE void requestToggleMinimized();
     Q_INVOKABLE void requestToggleMaximized();

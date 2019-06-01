@@ -105,6 +105,7 @@ public:
     virtual void requestActivate(WindowId wid) const = 0;
     virtual void requestClose(WindowId wid) const = 0;
     virtual void requestMoveWindow(WindowId wid, QPoint from) const = 0;
+    virtual void requestToggleIsOnAllDesktops(WindowId wid) const = 0;
     virtual void requestToggleKeepAbove(WindowId wid) const = 0;
     virtual void requestToggleMinimized(WindowId wid) const = 0;
     virtual void requestToggleMaximized(WindowId wid) const = 0;

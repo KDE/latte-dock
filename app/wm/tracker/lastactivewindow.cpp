@@ -296,6 +296,11 @@ void LastActiveWindow::requestMove(int localX, int localY)
     emit draggingStarted();
 }
 
+void LastActiveWindow::requestToggleIsOnAllDesktops()
+{
+    m_wm->requestToggleIsOnAllDesktops(m_winId);
+}
+
 void LastActiveWindow::requestToggleKeepAbove()
 {
     m_wm->requestToggleKeepAbove(m_winId);

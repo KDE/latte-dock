@@ -67,6 +67,7 @@ public:
     void requestActivate(WindowId wid) const override;
     void requestClose(WindowId wid) const override;
     void requestMoveWindow(WindowId wid, QPoint from) const override;
+    void requestToggleIsOnAllDesktops(WindowId wid) const override;
     void requestToggleKeepAbove(WindowId wid) const override;
     void requestToggleMinimized(WindowId wid) const override;
     void requestToggleMaximized(WindowId wid) const override;

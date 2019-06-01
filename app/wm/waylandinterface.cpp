@@ -479,6 +479,25 @@ void WaylandInterface::requestMoveWindow(WindowId wid, QPoint from) const
     }
 }
 
+void WaylandInterface::requestToggleIsOnAllDesktops(WindowId wid) const
+{
+#if KF5_VERSION_MINOR >= 52
+    auto w = windowFor(wid);
+
+    if (w && isValidWindow(w) && m_desktops.count() > 1) {
+        if (w->isOnAllDesktops()) {
+            w->requestEnterVirtualDesktop(m_currentDesktop);
+        } else {
+            const QStringList &now = w->plasmaVirtualDesktops();
+
+            foreach (const QString &desktop, now) {
+                w->requestLeaveVirtualDesktop(desktop);
+            }
+        }
+    }
+#endif
+}
+
 void WaylandInterface::requestToggleKeepAbove(WindowId wid) const
 {
     auto w = windowFor(wid);
