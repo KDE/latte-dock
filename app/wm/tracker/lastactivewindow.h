@@ -22,12 +22,14 @@
 
 // local
 #include "../windowinfowrap.h"
+#include "../abstractwindowinterface.h"
 
 // Qt
 #include <QObject>
 #include <QRect>
 
 namespace Latte {
+class View;
 namespace WindowSystem {
 class AbstractWindowInterface;
 namespace Tracker {
@@ -36,9 +38,6 @@ class Windows;
 }
 }
 }
-/*
-        , m_hasSkipTaskbar(false)
- */
 
 namespace Latte {
 namespace WindowSystem {
@@ -63,7 +62,7 @@ class LastActiveWindow : public QObject {
     Q_PROPERTY(QVariant winId READ winId NOTIFY winIdChanged)
 
 public:
-    LastActiveWindow(TrackedInfo *parent);
+    LastActiveWindow(TrackedInfo *trackedInfo);
     ~LastActiveWindow() override;
 
     bool isActive() const;
@@ -84,7 +83,14 @@ public:
 
     void setInformation(const WindowInfoWrap &info);
 
+public slots:
+    Q_INVOKABLE void requestToggleMaximize();
+    Q_INVOKABLE void requestMove(int localX, int localY);
+    Q_INVOKABLE bool canBeDragged();
+
 signals:
+    void draggingStarted();
+
     void iconChanged();
     void isActiveChanged();
     void isMinimizedChanged();
@@ -134,9 +140,9 @@ private:
 
     QVariant m_winId;
 
+    TrackedInfo *m_trackedInfo{nullptr};
     AbstractWindowInterface *m_wm{nullptr};
     Tracker::Windows *m_windowsTracker{nullptr};
-
 };
 
 }

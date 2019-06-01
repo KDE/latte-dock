@@ -22,15 +22,17 @@
 //local
 #include "windows.h"
 #include "../schemecolors.h"
+#include "../../view/view.h"
 
 namespace Latte {
 namespace WindowSystem {
 namespace Tracker {
 
 
-TrackedInfo::TrackedInfo(Tracker::Windows *parent)
-    : QObject(parent),
-      m_wm(parent->wm())
+TrackedInfo::TrackedInfo(Tracker::Windows *tracker, Latte::View *view)
+    : QObject(tracker) ,
+      m_wm(tracker->wm()),
+      m_view(view)
 {
     m_lastActiveWindow = new LastActiveWindow(this);
 
@@ -177,6 +179,11 @@ void TrackedInfo::setTouchingWindowScheme(SchemeColors *scheme)
     }
 
     m_touchingWindowScheme = scheme;
+}
+
+Latte::View *TrackedInfo::view()
+{
+    return m_view;
 }
 
 AbstractWindowInterface *TrackedInfo::wm()

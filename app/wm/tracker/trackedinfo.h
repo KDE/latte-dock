@@ -29,6 +29,7 @@
 #include <QRect>
 
 namespace Latte {
+class View;
 namespace WindowSystem {
 class SchemeColors;
 namespace Tracker {
@@ -48,7 +49,7 @@ class TrackedInfo : public QObject {
     Q_PROPERTY(Latte::WindowSystem::Tracker::LastActiveWindow *activeWindow READ lastActiveWindow NOTIFY lastActiveWindowChanged)
 
 public:
-    TrackedInfo(Tracker::Windows *parent);
+    TrackedInfo(Tracker::Windows *tracker, Latte::View *view);
     ~TrackedInfo() override;
 
     bool enabled() const;
@@ -80,6 +81,7 @@ public:
     SchemeColors *touchingWindowScheme() const;
     void setTouchingWindowScheme(SchemeColors *scheme);
 
+    Latte::View *view();
     AbstractWindowInterface *wm();
 
 signals:
@@ -95,6 +97,7 @@ private:
 
     QRect m_availableScreenGeometry;
 
+    Latte::View *m_view{nullptr};
     LastActiveWindow *m_lastActiveWindow{nullptr};
 
     SchemeColors *m_activeWindowScheme{nullptr};

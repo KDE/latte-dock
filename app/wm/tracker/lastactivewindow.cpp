@@ -24,19 +24,24 @@
 #include "windows.h"
 #include "../abstractwindowinterface.h"
 #include "../tasktools.h"
+#include "../../view/view.h"
+#include "../../view/visibilitymanager.h"
 
 // Qt
 #include <QDebug>
+#include <QPoint>
+#include <QTimer>
+
 
 namespace Latte {
 namespace WindowSystem {
 namespace Tracker {
 
-
-LastActiveWindow::LastActiveWindow(TrackedInfo *parent)
-    : QObject(parent),
-      m_windowsTracker(parent->wm()->windowsTracker()),
-      m_wm(parent->wm())
+LastActiveWindow::LastActiveWindow(TrackedInfo *trackedInfo)
+    : QObject(trackedInfo),
+      m_trackedInfo(trackedInfo),
+      m_windowsTracker(trackedInfo->wm()->windowsTracker()),
+      m_wm(trackedInfo->wm())
 {
 }
 
@@ -244,6 +249,32 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
         setIcon(info.icon());
     }
 
+}
+
+//! FUNCTIONALITY
+void LastActiveWindow::requestToggleMaximize()
+{
+    m_wm->requestToggleMaximized(m_winId);
+}
+
+void LastActiveWindow::requestMove(int localX, int localY)
+{
+    QPoint globalPoint{m_trackedInfo->view()->x() + localX, m_trackedInfo->view()->y() + localY};
+
+    m_wm->requestMoveWindow(m_winId, globalPoint);
+
+    //! This timer is needed because otherwise the mouse position
+    //! in the dragged window changes to TopLeft corner
+    QTimer::singleShot(250, this, [&]() {
+        m_wm->releaseMouseEventFor(m_trackedInfo->view()->winId());
+    });
+
+    emit draggingStarted();
+}
+
+bool LastActiveWindow::canBeDragged()
+{
+    return m_wm->windowCanBeDragged(m_winId);
 }
 
 }

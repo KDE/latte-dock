@@ -130,7 +130,7 @@ void Windows::addView(Latte::View *view)
         return;
     }
 
-    m_views[view] = new TrackedInfo(this);
+    m_views[view] = new TrackedInfo(this, view);
 
     updateAvailableScreenGeometries();
     updateHints(view);
