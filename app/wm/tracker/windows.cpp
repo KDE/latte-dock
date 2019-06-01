@@ -377,12 +377,12 @@ bool Windows::intersects(Latte::View *view, const WindowInfoWrap &winfo)
 
 bool Windows::isActive(const WindowInfoWrap &winfo)
 {
-    return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized());
+    return (winfo.isValid() && winfo.isActive() && !winfo.isPlasmaDesktop() && !winfo.isMinimized());
 }
 
 bool Windows::isActiveInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
 {
-    return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized()
+    return (winfo.isValid() && winfo.isActive() && !winfo.isPlasmaDesktop() &&  !winfo.isMinimized()
             && m_views[view]->availableScreenGeometry().contains(winfo.geometry().center()));
 }
 
@@ -402,19 +402,19 @@ bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &w
 
     //! updated implementation to identify the screen that the maximized window is present
     //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
-    return (winfo.isValid() && !winfo.isMinimized()
+    return (winfo.isValid() && !winfo.isPlasmaDesktop() && !winfo.isMinimized()
             && (winfo.isMaximized() || viewIntersectsMaxVert() || viewIntersectsMaxHoriz())
             && m_views[view]->availableScreenGeometry().contains(winfo.geometry().center()));
 }
 
 bool Windows::isTouchingView(Latte::View *view, const WindowSystem::WindowInfoWrap &winfo)
 {
-    return (winfo.isValid() && intersects(view, winfo));
+    return (winfo.isValid() && !winfo.isPlasmaDesktop() &&  intersects(view, winfo));
 }
 
 bool Windows::isTouchingViewEdge(Latte::View *view, const WindowInfoWrap &winfo)
 {
-    if (winfo.isValid() && !winfo.isMinimized()) {
+    if (winfo.isValid() && !winfo.isPlasmaDesktop() &&  !winfo.isMinimized()) {
         bool touchingViewEdge{false};
 
         QRect screenGeometry = view->screenGeometry();
@@ -467,6 +467,19 @@ void Windows::updateAvailableScreenGeometries()
                 updateHints(view);
             }
         }
+    }
+}
+
+void Windows::setPlasmaDesktop(WindowId wid)
+{
+    if (!m_windows.contains(wid)) {
+        return;
+    }
+
+    if (!m_windows[wid].isPlasmaDesktop()) {
+        m_windows[wid].setIsPlasmaDesktop(true);
+        qDebug() << " plasmashell updated...";
+        updateViewsHints();
     }
 }
 

@@ -71,6 +71,8 @@ public:
     QIcon iconFor(WindowId wid);
     QString appNameFor(WindowId wid);
 
+    void setPlasmaDesktop(WindowId wid);
+
     AbstractWindowInterface *wm();
 
 signals:

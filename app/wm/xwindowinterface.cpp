@@ -464,7 +464,7 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
         return true;
     }
 
-    constexpr auto types = NET::DesktopMask | NET::DockMask | NET::MenuMask | NET::SplashMask | NET::PopupMenuMask | NET::NormalMask | NET::DialogMask;
+    constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::PopupMenuMask | NET::NormalMask | NET::DialogMask;
     NET::WindowType winType = winfo.windowType(types);
     const auto winClass = KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName();
 
@@ -473,8 +473,7 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
         return false;
     }
 
-    //! reject desktop window
-    if (winType != -1 && (winType & NET::Desktop)) {
+    if (m_desktopId == winfo.win()) {
         return false;
     }
 
@@ -497,14 +496,28 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
     //! GTK2+ dialogs case e.g. inkscape, gimp2, etc...
     //! are both Popups and Splash types, this is why
     //! we can not black list them here
-
     return !(isMenu || isDock);
+}
+
+bool XWindowInterface::hasScreenGeometry(const KWindowInfo &winfo) const
+{
+    bool hasScreenGeometry{false};
+
+    for (const auto scr : qGuiApp->screens()) {
+        if (!winfo.geometry().isEmpty() && winfo.geometry() == scr->geometry()) {
+            hasScreenGeometry = true;
+            break;
+        }
+    }
+
+    return hasScreenGeometry;
 }
 
 void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
 {
-    const auto winType = KWindowInfo(wid, NET::WMWindowType).windowType(NET::DesktopMask);
-    const auto winClass = KWindowInfo(wid, 0, NET::WM2WindowClass).windowClassName();
+    const KWindowInfo info(wid, NET::WMGeometry, NET::WM2WindowClass);
+
+    const auto winClass = info.windowClassName();
 
     //! ignore latte related windows from tracking
     if (winClass == "latte-dock") {
@@ -512,9 +525,10 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     }
 
     //! update desktop id
-    if (winType != -1 && (winType & NET::Desktop)) {
+    if (winClass == "plasmashell" && hasScreenGeometry(info)) {
         m_desktopId = wid;
-        emit windowChanged(wid);
+        windowsTracker()->setPlasmaDesktop(wid);
+        considerWindowChanged(wid);
         return;
     }
 
@@ -554,7 +568,6 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
 
     //! ignore windows that do not respect normal windows types
     if (!isValidWindow(wid)) {
-        qDebug() << "rejected window...";
         return;
     }
 

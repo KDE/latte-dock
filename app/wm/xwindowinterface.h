@@ -74,6 +74,7 @@ public:
     void setEdgeStateFor(QWindow *view, bool active) const override;
 
 private:
+    bool hasScreenGeometry(const KWindowInfo &winfo) const;
     bool isValidWindow(WindowId wid) const;
     bool isValidWindow(const KWindowInfo &winfo) const;
     void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
@@ -81,7 +82,7 @@ private:
     QUrl windowUrl(WindowId wid) const;
 
 private:
-    WindowId m_desktopId;
+    WindowId m_desktopId{-1};
 };
 
 }
