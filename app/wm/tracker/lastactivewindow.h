@@ -50,6 +50,7 @@ class LastActiveWindow : public QObject {
     Q_PROPERTY(bool isMaximized READ isMaximized NOTIFY isMaximizedChanged)
     Q_PROPERTY(bool isFullScreen READ isFullScreen NOTIFY isFullScreenChanged)
     Q_PROPERTY(bool isKeepAbove READ isKeepAbove NOTIFY isKeepAboveChanged)
+    Q_PROPERTY(bool isOnAllDesktops  READ isOnAllDesktops NOTIFY isOnAllDesktopsChanged)
     Q_PROPERTY(bool isShaded READ isShaded NOTIFY isShadedChanged)
     Q_PROPERTY(bool hasSkipTaskbar READ hasSkipTaskbar NOTIFY hasSkipTaskbarChanged)
 
@@ -70,6 +71,7 @@ public:
     bool isMaximized() const;
     bool isFullScreen() const;
     bool isKeepAbove() const;
+    bool isOnAllDesktops() const;
     bool isShaded() const;
     bool hasSkipTaskbar() const;
 
@@ -102,6 +104,7 @@ signals:
     void isMaximizedChanged();
     void isFullScreenChanged();
     void isKeepAboveChanged();
+    void isOnAllDesktopsChanged();
     void isShadedChanged();
     void hasSkipTaskbarChanged();
 
@@ -117,6 +120,7 @@ private:
     void setIsMaximized(bool maximized);
     void setIsFullScreen(bool fullscreen);
     void setIsKeepAbove(bool above);
+    void setIsOnAllDesktops(bool all);
     void setIsShaded(bool shaded);
     void setHasSkipTaskbar(bool skip);
 
@@ -134,6 +138,7 @@ private:
     bool m_isMaximized{false};
     bool m_isFullScreen{false};
     bool m_isKeepAbove{false};
+    bool m_isOnAllDesktops{false};
     bool m_isShaded{false};
     bool m_hasSkipTaskbar{false};
 

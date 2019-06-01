@@ -124,6 +124,21 @@ void LastActiveWindow::setIsKeepAbove(bool above)
     emit isKeepAboveChanged();
 }
 
+bool LastActiveWindow::isOnAllDesktops() const
+{
+    return m_isOnAllDesktops;
+}
+
+void LastActiveWindow::setIsOnAllDesktops(bool all)
+{
+    if (m_isOnAllDesktops == all) {
+        return;
+    }
+
+    m_isOnAllDesktops = all;
+    emit isOnAllDesktopsChanged();
+}
+
 bool LastActiveWindow::isShaded() const
 {
     return m_isShaded;
@@ -232,10 +247,12 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
     setActive(info.isActive());
     setIsMinimized(info.isMinimized());
     setIsMaximized(info.isMaxVert() || info.isMaxHoriz());
+    setIsOnAllDesktops(info.isOnAllDesktops());
 
     setAppName(info.appName());
     setDisplay(info.display());
     setGeometry(info.geometry());
+    setIsKeepAbove(info.isKeepAbove());
 
     if (info.appName().isEmpty()) {
         setAppName(m_windowsTracker->appNameFor(info.wid()));

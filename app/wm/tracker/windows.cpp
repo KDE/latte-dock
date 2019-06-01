@@ -60,6 +60,14 @@ void Windows::init()
 
     connect(m_wm, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
         m_windows[wid] = m_wm->requestInfo(wid);
+
+        for (const auto view : m_views.keys()) {
+            WindowId lastWinId = m_views[view]->lastActiveWindow()->winId();
+            if (lastWinId == wid) {
+                m_views[view]->lastActiveWindow()->setInformation(m_windows[lastWinId]);
+            }
+        }
+
         updateViewsHints();
     });
 

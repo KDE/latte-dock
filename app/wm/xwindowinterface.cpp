@@ -608,6 +608,7 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     if ( !(prop1 & NET::WMState)
           && !(prop1 & NET::WMGeometry)
           && !(prop1 & NET::ActiveWindow)
+          && !(prop1 & NET::WMDesktop)
           && !(prop1 & (NET::WMName | NET::WMVisibleName)) ) {
         return;
     }
@@ -616,11 +617,12 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     if ((prop1 & NET::WMState)
             && !(prop1 & NET::WMGeometry)
             && !(prop1 & NET::ActiveWindow)
+            && !(prop1 & NET::WMDesktop)
             && !(prop1 & (NET::WMName | NET::WMVisibleName)) ) {
         KWindowInfo info(wid, NET::WMState);
 
         if (info.valid()) {
-            if (!info.hasState(NET::Sticky) && !info.hasState(NET::Shaded)
+            if ( !info.hasState(NET::KeepAbove) && !info.hasState(NET::Sticky) && !info.hasState(NET::Shaded)
                 && !info.hasState(NET::FullScreen) && !info.hasState(NET::Hidden)) {
                 return;
             }
