@@ -252,9 +252,16 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 }
 
 //! FUNCTIONALITY
-void LastActiveWindow::requestToggleMaximize()
+
+
+void LastActiveWindow::requestActivate()
 {
-    m_wm->requestToggleMaximized(m_winId);
+    m_wm->requestActivate(m_winId);
+}
+
+void LastActiveWindow::requestClose()
+{
+    m_wm->requestClose(m_winId);
 }
 
 void LastActiveWindow::requestMove(int localX, int localY)
@@ -270,6 +277,21 @@ void LastActiveWindow::requestMove(int localX, int localY)
     });
 
     emit draggingStarted();
+}
+
+void LastActiveWindow::requestToggleKeepAbove()
+{
+    m_wm->requestToggleKeepAbove(m_winId);
+}
+
+void LastActiveWindow::requestToggleMinimized()
+{
+    m_wm->requestToggleMinimized(m_winId);
+}
+
+void LastActiveWindow::requestToggleMaximized()
+{
+    m_wm->requestToggleMaximized(m_winId);
 }
 
 bool LastActiveWindow::canBeDragged()

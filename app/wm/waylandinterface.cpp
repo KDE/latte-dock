@@ -458,6 +458,16 @@ void WaylandInterface::requestActivate(WindowId wid) const
     }
 }
 
+void WaylandInterface::requestClose(WindowId wid) const
+{
+    auto w = windowFor(wid);
+
+    if (w) {
+        w->requestClose();
+    }
+}
+
+
 void WaylandInterface::requestMoveWindow(WindowId wid, QPoint from) const
 {
     if (windowCanBeDragged(wid)) {
@@ -469,13 +479,41 @@ void WaylandInterface::requestMoveWindow(WindowId wid, QPoint from) const
     }
 }
 
-void WaylandInterface::requestToggleMaximized(WindowId wid) const
+void WaylandInterface::requestToggleKeepAbove(WindowId wid) const
+{
+    auto w = windowFor(wid);
+
+    if (w) {
+        w->requestToggleKeepAbove();
+    }
+}
+
+void WaylandInterface::requestToggleMinimized(WindowId wid) const
 {
     auto w = windowFor(wid);
 
     if (w && isValidWindow(w)) {
-        w->requestToggleMaximized();
+#if KF5_VERSION_MINOR >= 52
+        if (!m_currentDesktop.isEmpty()) {
+            w->requestEnterVirtualDesktop(m_currentDesktop);
+        }
+#endif
+        w->requestToggleMinimized();
     }
+}
+
+void WaylandInterface::requestToggleMaximized(WindowId wid) const
+{
+    auto w = windowFor(wid);
+
+    if (w && isValidWindow(w)) {   
+#if KF5_VERSION_MINOR >= 52
+        if (!m_currentDesktop.isEmpty()) {
+            w->requestEnterVirtualDesktop(m_currentDesktop);
+        }
+#endif
+        w->requestToggleMaximized();
+    }   
 }
 
 bool WaylandInterface::isPlasmaDesktop(const KWayland::Client::PlasmaWindow *w) const

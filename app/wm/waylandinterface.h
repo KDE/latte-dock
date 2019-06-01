@@ -79,10 +79,16 @@ public:
     void enableBlurBehind(QWindow &view) const override;
 
     void releaseMouseEventFor(WindowId wid) const override;
+
     void requestActivate(WindowId wid) const override;
-    void requestToggleMaximized(WindowId wid) const override;
+    void requestClose(WindowId wid) const override;
     void requestMoveWindow(WindowId wid, QPoint from) const override;
+    void requestToggleKeepAbove(WindowId wid) const override;
+    void requestToggleMinimized(WindowId wid) const override;
+    void requestToggleMaximized(WindowId wid) const override;
+
     bool windowCanBeDragged(WindowId wid) const;
+
     QIcon iconFor(WindowId wid) const;
     WindowId winIdFor(QString appId, QRect geometry) const override;
     AppData appDataFor(WindowId wid) const override;

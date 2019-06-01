@@ -416,6 +416,18 @@ WindowId XWindowInterface::winIdFor(QString appId, QRect geometry) const
     return activeWindow();
 }
 
+void XWindowInterface::requestClose(WindowId wid) const
+{
+    WindowInfoWrap wInfo = requestInfo(wid);
+
+    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+        return;
+    }
+
+    NETRootInfo ri(QX11Info::connection(), NET::CloseWindow);
+    ri.closeWindowRequest(wInfo.wid().toUInt());
+}
+
 void XWindowInterface::requestMoveWindow(WindowId wid, QPoint from) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);
@@ -442,10 +454,52 @@ void XWindowInterface::requestMoveWindow(WindowId wid, QPoint from) const
     ri.moveResizeRequest(wInfo.wid().toUInt(), validX, validY, NET::Move);
 }
 
+void XWindowInterface::requestToggleKeepAbove(WindowId wid) const
+{
+    WindowInfoWrap wInfo = requestInfo(wid);
+
+    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+        return;
+    }
+
+    NETWinInfo ni(QX11Info::connection(), wid.toUInt(), QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
+
+    if (wInfo.isKeepAbove()) {
+        ni.setState(NET::States(), NET::StaysOnTop);
+    } else {
+        ni.setState(NET::StaysOnTop, NET::StaysOnTop);
+    }
+}
+
+void XWindowInterface::requestToggleMinimized(WindowId wid) const
+{
+    WindowInfoWrap wInfo = requestInfo(wid);
+
+    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+        return;
+    }
+
+    if (wInfo.isMinimized()) {
+        bool onCurrent = isOnCurrentDesktop(wid);
+
+        KWindowSystem::unminimizeWindow(wid.toUInt());
+
+        if (onCurrent) {
+            KWindowSystem::forceActiveWindow(wid.toUInt());
+        }
+    } else {
+        KWindowSystem::minimizeWindow(wid.toUInt());
+    }
+}
+
 void XWindowInterface::requestToggleMaximized(WindowId wid) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);
     bool restore = wInfo.isMaxHoriz() && wInfo.isMaxVert();
+
+    if (wInfo.isMinimized()) {
+        KWindowSystem::unminimizeWindow(wid.toUInt());
+    }
 
     NETWinInfo ni(QX11Info::connection(), wid.toInt(), QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
 

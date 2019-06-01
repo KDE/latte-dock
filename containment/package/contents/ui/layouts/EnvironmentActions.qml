@@ -105,8 +105,7 @@ Loader {
 
             dragWindowTimer.stop();
             restoreGrabberTimer.stop();
-            latteView.windowsTracker.lastActiveWindow.requestToggleMaximize();
-            //tasksModel.requestToggleMaximized(tasksModel.activeTask);
+            latteView.windowsTracker.lastActiveWindow.requestToggleMaximized();
         }
 
         onWheel: {
