@@ -282,17 +282,26 @@ bool XWindowInterface::isOnCurrentActivity(WindowId wid) const
 
 WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 {
-    const KWindowInfo winfo{wid.value<WId>(),NET::WMFrameExtents
+    const KWindowInfo winfo{wid.value<WId>(), NET::WMFrameExtents
                             | NET::WMWindowType
                             | NET::WMGeometry
                             | NET::WMDesktop
                             | NET::WMState
                             | NET::WMName
-                            | NET::WMVisibleName};
+                            | NET::WMVisibleName,
+                              NET::WM2WindowClass};
+
+    //! update desktop id
+
+    bool isPlasmaDesktop{false};
+    if (winfo.windowClassName() == "plasmashell" && hasScreenGeometry(winfo)) {
+        isPlasmaDesktop = true;
+        windowsTracker()->setPlasmaDesktop(wid);
+    }
 
     WindowInfoWrap winfoWrap;
 
-    if (isValidWindow(winfo)) {
+    if (isValidWindow(winfo) && !isPlasmaDesktop) {
         winfoWrap.setIsValid(true);
         winfoWrap.setWid(wid);
         winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid.value<WId>());
