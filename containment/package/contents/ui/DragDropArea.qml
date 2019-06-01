@@ -40,6 +40,8 @@ DragDrop.DropArea {
         property bool computationsAreValid: false
     }
 
+    property bool animationSent: false
+
     Connections{
         target: root.dragInfo
 
@@ -112,7 +114,10 @@ DragDrop.DropArea {
         dragInfo.onlyLaunchers = latteApplet ? latteApplet.launchersDrop(event) : false;
         dragInfo.computationsAreValid = true;
 
-        slotAnimationsNeedLength(1);
+        if (!animationSent) {
+            animationSent = true;
+            slotAnimationsNeedLength(1);
+        }
 
         if (dragInfo.isTask || plasmoid.immutable || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
             event.ignore();
@@ -189,7 +194,8 @@ DragDrop.DropArea {
     }
 
     onDragLeave: {
-        if (dragInfo.entered) {
+        if (animationSent) {
+            animationSent = false;
             slotAnimationsNeedLength(-1);
         }
 
@@ -202,10 +208,12 @@ DragDrop.DropArea {
     }
 
     onDrop: {
+        if (animationSent) {
+            animationSent = false;
+            slotAnimationsNeedLength(-1);
+        }
+
         if (dragInfo.isTask || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
-            if (dragInfo.entered) {
-                slotAnimationsNeedLength(-1);
-            }
             return;
         }
 
@@ -218,9 +226,5 @@ DragDrop.DropArea {
 
         root.addLaunchersMessage = false;
         dndSpacer.opacity = 0;
-
-        if (dragInfo.entered) {
-            slotAnimationsNeedLength(-1);
-        }
     }
 }
