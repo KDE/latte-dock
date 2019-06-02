@@ -742,6 +742,21 @@ Window{
                 text: layoutsContainer.endLayout.sizeWithNoFillApplets+" px."
             }
 
+            Text{
+                text: "   -----------   "
+            }
+
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
+                text: "Applets need Windows Tracking"+space
+            }
+
+            Text{
+                text: root.appletsNeedWindowsTracking
+            }
         }
 
     }

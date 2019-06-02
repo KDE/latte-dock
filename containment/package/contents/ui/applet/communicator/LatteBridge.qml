@@ -80,7 +80,15 @@ Item{
     // @since: 0.9
     readonly property int iconSize: root.iconSize
 
-    readonly property QtObject windowsTracker: latteView ? latteView.windowsTracker : null
+
+    // NAME: windowsTracker
+    //   USAGE: read-only
+    //   EXPLANATION: windows tracking based on the view this applet is present
+    //   USE CASE: it can be used from applets that want windows tracking in order
+    //       to update their appearance or their behavior accordingly
+    // @since: 0.9
+    readonly property QtObject windowsTracker: mainCommunicator.needsWindowTracking && latteView && latteView.windowsTracker ?
+                                                   latteView.windowsTracker : null
 
     property Item actions: Actions{}
 

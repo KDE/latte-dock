@@ -235,10 +235,11 @@ Item{
         property: "enabled"
         when: latteView && latteView.windowsTracker && latteView.visibility
         value: (latteView && latteView.visibility
-                && !(latteView.visibility.mode === Latte.Types.AlwaysVisible
+                && !(latteView.visibility.mode === Latte.Types.AlwaysVisible /* Visibility */
                      || latteView.visibility.mode === Latte.Types.WindowsGoBelow
                      || latteView.visibility.mode === Latte.Types.AutoHide))
-               || ((root.backgroundOnlyOnMaximized
+               || root.appletsNeedWindowsTracking > 0                        /*Applets Neew Windows Tracking */
+               || ((root.backgroundOnlyOnMaximized                           /*Dynamic Background */
                     || plasmoid.configuration.solidBackgroundForMaximized
                     || root.disablePanelShadowMaximized
                     || root.windowColors !== Latte.Types.NoneWindowColors))

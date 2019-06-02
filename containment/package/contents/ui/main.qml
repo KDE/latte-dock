@@ -204,6 +204,8 @@ Item {
 
     property int animationTime: durationTime*2.8*units.longDuration
 
+    property int appletsNeedWindowsTracking: 0
+
     property int automaticIconSizeBasedSize: -1 //it is not set, this is the defautl
 
     //what is the highest icon size based on what icon size is used, screen calculated or user specified
@@ -1257,6 +1259,14 @@ Item {
         animationsNeedThickness = Math.max(animationsNeedThickness + step, 0);
 
         visibilityManager.updateMaskArea();
+    }
+
+    function slotAppletsNeedWindowsTracking(step) {
+        if (step === 0) {
+            return;
+        }
+
+        appletsNeedWindowsTracking = Math.max(appletsNeedWindowsTracking + step, 0);
     }
 
     //this is used when dragging a task in order to not hide the dock
