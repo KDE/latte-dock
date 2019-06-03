@@ -21,10 +21,10 @@
 
 // local
 #include "indicatorinfo.h"
-#include "view.h"
-#include "../lattecorona.h"
-#include "../indicator/factory.h"
-#include "../../liblatte2/types.h"
+#include "../view.h"
+#include "../../lattecorona.h"
+#include "../../indicator/factory.h"
+#include "../../../liblatte2/types.h"
 
 // Qt
 #include <QFileDialog>

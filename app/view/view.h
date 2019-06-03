@@ -23,10 +23,10 @@
 
 // local
 #include "effects.h"
-#include "indicator.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
 #include "windowstracker.h"
+#include "indicator/indicator.h"
 #include "settings/primaryconfigview.h"
 #include "../shortcuts/globalshortcuts.h"
 #include "../layout/genericlayout.h"
