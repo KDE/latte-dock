@@ -220,6 +220,8 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
         m_connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::existsWindowTouchingChanged
                                         , this, &VisibilityManager::dodgeAllWindows);
+
+        dodgeAllWindows();
         break;
     }
 
