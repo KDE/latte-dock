@@ -62,10 +62,12 @@ Item {
 
     readonly property int currentIconSize: root.iconSize
     readonly property int maxIconSize: root.maxIconSize
-    readonly property int durationTime: root.durationTime
     readonly property real scaleFactor: taskIsValid ? taskItem.wrapperAlias.mScale : 1
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid
+
+    readonly property bool animationsEnabled: root.animationsEnabled
+    readonly property real durationTime: root.durationTime
 
     readonly property bool usePlasmaTabsStyle: false
 
