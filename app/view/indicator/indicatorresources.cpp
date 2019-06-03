@@ -17,10 +17,12 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "indicator.h"
 #include "indicatorresources.h"
 
 // Qt
 #include <QDebug>
+#include <QFileInfo>
 
 // Plasma
 #include <Plasma/Svg>
@@ -29,8 +31,9 @@ namespace Latte {
 namespace ViewPart {
 namespace IndicatorPart {
 
-Resources::Resources(QObject *parent) :
-    QObject(parent)
+Resources::Resources(Indicator *parent) :
+    QObject(parent),
+    m_indicator(parent)
 {
 }
 
@@ -55,11 +58,19 @@ void Resources::setSvgImagePaths(QStringList paths)
         svg->deleteLater();
     }
 
-    for(const auto &path : paths) {
-        if (!path.isEmpty()) {
+    for(const auto &relPath : paths) {
+        if (!relPath.isEmpty()) {
             Plasma::Svg *svg = new Plasma::Svg(this);
-            svg->setImagePath(path);
-            m_svgs << svg;
+
+            bool isLocalFile = relPath.contains(".") && !relPath.startsWith("file:");
+
+            QString adjustedPath = isLocalFile ? m_indicator->uiPath() + "/" + relPath : relPath;
+
+            if ( !isLocalFile
+                 || (isLocalFile && QFileInfo(adjustedPath).exists()) ) {
+                svg->setImagePath(adjustedPath);
+                m_svgs << svg;
+            }
         }
     }
 

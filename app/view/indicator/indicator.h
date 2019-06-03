@@ -109,6 +109,8 @@ public:
     QString type() const;
     void setType(QString type);
 
+    QString uiPath() const;
+
     QString customType() const;
 
     int customPluginsCount() const;

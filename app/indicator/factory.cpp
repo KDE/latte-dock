@@ -113,6 +113,7 @@ KPluginMetaData Factory::metadata(QString pluginId)
 void Factory::reload()
 {
     m_plugins.clear();
+    m_pluginUiPaths.clear();
     m_customPluginIds.clear();
     m_customPluginNames.clear();
     m_customLocalPluginIds.clear();
@@ -144,8 +145,11 @@ void Factory::reload()
                                 m_customLocalPluginIds << metadata.pluginId();
                             }
 
-                            QString pluginPath = metadata.fileName().remove("metadata.desktop");
+                            m_pluginUiPaths[metadata.pluginId()] = QFileInfo(uiFile).absolutePath();
+
+                            QString pluginPath = metadata.fileName().remove("metadata.desktop");                                                        
                             qDebug() << " Indicator Package Loaded ::: " << metadata.name() << " [" << metadata.pluginId() << "]" << " - [" <<pluginPath<<"]";
+
                             /*qDebug() << " Indicator value ::: " << metadata.pluginId();
                             qDebug() << " Indicator value ::: " << metadata.fileName();
                             qDebug() << " Indicator value ::: " << metadata.value("X-Latte-MainScript");
@@ -178,6 +182,14 @@ bool Factory::metadataAreValid(QString &file)
     return false;
 }
 
+QString Factory::uiPath(QString pluginName) const
+{
+    if (!m_pluginUiPaths.contains(pluginName)) {
+        return "";
+    }
+
+    return m_pluginUiPaths[pluginName];
+}
 
 Latte::Types::ImportExportState Factory::importIndicatorFile(QString compressedFile)
 {

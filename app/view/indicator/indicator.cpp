@@ -206,6 +206,11 @@ int Indicator::customPluginsCount() const
     return m_corona->indicatorFactory()->customPluginsCount();
 }
 
+QString Indicator::uiPath() const
+{
+    return m_corona->indicatorFactory()->uiPath(m_type);
+}
+
 QStringList Indicator::customPluginIds() const
 {
     return m_corona->indicatorFactory()->customPluginIds();

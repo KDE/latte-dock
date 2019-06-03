@@ -53,6 +53,8 @@ public:
 
     bool pluginExists(QString id) const;
 
+    QString uiPath(QString pluginName) const;
+
     //! metadata record
     static bool metadataAreValid(KPluginMetaData &metadata);
     //! metadata file
@@ -68,6 +70,7 @@ private:
 
 private:
     QHash<QString, KPluginMetaData> m_plugins;
+    QHash<QString, QString> m_pluginUiPaths;
 
     QStringList m_customPluginIds;
     QStringList m_customPluginNames;

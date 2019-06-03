@@ -25,6 +25,12 @@
 
 namespace Latte {
 namespace ViewPart {
+class Indicator;
+}
+}
+
+namespace Latte {
+namespace ViewPart {
 namespace IndicatorPart {
 
 /**
@@ -37,7 +43,7 @@ class Resources: public QObject
     Q_PROPERTY(QList<QObject *> svgs READ svgs NOTIFY svgsChanged)
 
 public:
-    Resources(QObject *parent);
+    Resources(Indicator *parent);
     virtual ~Resources();
 
     QList<QObject *> svgs() const;
@@ -50,6 +56,8 @@ signals:
 
 private:
     QStringList m_svgImagePaths;
+
+    Indicator *m_indicator{nullptr};
 
     QList<QObject *> m_svgs;
 };
