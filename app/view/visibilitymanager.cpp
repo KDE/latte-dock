@@ -208,7 +208,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged
                                       , this, &VisibilityManager::dodgeMaximized);
         m_connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowMaximizedChanged
-                                        , this, &VisibilityManager::dodgeActive);
+                                        , this, &VisibilityManager::dodgeMaximized);
 
         dodgeMaximized();
         break;
