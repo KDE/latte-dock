@@ -41,7 +41,8 @@ namespace ViewPart {
 Indicator::Indicator(Latte::View *parent)
     : QObject(parent),
       m_view(parent),
-      m_info(new IndicatorPart::Info(this))
+      m_info(new IndicatorPart::Info(this)),
+      m_resources(new IndicatorPart::Resources(this))
 {
     m_corona = qobject_cast<Latte::Corona *>(m_view->corona());
     loadConfig();
@@ -223,6 +224,11 @@ QStringList Indicator::customLocalPluginIds() const
 IndicatorPart::Info *Indicator::info() const
 {
     return m_info;
+}
+
+IndicatorPart::Resources *Indicator::resources() const
+{
+    return m_resources;
 }
 
 QQmlComponent *Indicator::component() const

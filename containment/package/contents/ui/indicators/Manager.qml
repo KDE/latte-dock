@@ -30,11 +30,12 @@ Item{
     id: managerIndicator
 
     readonly property QtObject configuration: latteView && latteView.indicator ? latteView.indicator.configuration : null
+    readonly property QtObject resources: latteView && latteView.indicator ? latteView.indicator.resources : null
 
     readonly property bool isEnabled: latteView && latteView.indicator ? (latteView.indicator.enabled && latteView.indicator.pluginIsReady) : false
     readonly property bool enabledForApplets: latteView && latteView.indicator ? latteView.indicator.enabledForApplets : true
     readonly property real padding: Math.max(info.minLengthPadding, latteView && latteView.indicator ? latteView.indicator.padding : 0.08)
-    readonly property string type: latteView && latteView.indicator ? latteView.indicator.type : "org.kde.latte.default"
+    readonly property string type: latteView && latteView.indicator ? latteView.indicator.type : "org.kde.latte.default"  
 
     readonly property Component plasmaStyleComponent: latteView && latteView.indicator ? latteView.indicator.plasmaComponent : null
     readonly property Component indicatorComponent: latteView && latteView.indicator ? latteView.indicator.component : null
@@ -44,7 +45,7 @@ Item{
                                                 && metricsLoader.item.needsIconColors
 
         readonly property bool needsMouseEventCoordinates: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("needsMouseEventCoordinates")
-                                                         && metricsLoader.item.needsMouseEventCoordinates
+                                                           && metricsLoader.item.needsMouseEventCoordinates
 
         readonly property bool providesFrontLayer: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("providesFrontLayer")
                                                    && metricsLoader.item.providesFrontLayer
@@ -78,7 +79,13 @@ Item{
 
             return 0;
         }
+
+        readonly property variant svgPaths: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("svgImagePaths") ?
+                                                metricsLoader.item.svgImagePaths : []
+
+        onSvgPathsChanged: latteView.indicator.resources.setSvgImagePaths(svgPaths);
     }
+
 
     //! Metrics and values provided from an invisible indicator
     Loader{

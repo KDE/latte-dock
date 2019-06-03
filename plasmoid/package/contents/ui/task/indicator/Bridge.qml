@@ -71,6 +71,8 @@ Item {
 
     readonly property bool usePlasmaTabsStyle: false
 
+    readonly property variant svgs: indicators ? indicators.svgs : []
+
     readonly property QtObject palette: enforceLattePalette ? latteBridge.palette.applyTheme : theme
 
     //!icon colors
@@ -80,6 +82,7 @@ Item {
     //! grouped options
     readonly property Item shared: indicators ? indicators : emptyOptions
     readonly property QtObject configuration: indicators ? indicators.configuration : null
+    readonly property QtObject resources: indicators ? indicators.resources : null
 
     Item{id: emptyOptions}
 }

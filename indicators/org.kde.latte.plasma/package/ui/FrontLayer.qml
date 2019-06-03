@@ -189,11 +189,6 @@ Item {
         sourceComponent: Item{
             anchors.fill: parent
 
-            PlasmaCore.Svg {
-                id: taskSvg
-                imagePath: "widgets/tasks"
-            }
-
             Item {
                 id: iconBox
                 anchors.centerIn: parent
@@ -207,9 +202,10 @@ Item {
                 implicitWidth: 0.25 * iconBox.width
                 implicitHeight: implicitWidth
 
-                svg: taskSvg
+                svg: groupSvg
                 elementId: elementForLocation(plasmoid.location)
 
+                readonly property QtObject groupSvg: indicator.resources.svgs.length > 0 ? indicator.resources.svgs[0] : null
 
                 function elementForLocation(location) {
                     switch (location) {

@@ -22,6 +22,7 @@
 
 // local
 #include "indicatorinfo.h"
+#include "indicatorresources.h"
 
 // Qt
 #include <QObject>
@@ -81,6 +82,12 @@ class Indicator: public QObject
       */
     Q_PROPERTY(Latte::ViewPart::IndicatorPart::Info *info READ info NOTIFY infoChanged)
 
+    /**
+      * Resources provided from the indicator itself
+      */
+    Q_PROPERTY(Latte::ViewPart::IndicatorPart::Resources *resources READ resources NOTIFY resourcesChanged)
+
+
 public:
     Indicator(Latte::View *parent);
     virtual ~Indicator();
@@ -110,6 +117,7 @@ public:
     QStringList customLocalPluginIds() const;
 
     IndicatorPart::Info *info() const;
+    IndicatorPart::Resources *resources() const;
 
     QObject *configuration() const;
     QQmlComponent *component() const;
@@ -136,6 +144,7 @@ signals:
     void pluginChanged();
     void pluginIsReadyChanged();
     void providesConfigUiChanged();
+    void resourcesChanged();
 
 private:
     void loadConfig();
@@ -172,6 +181,7 @@ private:
     KPluginMetaData m_metadata;
 
     QPointer<IndicatorPart::Info> m_info;
+    QPointer<IndicatorPart::Resources> m_resources;
 
     QPointer<KDeclarative::ConfigPropertyMap> m_configuration;
     QPointer<KDeclarative::QmlObjectSharedEngine> m_lastCreatedConfigUi;

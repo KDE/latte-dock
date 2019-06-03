@@ -32,6 +32,8 @@ Item{
     id: managerIndicator
 
     readonly property Item configuration: explicitOptions
+    readonly property QtObject resources: null
+
 
     readonly property bool isEnabled: true
     readonly property string type: "org.kde.latte.default"

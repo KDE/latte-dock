@@ -90,4 +90,5 @@ Item{
     //! grouped options
     readonly property Item shared: indicators
     readonly property QtObject configuration: indicators.configuration
+    readonly property QtObject resources: indicators.resources
 }

@@ -31,6 +31,7 @@ LatteComponents.IndicatorItem {
     providesClickedAnimation: clickedAnimationEnabled
     providesHoveredAnimation: true
     providesFrontLayer: true
+    svgImagePaths: ["widgets/tasks"]
 
     //! config options
     readonly property bool clickedAnimationEnabled: indicator && indicator.configuration

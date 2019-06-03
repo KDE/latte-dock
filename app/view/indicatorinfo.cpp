@@ -19,6 +19,11 @@
 
 #include "indicatorinfo.h"
 
+// Qt
+#include <QDebug>
+
+// Plasma
+#include <Plasma/Svg>
 
 namespace Latte {
 namespace ViewPart {
