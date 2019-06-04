@@ -67,9 +67,10 @@ public:
     SchemeColors *touchingWindowScheme(Latte::View *view) const;
     LastActiveWindow *lastActiveWindow(Latte::View *view);
 
-    bool isValidFor(WindowId wid) const;
-    QIcon iconFor(WindowId wid);
-    QString appNameFor(WindowId wid);
+    bool isValidFor(const WindowId &wid) const;
+    QIcon iconFor(const WindowId &wid);
+    QString appNameFor(const WindowId &wid);
+    WindowInfoWrap infoFor(const WindowId &wid) const;
 
     void setPlasmaDesktop(WindowId wid);
 
@@ -84,6 +85,11 @@ signals:
     void existsWindowTouchingChanged(const Latte::View *view);
     void activeWindowSchemeChanged(const Latte::View *view);
     void touchingWindowSchemeChanged(const Latte::View *view);
+
+    //! overloading WM signals in order to update first m_windows and afterwards
+    //! inform consumers for window changes
+    void activeWindowChanged(const WindowId &wid);
+    void windowChanged(const WindowId &wid);
 
 private slots:
     void updateAvailableScreenGeometries();

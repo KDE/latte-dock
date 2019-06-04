@@ -32,9 +32,13 @@ namespace Tracker {
 TrackedGeneralInfo::TrackedGeneralInfo(Tracker::Windows *tracker, Latte::View *view)
     : QObject(tracker) ,
       m_wm(tracker->wm()),
-      m_view(view)
+      m_view(view),
+      m_tracker(tracker)
 {
     m_lastActiveWindow = new LastActiveWindow(this);
+
+    connect(tracker, &Windows::windowChanged, this, &TrackedGeneralInfo::windowChanged);
+    connect(tracker, &Windows::activeWindowChanged, this, &TrackedGeneralInfo::windowChanged);
 
     emit lastActiveWindowChanged();
 }
@@ -133,6 +137,19 @@ Latte::View *TrackedGeneralInfo::view()
 AbstractWindowInterface *TrackedGeneralInfo::wm()
 {
     return m_wm;
+}
+
+
+void TrackedGeneralInfo::setActiveWindow(const WindowId &wid)
+{
+    m_lastActiveWindow->setInformation(m_tracker->infoFor(wid));
+}
+
+void TrackedGeneralInfo::windowChanged(const WindowId &wid)
+{
+    if (m_lastActiveWindow->winId() == wid && !wid.isNull()) {
+        m_lastActiveWindow->setInformation(m_tracker->infoFor(wid));
+    }
 }
 
 }

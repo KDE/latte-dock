@@ -63,12 +63,13 @@ public:
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
-        , m_isOnAllDesktops(o.m_isOnAllDesktops) {
+        , m_isOnAllDesktops(o.m_isOnAllDesktops)
+        , m_display(o.m_display) {
     }
 
     WindowInfoWrap(WindowInfoWrap &&o) noexcept
-        : m_wid(std::move(o.m_wid))
-        , m_geometry(std::move(o.m_geometry))
+        : m_wid(o.m_wid)
+        , m_geometry(o.m_geometry)
         , m_isValid(o.m_isValid)
         , m_isActive(o.m_isActive)
         , m_isMinimized(o.m_isMinimized)
@@ -79,7 +80,8 @@ public:
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
-        , m_isOnAllDesktops(o.m_isOnAllDesktops) {
+        , m_isOnAllDesktops(o.m_isOnAllDesktops)
+        , m_display(o.m_display) {
     }
 
     inline WindowInfoWrap &operator=(WindowInfoWrap &&rhs) noexcept;

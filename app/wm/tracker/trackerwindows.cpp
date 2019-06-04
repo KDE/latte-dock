@@ -60,15 +60,9 @@ void Windows::init()
 
     connect(m_wm, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
         m_windows[wid] = m_wm->requestInfo(wid);
-
-        for (const auto view : m_views.keys()) {
-            WindowId lastWinId = m_views[view]->lastActiveWindow()->winId();
-            if (lastWinId == wid) {
-                m_views[view]->lastActiveWindow()->setInformation(m_windows[lastWinId]);
-            }
-        }
-
         updateViewsHints();
+
+        emit windowChanged(wid);
     });
 
     connect(m_wm, &AbstractWindowInterface::windowRemoved, this, [&](WindowId wid) {
@@ -84,16 +78,19 @@ void Windows::init()
     });
 
     connect(m_wm, &AbstractWindowInterface::activeWindowChanged, this, [&](WindowId wid) {
+        //! for some reason this is needed in order to update properly activeness values
+        //! when the active window changes the previous active windows should be also updated
         for (const auto view : m_views.keys()) {
             WindowId lastWinId = m_views[view]->lastActiveWindow()->winId();
-            if (m_windows.contains(lastWinId)) {
+            if ((lastWinId) != wid && m_windows.contains(lastWinId)) {
                 m_windows[lastWinId] = m_wm->requestInfo(lastWinId);
-                m_views[view]->lastActiveWindow()->setInformation(m_windows[lastWinId]);
             }
         }
 
         m_windows[wid] = m_wm->requestInfo(wid);
         updateViewsHints();
+
+        emit activeWindowChanged(wid);
     });
 
     connect(m_wm, &AbstractWindowInterface::currentDesktopChanged, this, [&] {
@@ -324,7 +321,7 @@ LastActiveWindow *Windows::lastActiveWindow(Latte::View *view)
     return m_views[view]->lastActiveWindow();
 }
 
-bool Windows::isValidFor(WindowId wid) const
+bool Windows::isValidFor(const WindowId &wid) const
 {
     if (!m_windows.contains(wid)) {
         return false;
@@ -333,7 +330,7 @@ bool Windows::isValidFor(WindowId wid) const
     return m_windows[wid].isValid() && !m_windows[wid].isPlasmaDesktop();
 }
 
-QIcon Windows::iconFor(WindowId wid)
+QIcon Windows::iconFor(const WindowId &wid)
 {
     if (!m_windows.contains(wid)) {
         return QIcon();
@@ -355,7 +352,7 @@ QIcon Windows::iconFor(WindowId wid)
     return m_windows[wid].icon();
 }
 
-QString Windows::appNameFor(WindowId wid)
+QString Windows::appNameFor(const WindowId &wid)
 {
     if (!m_windows.contains(wid)) {
         return QString();
@@ -370,6 +367,17 @@ QString Windows::appNameFor(WindowId wid)
 
     return m_windows[wid].appName();
 }
+
+WindowInfoWrap Windows::infoFor(const WindowId &wid) const
+{
+    if (!m_windows.contains(wid)) {
+        return WindowInfoWrap();
+    }
+
+    return m_windows[wid];
+}
+
+
 
 //! Windows Criteria Functions
 
@@ -397,16 +405,16 @@ bool Windows::isActiveInViewScreen(Latte::View *view, const WindowInfoWrap &winf
 bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
 {
     auto viewIntersectsMaxVert = [&]() noexcept -> bool {
-        return ((winfo.isMaxVert()
-                 || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height()))
-                && intersects(view, winfo));
-    };
+            return ((winfo.isMaxVert()
+                     || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height()))
+                    && intersects(view, winfo));
+};
 
     auto viewIntersectsMaxHoriz = [&]() noexcept -> bool {
-        return ((winfo.isMaxHoriz()
-                 || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width()))
-                && intersects(view, winfo));
-    };
+            return ((winfo.isMaxHoriz()
+                     || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width()))
+                    && intersects(view, winfo));
+};
 
     //! updated implementation to identify the screen that the maximized window is present
     //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
@@ -531,7 +539,6 @@ void Windows::updateHints(Latte::View *view)
         }
 
         if (isActiveInViewScreen(view, winfo)) {
-            m_views[view]->lastActiveWindow()->setInformation(winfo);
             foundActiveInCurScreen = true;
             activeWinId = winfo.wid();
         }
@@ -596,6 +603,11 @@ void Windows::updateHints(Latte::View *view)
         setTouchingWindowScheme(view, m_wm->schemesTracker()->schemeForWindow(touchWinId));
     } else {
         setTouchingWindowScheme(view, nullptr);
+    }
+
+    //! update LastActiveWindow
+    if (foundActiveInCurScreen) {
+        m_views[view]->setActiveWindow(activeWinId);
     }
 
     //! Debug

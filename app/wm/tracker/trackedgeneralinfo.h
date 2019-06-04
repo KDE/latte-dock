@@ -74,8 +74,13 @@ public:
     Latte::View *view();
     AbstractWindowInterface *wm();
 
+    void setActiveWindow(const WindowId &wid);
+
 signals:
     void lastActiveWindowChanged();
+
+private slots:
+    void windowChanged(const WindowId &wid);
 
 private:
     bool m_enabled;
@@ -89,6 +94,7 @@ private:
     SchemeColors *m_activeWindowScheme{nullptr};
 
     AbstractWindowInterface *m_wm{nullptr};
+    Tracker::Windows *m_tracker{nullptr};
 };
 
 }
