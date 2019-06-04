@@ -239,6 +239,7 @@ Item{
                      || latteView.visibility.mode === Latte.Types.WindowsGoBelow
                      || latteView.visibility.mode === Latte.Types.AutoHide))
                || root.appletsNeedWindowsTracking > 0                        /*Applets Neew Windows Tracking */
+               || root.dragActiveWindowEnabled                               /*Dragging Active Window(Empty Areas)*/
                || ((root.backgroundOnlyOnMaximized                           /*Dynamic Background */
                     || plasmoid.configuration.solidBackgroundForMaximized
                     || root.disablePanelShadowMaximized
