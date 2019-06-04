@@ -63,9 +63,7 @@ public:
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
-        , m_isOnAllDesktops(o.m_isOnAllDesktops)
-        , m_appName(o.m_appName)
-        , m_display(o.m_display) {
+        , m_isOnAllDesktops(o.m_isOnAllDesktops) {
     }
 
     WindowInfoWrap(WindowInfoWrap &&o) noexcept
@@ -81,9 +79,7 @@ public:
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
-        , m_isOnAllDesktops(o.m_isOnAllDesktops)
-        , m_appName(o.m_appName)
-        , m_display(o.m_display) {
+        , m_isOnAllDesktops(o.m_isOnAllDesktops) {
     }
 
     inline WindowInfoWrap &operator=(WindowInfoWrap &&rhs) noexcept;
@@ -140,7 +136,7 @@ public:
     inline void setIcon(const QIcon &icon) noexcept;
 
     inline WindowId wid() const noexcept;
-    inline void setWid(WindowId wid) noexcept;
+    inline void setWid(const WindowId &wid) noexcept;
 
 private:
     WindowId m_wid{0};
@@ -167,8 +163,8 @@ private:
 // BEGIN: definitions
 inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
 {
-    m_wid = std::move(rhs.m_wid);
-    m_geometry = std::move(rhs.m_geometry);
+    m_wid = rhs.m_wid;
+    m_geometry = rhs.m_geometry;
     m_isValid = rhs.m_isValid;
     m_isActive = rhs.m_isActive;
     m_isMinimized = rhs.m_isMinimized;
@@ -180,9 +176,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
-    m_appName = rhs.m_appName;
     m_display = rhs.m_display;
-    m_icon = rhs.m_icon;
     return *this;
 }
 
@@ -201,9 +195,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noex
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
-    m_appName = rhs.m_appName;
     m_display = rhs.m_display;
-    m_icon = rhs.m_icon;
     return *this;
 }
 
@@ -382,7 +374,7 @@ inline WindowId WindowInfoWrap::wid() const noexcept
     return m_wid;
 }
 
-inline void WindowInfoWrap::setWid(WindowId wid) noexcept
+inline void WindowInfoWrap::setWid(const WindowId &wid) noexcept
 {
     m_wid = wid;
 }
