@@ -21,7 +21,7 @@
 
 // local
 #include "trackedgeneralinfo.h"
-#include "windows.h"
+#include "trackerwindows.h"
 #include "../abstractwindowinterface.h"
 #include "../tasktools.h"
 #include "../../view/view.h"

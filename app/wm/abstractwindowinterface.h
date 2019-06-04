@@ -25,7 +25,7 @@
 #include "schemecolors.h"
 #include "tasktools.h"
 #include "windowinfowrap.h"
-#include "tracker/windows.h"
+#include "tracker/trackerwindows.h"
 #include "../liblatte2/types.h"
 #include "../liblatte2/extras.h"
 

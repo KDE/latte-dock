@@ -757,6 +757,23 @@ Window{
             Text{
                 text: root.appletsNeedWindowsTracking
             }
+
+            Text{
+                text: "Last Active Window (id)"+space
+            }
+
+            Text{
+                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.lastActiveWindow.winId : ""
+            }
+
+            Text{
+                text: "Last Active Window (title)"+space
+            }
+
+            Text{
+                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.lastActiveWindow.display : ""
+                elide: Text.ElideRight
+            }
         }
 
     }
