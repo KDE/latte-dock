@@ -22,7 +22,7 @@
 // local
 #include "lastactivewindow.h"
 #include "schemes.h"
-#include "trackedinfo.h"
+#include "trackedviewinfo.h"
 #include "../abstractwindowinterface.h"
 #include "../schemecolors.h"
 #include "../../lattecorona.h"
@@ -46,7 +46,7 @@ Windows::Windows(AbstractWindowInterface *parent)
 Windows::~Windows()
 {
     //! clear all the m_views tracking information
-    for (QHash<Latte::View *, TrackedInfo *>::iterator i=m_views.begin(); i!=m_views.end(); ++i) {
+    for (QHash<Latte::View *, TrackedViewInfo *>::iterator i=m_views.begin(); i!=m_views.end(); ++i) {
         i.value()->deleteLater();
         m_views[i.key()] = nullptr;
     }
@@ -138,7 +138,7 @@ void Windows::addView(Latte::View *view)
         return;
     }
 
-    m_views[view] = new TrackedInfo(this, view);
+    m_views[view] = new TrackedViewInfo(this, view);
 
     updateAvailableScreenGeometries();
     updateHints(view);

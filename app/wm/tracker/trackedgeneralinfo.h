@@ -17,8 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef WINDOWSYSTEMTRACKEDINFO_H
-#define WINDOWSYSTEMTRACKEDINFO_H
+#ifndef WINDOWSYSTEMTRACKEDGENERALINFO_H
+#define WINDOWSYSTEMTRACKEDGENERALINFO_H
 
 // local
 #include "lastactivewindow.h"
@@ -26,7 +26,6 @@
 
 // Qt
 #include <QObject>
-#include <QRect>
 
 namespace Latte {
 class View;
@@ -43,14 +42,14 @@ namespace Latte {
 namespace WindowSystem {
 namespace Tracker {
 
-class TrackedInfo : public QObject {
+class TrackedGeneralInfo : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(Latte::WindowSystem::Tracker::LastActiveWindow *activeWindow READ lastActiveWindow NOTIFY lastActiveWindowChanged)
 
 public:
-    TrackedInfo(Tracker::Windows *tracker, Latte::View *view);
-    ~TrackedInfo() override;
+    TrackedGeneralInfo(Tracker::Windows *tracker, Latte::View *view);
+    ~TrackedGeneralInfo() override;
 
     bool enabled() const;
     void setEnabled(bool enabled);
@@ -58,17 +57,11 @@ public:
     bool activeWindowMaximized() const;
     void setActiveWindowMaximized(bool activeMaximized);
 
-    bool activeWindowTouching() const;
-    void setActiveWindowTouching(bool touching);
-
     bool existsWindowActive() const;
     void setExistsWindowActive(bool exists);
 
     bool existsWindowMaximized() const;
     void setExistsWindowMaximized(bool maximized);
-
-    bool existsWindowTouching() const;
-    void setExistsWindowTouching(bool touching);
 
     QRect availableScreenGeometry() const;
     void setAvailableScreenGeometry(QRect geometry);
@@ -77,9 +70,6 @@ public:
 
     SchemeColors *activeWindowScheme() const;
     void setActiveWindowScheme(SchemeColors *scheme);
-
-    SchemeColors *touchingWindowScheme() const;
-    void setTouchingWindowScheme(SchemeColors *scheme);
 
     Latte::View *view();
     AbstractWindowInterface *wm();
@@ -90,18 +80,13 @@ signals:
 private:
     bool m_enabled;
     bool m_activeWindowMaximized;
-    bool m_activeWindowTouching;
     bool m_existsWindowActive;
     bool m_existsWindowMaximized;
-    bool m_existsWindowTouching;
-
-    QRect m_availableScreenGeometry;
 
     Latte::View *m_view{nullptr};
     LastActiveWindow *m_lastActiveWindow{nullptr};
 
     SchemeColors *m_activeWindowScheme{nullptr};
-    SchemeColors *m_touchingWindowScheme{nullptr};
 
     AbstractWindowInterface *m_wm{nullptr};
 };

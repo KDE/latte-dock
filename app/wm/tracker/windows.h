@@ -36,7 +36,7 @@ class AbstractWindowInterface;
 class SchemeColors;
 namespace Tracker {
 class LastActiveWindow;
-class TrackedInfo;
+class TrackedViewInfo;
 }
 }
 }
@@ -114,7 +114,7 @@ private:
 
 private:
     AbstractWindowInterface *m_wm;
-    QHash<Latte::View *, TrackedInfo *> m_views;
+    QHash<Latte::View *, TrackedViewInfo *> m_views;
     QMap<WindowId, WindowInfoWrap > m_windows;
 
 };

@@ -17,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "trackedinfo.h"
+#include "trackedgeneralinfo.h"
 
 //local
 #include "windows.h"
@@ -29,7 +29,7 @@ namespace WindowSystem {
 namespace Tracker {
 
 
-TrackedInfo::TrackedInfo(Tracker::Windows *tracker, Latte::View *view)
+TrackedGeneralInfo::TrackedGeneralInfo(Tracker::Windows *tracker, Latte::View *view)
     : QObject(tracker) ,
       m_wm(tracker->wm()),
       m_view(view)
@@ -39,7 +39,7 @@ TrackedInfo::TrackedInfo(Tracker::Windows *tracker, Latte::View *view)
     emit lastActiveWindowChanged();
 }
 
-TrackedInfo::~TrackedInfo()
+TrackedGeneralInfo::~TrackedGeneralInfo()
 {
     if (m_lastActiveWindow) {
         auto law = m_lastActiveWindow;
@@ -50,12 +50,12 @@ TrackedInfo::~TrackedInfo()
     }
 }
 
-bool TrackedInfo::enabled() const
+bool TrackedGeneralInfo::enabled() const
 {
     return m_enabled;
 }
 
-void TrackedInfo::setEnabled(bool enabled)
+void TrackedGeneralInfo::setEnabled(bool enabled)
 {
     if (m_enabled == enabled) {
         return;
@@ -64,12 +64,12 @@ void TrackedInfo::setEnabled(bool enabled)
     m_enabled = enabled;
 }
 
-bool TrackedInfo::activeWindowMaximized() const
+bool TrackedGeneralInfo::activeWindowMaximized() const
 {
     return m_activeWindowMaximized;
 }
 
-void TrackedInfo::setActiveWindowMaximized(bool activeMaximized)
+void TrackedGeneralInfo::setActiveWindowMaximized(bool activeMaximized)
 {
     if (m_activeWindowMaximized == activeMaximized) {
         return;
@@ -78,26 +78,12 @@ void TrackedInfo::setActiveWindowMaximized(bool activeMaximized)
     m_activeWindowMaximized = activeMaximized;
 }
 
-bool TrackedInfo::activeWindowTouching() const
-{
-    return m_activeWindowTouching;
-}
-
-void TrackedInfo::setActiveWindowTouching(bool touching)
-{
-    if (m_activeWindowTouching == touching) {
-        return;
-    }
-
-    m_activeWindowTouching = touching;
-}
-
-bool TrackedInfo::existsWindowActive() const
+bool TrackedGeneralInfo::existsWindowActive() const
 {
     return m_existsWindowActive;
 }
 
-void TrackedInfo::setExistsWindowActive(bool exists)
+void TrackedGeneralInfo::setExistsWindowActive(bool exists)
 {
     if (m_existsWindowActive == exists) {
         return;
@@ -106,12 +92,12 @@ void TrackedInfo::setExistsWindowActive(bool exists)
     m_existsWindowActive = exists;
 }
 
-bool TrackedInfo::existsWindowMaximized() const
+bool TrackedGeneralInfo::existsWindowMaximized() const
 {
     return m_existsWindowMaximized;
 }
 
-void TrackedInfo::setExistsWindowMaximized(bool maximized)
+void TrackedGeneralInfo::setExistsWindowMaximized(bool maximized)
 {
     if (m_existsWindowMaximized == maximized) {
         return;
@@ -120,45 +106,17 @@ void TrackedInfo::setExistsWindowMaximized(bool maximized)
     m_existsWindowMaximized = maximized;
 }
 
-bool TrackedInfo::existsWindowTouching() const
-{
-    return m_existsWindowTouching;
-}
-
-void TrackedInfo::setExistsWindowTouching(bool touching)
-{
-    if (m_existsWindowTouching == touching) {
-        return;
-    }
-
-    m_existsWindowTouching = touching;
-}
-
-QRect TrackedInfo::availableScreenGeometry() const
-{
-    return m_availableScreenGeometry;
-}
-
-void TrackedInfo::setAvailableScreenGeometry(QRect geometry)
-{
-    if (m_availableScreenGeometry == geometry) {
-        return;
-    }
-
-    m_availableScreenGeometry = geometry;
-}
-
-LastActiveWindow *TrackedInfo::lastActiveWindow() const
+LastActiveWindow *TrackedGeneralInfo::lastActiveWindow() const
 {
     return m_lastActiveWindow;
 }
 
-SchemeColors *TrackedInfo::activeWindowScheme() const
+SchemeColors *TrackedGeneralInfo::activeWindowScheme() const
 {
     return m_activeWindowScheme;
 }
 
-void TrackedInfo::setActiveWindowScheme(SchemeColors *scheme)
+void TrackedGeneralInfo::setActiveWindowScheme(SchemeColors *scheme)
 {
     if (m_activeWindowScheme == scheme) {
         return;
@@ -167,26 +125,12 @@ void TrackedInfo::setActiveWindowScheme(SchemeColors *scheme)
     m_activeWindowScheme = scheme;
 }
 
-SchemeColors *TrackedInfo::touchingWindowScheme() const
-{
-    return m_touchingWindowScheme;
-}
-
-void TrackedInfo::setTouchingWindowScheme(SchemeColors *scheme)
-{
-    if (m_touchingWindowScheme == scheme) {
-        return;
-    }
-
-    m_touchingWindowScheme = scheme;
-}
-
-Latte::View *TrackedInfo::view()
+Latte::View *TrackedGeneralInfo::view()
 {
     return m_view;
 }
 
-AbstractWindowInterface *TrackedInfo::wm()
+AbstractWindowInterface *TrackedGeneralInfo::wm()
 {
     return m_wm;
 }

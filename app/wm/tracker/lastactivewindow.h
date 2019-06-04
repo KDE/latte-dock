@@ -33,7 +33,7 @@ class View;
 namespace WindowSystem {
 class AbstractWindowInterface;
 namespace Tracker {
-class TrackedInfo;
+class TrackedGeneralInfo;
 class Windows;
 }
 }
@@ -63,7 +63,7 @@ class LastActiveWindow : public QObject {
     Q_PROPERTY(QVariant winId READ winId NOTIFY winIdChanged)
 
 public:
-    LastActiveWindow(TrackedInfo *trackedInfo);
+    LastActiveWindow(TrackedGeneralInfo *trackedInfo);
     ~LastActiveWindow() override;
 
     bool isActive() const;
@@ -151,7 +151,7 @@ private:
 
     QVariant m_winId;
 
-    TrackedInfo *m_trackedInfo{nullptr};
+    TrackedGeneralInfo *m_trackedInfo{nullptr};
     AbstractWindowInterface *m_wm{nullptr};
     Tracker::Windows *m_windowsTracker{nullptr};
 };

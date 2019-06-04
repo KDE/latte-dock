@@ -20,7 +20,7 @@
 #include "lastactivewindow.h"
 
 // local
-#include "trackedinfo.h"
+#include "trackedgeneralinfo.h"
 #include "windows.h"
 #include "../abstractwindowinterface.h"
 #include "../tasktools.h"
@@ -37,7 +37,7 @@ namespace Latte {
 namespace WindowSystem {
 namespace Tracker {
 
-LastActiveWindow::LastActiveWindow(TrackedInfo *trackedInfo)
+LastActiveWindow::LastActiveWindow(TrackedGeneralInfo *trackedInfo)
     : QObject(trackedInfo),
       m_trackedInfo(trackedInfo),
       m_windowsTracker(trackedInfo->wm()->windowsTracker()),
