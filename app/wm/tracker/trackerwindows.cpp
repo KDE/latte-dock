@@ -68,6 +68,8 @@ void Windows::init()
     connect(m_wm, &AbstractWindowInterface::windowRemoved, this, [&](WindowId wid) {
         m_windows.remove(wid);
         updateViewsHints();
+
+        emit windowRemoved(wid);
     });
 
     connect(m_wm, &AbstractWindowInterface::windowAdded, this, [&](WindowId wid) {

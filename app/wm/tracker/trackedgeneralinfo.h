@@ -79,9 +79,6 @@ public:
 signals:
     void lastActiveWindowChanged();
 
-private slots:
-    void windowChanged(const WindowId &wid);
-
 private:
     bool m_enabled;
     bool m_activeWindowMaximized;

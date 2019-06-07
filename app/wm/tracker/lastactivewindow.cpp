@@ -43,6 +43,9 @@ LastActiveWindow::LastActiveWindow(TrackedGeneralInfo *trackedInfo)
       m_windowsTracker(trackedInfo->wm()->windowsTracker()),
       m_wm(trackedInfo->wm())
 {
+    connect(m_windowsTracker, &Windows::activeWindowChanged, this, &LastActiveWindow::windowChanged);
+    connect(m_windowsTracker, &Windows::windowChanged, this, &LastActiveWindow::windowChanged);
+    connect(m_windowsTracker, &Windows::windowRemoved, this, &LastActiveWindow::windowRemoved);
 }
 
 LastActiveWindow::~LastActiveWindow()
@@ -236,6 +239,14 @@ void LastActiveWindow::setWinId(QVariant winId)
         return;
     }
 
+    if (!m_history.contains(winId)) {
+        m_history.prepend(winId);
+    } else {
+        int p = m_history.indexOf(winId);
+        //! move to start
+        m_history.move(p, 0);
+    }
+
     m_winId = winId;
     emit winIdChanged();
 }
@@ -268,9 +279,32 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 
 }
 
+//! PRIVATE SLOTS
+void LastActiveWindow::windowChanged(const WindowId &wid)
+{
+    if (m_winId == wid && !wid.isNull()) {
+        setInformation(m_windowsTracker->infoFor(wid));
+    }
+}
+
+void LastActiveWindow::windowRemoved(const WindowId &wid)
+{
+    bool wasFirst{false};
+
+    if (m_history.contains(wid)) {
+        if (m_history[0] == wid) {
+            wasFirst = true;
+        }
+
+        m_history.removeAll(wid);
+    }
+
+    if (wasFirst && !m_history.isEmpty()) {
+        setInformation(m_windowsTracker->infoFor(m_history[0]));
+    }
+}
+
 //! FUNCTIONALITY
-
-
 void LastActiveWindow::requestActivate()
 {
     m_wm->requestActivate(m_winId);

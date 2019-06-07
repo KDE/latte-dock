@@ -96,6 +96,12 @@ public slots:
 
     Q_INVOKABLE bool canBeDragged();
 
+
+private slots:
+    void windowChanged(const WindowId &wid);
+    void windowRemoved(const WindowId &wid);
+
+
 signals:
     void draggingStarted();
 
@@ -150,6 +156,8 @@ private:
     QIcon m_icon;
 
     QVariant m_winId;
+
+    QList<WindowId> m_history;
 
     TrackedGeneralInfo *m_trackedInfo{nullptr};
     AbstractWindowInterface *m_wm{nullptr};

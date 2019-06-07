@@ -90,6 +90,7 @@ signals:
     //! inform consumers for window changes
     void activeWindowChanged(const WindowId &wid);
     void windowChanged(const WindowId &wid);
+    void windowRemoved(const WindowId &wid);
 
 private slots:
     void updateAvailableScreenGeometries();
