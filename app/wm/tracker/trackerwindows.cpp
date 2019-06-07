@@ -512,7 +512,7 @@ void Windows::updateViewsHints()
 
 void Windows::updateHints(Latte::View *view)
 {
-    if (!m_views.contains(view)) {
+    if (!m_views.contains(view) || !view->isOnActivity(m_wm->currentActivity())) {
         return;
     }
 

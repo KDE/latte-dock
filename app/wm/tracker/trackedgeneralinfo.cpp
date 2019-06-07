@@ -148,7 +148,8 @@ bool TrackedGeneralInfo::isTracking(const WindowInfoWrap &winfo) const
             && !winfo.isPlasmaDesktop()
             && !winfo.isMinimized()
             && winfo.isOnDesktop(m_wm->currentDesktop())
-            && winfo.isOnActivity(m_wm->currentActivity()));
+            && winfo.isOnActivity(m_wm->currentActivity())
+            && m_view->isOnActivity(m_wm->currentActivity()));
 }
 
 }

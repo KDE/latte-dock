@@ -289,6 +289,7 @@ void LastActiveWindow::windowChanged(const WindowId &wid)
         //! and update information accordingly with the first window found from
         //! history after the removal
         WindowInfoWrap winfo = m_windowsTracker->infoFor(wid);
+
         if (winfo.isMinimized() || !m_trackedInfo->isTracking(winfo)) {
             m_history.removeAll(wid);
 

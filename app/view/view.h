@@ -176,6 +176,10 @@ public:
     QRect localGeometry() const;
     void setLocalGeometry(const QRect &geometry);
 
+    bool isOnActivity(const QString &activity) const;
+    bool isOnAllActivities() const;
+    QStringList activities() const;
+
     bool settingsWindowIsShown();
     void showSettingsWindow();
 
@@ -311,6 +315,8 @@ private:
 
     QRect m_localGeometry;
     QRect m_absoluteGeometry;
+
+    QStringList m_activities;
 
     //! HACK: Timers in order to handle KWin faulty
     //! behavior that hides Views when closing Activities

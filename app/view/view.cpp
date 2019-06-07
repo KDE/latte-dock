@@ -774,24 +774,38 @@ void View::setFontPixelSize(int size)
     emit fontPixelSizeChanged();
 }
 
+bool View::isOnAllActivities() const
+{
+    return m_activities.isEmpty() || m_activities[0] == "0";
+}
+
+bool View::isOnActivity(const QString &activity) const
+{
+    return isOnAllActivities() || m_activities.contains(activity);
+}
+
+QStringList View::activities() const
+{
+    return m_activities;
+}
+
 void View::applyActivitiesToWindows()
 {
     if (m_visibility && m_layout) {
-        QStringList activities = m_layout->appliedActivities();
-        m_windowsTracker->setWindowOnActivities(*this, activities);
+        m_windowsTracker->setWindowOnActivities(*this, m_activities);
 
         if (m_configView) {
-            m_windowsTracker->setWindowOnActivities(*m_configView, activities);
+            m_windowsTracker->setWindowOnActivities(*m_configView, m_activities);
 
             auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
             if (configView && configView->secondaryWindow()) {
-                m_windowsTracker->setWindowOnActivities(*configView->secondaryWindow(), activities);
+                m_windowsTracker->setWindowOnActivities(*configView->secondaryWindow(), m_activities);
             }
         }
 
         if (m_visibility->supportsKWinEdges()) {
-            m_visibility->applyActivitiesToHiddenWindows(activities);
+            m_visibility->applyActivitiesToHiddenWindows(m_activities);
         }
     }
 }
@@ -829,7 +843,8 @@ void View::setLayout(Layout::GenericLayout *layout)
         //! we try to catch up
         QTimer::singleShot(100, [this]() {
             if (m_layout && m_visibility) {
-                qDebug() << "DOCK VIEW FROM LAYOUT ::: " << m_layout->name() << " - activities: " << m_layout->appliedActivities();
+                m_activities = m_layout->appliedActivities();
+                qDebug() << "DOCK VIEW FROM LAYOUT ::: " << m_layout->name() << " - activities: " << m_activities;
                 applyActivitiesToWindows();
                 emit activitiesChanged();
             }
@@ -843,8 +858,9 @@ void View::setLayout(Layout::GenericLayout *layout)
         if (latteCorona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
             connectionsLayout << connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
                 if (m_layout && m_visibility) {
+                    m_activities = m_layout->appliedActivities();
                     qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_layout->name()
-                             << " - activities: " << m_layout->appliedActivities();
+                             << " - activities: " << m_activities;
                     applyActivitiesToWindows();
                     emit activitiesChanged();
                 }
@@ -852,6 +868,7 @@ void View::setLayout(Layout::GenericLayout *layout)
 
             connectionsLayout << connect(m_layout, &Layout::GenericLayout::activitiesChanged, this, [&]() {
                 if (m_layout) {
+                    m_activities = m_layout->appliedActivities();
                     applyActivitiesToWindows();
                     emit activitiesChanged();
                 }
@@ -859,6 +876,7 @@ void View::setLayout(Layout::GenericLayout *layout)
 
             connectionsLayout << connect(latteCorona->layoutsManager(), &Layouts::Manager::layoutsChanged, this, [&]() {
                 if (m_layout) {
+                    m_activities = m_layout->appliedActivities();
                     applyActivitiesToWindows();
                     emit activitiesChanged();
                 }
@@ -906,6 +924,8 @@ void View::setLayout(Layout::GenericLayout *layout)
         }
 
         emit layoutChanged();
+    } else {
+        m_activities.clear();
     }
 }
 
