@@ -42,11 +42,13 @@ Loader {
         return indicators.indicatorComponent;
     }
 
-    width: root.isHorizontal ? appletItem.wrapperAlias.width - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin
-                             : appletItem.wrapperAlias.width;
+    width: root.isHorizontal && !(root.inFullJustify && atScreenEdge /*Fitt's Law*/) ?
+               appletItem.wrapperAlias.width - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin
+             : appletItem.wrapperAlias.width
 
-    height: root.isVertical ? appletItem.wrapperAlias.height - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin :
-                              appletItem.wrapperAlias.height;
+    height: root.isVertical && !(root.inFullJustify && atScreenEdge /*Fitt's Law*/) ?
+                appletItem.wrapperAlias.height - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin :
+                appletItem.wrapperAlias.height
 
     readonly property bool locked: appletItem.lockZoom || root.zoomFactor === 1
 
