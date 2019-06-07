@@ -47,7 +47,8 @@ public:
         , m_isPlasmaDesktop(false)
         , m_isKeepAbove(false)
         , m_hasSkipTaskbar(false)
-        , m_isOnAllDesktops(false) {
+        , m_isOnAllDesktops(false)
+        , m_isOnAllActivities(false) {
     }
 
     WindowInfoWrap(const WindowInfoWrap &o) noexcept
@@ -64,6 +65,9 @@ public:
         , m_isKeepAbove(o.m_isKeepAbove)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
         , m_isOnAllDesktops(o.m_isOnAllDesktops)
+        , m_isOnAllActivities(o.m_isOnAllActivities)
+        , m_desktops(o.m_desktops)
+        , m_activities(o.m_activities)
         , m_display(o.m_display) {
     }
 
@@ -81,6 +85,9 @@ public:
         , m_isKeepAbove(o.m_isKeepAbove)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
         , m_isOnAllDesktops(o.m_isOnAllDesktops)
+        , m_isOnAllActivities(o.m_isOnAllActivities)
+        , m_desktops(o.m_desktops)
+        , m_activities(o.m_activities)
         , m_display(o.m_display) {
     }
 
@@ -125,6 +132,9 @@ public:
     inline bool isOnAllDesktops() const noexcept;
     inline void setIsOnAllDesktops(bool alldesktops) noexcept;
 
+    inline bool isOnAllActivities() const noexcept;
+    inline void setIsOnAllActivities(bool allactivities) noexcept;
+
     inline QRect geometry() const noexcept;
     inline void setGeometry(const QRect &geometry) noexcept;
 
@@ -139,6 +149,15 @@ public:
 
     inline WindowId wid() const noexcept;
     inline void setWid(const WindowId &wid) noexcept;
+
+    inline QVariantList desktops() const noexcept;
+    inline void setDesktops(const QVariantList &desktops) noexcept;
+
+    inline QStringList activities() const noexcept;
+    inline void setActivities(const QStringList &activities) noexcept;
+
+    inline bool isOnDesktop(const QVariant &desktop) const noexcept;
+    inline bool isOnActivity(const QString &activity) const noexcept;
 
 private:
     WindowId m_wid{0};
@@ -155,11 +174,15 @@ private:
     bool m_isKeepAbove: 1;
     bool m_hasSkipTaskbar: 1;
     bool m_isOnAllDesktops: 1;
+    bool m_isOnAllActivities: 1;
 
     QString m_appName;
     QString m_display;
 
     QIcon m_icon;
+
+    QVariantList m_desktops;
+    QStringList m_activities;
 };
 
 // BEGIN: definitions
@@ -178,7 +201,10 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
+    m_isOnAllActivities = rhs.m_isOnAllActivities;
     m_display = rhs.m_display;
+    m_desktops = rhs.m_desktops;
+    m_activities = rhs.m_activities;
     return *this;
 }
 
@@ -197,7 +223,10 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noex
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
+    m_isOnAllActivities = rhs.m_isOnAllActivities;
     m_display = rhs.m_display;
+    m_desktops = rhs.m_desktops;
+    m_activities = rhs.m_activities;
     return *this;
 }
 
@@ -331,6 +360,16 @@ inline void WindowInfoWrap::setIsOnAllDesktops(bool alldesktops) noexcept
     m_isOnAllDesktops = alldesktops;
 }
 
+inline bool WindowInfoWrap::isOnAllActivities() const noexcept
+{
+    return m_isOnAllActivities;
+}
+
+inline void WindowInfoWrap::setIsOnAllActivities(bool allactivities) noexcept
+{
+    m_isOnAllActivities = allactivities;
+}
+
 inline QString WindowInfoWrap::appName() const noexcept
 {
     return m_appName;
@@ -381,7 +420,38 @@ inline void WindowInfoWrap::setWid(const WindowId &wid) noexcept
     m_wid = wid;
 }
 
+inline QVariantList WindowInfoWrap::desktops() const noexcept
+{
+    return m_desktops;
+}
+
+inline void WindowInfoWrap::setDesktops(const QVariantList &desktops) noexcept
+{
+    m_desktops = desktops;
+}
+
+inline QStringList WindowInfoWrap::activities() const noexcept
+{
+    return m_activities;
+}
+
+inline void WindowInfoWrap::setActivities(const QStringList &activities) noexcept
+{
+    m_activities = activities;
+}
 // END: definitions
+
+inline bool WindowInfoWrap::isOnDesktop(const QVariant &desktop) const noexcept
+{
+    return m_isOnAllDesktops || m_desktops.contains(desktop);
+}
+
+inline bool WindowInfoWrap::isOnActivity(const QString &activity) const noexcept
+{
+    return m_isOnAllActivities || m_activities.contains(activity);
+}
+
+
 }
 }
 
