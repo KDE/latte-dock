@@ -106,12 +106,6 @@ WaylandInterface::WaylandInterface(QObject *parent)
     : AbstractWindowInterface(parent)
 {
     m_corona = qobject_cast<Latte::Corona *>(parent);
-
-    m_activities = new KActivities::Consumer(this);
-
-
-    connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged
-            , this, &WaylandInterface::currentActivityChanged);
 }
 
 WaylandInterface::~WaylandInterface()
@@ -335,28 +329,6 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
     return  requestInfo(w->internalId());
 }
 
-bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
-{
-    if (!m_windowManagement) {
-        return true;
-    }
-
-#if KF5_VERSION_MINOR >= 52
-    auto window = windowFor(wid);
-    if (window) {
-        QStringList wvds = window->plasmaVirtualDesktops();
-        return (wvds.isEmpty() || (!wvds.isEmpty() && wvds.contains(m_currentDesktop)));
-    }
-#endif
-
-    return true;
-}
-
-bool WaylandInterface::isOnCurrentActivity(WindowId wid) const
-{
-    return true;
-}
-
 WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
 {
     WindowInfoWrap winfoWrap;
@@ -378,9 +350,14 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
             winfoWrap.setIsFullscreen(w->isFullscreen());
             winfoWrap.setIsShaded(w->isShaded());
             winfoWrap.setIsOnAllDesktops(w->isOnAllDesktops());
+            winfoWrap.setIsOnAllActivities(true);
             winfoWrap.setGeometry(w->geometry());
             winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
             winfoWrap.setDisplay(w->title());
+#if KF5_VERSION_MINOR >= 52
+            winfoWrap.setDesktops(w->plasmaVirtualDesktops());
+#endif
+            winfoWrap.setActivities(QStringList());
         }
     } else {
         return {};

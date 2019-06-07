@@ -91,8 +91,6 @@ public:
     virtual WindowId activeWindow() const = 0;
     virtual WindowInfoWrap requestInfo(WindowId wid) const = 0;
     virtual WindowInfoWrap requestInfoActive() const = 0;
-    virtual bool isOnCurrentDesktop(WindowId wid) const = 0;
-    virtual bool isOnCurrentActivity(WindowId wid) const = 0;
 
     virtual void setKeepAbove(const QDialog &dialog, bool above = true) const = 0;
     virtual void skipTaskBar(const QDialog &dialog) const = 0;
@@ -116,6 +114,9 @@ public:
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;
     virtual AppData appDataFor(WindowId wid) const = 0;
 
+    QString currentDesktop() const;
+    QString currentActivity() const;
+
     Latte::Corona *corona();
     Tracker::Schemes *schemesTracker();
     Tracker::Windows *windowsTracker() const;
@@ -129,6 +130,9 @@ signals:
     void currentActivityChanged();
 
 protected:
+    QString m_currentDesktop;
+    QString m_currentActivity;
+
     QPointer<KActivities::Consumer> m_activities;
 
     //! Sending too fast plenty of signals for the same window

@@ -47,19 +47,21 @@ namespace WindowSystem {
 XWindowInterface::XWindowInterface(QObject *parent)
     : AbstractWindowInterface(parent)
 {
-    m_activities = new KActivities::Consumer(this);
+    m_currentDesktop = QString(KWindowSystem::self()->currentDesktop());
 
     connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AbstractWindowInterface::activeWindowChanged);
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &AbstractWindowInterface::windowAdded);
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &AbstractWindowInterface::windowRemoved);
-    connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged, this, &XWindowInterface::currentDesktopChanged);
+
+    connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged, this, [&](int desktop) {
+        m_currentDesktop = QString(desktop);
+        emit currentDesktopChanged();
+    });
 
     connect(KWindowSystem::self()
             , static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>
             (&KWindowSystem::windowChanged)
             , this, &XWindowInterface::windowChangedProxy);
-
-    connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged, this, &XWindowInterface::currentActivityChanged);
 }
 
 XWindowInterface::~XWindowInterface()
@@ -266,20 +268,6 @@ WindowInfoWrap XWindowInterface::requestInfoActive() const
     return requestInfo(KWindowSystem::activeWindow());
 }
 
-bool XWindowInterface::isOnCurrentDesktop(WindowId wid) const
-{
-    KWindowInfo winfo(wid.value<WId>(), NET::WMDesktop);
-    return winfo.valid() && winfo.isOnCurrentDesktop();
-}
-
-bool XWindowInterface::isOnCurrentActivity(WindowId wid) const
-{
-    KWindowInfo winfo(wid.value<WId>(), 0, NET::WM2Activities);
-
-    return winfo.valid()
-           && (winfo.activities().contains(m_activities->currentActivity()) || winfo.activities().empty());
-}
-
 WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 {
     const KWindowInfo winfo{wid.value<WId>(), NET::WMFrameExtents
@@ -289,7 +277,8 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
                             | NET::WMState
                             | NET::WMName
                             | NET::WMVisibleName,
-                              NET::WM2WindowClass};
+                              NET::WM2WindowClass
+                            | NET::WM2Activities};
 
     //! update desktop id
 
@@ -311,10 +300,14 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
         winfoWrap.setIsShaded(winfo.hasState(NET::Shaded));
         winfoWrap.setIsOnAllDesktops(winfo.onAllDesktops());
+        winfoWrap.setIsOnAllActivities(winfo.activities().empty());
         winfoWrap.setGeometry(winfo.frameGeometry());
         winfoWrap.setIsKeepAbove(winfo.hasState(NET::KeepAbove));
         winfoWrap.setHasSkipTaskbar(winfo.hasState(NET::SkipTaskbar));
         winfoWrap.setDisplay(winfo.visibleName());
+
+        winfoWrap.setDesktops({QString(winfo.desktop())});
+        winfoWrap.setActivities(winfo.activities());
     } else if (m_desktopId == wid) {
         winfoWrap.setIsValid(true);
         winfoWrap.setIsPlasmaDesktop(true);
@@ -500,7 +493,7 @@ void XWindowInterface::requestToggleMinimized(WindowId wid) const
     }
 
     if (wInfo.isMinimized()) {
-        bool onCurrent = isOnCurrentDesktop(wid);
+        bool onCurrent = wInfo.isOnDesktop(m_currentDesktop);
 
         KWindowSystem::unminimizeWindow(wid.toUInt());
 
@@ -619,7 +612,7 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     //! ignore when the user presses a key, or a window is sending X events etc.
     //! without needing to (e.g. Firefox, https://bugzilla.mozilla.org/show_bug.cgi?id=1389953)
     //! NET::WM2UserTime, NET::WM2IconPixmap etc....
-    if (prop1 == 0) {
+    if (prop1 == 0 && !(prop2 & NET::WM2Activities)) {
         return;
     }
 
@@ -629,7 +622,8 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
           && !(prop1 & NET::WMGeometry)
           && !(prop1 & NET::ActiveWindow)
           && !(prop1 & NET::WMDesktop)
-          && !(prop1 & (NET::WMName | NET::WMVisibleName)) ) {
+          && !(prop1 & (NET::WMName | NET::WMVisibleName)
+          && !(prop2 & NET::WM2Activities)) ) {
         return;
     }
 

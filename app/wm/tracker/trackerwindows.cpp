@@ -385,7 +385,7 @@ WindowInfoWrap Windows::infoFor(const WindowId &wid) const
 
 bool Windows::inCurrentDesktopActivity(const WindowInfoWrap &winfo)
 {
-    return (winfo.isValid() && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid()));
+    return (winfo.isValid() && winfo.isOnDesktop(m_wm->currentDesktop()) && winfo.isOnActivity(m_wm->currentActivity()));
 }
 
 bool Windows::intersects(Latte::View *view, const WindowInfoWrap &winfo)

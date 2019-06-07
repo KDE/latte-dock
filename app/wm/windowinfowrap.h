@@ -150,13 +150,13 @@ public:
     inline WindowId wid() const noexcept;
     inline void setWid(const WindowId &wid) noexcept;
 
-    inline QVariantList desktops() const noexcept;
-    inline void setDesktops(const QVariantList &desktops) noexcept;
+    inline QStringList desktops() const noexcept;
+    inline void setDesktops(const QStringList &desktops) noexcept;
 
     inline QStringList activities() const noexcept;
     inline void setActivities(const QStringList &activities) noexcept;
 
-    inline bool isOnDesktop(const QVariant &desktop) const noexcept;
+    inline bool isOnDesktop(const QString &desktop) const noexcept;
     inline bool isOnActivity(const QString &activity) const noexcept;
 
 private:
@@ -181,7 +181,7 @@ private:
 
     QIcon m_icon;
 
-    QVariantList m_desktops;
+    QStringList m_desktops;
     QStringList m_activities;
 };
 
@@ -420,12 +420,12 @@ inline void WindowInfoWrap::setWid(const WindowId &wid) noexcept
     m_wid = wid;
 }
 
-inline QVariantList WindowInfoWrap::desktops() const noexcept
+inline QStringList WindowInfoWrap::desktops() const noexcept
 {
     return m_desktops;
 }
 
-inline void WindowInfoWrap::setDesktops(const QVariantList &desktops) noexcept
+inline void WindowInfoWrap::setDesktops(const QStringList &desktops) noexcept
 {
     m_desktops = desktops;
 }
@@ -441,7 +441,7 @@ inline void WindowInfoWrap::setActivities(const QStringList &activities) noexcep
 }
 // END: definitions
 
-inline bool WindowInfoWrap::isOnDesktop(const QVariant &desktop) const noexcept
+inline bool WindowInfoWrap::isOnDesktop(const QString &desktop) const noexcept
 {
     return m_isOnAllDesktops || m_desktops.contains(desktop);
 }

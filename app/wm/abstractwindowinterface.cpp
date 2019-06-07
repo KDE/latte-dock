@@ -32,6 +32,9 @@ namespace WindowSystem {
 AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
     : QObject(parent)
 {
+    m_activities = new KActivities::Consumer(this);
+    m_currentActivity = m_activities->currentActivity();
+
     m_corona = qobject_cast<Latte::Corona *>(parent);
     m_windowsTracker = new Tracker::Windows(this);
     m_schemesTracker = new Tracker::Schemes(this);
@@ -50,6 +53,12 @@ AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
     connect(this, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
         qDebug() << "WINDOW CHANGED ::: " << wid;
     });
+
+    connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged, this, [&](const QString &id) {
+        m_currentActivity = id;
+        emit currentActivityChanged();
+    });
+
 }
 
 AbstractWindowInterface::~AbstractWindowInterface()
@@ -58,6 +67,16 @@ AbstractWindowInterface::~AbstractWindowInterface()
 
     m_schemesTracker->deleteLater();
     m_windowsTracker->deleteLater();
+}
+
+QString AbstractWindowInterface::currentDesktop() const
+{
+    return m_currentDesktop;
+}
+
+QString AbstractWindowInterface::currentActivity() const
+{
+    return m_currentActivity;
 }
 
 Latte::Corona *AbstractWindowInterface::corona()
