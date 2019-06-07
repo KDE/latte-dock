@@ -76,6 +76,8 @@ public:
 
     void setActiveWindow(const WindowId &wid);
 
+    virtual bool isTracking(const WindowInfoWrap &winfo) const;
+
 signals:
     void lastActiveWindowChanged();
 

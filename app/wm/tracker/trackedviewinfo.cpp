@@ -95,6 +95,12 @@ void TrackedViewInfo::setTouchingWindowScheme(SchemeColors *scheme)
     m_touchingWindowScheme = scheme;
 }
 
+bool TrackedViewInfo::isTracking(const WindowInfoWrap &winfo) const
+{
+    return TrackedGeneralInfo::isTracking(winfo)
+            && m_availableScreenGeometry.contains(winfo.geometry().center());
+}
+
 }
 }
 }

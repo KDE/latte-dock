@@ -62,6 +62,8 @@ public:
     SchemeColors *touchingWindowScheme() const;
     void setTouchingWindowScheme(SchemeColors *scheme);
 
+    bool isTracking(const WindowInfoWrap &winfo) const override;
+
 private:
     bool m_activeWindowTouching;
     bool m_existsWindowTouching;

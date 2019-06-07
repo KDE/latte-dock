@@ -284,23 +284,29 @@ void LastActiveWindow::windowChanged(const WindowId &wid)
 {
     if (m_winId == wid && !wid.isNull()) {
         setInformation(m_windowsTracker->infoFor(wid));
+    } else if (m_history.contains(wid)) {
+        //! remove from history minimized windows or windows that changed screen
+        //! and update information accordingly with the first window found from
+        //! history after the removal
+        WindowInfoWrap winfo = m_windowsTracker->infoFor(wid);
+        if (winfo.isMinimized() || !m_trackedInfo->isTracking(winfo)) {
+            m_history.removeAll(wid);
+
+            if (m_history.count() > 0) {
+                setInformation(m_windowsTracker->infoFor(m_history[0]));
+            }
+        }
     }
 }
 
 void LastActiveWindow::windowRemoved(const WindowId &wid)
 {
-    bool wasFirst{false};
-
     if (m_history.contains(wid)) {
-        if (m_history[0] == wid) {
-            wasFirst = true;
-        }
-
         m_history.removeAll(wid);
-    }
 
-    if (wasFirst && !m_history.isEmpty()) {
-        setInformation(m_windowsTracker->infoFor(m_history[0]));
+        if (m_history.count() > 0) {
+            setInformation(m_windowsTracker->infoFor(m_history[0]));
+        }
     }
 }
 

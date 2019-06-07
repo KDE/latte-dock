@@ -142,6 +142,15 @@ void TrackedGeneralInfo::setActiveWindow(const WindowId &wid)
     m_lastActiveWindow->setInformation(m_tracker->infoFor(wid));
 }
 
+bool TrackedGeneralInfo::isTracking(const WindowInfoWrap &winfo) const
+{
+    return (winfo.isValid()
+            && !winfo.isPlasmaDesktop()
+            && !winfo.isMinimized()
+            && winfo.isOnDesktop(m_wm->currentDesktop())
+            && winfo.isOnActivity(m_wm->currentActivity()));
+}
+
 }
 }
 }
