@@ -35,8 +35,6 @@ CurrentScreenTracker::CurrentScreenTracker(WindowsTracker *parent)
       m_wm(parent->wm())
 {
     init();
-
-    m_wm->windowsTracker()->addView(m_latteView);
 }
 
 CurrentScreenTracker::~CurrentScreenTracker()

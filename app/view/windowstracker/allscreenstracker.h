@@ -85,6 +85,9 @@ private slots:
 private:
     void init();
 
+private:
+    Latte::WindowSystem::Tracker::LastActiveWindow *m_currentLastActiveWindow{nullptr};
+
     Latte::View *m_latteView{nullptr};
     WindowSystem::AbstractWindowInterface *m_wm{nullptr};
 };

@@ -44,6 +44,16 @@ AllScreensTracker::~AllScreensTracker()
 
 void  AllScreensTracker::init()
 {
+    if (!m_currentLastActiveWindow && lastActiveWindow()) {
+        initSignalsForInformation();
+    }
+
+    connect(m_latteView, &Latte::View::layoutChanged, this, [&]() {
+        if (m_latteView->layout()) {
+            initSignalsForInformation();
+        }
+    });
+
     connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::informationAnnouncedForLayout, this, [&](const Latte::Layout::GenericLayout *layout) {
         if (m_latteView->layout() == layout) {
             initSignalsForInformation();
@@ -77,10 +87,20 @@ void  AllScreensTracker::init()
 
 void AllScreensTracker::initSignalsForInformation()
 {
-    connect(lastActiveWindow(), &WindowSystem::Tracker::LastActiveWindow::draggingStarted,
+    if (m_currentLastActiveWindow) {
+        disconnect(m_currentLastActiveWindow, &WindowSystem::Tracker::LastActiveWindow::draggingStarted,
+                this, &AllScreensTracker::activeWindowDraggingStarted);
+    }
+
+    m_currentLastActiveWindow = lastActiveWindow();
+    connect(m_currentLastActiveWindow, &WindowSystem::Tracker::LastActiveWindow::draggingStarted,
             this, &AllScreensTracker::activeWindowDraggingStarted);
 
     emit lastActiveWindowChanged();
+    emit activeWindowMaximizedChanged();
+    emit existsWindowActiveChanged();
+    emit existsWindowMaximizedChanged();
+    emit activeWindowSchemeChanged();
 }
 
 bool AllScreensTracker::activeWindowMaximized() const

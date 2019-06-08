@@ -53,6 +53,8 @@ WindowsTracker::WindowsTracker(Latte::View *parent)
     connect(m_currentScreenTracker, &TrackerPart::CurrentScreenTracker::activeWindowDraggingStarted,
             this, &WindowsTracker::activeWindowDraggingStarted);
 
+    m_wm->windowsTracker()->addView(m_latteView);
+
     emit allScreensChanged();
     emit currentScreenChanged();
 }
