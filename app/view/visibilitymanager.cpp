@@ -24,6 +24,7 @@
 #include "positioner.h"
 #include "screenedgeghostwindow.h"
 #include "view.h"
+#include "windowstracker/currentscreentracker.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../layouts/manager.h"
@@ -197,7 +198,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     case Types::DodgeActive: {
         m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged
                                       , this, &VisibilityManager::dodgeActive);
-        m_connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowTouchingChanged
+        m_connections[base+1] = connect(m_latteView->windowsTracker()->currentScreen(), &TrackerPart::CurrentScreenTracker::activeWindowTouchingChanged
                                         , this, &VisibilityManager::dodgeActive);
 
         dodgeActive();
@@ -207,7 +208,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     case Types::DodgeMaximized: {
         m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged
                                       , this, &VisibilityManager::dodgeMaximized);
-        m_connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowMaximizedChanged
+        m_connections[base+1] = connect(m_latteView->windowsTracker()->currentScreen(), &TrackerPart::CurrentScreenTracker::activeWindowMaximizedChanged
                                         , this, &VisibilityManager::dodgeMaximized);
 
         dodgeMaximized();
@@ -218,7 +219,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged
                                       , this, &VisibilityManager::dodgeAllWindows);
 
-        m_connections[base+1] = connect(m_latteView->windowsTracker(), &WindowsTracker::existsWindowTouchingChanged
+        m_connections[base+1] = connect(m_latteView->windowsTracker()->currentScreen(), &TrackerPart::CurrentScreenTracker::existsWindowTouchingChanged
                                         , this, &VisibilityManager::dodgeAllWindows);
 
         dodgeAllWindows();
@@ -521,7 +522,7 @@ void VisibilityManager::dodgeActive()
         return;
     }
 
-    raiseView(!m_latteView->windowsTracker()->activeWindowTouching());
+    raiseView(!m_latteView->windowsTracker()->currentScreen()->activeWindowTouching());
 }
 
 void VisibilityManager::dodgeMaximized()
@@ -535,7 +536,7 @@ void VisibilityManager::dodgeMaximized()
         return;
     }
 
-    raiseView(!m_latteView->windowsTracker()->activeWindowMaximized());
+    raiseView(!m_latteView->windowsTracker()->currentScreen()->activeWindowMaximized());
 }
 
 void VisibilityManager::dodgeAllWindows()
@@ -547,7 +548,7 @@ void VisibilityManager::dodgeAllWindows()
         raiseView(true);
     }
 
-    bool windowIntersects{m_latteView->windowsTracker()->activeWindowTouching() || m_latteView->windowsTracker()->existsWindowTouching()};
+    bool windowIntersects{m_latteView->windowsTracker()->currentScreen()->activeWindowTouching() || m_latteView->windowsTracker()->currentScreen()->existsWindowTouching()};
 
     raiseView(!windowIntersects);
 }

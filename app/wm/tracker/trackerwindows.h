@@ -73,6 +73,7 @@ public:
     LastActiveWindow *lastActiveWindow(Latte::View *view);
 
     //! Layouts Tracking (all screens)
+    bool enabled(Latte::Layout::GenericLayout *layout);
     bool activeWindowMaximized(Latte::Layout::GenericLayout *layout) const;
     bool existsWindowActive(Latte::Layout::GenericLayout *layout) const;
     bool existsWindowMaximized(Latte::Layout::GenericLayout *layout) const;
@@ -99,6 +100,7 @@ signals:
     void existsWindowTouchingChanged(const Latte::View *view);
     void activeWindowSchemeChanged(const Latte::View *view);
     void touchingWindowSchemeChanged(const Latte::View *view);
+    void informationAnnounced(const Latte::View *view);
 
     //! Layouts
     void enabledChangedForLayout(const Latte::Layout::GenericLayout *layout);
@@ -106,6 +108,7 @@ signals:
     void existsWindowActiveChangedForLayout(const Latte::Layout::GenericLayout *layout);
     void existsWindowMaximizedChangedForLayout(const Latte::Layout::GenericLayout *layout);
     void activeWindowSchemeChangedForLayout(const Latte::Layout::GenericLayout *layout);
+    void informationAnnouncedForLayout(const Latte::Layout::GenericLayout *layout);
 
     //! overloading WM signals in order to update first m_windows and afterwards
     //! inform consumers for window changes

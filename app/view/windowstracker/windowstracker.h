@@ -17,8 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef WINDOWSTRACKER_H
-#define WINDOWSTRACKER_H
+#ifndef VIEWWINDOWSTRACKER_H
+#define VIEWWINDOWSTRACKER_H
 
 // local
 #include "../../wm/abstractwindowinterface.h"
@@ -27,15 +27,17 @@
 #include <QObject>
 
 namespace Latte{
-class Corona;
 class View;
+
+namespace ViewPart {
+namespace TrackerPart {
+class AllScreensTracker;
+class CurrentScreenTracker;
+}
+}
 
 namespace WindowSystem {
 class AbstractWindowInterface;
-class SchemeColors;
-namespace Tracker {
-class LastActiveWindow;
-}
 }
 }
 
@@ -44,61 +46,32 @@ namespace ViewPart {
 
 class WindowsTracker : public QObject {
     Q_OBJECT
-    Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
-    Q_PROPERTY(bool activeWindowMaximized READ activeWindowMaximized NOTIFY activeWindowMaximizedChanged)
-    Q_PROPERTY(bool activeWindowTouching READ activeWindowTouching NOTIFY activeWindowTouchingChanged)
-    Q_PROPERTY(bool existsWindowActive READ existsWindowActive NOTIFY existsWindowActiveChanged)
-    Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
-    Q_PROPERTY(bool existsWindowTouching READ existsWindowTouching NOTIFY existsWindowTouchingChanged)
-    Q_PROPERTY(Latte::WindowSystem::SchemeColors *activeWindowScheme READ activeWindowScheme NOTIFY activeWindowSchemeChanged)
-    Q_PROPERTY(Latte::WindowSystem::SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
-
-    Q_PROPERTY(Latte::WindowSystem::Tracker::LastActiveWindow *lastActiveWindow READ lastActiveWindow NOTIFY lastActiveWindowChanged)
+    Q_PROPERTY(Latte::ViewPart::TrackerPart::CurrentScreenTracker *currentScreen READ currentScreen NOTIFY currentScreenChanged)
+    Q_PROPERTY(Latte::ViewPart::TrackerPart::AllScreensTracker *allScreens READ allScreens NOTIFY allScreensChanged)
 
 public:
     explicit WindowsTracker(Latte::View *parent);
     virtual ~WindowsTracker();
 
-    bool enabled() const;
-    void setEnabled(bool active);
-
-    bool activeWindowMaximized() const;
-    bool activeWindowTouching() const;
-    bool existsWindowActive() const;
-    bool existsWindowMaximized() const;
-    bool existsWindowTouching() const;
-
-    WindowSystem::SchemeColors *activeWindowScheme() const;
-    WindowSystem::SchemeColors *touchingWindowScheme() const;
-
-    WindowSystem::Tracker::LastActiveWindow *lastActiveWindow();
+    TrackerPart::AllScreensTracker *allScreens() const;
+    TrackerPart::CurrentScreenTracker *currentScreen() const;
 
     void setWindowOnActivities(QWindow &window, const QStringList &activities);
 
-public slots:
-    Q_INVOKABLE void requestMoveLastWindowFromCurrentScreen(int localX, int localY);
+    Latte::View *view() const;
+    WindowSystem::AbstractWindowInterface *wm() const;
 
 signals:
-    void enabledChanged();
     void activeWindowDraggingStarted();
-    void activeWindowMaximizedChanged();
-    void activeWindowTouchingChanged();
-    void existsWindowActiveChanged();
-    void existsWindowMaximizedChanged();
-    void existsWindowTouchingChanged();
-    void activeWindowSchemeChanged();
-    void touchingWindowSchemeChanged();
-
-    void lastActiveWindowChanged();
+    void allScreensChanged();
+    void currentScreenChanged();
 
 private:
-    void init();
-
-private:
-    Latte::Corona *m_corona{nullptr};
     Latte::View *m_latteView{nullptr};
+    WindowSystem::AbstractWindowInterface *m_wm{nullptr};
 
-    WindowSystem::AbstractWindowInterface *m_wm;
+    TrackerPart::AllScreensTracker *m_allScreensTracker{nullptr};
+    TrackerPart::CurrentScreenTracker *m_currentScreenTracker{nullptr};
 };
 
 }

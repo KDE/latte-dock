@@ -20,14 +20,11 @@
 #include "windowstracker.h"
 
 // local
-#include "../positioner.h"
+#include "currentscreentracker.h"
+#include "allscreenstracker.h"
 #include "../view.h"
 #include "../../lattecorona.h"
-#include "../../layouts/manager.h"
-#include "../../wm/schemecolors.h"
-#include "../../wm/tracker/lastactivewindow.h"
-#include "../../wm/tracker/trackerwindows.h"
-#include "../../../liblatte2/types.h"
+
 
 namespace Latte {
 namespace ViewPart {
@@ -38,136 +35,58 @@ WindowsTracker::WindowsTracker(Latte::View *parent)
 {
     qDebug() << "WindowsTracker creating...";
 
-    m_corona = qobject_cast<Latte::Corona *>(m_latteView->corona());
-    m_wm = m_corona->wm();
+    auto corona = qobject_cast<Latte::Corona *>(m_latteView->corona());
+    m_wm = corona->wm();
 
-    init();
-    m_wm->windowsTracker()->addView(m_latteView);
+    m_allScreensTracker = new TrackerPart::AllScreensTracker(this);
+    m_currentScreenTracker = new TrackerPart::CurrentScreenTracker(this);
 
-
-    connect(lastActiveWindow(), &WindowSystem::Tracker::LastActiveWindow::draggingStarted,
+    connect(m_allScreensTracker, &TrackerPart::AllScreensTracker::activeWindowDraggingStarted,
+            this, &WindowsTracker::activeWindowDraggingStarted);
+    connect(m_currentScreenTracker, &TrackerPart::CurrentScreenTracker::activeWindowDraggingStarted,
             this, &WindowsTracker::activeWindowDraggingStarted);
 
-    emit lastActiveWindowChanged();
+    emit allScreensChanged();
+    emit currentScreenChanged();
 }
 
 WindowsTracker::~WindowsTracker()
 {
     qDebug() << "WindowsTracker removing...";
-    m_wm->windowsTracker()->removeView(m_latteView);
+
+    if (m_allScreensTracker) {
+        m_allScreensTracker->deleteLater();
+    }
+
+    if (m_currentScreenTracker) {
+        m_currentScreenTracker->deleteLater();
+    }
 }
 
-void  WindowsTracker::init()
+Latte::View *WindowsTracker::view() const
 {
-    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::enabledChanged, this, [&](const Latte::View *view) {
-        if (m_latteView == view) {
-            emit enabledChanged();
-        }
-    });
-
-    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::activeWindowMaximizedChanged, this, [&](const Latte::View *view) {
-        if (m_latteView == view) {
-            emit activeWindowMaximizedChanged();
-        }
-    });
-
-    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::activeWindowTouchingChanged, this, [&](const Latte::View *view) {
-        if (m_latteView == view) {
-            emit activeWindowTouchingChanged();
-        }
-    });
-
-    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::existsWindowActiveChanged, this, [&](const Latte::View *view) {
-        if (m_latteView == view) {
-            emit existsWindowActiveChanged();
-        }
-    });
-
-    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::existsWindowMaximizedChanged, this, [&](const Latte::View *view) {
-        if (m_latteView == view) {
-            emit existsWindowMaximizedChanged();
-        }
-    });
-
-    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::existsWindowTouchingChanged, this, [&](const Latte::View *view) {
-        if (m_latteView == view) {
-            emit existsWindowTouchingChanged();
-        }
-    });
-
-    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::activeWindowSchemeChanged, this, [&](const Latte::View *view) {
-        if (m_latteView == view) {
-            emit activeWindowSchemeChanged();
-        }
-    });
-
-    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::touchingWindowSchemeChanged, this, [&](const Latte::View *view) {
-        if (m_latteView == view) {
-            emit touchingWindowSchemeChanged();
-        }
-    });
+    return m_latteView;
 }
 
-bool WindowsTracker::activeWindowMaximized() const
+WindowSystem::AbstractWindowInterface *WindowsTracker::wm() const
 {
-    return m_wm->windowsTracker()->activeWindowMaximized(m_latteView);
+    return m_wm;
 }
 
-bool WindowsTracker::activeWindowTouching() const
+TrackerPart::AllScreensTracker *WindowsTracker::allScreens() const
 {
-    return m_wm->windowsTracker()->activeWindowTouching(m_latteView);
+    return m_allScreensTracker;
 }
 
-bool WindowsTracker::existsWindowActive() const
+TrackerPart::CurrentScreenTracker *WindowsTracker::currentScreen() const
 {
-    return m_wm->windowsTracker()->existsWindowActive(m_latteView);
+    return m_currentScreenTracker;
 }
-
-bool WindowsTracker::existsWindowMaximized() const
-{
-    return m_wm->windowsTracker()->existsWindowMaximized(m_latteView);
-}
-
-bool WindowsTracker::existsWindowTouching() const
-{
-    return m_wm->windowsTracker()->existsWindowTouching(m_latteView);
-}
-
-WindowSystem::SchemeColors *WindowsTracker::activeWindowScheme() const
-{
-    return m_wm->windowsTracker()->activeWindowScheme(m_latteView);
-}
-
-WindowSystem::SchemeColors *WindowsTracker::touchingWindowScheme() const
-{
-    return m_wm->windowsTracker()->touchingWindowScheme(m_latteView);
-}
-
-bool WindowsTracker::enabled() const
-{
-    return m_wm->windowsTracker()->enabled(m_latteView);
-}
-
-void WindowsTracker::setEnabled(bool active)
-{
-    m_wm->windowsTracker()->setEnabled(m_latteView, active);
-}
-
-WindowSystem::Tracker::LastActiveWindow *WindowsTracker::lastActiveWindow()
-{
-    return m_wm->windowsTracker()->lastActiveWindow(m_latteView);
-}
-
 
 //! Window Functions
 void WindowsTracker::setWindowOnActivities(QWindow &window, const QStringList &activities)
 {
     m_wm->setWindowOnActivities(window, activities);
-}
-
-void WindowsTracker::requestMoveLastWindowFromCurrentScreen(int localX, int localY)
-{
-    m_wm->windowsTracker()->lastActiveWindow(m_latteView)->requestMove(m_latteView, localX, localY);
 }
 
 }

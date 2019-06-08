@@ -270,7 +270,7 @@ void View::disconnectSensitiveSignals()
     setLayout(nullptr);
 
     if (m_windowsTracker) {
-        m_windowsTracker->setEnabled(false);
+      //  m_windowsTracker->setEnabled(false);
     }
 }
 

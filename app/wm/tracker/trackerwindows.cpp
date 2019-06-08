@@ -171,6 +171,8 @@ void Windows::addView(Latte::View *view)
     });
 
     updateHints(view);
+
+    emit informationAnnounced(view);
 }
 
 void Windows::removeView(Latte::View *view)
@@ -191,6 +193,8 @@ void Windows::addRelevantLayout(Latte::View *view)
         m_layouts[view->layout()] = new TrackedLayoutInfo(this, view->layout());
 
         updateRelevantLayouts();
+        updateHints(view->layout());
+        emit informationAnnouncedForLayout(view->layout());
     }
 }
 
@@ -413,6 +417,15 @@ LastActiveWindow *Windows::lastActiveWindow(Latte::View *view)
 }
 
 //! Layouts
+bool Windows::enabled(Latte::Layout::GenericLayout *layout)
+{
+    if (!m_layouts.contains(layout)) {
+        return false;
+    }
+
+    return m_layouts[layout]->enabled();
+}
+
 bool Windows::activeWindowMaximized(Latte::Layout::GenericLayout *layout) const
 {
     if (!m_layouts.contains(layout)) {
