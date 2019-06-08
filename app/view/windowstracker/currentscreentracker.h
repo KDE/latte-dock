@@ -94,6 +94,9 @@ private slots:
 private:
     void init();
 
+private:
+    bool m_initialized{false};
+
     Latte::View *m_latteView{nullptr};
     WindowSystem::AbstractWindowInterface *m_wm{nullptr};
 };
