@@ -134,14 +134,22 @@ void TrackedGeneralInfo::setActiveWindow(const WindowId &wid)
     m_lastActiveWindow->setInformation(m_tracker->infoFor(wid));
 }
 
+bool TrackedGeneralInfo::isTrackedOnActivity(const QString &activity) const
+{
+    //! TODO:: needs to be updated for Layouts case
+    //! a way to access the first enabled View::activities in that specific
+    //! layout
+    return true;
+}
+
 bool TrackedGeneralInfo::isTracking(const WindowInfoWrap &winfo) const
 {
     return (winfo.isValid()
             && !winfo.isPlasmaDesktop()
             && !winfo.isMinimized()
             && winfo.isOnDesktop(m_wm->currentDesktop())
-            && winfo.isOnActivity(m_wm->currentActivity()));
-            /*&& m_view->isOnActivity(m_wm->currentActivity()));*/
+            && winfo.isOnActivity(m_wm->currentActivity())
+            && isTrackedOnActivity(m_wm->currentActivity()));
 }
 
 }

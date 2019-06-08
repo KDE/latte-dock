@@ -66,6 +66,9 @@ public:
 
     bool isTracking(const WindowInfoWrap &winfo) const override;
 
+protected:
+    bool isTrackedOnActivity(const QString &activity) const override;
+
 private:
     bool m_activeWindowTouching;
     bool m_existsWindowTouching;

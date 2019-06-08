@@ -101,6 +101,11 @@ Latte::View *TrackedViewInfo::view() const
     return m_view;
 }
 
+bool TrackedViewInfo::isTrackedOnActivity(const QString &activity) const
+{
+    return m_view->isOnActivity(activity);
+}
+
 bool TrackedViewInfo::isTracking(const WindowInfoWrap &winfo) const
 {
     return TrackedGeneralInfo::isTracking(winfo)

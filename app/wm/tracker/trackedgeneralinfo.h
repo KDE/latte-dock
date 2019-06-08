@@ -76,6 +76,9 @@ public:
 signals:
     void lastActiveWindowChanged();
 
+protected:
+    virtual bool isTrackedOnActivity(const QString &activity) const;
+
 private:
     bool m_enabled;
     bool m_activeWindowMaximized;
