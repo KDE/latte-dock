@@ -38,6 +38,9 @@
 #include "plasma/extended/theme.h"
 #include "settings/universalsettings.h"
 #include "view/view.h"
+#include "view/windowstracker/windowstracker.h"
+#include "view/windowstracker/allscreenstracker.h"
+#include "view/windowstracker/currentscreentracker.h"
 #include "wm/abstractwindowinterface.h"
 #include "wm/schemecolors.h"
 #include "wm/waylandinterface.h"
@@ -1074,6 +1077,9 @@ inline void Corona::qmlRegisterTypes() const
 {
     qmlRegisterType<QScreen>();
     qmlRegisterType<Latte::View>();
+    qmlRegisterType<Latte::ViewPart::WindowsTracker>();
+    qmlRegisterType<Latte::ViewPart::TrackerPart::CurrentScreenTracker>();
+    qmlRegisterType<Latte::ViewPart::TrackerPart::AllScreensTracker>();
     qmlRegisterType<Latte::WindowSystem::SchemeColors>();
     qmlRegisterType<Latte::WindowSystem::Tracker::LastActiveWindow>();
 }

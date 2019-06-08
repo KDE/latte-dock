@@ -46,12 +46,17 @@ namespace ViewPart {
 
 class WindowsTracker : public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
+
     Q_PROPERTY(Latte::ViewPart::TrackerPart::CurrentScreenTracker *currentScreen READ currentScreen NOTIFY currentScreenChanged)
     Q_PROPERTY(Latte::ViewPart::TrackerPart::AllScreensTracker *allScreens READ allScreens NOTIFY allScreensChanged)
 
 public:
     explicit WindowsTracker(Latte::View *parent);
     virtual ~WindowsTracker();
+
+    bool enabled() const;
+    void setEnabled(bool active);
 
     TrackerPart::AllScreensTracker *allScreens() const;
     TrackerPart::CurrentScreenTracker *currentScreen() const;
@@ -62,6 +67,7 @@ public:
     WindowSystem::AbstractWindowInterface *wm() const;
 
 signals:
+    void enabledChanged();
     void activeWindowDraggingStarted();
     void allScreensChanged();
     void currentScreenChanged();

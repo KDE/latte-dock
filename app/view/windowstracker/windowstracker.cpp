@@ -24,6 +24,7 @@
 #include "allscreenstracker.h"
 #include "../view.h"
 #include "../../lattecorona.h"
+#include "../../wm/tracker/trackerwindows.h"
 
 
 namespace Latte {
@@ -40,6 +41,12 @@ WindowsTracker::WindowsTracker(Latte::View *parent)
 
     m_allScreensTracker = new TrackerPart::AllScreensTracker(this);
     m_currentScreenTracker = new TrackerPart::CurrentScreenTracker(this);
+
+    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::enabledChanged, this, [&](const Latte::View *view) {
+        if (m_latteView == view) {
+            emit enabledChanged();
+        }
+    });
 
     connect(m_allScreensTracker, &TrackerPart::AllScreensTracker::activeWindowDraggingStarted,
             this, &WindowsTracker::activeWindowDraggingStarted);
@@ -72,6 +79,17 @@ WindowSystem::AbstractWindowInterface *WindowsTracker::wm() const
 {
     return m_wm;
 }
+
+bool WindowsTracker::enabled() const
+{
+    return m_wm->windowsTracker()->enabled(m_latteView);
+}
+
+void WindowsTracker::setEnabled(bool active)
+{
+    m_wm->windowsTracker()->setEnabled(m_latteView, active);
+}
+
 
 TrackerPart::AllScreensTracker *WindowsTracker::allScreens() const
 {

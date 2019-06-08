@@ -48,7 +48,6 @@ namespace TrackerPart {
 
 class AllScreensTracker : public QObject {
     Q_OBJECT
-    Q_PROPERTY(bool enabled READ enabled NOTIFY enabledChanged)
     Q_PROPERTY(bool activeWindowMaximized READ activeWindowMaximized NOTIFY activeWindowMaximizedChanged)
     Q_PROPERTY(bool existsWindowActive READ existsWindowActive NOTIFY existsWindowActiveChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
@@ -60,7 +59,6 @@ public:
     explicit AllScreensTracker(WindowsTracker *parent);
     virtual ~AllScreensTracker();
 
-    bool enabled() const;
     bool activeWindowMaximized() const;
     bool existsWindowActive() const;
     bool existsWindowMaximized() const;
@@ -73,7 +71,6 @@ public slots:
     Q_INVOKABLE void requestMoveLastWindow(int localX, int localY);
 
 signals:
-    void enabledChanged();
     void activeWindowDraggingStarted();
     void activeWindowMaximizedChanged();
     void existsWindowActiveChanged();

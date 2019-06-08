@@ -50,12 +50,6 @@ void  AllScreensTracker::init()
         }
     });
 
-    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::enabledChangedForLayout, this, [&](const Latte::Layout::GenericLayout *layout) {
-        if (m_latteView->layout() == layout) {
-            emit enabledChanged();
-        }
-    });
-
     connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::activeWindowMaximizedChangedForLayout, this, [&](const Latte::Layout::GenericLayout *layout) {
         if (m_latteView->layout() == layout) {
             emit activeWindowMaximizedChanged();
@@ -107,11 +101,6 @@ bool AllScreensTracker::existsWindowMaximized() const
 WindowSystem::SchemeColors *AllScreensTracker::activeWindowScheme() const
 {
     return m_wm->windowsTracker()->activeWindowScheme(m_latteView->layout());
-}
-
-bool AllScreensTracker::enabled() const
-{
-    return m_wm->windowsTracker()->enabled(m_latteView->layout());
 }
 
 WindowSystem::Tracker::LastActiveWindow *AllScreensTracker::lastActiveWindow()
