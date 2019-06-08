@@ -31,11 +31,15 @@
 
 namespace Latte {
 class View;
+namespace Layout {
+class GenericLayout;
+}
 namespace WindowSystem {
 class AbstractWindowInterface;
 class SchemeColors;
 namespace Tracker {
 class LastActiveWindow;
+class TrackedLayoutInfo;
 class TrackedViewInfo;
 }
 }
@@ -95,6 +99,10 @@ signals:
 private slots:
     void updateAvailableScreenGeometries();
 
+    void addRelevantLayout(Latte::View *view);
+
+    void updateRelevantLayouts();
+
 private:
     void init();
     void initViewHints(Latte::View *view);
@@ -122,8 +130,9 @@ private:
 private:
     AbstractWindowInterface *m_wm;
     QHash<Latte::View *, TrackedViewInfo *> m_views;
-    QMap<WindowId, WindowInfoWrap > m_windows;
+    QHash<Latte::Layout::GenericLayout *, TrackedLayoutInfo *> m_layouts;
 
+    QMap<WindowId, WindowInfoWrap > m_windows;
 };
 
 }

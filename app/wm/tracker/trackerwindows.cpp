@@ -22,10 +22,12 @@
 // local
 #include "lastactivewindow.h"
 #include "schemes.h"
+#include "trackedlayoutinfo.h"
 #include "trackedviewinfo.h"
 #include "../abstractwindowinterface.h"
 #include "../schemecolors.h"
 #include "../../lattecorona.h"
+#include "../../layout/genericlayout.h"
 #include "../../layouts/manager.h"
 #include "../../view/view.h"
 #include "../../view/positioner.h"
@@ -52,6 +54,14 @@ Windows::~Windows()
     }
 
     m_views.clear();
+
+    //! clear all the m_layouts tracking layouts
+    for (QHash<Latte::Layout::GenericLayout *, TrackedLayoutInfo *>::iterator i=m_layouts.begin(); i!=m_layouts.end(); ++i) {
+        i.value()->deleteLater();
+        m_layouts[i.key()] = nullptr;
+    }
+
+    m_layouts.clear();
 }
 
 void Windows::init()
@@ -140,6 +150,14 @@ void Windows::addView(Latte::View *view)
     m_views[view] = new TrackedViewInfo(this, view);
 
     updateAvailableScreenGeometries();
+
+    //! Consider Layouts
+    addRelevantLayout(view);
+
+    connect(view, &Latte::View::layoutChanged, this, [&, view]() {
+        addRelevantLayout(view);
+    });
+
     updateHints(view);
 }
 
@@ -151,6 +169,59 @@ void Windows::removeView(Latte::View *view)
 
     m_views[view]->deleteLater();
     m_views.remove(view);
+
+    updateRelevantLayouts();
+}
+
+void Windows::addRelevantLayout(Latte::View *view)
+{
+     if (view->layout() && !m_layouts.contains(view->layout())) {
+         m_layouts[view->layout()] = new TrackedLayoutInfo(this, view->layout());
+
+         updateRelevantLayouts();
+     }
+}
+
+void Windows::updateRelevantLayouts()
+{
+    QList<Latte::Layout::GenericLayout*> orphanedLayouts;
+
+    //! REMOVE Orphaned Relevant layouts that have been removed or they dont contain any Views anymore
+    for (QHash<Latte::Layout::GenericLayout *, TrackedLayoutInfo *>::iterator i=m_layouts.begin(); i!=m_layouts.end(); ++i) {
+        bool hasView{false};
+        for (QHash<Latte::View *, TrackedViewInfo *>::iterator j=m_views.begin(); j!=m_views.end(); ++j) {
+            if (j.key() && i.key() && i.key() == j.key()->layout()) {
+                hasView = true;
+                break;
+            }
+        }
+
+        if (!hasView)  {
+            if (i.value()) {
+                i.value()->deleteLater();
+            }
+            orphanedLayouts << i.key();
+        }
+    }
+
+    for(const auto &layout : orphanedLayouts) {
+        m_layouts.remove(layout);
+    }
+
+    //! UPDATE Enabled layout window tracking based on the Views that are requesting windows tracking
+    for (QHash<Latte::Layout::GenericLayout *, TrackedLayoutInfo *>::iterator i=m_layouts.begin(); i!=m_layouts.end(); ++i) {
+        bool hasViewEnabled{false};
+        for (QHash<Latte::View *, TrackedViewInfo *>::iterator j=m_views.begin(); j!=m_views.end(); ++j) {
+            if (i.key() == j.key()->layout() && j.value()->enabled()) {
+                hasViewEnabled = true;
+                break;
+            }
+        }
+
+        if (i.value()) {
+            i.value()->setEnabled(hasViewEnabled);
+        }
+    }
 }
 
 //! Views Properties And Hints
@@ -177,6 +248,8 @@ void Windows::setEnabled(Latte::View *view, const bool enabled)
     } else {
         initViewHints(view);
     }
+
+    updateRelevantLayouts();
 
     emit enabledChanged(view);
 }
