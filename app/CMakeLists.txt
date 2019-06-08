@@ -20,6 +20,7 @@ add_subdirectory(shortcuts)
 add_subdirectory(view)
 add_subdirectory(view/indicator)
 add_subdirectory(view/settings)
+add_subdirectory(view/windowstracker)
 add_subdirectory(wm)
 add_subdirectory(wm/tracker)
 

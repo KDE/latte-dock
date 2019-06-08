@@ -20,14 +20,14 @@
 #include "windowstracker.h"
 
 // local
-#include "positioner.h"
-#include "view.h"
-#include "../lattecorona.h"
-#include "../layouts/manager.h"
-#include "../wm/schemecolors.h"
-#include "../wm/tracker/lastactivewindow.h"
-#include "../wm/tracker/trackerwindows.h"
-#include "../../liblatte2/types.h"
+#include "../positioner.h"
+#include "../view.h"
+#include "../../lattecorona.h"
+#include "../../layouts/manager.h"
+#include "../../wm/schemecolors.h"
+#include "../../wm/tracker/lastactivewindow.h"
+#include "../../wm/tracker/trackerwindows.h"
+#include "../../../liblatte2/types.h"
 
 namespace Latte {
 namespace ViewPart {

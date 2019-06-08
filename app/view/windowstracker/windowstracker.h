@@ -21,7 +21,7 @@
 #define WINDOWSTRACKER_H
 
 // local
-#include "../wm/abstractwindowinterface.h"
+#include "../../wm/abstractwindowinterface.h"
 
 // Qt
 #include <QObject>
