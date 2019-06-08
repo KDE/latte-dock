@@ -281,6 +281,10 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 //! PRIVATE SLOTS
 void LastActiveWindow::windowChanged(const WindowId &wid)
 {
+    if (!m_trackedInfo->enabled()) {
+        return;
+    }
+
     if (m_winId == wid && !wid.isNull()) {
         setInformation(m_windowsTracker->infoFor(wid));
     } else if (m_history.contains(wid)) {
