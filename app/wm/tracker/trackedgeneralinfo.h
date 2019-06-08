@@ -63,9 +63,6 @@ public:
     bool existsWindowMaximized() const;
     void setExistsWindowMaximized(bool maximized);
 
-    QRect availableScreenGeometry() const;
-    void setAvailableScreenGeometry(QRect geometry);
-
     LastActiveWindow *lastActiveWindow() const;
 
     SchemeColors *activeWindowScheme() const;
