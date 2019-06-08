@@ -69,7 +69,7 @@ Loader {
                 return;
             }
 
-            if (latteView.windowsTracker.lastActiveWindow.canBeDragged()) {
+            if (selectedWindowsTracker.lastActiveWindow.canBeDragged()) {
                 lastPressX = mouse.x;
                 lastPressY = mouse.y;
                 dragWindowTimer.start();
@@ -92,7 +92,7 @@ Loader {
 
             var tryDrag = mainArea.pressed && (stepX>threshold || stepY>threshold);
 
-            if ( tryDrag && latteView.windowsTracker.lastActiveWindow.canBeDragged()) {
+            if ( tryDrag && selectedWindowsTracker.lastActiveWindow.canBeDragged()) {
                 dragWindowTimer.stop();
                 activateDragging();
             }
@@ -105,7 +105,7 @@ Loader {
 
             dragWindowTimer.stop();
             restoreGrabberTimer.stop();
-            latteView.windowsTracker.lastActiveWindow.requestToggleMaximized();
+            selectedWindowsTracker.lastActiveWindow.requestToggleMaximized();
         }
 
         onWheel: {
@@ -169,7 +169,7 @@ Loader {
 
         function activateDragging(){
             latteView.disableGrabItemBehavior();
-            latteView.windowsTracker.requestMoveLastWindowFromCurrentScreen(mainArea.mouseX, mainArea.mouseY);
+            selectedWindowsTracker.requestMoveLastWindow(mainArea.mouseX, mainArea.mouseY);
             restoreGrabberTimer.start();
         }
 
@@ -178,7 +178,7 @@ Loader {
             id: dragWindowTimer
             interval: 500
             onTriggered: {
-                if (mainArea.pressed && latteView.windowsTracker.lastActiveWindow.canBeDragged()) {
+                if (mainArea.pressed && selectedWindowsTracker.lastActiveWindow.canBeDragged()) {
                     mainArea.activateDragging();
                 }
             }

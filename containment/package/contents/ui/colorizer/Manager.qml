@@ -65,26 +65,26 @@ Loader{
     readonly property real currentBackgroundBrightness: item ? item.currentBrightness : -1000
 
     readonly property bool applyingWindowColors: (root.windowColors === Latte.Types.ActiveWindowColors && latteView && latteView.windowsTracker
-                                                  && latteView.windowsTracker.activeWindowScheme)
+                                                  && selectedWindowsTracker.activeWindowScheme)
                                                  || (root.windowColors === Latte.Types.TouchingWindowColors && latteView && latteView.windowsTracker
-                                                     && latteView.windowsTracker.touchingWindowScheme)
+                                                     && latteView.windowsTracker.currentScreen.touchingWindowScheme)
 
     property QtObject applyTheme: {
         if (latteView && latteView.windowsTracker && !root.hasExpandedApplet) {
-            if (root.windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.activeWindowScheme) {
-                return latteView.windowsTracker.activeWindowScheme;
+            if (root.windowColors === Latte.Types.ActiveWindowColors && selectedWindowsTracker.activeWindowScheme) {
+                return selectedWindowsTracker.activeWindowScheme;
             }
 
-            if (root.windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.touchingWindowScheme) {
+            if (root.windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.currentScreen.touchingWindowScheme) {
                 //! we must track touching windows and when they are not ative
                 //! the active window scheme is used for convenience
-                if (latteView.windowsTracker.existsWindowTouching
-                        && !latteView.windowsTracker.activeWindowTouching
-                        && latteView.windowsTracker.activeWindowScheme) {
-                    return latteView.windowsTracker.activeWindowScheme;
+                if (latteView.windowsTracker.currentScreen.existsWindowTouching
+                        && !latteView.windowsTracker.currentScreen.activeWindowTouching
+                        && latteView.windowsTracker.currentScreen.activeWindowScheme) {
+                    return latteView.windowsTracker.currentScreen.activeWindowScheme;
                 }
 
-                return latteView.windowsTracker.touchingWindowScheme;
+                return latteView.windowsTracker.currentScreen.touchingWindowScheme;
             }
         }
 

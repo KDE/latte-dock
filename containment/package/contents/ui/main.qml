@@ -118,7 +118,7 @@ Item {
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
     property bool editMode: editModeVisual.inEditMode
     property bool windowIsTouching: latteView && latteView.windowsTracker
-                                    && (latteView.windowsTracker.activeWindowTouching || hasExpandedApplet)
+                                    && (latteView.windowsTracker.currentScreen.activeWindowTouching || hasExpandedApplet)
 
     property bool forceSolidPanel: (latteView && latteView.visibility
                                     && Latte.WindowSystem.compositingActive
@@ -126,7 +126,7 @@ Item {
                                     && userShowPanelBackground
                                     && ( (plasmoid.configuration.solidBackgroundForMaximized
                                           && !(hasExpandedApplet && !plasmaBackgroundForPopups)
-                                          && latteView.windowsTracker.existsWindowTouching)
+                                          && latteView.windowsTracker.currentScreen.existsWindowTouching)
                                         || (hasExpandedApplet && plasmaBackgroundForPopups) ))
                                    || !Latte.WindowSystem.compositingActive
 
@@ -135,8 +135,8 @@ Item {
                                          && Latte.WindowSystem.compositingActive
                                          && !inConfigureAppletsMode
                                          && !forceSolidPanel
-                                         && !(windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.activeWindowTouching)
-                                         && !(windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.existsWindowActive)
+                                         && !(windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.currentScreen.activeWindowTouching)
+                                         && !(windowColors === Latte.Types.ActiveWindowColors && selectedWindowsTracker.existsWindowActive)
 
     property bool forcePanelForBusyBackground: userShowPanelBackground && root.forceTransparentPanel
                                                && colorizerManager.mustBeShown && colorizerManager.backgroundIsBusy
@@ -263,7 +263,7 @@ Item {
         if (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
              || (plasmoid.configuration.panelShadows && root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
                 && !(disablePanelShadowMaximized && latteView && latteView.windowsTracker
-                     && latteView.windowsTracker.activeWindowMaximized)) {
+                     && latteView.windowsTracker.currentScreen.activeWindowMaximized)) {
             return true;
         }
 
@@ -409,6 +409,7 @@ Item {
     property QtObject universalSettings: null
     property QtObject layoutsManager: null
     property QtObject viewLayout: latteView && latteView.layout ? latteView.layout : null
+    property QtObject selectedWindowsTracker: latteView && latteView.windowsTracker ? latteView.windowsTracker.currentScreen : null
 
     // TO BE DELETED, if not needed: property int counter:0;
 

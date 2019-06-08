@@ -759,19 +759,36 @@ Window{
             }
 
             Text{
-                text: "Last Active Window (id)"+space
+                text: "Last Active Window Current Screen (id)"+space
             }
 
             Text{
-                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.lastActiveWindow.winId : ""
+                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.currentScreen.lastActiveWindow.winId : "--"
             }
 
             Text{
-                text: "Last Active Window (title)"+space
+                text: "Last Active Window Current Screen (title)"+space
             }
 
             Text{
-                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.lastActiveWindow.display : ""
+                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.currentScreen.lastActiveWindow.display : "--"
+                elide: Text.ElideRight
+            }
+
+            Text{
+                text: "Last Active Window All Screens (id)"+space
+            }
+
+            Text{
+                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.allScreens.lastActiveWindow.winId : "--"
+            }
+
+            Text{
+                text: "Last Active Window All Screens (title)"+space
+            }
+
+            Text{
+                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.allScreens.lastActiveWindow.display : "--"
                 elide: Text.ElideRight
             }
         }
