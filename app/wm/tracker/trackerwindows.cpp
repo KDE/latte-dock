@@ -70,14 +70,14 @@ void Windows::init()
 
     connect(m_wm, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
         m_windows[wid] = m_wm->requestInfo(wid);
-        updateViewsHints();
+        updateAllHints();
 
         emit windowChanged(wid);
     });
 
     connect(m_wm, &AbstractWindowInterface::windowRemoved, this, [&](WindowId wid) {
         m_windows.remove(wid);
-        updateViewsHints();
+        updateAllHints();
 
         emit windowRemoved(wid);
     });
@@ -86,7 +86,7 @@ void Windows::init()
         if (!m_windows.contains(wid)) {
             m_windows.insert(wid, m_wm->requestInfo(wid));
         }
-        updateViewsHints();
+        updateAllHints();
     });
 
     connect(m_wm, &AbstractWindowInterface::activeWindowChanged, this, [&](WindowId wid) {
@@ -100,13 +100,13 @@ void Windows::init()
         }
 
         m_windows[wid] = m_wm->requestInfo(wid);
-        updateViewsHints();
+        updateAllHints();
 
         emit activeWindowChanged(wid);
     });
 
     connect(m_wm, &AbstractWindowInterface::currentDesktopChanged, this, [&] {
-        updateViewsHints();
+        updateAllHints();
     });
 
     connect(m_wm, &AbstractWindowInterface::currentActivityChanged, this, [&] {
@@ -116,8 +116,20 @@ void Windows::init()
             updateAvailableScreenGeometries();
         }
 
-        updateViewsHints();
+        updateAllHints();
     });
+}
+
+void Windows::initLayoutHints(Latte::Layout::GenericLayout *layout)
+{
+    if (!m_layouts.contains(layout)) {
+        return;
+    }
+
+    setActiveWindowMaximized(layout, false);
+    setExistsWindowActive(layout, false);
+    setExistsWindowMaximized(layout, false);
+    setActiveWindowScheme(layout, nullptr);
 }
 
 void Windows::initViewHints(Latte::View *view)
@@ -175,11 +187,11 @@ void Windows::removeView(Latte::View *view)
 
 void Windows::addRelevantLayout(Latte::View *view)
 {
-     if (view->layout() && !m_layouts.contains(view->layout())) {
-         m_layouts[view->layout()] = new TrackedLayoutInfo(this, view->layout());
+    if (view->layout() && !m_layouts.contains(view->layout())) {
+        m_layouts[view->layout()] = new TrackedLayoutInfo(this, view->layout());
 
-         updateRelevantLayouts();
-     }
+        updateRelevantLayouts();
+    }
 }
 
 void Windows::updateRelevantLayouts()
@@ -220,6 +232,10 @@ void Windows::updateRelevantLayouts()
 
         if (i.value()) {
             i.value()->setEnabled(hasViewEnabled);
+
+            if (!hasViewEnabled) {
+                initLayoutHints(i.key());
+            }
         }
     }
 }
@@ -396,6 +412,94 @@ LastActiveWindow *Windows::lastActiveWindow(Latte::View *view)
     return m_views[view]->lastActiveWindow();
 }
 
+//! Layouts
+bool Windows::activeWindowMaximized(Latte::Layout::GenericLayout *layout) const
+{
+    if (!m_layouts.contains(layout)) {
+        return false;
+    }
+
+    return m_layouts[layout]->activeWindowMaximized();
+}
+
+void Windows::setActiveWindowMaximized(Latte::Layout::GenericLayout *layout, bool activeMaximized)
+{
+    if (!m_layouts.contains(layout) || m_layouts[layout]->activeWindowMaximized() == activeMaximized) {
+        return;
+    }
+
+    m_layouts[layout]->setActiveWindowMaximized(activeMaximized);
+    emit activeWindowMaximizedChangedForLayout(layout);
+}
+
+bool Windows::existsWindowActive(Latte::Layout::GenericLayout *layout) const
+{
+    if (!m_layouts.contains(layout)) {
+        return false;
+    }
+
+    return m_layouts[layout]->existsWindowActive();
+}
+
+void Windows::setExistsWindowActive(Latte::Layout::GenericLayout *layout, bool windowActive)
+{
+    if (!m_layouts.contains(layout) || m_layouts[layout]->existsWindowActive() == windowActive) {
+        return;
+    }
+
+    m_layouts[layout]->setExistsWindowActive(windowActive);
+    emit existsWindowActiveChangedForLayout(layout);
+}
+
+bool Windows::existsWindowMaximized(Latte::Layout::GenericLayout *layout) const
+{
+    if (!m_layouts.contains(layout)) {
+        return false;
+    }
+
+    return m_layouts[layout]->existsWindowMaximized();
+}
+
+void Windows::setExistsWindowMaximized(Latte::Layout::GenericLayout *layout, bool windowMaximized)
+{
+    if (!m_layouts.contains(layout) || m_layouts[layout]->existsWindowMaximized() == windowMaximized) {
+        return;
+    }
+
+    m_layouts[layout]->setExistsWindowMaximized(windowMaximized);
+    emit existsWindowMaximizedChangedForLayout(layout);
+}
+
+SchemeColors *Windows::activeWindowScheme(Latte::Layout::GenericLayout *layout) const
+{
+    if (!m_layouts.contains(layout)) {
+        return nullptr;
+    }
+
+    return m_layouts[layout]->activeWindowScheme();
+}
+
+void Windows::setActiveWindowScheme(Latte::Layout::GenericLayout *layout, WindowSystem::SchemeColors *scheme)
+{
+    if (!m_layouts.contains(layout) || m_layouts[layout]->activeWindowScheme() == scheme) {
+        return;
+    }
+
+    m_layouts[layout]->setActiveWindowScheme(scheme);
+    emit activeWindowSchemeChangedForLayout(layout);
+}
+
+LastActiveWindow *Windows::lastActiveWindow(Latte::Layout::GenericLayout *layout)
+{
+    if (!m_layouts.contains(layout)) {
+        return nullptr;
+    }
+
+    return m_layouts[layout]->lastActiveWindow();
+}
+
+
+//! Windows
 bool Windows::isValidFor(const WindowId &wid) const
 {
     if (!m_windows.contains(wid)) {
@@ -570,22 +674,24 @@ void Windows::setPlasmaDesktop(WindowId wid)
     if (!m_windows[wid].isPlasmaDesktop()) {
         m_windows[wid].setIsPlasmaDesktop(true);
         qDebug() << " plasmashell updated...";
-        updateViewsHints();
+        updateAllHints();
     }
 }
 
-void Windows::updateViewsHints()
+void Windows::updateAllHints()
 {
     for (const auto view : m_views.keys()) {
-        if (m_views[view]->enabled()) {
-            updateHints(view);
-        }
+        updateHints(view);
+    }
+
+    for (const auto layout : m_layouts.keys()) {
+        updateHints(layout);
     }
 }
 
 void Windows::updateHints(Latte::View *view)
 {
-    if (!m_views.contains(view) || !view->isOnActivity(m_wm->currentActivity())) {
+    if (!m_views.contains(view) || !m_views[view]->enabled() || !m_views[view]->isTrackingCurrentActivity()) {
         return;
     }
 
@@ -683,6 +789,83 @@ void Windows::updateHints(Latte::View *view)
     //! update LastActiveWindow
     if (foundActiveInCurScreen) {
         m_views[view]->setActiveWindow(activeWinId);
+    }
+
+    //! Debug
+    //qDebug() << "TRACKING | SCREEN: " << view->positioner()->currentScreenId() << " , EDGE:" << view->location() << " , ENABLED:" << enabled(view);
+    //qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
+    //qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
+    //         << " , existsWindowTouching:"<<existsWindowTouching(view);
+}
+
+void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
+    if (!m_layouts.contains(layout) || !m_layouts[layout]->enabled() || !m_layouts[layout]->isTrackingCurrentActivity()) {
+        return;
+    }
+
+    bool foundActive{false};
+    bool foundActiveMaximized{false};
+    bool foundMaximized{false};
+
+    //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
+    //! maybe a garbage collector here is a good idea!!!
+    bool existsFaultyWindow{false};
+
+    WindowId activeWinId;
+    WindowId maxWinId;
+
+    for (const auto &winfo : m_windows) {
+        if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo)) {
+            continue;
+        }
+
+        if (isActive(winfo)) {
+            foundActive = true;
+            activeWinId = winfo.wid();
+
+            if (winfo.isMaximized() && !winfo.isMinimized()) {
+                foundActiveMaximized = true;
+                maxWinId = winfo.wid();
+            }
+        }
+
+        if (!foundActiveMaximized && winfo.isMaximized() && !winfo.isMinimized()) {
+            foundMaximized = true;
+            maxWinId = winfo.wid();
+        }
+
+        if (!existsFaultyWindow && winfo.geometry() == QRect(0, 0, 0, 0)) {
+            existsFaultyWindow = true;
+        }
+
+        //qDebug() << "window geometry ::: " << winfo.geometry();
+    }
+
+    if (existsFaultyWindow) {
+        cleanupFaultyWindows();
+    }
+
+    //! HACK: KWin Effects such as ShowDesktop have no way to be identified and as such
+    //! create issues with identifying properly touching and maximized windows. BUT when
+    //! they are enabled then NO ACTIVE window is found. This is a way to identify these
+    //! effects trigerring and disable the touch flags.
+    //! BUG: 404483
+    //! Disabled because it has fault identifications, e.g. when a window is maximized and
+    //! Latte or Plasma are showing their View settings
+    //foundMaximizedInCurScreen = foundMaximizedInCurScreen && foundActive;
+    //foundTouchInCurScreen = foundTouchInCurScreen && foundActive;
+
+    //! assign flags
+    setExistsWindowActive(layout, foundActive);
+    setActiveWindowMaximized(layout, foundActiveMaximized);
+    setExistsWindowMaximized(layout, foundActiveMaximized || foundMaximized);
+
+    //! update color schemes for active and touching windows
+    setActiveWindowScheme(layout, (foundActive ? m_wm->schemesTracker()->schemeForWindow(activeWinId) : nullptr));
+
+    //! update LastActiveWindow
+    if (foundActive) {
+        m_layouts[layout]->setActiveWindow(activeWinId);
     }
 
     //! Debug

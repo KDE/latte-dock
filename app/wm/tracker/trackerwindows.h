@@ -59,6 +59,7 @@ public:
     void addView(Latte::View *view);
     void removeView(Latte::View *view);
 
+    //! Views Tracking (current screen specific)
     bool enabled(Latte::View *view);
     void setEnabled(Latte::View *view, const bool enabled);
 
@@ -71,6 +72,14 @@ public:
     SchemeColors *touchingWindowScheme(Latte::View *view) const;
     LastActiveWindow *lastActiveWindow(Latte::View *view);
 
+    //! Layouts Tracking (all screens)
+    bool activeWindowMaximized(Latte::Layout::GenericLayout *layout) const;
+    bool existsWindowActive(Latte::Layout::GenericLayout *layout) const;
+    bool existsWindowMaximized(Latte::Layout::GenericLayout *layout) const;
+    SchemeColors *activeWindowScheme(Latte::Layout::GenericLayout *layout) const;
+    LastActiveWindow *lastActiveWindow(Latte::Layout::GenericLayout *layout);
+
+    //! Windows management
     bool isValidFor(const WindowId &wid) const;
     QIcon iconFor(const WindowId &wid);
     QString appNameFor(const WindowId &wid);
@@ -81,6 +90,7 @@ public:
     AbstractWindowInterface *wm();
 
 signals:
+    //! Views
     void enabledChanged(const Latte::View *view);
     void activeWindowMaximizedChanged(const Latte::View *view);
     void activeWindowTouchingChanged(const Latte::View *view);
@@ -89,6 +99,13 @@ signals:
     void existsWindowTouchingChanged(const Latte::View *view);
     void activeWindowSchemeChanged(const Latte::View *view);
     void touchingWindowSchemeChanged(const Latte::View *view);
+
+    //! Layouts
+    void enabledChangedForLayout(const Latte::Layout::GenericLayout *layout);
+    void activeWindowMaximizedChangedForLayout(const Latte::Layout::GenericLayout *layout);
+    void existsWindowActiveChangedForLayout(const Latte::Layout::GenericLayout *layout);
+    void existsWindowMaximizedChangedForLayout(const Latte::Layout::GenericLayout *layout);
+    void activeWindowSchemeChangedForLayout(const Latte::Layout::GenericLayout *layout);
 
     //! overloading WM signals in order to update first m_windows and afterwards
     //! inform consumers for window changes
@@ -105,11 +122,15 @@ private slots:
 
 private:
     void init();
+    void initLayoutHints(Latte::Layout::GenericLayout *layout);
     void initViewHints(Latte::View *view);
     void cleanupFaultyWindows();
 
-    void updateViewsHints();
+    void updateAllHints();
+
+    //! Views
     void updateHints(Latte::View *view);
+    void updateHints(Latte::Layout::GenericLayout *layout);
 
     void setActiveWindowMaximized(Latte::View *view, bool activeMaximized);
     void setActiveWindowTouching(Latte::View *view, bool activeTouching);
@@ -119,6 +140,13 @@ private:
     void setActiveWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme);
     void setTouchingWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme);
 
+    //! Layouts
+    void setActiveWindowMaximized(Latte::Layout::GenericLayout *layout, bool activeMaximized);
+    void setExistsWindowActive(Latte::Layout::GenericLayout *layout, bool windowActive);
+    void setExistsWindowMaximized(Latte::Layout::GenericLayout *layout, bool windowMaximized);
+    void setActiveWindowScheme(Latte::Layout::GenericLayout *layout, WindowSystem::SchemeColors *scheme);
+
+    //! Windows
     bool inCurrentDesktopActivity(const WindowInfoWrap &winfo);
     bool intersects(Latte::View *view, const WindowInfoWrap &winfo);
     bool isActive(const WindowInfoWrap &winfo);
