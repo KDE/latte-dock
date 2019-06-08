@@ -21,6 +21,7 @@
 
 //local
 #include "trackerwindows.h"
+#include "../abstractwindowinterface.h"
 #include "../schemecolors.h"
 
 namespace Latte {
@@ -34,6 +35,10 @@ TrackedGeneralInfo::TrackedGeneralInfo(Tracker::Windows *tracker)
       m_tracker(tracker)
 {
     m_lastActiveWindow = new LastActiveWindow(this);
+
+    connect(m_wm, &AbstractWindowInterface::currentActivityChanged, this, [&]() {
+        updateTrackingCurrentActivity();
+    });
 
     emit lastActiveWindowChanged();
 }
@@ -105,6 +110,19 @@ void TrackedGeneralInfo::setExistsWindowMaximized(bool maximized)
     m_existsWindowMaximized = maximized;
 }
 
+bool TrackedGeneralInfo::isTrackingCurrentActivity() const
+{
+    return m_isTrackingCurrentActivity;
+}
+
+void TrackedGeneralInfo::updateTrackingCurrentActivity()
+{
+    m_isTrackingCurrentActivity = ( m_activities.isEmpty()
+                                    || m_activities[0] == "0"
+            || m_activities.contains(m_wm->currentActivity()));
+}
+
+
 LastActiveWindow *TrackedGeneralInfo::lastActiveWindow() const
 {
     return m_lastActiveWindow;
@@ -134,22 +152,14 @@ void TrackedGeneralInfo::setActiveWindow(const WindowId &wid)
     m_lastActiveWindow->setInformation(m_tracker->infoFor(wid));
 }
 
-bool TrackedGeneralInfo::isTrackedOnActivity(const QString &activity) const
-{
-    //! TODO:: needs to be updated for Layouts case
-    //! a way to access the first enabled View::activities in that specific
-    //! layout
-    return true;
-}
-
 bool TrackedGeneralInfo::isTracking(const WindowInfoWrap &winfo) const
 {
     return (winfo.isValid()
+            && isTrackingCurrentActivity()
             && !winfo.isPlasmaDesktop()
             && !winfo.isMinimized()
             && winfo.isOnDesktop(m_wm->currentDesktop())
-            && winfo.isOnActivity(m_wm->currentActivity())
-            && isTrackedOnActivity(m_wm->currentActivity()));
+            && winfo.isOnActivity(m_wm->currentActivity()));
 }
 
 }

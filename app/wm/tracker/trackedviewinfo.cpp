@@ -34,6 +34,12 @@ TrackedViewInfo::TrackedViewInfo(Tracker::Windows *tracker, Latte::View *view)
     : TrackedGeneralInfo(tracker) ,
       m_view(view)
 {
+    m_activities = m_view->activities();
+
+    connect(m_view, &Latte::View::activitiesChanged, this, [&]() {
+        m_activities = m_view->activities();
+        updateTrackingCurrentActivity();
+    });
 }
 
 TrackedViewInfo::~TrackedViewInfo()
@@ -101,14 +107,9 @@ Latte::View *TrackedViewInfo::view() const
     return m_view;
 }
 
-bool TrackedViewInfo::isTrackedOnActivity(const QString &activity) const
-{
-    return m_view->isOnActivity(activity);
-}
-
 bool TrackedViewInfo::isTracking(const WindowInfoWrap &winfo) const
 {
-    return TrackedGeneralInfo::isTracking(winfo)
+    return  TrackedGeneralInfo::isTracking(winfo)
             && m_availableScreenGeometry.contains(winfo.geometry().center());
 }
 

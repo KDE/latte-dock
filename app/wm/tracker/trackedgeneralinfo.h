@@ -62,6 +62,8 @@ public:
     bool existsWindowMaximized() const;
     void setExistsWindowMaximized(bool maximized);
 
+    bool isTrackingCurrentActivity() const;
+
     LastActiveWindow *lastActiveWindow() const;
 
     SchemeColors *activeWindowScheme() const;
@@ -77,7 +79,14 @@ signals:
     void lastActiveWindowChanged();
 
 protected:
-    virtual bool isTrackedOnActivity(const QString &activity) const;
+    void updateTrackingCurrentActivity();
+
+protected:
+    QStringList m_activities;
+
+    LastActiveWindow *m_lastActiveWindow{nullptr};
+    AbstractWindowInterface *m_wm{nullptr};
+    Tracker::Windows *m_tracker{nullptr};
 
 private:
     bool m_enabled;
@@ -85,12 +94,9 @@ private:
     bool m_existsWindowActive;
     bool m_existsWindowMaximized;
 
-    LastActiveWindow *m_lastActiveWindow{nullptr};
+    bool m_isTrackingCurrentActivity{true};
 
     SchemeColors *m_activeWindowScheme{nullptr};
-
-    AbstractWindowInterface *m_wm{nullptr};
-    Tracker::Windows *m_tracker{nullptr};
 };
 
 }
