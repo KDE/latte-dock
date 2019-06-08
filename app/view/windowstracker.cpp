@@ -165,5 +165,10 @@ void WindowsTracker::setWindowOnActivities(QWindow &window, const QStringList &a
     m_wm->setWindowOnActivities(window, activities);
 }
 
+void WindowsTracker::requestMoveLastWindowFromCurrentScreen(int localX, int localY)
+{
+    m_wm->windowsTracker()->lastActiveWindow(m_latteView)->requestMove(m_latteView, localX, localY);
+}
+
 }
 }

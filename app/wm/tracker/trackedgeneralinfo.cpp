@@ -22,17 +22,15 @@
 //local
 #include "trackerwindows.h"
 #include "../schemecolors.h"
-#include "../../view/view.h"
 
 namespace Latte {
 namespace WindowSystem {
 namespace Tracker {
 
 
-TrackedGeneralInfo::TrackedGeneralInfo(Tracker::Windows *tracker, Latte::View *view)
+TrackedGeneralInfo::TrackedGeneralInfo(Tracker::Windows *tracker)
     : QObject(tracker) ,
       m_wm(tracker->wm()),
-      m_view(view),
       m_tracker(tracker)
 {
     m_lastActiveWindow = new LastActiveWindow(this);
@@ -126,16 +124,10 @@ void TrackedGeneralInfo::setActiveWindowScheme(SchemeColors *scheme)
     m_activeWindowScheme = scheme;
 }
 
-Latte::View *TrackedGeneralInfo::view()
-{
-    return m_view;
-}
-
 AbstractWindowInterface *TrackedGeneralInfo::wm()
 {
     return m_wm;
 }
-
 
 void TrackedGeneralInfo::setActiveWindow(const WindowId &wid)
 {
@@ -148,8 +140,8 @@ bool TrackedGeneralInfo::isTracking(const WindowInfoWrap &winfo) const
             && !winfo.isPlasmaDesktop()
             && !winfo.isMinimized()
             && winfo.isOnDesktop(m_wm->currentDesktop())
-            && winfo.isOnActivity(m_wm->currentActivity())
-            && m_view->isOnActivity(m_wm->currentActivity()));
+            && winfo.isOnActivity(m_wm->currentActivity()));
+            /*&& m_view->isOnActivity(m_wm->currentActivity()));*/
 }
 
 }

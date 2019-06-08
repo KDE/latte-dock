@@ -62,6 +62,8 @@ public:
     SchemeColors *touchingWindowScheme() const;
     void setTouchingWindowScheme(SchemeColors *scheme);
 
+    Latte::View *view() const;
+
     bool isTracking(const WindowInfoWrap &winfo) const override;
 
 private:
@@ -71,6 +73,8 @@ private:
     QRect m_availableScreenGeometry;
 
     SchemeColors *m_touchingWindowScheme{nullptr};
+
+    Latte::View *m_view{nullptr};
 };
 
 }

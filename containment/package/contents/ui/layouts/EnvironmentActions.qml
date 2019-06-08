@@ -169,7 +169,7 @@ Loader {
 
         function activateDragging(){
             latteView.disableGrabItemBehavior();
-            latteView.windowsTracker.lastActiveWindow.requestMove(mainArea.mouseX, mainArea.mouseY);
+            latteView.windowsTracker.requestMoveLastWindowFromCurrentScreen(mainArea.mouseX, mainArea.mouseY);
             restoreGrabberTimer.start();
         }
 

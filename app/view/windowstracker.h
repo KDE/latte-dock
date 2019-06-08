@@ -75,6 +75,9 @@ public:
 
     void setWindowOnActivities(QWindow &window, const QStringList &activities);
 
+public slots:
+    Q_INVOKABLE void requestMoveLastWindowFromCurrentScreen(int localX, int localY);
+
 signals:
     void enabledChanged();
     void activeWindowDraggingStarted();

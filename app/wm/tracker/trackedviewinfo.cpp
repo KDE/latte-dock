@@ -31,7 +31,8 @@ namespace Tracker {
 
 
 TrackedViewInfo::TrackedViewInfo(Tracker::Windows *tracker, Latte::View *view)
-    : TrackedGeneralInfo(tracker, view)
+    : TrackedGeneralInfo(tracker) ,
+      m_view(view)
 {
 }
 
@@ -93,6 +94,11 @@ void TrackedViewInfo::setTouchingWindowScheme(SchemeColors *scheme)
     }
 
     m_touchingWindowScheme = scheme;
+}
+
+Latte::View *TrackedViewInfo::view() const
+{
+    return m_view;
 }
 
 bool TrackedViewInfo::isTracking(const WindowInfoWrap &winfo) const

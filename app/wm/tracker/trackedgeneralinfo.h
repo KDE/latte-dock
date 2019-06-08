@@ -28,7 +28,6 @@
 #include <QObject>
 
 namespace Latte {
-class View;
 namespace WindowSystem {
 class SchemeColors;
 namespace Tracker {
@@ -48,7 +47,7 @@ class TrackedGeneralInfo : public QObject {
     Q_PROPERTY(Latte::WindowSystem::Tracker::LastActiveWindow *activeWindow READ lastActiveWindow NOTIFY lastActiveWindowChanged)
 
 public:
-    TrackedGeneralInfo(Tracker::Windows *tracker, Latte::View *view);
+    TrackedGeneralInfo(Tracker::Windows *tracker);
     ~TrackedGeneralInfo() override;
 
     bool enabled() const;
@@ -68,7 +67,6 @@ public:
     SchemeColors *activeWindowScheme() const;
     void setActiveWindowScheme(SchemeColors *scheme);
 
-    Latte::View *view();
     AbstractWindowInterface *wm();
 
     void setActiveWindow(const WindowId &wid);
@@ -84,7 +82,6 @@ private:
     bool m_existsWindowActive;
     bool m_existsWindowMaximized;
 
-    Latte::View *m_view{nullptr};
     LastActiveWindow *m_lastActiveWindow{nullptr};
 
     SchemeColors *m_activeWindowScheme{nullptr};
