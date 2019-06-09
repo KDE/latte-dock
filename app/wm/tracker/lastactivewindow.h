@@ -143,6 +143,8 @@ private:
 
     void setWinId(QVariant winId);
 
+    void clearHistory();
+
 private:
     bool m_isActive{false};
     bool m_isMinimized{false};

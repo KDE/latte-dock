@@ -37,6 +37,8 @@ namespace WindowSystem {
 namespace Tracker {
 
 const int INVALIDWID = -1;
+const int PREFHISTORY = 8;
+const int MAXHISTORY = 15;
 
 LastActiveWindow::LastActiveWindow(TrackedGeneralInfo *trackedInfo)
     : QObject(trackedInfo),
@@ -256,6 +258,7 @@ void LastActiveWindow::setWinId(QVariant winId)
 
     if (!m_history.contains(winId)) {
         m_history.prepend(winId);
+        clearHistory();
     } else {
         int p = m_history.indexOf(winId);
         //! move to start
@@ -298,7 +301,7 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 void LastActiveWindow::windowChanged(const WindowId &wid)
 {
     if (!m_trackedInfo->enabled()) {
-        qDebug() << " Window Changed : TrackedInfo is disabled...";
+        qDebug() << " Last Active Window, Window Changed : TrackedInfo is disabled...";
         return;
     }
 
@@ -315,7 +318,9 @@ void LastActiveWindow::windowChanged(const WindowId &wid)
             if (m_history[0] == wid) {
                 firstItemRemoved = true;
             }
+
             m_history.removeAll(wid);
+            clearHistory();
         }
 
         if (m_history.count() > 0) {
@@ -334,9 +339,9 @@ void LastActiveWindow::windowChanged(const WindowId &wid)
             setIsValid(false);
         }
 
-        qDebug() << " HISTORY ::: " << m_history;
+        //qDebug() << " HISTORY ::: " << m_history;
     } else {
-        qDebug() << " LastActiveWindow : window is not in history";
+        //qDebug() << " LastActiveWindow : window is not in history";
     }
 }
 
@@ -350,6 +355,7 @@ void LastActiveWindow::windowRemoved(const WindowId &wid)
         }
 
         m_history.removeAll(wid);
+        m_history.removeAll(wid);
 
         if (m_history.count() > 0 && firstItemRemoved) {
             windowChanged(m_history[0]);
@@ -358,6 +364,19 @@ void LastActiveWindow::windowRemoved(const WindowId &wid)
         }
     }
 }
+
+void LastActiveWindow::clearHistory()
+{
+    if (m_history.count() > MAXHISTORY) {
+        int size = m_history.count();
+        for(int i=0; i<(size-PREFHISTORY); ++i) {
+            if (!m_history.isEmpty()) {
+                m_history.removeLast();
+            }
+        }
+    }
+}
+
 
 //! FUNCTIONALITY
 void LastActiveWindow::requestActivate()
