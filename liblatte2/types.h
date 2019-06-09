@@ -202,6 +202,13 @@ public:
     };
     Q_ENUM(WindowColorsGroup);
 
+    enum ActiveWindowFilterGroup
+    {
+        ActiveInCurrentScreen = 0,
+        ActiveFromAllScreens
+    };
+    Q_ENUM(ActiveWindowFilterGroup);
+
     enum LayoutsMemoryUsage
     {
         SingleLayout = 0,  /* a single Layout is loaded in each time */

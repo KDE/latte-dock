@@ -409,7 +409,18 @@ Item {
     property QtObject universalSettings: null
     property QtObject layoutsManager: null
     property QtObject viewLayout: latteView && latteView.layout ? latteView.layout : null
-    property QtObject selectedWindowsTracker: latteView && latteView.windowsTracker ? latteView.windowsTracker.currentScreen : null
+    property QtObject selectedWindowsTracker: {
+        if (latteView && latteView.windowsTracker) {
+            switch(plasmoid.configuration.activeWindowFilter) {
+            case Latte.Types.ActiveInCurrentScreen:
+                return latteView.windowsTracker.currentScreen;
+            case Latte.Types.ActiveFromAllScreens:
+                return latteView.windowsTracker.allScreens;
+            }
+        }
+
+        return null;
+    }
 
     // TO BE DELETED, if not needed: property int counter:0;
 

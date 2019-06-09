@@ -566,6 +566,7 @@ PlasmaComponents.Page {
                         Layout.topMargin: units.smallSpacing
 
                         PlasmaComponents.Label {
+                            id: mouseWheelLbl
                             text: i18n("Mouse wheel")
                         }
 
@@ -597,6 +598,42 @@ PlasmaComponents.Page {
                             }
                         }
                     }
+                }
+
+                LatteComponents.SubHeader {
+                    text: i18n("Active Window")
+                }
+
+                ColumnLayout {
+                    RowLayout {
+                        Layout.topMargin: units.smallSpacing
+
+                        PlasmaComponents.Label {
+                            Layout.minimumWidth: mouseWheelLbl.width
+                            Layout.maximumWidth: mouseWheelLbl.width
+                            text: i18n("Track From")
+                        }
+
+                        LatteComponents.ComboBox {
+                            id: activeWindowFilterCmb
+                            Layout.fillWidth: true
+                            model: [i18n("Current Screen"),
+                                i18n("All Screens")]
+
+                            currentIndex: plasmoid.configuration.activeWindowFilter
+
+                            onCurrentIndexChanged: {
+                                switch(currentIndex) {
+                                case Latte.Types.ActiveInCurrentScreen:
+                                    plasmoid.configuration.activeWindowFilter = Latte.Types.ActiveInCurrentScreen;
+                                    break;
+                                case Latte.Types.ActiveFromAllScreens:
+                                    plasmoid.configuration.activeWindowFilter = Latte.Types.ActiveFromAllScreens;
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
@@ -611,6 +648,7 @@ PlasmaComponents.Page {
                         }
                     }
                 }
+
 
                 LatteComponents.SubHeader {
                     text: i18n("Items")
