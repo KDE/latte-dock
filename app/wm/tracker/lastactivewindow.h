@@ -52,6 +52,7 @@ class LastActiveWindow : public QObject {
     Q_PROPERTY(bool isKeepAbove READ isKeepAbove NOTIFY isKeepAboveChanged)
     Q_PROPERTY(bool isOnAllDesktops  READ isOnAllDesktops NOTIFY isOnAllDesktopsChanged)
     Q_PROPERTY(bool isShaded READ isShaded NOTIFY isShadedChanged)
+    Q_PROPERTY(bool isValid READ isValid NOTIFY isValidChanged)
     Q_PROPERTY(bool hasSkipTaskbar READ hasSkipTaskbar NOTIFY hasSkipTaskbarChanged)
 
     Q_PROPERTY(QString appName READ appName NOTIFY appNameChanged)
@@ -73,6 +74,7 @@ public:
     bool isKeepAbove() const;
     bool isOnAllDesktops() const;
     bool isShaded() const;
+    bool isValid() const;
     bool hasSkipTaskbar() const;
 
     QString appName() const;
@@ -113,6 +115,7 @@ signals:
     void isKeepAboveChanged();
     void isOnAllDesktopsChanged();
     void isShadedChanged();
+    void isValidChanged();
     void hasSkipTaskbarChanged();
 
     void appNameChanged();
@@ -129,6 +132,7 @@ private:
     void setIsKeepAbove(bool above);
     void setIsOnAllDesktops(bool all);
     void setIsShaded(bool shaded);
+    void setIsValid(bool valid);
     void setHasSkipTaskbar(bool skip);
 
     void setAppName(QString appName);
@@ -147,6 +151,7 @@ private:
     bool m_isKeepAbove{false};
     bool m_isOnAllDesktops{false};
     bool m_isShaded{false};
+    bool m_isValid{false};
     bool m_hasSkipTaskbar{false};
 
     QString m_appName;

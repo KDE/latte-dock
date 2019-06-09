@@ -36,13 +36,14 @@ namespace Latte {
 namespace WindowSystem {
 namespace Tracker {
 
+const int INVALIDWID = -1;
+
 LastActiveWindow::LastActiveWindow(TrackedGeneralInfo *trackedInfo)
     : QObject(trackedInfo),
       m_trackedInfo(trackedInfo),
       m_windowsTracker(trackedInfo->wm()->windowsTracker()),
       m_wm(trackedInfo->wm())
 {
-    connect(m_windowsTracker, &Windows::activeWindowChanged, this, &LastActiveWindow::windowChanged);
     connect(m_windowsTracker, &Windows::windowChanged, this, &LastActiveWindow::windowChanged);
     connect(m_windowsTracker, &Windows::windowRemoved, this, &LastActiveWindow::windowRemoved);
 }
@@ -156,6 +157,21 @@ void LastActiveWindow::setIsShaded(bool shaded)
     emit isShadedChanged();
 }
 
+bool LastActiveWindow::isValid() const
+{
+    return m_isValid;
+}
+
+void LastActiveWindow::setIsValid(bool valid)
+{
+    if (m_isValid == valid) {
+        return;
+    }
+
+    m_isValid = valid;
+    emit isValidChanged();
+}
+
 bool LastActiveWindow::hasSkipTaskbar() const
 {
     return m_hasSkipTaskbar;
@@ -234,7 +250,7 @@ QVariant LastActiveWindow::winId() const
 
 void LastActiveWindow::setWinId(QVariant winId)
 {
-    if (m_winId == winId) {
+    if (m_winId == winId && isValid()) {
         return;
     }
 
@@ -254,6 +270,7 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 {
     setWinId(info.wid());
 
+    setIsValid(true);
     setActive(info.isActive());
     setIsMinimized(info.isMinimized());
     setIsMaximized(info.isMaxVert() || info.isMaxHoriz());
@@ -275,41 +292,69 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
     } else {
         setIcon(info.icon());
     }
-
 }
 
 //! PRIVATE SLOTS
 void LastActiveWindow::windowChanged(const WindowId &wid)
 {
     if (!m_trackedInfo->enabled()) {
+        qDebug() << " Window Changed : TrackedInfo is disabled...";
         return;
     }
 
-    if (m_winId == wid && !wid.isNull()) {
-        setInformation(m_windowsTracker->infoFor(wid));
-    } else if (m_history.contains(wid)) {
+    if (m_history.contains(wid)) {
         //! remove from history minimized windows or windows that changed screen
-        //! and update information accordingly with the first window found from
+        //! and update information accordingly with the first valid window found from
         //! history after the removal
         WindowInfoWrap winfo = m_windowsTracker->infoFor(wid);
 
-        if (winfo.isMinimized() || !m_trackedInfo->isTracking(winfo)) {
-            m_history.removeAll(wid);
+        bool firstItemRemoved{false};
 
-            if (m_history.count() > 0) {
-                setInformation(m_windowsTracker->infoFor(m_history[0]));
+        //! Remove minimized windows OR NOT-TRACKED windows from history
+        if (winfo.isMinimized() || !m_trackedInfo->isTracking(winfo)) {
+            if (m_history[0] == wid) {
+                firstItemRemoved = true;
             }
+            m_history.removeAll(wid);
         }
+
+        if (m_history.count() > 0) {
+            if (m_history[0] == wid || firstItemRemoved) {
+                WindowInfoWrap history1 = m_windowsTracker->infoFor(m_history[0]);
+
+                //! Check if first found History window is still valid to show its information
+                if (history1.isMinimized() || !m_trackedInfo->isTracking(history1)) {
+                    windowChanged(m_history[0]);
+                } else {
+                    setInformation(history1);
+                }
+            }
+        } else {
+            //! History is empty so any demonstrated information are invalid
+            setIsValid(false);
+        }
+
+        qDebug() << " HISTORY ::: " << m_history;
+    } else {
+        qDebug() << " LastActiveWindow : window is not in history";
     }
 }
 
 void LastActiveWindow::windowRemoved(const WindowId &wid)
 {
     if (m_history.contains(wid)) {
+        bool firstItemRemoved{false};
+
+        if (m_history.count() > 0 && m_history[0] == wid) {
+            firstItemRemoved = true;
+        }
+
         m_history.removeAll(wid);
 
-        if (m_history.count() > 0) {
-            setInformation(m_windowsTracker->infoFor(m_history[0]));
+        if (m_history.count() > 0 && firstItemRemoved) {
+            windowChanged(m_history[0]);
+        } else {
+            setIsValid(false);
         }
     }
 }

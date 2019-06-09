@@ -763,7 +763,8 @@ Window{
             }
 
             Text{
-                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.currentScreen.lastActiveWindow.winId : "--"
+                text: latteView && latteView.windowsTracker && latteView.windowsTracker.currentScreen.lastActiveWindow.isValid ?
+                          latteView.windowsTracker.currentScreen.lastActiveWindow.winId : "--"
             }
 
             Text{
@@ -771,7 +772,8 @@ Window{
             }
 
             Text{
-                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.currentScreen.lastActiveWindow.display : "--"
+                text: latteView && latteView.windowsTracker && latteView.windowsTracker.currentScreen.lastActiveWindow.isValid ?
+                          latteView.windowsTracker.currentScreen.lastActiveWindow.display : "--"
                 elide: Text.ElideRight
             }
 
@@ -780,7 +782,8 @@ Window{
             }
 
             Text{
-                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.allScreens.lastActiveWindow.winId : "--"
+                text: latteView && latteView.windowsTracker && latteView.windowsTracker.allScreens.lastActiveWindow.isValid ?
+                          latteView.windowsTracker.allScreens.lastActiveWindow.winId : "--"
             }
 
             Text{
@@ -788,7 +791,8 @@ Window{
             }
 
             Text{
-                text: latteView && latteView.windowsTracker ? latteView.windowsTracker.allScreens.lastActiveWindow.display : "--"
+                text: latteView && latteView.windowsTracker && latteView.windowsTracker.allScreens.lastActiveWindow.isValid ?
+                          latteView.windowsTracker.allScreens.lastActiveWindow.display : "--"
                 elide: Text.ElideRight
             }
         }

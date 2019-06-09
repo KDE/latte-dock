@@ -170,7 +170,7 @@ void Windows::addView(Latte::View *view)
         addRelevantLayout(view);
     });
 
-    updateHints(view);
+    updateAllHints();
 
     emit informationAnnounced(view);
 }

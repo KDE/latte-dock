@@ -108,7 +108,7 @@ Latte::View *TrackedViewInfo::view() const
 }
 
 bool TrackedViewInfo::isTracking(const WindowInfoWrap &winfo) const
-{
+{   
     return  TrackedGeneralInfo::isTracking(winfo)
             && m_availableScreenGeometry.contains(winfo.geometry().center());
 }
