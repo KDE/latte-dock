@@ -25,6 +25,8 @@
 #include "tracker/trackerwindows.h"
 #include "../lattecorona.h"
 
+// KDE
+#include <KActivities/Controller>
 
 namespace Latte {
 namespace WindowSystem {
@@ -94,6 +96,44 @@ Tracker::Windows *AbstractWindowInterface::windowsTracker() const
     return m_windowsTracker;
 }
 
+//! Activities switching
+void AbstractWindowInterface::switchToNextActivity()
+{
+    QStringList runningActivities = m_activities->activities(KActivities::Info::State::Running);
+    if (runningActivities.count() <= 1) {
+        return;
+    }
+
+    int curPos = runningActivities.indexOf(m_currentActivity);
+    int nextPos = curPos + 1;
+
+    if (curPos == runningActivities.count() -1) {
+        nextPos = 0;
+    }
+
+    KActivities::Controller activitiesController;
+    activitiesController.setCurrentActivity(runningActivities.at(nextPos));
+}
+
+void AbstractWindowInterface::switchToPreviousActivity()
+{
+    QStringList runningActivities = m_activities->activities(KActivities::Info::State::Running);
+    if (runningActivities.count() <= 1) {
+        return;
+    }
+
+    int curPos = runningActivities.indexOf(m_currentActivity);
+    int nextPos = curPos - 1;
+
+    if (curPos == 0) {
+        nextPos = runningActivities.count() - 1;
+    }
+
+    KActivities::Controller activitiesController;
+    activitiesController.setCurrentActivity(runningActivities.at(nextPos));
+}
+
+//! Delay window changed trigerring
 void AbstractWindowInterface::considerWindowChanged(WindowId wid)
 {
     //! Consider if the windowChanged signal should be sent DIRECTLY or WAIT
@@ -113,7 +153,7 @@ void AbstractWindowInterface::considerWindowChanged(WindowId wid)
     if (m_windowChangedWaiting != wid && m_windowWaitingTimer.isActive()) {
         m_windowWaitingTimer.stop();
         //! sent previous waiting window
-        emit (m_windowChangedWaiting);
+        emit windowChanged(m_windowChangedWaiting);
 
         //! retrigger waiting for the upcoming window
         m_windowChangedWaiting = wid;

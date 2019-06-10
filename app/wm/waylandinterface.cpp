@@ -224,6 +224,50 @@ void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::T
 
 }
 
+void WaylandInterface::switchToNextVirtualDesktop() const
+{
+#if KF5_VERSION_MINOR >= 52
+    if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
+        return;
+    }
+
+    int curPos = m_desktops.indexOf(m_currentDesktop);
+    int nextPos = curPos + 1;
+
+    if (curPos == m_desktops.count()-1) {
+        nextPos = 0;
+    }
+
+    KWayland::Client::PlasmaVirtualDesktop *desktopObj = m_virtualDesktopManagement->getVirtualDesktop(m_desktops[nextPos]);
+
+    if (desktopObj) {
+        desktopObj->requestActivate();
+    }
+#endif
+}
+
+void WaylandInterface::switchToPreviousVirtualDesktop() const
+{
+#if KF5_VERSION_MINOR >= 52
+    if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
+        return;
+    }
+
+    int curPos = m_desktops.indexOf(m_currentDesktop);
+    int nextPos = curPos - 1;
+
+    if (curPos == 0) {
+        nextPos = m_desktops.count()-1;
+    }
+
+    KWayland::Client::PlasmaVirtualDesktop *desktopObj = m_virtualDesktopManagement->getVirtualDesktop(m_desktops[nextPos]);
+
+    if (desktopObj) {
+        desktopObj->requestActivate();
+    }
+#endif
+}
+
 void WaylandInterface::setWindowOnActivities(QWindow &window, const QStringList &activities)
 {
     //! needs to updated to wayland case

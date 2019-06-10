@@ -117,6 +117,12 @@ public:
     QString currentDesktop() const;
     QString currentActivity() const;
 
+    void switchToNextActivity();
+    void switchToPreviousActivity();
+
+    virtual void switchToNextVirtualDesktop() const = 0;
+    virtual void switchToPreviousVirtualDesktop() const = 0;
+
     Latte::Corona *corona();
     Tracker::Schemes *schemesTracker();
     Tracker::Windows *windowsTracker() const;

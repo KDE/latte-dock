@@ -94,6 +94,9 @@ public:
 
     void setEdgeStateFor(QWindow *view, bool active) const override;
 
+    void switchToNextVirtualDesktop() const override;
+    void switchToPreviousVirtualDesktop() const override;
+
     void initWindowManagement(KWayland::Client::PlasmaWindowManagement *windowManagement);
 
 #if KF5_VERSION_MINOR >= 52

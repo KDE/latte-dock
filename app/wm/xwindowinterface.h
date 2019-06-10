@@ -78,6 +78,9 @@ public:
 
     void setEdgeStateFor(QWindow *view, bool active) const override;
 
+    void switchToNextVirtualDesktop() const override;
+    void switchToPreviousVirtualDesktop() const override;
+
 private:
     bool hasScreenGeometry(const KWindowInfo &winfo) const;
     bool isValidWindow(WindowId wid) const;
