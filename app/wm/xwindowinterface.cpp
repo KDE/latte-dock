@@ -145,6 +145,7 @@ void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
 void XWindowInterface::switchToNextVirtualDesktop() const
 {
     int desktops = KWindowSystem::numberOfDesktops();
+
     if (desktops <= 1) {
         return;
     }
@@ -152,8 +153,8 @@ void XWindowInterface::switchToNextVirtualDesktop() const
     int curPos = KWindowSystem::currentDesktop();
     int nextPos = curPos + 1;
 
-    if (curPos == desktops -1) {
-        nextPos = 0;
+    if (curPos == desktops) {
+        nextPos = 1;
     }
 
     KWindowSystem::setCurrentDesktop(nextPos);
@@ -169,8 +170,8 @@ void XWindowInterface::switchToPreviousVirtualDesktop() const
     int curPos = KWindowSystem::currentDesktop();
     int nextPos = curPos - 1;
 
-    if (curPos == 0) {
-        nextPos = desktops - 1;
+    if (curPos == 1) {
+        nextPos = desktops;
     }
 
     KWindowSystem::setCurrentDesktop(nextPos);

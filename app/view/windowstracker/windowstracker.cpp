@@ -109,5 +109,26 @@ void WindowsTracker::setWindowOnActivities(QWindow &window, const QStringList &a
     m_wm->setWindowOnActivities(window, activities);
 }
 
+//! Environment Functions
+void WindowsTracker::switchToNextActivity()
+{
+    m_wm->switchToNextActivity();
+}
+
+void WindowsTracker::switchToPreviousActivity()
+{
+    m_wm->switchToPreviousActivity();
+}
+
+void WindowsTracker::switchToNextVirtualDesktop()
+{
+    m_wm->switchToNextVirtualDesktop();
+}
+
+void WindowsTracker::switchToPreviousVirtualDesktop()
+{
+    m_wm->switchToPreviousVirtualDesktop();
+}
+
 }
 }
