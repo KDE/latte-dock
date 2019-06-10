@@ -617,8 +617,8 @@ PlasmaComponents.Page {
                         LatteComponents.ComboBox {
                             id: activeWindowFilterCmb
                             Layout.fillWidth: true
-                            model: [i18n("Current Screen"),
-                                i18n("All Screens")]
+                            model: [i18nc("track from current screen", "Current Screen"),
+                                i18n("track from all screens", "All Screens")]
 
                             currentIndex: plasmoid.configuration.activeWindowFilter
 
