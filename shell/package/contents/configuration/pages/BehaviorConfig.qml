@@ -618,7 +618,7 @@ PlasmaComponents.Page {
                             id: activeWindowFilterCmb
                             Layout.fillWidth: true
                             model: [i18nc("track from current screen", "Current Screen"),
-                                i18n("track from all screens", "All Screens")]
+                                i18nc("track from all screens", "All Screens")]
 
                             currentIndex: plasmoid.configuration.activeWindowFilter
 
