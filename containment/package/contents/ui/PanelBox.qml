@@ -332,14 +332,12 @@ Item{
             anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom : 0
             anchors.fill:parent
 
-            opacity: {
-                if (forceSolidness) {
-                    return 1;
-                } else if (!root.userShowPanelBackground || root.forcePanelForBusyBackground || root.forceTransparentPanel) {
+            opacity: {                
+                if (overlayedBackground.opacity > 0) {
                     return 0;
-                } else {
-                    return plasmoid.configuration.panelTransparency / 100;
                 }
+
+                return overlayedBackground.midOpacity;
             }
 
             readonly property bool forceSolidness: root.forceSolidPanel || !Latte.WindowSystem.compositingActive
@@ -487,7 +485,7 @@ Item{
                 }
 
                 if (colorizerManager.mustBeShown && colorizerManager.applyTheme !== theme) {
-                    return solidBackground.opacity;
+                    return midOpacity;
                 }
 
                 return 0;
@@ -514,6 +512,19 @@ Item{
 
                 return 0;
             }
+
+            property real midOpacity: {
+                if (forceSolidness) {
+                    return 1;
+                } else if (!root.userShowPanelBackground || root.forcePanelForBusyBackground || root.forceTransparentPanel) {
+                    return 0;
+                } else {
+                    return plasmoid.configuration.panelTransparency / 100;
+                }
+            }
+
+            readonly property bool forceSolidness: root.forceSolidPanel || !Latte.WindowSystem.compositingActive
+
 
             Behavior on opacity{
                 enabled: Latte.WindowSystem.compositingActive
