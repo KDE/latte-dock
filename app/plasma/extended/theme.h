@@ -115,7 +115,8 @@ private:
     void updateReversedScheme();
     void updateReversedSchemeValues();
 
-    int roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge);
+    int roundness(const QImage &svgImage, Plasma::Types::Location edge);
+
 private:
     bool m_isLightTheme{false};
     bool m_compositing{true};

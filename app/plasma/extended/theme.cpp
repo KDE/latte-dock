@@ -306,19 +306,24 @@ void Theme::updateReversedSchemeValues()
     }
 }
 
-int Theme::roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge)
+int Theme::roundness(const QImage &svgImage, Plasma::Types::Location edge)
 {
-    int discovY = (edge == Plasma::Types::TopEdge ? svg->mask().boundingRect().bottom() : svg->mask().boundingRect().top());
-    int discovX = (edge == Plasma::Types::LeftEdge ? svg->mask().boundingRect().right() : svg->mask().boundingRect().left());
+    int discovRow = (edge == Plasma::Types::TopEdge ? svgImage.height()-1 : 0);
+    int discovCol = (edge == Plasma::Types::LeftEdge ? svgImage.width()-1 : 0);
 
     int round{0};
+
+    int maxOpacity = qAlpha(svgImage.pixel(49,0));
 
     if (edge == Plasma::Types::BottomEdge || edge == Plasma::Types::RightEdge || edge == Plasma::Types::TopEdge) {
         //! TOPLEFT corner
         //! first LEFT pixel found
-        for (int x=svg->mask().boundingRect().left(); x<50; ++x) {
-            if (!svg->mask().contains(QPoint(x, discovY))) {
-                discovX++;
+        QRgb *line = (QRgb *)svgImage.scanLine(discovRow);
+        for (int col=0; col<50; ++col) {
+            QRgb pixelData = line[col];
+
+            if (qAlpha(pixelData) != maxOpacity) {
+                discovCol++;
                 round++;
             } else {
                 break;
@@ -327,9 +332,12 @@ int Theme::roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge)
     } else if (edge == Plasma::Types::LeftEdge) {
         //! it should be TOPRIGHT corner in that case
         //! first RIGHT pixel found
-        for (int x=svg->mask().boundingRect().right(); x>50; --x) {
-            if (!svg->mask().contains(QPoint(x, discovY))) {
-                discovX--;
+        QRgb *line = (QRgb *)svgImage.scanLine(discovRow);
+        for (int col=99; col>50; --col) {
+            QRgb pixelData = line[col];
+
+            if (qAlpha(pixelData) != maxOpacity) {
+                discovCol--;
                 round++;
             } else {
                 break;
@@ -339,7 +347,7 @@ int Theme::roundness(Plasma::FrameSvg *svg, Plasma::Types::Location edge)
 
     //! this needs investigation (the x2) I dont know if it is really needed
     //! but it gives me the impression that returns better results
-    return round*2;
+    return round; ///**2*/;
 }
 
 void Theme::loadCompositingRoundness()
@@ -349,38 +357,51 @@ void Theme::loadCompositingRoundness()
     svg->setEnabledBorders(Plasma::FrameSvg::AllBorders);
     svg->resizeFrame(QSize(100,100));
 
+    //! New approach
+    QPixmap pxm = svg->framePixmap();
+
     //! bottom roundness
     if (svg->hasElementPrefix("south")) {
         svg->setElementPrefix("south");
+        pxm = svg->framePixmap();
+    } else {
+        svg->setElementPrefix("");
+        pxm = svg->framePixmap();
     }
-    m_bottomEdgeRoundness = roundness(svg, Plasma::Types::BottomEdge);
+    m_bottomEdgeRoundness = roundness(pxm.toImage(), Plasma::Types::BottomEdge);
 
     //! left roundness
     if (svg->hasElementPrefix("west")) {
         svg->setElementPrefix("west");
+        pxm = svg->framePixmap();
     } else {
         svg->setElementPrefix("");
+        pxm = svg->framePixmap();
     }
-    m_leftEdgeRoundness = roundness(svg, Plasma::Types::LeftEdge);
+    m_leftEdgeRoundness = roundness(pxm.toImage(), Plasma::Types::LeftEdge);
 
     //! top roundness
     if (svg->hasElementPrefix("north")) {
         svg->setElementPrefix("north");
+        pxm = svg->framePixmap();
     } else {
         svg->setElementPrefix("");
+        pxm = svg->framePixmap();
     }
-    m_topEdgeRoundness = roundness(svg, Plasma::Types::TopEdge);
+    m_topEdgeRoundness = roundness(pxm.toImage(), Plasma::Types::TopEdge);
 
     //! right roundness
     if (svg->hasElementPrefix("east")) {
         svg->setElementPrefix("east");
+        pxm = svg->framePixmap();
     } else {
         svg->setElementPrefix("");
+        pxm = svg->framePixmap();
     }
-    m_rightEdgeRoundness = roundness(svg, Plasma::Types::RightEdge);
+    m_rightEdgeRoundness = roundness(pxm.toImage(), Plasma::Types::RightEdge);
 
-    qDebug() << " COMPOSITING MASK ::: " << svg->mask();
-    qDebug() << " COMPOSITING MASK BOUNDING RECT ::: " << svg->mask().boundingRect();
+  /*  qDebug() << " COMPOSITING MASK ::: " << svg->mask();
+    qDebug() << " COMPOSITING MASK BOUNDING RECT ::: " << svg->mask().boundingRect();*/
     qDebug() << " COMPOSITING ROUNDNESS ::: " << m_bottomEdgeRoundness << " _ " << m_leftEdgeRoundness << " _ " << m_topEdgeRoundness << " _ " << m_rightEdgeRoundness;
 
     svg->deleteLater();
