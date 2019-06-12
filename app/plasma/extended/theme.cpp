@@ -313,16 +313,17 @@ int Theme::roundness(const QImage &svgImage, Plasma::Types::Location edge)
 
     int round{0};
 
-    int maxOpacity = qAlpha(svgImage.pixel(49,0));
+    int maxOpacity = qMin(qAlpha(svgImage.pixel(49,0)), 200);
 
     if (edge == Plasma::Types::BottomEdge || edge == Plasma::Types::RightEdge || edge == Plasma::Types::TopEdge) {
         //! TOPLEFT corner
         //! first LEFT pixel found
         QRgb *line = (QRgb *)svgImage.scanLine(discovRow);
+
         for (int col=0; col<50; ++col) {
             QRgb pixelData = line[col];
 
-            if (qAlpha(pixelData) != maxOpacity) {
+            if (qAlpha(pixelData) < maxOpacity) {
                 discovCol++;
                 round++;
             } else {
@@ -336,7 +337,7 @@ int Theme::roundness(const QImage &svgImage, Plasma::Types::Location edge)
         for (int col=99; col>50; --col) {
             QRgb pixelData = line[col];
 
-            if (qAlpha(pixelData) != maxOpacity) {
+            if (qAlpha(pixelData) < maxOpacity) {
                 discovCol--;
                 round++;
             } else {
