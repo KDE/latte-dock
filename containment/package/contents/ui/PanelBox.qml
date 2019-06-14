@@ -308,10 +308,13 @@ Item{
         Colorizer.CustomBackground {
             id: backgroundLowestRectangle
             anchors.fill: solidBackground
-            opacity: solidBackground.opacity
+            opacity: normalizedOpacity
             backgroundColor: colorizerManager.backgroundColor
             roundness: overlayedBackground.roundness
-            visible: Latte.WindowSystem.compositingActive
+            visible: Latte.WindowSystem.compositingActive && solidBackground.exceedsThemeOpacityLimits
+
+            readonly property real normalizedOpacity: visible ?  Math.min(1, (appliedOpacity - solidBackground.themeMaxOpacity)/(1-solidBackground.themeMaxOpacity)) : 0
+            readonly property real appliedOpacity: visible ? solidBackground.appliedOpacity : 0
 
             Behavior on opacity{
                 enabled: Latte.WindowSystem.compositingActive
@@ -332,15 +335,28 @@ Item{
             anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom : 0
             anchors.fill:parent
 
-            opacity: {                
-                if (overlayedBackground.opacity > 0) {
-                    return 0;
+            opacity: normalizedOpacity
+
+            readonly property bool exceedsThemeOpacityLimits: appliedOpacity > themeMaxOpacity
+            readonly property bool forceSolidness: root.forceSolidPanel || !Latte.WindowSystem.compositingActive
+
+            //! must be normalized to plasma theme maximum opacity
+            readonly property real normalizedOpacity: Math.min(1, appliedOpacity / themeMaxOpacity)
+
+            readonly property real appliedOpacity: overlayedBackground.opacity > 0 ? 0 : overlayedBackground.midOpacity
+            readonly property real themeMaxOpacity: {
+                if (themeExtended) {
+                    switch(plasmoid.location) {
+                    case PlasmaCore.Types.BottomEdge: return themeExtended.bottomEdgeMaxOpacity;
+                    case PlasmaCore.Types.LeftEdge: return themeExtended.leftEdgeMaxOpacity;
+                    case PlasmaCore.Types.TopEdge: return themeExtended.topEdgeMaxOpacity;
+                    case PlasmaCore.Types.RightEdge: return themeExtended.rightEdgeMaxOpacity;
+                    default: return 0;
+                    }
                 }
 
-                return overlayedBackground.midOpacity;
+                return 1;
             }
-
-            readonly property bool forceSolidness: root.forceSolidPanel || !Latte.WindowSystem.compositingActive
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 
