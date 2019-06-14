@@ -60,7 +60,10 @@ class Theme: public QObject
 
     Q_PROPERTY(int outlineWidth READ outlineWidth NOTIFY outlineWidthChanged)
 
-    Q_PROPERTY(float backgroundMaxOpacity READ backgroundMaxOpacity NOTIFY backgroundMaxOpacityChanged)
+    Q_PROPERTY(float bottomEdgeMaxOpacity READ bottomEdgeMaxOpacity NOTIFY maxOpacityChanged)
+    Q_PROPERTY(float leftEdgeMaxOpacity READ leftEdgeMaxOpacity NOTIFY maxOpacityChanged)
+    Q_PROPERTY(float topEdgeMaxOpacity READ topEdgeMaxOpacity NOTIFY maxOpacityChanged)
+    Q_PROPERTY(float rightEdgeMaxOpacity READ rightEdgeMaxOpacity NOTIFY maxOpacityChanged)
 
     Q_PROPERTY(Latte::WindowSystem::SchemeColors *defaultTheme READ defaultTheme NOTIFY themeChanged)
     Q_PROPERTY(Latte::WindowSystem::SchemeColors *lightTheme READ lightTheme NOTIFY themeChanged)
@@ -82,7 +85,10 @@ public:
     int outlineWidth() const;
     void setOutlineWidth(int width);
 
-    float backgroundMaxOpacity() const;
+    float bottomEdgeMaxOpacity() const;
+    float leftEdgeMaxOpacity() const;
+    float topEdgeMaxOpacity() const;
+    float rightEdgeMaxOpacity() const;
 
     WindowSystem::SchemeColors *defaultTheme() const;
     WindowSystem::SchemeColors *lightTheme() const;
@@ -91,9 +97,9 @@ public:
     void load();
 
 signals:
-    void backgroundMaxOpacityChanged();
     void compositingChanged();
     void hasShadowChanged();
+    void maxOpacityChanged();
     void outlineWidthChanged();
     void roundnessChanged();
     void themeChanged();
@@ -128,7 +134,10 @@ private:
 
     int m_outlineWidth{1};
 
-    float m_backgroundMaxOpacity{1};
+    float m_bottomEdgeMaxOpacity{1};
+    float m_leftEdgeMaxOpacity{1};
+    float m_topEdgeMaxOpacity{1};
+    float m_rightEdgeMaxOpacity{1};
 
     QString m_themePath;
     QString m_themeWidgetsPath;

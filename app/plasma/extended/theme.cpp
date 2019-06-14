@@ -144,9 +144,24 @@ void Theme::setOutlineWidth(int width)
     emit outlineWidthChanged();
 }
 
-float Theme::backgroundMaxOpacity() const
+float Theme::bottomEdgeMaxOpacity() const
 {
-    return m_backgroundMaxOpacity;
+    return m_bottomEdgeMaxOpacity;
+}
+
+float Theme::leftEdgeMaxOpacity() const
+{
+    return m_leftEdgeMaxOpacity;
+}
+
+float Theme::topEdgeMaxOpacity() const
+{
+    return m_topEdgeMaxOpacity;
+}
+
+float Theme::rightEdgeMaxOpacity() const
+{
+    return m_rightEdgeMaxOpacity;
 }
 
 WindowSystem::SchemeColors *Theme::defaultTheme() const
@@ -315,6 +330,16 @@ int Theme::roundness(const QImage &svgImage, Plasma::Types::Location edge)
 
     int maxOpacity = qMin(qAlpha(svgImage.pixel(49,0)), 200);
 
+    if (edge == Plasma::Types::BottomEdge) {
+        m_bottomEdgeMaxOpacity = (float)maxOpacity / (float)255;
+    } else if (edge == Plasma::Types::LeftEdge) {
+        m_leftEdgeMaxOpacity = (float)maxOpacity / (float)255;
+    } else if (edge == Plasma::Types::TopEdge) {
+        m_topEdgeMaxOpacity = (float)maxOpacity / (float)255;
+    } else if (edge == Plasma::Types::RightEdge) {
+        m_rightEdgeMaxOpacity = (float)maxOpacity / (float)255;
+    }
+
     if (edge == Plasma::Types::BottomEdge || edge == Plasma::Types::RightEdge || edge == Plasma::Types::TopEdge) {
         //! TOPLEFT corner
         //! first LEFT pixel found
@@ -412,6 +437,7 @@ void Theme::loadRoundness()
 {
     loadCompositingRoundness();
 
+    emit maxOpacityChanged();
     emit roundnessChanged();
 }
 
@@ -564,12 +590,12 @@ void Theme::parseThemeSvgFiles()
             }
         }
 
-        m_backgroundMaxOpacity = opacity * fillOpacity;
+      //  m_backgroundMaxOpacity = opacity * fillOpacity;
 
-        qDebug() << "plasma theme opacity :: " << m_backgroundMaxOpacity << " from : " << opacity << " * " << fillOpacity;
+      //  qDebug() << "plasma theme opacity :: " << m_backgroundMaxOpacity << " from : " << opacity << " * " << fillOpacity;
     }
 
-    emit backgroundMaxOpacityChanged();
+ //   emit backgroundMaxOpacityChanged();
 }
 
 void Theme::loadThemeLightness()
