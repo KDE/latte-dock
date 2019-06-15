@@ -77,13 +77,23 @@ Item{
     //! this is set from indicators when they need extra thickness mask size
     readonly property int indicatorsExtraThickMask: indicators.info.extraMaskThickness
     property int shadowsExtraThickMask: {
-        var shadowMaxNeededMargin = 0.15 * root.maxIconSize;
+        if (Latte.WindowSystem.isPlatformWayland) {
+            return 0;
+        }
+
+        //! 45% of max shadow size in px.
+        var shadowMaxNeededMargin = 0.45 * root.appShadowSizeOriginal;
+        var shadowOpacity = (plasmoid.configuration.shadowOpacity) / 100;
+        //! +40% of shadow opacity in percentage
+        shadowOpacity = shadowOpacity + shadowOpacity*0.4;
+
+        //! This way we are trying to calculate how many pixels are needed in order for the shadow
+        //! to be drawn correctly without being cut of from View::mask() under X11
+        shadowMaxNeededMargin = (shadowMaxNeededMargin * shadowOpacity);
 
         //! give some more space when items shadows are enabled and extremely big
-        if (root.enableShadows && (plasmoid.configuration.shadowSize > 60 && plasmoid.configuration.shadowOpacity > 40)) {
-            if (root.maxThickMargin < shadowMaxNeededMargin) {
+        if (root.enableShadows && root.maxThickMargin < shadowMaxNeededMargin) {
                 return shadowMaxNeededMargin - root.maxThickMargin;
-            }
         }
 
         return 0;
