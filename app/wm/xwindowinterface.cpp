@@ -91,12 +91,17 @@ void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
     const QRect currentScreen {screen->geometry()};
     const QRect wholeScreen {{0, 0}, screen->virtualSize()};
 
+    //! WORKAROUND in order to fix KWin faulty behavior concerning struts
+    //! under !compositing mode. Under !compositing mode, kwin removes 1px.
+    //! from the struts
+    const int strutsGap = KWindowSystem::compositingActive ? 1 : 2;
+
     switch (location) {
         case Plasma::Types::TopEdge: {
             const int topOffset {screen->geometry().top()};
             strut.top_width = rect.height() + topOffset;
             strut.top_start = rect.x();
-            strut.top_end = rect.x() + rect.width() - 1;
+            strut.top_end = rect.x() + rect.width() - strutsGap;
             break;
         }
 
@@ -104,7 +109,7 @@ void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
             const int bottomOffset {wholeScreen.bottom() - currentScreen.bottom()};
             strut.bottom_width = rect.height() + bottomOffset;
             strut.bottom_start = rect.x();
-            strut.bottom_end = rect.x() + rect.width() - 1;
+            strut.bottom_end = rect.x() + rect.width() - strutsGap;
             break;
         }
 
@@ -112,7 +117,7 @@ void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
             const int leftOffset = {screen->geometry().left()};
             strut.left_width = rect.width() + leftOffset;
             strut.left_start = rect.y();
-            strut.left_end = rect.y() + rect.height() - 1;
+            strut.left_end = rect.y() + rect.height() - strutsGap;
             break;
         }
 
@@ -120,7 +125,7 @@ void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
             const int rightOffset = {wholeScreen.right() - currentScreen.right()};
             strut.right_width = rect.width() + rightOffset;
             strut.right_start = rect.y();
-            strut.right_end = rect.y() + rect.height() - 1;
+            strut.right_end = rect.y() + rect.height() - strutsGap;
             break;
         }
 
