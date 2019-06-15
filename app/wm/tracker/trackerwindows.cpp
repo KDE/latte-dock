@@ -617,32 +617,52 @@ bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &w
 
 bool Windows::isTouchingView(Latte::View *view, const WindowSystem::WindowInfoWrap &winfo)
 {
-    return (winfo.isValid() && !winfo.isPlasmaDesktop() &&  intersects(view, winfo));
+    return (winfo.isValid() && !winfo.isPlasmaDesktop() && intersects(view, winfo));
 }
 
 bool Windows::isTouchingViewEdge(Latte::View *view, const WindowInfoWrap &winfo)
 {
     if (winfo.isValid() && !winfo.isPlasmaDesktop() &&  !winfo.isMinimized()) {
-        bool touchingViewEdge{false};
+        bool inViewThicknessEdge{false};
+        bool inViewLengthBoundaries{false};
 
         QRect screenGeometry = view->screenGeometry();
-        QRect availableScreenGeometry = m_views[view]->availableScreenGeometry();
 
         bool inCurrentScreen{screenGeometry.contains(winfo.geometry().topLeft()) || screenGeometry.contains(winfo.geometry().bottomRight())};
 
         if (inCurrentScreen) {
             if (view->location() == Plasma::Types::TopEdge) {
-                touchingViewEdge = (winfo.geometry().y() == availableScreenGeometry.y());
+                inViewThicknessEdge = (winfo.geometry().y() == view->absoluteGeometry().bottom() + 1);
             } else if (view->location() == Plasma::Types::BottomEdge) {
-                touchingViewEdge = (winfo.geometry().bottom() == availableScreenGeometry.bottom());
+                inViewThicknessEdge = (winfo.geometry().bottom() == view->absoluteGeometry().top() - 1);
             } else if (view->location() == Plasma::Types::LeftEdge) {
-                touchingViewEdge = (winfo.geometry().x() == availableScreenGeometry.x());
+                inViewThicknessEdge = (winfo.geometry().x() == view->absoluteGeometry().right() + 1);
             } else if (view->location() == Plasma::Types::RightEdge) {
-                touchingViewEdge = (winfo.geometry().right() == availableScreenGeometry.right());
+                inViewThicknessEdge = (winfo.geometry().right() == view->absoluteGeometry().left() - 1);
+            }
+
+            if (view->formFactor() == Plasma::Types::Horizontal) {
+                int yCenter = view->absoluteGeometry().center().y();
+
+                QPoint leftChecker(winfo.geometry().left(), yCenter);
+                QPoint rightChecker(winfo.geometry().right(), yCenter);
+
+                bool fulloverlap = (winfo.geometry().left()<=view->absoluteGeometry().left()) && (winfo.geometry().right()>=view->absoluteGeometry().right());
+
+                inViewLengthBoundaries = fulloverlap || view->absoluteGeometry().contains(leftChecker) || view->absoluteGeometry().contains(rightChecker);
+            } else if (view->formFactor() == Plasma::Types::Vertical) {
+                int xCenter = view->absoluteGeometry().center().x();
+
+                QPoint topChecker(xCenter, winfo.geometry().top());
+                QPoint bottomChecker(xCenter, winfo.geometry().bottom());
+
+                bool fulloverlap = (winfo.geometry().top()<=view->absoluteGeometry().top()) && (winfo.geometry().bottom()>=view->absoluteGeometry().bottom());
+
+                inViewLengthBoundaries = fulloverlap || view->absoluteGeometry().contains(topChecker) || view->absoluteGeometry().contains(bottomChecker);
             }
         }
 
-        return touchingViewEdge;
+        return (inViewThicknessEdge && inViewLengthBoundaries);
     }
 
     return false;
