@@ -255,8 +255,8 @@ Item {
             return plasmoid.configuration.panelShadows;
         }
 
-        //! Draw shadows for isBusy state only when current panelTransparency is greater than 40%
-        if (plasmoid.configuration.panelShadows && root.forcePanelForBusyBackground && currentPanelTransparency>40) {
+        //! Draw shadows for isBusy state only when current panelTransparency is greater than 10%
+        if (plasmoid.configuration.panelShadows && root.forcePanelForBusyBackground && currentPanelTransparency>10) {
             return true;
         }
 

@@ -98,6 +98,12 @@ Item{
         }
     }
 
+    Binding{
+        target: root
+        property: "currentPanelTransparency"
+        value: overlayedBackground.opacity>0 ? overlayedBackground.opacity*100 : solidBackground.opacity*100
+    }
+
     Binding {
         target: root
         property: "realPanelLength"
@@ -375,12 +381,6 @@ Item{
             }
 
             onImagePathChanged: solidBackground.adjustPrefix();
-
-            Binding{
-                target: root
-                property: "currentPanelTransparency"
-                value: solidBackground.opacity * 100
-            }
 
             Connections{
                 target: root
