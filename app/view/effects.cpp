@@ -222,28 +222,28 @@ QRegion Effects::subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *win
         QRect windowMask;
         //! we need to subtrack the mask areas that overlap with underlying window
         switch (m_view->location()) {
-            case Plasma::Types::TopEdge:
-                windowMask.setTopLeft(QPoint(start - m_view->x(), m_mask.y() + m_mask.height() - m_editShadow));
-                windowMask.setSize(QSize(length, m_editShadow));
-                break;
+        case Plasma::Types::TopEdge:
+            windowMask.setTopLeft(QPoint(start - m_view->x(), m_mask.y() + m_mask.height() - m_editShadow));
+            windowMask.setSize(QSize(length, m_editShadow));
+            break;
 
-            case Plasma::Types::LeftEdge:
-                windowMask.setTopLeft(QPoint(m_mask.right() + 1 - m_editShadow, start - m_view->y()));
-                windowMask.setSize(QSize(m_editShadow, length));
-                break;
+        case Plasma::Types::LeftEdge:
+            windowMask.setTopLeft(QPoint(m_mask.right() + 1 - m_editShadow, start - m_view->y()));
+            windowMask.setSize(QSize(m_editShadow, length));
+            break;
 
-            case Plasma::Types::RightEdge:
-                windowMask.setTopLeft(QPoint(m_mask.x(), start - m_view->y()));
-                windowMask.setSize(QSize(m_editShadow, length));
-                break;
+        case Plasma::Types::RightEdge:
+            windowMask.setTopLeft(QPoint(m_mask.x(), start - m_view->y()));
+            windowMask.setSize(QSize(m_editShadow, length));
+            break;
 
-            case Plasma::Types::BottomEdge:
-                windowMask.setTopLeft(QPoint(start - m_view->x(), m_mask.y()));
-                windowMask.setSize(QSize(length, m_editShadow));
-                break;
+        case Plasma::Types::BottomEdge:
+            windowMask.setTopLeft(QPoint(start - m_view->x(), m_mask.y()));
+            windowMask.setSize(QSize(length, m_editShadow));
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         subtractedMask = subtractedMask.subtracted(windowMask);
@@ -387,53 +387,40 @@ void Effects::updateEffects()
         return;
     }
 
-    if (!m_view->behaveAsPlasmaPanel()) {
-        if (m_drawEffects && !m_rect.isNull() && !m_rect.isEmpty()) {
-            //! this is used when compositing is disabled and provides
-            //! the correct way for the mask to be painted in order for
-            //! rounded corners to be shown correctly
-            if (!m_background) {
-                m_background = new Plasma::FrameSvg(this);
-            }
-
-            if (m_background->imagePath() != "widgets/panel-background") {
-                m_background->setImagePath(QStringLiteral("widgets/panel-background"));
-            }
-
-            m_background->setEnabledBorders(m_enabledBorders);
-            m_background->resizeFrame(m_rect.size());
-            QRegion fixedMask = m_background->mask();
-            fixedMask.translate(m_rect.x(), m_rect.y());
-
-            //! fix1, for KF5.32 that return empty QRegion's for the mask
-            if (fixedMask.isEmpty()) {
-                fixedMask = QRegion(m_rect);
-            }
-
-            KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);
-
-            bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_backgroundOpacity == 100);
-            //based on Breeze Dark theme behavior the enableBackgroundContrast even though it does accept
-            //a QRegion it uses only the first rect. The bug was that for Breeze Dark there was a line
-            //at the dock bottom that was distinguishing it from other themes
-            KWindowEffects::enableBackgroundContrast(m_view->winId(), drawBackgroundEffect,
-                    m_theme.backgroundContrast(),
-                    m_theme.backgroundIntensity(),
-                    m_theme.backgroundSaturation(),
-                    fixedMask.boundingRect());
-        } else {
-            KWindowEffects::enableBlurBehind(m_view->winId(), false);
-            KWindowEffects::enableBackgroundContrast(m_view->winId(), false);
+    if (m_drawEffects && !m_rect.isNull() && !m_rect.isEmpty()) {
+        //! this is used when compositing is disabled and provides
+        //! the correct way for the mask to be painted in order for
+        //! rounded corners to be shown correctly
+        if (!m_background) {
+            m_background = new Plasma::FrameSvg(this);
         }
-    } else if (m_view->behaveAsPlasmaPanel() && m_drawEffects) {
-        KWindowEffects::enableBlurBehind(m_view->winId(), true);
+
+        if (m_background->imagePath() != "widgets/panel-background") {
+            m_background->setImagePath(QStringLiteral("widgets/panel-background"));
+        }
+
+        m_background->setEnabledBorders(m_enabledBorders);
+        m_background->resizeFrame(m_rect.size());
+        QRegion fixedMask = m_background->mask();
+        fixedMask.translate(m_rect.x(), m_rect.y());
+
+        //! fix1, for KF5.32 that return empty QRegion's for the mask
+        if (fixedMask.isEmpty()) {
+            fixedMask = QRegion(m_rect);
+        }
+
+        KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);
 
         bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_backgroundOpacity == 100);
-
-        KWindowEffects::enableBackgroundContrast(m_view->winId(), drawBackgroundEffect,
-                m_theme.backgroundContrast(),
-                m_theme.backgroundIntensity(),
-                m_theme.backgroundSaturation());
+        //based on Breeze Dark theme behavior the enableBackgroundContrast even though it does accept
+        //a QRegion it uses only the first rect. The bug was that for Breeze Dark there was a line
+        //at the dock bottom that was distinguishing it from other themes
+        KWindowEffects::enableBackgroundContrast(m_view->winId(),
+                                                 drawBackgroundEffect,
+                                                 m_theme.backgroundContrast(),
+                                                 m_theme.backgroundIntensity(),
+                                                 m_theme.backgroundSaturation(),
+                                                 fixedMask);
     } else {
         KWindowEffects::enableBlurBehind(m_view->winId(), false);
         KWindowEffects::enableBackgroundContrast(m_view->winId(), false);
@@ -455,24 +442,24 @@ void Effects::updateEnabledBorders()
     Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
 
     switch (m_view->location()) {
-        case Plasma::Types::TopEdge:
-            borders &= ~Plasma::FrameSvg::TopBorder;
-            break;
+    case Plasma::Types::TopEdge:
+        borders &= ~Plasma::FrameSvg::TopBorder;
+        break;
 
-        case Plasma::Types::LeftEdge:
-            borders &= ~Plasma::FrameSvg::LeftBorder;
-            break;
+    case Plasma::Types::LeftEdge:
+        borders &= ~Plasma::FrameSvg::LeftBorder;
+        break;
 
-        case Plasma::Types::RightEdge:
-            borders &= ~Plasma::FrameSvg::RightBorder;
-            break;
+    case Plasma::Types::RightEdge:
+        borders &= ~Plasma::FrameSvg::RightBorder;
+        break;
 
-        case Plasma::Types::BottomEdge:
-            borders &= ~Plasma::FrameSvg::BottomBorder;
-            break;
+    case Plasma::Types::BottomEdge:
+        borders &= ~Plasma::FrameSvg::BottomBorder;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ((m_view->location() == Plasma::Types::LeftEdge || m_view->location() == Plasma::Types::RightEdge)) {

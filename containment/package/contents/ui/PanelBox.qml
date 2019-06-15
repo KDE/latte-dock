@@ -515,6 +515,9 @@ Item{
                 return "transparent";
             }
 
+            borderWidth: 1
+            borderColor: backgroundColor
+
             roundness: {
                 if (themeExtended) {
                     switch(plasmoid.location) {
