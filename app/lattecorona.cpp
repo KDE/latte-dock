@@ -789,8 +789,8 @@ int Corona::screenForContainment(const Plasma::Containment *containment) const
         }
     }
 
-    Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
-    Latte::View *view = currentLayout->viewForContainment(containment);
+    Plasma::Containment *c = const_cast<Plasma::Containment *>(containment);
+    Latte::View *view =  m_layoutsManager->synchronizer()->viewForContainment(c);
 
     if (view && view->screen()) {
         return m_screenPool->id(view->screen()->name());
@@ -823,8 +823,7 @@ void Corona::showAlternativesForApplet(Plasma::Applet *applet)
         return;
     }
 
-    Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
-    Latte::View *latteView = currentLayout->viewForContainment(applet->containment());
+    Latte::View *latteView =  m_layoutsManager->synchronizer()->viewForContainment(applet->containment());
 
     KDeclarative::QmlObjectSharedEngine *qmlObj{nullptr};
 

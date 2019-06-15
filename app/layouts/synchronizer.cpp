@@ -33,6 +33,9 @@
 #include <QDir>
 #include <QFile>
 
+// Plasma
+#include <Plasma/Containment>
+
 // KDE
 #include <KActivities/Consumer>
 #include <KActivities/Controller>
@@ -350,6 +353,27 @@ SharedLayout *Synchronizer::sharedLayout(QString id) const
 
         if (layout->name() == id) {
             return layout;
+        }
+    }
+
+    return nullptr;
+}
+
+Latte::View *Synchronizer::viewForContainment(Plasma::Containment *containment)
+{
+    for (auto layout : m_centralLayouts) {
+        Latte::View *view = layout->viewForContainment(containment);
+
+        if (view) {
+            return view;
+        }
+    }
+
+    for (auto layout : m_sharedLayouts) {
+        Latte::View *view = layout->viewForContainment(containment);
+
+        if (view) {
+            return view;
         }
     }
 

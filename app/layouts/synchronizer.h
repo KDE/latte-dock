@@ -38,6 +38,10 @@ class Manager;
 }
 }
 
+namespace Plasma {
+class Containment;
+}
+
 namespace KActivities {
 class Controller;
 }
@@ -99,6 +103,8 @@ public:
     QStringList activities();
     QStringList runningActivities();
     QStringList orphanedActivities(); //! These are activities that haven't been assigned to specific layout
+
+    Latte::View *viewForContainment(Plasma::Containment *containment);
 
     CentralLayout *currentLayout() const;
     CentralLayout *centralLayout(QString id) const;

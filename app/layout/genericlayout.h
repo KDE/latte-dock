@@ -90,7 +90,7 @@ public:
     const QList<Plasma::Containment *> *containments();
 
     Latte::View *highestPriorityView();
-    Latte::View *viewForContainment(const Plasma::Containment *containment);
+    Latte::View *viewForContainment(Plasma::Containment *containment);
     virtual QList<Latte::View *> sortedLatteViews(QList<Latte::View *> views = QList<Latte::View *>());
     virtual QList<Latte::View *> viewsWithPlasmaShortcuts();
     virtual QList<Latte::View *> latteViews();

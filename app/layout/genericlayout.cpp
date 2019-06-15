@@ -338,9 +338,9 @@ void GenericLayout::setLastConfigViewFor(Latte::View *view)
     emit lastConfigViewForChanged(view);
 }
 
-Latte::View *GenericLayout::viewForContainment(const Plasma::Containment *containment)
+Latte::View *GenericLayout::viewForContainment(Plasma::Containment *containment)
 {
-    if (m_latteViews.contains(containment)) {
+    if (m_containments.contains(containment) && m_latteViews.contains(containment)) {
         return m_latteViews[containment];
     }
 
