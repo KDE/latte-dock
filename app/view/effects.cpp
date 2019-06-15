@@ -63,17 +63,6 @@ void Effects::init()
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateShadows);
     connect(m_view, &Latte::View::configWindowGeometryChanged, this, &Effects::updateMask);
-
-    connect(m_view, &QQuickWindow::widthChanged, this, [&]() {
-        if (m_view->behaveAsPlasmaPanel() && m_view->formFactor() == Plasma::Types::Vertical) {
-            updateMaskThickness();
-        }
-    });
-    connect(m_view, &QQuickWindow::heightChanged, this, [&]() {
-        if (m_view->behaveAsPlasmaPanel() && m_view->formFactor() == Plasma::Types::Horizontal) {
-            updateMaskThickness();
-        }
-    });
 }
 
 bool Effects::animationsBlocked() const
@@ -206,40 +195,29 @@ void Effects::setSettingsMaskSubtracted(bool enabled)
 
 int Effects::maskThickness() const
 {
-    return m_maskThickness;
-}
-
-void Effects::setMaskThickness(const int &thickness)
-{
-    if (m_maskThickness == thickness) {
-        return;
-    }
-
-    m_maskThickness = thickness;
-    emit maskThicknessChanged();
-}
-
-void Effects::updateMaskThickness()
-{
-    if (m_mask.isNull() || m_mask.width() == 0 || m_mask.height() == 0) {
-        setMaskThickness(m_view->formFactor() == Plasma::Types::Horizontal ? m_view->height() : m_view->width());
+    if (m_view->mask().isEmpty()) {
+        return m_view->formFactor() == Plasma::Types::Horizontal ? m_view->width() : m_view->height();
     }
 
     switch (m_view->location()) {
         case Plasma::Types::TopEdge:
-            setMaskThickness(m_mask.bottom());
+            return m_view->mask().boundingRect().bottom();
             break;
 
         case Plasma::Types::LeftEdge:
-            setMaskThickness(m_mask.right());
+            return m_view->mask().boundingRect().right();
             break;
 
         case Plasma::Types::RightEdge:
-            setMaskThickness(m_mask.left());
+            return m_view->mask().boundingRect().left();
             break;
 
         case Plasma::Types::BottomEdge:
-            setMaskThickness(m_mask.top());
+            return m_view->mask().boundingRect().top();
+            break;
+
+        default:
+            return 64;
             break;
     }
 }
@@ -354,13 +332,11 @@ QRect Effects::mask() const
 
 void Effects::setMask(QRect area)
 {
-    if (m_mask == area) {
+    if (m_mask == area)
         return;
-    }
 
     m_mask = area;
     updateMask();
-    updateMaskThickness();
 
     // qDebug() << "dock mask set:" << m_mask;
     emit maskChanged();

@@ -170,17 +170,14 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
             updateStrutsBasedOnLayoutsAndActivities();
         }
 
-        m_connections[base] = connect(m_latteView->effects(),  &ViewPart::Effects::maskThicknessChanged, this, [&]() {
-            updateStrutsBasedOnLayoutsAndActivities();
-        });
 
-        m_connections[base+1] = connect(m_corona->layoutsManager(),  &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
+        m_connections[base] = connect(m_corona->layoutsManager(),  &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
             if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities(true);
             }
         });
 
-        m_connections[base+2] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
+        m_connections[base+1] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
             if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities(true);
             }
@@ -273,30 +270,28 @@ QRect VisibilityManager::acceptableStruts()
 
     int visibleThickness = qMin(m_latteView->effects()->maskThickness(), m_latteView->normalThickness());
 
-    qDebug() << " VISIBLE THICKNESS ::: " << visibleThickness;
-
     switch (m_latteView->location()) {
-    case Plasma::Types::TopEdge: {
-        calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->width(), visibleThickness);
-        break;
-    }
+        case Plasma::Types::TopEdge: {
+            calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->width(), visibleThickness);
+            break;
+        }
 
-    case Plasma::Types::BottomEdge: {
-        int y = m_latteView->y() + m_latteView->height() - visibleThickness;
-        calcs = QRect(m_latteView->x(), y, m_latteView->width(), visibleThickness);
-        break;
-    }
+        case Plasma::Types::BottomEdge: {
+            int y = m_latteView->y() + m_latteView->height() - visibleThickness;
+            calcs = QRect(m_latteView->x(), y, m_latteView->width(), visibleThickness);
+            break;
+        }
 
-    case Plasma::Types::LeftEdge: {
-        calcs = QRect(m_latteView->x(), m_latteView->y(), visibleThickness, m_latteView->height());
-        break;
-    }
+        case Plasma::Types::LeftEdge: {
+            calcs = QRect(m_latteView->x(), m_latteView->y(), visibleThickness, m_latteView->height());
+            break;
+        }
 
-    case Plasma::Types::RightEdge: {
-        int x = m_latteView->x() + m_latteView->width() - visibleThickness;
-        calcs = QRect(x, m_latteView->y(), visibleThickness, m_latteView->height());
-        break;
-    }
+        case Plasma::Types::RightEdge: {
+            int x = m_latteView->x() + m_latteView->width() - visibleThickness;
+            calcs = QRect(x, m_latteView->y(), visibleThickness, m_latteView->height());
+            break;
+        }
     }
 
     return calcs;
