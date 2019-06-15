@@ -84,6 +84,7 @@ public:
     void setInnerShadow(int shadow);
 
     int maskThickness() const;
+    void setMaskThickness(const int &thickness);
 
     QRect mask() const;
     void setMask(QRect area);
@@ -110,12 +111,14 @@ signals:
     void editShadowChanged();
     void enabledBordersChanged();
     void maskChanged();
+    void maskThicknessChanged();
     void innerShadowChanged();
     void rectChanged();
     void settingsMaskSubtractedChanged();
 
 private slots:
     void init();
+    void updateMaskThickness();
 
 private:
     QRegion subtractedMask();
@@ -131,6 +134,7 @@ private:
     int m_backgroundOpacity{100};
     int m_editShadow{0};
     int m_innerShadow{0};
+    int m_maskThickness{64};
 
     QRect m_rect;
     QRect m_mask;
