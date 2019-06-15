@@ -193,6 +193,36 @@ void Effects::setSettingsMaskSubtracted(bool enabled)
     emit settingsMaskSubtractedChanged();
 }
 
+int Effects::maskThickness() const
+{
+    if (m_view->mask().isEmpty()) {
+        return m_view->formFactor() == Plasma::Types::Horizontal ? m_view->width() : m_view->height();
+    }
+
+    switch (m_view->location()) {
+        case Plasma::Types::TopEdge:
+            return m_view->mask().boundingRect().bottom();
+            break;
+
+        case Plasma::Types::LeftEdge:
+            return m_view->mask().boundingRect().right();
+            break;
+
+        case Plasma::Types::RightEdge:
+            return m_view->mask().boundingRect().left();
+            break;
+
+        case Plasma::Types::BottomEdge:
+            return m_view->mask().boundingRect().top();
+            break;
+
+        default:
+            return 64;
+            break;
+    }
+}
+
+
 QRegion Effects::subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *window)
 {
     QRegion subtractedMask = initialRegion;
