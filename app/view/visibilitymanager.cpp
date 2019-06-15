@@ -21,7 +21,6 @@
 #include "visibilitymanager.h"
 
 // local
-#include "effects.h"
 #include "positioner.h"
 #include "screenedgeghostwindow.h"
 #include "view.h"
@@ -268,28 +267,26 @@ QRect VisibilityManager::acceptableStruts()
 {
     QRect calcs;
 
-    int visibleThickness = qMin(m_latteView->effects()->maskThickness(), m_latteView->normalThickness());
-
     switch (m_latteView->location()) {
         case Plasma::Types::TopEdge: {
-            calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->width(), visibleThickness);
+            calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->width(), m_latteView->normalThickness());
             break;
         }
 
         case Plasma::Types::BottomEdge: {
-            int y = m_latteView->y() + m_latteView->height() - visibleThickness;
-            calcs = QRect(m_latteView->x(), y, m_latteView->width(), visibleThickness);
+            int y = m_latteView->y() + m_latteView->height() - m_latteView->normalThickness();
+            calcs = QRect(m_latteView->x(), y, m_latteView->width(), m_latteView->normalThickness());
             break;
         }
 
         case Plasma::Types::LeftEdge: {
-            calcs = QRect(m_latteView->x(), m_latteView->y(), visibleThickness, m_latteView->height());
+            calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->normalThickness(), m_latteView->height());
             break;
         }
 
         case Plasma::Types::RightEdge: {
-            int x = m_latteView->x() + m_latteView->width() - visibleThickness;
-            calcs = QRect(x, m_latteView->y(), visibleThickness, m_latteView->height());
+            int x = m_latteView->x() + m_latteView->width() - m_latteView->normalThickness();
+            calcs = QRect(x, m_latteView->y(), m_latteView->normalThickness(), m_latteView->height());
             break;
         }
     }

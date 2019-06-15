@@ -83,8 +83,6 @@ public:
     int innerShadow() const;
     void setInnerShadow(int shadow);
 
-    int maskThickness() const;
-
     QRect mask() const;
     void setMask(QRect area);
 
