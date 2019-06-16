@@ -65,6 +65,17 @@ void Effects::init()
     connect(m_view, &Latte::View::configWindowGeometryChanged, this, &Effects::updateMask);
 
     connect(&m_theme, &Plasma::Theme::themeChanged, this, [&]() {
+        auto background = m_background;
+        m_background = new Plasma::FrameSvg(this);
+
+        if (background) {
+            background->deleteLater();
+        }
+
+        if (m_background->imagePath() != "widgets/panel-background") {
+            m_background->setImagePath(QStringLiteral("widgets/panel-background"));
+        }
+
         updateBackgroundContrastValues();
         updateEffects();
     });
