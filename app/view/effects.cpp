@@ -63,6 +63,11 @@ void Effects::init()
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateShadows);
     connect(m_view, &Latte::View::configWindowGeometryChanged, this, &Effects::updateMask);
+
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, [&]() {
+        updateBackgroundContrastValues();
+        updateEffects();
+    });
 }
 
 bool Effects::animationsBlocked() const
@@ -144,6 +149,8 @@ void Effects::setBackgroundOpacity(int opacity)
     }
 
     m_backgroundOpacity = opacity;
+
+    updateBackgroundContrastValues();
     emit backgroundOpacityChanged();
 }
 
@@ -410,16 +417,11 @@ void Effects::updateEffects()
         }
 
         KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);
-
-        bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_backgroundOpacity == 100);
-        //based on Breeze Dark theme behavior the enableBackgroundContrast even though it does accept
-        //a QRegion it uses only the first rect. The bug was that for Breeze Dark there was a line
-        //at the dock bottom that was distinguishing it from other themes
         KWindowEffects::enableBackgroundContrast(m_view->winId(),
-                                                 drawBackgroundEffect,
-                                                 m_theme.backgroundContrast(),
-                                                 m_theme.backgroundIntensity(),
-                                                 m_theme.backgroundSaturation(),
+                                                 m_theme.backgroundContrastEnabled(),
+                                                 m_backEffectContrast,
+                                                 m_backEffectIntesity,
+                                                 m_backEffectSaturation,
                                                  fixedMask);
     } else {
         KWindowEffects::enableBlurBehind(m_view->winId(), false);
@@ -431,6 +433,41 @@ void Effects::updateEffects()
 Plasma::FrameSvg::EnabledBorders Effects::enabledBorders() const
 {
     return m_enabledBorders;
+}
+
+qreal Effects::currentMidValue(const qreal &max, const qreal &factor, const qreal &min) const
+{
+    if (max==min || factor==0) {
+        return min;
+    }
+
+    qreal space = 0;
+    qreal distance = 0;
+
+    if (max<min) {
+        space = min-max;
+        distance = factor*space;
+        return 1-distance;
+    } else {
+        space = max-min;
+        distance = factor*space;
+        return 1+distance;
+    }
+}
+
+void Effects::updateBackgroundContrastValues()
+{
+    if (!m_theme.backgroundContrastEnabled()) {
+        m_backEffectContrast = 1;
+        m_backEffectIntesity = 1;
+        m_backEffectSaturation = 1;
+        return;
+    }
+
+    const qreal factor = (qreal)m_backgroundOpacity / (qreal)100;
+    m_backEffectContrast = currentMidValue(m_theme.backgroundContrast(), factor, 1);
+    m_backEffectIntesity = currentMidValue(m_theme.backgroundIntensity(), factor, 1);
+    m_backEffectSaturation = currentMidValue(m_theme.backgroundSaturation(), factor, 1);
 }
 
 void Effects::updateEnabledBorders()

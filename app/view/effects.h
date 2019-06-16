@@ -115,7 +115,11 @@ signals:
 private slots:
     void init();
 
+    void updateBackgroundContrastValues();
+
 private:
+    qreal currentMidValue(const qreal &max, const qreal &factor, const qreal &min) const;
+
     QRegion subtractedMask();
     QRegion subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *window);
 
@@ -129,6 +133,10 @@ private:
     int m_backgroundOpacity{100};
     int m_editShadow{0};
     int m_innerShadow{0};
+
+    qreal m_backEffectContrast{1};
+    qreal m_backEffectIntesity{1};
+    qreal m_backEffectSaturation{1};
 
     QRect m_rect;
     QRect m_mask;
