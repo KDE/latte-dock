@@ -85,11 +85,11 @@ PlasmaComponents.Page {
                 visible: true
 
                 function updateScreens() {
-                    /*if (universalSettings.screens.length > 1) {
+                    if (universalSettings.screens.length > 1) {
                         screenRow.visible = true;
                     } else {
                         screenRow.visible = false;
-                    } */
+                    }
 
                     screensModel.clear();
 
