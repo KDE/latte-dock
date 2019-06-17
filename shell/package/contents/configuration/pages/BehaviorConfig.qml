@@ -76,6 +76,11 @@ PlasmaComponents.Page {
                 text: screenRow.visible ? i18n("Screen") : i18n("Location")
             }
 
+            Connections {
+                target: universalSettings
+                onScreensCountChanged: screenRow.updateScreens()
+            }
+
             RowLayout {
                 id: screenRow
                 Layout.fillWidth: true

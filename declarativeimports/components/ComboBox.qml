@@ -156,7 +156,17 @@ T.ComboBox {
                 height: textField.height
 
                 colorGroup: PlasmaCore.Theme.ButtonColorGroup
-                source: control.iconRole === "icon" ? control.model.get(control.currentIndex).icon : ''
+                source: {
+                    if (control && control.currentIndex>=0 &&
+                            control.iconRole && control.iconRole === "icon"
+                            && control.model && control.model.get(control.currentIndex)
+                            && control.model.get(control.currentIndex)) {
+
+                        return control.model.get(control.currentIndex).icon;
+                    }
+
+                    return "";
+                }
 
                 visible: source !== ''
             }

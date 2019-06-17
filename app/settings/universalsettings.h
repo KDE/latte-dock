@@ -140,6 +140,7 @@ signals:
     void layoutsMemoryUsageChanged();
     void metaPressAndHoldEnabledChanged();
     void mouseSensitivityChanged();
+    void screensCountChanged();
     void screenScalesChanged();
     void screenTrackerIntervalChanged();
     void showInfoWindowChanged();

@@ -63,6 +63,9 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
 
     connect(this, &UniversalSettings::screenScalesChanged, this, &UniversalSettings::saveScalesConfig);
+
+    connect(qGuiApp, &QGuiApplication::screenAdded, this, &UniversalSettings::screensCountChanged);
+    connect(qGuiApp, &QGuiApplication::screenRemoved, this, &UniversalSettings::screensCountChanged);
 }
 
 UniversalSettings::~UniversalSettings()
