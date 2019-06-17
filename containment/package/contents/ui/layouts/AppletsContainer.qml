@@ -49,7 +49,7 @@ Grid {
         property:"sizeWithNoFillApplets"
         when: appletsContainer
         value: {
-            if (!visibilityManager || !visibilityManager.normalState)
+            if (!visibilityManager || !visibilityManager.normalState && !(root.editMode && !root.inConfigureAppletsMode))
                 return;
 
             var space = 0;
