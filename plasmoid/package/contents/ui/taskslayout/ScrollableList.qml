@@ -35,7 +35,13 @@ Flickable{
     readonly property bool centered: userPanelPosition === Latte.Types.Center
     readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
 
-    readonly property bool contentsExceed:  !root.vertical ? Math.floor(contentWidth) > width : Math.floor(contentHeight) > height
+    readonly property bool contentsExceed:  {
+        if (root.scrollingEnabled) {
+            return (!root.vertical ? Math.floor(contentWidth) > width : Math.floor(contentHeight) > height);
+        }
+
+        return false;
+    }
     readonly property int contentsExtraSpace: {
         if (contentsExceed) {
             if (!root.vertical) {

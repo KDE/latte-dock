@@ -17,6 +17,7 @@
 
 import QtQuick 2.7
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
@@ -25,7 +26,7 @@ Rectangle {
     id: listViewBase
     x: {
         if (!root.vertical) {
-            if (root.userPanelPosition === Latte.Types.Center) {
+            if (root.userPanelPosition === Latte.Types.Center || plasmoid.location===PlasmaCore.Types.Floating) {
                 return icList.width / 2;
             } else if (root.userPanelPosition === Latte.Types.Left){
                 return 0;
