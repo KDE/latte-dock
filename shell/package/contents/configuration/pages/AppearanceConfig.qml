@@ -697,9 +697,22 @@ PlasmaComponents.Page {
                     checked: parent.windowColors === colors
                     checkable: true
                     exclusiveGroup: windowColorsGroup
-                    tooltip: i18n("Colors are going to be based on the active window")
+                    tooltip: universalSettings.colorsScriptIsPresent ?
+                                 i18n("Colors are going to be based on the active window") :
+                                 i18n("Colors are going to be based on the active window.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
 
                     readonly property int colors: Latte.Types.ActiveWindowColors
+
+                    PlasmaCore.IconItem {
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        width: height
+                        height: parent.height
+                        source: "state-warning"
+
+                        visible: !universalSettings.colorsScriptIsPresent
+                    }
                 }
 
                 PlasmaComponents.Button {
@@ -709,9 +722,22 @@ PlasmaComponents.Page {
                     checked: parent.windowColors === colors
                     checkable: true
                     exclusiveGroup: windowColorsGroup
-                    tooltip: i18n("Colors are going to be based on windows that are touching the view")
+                    tooltip: universalSettings.colorsScriptIsPresent ?
+                                 i18n("Colors are going to be based on windows that are touching the view") :
+                                    i18n("Colors are going to be based on windows that are touching the view.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
 
                     readonly property int colors: Latte.Types.TouchingWindowColors
+
+                    PlasmaCore.IconItem {
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        width: height
+                        height: parent.height
+                        source: "state-warning"
+
+                        visible: !universalSettings.colorsScriptIsPresent
+                    }
                 }
             }
         }

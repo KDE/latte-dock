@@ -94,8 +94,8 @@ void UniversalSettings::load()
         KDirWatch::self()->addDir(path);
     }
 
-    connect(KDirWatch::self(), &KDirWatch::dirty, this, &UniversalSettings::colorsScriptChanged);
     connect(KDirWatch::self(), &KDirWatch::created, this, &UniversalSettings::colorsScriptChanged);
+    connect(KDirWatch::self(), &KDirWatch::deleted, this, &UniversalSettings::colorsScriptChanged);
 
     //! this is needed to inform globalshortcuts to update its modifiers tracking
     emit metaPressAndHoldEnabledChanged();
