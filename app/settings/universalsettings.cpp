@@ -32,9 +32,12 @@
 
 // KDE
 #include <KActivities/Consumer>
+#include <KDirWatch>
 
 #define KWINMETAFORWARDTOLATTESTRING "org.kde.lattedock,/Latte,org.kde.LatteDock,activateLauncherMenu"
 #define KWINMETAFORWARDTOPLASMASTRING "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu"
+
+#define KWINCOLORSSCRIPT "kwin/scripts/lattewindowcolors"
 
 namespace Latte {
 
@@ -82,6 +85,17 @@ void UniversalSettings::load()
 
     //! load configuration
     loadConfig();
+
+    //! Track KWin Colors Script Presence
+    updateColorsScriptIsPresent();
+
+    QStringList colorsScriptPaths = Layouts::Importer::standardPathsFor(KWINCOLORSSCRIPT);
+    for(auto path: colorsScriptPaths) {
+        KDirWatch::self()->addDir(path);
+    }
+
+    connect(KDirWatch::self(), &KDirWatch::dirty, this, &UniversalSettings::colorsScriptChanged);
+    connect(KDirWatch::self(), &KDirWatch::created, this, &UniversalSettings::colorsScriptChanged);
 
     //! this is needed to inform globalshortcuts to update its modifiers tracking
     emit metaPressAndHoldEnabledChanged();
@@ -283,6 +297,35 @@ void UniversalSettings::setCanDisableBorders(bool enable)
 
     m_canDisableBorders = enable;
     emit canDisableBordersChanged();
+}
+
+bool UniversalSettings::colorsScriptIsPresent() const
+{
+    return m_colorsScriptIsPresent;
+}
+
+void UniversalSettings::setColorsScriptIsPresent(bool present)
+{
+    if (m_colorsScriptIsPresent == present) {
+        return;
+    }
+
+    m_colorsScriptIsPresent = present;
+    emit colorsScriptIsPresentChanged();
+}
+
+void UniversalSettings::updateColorsScriptIsPresent()
+{
+    setColorsScriptIsPresent(!Layouts::Importer::standardPath(KWINCOLORSSCRIPT).isEmpty());
+}
+
+void UniversalSettings::colorsScriptChanged(const QString &file)
+{
+    if (!file.endsWith(KWINCOLORSSCRIPT)) {
+        return;
+    }
+
+    updateColorsScriptIsPresent();
 }
 
 bool UniversalSettings::metaForwardedToLatte() const

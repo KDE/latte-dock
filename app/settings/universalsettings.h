@@ -54,6 +54,7 @@ class UniversalSettings : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
+    Q_PROPERTY(bool colorsScriptIsPresent READ colorsScriptIsPresent NOTIFY colorsScriptIsPresentChanged)
     Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)
 
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
@@ -75,6 +76,8 @@ public:
 
     bool canDisableBorders() const;
     void setCanDisableBorders(bool enable);
+
+    bool colorsScriptIsPresent() const;
 
     bool metaForwardedToLatte() const;
     void forwardMetaToLatte(bool forward);
@@ -127,6 +130,7 @@ public slots:
 signals:
     void autostartChanged();
     void canDisableBordersChanged();
+    void colorsScriptIsPresentChanged();
     void currentLayoutNameChanged();
     void downloadWindowSizeChanged();
     void lastNonAssignedLayoutNameChanged();
@@ -147,17 +151,23 @@ private slots:
     void saveConfig();
     void saveScalesConfig();
 
+    void updateColorsScriptIsPresent();
+    void colorsScriptChanged(const QString &file);
+
 private:
     void cleanupSettings();
 
     bool kwin_metaForwardedToLatte() const;
     void kwin_forwardMetaToLatte(bool forward);
 
+    void setColorsScriptIsPresent(bool present);
+
     Types::LayoutsMemoryUsage layoutsMemoryUsage() const;
     void setLayoutsMemoryUsage(Types::LayoutsMemoryUsage layoutsMemoryUsage);
 
 private:
     bool m_canDisableBorders{false};
+    bool m_colorsScriptIsPresent{false};
     bool m_metaPressAndHoldEnabled{true};
     bool m_showInfoWindow{true};
 
