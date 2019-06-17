@@ -26,7 +26,10 @@ Rectangle {
     id: listViewBase
     x: {
         if (!root.vertical) {
-            if (root.userPanelPosition === Latte.Types.Center || plasmoid.location===PlasmaCore.Types.Floating) {
+            if (plasmoid.location===PlasmaCore.Types.Floating) {
+                //! Center position Tasks when are located in the Desktop
+                return root.width < icList.width ? (root.width/2) : icList.width/2;
+            } else if (root.userPanelPosition === Latte.Types.Center) {
                 return icList.width / 2;
             } else if (root.userPanelPosition === Latte.Types.Left){
                 return 0;
