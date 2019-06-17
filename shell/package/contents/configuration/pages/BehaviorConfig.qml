@@ -148,40 +148,31 @@ PlasmaComponents.Page {
 
                     Component.onCompleted: screenRow.updateScreens();
 
-                    //they are used to restore the index when the screen edge
-                    //is occupied
-                    property bool acceptedIndex: true
-                    property int previousIndex: -1
-
-                    onCurrentIndexChanged: {
-                        //it is used to restore the index when the screen edge
-                        //is occupied
-                        if (!acceptedIndex) {
-                            acceptedIndex = true;
-                            currentIndex = previousIndex;
-                        }
-                    }
-
                     onActivated: {
-                        previousIndex = currentIndex;
-                        if (index === 0) {
-                            var succeed = latteView.positioner.setCurrentScreen("primary");
+                        var succeed = false;
 
-                            latteView.onPrimary = true;
-                            acceptedIndex = true;
+                        if (index === 0) {
+                            succeed = latteView.positioner.setCurrentScreen("primary");
+
+                            if (succeed) {
+                                latteView.onPrimary = true;
+                            } else if (!latteView.onPrimary){
+                                console.log("the edge is already occupied!!!");
+                                currentIndex = findScreen(latteView.positioner.currentScreenName);
+                            }
                         } else if (index>0 && (index !== findScreen(latteView.positioner.currentScreenName) || latteView.onPrimary)) {
                             console.log("current index changed!!! :"+ index);
                             console.log("screen must be changed...");
 
-                            var succeed = latteView.positioner.setCurrentScreen(textAt(index));
+                            succeed = latteView.positioner.setCurrentScreen(textAt(index));
 
                             if(succeed) {
                                 latteView.onPrimary = false;
                             } else {
                                 console.log("the edge is already occupied!!!");
-                                acceptedIndex = false;
+                                currentIndex = findScreen(latteView.positioner.currentScreenName);
                             }
-                        }
+                        }                        
                     }
 
                     function findScreen(scrName) {
