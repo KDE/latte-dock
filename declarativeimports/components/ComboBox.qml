@@ -147,13 +147,17 @@ T.ComboBox {
         }
         RowLayout {
             anchors.fill: parent
+            spacing: 0
+
+            anchors {
+                leftMargin: !control.mirrored ? 1 : 0
+                rightMargin: control.mirrored ? 1 : 0
+            }
 
             PlasmaCore.IconItem {
                 id: selectedIcon
-                Layout.leftMargin: 2
-
-                width: textField.height
-                height: textField.height
+                width: textLabel.height
+                height: textLabel.height
 
                 colorGroup: PlasmaCore.Theme.ButtonColorGroup
                 source: {
@@ -171,16 +175,26 @@ T.ComboBox {
                 visible: source !== ''
             }
 
-            T.TextField {
+            Label {
+                id: textLabel
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.leftMargin: !selectedIcon.visible && !control.mirrored ? units.smallSpacing : 0
+                Layout.rightMargin: !selectedIcon.visible && control.mirrored ? units.smallSpacing : 0
+
+                text: control.displayText
+                font: control.font
+                color: control.pressed ? theme.highlightedTextColor : theme.buttonTextColor
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                opacity: control.enabled ? 1 : 0.6
+            }
+
+         /*   T.TextField {
                 id: textField
                 padding: 0
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-
-                Layout.leftMargin: selectedIcon.visible ? 0 : control.leftPadding
-                Layout.rightMargin: control.rightPadding
-                Layout.topMargin: control.topPadding
-                Layout.bottomMargin: control.bottomPadding
 
                 text: control.editable ? control.editText : control.displayText
 
@@ -219,7 +233,7 @@ T.ComboBox {
                     cursorPosition = positionAt(event.x, event.y);
                     selectWord();
                 }
-            }
+            }*/
         }
     }
 
