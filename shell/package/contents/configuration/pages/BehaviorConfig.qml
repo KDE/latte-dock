@@ -73,50 +73,53 @@ PlasmaComponents.Page {
             Layout.topMargin: units.smallSpacing
 
             LatteComponents.Header {
-                text: i18n("Location")
+                text: screenRow.visible ? i18n("Screen") : i18n("Location")
             }
 
             RowLayout {
                 id: screenRow
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 3
                 spacing: 2
                 visible: true
 
                 function updateScreens() {
-                    if (universalSettings.screens.length > 1)
+                    /*if (universalSettings.screens.length > 1) {
                         screenRow.visible = true;
-                    else
+                    } else {
                         screenRow.visible = false;
+                    } */
 
-                    var screens = []
-                    var rtlSpace = Qt.application.layoutDirection === Qt.RightToLeft ? "    " : "";
+                    screensModel.clear();
 
-                    screens.push(rtlSpace + i18n("On Primary"));
+                    var primary = {name: i18n("On Primary"), icon: 'favorites'};
+                    screensModel.append(primary);
 
                     //check if the screen exists, it is used in cases Latte is moving
                     //the view automatically to primaryScreen in order for the user
                     //to has always a view with tasks shown
                     var screenExists = false
                     for (var i = 0; i < universalSettings.screens.length; i++) {
-                        if (universalSettings.screens[i].name === latteView.positioner.currentScreenName)
+                        if (universalSettings.screens[i].name === latteView.positioner.currentScreenName) {
                             screenExists = true;
+                        }
                     }
 
-                    if (!screenExists && !latteView.onPrimary)
-                        screens.push(rtlSpace + latteView.positioner.currentScreenName);
+                    if (!screenExists && !latteView.onPrimary) {
+                        var scr = {name: latteView.positioner.currentScreenName, icon: 'view-fullscreen'};
+                        screensModel.append(scr);
+                    }
 
                     for (var i = 0; i < universalSettings.screens.length; i++) {
-                        screens.push(rtlSpace + universalSettings.screens[i].name)
+                        var scr = {name: universalSettings.screens[i].name, icon: 'view-fullscreen'};
+                        screensModel.append(scr);
                     }
-
-                    screenCmb.model = screens;
 
                     if (latteView.onPrimary) {
                         screenCmb.currentIndex = 0;
                     } else {
-                        screenCmb.currentIndex = screenCmb.find(latteView.positioner.currentScreenName);
+                        screenCmb.currentIndex = screenCmb.findScreen(latteView.positioner.currentScreenName);
                     }
 
                     console.log(latteView.positioner.currentScreenName);
@@ -127,14 +130,17 @@ PlasmaComponents.Page {
                     onShowSignal: screenRow.updateScreens();
                 }
 
-                PlasmaComponents.Label {
-                    text: i18n("Screen")
-                    Layout.alignment: Qt.AlignRight
+                ListModel {
+                    id: screensModel
                 }
 
                 LatteComponents.ComboBox {
                     id: screenCmb
                     Layout.fillWidth: true
+                    model: screensModel
+                    textRole: "name"
+                    iconRole: "icon"
+
                     Component.onCompleted: screenRow.updateScreens();
 
                     //they are used to restore the index when the screen edge
@@ -158,7 +164,7 @@ PlasmaComponents.Page {
 
                             latteView.onPrimary = true;
                             acceptedIndex = true;
-                        } else if (index>0 && (index !== find(latteView.positioner.currentScreenName) || latteView.onPrimary)) {
+                        } else if (index>0 && (index !== findScreen(latteView.positioner.currentScreenName) || latteView.onPrimary)) {
                             console.log("current index changed!!! :"+ index);
                             console.log("screen must be changed...");
 
@@ -172,6 +178,16 @@ PlasmaComponents.Page {
                             }
                         }
                     }
+
+                    function findScreen(scrName) {
+                        for(var i=0; i<screensModel.count; ++i) {
+                            if (screensModel.get(i).name === scrName) {
+                                return i;
+                            }
+                        }
+
+                        return 0;
+                    }
                 }
             }
 
@@ -180,6 +196,7 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
+                Layout.topMargin: screenRow.visible ? units.smallSpacing : 0
                 LayoutMirroring.enabled: false
                 spacing: 2
 
