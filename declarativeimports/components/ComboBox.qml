@@ -237,26 +237,26 @@ T.ComboBox {
         }
     }
 
-    Component {
+  /*  Component {
         id: mobileCursor
         Private.MobileCursor {
             target: textField
         }
-    }
+    }*/
 
     Component {
         id: undefinedCursor
         Item{}
     }
 
-    Private.MobileCursor {
+ /*   Private.MobileCursor {
         target: textField
         selectionStartHandle: true
         property var rect: textField.positionToRectangle(textField.selectionStart)
         //FIXME: this magic values seem to be always valid, for every font,every dpi, every scaling
         x: rect.x + 5
         y: rect.y + 6
-    }
+    }*/
 
     background: PlasmaCore.FrameSvgItem {
         id: surfaceNormal
