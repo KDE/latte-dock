@@ -21,6 +21,7 @@ import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Templates 2.2 as T
 import QtQuick.Controls 2.2 as Controls
+import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.5 as Kirigami
@@ -83,14 +84,14 @@ T.ComboBox {
         elementId: "down-arrow"
     }
 
-//     contentItem: Label {
-//         text: control.displayText
-//         font: control.font
-//         color: theme.buttonTextColor
-//         horizontalAlignment: Text.AlignLeft
-//         verticalAlignment: Text.AlignVCenter
-//         elide: Text.ElideRight
-//     }
+    //     contentItem: Label {
+    //         text: control.displayText
+    //         font: control.font
+    //         color: theme.buttonTextColor
+    //         horizontalAlignment: Text.AlignLeft
+    //         verticalAlignment: Text.AlignVCenter
+    //         elide: Text.ElideRight
+    //     }
     contentItem: MouseArea {
         id: mouseArea
         anchors.fill: parent
@@ -144,52 +145,70 @@ T.ComboBox {
                 control.pressed = false;
             }
         }
-        T.TextField {
-            id: textField
-            padding: 0
-            anchors {
-                fill:parent
-                leftMargin: control.leftPadding
-                rightMargin: control.rightPadding
-                topMargin: control.topPadding
-                bottomMargin: control.bottomPadding
-            }
-            text: control.editable ? control.editText : control.displayText
+        RowLayout {
+            anchors.fill: parent
 
-            enabled: control.editable
-            autoScroll: control.editable
+            PlasmaCore.IconItem {
+                id: selectedIcon
+                Layout.leftMargin: 2
 
-            readOnly: control.down || !control.hasOwnProperty("editable") || !control.editable
-            inputMethodHints: control.inputMethodHints
-            validator: control.validator
+                width: textField.height
+                height: textField.height
 
-            // Work around Qt bug where NativeRendering breaks for non-integer scale factors
-            // https://bugreports.qt.io/browse/QTBUG-67007
-            renderType: Screen.devicePixelRatio % 1 !== 0 ? Text.QtRendering : Text.NativeRendering
-            color: theme.buttonTextColor //control.enabled ? theme.textColor : theme.disabledTextColor
-            selectionColor: Kirigami.Theme.highlightColor
-            selectedTextColor: Kirigami.Theme.highlightedTextColor
+                colorGroup: PlasmaCore.Theme.ButtonColorGroup
+                source: control.iconRole === "icon" ? control.model.get(control.currentIndex).icon : ''
 
-            selectByMouse: !Kirigami.Settings.tabletMode
-            cursorDelegate: Kirigami.Settings.tabletMode ? mobileCursor : undefinedCursor
-
-            font: control.font
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-            opacity: control.enabled ? 1 : 0.6
-            onFocusChanged: {
-                if (focus) {
-                    Private.MobileTextActionsToolBar.controlRoot = textField;
-                }
+                visible: source !== ''
             }
 
-            onPressAndHold: {
-                if (!Kirigami.Settings.tabletMode) {
-                    return;
+            T.TextField {
+                id: textField
+                padding: 0
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                Layout.leftMargin: selectedIcon.visible ? 0 : control.leftPadding
+                Layout.rightMargin: control.rightPadding
+                Layout.topMargin: control.topPadding
+                Layout.bottomMargin: control.bottomPadding
+
+                text: control.editable ? control.editText : control.displayText
+
+                enabled: control.editable
+                autoScroll: control.editable
+
+                readOnly: control.down || !control.hasOwnProperty("editable") || !control.editable
+                inputMethodHints: control.inputMethodHints
+                validator: control.validator
+
+                // Work around Qt bug where NativeRendering breaks for non-integer scale factors
+                // https://bugreports.qt.io/browse/QTBUG-67007
+                renderType: Screen.devicePixelRatio % 1 !== 0 ? Text.QtRendering : Text.NativeRendering
+                color: theme.buttonTextColor //control.enabled ? theme.textColor : theme.disabledTextColor
+                selectionColor: Kirigami.Theme.highlightColor
+                selectedTextColor: Kirigami.Theme.highlightedTextColor
+
+                selectByMouse: !Kirigami.Settings.tabletMode
+                cursorDelegate: Kirigami.Settings.tabletMode ? mobileCursor : undefinedCursor
+
+                font: control.font
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                opacity: control.enabled ? 1 : 0.6
+                onFocusChanged: {
+                    if (focus) {
+                        Private.MobileTextActionsToolBar.controlRoot = textField;
+                    }
                 }
-                forceActiveFocus();
-                cursorPosition = positionAt(event.x, event.y);
-                selectWord();
+
+                onPressAndHold: {
+                    if (!Kirigami.Settings.tabletMode) {
+                        return;
+                    }
+                    forceActiveFocus();
+                    cursorPosition = positionAt(event.x, event.y);
+                    selectWord();
+                }
             }
         }
     }
