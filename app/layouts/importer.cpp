@@ -202,6 +202,20 @@ QStringList Importer::standardPaths(bool localfirst)
     }
 }
 
+QStringList Importer::standardPathsFor(QString subPath, bool localfirst)
+{
+    QStringList paths = standardPaths(localfirst);
+
+    QString separator = subPath.startsWith("/") ? "" : "/";
+
+    for (int i=0; i<paths.count(); ++i) {
+        paths[i] = paths[i] + separator + subPath;
+    }
+
+    return paths;
+}
+
+
 QString Importer::standardPath(QString subPath, bool localfirst)
 {
     QStringList paths = standardPaths(localfirst);
