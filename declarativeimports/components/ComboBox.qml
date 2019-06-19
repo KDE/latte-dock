@@ -43,6 +43,9 @@ T.ComboBox {
 
     wheelEnabled: false
 
+    property bool hideDisplayText: false
+    property bool hideSelectedItemIcon: false
+
     property bool blankSpaceForEmptyIcons: false
     property bool forcePressed: false
     property bool popUpAlignRight: true
@@ -172,7 +175,7 @@ T.ComboBox {
                     return "";
                 }
 
-                visible: source !== ''
+                visible: source !== '' && !control.hideSelectedItemIcon
             }
 
             Label {
@@ -188,6 +191,8 @@ T.ComboBox {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 opacity: control.enabled ? 1 : 0.6
+
+                visible: !control.hideDisplayText
             }
 
          /*   T.TextField {

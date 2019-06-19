@@ -100,6 +100,9 @@ Rectangle {
                             (popUpAlignRight ? root.width - width : 0) :
                             (popUpAlignRight ? width : -(root.width - width))
 
+        hideDisplayText: true
+        hideSelectedItemIcon: true
+
         minimumPopUpWidth: Math.max(comboBoxMinimumPopUpWidth, root.width)
 
         onIconClicked: root.iconClicked(index);
@@ -126,6 +129,6 @@ Rectangle {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
-        readonly property bool exceeds: width>(mainButton.width-mainComboBox.width)
+        readonly property bool exceeds: width>(mainButton.width-2*mainComboBox.width)
     }
 }
