@@ -130,6 +130,9 @@ private slots:
     void saveConfig();
     void restoreConfig();
 
+    //! KWin Edges Support functions
+    void updateKWinEdgesSupport();
+
 private:
     void setContainsMouse(bool contains);
 
@@ -139,7 +142,6 @@ private:
     //! KWin Edges Support functions
     void createEdgeGhostWindow();
     void deleteEdgeGhostWindow();
-    void updateKWinEdgesSupport();
     void updateGhostWindowState();
 
     void updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate = false);

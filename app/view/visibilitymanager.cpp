@@ -58,6 +58,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
+        connect(m_latteView, &Latte::View::byPassWMChanged, this, &VisibilityManager::updateKWinEdgesSupport);
 
         connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, [&]() {
             if (m_mode == Types::AlwaysVisible && m_latteView->screen()) {
@@ -689,10 +690,11 @@ void VisibilityManager::setEnableKWinEdges(bool enable)
 
 void VisibilityManager::updateKWinEdgesSupport()
 {
-    if (m_mode == Types::AutoHide
+    if ((m_mode == Types::AutoHide
             || m_mode == Types::DodgeActive
             || m_mode == Types::DodgeAllWindows
-            || m_mode == Types::DodgeMaximized) {
+            || m_mode == Types::DodgeMaximized)
+            && (!m_latteView->byPassWM()) ) {
         if (m_enableKWinEdgesFromUser) {
             createEdgeGhostWindow();
         } else if (!m_enableKWinEdgesFromUser) {
