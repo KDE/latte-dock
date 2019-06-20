@@ -925,27 +925,33 @@ void GenericLayout::recreateView(Plasma::Containment *containment)
         return;
     }
 
-    //! give the time to config window to close itself first and then recreate the dock
-    //! step:1 remove the latteview
-    QTimer::singleShot(350, [this, containment]() {
-        auto view = m_latteViews.take(containment);
+    if (!m_viewsToRecreate.contains(containment)) {
+        m_viewsToRecreate << containment;
 
-        if (view) {
-            qDebug() << "recreate - step 1: removing dock for containment:" << containment->id();
+        //! give the time to config window to close itself first and then recreate the dock
+        //! step:1 remove the latteview
+        QTimer::singleShot(350, [this, containment]() {
+            auto view = m_latteViews.take(containment);
 
-            //! step:2 add the new latteview
-            connect(view, &QObject::destroyed, this, [this, containment]() {
-                QTimer::singleShot(250, this, [this, containment]() {
-                    if (!m_latteViews.contains(containment)) {
-                        qDebug() << "recreate - step 2: adding dock for containment:" << containment->id();
-                        addView(containment);
-                    }
+            if (view) {
+                qDebug() << "recreate - step 1: removing dock for containment:" << containment->id();
+
+                //! step:2 add the new latteview
+                connect(view, &QObject::destroyed, this, [this, containment]() {
+                    QTimer::singleShot(250, this, [this, containment]() {
+                        if (!m_latteViews.contains(containment)) {
+                            qDebug() << "recreate - step 2: adding dock for containment:" << containment->id();
+                            addView(containment);
+                            m_viewsToRecreate.removeAll(containment);
+                        }
+                    });
                 });
-            });
 
-            view->deleteLater();
-        }
-    });
+                view->disconnectSensitiveSignals();
+                view->deleteLater();
+            }
+        });
+    }
 }
 
 

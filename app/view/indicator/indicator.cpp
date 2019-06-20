@@ -63,10 +63,9 @@ Indicator::Indicator(Latte::View *parent)
     });
 
     connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::pluginsUpdated, [this]() {
-        if (m_view && m_view->layout()) {
-            m_view->layout()->recreateView(m_view->containment());
+        if (m_view && m_view->layout() && m_view->containment()) {
+        //    m_view->layout()->recreateView(m_view->containment());
         }
-
     });
 
     connect(this, &Indicator::pluginChanged, [this]() {

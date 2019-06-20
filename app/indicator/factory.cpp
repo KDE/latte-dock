@@ -148,7 +148,7 @@ void Factory::reload()
 
                             m_pluginUiPaths[metadata.pluginId()] = QFileInfo(uiFile).absolutePath();
 
-                            QString pluginPath = metadata.fileName().remove("metadata.desktop");                                                        
+                            QString pluginPath = metadata.fileName().remove("metadata.desktop");
                             qDebug() << " Indicator Package Loaded ::: " << metadata.name() << " [" << metadata.pluginId() << "]" << " - [" <<pluginPath<<"]";
 
                             /*qDebug() << " Indicator value ::: " << metadata.pluginId();
