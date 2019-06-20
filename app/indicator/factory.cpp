@@ -65,6 +65,7 @@ Factory::Factory(QObject *parent)
     connect(KDirWatch::self(), &KDirWatch::dirty, this, [ & ](const QString & path) {
         if (m_watchedPaths.contains(path)) {
             reload();
+            emit pluginsUpdated();
         }
     });
 

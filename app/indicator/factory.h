@@ -64,6 +64,7 @@ public:
     static Latte::Types::ImportExportState importIndicatorFile(QString compressedFile);
 signals:
     void customPluginsChanged();
+    void pluginsUpdated();
 
 private:
     void reload();

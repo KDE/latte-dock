@@ -62,6 +62,13 @@ Indicator::Indicator(Latte::View *parent)
         emit customPluginsChanged();
     });
 
+    connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::pluginsUpdated, [this]() {
+        if (m_view && m_view->layout()) {
+            m_view->layout()->recreateView(m_view->containment());
+        }
+
+    });
+
     connect(this, &Indicator::pluginChanged, [this]() {
         if ((m_type != "org.kde.latte.default") && m_type != "org.kde.latte.plasma") {
             setCustomType(m_type);
