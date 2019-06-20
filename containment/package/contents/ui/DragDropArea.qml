@@ -114,14 +114,16 @@ DragDrop.DropArea {
         dragInfo.onlyLaunchers = latteApplet ? latteApplet.launchersDrop(event) : false;
         dragInfo.computationsAreValid = true;
 
-        if (!animationSent) {
-            animationSent = true;
-            slotAnimationsNeedLength(1);
-        }
-
         if (dragInfo.isTask || plasmoid.immutable || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
             event.ignore();
             return;
+        }
+
+        //! Send signal AFTER the dragging is confirmed otherwise the restore mask signal from animations
+        //! may not be triggered #408926
+        if (!animationSent) {
+            animationSent = true;
+            slotAnimationsNeedLength(1);
         }
 
         if (latteApplet && (dragInfo.onlyLaunchers || dragInfo.isSeparator || !dragInfo.isPlasmoid)) {
