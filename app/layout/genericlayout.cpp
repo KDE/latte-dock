@@ -919,39 +919,35 @@ QList<Plasma::Containment *> GenericLayout::unassignFromLayout(Latte::View *latt
     return containments;
 }
 
-void GenericLayout::recreateView(Plasma::Containment *containment)
+void GenericLayout::recreateView(Plasma::Containment *containment, bool delayed)
 {
-    if (!m_corona) {
+    if (!m_corona || m_viewsToRecreate.contains(containment) || !containment || !m_latteViews.contains(containment)) {
         return;
     }
 
-    if (!m_viewsToRecreate.contains(containment)) {
-        m_viewsToRecreate << containment;
+    int delay = delayed ? 350 : 0;
+    m_viewsToRecreate << containment;
 
-        //! give the time to config window to close itself first and then recreate the dock
-        //! step:1 remove the latteview
-        QTimer::singleShot(350, [this, containment]() {
+    //! give the time to config window to close itself first and then recreate the dock
+    //! step:1 remove the latteview
+    QTimer::singleShot(delay, [this, containment]() {
+        auto view = m_latteViews[containment];
+        view->disconnectSensitiveSignals();
+
+        //! step:2 add the new latteview
+        connect(view, &QObject::destroyed, this, [this, containment]() {
             auto view = m_latteViews.take(containment);
-
-            if (view) {
-                qDebug() << "recreate - step 1: removing dock for containment:" << containment->id();
-
-                //! step:2 add the new latteview
-                connect(view, &QObject::destroyed, this, [this, containment]() {
-                    QTimer::singleShot(250, this, [this, containment]() {
-                        if (!m_latteViews.contains(containment)) {
-                            qDebug() << "recreate - step 2: adding dock for containment:" << containment->id();
-                            addView(containment);
-                            m_viewsToRecreate.removeAll(containment);
-                        }
-                    });
-                });
-
-                view->disconnectSensitiveSignals();
-                view->deleteLater();
-            }
+            QTimer::singleShot(250, this, [this, containment]() {
+                if (!m_latteViews.contains(containment)) {
+                    qDebug() << "recreate - step 2: adding dock for containment:" << containment->id();
+                    addView(containment);
+                    m_viewsToRecreate.removeAll(containment);
+                }
+            });
         });
-    }
+
+        view->deleteLater();
+    });
 }
 
 

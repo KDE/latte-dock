@@ -271,11 +271,16 @@ signals:
 
     void absoluteGeometryChanged(const QRect &geometry);
 
+    //! pass on signals to children in order to avoid crashes when View is recreated or destroyed
+    void availableScreenRectChangedForViewParts();
+    void customPluginsChanged();
+
 private slots:
     void availableScreenRectChangedFrom(View *origin);
     void configViewCreatedFor(Latte::View *view);
     void hideWindowsForSlidingOut();
     void preferredViewForShortcutsChangedSlot(Latte::View *view);
+    void reloadSource();
     void statusChanged(Plasma::Types::ItemStatus);
 
     void restoreConfig();

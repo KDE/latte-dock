@@ -27,6 +27,7 @@
 #include "visibilitymanager.h"
 #include "settings/primaryconfigview.h"
 #include "settings/secondaryconfigview.h"
+#include "../indicator/factory.h"
 #include "../lattecorona.h"
 #include "../layout/genericlayout.h"
 #include "../layouts/manager.h"
@@ -238,6 +239,11 @@ void View::init()
 
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
 
+    connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::pluginsUpdated, this, &View::reloadSource);
+    //! View sends this signal in order to avoid crashes from ViewPart::Indicator when the view is recreated
+    connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::customPluginsChanged, this, &View::customPluginsChanged);
+    connect(m_corona, &Latte::Corona::availableScreenRectChanged, this, &View::availableScreenRectChangedForViewParts);
+
     ///!!!!!
     rootContext()->setContextProperty(QStringLiteral("latteView"), this);
 
@@ -258,6 +264,19 @@ void View::init()
 
     qDebug() << "SOURCE:" << source();
 }
+
+void View::reloadSource()
+{
+    if (m_layout && containment()) {
+        if (settingsWindowIsShown()) {
+            m_configView->deleteLater();
+        }
+
+        engine()->clearComponentCache();
+        m_layout->recreateView(containment(), settingsWindowIsShown());
+    }
+}
+
 
 bool View::inDelete() const
 {

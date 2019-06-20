@@ -54,18 +54,12 @@ Indicator::Indicator(Latte::View *parent)
 
     connect(m_view, &Latte::View::latteTasksArePresentChanged, this, &Indicator::latteTasksArePresentChanged);
 
-    connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::customPluginsChanged, [this]() {
-        if (!m_corona->indicatorFactory()->pluginExists(m_type)) {
+    connect(m_view, &Latte::View::customPluginsChanged, [this]() {
+        if (m_corona && !m_corona->indicatorFactory()->pluginExists(m_type)) {
             setType("org.kde.latte.default");
         }
 
         emit customPluginsChanged();
-    });
-
-    connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::pluginsUpdated, [this]() {
-        if (m_view && m_view->layout() && m_view->containment()) {
-        //    m_view->layout()->recreateView(m_view->containment());
-        }
     });
 
     connect(this, &Indicator::pluginChanged, [this]() {

@@ -106,9 +106,7 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
         m_thicknessSyncTimer.start();
     });
 
-    connections << connect(m_corona, &Latte::Corona::availableScreenRectChanged, this, [this]() {
-        updateAvailableScreenGeometry();
-    });
+    connections << connect(m_latteView, &Latte::View::availableScreenRectChangedForViewParts, this, &PrimaryConfigView::updateAvailableScreenGeometry);
 
     if (m_corona) {
         connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &PrimaryConfigView::raiseDocksTemporaryChanged);
@@ -382,7 +380,7 @@ void PrimaryConfigView::hideEvent(QHideEvent *ev)
         m_latteView->containment()->setUserConfiguring(false);
     }
 
-   // QQuickWindow::hideEvent(ev);
+    // QQuickWindow::hideEvent(ev);
 
     const auto mode = m_latteView->visibility()->mode();
 
@@ -406,8 +404,9 @@ void PrimaryConfigView::focusOutEvent(QFocusEvent *ev)
 
     const auto *focusWindow = qGuiApp->focusWindow();
 
-    if ((focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
-                         || focusWindow->flags().testFlag(Qt::ToolTip)))
+    if (!m_latteView
+            || (focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
+                                || focusWindow->flags().testFlag(Qt::ToolTip)))
             || m_latteView->alternativesIsShown()) {
         return;
     }

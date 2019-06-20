@@ -128,34 +128,37 @@ void Factory::reload()
             for (const auto &pluginDir : pluginDirs) {
                 if (pluginDir != "." && pluginDir != "..") {
                     QString metadataFile = standard.absolutePath() + "/" + pluginDir + "/metadata.desktop";
-                    KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(metadataFile);
 
-                    if (metadataAreValid(metadata)) {
-                        QString uiFile = standard.absolutePath() + "/" + pluginDir + "/package/" + metadata.value("X-Latte-MainScript");
+                    if(QFileInfo(metadataFile).exists()) {
+                        KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(metadataFile);
 
-                        if (QFileInfo(uiFile).exists() && !m_plugins.contains(metadata.pluginId())) {
-                            m_plugins[metadata.pluginId()] = metadata;
+                        if (metadataAreValid(metadata)) {
+                            QString uiFile = standard.absolutePath() + "/" + pluginDir + "/package/" + metadata.value("X-Latte-MainScript");
 
-                            if ((metadata.pluginId() != "org.kde.latte.default")
-                                    && (metadata.pluginId() != "org.kde.latte.plasma")) {
-                                m_customPluginIds << metadata.pluginId();
-                                m_customPluginNames << metadata.name();
-                            }
+                            if (QFileInfo(uiFile).exists() && !m_plugins.contains(metadata.pluginId())) {
+                                m_plugins[metadata.pluginId()] = metadata;
 
-                            if (standard.absolutePath().startsWith(QDir::homePath())) {
-                                m_customLocalPluginIds << metadata.pluginId();
-                            }
+                                if ((metadata.pluginId() != "org.kde.latte.default")
+                                        && (metadata.pluginId() != "org.kde.latte.plasma")) {
+                                    m_customPluginIds << metadata.pluginId();
+                                    m_customPluginNames << metadata.name();
+                                }
 
-                            m_pluginUiPaths[metadata.pluginId()] = QFileInfo(uiFile).absolutePath();
+                                if (standard.absolutePath().startsWith(QDir::homePath())) {
+                                    m_customLocalPluginIds << metadata.pluginId();
+                                }
 
-                            QString pluginPath = metadata.fileName().remove("metadata.desktop");
-                            qDebug() << " Indicator Package Loaded ::: " << metadata.name() << " [" << metadata.pluginId() << "]" << " - [" <<pluginPath<<"]";
+                                m_pluginUiPaths[metadata.pluginId()] = QFileInfo(uiFile).absolutePath();
 
-                            /*qDebug() << " Indicator value ::: " << metadata.pluginId();
+                                QString pluginPath = metadata.fileName().remove("metadata.desktop");
+                                qDebug() << " Indicator Package Loaded ::: " << metadata.name() << " [" << metadata.pluginId() << "]" << " - [" <<pluginPath<<"]";
+
+                                /*qDebug() << " Indicator value ::: " << metadata.pluginId();
                             qDebug() << " Indicator value ::: " << metadata.fileName();
                             qDebug() << " Indicator value ::: " << metadata.value("X-Latte-MainScript");
                             qDebug() << " Indicator value ::: " << metadata.value("X-Latte-ConfigUi");
                             qDebug() << " Indicator value ::: " << metadata.value("X-Latte-ConfigXml");*/
+                            }
                         }
                     }
                 }
