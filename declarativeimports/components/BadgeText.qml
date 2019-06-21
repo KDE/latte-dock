@@ -149,7 +149,6 @@ Rectangle {
         font.bold: true
         color: textWithBackgroundColor ? parent.color : parent.textColor
         visible: showNumber || showText
-        renderType: Text.QtRendering
     }
 
     Rectangle{
