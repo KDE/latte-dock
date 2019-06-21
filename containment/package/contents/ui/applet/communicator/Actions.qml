@@ -66,8 +66,8 @@ Item{
             mainCommunicator.activeIndicatorEnabled = value;
         } else if (parameter === "parabolicEffectLocked") {
             mainCommunicator.parabolicEffectLocked = value;
-        } else if (parameter === "needWindowsTracking") {
-            mainCommunicator.needWindowsTracking = value;
+        } else if (parameter === "windowsTrackingEnabled") {
+            mainCommunicator.windowsTrackingEnabled = value;
         }
     }
 
@@ -80,8 +80,8 @@ Item{
             return mainCommunicator.activeIndicatorEnabled;
         } else if (parameter === "parabolicEffectLocked") {
             return mainCommunicator.parabolicEffectLocked;
-        } else if (parameter === "needWindowsTracking") {
-            return mainCommunicator.needWindowsTracking;
+        } else if (parameter === "windowsTrackingEnabled") {
+            return mainCommunicator.windowsTrackingEnabled;
         }
 
         return null;

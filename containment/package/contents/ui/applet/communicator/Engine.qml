@@ -53,14 +53,14 @@ Item{
     property bool latteSideColoringEnabled: true
     property bool latteIconOverlayEnabled: true
     property bool activeIndicatorEnabled: true
-    property bool needWindowsTracking: false
+    property bool windowsTrackingEnabled: false
     property bool parabolicEffectLocked: false
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
 
     //! BEGIN OF PROPERTY CHANGES
     //! END OF PROPERTY CHANGES
 
-    property bool needWindowsTrackingSent: false
+    property bool windowsTrackingEnabledSent: false
 
     //! BEGIN OF FUNCTIONS
     function appletIconItemIsShown() {
@@ -82,12 +82,12 @@ Item{
     }
     //! END OF FUNCTIONS
 
-    onNeedWindowsTrackingChanged: {
-        if (needWindowsTracking && !needWindowsTrackingSent) {
-            needWindowsTrackingSent = true;
+    onWindowsTrackingEnabledChanged: {
+        if (windowsTrackingEnabled && !windowsTrackingEnabledSent) {
+            windowsTrackingEnabledSent = true;
             root.slotAppletsNeedWindowsTracking(1);
-        } else if (!needWindowTracking && needWindowsTrackingSent) {
-            needWindowsTrackingSent = false;
+        } else if (!windowsTrackingEnabled && windowsTrackingEnabledSent) {
+            windowsTrackingEnabledSent = false;
             root.slotAppletsNeedWindowsTracking(-1);
         }
     }
@@ -105,8 +105,8 @@ Item{
     }
 
     Component.onDestruction: {
-        if (needWindowsTracking && needWindowsTrackingSent) {
-            needWindowsTrackingSent = false;
+        if (windowsTrackingEnabled && windowsTrackingEnabledSent) {
+            windowsTrackingEnabledSent = false;
             root.slotAppletsNeedWindowsTracking(-1);
         }
     }
