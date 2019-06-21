@@ -19,6 +19,8 @@
 
 import QtQuick 2.7
 
+import org.kde.latte 0.2 as Latte
+
 Item{
     // NAME: latteSideColoringEnabled
     // TYPE: bool
@@ -55,6 +57,14 @@ Item{
     //   EXPLANATION: when is TRUE, Latte can use Parabolic Effect in order
     //       to draw that applet. For FALSE, this applet is considered locked
     //       and can not be zoomed.
+    // @since: 0.9
+
+    // NAME: windowsTrackingEnabled
+    // TYPE: bool
+    //   USAGE: writable through actions.setProperty
+    //   EXPLANATION: when is TRUE, Latte is informed that this applet requests
+    //       windows tracking. For FALSE, this applet is not requesting
+    //       windows tracking.
     // @since: 0.9
 
     function setProperty(appletId, parameter, value) {
@@ -95,4 +105,7 @@ Item{
         root.broadcastedToApplet(pluginName, action, value);
     }
 
+    function version(major, minor, patch) {
+        return Latte.WindowSystem.makeVersion(major, minor, patch)
+    }
 }

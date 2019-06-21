@@ -37,7 +37,7 @@ Item{
     //   EXPLANATION: Latte communication version in order for the applet to use only properties
     //       and parameters that are valid
     // @since: 0.9
-    readonly property int version: 9
+    readonly property int version: root.version
 
     // NAME: inEditMode
     //   USAGE: read-only

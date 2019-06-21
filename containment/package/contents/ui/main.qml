@@ -66,6 +66,8 @@ Item {
     property bool debugModeWindow: Qt.application.arguments.indexOf("--with-window")>=0
     property bool debugModeOverloadedIcons: Qt.application.arguments.indexOf("--overloaded-icons")>=0
 
+    readonly property int version: Latte.WindowSystem.makeVersion(0,9,0)
+
     property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
     property int directRenderAnimationTime: 0
 
