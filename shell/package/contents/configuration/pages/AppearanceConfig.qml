@@ -1006,11 +1006,5 @@ PlasmaComponents.Page {
             }
         }
         //! END: Background
-
-        //! Bottom spacer
-        PlasmaComponents.Label{
-            id: bottomMarginSpacer
-            text:" "
-        }
     }
 }

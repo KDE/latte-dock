@@ -775,10 +775,5 @@ PlasmaComponents.Page {
         }
         //! END: Adjust
 
-        //! Bottom spacer
-        PlasmaComponents.Label{
-            id: bottomMarginSpacer
-            text:" "
-        }
     }
 }

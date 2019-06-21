@@ -95,6 +95,18 @@ PlasmaComponents.Page {
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
+                    text: i18n("Prominent color for notification badge")
+                    checked: plasmoid.configuration.infoBadgeProminentColorEnabled
+                    enabled: plasmoid.configuration.showInfoBadge
+                    tooltip: i18n("Notification badge uses a more prominent background which is usually red")
+
+                    onClicked: {
+                        plasmoid.configuration.infoBadgeProminentColorEnabled = !plasmoid.configuration.infoBadgeProminentColorEnabled;
+                    }
+                }
+
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Change volume when scrolling audio badge")
                     checked: plasmoid.configuration.audioBadgeActionsEnabled
                     enabled: plasmoid.configuration.showAudioBadge
@@ -614,12 +626,6 @@ PlasmaComponents.Page {
                     latteView.removeTasksPlasmoid();
                 }
             }
-        }
-
-        //! Bottom spacer
-        PlasmaComponents.Label{
-            id: bottomMarginSpacer
-            text:" "
         }
     }
 }

@@ -436,6 +436,7 @@ Item {
     property bool showProgressBadge: plasmoid.configuration.showProgressBadge
     property bool showAudioBadge: plasmoid.configuration.showAudioBadge
     property bool audioBadgeActionsEnabled: plasmoid.configuration.audioBadgeActionsEnabled
+    property bool infoBadgeProminentColorEnabled: plasmoid.configuration.infoBadgeProminentColorEnabled
 
     property bool scrollTasksEnabled: plasmoid.configuration.scrollTasksEnabled
     property bool autoScrollTasksEnabled: plasmoid.configuration.autoScrollTasksEnabled

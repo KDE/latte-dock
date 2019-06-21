@@ -83,12 +83,18 @@ Item {
             showNumber: true
 
             color: theme.backgroundColor
-            textColor: showsInfoBadge ? root.lightTextColor : theme.textColor
+            textColor: {
+                if (showsInfoBadge) {
+                    return root.infoBadgeProminentColorEnabled ? root.lightTextColor : theme.highlightedTextColor
+                }
+
+                return theme.textColor;
+            }
             borderColor: root.lightTextColor
 
             highlightedColor: {
                 if (showsInfoBadge) {
-                    return theme.negativeTextColor
+                    return root.infoBadgeProminentColorEnabled ? theme.negativeTextColor : theme.highlightColor
                 }
 
                 return theme.buttonFocusColor;
