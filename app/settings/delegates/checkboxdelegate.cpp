@@ -21,6 +21,7 @@
 
 // local
 #include "../settingsdialog.h"
+#include "../tools/settingstools.h"
 
 // Qt
 #include <QApplication>
@@ -56,10 +57,16 @@ void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         QStyledItemDelegate::paint(painter, adjustedOption, index);
     } else {
         // Disabled
-        QPalette palette;
-        QPen pen(Qt::DashDotDotLine);
+        bool isSelected{Latte::isSelected(option)};
+        QPalette::ColorRole backColorRole = isSelected ? QPalette::Highlight : QPalette::Base;
+        QPalette::ColorRole textColorRole = isSelected ? QPalette::HighlightedText : QPalette::Text;
 
-        pen.setWidth(2); pen.setColor(palette.text().color());
+        // background
+        painter->fillRect(option.rect, option.palette.brush(Latte::colorGroup(option), backColorRole));
+
+        // text
+        QPen pen(Qt::DashDotDotLine);
+        pen.setWidth(2); pen.setColor(option.palette.brush(Latte::colorGroup(option), textColorRole).color());
         int y = option.rect.y()+option.rect.height()/2;
 
         bool inMenu = m_settingsDialog->isMenuCell(index.column());

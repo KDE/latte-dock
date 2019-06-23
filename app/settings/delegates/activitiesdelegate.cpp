@@ -173,10 +173,18 @@ void ActivitiesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         painter->restore();
     } else {
         // Disabled
-        QPalette palette;
-        QPen pen(Qt::DashDotDotLine);
+        bool isSelected{Latte::isSelected(option)};
+        QPalette::ColorRole backColorRole = isSelected ? QPalette::Highlight : QPalette::Base;
+        QPalette::ColorRole textColorRole = isSelected ? QPalette::HighlightedText : QPalette::Text;
 
-        pen.setWidth(2); pen.setColor(palette.text().color());
+        // background
+        painter->fillRect(option.rect, option.palette.brush(Latte::colorGroup(option), backColorRole));
+
+        // text
+        QPen pen(Qt::DashDotDotLine);
+        QColor textColor = option.palette.brush(Latte::colorGroup(option), textColorRole).color();
+
+        pen.setWidth(2); pen.setColor(textColor);
         int y = option.rect.y()+option.rect.height()/2;
 
         int space = option.rect.height() / 2;
@@ -193,7 +201,7 @@ void ActivitiesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
             pen.setStyle(Qt::SolidLine);
             painter->setPen(pen);
-            painter->setBrush(palette.text().color());
+            painter->setBrush(textColor);
 
             //! draw ending cirlce
             painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
@@ -207,7 +215,7 @@ void ActivitiesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
             pen.setStyle(Qt::SolidLine);
             painter->setPen(pen);
-            painter->setBrush(palette.text().color());
+            painter->setBrush(textColor);
 
             //! draw ending cirlce
             painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
