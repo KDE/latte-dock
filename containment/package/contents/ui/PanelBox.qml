@@ -349,7 +349,7 @@ Item{
             //! must be normalized to plasma theme maximum opacity
             readonly property real normalizedOpacity: Math.min(1, appliedOpacity / themeMaxOpacity)
 
-            readonly property real appliedOpacity: overlayedBackground.opacity > 0 ? 0 : overlayedBackground.midOpacity
+            readonly property real appliedOpacity: overlayedBackground.opacity > 0 && !paintInstantly ? 0 : overlayedBackground.midOpacity
             readonly property real themeMaxOpacity: {
                 if (themeExtended) {
                     switch(plasmoid.location) {
@@ -363,6 +363,10 @@ Item{
 
                 return 1;
             }
+
+            //! When switching from overlaied background to regular one this must be done
+            //! instantly otherwise the transition is not smooth
+            readonly property bool paintInstantly: root.hasExpandedApplet && root.plasmaBackgroundForPopups
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 
@@ -456,7 +460,7 @@ Item{
             enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
             Behavior on opacity{
-                enabled: Latte.WindowSystem.compositingActive
+                enabled: Latte.WindowSystem.compositingActive && !solidBackground.paintInstantly
                 NumberAnimation { duration: barLine.animationTime }
             }
 
@@ -496,7 +500,7 @@ Item{
             anchors.fill: solidBackground
             opacity: {
                 if (root.forcePanelForBusyBackground
-                        && solidBackground.opacity === 0) {
+                        && (solidBackground.opacity === 0 || !solidBackground.paintInstantly)) {
                     return plasmoid.configuration.panelTransparency / 100;
                 }
 
