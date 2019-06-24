@@ -71,8 +71,14 @@ public:
     }
 
     void setGeometry(const QRect &rect) {
-        QWindow::setGeometry(rect);
+        if (geometry() == rect) {
+            return;
+        }
+
+        setMinimumSize(rect.size());
         setMaximumSize(rect.size());
+        resize(rect.size());
+
         m_shellSurface->setPosition(rect.topLeft());
     }
 
@@ -202,8 +208,9 @@ void WaylandInterface::setViewExtraFlags(QWindow &view)
 
 void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::Types::Location location)
 {
-    if (!m_ghostWindows.contains(view.winId()))
+    if (!m_ghostWindows.contains(view.winId())) {
         m_ghostWindows[view.winId()] = new Private::GhostWindow(this);
+    }
 
     auto w = m_ghostWindows[view.winId()];
 
