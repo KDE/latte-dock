@@ -85,7 +85,7 @@ Item {
             color: theme.backgroundColor
             textColor: {
                 if (showsInfoBadge) {
-                    return root.infoBadgeProminentColorEnabled ? root.lightTextColor : theme.highlightedTextColor
+                    return root.infoBadgeProminentColorEnabled ? prominentTextColor : theme.highlightedTextColor
                 }
 
                 return theme.textColor;
@@ -94,7 +94,7 @@ Item {
 
             highlightedColor: {
                 if (showsInfoBadge) {
-                    return root.infoBadgeProminentColorEnabled ? theme.negativeTextColor : theme.highlightColor
+                    return root.infoBadgeProminentColorEnabled ? prominentBackColor : theme.highlightColor
                 }
 
                 return theme.buttonFocusColor;
@@ -114,6 +114,9 @@ Item {
 
                 return 0;
             }
+
+            readonly property color prominentBackColor: "#cc0000" //redish  (deprecated: theme.negativeTextColor)
+            readonly property color prominentTextColor: "#f3f3f3" //whitish (deprecated: root.lightTextColor)
 
             readonly property bool showsInfoBadge: ((taskItem.badgeIndicator > 0)
                                                     || (taskIcon.smartLauncherItem && taskIcon.smartLauncherItem.countVisible && !taskIcon.smartLauncherItem.progressVisible))
