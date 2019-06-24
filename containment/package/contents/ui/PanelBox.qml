@@ -418,10 +418,15 @@ Item{
                 if (!latteView)
                     return;
 
-                var rootGeometry = mapToItem(root, 0, 0);
+                if (!root.behaveAsPlasmaPanel) {
+                    var rootGeometry = mapToItem(root, 0, 0);
+                    efGeometry.x = rootGeometry.x;
+                    efGeometry.y = rootGeometry.y;
+                } else {
+                    efGeometry.x = 0;
+                    efGeometry.y = 0;
+                }
 
-                efGeometry.x = rootGeometry.x;
-                efGeometry.y = rootGeometry.y;
                 efGeometry.width = width;
                 efGeometry.height = height;
 
