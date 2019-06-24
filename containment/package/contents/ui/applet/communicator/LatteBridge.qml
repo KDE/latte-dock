@@ -87,7 +87,7 @@ Item{
     //   USE CASE: it can be used from applets that want windows tracking in order
     //       to update their appearance or their behavior accordingly
     // @since: 0.9
-    readonly property QtObject windowsTracker: mainCommunicator.needWindowsTracking && latteView && latteView.windowsTracker ?
+    readonly property QtObject windowsTracker: mainCommunicator.windowsTrackingEnabled && latteView && latteView.windowsTracker ?
                                                    latteView.windowsTracker : null
 
     property Item actions: Actions{}
