@@ -51,6 +51,14 @@ Item{
     //       or used for that applet.
     // @since: 0.9
 
+    // NAME: lengthMarginsEnabled
+    // TYPE: bool
+    //   USAGE: writable through actions.setProperty
+    //   EXPLANATION: when is TRUE, all length margins are drawn including
+    //       indicator padding and applets distance. For FALSE, length margins
+    //       are not drawn at all.
+    // @since: 0.9
+
     // NAME: parabolicEffectEnabled
     // TYPE: bool
     //   USAGE: writable through actions.setProperty
@@ -74,6 +82,8 @@ Item{
             mainCommunicator.latteIconOverlayEnabled = value;
         } else if (parameter === "activeIndicatorEnabled") {
             mainCommunicator.activeIndicatorEnabled = value;
+        } else if (parameter === "lengthMarginsEnabled") {
+           mainCommunicator.lengthMarginsEnabled = value;
         } else if (parameter === "parabolicEffectLocked") {
             mainCommunicator.parabolicEffectLocked = value;
         } else if (parameter === "windowsTrackingEnabled") {
@@ -88,6 +98,8 @@ Item{
             return mainCommunicator.latteIconOverlayEnabled;
         } else if (parameter === "activeIndicatorEnabled") {
             return mainCommunicator.activeIndicatorEnabled;
+        } else if (parameter === "lengthMarginsEnabled") {
+            return mainCommunicator.lengthMarginsEnabled;
         } else if (parameter === "parabolicEffectLocked") {
             return mainCommunicator.parabolicEffectLocked;
         } else if (parameter === "windowsTrackingEnabled") {

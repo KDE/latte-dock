@@ -122,7 +122,7 @@ Item{
                                    root.thickMargins :
                                    (root.inFullJustify && atScreenEdge ? 0 : localLengthMargins)  //Fitt's Law
 
-    property int localLengthMargins: isSpacer || isSeparator ? 0 : root.lengthMargins
+    property int localLengthMargins: isSeparator || !communicator.lengthMarginsEnabled ? 0 : root.lengthMargins
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
     property real scaledHeight: zoomScaleHeight * (layoutHeight + marginHeight)

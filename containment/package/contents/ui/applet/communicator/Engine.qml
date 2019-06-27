@@ -53,6 +53,7 @@ Item{
     property bool latteSideColoringEnabled: true
     property bool latteIconOverlayEnabled: true
     property bool activeIndicatorEnabled: true
+    property bool lengthMarginsEnabled: true
     property bool windowsTrackingEnabled: false
     property bool parabolicEffectLocked: false
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
