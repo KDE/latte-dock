@@ -294,6 +294,8 @@ Item{
             return;
         }
 
+        var blockParabolicEffect = false;
+
         if (isLattePlasmoid) {
             return;
         } else if (appletItem.isInternalViewSplitter){
@@ -307,6 +309,7 @@ Item{
         }
         else{
             if(applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical && !canBeHovered && !communicator.overlayLatteIconIsActive){
+                blockParabolicEffect = true;
                 layoutHeight = applet.Layout.minimumHeight;
             } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
             else if(applet
@@ -316,22 +319,29 @@ Item{
                     && root.isVertical
                     && !disableScaleWidth
                     && !communicator.overlayLatteIconIsActive) {
-
-                disableScaleHeight = true;
-
                 //this way improves performance, probably because during animation the preferred sizes update a lot
                 if((applet.Layout.maximumHeight < root.iconSize)){
                     layoutHeight = applet.Layout.maximumHeight;
                 } else if (applet.Layout.minimumHeight > root.iconSize){
+                    blockParabolicEffect = true;
                     layoutHeight = applet.Layout.minimumHeight;
                 } else if ((applet.Layout.preferredHeight > root.iconSize)
                            || (appletItem.originalAppletBehavior && applet.Layout.preferredHeight > 0 )){
+                    blockParabolicEffect = true;
                     layoutHeight = applet.Layout.preferredHeight;
                 } else{
                     layoutHeight = root.iconSize;
                 }
             } else {
                 layoutHeight = root.iconSize;
+            }
+        }
+
+        if (wrapper.zoomScale === 1) {
+            if (blockParabolicEffect) {
+                disableScaleHeight = true;
+            } else {
+                disableScaleHeight = false;
             }
         }
     }
@@ -343,6 +353,8 @@ Item{
             layoutsContainer.updateSizeForAppletsInFill();
             return;
         }
+
+        var blockParabolicEffect = false;
 
         if (isLattePlasmoid) {
             return;
@@ -357,6 +369,7 @@ Item{
         }
         else{
             if(applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal && !canBeHovered && !communicator.overlayLatteIconIsActive){
+                blockParabolicEffect = true;
                 layoutWidth = applet.Layout.minimumWidth;
             } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
             else if(applet
@@ -367,22 +380,30 @@ Item{
                     && !disableScaleHeight
                     && !communicator.overlayLatteIconIsActive){
 
-                disableScaleWidth = true;
-
                 //this way improves performance, probably because during animation the preferred sizes update a lot
                 if((applet.Layout.maximumWidth < root.iconSize)){
                     //   return applet.Layout.maximumWidth;
                     layoutWidth = applet.Layout.maximumWidth;
                 } else if (applet.Layout.minimumWidth > root.iconSize){
+                    blockParabolicEffect = true;
                     layoutWidth = applet.Layout.minimumWidth;
                 } else if ((applet.Layout.preferredWidth > root.iconSize)
                            || (appletItem.originalAppletBehavior && applet.Layout.preferredWidth > 0 )){
+                    blockParabolicEffect = true;
                     layoutWidth = applet.Layout.preferredWidth;
                 } else{
                     layoutWidth = root.iconSize;
                 }
             } else{
                 layoutWidth = root.iconSize;
+            }
+        }
+
+        if (wrapper.zoomScale === 1) {
+            if (blockParabolicEffect) {
+                disableScaleWidth = true;
+            } else {
+                disableScaleWidth = false;
             }
         }
     }
