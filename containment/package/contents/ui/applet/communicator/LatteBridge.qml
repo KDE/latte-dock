@@ -80,6 +80,13 @@ Item{
     // @since: 0.9
     readonly property int iconSize: root.iconSize
 
+    // NAME: maxZoomFactor
+    //   USAGE: read-only
+    //   EXPLANATION: The maximum zoom factor currently used
+    //   USE CASE: it can be used from applets that want to be informed what is the maximum
+    //       zoom factor currently used
+    // @since: 0.9
+    readonly property real maxZoomFactor: root.zoomFactor
 
     // NAME: windowsTracker
     //   USAGE: read-only
