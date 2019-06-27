@@ -1,5 +1,14 @@
 #**CHANGELOG**#
 
+#### Version 0.8.9
+
+* fix: show notifications applet when in Latte (for plasma >= 5.16)
+
+#### Version 0.8.8
+
+* fix: multi-screen, unload properly explicit screen docks when its screen
+is not available any more
+
 #### Version 0.8.7
 
 * fix: Show dock properly on first startup. New users where trying Latte but
