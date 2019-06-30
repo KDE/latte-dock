@@ -1027,7 +1027,7 @@ void SettingsDialog::loadSettings()
     m_model->setHorizontalHeaderItem(NAMECOLUMN, new QStandardItem(QString(i18nc("column for layout name", "Name"))));
     m_model->setHorizontalHeaderItem(MENUCOLUMN, new QStandardItem(QString(i18nc("column for layout to show in menu", "In Menu"))));
     m_model->setHorizontalHeaderItem(BORDERSCOLUMN, new QStandardItem(QString(i18nc("column for layout to hide borders for maximized windows", "Borderless"))));
-    m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QIcon::fromTheme("preferences-activities"),
+    m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QIcon::fromTheme("activities"),
                                                                        QString(i18nc("column for layout to show which activities is assigned to", "Activities"))));
     m_model->setHorizontalHeaderItem(SHAREDCOLUMN, new QStandardItem(QIcon::fromTheme("document-share"),
                                                                      QString(i18nc("column for shared layout to show which layouts is assigned to", "Shared To"))));
