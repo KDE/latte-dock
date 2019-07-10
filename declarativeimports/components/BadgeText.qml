@@ -27,6 +27,8 @@ Rectangle {
 
     property double previousProportion: 0
 
+    property bool style3d: true
+
     property int numberValue
     property string textValue
 
@@ -58,6 +60,8 @@ Rectangle {
     property color borderColor: theme.textColor
     property color textColor: theme.textColor
     property color highlightedColor: theme.buttonFocusColor
+
+    readonly property bool singleCharacter: (showNumber && numberValue<=9 && numberValue>=0)|| (showText && textValue.length===1)
 
     onProportionChanged: {
         //  console.log(previousProportion + " - "+proportion);
@@ -162,12 +166,14 @@ Rectangle {
         border.color: "black"
         radius: parent.radius
         opacity: 0.4
+
+        visible: style3d
     }
 
     Rectangle{
         anchors.fill: parent
         border.width: parent.borderWidth
-        border.color: parent.borderColor
+        border.color: style3d ? parent.borderColor : parent.color
         color: "transparent"
         radius: parent.radius
         opacity: parent.borderOpacity
