@@ -1755,6 +1755,11 @@ Item {
                                                && ((root.dragInfo.isPlasmoid && root.dragInfo.isSeparator)
                                                || (foreDropArea.dragInfo.computationsAreValid && !root.dragInfo.isPlasmoid && !root.dragInfo.onlyLaunchers))
 
+        readonly property bool ignoreRegularFiles: !root.editMode
+                                                   && (dragInfo.computationsAreValid || foreDropArea.dragInfo.computationsAreValid)
+                                                   && !root.dragInfo.isPlasmoid
+                                                   && !root.dragInfo.onlyLaunchers
+
         Item{
             id: panelBox
             anchors.fill: layoutsContainer
