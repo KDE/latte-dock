@@ -430,6 +430,7 @@ Item {
 
     ///BEGIN properties provided to Latte Plasmoid
     //shadows for applets, it should be removed as the appleitems don't need it any more
+    property bool badges3DStyle: universalSettings ? universalSettings.badges3DStyle : true
     property bool enableShadows: plasmoid.configuration.shadows || (root.forceTransparentPanel && plasmoid.configuration.shadows>0)
     property bool dockIsHidden: latteView ? latteView.visibility.isHidden : true
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault

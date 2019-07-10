@@ -203,6 +203,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     });
 
     connect(ui->autostartChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(ui->badges3DStyleChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->metaPressChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->metaPressHoldChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->infoWindowChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
@@ -837,6 +838,7 @@ void SettingsDialog::restoreDefaults()
     } else if (ui->tabWidget->currentIndex() == 1) {
         //! Defaults for general Latte settings
         ui->autostartChkBox->setChecked(true);
+        ui->badges3DStyleChkBox->setChecked(true);
         ui->infoWindowChkBox->setChecked(true);
         ui->metaPressChkBox->setChecked(false);
         ui->metaPressHoldChkBox->setChecked(true);
@@ -1031,6 +1033,7 @@ void SettingsDialog::loadSettings()
     updateSharedLayoutsStates();
 
     ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
+    ui->badges3DStyleChkBox->setChecked(m_corona->universalSettings()->badges3DStyle());
     ui->infoWindowChkBox->setChecked(m_corona->universalSettings()->showInfoWindow());
     ui->metaPressChkBox->setChecked(m_corona->universalSettings()->metaForwardedToLatte());
     ui->metaPressHoldChkBox->setChecked(m_corona->universalSettings()->metaPressAndHoldEnabled());
@@ -1066,6 +1069,7 @@ QList<int> SettingsDialog::currentSettings()
     QList<int> settings;
     settings << m_inMemoryButtons->checkedId();
     settings << (int)ui->autostartChkBox->isChecked();
+    settings << (int)ui->badges3DStyleChkBox->isChecked();
     settings << (int)ui->infoWindowChkBox->isChecked();
     settings << (int)ui->metaPressChkBox->isChecked();
     settings << (int)ui->metaPressHoldChkBox->isChecked();
@@ -1337,6 +1341,7 @@ void SettingsDialog::updateApplyButtonsState()
         //! Defaults for general Latte settings
 
         if (!ui->autostartChkBox->isChecked()
+                || ui->badges3DStyleChkBox->isChecked()
                 || ui->metaPressChkBox->isChecked()
                 || !ui->metaPressHoldChkBox->isChecked()
                 || !ui->infoWindowChkBox->isChecked()
@@ -1523,6 +1528,7 @@ bool SettingsDialog::saveAllChanges()
     //! Update universal settings
     Latte::Types::MouseSensitivity sensitivity = static_cast<Latte::Types::MouseSensitivity>(m_mouseSensitivityButtons->checkedId());
     bool autostart = ui->autostartChkBox->isChecked();
+    bool badges3DStyle = ui->badges3DStyleChkBox->isChecked();
     bool forwardMetaPress = ui->metaPressChkBox->isChecked();
     bool metaPressAndHold = ui->metaPressHoldChkBox->isChecked();
     bool showInfoWindow = ui->infoWindowChkBox->isChecked();
@@ -1530,6 +1536,7 @@ bool SettingsDialog::saveAllChanges()
 
     m_corona->universalSettings()->setMouseSensitivity(sensitivity);
     m_corona->universalSettings()->setAutostart(autostart);
+    m_corona->universalSettings()->setBadges3DStyle(badges3DStyle);
     m_corona->universalSettings()->forwardMetaToLatte(forwardMetaPress);
     m_corona->universalSettings()->setMetaPressAndHoldEnabled(metaPressAndHold);
     m_corona->universalSettings()->setShowInfoWindow(showInfoWindow);

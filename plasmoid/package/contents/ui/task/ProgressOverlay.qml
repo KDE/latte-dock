@@ -100,7 +100,7 @@ Item {
                 return theme.buttonFocusColor;
             }
 
-
+            style3d: root.badges3DStyle
             textWithBackgroundColor: false
 
             proportion: {

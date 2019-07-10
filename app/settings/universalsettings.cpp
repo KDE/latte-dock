@@ -48,6 +48,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
 {
     m_corona = qobject_cast<Latte::Corona *>(parent);
 
+    connect(this, &UniversalSettings::badges3DStyleChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::downloadWindowSizeChanged, this, &UniversalSettings::saveConfig);
@@ -287,6 +288,22 @@ void UniversalSettings::setAutostart(bool state)
     }
 }
 
+bool UniversalSettings::badges3DStyle() const
+{
+    return m_badges3DStyle;
+}
+
+void UniversalSettings::setBadges3DStyle(bool enable)
+{
+    if (m_badges3DStyle == enable) {
+        return;
+    }
+
+    m_badges3DStyle = enable;
+    emit badges3DStyleChanged();
+}
+
+
 bool UniversalSettings::canDisableBorders() const
 {
     return m_canDisableBorders;
@@ -464,6 +481,7 @@ void UniversalSettings::setScreenScales(QString screenName, float widthScale, fl
 void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
+    m_badges3DStyle = m_universalGroup.readEntry("badges3DStyle", false);
     m_canDisableBorders = m_universalGroup.readEntry("canDisableBorders", false);
     m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
     m_downloadWindowSize = m_universalGroup.readEntry("downloadWindowSize", QSize(800, 550));
@@ -483,6 +501,7 @@ void UniversalSettings::loadConfig()
 void UniversalSettings::saveConfig()
 {
     m_universalGroup.writeEntry("version", m_version);
+    m_universalGroup.writeEntry("badges3DStyle", m_badges3DStyle);
     m_universalGroup.writeEntry("canDisableBorders", m_canDisableBorders);
     m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
     m_universalGroup.writeEntry("downloadWindowSize", m_downloadWindowSize);

@@ -69,6 +69,8 @@ Item {
             proportion: 0
             radiusPerCentage: 100
 
+            style3d: root.badges3DStyle
+
             Latte.IconItem{
                 id: audioStreamIcon
                 anchors.centerIn: parent

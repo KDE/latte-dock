@@ -68,6 +68,7 @@ Loader{
             minimumWidth: 0.4 * (wrapper.mScale * root.iconSize)
             height: Math.max(24, 0.4 * (wrapper.mScale * root.iconSize))
 
+            style3d: root.badges3DStyle
             textValue: shorcutBadge.badgeString
             borderColor: root.lightTextColor
 

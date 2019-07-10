@@ -114,6 +114,8 @@ Loader{
             showNumber: false
             showText: true
             textValue: appletNumberLoader.badgeString
+
+            style3d: root.badges3DStyle
         }
     }
 }

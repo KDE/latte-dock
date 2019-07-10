@@ -173,7 +173,13 @@ Rectangle {
     Rectangle{
         anchors.fill: parent
         border.width: parent.borderWidth
-        border.color: style3d ? parent.borderColor : parent.color
+        border.color: {
+            if (style3d) {
+                return parent.borderColor
+            }
+
+            return proportion === 100 ? parent.highlightedColor : parent.color
+        }
         color: "transparent"
         radius: parent.radius
         opacity: parent.borderOpacity
