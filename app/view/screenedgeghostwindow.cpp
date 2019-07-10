@@ -166,7 +166,7 @@ void ScreenEdgeGhostWindow::updateGeometry()
     QRect newGeometry;
     int thickness;
     if (KWindowSystem::compositingActive()) {
-        thickness == 4;
+        thickness == 6;
     } else {
         thickness == 2;
     };
