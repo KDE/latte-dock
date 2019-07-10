@@ -408,7 +408,7 @@ void VisibilityManager::updateGhostWindowState()
                                  && m_latteView->layout()->name() == m_corona->layoutsManager()->currentLayoutName()));
 
         if (inCurrentLayout) {
-            m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden && !m_dragEnter);
+            m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
         } else {
             m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
         }
