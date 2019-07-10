@@ -408,7 +408,7 @@ void VisibilityManager::updateGhostWindowState()
                                  && m_latteView->layout()->name() == m_corona->layoutsManager()->currentLayoutName()));
 
         if (inCurrentLayout) {
-            m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
+            m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden && !m_dragEnter);
         } else {
             m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
         }
@@ -647,14 +647,16 @@ void VisibilityManager::viewEventManager(QEvent *ev)
         break;
 
     case QEvent::Leave:
+        m_dragEnter = false;
         setContainsMouse(false);
         break;
 
     case QEvent::DragEnter:
         m_dragEnter = true;
 
-        if (m_isHidden)
+        if (m_isHidden) {
             emit mustBeShown();
+        }
 
         break;
 
@@ -719,6 +721,12 @@ void VisibilityManager::createEdgeGhostWindow()
             } else {
                 m_timerShow.stop();
                 updateGhostWindowState();
+            }
+        });
+
+        connect(m_edgeGhostWindow, &ScreenEdgeGhostWindow::dragEntered, this, [&]() {
+            if (m_isHidden) {
+                emit mustBeShown();
             }
         });
 

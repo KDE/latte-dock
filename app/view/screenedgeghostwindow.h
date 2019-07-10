@@ -76,6 +76,7 @@ public:
 
 signals:
     void containsMouseChanged(bool contains);
+    void dragEntered();
 
 protected:
     bool event(QEvent *ev) override;

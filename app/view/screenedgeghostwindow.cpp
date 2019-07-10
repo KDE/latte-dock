@@ -267,7 +267,12 @@ void ScreenEdgeGhostWindow::setContainsMouse(bool contains)
 
 bool ScreenEdgeGhostWindow::event(QEvent *e)
 {
-    if (e->type() == QEvent::Enter || e->type() == QEvent::DragEnter) {
+    if (e->type() == QEvent::DragEnter) {
+        m_delayedContainsMouse = false;
+        m_delayedMouseTimer.stop();
+        setContainsMouse(true);
+        emit dragEntered();
+    } else if (e->type() == QEvent::Enter || e->type() == QEvent::DragEnter) {
         m_delayedContainsMouse = true;
         if (!m_delayedMouseTimer.isActive()) {
             m_delayedMouseTimer.start();
