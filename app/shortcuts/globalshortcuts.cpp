@@ -732,7 +732,7 @@ void GlobalShortcuts::showSettings()
         }
 
         if (openSettings >= 0 && sortedViews.count() > 1) {
-            openSettings = openSettings + 1;
+            openSettings = currentLayout->configViewIsShown() ? openSettings + 1 : openSettings;
 
             if (openSettings >= sortedViews.size()) {
                 openSettings = 0;

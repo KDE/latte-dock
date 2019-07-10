@@ -292,6 +292,16 @@ void CentralLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     }
 }
 
+bool CentralLayout::configViewIsShown() const
+{
+    bool genericShown = GenericLayout::configViewIsShown();
+    if (m_sharedLayout) {
+        return (m_sharedLayout->configViewIsShown() || genericShown);
+    }
+
+    return genericShown;
+}
+
 const QStringList CentralLayout::appliedActivities()
 {
     if (!m_corona) {

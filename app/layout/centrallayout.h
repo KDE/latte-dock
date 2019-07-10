@@ -67,8 +67,6 @@ public:
     QStringList activities() const;
     void setActivities(QStringList activities);
 
-    Latte::View *lastSettingsView();
-
     SharedLayout *sharedLayout() const;
     void setSharedLayout(SharedLayout *layout);
 
@@ -76,6 +74,7 @@ public:
     void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr);
     void syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap = nullptr) override;
     void unloadContainments() override;
+    bool configViewIsShown() const override;
     const QStringList appliedActivities() override;
     Types::ViewType latteViewType(int containmentId) const override;
     QList<Latte::View *> latteViews() override;

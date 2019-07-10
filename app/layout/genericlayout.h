@@ -76,6 +76,8 @@ public:
     bool isWritable() const;
     bool layoutIsBroken() const;
 
+    virtual bool configViewIsShown() const;
+
     virtual int viewsCount(int screen) const;
     virtual int viewsCount(QScreen *screen) const;
     virtual int viewsCount() const;
