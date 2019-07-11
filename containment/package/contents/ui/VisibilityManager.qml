@@ -294,6 +294,10 @@ Item{
     function slotContainsMouseChanged() {
         if(latteView.visibility.containsMouse) {
             updateMaskArea();
+
+            if (slidingAnimationAutoHiddenOut.running && !inTempHiding && !inForceHiding) {
+                slotMustBeShown();
+            }
         }
     }
 
