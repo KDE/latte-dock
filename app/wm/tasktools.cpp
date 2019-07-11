@@ -87,9 +87,7 @@ AppData appDataFromUrl(const QUrl &url, const QIcon &fallbackIcon)
     }
 
     if (url.isLocalFile() && KDesktopFile::isDesktopFile(url.toLocalFile())) {
-        KDesktopFile f(url.toLocalFile());
-
-        const KService::Ptr service = KService::serviceByStorageId(f.fileName());
+        const KService::Ptr service = KService::serviceByStorageId(url.fileName());
 
         // Resolve to non-absolute menuId-based URL if possible.
         if (service) {
@@ -108,13 +106,16 @@ AppData appDataFromUrl(const QUrl &url, const QIcon &fallbackIcon)
             if (data.icon.isNull()) {
                 data.icon = QIcon::fromTheme(service->icon());
             }
-        } else if (f.tryExec()) {
-            data.name = f.readName();
-            data.genericName = f.readGenericName();
-            data.id = QUrl::fromLocalFile(f.fileName()).fileName();
+        } else {
+            KDesktopFile f(url.toLocalFile());
+            if (f.tryExec()) {
+                data.name = f.readName();
+                data.genericName = f.readGenericName();
+                data.id = QUrl::fromLocalFile(f.fileName()).fileName();
 
-            if (data.icon.isNull()) {
-                data.icon = QIcon::fromTheme(f.readIcon());
+                if (data.icon.isNull()) {
+                    data.icon = QIcon::fromTheme(f.readIcon());
+                }
             }
         }
 
@@ -310,7 +311,7 @@ QUrl windowUrlFromMetadata(const QString &appId, quint32 pid,
                 sortServicesByMenuId(services, appId);
             }
 
-            if (services.isEmpty()) {
+            if (services.isEmpty() && !xWindowsWMClassName.isEmpty()) {
                 services = KServiceTypeTrader::self()->query(QStringLiteral("Application"), QStringLiteral("exist Exec and ('%1' =~ StartupWMClass)").arg(xWindowsWMClassName));
                 sortServicesByMenuId(services, xWindowsWMClassName);
             }
@@ -673,7 +674,6 @@ QString defaultApplication(const QUrl &url)
 
     return QString("");
 }
-
 
 
 
