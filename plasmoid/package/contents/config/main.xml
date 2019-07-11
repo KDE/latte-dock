@@ -114,6 +114,10 @@
       <label>Delay in order to show previews or highlight windows. Values lower than 150ms are ignored because previews do not work correctly</label>
       <default>600</default>
     </entry>
+    <entry name="forceMonochromaticIcons" type="Bool">
+      <default>false</default>
+      <label>When "true" Latte color palette is used in order to provide monochromatic icons at all times. It is not needed in general and can be used only with specific icon themes</label>
+    </entry>
   </group>
 </kcfg>
 

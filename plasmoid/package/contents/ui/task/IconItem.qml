@@ -200,6 +200,19 @@ Item{
                     return Math.max(basicScalingWidth, basicScalingHeight)
             }
 
+            //! Latte Side Painting-style if the user chose it
+            Loader{
+                anchors.fill: iconImageBuffer
+                active: plasmoid.configuration.forceMonochromaticIcons
+
+                sourceComponent: ColorOverlay {
+                    anchors.fill: parent
+                    color: latteBridge ? latteBridge.palette.textColor : "transparent"
+                    source: iconImageBuffer
+                }
+            }
+            //! Latte Side Painting-style if the user chose it
+
             ///states for launcher animation
             states: [
                 State{
@@ -310,6 +323,17 @@ Item{
                             width: iconImageBuffer.width
                             height: iconImageBuffer.height
                             source: iconImageBuffer.source
+
+                            Loader{
+                                anchors.fill: parent
+                                active: plasmoid.configuration.forceMonochromaticIcons
+
+                                sourceComponent: ColorOverlay {
+                                    anchors.fill: parent
+                                    color: latteBridge ? latteBridge.palette.textColor : "transparent"
+                                    source: iconImageBuffer
+                                }
+                            }
                         }
                     }
                     property var mask: ShaderEffectSource {
