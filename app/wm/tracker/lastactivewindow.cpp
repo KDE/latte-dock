@@ -301,7 +301,7 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 void LastActiveWindow::windowChanged(const WindowId &wid)
 {
     if (!m_trackedInfo->enabled()) {
-        qDebug() << " Last Active Window, Window Changed : TrackedInfo is disabled...";
+        // qDebug() << " Last Active Window, Window Changed : TrackedInfo is disabled...";
         return;
     }
 

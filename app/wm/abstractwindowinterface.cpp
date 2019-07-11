@@ -52,9 +52,9 @@ AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
         emit windowChanged(wid);
     });
 
-    connect(this, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
-        qDebug() << "WINDOW CHANGED ::: " << wid;
-    });
+   // connect(this, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
+   //     qDebug() << "WINDOW CHANGED ::: " << wid;
+   // });
 
     connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged, this, [&](const QString &id) {
         m_currentActivity = id;
