@@ -101,6 +101,10 @@ Item {
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && (!forceTransparentPanel || forcePanelForBusyBackground)
 
+    readonly property bool ignoreRegularFilesDragging: !root.editMode
+                                                       && (dragInfo.computationsAreValid || foreDropArea.dragInfo.computationsAreValid)
+                                                       && !root.dragInfo.isPlasmoid
+                                                       && !root.dragInfo.onlyLaunchers
     readonly property Item dragInfo: Item {
         property bool entered: backDropArea.dragInfo.entered || foreDropArea.dragInfo.entered
         property bool isTask: backDropArea.dragInfo.isTask || foreDropArea.dragInfo.isTask
@@ -1754,12 +1758,7 @@ Item {
         anchors.fill: parent
         readonly property bool higherPriority: latteView && latteView.containsDrag
                                                && ((root.dragInfo.isPlasmoid && root.dragInfo.isSeparator)
-                                               || (foreDropArea.dragInfo.computationsAreValid && !root.dragInfo.isPlasmoid && !root.dragInfo.onlyLaunchers))
-
-        readonly property bool ignoreRegularFiles: !root.editMode
-                                                   && (dragInfo.computationsAreValid || foreDropArea.dragInfo.computationsAreValid)
-                                                   && !root.dragInfo.isPlasmoid
-                                                   && !root.dragInfo.onlyLaunchers
+                                                   || (foreDropArea.dragInfo.computationsAreValid && !root.dragInfo.isPlasmoid && !root.dragInfo.onlyLaunchers))
 
         Item{
             id: panelBox

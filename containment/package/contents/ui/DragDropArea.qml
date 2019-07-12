@@ -145,7 +145,7 @@ DragDrop.DropArea {
             }
         }
 
-        if (!ignoreRegularFiles && !dragResistaner.running && (!latteApplet || (latteApplet && !dragInfo.isLatteTasks))) {
+        if (!root.ignoreRegularFilesDragging && !dragResistaner.running && (!latteApplet || (latteApplet && !dragInfo.isLatteTasks))) {
             if (!isForeground) {
                 dragResistaner.start();
             }
@@ -180,7 +180,7 @@ DragDrop.DropArea {
             }
         }
 
-        if (!ignoreRegularFiles && !dragResistaner.running && (!latteApplet || (latteApplet && !dragInfo.isLatteTasks))) {
+        if (!root.ignoreRegularFilesDragging && !dragResistaner.running && (!latteApplet || (latteApplet && !dragInfo.isLatteTasks))) {
             if (!isForeground) {
                 dragResistaner.start();
             }
@@ -215,7 +215,7 @@ DragDrop.DropArea {
             slotAnimationsNeedLength(-1);
         }
 
-        if (ignoreRegularFiles && dragInfo.isTask || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
+        if (root.ignoreRegularFilesDragging && dragInfo.isTask || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
             return;
         }
 
