@@ -91,7 +91,7 @@ Item{
         }
     }
 
-    function getProperty(appletId, parameter, value) {
+    function getProperty(appletId, parameter) {
         if (parameter === "latteSideColoringEnabled") {
             return mainCommunicator.latteSideColoringEnabled;
         } else if (parameter === "latteIconOverlayEnabled") {
@@ -113,8 +113,8 @@ Item{
     //!   USAGE: send message to <pluginName>, for <action> command and set its property to <value>
     //!   EXPLANATION: applets can send messages/commands to other applets
     //!       in order to communicate with each other
-    function broadcastToApplet(pluginName, action, value) {
-        root.broadcastedToApplet(pluginName, action, value);
+    function broadcastToApplet(receiverPluginId, action, value) {
+        root.broadcastedToApplet(receiverPluginId, action, value);
     }
 
     function version(major, minor, patch) {

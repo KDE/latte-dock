@@ -46,6 +46,14 @@ Item{
     // @since: 0.9
     readonly property bool inEditMode: root.inConfigureAppletsMode
 
+    // NAME: inPlasmaPanelStyle
+    //   USAGE: read-only
+    //   EXPLANATION: Latte sets it to true when this view behaves as Plasma panel concerning
+    //       drawing background shadows externally and applets can take this into account in order
+    //       to adjust their appearance and behavior
+    // @since: 0.9
+    readonly property bool inPlasmaPanelStyle: root.behaveAsPlasmaPanel
+
     // NAME: palette
     //   USAGE: read-only
     //   EXPLANATION: Latte updates it to its coloring palette in order for the applet
