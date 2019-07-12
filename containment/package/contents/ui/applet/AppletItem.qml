@@ -444,12 +444,18 @@ Item {
     }
 
     Component.onDestruction: {
+        if (animationWasSent) {
+             root.slotAnimationsNeedBothAxis(-1);
+             animationWasSent = false;
+        }
+
         if (isSeparator){
             parabolicManager.setSeparator(previousIndex, -1);
         }
 
-        if (isHidden)
+        if (isHidden) {
             parabolicManager.setHidden(previousIndex, -1);
+        }
 
         if(root.latteAppletPos>=0 && root.latteAppletPos === index){
             root.latteApplet = null;
