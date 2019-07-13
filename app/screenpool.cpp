@@ -28,6 +28,9 @@
 #include <QGuiApplication>
 #include <QScreen>
 
+// KDE
+#include <KLocalizedString>
+
 // X11
 #if HAVE_X11
     #include <QtX11Extras/QX11Info>
@@ -100,6 +103,40 @@ ScreenPool::~ScreenPool()
     m_configGroup.sync();
 }
 
+
+QString ScreenPool::reportHtml() const
+{
+    QString report;
+
+    report += "<table cellspacing='6'>";
+    report += "<tr><td align='center'><b>ID</b></td><td align='center'><b>Name</b></td><td align='center'><b>State</b></td></tr>";
+
+    for(const QString &connector : m_connectorForId) {
+        bool primary = m_primaryConnector == connector;
+        report += "<tr>";
+
+        //! ScreenId
+        QString idStr = primary ? "<b>"+QString::number(id(connector))+"</b>" : QString::number(id(connector));
+        report += "<td align='center'>" + idStr + "</td>";
+
+        //! ScreenName
+        QString connectorStr = primary ?  "<b>"+connector+"</b>" : connector;
+        report += "<td align='center'>" + connectorStr + "</td>";
+
+        //! Screen State
+        if (primary) {
+            report += "<td><font color='green'>[" + i18nc("primary screen","Primary") + "]</font></td>";
+        } else {
+            report += "<td></td>";
+        }
+
+        report += "</tr>";
+    }
+
+    report += "</table>";
+
+    return report;
+}
 
 void ScreenPool::reload(QString path)
 {

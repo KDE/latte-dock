@@ -25,6 +25,7 @@
 #include "universalsettings.h"
 #include "ui_settingsdialog.h"
 #include "../lattecorona.h"
+#include "../screenpool.h"
 #include "../layout/genericlayout.h"
 #include "../layout/centrallayout.h"
 #include "../layout/sharedlayout.h"
@@ -248,8 +249,17 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         QString file = idForRow(ui->layoutsView->currentIndex().row());
 
         if (!file.isEmpty()) {
-            QProcess::startDetached("kwrite " + file);
+            QProcess::startDetached("kwrite \"" + file + "\"");
         }
+    });
+
+    connect(screensAction, &QAction::triggered, this, [&]() {
+        auto msg = new QMessageBox(this);
+        msg->setIcon(QMessageBox::Information);
+        msg->setWindowTitle(i18n("Screens Information"));
+        msg->setText(m_corona->screenPool()->reportHtml());
+
+        msg->open();
     });
 
     //! update all layouts view when runningActivities changed. This way we update immediately

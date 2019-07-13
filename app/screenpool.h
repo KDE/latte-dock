@@ -59,6 +59,8 @@ public:
 
     int firstAvailableId() const;
 
+    QString reportHtml() const;
+
     //all ids that are known, included screens not enabled at the moment
     QList <int> knownIds() const;
 
