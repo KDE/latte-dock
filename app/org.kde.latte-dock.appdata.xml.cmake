@@ -3,7 +3,6 @@
   <id>org.kde.latte-dock.desktop</id>
   <name>Latte</name>
   <name xml:lang="ar">لاتيه</name>
-  <name xml:lang="ast">Latte</name>
   <name xml:lang="ca">Latte</name>
   <name xml:lang="ca-valencia">Latte</name>
   <name xml:lang="cs">Latte</name>
@@ -122,7 +121,6 @@
   <url type="bugtracker">@BUG_ADDRESS@</url>
   <url type="faq">@FAQS@</url>
   <developer_name>Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
-  <developer_name xml:lang="ast">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca-valencia">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="cs">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
