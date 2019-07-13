@@ -96,6 +96,24 @@ Tracker::Windows *AbstractWindowInterface::windowsTracker() const
     return m_windowsTracker;
 }
 
+//! Register Latte Normal Windows in order to be tracked
+void AbstractWindowInterface::registerIgnoredWindow(WindowId wid)
+{
+    if (!m_ignoredWindows.contains(wid)) {
+        m_ignoredWindows.append(wid);
+        emit windowChanged(wid);
+    }
+}
+
+void AbstractWindowInterface::unregisterIgnoredWindow(WindowId wid)
+{
+    if (!m_ignoredWindows.contains(wid)) {
+        m_ignoredWindows.removeAll(wid);
+        emit windowRemoved(wid);
+    }
+}
+
+
 //! Activities switching
 void AbstractWindowInterface::switchToNextActivity()
 {

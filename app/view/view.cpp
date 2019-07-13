@@ -69,7 +69,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
       m_contextMenu(new ViewPart::ContextMenu(this)),
       m_effects(new ViewPart::Effects(this)),
       m_positioner(new ViewPart::Positioner(this)) //needs to be created after Effects because it catches some of its signals
-{   
+{      
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
@@ -139,6 +139,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     m_corona = qobject_cast<Latte::Corona *>(this->corona());
 
     if (m_corona) {
+        if (KWindowSystem::isPlatformX11()) {
+            m_corona->wm()->registerIgnoredWindow(winId());
+        }
+
         connect(m_corona, &Latte::Corona::viewLocationChanged, this, &View::dockLocationChanged);
     }
 }
@@ -146,6 +150,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
 View::~View()
 {
     m_inDelete = true;
+
+    if (KWindowSystem::isPlatformX11()) {
+        m_corona->wm()->unregisterIgnoredWindow(winId());
+    }
 
     //! clear Layout connections
     m_visibleHackTimer1.stop();

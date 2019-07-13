@@ -56,6 +56,10 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
 
     setupWaylandIntegration();
 
+    if (KWindowSystem::isPlatformX11()) {
+        m_corona->wm()->registerIgnoredWindow(winId());
+    }
+
     setResizeMode(QQuickView::SizeViewToRootObject);
     setScreen(m_latteView->screen());
 
@@ -101,6 +105,10 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
 SecondaryConfigView::~SecondaryConfigView()
 {
     qDebug() << "SecDockConfigView deleting ...";
+
+    if (KWindowSystem::isPlatformX11()) {
+        m_corona->wm()->unregisterIgnoredWindow(winId());
+    }
 
     for (const auto &var : connections) {
         QObject::disconnect(var);

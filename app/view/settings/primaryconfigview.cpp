@@ -62,6 +62,10 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
 
     setupWaylandIntegration();
 
+    if (KWindowSystem::isPlatformX11()) {
+        m_corona->wm()->registerIgnoredWindow(winId());
+    }
+
     setScreen(m_latteView->screen());
 
     if (containment) {
@@ -120,6 +124,10 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
 PrimaryConfigView::~PrimaryConfigView()
 {
     qDebug() << "ConfigView deleting ...";
+
+    if (KWindowSystem::isPlatformX11()) {
+        m_corona->wm()->unregisterIgnoredWindow(winId());
+    }
 
     deleteSecondaryWindow();
 

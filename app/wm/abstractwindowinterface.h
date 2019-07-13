@@ -117,6 +117,9 @@ public:
     QString currentDesktop() const;
     QString currentActivity() const;
 
+    void registerIgnoredWindow(WindowId wid);
+    void unregisterIgnoredWindow(WindowId wid);
+
     void switchToNextActivity();
     void switchToPreviousActivity();
 
@@ -138,6 +141,10 @@ signals:
 protected:
     QString m_currentDesktop;
     QString m_currentActivity;
+
+    //! windows that must be ignored from tracking, a good example are Latte::Views and
+    //! their Configuration windows
+    QList<WindowId> m_ignoredWindows;
 
     QPointer<KActivities::Consumer> m_activities;
 
