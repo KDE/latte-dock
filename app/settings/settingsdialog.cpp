@@ -163,7 +163,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     menuBar->addMenu(helpMenu);
 
     QAction *screensAction = fileMenu->addAction(i18n("Sc&reens..."));
-    screensAction->setIcon(QIcon::fromTheme("view-list-details"));
+    screensAction->setIcon(QIcon::fromTheme("document-properties"));
     screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
 
     QAction *quitAction = fileMenu->addAction(i18n("&Quit Latte"));
@@ -176,7 +176,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     m_editLayoutAction->setToolTip("You can edit layout file when layout is not active or locked");
 
     QAction *infoLayoutAction = layoutMenu->addAction(i18nc("layout information","&Information..."));
-    infoLayoutAction->setIcon(QIcon::fromTheme("view-list-details"));
+    infoLayoutAction->setIcon(QIcon::fromTheme("document-properties"));
     infoLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
 
     QAction *aboutAction = helpMenu->addAction(i18n("About Latte"));
