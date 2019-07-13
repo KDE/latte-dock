@@ -144,6 +144,8 @@ private:
 
     Latte::Corona *m_corona{nullptr};
 
+    QAction *m_editLayoutAction{nullptr};
+
     QStandardItemModel *m_model{nullptr};
     Ui::SettingsDialog *ui;
 
