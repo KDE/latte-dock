@@ -198,15 +198,13 @@ void Storage::copyView(Plasma::Containment *containment)
     KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1File);
     KConfigGroup copied_conts = KConfigGroup(newFile, "Containments");
     KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
-    KConfigGroup copied_systray;
 
-    // toCopyContainmentIds << QString::number(containment->id());
-    //  toCopyAppletIds << containment->config().group("Applets").groupList();
     containment->config().copyTo(&copied_c1);
 
-    //!investigate if there is a systray in the containment to copy also
-    int systrayId = -1;
-    QString systrayAppletId;
+    //!investigate if there multiple systray(s) in the containment to copy also
+
+    //! systrayId, systrayAppletId
+    QHash<int, QString> systraysInfo;
     auto applets = containment->config().group("Applets");
 
     for (const auto &applet : applets.groupList()) {
@@ -215,31 +213,28 @@ void Storage::copyView(Plasma::Containment *containment)
         int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
 
         if (tSysId != -1) {
-            systrayId = tSysId;
-            systrayAppletId = applet;
-            qDebug() << "systray was found in the containment... ::: " << tSysId;
-            break;
+            systraysInfo[tSysId] = applet;
+            qDebug() << "systray with id "<< tSysId << " was found in the containment... ::: " << tSysId;
         }
     }
 
-    if (systrayId != -1) {
-        Plasma::Containment *systray{nullptr};
+    if (systraysInfo.count() > 0) {
+        for(const auto systrayId : systraysInfo.keys()) {
+            Plasma::Containment *systray{nullptr};
 
-        for (const auto containment : m_layout->corona()->containments()) {
-            if (containment->id() == systrayId) {
-                systray = containment;
-                break;
+            for (const auto containment : m_layout->corona()->containments()) {
+                if (containment->id() == systrayId) {
+                    systray = containment;
+                    break;
+                }
+            }
+
+            if (systray) {
+                KConfigGroup copied_systray = KConfigGroup(&copied_conts, QString::number(systray->id()));
+                systray->config().copyTo(&copied_systray);
             }
         }
-
-        if (systray) {
-            copied_systray = KConfigGroup(&copied_conts, QString::number(systray->id()));
-            //  toCopyContainmentIds << QString::number(systray->id());
-            //  toCopyAppletIds << systray->config().group("Applets").groupList();
-            systray->config().copyTo(&copied_systray);
-        }
     }
-
     //! end of systray specific code
 
     //! update ids to unique ones
@@ -400,8 +395,9 @@ QString Storage::newUniqueIdsLayoutFromFile(QString file)
 
     QFile copyFile(tempFile);
 
-    if (copyFile.exists())
+    if (copyFile.exists()) {
         copyFile.remove();
+    }
 
     //! BEGIN updating the ids in the temp file
     QStringList allIds;
@@ -426,7 +422,6 @@ QString Storage::newUniqueIdsLayoutFromFile(QString file)
 
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
     KConfigGroup investigate_conts = KConfigGroup(filePtr, "Containments");
-    //KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
 
     //! Record the containment and applet ids
     for (const auto &cId : investigate_conts.groupList()) {
