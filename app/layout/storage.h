@@ -43,7 +43,7 @@ public:
     bool isWritable() const;
     bool isLatteContainment(Plasma::Containment *containment) const;
     bool isLatteContainment(const KConfigGroup &group) const;
-    bool layoutIsBroken() const;
+    bool layoutIsBroken(QStringList &errors) const;
 
     void importToCorona();
     void lock(); //! make it only read-only

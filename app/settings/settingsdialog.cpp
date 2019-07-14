@@ -253,6 +253,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         }
     });
 
+    connect(infoLayoutAction, &QAction::triggered, this, &SettingsDialog::showLayoutInformation);
     connect(screensAction, &QAction::triggered, this, &SettingsDialog::showScreensInformation);
 
     //! update all layouts view when runningActivities changed. This way we update immediately
@@ -1554,6 +1555,24 @@ bool SettingsDialog::dataAreAccepted()
     return true;
 }
 
+void SettingsDialog::showLayoutInformation()
+{
+    int currentRow = ui->layoutsView->currentIndex().row();
+
+    QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
+    QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
+
+    Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(m_layouts[id]->name());
+    Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
+
+    auto msg = new QMessageBox(this);
+    //msg->setIcon(QMessageBox::Information);
+    msg->setWindowTitle(name + " " + i18n("Layout Information"));
+    msg->setText(generic->reportHtml());
+
+    msg->open();
+}
+
 void SettingsDialog::showScreensInformation()
 {
     QList<int> assignedScreens;
@@ -1575,7 +1594,7 @@ void SettingsDialog::showScreensInformation()
     }
 
     auto msg = new QMessageBox(this);
-    msg->setIcon(QMessageBox::Information);
+    //msg->setIcon(QMessageBox::Information);
     msg->setWindowTitle(i18n("Screens Information"));
     msg->setText(m_corona->screenPool()->reportHtml(assignedScreens));
 

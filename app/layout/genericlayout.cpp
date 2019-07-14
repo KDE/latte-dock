@@ -472,11 +472,88 @@ bool GenericLayout::viewAtLowerEdgePriority(Latte::View *test, Latte::View *base
         }
     }
 
-    if (testPriority < basePriority)
+    if (testPriority < basePriority) {
         return true;
-    else
+    } else {
         return false;
+    }
 }
+
+bool GenericLayout::viewDataAtLowerScreenPriority(const ViewData &test, const ViewData &base) const
+{
+    if (test.onPrimary && base.onPrimary) {
+        return false;
+    } else if (!base.onPrimary && test.onPrimary) {
+        return false;
+    } else if (base.onPrimary && !test.onPrimary) {
+        return true;
+    } else {
+        return test.screenId <= base.screenId;
+    }
+}
+
+bool GenericLayout::viewDataAtLowerStatePriority(const ViewData &test, const ViewData &base) const
+{
+    if (test.active == base.active) {
+        return false;
+    } else if (!base.active && test.active) {
+        return false;
+    } else if (base.active && !test.active) {
+        return true;
+    }
+
+    return false;
+}
+
+bool GenericLayout::viewDataAtLowerEdgePriority(const ViewData &test, const ViewData &base) const
+{
+    QList<Plasma::Types::Location> edges{Plasma::Types::RightEdge, Plasma::Types::TopEdge,
+                Plasma::Types::LeftEdge, Plasma::Types::BottomEdge};
+
+    int testPriority = -1;
+    int basePriority = -1;
+
+    for (int i = 0; i < edges.count(); ++i) {
+        if (edges[i] == base.location) {
+            basePriority = i;
+        }
+
+        if (edges[i] == test.location) {
+            testPriority = i;
+        }
+    }
+
+    if (testPriority < basePriority) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+QList<ViewData> GenericLayout::sortedViewsData(const QList<ViewData> &viewsData)
+{
+    QList<ViewData> sortedData = viewsData;
+
+    //! sort the views based on screens and edges priorities
+    //! views on primary screen have higher priority and
+    //! for views in the same screen the priority goes to
+    //! Bottom,Left,Top,Right
+    for (int i = 0; i < sortedData.size(); ++i) {
+        for (int j = 0; j < sortedData.size() - i - 1; ++j) {
+            if (viewDataAtLowerStatePriority(sortedData[j], sortedData[j + 1])
+                    || viewDataAtLowerScreenPriority(sortedData[j], sortedData[j + 1])
+                    || (!viewDataAtLowerScreenPriority(sortedData[j], sortedData[j + 1])
+                        && viewDataAtLowerEdgePriority(sortedData[j], sortedData[j + 1])) ) {
+                ViewData temp = sortedData[j + 1];
+                sortedData[j + 1] = sortedData[j];
+                sortedData[j] = temp;
+            }
+        }
+    }
+
+    return sortedData;
+}
+
 
 const QList<Plasma::Containment *> *GenericLayout::containments()
 {
@@ -1205,6 +1282,211 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
     qDebug() << "end of, syncLatteViewsToScreens ....";
 }
 
+QList<int> GenericLayout::containmentSystrays(Plasma::Containment *containment) const
+{
+    QList<int> trays;
+
+    if (m_storage->isLatteContainment(containment)) {
+        int systrayId = -1;
+        auto applets = containment->config().group("Applets");
+
+        for (const auto &applet : applets.groupList()) {
+            KConfigGroup appletSettings = applets.group(applet).group("Configuration");
+            int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
+
+            if (tSysId != -1) {
+                trays << tSysId;
+            }
+        }
+    }
+
+    return trays;
+}
+
+
+QString GenericLayout::reportHtml()
+{
+    //qDebug() << "DBUS CALL ::: " << identifier << " - " << value;
+    auto locationText = [this](const int &location) {
+        switch (location) {
+        case Plasma::Types::BottomEdge: return i18nc("bottom edge", "Bottom");
+        case Plasma::Types::LeftEdge: return i18nc("left edge", "Left");
+        case Plasma::Types::TopEdge: return i18nc("top edge", "Top");
+        case Plasma::Types::RightEdge: return i18nc("right edge", "Right");
+        }
+
+        return QString();
+    };
+
+    auto idsLineStr = [this](const QList<int> list) {
+        QString line;
+
+        for(int i=0; i<list.count(); ++i) {
+            if(i!=0) {
+                line += ", ";
+            }
+            line += "["+QString::number(list[i]) + "]";
+        }
+
+        return line;
+    };
+
+    ///////!  main report layout code
+
+    QString report;
+
+    int activeViews = m_latteViews.count();
+
+    report += "<table cellspacing='8'>";
+    report += "<tr>";
+    report += "<td><b>" + i18nc("active docks panels","Active:") +"</b></td>";
+    report += "<td><b>" + (activeViews == 0 ? "--" : QString::number(activeViews)) +"</b></td>";
+    report += "</tr>";
+
+    //! latte containment ids, systrays
+    QHash<int, QList<int>> systrays;
+    QList<int> assignedSystrays;
+    QList<int> orphanSystrays;
+
+    if (isActive()) {
+        //! organize systrays
+        for (const auto containment : m_containments) {
+            QList<int> trays = containmentSystrays(containment);
+            if (trays.count() > 0) {
+                systrays[containment->id()] = trays;
+                assignedSystrays << trays;
+            }
+        }
+
+        //! orphan systrays
+        for (const auto containment : m_containments) {
+            if (!m_storage->isLatteContainment(containment) && !assignedSystrays.contains(containment->id())) {
+                orphanSystrays << containment->id();
+            }
+        }
+    }
+
+    report += "<tr>";
+    report += "<td><b>" + i18n("Orphan Systrays:") +"</b></td>";
+    report += "<td><b>" + (orphanSystrays.count() == 0 ? "--" : idsLineStr(orphanSystrays)) +"</b></td>";
+    report += "</tr>";
+    report += "</table>";
+
+    report += "<table cellspacing='14'>";
+    report += "<tr><td align='center'><b>" + i18nc("view id","ID") + "</b></td>" +
+            "<td align='center'><b>" + i18n("Screen") + "</b></td>" +
+            "<td align='center'><b>" + i18nc("screen edge","Edge") + "</b></td>" +
+            "<td align='center'><b>" + i18nc("active dock/panel","Active") + "</b></td>" +
+            "<td align='center'><b>" + i18n("Systrays") + "</b></td>";
+
+    report += "<tr><td colspan='5'><hr></td></tr>";
+
+    QList<ViewData> viewsData;
+
+    if (isActive()) {
+        //! collect viewData results
+        for (const auto containment : m_containments) {
+            if (m_storage->isLatteContainment(containment)) {
+                ViewData vData;
+                vData.id = containment->id();
+                vData.active = latteViewExists(containment);
+                vData.location = containment->location();
+
+                //! onPrimary / Screen Id
+                int screenId = -1;
+                bool onPrimary = true;
+
+                if (latteViewExists(containment)) {
+                    screenId = m_latteViews[containment]->positioner()->currentScreenId();
+                    onPrimary = m_latteViews[containment]->onPrimary();
+                } else {
+                    screenId = containment->screen();
+                    onPrimary = containment->config().readEntry("onPrimary", true);
+
+                    if (screenId == -1) {
+                        screenId = containment->lastScreen();
+                    }
+                }
+
+                vData.onPrimary = onPrimary;
+                vData.screenId = screenId;
+                vData.systrays = containmentSystrays(containment);
+
+                viewsData << vData;
+            }
+        }
+    }
+
+    //! sort views data
+    viewsData = sortedViewsData(viewsData);
+
+    //! print viewData results
+    for (int i=0; i<viewsData.count(); ++i) {
+        report += "<tr>";
+
+        //! view id
+        QString idStr = "[" + QString::number(viewsData[i].id) + "]";
+        if(viewsData[i].active) {
+            idStr = "<b>" + idStr + "</b>";
+        }
+        report += "<td align='center'>" + idStr + "</td>";
+
+        //! screen
+        QString screenStr = "[" + i18nc("primary screen","Primary") + "]";
+        if (viewsData[i].active && viewsData[i].onPrimary) {
+            screenStr = "<font color='green'>" + screenStr + "</font>";
+        }
+        if (!viewsData[i].onPrimary) {
+            screenStr = m_corona->screenPool()->connector(viewsData[i].screenId);
+        }
+        if(viewsData[i].active) {
+            screenStr = "<b>" + screenStr + "</b>";
+        }
+        report += "<td align='center'>" + screenStr + "</td>";
+
+        //! edge
+        QString edgeStr = locationText(viewsData[i].location);
+        if(viewsData[i].active) {
+            edgeStr = "<b>" + edgeStr + "</b>";
+        }
+        report += "<td align='center'>" + edgeStr + "</td>" ;
+
+        //! active
+        QString activeStr = "";
+        if(viewsData[i].active) {
+            activeStr = "<b>" + i18n("Yes") + "</b>";
+        }
+        report += "<td align='center'>" + activeStr + "</td>" ;
+
+        //! systrays
+        QString systraysStr = idsLineStr(viewsData[i].systrays);
+        if(viewsData[i].active) {
+            systraysStr = "<b>" + systraysStr + "</b>";
+        }
+        report += "<td align='center'>" + systraysStr + "</td>";
+
+        report += "</tr>";
+    }
+
+    report += "</table>";
+
+    report += "<br/><hr>";
+
+    QStringList errorsList;
+    bool broken = m_storage->layoutIsBroken(errorsList);
+
+    if (!broken) {
+        report += "<font color='green'>" + i18n("No errors were identified for this layout...") + "</font><br/>";
+    } else {
+        report += "<font color='red'><b>" + i18n("Errors:") + "</b></font><br/>";
+        for(int i=0; i<errorsList.count(); ++i) {
+            report += "<font color='red'><b>[" + QString::number(i) + "] - " + errorsList[i] + "</b></font><br/>";
+        }
+    }
+
+    return report;
+}
+
 QList<int> GenericLayout::viewsScreens()
 {
     QList<int> screens;
@@ -1273,7 +1555,8 @@ void GenericLayout::importToCorona()
 
 bool GenericLayout::layoutIsBroken() const
 {
-    return m_storage->layoutIsBroken();
+    QStringList errors;
+    return m_storage->layoutIsBroken(errors);
 }
 
 }

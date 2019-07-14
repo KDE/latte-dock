@@ -571,7 +571,7 @@ bool Storage::appletGroupIsValid(KConfigGroup appletGroup)
               && appletGroup.group("Configuration").hasKey("PreloadWeight") );
 }
 
-bool Storage::layoutIsBroken() const
+bool Storage::layoutIsBroken(QStringList &errors) const
 {
     if (m_layout->file().isEmpty() || !QFile(m_layout->file()).exists()) {
         return false;
@@ -653,14 +653,18 @@ bool Storage::layoutIsBroken() const
 
         for (const QString &c : conts) {
             if (applets.contains(c)) {
-                qDebug() << "Error: Same applet and containment id found ::: " << c;
+                QString errorStr = i18n("Same applet and containment id found ::: ") + c;
+                qDebug() << "Error: " << errorStr;
+                errors << errorStr;
             }
         }
 
         for (int i = 0; i < ids.count(); ++i) {
             for (int j = i + 1; j < ids.count(); ++j) {
                 if (ids[i] == ids[j]) {
-                    qDebug() << "Error: Applets with same id ::: " << ids[i];
+                    QString errorStr = i18n("Applets with same id ::: ") + ids[i];
+                    qDebug() << "Error: " << errorStr;
+                    errors << errorStr;
                 }
             }
         }

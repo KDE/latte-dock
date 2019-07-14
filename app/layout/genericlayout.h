@@ -53,6 +53,16 @@ class Storage;
 namespace Latte {
 namespace Layout {
 
+struct ViewData
+{
+    int id; //view id
+    bool active; //is active
+    bool onPrimary; //on primary
+    int screenId; //explicit screen id
+    int location; //edge location
+    QList<int> systrays;
+};
+
 //! This is  views map in the following structure:
 //! SCREEN_NAME -> EDGE -> VIEWID
 typedef QHash<QString, QHash<Plasma::Types::Location, uint>> ViewsMap;
@@ -130,6 +140,7 @@ public:
     //! that latteView
     QList<Plasma::Containment *> unassignFromLayout(Latte::View *latteView);
 
+    QString reportHtml();
     QList<int> viewsScreens();
 
 public slots:
@@ -178,7 +189,15 @@ private:
     bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
 
+    bool viewDataAtLowerEdgePriority(const ViewData &test, const ViewData &base) const;
+    bool viewDataAtLowerScreenPriority(const ViewData &test, const ViewData &base) const;
+    bool viewDataAtLowerStatePriority(const ViewData &test, const ViewData &base) const;
+
     bool mapContainsId(const ViewsMap *map, uint viewId) const;
+
+    QList<int> containmentSystrays(Plasma::Containment *containment) const;
+
+    QList<ViewData> sortedViewsData(const QList<ViewData> &viewsData);
 
 private:
     bool m_blockAutomaticLatteViewCreation{false};
