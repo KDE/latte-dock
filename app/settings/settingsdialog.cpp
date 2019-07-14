@@ -25,6 +25,7 @@
 #include "universalsettings.h"
 #include "ui_settingsdialog.h"
 #include "../lattecorona.h"
+#include "../screenpool.h"
 #include "../layout/genericlayout.h"
 #include "../layout/centrallayout.h"
 #include "../layout/sharedlayout.h"
@@ -154,13 +155,30 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     QMenu *fileMenu = new QMenu(i18n("File"), menuBar);
     menuBar->addMenu(fileMenu);
 
+    QMenu *layoutMenu = new QMenu(i18n("Layout"), menuBar);
+    //rightAlignedMenuBar->addMenu(helpMenu);
+    menuBar->addMenu(layoutMenu);
+
     QMenu *helpMenu = new QMenu(i18n("Help"), menuBar);
     //rightAlignedMenuBar->addMenu(helpMenu);
     menuBar->addMenu(helpMenu);
 
-    QAction *quitAction = fileMenu->addAction(i18n("Quit Latte"));
+    QAction *screensAction = fileMenu->addAction(i18n("Sc&reens..."));
+    screensAction->setIcon(QIcon::fromTheme("document-properties"));
+    screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+
+    QAction *quitAction = fileMenu->addAction(i18n("&Quit Latte"));
     quitAction->setIcon(QIcon::fromTheme("application-exit"));
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+
+    m_editLayoutAction = layoutMenu->addAction(i18nc("edit layout","&Edit..."));
+    m_editLayoutAction->setIcon(QIcon::fromTheme("document-edit"));
+    m_editLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+    m_editLayoutAction->setToolTip("You can edit layout file when layout is not active or locked");
+
+    QAction *infoLayoutAction = layoutMenu->addAction(i18nc("layout information","&Information..."));
+    infoLayoutAction->setIcon(QIcon::fromTheme("document-properties"));
+    infoLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
 
     QAction *aboutAction = helpMenu->addAction(i18n("About Latte"));
     aboutAction->setIcon(QIcon::fromTheme("latte-dock"));
@@ -226,6 +244,16 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         close();
         m_corona->closeApplication();
     });
+
+    connect(m_editLayoutAction, &QAction::triggered, this, [&]() {
+        QString file = idForRow(ui->layoutsView->currentIndex().row());
+
+        if (!file.isEmpty()) {
+            QProcess::startDetached("kwrite \"" + file + "\"");
+        }
+    });
+
+    connect(screensAction, &QAction::triggered, this, &SettingsDialog::showScreensInformation);
 
     //! update all layouts view when runningActivities changed. This way we update immediately
     //! the running Activities in Activities checkboxes which are shown as bold
@@ -1365,6 +1393,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
     QString originalName = m_layouts.contains(id) ? m_layouts[id]->name() : "";
     bool lockedInModel = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::UserRole).toBool();
     bool sharedInModel = !m_model->data(m_model->index(currentRow, SHAREDCOLUMN), Qt::UserRole).toStringList().isEmpty();
+    bool editable = !isActive(originalName) && !lockedInModel;
 
     //! Switch Button
     if (id.startsWith("/tmp/") || originalName != nameInModel) {
@@ -1412,6 +1441,12 @@ void SettingsDialog::updatePerLayoutButtonsState()
         ui->sharedButton->setChecked(true);
     } else {
         ui->sharedButton->setChecked(false);
+    }
+
+    if (editable) {
+        m_editLayoutAction->setEnabled(true);
+    } else {
+        m_editLayoutAction->setEnabled(false);
     }
 }
 
@@ -1517,6 +1552,34 @@ bool SettingsDialog::dataAreAccepted()
     }
 
     return true;
+}
+
+void SettingsDialog::showScreensInformation()
+{
+    QList<int> assignedScreens;
+
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
+        QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+
+        Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(m_layouts[id]->name());
+        Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
+
+        QList<int> vScreens = generic->viewsScreens();
+
+        for (const int scrId : vScreens) {
+            if (!assignedScreens.contains(scrId)) {
+                assignedScreens << scrId;
+            }
+        }
+    }
+
+    auto msg = new QMessageBox(this);
+    msg->setIcon(QMessageBox::Information);
+    msg->setWindowTitle(i18n("Screens Information"));
+    msg->setText(m_corona->screenPool()->reportHtml(assignedScreens));
+
+    msg->open();
 }
 
 bool SettingsDialog::saveAllChanges()

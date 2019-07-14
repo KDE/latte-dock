@@ -574,8 +574,8 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
     NET::WindowType winType = winfo.windowType(types);
     const auto winClass = KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName();
 
-    //! ignore latte related windows from tracking
-    if (winClass == "latte-dock") {
+    //! ignored windows from tracking
+    if (m_ignoredWindows.contains(winfo.win())) {
         return false;
     }
 
@@ -625,8 +625,8 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
 
     const auto winClass = info.windowClassName();
 
-    //! ignore latte related windows from tracking
-    if (winClass == "latte-dock") {
+    //! ignored windows do not trackd
+    if (m_ignoredWindows.contains(wid)) {
         return;
     }
 

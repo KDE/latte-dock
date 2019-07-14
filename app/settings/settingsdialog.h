@@ -94,6 +94,7 @@ private slots:
     void reject() override;
     void apply();
     void restoreDefaults();
+    void showScreensInformation();
     void updatePerLayoutButtonsState();
 
     void layoutsChanged();
@@ -143,6 +144,8 @@ private:
     bool m_blockDeleteOnReject{false};
 
     Latte::Corona *m_corona{nullptr};
+
+    QAction *m_editLayoutAction{nullptr};
 
     QStandardItemModel *m_model{nullptr};
     Ui::SettingsDialog *ui;

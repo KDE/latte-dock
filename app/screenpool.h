@@ -43,8 +43,8 @@ public:
     void load();
     ~ScreenPool() override;
 
-    bool hasId(int id);
-    bool screenExists(int id);
+    bool hasId(int id) const;
+    bool screenExists(int id) const;
     int primaryScreenId() const;
 
     QString primaryConnector() const;
@@ -58,6 +58,8 @@ public:
     QString connector(int id) const;
 
     int firstAvailableId() const;
+
+    QString reportHtml(const QList<int> &assignedScreens) const;
 
     //all ids that are known, included screens not enabled at the moment
     QList <int> knownIds() const;

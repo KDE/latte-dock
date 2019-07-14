@@ -76,6 +76,12 @@ bool Storage::isLatteContainment(Plasma::Containment *containment) const
     return false;
 }
 
+bool Storage::isLatteContainment(const KConfigGroup &group) const
+{
+    QString pluginId = group.readEntry("plugin", "");
+    return pluginId == "org.kde.latte.containment";
+}
+
 void Storage::lock()
 {
     QFileInfo layoutFileInfo(m_layout->file());
@@ -342,6 +348,27 @@ QList<Plasma::Containment *> Storage::importLayoutFile(QString file)
     }
 
     return importedDocks;
+}
+
+QList<int> Storage::viewsScreens()
+{
+    QList<int> screens;
+
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(m_layout->file());
+
+    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+
+    for (const auto &cId : containmentGroups.groupList()) {
+        if (isLatteContainment(containmentGroups.group(cId))) {
+            int screenId = containmentGroups.group(cId).readEntry("lastScreen", -1);
+
+            if (screenId != -1 && !screens.contains(screenId)) {
+                screens << screenId;
+            }
+        }
+    }
+
+    return screens;
 }
 
 QString Storage::availableId(QStringList all, QStringList assigned, int base)
