@@ -1205,6 +1205,38 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
     qDebug() << "end of, syncLatteViewsToScreens ....";
 }
 
+QList<int> GenericLayout::viewsScreens()
+{
+    QList<int> screens;
+
+    if (isActive()) {
+        for (const auto containment : m_containments) {
+            if (m_storage->isLatteContainment(containment)) {
+                int screenId = -1;
+
+                //! valid screen id
+                if (latteViewExists(containment)) {
+                    screenId = m_latteViews[containment]->positioner()->currentScreenId();
+                } else {
+                    screenId = containment->screen();
+
+                    if (screenId == -1) {
+                        screenId = containment->lastScreen();
+                    }
+                }
+
+                if (screenId!=-1 &&!screens.contains(screenId)) {
+                    screens << screenId;
+                }
+            }
+        }
+
+        return screens;
+    } else {
+        return m_storage->viewsScreens();
+    }
+}
+
 
 //! STORAGE
 

@@ -42,6 +42,7 @@ public:
 
     bool isWritable() const;
     bool isLatteContainment(Plasma::Containment *containment) const;
+    bool isLatteContainment(const KConfigGroup &group) const;
     bool layoutIsBroken() const;
 
     void importToCorona();
@@ -50,6 +51,8 @@ public:
 
     void copyView(Plasma::Containment *containment);
     void syncToLayoutFile(bool removeLayoutId);
+
+    QList<int> viewsScreens();
 
     /// STATIC
     //! Check if an applet config group is valid or belongs to removed applet

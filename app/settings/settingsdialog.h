@@ -94,6 +94,7 @@ private slots:
     void reject() override;
     void apply();
     void restoreDefaults();
+    void showScreensInformation();
     void updatePerLayoutButtonsState();
 
     void layoutsChanged();

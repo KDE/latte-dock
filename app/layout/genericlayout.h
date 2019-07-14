@@ -130,6 +130,8 @@ public:
     //! that latteView
     QList<Plasma::Containment *> unassignFromLayout(Latte::View *latteView);
 
+    QList<int> viewsScreens();
+
 public slots:
     Q_INVOKABLE void addNewView();
     Q_INVOKABLE int viewsWithTasks() const;

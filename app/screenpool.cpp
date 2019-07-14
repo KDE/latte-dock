@@ -104,31 +104,57 @@ ScreenPool::~ScreenPool()
 }
 
 
-QString ScreenPool::reportHtml() const
+QString ScreenPool::reportHtml(const QList<int> &assignedScreens) const
 {
     QString report;
 
-    report += "<table cellspacing='6'>";
-    report += "<tr><td align='center'><b>ID</b></td><td align='center'><b>Name</b></td><td align='center'><b>State</b></td></tr>";
+    report += "<table cellspacing='8'>";
+    report += "<tr><td align='center'><b>" + i18nc("screen id","ID") + "</b></td>" +
+            "<td align='center'><b>" + i18nc("screen name", "Name") + "</b></td>" +
+            "<td align='center'><b>" + i18nc("screen type", "Type") + "</b></td>" +
+            "<td align='center'><b>" + i18n("Docks/Panels") + "</b></td></tr>";
+
+    report += "<tr><td colspan='4'><hr></td></tr>";
 
     for(const QString &connector : m_connectorForId) {
+        int scrId = id(connector);
+        bool hasViews = assignedScreens.contains(scrId);
         bool primary = m_primaryConnector == connector;
+        bool secondary = !primary && screenExists(scrId);
+
         report += "<tr>";
 
         //! ScreenId
-        QString idStr = primary ? "<b>"+QString::number(id(connector))+"</b>" : QString::number(id(connector));
+        QString idStr = QString::number(scrId);
+        if (primary || secondary) {
+            idStr = "<b>" + idStr +"</b>";
+        }
         report += "<td align='center'>" + idStr + "</td>";
 
-        //! ScreenName
-        QString connectorStr = primary ?  "<b>"+connector+"</b>" : connector;
+        //! ScreenName and Primary flag
+        QString connectorStr = connector;
+        if (primary || secondary) {
+            connectorStr = "<b>"+ connector + "</b>";
+        }
         report += "<td align='center'>" + connectorStr + "</td>";
 
-        //! Screen State
+        //! ScreenType
+        QString typeStr = "";
         if (primary) {
-            report += "<td><font color='green'>[" + i18nc("primary screen","Primary") + "]</font></td>";
-        } else {
-            report += "<td></td>";
+            typeStr = "<b><font color='green'>[" + i18nc("primary screen","Primary") + "]</font></b>";
+        } else if (secondary) {
+            typeStr = "<b>[" + i18nc("secondary screen","Secondary") + "]</b>";
         }
+
+        report += "<td align='center'>" + typeStr +"</td>";
+
+        //! Screen has not assigned any docks/panels
+        QString notAssignedStr = "";
+        if (!hasViews) {
+            notAssignedStr = "<font color='red'><i>[" + i18nc("it has not latte docks/panels", "none") + "]</i></font>";
+        }
+
+        report += "<td align='center'>" + notAssignedStr +"</td>";
 
         report += "</tr>";
     }
@@ -263,12 +289,12 @@ QList <int> ScreenPool::knownIds() const
     return m_connectorForId.keys();
 }
 
-bool ScreenPool::hasId(int id)
+bool ScreenPool::hasId(int id) const
 {
     return ((id!=-1) && m_connectorForId.keys().contains(id));
 }
 
-bool ScreenPool::screenExists(int id)
+bool ScreenPool::screenExists(int id) const
 {
     if (id != -1 && knownIds().contains(id)) {
         QString scrName = connector(id);
