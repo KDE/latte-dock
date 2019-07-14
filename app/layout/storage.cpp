@@ -345,6 +345,77 @@ QList<Plasma::Containment *> Storage::importLayoutFile(QString file)
     return importedDocks;
 }
 
+void Storage::systraysInformation(QHash<int, QList<int>> &systrays, QList<int> &assignedSystrays, QList<int> &orphanSystrays)
+{
+    systrays.clear();
+    assignedSystrays.clear();
+    orphanSystrays.clear();
+
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(m_layout->file());
+    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+
+    //! assigned systrays
+    for (const auto &cId : containmentGroups.groupList()) {
+        if (isLatteContainment(containmentGroups.group(cId))) {
+            auto applets = containmentGroups.group(cId).group("Applets");
+
+            for (const auto &applet : applets.groupList()) {
+                KConfigGroup appletSettings = applets.group(applet).group("Configuration");
+                int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
+
+                if (tSysId != -1) {
+                    assignedSystrays << tSysId;
+                    systrays[cId.toInt()].append(tSysId);
+                }
+            }
+        }
+    }
+
+    //! orphan systrays
+    for (const auto &cId : containmentGroups.groupList()) {
+        if (!isLatteContainment(containmentGroups.group(cId)) && !assignedSystrays.contains(cId.toInt())) {
+            orphanSystrays << cId.toInt();
+        }
+    }
+}
+
+QList<ViewData> Storage::viewsData(const QHash<int, QList<int>> &systrays)
+{
+    QList<ViewData> viewsData;
+
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(m_layout->file());
+    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+
+    for (const auto &cId : containmentGroups.groupList()) {
+        if (isLatteContainment(containmentGroups.group(cId))) {
+            ViewData vData;
+            int id = cId.toInt();
+
+            //! id
+            vData.id = id;
+
+            //! active
+            vData.active = false;
+
+            //! onPrimary
+            vData.onPrimary = containmentGroups.group(cId).readEntry("onPrimary", true);
+
+            //! Screen
+            vData.screenId = containmentGroups.group(cId).readEntry("lastScreen", -1);
+
+            //! location
+            vData.location = containmentGroups.group(cId).readEntry("location", (int)Plasma::Types::BottomEdge);
+
+            //! systrays
+            vData.systrays = systrays[id];
+
+            viewsData << vData;
+        }
+    }
+
+    return viewsData;
+}
+
 QList<int> Storage::viewsScreens()
 {
     QList<int> screens;
@@ -657,7 +728,7 @@ bool Storage::layoutIsBroken(QStringList &errors) const
         for (int i = 0; i < ids.count(); ++i) {
             for (int j = i + 1; j < ids.count(); ++j) {
                 if (ids[i] == ids[j]) {
-                    QString errorStr = i18n("Applets with same id ::: ") + ids[i];
+                    QString errorStr = i18n("Differrent applets with same id ::: ") + ids[i];
                     qDebug() << "Error: " << errorStr;
                     errors << errorStr;
                 }

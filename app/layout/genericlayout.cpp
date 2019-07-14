@@ -1287,7 +1287,6 @@ QList<int> GenericLayout::containmentSystrays(Plasma::Containment *containment) 
     QList<int> trays;
 
     if (m_storage->isLatteContainment(containment)) {
-        int systrayId = -1;
         auto applets = containment->config().group("Applets");
 
         for (const auto &applet : applets.groupList()) {
@@ -1304,7 +1303,7 @@ QList<int> GenericLayout::containmentSystrays(Plasma::Containment *containment) 
 }
 
 
-QString GenericLayout::reportHtml()
+QString GenericLayout::reportHtml(const ScreenPool *screenPool)
 {
     //qDebug() << "DBUS CALL ::: " << identifier << " - " << value;
     auto locationText = [this](const int &location) {
@@ -1339,8 +1338,12 @@ QString GenericLayout::reportHtml()
 
     report += "<table cellspacing='8'>";
     report += "<tr>";
-    report += "<td><b>" + i18nc("active docks panels","Active:") +"</b></td>";
-    report += "<td><b>" + (activeViews == 0 ? "--" : QString::number(activeViews)) +"</b></td>";
+    report += "<td><b>" + i18nc("active docks panels","Active Views:") +"</b></td>";
+    if (activeViews == 0) {
+        report += "<td><b> -- </b></td>";
+    } else {
+        report += "<td><b><font color='blue'>" + QString::number(activeViews) +"</font></b></td>";
+    }
     report += "</tr>";
 
     //! latte containment ids, systrays
@@ -1364,11 +1367,17 @@ QString GenericLayout::reportHtml()
                 orphanSystrays << containment->id();
             }
         }
+    } else {
+        m_storage->systraysInformation(systrays, assignedSystrays, orphanSystrays);
     }
 
     report += "<tr>";
     report += "<td><b>" + i18n("Orphan Systrays:") +"</b></td>";
-    report += "<td><b>" + (orphanSystrays.count() == 0 ? "--" : idsLineStr(orphanSystrays)) +"</b></td>";
+    if (orphanSystrays.count() == 0) {
+        report += "<td><b> -- </b></td>";
+    } else {
+        report += "<td><b><font color='red'>" + idsLineStr(orphanSystrays) +"</font></b></td>";
+    }
     report += "</tr>";
     report += "</table>";
 
@@ -1415,6 +1424,8 @@ QString GenericLayout::reportHtml()
                 viewsData << vData;
             }
         }
+    } else {
+        viewsData = m_storage->viewsData(systrays);
     }
 
     //! sort views data
@@ -1437,7 +1448,7 @@ QString GenericLayout::reportHtml()
             screenStr = "<font color='green'>" + screenStr + "</font>";
         }
         if (!viewsData[i].onPrimary) {
-            screenStr = m_corona->screenPool()->connector(viewsData[i].screenId);
+            screenStr = screenPool->connector(viewsData[i].screenId);
         }
         if(viewsData[i].active) {
             screenStr = "<b>" + screenStr + "</b>";
@@ -1452,14 +1463,17 @@ QString GenericLayout::reportHtml()
         report += "<td align='center'>" + edgeStr + "</td>" ;
 
         //! active
-        QString activeStr = "";
+        QString activeStr = " -- ";
         if(viewsData[i].active) {
             activeStr = "<b>" + i18n("Yes") + "</b>";
         }
         report += "<td align='center'>" + activeStr + "</td>" ;
 
         //! systrays
-        QString systraysStr = idsLineStr(viewsData[i].systrays);
+        QString systraysStr = " -- ";
+        if (viewsData[i].systrays.count() > 0) {
+            systraysStr = idsLineStr(viewsData[i].systrays);
+        }
         if(viewsData[i].active) {
             systraysStr = "<b>" + systraysStr + "</b>";
         }

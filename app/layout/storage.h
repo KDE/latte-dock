@@ -52,11 +52,17 @@ public:
     void copyView(Plasma::Containment *containment);
     void syncToLayoutFile(bool removeLayoutId);
 
-    QList<int> viewsScreens();
-
     /// STATIC
     //! Check if an applet config group is valid or belongs to removed applet
     static bool appletGroupIsValid(KConfigGroup appletGroup);
+
+    //! Functions used from Layout Reports
+    //! [containment id, list<systrays ids>], list<systrays ids>, list[systrays ids]
+    void systraysInformation(QHash<int, QList<int>> &systrays, QList<int> &assignedSystrays, QList<int> &orphanSystrays);
+    //! list<screens ids>
+    QList<int> viewsScreens();
+    //! list<ViewData>
+    QList<ViewData> viewsData(const QHash<int, QList<int>> &systrays);
 
 private:
     //! STORAGE !////

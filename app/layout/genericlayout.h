@@ -41,6 +41,7 @@ class Types;
 
 namespace Latte {
 class Corona;
+class ScreenPool;
 class View;
 }
 
@@ -140,7 +141,7 @@ public:
     //! that latteView
     QList<Plasma::Containment *> unassignFromLayout(Latte::View *latteView);
 
-    QString reportHtml();
+    QString reportHtml(const ScreenPool *screenPool);
     QList<int> viewsScreens();
 
 public slots:

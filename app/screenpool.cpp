@@ -125,7 +125,7 @@ QString ScreenPool::reportHtml(const QList<int> &assignedScreens) const
         report += "<tr>";
 
         //! ScreenId
-        QString idStr = QString::number(scrId);
+        QString idStr = "[" + QString::number(scrId) + "]";
         if (primary || secondary) {
             idStr = "<b>" + idStr +"</b>";
         }
@@ -144,6 +144,8 @@ QString ScreenPool::reportHtml(const QList<int> &assignedScreens) const
             typeStr = "<b><font color='green'>[" + i18nc("primary screen","Primary") + "]</font></b>";
         } else if (secondary) {
             typeStr = "<b>[" + i18nc("secondary screen","Secondary") + "]</b>";
+        } else {
+            typeStr = "<i>" + i18nc("inactive screen","inactive") + "</i>";
         }
 
         report += "<td align='center'>" + typeStr +"</td>";
@@ -152,6 +154,8 @@ QString ScreenPool::reportHtml(const QList<int> &assignedScreens) const
         QString notAssignedStr = "";
         if (!hasViews) {
             notAssignedStr = "<font color='red'><i>[" + i18nc("it has not latte docks/panels", "none") + "]</i></font>";
+        } else {
+            notAssignedStr = " ✔ ";
         }
 
         report += "<td align='center'>" + notAssignedStr +"</td>";

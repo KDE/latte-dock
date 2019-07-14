@@ -1566,9 +1566,8 @@ void SettingsDialog::showLayoutInformation()
     Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
 
     auto msg = new QMessageBox(this);
-    //msg->setIcon(QMessageBox::Information);
-    msg->setWindowTitle(name + " " + i18n("Layout Information"));
-    msg->setText(generic->reportHtml());
+    msg->setWindowTitle(name);
+    msg->setText(generic->reportHtml(m_corona->screenPool()));
 
     msg->open();
 }
@@ -1594,7 +1593,6 @@ void SettingsDialog::showScreensInformation()
     }
 
     auto msg = new QMessageBox(this);
-    //msg->setIcon(QMessageBox::Information);
     msg->setWindowTitle(i18n("Screens Information"));
     msg->setText(m_corona->screenPool()->reportHtml(assignedScreens));
 
