@@ -105,7 +105,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 
         connectionsHack << connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
             if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
-                setVisible(true);
+                show();
                 //qDebug() << "Ghost Edge:: Enforce reshow from timer 1...";
             } else {
                 //qDebug() << "Ghost Edge:: No needed reshow from timer 1...";
@@ -114,7 +114,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 
         connectionsHack << connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
             if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
-                setVisible(true);
+                show();
                 //qDebug() << "Ghost Edge:: Enforce reshow from timer 2...";
             } else {
                 //qDebug() << "Ghost Edge:: No needed reshow from timer 2...";
@@ -136,7 +136,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
     }
 
     setScreen(m_latteView->screen());
-    setVisible(true);
+    show();
     updateGeometry();
     hideWithMask();
 }

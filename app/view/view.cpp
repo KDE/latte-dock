@@ -260,10 +260,6 @@ void View::init()
     setSource(corona()->kPackage().filePath("lattedockui"));
     m_positioner->syncGeometry();
 
-    if (!KWindowSystem::isPlatformWayland()) {
-        setVisible(true);
-    }
-
     qDebug() << "SOURCE:" << source();
 }
 
@@ -386,42 +382,26 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
     if (!applet || !applet->containment())
         return;
 
-    //! split x11/wayland case in order to avoid crashes under wayland
-    //! environment from QWindow::setVisible() function
-    auto setConfigViewVisibility = [this](PlasmaQuick::ConfigView *view, const bool &visible) {
-        if (view) {
-            if (KWindowSystem::isPlatformX11()) {
-                view->setVisible(visible);
-            } else {
-                if (visible) {
-                    view->show();
-                } else {
-                    view->hide();
-                }
-            }
-        }
-    };
-
     Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
 
     if (m_configView && c && c->isContainment() && c == this->containment()) {
         if (m_configView->isVisible()) {
-            setConfigViewVisibility(m_configView, false);
+            m_configView->hide();
         } else {
-            setConfigViewVisibility(m_configView, true);
+            m_configView->show();
         }
 
         return;
     } else if (m_configView) {
         if (m_configView->applet() == applet) {
-            setConfigViewVisibility(m_configView, true);
+            m_configView->show();
 
             if (KWindowSystem::isPlatformX11()) {
                 m_configView->requestActivate();
             }
             return;
         } else {
-            setConfigViewVisibility(m_configView, false);
+            m_configView->hide();
         }
     }
 
@@ -437,18 +417,14 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
     m_configView.data()->init();
 
     if (!delayConfigView) {
-        setConfigViewVisibility(m_configView, true);
+        m_configView->show();
     } else {
         //add a timer for showing the configuration window the first time it is
         //created in order to give the containment's layouts the time to
         //calculate the window's height
         QTimer::singleShot(150, [this]() {
             if (m_configView) {
-                if (KWindowSystem::isPlatformX11()) {
-                    m_configView->setVisible(true);
-                } else {
-                    m_configView->show();
-                }
+                m_configView->show();
             }
         });
     }
@@ -934,7 +910,7 @@ void View::setLayout(Layout::GenericLayout *layout)
 
             connectionsLayout << connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
                 if (m_layout && !inDelete() & !isVisible()) {
-                    setVisible(true);
+                    show();
                     applyActivitiesToWindows();
                     //qDebug() << "View:: Enforce reshow from timer 1...";
                     emit activitiesChanged();
@@ -945,7 +921,7 @@ void View::setLayout(Layout::GenericLayout *layout)
 
             connectionsLayout << connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
                 if (m_layout && !inDelete() && !isVisible()) {
-                    setVisible(true);
+                    show();
                     applyActivitiesToWindows();
                     //qDebug() << "View:: Enforce reshow from timer 2...";
                     emit activitiesChanged();

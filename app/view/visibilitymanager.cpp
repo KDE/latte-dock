@@ -418,14 +418,14 @@ void VisibilityManager::updateGhostWindowState()
 void VisibilityManager::hide()
 {
     if (KWindowSystem::isPlatformX11()) {
-        m_latteView->setVisible(false);
+        m_latteView->hide();
     }
 }
 
 void VisibilityManager::show()
 {
     if (KWindowSystem::isPlatformX11()) {
-        m_latteView->setVisible(true);
+        m_latteView->show();
     }
 }
 

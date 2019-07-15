@@ -561,14 +561,7 @@ void PrimaryConfigView::updateShowInlineProperties()
             createSecondaryWindow();
         }
 
-        if (KWindowSystem::isPlatformWayland()) {
-            QTimer::singleShot(150, m_secConfigView, SLOT(show()));
-        } else {
-            QTimer::singleShot(150, [this]() {
-                m_secConfigView->setVisible(true);
-            });
-        }
-
+        QTimer::singleShot(150, m_secConfigView, SLOT(show()));
         setShowInlineProperties(false);
     } else {
         deleteSecondaryWindow();
