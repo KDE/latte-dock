@@ -559,7 +559,7 @@ void PrimaryConfigView::updateShowInlineProperties()
             createSecondaryWindow();
         }
 
-        if (!KWindowSystem::isPlatformWayland()) {
+        if (KWindowSystem::isPlatformWayland()) {
             QTimer::singleShot(150, m_secConfigView, SLOT(show()));
         } else {
             QTimer::singleShot(150, [this]() {

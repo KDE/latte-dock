@@ -180,7 +180,7 @@ View::~View()
     //! this->disconnect();
 
     if (m_configView) {
-        m_configView->setVisible(false);//hide();
+        m_configView->deleteLater();
     }
 
     if (m_contextMenu) {
@@ -258,7 +258,6 @@ void View::init()
     }
 
     setSource(corona()->kPackage().filePath("lattedockui"));
-    // setVisible(true);
     m_positioner->syncGeometry();
 
     if (!KWindowSystem::isPlatformWayland()) {
@@ -387,30 +386,42 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
     if (!applet || !applet->containment())
         return;
 
+    //! split x11/wayland case in order to avoid crashes under wayland
+    //! environment from QWindow::setVisible() function
+    auto setConfigViewVisibility = [this](PlasmaQuick::ConfigView *view, const bool &visible) {
+        if (view) {
+            if (KWindowSystem::isPlatformX11()) {
+                view->setVisible(visible);
+            } else {
+                if (visible) {
+                    view->show();
+                } else {
+                    view->hide();
+                }
+            }
+        }
+    };
+
     Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
 
     if (m_configView && c && c->isContainment() && c == this->containment()) {
         if (m_configView->isVisible()) {
-            m_configView->setVisible(false);
-            //m_configView->hide();
+            setConfigViewVisibility(m_configView, false);
         } else {
-            m_configView->setVisible(true);
-            //m_configView->show();
+            setConfigViewVisibility(m_configView, true);
         }
 
         return;
     } else if (m_configView) {
         if (m_configView->applet() == applet) {
-            m_configView->setVisible(true);
-            //m_configView->show();
+            setConfigViewVisibility(m_configView, true);
+
             if (KWindowSystem::isPlatformX11()) {
                 m_configView->requestActivate();
             }
             return;
         } else {
-            m_configView->setVisible(false);
-            //m_configView->hide();
-            m_configView->deleteLater();
+            setConfigViewVisibility(m_configView, false);
         }
     }
 
@@ -426,19 +437,20 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
     m_configView.data()->init();
 
     if (!delayConfigView) {
-        m_configView->setVisible(true);
-        //m_configView.data()->show();
+        setConfigViewVisibility(m_configView, true);
     } else {
         //add a timer for showing the configuration window the first time it is
         //created in order to give the containment's layouts the time to
         //calculate the window's height
-        if (!KWindowSystem::isPlatformWayland()) {
-            QTimer::singleShot(150, m_configView, SLOT(show()));
-        } else {
-            QTimer::singleShot(150, [this]() {
-                m_configView->setVisible(true);
-            });
-        }
+        QTimer::singleShot(150, [this]() {
+            if (m_configView) {
+                if (KWindowSystem::isPlatformX11()) {
+                    m_configView->setVisible(true);
+                } else {
+                    m_configView->show();
+                }
+            }
+        });
     }
 }
 
