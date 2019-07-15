@@ -21,7 +21,6 @@
 
 // local
 #include "view.h"
-#include "../lattecorona.h"
 
 // Qt
 #include <QDebug>
@@ -43,6 +42,8 @@ namespace ViewPart {
 ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
     m_latteView(view)
 {
+    m_corona = qobject_cast<Latte::Corona *>(view->corona());
+
     setColor(QColor(Qt::transparent));
     setDefaultAlphaBuffer(true);
 
@@ -123,6 +124,10 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 
     setupWaylandIntegration();
 
+    if (KWindowSystem::isPlatformX11()) {
+        m_corona->wm()->registerIgnoredWindow(winId());
+    }
+
     setScreen(m_latteView->screen());
     setVisible(true);
     updateGeometry();
@@ -132,6 +137,9 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 ScreenEdgeGhostWindow::~ScreenEdgeGhostWindow()
 {
     m_inDelete = true;
+
+    m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_waylandWindowId);
+
     m_latteView = nullptr;
 
     // clear mode
@@ -163,6 +171,11 @@ KWayland::Client::PlasmaShellSurface *ScreenEdgeGhostWindow::surface()
 
 void ScreenEdgeGhostWindow::updateGeometry()
 {
+    if (KWindowSystem::isPlatformWayland() && m_waylandWindowId.isNull()) {
+        m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
+        m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
+    }
+
     QRect newGeometry;
     int thickness;
     if (KWindowSystem::compositingActive()) {
@@ -226,10 +239,10 @@ void ScreenEdgeGhostWindow::setupWaylandIntegration()
         return;
     }
 
-    if (Latte::Corona *c = qobject_cast<Latte::Corona *>(m_latteView->containment()->corona())) {
+    if (m_corona) {
         using namespace KWayland::Client;
 
-        PlasmaShell *interface = c->waylandCoronaInterface();
+        PlasmaShell *interface = m_corona->waylandCoronaInterface();
 
         if (!interface) {
             return;

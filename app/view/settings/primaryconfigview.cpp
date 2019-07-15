@@ -125,9 +125,7 @@ PrimaryConfigView::~PrimaryConfigView()
 {
     qDebug() << "ConfigView deleting ...";
 
-    if (KWindowSystem::isPlatformX11()) {
-        m_corona->wm()->unregisterIgnoredWindow(winId());
-    }
+    m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_waylandWindowId);
 
     deleteSecondaryWindow();
 
@@ -236,8 +234,11 @@ QRect PrimaryConfigView::geometryWhenVisible() const
 void PrimaryConfigView::requestActivate()
 {
     if (KWindowSystem::isPlatformWayland() && m_shellSurface) {
-        WindowSystem::WindowId wid = m_corona->wm()->winIdFor("latte-dock", geometry());
-        m_corona->wm()->requestActivate(wid);
+        if (m_waylandWindowId.isNull()) {
+            m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
+        }
+
+        m_corona->wm()->requestActivate(m_waylandWindowId);
     } else {
         QQuickView::requestActivate();
     }
@@ -247,6 +248,11 @@ void PrimaryConfigView::syncGeometry()
 {
     if (!m_latteView || !m_latteView->layout() || !m_latteView->containment() || !rootObject()) {
         return;
+    }
+
+    if (KWindowSystem::isPlatformWayland() && m_waylandWindowId.isNull()) {
+        m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
+        m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
     }
 
     const QSize size(rootObject()->width(), rootObject()->height());

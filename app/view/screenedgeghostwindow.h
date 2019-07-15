@@ -20,6 +20,10 @@
 #ifndef SCREENEDGEGHOSTWINDOW_H
 #define SCREENEDGEGHOSTWINDOW_H
 
+// local
+#include "../lattecorona.h"
+#include "../wm/windowinfowrap.h"
+
 // Qt
 #include <QObject>
 #include <QQuickView>
@@ -32,6 +36,7 @@ class PlasmaShellSurface;
 }
 
 namespace Latte {
+class Corona;
 class View;
 }
 
@@ -109,6 +114,9 @@ private:
 
     Latte::View *m_latteView{nullptr};
 
+    QPointer<Latte::Corona> m_corona;
+
+    Latte::WindowSystem::WindowId m_waylandWindowId;
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 

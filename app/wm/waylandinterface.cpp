@@ -55,6 +55,8 @@ class Private::GhostWindow : public QRasterWindow
     Q_OBJECT
 
 public:
+    WindowSystem::WindowId m_winId;
+
     GhostWindow(WindowSystem::WaylandInterface *waylandInterface)
         : m_waylandInterface(waylandInterface) {
         setFlags(Qt::FramelessWindowHint
@@ -67,12 +69,18 @@ public:
     }
 
     ~GhostWindow() {
+        m_waylandInterface->unregisterIgnoredWindow(m_winId);
         delete m_shellSurface;
     }
 
     void setGeometry(const QRect &rect) {
         if (geometry() == rect) {
             return;
+        }
+
+        if (m_winId.isNull()) {
+            m_winId = m_waylandInterface->winIdFor("latte-dock", geometry());
+            m_waylandInterface->registerIgnoredWindow(m_winId);
         }
 
         setMinimumSize(rect.size());
@@ -133,7 +141,7 @@ void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManage
     connect(m_windowManagement, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
     connect(m_windowManagement, &PlasmaWindowManagement::activeWindowChanged, this, [&]() noexcept {
                 auto w = m_windowManagement->activeWindow();
-                if (!w || (w && (!isPlasmaDesktop(w) && w->appId() != QLatin1String("latte-dock")))) {
+                if (!w || (w && (!m_ignoredWindows.contains(w->internalId() && !isPlasmaDesktop(w)))) ) {
                     emit activeWindowChanged(w ? w->internalId() : 0);
                 }
 
@@ -201,6 +209,30 @@ KWayland::Client::PlasmaShell *WaylandInterface::waylandCoronaInterface() const
     return m_corona->waylandCoronaInterface();
 }
 
+//! Register Latte Ignored Windows in order to NOT be tracked
+void WaylandInterface::registerIgnoredWindow(WindowId wid)
+{
+    if (!wid.isNull() && !m_ignoredWindows.contains(wid)) {
+        m_ignoredWindows.append(wid);
+
+        KWayland::Client::PlasmaWindow *w = windowFor(wid);
+
+        if (mapper && w) {
+            mapper->removeMappings(w);
+        }
+
+        emit windowChanged(wid);
+    }
+}
+
+void WaylandInterface::unregisterIgnoredWindow(WindowId wid)
+{
+    if (m_ignoredWindows.contains(wid)) {
+        m_ignoredWindows.removeAll(wid);
+        emit windowRemoved(wid);
+    }
+}
+
 void WaylandInterface::setViewExtraFlags(QWindow &view)
 {
     Q_UNUSED(view)
@@ -228,7 +260,6 @@ void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::T
     default:
         break;
     }
-
 }
 
 void WaylandInterface::switchToNextVirtualDesktop() const
@@ -459,7 +490,7 @@ WindowId WaylandInterface::winIdFor(QString appId, QRect geometry) const
     });
 
     if (it == m_windowManagement->windows().constEnd()) {
-        return 0;
+        return QVariant();
     }
 
     return (*it)->internalId();
@@ -590,7 +621,7 @@ bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) co
     //! e.g. widgets explorer, Activities etc. that are not used to hide
     //! the dodge views appropriately
 
-    return w->isValid() && !isPlasmaDesktop(w) && w->appId()!=QLatin1String("latte-dock");// && !w->skipTaskbar();
+    return w->isValid() && !isPlasmaDesktop(w) && !m_ignoredWindows.contains(w->internalId());
 }
 
 void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
@@ -634,7 +665,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
         //qDebug() << "window changed:" << qobject_cast<PlasmaWindow *>(w)->appId();
         PlasmaWindow *pW = qobject_cast<PlasmaWindow*>(w);
 
-        if (pW && !isPlasmaDesktop(pW) && pW->appId() != QLatin1String("latte-dock")) {
+        if (pW && !m_ignoredWindows.contains(pW->internalId() && !isPlasmaDesktop(pW) )) {
             considerWindowChanged(pW->internalId());
         }
     });

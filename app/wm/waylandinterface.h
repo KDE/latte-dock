@@ -97,6 +97,9 @@ public:
     void switchToNextVirtualDesktop() const override;
     void switchToPreviousVirtualDesktop() const override;
 
+    void registerIgnoredWindow(WindowId wid) override;
+    void unregisterIgnoredWindow(WindowId wid) override;
+
     void initWindowManagement(KWayland::Client::PlasmaWindowManagement *windowManagement);
 
 #if KF5_VERSION_MINOR >= 52

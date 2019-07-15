@@ -54,15 +54,19 @@ Positioner::Positioner(Latte::View *parent)
     m_validateGeometryTimer.setInterval(500);
     connect(&m_validateGeometryTimer, &QTimer::timeout, this, &Positioner::syncGeometry);
 
-    auto *latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
+    m_corona = qobject_cast<Latte::Corona *>(m_view->corona());
 
-    if (latteCorona) {
-        m_screenSyncTimer.setInterval(qMax(latteCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
-        connect(latteCorona->universalSettings(), &UniversalSettings::screenTrackerIntervalChanged, this, [this, latteCorona]() {
-            m_screenSyncTimer.setInterval(qMax(latteCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
+    if (m_corona) {
+        if (KWindowSystem::isPlatformX11()) {
+            m_corona->wm()->registerIgnoredWindow(m_view->winId());
+        }
+
+        m_screenSyncTimer.setInterval(qMax(m_corona->universalSettings()->screenTrackerInterval() - 500, 1000));
+        connect(m_corona->universalSettings(), &UniversalSettings::screenTrackerIntervalChanged, this, [&]() {
+            m_screenSyncTimer.setInterval(qMax(m_corona->universalSettings()->screenTrackerInterval() - 500, 1000));
         });
 
-        connect(latteCorona, &Latte::Corona::viewLocationChanged, this, [&]() {
+        connect(m_corona, &Latte::Corona::viewLocationChanged, this, [&]() {
             //! check if an edge has been freed for a primary dock
             //! from another screen
             if (m_view->onPrimary()) {
@@ -77,6 +81,7 @@ Positioner::Positioner(Latte::View *parent)
 Positioner::~Positioner()
 {
     m_inDelete = true;
+    m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? m_view->winId() : m_waylandWindowId);
 
     m_screenSyncTimer.stop();
     m_validateGeometryTimer.stop();
@@ -311,6 +316,11 @@ void Positioner::syncGeometry()
     bool found{false};
 
     qDebug() << "syncGeometry() called...";
+
+    if (KWindowSystem::isPlatformWayland() && m_waylandWindowId.isNull()) {
+        m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", m_view->geometry());
+        m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
+    }
 
     //! before updating the positioning and geometry of the dock
     //! we make sure that the dock is at the correct screen

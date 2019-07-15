@@ -21,6 +21,7 @@
 #define SECONDARYCONFIGVIEW_H
 
 // local
+#include "../../wm/windowinfowrap.h"
 #include "../../../liblatte2/types.h"
 
 //Qt
@@ -110,6 +111,7 @@ private:
     Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
 
     Latte::Corona *m_corona{nullptr};
+    Latte::WindowSystem::WindowId m_waylandWindowId;
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 

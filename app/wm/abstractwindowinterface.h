@@ -117,8 +117,8 @@ public:
     QString currentDesktop() const;
     QString currentActivity() const;
 
-    void registerIgnoredWindow(WindowId wid);
-    void unregisterIgnoredWindow(WindowId wid);
+    virtual void registerIgnoredWindow(WindowId wid);
+    virtual void unregisterIgnoredWindow(WindowId wid);
 
     void switchToNextActivity();
     void switchToPreviousActivity();

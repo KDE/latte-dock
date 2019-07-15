@@ -20,6 +20,9 @@
 #ifndef POSITIONER_H
 #define POSITIONER_H
 
+//local
+#include "../wm/windowinfowrap.h"
+
 // Qt
 #include <QObject>
 #include <QPointer>
@@ -34,6 +37,7 @@ class Types;
 }
 
 namespace Latte {
+class Corona;
 class View;
 }
 
@@ -108,6 +112,7 @@ private:
     QRect m_validGeometry;
 
     QPointer<Latte::View> m_view;
+    QPointer<Latte::Corona> m_corona;
 
     QString m_screenToFollowId;
     QPointer<QScreen> m_screenToFollow;
@@ -119,6 +124,8 @@ private:
     QString m_moveToLayout;
     Plasma::Types::Location m_goToLocation{Plasma::Types::Floating};
     QScreen *m_goToScreen{nullptr};
+
+    Latte::WindowSystem::WindowId m_waylandWindowId;
 };
 
 }
