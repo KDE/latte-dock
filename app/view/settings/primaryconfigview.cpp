@@ -64,6 +64,13 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
 
     if (KWindowSystem::isPlatformX11()) {
         m_corona->wm()->registerIgnoredWindow(winId());
+    } else {
+        connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, [&]() {
+            if (m_waylandWindowId.isNull()) {
+                m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
+                m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
+            }
+        });
     }
 
     setScreen(m_latteView->screen());
@@ -248,11 +255,6 @@ void PrimaryConfigView::syncGeometry()
 {
     if (!m_latteView || !m_latteView->layout() || !m_latteView->containment() || !rootObject()) {
         return;
-    }
-
-    if (KWindowSystem::isPlatformWayland() && m_waylandWindowId.isNull()) {
-        m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
-        m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
     }
 
     const QSize size(rootObject()->width(), rootObject()->height());

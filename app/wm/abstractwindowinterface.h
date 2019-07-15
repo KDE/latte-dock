@@ -138,6 +138,8 @@ signals:
     void currentDesktopChanged();
     void currentActivityChanged();
 
+    void latteWindowAdded();
+
 protected:
     QString m_currentDesktop;
     QString m_currentActivity;

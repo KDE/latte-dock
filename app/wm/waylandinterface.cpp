@@ -64,6 +64,8 @@ public:
                  | Qt::NoDropShadowWindowHint
                  | Qt::WindowDoesNotAcceptFocus);
 
+        connect(m_waylandInterface, &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &GhostWindow::identifyWinId);
+
         setupWaylandIntegration();
         show();
     }
@@ -78,10 +80,7 @@ public:
             return;
         }
 
-        if (m_winId.isNull()) {
-            m_winId = m_waylandInterface->winIdFor("latte-dock", geometry());
-            m_waylandInterface->registerIgnoredWindow(m_winId);
-        }
+        m_validGeometry = rect;
 
         setMinimumSize(rect.size());
         setMaximumSize(rect.size());
@@ -112,6 +111,17 @@ public:
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
     WindowSystem::WaylandInterface *m_waylandInterface{nullptr};
+
+    //! geometry() function under wayland does not return nice results
+    QRect m_validGeometry;
+
+public slots:
+    void identifyWinId() {
+        if (m_winId.isNull()) {
+            m_winId = m_waylandInterface->winIdFor("latte-dock", m_validGeometry);
+            m_waylandInterface->registerIgnoredWindow(m_winId);
+        }
+    }
 };
 
 namespace WindowSystem {
@@ -453,7 +463,7 @@ AppData WaylandInterface::appDataFor(WindowId wid) const
     auto window = windowFor(wid);
 
     const AppData &data = appDataFromUrl(windowUrlFromMetadata(window->appId(),
-                    window->pid(), rulesConfig));
+                                                               window->pid(), rulesConfig));
 
     return data;
 }
@@ -584,14 +594,14 @@ void WaylandInterface::requestToggleMaximized(WindowId wid) const
 {
     auto w = windowFor(wid);
 
-    if (w && isValidWindow(w)) {   
+    if (w && isValidWindow(w)) {
 #if KF5_VERSION_MINOR >= 52
         if (!m_currentDesktop.isEmpty()) {
             w->requestEnterVirtualDesktop(m_currentDesktop);
         }
 #endif
         w->requestToggleMaximized();
-    }   
+    }
 }
 
 bool WaylandInterface::isPlasmaDesktop(const KWayland::Client::PlasmaWindow *w) const
@@ -671,6 +681,10 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
     });
 
     emit windowAdded(w->internalId());
+
+    if (w->appId() == "latte-dock") {
+        emit latteWindowAdded();
+    }
 }
 
 }

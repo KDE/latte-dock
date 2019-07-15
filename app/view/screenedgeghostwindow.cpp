@@ -126,6 +126,13 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 
     if (KWindowSystem::isPlatformX11()) {
         m_corona->wm()->registerIgnoredWindow(winId());
+    } else {
+        connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, [&]() {
+            if (m_waylandWindowId.isNull()) {
+                m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
+                m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
+            }
+        });
     }
 
     setScreen(m_latteView->screen());
@@ -171,11 +178,6 @@ KWayland::Client::PlasmaShellSurface *ScreenEdgeGhostWindow::surface()
 
 void ScreenEdgeGhostWindow::updateGeometry()
 {
-    if (KWindowSystem::isPlatformWayland() && m_waylandWindowId.isNull()) {
-        m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
-        m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
-    }
-
     QRect newGeometry;
     int thickness;
     if (KWindowSystem::compositingActive()) {

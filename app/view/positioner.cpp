@@ -59,6 +59,13 @@ Positioner::Positioner(Latte::View *parent)
     if (m_corona) {
         if (KWindowSystem::isPlatformX11()) {
             m_corona->wm()->registerIgnoredWindow(m_view->winId());
+        } else {
+            connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, [&]() {
+                if (m_waylandWindowId.isNull()) {
+                    m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", m_view->geometry());
+                    m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
+                }
+            });
         }
 
         m_screenSyncTimer.setInterval(qMax(m_corona->universalSettings()->screenTrackerInterval() - 500, 1000));
@@ -316,11 +323,6 @@ void Positioner::syncGeometry()
     bool found{false};
 
     qDebug() << "syncGeometry() called...";
-
-    if (KWindowSystem::isPlatformWayland() && m_waylandWindowId.isNull()) {
-        m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", m_view->geometry());
-        m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
-    }
 
     //! before updating the positioning and geometry of the dock
     //! we make sure that the dock is at the correct screen
