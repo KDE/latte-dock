@@ -47,7 +47,7 @@
 #include "wm/xwindowinterface.h"
 #include "wm/tracker/lastactivewindow.h"
 #include "wm/tracker/schemes.h"
-#include "wm/tracker/trackerwindows.h"
+#include "wm/tracker/windowstracker.h"
 
 // Qt
 #include <QAction>

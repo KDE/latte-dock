@@ -20,7 +20,7 @@
 #include "trackedgeneralinfo.h"
 
 //local
-#include "trackerwindows.h"
+#include "windowstracker.h"
 #include "../abstractwindowinterface.h"
 #include "../schemecolors.h"
 

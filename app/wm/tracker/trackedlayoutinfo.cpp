@@ -20,7 +20,7 @@
 #include "trackedlayoutinfo.h"
 
 //local
-#include "trackerwindows.h"
+#include "windowstracker.h"
 #include "../../layout/genericlayout.h"
 
 namespace Latte {

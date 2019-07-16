@@ -24,7 +24,7 @@
 #include "../../layout/genericlayout.h"
 #include "../../wm/schemecolors.h"
 #include "../../wm/tracker/lastactivewindow.h"
-#include "../../wm/tracker/trackerwindows.h"
+#include "../../wm/tracker/windowstracker.h"
 
 namespace Latte {
 namespace ViewPart {
