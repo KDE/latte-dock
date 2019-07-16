@@ -728,7 +728,7 @@ bool Storage::layoutIsBroken(QStringList &errors) const
         for (int i = 0; i < ids.count(); ++i) {
             for (int j = i + 1; j < ids.count(); ++j) {
                 if (ids[i] == ids[j]) {
-                    QString errorStr = i18n("Differrent applets with same id ::: ") + ids[i];
+                    QString errorStr = i18n("Different applets with same id ::: ") + ids[i];
                     qDebug() << "Error: " << errorStr;
                     errors << errorStr;
                 }
