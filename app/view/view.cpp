@@ -77,6 +77,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setColor(QColor(Qt::transparent));
+    setDefaultAlphaBuffer(true);
     setClearBeforeRendering(true);
 
     const auto flags = Qt::FramelessWindowHint

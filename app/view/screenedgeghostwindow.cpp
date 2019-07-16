@@ -187,12 +187,11 @@ KWayland::Client::PlasmaShellSurface *ScreenEdgeGhostWindow::surface()
 void ScreenEdgeGhostWindow::updateGeometry()
 {
     QRect newGeometry;
-    int thickness;
+    int thickness{2};
+
     if (KWindowSystem::compositingActive()) {
-        thickness == 6;
-    } else {
-        thickness == 2;
-    };
+        thickness = 6;
+    }
 
     if (m_latteView->location() == Plasma::Types::BottomEdge) {
         newGeometry.setX(m_latteView->absoluteGeometry().left());
