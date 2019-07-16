@@ -759,6 +759,7 @@ void Windows::updateHints(Latte::View *view)
 
         if (isTouchingViewEdge(view, winfo) || isTouchingView(view, winfo)) {
             if (winfo.isActive()) {
+                //qDebug() << " ACTIVE-TOUCH :: " << winfo.wid() << " _ " << winfo.appName() << " _ " << winfo.geometry() << " _ " << winfo.display();
                 foundActiveTouchInCurScreen = true;
                 activeTouchWinId = winfo.wid();
 
@@ -768,6 +769,7 @@ void Windows::updateHints(Latte::View *view)
                     maxWinId = winfo.wid();
                 }
             } else {
+                //qDebug() << " TOUCH :: " << winfo.wid() << " _ " << winfo.appName() << " _ " << winfo.geometry() << " _ " << winfo.display();
                 foundTouchInCurScreen = true;
                 touchWinId = winfo.wid();
             }

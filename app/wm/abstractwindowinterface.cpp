@@ -25,6 +25,9 @@
 #include "tracker/trackerwindows.h"
 #include "../lattecorona.h"
 
+// Qt
+#include <QDebug>
+
 // KDE
 #include <KActivities/Controller>
 

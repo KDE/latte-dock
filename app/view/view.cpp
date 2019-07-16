@@ -77,6 +77,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setColor(QColor(Qt::transparent));
+    setDefaultAlphaBuffer(true);
     setClearBeforeRendering(true);
 
     const auto flags = Qt::FramelessWindowHint
@@ -914,6 +915,7 @@ void View::setLayout(Layout::GenericLayout *layout)
                     applyActivitiesToWindows();
                     //qDebug() << "View:: Enforce reshow from timer 1...";
                     emit activitiesChanged();
+                    emit forcedShown();
                 } else {
                     //qDebug() << "View:: No needed reshow from timer 1...";
                 }
@@ -925,6 +927,7 @@ void View::setLayout(Layout::GenericLayout *layout)
                     applyActivitiesToWindows();
                     //qDebug() << "View:: Enforce reshow from timer 2...";
                     emit activitiesChanged();
+                    emit forcedShown();
                 } else {
                     //qDebug() << "View:: No needed reshow from timer 2...";
                 }

@@ -56,6 +56,9 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     connect(this, &VisibilityManager::slideInFinished, this, &VisibilityManager::updateHiddenState);
     connect(this, &VisibilityManager::slideOutFinished, this, &VisibilityManager::updateHiddenState);
 
+    connect(this, &VisibilityManager::enableKWinEdgesChanged, this, &VisibilityManager::updateKWinEdgesSupport);
+    connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateKWinEdgesSupport);
+
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
         connect(m_latteView, &Latte::View::byPassWMChanged, this, &VisibilityManager::updateKWinEdgesSupport);
@@ -405,7 +408,7 @@ void VisibilityManager::updateGhostWindowState()
         bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout ||
                                 (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts
                                  && m_latteView->layout() && !m_latteView->positioner()->inLocationChangeAnimation()
-                                 && m_latteView->layout()->name() == m_corona->layoutsManager()->currentLayoutName()));
+                                 && m_latteView->layout()->isCurrent()));
 
         if (inCurrentLayout) {
             m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
@@ -686,8 +689,6 @@ void VisibilityManager::setEnableKWinEdges(bool enable)
     m_enableKWinEdgesFromUser = enable;
 
     emit enableKWinEdgesChanged();
-
-    updateKWinEdgesSupport();
 }
 
 void VisibilityManager::updateKWinEdgesSupport()
@@ -735,7 +736,7 @@ void VisibilityManager::createEdgeGhostWindow()
             bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout ||
                                     (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts
                                      && m_latteView->layout() && !m_latteView->positioner()->inLocationChangeAnimation()
-                                     && m_latteView->layout()->name() == m_corona->layoutsManager()->currentLayoutName()));
+                                     && m_latteView->layout()->isCurrent()));
 
             if (m_edgeGhostWindow) {
                 if (inCurrentLayout) {
