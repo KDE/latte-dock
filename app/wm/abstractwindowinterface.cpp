@@ -22,7 +22,7 @@
 
 // local
 #include "tracker/schemes.h"
-#include "tracker/trackerwindows.h"
+#include "tracker/windowstracker.h"
 #include "../lattecorona.h"
 
 // Qt

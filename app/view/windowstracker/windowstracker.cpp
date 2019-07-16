@@ -24,7 +24,7 @@
 #include "allscreenstracker.h"
 #include "../view.h"
 #include "../../lattecorona.h"
-#include "../../wm/tracker/trackerwindows.h"
+#include "../../wm/tracker/windowstracker.h"
 
 
 namespace Latte {
