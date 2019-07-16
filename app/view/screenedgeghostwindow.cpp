@@ -81,7 +81,6 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
         updateGeometry();
     });
 
-
     if (!KWindowSystem::isPlatformWayland()) {
         //! IMPORTANT!!! ::: This fixes a bug when closing an Activity all views from all Activities are
         //!  disappearing! With this code parts they reappear!!!
@@ -106,6 +105,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
         connectionsHack << connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
             if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
                 show();
+                emit forcedShown();
                 //qDebug() << "Ghost Edge:: Enforce reshow from timer 1...";
             } else {
                 //qDebug() << "Ghost Edge:: No needed reshow from timer 1...";
@@ -115,22 +115,30 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
         connectionsHack << connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
             if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
                 show();
+                emit forcedShown();
                 //qDebug() << "Ghost Edge:: Enforce reshow from timer 2...";
             } else {
                 //qDebug() << "Ghost Edge:: No needed reshow from timer 2...";
             }
+        });
+
+        connectionsHack << connect(this, &ScreenEdgeGhostWindow::forcedShown, this, [&]() {
+            m_corona->wm()->unregisterIgnoredWindow(m_trackedWindowId);
+            m_trackedWindowId = winId();
+            m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
         });
     }
 
     setupWaylandIntegration();
 
     if (KWindowSystem::isPlatformX11()) {
-        m_corona->wm()->registerIgnoredWindow(winId());
+        m_trackedWindowId = winId();
+        m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
     } else {
         connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, [&]() {
-            if (m_waylandWindowId.isNull()) {
-                m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
-                m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
+            if (m_trackedWindowId.isNull()) {
+                m_trackedWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
+                m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
             }
         });
     }
@@ -145,7 +153,7 @@ ScreenEdgeGhostWindow::~ScreenEdgeGhostWindow()
 {
     m_inDelete = true;
 
-    m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_waylandWindowId);
+    m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_trackedWindowId);
 
     m_latteView = nullptr;
 

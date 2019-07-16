@@ -58,15 +58,24 @@ Positioner::Positioner(Latte::View *parent)
 
     if (m_corona) {
         if (KWindowSystem::isPlatformX11()) {
-            m_corona->wm()->registerIgnoredWindow(m_view->winId());
+            m_trackedWindowId = m_view->winId();
+            m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
+
+            connect(m_view, &Latte::View::forcedShown, this, [&]() {
+                m_corona->wm()->unregisterIgnoredWindow(m_trackedWindowId);
+                m_trackedWindowId = m_view->winId();
+                m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
+            });
         } else {
             connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, [&]() {
-                if (m_waylandWindowId.isNull()) {
-                    m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", m_view->geometry());
-                    m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
+                if (m_trackedWindowId.isNull()) {
+                    m_trackedWindowId = m_corona->wm()->winIdFor("latte-dock", m_view->geometry());
+                    m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
                 }
             });
         }
+
+        /////
 
         m_screenSyncTimer.setInterval(qMax(m_corona->universalSettings()->screenTrackerInterval() - 500, 1000));
         connect(m_corona->universalSettings(), &UniversalSettings::screenTrackerIntervalChanged, this, [&]() {
@@ -88,7 +97,7 @@ Positioner::Positioner(Latte::View *parent)
 Positioner::~Positioner()
 {
     m_inDelete = true;
-    m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? m_view->winId() : m_waylandWindowId);
+    m_corona->wm()->unregisterIgnoredWindow(m_trackedWindowId);
 
     m_screenSyncTimer.stop();
     m_validateGeometryTimer.stop();

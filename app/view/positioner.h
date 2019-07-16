@@ -125,7 +125,7 @@ private:
     Plasma::Types::Location m_goToLocation{Plasma::Types::Floating};
     QScreen *m_goToScreen{nullptr};
 
-    Latte::WindowSystem::WindowId m_waylandWindowId;
+    Latte::WindowSystem::WindowId m_trackedWindowId;
 };
 
 }

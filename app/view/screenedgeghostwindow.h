@@ -82,6 +82,7 @@ public:
 signals:
     void containsMouseChanged(bool contains);
     void dragEntered();
+    void forcedShown(); //[workaround] forced shown to avoid a KWin issue that hides windows when activities are stopped
 
 protected:
     bool event(QEvent *ev) override;
@@ -116,7 +117,7 @@ private:
 
     QPointer<Latte::Corona> m_corona;
 
-    Latte::WindowSystem::WindowId m_waylandWindowId;
+    Latte::WindowSystem::WindowId m_trackedWindowId;
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 
