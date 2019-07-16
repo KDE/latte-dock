@@ -17,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "trackerwindows.h"
+#include "windowstracker.h"
 
 // local
 #include "lastactivewindow.h"

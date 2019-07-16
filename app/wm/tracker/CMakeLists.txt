@@ -5,6 +5,6 @@ set(lattedock-app_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/trackedgeneralinfo.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/trackedlayoutinfo.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/trackedviewinfo.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/trackerwindows.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/windowstracker.cpp
     PARENT_SCOPE
 )

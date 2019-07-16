@@ -20,7 +20,7 @@
 #include "trackedviewinfo.h"
 
 //local
-#include "trackerwindows.h"
+#include "windowstracker.h"
 #include "../schemecolors.h"
 #include "../../view/view.h"
 
