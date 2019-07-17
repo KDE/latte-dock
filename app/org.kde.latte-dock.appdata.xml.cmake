@@ -3,7 +3,6 @@
   <id>org.kde.latte-dock.desktop</id>
   <name>Latte</name>
   <name xml:lang="ar">لاتيه</name>
-  <name xml:lang="ast">Latte</name>
   <name xml:lang="ca">Latte</name>
   <name xml:lang="ca-valencia">Latte</name>
   <name xml:lang="cs">Latte</name>
@@ -75,7 +74,7 @@
     <p xml:lang="it">Latte è un'area di aggancio basata su plasma frameworks. Offre ai tuoi processi e ai tuoi plasmoidi un'esperienza elegante ed intuitiva, animando il loro contenuto con un effetto zoom parabolico e facendosi trovare solo quando necessario.</p>
     <p xml:lang="ko">Latte는 Plasma 프레임워크 기반의 독으로 작업 및 plasmoids에 대한 우아하고 직관적인 경험을 제공합니다. 상직적인 확대/축소 효과를 사용하여 내용을 애니메이션화하고 필요할 때만 사용할 수 있습니다.</p>
     <p xml:lang="nl">Latte is een dock gebaseerd op plasma frameworks die een elegante en intuïtieve ervaring voor uw taken en plasmoids is. Het animeert zijn inhoud door een parabolisch zoomeffect te gebruiken en probeert er alleen te zijn wanneer nodig.</p>
-    <p xml:lang="nn">Latte er ein dokk basert på Plasma-rammeverket og som gjev elegant og intuitiv tilgang til program/oppgåver og skjermelement. Innhaldet vert animerte med parabolske forstørringseffektar og programmet prøver å ikkje vera i vegen når det ikkje trengst.</p>
+    <p xml:lang="nn">Latte er ei dokk basert på Plasma-rammeverket og som gjev elegant og intuitiv tilgang til program/oppgåver og skjerm­element. Innhaldet vert animerte med parabolske forstørrings­effektar og programmet prøver å ikkje vera i vegen når det ikkje trengst.</p>
     <p xml:lang="pl">Latte jest dokiem opartym na szkieletach plazmy, który zapewnia przyjemne i intuicyjne odczucia w pracy z zadaniami i plazmoidami. Animuje swoją zawartośc przy użyciu efektu przybliżenia parabolicznego i próbuje być widocznym tylko wtedy, gdy jest potrzebny.</p>
     <p xml:lang="pt">O Latte é uma área acoplável baseada nas plataformas do Plasma que oferece uma experiência elegante e intuitiva para as suas tarefas e plasmóides. Ele anima o seu conteúdo, usando um efeito de ampliação parabólico e tenta estar apenas onde for necessário.</p>
     <p xml:lang="pt-BR">O Latte é uma área acoplável baseada nos frameworks do Plasma que oferece uma experiência elegante e intuitiva para as suas tarefas e plasmoides. Ele anima o seu conteúdo, usando um efeito de zoom parabólico e tenta estar apenas onde for necessário.</p>
@@ -122,7 +121,6 @@
   <url type="bugtracker">@BUG_ADDRESS@</url>
   <url type="faq">@FAQS@</url>
   <developer_name>Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
-  <developer_name xml:lang="ast">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca-valencia">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="cs">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
