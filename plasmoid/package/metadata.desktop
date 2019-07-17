@@ -45,7 +45,7 @@ X-Plasma-Provides=org.kde.plasma.multitasking
 X-KDE-PluginInfo-Author=Michail Vourlakos, Smith Ar
 X-KDE-PluginInfo-Email=mvourlakos@gmail.com, audoban@openmailbox.org
 X-KDE-PluginInfo-Name=org.kde.latte.plasmoid
-X-KDE-PluginInfo-Version=0.8.96
+X-KDE-PluginInfo-Version=0.8.97
 X-KDE-PluginInfo-Website=https://github.com/psifidotos/Latte-Dock
 X-KDE-PluginInfo-Category=Windows and Tasks
 X-KDE-PluginInfo-Depends=X-KDE-PluginInfo-License=GPL v2+
