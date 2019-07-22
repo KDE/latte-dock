@@ -78,7 +78,7 @@ GenericName[zh_CN]=停靠栏
 GenericName[zh_TW]=Dock
 Icon=latte-dock
 Categories=Utility;X-SuSE-DesktopUtility;
-Exec=latte-dock %u
+Exec=@CMAKE_INSTALL_PREFIX@/bin/latte-dock
 InitialPreference=1
 StartupNotify=false
 Terminal=false
@@ -92,4 +92,5 @@ X-KDE-PluginInfo-Version=@VERSION@
 X-KDE-PluginInfo-Website=@WEBSITE@
 X-KDE-StartupNotify=false
 X-KDE-SubstituteUID=false
+X-KDE-Wayland-Interfaces=org_kde_plasma_window_management
 
