@@ -308,7 +308,8 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
                             | NET::WMName
                             | NET::WMVisibleName,
                               NET::WM2WindowClass
-                            | NET::WM2Activities};
+                            | NET::WM2Activities
+                            | NET::WM2TransientFor};
 
     //! update desktop id
 
@@ -323,6 +324,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
     if (isValidWindow(winfo) && !isPlasmaDesktop) {
         winfoWrap.setIsValid(true);
         winfoWrap.setWid(wid);
+        winfoWrap.setParentId(winfo.transientFor());
         winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid.value<WId>());
         winfoWrap.setIsMinimized(winfo.hasState(NET::Hidden));
         winfoWrap.setIsMaxVert(winfo.hasState(NET::MaxVert));
@@ -342,6 +344,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsValid(true);
         winfoWrap.setIsPlasmaDesktop(true);
         winfoWrap.setWid(wid);
+        winfoWrap.setParentId(0);
         winfoWrap.setHasSkipTaskbar(true);
     }
 
@@ -653,6 +656,7 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
           && !(prop1 & NET::ActiveWindow)
           && !(prop1 & NET::WMDesktop)
           && !(prop1 & (NET::WMName | NET::WMVisibleName)
+          && !(prop2 & NET::WM2TransientFor)
           && !(prop2 & NET::WM2Activities)) ) {
         return;
     }

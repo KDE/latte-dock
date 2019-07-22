@@ -674,7 +674,7 @@ void Windows::cleanupFaultyWindows()
         auto winfo = m_windows[key];
 
         //! garbage windows removing
-        if (winfo.geometry() == QRect(0, 0, 0, 0)) {
+        if (winfo.wid()<=0 || winfo.geometry() == QRect(0, 0, 0, 0)) {
             //qDebug() << "Faulty Geometry ::: " << winfo.wid();
             m_windows.remove(key);
         }
@@ -734,6 +734,8 @@ void Windows::updateHints(Latte::View *view)
     bool foundTouchInCurScreen{false};
     bool foundMaximizedInCurScreen{false};
 
+    bool foundActiveGroupTouchInCurScreen{false};
+
     //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
     //! maybe a garbage collector here is a good idea!!!
     bool existsFaultyWindow{false};
@@ -743,7 +745,12 @@ void Windows::updateHints(Latte::View *view)
     WindowId touchWinId;
     WindowId activeTouchWinId;
 
+    //! First Pass
     for (const auto &winfo : m_windows) {
+        if (!existsFaultyWindow && (winfo.wid()<=0 || winfo.geometry() == QRect(0, 0, 0, 0))) {
+            existsFaultyWindow = true;
+        }
+
         if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo)) {
             continue;
         }
@@ -780,16 +787,45 @@ void Windows::updateHints(Latte::View *view)
             }
         }
 
-        if (!existsFaultyWindow && winfo.geometry() == QRect(0, 0, 0, 0)) {
-            existsFaultyWindow = true;
-        }
-
         //qDebug() << "window geometry ::: " << winfo.geometry();
     }
 
     if (existsFaultyWindow) {
         cleanupFaultyWindows();
     }
+
+    //! PASS 2
+    if (foundActiveInCurScreen && !foundActiveTouchInCurScreen) {
+        qDebug() << "Windows Array...";
+        for (const auto &winfo : m_windows) {
+            qDebug() << " - " << winfo.wid() << " - " << winfo.display() << " parent : " << winfo.parentId();
+        }
+        qDebug() << " - - - - - ";
+
+        //! Second Pass to track also Child windows if needed
+        WindowInfoWrap activeInfo = m_windows[activeWinId];
+        WindowId mainWindowId = activeInfo.isChildWindow() ? activeInfo.parentId() : activeWinId;
+
+        for (const auto &winfo : m_windows) {
+            if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo)) {
+                continue;
+            }
+
+            bool inActiveGroup = (winfo.wid() == mainWindowId || winfo.parentId() == mainWindowId);
+
+            //! consider only windows that belong to active window group meaning the main window
+            //! and its children
+            if (!inActiveGroup) {
+                continue;
+            }
+
+            if (isTouchingViewEdge(view, winfo) || isTouchingView(view, winfo)) {
+                foundActiveGroupTouchInCurScreen = true;
+                break;
+            }
+        }
+    }
+
 
     //! HACK: KWin Effects such as ShowDesktop have no way to be identified and as such
     //! create issues with identifying properly touching and maximized windows. BUT when
@@ -803,10 +839,10 @@ void Windows::updateHints(Latte::View *view)
 
     //! assign flags
     setExistsWindowActive(view, foundActiveInCurScreen);
-    setActiveWindowTouching(view, foundActiveTouchInCurScreen);
+    setActiveWindowTouching(view, foundActiveTouchInCurScreen || foundActiveGroupTouchInCurScreen);
     setActiveWindowMaximized(view, (maxWinId.toInt()>0 && (maxWinId == activeTouchWinId)));
     setExistsWindowMaximized(view, foundMaximizedInCurScreen);
-    setExistsWindowTouching(view, (foundTouchInCurScreen || foundActiveTouchInCurScreen));
+    setExistsWindowTouching(view, (foundTouchInCurScreen || foundActiveTouchInCurScreen || foundActiveGroupTouchInCurScreen));
 
     //! update color schemes for active and touching windows
     setActiveWindowScheme(view, (foundActiveInCurScreen ? m_wm->schemesTracker()->schemeForWindow(activeWinId) : nullptr));
@@ -827,10 +863,12 @@ void Windows::updateHints(Latte::View *view)
     }
 
     //! Debug
+    //qDebug() << " -- TRACKING REPORT --";
     //qDebug() << "TRACKING | SCREEN: " << view->positioner()->currentScreenId() << " , EDGE:" << view->location() << " , ENABLED:" << enabled(view);
     //qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
     //qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
     //         << " , existsWindowTouching:"<<existsWindowTouching(view);
+    //qDebug() << "TRACKING | existsActiveGroupTouching: " << foundActiveGroupTouchInCurScreen;
 }
 
 void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
@@ -850,6 +888,10 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
     WindowId maxWinId;
 
     for (const auto &winfo : m_windows) {
+        if (!existsFaultyWindow && (winfo.wid()<=0 || winfo.geometry() == QRect(0, 0, 0, 0))) {
+            existsFaultyWindow = true;
+        }
+
         if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo)) {
             continue;
         }
@@ -867,10 +909,6 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
         if (!foundActiveMaximized && winfo.isMaximized() && !winfo.isMinimized()) {
             foundMaximized = true;
             maxWinId = winfo.wid();
-        }
-
-        if (!existsFaultyWindow && winfo.geometry() == QRect(0, 0, 0, 0)) {
-            existsFaultyWindow = true;
         }
 
         //qDebug() << "window geometry ::: " << winfo.geometry();
@@ -904,6 +942,7 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
     }
 
     //! Debug
+    //qDebug() << " -- TRACKING REPORT --";
     //qDebug() << "TRACKING | SCREEN: " << view->positioner()->currentScreenId() << " , EDGE:" << view->location() << " , ENABLED:" << enabled(view);
     //qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
     //qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
