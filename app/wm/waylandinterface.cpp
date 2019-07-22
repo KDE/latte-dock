@@ -418,7 +418,7 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
 
     if (!w) return {};
 
-    return  requestInfo(w->internalId());
+    return requestInfo(w->internalId());
 }
 
 WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
@@ -435,6 +435,7 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
         } else if (isValidWindow(w)) {
             winfoWrap.setIsValid(true);
             winfoWrap.setWid(wid);
+            winfoWrap.setParentId(w->parentWindow() ? w->parentWindow()->internalId() : 0);
             winfoWrap.setIsActive(w->isActive());
             winfoWrap.setIsMinimized(w->isMinimized());
             winfoWrap.setIsMaxVert(w->isMaximized());
@@ -657,6 +658,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
     connect(w, SIGNAL(skipTaskbarChanged()), mapper, SLOT(map()) );
     connect(w, SIGNAL(onAllDesktopsChanged()), mapper, SLOT(map()) );
     connect(w, SIGNAL(virtualDesktopChanged()), mapper, SLOT(map()) );
+    connect(w, SIGNAL(parentWindowChanged()), mapper, SLOT(map()) );
 
 #if KF5_VERSION_MINOR >= 52
     connect(w, &KWayland::Client::PlasmaWindow::plasmaVirtualDesktopEntered, this,

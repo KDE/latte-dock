@@ -53,6 +53,7 @@ public:
 
     WindowInfoWrap(const WindowInfoWrap &o) noexcept
         : m_wid(o.m_wid)
+        , m_parentId(o.m_parentId)
         , m_geometry(o.m_geometry)
         , m_isValid(o.m_isValid)
         , m_isActive(o.m_isActive)
@@ -73,6 +74,7 @@ public:
 
     WindowInfoWrap(WindowInfoWrap &&o) noexcept
         : m_wid(o.m_wid)
+        , m_parentId(o.m_parentId)
         , m_geometry(o.m_geometry)
         , m_isValid(o.m_isValid)
         , m_isActive(o.m_isActive)
@@ -135,6 +137,9 @@ public:
     inline bool isOnAllActivities() const noexcept;
     inline void setIsOnAllActivities(bool allactivities) noexcept;
 
+    inline bool isMainWindow() const noexcept;
+    inline bool isChildWindow() const noexcept;
+
     inline QRect geometry() const noexcept;
     inline void setGeometry(const QRect &geometry) noexcept;
 
@@ -150,6 +155,9 @@ public:
     inline WindowId wid() const noexcept;
     inline void setWid(const WindowId &wid) noexcept;
 
+    inline WindowId parentId() const noexcept;
+    inline void setParentId(const WindowId &parentId) noexcept;
+
     inline QStringList desktops() const noexcept;
     inline void setDesktops(const QStringList &desktops) noexcept;
 
@@ -161,6 +169,8 @@ public:
 
 private:
     WindowId m_wid{0};
+    WindowId m_parentId{0};
+
     QRect m_geometry;
 
     bool m_isValid : 1;
@@ -189,6 +199,7 @@ private:
 inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
 {
     m_wid = rhs.m_wid;
+    m_parentId = rhs.m_parentId;
     m_geometry = rhs.m_geometry;
     m_isValid = rhs.m_isValid;
     m_isActive = rhs.m_isActive;
@@ -211,6 +222,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
 inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noexcept
 {
     m_wid = rhs.m_wid;
+    m_parentId = rhs.m_parentId;
     m_geometry = std::move(rhs.m_geometry);
     m_isValid = rhs.m_isValid;
     m_isActive = rhs.m_isActive;
@@ -370,6 +382,17 @@ inline void WindowInfoWrap::setIsOnAllActivities(bool allactivities) noexcept
     m_isOnAllActivities = allactivities;
 }
 
+inline bool WindowInfoWrap::isMainWindow() const noexcept
+{
+    return (m_parentId.toInt() <= 0);
+}
+
+inline bool WindowInfoWrap::isChildWindow() const noexcept
+{
+    return (m_parentId.toInt() > 0);
+}
+
+
 inline QString WindowInfoWrap::appName() const noexcept
 {
     return m_appName;
@@ -418,6 +441,20 @@ inline WindowId WindowInfoWrap::wid() const noexcept
 inline void WindowInfoWrap::setWid(const WindowId &wid) noexcept
 {
     m_wid = wid;
+}
+
+inline WindowId WindowInfoWrap::parentId() const noexcept
+{
+    return m_parentId;
+}
+
+inline void WindowInfoWrap::setParentId(const WindowId &parentId) noexcept
+{
+    if (m_wid == parentId) {
+        return;
+    }
+
+    m_parentId = parentId;
 }
 
 inline QStringList WindowInfoWrap::desktops() const noexcept

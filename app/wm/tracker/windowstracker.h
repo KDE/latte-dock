@@ -163,7 +163,7 @@ private:
     QHash<Latte::View *, TrackedViewInfo *> m_views;
     QHash<Latte::Layout::GenericLayout *, TrackedLayoutInfo *> m_layouts;
 
-    QMap<WindowId, WindowInfoWrap > m_windows;
+    QMap<WindowId, WindowInfoWrap> m_windows;
 };
 
 }
