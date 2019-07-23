@@ -1431,6 +1431,8 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
     //! sort views data
     viewsData = sortedViewsData(viewsData);
 
+    QStringList unknownScreens;
+
     //! print viewData results
     for (int i=0; i<viewsData.count(); ++i) {
         report += "<tr>";
@@ -1448,7 +1450,13 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
             screenStr = "<font color='green'>" + screenStr + "</font>";
         }
         if (!viewsData[i].onPrimary) {
-            screenStr = screenPool->connector(viewsData[i].screenId);
+            if (!screenPool->hasId(viewsData[i].screenId)) {
+                screenStr = "<font color='red'><i>[" + QString::number(viewsData[i].screenId) + "]</i></font>";
+
+                unknownScreens << QString("[" + QString::number(viewsData[i].screenId) + "]");
+            } else {
+                screenStr = screenPool->connector(viewsData[i].screenId);
+            }
         }
         if(viewsData[i].active) {
             screenStr = "<b>" + screenStr + "</b>";
@@ -1489,13 +1497,20 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
     QStringList errorsList;
     bool broken = m_storage->layoutIsBroken(errorsList);
 
-    if (!broken) {
+    if (!broken && unknownScreens.count() == 0) {
         report += "<font color='green'>" + i18n("No errors were identified for this layout...") + "</font><br/>";
     } else {
         report += "<font color='red'><b>" + i18n("Errors:") + "</b></font><br/>";
+    }
+
+    if (broken){
         for(int i=0; i<errorsList.count(); ++i) {
             report += "<font color='red'><b>[" + QString::number(i) + "] - " + errorsList[i] + "</b></font><br/>";
         }
+    }
+
+    if (unknownScreens.count() > 0) {
+        report += "<font color='red'><b>" + i18n("Unknown screens: ") + unknownScreens.join(", ") + "</b></font><br/>";
     }
 
     return report;
