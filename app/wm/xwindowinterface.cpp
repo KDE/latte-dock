@@ -321,7 +321,9 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 
     WindowInfoWrap winfoWrap;
 
-    if (isValidWindow(winfo) && !isPlasmaDesktop) {
+    if (!winfo.valid()) {
+        winfoWrap.setIsValid(false);
+    } else if (isValidWindow(winfo) && !isPlasmaDesktop) {
         winfoWrap.setIsValid(true);
         winfoWrap.setWid(wid);
         winfoWrap.setParentId(winfo.transientFor());
@@ -645,7 +647,7 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     //! ignore when the user presses a key, or a window is sending X events etc.
     //! without needing to (e.g. Firefox, https://bugzilla.mozilla.org/show_bug.cgi?id=1389953)
     //! NET::WM2UserTime, NET::WM2IconPixmap etc....
-    if (prop1 == 0 && !(prop2 & NET::WM2Activities)) {
+    if (prop1 == 0 && !(prop2 & (NET::WM2Activities | NET::WM2TransientFor))) {
         return;
     }
 

@@ -453,7 +453,7 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
             winfoWrap.setActivities(QStringList());
         }
     } else {
-        return {};
+        winfoWrap.setIsValid(false);
     }
 
     return winfoWrap;
