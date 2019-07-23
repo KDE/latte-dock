@@ -797,12 +797,12 @@ void Windows::updateHints(Latte::View *view)
     //! PASS 2
     if (foundActiveInCurScreen && !foundActiveTouchInCurScreen) {
         //! Second Pass to track also Child windows if needed
-        /*qDebug() << "Windows Array...";
-        for (const auto &winfo : m_windows) {
-            qDebug() << " - " << winfo.wid() << " - " << winfo.display() << " parent : " << winfo.parentId();
-        }
-        qDebug() << " - - - - - ";
-        */
+
+        //qDebug() << "Windows Array...";
+        //for (const auto &winfo : m_windows) {
+        //    qDebug() << " - " << winfo.wid() << " - " << winfo.isValid() << " - " << winfo.display() << " - " << winfo.geometry() << " parent : " << winfo.parentId();
+        //}
+        //qDebug() << " - - - - - ";
 
         WindowInfoWrap activeInfo = m_windows[activeWinId];
         WindowId mainWindowId = activeInfo.isChildWindow() ? activeInfo.parentId() : activeWinId;
