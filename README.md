@@ -16,8 +16,13 @@ Installation
 
 ## Requirements
 
-We recommend that you use at least **Plasma 5.12.0**
+We recommend to use at least:
+ **Plasma >= 5.15.0**
+ **Qt >= 5.12**
 
+
+Minimum requirements:
+ 
 **tools:**
 ```
  bash

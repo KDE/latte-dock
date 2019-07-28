@@ -1,5 +1,23 @@
 #**CHANGELOG**#
 
+#### Version 0.9.0
+
+* Smart Coloring
+  --maximum contrast with desktop background when needed
+  --use active or touching window color scheme to paint dock/panel contents
+  --use reverse colors from plasma theme, meaning dark plasma themes can provide also whitish docks/panels
+* Self-packaged Indicators that can be installed from kde store
+* Live Editing Mode to inspect your settings changes immediately
+* Flexible window layout for settings
+* Shared Layouts under Multiple Layouts Environments
+* Improve badges experience and layout
+* Enhanced Active Window experience, drag/maximize/restore active window from empty areas
+* Track "LastActiveWindow" at per screen/activity and inform applets
+* Support scrolling for Latte Tasks plasmoid
+* Independent multi-screen dynamic background and identify "busy" backgrounds
+* Outline option for background
+* plenty more fixes and improvements all over the place
+
 #### Version 0.8.9
 
 * fix: show notifications applet when in Latte (for plasma >= 5.16)
