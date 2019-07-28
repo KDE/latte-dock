@@ -109,7 +109,7 @@ Item {
                 }
 
                 if (taskItem.badgeIndicator > 0 || (taskIcon.smartLauncherItem && taskIcon.smartLauncherItem.countVisible)) {
-                    return 100;
+                    return 1;
                 }
 
                 return 0;

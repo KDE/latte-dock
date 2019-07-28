@@ -64,8 +64,13 @@ Rectangle {
     readonly property bool singleCharacter: (showNumber && numberValue<=9 && numberValue>=0)|| (showText && textValue.length===1)
 
     onProportionChanged: {
-        //  console.log(previousProportion + " - "+proportion);
-        if ((proportion - 0.03 >= previousProportion) || (proportion===1)) {
+        if (proportion<0.03) {
+            previousProportion = 0;
+        }
+
+        //console.log(previousProportion + " - "+proportion);
+        var currentStep = (proportion - previousProportion);
+        if ((currentStep >= 0.01) || (proportion>=1 && previousProportion !==1)) {
             //   console.log("request repaint...");
             previousProportion = proportion;
             repaint();
@@ -120,7 +125,7 @@ Rectangle {
         anchors.fill: canvas
         color: canvas.drawColor
 
-        visible: proportion === 100 && showNumber
+        visible: proportion === 1 && showNumber
         radius: parent.radius
     }
 
@@ -178,7 +183,7 @@ Rectangle {
                 return parent.borderColor
             }
 
-            return proportion === 100 ? parent.highlightedColor : parent.color
+            return proportion === 1 ? parent.highlightedColor : parent.color
         }
         color: "transparent"
         radius: parent.radius
