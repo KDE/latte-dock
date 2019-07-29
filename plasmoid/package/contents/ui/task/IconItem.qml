@@ -153,14 +153,8 @@ Item{
 
             anchors.centerIn: parent
 
-            //! HACK TO AVOID PIXELIZATION
-            //! WORKAROUND: When the parabolic effect is disabled zoom=1.0 and no
-            //! Shadows are enabled for Items then many task icons look pixelated.
-            //! I dont know how multiplying the width *1.0002 helps the situation
-            //! but it does. After adding any multipier e.g. *1.0002 the pixelated
-            //! icons are gone
-            width: Math.round(newTempSize) * 1.0002
-            height: Math.round(width) * 1.0002
+            width: Math.round(newTempSize)
+            height: Math.round(width)
             source: decoration
             smooth: root.zoomFactor === 1 ? true : false
             providesColors: indicators ? indicators.info.needsIconColors : false
@@ -513,9 +507,8 @@ Item{
         //! moved out of badgeVisualsLoader in order to avoid crashes
         //! when the latte view is removed
         Loader {
-            //! HACK TO AVOID PIXELIZATION
-            width: iconImageBuffer.width * 1.0002
-            height: iconImageBuffer.height * 1.0002
+            width: iconImageBuffer.width
+            height: iconImageBuffer.height
             anchors.centerIn: iconImageBuffer
 
             active: badgeVisualsLoader.active
@@ -533,9 +526,8 @@ Item{
         //! Effects
         Colorize{
             id: stateColorizer
-            //! HACK TO AVOID PIXELIZATION
-            width: iconImageBuffer.width * 1.0002
-            height: iconImageBuffer.height * 1.0002
+            width: iconImageBuffer.width
+            height: iconImageBuffer.height
             anchors.centerIn: iconImageBuffer
 
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
@@ -550,9 +542,8 @@ Item{
 
         BrightnessContrast{
             id:hoveredImage
-            //! HACK TO AVOID PIXELIZATION
-            width: iconImageBuffer.width * 1.0002
-            height: iconImageBuffer.height * 1.0002
+            width: iconImageBuffer.width
+            height: iconImageBuffer.height
             anchors.centerIn: iconImageBuffer
 
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
@@ -569,9 +560,8 @@ Item{
 
         BrightnessContrast {
             id: brightnessTaskEffect
-            //! HACK TO AVOID PIXELIZATION
-            width: iconImageBuffer.width * 1.0002
-            height: iconImageBuffer.height * 1.0002
+            width: iconImageBuffer.width
+            height: iconImageBuffer.height
             anchors.centerIn: iconImageBuffer
 
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
