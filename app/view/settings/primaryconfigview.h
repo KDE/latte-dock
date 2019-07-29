@@ -22,7 +22,7 @@
 #define PRIMARYCONFIGVIEW_H
 
 // local
-#include "../../plasmaquick/configview.h"
+#include "../../plasma/quick/configview.h"
 #include "../../wm/windowinfowrap.h"
 #include "../../../liblatte2/types.h"
 
