@@ -515,6 +515,12 @@ Item{
             sourceComponent: Colorize{
                 source: badgeVisualsLoader.item
 
+                //! HACK TO AVOID PIXELIZATION
+                //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
+                //! the icon appears pixelated. It is even most notable when zoomFactor === 1
+                //! I dont know enabling cached=true helps, but it does.
+                cached: true
+
                 opacity: stateColorizer.opacity
                 hue: stateColorizer.hue
                 saturation: stateColorizer.saturation
@@ -526,9 +532,15 @@ Item{
         //! Effects
         Colorize{
             id: stateColorizer
+            anchors.centerIn: iconImageBuffer
             width: iconImageBuffer.width
             height: iconImageBuffer.height
-            anchors.centerIn: iconImageBuffer
+
+            //! HACK TO AVOID PIXELIZATION
+            //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
+            //! the icon appears pixelated. It is even most notable when zoomFactor === 1
+            //! I dont know enabling cached=true helps, but it does.
+            cached: true
 
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
             visible: !isSeparator
@@ -542,9 +554,15 @@ Item{
 
         BrightnessContrast{
             id:hoveredImage
+            anchors.centerIn: iconImageBuffer
             width: iconImageBuffer.width
             height: iconImageBuffer.height
-            anchors.centerIn: iconImageBuffer
+
+            //! HACK TO AVOID PIXELIZATION
+            //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
+            //! the icon appears pixelated. It is even most notable when zoomFactor === 1
+            //! I dont know enabling cached=true helps, but it does.
+            cached: true
 
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
             visible: !isSeparator
@@ -560,9 +578,15 @@ Item{
 
         BrightnessContrast {
             id: brightnessTaskEffect
+            anchors.centerIn: iconImageBuffer
             width: iconImageBuffer.width
             height: iconImageBuffer.height
-            anchors.centerIn: iconImageBuffer
+
+            //! HACK TO AVOID PIXELIZATION
+            //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
+            //! the icon appears pixelated. It is even most notable when zoomFactor === 1
+            //! I dont know enabling cached=true helps, but it does.
+            cached: true
 
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
 
