@@ -871,6 +871,12 @@ Item {
             mouse.accepted = false;
         }
 
+        //! these are needed in order for these events to be really forwarded underneath
+        //! otherwise there were applets that did not receive them e.g. lock/logout applet
+        //! when parabolic effect was used
+        onPressed: mouse.accepted = false;
+        onReleased: mouse.accepted = false;
+
         onWheel: {
             if (isSeparator || !root.mouseWheelActions || blockWheel
                     || (root.latteViewIsHidden || root.inSlidingIn || root.inSlidingOut)){
