@@ -101,7 +101,8 @@ See the [installation instruction](./INSTALLATION.md) for others Linux distribut
 ## Run Latte-Dock
 
 Latte is now ready to be used by executing 
-```latte-dock
+```
+latte-dock
 ```
 
 or activating **Latte Dock** from applications menu.
