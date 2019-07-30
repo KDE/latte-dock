@@ -39,6 +39,10 @@
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
 
+//! Hide Timer can create cases that when it is low it does not allow the
+//! view to be show. For example !compositing+kwin_edges+hide inteval<50ms
+const int HIDEMINIMUMINTERVAL = 50;
+
 namespace Latte {
 namespace ViewPart {
 
@@ -272,27 +276,27 @@ QRect VisibilityManager::acceptableStruts()
     QRect calcs;
 
     switch (m_latteView->location()) {
-        case Plasma::Types::TopEdge: {
-            calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->width(), m_latteView->normalThickness());
-            break;
-        }
+    case Plasma::Types::TopEdge: {
+        calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->width(), m_latteView->normalThickness());
+        break;
+    }
 
-        case Plasma::Types::BottomEdge: {
-            int y = m_latteView->y() + m_latteView->height() - m_latteView->normalThickness();
-            calcs = QRect(m_latteView->x(), y, m_latteView->width(), m_latteView->normalThickness());
-            break;
-        }
+    case Plasma::Types::BottomEdge: {
+        int y = m_latteView->y() + m_latteView->height() - m_latteView->normalThickness();
+        calcs = QRect(m_latteView->x(), y, m_latteView->width(), m_latteView->normalThickness());
+        break;
+    }
 
-        case Plasma::Types::LeftEdge: {
-            calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->normalThickness(), m_latteView->height());
-            break;
-        }
+    case Plasma::Types::LeftEdge: {
+        calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->normalThickness(), m_latteView->height());
+        break;
+    }
 
-        case Plasma::Types::RightEdge: {
-            int x = m_latteView->x() + m_latteView->width() - m_latteView->normalThickness();
-            calcs = QRect(x, m_latteView->y(), m_latteView->normalThickness(), m_latteView->height());
-            break;
-        }
+    case Plasma::Types::RightEdge: {
+        int x = m_latteView->x() + m_latteView->width() - m_latteView->normalThickness();
+        calcs = QRect(x, m_latteView->y(), m_latteView->normalThickness(), m_latteView->height());
+        break;
+    }
     }
 
     return calcs;
@@ -382,6 +386,10 @@ int VisibilityManager::timerShow() const
 
 void VisibilityManager::setTimerShow(int msec)
 {
+    if (m_timerShow.interval() == msec) {
+        return;
+    }
+
     m_timerShow.setInterval(msec);
     emit timerShowChanged();
 }
@@ -393,7 +401,13 @@ int VisibilityManager::timerHide() const
 
 void VisibilityManager::setTimerHide(int msec)
 {
-    m_timerHide.setInterval(msec);
+    int interval = qMax(HIDEMINIMUMINTERVAL, msec);
+
+    if (m_timerHide.interval() == interval) {
+        return;
+    }
+
+    m_timerHide.setInterval(interval);
     emit timerHideChanged();
 }
 
@@ -581,7 +595,7 @@ void VisibilityManager::restoreConfig()
 
     auto config = m_latteView->containment()->config();
     m_timerShow.setInterval(config.readEntry("timerShow", 0));
-    m_timerHide.setInterval(config.readEntry("timerHide", 700));
+    m_timerHide.setInterval(qMax(HIDEMINIMUMINTERVAL, config.readEntry("timerHide", 700)));
     emit timerShowChanged();
     emit timerHideChanged();
 
@@ -694,9 +708,9 @@ void VisibilityManager::setEnableKWinEdges(bool enable)
 void VisibilityManager::updateKWinEdgesSupport()
 {
     if ((m_mode == Types::AutoHide
-            || m_mode == Types::DodgeActive
-            || m_mode == Types::DodgeAllWindows
-            || m_mode == Types::DodgeMaximized)
+         || m_mode == Types::DodgeActive
+         || m_mode == Types::DodgeAllWindows
+         || m_mode == Types::DodgeMaximized)
             && (!m_latteView->byPassWM()) ) {
         if (m_enableKWinEdgesFromUser) {
             createEdgeGhostWindow();
