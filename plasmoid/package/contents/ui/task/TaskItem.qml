@@ -787,7 +787,7 @@ MouseArea{
         if(pressed && (!inBlockingAnimation || inAttentionAnimation) && !isSeparator){
 
             if (modifierAccepted(mouse) && !root.disableAllWindowsFunctionality){
-                if( !taskItem.isLauncher){
+                if( !taskItem.isLauncher ){
                     if (root.modifierClickAction == Latte.Types.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
                     } else if (root.modifierClickAction == Latte.Types.Close) {
@@ -806,7 +806,7 @@ MouseArea{
                     activateTask();
                 }
             } else if (mouse.button == Qt.MidButton && !root.disableAllWindowsFunctionality){
-                if( !taskItem.isLauncher){
+                if( !taskItem.isLauncher ){
                     if (root.middleClickAction == Latte.Types.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
                     } else if (root.middleClickAction == Latte.Types.Close) {
@@ -825,20 +825,24 @@ MouseArea{
                     activateTask();
                 }
             } else if (mouse.button == Qt.LeftButton){
-                if( !taskItem.isLauncher){
-                    if (root.leftClickAction === Latte.Types.PresentWindows && !(isGroupParent && !Latte.WindowSystem.compositingActive)) {
+                if( !taskItem.isLauncher ){
+                    if (root.leftClickAction === Latte.Types.PreviewWindows
+                            || (Latte.WindowSystem.isPlatformWayland
+                                && root.leftClickAction === Latte.Types.PresentWindows
+                                && isGroupParent)
+                            || !Latte.WindowSystem.compositingActive) {
+                        if(windowsPreviewDlg.activeItem !== taskItem){
+                            showPreviewWindow();
+                        } else {
+                            hidePreviewWindow();
+                        }
+                    } else if (root.leftClickAction === Latte.Types.PresentWindows && !(isGroupParent && !Latte.WindowSystem.compositingActive)) {
                         activateTask();
                     } else if (root.leftClickAction === Latte.Types.CycleThroughTasks) {
                         if (isGroupParent)
                             subWindows.activateNextTask();
                         else
                             activateTask();
-                    } else if (root.leftClickAction === Latte.Types.PreviewWindows || !Latte.WindowSystem.compositingActive) {
-                        if(windowsPreviewDlg.activeItem !== taskItem){
-                            showPreviewWindow();
-                        } else {
-                            hidePreviewWindow();
-                        }
                     }
                 } else {
                     activateTask();
