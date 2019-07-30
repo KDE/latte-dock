@@ -600,13 +600,9 @@ Item{
             }
 
             //console.log("update geometry ::: "+tempGeometry);
-            if (!Latte.WindowSystem.compositingActive) {
-                latteView.localGeometry = latteView.effects.rect;
-            } else {
-                latteView.localGeometry = tempGeometry;
-            }
-        }
 
+            latteView.localGeometry = tempGeometry;
+        }
     }
 
     Loader{
@@ -745,6 +741,11 @@ Item{
             }
 
             latteView.visibility.slideInFinished();
+
+            if (!Latte.WindowSystem.compositingActive) {
+                //! this is needed in order to update dock absolute geometry correctly in the end
+                updateMaskArea();
+            }
         }
 
         function init() {
