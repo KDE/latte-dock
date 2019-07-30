@@ -93,7 +93,7 @@ Item{
 
         //! give some more space when items shadows are enabled and extremely big
         if (root.enableShadows && root.maxThickMargin < shadowMaxNeededMargin) {
-                return shadowMaxNeededMargin - root.maxThickMargin;
+            return shadowMaxNeededMargin - root.maxThickMargin;
         }
 
         return 0;
@@ -507,7 +507,7 @@ Item{
             if (root.isVertical) {
                 maskThickness = maskArea.width;
             }
-        } else if (!noCompositingEdit){            
+        } else if (!noCompositingEdit){
             //! no compositing case
             var overridesHidden = latteView.visibility.isHidden && !latteView.visibility.supportsKWinEdges;
 
@@ -575,8 +575,7 @@ Item{
 
             //the shadows size must be removed from the maskArea
             //before updating the localDockGeometry
-            if ((!latteView.behaveAsPlasmaPanel || root.editMode)
-                    && Latte.WindowSystem.compositingActive) {
+            if (!latteView.behaveAsPlasmaPanel || root.editMode) {
                 var fixedThickness = root.editMode ? root.iconSize + root.thickMargins : root.realPanelThickness;
 
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
@@ -600,7 +599,6 @@ Item{
             }
 
             //console.log("update geometry ::: "+tempGeometry);
-
             latteView.localGeometry = tempGeometry;
         }
     }
