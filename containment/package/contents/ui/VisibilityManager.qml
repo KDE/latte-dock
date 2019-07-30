@@ -507,32 +507,34 @@ Item{
             if (root.isVertical) {
                 maskThickness = maskArea.width;
             }
-        } else if (!noCompositingEdit){
+        } else if (!noCompositingEdit){            
             //! no compositing case
-            if (!latteView.visibility.isHidden || !latteView.visibility.supportsKWinEdges) {
+            var overridesHidden = latteView.visibility.isHidden && !latteView.visibility.supportsKWinEdges;
+
+            if (!overridesHidden) {
                 localX = latteView.effects.rect.x;
                 localY = latteView.effects.rect.y;
             } else {
                 if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
                     localX = latteView.effects.rect.x;
-                    localY = latteView.effects.rect.y+latteView.effects.rect.height+thicknessAutoHidden;
+                    localY = root.height - thicknessAutoHidden;
                 } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                     localX = latteView.effects.rect.x;
-                    localY = latteView.effects.rect.y - thicknessAutoHidden;
+                    localY = 0;
                 } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    localX = latteView.effects.rect.x - thicknessAutoHidden;
+                    localX = 0;
                     localY = latteView.effects.rect.y;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    localX = latteView.effects.rect.x + latteView.effects.rect.width + 1;
+                    localX = root.width - thicknessAutoHidden;
                     localY = latteView.effects.rect.y;
                 }
             }
 
             if (root.isHorizontal) {
-                tempThickness = latteView.effects.rect.height;
+                tempThickness = overridesHidden ? thicknessAutoHidden : latteView.effects.rect.height;
                 tempLength = latteView.effects.rect.width;
             } else {
-                tempThickness = latteView.effects.rect.width;
+                tempThickness = overridesHidden ? thicknessAutoHidden : latteView.effects.rect.width;
                 tempLength = latteView.effects.rect.height;
             }
         }
