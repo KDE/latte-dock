@@ -60,7 +60,8 @@ Loader{
     readonly property bool editModeTextColorIsBright: ColorizerTools.colorBrightness(editModeTextColor) > 127.5
     readonly property color editModeTextColor: latteView && latteView.layout ? latteView.layout.textColor : "white"
 
-    readonly property bool mustBeShown: (applyTheme && applyTheme !== theme) || (root.inConfigureAppletsMode && (root.themeColors === Latte.Types.SmartThemeColors))
+    readonly property bool mustBeShown: (applyTheme && applyTheme !== theme)
+                                        || (root.inConfigureAppletsMode && (root.themeColors === Latte.Types.SmartThemeColors))
 
     readonly property real currentBackgroundBrightness: item ? item.currentBrightness : -1000
 
@@ -102,10 +103,25 @@ Loader{
             }
 
             if (root.themeColors === Latte.Types.SmartThemeColors) {
-                if (currentBackgroundBrightness > 127.5) {
-                    return themeExtended.lightTheme;
+                //! Smart Colors Case
+                if (!root.forcePanelForBusyBackground) {
+                    //! simple case that not a busy background is applied
+                    return currentBackgroundBrightness > 127.5 ? themeExtended.lightTheme : themeExtended.darkTheme;
                 } else {
-                    return themeExtended.darkTheme;
+                    //! Smart + Busy background case
+                    var themeContrastedTextColor = currentBackgroundBrightness > 127.5 ? themeExtended.lightTheme : themeExtended.darkTheme;
+                    var themeContrastedBackground = currentBackgroundBrightness > 127.5 ? themeExtended.darkTheme : themeExtended.lightTheme;
+
+                    if (root.panelTransparency < 35) {
+                        //! textColor should be better to provide the needed contrast
+                        return themeContrastedTextColor;
+                    } else if (root.panelTransparency >= 35 && root.panelTransparency <= 70) {
+                        //! provide a dark case scenario at all cases
+                        return themeExtended.darkTheme;
+                    } else {
+                        //! default plasma theme shoud be better for panel transparency > 70
+                        return theme;
+                    }
                 }
             }
         }
