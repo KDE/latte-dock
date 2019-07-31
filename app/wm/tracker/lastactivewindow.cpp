@@ -391,6 +391,10 @@ void LastActiveWindow::requestClose()
 
 void LastActiveWindow::requestMove(Latte::View *fromView, int localX, int localY)
 {
+    if (!canBeDragged()) {
+        return;
+    }
+
     QPoint globalPoint{fromView->x() + localX, fromView->y() + localY};
 
     m_wm->requestMoveWindow(m_winId, globalPoint);

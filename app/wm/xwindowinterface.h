@@ -71,6 +71,7 @@ public:
     void requestToggleMaximized(WindowId wid) const override;
 
     bool windowCanBeDragged(WindowId wid) const override;
+    bool windowCanBeMaximized(WindowId wid) const override;
 
     QIcon iconFor(WindowId wid) const override;
     WindowId winIdFor(QString appId, QRect geometry) const override;   
