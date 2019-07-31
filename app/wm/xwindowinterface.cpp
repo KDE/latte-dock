@@ -397,11 +397,27 @@ QUrl XWindowInterface::windowUrl(WindowId wid) const
 bool XWindowInterface::windowCanBeDragged(WindowId wid) const
 {
     KWindowInfo info(wid.value<WId>(), 0, NET::WM2AllowedActions);
+
     if (info.valid()) {
         WindowInfoWrap winfo = requestInfo(wid);
         return (winfo.isValid()
                 && info.actionSupported(NET::ActionMove)
                 && !winfo.isMinimized()
+                && !winfo.isPlasmaDesktop());
+    }
+
+    return false;
+}
+
+bool XWindowInterface::windowCanBeMaximized(WindowId wid) const
+{
+    KWindowInfo info(wid.value<WId>(), 0, NET::WM2AllowedActions);
+
+    if (info.valid()) {
+        WindowInfoWrap winfo = requestInfo(wid);
+        return (winfo.isValid()
+                && !winfo.isMinimized()
+                && info.actionSupported(NET::ActionMax)
                 && !winfo.isPlasmaDesktop());
     }
 
@@ -550,6 +566,10 @@ void XWindowInterface::requestToggleMinimized(WindowId wid) const
 
 void XWindowInterface::requestToggleMaximized(WindowId wid) const
 {
+    if (!windowCanBeMaximized(wid)) {
+        return;
+    }
+
     WindowInfoWrap wInfo = requestInfo(wid);
     bool restore = wInfo.isMaxHoriz() && wInfo.isMaxVert();
 

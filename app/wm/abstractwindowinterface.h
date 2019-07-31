@@ -109,6 +109,7 @@ public:
     virtual void requestToggleMaximized(WindowId wid) const = 0;
 
     virtual bool windowCanBeDragged(WindowId wid) const = 0;
+    virtual bool windowCanBeMaximized(WindowId wid) const = 0;
 
     virtual QIcon iconFor(WindowId wid) const = 0;
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;

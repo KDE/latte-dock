@@ -523,6 +523,21 @@ bool WaylandInterface::windowCanBeDragged(WindowId wid) const
     return false;
 }
 
+bool WaylandInterface::windowCanBeMaximized(WindowId wid) const
+{
+    auto w = windowFor(wid);
+
+    if (w && isValidWindow(w)) {
+        WindowInfoWrap winfo = requestInfo(wid);
+        return (winfo.isValid()
+                && w->isMaximizeable()
+                && !winfo.isMinimized()
+                && !winfo.isPlasmaDesktop());
+    }
+
+    return false;
+}
+
 void WaylandInterface::releaseMouseEventFor(WindowId wid) const
 {
     // this isnt really needed under wayland
@@ -604,7 +619,7 @@ void WaylandInterface::requestToggleMaximized(WindowId wid) const
 {
     auto w = windowFor(wid);
 
-    if (w && isValidWindow(w)) {
+    if (w && isValidWindow(w) && windowCanBeMaximized(wid)) {
 #if KF5_VERSION_MINOR >= 52
         if (!m_currentDesktop.isEmpty()) {
             w->requestEnterVirtualDesktop(m_currentDesktop);
