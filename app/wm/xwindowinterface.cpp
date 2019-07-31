@@ -396,8 +396,16 @@ QUrl XWindowInterface::windowUrl(WindowId wid) const
 
 bool XWindowInterface::windowCanBeDragged(WindowId wid) const
 {
-    WindowInfoWrap winfo = requestInfo(wid);
-    return (winfo.isValid() && !winfo.isMinimized() && !winfo.isPlasmaDesktop());
+    KWindowInfo info(wid.value<WId>(), 0, NET::WM2AllowedActions);
+    if (info.valid()) {
+        WindowInfoWrap winfo = requestInfo(wid);
+        return (winfo.isValid()
+                && info.actionSupported(NET::ActionMove)
+                && !winfo.isMinimized()
+                && !winfo.isPlasmaDesktop());
+    }
+
+    return false;
 }
 
 void XWindowInterface::releaseMouseEventFor(WindowId wid) const
