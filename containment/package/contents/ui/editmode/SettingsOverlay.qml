@@ -51,13 +51,18 @@ Item{
 
     readonly property real textColorBrightness: ColorizerTools.colorBrightness(textColor)
     readonly property bool textColorIsDark: textColorBrightness < 127.5
-    readonly property color textColor: {
-        if (imageTiler.opacity <= 0.4) {
-            return colorizerManager.applyColor;
-        } else {
-            return latteView && latteView.layout ? latteView.layout.textColor : "#D7E3FF";
+
+    readonly property color bestContrastedTextColor: {
+        if (imageTiler.opacity <= 0.4 && !root.inConfigureAppletsMode && themeExtended) {
+            return colorizerManager.currentBackgroundBrightness > 127.5 ?
+                        themeExtended.lightTheme.textColor :
+                        themeExtended.darkTheme.textColor;
         }
+
+        return latteView && latteView.layout ? latteView.layout.textColor : "#D7E3FF";
     }
+
+    readonly property color textColor: bestContrastedTextColor
 
     layer.enabled: true
     layer.effect: DropShadow{

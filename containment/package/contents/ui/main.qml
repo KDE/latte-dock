@@ -144,8 +144,10 @@ Item {
                                          && !(windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.currentScreen.activeWindowTouching)
                                          && !(windowColors === Latte.Types.ActiveWindowColors && selectedWindowsTracker.existsWindowActive)
 
-    property bool forcePanelForBusyBackground: userShowPanelBackground && root.forceTransparentPanel
-                                               && colorizerManager.mustBeShown && colorizerManager.backgroundIsBusy
+    property bool forcePanelForBusyBackground: userShowPanelBackground
+                                               && root.forceTransparentPanel
+                                               && (root.themeColors === Latte.Types.SmartThemeColors)
+                                               && colorizerManager.backgroundIsBusy
 
     property int themeColors: plasmoid.configuration.themeColors
     property int windowColors: plasmoid.configuration.windowColors

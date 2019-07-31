@@ -503,13 +503,17 @@ Item{
         Colorizer.CustomBackground {
             id: overlayedBackground
             anchors.fill: solidBackground
+
+            readonly property bool busyBackground: root.forcePanelForBusyBackground
+                                                   && (solidBackground.opacity === 0 || !solidBackground.paintInstantly)
+            readonly property bool coloredView: colorizerManager.mustBeShown && colorizerManager.applyTheme !== theme
+
             opacity: {
-                if (root.forcePanelForBusyBackground
-                        && (solidBackground.opacity === 0 || !solidBackground.paintInstantly)) {
+                if (busyBackground) {
                     return plasmoid.configuration.panelTransparency / 100;
                 }
 
-                if (colorizerManager.mustBeShown && colorizerManager.applyTheme !== theme) {
+                if (coloredView) {
                     return midOpacity;
                 }
 
@@ -517,7 +521,7 @@ Item{
             }
 
             backgroundColor: {
-                if (colorizerManager.mustBeShown && colorizerManager.applyTheme !== theme) {
+                if (busyBackground || coloredView) {
                     return colorizerManager.backgroundColor;
                 }
 
