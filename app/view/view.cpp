@@ -655,6 +655,37 @@ void View::setLatteTasksArePresent(bool present)
     emit latteTasksArePresentChanged();
 }
 
+bool View::touchingBottomViewAndIsBusy() const
+{
+    return m_touchingBottomViewAndIsBusy;
+}
+
+void View::setTouchingBottomViewAndIsBusy(bool touchAndBusy)
+{
+    if (m_touchingBottomViewAndIsBusy == touchAndBusy) {
+        return;
+    }
+
+    m_touchingBottomViewAndIsBusy = touchAndBusy;
+
+    emit touchingBottomViewAndIsBusyChanged();
+}
+
+bool View::touchingTopViewAndIsBusy() const
+{
+    return m_touchingTopViewAndIsBusy;
+}
+
+void View::setTouchingTopViewAndIsBusy(bool touchAndBusy)
+{
+    if (m_touchingTopViewAndIsBusy == touchAndBusy) {
+        return;
+    }
+
+    m_touchingTopViewAndIsBusy = touchAndBusy;
+    emit touchingTopViewAndIsBusyChanged();
+}
+
 void View::preferredViewForShortcutsChangedSlot(Latte::View *view)
 {
     if (view != this) {

@@ -181,6 +181,34 @@ Item{
     }
 
     Binding{
+        target: latteView
+        property: "touchingTopViewAndIsBusy"
+        when: latteView
+        value: {
+            var isTouchingTopScreenEdge = (latteView.y === latteView.screenGeometry.y);
+            var hasTopBorder = ((latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.TopBorder)) > 0);
+
+            return root.isVertical && !isTouchingTopScreenEdge && !hasTopBorder && root.forcePanelForBusyBackground;
+        }
+    }
+
+    Binding{
+        target: latteView
+        property: "touchingBottomViewAndIsBusy"
+        when: latteView
+        value: {
+            var latteBottom = latteView.y + latteView.height;
+            var screenBottom = latteView.screenGeometry.y + latteView.screenGeometry.height;
+            var isTouchingBottomScreenEdge = (latteBottom === screenBottom);
+
+            var hasBottomBorder = ((latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.BottomBorder)) > 0);
+
+            return root.isVertical && !isTouchingBottomScreenEdge && !hasBottomBorder && root.forcePanelForBusyBackground;
+        }
+    }
+
+    //! View::Effects bindings
+    Binding{
         target: latteView && latteView.effects ? latteView.effects : null
         property: "backgroundOpacity"
         when: latteView && latteView.effects
@@ -240,6 +268,7 @@ Item{
         }
     }
 
+    //! View::WindowsTracker bindings
     Binding{
         target: latteView && latteView.windowsTracker ? latteView.windowsTracker : null
         property: "enabled"
