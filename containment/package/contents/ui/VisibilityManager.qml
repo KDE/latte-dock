@@ -182,7 +182,7 @@ Item{
 
     Binding{
         target: latteView
-        property: "touchingTopViewAndIsBusy"
+        property: "isTouchingTopViewAndIsBusy"
         when: latteView
         value: {
             var isTouchingTopScreenEdge = (latteView.y === latteView.screenGeometry.y);
@@ -194,7 +194,7 @@ Item{
 
     Binding{
         target: latteView
-        property: "touchingBottomViewAndIsBusy"
+        property: "isTouchingBottomViewAndIsBusy"
         when: latteView
         value: {
             var latteBottom = latteView.y + latteView.height;

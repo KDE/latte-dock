@@ -74,6 +74,20 @@ void TrackedViewInfo::setExistsWindowTouching(bool touching)
     m_existsWindowTouching = touching;
 }
 
+bool TrackedViewInfo::isTouchingBusyVerticalView() const
+{
+    return m_isTouchingBusyVerticalView;
+}
+
+void TrackedViewInfo::setIsTouchingBusyVerticalView(bool touching)
+{
+    if (m_isTouchingBusyVerticalView == touching) {
+        return;
+    }
+
+    m_isTouchingBusyVerticalView = touching;
+}
+
 QRect TrackedViewInfo::availableScreenGeometry() const
 {
     return m_availableScreenGeometry;

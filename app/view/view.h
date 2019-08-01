@@ -87,8 +87,8 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
 
     //! values to be used from Smart surrounding Views
-    Q_PROPERTY(bool touchingBottomViewAndIsBusy READ touchingBottomViewAndIsBusy WRITE setTouchingBottomViewAndIsBusy NOTIFY touchingBottomViewAndIsBusyChanged)
-    Q_PROPERTY(bool touchingTopViewAndIsBusy READ touchingTopViewAndIsBusy WRITE setTouchingTopViewAndIsBusy NOTIFY touchingTopViewAndIsBusyChanged)
+    Q_PROPERTY(bool isTouchingBottomViewAndIsBusy READ isTouchingBottomViewAndIsBusy WRITE setIsTouchingBottomViewAndIsBusy NOTIFY isTouchingBottomViewAndIsBusyChanged)
+    Q_PROPERTY(bool isTouchingTopViewAndIsBusy READ isTouchingTopViewAndIsBusy WRITE setIsTouchingTopViewAndIsBusy NOTIFY isTouchingTopViewAndIsBusyChanged)
 
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
     Q_PROPERTY(int fontPixelSize READ fontPixelSize WRITE setFontPixelSize NOTIFY fontPixelSizeChanged)
@@ -153,11 +153,11 @@ public:
     bool latteTasksArePresent() const;
     void setLatteTasksArePresent(bool present);
 
-    bool touchingBottomViewAndIsBusy() const;
-    void setTouchingBottomViewAndIsBusy(bool touchAndBusy);
+    bool isTouchingBottomViewAndIsBusy() const;
+    void setIsTouchingBottomViewAndIsBusy(bool touchAndBusy);
 
-    bool touchingTopViewAndIsBusy() const;
-    void setTouchingTopViewAndIsBusy(bool touchAndBusy);
+    bool isTouchingTopViewAndIsBusy() const;
+    void setIsTouchingTopViewAndIsBusy(bool touchAndBusy);
 
     float maxLength() const;
     void setMaxLength(float length);
@@ -264,6 +264,8 @@ signals:
     void inEditModeChanged();
     void indicatorChanged();
     void isPreferredForShortcutsChanged();
+    void isTouchingBottomViewAndIsBusyChanged();
+    void isTouchingTopViewAndIsBusyChanged();
     void latteTasksArePresentChanged();
     void layoutChanged();
     void localGeometryChanged();
@@ -274,8 +276,6 @@ signals:
     void onPrimaryChanged();
     void positionerChanged();
     void screenGeometryChanged();
-    void touchingBottomViewAndIsBusyChanged();
-    void touchingTopViewAndIsBusyChanged();
     void typeChanged();
     void visibilityChanged();
     void windowsTrackerChanged();
@@ -321,8 +321,8 @@ private:
     bool m_latteTasksArePresent{false};
     bool m_onPrimary{true};
 
-    bool m_touchingBottomViewAndIsBusy{false};
-    bool m_touchingTopViewAndIsBusy{false};
+    bool m_isTouchingBottomViewAndIsBusy{false};
+    bool m_isTouchingTopViewAndIsBusy{false};
 
     int m_fontPixelSize{ -1};
     int m_editThickness{24};

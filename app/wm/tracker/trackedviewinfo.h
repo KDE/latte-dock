@@ -56,6 +56,9 @@ public:
     bool existsWindowTouching() const;
     void setExistsWindowTouching(bool touching);
 
+    bool isTouchingBusyVerticalView() const;
+    void setIsTouchingBusyVerticalView(bool touching);
+
     QRect availableScreenGeometry() const;
     void setAvailableScreenGeometry(QRect geometry);
 
@@ -67,8 +70,9 @@ public:
     bool isTracking(const WindowInfoWrap &winfo) const override;
 
 private:
-    bool m_activeWindowTouching;
-    bool m_existsWindowTouching;
+    bool m_activeWindowTouching{false};
+    bool m_existsWindowTouching{false};
+    bool m_isTouchingBusyVerticalView{false};
 
     QRect m_availableScreenGeometry;
 

@@ -42,6 +42,11 @@ Windows::Windows(AbstractWindowInterface *parent)
 {
     m_wm = parent;
 
+    m_extraViewHintsTimer.setInterval(600);
+    m_extraViewHintsTimer.setSingleShot(true);
+
+    connect(&m_extraViewHintsTimer, &QTimer::timeout, this, &Windows::updateExtraViewHints);
+
     init();
 }
 
@@ -143,6 +148,7 @@ void Windows::initViewHints(Latte::View *view)
     setExistsWindowActive(view, false);
     setExistsWindowTouching(view, false);
     setExistsWindowMaximized(view, false);
+    setIsTouchingBusyVerticalView(view, false);
     setActiveWindowScheme(view, nullptr);
     setTouchingWindowScheme(view, nullptr);
 }
@@ -169,6 +175,9 @@ void Windows::addView(Latte::View *view)
     connect(view, &Latte::View::layoutChanged, this, [&, view]() {
         addRelevantLayout(view);
     });
+
+    connect(view, &Latte::View::isTouchingBottomViewAndIsBusy, this, &Windows::updateExtraViewHints);
+    connect(view, &Latte::View::isTouchingTopViewAndIsBusy, this, &Windows::updateExtraViewHints);
 
     updateAllHints();
 
@@ -367,6 +376,25 @@ void Windows::setExistsWindowTouching(Latte::View *view, bool windowTouching)
 
     m_views[view]->setExistsWindowTouching(windowTouching);
     emit existsWindowTouchingChanged(view);
+}
+
+bool Windows::isTouchingBusyVerticalView(Latte::View *view) const
+{
+    if (!m_views.contains(view)) {
+        return false;
+    }
+
+    return m_views[view]->isTouchingBusyVerticalView();
+}
+
+void Windows::setIsTouchingBusyVerticalView(Latte::View *view, bool viewTouching)
+{
+    if (!m_views.contains(view) || m_views[view]->isTouchingBusyVerticalView() == viewTouching) {
+        return;
+    }
+
+    m_views[view]->setIsTouchingBusyVerticalView(viewTouching);
+    emit isTouchingBusyVerticalViewChanged(view);
 }
 
 SchemeColors *Windows::activeWindowScheme(Latte::View *view) const
@@ -719,6 +747,45 @@ void Windows::updateAllHints()
 
     for (const auto layout : m_layouts.keys()) {
         updateHints(layout);
+    }
+
+    if (!m_extraViewHintsTimer.isActive()) {
+        m_extraViewHintsTimer.start();
+    }
+}
+
+void Windows::updateExtraViewHints()
+{
+    for (const auto horView : m_views.keys()) {
+        if (!m_views.contains(horView) || !m_views[horView]->enabled() || !m_views[horView]->isTrackingCurrentActivity()) {
+            continue;
+        }
+
+        if (horView->formFactor() == Plasma::Types::Horizontal) {
+            bool touchingBusyVerticalView{false};
+
+            for (const auto verView : m_views.keys()) {
+                if (!m_views.contains(verView) || !m_views[verView]->enabled() || !m_views[verView]->isTrackingCurrentActivity()) {
+                    continue;
+                }
+
+                bool sameScreen = (verView->positioner()->currentScreenId() == horView->positioner()->currentScreenId());
+
+                if (verView->formFactor() == Plasma::Types::Vertical && sameScreen) {
+                    bool topTouch = verView->isTouchingTopViewAndIsBusy() && horView->location() == Plasma::Types::TopEdge;
+                    bool bottomTouch = verView->isTouchingBottomViewAndIsBusy() && horView->location() == Plasma::Types::BottomEdge;
+
+                    if (topTouch || bottomTouch) {
+                        touchingBusyVerticalView = true;
+                        break;
+                    }
+                }
+            }
+
+            //qDebug() << " Touching Busy Vertical View :: " << horView->location() << " - " << horView->positioner()->currentScreenId() << " :: " << touchingBusyVerticalView;
+
+            setIsTouchingBusyVerticalView(horView, touchingBusyVerticalView);
+        }
     }
 }
 
