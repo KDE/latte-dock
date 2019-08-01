@@ -28,6 +28,7 @@
 
 #include <QHash>
 #include <QMap>
+#include <QTimer>
 
 namespace Latte {
 class View;
@@ -68,6 +69,7 @@ public:
     bool existsWindowActive(Latte::View *view) const;
     bool existsWindowMaximized(Latte::View *view) const;
     bool existsWindowTouching(Latte::View *view) const;
+    bool isTouchingBusyVerticalView(Latte::View *view) const;
     SchemeColors *activeWindowScheme(Latte::View *view) const;
     SchemeColors *touchingWindowScheme(Latte::View *view) const;
     LastActiveWindow *lastActiveWindow(Latte::View *view);
@@ -98,6 +100,7 @@ signals:
     void existsWindowActiveChanged(const Latte::View *view);
     void existsWindowMaximizedChanged(const Latte::View *view);
     void existsWindowTouchingChanged(const Latte::View *view);
+    void isTouchingBusyVerticalViewChanged(const Latte::View *view);
     void activeWindowSchemeChanged(const Latte::View *view);
     void touchingWindowSchemeChanged(const Latte::View *view);
     void informationAnnounced(const Latte::View *view);
@@ -122,6 +125,7 @@ private slots:
     void addRelevantLayout(Latte::View *view);
 
     void updateRelevantLayouts();
+    void updateExtraViewHints();
 
 private:
     void init();
@@ -140,6 +144,7 @@ private:
     void setExistsWindowActive(Latte::View *view, bool windowActive);
     void setExistsWindowMaximized(Latte::View *view, bool windowMaximized);
     void setExistsWindowTouching(Latte::View *view, bool windowTouching);
+    void setIsTouchingBusyVerticalView(Latte::View *view, bool viewTouching);
     void setActiveWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme);
     void setTouchingWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme);
 
@@ -159,6 +164,10 @@ private:
     bool isTouchingViewEdge(Latte::View *view, const WindowInfoWrap &winfo);
 
 private:
+    //! a timer in order to not overload the views extra hints checking because it is not
+    //! really needed that often
+    QTimer m_extraViewHintsTimer;
+
     AbstractWindowInterface *m_wm;
     QHash<Latte::View *, TrackedViewInfo *> m_views;
     QHash<Latte::Layout::GenericLayout *, TrackedLayoutInfo *> m_layouts;

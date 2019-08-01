@@ -366,7 +366,8 @@ Item{
 
             //! When switching from overlaied background to regular one this must be done
             //! instantly otherwise the transition is not smooth
-            readonly property bool paintInstantly: root.hasExpandedApplet && root.plasmaBackgroundForPopups
+            readonly property bool paintInstantly: (root.hasExpandedApplet && root.plasmaBackgroundForPopups)
+                                                   || root.plasmaStyleBusyForTouchingBusyVerticalView
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 

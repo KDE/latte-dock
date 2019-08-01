@@ -655,35 +655,35 @@ void View::setLatteTasksArePresent(bool present)
     emit latteTasksArePresentChanged();
 }
 
-bool View::touchingBottomViewAndIsBusy() const
+bool View::isTouchingBottomViewAndIsBusy() const
 {
-    return m_touchingBottomViewAndIsBusy;
+    return m_isTouchingBottomViewAndIsBusy;
 }
 
-void View::setTouchingBottomViewAndIsBusy(bool touchAndBusy)
+void View::setIsTouchingBottomViewAndIsBusy(bool touchAndBusy)
 {
-    if (m_touchingBottomViewAndIsBusy == touchAndBusy) {
+    if (m_isTouchingBottomViewAndIsBusy == touchAndBusy) {
         return;
     }
 
-    m_touchingBottomViewAndIsBusy = touchAndBusy;
+    m_isTouchingBottomViewAndIsBusy = touchAndBusy;
 
-    emit touchingBottomViewAndIsBusyChanged();
+    emit isTouchingBottomViewAndIsBusyChanged();
 }
 
-bool View::touchingTopViewAndIsBusy() const
+bool View::isTouchingTopViewAndIsBusy() const
 {
-    return m_touchingTopViewAndIsBusy;
+    return m_isTouchingTopViewAndIsBusy;
 }
 
-void View::setTouchingTopViewAndIsBusy(bool touchAndBusy)
+void View::setIsTouchingTopViewAndIsBusy(bool touchAndBusy)
 {
-    if (m_touchingTopViewAndIsBusy == touchAndBusy) {
+    if (m_isTouchingTopViewAndIsBusy == touchAndBusy) {
         return;
     }
 
-    m_touchingTopViewAndIsBusy = touchAndBusy;
-    emit touchingTopViewAndIsBusyChanged();
+    m_isTouchingTopViewAndIsBusy = touchAndBusy;
+    emit isTouchingTopViewAndIsBusyChanged();
 }
 
 void View::preferredViewForShortcutsChangedSlot(Latte::View *view)

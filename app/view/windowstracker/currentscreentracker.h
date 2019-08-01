@@ -53,6 +53,7 @@ class CurrentScreenTracker : public QObject {
     Q_PROPERTY(bool existsWindowActive READ existsWindowActive NOTIFY existsWindowActiveChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
     Q_PROPERTY(bool existsWindowTouching READ existsWindowTouching NOTIFY existsWindowTouchingChanged)
+    Q_PROPERTY(bool isTouchingBusyVerticalView READ isTouchingBusyVerticalView NOTIFY isTouchingBusyVerticalViewChanged)
     Q_PROPERTY(Latte::WindowSystem::SchemeColors *activeWindowScheme READ activeWindowScheme NOTIFY activeWindowSchemeChanged)
     Q_PROPERTY(Latte::WindowSystem::SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
 
@@ -67,6 +68,8 @@ public:
     bool existsWindowActive() const;
     bool existsWindowMaximized() const;
     bool existsWindowTouching() const;
+
+    bool isTouchingBusyVerticalView() const;
 
     WindowSystem::SchemeColors *activeWindowScheme() const;
     WindowSystem::SchemeColors *touchingWindowScheme() const;
@@ -83,6 +86,8 @@ signals:
     void existsWindowActiveChanged();
     void existsWindowMaximizedChanged();
     void existsWindowTouchingChanged();
+    void isTouchingBusyVerticalViewChanged();
+
     void activeWindowSchemeChanged();
     void touchingWindowSchemeChanged();
 

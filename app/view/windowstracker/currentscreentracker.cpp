@@ -90,6 +90,12 @@ void  CurrentScreenTracker::init()
         }
     });
 
+    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::isTouchingBusyVerticalViewChanged, this, [&](const Latte::View *view) {
+        if (m_latteView == view) {
+            emit isTouchingBusyVerticalViewChanged();
+        }
+    });
+
     connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::activeWindowSchemeChanged, this, [&](const Latte::View *view) {
         if (m_latteView == view) {
             emit activeWindowSchemeChanged();
@@ -145,6 +151,11 @@ bool CurrentScreenTracker::existsWindowMaximized() const
 bool CurrentScreenTracker::existsWindowTouching() const
 {
     return m_wm->windowsTracker()->existsWindowTouching(m_latteView);
+}
+
+bool CurrentScreenTracker::isTouchingBusyVerticalView() const
+{
+    return m_wm->windowsTracker()->isTouchingBusyVerticalView(m_latteView);
 }
 
 WindowSystem::SchemeColors *CurrentScreenTracker::activeWindowScheme() const
