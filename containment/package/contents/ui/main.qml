@@ -154,21 +154,23 @@ Item {
                                                           && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
                                                           && root.themeColors === Latte.Types.SmartThemeColors
                                                           && plasmoid.configuration.backgroundOnlyOnMaximized
-                                                          && !plasmoid.configuration.solidBackgroundForMaximized
-                                                          && !plasmaBackgroundForPopups)
+                                                          /*&& !plasmoid.configuration.solidBackgroundForMaximized
+                                                          && !plasmaBackgroundForPopups*/)
 
-    property bool solidBusyForTouchingBusyVerticalView: (latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
-                                                         && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
+    property bool solidBusyForTouchingBusyVerticalView: false //DISABLED, until to check if the normalBusyForTouchingBusyVerticalView is enough to catch and handle the case
+                                                        /*(latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
+                                                        /* && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
                                                          && root.themeColors === Latte.Types.SmartThemeColors
                                                          && plasmoid.configuration.backgroundOnlyOnMaximized
                                                          && plasmoid.configuration.solidBackgroundForMaximized
-                                                         && !plasmaBackgroundForPopups)
+                                                         && !plasmaBackgroundForPopups)*/
 
-    property bool plasmaStyleBusyForTouchingBusyVerticalView: (latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
-                                                               && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
+    property bool plasmaStyleBusyForTouchingBusyVerticalView: false //DISABLED, until to check if the normalBusyForTouchingBusyVerticalView is enough to catch and handle the case
+                                                              //(latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
+                                                              /* && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
                                                                && root.themeColors === Latte.Types.SmartThemeColors
                                                                && plasmoid.configuration.backgroundOnlyOnMaximized
-                                                               && plasmaBackgroundForPopups)
+                                                               && plasmaBackgroundForPopups)*/
 
 
     property int themeColors: plasmoid.configuration.themeColors
