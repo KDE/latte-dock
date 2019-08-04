@@ -1,5 +1,17 @@
 #**CHANGELOG**#
 
+#### Version 0.9.1
+
+* improve: when preview windows left click action is used then for single windows is just activating them without triggering the preview window
+* improve: consider the case when a horizontal and a vertical Latte dock/panel are touching each other and the vertical one is isBusy desktop background case, in such case the horizontal view is also changing to isBusy state
+* fix: blurred icons for items size that should not be blurred e.g. 48px and >=64px
+* fix: geometries calculation under !compositing environment
+* fix: forward pressed/released event to applets even when parabolic effect is enabled. The issue was pretty obvious with lock/logout plasma applet
+* fix: update progress badge properly
+* fix: tasks icons pixelization when are dragged
+* fix: wayland, show preview window for grouped tasks when clicked
+
+
 #### Version 0.9.0
 
 * Smart Coloring
