@@ -29,7 +29,7 @@ LatteComponents.IndicatorItem {
 
     needsMouseEventCoordinates: true
     providesClickedAnimation: clickedAnimationEnabled
-    providesHoveredAnimation: true
+    //providesHoveredAnimation: true
     providesFrontLayer: true
     svgImagePaths: ["widgets/tasks"]
 
