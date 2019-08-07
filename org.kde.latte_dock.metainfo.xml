@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component type="addon">
+  <id>org.kde.latte_doc</id>
+  <extends>org.kde.plasmashell</extends>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0+</project_license>
+  <name>Latte Dock</name>
+  <summary>An app dock for KDE Plasma</summary>
+  <description>
+    <p>Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and trys to be there only when it is needed.
+    </p>
+  </description>
+  <url type="homepage">https://www.kde.org/</url>
+  <url type="bugtracker">https://bugs.kde.org/enter_bug.cgi?format=guided&amp;product=latte-dock</url>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://cdn.kde.org/screenshots/latte-dock/latte-dock_badges.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://cdn.kde.org/screenshots/latte-dock/latte-dock_regular.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://cdn.kde.org/screenshots/latte-dock/latte-dock_settings.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://cdn.kde.org/screenshots/latte-dock/latte-dock_settings2.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://cdn.kde.org/screenshots/latte-dock/latte-dock_toppanel.png</image>
+    </screenshot>
+  </screenshots>
+  <project_group>KDE</project_group>
+  <categories>
+    <category>Network</category>
+  </categories>
+  <icon type="stock">latte-dock</icon>
+</component>
