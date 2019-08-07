@@ -3,6 +3,7 @@
   <id>org.kde.latte-dock.desktop</id>
   <name>Latte</name>
   <name xml:lang="ar">لاتيه</name>
+  <name xml:lang="ast">Latte</name>
   <name xml:lang="ca">Latte</name>
   <name xml:lang="ca-valencia">Latte</name>
   <name xml:lang="cs">Latte</name>
@@ -31,6 +32,7 @@
   <name xml:lang="zh-TW">Latte</name>
   <summary>Dock for the masses</summary>
   <summary xml:lang="ar">رصيف للأمور الكبيرة</summary>
+  <summary xml:lang="ast">Árees d'anclaxe pa les mases</summary>
   <summary xml:lang="ca">Dock per a les masses</summary>
   <summary xml:lang="ca-valencia">Dock per a les masses</summary>
   <summary xml:lang="cs">Dok pro masy</summary>
@@ -60,6 +62,7 @@
   <description>
     <p>Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.</p>
     <p xml:lang="ar">«لاتيه» هو رصيف مبنيّ على أُطر عمل «بلازما» حيث يقدّم تجربة أنيقة وبدهيّة لمهامك والبلازمويد لديك. يعمل الرّصيف على إنشاء حركة للمحتويات باستخدام تأثير تقريب القطع المكافئ، ويحاول أن يكون بمتناول يديك عند حاجتك إليه فقط.</p>
+    <p xml:lang="ast">Latte ye un área d'anclaxe basáu nos frameworks de Plasma qu'apurren una esperiencia elegante ya intuitiva pa xeres y plasmoides. Anima'l so conteníu usando l'efeutu de zoom parabólicu y tenta d'amosase namái cuando se precisa.</p>
     <p xml:lang="ca">El Latte és un acoblador basat en els Frameworks del Plasma que proporciona una experiència elegant i intuïtiva per a les vostres tasques i els plasmoides. Anima els seus continguts usant un efecte de zoom parabòlic i intenta mostrar-se només quan cal.</p>
     <p xml:lang="ca-valencia">El Latte és un acoblador basat en els Frameworks del Plasma que proporciona una experiència elegant i intuïtiva per a les vostres tasques i els plasmoides. Anima els seus continguts usant un efecte de zoom parabòlic i intenta mostrar-se només quan cal.</p>
     <p xml:lang="da">Latte er en dok som er baseret på plasma-frameworks som giver en elegant og intuitiv oplevelse til dine opgaver og plasmoids. Den animerer dens indhold med parabolsk zoom og prøver på kun at være der når der er brug for det.</p>
@@ -87,6 +90,7 @@
     <p xml:lang="zh-TW">Latte 是一個基於 Plasma 框架並提供您的工作與 plasmoid 優雅與直觀體驗的 dock。它使用拋物線縮放效果來讓您的內容動畫化，並試著只在您需要它時出現。</p>
     <p> "Art In Coffee" </p>
     <p xml:lang="ar">”الفنّ في القهوة“</p>
+    <p xml:lang="ast">«Arte nel café»</p>
     <p xml:lang="ca">"Art al cafè"</p>
     <p xml:lang="ca-valencia">"Art al cafè"</p>
     <p xml:lang="da">"Kunst i kaffe"</p>
@@ -121,6 +125,7 @@
   <url type="bugtracker">@BUG_ADDRESS@</url>
   <url type="faq">@FAQS@</url>
   <developer_name>Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="ast">Michail Vourlakos y Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca-valencia">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="cs">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
