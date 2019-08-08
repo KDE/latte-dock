@@ -674,7 +674,7 @@ PlasmaComponents.Page {
                         text: i18n("Show title tooltips on hovering")
                         tooltip: i18n("Show thinner tooltips produced by Latte for items.\nThese tooltips are not drawn when applets zoom effect is disabled");
                         checked: plasmoid.configuration.titleTooltips
-                        enabled: plasmoid.configuration.zoomLevel > 0
+                        //enabled: plasmoid.configuration.zoomLevel > 0
 
                         onClicked: {
                             plasmoid.configuration.titleTooltips = !plasmoid.configuration.titleTooltips;
