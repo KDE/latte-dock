@@ -85,6 +85,4 @@ add_subdirectory(icons)
 add_subdirectory(plasmoid)
 add_subdirectory(shell)
 
-install(FILES org.kde.latte_dock.metainfo.xml DESTINATION ${CMAKE_INSTALL_METAINFODIR})
-
 ki18n_install(po)
