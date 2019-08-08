@@ -116,7 +116,7 @@ Item {
                                                                                            ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
 
     readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.parabolicEffectLocked
-    readonly property bool originalAppletBehavior: root.zoomFactor === 1
+    readonly property bool originalAppletBehavior: (root.zoomFactor === 1 && !lockZoom /*hacky flag to keep Latte behavior*/)
                                                    || (root.zoomFactor>1 && !canBeHovered)
                                                    || (root.zoomFactor>1 && canBeHovered && lockZoom)
 
