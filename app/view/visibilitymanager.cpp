@@ -177,14 +177,17 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
             updateStrutsBasedOnLayoutsAndActivities();
         }
 
+        m_connections[base] = connect(m_latteView, &Latte::View::normalThicknessChanged, this, [&]() {
+            updateStrutsBasedOnLayoutsAndActivities();
+        });
 
-        m_connections[base] = connect(m_corona->layoutsManager(),  &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
+        m_connections[base+1] = connect(m_corona->layoutsManager(),  &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
             if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities(true);
             }
         });
 
-        m_connections[base+1] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
+        m_connections[base+2] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
             if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities(true);
             }
