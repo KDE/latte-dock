@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component type="desktop">
+<component type="addon">
   <id>org.kde.latte-dock.desktop</id>
+  <extends>org.kde.plasmashell</extends>
   <name>Latte</name>
   <name xml:lang="ar">لاتيه</name>
   <name xml:lang="ast">Latte</name>
