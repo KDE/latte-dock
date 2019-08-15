@@ -159,7 +159,9 @@ Item{
             smooth: root.zoomFactor === 1 ? true : false
             providesColors: indicators ? indicators.info.needsIconColors : false
 
-            opacity: root.enableShadows ? 0 : 1
+            opacity: root.enableShadows
+                     && taskWithShadow.active
+                     && (taskWithShadow.item.status === ShaderEffect.Compiled) ? 0 : 1
             visible: !taskItem.isSeparator && !badgesLoader.active
 
 

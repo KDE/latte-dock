@@ -95,7 +95,7 @@ Item{
         }
     }
 
-    opacity: appletColorizer.mustBeShown ? 0 : 1
+    opacity: appletColorizer.mustBeShown && appletColorizer.isCompiled ? 0 : 1
 
     property bool disableScaleWidth: false
     property bool disableScaleHeight: false
@@ -444,8 +444,7 @@ Item{
 
         }
 
-        opacity: appletShadow.active ? 0 : 1
-
+        opacity: appletShadow.active && (appletShadow.item.status === ShaderEffect.Compiled) ? 0 : 1
         anchors.centerIn: parent
 
         ///Secret MouseArea to be used by the folder widget
@@ -562,7 +561,7 @@ Item{
                     || (root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
 
         onActiveChanged: {
-            if (active && !isSeparator) {
+            if (active && !isSeparator && item.status === ShaderEffect.Compiled) {
                 wrapperContainer.opacity = 0;
             } else {
                 wrapperContainer.opacity = 1;

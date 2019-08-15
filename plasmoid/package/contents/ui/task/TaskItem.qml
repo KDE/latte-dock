@@ -306,7 +306,8 @@ MouseArea{
         id:separatorItem
 
         anchors.centerIn: parent
-        opacity: separatorShadow.active || forceHiddenState ? 0 : 0.4
+        opacity: (separatorShadow.active && (separatorShadow.item.status === ShaderEffect.Compiled))
+                 || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
 
         width: root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.lengthMargins: 1
