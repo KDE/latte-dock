@@ -19,6 +19,7 @@ Name[ru]=Процессы Latte
 Name[sv]=Latte aktiviteter
 Name[uk]=Завдання Латте
 Name[x-test]=xxLatte Tasksxx
+Name[zh_CN]=Latte 任务管理器
 Name[zh_TW]=Latte 任務
 Comment=Tasks plasmoid from Latte Dock
 Comment[ca]=Plasmoide de tasques del Latte Dock
@@ -40,6 +41,7 @@ Comment[ru]=Виджет процессов из Latte Dock
 Comment[sv]=Aktivitetsplasmoid för Latte dockningsfönster
 Comment[uk]=Плазмоїд завдань з панелі Латте
 Comment[x-test]=xxTasks plasmoid from Latte Dockxx
+Comment[zh_CN]=Latte 停靠栏的任务管理 Plasma 部件
 Comment[zh_TW]=來自 Latte Dock 的任務 Plasmoid
 
 Type=Service

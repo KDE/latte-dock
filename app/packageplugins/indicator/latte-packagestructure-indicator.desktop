@@ -19,6 +19,7 @@ Name[ru]=Индикатор
 Name[sv]=Indikator
 Name[uk]=Індикатор
 Name[x-test]=xxIndicatorxx
+Name[zh_CN]=任务指示器
 Name[zh_TW]=指示器
 Type=Service
 X-KDE-ServiceTypes=KPackage/PackageStructure
