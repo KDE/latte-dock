@@ -149,7 +149,7 @@
   <developer_name xml:lang="zh-CN">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="zh-TW">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <icon type="stock">latte-dock</icon>
-  <project_license>GPL-2.0-or-later</project_license>
+  <project_license>GPL-2.0+</project_license>
   <metadata_license>CC0-1.0</metadata_license>
   <screenshots>
     <screenshot type="default">
