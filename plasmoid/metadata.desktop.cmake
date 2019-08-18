@@ -54,5 +54,5 @@ X-KDE-PluginInfo-Name=org.kde.latte.plasmoid
 X-KDE-PluginInfo-Version=@VERSION@
 X-KDE-PluginInfo-Website=@WEBSITE@
 X-KDE-PluginInfo-Category=Windows and Tasks
-X-KDE-PluginInfo-Depends=X-KDE-PluginInfo-License=GPL v2+
+X-KDE-PluginInfo-License=GPL v2+
 X-KDE-PluginInfo-EnabledByDefault=true
