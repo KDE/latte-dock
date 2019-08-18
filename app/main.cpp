@@ -113,32 +113,32 @@ int main(int argc, char **argv)
     //! START: Hidden options for Developer and Debugging usage
     QCommandLineOption graphicsOption(QStringList() << QStringLiteral("graphics"));
     graphicsOption.setDescription(QStringLiteral("Draw boxes around of the applets."));
-    graphicsOption.setHidden(true);
+    graphicsOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(graphicsOption);
 
     QCommandLineOption withWindowOption(QStringList() << QStringLiteral("with-window"));
     withWindowOption.setDescription(QStringLiteral("Open a window with much debug information"));
-    withWindowOption.setHidden(true);
+    withWindowOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(withWindowOption);
 
     QCommandLineOption maskOption(QStringList() << QStringLiteral("mask"));
     maskOption.setDescription(QStringLiteral("Show messages of debugging for the mask (Only useful to devs)."));
-    maskOption.setHidden(true);
+    maskOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(maskOption);
 
     QCommandLineOption timersOption(QStringList() << QStringLiteral("timers"));
     timersOption.setDescription(QStringLiteral("Show messages for debugging the timers (Only useful to devs)."));
-    timersOption.setHidden(true);
+    timersOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(timersOption);
 
     QCommandLineOption spacersOption(QStringList() << QStringLiteral("spacers"));
     spacersOption.setDescription(QStringLiteral("Show visual indicators for debugging spacers (Only useful to devs)."));
-    spacersOption.setHidden(true);
+    spacersOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(spacersOption);
 
     QCommandLineOption overloadedIconsOption(QStringList() << QStringLiteral("overloaded-icons"));
     overloadedIconsOption.setDescription(QStringLiteral("Show visual indicators for debugging overloaded applets icons (Only useful to devs)."));
-    overloadedIconsOption.setHidden(true);
+    overloadedIconsOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(overloadedIconsOption);
     //! END: Hidden options
 
