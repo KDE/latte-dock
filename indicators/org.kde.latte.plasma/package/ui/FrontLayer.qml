@@ -111,7 +111,7 @@ Item {
             PropertyAnimation {
                 target: clickedRectangle
                 property: "width"
-                //! Dont animate above for length
+                //! Don't animate above for length
                 to: maxLength * multiplier
                 duration: 700
                 easing.type: Easing.Linear

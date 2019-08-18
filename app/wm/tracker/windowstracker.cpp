@@ -211,7 +211,7 @@ void Windows::updateRelevantLayouts()
 {
     QList<Latte::Layout::GenericLayout*> orphanedLayouts;
 
-    //! REMOVE Orphaned Relevant layouts that have been removed or they dont contain any Views anymore
+    //! REMOVE Orphaned Relevant layouts that have been removed or they don't contain any Views anymore
     for (QHash<Latte::Layout::GenericLayout *, TrackedLayoutInfo *>::iterator i=m_layouts.begin(); i!=m_layouts.end(); ++i) {
         bool hasView{false};
         for (QHash<Latte::View *, TrackedViewInfo *>::iterator j=m_views.begin(); j!=m_views.end(); ++j) {
