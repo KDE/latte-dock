@@ -28,7 +28,7 @@ class PersistentMenu : public QMenu
 {
   Q_OBJECT
 public:
-  PersistentMenu(QWidget *parent);
+  PersistentMenu(QWidget *parent = nullptr);
 
 protected:
   void setVisible (bool visible) override;

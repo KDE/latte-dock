@@ -20,7 +20,7 @@
 #include "persistentmenu.h"
 
 
-PersistentMenu::PersistentMenu(QWidget *parent = 0)
+PersistentMenu::PersistentMenu(QWidget *parent)
     : QMenu (parent),
       m_blockHide(false)
 {
