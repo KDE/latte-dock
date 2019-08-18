@@ -21,6 +21,8 @@
 #ifndef VISIBILITYMANAGER_H
 #define VISIBILITYMANAGER_H
 
+#include <array>
+
 // local
 #include "../plasma/quick/containmentview.h"
 #include "../../liblatte2/types.h"
