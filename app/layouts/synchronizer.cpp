@@ -556,7 +556,7 @@ void Synchronizer::loadLayouts()
 
     for (const auto &layout : files) {
         if (layout.contains(Layout::AbstractLayout::MultipleLayoutsName)) {
-            //! IMPORTANT: DONT ADD MultipleLayouts hidden file in layouts list
+            //! IMPORTANT: DON'T ADD MultipleLayouts hidden file in layouts list
             continue;
         }
 

@@ -255,7 +255,7 @@ bool BackgroundCache::areaIsBusy(float bright1, float bright2)
 //! the code is doing the following. It is not needed to calculate these values
 //! for the entire image that would also be cpu costly. The function takes
 //! the location of the area in the image for which we are interested.
-//! The area is splitted in ten different Tiles and for each one its brightness
+//! The area is split in ten different Tiles and for each one its brightness
 //! is computed. The brightness average from these tiles provides the entire
 //! area brightness. In order to indicate if this area is busy or not we
 //! compare the minimum and the maximum values of brightness from these

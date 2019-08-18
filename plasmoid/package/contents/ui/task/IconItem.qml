@@ -520,7 +520,7 @@ Item{
                 //! HACK TO AVOID PIXELIZATION
                 //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
                 //! the icon appears pixelated. It is even most notable when zoomFactor === 1
-                //! I dont know enabling cached=true helps, but it does.
+                //! I don't know enabling cached=true helps, but it does.
                 cached: true
 
                 opacity: stateColorizer.opacity
@@ -541,7 +541,7 @@ Item{
             //! HACK TO AVOID PIXELIZATION
             //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
             //! the icon appears pixelated. It is even most notable when zoomFactor === 1
-            //! I dont know enabling cached=true helps, but it does.
+            //! I don't know enabling cached=true helps, but it does.
             cached: true
 
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
@@ -563,7 +563,7 @@ Item{
             //! HACK TO AVOID PIXELIZATION
             //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
             //! the icon appears pixelated. It is even most notable when zoomFactor === 1
-            //! I dont know enabling cached=true helps, but it does.
+            //! I don't know enabling cached=true helps, but it does.
             cached: true
 
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
@@ -587,7 +587,7 @@ Item{
             //! HACK TO AVOID PIXELIZATION
             //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
             //! the icon appears pixelated. It is even most notable when zoomFactor === 1
-            //! I dont know enabling cached=true helps, but it does.
+            //! I don't know enabling cached=true helps, but it does.
             cached: true
 
             source: badgesLoader.active ? badgesLoader : iconImageBuffer

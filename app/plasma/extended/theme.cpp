@@ -371,7 +371,7 @@ int Theme::roundness(const QImage &svgImage, Plasma::Types::Location edge)
         }
     }
 
-    //! this needs investigation (the x2) I dont know if it is really needed
+    //! this needs investigation (the x2) I don't know if it is really needed
     //! but it gives me the impression that returns better results
     return round; ///**2*/;
 }

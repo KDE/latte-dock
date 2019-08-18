@@ -120,7 +120,7 @@ Loader{
                         //! provide a dark case scenario at all cases
                         return themeExtended.darkTheme;
                     } else {
-                        //! default plasma theme shoud be better for panel transparency > 70
+                        //! default plasma theme should be better for panel transparency > 70
                         return theme;
                     }
                 }
