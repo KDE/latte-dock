@@ -126,17 +126,17 @@ Loader {
 
             if (angle>10) {
                 if (root.scrollAction === Latte.Types.ScrollDesktops) {
-                    latteView.windowsTracker.switchToNextVirtualDesktop();
+                    latteView.windowsTracker.switchToPreviousVirtualDesktop();
                 } else if (root.scrollAction === Latte.Types.ScrollActivities) {
-                    latteView.windowsTracker.switchToNextActivity();
+                    latteView.windowsTracker.switchToPreviousActivity();
                 } else if (tasksLoader.active) {
                     tasksLoader.item.activateNextPrevTask(true);
                 }
             } else if (angle<-10) {
                 if (root.scrollAction === Latte.Types.ScrollDesktops) {
-                    latteView.windowsTracker.switchToPreviousVirtualDesktop();
+                    latteView.windowsTracker.switchToNextVirtualDesktop();
                 } else if (root.scrollAction === Latte.Types.ScrollActivities) {
-                    latteView.windowsTracker.switchToPreviousActivity();
+                    latteView.windowsTracker.switchToNextActivity();
                 } else if (tasksLoader.active) {
                     tasksLoader.item.activateNextPrevTask(false);
                 }
