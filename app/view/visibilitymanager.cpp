@@ -528,8 +528,9 @@ void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activi
 
 void VisibilityManager::activeWindowDraggingStarted()
 {
-    setContainsMouse(false);
-    updateHiddenState();
+    //! Send a fake QEvent::LEAVE to inform applets for mouse leaving the view
+    QHoverEvent e(QEvent::Leave, QPoint(-5,-5),  m_latteView->geometry().center());
+    QCoreApplication::instance()->sendEvent(m_latteView, &e);
 }
 
 void VisibilityManager::dodgeActive()

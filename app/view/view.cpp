@@ -1292,6 +1292,9 @@ void View::restoreGrabItemBehavior()
     if (mouseGrabberItem()) {
         mouseGrabberItem()->ungrabMouse();
     }
+
+    setMouseGrabEnabled(true);
+    setMouseGrabEnabled(false);
 }
 
 bool View::isHighestPriorityView() {
