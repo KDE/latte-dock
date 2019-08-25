@@ -206,6 +206,9 @@ public:
 
     KWayland::Client::PlasmaShellSurface *surface();
 
+    //! release grab and restore mouse state
+    void unblockMouse(int x, int y);
+
     void reconsiderScreen();
 
     //! these are signals that create crashes, such a example is the availableScreenRectChanged from corona
@@ -228,9 +231,6 @@ public slots:
     Q_INVOKABLE bool tasksPresent();
 
     void updateAbsoluteGeometry(bool bypassChecks = false);
-
-    Q_INVOKABLE void disableGrabItemBehavior();
-    Q_INVOKABLE void restoreGrabItemBehavior();
 
     Q_INVOKABLE bool isHighestPriorityView();
 
@@ -293,6 +293,7 @@ private slots:
     void configViewCreatedFor(Latte::View *view);
     void hideWindowsForSlidingOut();
     void preferredViewForShortcutsChangedSlot(Latte::View *view);
+    void releaseGrab();
     void reloadSource();
     void statusChanged(Plasma::Types::ItemStatus);
 
@@ -344,6 +345,10 @@ private:
     //! with no actual reason
     QTimer m_visibleHackTimer1;
     QTimer m_visibleHackTimer2;
+
+    QTimer m_releaseGrabTimer;
+    int m_releaseGrab_x;
+    int m_releaseGrab_y;
 
     Layout::GenericLayout *m_layout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;

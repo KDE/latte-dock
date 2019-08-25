@@ -71,7 +71,6 @@ public slots:
     Q_INVOKABLE void requestMoveLastWindow(int localX, int localY);
 
 signals:
-    void activeWindowDraggingStarted();
     void activeWindowMaximizedChanged();
     void existsWindowActiveChanged();
     void existsWindowMaximizedChanged();

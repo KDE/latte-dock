@@ -111,13 +111,6 @@ void  CurrentScreenTracker::init()
 
 void CurrentScreenTracker::initSignalsForInformation()
 {
-    if (!m_initialized) {
-        connect(lastActiveWindow(), &WindowSystem::Tracker::LastActiveWindow::draggingStarted,
-                this, &CurrentScreenTracker::activeWindowDraggingStarted);
-
-        m_initialized = true;
-    }
-
     emit lastActiveWindowChanged();
     emit activeWindowMaximizedChanged();
     emit activeWindowTouchingChanged();

@@ -96,6 +96,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     else
         m_positioner->setScreenToFollow(qGuiApp->primaryScreen());
 
+    m_releaseGrabTimer.setInterval(400);
+    m_releaseGrabTimer.setSingleShot(true);
+    connect(&m_releaseGrabTimer, &QTimer::timeout, this, &View::releaseGrab);
+
     connect(this, &View::containmentChanged
             , this, [ &, byPassWM]() {
         qDebug() << "dock view c++ containment changed 1...";
@@ -1215,6 +1219,32 @@ bool View::event(QEvent *e)
     return ContainmentView::event(e);
 }
 
+//! release grab and restore mouse state
+void View::unblockMouse(int x, int y)
+{
+    setMouseGrabEnabled(false);
+
+    m_releaseGrab_x = x;
+    m_releaseGrab_y = y;
+    m_releaseGrabTimer.start();
+}
+
+void View::releaseGrab()
+{
+    //! ungrab mouse
+    if (mouseGrabberItem()) {
+        mouseGrabberItem()->ungrabMouse();
+    }
+
+    //! properly release grabbed mouse in order to inform all views
+    setMouseGrabEnabled(true);
+    setMouseGrabEnabled(false);
+
+    //! Send a fake QEvent::Leave to inform applets for mouse leaving the view
+    QHoverEvent e(QEvent::Leave, QPoint(-5,-5),  QPoint(m_releaseGrab_x, m_releaseGrab_y));
+    QCoreApplication::instance()->sendEvent(this, &e);
+}
+
 void View::deactivateApplets()
 {
     if (!containment()) {
@@ -1280,21 +1310,6 @@ QVariantList View::containmentActions()
     }
 
     return actions;
-}
-
-void View::disableGrabItemBehavior()
-{
-    setMouseGrabEnabled(false);
-}
-
-void View::restoreGrabItemBehavior()
-{
-    if (mouseGrabberItem()) {
-        mouseGrabberItem()->ungrabMouse();
-    }
-
-    setMouseGrabEnabled(true);
-    setMouseGrabEnabled(false);
 }
 
 bool View::isHighestPriorityView() {

@@ -87,14 +87,7 @@ void  AllScreensTracker::init()
 
 void AllScreensTracker::initSignalsForInformation()
 {
-    if (m_currentLastActiveWindow) {
-        disconnect(m_currentLastActiveWindow, &WindowSystem::Tracker::LastActiveWindow::draggingStarted,
-                this, &AllScreensTracker::activeWindowDraggingStarted);
-    }
-
     m_currentLastActiveWindow = lastActiveWindow();
-    connect(m_currentLastActiveWindow, &WindowSystem::Tracker::LastActiveWindow::draggingStarted,
-            this, &AllScreensTracker::activeWindowDraggingStarted);
 
     emit lastActiveWindowChanged();
     emit activeWindowMaximizedChanged();

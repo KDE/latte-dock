@@ -101,9 +101,6 @@ public:
 
     bool supportsKWinEdges() const;
 
-    //! called for windowTracker to reset values
-    void activeWindowDraggingStarted();
-
 public slots:
     Q_INVOKABLE void hide();
     Q_INVOKABLE void show();

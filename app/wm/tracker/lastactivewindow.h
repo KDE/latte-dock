@@ -105,8 +105,6 @@ private slots:
 
 
 signals:
-    void draggingStarted();
-
     void iconChanged();
     void isActiveChanged();
     void isMinimizedChanged();
