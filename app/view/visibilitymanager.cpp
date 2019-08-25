@@ -72,9 +72,6 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
                 updateStrutsBasedOnLayoutsAndActivities();
             }
         });
-
-        connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowDraggingStarted,
-                this, &VisibilityManager::activeWindowDraggingStarted);
     }
 
     if (m_corona) {
@@ -524,13 +521,6 @@ void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activi
     if (m_edgeGhostWindow) {
         m_wm->setWindowOnActivities(*m_edgeGhostWindow, activities);
     }
-}
-
-void VisibilityManager::activeWindowDraggingStarted()
-{
-    //! Send a fake QEvent::LEAVE to inform applets for mouse leaving the view
-    QHoverEvent e(QEvent::Leave, QPoint(-5,-5),  m_latteView->geometry().center());
-    QCoreApplication::instance()->sendEvent(m_latteView, &e);
 }
 
 void VisibilityManager::dodgeActive()

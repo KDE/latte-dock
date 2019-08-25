@@ -538,11 +538,6 @@ bool WaylandInterface::windowCanBeMaximized(WindowId wid) const
     return false;
 }
 
-void WaylandInterface::releaseMouseEventFor(WindowId wid) const
-{
-    // this isnt really needed under wayland
-}
-
 void WaylandInterface::requestActivate(WindowId wid) const
 {
     auto w = windowFor(wid);

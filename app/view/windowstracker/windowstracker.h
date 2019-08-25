@@ -74,7 +74,6 @@ public slots:
 
 signals:
     void enabledChanged();
-    void activeWindowDraggingStarted();
     void allScreensChanged();
     void currentScreenChanged();
 

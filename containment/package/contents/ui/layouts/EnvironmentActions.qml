@@ -104,7 +104,6 @@ Loader {
             }
 
             dragWindowTimer.stop();
-            restoreGrabberTimer.stop();
             selectedWindowsTracker.lastActiveWindow.requestToggleMaximized();
         }
 
@@ -148,9 +147,9 @@ Loader {
         }
 
         function activateDragging(){
-            latteView.disableGrabItemBehavior();
             selectedWindowsTracker.requestMoveLastWindow(mainArea.mouseX, mainArea.mouseY);
-            restoreGrabberTimer.start();
+            mainArea.lastPressX = -1;
+            mainArea.lastPressY = -1;
         }
 
         //! Timers
@@ -161,16 +160,6 @@ Loader {
                 if (mainArea.pressed && selectedWindowsTracker.lastActiveWindow.canBeDragged()) {
                     mainArea.activateDragging();
                 }
-            }
-        }
-
-        Timer {
-            id: restoreGrabberTimer
-            interval: 50
-            onTriggered: {
-                latteView.restoreGrabItemBehavior();
-                mainArea.lastPressX = -1;
-                mainArea.lastPressY = -1;
             }
         }
 

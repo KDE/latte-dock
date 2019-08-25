@@ -28,6 +28,7 @@
 
 // Qt
 #include <QDebug>
+#include <QHoverEvent>
 #include <QPoint>
 #include <QTimer>
 
@@ -391,23 +392,14 @@ void LastActiveWindow::requestClose()
 
 void LastActiveWindow::requestMove(Latte::View *fromView, int localX, int localY)
 {
-    if (!canBeDragged()) {
+    if (!fromView || !canBeDragged()) {
         return;
     }
 
     QPoint globalPoint{fromView->x() + localX, fromView->y() + localY};
-
     m_wm->requestMoveWindow(m_winId, globalPoint);
 
-    auto viewId = m_winId;
-
-    //! This timer is needed because otherwise the mouse position
-    //! in the dragged window changes to TopLeft corner
-    QTimer::singleShot(250, this, [&, viewId]() {
-        m_wm->releaseMouseEventFor(viewId);
-    });
-
-    emit draggingStarted();
+    fromView->unblockMouse(localX, localY);
 }
 
 void LastActiveWindow::requestToggleIsOnAllDesktops()

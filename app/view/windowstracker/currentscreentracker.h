@@ -80,7 +80,6 @@ public slots:
     Q_INVOKABLE void requestMoveLastWindow(int localX, int localY);
 
 signals:
-    void activeWindowDraggingStarted();
     void activeWindowMaximizedChanged();
     void activeWindowTouchingChanged();
     void existsWindowActiveChanged();
@@ -100,8 +99,6 @@ private:
     void init();
 
 private:
-    bool m_initialized{false};
-
     Latte::View *m_latteView{nullptr};
     WindowSystem::AbstractWindowInterface *m_wm{nullptr};
 };

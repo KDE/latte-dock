@@ -60,8 +60,6 @@ public:
     void slideWindow(QWindow &view, Slide location) const override;
     void enableBlurBehind(QWindow &view) const override;
 
-    void releaseMouseEventFor(WindowId wid) const override;
-
     void requestActivate(WindowId wid) const override;
     void requestClose(WindowId wid) const override;
     void requestMoveWindow(WindowId wid, QPoint from) const override;
