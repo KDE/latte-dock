@@ -66,6 +66,9 @@ Item{
     readonly property bool animationsEnabled: root.animationsEnabled
     readonly property real durationTime: root.durationTime
 
+    readonly property bool progressVisible: false /*since 0.9.2*/
+    readonly property real progress: 0 /*since 0.9.2*/
+
     readonly property bool usePlasmaTabsStyle: !indicators.enabledForApplets
 
     readonly property QtObject palette: colorizerManager.applyTheme

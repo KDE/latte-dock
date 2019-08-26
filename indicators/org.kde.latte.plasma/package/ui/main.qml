@@ -52,6 +52,37 @@ LatteComponents.IndicatorItem {
         sourceComponent: BackLayer{}
     }
 
+    /* progress overlay for BackLayer*/
+    /* it is not added in the BackLayer because the BackLayer is rotated in some cases*/
+    Loader {
+        anchors.fill: parent
+        asynchronous: true
+        active: level.isBackground && indicator.progressVisible
+        sourceComponent: Item {
+            id: background
+
+            Item {
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    bottom: parent.bottom
+                }
+
+                width: parent.width * (Math.min(indicator.progress, 100) / 100)
+                clip: true
+
+                PlasmaCore.FrameSvgItem {
+                    id: progressFrame
+                    width: background.width
+                    height: background.height
+
+                    imagePath: "widgets/tasks"
+                    prefix: root.taskPrefix("progress").concat(root.taskPrefix("hover"))
+                }
+            }
+        }
+    }
+
     //! Foreground Layer to draw arrows
     Loader{
         id: frontLayer
@@ -61,4 +92,26 @@ LatteComponents.IndicatorItem {
         sourceComponent: FrontLayer{}
     }
 
+
+    function taskPrefix(prefix) {
+        var effectivePrefix;
+
+        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+            effectivePrefix = "west-" + prefix;
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+            effectivePrefix = "north-" + prefix;
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+            effectivePrefix = "east-" + prefix;
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+            effectivePrefix = "south-" + prefix;
+        }
+
+        return [effectivePrefix, prefix];
+    }
 }
