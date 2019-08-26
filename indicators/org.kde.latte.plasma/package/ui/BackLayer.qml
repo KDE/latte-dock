@@ -56,30 +56,8 @@ PlasmaCore.FrameSvgItem {
 
             return  "south-active-tab";
         } else {
-            return taskPrefix(basePrefix);
+            return root.taskPrefix(basePrefix);
         }
-    }
-
-    function taskPrefix(prefix) {
-        var effectivePrefix;
-
-        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-            effectivePrefix = "west-" + prefix;
-        }
-
-        if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-            effectivePrefix = "north-" + prefix;
-        }
-
-        if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-            effectivePrefix = "east-" + prefix;
-        }
-
-        if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-            effectivePrefix = "south-" + prefix;
-        }
-
-        return [effectivePrefix, prefix];
     }
 
     states: [

@@ -69,6 +69,9 @@ Item {
     readonly property bool animationsEnabled: root.animationsEnabled
     readonly property real durationTime: root.durationTime
 
+    readonly property bool progressVisible: wrapper.progressVisible /*since 0.9.2*/
+    readonly property real progress: wrapper.progress /*since 0.9.2*/
+
     readonly property bool usePlasmaTabsStyle: false
 
     readonly property variant svgs: indicators ? indicators.svgs : []
