@@ -71,6 +71,10 @@ Loader{
                                                      && latteView.windowsTracker.currentScreen.touchingWindowScheme)
 
     property QtObject applyTheme: {
+        if (!graphicsSystem.isAccelerated) {
+            return theme;
+        }
+
         if (latteView && latteView.windowsTracker && !root.hasExpandedApplet) {
             if (root.windowColors === Latte.Types.ActiveWindowColors && selectedWindowsTracker.activeWindowScheme) {
                 return selectedWindowsTracker.activeWindowScheme;
