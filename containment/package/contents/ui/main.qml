@@ -18,7 +18,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.1
+import QtQuick 2.8
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 import QtGraphicalEffects 1.0
@@ -1711,10 +1711,10 @@ Item {
         id: indicators
     }
 
-    ShaderEffect {
+    Item {
         id: graphicsSystem
-        //! check if Software qml rendering is applied
-        readonly property bool isAccelerated: status === ShaderEffect.Compiled
+        readonly property bool isAccelerated: (GraphicsInfo.api !== GraphicsInfo.Software)
+                                              && (GraphicsInfo.api !== GraphicsInfo.Unknown)
     }
 
     ///////////////END components
