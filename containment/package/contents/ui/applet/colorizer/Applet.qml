@@ -24,9 +24,6 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item {
-    readonly property bool isCompiled: !colorizedAppletShadow.active
-                                       || (colorizedAppletShadow.active && colorizedAppletShadow.item.status === ShaderEffect.Compiled)
-
     ColorOverlay {
         id: colorizer
         anchors.fill: parent
@@ -39,7 +36,7 @@ Item {
         id: colorizedAppletShadow
         anchors.fill: colorizer
 
-        active: (plasmoid.configuration.shadows >= 1) && (appletColorizer.opacity>0)
+        active: graphicsSystem.isAccelerated && (plasmoid.configuration.shadows >= 1) && (appletColorizer.opacity>0)
 
         sourceComponent: DropShadow{
             anchors.fill: parent

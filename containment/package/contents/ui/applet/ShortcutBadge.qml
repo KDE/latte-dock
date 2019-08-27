@@ -83,7 +83,7 @@ Loader{
     sourceComponent: Item{
         Loader{
             anchors.fill: appletNumber
-            active: root.enableShadows
+            active: root.enableShadows && graphicsSystem.isAccelerated
 
             sourceComponent: DropShadow{
                 color: root.appShadowColor

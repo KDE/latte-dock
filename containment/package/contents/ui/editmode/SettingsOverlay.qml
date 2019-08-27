@@ -64,7 +64,7 @@ Item{
 
     readonly property color textColor: bestContrastedTextColor
 
-    layer.enabled: true
+    layer.enabled: graphicsSystem.isAccelerated
     layer.effect: DropShadow{
         radius: settingsRoot.textShadow
         fast: true
