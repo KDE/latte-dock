@@ -376,6 +376,13 @@ Item {
         id: colorScopePalette
     }
 
+    //!
+    ShaderEffect {
+        id: graphicsSystem
+        //! check if Software qml rendering is applied
+        readonly property bool isAccelerated: status === ShaderEffect.Compiled
+    }
+
     Loader {
         id: indicatorsStandaloneLoader
         active: !latteView && !plasmoid.configuration.isInLatteDock

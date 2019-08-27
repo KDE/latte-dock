@@ -89,7 +89,7 @@ Item{
             Loader{
                 id: tempTaskShadow
                 anchors.fill: tempRemoveIcon
-                active: root.enableShadows
+                active: root.enableShadows && graphicsSystem.isAccelerated
 
                 sourceComponent: DropShadow{
                     anchors.fill: parent

@@ -44,7 +44,7 @@ Loader{
     sourceComponent: Item{
         Loader{
             anchors.fill: taskNumber
-            active: root.enableShadows
+            active: root.enableShadows && graphicsSystem.isAccelerated
 
             sourceComponent: DropShadow{
                 color: root.appShadowColor

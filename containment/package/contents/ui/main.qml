@@ -1711,6 +1711,12 @@ Item {
         id: indicators
     }
 
+    ShaderEffect {
+        id: graphicsSystem
+        //! check if Software qml rendering is applied
+        readonly property bool isAccelerated: status === ShaderEffect.Compiled
+    }
+
     ///////////////END components
 
     PlasmaCore.ColorScope{

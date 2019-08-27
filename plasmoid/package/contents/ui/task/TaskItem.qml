@@ -306,8 +306,7 @@ MouseArea{
         id:separatorItem
 
         anchors.centerIn: parent
-        opacity: (separatorShadow.active && (separatorShadow.item.status === ShaderEffect.Compiled))
-                 || forceHiddenState ? 0 : 0.4
+        opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
 
         width: root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.lengthMargins: 1
@@ -397,7 +396,7 @@ MouseArea{
     Loader{
         id: separatorShadow
         anchors.fill: separatorItem
-        active: root.enableShadows && isSeparator
+        active: root.enableShadows && isSeparator && graphicsSystem.isAccelerated
         opacity: separatorItem.forceHiddenState ? 0 : 0.4
 
         Behavior on opacity {

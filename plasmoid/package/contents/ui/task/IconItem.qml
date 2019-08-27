@@ -126,6 +126,8 @@ Item{
         thickness: root.zoomFactor * (root.iconSize + root.thickMargins) + 1
     }
 
+    //!
+
     // KQuickControlAddons.QIconItem{
     Item{
         id: iconGraphic
@@ -163,9 +165,8 @@ Item{
 
             opacity: root.enableShadows
                      && taskWithShadow.active
-                     && (taskWithShadow.item.status === ShaderEffect.Compiled) ? 0 : 1
-            visible: !taskItem.isSeparator && !badgesLoader.active
-
+                     && graphicsSystem.isAccelerated ? 0 : 1
+            visible: !taskItem.isSeparator && (!badgesLoader.active || !graphicsSystem.isAccelerated)
 
             onValidChanged: {
                 if (!valid && (source === decoration || source === "unknown")) {
@@ -275,7 +276,7 @@ Item{
         Loader{
             id: taskWithShadow
             anchors.fill: iconImageBuffer
-            active: root.enableShadows && !taskItem.isSeparator
+            active: root.enableShadows && !taskItem.isSeparator && graphicsSystem.isAccelerated
 
             sourceComponent: DropShadow{
                 anchors.fill: parent
@@ -293,7 +294,7 @@ Item{
         Loader{
             id: badgesLoader
             anchors.fill: iconImageBuffer
-            active: activateProgress > 0
+            active: (activateProgress > 0) && graphicsSystem.isAccelerated
             asynchronous: true
             opacity: stateColorizer.opacity > 0 ? 0 : 1
 
@@ -455,7 +456,7 @@ Item{
         Loader {
             id: badgeVisualsLoader
             anchors.fill: iconImageBuffer
-            active: badgesLoader.active
+            active: (badgesLoader.activateProgress > 0)
 
             readonly property int infoBadgeWidth: active ? publishedInfoBadgeWidth : 0
             property int publishedInfoBadgeWidth: 0
@@ -471,7 +472,7 @@ Item{
                     opacity: badgesLoader.activateProgress
                     visible: badgesLoader.showInfo || badgesLoader.showProgress
 
-                    layer.enabled: root.enableShadows
+                    layer.enabled: root.enableShadows && graphicsSystem.isAccelerated
                     layer.effect: DropShadow {
                         color: root.appShadowColor
                         fast: true
@@ -488,7 +489,7 @@ Item{
                     opacity: badgesLoader.activateProgress
                     visible: badgesLoader.showAudio
 
-                    layer.enabled: root.enableShadows
+                    layer.enabled: root.enableShadows && graphicsSystem.isAccelerated
                     layer.effect: DropShadow {
                         color: root.appShadowColor
                         fast: true
@@ -515,7 +516,7 @@ Item{
             height: iconImageBuffer.height
             anchors.centerIn: iconImageBuffer
 
-            active: badgeVisualsLoader.active
+            active: badgeVisualsLoader.active && graphicsSystem.isAccelerated
             sourceComponent: Colorize{
                 source: badgeVisualsLoader.item
 

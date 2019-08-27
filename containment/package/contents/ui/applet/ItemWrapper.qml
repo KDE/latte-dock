@@ -95,7 +95,7 @@ Item{
         }
     }
 
-    opacity: appletColorizer.mustBeShown && appletColorizer.isCompiled ? 0 : 1
+    opacity: appletColorizer.mustBeShown && graphicsSystem.isAccelerated ? 0 : 1
 
     property bool disableScaleWidth: false
     property bool disableScaleHeight: false
@@ -444,7 +444,7 @@ Item{
 
         }
 
-        opacity: appletShadow.active && (appletShadow.item.status === ShaderEffect.Compiled) ? 0 : 1
+        opacity: appletShadow.active ? 0 : 1
         anchors.centerIn: parent
 
         ///Secret MouseArea to be used by the folder widget
@@ -526,7 +526,7 @@ Item{
                 imagePath: root.universalSettings.splitterIconPath()
             }
 
-            layer.enabled: true
+            layer.enabled: graphicsSystem.isAccelerated
             layer.effect: DropShadow {
                 radius: root.appShadowSize
                 fast: true
@@ -553,7 +553,9 @@ Item{
         id: appletShadow
         anchors.fill: appletItem.appletWrapper
 
-        active: appletItem.applet && !appletColorizer.mustBeShown
+        active: appletItem.applet
+                && graphicsSystem.isAccelerated
+                && !appletColorizer.mustBeShown
                 && (((plasmoid.configuration.shadows === 1 /*Locked Applets*/
                       && (!appletItem.canBeHovered || (appletItem.originalAppletBehavior && (applet.pluginName !== root.plasmoidName))) )
                      || (plasmoid.configuration.shadows === 2 /*All Applets*/
@@ -561,7 +563,7 @@ Item{
                     || (root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
 
         onActiveChanged: {
-            if (active && !isSeparator && item.status === ShaderEffect.Compiled) {
+            if (active && !isSeparator && graphicsSystem.isAccelerated) {
                 wrapperContainer.opacity = 0;
             } else {
                 wrapperContainer.opacity = 1;
