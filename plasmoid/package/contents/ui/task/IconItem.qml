@@ -301,7 +301,7 @@ Item{
             property real activateProgress: showInfo || showProgress || showAudio ? 1 : 0
 
             property bool showInfo: (root.showInfoBadge && taskIcon.smartLauncherItem && !taskItem.isSeparator
-                                     && (taskIcon.smartLauncherItem.countVisible || taskItem.badgeIndicator > 0))
+                                     && (taskIcon.smartLauncherItem.countVisible || taskItem.badgeIndicator > 0) && !taskIcon.smartLauncherItem.progressVisible)
 
             property bool showProgress: root.showProgressBadge && taskIcon.smartLauncherItem && !taskItem.isSeparator
                                         && taskIcon.smartLauncherItem.progressVisible
