@@ -32,7 +32,8 @@ Item{
 
     property bool neighbourSeparator: false;
 
-    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && !appletItem.latteApplet && root.zoomFactor>1 ? (2+root.lengthMargin) : 0
+    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && root.parabolicEffectEnabled
+                                 && !appletItem.latteApplet ? (2.5+root.lengthExtMargin) : 0
 
     property real nHiddenSize: {
         if (isSeparator || !communicator.lengthMarginsEnabled) {

@@ -45,9 +45,9 @@ Item{
     //and it is used later on Behaviors in order to not break
     //the activity change animations from removal/additions of tasks
     //! && !root.inActivityChange (deprecated) in order to check if it is fixed
-    property int separatorSpace: neighbourSeparator && !isSeparator
+    property int separatorSpace: neighbourSeparator && !isSeparator && root.parabolicEffectEnabled
                                  && !(parabolicManager.hasInternalSeparator && root.dragSource) ?
-                                     (2+root.lengthMargin) : 0
+                                     (2.5+root.lengthExtMargin) : 0
 
     property bool rightSpacer: false
 
