@@ -49,7 +49,6 @@ Item {
     //! e.g 0.06 -> 6%
     property real minLengthPadding: 0
 
-
     //! svg image paths either from plasma theme or local files relevant to indicator "ui" directory
     //! in order to reduce resources usage
     property var svgImagePaths: []

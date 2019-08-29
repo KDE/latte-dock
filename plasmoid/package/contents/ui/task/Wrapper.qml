@@ -143,6 +143,9 @@ Item{
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
+        anchors.horizontalCenterOffset: taskItem.iconOffsetX
+        anchors.verticalCenterOffset: taskItem.iconOffsetY
+
         width: wrapper.width
         height:wrapper.height
     }

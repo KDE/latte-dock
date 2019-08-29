@@ -138,6 +138,10 @@ MouseArea{
     property int windowsCount: subWindows.windowsCount
     property int windowsMinimizedCount: subWindows.windowsMinimized
 
+    //! are set by the indicator
+    property int iconOffsetX: 0
+    property int iconOffsetY: 0
+
     property string activity: tasksModel.activity
 
     readonly property var m: model
@@ -441,8 +445,21 @@ MouseArea{
             Indicator.Loader{
                 id: indicatorBackLayer
                 level: Indicator.LevelOptions {
+                    id: backLevelOptions
                     isBackground: true
                     bridge: indicatorBridge
+
+                    Binding {
+                        target: taskItem
+                        property: "iconOffsetX"
+                        value: backLevelOptions.requested.iconOffsetX
+                    }
+
+                    Binding {
+                        target: taskItem
+                        property: "iconOffsetY"
+                        value: backLevelOptions.requested.iconOffsetY
+                    }
                 }
             }
 

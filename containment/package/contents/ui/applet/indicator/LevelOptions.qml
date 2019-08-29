@@ -30,6 +30,11 @@ Item {
     property bool isBackground: true
     property bool isForeground: false
 
+    readonly property Item requested: Item{
+        property int iconOffsetX: 0
+        property int iconOffsetY: 0
+    }
+
     property Item bridge
 
     onIsBackgroundChanged: {
