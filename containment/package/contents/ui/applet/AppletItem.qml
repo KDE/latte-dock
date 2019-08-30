@@ -131,7 +131,7 @@ Item {
 
     property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * root.iconSize) - root.lengthMargins)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * root.iconSize) - root.lengthAppletMargins)
     property int status: applet ? applet.status : -1
 
     //! are set by the indicator

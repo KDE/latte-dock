@@ -117,12 +117,13 @@ Item{
 
     property int marginWidth: root.isVertical ?
                                   root.thickMargins :
-                                  (root.inFullJustify && atScreenEdge ? 0 : localLengthMargins)  //Fitt's Law
+                                  (root.inFullJustify && atScreenEdge ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
     property int marginHeight: root.isHorizontal ?
                                    root.thickMargins :
-                                   (root.inFullJustify && atScreenEdge ? 0 : localLengthMargins)  //Fitt's Law
+                                  (root.inFullJustify && atScreenEdge ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
 
-    property int localLengthMargins: isSeparator || !communicator.lengthMarginsEnabled ? 0 : root.lengthMargins
+    property int localLengthMargins: isSeparator || !communicator.lengthMarginsEnabled ? 0 : root.lengthAppletMargins
+    property int edgeLengthMargins: isSeparator || !communicator.lengthMarginsEnabled || !isSquare ? 0 : root.lengthAppletMargins
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
     property real scaledHeight: zoomScaleHeight * (layoutHeight + marginHeight)
