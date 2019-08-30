@@ -37,27 +37,29 @@ Item{
     readonly property real padding: Math.max(info.minLengthPadding, latteView && latteView.indicator ? latteView.indicator.padding : 0.08)
     readonly property string type: latteView && latteView.indicator ? latteView.indicator.type : "org.kde.latte.default"  
 
+    readonly property bool infoLoaded: metricsLoader.active && metricsLoader.item
+
     readonly property Component plasmaStyleComponent: latteView && latteView.indicator ? latteView.indicator.plasmaComponent : null
     readonly property Component indicatorComponent: latteView && latteView.indicator ? latteView.indicator.component : null
 
     readonly property Item info: Item{
-        readonly property bool needsIconColors: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("needsIconColors")
+        readonly property bool needsIconColors: infoLoaded && metricsLoader.item.hasOwnProperty("needsIconColors")
                                                 && metricsLoader.item.needsIconColors
 
-        readonly property bool needsMouseEventCoordinates: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("needsMouseEventCoordinates")
+        readonly property bool needsMouseEventCoordinates: infoLoaded && metricsLoader.item.hasOwnProperty("needsMouseEventCoordinates")
                                                            && metricsLoader.item.needsMouseEventCoordinates
 
-        readonly property bool providesFrontLayer: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("providesFrontLayer")
+        readonly property bool providesFrontLayer: minfoLoaded &&  metricsLoader.item.hasOwnProperty("providesFrontLayer")
                                                    && metricsLoader.item.providesFrontLayer
 
-        readonly property bool providesHoveredAnimation: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("providesHoveredAnimation")
+        readonly property bool providesHoveredAnimation: infoLoaded && metricsLoader.item.hasOwnProperty("providesHoveredAnimation")
                                                          && metricsLoader.item.providesHoveredAnimation
 
-        readonly property bool providesClickedAnimation: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("providesClickedAnimation")
+        readonly property bool providesClickedAnimation: infoLoaded && metricsLoader.item.hasOwnProperty("providesClickedAnimation")
                                                          && metricsLoader.item.providesClickedAnimation
 
         readonly property int extraMaskThickness: {
-            if (metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("extraMaskThickness")) {
+            if (infoLoaded && metricsLoader.item.hasOwnProperty("extraMaskThickness")) {
                 return metricsLoader.item.extraMaskThickness;
             }
 
@@ -65,7 +67,7 @@ Item{
         }
 
         readonly property real minThicknessPadding: {
-            if (metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("minThicknessPadding")) {
+            if (infoLoaded && metricsLoader.item.hasOwnProperty("minThicknessPadding")) {
                 return metricsLoader.item.minThicknessPadding;
             }
 
@@ -73,14 +75,22 @@ Item{
         }
 
         readonly property real minLengthPadding: {
-            if (metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("minLengthPadding")) {
+            if (infoLoaded && metricsLoader.item.hasOwnProperty("minLengthPadding")) {
                 return metricsLoader.item.minLengthPadding;
             }
 
             return 0;
         }
 
-        readonly property variant svgPaths: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("svgImagePaths") ?
+        readonly property real appletLengthPadding: {
+            if (infoLoaded && metricsLoader.item.hasOwnProperty("appletLengthPadding")) {
+                return metricsLoader.item.appletLengthPadding;
+            }
+
+            return -1;
+        }
+
+        readonly property variant svgPaths: infoLoaded && metricsLoader.item.hasOwnProperty("svgImagePaths") ?
                                                 metricsLoader.item.svgImagePaths : []
 
         onSvgPathsChanged: latteView.indicator.resources.setSvgImagePaths(svgPaths);

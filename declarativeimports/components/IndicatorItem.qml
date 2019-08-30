@@ -49,6 +49,11 @@ Item {
     //! e.g 0.06 -> 6%
     property real minLengthPadding: 0
 
+    //! this indicator specifies a different padding value for applets. This value is a percentage,
+    //! -1, means disabled and the regular padding is used
+    //!  0.06 -> 6%
+    //! [since v0.9.2]
+    property real appletLengthPadding: -1
 
     //! svg image paths either from plasma theme or local files relevant to indicator "ui" directory
     //! in order to reduce resources usage

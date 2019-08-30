@@ -131,8 +131,12 @@ Item {
 
     property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * root.iconSize) - root.lengthMargins)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * root.iconSize) - root.lengthAppletMargins)
     property int status: applet ? applet.status : -1
+
+    //! are set by the indicator
+    property int iconOffsetX: 0
+    property int iconOffsetY: 0
 
     property real computeWidth: root.isVertical ? wrapper.width :
                                                   hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width
@@ -660,8 +664,21 @@ Item {
             Indicator.Loader{
                 id: indicatorBackLayer
                 level: Indicator.LevelOptions {
+                    id: backLevelOptions
                     isBackground: true
                     bridge: indicatorBridge
+
+                    Binding {
+                        target: appletItem
+                        property: "iconOffsetX"
+                        value: backLevelOptions.requested.iconOffsetX
+                    }
+
+                    Binding {
+                        target: appletItem
+                        property: "iconOffsetY"
+                        value: backLevelOptions.requested.iconOffsetY
+                    }
                 }
             }
 

@@ -32,7 +32,8 @@ Item{
 
     property bool neighbourSeparator: false;
 
-    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && !appletItem.latteApplet && root.zoomFactor>1 ? (2+root.lengthMargin) : 0
+    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && root.parabolicEffectEnabled
+                                 && !appletItem.latteApplet ? (2.5+root.lengthExtMargin) : subtrackedMargins
 
     property real nHiddenSize: {
         if (isSeparator || !communicator.lengthMarginsEnabled) {
@@ -43,6 +44,10 @@ Item{
     }
 
     property bool rightSpacer: false
+
+    readonly property bool atEdgeForcingFittsLaw: !isSeparator && !root.parabolicEffectEnabled && root.inFullJustify && atScreenEdge && !isSquare
+    readonly property int subtrackedMargins: atEdgeForcingFittsLaw && ((startEdge && rightSpacer) || (endEdge && !rightSpacer )) ?
+                                                 root.lengthAppletIntMargin + root.lengthExtMargin : 0
 
     property real nScale: 0
 

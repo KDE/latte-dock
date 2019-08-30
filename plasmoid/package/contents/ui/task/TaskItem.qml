@@ -50,7 +50,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || !root.parabolicEffectEnabled ? 5+root.lengthMargins : 0);
+            return root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || !root.parabolicEffectEnabled ? 5+2*root.lengthExtMargin : 0);
 
         if (root.vertical) {
             return wrapper.width;
@@ -68,7 +68,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return !root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || !root.parabolicEffectEnabled ? 5+root.lengthMargins: 0);
+            return !root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || !root.parabolicEffectEnabled ? 5+2*root.lengthExtMargin: 0);
 
         if (root.vertical) {
             return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;
@@ -137,6 +137,10 @@ MouseArea{
     property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.lengthMargins)
     property int windowsCount: subWindows.windowsCount
     property int windowsMinimizedCount: subWindows.windowsMinimized
+
+    //! are set by the indicator
+    property int iconOffsetX: 0
+    property int iconOffsetY: 0
 
     property string activity: tasksModel.activity
 
@@ -441,8 +445,21 @@ MouseArea{
             Indicator.Loader{
                 id: indicatorBackLayer
                 level: Indicator.LevelOptions {
+                    id: backLevelOptions
                     isBackground: true
                     bridge: indicatorBridge
+
+                    Binding {
+                        target: taskItem
+                        property: "iconOffsetX"
+                        value: backLevelOptions.requested.iconOffsetX
+                    }
+
+                    Binding {
+                        target: taskItem
+                        property: "iconOffsetY"
+                        value: backLevelOptions.requested.iconOffsetY
+                    }
                 }
             }
 
