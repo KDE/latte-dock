@@ -287,6 +287,13 @@ Item {
             return plasmoid.configuration.panelShadows;
         }
 
+        var forcedNoShadows = (plasmoid.configuration.panelShadows && disablePanelShadowMaximized
+                                     && latteView && latteView.windowsTracker && latteView.windowsTracker.currentScreen.activeWindowMaximized);
+
+        if (forcedNoShadows) {
+            return false;
+        }
+
         var transparencyCheck = (blurEnabled || (!blurEnabled && currentPanelTransparency>20));
 
         //! Draw shadows for isBusy state only when current panelTransparency is greater than 10%
@@ -296,8 +303,7 @@ Item {
 
         if (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
              || (plasmoid.configuration.panelShadows && root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
-                && !(disablePanelShadowMaximized && latteView && latteView.windowsTracker
-                     && latteView.windowsTracker.currentScreen.activeWindowMaximized)) {
+                && !forcedNoShadows) {
             return true;
         }
 
