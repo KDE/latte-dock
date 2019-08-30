@@ -573,7 +573,7 @@ Item{
         //! Outline drawing
         Loader{
             anchors.fill: solidBackground
-            active: root.panelOutline
+            active: root.panelOutline && !(root.hasExpandedApplet && root.plasmaBackgroundForPopups)
             sourceComponent: Colorizer.CustomBackground{
                 backgroundColor: "transparent"
                 borderColor: colorizerManager.outlineColor
