@@ -510,7 +510,7 @@ Item{
             readonly property bool coloredView: colorizerManager.mustBeShown && colorizerManager.applyTheme !== theme
 
             opacity: {
-                if (busyBackground) {
+                if (busyBackground && !forceSolidness) {
                     return plasmoid.configuration.panelTransparency / 100;
                 }
 
