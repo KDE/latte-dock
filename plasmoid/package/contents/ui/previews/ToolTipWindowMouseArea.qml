@@ -35,15 +35,25 @@ MouseArea {
              (!Latte.WindowSystem.isPlatformWayland && winId != 0)
 
     onClicked: {
+        //!used mainly to not close the previews window when the user closes many windows simultaneously
+        var keepVisibility = false;
+
         if (mouse.button == Qt.LeftButton) {
             tasksModel.requestActivate(modelIndex);
         } else if (mouse.button == Qt.MiddleButton) {
+            if (isGroup) {
+                keepVisibility = true;
+            }
+
             tasksModel.requestClose(modelIndex);
         } else {
             root.createContextMenu(rootTask, modelIndex).show();
         }
-        icList.hoveredIndex = -1;
-        windowsPreviewDlg.hide("7.1");
+
+        if (!keepVisibility) {
+            icList.hoveredIndex = -1;
+            windowsPreviewDlg.hide("7.1");
+        }
     }
 
     onContainsMouseChanged: {
