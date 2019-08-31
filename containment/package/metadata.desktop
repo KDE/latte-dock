@@ -22,6 +22,7 @@ Name[pl]=Latte
 Name[pt]=Latte
 Name[pt_BR]=Latte
 Name[ru]=Latte
+Name[sk]=Latte
 Name[sv]=Latte
 Name[uk]=Латте
 Name[x-test]=xxLattexx
