@@ -844,10 +844,9 @@ MouseArea{
             } else if (mouse.button == Qt.LeftButton){
                 if( !taskItem.isLauncher ){
                     if ( (root.leftClickAction === Latte.Types.PreviewWindows && isGroupParent)
-                            || (Latte.WindowSystem.isPlatformWayland
+                            || ( (Latte.WindowSystem.isPlatformWayland || !Latte.WindowSystem.compositingActive)
                                 && root.leftClickAction === Latte.Types.PresentWindows
-                                && isGroupParent)
-                            || !Latte.WindowSystem.compositingActive) {
+                                && isGroupParent) ) {
                         if(windowsPreviewDlg.activeItem !== taskItem){
                             showPreviewWindow();
                         } else {
