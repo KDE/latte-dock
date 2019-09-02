@@ -178,10 +178,26 @@
     <library>liblatte2plugin.so</library>
   </provides>
   <releases>
-​    <release version="0.6.0" date="2017-04-02"/>
-​    <release version="0.6.1" date="2017-05-05"/>
-​    <release version="0.6.2" date="2017-05-09"/>
-​    <release version="0.7.0" date="2017-08-11"/>
+​    <release version="0.9.1" date="2019-08-04"/>
+    <release version="0.9.0" date="2019-07-28"/>
+    <release version="0.8.9" date="2019-06-28"/>
+    <release version="0.8.8" date="2019-04-14"/>
+    <release version="0.8.7" date="2019-03-02"/>
+    <release version="0.8.6" date="2019-02-16"/>
+    <release version="0.8.5" date="2019-01-26"/>
+    <release version="0.8.4" date="2018-12-29"/>
+    <release version="0.8.3" date="2018-11-24"/>
+    <release version="0.8.2" date="2018-10-27"/>
+    <release version="0.8.1" date="2018-09-16"/>
+    <release version="0.8.0" date="2018-07-15"/>
+    <release version="0.7.5" date="2018-04-22"/>
+    <release version="0.7.4" date="2018-03-05"/>
+    <release version="0.7.3" date="2018-01-07"/>
+    <release version="0.7.2" date="2017-11-12"/>
 ​    <release version="0.7.1" date="2017-08-31"/>
+​    <release version="0.7.0" date="2017-08-11"/>
+​    <release version="0.6.2" date="2017-05-09"/>
+​    <release version="0.6.1" date="2017-05-05"/>
+​    <release version="0.6.0" date="2017-04-02"/>
 ​  </releases>
 </component>

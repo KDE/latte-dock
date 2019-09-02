@@ -60,7 +60,8 @@ X-KDE-PluginInfo-Email=@EMAIL@
 X-KDE-PluginInfo-Name=org.kde.latte.containment
 X-KDE-PluginInfo-Version=@VERSION@
 X-KDE-PluginInfo-Website=@WEBSITE@
-X-KDE-PluginInfo-Category=X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-Category=
+X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=true
 X-KDE-ServiceTypes=Plasma/Applet,Plasma/Containment
