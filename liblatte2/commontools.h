@@ -18,6 +18,9 @@
  *
  */
 
+#ifndef COMMONTOOLS_H
+#define COMMONTOOLS_H
+
 // Qt
 #include <QColor>
 
@@ -35,3 +38,5 @@ float colorLumina(float r, float g, float b);
 //! local paths have higher priority by default
 QString standardPath(QString subPath, bool localFirst = true);
 }
+
+#endif

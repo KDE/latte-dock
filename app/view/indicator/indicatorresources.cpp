@@ -17,8 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "indicator.h"
 #include "indicatorresources.h"
+#include "indicator.h"
 
 // Qt
 #include <QDebug>
