@@ -18,6 +18,9 @@
  *
  */
 
+#ifndef SETTINGSTOOLS_H
+#define SETTINGSTOOLS_H
+
 // Qt
 #include <QPalette>
 #include <QStyleOptionViewItem>
@@ -28,3 +31,5 @@ bool isSelected(const QStyleOptionViewItem &option);
 QPalette::ColorGroup colorGroup(const QStyleOptionViewItem &option);
 
 }
+
+#endif
