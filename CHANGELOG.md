@@ -1,5 +1,23 @@
 #**CHANGELOG**#
 
+#### Version 0.9.2
+
+* do not hide contents/icons when qtquick software rendering is used
+* reverse scrolling direction for desktops and activities through empty areas
+* after dragging active windows send a leave event and restore this way applets in normal state
+* close multiple windows from previews when using middle-click
+* activate single windows directly with left click in non compositing mode, and do not show the preview window in that case
+* send tasks progress information to latte indicators
+* latte indicators can offset their icons if they want
+* latte indicators can provide different length padding values for applets compared to tasks
+* autostart Latte earlier in order to catch up with windows global menu activation. You need to reactivate it in order to work.
+* forced solidness for panels has higher priority compared to panel backgrounds in isBusy state
+* disable panel shadow if the user has enabled the corresponding option
+* do not draw the panel background outline if the plasma default behavior was chosen for popups
+* do not draw progress badge if user has disabled it
+* support struts with thickness < 24px.
+* fixes for Clang
+
 #### Version 0.9.1
 
 * improve: when preview windows left click action is used then for single windows is just activating them without triggering the preview window
