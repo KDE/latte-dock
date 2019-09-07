@@ -372,14 +372,13 @@ void Positioner::syncGeometry()
 
             //! it is used to choose which or the availableRegion rectangles will
             //! be the one representing dock geometry
-            for (int i = 0; i < availableRegion.rectCount(); ++i) {
-                QRect rect = availableRegion.rects().at(i);
+            for (QRegion::const_iterator p_rect=availableRegion.begin(); p_rect!=availableRegion.end(); ++p_rect) {
                 //! the area of each rectangle in calculated in squares of 50x50
                 //! this is a way to avoid enourmous numbers for area value
-                float tempArea = (float)(rect.width() * rect.height()) / 2500;
+                float tempArea = (float)((*p_rect).width() * (*p_rect).height()) / 2500;
 
                 if (tempArea > area) {
-                    availableScreenRect = rect;
+                    availableScreenRect = (*p_rect);
                     area = tempArea;
                 }
             }
