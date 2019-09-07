@@ -337,7 +337,7 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
                     continue;
                 }
 
-                int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
+                int appLauncher = m_corona->universalSettings()->kwin_metaForwardedToLatte() ?
                             applicationLauncherId(view->containment()) : -1;
 
                 int showMethodIndex = -1;
@@ -536,7 +536,7 @@ void GlobalShortcuts::showViews()
                         continue;
                     }
 
-                    int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() && showMeta ?
+                    int appLauncher = m_corona->universalSettings()->kwin_metaForwardedToLatte() && showMeta ?
                                 applicationLauncherId(c) : -1;
 
                     int showMethodIndex = -1;
@@ -581,7 +581,7 @@ void GlobalShortcuts::showViews()
                         continue;
                     }
 
-                    int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
+                    int appLauncher = m_corona->universalSettings()->kwin_metaForwardedToLatte() ?
                                 applicationLauncherId(c) : -1;
 
                     int showMethodIndex = -1;
@@ -628,7 +628,7 @@ void GlobalShortcuts::showViews()
     //! show Meta if it is not already shown for Tasks Latte View
     if (!viewWithTasks || applicationLauncherId(viewWithTasks->containment()) == -1) {
         for(const auto view : sortedViews) {
-            if (!viewWithMeta && m_corona->universalSettings()->metaForwardedToLatte() && applicationLauncherId(view->containment()) > -1) {
+            if (!viewWithMeta && m_corona->universalSettings()->kwin_metaForwardedToLatte() && applicationLauncherId(view->containment()) > -1) {
                 viewWithMeta = view;
                 break;
             }

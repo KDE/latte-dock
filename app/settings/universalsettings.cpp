@@ -38,6 +38,7 @@
 #define KWINMETAFORWARDTOPLASMASTRING "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu"
 
 #define KWINCOLORSSCRIPT "kwin/scripts/lattewindowcolors"
+#define KWINRC "/.config/kwinrc"
 
 namespace Latte {
 
@@ -98,8 +99,14 @@ void UniversalSettings::load()
         KDirWatch::self()->addDir(path);
     }
 
-    connect(KDirWatch::self(), &KDirWatch::created, this, &UniversalSettings::colorsScriptChanged);
-    connect(KDirWatch::self(), &KDirWatch::deleted, this, &UniversalSettings::colorsScriptChanged);
+    //! Track KWin rc options
+    const QString kwinrcFilePath = QDir::homePath() + KWINRC;
+    KDirWatch::self()->addFile(kwinrcFilePath);
+    recoverKWinOptions();
+
+    connect(KDirWatch::self(), &KDirWatch::created, this, &UniversalSettings::trackedFileChanged);
+    connect(KDirWatch::self(), &KDirWatch::deleted, this, &UniversalSettings::trackedFileChanged);
+    connect(KDirWatch::self(), &KDirWatch::dirty, this, &UniversalSettings::trackedFileChanged);
 
     //! this is needed to inform globalshortcuts to update its modifiers tracking
     emit metaPressAndHoldEnabledChanged();
@@ -336,43 +343,35 @@ void UniversalSettings::setColorsScriptIsPresent(bool present)
 
 void UniversalSettings::updateColorsScriptIsPresent()
 {
+    qDebug() << "Updating Latte Colors Script presence...";
+
     setColorsScriptIsPresent(!Layouts::Importer::standardPath(KWINCOLORSSCRIPT).isEmpty());
 }
 
-void UniversalSettings::colorsScriptChanged(const QString &file)
-{
-    if (!file.endsWith(KWINCOLORSSCRIPT)) {
-        return;
+void UniversalSettings::trackedFileChanged(const QString &file)
+{    
+    if (file.endsWith(KWINCOLORSSCRIPT)) {
+        updateColorsScriptIsPresent();
     }
 
-    updateColorsScriptIsPresent();
-}
-
-bool UniversalSettings::metaForwardedToLatte() const
-{
-    return kwin_metaForwardedToLatte();
-}
-
-void UniversalSettings::forwardMetaToLatte(bool forward)
-{
-    kwin_forwardMetaToLatte(forward);
+    if (file.endsWith(KWINRC)) {
+        recoverKWinOptions();
+    }
 }
 
 bool UniversalSettings::kwin_metaForwardedToLatte() const
 {
-    QProcess process;
-    process.start("kreadconfig5 --file kwinrc --group ModifierOnlyShortcuts --key Meta");
-    process.waitForFinished();
-    QString output(process.readAllStandardOutput());
+    return m_kwinMetaForwardedToLatte;
+}
 
-    output = output.remove("\n");
-
-    return (output == KWINMETAFORWARDTOLATTESTRING);
+bool UniversalSettings::kwin_borderlessMaximizedWindowsEnabled() const
+{
+    return m_kwinBorderlessMaximizedWindows;
 }
 
 void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
 {
-    if (kwin_metaForwardedToLatte() == forward) {
+    if (m_kwinMetaForwardedToLatte == forward) {
         return;
     }
 
@@ -395,6 +394,48 @@ void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
         iface.call("reconfigure");
     }
 }
+
+void UniversalSettings::kwin_setDisabledMaximizedBorders(bool disable)
+{
+    if (m_kwinBorderlessMaximizedWindows == disable) {
+        return;
+    }
+
+    QString disableText = disable ? "true" : "false";
+
+    QProcess process;
+    QString commandStr = "kwriteconfig5 --file kwinrc --group Windows --key BorderlessMaximizedWindows --type bool " + disableText;
+    process.start(commandStr);
+    process.waitForFinished();
+
+    QDBusInterface iface("org.kde.KWin", "/KWin", "", QDBusConnection::sessionBus());
+
+    if (iface.isValid()) {
+        iface.call("reconfigure");
+    }
+}
+
+void UniversalSettings::recoverKWinOptions()
+{
+    qDebug() << "kwinrc: recovering values...";
+
+    //! Meta forwarded to Latte option
+    QProcess process;
+    process.start("kreadconfig5 --file kwinrc --group ModifierOnlyShortcuts --key Meta");
+    process.waitForFinished();
+    QString output(process.readAllStandardOutput());
+    output = output.remove("\n");
+
+    m_kwinMetaForwardedToLatte = (output == KWINMETAFORWARDTOLATTESTRING);
+
+    //! BorderlessMaximizedWindows option
+    process.start("kreadconfig5 --file kwinrc --group Windows --key BorderlessMaximizedWindows");
+    process.waitForFinished();
+    output = process.readAllStandardOutput();
+    output = output.remove("\n");
+    m_kwinBorderlessMaximizedWindows = (output == "true");
+}
+
 
 bool UniversalSettings::metaPressAndHoldEnabled() const
 {
