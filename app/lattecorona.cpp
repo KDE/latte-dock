@@ -212,7 +212,6 @@ void Corona::load()
         connect(this, &Corona::availableScreenRegionChangedFrom, this, &Plasma::Corona::availableScreenRegionChanged);
 
         connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Corona::primaryOutputChanged, Qt::UniqueConnection);
-        connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &Corona::screenCountChanged);
 
         connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &Corona::screenCountChanged);
 
@@ -258,6 +257,7 @@ void Corona::load()
         }
 
         connect(qGuiApp, &QGuiApplication::screenAdded, this, &Corona::addOutput, Qt::UniqueConnection);
+        connect(qGuiApp, &QGuiApplication::screenRemoved, this, &Corona::screenRemoved, Qt::UniqueConnection);
     }
 }
 
@@ -707,6 +707,8 @@ void Corona::addOutput(QScreen *screen)
 
     emit availableScreenRectChanged();
     emit screenAdded(m_screenPool->id(screen->name()));
+
+    screenCountChanged();
 }
 
 void Corona::primaryOutputChanged()
@@ -716,7 +718,7 @@ void Corona::primaryOutputChanged()
 
 void Corona::screenRemoved(QScreen *screen)
 {
-    Q_ASSERT(screen);
+    screenCountChanged();
 }
 
 void Corona::screenCountChanged()
