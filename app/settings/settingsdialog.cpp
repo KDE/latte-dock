@@ -1064,7 +1064,7 @@ void SettingsDialog::loadSettings()
     ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
     ui->badges3DStyleChkBox->setChecked(m_corona->universalSettings()->badges3DStyle());
     ui->infoWindowChkBox->setChecked(m_corona->universalSettings()->showInfoWindow());
-    ui->metaPressChkBox->setChecked(m_corona->universalSettings()->metaForwardedToLatte());
+    ui->metaPressChkBox->setChecked(m_corona->universalSettings()->kwin_metaForwardedToLatte());
     ui->metaPressHoldChkBox->setChecked(m_corona->universalSettings()->metaPressAndHoldEnabled());
     ui->noBordersForMaximizedChkBox->setChecked(m_corona->universalSettings()->canDisableBorders());
 
@@ -1617,7 +1617,7 @@ bool SettingsDialog::saveAllChanges()
     m_corona->universalSettings()->setMouseSensitivity(sensitivity);
     m_corona->universalSettings()->setAutostart(autostart);
     m_corona->universalSettings()->setBadges3DStyle(badges3DStyle);
-    m_corona->universalSettings()->forwardMetaToLatte(forwardMetaPress);
+    m_corona->universalSettings()->kwin_forwardMetaToLatte(forwardMetaPress);
     m_corona->universalSettings()->setMetaPressAndHoldEnabled(metaPressAndHold);
     m_corona->universalSettings()->setShowInfoWindow(showInfoWindow);
     m_corona->universalSettings()->setCanDisableBorders(noBordersForMaximized);

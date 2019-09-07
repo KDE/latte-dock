@@ -31,9 +31,6 @@
 #include "../view/view.h"
 #include "../../liblatte2/types.h"
 
-// Qt
-#include <QtDBus/QtDBus>
-
 // KDE
 #include <KConfigGroup>
 #include <KActivities/Consumer>
@@ -125,36 +122,20 @@ void CentralLayout::setDisableBordersForMaximizedWindows(bool disable)
 
 bool CentralLayout::kwin_disabledMaximizedBorders() const
 {
-    //! Identify Plasma Desktop version
-    QProcess process;
-    process.start("kreadconfig5 --file kwinrc --group Windows --key BorderlessMaximizedWindows");
-    process.waitForFinished();
-    QString output(process.readAllStandardOutput());
+    if (!m_corona) {
+        return false;
+    }
 
-    output = output.remove("\n");
-
-    return (output == "true");
+    return m_corona->universalSettings()->kwin_borderlessMaximizedWindowsEnabled();
 }
 
 void CentralLayout::kwin_setDisabledMaximizedBorders(bool disable)
 {
-    if (kwin_disabledMaximizedBorders() == disable) {
+    if (!m_corona) {
         return;
     }
 
-    QString disableText = disable ? "true" : "false";
-
-    QProcess process;
-    QString commandStr = "kwriteconfig5 --file kwinrc --group Windows --key BorderlessMaximizedWindows --type bool " + disableText;
-    process.start(commandStr);
-    process.waitForFinished();
-
-    QDBusInterface iface("org.kde.KWin", "/KWin", "", QDBusConnection::sessionBus());
-
-    if (iface.isValid()) {
-        iface.call("reconfigure");
-    }
-
+    m_corona->universalSettings()->kwin_setDisabledMaximizedBorders(disable);
 }
 
 bool CentralLayout::showInMenu() const

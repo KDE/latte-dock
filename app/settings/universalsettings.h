@@ -83,8 +83,11 @@ public:
 
     bool colorsScriptIsPresent() const;
 
-    bool metaForwardedToLatte() const;
-    void forwardMetaToLatte(bool forward);
+    bool kwin_metaForwardedToLatte() const;
+    void kwin_forwardMetaToLatte(bool forward);
+
+    bool kwin_borderlessMaximizedWindowsEnabled() const;
+    void kwin_setDisabledMaximizedBorders(bool disable);
 
     bool metaPressAndHoldEnabled() const;
     void setMetaPressAndHoldEnabled(bool enabled);
@@ -157,14 +160,12 @@ private slots:
     void saveConfig();
     void saveScalesConfig();
 
+    void recoverKWinOptions();
     void updateColorsScriptIsPresent();
-    void colorsScriptChanged(const QString &file);
+    void trackedFileChanged(const QString &file);
 
 private:
     void cleanupSettings();
-
-    bool kwin_metaForwardedToLatte() const;
-    void kwin_forwardMetaToLatte(bool forward);
 
     void setColorsScriptIsPresent(bool present);
 
@@ -177,6 +178,10 @@ private:
     bool m_colorsScriptIsPresent{false};
     bool m_metaPressAndHoldEnabled{true};
     bool m_showInfoWindow{true};
+
+    //!kwinrc tracking
+    bool m_kwinMetaForwardedToLatte{false};
+    bool m_kwinBorderlessMaximizedWindows{false};
 
     //when there isnt a version it is an old universal file
     int m_version{1};
