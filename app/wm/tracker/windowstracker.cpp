@@ -198,12 +198,23 @@ void Windows::removeView(Latte::View *view)
 
 void Windows::addRelevantLayout(Latte::View *view)
 {
-    if (view->layout() && !m_layouts.contains(view->layout())) {
-        m_layouts[view->layout()] = new TrackedLayoutInfo(this, view->layout());
+    if (view->layout()) {
+        bool initializing {false};
 
+        if (!m_layouts.contains(view->layout())) {
+            initializing = true;
+            m_layouts[view->layout()] = new TrackedLayoutInfo(this, view->layout());
+        }
+
+        //! Update always the AllScreens tracking because there is a chance a view delayed to be assigned in a layout
+        //! and that could create a state the AllScreens tracking will be disabled if there is a View requesting
+        //! tracking and one that it does not during startup
         updateRelevantLayouts();
-        updateHints(view->layout());
-        emit informationAnnouncedForLayout(view->layout());
+
+        if (initializing) {
+            updateHints(view->layout());
+            emit informationAnnouncedForLayout(view->layout());
+        }
     }
 }
 
