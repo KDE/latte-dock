@@ -42,11 +42,11 @@ Loader {
         return indicators.indicatorComponent;
     }
 
-    width: root.isHorizontal && !(root.inFullJustify && atScreenEdge /*Fitt's Law*/ && !isSquare) ?
+    width: root.isHorizontal && !(root.inFullJustify && atScreenEdge /*Fitt's Law*/ && !isSquare) && canBeHovered ?
                appletItem.wrapperAlias.width - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin
              : appletItem.wrapperAlias.width
 
-    height: root.isVertical && !(root.inFullJustify && atScreenEdge /*Fitt's Law*/ && !isSquare) ?
+    height: root.isVertical && !(root.inFullJustify && atScreenEdge /*Fitt's Law*/ && !isSquare) && canBeHovered ?
                 appletItem.wrapperAlias.height - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin :
                 appletItem.wrapperAlias.height
 

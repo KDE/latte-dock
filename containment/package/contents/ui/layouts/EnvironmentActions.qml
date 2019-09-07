@@ -25,6 +25,8 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte 0.2 as Latte
 
 import "loaders" as Loaders
+import "indicator" as Indicator
+import "../applet/indicator" as AppletIndicator
 
 Loader {
     id: environmentLoader
@@ -160,6 +162,21 @@ Loader {
                 if (mainArea.pressed && selectedWindowsTracker.lastActiveWindow.canBeDragged()) {
                     mainArea.activateDragging();
                 }
+            }
+        }
+
+        //! Background Indicator
+        Indicator.Bridge{
+            id: indicatorBridge
+        }
+
+        //! Indicator Back Layer
+        Indicator.Loader{
+            id: indicatorBackLayer
+            level: AppletIndicator.LevelOptions {
+                id: backLevelOptions
+                isBackground: true
+                bridge: indicatorBridge
             }
         }
 

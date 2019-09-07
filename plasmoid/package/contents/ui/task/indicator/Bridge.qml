@@ -35,6 +35,7 @@ Item {
     /* Indicators Properties in order for indicators to use them*/
     readonly property bool isTask: true
     readonly property bool isApplet: false
+    readonly property bool isEmptySpace: false /*since 0.9.3*/
 
     readonly property bool isLauncher: taskIsValid ? taskItem.isLauncher : true
     readonly property bool isStartup: taskIsValid ? taskItem.isStartup : false

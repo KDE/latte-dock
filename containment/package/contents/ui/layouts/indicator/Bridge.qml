@@ -25,34 +25,28 @@ Item{
     id: indicatorBridge
     anchors.fill: parent
 
-    property bool appletIsValid: true
-
-    readonly property bool active: appletIsValid &&
-                                   ((indicators.isEnabled
-                                     && appletItem.communicatorAlias.activeIndicatorEnabled
-                                     && indicators.enabledForApplets)
-                                    || (!indicators.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive))
+    readonly property bool active: true
 
     /* Indicators Properties in order use them*/
     readonly property bool isTask: false
-    readonly property bool isApplet: true
-    readonly property bool isEmptySpace: false /*since 0.9.3*/
+    readonly property bool isApplet: false
+    readonly property bool isEmptySpace: true /*since 0.9.3*/
 
     readonly property bool isLauncher: false
     readonly property bool isStartup: false
     readonly property bool isWindow: false
 
-    readonly property bool isActive: appletIsValid ? appletItem.isActive : false
+    readonly property bool isActive: false
     readonly property bool isGroup: false
-    readonly property bool isHovered: appletIsValid ? appletMouseArea.containsMouse : false
+    readonly property bool isHovered: false
     readonly property bool isMinimized: false
-    readonly property bool isPressed: appletIsValid ? appletMouseArea.pressed : false
+    readonly property bool isPressed: mainArea.pressed
     readonly property bool inAttention: false
     readonly property bool inRemoving: false
 
-    readonly property bool isSquare: appletIsValid ? appletItem.isSquare : true
+    readonly property bool isSquare: false
 
-    readonly property bool hasActive: isActive
+    readonly property bool hasActive: false
     readonly property bool hasMinimized: false
     readonly property bool hasShown: false
     readonly property int windowsCount: 0
@@ -60,7 +54,7 @@ Item{
 
     readonly property int currentIconSize: root.iconSize
     readonly property int maxIconSize: root.maxIconSize
-    readonly property real scaleFactor: appletIsValid ? appletItem.wrapperAlias.zoomScale : 1
+    readonly property real scaleFactor: 1
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
@@ -75,21 +69,8 @@ Item{
     readonly property QtObject palette: colorizerManager.applyTheme
 
     //!icon colors
-    property color iconBackgroundColor: {
-        if (appletIsValid) {
-            return isSquare ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : colorizerManager.buttonFocusColor;
-        }
-
-        return "black";
-    }
-
-    property color iconGlowColor:{
-        if (appletIsValid) {
-            return isSquare ? appletItem.wrapperAlias.overlayIconLoader.glowColor : colorizerManager.focusGlowColor;
-        }
-
-        return "white";
-    }
+    property color iconBackgroundColor: "brown"
+    property color iconGlowColor: "pink"
 
     //! grouped options
     readonly property Item shared: indicators
