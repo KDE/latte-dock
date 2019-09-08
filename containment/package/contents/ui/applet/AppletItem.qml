@@ -131,8 +131,20 @@ Item {
 
     property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * root.iconSize) - root.lengthAppletMargins)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * root.iconSize) - root.lengthMargins)
     property int status: applet ? applet.status : -1
+
+    //! local margins
+    readonly property bool parabolicEffectMarginsEnabled: root.zoomFactor>1 && !originalAppletBehavior
+
+    property int lengthAppletIntMargin: root.lengthAppletIntMarginFactor === -1 || parabolicEffectMarginsEnabled ?
+                                            root.lengthIntMargin : root.lengthAppletIntMarginFactor * root.iconSize
+
+    property int lengthAppletFullMargin: lengthAppletIntMargin + root.lengthExtMargin
+    property int lengthAppletFullMargins: 2 * lengthAppletFullMargin
+
+    property int internalWidthMargins: root.isVertical ? root.thickMargins : 2 * lengthAppletIntMargin
+    property int internalHeightMargins: root.isHorizontal ? root.thickMargins : 2 * lengthAppletIntMargin
 
     //! are set by the indicator
     property int iconOffsetX: 0
@@ -234,6 +246,13 @@ Item {
         target: translation
         properties: "x,y"
         to: 0
+    }
+
+    Behavior on lengthAppletIntMargin {
+        NumberAnimation {
+            duration: 0.8 * root.animationTime
+            easing.type: Easing.OutCubic
+        }
     }
 
     //// END :: Animate Applet when a new applet is dragged in the view

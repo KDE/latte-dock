@@ -68,7 +68,7 @@ Item{
     readonly property color backgroundColor: iconImageBuffer.backgroundColor
     readonly property color glowColor: iconImageBuffer.glowColor
     readonly property bool progressVisible: smartLauncherItem && smartLauncherItem.progressVisible
-    readonly property real progress: smartLauncherItem && smartLauncherItem.progress
+    readonly property real progress: smartLauncherItem && smartLauncherItem.progress ? smartLauncherItem.progress : 0
 
     property QtObject buffers: null
     property QtObject smartLauncherItem: null

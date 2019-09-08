@@ -383,8 +383,7 @@ Item {
     property real lengthIntMarginFactor: indicators.isEnabled ? indicators.padding : 0
     property real lengthExtMarginFactor: plasmoid.configuration.lengthExtMargin / 100
 
-    property int lengthAppletIntMargin: lengthAppletIntMarginFactor === -1 ? lengthIntMargin : lengthAppletIntMarginFactor * root.iconSize
-    property real lengthAppletIntMarginFactor: indicators.infoLoaded && !parabolicEffectEnabled ? indicators.info.appletLengthPadding : -1
+    property real lengthAppletIntMarginFactor: indicators.infoLoaded ? indicators.info.appletLengthPadding : -1
 
     property real thickMarginFactor: {
         if (shrinkThickMargins) {
@@ -407,14 +406,8 @@ Item {
     property int lengthMargin: lengthIntMargin + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
 
-    property int lengthAppletMargin: lengthAppletIntMargin + lengthExtMargin
-    property int lengthAppletMargins: 2 * lengthAppletIntMargin
-
     property int widthMargins: root.isVertical ? thickMargins : lengthMargins
     property int heightMargins: root.isHorizontal ? thickMargins : lengthMargins
-
-    property int internalWidthMargins: root.isVertical ? thickMargins : 2 * lengthAppletMargin
-    property int internalHeightMargins: root.isHorizontal ? thickMargins : 2 * lengthAppletMargin
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Types.Center : (root.isVertical ? Latte.Types.Top : Latte.Types.Left)
@@ -613,13 +606,6 @@ Item {
     }
 
     Behavior on lengthIntMargin {
-        NumberAnimation {
-            duration: 0.8 * root.animationTime
-            easing.type: Easing.OutCubic
-        }
-    }
-
-    Behavior on lengthAppletIntMargin {
         NumberAnimation {
             duration: 0.8 * root.animationTime
             easing.type: Easing.OutCubic

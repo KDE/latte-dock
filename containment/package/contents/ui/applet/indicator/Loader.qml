@@ -42,18 +42,13 @@ Loader {
         return indicators.indicatorComponent;
     }
 
-    width: root.isHorizontal && !(root.inFullJustify && atScreenEdge /*Fitt's Law*/ && !isSquare) && canBeHovered ?
-               appletItem.wrapperAlias.width - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin
-             : appletItem.wrapperAlias.width
-
-    height: root.isVertical && !(root.inFullJustify && atScreenEdge /*Fitt's Law*/ && !isSquare) && canBeHovered ?
-                appletItem.wrapperAlias.height - 2*appletItem.wrapperAlias.zoomScale*root.lengthExtMargin :
-                appletItem.wrapperAlias.height
+    width: root.isHorizontal && canBeHovered  ? appletItem.wrapperAlias.zoomScale * visualLockedWidth : appletItem.wrapperAlias.width
+    height: root.isVertical && canBeHovered  ? appletItem.wrapperAlias.zoomScale * visualLockedHeight : appletItem.wrapperAlias.height
 
     readonly property bool locked: appletItem.lockZoom || root.zoomFactor === 1
 
-    property real visualLockedWidth: root.iconSize + root.internalWidthMargins
-    property real visualLockedHeight: root.iconSize + root.internalHeightMargins
+    property real visualLockedWidth: root.iconSize + appletItem.internalWidthMargins
+    property real visualLockedHeight: root.iconSize + appletItem.internalHeightMargins
 
     //! Communications !//
 
