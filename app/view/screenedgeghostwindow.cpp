@@ -313,7 +313,8 @@ bool ScreenEdgeGhostWindow::event(QEvent *e)
 
 void ScreenEdgeGhostWindow::hideWithMask()
 {
-    QRect maskGeometry{0, 0, 1, 1};
+    //! old values: 0,0,1,1 were blocking the top-left corner of the window
+    QRect maskGeometry{-2, 0, 1, 1};
 
     setMask(maskGeometry);
 }
