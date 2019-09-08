@@ -45,9 +45,9 @@ Item{
 
     property bool rightSpacer: false
 
-    readonly property bool atEdgeForcingFittsLaw: !isSeparator && !root.parabolicEffectEnabled && root.inFullJustify && atScreenEdge && !isSquare
+    readonly property bool atEdgeForcingFittsLaw: !isSeparator && !parabolicEffectMarginsEnabled && atScreenEdge
     readonly property int subtrackedMargins: atEdgeForcingFittsLaw && ((startEdge && rightSpacer) || (endEdge && !rightSpacer )) ?
-                                                 root.lengthAppletIntMargin + root.lengthExtMargin : 0
+                                                 root.lengthExtMargin : 0
 
     property real nScale: 0
 

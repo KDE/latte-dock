@@ -49,7 +49,7 @@ Item{
         readonly property bool needsMouseEventCoordinates: infoLoaded && metricsLoader.item.hasOwnProperty("needsMouseEventCoordinates")
                                                            && metricsLoader.item.needsMouseEventCoordinates
 
-        readonly property bool providesFrontLayer: minfoLoaded &&  metricsLoader.item.hasOwnProperty("providesFrontLayer")
+        readonly property bool providesFrontLayer: infoLoaded &&  metricsLoader.item.hasOwnProperty("providesFrontLayer")
                                                    && metricsLoader.item.providesFrontLayer
 
         readonly property bool providesHoveredAnimation: infoLoaded && metricsLoader.item.hasOwnProperty("providesHoveredAnimation")
