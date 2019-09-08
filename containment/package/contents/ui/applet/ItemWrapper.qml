@@ -123,7 +123,7 @@ Item{
                                   (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
 
     property int localLengthMargins: isSeparator || !communicator.lengthMarginsEnabled ? 0 : appletItem.lengthAppletFullMargins
-    property int edgeLengthMargins: isSeparator || !communicator.lengthMarginsEnabled || !isSquare ? 0 : appletItem.lengthAppletIntMargin * 2
+    property int edgeLengthMargins: isSeparator || !communicator.lengthMarginsEnabled || !canBeHovered ? 0 : appletItem.lengthAppletIntMargin * 2
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
     property real scaledHeight: zoomScaleHeight * (layoutHeight + marginHeight)
