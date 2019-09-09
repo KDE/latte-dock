@@ -47,8 +47,7 @@ LatteComponents.IndicatorItem {
     Loader{
         id: backLayer
         anchors.fill: parent
-        active: level.isBackground
-
+        active: level.isBackground && !indicator.isEmptySpace
         sourceComponent: BackLayer{}
     }
 
