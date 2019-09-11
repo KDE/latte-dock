@@ -38,7 +38,7 @@ Item{
 
     //! BEGIN OF PROPERTIES
     //this is used for folderView and icon widgets to fake their visual icons
-    readonly property bool canShowOverlaiedLatteIcon: appletIconItem
+    readonly property bool canShowOverlaiedLatteIcon: appletIconItem && appletIconItem.visible
     readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon && latteIconOverlayEnabled
 
     property Item appletRootItem: appletDiscoveredRootItem ? appletDiscoveredRootItem : appletDefaultRootItem
