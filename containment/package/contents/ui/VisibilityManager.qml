@@ -70,6 +70,8 @@ Item{
 
     //! is used from Panel in edit mode in order to provide correct masking
     property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness
+    //! when Latte behaves as Plasma panel
+    property int thicknessAsPanel: root.iconSize + root.thickMargins
 
     //! is used to increase the mask thickness
     readonly property int marginBetweenContentsAndRuler: root.editMode ? 10 : 0
@@ -104,7 +106,7 @@ Item{
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
         when: latteView && !inTempHiding && !inForceHiding
-        value: thicknessZoomOriginal
+        value: root.behaveAsPlasmaPanel && !root.editMode ? thicknessAsPanel : thicknessZoomOriginal
     }
 
     property bool validIconSize: (root.iconSize===root.maxIconSize || root.iconSize === root.automaticIconSizeBasedSize)
@@ -114,7 +116,7 @@ Item{
         target: latteView
         property:"normalThickness"
         when: latteView && inPublishingState
-        value: thicknessNormalOriginal
+        value:  root.behaveAsPlasmaPanel && !root.editMode ? thicknessAsPanel : thicknessNormalOriginal
     }
 
     Binding{
