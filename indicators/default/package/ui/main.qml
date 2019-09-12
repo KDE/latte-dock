@@ -91,6 +91,10 @@ LatteComponents.IndicatorItem{
             LatteComponents.GlowPoint{
                 id:firstPoint
                 opacity: {
+                    if (indicator.isEmptySpace) {
+                        return 0;
+                    }
+
                     if (indicator.isTask) {
                         return indicator.isLauncher || (indicator.inRemoving && !activeAndReverseAnimation.running) ? 0 : 1
                     }
