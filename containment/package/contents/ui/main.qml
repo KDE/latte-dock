@@ -1377,11 +1377,17 @@ Item {
     }
 
     function updateAutomaticIconSize() {
-        if ( !blockAutomaticUpdateIconSize.running && !visibilityManager.inTempHiding
+        if ( !doubleCallAutomaticUpdateIconSize.running && !visibilityManager.inTempHiding
                 && ((visibilityManager.normalState || root.editMode)
                     && (root.autoDecreaseIconSize || (!root.autoDecreaseIconSize && root.iconSize!=root.maxIconSize)))
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
-            blockAutomaticUpdateIconSize.start();
+
+            //!doubler timer
+            if (!doubleCallAutomaticUpdateIconSize.secondTimeCallApplied) {
+                doubleCallAutomaticUpdateIconSize.start();
+            } else {
+                doubleCallAutomaticUpdateIconSize.secondTimeCallApplied = false;
+            }
 
             var layoutLength;
             var maxLength = root.maxLength;
@@ -1397,12 +1403,15 @@ Item {
                             layoutsContainer.startLayout.width+layoutsContainer.mainLayout.width+layoutsContainer.endLayout.width : layoutsContainer.mainLayout.width
             }
 
-            var toShrinkLimit = maxLength-((root.zoomFactor-1)*(iconSize + thickMargins));
-            var toGrowLimit = maxLength-1.5*((root.zoomFactor-1)*(iconSize + thickMargins));
+            var toShrinkLimit = maxLength-((1+(root.zoomFactor-1))*(iconSize + lengthMargins));
+            var toGrowLimit = maxLength-((1+(root.zoomFactor-1))*(iconSize + lengthMargins));
+
+            //console.log("toShrinkLimit: "+ toShrinkLimit);
+            //console.log("toGrowLimit: "+ toGrowLimit);
 
             var newIconSizeFound = false;
             if (layoutLength > toShrinkLimit) { //must shrink
-                //  console.log("step3");
+                // console.log("step3");
                 var nextIconSize = root.maxIconSize;
 
                 do {
@@ -1414,10 +1423,10 @@ Item {
 
                 automaticIconSizeBasedSize = nextIconSize;
                 newIconSizeFound = true;
-                console.log("Step 3 - found:"+automaticIconSizeBasedSize);
+                // console.log("Step 3 - found:"+automaticIconSizeBasedSize);
             } else if ((layoutLength<toGrowLimit
                         && (iconSize === automaticIconSizeBasedSize)) ) { //must grow probably
-                //  console.log("step4");
+                // console.log("step4");
                 var nextIconSize2 = automaticIconSizeBasedSize;
                 var foundGoodSize = -1;
 
@@ -1906,13 +1915,19 @@ Item {
         }
     }
 
-    // This function is very costly! This timer makes sure that it can be called
-    // only once every 1sec.
+    //! This functions makes sure to call the updateAutomaticIconSize(); function which is costly
+    //! one more time after its last call to confirm the applied icon size found
     Timer{
-        id:blockAutomaticUpdateIconSize
+        id:doubleCallAutomaticUpdateIconSize
         interval: 1000
-        repeat: false
-        onTriggered: root.updateAutomaticIconSize();
+        property bool secondTimeCallApplied: false
+
+        onTriggered: {
+            if (!secondTimeCallApplied) {
+                secondTimeCallApplied = true;
+                root.updateAutomaticIconSize();
+            }
+        }
     }
 
     //! It is used in order to slide-in the latteView on startup
