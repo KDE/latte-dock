@@ -681,7 +681,7 @@ Item {
         screenGeometry: root.screenGeometry
         // comment in order to support LTS Plasma 5.8
         // screen: plasmoid.screen
-        activity: activityInfo.currentActivity
+        activity: viewLayout ? viewLayout.lastUsedActivity : activityInfo.currentActivity
 
         filterByVirtualDesktop: root.showOnlyCurrentDesktop
         filterByScreen: root.showOnlyCurrentScreen
