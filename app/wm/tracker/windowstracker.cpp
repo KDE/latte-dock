@@ -942,7 +942,7 @@ void Windows::updateHints(Latte::View *view)
     }
 
     //! Debug
-    //qDebug() << " -- TRACKING REPORT --";
+    //qDebug() << " -- TRACKING REPORT (SCREEN)--";
     //qDebug() << "TRACKING | SCREEN: " << view->positioner()->currentScreenId() << " , EDGE:" << view->location() << " , ENABLED:" << enabled(view);
     //qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
     //qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
@@ -1021,11 +1021,10 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
     }
 
     //! Debug
-    //qDebug() << " -- TRACKING REPORT --";
-    //qDebug() << "TRACKING | SCREEN: " << view->positioner()->currentScreenId() << " , EDGE:" << view->location() << " , ENABLED:" << enabled(view);
-    //qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
-    //qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
-    //         << " , existsWindowTouching:"<<existsWindowTouching(view);
+    //qDebug() << " -- TRACKING REPORT (LAYOUT) --";
+    //qDebug() << "TRACKING | LAYOUT: " << layout->name() << " , ENABLED:" << enabled(layout);
+    //qDebug() << "TRACKING | existsActiveWindow: " << foundActive << " ,activeWindowMaximized: " << foundActiveMaximized;
+    //qDebug() << "TRACKING | existsWindowMaximized: " << existsWindowMaximized(layout);
 }
 
 }
