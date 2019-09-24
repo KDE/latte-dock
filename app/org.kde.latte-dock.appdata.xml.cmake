@@ -19,6 +19,7 @@
   <name xml:lang="id">Latte</name>
   <name xml:lang="it">Latte</name>
   <name xml:lang="ko">Latte</name>
+  <name xml:lang="lt">Latte</name>
   <name xml:lang="nl">Latte</name>
   <name xml:lang="nn">Latte</name>
   <name xml:lang="pl">Latte</name>
@@ -48,6 +49,7 @@
   <summary xml:lang="id">Dock untuk mengelompokkan</summary>
   <summary xml:lang="it">Area di aggancio per le masse</summary>
   <summary xml:lang="ko">다수의 응용프로그램을 위한 독</summary>
+  <summary xml:lang="lt">Dokas masėms</summary>
   <summary xml:lang="nl">Dock voor de massa</summary>
   <summary xml:lang="nn">Dokk for massane</summary>
   <summary xml:lang="pl">Dok dla mas</summary>
@@ -77,6 +79,7 @@
     <p xml:lang="id">Latte adalah dock berdasarkan kerangka kerja plasma yang memberikan pengalaman yang elegan dan intuitif untuk tugas dan plasmoid kamu. Ini menganimasikan konten dengan menggunakan efek zoom parabola dan mencoba untuk berada di sana hanya ketika diperlukan.</p>
     <p xml:lang="it">Latte è un'area di aggancio basata su plasma frameworks. Offre ai tuoi processi e ai tuoi plasmoidi un'esperienza elegante ed intuitiva, animando il loro contenuto con un effetto zoom parabolico e facendosi trovare solo quando necessario.</p>
     <p xml:lang="ko">Latte는 Plasma 프레임워크 기반의 독으로 작업 및 plasmoids에 대한 우아하고 직관적인 경험을 제공합니다. 상직적인 확대/축소 효과를 사용하여 내용을 애니메이션화하고 필요할 때만 사용할 수 있습니다.</p>
+    <p xml:lang="lt">Latte yra Plasma karkasu pagrįstas dokas, kuris teikia elegantišką ir intuityvų jūsų užduočių ir Plasma įskiepių patyrimą. Jis animuoja savo turinį naudodamas parabolinį mastelio efektą ir stengiasi pasirodyti tik tuomet, kai jo reikia.</p>
     <p xml:lang="nl">Latte is een dock gebaseerd op plasma frameworks die een elegante en intuïtieve ervaring voor uw taken en plasmoids is. Het animeert zijn inhoud door een parabolisch zoomeffect te gebruiken en probeert er alleen te zijn wanneer nodig.</p>
     <p xml:lang="nn">Latte er ei dokk basert på Plasma-rammeverket og som gjev elegant og intuitiv tilgang til program/oppgåver og skjerm­element. Innhaldet vert animerte med parabolske forstørrings­effektar og programmet prøver å ikkje vera i vegen når det ikkje trengst.</p>
     <p xml:lang="pl">Latte jest dokiem opartym na szkieletach plazmy, który zapewnia przyjemne i intuicyjne odczucia w pracy z zadaniami i plazmoidami. Animuje swoją zawartośc przy użyciu efektu przybliżenia parabolicznego i próbuje być widocznym tylko wtedy, gdy jest potrzebny.</p>
@@ -105,6 +108,7 @@
     <p xml:lang="id">"Art In Coffee"</p>
     <p xml:lang="it">«Art In Coffee»</p>
     <p xml:lang="ko">"커피 안의 예술"</p>
+    <p xml:lang="lt">"Menas kavoje"</p>
     <p xml:lang="nl">"Kunst in koffie"</p>
     <p xml:lang="nn">«Kunst i kaffi»</p>
     <p xml:lang="pl">"Sztuka w Kawie"</p>
@@ -140,6 +144,7 @@
   <developer_name xml:lang="id">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="it">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ko">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="lt">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="nl">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="nn">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="pl">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
