@@ -140,7 +140,7 @@ LatteComponents.ComboBoxButton{
             for(var i=0; i<pluginIds.length; ++i) {
                 var canBeRemoved = localPluginIds.indexOf(pluginIds[i])>=0;
                 var iconString = canBeRemoved ? 'remove' : '';
-                var iconTip = canBeRemoved ? i18n('Remove indicator') : '';
+                var iconTip = canBeRemoved ? i18n("Remove indicator") : '';
                 var iconOnlyForHovered = canBeRemoved ? true : false;
 
                 var element = {
@@ -194,7 +194,7 @@ LatteComponents.ComboBoxButton{
         //! add
         var addElement = {
             pluginId: 'add:',
-            name: i18n('Add Indicator...'),
+            name: i18n("Add Indicator..."),
             icon: 'document-import',
             iconToolTip: '',
             iconOnlyWhenHovered: false
@@ -204,7 +204,7 @@ LatteComponents.ComboBoxButton{
         //! download
         var downloadElement = {
             pluginId: 'download:',
-            name: i18n('Get New Indicators...'),
+            name: i18n("Get New Indicators..."),
             icon: 'get-hot-new-stuff',
             iconToolTip: '',
             iconOnlyWhenHovered: false
