@@ -271,7 +271,7 @@ FocusScope {
 
                 PlasmaComponents.Label {
                     id: latteTxtMetrics
-                    text: "Latte"
+                    text: i18n("Latte")
                     width: 0
                     font.pointSize: 2 * theme.defaultFont.pointSize
                     visible: false
