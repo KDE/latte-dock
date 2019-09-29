@@ -1,5 +1,16 @@
 #**CHANGELOG**#
 
+#### Version 0.9.3
+
+* important: plenty of fixes for margins and Fitt's Law
+* support android click animation even for panel empty areas
+* latte indicators can now support animations for panel empty areas
+* track kwinrc changes only when needed
+* latte plasmoid is now using the last used activity from its layouts instead of the plasma current one. In that way tasks animations are improved under multiple layouts environments
+* fix for all screens last active window tracking
+* fix automatic icon size calculations in order to avoid constant cpu usage
+* update some qt deprecated code
+
 #### Version 0.9.2
 
 * do not hide contents/icons when qtquick software rendering is used
