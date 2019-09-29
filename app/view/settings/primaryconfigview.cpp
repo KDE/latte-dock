@@ -35,7 +35,6 @@
 #include "../../wm/abstractwindowinterface.h"
 
 // Qt
-#include <QFontMetrics>
 #include <QQuickItem>
 #include <QQmlContext>
 #include <QQmlEngine>
