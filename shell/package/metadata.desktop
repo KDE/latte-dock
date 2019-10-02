@@ -57,6 +57,7 @@ Comment[zh_TW]=由 Latte Dock 提供的 Shell
 Keywords=shell
 Keywords[ca]=intèrpret d'ordres
 Keywords[ca@valencia]=intèrpret d'ordres
+Keywords[cs]=shell
 Keywords[da]=skal
 Keywords[de]=Shell
 Keywords[el]=κέλυφος
