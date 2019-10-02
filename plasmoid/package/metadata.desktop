@@ -2,6 +2,7 @@
 Name=Latte Tasks
 Name[ca]=Tasques del Latte
 Name[ca@valencia]=Tasques del Latte
+Name[cs]=Úlohy Latte
 Name[en_GB]=Latte Tasks
 Name[es]=Tareas de Latte
 Name[fi]=Latte-tehtävät
@@ -24,6 +25,7 @@ Name[zh_TW]=Latte 任務
 Comment=Tasks plasmoid from Latte Dock
 Comment[ca]=Plasmoide de tasques del Latte Dock
 Comment[ca@valencia]=Plasmoide de tasques del Latte Dock
+Comment[cs]=Plasmoid úloh z doku Latte
 Comment[en_GB]=Tasks plasmoid from Latte Dock
 Comment[es]=Plasmoide de tareas de Latte Dock
 Comment[fi]=Latte-telakan tehtäväsovelma
