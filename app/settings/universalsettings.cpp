@@ -268,7 +268,7 @@ void UniversalSettings::setAutostart(bool state)
     //! end of removal of old autostart file
 
     QFile autostartFile(QDir::homePath() + "/.config/autostart/org.kde.latte-dock.desktop");
-    QFile metaFile(Layouts::Importer::standardPath("applications", false)+"/org.kde.latte-dock.desktop");
+    QFile metaFile(Layouts::Importer::standardPath("applications/org.kde.latte-dock.desktop", false));
 
     if (!state && autostartFile.exists()) {
         //! the first time that the user disables the autostart, this is recorded
