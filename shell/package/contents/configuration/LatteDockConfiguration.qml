@@ -361,14 +361,6 @@ FocusScope {
                     Layout.rightMargin: units.smallSpacing * 2
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
 
-                    function switchMode() {
-                        if (dialog.basicLevel || dialog.advancedLevel) {
-                            viewConfig.complexity = Latte.Types.ExpertSettings;
-                        } else if (dialog.expertLevel) {
-                            viewConfig.complexity = Latte.Types.BasicSettings;
-                        }
-                    }
-
                     PlasmaComponents.Label {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignRight
@@ -410,18 +402,20 @@ FocusScope {
                             anchors.fill: parent
                             hoverEnabled: true
                             onClicked: {
-                                complexitySettings.switchMode();
+                                complexitySwitch.checked = !complexitySwitch.checked;
                             }
                         }
                     }
 
                     LatteComponents.Switch {
                         id: complexitySwitch
-                        checked: dialog.expertLevel
+                        checked: (viewConfig.complexity === Latte.Types.ExpertSettings)
 
-                        onPressedChanged: {
-                            if(pressed){
-                                complexitySettings.switchMode();
+                        onCheckedChanged: {
+                            if (checked) {
+                                viewConfig.complexity = Latte.Types.ExpertSettings;
+                            } else {
+                                viewConfig.complexity = Latte.Types.BasicSettings;
                             }
                         }
                     }
