@@ -1004,7 +1004,37 @@ void Corona::updateDockItemBadge(QString identifier, QString value)
 
 void Corona::switchToLayout(QString layout)
 {
-    m_layoutsManager->switchToLayout(layout);
+    if ((layout.startsWith("file:/") || layout.startsWith("/")) && layout.endsWith(".layout.latte")) {
+        //! Import and load runtime a layout through dbus interface
+        //! It can be used from external programs that want to update runtime
+        //! the Latte shown layout
+        QString layoutPath = layout;
+
+        //! cleanup layout path
+        if (layoutPath.startsWith("file:///")) {
+            layoutPath = layout.remove("file://");
+        } else if (layoutPath.startsWith("file://")) {
+            layoutPath = layout.remove("file:/");
+        }
+
+        //! check out layoutpath existence
+        if (QFileInfo(layoutPath).exists()) {
+            qDebug() << " Layout is going to be imported and loaded from file :: " << layoutPath;
+
+            QString importedLayout = m_layoutsManager->importer()->importLayoutHelper(layoutPath);
+
+            if (importedLayout.isEmpty()) {
+                qDebug() << i18n("The layout cannot be imported from file :: ") << layoutPath;
+            } else {
+                m_layoutsManager->synchronizer()->loadLayouts();
+                m_layoutsManager->switchToLayout(importedLayout);
+            }
+        } else {
+            qDebug() << " Layout from missing file can not be imported and loaded :: " << layoutPath;
+        }
+    } else {
+        m_layoutsManager->switchToLayout(layout);
+    }
 }
 
 void Corona::showSettingsWindow(int page)
