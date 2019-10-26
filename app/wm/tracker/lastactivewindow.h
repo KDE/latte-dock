@@ -55,6 +55,9 @@ class LastActiveWindow : public QObject {
     Q_PROPERTY(bool isValid READ isValid NOTIFY isValidChanged)
     Q_PROPERTY(bool hasSkipTaskbar READ hasSkipTaskbar NOTIFY hasSkipTaskbarChanged)
 
+    /*since Latte v0.9.4*/
+    Q_PROPERTY(QString colorScheme READ colorScheme NOTIFY colorSchemeChanged)
+
     Q_PROPERTY(QString appName READ appName NOTIFY appNameChanged)
     Q_PROPERTY(QString display READ display NOTIFY displayChanged)
     Q_PROPERTY(QRect geometry READ geometry NOTIFY geometryChanged)
@@ -78,7 +81,8 @@ public:
     bool hasSkipTaskbar() const;
 
     QString appName() const;
-    QString display() const;
+    QString colorScheme() const;
+    QString display() const;    
 
     QRect geometry() const;
     QIcon icon() const;
@@ -105,6 +109,7 @@ private slots:
 
 
 signals:
+    void colorSchemeChanged();
     void iconChanged();
     void isActiveChanged();
     void isMinimizedChanged();
@@ -114,7 +119,7 @@ signals:
     void isOnAllDesktopsChanged();
     void isShadedChanged();
     void isValidChanged();
-    void hasSkipTaskbarChanged();
+    void hasSkipTaskbarChanged();    
 
     void appNameChanged();
     void displayChanged();
@@ -132,6 +137,8 @@ private:
     void setIsShaded(bool shaded);
     void setIsValid(bool valid);
     void setHasSkipTaskbar(bool skip);
+
+    void setColorScheme(QString scheme);
 
     void setAppName(QString appName);
     void setDisplay(QString display);
@@ -153,6 +160,8 @@ private:
     bool m_isShaded{false};
     bool m_isValid{false};
     bool m_hasSkipTaskbar{false};
+
+    QString m_colorScheme;
 
     QString m_appName;
     QString m_display;
