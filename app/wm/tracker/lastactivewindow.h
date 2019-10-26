@@ -149,6 +149,7 @@ private:
     void setWinId(QVariant winId);
 
     void clearHistory();
+    void updateColorScheme();
 
 private:
     bool m_isActive{false};

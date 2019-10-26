@@ -54,6 +54,12 @@ void Schemes::init()
 {
     updateDefaultScheme();
 
+    connect(this, &Schemes::colorSchemeChanged, this, [&](WindowId wid) {
+        if (wid == m_wm->activeWindow()) {
+            emit m_wm->activeWindowChanged(wid);
+        }
+    });
+
     connect(m_wm, &AbstractWindowInterface::windowRemoved, this, [&](WindowId wid) {
         m_windowScheme.remove(wid);
     });
@@ -129,9 +135,7 @@ void Schemes::setColorSchemeForWindow(WindowId wid, QString scheme)
         m_windowScheme[wid] = schemeFile;
     }
 
-    if (wid == m_wm->activeWindow()) {
-        emit m_wm->activeWindowChanged(wid);
-    }
+    emit colorSchemeChanged(wid);
 }
 
 }
