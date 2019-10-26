@@ -20,6 +20,7 @@
 #include "lastactivewindow.h"
 
 // local
+#include "schemes.h"
 #include "trackedgeneralinfo.h"
 #include "windowstracker.h"
 #include "../abstractwindowinterface.h"
@@ -220,6 +221,21 @@ void LastActiveWindow::setAppName(QString appName)
     emit appNameChanged();
 }
 
+QString LastActiveWindow::colorScheme() const
+{
+    return m_colorScheme;
+}
+
+void LastActiveWindow::setColorScheme(QString scheme)
+{
+    if (m_colorScheme == scheme){
+        return;
+    }
+
+    m_colorScheme = scheme;
+    emit colorSchemeChanged();
+}
+
 QString LastActiveWindow::display() const
 {
     return m_display;
@@ -272,6 +288,12 @@ void LastActiveWindow::setWinId(QVariant winId)
 
 void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 {
+    bool firstActiveness{false};
+
+    if (m_winId != info.wid()) {
+        firstActiveness = true;
+    }
+
     setWinId(info.wid());
 
     setIsValid(true);
@@ -284,6 +306,11 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
     setDisplay(info.display());
     setGeometry(info.geometry());
     setIsKeepAbove(info.isKeepAbove());
+
+    auto scheme = m_wm->schemesTracker()->schemeForWindow(info.wid());
+    if (scheme) {
+        setColorScheme(scheme->schemeFile());
+    }
 
     if (info.appName().isEmpty()) {
         setAppName(m_windowsTracker->appNameFor(info.wid()));
