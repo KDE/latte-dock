@@ -48,6 +48,12 @@ LastActiveWindow::LastActiveWindow(TrackedGeneralInfo *trackedInfo)
       m_windowsTracker(trackedInfo->wm()->windowsTracker()),
       m_wm(trackedInfo->wm())
 {
+    connect(m_wm->schemesTracker(), &Schemes::colorSchemeChanged, this, [&](WindowId wid) {
+        if (wid == m_winId) {
+            updateColorScheme();
+        }
+    });
+
     connect(m_windowsTracker, &Windows::windowChanged, this, &LastActiveWindow::windowChanged);
     connect(m_windowsTracker, &Windows::windowRemoved, this, &LastActiveWindow::windowRemoved);
 }
@@ -307,9 +313,8 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
     setGeometry(info.geometry());
     setIsKeepAbove(info.isKeepAbove());
 
-    auto scheme = m_wm->schemesTracker()->schemeForWindow(info.wid());
-    if (scheme) {
-        setColorScheme(scheme->schemeFile());
+    if (firstActiveness) {
+        updateColorScheme();
     }
 
     if (info.appName().isEmpty()) {
@@ -402,6 +407,14 @@ void LastActiveWindow::clearHistory()
                 m_history.removeLast();
             }
         }
+    }
+}
+
+void LastActiveWindow::updateColorScheme()
+{
+    auto scheme = m_wm->schemesTracker()->schemeForWindow(m_winId);
+    if (scheme) {
+        setColorScheme(scheme->schemeFile());
     }
 }
 
