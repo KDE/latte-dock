@@ -1,5 +1,12 @@
 #**CHANGELOG**#
 
+#### Version 0.9.4
+
+* import and a load layout when Latte is running through its dbus interface
+* expose the last active window colorscheme in order to be used from applets. In upcoming Window AppMenu version the user will be able to define the color scheme to be used for its app menus
+* fix advanced switch button when changing between different states
+* fix autostart option for some distros that did not work such as Manjaro
+
 #### Version 0.9.3
 
 * important: plenty of fixes for margins and Fitt's Law
