@@ -19,8 +19,6 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS DBus Gui Qml Quick)
 
-find_package(KF5 REQUIRED COMPONENTS SysGuard)
-
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Activities Archive CoreAddons GuiAddons Crash DBusAddons Declarative GlobalAccel I18n 
     IconThemes NewStuff Notifications Plasma PlasmaQuick Wayland WindowSystem XmlGui)
@@ -52,6 +50,10 @@ string(REGEX REPLACE "\\." "" KF5_VERSION_MINOR ${KF5_VERSION_MINOR})
 
 message(STATUS "KF5 VERSION : ${KF5_VERSION}")
 message(STATUS "KF5 VERSION MINOR : ${KF5_VERSION_MINOR}")
+
+if(${KF5_VERSION_MINOR} LESS "62")
+find_package(KF5 REQUIRED COMPONENTS SysGuard)
+endif()
 
 include(ECMQMLModules)
 ecm_find_qmlmodule(QtQuick 2.7)
