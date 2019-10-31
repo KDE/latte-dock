@@ -583,13 +583,13 @@ QIcon Windows::iconFor(const WindowId &wid)
     return m_windows[wid].icon();
 }
 
-QString Windows::appNameFor(const WindowId &wid)
+QString Windows::appNameFor(const WindowId &wid, bool forceUpdate)
 {
     if (!m_windows.contains(wid)) {
         return QString();
     }
 
-    if (m_windows[wid].appName().isEmpty()) {
+    if (m_windows[wid].appName().isEmpty() || forceUpdate) {
         AppData data = m_wm->appDataFor(wid);
 
         m_windows[wid].setAppName(data.name);
