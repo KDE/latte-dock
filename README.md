@@ -52,7 +52,7 @@ Minimum requirements:
  KF5GlobalAccel >= 5.38.0
  KF5Crash >= 5.38.0
 
- KSysGuard
+ KSysGuard [reguired only for kf5<=5.61]
 
  For X11 support:
     KF5WindowSystem >= 5.38.0

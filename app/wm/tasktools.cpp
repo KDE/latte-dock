@@ -16,23 +16,24 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
 #include "tasktools.h"
+#include <config-latte.h>
 
 #include <KActivities/ResourceInstance>
 #include <KConfigGroup>
 #include <KDesktopFile>
 #include <kemailsettings.h>
-//#include <KFileItem>
 #include <KMimeTypeTrader>
-//#include <KRun>
 #include <KServiceTypeTrader>
 #include <KSharedConfig>
 #include <KStartupInfo>
 #include <KWindowSystem>
 
-#include <processcore/processes.h>
-#include <processcore/process.h>
-
-#include <config-latte.h>
+#if KF5_VERSION_MINOR >= 62
+    #include <KProcessList>
+#else
+    #include <processcore/processes.h>
+    #include <processcore/process.h>
+#endif
 
 #include <QDir>
 #include <QGuiApplication>
@@ -503,17 +504,30 @@ KService::List servicesFromPid(quint32 pid, KSharedConfig::Ptr rulesConfig)
         return KService::List();
     }
 
+#if KF5_VERSION_MINOR >= 62
+    auto proc = KProcessList::processInfo(pid);
+    if (!proc.isValid()) {
+        return KService::List();
+    }
+
+    const QString cmdLine = proc.command();
+#else
     KSysGuard::Processes procs;
     procs.updateOrAddProcess(pid);
 
     KSysGuard::Process *proc = procs.getProcess(pid);
     const QString &cmdLine = proc ? proc->command().simplified() : QString(); // proc->command has a trailing space???
+#endif
 
     if (cmdLine.isEmpty()) {
         return KService::List();
     }
 
+#if KF5_VERSION_MINOR >= 63
+    return servicesFromCmdLine(cmdLine, proc.name(), rulesConfig);
+#else
     return servicesFromCmdLine(cmdLine, proc->name(), rulesConfig);
+#endif
 }
 
 KService::List servicesFromCmdLine(const QString &_cmdLine, const QString &processName,
