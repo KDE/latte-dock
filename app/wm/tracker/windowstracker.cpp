@@ -47,6 +47,11 @@ Windows::Windows(AbstractWindowInterface *parent)
 
     connect(&m_extraViewHintsTimer, &QTimer::timeout, this, &Windows::updateExtraViewHints);
 
+    //! delayed application data
+    m_updateApplicationDataTimer.setInterval(1500);
+    m_updateApplicationDataTimer.setSingleShot(true);
+    connect(&m_updateApplicationDataTimer, &QTimer::timeout, this, &Windows::updateApplicationData);
+
     init();
 }
 
@@ -82,6 +87,11 @@ void Windows::init()
 
     connect(m_wm, &AbstractWindowInterface::windowRemoved, this, [&](WindowId wid) {
         m_windows.remove(wid);
+
+        //! application data
+        m_initializedApplicationData.removeAll(wid);
+        m_delayedApplicationData.removeAll(wid);
+
         updateAllHints();
 
         emit windowRemoved(wid);
@@ -583,20 +593,54 @@ QIcon Windows::iconFor(const WindowId &wid)
     return m_windows[wid].icon();
 }
 
-QString Windows::appNameFor(const WindowId &wid, bool forceUpdate)
+QString Windows::appNameFor(const WindowId &wid)
 {
     if (!m_windows.contains(wid)) {
         return QString();
     }
 
-    if (m_windows[wid].appName().isEmpty() || forceUpdate) {
+    if(!m_initializedApplicationData.contains(wid) && !m_delayedApplicationData.contains(wid)) {
+        m_delayedApplicationData.append(wid);
+        m_updateApplicationDataTimer.start();
+    }
+
+    if (m_windows[wid].appName().isEmpty()) {
         AppData data = m_wm->appDataFor(wid);
 
         m_windows[wid].setAppName(data.name);
+
         return data.name;
     }
 
     return m_windows[wid].appName();
+}
+
+void Windows::updateApplicationData()
+{
+    if (m_delayedApplicationData.count() > 0) {
+        for(int i=0; i<m_delayedApplicationData.count(); ++i) {
+            auto wid = m_delayedApplicationData[i];
+
+            if (m_windows.contains(wid)) {
+                AppData data = m_wm->appDataFor(wid);
+
+                QIcon icon = data.icon;
+
+                if (icon.isNull()) {
+                    icon = m_wm->iconFor(wid);
+                }
+
+                m_windows[wid].setIcon(icon);
+                m_windows[wid].setAppName(data.name);
+
+                m_initializedApplicationData.append(wid);
+
+                emit applicationDataChanged(wid);
+            }
+        }
+    }
+
+    m_delayedApplicationData.clear();
 }
 
 WindowInfoWrap Windows::infoFor(const WindowId &wid) const

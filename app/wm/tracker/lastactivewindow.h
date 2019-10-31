@@ -27,7 +27,6 @@
 // Qt
 #include <QObject>
 #include <QRect>
-#include <QTimer>
 
 namespace Latte {
 class View;
@@ -105,6 +104,8 @@ public slots:
     void requestMove(Latte::View *fromView, int localX, int localY);
 
 private slots:
+    void applicationDataChanged(const WindowId &wid);
+
     void windowChanged(const WindowId &wid);
     void windowRemoved(const WindowId &wid);
 
@@ -174,13 +175,6 @@ private:
     QVariant m_winId;
 
     QList<WindowId> m_history;
-
-    //! Some applications delay their application name/icon identification
-    //! such as Libreoffice that updates its StartupWMClass after
-    //! its startup
-    QTimer m_updateApplicationDataTimer;
-    QList<WindowId> m_initializedApplicationData;
-    WindowId m_delayedApplicationDataWid{-1};
 
     TrackedGeneralInfo *m_trackedInfo{nullptr};
     AbstractWindowInterface *m_wm{nullptr};
