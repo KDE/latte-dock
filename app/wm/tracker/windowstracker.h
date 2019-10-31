@@ -85,7 +85,7 @@ public:
     //! Windows management
     bool isValidFor(const WindowId &wid) const;
     QIcon iconFor(const WindowId &wid);
-    QString appNameFor(const WindowId &wid, bool forceUpdate = false);
+    QString appNameFor(const WindowId &wid);
     WindowInfoWrap infoFor(const WindowId &wid) const;
 
     void setPlasmaDesktop(WindowId wid);
@@ -119,11 +119,14 @@ signals:
     void windowChanged(const WindowId &wid);
     void windowRemoved(const WindowId &wid);
 
+    void applicationDataChanged(const WindowId &wid);
+
 private slots:
     void updateAvailableScreenGeometries();
 
     void addRelevantLayout(Latte::View *view);
 
+    void updateApplicationData();
     void updateRelevantLayouts();
     void updateExtraViewHints();
 
@@ -173,6 +176,13 @@ private:
     QHash<Latte::Layout::GenericLayout *, TrackedLayoutInfo *> m_layouts;
 
     QMap<WindowId, WindowInfoWrap> m_windows;
+
+    //! Some applications delay their application name/icon identification
+    //! such as Libreoffice that updates its StartupWMClass after
+    //! its startup
+    QTimer m_updateApplicationDataTimer;
+    QList<WindowId> m_delayedApplicationData;
+    QList<WindowId> m_initializedApplicationData;
 };
 
 }
