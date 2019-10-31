@@ -85,7 +85,7 @@ public:
     //! Windows management
     bool isValidFor(const WindowId &wid) const;
     QIcon iconFor(const WindowId &wid);
-    QString appNameFor(const WindowId &wid);
+    QString appNameFor(const WindowId &wid, bool forceUpdate = false);
     WindowInfoWrap infoFor(const WindowId &wid) const;
 
     void setPlasmaDesktop(WindowId wid);

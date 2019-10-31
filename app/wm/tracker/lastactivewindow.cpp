@@ -56,6 +56,17 @@ LastActiveWindow::LastActiveWindow(TrackedGeneralInfo *trackedInfo)
 
     connect(m_windowsTracker, &Windows::windowChanged, this, &LastActiveWindow::windowChanged);
     connect(m_windowsTracker, &Windows::windowRemoved, this, &LastActiveWindow::windowRemoved);
+
+    //! delayed application data
+    m_updateApplicationDataTimer.setInterval(1500);
+    m_updateApplicationDataTimer.setSingleShot(true);
+    connect(&m_updateApplicationDataTimer, &QTimer::timeout, this, [&]() {
+        if (m_delayedApplicationDataWid>=0 && m_delayedApplicationDataWid == m_winId && !m_initializedApplicationData.contains(m_winId)) {
+            setAppName(m_windowsTracker->appNameFor(m_winId, true));
+            m_delayedApplicationDataWid = -1;
+            m_initializedApplicationData.append(m_winId);
+        }
+    });
 }
 
 LastActiveWindow::~LastActiveWindow()
@@ -315,6 +326,14 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 
     if (firstActiveness) {
         updateColorScheme();
+
+        //delayed application data
+        m_updateApplicationDataTimer.stop();
+
+        if (!m_initializedApplicationData.contains(info.wid())) {
+            m_delayedApplicationDataWid = info.wid();
+            m_updateApplicationDataTimer.start();
+        }
     }
 
     if (info.appName().isEmpty()) {
@@ -380,6 +399,10 @@ void LastActiveWindow::windowChanged(const WindowId &wid)
 
 void LastActiveWindow::windowRemoved(const WindowId &wid)
 {
+    if (m_initializedApplicationData.contains(wid)) {
+        m_initializedApplicationData.removeAll(wid);
+    }
+
     if (m_history.contains(wid)) {
         bool firstItemRemoved{false};
 
