@@ -523,7 +523,7 @@ KService::List servicesFromPid(quint32 pid, KSharedConfig::Ptr rulesConfig)
         return KService::List();
     }
 
-#if KF5_VERSION_MINOR >= 63
+#if KF5_VERSION_MINOR >= 62
     return servicesFromCmdLine(cmdLine, proc.name(), rulesConfig);
 #else
     return servicesFromCmdLine(cmdLine, proc->name(), rulesConfig);
