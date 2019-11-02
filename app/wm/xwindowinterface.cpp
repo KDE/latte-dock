@@ -62,6 +62,12 @@ XWindowInterface::XWindowInterface(QObject *parent)
             , static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>
             (&KWindowSystem::windowChanged)
             , this, &XWindowInterface::windowChangedProxy);
+
+
+    for(auto wid : KWindowSystem::self()->windows()) {
+        emit windowAdded(wid);
+        windowChangedProxy(wid,0,0);
+    }
 }
 
 XWindowInterface::~XWindowInterface()
@@ -313,9 +319,9 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 
     //! update desktop id
 
-    bool isPlasmaDesktop{false};
-    if (winfo.windowClassName() == "plasmashell" && hasScreenGeometry(winfo)) {
-        isPlasmaDesktop = true;
+    bool isDesktop{false};
+    if (winfo.windowClassName() == "plasmashell" && isPlasmaDesktop(winfo.geometry())) {
+        isDesktop = true;
         windowsTracker()->setPlasmaDesktop(wid);
     }
 
@@ -323,7 +329,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 
     if (!winfo.valid()) {
         winfoWrap.setIsValid(false);
-    } else if (isValidWindow(winfo) && !isPlasmaDesktop) {
+    } else if (isValidWindow(winfo) && !isDesktop) {
         winfoWrap.setIsValid(true);
         winfoWrap.setWid(wid);
         winfoWrap.setParentId(winfo.transientFor());
@@ -616,20 +622,6 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
     return !(isMenu || isDock);
 }
 
-bool XWindowInterface::hasScreenGeometry(const KWindowInfo &winfo) const
-{
-    bool hasScreenGeometry{false};
-
-    for (const auto scr : qGuiApp->screens()) {
-        if (!winfo.geometry().isEmpty() && winfo.geometry() == scr->geometry()) {
-            hasScreenGeometry = true;
-            break;
-        }
-    }
-
-    return hasScreenGeometry;
-}
-
 void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
 {
     const KWindowInfo info(wid, NET::WMGeometry, NET::WM2WindowClass);
@@ -641,12 +633,17 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
         return;
     }
 
-    //! update desktop id
-    if (winClass == "plasmashell" && hasScreenGeometry(info)) {
-        m_desktopId = wid;
-        windowsTracker()->setPlasmaDesktop(wid);
-        considerWindowChanged(wid);
-        return;
+    if (winClass == "plasmashell") {
+        //! update desktop id
+        if (isPlasmaDesktop(info.geometry())) {
+            m_desktopId = wid;
+            windowsTracker()->setPlasmaDesktop(wid);
+            considerWindowChanged(wid);
+            return;
+        } else if (isPlasmaPanel(info.geometry())) {
+            registerPlasmaPanel(wid);
+            return;
+        }
     }
 
     //! accept only NET::Properties events,
