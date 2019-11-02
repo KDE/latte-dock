@@ -92,41 +92,41 @@ void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
     const QRect wholeScreen {{0, 0}, screen->virtualSize()};
 
     switch (location) {
-        case Plasma::Types::TopEdge: {
-            const int topOffset {screen->geometry().top()};
-            strut.top_width = rect.height() + topOffset;
-            strut.top_start = rect.x();
-            strut.top_end = rect.x() + rect.width() - 1;
-            break;
-        }
+    case Plasma::Types::TopEdge: {
+        const int topOffset {screen->geometry().top()};
+        strut.top_width = rect.height() + topOffset;
+        strut.top_start = rect.x();
+        strut.top_end = rect.x() + rect.width() - 1;
+        break;
+    }
 
-        case Plasma::Types::BottomEdge: {
-            const int bottomOffset {wholeScreen.bottom() - currentScreen.bottom()};
-            strut.bottom_width = rect.height() + bottomOffset;
-            strut.bottom_start = rect.x();
-            strut.bottom_end = rect.x() + rect.width() - 1;
-            break;
-        }
+    case Plasma::Types::BottomEdge: {
+        const int bottomOffset {wholeScreen.bottom() - currentScreen.bottom()};
+        strut.bottom_width = rect.height() + bottomOffset;
+        strut.bottom_start = rect.x();
+        strut.bottom_end = rect.x() + rect.width() - 1;
+        break;
+    }
 
-        case Plasma::Types::LeftEdge: {
-            const int leftOffset = {screen->geometry().left()};
-            strut.left_width = rect.width() + leftOffset;
-            strut.left_start = rect.y();
-            strut.left_end = rect.y() + rect.height() - 1;
-            break;
-        }
+    case Plasma::Types::LeftEdge: {
+        const int leftOffset = {screen->geometry().left()};
+        strut.left_width = rect.width() + leftOffset;
+        strut.left_start = rect.y();
+        strut.left_end = rect.y() + rect.height() - 1;
+        break;
+    }
 
-        case Plasma::Types::RightEdge: {
-            const int rightOffset = {wholeScreen.right() - currentScreen.right()};
-            strut.right_width = rect.width() + rightOffset;
-            strut.right_start = rect.y();
-            strut.right_end = rect.y() + rect.height() - 1;
-            break;
-        }
+    case Plasma::Types::RightEdge: {
+        const int rightOffset = {wholeScreen.right() - currentScreen.right()};
+        strut.right_width = rect.width() + rightOffset;
+        strut.right_start = rect.y();
+        strut.right_end = rect.y() + rect.height() - 1;
+        break;
+    }
 
-        default:
-            qWarning() << "wrong location:" << qEnumToStr(location);
-            return;
+    default:
+        qWarning() << "wrong location:" << qEnumToStr(location);
+        return;
     }
 
     KWindowSystem::setExtendedStrut(view.winId(),
@@ -134,7 +134,7 @@ void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
                                     strut.right_width,  strut.right_start,  strut.right_end,
                                     strut.top_width,    strut.top_start,    strut.top_end,
                                     strut.bottom_width, strut.bottom_start, strut.bottom_end
-                                   );
+                                    );
 }
 
 void XWindowInterface::switchToNextVirtualDesktop() const
@@ -206,24 +206,24 @@ void XWindowInterface::slideWindow(QWindow &view, AbstractWindowInterface::Slide
     auto slideLocation = KWindowEffects::NoEdge;
 
     switch (location) {
-        case Slide::Top:
-            slideLocation = KWindowEffects::TopEdge;
-            break;
+    case Slide::Top:
+        slideLocation = KWindowEffects::TopEdge;
+        break;
 
-        case Slide::Bottom:
-            slideLocation = KWindowEffects::BottomEdge;
-            break;
+    case Slide::Bottom:
+        slideLocation = KWindowEffects::BottomEdge;
+        break;
 
-        case Slide::Left:
-            slideLocation = KWindowEffects::LeftEdge;
-            break;
+    case Slide::Left:
+        slideLocation = KWindowEffects::LeftEdge;
+        break;
 
-        case Slide::Right:
-            slideLocation = KWindowEffects::RightEdge;
-            break;
+    case Slide::Right:
+        slideLocation = KWindowEffects::RightEdge;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     KWindowEffects::slideWindow(view.winId(), slideLocation, -1);
@@ -264,26 +264,26 @@ void XWindowInterface::setEdgeStateFor(QWindow *view, bool active) const
     uint32_t value = 0;
 
     switch (window->location()) {
-        case Plasma::Types::TopEdge:
-            value = 0;
-            break;
+    case Plasma::Types::TopEdge:
+        value = 0;
+        break;
 
-        case Plasma::Types::RightEdge:
-            value = 1;
-            break;
+    case Plasma::Types::RightEdge:
+        value = 1;
+        break;
 
-        case Plasma::Types::BottomEdge:
-            value = 2;
-            break;
+    case Plasma::Types::BottomEdge:
+        value = 2;
+        break;
 
-        case Plasma::Types::LeftEdge:
-            value = 3;
-            break;
+    case Plasma::Types::LeftEdge:
+        value = 3;
+        break;
 
-        case Plasma::Types::Floating:
-        default:
-            value = 4;
-            break;
+    case Plasma::Types::Floating:
+    default:
+        value = 4;
+        break;
     }
 
     int hideType = 0;
@@ -301,15 +301,15 @@ WindowInfoWrap XWindowInterface::requestInfoActive() const
 WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 {
     const KWindowInfo winfo{wid.value<WId>(), NET::WMFrameExtents
-                            | NET::WMWindowType
-                            | NET::WMGeometry
-                            | NET::WMDesktop
-                            | NET::WMState
-                            | NET::WMName
-                            | NET::WMVisibleName,
-                              NET::WM2WindowClass
-                            | NET::WM2Activities
-                            | NET::WM2TransientFor};
+                | NET::WMWindowType
+                | NET::WMGeometry
+                | NET::WMDesktop
+                | NET::WMState
+                | NET::WMName
+                | NET::WMVisibleName,
+                NET::WM2WindowClass
+                | NET::WM2Activities
+                | NET::WM2TransientFor};
 
     //! update desktop id
 
@@ -389,8 +389,8 @@ QUrl XWindowInterface::windowUrl(WindowId wid) const
     }
 
     return windowUrlFromMetadata(info.windowClassClass(),
-        NETWinInfo(QX11Info::connection(), wid.value<WId>(), QX11Info::appRootWindow(), NET::WMPid, NET::Properties2()).pid(),
-        rulesConfig, info.windowClassName());
+                                 NETWinInfo(QX11Info::connection(), wid.value<WId>(), QX11Info::appRootWindow(), NET::WMPid, NET::Properties2()).pid(),
+                                 rulesConfig, info.windowClassName());
 }
 
 
@@ -466,7 +466,7 @@ void XWindowInterface::requestMoveWindow(WindowId wid, QPoint from) const
         return;
     }
 
-    int borderX{wInfo.geometry().width() > 120 ? 60 : 10};
+    int borderX = wInfo.geometry().width() > 120 ? 60 : 10;
     int borderY{10};
 
     //! find min/max values for x,y based on active window geometry
@@ -660,12 +660,12 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     //! accept only the following NET:Properties changed signals
     //! NET::WMState, NET::WMGeometry, NET::ActiveWindow
     if ( !(prop1 & NET::WMState)
-          && !(prop1 & NET::WMGeometry)
-          && !(prop1 & NET::ActiveWindow)
-          && !(prop1 & NET::WMDesktop)
-          && !(prop1 & (NET::WMName | NET::WMVisibleName)
-          && !(prop2 & NET::WM2TransientFor)
-          && !(prop2 & NET::WM2Activities)) ) {
+         && !(prop1 & NET::WMGeometry)
+         && !(prop1 & NET::ActiveWindow)
+         && !(prop1 & NET::WMDesktop)
+         && !(prop1 & (NET::WMName | NET::WMVisibleName)
+              && !(prop2 & NET::WM2TransientFor)
+              && !(prop2 & NET::WM2Activities)) ) {
         return;
     }
 
