@@ -110,6 +110,7 @@ private:
     void init();
     bool isValidWindow(const KWayland::Client::PlasmaWindow *w) const;
     bool isPlasmaDesktop(const KWayland::Client::PlasmaWindow *w) const;
+    bool isPlasmaPanel(const KWayland::Client::PlasmaWindow *w) const;
     void windowCreatedProxy(KWayland::Client::PlasmaWindow *w);
     KWayland::Client::PlasmaWindow *windowFor(WindowId wid) const;
     KWayland::Client::PlasmaShell *waylandCoronaInterface() const;

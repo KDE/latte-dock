@@ -113,11 +113,17 @@ public:
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;
     virtual AppData appDataFor(WindowId wid) const = 0;
 
+    bool isIgnored(const WindowId &wid);
+    bool isRegisteredPlasmaPanel(const WindowId &wid);
+
     QString currentDesktop() const;
     QString currentActivity() const;
 
     virtual void registerIgnoredWindow(WindowId wid);
     virtual void unregisterIgnoredWindow(WindowId wid);
+
+    void registerPlasmaPanel(WindowId wid);
+    void unregisterPlasmaPanel(WindowId wid);
 
     void switchToNextActivity();
     void switchToPreviousActivity();
@@ -146,6 +152,8 @@ protected:
     //! windows that must be ignored from tracking, a good example are Latte::Views and
     //! their Configuration windows
     QList<WindowId> m_ignoredWindows;
+    //! identified plasma panels
+    QList<WindowId> m_plasmaPanels;
 
     QPointer<KActivities::Consumer> m_activities;
 
@@ -159,6 +167,12 @@ protected:
     KSharedConfig::Ptr rulesConfig;
 
     void considerWindowChanged(WindowId wid);
+
+    bool isPlasmaDesktop(const QRect &wGeometry) const;
+    bool isPlasmaPanel(const QRect &wGeometry) const;
+
+private slots:
+    void windowRemovedSlot(WindowId wid);
 
 private:
     Latte::Corona *m_corona;

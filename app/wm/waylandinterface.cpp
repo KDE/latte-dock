@@ -630,16 +630,16 @@ bool WaylandInterface::isPlasmaDesktop(const KWayland::Client::PlasmaWindow *w) 
         return false;
     }
 
-    bool hasScreenGeometry{false};
+    return AbstractWindowInterface::isPlasmaDesktop(w->geometry());
+}
 
-    for (const auto scr : qGuiApp->screens()) {
-        if (!w->geometry().isEmpty() && w->geometry() == scr->geometry()) {
-            hasScreenGeometry = true;
-            break;
-        }
+bool WaylandInterface::isPlasmaPanel(const KWayland::Client::PlasmaWindow *w) const
+{
+    if (!w || (w->appId() != QLatin1String("org.kde.plasmashell"))) {
+        return false;
     }
 
-    return hasScreenGeometry;
+    return AbstractWindowInterface::isPlasmaPanel(w->geometry());
 }
 
 bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) const
@@ -651,7 +651,7 @@ bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) co
     //! e.g. widgets explorer, Activities etc. that are not used to hide
     //! the dodge views appropriately
 
-    return w->isValid() && !isPlasmaDesktop(w) && !m_ignoredWindows.contains(w->internalId());
+    return w->isValid() && !isPlasmaDesktop(w) && !m_plasmaPanels.contains(w->internalId()) && !m_ignoredWindows.contains(w->internalId());
 }
 
 void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
@@ -697,9 +697,21 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
         PlasmaWindow *pW = qobject_cast<PlasmaWindow*>(w);
 
         if (pW && !m_ignoredWindows.contains(pW->internalId() && !isPlasmaDesktop(pW) )) {
+            if (pW->appId() == QLatin1String("org.kde.plasmashell")) {
+                if (isPlasmaDesktop(pW)) {
+                    return;
+                } else if (isPlasmaPanel(pW)) {
+                    registerIgnoredWindow(pW->internalId());
+                }
+            }
+
             considerWindowChanged(pW->internalId());
         }
     });
+
+    if (isPlasmaPanel(w)) {
+        registerPlasmaPanel(w->internalId());
+    }
 
     emit windowAdded(w->internalId());
 

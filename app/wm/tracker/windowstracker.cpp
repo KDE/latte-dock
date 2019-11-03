@@ -873,7 +873,7 @@ void Windows::updateHints(Latte::View *view)
             existsFaultyWindow = true;
         }
 
-        if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo)) {
+        if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
             continue;
         }
 
@@ -930,7 +930,7 @@ void Windows::updateHints(Latte::View *view)
         WindowId mainWindowId = activeInfo.isChildWindow() ? activeInfo.parentId() : activeWinId;
 
         for (const auto &winfo : m_windows) {
-            if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo)) {
+            if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
                 continue;
             }
 
@@ -1015,7 +1015,7 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
             existsFaultyWindow = true;
         }
 
-        if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo)) {
+        if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
             continue;
         }
 

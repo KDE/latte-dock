@@ -55,6 +55,8 @@ AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
         emit windowChanged(wid);
     });
 
+    connect(this, &AbstractWindowInterface::windowRemoved, this, &AbstractWindowInterface::windowRemovedSlot);
+
    // connect(this, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
    //     qDebug() << "WINDOW CHANGED ::: " << wid;
    // });
@@ -99,6 +101,52 @@ Tracker::Windows *AbstractWindowInterface::windowsTracker() const
     return m_windowsTracker;
 }
 
+bool AbstractWindowInterface::isIgnored(const WindowId &wid)
+{
+    return m_ignoredWindows.contains(wid);
+}
+
+bool AbstractWindowInterface::isPlasmaDesktop(const QRect &wGeometry) const
+{
+    if (wGeometry.isEmpty()) {
+        return false;
+    }
+
+    for (const auto scr : qGuiApp->screens()) {
+        if (wGeometry == scr->geometry()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool AbstractWindowInterface::isPlasmaPanel(const QRect &wGeometry) const
+{
+    if (wGeometry.isEmpty()) {
+        return false;
+    }
+
+    for (const auto scr : qGuiApp->screens()) {
+        if (scr->geometry().contains(wGeometry.center())) {
+            if (wGeometry.y() == scr->geometry().y()
+                    || wGeometry.bottom() == scr->geometry().bottom()
+                    || wGeometry.left() == scr->geometry().left()
+                    || wGeometry.right() == scr->geometry().right()) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool AbstractWindowInterface::isRegisteredPlasmaPanel(const WindowId &wid)
+{
+    return m_plasmaPanels.contains(wid);
+}
+
+
 //! Register Latte Ignored Windows in order to NOT be tracked
 void AbstractWindowInterface::registerIgnoredWindow(WindowId wid)
 {
@@ -116,6 +164,27 @@ void AbstractWindowInterface::unregisterIgnoredWindow(WindowId wid)
     }
 }
 
+void AbstractWindowInterface::registerPlasmaPanel(WindowId wid)
+{
+    if (!wid.isNull() && !m_plasmaPanels.contains(wid)) {
+        m_plasmaPanels.append(wid);
+        emit windowChanged(wid);
+    }
+}
+
+void AbstractWindowInterface::unregisterPlasmaPanel(WindowId wid)
+{
+    if (m_plasmaPanels.contains(wid)) {
+        m_plasmaPanels.removeAll(wid);
+    }
+}
+
+void AbstractWindowInterface::windowRemovedSlot(WindowId wid)
+{
+    if (m_plasmaPanels.contains(wid)) {
+        unregisterPlasmaPanel(wid);
+    }
+}
 
 //! Activities switching
 void AbstractWindowInterface::switchToNextActivity()
