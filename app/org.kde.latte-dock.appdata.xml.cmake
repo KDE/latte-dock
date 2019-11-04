@@ -48,7 +48,7 @@
   <summary xml:lang="gl">Doca para as masas</summary>
   <summary xml:lang="id">Dock untuk mengelompokkan</summary>
   <summary xml:lang="it">Area di aggancio per le masse</summary>
-  <summary xml:lang="ko">다수의 응용프로그램을 위한 독</summary>
+  <summary xml:lang="ko">다수의 프로그램을 위한 도구집</summary>
   <summary xml:lang="lt">Dokas masėms</summary>
   <summary xml:lang="nl">Dock voor de massa</summary>
   <summary xml:lang="nn">Dokk for massane</summary>
@@ -78,7 +78,7 @@
     <p xml:lang="gl">Latte é unha doca construída coas infraestruturas de Plasma que fornece unha experiencia elegante e intuitiva para as súas tarefas e plasmoides. Anima o seu contido usando o efecto de ampliación parabólico e intenta estar aí só cando se necesita.</p>
     <p xml:lang="id">Latte adalah dock berdasarkan kerangka kerja plasma yang memberikan pengalaman yang elegan dan intuitif untuk tugas dan plasmoid kamu. Ini menganimasikan konten dengan menggunakan efek zoom parabola dan mencoba untuk berada di sana hanya ketika diperlukan.</p>
     <p xml:lang="it">Latte è un'area di aggancio basata su plasma frameworks. Offre ai tuoi processi e ai tuoi plasmoidi un'esperienza elegante ed intuitiva, animando il loro contenuto con un effetto zoom parabolico e facendosi trovare solo quando necessario.</p>
-    <p xml:lang="ko">Latte는 Plasma 프레임워크 기반의 독으로 작업 및 plasmoids에 대한 우아하고 직관적인 경험을 제공합니다. 상직적인 확대/축소 효과를 사용하여 내용을 애니메이션화하고 필요할 때만 사용할 수 있습니다.</p>
+    <p xml:lang="ko">Latte는 플라즈마 프레임워크를 기반으로 한 도구집으로 작업 및 plasmoids에 대한 우아하고 직관적인 경험을 제공합니다. 포물선 모양의 확대/축소 효과를 사용하여 내용을 애니메이션화하고 필요할 때만 도구집을 표시됩니다.</p>
     <p xml:lang="lt">Latte yra Plasma karkasu pagrįstas dokas, kuris teikia elegantišką ir intuityvų jūsų užduočių ir Plasma įskiepių patyrimą. Jis animuoja savo turinį naudodamas parabolinį mastelio efektą ir stengiasi pasirodyti tik tuomet, kai jo reikia.</p>
     <p xml:lang="nl">Latte is een dock gebaseerd op plasma frameworks die een elegante en intuïtieve ervaring voor uw taken en plasmoids is. Het animeert zijn inhoud door een parabolisch zoomeffect te gebruiken en probeert er alleen te zijn wanneer nodig.</p>
     <p xml:lang="nn">Latte er ei dokk basert på Plasma-rammeverket og som gjev elegant og intuitiv tilgang til program/oppgåver og skjerm­element. Innhaldet vert animerte med parabolske forstørrings­effektar og programmet prøver å ikkje vera i vegen når det ikkje trengst.</p>
