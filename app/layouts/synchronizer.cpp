@@ -515,8 +515,8 @@ void Synchronizer::unloadCentralLayout(CentralLayout *layout)
             central->syncToLayoutFile(true);
         }
 
-        central->unloadContainments();
         central->unloadLatteViews();
+        central->unloadContainments();
 
         if (m_multipleModeInitialized) {
             m_manager->clearUnloadedContainmentsFromLinkedFile(central->unloadedContainmentsIds(), true);
@@ -533,8 +533,8 @@ void Synchronizer::unloadSharedLayout(SharedLayout *layout)
         int pos = m_sharedLayouts.indexOf(layout);
         SharedLayout *shared = m_sharedLayouts.takeAt(pos);
         shared->syncToLayoutFile(true);
-        shared->unloadContainments();
         shared->unloadLatteViews();
+        shared->unloadContainments();
         m_manager->clearUnloadedContainmentsFromLinkedFile(shared->unloadedContainmentsIds(), true);
 
         delete layout;
