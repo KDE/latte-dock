@@ -113,6 +113,8 @@ public:
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;
     virtual AppData appDataFor(WindowId wid) const = 0;
 
+    bool inCurrentDesktopActivity(const WindowInfoWrap &winfo) const;
+
     bool isIgnored(const WindowId &wid);
     bool isRegisteredPlasmaPanel(const WindowId &wid);
 

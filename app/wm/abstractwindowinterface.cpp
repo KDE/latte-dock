@@ -146,6 +146,10 @@ bool AbstractWindowInterface::isRegisteredPlasmaPanel(const WindowId &wid)
     return m_plasmaPanels.contains(wid);
 }
 
+bool AbstractWindowInterface::inCurrentDesktopActivity(const WindowInfoWrap &winfo) const
+{
+    return (winfo.isValid() && winfo.isOnDesktop(currentDesktop()) && winfo.isOnActivity(currentActivity()));
+}
 
 //! Register Latte Ignored Windows in order to NOT be tracked
 void AbstractWindowInterface::registerIgnoredWindow(WindowId wid)
