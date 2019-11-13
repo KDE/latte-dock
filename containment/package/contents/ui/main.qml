@@ -143,7 +143,7 @@ Item {
                                          && Latte.WindowSystem.compositingActive
                                          && !inConfigureAppletsMode
                                          && !forceSolidPanel
-                                         && !(windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.currentScreen.activeWindowTouching)
+                                         && !latteView.windowsTracker.currentScreen.existsWindowTouching
                                          && !(windowColors === Latte.Types.ActiveWindowColors && selectedWindowsTracker.existsWindowActive)
 
     property bool forcePanelForBusyBackground: userShowPanelBackground && (root.themeColors === Latte.Types.SmartThemeColors)

@@ -825,7 +825,7 @@ PlasmaComponents.Page {
                     enabled: Latte.WindowSystem.compositingActive
 
                     PlasmaComponents.Label {
-                        text: plasmoid.configuration.backgroundOnlyOnMaximized ?
+                        text: plasmoid.configuration.backgroundOnlyOnMaximized && plasmoid.configuration.solidBackgroundForMaximized ?
                                   i18nc("opacity when desktop background is busy from contrast point of view","Busy Opacity") : i18n("Opacity")
                         horizontalAlignment: Text.AlignLeft
                         enabled: transparencySlider.enabled
