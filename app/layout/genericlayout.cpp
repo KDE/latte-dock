@@ -67,22 +67,10 @@ void GenericLayout::unloadContainments()
         return;
     }
 
-    //!disconnect signals in order to avoid crashes when the layout is unloading
-    disconnect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
-    disconnect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
-    disconnect(m_corona->activityConsumer(), &KActivities::Consumer::currentActivityChanged, this, &GenericLayout::updateLastUsedActivity);
-
-    qDebug() << "Layout - " + name() + " unload: containments ... size ::: " << m_containments.size()
+    qDebug() << "Layout - " + name() + " : [unloadContainments]"
+             << "containments ::: " << m_containments.size()
              << " ,latteViews in memory ::: " << m_latteViews.size()
              << " ,hidden latteViews in memory :::  " << m_waitingLatteViews.size();
-
-    for (const auto view : m_latteViews) {
-        view->disconnectSensitiveSignals();
-    }
-
-    for (const auto view : m_waitingLatteViews) {
-        view->disconnectSensitiveSignals();
-    }
 
     m_unloadedContainmentsIds.clear();
 
@@ -117,7 +105,23 @@ void GenericLayout::unloadLatteViews()
         return;
     }
 
-    qDebug() << "Layout - " + name() + " unload: latteViews ... size: " << m_latteViews.size();
+    qDebug() << "Layout - " + name() + " : [unloadLatteViews]"
+             << "containments ::: " << m_containments.size()
+             << " ,latteViews in memory ::: " << m_latteViews.size()
+             << " ,hidden latteViews in memory :::  " << m_waitingLatteViews.size();
+
+    //!disconnect signals in order to avoid crashes when the layout is unloading
+    disconnect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
+    disconnect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
+    disconnect(m_corona->activityConsumer(), &KActivities::Consumer::currentActivityChanged, this, &GenericLayout::updateLastUsedActivity);
+
+    for (const auto view : m_latteViews) {
+        view->disconnectSensitiveSignals();
+    }
+
+    for (const auto view : m_waitingLatteViews) {
+        view->disconnectSensitiveSignals();
+    }
 
     qDeleteAll(m_latteViews);
     qDeleteAll(m_waitingLatteViews);
