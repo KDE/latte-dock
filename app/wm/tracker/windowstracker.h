@@ -158,7 +158,6 @@ private:
     void setActiveWindowScheme(Latte::Layout::GenericLayout *layout, WindowSystem::SchemeColors *scheme);
 
     //! Windows
-    bool inCurrentDesktopActivity(const WindowInfoWrap &winfo);
     bool intersects(Latte::View *view, const WindowInfoWrap &winfo);
     bool isActive(const WindowInfoWrap &winfo);
     bool isActiveInViewScreen(Latte::View *view, const WindowInfoWrap &winfo);

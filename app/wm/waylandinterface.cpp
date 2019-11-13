@@ -517,6 +517,7 @@ bool WaylandInterface::windowCanBeDragged(WindowId wid) const
         return (winfo.isValid()
                 && w->isMovable()
                 && !winfo.isMinimized()
+                && inCurrentDesktopActivity(winfo)
                 && !winfo.isPlasmaDesktop());
     }
 
@@ -532,6 +533,7 @@ bool WaylandInterface::windowCanBeMaximized(WindowId wid) const
         return (winfo.isValid()
                 && w->isMaximizeable()
                 && !winfo.isMinimized()
+                && inCurrentDesktopActivity(winfo)
                 && !winfo.isPlasmaDesktop());
     }
 
@@ -559,7 +561,9 @@ void WaylandInterface::requestClose(WindowId wid) const
 
 void WaylandInterface::requestMoveWindow(WindowId wid, QPoint from) const
 {
-    if (windowCanBeDragged(wid)) {
+    WindowInfoWrap wInfo = requestInfo(wid);
+
+    if (windowCanBeDragged(wid) && inCurrentDesktopActivity(wInfo)) {
         auto w = windowFor(wid);
 
         if (w && isValidWindow(w)) {
@@ -599,8 +603,9 @@ void WaylandInterface::requestToggleKeepAbove(WindowId wid) const
 void WaylandInterface::requestToggleMinimized(WindowId wid) const
 {
     auto w = windowFor(wid);
+    WindowInfoWrap wInfo = requestInfo(wid);
 
-    if (w && isValidWindow(w)) {
+    if (w && isValidWindow(w) && inCurrentDesktopActivity(wInfo)) {
 #if KF5_VERSION_MINOR >= 52
         if (!m_currentDesktop.isEmpty()) {
             w->requestEnterVirtualDesktop(m_currentDesktop);
@@ -613,8 +618,9 @@ void WaylandInterface::requestToggleMinimized(WindowId wid) const
 void WaylandInterface::requestToggleMaximized(WindowId wid) const
 {
     auto w = windowFor(wid);
+    WindowInfoWrap wInfo = requestInfo(wid);
 
-    if (w && isValidWindow(w) && windowCanBeMaximized(wid)) {
+    if (w && isValidWindow(w) && windowCanBeMaximized(wid) && inCurrentDesktopActivity(wInfo)) {
 #if KF5_VERSION_MINOR >= 52
         if (!m_currentDesktop.isEmpty()) {
             w->requestEnterVirtualDesktop(m_currentDesktop);

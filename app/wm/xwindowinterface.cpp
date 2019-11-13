@@ -409,6 +409,7 @@ bool XWindowInterface::windowCanBeDragged(WindowId wid) const
         return (winfo.isValid()
                 && info.actionSupported(NET::ActionMove)
                 && !winfo.isMinimized()
+                && inCurrentDesktopActivity(winfo)
                 && !winfo.isPlasmaDesktop());
     }
 
@@ -424,6 +425,7 @@ bool XWindowInterface::windowCanBeMaximized(WindowId wid) const
         return (winfo.isValid()
                 && !winfo.isMinimized()
                 && info.actionSupported(NET::ActionMax)
+                && inCurrentDesktopActivity(winfo)
                 && !winfo.isPlasmaDesktop());
     }
 
@@ -468,7 +470,7 @@ void XWindowInterface::requestMoveWindow(WindowId wid, QPoint from) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);
 
-    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+    if (!wInfo.isValid() || wInfo.isPlasmaDesktop() || !inCurrentDesktopActivity(wInfo)) {
         return;
     }
 
@@ -531,7 +533,7 @@ void XWindowInterface::requestToggleMinimized(WindowId wid) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);
 
-    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+    if (!wInfo.isValid() || wInfo.isPlasmaDesktop() || !inCurrentDesktopActivity(wInfo)) {
         return;
     }
 
@@ -550,11 +552,12 @@ void XWindowInterface::requestToggleMinimized(WindowId wid) const
 
 void XWindowInterface::requestToggleMaximized(WindowId wid) const
 {
-    if (!windowCanBeMaximized(wid)) {
+    WindowInfoWrap wInfo = requestInfo(wid);
+
+    if (!windowCanBeMaximized(wid) || !inCurrentDesktopActivity(wInfo)) {
         return;
     }
 
-    WindowInfoWrap wInfo = requestInfo(wid);
     bool restore = wInfo.isMaxHoriz() && wInfo.isMaxVert();
 
     if (wInfo.isMinimized()) {

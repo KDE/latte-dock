@@ -655,12 +655,6 @@ WindowInfoWrap Windows::infoFor(const WindowId &wid) const
 
 
 //! Windows Criteria Functions
-
-bool Windows::inCurrentDesktopActivity(const WindowInfoWrap &winfo)
-{
-    return (winfo.isValid() && winfo.isOnDesktop(m_wm->currentDesktop()) && winfo.isOnActivity(m_wm->currentActivity()));
-}
-
 bool Windows::intersects(Latte::View *view, const WindowInfoWrap &winfo)
 {
     return (!winfo.isMinimized() && !winfo.isShaded() && winfo.geometry().intersects(view->absoluteGeometry()));
@@ -873,7 +867,7 @@ void Windows::updateHints(Latte::View *view)
             existsFaultyWindow = true;
         }
 
-        if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
+        if (winfo.isPlasmaDesktop() || !m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
             continue;
         }
 
@@ -930,7 +924,7 @@ void Windows::updateHints(Latte::View *view)
         WindowId mainWindowId = activeInfo.isChildWindow() ? activeInfo.parentId() : activeWinId;
 
         for (const auto &winfo : m_windows) {
-            if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
+            if (winfo.isPlasmaDesktop() || !m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
                 continue;
             }
 
@@ -1015,7 +1009,7 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
             existsFaultyWindow = true;
         }
 
-        if (winfo.isPlasmaDesktop() || !inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
+        if (winfo.isPlasmaDesktop() || !m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
             continue;
         }
 
