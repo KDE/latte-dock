@@ -42,8 +42,29 @@ Loader {
         return indicators.indicatorComponent;
     }
 
-    width: root.isHorizontal && canBeHovered  ? appletItem.wrapperAlias.zoomScale * visualLockedWidth : appletItem.wrapperAlias.width
-    height: root.isVertical && canBeHovered  ? appletItem.wrapperAlias.zoomScale * visualLockedHeight : appletItem.wrapperAlias.height
+    width: {
+        if (root.isHorizontal) {
+            if (canBeHovered) {
+                return appletItem.wrapperAlias.zoomScale * visualLockedWidth;
+            }
+
+            return appletWrapper.width + appletItem.internalWidthMargins;
+        } else {
+            return appletItem.wrapperAlias.width;
+        }
+    }
+
+    height: {
+        if (root.isVertical) {
+            if (canBeHovered) {
+               return appletItem.wrapperAlias.zoomScale * visualLockedHeight;
+            }
+
+            return appletWrapper.height + appletItem.internalHeightMargins;
+        } else {
+            return appletItem.wrapperAlias.height;
+        }
+    }
 
     readonly property bool locked: appletItem.lockZoom || root.zoomFactor === 1
 
