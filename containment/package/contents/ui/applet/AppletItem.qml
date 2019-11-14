@@ -164,9 +164,7 @@ Item {
     property Item latteStyleApplet: applet && ((applet.pluginName === "org.kde.latte.spacer") || (applet.pluginName === "org.kde.latte.separator")) ?
                                         (applet.children[0] ? applet.children[0] : null) : null
 
-    property Item appletWrapper: applet &&
-                                 ((applet.pluginName === root.plasmoidName) ||
-                                  isSystray) ? wrapper : wrapper.wrapperContainer
+    property Item appletWrapper: applet && (applet.pluginName === root.plasmoidName )? wrapper : wrapper.wrapperContainer
 
     property Item tooltipVisualParent: titleTooltipParent
 
