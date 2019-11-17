@@ -144,8 +144,29 @@ Item {
     property int lengthAppletFullMargin: lengthAppletIntMargin + root.lengthExtMargin
     property int lengthAppletFullMargins: 2 * lengthAppletFullMargin
 
-    property int internalWidthMargins: root.isVertical ? root.thickMargins : 2 * lengthAppletIntMargin
-    property int internalHeightMargins: root.isHorizontal ? root.thickMargins : 2 * lengthAppletIntMargin
+    property int internalWidthMargins: {
+        if (root.isVertical) {
+            return root.thickMargins;
+        }
+
+        /*TODO, Fitt's case: is temporary until the atScreenEdge applets are aligned properly to the corner and the wrapper
+          is taking all the space needed in order to fill right. For atScreenEdge appplets that should be: applet size + lengthAppletIntMargin + lengthAppletExtMargin.
+          The indicator should follow also the applet alignment in this in order to feel right
+          */
+        return atScreenEdge ? lengthAppletIntMargin / 2 /*Fitt's*/ : 2 * lengthAppletIntMargin;
+    }
+
+    property int internalHeightMargins: {
+        if (root.isHorizontal) {
+            return root.thickMargins;
+        }
+
+        /*TODO,Fitt's case: is temporary until the atScreenEdge applets are aligned properly to the corner and the wrapper
+          is taking all the space needed in order to fill right. For atScreenEdge appplets that should be: applet size + lengthAppletIntMargin + lengthAppletExtMargin.
+          The indicator should follow also the applet alignment in this in order to feel right
+          */
+        return atScreenEdge ? lengthAppletIntMargin / 2 /*Fitt's*/ : 2 * lengthAppletIntMargin;
+    }
 
     //! are set by the indicator
     property int iconOffsetX: 0
