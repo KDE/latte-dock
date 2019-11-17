@@ -84,8 +84,8 @@ Item {
     property bool isSpacer: applet && (applet.pluginName === "org.kde.latte.spacer")
     property bool isSystray: applet && (applet.pluginName === "org.kde.plasma.systemtray" || applet.pluginName === "org.nomad.systemtray" )
 
-    property bool firstChildOfStartLayout: (index === layoutsContainer.startLayout.beginIndex)
-    property bool lastChildOfEndLayout: ((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1))
+    property bool firstChildOfStartLayout: index === layoutsContainer.startLayout.firstVisibleIndex
+    property bool lastChildOfEndLayout: index === layoutsContainer.endLayout.lastVisibleIndex
 
     readonly property bool atScreenEdge: {
         if (root.isHorizontal) {
@@ -106,14 +106,15 @@ Item {
     }
 
     //applet is in starting edge
-    /*property bool startEdge: index < layoutsContainer.endLayout.beginIndex ? (index === 0)&&(layoutsContainer.mainLayout.count > 1) :
-                                                               (index === layoutsContainer.endLayout.beginIndex)&&(layoutsContainer.endLayout.count > 1)*/
-    property bool startEdge: (index === layoutsContainer.startLayout.beginIndex) || (index === layoutsContainer.mainLayout.beginIndex) || (index === layoutsContainer.endLayout.beginIndex)
+    property bool startEdge: (index >=0) &&
+                             ((index === layoutsContainer.startLayout.firstVisibleIndex)
+                              || (index === layoutsContainer.mainLayout.firstVisibleIndex)
+                              || (index === layoutsContainer.endLayout.firstVisibleIndex))
     //applet is in ending edge
-    property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Types.Justify ? (index === layoutsContainer.mainLayout.beginIndex + layoutsContainer.mainLayout.count - 1)&&(layoutsContainer.mainLayout.count>1) :
-                                                                                          (((index === layoutsContainer.startLayout.beginIndex+layoutsContainer.startLayout.count-2)&&(layoutsContainer.startLayout.count>2))
-                                                                                           ||((index === layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-2)&&(layoutsContainer.mainLayout.count>2))
-                                                                                           ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
+    property bool endEdge: (index >=0) &&
+                           ((index === layoutsContainer.startLayout.lastVisibleIndex)
+                            || (index === layoutsContainer.mainLayout.lastVisibleIndex)
+                            || (index === layoutsContainer.endLayout.lastVisibleIndex))
 
     readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.parabolicEffectLocked
     readonly property bool originalAppletBehavior: (root.zoomFactor === 1 && !lockZoom /*hacky flag to keep Latte behavior*/)
@@ -466,8 +467,8 @@ Item {
 
     Component.onDestruction: {
         if (animationWasSent) {
-             root.slotAnimationsNeedBothAxis(-1);
-             animationWasSent = false;
+            root.slotAnimationsNeedBothAxis(-1);
+            animationWasSent = false;
         }
 
         if (isSeparator){

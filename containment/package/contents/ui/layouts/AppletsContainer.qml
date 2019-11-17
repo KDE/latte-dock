@@ -91,6 +91,57 @@ Grid {
         return no;
     }
 
+    property int firstVisibleIndex: -1
+    property int lastVisibleIndex: -1
+
+    Binding{
+        target: appletsContainer
+        property:"firstVisibleIndex"
+        when: appletsContainer
+        value: {
+            if (root.inConfigureAppletsMode) {
+                return;
+            }
+
+            var ind = -1;
+            for (var i=0; i>=children[i].length-1; ++i){
+                if (children[i]
+                        && (children[i].index<ind || ind === -1)
+                        && children[i].applet
+                        && !children[i].isHidden
+                        && !children[i].isInternalViewSplitter) {
+                    ind = children[i].index;
+                }
+            }
+
+            return ind;
+        }
+    }
+
+    Binding{
+        target: appletsContainer
+        property:"lastVisibleIndex"
+        when: appletsContainer
+        value: {
+            if (root.inConfigureAppletsMode) {
+                return;
+            }
+
+            var ind = -1;
+            for (var i=children.length-1; i>=0; --i){
+                if (children[i]
+                        && children[i].index>ind
+                        && children[i].applet
+                        && !children[i].isHidden
+                        && !children[i].isInternalViewSplitter) {
+                    ind = children[i].index;
+                }
+            }
+
+            return ind;
+        }
+    }
+
     onCountChanged: {
         if (root.editMode) {
             //! this is mainly used when removing/adding internal view splitters
