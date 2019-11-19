@@ -521,13 +521,7 @@ Item{
                 return 0;
             }
 
-            backgroundColor: {
-                if (busyBackground || coloredView) {
-                    return colorizerManager.backgroundColor;
-                }
-
-                return "transparent";
-            }
+            backgroundColor: colorizerManager.backgroundColor
 
             borderWidth: 1
             borderColor: backgroundColor
@@ -567,6 +561,16 @@ Item{
             Behavior on opacity{
                 enabled: !Latte.WindowSystem.compositingActive
                 NumberAnimation { duration: 0 }
+            }
+                        
+            Behavior on backgroundColor{
+                enabled: Latte.WindowSystem.compositingActive
+                ColorAnimation { duration: barLine.animationTime }
+            }
+
+            Behavior on backgroundColor{
+                enabled: !Latte.WindowSystem.compositingActive
+                ColorAnimation { duration: 0 }
             }
         }
 
