@@ -34,6 +34,8 @@
 namespace Latte {
 namespace WindowSystem {
 
+#define MAXPLASMAPANELTHICKNESS 96
+
 AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
     : QObject(parent)
 {
@@ -57,9 +59,9 @@ AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
 
     connect(this, &AbstractWindowInterface::windowRemoved, this, &AbstractWindowInterface::windowRemovedSlot);
 
-   // connect(this, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
-   //     qDebug() << "WINDOW CHANGED ::: " << wid;
-   // });
+    // connect(this, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
+    //     qDebug() << "WINDOW CHANGED ::: " << wid;
+    // });
 
     connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged, this, [&](const QString &id) {
         m_currentActivity = id;
@@ -122,20 +124,33 @@ bool AbstractWindowInterface::isPlasmaDesktop(const QRect &wGeometry) const
 }
 
 bool AbstractWindowInterface::isPlasmaPanel(const QRect &wGeometry) const
-{
+{     
     if (wGeometry.isEmpty()) {
         return false;
     }
 
+    bool isTouchingHorizontalEdge{false};
+    bool isTouchingVerticalEdge{false};
+
     for (const auto scr : qGuiApp->screens()) {
         if (scr->geometry().contains(wGeometry.center())) {
-            if (wGeometry.y() == scr->geometry().y()
-                    || wGeometry.bottom() == scr->geometry().bottom()
-                    || wGeometry.left() == scr->geometry().left()
-                    || wGeometry.right() == scr->geometry().right()) {
-                return true;
+            if (wGeometry.y() == scr->geometry().y() || wGeometry.bottom() == scr->geometry().bottom()) {
+                isTouchingHorizontalEdge = true;
+            }
+
+            if (wGeometry.left() == scr->geometry().left() || wGeometry.right() == scr->geometry().right()) {
+                isTouchingVerticalEdge = true;
+            }
+
+            if (isTouchingVerticalEdge && isTouchingHorizontalEdge) {
+                break;
             }
         }
+    }
+
+    if ((isTouchingHorizontalEdge && wGeometry.height() < MAXPLASMAPANELTHICKNESS)
+            || (isTouchingVerticalEdge && wGeometry.width() < MAXPLASMAPANELTHICKNESS)) {
+        return true;
     }
 
     return false;
