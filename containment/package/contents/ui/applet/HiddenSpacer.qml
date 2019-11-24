@@ -28,7 +28,7 @@ Item{
     height: root.isHorizontal ? wrapper.height : nHiddenSize
 
     ///check also if this is the first/last plasmoid in anylayout
-    visible: (rightSpacer ? appletItem.endEdge : appletItem.startEdge) || separatorSpace>0
+    visible: (rightSpacer ? appletItem.lastAppletInContainer : appletItem.firstAppletInContainer) || separatorSpace>0
 
     property bool neighbourSeparator: false;
 
@@ -46,7 +46,7 @@ Item{
     property bool rightSpacer: false
 
     readonly property bool atEdgeForcingFittsLaw: !isSeparator && !parabolicEffectMarginsEnabled && atScreenEdge
-    readonly property int subtrackedMargins: atEdgeForcingFittsLaw && ((startEdge && rightSpacer) || (endEdge && !rightSpacer )) ?
+    readonly property int subtrackedMargins: atEdgeForcingFittsLaw && ((firstAppletInContainer && rightSpacer) || (lastAppletInContainer && !rightSpacer )) ?
                                                  root.lengthExtMargin : 0
 
     property real nScale: 0

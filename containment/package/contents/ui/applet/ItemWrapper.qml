@@ -669,12 +669,12 @@ Item{
             }*/
 
             //Left hiddenSpacer
-            if(appletItem.startEdge){
+            if(appletItem.firstAppletInContainer){
                 hiddenSpacerLeft.nScale = scales.leftScale - 1;
             }
 
             //Right hiddenSpacer  ///there is one more item in the currentLayout ????
-            if(appletItem.endEdge){
+            if(appletItem.lastAppletInContainer){
                 hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }
 
