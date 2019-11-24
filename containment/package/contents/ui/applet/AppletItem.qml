@@ -88,6 +88,10 @@ Item {
     property bool lastChildOfEndLayout: index === layoutsContainer.endLayout.lastVisibleIndex
 
     readonly property bool atScreenEdge: {
+        if (plasmoid.configuration.maxLength!==100 || plasmoid.configuration.offset!==0) {
+            return false;
+        }
+
         if (root.isHorizontal) {
             if (firstChildOfStartLayout) {
                 return latteView && latteView.x === latteView.screenGeometry.x;
@@ -153,7 +157,7 @@ Item {
           is taking all the space needed in order to fill right. For atScreenEdge appplets that should be: applet size + lengthAppletIntMargin + lengthAppletExtMargin.
           The indicator should follow also the applet alignment in this in order to feel right
           */
-        return atScreenEdge ? lengthAppletIntMargin / 2 /*Fitt's*/ : 2 * lengthAppletIntMargin;
+        return 2 * lengthAppletIntMargin;
     }
 
     property int internalHeightMargins: {
@@ -165,7 +169,7 @@ Item {
           is taking all the space needed in order to fill right. For atScreenEdge appplets that should be: applet size + lengthAppletIntMargin + lengthAppletExtMargin.
           The indicator should follow also the applet alignment in this in order to feel right
           */
-        return atScreenEdge ? lengthAppletIntMargin / 2 /*Fitt's*/ : 2 * lengthAppletIntMargin;
+        return 2 * lengthAppletIntMargin;
     }
 
     //! are set by the indicator

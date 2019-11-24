@@ -104,7 +104,7 @@ Grid {
             }
 
             var ind = -1;
-            for (var i=0; i>=children[i].length-1; ++i){
+            for (var i=0; i<=children.length-1; ++i){
                 if (children[i]
                         && (children[i].index<ind || ind === -1)
                         && children[i].applet

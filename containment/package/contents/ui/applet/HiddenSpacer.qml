@@ -47,7 +47,7 @@ Item{
 
     readonly property bool atEdgeForcingFittsLaw: !isSeparator && !parabolicEffectMarginsEnabled && atScreenEdge
     readonly property int subtrackedMargins: atEdgeForcingFittsLaw && ((firstAppletInContainer && rightSpacer) || (lastAppletInContainer && !rightSpacer )) ?
-                                                 root.lengthExtMargin : 0
+                                                 root.lengthExtMargin + root.lengthIntMargin : 0
 
     property real nScale: 0
 
