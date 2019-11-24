@@ -106,15 +106,15 @@ Item {
     }
 
     //applet is in starting edge
-    property bool startEdge: (index >=0) &&
-                             ((index === layoutsContainer.startLayout.firstVisibleIndex)
-                              || (index === layoutsContainer.mainLayout.firstVisibleIndex)
-                              || (index === layoutsContainer.endLayout.firstVisibleIndex))
+    property bool firstAppletInContainer: (index >=0) &&
+                                          ((index === layoutsContainer.startLayout.firstVisibleIndex)
+                                           || (index === layoutsContainer.mainLayout.firstVisibleIndex)
+                                           || (index === layoutsContainer.endLayout.firstVisibleIndex))
     //applet is in ending edge
-    property bool endEdge: (index >=0) &&
-                           ((index === layoutsContainer.startLayout.lastVisibleIndex)
-                            || (index === layoutsContainer.mainLayout.lastVisibleIndex)
-                            || (index === layoutsContainer.endLayout.lastVisibleIndex))
+    property bool lastAppletInContainer: (index >=0) &&
+                                         ((index === layoutsContainer.startLayout.lastVisibleIndex)
+                                          || (index === layoutsContainer.mainLayout.lastVisibleIndex)
+                                          || (index === layoutsContainer.endLayout.lastVisibleIndex))
 
     readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.parabolicEffectLocked
     readonly property bool originalAppletBehavior: (root.zoomFactor === 1 && !lockZoom /*hacky flag to keep Latte behavior*/)
