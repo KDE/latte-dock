@@ -418,7 +418,7 @@ Window{
             }
 
             Text{
-                text: root.automaticIconSizeBasedSize
+                text: automaticItemSizer.automaticIconSizeBasedSize
             }
 
             Text{
