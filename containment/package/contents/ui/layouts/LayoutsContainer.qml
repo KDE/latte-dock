@@ -123,7 +123,7 @@ Item{
             }
 
             if (latteView && ((contentsWidth >= root.maxLength) || firstHalfExited || secondHalfExited)) {
-                updateAutomaticIconSize();
+                automaticItemSizer.updateAutomaticIconSize();
             }
 
             if (!animationSent) {
@@ -148,7 +148,7 @@ Item{
             }
 
             if (latteView && ((contentsHeight >= root.maxLength) || firstHalfExited || secondHalfExited)) {
-                updateAutomaticIconSize();
+                automaticItemSizer.updateAutomaticIconSize();
             }
 
             if (!animationSent) {

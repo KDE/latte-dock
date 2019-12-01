@@ -73,9 +73,6 @@ Item {
 
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
-    // when there are only plasma style task managers OR any applets that fill width or height
-    // the automatic icon size algorithm should better be disabled
-    property bool autoDecreaseIconSize: !containsOnlyPlasmaTasks && layoutsContainer.fillApplets<=0
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: {
         if (!latteView || !latteView.visibility) {
@@ -238,12 +235,10 @@ Item {
 
     property int appletsNeedWindowsTracking: 0
 
-    property int automaticIconSizeBasedSize: -1 //it is not set, this is the defautl
-
     //what is the highest icon size based on what icon size is used, screen calculated or user specified
     property int maxIconSize: proportionIconSize!==-1 ? proportionIconSize : plasmoid.configuration.iconSize
-    property int iconSize: automaticIconSizeBasedSize > 0 && autoDecreaseIconSize ?
-                               Math.min(automaticIconSizeBasedSize, root.maxIconSize) :
+    property int iconSize: automaticItemSizer.automaticIconSizeBasedSize > 0 && automaticItemSizer.isActive ?
+                               Math.min(automaticItemSizer.automaticIconSizeBasedSize, root.maxIconSize) :
                                root.maxIconSize
 
     property int proportionIconSize: { //icon size based on screen height
@@ -253,7 +248,6 @@ Item {
         return Math.max(16,Math.round(latteView.screenGeometry.height * plasmoid.configuration.proportionIconSize/100/8)*8);
     }
 
-    property int iconStep: 8
     property int latteAppletPos: -1
     property int maxLength: {
         if (root.isHorizontal) {
@@ -334,8 +328,6 @@ Item {
     property string appShadowColorSolid: "#" + appChosenShadowColor
 
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
-    //FIXME: this is not needed any more probably
-    property int previousAllTasks: -1    //is used to forbid updateAutomaticIconSize when hovering
     property int offset: {
         if (behaveAsPlasmaPanel) {
             return 0;
@@ -644,15 +636,11 @@ Item {
     //// END OF Behaviors
 
     //////////////START OF CONNECTIONS
-    onContainsOnlyPlasmaTasksChanged: updateAutomaticIconSize();
-
     onEditModeChanged: {
         if (editMode) {
             visibilityManager.updateMaskArea();
-            updateAutomaticIconSize();
             clearZoom();
         } else {
-            updateAutomaticIconSize();
             layoutsContainer.updateSizeForAppletsInFill();
         }
 
@@ -732,29 +720,11 @@ Item {
 
     onMaxLengthChanged: {
         layoutsContainer.updateSizeForAppletsInFill();
-        if (root.editMode) {
-            updateAutomaticIconSize();
-        }
     }
 
     onToolBoxChanged: {
         if (toolBox) {
             toolBox.visible = false;
-        }
-    }
-
-    property bool automaticSizeAnimation: false;
-    onAutomaticIconSizeBasedSizeChanged: {
-        if (!automaticSizeAnimation) {
-            automaticSizeAnimation = true;
-            slotAnimationsNeedBothAxis(1);
-        }
-    }
-
-    onIconSizeChanged: {
-        if (((iconSize === automaticIconSizeBasedSize) || (iconSize === root.maxIconSize)) && automaticSizeAnimation){
-            slotAnimationsNeedBothAxis(-1);
-            automaticSizeAnimation=false;
         }
     }
 
@@ -776,11 +746,6 @@ Item {
             else if (plasmoid.configuration.panelPosition === Latte.Types.Bottom)
                 plasmoid.configuration.panelPosition = Latte.Types.Right;
         }
-    }
-
-    onProportionIconSizeChanged: {
-        if (proportionIconSize!==-1)
-            updateAutomaticIconSize();
     }
 
     //  onIconSizeChanged: console.log("Icon Size Changed:"+iconSize);
@@ -1376,85 +1341,6 @@ Item {
         }
     }
 
-    function updateAutomaticIconSize() {
-        if ( !doubleCallAutomaticUpdateIconSize.running && !visibilityManager.inTempHiding
-                && ((visibilityManager.normalState || root.editMode)
-                    && (root.autoDecreaseIconSize || (!root.autoDecreaseIconSize && root.iconSize!=root.maxIconSize)))
-                && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
-
-            //!doubler timer
-            if (!doubleCallAutomaticUpdateIconSize.secondTimeCallApplied) {
-                doubleCallAutomaticUpdateIconSize.start();
-            } else {
-                doubleCallAutomaticUpdateIconSize.secondTimeCallApplied = false;
-            }
-
-            var layoutLength;
-            var maxLength = root.maxLength;
-
-            //console.log("------Entered check-----");
-            //console.log("max length: "+ maxLength);
-
-            if (root.isVertical) {
-                layoutLength = (plasmoid.configuration.panelPosition === Latte.Types.Justify) ?
-                            layoutsContainer.startLayout.height+layoutsContainer.mainLayout.height+layoutsContainer.endLayout.height : layoutsContainer.mainLayout.height
-            } else {
-                layoutLength = (plasmoid.configuration.panelPosition === Latte.Types.Justify) ?
-                            layoutsContainer.startLayout.width+layoutsContainer.mainLayout.width+layoutsContainer.endLayout.width : layoutsContainer.mainLayout.width
-            }
-
-            var toShrinkLimit = maxLength-((1+(root.zoomFactor-1))*(iconSize + lengthMargins));
-            var toGrowLimit = maxLength-((1+(root.zoomFactor-1))*(iconSize + lengthMargins));
-
-            //console.log("toShrinkLimit: "+ toShrinkLimit);
-            //console.log("toGrowLimit: "+ toGrowLimit);
-
-            var newIconSizeFound = false;
-            if (layoutLength > toShrinkLimit) { //must shrink
-                // console.log("step3");
-                var nextIconSize = root.maxIconSize;
-
-                do {
-                    nextIconSize = nextIconSize - iconStep;
-                    var factor = nextIconSize / iconSize;
-                    var nextLength = factor * layoutLength;
-
-                } while ( (nextLength>toShrinkLimit) && (nextIconSize !== 16));
-
-                automaticIconSizeBasedSize = nextIconSize;
-                newIconSizeFound = true;
-                // console.log("Step 3 - found:"+automaticIconSizeBasedSize);
-            } else if ((layoutLength<toGrowLimit
-                        && (iconSize === automaticIconSizeBasedSize)) ) { //must grow probably
-                // console.log("step4");
-                var nextIconSize2 = automaticIconSizeBasedSize;
-                var foundGoodSize = -1;
-
-                do {
-                    nextIconSize2 = nextIconSize2 + iconStep;
-                    var factor2 = nextIconSize2 / automaticIconSizeBasedSize;
-                    var nextLength2 = factor2 * layoutLength;
-
-                    if (nextLength2 < toGrowLimit) {
-                        foundGoodSize = nextIconSize2;
-                    }
-                } while ( (nextLength2<toGrowLimit) && (nextIconSize2 !== root.maxIconSize ));
-
-                if (foundGoodSize > 0) {
-                    if (foundGoodSize === root.maxIconSize) {
-                        automaticIconSizeBasedSize = -1;
-                    } else {
-                        automaticIconSizeBasedSize = foundGoodSize;
-                    }
-                    newIconSizeFound = true
-                    //        console.log("Step 4 - found:"+automaticIconSizeBasedSize);
-                } else {
-                    //       console.log("Step 4 - did not found...");
-                }
-            }
-        }
-    }
-
     function updateContainsOnlyPlasmaTasks() {
         if (latteView) {
             root.containsOnlyPlasmaTasks = (latteView.tasksPresent() && !latteApplet);
@@ -1537,15 +1423,6 @@ Item {
 
     Connections {
         target: latteView
-        onWidthChanged:{
-            if (root.isHorizontal && proportionIconSize!==-1)
-                updateAutomaticIconSize();
-        }
-
-        onHeightChanged:{
-            if (root.isVertical && proportionIconSize!==-1)
-                updateAutomaticIconSize();
-        }
 
         onContextMenuIsShownChanged: {
             if (!latteView.contextMenuIsShown) {
@@ -1797,6 +1674,10 @@ Item {
         }
     }
 
+    AutomaticItemSizer {
+        id: automaticItemSizer
+    }
+
     VisibilityManager{ id: visibilityManager }
 
     DragDropArea {
@@ -1911,21 +1792,6 @@ Item {
 
             if (root.debugModeTimers) {
                 console.log("containment timer: delayUpdateMaskArea called...");
-            }
-        }
-    }
-
-    //! This functions makes sure to call the updateAutomaticIconSize(); function which is costly
-    //! one more time after its last call to confirm the applied icon size found
-    Timer{
-        id:doubleCallAutomaticUpdateIconSize
-        interval: 1000
-        property bool secondTimeCallApplied: false
-
-        onTriggered: {
-            if (!secondTimeCallApplied) {
-                secondTimeCallApplied = true;
-                root.updateAutomaticIconSize();
             }
         }
     }

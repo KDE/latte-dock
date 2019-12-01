@@ -109,7 +109,7 @@ Item{
         value: root.behaveAsPlasmaPanel && !root.editMode ? thicknessAsPanel : thicknessZoomOriginal
     }
 
-    property bool validIconSize: (root.iconSize===root.maxIconSize || root.iconSize === root.automaticIconSizeBasedSize)
+    property bool validIconSize: (root.iconSize===root.maxIconSize || root.iconSize === automaticItemSizer.automaticIconSizeBasedSize)
     property bool inPublishingState: validIconSize && !inSlidingIn && !inSlidingOut && !inTempHiding && !inForceHiding
 
     Binding{
@@ -313,7 +313,7 @@ Item{
 
     onNormalStateChanged: {
         if (normalState) {
-            root.updateAutomaticIconSize();
+            automaticItemSizer.updateAutomaticIconSize();
             root.updateSizeForAppletsInFill();
         }
     }
@@ -598,7 +598,7 @@ Item{
             }
         }
 
-        var validIconSize = (root.iconSize===root.maxIconSize || root.iconSize === root.automaticIconSizeBasedSize);
+        var validIconSize = (root.iconSize===root.maxIconSize || root.iconSize === automaticItemSizer.automaticIconSizeBasedSize);
 
         //console.log("reached updating geometry ::: "+dock.maskArea);
         if(inPublishingState && (normalState || root.editMode)) {
@@ -759,11 +759,11 @@ Item{
 
             if (manager.inTempHiding) {
                 manager.inTempHiding = false;
-                updateAutomaticIconSize();
+                automaticItemSizer.updateAutomaticIconSize();
             }
 
             manager.inTempHiding = false;
-            updateAutomaticIconSize();
+            automaticItemSizer.updateAutomaticIconSize();
 
             if (manager.debugMagager) {
                 console.log("showing animation ended...");
