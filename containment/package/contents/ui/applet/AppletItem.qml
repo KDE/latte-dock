@@ -85,26 +85,51 @@ Item {
     property bool isSystray: applet && (applet.pluginName === "org.kde.plasma.systemtray" || applet.pluginName === "org.nomad.systemtray" )
 
     property bool firstChildOfStartLayout: index === layoutsContainer.startLayout.firstVisibleIndex
+    property bool firstChildOfMainLayout: index === layoutsContainer.mainLayout.firstVisibleIndex
+    property bool lastChildOfMainLayout: index === layoutsContainer.mainLayout.lastVisibleIndex
     property bool lastChildOfEndLayout: index === layoutsContainer.endLayout.lastVisibleIndex
 
     readonly property bool atScreenEdge: {
-        if (plasmoid.configuration.maxLength!==100 || plasmoid.configuration.offset!==0) {
+        if (root.panelAlignment !== Latte.Types.Justify || root.inConfigureAppletsMode || plasmoid.configuration.offset!==0) {
             return false;
         }
 
-        if (root.isHorizontal) {
-            if (firstChildOfStartLayout) {
-                return latteView && latteView.x === latteView.screenGeometry.x;
-            } else if (lastChildOfEndLayout) {
-                return latteView && ((latteView.x + latteView.width) === (latteView.screenGeometry.x + latteView.screenGeometry.width));
+        if (root.panelAlignment === Latte.Types.Justify) {
+            //! Justify case
+            if (plasmoid.configuration.maxLength!==100) {
+                return false;
             }
-        } else {
-            if (firstChildOfStartLayout) {
-                return latteView && latteView.y === latteView.screenGeometry.y;
-            } else if (lastChildOfEndLayout) {
-                return latteView && ((latteView.y + latteView.height) === (latteView.screenGeometry.y + latteView.screenGeometry.height));
+
+            if (root.isHorizontal) {
+                if (firstChildOfStartLayout) {
+                    return latteView && latteView.x === latteView.screenGeometry.x;
+                } else if (lastChildOfEndLayout) {
+                    return latteView && ((latteView.x + latteView.width) === (latteView.screenGeometry.x + latteView.screenGeometry.width));
+                }
+            } else {
+                if (firstChildOfStartLayout) {
+                    return latteView && latteView.y === latteView.screenGeometry.y;
+                } else if (lastChildOfEndLayout) {
+                    return latteView && ((latteView.y + latteView.height) === (latteView.screenGeometry.y + latteView.screenGeometry.height));
+                }
             }
+
+            return false;
         }
+
+        /*if (root.panelAlignment === Latte.Types.Left) {
+            //! Left case
+            return firstChildOfMainLayout;
+        } else if (root.panelAlignment === Latte.Types.Right) {
+            //! Right case
+            return lastChildOfMainLayout
+        }
+
+        if (root.panelAlignment === Latte.Types.Top) {
+            return firstChildOfMainLayout && latteView && latteView.y === latteView.screenGeometry.y;
+        } else if (root.panelAlignment === Latte.Types.Bottom) {
+            return lastChildOfMainLayout && latteView && ((latteView.y + latteView.height) === (latteView.screenGeometry.y + latteView.screenGeometry.height));
+        }*/
 
         return false;
     }
