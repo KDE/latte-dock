@@ -117,6 +117,8 @@ Item {
             return false;
         }
 
+        //! [disabled] because it is probably not needed at all. If in the future there is a report
+        //! describing a case that this would be useful this disablement choice can be rethought
         /*if (root.panelAlignment === Latte.Types.Left) {
             //! Left case
             return firstChildOfMainLayout;
