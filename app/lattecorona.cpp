@@ -1106,6 +1106,7 @@ void Corona::setBroadcastedBackgroundsEnabled(QString activity, QString screenNa
 
 inline void Corona::qmlRegisterTypes() const
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     qmlRegisterType<QScreen>();
     qmlRegisterType<Latte::View>();
     qmlRegisterType<Latte::ViewPart::WindowsTracker>();
@@ -1113,6 +1114,15 @@ inline void Corona::qmlRegisterTypes() const
     qmlRegisterType<Latte::ViewPart::TrackerPart::AllScreensTracker>();
     qmlRegisterType<Latte::WindowSystem::SchemeColors>();
     qmlRegisterType<Latte::WindowSystem::Tracker::LastActiveWindow>();
+#else
+    qmlRegisterAnonymousType<QScreen>("latte-dock", 1);
+    qmlRegisterAnonymousType<Latte::View>("latte-dock", 1);
+    qmlRegisterAnonymousType<Latte::ViewPart::WindowsTracker>("latte-dock", 1);
+    qmlRegisterAnonymousType<Latte::ViewPart::TrackerPart::CurrentScreenTracker>("latte-dock", 1);
+    qmlRegisterAnonymousType<Latte::ViewPart::TrackerPart::AllScreensTracker>("latte-dock", 1);
+    qmlRegisterAnonymousType<Latte::WindowSystem::SchemeColors>("latte-dock", 1);
+    qmlRegisterAnonymousType<Latte::WindowSystem::Tracker::LastActiveWindow>("latte-dock", 1);
+#endif
 }
 
 }
