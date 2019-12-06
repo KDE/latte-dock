@@ -410,7 +410,12 @@ Window{
             }
 
             Text{
-                text: root.autoDecreaseIconSize
+                text: {
+                    if (automaticItemSizer.isActive)
+                        return "Yes";
+                    else
+                        return "No";
+                }
             }
 
             Text{
