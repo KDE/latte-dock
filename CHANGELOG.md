@@ -1,5 +1,19 @@
 #**CHANGELOG**#
 
+#### Version 0.9.5
+
+* improve dynamic background animated transitions [Adrien Brunelat]
+* fix endless growing/shrinking for items size by introducing an AutomaticItemSizer class that is tracking the algorithm predictions and results in order to identify the issue/case
+* improve paddings and margins for applets that are touching the screen edge and at the same time follow Fitt's Law
+* remove workarounds for margins and paddings for plasma systray
+* dont crash when changing layouts by unloading Latte::View(s) first and their Plasma::Containment(s) afterwards
+* dont drag/maximize windows from different virtual desktops than the current one
+* fixes for dynamic background: force transparency codepath
+* ignore plasma panels for Latte heuristics. Any plasma window touching the screen edge and having thickness <=96px is considered a plasma panel.
+* update application data after 1500ms after their first fetching to catch up with some applications that are changing them with delay such as libreoffice
+* remove some deprecated code for qt>=5.14
+* drop ksysguard dependency with kde frameworks >=5.62
+
 #### Version 0.9.4
 
 * import and a load layout when Latte is running through its dbus interface
