@@ -688,8 +688,8 @@ bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &w
     //! updated implementation to identify the screen that the maximized window is present
     //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
     return (winfo.isValid() && !winfo.isPlasmaDesktop() && !winfo.isMinimized()
+            && !winfo.isShaded()
             && winfo.isMaximized()
-            && intersects(view, winfo)
             && m_views[view]->availableScreenGeometry().contains(winfo.geometry().center()));
 }
 
