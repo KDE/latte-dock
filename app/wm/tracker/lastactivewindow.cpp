@@ -306,7 +306,7 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
     setIsValid(true);
     setActive(info.isActive());
     setIsMinimized(info.isMinimized());
-    setIsMaximized(info.isMaxVert() || info.isMaxHoriz());
+    setIsMaximized(info.isMaximized());
     setIsOnAllDesktops(info.isOnAllDesktops());
 
     setAppName(info.appName());

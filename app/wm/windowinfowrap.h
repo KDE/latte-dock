@@ -289,7 +289,7 @@ inline void WindowInfoWrap::setIsMinimized(bool isMinimized) noexcept
 
 inline bool WindowInfoWrap::isMaximized() const noexcept
 {
-    return m_isMaxVert || m_isMaxHoriz;
+    return m_isMaxVert && m_isMaxHoriz;
 }
 
 inline bool WindowInfoWrap::isMaxVert() const noexcept

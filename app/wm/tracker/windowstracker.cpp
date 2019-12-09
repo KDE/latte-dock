@@ -673,7 +673,7 @@ bool Windows::isActiveInViewScreen(Latte::View *view, const WindowInfoWrap &winf
 
 bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
 {
-    auto viewIntersectsMaxVert = [&]() noexcept -> bool {
+ /*   auto viewIntersectsMaxVert = [&]() noexcept -> bool {
             return ((winfo.isMaxVert()
                      || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height()))
                     && intersects(view, winfo));
@@ -683,12 +683,13 @@ bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &w
             return ((winfo.isMaxHoriz()
                      || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width()))
                     && intersects(view, winfo));
-};
+};*/
 
     //! updated implementation to identify the screen that the maximized window is present
     //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
     return (winfo.isValid() && !winfo.isPlasmaDesktop() && !winfo.isMinimized()
-            && (winfo.isMaximized() || viewIntersectsMaxVert() || viewIntersectsMaxHoriz())
+            && winfo.isMaximized()
+            && intersects(view, winfo)
             && m_views[view]->availableScreenGeometry().contains(winfo.geometry().center()));
 }
 
