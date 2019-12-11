@@ -155,8 +155,12 @@ Item {
                             layoutsContainer.startLayout.width+layoutsContainer.mainLayout.width+layoutsContainer.endLayout.width : layoutsContainer.mainLayout.width
             }
 
-            var toShrinkLimit = maxLength-((1+(root.zoomFactor-1))*(root.iconSize + lengthMargins));
-            var toGrowLimit = maxLength-((1+(root.zoomFactor-1))*(root.iconSize + lengthMargins));
+            var itemLength = root.iconSize + lengthMargins;
+
+            var toShrinkLimit = maxLength - (root.zoomFactor * itemLength);
+            //! to grow limit must be a little less than the shrink one in order to be more robust and
+            //! not create endless loops from early calculations
+            var toGrowLimit = maxLength - (1.2 * root.zoomFactor * itemLength);
 
             //console.log("toShrinkLimit: "+ toShrinkLimit);
             //console.log("toGrowLimit: "+ toGrowLimit);
