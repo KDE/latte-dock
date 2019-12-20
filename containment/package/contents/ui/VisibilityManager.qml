@@ -190,7 +190,8 @@ Item{
             var isTouchingTopScreenEdge = (latteView.y === latteView.screenGeometry.y);
             var hasTopBorder = ((latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.TopBorder)) > 0);
 
-            return root.isVertical && !isTouchingTopScreenEdge && !hasTopBorder && root.forcePanelForBusyBackground;
+            return root.isVertical && !latteView.visibility.isHidden && !isTouchingTopScreenEdge && !hasTopBorder
+                    && (root.forcePanelForBusyBackground || root.forceSolidPanel);
         }
     }
 
@@ -205,7 +206,8 @@ Item{
 
             var hasBottomBorder = ((latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.BottomBorder)) > 0);
 
-            return root.isVertical && !isTouchingBottomScreenEdge && !hasBottomBorder && root.forcePanelForBusyBackground;
+            return root.isVertical && !latteView.visibility.isHidden && !isTouchingBottomScreenEdge && !hasBottomBorder
+                    && (root.forcePanelForBusyBackground || root.forceSolidPanel);
         }
     }
 
