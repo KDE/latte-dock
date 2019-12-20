@@ -41,6 +41,8 @@ Item{
 
     opacity: root.useThemePanel ? 1 : 0
 
+    readonly property bool isShown: (solidBackground.opacity > 0) || (overlayedBackground.opacity > 0)
+
     property int animationTime: 6*root.durationTime*units.shortDuration
 
     property int lengthMargins: {
