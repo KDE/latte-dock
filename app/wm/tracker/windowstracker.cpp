@@ -186,8 +186,8 @@ void Windows::addView(Latte::View *view)
         addRelevantLayout(view);
     });
 
-    connect(view, &Latte::View::isTouchingBottomViewAndIsBusy, this, &Windows::updateExtraViewHints);
-    connect(view, &Latte::View::isTouchingTopViewAndIsBusy, this, &Windows::updateExtraViewHints);
+    connect(view, &Latte::View::isTouchingBottomViewAndIsBusyChanged, this, &Windows::updateExtraViewHints);
+    connect(view, &Latte::View::isTouchingTopViewAndIsBusyChanged, this, &Windows::updateExtraViewHints);
 
     updateAllHints();
 
