@@ -73,8 +73,8 @@ private:
     void showViews();
     void showSettings();
 
-    bool activateLatteEntry(const Latte::View *view, int index, Qt::Key modifier);
-    bool activatePlasmaTaskManager(const Latte::View *view, int index, Qt::Key modifier);
+    bool activateLatteEntry(Latte::View *view, int index, Qt::Key modifier, bool *delayedExecution);
+    bool activatePlasmaTaskManager(const Latte::View *view, int index, Qt::Key modifier, bool *delayedExecution);
     bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
     bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     bool viewsToHideAreValid();

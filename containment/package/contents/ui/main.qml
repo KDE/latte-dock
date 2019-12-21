@@ -1197,7 +1197,7 @@ Item {
         }
     }
 
-    // This is called by dockcorona in response to a Meta+number shortcut.
+    //! this is called from Latte::View::ContainmentInterface
     function activateEntryAtIndex(index) {
         if (typeof index !== "number") {
             return;
@@ -1212,7 +1212,7 @@ Item {
         signalActivateEntryAtIndex(index);
     }
 
-    // This is called by dockcorona in response to a Meta+Alt+number shortcut.
+    //! this is called from Latte::View::ContainmentInterface
     function newInstanceForEntryAtIndex(index) {
         if (typeof index !== "number") {
             return;
@@ -1225,6 +1225,39 @@ Item {
         }
 
         signalNewInstanceForEntryAtIndex(index);
+    }
+
+    //! this is called from Latte::View::ContainmentInterface
+    function appletIdForIndex(index) {
+        if (!root.unifiedGlobalShortcuts || parabolicManager.pseudoIndexBelongsToLatteApplet(index)) {
+            return -1;
+        }
+
+        for (var i=0; i<layoutsContainer.startLayout.children.length; ++i){
+            var appletItem = layoutsContainer.startLayout.children[i];
+
+            if (appletItem && appletItem.refersEntryIndex(index)) {
+                return appletItem.applet.id;
+            }
+        }
+
+        for (var j=0; j<layoutsContainer.mainLayout.children.length; ++j){
+            var appletItem2 = layoutsContainer.mainLayout.children[j];
+
+            if (appletItem2 && appletItem2.refersEntryIndex(index)) {
+                return appletItem2.applet.id;
+            }
+        }
+
+        for (var k=0; j<layoutsContainer.endLayout.children.length; ++k){
+            var appletItem3 = layoutsContainer.endLayout.children[k];
+
+            if (appletItem3 && appletItem3.refersEntryIndex(index)) {
+                return appletItem3.applet.id;
+            }
+        }
+
+        return -1;
     }
 
 

@@ -73,10 +73,32 @@ void ContainmentInterface::identifyMethods()
     int aeIndex = m_mainItem->metaObject()->indexOfMethod("activateEntryAtIndex(QVariant)");
     int niIndex = m_mainItem->metaObject()->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
     int sbIndex = m_mainItem->metaObject()->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
+    int afiIndex = m_mainItem->metaObject()->indexOfMethod("appletIdForIndex(QVariant)");
 
     m_activateEntryMethod = m_mainItem->metaObject()->method(aeIndex);
+    m_appletIdForIndexMethod = m_mainItem->metaObject()->method(afiIndex);
     m_newInstanceMethod = m_mainItem->metaObject()->method(niIndex);
     m_showShortcutsMethod = m_mainItem->metaObject()->method(sbIndex);
+}
+
+bool ContainmentInterface::applicationLauncherInPopup() const
+{
+    if (!containsApplicationLauncher()) {
+        return false;
+    }
+
+    int launcherAppletId = applicationLauncherId();
+    QString launcherPluginId;
+
+    const auto applets = m_view->containment()->applets();
+
+    for (auto applet : applets) {
+        if (applet->id() == launcherAppletId) {
+            launcherPluginId = applet->kPackage().metadata().pluginId();
+        }
+    }
+
+    return launcherPluginId != "org.kde.plasma.kickerdash";
 }
 
 bool ContainmentInterface::containsApplicationLauncher() const
@@ -303,6 +325,22 @@ bool ContainmentInterface::showShortcutBadges(const bool showLatteShortcuts, con
 
     return m_showShortcutsMethod.invoke(m_mainItem, Q_ARG(QVariant, showLatteShortcuts), Q_ARG(QVariant, true), Q_ARG(QVariant, showMeta), Q_ARG(QVariant, appLauncherId));
 }
+
+int ContainmentInterface::appletIdForIndex(const int index)
+{
+    identifyMainItem();
+
+    if (!m_appletIdForIndexMethod.isValid()) {
+        return false;
+    }
+
+    QVariant appletId{-1};
+
+    m_appletIdForIndexMethod.invoke(m_mainItem, Q_RETURN_ARG(QVariant, appletId), Q_ARG(QVariant, index));
+
+    return appletId.toInt();
+}
+
 
 }
 }

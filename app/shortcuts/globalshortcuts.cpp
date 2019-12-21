@@ -223,7 +223,7 @@ void GlobalShortcuts::activateLauncherMenu()
 
     for (const auto view : sortedViews) {
         if (view->interface()->containsApplicationLauncher()) {
-            if (view->visibility()->isHidden()) {
+            if (view->visibility()->isHidden() && view->interface()->applicationLauncherInPopup()) {
                 if (!m_hideViews.contains(view)) {
                     m_hideViews.append(view);
                 }
@@ -247,7 +247,7 @@ void GlobalShortcuts::activateLauncherMenu()
     }
 }
 
-bool GlobalShortcuts::activatePlasmaTaskManager(const Latte::View *view, int index, Qt::Key modifier)
+bool GlobalShortcuts::activatePlasmaTaskManager(const Latte::View *view, int index, Qt::Key modifier, bool *delayedExecution)
 {
     bool activation{modifier == static_cast<Qt::Key>(Qt::META)};
     bool newInstance{!activation};
@@ -262,18 +262,25 @@ bool GlobalShortcuts::activatePlasmaTaskManager(const Latte::View *view, int ind
             }
         });
 
+        *delayedExecution = true;
+
         return true;
     } else {
+        *delayedExecution = false;
+
         return (activation ? view->interface()->activatePlasmaTask(index) : view->interface()->newInstanceForPlasmaTask(index));
     }
 }
 
-bool GlobalShortcuts::activateLatteEntry(const Latte::View *view, int index, Qt::Key modifier)
+bool GlobalShortcuts::activateLatteEntry(Latte::View *view, int index, Qt::Key modifier, bool *delayedExecution)
 {
     bool activation{modifier == static_cast<Qt::Key>(Qt::META)};
     bool newInstance{!activation};
 
-    if (view->visibility()->isHidden()) {
+    int appletId = view->interface()->appletIdForIndex(index);
+    bool hasPopUp {(appletId>-1 && view->appletIsExpandable(appletId))};
+
+    if (view->visibility()->isHidden() && hasPopUp) {
         //! delay the execution in order to show first the view
         QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view, index, activation]() {
             if (activation) {
@@ -283,8 +290,12 @@ bool GlobalShortcuts::activateLatteEntry(const Latte::View *view, int index, Qt:
             }
         });
 
+        *delayedExecution = true;
+
         return true;
     } else {
+        *delayedExecution = false;
+
         return (activation ? view->interface()->activateEntry(index) : view->interface()->newInstanceForEntry(index));
     }
 }
@@ -307,16 +318,21 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
             continue;
         }
 
+        bool delayed{false};
+
         if ((!view->latteTasksArePresent() && view->tasksPresent() &&
-             activatePlasmaTaskManager(view, index, modifier))
-                || activateLatteEntry(view, index, modifier)) {
+             activatePlasmaTaskManager(view, index, modifier, &delayed))
+                || activateLatteEntry(view, index, modifier, &delayed)) {
 
             if (!m_hideViews.contains(view)) {
                 m_hideViews.append(view);
             }
 
-            view->visibility()->setBlockHiding(true);
-            m_hideViewsTimer.start();
+            if (delayed) {
+                view->visibility()->setBlockHiding(true);
+                m_hideViewsTimer.start();
+            }
+
             return;
         }
     }

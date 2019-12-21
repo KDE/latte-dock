@@ -42,6 +42,7 @@ public:
     ContainmentInterface(Latte::View *parent);
     virtual ~ContainmentInterface();
 
+    bool applicationLauncherInPopup() const;
     bool containsApplicationLauncher() const;
     bool isCapableToShowShortcutBadges() const;
 
@@ -59,6 +60,7 @@ public:
     bool updateBadgeForLatteTask(const QString identifier, const QString value);
 
     int applicationLauncherId() const;
+    int appletIdForIndex(const int index);
 
 private slots:
     void identifyMainItem();
@@ -66,6 +68,7 @@ private slots:
 
 private:
     QMetaMethod m_activateEntryMethod;
+    QMetaMethod m_appletIdForIndexMethod;
     QMetaMethod m_newInstanceMethod;
     QMetaMethod m_showShortcutsMethod;
 
