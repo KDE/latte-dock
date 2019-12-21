@@ -28,6 +28,7 @@
 #include "../layouts/manager.h"
 #include "../layouts/synchronizer.h"
 #include "../settings/universalsettings.h"
+#include "../view/containmentinterface.h"
 #include "../view/view.h"
 
 // C++
@@ -221,154 +222,71 @@ void GlobalShortcuts::activateLauncherMenu()
     }
 
     for (const auto view : sortedViews) {
-        const auto applets = view->containment()->applets();
-
-        for (auto applet : applets) {
-            const auto provides = applet->kPackage().metadata().value(QStringLiteral("X-Plasma-Provides"));
-
-            if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
-                if (view->visibility()->isHidden()) {
-                    if (!m_hideViews.contains(view)) {
-                        m_hideViews.append(view);
-                    }
-
-                    m_lastInvokedAction = m_singleMetaAction;
-
-                    view->visibility()->setBlockHiding(true);
-
-                    //! delay the execution in order to show first the view
-                    QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view, applet]() {
-                        view->toggleAppletExpanded(applet->id());
-                    });
-
-                    m_hideViewsTimer.start();
-                } else {
-                    view->toggleAppletExpanded(applet->id());
+        if (view->interface()->containsApplicationLauncher()) {
+            if (view->visibility()->isHidden()) {
+                if (!m_hideViews.contains(view)) {
+                    m_hideViews.append(view);
                 }
 
-                return;
+                m_lastInvokedAction = m_singleMetaAction;
+
+                view->visibility()->setBlockHiding(true);
+
+                //! delay the execution in order to show first the view
+                QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view]() {
+                    view->toggleAppletExpanded(view->interface()->applicationLauncherId());
+                });
+
+                m_hideViewsTimer.start();
+            } else {
+                view->toggleAppletExpanded(view->interface()->applicationLauncherId());
             }
+
+            return;
         }
     }
 }
 
-bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::Containment *c, int index, Qt::Key modifier)
+bool GlobalShortcuts::activatePlasmaTaskManager(const Latte::View *view, int index, Qt::Key modifier)
 {
-    const auto &applets = c->applets();
+    bool activation{modifier == static_cast<Qt::Key>(Qt::META)};
+    bool newInstance{!activation};
 
-    for (auto *applet : applets) {
-        const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
-
-        if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
-            if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-                const auto &childItems = appletInterface->childItems();
-
-                if (childItems.isEmpty()) {
-                    continue;
-                }
-
-                KPluginMetaData meta = applet->kPackage().metadata();
-
-                for (QQuickItem *item : childItems) {
-                    if (auto *metaObject = item->metaObject()) {
-                        // not using QMetaObject::invokeMethod to avoid warnings when calling
-                        // this on applets that don't have it or other child items since this
-                        // is pretty much trial and error.
-
-                        // Also, "var" arguments are treated as QVariant in QMetaObject
-                        int methodIndex = modifier == static_cast<Qt::Key>(Qt::META) ?
-                                    metaObject->indexOfMethod("activateTaskAtIndex(QVariant)") :
-                                    metaObject->indexOfMethod("newInstanceForTaskAtIndex(QVariant)");
-
-                        int methodIndex2 = metaObject->indexOfMethod("setShowTaskShortcutBadges(QVariant)");
-
-                        if (methodIndex == -1 || (methodIndex2 == -1 && meta.pluginId() == "org.kde.latte.plasmoid")) {
-                            continue;
-                        }
-
-                        int showMethodIndex = -1;
-
-                        if (!m_viewItemsCalled.contains(item)) {
-                            m_viewItemsCalled.append(item);
-                            m_showShortcutBadgesMethods.append(metaObject->method(methodIndex));
-                            showMethodIndex = m_showShortcutBadgesMethods.count() - 1;
-                        } else {
-                            showMethodIndex = m_showShortcutBadgesMethods.indexOf(metaObject->method(methodIndex));
-                        }
-
-                        QMetaMethod method = metaObject->method(methodIndex);
-
-                        if (method.invoke(item, Q_ARG(QVariant, index - 1))) {
-                            if (methodIndex2 != -1) {
-                                m_showShortcutBadgesMethods[showMethodIndex].invoke(item, Q_ARG(QVariant, true));
-                            }
-
-                            return true;
-                        }
-
-                    }
-                }
+    if (view->visibility()->isHidden()) {
+        //! delay the execution in order to show first the view
+        QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view, index, activation]() {
+            if (activation) {
+                view->interface()->activatePlasmaTask(index);
+            } else {
+                view->interface()->newInstanceForPlasmaTask(index);
             }
-        }
-    }
+        });
 
-    return false;
+        return true;
+    } else {
+        return (activation ? view->interface()->activatePlasmaTask(index) : view->interface()->newInstanceForPlasmaTask(index));
+    }
 }
 
-bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, int index, Qt::Key modifier)
+bool GlobalShortcuts::activateLatteEntry(const Latte::View *view, int index, Qt::Key modifier)
 {
-    if (QQuickItem *containmentInterface = view->containment()->property("_plasma_graphicObject").value<QQuickItem *>()) {
-        const auto &childItems = containmentInterface->childItems();
+    bool activation{modifier == static_cast<Qt::Key>(Qt::META)};
+    bool newInstance{!activation};
 
-        for (QQuickItem *item : childItems) {
-            if (auto *metaObject = item->metaObject()) {
-                // not using QMetaObject::invokeMethod to avoid warnings when calling
-                // this on applets that don't have it or other child items since this
-                // is pretty much trial and error.
-
-                // Also, "var" arguments are treated as QVariant in QMetaObject
-                int methodIndex = modifier == static_cast<Qt::Key>(Qt::META) ?
-                            metaObject->indexOfMethod("activateEntryAtIndex(QVariant)") :
-                            metaObject->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
-
-                int methodIndex2 = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
-
-                if (methodIndex == -1 || (methodIndex2 == -1)) {
-                    continue;
-                }
-
-                int appLauncher = m_corona->universalSettings()->kwin_metaForwardedToLatte() ?
-                            applicationLauncherId(view->containment()) : -1;
-
-                int showMethodIndex = -1;
-
-                if (!m_viewItemsCalled.contains(item)) {
-                    m_viewItemsCalled.append(item);
-                    m_showShortcutBadgesMethods.append(metaObject->method(methodIndex2));
-                    showMethodIndex = m_showShortcutBadgesMethods.count() - 1;
-                } else {
-                    showMethodIndex = m_showShortcutBadgesMethods.indexOf(metaObject->method(methodIndex2));
-                }
-
-                QMetaMethod method = metaObject->method(methodIndex);
-
-                if (view->visibility()->isHidden()) {
-                    //! delay the execution in order to show first the view
-                    QTimer::singleShot(APPLETEXECUTIONDELAY, [this, item, method, index]() {
-                        method.invoke(item, Q_ARG(QVariant, index));
-                    });
-
-                    return true;
-                } else {
-                    if (method.invoke(item, Q_ARG(QVariant, index))) {
-                        return true;
-                    }
-                }
+    if (view->visibility()->isHidden()) {
+        //! delay the execution in order to show first the view
+        QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view, index, activation]() {
+            if (activation) {
+                view->interface()->activateEntry(index);
+            } else {
+                view->interface()->newInstanceForEntry(index);
             }
-        }
-    }
+        });
 
-    return false;
+        return true;
+    } else {
+        return (activation ? view->interface()->activateEntry(index) : view->interface()->newInstanceForEntry(index));
+    }
 }
 
 
@@ -390,8 +308,8 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
         }
 
         if ((!view->latteTasksArePresent() && view->tasksPresent() &&
-             activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))
-                || activateLatteEntryAtContainment(view, index, modifier)) {
+             activatePlasmaTaskManager(view, index, modifier))
+                || activateLatteEntry(view, index, modifier)) {
 
             if (!m_hideViews.contains(view)) {
                 m_hideViews.append(view);
@@ -408,49 +326,6 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 //! update badge for specific view item
 void GlobalShortcuts::updateViewItemBadge(QString identifier, QString value)
 {
-    //qDebug() << "DBUS CALL ::: " << identifier << " - " << value;
-    auto updateBadgeForTaskInContainment = [this](const Plasma::Containment * c, QString identifier, QString value) {
-        const auto &applets = c->applets();
-
-        for (auto *applet : applets) {
-            KPluginMetaData meta = applet->kPackage().metadata();
-
-            if (meta.pluginId() == "org.kde.latte.plasmoid") {
-
-                if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-                    const auto &childItems = appletInterface->childItems();
-
-                    if (childItems.isEmpty()) {
-                        continue;
-                    }
-
-                    for (QQuickItem *item : childItems) {
-                        if (auto *metaObject = item->metaObject()) {
-                            // not using QMetaObject::invokeMethod to avoid warnings when calling
-                            // this on applets that don't have it or other child items since this
-                            // is pretty much trial and error.
-                            // Also, "var" arguments are treated as QVariant in QMetaObject
-
-                            int methodIndex = metaObject->indexOfMethod("updateBadge(QVariant,QVariant)");
-
-                            if (methodIndex == -1) {
-                                continue;
-                            }
-
-                            QMetaMethod method = metaObject->method(methodIndex);
-
-                            if (method.invoke(item, Q_ARG(QVariant, identifier), Q_ARG(QVariant, value))) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
-    };
-
     CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
     QList<Latte::View *> views;
 
@@ -460,55 +335,8 @@ void GlobalShortcuts::updateViewItemBadge(QString identifier, QString value)
 
     // update badges in all Latte Tasks plasmoids
     for (const auto &view : views) {
-        updateBadgeForTaskInContainment(view->containment(), identifier, value);
+        view->interface()->updateBadgeForLatteTask(identifier, value);
     }
-}
-
-bool GlobalShortcuts::isCapableToShowShortcutBadges(Latte::View *view)
-{
-    if (!view->latteTasksArePresent() && view->tasksPresent()) {
-        return false;
-    }
-
-    const Plasma::Containment *c = view->containment();
-
-    if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
-        const auto &childItems = containmentInterface->childItems();
-
-        for (QQuickItem *item : childItems) {
-            if (auto *metaObject = item->metaObject()) {
-                // not using QMetaObject::invokeMethod to avoid warnings when calling
-                // this on applets that don't have it or other child items since this
-                // is pretty much trial and error.
-
-                // Also, "var" arguments are treated as QVariant in QMetaObject
-                int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
-
-                if (methodIndex == -1) {
-                    continue;
-                }
-
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-int GlobalShortcuts::applicationLauncherId(const Plasma::Containment *c)
-{
-    const auto applets = c->applets();
-
-    for (auto applet : applets) {
-        const auto provides = applet->kPackage().metadata().value(QStringLiteral("X-Plasma-Provides"));
-
-        if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
-            return applet->id();
-        }
-    }
-
-    return -1;
 }
 
 void GlobalShortcuts::showViews()
@@ -518,95 +346,6 @@ void GlobalShortcuts::showViews()
         // when holding Meta
         m_lastInvokedAction = m_singleMetaAction;
     }
-
-    auto invokeShowShortcuts = [this](const Plasma::Containment * c, const bool showLatteShortcuts, const bool showMeta) {
-        if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
-            const auto &childItems = containmentInterface->childItems();
-
-            for (QQuickItem *item : childItems) {
-                if (auto *metaObject = item->metaObject()) {
-                    // not using QMetaObject::invokeMethod to avoid warnings when calling
-                    // this on applets that don't have it or other child items since this
-                    // is pretty much trial and error.
-
-                    // Also, "var" arguments are treated as QVariant in QMetaObject
-                    int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
-
-                    if (methodIndex == -1) {
-                        continue;
-                    }
-
-                    int appLauncher = m_corona->universalSettings()->kwin_metaForwardedToLatte() && showMeta ?
-                                applicationLauncherId(c) : -1;
-
-                    int showMethodIndex = -1;
-
-                    if (!m_viewItemsCalled.contains(item)) {
-                        m_viewItemsCalled.append(item);
-                        m_showShortcutBadgesMethods.append(metaObject->method(methodIndex));
-                        showMethodIndex = m_showShortcutBadgesMethods.count() - 1;
-                    } else {
-                        showMethodIndex = m_showShortcutBadgesMethods.indexOf(metaObject->method(methodIndex));
-                    }
-
-                    if (m_showShortcutBadgesMethods[showMethodIndex].invoke(item,
-                                                                            Q_ARG(QVariant, showLatteShortcuts),
-                                                                            Q_ARG(QVariant, true),
-                                                                            Q_ARG(QVariant, showMeta),
-                                                                            Q_ARG(QVariant, appLauncher))) {
-                        return true;
-                    }
-
-                }
-            }
-        }
-
-        return false;
-    };
-
-    auto invokeShowOnlyMeta = [this](const Plasma::Containment * c, const bool showLatteShortcuts) {
-        if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
-            const auto &childItems = containmentInterface->childItems();
-
-            for (QQuickItem *item : childItems) {
-                if (auto *metaObject = item->metaObject()) {
-                    // not using QMetaObject::invokeMethod to avoid warnings when calling
-                    // this on applets that don't have it or other child items since this
-                    // is pretty much trial and error.
-
-                    // Also, "var" arguments are treated as QVariant in QMetaObject
-                    int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
-
-                    if (methodIndex == -1) {
-                        continue;
-                    }
-
-                    int appLauncher = m_corona->universalSettings()->kwin_metaForwardedToLatte() ?
-                                applicationLauncherId(c) : -1;
-
-                    int showMethodIndex = -1;
-
-                    if (!m_viewItemsCalled.contains(item)) {
-                        m_viewItemsCalled.append(item);
-                        m_showShortcutBadgesMethods.append(metaObject->method(methodIndex));
-                        showMethodIndex = m_showShortcutBadgesMethods.count() - 1;
-                    } else {
-                        showMethodIndex = m_showShortcutBadgesMethods.indexOf(metaObject->method(methodIndex));
-                    }
-
-                    if (m_showShortcutBadgesMethods[showMethodIndex].invoke(item,
-                                                                            Q_ARG(QVariant, showLatteShortcuts),
-                                                                            Q_ARG(QVariant, true),
-                                                                            Q_ARG(QVariant, true),
-                                                                            Q_ARG(QVariant, appLauncher))) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    };
 
     QList<Latte::View *> sortedViews;
     CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
@@ -619,16 +358,18 @@ void GlobalShortcuts::showViews()
     Latte::View *viewWithMeta{nullptr};
 
     for(const auto view : sortedViews) {
-        if (!viewWithTasks && (!view->layout()->preferredForShortcutsTouched() || view->isPreferredForShortcuts()) && isCapableToShowShortcutBadges(view)) {
+        if (!viewWithTasks
+                && view->interface()->isCapableToShowShortcutBadges()
+                && (!view->layout()->preferredForShortcutsTouched() || view->isPreferredForShortcuts())) {
             viewWithTasks = view;
             break;
         }
     }
 
     //! show Meta if it is not already shown for Tasks Latte View
-    if (!viewWithTasks || applicationLauncherId(viewWithTasks->containment()) == -1) {
+    if (!viewWithTasks || !viewWithTasks->interface()->containsApplicationLauncher()) {
         for(const auto view : sortedViews) {
-            if (!viewWithMeta && m_corona->universalSettings()->kwin_metaForwardedToLatte() && applicationLauncherId(view->containment()) > -1) {
+            if (!viewWithMeta && m_corona->universalSettings()->kwin_metaForwardedToLatte() && view->interface()->containsApplicationLauncher()) {
                 viewWithMeta = view;
                 break;
             }
@@ -639,15 +380,10 @@ void GlobalShortcuts::showViews()
 
     if (!m_hideViewsTimer.isActive()) {
         m_hideViews.clear();
-
-        if (viewWithTasks || viewWithMeta) {
-            m_viewItemsCalled.clear();
-            m_showShortcutBadgesMethods.clear();
-        }
     }
 
     //! show view that contains tasks plasmoid
-    if (viewWithTasks && invokeShowShortcuts(viewWithTasks->containment(), true, true)) {
+    if (viewWithTasks && viewWithTasks->interface()->showShortcutBadges(true, true)) {
         viewFound = true;
 
         if (!m_hideViewsTimer.isActive()) {
@@ -657,7 +393,7 @@ void GlobalShortcuts::showViews()
     }
 
     //! show view that contains only meta
-    if (viewWithMeta && viewWithMeta != viewWithTasks && invokeShowOnlyMeta(viewWithMeta->containment(), false)) {
+    if (viewWithMeta && viewWithMeta != viewWithTasks && viewWithMeta->interface()->showOnlyMeta()) {
         viewFound = true;
 
         if (!m_hideViewsTimer.isActive()) {
@@ -679,7 +415,7 @@ void GlobalShortcuts::showViews()
         if (!m_hideViewsTimer.isActive()) {
             for(const auto view : viewsWithShortcuts) {
                 if (view != viewWithTasks && view != viewWithMeta) {
-                    if (invokeShowShortcuts(view->containment(), false, false)) {
+                    if (view->interface()->showShortcutBadges(false, false)) {
                         m_hideViews.append(view);
                         view->visibility()->setBlockHiding(true);
                     }
@@ -757,22 +493,11 @@ void GlobalShortcuts::hideViewsTimerSlot()
         if (viewsToHideAreValid()) {
             for(const auto latteView : m_hideViews) {
                 latteView->visibility()->setBlockHiding(false);
-            }
-
-            if (m_viewItemsCalled.count() > 0) {
-                for (int i = 0; i < m_viewItemsCalled.count(); ++i) {
-                    m_showShortcutBadgesMethods[i].invoke(m_viewItemsCalled[i],
-                                                          Q_ARG(QVariant, false),
-                                                          Q_ARG(QVariant, false),
-                                                          Q_ARG(QVariant, false),
-                                                          Q_ARG(QVariant, -1));
-                }
-            }
+                latteView->interface()->hideShortcutBadges();
+            }    
         }
 
         m_hideViews.clear();
-        m_viewItemsCalled.clear();
-        m_showShortcutBadgesMethods.clear();
         m_metaShowedViews = false;
     };
 

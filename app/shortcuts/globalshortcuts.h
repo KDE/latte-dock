@@ -25,8 +25,7 @@
 #include "../liblatte2/types.h"
 
 // Qt
-#include <QMetaMethod>
-#include <QQuickItem>
+#include <QAction>
 #include <QPointer>
 #include <QTimer>
 
@@ -74,14 +73,12 @@ private:
     void showViews();
     void showSettings();
 
-    bool activateLatteEntryAtContainment(const Latte::View *view, int index, Qt::Key modifier);
-    bool activatePlasmaTaskManagerEntryAtContainment(const Plasma::Containment *c, int index, Qt::Key modifier);
+    bool activateLatteEntry(const Latte::View *view, int index, Qt::Key modifier);
+    bool activatePlasmaTaskManager(const Latte::View *view, int index, Qt::Key modifier);
     bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
     bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     bool viewsToHideAreValid();
-    bool isCapableToShowShortcutBadges(Latte::View *view);
 
-    int applicationLauncherId(const Plasma::Containment *c);
     QList<Latte::View *> sortedViewsList(QHash<const Plasma::Containment *, Latte::View *> *views);
 
 private:
@@ -95,9 +92,6 @@ private:
     //! delayer for hiding the shown latte views
     QTimer m_hideViewsTimer;
     QList<Latte::View *> m_hideViews;
-
-    QList<QQuickItem *> m_viewItemsCalled;
-    QList<QMetaMethod> m_showShortcutBadgesMethods;
 
     QPointer<ShortcutsPart::ModifierTracker> m_modifierTracker;
     QPointer<ShortcutsPart::ShortcutsTracker> m_shortcutsTracker;

@@ -22,6 +22,7 @@
 #define VIEW_H
 
 // local
+#include "containmentinterface.h"
 #include "effects.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
@@ -195,8 +196,9 @@ public:
 
     PlasmaQuick::ConfigView *configView();
 
-    ViewPart::Effects *effects() const;
+    ViewPart::Effects *effects() const;   
     ViewPart::Indicator *indicator() const;
+    ViewPart::ContainmentInterface *interface() const;
     ViewPart::Positioner *positioner() const;
     ViewPart::VisibilityManager *visibility() const;
     ViewPart::WindowsTracker *windowsTracker() const;
@@ -356,6 +358,7 @@ private:
     QPointer<ViewPart::ContextMenu> m_contextMenu;
     QPointer<ViewPart::Effects> m_effects;
     QPointer<ViewPart::Indicator> m_indicator;
+    QPointer<ViewPart::ContainmentInterface> m_interface;
     QPointer<ViewPart::Positioner> m_positioner;
     QPointer<ViewPart::VisibilityManager> m_visibility;
     QPointer<ViewPart::WindowsTracker> m_windowsTracker;

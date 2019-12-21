@@ -67,7 +67,8 @@ namespace Latte {
 View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(new ViewPart::ContextMenu(this)),
-      m_effects(new ViewPart::Effects(this))
+      m_effects(new ViewPart::Effects(this)),
+      m_interface(new ViewPart::ContainmentInterface(this))
 {      
     //! needs to be created after Effects because it catches some of its signals
     //! and avoid a crash from View::winId() at the same time
@@ -203,6 +204,10 @@ View::~View()
 
     if (m_indicator) {
         delete m_indicator;
+    }
+
+    if (m_interface) {
+        delete m_interface;
     }
 
     if (m_visibility) {
@@ -1110,6 +1115,11 @@ ViewPart::Effects *View::effects() const
 ViewPart::Indicator *View::indicator() const
 {
     return m_indicator;
+}
+
+ViewPart::ContainmentInterface *View::interface() const
+{
+    return m_interface;
 }
 
 ViewPart::Positioner *View::positioner() const
