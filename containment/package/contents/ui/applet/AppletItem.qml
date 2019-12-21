@@ -426,6 +426,11 @@ Item {
 
         return false;
     }
+
+    function refersEntryIndex(entryIndex) {
+        return (entryIndex === parabolicManager.pseudoAppletIndex(appletItem.index));
+    }
+
     ///END functions
 
     //BEGIN connections
@@ -589,7 +594,7 @@ Item {
         onSignalActivateEntryAtIndex: {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
                 latteApplet.activateTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
-            } else if (root.unifiedGlobalShortcuts && (entryIndex === parabolicManager.pseudoAppletIndex(appletItem.index))) {
+            } else if (root.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
                 latteView.toggleAppletExpanded(applet.id);
             }
         }
@@ -597,7 +602,7 @@ Item {
         onSignalNewInstanceForEntryAtIndex: {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
                 latteApplet.newInstanceForTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
-            } else if (root.unifiedGlobalShortcuts && (entryIndex === parabolicManager.pseudoAppletIndex(appletItem.index))) {
+            } else if (root.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
                 latteView.toggleAppletExpanded(applet.id);
             }
         }

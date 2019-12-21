@@ -1270,6 +1270,25 @@ void View::deactivateApplets()
     }
 }
 
+bool View::appletIsExpandable(const int id)
+{
+    if (!containment()) {
+        return false;
+    }
+
+    for (const auto applet : containment()->applets()) {
+        if (applet->id() == id) {
+            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (ai) {
+                return (ai->preferredRepresentation() != ai->fullRepresentation());
+            }
+        }
+    }
+
+    return false;
+}
+
 void View::toggleAppletExpanded(const int id)
 {
     if (!containment()) {

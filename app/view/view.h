@@ -229,6 +229,7 @@ public slots:
     Q_INVOKABLE void setBlockHiding(bool block);
     Q_INVOKABLE void toggleAppletExpanded(const int id);
 
+    Q_INVOKABLE bool appletIsExpandable(const int id);
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
     Q_INVOKABLE bool tasksPresent();
 
