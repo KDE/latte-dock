@@ -29,7 +29,6 @@
 // Qt
 #include <QMap>
 #include <QObject>
-#include <QSignalMapper>
 
 // KDE
 #include <KWayland/Client/registry.h>
@@ -106,12 +105,19 @@ public:
     void initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement);
 #endif
 
+private slots:
+    void updateWindow();
+    void windowUnmapped();
+
 private:
     void init();
     bool isValidWindow(const KWayland::Client::PlasmaWindow *w) const;
     bool isPlasmaDesktop(const KWayland::Client::PlasmaWindow *w) const;
     bool isPlasmaPanel(const KWayland::Client::PlasmaWindow *w) const;
     void windowCreatedProxy(KWayland::Client::PlasmaWindow *w);
+    void trackWindow(KWayland::Client::PlasmaWindow *w);
+    void untrackWindow(KWayland::Client::PlasmaWindow *w);
+
     KWayland::Client::PlasmaWindow *windowFor(WindowId wid) const;
     KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
 
@@ -122,8 +128,6 @@ private:
 #endif
 
 private:
-    QSignalMapper *mapper{nullptr};
-
     friend class Private::GhostWindow;
     mutable QMap<WindowId, Private::GhostWindow *> m_ghostWindows;
 
