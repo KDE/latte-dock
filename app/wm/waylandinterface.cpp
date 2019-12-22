@@ -30,7 +30,6 @@
 #include <QDebug>
 #include <QTimer>
 #include <QApplication>
-#include <QSignalMapper>
 #include <QtX11Extras/QX11Info>
 #include <QRasterWindow>
 
@@ -227,8 +226,8 @@ void WaylandInterface::registerIgnoredWindow(WindowId wid)
 
         KWayland::Client::PlasmaWindow *w = windowFor(wid);
 
-        if (mapper && w) {
-            mapper->removeMappings(w);
+        if (w) {
+            untrackWindow(w);
         }
 
         emit windowChanged(wid);
@@ -660,66 +659,100 @@ bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) co
     return w->isValid() && !isPlasmaDesktop(w) && !m_plasmaPanels.contains(w->internalId()) && !m_ignoredWindows.contains(w->internalId());
 }
 
-void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
+void WaylandInterface::updateWindow()
 {
-    if (!isValidWindow(w)) return;
+    PlasmaWindow *pW = qobject_cast<PlasmaWindow*>(QObject::sender());
 
-    if (!mapper) mapper = new QSignalMapper(this);
-
-    mapper->setMapping(w, w);
-
-    connect(w, &PlasmaWindow::unmapped, this, [ &, win = w]() noexcept {
-        mapper->removeMappings(win);
-        emit windowRemoved(win->internalId());
-    });
-
-    connect(w, SIGNAL(activeChanged()), mapper, SLOT(map()) );
-    connect(w, SIGNAL(titleChanged()), mapper, SLOT(map()) );
-    connect(w, SIGNAL(fullscreenChanged()), mapper, SLOT(map()) );
-    connect(w, SIGNAL(geometryChanged()), mapper, SLOT(map()) );
-    connect(w, SIGNAL(maximizedChanged()), mapper, SLOT(map()) );
-    connect(w, SIGNAL(minimizedChanged()), mapper, SLOT(map()) );
-    connect(w, SIGNAL(shadedChanged()), mapper, SLOT(map()) );
-    connect(w, SIGNAL(skipTaskbarChanged()), mapper, SLOT(map()) );
-    connect(w, SIGNAL(onAllDesktopsChanged()), mapper, SLOT(map()) );
-    connect(w, SIGNAL(virtualDesktopChanged()), mapper, SLOT(map()) );
-    connect(w, SIGNAL(parentWindowChanged()), mapper, SLOT(map()) );
-
-#if KF5_VERSION_MINOR >= 52
-    connect(w, &KWayland::Client::PlasmaWindow::plasmaVirtualDesktopEntered, this,
-            [w, this] {
-        mapper->map(w);
-    });
-
-    connect(w, &KWayland::Client::PlasmaWindow::plasmaVirtualDesktopLeft, this,
-            [w, this] {
-        mapper->map(w);
-    });
-#endif
-
-    connect(mapper, static_cast<void (QSignalMapper::*)(QObject *)>(&QSignalMapper::mapped)
-            , this, [&](QObject * w) noexcept {
-        //qDebug() << "window changed:" << qobject_cast<PlasmaWindow *>(w)->appId();
-        PlasmaWindow *pW = qobject_cast<PlasmaWindow*>(w);
-
-        if (pW && !m_ignoredWindows.contains(pW->internalId() && !isPlasmaDesktop(pW) )) {
-            if (pW->appId() == QLatin1String("org.kde.plasmashell")) {
-                if (isPlasmaDesktop(pW)) {
-                    return;
-                } else if (isPlasmaPanel(pW)) {
-                    registerIgnoredWindow(pW->internalId());
-                }
+    if (pW && !m_ignoredWindows.contains(pW->internalId() && !isPlasmaDesktop(pW) )) {
+        if (pW->appId() == QLatin1String("org.kde.plasmashell")) {
+            if (isPlasmaDesktop(pW)) {
+                return;
+            } else if (isPlasmaPanel(pW)) {
+                registerIgnoredWindow(pW->internalId());
             }
-
-            considerWindowChanged(pW->internalId());
         }
-    });
 
-    if (isPlasmaPanel(w)) {
-        registerPlasmaPanel(w->internalId());
+        considerWindowChanged(pW->internalId());
+    }
+}
+
+void WaylandInterface::windowUnmapped()
+{
+    PlasmaWindow *pW = qobject_cast<PlasmaWindow*>(QObject::sender());
+
+    if (pW) {
+        untrackWindow(pW);
+        emit windowRemoved(pW->internalId());
+    }
+}
+
+void WaylandInterface::trackWindow(KWayland::Client::PlasmaWindow *w)
+{
+    if (!w) {
+        return;
     }
 
-    emit windowAdded(w->internalId());
+    connect(w, &PlasmaWindow::activeChanged, this, &WaylandInterface::updateWindow);
+    connect(w, &PlasmaWindow::titleChanged, this, &WaylandInterface::updateWindow);
+    connect(w, &PlasmaWindow::fullscreenChanged, this, &WaylandInterface::updateWindow);
+    connect(w, &PlasmaWindow::geometryChanged, this, &WaylandInterface::updateWindow);
+    connect(w, &PlasmaWindow::maximizedChanged, this, &WaylandInterface::updateWindow);
+    connect(w, &PlasmaWindow::minimizedChanged, this, &WaylandInterface::updateWindow);
+    connect(w, &PlasmaWindow::shadedChanged, this, &WaylandInterface::updateWindow);
+    connect(w, &PlasmaWindow::skipTaskbarChanged, this, &WaylandInterface::updateWindow);
+    connect(w, &PlasmaWindow::onAllDesktopsChanged, this, &WaylandInterface::updateWindow);
+    connect(w, &PlasmaWindow::parentWindowChanged, this, &WaylandInterface::updateWindow);
+
+#if KF5_VERSION_MINOR >= 52
+    connect(w, &PlasmaWindow::plasmaVirtualDesktopEntered, this, &WaylandInterface::updateWindow);
+    connect(w, &PlasmaWindow::plasmaVirtualDesktopLeft, this, &WaylandInterface::updateWindow);
+#else
+    connect(w, &PlasmaWindow::virtualDesktopChanged, this, &WaylandInterface::updateWindow);
+#endif
+
+    connect(w, &PlasmaWindow::unmapped, this, &WaylandInterface::windowUnmapped);
+}
+
+void WaylandInterface::untrackWindow(KWayland::Client::PlasmaWindow *w)
+{
+    if (!w) {
+        return;
+    }
+
+    disconnect(w, &PlasmaWindow::activeChanged, this, &WaylandInterface::updateWindow);
+    disconnect(w, &PlasmaWindow::titleChanged, this, &WaylandInterface::updateWindow);
+    disconnect(w, &PlasmaWindow::fullscreenChanged, this, &WaylandInterface::updateWindow);
+    disconnect(w, &PlasmaWindow::geometryChanged, this, &WaylandInterface::updateWindow);
+    disconnect(w, &PlasmaWindow::maximizedChanged, this, &WaylandInterface::updateWindow);
+    disconnect(w, &PlasmaWindow::minimizedChanged, this, &WaylandInterface::updateWindow);
+    disconnect(w, &PlasmaWindow::shadedChanged, this, &WaylandInterface::updateWindow);
+    disconnect(w, &PlasmaWindow::skipTaskbarChanged, this, &WaylandInterface::updateWindow);
+    disconnect(w, &PlasmaWindow::onAllDesktopsChanged, this, &WaylandInterface::updateWindow);
+    disconnect(w, &PlasmaWindow::parentWindowChanged, this, &WaylandInterface::updateWindow);
+
+#if KF5_VERSION_MINOR >= 52
+    disconnect(w, &PlasmaWindow::plasmaVirtualDesktopEntered, this, &WaylandInterface::updateWindow);
+    disconnect(w, &PlasmaWindow::plasmaVirtualDesktopLeft, this, &WaylandInterface::updateWindow);
+#else
+    disconnect(w, &PlasmaWindow::virtualDesktopChanged, this, &WaylandInterface::updateWindow);
+#endif
+
+    disconnect(w, &PlasmaWindow::unmapped, this, &WaylandInterface::windowUnmapped);
+}
+
+
+void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
+{
+    if (!isValidWindow(w)) {
+        return;
+    }
+
+    if ((w->appId() == QLatin1String("org.kde.plasmashell")) && isPlasmaPanel(w)) {
+        registerPlasmaPanel(w->internalId());
+    } else {
+        trackWindow(w);
+        emit windowAdded(w->internalId());
+    }
 
     if (w->appId() == "latte-dock") {
         emit latteWindowAdded();
