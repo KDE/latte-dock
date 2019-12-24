@@ -146,8 +146,8 @@ Item{
         anchors.horizontalCenterOffset: taskItem.iconOffsetX
         anchors.verticalCenterOffset: taskItem.iconOffsetY
 
-        width: wrapper.width
-        height:wrapper.height
+        width: wrapper.regulatorWidth
+        height:wrapper.regulatorHeight
     }
 
     function calculateScales( currentMousePosition ){
