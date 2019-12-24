@@ -26,7 +26,6 @@ import org.kde.latte 0.2 as Latte
 
 Item{
     id: main
-    anchors.fill: parent
     clip: true
 
     property int roundness: 0
@@ -40,6 +39,10 @@ Item{
     property bool rightBorder: false
 
     property int noOfBorders: {
+        if (allBorders) {
+            return 4;
+        }
+
         var i = 0;
 
         if (topBorder) {
@@ -58,6 +61,12 @@ Item{
         return i;
     }
 
+    readonly property bool allBorders: (latteView && latteView.effects && (latteView.effects.enabledBorders === PlasmaCore.FrameSvg.AllBorders))
+
+    readonly property bool bothVerticals: (leftBorder && rightBorder)
+    readonly property bool bothHorizontals: (bottomBorder && topBorder)
+
+
     readonly property bool drawWithoutRoundness: noOfBorders === 1
 
     Binding{
@@ -65,7 +74,7 @@ Item{
         property: "topBorder"
         when: latteView
         value: {
-            return ((latteView && latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.TopBorder)) > 0);
+            return (latteView && latteView.effects && ((latteView.effects.enabledBorders & PlasmaCore.FrameSvg.TopBorder)) > 0) || allBorders;
         }
     }
 
@@ -74,7 +83,7 @@ Item{
         property: "leftBorder"
         when: latteView
         value: {
-            return ((latteView && latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.LeftBorder)) > 0);
+            return (latteView && latteView.effects && ((latteView.effects.enabledBorders & PlasmaCore.FrameSvg.LeftBorder)) > 0) || allBorders;
         }
     }
 
@@ -83,7 +92,7 @@ Item{
         property: "bottomBorder"
         when: latteView
         value: {
-            return ((latteView && latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.BottomBorder)) > 0);
+            return (latteView && latteView.effects && ((latteView.effects.enabledBorders & PlasmaCore.FrameSvg.BottomBorder)) > 0) || allBorders;
         }
     }
 
@@ -92,7 +101,7 @@ Item{
         property: "rightBorder"
         when: latteView
         value: {
-            return ((latteView && latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.RightBorder)) > 0);
+            return (latteView && latteView.effects && ((latteView.effects.enabledBorders & PlasmaCore.FrameSvg.RightBorder)) > 0) || allBorders;
         }
     }
 
@@ -105,18 +114,20 @@ Item{
             if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
                 if (drawWithoutRoundness) {
                     return parent.width + 2*borderWidth;
-                } else if (noOfBorders === 2) {
+                } else if (noOfBorders === 2 || (noOfBorders === 3 && bothHorizontals)) {
                     return parent.width + Math.max(roundness, 2*borderWidth);
-                } else if (noOfBorders === 3) {
+                } else if (noOfBorders === 3 && bothVerticals) {
                     return parent.width;
                 }
             } else if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                 if (drawWithoutRoundness) {
                     return parent.width + 2 * borderWidth;
-                } else if (noOfBorders === 2 || noOfBorders === 3) {
+                } else if (noOfBorders === 2 || (noOfBorders === 3 && bothHorizontals)) {
                     return parent.width + Math.max(roundness, 2 * borderWidth);
                 }
             }
+
+            return parent.width;
         }
 
 
@@ -124,18 +135,20 @@ Item{
             if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
                 if (drawWithoutRoundness) {
                     return parent.height + 2 * borderWidth;
-                } else if (noOfBorders === 2 || noOfBorders === 3) {
+                } else if (noOfBorders === 2 || (noOfBorders === 3 && bothVerticals)) {
                     return parent.height + Math.max(roundness,2 * borderWidth);
                 }
             } else if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                 if (drawWithoutRoundness) {
                     return parent.height + 2*borderWidth;
-                } else if (noOfBorders === 2) {
+                } else if (noOfBorders === 2 || (noOfBorders === 3 && bothVerticals)) {
                     return parent.height + Math.max(roundness, 2*borderWidth);
-                } else if (noOfBorders === 3) {
+                } else if (noOfBorders === 3 && bothHorizontals) {
                     return parent.height;
                 }
             }
+
+            return parent.height;
         }
 
         radius: drawWithoutRoundness ? 0 : roundness
@@ -143,7 +156,13 @@ Item{
         border.width: main.borderWidth
         border.color: main.borderColor
 
-        readonly property int centerStep: Math.max(Math.ceil((drawWithoutRoundness ? 0 : roundness) / 2) , borderWidth)
+        readonly property int centerStep: {
+            if (allBorders) {
+                return 0;
+            }
+
+            return Math.max(Math.ceil((drawWithoutRoundness ? 0 : roundness) / 2) , borderWidth)
+        }
 
         states: [
             State {
@@ -153,9 +172,9 @@ Item{
                 PropertyChanges{
                     target: painter
                     anchors.horizontalCenterOffset: {
-                        if (drawWithoutRoundness || noOfBorders === 3) {
+                        if (drawWithoutRoundness || (noOfBorders === 3 && bothVerticals)) {
                             return 0;
-                        } else if (noOfBorders === 2) {
+                        } else if (noOfBorders === 2 || (noOfBorders === 3 && bothHorizontals)) {
                             if (leftBorder) {
                                 return centerStep;
                             } else if (rightBorder) {
@@ -166,6 +185,10 @@ Item{
                         return 0;
                     }
                     anchors.verticalCenterOffset: {
+                        if (allBorders || (noOfBorders === 3 && bothHorizontals)) {
+                            return 0;
+                        }
+
                         //bottom edge and top edge
                         return plasmoid.location === PlasmaCore.Types.TopEdge ? -centerStep : centerStep;
                     }
@@ -178,9 +201,9 @@ Item{
                 PropertyChanges{
                     target: painter
                     anchors.verticalCenterOffset: {
-                        if (drawWithoutRoundness || noOfBorders === 3) {
+                        if (drawWithoutRoundness || (noOfBorders === 3 && bothHorizontals)) {
                             return 0;
-                        } else if (noOfBorders === 2) {
+                        } else if (noOfBorders === 2 || (noOfBorders === 3 && bothVerticals)) {
                             if (bottomBorder) {
                                 return -centerStep;
                             } else if (topBorder) {
@@ -191,6 +214,10 @@ Item{
                         return 0;
                     }
                     anchors.horizontalCenterOffset: {
+                        if (allBorders || (noOfBorders === 3 && bothVerticals)) {
+                            return 0;
+                        }
+
                         //left edge and right edge
                         return plasmoid.location === PlasmaCore.Types.LeftEdge ? -centerStep : centerStep;
                     }

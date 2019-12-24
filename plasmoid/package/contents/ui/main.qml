@@ -278,7 +278,6 @@ Item {
 
     readonly property bool screenEdgeMarginEnabled: latteBridge ? latteBridge.screenEdgeMarginEnabled : false
     readonly property int screenEdgeMargin: latteBridge ? latteBridge.screenEdgeMargin : 0
-    onScreenEdgeMarginChanged: console.log(screenEdgeMargin)
     //END  Latte Dock Communicator
 
     //BEGIN Latte based properties
