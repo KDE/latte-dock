@@ -153,6 +153,7 @@ Item {
                                                    || (root.zoomFactor>1 && canBeHovered && lockZoom)
 
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
+    readonly property bool supportsScreenEdgeMargin: communicator.supportsScreenEdgeMargin
 
     property int animationTime: appliedDurationTime * (1.2 *units.shortDuration)
     property int hoveredIndex: layoutsContainer.hoveredIndex

@@ -60,7 +60,11 @@ Item{
         if (appletItem.latteApplet) {
             return latteApplet.tasksWidth;
         } else {
-            return (root.isHorizontal && root.inConfigureAppletsMode) ? Math.max(root.iconSize, scaledWidth) : scaledWidth;
+            if (root.isHorizontal && root.inConfigureAppletsMode) {
+                return Math.max(root.iconSize, scaledWidth);
+            } else {
+                return root.isVertical ? scaledWidth + root.screenEdgeMargin : scaledWidth;
+            }
         }
     }
 
@@ -91,7 +95,11 @@ Item{
         if (appletItem.latteApplet) {
             return latteApplet.tasksHeight;
         } else {
-            return (root.isVertical && root.inConfigureAppletsMode) ? Math.max(root.iconSize, scaledHeight) : scaledHeight;
+            if (root.isVertical && root.inConfigureAppletsMode) {
+                return Math.max(root.iconSize, scaledHeight);
+            }
+
+            return root.isHorizontal ? scaledHeight + root.screenEdgeMargin : scaledHeight;
         }
     }
 
@@ -421,7 +429,8 @@ Item{
                 return wrapper.layoutWidth;
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    return parent.zoomScaleWidth * (root.iconSize + root.thickMargins);
+                    var wrapperContainerThickness = parent.zoomScaleWidth * (root.iconSize + root.thickMargins);
+                    return appletItem.supportsScreenEdgeMargin ? wrapperContainerThickness + root.screenEdgeMargin : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleWidth * wrapper.layoutWidth;
                 }
@@ -437,7 +446,8 @@ Item{
                 return wrapper.layoutHeight;
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                    return parent.zoomScaleHeight * (root.iconSize + root.thickMargins);
+                    var wrapperContainerThickness = parent.zoomScaleHeight * (root.iconSize + root.thickMargins);
+                    return appletItem.supportsScreenEdgeMargin ? wrapperContainerThickness + root.screenEdgeMargin : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleHeight * wrapper.layoutHeight;
                 }
@@ -446,7 +456,14 @@ Item{
         }
 
         opacity: appletShadow.active ? 0 : 1
-        anchors.centerIn: parent
+
+        readonly property int appliedEdgeMargin: {
+            if (appletItem.isInternalViewSplitter) {
+                return root.screenEdgeMargin + root.thickMargin;
+            }
+
+            return appletItem.supportsScreenEdgeMargin ? 0 : root.screenEdgeMargin;
+        }
 
         ///Secret MouseArea to be used by the folder widget
         Loader{
@@ -511,6 +528,70 @@ Item{
                 }
             }
         }
+
+        //! WrapperContainer States
+        states:[
+            State{
+                name: "bottom"
+                when: plasmoid.location === PlasmaCore.Types.BottomEdge
+
+                AnchorChanges{
+                    target: _wrapperContainer;
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                }
+                PropertyChanges{
+                    target: _wrapperContainer;
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: _wrapperContainer.appliedEdgeMargin;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
+            },
+            State{
+                name: "top"
+                when: plasmoid.location === PlasmaCore.Types.TopEdge
+
+                AnchorChanges{
+                    target:_wrapperContainer;
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+                }
+                PropertyChanges{
+                    target: _wrapperContainer;
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: _wrapperContainer.appliedEdgeMargin;    anchors.bottomMargin: 0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
+            },
+            State{
+                name: "left"
+                when: plasmoid.location === PlasmaCore.Types.LeftEdge
+
+                AnchorChanges{
+                    target: _wrapperContainer;
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+                }
+                PropertyChanges{
+                    target: _wrapperContainer;
+                    anchors.leftMargin: _wrapperContainer.appliedEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
+            },
+            State{
+                name: "right"
+                when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                AnchorChanges{
+                    target: _wrapperContainer;
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                }
+                PropertyChanges{
+                    target: _wrapperContainer;
+                    anchors.leftMargin: 0;    anchors.rightMargin: _wrapperContainer.appliedEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
+            }
+        ]
     }
 
     Loader{

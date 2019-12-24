@@ -603,7 +603,7 @@ PlasmaComponents.Page {
 
                         value: plasmoid.configuration.screenEdgeMargin
                         from: -1
-                        to: 25
+                        to: 150
                         stepSize: 1
                         wheelEnabled: false
 
