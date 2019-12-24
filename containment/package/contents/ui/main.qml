@@ -364,7 +364,7 @@ Item {
 
     property int themePanelThickness: {
         var panelBase = root.panelThickMarginHigh;
-        var margin = shrinkThickMargins ? 0 : thickMargins + root.screenEdgeMargin;
+        var margin = shrinkThickMargins ? 0 : thickMargins + localScreenEdgeMargin;
         var maxPanelSize = (iconSize + margin) - panelBase;
         var percentage = Latte.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
@@ -389,6 +389,7 @@ Item {
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0
     property int screenEdgeMargin: plasmoid.configuration.screenEdgeMargin <=0 ? 0 : plasmoid.configuration.screenEdgeMargin
+    property int localScreenEdgeMargin: screenEdgeMarginEnabled && behaveAsPlasmaPanel ? 0 : plasmoid.configuration.screenEdgeMargin
 
     //! thickness margins are always two and equal in order for items
     //! to be always correctly centered

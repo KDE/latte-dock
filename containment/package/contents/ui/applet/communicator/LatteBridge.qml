@@ -102,7 +102,7 @@ Item{
     //   USE CASE: it can be used from applets that want to be informed what is the screen edge margin
     //       currently applied
     // @since: 0.10
-    readonly property int screenEdgeMargin: root.screenEdgeMargin
+    readonly property int screenEdgeMargin: root.localScreenEdgeMargin
 
     // NAME: maxZoomFactor
     //   USAGE: read-only

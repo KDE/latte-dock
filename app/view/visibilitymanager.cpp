@@ -275,26 +275,29 @@ QRect VisibilityManager::acceptableStruts()
 {
     QRect calcs;
 
+    int screenEdgeMargin = (m_latteView->behaveAsPlasmaPanel() && m_latteView->screenEdgeMarginEnabled()) ? m_latteView->screenEdgeMargin() : 0;
+    int shownThickness = m_latteView->normalThickness() + screenEdgeMargin;
+
     switch (m_latteView->location()) {
     case Plasma::Types::TopEdge: {
-        calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->width(), m_latteView->normalThickness());
+        calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->width(), shownThickness);
         break;
     }
 
     case Plasma::Types::BottomEdge: {
-        int y = m_latteView->y() + m_latteView->height() - m_latteView->normalThickness();
-        calcs = QRect(m_latteView->x(), y, m_latteView->width(), m_latteView->normalThickness());
+        int y = m_latteView->y() + m_latteView->height() - shownThickness;
+        calcs = QRect(m_latteView->x(), y, m_latteView->width(), shownThickness);
         break;
     }
 
     case Plasma::Types::LeftEdge: {
-        calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->normalThickness(), m_latteView->height());
+        calcs = QRect(m_latteView->x(), m_latteView->y(), shownThickness, m_latteView->height());
         break;
     }
 
     case Plasma::Types::RightEdge: {
-        int x = m_latteView->x() + m_latteView->width() - m_latteView->normalThickness();
-        calcs = QRect(x, m_latteView->y(), m_latteView->normalThickness(), m_latteView->height());
+        int x = m_latteView->x() + m_latteView->width() - shownThickness;
+        calcs = QRect(x, m_latteView->y(), shownThickness, m_latteView->height());
         break;
     }
     }

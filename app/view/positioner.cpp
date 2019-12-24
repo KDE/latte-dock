@@ -464,10 +464,13 @@ void Positioner::updatePosition(QRect availableScreenRect)
     };
     int cleanThickness = m_view->normalThickness() - m_view->effects()->innerShadow();
 
+    int screenEdgeMargin = (m_view->behaveAsPlasmaPanel() && m_view->screenEdgeMarginEnabled()) ? m_view->screenEdgeMargin() : 0;
+
     switch (m_view->location()) {
         case Plasma::Types::TopEdge:
             if (m_view->behaveAsPlasmaPanel()) {
-                position = {screenGeometry.x() + length(screenGeometry.width()), screenGeometry.y()};
+                position = {screenGeometry.x() + length(screenGeometry.width()),
+                            screenGeometry.y() + screenEdgeMargin};
             } else {
                 position = {screenGeometry.x(), screenGeometry.y()};
             }
@@ -477,8 +480,7 @@ void Positioner::updatePosition(QRect availableScreenRect)
         case Plasma::Types::BottomEdge:
             if (m_view->behaveAsPlasmaPanel()) {
                 position = {screenGeometry.x() + length(screenGeometry.width()),
-                            screenGeometry.y() + screenGeometry.height() - cleanThickness
-                           };
+                            screenGeometry.y() + screenGeometry.height() - cleanThickness - screenEdgeMargin};
             } else {
                 position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - m_view->height()};
             }
@@ -487,9 +489,8 @@ void Positioner::updatePosition(QRect availableScreenRect)
 
         case Plasma::Types::RightEdge:
             if (m_view->behaveAsPlasmaPanel()) {
-                position = {availableScreenRect.right() - cleanThickness + 1,
-                            availableScreenRect.y() + length(availableScreenRect.height())
-                           };
+                position = {availableScreenRect.right() - cleanThickness + 1 - screenEdgeMargin,
+                            availableScreenRect.y() + length(availableScreenRect.height())};
             } else {
                 position = {availableScreenRect.right() - m_view->width() + 1, availableScreenRect.y()};
             }
@@ -498,7 +499,8 @@ void Positioner::updatePosition(QRect availableScreenRect)
 
         case Plasma::Types::LeftEdge:
             if (m_view->behaveAsPlasmaPanel()) {
-                position = {availableScreenRect.x(), availableScreenRect.y() + length(availableScreenRect.height())};
+                position = {availableScreenRect.x() + screenEdgeMargin,
+                            availableScreenRect.y() + length(availableScreenRect.height())};
             } else {
                 position = {availableScreenRect.x(), availableScreenRect.y()};
             }

@@ -63,7 +63,7 @@ Item{
             if (root.isHorizontal && root.inConfigureAppletsMode) {
                 return Math.max(root.iconSize, scaledWidth);
             } else {
-                return root.isVertical ? scaledWidth + root.screenEdgeMargin : scaledWidth;
+                return root.isVertical ? scaledWidth + root.localScreenEdgeMargin : scaledWidth;
             }
         }
     }
@@ -99,7 +99,7 @@ Item{
                 return Math.max(root.iconSize, scaledHeight);
             }
 
-            return root.isHorizontal ? scaledHeight + root.screenEdgeMargin : scaledHeight;
+            return root.isHorizontal ? scaledHeight + root.localScreenEdgeMargin : scaledHeight;
         }
     }
 
@@ -430,7 +430,7 @@ Item{
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                     var wrapperContainerThickness = parent.zoomScaleWidth * (root.iconSize + root.thickMargins);
-                    return appletItem.supportsScreenEdgeMargin ? wrapperContainerThickness + root.screenEdgeMargin : wrapperContainerThickness;
+                    return appletItem.supportsScreenEdgeMargin ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleWidth * wrapper.layoutWidth;
                 }
@@ -447,7 +447,7 @@ Item{
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
                     var wrapperContainerThickness = parent.zoomScaleHeight * (root.iconSize + root.thickMargins);
-                    return appletItem.supportsScreenEdgeMargin ? wrapperContainerThickness + root.screenEdgeMargin : wrapperContainerThickness;
+                    return appletItem.supportsScreenEdgeMargin ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleHeight * wrapper.layoutHeight;
                 }
@@ -459,10 +459,10 @@ Item{
 
         readonly property int appliedEdgeMargin: {
             if (appletItem.isInternalViewSplitter) {
-                return root.screenEdgeMargin + root.thickMargin;
+                return root.localScreenEdgeMargin + root.thickMargin;
             }
 
-            return appletItem.supportsScreenEdgeMargin ? 0 : root.screenEdgeMargin;
+            return appletItem.supportsScreenEdgeMargin ? 0 : root.localScreenEdgeMargin;
         }
 
         ///Secret MouseArea to be used by the folder widget
