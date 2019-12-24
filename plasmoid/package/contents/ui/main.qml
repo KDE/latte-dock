@@ -1327,7 +1327,7 @@ Item {
 
         LatteComponents.AddingArea {
             id: newDroppedLauncherVisual
-            anchors.fill: mouseHandler
+            anchors.fill: parent
             visible: backgroundOpacity > 0
             radius: root.iconSize/10
             backgroundOpacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 0.75 : 0

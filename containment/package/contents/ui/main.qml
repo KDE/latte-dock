@@ -1762,7 +1762,7 @@ Item {
         height: root.isHorizontal ? thickness : length
 
         readonly property int length: root.iconSize + root.lengthMargins
-        readonly property int thickness: root.iconSize + root.thickMargins
+        readonly property int thickness: root.iconSize + root.thickMargins + root.localScreenEdgeMargin
 
         Layout.preferredWidth: width
         Layout.preferredHeight: height
@@ -1770,7 +1770,72 @@ Item {
         z:1500
 
         LatteComponents.AddItem{
-            anchors.fill: parent
+            id: dndSpacerAddItem
+            width: root.isHorizontal ? parent.width : parent.width - root.localScreenEdgeMargin
+            height: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.height
+
+            states:[
+                State{
+                    name: "bottom"
+                    when: plasmoid.location === PlasmaCore.Types.BottomEdge
+
+                    AnchorChanges{
+                        target: dndSpacerAddItem;
+                        anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                        anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                    }
+                    PropertyChanges{
+                        target: dndSpacerAddItem;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.localScreenEdgeMargin;
+                        anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                    }
+                },
+                State{
+                    name: "top"
+                    when: plasmoid.location === PlasmaCore.Types.TopEdge
+
+                    AnchorChanges{
+                        target: dndSpacerAddItem;
+                        anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                        anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+                    }
+                    PropertyChanges{
+                        target: dndSpacerAddItem;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.localScreenEdgeMargin;    anchors.bottomMargin: 0;
+                        anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                    }
+                },
+                State{
+                    name: "left"
+                    when: plasmoid.location === PlasmaCore.Types.LeftEdge
+
+                    AnchorChanges{
+                        target: dndSpacerAddItem;
+                        anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                        anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+                    }
+                    PropertyChanges{
+                        target: dndSpacerAddItem;
+                        anchors.leftMargin: root.localScreenEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                    }
+                },
+                State{
+                    name: "right"
+                    when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                    AnchorChanges{
+                        target: dndSpacerAddItem;
+                        anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                        anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                    }
+                    PropertyChanges{
+                        target: dndSpacerAddItem;
+                        anchors.leftMargin: 0;    anchors.rightMargin: root.localScreenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                    }
+                }
+            ]
         }
     }
 

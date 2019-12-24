@@ -272,19 +272,93 @@ MouseArea {
         }
 
         //END functions
-        Rectangle{
-            anchors.fill: parent
-            color: theme.backgroundColor
-            radius: 3
-            opacity: 0.5
-        }
 
-        PlasmaCore.IconItem {
-            source: "transform-move"
-            width: Math.min(parent.width, parent.height)
-            height: width
-            anchors.centerIn: parent
-            opacity: 0.5
+        Item {
+            id: handleVisualItem
+            width: root.isHorizontal ? parent.width : thickness
+            height: root.isHorizontal ? thickness : parent.width
+
+            readonly property int thickness: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.width - root.localScreenEdgeMargin
+
+            Rectangle{
+                anchors.fill: parent
+                color: theme.backgroundColor
+                radius: 3
+                opacity: 0.5
+            }
+
+            PlasmaCore.IconItem {
+                source: "transform-move"
+                width: Math.min(parent.width, parent.height)
+                height: width
+                anchors.centerIn: parent
+                opacity: 0.5
+            }
+
+
+            states:[
+                State{
+                    name: "bottom"
+                    when: plasmoid.location === PlasmaCore.Types.BottomEdge
+
+                    AnchorChanges{
+                        target: handleVisualItem;
+                        anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                        anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                    }
+                    PropertyChanges{
+                        target: handleVisualItem;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.localScreenEdgeMargin;
+                        anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                    }
+                },
+                State{
+                    name: "top"
+                    when: plasmoid.location === PlasmaCore.Types.TopEdge
+
+                    AnchorChanges{
+                        target: handleVisualItem;
+                        anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                        anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+                    }
+                    PropertyChanges{
+                        target: handleVisualItem;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.localScreenEdgeMargin;    anchors.bottomMargin: 0;
+                        anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                    }
+                },
+                State{
+                    name: "left"
+                    when: plasmoid.location === PlasmaCore.Types.LeftEdge
+
+                    AnchorChanges{
+                        target: handleVisualItem;
+                        anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                        anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+                    }
+                    PropertyChanges{
+                        target: handleVisualItem;
+                        anchors.leftMargin: root.localScreenEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                    }
+                },
+                State{
+                    name: "right"
+                    when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                    AnchorChanges{
+                        target: handleVisualItem;
+                        anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                        anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                    }
+                    PropertyChanges{
+                        target: handleVisualItem;
+                        anchors.leftMargin: 0;    anchors.rightMargin: root.localScreenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                    }
+                }
+            ]
+
         }
 
         Behavior on x {

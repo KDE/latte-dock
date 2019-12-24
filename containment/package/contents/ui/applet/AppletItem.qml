@@ -835,10 +835,18 @@ Item {
     }
 
     Loader {
-        anchors.fill: parent
+        id: addingAreaLoader
+        width: root.isHorizontal ? parent.width : parent.width - root.localScreenEdgeMargin
+        height: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.height
+
         active: isLattePlasmoid
+
         sourceComponent: LatteComponents.AddingArea{
+            id: addingAreaItem
             anchors.fill: parent
+            // width: root.isHorizontal ? parent.width : parent.width - root.localScreenEdgeMargin
+           // height: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.height
+
             radius: root.iconSize/10
             opacity: root.addLaunchersMessage ? 1 : 0
             backgroundOpacity: 0.75
@@ -846,6 +854,70 @@ Item {
 
             title: i18n("Tasks Area")
         }
+
+        //! AddingAreaItem States
+        states:[
+            State{
+                name: "bottom"
+                when: plasmoid.location === PlasmaCore.Types.BottomEdge
+
+                AnchorChanges{
+                    target: addingAreaLoader
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                }
+                PropertyChanges{
+                    target: addingAreaLoader
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.localScreenEdgeMargin;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
+            },
+            State{
+                name: "top"
+                when: plasmoid.location === PlasmaCore.Types.TopEdge
+
+                AnchorChanges{
+                    target: addingAreaLoader
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+                }
+                PropertyChanges{
+                    target: addingAreaLoader
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.localScreenEdgeMargin;    anchors.bottomMargin: 0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
+            },
+            State{
+                name: "left"
+                when: plasmoid.location === PlasmaCore.Types.LeftEdge
+
+                AnchorChanges{
+                    target: addingAreaLoader
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+                }
+                PropertyChanges{
+                    target: addingAreaLoader
+                    anchors.leftMargin: root.localScreenEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
+            },
+            State{
+                name: "right"
+                when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                AnchorChanges{
+                    target: addingAreaLoader
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                }
+                PropertyChanges{
+                    target: addingAreaLoader
+                    anchors.leftMargin: 0;    anchors.rightMargin: root.localScreenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
+            }
+        ]
     }
 
     MouseArea{
