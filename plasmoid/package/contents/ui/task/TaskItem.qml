@@ -50,7 +50,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || !root.parabolicEffectEnabled ? 5+2*root.lengthExtMargin : 0);
+            return root.vertical ? root.iconSize + root.thickMargins + root.screenEdgeMargin : (root.dragSource || !root.parabolicEffectEnabled ? 5+2*root.lengthExtMargin : 0);
 
         if (root.vertical) {
             return wrapper.width;
@@ -68,7 +68,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return !root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || !root.parabolicEffectEnabled ? 5+2*root.lengthExtMargin: 0);
+            return !root.vertical ? root.iconSize + root.thickMargins + root.screenEdgeMargin : (root.dragSource || !root.parabolicEffectEnabled ? 5+2*root.lengthExtMargin: 0);
 
         if (root.vertical) {
             return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;
@@ -476,14 +476,7 @@ MouseArea{
 
         // a hidden spacer on the right for the last item to add stability
         HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
-    }// Flow with hidden spacers inside
-
-    /*Rectangle{
-        anchors.fill: taskFlow
-        color: "transparent"
-        border.width: 1
-        border.color: "blue"
-    }*/
+    }// Flow with hidden spacers inside   
 
     Component {
         id: taskInitComponent
@@ -1270,6 +1263,7 @@ MouseArea{
             var adjY = Math.min(limits.y+limits.height, Math.max(limits.y, globalChoords.y));
 
             var length = root.iconSize * wrapper.mScale;
+            var thickness = length;
 
             //! Magic Lamp effect doesn't like coordinates outside the screen and
             //! width,heights of zero value... So we now normalize the geometries
@@ -1283,10 +1277,9 @@ MouseArea{
                         //! semi-part out of boundaries
                         length = Math.max(4, Math.abs(adjY - globalChoords.y));
                     }
-                }
 
-                globalChoords.width = 1;
-                globalChoords.height = length;
+                    globalChoords.height = length;
+                }
             } else {
                 if (adjX !== globalChoords.x) {
                     if (((globalChoords.x+globalChoords.width) < limits.x) || (globalChoords.x)>(limits.x+limits.width)) {
@@ -1296,24 +1289,13 @@ MouseArea{
                         //! semi-part out of boundaries
                         length = Math.max(4, Math.abs(adjX - globalChoords.x));
                     }
-                }
 
-                globalChoords.height = 1;
-                globalChoords.width = length;
+                    globalChoords.width = length;
+                }                
             }
 
             globalChoords.x = adjX;
             globalChoords.y = adjY;
-
-            if (root.position === PlasmaCore.Types.BottomPositioned) {
-                globalChoords.y = root.screenGeometry.y+root.screenGeometry.height-1;
-            } else if (root.position === PlasmaCore.Types.TopPositioned) {
-                globalChoords.y = root.screenGeometry.y+1;
-            } else if (root.position === PlasmaCore.Types.LeftPositioned) {
-                globalChoords.x = root.screenGeometry.x+1;
-            } else if (root.position === PlasmaCore.Types.RightPositioned) {
-                globalChoords.x = root.screenGeometry.x+root.screenGeometry.width - 1;
-            }
 
             tasksModel.requestPublishDelegateGeometry(taskItem.modelIndex(), globalChoords, taskItem);
         }

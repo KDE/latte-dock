@@ -232,7 +232,7 @@ Item{
                 var icons = root.iconSize + root.thickMargins;// + 2;
                 var panelt = root.themePanelThickness;// + 2;
 
-                root.realPanelThickness = icons;
+                root.realPanelThickness = icons + root.screenEdgeMargin;
 
                 return Math.min(icons, panelt);
             }

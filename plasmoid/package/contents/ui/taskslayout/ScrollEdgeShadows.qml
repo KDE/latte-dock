@@ -79,6 +79,11 @@ Item {
                 anchors{ top:undefined; bottom:flickable.bottom; left:undefined; right:undefined;
                     horizontalCenter:flickable.horizontalCenter; verticalCenter:undefined}
             }
+            PropertyChanges {
+                target: shadowsContainer
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: 0;    anchors.bottomMargin:root.screenEdgeMargin;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
         },
         State {
             name: "top"
@@ -98,6 +103,11 @@ Item {
                 target: shadowsContainer
                 anchors{ top:flickable.top; bottom:undefined; left:undefined; right:undefined;
                     horizontalCenter:flickable.horizontalCenter; verticalCenter:undefined}
+            }
+            PropertyChanges {
+                target: shadowsContainer
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: root.screenEdgeMargin;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         State {
@@ -119,6 +129,11 @@ Item {
                 anchors{ top:undefined; bottom:undefined; left:flickable.left; right:undefined;
                     horizontalCenter:undefined; verticalCenter:flickable.verticalCenter}
             }
+            PropertyChanges {
+                target: shadowsContainer
+                anchors.leftMargin: root.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin: 0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
         },
         State {
             name: "right"
@@ -138,6 +153,11 @@ Item {
                 target: shadowsContainer
                 anchors{ top:undefined; bottom:undefined; left:undefined; right:flickable.right;
                     horizontalCenter:undefined; verticalCenter:flickable.verticalCenter}
+            }
+            PropertyChanges {
+                target: shadowsContainer
+                anchors.leftMargin: 0;    anchors.rightMargin:root.screenEdgeMargin;     anchors.topMargin: 0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         }
     ]

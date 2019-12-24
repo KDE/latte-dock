@@ -80,6 +80,14 @@ Item{
     // @since: 0.9
     readonly property bool parabolicEffectEnabled: root.parabolicEffectEnabled && !appletItem.originalAppletBehavior
 
+    // NAME: screenMarginEnabled
+    //   USAGE: read-only
+    //   EXPLANATION: Screen Edge Margin is enabled or not for this Latte View
+    //   USE CASE: it can be used from applets that want to be adjusted based
+    //       on the screen margin applied without losing any of their functionality
+    // @since: 0.10
+    readonly property bool screenEdgeMarginEnabled: root.screenEdgeMarginEnabled
+
     // NAME: iconSize
     //   USAGE: read-only
     //   EXPLANATION: The current icon size used in the Latte View
@@ -87,6 +95,14 @@ Item{
     //       relevant to the view icon size
     // @since: 0.9
     readonly property int iconSize: root.iconSize
+
+    // NAME: screenEdgeMargin
+    //   USAGE: read-only
+    //   EXPLANATION: The screen edge margin applied in pixels
+    //   USE CASE: it can be used from applets that want to be informed what is the screen edge margin
+    //       currently applied
+    // @since: 0.10
+    readonly property int screenEdgeMargin: root.screenEdgeMargin
 
     // NAME: maxZoomFactor
     //   USAGE: read-only

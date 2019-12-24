@@ -364,7 +364,7 @@ Item {
 
     property int themePanelThickness: {
         var panelBase = root.panelThickMarginHigh;
-        var margin = shrinkThickMargins ? 0 : thickMargins;
+        var margin = shrinkThickMargins ? 0 : thickMargins + root.screenEdgeMargin;
         var maxPanelSize = (iconSize + margin) - panelBase;
         var percentage = Latte.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);

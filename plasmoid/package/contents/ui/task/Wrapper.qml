@@ -36,13 +36,13 @@ Item{
             if (!root.vertical)
                 return 0;
             else
-                return (root.iconSize + root.widthMargins);
+                return (root.iconSize + root.widthMargins + root.screenEdgeMargin);
         }
 
         if (taskItem.isStartup && root.durationTime !==0 ) {
-            return cleanScalingWidth;
+            return root.vertical ? cleanScalingWidth + root.screenEdgeMargin : cleanScalingWidth;
         } else {
-            return showDelegateWidth;
+            return root.vertical ? showDelegateWidth + root.screenEdgeMargin : showDelegateWidth;
         }
     }
 
@@ -54,13 +54,13 @@ Item{
             if (root.vertical)
                 return 0;
             else
-                return (root.iconSize + root.heightMargins);
+                return (root.iconSize + root.heightMargins + root.screenEdgeMargin);
         }
 
         if (taskItem.isStartup && root.durationTime !==0){
-            return cleanScalingHeight;
+            return !root.vertical ? cleanScalingHeight + root.screenEdgeMargin : cleanScalingHeight;
         } else {
-            return showDelegateheight;
+            return !root.vertical ? showDelegateHeight + root.screenEdgeMargin : showDelegateHeight;
         }
     }
 
@@ -68,7 +68,7 @@ Item{
                                               : root.zoomFactor*(root.iconSize+root.widthMargins)
 
     property real showDelegateWidth: basicScalingWidth
-    property real showDelegateheight: basicScalingHeight
+    property real showDelegateHeight: basicScalingHeight
 
     //scales which are used mainly for activating InLauncher
     ////Scalers///////
@@ -113,7 +113,7 @@ Item{
 
     signal runLauncherAnimation();
 
-    /*  Rectangle{
+     /* Rectangle{
             anchors.fill: parent
             border.width: 1
             border.color: "green"
@@ -143,11 +143,16 @@ Item{
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
+        anchors.bottomMargin: (root.position === PlasmaCore.Types.BottomPositioned) ? root.screenEdgeMargin : 0
+        anchors.topMargin: (root.position === PlasmaCore.Types.TopPositioned) ? root.screenEdgeMargin : 0
+        anchors.leftMargin: (root.position === PlasmaCore.Types.LeftPositioned) ? root.screenEdgeMargin : 0
+        anchors.rightMargin: (root.position === PlasmaCore.Types.RightPositioned) ? root.screenEdgeMargin : 0
+
         anchors.horizontalCenterOffset: taskItem.iconOffsetX
         anchors.verticalCenterOffset: taskItem.iconOffsetY
 
-        width: wrapper.width
-        height:wrapper.height
+        width: wrapper.regulatorWidth
+        height: wrapper.regulatorHeight
     }
 
     function calculateScales( currentMousePosition ){

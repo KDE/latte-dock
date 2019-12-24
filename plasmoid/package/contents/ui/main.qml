@@ -272,9 +272,15 @@ Item {
     onLatteBridgeChanged: {
         if (latteBridge) {
             latteBridge.actions.setProperty(plasmoid.id, "latteSideColoringEnabled", false);
+            latteBridge.actions.setProperty(plasmoid.id, "supportsScreenEdgeMargin", true);
         }
     }
+
+    readonly property bool screenEdgeMarginEnabled: latteBridge ? latteBridge.screenEdgeMarginEnabled : false
+    readonly property int screenEdgeMargin: latteBridge ? latteBridge.screenEdgeMargin : 0
+    onScreenEdgeMarginChanged: console.log(screenEdgeMargin)
     //END  Latte Dock Communicator
+
     //BEGIN Latte based properties
     readonly property bool enforceLattePalette: latteBridge && latteBridge.applyPalette && latteBridge.palette
     readonly property bool latteInEditMode: latteBridge && latteBridge.inEditMode
@@ -1148,8 +1154,8 @@ Item {
             visible: root.dragAreaEnabled
 
             property int maxSize: (((root.hoveredIndex>=0 || dockHoveredIndex>=0 ) || windowPreviewIsShown) && !root.dragSource) ?
-                                      root.zoomFactor * (root.iconSize + root.thickMargins) :
-                                      root.iconSize + root.thickMargins
+                                      root.zoomFactor * (root.iconSize + root.thickMargins) + root.screenEdgeMargin :
+                                      root.iconSize + root.thickMargins + root.screenEdgeMargin
 
             function onlyLaunchersInList(list){
                 return list.every(function (item) {

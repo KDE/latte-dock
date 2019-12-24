@@ -56,6 +56,7 @@ Item{
     property bool lengthMarginsEnabled: true
     property bool windowsTrackingEnabled: false
     property bool parabolicEffectLocked: false
+    property bool supportsScreenEdgeMargin: false
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
 
     //! BEGIN OF PROPERTY CHANGES

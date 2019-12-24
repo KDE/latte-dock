@@ -41,8 +41,8 @@ import "animations" as TaskAnimations
 Item{
     id: taskIcon
 
-    width: wrapper.regulatorWidth
-    height: wrapper.regulatorHeight
+   // width: wrapper.regulatorWidth
+   // height: wrapper.regulatorHeight
 
     //big interval to show shadows only after all the crappy adds and removes of tasks
     //have happened

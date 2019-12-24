@@ -35,6 +35,8 @@ LatteComponents.IndicatorItem{
     readonly property real factor: 0.08
     readonly property int size: factor * indicator.currentIconSize
 
+    readonly property int screenEdgeMargin: plasmoid.location === PlasmaCore.Types.Floating || reversedEnabled ? 0 : indicator.screenEdgeMargin
+
     property real textColorBrightness: colorBrightness(theme.textColor)
 
     property color isActiveColor: theme.buttonFocusColor
@@ -254,6 +256,11 @@ LatteComponents.IndicatorItem{
                     anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
                         top:undefined; bottom:undefined; left:parent.left; right:undefined;}
                 }
+                PropertyChanges{
+                    target: mainIndicatorElement
+                    anchors.leftMargin: root.screenEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
             },
             State {
                 name: "bottom"
@@ -266,6 +273,11 @@ LatteComponents.IndicatorItem{
                     anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
                         top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
                 }
+                PropertyChanges{
+                    target: mainIndicatorElement
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.screenEdgeMargin;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
             },
             State {
                 name: "top"
@@ -277,6 +289,11 @@ LatteComponents.IndicatorItem{
                     anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
                         top:parent.top; bottom:undefined; left:undefined; right:undefined;}
                 }
+                PropertyChanges{
+                    target: mainIndicatorElement
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.screenEdgeMargin;    anchors.bottomMargin:0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
             },
             State {
                 name: "right"
@@ -287,6 +304,11 @@ LatteComponents.IndicatorItem{
                     target: mainIndicatorElement
                     anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
                         top:undefined; bottom:undefined; left:undefined; right:parent.right;}
+                }
+                PropertyChanges{
+                    target: mainIndicatorElement
+                    anchors.leftMargin: 0;    anchors.rightMargin: root.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                 }
             }
         ]

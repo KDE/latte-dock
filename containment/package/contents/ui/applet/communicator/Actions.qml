@@ -86,6 +86,8 @@ Item{
            mainCommunicator.lengthMarginsEnabled = value;
         } else if (parameter === "parabolicEffectLocked") {
             mainCommunicator.parabolicEffectLocked = value;
+        } else if (parameter === "supportsScreenEdgeMargin") {
+            mainCommunicator.supportsScreenEdgeMargin = value;
         } else if (parameter === "windowsTrackingEnabled") {
             mainCommunicator.windowsTrackingEnabled = value;
         }
@@ -102,6 +104,8 @@ Item{
             return mainCommunicator.lengthMarginsEnabled;
         } else if (parameter === "parabolicEffectLocked") {
             return mainCommunicator.parabolicEffectLocked;
+        } else if (parameter === "supportsScreenEdgeMargin") {
+            return mainCommunicator.supportsScreenEdgeMargin;
         } else if (parameter === "windowsTrackingEnabled") {
             return mainCommunicator.windowsTrackingEnabled;
         }
