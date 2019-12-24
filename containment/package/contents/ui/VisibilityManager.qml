@@ -177,6 +177,13 @@ Item{
 
     Binding{
         target: latteView
+        property: "screenEdgeMargin"
+        when: latteView
+        value: plasmoid.configuration.screenEdgeMargin
+    }
+
+    Binding{
+        target: latteView
         property: "alignment"
         when: latteView
         value: root.panelAlignment

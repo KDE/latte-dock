@@ -809,6 +809,26 @@ void View::setOffset(int offset)
     emit offsetChanged();
 }
 
+bool View::screenEdgeMarginEnabled() const
+{
+    return (m_screenEdgeMargin > -1);
+}
+
+int View::screenEdgeMargin() const
+{
+    return m_screenEdgeMargin;
+}
+
+void View::setScreenEdgeMargin(int margin)
+{
+    if (m_screenEdgeMargin == margin) {
+        return;
+    }
+
+    m_screenEdgeMargin = margin;
+    emit screenEdgeMarginChanged();
+}
+
 int View::fontPixelSize() const
 {
     return m_fontPixelSize;

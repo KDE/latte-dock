@@ -53,6 +53,10 @@
       <default>-1</default>
       <label>this is a percentage value, -1 means disabled</label>
     </entry>
+    <entry name="screenEdgeMargin" type="Int">
+      <default>-1</default>
+      <label>margin from screen edge in pixels, -1 means disabled</label>
+    </entry>
     <entry name="inConfigureAppletsMode" type="Bool">
       <default>false</default>
     </entry>

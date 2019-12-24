@@ -585,6 +585,44 @@ PlasmaComponents.Page {
                         readonly property int currentValue: Math.max(thickMarginSlider.minimumInternalValue, thickMarginSlider.value)
                     }
                 }
+
+                RowLayout {
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
+                    spacing: units.smallSpacing
+                    enabled: !plasmoid.configuration.shrinkThickMargins
+
+                    PlasmaComponents.Label {
+                        text: i18n("Screen")
+                        horizontalAlignment: Text.AlignLeft
+                    }
+
+                    LatteComponents.Slider {
+                        id: screenEdgeMarginSlider
+                        Layout.fillWidth: true
+
+                        value: plasmoid.configuration.screenEdgeMargin
+                        from: -1
+                        to: 25
+                        stepSize: 1
+                        wheelEnabled: false
+
+                        onPressedChanged: {
+                            if (!pressed) {
+                                plasmoid.configuration.screenEdgeMargin = value;
+                            }
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        text: currentValue < 0 ? "---" : i18nc("number in pixels, e.g. 85 px.","%0 px.").arg(currentValue)
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+                        readonly property int currentValue: screenEdgeMarginSlider.value
+                    }
+                }
             }
         }
         //! END: Margins

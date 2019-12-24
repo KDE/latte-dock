@@ -45,6 +45,8 @@ Item{
 
     property int animationTime: 6*root.durationTime*units.shortDuration
 
+    property int screenEdgeMargin: root.screenEdgeMarginEnabled ? root.screenEdgeMargin - shadowsSvgItem.screenEdgeShadow : 0
+
     property int lengthMargins: {
         return root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
     }
@@ -178,6 +180,22 @@ Item{
         Behavior on opacity{
             enabled: !Latte.WindowSystem.compositingActive
             NumberAnimation { duration: 0 }
+        }
+
+        property int screenEdgeShadow: {
+            if (imagePath === "" || !root.screenEdgeMarginEnabled) {
+                return 0;
+            }
+
+            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                return margins.left;
+            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                return margins.right;
+            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                return margins.top;
+            } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                return margins.bottom;
+            }
         }
 
         property int marginsWidth: {
@@ -625,7 +643,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0);
             }
         },
@@ -644,7 +662,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offset;    anchors.bottomMargin:0;
+                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:root.offset;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -663,7 +681,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offset;
+                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offset;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -682,7 +700,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0);
             }
         },
@@ -700,7 +718,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offset;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:root.offset;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -718,7 +736,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offset;
+                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:root.offset;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -737,7 +755,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
                 anchors.horizontalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
             }
         },
@@ -757,7 +775,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: root.offset;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: root.offset;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
 
@@ -778,7 +796,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -797,7 +815,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
             }
         },
@@ -817,7 +835,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: root.offset;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: root.offset;    anchors.rightMargin:0;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -837,7 +855,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         }

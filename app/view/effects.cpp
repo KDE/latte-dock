@@ -60,6 +60,7 @@ void Effects::init()
     });
 
     connect(m_view, &Latte::View::alignmentChanged, this, &Effects::updateEnabledBorders);
+    connect(m_view, &Latte::View::screenEdgeMarginChanged, this, &Effects::updateEnabledBorders);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateShadows);
     connect(m_view, &Latte::View::configWindowGeometryChanged, this, &Effects::updateMask);
@@ -489,25 +490,27 @@ void Effects::updateEnabledBorders()
 
     Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
 
-    switch (m_view->location()) {
-    case Plasma::Types::TopEdge:
-        borders &= ~Plasma::FrameSvg::TopBorder;
-        break;
+    if (!m_view->screenEdgeMarginEnabled()) {
+        switch (m_view->location()) {
+        case Plasma::Types::TopEdge:
+            borders &= ~Plasma::FrameSvg::TopBorder;
+            break;
 
-    case Plasma::Types::LeftEdge:
-        borders &= ~Plasma::FrameSvg::LeftBorder;
-        break;
+        case Plasma::Types::LeftEdge:
+            borders &= ~Plasma::FrameSvg::LeftBorder;
+            break;
 
-    case Plasma::Types::RightEdge:
-        borders &= ~Plasma::FrameSvg::RightBorder;
-        break;
+        case Plasma::Types::RightEdge:
+            borders &= ~Plasma::FrameSvg::RightBorder;
+            break;
 
-    case Plasma::Types::BottomEdge:
-        borders &= ~Plasma::FrameSvg::BottomBorder;
-        break;
+        case Plasma::Types::BottomEdge:
+            borders &= ~Plasma::FrameSvg::BottomBorder;
+            break;
 
-    default:
-        break;
+        default:
+            break;
+        }
     }
 
     if ((m_view->location() == Plasma::Types::LeftEdge || m_view->location() == Plasma::Types::RightEdge)) {

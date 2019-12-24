@@ -101,6 +101,8 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
     Q_PROPERTY(int offset READ offset WRITE setOffset NOTIFY offsetChanged)
+    Q_PROPERTY(int screenEdgeMargin READ screenEdgeMargin WRITE setScreenEdgeMargin NOTIFY screenEdgeMarginChanged)
+
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
@@ -160,6 +162,8 @@ public:
     bool isTouchingTopViewAndIsBusy() const;
     void setIsTouchingTopViewAndIsBusy(bool touchAndBusy);
 
+    bool screenEdgeMarginEnabled() const;
+
     float maxLength() const;
     void setMaxLength(float length);
 
@@ -177,6 +181,9 @@ public:
 
     int offset() const;
     void setOffset(int offset);
+
+    int screenEdgeMargin() const;
+    void setScreenEdgeMargin(int margin);
 
     int alignment() const;
     void setAlignment(int alignment);
@@ -278,6 +285,7 @@ signals:
     void offsetChanged();
     void onPrimaryChanged();
     void positionerChanged();
+    void screenEdgeMarginChanged();
     void screenGeometryChanged();
     void typeChanged();
     void visibilityChanged();
@@ -333,6 +341,7 @@ private:
     int m_maxThickness{24};
     int m_normalThickness{24};
     int m_offset{0};
+    int m_screenEdgeMargin{-1};
     float m_maxLength{1};
 
     Types::Alignment m_alignment{Types::Center};
