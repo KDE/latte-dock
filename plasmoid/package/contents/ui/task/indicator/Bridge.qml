@@ -73,7 +73,6 @@ Item {
     readonly property bool progressVisible: wrapper.progressVisible /*since 0.9.2*/
     readonly property real progress: wrapper.progress /*since 0.9.2*/
 
-    readonly property bool screenEdgeMarginEnabled: root.screenEdgeMarginEnabled /*since 0.10*/
     readonly property int screenEdgeMargin: root.screenEdgeMargin /*since 0.10*/
 
     readonly property bool usePlasmaTabsStyle: false

@@ -70,7 +70,6 @@ Item{
     readonly property bool progressVisible: false /*since 0.9.2*/
     readonly property real progress: 0 /*since 0.9.2*/
 
-    readonly property bool screenEdgeMarginEnabled: root.screenEdgeMarginEnabled /*since 0.10*/
     readonly property int screenEdgeMargin: root.localScreenEdgeMargin /*since 0.10*/
 
     readonly property bool usePlasmaTabsStyle: !indicators.enabledForApplets
