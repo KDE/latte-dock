@@ -49,6 +49,10 @@
       <default>false</default>
       <label>this is a percentage value</label>
     </entry>
+    <entry name="fittsLawIsRequested" type="Bool">
+      <default>false</default>
+      <label>floating views require Fitts Law to be applied</label>
+    </entry>
     <entry name="proportionIconSize" type="Double">
       <default>-1</default>
       <label>this is a percentage value, -1 means disabled</label>

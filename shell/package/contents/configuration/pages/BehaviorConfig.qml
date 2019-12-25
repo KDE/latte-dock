@@ -695,6 +695,20 @@ PlasmaComponents.Page {
                     }
 
                     LatteComponents.CheckBox {
+                        id: fittsLawChk
+                        Layout.maximumWidth: dialog.optionsWidth
+                        text: i18n("Always use empty screen gap when in floating mode")
+                        checked: plasmoid.configuration.fittsLawIsRequested
+                        tooltip: i18n("When the dock or panel is in floating mode, the gap to the screen is also used by items")
+                        visible: dialog.highLevel
+                        enabled: !plasmoid.configuration.shrinkThickMargins && (plasmoid.configuration.screenEdgeMargin >= 0)
+
+                        onClicked: {
+                            plasmoid.configuration.fittsLawIsRequested = checked
+                        }
+                    }
+
+                    LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
                        // Layout.maximumHeight: mouseWheelChk.height
                         text: i18n("🅰 Activate based on position through global shortcuts")

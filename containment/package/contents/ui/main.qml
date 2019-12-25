@@ -79,6 +79,11 @@ Item {
             return false;
         }
 
+        if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
+            //! dont use when floating views are requesting Fitt's Law
+            return false;
+        }
+
         return (visibilityManager.panelIsBiggerFromIconSize && (maxZoomFactor === 1.0)
                 && (latteView.visibility.mode === Latte.Types.AlwaysVisible || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
                 && (plasmoid.configuration.panelPosition === Latte.Types.Justify)
