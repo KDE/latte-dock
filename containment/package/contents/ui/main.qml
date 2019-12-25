@@ -387,9 +387,9 @@ Item {
     }
     property int thickMargin: thickMarginFactor * root.iconSize
 
-    property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0
-    property int screenEdgeMargin: plasmoid.configuration.screenEdgeMargin <=0 ? 0 : plasmoid.configuration.screenEdgeMargin
-    property int localScreenEdgeMargin: screenEdgeMarginEnabled && behaveAsPlasmaPanel ? 0 : plasmoid.configuration.screenEdgeMargin
+    property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
+    property int screenEdgeMargin: !screenEdgeMarginEnabled ? 0 : plasmoid.configuration.screenEdgeMargin
+    property int localScreenEdgeMargin: (screenEdgeMarginEnabled && behaveAsPlasmaPanel) || !screenEdgeMarginEnabled ? 0 : plasmoid.configuration.screenEdgeMargin
 
     //! thickness margins are always two and equal in order for items
     //! to be always correctly centered

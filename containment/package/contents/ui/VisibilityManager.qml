@@ -179,7 +179,7 @@ Item{
         target: latteView
         property: "screenEdgeMargin"
         when: latteView
-        value: plasmoid.configuration.screenEdgeMargin
+        value: !root.screenEdgeMarginEnabled ? -1 : plasmoid.configuration.screenEdgeMargin
     }
 
     Binding{
