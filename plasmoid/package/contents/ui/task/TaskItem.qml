@@ -1304,6 +1304,22 @@ MouseArea{
             globalChoords.x = adjX;
             globalChoords.y = adjY;
 
+            if (latteView && latteView.dockIsHidden) {
+                if (root.position === PlasmaCore.Types.BottomPositioned) {
+                    globalChoords.y = root.screenGeometry.y+root.screenGeometry.height-1;
+                    globalChoords.height = 1;
+                } else if (root.position === PlasmaCore.Types.TopPositioned) {
+                    globalChoords.y = root.screenGeometry.y+1;
+                    globalChoords.height = 1;
+                } else if (root.position === PlasmaCore.Types.LeftPositioned) {
+                    globalChoords.x = root.screenGeometry.x+1;
+                    globalChoords.width = 1;
+                } else if (root.position === PlasmaCore.Types.RightPositioned) {
+                    globalChoords.x = root.screenGeometry.x+root.screenGeometry.width - 1;
+                    globalChoords.width = 1;
+                }
+            }
+
             tasksModel.requestPublishDelegateGeometry(taskItem.modelIndex(), globalChoords, taskItem);
         }
     }
@@ -1456,6 +1472,21 @@ MouseArea{
         target: scrollableList
         onAnimationsFinishedChanged: {
             if (scrollableList.animationsFinished) {
+                taskItem.slotPublishGeometries();
+            }
+        }
+    }
+
+    Connections {
+        target: latteView
+        onDockIsHiddenChanged: {
+            if (dockIsHidden) {
+                taskItem.slotPublishGeometries();
+            }
+        }
+
+        onDockIsShownCompletelyChanged: {
+            if (dockIsShownCompletely) {
                 taskItem.slotPublishGeometries();
             }
         }
