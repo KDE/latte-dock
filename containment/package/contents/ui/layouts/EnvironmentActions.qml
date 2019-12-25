@@ -34,11 +34,13 @@ Loader {
     sourceComponent: MouseArea{
         id: mainArea
 
+        readonly property int localThickness: (root.isHovered ? (root.iconSize + root.thickMargins)*root.zoomFactor : (root.iconSize + root.thickMargins))
+
         width:  {
             if (root.isHorizontal) {
                 return useAllLayouts ? root.maxLength : root.realPanelLength;
             } else {
-                return root.isHovered ? (root.iconSize + root.thickMargins)*root.zoomFactor : (root.iconSize + root.thickMargins)
+                return localThickness + root.localScreenEdgeMargin;
             }
         }
 
@@ -46,7 +48,7 @@ Loader {
             if (root.isVertical) {
                 return useAllLayouts ? root.maxLength : root.realPanelLength;
             } else {
-                return root.isHovered ? (root.iconSize + root.thickMargins)*root.zoomFactor : (root.iconSize + root.thickMargins)
+                return localThickness + root.localScreenEdgeMargin;
             }
         }
 
