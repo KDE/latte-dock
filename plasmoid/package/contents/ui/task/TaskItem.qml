@@ -1013,11 +1013,11 @@ MouseArea{
                     root.presentWindows(root.plasma515 ? model.WinIdList: model.LegacyWinIdList );
                 }
             } else {
-                if (IsMinimized === true) {
+                if (isMinimized) {
                     var i = modelIndex();
                     tasksModel.requestToggleMinimized(i);
                     tasksModel.requestActivate(i);
-                } else if (IsActive === true) {
+                } else if (isActive) {
                     tasksModel.requestToggleMinimized(modelIndex());
                 } else {
                     tasksModel.requestActivate(modelIndex());

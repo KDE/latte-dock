@@ -120,10 +120,18 @@ Types::Visibility VisibilityManager::mode() const
 
 void VisibilityManager::initViewFlags()
 {
-    if ((m_mode == Types::WindowsCanCover || m_mode == Types::WindowsAlwaysCover) && (!m_latteView->inEditMode())) {
-        m_wm->setViewExtraFlags(m_latteView, false, m_mode);
+    if (KWindowSystem::isPlatformX11()) {
+        if ((m_mode == Types::WindowsCanCover || m_mode == Types::WindowsAlwaysCover) && (!m_latteView->inEditMode())) {
+            m_wm->setViewExtraFlags(m_latteView, false, m_mode);
+        } else {
+            m_wm->setViewExtraFlags(m_latteView, true);
+        }
     } else {
-        m_wm->setViewExtraFlags(m_latteView, true);
+        if ((m_mode == Types::WindowsCanCover || m_mode == Types::WindowsAlwaysCover) && (!m_latteView->inEditMode())) {
+            m_wm->setViewExtraFlags(m_latteView, false, m_mode);
+        } else {
+            m_wm->setViewExtraFlags(m_latteView, true);
+        }
     }
 }
 

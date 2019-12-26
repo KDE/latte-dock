@@ -330,7 +330,9 @@ void View::setupWaylandIntegration()
 
         m_shellSurface = interface->createSurface(s, this);
         qDebug() << "WAYLAND dock window surface was created...";
-        m_corona->wm()->setViewExtraFlags(m_shellSurface);
+        if (m_visibility) {
+            m_visibility->initViewFlags();
+        }
     }
 }
 

@@ -21,6 +21,7 @@
 #include "waylandinterface.h"
 
 // local
+#include "view/positioner.h"
 #include "view/screenedgeghostwindow.h"
 #include "view/view.h"
 #include "../lattecorona.h"
@@ -246,6 +247,11 @@ void WaylandInterface::unregisterIgnoredWindow(WindowId wid)
 void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latte::Types::Visibility mode)
 {
     KWayland::Client::PlasmaShellSurface *surface = qobject_cast<KWayland::Client::PlasmaShellSurface *>(view);
+    Latte::View *latteView = qobject_cast<Latte::View *>(view);
+
+    if (latteView) {
+        surface = latteView->surface();
+    }
 
     if (!surface) {
         return;
@@ -256,9 +262,43 @@ void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latt
     surface->setSkipSwitcher(true);
 #endif
 
+    bool atBottom{!isPanelWindow && (mode == Latte::Types::WindowsCanCover || mode == Latte::Types::WindowsAlwaysCover)};
+
     if (isPanelWindow) {
         surface->setRole(PlasmaShellSurface::Role::Panel);
         surface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
+    } else {
+        surface->setRole(PlasmaShellSurface::Role::Normal);
+    }
+
+    if (latteView) {
+        WindowId winId = latteView->positioner()->trackedWindowId();
+
+        auto w = windowFor(winId);
+        if (w && !w->isOnAllDesktops()) {
+            requestToggleIsOnAllDesktops(winId);
+        }
+
+        //! Layer to be applied
+        if (mode == Latte::Types::WindowsCanCover || mode == Latte::Types::WindowsAlwaysCover) {
+            setKeepBelow(winId, true);
+        } else if (mode == Latte::Types::NormalWindow) {
+            setKeepBelow(winId, false);
+            setKeepAbove(winId, false);
+        } else {
+            setKeepAbove(winId, true);
+        }
+    }
+
+    if (atBottom){
+        //! trying to workaround WM behavior in order
+        //!  1. View at the end MUST NOT HAVE FOCUSABILITY (issue example: clicking a single active task is not minimized)
+        //!  2. View at the end MUST BE AT THE BOTTOM of windows stack
+
+        QTimer::singleShot(50, [this, surface]() {
+            surface->setRole(PlasmaShellSurface::Role::ToolTip);
+        });
+
     }
 }
 
