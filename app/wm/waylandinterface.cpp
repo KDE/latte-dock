@@ -266,7 +266,7 @@ void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latt
 
     if (isPanelWindow) {
         surface->setRole(PlasmaShellSurface::Role::Panel);
-        surface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
+        surface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AutoHide);
     } else {
         surface->setRole(PlasmaShellSurface::Role::Normal);
     }
