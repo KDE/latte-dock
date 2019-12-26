@@ -566,12 +566,17 @@ PlasmaComponents.Page {
             }
 
             ColumnLayout {
+                id: actionsPropertiesColumn
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 0
 
+                readonly property int maxLabelWidth: Math.max(trackActiveLbl.implicitWidth,
+                                                              mouseWheelLbl.implicitWidth,
+                                                              leftBtnLbl.implicitWidth)
+
                 LatteComponents.SubHeader {
-                    text: i18n("Empty Area")
+                    text: i18n("Active Window")
                 }
 
                 ColumnLayout {
@@ -579,7 +584,68 @@ PlasmaComponents.Page {
                         Layout.topMargin: units.smallSpacing
 
                         PlasmaComponents.Label {
+                            id: trackActiveLbl
+                            Layout.minimumWidth: actionsPropertiesColumn.maxLabelWidth
+                            Layout.maximumWidth: actionsPropertiesColumn.maxLabelWidth
+                            text: i18n("Track From")
+                        }
+
+                        LatteComponents.ComboBox {
+                            id: activeWindowFilterCmb
+                            Layout.fillWidth: true
+                            model: [i18nc("track from current screen", "Current Screen"),
+                                i18nc("track from all screens", "All Screens")]
+
+                            currentIndex: plasmoid.configuration.activeWindowFilter
+
+                            onCurrentIndexChanged: {
+                                switch(currentIndex) {
+                                case Latte.Types.ActiveInCurrentScreen:
+                                    plasmoid.configuration.activeWindowFilter = Latte.Types.ActiveInCurrentScreen;
+                                    break;
+                                case Latte.Types.ActiveFromAllScreens:
+                                    plasmoid.configuration.activeWindowFilter = Latte.Types.ActiveFromAllScreens;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                LatteComponents.SubHeader {
+                    text: i18n("Empty Area")
+                }
+
+                ColumnLayout {
+                    RowLayout {
+                        PlasmaComponents.Label {
+                            id: leftBtnLbl
+                            Layout.minimumWidth: actionsPropertiesColumn.maxLabelWidth
+                            Layout.maximumWidth: actionsPropertiesColumn.maxLabelWidth
+                            text: i18n("Left Button")
+                        }
+
+                        PlasmaComponents.Button {
+                            Layout.fillWidth: true
+                            text: i18n("Drag Active Window")
+                            checked: plasmoid.configuration.dragActiveWindowEnabled
+                            checkable: true
+                            tooltip: i18n("The user can use left mouse button to drag and maximized/restore last active window")
+                            iconName: "transform-move"
+
+                            onClicked: {
+                                plasmoid.configuration.dragActiveWindowEnabled = !plasmoid.configuration.dragActiveWindowEnabled;
+                            }
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.topMargin: units.smallSpacing
+
+                        PlasmaComponents.Label {
                             id: mouseWheelLbl
+                            Layout.minimumWidth: actionsPropertiesColumn.maxLabelWidth
+                            Layout.maximumWidth: actionsPropertiesColumn.maxLabelWidth
                             text: i18n("Mouse wheel")
                         }
 
@@ -612,56 +678,6 @@ PlasmaComponents.Page {
                         }
                     }
                 }
-
-                LatteComponents.SubHeader {
-                    text: i18n("Active Window")
-                }
-
-                ColumnLayout {
-                    RowLayout {
-                        Layout.topMargin: units.smallSpacing
-
-                        PlasmaComponents.Label {
-                            Layout.minimumWidth: mouseWheelLbl.width
-                            Layout.maximumWidth: mouseWheelLbl.width
-                            text: i18n("Track From")
-                        }
-
-                        LatteComponents.ComboBox {
-                            id: activeWindowFilterCmb
-                            Layout.fillWidth: true
-                            model: [i18nc("track from current screen", "Current Screen"),
-                                i18nc("track from all screens", "All Screens")]
-
-                            currentIndex: plasmoid.configuration.activeWindowFilter
-
-                            onCurrentIndexChanged: {
-                                switch(currentIndex) {
-                                case Latte.Types.ActiveInCurrentScreen:
-                                    plasmoid.configuration.activeWindowFilter = Latte.Types.ActiveInCurrentScreen;
-                                    break;
-                                case Latte.Types.ActiveFromAllScreens:
-                                    plasmoid.configuration.activeWindowFilter = Latte.Types.ActiveFromAllScreens;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    LatteComponents.CheckBox {
-                        Layout.maximumWidth: dialog.optionsWidth
-                        Layout.topMargin: units.smallSpacing
-                        text: i18n("Drag and maximize/restore active window")
-                        checked: plasmoid.configuration.dragActiveWindowEnabled
-                        tooltip: i18n("Drag/Maximize/Restore active window with double-click and dragging actions")
-                        visible: dialog.highLevel
-
-                        onClicked: {
-                            plasmoid.configuration.dragActiveWindowEnabled = !plasmoid.configuration.dragActiveWindowEnabled;
-                        }
-                    }
-                }
-
 
                 LatteComponents.SubHeader {
                     text: i18n("Items")
@@ -697,7 +713,7 @@ PlasmaComponents.Page {
                     LatteComponents.CheckBox {
                         id: fittsLawChk
                         Layout.maximumWidth: dialog.optionsWidth
-                        text: i18n("Always use empty screen gap when in floating mode")
+                        text: i18n("Always use screen gap from floating mode")
                         checked: plasmoid.configuration.fittsLawIsRequested
                         tooltip: i18n("When the dock or panel is in floating mode, the gap to the screen is also used by items")
                         visible: dialog.highLevel
@@ -711,7 +727,7 @@ PlasmaComponents.Page {
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
                        // Layout.maximumHeight: mouseWheelChk.height
-                        text: i18n("🅰 Activate based on position through global shortcuts")
+                        text: i18n("➊ Activate based on position through global shortcuts")
                         checked: latteView.isPreferredForShortcuts || (!latteView.layout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
                         tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
 

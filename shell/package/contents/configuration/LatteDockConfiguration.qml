@@ -189,7 +189,7 @@ FocusScope {
         id: backgroundMouseAreaTooltip
         anchors.fill: parent
         opacity: 0
-        tooltip: i18n("You can use Ctrl/Meta + Scroll Wheel to alter the window size")
+        //tooltip: i18n("You can use Ctrl/Meta + Scroll Wheel to alter the window size")
 
         onHoveredChanged: {
             if (!hovered) {

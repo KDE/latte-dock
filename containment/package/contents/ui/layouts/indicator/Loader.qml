@@ -38,6 +38,6 @@ Loader {
         target: mainArea
         enabled: indicators.info.needsMouseEventCoordinates
         onPressed: level.mousePressed(mouse.x, mouse.y, mouse.button);
-        onMouseReleased: level.mouseReleased(mouse.x, mouse.y, mouse.button);
+        onReleased: level.mouseReleased(mouse.x, mouse.y, mouse.button);
     }
 }

@@ -160,7 +160,7 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     id: unifyGlobalShortcutsChk
                     Layout.maximumWidth: dialog.optionsWidth
-                    text: i18n("🅰 Based on position shortcuts apply only for tasks")
+                    text: i18n("➊ Based on position shortcuts apply only for tasks")
                     checked: !plasmoid.configuration.unifiedGlobalShortcuts
                     tooltip: i18n("Based on position global shortcuts are enabled only for tasks and not for applets")
                     visible: dialog.highLevel
