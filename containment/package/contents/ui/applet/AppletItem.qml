@@ -322,7 +322,10 @@ Item {
         //console.log(" APPLET :: " + mouse.x +  " _ " + mouse.y);
         //console.log(" WRAPPER :: " + choords.x + " _ " + choords.y);
 
-        if (appletItemContainsMouse && !wrapperContainsMouse) {
+        var inThicknessNeutralArea = !wrapperContainsMouse && (root.localScreenEdgeMargin>0);
+        var appletNeutralAreaEnabled = !(inThicknessNeutralArea && root.dragActiveWindowEnabled);
+
+        if (appletItemContainsMouse && !wrapperContainsMouse && appletNeutralAreaEnabled) {
             //console.log("PASSED");
             latteView.toggleAppletExpanded(applet.id);
         } else {
