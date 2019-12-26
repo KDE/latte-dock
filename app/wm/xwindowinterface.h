@@ -54,7 +54,6 @@ public:
     WindowInfoWrap requestInfo(WindowId wid) const override;
     WindowInfoWrap requestInfoActive() const override;
 
-    void setKeepAbove(const QDialog &dialog, bool above = true) const override;
     void skipTaskBar(const QDialog &dialog) const override;
     void slideWindow(QWindow &view, Slide location) const override;
     void enableBlurBehind(QWindow &view) const override;

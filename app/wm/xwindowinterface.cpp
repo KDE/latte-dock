@@ -24,7 +24,8 @@
 #include "tasktools.h"
 #include "view/screenedgeghostwindow.h"
 #include "view/view.h"
-#include "../liblatte2/extras.h"
+#include "../../liblatte2/extras.h"
+#include "../../liblatte2/types.h"
 
 // Qt
 #include <QDebug>
@@ -105,10 +106,18 @@ void XWindowInterface::setViewExtraFlags(QObject *view,bool isPanelWindow, Latte
 
     if (isPanelWindow) {
         KWindowSystem::setType(winId, NET::Dock);
+    } else {
+        KWindowSystem::setType(winId, NET::Normal);
     }
 
     KWindowSystem::setState(winId, NET::SkipTaskbar | NET::SkipPager);
     KWindowSystem::setOnAllDesktops(winId, true);
+
+    if (mode == Latte::Types::WindowsCanCover || mode == Latte::Types::WindowsAlwaysCover) {
+        setKeepBelow(winId, true);
+    } else {
+        setKeepAbove(winId, true);
+    }
 }
 
 void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
@@ -215,15 +224,6 @@ void XWindowInterface::removeViewStruts(QWindow &view) const
 WindowId XWindowInterface::activeWindow() const
 {
     return KWindowSystem::self()->activeWindow();
-}
-
-void XWindowInterface::setKeepAbove(const QDialog &dialog, bool above) const
-{
-    if (above) {
-        KWindowSystem::setState(dialog.winId(), NET::KeepAbove);
-    } else {
-        KWindowSystem::clearState(dialog.winId(), NET::KeepAbove);
-    }
 }
 
 void XWindowInterface::skipTaskBar(const QDialog &dialog) const
@@ -560,6 +560,7 @@ void XWindowInterface::setKeepAbove(WindowId wid, bool active) const
 
     if (active) {
         KWindowSystem::setState(wid.toUInt(), NET::KeepAbove);
+        KWindowSystem::clearState(wid.toUInt(), NET::KeepBelow);
     } else {
         KWindowSystem::clearState(wid.toUInt(), NET::KeepAbove);
     }
@@ -573,6 +574,7 @@ void XWindowInterface::setKeepBelow(WindowId wid, bool active) const
 
     if (active) {
         KWindowSystem::setState(wid.toUInt(), NET::KeepBelow);
+        KWindowSystem::clearState(wid.toUInt(), NET::KeepAbove);
     } else {
         KWindowSystem::clearState(wid.toUInt(), NET::KeepBelow);
     }

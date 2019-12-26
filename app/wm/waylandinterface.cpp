@@ -24,7 +24,8 @@
 #include "view/screenedgeghostwindow.h"
 #include "view/view.h"
 #include "../lattecorona.h"
-#include "../liblatte2/extras.h"
+#include "../../liblatte2/extras.h"
+#include "../../liblatte2/types.h"
 
 // Qt
 #include <QDebug>
@@ -351,15 +352,6 @@ WindowId WaylandInterface::activeWindow() const
     return wid ? wid->internalId() : 0;
 }
 
-void WaylandInterface::setKeepAbove(const QDialog &dialog, bool above) const
-{
-    if (above) {
-        KWindowSystem::setState(dialog.winId(), NET::KeepAbove);
-    } else {
-        KWindowSystem::clearState(dialog.winId(), NET::KeepAbove);
-    }
-}
-
 void WaylandInterface::skipTaskBar(const QDialog &dialog) const
 {
     KWindowSystem::setState(dialog.winId(), NET::SkipTaskbar);
@@ -620,6 +612,10 @@ void WaylandInterface::setKeepAbove(WindowId wid, bool active) const
     auto w = windowFor(wid);
 
     if (w) {
+        if (active) {
+            setKeepBelow(wid, false);
+        }
+
         if ((w->isKeepAbove() && active) || (!w->isKeepAbove() && !active)) {
             return;
         }
@@ -633,6 +629,10 @@ void WaylandInterface::setKeepBelow(WindowId wid, bool active) const
     auto w = windowFor(wid);
 
     if (w) {
+        if (active) {
+            setKeepAbove(wid, false);
+        }
+
         if ((w->isKeepBelow() && active) || (!w->isKeepBelow() && !active)) {
             return;
         }

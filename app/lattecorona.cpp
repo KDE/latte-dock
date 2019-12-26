@@ -763,7 +763,7 @@ void Corona::aboutApplication()
     aboutDialog = new KAboutApplicationDialog(KAboutData::applicationData());
     connect(aboutDialog.data(), &QDialog::finished, aboutDialog.data(), &QObject::deleteLater);
     m_wm->skipTaskBar(*aboutDialog);
-    m_wm->setKeepAbove(*aboutDialog, true);
+    m_wm->setKeepAbove(aboutDialog->winId(), true);
 
     aboutDialog->show();
 }

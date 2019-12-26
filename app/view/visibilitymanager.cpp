@@ -141,6 +141,12 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     m_timerHide.stop();
     m_mode = mode;
 
+    if (m_mode == Types::WindowsCanCover || m_mode == Types::WindowsAlwaysCover) {
+        m_wm->setViewExtraFlags(m_latteView, false, mode);
+    } else {
+        m_wm->setViewExtraFlags(m_latteView, true, mode);
+    }
+
     if (mode != Types::AlwaysVisible && mode != Types::WindowsGoBelow) {
         m_connections[0] = connect(m_wm, &WindowSystem::AbstractWindowInterface::currentDesktopChanged, this, [&] {
             if (m_raiseOnDesktopChange) {
@@ -225,6 +231,9 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     }
 
     case Types::WindowsGoBelow:
+        break;
+
+    case Types::WindowsCanCover:
         break;
 
     case Types::WindowsAlwaysCover:
