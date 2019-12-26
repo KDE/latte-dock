@@ -59,7 +59,7 @@ public:
     explicit WaylandInterface(QObject *parent = nullptr);
     ~WaylandInterface() override;
 
-    void setViewExtraFlags(QWindow &view) override;
+    void setViewExtraFlags(QObject *view, bool isPanelWindow = true, Latte::Types::Visibility mode = Latte::Types::WindowsGoBelow) override;
     void setViewStruts(QWindow &view, const QRect &rect
                        , Plasma::Types::Location location) override;
     void setWindowOnActivities(QWindow &view, const QStringList &activities) override;
@@ -82,6 +82,8 @@ public:
     void requestToggleKeepAbove(WindowId wid) const override;
     void requestToggleMinimized(WindowId wid) const override;
     void requestToggleMaximized(WindowId wid) const override;
+    void setKeepAbove(WindowId wid, bool active) const override;
+    void setKeepBelow(WindowId wid, bool active) const override;
 
     bool windowCanBeDragged(WindowId wid) const override;
     bool windowCanBeMaximized(WindowId wid) const override;

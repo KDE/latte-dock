@@ -130,7 +130,7 @@ void InfoView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
 
-    m_corona->wm()->setViewExtraFlags(*this);
+    m_corona->wm()->setViewExtraFlags(this);
     setFlags(wFlags());
 
     m_corona->wm()->enableBlurBehind(*this);
@@ -167,6 +167,7 @@ void InfoView::setupWaylandIntegration()
         qDebug() << "wayland dock window surface was created...";
 
         m_shellSurface = interface->createSurface(s, this);
+        m_corona->wm()->setViewExtraFlags(m_shellSurface);
     }
 }
 

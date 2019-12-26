@@ -725,8 +725,6 @@ void VisibilityManager::createEdgeGhostWindow()
     if (!m_edgeGhostWindow) {
         m_edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
 
-        m_wm->setViewExtraFlags(*m_edgeGhostWindow);
-
         connect(m_edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
                 raiseView(true);

@@ -295,7 +295,7 @@ void SecondaryConfigView::showEvent(QShowEvent *ev)
         return;
     }
 
-    m_corona->wm()->setViewExtraFlags(*this);
+    m_corona->wm()->setViewExtraFlags(this);
     setFlags(wFlags());
 
     m_corona->wm()->enableBlurBehind(*this);
@@ -352,10 +352,7 @@ void SecondaryConfigView::setupWaylandIntegration()
         qDebug() << "wayland secondary settings surface was created...";
 
         m_shellSurface = interface->createSurface(s, this);
-        m_shellSurface->setSkipTaskbar(true);
-#if KF5_VERSION_MINOR >= 47
-        m_shellSurface->setSkipSwitcher(true);
-#endif
+        m_corona->wm()->setViewExtraFlags(m_shellSurface, false);
 
         syncGeometry();
     }

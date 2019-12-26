@@ -46,6 +46,7 @@ public:
         , m_isShaded(false)
         , m_isPlasmaDesktop(false)
         , m_isKeepAbove(false)
+        , m_isKeepBelow(false)
         , m_hasSkipTaskbar(false)
         , m_isOnAllDesktops(false)
         , m_isOnAllActivities(false) {
@@ -64,6 +65,7 @@ public:
         , m_isShaded(o.m_isShaded)
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
+        , m_isKeepBelow(o.m_isKeepBelow)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
         , m_isOnAllDesktops(o.m_isOnAllDesktops)
         , m_isOnAllActivities(o.m_isOnAllActivities)
@@ -85,6 +87,7 @@ public:
         , m_isShaded(o.m_isShaded)
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
+        , m_isKeepBelow(o.m_isKeepBelow)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
         , m_isOnAllDesktops(o.m_isOnAllDesktops)
         , m_isOnAllActivities(o.m_isOnAllActivities)
@@ -127,6 +130,9 @@ public:
 
     inline bool isKeepAbove() const noexcept;
     inline void setIsKeepAbove(bool isKeepAbove) noexcept;
+
+    inline bool isKeepBelow() const noexcept;
+    inline void setIsKeepBelow(bool isKeepBelow) noexcept;
 
     inline bool hasSkipTaskbar() const noexcept;
     inline void setHasSkipTaskbar(bool skipTaskbar) noexcept;
@@ -182,6 +188,7 @@ private:
     bool m_isShaded : 1;
     bool m_isPlasmaDesktop : 1;
     bool m_isKeepAbove: 1;
+    bool m_isKeepBelow: 1;
     bool m_hasSkipTaskbar: 1;
     bool m_isOnAllDesktops: 1;
     bool m_isOnAllActivities: 1;
@@ -210,6 +217,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isShaded = rhs.m_isShaded;
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_isKeepAbove = rhs.m_isKeepAbove;
+    m_isKeepBelow = rhs.m_isKeepBelow;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
     m_isOnAllActivities = rhs.m_isOnAllActivities;
@@ -233,6 +241,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noex
     m_isShaded = rhs.m_isShaded;
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_isKeepAbove = rhs.m_isKeepAbove;
+    m_isKeepBelow = rhs.m_isKeepBelow;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
     m_isOnAllActivities = rhs.m_isOnAllActivities;
@@ -350,6 +359,16 @@ inline bool WindowInfoWrap::isKeepAbove() const noexcept
 inline void WindowInfoWrap::setIsKeepAbove(bool isKeepAbove) noexcept
 {
     m_isKeepAbove = isKeepAbove;
+}
+
+inline bool WindowInfoWrap::isKeepBelow() const noexcept
+{
+    return m_isKeepBelow;
+}
+
+inline void WindowInfoWrap::setIsKeepBelow(bool isKeepBelow) noexcept
+{
+    m_isKeepBelow = isKeepBelow;
 }
 
 inline bool WindowInfoWrap::hasSkipTaskbar() const noexcept

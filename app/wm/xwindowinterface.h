@@ -44,9 +44,8 @@ public:
     explicit XWindowInterface(QObject *parent = nullptr);
     ~XWindowInterface() override;
 
-    void setViewExtraFlags(QWindow &view) override;
-    void setViewStruts(QWindow &view, const QRect &rect
-                       , Plasma::Types::Location location) override;
+    void setViewExtraFlags(QObject *view, bool isPanelWindow = true, Latte::Types::Visibility mode = Latte::Types::WindowsGoBelow) override;
+    void setViewStruts(QWindow &view, const QRect &rect, Plasma::Types::Location location) override;
     void setWindowOnActivities(QWindow &window, const QStringList &activities) override;
 
     void removeViewStruts(QWindow &view) const override;
@@ -67,6 +66,8 @@ public:
     void requestToggleKeepAbove(WindowId wid) const override;
     void requestToggleMinimized(WindowId wid) const override;
     void requestToggleMaximized(WindowId wid) const override;
+    void setKeepAbove(WindowId wid, bool active) const override;
+    void setKeepBelow(WindowId wid, bool active) const override;
 
     bool windowCanBeDragged(WindowId wid) const override;
     bool windowCanBeMaximized(WindowId wid) const override;

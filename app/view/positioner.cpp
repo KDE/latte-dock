@@ -443,7 +443,11 @@ QRect Positioner::maximumNormalGeometry()
     //! this is needed in order to preserve that the top dock will be above
     //! the others in case flag bypasswindowmanagerhint hasn't be set,
     //! such a case is the AlwaysVisible mode
-    if (m_view->location() == Plasma::Types::TopEdge) {
+    //! NO IDEA what this is trying to solve... It must be updated and checked
+    //! if this IS STILL NEEDED
+    if (m_view->location() == Plasma::Types::TopEdge
+            && m_view->visibility()->mode() != Latte::Types::WindowsCanCover
+            && m_view->visibility()->mode() != Latte::Types::WindowsAlwaysCover) {
         KWindowSystem::setState(m_view->winId(), NET::KeepAbove);
     } else {
         KWindowSystem::clearState(m_view->winId(), NET::KeepAbove);

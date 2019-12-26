@@ -96,9 +96,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
             } else if (!m_inDelete) {
                 //! For some reason when the window is hidden in the edge under X11 afterwards
                 //! is losing its window flags
-                KWindowSystem::setType(winId(), NET::Dock);
-                KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
-                KWindowSystem::setOnAllDesktops(winId(), true);
+                m_corona->wm()->setViewExtraFlags(this);
             }
         });
 
@@ -265,10 +263,9 @@ void ScreenEdgeGhostWindow::setupWaylandIntegration()
 
         qDebug() << "wayland screen edge ghost window surface was created...";
         m_shellSurface = interface->createSurface(s, this);
-        m_shellSurface->setSkipTaskbar(true);
+        m_corona->wm()->setViewExtraFlags(m_shellSurface);
+
         m_shellSurface->setPanelTakesFocus(false);
-        m_shellSurface->setRole(PlasmaShellSurface::Role::Panel);
-        m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AutoHide);
     }
 }
 
@@ -306,6 +303,8 @@ bool ScreenEdgeGhostWindow::event(QEvent *e)
         if (!m_delayedMouseTimer.isActive()) {
             m_delayedMouseTimer.start();
         }
+    } else if (e->type() == QEvent::Show) {
+        m_corona->wm()->setViewExtraFlags(this);
     }
 
     return QQuickView::event(e);

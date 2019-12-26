@@ -331,10 +331,7 @@ void View::setupWaylandIntegration()
 
         m_shellSurface = interface->createSurface(s, this);
         qDebug() << "WAYLAND dock window surface was created...";
-
-        m_shellSurface->setSkipTaskbar(true);
-        m_shellSurface->setRole(PlasmaShellSurface::Role::Panel);
-        m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
+        m_corona->wm()->setViewExtraFlags(m_shellSurface);
     }
 }
 
@@ -1238,7 +1235,7 @@ bool View::event(QEvent *e)
             break;
 
         case QEvent::Show:
-            m_corona->wm()->setViewExtraFlags(*this);
+            m_corona->wm()->setViewExtraFlags(this);
             break;
 
         default:

@@ -81,7 +81,7 @@ public:
     explicit AbstractWindowInterface(QObject *parent = nullptr);
     virtual ~AbstractWindowInterface();
 
-    virtual void setViewExtraFlags(QWindow &view) = 0;
+    virtual void setViewExtraFlags(QObject *view,bool isPanelWindow = true, Latte::Types::Visibility mode = Latte::Types::WindowsGoBelow) = 0;
     virtual void setViewStruts(QWindow &view, const QRect &rect
                                , Plasma::Types::Location location) = 0;
     virtual void setWindowOnActivities(QWindow &window, const QStringList &activities) = 0;
@@ -105,6 +105,8 @@ public:
     virtual void requestToggleKeepAbove(WindowId wid) const = 0;
     virtual void requestToggleMinimized(WindowId wid) const = 0;
     virtual void requestToggleMaximized(WindowId wid) const = 0;
+    virtual void setKeepAbove(WindowId wid, bool active) const = 0;
+    virtual void setKeepBelow(WindowId wid, bool active) const = 0;
 
     virtual bool windowCanBeDragged(WindowId wid) const = 0;
     virtual bool windowCanBeMaximized(WindowId wid) const = 0;

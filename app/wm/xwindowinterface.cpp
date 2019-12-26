@@ -74,17 +74,41 @@ XWindowInterface::~XWindowInterface()
 {
 }
 
-void XWindowInterface::setViewExtraFlags(QWindow &view)
+void XWindowInterface::setViewExtraFlags(QObject *view,bool isPanelWindow, Latte::Types::Visibility mode)
 {
+    WId winId = -1;
+
+    QQuickView *quickView = qobject_cast<QQuickView *>(view);
+
+    if (quickView) {
+        winId = quickView->winId();
+    }
+
+    if (!quickView) {
+        QQuickWindow *quickWindow = qobject_cast<QQuickWindow *>(view);
+
+        if (quickWindow) {
+            winId = quickWindow->winId();
+        }
+    }
+
+    if (winId < 0) {
+        return;
+    }
+
     NETWinInfo winfo(QX11Info::connection()
-                     , static_cast<xcb_window_t>(view.winId())
-                     , static_cast<xcb_window_t>(view.winId())
+                     , static_cast<xcb_window_t>(winId)
+                     , static_cast<xcb_window_t>(winId)
                      , 0, 0);
 
     winfo.setAllowedActions(NET::ActionChangeDesktop);
-    KWindowSystem::setType(view.winId(), NET::Dock);
-    KWindowSystem::setState(view.winId(), NET::SkipTaskbar | NET::SkipPager);
-    KWindowSystem::setOnAllDesktops(view.winId(), true);
+
+    if (isPanelWindow) {
+        KWindowSystem::setType(winId, NET::Dock);
+    }
+
+    KWindowSystem::setState(winId, NET::SkipTaskbar | NET::SkipPager);
+    KWindowSystem::setOnAllDesktops(winId, true);
 }
 
 void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
@@ -343,6 +367,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsOnAllActivities(winfo.activities().empty());
         winfoWrap.setGeometry(winfo.frameGeometry());
         winfoWrap.setIsKeepAbove(winfo.hasState(NET::KeepAbove));
+        winfoWrap.setIsKeepBelow(winfo.hasState(NET::KeepBelow));
         winfoWrap.setHasSkipTaskbar(winfo.hasState(NET::SkipTaskbar));
         winfoWrap.setDisplay(winfo.visibleName());
 
@@ -528,6 +553,49 @@ void XWindowInterface::requestToggleKeepAbove(WindowId wid) const
         ni.setState(NET::StaysOnTop, NET::StaysOnTop);
     }
 }
+
+void XWindowInterface::setKeepAbove(WindowId wid, bool active) const
+{
+    WindowInfoWrap wInfo = requestInfo(wid);
+
+    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+        return;
+    }
+
+    NETWinInfo ni(QX11Info::connection(), wid.toUInt(), QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
+
+    if ((wInfo.isKeepAbove() && active) || (!wInfo.isKeepAbove() && !active)) {
+        return;
+    }
+
+    if (wInfo.isKeepAbove()) {
+        ni.setState(NET::States(), NET::StaysOnTop);
+    } else {
+        ni.setState(NET::StaysOnTop, NET::StaysOnTop);
+    }
+}
+
+void XWindowInterface::setKeepBelow(WindowId wid, bool active) const
+{
+    WindowInfoWrap wInfo = requestInfo(wid);
+
+    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+        return;
+    }
+
+    NETWinInfo ni(QX11Info::connection(), wid.toUInt(), QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
+
+    if ((wInfo.isKeepBelow() && active) || (!wInfo.isKeepBelow() && !active)) {
+        return;
+    }
+
+    if (wInfo.isKeepBelow()) {
+        ni.setState(NET::States(), NET::KeepBelow);
+    } else {
+        ni.setState(NET::KeepBelow, NET::KeepBelow);
+    }
+}
+
 
 void XWindowInterface::requestToggleMinimized(WindowId wid) const
 {

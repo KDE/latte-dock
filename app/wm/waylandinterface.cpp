@@ -242,9 +242,23 @@ void WaylandInterface::unregisterIgnoredWindow(WindowId wid)
     }
 }
 
-void WaylandInterface::setViewExtraFlags(QWindow &view)
+void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latte::Types::Visibility mode)
 {
-    Q_UNUSED(view)
+    KWayland::Client::PlasmaShellSurface *surface = qobject_cast<KWayland::Client::PlasmaShellSurface *>(view);
+
+    if (!surface) {
+        return;
+    }
+
+    surface->setSkipTaskbar(true);
+#if KF5_VERSION_MINOR >= 47
+    surface->setSkipSwitcher(true);
+#endif
+
+    if (isPanelWindow) {
+        surface->setRole(PlasmaShellSurface::Role::Panel);
+        surface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
+    }
 }
 
 void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::Types::Location location)
@@ -443,6 +457,8 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
             winfoWrap.setIsShaded(w->isShaded());
             winfoWrap.setIsOnAllDesktops(w->isOnAllDesktops());
             winfoWrap.setIsOnAllActivities(true);
+            winfoWrap.setIsKeepAbove(w->isKeepAbove());
+            winfoWrap.setIsKeepBelow(w->isKeepBelow());
             winfoWrap.setGeometry(w->geometry());
             winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
             winfoWrap.setDisplay(w->title());
@@ -596,6 +612,32 @@ void WaylandInterface::requestToggleKeepAbove(WindowId wid) const
 
     if (w) {
         w->requestToggleKeepAbove();
+    }
+}
+
+void WaylandInterface::setKeepAbove(WindowId wid, bool active) const
+{
+    auto w = windowFor(wid);
+
+    if (w) {
+        if ((w->isKeepAbove() && active) || (!w->isKeepAbove() && !active)) {
+            return;
+        }
+
+        w->requestToggleKeepAbove();
+    }
+}
+
+void WaylandInterface::setKeepBelow(WindowId wid, bool active) const
+{
+    auto w = windowFor(wid);
+
+    if (w) {
+        if ((w->isKeepBelow() && active) || (!w->isKeepBelow() && !active)) {
+            return;
+        }
+
+        w->requestToggleKeepBelow();
     }
 }
 
