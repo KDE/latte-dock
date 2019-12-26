@@ -342,13 +342,11 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
                 | NET::WM2TransientFor};
 
     //! update desktop id
-
     bool isDesktop{false};
     if (winfo.windowClassName() == "plasmashell" && isPlasmaDesktop(winfo.geometry())) {
         isDesktop = true;
         windowsTracker()->setPlasmaDesktop(wid);
     }
-
     WindowInfoWrap winfoWrap;
 
     if (!winfo.valid()) {
@@ -556,43 +554,27 @@ void XWindowInterface::requestToggleKeepAbove(WindowId wid) const
 
 void XWindowInterface::setKeepAbove(WindowId wid, bool active) const
 {
-    WindowInfoWrap wInfo = requestInfo(wid);
-
-    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+    if (wid.toUInt() <= 0) {
         return;
     }
 
-    NETWinInfo ni(QX11Info::connection(), wid.toUInt(), QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
-
-    if ((wInfo.isKeepAbove() && active) || (!wInfo.isKeepAbove() && !active)) {
-        return;
-    }
-
-    if (wInfo.isKeepAbove()) {
-        ni.setState(NET::States(), NET::StaysOnTop);
+    if (active) {
+        KWindowSystem::setState(wid.toUInt(), NET::KeepAbove);
     } else {
-        ni.setState(NET::StaysOnTop, NET::StaysOnTop);
+        KWindowSystem::clearState(wid.toUInt(), NET::KeepAbove);
     }
 }
 
 void XWindowInterface::setKeepBelow(WindowId wid, bool active) const
 {
-    WindowInfoWrap wInfo = requestInfo(wid);
-
-    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+    if (wid.toUInt() <= 0) {
         return;
     }
 
-    NETWinInfo ni(QX11Info::connection(), wid.toUInt(), QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
-
-    if ((wInfo.isKeepBelow() && active) || (!wInfo.isKeepBelow() && !active)) {
-        return;
-    }
-
-    if (wInfo.isKeepBelow()) {
-        ni.setState(NET::States(), NET::KeepBelow);
+    if (active) {
+        KWindowSystem::setState(wid.toUInt(), NET::KeepBelow);
     } else {
-        ni.setState(NET::KeepBelow, NET::KeepBelow);
+        KWindowSystem::clearState(wid.toUInt(), NET::KeepBelow);
     }
 }
 

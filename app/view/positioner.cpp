@@ -166,6 +166,11 @@ int Positioner::currentScreenId() const
     return -1;
 }
 
+Latte::WindowSystem::WindowId Positioner::trackedWindowId()
+{
+    return m_trackedWindowId;
+}
+
 QString Positioner::currentScreenName() const
 {
     return m_screenToFollowId;
@@ -450,7 +455,7 @@ QRect Positioner::maximumNormalGeometry()
             && m_view->visibility()->mode() != Latte::Types::WindowsAlwaysCover) {
         KWindowSystem::setState(m_view->winId(), NET::KeepAbove);
     } else {
-        KWindowSystem::clearState(m_view->winId(), NET::KeepAbove);
+      //  KWindowSystem::clearState(m_view->winId(), NET::KeepAbove);
     }
 
     return maxGeometry;

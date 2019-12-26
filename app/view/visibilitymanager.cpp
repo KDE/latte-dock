@@ -142,11 +142,6 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     m_mode = mode;
 
     if (mode != Types::AlwaysVisible && mode != Types::WindowsGoBelow) {
-        //set wayland visibility mode
-        if (m_latteView->surface()) {
-            m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
-        }
-
         m_connections[0] = connect(m_wm, &WindowSystem::AbstractWindowInterface::currentDesktopChanged, this, [&] {
             if (m_raiseOnDesktopChange) {
                 raiseViewTemporarily();
@@ -161,11 +156,6 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         });
 
         base = 2;
-    } else {
-        //set wayland visibility mode
-        if (m_latteView->surface()) {
-            m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
-        }
     }
 
     switch (m_mode) {
@@ -235,6 +225,9 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     }
 
     case Types::WindowsGoBelow:
+        break;
+
+    case Types::WindowsAlwaysCover:
         break;
 
     default:

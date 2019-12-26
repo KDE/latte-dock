@@ -63,6 +63,8 @@ public:
 
     void reconsiderScreen();
 
+    Latte::WindowSystem::WindowId trackedWindowId();
+
 public slots:
     Q_INVOKABLE void hideDockDuringLocationChange(int goToLocation);
     Q_INVOKABLE void hideDockDuringMovingToLayout(QString layoutName);
