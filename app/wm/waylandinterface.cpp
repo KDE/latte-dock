@@ -470,10 +470,16 @@ AppData WaylandInterface::appDataFor(WindowId wid) const
 {
     auto window = windowFor(wid);
 
-    const AppData &data = appDataFromUrl(windowUrlFromMetadata(window->appId(),
-                                                               window->pid(), rulesConfig));
+    if (window) {
+        const AppData &data = appDataFromUrl(windowUrlFromMetadata(window->appId(),
+                                                                   window->pid(), rulesConfig));
 
-    return data;
+        return data;
+    }
+
+    AppData empty;
+
+    return empty;
 }
 
 KWayland::Client::PlasmaWindow *WaylandInterface::windowFor(WindowId wid) const
