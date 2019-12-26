@@ -51,6 +51,7 @@ T.ComboBox {
     property bool popUpAlignRight: true
     property int minimumPopUpWidth: 150
     property int popUpRelativeX: 0
+    property int popUpTextHorizontalAlignment: Text.AlignLeft
 
     property string enabledRole
     property string iconRole
@@ -61,14 +62,15 @@ T.ComboBox {
 
     delegate: ItemDelegate {
         width: control.popup.width
-        enabled: control.enabledRole ? (Array.isArray(control.model) ? modelData[control.enabledRole] : model[control.enabledRole]) : true
-        text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
-        icon: control.iconRole ? (Array.isArray(control.model) ? modelData[control.iconRole] : model[control.iconRole]) : ''
-        iconToolTip: control.iconToolTipRole ? (Array.isArray(control.model) ? modelData[control.iconToolTipRole] : model[control.iconToolTipRole]) : ''
-        iconOnlyWhenHovered: control.iconOnlyWhenHoveredRole ? (Array.isArray(control.model) ? modelData[control.iconOnlyWhenHoveredRole] : model[control.iconOnlyWhenHoveredRole]) : ''
+        enabled: control.enabledRole.length>0 ? (Array.isArray(control.model) ? modelData[control.enabledRole] : model[control.enabledRole]) : true
+        text: control.textRole.length>0 ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
+        icon: control.iconRole.length>0 ? (Array.isArray(control.model) ? modelData[control.iconRole] : model[control.iconRole]) : ''
+        iconToolTip: control.iconToolTipRole.length>0 ? (Array.isArray(control.model) ? modelData[control.iconToolTipRole] : model[control.iconToolTipRole]) : ''
+        iconOnlyWhenHovered: control.iconOnlyWhenHoveredRole.length>0 ? (Array.isArray(control.model) ? modelData[control.iconOnlyWhenHoveredRole] : model[control.iconOnlyWhenHoveredRole]) : ''
 
         highlighted: mouseArea.pressed ? listView.currentIndex == index : control.currentIndex == index
         blankSpaceForEmptyIcons: control.blankSpaceForEmptyIcons
+        textHorizontalAlignment: popUpTextHorizontalAlignment
         property bool separatorVisible: false
     }
 

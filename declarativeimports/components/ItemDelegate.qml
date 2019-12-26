@@ -45,6 +45,8 @@ T.CheckDelegate {
     property string iconToolTip
     property bool iconOnlyWhenHovered
 
+    property int textHorizontalAlignment: Text.AlignLeft
+
     readonly property bool isHovered: hovered || iconMouseArea.containsMouse
     readonly property int margin: 4
 
@@ -101,7 +103,7 @@ T.CheckDelegate {
             color: theme.viewTextColor
             elide: Text.ElideRight
             visible: control.text
-            horizontalAlignment: Text.AlignLeft
+            horizontalAlignment: control.textHorizontalAlignment
             verticalAlignment: Text.AlignVCenter
         }
     }

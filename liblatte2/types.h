@@ -51,7 +51,9 @@ public:
         DodgeActive,
         DodgeMaximized,
         DodgeAllWindows,
-        WindowsGoBelow
+        WindowsGoBelow,
+        WindowsCanCover,
+        WindowsAlwaysCover
     };
     Q_ENUM(Visibility);
 

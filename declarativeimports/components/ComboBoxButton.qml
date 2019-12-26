@@ -50,6 +50,7 @@ Rectangle {
     property bool comboBoxForcePressed: false
     property bool comboBoxPopUpAlignRight: true
     property int comboBoxMinimumPopUpWidth: 150
+    property int comboBoxPopupTextHorizontalAlignment: Text.AlignLeft
     property string comboBoxEnabledRole: ""
     property string comboBoxTextRole: ""
     property string comboBoxIconRole: ""
@@ -82,7 +83,7 @@ Rectangle {
         anchors.right: mainButton.right
         anchors.top: parent.top
 
-        width:  units.iconSizes.medium - units.smallSpacing
+        width:  units.iconSizes.medium - 2 * units.smallSpacing
         height: parent.height
 
         enabled: comboBoxEnabled
@@ -99,6 +100,7 @@ Rectangle {
         popUpRelativeX: Qt.application.layoutDirection === Qt.RightToLeft ?
                             (popUpAlignRight ? root.width - width : 0) :
                             (popUpAlignRight ? width : -(root.width - width))
+        popUpTextHorizontalAlignment: comboBoxPopupTextHorizontalAlignment
 
         hideDisplayText: true
         hideSelectedItemIcon: true

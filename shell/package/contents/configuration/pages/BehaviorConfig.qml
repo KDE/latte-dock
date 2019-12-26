@@ -397,12 +397,18 @@ PlasmaComponents.Page {
                 ExclusiveGroup {
                     id: visibilityGroup
                     onCurrentChanged: {
-                        if (current.checked)
-                            latteView.visibility.mode = current.mode
+                        if (current.checked){
+                            if (current !== windowsModeBtn.button){
+                                latteView.visibility.mode = current.mode;
+                            } else {
+                                latteView.visibility.mode = windowsModeBtn.mode;
+                            }
+                        }
                     }
                 }
 
                 PlasmaComponents.Button {
+                    id:alwaysVisibleBtn
                     Layout.minimumWidth: parent.buttonSize
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Always Visible")
@@ -453,16 +459,17 @@ PlasmaComponents.Page {
 
                     property int mode: Latte.Types.DodgeAllWindows
                 }
-                PlasmaComponents.Button {
-                    id: windowsGoBelowBtn
+
+                LatteExtraControls.CustomWindowsModeButton {
+                    id: windowsModeBtn
                     Layout.minimumWidth: parent.buttonSize
                     Layout.maximumWidth: Layout.minimumWidth
-                    text: i18n("Windows Go Below")
-                    checked: parent.mode === mode
-                    checkable: true
-                    exclusiveGroup: visibilityGroup
+                    implicitWidth: dodgeAllWindowsBtn.implicitWidth
+                    implicitHeight: dodgeAllWindowsBtn.implicitHeight
 
-                    property int mode: Latte.Types.WindowsGoBelow
+                    checked: parent.mode === mode
+                    buttonExclusiveGroup:  visibilityGroup
+                    comboBoxMinimumPopUpWidth: windowsModeBtn.width
                 }
             }
         }
@@ -529,8 +536,8 @@ PlasmaComponents.Page {
                     implicitWidth: width
                     implicitHeight: height
 
-                    readonly property bool overlap: oneLineWidth > windowsGoBelowBtn.width
-                    readonly property int oneLineWidth: Math.max(windowsGoBelowBtn.width, hideTimerRow.width)
+                    readonly property bool overlap: oneLineWidth > alwaysVisibleBtn.width
+                    readonly property int oneLineWidth: Math.max(alwaysVisibleBtn.width, hideTimerRow.width)
 
                     RowLayout {
                         id: hideTimerRow
