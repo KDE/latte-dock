@@ -72,6 +72,8 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
                 updateStrutsBasedOnLayoutsAndActivities();
             }
         });
+
+        connect(m_latteView, &Latte::View::inEditModeChanged, this, &VisibilityManager::initViewFlags);
     }
 
     if (m_corona) {
@@ -116,6 +118,15 @@ Types::Visibility VisibilityManager::mode() const
     return m_mode;
 }
 
+void VisibilityManager::initViewFlags()
+{
+    if ((m_mode == Types::WindowsCanCover || m_mode == Types::WindowsAlwaysCover) && (!m_latteView->inEditMode())) {
+        m_wm->setViewExtraFlags(m_latteView, false, m_mode);
+    } else {
+        m_wm->setViewExtraFlags(m_latteView, true);
+    }
+}
+
 void VisibilityManager::setMode(Latte::Types::Visibility mode)
 {
     if (m_mode == mode)
@@ -141,11 +152,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     m_timerHide.stop();
     m_mode = mode;
 
-    if (m_mode == Types::WindowsCanCover || m_mode == Types::WindowsAlwaysCover) {
-        m_wm->setViewExtraFlags(m_latteView, false, mode);
-    } else {
-        m_wm->setViewExtraFlags(m_latteView, true, mode);
-    }
+    initViewFlags();
 
     if (mode != Types::AlwaysVisible && mode != Types::WindowsGoBelow) {
         m_connections[0] = connect(m_wm, &WindowSystem::AbstractWindowInterface::currentDesktopChanged, this, [&] {

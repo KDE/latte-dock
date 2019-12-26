@@ -110,11 +110,20 @@ void XWindowInterface::setViewExtraFlags(QObject *view,bool isPanelWindow, Latte
         KWindowSystem::setType(winId, NET::Normal);
     }
 
+#if KF5_VERSION_MINOR >= 45
+    KWindowSystem::setState(winId, NET::SkipTaskbar | NET::SkipPager | NET::SkipSwitcher);
+#else
     KWindowSystem::setState(winId, NET::SkipTaskbar | NET::SkipPager);
+#endif
+
     KWindowSystem::setOnAllDesktops(winId, true);
 
+    //! Layer to be applied
     if (mode == Latte::Types::WindowsCanCover || mode == Latte::Types::WindowsAlwaysCover) {
         setKeepBelow(winId, true);
+    } else if (mode == Latte::Types::NormalWindow) {
+        setKeepBelow(winId, false);
+        setKeepAbove(winId, false);
     } else {
         setKeepAbove(winId, true);
     }

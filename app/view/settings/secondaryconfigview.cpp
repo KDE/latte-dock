@@ -83,13 +83,7 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
         setFlags(wFlags());
 
         if (KWindowSystem::isPlatformX11()) {
-#if KF5_VERSION_MINOR >= 45
-            KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager | NET::SkipSwitcher);
-#else
-            KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
-#endif
-
-            KWindowSystem::setOnAllDesktops(winId(), true);
+            m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
         }
 
         syncGeometry();
@@ -295,8 +289,8 @@ void SecondaryConfigView::showEvent(QShowEvent *ev)
         return;
     }
 
-    m_corona->wm()->setViewExtraFlags(this);
     setFlags(wFlags());
+    m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
 
     m_corona->wm()->enableBlurBehind(*this);
 

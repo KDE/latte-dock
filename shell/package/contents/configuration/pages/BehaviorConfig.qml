@@ -481,7 +481,9 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
 
             enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
-                       || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
+                       || latteView.visibility.mode === Latte.Types.WindowsGoBelow
+                       || latteView.visibility.mode === Latte.Types.WindowsCanCover
+                       || latteView.visibility.mode === Latte.Types.WindowsAlwaysCover)
 
             LatteComponents.Header {
                 text: i18n("Delay")
@@ -755,7 +757,10 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
 
             visible: dialog.expertLevel
-            enabled: latteView.visibility.mode !== Latte.Types.AlwaysVisible && latteView.visibility.mode !== Latte.Types.WindowsGoBelow
+            enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
+                       || latteView.visibility.mode === Latte.Types.WindowsGoBelow
+                       || latteView.visibility.mode === Latte.Types.WindowsCanCover
+                       || latteView.visibility.mode === Latte.Types.WindowsAlwaysCover)
 
             LatteComponents.Header {
                 text: i18n("Environment")

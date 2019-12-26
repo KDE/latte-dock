@@ -53,7 +53,8 @@ public:
         DodgeAllWindows,
         WindowsGoBelow,
         WindowsCanCover,
-        WindowsAlwaysCover
+        WindowsAlwaysCover,
+        NormalWindow = 20
     };
     Q_ENUM(Visibility);
 

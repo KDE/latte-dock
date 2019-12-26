@@ -91,13 +91,7 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
         setFlags(wFlags());
 
         if (KWindowSystem::isPlatformX11()) {
-#if KF5_VERSION_MINOR >= 45
-            KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager | NET::SkipSwitcher);
-#else
-            KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
-#endif
-
-            KWindowSystem::setOnAllDesktops(winId(), true);
+            m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
         }
 
         syncGeometry();
@@ -185,7 +179,7 @@ void PrimaryConfigView::init()
 
 inline Qt::WindowFlags PrimaryConfigView::wFlags() const
 {
-    return (flags() | Qt::FramelessWindowHint /*| Qt::WindowStaysOnTopHint*/) & ~Qt::WindowDoesNotAcceptFocus;
+    return (flags() | Qt::FramelessWindowHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
 QQuickView *PrimaryConfigView::secondaryWindow()
@@ -366,8 +360,8 @@ void PrimaryConfigView::showEvent(QShowEvent *ev)
         return;
     }
 
-    m_corona->wm()->setViewExtraFlags(this);
     setFlags(wFlags());
+    m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
 
     m_corona->wm()->enableBlurBehind(*this);
 

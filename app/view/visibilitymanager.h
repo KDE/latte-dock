@@ -105,6 +105,8 @@ public slots:
     Q_INVOKABLE void hide();
     Q_INVOKABLE void show();
 
+    void initViewFlags();
+
 signals:
     void mustBeShown();
     void mustBeHide();

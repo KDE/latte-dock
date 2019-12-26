@@ -82,7 +82,6 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     setClearBeforeRendering(true);
 
     const auto flags = Qt::FramelessWindowHint
-            | Qt::WindowStaysOnTopHint
             | Qt::NoDropShadowWindowHint
             | Qt::WindowDoesNotAcceptFocus;
 
@@ -1235,7 +1234,9 @@ bool View::event(QEvent *e)
             break;
 
         case QEvent::Show:
-            m_corona->wm()->setViewExtraFlags(this);
+            if (m_visibility) {
+                m_visibility->initViewFlags();
+            }
             break;
 
         default:
