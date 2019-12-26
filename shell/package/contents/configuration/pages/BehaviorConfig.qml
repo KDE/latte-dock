@@ -713,9 +713,9 @@ PlasmaComponents.Page {
                     LatteComponents.CheckBox {
                         id: fittsLawChk
                         Layout.maximumWidth: dialog.optionsWidth
-                        text: i18n("Always use screen gap from floating mode")
+                        text: i18n("Always use screen gap for floating panel")
                         checked: plasmoid.configuration.fittsLawIsRequested
-                        tooltip: i18n("When the dock or panel is in floating mode, the gap to the screen is also used by items")
+                        tooltip: i18n("When the panel is in floating mode, the gap to the screen is also used")
                         visible: dialog.highLevel
                         enabled: !plasmoid.configuration.shrinkThickMargins && (plasmoid.configuration.screenEdgeMargin >= 0)
 
