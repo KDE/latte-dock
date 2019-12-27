@@ -88,13 +88,13 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     m_timerHide.setSingleShot(true);
 
     connect(&m_timerShow, &QTimer::timeout, this, [&]() {
-        if (m_isHidden) {
+        if (m_isHidden ||  m_isBelowLayer) {
             //   qDebug() << "must be shown";
             emit mustBeShown();
         }
     });
     connect(&m_timerHide, &QTimer::timeout, this, [&]() {
-        if (!m_blockHiding && !m_isHidden && !m_dragEnter) {
+        if (!m_blockHiding && !m_isHidden && !m_isBelowLayer && !m_dragEnter) {
             //   qDebug() << "must be hide";
             emit mustBeHide();
         }
@@ -120,19 +120,23 @@ Types::Visibility VisibilityManager::mode() const
 
 void VisibilityManager::initViewFlags()
 {
-    if (KWindowSystem::isPlatformX11()) {
-        if ((m_mode == Types::WindowsCanCover || m_mode == Types::WindowsAlwaysCover) && (!m_latteView->inEditMode())) {
-            m_wm->setViewExtraFlags(m_latteView, false, m_mode);
-        } else {
-            m_wm->setViewExtraFlags(m_latteView, true);
-        }
+    if ((m_mode == Types::WindowsCanCover || m_mode == Types::WindowsAlwaysCover) && (!m_latteView->inEditMode())) {
+        setViewOnBackLayer();
     } else {
-        if ((m_mode == Types::WindowsCanCover || m_mode == Types::WindowsAlwaysCover) && (!m_latteView->inEditMode())) {
-            m_wm->setViewExtraFlags(m_latteView, false, m_mode);
-        } else {
-            m_wm->setViewExtraFlags(m_latteView, true);
-        }
+        setViewOnFrontLayer();
     }
+}
+
+void VisibilityManager::setViewOnBackLayer()
+{
+    m_wm->setViewExtraFlags(m_latteView, false, Types::WindowsAlwaysCover);
+    setIsBelowLayer(true);
+}
+
+void VisibilityManager::setViewOnFrontLayer()
+{
+    m_wm->setViewExtraFlags(m_latteView, true);
+    setIsBelowLayer(false);
 }
 
 void VisibilityManager::setMode(Latte::Types::Visibility mode)
@@ -249,6 +253,11 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
     case Types::WindowsCanCover:
+        m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
+            raiseView(m_containsMouse);
+        });
+
+        raiseView(m_containsMouse);
         break;
 
     case Types::WindowsAlwaysCover:
@@ -350,6 +359,26 @@ void VisibilityManager::setRaiseOnActivity(bool enable)
     emit raiseOnActivityChanged();
 }
 
+bool VisibilityManager::isBelowLayer() const
+{
+    return m_isBelowLayer;
+}
+
+void VisibilityManager::setIsBelowLayer(bool below)
+{
+    if (m_isBelowLayer == below) {
+        return;
+    }
+
+    m_isBelowLayer = below;
+
+    if (m_mode == Latte::Types::WindowsCanCover) {
+        updateGhostWindowState();
+    }
+
+    emit isBelowLayerChanged();
+}
+
 bool VisibilityManager::isHidden() const
 {
     return m_isHidden;
@@ -445,7 +474,11 @@ void VisibilityManager::updateGhostWindowState()
                                  && m_latteView->layout()->isCurrent()));
 
         if (inCurrentLayout) {
-            m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
+            if (m_mode == Latte::Types::WindowsCanCover) {
+                m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isBelowLayer);
+            } else {
+                m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
+            }
         } else {
             m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
         }
@@ -516,6 +549,7 @@ void VisibilityManager::updateHiddenState()
 
     switch (m_mode) {
     case Types::AutoHide:
+    case Types::WindowsCanCover:
         raiseView(m_containsMouse);
         break;
 
@@ -724,15 +758,15 @@ void VisibilityManager::updateKWinEdgesSupport()
     if ((m_mode == Types::AutoHide
          || m_mode == Types::DodgeActive
          || m_mode == Types::DodgeAllWindows
-         || m_mode == Types::DodgeMaximized)
+         || m_mode == Types::DodgeMaximized
+         || m_mode == Types::WindowsCanCover)
             && (!m_latteView->byPassWM()) ) {
         if (m_enableKWinEdgesFromUser) {
             createEdgeGhostWindow();
         } else if (!m_enableKWinEdgesFromUser) {
             deleteEdgeGhostWindow();
         }
-    } else if (m_mode == Types::AlwaysVisible
-               || m_mode == Types::WindowsGoBelow) {
+    } else {
         deleteEdgeGhostWindow();
     }
 }

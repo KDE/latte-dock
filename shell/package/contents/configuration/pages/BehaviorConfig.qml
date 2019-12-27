@@ -482,7 +482,6 @@ PlasmaComponents.Page {
 
             enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
                        || latteView.visibility.mode === Latte.Types.WindowsGoBelow
-                       || latteView.visibility.mode === Latte.Types.WindowsCanCover
                        || latteView.visibility.mode === Latte.Types.WindowsAlwaysCover)
 
             LatteComponents.Header {

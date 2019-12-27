@@ -56,6 +56,7 @@ class VisibilityManager : public QObject
     Q_PROPERTY(bool raiseOnDesktop READ raiseOnDesktop WRITE setRaiseOnDesktop NOTIFY raiseOnDesktopChanged)
     Q_PROPERTY(bool raiseOnActivity READ raiseOnActivity WRITE setRaiseOnActivity NOTIFY raiseOnActivityChanged)
     Q_PROPERTY(bool isHidden READ isHidden WRITE setIsHidden NOTIFY isHiddenChanged)
+    Q_PROPERTY(bool isBelowLayer READ isBelowLayer NOTIFY isBelowLayerChanged)
     Q_PROPERTY(bool blockHiding READ blockHiding WRITE setBlockHiding NOTIFY blockHidingChanged)
     Q_PROPERTY(bool containsMouse READ containsMouse NOTIFY containsMouseChanged)
 
@@ -81,6 +82,8 @@ public:
     bool raiseOnActivity() const;
     void setRaiseOnActivity(bool enable);
 
+    bool isBelowLayer() const;
+
     bool isHidden() const;
     void setIsHidden(bool isHidden);
 
@@ -105,6 +108,9 @@ public slots:
     Q_INVOKABLE void hide();
     Q_INVOKABLE void show();
 
+    Q_INVOKABLE void setViewOnBackLayer();
+    Q_INVOKABLE void setViewOnFrontLayer();
+
     void initViewFlags();
 
 signals:
@@ -117,6 +123,7 @@ signals:
     void modeChanged();
     void raiseOnDesktopChanged();
     void raiseOnActivityChanged();
+    void isBelowLayerChanged();
     void isHiddenChanged();
     void blockHidingChanged();
     void containsMouseChanged();
@@ -130,6 +137,8 @@ signals:
 private slots:
     void saveConfig();
     void restoreConfig();
+
+    void setIsBelowLayer(bool below);
 
     //! KWin Edges Support functions
     void updateKWinEdgesSupport();
@@ -165,6 +174,7 @@ private:
     QTimer m_timerHide;
     QTimer m_timerStartUp;
 
+    bool m_isBelowLayer{false};
     bool m_isHidden{false};
     bool m_dragEnter{false};
     bool m_blockHiding{false};

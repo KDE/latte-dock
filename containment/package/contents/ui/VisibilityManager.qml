@@ -340,19 +340,30 @@ Item{
     }
 
     function slotMustBeShown() {
-        //  console.log("show...");
+        //! WindowsCanCover case
+        if (latteView && latteView.visibility.mode === Latte.Types.WindowsCanCover) {
+            latteView.visibility.setViewOnFrontLayer();
+            return;
+        }
+
+        //! Normal Dodge/AutoHide case
         if (!slidingAnimationAutoHiddenIn.running && !inTempHiding && !inForceHiding){
             slidingAnimationAutoHiddenIn.init();
         }
     }
 
     function slotMustBeHide() {
+        if (latteView && latteView.visibility.mode === Latte.Types.WindowsCanCover) {
+            latteView.visibility.setViewOnBackLayer();
+            return;
+        }
+
         //! prevent sliding-in on startup if the dodge modes have sent a hide signal
         if (inStartupTimer.running && root.inStartup) {
             root.inStartup = false;
         }
 
-        // console.log("hide....");
+        //! Normal Dodge/AutoHide case
         if((!slidingAnimationAutoHiddenOut.running && !latteView.visibility.blockHiding
             && !latteView.visibility.containsMouse) || inForceHiding) {
             slidingAnimationAutoHiddenOut.init();
