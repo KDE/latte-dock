@@ -111,7 +111,7 @@ public slots:
     void showAboutDialog();
 
     void hideLatteSettingsDialog();
-    Q_INVOKABLE void showLatteSettingsDialog(int page = Latte::Types::LayoutPage);
+    Q_INVOKABLE void showLatteSettingsDialog(int firstPage = Latte::Types::LayoutPage, bool toggleCurrentPage = false);
 
     //! switch to specified layout, default previousMemoryUsage means that it didn't change
     Q_INVOKABLE bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);

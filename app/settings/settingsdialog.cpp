@@ -368,7 +368,12 @@ void SettingsDialog::toggleCurrentPage()
         ui->tabWidget->setCurrentIndex(1);
     } else {
         ui->tabWidget->setCurrentIndex(0);
-    }
+    }                                   
+}
+
+void SettingsDialog::setCurrentPage(int page)
+{
+    ui->tabWidget->setCurrentIndex(page);
 }
 
 void SettingsDialog::on_newButton_clicked()

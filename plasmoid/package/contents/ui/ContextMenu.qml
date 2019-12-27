@@ -917,8 +917,10 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        text: i18n("Configure")
-        section: true
+        //text: i18n("Configure")
+        //section: true
+        separator: true
+        visible: preferenceMenuItem.visible
     }
 
     /* PlasmaComponents.MenuItem {
@@ -935,6 +937,18 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
+        id: preferenceMenuItem
+
+        action: latteView ?  latteView.containmentActions()[2] : plasmoid.action("configure")
+        visible: latteView
+    }
+
+    PlasmaComponents.MenuItem {
+        separator: true
+        visible: preferenceMenuItem.visible
+    }
+
+    PlasmaComponents.MenuItem {
         id: alternativesMenuItem
         visible: root.editMode && !visualParent.isSeparator
         text: plasmoid.action("alternatives").text
@@ -946,7 +960,7 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: addWidgets
 
-        action: latteView ? latteView.containmentActions()[2] : plasmoid.action("configure");
+        action: latteView ? latteView.containmentActions()[4] : plasmoid.action("configure");
         visible:  latteView
     }
 
@@ -954,7 +968,7 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: configureItem
 
-        action: latteView ? latteView.containmentActions()[3] : plasmoid.action("configure")
+        action: latteView ? latteView.containmentActions()[5] : plasmoid.action("configure")
     }
 
     //! BEGIN: Plasmoid actions when it isnt inside a Latte dock

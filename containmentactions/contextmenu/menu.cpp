@@ -50,24 +50,28 @@ Menu::Menu(QObject *parent, const QVariantList &args)
 Menu::~Menu()
 {
     m_separator1->deleteLater();
+    m_separator2->deleteLater();
     m_addWidgetsAction->deleteLater();
     m_configureAction->deleteLater();
     m_printAction->deleteLater();
     m_switchLayoutsMenu->deleteLater();
     m_layoutsAction->deleteLater();
+    m_preferenceAction->deleteLater();
 }
 
 void Menu::makeActions()
 {
     m_separator1 = new QAction(this);
     m_separator1->setSeparator(true);
+    m_separator2 = new QAction(this);
+    m_separator2->setSeparator(true);
 
     m_printAction = new QAction(QIcon::fromTheme("edit"), "Print Message...", this);
     connect(m_printAction, &QAction::triggered, [ = ]() {
         qDebug() << "Action Trigerred !!!";
     });
 
-    m_addWidgetsAction = new QAction(QIcon::fromTheme("add"), i18n("&Add Widgets..."), this);
+    m_addWidgetsAction = new QAction(QIcon::fromTheme("list-add"), i18n("&Add Widgets..."), this);
     m_addWidgetsAction->setStatusTip(i18n("Show Plasma Widget Explorer"));
     connect(m_addWidgetsAction, &QAction::triggered, [ = ]() {
         QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
@@ -77,7 +81,7 @@ void Menu::makeActions()
         }
     });
 
-    m_configureAction = new QAction(QIcon::fromTheme("configure"), i18nc("view settings window", "View &Settings..."), this);
+    m_configureAction = new QAction(QIcon::fromTheme("document-edit"), i18nc("view settings window", "View &Settings..."), this);
     connect(m_configureAction, &QAction::triggered, this, &Menu::requestConfiguration);
 
     connect(this->containment(), &Plasma::Containment::userConfiguringChanged, this, [&](bool configuring){
@@ -95,6 +99,15 @@ void Menu::makeActions()
 
     connect(m_switchLayoutsMenu, &QMenu::aboutToShow, this, &Menu::populateLayouts);
     connect(m_switchLayoutsMenu, &QMenu::triggered, this, &Menu::switchToLayout);
+
+    m_preferenceAction = new QAction(QIcon::fromTheme("configure"), i18nc("global settings window", "&Configure Latte..."), this);
+    connect(m_preferenceAction, &QAction::triggered, [=](){
+        QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
+
+        if (iface.isValid()) {
+            iface.call("showSettingsWindow", (int)Latte::Types::PreferencesPage);
+        }
+    });
 }
 
 
@@ -109,12 +122,16 @@ void Menu::requestConfiguration()
 QList<QAction *> Menu::contextualActions()
 {
     QList<QAction *> actions;
+
     actions << m_separator1;
     //actions << m_printAction;
     actions << m_layoutsAction;
+    actions << m_preferenceAction;
+
+    actions << m_separator2;
     actions << m_addWidgetsAction;
     actions << m_configureAction;
-
+    
     m_data.clear();
     QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
@@ -138,7 +155,7 @@ QList<QAction *> Menu::contextualActions()
         viewType = static_cast<Latte::Types::ViewType>((m_data[2]).toInt());
     }
 
-    const QString configureActionText = (viewType == Latte::Types::DockView) ? i18nc("dock settings window", "Dock &Settings...") : i18nc("panel settings window", "Panel &Settings...");
+    const QString configureActionText = (viewType == Latte::Types::DockView) ? i18nc("dock settings window", "&Edit Dock...") : i18nc("panel settings window", "&Edit Panel...");
     m_configureAction->setText(configureActionText);
 
     return actions;
@@ -198,7 +215,7 @@ void Menu::populateLayouts()
 
         m_switchLayoutsMenu->addSeparator();
 
-        QAction *editLayoutsAction = new QAction(i18n("Configure..."), m_switchLayoutsMenu);
+        QAction *editLayoutsAction = new QAction(i18n("Manage &Layouts..."), m_switchLayoutsMenu);
         editLayoutsAction->setData(QStringLiteral(" _show_latte_settings_dialog_"));
         m_switchLayoutsMenu->addAction(editLayoutsAction);
     }

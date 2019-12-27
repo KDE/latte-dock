@@ -120,7 +120,7 @@ void GlobalShortcuts::init()
     KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_W));
     connect(layoutsAction, &QAction::triggered, this, [this]() {
         m_modifierTracker->cancelMetaPressed();
-        m_corona->layoutsManager()->showLatteSettingsDialog(Types::LayoutPage);
+        m_corona->layoutsManager()->showLatteSettingsDialog(Types::PreferencesPage, true);
     });
 
     KActionCollection *taskbarActions = new KActionCollection(m_corona);

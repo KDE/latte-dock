@@ -416,13 +416,10 @@ void Manager::importPreset(int presetNo, bool newInstanceIfPresent)
     }
 }
 
-void Manager::showLatteSettingsDialog(int page)
+void Manager::showLatteSettingsDialog(int firstPage, bool toggleCurrentPage)
 {
-    bool created{false};
-
     if (!m_latteSettingsDialog) {
         m_latteSettingsDialog = new SettingsDialog(nullptr, m_corona);
-        created = true;
     }
     m_latteSettingsDialog->show();
 
@@ -430,9 +427,10 @@ void Manager::showLatteSettingsDialog(int page)
         m_latteSettingsDialog->showNormal();
     }
 
-    if (!created) {
-        Types::LatteConfigPage configPage = static_cast<Types::LatteConfigPage>(page);
+    if (toggleCurrentPage) {
         m_latteSettingsDialog->toggleCurrentPage();
+    } else {
+        m_latteSettingsDialog->setCurrentPage(firstPage);
     }
 
     m_latteSettingsDialog->activateWindow();

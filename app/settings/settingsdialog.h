@@ -56,6 +56,7 @@ public:
     ~SettingsDialog();
 
     void toggleCurrentPage();
+    void setCurrentPage(int page);
 
     void addActivityInCurrent(const QString &activityId);
     void removeActivityFromCurrent(const QString &activityId);
