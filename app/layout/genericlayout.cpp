@@ -843,7 +843,10 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     auto mode = static_cast<Types::Visibility>(containment->config().readEntry("visibility", static_cast<int>(Types::DodgeActive)));
     bool byPassWM{false};
 
-    if (mode == Types::AlwaysVisible || mode == Types::WindowsGoBelow) {
+    if (mode == Types::AlwaysVisible
+            || mode == Types::WindowsGoBelow
+            || mode == Types::WindowsCanCover
+            || mode == Types::WindowsAlwaysCover) {
         byPassWM = false;
     } else {
         byPassWM = containment->config().readEntry("byPassWM", false);

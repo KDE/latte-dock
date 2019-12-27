@@ -254,7 +254,11 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
     case Types::WindowsCanCover:
         m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
-            raiseView(m_containsMouse);
+            if (m_containsMouse) {
+                emit mustBeShown();
+            } else {
+                raiseView(false);
+            }
         });
 
         raiseView(m_containsMouse);
@@ -475,9 +479,9 @@ void VisibilityManager::updateGhostWindowState()
 
         if (inCurrentLayout) {
             if (m_mode == Latte::Types::WindowsCanCover) {
-                m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isBelowLayer);
+                m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isBelowLayer && !m_containsMouse);
             } else {
-                m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
+                m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden && !m_containsMouse);
             }
         } else {
             m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
@@ -758,14 +762,17 @@ void VisibilityManager::updateKWinEdgesSupport()
     if ((m_mode == Types::AutoHide
          || m_mode == Types::DodgeActive
          || m_mode == Types::DodgeAllWindows
-         || m_mode == Types::DodgeMaximized
-         || m_mode == Types::WindowsCanCover)
-            && (!m_latteView->byPassWM()) ) {
+         || m_mode == Types::DodgeMaximized)
+            && !m_latteView->byPassWM()) {
+
         if (m_enableKWinEdgesFromUser) {
             createEdgeGhostWindow();
         } else if (!m_enableKWinEdgesFromUser) {
             deleteEdgeGhostWindow();
         }
+
+    } else if (m_mode == Types::WindowsCanCover) {
+        createEdgeGhostWindow();
     } else {
         deleteEdgeGhostWindow();
     }
