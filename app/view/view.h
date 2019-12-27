@@ -299,6 +299,8 @@ signals:
     void availableScreenRectChangedForViewParts();
     void customPluginsChanged();
 
+    void availableScreenRegionChangedFrom(Latte::View *origin);
+
 private slots:
     void availableScreenRectChangedFrom(View *origin);
     void configViewCreatedFor(Latte::View *view);
