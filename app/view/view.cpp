@@ -231,6 +231,8 @@ void View::init()
     connect(this, &QQuickWindow::heightChanged, this, &View::updateAbsoluteGeometry);
 
     connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFrom);
+    //! used in order to disconnect it when it should NOT be called because it creates crashes
+    connect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
 
     connect(this, &View::byPassWMChanged, this, &View::saveConfig);
     connect(this, &View::isPreferredForShortcutsChanged, this, &View::saveConfig);
@@ -294,6 +296,7 @@ bool View::inDelete() const
 void View::disconnectSensitiveSignals()
 {
     disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFrom);
+    disconnect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
     setLayout(nullptr);
 
     if (m_windowsTracker) {
@@ -481,7 +484,7 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
     if (visibility() && corona() && visibility()->mode() == Types::AlwaysVisible) {
         //! main use of BYPASSCKECKS is from Positioner when the view changes screens
         emit m_corona->availableScreenRectChangedFrom(this);
-        emit m_corona->availableScreenRegionChangedFrom(this);
+        emit availableScreenRegionChangedFrom(this);
     }
 }
 

@@ -72,6 +72,14 @@ void GenericLayout::unloadContainments()
              << " ,latteViews in memory ::: " << m_latteViews.size()
              << " ,hidden latteViews in memory :::  " << m_waitingLatteViews.size();
 
+    for (const auto view : m_latteViews) {
+        view->disconnectSensitiveSignals();
+    }
+
+    for (const auto view : m_waitingLatteViews) {
+        view->disconnectSensitiveSignals();
+    }
+
     m_unloadedContainmentsIds.clear();
 
     QList<Plasma::Containment *> systrays;
