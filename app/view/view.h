@@ -299,10 +299,13 @@ signals:
     void availableScreenRectChangedForViewParts();
     void customPluginsChanged();
 
+    //! are used to trigger the Corona relevant signals and in that
+    //! way we can disable any such signaling all together, e.g. through disconnectSensitiveSignals()
+    void availableScreenRectChangedFrom(Latte::View *origin);
     void availableScreenRegionChangedFrom(Latte::View *origin);
 
 private slots:
-    void availableScreenRectChangedFrom(View *origin);
+    void availableScreenRectChangedFromSlot(View *origin);
     void configViewCreatedFor(Latte::View *view);
     void hideWindowsForSlidingOut();
     void preferredViewForShortcutsChangedSlot(Latte::View *view);

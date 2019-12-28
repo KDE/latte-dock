@@ -74,11 +74,9 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         });
 
         connect(m_latteView, &Latte::View::inEditModeChanged, this, &VisibilityManager::initViewFlags);
-    }
 
-    if (m_corona) {
         connect(this, &VisibilityManager::modeChanged, this, [&]() {
-            emit m_corona->availableScreenRectChangedFrom(m_latteView);
+            emit m_latteView->availableScreenRectChangedFrom(m_latteView);
         });
     }
 
