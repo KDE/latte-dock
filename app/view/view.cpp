@@ -168,7 +168,7 @@ View::~View()
         m_indicator->unloadIndicators();
     }
 
-    disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFrom);
+    disconnectSensitiveSignals();
     disconnect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), this, SLOT(statusChanged(Plasma::Types::ItemStatus)));
 
     qDebug() << "dock view deleting...";
@@ -230,8 +230,8 @@ void View::init()
     connect(this, &QQuickWindow::heightChanged, this, &View::heightChanged);
     connect(this, &QQuickWindow::heightChanged, this, &View::updateAbsoluteGeometry);
 
-    connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFrom);
     //! used in order to disconnect it when it should NOT be called because it creates crashes
+    connect(this, &View::availableScreenRectChangedFrom, m_corona, &Latte::Corona::availableScreenRectChangedFrom);
     connect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
 
     connect(this, &View::byPassWMChanged, this, &View::saveConfig);
@@ -240,16 +240,16 @@ void View::init()
     connect(this, &View::typeChanged, this, &View::saveConfig);
 
     connect(this, &View::normalThicknessChanged, this, [&]() {
-        emit m_corona->availableScreenRectChangedFrom(this);
+        emit availableScreenRectChangedFrom(this);
     });
 
     connect(m_effects, &ViewPart::Effects::innerShadowChanged, this, [&]() {
-        emit m_corona->availableScreenRectChangedFrom(this);
+        emit availableScreenRectChangedFrom(this);
     });
     connect(m_positioner, &ViewPart::Positioner::onHideWindowsForSlidingOut, this, &View::hideWindowsForSlidingOut);
     connect(m_positioner, &ViewPart::Positioner::screenGeometryChanged, this, &View::screenGeometryChanged);
     connect(m_positioner, &ViewPart::Positioner::windowSizeChanged, this, [&]() {
-        emit m_corona->availableScreenRectChangedFrom(this);
+        emit availableScreenRectChangedFrom(this);
     });
 
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
@@ -295,8 +295,11 @@ bool View::inDelete() const
 
 void View::disconnectSensitiveSignals()
 {
-    disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFrom);
+    disconnect(this, &View::availableScreenRectChangedFrom, m_corona, &Latte::Corona::availableScreenRectChangedFrom);
     disconnect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
+    disconnect(m_corona, &Latte::Corona::availableScreenRectChanged, this, &View::availableScreenRectChangedForViewParts);
+    disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFromSlot);
+
     setLayout(nullptr);
 
     if (m_windowsTracker) {
@@ -304,7 +307,7 @@ void View::disconnectSensitiveSignals()
     }
 }
 
-void View::availableScreenRectChangedFrom(View *origin)
+void View::availableScreenRectChangedFromSlot(View *origin)
 {
     if (m_inDelete || origin == this)
         return;
@@ -483,7 +486,7 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
     //! this is needed in order to update correctly the screenGeometries
     if (visibility() && corona() && visibility()->mode() == Types::AlwaysVisible) {
         //! main use of BYPASSCKECKS is from Positioner when the view changes screens
-        emit m_corona->availableScreenRectChangedFrom(this);
+        emit availableScreenRectChangedFrom(this);
         emit availableScreenRegionChangedFrom(this);
     }
 }

@@ -72,11 +72,9 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
                 updateStrutsBasedOnLayoutsAndActivities();
             }
         });
-    }
 
-    if (m_corona) {
         connect(this, &VisibilityManager::modeChanged, this, [&]() {
-            emit m_corona->availableScreenRectChangedFrom(m_latteView);
+            emit m_latteView->availableScreenRectChangedFrom(m_latteView);
         });
     }
 
