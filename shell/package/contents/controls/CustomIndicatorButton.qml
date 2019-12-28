@@ -29,8 +29,9 @@ LatteComponents.ComboBoxButton{
     id: custom
     checkable: true
 
-    buttonToolTip: checked ? i18n("Use %0 style for your indicators").arg(buttonText) :
-                             i18n("Download indicator styles from the internet")
+    buttonToolTip:  custom.type === "download:" ? i18n("Download indicator styles from the internet") :
+                                                  i18n("Use %0 style for your indicators").arg(buttonText)
+
     comboBoxTextRole: "name"
     comboBoxIconRole: "icon"
     comboBoxIconToolTipRole: "iconToolTip"
