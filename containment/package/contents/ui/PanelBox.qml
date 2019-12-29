@@ -76,7 +76,7 @@ Item{
     }
 
     property int spacing: {
-        if (root.panelAlignment === Latte.Types.Justify && plasmoid.configuration.maxLength === 100) {
+        if (root.panelAlignment === Latte.Types.Justify && root.maxLengthPerCentage === 100) {
             return 0;
         } else if (!Latte.WindowSystem.compositingActive) {
             return root.panelEdgeSpacing/2;

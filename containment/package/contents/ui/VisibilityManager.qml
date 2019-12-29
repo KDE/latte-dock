@@ -165,7 +165,7 @@ Item{
         target: latteView
         property: "maxLength"
         when: latteView
-        value: root.inConfigureAppletsMode ? 1 : plasmoid.configuration.maxLength/100
+        value: root.inConfigureAppletsMode ? 1 : maxLengthPerCentage/100
     }
 
     Binding{
@@ -179,7 +179,7 @@ Item{
         target: latteView
         property: "screenEdgeMargin"
         when: latteView
-        value: !root.screenEdgeMarginEnabled ? -1 : plasmoid.configuration.screenEdgeMargin
+        value: !root.screenEdgeMarginEnabled || root.hideThickScreenGap ? -1 : plasmoid.configuration.screenEdgeMargin
     }
 
     Binding{
@@ -292,6 +292,8 @@ Item{
                     || plasmoid.configuration.solidBackgroundForMaximized
                     || root.disablePanelShadowMaximized
                     || root.windowColors !== Latte.Types.NoneWindowColors))
+               || (root.screenEdgeMarginsEnabled                             /*Dynamic Screen Edge Margin*/
+                   && plasmoid.configuration.hideScreenGapForMaximized)
     }
 
     Connections{

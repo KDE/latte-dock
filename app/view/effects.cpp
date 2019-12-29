@@ -60,10 +60,10 @@ void Effects::init()
     });
 
     connect(m_view, &Latte::View::alignmentChanged, this, &Effects::updateEnabledBorders);
-    connect(m_view, &Latte::View::screenEdgeMarginChanged, this, &Effects::updateEnabledBorders);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateShadows);
     connect(m_view, &Latte::View::configWindowGeometryChanged, this, &Effects::updateMask);
+    connect(m_view, &Latte::View::screenEdgeMarginEnabledChanged, this, &Effects::updateEnabledBorders);
 
     connect(&m_theme, &Plasma::Theme::themeChanged, this, [&]() {
         auto background = m_background;

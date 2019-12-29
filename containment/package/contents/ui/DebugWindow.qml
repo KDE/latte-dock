@@ -120,11 +120,11 @@ Window{
             }
 
             Text{
-                text: "Max Length (user)"+space
+                text: "Max Length"+space
             }
 
             Text{
-                text: plasmoid.configuration.maxLength +"%"
+                text: root.maxLengthPerCentage +"%"
             }
 
             Text{

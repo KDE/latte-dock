@@ -137,6 +137,12 @@ void Positioner::init()
         }
     });
 
+    connect(m_view, &Latte::View::screenEdgeMarginEnabledChanged, this, [&]() {
+        if (m_view->behaveAsPlasmaPanel()) {
+            syncGeometry();
+        }
+    });
+
     connect(m_view->effects(), &Latte::ViewPart::Effects::drawShadowsChanged, this, [&]() {
         if (!m_view->behaveAsPlasmaPanel()) {
             syncGeometry();

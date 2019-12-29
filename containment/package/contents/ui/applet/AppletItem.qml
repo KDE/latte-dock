@@ -96,7 +96,7 @@ Item {
 
         if (root.panelAlignment === Latte.Types.Justify) {
             //! Justify case
-            if (plasmoid.configuration.maxLength!==100) {
+            if (root.maxLengthPerCentage!==100) {
                 return false;
             }
 

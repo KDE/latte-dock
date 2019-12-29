@@ -881,26 +881,23 @@ void Windows::updateHints(Latte::View *view)
             activeWinId = winfo.wid();
         }
 
+        //! Maximized windows flags
+        if ((winfo.isActive() && isMaximizedInViewScreen(view, winfo)) //! active maximized windows have higher priority than the rest maximized windows
+                || (!foundMaximizedInCurScreen && isMaximizedInViewScreen(view, winfo))) {
+            foundMaximizedInCurScreen = true;
+            maxWinId = winfo.wid();
+        }
+
+        //! Touching windows flags
         if (isTouchingViewEdge(view, winfo) || isTouchingView(view, winfo)) {
             if (winfo.isActive()) {
                 //qDebug() << " ACTIVE-TOUCH :: " << winfo.wid() << " _ " << winfo.appName() << " _ " << winfo.geometry() << " _ " << winfo.display();
                 foundActiveTouchInCurScreen = true;
                 activeTouchWinId = winfo.wid();
-
-                if (isMaximizedInViewScreen(view, winfo)) {
-                    //! active maximized windows have higher priority than the rest maximized windows
-                    foundMaximizedInCurScreen = true;
-                    maxWinId = winfo.wid();
-                }
             } else {
                 //qDebug() << " TOUCH :: " << winfo.wid() << " _ " << winfo.appName() << " _ " << winfo.geometry() << " _ " << winfo.display();
                 foundTouchInCurScreen = true;
                 touchWinId = winfo.wid();
-            }
-
-            if (!foundMaximizedInCurScreen && isMaximizedInViewScreen(view, winfo)) {
-                foundMaximizedInCurScreen = true;
-                maxWinId = winfo.wid();
             }
         }
 

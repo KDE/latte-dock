@@ -286,6 +286,7 @@ signals:
     void onPrimaryChanged();
     void positionerChanged();
     void screenEdgeMarginChanged();
+    void screenEdgeMarginEnabledChanged();
     void screenGeometryChanged();
     void typeChanged();
     void visibilityChanged();
@@ -323,6 +324,7 @@ private:
     void updateAppletContainsMethod();
 
     void setContainsDrag(bool contains);
+    void setScreenEdgeMarginEnabled(bool enabled);
 
 private:
     Plasma::Containment *containmentById(uint id);
@@ -337,6 +339,7 @@ private:
     bool m_isPreferredForShortcuts{false};
     bool m_latteTasksArePresent{false};
     bool m_onPrimary{true};
+    bool m_screenEdgeMarginEnabled{false};
 
     bool m_isTouchingBottomViewAndIsBusy{false};
     bool m_isTouchingTopViewAndIsBusy{false};

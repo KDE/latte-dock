@@ -160,19 +160,32 @@ Item {
                                                           && !plasmaBackgroundForPopups*/)
 
     property bool solidBusyForTouchingBusyVerticalView: false //DISABLED, until to check if the normalBusyForTouchingBusyVerticalView is enough to catch and handle the case
-                                                        /*(latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
-                                                        /* && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
+    /*(latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
+    /* && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
                                                          && root.themeColors === Latte.Types.SmartThemeColors
                                                          && plasmoid.configuration.backgroundOnlyOnMaximized
                                                          && plasmoid.configuration.solidBackgroundForMaximized
                                                          && !plasmaBackgroundForPopups)*/
 
     property bool plasmaStyleBusyForTouchingBusyVerticalView: false //DISABLED, until to check if the normalBusyForTouchingBusyVerticalView is enough to catch and handle the case
-                                                              //(latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
-                                                              /* && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
+    //(latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
+    /* && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
                                                                && root.themeColors === Latte.Types.SmartThemeColors
                                                                && plasmoid.configuration.backgroundOnlyOnMaximized
                                                                && plasmaBackgroundForPopups)*/
+
+    property bool hideThickScreenGap: screenEdgeMarginEnabled
+                                      && plasmoid.configuration.hideScreenGapForMaximized
+                                      && latteView && latteView.windowsTracker
+                                      && latteView.windowsTracker.currentScreen.existsWindowMaximized
+
+    property bool hideLengthScreenGaps: hideThickScreenGap
+                                        && (latteView.visibility.mode === Latte.Types.AlwaysVisible
+                                            || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
+                                        && (plasmoid.configuration.panelPosition === Latte.Types.Justify)
+                                        && maxLengthPerCentage>85
+                                        && !root.editMode
+
 
 
     property int themeColors: plasmoid.configuration.themeColors
@@ -199,7 +212,7 @@ Item {
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
     property bool dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled
     property bool immutable: plasmoid.immutable
-    property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Types.Justify) && (plasmoid.configuration.maxLength===100)
+    property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Types.Justify) && (maxLengthPerCentage===100)
     property bool inSlidingIn: visibilityManager ? visibilityManager.inSlidingIn : false
     property bool inSlidingOut: visibilityManager ? visibilityManager.inSlidingOut : false
     property bool inStartup: true
@@ -254,11 +267,13 @@ Item {
     }
 
     property int latteAppletPos: -1
+    property int maxLengthPerCentage: hideLengthScreenGaps ? 100 : plasmoid.configuration.maxLength
+
     property int maxLength: {
         if (root.isHorizontal) {
-            return behaveAsPlasmaPanel ? width : width * (plasmoid.configuration.maxLength/100)
+            return behaveAsPlasmaPanel ? width : width * (maxLengthPerCentage/100)
         } else {
-            return behaveAsPlasmaPanel ? height : height * (plasmoid.configuration.maxLength/100)
+            return behaveAsPlasmaPanel ? height : height * (maxLengthPerCentage/100)
         }
     }
 
@@ -287,7 +302,7 @@ Item {
         }
 
         var forcedNoShadows = (plasmoid.configuration.panelShadows && disablePanelShadowMaximized
-                                     && latteView && latteView.windowsTracker && latteView.windowsTracker.currentScreen.activeWindowMaximized);
+                               && latteView && latteView.windowsTracker && latteView.windowsTracker.currentScreen.activeWindowMaximized);
 
         if (forcedNoShadows) {
             return false;
@@ -393,8 +408,10 @@ Item {
     property int thickMargin: thickMarginFactor * root.iconSize
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
-    property int screenEdgeMargin: !screenEdgeMarginEnabled ? 0 : plasmoid.configuration.screenEdgeMargin
-    property int localScreenEdgeMargin: (screenEdgeMarginEnabled && behaveAsPlasmaPanel) || !screenEdgeMarginEnabled ? 0 : plasmoid.configuration.screenEdgeMargin
+    property int screenEdgeMargin: !screenEdgeMarginEnabled || hideThickScreenGap ? 0 : plasmoid.configuration.screenEdgeMargin
+    property int localScreenEdgeMargin: (screenEdgeMarginEnabled && behaveAsPlasmaPanel)
+                                        || !screenEdgeMarginEnabled
+                                        || hideThickScreenGap ? 0 : plasmoid.configuration.screenEdgeMargin
 
     //! thickness margins are always two and equal in order for items
     //! to be always correctly centered

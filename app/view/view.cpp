@@ -815,7 +815,17 @@ void View::setOffset(int offset)
 
 bool View::screenEdgeMarginEnabled() const
 {
-    return (m_screenEdgeMargin > -1);
+    return m_screenEdgeMarginEnabled;
+}
+
+void View::setScreenEdgeMarginEnabled(bool enabled)
+{
+    if (m_screenEdgeMarginEnabled == enabled) {
+        return;
+    }
+
+    m_screenEdgeMarginEnabled = enabled;
+    emit screenEdgeMarginEnabledChanged();
 }
 
 int View::screenEdgeMargin() const
@@ -830,6 +840,8 @@ void View::setScreenEdgeMargin(int margin)
     }
 
     m_screenEdgeMargin = margin;
+    setScreenEdgeMarginEnabled(m_screenEdgeMargin>-1);
+
     emit screenEdgeMarginChanged();
 }
 

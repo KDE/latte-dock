@@ -719,20 +719,6 @@ PlasmaComponents.Page {
                     }
 
                     LatteComponents.CheckBox {
-                        id: fittsLawChk
-                        Layout.maximumWidth: dialog.optionsWidth
-                        text: i18n("Always use screen gap for floating panel")
-                        checked: plasmoid.configuration.fittsLawIsRequested
-                        tooltip: i18n("When the panel is in floating mode, the gap to the screen is also used")
-                        visible: dialog.highLevel
-                        enabled: !plasmoid.configuration.shrinkThickMargins && (plasmoid.configuration.screenEdgeMargin >= 0)
-
-                        onClicked: {
-                            plasmoid.configuration.fittsLawIsRequested = checked
-                        }
-                    }
-
-                    LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
                        // Layout.maximumHeight: mouseWheelChk.height
                         text: i18n("➊ Activate based on position through global shortcuts")
@@ -744,6 +730,44 @@ PlasmaComponents.Page {
                             if (!latteView.layout.preferredForShortcutsTouched) {
                                 latteView.layout.preferredForShortcutsTouched = true
                             }
+                        }
+                    }
+                }
+            }
+
+            LatteComponents.SubHeader {
+                id: floatingSubCategory
+                text: i18n("Floating")
+                enabled: !plasmoid.configuration.shrinkThickMargins && (plasmoid.configuration.screenEdgeMargin >= 0)
+            }
+
+            LatteComponents.CheckBoxesColumn {
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                enabled: floatingSubCategory.enabled
+
+                LatteComponents.CheckBoxesColumn {
+                    LatteComponents.CheckBox {
+                        id: fittsLawChk
+                        Layout.maximumWidth: dialog.optionsWidth
+                        text: i18n("Always use screen gap for user interaction")
+                        checked: plasmoid.configuration.fittsLawIsRequested
+                        tooltip: i18n("Panels in floating mode use the screen gap for user interaction")
+
+                        onClicked: {
+                            plasmoid.configuration.fittsLawIsRequested = checked;
+                        }
+                    }
+
+                    LatteComponents.CheckBox {
+                        id: hideScreenGapForMaximizedChk
+                        Layout.maximumWidth: dialog.optionsWidth
+                        text: i18n("Hide screen gap for maximized windows")
+                        checked: plasmoid.configuration.hideScreenGapForMaximized
+                        tooltip: i18n("Panels in floating mode disable their screen gap for maximized windows")
+
+                        onClicked: {
+                            plasmoid.configuration.hideScreenGapForMaximized = checked;
                         }
                     }
                 }
