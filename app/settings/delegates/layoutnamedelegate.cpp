@@ -63,7 +63,7 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
         //! font metrics
         QFontMetrics fm(option.font);
-        int textWidth = fm.width(nameText);
+        int textWidth = fm.boundingRect(nameText).width();
         int thick = option.rect.height();
         int length = showTwoIcons ? (2 * thick + 2) : thick;
 
