@@ -33,23 +33,16 @@ Loader {
 
     sourceComponent: MouseArea{
         id: mainArea
+        width: root.isHorizontal ? length : localThickness + root.localScreenEdgeMargin
+        height: root.isVertical ? length :  localThickness + root.localScreenEdgeMargin
 
         readonly property int localThickness: (root.isHovered ? (root.iconSize + root.thickMargins)*root.zoomFactor : (root.iconSize + root.thickMargins))
-
-        width:  {
-            if (root.isHorizontal) {
-                return useAllLayouts ? root.maxLength : root.realPanelLength;
-            } else {
-                return localThickness + root.localScreenEdgeMargin;
+        readonly property int length: {
+            if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
+                return root.isHorizontal ? root.width : root.height;
             }
-        }
 
-        height: {
-            if (root.isVertical) {
-                return useAllLayouts ? root.maxLength : root.realPanelLength;
-            } else {
-                return localThickness + root.localScreenEdgeMargin;
-            }
+            return useAllLayouts ? root.maxLength : root.realPanelLength;
         }
 
         hoverEnabled: true
