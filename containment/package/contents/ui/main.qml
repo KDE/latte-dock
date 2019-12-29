@@ -183,7 +183,7 @@ Item {
                                         && (latteView.visibility.mode === Latte.Types.AlwaysVisible
                                             || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
                                         && (plasmoid.configuration.panelPosition === Latte.Types.Justify)
-                                        && maxLengthPerCentage>85
+                                        && plasmoid.configuration.maxLength>85
                                         && !root.editMode
 
 
