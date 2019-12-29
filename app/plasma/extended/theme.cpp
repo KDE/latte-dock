@@ -96,7 +96,7 @@ Theme::~Theme()
 
 bool Theme::hasShadow() const
 {
-    return PanelShadows::self()->enabled();
+    return PanelShadows::self()->hasShadows();
 }
 
 bool Theme::isLightTheme() const

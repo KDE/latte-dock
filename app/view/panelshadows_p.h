@@ -19,10 +19,8 @@
 #ifndef PANELSHADOWS_P_H
 #define PANELSHADOWS_P_H
 
-// Qt
 #include <QSet>
 
-// Plasma
 #include "plasma/framesvg.h"
 #include "plasma/svg.h"
 
@@ -42,14 +40,11 @@ public:
 
     void setEnabledBorders(const QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders = Plasma::FrameSvg::AllBorders);
 
-    bool enabled() const;
+    bool hasShadows() const;
 
 private:
     class Private;
-    Private *const d;
-
-    Q_PRIVATE_SLOT(d, void updateShadows())
-    Q_PRIVATE_SLOT(d, void windowDestroyed(QObject *deletedObject))
+    Private * const d;
 };
 
 #endif
