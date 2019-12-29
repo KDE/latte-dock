@@ -18,30 +18,27 @@
 
 #include "panelshadows_p.h"
 
-// local
-#include <config-latte.h>
-
-// Qt
-#include <QDebug>
 #include <QWindow>
 #include <QPainter>
 
-// KDE
+#include <config-latte.h>
+
+#include <KWindowSystem>
+#if HAVE_X11
+#include <QX11Info>
+#include <X11/Xatom.h>
+#include <X11/Xlib.h>
+#include <X11/Xlib-xcb.h>
+#include <fixx11h.h>
+#endif
+
 #include <KWayland/Client/connection_thread.h>
 #include <KWayland/Client/registry.h>
 #include <KWayland/Client/shadow.h>
 #include <KWayland/Client/shm_pool.h>
 #include <KWayland/Client/surface.h>
-#include <KWindowSystem>
 
-// X11
-#if HAVE_X11
-    #include <QX11Info>
-    #include <X11/Xatom.h>
-    #include <X11/Xlib.h>
-    #include <X11/Xlib-xcb.h>
-    #include <fixx11h.h>
-#endif
+#include <qdebug.h>
 
 class PanelShadows::Private
 {
@@ -49,15 +46,16 @@ public:
     Private(PanelShadows *shadows)
         : q(shadows)
 #if HAVE_X11
-        , _connection(nullptr),
-          _gc(0x0)
+        ,_connection( nullptr ),
+        _gc( 0x0 )
         , m_isX11(KWindowSystem::isPlatformX11())
 #endif
     {
         setupWaylandIntegration();
     }
 
-    ~Private() {
+    ~Private()
+    {
         // Do not call clearPixmaps() from here: it creates new QPixmap(),
         // which causes a crash when application is stopping.
         freeX11Pixmaps();
@@ -67,7 +65,7 @@ public:
     void freeWaylandBuffers();
     void clearPixmaps();
     void setupPixmaps();
-    Qt::HANDLE createPixmap(const QPixmap &source);
+    Qt::HANDLE createPixmap(const QPixmap& source);
     void initPixmap(const QString &element);
     QPixmap initEmptyPixmap(const QSize &size);
     void updateShadow(const QWindow *window, Plasma::FrameSvg::EnabledBorders);
@@ -77,8 +75,8 @@ public:
     void clearShadowX11(const QWindow *window);
     void clearShadowWayland(const QWindow *window);
     void updateShadows();
-    void windowDestroyed(QObject *deletedObject);
     void setupData(Plasma::FrameSvg::EnabledBorders enabledBorders);
+    bool hasShadows() const;
 
     void setupWaylandIntegration();
 
@@ -95,15 +93,14 @@ public:
 
 #if HAVE_X11
     //! xcb connection
-    xcb_connection_t *_connection;
+    xcb_connection_t* _connection;
 
     //! graphical context
     xcb_gcontext_t _gc;
     bool m_isX11;
 #endif
 
-    struct Wayland
-    {
+    struct Wayland {
         KWayland::Client::ShadowManager *manager = nullptr;
         KWayland::Client::ShmPool *shmPool = nullptr;
 
@@ -111,17 +108,18 @@ public:
     };
     Wayland m_wayland;
 
-    QHash<Plasma::FrameSvg::EnabledBorders, QVector<unsigned long>> data;
+    QHash<Plasma::FrameSvg::EnabledBorders, QVector<unsigned long> > data;
     QHash<const QWindow *, Plasma::FrameSvg::EnabledBorders> m_windows;
 };
 
 class PanelShadowsSingleton
 {
 public:
-    PanelShadowsSingleton() {
+    PanelShadowsSingleton()
+    {
     }
 
-    PanelShadows self;
+   PanelShadows self;
 };
 
 Q_GLOBAL_STATIC(PanelShadowsSingleton, privatePanelShadowsSelf)
@@ -131,7 +129,9 @@ PanelShadows::PanelShadows(QObject *parent, const QString &prefix)
       d(new Private(this))
 {
     setImagePath(prefix);
-    connect(this, SIGNAL(repaintNeeded()), this, SLOT(updateShadows()));
+    connect(this, &Plasma::Svg::repaintNeeded, this, [this]() {
+        d->updateShadows();
+    });
 }
 
 PanelShadows::~PanelShadows()
@@ -152,8 +152,12 @@ void PanelShadows::addWindow(const QWindow *window, Plasma::FrameSvg::EnabledBor
 
     d->m_windows[window] = enabledBorders;
     d->updateShadow(window, enabledBorders);
-    connect(window, SIGNAL(destroyed(QObject *)),
-            this, SLOT(windowDestroyed(QObject *)), Qt::UniqueConnection);
+    connect(window, &QObject::destroyed, this, [this, window]() {
+        d->m_windows.remove(window);
+        if (d->m_windows.isEmpty()) {
+            d->clearPixmaps();
+        }
+    });
 }
 
 void PanelShadows::removeWindow(const QWindow *window)
@@ -171,6 +175,11 @@ void PanelShadows::removeWindow(const QWindow *window)
     }
 }
 
+bool PanelShadows::hasShadows() const
+{
+    return hasElement(QStringLiteral("shadow-left"));
+}
+
 void PanelShadows::setEnabledBorders(const QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders)
 {
     if (!window || !d->m_windows.contains(window)) {
@@ -181,31 +190,33 @@ void PanelShadows::setEnabledBorders(const QWindow *window, Plasma::FrameSvg::En
     d->updateShadow(window, enabledBorders);
 }
 
-
-void PanelShadows::Private::windowDestroyed(QObject *deletedObject)
-{
-    m_windows.remove(static_cast<QWindow *>(deletedObject));
-
-    if (m_windows.isEmpty()) {
-        clearPixmaps();
-    }
-}
-
 void PanelShadows::Private::updateShadows()
 {
-    setupPixmaps();
-    QHash<const QWindow *, Plasma::FrameSvg::EnabledBorders>::const_iterator i;
+    const bool hadShadowsBefore = !m_shadowPixmaps.isEmpty();
 
-    for (i = m_windows.constBegin(); i != m_windows.constEnd(); ++i) {
-        updateShadow(i.key(), i.value());
+    // has shadows now?
+    if (hasShadows()) {
+        if (hadShadowsBefore) {
+            clearPixmaps();
+        }
+        for (auto i = m_windows.constBegin(); i != m_windows.constEnd(); ++i) {
+            updateShadow(i.key(), i.value());
+        }
+    } else {
+        if (hadShadowsBefore) {
+            for (auto i = m_windows.constBegin(); i != m_windows.constEnd(); ++i) {
+                clearShadow(i.key());
+            }
+            clearPixmaps();
+        }
     }
 }
 
-Qt::HANDLE PanelShadows::Private::createPixmap(const QPixmap &source)
+Qt::HANDLE PanelShadows::Private::createPixmap(const QPixmap& source)
 {
 
     // do nothing for invalid pixmaps
-    if (source.isNull()) return nullptr;
+    if( source.isNull() ) return nullptr;
 
     /*
     in some cases, pixmap handle is invalid. This is the case notably
@@ -213,25 +224,25 @@ Qt::HANDLE PanelShadows::Private::createPixmap(const QPixmap &source)
     explicitly and draw the source pixmap on it.
     */
 
-#if HAVE_X11
-
+    #if HAVE_X11
     if (!m_isX11) {
         return nullptr;
     }
 
     // check connection
-    if (!_connection) _connection = QX11Info::connection();
+    if( !_connection ) _connection = QX11Info::connection();
 
-    const int width(source.width());
-    const int height(source.height());
+    const int width( source.width() );
+    const int height( source.height() );
 
     // create X11 pixmap
-    Pixmap pixmap = XCreatePixmap(QX11Info::display(), QX11Info::appRootWindow(), width, height, 32);
+    Pixmap pixmap = XCreatePixmap( QX11Info::display(), QX11Info::appRootWindow(), width, height, 32 );
 
     // check gc
-    if (!_gc) {
-        _gc = xcb_generate_id(_connection);
-        xcb_create_gc(_connection, _gc, pixmap, 0, nullptr);
+    if( !_gc )
+    {
+        _gc = xcb_generate_id( _connection );
+        xcb_create_gc( _connection, _gc, pixmap, 0, nullptr );
     }
 
 //         // create explicitly shared QPixmap from it
@@ -246,18 +257,18 @@ Qt::HANDLE PanelShadows::Private::createPixmap(const QPixmap &source)
 //
 //
 //         return pixmap;
-    QImage image(source.toImage());
+    QImage image( source.toImage() );
     xcb_put_image(
         _connection, XCB_IMAGE_FORMAT_Z_PIXMAP, pixmap, _gc,
         image.width(), image.height(), 0, 0,
         0, 32,
-        image.byteCount(), image.constBits());
+        image.sizeInBytes(), image.constBits());
 
     return (Qt::HANDLE)pixmap;
 
-#else
+    #else
     return 0;
-#endif
+    #endif
 
 }
 
@@ -269,17 +280,13 @@ void PanelShadows::Private::initPixmap(const QString &element)
 QPixmap PanelShadows::Private::initEmptyPixmap(const QSize &size)
 {
 #if HAVE_X11
-
     if (!m_isX11) {
         return QPixmap();
     }
-
     QPixmap tempEmptyPix(size);
-
     if (!size.isEmpty()) {
         tempEmptyPix.fill(Qt::transparent);
     }
-
     return tempEmptyPix;
 #else
     Q_UNUSED(size)
@@ -299,7 +306,7 @@ void PanelShadows::Private::setupPixmaps()
     initPixmap(QStringLiteral("shadow-left"));
     initPixmap(QStringLiteral("shadow-topleft"));
 
-    m_emptyCornerPix = initEmptyPixmap(QSize(1, 1));
+    m_emptyCornerPix = initEmptyPixmap(QSize(1,1));
     m_emptyCornerLeftPix = initEmptyPixmap(QSize(q->elementSize(QStringLiteral("shadow-topleft")).width(), 1));
     m_emptyCornerTopPix = initEmptyPixmap(QSize(1, q->elementSize(QStringLiteral("shadow-topleft")).height()));
     m_emptyCornerRightPix = initEmptyPixmap(QSize(q->elementSize(QStringLiteral("shadow-bottomright")).width(), 1));
@@ -318,11 +325,9 @@ void PanelShadows::Private::setupPixmaps()
 void PanelShadows::Private::setupData(Plasma::FrameSvg::EnabledBorders enabledBorders)
 {
 #if HAVE_X11
-
     if (!m_isX11) {
         return;
     }
-
     //shadow-top
     if (enabledBorders & Plasma::FrameSvg::TopBorder) {
         data[enabledBorders] << reinterpret_cast<unsigned long>(createPixmap(m_shadowPixmaps[0]));
@@ -398,16 +403,13 @@ void PanelShadows::Private::setupData(Plasma::FrameSvg::EnabledBorders enabledBo
     } else {
         data[enabledBorders] << reinterpret_cast<unsigned long>(createPixmap(m_emptyCornerPix));
     }
-
 #endif
 
     int left, top, right, bottom = 0;
 
     QSize marginHint;
-
     if (enabledBorders & Plasma::FrameSvg::TopBorder) {
         marginHint = q->elementSize(QStringLiteral("shadow-hint-top-margin"));
-
         if (marginHint.isValid()) {
             top = marginHint.height();
         } else {
@@ -419,7 +421,6 @@ void PanelShadows::Private::setupData(Plasma::FrameSvg::EnabledBorders enabledBo
 
     if (enabledBorders & Plasma::FrameSvg::RightBorder) {
         marginHint = q->elementSize(QStringLiteral("shadow-hint-right-margin"));
-
         if (marginHint.isValid()) {
             right = marginHint.width();
         } else {
@@ -431,7 +432,6 @@ void PanelShadows::Private::setupData(Plasma::FrameSvg::EnabledBorders enabledBo
 
     if (enabledBorders & Plasma::FrameSvg::BottomBorder) {
         marginHint = q->elementSize(QStringLiteral("shadow-hint-bottom-margin"));
-
         if (marginHint.isValid()) {
             bottom = marginHint.height();
         } else {
@@ -443,7 +443,6 @@ void PanelShadows::Private::setupData(Plasma::FrameSvg::EnabledBorders enabledBo
 
     if (enabledBorders & Plasma::FrameSvg::LeftBorder) {
         marginHint = q->elementSize(QStringLiteral("shadow-hint-left-margin"));
-
         if (marginHint.isValid()) {
             left = marginHint.width();
         } else {
@@ -459,18 +458,16 @@ void PanelShadows::Private::setupData(Plasma::FrameSvg::EnabledBorders enabledBo
 void PanelShadows::Private::freeX11Pixmaps()
 {
 #if HAVE_X11
-
     if (!m_isX11) {
         return;
     }
 
     auto *display = QX11Info::display();
-
     if (!display) {
         return;
     }
 
-    for (const QPixmap &pixmap : m_shadowPixmaps) {
+    foreach (const QPixmap &pixmap, m_shadowPixmaps) {
         if (!pixmap.isNull()) {
             XFreePixmap(display, reinterpret_cast<unsigned long>(createPixmap(pixmap)));
         }
@@ -479,31 +476,24 @@ void PanelShadows::Private::freeX11Pixmaps()
     if (!m_emptyCornerPix.isNull()) {
         XFreePixmap(display, reinterpret_cast<unsigned long>(createPixmap(m_emptyCornerPix)));
     }
-
     if (!m_emptyCornerBottomPix.isNull()) {
         XFreePixmap(display, reinterpret_cast<unsigned long>(createPixmap(m_emptyCornerBottomPix)));
     }
-
     if (!m_emptyCornerLeftPix.isNull()) {
         XFreePixmap(display, reinterpret_cast<unsigned long>(createPixmap(m_emptyCornerLeftPix)));
     }
-
     if (!m_emptyCornerRightPix.isNull()) {
         XFreePixmap(display, reinterpret_cast<unsigned long>(createPixmap(m_emptyCornerRightPix)));
     }
-
     if (!m_emptyCornerTopPix.isNull()) {
         XFreePixmap(display, reinterpret_cast<unsigned long>(createPixmap(m_emptyCornerTopPix)));
     }
-
     if (!m_emptyVerticalPix.isNull()) {
         XFreePixmap(display, reinterpret_cast<unsigned long>(createPixmap(m_emptyVerticalPix)));
     }
-
     if (!m_emptyHorizontalPix.isNull()) {
         XFreePixmap(display, reinterpret_cast<unsigned long>(createPixmap(m_emptyHorizontalPix)));
     }
-
 #endif
 }
 
@@ -532,14 +522,15 @@ void PanelShadows::Private::freeWaylandBuffers()
 
 void PanelShadows::Private::updateShadow(const QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders)
 {
-#if HAVE_X11
+    if (!hasShadows()) {
+        return;
+    }
 
+#if HAVE_X11
     if (m_isX11) {
         updateShadowX11(window, enabledBorders);
     }
-
 #endif
-
     if (m_wayland.manager) {
         updateShadowWayland(window, enabledBorders);
     }
@@ -548,7 +539,6 @@ void PanelShadows::Private::updateShadow(const QWindow *window, Plasma::FrameSvg
 void PanelShadows::Private::updateShadowX11(const QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders)
 {
 #if HAVE_X11
-
     if (m_shadowPixmaps.isEmpty()) {
         setupPixmaps();
     }
@@ -571,18 +561,14 @@ void PanelShadows::Private::updateShadowWayland(const QWindow *window, Plasma::F
     if (!m_wayland.shmPool) {
         return;
     }
-
     if (m_wayland.shadowBuffers.isEmpty()) {
         setupPixmaps();
     }
-
     // TODO: check whether the surface already has a shadow
-    KWayland::Client::Surface *surface = KWayland::Client::Surface::fromWindow(const_cast<QWindow *>(window));
-
+    KWayland::Client::Surface *surface = KWayland::Client::Surface::fromWindow(const_cast<QWindow*>(window));
     if (!surface) {
         return;
     }
-
     auto shadow = m_wayland.manager->createShadow(surface, surface);
 
     //shadow-top
@@ -630,11 +616,9 @@ void PanelShadows::Private::updateShadowWayland(const QWindow *window, Plasma::F
     }
 
     QSize marginHint;
-    QMarginsF margins = QMarginsF(1, 1, 1, 1);
-
+    QMarginsF margins;
     if (enabledBorders & Plasma::FrameSvg::TopBorder) {
         marginHint = q->elementSize(QStringLiteral("shadow-hint-top-margin"));
-
         if (marginHint.isValid()) {
             margins.setTop(marginHint.height());
         } else {
@@ -644,7 +628,6 @@ void PanelShadows::Private::updateShadowWayland(const QWindow *window, Plasma::F
 
     if (enabledBorders & Plasma::FrameSvg::RightBorder) {
         marginHint = q->elementSize(QStringLiteral("shadow-hint-right-margin"));
-
         if (marginHint.isValid()) {
             margins.setRight(marginHint.width());
         } else {
@@ -654,7 +637,6 @@ void PanelShadows::Private::updateShadowWayland(const QWindow *window, Plasma::F
 
     if (enabledBorders & Plasma::FrameSvg::BottomBorder) {
         marginHint = q->elementSize(QStringLiteral("shadow-hint-bottom-margin"));
-
         if (marginHint.isValid()) {
             margins.setBottom(marginHint.height());
         } else {
@@ -664,7 +646,6 @@ void PanelShadows::Private::updateShadowWayland(const QWindow *window, Plasma::F
 
     if (enabledBorders & Plasma::FrameSvg::LeftBorder) {
         marginHint = q->elementSize(QStringLiteral("shadow-hint-left-margin"));
-
         if (marginHint.isValid()) {
             margins.setLeft(marginHint.width());
         } else {
@@ -679,25 +660,21 @@ void PanelShadows::Private::updateShadowWayland(const QWindow *window, Plasma::F
 
 void PanelShadows::Private::clearShadow(const QWindow *window)
 {
-    if (!static_cast<const QSurface *>(window)->surfaceHandle()) {
+    if (!static_cast<const QSurface*>(window)->surfaceHandle()) {
         qWarning() << "Cannot clear shadow from window without native surface!";
         return;
     }
-
 #if HAVE_X11
-
     if (m_isX11) {
         clearShadowX11(window);
     }
-
 #endif
-
     if (m_wayland.manager) {
         clearShadowWayland(window);
     }
 }
 
-void PanelShadows::Private::clearShadowX11(const QWindow *window)
+void PanelShadows::Private::clearShadowX11(const QWindow* window)
 {
 #if HAVE_X11
     Display *dpy = QX11Info::display();
@@ -708,19 +685,17 @@ void PanelShadows::Private::clearShadowX11(const QWindow *window)
 
 void PanelShadows::Private::clearShadowWayland(const QWindow *window)
 {
-    KWayland::Client::Surface *surface = KWayland::Client::Surface::fromWindow(const_cast<QWindow *>(window));
-
+    KWayland::Client::Surface *surface = KWayland::Client::Surface::fromWindow(const_cast<QWindow*>(window));
     if (!surface) {
         return;
     }
-
     m_wayland.manager->removeShadow(surface);
     surface->commit(KWayland::Client::Surface::CommitFlag::None);
 }
 
-bool PanelShadows::enabled() const
+bool PanelShadows::Private::hasShadows() const
 {
-    return hasElement(QStringLiteral("shadow-left"));
+     return q->hasShadows();
 }
 
 void PanelShadows::Private::setupWaylandIntegration()
@@ -728,28 +703,25 @@ void PanelShadows::Private::setupWaylandIntegration()
     if (!KWindowSystem::isPlatformWayland()) {
         return;
     }
-
     using namespace KWayland::Client;
     ConnectionThread *connection = ConnectionThread::fromApplication(q);
-
     if (!connection) {
         return;
     }
-
     Registry *registry = new Registry(q);
     registry->create(connection);
     connect(registry, &Registry::shadowAnnounced, q,
-    [this, registry](quint32 name, quint32 version) {
-        m_wayland.manager = registry->createShadowManager(name, version, q);
-        updateShadows();
-    }, Qt::QueuedConnection
-           );
+        [this, registry] (quint32 name, quint32 version) {
+            m_wayland.manager = registry->createShadowManager(name, version, q);
+            updateShadows();
+        }, Qt::QueuedConnection
+    );
     connect(registry, &Registry::shmAnnounced, q,
-    [this, registry](quint32 name, quint32 version) {
-        m_wayland.shmPool = registry->createShmPool(name, version, q);
-        updateShadows();
-    }, Qt::QueuedConnection
-           );
+        [this, registry] (quint32 name, quint32 version) {
+            m_wayland.shmPool = registry->createShmPool(name, version, q);
+            updateShadows();
+        }, Qt::QueuedConnection
+    );
     registry->setup();
     connection->roundtrip();
 }
