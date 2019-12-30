@@ -2,7 +2,7 @@ project(lattedock)
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 set(CMAKE_CXX_STANDARD 14)
-set(VERSION 0.9.6)
+set(VERSION 0.9.7)
 set(AUTHOR "Michail Vourlakos, Smith Ar")
 set(EMAIL "mvourlakos@gmail.com, audoban@openmailbox.org")
 set(WEBSITE "https://userbase.kde.org/LatteDock")
