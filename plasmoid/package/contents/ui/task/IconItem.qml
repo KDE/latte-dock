@@ -216,7 +216,8 @@ Item{
             states: [
                 State{
                     name: "*"
-                    when:  !launcherAnimation.running && !newWindowAnimation.running && !taskItem.inAddRemoveAnimation && !fastRestoreAnimation.running
+                    //! since qt 5.14 default state can not use "when" property
+                    //! it breaks restoring transitions otherwise
 
                     AnchorChanges{
                         target:iconImageBuffer;
@@ -246,7 +247,7 @@ Item{
 
                 State{
                     name: "animating"
-                    when: (launcherAnimation.running || newWindowAnimation.running || fastRestoreAnimation.running) && !taskItem.inAddRemoveAnimation
+                    when: !taskItem.inAddRemoveAnimation && (launcherAnimation.running || newWindowAnimation.running || fastRestoreAnimation.running)
 
                     AnchorChanges{
                         target:iconImageBuffer;
@@ -658,7 +659,8 @@ Item{
     states: [
         State{
             name: "*"
-            when:  !taskItem.isDragged
+            //! since qt 5.14 default state can not use "when" property
+            //! it breaks restoring transitions otherwise
         },
 
         State{
