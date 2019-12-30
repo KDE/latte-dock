@@ -1,5 +1,23 @@
 #**CHANGELOG**#
 
+#### Version 0.9.6
+
+* qt5.14 - restore properly the dragged tasks to normal mode [kde#415333]
+* qt5.14 - release properly the edit mode animation state [kde#412940]
+* do not wait for dock to show in order to activate based on position global shortcuts. The new approach is smart enough in order to identify applets with popups in order to wait for them to slide-in first. [kde#415417]
+* dynamic touching of views enabled isBusy state for them only when they are really touching. If one of them is hidden from its visibility mode then isBusy states should not be applied [kde#415347]
+* wayland: fix crash from unavailable windows
+* set a minimum length of screen edge activation area to 25% of the entire screen length this view is attached at.
+* fix crash from unloading views by disconnecting their sensitive signals early in the chain
+* show proper tooltip for installed indicators in Effects page
+* update panelshadows to latest plasma code
+* improve behavior of the AutomaticItemSizer
+* improve publish tasks geometries code
+* accept only left click as valid action when clicking neutral areas of applets, that is areas that even though the visually belong to the applet, the applet does not have any access to it.
+* do not require a window to intersect with the view in order to be considered maximized
+* consider windows as maximized only when both MaxHorizontally and MaxVertically are both applied
+* remove various deprecated code
+
 #### Version 0.9.5
 
 * improve dynamic background animated transitions [Adrien Brunelat]
