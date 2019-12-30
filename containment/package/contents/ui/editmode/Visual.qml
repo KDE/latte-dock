@@ -318,7 +318,8 @@ Item{
     states: [
         State{
             name: "*"
-            when:  !plasmaEditMode
+            //! since qt 5.14 default state can not use "when" property
+            //! it breaks restoring transitions otherwise
         },
 
         State{
