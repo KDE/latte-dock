@@ -1,5 +1,9 @@
 #**CHANGELOG**#
 
+#### Version 0.9.7
+
+* fix built with qt 5.9 [kde#415715]
+
 #### Version 0.9.6
 
 * qt5.14 - restore properly the dragged tasks to normal mode [kde#415333]
