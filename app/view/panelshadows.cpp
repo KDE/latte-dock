@@ -262,7 +262,7 @@ Qt::HANDLE PanelShadows::Private::createPixmap(const QPixmap& source)
         _connection, XCB_IMAGE_FORMAT_Z_PIXMAP, pixmap, _gc,
         image.width(), image.height(), 0, 0,
         0, 32,
-        image.sizeInBytes(), image.constBits());
+        image.byteCount(), image.constBits());
 
     return (Qt::HANDLE)pixmap;
 
