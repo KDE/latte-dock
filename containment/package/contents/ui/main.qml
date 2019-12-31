@@ -408,7 +408,16 @@ Item {
     property int thickMargin: thickMarginFactor * root.iconSize
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
-    property int screenEdgeMargin: !screenEdgeMarginEnabled || hideThickScreenGap ? 0 : plasmoid.configuration.screenEdgeMargin
+    property int screenEdgeMargin: {
+        //! is used for window geometry calculations
+        if (!screenEdgeMarginEnabled
+                || (hideThickScreenGap && localScreenEdgeMargin === 0)) {
+                /*window geometry is updated after the local screen margin animation was zeroed*/
+            return 0;
+        }
+
+        return plasmoid.configuration.screenEdgeMargin;
+    }
     property int localScreenEdgeMargin: (screenEdgeMarginEnabled && behaveAsPlasmaPanel)
                                         || !screenEdgeMarginEnabled
                                         || hideThickScreenGap ? 0 : plasmoid.configuration.screenEdgeMargin
@@ -631,6 +640,15 @@ Item {
     }
 
     Behavior on lengthExtMargin {
+        NumberAnimation {
+            duration: 0.8 * root.animationTime
+            easing.type: Easing.OutCubic
+        }
+    }
+
+    Behavior on localScreenEdgeMargin {
+        enabled: !behaveAsPlasmaPanel
+
         NumberAnimation {
             duration: 0.8 * root.animationTime
             easing.type: Easing.OutCubic
