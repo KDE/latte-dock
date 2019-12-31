@@ -52,6 +52,7 @@ public:
     void removeIndicator(QString id);
 
     bool pluginExists(QString id) const;
+    bool isCustomType(const QString &id) const;
 
     QString uiPath(QString pluginName) const;
 
@@ -63,11 +64,14 @@ public:
     //! imports an indicator compressed file
     static Latte::Types::ImportExportState importIndicatorFile(QString compressedFile);
 signals:
-    void customPluginsChanged();
-    void pluginsUpdated();
+    void indicatorChanged(const QString &indicatorId);
+    void indicatorRemoved(const QString &indicatorId);
 
 private:
-    void reload();
+    void reload(const QString &indicatorPath);
+
+    void removeIndicatorRecords(const QString &path);
+    void discoverNewIndicators(const QString &main);
 
 private:
     QHash<QString, KPluginMetaData> m_plugins;
@@ -77,7 +81,9 @@ private:
     QStringList m_customPluginNames;
     QStringList m_customLocalPluginIds;
 
-    QStringList m_watchedPaths;
+    //! plugins paths
+    QStringList m_mainPaths;
+    QStringList m_indicatorsPaths;
 
     QWidget *m_parentWidget;
 };

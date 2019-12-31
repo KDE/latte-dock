@@ -298,7 +298,8 @@ signals:
 
     //! pass on signals to children in order to avoid crashes when View is recreated or destroyed
     void availableScreenRectChangedForViewParts();
-    void customPluginsChanged();
+    void indicatorPluginChanged(const QString &indicatorId);
+    void indicatorPluginRemoved(const QString &indicatorId);
 
     //! are used to trigger the Corona relevant signals and in that
     //! way we can disable any such signaling all together, e.g. through disconnectSensitiveSignals()

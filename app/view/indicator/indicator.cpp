@@ -54,17 +54,19 @@ Indicator::Indicator(Latte::View *parent)
 
     connect(m_view, &Latte::View::latteTasksArePresentChanged, this, &Indicator::latteTasksArePresentChanged);
 
-    connect(m_view, &Latte::View::customPluginsChanged, [this]() {
-        if (m_corona && !m_corona->indicatorFactory()->pluginExists(m_type)) {
+    connect(m_view, &Latte::View::indicatorPluginChanged, [this](const QString &indicatorId) {
+        if (m_corona && m_corona->indicatorFactory()->isCustomType(indicatorId)) {
+            emit customPluginsChanged();
+        }
+    });
+
+    connect(m_view, &Latte::View::indicatorPluginRemoved, [this](const QString &indicatorId) {
+        if (m_corona && m_type == indicatorId && !m_corona->indicatorFactory()->pluginExists(indicatorId)) {
             setType("org.kde.latte.default");
         }
 
-        emit customPluginsChanged();
-    });
-
-    connect(this, &Indicator::pluginChanged, [this]() {
-        if ((m_type != "org.kde.latte.default") && m_type != "org.kde.latte.plasma") {
-            setCustomType(m_type);
+        if (m_corona && m_corona->indicatorFactory()->isCustomType(indicatorId)) {
+            emit customPluginsChanged();
         }
     });
 
@@ -265,6 +267,10 @@ void Indicator::load(QString type)
 
         QString path = m_metadata.fileName();
         m_pluginPath = path.remove("metadata.desktop");
+
+        if (m_corona && m_corona->indicatorFactory()->isCustomType(type)) {
+            setCustomType(type);
+        }
 
         updateScheme();
         updateComponent();

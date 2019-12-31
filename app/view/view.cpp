@@ -253,9 +253,19 @@ void View::init()
 
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
 
-    connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::pluginsUpdated, this, &View::reloadSource);
     //! View sends this signal in order to avoid crashes from ViewPart::Indicator when the view is recreated
-    connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::customPluginsChanged, this, &View::customPluginsChanged);
+    connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::indicatorChanged, this, [&](const QString &indicatorId) {
+        emit indicatorPluginChanged(indicatorId);
+    });
+
+    connect(this, &View::indicatorPluginChanged, this, [&](const QString &indicatorId) {
+        if (m_indicator && m_indicator->type() == indicatorId) {
+            reloadSource();
+        }
+    });
+
+    connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::indicatorRemoved, this, &View::indicatorPluginRemoved);
+
     connect(m_corona, &Latte::Corona::availableScreenRectChanged, this, &View::availableScreenRectChangedForViewParts);
 
     ///!!!!!
