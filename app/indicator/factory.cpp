@@ -210,8 +210,6 @@ void Factory::removeIndicatorRecords(const QString &path)
 
         m_indicatorsPaths.removeAll(path);
 
-        qDebug() << " indicator removed 1 :: " << pluginId;
-
         KDirWatch::self()->removeDir(path);
 
         //! delay informing the removal in case it is just an update
