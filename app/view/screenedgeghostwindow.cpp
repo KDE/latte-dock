@@ -44,7 +44,9 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 {
     m_corona = qobject_cast<Latte::Corona *>(view->corona());
 
-    setColor(QColor(Qt::transparent));
+    bool debugEdge = (qApp->arguments().contains("-d") && qApp->arguments().contains("--kwinedges"));
+
+    setColor(debugEdge ? QColor("purple") : QColor(Qt::transparent));
     setDefaultAlphaBuffer(true);
 
     setFlags(Qt::FramelessWindowHint
