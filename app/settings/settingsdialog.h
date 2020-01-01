@@ -33,6 +33,9 @@
 #include <QStandardItemModel>
 #include <QTimer>
 
+// KDE
+#include <KHelpMenu>
+
 namespace Ui {
 class SettingsDialog;
 }
@@ -144,6 +147,8 @@ private:
 
     QTimer m_activityClosedTimer;
     bool m_blockDeleteOnReject{false};
+
+    KHelpMenu *m_helpMenu{nullptr};
 
     Latte::Corona *m_corona{nullptr};
 

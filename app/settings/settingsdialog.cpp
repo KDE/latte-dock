@@ -156,12 +156,17 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     menuBar->addMenu(fileMenu);
 
     QMenu *layoutMenu = new QMenu(i18n("Layout"), menuBar);
-    //rightAlignedMenuBar->addMenu(helpMenu);
     menuBar->addMenu(layoutMenu);
 
-    QMenu *helpMenu = new QMenu(i18n("Help"), menuBar);
+    //! Help menu
+    m_helpMenu = new KHelpMenu(menuBar);
+    menuBar->addMenu(m_helpMenu->menu());
     //rightAlignedMenuBar->addMenu(helpMenu);
-    menuBar->addMenu(helpMenu);
+
+    //! hide help menu actions that are not used
+    m_helpMenu->action(KHelpMenu::menuHelpContents)->setVisible(false);
+    m_helpMenu->action(KHelpMenu::menuWhatsThis)->setVisible(false);
+
 
     QAction *screensAction = fileMenu->addAction(i18n("Sc&reens..."));
     screensAction->setIcon(QIcon::fromTheme("document-properties"));
@@ -179,9 +184,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     QAction *infoLayoutAction = layoutMenu->addAction(i18nc("layout information","&Information..."));
     infoLayoutAction->setIcon(QIcon::fromTheme("document-properties"));
     infoLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
-
-    QAction *aboutAction = helpMenu->addAction(i18n("About Latte"));
-    aboutAction->setIcon(QIcon::fromTheme("latte-dock"));
 
     //! RTL support for labels in preferences
     if (qApp->layoutDirection() == Qt::RightToLeft) {
@@ -239,7 +241,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         updateApplyButtonsState();
     });
 
-    connect(aboutAction, &QAction::triggered, m_corona, &Latte::Corona::aboutApplication);
     connect(quitAction, &QAction::triggered, this, [&]() {
         close();
         m_corona->closeApplication();
