@@ -140,6 +140,11 @@ int main(int argc, char **argv)
     overloadedIconsOption.setDescription(QStringLiteral("Show visual indicators for debugging overloaded applets icons (Only useful to devs)."));
     overloadedIconsOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(overloadedIconsOption);
+
+    QCommandLineOption edgesOption(QStringList() << QStringLiteral("kwinedges"));
+    graphicsOption.setDescription(QStringLiteral("Show visual window indicators for hidden screen edge windows."));
+    graphicsOption.setFlags(QCommandLineOption::HiddenFromHelp);
+    parser.addOption(edgesOption);
     //! END: Hidden options
 
     parser.process(app);
