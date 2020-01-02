@@ -695,9 +695,13 @@ Item{
         }
 
         PropertyAnimation {
-            target: layoutsContainer
-            property: root.isVertical ? "x" : "y"
+            target: !root.behaveAsPlasmaPanel ? layoutsContainer : latteView.positioner
+            property: !root.behaveAsPlasmaPanel ? (root.isVertical ? "x" : "y") : "slideOffset"
             to: {
+                if (root.behaveAsPlasmaPanel) {
+                    return slidingOutToPos;
+                }
+
                 if (Latte.WindowSystem.compositingActive) {
                     return slidingOutToPos;
                 } else {
@@ -752,8 +756,8 @@ Item{
         }
 
         PropertyAnimation {
-            target: layoutsContainer
-            property: root.isVertical ? "x" : "y"
+            target: !root.behaveAsPlasmaPanel ? layoutsContainer : latteView.positioner
+            property: !root.behaveAsPlasmaPanel ? (root.isVertical ? "x" : "y") : "slideOffset"
             to: 0
             duration: manager.animationSpeed
             easing.type: Easing.OutQuad

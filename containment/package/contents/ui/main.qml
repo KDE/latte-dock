@@ -85,7 +85,7 @@ Item {
         }
 
         return (visibilityManager.panelIsBiggerFromIconSize && (maxZoomFactor === 1.0)
-                && (latteView.visibility.mode === Latte.Types.AlwaysVisible || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
+                //&& (latteView.visibility.mode === Latte.Types.AlwaysVisible || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
                 && (plasmoid.configuration.panelPosition === Latte.Types.Justify)
                 && !root.editMode);
     }

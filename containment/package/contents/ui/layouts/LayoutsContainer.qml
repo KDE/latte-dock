@@ -50,6 +50,10 @@ Item{
         target: layoutsContainer
         property: "x"
         value: {
+            if (root.behaveAsPlasmaPanel) {
+                return 0;
+            }
+
             if ( latteView && root.isHorizontal && useMaxLength ){
                 return ((latteView.width/2) - (root.maxLength/2) + root.offset);
             } else {
@@ -78,6 +82,10 @@ Item{
         target: layoutsContainer
         property: "y"
         value: {
+            if (root.behaveAsPlasmaPanel) {
+                return 0;
+            }
+
             if ( latteView && root.isVertical && useMaxLength ) {
                 return ((latteView.height/2) - (root.maxLength/2) + root.offset);
             } else {

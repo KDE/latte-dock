@@ -49,6 +49,8 @@ class Positioner: public QObject
     Q_OBJECT
 
     Q_PROPERTY(int currentScreenId READ currentScreenId NOTIFY currentScreenChanged)
+    //! animating window slide
+    Q_PROPERTY(int slideOffset READ slideOffset WRITE setSlideOffset NOTIFY slideOffsetChanged)
     Q_PROPERTY(QString currentScreenName READ currentScreenName NOTIFY currentScreenChanged)
 
 public:
@@ -57,6 +59,9 @@ public:
 
     int currentScreenId() const;
     QString currentScreenName() const;
+
+    int slideOffset() const;
+    void setSlideOffset(int offset);
 
     bool inLocationChangeAnimation();
     void setScreenToFollow(QScreen *scr, bool updateScreenId = true);
@@ -77,6 +82,7 @@ signals:
     void currentScreenChanged();
     void edgeChanged();
     void screenGeometryChanged();
+    void slideOffsetChanged();
     void windowSizeChanged();
 
     //! these two signals are used from config ui and containment ui
@@ -109,6 +115,8 @@ private:
 
 private:
     bool m_inDelete{false};
+
+    int m_slideOffset{0};
 
     //! it is used in order to enforce X11 to never miss window geometry
     QRect m_validGeometry;

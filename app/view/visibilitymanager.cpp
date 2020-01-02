@@ -374,9 +374,7 @@ void VisibilityManager::setIsBelowLayer(bool below)
 
     m_isBelowLayer = below;
 
-    if (m_mode == Latte::Types::WindowsCanCover) {
-        updateGhostWindowState();
-    }
+    updateGhostWindowState();
 
     emit isBelowLayerChanged();
 }
@@ -398,7 +396,9 @@ void VisibilityManager::setIsHidden(bool isHidden)
 
     m_isHidden = isHidden;
 
-    updateGhostWindowState();
+    if (!m_latteView->behaveAsPlasmaPanel()) {
+        updateGhostWindowState();
+    }
 
     emit isHiddenChanged();
 }
