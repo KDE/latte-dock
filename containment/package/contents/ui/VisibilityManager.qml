@@ -238,7 +238,7 @@ Item{
         target: latteView && latteView.effects ? latteView.effects : null
         property: "drawShadows"
         when: latteView && latteView.effects
-        value: root.drawShadowsExternal && (!root.inStartup || inForceHiding || inTempHiding)
+        value: root.drawShadowsExternal && (!root.inStartup || inForceHiding || inTempHiding) && !(latteView && latteView.visibility.isHidden)
     }
 
     Binding{
