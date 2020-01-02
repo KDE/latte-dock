@@ -474,7 +474,7 @@ QRegion Corona::availableScreenRegion(int id) const
     return availableScreenRegionWithCriteria(id);
 }
 
-QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) const
+QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout, bool includeExternalPanels) const
 {
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
@@ -492,8 +492,9 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
         }
     }
 
-    if (!screen)
+    if (!screen) {
         return QRegion();
+    }
 
     QList<Latte::View *> views;
 
@@ -520,7 +521,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
         views = generic->latteViews();
     }
 
-    QRegion available(screen->geometry());
+    QRegion available = includeExternalPanels ? screen->availableGeometry() : screen->geometry();
 
     for (const auto *view : views) {
         if (view && view->containment() && view->screen() == screen
@@ -616,7 +617,7 @@ QRect Corona::availableScreenRect(int id) const
     return availableScreenRectWithCriteria(id);
 }
 
-QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> modes, QList<Plasma::Types::Location> edges) const
+QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> modes, QList<Plasma::Types::Location> edges, bool includeExternalPanels) const
 {
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
@@ -632,14 +633,15 @@ QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> m
         }
     }
 
-    if (!screen)
+    if (!screen) {
         return {};
+    }
 
     bool allModes = modes.isEmpty();
 
     bool allEdges = edges.isEmpty();
 
-    auto available = screen->geometry();
+    auto available = includeExternalPanels ? screen->availableGeometry() : screen->geometry();
 
     Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
     QList<Latte::View *> views;
