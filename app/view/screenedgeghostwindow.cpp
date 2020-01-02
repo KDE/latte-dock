@@ -186,6 +186,10 @@ KWayland::Client::PlasmaShellSurface *ScreenEdgeGhostWindow::surface()
 
 void ScreenEdgeGhostWindow::updateGeometry()
 {
+    if (m_latteView->positioner()->slideOffset() != 0) {
+        return;
+    }
+
     QRect newGeometry;
     int thickness{2};
 

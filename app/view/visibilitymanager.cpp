@@ -396,9 +396,7 @@ void VisibilityManager::setIsHidden(bool isHidden)
 
     m_isHidden = isHidden;
 
-    if (!m_latteView->behaveAsPlasmaPanel()) {
-        updateGhostWindowState();
-    }
+    updateGhostWindowState();
 
     emit isHiddenChanged();
 }
@@ -479,7 +477,13 @@ void VisibilityManager::updateGhostWindowState()
             if (m_mode == Latte::Types::WindowsCanCover) {
                 m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isBelowLayer && !m_containsMouse);
             } else {
-                m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden && !m_containsMouse);
+                bool viewIsFloatingAndMouseOnEdge =
+                        m_latteView->behaveAsPlasmaPanel()
+                        && m_latteView->screenEdgeMarginEnabled()
+                        && m_latteView->screenEdgeMargin()>0
+                        && m_edgeGhostWindow->containsMouse();
+
+                m_wm->setEdgeStateFor(m_edgeGhostWindow, (m_isHidden && !m_containsMouse) || viewIsFloatingAndMouseOnEdge);
             }
         } else {
             m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
@@ -552,7 +556,7 @@ void VisibilityManager::updateHiddenState()
     switch (m_mode) {
     case Types::AutoHide:
     case Types::WindowsCanCover:
-        raiseView(m_containsMouse);
+        raiseView(m_containsMouse || (m_edgeGhostWindow && m_edgeGhostWindow->containsMouse()));
         break;
 
     case Types::DodgeActive:
