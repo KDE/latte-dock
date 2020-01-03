@@ -51,6 +51,7 @@ Item{
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
     property bool editAnimationEnded: false
     property bool editAnimationInFullThickness: false
+    property bool editAnimationRunning: false
     property bool plasmaEditMode: plasmoid.userConfiguring
     property bool inEditMode: false
 
@@ -350,6 +351,7 @@ Item{
                 id:normalAnimationTransition
                 ScriptAction{
                     script:{
+                        editVisual.editAnimationRunning = true;
                         editVisual.inEditMode = true;
                         imageTiler.opacity = 0
                         editVisual.editAnimationEnded = false;
@@ -395,6 +397,7 @@ Item{
                         updateEffectsArea();
                         automaticItemSizer.updateAutomaticIconSize();
                         visibilityManager.updateMaskArea();
+                        editVisual.editAnimationRunning = false;
                     }
                 }
             }
@@ -405,6 +408,7 @@ Item{
             SequentialAnimation{
                 ScriptAction{
                     script: {
+                        editVisual.editAnimationRunning = true;
                         editVisual.editAnimationInFullThickness = false;
                         //! remove kwin effects when starting the animation
                         latteView.effects.rect = Qt.rect(-1, -1, 0, 0);
@@ -450,6 +454,7 @@ Item{
                         if (visibilityManager.inTempHiding) {
                             visibilityManager.sendSlidingOutAnimationEnded();
                         }
+                        editVisual.editAnimationRunning = false;
                     }
                 }
             }
