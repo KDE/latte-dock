@@ -235,6 +235,18 @@ Item{
         onLocationChanged: initializeEditPosition();
     }
 
+    onInEditModeChanged: {
+        if (inEditMode) {
+            latteView.setBlockHiding(true);
+        } else {
+            latteView.setBlockHiding(false);
+
+            if (latteView.visibility.isHidden) {
+                latteView.visibility.mustBeShown();
+            }
+        }
+    }
+
     onRootThicknessChanged: {
         initializeEditPosition();
     }

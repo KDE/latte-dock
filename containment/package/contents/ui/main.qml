@@ -84,8 +84,8 @@ Item {
             return false;
         }
 
-        return (visibilityManager.panelIsBiggerFromIconSize && (maxZoomFactor === 1.0)
-                //&& (latteView.visibility.mode === Latte.Types.AlwaysVisible || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
+        return (visibilityManager.panelIsBiggerFromIconSize
+                && (maxZoomFactor === 1.0)
                 && (plasmoid.configuration.panelPosition === Latte.Types.Justify)
                 && !root.editMode);
     }
@@ -874,8 +874,6 @@ Item {
         // console.debug("user configuring", plasmoid.userConfiguring)
 
         if (plasmoid.userConfiguring) {
-            latteView.setBlockHiding(true);
-
             //  console.log("applets------");
             for (var i = 0; i < plasmoid.applets.length; ++i) {
                 //    console.log("applet:"+i);
@@ -894,12 +892,6 @@ Item {
                 dragOverlay.visible = true;
             }
         } else {
-            latteView.setBlockHiding(false);
-
-            if (latteView.visibility.isHidden) {
-                latteView.visibility.mustBeShown();
-            }
-
             if (dragOverlay) {
                 dragOverlay.visible = false;
                 dragOverlay.destroy();
