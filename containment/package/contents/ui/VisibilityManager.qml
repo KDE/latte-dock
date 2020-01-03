@@ -376,7 +376,10 @@ Item{
     function slotHideDockDuringLocationChange() {
         inTempHiding = true;
         blockUpdateMask = true;
-        slotMustBeHide();
+
+        if(!slidingAnimationAutoHiddenOut.running) {
+            slidingAnimationAutoHiddenOut.init();
+        }
     }
 
     function slotShowDockAfterLocationChange() {
@@ -742,7 +745,7 @@ Item{
         }
 
         function init() {
-            if (!latteView.visibility.blockHiding) {
+            if (inTempHiding || !latteView.visibility.blockHiding) {
                 start();
             }
         }
