@@ -423,9 +423,9 @@ void VisibilityManager::updateGhostWindowState()
                                  && m_latteView->layout()->isCurrent()));
 
         if (inCurrentLayout) {
-            m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
+            m_wm->setActiveEdge(m_edgeGhostWindow, m_isHidden);
         } else {
-            m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
+            m_wm->setActiveEdge(m_edgeGhostWindow, false);
         }
     }
 }
@@ -746,9 +746,9 @@ void VisibilityManager::createEdgeGhostWindow()
 
             if (m_edgeGhostWindow) {
                 if (inCurrentLayout) {
-                    m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
+                    m_wm->setActiveEdge(m_edgeGhostWindow, m_isHidden);
                 } else {
-                    m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
+                    m_wm->setActiveEdge(m_edgeGhostWindow, false);
                 }
             }
         });

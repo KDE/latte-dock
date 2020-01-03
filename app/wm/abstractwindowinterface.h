@@ -96,7 +96,7 @@ public:
     virtual void skipTaskBar(const QDialog &dialog) const = 0;
     virtual void slideWindow(QWindow &view, Slide location) const = 0;
     virtual void enableBlurBehind(QWindow &view) const = 0;
-    virtual void setEdgeStateFor(QWindow *view, bool active) const = 0;
+    virtual void setActiveEdge(QWindow *view, bool active) const = 0;
 
     virtual void requestActivate(WindowId wid) const = 0;
     virtual void requestClose(WindowId wid) const = 0;

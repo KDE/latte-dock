@@ -240,7 +240,7 @@ void XWindowInterface::enableBlurBehind(QWindow &view) const
     KWindowEffects::enableBlurBehind(view.winId());
 }
 
-void XWindowInterface::setEdgeStateFor(QWindow *view, bool active) const
+void XWindowInterface::setActiveEdge(QWindow *view, bool active) const
 {
     ViewPart::ScreenEdgeGhostWindow *window = qobject_cast<ViewPart::ScreenEdgeGhostWindow *>(view);
 
