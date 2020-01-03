@@ -86,7 +86,7 @@ Item {
 
         return (visibilityManager.panelIsBiggerFromIconSize
                 && (maxZoomFactor === 1.0)
-                /*&& (plasmoid.configuration.panelPosition === Latte.Types.Justify)*/
+                && (plasmoid.configuration.panelPosition === Latte.Types.Justify)
                 && !root.editMode
                 && !visibilityManager.inLocationAnimation);
     }

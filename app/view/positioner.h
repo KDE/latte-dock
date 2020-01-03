@@ -49,6 +49,7 @@ class Positioner: public QObject
     Q_OBJECT
 
     Q_PROPERTY(bool inLocationAnimation READ inLocationAnimation NOTIFY inLocationAnimationChanged)
+    Q_PROPERTY(bool inSlideAnimation READ inSlideAnimation WRITE setInSlideAnimation NOTIFY inSlideAnimationChanged)
 
     Q_PROPERTY(int currentScreenId READ currentScreenId NOTIFY currentScreenChanged)
     //! animating window slide
@@ -66,6 +67,9 @@ public:
     void setSlideOffset(int offset);
 
     bool inLocationAnimation();
+
+    bool inSlideAnimation() const;
+    void setInSlideAnimation(bool active);
 
     void setScreenToFollow(QScreen *scr, bool updateScreenId = true);
 
@@ -103,6 +107,7 @@ signals:
 
     void onHideWindowsForSlidingOut();
     void inLocationAnimationChanged();
+    void inSlideAnimationChanged();
 
 private slots:
     void screenChanged(QScreen *screen);
@@ -122,6 +127,7 @@ private:
 private:
     bool m_inDelete{false};
     bool m_inLocationAnimation{false};
+    bool m_inSlideAnimation{false};
 
     int m_slideOffset{0};
 

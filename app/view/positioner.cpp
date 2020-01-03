@@ -343,7 +343,7 @@ void Positioner::screenChanged(QScreen *scr)
 
 void Positioner::syncGeometry()
 {
-    if (!(m_view->screen() && m_view->containment()) || m_inDelete || m_slideOffset!=0) {
+    if (!(m_view->screen() && m_view->containment()) || m_inDelete || m_slideOffset!=0 || inSlideAnimation()) {
         return;
     }
 
@@ -716,6 +716,21 @@ void Positioner::initSignalingForLocationChangeSliding()
 bool Positioner::inLocationAnimation()
 {
     return ((m_goToLocation != Plasma::Types::Floating) || (m_moveToLayout != "") || m_goToScreen);
+}
+
+bool Positioner::inSlideAnimation() const
+{
+    return m_inSlideAnimation;
+}
+
+void Positioner::setInSlideAnimation(bool active)
+{
+    if (m_inSlideAnimation == active) {
+        return;
+    }
+
+    m_inSlideAnimation = active;
+    emit inSlideAnimationChanged();
 }
 
 void Positioner::updateInLocationAnimation()

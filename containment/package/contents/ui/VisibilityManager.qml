@@ -819,4 +819,71 @@ Item{
             start();
         }
     }
+
+    //! Slides Animations for FLOATING+BEHAVEASPLASMAPANEL
+/*  DISABLED because they dont create a smooth transition
+
+    SequentialAnimation{
+        id: slidingInRealFloating
+
+        ScriptAction{
+            script: {
+                latteView.positioner.inSlideAnimation = true;
+            }
+        }
+
+        PropertyAnimation {
+            target: latteView.positioner
+            property: "slideOffset"
+            to: 0
+            duration: manager.animationSpeed
+            easing.type: Easing.OutQuad
+        }
+
+        ScriptAction{
+            script: {
+                latteView.positioner.inSlideAnimation = false;
+            }
+        }
+    }
+
+    SequentialAnimation{
+        id: slidingOutRealFloating
+
+        ScriptAction{
+            script: {
+                latteView.positioner.inSlideAnimation = true;
+            }
+        }
+
+        PropertyAnimation {
+            target: latteView.positioner
+            property: "slideOffset"
+            to: plasmoid.configuration.screenEdgeMargin
+            duration: manager.animationSpeed
+            easing.type: Easing.OutQuad
+        }
+
+        ScriptAction{
+            script: {
+                latteView.positioner.inSlideAnimation = false;
+            }
+        }
+    }
+
+    Connections {
+        target: root
+        onHideThickScreenGapChanged: {
+            if (root.behaveAsPlasmaPanel && !latteView.visibility.isHidden) {
+                if (hideThickScreenGap) {
+                    slidingInRealFloating.stop();
+                    slidingOutRealFloating.start();
+                } else {
+                    slidingOutRealFloating.stop();
+                    slidingInRealFloating.start();
+                }
+            }
+        }
+    }*/
+
 }
