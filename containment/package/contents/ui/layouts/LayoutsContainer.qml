@@ -50,6 +50,10 @@ Item{
         target: layoutsContainer
         property: "x"
         value: {
+            if (visibilityManager.inLocationAnimation) {
+                return;
+            }
+
             if (root.behaveAsPlasmaPanel) {
                 return 0;
             }
@@ -82,6 +86,10 @@ Item{
         target: layoutsContainer
         property: "y"
         value: {
+            if (visibilityManager.inLocationAnimation) {
+                return;
+            }
+
             if (root.behaveAsPlasmaPanel) {
                 return 0;
             }
