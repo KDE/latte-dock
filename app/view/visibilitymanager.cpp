@@ -477,13 +477,15 @@ void VisibilityManager::updateGhostWindowState()
             if (m_mode == Latte::Types::WindowsCanCover) {
                 m_wm->setActiveEdge(m_edgeGhostWindow, m_isBelowLayer && !m_containsMouse);
             } else {
-                bool viewIsFloatingAndMouseOnEdge =
+                bool viewIsFloatingAndContainsMouse =
                         m_latteView->behaveAsPlasmaPanel()
                         && m_latteView->screenEdgeMarginEnabled()
                         && m_latteView->screenEdgeMargin()>0
-                        && m_edgeGhostWindow->containsMouse();
+                        && (m_edgeGhostWindow->containsMouse() || m_containsMouse);
 
-                m_wm->setActiveEdge(m_edgeGhostWindow, (m_isHidden && !m_containsMouse) || viewIsFloatingAndMouseOnEdge);
+                bool activated = (m_isHidden && !m_containsMouse) || viewIsFloatingAndContainsMouse;
+
+                m_wm->setActiveEdge(m_edgeGhostWindow, activated);
             }
         } else {
             m_wm->setActiveEdge(m_edgeGhostWindow, false);

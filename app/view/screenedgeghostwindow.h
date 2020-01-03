@@ -71,6 +71,7 @@ public:
     bool containsMouse() const;
 
     int location();
+    int thickness() const;
 
     void hideWithMask();
     void showWithMask();
@@ -100,6 +101,9 @@ private:
     bool m_delayedContainsMouse{false};
     bool m_containsMouse{false};
     bool m_inDelete{false};
+
+    int m_thickness{2};
+
     QRect m_calculatedGeometry;
 
     QTimer m_delayedMouseTimer;

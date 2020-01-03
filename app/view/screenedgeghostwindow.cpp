@@ -174,6 +174,11 @@ int ScreenEdgeGhostWindow::location()
     return (int)m_latteView->location();
 }
 
+int ScreenEdgeGhostWindow::thickness() const
+{
+    return m_thickness;
+}
+
 Latte::View *ScreenEdgeGhostWindow::parentView()
 {
     return m_latteView;
@@ -191,10 +196,11 @@ void ScreenEdgeGhostWindow::updateGeometry()
     }
 
     QRect newGeometry;
-    int thickness{2};
 
     if (KWindowSystem::compositingActive()) {
-        thickness = 6;
+        m_thickness = 6;
+    } else {
+        m_thickness = 2;
     }
 
     int length{30};
@@ -213,7 +219,7 @@ void ScreenEdgeGhostWindow::updateGeometry()
     if (m_latteView->location() == Plasma::Types::BottomEdge) {
         int xF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left() - lengthDifference);
         newGeometry.setX(xF);
-        newGeometry.setY(m_latteView->screenGeometry().bottom() - thickness);
+        newGeometry.setY(m_latteView->screenGeometry().bottom() - m_thickness);
     } else if (m_latteView->location() == Plasma::Types::TopEdge) {
         int xF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left() - lengthDifference);
         newGeometry.setX(xF);
@@ -224,15 +230,15 @@ void ScreenEdgeGhostWindow::updateGeometry()
         newGeometry.setY(yF);
     } else if (m_latteView->location() == Plasma::Types::RightEdge) {
         int yF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top() - lengthDifference);
-        newGeometry.setX(m_latteView->screenGeometry().right() - thickness);
+        newGeometry.setX(m_latteView->screenGeometry().right() - m_thickness);
         newGeometry.setY(yF);
     }
 
     if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
         newGeometry.setWidth(length);
-        newGeometry.setHeight(thickness + 1);
+        newGeometry.setHeight(m_thickness + 1);
     } else {
-        newGeometry.setWidth(thickness + 1);
+        newGeometry.setWidth(m_thickness + 1);
         newGeometry.setHeight(length);
     }
 
