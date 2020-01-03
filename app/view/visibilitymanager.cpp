@@ -475,7 +475,7 @@ void VisibilityManager::updateGhostWindowState()
 
         if (inCurrentLayout) {
             if (m_mode == Latte::Types::WindowsCanCover) {
-                m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isBelowLayer && !m_containsMouse);
+                m_wm->setActiveEdge(m_edgeGhostWindow, m_isBelowLayer && !m_containsMouse);
             } else {
                 bool viewIsFloatingAndMouseOnEdge =
                         m_latteView->behaveAsPlasmaPanel()
@@ -483,10 +483,10 @@ void VisibilityManager::updateGhostWindowState()
                         && m_latteView->screenEdgeMargin()>0
                         && m_edgeGhostWindow->containsMouse();
 
-                m_wm->setEdgeStateFor(m_edgeGhostWindow, (m_isHidden && !m_containsMouse) || viewIsFloatingAndMouseOnEdge);
+                m_wm->setActiveEdge(m_edgeGhostWindow, (m_isHidden && !m_containsMouse) || viewIsFloatingAndMouseOnEdge);
             }
         } else {
-            m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
+            m_wm->setActiveEdge(m_edgeGhostWindow, false);
         }
     }
 }
@@ -809,9 +809,9 @@ void VisibilityManager::createEdgeGhostWindow()
 
             if (m_edgeGhostWindow) {
                 if (inCurrentLayout) {
-                    m_wm->setEdgeStateFor(m_edgeGhostWindow, m_isHidden);
+                    m_wm->setActiveEdge(m_edgeGhostWindow, m_isHidden);
                 } else {
-                    m_wm->setEdgeStateFor(m_edgeGhostWindow, false);
+                    m_wm->setActiveEdge(m_edgeGhostWindow, false);
                 }
             }
         });

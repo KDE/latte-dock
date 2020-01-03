@@ -430,7 +430,7 @@ void WaylandInterface::enableBlurBehind(QWindow &view) const
     KWindowEffects::enableBlurBehind(view.winId());
 }
 
-void WaylandInterface::setEdgeStateFor(QWindow *view, bool active) const
+void WaylandInterface::setActiveEdge(QWindow *view, bool active) const
 {
     ViewPart::ScreenEdgeGhostWindow *window = qobject_cast<ViewPart::ScreenEdgeGhostWindow *>(view);
 

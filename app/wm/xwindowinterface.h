@@ -75,7 +75,7 @@ public:
     WindowId winIdFor(QString appId, QRect geometry) const override;   
     AppData appDataFor(WindowId wid) const override;
 
-    void setEdgeStateFor(QWindow *view, bool active) const override;
+    void setActiveEdge(QWindow *view, bool active) const override;
 
     void switchToNextVirtualDesktop() const override;
     void switchToPreviousVirtualDesktop() const override;
