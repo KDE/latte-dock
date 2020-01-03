@@ -274,7 +274,7 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
-                    enabled: plasmoid.configuration.durationTime > 0
+                    enabled: plasmoid.configuration.animationsEnabled
 
                     PlasmaComponents.Label {
                         text: i18n("Zoom On Hover")
@@ -284,7 +284,6 @@ PlasmaComponents.Page {
                     LatteComponents.Slider {
                         id: zoomSlider
                         Layout.fillWidth: true
-                        enabled: plasmoid.configuration.animationsEnabled
                         value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
                         from: 1
                         to: 2
