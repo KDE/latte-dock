@@ -108,6 +108,13 @@ void Positioner::init()
     //! connections
     connect(this, &Positioner::screenGeometryChanged, this, &Positioner::syncGeometry);
 
+    connect(this, &Positioner::hideDockDuringLocationChangeStarted, this, &Positioner::updateInLocationAnimation);
+    connect(this, &Positioner::hideDockDuringScreenChangeStarted, this, &Positioner::updateInLocationAnimation);
+    connect(this, &Positioner::hideDockDuringMovingToLayoutStarted, this, &Positioner::updateInLocationAnimation);
+    connect(this, &Positioner::showDockAfterLocationChangeFinished, this, &Positioner::updateInLocationAnimation);
+    connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::updateInLocationAnimation);
+    connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::updateInLocationAnimation);
+
     connect(m_view, &QQuickWindow::xChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::yChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::widthChanged, this, &Positioner::validateDockGeometry);
@@ -706,9 +713,21 @@ void Positioner::initSignalingForLocationChangeSliding()
     });
 }
 
-bool Positioner::inLocationChangeAnimation()
+bool Positioner::inLocationAnimation()
 {
     return ((m_goToLocation != Plasma::Types::Floating) || (m_moveToLayout != "") || m_goToScreen);
+}
+
+void Positioner::updateInLocationAnimation()
+{
+    bool inLocationAnimation = ((m_goToLocation != Plasma::Types::Floating) || (m_moveToLayout != "") || m_goToScreen);
+
+    if (m_inLocationAnimation == inLocationAnimation) {
+        return;
+    }
+
+    m_inLocationAnimation = inLocationAnimation;
+    emit inLocationAnimationChanged();
 }
 
 void Positioner::hideDockDuringLocationChange(int goToLocation)
