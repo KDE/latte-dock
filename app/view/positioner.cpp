@@ -382,7 +382,19 @@ void Positioner::syncGeometry()
             auto latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
             int fixedScreen = m_view->onPrimary() ? latteCorona->screenPool()->primaryScreenId() : m_view->containment()->screen();
 
-            freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, layoutName);
+            QList<Types::Visibility> modes({Latte::Types::AlwaysVisible,
+                                            Latte::Types::DodgeActive,
+                                            Latte::Types::DodgeMaximized,
+                                            Latte::Types::DodgeAllWindows,
+                                            Latte::Types::WindowsGoBelow,
+                                            Latte::Types::WindowsCanCover,
+                                            Latte::Types::WindowsAlwaysCover});
+
+            QList<Plasma::Types::Location> edges({Plasma::Types::TopEdge,
+                                                  Plasma::Types::BottomEdge});
+
+            freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, layoutName, modes, edges);
+
             maximumRect = maximumNormalGeometry();
             QRegion availableRegion = freeRegion.intersected(maximumRect);
             availableScreenRect = freeRegion.intersected(maximumRect).boundingRect();
