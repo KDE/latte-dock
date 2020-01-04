@@ -309,12 +309,24 @@ MouseArea{
     Item{
         id:separatorItem
 
-        anchors.centerIn: parent
+        anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+
+        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
+
+        anchors.bottomMargin: (root.position === PlasmaCore.Types.BottomPositioned) ? root.screenEdgeMargin + root.thickMargin : 0
+        anchors.topMargin: (root.position === PlasmaCore.Types.TopPositioned) ? root.screenEdgeMargin + root.thickMargin : 0
+        anchors.leftMargin: (root.position === PlasmaCore.Types.LeftPositioned) ? root.screenEdgeMargin + root.thickMargin : 0
+        anchors.rightMargin: (root.position === PlasmaCore.Types.RightPositioned) ? root.screenEdgeMargin + root.thickMargin : 0
+
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
 
-        width: root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.lengthMargins: 1
-        height: !root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.lengthMargins: 1
+        width: root.vertical ? root.iconSize : ((root.dragSource || root.editMode) ? 5+root.lengthMargins: 1)
+        height: !root.vertical ? root.iconSize : ((root.dragSource || root.editMode) ? 5+root.lengthMargins: 1)
 
         property bool forceHiddenState: false
 
@@ -394,6 +406,8 @@ MouseArea{
             height: !root.vertical ? root.iconSize - 4 : 1
             color: enforceLattePalette ? latteBridge.palette.textColor : theme.textColor
         }
+
+
     }
 
     ///Shadow in tasks
