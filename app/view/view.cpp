@@ -1001,27 +1001,29 @@ void View::setLayout(Layout::GenericLayout *layout)
                 }
             });
 
-            connectionsLayout << connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
+            connectionsLayout << connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {               
+                applyActivitiesToWindows();
+                emit activitiesChanged();
+
                 if (m_layout && !inDelete() & !isVisible()) {
                     show();
-                    applyActivitiesToWindows();
                     //qDebug() << "View:: Enforce reshow from timer 1...";
-                    emit activitiesChanged();
                     emit forcedShown();
-                } else {
+                } else {                   
                     //qDebug() << "View:: No needed reshow from timer 1...";
                 }
             });
 
             connectionsLayout << connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
-                if (m_layout && !inDelete() && !isVisible()) {
+                applyActivitiesToWindows();
+                emit activitiesChanged();
+
+                if (m_layout && !inDelete() & !isVisible()) {
                     show();
-                    applyActivitiesToWindows();
-                    //qDebug() << "View:: Enforce reshow from timer 2...";
-                    emit activitiesChanged();
+                    //qDebug() << "View:: Enforce reshow from timer 1...";
                     emit forcedShown();
                 } else {
-                    //qDebug() << "View:: No needed reshow from timer 2...";
+                    //qDebug() << "View:: No needed reshow from timer 1...";
                 }
             });
 
