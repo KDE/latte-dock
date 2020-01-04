@@ -765,7 +765,7 @@ void Windows::updateAvailableScreenGeometries()
     for (const auto view : m_views.keys()) {
         if (m_views[view]->enabled()) {
             int currentScrId = view->positioner()->currentScreenId();
-            QRect tempAvailableScreenGeometry = m_wm->corona()->availableScreenRectWithCriteria(currentScrId, {Types::AlwaysVisible}, {});
+            QRect tempAvailableScreenGeometry = m_wm->corona()->availableScreenRectWithCriteria(currentScrId, QString(), {Types::AlwaysVisible}, {});
 
             if (tempAvailableScreenGeometry != m_views[view]->availableScreenGeometry()) {
                 m_views[view]->setAvailableScreenGeometry(tempAvailableScreenGeometry);
