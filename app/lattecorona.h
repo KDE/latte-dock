@@ -62,6 +62,7 @@ class PlasmaShell;
 }
 
 namespace Latte {
+class CentralLayout;
 class ScreenPool;
 class GlobalShortcuts;
 class UniversalSettings;
@@ -110,12 +111,15 @@ public:
     //! arguments mean that all choices are accepted in calculations. includeExternalPanels means that
     //! external panels should be considered in the calculations
     QRect availableScreenRectWithCriteria(int id,
+                                          QString forLayout = QString(),
                                           QList<Types::Visibility> modes = QList<Types::Visibility>(),
                                           QList<Plasma::Types::Location> edges = QList<Plasma::Types::Location>(),
                                           bool includeExternalPanels = false) const;
 
     QRegion availableScreenRegionWithCriteria(int id,
                                               QString forLayout = QString(),
+                                              QList<Types::Visibility> modes = QList<Types::Visibility>(),
+                                              QList<Plasma::Types::Location> edges = QList<Plasma::Types::Location>(),
                                               bool includeExternalPanels = false) const;
 
     int screenForContainment(const Plasma::Containment *containment) const override;
@@ -189,6 +193,10 @@ private:
 
     QStringList containmentsIds();
     QStringList appletsIds();
+
+    CentralLayout *centralLayout(QString name) const;
+
+private:
 
     bool m_activitiesStarting{true};
     bool m_defaultLayoutOnStartup{false}; //! this is used to enforce loading the default layout on startup

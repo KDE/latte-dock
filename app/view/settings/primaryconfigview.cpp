@@ -230,7 +230,7 @@ void PrimaryConfigView::deleteSecondaryWindow()
 void PrimaryConfigView::updateAvailableScreenGeometry(View *origin)
 {    
     int currentScrId = m_latteView->positioner()->currentScreenId();
-    m_availableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, {}, {}, true);
+    m_availableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, QString(), {}, {}, true);
 
     emit availableScreenGeometryChanged();
 }

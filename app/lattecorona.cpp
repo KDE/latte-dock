@@ -476,63 +476,65 @@ QRect Corona::screenGeometry(int id) const
     return screen->geometry();
 }
 
+CentralLayout *Corona::centralLayout(QString name) const
+{
+    CentralLayout *result{nullptr};
+
+    if (name.isEmpty()) {
+        result = m_layoutsManager->currentLayout();
+    } else {
+        CentralLayout *tempCentral = m_layoutsManager->synchronizer()->centralLayout(name);
+
+        if (!tempCentral) {
+            //! Identify best active layout to be used for metrics calculations.
+            //! Active layouts are always take into account their shared layouts for their metrics
+            SharedLayout *sharedLayout = m_layoutsManager->synchronizer()->sharedLayout(name);
+
+            if (sharedLayout) {
+                tempCentral = sharedLayout->currentCentralLayout();
+            }
+        }
+
+        if (tempCentral) {
+            result = tempCentral;
+        }
+    }
+
+    return result;
+}
+
 QRegion Corona::availableScreenRegion(int id) const
 {
     return availableScreenRegionWithCriteria(id);
 }
 
-QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout, bool includeExternalPanels) const
+QRegion Corona::availableScreenRegionWithCriteria(int id,
+                                                  QString forLayout,
+                                                  QList<Types::Visibility> modes,
+                                                  QList<Plasma::Types::Location> edges,
+                                                  bool includeExternalPanels) const
 {
-    const auto screens = qGuiApp->screens();
-    const QScreen *screen{qGuiApp->primaryScreen()};
-
-    QString screenName;
-
-    if (m_screenPool->hasId(id)) {
-        screenName = m_screenPool->connector(id);
-    }
-
-    for(auto scr : screens) {
-        if (scr->name() == screenName) {
-            screen = scr;
-            break;
-        }
-    }
+    const QScreen *screen = m_screenPool->screenForId(id);
+    CentralLayout *layout = centralLayout(forLayout);
 
     if (!screen) {
-        return QRegion();
-    }
-
-    QList<Latte::View *> views;
-
-    if (forLayout.isEmpty()) {
-        Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
-        views = currentLayout->latteViews();
-    } else {
-        Layout::GenericLayout *generic = m_layoutsManager->synchronizer()->centralLayout(forLayout);
-
-        if (!generic) {
-            //! Identify best active layout to be used for metrics calculations.
-            //! Active layouts are always take into account their shared layouts for their metrics
-            SharedLayout *sharedLayout = m_layoutsManager->synchronizer()->sharedLayout(forLayout);
-
-            if (sharedLayout) {
-                generic = sharedLayout->currentCentralLayout();
-            }
-        }
-
-        if (!generic) {
-            generic = m_layoutsManager->currentLayout();
-        }
-
-        views = generic->latteViews();
+        return {};
     }
 
     QRegion available = includeExternalPanels ? screen->availableGeometry() : screen->geometry();
 
+    if (!layout) {
+        return available;
+    }
+
+    bool allModes = modes.isEmpty();
+    bool allEdges = edges.isEmpty();
+    QList<Latte::View *> views = layout->latteViews();
+
     for (const auto *view : views) {
         if (view && view->containment() && view->screen() == screen
-                && view->visibility() && (view->visibility()->mode() != Latte::Types::AutoHide)) {
+                && ((allEdges || edges.contains(view->location()))
+                    && (allModes || (view->visibility() && modes.contains(view->visibility()->mode()))))) {
             int realThickness = view->normalThickness();
 
             // Usually availableScreenRect is used by the desktop,
@@ -685,38 +687,28 @@ QRect Corona::availableScreenRect(int id) const
     return availableScreenRectWithCriteria(id);
 }
 
-QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> modes, QList<Plasma::Types::Location> edges, bool includeExternalPanels) const
+QRect Corona::availableScreenRectWithCriteria(int id,
+                                              QString forLayout,
+                                              QList<Types::Visibility> modes,
+                                              QList<Plasma::Types::Location> edges,
+                                              bool includeExternalPanels) const
 {
-    const auto screens = qGuiApp->screens();
-    const QScreen *screen{qGuiApp->primaryScreen()};
-
-    if (m_screenPool->hasId(id)) {
-        QString scrName = m_screenPool->connector(id);
-
-        for(const auto scr : screens) {
-            if (scr->name() == scrName) {
-                screen = scr;
-                break;
-            }
-        }
-    }
+    const QScreen *screen = m_screenPool->screenForId(id);
+    CentralLayout *layout = centralLayout(forLayout);
 
     if (!screen) {
         return {};
     }
 
-    bool allModes = modes.isEmpty();
+    QRect available = includeExternalPanels ? screen->availableGeometry() : screen->geometry();
 
-    bool allEdges = edges.isEmpty();
-
-    auto available = includeExternalPanels ? screen->availableGeometry() : screen->geometry();
-
-    Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
-    QList<Latte::View *> views;
-
-    if (currentLayout) {
-        views = currentLayout->latteViews();
+    if (!layout) {
+        return available;
     }
+
+    bool allModes = modes.isEmpty();
+    bool allEdges = edges.isEmpty();
+    QList<Latte::View *> views = layout->latteViews();
 
     for (const auto *view : views) {
         if (view && view->containment() && view->screen() == screen
