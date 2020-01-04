@@ -232,6 +232,8 @@ void View::init()
     //! used in order to disconnect it when it should NOT be called because it creates crashes
     connect(this, &View::availableScreenRectChangedFrom, m_corona, &Latte::Corona::availableScreenRectChangedFrom);
     connect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
+    connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFromSlot);
+    connect(m_corona, &Latte::Corona::availableScreenRectChanged, this, &View::availableScreenRectChangedForViewParts);
 
     connect(this, &View::byPassWMChanged, this, &View::saveConfig);
     connect(this, &View::isPreferredForShortcutsChanged, this, &View::saveConfig);
@@ -265,8 +267,6 @@ void View::init()
     });
 
     connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::indicatorRemoved, this, &View::indicatorPluginRemoved);
-
-    connect(m_corona, &Latte::Corona::availableScreenRectChanged, this, &View::availableScreenRectChangedForViewParts);
 
     ///!!!!!
     rootContext()->setContextProperty(QStringLiteral("latteView"), this);
@@ -306,8 +306,8 @@ void View::disconnectSensitiveSignals()
 {
     disconnect(this, &View::availableScreenRectChangedFrom, m_corona, &Latte::Corona::availableScreenRectChangedFrom);
     disconnect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
-    disconnect(m_corona, &Latte::Corona::availableScreenRectChanged, this, &View::availableScreenRectChangedForViewParts);
     disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFromSlot);
+    disconnect(m_corona, &Latte::Corona::availableScreenRectChanged, this, &View::availableScreenRectChangedForViewParts);
 
     setLayout(nullptr);
 
@@ -494,6 +494,7 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
     //! this is needed in order to update correctly the screenGeometries
     if (visibility() && corona() && visibility()->mode() == Types::AlwaysVisible) {
         //! main use of BYPASSCKECKS is from Positioner when the view changes screens
+
         emit availableScreenRectChangedFrom(this);
         emit availableScreenRegionChangedFrom(this);
     }
