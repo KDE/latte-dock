@@ -57,8 +57,16 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     m_corona = qobject_cast<Latte::Corona *>(view->corona());
     m_wm = m_corona->wm();
 
-    connect(this, &VisibilityManager::slideInFinished, this, &VisibilityManager::updateHiddenState);
     connect(this, &VisibilityManager::slideOutFinished, this, &VisibilityManager::updateHiddenState);
+    connect(this, &VisibilityManager::slideInFinished, this, [&]() {
+        if (m_latteView && !m_latteView->isFloatingWindow()) {
+            //! after slide-out the real floating windows should ignore their criteria
+            //! until containsMouse from view has been set to true and false to afterwards
+            updateHiddenState();
+        } else {
+            m_timerHide.stop();
+        }
+    });
 
     connect(this, &VisibilityManager::enableKWinEdgesChanged, this, &VisibilityManager::updateKWinEdgesSupport);
     connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateKWinEdgesSupport);
@@ -477,13 +485,13 @@ void VisibilityManager::updateGhostWindowState()
             if (m_mode == Latte::Types::WindowsCanCover) {
                 m_wm->setActiveEdge(m_edgeGhostWindow, m_isBelowLayer && !m_containsMouse);
             } else {
-                bool viewIsFloatingAndContainsMouse =
+               /* bool viewIsFloatingAndContainsMouse =
                         m_latteView->behaveAsPlasmaPanel()
                         && m_latteView->screenEdgeMarginEnabled()
                         && m_latteView->screenEdgeMargin()>0
-                        && (m_edgeGhostWindow->containsMouse() || m_containsMouse);
+                        && (m_edgeGhostWindow->containsMouse() || m_containsMouse);*/
 
-                bool activated = (m_isHidden && !m_containsMouse) || viewIsFloatingAndContainsMouse;
+                bool activated = (m_isHidden && !m_containsMouse); /*|| viewIsFloatingAndContainsMouse;*/
 
                 m_wm->setActiveEdge(m_edgeGhostWindow, activated);
             }

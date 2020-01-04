@@ -643,6 +643,11 @@ void View::setInEditMode(bool edit)
     emit inEditModeChanged();
 }
 
+bool View::isFloatingWindow() const
+{
+    return m_behaveAsPlasmaPanel && m_screenEdgeMarginEnabled && (m_screenEdgeMargin>0);
+}
+
 bool View::isPreferredForShortcuts() const
 {
     return m_isPreferredForShortcuts;
