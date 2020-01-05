@@ -59,7 +59,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     connect(this, &VisibilityManager::slideOutFinished, this, &VisibilityManager::updateHiddenState);
     connect(this, &VisibilityManager::slideInFinished, this, [&]() {
-        if (m_latteView && !m_latteView->isFloatingWindow()) {
+        if (m_latteView && !m_latteView->screenEdgeMarginEnabled()) {
             //! after slide-out the real floating windows should ignore their criteria
             //! until containsMouse from view has been set to true and false to afterwards
             updateHiddenState();

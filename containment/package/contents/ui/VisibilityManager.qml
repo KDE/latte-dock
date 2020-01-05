@@ -41,6 +41,15 @@ Item{
     property bool previousNormalState : false // this is only for debugging purposes
     property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelThickness >= (root.iconSize + root.thickMargin))
 
+    property bool maskIsFloating: !root.behaveAsPlasmaPanel
+                                  && !root.editMode
+                                  && screenEdgeMarginEnabled
+                                  && !plasmoid.configuration.fittsLawIsRequested
+                                  && !inSlidingIn
+                                  && !inSlidingOut
+
+    property int maskFloatedGap: maskIsFloating ? Math.max(0, root.localScreenEdgeMargin - root.panelShadow) : 0
+
     property int animationSpeed: Latte.WindowSystem.compositingActive ?
                                      (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : root.appliedDurationTime * 1.4 * units.longDuration) : 0
 
@@ -321,6 +330,8 @@ Item{
         onThemeChanged: latteView.effects.forceMaskRedraw();
     }
 
+    onMaskIsFloatingChanged: updateMaskArea();
+
     onNormalStateChanged: {
         if (normalState) {
             automaticItemSizer.updateAutomaticIconSize();
@@ -330,7 +341,7 @@ Item{
 
     onThicknessZoomOriginalChanged: {
         updateMaskArea();
-    }
+    }    
 
     function slotContainsMouseChanged() {
         if(latteView.visibility.containsMouse) {
@@ -469,6 +480,10 @@ Item{
                     tempThickness = Latte.WindowSystem.compositingActive ? thicknessZoom : thicknessNormal;
                 }
 
+                if (maskIsFloating) {
+                    tempThickness = tempThickness - maskFloatedGap;
+                }
+
                 if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                     tempThickness = thicknessAutoHidden;
                 }
@@ -476,11 +491,21 @@ Item{
                 //configure x,y based on plasmoid position and root.panelAlignment(Alignment)
                 if ((plasmoid.location === PlasmaCore.Types.BottomEdge) || (plasmoid.location === PlasmaCore.Types.TopEdge)) {
                     if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                        localY = latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges ?
-                                    latteView.height + tempThickness : latteView.height - tempThickness;
+                        if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
+                            localY = latteView.height + tempThickness;
+                        } else if (maskIsFloating) {
+                            localY = latteView.height - tempThickness - maskFloatedGap;
+                        } else {
+                            localY = latteView.height - tempThickness;
+                        }
                     } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                        localY = latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges ?
-                                    -tempThickness : 0;
+                        if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
+                            localY = -tempThickness;
+                        } else if (maskIsFloating) {
+                            localY = maskFloatedGap;
+                        } else {
+                            localY = 0;
+                        }
                     }
 
                     if (noCompositingEdit) {
@@ -496,11 +521,21 @@ Item{
                     }
                 } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
                     if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                        localX = latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges ?
-                                    -tempThickness : 0;
+                        if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
+                            localX = -tempThickness;
+                        } else if (maskIsFloating) {
+                            localX = maskFloatedGap;
+                        } else {
+                            localX = 0;
+                        }
                     } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        localX = latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges ?
-                                    latteView.width + tempThickness : latteView.width - tempThickness;
+                        if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
+                            localX = latteView.width + tempThickness;
+                        } else if (maskIsFloating) {
+                            localX = latteView.width - tempThickness - maskFloatedGap;
+                        } else {
+                            localX = latteView.width - tempThickness;
+                        }
                     }
 
                     if (noCompositingEdit) {
@@ -516,6 +551,8 @@ Item{
                     }
                 }
             } else {
+                // !inNormalState
+
                 if(root.isHorizontal)
                     tempLength = Screen.width; //screenGeometry.width;
                 else
@@ -538,15 +575,30 @@ Item{
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                         tempThickness = Latte.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
                     } else {
-                        tempThickness = thicknessZoomOriginal;
+                        tempThickness = !maskIsFloating ? thicknessZoomOriginal : thicknessZoomOriginal - maskFloatedGap;
                     }
                 }
 
                 //configure the x,y position based on thickness
-                if(plasmoid.location === PlasmaCore.Types.RightEdge)
-                    localX = Math.max(0,latteView.width - tempThickness);
-                else if(plasmoid.location === PlasmaCore.Types.BottomEdge)
-                    localY = Math.max(0,latteView.height - tempThickness);
+                if(plasmoid.location === PlasmaCore.Types.RightEdge) {
+                    localX = !maskIsFloating ? latteView.width - tempThickness : latteView.width - tempThickness - maskFloatedGap;
+
+                    if (localX < 0) {
+                        tempThickness = tempThickness + localX;
+                        localX = 0;
+                    }
+                } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                    localY = !maskIsFloating ? latteView.height - tempThickness : latteView.height - tempThickness - maskFloatedGap;
+
+                    if (localY < 0) {
+                        tempThickness = tempThickness + localY;
+                        localY = 0;
+                    }
+                } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                    localY = !maskIsFloating ? 0 : maskFloatedGap;
+                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                    localX = !maskIsFloating ? 0 : maskFloatedGap;
+                }
             }
         } // end of compositing calculations
 
@@ -799,14 +851,12 @@ Item{
 
             latteView.visibility.slideInFinished();
 
-            if (!Latte.WindowSystem.compositingActive) {
-                //! this is needed in order to update dock absolute geometry correctly in the end
-                updateMaskArea();
-            }
+            //! this is needed in order to update dock absolute geometry correctly in the end AND
+            //! when a floating dock is sliding-in through masking techniques
+            updateMaskArea();
         }
 
         function init() {
-            // if (!latteView.visibility.blockHiding)
             inSlidingIn = true;
 
             if (slidingAnimationAutoHiddenOut.running) {
