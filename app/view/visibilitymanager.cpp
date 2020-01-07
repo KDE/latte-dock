@@ -58,15 +58,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     m_wm = m_corona->wm();
 
     connect(this, &VisibilityManager::slideOutFinished, this, &VisibilityManager::updateHiddenState);
-    connect(this, &VisibilityManager::slideInFinished, this, [&]() {
-        if (m_latteView && !m_latteView->screenEdgeMarginEnabled()) {
-            //! after slide-out the real floating windows should ignore their criteria
-            //! until containsMouse from view has been set to true and false to afterwards
-            updateHiddenState();
-        } else {
-            m_timerHide.stop();
-        }
-    });
+    connect(this, &VisibilityManager::slideInFinished, this, &VisibilityManager::updateHiddenState);
 
     connect(this, &VisibilityManager::enableKWinEdgesChanged, this, &VisibilityManager::updateKWinEdgesSupport);
     connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateKWinEdgesSupport);
@@ -74,6 +66,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
         connect(m_latteView, &Latte::View::byPassWMChanged, this, &VisibilityManager::updateKWinEdgesSupport);
+        connect(m_latteView, &Latte::View::screenEdgeMarginEnabledChanged, this, &VisibilityManager::updateHideTimer);
 
         connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, [&]() {
             if (m_mode == Types::AlwaysVisible && m_latteView->screen()) {
@@ -341,6 +334,11 @@ QRect VisibilityManager::acceptableStruts()
     return calcs;
 }
 
+bool VisibilityManager::floatHideInterval() const
+{
+    return (m_latteView && m_latteView->screenEdgeMarginEnabled());
+}
+
 bool VisibilityManager::raiseOnDesktop() const
 {
     return m_raiseOnDesktopChange;
@@ -453,19 +451,39 @@ void VisibilityManager::setTimerShow(int msec)
 
 int VisibilityManager::timerHide() const
 {
-    return m_timerHide.interval();
+    if (floatHideInterval()) {
+        return m_floatHideInterval;
+    } else {
+        return m_normalHideInterval;
+    }
 }
 
 void VisibilityManager::setTimerHide(int msec)
 {
-    int interval = qMax(HIDEMINIMUMINTERVAL, msec);
+    int newInterval = qMax(HIDEMINIMUMINTERVAL, msec);
+    int curInterval = !floatHideInterval()  ? m_normalHideInterval : m_floatHideInterval;
 
-    if (m_timerHide.interval() == interval) {
+    if (curInterval == newInterval && m_timerHide.interval() == newInterval) {
         return;
     }
 
-    m_timerHide.setInterval(interval);
-    emit timerHideChanged();
+    if (floatHideInterval()) {
+        m_floatHideInterval = newInterval;
+    } else {
+        m_normalHideInterval = newInterval;
+    }
+
+    updateHideTimer();
+}
+
+void VisibilityManager::updateHideTimer()
+{
+    int curInterval = !floatHideInterval() ? m_normalHideInterval : m_floatHideInterval;
+
+    if (m_timerHide.interval() != curInterval) {
+        m_timerHide.setInterval(curInterval);
+        emit timerHideChanged();
+    }
 }
 
 bool VisibilityManager::supportsKWinEdges() const
@@ -644,7 +662,8 @@ void VisibilityManager::saveConfig()
 
     config.writeEntry("enableKWinEdges", m_enableKWinEdgesFromUser);
     config.writeEntry("timerShow", m_timerShow.interval());
-    config.writeEntry("timerHide", m_timerHide.interval());
+    config.writeEntry("timerHide", m_normalHideInterval);
+    config.writeEntry("timerFloatHide", m_floatHideInterval);
     config.writeEntry("raiseOnDesktopChange", m_raiseOnDesktopChange);
     config.writeEntry("raiseOnActivityChange", m_raiseOnActivityChange);
 
@@ -659,9 +678,11 @@ void VisibilityManager::restoreConfig()
 
     auto config = m_latteView->containment()->config();
     m_timerShow.setInterval(config.readEntry("timerShow", 0));
-    m_timerHide.setInterval(qMax(HIDEMINIMUMINTERVAL, config.readEntry("timerHide", 700)));
     emit timerShowChanged();
-    emit timerHideChanged();
+
+    m_normalHideInterval = qMax(HIDEMINIMUMINTERVAL, config.readEntry("timerHide", 700));
+    m_floatHideInterval = qMax(HIDEMINIMUMINTERVAL, config.readEntry("timerFloatHide", 2700));
+    updateHideTimer();
 
     m_enableKWinEdgesFromUser = config.readEntry("enableKWinEdges", true);
     emit enableKWinEdgesChanged();

@@ -554,6 +554,8 @@ PlasmaComponents.Page {
                             Layout.preferredWidth: width
                             text: latteView.visibility.timerHide
 
+                            maxValue: 6000
+
                             onValueChanged: {
                                 latteView.visibility.timerHide = value
                             }

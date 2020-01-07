@@ -143,6 +143,8 @@ private slots:
     //! KWin Edges Support functions
     void updateKWinEdgesSupport();
 
+    void updateHideTimer();
+
 private:
     void setContainsMouse(bool contains);
 
@@ -156,6 +158,8 @@ private:
 
     void updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate = false);
     void viewEventManager(QEvent *ev);
+
+    bool floatHideInterval() const;
 
     QRect acceptableStruts();
 
@@ -183,6 +187,9 @@ private:
     bool m_raiseOnDesktopChange{false};
     bool m_raiseOnActivityChange{false};
     bool m_hideNow{false};
+
+    int m_normalHideInterval{700};
+    int m_floatHideInterval{2700};
 
     QRect m_publishedStruts;
 
