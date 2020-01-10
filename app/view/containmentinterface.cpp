@@ -81,6 +81,25 @@ void ContainmentInterface::identifyMethods()
     m_showShortcutsMethod = m_mainItem->metaObject()->method(sbIndex);
 }
 
+bool ContainmentInterface::applicationLauncherHasGlobalShortcut() const
+{
+    if (!containsApplicationLauncher()) {
+        return false;
+    }
+
+    int launcherAppletId = applicationLauncherId();
+
+    const auto applets = m_view->containment()->applets();
+
+    for (auto applet : applets) {
+        if (applet->id() == launcherAppletId) {
+            return !applet->globalShortcut().isEmpty();
+        }
+    }
+
+    return false;
+}
+
 bool ContainmentInterface::applicationLauncherInPopup() const
 {
     if (!containsApplicationLauncher()) {
@@ -103,11 +122,13 @@ bool ContainmentInterface::applicationLauncherInPopup() const
 
 bool ContainmentInterface::containsApplicationLauncher() const
 {
-    return applicationLauncherId() == -1 ? false : true;
+    return (applicationLauncherId() >= 0);
 }
 
-bool ContainmentInterface::isCapableToShowShortcutBadges() const
+bool ContainmentInterface::isCapableToShowShortcutBadges()
 {
+    identifyMainItem();
+
     if (!m_view->latteTasksArePresent() && m_view->tasksPresent()) {
         return false;
     }
@@ -119,15 +140,21 @@ int ContainmentInterface::applicationLauncherId() const
 {
     const auto applets = m_view->containment()->applets();
 
+    auto launcherId{-1};
+
     for (auto applet : applets) {
         const auto provides = applet->kPackage().metadata().value(QStringLiteral("X-Plasma-Provides"));
 
         if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
-            return applet->id();
+            if (!applet->globalShortcut().isEmpty()) {
+                return applet->id();
+            } else if (launcherId == -1) {
+                launcherId = applet->id();
+            }
         }
     }
 
-    return -1;
+    return launcherId;
 }
 
 bool ContainmentInterface::updateBadgeForLatteTask(const QString identifier, const QString value)

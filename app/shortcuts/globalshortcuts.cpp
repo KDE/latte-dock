@@ -207,6 +207,33 @@ ShortcutsPart::ShortcutsTracker *GlobalShortcuts::shortcutsTracker() const
     return m_shortcutsTracker;
 }
 
+Latte::View *GlobalShortcuts::highestApplicationLauncherView(const QList<Latte::View *> &views) const
+{
+    if (views.isEmpty()) {
+        return nullptr;
+    }
+
+    Latte::View *highestPriorityView{nullptr};
+
+    for (const auto view : views) {
+        if (view->interface()->applicationLauncherHasGlobalShortcut()) {
+            highestPriorityView = view;
+            break;
+        }
+    }
+
+    if (!highestPriorityView) {
+        for (const auto view : views) {
+            if (view->interface()->containsApplicationLauncher()) {
+                highestPriorityView = view;
+                break;
+            }
+        }
+    }
+
+    return highestPriorityView;
+}
+
 //! Activate launcher menu through dbus interface
 void GlobalShortcuts::activateLauncherMenu()
 {
@@ -221,28 +248,26 @@ void GlobalShortcuts::activateLauncherMenu()
         sortedViews = currentLayout->sortedLatteViews();
     }
 
-    for (const auto view : sortedViews) {
-        if (view->interface()->containsApplicationLauncher()) {
-            if (view->visibility()->isHidden() && view->interface()->applicationLauncherInPopup()) {
-                if (!m_hideViews.contains(view)) {
-                    m_hideViews.append(view);
-                }
+    Latte::View *highestPriorityView = highestApplicationLauncherView(sortedViews);
 
-                m_lastInvokedAction = m_singleMetaAction;
-
-                view->visibility()->setBlockHiding(true);
-
-                //! delay the execution in order to show first the view
-                QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view]() {
-                    view->toggleAppletExpanded(view->interface()->applicationLauncherId());
-                });
-
-                m_hideViewsTimer.start();
-            } else {
-                view->toggleAppletExpanded(view->interface()->applicationLauncherId());
+    if (highestPriorityView) {
+        if (highestPriorityView->visibility()->isHidden() && highestPriorityView->interface()->applicationLauncherInPopup()) {
+            if (!m_hideViews.contains(highestPriorityView)) {
+                m_hideViews.append(highestPriorityView);
             }
 
-            return;
+            m_lastInvokedAction = m_singleMetaAction;
+
+            highestPriorityView->visibility()->setBlockHiding(true);
+
+            //! delay the execution in order to show first the view
+            QTimer::singleShot(APPLETEXECUTIONDELAY, [this, highestPriorityView]() {
+                highestPriorityView->toggleAppletExpanded(highestPriorityView->interface()->applicationLauncherId());
+            });
+
+            m_hideViewsTimer.start();
+        } else {
+            highestPriorityView->toggleAppletExpanded(highestPriorityView->interface()->applicationLauncherId());
         }
     }
 }
@@ -382,14 +407,8 @@ void GlobalShortcuts::showViews()
         }
     }
 
-    //! show Meta if it is not already shown for Tasks Latte View
-    if (!viewWithTasks || !viewWithTasks->interface()->containsApplicationLauncher()) {
-        for(const auto view : sortedViews) {
-            if (!viewWithMeta && m_corona->universalSettings()->kwin_metaForwardedToLatte() && view->interface()->containsApplicationLauncher()) {
-                viewWithMeta = view;
-                break;
-            }
-        }
+    if (m_corona->universalSettings()->kwin_metaForwardedToLatte()) {
+        viewWithMeta = highestApplicationLauncherView(sortedViews);
     }
 
     bool viewFound{false};
@@ -399,8 +418,12 @@ void GlobalShortcuts::showViews()
     }
 
     //! show view that contains tasks plasmoid
-    if (viewWithTasks && viewWithTasks->interface()->showShortcutBadges(true, true)) {
+    if (viewWithTasks) {
         viewFound = true;
+
+        bool showMeta = (viewWithMeta && (viewWithMeta == viewWithTasks));
+
+        viewWithTasks->interface()->showShortcutBadges(true, showMeta);
 
         if (!m_hideViewsTimer.isActive()) {
             m_hideViews.append(viewWithTasks);
@@ -510,7 +533,7 @@ void GlobalShortcuts::hideViewsTimerSlot()
             for(const auto latteView : m_hideViews) {
                 latteView->visibility()->setBlockHiding(false);
                 latteView->interface()->hideShortcutBadges();
-            }    
+            }
         }
 
         m_hideViews.clear();

@@ -62,6 +62,10 @@ Loader{
                 return;
             }
 
+            if (root.showMetaBadge && applet && applet.id === applicationLauncherId) {
+                return '\u2318';
+            }
+
             if (root.showAppletShortcutBadges) {
                 var plasmaShortcut = applet ? shortcutsEngine.appletShortcutBadge(applet.id) : "";
 
@@ -70,9 +74,7 @@ Loader{
                 }
             }
 
-            if (root.showMetaBadge && applet && applet.id === applicationLauncherId) {
-                return '\u2318';
-            } else if (appletNumberLoader.fixedIndex>=1 && appletNumberLoader.fixedIndex<20) {
+             if (appletNumberLoader.fixedIndex>=1 && appletNumberLoader.fixedIndex<20) {
                 return root.badgesForActivate[appletNumberLoader.fixedIndex-1];
             } else {
                 return "";

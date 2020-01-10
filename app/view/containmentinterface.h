@@ -43,8 +43,9 @@ public:
     virtual ~ContainmentInterface();
 
     bool applicationLauncherInPopup() const;
+    bool applicationLauncherHasGlobalShortcut() const;
     bool containsApplicationLauncher() const;
-    bool isCapableToShowShortcutBadges() const;
+    bool isCapableToShowShortcutBadges();
 
     bool activateEntry(const int index);
     bool newInstanceForEntry(const int index);
