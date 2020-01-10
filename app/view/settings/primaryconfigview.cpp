@@ -110,10 +110,9 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
         m_thicknessSyncTimer.start();
     });
 
-    connections << connect(m_latteView, &Latte::View::availableScreenRectChangedForViewParts, this, &PrimaryConfigView::updateAvailableScreenGeometry);
-
     if (m_corona) {
         connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &PrimaryConfigView::raiseDocksTemporaryChanged);
+        connections << connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &PrimaryConfigView::updateAvailableScreenGeometry);
     }
 
     if (m_latteView->layout()) {
@@ -213,8 +212,8 @@ void PrimaryConfigView::deleteSecondaryWindow()
     }
 }
 
-void PrimaryConfigView::updateAvailableScreenGeometry()
-{
+void PrimaryConfigView::updateAvailableScreenGeometry(View *origin)
+{    
     int currentScrId = m_latteView->positioner()->currentScreenId();
     m_availableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, QString(), {}, {}, true);
 

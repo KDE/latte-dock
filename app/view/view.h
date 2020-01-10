@@ -298,8 +298,6 @@ signals:
 
     void absoluteGeometryChanged(const QRect &geometry);
 
-    //! pass on signals to children in order to avoid crashes when View is recreated or destroyed
-    void availableScreenRectChangedForViewParts();
     void indicatorPluginChanged(const QString &indicatorId);
     void indicatorPluginRemoved(const QString &indicatorId);
 
