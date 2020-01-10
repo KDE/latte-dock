@@ -79,6 +79,9 @@ private:
     bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     bool viewsToHideAreValid();
 
+    //! highest priority application launcher view
+    Latte::View *highestApplicationLauncherView(const QList<Latte::View *> &views) const;
+
     QList<Latte::View *> sortedViewsList(QHash<const Plasma::Containment *, Latte::View *> *views);
 
 private:
