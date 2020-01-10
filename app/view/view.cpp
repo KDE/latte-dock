@@ -234,7 +234,6 @@ void View::init()
     connect(this, &View::availableScreenRectChangedFrom, m_corona, &Latte::Corona::availableScreenRectChangedFrom);
     connect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
     connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFromSlot);
-    connect(m_corona, &Latte::Corona::availableScreenRectChanged, this, &View::availableScreenRectChangedForViewParts);
 
     connect(this, &View::byPassWMChanged, this, &View::saveConfig);
     connect(this, &View::isPreferredForShortcutsChanged, this, &View::saveConfig);
@@ -299,7 +298,6 @@ void View::disconnectSensitiveSignals()
     disconnect(this, &View::availableScreenRectChangedFrom, m_corona, &Latte::Corona::availableScreenRectChangedFrom);
     disconnect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
     disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFromSlot);
-    disconnect(m_corona, &Latte::Corona::availableScreenRectChanged, this, &View::availableScreenRectChangedForViewParts);
 
     setLayout(nullptr);
 
