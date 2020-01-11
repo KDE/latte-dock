@@ -603,7 +603,7 @@ PlasmaComponents.Page {
         //! END: Actions
 
         //! BEGIN: Recycling
-        ColumnLayout {
+       /* ColumnLayout {
             spacing: units.smallSpacing
             visible: dialog.expertLevel
 
@@ -626,6 +626,6 @@ PlasmaComponents.Page {
                     latteView.removeTasksPlasmoid();
                 }
             }
-        }
+        }*/
     }
 }

@@ -973,16 +973,6 @@ PlasmaComponents.ContextMenu {
 
     //! BEGIN: Plasmoid actions when it isnt inside a Latte dock
     PlasmaComponents.MenuItem {
-        id: removePlasmoid
-        visible: !latteView && !plasmoid.immutable
-
-        text: plasmoid.action("remove").text
-        icon: plasmoid.action("remove").icon
-
-        onClicked: plasmoid.action("remove").trigger();
-    }
-
-    PlasmaComponents.MenuItem {
         id: configurePlasmoid
         visible: !latteView && !plasmoid.immutable
 
@@ -1017,5 +1007,20 @@ PlasmaComponents.ContextMenu {
                 tasksModel.requestClose(menu.modelIndex);
             }
         }
+    }
+
+    PlasmaComponents.MenuItem {
+        separator: true
+        visible: removePlasmoid.visible
+    }
+
+    PlasmaComponents.MenuItem {
+        id: removePlasmoid
+        visible: (latteView && latteView.editMode) || (!latteView && !plasmoid.immutable /*normal plasmoid in the desktop*/)
+
+        text: plasmoid.action("remove").text
+        icon: plasmoid.action("remove").icon
+
+        onClicked: plasmoid.action("remove").trigger();
     }
 }
