@@ -383,67 +383,6 @@ PlasmaComponents.Page {
                             readonly property int duration: 1
                         }
                     }
-
-                    ColumnLayout {
-                        spacing: 0
-                        visible: latteView.latteTasksArePresent
-
-                        LatteComponents.SubHeader {
-                            text: i18n("Tasks")
-                        }
-
-                        LatteComponents.CheckBoxesColumn {
-                            LatteComponents.CheckBox {
-                                Layout.maximumWidth: dialog.optionsWidth
-                                text: i18n("Bounce launchers when triggered")
-                                checked: plasmoid.configuration.animationLauncherBouncing
-
-                                onClicked: {
-                                    plasmoid.configuration.animationLauncherBouncing = !plasmoid.configuration.animationLauncherBouncing;
-                                }
-                            }
-
-                            LatteComponents.CheckBox {
-                                Layout.maximumWidth: dialog.optionsWidth
-                                text: i18n("Bounce tasks that need attention")
-                                checked: plasmoid.configuration.animationWindowInAttention
-
-                                onClicked: {
-                                    plasmoid.configuration.animationWindowInAttention = !plasmoid.configuration.animationWindowInAttention;
-                                }
-                            }
-
-                            LatteComponents.CheckBox {
-                                Layout.maximumWidth: dialog.optionsWidth
-                                text: i18n("Slide in and out single windows")
-                                checked: plasmoid.configuration.animationNewWindowSliding
-
-                                onClicked: {
-                                    plasmoid.configuration.animationNewWindowSliding = !plasmoid.configuration.animationNewWindowSliding;
-                                }
-                            }
-
-                            LatteComponents.CheckBox {
-                                Layout.maximumWidth: dialog.optionsWidth
-                                text: i18n("Grouped tasks bounce their new windows")
-                                checked: plasmoid.configuration.animationWindowAddedInGroup
-
-                                onClicked: {
-                                    plasmoid.configuration.animationWindowAddedInGroup = !plasmoid.configuration.animationWindowAddedInGroup;
-                                }
-                            }
-
-                            LatteComponents.CheckBox {
-                                Layout.maximumWidth: dialog.optionsWidth
-                                text: i18n("Grouped tasks slide out their closed windows")
-                                checked: plasmoid.configuration.animationWindowRemovedFromGroup
-
-                                onClicked: {
-                                    plasmoid.configuration.animationWindowRemovedFromGroup = !plasmoid.configuration.animationWindowRemovedFromGroup;
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
