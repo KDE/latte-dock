@@ -45,6 +45,7 @@
 #include <KDeclarative/KDeclarative>
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
+#include <KWindowEffects>
 #include <KWindowSystem>
 
 // Plasma
@@ -85,6 +86,12 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::saveConfig);
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::updateShowInlineProperties);
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::syncGeometry);
+
+    connect(this, &QQuickView::statusChanged, [&](QQuickView::Status status) {
+        if (status == QQuickView::Ready) {
+            updateEffects();
+        }
+    });
 
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_latteView->screen());
@@ -311,7 +318,7 @@ void PrimaryConfigView::syncGeometry()
 
     position = {xPos, yPos};
 
-    updateEnabledBorders();
+    updateEnabledBorders();    
 
     m_geometryWhenVisible = QRect(position.x(), position.y(), size.width(), size.height());
 
@@ -369,8 +376,6 @@ void PrimaryConfigView::showEvent(QShowEvent *ev)
 
     m_corona->wm()->setViewExtraFlags(*this);
     setFlags(wFlags());
-
-    m_corona->wm()->enableBlurBehind(*this);
 
     syncGeometry();
     syncSlideEffect();
@@ -700,6 +705,34 @@ void PrimaryConfigView::updateEnabledBorders()
     }
 }
 //!END borders
+
+void PrimaryConfigView::updateEffects()
+{
+    //! Don't apply any effect before the wayland surface is created under wayland
+    //! https://bugs.kde.org/show_bug.cgi?id=392890
+    if (KWindowSystem::isPlatformWayland() && !m_shellSurface) {
+        return;
+    }
+
+    QRegion mask;
+
+    QQuickItem *rootObject = this->rootObject();
+    if (rootObject) {
+        const QVariant maskProperty = rootObject->property("backgroundMask");
+        if (static_cast<QMetaType::Type>(maskProperty.type()) == QMetaType::QRegion) {
+            qDebug() << "found 2...";
+            mask = maskProperty.value<QRegion>();
+        }
+    }
+
+    if (!mask.isEmpty()) {
+        setMask(mask);
+        KWindowEffects::enableBlurBehind(winId(), true, mask);
+    } else {
+        setMask(QRect());
+        KWindowEffects::enableBlurBehind(winId(), false);
+    }
+}
 
 //!BEGIN configuration
 void PrimaryConfigView::loadConfig()

@@ -108,6 +108,7 @@ public slots:
     Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
     Q_INVOKABLE void updateLaunchersForGroup(int groupInt);
+    Q_INVOKABLE void updateEffects();
 
 signals:
     void availableScreenGeometryChanged();
