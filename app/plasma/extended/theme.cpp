@@ -232,11 +232,11 @@ void Theme::updateDefaultSchemeValues()
     KSharedConfigPtr defaultPtr = KSharedConfig::openConfig(m_defaultSchemePath);
 
     if (originalPtr && defaultPtr) {
-        KConfigGroup originalViewGroup(originalPtr, "Colors:View");
+        KConfigGroup normalWindowGroup(originalPtr, "Colors:Window");
         KConfigGroup defaultWMGroup(defaultPtr, "WM");
 
-        defaultWMGroup.writeEntry("activeBackground", originalViewGroup.readEntry("BackgroundNormal", QColor()));
-        defaultWMGroup.writeEntry("activeForeground", originalViewGroup.readEntry("ForegroundNormal", QColor()));
+        defaultWMGroup.writeEntry("activeBackground", normalWindowGroup.readEntry("BackgroundNormal", QColor()));
+        defaultWMGroup.writeEntry("activeForeground", normalWindowGroup.readEntry("ForegroundNormal", QColor()));
 
         defaultWMGroup.sync();
     }
@@ -290,7 +290,7 @@ void Theme::updateReversedSchemeValues()
 
         //! update WM group
         KConfigGroup reversedWMGroup(reversedPtr, "WM");
-        KConfigGroup originalViewGroup(originalPtr, "Colors:View");
+        KConfigGroup normalWindowGroup(originalPtr, "Colors:Window");
 
         if (reversedWMGroup.keyList().contains("activeBackground")
                 && reversedWMGroup.keyList().contains("activeForeground")
@@ -298,8 +298,8 @@ void Theme::updateReversedSchemeValues()
                 && reversedWMGroup.keyList().contains("inactiveForeground")) {
             //! reverse usual wm titlebar values
             KConfigGroup originalGroup(originalPtr, "WM");
-            reversedWMGroup.writeEntry("activeBackground", originalViewGroup.readEntry("ForegroundNormal", QColor()));
-            reversedWMGroup.writeEntry("activeForeground", originalViewGroup.readEntry("BackgroundNormal", QColor()));
+            reversedWMGroup.writeEntry("activeBackground", normalWindowGroup.readEntry("ForegroundNormal", QColor()));
+            reversedWMGroup.writeEntry("activeForeground", normalWindowGroup.readEntry("BackgroundNormal", QColor()));
             reversedWMGroup.writeEntry("inactiveBackground", originalGroup.readEntry("inactiveForeground", QColor()));
             reversedWMGroup.writeEntry("inactiveForeground", originalGroup.readEntry("inactiveBackground", QColor()));
             reversedWMGroup.sync();
