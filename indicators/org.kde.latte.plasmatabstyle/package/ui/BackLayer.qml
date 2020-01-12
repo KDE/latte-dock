@@ -1,5 +1,5 @@
 /*
-*  Copyright 2019  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -23,16 +23,37 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
-PlasmaCore.FrameSvgItem {
-    id: frame
+PlasmaCore.FrameSvgItem {    id: frame
     property string basePrefix: "normal"
 
-    imagePath: "widgets/tasks"
-    rotation: root.reversedEnabled ? 180 : 0
+    imagePath: "widgets/tabbar"
+    rotation: 0
 
     opacity: 1
 
-    prefix: root.taskPrefix(basePrefix)
+    prefix: {
+        if (!indicator.isActive) {
+            return "";
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+            return "west-active-tab";
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+            return "north-active-tab";
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+            return "east-active-tab";
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+            return "south-active-tab";
+        }
+
+        return  "south-active-tab";
+    }
 
     states: [
         State {

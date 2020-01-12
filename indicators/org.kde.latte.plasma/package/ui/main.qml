@@ -48,7 +48,6 @@ LatteComponents.IndicatorItem {
                                             && indicator.configuration.reversed
 
 
-    readonly property bool usePlasmaTabsStyle: false
     readonly property bool configurationIsReady: indicator && indicator.configuration
 
     //! Background Layer

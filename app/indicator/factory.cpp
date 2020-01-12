@@ -144,7 +144,8 @@ void Factory::reload(const QString &indicatorPath)
                 }
 
                 if ((metadata.pluginId() != "org.kde.latte.default")
-                        && (metadata.pluginId() != "org.kde.latte.plasma")) {
+                        && (metadata.pluginId() != "org.kde.latte.plasma")
+                        && (metadata.pluginId() != "org.kde.latte.plasmatabstyle")) {
 
                     if (!m_customPluginIds.contains(metadata.pluginId())) {
                         m_customPluginIds << metadata.pluginId();
@@ -221,7 +222,7 @@ void Factory::removeIndicatorRecords(const QString &path)
 
 bool Factory::isCustomType(const QString &id) const
 {
-    return ((id != "org.kde.latte.default") && (id != "org.kde.latte.plasma"));
+    return ((id != "org.kde.latte.default") && (id != "org.kde.latte.plasma") && (id != "org.kde.latte.plasmatabstyle"));
 }
 
 bool Factory::metadataAreValid(KPluginMetaData &metadata)

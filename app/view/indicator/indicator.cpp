@@ -288,7 +288,7 @@ void Indicator::loadPlasmaComponent()
 {
     auto prevComponent = m_plasmaComponent;
 
-    KPluginMetaData metadata = m_corona->indicatorFactory()->metadata("org.kde.latte.plasma");
+    KPluginMetaData metadata = m_corona->indicatorFactory()->metadata("org.kde.latte.plasmatabstyle");
     QString uiPath = metadata.value("X-Latte-MainScript");
 
     if (!uiPath.isEmpty()) {
