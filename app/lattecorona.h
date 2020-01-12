@@ -24,6 +24,7 @@
 // local
 #include "plasma/quick/configview.h"
 #include "layout/storage.h"
+#include "view/panelshadows_p.h"
 #include "../liblatte2/types.h"
 
 // Qt
@@ -141,6 +142,8 @@ public:
 
     WindowSystem::AbstractWindowInterface *wm() const;
 
+    PanelShadows *dialogShadows() const;
+
     //! these functions are used from context menu through containmentactions
     void switchToLayout(QString layout);
     void showSettingsWindow(int page);
@@ -226,6 +229,8 @@ private:
     PlasmaExtended::Theme *m_themeExtended{nullptr};
 
     WindowSystem::AbstractWindowInterface *m_wm{nullptr};
+
+    PanelShadows *m_dialogShadows{nullptr};
 
     KWayland::Client::PlasmaShell *m_waylandCorona{nullptr};
 

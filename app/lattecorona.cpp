@@ -96,7 +96,8 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_globalShortcuts(new GlobalShortcuts(this)),
       m_plasmaScreenPool(new PlasmaExtended::ScreenPool(this)),
       m_themeExtended(new PlasmaExtended::Theme(KSharedConfig::openConfig(), this)),
-      m_layoutsManager(new Layouts::Manager(this))
+      m_layoutsManager(new Layouts::Manager(this)),
+      m_dialogShadows(new PanelShadows(this, QStringLiteral("dialogs/background")))
 {
     //! create the window manager
 
@@ -184,6 +185,7 @@ Corona::~Corona()
     m_layoutsManager->unload();
 
     m_wm->deleteLater();
+    m_dialogShadows->deleteLater();
     m_globalShortcuts->deleteLater();
     m_layoutsManager->deleteLater();
     m_screenPool->deleteLater();
@@ -401,6 +403,11 @@ bool Corona::appletExists(uint containmentId, uint appletId) const
 KActivities::Consumer *Corona::activitiesConsumer() const
 {
     return m_activityConsumer;
+}
+
+PanelShadows *Corona::dialogShadows() const
+{
+    return m_dialogShadows;
 }
 
 GlobalShortcuts *Corona::globalShortcuts() const
