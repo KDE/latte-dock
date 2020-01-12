@@ -21,8 +21,8 @@
 
 // local
 #include <config-latte.h>
-#include "dialogshadows_p.h"
 #include "primaryconfigview.h"
+#include "../panelshadows_p.h"
 #include "../view.h"
 #include "../../lattecorona.h"
 #include "../../wm/abstractwindowinterface.h"
@@ -113,8 +113,6 @@ SecondaryConfigView::~SecondaryConfigView()
 {
     qDebug() << "SecDockConfigView deleting ...";
 
-    DialogShadows::self()->removeWindow(this);
-
     m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_waylandWindowId);
 
     for (const auto &var : connections) {
@@ -128,7 +126,7 @@ void SecondaryConfigView::init()
 
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
-    DialogShadows::self()->addWindow(this);
+    PanelShadows::self()->addWindow(this);
     rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
     rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
     rootContext()->setContextProperty(QStringLiteral("plasmoid"), m_latteView->containment()->property("_plasma_graphicObject").value<QObject *>());
@@ -464,7 +462,7 @@ void SecondaryConfigView::updateEnabledBorders()
     if (m_enabledBorders != borders) {
         m_enabledBorders = borders;
 
-        DialogShadows::self()->addWindow(this, m_enabledBorders);
+        PanelShadows::self()->addWindow(this, m_enabledBorders);
 
         emit enabledBordersChanged();
     }
