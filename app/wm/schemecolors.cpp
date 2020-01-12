@@ -216,8 +216,8 @@ void SchemeColors::updateScheme()
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_schemeFile);
     KConfigGroup wmGroup = KConfigGroup(filePtr, "WM");
     KConfigGroup selGroup = KConfigGroup(filePtr, "Colors:Selection");
-    KConfigGroup viewGroup = KConfigGroup(filePtr, "Colors:View");
-    //KConfigGroup windowGroup = KConfigGroup(filePtr, "Colors:Window");
+    //KConfigGroup viewGroup = KConfigGroup(filePtr, "Colors:View");
+    KConfigGroup windowGroup = KConfigGroup(filePtr, "Colors:Window");
     KConfigGroup buttonGroup = KConfigGroup(filePtr, "Colors:Button");
 
     if (!m_basedOnPlasmaTheme) {
@@ -226,18 +226,18 @@ void SchemeColors::updateScheme()
         m_inactiveBackgroundColor = wmGroup.readEntry("inactiveBackground", QColor());
         m_inactiveTextColor = wmGroup.readEntry("inactiveForeground", QColor());
     } else {
-        m_activeBackgroundColor = viewGroup.readEntry("BackgroundNormal", QColor());
-        m_activeTextColor = viewGroup.readEntry("ForegroundNormal", QColor());
-        m_inactiveBackgroundColor = viewGroup.readEntry("BackgroundAlternate", QColor());
-        m_inactiveTextColor = viewGroup.readEntry("ForegroundInactive", QColor());
+        m_activeBackgroundColor = windowGroup.readEntry("BackgroundNormal", QColor());
+        m_activeTextColor = windowGroup.readEntry("ForegroundNormal", QColor());
+        m_inactiveBackgroundColor = windowGroup.readEntry("BackgroundAlternate", QColor());
+        m_inactiveTextColor = windowGroup.readEntry("ForegroundInactive", QColor());
     }
 
     m_highlightColor = selGroup.readEntry("BackgroundNormal", QColor());
     m_highlightedTextColor = selGroup.readEntry("ForegroundNormal", QColor());
 
-    m_positiveTextColor = viewGroup.readEntry("ForegroundPositive", QColor());
-    m_neutralTextColor = viewGroup.readEntry("ForegroundNeutral", QColor());;
-    m_negativeTextColor = viewGroup.readEntry("ForegroundNegative", QColor());
+    m_positiveTextColor = windowGroup.readEntry("ForegroundPositive", QColor());
+    m_neutralTextColor = windowGroup.readEntry("ForegroundNeutral", QColor());;
+    m_negativeTextColor = windowGroup.readEntry("ForegroundNegative", QColor());
 
     m_buttonTextColor = buttonGroup.readEntry("ForegroundNormal", QColor());
     m_buttonBackgroundColor = buttonGroup.readEntry("BackgroundNormal", QColor());
