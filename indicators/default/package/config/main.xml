@@ -22,6 +22,9 @@
     <entry name="glowEnabled" type="Bool">
        <default>false</default>
     </entry>
+    <entry name="enabledForApplets" type="Bool">
+       <default>true</default>
+    </entry>
     <entry name="glowApplyTo" type="Enum">
       <label>Glow for active indicators</label>
         <choices>
@@ -36,6 +39,9 @@
     </entry>
     <entry name="glowOpacity" type="Double">
        <default>0.35</default>
+    </entry>
+    <entry name="lengthPadding" type="Double">
+       <default>0.08</default>
     </entry>
     <entry name="reversed" type="Bool">
        <default>false</default>

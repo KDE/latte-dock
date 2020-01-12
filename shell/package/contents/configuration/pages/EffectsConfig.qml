@@ -470,103 +470,29 @@ PlasmaComponents.Page {
                     }
                 }
 
-                LatteComponents.SubHeader {
-                    Layout.topMargin: units.smallSpacing
-                    isFirstSubCategory: true
-                    text: i18n("Paddings")
-                }
-
-                RowLayout {
+                //! BEGIN: Indicator specific sub-options
+                ColumnLayout {
+                    id: indicatorSpecificOptions
                     Layout.fillWidth: true
-                    spacing: units.smallSpacing
+                    Layout.topMargin: units.smallSpacing * 2
+                    spacing: 0
+                    visible: latteView.indicator.providesConfigUi
+                    enabled: latteView.indicator.enabled
 
-                    PlasmaComponents.Label {
-                        text: i18n("Length")
-                        horizontalAlignment: Text.AlignLeft
+                    readonly property int optionsWidth: dialog.optionsWidth
+
+                    Component.onCompleted: {
+                        latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
                     }
 
-                    LatteComponents.Slider {
-                        id: lengthIntMarginSlider
-                        Layout.fillWidth: true
-
-                        value: Math.round(latteView.indicator.padding * 100)
-                        from: 0
-                        to: maxMargin
-                        stepSize: 1
-                        wheelEnabled: false
-                        minimumInternalValue: latteView.indicator.info.minLengthPadding * 100
-
-                        readonly property int maxMargin: 80
-
-                        onPressedChanged: {
-                            if (!pressed) {
-                                latteView.indicator.padding = value / 100;
-                            }
-                        }
-                    }
-
-                    PlasmaComponents.Label {
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(currentValue)
-                        horizontalAlignment: Text.AlignRight
-                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-
-                        readonly property int currentValue: Math.max(lengthIntMarginSlider.minimumInternalValue, lengthIntMarginSlider.value)
+                    Connections {
+                        target: latteView.indicator
+                        onPluginChanged: latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
                     }
                 }
-
-                LatteComponents.SubHeader {
-                    Layout.topMargin: units.smallSpacing
-                    isFirstSubCategory: true
-                    text: i18n("Options")
-                }
-
-                LatteComponents.CheckBoxesColumn {
-                    LatteComponents.CheckBox {
-                        Layout.maximumWidth: dialog.optionsWidth
-                        text: i18n("Show indicators for applets")
-                        checked: latteView.indicator.enabledForApplets
-                        tooltip: i18n("Indicators are shown for applets")
-
-                        onClicked: {
-                            latteView.indicator.enabledForApplets = !latteView.indicator.enabledForApplets;
-                        }
-                    }
-                }
+                //! END: Indicator specific sub-options
             }
         }
-        //! END: Active Indicator General Settings
-
-        //! BEGIN: Indicator specific sub-options
-        ColumnLayout {
-            Layout.fillWidth: true
-            Layout.topMargin: units.smallSpacing
-            spacing: units.smallSpacing
-            visible: latteView.indicator.providesConfigUi
-            enabled: latteView.indicator.enabled
-
-            LatteComponents.Header {
-                text: i18n("%0 Indicator Options").arg(indicatorStyleGroup.current === customIndicator.button ? customIndicator.buttonText : indicatorStyleGroup.current.text)
-            }
-
-            ColumnLayout {
-                id: indicatorSpecificOptions
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: 0
-                readonly property int optionsWidth: dialog.optionsWidth
-
-                Component.onCompleted: {
-                    latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
-                }
-
-                Connections {
-                    target: latteView.indicator
-                    onPluginChanged: latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
-                }
-            }
-        }
-        //! END: Indicator specific sub-options
+        //! END: Active Indicator General Settings        
     }
 }

@@ -36,6 +36,10 @@ Item {
     //! any clicked animation in that case
     property bool providesClickedAnimation: false
 
+    //! this indicator will draw its own indicators for applets
+    //! [since v0.10.0]
+    property bool enabledForApplets: true
+
     //! this indicator visuals go out of the regular mask thickness and this variable sets
     //! the pixels needed outside of the mask thickness e.g. a glow
     property int extraMaskThickness: 0
@@ -50,10 +54,18 @@ Item {
     property real minLengthPadding: 0
 
     //! this indicator specifies a different padding value for applets. This value is a percentage,
-    //! -1, means disabled and the regular padding is used
+    //! -1, means disabled and the regular length padding is used
     //!  0.06 -> 6%
     //! [since v0.9.2]
     property real appletLengthPadding: -1
+
+    //! this indicator specifies how much is going to be the items regular length padding
+    //! as long as other more specialized paddings such as appletLengthPadding are not
+    //! applied. This value is a percentage,
+    //! e.g 0.06 -> 6%
+    //! [since v0.10.0]
+    property real lengthPadding: 0.08
+
 
     //! svg image paths either from plasma theme or local files relevant to indicator "ui" directory
     //! in order to reduce resources usage

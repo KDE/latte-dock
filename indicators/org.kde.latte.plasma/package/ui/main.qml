@@ -33,15 +33,23 @@ LatteComponents.IndicatorItem {
     providesFrontLayer: true
     svgImagePaths: ["widgets/tasks"]
 
+    enabledForApplets: configurationIsReady && indicator.configuration.clickedAnimationEnabled !== undefined ?
+                           indicator.configuration.enabledForApplets : true
+    lengthPadding: configurationIsReady && indicator.configuration.clickedAnimationEnabled !== undefined ?
+                       indicator.configuration.lengthPadding : 0.08
+
     //! config options
-    readonly property bool clickedAnimationEnabled: indicator && indicator.configuration
+    readonly property bool clickedAnimationEnabled: configurationIsReady
                                                     && indicator.configuration.clickedAnimationEnabled !== undefined
                                                     && indicator.configuration.clickedAnimationEnabled
 
-    readonly property bool reversedEnabled: indicator && indicator.configuration
+    readonly property bool reversedEnabled: configurationIsReady
                                             && indicator.configuration.reversed !== undefined
                                             && indicator.configuration.reversed
 
+
+    readonly property bool usePlasmaTabsStyle: false
+    readonly property bool configurationIsReady: indicator && indicator.configuration
 
     //! Background Layer
     Loader{

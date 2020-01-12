@@ -10,7 +10,13 @@
     </entry>
     <entry name="clickedAnimationEnabled" type="Bool">
        <default>false</default>
-    </entry>    
+    </entry>
+    <entry name="enabledForApplets" type="Bool">
+       <default>true</default>
+    </entry>
+    <entry name="lengthPadding" type="Double">
+       <default>0.08</default>
+    </entry>
   </group>
 </kcfg>
 

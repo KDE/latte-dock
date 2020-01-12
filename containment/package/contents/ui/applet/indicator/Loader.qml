@@ -35,7 +35,7 @@ Loader {
 
     active: level.bridge && level.bridge.active && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
     sourceComponent: {
-        if (!indicators.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
+        if (!indicators.info.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
             return indicators.plasmaStyleComponent;
         }
 

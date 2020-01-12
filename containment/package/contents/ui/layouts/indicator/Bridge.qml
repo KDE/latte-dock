@@ -66,8 +66,6 @@ Item{
 
     readonly property int screenEdgeMargin: 0 /*since 0.10*/
 
-    readonly property bool usePlasmaTabsStyle: !indicators.enabledForApplets
-
     readonly property QtObject palette: colorizerManager.applyTheme
 
     //!icon colors

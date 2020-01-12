@@ -27,13 +27,13 @@ PlasmaCore.FrameSvgItem {
     id: frame
     property string basePrefix: "normal"
 
-    imagePath: indicator.usePlasmaTabsStyle ? "widgets/tabbar" : "widgets/tasks"
+    imagePath: root.usePlasmaTabsStyle ? "widgets/tabbar" : "widgets/tasks"
     rotation: root.reversedEnabled ? 180 : 0
 
     opacity: 1 //state === "hovered" ? 0.9 : 1
 
     prefix: {
-        if (indicator.usePlasmaTabsStyle) {
+        if (root.usePlasmaTabsStyle) {
             if (!indicator.isActive) {
                 return "";
             }

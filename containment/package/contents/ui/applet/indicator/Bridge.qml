@@ -30,8 +30,8 @@ Item{
     readonly property bool active: appletIsValid &&
                                    ((indicators.isEnabled
                                      && appletItem.communicatorAlias.activeIndicatorEnabled
-                                     && indicators.enabledForApplets)
-                                    || (!indicators.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive))
+                                     && indicators.info.enabledForApplets)
+                                    || (!indicators.info.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive))
 
     /* Indicators Properties in order use them*/
     readonly property bool isTask: false
@@ -71,8 +71,6 @@ Item{
     readonly property real progress: 0 /*since 0.9.2*/
 
     readonly property int screenEdgeMargin: root.localScreenEdgeMargin /*since 0.10*/
-
-    readonly property bool usePlasmaTabsStyle: !indicators.enabledForApplets
 
     readonly property QtObject palette: colorizerManager.applyTheme
 

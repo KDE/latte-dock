@@ -23,6 +23,7 @@ import QtQuick.Layouts 1.3
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.2 as Latte
 import org.kde.latte.components 1.0 as LatteComponents
@@ -30,6 +31,52 @@ import org.kde.latte.components 1.0 as LatteComponents
 ColumnLayout {
     id: root
     Layout.fillWidth: true
+
+    LatteComponents.SubHeader {
+        text: i18n("Padding")
+    }
+
+    RowLayout {
+        Layout.fillWidth: true
+        spacing: units.smallSpacing
+
+        PlasmaComponents.Label {
+            text: i18n("Length")
+            horizontalAlignment: Text.AlignLeft
+        }
+
+        LatteComponents.Slider {
+            id: lengthIntMarginSlider
+            Layout.fillWidth: true
+
+            value: Math.round(indicator.configuration.lengthPadding * 100)
+            from: 0
+            to: maxMargin
+            stepSize: 1
+            wheelEnabled: false
+
+            readonly property int maxMargin: 80
+
+            onPressedChanged: {
+                if (!pressed) {
+                    indicator.configuration.lengthPadding = value / 100;
+                }
+            }
+        }
+
+        PlasmaComponents.Label {
+            text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(currentValue)
+            horizontalAlignment: Text.AlignRight
+            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+            readonly property int currentValue: lengthIntMarginSlider.value
+        }
+    }
+
+    LatteComponents.SubHeader {
+        text: i18n("Options")
+    }
 
     LatteComponents.CheckBoxesColumn {
         Layout.topMargin: 1.5 * units.smallSpacing
@@ -51,6 +98,17 @@ ColumnLayout {
 
             onClicked: {
                 indicator.configuration.clickedAnimationEnabled = !indicator.configuration.clickedAnimationEnabled;
+            }
+        }
+
+        LatteComponents.CheckBox {
+            Layout.maximumWidth: dialog.optionsWidth
+            text: i18n("Show indicators for applets")
+            checked: indicator.configuration.enabledForApplets
+            tooltip: i18n("Indicators are shown for applets")
+
+            onClicked: {
+                indicator.configuration.enabledForApplets = !indicator.configuration.enabledForApplets;
             }
         }
     }

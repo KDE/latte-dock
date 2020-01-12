@@ -48,8 +48,6 @@ Indicator::Indicator(Latte::View *parent)
     loadConfig();
 
     connect(this, &Indicator::enabledChanged, this, &Indicator::saveConfig);
-    connect(this, &Indicator::enabledForAppletsChanged, this, &Indicator::saveConfig);
-    connect(this, &Indicator::paddingChanged, this, &Indicator::saveConfig);
     connect(this, &Indicator::pluginChanged, this, &Indicator::saveConfig);
 
     connect(m_view, &Latte::View::latteTasksArePresentChanged, this, &Indicator::latteTasksArePresentChanged);
@@ -142,21 +140,6 @@ void Indicator::setProvidesConfigUi(bool provides)
 
     m_providesConfigUi = provides;
     emit providesConfigUiChanged();
-}
-
-float Indicator::padding() const
-{
-    return m_padding;
-}
-
-void Indicator::setPadding(float padding)
-{
-    if (m_padding == padding) {
-        return;
-    }
-
-    m_padding = padding;
-    emit paddingChanged();
 }
 
 bool Indicator::pluginIsReady()
@@ -439,8 +422,6 @@ void Indicator::loadConfig()
     auto config = m_view->containment()->config().group("Indicator");
     m_customType = config.readEntry("customType", QString());
     m_enabled = config.readEntry("enabled", true);
-    m_enabledForApplets = config.readEntry("enabledForApplets", true);
-    m_padding = config.readEntry("padding", (float)0.08);
     m_type = config.readEntry("type", "org.kde.latte.default");
 }
 
@@ -449,8 +430,6 @@ void Indicator::saveConfig()
     auto config = m_view->containment()->config().group("Indicator");
     config.writeEntry("customType", m_customType);
     config.writeEntry("enabled", m_enabled);
-    config.writeEntry("enabledForApplets", m_enabledForApplets);
-    config.writeEntry("padding", m_padding);
     config.writeEntry("type", m_type);
 
     config.sync();

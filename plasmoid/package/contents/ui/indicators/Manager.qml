@@ -47,6 +47,7 @@ Item{
         readonly property bool providesHoveredAnimation: false
         readonly property bool providesClickedAnimation: false
         readonly property int extraMaskThickness: 0
+        readonly property real lengthPadding: 0.08
         readonly property real minThicknessPadding: 0
         readonly property real minLengthPadding:0
     }

@@ -58,8 +58,6 @@ class Indicator: public QObject
     Q_PROPERTY(bool pluginIsReady READ pluginIsReady NOTIFY pluginIsReadyChanged)
     Q_PROPERTY(bool providesConfigUi READ providesConfigUi NOTIFY providesConfigUiChanged)
 
-    Q_PROPERTY(float padding READ padding WRITE setPadding NOTIFY paddingChanged)
-
     Q_PROPERTY(QString type READ type WRITE setType NOTIFY pluginChanged)
     Q_PROPERTY(QString customType READ customType NOTIFY customPluginChanged)
 
@@ -103,9 +101,6 @@ public:
 
     bool pluginIsReady();
 
-    float padding() const;
-    void setPadding(float padding);
-
     QString type() const;
     void setType(QString type);
 
@@ -141,7 +136,6 @@ signals:
     void customPluginChanged();
     void infoChanged();
     void latteTasksArePresentChanged();
-    void paddingChanged();
     void plasmaComponentChanged();
     void pluginChanged();
     void pluginIsReadyChanged();
@@ -166,8 +160,6 @@ private:
     bool m_enabledForApplets{true};
     bool m_pluginIsReady{false};
     bool m_providesConfigUi{true};
-
-    float m_padding{0.08};
 
     QString m_pluginPath;
     QString m_type{"org.kde.latte.default"};

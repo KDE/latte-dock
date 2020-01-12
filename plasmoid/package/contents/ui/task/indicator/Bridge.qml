@@ -75,8 +75,6 @@ Item {
 
     readonly property int screenEdgeMargin: root.screenEdgeMargin /*since 0.10*/
 
-    readonly property bool usePlasmaTabsStyle: false
-
     readonly property variant svgs: indicators ? indicators.svgs : []
 
     readonly property QtObject palette: enforceLattePalette ? latteBridge.palette.applyTheme : theme

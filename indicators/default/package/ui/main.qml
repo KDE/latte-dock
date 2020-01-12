@@ -32,6 +32,9 @@ LatteComponents.IndicatorItem{
     id: root
     extraMaskThickness: reversedEnabled && glowEnabled ? 1.7 * (factor * indicator.maxIconSize) : 0
 
+    enabledForApplets: indicator && indicator.configuration ? indicator.configuration.enabledForApplets : true
+    lengthPadding: indicator && indicator.configuration ? indicator.configuration.lengthPadding : 0.08
+
     readonly property real factor: 0.08
     readonly property int size: factor * indicator.currentIconSize
 
