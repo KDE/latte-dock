@@ -125,7 +125,7 @@ FocusScope {
 
     PlasmaCore.FrameSvgItem{
         anchors.fill: parent
-        imagePath: "widgets/panel-background"
+        imagePath: "dialogs/background"
         enabledBorders: viewConfig.enabledBorders
     }
 

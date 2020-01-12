@@ -130,6 +130,8 @@ PrimaryConfigView::~PrimaryConfigView()
 {
     qDebug() << "ConfigView deleting ...";
 
+    m_corona->dialogShadows()->removeWindow(this);
+
     m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_waylandWindowId);
 
     deleteSecondaryWindow();
@@ -149,7 +151,7 @@ void PrimaryConfigView::init()
 
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
-    PanelShadows::self()->addWindow(this);
+    m_corona->dialogShadows()->addWindow(this);
     rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
     rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), m_corona->globalShortcuts()->shortcutsTracker());
     rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
@@ -692,7 +694,7 @@ void PrimaryConfigView::updateEnabledBorders()
     if (m_enabledBorders != borders) {
         m_enabledBorders = borders;
 
-        PanelShadows::self()->addWindow(this, m_enabledBorders);
+        m_corona->dialogShadows()->addWindow(this, m_enabledBorders);
 
         emit enabledBordersChanged();
     }
