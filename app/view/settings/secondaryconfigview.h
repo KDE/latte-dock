@@ -82,6 +82,7 @@ public:
 public slots:
     Q_INVOKABLE void hideConfigWindow();
     Q_INVOKABLE void syncGeometry();
+    Q_INVOKABLE void updateEffects();
 
 signals:
     void enabledBordersChanged();

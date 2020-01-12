@@ -38,6 +38,7 @@
 #include <KDeclarative/KDeclarative>
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
+#include <KWindowEffects>
 #include <KWindowSystem>
 
 // Plasma
@@ -75,6 +76,12 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
 
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
+
+    connect(this, &QQuickView::statusChanged, [&](QQuickView::Status status) {
+        if (status == QQuickView::Ready) {
+            updateEffects();
+        }
+    });
 
     connections << connect(m_parent, &PrimaryConfigView::availableScreenGeometryChanged, this, &SecondaryConfigView::syncGeometry);
 
@@ -294,8 +301,6 @@ void SecondaryConfigView::showEvent(QShowEvent *ev)
     setFlags(wFlags());
     m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
 
-    m_corona->wm()->enableBlurBehind(*this);
-
     syncGeometry();
     syncSlideEffect();
 
@@ -390,6 +395,34 @@ void SecondaryConfigView::hideConfigWindow()
         close();
     } else {
         hide();
+    }
+}
+
+void SecondaryConfigView::updateEffects()
+{
+    //! Don't apply any effect before the wayland surface is created under wayland
+    //! https://bugs.kde.org/show_bug.cgi?id=392890
+    if (KWindowSystem::isPlatformWayland() && !m_shellSurface) {
+        return;
+    }
+
+    QRegion mask;
+
+    QQuickItem *rootObject = this->rootObject();
+    if (rootObject) {
+        const QVariant maskProperty = rootObject->property("backgroundMask");
+        if (static_cast<QMetaType::Type>(maskProperty.type()) == QMetaType::QRegion) {
+            qDebug() << "found 2...";
+            mask = maskProperty.value<QRegion>();
+        }
+    }
+
+    if (!mask.isEmpty()) {
+        setMask(mask);
+        KWindowEffects::enableBlurBehind(winId(), true, mask);
+    } else {
+        setMask(QRect());
+        KWindowEffects::enableBlurBehind(winId(), false);
     }
 }
 
