@@ -479,6 +479,9 @@ PlasmaComponents.Page {
                     visible: latteView.indicator.providesConfigUi
                     enabled: latteView.indicator.enabled
 
+                    // @since 0.10.0
+                    readonly property bool deprecatedOptionsAreHidden: true
+
                     readonly property int optionsWidth: dialog.optionsWidth
 
                     Component.onCompleted: {
