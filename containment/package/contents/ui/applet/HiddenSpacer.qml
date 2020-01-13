@@ -46,8 +46,13 @@ Item{
     property bool rightSpacer: false
 
     readonly property bool atEdgeForcingFittsLaw: !isSeparator && !parabolicEffectMarginsEnabled && atScreenEdge
-    readonly property int subtrackedMargins: atEdgeForcingFittsLaw && ((firstAppletInContainer && rightSpacer) || (lastAppletInContainer && !rightSpacer )) ?
-                                                 root.lengthExtMargin + root.lengthIntMargin : 0
+    readonly property int subtrackedMargins: {
+        if (atEdgeForcingFittsLaw && ((firstAppletInContainer && rightSpacer) || (lastAppletInContainer && !rightSpacer ))) {
+            return (wrapperAlias.edgeLengthMarginsDisabled ? root.lengthExtMargin + appletItem.lengthAppletIntMargin : root.lengthExtMargin);
+        }
+
+        return 0;
+    }
 
     property real nScale: 0
 

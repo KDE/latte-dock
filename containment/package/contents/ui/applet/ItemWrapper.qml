@@ -109,6 +109,8 @@ Item{
     property bool disableScaleHeight: false
     property bool editMode: root.inConfigureAppletsMode
 
+    property bool edgeLengthMarginsDisabled: isSeparator || !communicator.lengthMarginsEnabled || !canBeHovered
+
     property int appletWidth: applet ?  applet.width : -1
     property int appletHeight: applet ?  applet.height : -1
 
@@ -131,7 +133,7 @@ Item{
                                   (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
 
     property int localLengthMargins: isSeparator || !communicator.lengthMarginsEnabled ? 0 : appletItem.lengthAppletFullMargins
-    property int edgeLengthMargins: isSeparator || !communicator.lengthMarginsEnabled || !canBeHovered ? 0 : appletItem.lengthAppletIntMargin * 2
+    property int edgeLengthMargins: edgeLengthMarginsDisabled ? 0 : appletItem.lengthAppletIntMargin * 2
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
     property real scaledHeight: zoomScaleHeight * (layoutHeight + marginHeight)
