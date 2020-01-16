@@ -716,10 +716,15 @@ void PrimaryConfigView::updateEffects()
     }
 
     if (!mask.isEmpty()) {
-        setMask(mask);
+        if (KWindowSystem::compositingActive()) {
+            setMask(QRegion());
+        } else {
+            setMask(mask);
+        }
+
         KWindowEffects::enableBlurBehind(winId(), true, mask);
     } else {
-        setMask(QRect());
+        setMask(QRegion());
         KWindowEffects::enableBlurBehind(winId(), false);
     }
 }

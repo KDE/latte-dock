@@ -412,16 +412,20 @@ void SecondaryConfigView::updateEffects()
     if (rootObject) {
         const QVariant maskProperty = rootObject->property("backgroundMask");
         if (static_cast<QMetaType::Type>(maskProperty.type()) == QMetaType::QRegion) {
-            qDebug() << "found 2...";
             mask = maskProperty.value<QRegion>();
         }
     }
 
     if (!mask.isEmpty()) {
-        setMask(mask);
+        if (KWindowSystem::compositingActive()) {
+            setMask(QRegion());
+        } else {
+            setMask(mask);
+        }
+
         KWindowEffects::enableBlurBehind(winId(), true, mask);
     } else {
-        setMask(QRect());
+        setMask(QRegion());
         KWindowEffects::enableBlurBehind(winId(), false);
     }
 }
