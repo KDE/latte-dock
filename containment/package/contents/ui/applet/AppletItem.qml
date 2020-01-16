@@ -802,17 +802,19 @@ Item {
 
             //! Applet Shortcut Visual Badge
             Item {
-                anchors.centerIn: parent
+                id: shortcutBadgeContainer
+
                 width: {
                     if (root.isHorizontal) {
                         return rectangled ? root.iconSize * wrapper.zoomScale : wrapper.width
                     } else {
-                        return root.iconSize * wrapper.zoomScale
+                        return ((root.iconSize + root.thickMargin) * wrapper.zoomScale) + root.localScreenEdgeMargin
                     }
                 }
+
                 height: {
                     if (root.isHorizontal) {
-                        return root.iconSize * wrapper.zoomScale
+                        return ((root.iconSize + root.thickMargin) * wrapper.zoomScale) + root.localScreenEdgeMargin
                     } else {
                         return rectangled ? root.iconSize * wrapper.zoomScale : wrapper.height
                     }
@@ -823,6 +825,49 @@ Item {
                 ShortcutBadge{
                     anchors.fill: parent
                 }
+
+                states:[
+                    State{
+                        name: "bottom"
+                        when: plasmoid.location === PlasmaCore.Types.BottomEdge
+
+                        AnchorChanges{
+                            target: shortcutBadgeContainer;
+                            anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                            anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                        }
+                    },
+                    State{
+                        name: "top"
+                        when: plasmoid.location === PlasmaCore.Types.TopEdge
+
+                        AnchorChanges{
+                            target: shortcutBadgeContainer;
+                            anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                            anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+                        }
+                    },
+                    State{
+                        name: "left"
+                        when: plasmoid.location === PlasmaCore.Types.LeftEdge
+
+                        AnchorChanges{
+                            target: shortcutBadgeContainer;
+                            anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                            anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+                        }
+                    },
+                    State{
+                        name: "right"
+                        when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                        AnchorChanges{
+                            target: shortcutBadgeContainer;
+                            anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                            anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                        }
+                    }
+                ]
             }
         }
 
