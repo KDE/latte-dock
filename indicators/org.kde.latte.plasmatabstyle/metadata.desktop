@@ -1,6 +1,22 @@
 [Desktop Entry]
 Name=Plasma Tab Style
+Name[ca]=Estil pestanya del Plasma
+Name[lt]=Plasma kortelių stilius
+Name[nl]=Plasma-tabbladstijl
+Name[pt]=Estilo de Páginas do Plasma
+Name[pt_BR]=Estilo de abas do Plasma
+Name[uk]=Стиль вкладок Плазми
+Name[x-test]=xxPlasma Tab Stylexx
+Name[zh_TW]=Plasma 分頁樣式
 Comment=Plasma Tab style indicator for Latte
+Comment[ca]=Indicador a l'estil pestanya del Plasma per al Latte
+Comment[lt]=Plasma kortelių stiliaus indikatorius skirtas Latte
+Comment[nl]=Plasma tabbladstijlindicator voor Latte
+Comment[pt]=Indicador do estilo de Páginas do Plasma para o Latte
+Comment[pt_BR]=Indicador de estilo de abas do Plasma para o Latte
+Comment[uk]=Індикатор стилю вкладок Плазми для Латте
+Comment[x-test]=xxPlasma Tab style indicator for Lattexx
+Comment[zh_TW]=適用於 Latte 的 Plasma 分頁樣式指示器
 
 Encoding=UTF-8
 Type=Service
