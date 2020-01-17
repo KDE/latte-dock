@@ -460,20 +460,52 @@ Item{
 
             Binding {
                 target: root
-                property: "panelThickMarginHigh"
+                property: "panelThickMarginBase"
                 value: {
+                    var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.topEdgeRoundness : 0;
+
                     if (root.useThemePanel){
                         if (root.isVertical){
-                            if (plasmoid.location === PlasmaCore.Types.LeftEdge)
-                                return solidBackground.margins.right;
-                            else if (plasmoid.location === PlasmaCore.Types.RightEdge)
-                                return solidBackground.margins.left;
+                            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                                return Math.max(minimum, solidBackground.margins.left);
+                            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                                return Math.max(minimum, solidBackground.margins.right);
+                            }
                         } else {
-                            if (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                                return solidBackground.margins.top;
-                            else if (plasmoid.location === PlasmaCore.Types.TopEdge)
-                                return solidBackground.margins.bottom;
+                            if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                                return Math.max(minimum, solidBackground.margins.bottom);
+                            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                                return Math.max(minimum, solidBackground.margins.top);
+                            }
                         }
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+
+            Binding {
+                target: root
+                property: "panelThickMarginHigh"
+                value: {
+                    var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.topEdgeRoundness : 0;
+
+                    if (root.useThemePanel){
+                        if (root.isVertical){
+                            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                                return Math.max(minimum, solidBackground.margins.right);
+                            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                                return Math.max(minimum, solidBackground.margins.left);
+                            }
+                        } else {
+                            if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                                return Math.max(minimum, solidBackground.margins.top);
+                            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                                return Math.max(minimum, solidBackground.margins.bottom);
+                            }
+                        }
+                    } else {
+                        return 0;
                     }
                 }
             }
