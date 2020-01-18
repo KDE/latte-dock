@@ -689,7 +689,7 @@ PlasmaComponents.Page {
                                 i18n("Cycle Through Desktops"),
                                 i18n("Cycle Through Activities"),
                                 i18n("Cycle Through Tasks"),
-                                i18n("Toggle Minimized Window State")
+                                i18n("Cycle And Minimize Tasks")
                             ]
 
                             currentIndex: plasmoid.configuration.scrollAction
