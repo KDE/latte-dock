@@ -175,6 +175,10 @@
       <default>false</default>
       <label>Drag and maximize/restore active window from empty areas</label>
     </entry>
+    <entry name="closeActiveWindowEnabled" type="Bool">
+      <default>false</default>
+      <label>Close active window from empty areas</label>
+    </entry>    
     <entry name="activeWindowFilter" type="Enum">
       <choices>
             <choice name="InCurrentScreen"/>

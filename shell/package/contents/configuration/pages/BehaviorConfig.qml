@@ -583,7 +583,8 @@ PlasmaComponents.Page {
 
                 readonly property int maxLabelWidth: Math.max(trackActiveLbl.implicitWidth,
                                                               mouseWheelLbl.implicitWidth,
-                                                              leftBtnLbl.implicitWidth)
+                                                              leftBtnLbl.implicitWidth,
+                                                              midBtnLbl.implicitWidth)
 
                 LatteComponents.SubHeader {
                     text: i18n("Active Window")
@@ -650,7 +651,29 @@ PlasmaComponents.Page {
                     }
 
                     RowLayout {
-                        Layout.topMargin: units.smallSpacing
+                        PlasmaComponents.Label {
+                            id: midBtnLbl
+                            Layout.minimumWidth: actionsPropertiesColumn.maxLabelWidth
+                            Layout.maximumWidth: actionsPropertiesColumn.maxLabelWidth
+                            text: i18n("Middle Button")
+                        }
+
+                        PlasmaComponents.Button {
+                            Layout.fillWidth: true
+                            text: i18n("Close Active Window")
+                            checked: plasmoid.configuration.closeActiveWindowEnabled
+                            checkable: true
+                            tooltip: i18n("The user can use middle mouse button to close last active window")
+                            iconName: "window-close"
+
+                            onClicked: {
+                                plasmoid.configuration.closeActiveWindowEnabled = !plasmoid.configuration.closeActiveWindowEnabled;
+                            }
+                        }
+                    }
+
+                    RowLayout {
+                       // Layout.topMargin: units.smallSpacing
 
                         PlasmaComponents.Label {
                             id: mouseWheelLbl

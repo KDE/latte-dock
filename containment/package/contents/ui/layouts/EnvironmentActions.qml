@@ -36,6 +36,8 @@ Loader {
         width: root.isHorizontal ? length : localThickness + root.localScreenEdgeMargin
         height: root.isVertical ? length :  localThickness + root.localScreenEdgeMargin
 
+        acceptedButtons: Qt.LeftButton | Qt.MidButton
+
         readonly property int localThickness: (root.isHovered ? (root.iconSize + root.thickMargins)*root.zoomFactor : (root.iconSize + root.thickMargins))
         readonly property int length: {
             if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
@@ -61,12 +63,18 @@ Loader {
             }
         }
 
+        onClicked: {
+            if (root.closeActiveWindowEnabled && mouse.button === Qt.MidButton) {
+                selectedWindowsTracker.lastActiveWindow.requestClose();
+            }
+        }
+
         onPressed: {
             if (!root.dragActiveWindowEnabled) {
                 return;
             }
 
-            if (selectedWindowsTracker.lastActiveWindow.canBeDragged()) {
+            if (mouse.button == Qt.LeftButton && selectedWindowsTracker.lastActiveWindow.canBeDragged()) {
                 lastPressX = mouse.x;
                 lastPressY = mouse.y;
                 dragWindowTimer.start();

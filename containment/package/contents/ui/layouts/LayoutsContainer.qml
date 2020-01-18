@@ -182,7 +182,7 @@ Item{
     onYChanged: root.updateEffectsArea();
 
     EnvironmentActions {
-        active: root.scrollAction !== Latte.Types.ScrollNone || root.dragActiveWindowEnabled
+        active: root.scrollAction !== Latte.Types.ScrollNone || root.dragActiveWindowEnabled || root.closeActiveWindowEnabled
     }
 
     AppletsContainer {

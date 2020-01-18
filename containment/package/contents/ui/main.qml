@@ -211,6 +211,7 @@ Item {
     readonly property bool parabolicEffectEnabled: zoomFactor>1 && !inConfigureAppletsMode
 
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
+    property bool closeActiveWindowEnabled: plasmoid.configuration.closeActiveWindowEnabled
     property bool dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled
     property bool immutable: plasmoid.immutable
     property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Types.Justify) && (maxLengthPerCentage===100)
