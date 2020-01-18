@@ -128,19 +128,45 @@ Loader {
 
             var angle = delta / 8;
 
+            var ctrlPressed = (wheel.modifiers & Qt.ControlModifier);
+
             if (angle>10) {
+                //! upwards
                 if (root.scrollAction === Latte.Types.ScrollDesktops) {
                     latteView.windowsTracker.switchToPreviousVirtualDesktop();
                 } else if (root.scrollAction === Latte.Types.ScrollActivities) {
                     latteView.windowsTracker.switchToPreviousActivity();
+                } else if (root.scrollAction === Latte.Types.ScrollToggleMinimized) {
+                    if (!ctrlPressed) {
+                        tasksLoader.item.activateNextPrevTask(true);
+                    } else if (!selectedWindowsTracker.lastActiveWindow.isMaximized){
+                        selectedWindowsTracker.lastActiveWindow.requestToggleMaximized();
+                    }
                 } else if (tasksLoader.active) {
                     tasksLoader.item.activateNextPrevTask(true);
                 }
             } else if (angle<-10) {
+                //! downwards
                 if (root.scrollAction === Latte.Types.ScrollDesktops) {
                     latteView.windowsTracker.switchToNextVirtualDesktop();
                 } else if (root.scrollAction === Latte.Types.ScrollActivities) {
                     latteView.windowsTracker.switchToNextActivity();
+                } else if (root.scrollAction === Latte.Types.ScrollToggleMinimized) {
+                    if (!ctrlPressed) {
+                        if (selectedWindowsTracker.lastActiveWindow.isValid
+                                && !selectedWindowsTracker.lastActiveWindow.isMinimized
+                                && selectedWindowsTracker.lastActiveWindow.isMaximized){
+                            //! maximized
+                            selectedWindowsTracker.lastActiveWindow.requestToggleMaximized();
+                        } else if (selectedWindowsTracker.lastActiveWindow.isValid
+                                   && !selectedWindowsTracker.lastActiveWindow.isMinimized
+                                   && !selectedWindowsTracker.lastActiveWindow.isMaximized) {
+                            //! normal
+                            selectedWindowsTracker.lastActiveWindow.requestToggleMinimized();
+                        }
+                    } else if (selectedWindowsTracker.lastActiveWindow.isMaximized) {
+                        selectedWindowsTracker.lastActiveWindow.requestToggleMaximized();
+                    }
                 } else if (tasksLoader.active) {
                     tasksLoader.item.activateNextPrevTask(false);
                 }

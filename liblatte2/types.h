@@ -123,7 +123,8 @@ public:
         ScrollNone = 0,
         ScrollDesktops,
         ScrollActivities,
-        ScrollTasks
+        ScrollTasks,
+        ScrollToggleMinimized
     };
     Q_ENUM(ScrollAction);
 

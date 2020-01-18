@@ -25,7 +25,7 @@ import org.kde.latte 0.2 as Latte
 
 Loader {
     id: tasksLoader
-    active: root.scrollAction === Latte.Types.ScrollTasks
+    active: root.scrollAction === Latte.Types.ScrollTasks || root.scrollAction === Latte.Types.ScrollToggleMinimized
     sourceComponent: Item {
         TaskManager.TasksModel {
             id: tasksModel

@@ -688,7 +688,9 @@ PlasmaComponents.Page {
                             model: [i18nc("none scroll actions", "None Action"),
                                 i18n("Cycle Through Desktops"),
                                 i18n("Cycle Through Activities"),
-                                i18n("Cycle Through Tasks")]
+                                i18n("Cycle Through Tasks"),
+                                i18n("Toggle Minimized Window State")
+                            ]
 
                             currentIndex: plasmoid.configuration.scrollAction
 
@@ -705,6 +707,9 @@ PlasmaComponents.Page {
                                     break;
                                 case Latte.Types.ScrollTasks:
                                     plasmoid.configuration.scrollAction = Latte.Types.ScrollTasks;
+                                    break;
+                                case Latte.Types.ScrollToggleMinimized:
+                                    plasmoid.configuration.scrollAction = Latte.Types.ScrollToggleMinimized;
                                     break;
                                 }
                             }
