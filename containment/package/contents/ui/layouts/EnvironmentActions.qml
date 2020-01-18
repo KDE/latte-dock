@@ -47,6 +47,8 @@ Loader {
             return useAllLayouts ? root.maxLength : root.realPanelLength;
         }
 
+        property bool wheelIsBlocked: false
+
         hoverEnabled: true
 
         readonly property bool useAllLayouts: panelUserSetAlignment === Latte.Types.Justify && !root.inConfigureAppletsMode
@@ -113,10 +115,17 @@ Loader {
         }
 
         onWheel: {
+            if (wheelIsBlocked) {
+                return;
+            }
+
             if (root.scrollAction === Latte.Types.ScrollNone) {
                 root.emptyAreasWheel(wheel);
                 return;
             }
+
+            wheelIsBlocked = true;
+            scrollDelayer.start();
 
             var delta = 0;
 
@@ -192,6 +201,17 @@ Loader {
                     mainArea.activateDragging();
                 }
             }
+        }
+
+        //! A timer is needed in order to handle also touchpads that probably
+        //! send too many signals very fast. This way the signals per sec are limited.
+        //! The user needs to have a steady normal scroll in order to not
+        //! notice a annoying delay
+        Timer{
+            id: scrollDelayer
+
+            interval: 200
+            onTriggered: mainArea.wheelIsBlocked = false;
         }
 
         //! Background Indicator
