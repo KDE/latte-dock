@@ -71,6 +71,12 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     connect(this, &VisibilityManager::enableKWinEdgesChanged, this, &VisibilityManager::updateKWinEdgesSupport);
     connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateKWinEdgesSupport);
 
+    connect(this, &VisibilityManager::mustBeHide, this, [&]() {
+        if (supportsKWinEdges() && m_latteView->screenEdgeMargin()>0 && m_latteView->behaveAsPlasmaPanel()) {
+            m_edgeGhostWindow->showWithMask();
+        }
+    });
+
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
         connect(m_latteView, &Latte::View::byPassWMChanged, this, &VisibilityManager::updateKWinEdgesSupport);
@@ -491,7 +497,7 @@ void VisibilityManager::updateGhostWindowState()
                         && m_latteView->screenEdgeMargin()>0
                         && (m_edgeGhostWindow->containsMouse() || m_containsMouse);*/
 
-                bool activated = (m_isHidden && !m_containsMouse); /*|| viewIsFloatingAndContainsMouse;*/
+                bool activated = (m_isHidden && !m_containsMouse && !m_edgeGhostWindow->containsMouse());
 
                 m_wm->setActiveEdge(m_edgeGhostWindow, activated);
             }
@@ -797,10 +803,21 @@ void VisibilityManager::createEdgeGhostWindow()
 
         connect(m_edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
-                raiseView(true);
+                if (!m_isHidden) {
+                    //! immediate call
+                    m_edgeGhostWindow->hideWithMask();
+                    emit mustBeShown();
+                } else {
+                    raiseView(true);
+                }
             } else {
-                m_timerShow.stop();
-                updateGhostWindowState();
+                if (!m_isHidden) {
+                    //! immediate call
+                    updateHiddenState();
+                } else {
+                    m_timerShow.stop();
+                    updateGhostWindowState();
+                }
             }
         });
 

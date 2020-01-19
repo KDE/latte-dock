@@ -197,7 +197,10 @@ void ScreenEdgeGhostWindow::updateGeometry()
 
     QRect newGeometry;
 
-    if (KWindowSystem::compositingActive()) {
+    if (m_latteView->screenEdgeMargin()>0 && m_latteView->behaveAsPlasmaPanel()) {
+        //real floating
+        m_thickness = m_latteView->screenEdgeMargin();
+    } else if (KWindowSystem::compositingActive()) {
         m_thickness = 6;
     } else {
         m_thickness = 2;
