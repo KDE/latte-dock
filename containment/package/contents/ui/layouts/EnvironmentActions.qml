@@ -76,7 +76,7 @@ Loader {
                 return;
             }
 
-            if (mouse.button == Qt.LeftButton && selectedWindowsTracker.lastActiveWindow.canBeDragged()) {
+            if (mouse.button === Qt.LeftButton && selectedWindowsTracker.lastActiveWindow.canBeDragged()) {
                 lastPressX = mouse.x;
                 lastPressY = mouse.y;
                 dragWindowTimer.start();
@@ -89,7 +89,7 @@ Loader {
         }
 
         onPositionChanged: {
-            if (!root.dragActiveWindowEnabled) {
+            if (!root.dragActiveWindowEnabled || mouse.button !== Qt.LeftButton) {
                 return;
             }
 
