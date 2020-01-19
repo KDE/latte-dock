@@ -89,7 +89,7 @@ Loader {
         }
 
         onPositionChanged: {
-            if (!root.dragActiveWindowEnabled || mouse.button !== Qt.LeftButton) {
+            if (!root.dragActiveWindowEnabled || !(mainArea.pressedButtons & Qt.LeftButton)) {
                 return;
             }
 
