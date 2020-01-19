@@ -553,6 +553,7 @@ PlasmaComponents.Page {
                         LatteComponents.TextField{
                             Layout.preferredWidth: width
                             text: latteView.visibility.timerHide
+                            maxValue: 5000
 
                             onValueChanged: {
                                 latteView.visibility.timerHide = value
