@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Plasma Tab Style
 Name[ca]=Estil pestanya del Plasma
+Name[et]=Plasma kaardistiil
 Name[lt]=Plasma kortelių stilius
 Name[nl]=Plasma-tabbladstijl
 Name[pt]=Estilo de Páginas do Plasma
@@ -11,6 +12,7 @@ Name[x-test]=xxPlasma Tab Stylexx
 Name[zh_TW]=Plasma 分頁樣式
 Comment=Plasma Tab style indicator for Latte
 Comment[ca]=Indicador a l'estil pestanya del Plasma per al Latte
+Comment[et]=Latte Plasma kaardistiili indikaator
 Comment[lt]=Plasma kortelių stiliaus indikatorius skirtas Latte
 Comment[nl]=Plasma tabbladstijlindicator voor Latte
 Comment[pt]=Indicador do estilo de Páginas do Plasma para o Latte
