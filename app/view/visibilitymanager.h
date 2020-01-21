@@ -38,6 +38,7 @@ namespace Latte {
 class Corona;
 class View;
 namespace ViewPart {
+class FloatingGapWindow;
 class ScreenEdgeGhostWindow;
 }
 namespace WindowSystem {
@@ -154,8 +155,17 @@ private:
     void deleteEdgeGhostWindow();
     void updateGhostWindowState();
 
+    //! Floating Gap Support functions
+    void createFloatingGapWindow();
+    void deleteFloatingGapWindow();
+    bool supportsFloatingGap() const;
+
     void updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate = false);
     void viewEventManager(QEvent *ev);
+
+    void checkMouseInFloatingArea();
+
+    bool windowContainsMouse();
 
     QRect acceptableStruts();
 
@@ -190,6 +200,9 @@ private:
     bool m_enableKWinEdgesFromUser{true};
     std::array<QMetaObject::Connection, 1> m_connectionsKWinEdges;
     ScreenEdgeGhostWindow *m_edgeGhostWindow{nullptr};
+
+    //! Floating Gap
+    FloatingGapWindow *m_floatingGapWindow{nullptr};
 
     Latte::Corona *m_corona{nullptr};
     Latte::View *m_latteView{nullptr};

@@ -480,6 +480,18 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
     QRect absGeometry {x() + m_localGeometry.x(), y() + m_localGeometry.y()
                 , m_localGeometry.width(), m_localGeometry.height()};
 
+    if (isFloatingWindow()) {
+        if (location() == Plasma::Types::BottomEdge) {
+            absGeometry.setY(screenGeometry().bottom() - m_screenEdgeMargin - m_normalThickness);
+        } else if (location() == Plasma::Types::TopEdge) {
+            absGeometry.setY(screenGeometry().top() + m_screenEdgeMargin);
+        } else if (location() == Plasma::Types::LeftEdge) {
+            absGeometry.setX(screenGeometry().left() + m_screenEdgeMargin);
+        } else if (location() == Plasma::Types::RightEdge) {
+            absGeometry.setX(screenGeometry().right() - m_screenEdgeMargin - m_normalThickness);
+        }
+    }
+
     if (m_absoluteGeometry == absGeometry && !bypassChecks) {
         return;
     }

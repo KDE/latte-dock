@@ -22,6 +22,7 @@
 
 // local
 #include "positioner.h"
+#include "floatinggapwindow.h"
 #include "screenedgeghostwindow.h"
 #include "view.h"
 #include "windowstracker/currentscreentracker.h"
@@ -58,24 +59,10 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     m_wm = m_corona->wm();
 
     connect(this, &VisibilityManager::slideOutFinished, this, &VisibilityManager::updateHiddenState);
-    connect(this, &VisibilityManager::slideInFinished, this, [&]() {
-        if (m_latteView && !m_latteView->screenEdgeMarginEnabled()) {
-            //! after slide-out the real floating windows should ignore their criteria
-            //! until containsMouse from view has been set to true and false to afterwards
-            updateHiddenState();
-        } else {
-            m_timerHide.stop();
-        }
-    });
+    connect(this, &VisibilityManager::slideInFinished, this, &VisibilityManager::updateHiddenState);
 
     connect(this, &VisibilityManager::enableKWinEdgesChanged, this, &VisibilityManager::updateKWinEdgesSupport);
     connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateKWinEdgesSupport);
-
-    connect(this, &VisibilityManager::mustBeHide, this, [&]() {
-        if (supportsKWinEdges() && m_latteView->screenEdgeMargin()>0 && m_latteView->behaveAsPlasmaPanel()) {
-            m_edgeGhostWindow->showWithMask();
-        }
-    });
 
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
@@ -107,8 +94,13 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     });
     connect(&m_timerHide, &QTimer::timeout, this, [&]() {
         if (!m_blockHiding && !m_isHidden && !m_isBelowLayer && !m_dragEnter) {
-            //   qDebug() << "must be hide";
-            emit mustBeHide();
+            if (m_latteView->isFloatingWindow()) {
+                //! first check if mouse is inside the floating gap
+                checkMouseInFloatingArea();
+            } else {
+                //! immediate call
+                emit mustBeHide();
+            }
         }
     });
 
@@ -122,6 +114,10 @@ VisibilityManager::~VisibilityManager()
 
     if (m_edgeGhostWindow) {
         m_edgeGhostWindow->deleteLater();
+    }
+
+    if (m_floatingGapWindow) {
+        m_floatingGapWindow->deleteLater();
     }
 }
 
@@ -491,13 +487,7 @@ void VisibilityManager::updateGhostWindowState()
             if (m_mode == Latte::Types::WindowsCanCover) {
                 m_wm->setActiveEdge(m_edgeGhostWindow, m_isBelowLayer && !m_containsMouse);
             } else {
-               /* bool viewIsFloatingAndContainsMouse =
-                        m_latteView->behaveAsPlasmaPanel()
-                        && m_latteView->screenEdgeMarginEnabled()
-                        && m_latteView->screenEdgeMargin()>0
-                        && (m_edgeGhostWindow->containsMouse() || m_containsMouse);*/
-
-                bool activated = (m_isHidden && !m_containsMouse && !m_edgeGhostWindow->containsMouse());
+                bool activated = (m_isHidden && !windowContainsMouse());
 
                 m_wm->setActiveEdge(m_edgeGhostWindow, activated);
             }
@@ -572,7 +562,7 @@ void VisibilityManager::updateHiddenState()
     switch (m_mode) {
     case Types::AutoHide:
     case Types::WindowsCanCover:
-        raiseView(m_containsMouse || (m_edgeGhostWindow && m_edgeGhostWindow->containsMouse()));
+        raiseView(m_containsMouse);
         break;
 
     case Types::DodgeActive:
@@ -596,6 +586,10 @@ void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activi
 {
     if (m_edgeGhostWindow) {
         m_wm->setWindowOnActivities(*m_edgeGhostWindow, activities);
+    }
+
+    if (m_floatingGapWindow) {
+        m_wm->setWindowOnActivities(*m_floatingGapWindow, activities);
     }
 }
 
@@ -634,6 +628,7 @@ void VisibilityManager::dodgeAllWindows()
 
     if (m_containsMouse) {
         raiseView(true);
+        return;
     }
 
     bool windowIntersects{m_latteView->windowsTracker()->currentScreen()->activeWindowTouching() || m_latteView->windowsTracker()->currentScreen()->existsWindowTouching()};
@@ -720,9 +715,17 @@ void VisibilityManager::setContainsMouse(bool contains)
 
     m_containsMouse = contains;
     emit containsMouseChanged();
+}
 
-    if (contains && m_mode != Types::AlwaysVisible) {
-        raiseView(true);
+bool VisibilityManager::windowContainsMouse()
+{
+    return m_containsMouse || (m_edgeGhostWindow && m_edgeGhostWindow->containsMouse());
+}
+
+void VisibilityManager::checkMouseInFloatingArea()
+{
+    if (m_floatingGapWindow && m_latteView->isFloatingWindow()) {
+        m_floatingGapWindow->callAsyncContainsMouse();
     }
 }
 
@@ -785,14 +788,19 @@ void VisibilityManager::updateKWinEdgesSupport()
 
         if (m_enableKWinEdgesFromUser) {
             createEdgeGhostWindow();
+            if (m_latteView->isFloatingWindow()) {
+                createFloatingGapWindow();
+            }
         } else if (!m_enableKWinEdgesFromUser) {
             deleteEdgeGhostWindow();
+            deleteFloatingGapWindow();
         }
 
     } else if (m_mode == Types::WindowsCanCover) {
         createEdgeGhostWindow();
     } else {
         deleteEdgeGhostWindow();
+        deleteFloatingGapWindow();
     }
 }
 
@@ -801,23 +809,12 @@ void VisibilityManager::createEdgeGhostWindow()
     if (!m_edgeGhostWindow) {
         m_edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
 
-        connect(m_edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
+        connect(m_edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {            
             if (contains) {
-                if (!m_isHidden) {
-                    //! immediate call
-                    m_edgeGhostWindow->hideWithMask();
-                    emit mustBeShown();
-                } else {
-                    raiseView(true);
-                }
+                raiseView(true);
             } else {
-                if (!m_isHidden) {
-                    //! immediate call
-                    updateHiddenState();
-                } else {
-                    m_timerShow.stop();
-                    updateGhostWindowState();
-                }
+                 m_timerShow.stop();
+                 updateGhostWindowState();
             }
         });
 
@@ -860,6 +857,41 @@ void VisibilityManager::deleteEdgeGhostWindow()
         emit supportsKWinEdgesChanged();
     }
 }
+
+void VisibilityManager::createFloatingGapWindow()
+{
+    if (!m_floatingGapWindow) {
+        m_floatingGapWindow = new FloatingGapWindow(m_latteView);
+
+        connect(m_floatingGapWindow, &FloatingGapWindow::asyncContainsMouseChanged, this, [ = ](bool contains) {
+            if (contains) {
+                if (m_latteView->isFloatingWindow() && !m_isHidden) {
+                    //! immediate call after contains mouse checks for mouse in sensitive floating areas
+                    updateHiddenState();
+                }
+            } else {
+                if (m_latteView->isFloatingWindow() && !m_isHidden) {
+                    //! immediate call after contains mouse checks for mouse in sensitive floating areas
+                    emit mustBeHide();
+                }
+            }
+        });
+    }
+}
+
+void VisibilityManager::deleteFloatingGapWindow()
+{
+    if (m_floatingGapWindow) {
+        m_floatingGapWindow->deleteLater();
+        m_floatingGapWindow = nullptr;
+    }
+}
+
+bool VisibilityManager::supportsFloatingGap() const
+{
+    return (m_floatingGapWindow != nullptr);
+}
+
 
 //! END: VisibilityManager implementation
 

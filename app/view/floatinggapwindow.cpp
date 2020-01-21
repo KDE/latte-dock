@@ -1,5 +1,5 @@
 /*
-*  Copyright 2018 Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020 Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -17,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "screenedgeghostwindow.h"
+#include "floatinggapwindow.h"
 
 // local
 #include "view.h"
@@ -39,14 +39,25 @@
 namespace Latte {
 namespace ViewPart {
 
-ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
+FloatingGapWindow::FloatingGapWindow(Latte::View *view) :
     m_latteView(view)
 {
     m_corona = qobject_cast<Latte::Corona *>(view->corona());
 
-    bool debugEdge = (qApp->arguments().contains("-d") && qApp->arguments().contains("--kwinedges"));
+    m_debugMode = (qApp->arguments().contains("-d") && qApp->arguments().contains("--kwinedges"));
 
-    setColor(debugEdge ? QColor("purple") : QColor(Qt::transparent));
+    if (m_debugMode) {
+        m_showColor = QColor("green");
+        m_hideColor = QColor("red");
+    } else {
+        m_showColor = QColor(Qt::transparent);
+        m_hideColor = QColor(Qt::transparent);
+
+        m_showColor.setAlpha(0);
+        m_hideColor.setAlpha(1);
+    }
+
+    setColor(m_showColor);
     setDefaultAlphaBuffer(true);
 
     setFlags(Qt::FramelessWindowHint
@@ -56,28 +67,28 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 
     m_fixGeometryTimer.setSingleShot(true);
     m_fixGeometryTimer.setInterval(500);
-    connect(&m_fixGeometryTimer, &QTimer::timeout, this, &ScreenEdgeGhostWindow::fixGeometry);
+    connect(&m_fixGeometryTimer, &QTimer::timeout, this, &FloatingGapWindow::fixGeometry);
 
-    //! this timer is used in order to avoid fast enter/exit signals during first
-    //! appearing after edge activation
-    m_delayedMouseTimer.setSingleShot(true);
-    m_delayedMouseTimer.setInterval(50);
-    connect(&m_delayedMouseTimer, &QTimer::timeout, this, [this]() {
-        if (m_delayedContainsMouse) {
-            setContainsMouse(true);
-        } else {
-            setContainsMouse(false);
+    //! this timer is used in order to identify if mouse is still present in sensitive floating
+    //! areas and in such case to prevent a real-floating view to hide itself
+    m_asyncMouseTimer.setSingleShot(true);
+    m_asyncMouseTimer.setInterval(200);
+    connect(&m_asyncMouseTimer, &QTimer::timeout, this, [this]() {
+        if (m_inAsyncContainsMouse && !m_containsMouse) {
+            emit asyncContainsMouseChanged(false);
+            hideWithMask();
+            m_inAsyncContainsMouse = false;
         }
     });
 
-    connect(this, &QQuickView::xChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
-    connect(this, &QQuickView::yChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
-    connect(this, &QQuickView::widthChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
-    connect(this, &QQuickView::heightChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
+    connect(this, &QQuickView::xChanged, this, &FloatingGapWindow::startGeometryTimer);
+    connect(this, &QQuickView::yChanged, this, &FloatingGapWindow::startGeometryTimer);
+    connect(this, &QQuickView::widthChanged, this, &FloatingGapWindow::startGeometryTimer);
+    connect(this, &QQuickView::heightChanged, this, &FloatingGapWindow::startGeometryTimer);
 
-    connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
-    connect(m_latteView, &Latte::View::screenGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
-    connect(m_latteView, &Latte::View::locationChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
+    connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, &FloatingGapWindow::updateGeometry);
+    connect(m_latteView, &Latte::View::screenGeometryChanged, this, &FloatingGapWindow::updateGeometry);
+    connect(m_latteView, &Latte::View::locationChanged, this, &FloatingGapWindow::updateGeometry);
     connect(m_latteView, &QQuickView::screenChanged, this, [this]() {
         setScreen(m_latteView->screen());
         updateGeometry();
@@ -106,9 +117,9 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
             if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
                 show();
                 emit forcedShown();
-                //qDebug() << "Ghost Edge:: Enforce reshow from timer 1...";
+                //qDebug() << "Floating Gap:: Enforce reshow from timer 1...";
             } else {
-                //qDebug() << "Ghost Edge:: No needed reshow from timer 1...";
+                //qDebug() << "Floating Gap:: No needed reshow from timer 1...";
             }
         });
 
@@ -116,13 +127,13 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
             if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
                 show();
                 emit forcedShown();
-                //qDebug() << "Ghost Edge:: Enforce reshow from timer 2...";
+                //qDebug() << "Floating Gap:: Enforce reshow from timer 2...";
             } else {
-                //qDebug() << "Ghost Edge:: No needed reshow from timer 2...";
+                //qDebug() << "Floating Gap:: No needed reshow from timer 2...";
             }
         });
 
-        connectionsHack << connect(this, &ScreenEdgeGhostWindow::forcedShown, this, [&]() {
+        connectionsHack << connect(this, &FloatingGapWindow::forcedShown, this, [&]() {
             m_corona->wm()->unregisterIgnoredWindow(m_trackedWindowId);
             m_trackedWindowId = winId();
             m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
@@ -149,7 +160,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
     hideWithMask();
 }
 
-ScreenEdgeGhostWindow::~ScreenEdgeGhostWindow()
+FloatingGapWindow::~FloatingGapWindow()
 {
     m_inDelete = true;
 
@@ -169,27 +180,27 @@ ScreenEdgeGhostWindow::~ScreenEdgeGhostWindow()
     }
 }
 
-int ScreenEdgeGhostWindow::location()
+int FloatingGapWindow::location()
 {
     return (int)m_latteView->location();
 }
 
-int ScreenEdgeGhostWindow::thickness() const
+int FloatingGapWindow::thickness() const
 {
     return m_thickness;
 }
 
-Latte::View *ScreenEdgeGhostWindow::parentView()
+Latte::View *FloatingGapWindow::parentView()
 {
     return m_latteView;
 }
 
-KWayland::Client::PlasmaShellSurface *ScreenEdgeGhostWindow::surface()
+KWayland::Client::PlasmaShellSurface *FloatingGapWindow::surface()
 {
     return m_shellSurface;
 }
 
-void ScreenEdgeGhostWindow::updateGeometry()
+void FloatingGapWindow::updateGeometry()
 {
     if (m_latteView->positioner()->slideOffset() != 0) {
         return;
@@ -197,39 +208,24 @@ void ScreenEdgeGhostWindow::updateGeometry()
 
     QRect newGeometry;
 
-    if (KWindowSystem::compositingActive()) {
-        m_thickness = 6;
-    } else {
-        m_thickness = 2;
-    }
+    m_thickness = m_latteView->screenEdgeMargin();
 
-    int length{30};
-    int lengthDifference{0};
-
-    if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
-        //! set minimum length to be 25% of screen width
-        length = qMax(m_latteView->screenGeometry().width()/4,qMin(m_latteView->absoluteGeometry().width(), m_latteView->screenGeometry().width() - 1));
-        lengthDifference = qMax(0,length - m_latteView->absoluteGeometry().width());
-    } else {
-        //! set minimum length to be 25% of screen height
-        length = qMax(m_latteView->screenGeometry().height()/4,qMin(m_latteView->absoluteGeometry().height(), m_latteView->screenGeometry().height() - 1));
-        lengthDifference = qMax(0,length - m_latteView->absoluteGeometry().height());
-    }
+    int length = m_latteView->formFactor() == Plasma::Types::Horizontal ? m_latteView->absoluteGeometry().width() : m_latteView->absoluteGeometry().height();
 
     if (m_latteView->location() == Plasma::Types::BottomEdge) {
-        int xF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left() - lengthDifference);
+        int xF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left());
         newGeometry.setX(xF);
         newGeometry.setY(m_latteView->screenGeometry().bottom() - m_thickness);
     } else if (m_latteView->location() == Plasma::Types::TopEdge) {
-        int xF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left() - lengthDifference);
+        int xF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left());
         newGeometry.setX(xF);
         newGeometry.setY(m_latteView->screenGeometry().top());
     } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
-        int yF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top() - lengthDifference);
+        int yF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top());
         newGeometry.setX(m_latteView->screenGeometry().left());
         newGeometry.setY(yF);
     } else if (m_latteView->location() == Plasma::Types::RightEdge) {
-        int yF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top() - lengthDifference);
+        int yF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top());
         newGeometry.setX(m_latteView->screenGeometry().right() - m_thickness);
         newGeometry.setY(yF);
     }
@@ -247,7 +243,7 @@ void ScreenEdgeGhostWindow::updateGeometry()
     fixGeometry();
 }
 
-void ScreenEdgeGhostWindow::fixGeometry()
+void FloatingGapWindow::fixGeometry()
 {
     if (!m_calculatedGeometry.isEmpty()
             && (m_calculatedGeometry.x() != x() || m_calculatedGeometry.y() != y()
@@ -263,12 +259,12 @@ void ScreenEdgeGhostWindow::fixGeometry()
     }
 }
 
-void ScreenEdgeGhostWindow::startGeometryTimer()
+void FloatingGapWindow::startGeometryTimer()
 {
     m_fixGeometryTimer.start();
 }
 
-void ScreenEdgeGhostWindow::setupWaylandIntegration()
+void FloatingGapWindow::setupWaylandIntegration()
 {
     if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
         // already setup
@@ -298,39 +294,34 @@ void ScreenEdgeGhostWindow::setupWaylandIntegration()
     }
 }
 
-bool ScreenEdgeGhostWindow::containsMouse() const
+bool FloatingGapWindow::containsMouse() const
 {
     return m_containsMouse;
 }
 
-void ScreenEdgeGhostWindow::setContainsMouse(bool contains)
+void FloatingGapWindow::setContainsMouse(bool contains)
 {
     if (m_containsMouse == contains) {
         return;
     }
 
     m_containsMouse = contains;
-    emit containsMouseChanged(contains);
 }
 
-bool ScreenEdgeGhostWindow::event(QEvent *e)
+bool FloatingGapWindow::event(QEvent *e)
 {
     if (e->type() == QEvent::DragEnter || e->type() == QEvent::DragMove) {
-        if (!m_containsMouse) {
-            m_delayedContainsMouse = false;
-            m_delayedMouseTimer.stop();
-            setContainsMouse(true);
-            emit dragEntered();
-        }
+        setContainsMouse(true);
+        emit dragEntered();
     } else if (e->type() == QEvent::Enter) {
-        m_delayedContainsMouse = true;
-        if (!m_delayedMouseTimer.isActive()) {
-            m_delayedMouseTimer.start();
-        }
+        setContainsMouse(true);
+        triggerAsyncContainsMouseSignals();
     } else if (e->type() == QEvent::Leave || e->type() == QEvent::DragLeave) {
-        m_delayedContainsMouse = false;
-        if (!m_delayedMouseTimer.isActive()) {
-            m_delayedMouseTimer.start();
+        setContainsMouse(false);
+        if (m_inAsyncContainsMouse) {
+            m_asyncMouseTimer.stop();
+            m_inAsyncContainsMouse = false;
+            emit asyncContainsMouseChanged(true);
         }
     } else if (e->type() == QEvent::Show) {
         m_corona->wm()->setViewExtraFlags(this);
@@ -339,17 +330,48 @@ bool ScreenEdgeGhostWindow::event(QEvent *e)
     return QQuickView::event(e);
 }
 
-void ScreenEdgeGhostWindow::hideWithMask()
+void FloatingGapWindow::callAsyncContainsMouse()
 {
-    //! old values: 0,0,1,1 were blocking the top-left corner of the window
-    QRect maskGeometry{-2, 0, 1, 1};
-
-    setMask(maskGeometry);
+    m_inAsyncContainsMouse = true;
+    m_asyncMouseTimer.start();
+    showWithMask();
 }
 
-void ScreenEdgeGhostWindow::showWithMask()
+void FloatingGapWindow::triggerAsyncContainsMouseSignals()
 {
-    setMask(QRect());
+    if (!m_inAsyncContainsMouse) {
+        return;
+    }
+
+    //! this function is called QEvent::Enter
+    m_asyncMouseTimer.stop();
+    hideWithMask();
+}
+
+void FloatingGapWindow::hideWithMask()
+{
+    if (m_debugMode) {
+        qDebug() << " Floating Gap Window :: MASK HIDE...";
+    }
+
+    //! old values: 0,0,1,1 were blocking the top-left corner of the window
+    QRect maskGeometry{-2, 0, 1, 1};
+    setMask(maskGeometry);
+
+    //! repaint in order to update mask immediately
+    setColor(m_hideColor);
+}
+
+void FloatingGapWindow::showWithMask()
+{
+    if (m_debugMode) {
+        qDebug() << " Floating Gap Window :: MAKS SHOW...";
+    }
+
+    setMask(QRegion());
+
+    //! repaint in order to update mask immediately
+    setColor(m_showColor);
 }
 
 }
