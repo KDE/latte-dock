@@ -22,8 +22,8 @@
 
 // local
 #include "view/positioner.h"
-#include "view/screenedgeghostwindow.h"
 #include "view/view.h"
+#include "view/helpers/screenedgeghostwindow.h"
 #include "../lattecorona.h"
 #include "../../liblatte2/extras.h"
 #include "../../liblatte2/types.h"

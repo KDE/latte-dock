@@ -22,9 +22,9 @@
 
 // local
 #include "positioner.h"
-#include "floatinggapwindow.h"
-#include "screenedgeghostwindow.h"
 #include "view.h"
+#include "helpers/floatinggapwindow.h"
+#include "helpers/screenedgeghostwindow.h"
 #include "windowstracker/currentscreentracker.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"

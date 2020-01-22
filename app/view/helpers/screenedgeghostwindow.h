@@ -21,8 +21,9 @@
 #define SCREENEDGEGHOSTWINDOW_H
 
 // local
-#include "../lattecorona.h"
-#include "../wm/windowinfowrap.h"
+#include "subwindow.h"
+#include "../../lattecorona.h"
+#include "../../wm/windowinfowrap.h"
 
 // Qt
 #include <QObject>
@@ -60,7 +61,7 @@ namespace ViewPart {
 //! KDE BUGS: https://bugs.kde.org/show_bug.cgi?id=382219
 //!           https://bugs.kde.org/show_bug.cgi?id=392464
 
-class ScreenEdgeGhostWindow : public QQuickView
+class ScreenEdgeGhostWindow : public SubWindow
 {
     Q_OBJECT
 
@@ -70,59 +71,22 @@ public:
 
     bool containsMouse() const;
 
-    int location();
-    int thickness() const;
-
-    void hideWithMask();
-    void showWithMask();
-
-    Latte::View *parentView();
-
-    KWayland::Client::PlasmaShellSurface *surface();
-
 signals:
     void containsMouseChanged(bool contains);
     void dragEntered();
-    void forcedShown(); //[workaround] forced shown to avoid a KWin issue that hides windows when activities are stopped
 
 protected:
     bool event(QEvent *ev) override;
-
-private slots:
-    void startGeometryTimer();
-    void updateGeometry();
-    void fixGeometry();
+    void updateGeometry() override;
 
 private:
     void setContainsMouse(bool contains);
-    void setupWaylandIntegration();
 
 private:
     bool m_delayedContainsMouse{false};
     bool m_containsMouse{false};
-    bool m_inDelete{false};
-
-    int m_thickness{2};
-
-    QRect m_calculatedGeometry;
 
     QTimer m_delayedMouseTimer;
-    QTimer m_fixGeometryTimer;
-
-    //! HACK: Timers in order to handle KWin faulty
-    //! behavior that hides Views when closing Activities
-    //! with no actual reason
-    QTimer m_visibleHackTimer1;
-    QTimer m_visibleHackTimer2;
-    //! Connections for the KWin visibility hack
-    QList<QMetaObject::Connection> connectionsHack;
-
-    Latte::View *m_latteView{nullptr};
-
-    QPointer<Latte::Corona> m_corona;
-
-    Latte::WindowSystem::WindowId m_trackedWindowId;
-    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 
 }

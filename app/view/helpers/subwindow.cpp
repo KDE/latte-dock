@@ -17,10 +17,10 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "floatinggapwindow.h"
+#include "subwindow.h"
 
 // local
-#include "view.h"
+#include "../view.h"
 
 // Qt
 #include <QDebug>
@@ -39,23 +39,16 @@
 namespace Latte {
 namespace ViewPart {
 
-FloatingGapWindow::FloatingGapWindow(Latte::View *view) :
+SubWindow::SubWindow(Latte::View *view, QString debugType) :
     m_latteView(view)
 {
     m_corona = qobject_cast<Latte::Corona *>(view->corona());
 
     m_debugMode = (qApp->arguments().contains("-d") && qApp->arguments().contains("--kwinedges"));
+    m_debugType = debugType;
 
-    if (m_debugMode) {
-        m_showColor = QColor("green");
-        m_hideColor = QColor("red");
-    } else {
-        m_showColor = QColor(Qt::transparent);
-        m_hideColor = QColor(Qt::transparent);
-
-        m_showColor.setAlpha(0);
-        m_hideColor.setAlpha(1);
-    }
+    m_showColor = QColor(Qt::transparent);
+    m_hideColor = QColor(Qt::transparent);
 
     setColor(m_showColor);
     setDefaultAlphaBuffer(true);
@@ -67,28 +60,18 @@ FloatingGapWindow::FloatingGapWindow(Latte::View *view) :
 
     m_fixGeometryTimer.setSingleShot(true);
     m_fixGeometryTimer.setInterval(500);
-    connect(&m_fixGeometryTimer, &QTimer::timeout, this, &FloatingGapWindow::fixGeometry);
+    connect(&m_fixGeometryTimer, &QTimer::timeout, this, &SubWindow::fixGeometry);
 
-    //! this timer is used in order to identify if mouse is still present in sensitive floating
-    //! areas and in such case to prevent a real-floating view to hide itself
-    m_asyncMouseTimer.setSingleShot(true);
-    m_asyncMouseTimer.setInterval(200);
-    connect(&m_asyncMouseTimer, &QTimer::timeout, this, [this]() {
-        if (m_inAsyncContainsMouse && !m_containsMouse) {
-            emit asyncContainsMouseChanged(false);
-            hideWithMask();
-            m_inAsyncContainsMouse = false;
-        }
-    });
+    connect(this, &QQuickView::xChanged, this, &SubWindow::startGeometryTimer);
+    connect(this, &QQuickView::yChanged, this, &SubWindow::startGeometryTimer);
+    connect(this, &QQuickView::widthChanged, this, &SubWindow::startGeometryTimer);
+    connect(this, &QQuickView::heightChanged, this, &SubWindow::startGeometryTimer);
 
-    connect(this, &QQuickView::xChanged, this, &FloatingGapWindow::startGeometryTimer);
-    connect(this, &QQuickView::yChanged, this, &FloatingGapWindow::startGeometryTimer);
-    connect(this, &QQuickView::widthChanged, this, &FloatingGapWindow::startGeometryTimer);
-    connect(this, &QQuickView::heightChanged, this, &FloatingGapWindow::startGeometryTimer);
+    connect(this, &SubWindow::calculatedGeometryChanged, this, &SubWindow::fixGeometry);
 
-    connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, &FloatingGapWindow::updateGeometry);
-    connect(m_latteView, &Latte::View::screenGeometryChanged, this, &FloatingGapWindow::updateGeometry);
-    connect(m_latteView, &Latte::View::locationChanged, this, &FloatingGapWindow::updateGeometry);
+    connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, &SubWindow::updateGeometry);
+    connect(m_latteView, &Latte::View::screenGeometryChanged, this, &SubWindow::updateGeometry);
+    connect(m_latteView, &Latte::View::locationChanged, this, &SubWindow::updateGeometry);
     connect(m_latteView, &QQuickView::screenChanged, this, [this]() {
         setScreen(m_latteView->screen());
         updateGeometry();
@@ -117,9 +100,9 @@ FloatingGapWindow::FloatingGapWindow(Latte::View *view) :
             if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
                 show();
                 emit forcedShown();
-                //qDebug() << "Floating Gap:: Enforce reshow from timer 1...";
+                //qDebug() << m_debugType + ":: Enforce reshow from timer 1...";
             } else {
-                //qDebug() << "Floating Gap:: No needed reshow from timer 1...";
+                //qDebug() << m_debugType + ":: No needed reshow from timer 1...";
             }
         });
 
@@ -127,13 +110,13 @@ FloatingGapWindow::FloatingGapWindow(Latte::View *view) :
             if (!m_inDelete && m_latteView && m_latteView->layout() && !isVisible()) {
                 show();
                 emit forcedShown();
-                //qDebug() << "Floating Gap:: Enforce reshow from timer 2...";
+                //qDebug() << m_debugType + ":: Enforce reshow from timer 2...";
             } else {
-                //qDebug() << "Floating Gap:: No needed reshow from timer 2...";
+                //qDebug() << m_debugType + ":: No needed reshow from timer 2...";
             }
         });
 
-        connectionsHack << connect(this, &FloatingGapWindow::forcedShown, this, [&]() {
+        connectionsHack << connect(this, &SubWindow::forcedShown, this, [&]() {
             m_corona->wm()->unregisterIgnoredWindow(m_trackedWindowId);
             m_trackedWindowId = winId();
             m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
@@ -156,11 +139,10 @@ FloatingGapWindow::FloatingGapWindow(Latte::View *view) :
 
     setScreen(m_latteView->screen());
     show();
-    updateGeometry();
     hideWithMask();
 }
 
-FloatingGapWindow::~FloatingGapWindow()
+SubWindow::~SubWindow()
 {
     m_inDelete = true;
 
@@ -180,70 +162,27 @@ FloatingGapWindow::~FloatingGapWindow()
     }
 }
 
-int FloatingGapWindow::location()
+int SubWindow::location()
 {
     return (int)m_latteView->location();
 }
 
-int FloatingGapWindow::thickness() const
+int SubWindow::thickness() const
 {
     return m_thickness;
 }
 
-Latte::View *FloatingGapWindow::parentView()
+Latte::View *SubWindow::parentView()
 {
     return m_latteView;
 }
 
-KWayland::Client::PlasmaShellSurface *FloatingGapWindow::surface()
+KWayland::Client::PlasmaShellSurface *SubWindow::surface()
 {
     return m_shellSurface;
 }
 
-void FloatingGapWindow::updateGeometry()
-{
-    if (m_latteView->positioner()->slideOffset() != 0) {
-        return;
-    }
-
-    QRect newGeometry;
-
-    m_thickness = m_latteView->screenEdgeMargin();
-
-    int length = m_latteView->formFactor() == Plasma::Types::Horizontal ? m_latteView->absoluteGeometry().width() : m_latteView->absoluteGeometry().height();
-
-    if (m_latteView->location() == Plasma::Types::BottomEdge) {
-        int xF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left());
-        newGeometry.setX(xF);
-        newGeometry.setY(m_latteView->screenGeometry().bottom() - m_thickness);
-    } else if (m_latteView->location() == Plasma::Types::TopEdge) {
-        int xF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left());
-        newGeometry.setX(xF);
-        newGeometry.setY(m_latteView->screenGeometry().top());
-    } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
-        int yF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top());
-        newGeometry.setX(m_latteView->screenGeometry().left());
-        newGeometry.setY(yF);
-    } else if (m_latteView->location() == Plasma::Types::RightEdge) {
-        int yF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top());
-        newGeometry.setX(m_latteView->screenGeometry().right() - m_thickness);
-        newGeometry.setY(yF);
-    }
-
-    if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
-        newGeometry.setWidth(length);
-        newGeometry.setHeight(m_thickness + 1);
-    } else {
-        newGeometry.setWidth(m_thickness + 1);
-        newGeometry.setHeight(length);
-    }
-
-    m_calculatedGeometry = newGeometry;
-
-    fixGeometry();
-}
-
-void FloatingGapWindow::fixGeometry()
+void SubWindow::fixGeometry()
 {
     if (!m_calculatedGeometry.isEmpty()
             && (m_calculatedGeometry.x() != x() || m_calculatedGeometry.y() != y()
@@ -259,12 +198,12 @@ void FloatingGapWindow::fixGeometry()
     }
 }
 
-void FloatingGapWindow::startGeometryTimer()
+void SubWindow::startGeometryTimer()
 {
     m_fixGeometryTimer.start();
 }
 
-void FloatingGapWindow::setupWaylandIntegration()
+void SubWindow::setupWaylandIntegration()
 {
     if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
         // already setup
@@ -294,64 +233,20 @@ void FloatingGapWindow::setupWaylandIntegration()
     }
 }
 
-bool FloatingGapWindow::containsMouse() const
+bool SubWindow::event(QEvent *e)
 {
-    return m_containsMouse;
-}
-
-void FloatingGapWindow::setContainsMouse(bool contains)
-{
-    if (m_containsMouse == contains) {
-        return;
-    }
-
-    m_containsMouse = contains;
-}
-
-bool FloatingGapWindow::event(QEvent *e)
-{
-    if (e->type() == QEvent::DragEnter || e->type() == QEvent::DragMove) {
-        setContainsMouse(true);
-        emit dragEntered();
-    } else if (e->type() == QEvent::Enter) {
-        setContainsMouse(true);
-        triggerAsyncContainsMouseSignals();
-    } else if (e->type() == QEvent::Leave || e->type() == QEvent::DragLeave) {
-        setContainsMouse(false);
-        if (m_inAsyncContainsMouse) {
-            m_asyncMouseTimer.stop();
-            m_inAsyncContainsMouse = false;
-            emit asyncContainsMouseChanged(true);
-        }
-    } else if (e->type() == QEvent::Show) {
+    if (e->type() == QEvent::Show) {
         m_corona->wm()->setViewExtraFlags(this);
     }
 
     return QQuickView::event(e);
 }
 
-void FloatingGapWindow::callAsyncContainsMouse()
-{
-    m_inAsyncContainsMouse = true;
-    m_asyncMouseTimer.start();
-    showWithMask();
-}
 
-void FloatingGapWindow::triggerAsyncContainsMouseSignals()
-{
-    if (!m_inAsyncContainsMouse) {
-        return;
-    }
-
-    //! this function is called QEvent::Enter
-    m_asyncMouseTimer.stop();
-    hideWithMask();
-}
-
-void FloatingGapWindow::hideWithMask()
+void SubWindow::hideWithMask()
 {
     if (m_debugMode) {
-        qDebug() << " Floating Gap Window :: MASK HIDE...";
+        qDebug() << m_debugType + " :: MASK HIDE...";
     }
 
     //! old values: 0,0,1,1 were blocking the top-left corner of the window
@@ -362,10 +257,10 @@ void FloatingGapWindow::hideWithMask()
     setColor(m_hideColor);
 }
 
-void FloatingGapWindow::showWithMask()
+void SubWindow::showWithMask()
 {
     if (m_debugMode) {
-        qDebug() << " Floating Gap Window :: MAKS SHOW...";
+        qDebug() << m_debugType + " :: MASK SHOW...";
     }
 
     setMask(QRegion());
