@@ -601,6 +601,67 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout, boo
 
                 break;
 
+            case Plasma::Types::LeftEdge:
+                if (view->behaveAsPlasmaPanel()) {
+                    available -= view->geometry();
+                } else {
+                    QRect realGeometry;
+                    int realHeight = view->maxLength() * view->height();
+
+                    switch (view->alignment()) {
+                    case Latte::Types::Top:
+                        realGeometry = QRect(view->x(), view->y(),
+                                             realThickness, realHeight);
+                        break;
+
+                    case Latte::Types::Center:
+                    case Latte::Types::Justify:
+                        realGeometry = QRect(view->x(), qMax(view->geometry().y(), view->geometry().center().y() - realHeight / 2),
+                                             realThickness, realHeight);
+                        break;
+
+                    case Latte::Types::Bottom:
+                        realGeometry = QRect(view->x(), view->geometry().bottom() - realHeight + 1,
+                                             realThickness, realHeight);
+                        break;
+                    }
+
+                    available -= realGeometry;
+                }
+
+                break;
+
+            case Plasma::Types::RightEdge:
+                if (view->behaveAsPlasmaPanel()) {
+                    available -= view->geometry();
+                } else {
+                    QRect realGeometry;
+                    int realHeight = view->maxLength() * view->height();
+                    int realX = view->geometry().right() - realThickness + 1;
+
+                    switch (view->alignment()) {
+                    case Latte::Types::Top:
+                        realGeometry = QRect(realX, view->y(),
+                                             realThickness, realHeight);
+                        break;
+
+                    case Latte::Types::Center:
+                    case Latte::Types::Justify:
+                        realGeometry = QRect(realX, qMax(view->geometry().y(), view->geometry().center().y() - realHeight / 2),
+                                             realThickness, realHeight);
+                        break;
+
+                    case Latte::Types::Bottom:
+                        realGeometry = QRect(realX, view->geometry().bottom() - realHeight + 1,
+                                             realThickness, realHeight);
+                        break;
+                    }
+
+                    available -= realGeometry;
+                }
+
+                break;
+
             default:
                 //! bypass clang warnings
                 break;
