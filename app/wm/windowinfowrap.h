@@ -49,7 +49,17 @@ public:
         , m_isKeepBelow(false)
         , m_hasSkipTaskbar(false)
         , m_isOnAllDesktops(false)
-        , m_isOnAllActivities(false) {
+        , m_isOnAllActivities(false)
+        , m_isClosable(false)
+        , m_isFullScreenable(false)
+        , m_isGroupable(false)
+        , m_isMaximizable(false)
+        , m_isMinimizable(false)
+        , m_isMovable(false)
+        , m_isResizable(false)
+        , m_isShadeable(false)
+        , m_isVirtualDesktopsChangeable(false)
+    {
     }
 
     WindowInfoWrap(const WindowInfoWrap &o) noexcept
@@ -69,6 +79,15 @@ public:
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
         , m_isOnAllDesktops(o.m_isOnAllDesktops)
         , m_isOnAllActivities(o.m_isOnAllActivities)
+        , m_isClosable(o.m_isClosable)
+        , m_isFullScreenable(o.m_isFullScreenable)
+        , m_isGroupable(o.m_isGroupable)
+        , m_isMaximizable(o.m_isMaximizable)
+        , m_isMinimizable(o.m_isMinimizable)
+        , m_isMovable(o.m_isMovable)
+        , m_isResizable(o.m_isResizable)
+        , m_isShadeable(o.m_isShadeable)
+        , m_isVirtualDesktopsChangeable(o.m_isVirtualDesktopsChangeable)
         , m_desktops(o.m_desktops)
         , m_activities(o.m_activities)
         , m_display(o.m_display) {
@@ -91,6 +110,15 @@ public:
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
         , m_isOnAllDesktops(o.m_isOnAllDesktops)
         , m_isOnAllActivities(o.m_isOnAllActivities)
+        , m_isClosable(o.m_isClosable)
+        , m_isFullScreenable(o.m_isFullScreenable)
+        , m_isGroupable(o.m_isGroupable)
+        , m_isMaximizable(o.m_isMaximizable)
+        , m_isMinimizable(o.m_isMinimizable)
+        , m_isMovable(o.m_isMovable)
+        , m_isResizable(o.m_isResizable)
+        , m_isShadeable(o.m_isShadeable)
+        , m_isVirtualDesktopsChangeable(o.m_isVirtualDesktopsChangeable)
         , m_desktops(o.m_desktops)
         , m_activities(o.m_activities)
         , m_display(o.m_display) {
@@ -143,6 +171,35 @@ public:
     inline bool isOnAllActivities() const noexcept;
     inline void setIsOnAllActivities(bool allactivities) noexcept;
 
+    //!BEGIN: Window Abilities
+    inline bool isCloseable() const noexcept;
+    inline void setIsClosable(bool closable) noexcept;
+
+    inline bool isFullScreenable() const noexcept;
+    inline void setIsFullScreenable(bool fullscreenable) noexcept;
+
+    inline bool isGroupable() const noexcept;
+    inline void setIsGroupable(bool groupable) noexcept;
+
+    inline bool isMaximizable() const noexcept;
+    inline void setIsMaximizable(bool maximizable) noexcept;
+
+    inline bool isMinimizable() const noexcept;
+    inline void setIsMinimizable(bool minimizable) noexcept;
+
+    inline bool isMovable() const noexcept;
+    inline void setIsMovable(bool movable) noexcept;
+
+    inline bool isResizable() const noexcept;
+    inline void setIsResizable(bool resizable) noexcept;
+
+    inline bool isShadeable() const noexcept;
+    inline void setIsShadeable(bool shadeble) noexcept;
+
+    inline bool isVirtualDesktopsChangeable() const noexcept;
+    inline void setIsVirtualDesktopsChangeable(bool virtualdesktopchangeable) noexcept;
+    //!END: Window Abilities
+
     inline bool isMainWindow() const noexcept;
     inline bool isChildWindow() const noexcept;
 
@@ -193,6 +250,18 @@ private:
     bool m_isOnAllDesktops: 1;
     bool m_isOnAllActivities: 1;
 
+    //!BEGIN: Window Abilities
+    bool m_isClosable : 1;
+    bool m_isFullScreenable : 1;
+    bool m_isGroupable : 1;
+    bool m_isMaximizable : 1;
+    bool m_isMinimizable : 1;
+    bool m_isMovable : 1;
+    bool m_isResizable : 1;
+    bool m_isShadeable : 1;
+    bool m_isVirtualDesktopsChangeable : 1;
+    //!END: Window Abilities
+
     QString m_appName;
     QString m_display;
 
@@ -221,6 +290,16 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
     m_isOnAllActivities = rhs.m_isOnAllActivities;
+    m_isClosable = rhs.m_isClosable;
+    m_isFullScreenable = rhs.m_isFullScreenable;
+    m_isGroupable = rhs.m_isGroupable;
+    m_isMaximizable = rhs.m_isMaximizable;
+    m_isMinimizable = rhs.m_isMinimizable;
+    m_isMovable = rhs.m_isMovable;
+    m_isResizable = rhs.m_isResizable;
+    m_isShadeable = rhs.m_isShadeable;
+    m_isVirtualDesktopsChangeable = rhs.m_isVirtualDesktopsChangeable;
+
     m_display = rhs.m_display;
     m_desktops = rhs.m_desktops;
     m_activities = rhs.m_activities;
@@ -245,6 +324,16 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noex
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
     m_isOnAllActivities = rhs.m_isOnAllActivities;
+    m_isClosable = rhs.m_isClosable;
+    m_isFullScreenable = rhs.m_isFullScreenable;
+    m_isGroupable = rhs.m_isGroupable;
+    m_isMaximizable = rhs.m_isMaximizable;
+    m_isMinimizable = rhs.m_isMinimizable;
+    m_isMovable = rhs.m_isMovable;
+    m_isResizable = rhs.m_isResizable;
+    m_isShadeable = rhs.m_isShadeable;
+    m_isVirtualDesktopsChangeable = rhs.m_isVirtualDesktopsChangeable;;
+
     m_display = rhs.m_display;
     m_desktops = rhs.m_desktops;
     m_activities = rhs.m_activities;
@@ -400,6 +489,91 @@ inline void WindowInfoWrap::setIsOnAllActivities(bool allactivities) noexcept
 {
     m_isOnAllActivities = allactivities;
 }
+
+//!BEGIN: Window Abilities
+inline bool WindowInfoWrap::isCloseable() const noexcept
+{
+    return m_isClosable;
+}
+inline void WindowInfoWrap::setIsClosable(bool closable) noexcept
+{
+    m_isClosable = closable;
+}
+
+inline bool WindowInfoWrap::isFullScreenable() const noexcept
+{
+    return m_isFullScreenable;
+}
+inline void WindowInfoWrap::setIsFullScreenable(bool fullscreenable) noexcept
+{
+    m_isFullScreenable = fullscreenable;
+}
+
+inline bool WindowInfoWrap::isGroupable() const noexcept
+{
+    return m_isGroupable;
+}
+inline void WindowInfoWrap::setIsGroupable(bool groupable) noexcept
+{
+    m_isGroupable = groupable;
+}
+
+inline bool WindowInfoWrap::isMaximizable() const noexcept
+{
+    return m_isMaximizable;
+}
+inline void WindowInfoWrap::setIsMaximizable(bool maximizable) noexcept
+{
+    m_isMaximizable = maximizable;
+}
+
+inline bool WindowInfoWrap::isMinimizable() const noexcept
+{
+    return m_isMinimizable;
+}
+inline void WindowInfoWrap::setIsMinimizable(bool minimizable) noexcept
+{
+    m_isMinimizable = minimizable;
+}
+
+inline bool WindowInfoWrap::isMovable() const noexcept
+{
+    return m_isMovable;
+}
+inline void WindowInfoWrap::setIsMovable(bool movable) noexcept
+{
+    m_isMovable = movable;
+}
+
+inline bool WindowInfoWrap::isResizable() const noexcept
+{
+    return m_isResizable;
+}
+inline void WindowInfoWrap::setIsResizable(bool resizable) noexcept
+{
+    m_isResizable = resizable;
+}
+
+inline bool WindowInfoWrap::isShadeable() const noexcept
+{
+    return m_isShadeable;
+}
+inline void WindowInfoWrap::setIsShadeable(bool shadeble) noexcept
+{
+    m_isShadeable = shadeble;
+}
+
+inline bool WindowInfoWrap::isVirtualDesktopsChangeable() const noexcept
+{
+    return m_isVirtualDesktopsChangeable;
+}
+inline void WindowInfoWrap::setIsVirtualDesktopsChangeable(bool virtualdesktopchangeable) noexcept
+{
+    m_isVirtualDesktopsChangeable = virtualdesktopchangeable;
+}
+//!END: Window Abilities
+
+
 
 inline bool WindowInfoWrap::isMainWindow() const noexcept
 {

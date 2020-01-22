@@ -477,6 +477,19 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
             winfoWrap.setIsValid(true);
             winfoWrap.setIsPlasmaDesktop(true);
             winfoWrap.setWid(wid);
+
+            //! Window Abilities
+            winfoWrap.setIsClosable(false);
+            winfoWrap.setIsFullScreenable(false);
+            winfoWrap.setIsGroupable(false);
+            winfoWrap.setIsMaximizable(false);
+            winfoWrap.setIsMinimizable(false);
+            winfoWrap.setIsMovable(false);
+            winfoWrap.setIsResizable(false);
+            winfoWrap.setIsShadeable(false);
+            winfoWrap.setIsVirtualDesktopsChangeable(false);
+            //! Window Abilities
+
         } else if (isValidWindow(w)) {
             winfoWrap.setIsValid(true);
             winfoWrap.setWid(wid);
@@ -493,6 +506,18 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
             winfoWrap.setIsKeepBelow(w->isKeepBelow());
             winfoWrap.setGeometry(w->geometry());
             winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
+
+            //! Window Abilities
+            winfoWrap.setIsClosable(w->isCloseable());
+            winfoWrap.setIsFullScreenable(w->isFullscreenable());
+            winfoWrap.setIsMaximizable(w->isMaximizeable());
+            winfoWrap.setIsMinimizable(w->isMinimizeable());
+            winfoWrap.setIsMovable(w->isMovable());
+            winfoWrap.setIsResizable(w->isResizable());
+            winfoWrap.setIsShadeable(w->isShadeable());
+            winfoWrap.setIsVirtualDesktopsChangeable(w->isVirtualDesktopChangeable());
+            //! Window Abilities
+
             winfoWrap.setDisplay(w->title());
 #if KF5_VERSION_MINOR >= 52
             winfoWrap.setDesktops(w->plasmaVirtualDesktops());

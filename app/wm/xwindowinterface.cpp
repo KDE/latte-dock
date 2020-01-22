@@ -348,6 +348,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
                 | NET::WMVisibleName,
                 NET::WM2WindowClass
                 | NET::WM2Activities
+                | NET::WM2AllowedActions
                 | NET::WM2TransientFor};
 
     //! update desktop id
@@ -376,8 +377,19 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsKeepAbove(winfo.hasState(NET::KeepAbove));
         winfoWrap.setIsKeepBelow(winfo.hasState(NET::KeepBelow));
         winfoWrap.setHasSkipTaskbar(winfo.hasState(NET::SkipTaskbar));
-        winfoWrap.setDisplay(winfo.visibleName());
 
+        //! Window Abilities
+        winfoWrap.setIsClosable(winfo.actionSupported(NET::ActionClose));
+        winfoWrap.setIsFullScreenable(winfo.actionSupported(NET::ActionFullScreen));
+        winfoWrap.setIsMaximizable(winfo.actionSupported(NET::ActionMax));
+        winfoWrap.setIsMinimizable(winfo.actionSupported(NET::ActionMinimize));
+        winfoWrap.setIsMovable(winfo.actionSupported(NET::ActionMove));
+        winfoWrap.setIsResizable(winfo.actionSupported(NET::ActionResize));
+        winfoWrap.setIsShadeable(winfo.actionSupported(NET::ActionShade));
+        winfoWrap.setIsVirtualDesktopsChangeable(winfo.actionSupported(NET::ActionChangeDesktop));
+        //! Window Abilities
+
+        winfoWrap.setDisplay(winfo.visibleName());
         winfoWrap.setDesktops({QString(winfo.desktop())});
         winfoWrap.setActivities(winfo.activities());
     } else if (m_desktopId == wid) {
@@ -386,6 +398,18 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setWid(wid);
         winfoWrap.setParentId(0);
         winfoWrap.setHasSkipTaskbar(true);
+
+        //! Window Abilities
+        winfoWrap.setIsClosable(false);
+        winfoWrap.setIsFullScreenable(false);
+        winfoWrap.setIsGroupable(false);
+        winfoWrap.setIsMaximizable(false);
+        winfoWrap.setIsMinimizable(false);
+        winfoWrap.setIsMovable(false);
+        winfoWrap.setIsResizable(false);
+        winfoWrap.setIsShadeable(false);
+        winfoWrap.setIsVirtualDesktopsChangeable(false);
+        //! Window Abilities
     }
 
     return winfoWrap;
@@ -434,34 +458,23 @@ QUrl XWindowInterface::windowUrl(WindowId wid) const
 
 bool XWindowInterface::windowCanBeDragged(WindowId wid) const
 {
-    KWindowInfo info(wid.value<WId>(), 0, NET::WM2AllowedActions);
-
-    if (info.valid()) {
-        WindowInfoWrap winfo = requestInfo(wid);
-        return (winfo.isValid()
-                && info.actionSupported(NET::ActionMove)
-                && !winfo.isMinimized()
-                && inCurrentDesktopActivity(winfo)
-                && !winfo.isPlasmaDesktop());
-    }
-
-    return false;
+    WindowInfoWrap winfo = requestInfo(wid);
+    return (winfo.isValid()
+            && !winfo.isMinimized()
+            && winfo.isMovable()
+            && inCurrentDesktopActivity(winfo)
+            && !winfo.isPlasmaDesktop());
 }
 
 bool XWindowInterface::windowCanBeMaximized(WindowId wid) const
 {
-    KWindowInfo info(wid.value<WId>(), 0, NET::WM2AllowedActions);
 
-    if (info.valid()) {
-        WindowInfoWrap winfo = requestInfo(wid);
-        return (winfo.isValid()
-                && !winfo.isMinimized()
-                && info.actionSupported(NET::ActionMax)
-                && inCurrentDesktopActivity(winfo)
-                && !winfo.isPlasmaDesktop());
-    }
-
-    return false;
+    WindowInfoWrap winfo = requestInfo(wid);
+    return (winfo.isValid()
+            && !winfo.isMinimized()
+            && winfo.isMaximizable()
+            && inCurrentDesktopActivity(winfo)
+            && !winfo.isPlasmaDesktop());
 }
 
 void XWindowInterface::requestActivate(WindowId wid) const

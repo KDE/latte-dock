@@ -45,6 +45,8 @@ namespace Tracker {
 
 class LastActiveWindow : public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool isValid READ isValid NOTIFY isValidChanged)
+
     Q_PROPERTY(bool isActive READ isActive NOTIFY isActiveChanged)
     Q_PROPERTY(bool isMinimized READ isMinimized NOTIFY isMinimizedChanged)
     Q_PROPERTY(bool isMaximized READ isMaximized NOTIFY isMaximizedChanged)
@@ -52,8 +54,20 @@ class LastActiveWindow : public QObject {
     Q_PROPERTY(bool isKeepAbove READ isKeepAbove NOTIFY isKeepAboveChanged)
     Q_PROPERTY(bool isOnAllDesktops  READ isOnAllDesktops NOTIFY isOnAllDesktopsChanged)
     Q_PROPERTY(bool isShaded READ isShaded NOTIFY isShadedChanged)
-    Q_PROPERTY(bool isValid READ isValid NOTIFY isValidChanged)
     Q_PROPERTY(bool hasSkipTaskbar READ hasSkipTaskbar NOTIFY hasSkipTaskbarChanged)
+
+    //! BEGIN: Window Abitilities
+    /*since Latte v0.9.8*/
+    Q_PROPERTY(bool isClosable READ isClosable NOTIFY isClosableChanged)
+    Q_PROPERTY(bool isFullScreenable READ isFullScreenable NOTIFY isFullScreenableChanged)
+    Q_PROPERTY(bool isGroupable READ isGroupable NOTIFY isGroupableChanged)
+    Q_PROPERTY(bool isMaximizable READ isMaximizable NOTIFY isMaximizableChanged)
+    Q_PROPERTY(bool isMinimizable READ isMinimizable NOTIFY isMinimizableChanged)
+    Q_PROPERTY(bool isMovable READ isMovable NOTIFY isMovableChanged)
+    Q_PROPERTY(bool isResizable READ isResizable NOTIFY isResizableChanged)
+    Q_PROPERTY(bool isShadeable READ isShadeable NOTIFY isShadeableChanged)
+    Q_PROPERTY(bool isVirtualDesktopChangeable READ isVirtualDesktopChangeable NOTIFY isVirtualDesktopChangeableChanged)
+    //! END: Window Abitilities
 
     /*since Latte v0.9.4*/
     Q_PROPERTY(QString colorScheme READ colorScheme NOTIFY colorSchemeChanged)
@@ -70,6 +84,7 @@ public:
     LastActiveWindow(TrackedGeneralInfo *trackedInfo);
     ~LastActiveWindow() override;
 
+    bool isValid() const;
     bool isActive() const;
     bool isMinimized() const;
     bool isMaximized() const;
@@ -77,8 +92,20 @@ public:
     bool isKeepAbove() const;
     bool isOnAllDesktops() const;
     bool isShaded() const;
-    bool isValid() const;
     bool hasSkipTaskbar() const;
+
+    //! BEGIN: Window Abitilities
+    /*since Latte v0.9.8*/
+    bool isClosable() const;
+    bool isFullScreenable() const;
+    bool isGroupable() const;
+    bool isMaximizable() const;
+    bool isMinimizable() const;
+    bool isMovable() const;
+    bool isResizable() const;
+    bool isShadeable() const;
+    bool isVirtualDesktopChangeable() const;
+    //! END: Window Abitilities
 
     QString appName() const;
     QString colorScheme() const;
@@ -123,6 +150,19 @@ signals:
     void isValidChanged();
     void hasSkipTaskbarChanged();    
 
+    //! BEGIN: Window Abitilities
+    /*since Latte v0.9.8*/
+    void isClosableChanged();
+    void isFullScreenableChanged();
+    void isGroupableChanged();
+    void isMaximizableChanged();
+    void isMinimizableChanged();
+    void isMovableChanged();
+    void isResizableChanged();
+    void isShadeableChanged();
+    void isVirtualDesktopChangeableChanged();
+    //! END: Window Abitilities
+
     void appNameChanged();
     void displayChanged();
 
@@ -139,6 +179,19 @@ private:
     void setIsShaded(bool shaded);
     void setIsValid(bool valid);
     void setHasSkipTaskbar(bool skip);
+
+    //! BEGIN: Window Abitilities
+    /*since Latte v0.9.8*/
+    void setIsClosable(bool closable);
+    void setIsFullScreenable(bool fullscreenable);
+    void setIsGroupable(bool groupable);
+    void setIsMaximizable(bool maximizable);
+    void setIsMinimizable(bool minimizable);
+    void setIsMovable(bool movable);
+    void setIsResizable(bool resizable);
+    void setIsShadeable(bool shadeable);
+    void setIsVirtualDesktopsChangeable(bool virtualdestkopschangeable);
+    //! END: Window Abitilities
 
     void setColorScheme(QString scheme);
 
@@ -163,6 +216,19 @@ private:
     bool m_isShaded{false};
     bool m_isValid{false};
     bool m_hasSkipTaskbar{false};
+
+    //! BEGIN: Window Abitilities
+    /*since Latte v0.9.8*/
+    bool m_isClosable{true};
+    bool m_isFullScreenable{true};
+    bool m_isGroupable{true};
+    bool m_isMaximizable{true};
+    bool m_isMinimizable{true};
+    bool m_isMovable{true};
+    bool m_isResizable{true};
+    bool m_isShadeable{true};
+    bool m_isVirtualDesktopsChangeable{true};
+    //! END: Window Abitilities
 
     QString m_colorScheme;
 

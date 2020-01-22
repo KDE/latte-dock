@@ -198,6 +198,145 @@ void LastActiveWindow::setHasSkipTaskbar(bool skip)
     emit hasSkipTaskbarChanged();
 }
 
+//! BEGIN: Window Abitilities
+bool LastActiveWindow::isClosable() const
+{
+    return m_isClosable;
+}
+
+void LastActiveWindow::setIsClosable(bool closable)
+{
+    if (m_isClosable == closable) {
+        return;
+    }
+
+    m_isClosable = closable;
+    emit isClosableChanged();
+}
+
+bool LastActiveWindow::isFullScreenable() const
+{
+    return m_isFullScreenable;
+}
+
+void LastActiveWindow::setIsFullScreenable(bool fullscreenable)
+{
+    if (m_isFullScreenable == fullscreenable) {
+        return;
+    }
+
+    m_isFullScreenable = fullscreenable;
+    emit isFullScreenableChanged();
+}
+
+bool LastActiveWindow::isGroupable() const
+{
+    return m_isGroupable;
+}
+
+void LastActiveWindow::setIsGroupable(bool groupable)
+{
+    if (m_isGroupable == groupable) {
+        return;
+    }
+
+    m_isGroupable = groupable;
+    emit isGroupableChanged();
+}
+
+
+bool LastActiveWindow::isMaximizable() const
+{
+    return m_isMaximizable;
+}
+
+void LastActiveWindow::setIsMaximizable(bool maximizable)
+{
+    if (m_isMaximizable == maximizable) {
+        return;
+    }
+
+    m_isMaximizable = maximizable;
+    emit isMaximizableChanged();
+}
+
+bool LastActiveWindow::isMinimizable() const
+{
+    return m_isMinimizable;
+}
+
+void LastActiveWindow::setIsMinimizable(bool minimizable)
+{
+    if (m_isMinimizable == minimizable) {
+        return;
+    }
+
+    m_isMinimizable = minimizable;
+    emit isMinimizableChanged();
+}
+
+bool LastActiveWindow::isMovable() const
+{
+    return m_isMovable;
+}
+
+void LastActiveWindow::setIsMovable(bool movable)
+{
+    if (m_isMovable == movable) {
+        return;
+    }
+
+    m_isMovable = movable;
+    emit isMovableChanged();
+}
+
+bool LastActiveWindow::isResizable() const
+{
+    return m_isResizable;
+}
+
+void LastActiveWindow::setIsResizable(bool resizable)
+{
+    if (m_isResizable == resizable) {
+        return;
+    }
+
+    m_isResizable = resizable;
+    emit isResizableChanged();
+}
+
+bool LastActiveWindow::isShadeable() const
+{
+    return m_isShadeable;
+}
+
+void LastActiveWindow::setIsShadeable(bool shadeable)
+{
+    if (m_isShadeable == shadeable) {
+        return;
+    }
+
+    m_isShadeable = shadeable;
+    emit isShadeableChanged();
+}
+
+bool LastActiveWindow::isVirtualDesktopChangeable() const
+{
+    return m_isVirtualDesktopsChangeable;
+}
+
+void LastActiveWindow::setIsVirtualDesktopsChangeable(bool virtualdestkopschangeable)
+{
+    if (m_isVirtualDesktopsChangeable == virtualdestkopschangeable) {
+        return;
+    }
+
+    m_isVirtualDesktopsChangeable = virtualdestkopschangeable;
+    emit isVirtualDesktopChangeableChanged();
+}
+//! END: Window Abitilities
+
+
 QRect LastActiveWindow::geometry() const
 {
     return m_geometry;
@@ -308,6 +447,18 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
     setIsMinimized(info.isMinimized());
     setIsMaximized(info.isMaximized());
     setIsOnAllDesktops(info.isOnAllDesktops());
+
+    //! Window Abilities
+    setIsClosable(info.isCloseable());
+    setIsFullScreenable(info.isFullScreenable());
+    setIsGroupable(info.isGroupable());
+    setIsMaximizable(info.isMaximizable());
+    setIsMinimizable(info.isMinimizable());
+    setIsMovable(info.isMovable());
+    setIsResizable(info.isResizable());
+    setIsShadeable(info.isShadeable());
+    setIsVirtualDesktopsChangeable(info.isVirtualDesktopsChangeable());
+    //! Window Abilities
 
     setAppName(info.appName());
     setDisplay(info.display());
