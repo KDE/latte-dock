@@ -67,6 +67,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
         connect(m_latteView, &Latte::View::byPassWMChanged, this, &VisibilityManager::updateKWinEdgesSupport);
+        connect(m_latteView, &Latte::View::inEditModeChanged, this, &VisibilityManager::initViewFlags);
 
         connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, [&]() {
             if (m_mode == Types::AlwaysVisible && m_latteView->screen()) {
@@ -74,7 +75,11 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
             }
         });
 
-        connect(m_latteView, &Latte::View::inEditModeChanged, this, &VisibilityManager::initViewFlags);
+        connect(m_latteView, &Latte::View::screenEdgeMarginEnabledChanged, this, [&]() {
+            if (!m_latteView->screenEdgeMarginEnabled()) {
+                deleteFloatingGapWindow();
+            }
+        });
 
         connect(this, &VisibilityManager::modeChanged, this, [&]() {
             emit m_latteView->availableScreenRectChangedFrom(m_latteView);
@@ -724,7 +729,11 @@ bool VisibilityManager::windowContainsMouse()
 
 void VisibilityManager::checkMouseInFloatingArea()
 {
-    if (m_floatingGapWindow && m_latteView->isFloatingWindow()) {
+    if (m_latteView->isFloatingWindow()) {
+        if (!m_floatingGapWindow) {
+            createFloatingGapWindow();
+        }
+
         m_floatingGapWindow->callAsyncContainsMouse();
     }
 }

@@ -103,7 +103,6 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int offset READ offset WRITE setOffset NOTIFY offsetChanged)
     Q_PROPERTY(int screenEdgeMargin READ screenEdgeMargin WRITE setScreenEdgeMargin NOTIFY screenEdgeMarginChanged)
 
-
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
     Q_PROPERTY(Latte::Layout::GenericLayout *layout READ layout WRITE setLayout NOTIFY layoutChanged)
