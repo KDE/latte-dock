@@ -421,7 +421,7 @@ void LastActiveWindow::setWinId(QVariant winId)
 
     if (!m_history.contains(winId)) {
         m_history.prepend(winId);
-        clearHistory();
+        cleanHistory();
     } else {
         int p = m_history.indexOf(winId);
         //! move to start
@@ -512,7 +512,7 @@ void LastActiveWindow::windowChanged(const WindowId &wid)
             }
 
             m_history.removeAll(wid);
-            clearHistory();
+            cleanHistory();
         }
 
         if (m_history.count() > 0) {
@@ -557,7 +557,7 @@ void LastActiveWindow::windowRemoved(const WindowId &wid)
     }
 }
 
-void LastActiveWindow::clearHistory()
+void LastActiveWindow::cleanHistory()
 {
     if (m_history.count() > MAXHISTORY) {
         int size = m_history.count();

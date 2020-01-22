@@ -203,7 +203,7 @@ private:
 
     void setWinId(QVariant winId);
 
-    void clearHistory();
+    void cleanHistory();
     void updateColorScheme();
 
 private:
