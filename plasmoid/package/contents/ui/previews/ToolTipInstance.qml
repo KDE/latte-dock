@@ -51,15 +51,17 @@ Column {
 
     spacing: units.smallSpacing
 
-    property string mprisSourceName: mpris2Source.sourceNameForLauncherUrl(toolTipDelegate.launcherUrl, isGroup ? appPid : pidParent)
-    property var playerData: mprisSourceName != "" ? mpris2Source.data[mprisSourceName] : 0
-    property bool hasPlayer: !!mprisSourceName && !!playerData
-    property bool playing: hasPlayer && playerData.PlaybackStatus === "Playing"
-    property bool canControl: hasPlayer && playerData.CanControl
-    property bool canGoBack: hasPlayer && playerData.CanGoPrevious
-    property bool canGoNext: hasPlayer && playerData.CanGoNext
-    property bool canRaise: hasPlayer && playerData.CanRaise
-    property var currentMetadata: hasPlayer ? playerData.Metadata : ({})
+    readonly property string mprisSourceName: mpris2Source.sourceNameForLauncherUrl(toolTipDelegate.launcherUrl, isGroup ? appPid : pidParent)
+    readonly property var playerData: mprisSourceName != "" ? mpris2Source.data[mprisSourceName] : 0
+    readonly property bool hasPlayer: !!mprisSourceName && !!playerData
+    readonly property bool playing: hasPlayer && playerData.PlaybackStatus === "Playing"
+    readonly property bool canControl: hasPlayer && playerData.CanControl
+    readonly property bool canPlay: hasPlayer && playerData.CanPlay
+    readonly property bool canPause: hasPlayer && playerData.CanPause
+    readonly property bool canGoBack: hasPlayer && playerData.CanGoPrevious
+    readonly property bool canGoNext: hasPlayer && playerData.CanGoNext
+    readonly property bool canRaise: hasPlayer && playerData.CanRaise
+    readonly property var currentMetadata: hasPlayer ? playerData.Metadata : ({})
 
     readonly property string track: {
         var xesamTitle = currentMetadata["xesam:title"]
@@ -83,7 +85,7 @@ Column {
 
     //
     function containsMouse() {
-        return area1.containsMouse || area2.containsMouse
+        return closeButton.hovered || area2.containsMouse
                || (playbackLoader.active && playbackLoader.item.containsMouse());
     }
 
@@ -151,33 +153,16 @@ Column {
             }
         }
         // close button
-        MouseArea {
-            id: area1
+        PlasmaComponents.ToolButton {
+            id: closeButton
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
-
-            height: units.iconSizes.smallMedium
-            width: height
-
             visible: isWin && !hideCloseButtons
-
-            acceptedButtons: Qt.LeftButton
-            hoverEnabled: true
+            iconSource: "window-close"
             onClicked: {
-                //NOTE: compatibility with plasma 5.8
-                if (backend.cancelHighlightWindows)
-                    backend.cancelHighlightWindows()
-
-                tasksModel.requestClose(submodelIndex)
+                backend.cancelHighlightWindows();
+                tasksModel.requestClose(submodelIndex);
             }
-            onContainsMouseChanged: mainToolTip.mouseIsInside();
-
-            PlasmaCore.IconItem {
-                anchors.fill: parent
-                active: parent.containsMouse
-
-                source: "window-close"
-                animated: false
-            }
+            onHoveredChanged: mainToolTip.mouseIsInside()
         }
     }
 
@@ -187,7 +172,7 @@ Column {
         width: header.width
         // similar to 0.5625 = 1 / (16:9) as most screens are
         // round necessary, otherwise shadow mask for players has gap!
-        height: Math.round(0.5 * width) + (!winTitle.visible? winTitle.height : 0)
+        height: Math.round(0.5 * width) + (!winTitle.visible? Math.round(winTitle.height) : 0)
         anchors.horizontalCenter: parent.horizontalCenter
 
         visible: isWin
@@ -294,7 +279,7 @@ Column {
                 //                }
 
                 function containsMouse() {
-                    return area3.containsMouse || area4.containsMouse || area5.containsMouse || area6.containsMouse;
+                    return area3.containsMouse || canGoBackButton.hovered || playingButton.hovered || canGoNextButton.hovered;
                 }
 
                 Item {
@@ -348,91 +333,57 @@ Column {
                         Layout.fillWidth: true
                         spacing: 0
 
-                        PlasmaExtras.Heading {
+                        PlasmaComponents.Label {
                             Layout.fillWidth: true
-                            level: 5
                             lineHeight: 1
                             maximumLineCount: artistText.visible? 1 : 2
                             wrapMode: artistText.visible? Text.NoWrap : Text.Wrap
                             elide: Text.ElideRight
                             text: track || ""
-                            font.weight: Font.Bold
                         }
 
-                        PlasmaExtras.Heading {
+                         PlasmaExtras.DescriptiveLabel {
                             id: artistText
                             Layout.fillWidth: true
-                            level: 5
                             wrapMode: Text.NoWrap
                             lineHeight: 1
                             elide: Text.ElideRight
                             text: artist || ""
                             visible: text != ""
-                            opacity: 0.75
+                            font.pointSize: theme.smallestFont.pointSize
                         }
                     }
 
-                    MouseArea {
-                        id: area4
+                   PlasmaComponents.ToolButton {
+                       id: canGoBackButton
+                       enabled: canGoBack
+                       iconSource: LayoutMirroring.enabled ? "media-skip-forward" : "media-skip-backward"
+                       onClicked: mpris2Source.goPrevious(mprisSourceName)
+                       onHoveredChanged: mainToolTip.mouseIsInside()
+                   }
 
-                        height: units.iconSizes.smallMedium
-                        width: height
+                   PlasmaComponents.ToolButton {
+                       id: playingButton
+                       enabled: playing ? canPause : canPlay
+                       iconSource: playing ? "media-playback-pause" : "media-playback-start"
+                       onClicked: {
+                           if (!playing) {
+                               mpris2Source.play(mprisSourceName);
+                           } else {
+                               mpris2Source.pause(mprisSourceName);
+                           }
+                       }
+                       onHoveredChanged: mainToolTip.mouseIsInside()
+                   }
 
-                        acceptedButtons: Qt.LeftButton
-                        hoverEnabled: true
-                        onClicked: mpris2Source.goPrevious(mprisSourceName)
-                        onContainsMouseChanged: mainToolTip.mouseIsInside();
+                   PlasmaComponents.ToolButton {
+                       id: canGoNextButton
+                       enabled: canGoNext
+                       iconSource: LayoutMirroring.enabled ? "media-skip-backward" : "media-skip-forward"
+                       onClicked: mpris2Source.goNext(mprisSourceName)
+                       onHoveredChanged: mainToolTip.mouseIsInside()
+                   }
 
-                        PlasmaCore.IconItem {
-                            anchors.fill: parent
-                            enabled: canGoBack
-                            active: parent.containsMouse
-
-                            source: LayoutMirroring.enabled ? "media-skip-forward" : "media-skip-backward"
-                            animated: false
-                        }
-                    }
-
-                    MouseArea {
-                        id: area5
-
-                        height: units.iconSizes.medium
-                        width: height
-
-                        acceptedButtons: Qt.LeftButton
-                        hoverEnabled: true
-                        onClicked: mpris2Source.playPause(mprisSourceName)
-                        onContainsMouseChanged: mainToolTip.mouseIsInside();
-
-                        PlasmaCore.IconItem {
-                            anchors.fill: parent
-                            active: parent.containsMouse
-
-                            source: playing ? "media-playback-pause" : "media-playback-start"
-                            animated: false
-                        }
-                    }
-
-                    MouseArea {
-                        id: area6
-
-                        height: units.iconSizes.smallMedium
-                        width: height
-
-                        acceptedButtons: Qt.LeftButton
-                        hoverEnabled: true
-                        onClicked: mpris2Source.goNext(mprisSourceName)
-                        onContainsMouseChanged: mainToolTip.mouseIsInside();
-
-                        PlasmaCore.IconItem {
-                            anchors.fill: parent
-                            enabled: canGoNext
-                            active: parent.containsMouse
-
-                            source: LayoutMirroring.enabled ? "media-skip-backward" : "media-skip-forward"
-                            animated: false
-                        }
-                    }
                 }
             }
         }

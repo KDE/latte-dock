@@ -921,6 +921,12 @@ Item {
         function goNext(source) {
             startOperation(source, "Next");
         }
+        function play(source) {
+            startOperation(source, "Play");
+        }
+        function pause(source) {
+            startOperation(source, "Pause");
+        }
         function playPause(source) {
             startOperation(source, "PlayPause");
         }
