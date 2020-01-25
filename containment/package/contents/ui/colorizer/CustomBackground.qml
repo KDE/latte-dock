@@ -66,8 +66,9 @@ Item{
     readonly property bool bothVerticals: (leftBorder && rightBorder)
     readonly property bool bothHorizontals: (bottomBorder && topBorder)
 
-
     readonly property bool drawWithoutRoundness: noOfBorders === 1
+
+    readonly property Item painterRectangle: painter
 
     Binding{
         target: main

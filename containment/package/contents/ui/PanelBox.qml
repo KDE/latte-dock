@@ -297,7 +297,7 @@ Item{
         Loader {
             anchors.fill: solidBackground
             active: editModeVisual.inEditMode && root.userShowPanelBackground && plasmoid.configuration.blurEnabled
-            sourceComponent: Item{
+            sourceComponent: Item {
                 Image{
                     id: backTiler
                     anchors.fill: parent
@@ -312,7 +312,7 @@ Item{
 
                 ShaderEffectSource {
                     id: effectSource
-                    anchors.fill: backTiler
+                    anchors.fill: parent
                     visible: false
 
                     sourceItem: backTiler
@@ -321,11 +321,26 @@ Item{
 
                 FastBlur{
                     id: blur
-                    anchors.fill: effectSource
+                    anchors.fill: parent
                     opacity: editModeVisual.appliedOpacity * 1.4
 
                     source: effectSource
                     radius: 50
+                    visible: false
+                }
+
+                OpacityMask {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenterOffset: overlayedBackground.painterRectangle.anchors.horizontalCenterOffset
+                    anchors.verticalCenterOffset: overlayedBackground.painterRectangle.anchors.verticalCenterOffset
+
+                    width: overlayedBackground.painterRectangle.width
+                    height: overlayedBackground.painterRectangle.height
+
+                    source: blur
+                    maskSource: overlayedBackground.painterRectangle
+                    opacity: blur.opacity
                 }
             }
         }
