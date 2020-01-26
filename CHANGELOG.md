@@ -1,5 +1,20 @@
 #**CHANGELOG**#
 
+#### Version 0.9.8
+
+* provide new way to set which application launcher in all docks/panels has the highest priority to trigger with Meta. The one having a global shortcut applied is the one that has the highest priority
+* consider plasma panels under x11 environment in order for dock settings window to not overlap with them
+* fix which Plasma theme colors are used for all Latte painting mechanisms and make them consistent with Plasma
+* Use KDE frameworks official Help Menu
+* Provide KDE frameworks official way to set application's language
+* add hidden debug option for "--kwinedges"
+* paint properly the dock settings window external shadows
+* fix margins/padding for applets that must follow Fitt's Law at the thick screen edge and at the same time be consisten with all surrounding applets
+* add new LastActiveWindow APIs for window properties Closable/Minimizable/Maximizable etc. and provide them to applets. Applet Window Buttons applet is already using it in order to identify buttons that should not be drawn for specific windows
+* add availableScreenRegion calculations for Left and Right screen edge docks/panels in order to be ready for new Plasma 5.18 API that will let us expose to plasma what are the free areas that are not occupied by Latte panels/docks
+* fix wayland crash when showing dock settings window
+* improve kwin workarounds in order to reapply properly docks/panels activities to them when kwin faulty is losting them
+
 #### Version 0.9.7
 
 * fix built with qt 5.9 [kde#415715]
