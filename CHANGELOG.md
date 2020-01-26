@@ -1,5 +1,9 @@
 #**CHANGELOG**#
 
+#### Version 0.9.8.1
+
+* fix availableScreenRegionWithCriteria calculations. A commit from master branch was lost even though it should be inside initial 0.9.8 release
+
 #### Version 0.9.8
 
 * provide new way to set which application launcher in all docks/panels has the highest priority to trigger with Meta. The one having a global shortcut applied is the one that has the highest priority
