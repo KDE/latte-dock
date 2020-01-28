@@ -258,6 +258,57 @@ Item{
         tasksModel.requestActivate(tasksModel.makeModelIndex(index,prevAvailableWindow));
     }
 
+    //! function which is used to cycle activation into
+    //! a group of windows backwise
+    function minimizeTask() {
+        windowsLocalModel.rootIndex = taskItem.modelIndex();
+
+        if (!taskItem.isGroupParent) {
+            return;
+        }
+
+        var childs = windowsLocalModel.items;
+
+        //indicates than nothing was found
+        var availableWindow = -1;
+
+        for(var i=childs.count-1; i>=0; --i){
+            var kid = childs.get(i);
+            if (kid.model.IsActive === true) {
+                availableWindow = i;
+                break;
+            }
+        }
+
+        if (availableWindow === -1 && lastActiveWinInGroup !==-1){
+            for(var i=childs.count-1; i>=0; --i){
+                var kid = childs.get(i);
+                var firstTask = (root.plasma515 ? kid.model.WinIdList[0] : kid.model.LegacyWinIdList[0]);
+                var isMinimized = kid.model.IsMinimized === true;
+
+                if (firstTask === lastActiveWinInGroup && !isMinimized) {
+                    availableWindow = i;
+                    break;
+                }
+            }
+        }
+
+        //no window was found
+        if (availableWindow === -1) {
+            for(var i=childs.count-1; i>=0; --i){
+                var kid = childs.get(i);
+                if (kid.model.IsMinimized !== true) {
+                    availableWindow = i;
+                    break;
+                }
+            }
+        }
+
+        if (availableWindow !== -1) {
+            tasksModel.requestToggleMinimized(tasksModel.makeModelIndex(index,availableWindow));
+        }
+    }
+
     Component.onCompleted: {
         taskItem.checkWindowsStates.connect(initializeStates);
     }

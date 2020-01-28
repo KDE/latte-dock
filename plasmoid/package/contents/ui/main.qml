@@ -168,7 +168,6 @@ Item {
     property bool groupTasksByDefault: latteView ? latteView.groupTasksByDefault: true
     property bool highlightWindows: latteView ? latteView.hoverAction === Latte.Types.HighlightWindows || latteView.hoverAction === Latte.Types.PreviewAndHighlightWindows :
                                                 plasmoid.configuration.highlightWindows
-    property bool mouseWheelActions: latteView ? latteView.mouseWheelActions : true
     property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : zoomFactor>1 && !root.editMode
 
     property bool scrollingEnabled: latteView ? latteView.scrollTasksEnabled : false
@@ -216,6 +215,7 @@ Item {
             return Qt.MetaModifier;
         else return -1;
     }
+    property int taskScrollAction: latteView ? latteView.taskScrollAction : Latte.Types.ScrollNone
 
     property int thickMargin: latteView ? latteView.thickMargin : 0.16*iconSize
     property int thickMargins: 2 * thickMargin

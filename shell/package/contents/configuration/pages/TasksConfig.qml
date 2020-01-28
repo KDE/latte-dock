@@ -606,6 +606,47 @@ PlasmaComponents.Page {
                         }
                     }
 
+                    PlasmaComponents.Label {
+                        text: i18n("Wheel")
+                    }
+
+                    LatteComponents.ComboBox {
+                        id: wheelAction
+                        Layout.fillWidth: true
+                        model: [
+                            i18nc("none action", "None"),
+                            i18n("Cycle Through Tasks"),
+                            i18n("Cycle And Minimize Tasks")
+                        ]
+
+                        currentIndex: {
+                            switch(plasmoid.configuration.taskScrollAction) {
+                            case Latte.Types.NoneAction:
+                                return 0;
+                            case Latte.Types.ScrollTasks:
+                                return 1;
+                            case Latte.Types.ScrollToggleMinimized:
+                                return 2;
+                            }
+
+                            return 0;
+                        }
+
+                        onCurrentIndexChanged: {
+                            switch(currentIndex) {
+                            case 0:
+                                plasmoid.configuration.taskScrollAction = Latte.Types.NoneAction;
+                                break;
+                            case 1:
+                                plasmoid.configuration.taskScrollAction = Latte.Types.ScrollTasks;
+                                break;
+                            case 2:
+                                plasmoid.configuration.taskScrollAction = Latte.Types.ScrollToggleMinimized;
+                                break;
+                            }
+                        }
+                    }
+
                     RowLayout {
                         spacing: units.smallSpacing
                         enabled: !disableAllWindowsFunctionality

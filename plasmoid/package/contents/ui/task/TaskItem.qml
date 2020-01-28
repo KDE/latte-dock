@@ -884,9 +884,11 @@ MouseArea{
     }
 
     onWheel: {
+        var wheelActionsEnabled = (root.taskScrollAction !== Latte.Types.ScrollNone || manualScrollTasksEnabled);
+
         if (isSeparator
                 || wheelIsBlocked
-                || !(root.mouseWheelActions || manualScrollTasksEnabled)
+                || !wheelActionsEnabled
                 || inBouncingAnimation
                 || (latteView && (latteView.dockIsHidden || latteView.inSlidingIn || latteView.inSlidingOut))){
 
@@ -919,7 +921,7 @@ MouseArea{
 
             if (overflowScrollingAccepted) {
                 scrollableList.increasePos();
-            } else if (root.mouseWheelActions){
+            } else {
                 if (isLauncher || root.disableAllWindowsFunctionality) {
                     wrapper.runLauncherAnimation();
                 } else if (isGroupParent) {
@@ -947,19 +949,27 @@ MouseArea{
 
             if (overflowScrollingAccepted) {
                 scrollableList.decreasePos();
-            } else if (root.mouseWheelActions){
+            } else {
                 if (isLauncher || root.disableAllWindowsFunctionality) {
                     // do nothing
                 } else if (isGroupParent) {
-                    subWindows.activatePreviousTask();
+                    if (root.taskScrollAction === Latte.Types.ScrollToggleMinimized) {
+                        subWindows.minimizeTask();
+                    } else {
+                        subWindows.activatePreviousTask();
+                    }
                 } else {
                     var taskIndex = modelIndex();
 
-                    if (isMinimized) {
+                    var hidingTask = (!isMinimized && root.taskScrollAction === Latte.Types.ScrollToggleMinimized);
+
+                    if (isMinimized || hidingTask) {
                         tasksModel.requestToggleMinimized(taskIndex);
                     }
 
-                    tasksModel.requestActivate(taskIndex);
+                    if (!hidingTask) {
+                        tasksModel.requestActivate(taskIndex);
+                    }
                 }
 
                 hidePreviewWindow();

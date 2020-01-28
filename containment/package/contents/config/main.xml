@@ -237,8 +237,17 @@
             <choice name="ScrollDesktops"/>
             <choice name="ScrollActivities"/>
             <choice name="ScrollTasks"/>
+            <choice name="ScrollToggleMinimized"/>
       </choices>
       <default>0</default>
+    </entry>
+    <entry name="taskScrollAction" type="Enum">
+      <choices>
+            <choice name="ScrollNone"/>
+            <choice name="ScrollTasks"/>
+            <choice name="ScrollToggleMinimized"/>
+      </choices>
+      <default>1</default>
     </entry>
     <entry name="modifierClickAction" type="Enum">
       <choices>
