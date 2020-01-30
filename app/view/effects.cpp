@@ -294,21 +294,11 @@ QRect Effects::rect() const
 
 void Effects::setRect(QRect area)
 {
-    if (KWindowSystem::compositingActive()) {
-        QRect inWindowRect = area.intersected(QRect(0, 0, m_view->width(), m_view->height()));
-
-        if (m_rect == inWindowRect) {
-            return;
-        }
-
-        m_rect = inWindowRect;
-    } else {
-        if (m_rect == area) {
-            return;
-        }
-
-        m_rect = area;
+    if (m_rect == area) {
+        return;
     }
+
+    m_rect = area;
 
     emit rectChanged();
 }
@@ -417,14 +407,19 @@ void Effects::updateEffects()
             m_background->setImagePath(QStringLiteral("widgets/panel-background"));
         }
 
+        QRect inWindowRect = m_rect;
+        if (KWindowSystem::compositingActive()) {
+            inWindowRect = m_rect.intersected(QRect(0, 0, m_view->width(), m_view->height()));
+        }
+
         m_background->setEnabledBorders(m_enabledBorders);
-        m_background->resizeFrame(m_rect.size());
+        m_background->resizeFrame(inWindowRect.size());
         QRegion fixedMask = m_background->mask();
-        fixedMask.translate(m_rect.x(), m_rect.y());
+        fixedMask.translate(inWindowRect.x(), inWindowRect.y());
 
         //! fix1, for KF5.32 that return empty QRegion's for the mask
         if (fixedMask.isEmpty()) {
-            fixedMask = QRegion(m_rect);
+            fixedMask = QRegion(inWindowRect);
         }
 
         KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);

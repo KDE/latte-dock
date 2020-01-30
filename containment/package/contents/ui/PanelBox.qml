@@ -402,7 +402,7 @@ Item{
             //! Fix for FrameSvgItem QML version not updating its margins after a theme change
             //! with this hack we enforce such update. I could use the repaintNeeded signal but
             //! it is called more often than the themeChanged one.
-            Connections{
+            Connections {
                 target: themeExtended
                 onThemeChanged: {
                     solidBackground.adjustPrefix();
@@ -411,6 +411,12 @@ Item{
                     updateEffectsArea();
                 }
             }
+
+            Connections {
+                target: latteView ? latteView.visibility : null
+                onIsHiddenChanged: solidBackground.updateEffectsArea();
+            }
+
 
             Connections{
                 target: plasmoid
@@ -421,17 +427,24 @@ Item{
                 if (!latteView)
                     return;
 
-                if (!root.behaveAsPlasmaPanel) {
-                    var rootGeometry = mapToItem(root, 0, 0);
-                    efGeometry.x = rootGeometry.x;
-                    efGeometry.y = rootGeometry.y;
-                } else {
+                if (latteView.visibility.isHidden) {
                     efGeometry.x = 0;
                     efGeometry.y = 0;
-                }
+                    efGeometry.width = 0;
+                    efGeometry.height = 0;
+                } else {
+                    if (!root.behaveAsPlasmaPanel) {
+                        var rootGeometry = mapToItem(root, 0, 0);
+                        efGeometry.x = rootGeometry.x;
+                        efGeometry.y = rootGeometry.y;
+                    } else {
+                        efGeometry.x = 0;
+                        efGeometry.y = 0;
+                    }
 
-                efGeometry.width = width;
-                efGeometry.height = height;
+                    efGeometry.width = width;
+                    efGeometry.height = height;
+                }
 
                 latteView.effects.rect = efGeometry;
 
