@@ -193,10 +193,11 @@ Item{
                                                                        root.iconSize * wrapper.mScale
 
             property real newTempSize: {
-                if (wrapper.opacity == 1)
-                    return Math.min(basicScalingWidth, basicScalingHeight)
-                else
-                    return Math.max(basicScalingWidth, basicScalingHeight)
+                if (wrapper.opacity === 1 ) {
+                    return Math.min(basicScalingWidth, basicScalingHeight);
+                } else {
+                    return Math.max(basicScalingWidth, basicScalingHeight);
+                }
             }
 
             //! Latte Side Painting-style if the user chose it
@@ -227,21 +228,6 @@ Item{
                         anchors.left: root.position === PlasmaCore.Types.LeftPositioned ? parent.left : undefined;
                         anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
                         anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
-                    }
-                },
-
-                State{
-                    name: "inAddRemoveAnimation"
-                    when:  taskItem.inAddRemoveAnimation
-
-                    AnchorChanges{
-                        target:iconImageBuffer;
-                        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
-                        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
-                        anchors.right: root.position === PlasmaCore.Types.LeftPositioned ? parent.right : undefined;
-                        anchors.left: root.position === PlasmaCore.Types.RightPositioned ? parent.left : undefined;
-                        anchors.top: root.position === PlasmaCore.Types.BottomPositioned ? parent.top : undefined;
-                        anchors.bottom: root.position === PlasmaCore.Types.TopPositioned ? parent.bottom : undefined;
                     }
                 },
 
