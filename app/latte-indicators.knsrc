@@ -26,7 +26,7 @@ Name[x-test]=xxLatte Indicatorsxx
 Name[zh_CN]=Latte 指示器
 Name[zh_TW]=Latte 指示器
 
-ProvidersUrl=https://download.kde.org/ocs/providers.xml
+ProvidersUrl=https://autoconfig.kde.org/ocs/providers.xml
 Categories=Latte Indicators
 StandardResource=tmp
 InstallationCommand=kpackagetool5 --install %f --type Latte/Indicator
