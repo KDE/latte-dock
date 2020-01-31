@@ -238,6 +238,7 @@ public slots:
     Q_INVOKABLE void toggleAppletExpanded(const int id);
 
     Q_INVOKABLE bool appletIsExpandable(const int id);
+    Q_INVOKABLE bool appletIsExpanded(const int id);
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
     Q_INVOKABLE bool tasksPresent();
 
@@ -256,6 +257,7 @@ signals:
     void eventTriggered(QEvent *ev);
     void mousePressed(const QPoint pos, const int button);
     void mouseReleased(const QPoint pos, const int button);
+    void wheelScrolled(const QPoint pos, const QPoint angleDelta, const int buttons);
 
     void activitiesChanged();
     void alternativesIsShownChanged();

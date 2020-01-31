@@ -1287,6 +1287,11 @@ bool View::event(QEvent *e)
             }
             break;
 
+        case QEvent::Wheel:
+            if (auto wheelEvent = dynamic_cast<QWheelEvent *>(e)) {
+                emit wheelScrolled(wheelEvent->position().toPoint(), wheelEvent->angleDelta(), wheelEvent->buttons());
+            }
+            break;
         default:
             break;
         }
@@ -1348,6 +1353,25 @@ bool View::appletIsExpandable(const int id)
 
             if (ai) {
                 return (ai->preferredRepresentation() != ai->fullRepresentation());
+            }
+        }
+    }
+
+    return false;
+}
+
+bool View::appletIsExpanded(const int id)
+{
+    if (!containment()) {
+        return false;
+    }
+
+    for (const auto applet : containment()->applets()) {
+        if (applet->id() == id) {
+            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (ai) {
+                return (ai->isExpanded());
             }
         }
     }

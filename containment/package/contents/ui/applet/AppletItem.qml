@@ -642,6 +642,7 @@ Item {
         enabled: !appletItem.isLattePlasmoid && !appletItem.isSeparator && !appletItem.isSpacer && !appletItem.isHidden
 
         property bool pressed: false
+        property bool blockWheel: false
 
         onMousePressed: {
             if (appletItem.containsPos(pos)) {
@@ -663,8 +664,27 @@ Item {
                 appletItem.mouseReleased(local.x, local.y, button);
             }
         }
-    }
 
+        onWheelScrolled: {
+            if (!root.mouseWheelActions || viewSignalsConnector.blockWheel
+                    || (root.latteViewIsHidden || root.inSlidingIn || root.inSlidingOut)) {
+                return;
+            }
+
+            blockWheel = true;
+            scrollDelayer.start();
+
+            if (appletItem.containsPos(pos) /*&& root.latteView.appletIsExpandable(applet.id)*/) {
+                var angle = angleDelta.y / 8;
+                var expanded = root.latteView.appletIsExpanded(applet.id);
+
+                if ((angle > 12 && !expanded) /*positive direction*/
+                        || (angle < -12 && expanded) /*negative direction*/) {
+                    latteView.toggleAppletExpanded(applet.id);
+                }
+            }
+        }
+    }
     ///END connections
 
     //! It is used for any communication needed with the underlying applet
@@ -896,7 +916,7 @@ Item {
             id: addingAreaItem
             anchors.fill: parent
             // width: root.isHorizontal ? parent.width : parent.width - root.localScreenEdgeMargin
-           // height: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.height
+            // height: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.height
 
             radius: root.iconSize/10
             opacity: root.addLaunchersMessage ? 1 : 0
@@ -1092,43 +1112,17 @@ Item {
         //! when parabolic effect was used
         onPressed: mouse.accepted = false;
         onReleased: mouse.accepted = false;
+    }
 
-        onWheel: {
-            if (isSeparator || !root.mouseWheelActions || blockWheel
-                    || (root.latteViewIsHidden || root.inSlidingIn || root.inSlidingOut)){
-                wheel.accepted = false;
-                return;
-            }
+    //! A timer is needed in order to handle also touchpads that probably
+    //! send too many signals very fast. This way the signals per sec are limited.
+    //! The user needs to have a steady normal scroll in order to not
+    //! notice a annoying delay
+    Timer{
+        id: scrollDelayer
+        interval: 500
 
-            var angle = wheel.angleDelta.y / 8;
-
-            blockWheel = true;
-            scrollDelayer.start();
-
-            if (angle > 12) {
-                //positive direction
-                if (!isExpanded) {
-                    latteView.toggleAppletExpanded(applet.id);
-                }
-            } else if (angle < -12) {
-                //negative direction
-                if (isExpanded) {
-                    latteView.toggleAppletExpanded(applet.id);
-                }
-            }
-        }
-
-        //! A timer is needed in order to handle also touchpads that probably
-        //! send too many signals very fast. This way the signals per sec are limited.
-        //! The user needs to have a steady normal scroll in order to not
-        //! notice a annoying delay
-        Timer{
-            id: scrollDelayer
-
-            interval: 700
-
-            onTriggered: appletMouseArea.blockWheel = false;
-        }
+        onTriggered: viewSignalsConnector.blockWheel = false;
     }
 
     //BEGIN states
