@@ -493,7 +493,7 @@ Item{
                     if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
                         if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
                             localY = latteView.height + tempThickness;
-                        } else if (maskIsFloating) {
+                        } else if (maskIsFloating && !latteView.visibility.isHidden) {
                             localY = latteView.height - tempThickness - maskFloatedGap;
                         } else {
                             localY = latteView.height - tempThickness;
@@ -501,7 +501,7 @@ Item{
                     } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                         if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
                             localY = -tempThickness;
-                        } else if (maskIsFloating) {
+                        } else if (maskIsFloating && !latteView.visibility.isHidden) {
                             localY = maskFloatedGap;
                         } else {
                             localY = 0;
@@ -523,7 +523,7 @@ Item{
                     if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
                         if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
                             localX = -tempThickness;
-                        } else if (maskIsFloating) {
+                        } else if (maskIsFloating && !latteView.visibility.isHidden) {
                             localX = maskFloatedGap;
                         } else {
                             localX = 0;
@@ -531,7 +531,7 @@ Item{
                     } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
                         if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
                             localX = latteView.width + tempThickness;
-                        } else if (maskIsFloating) {
+                        } else if (maskIsFloating && !latteView.visibility.isHidden) {
                             localX = latteView.width - tempThickness - maskFloatedGap;
                         } else {
                             localX = latteView.width - tempThickness;
