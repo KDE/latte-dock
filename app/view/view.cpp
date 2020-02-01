@@ -1289,7 +1289,12 @@ bool View::event(QEvent *e)
 
         case QEvent::Wheel:
             if (auto wheelEvent = dynamic_cast<QWheelEvent *>(e)) {
-                emit wheelScrolled(wheelEvent->position().toPoint(), wheelEvent->angleDelta(), wheelEvent->buttons());
+#if QT_VERSION <= QT_VERSION_CHECK(5, 13, 0)
+                QPoint position = QPoint(wheelEvent->x(), wheelEvent->y());
+#else
+                QPoint position = wheelEvent->position().toPoint();
+#endif
+                emit wheelScrolled(position, wheelEvent->angleDelta(), wheelEvent->buttons());
             }
             break;
         default:
