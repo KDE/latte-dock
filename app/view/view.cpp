@@ -1289,7 +1289,7 @@ bool View::event(QEvent *e)
 
         case QEvent::Wheel:
             if (auto wheelEvent = dynamic_cast<QWheelEvent *>(e)) {
-#if QT_VERSION <= QT_VERSION_CHECK(5, 13, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
                 QPoint position = QPoint(wheelEvent->x(), wheelEvent->y());
 #else
                 QPoint position = wheelEvent->position().toPoint();
