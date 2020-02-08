@@ -252,10 +252,6 @@ void GlobalShortcuts::activateLauncherMenu()
 
     if (highestPriorityView) {
         if (highestPriorityView->visibility()->isHidden() && highestPriorityView->interface()->applicationLauncherInPopup()) {
-            if (!m_hideViews.contains(highestPriorityView)) {
-                m_hideViews.append(highestPriorityView);
-            }
-
             m_lastInvokedAction = m_singleMetaAction;
 
             highestPriorityView->visibility()->setBlockHiding(true);
@@ -264,8 +260,6 @@ void GlobalShortcuts::activateLauncherMenu()
             QTimer::singleShot(APPLETEXECUTIONDELAY, [this, highestPriorityView]() {
                 highestPriorityView->toggleAppletExpanded(highestPriorityView->interface()->applicationLauncherId());
             });
-
-            m_hideViewsTimer.start();
         } else {
             highestPriorityView->toggleAppletExpanded(highestPriorityView->interface()->applicationLauncherId());
         }
