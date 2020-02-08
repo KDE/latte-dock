@@ -396,6 +396,8 @@ void Effects::updateEffects()
         return;
     }
 
+    bool clearEffects{true};
+
     if (m_drawEffects && !m_rect.isNull() && !m_rect.isEmpty()) {
         //! this is used when compositing is disabled and provides
         //! the correct way for the mask to be painted in order for
@@ -408,29 +410,24 @@ void Effects::updateEffects()
             m_background->setImagePath(QStringLiteral("widgets/panel-background"));
         }
 
-        QRect inWindowRect = m_rect;
-        if (KWindowSystem::compositingActive()) {
-            inWindowRect = m_rect.intersected(QRect(0, 0, m_view->width(), m_view->height()));
-        }
-
         m_background->setEnabledBorders(m_enabledBorders);
-        m_background->resizeFrame(inWindowRect.size());
+        m_background->resizeFrame(m_rect.size());
         QRegion fixedMask = m_background->mask();
-        fixedMask.translate(inWindowRect.x(), inWindowRect.y());
+        fixedMask.translate(m_rect.x(), m_rect.y());
 
-        //! fix1, for KF5.32 that return empty QRegion's for the mask
-        if (fixedMask.isEmpty()) {
-            fixedMask = QRegion(inWindowRect);
+        if (!fixedMask.isEmpty()) {
+            clearEffects = false;
+            KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);
+            KWindowEffects::enableBackgroundContrast(m_view->winId(),
+                                                     m_theme.backgroundContrastEnabled(),
+                                                     m_backEffectContrast,
+                                                     m_backEffectIntesity,
+                                                     m_backEffectSaturation,
+                                                     fixedMask);
         }
+    }
 
-        KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);
-        KWindowEffects::enableBackgroundContrast(m_view->winId(),
-                                                 m_theme.backgroundContrastEnabled(),
-                                                 m_backEffectContrast,
-                                                 m_backEffectIntesity,
-                                                 m_backEffectSaturation,
-                                                 fixedMask);
-    } else {
+    if (clearEffects) {
         KWindowEffects::enableBlurBehind(m_view->winId(), false);
         KWindowEffects::enableBackgroundContrast(m_view->winId(), false);
     }
