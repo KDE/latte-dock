@@ -17,6 +17,7 @@
   <name xml:lang="eu">Latte</name>
   <name xml:lang="fi">Latte</name>
   <name xml:lang="gl">Latte</name>
+  <name xml:lang="ia">Latte</name>
   <name xml:lang="id">Latte</name>
   <name xml:lang="it">Latte</name>
   <name xml:lang="ko">Latte</name>
@@ -146,6 +147,7 @@
   <developer_name xml:lang="eu">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="fi">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="gl">Michail Vourlakos e Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="ia">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="id">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="it">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ko">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
