@@ -68,6 +68,7 @@ GenericName[et]=Dokk
 GenericName[eu]=Kaia
 GenericName[fi]=Telakka
 GenericName[gl]=Doca
+GenericName[ia]=Bassino
 GenericName[id]=Dok
 GenericName[it]=Aggancio
 GenericName[ko]=도구집

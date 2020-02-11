@@ -69,6 +69,7 @@ Keywords[et]=shell
 Keywords[eu]=shell
 Keywords[fi]=käyttöliittymä
 Keywords[gl]=intérprete de ordes
+Keywords[ia]=shell
 Keywords[id]=shell
 Keywords[it]=shell
 Keywords[ko]=셸
