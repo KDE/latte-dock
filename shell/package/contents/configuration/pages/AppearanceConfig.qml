@@ -173,7 +173,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
                         value: plasmoid.configuration.iconSize
                         from: 16
-                        to: 128
+                        to: 256
                         stepSize: dialog.highLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 1 : 8
                         wheelEnabled: false
 
@@ -190,12 +190,6 @@ PlasmaComponents.Page {
 
                         Component.onCompleted: {
                             valueChanged.connect(updateIconSize);
-
-                            if (plasmoid.configuration.iconSize>128) {
-                                to = plasmoid.configuration.iconSize + 64
-                            } else {
-                                to = 128
-                            }
                         }
 
                         Component.onDestruction: {
@@ -228,7 +222,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
                         value: plasmoid.configuration.proportionIconSize
                         from: 1.0
-                        to: 10
+                        to: 12
                         stepSize: 0.5
                         wheelEnabled: false
 
