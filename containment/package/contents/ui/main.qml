@@ -221,6 +221,8 @@ Item {
     property bool useThemePanel: noApplets === 0 || !Latte.WindowSystem.compositingActive ?
                                      true : (plasmoid.configuration.useThemePanel || plasmoid.configuration.solidBackgroundForMaximized)
 
+    property bool plasma518: Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,18,0)
+
     property alias hoveredIndex: layoutsContainer.hoveredIndex
     property alias directRenderDelayerIsRunning: directRenderDelayerForEnteringTimer.running
 
@@ -505,26 +507,25 @@ Item {
     property bool animationWindowAddedInGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowAddedInGroup
     property bool animationWindowRemovedFromGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowRemovedFromGroup
 
-    property real appliedDurationTime: animationsEnabled ? durationTime : 2
+    property real appliedDurationTime: animationsEnabled ? durationTime : animationsSpeed2
+    readonly property real animationsSpeed1: root.plasma518 ? 0.65 : 1.65
+    readonly property real animationsSpeed2: root.plasma518 ? 1.00 : 2.00
+    readonly property real animationsSpeed3: root.plasma518 ? 1.35 : 2.35
+
     property real durationTime: {
-        if (!animationsEnabled) {
+        if (!animationsEnabled || plasmoid.configuration.durationTime === 0) {
             return 0;
         }
 
-        /*if ((latteView && latteView.effects && latteView.effects.animationsBlocked)
-                || !animationsEnabled) {
-            return 0;
-        }*/
+        if (plasmoid.configuration.durationTime === 1 ) {
+            return animationsSpeed1;
+        } else if (plasmoid.configuration.durationTime === 2) {
+            return animationsSpeed2;
+        } else if (plasmoid.configuration.durationTime === 3) {
+            return animationsSpeed3;
+        }
 
-        if (plasmoid.configuration.durationTime === 0 || plasmoid.configuration.durationTime === 2 )
-            return plasmoid.configuration.durationTime;
-
-        if (plasmoid.configuration.durationTime === 1)
-            return 1.65;
-        else if (plasmoid.configuration.durationTime === 3)
-            return 2.35;
-
-        return 2;
+        return animationsSpeed2;
     }
 
     property real animationsZoomFactor : {
