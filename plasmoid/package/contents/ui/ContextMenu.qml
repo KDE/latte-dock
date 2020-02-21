@@ -434,8 +434,7 @@ PlasmaComponents.ContextMenu {
                     menuItem.checked = Qt.binding((function(i) {
                         return function() {
                             if (root.plasma515) {
-                                var vds = menu.get(atm.VirtualDesktops);
-                                return (menu.visualParent && (vds !== undefined) && vds.indexOf(virtualDesktopInfo.desktopIds[i]) > -1);
+                                return (menu.visualParent && menu.get(atm.VirtualDesktops).indexOf(virtualDesktopInfo.desktopIds[i]) > -1);
                             } else {
                                 return (menu.visualParent && menu.get(atm.VirtualDesktop) === (i + 1));
                             }
