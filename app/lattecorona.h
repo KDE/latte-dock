@@ -79,6 +79,7 @@ class LaunchersSignals;
 class Manager;
 }
 namespace PlasmaExtended{
+class ScreenGeometries;
 class ScreenPool;
 class Theme;
 }
@@ -225,6 +226,7 @@ private:
     Indicator::Factory *m_indicatorFactory{nullptr};
     Layouts::Manager *m_layoutsManager{nullptr};
 
+    PlasmaExtended::ScreenGeometries *m_plasmaGeometries{nullptr};
     PlasmaExtended::ScreenPool *m_plasmaScreenPool{nullptr};
     PlasmaExtended::Theme *m_themeExtended{nullptr};
 

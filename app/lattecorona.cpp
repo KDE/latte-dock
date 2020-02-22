@@ -34,6 +34,7 @@
 #include "layouts/launcherssignals.h"
 #include "shortcuts/globalshortcuts.h"
 #include "package/lattepackage.h"
+#include "plasma/extended/screengeometries.h"
 #include "plasma/extended/screenpool.h"
 #include "plasma/extended/theme.h"
 #include "settings/universalsettings.h"
@@ -97,6 +98,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_plasmaScreenPool(new PlasmaExtended::ScreenPool(this)),
       m_themeExtended(new PlasmaExtended::Theme(KSharedConfig::openConfig(), this)),
       m_layoutsManager(new Layouts::Manager(this)),
+      m_plasmaGeometries(new PlasmaExtended::ScreenGeometries(this)),
       m_dialogShadows(new PanelShadows(this, QStringLiteral("dialogs/background")))
 {
     //! create the window manager
@@ -184,6 +186,7 @@ Corona::~Corona()
 
     m_layoutsManager->unload();
 
+    m_plasmaGeometries->deleteLater();
     m_wm->deleteLater();
     m_dialogShadows->deleteLater();
     m_globalShortcuts->deleteLater();
