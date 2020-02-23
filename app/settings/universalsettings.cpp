@@ -139,6 +139,7 @@ void UniversalSettings::setVersion(int ver)
     }
 
     m_version = ver;
+    qDebug() << "Universal Settings version updated to : " << m_version;
 
     emit versionChanged();
 }
