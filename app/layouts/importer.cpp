@@ -79,8 +79,8 @@ bool Importer::updateOldConfiguration()
         }
     }
 
-    m_manager->corona()->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
     m_manager->corona()->universalSettings()->setVersion(2);
+    m_manager->corona()->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
 
     return true;
 }

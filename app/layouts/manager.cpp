@@ -81,25 +81,33 @@ void Manager::load()
 {
     m_presetsPaths.clear();
 
+    QDir layoutsDir(QDir::homePath() + "/.config/latte");
+    bool firstRun = !layoutsDir.exists();
+
     int configVer = m_corona->universalSettings()->version();
     qDebug() << "Universal Settings version : " << configVer;
 
-    if (configVer < 2 && QFile(QDir::homePath() + "/.config/lattedockrc").exists()) {
-        qDebug() << "Latte must update its configuration...";
-        m_importer->updateOldConfiguration();
-        importPresets(false);
-    } else if (!QFile(QDir::homePath() + "/.config/lattedockrc").exists()) {
-        //startup create what is necessary....
-        QDir layoutDir(QDir::homePath() + "/.config/latte");
+    if (firstRun) {
+        m_corona->universalSettings()->setVersion(2);
+        m_corona->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
 
-        if (!layoutDir.exists()) {
+        //startup create what is necessary....
+        if (!layoutsDir.exists()) {
             QDir(QDir::homePath() + "/.config").mkdir("latte");
         }
 
         newLayout(i18n("My Layout"));
         importPresets(false);
-        m_corona->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
+    } else if (configVer < 2 && !firstRun) {
         m_corona->universalSettings()->setVersion(2);
+
+        bool isOlderVersion = m_importer->updateOldConfiguration();
+        if (isOlderVersion) {
+            qDebug() << "Latte is updating its older configuration...";
+            importPresets(false);
+        } else {
+            m_corona->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
+        }
     }
 
     //! Check if the multiple-layouts hidden file is present, add it if it isnt
