@@ -865,19 +865,6 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForOrphans)
         }
     }
 
-    //! Add Layout for orphan activities
-    if (!allRunningActivitiesWillBeReserved) {
-        if (!centralLayout(layoutForOrphans)) {
-            CentralLayout *newLayout = new CentralLayout(this, layoutPath(layoutForOrphans), layoutForOrphans);
-
-            if (newLayout) {
-                qDebug() << "ACTIVATING ORPHANED LAYOUT ::::: " << layoutForOrphans;
-                addLayout(newLayout);
-                newLayout->importToCorona();
-            }
-        }
-    }
-
     //! Add needed Layouts based on Activities
     for (const auto &layoutName : layoutsToLoad) {
         if (!centralLayout(layoutName)) {
@@ -891,6 +878,21 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForOrphans)
                 if (m_manager->corona()->universalSettings()->showInfoWindow()) {
                     m_manager->showInfoWindow(i18n("Activating layout: <b>%0</b> ...").arg(newLayout->name()), 5000, newLayout->appliedActivities());
                 }
+            }
+        }
+    }
+
+    //! Add Layout for orphan activities
+    if (!allRunningActivitiesWillBeReserved) {
+        if (!centralLayout(layoutForOrphans) && !sharedLayout(layoutForOrphans)) {
+            //! CENTRAL Layout for Orphaned Activities is not loaded and at the same time
+            //! that layout is not already configured as SHARED for other CENTRAL layouts
+            CentralLayout *newLayout = new CentralLayout(this, layoutPath(layoutForOrphans), layoutForOrphans);
+
+            if (newLayout) {
+                qDebug() << "ACTIVATING ORPHANED LAYOUT ::::: " << layoutForOrphans;
+                addLayout(newLayout);
+                newLayout->importToCorona();
             }
         }
     }
