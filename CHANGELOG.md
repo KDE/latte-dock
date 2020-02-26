@@ -1,5 +1,16 @@
 #**CHANGELOG**#
 
+#### Version 0.9.9
+
+* CRITICAL: initialize properly configuration files during startup [kde#417886]
+* IMPORTANT: Do not load a Shared Layout as Central when it is already loaded and as such do not mess the MultipleLayouts appearance when a Shared layout should also be used [kde#417886]
+* [wayland] do not crash when right clicking Tasks plasmoid [kde#417546]
+* update animations speed to support plasma 5.18 new animation speed values
+* do not double release dock visibility after Meta application launcher triggering [kde#417239]
+* improve blur region calculations in general and do not send invalid areas to kwin [kde#417254]
+* improve blur area calculations during startup when parabolic effect is disabled [kde#416928]
+* show Tasks icon size properly during startup when parabolic effect is disabled
+
 #### Version 0.9.8.1
 
 * fix availableScreenRegionWithCriteria calculations. A commit from master branch was lost even though it should be inside initial 0.9.8 release
