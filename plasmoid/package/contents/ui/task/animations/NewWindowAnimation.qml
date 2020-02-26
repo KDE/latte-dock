@@ -28,7 +28,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 SequentialAnimation{
     id:newWindowAnimation
 
-    property int speed: root.appliedDurationTime*units.longDuration
+    property int speed: root.appliedDurationTime*1.2*units.longDuration
     property bool isDemandingAttention: taskItem.inAttention
     property bool containsMouse: taskItem.containsMouse
     property bool needsThicknessSent: false //flag to check if the signal for thickness was sent
@@ -44,7 +44,7 @@ SequentialAnimation{
                 duration: newWindowAnimation.speed
                 easing.type: Easing.OutQuad
 
-                property real thickPercentage: taskItem.inAttentionAnimation ? 1 : 0.6
+                property real thickPercentage: taskItem.inAttentionAnimation ? 0.8 : 0.6
             }
 
             PropertyAnimation {
@@ -60,7 +60,7 @@ SequentialAnimation{
             target: wrapper
             property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
             to: 1
-            duration: 3*root.appliedDurationTime*newWindowAnimation.speed
+            duration: 4.4*newWindowAnimation.speed
             easing.type: Easing.OutBounce
         }
     }

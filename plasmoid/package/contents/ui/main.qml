@@ -65,7 +65,8 @@ Item {
     //it is used to check both the applet and the containment for direct render
     property bool globalDirectRender: latteView ? latteView.globalDirectRender : icList.directRender
 
-    property bool plasma515: Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,14,90)
+    property bool plasma515: latteView ? latteView.plasma515 : Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,15,0)
+    property bool plasma518: latteView ? latteView.plasma518 : Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,18,0)
 
     property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool inConfigureAppletsMode: latteView ? latteView.inConfigureAppletsMode : true
@@ -242,7 +243,9 @@ Item {
     property real animationsZoomFactor: latteView ? latteView.animationsZoomFactor : durationTime === 0 ? 1 : 1.65
     property real maxZoomFactor: latteView ? latteView.maxZoomFactor : Math.max(zoomFactor, animationsZoomFactor)
 
-    property real appliedDurationTime: animationsEnabled ? durationTime : 2
+    readonly property real animationsSpeed2: plasma518 ? 1.00 : 2.00
+
+    property real appliedDurationTime: animationsEnabled ? durationTime : animationsSpeed2
     property real durationTime: latteView ? latteView.durationTime : plasmoid.configuration.durationTime
     property real zoomFactor: latteView ? latteView.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
 

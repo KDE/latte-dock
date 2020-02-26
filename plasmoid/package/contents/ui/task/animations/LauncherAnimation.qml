@@ -28,7 +28,7 @@ SequentialAnimation{
     id:launcherAnimation
 
     property bool launchedAlready: false
-    property int speed: root.durationTime * 0.8 * units.longDuration
+    property int speed: root.durationTime * 0.9 * units.longDuration
 
     SequentialAnimation{
         ScriptAction {
