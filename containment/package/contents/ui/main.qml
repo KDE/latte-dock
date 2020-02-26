@@ -221,6 +221,7 @@ Item {
     property bool useThemePanel: noApplets === 0 || !Latte.WindowSystem.compositingActive ?
                                      true : (plasmoid.configuration.useThemePanel || plasmoid.configuration.solidBackgroundForMaximized)
 
+    property bool plasma515: Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,15,0)
     property bool plasma518: Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,18,0)
 
     property alias hoveredIndex: layoutsContainer.hoveredIndex
