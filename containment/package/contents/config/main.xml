@@ -69,6 +69,14 @@
       <default>-1</default>
       <label>margin from screen edge in pixels, -1 means disabled</label>
     </entry>
+    <entry name="isStickedOnTopEdge" type="Bool">
+      <default>false</default>
+      <label>vertical view is sticked at top screen edge at all cases; useful for sidepanels</label>
+    </entry>
+    <entry name="isStickedOnBottomEdge" type="Bool">
+      <default>false</default>
+      <label>vertical view is sticked at bottom screen edge at all cases; useful for sidepanels</label>
+    </entry>
     <entry name="inConfigureAppletsMode" type="Bool">
       <default>false</default>
     </entry>

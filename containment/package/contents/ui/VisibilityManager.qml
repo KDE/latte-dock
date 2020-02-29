@@ -287,6 +287,21 @@ Item{
         }
     }
 
+    //! View::Positioner bindings
+    Binding{
+        target: latteView && latteView.positioner ? latteView.positioner : null
+        property: "isStickedOnTopEdge"
+        when: latteView && latteView.positioner
+        value: plasmoid.configuration.isStickedOnTopEdge
+    }
+
+    Binding{
+        target: latteView && latteView.positioner ? latteView.positioner : null
+        property: "isStickedOnBottomEdge"
+        when: latteView && latteView.positioner
+        value: plasmoid.configuration.isStickedOnBottomEdge
+    }
+
     //! View::WindowsTracker bindings
     Binding{
         target: latteView && latteView.windowsTracker ? latteView.windowsTracker : null

@@ -51,6 +51,9 @@ class Positioner: public QObject
     Q_PROPERTY(bool inLocationAnimation READ inLocationAnimation NOTIFY inLocationAnimationChanged)
     Q_PROPERTY(bool inSlideAnimation READ inSlideAnimation WRITE setInSlideAnimation NOTIFY inSlideAnimationChanged)
 
+    Q_PROPERTY(bool isStickedOnTopEdge READ isStickedOnTopEdge WRITE setIsStickedOnTopEdge NOTIFY isStickedOnTopEdgeChanged)
+    Q_PROPERTY(bool isStickedOnBottomEdge READ isStickedOnBottomEdge WRITE setIsStickedOnBottomEdge NOTIFY isStickedOnBottomEdgeChanged)
+
     Q_PROPERTY(int currentScreenId READ currentScreenId NOTIFY currentScreenChanged)
     //! animating window slide
     Q_PROPERTY(int slideOffset READ slideOffset WRITE setSlideOffset NOTIFY slideOffsetChanged)
@@ -70,6 +73,12 @@ public:
 
     bool inSlideAnimation() const;
     void setInSlideAnimation(bool active);
+
+    bool isStickedOnTopEdge() const;
+    void setIsStickedOnTopEdge(bool sticked);
+
+    bool isStickedOnBottomEdge() const;
+    void setIsStickedOnBottomEdge(bool sticked);
 
     void setScreenToFollow(QScreen *scr, bool updateScreenId = true);
 
@@ -108,6 +117,8 @@ signals:
     void onHideWindowsForSlidingOut();
     void inLocationAnimationChanged();
     void inSlideAnimationChanged();
+    void isStickedOnTopEdgeChanged();
+    void isStickedOnBottomEdgeChanged();
 
 private slots:
     void screenChanged(QScreen *screen);
@@ -128,6 +139,9 @@ private:
     bool m_inDelete{false};
     bool m_inLocationAnimation{false};
     bool m_inSlideAnimation{false};
+
+    bool m_isStickedOnTopEdge{false};
+    bool m_isStickedOnBottomEdge{false};
 
     int m_slideOffset{0};
 

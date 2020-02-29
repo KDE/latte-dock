@@ -102,6 +102,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
     Q_PROPERTY(int offset READ offset WRITE setOffset NOTIFY offsetChanged)
     Q_PROPERTY(int screenEdgeMargin READ screenEdgeMargin WRITE setScreenEdgeMargin NOTIFY screenEdgeMarginChanged)
+    Q_PROPERTY(int settingsLevel READ settingsLevel NOTIFY settingsLevelChanged)
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
@@ -188,6 +189,8 @@ public:
 
     int alignment() const;
     void setAlignment(int alignment);
+
+    int settingsLevel() const;
 
     QRect absoluteGeometry() const;
     QRect screenGeometry() const;
@@ -288,6 +291,7 @@ signals:
     void offsetChanged();
     void onPrimaryChanged();
     void positionerChanged();
+    void settingsLevelChanged();
     void screenEdgeMarginChanged();
     void screenEdgeMarginEnabledChanged();
     void screenGeometryChanged();

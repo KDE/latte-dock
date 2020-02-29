@@ -32,71 +32,84 @@ Item{
     width: visibleButton.width
     height: visibleButton.height
 
-    signal pressed();
+    signal pressedChanged(bool pressed);
 
     property bool checked: false
-    property bool hoveredExternal: false
-    property bool reverseIcon: false
+
+    property bool iconPositionReversed: false
     property string text: "Default Text"
     property string tooltip: ""
 
-    readonly property bool containsMouse: buttonMouseArea.containsMouse || hoveredExternal
+    readonly property bool containsMouse: tooltipBtn.hovered
     readonly property int implicitHeight: visibleButton.height
 
     readonly property color appliedTextColor: checked ? checkedTextColor : textColor
     readonly property color appliedBackgroundColor: checked ? checkedBackgroundColor : backgroundColor
 
-    property color textColor: "white"
-    property color backgroundColor: "black"
-    property color checkedTextColor: "black"
-    property color checkedBackgroundColor: "white"
+    readonly property color textColor: containsMouse ? colorizerManager.buttonTextColor : settingsRoot.textColor
+    readonly property color backgroundColor: containsMouse ? hoveredBackground : normalBackground// "transparent"
+    readonly property color checkedTextColor: colorizerManager.buttonTextColor
+    readonly property color checkedBackgroundColor: colorizerManager.buttonFocusColor
 
-    Rectangle {
-        id: visibleButton
-        width: buttonRow.width + 4 * margin
-        height: buttonRow.height + 2 * margin
-        radius: 2
-        color: appliedBackgroundColor
-     //   border.width: 1
-     //   border.color: checked ? appliedBackgroundColor : appliedTextColor
+    readonly property color normalBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
+                                                      colorizerManager.buttonHoverColor.g,
+                                                      colorizerManager.buttonHoverColor.b,
+                                                      0.3)
 
-        readonly property int margin: units.smallSpacing
+    readonly property color hoveredBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
+                                                       colorizerManager.buttonHoverColor.g,
+                                                       colorizerManager.buttonHoverColor.b,
+                                                       0.7)
 
-        RowLayout{
-            id: buttonRow
-            anchors.centerIn: parent
-            spacing: units.smallSpacing
-            layoutDirection: reverseIcon ? Qt.RightToLeft : Qt.LeftToRight
+    property Component icon
 
-            RearrangeIcon{
-                width: height
-                height: textLbl.implicitHeight
-                iconColor: button.appliedTextColor
-            }
+    Item{
+        id: visibleButtonRoot
+        width: visibleButton.width
+        height: visibleButton.height
 
-            PlasmaComponents.Label{
-                id: textLbl
-                text: button.text
-                color: button.appliedTextColor
+        Rectangle {
+            id: visibleButton
+            width: buttonRow.width + 4 * margin
+            height: buttonRow.height + 2 * margin
+            radius: 2
+            color: appliedBackgroundColor
+            //   border.width: 1
+            //   border.color: checked ? appliedBackgroundColor : appliedTextColor
+
+            readonly property int margin: units.smallSpacing
+
+            RowLayout{
+                id: buttonRow
+                anchors.centerIn: parent
+                spacing: units.smallSpacing
+                layoutDirection: iconPositionReversed ? Qt.RightToLeft : Qt.LeftToRight
+
+                Loader {
+                    width: height
+                    height: textLbl.implicitHeight
+                    active: button.icon
+                    sourceComponent: button.icon
+                    visible: active
+
+                    readonly property color iconColor: button.appliedTextColor
+                }
+
+                PlasmaComponents.Label{
+                    id: textLbl
+                    text: button.text
+                    color: button.appliedTextColor
+                }
             }
         }
-
-    /*    Rectangle {
-            anchors.topMargin: 1
-            anchors.top: buttonRow.bottom
-            anchors.horizontalCenter: buttonRow.horizontalCenter
-            width: visibleButton.width
-            height: 1
-            color: button.appliedTextColor
-            visible: buttonMouseArea.containsMouse
-        }*/
     }
 
-    MouseArea{
-        id: buttonMouseArea
-        anchors.fill: visibleButton
-        hoverEnabled: true
+    PlasmaComponents.Button {
+        id: tooltipBtn
+        anchors.fill: visibleButtonRoot
+        opacity: 0
+        tooltip: button.tooltip
 
-        onClicked: button.pressed();
+        onPressedChanged: button.pressedChanged(pressed)
     }
 }

@@ -871,6 +871,19 @@ void View::setScreenEdgeMargin(int margin)
     emit screenEdgeMarginChanged();
 }
 
+int View::settingsLevel() const
+{
+    if (m_configView) {
+        auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+
+        if (configView) {
+            return (int)configView->complexity();
+        }
+    }
+
+    return (int)Latte::Types::BasicSettings;
+}
+
 int View::fontPixelSize() const
 {
     return m_fontPixelSize;

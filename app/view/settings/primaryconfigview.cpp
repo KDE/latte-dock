@@ -87,6 +87,8 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::updateShowInlineProperties);
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::syncGeometry);
 
+    connect(this, &PrimaryConfigView::complexityChanged, m_latteView, &Latte::View::settingsLevelChanged);
+
     connect(this, &QQuickView::statusChanged, [&](QQuickView::Status status) {
         if (status == QQuickView::Ready) {
             updateEffects();
@@ -104,6 +106,7 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
         syncGeometry();
         syncSlideEffect();
     });
+
     connections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &PrimaryConfigView::syncGeometry);
     connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);
 
@@ -149,6 +152,8 @@ void PrimaryConfigView::init()
     m_originalMode = m_latteView->visibility()->mode();
 
     loadConfig();
+    //! inform view about the current settings level
+    emit m_latteView->settingsLevelChanged();
 
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);

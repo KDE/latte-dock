@@ -115,6 +115,18 @@ void Positioner::init()
     connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::updateInLocationAnimation);
     connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::updateInLocationAnimation);
 
+    connect(this, &Positioner::isStickedOnTopEdgeChanged, this, [&]() {
+        if (m_view->formFactor() == Plasma::Types::Vertical) {
+            syncGeometry();
+        }
+    });
+
+    connect(this, &Positioner::isStickedOnBottomEdgeChanged, this, [&]() {
+        if (m_view->formFactor() == Plasma::Types::Vertical) {
+            syncGeometry();
+        }
+    });
+
     connect(m_view, &QQuickWindow::xChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::yChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::widthChanged, this, &Positioner::validateDockGeometry);
@@ -390,13 +402,26 @@ void Positioner::syncGeometry()
                                             Latte::Types::WindowsCanCover,
                                             Latte::Types::WindowsAlwaysCover});
 
-            QList<Plasma::Types::Location> edges({Plasma::Types::TopEdge,
-                                                  Plasma::Types::BottomEdge});
+            QList<Plasma::Types::Location> edges;
+
+            if (m_isStickedOnTopEdge && m_isStickedOnBottomEdge) {
+                //! dont send an empty edges array because that means include all screen edges in calculations
+                edges << Plasma::Types::Floating;
+            } else {
+                if (!m_isStickedOnTopEdge) {
+                    edges << Plasma::Types::TopEdge;
+                }
+
+                if (!m_isStickedOnBottomEdge) {
+                    edges << Plasma::Types::BottomEdge;
+                }
+            }
 
             freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, layoutName, modes, edges);
 
             maximumRect = maximumNormalGeometry();
             QRegion availableRegion = freeRegion.intersected(maximumRect);
+
             availableScreenRect = freeRegion.intersected(maximumRect).boundingRect();
             float area = 0;
 
@@ -743,6 +768,36 @@ void Positioner::setInSlideAnimation(bool active)
 
     m_inSlideAnimation = active;
     emit inSlideAnimationChanged();
+}
+
+bool Positioner::isStickedOnTopEdge() const
+{
+    return m_isStickedOnTopEdge;
+}
+
+void Positioner::setIsStickedOnTopEdge(bool sticked)
+{
+    if (m_isStickedOnTopEdge == sticked) {
+         return;
+    }
+
+    m_isStickedOnTopEdge = sticked;
+    emit isStickedOnTopEdgeChanged();
+}
+
+bool Positioner::isStickedOnBottomEdge() const
+{
+    return m_isStickedOnBottomEdge;
+}
+
+void Positioner::setIsStickedOnBottomEdge(bool sticked)
+{
+    if (m_isStickedOnBottomEdge == sticked) {
+        return;
+    }
+
+    m_isStickedOnBottomEdge = sticked;
+    emit isStickedOnBottomEdgeChanged();
 }
 
 void Positioner::updateInLocationAnimation()

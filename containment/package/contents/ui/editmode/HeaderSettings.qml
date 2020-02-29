@@ -33,10 +33,10 @@ Item {
     width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.width : parent.height
     height: thickness
 
-    readonly property bool containsMouse: rearrangeBtn.containsMouse
+    readonly property bool containsMouse: rearrangeBtn.containsMouse || stickOnBottomBtn.containsMouse || stickOnTopBtn.containsMouse
     readonly property int thickness: rearrangeBtn.implicitHeight
 
-    readonly property string tooltip: rearrangeBtn.tooltip
+    readonly property bool inExpertSettingsMode: latteView && (latteView.settingsLevel === Latte.Types.ExpertSettings)
 
     rotation: {
         if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
@@ -75,49 +75,100 @@ Item {
     }
 
     SettingsControls.Button{
+        id: stickOnTopBtn
+        visible: root.isVertical && inExpertSettingsMode
+
+        text: i18n("Stick On Top");
+        tooltip: i18n("Stick maximum available space at top screen edge and ignore any top docks or panels")
+        checked: plasmoid.configuration.isStickedOnTopEdge
+        iconPositionReversed: (plasmoid.location === PlasmaCore.Types.RightEdge)
+
+        icon: SettingsControls.StickIcon{}
+
+        onPressedChanged: {
+            if (pressed) {
+                plasmoid.configuration.isStickedOnTopEdge = !plasmoid.configuration.isStickedOnTopEdge;
+            }
+        }
+
+        states: [
+            State {
+                name: "generalEdge"
+                when: (plasmoid.location !== PlasmaCore.Types.RightEdge)
+
+                AnchorChanges {
+                    target: stickOnTopBtn
+                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
+                }
+            },
+            State {
+                name: "rightEdge"
+                when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+
+                AnchorChanges {
+                    target: stickOnTopBtn
+                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
+                }
+            }
+        ]
+    }
+
+
+    SettingsControls.Button{
         id: rearrangeBtn
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
 
         text: i18n("Rearrange and configure your widgets")
         tooltip: i18n("Feel free to move around your widgets and configure them from their tooltips")
-        reverseIcon: plasmoid.location === PlasmaCore.Types.RightEdge
-
-        textColor: containsMouse ? colorizerManager.buttonTextColor : settingsRoot.textColor
-        backgroundColor: containsMouse ? hoveredBackground : normalBackground// "transparent"
-        checkedTextColor: colorizerManager.buttonTextColor
-        checkedBackgroundColor: colorizerManager.buttonFocusColor
-
         checked: root.inConfigureAppletsMode
-        hoveredExternal: rearrangeTooltipBtn.hovered
+        iconPositionReversed: plasmoid.location === PlasmaCore.Types.RightEdge
 
-        property color normalBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
-                                                 colorizerManager.buttonHoverColor.g,
-                                                 colorizerManager.buttonHoverColor.b,
-                                                 0.3)
-
-        property color hoveredBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
-                                                  colorizerManager.buttonHoverColor.g,
-                                                  colorizerManager.buttonHoverColor.b,
-                                                  0.7)
-
-        onPressed: {
-            if (Latte.WindowSystem.compositingActive) {
-                plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
-            }
-        }
-    }
-
-    PlasmaComponents.Button {
-        id: rearrangeTooltipBtn
-        anchors.fill: rearrangeBtn
-        opacity: 0
-        tooltip: headerSettings.tooltip
+        icon: SettingsControls.RearrangeIcon{}
 
         onPressedChanged: {
             if (Latte.WindowSystem.compositingActive && pressed) {
                 plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
             }
         }
+    }
+
+    SettingsControls.Button{
+        id: stickOnBottomBtn
+        visible: root.isVertical && inExpertSettingsMode
+
+        text: i18n("Stick On Bottom");
+        tooltip: i18n("Stick maximum available space at top screen edge and ignore any bottom docks or panels")
+        checked: plasmoid.configuration.isStickedOnBottomEdge
+        iconPositionReversed: (plasmoid.location !== PlasmaCore.Types.RightEdge)
+
+        icon: SettingsControls.StickIcon{}
+
+        onPressedChanged: {
+            if (pressed) {
+                plasmoid.configuration.isStickedOnBottomEdge = !plasmoid.configuration.isStickedOnBottomEdge;
+            }
+        }
+
+        states: [
+            State {
+                name: "generalEdge"
+                when: (plasmoid.location !== PlasmaCore.Types.RightEdge)
+
+                AnchorChanges {
+                    target: stickOnBottomBtn
+                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
+                }
+            },
+            State {
+                name: "rightEdge"
+                when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+
+                AnchorChanges {
+                    target: stickOnBottomBtn
+                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
+                }
+            }
+        ]
     }
 }
