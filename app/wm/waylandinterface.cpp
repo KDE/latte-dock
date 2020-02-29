@@ -151,12 +151,12 @@ void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManage
 
     connect(m_windowManagement, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
     connect(m_windowManagement, &PlasmaWindowManagement::activeWindowChanged, this, [&]() noexcept {
-                auto w = m_windowManagement->activeWindow();
-                if (!w || (w && (!m_ignoredWindows.contains(w->internalId() && !isPlasmaDesktop(w)))) ) {
-                    emit activeWindowChanged(w ? w->internalId() : 0);
-                }
+        auto w = m_windowManagement->activeWindow();
+        if (!w || (w && (!m_ignoredWindows.contains(w->internalId()))) ) {
+            emit activeWindowChanged(w ? w->internalId() : 0);
+        }
 
-            }, Qt::QueuedConnection);
+    }, Qt::QueuedConnection);
 }
 
 #if KF5_VERSION_MINOR >= 52
@@ -472,58 +472,39 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
 
     auto w = windowFor(wid);
 
-    if (w) {
-        if (isPlasmaDesktop(w)) {
-            winfoWrap.setIsValid(true);
-            winfoWrap.setIsPlasmaDesktop(true);
-            winfoWrap.setWid(wid);
+    if (w && isValidWindow(w)) {
+        winfoWrap.setIsValid(true);
+        winfoWrap.setWid(wid);
+        winfoWrap.setParentId(w->parentWindow() ? w->parentWindow()->internalId() : 0);
+        winfoWrap.setIsActive(w->isActive());
+        winfoWrap.setIsMinimized(w->isMinimized());
+        winfoWrap.setIsMaxVert(w->isMaximized());
+        winfoWrap.setIsMaxHoriz(w->isMaximized());
+        winfoWrap.setIsFullscreen(w->isFullscreen());
+        winfoWrap.setIsShaded(w->isShaded());
+        winfoWrap.setIsOnAllDesktops(w->isOnAllDesktops());
+        winfoWrap.setIsOnAllActivities(true);
+        winfoWrap.setIsKeepAbove(w->isKeepAbove());
+        winfoWrap.setIsKeepBelow(w->isKeepBelow());
+        winfoWrap.setGeometry(w->geometry());
+        winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
 
-            //! Window Abilities
-            winfoWrap.setIsClosable(false);
-            winfoWrap.setIsFullScreenable(false);
-            winfoWrap.setIsGroupable(false);
-            winfoWrap.setIsMaximizable(false);
-            winfoWrap.setIsMinimizable(false);
-            winfoWrap.setIsMovable(false);
-            winfoWrap.setIsResizable(false);
-            winfoWrap.setIsShadeable(false);
-            winfoWrap.setIsVirtualDesktopsChangeable(false);
-            //! Window Abilities
+        //! BEGIN:Window Abilities
+        winfoWrap.setIsClosable(w->isCloseable());
+        winfoWrap.setIsFullScreenable(w->isFullscreenable());
+        winfoWrap.setIsMaximizable(w->isMaximizeable());
+        winfoWrap.setIsMinimizable(w->isMinimizeable());
+        winfoWrap.setIsMovable(w->isMovable());
+        winfoWrap.setIsResizable(w->isResizable());
+        winfoWrap.setIsShadeable(w->isShadeable());
+        winfoWrap.setIsVirtualDesktopsChangeable(w->isVirtualDesktopChangeable());
+        //! END:Window Abilities
 
-        } else if (isValidWindow(w)) {
-            winfoWrap.setIsValid(true);
-            winfoWrap.setWid(wid);
-            winfoWrap.setParentId(w->parentWindow() ? w->parentWindow()->internalId() : 0);
-            winfoWrap.setIsActive(w->isActive());
-            winfoWrap.setIsMinimized(w->isMinimized());
-            winfoWrap.setIsMaxVert(w->isMaximized());
-            winfoWrap.setIsMaxHoriz(w->isMaximized());
-            winfoWrap.setIsFullscreen(w->isFullscreen());
-            winfoWrap.setIsShaded(w->isShaded());
-            winfoWrap.setIsOnAllDesktops(w->isOnAllDesktops());
-            winfoWrap.setIsOnAllActivities(true);
-            winfoWrap.setIsKeepAbove(w->isKeepAbove());
-            winfoWrap.setIsKeepBelow(w->isKeepBelow());
-            winfoWrap.setGeometry(w->geometry());
-            winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
-
-            //! Window Abilities
-            winfoWrap.setIsClosable(w->isCloseable());
-            winfoWrap.setIsFullScreenable(w->isFullscreenable());
-            winfoWrap.setIsMaximizable(w->isMaximizeable());
-            winfoWrap.setIsMinimizable(w->isMinimizeable());
-            winfoWrap.setIsMovable(w->isMovable());
-            winfoWrap.setIsResizable(w->isResizable());
-            winfoWrap.setIsShadeable(w->isShadeable());
-            winfoWrap.setIsVirtualDesktopsChangeable(w->isVirtualDesktopChangeable());
-            //! Window Abilities
-
-            winfoWrap.setDisplay(w->title());
+        winfoWrap.setDisplay(w->title());
 #if KF5_VERSION_MINOR >= 52
-            winfoWrap.setDesktops(w->plasmaVirtualDesktops());
+        winfoWrap.setDesktops(w->plasmaVirtualDesktops());
 #endif
-            winfoWrap.setActivities(QStringList());
-        }
+        winfoWrap.setActivities(QStringList());
     } else {
         winfoWrap.setIsValid(false);
     }
@@ -595,8 +576,7 @@ bool WaylandInterface::windowCanBeDragged(WindowId wid) const
         return (winfo.isValid()
                 && w->isMovable()
                 && !winfo.isMinimized()
-                && inCurrentDesktopActivity(winfo)
-                && !winfo.isPlasmaDesktop());
+                && inCurrentDesktopActivity(winfo));
     }
 
     return false;
@@ -611,8 +591,7 @@ bool WaylandInterface::windowCanBeMaximized(WindowId wid) const
         return (winfo.isValid()
                 && w->isMaximizeable()
                 && !winfo.isMinimized()
-                && inCurrentDesktopActivity(winfo)
-                && !winfo.isPlasmaDesktop());
+                && inCurrentDesktopActivity(winfo));
     }
 
     return false;
@@ -742,15 +721,6 @@ void WaylandInterface::requestToggleMaximized(WindowId wid) const
     }
 }
 
-bool WaylandInterface::isPlasmaDesktop(const KWayland::Client::PlasmaWindow *w) const
-{
-    if (!w || (w->appId() != QLatin1String("org.kde.plasmashell"))) {
-        return false;
-    }
-
-    return AbstractWindowInterface::isPlasmaDesktop(w->geometry());
-}
-
 bool WaylandInterface::isPlasmaPanel(const KWayland::Client::PlasmaWindow *w) const
 {
     if (!w || (w->appId() != QLatin1String("org.kde.plasmashell"))) {
@@ -758,6 +728,15 @@ bool WaylandInterface::isPlasmaPanel(const KWayland::Client::PlasmaWindow *w) co
     }
 
     return AbstractWindowInterface::isPlasmaPanel(w->geometry());
+}
+
+bool WaylandInterface::isFullScreenWindow(const KWayland::Client::PlasmaWindow *w) const
+{
+    if (!w) {
+        return false;
+    }
+
+    return w->isFullscreen() || AbstractWindowInterface::isFullScreenWindow(w->geometry());
 }
 
 bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) const
@@ -769,19 +748,21 @@ bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) co
     //! e.g. widgets explorer, Activities etc. that are not used to hide
     //! the dodge views appropriately
 
-    return w->isValid() && !isPlasmaDesktop(w) && !m_plasmaPanels.contains(w->internalId()) && !m_ignoredWindows.contains(w->internalId());
+    return w->isValid() && !m_plasmaIgnoredWindows.contains(w->internalId()) && !m_ignoredWindows.contains(w->internalId());
 }
 
 void WaylandInterface::updateWindow()
 {
     PlasmaWindow *pW = qobject_cast<PlasmaWindow*>(QObject::sender());
 
-    if (pW && !m_ignoredWindows.contains(pW->internalId() && !isPlasmaDesktop(pW) )) {
+    if (pW && !m_ignoredWindows.contains(pW->internalId())) {
         if (pW->appId() == QLatin1String("org.kde.plasmashell")) {
-            if (isPlasmaDesktop(pW)) {
-                return;
-            } else if (isPlasmaPanel(pW)) {
-                registerIgnoredWindow(pW->internalId());
+            if (isPlasmaPanel(pW) || isFullScreenWindow(pW)) {
+                registerPlasmaIgnoredWindow(pW->internalId());
+            }
+        } else if (pW->appId() == QLatin1String("latte-dock")) {
+            if (isFullScreenWindow(pW)) {
+                registerPlasmaIgnoredWindow(pW->internalId());
             }
         }
 
@@ -860,12 +841,20 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
         return;
     }
 
-    if ((w->appId() == QLatin1String("org.kde.plasmashell")) && isPlasmaPanel(w)) {
-        registerPlasmaPanel(w->internalId());
-    } else {
-        trackWindow(w);
-        emit windowAdded(w->internalId());
+    if ((w->appId() == QLatin1String("org.kde.plasmashell"))) {
+        if (isPlasmaPanel(w) || isFullScreenWindow(w)) {
+            registerPlasmaIgnoredWindow(w->internalId());
+            return;
+        }
+    } else if (w->appId() == QLatin1String("latte-dock")) {
+        if (isFullScreenWindow(w)) {
+            registerPlasmaIgnoredWindow(w->internalId());
+            return;
+        }
     }
+
+    trackWindow(w);
+    emit windowAdded(w->internalId());
 
     if (w->appId() == "latte-dock") {
         emit latteWindowAdded();

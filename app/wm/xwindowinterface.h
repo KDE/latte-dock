@@ -83,12 +83,12 @@ public:
 private:
     bool isValidWindow(WindowId wid) const;
     bool isValidWindow(const KWindowInfo &winfo) const;
+    bool isFullScreenWindow(WindowId wid) const;
+
     void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
 
     QUrl windowUrl(WindowId wid) const;
 
-private:
-    WindowId m_desktopId{-1};
 };
 
 }

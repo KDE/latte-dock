@@ -88,8 +88,6 @@ public:
     QString appNameFor(const WindowId &wid);
     WindowInfoWrap infoFor(const WindowId &wid) const;
 
-    void setPlasmaDesktop(WindowId wid);
-
     AbstractWindowInterface *wm();
 
 signals:

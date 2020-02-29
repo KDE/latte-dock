@@ -113,7 +113,7 @@ private slots:
 private:
     void init();
     bool isValidWindow(const KWayland::Client::PlasmaWindow *w) const;
-    bool isPlasmaDesktop(const KWayland::Client::PlasmaWindow *w) const;
+    bool isFullScreenWindow(const KWayland::Client::PlasmaWindow *w) const;
     bool isPlasmaPanel(const KWayland::Client::PlasmaWindow *w) const;
     void windowCreatedProxy(KWayland::Client::PlasmaWindow *w);
     void trackWindow(KWayland::Client::PlasmaWindow *w);

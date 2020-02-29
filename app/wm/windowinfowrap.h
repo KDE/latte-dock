@@ -44,7 +44,6 @@ public:
         , m_isMaxHoriz(false)
         , m_isFullscreen(false)
         , m_isShaded(false)
-        , m_isPlasmaDesktop(false)
         , m_isKeepAbove(false)
         , m_isKeepBelow(false)
         , m_hasSkipTaskbar(false)
@@ -73,7 +72,6 @@ public:
         , m_isMaxHoriz(o.m_isMaxHoriz)
         , m_isFullscreen(o.m_isFullscreen)
         , m_isShaded(o.m_isShaded)
-        , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
         , m_isKeepBelow(o.m_isKeepBelow)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
@@ -104,7 +102,6 @@ public:
         , m_isMaxHoriz(o.m_isMaxHoriz)
         , m_isFullscreen(o.m_isFullscreen)
         , m_isShaded(o.m_isShaded)
-        , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
         , m_isKeepAbove(o.m_isKeepAbove)
         , m_isKeepBelow(o.m_isKeepBelow)
         , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
@@ -152,9 +149,6 @@ public:
 
     inline bool isShaded() const noexcept;
     inline void setIsShaded(bool isShaded) noexcept;
-
-    inline bool isPlasmaDesktop() const noexcept;
-    inline void setIsPlasmaDesktop(bool isPlasmaDesktop) noexcept;
 
     inline bool isKeepAbove() const noexcept;
     inline void setIsKeepAbove(bool isKeepAbove) noexcept;
@@ -243,7 +237,6 @@ private:
     bool m_isMaxHoriz : 1;
     bool m_isFullscreen : 1;
     bool m_isShaded : 1;
-    bool m_isPlasmaDesktop : 1;
     bool m_isKeepAbove: 1;
     bool m_isKeepBelow: 1;
     bool m_hasSkipTaskbar: 1;
@@ -284,7 +277,6 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isMaxHoriz = rhs.m_isMaxHoriz;
     m_isFullscreen = rhs.m_isFullscreen;
     m_isShaded = rhs.m_isShaded;
-    m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_isKeepBelow = rhs.m_isKeepBelow;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
@@ -318,7 +310,6 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noex
     m_isMaxHoriz = rhs.m_isMaxHoriz;
     m_isFullscreen = rhs.m_isFullscreen;
     m_isShaded = rhs.m_isShaded;
-    m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_isKeepBelow = rhs.m_isKeepBelow;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
@@ -428,16 +419,6 @@ inline bool WindowInfoWrap::isShaded() const noexcept
 inline void WindowInfoWrap::setIsShaded(bool isShaded) noexcept
 {
     m_isShaded = isShaded;
-}
-
-inline bool WindowInfoWrap::isPlasmaDesktop() const noexcept
-{
-    return m_isPlasmaDesktop;
-}
-
-inline void WindowInfoWrap::setIsPlasmaDesktop(bool isPlasmaDesktop) noexcept
-{
-    m_isPlasmaDesktop = isPlasmaDesktop;
 }
 
 inline bool WindowInfoWrap::isKeepAbove() const noexcept

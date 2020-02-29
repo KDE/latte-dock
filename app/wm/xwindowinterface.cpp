@@ -351,17 +351,11 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
                 | NET::WM2AllowedActions
                 | NET::WM2TransientFor};
 
-    //! update desktop id
-    bool isDesktop{false};
-    if (winfo.windowClassName() == "plasmashell" && isPlasmaDesktop(winfo.geometry())) {
-        isDesktop = true;
-        windowsTracker()->setPlasmaDesktop(wid);
-    }
     WindowInfoWrap winfoWrap;
 
     if (!winfo.valid()) {
         winfoWrap.setIsValid(false);
-    } else if (isValidWindow(winfo) && !isDesktop) {
+    } else if (isValidWindow(winfo)) {
         winfoWrap.setIsValid(true);
         winfoWrap.setWid(wid);
         winfoWrap.setParentId(winfo.transientFor());
@@ -378,7 +372,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsKeepBelow(winfo.hasState(NET::KeepBelow));
         winfoWrap.setHasSkipTaskbar(winfo.hasState(NET::SkipTaskbar));
 
-        //! Window Abilities
+        //! BEGIN:Window Abilities
         winfoWrap.setIsClosable(winfo.actionSupported(NET::ActionClose));
         winfoWrap.setIsFullScreenable(winfo.actionSupported(NET::ActionFullScreen));
         winfoWrap.setIsMaximizable(winfo.actionSupported(NET::ActionMax));
@@ -387,29 +381,11 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsResizable(winfo.actionSupported(NET::ActionResize));
         winfoWrap.setIsShadeable(winfo.actionSupported(NET::ActionShade));
         winfoWrap.setIsVirtualDesktopsChangeable(winfo.actionSupported(NET::ActionChangeDesktop));
-        //! Window Abilities
+        //! END:Window Abilities
 
         winfoWrap.setDisplay(winfo.visibleName());
         winfoWrap.setDesktops({QString(winfo.desktop())});
         winfoWrap.setActivities(winfo.activities());
-    } else if (m_desktopId == wid) {
-        winfoWrap.setIsValid(true);
-        winfoWrap.setIsPlasmaDesktop(true);
-        winfoWrap.setWid(wid);
-        winfoWrap.setParentId(0);
-        winfoWrap.setHasSkipTaskbar(true);
-
-        //! Window Abilities
-        winfoWrap.setIsClosable(false);
-        winfoWrap.setIsFullScreenable(false);
-        winfoWrap.setIsGroupable(false);
-        winfoWrap.setIsMaximizable(false);
-        winfoWrap.setIsMinimizable(false);
-        winfoWrap.setIsMovable(false);
-        winfoWrap.setIsResizable(false);
-        winfoWrap.setIsShadeable(false);
-        winfoWrap.setIsVirtualDesktopsChangeable(false);
-        //! Window Abilities
     }
 
     return winfoWrap;
@@ -455,6 +431,14 @@ QUrl XWindowInterface::windowUrl(WindowId wid) const
                                  rulesConfig, info.windowClassName());
 }
 
+bool XWindowInterface::isFullScreenWindow(WindowId wid) const
+{
+    WindowInfoWrap winfo = requestInfo(wid);
+
+    return (winfo.isValid()
+            && !winfo.isMinimized()
+            && (winfo.isFullscreen() || AbstractWindowInterface::isFullScreenWindow(winfo.geometry())));
+}
 
 bool XWindowInterface::windowCanBeDragged(WindowId wid) const
 {
@@ -462,19 +446,16 @@ bool XWindowInterface::windowCanBeDragged(WindowId wid) const
     return (winfo.isValid()
             && !winfo.isMinimized()
             && winfo.isMovable()
-            && inCurrentDesktopActivity(winfo)
-            && !winfo.isPlasmaDesktop());
+            && inCurrentDesktopActivity(winfo));
 }
 
 bool XWindowInterface::windowCanBeMaximized(WindowId wid) const
 {
-
     WindowInfoWrap winfo = requestInfo(wid);
     return (winfo.isValid()
             && !winfo.isMinimized()
             && winfo.isMaximizable()
-            && inCurrentDesktopActivity(winfo)
-            && !winfo.isPlasmaDesktop());
+            && inCurrentDesktopActivity(winfo));
 }
 
 void XWindowInterface::requestActivate(WindowId wid) const
@@ -503,7 +484,7 @@ void XWindowInterface::requestClose(WindowId wid) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);
 
-    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+    if (!wInfo.isValid()) {
         return;
     }
 
@@ -515,7 +496,7 @@ void XWindowInterface::requestMoveWindow(WindowId wid, QPoint from) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);
 
-    if (!wInfo.isValid() || wInfo.isPlasmaDesktop() || !inCurrentDesktopActivity(wInfo)) {
+    if (!wInfo.isValid() || !inCurrentDesktopActivity(wInfo)) {
         return;
     }
 
@@ -541,7 +522,7 @@ void XWindowInterface::requestToggleIsOnAllDesktops(WindowId wid) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);
 
-    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+    if (!wInfo.isValid()) {
         return;
     }
 
@@ -561,7 +542,7 @@ void XWindowInterface::requestToggleKeepAbove(WindowId wid) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);
 
-    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
+    if (!wInfo.isValid()) {
         return;
     }
 
@@ -607,7 +588,7 @@ void XWindowInterface::requestToggleMinimized(WindowId wid) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);
 
-    if (!wInfo.isValid() || wInfo.isPlasmaDesktop() || !inCurrentDesktopActivity(wInfo)) {
+    if (!wInfo.isValid() || !inCurrentDesktopActivity(wInfo)) {
         return;
     }
 
@@ -664,18 +645,14 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
         return true;
     }
 
+    //! ignored windows from tracking
+    if (m_ignoredWindows.contains(winfo.win()) || m_plasmaIgnoredWindows.contains(winfo.win())) {
+        return false;
+    }
+
     constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::PopupMenuMask | NET::NormalMask | NET::DialogMask;
     NET::WindowType winType = winfo.windowType(types);
     const auto winClass = KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName();
-
-    //! ignored windows from tracking
-    if (m_ignoredWindows.contains(winfo.win())) {
-        return false;
-    }
-
-    if (m_desktopId == winfo.win()) {
-        return false;
-    }
 
     if (winType == -1) {
         // Trying to get more types for verify if the window have any other type
@@ -706,19 +683,18 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     const auto winClass = info.windowClassName();
 
     //! ignored windows do not trackd
-    if (m_ignoredWindows.contains(wid)) {
+    if (m_ignoredWindows.contains(wid) || m_plasmaIgnoredWindows.contains(wid)) {
         return;
     }
 
     if (winClass == "plasmashell") {
-        //! update desktop id
-        if (isPlasmaDesktop(info.geometry())) {
-            m_desktopId = wid;
-            windowsTracker()->setPlasmaDesktop(wid);
-            considerWindowChanged(wid);
+        if (isPlasmaPanel(info.geometry()) || isFullScreenWindow(wid)) {
+            registerPlasmaIgnoredWindow(wid);
             return;
-        } else if (isPlasmaPanel(info.geometry())) {
-            registerPlasmaPanel(wid);
+        }
+    } else if (winClass == "latte-dock") {
+        if (isFullScreenWindow(wid)) {
+            registerPlasmaIgnoredWindow(wid);
             return;
         }
     }

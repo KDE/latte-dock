@@ -117,7 +117,7 @@ public:
     bool inCurrentDesktopActivity(const WindowInfoWrap &winfo) const;
 
     bool isIgnored(const WindowId &wid);
-    bool isRegisteredPlasmaPanel(const WindowId &wid);
+    bool isRegisteredPlasmaIgnoredWindow(const WindowId &wid);
 
     QString currentDesktop() const;
     QString currentActivity() const;
@@ -125,8 +125,8 @@ public:
     virtual void registerIgnoredWindow(WindowId wid);
     virtual void unregisterIgnoredWindow(WindowId wid);
 
-    void registerPlasmaPanel(WindowId wid);
-    void unregisterPlasmaPanel(WindowId wid);
+    void registerPlasmaIgnoredWindow(WindowId wid);
+    void unregisterPlasmaIgnoredWindow(WindowId wid);
 
     void switchToNextActivity();
     void switchToPreviousActivity();
@@ -156,7 +156,7 @@ protected:
     //! their Configuration windows
     QList<WindowId> m_ignoredWindows;
     //! identified plasma panels
-    QList<WindowId> m_plasmaPanels;
+    QList<WindowId> m_plasmaIgnoredWindows;
 
     QPointer<KActivities::Consumer> m_activities;
 
@@ -171,7 +171,7 @@ protected:
 
     void considerWindowChanged(WindowId wid);
 
-    bool isPlasmaDesktop(const QRect &wGeometry) const;
+    bool isFullScreenWindow(const QRect &wGeometry) const;
     bool isPlasmaPanel(const QRect &wGeometry) const;
 
 private slots:

@@ -156,7 +156,6 @@ bool TrackedGeneralInfo::isTracking(const WindowInfoWrap &winfo) const
 {
     return (winfo.isValid()
             && isTrackingCurrentActivity()
-            && !winfo.isPlasmaDesktop()
             && !winfo.isMinimized()
             && winfo.isOnDesktop(m_wm->currentDesktop())
             && winfo.isOnActivity(m_wm->currentActivity()));

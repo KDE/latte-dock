@@ -108,7 +108,7 @@ bool AbstractWindowInterface::isIgnored(const WindowId &wid)
     return m_ignoredWindows.contains(wid);
 }
 
-bool AbstractWindowInterface::isPlasmaDesktop(const QRect &wGeometry) const
+bool AbstractWindowInterface::isFullScreenWindow(const QRect &wGeometry) const
 {
     if (wGeometry.isEmpty()) {
         return false;
@@ -156,9 +156,9 @@ bool AbstractWindowInterface::isPlasmaPanel(const QRect &wGeometry) const
     return false;
 }
 
-bool AbstractWindowInterface::isRegisteredPlasmaPanel(const WindowId &wid)
+bool AbstractWindowInterface::isRegisteredPlasmaIgnoredWindow(const WindowId &wid)
 {
-    return m_plasmaPanels.contains(wid);
+    return m_plasmaIgnoredWindows.contains(wid);
 }
 
 bool AbstractWindowInterface::inCurrentDesktopActivity(const WindowInfoWrap &winfo) const
@@ -183,25 +183,25 @@ void AbstractWindowInterface::unregisterIgnoredWindow(WindowId wid)
     }
 }
 
-void AbstractWindowInterface::registerPlasmaPanel(WindowId wid)
+void AbstractWindowInterface::registerPlasmaIgnoredWindow(WindowId wid)
 {
-    if (!wid.isNull() && !m_plasmaPanels.contains(wid)) {
-        m_plasmaPanels.append(wid);
+    if (!wid.isNull() && !m_plasmaIgnoredWindows.contains(wid)) {
+        m_plasmaIgnoredWindows.append(wid);
         emit windowChanged(wid);
     }
 }
 
-void AbstractWindowInterface::unregisterPlasmaPanel(WindowId wid)
+void AbstractWindowInterface::unregisterPlasmaIgnoredWindow(WindowId wid)
 {
-    if (m_plasmaPanels.contains(wid)) {
-        m_plasmaPanels.removeAll(wid);
+    if (m_plasmaIgnoredWindows.contains(wid)) {
+        m_plasmaIgnoredWindows.removeAll(wid);
     }
 }
 
 void AbstractWindowInterface::windowRemovedSlot(WindowId wid)
 {
-    if (m_plasmaPanels.contains(wid)) {
-        unregisterPlasmaPanel(wid);
+    if (m_plasmaIgnoredWindows.contains(wid)) {
+        unregisterPlasmaIgnoredWindow(wid);
     }
 }
 

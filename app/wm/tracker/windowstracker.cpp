@@ -568,7 +568,7 @@ bool Windows::isValidFor(const WindowId &wid) const
         return false;
     }
 
-    return m_windows[wid].isValid() && !m_windows[wid].isPlasmaDesktop();
+    return m_windows[wid].isValid();
 }
 
 QIcon Windows::iconFor(const WindowId &wid)
@@ -662,32 +662,20 @@ bool Windows::intersects(Latte::View *view, const WindowInfoWrap &winfo)
 
 bool Windows::isActive(const WindowInfoWrap &winfo)
 {
-    return (winfo.isValid() && winfo.isActive() && !winfo.isPlasmaDesktop() && !winfo.isMinimized());
+    return (winfo.isValid() && winfo.isActive() && !winfo.isMinimized());
 }
 
 bool Windows::isActiveInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
 {
-    return (winfo.isValid() && winfo.isActive() && !winfo.isPlasmaDesktop() &&  !winfo.isMinimized()
+    return (winfo.isValid() && winfo.isActive() &&  !winfo.isMinimized()
             && m_views[view]->availableScreenGeometry().contains(winfo.geometry().center()));
 }
 
 bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
 {
- /*   auto viewIntersectsMaxVert = [&]() noexcept -> bool {
-            return ((winfo.isMaxVert()
-                     || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height()))
-                    && intersects(view, winfo));
-};
-
-    auto viewIntersectsMaxHoriz = [&]() noexcept -> bool {
-            return ((winfo.isMaxHoriz()
-                     || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width()))
-                    && intersects(view, winfo));
-};*/
-
     //! updated implementation to identify the screen that the maximized window is present
     //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
-    return (winfo.isValid() && !winfo.isPlasmaDesktop() && !winfo.isMinimized()
+    return (winfo.isValid() && !winfo.isMinimized()
             && !winfo.isShaded()
             && winfo.isMaximized()
             && m_views[view]->availableScreenGeometry().contains(winfo.geometry().center()));
@@ -695,12 +683,12 @@ bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &w
 
 bool Windows::isTouchingView(Latte::View *view, const WindowSystem::WindowInfoWrap &winfo)
 {
-    return (winfo.isValid() && !winfo.isPlasmaDesktop() && intersects(view, winfo));
+    return (winfo.isValid() && intersects(view, winfo));
 }
 
 bool Windows::isTouchingViewEdge(Latte::View *view, const WindowInfoWrap &winfo)
 {
-    if (winfo.isValid() && !winfo.isPlasmaDesktop() &&  !winfo.isMinimized()) {
+    if (winfo.isValid() &&  !winfo.isMinimized()) {
         bool inViewThicknessEdge{false};
         bool inViewLengthBoundaries{false};
 
@@ -773,19 +761,6 @@ void Windows::updateAvailableScreenGeometries()
                 updateHints(view);
             }
         }
-    }
-}
-
-void Windows::setPlasmaDesktop(WindowId wid)
-{
-    if (!m_windows.contains(wid)) {
-        return;
-    }
-
-    if (!m_windows[wid].isPlasmaDesktop()) {
-        m_windows[wid].setIsPlasmaDesktop(true);
-        qDebug() << " plasmashell updated...";
-        updateAllHints();
     }
 }
 
@@ -868,7 +843,7 @@ void Windows::updateHints(Latte::View *view)
             existsFaultyWindow = true;
         }
 
-        if (winfo.isPlasmaDesktop() || !m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
+        if (!m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())) {
             continue;
         }
 
@@ -922,7 +897,7 @@ void Windows::updateHints(Latte::View *view)
         WindowId mainWindowId = activeInfo.isChildWindow() ? activeInfo.parentId() : activeWinId;
 
         for (const auto &winfo : m_windows) {
-            if (winfo.isPlasmaDesktop() || !m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
+            if (!m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())) {
                 continue;
             }
 
@@ -1007,7 +982,7 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
             existsFaultyWindow = true;
         }
 
-        if (winfo.isPlasmaDesktop() || !m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaPanel(winfo.wid())) {
+        if (!m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())) {
             continue;
         }
 
