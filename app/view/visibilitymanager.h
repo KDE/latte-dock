@@ -198,6 +198,7 @@ private:
     bool m_hideNow{false};
 
     QRect m_publishedStruts;
+    QRegion m_lastMask;
 
     //! KWin Edges
     bool m_enableKWinEdgesFromUser{true};

@@ -802,6 +802,11 @@ Item{
         ScriptAction{
             script: {
                 latteView.visibility.isHidden = true;
+
+                if (root.behaveAsPlasmaPanel && latteView.positioner.slideOffset !== 0) {
+                    //! hide real panels when they slide-out
+                    latteView.visibility.hide();
+                }
             }
         }
 
