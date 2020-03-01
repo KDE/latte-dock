@@ -437,14 +437,6 @@ void Positioner::syncGeometry()
                     area = tempArea;
                 }
             }
-
-            if (availableRegion.rectCount() > 1 && m_view->behaveAsPlasmaPanel()) {
-                m_view->effects()->setForceDrawCenteredBorders(true);
-            } else {
-                m_view->effects()->setForceDrawCenteredBorders(false);
-            }
-        } else {
-            m_view->effects()->setForceDrawCenteredBorders(false);
         }
 
         m_view->effects()->updateEnabledBorders();
