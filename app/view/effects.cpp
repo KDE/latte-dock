@@ -397,32 +397,45 @@ void Effects::updateEffects()
 
     bool clearEffects{true};
 
-    if (m_drawEffects && !m_rect.isNull() && !m_rect.isEmpty()) {
-        //! this is used when compositing is disabled and provides
-        //! the correct way for the mask to be painted in order for
-        //! rounded corners to be shown correctly
-        if (!m_background) {
-            m_background = new Plasma::FrameSvg(this);
-        }
+    if (m_drawEffects) {
+        if (!m_view->behaveAsPlasmaPanel()) {
+            if (!m_rect.isNull() && !m_rect.isEmpty()) {
+                //! this is used when compositing is disabled and provides
+                //! the correct way for the mask to be painted in order for
+                //! rounded corners to be shown correctly
+                if (!m_background) {
+                    m_background = new Plasma::FrameSvg(this);
+                }
 
-        if (m_background->imagePath() != "widgets/panel-background") {
-            m_background->setImagePath(QStringLiteral("widgets/panel-background"));
-        }
+                if (m_background->imagePath() != "widgets/panel-background") {
+                    m_background->setImagePath(QStringLiteral("widgets/panel-background"));
+                }
 
-        m_background->setEnabledBorders(m_enabledBorders);
-        m_background->resizeFrame(m_rect.size());
-        QRegion fixedMask = m_background->mask();
-        fixedMask.translate(m_rect.x(), m_rect.y());
+                m_background->setEnabledBorders(m_enabledBorders);
+                m_background->resizeFrame(m_rect.size());
+                QRegion fixedMask = m_background->mask();
+                fixedMask.translate(m_rect.x(), m_rect.y());
 
-        if (!fixedMask.isEmpty()) {
+                if (!fixedMask.isEmpty()) {
+                    clearEffects = false;
+                    KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);
+                    KWindowEffects::enableBackgroundContrast(m_view->winId(),
+                                                             m_theme.backgroundContrastEnabled(),
+                                                             m_backEffectContrast,
+                                                             m_backEffectIntesity,
+                                                             m_backEffectSaturation,
+                                                             fixedMask);
+                }
+            }
+        } else {
+            //!  BEHAVEASPLASMAPANEL case
             clearEffects = false;
-            KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);
+            KWindowEffects::enableBlurBehind(m_view->winId(), true);
             KWindowEffects::enableBackgroundContrast(m_view->winId(),
                                                      m_theme.backgroundContrastEnabled(),
                                                      m_backEffectContrast,
                                                      m_backEffectIntesity,
-                                                     m_backEffectSaturation,
-                                                     fixedMask);
+                                                     m_backEffectSaturation);
         }
     }
 
