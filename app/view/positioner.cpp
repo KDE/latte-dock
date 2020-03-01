@@ -604,7 +604,7 @@ void Positioner::setSlideOffset(int offset)
         slidedTopLeft = {m_validGeometry.x(), boundedY};
 
     } else if (m_view->location() == Plasma::Types::RightEdge) {
-        int boundedX = qMax(m_view->screenGeometry().right() - 1, m_validGeometry.x() + qAbs(m_slideOffset));
+        int boundedX = qMin(m_view->screenGeometry().right() - 1, m_validGeometry.x() + qAbs(m_slideOffset));
         slidedTopLeft = {boundedX, m_validGeometry.y()};
 
     } else if (m_view->location() == Plasma::Types::LeftEdge) {
