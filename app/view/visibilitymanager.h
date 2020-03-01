@@ -105,6 +105,9 @@ public:
 
     bool supportsKWinEdges() const;
 
+    //! Used mostly to show / hide SideBars
+    void toggleHiddenState();
+
 public slots:
     Q_INVOKABLE void hide();
     Q_INVOKABLE void show();

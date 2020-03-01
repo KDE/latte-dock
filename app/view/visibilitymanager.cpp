@@ -280,6 +280,19 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     case Types::WindowsAlwaysCover:
         break;
 
+    case Types::SideBar:
+        m_connections[base] = connect(m_latteView, &Latte::View::inEditModeChanged, this, [&]() {
+            if (!m_latteView->inEditMode()) {
+                //! Give the time to View to change from !behaveAsPlasmaPanel to behaveAsPlasmaPanel
+                //! if this is needed when changing to !inEditMode
+                QTimer::singleShot(100, [this]() {
+                    toggleHiddenState();
+                });
+            }
+        });
+
+        toggleHiddenState();
+
     default:
         break;
     }
@@ -428,7 +441,7 @@ void VisibilityManager::setBlockHiding(bool blockHiding)
     }
 
     m_blockHiding = blockHiding;
-    // qDebug() << "blockHiding:" << blockHiding;
+    //qDebug() << "blockHiding:" << blockHiding;
 
     if (m_blockHiding) {
         m_timerHide.stop();
@@ -519,7 +532,7 @@ void VisibilityManager::show()
 
 void VisibilityManager::raiseView(bool raise)
 {
-    if (m_blockHiding)
+    if (m_blockHiding || m_mode == Latte::Types::SideBar)
         return;
 
     if (raise) {
@@ -557,6 +570,21 @@ void VisibilityManager::raiseViewTemporarily()
         m_hideNow = true;
         updateHiddenState();
     });
+}
+
+void VisibilityManager::toggleHiddenState()
+{
+    if (!m_latteView->inEditMode()) {
+        if (m_mode == Latte::Types::SideBar) {
+            if (m_isHidden) {
+                emit mustBeShown();
+            } else {
+                emit mustBeHide();
+            }
+        } else {
+            setBlockHiding(!m_blockHiding);
+        }
+    }
 }
 
 void VisibilityManager::updateHiddenState()
@@ -753,7 +781,7 @@ void VisibilityManager::viewEventManager(QEvent *ev)
     case QEvent::DragEnter:
         m_dragEnter = true;
 
-        if (m_isHidden) {
+        if (m_isHidden && m_mode != Latte::Types::SideBar) {
             emit mustBeShown();
         }
 

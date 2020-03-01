@@ -54,6 +54,7 @@ public:
         WindowsGoBelow,
         WindowsCanCover,
         WindowsAlwaysCover,
+        SideBar,
         NormalWindow = 20
     };
     Q_ENUM(Visibility);

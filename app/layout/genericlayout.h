@@ -149,6 +149,8 @@ public slots:
     Q_INVOKABLE int viewsWithTasks() const;
     virtual Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;  //change <Plasma::Types::Location> to <int> types
 
+    void toggleHiddenState(QString screenName, Plasma::Types::Location edge);
+
 signals:
     void activitiesChanged(); // to move at an interface
     void viewsCountChanged();

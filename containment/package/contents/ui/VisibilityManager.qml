@@ -75,8 +75,8 @@ Item{
 
     property int thicknessNormalOriginalValue: root.screenEdgeMargin + root.maxIconSize + (root.maxThickMargin * 2) + extraThickMask + 1
     property int thicknessZoomOriginal:root.screenEdgeMargin + Math.max( ((root.maxIconSize+(root.maxThickMargin * 2)) * root.maxZoomFactor) + extraThickMask + 2,
-                                                                           root.realPanelSize + root.panelShadow,
-                                                                          (Latte.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
+                                                                        root.realPanelSize + root.panelShadow,
+                                                                        (Latte.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
 
     //! is used from Panel in edit mode in order to provide correct masking
     property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness
@@ -356,10 +356,10 @@ Item{
 
     onThicknessZoomOriginalChanged: {
         updateMaskArea();
-    }    
+    }
 
     function slotContainsMouseChanged() {
-        if(latteView.visibility.containsMouse) {
+        if(latteView.visibility.containsMouse && latteView.visibility.mode !== Latte.Types.SideBar) {
             updateMaskArea();
 
             if (slidingAnimationAutoHiddenOut.running && !inTempHiding && !inForceHiding) {
@@ -393,8 +393,10 @@ Item{
         }
 
         //! Normal Dodge/AutoHide case
-        if((!slidingAnimationAutoHiddenOut.running && !latteView.visibility.blockHiding
-            && !latteView.visibility.containsMouse) || inForceHiding) {
+        if((!slidingAnimationAutoHiddenOut.running
+            && !latteView.visibility.blockHiding
+            && (!latteView.visibility.containsMouse || latteView.visibility.mode === Latte.Types.SideBar))
+                || inForceHiding) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
@@ -565,6 +567,14 @@ Item{
                         localY = latteView.height - layoutsContainer.mainLayout.height - space - root.offset;
                     }
                 }
+
+                if (latteView.visibility.isHidden && latteView && latteView.visibility.mode === Latte.Types.SideBar) {
+                    //!hide completely
+                    localX = -1;
+                    localY = -1;
+                    tempThickness = 1;
+                    tempLength = 1;
+                }
             } else {
                 // !inNormalState
 
@@ -660,6 +670,8 @@ Item{
                 tempLength = latteView.effects.rect.height;
             }
         }
+
+
 
         //  console.log("Not updating mask...");
         if( maskArea.x !== localX || maskArea.y !== localY
@@ -886,7 +898,7 @@ Item{
     }
 
     //! Slides Animations for FLOATING+BEHAVEASPLASMAPANEL
-/*  DISABLED because they dont create a smooth transition
+    /*  DISABLED because they dont create a smooth transition
 
     SequentialAnimation{
         id: slidingInRealFloating

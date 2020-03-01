@@ -32,5 +32,10 @@
         <arg name="screenName" type="s" direction="in"/>
         <arg name="enabled" type="b" direction="in"/>
     </method>
+    <method name="toggleHiddenState">
+        <arg name="layoutName" type="s" direction="in"/>
+        <arg name="screenName" type="s" direction="in"/>
+        <arg name="screenEdge" type="i" direction="in"/>
+    </method>
   </interface>
 </node>

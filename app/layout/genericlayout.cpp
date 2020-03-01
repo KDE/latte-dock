@@ -886,6 +886,24 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     emit viewsCountChanged();
 }
 
+void GenericLayout::toggleHiddenState(QString screenName, Plasma::Types::Location edge)
+{
+    if (!m_corona) {
+        return;
+    }
+
+    QString validScreenName = qGuiApp->primaryScreen()->name();
+    if (!screenName.isEmpty()) {
+        validScreenName = screenName;
+    }
+
+    for(const auto view : latteViews()) {
+        if (view->positioner()->currentScreenName() == validScreenName && view->location() == edge) {
+            view->visibility()->toggleHiddenState();
+            return;
+        }
+    }
+}
 
 bool GenericLayout::initToCorona(Latte::Corona *corona)
 {

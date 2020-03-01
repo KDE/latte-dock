@@ -506,6 +506,23 @@ CentralLayout *Corona::centralLayout(QString name) const
     return result;
 }
 
+Layout::GenericLayout *Corona::layout(QString name) const
+{
+    Layout::GenericLayout *result{nullptr};
+
+    if (name.isEmpty()) {
+        result = m_layoutsManager->currentLayout();
+    } else {
+        result = m_layoutsManager->synchronizer()->layout(name);
+
+        if (!result) {
+            result = m_layoutsManager->currentLayout();
+        }
+    }
+
+    return result;
+}
+
 QRegion Corona::availableScreenRegion(int id) const
 {
     return availableScreenRegionWithCriteria(id);
@@ -1167,6 +1184,15 @@ void Corona::setBroadcastedBackgroundsEnabled(QString activity, QString screenNa
                               Q_ARG(QVariant, activity),
                               Q_ARG(QVariant, screenName),
                               Q_ARG(QVariant, enabled));
+}
+
+void Corona::toggleHiddenState(QString layoutName, QString screenName, int screenEdge)
+{
+    Layout::GenericLayout *gLayout = layout(layoutName);
+
+    if (gLayout) {
+        gLayout->toggleHiddenState(screenName, (Plasma::Types::Location)screenEdge);
+    }
 }
 
 inline void Corona::qmlRegisterTypes() const

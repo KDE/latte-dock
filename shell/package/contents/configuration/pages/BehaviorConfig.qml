@@ -482,7 +482,8 @@ PlasmaComponents.Page {
 
             enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
                        || latteView.visibility.mode === Latte.Types.WindowsGoBelow
-                       || latteView.visibility.mode === Latte.Types.WindowsAlwaysCover)
+                       || latteView.visibility.mode === Latte.Types.WindowsAlwaysCover
+                       || latteView.visibility.mode === Latte.Types.SideBar)
 
             LatteComponents.Header {
                 text: i18n("Delay")
@@ -827,7 +828,7 @@ PlasmaComponents.Page {
                     text: i18n("Activate KWin edge after hiding")
                     checked: latteView.visibility.enableKWinEdges
                     tooltip: i18n("After the view becomes hidden, KWin is informed to track user feedback. For example an edge visual hint is shown whenever the mouse approaches the hidden view")
-                    enabled: !latteView.byPassWM
+                    enabled: !latteView.byPassWM && latteView.visibility.mode !== Latte.Types.SideBar
 
                     onClicked: {
                         latteView.visibility.enableKWinEdges = checked;

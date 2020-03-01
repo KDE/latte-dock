@@ -29,8 +29,8 @@ LatteComponents.ComboBoxButton{
     id: custom
     checkable: true
 
-   // buttonToolTip: checked ? i18n("Use %0 style for your indicators").arg(buttonText) :
-   //                          i18n("Download indicator styles from the internet")
+    buttonToolTip: mode === Latte.Types.SideBar ? i18n("SideBar can be shown only when the user has explicitly requested it. For example through an external applet, shortcut or script") : ""
+
     comboBoxTextRole: "name"
     comboBoxBlankSpaceForEmptyIcons: false
     comboBoxForcePressed: latteView.visibility.mode === mode
@@ -135,9 +135,15 @@ LatteComponents.ComboBoxButton{
             name: i18n("Windows Always Cover"),
         }
 
+        var sideBar = {
+            pluginId: '8',
+            name: i18n("On Demand SideBar")
+        }
+
         actionsModel.append(windowsGoBelow);
         actionsModel.append(windowsCanCover);
         actionsModel.append(windowsAlwaysCover);
+        actionsModel.append(sideBar);
     }
 
 }

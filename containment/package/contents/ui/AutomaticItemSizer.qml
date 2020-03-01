@@ -29,7 +29,9 @@ Item {
 
     // when there are only plasma style task managers OR any applets that fill width or height
     // the automatic icon size algorithm should better be disabled
-    readonly property bool isActive: !root.containsOnlyPlasmaTasks && layoutsContainer.fillApplets<=0
+    readonly property bool isActive: !root.containsOnlyPlasmaTasks
+                                     && layoutsContainer.fillApplets<=0
+                                     && latteView && latteView.visibility.mode !== Latte.Types.SideBar
 
     property bool automaticSizeAnimation: false
 
