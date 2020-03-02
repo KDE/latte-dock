@@ -133,8 +133,7 @@ MouseArea {
         previousCurrentApplet = currentApplet;
 
         if (!currentApplet
-                || !root.dragOverlay.currentApplet
-                || (currentApplet && currentApplet.isInternalViewSplitter)) {
+                || !root.dragOverlay.currentApplet) {
             hideTimer.restart();
             return;
         }
@@ -276,7 +275,7 @@ MouseArea {
         Item {
             id: handleVisualItem
             width: root.isHorizontal ? parent.width : thickness
-            height: root.isHorizontal ? thickness : parent.width
+            height: root.isHorizontal ? thickness : parent.height
 
             readonly property int thickness: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.width - root.localScreenEdgeMargin
 

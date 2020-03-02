@@ -61,10 +61,10 @@ Item{
             return latteApplet.tasksWidth;
         } else {
             if (root.isHorizontal && root.inConfigureAppletsMode) {
-                return Math.max(root.iconSize, scaledWidth);
-            } else {
-                return root.isVertical ? scaledWidth + root.localScreenEdgeMargin : scaledWidth;
+                return Math.max(Math.min(root.iconSize, 64), scaledWidth);
             }
+
+            return root.isVertical ? scaledWidth + root.localScreenEdgeMargin : scaledWidth;
         }
     }
 
@@ -96,7 +96,7 @@ Item{
             return latteApplet.tasksHeight;
         } else {
             if (root.isVertical && root.inConfigureAppletsMode) {
-                return Math.max(root.iconSize, scaledHeight);
+                return Math.max(Math.min(root.iconSize, 64), scaledHeight);
             }
 
             return root.isHorizontal ? scaledHeight + root.localScreenEdgeMargin : scaledHeight;
@@ -132,7 +132,7 @@ Item{
                                    root.thickMargins :
                                   (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
 
-    property int localLengthMargins: isSeparator || !communicator.lengthMarginsEnabled ? 0 : appletItem.lengthAppletFullMargins
+    property int localLengthMargins: isSeparator || !communicator.lengthMarginsEnabled || isInternalViewSplitter ? 0 : appletItem.lengthAppletFullMargins
     property int edgeLengthMargins: edgeLengthMarginsDisabled ? 0 : appletItem.lengthAppletIntMargin * 2
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
@@ -310,10 +310,11 @@ Item{
         if (isLattePlasmoid) {
             return;
         } else if (appletItem.isInternalViewSplitter){
-            if(!root.inConfigureAppletsMode)
+            if(!root.inConfigureAppletsMode) {
                 layoutHeight = 0;
-            else
-                layoutHeight = root.iconSize;
+            } else {
+                layoutHeight = (root.isHorizontal ? root.iconSize : Math.min(root.iconSize, 96));
+            }
         }
         else if(appletItem.isSystray && root.isHorizontal){
             layoutHeight = root.iconSize;
@@ -370,10 +371,11 @@ Item{
         if (isLattePlasmoid) {
             return;
         } else if (appletItem.isInternalViewSplitter){
-            if(!root.inConfigureAppletsMode)
+            if(!root.inConfigureAppletsMode) {
                 layoutWidth = 0;
-            else
-                layoutWidth = root.iconSize;
+            } else {
+                layoutWidth = (root.isVertical ? root.iconSize : Math.min(root.iconSize, 96));
+            }
         }
         else if(appletItem.isSystray && root.isVertical){
             layoutWidth = root.iconSize;
@@ -600,11 +602,12 @@ Item{
         anchors.fill: _wrapperContainer
         active: appletItem.isInternalViewSplitter && root.inConfigureAppletsMode
 
-        rotation: root.isVertical ? 90 : 0
-
         sourceComponent: PlasmaCore.SvgItem{
             id:splitterImage
-            anchors.fill: parent
+            anchors.centerIn: parent
+            width: Math.min(wrapper.width, wrapper.height)
+            height: width
+            rotation: root.isVertical ? 90 : 0
 
             svg: PlasmaCore.Svg{
                 imagePath: root.universalSettings.splitterIconPath()
