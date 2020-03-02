@@ -198,6 +198,8 @@ public:
     QRect localGeometry() const;
     void setLocalGeometry(const QRect &geometry);
 
+    QString validTitle() const;
+
     bool isOnActivity(const QString &activity) const;
     bool isOnAllActivities() const;
     QStringList activities() const;

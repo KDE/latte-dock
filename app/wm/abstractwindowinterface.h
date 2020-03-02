@@ -112,6 +112,7 @@ public:
 
     virtual QIcon iconFor(WindowId wid) const = 0;
     virtual WindowId winIdFor(QString appId, QRect geometry) const = 0;
+    virtual WindowId winIdFor(QString appId, QString title) const = 0;
     virtual AppData appDataFor(WindowId wid) const = 0;
 
     bool inCurrentDesktopActivity(const WindowInfoWrap &winfo) const;

@@ -74,7 +74,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     //! and avoid a crash from View::winId() at the same time
     m_positioner = new ViewPart::Positioner(this);
 
-    setTitle(corona->kPackage().metadata().name());
+   // setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setColor(QColor(Qt::transparent));
@@ -108,6 +108,8 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
             return;
 
         qDebug() << "dock view c++ containment changed 2...";
+
+        setTitle(validTitle());
 
         //! First load default values from file
         restoreConfig();
@@ -466,6 +468,15 @@ void View::setLocalGeometry(const QRect &geometry)
     m_localGeometry = geometry;
     emit localGeometryChanged();
     updateAbsoluteGeometry();
+}
+
+QString View::validTitle() const
+{
+    if (!containment()) {
+        return QString();
+    }
+
+    return QString("#view#" + QString::number(containment()->id()));
 }
 
 void View::updateAbsoluteGeometry(bool bypassChecks)

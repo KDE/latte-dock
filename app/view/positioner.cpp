@@ -67,12 +67,8 @@ Positioner::Positioner(Latte::View *parent)
                 m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
             });
         } else {
-            connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, [&]() {
-                if (m_trackedWindowId.isNull()) {
-                    m_trackedWindowId = m_corona->wm()->winIdFor("latte-dock", m_view->geometry());
-                    m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
-                }
-            });
+            connect(m_view, &QWindow::windowTitleChanged, this, &Positioner::updateWaylandId);
+            connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &Positioner::updateWaylandId);
         }
 
         /////
@@ -178,6 +174,21 @@ void Positioner::init()
     connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Positioner::screenChanged);
 
     initSignalingForLocationChangeSliding();
+}
+
+void Positioner::updateWaylandId()
+{
+    QString validTitle = m_view->validTitle();
+    if (validTitle.isEmpty()) {
+        return;
+    }
+
+    if (!m_trackedWindowId.isNull()) {
+        m_corona->wm()->unregisterIgnoredWindow(m_trackedWindowId);
+    }
+
+    m_trackedWindowId = m_corona->wm()->winIdFor("latte-dock", validTitle);
+    m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
 }
 
 int Positioner::currentScreenId() const

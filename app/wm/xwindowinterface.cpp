@@ -480,6 +480,11 @@ WindowId XWindowInterface::winIdFor(QString appId, QRect geometry) const
     return activeWindow();
 }
 
+WindowId XWindowInterface::winIdFor(QString appId, QString title) const
+{
+    return activeWindow();
+}
+
 void XWindowInterface::requestClose(WindowId wid) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);

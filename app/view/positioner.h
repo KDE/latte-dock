@@ -124,6 +124,7 @@ private slots:
     void screenChanged(QScreen *screen);
     void validateDockGeometry();
     void updateInLocationAnimation();
+    void updateWaylandId();
 
 private:
     void init();

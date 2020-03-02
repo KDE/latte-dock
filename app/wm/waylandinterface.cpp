@@ -553,6 +553,19 @@ QIcon WaylandInterface::iconFor(WindowId wid) const
     return QIcon();
 }
 
+WindowId WaylandInterface::winIdFor(QString appId, QString title) const
+{
+    auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&appId, &title](PlasmaWindow * w) noexcept {
+        return w->isValid() && w->appId() == appId && w->title().startsWith(title);
+    });
+
+    if (it == m_windowManagement->windows().constEnd()) {
+        return QVariant();
+    }
+
+    return (*it)->internalId();
+}
+
 WindowId WaylandInterface::winIdFor(QString appId, QRect geometry) const
 {
     auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&appId, &geometry](PlasmaWindow * w) noexcept {
@@ -565,7 +578,6 @@ WindowId WaylandInterface::winIdFor(QString appId, QRect geometry) const
 
     return (*it)->internalId();
 }
-
 
 bool WaylandInterface::windowCanBeDragged(WindowId wid) const
 {

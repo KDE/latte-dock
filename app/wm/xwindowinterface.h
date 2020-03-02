@@ -72,7 +72,8 @@ public:
     bool windowCanBeMaximized(WindowId wid) const override;
 
     QIcon iconFor(WindowId wid) const override;
-    WindowId winIdFor(QString appId, QRect geometry) const override;   
+    WindowId winIdFor(QString appId, QRect geometry) const override;
+    WindowId winIdFor(QString appId, QString title) const override;
     AppData appDataFor(WindowId wid) const override;
 
     void setActiveEdge(QWindow *view, bool active) const override;

@@ -22,8 +22,8 @@ import QtQuick 2.1
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import org.kde.latte 0.2 as Latte
 import org.kde.latte.components 1.0 as LatteComponents
-
 
 LatteComponents.ComboBoxButton{
     id: custom
