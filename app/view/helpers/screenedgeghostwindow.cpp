@@ -75,6 +75,11 @@ ScreenEdgeGhostWindow::~ScreenEdgeGhostWindow()
 {
 }
 
+QString ScreenEdgeGhostWindow::validTitlePrefix() const
+{
+    return QString("#subghostedge#");
+}
+
 void ScreenEdgeGhostWindow::updateGeometry()
 {
     if (m_latteView->positioner()->slideOffset() != 0) {

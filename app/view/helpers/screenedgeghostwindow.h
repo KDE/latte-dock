@@ -77,6 +77,7 @@ signals:
 
 protected:
     bool event(QEvent *ev) override;
+    QString validTitlePrefix() const override;
     void updateGeometry() override;
 
 private:

@@ -76,6 +76,11 @@ FloatingGapWindow::~FloatingGapWindow()
 {
 }
 
+QString FloatingGapWindow::validTitlePrefix() const
+{
+    return QString("#subfloatgap#");
+}
+
 void FloatingGapWindow::updateGeometry()
 {
     if (m_latteView->positioner()->slideOffset() != 0) {

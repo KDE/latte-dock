@@ -50,6 +50,7 @@ SubWindow::SubWindow(Latte::View *view, QString debugType) :
     m_showColor = QColor(Qt::transparent);
     m_hideColor = QColor(Qt::transparent);
 
+    setTitle(validTitle());
     setColor(m_showColor);
     setDefaultAlphaBuffer(true);
 
@@ -129,12 +130,7 @@ SubWindow::SubWindow(Latte::View *view, QString debugType) :
         m_trackedWindowId = winId();
         m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
     } else {
-        connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, [&]() {
-            if (m_trackedWindowId.isNull()) {
-                m_trackedWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
-                m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
-            }
-        });
+        connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &SubWindow::updateWaylandId);
     }
 
     setScreen(m_latteView->screen());
@@ -172,6 +168,16 @@ int SubWindow::thickness() const
     return m_thickness;
 }
 
+QString SubWindow::validTitlePrefix() const
+{
+    return QString("#subwindow#");
+}
+
+QString SubWindow::validTitle() const
+{
+    return QString(validTitlePrefix() + QString::number(m_latteView->containment()->id()));
+}
+
 Latte::View *SubWindow::parentView()
 {
     return m_latteView;
@@ -195,6 +201,20 @@ void SubWindow::fixGeometry()
         if (m_shellSurface) {
             m_shellSurface->setPosition(m_calculatedGeometry.topLeft());
         }
+    }
+}
+
+void SubWindow::updateWaylandId()
+{
+    Latte::WindowSystem::WindowId newId = m_corona->wm()->winIdFor("latte-dock", validTitle());
+
+    if (m_trackedWindowId != newId) {
+        if (!m_trackedWindowId.isNull()) {
+            m_corona->wm()->unregisterIgnoredWindow(m_trackedWindowId);
+        }
+
+        m_trackedWindowId = newId;
+        m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
     }
 }
 

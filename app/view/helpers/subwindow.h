@@ -58,6 +58,8 @@ public:
     int location();
     int thickness() const;
 
+    QString validTitle() const;
+
     void hideWithMask();
     void showWithMask();
 
@@ -72,12 +74,15 @@ signals:
 protected:
     bool event(QEvent *ev) override;
 
+    virtual QString validTitlePrefix() const;
+
     //! it is used to update m_calculatedGeometry correctly
     virtual void updateGeometry() = 0;
 
 private slots:
     void startGeometryTimer();
     void fixGeometry();
+    void updateWaylandId();
 
 private:
     void setupWaylandIntegration();
