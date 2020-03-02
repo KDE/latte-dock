@@ -772,7 +772,8 @@ void WaylandInterface::updateWindow()
             if (isPlasmaPanel(pW) || isFullScreenWindow(pW)) {
                 registerPlasmaIgnoredWindow(pW->internalId());
             }
-        } else if (pW->appId() == QLatin1String("latte-dock")) {
+        } else if ((pW->appId() == QLatin1String("latte-dock"))
+                   || (pW->appId().startsWith(QLatin1String("ksmserver")))) {
             if (isFullScreenWindow(pW)) {
                 registerPlasmaIgnoredWindow(pW->internalId());
             }
@@ -858,7 +859,8 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
             registerPlasmaIgnoredWindow(w->internalId());
             return;
         }
-    } else if (w->appId() == QLatin1String("latte-dock")) {
+    } else if ((w->appId() == QLatin1String("latte-dock"))
+               || (w->appId().startsWith(QLatin1String("ksmserver")))) {
         if (isFullScreenWindow(w)) {
             registerPlasmaIgnoredWindow(w->internalId());
             return;

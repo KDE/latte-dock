@@ -685,19 +685,20 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
 {
     const KWindowInfo info(wid, NET::WMGeometry, NET::WM2WindowClass);
 
-    const auto winClass = info.windowClassName();
+    const auto winClass = QString(info.windowClassName());
 
     //! ignored windows do not trackd
     if (m_ignoredWindows.contains(wid) || m_plasmaIgnoredWindows.contains(wid)) {
         return;
     }
 
-    if (winClass == "plasmashell") {
+    if (winClass == QLatin1String("plasmashell")) {
         if (isPlasmaPanel(info.geometry()) || isFullScreenWindow(wid)) {
             registerPlasmaIgnoredWindow(wid);
             return;
         }
-    } else if (winClass == "latte-dock") {
+    } else if ((winClass == QLatin1String("latte-dock"))
+               || (winClass == QLatin1String("ksmserver"))) {
         if (isFullScreenWindow(wid)) {
             registerPlasmaIgnoredWindow(wid);
             return;
