@@ -99,6 +99,8 @@ public:
     QRect availableScreenGeometry() const;
     QRect geometryWhenVisible() const;
 
+    QString validTitle() const;
+
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
     QQuickView *secondaryWindow();
@@ -131,6 +133,7 @@ private slots:
     void updateAvailableScreenGeometry(View *origin = nullptr);
     void updateEnabledBorders();
     void updateShowInlineProperties();
+    void updateWaylandId();
 
     void createSecondaryWindow();
     void deleteSecondaryWindow();

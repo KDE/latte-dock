@@ -56,15 +56,12 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
 
     setupWaylandIntegration();
 
+    setTitle(validTitle());
+
     if (KWindowSystem::isPlatformX11()) {
         m_corona->wm()->registerIgnoredWindow(winId());
     } else {
-        connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, [&]() {
-            if (m_waylandWindowId.isNull()) {
-                m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
-                m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
-            }
-        });
+        connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &SecondaryConfigView::updateWaylandId);
     }
 
     setResizeMode(QQuickView::SizeViewToRootObject);
@@ -164,6 +161,11 @@ inline Qt::WindowFlags SecondaryConfigView::wFlags() const
     return (flags() | Qt::FramelessWindowHint /*| Qt::WindowStaysOnTopHint*/) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
+QString SecondaryConfigView::validTitle() const
+{
+    return QString("#secconfig#" + QString::number(m_latteView->containment()->id()));
+}
+
 QRect SecondaryConfigView::geometryWhenVisible() const
 {
     return m_geometryWhenVisible;
@@ -172,10 +174,7 @@ QRect SecondaryConfigView::geometryWhenVisible() const
 void SecondaryConfigView::requestActivate()
 {
     if (KWindowSystem::isPlatformWayland() && m_shellSurface) {
-        if (m_waylandWindowId.isNull()) {
-            m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
-        }
-
+        updateWaylandId();
         m_corona->wm()->requestActivate(m_waylandWindowId);
     } else {
         QQuickView::requestActivate();
@@ -395,6 +394,20 @@ void SecondaryConfigView::hideConfigWindow()
         close();
     } else {
         hide();
+    }
+}
+
+void SecondaryConfigView::updateWaylandId()
+{
+    Latte::WindowSystem::WindowId newId = m_corona->wm()->winIdFor("latte-dock", validTitle());
+
+    if (m_waylandWindowId != newId) {
+        if (!m_waylandWindowId.isNull()) {
+            m_corona->wm()->unregisterIgnoredWindow(m_waylandWindowId);
+        }
+
+        m_waylandWindowId = newId;
+        m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
     }
 }
 

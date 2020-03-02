@@ -183,12 +183,16 @@ void Positioner::updateWaylandId()
         return;
     }
 
-    if (!m_trackedWindowId.isNull()) {
-        m_corona->wm()->unregisterIgnoredWindow(m_trackedWindowId);
-    }
+    Latte::WindowSystem::WindowId newId = m_corona->wm()->winIdFor("latte-dock", validTitle);
 
-    m_trackedWindowId = m_corona->wm()->winIdFor("latte-dock", validTitle);
-    m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
+    if (m_trackedWindowId != newId) {
+        if (!m_trackedWindowId.isNull()) {
+            m_corona->wm()->unregisterIgnoredWindow(m_trackedWindowId);
+        }
+
+        m_trackedWindowId = newId;
+        m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
+    }
 }
 
 int Positioner::currentScreenId() const

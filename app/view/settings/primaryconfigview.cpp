@@ -62,15 +62,12 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
 
     setupWaylandIntegration();
 
+    setTitle(validTitle());
+
     if (KWindowSystem::isPlatformX11()) {
         m_corona->wm()->registerIgnoredWindow(winId());
     } else {
-        connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, [&]() {
-            if (m_waylandWindowId.isNull()) {
-                m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
-                m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
-            }
-        });
+        connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &PrimaryConfigView::updateWaylandId);
     }
 
     setScreen(m_latteView->screen());
@@ -195,6 +192,11 @@ inline Qt::WindowFlags PrimaryConfigView::wFlags() const
     return (flags() | Qt::FramelessWindowHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
+QString PrimaryConfigView::validTitle() const
+{
+    return QString("#primaryconfig#" + QString::number(m_latteView->containment()->id()));
+}
+
 QQuickView *PrimaryConfigView::secondaryWindow()
 {
     return m_secConfigView;
@@ -247,10 +249,7 @@ QRect PrimaryConfigView::geometryWhenVisible() const
 void PrimaryConfigView::requestActivate()
 {
     if (KWindowSystem::isPlatformWayland() && m_shellSurface) {
-        if (m_waylandWindowId.isNull()) {
-            m_waylandWindowId = m_corona->wm()->winIdFor("latte-dock", geometry());
-        }
-
+        updateWaylandId();
         m_corona->wm()->requestActivate(m_waylandWindowId);
     } else {
         QQuickView::requestActivate();
@@ -317,7 +316,7 @@ void PrimaryConfigView::syncGeometry()
 
     position = {xPos, yPos};
 
-    updateEnabledBorders();    
+    updateEnabledBorders();
 
     m_geometryWhenVisible = QRect(position.x(), position.y(), size.width(), size.height());
 
@@ -570,6 +569,20 @@ void PrimaryConfigView::updateShowInlineProperties()
     }
 
     // qDebug() << " showSecWindow:" << showSecWindow << " _ " << " inline:"<< !showSecWindow;
+}
+
+void PrimaryConfigView::updateWaylandId()
+{
+    Latte::WindowSystem::WindowId newId = m_corona->wm()->winIdFor("latte-dock", validTitle());
+
+    if (m_waylandWindowId != newId) {
+        if (!m_waylandWindowId.isNull()) {
+            m_corona->wm()->unregisterIgnoredWindow(m_waylandWindowId);
+        }
+
+        m_waylandWindowId = newId;
+        m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
+    }
 }
 
 int PrimaryConfigView::complexity() const

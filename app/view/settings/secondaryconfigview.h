@@ -77,6 +77,8 @@ public:
 
     QRect geometryWhenVisible() const;
 
+    QString validTitle() const;
+
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
 public slots:
@@ -97,6 +99,7 @@ protected:
 
 private slots:
     void updateEnabledBorders();
+    void updateWaylandId();
 
 private:
     void setupWaylandIntegration();
