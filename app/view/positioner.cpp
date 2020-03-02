@@ -153,7 +153,7 @@ void Positioner::init()
     });
 
     connect(m_view, &Latte::View::screenEdgeMarginEnabledChanged, this, [&]() {
-        if (m_view->behaveAsPlasmaPanel()) {
+        if (m_view->behaveAsPlasmaPanel() || m_view->inEditMode() ) {
             syncGeometry();
         }
     });
