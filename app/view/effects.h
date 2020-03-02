@@ -68,8 +68,8 @@ public:
     bool drawEffects() const;
     void setDrawEffects(bool draw);
 
-    bool forceDrawCenteredBorders() const;
-    void setForceDrawCenteredBorders(bool draw);
+    void setForceTopBorder(bool draw);
+    void setForceBottomBorder(bool draw);
 
     bool settingsMaskSubtracted() const;
     void setSettingsMaskSubtracted(bool enabled);
@@ -127,7 +127,8 @@ private:
     bool m_animationsBlocked{false};
     bool m_drawShadows{true};
     bool m_drawEffects{false};
-    bool m_forceDrawCenteredBorders{false};
+    bool m_forceTopBorder{false};
+    bool m_forceBottomBorder{false};
     bool m_settingsMaskSubtracted{false};
 
     int m_backgroundOpacity{100};

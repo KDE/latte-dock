@@ -135,18 +135,24 @@ void Effects::setDrawEffects(bool draw)
     emit drawEffectsChanged();
 }
 
-bool Effects::forceDrawCenteredBorders() const
+void Effects::setForceBottomBorder(bool draw)
 {
-    return m_forceDrawCenteredBorders;
-}
-
-void Effects::setForceDrawCenteredBorders(bool draw)
-{
-    if (m_forceDrawCenteredBorders == draw) {
+    if (m_forceBottomBorder == draw) {
         return;
     }
 
-    m_forceDrawCenteredBorders = draw;
+    m_forceBottomBorder = draw;
+    updateEnabledBorders();
+}
+
+void Effects::setForceTopBorder(bool draw)
+{
+    if (m_forceTopBorder == draw) {
+        return;
+    }
+
+    m_forceTopBorder = draw;
+    updateEnabledBorders();
 }
 
 int Effects::backgroundOpacity() const
@@ -519,16 +525,21 @@ void Effects::updateEnabledBorders()
     }
 
     if ((m_view->location() == Plasma::Types::LeftEdge || m_view->location() == Plasma::Types::RightEdge)) {
-        if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Types::Justify && !m_forceDrawCenteredBorders) {
-            borders &= ~Plasma::FrameSvg::TopBorder;
-            borders &= ~Plasma::FrameSvg::BottomBorder;
+        if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Types::Justify) {
+            if (!m_forceTopBorder) {
+                borders &= ~Plasma::FrameSvg::TopBorder;
+            }
+
+            if (!m_forceBottomBorder) {
+                borders &= ~Plasma::FrameSvg::BottomBorder;
+            }
         }
 
-        if (m_view->alignment() == Latte::Types::Top && !m_forceDrawCenteredBorders && m_view->offset() == 0) {
+        if (m_view->alignment() == Latte::Types::Top && !m_forceTopBorder && m_view->offset() == 0) {
             borders &= ~Plasma::FrameSvg::TopBorder;
         }
 
-        if (m_view->alignment() == Latte::Types::Bottom && !m_forceDrawCenteredBorders && m_view->offset() == 0) {
+        if (m_view->alignment() == Latte::Types::Bottom && !m_forceBottomBorder && m_view->offset() == 0) {
             borders &= ~Plasma::FrameSvg::BottomBorder;
         }
     }

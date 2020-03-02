@@ -134,6 +134,8 @@ private:
     void updateFormFactor();
     void updatePosition(QRect availableScreenRect = QRect());
 
+    void validateTopBottomBorders(QRect availableScreenRect, QRegion availableScreenRegion);
+
     QRect maximumNormalGeometry();
 
 private:

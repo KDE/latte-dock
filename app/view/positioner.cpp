@@ -158,6 +158,12 @@ void Positioner::init()
         }
     });
 
+    connect(m_view, &Latte::View::screenEdgeMarginChanged, this, [&]() {
+        if (m_view->screenEdgeMarginEnabled() && m_view->inEditMode()) {
+            syncGeometry();
+        }
+    });
+
     connect(m_view->effects(), &Latte::ViewPart::Effects::drawShadowsChanged, this, [&]() {
         if (!m_view->behaveAsPlasmaPanel()) {
             syncGeometry();
@@ -452,6 +458,11 @@ void Positioner::syncGeometry()
                     area = tempArea;
                 }
             }
+
+            validateTopBottomBorders(availableScreenRect, freeRegion);
+        } else {
+            m_view->effects()->setForceTopBorder(false);
+            m_view->effects()->setForceBottomBorder(false);
         }
 
         m_view->effects()->updateEnabledBorders();
@@ -516,6 +527,44 @@ QRect Positioner::maximumNormalGeometry()
     }
 
     return maxGeometry;
+}
+
+void Positioner::validateTopBottomBorders(QRect availableScreenRect, QRegion availableScreenRegion)
+{
+    //! Check if the the top/bottom borders must be drawn also
+    int edgeMargin = qMax(1, m_view->screenEdgeMargin());
+
+    if (availableScreenRect.top() != m_view->screenGeometry().top()) {
+        //! check top border
+        QRegion fitInRegion = QRect(m_view->screenGeometry().x(), availableScreenRect.y()-1, edgeMargin, 1);
+        QRegion subtracted = fitInRegion.subtracted(availableScreenRegion);
+
+        if (subtracted.isNull()) {
+            //!FitIn rectangle fits TOTALLY in the free screen region and as such
+            //!the top border should be drawn
+            m_view->effects()->setForceTopBorder(true);
+        } else {
+            m_view->effects()->setForceTopBorder(false);
+        }
+    } else {
+        m_view->effects()->setForceTopBorder(false);
+    }
+
+    if (availableScreenRect.bottom() != m_view->screenGeometry().bottom()) {
+        //! check top border
+        QRegion fitInRegion = QRect(m_view->screenGeometry().x(), availableScreenRect.bottom()+1, edgeMargin, 1);
+        QRegion subtracted = fitInRegion.subtracted(availableScreenRegion);
+
+        if (subtracted.isNull()) {
+            //!FitIn rectangle fits TOTALLY in the free screen region and as such
+            //!the BOTTOM border should be drawn
+            m_view->effects()->setForceBottomBorder(true);
+        } else {
+            m_view->effects()->setForceBottomBorder(false);
+        }
+    } else {
+        m_view->effects()->setForceBottomBorder(false);
+    }
 }
 
 void Positioner::updatePosition(QRect availableScreenRect)
@@ -785,7 +834,7 @@ bool Positioner::isStickedOnTopEdge() const
 void Positioner::setIsStickedOnTopEdge(bool sticked)
 {
     if (m_isStickedOnTopEdge == sticked) {
-         return;
+        return;
     }
 
     m_isStickedOnTopEdge = sticked;
