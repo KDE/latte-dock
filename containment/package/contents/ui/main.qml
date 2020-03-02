@@ -258,6 +258,9 @@ Item {
 
     property int appletsNeedWindowsTracking: 0
 
+    readonly property int minAppletLengthInConfigure: 64
+    readonly property int maxJustifySplitterSize: 96
+
     //what is the highest icon size based on what icon size is used, screen calculated or user specified
     property int maxIconSize: proportionIconSize!==-1 ? proportionIconSize : plasmoid.configuration.iconSize
     property int iconSize: automaticItemSizer.automaticIconSizeBasedSize > 0 && automaticItemSizer.isActive ?

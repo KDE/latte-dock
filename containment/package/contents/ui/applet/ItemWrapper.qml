@@ -61,7 +61,7 @@ Item{
             return latteApplet.tasksWidth;
         } else {
             if (root.isHorizontal && root.inConfigureAppletsMode) {
-                return Math.max(Math.min(root.iconSize, 64), scaledWidth);
+                return Math.max(Math.min(root.iconSize, root.minAppletLengthInConfigure), scaledWidth);
             }
 
             return root.isVertical ? scaledWidth + root.localScreenEdgeMargin : scaledWidth;
@@ -96,7 +96,7 @@ Item{
             return latteApplet.tasksHeight;
         } else {
             if (root.isVertical && root.inConfigureAppletsMode) {
-                return Math.max(Math.min(root.iconSize, 64), scaledHeight);
+                return Math.max(Math.min(root.iconSize, root.minAppletLengthInConfigure), scaledHeight);
             }
 
             return root.isHorizontal ? scaledHeight + root.localScreenEdgeMargin : scaledHeight;
@@ -130,7 +130,7 @@ Item{
                                   (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
     property int marginHeight: root.isHorizontal ?
                                    root.thickMargins :
-                                  (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
+                                   (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
 
     property int localLengthMargins: isSeparator || !communicator.lengthMarginsEnabled || isInternalViewSplitter ? 0 : appletItem.lengthAppletFullMargins
     property int edgeLengthMargins: edgeLengthMarginsDisabled ? 0 : appletItem.lengthAppletIntMargin * 2
@@ -313,7 +313,7 @@ Item{
             if(!root.inConfigureAppletsMode) {
                 layoutHeight = 0;
             } else {
-                layoutHeight = (root.isHorizontal ? root.iconSize : Math.min(root.iconSize, 96));
+                layoutHeight = (root.isHorizontal ? root.iconSize : Math.min(root.iconSize, root.maxJustifySplitterSize));
             }
         }
         else if(appletItem.isSystray && root.isHorizontal){
@@ -374,7 +374,7 @@ Item{
             if(!root.inConfigureAppletsMode) {
                 layoutWidth = 0;
             } else {
-                layoutWidth = (root.isVertical ? root.iconSize : Math.min(root.iconSize, 96));
+                layoutWidth = (root.isVertical ? root.iconSize : Math.min(root.iconSize, root.maxJustifySplitterSize));
             }
         }
         else if(appletItem.isSystray && root.isVertical){
@@ -602,34 +602,28 @@ Item{
         anchors.fill: _wrapperContainer
         active: appletItem.isInternalViewSplitter && root.inConfigureAppletsMode
 
-        sourceComponent: PlasmaCore.SvgItem{
-            id:splitterImage
-            anchors.centerIn: parent
-            width: Math.min(wrapper.width, wrapper.height)
-            height: width
-            rotation: root.isVertical ? 90 : 0
+        sourceComponent: Item {
+            anchors.fill: parent
 
-            svg: PlasmaCore.Svg{
-                imagePath: root.universalSettings.splitterIconPath()
-            }
+            PlasmaCore.SvgItem{
+                id:splitterImage
+                anchors.centerIn: parent
+                width: Math.min(root.maxJustifySplitterSize, root.iconSize)
+                height: width
+                rotation: root.isVertical ? 90 : 0
 
-            layer.enabled: graphicsSystem.isAccelerated
-            layer.effect: DropShadow {
-                radius: root.appShadowSize
-                fast: true
-                samples: 2 * radius
-                color: root.appShadowColor
+                svg: PlasmaCore.Svg{
+                    imagePath: root.universalSettings.splitterIconPath()
+                }
 
-                verticalOffset: 2
-            }
+                layer.enabled: graphicsSystem.isAccelerated
+                layer.effect: DropShadow {
+                    radius: root.appShadowSize
+                    fast: true
+                    samples: 2 * radius
+                    color: root.appShadowColor
 
-            Component.onCompleted: {
-                if (root.isVertical)  {
-                    wrapper.updateLayoutHeight();
-                    wrapper.updateLayoutWidth();
-                } else {
-                    wrapper.updateLayoutWidth();
-                    wrapper.updateLayoutHeight();
+                    verticalOffset: 2
                 }
             }
         }
