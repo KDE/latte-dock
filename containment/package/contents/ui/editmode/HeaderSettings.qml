@@ -138,7 +138,7 @@ Item {
         visible: root.isVertical && inExpertSettingsMode
 
         text: i18n("Stick On Bottom");
-        tooltip: i18n("Stick maximum available space at top screen edge and ignore any bottom docks or panels")
+        tooltip: i18n("Stick maximum available space at bottom screen edge and ignore any bottom docks or panels")
         checked: plasmoid.configuration.isStickedOnBottomEdge
         iconPositionReversed: (plasmoid.location !== PlasmaCore.Types.RightEdge)
 
