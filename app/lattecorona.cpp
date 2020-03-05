@@ -820,7 +820,7 @@ int Corona::primaryScreenId() const
     return m_screenPool->id(qGuiApp->primaryScreen()->name());
 }
 
-void Corona::closeApplication()
+void Corona::quitApplication()
 {
     //! this code must be called asynchronously because it is called
     //! also from qml (Settings window).

@@ -125,8 +125,6 @@ public:
 
     int screenForContainment(const Plasma::Containment *containment) const override;
 
-    void closeApplication();
-
     KActivities::Consumer *activityConsumer() const;
     KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
 
@@ -146,6 +144,7 @@ public:
     PanelShadows *dialogShadows() const;
 
     //! these functions are used from context menu through containmentactions
+    void quitApplication();
     void switchToLayout(QString layout);
     void showSettingsWindow(int page);
     void setContextMenuView(int id);

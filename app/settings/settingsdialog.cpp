@@ -243,7 +243,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     connect(quitAction, &QAction::triggered, this, [&]() {
         close();
-        m_corona->closeApplication();
+        m_corona->quitApplication();
     });
 
     connect(m_editLayoutAction, &QAction::triggered, this, [&]() {

@@ -42,6 +42,8 @@ PlasmaComponents.ContextMenu {
     property var modelIndex
     readonly property var atm: TaskManager.AbstractTasksModel
 
+    readonly property var containmentActions: latteView ? latteView.containmentActions() : []
+
     placement: {
         if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
             return PlasmaCore.Types.RightPosedTopAlignedPopup;
@@ -930,7 +932,7 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: layoutsMenuItem
 
-        action: latteView ?  latteView.containmentActions()[1] : plasmoid.action("configure")
+        action: latteView ?  containmentActions[1] : plasmoid.action("configure")
         enabled: visible
         visible: latteView && latteView.layoutsManager.menuLayouts.length>1
     }
@@ -938,8 +940,14 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: preferenceMenuItem
 
-        action: latteView ?  latteView.containmentActions()[2] : plasmoid.action("configure")
+        action: latteView ?  containmentActions[2] : plasmoid.action("configure")
         visible: latteView
+    }
+
+    PlasmaComponents.MenuItem {
+        id: quitApplicationItem
+        action: latteView ? containmentActions[3] : plasmoid.action("configure")
+        visible:  latteView
     }
 
     PlasmaComponents.MenuItem {
@@ -959,15 +967,14 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: addWidgets
 
-        action: latteView ? latteView.containmentActions()[4] : plasmoid.action("configure");
+        action: latteView ? containmentActions[5] : plasmoid.action("configure");
         visible:  latteView
     }
-
 
     PlasmaComponents.MenuItem {
         id: configureItem
 
-        action: latteView ? latteView.containmentActions()[5] : plasmoid.action("configure")
+        action: latteView ? containmentActions[6] : plasmoid.action("configure")
     }
 
     //! BEGIN: Plasmoid actions when it isnt inside a Latte dock

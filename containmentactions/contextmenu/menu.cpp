@@ -57,6 +57,7 @@ Menu::~Menu()
     m_switchLayoutsMenu->deleteLater();
     m_layoutsAction->deleteLater();
     m_preferenceAction->deleteLater();
+    m_quitApplication->deleteLater();
 }
 
 void Menu::makeActions()
@@ -90,6 +91,9 @@ void Menu::makeActions()
         // we should enable it
         m_configureAction->setEnabled(true);
     });
+
+    m_quitApplication = new QAction(QIcon::fromTheme("application-exit"), i18nc("quit application", "Quit &Latte"));
+    connect(m_quitApplication, &QAction::triggered, this, &Menu::quitApplication);
 
     m_switchLayoutsMenu = new QMenu;
     m_layoutsAction = m_switchLayoutsMenu->menuAction();
@@ -127,11 +131,12 @@ QList<QAction *> Menu::contextualActions()
     //actions << m_printAction;
     actions << m_layoutsAction;
     actions << m_preferenceAction;
+    actions << m_quitApplication;
 
     actions << m_separator2;
     actions << m_addWidgetsAction;
-    actions << m_configureAction;
-    
+    actions << m_configureAction;    
+
     m_data.clear();
     QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
@@ -169,6 +174,8 @@ QAction *Menu::action(const QString &name)
         return m_configureAction;
     } else if (name == "layouts") {
         return m_layoutsAction;
+    } else if (name == "quit application") {
+        return m_quitApplication;
     }
 
     return nullptr;
@@ -241,6 +248,15 @@ void Menu::switchToLayout(QAction *action)
                 iface.call("switchToLayout", layout);
             }
         });
+    }
+}
+
+void Menu::quitApplication()
+{
+    QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
+
+    if (iface.isValid()) {
+        iface.call("quitApplication");
     }
 }
 

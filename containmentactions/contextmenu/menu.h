@@ -44,6 +44,7 @@ private Q_SLOTS:
     void makeActions();
     void populateLayouts();
     void requestConfiguration();
+    void quitApplication();
     void switchToLayout(QAction *action);
 
 
@@ -60,6 +61,7 @@ private:
     QAction *m_printAction{nullptr};
     QAction *m_layoutsAction{nullptr};
     QAction *m_preferenceAction{nullptr};
+    QAction *m_quitApplication{nullptr};
 
     QMenu *m_switchLayoutsMenu{nullptr};
 };
