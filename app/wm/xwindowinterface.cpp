@@ -51,8 +51,9 @@ XWindowInterface::XWindowInterface(QObject *parent)
     m_currentDesktop = QString(KWindowSystem::self()->currentDesktop());
 
     connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AbstractWindowInterface::activeWindowChanged);
-    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &AbstractWindowInterface::windowAdded);
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &AbstractWindowInterface::windowRemoved);
+
+    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &XWindowInterface::windowAddedProxy);
 
     connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged, this, [&](int desktop) {
         m_currentDesktop = QString(desktop);
@@ -66,8 +67,7 @@ XWindowInterface::XWindowInterface(QObject *parent)
 
 
     for(auto wid : KWindowSystem::self()->windows()) {
-        emit windowAdded(wid);
-        windowChangedProxy(wid,0,0);
+        windowAddedProxy(wid);
     }
 }
 
@@ -681,7 +681,7 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
     return !(isMenu || isDock);
 }
 
-void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
+bool XWindowInterface::isAcceptableWindow(WId wid)
 {
     const KWindowInfo info(wid, NET::WMGeometry, NET::WM2WindowClass);
 
@@ -689,20 +689,39 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
 
     //! ignored windows do not trackd
     if (m_ignoredWindows.contains(wid) || m_plasmaIgnoredWindows.contains(wid)) {
-        return;
+        return false;
     }
 
     if (winClass == QLatin1String("plasmashell")) {
         if (isPlasmaPanel(info.geometry()) || isFullScreenWindow(wid)) {
             registerPlasmaIgnoredWindow(wid);
-            return;
+            return false;
         }
     } else if ((winClass == QLatin1String("latte-dock"))
                || (winClass == QLatin1String("ksmserver"))) {
         if (isFullScreenWindow(wid)) {
             registerPlasmaIgnoredWindow(wid);
-            return;
+            return false;
         }
+    }
+
+    return true;
+}
+
+void XWindowInterface::windowAddedProxy(WId wid)
+{
+    if (!isAcceptableWindow(wid)) {
+        return;
+    }
+
+    emit windowAdded(wid);
+    considerWindowChanged(wid);
+}
+
+void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
+{
+    if (!isAcceptableWindow(wid)) {
+        return;
     }
 
     //! accept only NET::Properties events,

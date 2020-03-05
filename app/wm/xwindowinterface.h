@@ -86,6 +86,8 @@ private:
     bool isValidWindow(const KWindowInfo &winfo) const;
     bool isFullScreenWindow(WindowId wid) const;
 
+    bool isAcceptableWindow(WId wid);
+    void windowAddedProxy(WId wid);
     void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
 
     QUrl windowUrl(WindowId wid) const;
