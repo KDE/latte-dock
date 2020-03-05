@@ -725,8 +725,8 @@ PlasmaComponents.Page {
                     LatteComponents.CheckBox {
                         id: titleTooltipsChk
                         Layout.maximumWidth: dialog.optionsWidth
-                        text: i18n("Show title tooltips on hovering")
-                        tooltip: i18n("Show thinner tooltips produced by Latte for items.\nThese tooltips are not drawn when applets zoom effect is disabled");
+                        text: i18n("Thin title tooltips on hovering")
+                        tooltip: i18n("Show narrow tooltips produced by Latte for items.\nThese tooltips are not drawn when applets zoom effect is disabled");
                         checked: plasmoid.configuration.titleTooltips
                         //enabled: plasmoid.configuration.zoomLevel > 0
 
