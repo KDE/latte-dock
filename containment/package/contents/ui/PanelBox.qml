@@ -460,23 +460,34 @@ Item{
                 if (!latteView)
                     return;
 
-                if (latteView.visibility.isHidden) {
-                    efGeometry.x = 0;
-                    efGeometry.y = 0;
-                    efGeometry.width = 0;
-                    efGeometry.height = 0;
-                } else {
-                    if (!root.behaveAsPlasmaPanel) {
-                        var rootGeometry = mapToItem(root, 0, 0);
-                        efGeometry.x = rootGeometry.x;
-                        efGeometry.y = rootGeometry.y;
-                    } else {
-                        efGeometry.x = 0;
-                        efGeometry.y = 0;
-                    }
-
+                if (!Latte.WindowSystem.compositingActive) {
+                    //! NOCOMPOSITING mode is a special case and Effects Area is also used for
+                    //! different calculations for View::mask()
+                    var rootGeometry = mapToItem(root, 0, 0);
+                    efGeometry.x = rootGeometry.x;
+                    efGeometry.y = rootGeometry.y;
                     efGeometry.width = width;
                     efGeometry.height = height;
+                } else {
+                    if (latteView.visibility.isHidden) {
+                        //! valid hide mask
+                        efGeometry.x = -1;
+                        efGeometry.y = -1;
+                        efGeometry.width = 1;
+                        efGeometry.height = 1;
+                    } else {
+                        if (!root.behaveAsPlasmaPanel) {
+                            var rootGeometry = mapToItem(root, 0, 0);
+                            efGeometry.x = rootGeometry.x;
+                            efGeometry.y = rootGeometry.y;
+                        } else {
+                            efGeometry.x = 0;
+                            efGeometry.y = 0;
+                        }
+
+                        efGeometry.width = width;
+                        efGeometry.height = height;
+                    }
                 }
 
                 latteView.effects.rect = efGeometry;
