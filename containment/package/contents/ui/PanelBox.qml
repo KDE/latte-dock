@@ -426,9 +426,7 @@ Item{
                 target: root
 
                 onEditModeChanged: {
-                    if (!root.editMode){
-                        solidBackground.updateEffectsArea();
-                    }
+                    solidBackground.updateEffectsArea();
                 }
             }
 
@@ -476,7 +474,7 @@ Item{
                         efGeometry.width = 1;
                         efGeometry.height = 1;
                     } else {
-                        if (!root.behaveAsPlasmaPanel) {
+                        if (!root.behaveAsPlasmaPanel || root.editMode) {
                             var rootGeometry = mapToItem(root, 0, 0);
                             efGeometry.x = rootGeometry.x;
                             efGeometry.y = rootGeometry.y;

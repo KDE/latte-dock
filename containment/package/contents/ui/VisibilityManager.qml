@@ -238,10 +238,11 @@ Item{
         target: latteView && latteView.effects ? latteView.effects : null
         property: "drawEffects"
         when: latteView && latteView.effects
-        value: Latte.WindowSystem.compositingActive &&
-               (((root.blurEnabled && root.useThemePanel)
-                 || (root.blurEnabled && root.forceSolidPanel && Latte.WindowSystem.compositingActive))
-                && (!root.inStartup || inForceHiding || inTempHiding))
+        value: Latte.WindowSystem.compositingActive
+               && !root.inConfigureAppletsMode
+               && (((root.blurEnabled && root.useThemePanel)
+                    || (root.blurEnabled && root.forceSolidPanel && Latte.WindowSystem.compositingActive))
+                   && (!root.inStartup || inForceHiding || inTempHiding))
     }
 
     Binding{

@@ -50,6 +50,7 @@ void Effects::init()
 {
     connect(this, &Effects::backgroundOpacityChanged, this, &Effects::updateEffects);
     connect(this, &Effects::drawEffectsChanged, this, &Effects::updateEffects);
+    connect(this, &Effects::enabledBordersChanged, this, &Effects::updateEffects);
     connect(this, &Effects::rectChanged, this, &Effects::updateEffects);
     connect(this, &Effects::settingsMaskSubtractedChanged, this, &Effects::updateMask);
 
@@ -420,7 +421,14 @@ void Effects::updateEffects()
 
                 m_background->setEnabledBorders(m_enabledBorders);
                 m_background->resizeFrame(m_rect.size());
-                QRegion fixedMask = m_background->mask();
+
+                QRegion backMask = m_background->mask();
+
+                //! There are cases that mask is NULL even though it should not
+                //! Example: SideBar from v0.10 that BEHAVEASPLASMAPANEL in EditMode
+                //! switching multiple times between inConfigureAppletsMode and LiveEditMode
+                //! is such a case
+                QRegion fixedMask = backMask.isNull() ? m_rect : backMask;
                 fixedMask.translate(m_rect.x(), m_rect.y());
 
                 if (!fixedMask.isEmpty()) {
