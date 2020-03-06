@@ -22,6 +22,7 @@
 #define XWINDOWINTERFACE_H
 
 // local
+#include <config-latte.h>
 #include "abstractwindowinterface.h"
 #include "windowinfowrap.h"
 
@@ -85,6 +86,10 @@ private:
     bool isValidWindow(WindowId wid) const;
     bool isValidWindow(const KWindowInfo &winfo) const;
     bool isFullScreenWindow(WindowId wid) const;
+
+#if KF5_VERSION_MINOR >= 65
+    QRect visibleGeometry(const WindowId &wid, const QRect &frameGeometry) const;
+#endif
 
     bool isAcceptableWindow(WId wid);
     void windowAddedProxy(WId wid);

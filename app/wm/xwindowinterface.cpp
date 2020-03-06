@@ -332,6 +332,23 @@ void XWindowInterface::setActiveEdge(QWindow *view, bool active) const
     xcb_change_property(c, XCB_PROP_MODE_REPLACE, window->winId(), atom->atom, XCB_ATOM_CARDINAL, 32, 1, &value);
 }
 
+#if KF5_VERSION_MINOR >= 65
+QRect XWindowInterface::visibleGeometry(const WindowId &wid, const QRect &frameGeometry) const
+{
+
+    NETWinInfo ni(QX11Info::connection(), wid.toUInt(), QX11Info::appRootWindow(), 0, NET::WM2GTKFrameExtents);
+    NETStrut struts = ni.gtkFrameExtents();
+    QMargins margins(struts.left, struts.top, struts.right, struts.bottom);
+    QRect visibleGeometry = frameGeometry;
+
+    if (!margins.isNull()) {
+        visibleGeometry -= margins;
+    }
+
+    return visibleGeometry;
+}
+#endif
+
 WindowInfoWrap XWindowInterface::requestInfoActive() const
 {
     return requestInfo(KWindowSystem::activeWindow());
@@ -367,7 +384,11 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsShaded(winfo.hasState(NET::Shaded));
         winfoWrap.setIsOnAllDesktops(winfo.onAllDesktops());
         winfoWrap.setIsOnAllActivities(winfo.activities().empty());
+#if KF5_VERSION_MINOR >= 65
+        winfoWrap.setGeometry(visibleGeometry(wid, winfo.frameGeometry()));
+#else
         winfoWrap.setGeometry(winfo.frameGeometry());
+#endif
         winfoWrap.setIsKeepAbove(winfo.hasState(NET::KeepAbove));
         winfoWrap.setIsKeepBelow(winfo.hasState(NET::KeepBelow));
         winfoWrap.setHasSkipTaskbar(winfo.hasState(NET::SkipTaskbar));
