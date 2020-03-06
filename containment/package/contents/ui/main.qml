@@ -75,6 +75,12 @@ Item {
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: {
+        if (!Latte.WindowSystem.compositingActive) {
+            //! In NOCOMPOSITING mode VIEWS should behave as real windows and that way
+            //! we gain also the snapping features from KWin
+            return true;
+        }
+
         if (!latteView || !latteView.visibility) {
             return false;
         }
@@ -571,7 +577,7 @@ Item {
     }
 
     property real animationsZoomFactor : {
-        if (!animationsEnabled) {
+        if (!animationsEnabled || !Latte.WindowSystem.compositingActive) {
             return 1;
         }
 
