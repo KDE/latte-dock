@@ -416,8 +416,10 @@ void Positioner::syncGeometry()
             auto latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
             int fixedScreen = m_view->onPrimary() ? latteCorona->screenPool()->primaryScreenId() : m_view->containment()->screen();
 
-            QList<Types::Visibility> ignoreModes({Latte::Types::AutoHide,
-                                                  Latte::Types::SideBar});
+            QList<Types::Visibility> ignoreModes({Latte::Types::None,
+                                                  Latte::Types::AutoHide,
+                                                  Latte::Types::SideBar,
+                                                  Latte::Types::NormalWindow});
 
             QList<Plasma::Types::Location> ignoreEdges({Plasma::Types::LeftEdge,
                                                         Plasma::Types::RightEdge});

@@ -175,6 +175,7 @@ private:
 
     //! Accept only ALWAYSVISIBLE visibility mode
     QList<Latte::Types::Visibility> m_ignoreModes{
+        Latte::Types::None,
         Latte::Types::AutoHide,
         Latte::Types::DodgeActive,
         Latte::Types::DodgeMaximized,
@@ -182,7 +183,8 @@ private:
         Latte::Types::WindowsGoBelow,
         Latte::Types::WindowsCanCover,
         Latte::Types::WindowsAlwaysCover,
-        Latte::Types::SideBar
+        Latte::Types::SideBar,
+        Latte::Types::NormalWindow
     };
 
     QMap<WindowId, WindowInfoWrap> m_windows;
