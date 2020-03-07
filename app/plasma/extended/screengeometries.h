@@ -64,10 +64,8 @@ private:
     Latte::Corona *m_corona{nullptr};
 
     QList<Latte::Types::Visibility> m_ignoreModes{
-        Latte::Types::None,
         Latte::Types::AutoHide,
-        Latte::Types::SideBar,
-        Latte::Types::NormalWindow
+        Latte::Types::SideBar
     };
 
     QStringList m_lastScreenNames;

@@ -895,10 +895,22 @@ void GenericLayout::toggleHiddenState(QString screenName, Plasma::Types::Locatio
         validScreenName = screenName;
     }
 
+    int viewsOnEdge{0};
+
     for(const auto view : latteViews()) {
         if (view->positioner()->currentScreenName() == validScreenName && view->location() == edge) {
-            view->visibility()->toggleHiddenState();
-            return;
+            viewsOnEdge++;
+        }
+    }
+
+    if (viewsOnEdge >= 1) {
+        for(const auto view : latteViews()) {
+            if (view->positioner()->currentScreenName() == validScreenName && view->location() == edge) {
+                if (viewsOnEdge == 1 || (viewsOnEdge >1 && view->visibility() && view->visibility()->mode() == Latte::Types::SideBar)) {
+                    view->visibility()->toggleHiddenState();
+                    return;
+                }
+            }
         }
     }
 }

@@ -231,7 +231,14 @@ void PrimaryConfigView::deleteSecondaryWindow()
 void PrimaryConfigView::updateAvailableScreenGeometry(View *origin)
 {    
     int currentScrId = m_latteView->positioner()->currentScreenId();
-    m_availableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, QString(), {}, {}, false);
+
+    QList<Latte::Types::Visibility> ignoreModes{Latte::Types::SideBar};
+
+    if (m_latteView->visibility() && m_latteView->visibility()->mode() == Latte::Types::SideBar) {
+        ignoreModes.removeAll(Latte::Types::SideBar);
+    }
+
+    m_availableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, QString(), ignoreModes, {}, false);
 
     emit availableScreenGeometryChanged();
 }
