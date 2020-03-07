@@ -109,19 +109,19 @@ public:
 
     //! This is a very generic function in order to return the availableScreenRect of specific screen
     //! by calculating only the user specified visibility modes and edges. Empty QLists for both
-    //! arguments mean that all choices are accepted in calculations. includeExternalPanels means that
-    //! external panels should be considered in the calculations
+    //! arguments mean that all choices are accepted in calculations. ignoreExternalPanels means that
+    //! external panels should be not considered in the calculations
     QRect availableScreenRectWithCriteria(int id,
                                           QString forLayout = QString(),
                                           QList<Types::Visibility> ignoreModes = QList<Types::Visibility>(),
                                           QList<Plasma::Types::Location> ignoreEdges = QList<Plasma::Types::Location>(),
-                                          bool includeExternalPanels = false) const;
+                                          bool ignoreExternalPanels = true) const;
 
     QRegion availableScreenRegionWithCriteria(int id,
                                               QString forLayout = QString(),
                                               QList<Types::Visibility> ignoreModes = QList<Types::Visibility>(),
                                               QList<Plasma::Types::Location> ignoreEdges = QList<Plasma::Types::Location>(),
-                                              bool includeExternalPanels = false) const;
+                                              bool ignoreExternalPanels = true) const;
 
     int screenForContainment(const Plasma::Containment *containment) const override;
 
