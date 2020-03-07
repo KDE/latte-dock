@@ -423,7 +423,7 @@ PlasmaComponents.Page {
                                || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ? -20 :  0
                         to: ((plasmoid.configuration.panelPosition === Latte.Types.Center)
                              || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ? 20 :  40
-                        stepSize: 2
+                        stepSize: 1
                         wheelEnabled: false
 
                         function updateOffset() {
@@ -596,7 +596,7 @@ PlasmaComponents.Page {
 
                         value: plasmoid.configuration.screenEdgeMargin
                         from: -1
-                        to: 150
+                        to: 256
                         stepSize: 1
                         wheelEnabled: false
 
