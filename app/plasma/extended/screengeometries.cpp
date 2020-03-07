@@ -124,29 +124,13 @@ void ScreenGeometries::updateGeometries()
 
             if (!m_lastAvailableRect.contains(scrName) || m_lastAvailableRect[scrName] != availableRect) {
                 m_lastAvailableRect[scrName] = availableRect;
-
-                QList<QVariant> args;
-                args << LATTESERVICE;
-                args << scrName;
-                args << availableRect;
-
-                plasmaStrutsIface.callWithArgumentList(QDBus::NoBlock, "setAvailableScreenRect", args);
+                plasmaStrutsIface.call("setAvailableScreenRect", LATTESERVICE, scrName, availableRect);
                 qDebug() << " PLASMA SCREEN GEOMETRIES AVAILABLE RECT :: " << screen->name() << " : " << availableRect;
             }
 
             if (!m_lastAvailableRegion.contains(scrName) || m_lastAvailableRegion[scrName] != availableRegion) {
                 m_lastAvailableRegion[scrName] = availableRegion;
-
-                QList<QVariant> args;
-                args << LATTESERVICE;
-                args << scrName;
-
-                //! transform QRegion to QList<QRect> in order to send through dbus
-                for(QRect subrect : availableRegion) {
-                    args << subrect;
-                }
-
-                plasmaStrutsIface.callWithArgumentList(QDBus::NoBlock, "setAvailableScreenRegion", args);
+                plasmaStrutsIface.call("setAvailableScreenRegion", LATTESERVICE, scrName, availableRegion);
                 qDebug() << " PLASMA SCREEN GEOMETRIES AVAILABLE REGION :: " << screen->name() << " : " << availableRegion;
             }
         }
