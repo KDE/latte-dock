@@ -954,7 +954,7 @@ void Synchronizer::syncActiveShares(SharesMap &sharesMap, QStringList &deprecate
                     central->setSharedLayout(shared);
                     if (oldShared) {
                         //! CENTRAL layout that changed from one ACTIVESHARED layout to another
-                        unassign[central] = shared;
+                        unassign[central] = oldShared;
                     }
                 }
             } else {
@@ -981,6 +981,7 @@ void Synchronizer::syncActiveShares(SharesMap &sharesMap, QStringList &deprecate
     //! IMPORTANT: This must be done after all the ASSIGNMENTS in order to avoid
     //! to unload a SharedLayout that it should not
     for (QHash<CentralLayout *, SharedLayout *>::iterator i=unassign.begin(); i!=unassign.end(); ++i) {
+        qDebug() << " REMOVING CENTRAL :: " << i.key()->name() << " FROM :: " << i.value()->name();
         i.value()->removeCentralLayout(i.key());
     }
 }
