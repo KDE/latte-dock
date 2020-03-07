@@ -368,6 +368,10 @@ private:
 
     QStringList m_activities;
 
+    //! HACK: In order to avoid crashes when the View is added and removed
+    //! immediately during startup
+    QTimer m_initLayoutTimer;
+
     //! HACK: Timers in order to handle KWin faulty
     //! behavior that hides Views when closing Activities
     //! with no actual reason

@@ -111,6 +111,11 @@ void Positioner::init()
     connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::updateInLocationAnimation);
     connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::updateInLocationAnimation);
 
+    connect(this, &Positioner::showDockAfterLocationChangeFinished, this, &Positioner::syncLatteViews);
+    connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::syncLatteViews);
+    connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::syncLatteViews);
+    connect(m_view, &Latte::View::onPrimaryChanged, this, &Positioner::syncLatteViews);
+
     connect(this, &Positioner::isStickedOnTopEdgeChanged, this, [&]() {
         if (m_view->formFactor() == Plasma::Types::Vertical) {
             syncGeometry();
@@ -222,6 +227,22 @@ QString Positioner::currentScreenName() const
     return m_screenToFollowId;
 }
 
+void Positioner::syncLatteViews()
+{
+    if (m_view->layout()) {
+        //! This is needed in case the edge there are views that must be deleted
+        //! after screen edges changes
+        m_view->layout()->syncLatteViewsToScreens();
+    }
+}
+
+void Positioner::updateContainmentScreen()
+{
+    if (m_view->containment()) {
+        m_view->containment()->reactToScreenChange();
+    }
+}
+
 bool Positioner::setCurrentScreen(const QString id)
 {
     QScreen *nextScreen{qGuiApp->primaryScreen()};
@@ -236,24 +257,19 @@ bool Positioner::setCurrentScreen(const QString id)
     }
 
     if (m_screenToFollow == nextScreen) {
+        updateContainmentScreen();
         return true;
     }
 
     if (nextScreen) {
         if (m_view->layout()) {
-            auto freeEdges = m_view->layout()->freeEdges(nextScreen);
+            m_goToScreen = nextScreen;
 
-            if (!freeEdges.contains(m_view->location())) {
-                return false;
-            } else {
-                m_goToScreen = nextScreen;
-
-                //! asynchronous call in order to not crash from configwindow
-                //! deletion from sliding out animation
-                QTimer::singleShot(100, [this]() {
-                    emit hideDockDuringScreenChangeStarted();
-                });
-            }
+            //! asynchronous call in order to not crash from configwindow
+            //! deletion from sliding out animation
+            QTimer::singleShot(100, [this]() {
+                emit hideDockDuringScreenChangeStarted();
+            });
         }
     }
 
@@ -285,9 +301,7 @@ void Positioner::setScreenToFollow(QScreen *scr, bool updateScreenId)
     qDebug() << "adapting to screen...";
     m_view->setScreen(scr);
 
-    if (m_view->containment()) {
-        m_view->containment()->reactToScreenChange();
-    }
+    updateContainmentScreen();
 
     connect(scr, &QScreen::geometryChanged, this, &Positioner::screenGeometryChanged);
     syncGeometry();
@@ -329,22 +343,9 @@ void Positioner::reconsiderScreen()
     if (m_view->onPrimary() && (m_screenToFollowId != qGuiApp->primaryScreen()->name()
                                 || m_screenToFollow != qGuiApp->primaryScreen()
                                 || m_view->screen() != qGuiApp->primaryScreen())) {
-        using Plasma::Types;
-        QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                    Types::TopEdge, Types::RightEdge};
-
-        edges = m_view->layout() ? m_view->layout()->availableEdgesForView(qGuiApp->primaryScreen(), m_view) : edges;
-
-        //change to primary screen only if the specific edge is free
-        qDebug() << "updating the primary screen for dock...";
-        qDebug() << "available primary screen edges:" << edges;
-        qDebug() << "dock location:" << m_view->location();
-
-        if (edges.contains(m_view->location())) {
-            //! case 1
-            qDebug() << "reached case 1: of updating dock primary screen...";
-            setScreenToFollow(qGuiApp->primaryScreen());
-        }
+        //! case 1
+        qDebug() << "reached case 1: of updating dock primary screen...";
+        setScreenToFollow(qGuiApp->primaryScreen());
     } else if (!m_view->onPrimary()) {
         //! 2.an explicit dock must be always on the correct associated screen
         //! there are cases that window manager misplaces the dock, this function
@@ -738,13 +739,6 @@ void Positioner::initSignalingForLocationChangeSliding()
                 m_view->effects()->setAnimationsBlocked(false);
                 emit showDockAfterLocationChangeFinished();
                 m_view->showSettingsWindow();
-
-                if (m_view->layout()) {
-                    //! This is needed in case the edge is occupied and the occupying
-                    //! view must be deleted
-                    m_view->layout()->syncLatteViewsToScreens();
-                }
-
                 emit edgeChanged();
             });
         }
@@ -760,13 +754,6 @@ void Positioner::initSignalingForLocationChangeSliding()
                 m_view->effects()->setAnimationsBlocked(false);
                 emit showDockAfterScreenChangeFinished();
                 m_view->showSettingsWindow();
-
-                if (m_view->layout()) {
-                    //! This is needed in case the edge is occupied and the occupying
-                    //! view must be deleted
-                    m_view->layout()->syncLatteViewsToScreens();
-                }
-
                 emit edgeChanged();
             });
         }

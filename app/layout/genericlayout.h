@@ -66,7 +66,7 @@ struct ViewData
 
 //! This is  views map in the following structure:
 //! SCREEN_NAME -> EDGE -> VIEWID
-typedef QHash<QString, QHash<Plasma::Types::Location, uint>> ViewsMap;
+typedef QHash<QString, QHash<Plasma::Types::Location, QList<uint>>> ViewsMap;
 
 class GenericLayout : public AbstractLayout
 {

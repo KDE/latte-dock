@@ -74,7 +74,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     //! and avoid a crash from View::winId() at the same time
     m_positioner = new ViewPart::Positioner(this);
 
-   // setTitle(corona->kPackage().metadata().name());
+    // setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setColor(QColor(Qt::transparent));
@@ -305,15 +305,13 @@ bool View::inDelete() const
 
 void View::disconnectSensitiveSignals()
 {
+    m_initLayoutTimer.stop();
+
     disconnect(this, &View::availableScreenRectChangedFrom, m_corona, &Latte::Corona::availableScreenRectChangedFrom);
     disconnect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
     disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFromSlot);
 
     setLayout(nullptr);
-
-    if (m_windowsTracker) {
-      //  m_windowsTracker->setEnabled(false);
-    }
 }
 
 void View::availableScreenRectChangedFromSlot(View *origin)
@@ -978,7 +976,9 @@ void View::setLayout(Layout::GenericLayout *layout)
 
         //! Sometimes the activity isnt completely ready, by adding a delay
         //! we try to catch up
-        QTimer::singleShot(100, [this]() {
+        m_initLayoutTimer.setInterval(100);
+        m_initLayoutTimer.setSingleShot(true);
+        connectionsLayout << connect(&m_initLayoutTimer, &QTimer::timeout, this, [&]() {
             if (m_layout && m_visibility) {
                 m_activities = m_layout->appliedActivities();
                 qDebug() << "DOCK VIEW FROM LAYOUT ::: " << m_layout->name() << " - activities: " << m_activities;
@@ -986,6 +986,7 @@ void View::setLayout(Layout::GenericLayout *layout)
                 emit activitiesChanged();
             }
         });
+        m_initLayoutTimer.start();
 
         connectionsLayout << connect(m_layout, &Layout::GenericLayout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
         connectionsLayout << connect(m_layout, &Layout::GenericLayout::lastConfigViewForChanged, this, &View::configViewCreatedFor);
@@ -1035,7 +1036,7 @@ void View::setLayout(Layout::GenericLayout *layout)
                 }
             });
 
-            connectionsLayout << connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {               
+            connectionsLayout << connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
                 applyActivitiesToWindows();
                 emit activitiesChanged();
 
@@ -1043,7 +1044,7 @@ void View::setLayout(Layout::GenericLayout *layout)
                     show();
                     //qDebug() << "View:: Enforce reshow from timer 1...";
                     emit forcedShown();
-                } else {                   
+                } else {
                     //qDebug() << "View:: No needed reshow from timer 1...";
                 }
             });
@@ -1275,7 +1276,7 @@ bool View::event(QEvent *e)
                 emit mouseReleased(mouseEvent->pos(), mouseEvent->button());
             }
             break;
-       /* case QEvent::DragMove:
+            /* case QEvent::DragMove:
             qDebug() << "DRAG MOVING>>>>>>";
             break;*/
         case QEvent::PlatformSurface:

@@ -87,15 +87,12 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 3
                 spacing: 2
-                visible: true
+                visible: screensCount > 1 || dialog.expertLevel
+
+                property int screensCount: 1
 
                 function updateScreens() {
-                    if (universalSettings.screens.length > 1) {
-                        screenRow.visible = true;
-                    } else {
-                        screenRow.visible = false;
-                    }
-
+                    screensCount = universalSettings.screens.length;
                     screensModel.clear();
 
                     var primary = {name: i18n("On Primary"), icon: 'favorites'};
@@ -198,23 +195,6 @@ PlasmaComponents.Page {
 
                 readonly property int buttonSize: (dialog.optionsWidth - (spacing * 3)) / 4
 
-                Connections{
-                    target: latteView
-                    onDockLocationChanged: locationLayout.lockReservedEdges();
-                }
-
-                Connections{
-                    target: latteView.layout
-                    onViewsCountChanged: locationLayout.lockReservedEdges();
-                }
-
-                Connections{
-                    target: latteView.positioner
-                    onCurrentScreenChanged: locationLayout.lockReservedEdges();
-                }
-
-                Component.onCompleted: lockReservedEdges()
-
                 ExclusiveGroup {
                     id: locationGroup
                     property bool inStartup: true
@@ -227,15 +207,6 @@ PlasmaComponents.Page {
                     }
                 }
 
-                function lockReservedEdges() {
-                    var edges = latteView.layout.qmlFreeEdges(latteView.positioner.currentScreenId);
-
-                    bottomEdgeBtn.edgeIsFree = (edges.indexOf(bottomEdgeBtn.edge)>=0);
-                    topEdgeBtn.edgeIsFree = (edges.indexOf(topEdgeBtn.edge)>=0);
-                    leftEdgeBtn.edgeIsFree = (edges.indexOf(leftEdgeBtn.edge)>=0);
-                    rightEdgeBtn.edgeIsFree = (edges.indexOf(rightEdgeBtn.edge)>=0);
-                }
-
                 PlasmaComponents.Button {
                     id: bottomEdgeBtn
                     Layout.minimumWidth: parent.buttonSize
@@ -244,10 +215,8 @@ PlasmaComponents.Page {
                     iconSource: "arrow-down"
                     checked: latteView.location === edge
                     checkable: true
-                    enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
 
-                    property bool edgeIsFree: true
                     readonly property int edge: PlasmaCore.Types.BottomEdge
                 }
                 PlasmaComponents.Button {
@@ -258,10 +227,8 @@ PlasmaComponents.Page {
                     iconSource: "arrow-left"
                     checked: latteView.location === edge
                     checkable: true
-                    enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
 
-                    property bool edgeIsFree: true
                     readonly property int edge: PlasmaCore.Types.LeftEdge
                 }
                 PlasmaComponents.Button {
@@ -272,10 +239,8 @@ PlasmaComponents.Page {
                     iconSource: "arrow-up"
                     checked: latteView.location === edge
                     checkable: true
-                    enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
 
-                    property bool edgeIsFree: true
                     readonly property int edge: PlasmaCore.Types.TopEdge
                 }
                 PlasmaComponents.Button {
@@ -286,10 +251,8 @@ PlasmaComponents.Page {
                     iconSource: "arrow-right"
                     checked: latteView.location === edge
                     checkable: true
-                    enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
 
-                    property bool edgeIsFree: true
                     readonly property int edge: PlasmaCore.Types.RightEdge
                 }
             }

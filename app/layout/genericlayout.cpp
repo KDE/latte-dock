@@ -822,9 +822,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     if (id >= 0 && onPrimary) {
         qDebug() << "add dock - connector : " << connector;
 
-        for (const auto view : m_latteViews) {
-            auto testContainment = view->containment();
-
+        for (const Plasma::Containment *testContainment : m_latteViews.keys()) {
             int testScreenId = testContainment->screen();
 
             if (testScreenId == -1) {
@@ -1131,7 +1129,14 @@ bool GenericLayout::primaryDockOccupyEdge(Plasma::Types::Location location) cons
 
     for (const auto containment : m_containments) {
         if (m_storage->isLatteContainment(containment)) {
-            bool onPrimary = containment->config().readEntry("onPrimary", true);
+            bool onPrimary{false};
+
+            if (m_latteViews.contains(containment)) {
+                onPrimary = m_latteViews[containment]->onPrimary();
+            } else {
+                onPrimary = containment->config().readEntry("onPrimary", true);
+            }
+
             Plasma::Types::Location contLocation = containment->location();
 
             if (onPrimary && contLocation == location) {
@@ -1147,7 +1152,7 @@ bool GenericLayout::mapContainsId(const Layout::ViewsMap *map, uint viewId) cons
 {
     for(const auto &scr : map->keys()) {
         for(const auto &edge : (*map)[scr].keys()) {
-            if ((*map)[scr][edge] == viewId) {
+            if ((*map)[scr][edge].contains(viewId)) {
                 return true;
             }
         }
@@ -1159,6 +1164,9 @@ bool GenericLayout::mapContainsId(const Layout::ViewsMap *map, uint viewId) cons
 //! screen name, location, containmentId
 Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
 {
+    //! Shared Views occupy the screen edge first
+    //! Primary Views occupy the screen edge if Shared Views do not exist already on that screen edge
+    //! Explicity Views occypy the screen edge if Shared Views and Primary Views do not exist already on that screen edge
     Layout::ViewsMap map;
 
     if (!m_corona) {
@@ -1199,11 +1207,13 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
             //! valid location
             Plasma::Types::Location location = containment->location();
 
-            if (onPrimary && !map[prmScreenName].contains(location)) {
-                map[prmScreenName][location] = containment->id();
+            if (onPrimary && (!occupiedMap || !(*occupiedMap)[prmScreenName].contains(location))) {
+                map[prmScreenName][location] << containment->id();
             }
         }
     }
+
+    Layout::ViewsMap explicitMap;
 
     //! second step: explicit docks must be placed in their screens if the screen edge is free
     for (const auto containment : m_containments) {
@@ -1237,9 +1247,15 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
                 QString expScreenName = m_corona->screenPool()->connector(screenId);
 
                 if (m_corona->screenPool()->screenExists(screenId) && !map[expScreenName].contains(location)) {
-                    map[expScreenName][location] = containment->id();
+                    explicitMap[expScreenName][location] << containment->id();
                 }
             }
+        }
+    }
+
+    for(const QString &expScreenName : explicitMap.keys()) {
+        for(const Plasma::Types::Location &expLocation : explicitMap[expScreenName].keys()) {
+            map[expScreenName][expLocation] << explicitMap[expScreenName][expLocation];
         }
     }
 

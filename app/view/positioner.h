@@ -125,6 +125,8 @@ private slots:
     void validateDockGeometry();
     void updateInLocationAnimation();
     void updateWaylandId();
+    void syncLatteViews();
+    void updateContainmentScreen();
 
 private:
     void init();
