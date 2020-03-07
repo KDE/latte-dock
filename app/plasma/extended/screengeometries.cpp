@@ -43,6 +43,8 @@ ScreenGeometries::ScreenGeometries(Latte::Corona *parent)
     : QObject(parent),
       m_corona(parent)
 {
+    qDBusRegisterMetaType<QList<QRect>>();
+
     m_startupInitTimer.setInterval(5000);
     m_startupInitTimer.setSingleShot(true);
     connect(&m_startupInitTimer, &QTimer::timeout, this, &ScreenGeometries::init);
@@ -130,7 +132,14 @@ void ScreenGeometries::updateGeometries()
 
             if (!m_lastAvailableRegion.contains(scrName) || m_lastAvailableRegion[scrName] != availableRegion) {
                 m_lastAvailableRegion[scrName] = availableRegion;
-                plasmaStrutsIface.call("setAvailableScreenRegion", LATTESERVICE, scrName, availableRegion);
+
+                //! transorm QRegion to QList<QRect> in order to be sent through dbus
+                QList<QRect> rects;
+                foreach (const QRect &rect, availableRegion) {
+                    rects << rect;
+                }
+
+                plasmaStrutsIface.call("setAvailableScreenRegion", LATTESERVICE, scrName, QVariant::fromValue(rects));
                 qDebug() << " PLASMA SCREEN GEOMETRIES AVAILABLE REGION :: " << screen->name() << " : " << availableRegion;
             }
         }
