@@ -22,6 +22,7 @@
 
 // local
 #include "../windowinfowrap.h"
+#include "../../../liblatte2/types.h"
 
 // Qt
 #include <QObject>
@@ -171,6 +172,18 @@ private:
     AbstractWindowInterface *m_wm;
     QHash<Latte::View *, TrackedViewInfo *> m_views;
     QHash<Latte::Layout::GenericLayout *, TrackedLayoutInfo *> m_layouts;
+
+    //! Accept only ALWAYSVISIBLE visibility mode
+    QList<Latte::Types::Visibility> m_ignoreModes{
+        Latte::Types::AutoHide,
+        Latte::Types::DodgeActive,
+        Latte::Types::DodgeMaximized,
+        Latte::Types::DodgeAllWindows,
+        Latte::Types::WindowsGoBelow,
+        Latte::Types::WindowsCanCover,
+        Latte::Types::WindowsAlwaysCover,
+        Latte::Types::SideBar
+    };
 
     QMap<WindowId, WindowInfoWrap> m_windows;
 

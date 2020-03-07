@@ -116,12 +116,12 @@ void ScreenGeometries::updateGeometries()
         if (m_corona->screenPool()->hasId(scrId)) {
             QRect availableRect = m_corona->availableScreenRectWithCriteria(scrId,
                                                                             QString(),
-                                                                            m_acceptedModes,
+                                                                            m_ignoreModes,
                                                                             QList<Plasma::Types::Location>());
 
             QRegion availableRegion = m_corona->availableScreenRegionWithCriteria(scrId,
                                                                                   QString(),
-                                                                                  m_acceptedModes,
+                                                                                  m_ignoreModes,
                                                                                   QList<Plasma::Types::Location>());
 
             if (!m_lastAvailableRect.contains(scrName) || m_lastAvailableRect[scrName] != availableRect) {

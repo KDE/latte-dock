@@ -530,8 +530,8 @@ QRegion Corona::availableScreenRegion(int id) const
 
 QRegion Corona::availableScreenRegionWithCriteria(int id,
                                                   QString forLayout,
-                                                  QList<Types::Visibility> modes,
-                                                  QList<Plasma::Types::Location> edges,
+                                                  QList<Types::Visibility> ignoreModes,
+                                                  QList<Plasma::Types::Location> ignoreEdges,
                                                   bool includeExternalPanels) const
 {
     const QScreen *screen = m_screenPool->screenForId(id);
@@ -547,14 +547,14 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
         return available;
     }
 
-    bool allModes = modes.isEmpty();
-    bool allEdges = edges.isEmpty();
+    bool allModes = ignoreModes.isEmpty();
+    bool allEdges = ignoreEdges.isEmpty();
     QList<Latte::View *> views = layout->latteViews();
 
     for (const auto *view : views) {
         if (view && view->containment() && view->screen() == screen
-                && ((allEdges || edges.contains(view->location()))
-                    && (allModes || (view->visibility() && modes.contains(view->visibility()->mode()))))) {
+                && ((allEdges || !ignoreEdges.contains(view->location()))
+                    && (allModes || (view->visibility() && !ignoreModes.contains(view->visibility()->mode()))))) {
             int realThickness = view->normalThickness();
 
             // Usually availableScreenRect is used by the desktop,
@@ -709,8 +709,8 @@ QRect Corona::availableScreenRect(int id) const
 
 QRect Corona::availableScreenRectWithCriteria(int id,
                                               QString forLayout,
-                                              QList<Types::Visibility> modes,
-                                              QList<Plasma::Types::Location> edges,
+                                              QList<Types::Visibility> ignoreModes,
+                                              QList<Plasma::Types::Location> ignoreEdges,
                                               bool includeExternalPanels) const
 {
     const QScreen *screen = m_screenPool->screenForId(id);
@@ -726,14 +726,14 @@ QRect Corona::availableScreenRectWithCriteria(int id,
         return available;
     }
 
-    bool allModes = modes.isEmpty();
-    bool allEdges = edges.isEmpty();
+    bool allModes = ignoreModes.isEmpty();
+    bool allEdges = ignoreEdges.isEmpty();
     QList<Latte::View *> views = layout->latteViews();
 
     for (const auto *view : views) {
         if (view && view->containment() && view->screen() == screen
-                && ((allEdges || edges.contains(view->location()))
-                    && (allModes || (view->visibility() && modes.contains(view->visibility()->mode()))))) {
+                && ((allEdges || !ignoreEdges.contains(view->location()))
+                    && (allModes || (view->visibility() && !ignoreModes.contains(view->visibility()->mode()))))) {
 
             // Usually availableScreenRect is used by the desktop,
             // but Latte don't have desktop, then here just

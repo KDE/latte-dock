@@ -415,30 +415,27 @@ void Positioner::syncGeometry()
             auto latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
             int fixedScreen = m_view->onPrimary() ? latteCorona->screenPool()->primaryScreenId() : m_view->containment()->screen();
 
-            QList<Types::Visibility> modes({Latte::Types::AlwaysVisible,
-                                            Latte::Types::DodgeActive,
-                                            Latte::Types::DodgeMaximized,
-                                            Latte::Types::DodgeAllWindows,
-                                            Latte::Types::WindowsGoBelow,
-                                            Latte::Types::WindowsCanCover,
-                                            Latte::Types::WindowsAlwaysCover});
+            QList<Types::Visibility> ignoreModes({Latte::Types::AutoHide,
+                                                  Latte::Types::SideBar});
 
-            QList<Plasma::Types::Location> edges;
+            QList<Plasma::Types::Location> ignoreEdges({Plasma::Types::LeftEdge,
+                                                        Plasma::Types::RightEdge});
 
             if (m_isStickedOnTopEdge && m_isStickedOnBottomEdge) {
                 //! dont send an empty edges array because that means include all screen edges in calculations
-                edges << Plasma::Types::Floating;
+                ignoreEdges << Plasma::Types::TopEdge;
+                ignoreEdges << Plasma::Types::BottomEdge;
             } else {
-                if (!m_isStickedOnTopEdge) {
-                    edges << Plasma::Types::TopEdge;
+                if (m_isStickedOnTopEdge) {
+                    ignoreEdges << Plasma::Types::TopEdge;
                 }
 
-                if (!m_isStickedOnBottomEdge) {
-                    edges << Plasma::Types::BottomEdge;
+                if (m_isStickedOnBottomEdge) {
+                    ignoreEdges << Plasma::Types::BottomEdge;
                 }
             }
 
-            freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, layoutName, modes, edges);
+            freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, layoutName, ignoreModes, ignoreEdges);
 
             maximumRect = maximumNormalGeometry();
             QRegion availableRegion = freeRegion.intersected(maximumRect);
