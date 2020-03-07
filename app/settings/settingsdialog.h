@@ -95,7 +95,9 @@ private slots:
     void on_exportButton_clicked();
 
     void accept() override;
-    void reject() override;
+
+    void ok();
+    void cancel();
     void apply();
     void restoreDefaults();
     void showLayoutInformation();

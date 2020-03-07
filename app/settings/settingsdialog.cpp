@@ -93,6 +93,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
             , this, &SettingsDialog::apply);
+    connect(ui->buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked
+            , this, &SettingsDialog::cancel);
+    connect(ui->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked
+            , this, &SettingsDialog::ok);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
             , this, &SettingsDialog::restoreDefaults);
 
@@ -823,21 +827,31 @@ void SettingsDialog::requestColorsDialog(int row)
     }
 }
 
-
 void SettingsDialog::accept()
 {
+    //! disable accept totally in order to avoid closing with ENTER key with no real reason
     qDebug() << Q_FUNC_INFO;
-
-    if (saveAllChanges()) {
-        deleteLater();
-    }
 }
 
-void SettingsDialog::reject()
+
+void SettingsDialog::cancel()
 {
     qDebug() << Q_FUNC_INFO;
 
     if (!m_blockDeleteOnReject) {
+        deleteLater();
+    }
+}
+
+void SettingsDialog::ok()
+{
+    if (!ui->buttonBox->button(QDialogButtonBox::Ok)->hasFocus()) {
+        return;
+    }
+
+    qDebug() << Q_FUNC_INFO;
+
+    if (saveAllChanges()) {
         deleteLater();
     }
 }
