@@ -36,6 +36,21 @@ void PersistentMenu::setVisible (bool visible)
   QMenu::setVisible (visible);
 }
 
+int PersistentMenu::masterIndex() const
+{
+    return m_masterIndex;
+}
+
+void PersistentMenu::setMasterIndex(const int &index)
+{
+    if (m_masterIndex == index) {
+        return;
+    }
+
+    m_masterIndex = index;
+    emit masterIndexChanged(index);
+}
+
 void PersistentMenu::mouseReleaseEvent (QMouseEvent *e)
 {
   const QAction *action = actionAt (e->pos ());

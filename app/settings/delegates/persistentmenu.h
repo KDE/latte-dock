@@ -30,12 +30,20 @@ class PersistentMenu : public QMenu
 public:
   PersistentMenu(QWidget *parent = nullptr);
 
+  int masterIndex() const;
+  void setMasterIndex(const int &index);
+
 protected:
   void setVisible (bool visible) override;
   void mouseReleaseEvent (QMouseEvent *e) override;
 
+signals:
+  void masterIndexChanged(const int &masterRow);
+
 private:
   bool m_blockHide{false};
+
+  int m_masterIndex{-1};
 
 };
 

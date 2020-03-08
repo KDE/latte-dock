@@ -61,8 +61,11 @@ public:
     void toggleCurrentPage();
     void setCurrentPage(int page);
 
-    void addActivityInCurrent(const QString &activityId);
-    void removeActivityFromCurrent(const QString &activityId);
+    void loadActivitiesInBuffer(const int &row);
+    void syncActivitiesFromBuffer(const int &row);
+    void addActivityInBuffer(const QString &activityId);
+    void removeActivityFromBuffer(const QString &activityId);
+
     void addShareInCurrent(const QString &layoutId);
     void removeShareFromCurrent(const QString &layoutId);
     void updateShareAt(const int &row, const QString &fromId, const QString &toId);
@@ -72,10 +75,17 @@ public:
     bool isShared(int row) const;
     bool isMenuCell(int column) const;
 
+    int currentFreeActiviesLayout() const;
+
     QString nameForId(QString id) const;
     QString idForRow(int row) const;
 
+    QString freeActivities_text() const;
+    QString freeActivities_icon() const;
+    QString freeActivities_id() const;
+
     QStringList activities();
+    QStringList activitiesList();
     QStringList availableActivities();
     QStringList availableSharesFor(int row);
 
@@ -123,6 +133,8 @@ private:
     void updateSharedLayoutsUiElements();
     void syncActiveShares();
 
+    void setCurrentFreeActivitiesLayout(const int &row);
+
     bool dataAreAccepted();
     bool idExistsInModel(QString id);
     bool importLayoutsFromV1ConfigFile(QString file);
@@ -140,10 +152,13 @@ private:
     QStringList currentLayoutsSettings();
 
 private:
+    int m_currentFreeActivitiesLayout{-1};
 
     QStringList m_availableActivities;
     QStringList m_tempDirectories;
     QStringList m_initLayoutPaths;
+
+    QStringList m_activitiesInBuffer;
 
     QButtonGroup *m_inMemoryButtons;
     QButtonGroup *m_mouseSensitivityButtons;

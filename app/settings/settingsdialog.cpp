@@ -64,6 +64,8 @@
 #include <KWindowSystem>
 #include <KNewStuff3/KNS3/DownloadDialog>
 
+#define FREEACTIVITIESID "{0000-0000}"
+
 namespace Latte {
 
 const int IDCOLUMN = 0;
@@ -332,6 +334,21 @@ void SettingsDialog::blockDeleteOnActivityStopped()
     });
 }
 
+QString SettingsDialog::freeActivities_text() const
+{
+    return QString("[ " + i18n("All Free Activities...") + " ]");
+}
+
+QString SettingsDialog::freeActivities_icon() const
+{
+    return "favorites";
+}
+
+QString SettingsDialog::freeActivities_id() const
+{
+    return FREEACTIVITIESID;
+}
+
 QStringList SettingsDialog::activities()
 {
     return m_corona->layoutsManager()->synchronizer()->activities();
@@ -340,6 +357,15 @@ QStringList SettingsDialog::activities()
 QStringList SettingsDialog::availableActivities()
 {
     return m_availableActivities;
+}
+
+QStringList SettingsDialog::activitiesList()
+{
+    QStringList result;
+    result << FREEACTIVITIESID;
+    result << m_corona->layoutsManager()->synchronizer()->activities();
+
+    return result;
 }
 
 QStringList SettingsDialog::availableSharesFor(int row)
@@ -1236,6 +1262,19 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
     m_model->setData(m_model->index(row, NAMECOLUMN), font, Qt::FontRole);
     m_model->setData(m_model->index(row, NAMECOLUMN), QVariant(locked), Qt::UserRole);
 
+    //! Add Free Activities record
+    if (activities.isEmpty()) {
+        if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
+            if (m_corona->layoutsManager()->currentLayoutName() == name) {
+                activities << FREEACTIVITIESID;
+            }
+        } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+            if (m_corona->layoutsManager()->synchronizer()->centralLayout(name)) {
+                activities << FREEACTIVITIESID;
+            }
+        }
+    }
+
     m_model->setData(m_model->index(row, ACTIVITYCOLUMN), activities, Qt::UserRole);
 }
 
@@ -1297,12 +1336,16 @@ void SettingsDialog::layoutsChanged()
 
             if (m_corona->layoutsManager()->currentLayoutName() == name) {
                 font.setBold(true);
-                // ui->layoutsView->selectRow(i);
+                setCurrentFreeActivitiesLayout(i);
             } else {
                 Layout::GenericLayout *layout = m_corona->layoutsManager()->synchronizer()->layout(name);
 
                 if (layout && (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts)) {
                     font.setBold(true);
+
+                    if (layout->appliedActivities().isEmpty()) {
+                        setCurrentFreeActivitiesLayout(i);
+                    }
                 } else {
                     font.setBold(false);
                 }
@@ -1695,7 +1738,7 @@ bool SettingsDialog::saveAllChanges()
 
         //!update only activities that are valid
         for (const auto &activity : lActivities) {
-            if (knownActivities.contains(activity)) {
+            if (knownActivities.contains(activity) && activity != FREEACTIVITIESID) {
                 cleanedActivities.append(activity);
             }
         }
@@ -1933,23 +1976,66 @@ void SettingsDialog::syncActiveShares()
     m_sharesMap = currentSharesIdMap;
 }
 
-void SettingsDialog::addActivityInCurrent(const QString &activityId)
+int SettingsDialog::currentFreeActiviesLayout() const
 {
-    int currentRow = ui->layoutsView->currentIndex().row();
-    QStringList activities = m_model->data(m_model->index(currentRow, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
-    if (!activities.contains(activityId)) {
-        activities << activityId;
-        m_model->setData(m_model->index(currentRow, ACTIVITYCOLUMN), activities, Qt::UserRole);
+    return m_currentFreeActivitiesLayout;
+}
+
+void SettingsDialog::setCurrentFreeActivitiesLayout(const int &row)
+{
+    if (m_currentFreeActivitiesLayout == row) {
+        return;
+    }
+
+    m_currentFreeActivitiesLayout = row;
+
+    loadActivitiesInBuffer(row);
+    addActivityInBuffer(FREEACTIVITIESID);
+    syncActivitiesFromBuffer(row);
+}
+
+void SettingsDialog::loadActivitiesInBuffer(const int &row)
+{
+    m_activitiesInBuffer.clear();
+    m_activitiesInBuffer = m_model->data(m_model->index(row, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+}
+
+void SettingsDialog::syncActivitiesFromBuffer(const int &row)
+{
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        if (i == row) {
+            m_model->setData(m_model->index(i, ACTIVITYCOLUMN), m_activitiesInBuffer, Qt::UserRole);
+            continue;
+        }
+
+        QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+
+        bool updated{false} ;
+
+        for (const auto &activityId : m_activitiesInBuffer) {
+            if (lActivities.contains(activityId)) {
+                updated = true;
+                lActivities.removeAll(activityId);
+            }
+        }
+
+        if (updated) {
+            m_model->setData(m_model->index(i, ACTIVITYCOLUMN), lActivities, Qt::UserRole);
+        }
+    };
+}
+
+void SettingsDialog::addActivityInBuffer(const QString &activityId)
+{
+    if (!m_activitiesInBuffer.contains(activityId)) {
+        m_activitiesInBuffer << activityId;
     }
 }
 
-void SettingsDialog::removeActivityFromCurrent(const QString &activityId)
+void SettingsDialog::removeActivityFromBuffer(const QString &activityId)
 {
-    int currentRow = ui->layoutsView->currentIndex().row();
-    QStringList activities = m_model->data(m_model->index(currentRow, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
-    if (activities.contains(activityId)) {
-        activities.removeAll(activityId);
-        m_model->setData(m_model->index(currentRow, ACTIVITYCOLUMN), activities, Qt::UserRole);
+    if (m_activitiesInBuffer.contains(activityId)) {
+        m_activitiesInBuffer.removeAll(activityId);
     }
 }
 

@@ -50,52 +50,107 @@ ActivitiesDelegate::ActivitiesDelegate(QObject *parent)
 
 QWidget *ActivitiesDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    int row = index.row();
+
     QPushButton *button = new QPushButton(parent);
     PersistentMenu *menu = new PersistentMenu(button);
     button->setMenu(menu);
     menu->setMinimumWidth(option.rect.width());
 
     QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
-    QStringList availableActivities = m_settingsDialog->availableActivities();
-    QStringList activities = m_settingsDialog->activities();
+    QStringList shownActivities = m_settingsDialog->activitiesList();
 
-    QStringList shownActivities;
+    m_settingsDialog->loadActivitiesInBuffer(row);
 
-    for (const auto &activity : activities) {
-        if (assignedActivities.contains(activity) || availableActivities.contains(activity)) {
-            shownActivities.append(activity);
-        }
-    }
+    QString freeActivitiesId = m_settingsDialog->freeActivities_id();
 
     for (unsigned int i = 0; i < shownActivities.count(); ++i) {
-        KActivities::Info info(shownActivities[i]);
 
-        if (info.state() != KActivities::Info::Invalid) {
-            QAction *action = new QAction(info.name());
-            action->setData(shownActivities[i]);
-            action->setIcon(QIcon::fromTheme(info.icon()));
+        if (shownActivities[i] == freeActivitiesId) {
+            bool isFreeActivitiesChecked = assignedActivities.contains(freeActivitiesId);
+
+            QAction *action = new QAction(m_settingsDialog->freeActivities_text());
+            action->setData(freeActivitiesId);
+            action->setIcon(QIcon::fromTheme(m_settingsDialog->freeActivities_icon()));
             action->setCheckable(true);
-            action->setChecked(assignedActivities.contains(shownActivities[i]));
-
-            if ((info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
-                QFont font = action->font();
-                font.setBold(true);
-                action->setFont(font);
-            }
+            action->setChecked(isFreeActivitiesChecked);
 
             menu->addAction(action);
+            if (isFreeActivitiesChecked) {
+                menu->setMasterIndex(i);
+            }
 
-            connect(action, &QAction::toggled, this, [this, button, action]() {
-                updateButton(button);
-
+            connect(action, &QAction::toggled, this, [this, menu, button, action, i]() {
                 if (action->isChecked()) {
-                    m_settingsDialog->addActivityInCurrent(action->data().toString());
+                    m_settingsDialog->addActivityInBuffer(action->data().toString());
+                    menu->setMasterIndex(i);
                 } else {
-                    m_settingsDialog->removeActivityFromCurrent(action->data().toString());
+                    if (menu->masterIndex() == i) {
+                        action->setChecked(true);
+                    }
+                    //do nothing....
+                    //m_settingsDialog->removeActivityFromBuffer(action->data().toString());
                 }
+
+                updateButton(button);
             });
+        } else {
+            KActivities::Info info(shownActivities[i]);
+
+            if (info.state() != KActivities::Info::Invalid) {
+                QAction *action = new QAction(info.name());
+                action->setData(shownActivities[i]);
+                action->setIcon(QIcon::fromTheme(info.icon()));
+                action->setCheckable(true);
+                action->setChecked(assignedActivities.contains(shownActivities[i]));
+
+                if ((info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
+                    QFont font = action->font();
+                    font.setBold(true);
+                    action->setFont(font);
+                }
+
+                menu->addAction(action);
+
+                connect(action, &QAction::toggled, this, [this, menu, button, action, i]() {
+                    if (action->isChecked()) {
+                        menu->setMasterIndex(-1);
+                        m_settingsDialog->addActivityInBuffer(action->data().toString());
+                    } else {
+                        m_settingsDialog->removeActivityFromBuffer(action->data().toString());
+                    }
+
+                    updateButton(button);
+                });
+            }
         }
     }
+
+    connect(menu, &PersistentMenu::masterIndexChanged, this, [this, menu, button, freeActivitiesId]() {
+        int masterRow = menu->masterIndex();
+        if (masterRow>=0) {
+            auto actions = button->menu()->actions();
+
+            for (int i=0; i<actions.count(); ++i) {
+                if (i != masterRow && actions[i]->isChecked()) {
+                    actions[i]->setChecked(false);
+                }
+            }
+        } else {
+            foreach (QAction *action, button->menu()->actions()) {
+                QString actId = action->data().toString();
+                if (actId == freeActivitiesId) {
+                    action->setChecked(false);
+                }
+            }
+        }
+
+        updateButton(button);
+    });
+
+    connect(menu, &QMenu::aboutToHide, this, [this, row]() {
+        m_settingsDialog->syncActivitiesFromBuffer(row);
+    });
 
     return button;
 }
@@ -229,23 +284,34 @@ QString ActivitiesDelegate::joinedActivities(const QStringList &activities, bool
 
     int i = 0;
 
+    QString freeActivitiesId = m_settingsDialog->freeActivities_id();
+
     for (const auto &activityId : activities) {
-        KActivities::Info info(activityId);
+        QString name;
+        bool isActive{false};
 
-        if (info.state() != KActivities::Info::Invalid) {
-            if (i > 0) {
-                finalText += ", ";
+        if (activityId == freeActivitiesId) {
+            name = m_settingsDialog->freeActivities_text();
+        } else {
+            KActivities::Info info(activityId);
+
+            if (info.state() != KActivities::Info::Invalid) {
+                if (i > 0) {
+                    finalText += ", ";
+                }
+                i++;
+
+                bool isActive{false};
+
+                if (boldForActive && (info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
+                    isActive = true;
+                }
+
+                name = info.name();
             }
-            i++;
-
-            bool isActive{false};
-
-            if (boldForActive && (info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
-                isActive = true;
-            }
-
-            finalText += isActive ? "<b>" + info.name() + "</b>" : info.name();
         }
+
+        finalText += isActive ? "<b>" + name + "</b>" : name;
     }
 
     return finalText;
