@@ -1420,8 +1420,13 @@ void SettingsDialog::updatePerLayoutButtonsState()
     bool sharedInModel = !m_model->data(m_model->index(currentRow, SHAREDCOLUMN), Qt::UserRole).toStringList().isEmpty();
     bool editable = !isActive(originalName) && !lockedInModel;
 
+    Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
+
     //! Switch Button
-    if (id.startsWith("/tmp/") || originalName != nameInModel) {
+    if (id.startsWith("/tmp/")
+            || originalName != nameInModel
+            || (inMemoryOption == Types::MultipleLayouts && sharedInModel)
+            || (m_corona->layoutsManager()->synchronizer()->currentLayoutName() == originalName)) {
         ui->switchButton->setEnabled(false);
     } else {
         ui->switchButton->setEnabled(true);
