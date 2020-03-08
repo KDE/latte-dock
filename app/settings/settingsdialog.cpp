@@ -2071,6 +2071,16 @@ bool SettingsDialog::inMultipleLayoutsLook() const
     return inMemoryOption == Latte::Types::MultipleLayouts;
 }
 
+bool  SettingsDialog::isActive(int row) const
+{
+    QString id = m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
+    if (m_originalLayoutNames.contains(id)){
+        return (m_corona->layoutsManager()->synchronizer()->layout(m_originalLayoutNames[id]) != nullptr);
+    }
+
+    return false;
+}
+
 bool SettingsDialog::isActive(QString layoutName) const
 {
     return (m_corona->layoutsManager()->synchronizer()->layout(layoutName) != nullptr);

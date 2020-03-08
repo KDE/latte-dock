@@ -51,8 +51,8 @@ ActivitiesDelegate::ActivitiesDelegate(QObject *parent)
 QWidget *ActivitiesDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     int row = index.row();
-
     QPushButton *button = new QPushButton(parent);
+
     PersistentMenu *menu = new PersistentMenu(button);
     button->setMenu(menu);
     menu->setMinimumWidth(option.rect.width());
@@ -74,6 +74,14 @@ QWidget *ActivitiesDelegate::createEditor(QWidget *parent, const QStyleOptionVie
             action->setIcon(QIcon::fromTheme(m_settingsDialog->freeActivities_icon()));
             action->setCheckable(true);
             action->setChecked(isFreeActivitiesChecked);
+
+            bool isActive = m_settingsDialog->isActive(row);
+
+            if (isActive) {
+                QFont font = action->font();
+                font.setBold(true);
+                action->setFont(font);
+            }
 
             menu->addAction(action);
             if (isFreeActivitiesChecked) {
@@ -191,7 +199,7 @@ void ActivitiesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
 
         if (assignedActivities.count() > 0) {
-            myOptions.text = joinedActivities(assignedActivities);
+            myOptions.text = joinedActivities(assignedActivities, index.row());
 
             QTextDocument doc;
             QString css;
@@ -278,7 +286,7 @@ void ActivitiesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     }
 }
 
-QString ActivitiesDelegate::joinedActivities(const QStringList &activities, bool boldForActive) const
+QString ActivitiesDelegate::joinedActivities(const QStringList &activities, int index) const
 {
     QString finalText;
 
@@ -288,10 +296,17 @@ QString ActivitiesDelegate::joinedActivities(const QStringList &activities, bool
 
     for (const auto &activityId : activities) {
         QString name;
-        bool isActive{false};
+        bool bold{false};
+        bool italic{false};
 
         if (activityId == freeActivitiesId) {
             name = m_settingsDialog->freeActivities_text();
+
+            if (index >= 0) {
+                bool isActive = m_settingsDialog->isActive(index);
+                bold = isActive;
+                italic = !isActive;
+            }
         } else {
             KActivities::Info info(activityId);
 
@@ -301,17 +316,25 @@ QString ActivitiesDelegate::joinedActivities(const QStringList &activities, bool
                 }
                 i++;
 
-                bool isActive{false};
-
-                if (boldForActive && (info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
-                    isActive = true;
+                if ((info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
+                    bold = true;
                 }
 
                 name = info.name();
             }
         }
 
-        finalText += isActive ? "<b>" + name + "</b>" : name;
+        QString styledText = name;
+
+        if (bold) {
+            styledText = "<b>" + styledText + "</b>";
+        }
+
+        if (italic) {
+            styledText = "<i>" + styledText + "</i>";
+        }
+
+        finalText += styledText;
     }
 
     return finalText;
@@ -331,6 +354,6 @@ void ActivitiesDelegate::updateButton(QWidget *editor) const
         }
     }
 
-    button->setText(joinedActivities(assignedActivities,false));
+    button->setText(joinedActivities(assignedActivities, -1));
 }
 

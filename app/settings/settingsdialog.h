@@ -71,6 +71,7 @@ public:
     void updateShareAt(const int &row, const QString &fromId, const QString &toId);
 
     bool inMultipleLayoutsLook() const;
+    bool isActive(int row) const;
     bool isActive(QString layoutName) const;
     bool isShared(int row) const;
     bool isMenuCell(int column) const;

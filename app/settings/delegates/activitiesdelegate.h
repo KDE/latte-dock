@@ -46,11 +46,13 @@ public:
 private:
     void updateButton(QWidget *editor) const;
 
-    QString joinedActivities(const QStringList &activities, bool boldForActive = true) const;
+    QString joinedActivities(const QStringList &activities, int index = -1) const;
 
 private:
     Latte::SettingsDialog *m_settingsDialog{nullptr};
 
+
+    int m_lastCurrentIndex{-1};
 };
 
 #endif
