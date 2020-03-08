@@ -349,16 +349,6 @@ QString SettingsDialog::freeActivities_id() const
     return FREEACTIVITIESID;
 }
 
-QStringList SettingsDialog::activities()
-{
-    return m_corona->layoutsManager()->synchronizer()->activities();
-}
-
-QStringList SettingsDialog::availableActivities()
-{
-    return m_availableActivities;
-}
-
 QStringList SettingsDialog::activitiesList()
 {
     QStringList result;
@@ -1068,8 +1058,6 @@ void SettingsDialog::loadSettings()
         }
     }
 
-    recalculateAvailableActivities();
-
     m_model->setHorizontalHeaderItem(IDCOLUMN, new QStandardItem(QString("#path")));
     m_model->setHorizontalHeaderItem(COLORCOLUMN, new QStandardItem(QIcon::fromTheme("games-config-background"),
                                                                     QString(i18nc("column for layout background", "Background"))));
@@ -1361,8 +1349,7 @@ void SettingsDialog::itemChanged(QStandardItem *item)
     updatePerLayoutButtonsState();
 
     if (item->column() == ACTIVITYCOLUMN) {
-        //! recalculate the available activities
-        recalculateAvailableActivities();
+        //! do nothing
     } else if (item->column() == NAMECOLUMN) {
         int currentRow = ui->layoutsView->currentIndex().row();
 
@@ -1574,23 +1561,6 @@ void SettingsDialog::updateSharedLayoutsUiElements()
     }
 }
 
-void SettingsDialog::recalculateAvailableActivities()
-{
-    QStringList tempActivities = m_corona->layoutsManager()->synchronizer()->activities();
-
-    for (int i = 0; i < m_model->rowCount(); ++i) {
-        QStringList assigned = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
-
-        for (const auto &activity : assigned) {
-            if (tempActivities.contains(activity)) {
-                tempActivities.removeAll(activity);
-            }
-        }
-    }
-
-    m_availableActivities = tempActivities;
-}
-
 bool SettingsDialog::dataAreAccepted()
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
@@ -1698,7 +1668,7 @@ bool SettingsDialog::saveAllChanges()
     m_corona->themeExtended()->setOutlineWidth(ui->outlineSpinBox->value());
 
     //! Update Layouts
-    QStringList knownActivities = activities();
+    QStringList knownActivities = m_corona->layoutsManager()->synchronizer()->activities();
 
     QTemporaryDir layoutTempDir;
 

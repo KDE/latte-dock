@@ -84,9 +84,7 @@ public:
     QString freeActivities_icon() const;
     QString freeActivities_id() const;
 
-    QStringList activities();
     QStringList activitiesList();
-    QStringList availableActivities();
     QStringList availableSharesFor(int row);
 
     void requestImagesDialog(int row);
@@ -154,7 +152,6 @@ private:
 private:
     int m_currentFreeActivitiesLayout{-1};
 
-    QStringList m_availableActivities;
     QStringList m_tempDirectories;
     QStringList m_initLayoutPaths;
 
