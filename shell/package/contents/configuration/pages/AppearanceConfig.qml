@@ -326,9 +326,14 @@ PlasmaComponents.Page {
             }
 
             ColumnLayout {
+                id: lengthColumn
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 0
+
+                readonly property int labelsMaxWidth: Math.max(maxLengthLbl.implicitWidth,
+                                                                     minLengthLbl.implicitWidth,
+                                                                     offsetLbl.implicitWidth)
 
                 RowLayout {
                     Layout.minimumWidth: dialog.optionsWidth
@@ -336,6 +341,8 @@ PlasmaComponents.Page {
                     spacing: units.smallSpacing
 
                     PlasmaComponents.Label {
+                        id: maxLengthLbl
+                        Layout.minimumWidth: lengthColumn.labelsMaxWidth
                         text: i18n("Maximum")
                         horizontalAlignment: Text.AlignLeft
                     }
@@ -345,14 +352,16 @@ PlasmaComponents.Page {
                         id: maxLengthSlider
 
                         value: plasmoid.configuration.maxLength
-                        from: 30
+                        from: 0
                         to: 100
                         stepSize: 1
                         wheelEnabled: false
 
+                        readonly property int localMinValue: 30
+
                         function updateMaxLength() {
                             if (!pressed) {
-                                plasmoid.configuration.maxLength = value;
+                                plasmoid.configuration.maxLength = Math.max(value, plasmoid.configuration.minLength, localMinValue);
                                 var newTotal = Math.abs(plasmoid.configuration.offset) + value;
 
                                 //centered and justify alignments based on offset and get out of the screen in some cases
@@ -378,6 +387,14 @@ PlasmaComponents.Page {
                                     } else {
                                         plasmoid.configuration.offset = Math.max(0, 100-value);
                                     }
+                                }
+
+                                if (plasmoid.configuration.maxLength < plasmoid.configuration.minLength) {
+                                    minLengthSlider.updateMinLength();
+                                }
+                            } else {
+                                if ((value < plasmoid.configuration.minLength) || (value < localMinValue)) {
+                                    value = Math.max(plasmoid.configuration.minLength, localMinValue);
                                 }
                             }
                         }
@@ -408,8 +425,69 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
                     visible: dialog.expertLevel
+                    enabled: (plasmoid.configuration.panelPosition !== Latte.Types.Justify)
 
                     PlasmaComponents.Label {
+                        id: minLengthLbl
+                        Layout.minimumWidth: lengthColumn.labelsMaxWidth
+                        text: i18n("Minimum")
+                        horizontalAlignment: Text.AlignLeft
+                    }
+
+                    LatteComponents.Slider {
+                        Layout.fillWidth: true
+                        id: minLengthSlider
+
+                        value: plasmoid.configuration.minLength
+                        from: 0
+                        to: 100
+                        stepSize: 1
+                        wheelEnabled: false
+
+                        function updateMinLength() {
+                            if (!pressed) {
+                                plasmoid.configuration.minLength = value; //Math.min(value, plasmoid.configuration.maxLength);
+
+                                if (plasmoid.configuration.minLength > maxLengthSlider.value) {
+                                    maxLengthSlider.updateMaxLength();
+                                }
+                            } else {
+                                if (value > plasmoid.configuration.maxLength) {
+                                    value = plasmoid.configuration.maxLength
+                                }
+                            }
+                        }
+
+                        onPressedChanged: {
+                            updateMinLength();
+                        }
+
+                        Component.onCompleted: {
+                            valueChanged.connect(updateMinLength)
+                        }
+
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updateMinLength)
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(minLengthSlider.value)
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    }
+                }
+
+                RowLayout {
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
+                    spacing: units.smallSpacing
+                    visible: dialog.expertLevel
+
+                    PlasmaComponents.Label {
+                        id: offsetLbl
+                        Layout.minimumWidth: lengthColumn.labelsMaxWidth
                         text: i18n("Offset")
                         horizontalAlignment: Text.AlignLeft
                     }
@@ -755,7 +833,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: windowColorsGroup
                     tooltip: universalSettings.colorsScriptIsPresent ?
                                  i18n("Colors are going to be based on windows that are touching the view") :
-                                    i18n("Colors are going to be based on windows that are touching the view.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
+                                 i18n("Colors are going to be based on windows that are touching the view.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
 
                     readonly property int colors: Latte.Types.TouchingWindowColors
 

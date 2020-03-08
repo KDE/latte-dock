@@ -326,6 +326,7 @@ Item{
         target:root
         onPanelShadowChanged: updateMaskArea();
         onPanelThickMarginHighChanged: updateMaskArea();
+        onRealPanelLengthChanged: updateMaskArea();
     }
 
     Connections{
@@ -484,12 +485,20 @@ Item{
                     tempLength = root.isHorizontal ? root.width : root.height;
                 } else {
                     if(root.isHorizontal) {
-                        tempLength = plasmoid.configuration.panelPosition === Latte.Types.Justify ?
-                                    layoutsContainer.width + space : layoutsContainer.mainLayout.width + space;
+                        if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
+                            tempLength = layoutsContainer.width;
+                        } else {
+                            tempLength = Math.max(root.realPanelLength, layoutsContainer.mainLayout.width);
+                        }
                     } else {
-                        tempLength = plasmoid.configuration.panelPosition === Latte.Types.Justify ?
-                                    layoutsContainer.height + space : layoutsContainer.mainLayout.height + space;
+                        if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
+                            tempLength = layoutsContainer.height;
+                        } else {
+                            tempLength = Math.max(root.realPanelLength, layoutsContainer.mainLayout.height);
+                        }
                     }
+
+                    tempLength = tempLength + space;
                 }
 
                 tempThickness = thicknessNormal;
@@ -535,7 +544,7 @@ Item{
                     } else if (root.panelAlignment === Latte.Types.Center) {
                         localX = (latteView.width/2) - tempLength/2 + root.offset;
                     } else if (root.panelAlignment === Latte.Types.Right) {
-                        localX = latteView.width - layoutsContainer.mainLayout.width - space - root.offset;
+                        localX = latteView.width - tempLength - root.offset;
                     }
                 } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
                     if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -565,7 +574,7 @@ Item{
                     } else if (root.panelAlignment === Latte.Types.Center) {
                         localY = (latteView.height/2) - tempLength/2 + root.offset;
                     } else if (root.panelAlignment === Latte.Types.Bottom) {
-                        localY = latteView.height - layoutsContainer.mainLayout.height - space - root.offset;
+                        localY = latteView.height - tempLength - root.offset;
                     }
                 }
 

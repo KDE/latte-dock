@@ -136,6 +136,22 @@ Window{
             }
 
             Text{
+                text: "Min Length"+space
+            }
+
+            Text{
+                text: root.minLengthPerCentage +"%"
+            }
+
+            Text{
+                text: "Min Length (pixels)"+space
+            }
+
+            Text{
+                text: root.minLength
+            }
+
+            Text{
                 text: "Offset (pixels)"+space
             }
 
@@ -355,6 +371,24 @@ Window{
                         break;
                     case Latte.Types.DodgeAllWindows:
                         return "Dodge All Windows";
+                        break;
+                    case Latte.Types.DodgeAllWindows:
+                        return "Dodge All Windows";
+                        break;
+                    case Latte.Types.WindowsGoBelow:
+                        return "Windows Go Below";
+                        break;
+                    case Latte.Types.WindowsCanCover:
+                        return "Windows Can Cover";
+                        break;
+                    case Latte.Types.WindowsAlwaysCover:
+                        return "Windows Always Cover";
+                        break;
+                    case Latte.Types.SideBar:
+                        return "OnDemand SideBar";
+                        break;
+                    case Latte.Types.NormalWindow:
+                        return "Normal Window";
                         break;
                     case Latte.Types.None:
                         return "None";

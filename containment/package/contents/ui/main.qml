@@ -282,7 +282,16 @@ Item {
     }
 
     property int latteAppletPos: -1
+    property int minLengthPerCentage: plasmoid.configuration.minLength
     property int maxLengthPerCentage: hideLengthScreenGaps ? 100 : plasmoid.configuration.maxLength
+
+    property int minLength: {
+        if (root.isHorizontal) {
+            return behaveAsPlasmaPanel ? width : width * (minLengthPerCentage/100)
+        } else {
+            return behaveAsPlasmaPanel ? height : height * (minLengthPerCentage/100)
+        }
+    }
 
     property int maxLength: {
         if (root.isHorizontal) {
