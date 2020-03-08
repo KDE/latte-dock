@@ -31,6 +31,11 @@ import "../applet/indicator" as AppletIndicator
 Loader {
     id: environmentLoader
 
+    width: active ? item.width : 0
+    height: active ? item.height: 0
+
+    property int alignment: Latte.Types.BottomEdgeCenterAlign
+
     sourceComponent: MouseArea{
         id: mainArea
         width: root.isHorizontal ? length : localThickness + root.localScreenEdgeMargin
@@ -228,65 +233,42 @@ Loader {
                 bridge: indicatorBridge
             }
         }
-
-        states:[
-            State {
-                name: "bottom"
-                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
-
-                AnchorChanges {
-                    target: mainArea
-                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;
-                        horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-                }
-            },
-            State {
-                name: "top"
-                when: (plasmoid.location === PlasmaCore.Types.TopEdge)
-
-                AnchorChanges {
-                    target: mainArea
-                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined;
-                        horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-                }
-            },
-            State {
-                name: "left"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)
-
-                AnchorChanges {
-                    target: mainArea
-                    anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
-                        horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-                }
-            },
-            State {
-                name: "right"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)
-
-                AnchorChanges {
-                    target: mainArea
-                    anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
-                        horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-                }
-            }
-        ]
     }
 
     states:[
         State {
-            name: "bottom"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
+            name: "bottomCenter"
+            when: (alignment === Latte.Types.BottomEdgeCenterAlign)
 
             AnchorChanges {
                 target: environmentLoader
-                anchors{ top:undefined; bottom: _mainLayout.bottom; left:undefined; right:undefined;
+                anchors{ top:undefined; bottom:_mainLayout.bottom; left:undefined; right:undefined;
                     horizontalCenter: _mainLayout.horizontalCenter; verticalCenter:undefined}
             }
         },
         State {
-            name: "top"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)
+            name: "bottomLeft"
+            when: (alignment === Latte.Types.BottomEdgeLeftAlign)
+
+            AnchorChanges {
+                target: environmentLoader
+                anchors{ top:undefined; bottom:_mainLayout.bottom; left:parent.left; right:undefined;
+                    horizontalCenter: undefined; verticalCenter:undefined}
+            }
+        },
+        State {
+            name: "bottomRight"
+            when: (alignment === Latte.Types.BottomEdgeRightAlign)
+
+            AnchorChanges {
+                target: environmentLoader
+                anchors{ top:undefined; bottom: _mainLayout.bottom; left:undefined; right:parent.right;
+                    horizontalCenter: undefined; verticalCenter:undefined}
+            }
+        },
+        State {
+            name: "topCenter"
+            when: (alignment === Latte.Types.TopEdgeCenterAlign)
 
             AnchorChanges {
                 target: environmentLoader
@@ -295,8 +277,28 @@ Loader {
             }
         },
         State {
-            name: "left"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)
+            name: "topLeft"
+            when: (alignment === Latte.Types.TopEdgeLeftAlign)
+
+            AnchorChanges {
+                target: environmentLoader
+                anchors{ top: _mainLayout.top; bottom:undefined; left: _mainLayout.left; right:undefined;
+                    horizontalCenter: undefined; verticalCenter:undefined}
+            }
+        },
+        State {
+            name: "topRight"
+            when: (alignment === Latte.Types.TopEdgeRightAlign)
+
+            AnchorChanges {
+                target: environmentLoader
+                anchors{ top: _mainLayout.top; bottom:undefined; left:undefined; right: _mainLayout.right;
+                    horizontalCenter: undefined; verticalCenter:undefined}
+            }
+        },
+        State {
+            name: "leftCenter"
+            when: (alignment === Latte.Types.LeftEdgeCenterAlign)
 
             AnchorChanges {
                 target: environmentLoader
@@ -305,13 +307,53 @@ Loader {
             }
         },
         State {
-            name: "right"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+            name: "leftTop"
+            when: (alignment === Latte.Types.LeftEdgeTopAlign)
+
+            AnchorChanges {
+                target: environmentLoader
+                anchors{ top:mainLayout.top; bottom:undefined; left: _mainLayout.left; right:undefined;
+                    horizontalCenter:undefined; verticalCenter: undefined}
+            }
+        },
+        State {
+            name: "leftBottom"
+            when: (alignment === Latte.Types.LeftEdgeBottomAlign)
+
+            AnchorChanges {
+                target: environmentLoader
+                anchors{ top:undefined; bottom:_mainLayout.bottom; left: _mainLayout.left; right:undefined;
+                    horizontalCenter:undefined; verticalCenter: undefined}
+            }
+        },
+        State {
+            name: "rightCenter"
+            when: (alignment === Latte.Types.RightEdgeCenterAlign)
 
             AnchorChanges {
                 target: environmentLoader
                 anchors{ top:undefined; bottom:undefined; left:undefined; right: _mainLayout.right;
                     horizontalCenter:undefined; verticalCenter: _mainLayout.verticalCenter}
+            }
+        },
+        State {
+            name: "rightTop"
+            when: (alignment === Latte.Types.RightEdgeTopAlign)
+
+            AnchorChanges {
+                target: environmentLoader
+                anchors{ top:_mainLayout.top; bottom:undefined; left:undefined; right: _mainLayout.right;
+                    horizontalCenter:undefined; verticalCenter: undefined}
+            }
+        },
+        State {
+            name: "rightBottom"
+            when: (alignment === Latte.Types.RightEdgeBottomAlign)
+
+            AnchorChanges {
+                target: environmentLoader
+                anchors{ top:undefined; bottom:_mainLayout.bottom; left:undefined; right: _mainLayout.right;
+                    horizontalCenter:undefined; verticalCenter: undefined}
             }
         }
     ]

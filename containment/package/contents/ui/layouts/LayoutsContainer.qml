@@ -183,6 +183,7 @@ Item{
 
     EnvironmentActions {
         active: root.scrollAction !== Latte.Types.ScrollNone || root.dragActiveWindowEnabled || root.closeActiveWindowEnabled
+        alignment: _mainLayout.alignment
     }
 
     AppletsContainer {
