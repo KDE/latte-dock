@@ -472,7 +472,10 @@ Item{
         ///Secret MouseArea to be used by the folder widget
         Loader{
             anchors.fill: parent
-            active: communicator.overlayLatteIconIsActive && applet.pluginName === "org.kde.plasma.folder"
+            active: communicator.overlayLatteIconIsActive
+                    && applet.pluginName === "org.kde.plasma.folder"
+                    && !appletItem.acceptMouseEvents
+
             sourceComponent: MouseArea{
                 onClicked: latteView.toggleAppletExpanded(applet.id);
             }
