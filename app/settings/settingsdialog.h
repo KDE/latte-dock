@@ -65,6 +65,7 @@ public:
     void removeActivityFromCurrent(const QString &activityId);
     void addShareInCurrent(const QString &layoutId);
     void removeShareFromCurrent(const QString &layoutId);
+    void updateShareAt(const int &row, const QString &fromId, const QString &toId);
 
     bool inMultipleLayoutsLook() const;
     bool isActive(QString layoutName) const;
@@ -162,6 +163,8 @@ private:
     //! SharedLayout #settingsid, Shares #settingsid
     QHash<const QString, QStringList> m_sharesMap;
     QHash<const QString, Latte::CentralLayout *> m_layouts;
+    //! Layout #settingsid, #original_layout_name
+    QHash<const QString, QString> m_originalLayoutNames;
 
     QList<int> o_settings;
     QStringList o_settingsLayouts;

@@ -440,6 +440,7 @@ void SettingsDialog::on_copyButton_clicked()
 
     CentralLayout *settings = new CentralLayout(this, copiedId);
     m_layouts[copiedId] = settings;
+    m_originalLayoutNames[copiedId] = layoutName;
 
     insertLayoutInfoAtRow(row + 1, copiedId, color, textColor, layoutName, menu, disabledBorders, QStringList(), false);
 
@@ -927,6 +928,7 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
 
     CentralLayout *settings = new CentralLayout(this, copiedId);
     m_layouts[copiedId] = settings;
+    m_originalLayoutNames[copiedId] = layoutName;
 
     QString id = copiedId;
     QString color = settings->color();
@@ -975,6 +977,7 @@ void SettingsDialog::loadSettings()
 
         CentralLayout *central = new CentralLayout(this, layoutPath);
         m_layouts[layoutPath] = central;
+        m_originalLayoutNames[layoutPath] = central->name();
 
         QString background = central->background();
 
@@ -1322,15 +1325,16 @@ void SettingsDialog::itemChanged(QStandardItem *item)
 
         QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
         QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
+        QString originalName = m_originalLayoutNames.contains(id) ? m_originalLayoutNames[id] : "";
         QFont font = qvariant_cast<QFont>(m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::FontRole));
 
-        if (m_corona->layoutsManager()->synchronizer()->layout(m_layouts[id]->name())) {
+        if (m_corona->layoutsManager()->synchronizer()->layout(originalName)) {
             font.setBold(true);
         } else {
             font.setBold(false);
         }
 
-        if (m_layouts[id]->name() != name) {
+        if (originalName != name) {
             font.setItalic(true);
         } else {
             font.setItalic(false);
@@ -1411,7 +1415,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
     QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
     QString nameInModel = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
-    QString originalName = m_layouts.contains(id) ? m_layouts[id]->name() : "";
+    QString originalName = m_originalLayoutNames.contains(id) ? m_originalLayoutNames[id] : "";
     bool lockedInModel = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::UserRole).toBool();
     bool sharedInModel = !m_model->data(m_model->index(currentRow, SHAREDCOLUMN), Qt::UserRole).toStringList().isEmpty();
     bool editable = !isActive(originalName) && !lockedInModel;
@@ -1433,7 +1437,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
         Latte::CentralLayout *layout = m_layouts[id];
 
-        if (!lActivities.isEmpty() && layout && m_corona->layoutsManager()->synchronizer()->centralLayout(layout->name())) {
+        if (!lActivities.isEmpty() && layout && m_corona->layoutsManager()->synchronizer()->centralLayout(originalName)) {
             ui->pauseButton->setEnabled(true);
         } else {
             ui->pauseButton->setEnabled(false);
@@ -1582,7 +1586,7 @@ void SettingsDialog::showLayoutInformation()
     QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
     QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
 
-    Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(m_layouts[id]->name());
+    Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(m_originalLayoutNames[id]);
     Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
 
     auto msg = new QMessageBox(this);
@@ -1600,7 +1604,7 @@ void SettingsDialog::showScreensInformation()
         QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
 
-        Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(m_layouts[id]->name());
+        Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(m_originalLayoutNames[id]);
         Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
 
         QList<int> vScreens = generic->viewsScreens();
@@ -1693,7 +1697,7 @@ bool SettingsDialog::saveAllChanges()
 
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
         //! update the generic parts of the layouts
-        Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(m_layouts[id]->name());
+        Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(m_originalLayoutNames[id]);
         Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
 
         //! unlock read-only layout
@@ -1719,7 +1723,7 @@ bool SettingsDialog::saveAllChanges()
         }
 
         //! update only the Central-specific layout parts
-        CentralLayout *centralActive= m_corona->layoutsManager()->synchronizer()->centralLayout(m_layouts[id]->name());
+        CentralLayout *centralActive= m_corona->layoutsManager()->synchronizer()->centralLayout(m_originalLayoutNames[id]);
         CentralLayout *central = centralActive ? centralActive : m_layouts[id];
 
         if (central->showInMenu() != menu) {
@@ -1784,6 +1788,18 @@ bool SettingsDialog::saveAllChanges()
                 m_model->setData(m_model->index(j, NAMECOLUMN), font, Qt::FontRole);
             }
         }
+
+        //! updating the #SETTINGSID in the model for SHARES
+        for (int j = 0; j < m_model->rowCount(); ++j) {
+            QStringList shares = m_model->data(m_model->index(j, SHAREDCOLUMN), Qt::UserRole).toStringList();
+            if (!shares.isEmpty()) {
+                for (auto oldShareId : fromRenamePaths) {
+                    if (shares.contains(oldShareId)) {
+                        updateShareAt(j, oldShareId, newFile);
+                    }
+                }
+            }
+        }
     }
 
     QString orphanedLayout;
@@ -1802,7 +1818,9 @@ bool SettingsDialog::saveAllChanges()
                     orphanedLayout = newLayoutName;
                 }
             }
+        }
 
+        for (const auto &newLayoutName : activeLayoutsToRename.keys()) {
             //! broadcast the name change
             int row = rowForName(newLayoutName);
             QStandardItem *item = m_model->item(row, NAMECOLUMN);
@@ -1818,12 +1836,24 @@ bool SettingsDialog::saveAllChanges()
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
         bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
 
-        Layout::GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(m_layouts[id]->name());
+        Layout::GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(m_originalLayoutNames[id]);
         Layout::GenericLayout *layout = generic ? generic : m_layouts[id];
+
+        m_originalLayoutNames[id] = name;
 
         if (layout && locked && layout->isWritable()) {
             layout->lock();
         }
+    }
+
+    //! update layouts original names
+    m_originalLayoutNames.clear();
+
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
+        QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+
+        m_originalLayoutNames[id] = name;
     }
 
     //! update SharedLayouts that are Active
@@ -1935,6 +1965,16 @@ void SettingsDialog::removeShareFromCurrent(const QString &layoutId)
     if (shares.contains(layoutId)) {
         shares.removeAll(layoutId);
         m_model->setData(m_model->index(currentRow, SHAREDCOLUMN), shares, Qt::UserRole);
+    }
+}
+
+void SettingsDialog::updateShareAt(const int &row, const QString &fromId, const QString &toId)
+{
+    QStringList shares = m_model->data(m_model->index(row, SHAREDCOLUMN), Qt::UserRole).toStringList();
+    if (shares.contains(fromId)) {
+        shares.removeAll(fromId);
+        shares << toId;
+        m_model->setData(m_model->index(row, SHAREDCOLUMN), shares, Qt::UserRole);
     }
 }
 
