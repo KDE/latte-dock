@@ -61,6 +61,7 @@ Item {
 
     ////BEGIN properties
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
+    property bool debugModeLocalGeometry: Qt.application.arguments.indexOf("--localgeometry")>=0
     property bool debugModeSpacers: Qt.application.arguments.indexOf("--spacers")>=0
     property bool debugModeTimers: Qt.application.arguments.indexOf("--timers")>=0
     property bool debugModeWindow: Qt.application.arguments.indexOf("--with-window")>=0
@@ -1958,4 +1959,21 @@ Item {
     }
 
     ///////////////END TIMER elements
+
+    Loader{
+        anchors.fill: parent
+        active: root.debugModeLocalGeometry
+        sourceComponent: Rectangle{
+            x: latteView.localGeometry.x
+            y: latteView.localGeometry.y
+            width: latteView.localGeometry.width
+            height: latteView.localGeometry.height
+
+            color: "blue"
+            border.width: 2
+            border.color: "red"
+
+            opacity: 0.35
+        }
+    }
 }

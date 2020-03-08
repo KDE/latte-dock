@@ -706,35 +706,51 @@ Item{
 
         //console.log("reached updating geometry ::: "+dock.maskArea);
         if(inPublishingState && (normalState || root.editMode)) {
-            var tempGeometry = Qt.rect(latteView.effects.mask.x, latteView.effects.mask.y, latteView.effects.mask.width, latteView.effects.mask.height);
+            var localGeometry = Qt.rect(0, 0, root.width, root.height);
 
             //the shadows size must be removed from the maskArea
             //before updating the localDockGeometry
             if (!latteView.behaveAsPlasmaPanel || root.editMode) {
-                var fixedThickness = root.editMode ? root.iconSize + root.thickMargins + root.screenEdgeMargin : root.realPanelThickness;
+                var cleanThickness = root.iconSize + root.thickMargins;
+                var edgeMargin = root.screenEdgeMargin;
 
-                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    tempGeometry.width = fixedThickness;
-                } else {
-                    tempGeometry.height = fixedThickness;
-                }
+                if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                    localGeometry.x = latteView.effects.rect.x; // from effects area
+                    localGeometry.width = latteView.effects.rect.width; // from effects area
 
-                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    tempGeometry.y = latteView.height - fixedThickness;
+                    localGeometry.y = edgeMargin;
+                    localGeometry.height = cleanThickness ;
+                } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                    localGeometry.x = latteView.effects.rect.x; // from effects area
+                    localGeometry.width = latteView.effects.rect.width; // from effects area
+
+                    localGeometry.y = root.height - cleanThickness - edgeMargin;
+                    localGeometry.height = cleanThickness;
+                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                    localGeometry.y = latteView.effects.rect.y; // from effects area
+                    localGeometry.height = latteView.effects.rect.height; // from effects area
+
+                    localGeometry.x = edgeMargin;
+                    localGeometry.width = cleanThickness;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    tempGeometry.x = latteView.width - fixedThickness;
+                    localGeometry.y = latteView.effects.rect.y; // from effects area
+                    localGeometry.height = latteView.effects.rect.height; // from effects area
+
+                    localGeometry.x = root.width - cleanThickness - edgeMargin;
+                    localGeometry.width = cleanThickness;
                 }
 
                 //set the boundaries for latteView local geometry
                 //qBound = qMax(min, qMin(value, max)).
-                tempGeometry.x = Math.max(0, Math.min(tempGeometry.x, latteView.width));
-                tempGeometry.y = Math.max(0, Math.min(tempGeometry.y, latteView.height));
-                tempGeometry.width = Math.min(tempGeometry.width, latteView.width);
-                tempGeometry.height = Math.min(tempGeometry.height, latteView.height);
+
+                localGeometry.x = Math.max(0, Math.min(localGeometry.x, latteView.width));
+                localGeometry.y = Math.max(0, Math.min(localGeometry.y, latteView.height));
+                localGeometry.width = Math.min(localGeometry.width, latteView.width);
+                localGeometry.height = Math.min(localGeometry.height, latteView.height);
             }
 
-            //console.log("update geometry ::: "+tempGeometry);
-            latteView.localGeometry = tempGeometry;
+            //console.log("update geometry ::: "+localGeometry);
+            latteView.localGeometry = localGeometry;
         }
     }
 

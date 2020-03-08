@@ -95,6 +95,7 @@ int main(int argc, char **argv)
     configureAboutData();
 
     QCommandLineParser parser;
+    parser.addHelpOption();
     parser.addOptions({
         {{"r", "replace"}, i18nc("command line", "Replace the current Latte instance.")}
         , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
@@ -140,9 +141,14 @@ int main(int argc, char **argv)
     parser.addOption(overloadedIconsOption);
 
     QCommandLineOption edgesOption(QStringList() << QStringLiteral("kwinedges"));
-    graphicsOption.setDescription(QStringLiteral("Show visual window indicators for hidden screen edge windows."));
-    graphicsOption.setFlags(QCommandLineOption::HiddenFromHelp);
+    edgesOption.setDescription(QStringLiteral("Show visual window indicators for hidden screen edge windows."));
+    edgesOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(edgesOption);
+
+    QCommandLineOption localGeometryOption(QStringList() << QStringLiteral("localgeometry"));
+    localGeometryOption.setDescription(QStringLiteral("Show visual window indicators for calculated local geometry."));
+    localGeometryOption.setFlags(QCommandLineOption::HiddenFromHelp);
+    parser.addOption(localGeometryOption);
     //! END: Hidden options
 
     parser.process(app);

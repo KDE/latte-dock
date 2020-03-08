@@ -490,9 +490,9 @@ Item{
 
                 latteView.effects.rect = efGeometry;
 
-                if (!Latte.WindowSystem.compositingActive) {
-                    visibilityManager.updateMaskArea();
-                }
+                //! needed both for NOCOMPOSITING environments AND
+                //! View::localGeometry calculations
+                visibilityManager.updateMaskArea();
             }
 
             Binding {
