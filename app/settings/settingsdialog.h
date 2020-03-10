@@ -177,8 +177,6 @@ private:
     //! SharedLayout #settingsid, Shares #settingsid
     QHash<const QString, QStringList> m_sharesMap;
     QHash<const QString, Latte::CentralLayout *> m_layouts;
-    //! Layout #settingsid, #original_layout_name
-    QHash<const QString, QString> m_originalLayoutNames;
 
     QList<int> o_settingsOriginalData;
     Settings::Data::LayoutsTable o_layoutsOriginalData;

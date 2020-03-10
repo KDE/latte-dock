@@ -42,7 +42,7 @@ public:
     bool operator==(const LayoutsTable &rhs) const;
     bool operator!=(const LayoutsTable &rhs) const;
     Layout &operator[](const QString &id);
-    const Layout &operator[](const QString &id) const;
+    const Layout operator[](const QString &id) const;
 
     bool contains(const QString &id) const;
 

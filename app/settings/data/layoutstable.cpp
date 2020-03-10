@@ -20,6 +20,7 @@
 
 #include "layoutstable.h"
 
+#include <QDebug>
 
 namespace Latte {
 namespace Settings {
@@ -72,24 +73,12 @@ bool LayoutsTable::operator!=(const LayoutsTable &rhs) const
 
 Layout &LayoutsTable::operator[](const QString &id)
 {
-    Layout tmp;
-
-    if (m_layouts.contains(id)) {
-        return m_layouts[id];
-    }
-
-    return tmp;
+    return m_layouts[id];
 }
 
-const Layout &LayoutsTable::operator[](const QString &id) const
+const Layout LayoutsTable::operator[](const QString &id) const
 {
-    Layout tmp;
-
-    if (m_layouts.contains(id)) {
-        return m_layouts[id];
-    }
-
-    return tmp;
+    return m_layouts[id];
 }
 
 bool LayoutsTable::contains(const QString &id) const
