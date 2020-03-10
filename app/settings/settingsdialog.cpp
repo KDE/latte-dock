@@ -1269,6 +1269,13 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
 
 void SettingsDialog::on_switchButton_clicked()
 {
+    int currentIndex = ui->layoutsView->currentIndex().row();
+    QStringList currentActivities = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+
+    if (currentActivities.isEmpty() || (currentActivities.count() == 1 && currentActivities[0] == FREEACTIVITIESID)) {
+        setCurrentFreeActivitiesLayout(currentIndex);
+    }
+
     if (ui->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
         //! thus there are changes in the settings
 
