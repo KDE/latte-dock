@@ -41,6 +41,10 @@ public:
     LayoutsTable &operator<<(const Layout &rhs);
     bool operator==(const LayoutsTable &rhs) const;
     bool operator!=(const LayoutsTable &rhs) const;
+    Layout &operator[](const QString &id);
+    const Layout &operator[](const QString &id) const;
+
+    bool contains(const QString &id) const;
 
 protected:
     //! #id, layout_record

@@ -34,6 +34,7 @@
 #include "../layouts/synchronizer.h"
 #include "../liblatte2/types.h"
 #include "../plasma/extended/theme.h"
+#include "data/layout.h"
 #include "delegates/activitiesdelegate.h"
 #include "delegates/checkboxdelegate.h"
 #include "delegates/colorcmbboxdelegate.h"
@@ -878,8 +879,8 @@ void SettingsDialog::apply()
     qDebug() << Q_FUNC_INFO;
     saveAllChanges();
 
-    o_settings = currentSettings();
-    o_settingsLayouts = currentLayoutsSettings();
+    o_settingsOriginalData = currentSettings();
+    o_layoutsOriginalData = currentLayoutsSettings();
 
     updateApplyButtonsState();
     updatePerLayoutButtonsState();
@@ -1113,8 +1114,8 @@ void SettingsDialog::loadSettings()
         ui->highSensitivityBtn->setChecked(true);
     }
 
-    o_settings = currentSettings();
-    o_settingsLayouts = currentLayoutsSettings();
+    o_settingsOriginalData = currentSettings();
+    o_layoutsOriginalData = currentLayoutsSettings();
     updateApplyButtonsState();
     updateSharedLayoutsUiElements();
 
@@ -1148,30 +1149,24 @@ QList<int> SettingsDialog::currentSettings()
     return settings;
 }
 
-QStringList SettingsDialog::currentLayoutsSettings()
+Settings::Data::LayoutsTable SettingsDialog::currentLayoutsSettings()
 {
-    QStringList layoutSettings;
+    Settings::Data::LayoutsTable layoutSettings;
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
-        QString color = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
-        QString textColor = m_model->data(m_model->index(i, COLORCOLUMN), Qt::UserRole).toString();
-        QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
-        bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
-        bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
-        bool borders = m_model->data(m_model->index(i, BORDERSCOLUMN), Qt::DisplayRole).toString() == CheckMark;
-        QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
-        QStringList shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
+        Settings::Data::Layout layoutData;
 
-        layoutSettings << id;
-        layoutSettings << color;
-        layoutSettings << textColor;
-        layoutSettings << name;
-        layoutSettings << QString::number((int)locked);
-        layoutSettings << QString::number((int)menu);
-        layoutSettings << QString::number((int)borders);
-        layoutSettings << lActivities;
-        layoutSettings << shares;
+        layoutData.id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
+        layoutData.background = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
+        layoutData.backgroundTextColor = m_model->data(m_model->index(i, COLORCOLUMN), Qt::UserRole).toString();
+        layoutData.name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+        layoutData.isLocked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
+        layoutData.isShownInMenu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
+        layoutData.hasDisabledBorders = m_model->data(m_model->index(i, BORDERSCOLUMN), Qt::DisplayRole).toString() == CheckMark;
+        layoutData.activities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+        layoutData.shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
+
+        layoutSettings << layoutData;
     }
 
     return layoutSettings;
@@ -1391,8 +1386,8 @@ void SettingsDialog::updateApplyButtonsState()
     bool changed{false};
 
     //! Ok, Apply Buttons
-    if ((o_settings != currentSettings())
-            || (o_settingsLayouts != currentLayoutsSettings())) {
+    if ((o_settingsOriginalData != currentSettings())
+            || (o_layoutsOriginalData != currentLayoutsSettings())) {
         changed = true;
     }
 

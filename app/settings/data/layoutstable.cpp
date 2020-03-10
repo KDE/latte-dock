@@ -70,6 +70,34 @@ bool LayoutsTable::operator!=(const LayoutsTable &rhs) const
     return !(*this == rhs);
 }
 
+Layout &LayoutsTable::operator[](const QString &id)
+{
+    Layout tmp;
+
+    if (m_layouts.contains(id)) {
+        return m_layouts[id];
+    }
+
+    return tmp;
+}
+
+const Layout &LayoutsTable::operator[](const QString &id) const
+{
+    Layout tmp;
+
+    if (m_layouts.contains(id)) {
+        return m_layouts[id];
+    }
+
+    return tmp;
+}
+
+bool LayoutsTable::contains(const QString &id) const
+{
+    return m_layouts.contains(id);
+}
+
+
 }
 }
 }

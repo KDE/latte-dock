@@ -24,6 +24,7 @@
 
 // local
 #include "../liblatte2/types.h"
+#include "data/layoutstable.h"
 
 // Qt
 #include <QObject>
@@ -148,7 +149,7 @@ private:
     QString uniqueLayoutName(QString name);
 
     QList<int> currentSettings();
-    QStringList currentLayoutsSettings();
+    Settings::Data::LayoutsTable currentLayoutsSettings();
 
 private:
     int m_currentFreeActivitiesLayout{-1};
@@ -179,8 +180,8 @@ private:
     //! Layout #settingsid, #original_layout_name
     QHash<const QString, QString> m_originalLayoutNames;
 
-    QList<int> o_settings;
-    QStringList o_settingsLayouts;
+    QList<int> o_settingsOriginalData;
+    Settings::Data::LayoutsTable o_layoutsOriginalData;
 };
 
 }
