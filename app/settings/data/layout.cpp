@@ -20,7 +20,6 @@
 
 #include "layout.h"
 
-
 namespace Latte {
 namespace Settings {
 namespace Data {
@@ -38,6 +37,7 @@ Layout::Layout(const Layout &o)
       name(o.name),
       background(o.background),
       backgroundTextColor(o.backgroundTextColor),
+      isActive(o.isActive),
       isLocked(o.isLocked),
       isShownInMenu(o.isShownInMenu),
       hasDisabledBorders(o.hasDisabledBorders),
@@ -52,6 +52,7 @@ Layout &Layout::operator=(const Layout &rhs)
     name = rhs.name;
     background = rhs.background;
     backgroundTextColor = rhs.backgroundTextColor;
+    isActive = rhs.isActive;
     isLocked = rhs.isLocked;
     isShownInMenu = rhs.isShownInMenu;
     hasDisabledBorders = rhs.hasDisabledBorders;
@@ -67,6 +68,7 @@ bool Layout::operator==(const Layout &rhs) const
             && (name == rhs.name)
             && (background == rhs.background)
             && (backgroundTextColor == rhs.backgroundTextColor)
+            && (isActive == rhs.isActive)
             && (isLocked == rhs.isLocked)
             && (isShownInMenu == rhs.isShownInMenu)
             && (hasDisabledBorders == rhs.hasDisabledBorders)
@@ -87,3 +89,4 @@ bool Layout::isShared() const
 }
 }
 }
+

@@ -45,7 +45,7 @@ LayoutsTable &LayoutsTable::operator=(const LayoutsTable &rhs)
 LayoutsTable &LayoutsTable::operator<<(const Layout &rhs)
 {
     if (!rhs.id.isEmpty()) {
-        m_layouts[rhs.id] = rhs;
+        m_layouts << rhs;
     }
 
     return (*this);
@@ -53,12 +53,16 @@ LayoutsTable &LayoutsTable::operator<<(const Layout &rhs)
 
 bool LayoutsTable::operator==(const LayoutsTable &rhs) const
 {
-    if (m_layouts.keys().count() != rhs.m_layouts.keys().count()) {
+    if (m_layouts.count() == 0 && rhs.m_layouts.count() == 0) {
+        return true;
+    }
+
+    if (m_layouts.count() != rhs.m_layouts.count()) {
         return false;
     }
 
-    for(const QString &id : m_layouts.keys()) {
-        if (!rhs.m_layouts.contains(id) || (m_layouts[id] != rhs.m_layouts[id])) {
+    for(int i=0; i<m_layouts.count(); ++i) {
+        if (m_layouts[i] != rhs.m_layouts[i]){
             return false;
         }
     }
@@ -73,19 +77,52 @@ bool LayoutsTable::operator!=(const LayoutsTable &rhs) const
 
 Layout &LayoutsTable::operator[](const QString &id)
 {
-    return m_layouts[id];
+    int pos{-1};
+
+    for(int i=0; i<m_layouts.count(); ++i) {
+        if (m_layouts[i].id == id){
+            pos = i;
+            break;
+        }
+    }
+
+    return m_layouts[pos];
 }
 
 const Layout LayoutsTable::operator[](const QString &id) const
 {
-    return m_layouts[id];
+    int pos{-1};
+
+    for(int i=0; i<m_layouts.count(); ++i) {
+        if (m_layouts[i].id == id){
+            pos = i;
+            break;
+        }
+    }
+
+    return m_layouts[pos];
+}
+
+Layout &LayoutsTable::operator[](const uint &index)
+{
+    return m_layouts[index];
+}
+
+const Layout LayoutsTable::operator[](const uint &index) const
+{
+    return (*this)[index];
 }
 
 bool LayoutsTable::contains(const QString &id) const
 {
-    return m_layouts.contains(id);
-}
+    for(int i=0; i<m_layouts.count(); ++i) {
+        if (m_layouts[i].id == id){
+            return true;
+        }
+    }
 
+    return false;
+}
 
 }
 }

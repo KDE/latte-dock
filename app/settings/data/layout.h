@@ -21,6 +21,7 @@
 #ifndef SETTINGSDATALAYOUT_H
 #define SETTINGSDATALAYOUT_H
 
+#include <QMetaType>
 #include <QString>
 #include <QStringList>
 
@@ -42,6 +43,7 @@ public:
     QString name;
     QString background;
     QString backgroundTextColor;
+    bool isActive{false};
     bool isLocked{false};
     bool isShownInMenu{false};
     bool hasDisabledBorders{false};
@@ -60,5 +62,7 @@ public:
 }
 }
 }
+
+Q_DECLARE_METATYPE(Latte::Settings::Data::Layout)
 
 #endif

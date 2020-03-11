@@ -23,7 +23,7 @@
 
 #include "layout.h"
 
-#include <QHash>
+#include <QList>
 
 namespace Latte {
 namespace Settings {
@@ -43,12 +43,14 @@ public:
     bool operator!=(const LayoutsTable &rhs) const;
     Layout &operator[](const QString &id);
     const Layout operator[](const QString &id) const;
+    Layout &operator[](const uint &index);
+    const Layout operator[](const uint &index) const;
 
     bool contains(const QString &id) const;
 
 protected:
     //! #id, layout_record
-    QHash<QString, Layout> m_layouts;
+    QList<Layout> m_layouts;
 
 };
 
