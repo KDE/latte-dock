@@ -129,8 +129,7 @@ private:
     void recalculateAvailableActivities();
 
     void appendLayout(Settings::Data::Layout &layout);
-    //void insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu, bool disabledBorders,
-    //                           QStringList activities, bool locked = false);
+
     void updateApplyButtonsState();
     void updateSharedLayoutsStates();
     void updateSharedLayoutsUiElements();
