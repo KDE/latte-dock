@@ -23,6 +23,8 @@
 
 // Qt
 #include <QDebug>
+#include <QFont>
+#include <QIcon>
 
 // KDE
 #include <KLocalizedString>
@@ -114,34 +116,67 @@ void Layouts::remove(const int &row)
 QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation != Qt::Horizontal) {
-        return QVariant{};
+        return QAbstractTableModel::headerData(section, orientation, role);
+    }
+
+    if (role == Qt::FontRole) {
+        QFont font = qvariant_cast<QFont>(QAbstractTableModel::headerData(section, orientation, role));
+        font.setBold(true);
+        return font;
     }
 
     switch(section) {
     case IDCOLUMN:
-        return QString("#path");
+        if (role == Qt::DisplayRole) {
+            return QString("#path");
+        }
+        break;
     case HIDDENTEXTCOLUMN:
-        //! QIcon::fromTheme("games-config-background")
-        return QString(i18nc("column for layout background", "Background"));
+        if (role == Qt::DisplayRole) {
+            return QString("#hidden_text");
+        }
+        break;
     case COLORCOLUMN:
-        return QString(i18nc("column for layout name", "Name"));
+        if (role == Qt::DisplayRole) {
+            return QString(i18nc("column for layout background", "Background"));
+        } else if (role == Qt::DecorationRole) {
+            return QIcon::fromTheme("games-config-background");
+        }
+        break;
     case NAMECOLUMN:
-        return QString(i18nc("column for layout to show in menu", "In Menu"));
+        if (role == Qt::DisplayRole) {
+            return QString(i18nc("column for layout name", "Name"));
+        }
+        break;
     case MENUCOLUMN:
-        return QString(i18nc("column for layout to show in menu", "In Menu"));
+        if (role == Qt::DisplayRole) {
+            return QString(i18nc("column for layout to show in menu", "In Menu"));
+        }
+        break;
     case BORDERSCOLUMN:
-        return QString(i18nc("column for layout to hide borders for maximized windows", "Borderless"));
+        if (role == Qt::DisplayRole) {
+            return QString(i18nc("column for layout to hide borders for maximized windows", "Borderless"));
+        }
+        break;
     case ACTIVITYCOLUMN:
-        //! QIcon::fromTheme("activities")
-        return QString(i18nc("column for layout to show which activities is assigned to", "Activities"));
+        if (role == Qt::DisplayRole) {
+            return QString(i18nc("column for layout to show which activities is assigned to", "Activities"));
+        } else if (role == Qt::DecorationRole) {
+            return QIcon::fromTheme("activities");
+        }
+        break;
     case SHAREDCOLUMN:
-        //! QIcon::fromTheme("document-share")
-        return QString(i18nc("column for shared layout to show which layouts is assigned to", "Shared To"));
+        if (role == Qt::DisplayRole) {
+            return QString(i18nc("column for shared layout to show which layouts is assigned to", "Shared To"));
+        } else if (role == Qt::DecorationRole) {
+            return QIcon::fromTheme("document-share");
+        }
+        break;
     default:
         break;
     };
 
-    return QVariant{};
+    return QAbstractTableModel::headerData(section, orientation, role);
 }
 
 QVariant Layouts::data(const QModelIndex &index, int role) const
@@ -198,6 +233,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         if (role == Qt::DisplayRole || role == Qt::UserRole) {
             return m_layoutsTable[row].shares;
         }
+        break;
     default:
         return QVariant{};
     };
@@ -227,4 +263,3 @@ void Layouts::setCurrentData(Data::LayoutsTable &data)
 }
 }
 }
-
