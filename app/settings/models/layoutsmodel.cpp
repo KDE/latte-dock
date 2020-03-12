@@ -76,7 +76,7 @@ int Layouts::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
 
-    return SHAREDCOLUMN;
+    return SHAREDCOLUMN+1;
 }
 
 void Layouts::clear()
@@ -136,7 +136,7 @@ QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role)
             return QString("#hidden_text");
         }
         break;
-    case COLORCOLUMN:
+    case BACKGROUNDCOLUMN:
         if (role == Qt::DisplayRole) {
             return QString(i18nc("column for layout background", "Background"));
         } else if (role == Qt::DecorationRole) {
@@ -179,6 +179,40 @@ QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role)
     return QAbstractTableModel::headerData(section, orientation, role);
 }
 
+Qt::ItemFlags Layouts::flags(const QModelIndex &index) const
+{
+    const int column = index.column();
+    const int row = index.column();
+
+    auto flags = QAbstractTableModel::flags(index);
+
+    bool isShared = m_inMultipleMode && m_layoutsTable[row].isShared();
+
+    if (column == MENUCOLUMN || column == BORDERSCOLUMN) {
+        if (isShared) {
+            flags &= ~Qt::ItemIsEnabled;
+        } else {
+            flags |= Qt::ItemIsUserCheckable;
+        }
+    }
+
+    if (column == ACTIVITYCOLUMN) {
+        if (isShared) {
+            flags &= ~Qt::ItemIsEnabled;
+        } else {
+            flags |= Qt::ItemIsEditable;
+        }
+    }
+
+    if (column == BACKGROUNDCOLUMN
+            || column == NAMECOLUMN
+            || column == SHAREDCOLUMN) {
+        flags |= Qt::ItemIsEditable;
+    }
+
+    return flags;
+}
+
 QVariant Layouts::data(const QModelIndex &index, int role) const
 {
     const int row = index.row();
@@ -206,7 +240,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case HIDDENTEXTCOLUMN:
         return QVariant{};
-    case COLORCOLUMN:
+    case BACKGROUNDCOLUMN:
         return m_layoutsTable[row].background.isEmpty() ? m_layoutsTable[row].color : m_layoutsTable[row].background;
         break;
     case NAMECOLUMN:
