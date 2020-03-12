@@ -22,7 +22,9 @@
 #define SETTINGSLAYOUTSMODEL_H
 
 // local
+#include "../data/layoutdata.h"
 #include "../data/layoutstable.h"
+
 // Qt
 #include <QAbstractTableModel>
 #include <QModelIndex>
@@ -35,21 +37,34 @@ namespace Model {
 class Layouts : public QAbstractTableModel
 {
 public:
-    const int IDCOLUMN = 0;
-    const int HIDDENTEXTCOLUMN = 1;
-    const int COLORCOLUMN = 2;
-    const int NAMECOLUMN = 3;
-    const int MENUCOLUMN = 4;
-    const int BORDERSCOLUMN = 5;
-    const int ACTIVITYCOLUMN = 6;
-    const int SHAREDCOLUMN = 7;
+    enum Columns
+    {
+        IDCOLUMN = 0,
+        HIDDENTEXTCOLUMN,
+        COLORCOLUMN,
+        NAMECOLUMN,
+        MENUCOLUMN,
+        BORDERSCOLUMN,
+        ACTIVITYCOLUMN,
+        SHAREDCOLUMN
+    };
 
     explicit Layouts(QObject *parent = nullptr);
 
+    int rowCount() const;
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
 
     QVariant data(const QModelIndex &index, int role) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    const Data::Layout &at(const int &row);
+
+    void appendLayout(const Settings::Data::Layout &layout);
+    void clear();
+    void removeLayout(const QString &id);
+    void remove(const int &row);
+
+    const Data::LayoutsTable &currentData();
 
 private:
     Data::LayoutsTable m_layoutsTable;

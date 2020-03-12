@@ -103,7 +103,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
             , this, &SettingsDialog::restoreDefaults);
 
-    m_model = new QStandardItemModel(m_corona->layoutsManager()->layouts().count(), 6, this);
+    //m_model = new QStandardItemModel(m_corona->layoutsManager()->layouts().count(), 6, this);
+    m_model = new Settings::Model::Layouts(this);
 
     ui->layoutsView->setModel(m_model);
     ui->layoutsView->horizontalHeader()->setStretchLastSection(true);
@@ -203,7 +204,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     //! SIGNALS
 
-    connect(m_model, &QStandardItemModel::itemChanged, this, &SettingsDialog::itemChanged);
+   // connect(m_model, &QStandardItemModel::itemChanged, this, &SettingsDialog::itemChanged);
     connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [&]() {
         updatePerLayoutButtonsState();
         updateApplyButtonsState();
@@ -437,28 +438,25 @@ void SettingsDialog::on_copyButton_clicked()
         }
     }
 
-    QString tempDir = uniqueTempDirectory();
+    Settings::Data::Layout original = m_model->at(row);
+    Settings::Data::Layout copied = original;
 
-    QString id = m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
-    QString color = m_model->data(m_model->index(row, COLORCOLUMN), Qt::BackgroundRole).toString();
-    QString textColor = m_model->data(m_model->index(row, COLORCOLUMN), Qt::UserRole).toString();
-    QString layoutName = uniqueLayoutName(m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString());
-    bool menu = m_model->data(m_model->index(row, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
-    bool disabledBorders = m_model->data(m_model->index(row, BORDERSCOLUMN), Qt::DisplayRole).toString() == CheckMark;
+    copied.name = uniqueLayoutName(m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString());
+    copied.id = uniqueTempDirectory() + "/" + copied.name + ".layout.latte";;
+    copied.activities = QStringList();
+    copied.isLocked = false;
 
-    QString copiedId = tempDir + "/" + layoutName + ".layout.latte";
-    QFile(id).copy(copiedId);
-
-    QFileInfo newFileInfo(copiedId);
+    QFile(original.id).copy(copied.id);
+    QFileInfo newFileInfo(copied.id);
 
     if (newFileInfo.exists() && !newFileInfo.isWritable()) {
-        QFile(copiedId).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+        QFile(copied.id).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
     }
 
-    CentralLayout *settings = new CentralLayout(this, copiedId);
-    m_layouts[copiedId] = settings;
+    CentralLayout *settings = new CentralLayout(this, copied.id);
+    m_layouts[copied.id] = settings;
 
-    insertLayoutInfoAtRow(row + 1, copiedId, color, textColor, layoutName, menu, disabledBorders, QStringList(), false);
+    m_model->appendLayout(copied);
 
     ui->layoutsView->selectRow(row + 1);
 }
@@ -879,7 +877,7 @@ void SettingsDialog::apply()
     saveAllChanges();
 
     o_settingsOriginalData = currentSettings();
-    o_layoutsOriginalData = currentLayoutsSettings();
+    o_layoutsOriginalData = m_model->currentData();
 
     updateApplyButtonsState();
     updatePerLayoutButtonsState();
@@ -921,49 +919,44 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
         layoutName = CentralLayout::layoutName(file);
     }
 
-    QString copiedId;
+    Settings::Data::Layout copied;
 
     if (newTempDirectory) {
-        QString tempDir = uniqueTempDirectory();
-        copiedId = tempDir + "/" + layoutName + ".layout.latte";
-        QFile(file).copy(copiedId);
+        copied.id = uniqueTempDirectory() + "/" + layoutName + ".layout.latte";
+        QFile(file).copy(copied.id);
     } else {
-        copiedId = file;
+        copied.id = file;
     }
 
-    QFileInfo newFileInfo(copiedId);
+    QFileInfo newFileInfo(copied.id);
 
     if (newFileInfo.exists() && !newFileInfo.isWritable()) {
-        QFile(copiedId).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+        QFile(copied.id).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
     }
 
-    if (m_layouts.contains(copiedId)) {
-        CentralLayout *oldSettings = m_layouts.take(copiedId);
+    if (m_layouts.contains(copied.id)) {
+        CentralLayout *oldSettings = m_layouts.take(copied.id);
         delete oldSettings;
     }
 
-    CentralLayout *settings = new CentralLayout(this, copiedId);
-    m_layouts[copiedId] = settings;
+    CentralLayout *settings = new CentralLayout(this, copied.id);
+    m_layouts[copied.id] = settings;
 
-    QString id = copiedId;
-    QString color = settings->color();
-    QString textColor = settings->textColor();
-    QString background = settings->background();
-    bool menu = settings->showInMenu();
-    bool disabledBorders = settings->disableBordersForMaximizedWindows();
-    bool locked = !settings->isWritable();
+    copied.name = uniqueLayoutName(layoutName);
+    copied.color = settings->color();
+    copied.textColor = settings->textColor();
+    copied.background = settings->background();
+    copied.isLocked = !settings->isWritable();
+    copied.isShownInMenu = settings->showInMenu();
+    copied.hasDisabledBorders = settings->disableBordersForMaximizedWindows();
 
-    layoutName = uniqueLayoutName(layoutName);
-
-    int row = ascendingRowFor(layoutName);
-
-    if (background.isEmpty()) {
-        insertLayoutInfoAtRow(row, copiedId, color, QString(), layoutName, menu, disabledBorders, QStringList(), locked);
-    } else {
-        insertLayoutInfoAtRow(row, copiedId, background, textColor, layoutName, menu, disabledBorders, QStringList(), locked);
+    if (copied.background.isEmpty()) {
+        copied.textColor = QString();
     }
 
-    ui->layoutsView->selectRow(row);
+    m_model->appendLayout(copied);
+
+  //  ui->layoutsView->selectRow(row);
 
     if (showNotification) {
         //NOTE: The pointer is automatically deleted when the event is closed
@@ -987,38 +980,43 @@ void SettingsDialog::loadSettings()
     }
 
     for (const auto layout : m_corona->layoutsManager()->layouts()) {
-        QString layoutPath = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
-        m_initLayoutPaths.append(layoutPath);
+        Settings::Data::Layout original;
+        original.id = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
 
-        CentralLayout *central = new CentralLayout(this, layoutPath);
-        m_layouts[layoutPath] = central;
+        CentralLayout *central = new CentralLayout(this, original.id);
 
-        QString background = central->background();
+        original.name = central->name();
+        original.background = central->background();
+        original.color = central->color();
+        original.textColor = central->textColor();
+        original.isLocked = !central->isWritable();
+        original.isShownInMenu = central->showInMenu();
+        original.hasDisabledBorders = central->disableBordersForMaximizedWindows();
+        original.activities = central->activities();
 
         //! add central layout properties
-        if (background.isEmpty()) {
-            insertLayoutInfoAtRow(i, layoutPath, central->color(), QString(), central->name(),
-                                  central->showInMenu(), central->disableBordersForMaximizedWindows(),
-                                  central->activities(), !central->isWritable());
-        } else {
-            insertLayoutInfoAtRow(i, layoutPath, background, central->textColor(), central->name(),
-                                  central->showInMenu(), central->disableBordersForMaximizedWindows(),
-                                  central->activities(), !central->isWritable());
+        if (original.background.isEmpty()) {
+            original.textColor = QString();
         }
+
+        m_initLayoutPaths.append(original.id);
+        m_layouts[original.id] = central;
 
         //! create initial SHARES maps
         QString shared = central->sharedLayoutName();
         if (!shared.isEmpty()) {
-            m_sharesMap[shared].append(layoutPath);
+            m_sharesMap[shared].append(original.id);
         }
+
+        m_model->appendLayout(original);
 
         qDebug() << "counter:" << i << " total:" << m_model->rowCount();
 
         i++;
 
-        if (central->name() == m_corona->layoutsManager()->currentLayoutName()) {
+        /*if (central->name() == m_corona->layoutsManager()->currentLayoutName()) {
             ui->layoutsView->selectRow(i - 1);
-        }
+        }*/
 
         Layout::GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(central->name());
 
@@ -1056,16 +1054,6 @@ void SettingsDialog::loadSettings()
         }
     }
 
-    m_model->setHorizontalHeaderItem(IDCOLUMN, new QStandardItem(QString("#path")));
-    m_model->setHorizontalHeaderItem(COLORCOLUMN, new QStandardItem(QIcon::fromTheme("games-config-background"),
-                                                                    QString(i18nc("column for layout background", "Background"))));
-    m_model->setHorizontalHeaderItem(NAMECOLUMN, new QStandardItem(QString(i18nc("column for layout name", "Name"))));
-    m_model->setHorizontalHeaderItem(MENUCOLUMN, new QStandardItem(QString(i18nc("column for layout to show in menu", "In Menu"))));
-    m_model->setHorizontalHeaderItem(BORDERSCOLUMN, new QStandardItem(QString(i18nc("column for layout to hide borders for maximized windows", "Borderless"))));
-    m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QIcon::fromTheme("activities"),
-                                                                       QString(i18nc("column for layout to show which activities is assigned to", "Activities"))));
-    m_model->setHorizontalHeaderItem(SHAREDCOLUMN, new QStandardItem(QIcon::fromTheme("document-share"),
-                                                                     QString(i18nc("column for shared layout to show which layouts is assigned to", "Shared To"))));
 
     //! this line should be commented for debugging layouts window functionality
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
@@ -1112,7 +1100,7 @@ void SettingsDialog::loadSettings()
     }
 
     o_settingsOriginalData = currentSettings();
-    o_layoutsOriginalData = currentLayoutsSettings();
+    o_layoutsOriginalData = m_model->currentData();
     updateApplyButtonsState();
     updateSharedLayoutsUiElements();
 
@@ -1146,31 +1134,26 @@ QList<int> SettingsDialog::currentSettings()
     return settings;
 }
 
-Settings::Data::LayoutsTable SettingsDialog::currentLayoutsSettings()
+void SettingsDialog::appendLayout(Settings::Data::Layout &layout)
 {
-    Settings::Data::LayoutsTable layoutSettings;
-
-    for (int i = 0; i < m_model->rowCount(); ++i) {
-        Settings::Data::Layout layoutData;
-
-        layoutData.id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
-        layoutData.background = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
-        layoutData.backgroundTextColor = m_model->data(m_model->index(i, COLORCOLUMN), Qt::UserRole).toString();
-        layoutData.name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
-        layoutData.isLocked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
-        layoutData.isShownInMenu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
-        layoutData.hasDisabledBorders = m_model->data(m_model->index(i, BORDERSCOLUMN), Qt::DisplayRole).toString() == CheckMark;
-        layoutData.activities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
-        layoutData.shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
-
-        layoutSettings << layoutData;
+    //! Add Free Activities record
+    if (layout.activities.isEmpty()) {
+        if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
+            if (m_corona->layoutsManager()->currentLayoutName() == layout.name) {
+                layout.activities << FREEACTIVITIESID;
+            }
+        } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+            if (m_corona->layoutsManager()->synchronizer()->centralLayout(layout.name)) {
+                layout.activities << FREEACTIVITIESID;
+            }
+        }
     }
 
-    return layoutSettings;
+    m_model->appendLayout(layout);
 }
 
 
-void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu,
+/*void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu,
                                            bool disabledBorders, QStringList activities, bool locked)
 {
     QStandardItem *pathItem = new QStandardItem(path);
@@ -1256,7 +1239,7 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
     }
 
     m_model->setData(m_model->index(row, ACTIVITYCOLUMN), activities, Qt::UserRole);
-}
+}*/
 
 
 void SettingsDialog::on_switchButton_clicked()
@@ -1315,30 +1298,30 @@ void SettingsDialog::layoutsChanged()
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QModelIndex nameIndex = m_model->index(i, NAMECOLUMN);
-        QVariant value = m_model->data(nameIndex);
+        QVariant value = m_model->data(nameIndex, Qt::DisplayRole);
 
         if (value.isValid()) {
             QString name = value.toString();
-            QFont font;
+           // QFont font;
 
             if (m_corona->layoutsManager()->currentLayoutName() == name) {
-                font.setBold(true);
+           //     font.setBold(true);
                 setCurrentFreeActivitiesLayout(i);
             } else {
                 Layout::GenericLayout *layout = m_corona->layoutsManager()->synchronizer()->layout(name);
 
                 if (layout && (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts)) {
-                    font.setBold(true);
+             //       font.setBold(true);
 
                     if (layout->appliedActivities().isEmpty()) {
                         setCurrentFreeActivitiesLayout(i);
                     }
                 } else {
-                    font.setBold(false);
+               //     font.setBold(false);
                 }
             }
 
-            m_model->setData(nameIndex, font, Qt::FontRole);
+         //   m_model->setData(nameIndex, font, Qt::FontRole);
         }
     }
 }
@@ -1384,7 +1367,7 @@ void SettingsDialog::updateApplyButtonsState()
 
     //! Ok, Apply Buttons
     if ((o_settingsOriginalData != currentSettings())
-            || (o_layoutsOriginalData != currentLayoutsSettings())) {
+            || (o_layoutsOriginalData != m_model->currentData())) {
         changed = true;
     }
 
@@ -1517,25 +1500,25 @@ void SettingsDialog::updateSharedLayoutsStates()
         QStringList shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
 
         if (shares.isEmpty() || !inMultiple) {
-            QStandardItem *item = m_model->item(i, MENUCOLUMN);
+ /*           QStandardItem *item = m_model->item(i, MENUCOLUMN);
             item->setEnabled(true);
             item = m_model->item(i, BORDERSCOLUMN);
             item->setEnabled(true);
             item = m_model->item(i, ACTIVITYCOLUMN);
-            item->setEnabled(true);
+            item->setEnabled(true);*/
         } else {
-            QStandardItem *item = m_model->item(i, MENUCOLUMN);
+/*            QStandardItem *item = m_model->item(i, MENUCOLUMN);
             item->setEnabled(false);
             item = m_model->item(i, BORDERSCOLUMN);
             item->setEnabled(false);
             item = m_model->item(i, ACTIVITYCOLUMN);
-            item->setEnabled(false);
+            item->setEnabled(false);*/
         }
 
         //! refresh LayoutName
-        QStandardItem *nameItem = m_model->item(i, NAMECOLUMN);
+/*        QStandardItem *nameItem = m_model->item(i, NAMECOLUMN);
         nameItem->setEnabled(false);
-        nameItem->setEnabled(true);
+        nameItem->setEnabled(true);*/
     }  
 }
 
@@ -1841,10 +1824,10 @@ bool SettingsDialog::saveAllChanges()
         for (const auto &newLayoutName : activeLayoutsToRename.keys()) {
             //! broadcast the name change
             int row = rowForName(newLayoutName);
-            QStandardItem *item = m_model->item(row, NAMECOLUMN);
+       /*     QStandardItem *item = m_model->item(row, NAMECOLUMN);
             if (item) {
                 emit itemChanged(item);
-            }
+            }*/
         }
     }
 

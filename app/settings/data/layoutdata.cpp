@@ -35,8 +35,9 @@ Layout::~Layout()
 Layout::Layout(const Layout &o)
     : id(o.id),
       name(o.name),
+      color(o.color),
       background(o.background),
-      backgroundTextColor(o.backgroundTextColor),
+      textColor(o.textColor),
       isActive(o.isActive),
       isLocked(o.isLocked),
       isShownInMenu(o.isShownInMenu),
@@ -50,8 +51,9 @@ Layout &Layout::operator=(const Layout &rhs)
 {
     id = rhs.id;
     name = rhs.name;
+    color = rhs.color;
     background = rhs.background;
-    backgroundTextColor = rhs.backgroundTextColor;
+    textColor = rhs.textColor;
     isActive = rhs.isActive;
     isLocked = rhs.isLocked;
     isShownInMenu = rhs.isShownInMenu;
@@ -66,8 +68,9 @@ bool Layout::operator==(const Layout &rhs) const
 {
     return (id == rhs.id)
             && (name == rhs.name)
+            && (color == rhs.color)
             && (background == rhs.background)
-            && (backgroundTextColor == rhs.backgroundTextColor)
+            && (textColor == rhs.textColor)
             && (isActive == rhs.isActive)
             && (isLocked == rhs.isLocked)
             && (isShownInMenu == rhs.isShownInMenu)

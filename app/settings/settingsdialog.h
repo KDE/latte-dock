@@ -25,6 +25,7 @@
 // local
 #include "../liblatte2/types.h"
 #include "data/layoutstable.h"
+#include "models/layoutsmodel.h"
 
 // Qt
 #include <QObject>
@@ -126,8 +127,10 @@ private:
     void blockDeleteOnActivityStopped();
     void loadSettings();
     void recalculateAvailableActivities();
-    void insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu, bool disabledBorders,
-                               QStringList activities, bool locked = false);
+
+    void appendLayout(Settings::Data::Layout &layout);
+    //void insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu, bool disabledBorders,
+    //                           QStringList activities, bool locked = false);
     void updateApplyButtonsState();
     void updateSharedLayoutsStates();
     void updateSharedLayoutsUiElements();
@@ -149,7 +152,6 @@ private:
     QString uniqueLayoutName(QString name);
 
     QList<int> currentSettings();
-    Settings::Data::LayoutsTable currentLayoutsSettings();
 
 private:
     int m_currentFreeActivitiesLayout{-1};
@@ -171,7 +173,8 @@ private:
 
     QAction *m_editLayoutAction{nullptr};
 
-    QStandardItemModel *m_model{nullptr};
+    //QStandardItemModel *m_model{nullptr};
+    Settings::Model::Layouts *m_model{nullptr};
     Ui::SettingsDialog *ui;
 
     //! SharedLayout #settingsid, Shares #settingsid

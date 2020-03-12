@@ -41,8 +41,9 @@ public:
     //! Layout data
     QString id;
     QString name;
+    QString color;
     QString background;
-    QString backgroundTextColor;
+    QString textColor;
     bool isActive{false};
     bool isLocked{false};
     bool isShownInMenu{false};

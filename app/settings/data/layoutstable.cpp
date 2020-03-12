@@ -110,7 +110,7 @@ Layout &LayoutsTable::operator[](const uint &index)
 
 const Layout LayoutsTable::operator[](const uint &index) const
 {
-    return (*this)[index];
+    return m_layouts[index];
 }
 
 bool LayoutsTable::contains(const QString &id) const
@@ -124,10 +124,48 @@ bool LayoutsTable::contains(const QString &id) const
     return false;
 }
 
+bool LayoutsTable::rowExists(const int &row) const
+{
+    return (m_layouts.count()>=0 && row>=0 && row<rowCount());
+}
+
+int LayoutsTable::indexOf(const QString &id) const
+{
+    for(int i=0; i<m_layouts.count(); ++i) {
+        if (m_layouts[i].id == id){
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 int LayoutsTable::rowCount() const
 {
     return m_layouts.count();
 }
+
+void LayoutsTable::clear()
+{
+    m_layouts.clear();
+}
+
+void LayoutsTable::removeLayout(const QString &id)
+{
+    const int pos = indexOf(id);
+
+    if (pos >= 0) {
+        m_layouts.removeAt(pos);
+    }
+}
+
+void LayoutsTable::remove(const int &row)
+{
+    if (rowExists(row)) {
+        m_layouts.removeAt(row);
+    }
+}
+
 
 }
 }

@@ -47,7 +47,15 @@ public:
     const Layout operator[](const uint &index) const;
 
     bool contains(const QString &id) const;
+    bool rowExists(const int &row) const;
+
+    int indexOf(const QString &id) const;
     int rowCount() const;
+
+    void clear();
+    void remove(const int &row);
+    void removeLayout(const QString &id);
+
 
 protected:
     //! #id, layout_record
