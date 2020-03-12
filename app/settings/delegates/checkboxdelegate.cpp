@@ -139,7 +139,7 @@ bool CheckBoxDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
     }
 
     const QChar CheckMark{0x2714};
-    return model->setData(index, value == CheckMark ? QString("") : CheckMark, Qt::DisplayRole);
+    return model->setData(index, value == CheckMark ? false : true, Qt::DisplayRole);
 }
 
 }

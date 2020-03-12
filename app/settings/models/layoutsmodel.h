@@ -78,6 +78,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     const Data::Layout &at(const int &row);
 
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
 
     void appendLayout(const Settings::Data::Layout &layout);

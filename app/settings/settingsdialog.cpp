@@ -527,9 +527,9 @@ void SettingsDialog::on_lockedButton_clicked()
         return;
     }
 
-    bool lockedModel = m_model->data(m_model->index(row, NAMECOLUMN), Qt::UserRole).toBool();
+    bool lockedModel = m_model->data(m_model->index(row, NAMECOLUMN), Settings::Model::Layouts::LAYOUTISLOCKEDROLE).toBool();
 
-    m_model->setData(m_model->index(row, NAMECOLUMN), QVariant(!lockedModel), Qt::UserRole);
+    m_model->setData(m_model->index(row, NAMECOLUMN), !lockedModel, Settings::Model::Layouts::LAYOUTISLOCKEDROLE);
 
     updatePerLayoutButtonsState();
     updateApplyButtonsState();

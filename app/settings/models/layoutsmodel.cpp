@@ -275,6 +275,91 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     return QVariant{};
 }
 
+bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    const int row = index.row();
+    const int column = index.column();
+
+    if (!m_layoutsTable.rowExists(row) || column<0 || column >= SHAREDCOLUMN) {
+        return false;
+    }
+
+    QVector<int> roles;
+    roles << role;
+
+    //! common roles for all row cells
+    if (role == LAYOUTISLOCKEDROLE) {
+        m_layoutsTable[row].isLocked = value.toBool();
+        emit dataChanged(this->index(row,0), this->index(row,SHAREDCOLUMN), roles);
+        return true;
+    }
+
+    //! specific roles to each independent cell
+    switch (column) {
+    case IDCOLUMN:
+        if (role == Qt::DisplayRole) {
+            m_layoutsTable[row].id = value.toString();
+            emit dataChanged(index, index, roles);
+            return true;
+        }
+        break;
+    case HIDDENTEXTCOLUMN:
+        return true;
+        break;
+    case BACKGROUNDCOLUMN:
+        if (role == Qt::BackgroundRole) {
+            QString back = value.toString();
+
+            if (back.startsWith("/")) {
+                m_layoutsTable[row].background = back;
+            } else {
+                m_layoutsTable[row].background = QString();
+                m_layoutsTable[row].color = back;
+            }
+            emit dataChanged(index, index, roles);
+            return true;
+        }
+        break;
+    case NAMECOLUMN:
+        if (role == Qt::DisplayRole) {
+            m_layoutsTable[row].name = value.toString();
+            emit dataChanged(index, index, roles);
+            return true;
+        }
+        break;
+    case MENUCOLUMN:
+        if (role == Qt::DisplayRole) {
+            m_layoutsTable[row].isShownInMenu = value.toBool();
+            emit dataChanged(index, index, roles);
+            return true;
+        }
+        break;
+    case BORDERSCOLUMN:
+        if (role == Qt::DisplayRole) {
+            m_layoutsTable[row].hasDisabledBorders = value.toBool();
+            emit dataChanged(index, index, roles);
+            return true;
+        }
+        break;
+    case ACTIVITYCOLUMN:
+        if (role == Qt::UserRole) {
+            m_layoutsTable[row].activities = value.toStringList();
+            emit dataChanged(index, index, roles);
+            return true;
+        }
+        break;
+    case SHAREDCOLUMN:
+        if (role == Qt::UserRole) {
+            m_layoutsTable[row].shares = value.toStringList();
+            emit dataChanged(index, index, roles);
+            return true;
+        }
+        break;
+    };
+
+    return false;
+}
+
 const Data::Layout &Layouts::at(const int &row)
 {
     return m_layoutsTable[row];
