@@ -128,10 +128,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         colors.append(color);
     }
 
-    ui->layoutsView->setItemDelegateForColumn(NAMECOLUMN, new LayoutNameDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(NAMECOLUMN, new Settings::View::LayoutNameDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new ColorCmbBoxDelegate(this, iconsPath, colors));
-    ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
-    ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new CheckBoxDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new Settings::View::CheckBoxDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new Settings::View::CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivitiesDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new SharedDelegate(this));
 
@@ -979,6 +979,8 @@ void SettingsDialog::loadSettings()
         m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
     }
 
+    Settings::Data::LayoutsTable layoutsBuffer;
+
     for (const auto layout : m_corona->layoutsManager()->layouts()) {
         Settings::Data::Layout original;
         original.id = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
@@ -989,6 +991,7 @@ void SettingsDialog::loadSettings()
         original.background = central->background();
         original.color = central->color();
         original.textColor = central->textColor();
+        original.isActive = (m_corona->layoutsManager()->synchronizer()->layout(original.name) != nullptr);
         original.isLocked = !central->isWritable();
         original.isShownInMenu = central->showInMenu();
         original.hasDisabledBorders = central->disableBordersForMaximizedWindows();
@@ -1008,15 +1011,11 @@ void SettingsDialog::loadSettings()
             m_sharesMap[shared].append(original.id);
         }
 
-        m_model->appendLayout(original);
+        layoutsBuffer << original;
 
         qDebug() << "counter:" << i << " total:" << m_model->rowCount();
 
         i++;
-
-        /*if (central->name() == m_corona->layoutsManager()->currentLayoutName()) {
-            ui->layoutsView->selectRow(i - 1);
-        }*/
 
         Layout::GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(central->name());
 
@@ -1026,34 +1025,36 @@ void SettingsDialog::loadSettings()
     }
 
     //! update SHARES map keys in order to use the #settingsid(s)
-    QStringList forremoval;
+    QStringList tempSharedNames;
 
     //! remove these records after updating
     for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
-        forremoval << i.key();
+        tempSharedNames << i.key();
     }
 
     //! update keys
     for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
-        QString shareid = idForRow(rowForName(i.key()));
-        m_sharesMap[shareid] = i.value();
+        QString shareid = layoutsBuffer.idForName(i.key());
+        if (!shareid.isEmpty()) {
+            m_sharesMap[shareid] = i.value();
+        }
     }
 
     //! remove deprecated keys
-    for (const auto &key : forremoval) {
+    for (const auto &key : tempSharedNames) {
         m_sharesMap.remove(key);
     }
 
     qDebug() << "SHARES MAP ::: " << m_sharesMap;
 
     for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
-        int sharedPos = rowForId(i.key());
-
-        if (sharedPos >= 0) {
-            m_model->setData(m_model->index(sharedPos, SHAREDCOLUMN), i.value(), Qt::UserRole);
-        }
+        layoutsBuffer[i.key()].shares = i.value();
     }
 
+    //! Send original loaded data to model
+    m_model->setCurrentData(layoutsBuffer);
+
+    ui->layoutsView->selectRow(rowForName(m_corona->layoutsManager()->currentLayoutName()));
 
     //! this line should be commented for debugging layouts window functionality
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
@@ -1075,11 +1076,15 @@ void SettingsDialog::loadSettings()
         }
     }
 
-    if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
-        ui->singleToolBtn->setChecked(true);
-    } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+    bool inMultiple{m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts};
+
+    if (inMultiple) {
         ui->multipleToolBtn->setChecked(true);
+    } else {
+        ui->singleToolBtn->setChecked(true);
     }
+
+    m_model->setInMultipleMode(inMultiple);
 
     updatePerLayoutButtonsState();
     updateSharedLayoutsStates();

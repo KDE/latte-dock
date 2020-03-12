@@ -18,7 +18,7 @@
 */
 
 #include "layoutnamedelegate.h"
-
+#include "../models/layoutsmodel.h"
 // local
 #include "../settingsdialog.h"
 #include "../tools/settingstools.h"
@@ -33,7 +33,9 @@
 #include <QPainter>
 #include <QStandardItemModel>
 
-const int HIDDENTEXTCOLUMN = 1;
+namespace Latte {
+namespace Settings {
+namespace View {
 
 LayoutNameDelegate::LayoutNameDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
@@ -47,14 +49,16 @@ LayoutNameDelegate::LayoutNameDelegate(QObject *parent)
 
 void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    bool isLocked = index.data(Qt::UserRole).toBool();
-    bool isShared = m_settingsDialog->isShared(index.row()) && m_settingsDialog->inMultipleLayoutsLook();
+    bool isLocked = index.data(Model::Layouts::LAYOUTISLOCKEDROLE).toBool();
+    bool isShared = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSMODE).toBool();
+    bool isActive = index.data(Model::Layouts::LAYOUTISACTIVEROLE).toBool();
 
     bool showTwoIcons = isLocked && isShared;
 
     QStyleOptionViewItem adjustedOption = option;
     //! Remove the focus dotted lines
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
+    adjustedOption.displayAlignment = Qt::AlignHCenter;
 
     if (isLocked || isShared) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
@@ -76,6 +80,9 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         QStyleOptionViewItem myOptionS = adjustedOption;
         QStyleOptionViewItem myOptionE = adjustedOption;
         QStyleOptionViewItem myOptionMain = adjustedOption;
+
+        myOptionMain.font.setBold(isActive);
+
         myOptionS.rect = destinationS;
         myOptionE.rect = destinationE;
         myOptionMain.rect.setX(option.rect.x() + startWidth);
@@ -84,9 +91,9 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         QStyledItemDelegate::paint(painter, myOptionMain, index);
 
         //! draw background at edges
-        QStyledItemDelegate::paint(painter, myOptionS, model->index(index.row(), HIDDENTEXTCOLUMN));
+        QStyledItemDelegate::paint(painter, myOptionS, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
-        QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), HIDDENTEXTCOLUMN));
+        QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
         //! Lock Icon
         QIcon firstIcon = isLocked && !showTwoIcons ? QIcon::fromTheme("object-locked") : QIcon::fromTheme("document-share");
@@ -111,6 +118,10 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         return;
     }
 
+    adjustedOption.font.setBold(isActive);
     QStyledItemDelegate::paint(painter, adjustedOption, index);
 }
 
+}
+}
+}

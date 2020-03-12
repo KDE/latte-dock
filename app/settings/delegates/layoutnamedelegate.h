@@ -27,15 +27,22 @@ namespace Latte {
 class SettingsDialog;
 }
 
+namespace Latte {
+namespace Settings {
+namespace View {
+
 class LayoutNameDelegate : public QStyledItemDelegate
 {
 public:
     LayoutNameDelegate(QObject *parent = 0);
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
     Latte::SettingsDialog *m_settingsDialog{nullptr};
 };
 
+}
+}
+}
 #endif

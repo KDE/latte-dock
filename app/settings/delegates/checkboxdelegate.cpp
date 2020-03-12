@@ -21,6 +21,7 @@
 
 // local
 #include "../settingsdialog.h"
+#include "../models/layoutsmodel.h"
 #include "../tools/settingstools.h"
 
 // Qt
@@ -32,7 +33,9 @@
 #include <QPainter>
 #include <QStandardItemModel>
 
-const int HIDDENTEXTCOLUMN = 1;
+namespace Latte {
+namespace Settings {
+namespace View {
 
 CheckBoxDelegate::CheckBoxDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
@@ -49,10 +52,11 @@ void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     QStyleOptionViewItem adjustedOption = option;
     //! Remove the focus dotted lines
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
+    adjustedOption.displayAlignment = Qt::AlignHCenter;
 
     if (adjustedOption.state & QStyle::State_Enabled) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
-        QStyledItemDelegate::paint(painter, adjustedOption, model->index(index.row(), HIDDENTEXTCOLUMN));
+        QStyledItemDelegate::paint(painter, adjustedOption, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
         QStyledItemDelegate::paint(painter, adjustedOption, index);
     } else {
@@ -136,4 +140,8 @@ bool CheckBoxDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
 
     const QChar CheckMark{0x2714};
     return model->setData(index, value == CheckMark ? QString("") : CheckMark, Qt::DisplayRole);
+}
+
+}
+}
 }

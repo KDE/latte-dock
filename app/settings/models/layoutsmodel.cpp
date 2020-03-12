@@ -39,6 +39,25 @@ Layouts::Layouts(QObject *parent)
 {
 }
 
+bool Layouts::inMultipleMode() const
+{
+    return m_inMultipleMode;
+}
+
+void Layouts::setInMultipleMode(bool inMultiple)
+{
+    if (m_inMultipleMode == inMultiple) {
+        return;
+    }
+
+    m_inMultipleMode = inMultiple;
+}
+
+QString Layouts::idForName(const QString &name)
+{
+    return m_layoutsTable.idForName(name);
+}
+
 int Layouts::rowCount() const
 {
     return m_layoutsTable.rowCount();
@@ -134,6 +153,16 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return QVariant{};
     }
 
+    if (role == LAYOUTISACTIVEROLE) {
+        return m_layoutsTable[row].isActive;
+    } else if (role == LAYOUTISLOCKEDROLE) {
+        return m_layoutsTable[row].isLocked;
+    } else if (role == LAYOUTISSHAREDROLE) {
+        return m_layoutsTable[row].isShared();
+    } else if (role == INMULTIPLELAYOUTSMODE) {
+        return inMultipleMode();
+    }
+
     switch (column) {
     case IDCOLUMN:
         if (role == Qt::DisplayRole) {
@@ -143,7 +172,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     case HIDDENTEXTCOLUMN:
         return QVariant{};
     case COLORCOLUMN:
-        return m_layoutsTable[row].background;
+        return m_layoutsTable[row].background.isEmpty() ? m_layoutsTable[row].color : m_layoutsTable[row].background;
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {
@@ -186,6 +215,14 @@ const Data::LayoutsTable &Layouts::currentData()
     return m_layoutsTable;
 }
 
+void Layouts::setCurrentData(Data::LayoutsTable &data)
+{
+    clear();
+
+    beginInsertRows(QModelIndex(), 0, data.rowCount() - 1);
+    m_layoutsTable = data;
+    endInsertRows();
+}
 
 }
 }

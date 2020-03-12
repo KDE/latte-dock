@@ -52,6 +52,8 @@ public:
     int indexOf(const QString &id) const;
     int rowCount() const;
 
+    QString idForName(const QString &name) const;
+
     void clear();
     void remove(const int &row);
     void removeLayout(const QString &id);

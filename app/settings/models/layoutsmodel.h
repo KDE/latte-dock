@@ -49,7 +49,25 @@ public:
         SHAREDCOLUMN
     };
 
+    enum LayoutUserRoles
+    {
+        LAYOUTISACTIVEROLE = Qt::UserRole + 1,
+        LAYOUTISLOCKEDROLE,
+        LAYOUTISSHAREDROLE,
+        LAYOUTNAMECHANGED,
+        INMULTIPLELAYOUTSMODE,
+        ACTIVITIESROLE,
+        RUNNINGACTIVITIESROLE,
+        SHARESROLE,
+        ACTIVESHARESROLE
+    };
+
     explicit Layouts(QObject *parent = nullptr);
+
+    bool inMultipleMode() const;
+    void setInMultipleMode(bool inMultiple);
+
+    QString idForName(const QString &name);
 
     int rowCount() const;
     int rowCount(const QModelIndex &parent) const override;
@@ -65,8 +83,10 @@ public:
     void remove(const int &row);
 
     const Data::LayoutsTable &currentData();
+    void setCurrentData(Data::LayoutsTable &data);
 
 private:
+    bool m_inMultipleMode{false};
     Data::LayoutsTable m_layoutsTable;
 };
 

@@ -145,6 +145,17 @@ int LayoutsTable::rowCount() const
     return m_layouts.count();
 }
 
+QString LayoutsTable::idForName(const QString &name) const
+{
+    for(int  i=0; i<m_layouts.count(); ++i) {
+        if (m_layouts[i].name == name) {
+            return m_layouts[i].id;
+        }
+    }
+
+    return QString();
+}
+
 void LayoutsTable::clear()
 {
     m_layouts.clear();
