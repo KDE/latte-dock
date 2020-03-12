@@ -18,7 +18,7 @@
  *
  */
 
-#include "layout.h"
+#include "layoutdata.h"
 
 namespace Latte {
 namespace Settings {

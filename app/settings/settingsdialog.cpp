@@ -34,7 +34,7 @@
 #include "../layouts/synchronizer.h"
 #include "../liblatte2/types.h"
 #include "../plasma/extended/theme.h"
-#include "data/layout.h"
+#include "data/layoutdata.h"
 #include "delegates/activitiesdelegate.h"
 #include "delegates/checkboxdelegate.h"
 #include "delegates/colorcmbboxdelegate.h"
@@ -1714,7 +1714,8 @@ bool SettingsDialog::saveAllChanges()
 
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
         //! update the generic parts of the layouts
-        Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].name);
+        bool isOriginalLayout = o_layoutsOriginalData.contains(id);
+        Layout::GenericLayout *genericActive= isOriginalLayout ?m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].name) : nullptr;
         Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
 
         //! unlock read-only layout
@@ -1740,7 +1741,7 @@ bool SettingsDialog::saveAllChanges()
         }
 
         //! update only the Central-specific layout parts
-        CentralLayout *centralActive= m_corona->layoutsManager()->synchronizer()->centralLayout(o_layoutsOriginalData[id].name);
+        CentralLayout *centralActive = isOriginalLayout ? m_corona->layoutsManager()->synchronizer()->centralLayout(o_layoutsOriginalData[id].name) : nullptr;
         CentralLayout *central = centralActive ? centralActive : m_layouts[id];
 
         if (central->showInMenu() != menu) {
@@ -1853,7 +1854,8 @@ bool SettingsDialog::saveAllChanges()
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
         bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
 
-        Layout::GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].name);
+        bool isOriginalLayout{o_layoutsOriginalData.contains(id)};
+        Layout::GenericLayout *generic = isOriginalLayout ? m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].name) : nullptr;
         Layout::GenericLayout *layout = generic ? generic : m_layouts[id];
 
         if (layout && locked && layout->isWritable()) {

@@ -124,6 +124,11 @@ bool LayoutsTable::contains(const QString &id) const
     return false;
 }
 
+int LayoutsTable::rowCount() const
+{
+    return m_layouts.count();
+}
+
 }
 }
 }

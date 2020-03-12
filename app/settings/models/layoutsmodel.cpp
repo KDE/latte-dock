@@ -18,45 +18,34 @@
  *
  */
 
-#ifndef SETTINGSDATALAYOUTSTABLE_H
-#define SETTINGSDATALAYOUTSTABLE_H
-
-#include "layoutdata.h"
-
-#include <QList>
+#include "layoutsmodel.h"
 
 namespace Latte {
 namespace Settings {
-namespace Data {
+namespace Model {
 
-class LayoutsTable
+Layouts::Layouts(QObject *parent)
+    : QAbstractTableModel(parent)
 {
+}
 
-public:
-    LayoutsTable();
-    ~LayoutsTable();
+int Layouts::rowCount(const QModelIndex &parent) const
+{
+    return m_layoutsTable.rowCount();
+}
 
-    //! Operators
-    LayoutsTable &operator=(const LayoutsTable &rhs);
-    LayoutsTable &operator<<(const Layout &rhs);
-    bool operator==(const LayoutsTable &rhs) const;
-    bool operator!=(const LayoutsTable &rhs) const;
-    Layout &operator[](const QString &id);
-    const Layout operator[](const QString &id) const;
-    Layout &operator[](const uint &index);
-    const Layout operator[](const uint &index) const;
+int Layouts::columnCount(const QModelIndex &parent) const
+{
+    return SHAREDCOLUMN;
+}
 
-    bool contains(const QString &id) const;
-    int rowCount() const;
+QVariant Layouts::data(const QModelIndex &index, int role) const
+{
+    return QVariant();
+}
 
-protected:
-    //! #id, layout_record
-    QList<Layout> m_layouts;
-
-};
 
 }
 }
 }
 
-#endif

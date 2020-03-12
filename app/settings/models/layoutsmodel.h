@@ -18,41 +18,41 @@
  *
  */
 
-#ifndef SETTINGSDATALAYOUTSTABLE_H
-#define SETTINGSDATALAYOUTSTABLE_H
+#ifndef SETTINGSLAYOUTSMODEL_H
+#define SETTINGSLAYOUTSMODEL_H
 
-#include "layoutdata.h"
+// local
+#include "../data/layoutstable.h"
+// Qt
+#include <QAbstractTableModel>
+#include <QModelIndex>
 
-#include <QList>
 
 namespace Latte {
 namespace Settings {
-namespace Data {
+namespace Model {
 
-class LayoutsTable
+class Layouts : public QAbstractTableModel
 {
-
 public:
-    LayoutsTable();
-    ~LayoutsTable();
+    const int IDCOLUMN = 0;
+    const int HIDDENTEXTCOLUMN = 1;
+    const int COLORCOLUMN = 2;
+    const int NAMECOLUMN = 3;
+    const int MENUCOLUMN = 4;
+    const int BORDERSCOLUMN = 5;
+    const int ACTIVITYCOLUMN = 6;
+    const int SHAREDCOLUMN = 7;
 
-    //! Operators
-    LayoutsTable &operator=(const LayoutsTable &rhs);
-    LayoutsTable &operator<<(const Layout &rhs);
-    bool operator==(const LayoutsTable &rhs) const;
-    bool operator!=(const LayoutsTable &rhs) const;
-    Layout &operator[](const QString &id);
-    const Layout operator[](const QString &id) const;
-    Layout &operator[](const uint &index);
-    const Layout operator[](const uint &index) const;
+    explicit Layouts(QObject *parent = nullptr);
 
-    bool contains(const QString &id) const;
-    int rowCount() const;
+    int rowCount(const QModelIndex &parent) const override;
+    int columnCount(const QModelIndex &parent) const override;
 
-protected:
-    //! #id, layout_record
-    QList<Layout> m_layouts;
+    QVariant data(const QModelIndex &index, int role) const override;
 
+private:
+    Data::LayoutsTable m_layoutsTable;
 };
 
 }
