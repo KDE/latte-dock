@@ -441,8 +441,8 @@ void SettingsDialog::on_copyButton_clicked()
     Settings::Data::Layout original = m_model->at(row);
     Settings::Data::Layout copied = original;
 
-    copied.name = uniqueLayoutName(m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString());
-    copied.id = uniqueTempDirectory() + "/" + copied.name + ".layout.latte";;
+    copied.setOriginalName(uniqueLayoutName(m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString()));
+    copied.id = uniqueTempDirectory() + "/" + copied.originalName() + ".layout.latte";;
     copied.activities = QStringList();
     copied.isLocked = false;
 
@@ -942,7 +942,7 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
     CentralLayout *settings = new CentralLayout(this, copied.id);
     m_layouts[copied.id] = settings;
 
-    copied.name = uniqueLayoutName(layoutName);
+    copied.setOriginalName(uniqueLayoutName(layoutName));
     copied.color = settings->color();
     copied.textColor = settings->textColor();
     copied.background = settings->background();
@@ -987,11 +987,11 @@ void SettingsDialog::loadSettings()
 
         CentralLayout *central = new CentralLayout(this, original.id);
 
-        original.name = central->name();
+        original.setOriginalName(central->name());
         original.background = central->background();
         original.color = central->color();
         original.textColor = central->textColor();
-        original.isActive = (m_corona->layoutsManager()->synchronizer()->layout(original.name) != nullptr);
+        original.isActive = (m_corona->layoutsManager()->synchronizer()->layout(original.originalName()) != nullptr);
         original.isLocked = !central->isWritable();
         original.isShownInMenu = central->showInMenu();
         original.hasDisabledBorders = central->disableBordersForMaximizedWindows();
@@ -1034,7 +1034,7 @@ void SettingsDialog::loadSettings()
 
     //! update keys
     for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
-        QString shareid = layoutsBuffer.idForName(i.key());
+        QString shareid = layoutsBuffer.idForOriginalName(i.key());
         if (!shareid.isEmpty()) {
             m_sharesMap[shareid] = i.value();
         }
@@ -1144,11 +1144,11 @@ void SettingsDialog::appendLayout(Settings::Data::Layout &layout)
     //! Add Free Activities record
     if (layout.activities.isEmpty()) {
         if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
-            if (m_corona->layoutsManager()->currentLayoutName() == layout.name) {
+            if (m_corona->layoutsManager()->currentLayoutName() == layout.originalName()) {
                 layout.activities << FREEACTIVITIESID;
             }
         } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-            if (m_corona->layoutsManager()->synchronizer()->centralLayout(layout.name)) {
+            if (m_corona->layoutsManager()->synchronizer()->centralLayout(layout.originalName())) {
                 layout.activities << FREEACTIVITIESID;
             }
         }
@@ -1252,7 +1252,7 @@ void SettingsDialog::itemChanged(QStandardItem *item)
 
         QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
         QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
-        QString originalName = o_layoutsOriginalData.contains(id) ? o_layoutsOriginalData[id].name : name;
+        QString originalName = o_layoutsOriginalData.contains(id) ? o_layoutsOriginalData[id].originalName() : name;
         QFont font = qvariant_cast<QFont>(m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::FontRole));
 
         if (m_corona->layoutsManager()->synchronizer()->layout(originalName)) {
@@ -1342,7 +1342,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
     QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
     QString nameInModel = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
-    QString originalName = o_layoutsOriginalData.contains(id) ? o_layoutsOriginalData[id].name : "";
+    QString originalName = o_layoutsOriginalData.contains(id) ? o_layoutsOriginalData[id].originalName() : "";
     bool lockedInModel = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::UserRole).toBool();
     bool sharedInModel = !m_model->data(m_model->index(currentRow, SHAREDCOLUMN), Qt::UserRole).toStringList().isEmpty();
     bool editable = !isActive(originalName) && !lockedInModel;
@@ -1501,7 +1501,7 @@ void SettingsDialog::showLayoutInformation()
     QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
     QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
 
-    Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].name);
+    Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].originalName());
     Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
 
     auto msg = new QMessageBox(this);
@@ -1519,7 +1519,7 @@ void SettingsDialog::showScreensInformation()
         QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
 
-        Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].name);
+        Layout::GenericLayout *genericActive= m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].originalName());
         Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
 
         QList<int> vScreens = generic->viewsScreens();
@@ -1613,7 +1613,7 @@ bool SettingsDialog::saveAllChanges()
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
         //! update the generic parts of the layouts
         bool isOriginalLayout = o_layoutsOriginalData.contains(id);
-        Layout::GenericLayout *genericActive= isOriginalLayout ?m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].name) : nullptr;
+        Layout::GenericLayout *genericActive= isOriginalLayout ?m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].originalName()) : nullptr;
         Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[id];
 
         //! unlock read-only layout
@@ -1639,7 +1639,7 @@ bool SettingsDialog::saveAllChanges()
         }
 
         //! update only the Central-specific layout parts
-        CentralLayout *centralActive = isOriginalLayout ? m_corona->layoutsManager()->synchronizer()->centralLayout(o_layoutsOriginalData[id].name) : nullptr;
+        CentralLayout *centralActive = isOriginalLayout ? m_corona->layoutsManager()->synchronizer()->centralLayout(o_layoutsOriginalData[id].originalName()) : nullptr;
         CentralLayout *central = centralActive ? centralActive : m_layouts[id];
 
         if (central->showInMenu() != menu) {
@@ -1753,7 +1753,7 @@ bool SettingsDialog::saveAllChanges()
         bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
 
         bool isOriginalLayout{o_layoutsOriginalData.contains(id)};
-        Layout::GenericLayout *generic = isOriginalLayout ? m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].name) : nullptr;
+        Layout::GenericLayout *generic = isOriginalLayout ? m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].originalName()) : nullptr;
         Layout::GenericLayout *layout = generic ? generic : m_layouts[id];
 
         if (layout && locked && layout->isWritable()) {
@@ -1962,7 +1962,7 @@ bool SettingsDialog::isActive(int row) const
 {
     QString id = m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
     if (o_layoutsOriginalData.contains(id)){
-        return (m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].name) != nullptr);
+        return (m_corona->layoutsManager()->synchronizer()->layout(o_layoutsOriginalData[id].originalName()) != nullptr);
     }
 
     return false;

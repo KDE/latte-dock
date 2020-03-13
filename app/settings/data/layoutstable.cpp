@@ -145,10 +145,21 @@ int LayoutsTable::rowCount() const
     return m_layouts.count();
 }
 
-QString LayoutsTable::idForName(const QString &name) const
+QString LayoutsTable::idForOriginalName(const QString &name) const
 {
     for(int  i=0; i<m_layouts.count(); ++i) {
-        if (m_layouts[i].name == name) {
+        if (m_layouts[i].originalName() == name) {
+            return m_layouts[i].id;
+        }
+    }
+
+    return QString();
+}
+
+QString LayoutsTable::idForEditedName(const QString &name) const
+{
+    for(int  i=0; i<m_layouts.count(); ++i) {
+        if ((m_layouts[i].editedName() == name)) {
             return m_layouts[i].id;
         }
     }

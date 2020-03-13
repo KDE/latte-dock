@@ -34,7 +34,8 @@ Layout::~Layout()
 
 Layout::Layout(const Layout &o)
     : id(o.id),
-      name(o.name),
+      m_editedName(o.m_editedName),
+      m_originalName(o.m_originalName),
       color(o.color),
       background(o.background),
       textColor(o.textColor),
@@ -50,7 +51,8 @@ Layout::Layout(const Layout &o)
 Layout &Layout::operator=(const Layout &rhs)
 {
     id = rhs.id;
-    name = rhs.name;
+    m_editedName = rhs.m_editedName;
+    m_originalName = rhs.m_originalName;
     color = rhs.color;
     background = rhs.background;
     textColor = rhs.textColor;
@@ -67,7 +69,8 @@ Layout &Layout::operator=(const Layout &rhs)
 bool Layout::operator==(const Layout &rhs) const
 {
     return (id == rhs.id)
-            && (name == rhs.name)
+            && (m_editedName == rhs.m_editedName)
+            && (m_originalName == rhs.m_originalName)
             && (color == rhs.color)
             && (background == rhs.background)
             && (textColor == rhs.textColor)
@@ -87,6 +90,32 @@ bool Layout::operator!=(const Layout &rhs) const
 bool Layout::isShared() const
 {
     return !shares.isEmpty();
+}
+
+bool Layout::nameWasEdited() const
+{
+    return !m_editedName.isEmpty() && (m_editedName != m_originalName);
+}
+
+QString Layout::editedName() const
+{
+    return m_editedName.isEmpty() ? m_originalName : m_editedName;
+}
+
+void Layout::setEditedName(const QString name)
+{
+    m_editedName = name;
+}
+
+QString Layout::originalName() const
+{
+    return m_originalName;
+}
+
+void Layout::setOriginalName(const QString name)
+{
+    m_originalName = name;
+    m_editedName = "";
 }
 
 }

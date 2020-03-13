@@ -55,9 +55,14 @@ void Layouts::setInMultipleMode(bool inMultiple)
     m_inMultipleMode = inMultiple;
 }
 
-QString Layouts::idForName(const QString &name)
+QString Layouts::idForOriginalName(const QString &name)
 {
-    return m_layoutsTable.idForName(name);
+    return m_layoutsTable.idForOriginalName(name);
+}
+
+QString Layouts::idForEditedName(const QString &name)
+{
+    return m_layoutsTable.idForEditedName(name);
 }
 
 int Layouts::rowCount() const
@@ -245,7 +250,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {
-            return m_layoutsTable[row].name;
+            return m_layoutsTable[row].editedName();
         }
         break;
     case MENUCOLUMN:
@@ -322,7 +327,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {
-            m_layoutsTable[row].name = value.toString();
+            m_layoutsTable[row].setEditedName(value.toString());
             emit dataChanged(index, index, roles);
             return true;
         }

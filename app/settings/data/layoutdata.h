@@ -40,7 +40,6 @@ public:
 
     //! Layout data
     QString id;
-    QString name;
     QString color;
     QString background;
     QString textColor;
@@ -51,13 +50,25 @@ public:
     QStringList activities;
     QStringList shares;
 
+    QString editedName() const;
+    void setEditedName(const QString name);
+
+    QString originalName() const;
+    void setOriginalName(const QString name);
+
     //! Functionality
     bool isShared() const;
+    bool nameWasEdited() const;
 
     //! Operators
     Layout &operator=(const Layout &rhs);
     bool operator==(const Layout &rhs) const;
     bool operator!=(const Layout &rhs) const;
+
+protected:
+    QString m_editedName;
+    QString m_originalName;
+
 };
 
 }
