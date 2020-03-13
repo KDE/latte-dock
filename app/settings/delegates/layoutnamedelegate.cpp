@@ -52,6 +52,7 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     bool isLocked = index.data(Model::Layouts::LAYOUTISLOCKEDROLE).toBool();
     bool isShared = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSMODE).toBool();
     bool isActive = index.data(Model::Layouts::LAYOUTISACTIVEROLE).toBool();
+    bool isChanged = index.data(Model::Layouts::LAYOUTNAMEWASEDITED).toBool();
 
     bool showTwoIcons = isLocked && isShared;
 
@@ -119,6 +120,8 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     }
 
     adjustedOption.font.setBold(isActive);
+    adjustedOption.font.setItalic(isChanged);
+
     QStyledItemDelegate::paint(painter, adjustedOption, index);
 }
 

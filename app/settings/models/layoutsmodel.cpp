@@ -235,6 +235,8 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return m_layoutsTable[row].isShared();
     } else if (role == INMULTIPLELAYOUTSMODE) {
         return inMultipleMode();
+    } else if (role == LAYOUTNAMEWASEDITED) {
+        return m_layoutsTable[row].nameWasEdited();
     }
 
     switch (column) {
