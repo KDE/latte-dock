@@ -35,9 +35,10 @@
 
 namespace Latte {
 namespace Settings {
-namespace View {
+namespace Layouts {
+namespace Delegates {
 
-CheckBoxDelegate::CheckBoxDelegate(QObject *parent)
+CheckBox::CheckBox(QObject *parent)
     : QStyledItemDelegate(parent)
 {
     auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
@@ -47,7 +48,7 @@ CheckBoxDelegate::CheckBoxDelegate(QObject *parent)
     }
 }
 
-void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem adjustedOption = option;
     //! Remove the focus dotted lines
@@ -109,7 +110,7 @@ void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     }
 }
 
-bool CheckBoxDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
+bool CheckBox::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
                                    const QModelIndex &index)
 {
     Q_ASSERT(event);
@@ -142,6 +143,7 @@ bool CheckBoxDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
     return model->setData(index, value == CheckMark ? false : true, Qt::DisplayRole);
 }
 
+}
 }
 }
 }

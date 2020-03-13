@@ -29,19 +29,24 @@ class SettingsDialog;
 
 namespace Latte {
 namespace Settings {
-namespace View {
+namespace Layouts {
+namespace Delegates {
 
-class LayoutNameDelegate : public QStyledItemDelegate
+class LayoutName : public QStyledItemDelegate
 {
 public:
-    LayoutNameDelegate(QObject *parent = 0);
+    LayoutName(QObject *parent = 0);
 
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
     Latte::SettingsDialog *m_settingsDialog{nullptr};
 };
 
+}
 }
 }
 }

@@ -29,12 +29,13 @@ class SettingsDialog;
 
 namespace Latte {
 namespace Settings {
-namespace View {
+namespace Layouts {
+namespace Delegates {
 
-class CheckBoxDelegate : public QStyledItemDelegate
+class CheckBox : public QStyledItemDelegate
 {
 public:
-    CheckBoxDelegate(QObject *parent = 0);
+    CheckBox(QObject *parent = 0);
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
@@ -43,6 +44,7 @@ private:
     Latte::SettingsDialog *m_settingsDialog{nullptr};
 };
 
+}
 }
 }
 }

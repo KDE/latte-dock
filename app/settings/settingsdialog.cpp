@@ -128,10 +128,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         colors.append(color);
     }
 
-    ui->layoutsView->setItemDelegateForColumn(NAMECOLUMN, new Settings::View::LayoutNameDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(NAMECOLUMN, new Settings::Layouts::Delegates::LayoutName(this));
     ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new ColorCmbBoxDelegate(this, iconsPath, colors));
-    ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new Settings::View::CheckBoxDelegate(this));
-    ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new Settings::View::CheckBoxDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new Settings::Layouts::Delegates::CheckBox(this));
+    ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new Settings::Layouts::Delegates::CheckBox(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivitiesDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new SharedDelegate(this));
 

@@ -29,15 +29,17 @@
 #include <QDebug>
 #include <QEvent>
 #include <QKeyEvent>
+#include <QLineEdit>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QStandardItemModel>
 
 namespace Latte {
 namespace Settings {
-namespace View {
+namespace Layouts {
+namespace Delegates {
 
-LayoutNameDelegate::LayoutNameDelegate(QObject *parent)
+LayoutName::LayoutName(QObject *parent)
     : QStyledItemDelegate(parent)
 {
     auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
@@ -47,7 +49,35 @@ LayoutNameDelegate::LayoutNameDelegate(QObject *parent)
     }
 }
 
-void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *LayoutName::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    Q_UNUSED(option);
+    Q_UNUSED(index);
+
+    QLineEdit *editor = new QLineEdit(parent);
+    return editor;
+}
+
+void LayoutName::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+    QLineEdit *lineEditor = qobject_cast<QLineEdit *>(editor);
+
+    if (lineEditor) {
+        QString name = index.data(Qt::DisplayRole).toString();
+        lineEditor->setText(name);
+    }
+}
+
+void LayoutName::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+    QLineEdit *lineEditor = qobject_cast<QLineEdit *>(editor);
+
+    if (lineEditor) {
+        model->setData(index, lineEditor->text(), Qt::DisplayRole);
+    }
+}
+
+void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     bool isLocked = index.data(Model::Layouts::LAYOUTISLOCKEDROLE).toBool();
     bool isShared = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSMODE).toBool();
@@ -125,6 +155,7 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     QStyledItemDelegate::paint(painter, adjustedOption, index);
 }
 
+}
 }
 }
 }
