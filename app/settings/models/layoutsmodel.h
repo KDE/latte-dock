@@ -36,6 +36,8 @@ namespace Model {
 
 class Layouts : public QAbstractTableModel
 {
+    Q_OBJECT
+
 public:
     enum Columns
     {
@@ -54,8 +56,8 @@ public:
         LAYOUTISACTIVEROLE = Qt::UserRole + 1,
         LAYOUTISLOCKEDROLE,
         LAYOUTISSHAREDROLE,
-        LAYOUTNAMEWASEDITED,
-        INMULTIPLELAYOUTSMODE,
+        LAYOUTNAMEWASEDITEDROLE,
+        INMULTIPLELAYOUTSROLE,
         ACTIVITIESROLE,
         RUNNINGACTIVITIESROLE,
         SHARESROLE,
@@ -89,6 +91,9 @@ public:
 
     const Data::LayoutsTable &currentData();
     void setCurrentData(Data::LayoutsTable &data);
+
+signals:
+    void inMultipleModeChanged();
 
 private:
     bool m_inMultipleMode{false};

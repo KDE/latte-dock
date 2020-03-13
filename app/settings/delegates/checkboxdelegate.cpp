@@ -55,7 +55,9 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
     adjustedOption.displayAlignment = Qt::AlignHCenter;
 
-    if (adjustedOption.state & QStyle::State_Enabled) {
+    bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+
+    if (!isSharedCapable) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
         QStyledItemDelegate::paint(painter, adjustedOption, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
@@ -116,19 +118,12 @@ bool CheckBox::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyl
     Q_ASSERT(event);
     Q_ASSERT(model);
 
-//     // make sure that the item is checkable
-//     Qt::ItemFlags flags = model->flags(index);
-//
-//     if (!(flags & Qt::ItemIsUserCheckable) || !(flags & Qt::ItemIsEnabled))
-//         return false;
-//
-//     // make sure that we have a check state
-    QString value{index.data().toString()};
-//
-//     if (!value.isValid())
-//         return false;
+    bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
-    // make sure that we have the right event type
+    if (isSharedCapable) {
+        return false;
+    }
+
     if (event->type() == QEvent::MouseButtonDblClick) {
         if (!option.rect.contains(static_cast<QMouseEvent *>(event)->pos()))
             return false;
@@ -139,8 +134,8 @@ bool CheckBox::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyl
         return false;
     }
 
-    const QChar CheckMark{0x2714};
-    return model->setData(index, value == CheckMark ? false : true, Qt::DisplayRole);
+    const bool currentState = index.data(Qt::UserRole).toBool();
+    return model->setData(index, !currentState, Qt::UserRole);
 }
 
 }

@@ -39,6 +39,15 @@ namespace Model {
 Layouts::Layouts(QObject *parent)
     : QAbstractTableModel(parent)
 {
+
+    connect(this, &Layouts::inMultipleModeChanged, this, [&]() {
+        QVector<int> roles;
+        roles << Qt::DisplayRole;
+        roles << Qt::UserRole;
+        roles << INMULTIPLELAYOUTSROLE;
+
+        emit dataChanged(index(0, MENUCOLUMN), index(rowCount(), SHAREDCOLUMN), roles);
+    });
 }
 
 bool Layouts::inMultipleMode() const
@@ -53,6 +62,7 @@ void Layouts::setInMultipleMode(bool inMultiple)
     }
 
     m_inMultipleMode = inMultiple;
+    emit inMultipleModeChanged();
 }
 
 QString Layouts::idForOriginalName(const QString &name)
@@ -233,9 +243,9 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return m_layoutsTable[row].isLocked;
     } else if (role == LAYOUTISSHAREDROLE) {
         return m_layoutsTable[row].isShared();
-    } else if (role == INMULTIPLELAYOUTSMODE) {
+    } else if (role == INMULTIPLELAYOUTSROLE) {
         return inMultipleMode();
-    } else if (role == LAYOUTNAMEWASEDITED) {
+    } else if (role == LAYOUTNAMEWASEDITEDROLE) {
         return m_layoutsTable[row].nameWasEdited();
     }
 
@@ -258,11 +268,15 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     case MENUCOLUMN:
         if (role == Qt::DisplayRole) {
             return m_layoutsTable[row].isShownInMenu ? CheckMark : QVariant{};
+        } else if (role == Qt::UserRole) {
+            return m_layoutsTable[row].isShownInMenu;
         }
         break;
     case BORDERSCOLUMN:
         if (role == Qt::DisplayRole) {
             return m_layoutsTable[row].hasDisabledBorders ? CheckMark : QVariant{};
+        } else if (role == Qt::UserRole) {
+            return m_layoutsTable[row].hasDisabledBorders;
         }
         break;
     case ACTIVITYCOLUMN:
@@ -335,14 +349,14 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         }
         break;
     case MENUCOLUMN:
-        if (role == Qt::DisplayRole) {
+        if (role == Qt::DisplayRole || role == Qt::UserRole) {
             m_layoutsTable[row].isShownInMenu = value.toBool();
             emit dataChanged(index, index, roles);
             return true;
         }
         break;
     case BORDERSCOLUMN:
-        if (role == Qt::DisplayRole) {
+        if (role == Qt::DisplayRole || role == Qt::UserRole) {
             m_layoutsTable[row].hasDisabledBorders = value.toBool();
             emit dataChanged(index, index, roles);
             return true;

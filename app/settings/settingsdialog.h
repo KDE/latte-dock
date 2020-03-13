@@ -117,7 +117,6 @@ private slots:
     void updatePerLayoutButtonsState();
 
     void layoutsChanged();
-    void itemChanged(QStandardItem *item);
 
 private:
     void addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true, bool showNotification = true);
@@ -131,7 +130,6 @@ private:
     void appendLayout(Settings::Data::Layout &layout);
 
     void updateApplyButtonsState();
-    void updateSharedLayoutsStates();
     void updateSharedLayoutsUiElements();
     void syncActiveShares();
 

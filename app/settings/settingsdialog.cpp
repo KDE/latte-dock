@@ -132,7 +132,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new ColorCmbBoxDelegate(this, iconsPath, colors));
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new Settings::Layouts::Delegates::CheckBox(this));
     ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new Settings::Layouts::Delegates::CheckBox(this));
-    ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivitiesDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new Settings::Layouts::Delegates::Activities(this));
     ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new SharedDelegate(this));
 
     m_inMemoryButtons = new QButtonGroup(this);
@@ -204,7 +204,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     //! SIGNALS
 
-   // connect(m_model, &QStandardItemModel::itemChanged, this, &SettingsDialog::itemChanged);
     connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [&]() {
         updatePerLayoutButtonsState();
         updateApplyButtonsState();
@@ -212,8 +211,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     connect(m_inMemoryButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
             [ = ](int id, bool checked) {
+
+        m_model->setInMultipleMode(inMultipleLayoutsLook());
+
         updateApplyButtonsState();
-        updateSharedLayoutsStates();
         updateSharedLayoutsUiElements();
     });
 
@@ -1087,7 +1088,6 @@ void SettingsDialog::loadSettings()
     m_model->setInMultipleMode(inMultiple);
 
     updatePerLayoutButtonsState();
-    updateSharedLayoutsStates();
 
     ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
     ui->badges3DStyleChkBox->setChecked(m_corona->universalSettings()->badges3DStyle());
@@ -1241,41 +1241,6 @@ void SettingsDialog::layoutsChanged()
     }
 }
 
-void SettingsDialog::itemChanged(QStandardItem *item)
-{
-    updatePerLayoutButtonsState();
-
-    if (item->column() == ACTIVITYCOLUMN) {
-        //! do nothing
-    } else if (item->column() == NAMECOLUMN) {
-        int currentRow = ui->layoutsView->currentIndex().row();
-
-        QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
-        QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
-        QString originalName = o_layoutsOriginalData.contains(id) ? o_layoutsOriginalData[id].originalName() : name;
-        QFont font = qvariant_cast<QFont>(m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::FontRole));
-
-        if (m_corona->layoutsManager()->synchronizer()->layout(originalName)) {
-            font.setBold(true);
-        } else {
-            font.setBold(false);
-        }
-
-        if (originalName != name) {
-            font.setItalic(true);
-        } else {
-            font.setItalic(false);
-        }
-
-        m_model->setData(m_model->index(currentRow, NAMECOLUMN), font, Qt::FontRole);
-
-    } else if (item->column() == SHAREDCOLUMN) {
-        updateSharedLayoutsStates();
-    }
-
-    updateApplyButtonsState();
-}
-
 void SettingsDialog::updateApplyButtonsState()
 {
     bool changed{false};
@@ -1405,36 +1370,6 @@ void SettingsDialog::updatePerLayoutButtonsState()
     } else {
         m_editLayoutAction->setEnabled(false);
     }
-}
-
-void SettingsDialog::updateSharedLayoutsStates()
-{
-    bool inMultiple{inMultipleLayoutsLook()};
-
-    for (int i = 0; i < m_model->rowCount(); ++i) {
-        QStringList shares = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
-
-        if (shares.isEmpty() || !inMultiple) {
- /*           QStandardItem *item = m_model->item(i, MENUCOLUMN);
-            item->setEnabled(true);
-            item = m_model->item(i, BORDERSCOLUMN);
-            item->setEnabled(true);
-            item = m_model->item(i, ACTIVITYCOLUMN);
-            item->setEnabled(true);*/
-        } else {
-/*            QStandardItem *item = m_model->item(i, MENUCOLUMN);
-            item->setEnabled(false);
-            item = m_model->item(i, BORDERSCOLUMN);
-            item->setEnabled(false);
-            item = m_model->item(i, ACTIVITYCOLUMN);
-            item->setEnabled(false);*/
-        }
-
-        //! refresh LayoutName
-/*        QStandardItem *nameItem = m_model->item(i, NAMECOLUMN);
-        nameItem->setEnabled(false);
-        nameItem->setEnabled(true);*/
-    }  
 }
 
 void SettingsDialog::updateSharedLayoutsUiElements()
@@ -1734,15 +1669,6 @@ bool SettingsDialog::saveAllChanges()
                     orphanedLayout = newLayoutName;
                 }
             }
-        }
-
-        for (const auto &newLayoutName : activeLayoutsToRename.keys()) {
-            //! broadcast the name change
-            int row = rowForName(newLayoutName);
-       /*     QStandardItem *item = m_model->item(row, NAMECOLUMN);
-            if (item) {
-                emit itemChanged(item);
-            }*/
         }
     }
 

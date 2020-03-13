@@ -38,7 +38,12 @@
 // KDE
 #include <KActivities/Info>
 
-ActivitiesDelegate::ActivitiesDelegate(QObject *parent)
+namespace Latte {
+namespace Settings {
+namespace Layouts {
+namespace Delegates {
+
+Activities::Activities(QObject *parent)
     : QItemDelegate(parent)
 {
     auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
@@ -48,7 +53,7 @@ ActivitiesDelegate::ActivitiesDelegate(QObject *parent)
     }
 }
 
-QWidget *ActivitiesDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     int row = index.row();
     QPushButton *button = new QPushButton(parent);
@@ -163,12 +168,12 @@ QWidget *ActivitiesDelegate::createEditor(QWidget *parent, const QStyleOptionVie
     return button;
 }
 
-void ActivitiesDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void Activities::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     updateButton(editor);
 }
 
-void ActivitiesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void Activities::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QPushButton *button = static_cast<QPushButton *>(editor);
 
@@ -182,18 +187,35 @@ void ActivitiesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model
     model->setData(index, assignedActivities, Qt::UserRole);
 }
 
-void ActivitiesDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void Activities::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     editor->setGeometry(option.rect);
 }
 
-void ActivitiesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+bool Activities::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
+                                   const QModelIndex &index)
+{
+    Q_ASSERT(event);
+    Q_ASSERT(model);
+
+    bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+
+    if (isSharedCapable) {
+        return false;
+    }
+
+    return QItemDelegate::editorEvent(event, model, option, index);
+}
+
+void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOptions = option;
     //! Remove the focus dotted lines
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
 
-    if (myOptions.state & QStyle::State_Enabled) {
+    bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+
+    if (!isSharedCapable) {
         painter->save();
 
         QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
@@ -286,7 +308,7 @@ void ActivitiesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     }
 }
 
-QString ActivitiesDelegate::joinedActivities(const QStringList &activities, int index) const
+QString Activities::joinedActivities(const QStringList &activities, int index) const
 {
     QString finalText;
 
@@ -340,7 +362,7 @@ QString ActivitiesDelegate::joinedActivities(const QStringList &activities, int 
     return finalText;
 }
 
-void ActivitiesDelegate::updateButton(QWidget *editor) const
+void Activities::updateButton(QWidget *editor) const
 {
     if (!editor) {
         return;
@@ -355,5 +377,10 @@ void ActivitiesDelegate::updateButton(QWidget *editor) const
     }
 
     button->setText(joinedActivities(assignedActivities, -1));
+}
+
+}
+}
+}
 }
 

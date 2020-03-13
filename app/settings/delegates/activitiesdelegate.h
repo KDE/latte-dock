@@ -31,17 +31,23 @@ namespace Latte {
 class SettingsDialog;
 }
 
-class ActivitiesDelegate : public QItemDelegate
+namespace Latte {
+namespace Settings {
+namespace Layouts {
+namespace Delegates {
+
+class Activities : public QItemDelegate
 {
     Q_OBJECT
 public:
-    ActivitiesDelegate(QObject *parent);
+    Activities(QObject *parent);
 
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
 private:
     void updateButton(QWidget *editor) const;
@@ -54,5 +60,10 @@ private:
 
     int m_lastCurrentIndex{-1};
 };
+
+}
+}
+}
+}
 
 #endif

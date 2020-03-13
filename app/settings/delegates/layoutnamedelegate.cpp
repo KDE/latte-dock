@@ -80,9 +80,9 @@ void LayoutName::setModelData(QWidget *editor, QAbstractItemModel *model, const 
 void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     bool isLocked = index.data(Model::Layouts::LAYOUTISLOCKEDROLE).toBool();
-    bool isShared = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSMODE).toBool();
+    bool isShared = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
     bool isActive = index.data(Model::Layouts::LAYOUTISACTIVEROLE).toBool();
-    bool isChanged = index.data(Model::Layouts::LAYOUTNAMEWASEDITED).toBool();
+    bool isChanged = index.data(Model::Layouts::LAYOUTNAMEWASEDITEDROLE).toBool();
 
     bool showTwoIcons = isLocked && isShared;
 
