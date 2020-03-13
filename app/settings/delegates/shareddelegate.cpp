@@ -21,7 +21,8 @@
 
 // local
 #include "persistentmenu.h"
-#include "../settingsdialog.h"
+#include "../data/layoutdata.h"
+#include "../models/layoutsmodel.h"
 #include "../tools/settingstools.h"
 
 // Qt
@@ -38,20 +39,23 @@
 #include <QTextDocument>
 
 
-SharedDelegate::SharedDelegate(QObject *parent)
+namespace Latte {
+namespace Settings {
+namespace Layouts {
+namespace Delegates {
+
+
+Shared::Shared(QObject *parent)
     : QItemDelegate(parent)
 {
-    auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
-
-    if (settingsDialog) {
-        m_settingsDialog = settingsDialog;
-    }
 }
 
-QWidget *SharedDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStringList assignedShares = index.model()->data(index, Qt::UserRole).toStringList();
-    QStringList availableShares = m_settingsDialog->availableSharesFor(index.row());
+    bool inMultiple = index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+
+    Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
+    QStringList assignedShares = index.data(Qt::UserRole).toStringList();
 
     QPushButton *button = new QPushButton(parent);
     PersistentMenu *menu = new PersistentMenu(button);
@@ -59,14 +63,17 @@ QWidget *SharedDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
 
     menu->setMinimumWidth(option.rect.width());
 
-    for (unsigned int i = 0; i < availableShares.count(); ++i) {
-        QString layoutName = m_settingsDialog->nameForId(availableShares[i]);
-        QAction *action = new QAction(layoutName);
-        action->setData(availableShares[i]);
-        action->setCheckable(true);
-        action->setChecked(assignedShares.contains(availableShares[i]));
+    for (unsigned int i = 0; i < allLayouts.rowCount(); ++i) {
+        if (inMultiple && allLayouts[i].isShared()) {
+            continue;
+        }
 
-        if (m_settingsDialog->isActive(layoutName)) {
+        QAction *action = new QAction(allLayouts[i].editedName());
+        action->setData(allLayouts[i].id);
+        action->setCheckable(true);
+        action->setChecked(assignedShares.contains(allLayouts[i].id));
+
+        if (allLayouts[i].isActive) {
             QFont font = action->font();
             font.setBold(true);
             action->setFont(font);
@@ -74,28 +81,23 @@ QWidget *SharedDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
 
         menu->addAction(action);
 
-        connect(action, &QAction::toggled, this, [this, button, action]() {
-            updateButtonText(button);
-
-            if (action->isChecked()) {
-                m_settingsDialog->addShareInCurrent(action->data().toString());
-            } else {
-                m_settingsDialog->removeShareFromCurrent(action->data().toString());
-            }
+        connect(action, &QAction::toggled, this, [this, button, action, allLayouts]() {
+            updateButtonText(button, allLayouts);
         });
     }
 
-    updateButtonText(button);
+    updateButtonText(button, allLayouts);
 
     return button;
 }
 
-void SharedDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void Shared::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    updateButtonText(editor);
+    Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
+    updateButtonText(editor, allLayouts);
 }
 
-void SharedDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void Shared::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QPushButton *button = static_cast<QPushButton *>(editor);
 
@@ -109,27 +111,29 @@ void SharedDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
     model->setData(index, assignedLayouts, Qt::UserRole);
 }
 
-void SharedDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void Shared::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     editor->setGeometry(option.rect);
 }
 
-void SharedDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
+    QStringList assignedIds = index.data(Qt::UserRole).toStringList();
+
+    Data::LayoutsTable assignedLayouts;
+
+    for (const auto &id : assignedIds) {
+        assignedLayouts << allLayouts[id];
+    }
+
     QStyleOptionViewItem myOptions = option;
     //! Remove the focus dotted lines
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
     painter->save();
 
-    QStringList assignedLayoutsIds = index.model()->data(index, Qt::UserRole).toStringList();
-    QStringList assignedLayouts;
-
-    for (const auto &id : assignedLayoutsIds) {
-        assignedLayouts << m_settingsDialog->nameForId(id);
-    }
-
-    if (assignedLayouts.count() > 0) {
-        myOptions.text = joined(assignedLayouts, true);
+    if (assignedLayouts.rowCount() > 0) {
+        myOptions.text = joined(assignedLayouts);
 
         QTextDocument doc;
         QString css;
@@ -166,43 +170,48 @@ void SharedDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     painter->restore();
 }
 
-void SharedDelegate::updateButtonText(QWidget *editor) const
+void Shared::updateButtonText(QWidget *editor, const Data::LayoutsTable &allLayouts) const
 {
     if (!editor) {
         return;
     }
+
     QPushButton *button = static_cast<QPushButton *>(editor);
-    QStringList assignedLayouts;
+    Data::LayoutsTable assignedLayouts;
 
     foreach (QAction *action, button->menu()->actions()) {
         if (action->isChecked()) {
-            assignedLayouts << m_settingsDialog->nameForId(action->data().toString());
+            assignedLayouts << allLayouts[action->data().toString()];
         }
     }
 
-    button->setText(joined(assignedLayouts));
+    button->setText(joined(assignedLayouts, false));
 }
 
-QString SharedDelegate::joined(const QStringList &layouts, bool boldForActive) const
+QString Shared::joined(const Data::LayoutsTable &layouts, bool formatText) const
 {
     QString finalText;
 
     int i = 0;
 
-    for (const auto &layoutName : layouts) {
+    for (unsigned int i = 0; i < layouts.rowCount(); ++i) {
         if (i > 0) {
             finalText += ", ";
         }
-        i++;
 
-        bool isActive{false};
+        bool bold {false};
 
-        if (boldForActive && m_settingsDialog->isActive(layoutName)) {
-            isActive = true;
+        if (formatText && layouts[i].isActive) {
+            bold = true;
         }
 
-        finalText += isActive ? "<b>" + layoutName + "</b>" : layoutName;
+        finalText += bold ? "<b>" + layouts[i].editedName() + "</b>" : layouts[i].editedName();
     }
 
     return finalText;
+}
+
+}
+}
+}
 }

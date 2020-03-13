@@ -63,8 +63,7 @@ public:
         INMULTIPLELAYOUTSROLE,
         ALLACTIVITIESROLE,
         RUNNINGACTIVITIESROLE,
-        SHARESROLE,
-        ACTIVESHARESROLE
+        ALLLAYOUTSROLE
     };
 
     explicit Layouts(QObject *parent, Latte::Corona *corona);

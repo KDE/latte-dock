@@ -256,6 +256,10 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         activities << QString(FREEACTIVITIESID);
         activities << m_corona->layoutsManager()->synchronizer()->activities();
         return activities;
+    } else if (role == ALLLAYOUTSROLE) {
+        QVariant layouts;
+        layouts.setValue(m_layoutsTable);
+        return layouts;
     }
 
     switch (column) {

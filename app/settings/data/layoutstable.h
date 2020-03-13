@@ -70,4 +70,6 @@ protected:
 }
 }
 
+Q_DECLARE_METATYPE(Latte::Settings::Data::LayoutsTable)
+
 #endif

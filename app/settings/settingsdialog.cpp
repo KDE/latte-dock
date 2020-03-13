@@ -130,7 +130,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new Settings::Layouts::Delegates::CheckBox(this));
     ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new Settings::Layouts::Delegates::CheckBox(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new Settings::Layouts::Delegates::Activities(this));
-    ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new SharedDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new Settings::Layouts::Delegates::Shared(this));
 
     m_inMemoryButtons = new QButtonGroup(this);
     m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Types::SingleLayout);

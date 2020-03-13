@@ -20,6 +20,9 @@
 #ifndef SHAREDDELEGATE_H
 #define SHAREDDELEGATE_H
 
+// local
+#include "../data/layoutstable.h"
+
 // Qt
 #include <QItemDelegate>
 
@@ -32,26 +35,32 @@ namespace Latte {
 class SettingsDialog;
 }
 
-class SharedDelegate : public QItemDelegate
+namespace Latte {
+namespace Settings {
+namespace Layouts {
+namespace Delegates {
+
+class Shared : public QItemDelegate
 {
     Q_OBJECT
 public:
-    SharedDelegate(QObject *parent);
+    Shared(QObject *parent);
 
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-
-private:
-    void updateButtonText(QWidget *editor) const;
-
-    QString joined(const QStringList &layouts, bool boldForActive = false) const;
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
-    Latte::SettingsDialog *m_settingsDialog{nullptr};
+    void updateButtonText(QWidget *editor, const Data::LayoutsTable &allLayouts) const;
 
+    QString joined(const Data::LayoutsTable &layouts, bool formatText = true) const;
 };
+
+}
+}
+}
+}
 
 #endif
