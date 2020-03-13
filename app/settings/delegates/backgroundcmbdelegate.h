@@ -17,8 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef COLORCMBBOXDELEGATE_H
-#define COLORCMBBOXDELEGATE_H
+#ifndef BACKGROUNDCMBBOXDELEGATE_H
+#define BACKGROUNDCMBBOXDELEGATE_H
 
 // Qt
 #include <QItemDelegate>
@@ -31,11 +31,11 @@ namespace Settings {
 namespace Layouts {
 namespace Delegates {
 
-class ColorCmbBox : public QItemDelegate
+class BackgroundCmbBox : public QItemDelegate
 {
     Q_OBJECT
 public:
-    ColorCmbBox(QObject *parent = 0, QString iconsPath = QString(), QStringList colors = QStringList());
+    BackgroundCmbBox(QObject *parent = 0, QString iconsPath = QString(), QStringList colors = QStringList());
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     void setEditorData(QWidget *editor, const QModelIndex &index) const override;

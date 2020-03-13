@@ -17,10 +17,10 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "colorcmbboxdelegate.h"
+#include "backgroundcmbdelegate.h"
 
 // local
-#include "colorcmbboxitemdelegate.h"
+#include "backgroundcmbitemdelegate.h"
 
 // Qt
 #include <QComboBox>
@@ -39,17 +39,17 @@ namespace Settings {
 namespace Layouts {
 namespace Delegates {
 
-ColorCmbBox::ColorCmbBox(QObject *parent, QString iconsPath, QStringList colors)
+BackgroundCmbBox::BackgroundCmbBox(QObject *parent, QString iconsPath, QStringList colors)
     : QItemDelegate(parent),
       m_iconsPath(iconsPath),
       Colors(colors)
 {
 }
 
-QWidget *ColorCmbBox::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *BackgroundCmbBox::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QComboBox *editor = new QComboBox(parent);
-    editor->setItemDelegate(new ColorCmbBoxItem(editor, m_iconsPath));
+    editor->setItemDelegate(new BackgroundCmbBoxItem(editor, m_iconsPath));
 
     for (unsigned int i = 0; i < Colors.count(); ++i) {
         if (Colors[i] != "sepia") {
@@ -74,7 +74,7 @@ QWidget *ColorCmbBox::createEditor(QWidget *parent, const QStyleOptionViewItem &
     return editor;
 }
 
-void ColorCmbBox::setEditorData(QWidget *editor, const QModelIndex &index) const
+void BackgroundCmbBox::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
     QString value = index.model()->data(index, Qt::BackgroundRole).toString();
@@ -88,7 +88,7 @@ void ColorCmbBox::setEditorData(QWidget *editor, const QModelIndex &index) const
     }
 }
 
-void ColorCmbBox::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void BackgroundCmbBox::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
 
@@ -96,12 +96,12 @@ void ColorCmbBox::setModelData(QWidget *editor, QAbstractItemModel *model, const
     model->setData(index, comboBox->currentText(), Qt::BackgroundRole);
 }
 
-void ColorCmbBox::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void BackgroundCmbBox::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     editor->setGeometry(option.rect);
 }
 
-void ColorCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOption = option;
     QVariant background = index.data(Qt::BackgroundRole);

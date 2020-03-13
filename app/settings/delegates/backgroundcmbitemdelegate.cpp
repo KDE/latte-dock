@@ -17,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "colorcmbboxitemdelegate.h"
+#include "backgroundcmbitemdelegate.h"
 
 // Qt
 #include <QApplication>
@@ -30,18 +30,18 @@ namespace Settings {
 namespace Layouts {
 namespace Delegates {
 
-ColorCmbBoxItem::ColorCmbBoxItem(QObject *parent, QString iconsPath)
+BackgroundCmbBoxItem::BackgroundCmbBoxItem(QObject *parent, QString iconsPath)
     : QAbstractItemDelegate(parent),
       m_iconsPath(iconsPath)
 {
 }
 
-QSize ColorCmbBoxItem::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+QSize BackgroundCmbBoxItem::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     return QSize(option.rect.width(), 50);
 }
 
-void ColorCmbBoxItem::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void BackgroundCmbBoxItem::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOption = option;
     QVariant value = index.data(Qt::DisplayRole);

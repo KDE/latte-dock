@@ -36,8 +36,8 @@
 #include "../plasma/extended/theme.h"
 #include "data/layoutdata.h"
 #include "delegates/activitiesdelegate.h"
+#include "delegates/backgroundcmbdelegate.h"
 #include "delegates/checkboxdelegate.h"
-#include "delegates/colorcmbboxdelegate.h"
 #include "delegates/layoutnamedelegate.h"
 #include "delegates/shareddelegate.h"
 
@@ -126,7 +126,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     }
 
     ui->layoutsView->setItemDelegateForColumn(NAMECOLUMN, new Settings::Layouts::Delegates::LayoutName(this));
-    ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new Settings::Layouts::Delegates::ColorCmbBox(this, iconsPath, colors));
+    ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new Settings::Layouts::Delegates::BackgroundCmbBox(this, iconsPath, colors));
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new Settings::Layouts::Delegates::CheckBox(this));
     ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new Settings::Layouts::Delegates::CheckBox(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new Settings::Layouts::Delegates::Activities(this));

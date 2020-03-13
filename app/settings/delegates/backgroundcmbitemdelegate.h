@@ -17,8 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef COLORCMBBOXITEMDELEGATE_H
-#define COLORCMBBOXITEMDELEGATE_H
+#ifndef BACKGROUNDCMBBOXITEMDELEGATE_H
+#define BACKGROUNDCMBBOXITEMDELEGATE_H
 
 // Qt
 #include <QAbstractItemDelegate>
@@ -28,11 +28,11 @@ namespace Settings {
 namespace Layouts {
 namespace Delegates {
 
-class ColorCmbBoxItem : public QAbstractItemDelegate
+class BackgroundCmbBoxItem : public QAbstractItemDelegate
 {
     Q_OBJECT
 public:
-    ColorCmbBoxItem(QObject *parent = 0, QString iconsPath = QString());
+    BackgroundCmbBoxItem(QObject *parent = 0, QString iconsPath = QString());
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
