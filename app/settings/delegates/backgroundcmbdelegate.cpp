@@ -48,10 +48,12 @@ BackgroundCmbBox::BackgroundCmbBox(QObject *parent, QString iconsPath, QStringLi
 
 QWidget *BackgroundCmbBox::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    Q_UNUSED(option)
+
     QComboBox *editor = new QComboBox(parent);
     editor->setItemDelegate(new BackgroundCmbBoxItem(editor, m_iconsPath));
 
-    for (unsigned int i = 0; i < Colors.count(); ++i) {
+    for (int i = 0; i < Colors.count(); ++i) {
         if (Colors[i] != "sepia") {
             QPixmap pixmap(50, 50);
             pixmap.fill(QColor(Colors[i]));
@@ -62,8 +64,6 @@ QWidget *BackgroundCmbBox::createEditor(QWidget *parent, const QStyleOptionViewI
     }
 
     QString value = index.model()->data(index, Qt::BackgroundRole).toString();
-
-    const QModelIndex &indexOriginal = index;
 
     //! add the background if exists
     if (value.startsWith("/")) {
@@ -89,7 +89,7 @@ void BackgroundCmbBox::setEditorData(QWidget *editor, const QModelIndex &index) 
 }
 
 void BackgroundCmbBox::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
-{
+{   
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
 
     QString itemData = comboBox->currentData().toString();
@@ -98,6 +98,8 @@ void BackgroundCmbBox::setModelData(QWidget *editor, QAbstractItemModel *model, 
 
 void BackgroundCmbBox::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    Q_UNUSED(index)
+
     editor->setGeometry(option.rect);
 }
 
@@ -114,6 +116,7 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
         if (QFileInfo(colorPath).exists()) {
             QBrush colorBrush;
             colorBrush.setTextureImage(QImage(colorPath).scaled(QSize(50, 50)));
+            colorBrush.setColor("black");
 
             painter->setBrush(colorBrush);
             painter->drawRect(QRect(option.rect.x(), option.rect.y(),
