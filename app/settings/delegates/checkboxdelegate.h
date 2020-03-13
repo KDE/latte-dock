@@ -23,9 +23,6 @@
 // Qt
 #include <QStyledItemDelegate>
 
-namespace Latte {
-class SettingsDialog;
-}
 
 namespace Latte {
 namespace Settings {
@@ -39,9 +36,6 @@ public:
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
-
-private:
-    Latte::SettingsDialog *m_settingsDialog{nullptr};
 };
 
 }

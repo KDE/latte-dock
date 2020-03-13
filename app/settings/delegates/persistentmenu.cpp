@@ -19,6 +19,10 @@
 
 #include "persistentmenu.h"
 
+namespace Latte {
+namespace Settings {
+namespace Layouts {
+namespace Delegates {
 
 PersistentMenu::PersistentMenu(QWidget *parent)
     : QMenu (parent),
@@ -59,4 +63,9 @@ void PersistentMenu::mouseReleaseEvent (QMouseEvent *e)
   }
 
   QMenu::mouseReleaseEvent (e);
+}
+
+}
+}
+}
 }

@@ -24,10 +24,6 @@
 #include <QStyledItemDelegate>
 
 namespace Latte {
-class SettingsDialog;
-}
-
-namespace Latte {
 namespace Settings {
 namespace Layouts {
 namespace Delegates {
@@ -41,9 +37,6 @@ public:
     void setEditorData(QWidget *editor, const QModelIndex &index) const override;
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-
-private:
-    Latte::SettingsDialog *m_settingsDialog{nullptr};
 };
 
 }

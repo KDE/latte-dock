@@ -21,34 +21,35 @@
 
 // local
 #include "colorcmbboxitemdelegate.h"
-#include "../settingsdialog.h"
 
 // Qt
 #include <QComboBox>
 #include <QDebug>
-#include <QDir>
-#include <QFileDialog>
+#include <QFileInfo>
 #include <QWidget>
 #include <QModelIndex>
-#include <QApplication>
 #include <QPainter>
 #include <QString>
 
 // KDE
 #include <KLocalizedString>
 
-ColorCmbBoxDelegate::ColorCmbBoxDelegate(QObject *parent, QString iconsPath, QStringList colors)
+namespace Latte {
+namespace Settings {
+namespace Layouts {
+namespace Delegates {
+
+ColorCmbBox::ColorCmbBox(QObject *parent, QString iconsPath, QStringList colors)
     : QItemDelegate(parent),
-      m_parent(parent),
       m_iconsPath(iconsPath),
       Colors(colors)
 {
 }
 
-QWidget *ColorCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *ColorCmbBox::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QComboBox *editor = new QComboBox(parent);
-    editor->setItemDelegate(new ColorCmbBoxItemDelegate(editor, m_iconsPath));
+    editor->setItemDelegate(new ColorCmbBoxItem(editor, m_iconsPath));
 
     for (unsigned int i = 0; i < Colors.count(); ++i) {
         if (Colors[i] != "sepia") {
@@ -64,48 +65,19 @@ QWidget *ColorCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionVi
 
     const QModelIndex &indexOriginal = index;
 
-    bool showTextColor{false};
-
     //! add the background if exists
     if (value.startsWith("/")) {
         QIcon icon(value);
         editor->addItem(icon, value);
-        showTextColor = true;
     }
-
-    editor->addItem(" " + i18n("Custom background..."), "select_image");
-
-    if (showTextColor) {
-        editor->addItem(" " + i18n("Custom text color..."), "text_color");
-    }
-
-    connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
-        editor->clearFocus();
-
-        if ((showTextColor && index == editor->count() - 2)
-            || (!showTextColor && index == editor->count() - 1)) {
-            Latte::SettingsDialog *settings = qobject_cast<Latte::SettingsDialog *>(m_parent);
-
-            if (settings) {
-                settings->requestImagesDialog(indexOriginal.row());
-            }
-        } else if (showTextColor && index == editor->count() - 1) {
-            Latte::SettingsDialog *settings = qobject_cast<Latte::SettingsDialog *>(m_parent);
-
-            if (settings) {
-                settings->requestColorsDialog(indexOriginal.row());
-            }
-        }
-    });
 
     return editor;
 }
 
-void ColorCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void ColorCmbBox::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
     QString value = index.model()->data(index, Qt::BackgroundRole).toString();
-    QString userData = index.model()->data(index, Qt::UserRole).toString();
 
     int pos = Colors.indexOf(value);
 
@@ -116,33 +88,28 @@ void ColorCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &inde
     }
 }
 
-void ColorCmbBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void ColorCmbBox::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
 
     QString itemData = comboBox->currentData().toString();
-
-    if (itemData != "select_image" && itemData != "text_color") {
-        model->setData(index, comboBox->currentText(), Qt::BackgroundRole);
-    }
+    model->setData(index, comboBox->currentText(), Qt::BackgroundRole);
 }
 
-void ColorCmbBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void ColorCmbBox::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     editor->setGeometry(option.rect);
 }
 
-void ColorCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void ColorCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOption = option;
-    QVariant value = index.data(Qt::BackgroundRole);
-    QVariant data = index.data(Qt::UserRole);
-    QString dataStr = data.toString();
+    QVariant background = index.data(Qt::BackgroundRole);
 
-    if (value.isValid() && (dataStr != "select_image") && (dataStr != "text_color")) {
-        QString valueStr = value.toString();
+    if (background.isValid()) {
+        QString backgroundStr = background.toString();
 
-        QString colorPath = valueStr.startsWith("/") ? valueStr : m_iconsPath + value.toString() + "print.jpg";
+        QString colorPath = backgroundStr.startsWith("/") ? backgroundStr : m_iconsPath + backgroundStr + "print.jpg";
 
         if (QFileInfo(colorPath).exists()) {
             QBrush colorBrush;
@@ -153,7 +120,10 @@ void ColorCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
                                     option.rect.width(), option.rect.height()));
         }
     }
+}
 
-    //QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
+}
+}
+}
 }
 

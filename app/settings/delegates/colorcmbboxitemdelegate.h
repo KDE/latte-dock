@@ -23,18 +23,28 @@
 // Qt
 #include <QAbstractItemDelegate>
 
-class ColorCmbBoxItemDelegate : public QAbstractItemDelegate
+namespace Latte {
+namespace Settings {
+namespace Layouts {
+namespace Delegates {
+
+class ColorCmbBoxItem : public QAbstractItemDelegate
 {
     Q_OBJECT
 public:
-    ColorCmbBoxItemDelegate(QObject *parent = 0, QString iconsPath = QString());
+    ColorCmbBoxItem(QObject *parent = 0, QString iconsPath = QString());
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
     QString m_iconsPath;
 
 };
+
+}
+}
+}
+}
 
 #endif

@@ -25,25 +25,32 @@
 
 class QModelIndex;
 class QWidget;
-class QVariant;
 
-class ColorCmbBoxDelegate : public QItemDelegate
+namespace Latte {
+namespace Settings {
+namespace Layouts {
+namespace Delegates {
+
+class ColorCmbBox : public QItemDelegate
 {
     Q_OBJECT
 public:
-    ColorCmbBoxDelegate(QObject *parent = 0, QString iconsPath = QString(), QStringList colors = QStringList());
+    ColorCmbBox(QObject *parent = 0, QString iconsPath = QString(), QStringList colors = QStringList());
 
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
-    QObject *m_parent{nullptr};
-
-    QStringList Colors;
-
     QString m_iconsPath;
+    QStringList Colors;
 };
+
+}
+}
+}
+}
+
 #endif

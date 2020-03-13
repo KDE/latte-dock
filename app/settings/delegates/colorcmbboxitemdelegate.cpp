@@ -25,18 +25,23 @@
 #include <QPainter>
 #include <QString>
 
-ColorCmbBoxItemDelegate::ColorCmbBoxItemDelegate(QObject *parent, QString iconsPath)
+namespace Latte {
+namespace Settings {
+namespace Layouts {
+namespace Delegates {
+
+ColorCmbBoxItem::ColorCmbBoxItem(QObject *parent, QString iconsPath)
     : QAbstractItemDelegate(parent),
       m_iconsPath(iconsPath)
 {
 }
 
-QSize ColorCmbBoxItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+QSize ColorCmbBoxItem::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     return QSize(option.rect.width(), 50);
 }
 
-void ColorCmbBoxItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void ColorCmbBoxItem::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOption = option;
     QVariant value = index.data(Qt::DisplayRole);
@@ -62,5 +67,10 @@ void ColorCmbBoxItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     }
 
     painter->restore();
+}
+
+}
+}
+}
 }
 

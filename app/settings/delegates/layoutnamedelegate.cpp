@@ -20,7 +20,6 @@
 #include "layoutnamedelegate.h"
 #include "../models/layoutsmodel.h"
 // local
-#include "../settingsdialog.h"
 #include "../tools/settingstools.h"
 
 // Qt
@@ -42,11 +41,6 @@ namespace Delegates {
 LayoutName::LayoutName(QObject *parent)
     : QStyledItemDelegate(parent)
 {
-    auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
-
-    if (settingsDialog) {
-        m_settingsDialog = settingsDialog;
-    }
 }
 
 QWidget *LayoutName::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const

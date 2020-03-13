@@ -271,7 +271,9 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     case HIDDENTEXTCOLUMN:
         return QVariant{};
     case BACKGROUNDCOLUMN:
-        return m_layoutsTable[row].background.isEmpty() ? m_layoutsTable[row].color : m_layoutsTable[row].background;
+        if (role == Qt::BackgroundRole) {
+            return m_layoutsTable[row].background.isEmpty() ? m_layoutsTable[row].color : m_layoutsTable[row].background;
+        }
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {

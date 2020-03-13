@@ -24,6 +24,11 @@
 #include <QMenu>
 #include <QMouseEvent>
 
+namespace Latte {
+namespace Settings {
+namespace Layouts {
+namespace Delegates {
+
 class PersistentMenu : public QMenu
 {
   Q_OBJECT
@@ -46,5 +51,10 @@ private:
   int m_masterIndex{-1};
 
 };
+
+}
+}
+}
+}
 
 #endif

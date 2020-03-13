@@ -20,7 +20,6 @@
 #include "checkboxdelegate.h"
 
 // local
-#include "../settingsdialog.h"
 #include "../models/layoutsmodel.h"
 #include "../tools/settingstools.h"
 
@@ -41,11 +40,6 @@ namespace Delegates {
 CheckBox::CheckBox(QObject *parent)
     : QStyledItemDelegate(parent)
 {
-    auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
-
-    if (settingsDialog) {
-        m_settingsDialog = settingsDialog;
-    }
 }
 
 void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -76,7 +70,7 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
         pen.setWidth(2); pen.setColor(option.palette.brush(Latte::colorGroup(option), textColorRole).color());
         int y = option.rect.y()+option.rect.height()/2;
 
-        bool inMenu = m_settingsDialog->isMenuCell(index.column());
+        bool inMenu = (index.column() == Model::Layouts::MENUCOLUMN);
         int space = inMenu ? option.rect.height() / 2 : 0;
 
         painter->setPen(pen);

@@ -26,14 +26,8 @@
 // Qt
 #include <QItemDelegate>
 
-class QMenu;
 class QModelIndex;
 class QWidget;
-class QVariant;
-
-namespace Latte {
-class SettingsDialog;
-}
 
 namespace Latte {
 namespace Settings {
