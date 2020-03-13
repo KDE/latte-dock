@@ -337,12 +337,40 @@ void Layouts::setActivities(const int &row, const QStringList &activities)
     emit dataChanged(index(row, ACTIVITYCOLUMN), index(row,ACTIVITYCOLUMN), roles);
 
     for(int i=0; i<rowCount(); ++i) {
-        if (i != row) {
-            auto cleaned = cleanStrings(m_layoutsTable[i].activities, activities);
-            if (cleaned != m_layoutsTable[i].activities) {
-                m_layoutsTable[i].activities = cleaned;
-                emit dataChanged(index(i, ACTIVITYCOLUMN), index(i,ACTIVITYCOLUMN), roles);
-            }
+        if (i == row) {
+            continue;
+        }
+
+        auto cleaned = cleanStrings(m_layoutsTable[i].activities, activities);
+        if (cleaned != m_layoutsTable[i].activities) {
+            m_layoutsTable[i].activities = cleaned;
+            emit dataChanged(index(i,ACTIVITYCOLUMN), index(i,ACTIVITYCOLUMN), roles);
+        }
+    }
+}
+
+void Layouts::setShares(const int &row, const QStringList &shares)
+{
+    if (!m_layoutsTable.rowExists(row) || m_layoutsTable[row].shares == shares) {
+        return;
+    }
+
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+
+    m_layoutsTable[row].shares = shares;
+    emit dataChanged(index(row,SHAREDCOLUMN), index(row,SHAREDCOLUMN), roles);
+
+    for(int i=0; i<rowCount(); ++i) {
+        if (i == row) {
+            continue;
+        }
+
+        auto cleaned = cleanStrings(m_layoutsTable[i].shares, shares);
+        if (cleaned != m_layoutsTable[i].shares) {
+            m_layoutsTable[i].shares = cleaned;
+            emit dataChanged(index(i,SHAREDCOLUMN), index(i,SHAREDCOLUMN), roles);
         }
     }
 }
@@ -352,7 +380,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
     const int row = index.row();
     const int column = index.column();
 
-    if (!m_layoutsTable.rowExists(row) || column<0 || column >= SHAREDCOLUMN) {
+    if (!m_layoutsTable.rowExists(row) || column<0 || column > SHAREDCOLUMN) {
         return false;
     }
 
@@ -421,8 +449,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         break;
     case SHAREDCOLUMN:
         if (role == Qt::UserRole) {
-            m_layoutsTable[row].shares = value.toStringList();
-            emit dataChanged(index, index, roles);
+            setShares(row, value.toStringList());
             return true;
         }
         break;

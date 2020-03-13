@@ -99,6 +99,7 @@ signals:
 
 private:
     void setActivities(const int &row, const QStringList &activities);
+    void setShares(const int &row, const QStringList &shares);
 
     QStringList cleanStrings(const QStringList &original, const QStringList &occupied);
 
