@@ -19,7 +19,11 @@
  */
 
 #include "layoutsmodel.h"
+
+// local
 #include "../data/layoutdata.h"
+#include "../../layouts/manager.h"
+#include "../../layouts/synchronizer.h"
 
 // Qt
 #include <QDebug>
@@ -29,15 +33,15 @@
 // KDE
 #include <KLocalizedString>
 
-
 const QChar CheckMark{0x2714};
 
 namespace Latte {
 namespace Settings {
 namespace Model {
 
-Layouts::Layouts(QObject *parent)
-    : QAbstractTableModel(parent)
+Layouts::Layouts(QObject *parent, Latte::Corona *corona)
+    : QAbstractTableModel(parent),
+      m_corona(corona)
 {
 
     connect(this, &Layouts::inMultipleModeChanged, this, [&]() {
@@ -247,6 +251,11 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return inMultipleMode();
     } else if (role == LAYOUTNAMEWASEDITEDROLE) {
         return m_layoutsTable[row].nameWasEdited();
+    } else if (role == ALLACTIVITIESROLE) {
+        QStringList activities;
+        activities << QString(FREEACTIVITIESID);
+        activities << m_corona->layoutsManager()->synchronizer()->activities();
+        return activities;
     }
 
     switch (column) {
@@ -294,6 +303,44 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     };
 
     return QVariant{};
+}
+
+QStringList Layouts::cleanStrings(const QStringList &original, const QStringList &occupied)
+{
+    QStringList result;
+
+    for(int i=0; i<original.count(); ++i) {
+        if (!occupied.contains(original[i])) {
+            result << original[i];
+        }
+    }
+
+    return result;
+}
+
+
+void Layouts::setActivities(const int &row, const QStringList &activities)
+{
+    if (!m_layoutsTable.rowExists(row) || m_layoutsTable[row].activities == activities) {
+        return;
+    }
+
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+
+    m_layoutsTable[row].activities = activities;
+    emit dataChanged(index(row, ACTIVITYCOLUMN), index(row,ACTIVITYCOLUMN), roles);
+
+    for(int i=0; i<rowCount(); ++i) {
+        if (i != row) {
+            auto cleaned = cleanStrings(m_layoutsTable[i].activities, activities);
+            if (cleaned != m_layoutsTable[i].activities) {
+                m_layoutsTable[i].activities = cleaned;
+                emit dataChanged(index(i, ACTIVITYCOLUMN), index(i,ACTIVITYCOLUMN), roles);
+            }
+        }
+    }
 }
 
 bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -364,8 +411,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         break;
     case ACTIVITYCOLUMN:
         if (role == Qt::UserRole) {
-            m_layoutsTable[row].activities = value.toStringList();
-            emit dataChanged(index, index, roles);
+            setActivities(row, value.toStringList());
             return true;
         }
         break;

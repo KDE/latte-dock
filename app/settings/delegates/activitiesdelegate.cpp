@@ -21,7 +21,7 @@
 
 // local
 #include "persistentmenu.h"
-#include "../settingsdialog.h"
+#include "../models/layoutsmodel.h"
 #include "../tools/settingstools.h"
 
 // Qt
@@ -37,6 +37,7 @@
 
 // KDE
 #include <KActivities/Info>
+#include <KLocalizedString>
 
 namespace Latte {
 namespace Settings {
@@ -46,43 +47,42 @@ namespace Delegates {
 Activities::Activities(QObject *parent)
     : QItemDelegate(parent)
 {
-    auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
+}
 
-    if (settingsDialog) {
-        m_settingsDialog = settingsDialog;
-    }
+QString Activities::freeActivities_text() const
+{
+    return QString("[ " + i18n("All Free Activities...") + " ]");
+}
+
+QString Activities::freeActivities_icon() const
+{
+    return "favorites";
 }
 
 QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    int row = index.row();
     QPushButton *button = new QPushButton(parent);
 
     PersistentMenu *menu = new PersistentMenu(button);
     button->setMenu(menu);
     menu->setMinimumWidth(option.rect.width());
 
-    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
-    QStringList shownActivities = m_settingsDialog->activitiesList();
+    bool isLayoutActive = index.data(Model::Layouts::LAYOUTISACTIVEROLE).toBool();
+    QStringList allActivities = index.data(Model::Layouts::ALLACTIVITIESROLE).toStringList();
+    QStringList assignedActivities = index.data(Qt::UserRole).toStringList();
 
-    m_settingsDialog->loadActivitiesInBuffer(row);
+    for (unsigned int i = 0; i < allActivities.count(); ++i) {
 
-    QString freeActivitiesId = m_settingsDialog->freeActivities_id();
+        if (allActivities[i] == Model::Layouts::FREEACTIVITIESID) {
+            bool isFreeActivitiesChecked = assignedActivities.contains(Model::Layouts::FREEACTIVITIESID);
 
-    for (unsigned int i = 0; i < shownActivities.count(); ++i) {
-
-        if (shownActivities[i] == freeActivitiesId) {
-            bool isFreeActivitiesChecked = assignedActivities.contains(freeActivitiesId);
-
-            QAction *action = new QAction(m_settingsDialog->freeActivities_text());
-            action->setData(freeActivitiesId);
-            action->setIcon(QIcon::fromTheme(m_settingsDialog->freeActivities_icon()));
+            QAction *action = new QAction(freeActivities_text());
+            action->setData(Model::Layouts::FREEACTIVITIESID);
+            action->setIcon(QIcon::fromTheme(freeActivities_icon()));
             action->setCheckable(true);
             action->setChecked(isFreeActivitiesChecked);
 
-            bool isActive = m_settingsDialog->isActive(row);
-
-            if (isActive) {
+            if (isLayoutActive) {
                 QFont font = action->font();
                 font.setBold(true);
                 action->setFont(font);
@@ -95,27 +95,24 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
 
             connect(action, &QAction::toggled, this, [this, menu, button, action, i]() {
                 if (action->isChecked()) {
-                    m_settingsDialog->addActivityInBuffer(action->data().toString());
                     menu->setMasterIndex(i);
                 } else {
                     if (menu->masterIndex() == i) {
                         action->setChecked(true);
                     }
-                    //do nothing....
-                    //m_settingsDialog->removeActivityFromBuffer(action->data().toString());
                 }
 
                 updateButton(button);
             });
         } else {
-            KActivities::Info info(shownActivities[i]);
+            KActivities::Info info(allActivities[i]);
 
             if (info.state() != KActivities::Info::Invalid) {
                 QAction *action = new QAction(info.name());
-                action->setData(shownActivities[i]);
+                action->setData(allActivities[i]);
                 action->setIcon(QIcon::fromTheme(info.icon()));
                 action->setCheckable(true);
-                action->setChecked(assignedActivities.contains(shownActivities[i]));
+                action->setChecked(assignedActivities.contains(allActivities[i]));
 
                 if ((info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
                     QFont font = action->font();
@@ -128,9 +125,6 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
                 connect(action, &QAction::toggled, this, [this, menu, button, action, i]() {
                     if (action->isChecked()) {
                         menu->setMasterIndex(-1);
-                        m_settingsDialog->addActivityInBuffer(action->data().toString());
-                    } else {
-                        m_settingsDialog->removeActivityFromBuffer(action->data().toString());
                     }
 
                     updateButton(button);
@@ -139,7 +133,7 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
         }
     }
 
-    connect(menu, &PersistentMenu::masterIndexChanged, this, [this, menu, button, freeActivitiesId]() {
+    connect(menu, &PersistentMenu::masterIndexChanged, this, [this, menu, button]() {
         int masterRow = menu->masterIndex();
         if (masterRow>=0) {
             auto actions = button->menu()->actions();
@@ -152,17 +146,13 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
         } else {
             foreach (QAction *action, button->menu()->actions()) {
                 QString actId = action->data().toString();
-                if (actId == freeActivitiesId) {
+                if (actId == Model::Layouts::FREEACTIVITIESID) {
                     action->setChecked(false);
                 }
             }
         }
 
         updateButton(button);
-    });
-
-    connect(menu, &QMenu::aboutToHide, this, [this, row]() {
-        m_settingsDialog->syncActivitiesFromBuffer(row);
     });
 
     return button;
@@ -213,6 +203,7 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     //! Remove the focus dotted lines
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
 
+    bool isLayoutActive = index.data(Model::Layouts::LAYOUTISACTIVEROLE).toBool();
     bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
     if (!isSharedCapable) {
@@ -221,7 +212,7 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
 
         if (assignedActivities.count() > 0) {
-            myOptions.text = joinedActivities(assignedActivities, index.row());
+            myOptions.text = joinedActivities(assignedActivities, isLayoutActive);
 
             QTextDocument doc;
             QString css;
@@ -308,24 +299,21 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     }
 }
 
-QString Activities::joinedActivities(const QStringList &activities, int index) const
+QString Activities::joinedActivities(const QStringList &activities, bool isActive, bool formatText) const
 {
     QString finalText;
 
     int i = 0;
-
-    QString freeActivitiesId = m_settingsDialog->freeActivities_id();
 
     for (const auto &activityId : activities) {
         QString name;
         bool bold{false};
         bool italic{false};
 
-        if (activityId == freeActivitiesId) {
-            name = m_settingsDialog->freeActivities_text();
+        if (activityId == Model::Layouts::FREEACTIVITIESID) {
+            name = freeActivities_text();
 
-            if (index >= 0) {
-                bool isActive = m_settingsDialog->isActive(index);
+            if (formatText) {
                 bold = isActive;
                 italic = !isActive;
             }
@@ -338,7 +326,7 @@ QString Activities::joinedActivities(const QStringList &activities, int index) c
                 }
                 i++;
 
-                if ((info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
+                if (formatText && ((info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting))) {
                     bold = true;
                 }
 
@@ -348,11 +336,11 @@ QString Activities::joinedActivities(const QStringList &activities, int index) c
 
         QString styledText = name;
 
-        if (bold) {
+        if (bold && formatText) {
             styledText = "<b>" + styledText + "</b>";
         }
 
-        if (italic) {
+        if (italic && formatText) {
             styledText = "<i>" + styledText + "</i>";
         }
 
@@ -376,7 +364,7 @@ void Activities::updateButton(QWidget *editor) const
         }
     }
 
-    button->setText(joinedActivities(assignedActivities, -1));
+    button->setText(joinedActivities(assignedActivities, false, false));
 }
 
 }

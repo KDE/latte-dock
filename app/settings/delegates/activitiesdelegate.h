@@ -28,10 +28,6 @@ class QWidget;
 class QVariant;
 
 namespace Latte {
-class SettingsDialog;
-}
-
-namespace Latte {
 namespace Settings {
 namespace Layouts {
 namespace Delegates {
@@ -52,13 +48,10 @@ public:
 private:
     void updateButton(QWidget *editor) const;
 
-    QString joinedActivities(const QStringList &activities, int index = -1) const;
+    QString freeActivities_text() const;
+    QString freeActivities_icon() const;
 
-private:
-    Latte::SettingsDialog *m_settingsDialog{nullptr};
-
-
-    int m_lastCurrentIndex{-1};
+    QString joinedActivities(const QStringList &activities, bool isActive = false, bool formatText = true) const;
 };
 
 }

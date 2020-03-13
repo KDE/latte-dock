@@ -63,11 +63,6 @@ public:
     void toggleCurrentPage();
     void setCurrentPage(int page);
 
-    void loadActivitiesInBuffer(const int &row);
-    void syncActivitiesFromBuffer(const int &row);
-    void addActivityInBuffer(const QString &activityId);
-    void removeActivityFromBuffer(const QString &activityId);
-
     void addShareInCurrent(const QString &layoutId);
     void removeShareFromCurrent(const QString &layoutId);
     void updateShareAt(const int &row, const QString &fromId, const QString &toId);
@@ -83,11 +78,6 @@ public:
     QString nameForId(QString id) const;
     QString idForRow(int row) const;
 
-    QString freeActivities_text() const;
-    QString freeActivities_icon() const;
-    QString freeActivities_id() const;
-
-    QStringList activitiesList();
     QStringList availableSharesFor(int row);
 
     void requestImagesDialog(int row);
@@ -115,8 +105,6 @@ private slots:
     void showLayoutInformation();
     void showScreensInformation();
     void updatePerLayoutButtonsState();
-
-    void layoutsChanged();
 
 private:
     void addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true, bool showNotification = true);
@@ -155,8 +143,6 @@ private:
 
     QStringList m_tempDirectories;
     QStringList m_initLayoutPaths;
-
-    QStringList m_activitiesInBuffer;
 
     QButtonGroup *m_inMemoryButtons;
     QButtonGroup *m_mouseSensitivityButtons;

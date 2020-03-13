@@ -24,6 +24,7 @@
 // local
 #include "../data/layoutdata.h"
 #include "../data/layoutstable.h"
+#include "../../lattecorona.h"
 
 // Qt
 #include <QAbstractTableModel>
@@ -39,6 +40,8 @@ class Layouts : public QAbstractTableModel
     Q_OBJECT
 
 public:
+    static constexpr const char* FREEACTIVITIESID = "{0000-0000}";
+
     enum Columns
     {
         IDCOLUMN = 0,
@@ -58,13 +61,13 @@ public:
         LAYOUTISSHAREDROLE,
         LAYOUTNAMEWASEDITEDROLE,
         INMULTIPLELAYOUTSROLE,
-        ACTIVITIESROLE,
+        ALLACTIVITIESROLE,
         RUNNINGACTIVITIESROLE,
         SHARESROLE,
         ACTIVESHARESROLE
     };
 
-    explicit Layouts(QObject *parent = nullptr);
+    explicit Layouts(QObject *parent, Latte::Corona *corona);
 
     bool inMultipleMode() const;
     void setInMultipleMode(bool inMultiple);
@@ -96,8 +99,15 @@ signals:
     void inMultipleModeChanged();
 
 private:
+    void setActivities(const int &row, const QStringList &activities);
+
+    QStringList cleanStrings(const QStringList &original, const QStringList &occupied);
+
+private:
     bool m_inMultipleMode{false};
     Data::LayoutsTable m_layoutsTable;
+
+    Latte::Corona *m_corona{nullptr};
 };
 
 }
