@@ -1268,8 +1268,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
     }
 
     //! Remove Layout Button
-    if (originalName != nameInModel
-            || (originalName == m_corona->layoutsManager()->currentLayoutName())
+    if ((originalName == m_corona->layoutsManager()->currentLayoutName())
             || (m_corona->layoutsManager()->synchronizer()->centralLayout(originalName))
             || lockedInModel) {
         ui->removeButton->setEnabled(false);

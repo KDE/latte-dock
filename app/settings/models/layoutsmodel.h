@@ -84,12 +84,11 @@ public:
     const Data::Layout &at(const int &row);
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-
-    void appendLayout(const Settings::Data::Layout &layout);
     void clear();
+    void appendLayout(const Settings::Data::Layout &layout);
     void removeLayout(const QString &id);
-    void remove(const int &row);
 
     const Data::LayoutsTable &currentData();
     void setCurrentData(Data::LayoutsTable &data);

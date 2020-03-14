@@ -124,7 +124,7 @@ bool Layout::isShared() const
 
 bool Layout::nameWasEdited() const
 {
-    return !m_editedName.isEmpty() && (m_editedName != m_originalName);
+    return (!m_editedName.isEmpty() && (m_editedName != m_originalName)) || id.startsWith("/tmp");
 }
 
 QString Layout::editedName() const

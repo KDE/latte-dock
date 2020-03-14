@@ -116,20 +116,33 @@ void Layouts::appendLayout(const Settings::Data::Layout &layout)
 
 void Layouts::removeLayout(const QString &id)
 {
-    if (m_layoutsTable.contains(id)) {
-        beginInsertRows(QModelIndex(), m_layoutsTable.rowCount(), m_layoutsTable.rowCount());
-        m_layoutsTable.removeLayout(id);
+    int index = m_layoutsTable.indexOf(id);
+
+    if (index >= 0) {
+        beginRemoveRows(QModelIndex(), index, index);
+        m_layoutsTable.remove(index);
         endInsertRows();
     }
 }
 
-void Layouts::remove(const int &row)
+bool Layouts::removeRows(int row, int count, const QModelIndex &parent)
 {
-    if (m_layoutsTable.rowExists(row)) {
-        beginInsertRows(QModelIndex(), m_layoutsTable.rowCount(), m_layoutsTable.rowCount());
-        m_layoutsTable.remove(row);
-        endInsertRows();
+    Q_UNUSED(parent)
+
+    int firstRow = row;
+    int lastRow = row+count-1;
+
+    if (count > 0 && m_layoutsTable.rowExists(firstRow) && (m_layoutsTable.rowExists(lastRow))) {
+        beginRemoveRows(QModelIndex(), firstRow, lastRow);
+        for(int i=0; i<count; ++i) {
+            m_layoutsTable.remove(firstRow);
+        }
+        endRemoveRows();
+
+        return true;
     }
+
+    return false;
 }
 
 QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role) const
