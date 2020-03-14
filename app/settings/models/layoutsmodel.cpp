@@ -351,6 +351,33 @@ void Layouts::setActivities(const int &row, const QStringList &activities)
     }
 }
 
+void Layouts::setId(const int &row, const QString &newId)
+{
+    if (!m_layoutsTable.rowExists(row) || newId.isEmpty() || m_layoutsTable[row].id == newId) {
+        return;
+    }
+
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+
+    QString oldId = m_layoutsTable[row].id;
+    m_layoutsTable[row].id = newId;
+    emit dataChanged(index(row, NAMECOLUMN), index(row,NAMECOLUMN), roles);
+
+    for(int i=0; i<rowCount(); ++i) {
+        if (i == row) {
+            continue;
+        }
+
+        int pos = m_layoutsTable[i].shares.indexOf(oldId);
+
+        if (oldId >= 0) {
+            m_layoutsTable[i].shares[pos] = newId;
+            emit dataChanged(index(i, NAMECOLUMN), index(i, NAMECOLUMN), roles);
+        }
+    }
+}
+
 void Layouts::setShares(const int &row, const QStringList &shares)
 {
     if (!m_layoutsTable.rowExists(row) || m_layoutsTable[row].shares == shares) {
@@ -400,8 +427,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
     switch (column) {
     case IDCOLUMN:
         if (role == Qt::DisplayRole) {
-            m_layoutsTable[row].id = value.toString();
-            emit dataChanged(index, index, roles);
+            setId(row, value.toString());
             return true;
         }
         break;
