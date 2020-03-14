@@ -943,7 +943,6 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
 
 void SettingsDialog::loadSettings()
 {
-    m_initLayoutPaths.clear();
     m_model->clear();
     m_sharesMap.clear();
 
@@ -977,7 +976,6 @@ void SettingsDialog::loadSettings()
             original.textColor = QString();
         }
 
-        m_initLayoutPaths.append(original.id);
         m_layouts[original.id] = central;
 
         //! create initial SHARES maps
@@ -1439,15 +1437,15 @@ bool SettingsDialog::saveAllChanges()
 
     QHash<QString, Layout::GenericLayout *> activeLayoutsToRename;
 
-    //! remove layouts that have been removed from the user
-    for (const auto &initLayout : m_initLayoutPaths) {
-        if (!idExistsInModel(initLayout)) {
-            QFile(initLayout).remove();
+    Settings::Data::LayoutsTable removedLayouts = o_layoutsOriginalData.subtracted(m_model->currentData());
 
-            if (m_layouts.contains(initLayout)) {
-                CentralLayout *removedLayout = m_layouts.take(initLayout);
-                delete removedLayout;
-            }
+    //! remove layouts that have been removed from the user
+    for (int i=0; i<removedLayouts.rowCount(); ++i) {
+        QFile(removedLayouts[i].id).remove();
+
+        if (m_layouts.contains(removedLayouts[i].id)) {
+            CentralLayout *removedLayout = m_layouts.take(removedLayouts[i].id);
+            delete removedLayout;
         }
     }
 
@@ -1556,12 +1554,6 @@ bool SettingsDialog::saveAllChanges()
 
             if (tId == fromRenamePaths[i]) {
                 m_model->setData(m_model->index(j, IDCOLUMN), newFile, Qt::DisplayRole);
-                m_initLayoutPaths.append(newFile);
-
-                QFont font = qvariant_cast<QFont>(m_model->data(m_model->index(j, NAMECOLUMN), Qt::FontRole));
-
-                font.setItalic(false);
-                m_model->setData(m_model->index(j, NAMECOLUMN), font, Qt::FontRole);
             }
         }
     }

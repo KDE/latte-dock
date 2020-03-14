@@ -139,7 +139,6 @@ private:
     int m_currentFreeActivitiesLayout{-1};
 
     QStringList m_tempDirectories;
-    QStringList m_initLayoutPaths;
 
     QButtonGroup *m_inMemoryButtons;
     QButtonGroup *m_mouseSensitivityButtons;
