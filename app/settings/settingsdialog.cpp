@@ -1644,9 +1644,9 @@ void SettingsDialog::syncActiveShares()
         QString shareId = deprecatedSharesIds[i];
 
         if (currentLayoutsData.contains(shareId)) {
-            deprecatedSharesNames << currentLayoutsData[shareId].editedName();
+            deprecatedSharesNames << currentLayoutsData[shareId].currentName();
         } else if (o_layoutsOriginalData.contains(shareId)) {
-            deprecatedSharesNames << o_layoutsOriginalData[shareId].editedName();
+            deprecatedSharesNames << o_layoutsOriginalData[shareId].currentName();
         }
     }
 

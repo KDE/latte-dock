@@ -74,9 +74,9 @@ QString Layouts::idForOriginalName(const QString &name)
     return m_layoutsTable.idForOriginalName(name);
 }
 
-QString Layouts::idForEditedName(const QString &name)
+QString Layouts::idForCurrentName(const QString &name)
 {
-    return m_layoutsTable.idForEditedName(name);
+    return m_layoutsTable.idForCurrentName(name);
 }
 
 int Layouts::rowCount() const
@@ -290,7 +290,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {
-            return m_layoutsTable[row].editedName();
+            return m_layoutsTable[row].currentName();
         }
         break;
     case MENUCOLUMN:
@@ -463,7 +463,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {
-            m_layoutsTable[row].setEditedName(value.toString());
+            m_layoutsTable[row].setCurrentName(value.toString());
             emit dataChanged(index, index, roles);
             return true;
         }

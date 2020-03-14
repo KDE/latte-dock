@@ -64,7 +64,7 @@ public:
     int rowCount() const;
 
     QString idForOriginalName(const QString &name) const;
-    QString idForEditedName(const QString &name) const;
+    QString idForCurrentName(const QString &name) const;
 
     void clear();
     void remove(const int &row);

@@ -49,8 +49,8 @@ public:
     QStringList activities;
     QStringList shares;
 
-    QString editedName() const;
-    void setEditedName(const QString name);
+    QString currentName() const;
+    void setCurrentName(const QString name);
 
     QString originalName() const;
     void setOriginalName(const QString name);
@@ -66,7 +66,7 @@ public:
     bool operator!=(const Layout &rhs) const;
 
 protected:
-    QString m_editedName;
+    QString m_currentName;
     QString m_originalName;
 
 };

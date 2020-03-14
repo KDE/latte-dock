@@ -151,7 +151,7 @@ QStringList LayoutsTable::allSharesNames() const
             for(int j=0; j<m_layouts[i].shares.count(); ++j) {
                 QString shareId = m_layouts[i].shares[j];
                 int sid = indexOf(shareId);
-                sharesNames << m_layouts[sid].editedName();
+                sharesNames << m_layouts[sid].currentName();
             }
         }
     }
@@ -187,10 +187,10 @@ Latte::Layouts::SharesMap LayoutsTable::sharesMap() const
             for(int j=0; j<m_layouts[i].shares.count(); ++j) {
                 QString shareId = m_layouts[i].shares[j];
                 int sid = indexOf(shareId);
-                sharesNames << m_layouts[sid].editedName();
+                sharesNames << m_layouts[sid].currentName();
             }
 
-            map[m_layouts[i].editedName()] = sharesNames;
+            map[m_layouts[i].currentName()] = sharesNames;
         }
     }
 
@@ -240,10 +240,10 @@ QString LayoutsTable::idForOriginalName(const QString &name) const
     return QString();
 }
 
-QString LayoutsTable::idForEditedName(const QString &name) const
+QString LayoutsTable::idForCurrentName(const QString &name) const
 {
     for(int  i=0; i<m_layouts.count(); ++i) {
-        if ((m_layouts[i].editedName() == name)) {
+        if ((m_layouts[i].currentName() == name)) {
             return m_layouts[i].id;
         }
     }

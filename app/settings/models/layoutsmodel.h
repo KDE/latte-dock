@@ -72,7 +72,7 @@ public:
     void setInMultipleMode(bool inMultiple);
 
     QString idForOriginalName(const QString &name);
-    QString idForEditedName(const QString &name);
+    QString idForCurrentName(const QString &name);
 
     int rowCount() const;
     int rowCount(const QModelIndex &parent) const override;

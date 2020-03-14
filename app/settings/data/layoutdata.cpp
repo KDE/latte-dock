@@ -30,7 +30,7 @@ Layout::Layout()
 
 Layout::Layout(Layout &&o)
     : id(o.id),
-      m_editedName(o.m_editedName),
+      m_currentName(o.m_currentName),
       m_originalName(o.m_originalName),
       color(o.color),
       background(o.background),
@@ -46,7 +46,7 @@ Layout::Layout(Layout &&o)
 
 Layout::Layout(const Layout &o)
     : id(o.id),
-      m_editedName(o.m_editedName),
+      m_currentName(o.m_currentName),
       m_originalName(o.m_originalName),
       color(o.color),
       background(o.background),
@@ -63,7 +63,7 @@ Layout::Layout(const Layout &o)
 Layout &Layout::operator=(Layout &&rhs)
 {
     id = rhs.id;
-    m_editedName = rhs.m_editedName;
+    m_currentName = rhs.m_currentName;
     m_originalName = rhs.m_originalName;
     color = rhs.color;
     background = rhs.background;
@@ -81,7 +81,7 @@ Layout &Layout::operator=(Layout &&rhs)
 Layout &Layout::operator=(const Layout &rhs)
 {
     id = rhs.id;
-    m_editedName = rhs.m_editedName;
+    m_currentName = rhs.m_currentName;
     m_originalName = rhs.m_originalName;
     color = rhs.color;
     background = rhs.background;
@@ -99,7 +99,7 @@ Layout &Layout::operator=(const Layout &rhs)
 bool Layout::operator==(const Layout &rhs) const
 {
     return (id == rhs.id)
-            && (m_editedName == rhs.m_editedName)
+            && (m_currentName == rhs.m_currentName)
             && (m_originalName == rhs.m_originalName)
             && (color == rhs.color)
             && (background == rhs.background)
@@ -124,17 +124,17 @@ bool Layout::isShared() const
 
 bool Layout::nameWasEdited() const
 {
-    return (!m_editedName.isEmpty() && (m_editedName != m_originalName)) || id.startsWith("/tmp");
+    return (!m_currentName.isEmpty() && (m_currentName != m_originalName)) || id.startsWith("/tmp");
 }
 
-QString Layout::editedName() const
+QString Layout::currentName() const
 {
-    return m_editedName.isEmpty() ? m_originalName : m_editedName;
+    return m_currentName.isEmpty() ? m_originalName : m_currentName;
 }
 
-void Layout::setEditedName(const QString name)
+void Layout::setCurrentName(const QString name)
 {
-    m_editedName = name;
+    m_currentName = name;
 }
 
 QString Layout::originalName() const
@@ -145,7 +145,7 @@ QString Layout::originalName() const
 void Layout::setOriginalName(const QString name)
 {
     m_originalName = name;
-    m_editedName = "";
+    m_currentName = "";
 }
 
 }
