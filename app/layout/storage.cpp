@@ -692,8 +692,7 @@ bool Storage::layoutIsBroken(QStringList &errors) const
         }
     }
 
-    QSet<QString> idsSet = QSet<QString>::fromList(ids);
-
+    QSet<QString> idsSet(ids.begin(), ids.end());
     /* a different way to count duplicates
     QMap<QString, int> countOfStrings;
 
