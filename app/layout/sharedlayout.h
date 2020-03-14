@@ -48,7 +48,7 @@ public:
     SharedLayout(CentralLayout *assigned, QObject *parent, QString layoutFile, QString layoutName = QString());
     ~SharedLayout() override;
 
-    const QStringList appliedActivities();
+    const QStringList appliedActivities() override;
     CentralLayout *currentCentralLayout() const;
 
     //! OVERRIDE GeneralLayout implementations

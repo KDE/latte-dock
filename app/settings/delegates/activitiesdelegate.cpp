@@ -71,8 +71,7 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
     QStringList allActivities = index.data(Model::Layouts::ALLACTIVITIESROLE).toStringList();
     QStringList assignedActivities = index.data(Qt::UserRole).toStringList();
 
-    for (unsigned int i = 0; i < allActivities.count(); ++i) {
-
+    for (int i = 0; i < allActivities.count(); ++i) {
         if (allActivities[i] == Model::Layouts::FREEACTIVITIESID) {
             bool isFreeActivitiesChecked = assignedActivities.contains(Model::Layouts::FREEACTIVITIESID);
 

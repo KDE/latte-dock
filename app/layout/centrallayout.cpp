@@ -445,10 +445,10 @@ QList<Plasma::Types::Location> CentralLayout::freeEdges(int screen) const
     return edges;
 }
 
-Types::ViewType CentralLayout::latteViewType(int containmentId) const
+Types::ViewType CentralLayout::latteViewType(uint containmentId) const
 {
     for (const auto view : m_latteViews) {
-        if (view->containment() && view->containment()->id() == containmentId) {
+        if (view->containment() && view->containment()->id() == (uint)containmentId) {
             return view->type();
         }
     }

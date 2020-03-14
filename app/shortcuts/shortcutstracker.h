@@ -44,7 +44,7 @@ public:
 
     QStringList badgesForActivate() const;
 
-    QList<int> appletsWithPlasmaShortcuts();
+    QList<uint> appletsWithPlasmaShortcuts();
 
 public slots:
     Q_INVOKABLE QString appletShortcutBadge(int appletId);
@@ -69,7 +69,7 @@ private:
 
     //! shortcuts assigned to applets through plasma infrastructure
     //! <applet id, shortcut>
-    QHash<int, QString> m_appletShortcuts;
+    QHash<uint, QString> m_appletShortcuts;
 
     KSharedConfig::Ptr m_shortcutsConfigPtr;
 };

@@ -99,7 +99,7 @@ public:
 
     QStringList unloadedContainmentsIds();
 
-    virtual Types::ViewType latteViewType(int containmentId) const;
+    virtual Types::ViewType latteViewType(uint containmentId) const;
     const QList<Plasma::Containment *> *containments();
 
     Latte::View *highestPriorityView();

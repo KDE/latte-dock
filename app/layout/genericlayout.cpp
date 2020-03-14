@@ -323,7 +323,7 @@ Latte::Corona *GenericLayout::corona()
     return m_corona;
 }
 
-Types::ViewType GenericLayout::latteViewType(int containmentId) const
+Types::ViewType GenericLayout::latteViewType(uint containmentId) const
 {
     for (const auto view : m_latteViews) {
         if (view->containment() && view->containment()->id() == containmentId) {
@@ -580,7 +580,7 @@ QList<Latte::View *> GenericLayout::viewsWithPlasmaShortcuts()
         return views;
     }
 
-    QList<int> appletsWithShortcuts = m_corona->globalShortcuts()->shortcutsTracker()->appletsWithPlasmaShortcuts();
+    QList<uint> appletsWithShortcuts = m_corona->globalShortcuts()->shortcutsTracker()->appletsWithPlasmaShortcuts();
 
     for (const auto &appletId : appletsWithShortcuts) {
         for (const auto view : m_latteViews) {

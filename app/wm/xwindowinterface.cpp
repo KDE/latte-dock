@@ -93,10 +93,6 @@ void XWindowInterface::setViewExtraFlags(QObject *view,bool isPanelWindow, Latte
         }
     }
 
-    if (winId < 0) {
-        return;
-    }
-
     NETWinInfo winfo(QX11Info::connection()
                      , static_cast<xcb_window_t>(winId)
                      , static_cast<xcb_window_t>(winId)

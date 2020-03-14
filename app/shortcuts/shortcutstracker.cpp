@@ -85,7 +85,7 @@ void ShortcutsTracker::shortcutsFileChanged(const QString &file)
     parseGlobalShortcuts();
 }
 
-QList<int> ShortcutsTracker::appletsWithPlasmaShortcuts()
+QList<uint> ShortcutsTracker::appletsWithPlasmaShortcuts()
 {
     return m_appletShortcuts.keys();
 }

@@ -1378,7 +1378,7 @@ bool View::appletIsExpandable(const int id)
     }
 
     for (const auto applet : containment()->applets()) {
-        if (applet->id() == id) {
+        if (applet->id() == (uint)id) {
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {
@@ -1397,7 +1397,7 @@ bool View::appletIsExpanded(const int id)
     }
 
     for (const auto applet : containment()->applets()) {
-        if (applet->id() == id) {
+        if (applet->id() == (uint)id) {
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {
@@ -1416,7 +1416,7 @@ void View::toggleAppletExpanded(const int id)
     }
 
     for (const auto applet : containment()->applets()) {
-        if (applet->id() == id) {
+        if (applet->id() == (uint)id) {
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {

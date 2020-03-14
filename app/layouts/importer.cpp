@@ -475,7 +475,7 @@ Importer::LatteFileVersion Importer::fileVersion(QString file)
         version2LatteDir = true;
     }
 
-    if (version1applets && version1applets) {
+    if (version1applets) {
         return ConfigVersion1;
     } else if (version2rc && version2LatteDir) {
         return ConfigVersion2;

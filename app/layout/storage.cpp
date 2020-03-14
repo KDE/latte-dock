@@ -204,7 +204,7 @@ void Storage::copyView(Plasma::Containment *containment)
     //!investigate if there multiple systray(s) in the containment to copy also
 
     //! systrayId, systrayAppletId
-    QHash<int, QString> systraysInfo;
+    QHash<uint, QString> systraysInfo;
     auto applets = containment->config().group("Applets");
 
     for (const auto &applet : applets.groupList()) {

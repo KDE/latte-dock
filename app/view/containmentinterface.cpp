@@ -87,7 +87,7 @@ bool ContainmentInterface::applicationLauncherHasGlobalShortcut() const
         return false;
     }
 
-    int launcherAppletId = applicationLauncherId();
+    uint launcherAppletId = applicationLauncherId();
 
     const auto applets = m_view->containment()->applets();
 
@@ -106,7 +106,7 @@ bool ContainmentInterface::applicationLauncherInPopup() const
         return false;
     }
 
-    int launcherAppletId = applicationLauncherId();
+    uint launcherAppletId = applicationLauncherId();
     QString launcherPluginId;
 
     const auto applets = m_view->containment()->applets();

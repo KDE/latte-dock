@@ -71,12 +71,12 @@ public:
     void setSharedLayout(SharedLayout *layout);
 
     //! OVERRIDE GeneralLayout implementations
-    void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr);
+    void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr) override;
     void syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap = nullptr) override;
     void unloadContainments() override;
     bool configViewIsShown() const override;
     const QStringList appliedActivities() override;
-    Types::ViewType latteViewType(int containmentId) const override;
+    Types::ViewType latteViewType(uint containmentId) const override;
     QList<Latte::View *> latteViews() override;
 
     int viewsCount(int screen) const override;
