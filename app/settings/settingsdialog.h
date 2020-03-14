@@ -26,6 +26,7 @@
 #include "../liblatte2/types.h"
 #include "data/layoutstable.h"
 #include "models/layoutsmodel.h"
+#include "controllers/layoutscontroller.h"
 
 // Qt
 #include <QObject>
@@ -158,6 +159,7 @@ private:
 
     //QStandardItemModel *m_model{nullptr};
     Settings::Model::Layouts *m_model{nullptr};
+    Settings::Controller::Layouts *m_layoutsController{nullptr};
     Ui::SettingsDialog *ui;
 
     //! SharedLayout #settingsid, Shares #settingsid

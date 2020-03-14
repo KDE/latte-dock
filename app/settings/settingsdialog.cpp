@@ -101,9 +101,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
             , this, &SettingsDialog::restoreDefaults);
 
-    m_model = new Settings::Model::Layouts(this, m_corona);
+    m_layoutsController = new Settings::Controller::Layouts(this, m_corona);
+    m_model = m_layoutsController->model();
 
-    ui->layoutsView->setModel(m_model);
+    ui->layoutsView->setModel(m_layoutsController->model());
     ui->layoutsView->horizontalHeader()->setStretchLastSection(true);
     ui->layoutsView->verticalHeader()->setVisible(false);
 
