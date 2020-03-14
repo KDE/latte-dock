@@ -21,8 +21,11 @@
 #ifndef SETTINGSDATALAYOUTSTABLE_H
 #define SETTINGSDATALAYOUTSTABLE_H
 
+// local
 #include "layoutdata.h"
+#include "../../layouts/synchronizer.h"
 
+// Qt
 #include <QList>
 
 namespace Latte {
@@ -49,6 +52,10 @@ public:
     const Layout operator[](const uint &index) const;
 
     LayoutsTable subtracted(const LayoutsTable &rhs) const;
+
+    QStringList allSharesIds() const;
+    QStringList allSharesNames() const;
+    Latte::Layouts::SharesMap sharesMap() const;
 
     bool contains(const QString &id) const;
     bool rowExists(const int &row) const;

@@ -30,6 +30,10 @@ namespace Latte {
 bool isSelected(const QStyleOptionViewItem &option);
 QPalette::ColorGroup colorGroup(const QStyleOptionViewItem &option);
 
+//! strings that even though they were initially at original list
+//! now they are not present to current list
+QStringList subtracted(const QStringList &original, const QStringList &current);
+
 }
 
 #endif

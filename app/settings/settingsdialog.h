@@ -157,8 +157,6 @@ private:
     Settings::Controller::Layouts *m_layoutsController{nullptr};
     Ui::SettingsDialog *ui;
 
-    //! SharedLayout #settingsid, Shares #settingsid
-    QHash<const QString, QStringList> m_sharesMap;
     QHash<const QString, Latte::CentralLayout *> m_layouts;
 
     QList<int> o_settingsOriginalData;

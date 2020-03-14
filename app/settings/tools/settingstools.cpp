@@ -43,4 +43,17 @@ QPalette::ColorGroup colorGroup(const QStyleOptionViewItem &option)
     }
 }
 
+QStringList subtracted(const QStringList &original, const QStringList &current)
+{
+    QStringList subtract;
+
+    for(int i=0; i<original.count(); ++i) {
+        if (!current.contains(original[i])) {
+            subtract << original[i];
+        }
+    }
+
+    return subtract;
+}
+
 }

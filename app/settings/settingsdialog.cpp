@@ -40,6 +40,7 @@
 #include "delegates/checkboxdelegate.h"
 #include "delegates/layoutnamedelegate.h"
 #include "delegates/shareddelegate.h"
+#include "tools/settingstools.h"
 
 // Qt
 #include <QButtonGroup>
@@ -944,7 +945,11 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
 void SettingsDialog::loadSettings()
 {
     m_model->clear();
-    m_sharesMap.clear();
+
+    //! The shares map needs to be constructed for start/scratch.
+    //! We start feeding information with layout_names and during the process
+    //! we update them to valid layout_ids
+    Layouts::SharesMap sharesMap;
 
     int i = 0;
     QStringList brokenLayouts;
@@ -981,7 +986,7 @@ void SettingsDialog::loadSettings()
         //! create initial SHARES maps
         QString shared = central->sharedLayoutName();
         if (!shared.isEmpty()) {
-            m_sharesMap[shared].append(original.id);
+            sharesMap[shared].append(original.id);
         }
 
         layoutsBuffer << original;
@@ -1001,26 +1006,26 @@ void SettingsDialog::loadSettings()
     QStringList tempSharedNames;
 
     //! remove these records after updating
-    for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
+    for (QHash<const QString, QStringList>::iterator i=sharesMap.begin(); i!=sharesMap.end(); ++i) {
         tempSharedNames << i.key();
     }
 
     //! update keys
-    for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
+    for (QHash<const QString, QStringList>::iterator i=sharesMap.begin(); i!=sharesMap.end(); ++i) {
         QString shareid = layoutsBuffer.idForOriginalName(i.key());
         if (!shareid.isEmpty()) {
-            m_sharesMap[shareid] = i.value();
+            sharesMap[shareid] = i.value();
         }
     }
 
     //! remove deprecated keys
     for (const auto &key : tempSharedNames) {
-        m_sharesMap.remove(key);
+        sharesMap.remove(key);
     }
 
-    qDebug() << "SHARES MAP ::: " << m_sharesMap;
+    qDebug() << "SHARES MAP ::: " << sharesMap;
 
-    for (QHash<const QString, QStringList>::iterator i=m_sharesMap.begin(); i!=m_sharesMap.end(); ++i) {
+    for (QHash<const QString, QStringList>::iterator i=sharesMap.begin(); i!=sharesMap.end(); ++i) {
         layoutsBuffer[i.key()].shares = i.value();
     }
 
@@ -1626,42 +1631,29 @@ void SettingsDialog::syncActiveShares()
         return;
     }
 
-    QHash<const QString, QStringList> currentSharesIdMap;
-    Layouts::SharesMap  currentSharesNamesMap;
+    Settings::Data::LayoutsTable currentLayoutsData = m_model->currentData();
 
-    for (int i = 0; i < m_model->rowCount(); ++i) {
-        if (isShared(i)) {
-            QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
-            QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
-            QStringList shareIds = m_model->data(m_model->index(i, SHAREDCOLUMN), Qt::UserRole).toStringList();
-            QStringList shareNames;
+    Layouts::SharesMap  currentSharesNamesMap = currentLayoutsData.sharesMap();
+    QStringList originalSharesIds = o_layoutsOriginalData.allSharesIds();
+    QStringList currentSharesIds = currentLayoutsData.allSharesIds();
 
-            for (const auto &shareid : shareIds) {
-                QString shareName = nameForId(shareid);
-                shareNames << shareName;
-            }
+    QStringList deprecatedSharesIds = Latte::subtracted(originalSharesIds, currentSharesIds);
+    QStringList deprecatedSharesNames;
 
-            currentSharesIdMap[id] = shareIds;
-            currentSharesNamesMap[name] = shareNames;
+    for(int i=0; i<deprecatedSharesIds.count(); ++i) {
+        QString shareId = deprecatedSharesIds[i];
+
+        if (currentLayoutsData.contains(shareId)) {
+            deprecatedSharesNames << currentLayoutsData[shareId].editedName();
+        } else if (o_layoutsOriginalData.contains(shareId)) {
+            deprecatedSharesNames << o_layoutsOriginalData[shareId].editedName();
         }
     }
 
-    QStringList deprecatedShares;
+    qDebug() << " CURRENT SHARES NAMES MAP  :: " << currentSharesNamesMap;
+    qDebug() << " DEPRECATED SHARES ::";
 
-    for (const auto &oldSharesIds : m_sharesMap) {
-        for(const auto &oldId : oldSharesIds) {
-            QString oldShareName = nameForId(oldId);
-            if (!m_corona->layoutsManager()->synchronizer()->mapHasRecord(oldShareName, currentSharesNamesMap)) {
-                deprecatedShares << oldShareName;
-            }
-        }
-    }
-
-    qDebug() << " CURRENT SHARES ID MAP  :: " << currentSharesIdMap;
-    m_corona->layoutsManager()->synchronizer()->syncActiveShares(currentSharesNamesMap, deprecatedShares);
-
-    m_sharesMap.clear();
-    m_sharesMap = currentSharesIdMap;
+    m_corona->layoutsManager()->synchronizer()->syncActiveShares(currentSharesNamesMap, deprecatedSharesNames);
 }
 
 bool SettingsDialog::idExistsInModel(QString id)

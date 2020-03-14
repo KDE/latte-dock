@@ -127,6 +127,38 @@ const Layout LayoutsTable::operator[](const uint &index) const
     return m_layouts[index];
 }
 
+QStringList LayoutsTable::allSharesIds() const
+{
+    QStringList sharesIds;
+
+    for(int i=0; i<m_layouts.count(); ++i) {
+        if (m_layouts[i].isShared()) {
+            for(int j=0; j<m_layouts[i].shares.count(); ++j) {
+                sharesIds << m_layouts[i].shares[j];
+            }
+        }
+    }
+
+    return sharesIds;
+}
+
+QStringList LayoutsTable::allSharesNames() const
+{
+    QStringList sharesNames;
+
+    for(int i=0; i<m_layouts.count(); ++i) {
+        if (m_layouts[i].isShared()) {
+            for(int j=0; j<m_layouts[i].shares.count(); ++j) {
+                QString shareId = m_layouts[i].shares[j];
+                int sid = indexOf(shareId);
+                sharesNames << m_layouts[sid].editedName();
+            }
+        }
+    }
+
+    return sharesNames;
+}
+
 LayoutsTable LayoutsTable::subtracted(const LayoutsTable &rhs) const
 {
     LayoutsTable subtract;
@@ -144,6 +176,26 @@ LayoutsTable LayoutsTable::subtracted(const LayoutsTable &rhs) const
     return subtract;
 }
 
+Latte::Layouts::SharesMap LayoutsTable::sharesMap() const
+{
+    Latte::Layouts::SharesMap map;
+
+    for(int i=0; i<m_layouts.count(); ++i) {
+        if (m_layouts[i].isShared()) {
+            QStringList sharesNames;
+
+            for(int j=0; j<m_layouts[i].shares.count(); ++j) {
+                QString shareId = m_layouts[i].shares[j];
+                int sid = indexOf(shareId);
+                sharesNames << m_layouts[sid].editedName();
+            }
+
+            map[m_layouts[i].editedName()] = sharesNames;
+        }
+    }
+
+    return map;
+}
 
 bool LayoutsTable::contains(const QString &id) const
 {
