@@ -64,10 +64,6 @@ public:
     void toggleCurrentPage();
     void setCurrentPage(int page);
 
-    void addShareInCurrent(const QString &layoutId);
-    void removeShareFromCurrent(const QString &layoutId);
-    void updateShareAt(const int &row, const QString &fromId, const QString &toId);
-
     bool inMultipleLayoutsLook() const;
     bool isActive(int row) const;
     bool isActive(QString layoutName) const;

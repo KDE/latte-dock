@@ -1565,18 +1565,6 @@ bool SettingsDialog::saveAllChanges()
                 m_model->setData(m_model->index(j, NAMECOLUMN), font, Qt::FontRole);
             }
         }
-
-        //! updating the #SETTINGSID in the model for SHARES
-        for (int j = 0; j < m_model->rowCount(); ++j) {
-            QStringList shares = m_model->data(m_model->index(j, SHAREDCOLUMN), Qt::UserRole).toStringList();
-            if (!shares.isEmpty()) {
-                for (auto oldShareId : fromRenamePaths) {
-                    if (shares.contains(oldShareId)) {
-                        updateShareAt(j, oldShareId, newFile);
-                    }
-                }
-            }
-        }
     }
 
     QString orphanedLayout;
@@ -1683,36 +1671,6 @@ void SettingsDialog::syncActiveShares()
 
     m_sharesMap.clear();
     m_sharesMap = currentSharesIdMap;
-}
-
-void SettingsDialog::addShareInCurrent(const QString &layoutId)
-{
-    int currentRow = ui->layoutsView->currentIndex().row();
-    QStringList shares = m_model->data(m_model->index(currentRow, SHAREDCOLUMN), Qt::UserRole).toStringList();
-    if (!shares.contains(layoutId)) {
-        shares << layoutId;
-        m_model->setData(m_model->index(currentRow, SHAREDCOLUMN), shares, Qt::UserRole);
-    }
-}
-
-void SettingsDialog::removeShareFromCurrent(const QString &layoutId)
-{
-    int currentRow = ui->layoutsView->currentIndex().row();
-    QStringList shares = m_model->data(m_model->index(currentRow, SHAREDCOLUMN), Qt::UserRole).toStringList();
-    if (shares.contains(layoutId)) {
-        shares.removeAll(layoutId);
-        m_model->setData(m_model->index(currentRow, SHAREDCOLUMN), shares, Qt::UserRole);
-    }
-}
-
-void SettingsDialog::updateShareAt(const int &row, const QString &fromId, const QString &toId)
-{
-    QStringList shares = m_model->data(m_model->index(row, SHAREDCOLUMN), Qt::UserRole).toStringList();
-    if (shares.contains(fromId)) {
-        shares.removeAll(fromId);
-        shares << toId;
-        m_model->setData(m_model->index(row, SHAREDCOLUMN), shares, Qt::UserRole);
-    }
 }
 
 bool SettingsDialog::idExistsInModel(QString id)
