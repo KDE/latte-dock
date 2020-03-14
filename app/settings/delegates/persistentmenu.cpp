@@ -21,8 +21,8 @@
 
 namespace Latte {
 namespace Settings {
-namespace Layouts {
-namespace Delegates {
+namespace Layout {
+namespace Delegate {
 
 PersistentMenu::PersistentMenu(QWidget *parent)
     : QMenu (parent),

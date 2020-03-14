@@ -27,8 +27,8 @@
 
 namespace Latte {
 namespace Settings {
-namespace Layouts {
-namespace Delegates {
+namespace Layout {
+namespace Delegate {
 
 BackgroundCmbBoxItem::BackgroundCmbBoxItem(QObject *parent, QString iconsPath)
     : QAbstractItemDelegate(parent),

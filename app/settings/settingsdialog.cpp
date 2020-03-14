@@ -125,12 +125,12 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         colors.append(color);
     }
 
-    ui->layoutsView->setItemDelegateForColumn(NAMECOLUMN, new Settings::Layouts::Delegates::LayoutName(this));
-    ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new Settings::Layouts::Delegates::BackgroundCmbBox(this, iconsPath, colors));
-    ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new Settings::Layouts::Delegates::CheckBox(this));
-    ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new Settings::Layouts::Delegates::CheckBox(this));
-    ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new Settings::Layouts::Delegates::Activities(this));
-    ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new Settings::Layouts::Delegates::Shared(this));
+    ui->layoutsView->setItemDelegateForColumn(NAMECOLUMN, new Settings::Layout::Delegate::LayoutName(this));
+    ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new Settings::Layout::Delegate::BackgroundCmbBox(this, iconsPath, colors));
+    ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
+    ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
+    ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new Settings::Layout::Delegate::Activities(this));
+    ui->layoutsView->setItemDelegateForColumn(SHAREDCOLUMN, new Settings::Layout::Delegate::Shared(this));
 
     m_inMemoryButtons = new QButtonGroup(this);
     m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Types::SingleLayout);

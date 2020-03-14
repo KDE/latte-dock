@@ -36,8 +36,8 @@
 
 namespace Latte {
 namespace Settings {
-namespace Layouts {
-namespace Delegates {
+namespace Layout {
+namespace Delegate {
 
 BackgroundCmbBox::BackgroundCmbBox(QObject *parent, QString iconsPath, QStringList colors)
     : QItemDelegate(parent),

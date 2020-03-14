@@ -26,8 +26,8 @@
 
 namespace Latte {
 namespace Settings {
-namespace Layouts {
-namespace Delegates {
+namespace Layout {
+namespace Delegate {
 
 class CheckBox : public QStyledItemDelegate
 {

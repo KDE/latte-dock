@@ -28,8 +28,8 @@ class QWidget;
 
 namespace Latte {
 namespace Settings {
-namespace Layouts {
-namespace Delegates {
+namespace Layout {
+namespace Delegate {
 
 class BackgroundCmbBox : public QItemDelegate
 {

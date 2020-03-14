@@ -35,8 +35,8 @@
 
 namespace Latte {
 namespace Settings {
-namespace Layouts {
-namespace Delegates {
+namespace Layout {
+namespace Delegate {
 
 LayoutName::LayoutName(QObject *parent)
     : QStyledItemDelegate(parent)

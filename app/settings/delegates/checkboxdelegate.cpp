@@ -34,8 +34,8 @@
 
 namespace Latte {
 namespace Settings {
-namespace Layouts {
-namespace Delegates {
+namespace Layout {
+namespace Delegate {
 
 CheckBox::CheckBox(QObject *parent)
     : QStyledItemDelegate(parent)

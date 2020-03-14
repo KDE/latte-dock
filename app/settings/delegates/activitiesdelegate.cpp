@@ -41,8 +41,8 @@
 
 namespace Latte {
 namespace Settings {
-namespace Layouts {
-namespace Delegates {
+namespace Layout {
+namespace Delegate {
 
 Activities::Activities(QObject *parent)
     : QItemDelegate(parent)
