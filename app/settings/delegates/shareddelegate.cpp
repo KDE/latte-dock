@@ -63,7 +63,7 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
 
     menu->setMinimumWidth(option.rect.width());
 
-    for (unsigned int i = 0; i < allLayouts.rowCount(); ++i) {
+    for (int i = 0; i < allLayouts.rowCount(); ++i) {
         if (inMultiple && allLayouts[i].isShared()) {
             continue;
         }
@@ -81,12 +81,12 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
 
         menu->addAction(action);
 
-        connect(action, &QAction::toggled, this, [this, button, action, allLayouts]() {
-            updateButtonText(button, allLayouts);
+        connect(action, &QAction::toggled, this, [this, button, index]() {
+            updateButtonText(button, index);
         });
     }
 
-    updateButtonText(button, allLayouts);
+    updateButtonText(button, index);
 
     return button;
 }
@@ -94,7 +94,7 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
 void Shared::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
-    updateButtonText(editor, allLayouts);
+    updateButtonText(editor, index);
 }
 
 void Shared::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
@@ -113,6 +113,8 @@ void Shared::setModelData(QWidget *editor, QAbstractItemModel *model, const QMod
 
 void Shared::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    Q_UNUSED(index)
+
     editor->setGeometry(option.rect);
 }
 
@@ -170,11 +172,13 @@ void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const 
     painter->restore();
 }
 
-void Shared::updateButtonText(QWidget *editor, const Data::LayoutsTable &allLayouts) const
+void Shared::updateButtonText(QWidget *editor, const QModelIndex &index) const
 {
     if (!editor) {
         return;
     }
+
+    Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
 
     QPushButton *button = static_cast<QPushButton *>(editor);
     Data::LayoutsTable assignedLayouts;
@@ -192,9 +196,7 @@ QString Shared::joined(const Data::LayoutsTable &layouts, bool formatText) const
 {
     QString finalText;
 
-    int i = 0;
-
-    for (unsigned int i = 0; i < layouts.rowCount(); ++i) {
+    for (int i = 0; i < layouts.rowCount(); ++i) {
         if (i > 0) {
             finalText += ", ";
         }

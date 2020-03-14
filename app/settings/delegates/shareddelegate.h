@@ -47,7 +47,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
-    void updateButtonText(QWidget *editor, const Data::LayoutsTable &allLayouts) const;
+    void updateButtonText(QWidget *editor, const QModelIndex &index) const;
 
     QString joined(const Data::LayoutsTable &layouts, bool formatText = true) const;
 };
