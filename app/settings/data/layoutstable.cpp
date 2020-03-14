@@ -30,8 +30,16 @@ LayoutsTable::LayoutsTable()
 {
 }
 
-LayoutsTable::~LayoutsTable()
+LayoutsTable::LayoutsTable(LayoutsTable &&o)
+    : m_layouts(o.m_layouts)
 {
+
+}
+
+LayoutsTable::LayoutsTable(const LayoutsTable &o)
+    : m_layouts(o.m_layouts)
+{
+
 }
 
 //! Operators
@@ -39,6 +47,12 @@ LayoutsTable &LayoutsTable::operator=(const LayoutsTable &rhs)
 {
     m_layouts = rhs.m_layouts;
 
+    return (*this);
+}
+
+LayoutsTable &LayoutsTable::operator=(LayoutsTable &&rhs)
+{
+    m_layouts = rhs.m_layouts;
     return (*this);
 }
 
@@ -112,6 +126,24 @@ const Layout LayoutsTable::operator[](const uint &index) const
 {
     return m_layouts[index];
 }
+
+LayoutsTable LayoutsTable::subtracted(const LayoutsTable &rhs) const
+{
+    LayoutsTable subtract;
+
+    if ((*this) == rhs) {
+        return subtract;
+    }
+
+    for(int i=0; i<m_layouts.count(); ++i) {
+        if (!rhs.contains(m_layouts[i].id)) {
+            subtract << m_layouts[i];
+        }
+    }
+
+    return subtract;
+}
+
 
 bool LayoutsTable::contains(const QString &id) const
 {

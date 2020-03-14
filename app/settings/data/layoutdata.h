@@ -34,8 +34,7 @@ class Layout
 
 public:
     Layout();
-    ~Layout();
-
+    Layout(Layout &&o);
     Layout(const Layout &o);
 
     //! Layout data
@@ -62,6 +61,7 @@ public:
 
     //! Operators
     Layout &operator=(const Layout &rhs);
+    Layout &operator=(Layout &&rhs);
     bool operator==(const Layout &rhs) const;
     bool operator!=(const Layout &rhs) const;
 

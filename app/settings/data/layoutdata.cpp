@@ -28,7 +28,19 @@ Layout::Layout()
 {
 }
 
-Layout::~Layout()
+Layout::Layout(Layout &&o)
+    : id(o.id),
+      m_editedName(o.m_editedName),
+      m_originalName(o.m_originalName),
+      color(o.color),
+      background(o.background),
+      textColor(o.textColor),
+      isActive(o.isActive),
+      isLocked(o.isLocked),
+      isShownInMenu(o.isShownInMenu),
+      hasDisabledBorders(o.hasDisabledBorders),
+      activities(o.activities),
+      shares(o.shares)
 {
 }
 
@@ -48,6 +60,24 @@ Layout::Layout(const Layout &o)
 {
 }
 
+Layout &Layout::operator=(Layout &&rhs)
+{
+    id = rhs.id;
+    m_editedName = rhs.m_editedName;
+    m_originalName = rhs.m_originalName;
+    color = rhs.color;
+    background = rhs.background;
+    textColor = rhs.textColor;
+    isActive = rhs.isActive;
+    isLocked = rhs.isLocked;
+    isShownInMenu = rhs.isShownInMenu;
+    hasDisabledBorders = rhs.hasDisabledBorders;
+    activities = rhs.activities;
+    shares = rhs.shares;
+
+    return (*this);
+}
+
 Layout &Layout::operator=(const Layout &rhs)
 {
     id = rhs.id;
@@ -63,7 +93,7 @@ Layout &Layout::operator=(const Layout &rhs)
     activities = rhs.activities;
     shares = rhs.shares;
 
-    return *this;
+    return (*this);
 }
 
 bool Layout::operator==(const Layout &rhs) const

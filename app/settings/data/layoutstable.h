@@ -34,10 +34,12 @@ class LayoutsTable
 
 public:
     LayoutsTable();
-    ~LayoutsTable();
+    LayoutsTable(LayoutsTable &&o);
+    LayoutsTable(const LayoutsTable &o);
 
     //! Operators
     LayoutsTable &operator=(const LayoutsTable &rhs);
+    LayoutsTable &operator=(LayoutsTable &&rhs);
     LayoutsTable &operator<<(const Layout &rhs);
     bool operator==(const LayoutsTable &rhs) const;
     bool operator!=(const LayoutsTable &rhs) const;
@@ -45,6 +47,8 @@ public:
     const Layout operator[](const QString &id) const;
     Layout &operator[](const uint &index);
     const Layout operator[](const uint &index) const;
+
+    LayoutsTable subtracted(const LayoutsTable &rhs) const;
 
     bool contains(const QString &id) const;
     bool rowExists(const int &row) const;
