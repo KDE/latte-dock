@@ -223,10 +223,6 @@ SettingsDialog::~SettingsDialog()
     qDebug() << Q_FUNC_INFO;
 
     m_corona->universalSettings()->setLayoutsWindowSize(size());
-    m_layoutsController->deleteLater();
-
-    m_inMemoryButtons->deleteLater();
-    m_mouseSensitivityButtons->deleteLater();
 }
 
 void SettingsDialog::blockDeleteOnActivityStopped()

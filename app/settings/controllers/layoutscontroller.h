@@ -74,6 +74,9 @@ public:
     //! import layouts from Latte versions <= v0.7.x
     void importLayoutsFromV1ConfigFile(QString file);
 
+private slots:
+    void saveColumnWidths();
+
 private:
     void initView();
     void syncActiveShares();

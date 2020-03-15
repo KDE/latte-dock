@@ -68,25 +68,6 @@ Layouts::Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view)
 
 Layouts::~Layouts()
 {
-    //! save column widths
-    QStringList columnWidths;
-    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::BACKGROUNDCOLUMN));
-    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::NAMECOLUMN));
-    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::MENUCOLUMN));
-    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::BORDERSCOLUMN));
-
-    if (inMultipleMode()) {
-        columnWidths << QString::number(m_view->columnWidth(Model::Layouts::ACTIVITYCOLUMN));
-    } else {
-        //! In Single Mode, keed recorded value for ACTIVITYCOLUMN
-        QStringList currentWidths = m_corona->universalSettings()->layoutsColumnWidths();
-        if (currentWidths.count()>=5) {
-            columnWidths << currentWidths[4];
-        }
-    }
-
-    m_corona->universalSettings()->setLayoutsColumnWidths(columnWidths);
-
     //! remove
     qDeleteAll(m_layouts);
 
@@ -139,6 +120,8 @@ void Layouts::initView()
     m_view->setItemDelegateForColumn(Model::Layouts::BORDERSCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     m_view->setItemDelegateForColumn(Model::Layouts::ACTIVITYCOLUMN, new Settings::Layout::Delegate::Activities(this));
     m_view->setItemDelegateForColumn(Model::Layouts::SHAREDCOLUMN, new Settings::Layout::Delegate::Shared(this));
+
+    connect(m_view, &QObject::destroyed, this, &Controller::Layouts::saveColumnWidths);
 
     //! update all layouts view when runningActivities changed. This way we update immediately
     //! the running Activities in Activities checkboxes which are shown as bold
@@ -791,6 +774,28 @@ void Layouts::syncActiveShares()
     qDebug() << " DEPRECATED SHARES ::";
 
     m_corona->layoutsManager()->synchronizer()->syncActiveShares(currentSharesNamesMap, deprecatedSharesNames);
+}
+
+void Layouts::saveColumnWidths()
+{
+    //! save column widths
+    QStringList columnWidths;
+    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::BACKGROUNDCOLUMN));
+    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::NAMECOLUMN));
+    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::MENUCOLUMN));
+    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::BORDERSCOLUMN));
+
+    if (inMultipleMode()) {
+        columnWidths << QString::number(m_view->columnWidth(Model::Layouts::ACTIVITYCOLUMN));
+    } else {
+        //! In Single Mode, keed recorded value for ACTIVITYCOLUMN
+        QStringList currentWidths = m_corona->universalSettings()->layoutsColumnWidths();
+        if (currentWidths.count()>=5) {
+            columnWidths << currentWidths[4];
+        }
+    }
+
+    m_corona->universalSettings()->setLayoutsColumnWidths(columnWidths);
 }
 
 }
