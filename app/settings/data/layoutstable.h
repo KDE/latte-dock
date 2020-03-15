@@ -57,7 +57,8 @@ public:
     QStringList allSharesNames() const;
     Latte::Layouts::SharesMap sharesMap() const;
 
-    bool contains(const QString &id) const;
+    bool containsId(const QString &id) const;
+    bool containsCurrentName(const QString &name) const;
     bool rowExists(const int &row) const;
 
     int indexOf(const QString &id) const;

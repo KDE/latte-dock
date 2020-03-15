@@ -54,6 +54,11 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
     });
 }
 
+bool Layouts::containsCurrentName(const QString &name) const
+{
+    return m_layoutsTable.containsCurrentName(name);
+}
+
 bool Layouts::inMultipleMode() const
 {
     return m_inMultipleMode;
@@ -266,7 +271,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return m_layoutsTable[row].nameWasEdited();
     } else if (role == ALLACTIVITIESROLE) {
         QStringList activities;
-        activities << QString(FREEACTIVITIESID);
+        activities << QString(Data::Layout::FREEACTIVITIESID);
         activities << m_corona->layoutsManager()->synchronizer()->activities();
         return activities;
     } else if (role == ALLLAYOUTSROLE) {

@@ -21,6 +21,7 @@
 
 // local
 #include "persistentmenu.h"
+#include "../data/layoutdata.h"
 #include "../models/layoutsmodel.h"
 #include "../tools/settingstools.h"
 
@@ -72,11 +73,11 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
     QStringList assignedActivities = index.data(Qt::UserRole).toStringList();
 
     for (int i = 0; i < allActivities.count(); ++i) {
-        if (allActivities[i] == Model::Layouts::FREEACTIVITIESID) {
-            bool isFreeActivitiesChecked = assignedActivities.contains(Model::Layouts::FREEACTIVITIESID);
+        if (allActivities[i] == Data::Layout::FREEACTIVITIESID) {
+            bool isFreeActivitiesChecked = assignedActivities.contains(Data::Layout::FREEACTIVITIESID);
 
             QAction *action = new QAction(freeActivities_text());
-            action->setData(Model::Layouts::FREEACTIVITIESID);
+            action->setData(Data::Layout::FREEACTIVITIESID);
             action->setIcon(QIcon::fromTheme(freeActivities_icon()));
             action->setCheckable(true);
             action->setChecked(isFreeActivitiesChecked);
@@ -145,7 +146,7 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
         } else {
             foreach (QAction *action, button->menu()->actions()) {
                 QString actId = action->data().toString();
-                if (actId == Model::Layouts::FREEACTIVITIESID) {
+                if (actId == Data::Layout::FREEACTIVITIESID) {
                     action->setChecked(false);
                 }
             }
@@ -309,7 +310,7 @@ QString Activities::joinedActivities(const QStringList &activities, bool isActiv
         bool bold{false};
         bool italic{false};
 
-        if (activityId == Model::Layouts::FREEACTIVITIESID) {
+        if (activityId == Data::Layout::FREEACTIVITIESID) {
             name = freeActivities_text();
 
             if (formatText) {

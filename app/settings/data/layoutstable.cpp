@@ -168,7 +168,7 @@ LayoutsTable LayoutsTable::subtracted(const LayoutsTable &rhs) const
     }
 
     for(int i=0; i<m_layouts.count(); ++i) {
-        if (!rhs.contains(m_layouts[i].id)) {
+        if (!rhs.containsId(m_layouts[i].id)) {
             subtract << m_layouts[i];
         }
     }
@@ -197,10 +197,21 @@ Latte::Layouts::SharesMap LayoutsTable::sharesMap() const
     return map;
 }
 
-bool LayoutsTable::contains(const QString &id) const
+bool LayoutsTable::containsId(const QString &id) const
 {
     for(int i=0; i<m_layouts.count(); ++i) {
         if (m_layouts[i].id == id){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool LayoutsTable::containsCurrentName(const QString &name) const
+{
+    for(int i=0; i<m_layouts.count(); ++i) {
+        if (m_layouts[i].currentName() == name){
             return true;
         }
     }

@@ -20,6 +20,7 @@
 
 #include "layoutdata.h"
 
+
 namespace Latte {
 namespace Settings {
 namespace Data {
@@ -115,6 +116,11 @@ bool Layout::operator==(const Layout &rhs) const
 bool Layout::operator!=(const Layout &rhs) const
 {
     return !(*this == rhs);
+}
+
+bool Layout::isForFreeActivities() const
+{
+    return ((activities.count() == 1) && (activities[0] == FREEACTIVITIESID));
 }
 
 bool Layout::isShared() const

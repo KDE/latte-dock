@@ -31,8 +31,9 @@ namespace Data {
 
 class Layout
 {
-
 public:
+    static constexpr const char* FREEACTIVITIESID = "{0000-0000}";
+
     Layout();
     Layout(Layout &&o);
     Layout(const Layout &o);
@@ -57,6 +58,7 @@ public:
 
     //! Functionality
     bool isShared() const;
+    bool isForFreeActivities() const;
     bool nameWasEdited() const;
 
     //! Operators

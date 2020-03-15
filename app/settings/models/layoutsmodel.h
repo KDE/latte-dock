@@ -40,8 +40,6 @@ class Layouts : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    static constexpr const char* FREEACTIVITIESID = "{0000-0000}";
-
     enum Columns
     {
         IDCOLUMN = 0,
@@ -68,6 +66,8 @@ public:
 
     explicit Layouts(QObject *parent, Latte::Corona *corona);
 
+    bool containsCurrentName(const QString &name) const;
+
     bool inMultipleMode() const;
     void setInMultipleMode(bool inMultiple);
 
@@ -81,6 +81,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
+
     const Data::Layout &at(const int &row);
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;

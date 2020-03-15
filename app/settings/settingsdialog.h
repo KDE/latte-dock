@@ -64,19 +64,6 @@ public:
     void toggleCurrentPage();
     void setCurrentPage(int page);
 
-    bool inMultipleLayoutsLook() const;
-    bool isActive(int row) const;
-    bool isActive(QString layoutName) const;
-    bool isShared(int row) const;
-    bool isMenuCell(int column) const;
-
-    int currentFreeActiviesLayout() const;
-
-    QString nameForId(QString id) const;
-    QString idForRow(int row) const;
-
-    QStringList availableSharesFor(int row);
-
     void requestImagesDialog(int row);
     void requestColorsDialog(int row);
 
@@ -104,63 +91,42 @@ private slots:
     void updatePerLayoutButtonsState();
 
 private:
-    void addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true, bool showNotification = true);
     //! When an activity is closed for some reason the window manager hides and reshows
     //! the windows. This function prevents this because we don't want to delete the window
     //! on reject in such case.
     void blockDeleteOnActivityStopped();
     void loadSettings();
-    void recalculateAvailableActivities();
-
-    void appendLayout(Settings::Data::Layout &layout);
 
     void updateApplyButtonsState();
     void updateSharedLayoutsUiElements();
-    void syncActiveShares();
 
+    void saveAllChanges();
     void setCurrentFreeActivitiesLayout(const int &row);
 
     bool dataAreAccepted();
-    bool idExistsInModel(QString id);
-    bool importLayoutsFromV1ConfigFile(QString file);
-    bool nameExistsInModel(QString name);
-    bool saveAllChanges();    
-
-    int rowForId(QString id) const;
-    int rowForName(QString layoutName) const;
-    int ascendingRowFor(QString name);
-
-    QString uniqueTempDirectory();
-    QString uniqueLayoutName(QString name);
 
     QList<int> currentSettings();
 
 private:
-    int m_currentFreeActivitiesLayout{-1};
-
-    QStringList m_tempDirectories;
-
-    QButtonGroup *m_inMemoryButtons;
-    QButtonGroup *m_mouseSensitivityButtons;
-
-    QTimer m_activityClosedTimer;
-    bool m_blockDeleteOnReject{false};
-
-    KHelpMenu *m_helpMenu{nullptr};
-
     Latte::Corona *m_corona{nullptr};
-
-    QAction *m_editLayoutAction{nullptr};
-
-    //QStandardItemModel *m_model{nullptr};
     Settings::Model::Layouts *m_model{nullptr};
     Settings::Controller::Layouts *m_layoutsController{nullptr};
     Ui::SettingsDialog *ui;
 
-    QHash<const QString, Latte::CentralLayout *> m_layouts;
+    QButtonGroup *m_inMemoryButtons;
+    QButtonGroup *m_mouseSensitivityButtons;
 
+    QAction *m_editLayoutAction{nullptr};
+
+    KHelpMenu *m_helpMenu{nullptr};
+
+    //! workaround to avoid dialog closing when kwin decides faulty to close it
+    //! because of Activities changes
+    QTimer m_activityClosedTimer;
+    bool m_blockDeleteOnReject{false};
+
+    //! original data
     QList<int> o_settingsOriginalData;
-    Settings::Data::LayoutsTable o_layoutsOriginalData;
 };
 
 }
