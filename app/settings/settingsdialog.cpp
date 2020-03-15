@@ -161,11 +161,13 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     connect(m_inMemoryButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
             [ = ](int id, bool checked) {
 
-        m_model->setInMultipleMode(m_inMemoryButtons->checkedId() == Latte::Types::MultipleLayouts);
+        if (checked) {
+            m_layoutsController->setInMultipleMode(id == Latte::Types::MultipleLayouts);
 
-        updateApplyButtonsState();
-        updatePerLayoutButtonsState();
-        updateSharedLayoutsUiElements();
+            updateApplyButtonsState();
+            updatePerLayoutButtonsState();
+            updateSharedLayoutsUiElements();
+        }
     });
 
     connect(m_mouseSensitivityButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
