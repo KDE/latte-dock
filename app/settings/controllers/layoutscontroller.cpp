@@ -732,9 +732,6 @@ void Layouts::save()
     //! reload layouts in layoutsmanager
     m_corona->layoutsManager()->synchronizer()->loadLayouts();
 
-
-
-
     //! send to layout manager in which layout to switch
   /*  Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
 
@@ -754,8 +751,12 @@ void Layouts::save()
         }
     }*/
 
+    m_model->applyCurrentNames();
+
     o_layoutsOriginalData = m_model->currentData();
     o_originalInMultipleMode = m_model->inMultipleMode();
+
+    emit dataChanged();
 }
 
 void Layouts::syncActiveShares()

@@ -151,7 +151,7 @@ QString Layout::originalName() const
 void Layout::setOriginalName(const QString name)
 {
     m_originalName = name;
-    m_currentName = "";
+    m_currentName = name;
 }
 
 }

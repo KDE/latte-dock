@@ -88,8 +88,9 @@ public:
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
     void clear();
+    void applyCurrentNames();
     void appendLayout(const Settings::Data::Layout &layout);
-    void removeLayout(const QString &id);
+    void removeLayout(const QString &id);    
 
     const Data::LayoutsTable &currentData();
     void setCurrentData(Data::LayoutsTable &data);

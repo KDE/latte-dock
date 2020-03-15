@@ -733,7 +733,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
     //! Switch Button
     if (selectedLayout.nameWasEdited()
-            || (m_layoutsController->inMultipleMode() && selectedLayout.isShared())
+            || (m_layoutsController->inMultipleMode() && (selectedLayout.isShared() || !selectedLayout.isActive))
             || (m_layoutsController->selectedLayoutIsCurrentActive())) {
         ui->switchButton->setEnabled(false);
     } else {

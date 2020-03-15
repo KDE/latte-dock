@@ -118,6 +118,18 @@ void Layouts::appendLayout(const Settings::Data::Layout &layout)
     endInsertRows();
 }
 
+void Layouts::applyCurrentNames()
+{
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+
+    for(int i=0; i<rowCount(); ++i) {
+        m_layoutsTable[i].setOriginalName(m_layoutsTable[i].currentName());
+    }
+
+    emit dataChanged(index(0, NAMECOLUMN), index(rowCount()-1,NAMECOLUMN), roles);
+}
+
 void Layouts::removeLayout(const QString &id)
 {
     int index = m_layoutsTable.indexOf(id);
