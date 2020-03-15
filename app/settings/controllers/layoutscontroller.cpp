@@ -62,6 +62,8 @@ Layouts::Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view)
       m_model(new Model::Layouts(this, corona)),
       m_view(view)
 {
+    setOriginalInMultipleMode(m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts);
+
     initView();
     loadLayouts();
 
@@ -391,6 +393,7 @@ void Layouts::loadLayouts()
 
     //! Send original loaded data to model
     m_model->setCurrentData(layoutsBuffer);
+    m_model->setLayoutForFreeActivities(m_corona->universalSettings()->lastNonAssignedLayoutName());
 
     m_view->selectRow(rowForName(m_corona->layoutsManager()->currentLayoutName()));
 

@@ -91,6 +91,7 @@ public:
     void applyCurrentNames();
     void appendLayout(const Settings::Data::Layout &layout);
     void removeLayout(const QString &id);    
+    void setLayoutForFreeActivities(const QString &name);
 
     const Data::LayoutsTable &currentData();
     void setCurrentData(Data::LayoutsTable &data);

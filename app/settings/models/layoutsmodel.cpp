@@ -161,6 +161,21 @@ bool Layouts::removeRows(int row, int count, const QModelIndex &parent)
     return false;
 }
 
+void Layouts::setLayoutForFreeActivities(const QString &name)
+{
+    QString id = m_layoutsTable.idForCurrentName(name);
+    int row = m_layoutsTable.indexOf(id);
+
+    if (row>=0 && m_layoutsTable[row].activities.isEmpty()) {
+        m_layoutsTable[row].activities << Data::Layout::FREEACTIVITIESID;
+
+        QVector<int> roles;
+        roles << Qt::DisplayRole;
+        roles << Qt::UserRole;
+        emit dataChanged(index(row, ACTIVITYCOLUMN), index(row, ACTIVITYCOLUMN), roles);
+    }
+}
+
 QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation != Qt::Horizontal) {
