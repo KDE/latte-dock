@@ -286,15 +286,12 @@ void SettingsDialog::on_downloadButton_clicked()
     dialog.resize(m_corona->universalSettings()->downloadWindowSize());
     dialog.exec();
 
-    bool layoutAdded{false};
-
     if (!dialog.changedEntries().isEmpty() || !dialog.installedEntries().isEmpty()) {
         for (const auto &entry : dialog.installedEntries()) {
             for (const auto &entryFile : entry.installedFiles()) {
                 Layouts::Importer::LatteFileVersion version = Layouts::Importer::fileVersion(entryFile);
 
                 if (version == Layouts::Importer::LayoutVersion2) {
-                    layoutAdded = true;
                     m_layoutsController->addLayoutForFile(entryFile);
                     break;
                 }
@@ -303,10 +300,6 @@ void SettingsDialog::on_downloadButton_clicked()
     }
 
     m_corona->universalSettings()->setDownloadWindowSize(dialog.size());
-
-    if (layoutAdded) {
-        apply();
-    }
 }
 
 void SettingsDialog::on_removeButton_clicked()
@@ -700,8 +693,10 @@ void SettingsDialog::updateApplyButtonsState()
 
     if (changed) {
         ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+        ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(true);
     } else {
         ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+        ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(false);
     }
 
     //! RestoreDefaults Button
