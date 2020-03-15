@@ -28,6 +28,7 @@
 namespace Latte {
 
 bool isSelected(const QStyleOptionViewItem &option);
+bool isHovered(const QStyleOptionViewItem &option);
 QPalette::ColorGroup colorGroup(const QStyleOptionViewItem &option);
 
 //! strings that even though they were initially at original list

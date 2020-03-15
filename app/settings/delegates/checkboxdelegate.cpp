@@ -52,9 +52,6 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
     bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
     if (!isSharedCapable) {
-        QStandardItemModel *model = (QStandardItemModel *) index.model();
-        QStyledItemDelegate::paint(painter, adjustedOption, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
-
         QStyledItemDelegate::paint(painter, adjustedOption, index);
     } else {
         // Disabled

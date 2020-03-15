@@ -21,6 +21,8 @@
 
 // local
 #include "backgroundcmbitemdelegate.h"
+#include "../models/layoutsmodel.h"
+#include "../tools/settingstools.h"
 
 // Qt
 #include <QComboBox>
@@ -40,7 +42,7 @@ namespace Layout {
 namespace Delegate {
 
 BackgroundCmbBox::BackgroundCmbBox(QObject *parent, QString iconsPath, QStringList colors)
-    : QItemDelegate(parent),
+    : QStyledItemDelegate(parent),
       m_iconsPath(iconsPath),
       Colors(colors)
 {
@@ -105,8 +107,14 @@ void BackgroundCmbBox::updateEditorGeometry(QWidget *editor, const QStyleOptionV
 
 void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyleOptionViewItem myOption = option;
+    QStyleOptionViewItem myOptions = option;
+    //! Remove the focus dotted lines
+    myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
+
     QVariant background = index.data(Qt::BackgroundRole);
+
+    //! draw underlying background
+    QStyledItemDelegate::paint(painter, myOptions, index);
 
     if (background.isValid()) {
         QString backgroundStr = background.toString();
@@ -114,13 +122,21 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
         QString colorPath = backgroundStr.startsWith("/") ? backgroundStr : m_iconsPath + backgroundStr + "print.jpg";
 
         if (QFileInfo(colorPath).exists()) {
-            QBrush colorBrush;
-            colorBrush.setTextureImage(QImage(colorPath).scaled(QSize(50, 50)));
-            colorBrush.setColor("black");
+            QPen pen;
 
+            QBrush colorBrush;
+            colorBrush.setTextureImage(QImage(colorPath));
+
+            pen.setColor("black");
+
+            painter->setPen(pen);
             painter->setBrush(colorBrush);
-            painter->drawRect(QRect(option.rect.x(), option.rect.y(),
-                                    option.rect.width(), option.rect.height()));
+
+            int cX = option.rect.x() + (option.rect.width() / 2);
+            int cY = option.rect.y() + (option.rect.height() / 2);
+            int radius = (option.rect.height() - 4) / 2;
+
+            painter->drawEllipse(QPointF(cX, cY), radius, radius);
         }
     }
 }

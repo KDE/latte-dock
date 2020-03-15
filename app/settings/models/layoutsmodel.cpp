@@ -175,9 +175,9 @@ QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role)
         break;
     case BACKGROUNDCOLUMN:
         if (role == Qt::DisplayRole) {
-            return QString(i18nc("column for layout background", "Background"));
+            return QString("#");//(i18nc("column for layout background", "Background"));
         } else if (role == Qt::DecorationRole) {
-            return QIcon::fromTheme("games-config-background");
+            return QString();//QIcon::fromTheme("games-config-background");
         }
         break;
     case NAMECOLUMN:

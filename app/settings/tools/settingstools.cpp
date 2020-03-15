@@ -34,6 +34,15 @@ bool isSelected(const QStyleOptionViewItem &option)
     return false;
 }
 
+bool isHovered(const QStyleOptionViewItem &option)
+{
+    if (option.state & QStyle::State_MouseOver) {
+        return true;
+    }
+
+    return false;
+}
+
 QPalette::ColorGroup colorGroup(const QStyleOptionViewItem &option)
 {
     if (option.state & QStyle::State_Active) {
