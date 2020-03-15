@@ -105,7 +105,7 @@ bool Layout::operator==(const Layout &rhs) const
             && (color == rhs.color)
             && (background == rhs.background)
             && (textColor == rhs.textColor)
-            && (isActive == rhs.isActive)
+            //&& (isActive == rhs.isActive) /*Disabled but this is not a data but a layout state*/
             && (isLocked == rhs.isLocked)
             && (isShownInMenu == rhs.isShownInMenu)
             && (hasDisabledBorders == rhs.hasDisabledBorders)

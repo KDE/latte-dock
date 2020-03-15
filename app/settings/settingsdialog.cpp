@@ -164,6 +164,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         m_model->setInMultipleMode(m_inMemoryButtons->checkedId() == Latte::Types::MultipleLayouts);
 
         updateApplyButtonsState();
+        updatePerLayoutButtonsState();
         updateSharedLayoutsUiElements();
     });
 
@@ -755,9 +756,10 @@ void SettingsDialog::updatePerLayoutButtonsState()
     }
 
     //! Pause Button
-    if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
+    if (!m_layoutsController->inMultipleMode()) {
+        //! Single Layout mode
         ui->pauseButton->setVisible(false);
-    } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+    } else {
         ui->pauseButton->setVisible(true);
 
         if (selectedLayout.isActive

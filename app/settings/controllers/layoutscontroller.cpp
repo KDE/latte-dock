@@ -250,7 +250,7 @@ void Layouts::removeSelected()
     int row = m_view->currentIndex().row();
     m_model->removeRow(row);
 
-    row = qMin(qMax(row - 1, 0), m_model->rowCount());
+    row = qMin(row, m_model->rowCount() - 1);
     m_view->selectRow(row);
 }
 
@@ -725,6 +725,8 @@ void Layouts::save()
     m_corona->layoutsManager()->synchronizer()->loadLayouts();
 
 
+
+
     //! send to layout manager in which layout to switch
   /*  Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
 
@@ -743,6 +745,9 @@ void Layouts::save()
             m_corona->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities(orphanedLayout);
         }
     }*/
+
+    o_layoutsOriginalData = m_model->currentData();
+    o_originalInMultipleMode = m_model->inMultipleMode();
 }
 
 void Layouts::syncActiveShares()

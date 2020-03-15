@@ -76,7 +76,9 @@ bool LayoutsTable::operator==(const LayoutsTable &rhs) const
     }
 
     for(int i=0; i<m_layouts.count(); ++i) {
-        if (m_layouts[i] != rhs.m_layouts[i]){
+        QString id = m_layouts[i].id;
+
+        if (!rhs.containsId(id) || (*this)[id] != rhs[id]){
             return false;
         }
     }
