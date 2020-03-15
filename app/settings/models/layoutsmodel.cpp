@@ -389,7 +389,7 @@ void Layouts::setId(const int &row, const QString &newId)
 
         int pos = m_layoutsTable[i].shares.indexOf(oldId);
 
-        if (oldId >= 0) {
+        if (pos >= 0) {
             m_layoutsTable[i].shares[pos] = newId;
             emit dataChanged(index(i, NAMECOLUMN), index(i, NAMECOLUMN), roles);
         }
