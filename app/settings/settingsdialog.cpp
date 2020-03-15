@@ -41,19 +41,12 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileDialog>
-#include <QHeaderView>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QProcess>
-#include <QStandardItem>
-#include <QStandardItemModel>
-#include <QTemporaryDir>
 
 // KDE
 #include <KActivities/Controller>
-#include <KArchive/KTar>
-#include <KArchive/KArchiveEntry>
-#include <KArchive/KArchiveDirectory>
 #include <KLocalizedString>
 #include <KNotification>
 #include <KWindowSystem>
@@ -61,19 +54,9 @@
 
 namespace Latte {
 
-const int IDCOLUMN = 0;
-const int HIDDENTEXTCOLUMN = 1;
-const int COLORCOLUMN = 2;
-const int NAMECOLUMN = 3;
-const int MENUCOLUMN = 4;
-const int BORDERSCOLUMN = 5;
-const int ACTIVITYCOLUMN = 6;
-const int SHAREDCOLUMN = 7;
-
 const int SCREENTRACKERDEFAULTVALUE = 2500;
 const int OUTLINEDEFAULTWIDTH = 1;
 
-const QChar CheckMark{0x2714};
 
 SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     : QDialog(parent),
@@ -208,9 +191,9 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         bool noBordersForMaximized = ui->noBordersForMaximizedChkBox->isChecked();
 
         if (noBordersForMaximized) {
-            ui->layoutsView->setColumnHidden(BORDERSCOLUMN, false);
+            ui->layoutsView->setColumnHidden(Settings::Model::Layouts::BORDERSCOLUMN, false);
         } else {
-            ui->layoutsView->setColumnHidden(BORDERSCOLUMN, true);
+            ui->layoutsView->setColumnHidden(Settings::Model::Layouts::BORDERSCOLUMN, true);
         }
 
         updateApplyButtonsState();
@@ -231,13 +214,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     connect(infoLayoutAction, &QAction::triggered, this, &SettingsDialog::showLayoutInformation);
     connect(screensAction, &QAction::triggered, this, &SettingsDialog::showScreensInformation);
-
-    //! update all layouts view when runningActivities changed. This way we update immediately
-    //! the running Activities in Activities checkboxes which are shown as bold
-    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
-            this, [&]() {
-        ui->layoutsView->update();
-    });
 
     blockDeleteOnActivityStopped();
 }
@@ -581,7 +557,7 @@ void SettingsDialog::requestImagesDialog(int row)
 void SettingsDialog::requestColorsDialog(int row)
 {
     QColorDialog dialog(this);
-    QString textColor = m_model->data(m_model->index(row, COLORCOLUMN), Qt::UserRole).toString();
+    QString textColor = m_model->data(m_model->index(row, Settings::Model::Layouts::BACKGROUNDCOLUMN), Qt::UserRole).toString();
     dialog.setCurrentColor(QColor(textColor));
 
     if (dialog.exec()) {

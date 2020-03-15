@@ -44,6 +44,7 @@
 #include <QTemporaryDir>
 
 // KDE
+#include <KActivities/Controller>
 #include <KArchive/KTar>
 #include <KArchive/KArchiveEntry>
 #include <KArchive/KArchiveDirectory>
@@ -138,6 +139,13 @@ void Layouts::initView()
     m_view->setItemDelegateForColumn(Model::Layouts::BORDERSCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     m_view->setItemDelegateForColumn(Model::Layouts::ACTIVITYCOLUMN, new Settings::Layout::Delegate::Activities(this));
     m_view->setItemDelegateForColumn(Model::Layouts::SHAREDCOLUMN, new Settings::Layout::Delegate::Shared(this));
+
+    //! update all layouts view when runningActivities changed. This way we update immediately
+    //! the running Activities in Activities checkboxes which are shown as bold
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
+            this, [&]() {
+        m_view->update();
+    });
 }
 
 bool Layouts::dataAreChanged() const
