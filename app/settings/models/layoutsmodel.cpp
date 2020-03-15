@@ -43,7 +43,6 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
     : QAbstractTableModel(parent),
       m_corona(corona)
 {
-
     connect(this, &Layouts::inMultipleModeChanged, this, [&]() {
         QVector<int> roles;
         roles << Qt::DisplayRole;

@@ -63,6 +63,7 @@ public:
     const Data::Layout &selectedLayout() const;
 
     //! actions
+    void reset();
     void save();
     void loadLayouts();
     void removeSelected();
@@ -73,6 +74,9 @@ public:
     void copySelectedLayout();
     //! import layouts from Latte versions <= v0.7.x
     void importLayoutsFromV1ConfigFile(QString file);
+
+signals:
+    void dataChanged();
 
 private slots:
     void saveColumnWidths();

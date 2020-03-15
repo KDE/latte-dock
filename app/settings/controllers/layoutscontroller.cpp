@@ -64,6 +64,8 @@ Layouts::Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view)
 {
     initView();
     loadLayouts();
+
+    connect(m_model, &QAbstractItemModel::dataChanged, this, &Layouts::dataChanged);
 }
 
 Layouts::~Layouts()
@@ -553,6 +555,12 @@ void Layouts::importLayoutsFromV1ConfigFile(QString file)
             }
         }
     }
+}
+
+void Layouts::reset()
+{
+    setOriginalInMultipleMode(o_originalInMultipleMode);
+    m_model->setCurrentData(o_layoutsOriginalData);
 }
 
 void Layouts::save()

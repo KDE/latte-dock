@@ -82,9 +82,8 @@ private slots:
 
     void accept() override;
 
-    void ok();
-    void cancel();
     void apply();
+    void reset();
     void restoreDefaults();
     void showLayoutInformation();
     void showScreensInformation();

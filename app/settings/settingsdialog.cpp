@@ -71,10 +71,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
             , this, &SettingsDialog::apply);
-    connect(ui->buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked
-            , this, &SettingsDialog::cancel);
-    connect(ui->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked
-            , this, &SettingsDialog::ok);
+    connect(ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked
+            , this, &SettingsDialog::reset);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
             , this, &SettingsDialog::restoreDefaults);
 
@@ -83,7 +81,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     //connect(m_corona->layoutsManager(), &Layouts::Manager::currentLayoutNameChanged, this, &SettingsDialog::layoutsChanged);
     //connect(m_corona->layoutsManager(), &Layouts::Manager::centralLayoutsChanged, this, &SettingsDialog::layoutsChanged);
-
 
     m_inMemoryButtons = new QButtonGroup(this);
     m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Types::SingleLayout);
@@ -158,15 +155,17 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         updateApplyButtonsState();
     });
 
+    connect(m_layoutsController, &Settings::Controller::Layouts::dataChanged, this, [&]() {
+        updateApplyButtonsState();
+        updatePerLayoutButtonsState();
+        updateSharedLayoutsUiElements();
+    });
+
     connect(m_inMemoryButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
             [ = ](int id, bool checked) {
 
         if (checked) {
             m_layoutsController->setInMultipleMode(id == Latte::Types::MultipleLayouts);
-
-            updateApplyButtonsState();
-            updatePerLayoutButtonsState();
-            updateSharedLayoutsUiElements();
         }
     });
 
@@ -572,28 +571,6 @@ void SettingsDialog::accept()
     qDebug() << Q_FUNC_INFO;
 }
 
-
-void SettingsDialog::cancel()
-{
-    qDebug() << Q_FUNC_INFO;
-
-    if (!m_blockDeleteOnReject) {
-        deleteLater();
-    }
-}
-
-void SettingsDialog::ok()
-{
-    if (!ui->buttonBox->button(QDialogButtonBox::Ok)->hasFocus()) {
-        return;
-    }
-
-    qDebug() << Q_FUNC_INFO;
-
-    saveAllChanges();
-    deleteLater();
-}
-
 void SettingsDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
@@ -602,6 +579,13 @@ void SettingsDialog::apply()
 
     updateApplyButtonsState();
     updatePerLayoutButtonsState();
+}
+
+void SettingsDialog::reset()
+{
+    if (ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
+        m_layoutsController->reset();
+    }
 }
 
 void SettingsDialog::restoreDefaults()
@@ -715,19 +699,18 @@ void SettingsDialog::updateApplyButtonsState()
     }
 
     if (changed) {
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
         ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
     } else {
-        //ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
     }
 
     //! RestoreDefaults Button
     if (ui->tabWidget->currentIndex() == 0) {
-        ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
+        ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setVisible(false);
     } else if (ui->tabWidget->currentIndex() == 1) {
-        //! Defaults for general Latte settings
+        ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setVisible(true);
 
+        //! Defaults for general Latte settings
         if (!ui->autostartChkBox->isChecked()
                 || ui->badges3DStyleChkBox->isChecked()
                 || ui->metaPressChkBox->isChecked()
