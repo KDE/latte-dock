@@ -122,7 +122,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
         //! Lock Icon
         QIcon firstIcon = isLocked && !showTwoIcons ? QIcon::fromTheme("object-locked") : QIcon::fromTheme("document-share");
-        QIcon::Mode mode = selected ? QIcon::Selected : QIcon::Normal;
+        QIcon::Mode mode = selected && (Latte::colorGroup(option) == QPalette::Active) ? QIcon::Selected : QIcon::Normal;
 
         if (qApp->layoutDirection() == Qt::RightToLeft) {
             painter->drawPixmap(QRect(option.rect.x(), option.rect.y(), thick, thick), firstIcon.pixmap(thick, thick, mode));

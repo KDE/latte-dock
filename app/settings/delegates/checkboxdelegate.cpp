@@ -47,7 +47,7 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
     QStyleOptionViewItem adjustedOption = option;
     //! Remove the focus dotted lines
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
-    adjustedOption.displayAlignment = Qt::AlignHCenter;
+    adjustedOption.displayAlignment = Qt::AlignHCenter | Qt::AlignVCenter;
 
     bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 

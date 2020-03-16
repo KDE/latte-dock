@@ -230,19 +230,19 @@ QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role)
         break;
     case BACKGROUNDCOLUMN:
         if (role == Qt::DisplayRole) {
-            return QString("");//(i18nc("column for layout background", "Background"));
+            return QIcon::fromTheme("games-config-background");//(i18nc("column for layout background", "Background"));
         } else if (role == Qt::DecorationRole) {
-            return QIcon::fromTheme("games-config-background");//QString();//QIcon::fromTheme("games-config-background");
-        } else if (role == Qt::TextAlignmentRole ){
+            return QString("");//QIcon::fromTheme("games-config-background");//QString();//QIcon::fromTheme("games-config-background");
+        }/* else if (role == Qt::TextAlignmentRole ){
             return QVariant::fromValue(Qt::AlignHCenter | Qt::AlignVCenter);
-        }
+        }*/
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {
             return QString(i18nc("column for layout name", "Name"));
-        } else if (role == Qt::TextAlignmentRole) {
+        }/* else if (role == Qt::TextAlignmentRole) {
             return QVariant::fromValue(Qt::AlignLeft | Qt::AlignVCenter);
-        }
+        }*/
         break;
     case MENUCOLUMN:
         if (role == Qt::DisplayRole) {
