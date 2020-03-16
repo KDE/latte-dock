@@ -79,9 +79,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     m_layoutsController = new Settings::Controller::Layouts(this, m_corona, ui->layoutsView);
     m_model = m_layoutsController->model();
 
-    //connect(m_corona->layoutsManager(), &Layouts::Manager::currentLayoutNameChanged, this, &SettingsDialog::layoutsChanged);
-    //connect(m_corona->layoutsManager(), &Layouts::Manager::centralLayoutsChanged, this, &SettingsDialog::layoutsChanged);
-
     m_inMemoryButtons = new QButtonGroup(this);
     m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Types::SingleLayout);
     m_inMemoryButtons->addButton(ui->multipleToolBtn, Latte::Types::MultipleLayouts);
@@ -662,7 +659,8 @@ void SettingsDialog::on_switchButton_clicked()
         }
     } else {
         if (!m_layoutsController->selectedLayoutIsCurrentActive()) {
-             m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
+            m_layoutsController->setLayoutNameForFreeActivities(selectedLayout.currentName(), true);
+            m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
         }
     }
 

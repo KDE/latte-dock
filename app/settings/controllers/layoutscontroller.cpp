@@ -303,6 +303,23 @@ void Layouts::toggleSharedForSelected()
     }
 }
 
+QString Layouts::layoutNameForFreeActivities() const
+{
+    return m_model->layoutNameForFreeActivities();
+}
+
+void Layouts::setLayoutNameForFreeActivities(const QString &name, bool updateOriginalData)
+{
+    m_model->setLayoutNameForFreeActivities(name);
+
+    if(updateOriginalData) {
+        QString id = o_layoutsOriginalData.idForCurrentName(name);
+        o_layoutsOriginalData.setLayoutForFreeActivities(id);
+    }
+
+    emit dataChanged();
+}
+
 
 void Layouts::loadLayouts()
 {
@@ -393,7 +410,7 @@ void Layouts::loadLayouts()
 
     //! Send original loaded data to model
     m_model->setCurrentData(layoutsBuffer);
-    m_model->setLayoutForFreeActivities(m_corona->universalSettings()->lastNonAssignedLayoutName());
+    m_model->setLayoutNameForFreeActivities(m_corona->universalSettings()->lastNonAssignedLayoutName());
 
     m_view->selectRow(rowForName(m_corona->layoutsManager()->currentLayoutName()));
 
@@ -696,22 +713,11 @@ void Layouts::save()
         }
     }
 
-    QString layoutForFreeActivities;
-
     if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
         for (const auto &newLayoutName : activeLayoutsToRename.keys()) {
             Latte::Layout::GenericLayout *layoutPtr = activeLayoutsToRename[newLayoutName];
             qDebug() << " Active Layout of Type: " << layoutPtr->type() << " Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
             layoutPtr->renameLayout(newLayoutName);
-
-            if (layoutPtr->type() == Latte::Layout::Type::Central) {
-                CentralLayout *central = qobject_cast<CentralLayout *>(layoutPtr);
-
-                if (central->activities().isEmpty()) {
-                    //! that means it is an active layout for orphaned Activities
-                    layoutForFreeActivities = newLayoutName;
-                }
-            }
         }
     }
 
@@ -735,24 +741,28 @@ void Layouts::save()
     //! reload layouts in layoutsmanager
     m_corona->layoutsManager()->synchronizer()->loadLayouts();
 
-    //! send to layout manager in which layout to switch
-  /*  Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
+    if (!m_model->layoutNameForFreeActivities().isEmpty()) {
+        //! make sure that there is a layout for free activities
+        //! send to layout manager in which layout to switch
+        Latte::Types::LayoutsMemoryUsage inMemoryOption = Latte::Types::SingleLayout;
 
-    if (m_corona->layoutsManager()->memoryUsage() != inMemoryOption) {
-        Types::LayoutsMemoryUsage previousMemoryUsage = m_corona->layoutsManager()->memoryUsage();
-        m_corona->layoutsManager()->setMemoryUsage(inMemoryOption);
-
-        QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole);
-        QString layoutName = value.toString();
-
-        m_corona->layoutsManager()->switchToLayout(layoutName, previousMemoryUsage);
-    } else {
-        if (!switchToLayout.isEmpty()) {
-            m_corona->layoutsManager()->switchToLayout(switchToLayout);
-        } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-            m_corona->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities(orphanedLayout);
+        if (inMultipleMode()) {
+            inMemoryOption = Latte::Types::MultipleLayouts;
         }
-    }*/
+
+        if (m_corona->layoutsManager()->memoryUsage() != inMemoryOption) {
+            Types::LayoutsMemoryUsage previousMemoryUsage = m_corona->layoutsManager()->memoryUsage();
+            m_corona->layoutsManager()->setMemoryUsage(inMemoryOption);
+
+            m_corona->layoutsManager()->switchToLayout(m_model->layoutNameForFreeActivities(), previousMemoryUsage);
+        } else {
+            if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+                m_corona->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities(m_model->layoutNameForFreeActivities());
+            } else {
+                m_corona->layoutsManager()->switchToLayout(m_model->layoutNameForFreeActivities());
+            }
+        }
+    }
 
     m_model->applyCurrentNames();
 

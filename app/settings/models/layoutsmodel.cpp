@@ -51,6 +51,9 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
 
         emit dataChanged(index(0, MENUCOLUMN), index(rowCount(), SHAREDCOLUMN), roles);
     });
+
+    connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::currentLayoutNameChanged, this, &Layouts::updateActiveStates);
+    connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::centralLayoutsChanged, this, &Layouts::updateActiveStates);
 }
 
 bool Layouts::containsCurrentName(const QString &name) const
@@ -161,18 +164,28 @@ bool Layouts::removeRows(int row, int count, const QModelIndex &parent)
     return false;
 }
 
-void Layouts::setLayoutForFreeActivities(const QString &name)
+QString Layouts::layoutNameForFreeActivities() const
+{
+    for(int i=0; i<rowCount(); ++i) {
+        if (m_layoutsTable[i].activities.contains(Data::Layout::FREEACTIVITIESID)) {
+            return m_layoutsTable[i].currentName();
+        }
+    }
+
+    return QString();
+}
+
+void Layouts::setLayoutNameForFreeActivities(const QString &name)
 {
     QString id = m_layoutsTable.idForCurrentName(name);
-    int row = m_layoutsTable.indexOf(id);
 
-    if (row>=0 && m_layoutsTable[row].activities.isEmpty()) {
-        m_layoutsTable[row].activities << Data::Layout::FREEACTIVITIESID;
+    if (!id.isEmpty()) {
+        m_layoutsTable.setLayoutForFreeActivities(id);
 
         QVector<int> roles;
         roles << Qt::DisplayRole;
         roles << Qt::UserRole;
-        emit dataChanged(index(row, ACTIVITYCOLUMN), index(row, ACTIVITYCOLUMN), roles);
+        emit dataChanged(index(0, ACTIVITYCOLUMN), index(rowCount()-1, ACTIVITYCOLUMN), roles);
     }
 }
 
@@ -528,6 +541,28 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
     };
 
     return false;
+}
+
+void Layouts::updateActiveStates()
+{
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+    roles << LAYOUTISACTIVEROLE;
+
+    for(int i=0; i<rowCount(); ++i) {
+        bool iActive{false};
+
+        if (m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].currentName())) {
+            iActive = true;
+        }
+
+        if (m_layoutsTable[i].isActive != iActive) {
+            m_layoutsTable[i].isActive = iActive;
+
+            emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,SHAREDCOLUMN), roles);
+        }
+    }
 }
 
 const Data::Layout &Layouts::at(const int &row)

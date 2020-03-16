@@ -70,6 +70,9 @@ public:
     void toggleLockedForSelected();
     void toggleSharedForSelected();
 
+    QString layoutNameForFreeActivities() const;
+    void setLayoutNameForFreeActivities(const QString &name, bool updateOriginalData = false);
+
     void addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true, bool showNotification = true);
     void copySelectedLayout();
     //! import layouts from Latte versions <= v0.7.x

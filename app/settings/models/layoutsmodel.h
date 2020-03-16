@@ -90,14 +90,20 @@ public:
     void clear();
     void applyCurrentNames();
     void appendLayout(const Settings::Data::Layout &layout);
-    void removeLayout(const QString &id);    
-    void setLayoutForFreeActivities(const QString &name);
+    void removeLayout(const QString &id);
+
+    QString layoutNameForFreeActivities() const;
+    void setLayoutNameForFreeActivities(const QString &name);
+
 
     const Data::LayoutsTable &currentData();
     void setCurrentData(Data::LayoutsTable &data);
 
 signals:
     void inMultipleModeChanged();
+
+private slots:
+    void updateActiveStates();
 
 private:
     void setActivities(const int &row, const QStringList &activities);

@@ -285,6 +285,20 @@ void LayoutsTable::remove(const int &row)
     }
 }
 
+void LayoutsTable::setLayoutForFreeActivities(const QString &id)
+{
+    int row = indexOf(id);
+
+    if (row>=0) {
+        for(int i=0; i<rowCount(); ++i) {
+            if (i == row) {
+                m_layouts[row].activities = QStringList(Data::Layout::FREEACTIVITIESID);
+            } else if (m_layouts[i].activities.contains(Data::Layout::FREEACTIVITIESID)) {
+                m_layouts[i].activities.removeAll(Data::Layout::FREEACTIVITIESID);
+            }
+        }
+    }
+}
 
 }
 }
