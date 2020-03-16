@@ -651,7 +651,10 @@ void SettingsDialog::on_switchButton_clicked()
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
 
     if (m_layoutsController->inMultipleMode()) {
-        if (selectedLayout.isActive && !m_layoutsController->selectedLayoutIsCurrentActive()) {
+        if (!m_layoutsController->selectedLayoutIsCurrentActive()) {
+            if (!selectedLayout.isShared() && selectedLayout.activities.isEmpty()) {
+                m_layoutsController->setLayoutNameForFreeActivities(selectedLayout.currentName(), true);
+            }
             m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
         }
     } else {
@@ -727,8 +730,9 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
     //! Switch Button
     if (selectedLayout.nameWasEdited()
-            || (m_layoutsController->inMultipleMode() && (selectedLayout.isShared() || !selectedLayout.isActive))
-            || (m_layoutsController->selectedLayoutIsCurrentActive())) {
+            || m_layoutsController->dataAreChanged()
+            || (m_layoutsController->inMultipleMode() && selectedLayout.isShared())
+            || m_layoutsController->selectedLayoutIsCurrentActive()) {
         ui->switchButton->setEnabled(false);
     } else {
         ui->switchButton->setEnabled(true);
