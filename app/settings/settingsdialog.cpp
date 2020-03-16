@@ -155,7 +155,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     connect(m_layoutsController, &Settings::Controller::Layouts::dataChanged, this, [&]() {
         updateApplyButtonsState();
         updatePerLayoutButtonsState();
-        updateSharedLayoutsUiElements();
     });
 
     connect(m_inMemoryButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
@@ -630,7 +629,6 @@ void SettingsDialog::loadSettings()
 
     o_settingsOriginalData = currentSettings();
     updateApplyButtonsState();
-    updateSharedLayoutsUiElements();
 }
 
 QList<int> SettingsDialog::currentSettings()
@@ -722,6 +720,10 @@ void SettingsDialog::updateApplyButtonsState()
 
 void SettingsDialog::updatePerLayoutButtonsState()
 {
+    if (!m_layoutsController->hasSelectedLayout()) {
+        return;
+    }
+
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
 
     //! Switch Button
@@ -763,21 +765,18 @@ void SettingsDialog::updatePerLayoutButtonsState()
         ui->lockedButton->setChecked(false);
     }
 
-    //! Layout Shared Button
-    if (selectedLayout.isShared()) {
-        ui->sharedButton->setChecked(true);
-    } else {
-        ui->sharedButton->setChecked(false);
-    }
-}
-
-void SettingsDialog::updateSharedLayoutsUiElements()
-{
     //! UI Elements that need to be enabled/disabled
     if (m_layoutsController->inMultipleMode()) {
         ui->sharedButton->setVisible(true);
     } else {
         ui->sharedButton->setVisible(false);
+    }
+
+    //! Layout Shared Button
+    if (selectedLayout.isShared()) {
+        ui->sharedButton->setChecked(true);
+    } else {
+        ui->sharedButton->setChecked(false);
     }
 }
 

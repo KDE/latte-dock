@@ -59,6 +59,7 @@ public:
 
     void setOriginalInMultipleMode(bool inMultiple);
 
+    bool hasSelectedLayout() const;
     bool selectedLayoutIsCurrentActive() const;
     const Data::Layout &selectedLayout() const;
 

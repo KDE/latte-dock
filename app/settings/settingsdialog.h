@@ -87,6 +87,7 @@ private slots:
     void restoreDefaults();
     void showLayoutInformation();
     void showScreensInformation();
+    void updateApplyButtonsState();
     void updatePerLayoutButtonsState();
 
 private:
@@ -95,9 +96,6 @@ private:
     //! on reject in such case.
     void blockDeleteOnActivityStopped();
     void loadSettings();
-
-    void updateApplyButtonsState();
-    void updateSharedLayoutsUiElements();
 
     void saveAllChanges();
     void setCurrentFreeActivitiesLayout(const int &row);

@@ -110,7 +110,7 @@ void Layouts::clear()
     if (m_layoutsTable.rowCount() > 0) {
         beginRemoveRows(QModelIndex(), 0, m_layoutsTable.rowCount() - 1);
         m_layoutsTable.clear();
-        endInsertRows();
+        endRemoveRows();
     }
 }
 

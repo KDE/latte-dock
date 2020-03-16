@@ -141,6 +141,13 @@ bool Layouts::dataAreChanged() const
             || (o_layoutsOriginalData != m_model->currentData()));
 }
 
+bool Layouts::hasSelectedLayout() const
+{
+    int selectedRow = m_view->currentIndex().row();
+
+    return (selectedRow >= 0);
+}
+
 bool Layouts::selectedLayoutIsCurrentActive() const
 {
     Data::Layout selected = selectedLayout();
@@ -581,6 +588,7 @@ void Layouts::reset()
 {
     setOriginalInMultipleMode(o_originalInMultipleMode);
     m_model->setCurrentData(o_layoutsOriginalData);
+    m_view->selectRow(rowForName(m_corona->layoutsManager()->currentLayoutName()));
 }
 
 void Layouts::save()
