@@ -40,7 +40,7 @@ HeaderView::HeaderView(Qt::Orientation orientation, QWidget *parent)
 }
 
 void HeaderView::paintSection(QPainter *painter, const QRect &rect, int logicalIndex) const
-{
+{   
     if (logicalIndex == Model::Layouts::BACKGROUNDCOLUMN) {
         QString text = model()->headerData(Model::Layouts::BACKGROUNDCOLUMN, Qt::Horizontal, Qt::DisplayRole).toString();
         QIcon icon = model()->headerData(Model::Layouts::BACKGROUNDCOLUMN, Qt::Horizontal, Qt::DecorationRole).value<QIcon>();

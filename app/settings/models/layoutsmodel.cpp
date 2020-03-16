@@ -234,6 +234,8 @@ QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role)
             return QString("");
         } else if (role == Qt::DecorationRole) {
             return QIcon::fromTheme("games-config-background");
+        } else if (role == Qt::TextAlignmentRole ){
+            return QVariant::fromValue(Qt::AlignHCenter | Qt::AlignVCenter);
         }
         break;
     case NAMECOLUMN:
