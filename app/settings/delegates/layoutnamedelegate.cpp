@@ -83,7 +83,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     QStyleOptionViewItem adjustedOption = option;
     //! Remove the focus dotted lines
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
-    adjustedOption.displayAlignment = Qt::AlignHCenter;
+    adjustedOption.displayAlignment = Qt::AlignLeft | Qt::AlignVCenter;
 
     if (isLocked || isShared) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
@@ -96,8 +96,8 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         int thick = option.rect.height();
         int length = showTwoIcons ? (2 * thick + 2) : thick;
 
-        int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? length : qBound(0, option.rect.width() - textWidth - length, length);
-        int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? qBound(0, option.rect.width() - textWidth - length, length) : length;
+        int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? length : 0;
+        int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? 0 : length;
 
         QRect destinationS(option.rect.x(), option.rect.y(), startWidth, thick);
         QRect destinationE(option.rect.x() + option.rect.width() - endWidth, option.rect.y(), endWidth, thick);
@@ -115,9 +115,9 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
         QStyledItemDelegate::paint(painter, myOptionMain, index);
 
-        //! draw background at edges
+        //! draw background below icons
+        //! HIDDENTEXTCOLUMN is just needed to draw empty background rectangles
         QStyledItemDelegate::paint(painter, myOptionS, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
-
         QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
         //! Lock Icon

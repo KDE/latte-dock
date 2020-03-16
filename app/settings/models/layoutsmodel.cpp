@@ -230,39 +230,51 @@ QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role)
         break;
     case BACKGROUNDCOLUMN:
         if (role == Qt::DisplayRole) {
-            return QString("#");//(i18nc("column for layout background", "Background"));
+            return QString("");//(i18nc("column for layout background", "Background"));
         } else if (role == Qt::DecorationRole) {
-            return QString();//QIcon::fromTheme("games-config-background");
+            return QIcon::fromTheme("games-config-background");//QString();//QIcon::fromTheme("games-config-background");
+        } else if (role == Qt::TextAlignmentRole ){
+            return QVariant::fromValue(Qt::AlignHCenter | Qt::AlignVCenter);
         }
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {
             return QString(i18nc("column for layout name", "Name"));
+        } else if (role == Qt::TextAlignmentRole) {
+            return QVariant::fromValue(Qt::AlignLeft | Qt::AlignVCenter);
         }
         break;
     case MENUCOLUMN:
         if (role == Qt::DisplayRole) {
             return QString(i18nc("column for layout to show in menu", "In Menu"));
-        }
+        }/* else if (role == Qt::TextAlignmentRole ){
+            return QVariant::fromValue(Qt::AlignHCenter | Qt::AlignVCenter);
+        }*/
         break;
     case BORDERSCOLUMN:
         if (role == Qt::DisplayRole) {
             return QString(i18nc("column for layout to hide borders for maximized windows", "Borderless"));
-        }
+        }/* else if (role == Qt::TextAlignmentRole ){
+            return QVariant::fromValue(Qt::AlignHCenter | Qt::AlignVCenter);
+        }*/
         break;
     case ACTIVITYCOLUMN:
         if (role == Qt::DisplayRole) {
             return QString(i18nc("column for layout to show which activities is assigned to", "Activities"));
         } else if (role == Qt::DecorationRole) {
             return QIcon::fromTheme("activities");
-        }
+        }/* else if (role == Qt::TextAlignmentRole ){
+            return QVariant::fromValue(Qt::AlignLeft | Qt::AlignVCenter);
+        }*/
         break;
     case SHAREDCOLUMN:
         if (role == Qt::DisplayRole) {
             return QString(i18nc("column for shared layout to show which layouts is assigned to", "Shared To"));
         } else if (role == Qt::DecorationRole) {
             return QIcon::fromTheme("document-share");
-        }
+        }/* else if (role == Qt::TextAlignmentRole ){
+            return QVariant::fromValue(Qt::AlignLeft | Qt::AlignVCenter);
+        }*/
         break;
     default:
         break;

@@ -541,6 +541,7 @@ void Layouts::copySelectedLayout()
     copied.isActive = false;
     copied.isLocked = false;
     copied.activities = QStringList();
+    copied.shares = QStringList();
 
     QFile(selected.id).copy(copied.id);
     QFileInfo newFileInfo(copied.id);
