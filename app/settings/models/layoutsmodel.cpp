@@ -47,9 +47,10 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
         QVector<int> roles;
         roles << Qt::DisplayRole;
         roles << Qt::UserRole;
+        roles << LAYOUTISSHAREDROLE;
         roles << INMULTIPLELAYOUTSROLE;
 
-        emit dataChanged(index(0, MENUCOLUMN), index(rowCount(), SHAREDCOLUMN), roles);
+        emit dataChanged(index(0, NAMECOLUMN), index(rowCount()-1, SHAREDCOLUMN), roles);
     });
 
     connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::currentLayoutNameChanged, this, &Layouts::updateActiveStates);
