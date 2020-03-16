@@ -779,42 +779,6 @@ void SettingsDialog::updatePerLayoutButtonsState()
     }
 }
 
-bool SettingsDialog::dataAreAccepted()
-{
- /*   for (int i = 0; i < m_model->rowCount(); ++i) {
-        QString layout1 = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
-
-        for (int j = i + 1; j < m_model->rowCount(); ++j) {
-            QString temp = m_model->data(m_model->index(j, NAMECOLUMN), Qt::DisplayRole).toString();
-
-            //!same layout name exists again
-            if (layout1 == temp) {
-                auto msg = new QMessageBox(this);
-                msg->setIcon(QMessageBox::Warning);
-                msg->setWindowTitle(i18n("Layout Warning"));
-                msg->setText(i18n("There are layouts with the same name, that is not permitted!!! Please update these names to re-apply the changes..."));
-                msg->setStandardButtons(QMessageBox::Ok);
-
-                connect(msg, &QMessageBox::finished, this, [ &, i, j](int result) {
-                    QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::ClearAndSelect;
-                    QModelIndex indexBase = m_model->index(i, NAMECOLUMN);
-                    ui->layoutsView->selectionModel()->select(indexBase, flags);
-
-                    QModelIndex indexOccurence = m_model->index(j, NAMECOLUMN);
-                    ui->layoutsView->edit(indexOccurence);
-                });
-
-
-                msg->open();
-
-                return false;
-            }
-        }
-    }*/
-
-    return true;
-}
-
 void SettingsDialog::showLayoutInformation()
 {
   /*  int currentRow = ui->layoutsView->currentIndex().row();
@@ -861,10 +825,6 @@ void SettingsDialog::showScreensInformation()
 
 void SettingsDialog::saveAllChanges()
 {
-    if (!dataAreAccepted()) {
-        return;
-    }
-
     //! Update universal settings
     Latte::Types::MouseSensitivity sensitivity = static_cast<Latte::Types::MouseSensitivity>(m_mouseSensitivityButtons->checkedId());
     bool autostart = ui->autostartChkBox->isChecked();

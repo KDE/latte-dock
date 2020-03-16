@@ -98,8 +98,6 @@ private:
     void saveAllChanges();
     void setCurrentFreeActivitiesLayout(const int &row);
 
-    bool dataAreAccepted();
-
     QList<int> currentSettings();
 
 private:
