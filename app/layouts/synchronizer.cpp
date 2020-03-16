@@ -205,7 +205,7 @@ QStringList Synchronizer::freeActivities()
     QStringList fActivities;
 
     for (const auto &activity : activities()) {
-        if (m_assignedLayouts[activity].isEmpty()) {
+        if (!m_assignedLayouts.contains(activity)) {
             fActivities.append(activity);
         }
     }
@@ -267,7 +267,8 @@ QString Synchronizer::shouldSwitchToLayout(QString activityId)
 {
     if (m_assignedLayouts.contains(activityId) && m_assignedLayouts[activityId] != currentLayoutName()) {
         return m_assignedLayouts[activityId];
-    } else if (!m_assignedLayouts.contains(activityId) && !m_manager->corona()->universalSettings()->lastNonAssignedLayoutName().isEmpty()
+    } else if (!m_assignedLayouts.contains(activityId)
+               && !m_manager->corona()->universalSettings()->lastNonAssignedLayoutName().isEmpty()
                && m_manager->corona()->universalSettings()->lastNonAssignedLayoutName() != currentLayoutName()) {
         return m_manager->corona()->universalSettings()->lastNonAssignedLayoutName();
     }
@@ -447,9 +448,9 @@ void Synchronizer::confirmDynamicSwitch()
 void Synchronizer::currentActivityChanged(const QString &id)
 {
     if (m_manager->memoryUsage() == Types::SingleLayout) {
-        qDebug() << "activity changed :: " << id;
-
         m_shouldSwitchToLayout = shouldSwitchToLayout(id);
+        qDebug() << "activity changed :: " << id;
+        qDebug() << "should switch to layout :: " << m_shouldSwitchToLayout;
 
         m_dynamicSwitchTimer.start();
     } else if (m_manager->memoryUsage() == Types::MultipleLayouts) {

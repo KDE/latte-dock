@@ -289,16 +289,10 @@ const QStringList CentralLayout::appliedActivities()
         return {};
     }
 
-    if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
-        return {"0"};
-    } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-        if (m_activities.isEmpty()) {
-            return m_corona->layoutsManager()->synchronizer()->freeActivities();
-        } else {
-            return m_activities;
-        }
+    if (m_activities.isEmpty()) {
+        return m_corona->layoutsManager()->synchronizer()->freeActivities();
     } else {
-        return {"0"};
+        return m_activities;
     }
 }
 

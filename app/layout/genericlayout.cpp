@@ -969,8 +969,7 @@ void GenericLayout::updateLastUsedActivity()
     QStringList appliedActivitiesIds = appliedActivities();
 
     if (m_lastUsedActivity != currentId
-            && (appliedActivitiesIds.contains(currentId)
-                || m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout)) {
+            && appliedActivitiesIds.contains(currentId)) {
         m_lastUsedActivity = currentId;
 
         emit lastUsedActivityChanged();

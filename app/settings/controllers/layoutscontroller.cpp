@@ -553,6 +553,7 @@ void Layouts::copySelectedLayout()
     }
 
     CentralLayout *settings = new CentralLayout(this, copied.id);
+    settings->clearLastUsedActivity();
 
     m_layouts[copied.id] = settings;
     m_model->appendLayout(copied);

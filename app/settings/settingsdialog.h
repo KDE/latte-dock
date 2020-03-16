@@ -87,12 +87,9 @@ private slots:
     void showScreensInformation();
     void updateApplyButtonsState();
     void updatePerLayoutButtonsState();
+    void updateWindowActivities();
 
 private:
-    //! When an activity is closed for some reason the window manager hides and reshows
-    //! the windows. This function prevents this because we don't want to delete the window
-    //! on reject in such case.
-    void blockDeleteOnActivityStopped();
     void loadSettings();
 
     void saveAllChanges();
@@ -112,10 +109,8 @@ private:
 
     KHelpMenu *m_helpMenu{nullptr};
 
-    //! workaround to avoid dialog closing when kwin decides faulty to close it
-    //! because of Activities changes
-    QTimer m_activityClosedTimer;
-    bool m_blockDeleteOnReject{false};
+    //! workaround to assign ALLACTIVITIES during startup
+    QTimer m_activitiesTimer;
 
     //! original data
     QList<int> o_settingsOriginalData;

@@ -85,8 +85,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     if (KWindowSystem::isPlatformWayland()) {
         m_inMemoryButtons->button(Latte::Types::MultipleLayouts)->setEnabled(false);
-    } else {
-        KWindowSystem::setOnActivities(winId(), QStringList());
     }
 
     m_mouseSensitivityButtons = new QButtonGroup(this);
@@ -214,7 +212,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     connect(infoLayoutAction, &QAction::triggered, this, &SettingsDialog::showLayoutInformation);
     connect(screensAction, &QAction::triggered, this, &SettingsDialog::showScreensInformation);
 
-    blockDeleteOnActivityStopped();
+    m_activitiesTimer.setSingleShot(true);
+    m_activitiesTimer.setInterval(750);
+    connect(&m_activitiesTimer, &QTimer::timeout, this, &SettingsDialog::updateWindowActivities);
+    m_activitiesTimer.start();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -224,28 +225,13 @@ SettingsDialog::~SettingsDialog()
     m_corona->universalSettings()->setLayoutsWindowSize(size());
 }
 
-void SettingsDialog::blockDeleteOnActivityStopped()
-{
-    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
-            this, [&]() {
-        m_blockDeleteOnReject = true;
-        m_activityClosedTimer.start();
-    });
-
-    m_activityClosedTimer.setSingleShot(true);
-    m_activityClosedTimer.setInterval(500);
-    connect(&m_activityClosedTimer, &QTimer::timeout, this, [&]() {
-        m_blockDeleteOnReject = false;
-    });
-}
-
 void SettingsDialog::toggleCurrentPage()
 {
     if (ui->tabWidget->currentIndex() == 0) {
         ui->tabWidget->setCurrentIndex(1);
     } else {
         ui->tabWidget->setCurrentIndex(0);
-    }                                   
+    }
 }
 
 void SettingsDialog::setCurrentPage(int page)
@@ -538,7 +524,7 @@ void SettingsDialog::requestImagesDialog(int row)
         QStringList files = dialog.selectedFiles();
 
         if (files.count() > 0) {
-           // m_model->setData(m_model->index(row, COLORCOLUMN), files[0], Qt::BackgroundRole);
+            // m_model->setData(m_model->index(row, COLORCOLUMN), files[0], Qt::BackgroundRole);
         }
     }
 }
@@ -796,7 +782,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
 void SettingsDialog::showLayoutInformation()
 {
-  /*  int currentRow = ui->layoutsView->currentIndex().row();
+    /*  int currentRow = ui->layoutsView->currentIndex().row();
 
     QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
     QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
@@ -813,7 +799,7 @@ void SettingsDialog::showLayoutInformation()
 
 void SettingsDialog::showScreensInformation()
 {
-  /*  QList<int> assignedScreens;
+    /*  QList<int> assignedScreens;
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
@@ -836,6 +822,13 @@ void SettingsDialog::showScreensInformation()
     msg->setText(m_corona->screenPool()->reportHtml(assignedScreens));
 
     msg->open();*/
+}
+
+void SettingsDialog::updateWindowActivities()
+{
+    if (KWindowSystem::isPlatformX11()) {
+        KWindowSystem::setOnActivities(winId(), QStringList());
+    }
 }
 
 void SettingsDialog::saveAllChanges()
