@@ -921,26 +921,38 @@ bool View::isOnActivity(const QString &activity) const
 
 QStringList View::activities() const
 {
-    return m_activities;
+    QStringList running;
+
+    QStringList runningAll = m_corona->activitiesConsumer()->runningActivities();
+
+    for(int i=0; i<m_activities.count(); ++i) {
+        if (runningAll.contains(m_activities[i])) {
+            running << m_activities[i];
+        }
+    }
+
+    return running;
 }
 
 void View::applyActivitiesToWindows()
 {
     if (m_visibility && m_layout) {
-        m_windowsTracker->setWindowOnActivities(*this, m_activities);
+        QStringList runningActivities = activities();
+
+        m_windowsTracker->setWindowOnActivities(*this, runningActivities);
 
         if (m_configView) {
-            m_windowsTracker->setWindowOnActivities(*m_configView, m_activities);
+            m_windowsTracker->setWindowOnActivities(*m_configView, runningActivities);
 
             auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
             if (configView && configView->secondaryWindow()) {
-                m_windowsTracker->setWindowOnActivities(*configView->secondaryWindow(), m_activities);
+                m_windowsTracker->setWindowOnActivities(*configView->secondaryWindow(), runningActivities);
             }
         }
 
         if (m_visibility->supportsKWinEdges()) {
-            m_visibility->applyActivitiesToHiddenWindows(m_activities);
+            m_visibility->applyActivitiesToHiddenWindows(runningActivities);
         }
     }
 }

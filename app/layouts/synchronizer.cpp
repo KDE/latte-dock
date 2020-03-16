@@ -98,17 +98,7 @@ bool Synchronizer::layoutExists(QString layoutName) const
 
 bool Synchronizer::layoutIsAssigned(QString layoutName)
 {
-    QHashIterator<const QString, QString> i(m_assignedLayouts);
-
-    while (i.hasNext()) {
-        i.next();
-
-        if (i.value() == layoutName) {
-            return true;
-        }
-    }
-
-    return false;
+    return m_assignedLayouts.values().contains(layoutName);
 }
 
 bool Synchronizer::mapHasRecord(const QString &record, SharesMap &map)
@@ -830,7 +820,7 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
     }
 
     for (const auto &activity : runningActivities()) {
-        if (!m_assignedLayouts[activity].isEmpty()) {
+        if (m_assignedLayouts.contains(activity)) {
             if (!layoutsToLoad.contains(m_assignedLayouts[activity])) {
                 layoutsToLoad.append(m_assignedLayouts[activity]);
             }
