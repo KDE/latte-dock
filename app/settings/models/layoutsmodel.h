@@ -97,6 +97,8 @@ public:
     QString layoutNameForFreeActivities() const;
     void setLayoutNameForFreeActivities(const QString &name);
 
+    QStringList availableShareIdsFor(const QString id) const;
+
     const Data::LayoutsTable &currentData();
     void setCurrentData(Data::LayoutsTable &data);
 

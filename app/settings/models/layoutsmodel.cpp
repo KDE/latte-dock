@@ -498,6 +498,21 @@ void Layouts::setId(const int &row, const QString &newId)
     }
 }
 
+QStringList Layouts::availableShareIdsFor(const QString id) const
+{
+    QStringList shares;
+
+    for(int i=0; i<rowCount(); ++i) {
+        if (m_layoutsTable[i].id == id || m_layoutsTable[i].isShared()) {
+            continue;
+        }
+
+        shares << m_layoutsTable[i].id;
+    }
+
+    return shares;
+}
+
 void Layouts::setShares(const int &row, const QStringList &shares)
 {
     if (!m_layoutsTable.rowExists(row) || m_layoutsTable[row].shares == shares) {
@@ -509,7 +524,7 @@ void Layouts::setShares(const int &row, const QStringList &shares)
     roles << Qt::UserRole;
 
     m_layoutsTable[row].shares = shares;
-    emit dataChanged(index(row,SHAREDCOLUMN), index(row,SHAREDCOLUMN), roles);
+    emit dataChanged(index(row,IDCOLUMN), index(row,SHAREDCOLUMN), roles);
 
     for(int i=0; i<rowCount(); ++i) {
         if (i == row) {
@@ -519,7 +534,7 @@ void Layouts::setShares(const int &row, const QStringList &shares)
         auto cleaned = cleanStrings(m_layoutsTable[i].shares, shares);
         if (cleaned != m_layoutsTable[i].shares) {
             m_layoutsTable[i].shares = cleaned;
-            emit dataChanged(index(i,SHAREDCOLUMN), index(i,SHAREDCOLUMN), roles);
+            emit dataChanged(index(i,IDCOLUMN), index(i,SHAREDCOLUMN), roles);
         }
     }
 }

@@ -283,36 +283,36 @@ void Layouts::toggleLockedForSelected()
 }
 
 void Layouts::toggleSharedForSelected()
-{
+{  
     if (m_view->currentIndex().row() < 0) {
         return;
     }
 
+    int row = m_view->currentIndex().row();
+
     Data::Layout selected = selectedLayout();
 
     if (selected.isShared()) {
-        m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::SHAREDCOLUMN), QStringList(), Qt::UserRole);
+        m_proxyModel->setData(m_proxyModel->index(row, Model::Layouts::SHAREDCOLUMN), QStringList(), Qt::UserRole);
     } else {
-        /*  bool assigned{false};
-        QStringList assignedList;
+        QStringList assignedIds;
+        QStringList availableShareIds = m_model->availableShareIdsFor(selected.id);
 
-        QStringList availableShares = availableSharesFor(row);
+        for (const auto &id : availableShareIds) {
+            int iRow = m_model->rowForId(id);
+            Data::Layout iLayout = m_model->at(iRow);
 
-        for (const auto &id : availableShares) {
-            QString name = nameForId(id);
-            if (m_corona->layoutsManager()->synchronizer()->layout(name)) {
-                assignedList << id;
-                m_model->setData(m_model->index(row, Model::Layouts::SHAREDCOLUMN), assignedList, Qt::UserRole);
-                assigned = true;
+            if (m_corona->layoutsManager()->synchronizer()->layout(iLayout.originalName())) {
+                assignedIds << id;
+                m_proxyModel->setData(m_proxyModel->index(row, Model::Layouts::SHAREDCOLUMN), assignedIds, Qt::UserRole);
                 break;
             }
         }
 
-        if (!assigned && availableShares.count()>0) {
-            assignedList << availableShares[0];
-            m_model->setData(m_model->index(row, Model::Layouts::SHAREDCOLUMN), assignedList, Qt::UserRole);
-            assigned = true;
-        }*/
+        if (assignedIds.isEmpty() && availableShareIds.count()>0) {
+            assignedIds << availableShareIds[0];
+            m_proxyModel->setData(m_proxyModel->index(row, Model::Layouts::SHAREDCOLUMN), assignedIds, Qt::UserRole);
+        }
     }
 }
 
