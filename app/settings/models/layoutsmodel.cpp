@@ -152,11 +152,25 @@ bool Layouts::removeRows(int row, int count, const QModelIndex &parent)
     int lastRow = row+count-1;
 
     if (count > 0 && m_layoutsTable.rowExists(firstRow) && (m_layoutsTable.rowExists(lastRow))) {
+        bool freeActivitiesLayoutIsRemoved{false};
+
+        for(int i=firstRow; i<=lastRow; ++i) {
+            if (m_layoutsTable[i].activities.contains(Data::Layout::FREEACTIVITIESID)) {
+                //! we need to reassign it properly
+                freeActivitiesLayoutIsRemoved = true;
+                break;
+            }
+        }
+
         beginRemoveRows(QModelIndex(), firstRow, lastRow);
         for(int i=0; i<count; ++i) {
             m_layoutsTable.remove(firstRow);
         }
         endRemoveRows();
+
+        if (freeActivitiesLayoutIsRemoved) {
+            autoAssignFreeActivitiesLayout();
+        }
 
         return true;
     }
@@ -382,6 +396,41 @@ QStringList Layouts::cleanStrings(const QStringList &original, const QStringList
 }
 
 
+void Layouts::autoAssignFreeActivitiesLayout()
+{
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+
+    //! ActiveCurrent with no activities has highest priority
+    QString activeCurrentId = m_layoutsTable.idForOriginalName(m_corona->layoutsManager()->currentLayoutName());
+    int row = m_layoutsTable.indexOf(activeCurrentId);
+
+    if (row>=0 && m_layoutsTable[row].activities.isEmpty()) {
+        m_layoutsTable[row].activities << Data::Layout::FREEACTIVITIESID;
+        emit dataChanged(index(row,ACTIVITYCOLUMN), index(row,ACTIVITYCOLUMN), roles);
+        return;
+    }
+
+    //! Active layouts with no activities have mid priority
+    for(int i=0; i<rowCount(); ++i) {
+        if (m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty()) {
+            m_layoutsTable[i].activities << Data::Layout::FREEACTIVITIESID;
+            emit dataChanged(index(i,ACTIVITYCOLUMN), index(i,ACTIVITYCOLUMN), roles);
+            return;
+        }
+    }
+
+    //! Inactive layouts with no activities have lowest priority
+    for(int i=0; i<rowCount(); ++i) {
+        if (!m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty()) {
+            m_layoutsTable[i].activities << Data::Layout::FREEACTIVITIESID;
+            emit dataChanged(index(i,ACTIVITYCOLUMN), index(i,ACTIVITYCOLUMN), roles);
+            return;
+        }
+    }
+}
+
 void Layouts::setActivities(const int &row, const QStringList &activities)
 {
     if (!m_layoutsTable.rowExists(row) || m_layoutsTable[row].activities == activities) {
@@ -391,6 +440,14 @@ void Layouts::setActivities(const int &row, const QStringList &activities)
     QVector<int> roles;
     roles << Qt::DisplayRole;
     roles << Qt::UserRole;
+
+    bool freeActivitiesLayoutIsMissing{false};
+
+    if (m_layoutsTable[row].activities.contains(Data::Layout::FREEACTIVITIESID)
+            && !activities.contains(Data::Layout::FREEACTIVITIESID)) {
+        //! we need to reassign it properly
+        freeActivitiesLayoutIsMissing = true;
+    }
 
     m_layoutsTable[row].activities = activities;
     emit dataChanged(index(row, ACTIVITYCOLUMN), index(row,ACTIVITYCOLUMN), roles);
@@ -405,6 +462,10 @@ void Layouts::setActivities(const int &row, const QStringList &activities)
             m_layoutsTable[i].activities = cleaned;
             emit dataChanged(index(i,ACTIVITYCOLUMN), index(i,ACTIVITYCOLUMN), roles);
         }
+    }
+
+    if (freeActivitiesLayoutIsMissing) {
+        autoAssignFreeActivitiesLayout();
     }
 }
 

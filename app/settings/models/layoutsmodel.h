@@ -106,6 +106,7 @@ private slots:
     void updateActiveStates();
 
 private:
+    void autoAssignFreeActivitiesLayout();
     void setActivities(const int &row, const QStringList &activities);
     void setId(const int &row, const QString &newId);
     void setShares(const int &row, const QStringList &shares);
