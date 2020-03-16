@@ -101,6 +101,7 @@ public:
 
 signals:
     void inMultipleModeChanged();
+    void nameDuplicated(const QString &provenId, const QString &trialId);
     void rowsInserted();
 
 private slots:

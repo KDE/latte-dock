@@ -570,9 +570,17 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {
-            m_layoutsTable[row].setCurrentName(value.toString());
-            emit dataChanged(index, index, roles);
-            return true;
+            QString provenId = m_layoutsTable.idForCurrentName(value.toString());
+
+            if (!provenId.isEmpty() && provenId != m_layoutsTable[row].id /*not the same row*/ ){
+                //! duplicate name should be rejected
+                emit nameDuplicated(provenId, m_layoutsTable[row].id);
+                return false;
+            } else {
+                m_layoutsTable[row].setCurrentName(value.toString());
+                emit dataChanged(index, index, roles);
+                return true;
+            }
         }
         break;
     case MENUCOLUMN:

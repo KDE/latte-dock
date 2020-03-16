@@ -39,6 +39,7 @@
 #include <QDir>
 #include <QFile>
 #include <QHeaderView>
+#include <QItemSelection>
 #include <QMessageBox>
 #include <QStringList>
 #include <QTemporaryDir>
@@ -57,7 +58,7 @@ namespace Controller {
 
 Layouts::Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view)
     : QObject(parent),
-      m_parent(parent),
+      m_parentDialog(parent),
       m_corona(corona),
       m_model(new Model::Layouts(this, corona)),
       m_proxyModel(new QSortFilterProxyModel(this)),
@@ -72,6 +73,7 @@ Layouts::Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view)
 
     connect(m_model, &QAbstractItemModel::dataChanged, this, &Layouts::dataChanged);
     connect(m_model, &Model::Layouts::rowsInserted, this, &Layouts::dataChanged);
+    connect(m_model, &Model::Layouts::nameDuplicated, this, &Layouts::on_nameDuplicatedFrom);
 }
 
 Layouts::~Layouts()
@@ -230,7 +232,7 @@ QString Layouts::uniqueTempDirectory()
 
 QString Layouts::uniqueLayoutName(QString name)
 {
-    int pos_ = name.lastIndexOf(QRegExp(QString("[-][0-9]+")));
+    int pos_ = name.lastIndexOf(QRegExp(QString(" [-][0-9]+")));
 
     if (m_model->containsCurrentName(name) && pos_ > 0) {
         name = name.left(pos_);
@@ -241,7 +243,7 @@ QString Layouts::uniqueLayoutName(QString name)
     QString namePart = name;
 
     while (m_model->containsCurrentName(name)) {
-        name = namePart + "-" + QString::number(i);
+        name = namePart + " - " + QString::number(i);
         i++;
     }
 
@@ -289,7 +291,7 @@ void Layouts::toggleSharedForSelected()
     if (selected.isShared()) {
         m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::SHAREDCOLUMN), QStringList(), Qt::UserRole);
     } else {
-      /*  bool assigned{false};
+        /*  bool assigned{false};
         QStringList assignedList;
 
         QStringList availableShares = availableSharesFor(row);
@@ -447,7 +449,7 @@ void Layouts::loadLayouts()
 
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
-        auto msg = new QMessageBox(m_parent);
+        auto msg = new QMessageBox(m_parentDialog);
         msg->setIcon(QMessageBox::Warning);
         msg->setWindowTitle(i18n("Layout Warning"));
         msg->setText(i18n("The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove them</b> to improve the system stability...").arg(brokenLayouts.join(",")));
@@ -502,7 +504,7 @@ void Layouts::addLayoutForFile(QString file, QString layoutName, bool newTempDir
 
     m_model->appendLayout(copied);
 
-  //  ui->layoutsView->selectRow(row);
+    //  ui->layoutsView->selectRow(row);
 
     if (showNotification) {
         //NOTE: The pointer is automatically deleted when the event is closed
@@ -833,6 +835,39 @@ void Layouts::saveColumnWidths()
     }
 
     m_corona->universalSettings()->setLayoutsColumnWidths(columnWidths);
+}
+
+void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &trialId)
+{
+    //! duplicated layout name
+    auto msg = new QMessageBox(m_parentDialog);
+    msg->setIcon(QMessageBox::Warning);
+    msg->setWindowTitle(i18n("Layout Warning"));
+    msg->setText(i18n("There are layouts with the same name, that is not permitted!!! Please update these names to re-apply the changes..."));
+    msg->setStandardButtons(QMessageBox::Ok);
+
+    connect(msg, &QMessageBox::finished, this, [ &, provenId, trialId](int result) {
+        int pRow = rowForId(provenId);
+        int tRow = rowForId(trialId);
+
+        if (pRow >= 0) {
+            QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::ClearAndSelect;
+            QItemSelection rowSelection;
+
+            QModelIndex pIndexS = m_proxyModel->index(pRow, Model::Layouts::BACKGROUNDCOLUMN);
+            QModelIndex pIndexE = m_proxyModel->index(pRow, Model::Layouts::SHAREDCOLUMN);
+
+            rowSelection.select(pIndexS, pIndexE);
+
+            m_view->selectionModel()->select(rowSelection, flags);
+        }
+
+        QModelIndex tIndex = m_proxyModel->index(tRow, Model::Layouts::NAMECOLUMN);
+        m_view->edit(tIndex);
+    });
+
+
+    msg->open();
 }
 
 }

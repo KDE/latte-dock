@@ -86,6 +86,7 @@ signals:
 
 private slots:
     void saveColumnWidths();
+    void on_nameDuplicatedFrom(const QString &provenId,  const QString &trialId);
 
 private:
     void initView();
@@ -98,7 +99,7 @@ private:
     QString uniqueLayoutName(QString name);
 
 private:
-    QDialog *m_parent{nullptr};
+    QDialog *m_parentDialog{nullptr};
     Latte::Corona *m_corona{nullptr};
     QTableView *m_view{nullptr};
 
