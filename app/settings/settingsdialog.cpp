@@ -77,7 +77,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
             , this, &SettingsDialog::restoreDefaults);
 
     m_layoutsController = new Settings::Controller::Layouts(this, m_corona, ui->layoutsView);
-    m_model = m_layoutsController->model();
 
     m_inMemoryButtons = new QButtonGroup(this);
     m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Types::SingleLayout);
@@ -544,14 +543,14 @@ void SettingsDialog::requestImagesDialog(int row)
 
 void SettingsDialog::requestColorsDialog(int row)
 {
-    QColorDialog dialog(this);
+    /*QColorDialog dialog(this);
     QString textColor = m_model->data(m_model->index(row, Settings::Model::Layouts::BACKGROUNDCOLUMN), Qt::UserRole).toString();
     dialog.setCurrentColor(QColor(textColor));
 
     if (dialog.exec()) {
         qDebug() << dialog.selectedColor().name();
-        //m_model->setData(m_model->index(row, COLORCOLUMN), dialog.selectedColor().name(), Qt::UserRole);
-    }
+        m_model->setData(m_model->index(row, COLORCOLUMN), dialog.selectedColor().name(), Qt::UserRole);
+    }*/
 }
 
 void SettingsDialog::accept()

@@ -24,8 +24,6 @@
 
 // local
 #include "../liblatte2/types.h"
-#include "data/layoutstable.h"
-#include "models/layoutsmodel.h"
 #include "controllers/layoutscontroller.h"
 
 // Qt
@@ -106,7 +104,6 @@ private:
 
 private:
     Latte::Corona *m_corona{nullptr};
-    Settings::Model::Layouts *m_model{nullptr};
     Settings::Controller::Layouts *m_layoutsController{nullptr};
     Ui::SettingsDialog *ui;
 

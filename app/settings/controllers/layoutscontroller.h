@@ -29,7 +29,9 @@
 #include "../../../liblatte2/types.h"
 
 // Qt
+#include <QAbstractItemModel>
 #include <QHash>
+#include <QSortFilterProxyModel>
 #include <QTableView>
 
 namespace Latte {
@@ -49,7 +51,7 @@ public:
     explicit Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view);
     ~Layouts();
 
-    Model::Layouts *model() const;
+    QAbstractItemModel *model() const;
     QTableView *view() const;
 
     bool dataAreChanged() const;
@@ -106,6 +108,7 @@ private:
 
     //! current data
     Model::Layouts *m_model{nullptr};
+    QSortFilterProxyModel *m_proxyModel{nullptr};
     QHash<const QString, Latte::CentralLayout *> m_layouts;
 
     //! temp data

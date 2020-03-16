@@ -60,9 +60,12 @@ Layouts::Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view)
       m_parent(parent),
       m_corona(corona),
       m_model(new Model::Layouts(this, corona)),
+      m_proxyModel(new QSortFilterProxyModel(this)),
       m_view(view)
 {
     setOriginalInMultipleMode(m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts);
+
+    m_proxyModel->setSourceModel(m_model);
 
     initView();
     loadLayouts();
@@ -76,10 +79,6 @@ Layouts::~Layouts()
     //! remove
     qDeleteAll(m_layouts);
 
-    if (m_model) {
-        delete m_model;
-    }
-
     for (const auto &tempDir : m_tempDirectories) {
         QDir tDir(tempDir);
 
@@ -89,9 +88,9 @@ Layouts::~Layouts()
     }
 }
 
-Model::Layouts *Layouts::model() const
+QAbstractItemModel *Layouts::model() const
 {
-    return m_model;
+    return m_proxyModel;
 }
 
 QTableView *Layouts::view() const
@@ -101,9 +100,11 @@ QTableView *Layouts::view() const
 
 void Layouts::initView()
 {
-    m_view->setModel(m_model);
+    m_view->setModel(m_proxyModel);
     m_view->horizontalHeader()->setStretchLastSection(true);
     m_view->verticalHeader()->setVisible(false);
+    m_view->setSortingEnabled(true);
+    m_view->sortByColumn(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
 
     //!find the available colors
     QString iconsPath(m_corona->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/");
@@ -194,8 +195,8 @@ void Layouts::setOriginalInMultipleMode(bool inMultiple)
 
 int Layouts::rowForId(QString id) const
 {
-    for (int i = 0; i < m_model->rowCount(); ++i) {
-        QString rowId = m_model->data(m_model->index(i, Model::Layouts::IDCOLUMN), Qt::DisplayRole).toString();
+    for (int i = 0; i < m_proxyModel->rowCount(); ++i) {
+        QString rowId = m_proxyModel->data(m_proxyModel->index(i, Model::Layouts::IDCOLUMN), Qt::DisplayRole).toString();
 
         if (rowId == id) {
             return i;
@@ -207,8 +208,8 @@ int Layouts::rowForId(QString id) const
 
 int Layouts::rowForName(QString layoutName) const
 {
-    for (int i = 0; i < m_model->rowCount(); ++i) {
-        QString rowName = m_model->data(m_model->index(i, Model::Layouts::NAMECOLUMN), Qt::DisplayRole).toString();
+    for (int i = 0; i < m_proxyModel->rowCount(); ++i) {
+        QString rowName = m_proxyModel->data(m_proxyModel->index(i, Model::Layouts::NAMECOLUMN), Qt::DisplayRole).toString();
 
         if (rowName == layoutName) {
             return i;
@@ -260,9 +261,9 @@ void Layouts::removeSelected()
     }
 
     int row = m_view->currentIndex().row();
-    m_model->removeRow(row);
+    m_proxyModel->removeRow(row);
 
-    row = qMin(row, m_model->rowCount() - 1);
+    row = qMin(row, m_proxyModel->rowCount() - 1);
     m_view->selectRow(row);
 }
 
@@ -274,7 +275,7 @@ void Layouts::toggleLockedForSelected()
 
     Data::Layout selected = selectedLayout();
 
-    m_model->setData(m_model->index(m_view->currentIndex().row(), Model::Layouts::NAMECOLUMN), !selected.isLocked, Settings::Model::Layouts::LAYOUTISLOCKEDROLE);
+    m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::NAMECOLUMN), !selected.isLocked, Settings::Model::Layouts::LAYOUTISLOCKEDROLE);
 }
 
 void Layouts::toggleSharedForSelected()
@@ -286,7 +287,7 @@ void Layouts::toggleSharedForSelected()
     Data::Layout selected = selectedLayout();
 
     if (selected.isShared()) {
-        m_model->setData(m_model->index(m_view->currentIndex().row(), Model::Layouts::SHAREDCOLUMN), QStringList(), Qt::UserRole);
+        m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::SHAREDCOLUMN), QStringList(), Qt::UserRole);
     } else {
       /*  bool assigned{false};
         QStringList assignedList;
