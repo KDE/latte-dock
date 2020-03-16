@@ -654,12 +654,30 @@ void SettingsDialog::on_switchButton_clicked()
 
     if (!m_layoutsController->selectedLayoutIsCurrentActive()) {
         bool appliedShared = m_layoutsController->inMultipleMode() && selectedLayout.isShared();
+        bool freeActivitiesLayoutUpdated{false};
 
         if (!appliedShared && selectedLayout.activities.isEmpty()) {
             m_layoutsController->setLayoutNameForFreeActivities(selectedLayout.currentName(), true);
+            freeActivitiesLayoutUpdated = true;
         }
 
-        m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
+        if (m_layoutsController->inMultipleMode()) {
+            m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
+        } else {
+            if (freeActivitiesLayoutUpdated) {
+                m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
+            } else {
+                CentralLayout singleLayout(this, selectedLayout.id);
+
+                QString switchToActivity = selectedLayout.isForFreeActivities() ? singleLayout.lastUsedActivity() : selectedLayout.activities[0];
+
+                if (!m_corona->activitiesConsumer()->runningActivities().contains(switchToActivity)) {
+                    m_corona->layoutsManager()->synchronizer()->activitiesController()->startActivity(switchToActivity);
+                }
+
+                m_corona->layoutsManager()->synchronizer()->activitiesController()->setCurrentActivity(switchToActivity);
+            }
+        }
     }
 
     updatePerLayoutButtonsState();

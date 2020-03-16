@@ -111,6 +111,8 @@ public:
     SharedLayout *sharedLayout(QString id) const;
     Layout::GenericLayout *layout(QString id) const;
 
+    KActivities::Controller *activitiesController() const;
+
 signals:
     void centralLayoutsChanged();
     void currentLayoutNameChanged();

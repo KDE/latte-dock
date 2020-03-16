@@ -72,6 +72,11 @@ Synchronizer::~Synchronizer()
     m_activitiesController->deleteLater();
 }
 
+KActivities::Controller *Synchronizer::activitiesController() const
+{
+    return m_activitiesController;
+}
+
 bool Synchronizer::latteViewExists(Latte::View *view) const
 {
     for (const auto layout : m_centralLayouts) {
