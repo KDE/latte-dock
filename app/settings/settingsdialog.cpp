@@ -85,6 +85,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     if (KWindowSystem::isPlatformWayland()) {
         m_inMemoryButtons->button(Latte::Types::MultipleLayouts)->setEnabled(false);
+    } else {
+        KWindowSystem::setOnActivities(winId(), QStringList());
     }
 
     m_mouseSensitivityButtons = new QButtonGroup(this);
@@ -650,18 +652,14 @@ void SettingsDialog::on_switchButton_clicked()
 {
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
 
-    if (m_layoutsController->inMultipleMode()) {
-        if (!m_layoutsController->selectedLayoutIsCurrentActive()) {
-            if (!selectedLayout.isShared() && selectedLayout.activities.isEmpty()) {
-                m_layoutsController->setLayoutNameForFreeActivities(selectedLayout.currentName(), true);
-            }
-            m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
-        }
-    } else {
-        if (!m_layoutsController->selectedLayoutIsCurrentActive()) {
+    if (!m_layoutsController->selectedLayoutIsCurrentActive()) {
+        bool appliedShared = m_layoutsController->inMultipleMode() && selectedLayout.isShared();
+
+        if (!appliedShared && selectedLayout.activities.isEmpty()) {
             m_layoutsController->setLayoutNameForFreeActivities(selectedLayout.currentName(), true);
-            m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
         }
+
+        m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
     }
 
     updatePerLayoutButtonsState();
@@ -669,15 +667,10 @@ void SettingsDialog::on_switchButton_clicked()
 
 void SettingsDialog::on_pauseButton_clicked()
 {
-    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
     ui->pauseButton->setEnabled(false);
 
-    if (m_layoutsController->inMultipleMode()
-            && selectedLayout.isActive
-            && !selectedLayout.isShared()
-            && !m_layoutsController->selectedLayoutIsCurrentActive()) {
-        m_corona->layoutsManager()->synchronizer()->pauseLayout(selectedLayout.originalName());
-    }
+    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
+    m_corona->layoutsManager()->synchronizer()->pauseLayout(selectedLayout.originalName());
 }
 
 void SettingsDialog::updateApplyButtonsState()
