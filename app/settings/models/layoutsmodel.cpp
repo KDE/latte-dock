@@ -107,8 +107,8 @@ int Layouts::columnCount(const QModelIndex &parent) const
 
 void Layouts::clear()
 {
-    if (m_layoutsTable.rowCount() > 1) {
-        beginInsertRows(QModelIndex(), 0, m_layoutsTable.rowCount() - 1);
+    if (m_layoutsTable.rowCount() > 0) {
+        beginRemoveRows(QModelIndex(), 0, m_layoutsTable.rowCount() - 1);
         m_layoutsTable.clear();
         endInsertRows();
     }

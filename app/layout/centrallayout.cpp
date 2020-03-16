@@ -293,7 +293,7 @@ const QStringList CentralLayout::appliedActivities()
         return {"0"};
     } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
         if (m_activities.isEmpty()) {
-            return m_corona->layoutsManager()->synchronizer()->orphanedActivities();
+            return m_corona->layoutsManager()->synchronizer()->freeActivities();
         } else {
             return m_activities;
         }

@@ -77,7 +77,7 @@ public:
     void pauseLayout(QString layoutName);
     void syncActiveLayoutsToOriginalFiles();
     void syncLatteViewsToScreens();
-    void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
+    void syncMultipleLayoutsToActivities(QString layoutForFreeActivities = QString());
     void syncActiveShares(SharesMap &sharesMap, QStringList &deprecatedShares);
 
     bool latteViewExists(Latte::View *view) const;
@@ -102,7 +102,7 @@ public:
 
     QStringList activities();
     QStringList runningActivities();
-    QStringList orphanedActivities(); //! These are activities that haven't been assigned to specific layout
+    QStringList freeActivities(); //! These are activities that haven't been assigned to specific layout
 
     Latte::View *viewForContainment(Plasma::Containment *containment);
 

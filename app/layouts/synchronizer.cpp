@@ -195,17 +195,17 @@ QStringList Synchronizer::runningActivities()
     return m_manager->corona()->activitiesConsumer()->runningActivities();
 }
 
-QStringList Synchronizer::orphanedActivities()
+QStringList Synchronizer::freeActivities()
 {
-    QStringList orphans;
+    QStringList fActivities;
 
     for (const auto &activity : activities()) {
         if (m_assignedLayouts[activity].isEmpty()) {
-            orphans.append(activity);
+            fActivities.append(activity);
         }
     }
 
-    return orphans;
+    return fActivities;
 }
 
 QStringList Synchronizer::centralLayoutsNames()
@@ -680,17 +680,17 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
 
             QStringList toActivities = toLayout.activities();
 
-            CentralLayout *centralForOrphans{nullptr};
+            CentralLayout *centralForFreeActivities{nullptr};
 
             for (const auto fromLayout : m_centralLayouts) {
                 if (fromLayout->activities().isEmpty()) {
-                    centralForOrphans = fromLayout;
+                    centralForFreeActivities = fromLayout;
                     break;
                 }
             }
 
-            if (toActivities.isEmpty() && centralForOrphans && (toLayout.name() != centralForOrphans->name())) {
-                emit currentLayoutIsSwitching(centralForOrphans->name());
+            if (toActivities.isEmpty() && centralForFreeActivities && (toLayout.name() != centralForFreeActivities->name())) {
+                emit currentLayoutIsSwitching(centralForFreeActivities->name());
             }
         }
 
@@ -744,11 +744,11 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
                     bool lastUsedActivityFound{false};
                     QString lastUsedActivity = layout.lastUsedActivity();
 
-                    bool orphanedLayout = !layoutIsAssigned(layoutName);
+                    bool freeActivitiesLayout = !layoutIsAssigned(layoutName);
 
-                    QStringList assignedActivities = orphanedLayout ? orphanedActivities() : layout.activities();
+                    QStringList assignedActivities = freeActivitiesLayout ? freeActivities() : layout.activities();
 
-                    if (!orphanedLayout) {
+                    if (!freeActivitiesLayout) {
                         for (const auto &assignedActivity : assignedActivities) {
                             //! Starting the activities must be done asynchronous because otherwise
                             //! the activity manager cant close multiple activities
@@ -767,7 +767,7 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
                             i = i + 1;
                         }
                     } else {
-                        //! orphaned layout
+                        //! free activities layout
                         for (const auto &assignedActivity : assignedActivities) {
                             if (lastUsedActivity == assignedActivity) {
                                 lastUsedActivityFound = true;
@@ -786,9 +786,9 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
                         }
                     }
 
-                    if (orphanedLayout) {
+                    if (freeActivitiesLayout) {
                         syncMultipleLayoutsToActivities(layoutName);
-                    } else if (!orphanedLayout && !lastUsedActivityFound) {
+                    } else if (!freeActivitiesLayout && !lastUsedActivityFound) {
                         m_activitiesController->setCurrentActivity(layout.activities()[0]);
                     }
                 } else {
@@ -809,7 +809,7 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
     return true;
 }
 
-void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForOrphans)
+void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActivities)
 {
     qDebug() << "   ----  --------- ------    syncMultipleLayoutsToActivities       -------   ";
     qDebug() << "   ----  --------- ------    -------------------------------       -------   ";
@@ -819,8 +819,8 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
     bool allRunningActivitiesWillBeReserved{true};
 
-    if (layoutForOrphans.isEmpty() || m_assignedLayouts.values().contains(layoutForOrphans)) {
-        layoutForOrphans = m_manager->corona()->universalSettings()->lastNonAssignedLayoutName();
+    if (layoutForFreeActivities.isEmpty() || m_assignedLayouts.values().contains(layoutForFreeActivities)) {
+        layoutForFreeActivities = m_manager->corona()->universalSettings()->lastNonAssignedLayoutName();
     }
 
     for (const auto &activity : runningActivities()) {
@@ -836,10 +836,10 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForOrphans)
     for (const auto layout : m_centralLayouts) {
         QString tempLayoutName;
 
-        if (!layoutsToLoad.contains(layout->name()) && layout->name() != layoutForOrphans) {
+        if (!layoutsToLoad.contains(layout->name()) && layout->name() != layoutForFreeActivities) {
             tempLayoutName = layout->name();
         } else if (layout->activities().isEmpty() && allRunningActivitiesWillBeReserved) {
-            //! in such case the layout for the orphaned must be unloaded
+            //! in such case the layout for free_activities must be unloaded
             tempLayoutName = layout->name();
         }
 
@@ -882,15 +882,15 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForOrphans)
         }
     }
 
-    //! Add Layout for orphan activities
+    //! Add Layout for free activities
     if (!allRunningActivitiesWillBeReserved) {
-        if (!centralLayout(layoutForOrphans) && !sharedLayout(layoutForOrphans)) {
-            //! CENTRAL Layout for Orphaned Activities is not loaded and at the same time
+        if (!centralLayout(layoutForFreeActivities) && !sharedLayout(layoutForFreeActivities)) {
+            //! CENTRAL Layout for FreeActivities is not loaded and at the same time
             //! that layout is not already configured as SHARED for other CENTRAL layouts
-            CentralLayout *newLayout = new CentralLayout(this, layoutPath(layoutForOrphans), layoutForOrphans);
+            CentralLayout *newLayout = new CentralLayout(this, layoutPath(layoutForFreeActivities), layoutForFreeActivities);
 
             if (newLayout) {
-                qDebug() << "ACTIVATING ORPHANED LAYOUT ::::: " << layoutForOrphans;
+                qDebug() << "ACTIVATING FREE ACTIVITIES LAYOUT ::::: " << layoutForFreeActivities;
                 addLayout(newLayout);
                 newLayout->importToCorona();
             }
