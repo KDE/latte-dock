@@ -62,8 +62,9 @@ Layouts::Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view)
       m_corona(corona),
       m_model(new Model::Layouts(this, corona)),
       m_proxyModel(new QSortFilterProxyModel(this)),
-      m_view(view)
-{
+      m_view(view),
+      m_headerView(new Settings::Layouts::HeaderView(Qt::Horizontal, m_parentDialog))
+{   
     setOriginalInMultipleMode(m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts);
 
     m_proxyModel->setSourceModel(m_model);
@@ -103,6 +104,7 @@ QTableView *Layouts::view() const
 void Layouts::initView()
 {
     m_view->setModel(m_proxyModel);
+    m_view->setHorizontalHeader(m_headerView);
     m_view->horizontalHeader()->setStretchLastSection(true);
     m_view->verticalHeader()->setVisible(false);
     m_view->setSortingEnabled(true);

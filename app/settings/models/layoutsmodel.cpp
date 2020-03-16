@@ -225,17 +225,15 @@ QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role)
         break;
     case HIDDENTEXTCOLUMN:
         if (role == Qt::DisplayRole) {
-            return QString("#hidden_text");
+            return QString("");
         }
         break;
     case BACKGROUNDCOLUMN:
         if (role == Qt::DisplayRole) {
-            return QIcon::fromTheme("games-config-background");//(i18nc("column for layout background", "Background"));
+            return QString("");
         } else if (role == Qt::DecorationRole) {
-            return QString("");//QIcon::fromTheme("games-config-background");//QString();//QIcon::fromTheme("games-config-background");
-        }/* else if (role == Qt::TextAlignmentRole ){
-            return QVariant::fromValue(Qt::AlignHCenter | Qt::AlignVCenter);
-        }*/
+            return QIcon::fromTheme("games-config-background");
+        }
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {

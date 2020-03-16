@@ -24,6 +24,7 @@
 // local
 #include "../data/layoutdata.h"
 #include "../data/layoutstable.h"
+#include "../delegates/layoutsheaderview.h"
 #include "../models/layoutsmodel.h"
 #include "../../lattecorona.h"
 #include "../../../liblatte2/types.h"
@@ -102,6 +103,7 @@ private:
     QDialog *m_parentDialog{nullptr};
     Latte::Corona *m_corona{nullptr};
     QTableView *m_view{nullptr};
+    Settings::Layouts::HeaderView *m_headerView{nullptr};
 
     //! original data
     bool o_originalInMultipleMode{false};
