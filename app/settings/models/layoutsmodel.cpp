@@ -641,6 +641,11 @@ const Data::Layout &Layouts::at(const int &row)
     return m_layoutsTable[row];
 }
 
+int Layouts::rowForId(const QString &id) const
+{
+    return m_layoutsTable.indexOf(id);
+}
+
 const Data::LayoutsTable &Layouts::currentData()
 {
     return m_layoutsTable;

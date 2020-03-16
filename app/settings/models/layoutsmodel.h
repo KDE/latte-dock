@@ -87,6 +87,8 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
+    int rowForId(const QString &id) const;
+
     void clear();
     void applyCurrentNames();
     void appendLayout(const Settings::Data::Layout &layout);
@@ -94,7 +96,6 @@ public:
 
     QString layoutNameForFreeActivities() const;
     void setLayoutNameForFreeActivities(const QString &name);
-
 
     const Data::LayoutsTable &currentData();
     void setCurrentData(Data::LayoutsTable &data);

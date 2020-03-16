@@ -162,8 +162,10 @@ bool Layouts::selectedLayoutIsCurrentActive() const
 const Data::Layout &Layouts::selectedLayout() const
 {
     int selectedRow = m_view->currentIndex().row();
+    QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::DisplayRole).toString();
 
-    return m_model->at(selectedRow);
+    int realRow = m_model->rowForId(selectedId);
+    return m_model->at(realRow);
 }
 
 bool Layouts::inMultipleMode() const
@@ -232,7 +234,7 @@ QString Layouts::uniqueTempDirectory()
 
 QString Layouts::uniqueLayoutName(QString name)
 {
-    int pos_ = name.lastIndexOf(QRegExp(QString(" [-][0-9]+")));
+    int pos_ = name.lastIndexOf(QRegExp(QString(" - [0-9]+")));
 
     if (m_model->containsCurrentName(name) && pos_ > 0) {
         name = name.left(pos_);
@@ -536,8 +538,9 @@ void Layouts::copySelectedLayout()
 
     copied.setOriginalName(uniqueLayoutName(selected.currentName()));
     copied.id = uniqueTempDirectory() + "/" + copied.originalName() + ".layout.latte";;
-    copied.activities = QStringList();
+    copied.isActive = false;
     copied.isLocked = false;
+    copied.activities = QStringList();
 
     QFile(selected.id).copy(copied.id);
     QFileInfo newFileInfo(copied.id);
@@ -551,7 +554,7 @@ void Layouts::copySelectedLayout()
     m_layouts[copied.id] = settings;
     m_model->appendLayout(copied);
 
-    m_view->selectRow(row + 1);
+    m_view->selectRow(rowForId(copied.id));
 }
 
 void Layouts::importLayoutsFromV1ConfigFile(QString file)

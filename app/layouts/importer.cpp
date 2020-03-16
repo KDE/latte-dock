@@ -577,7 +577,7 @@ QString Importer::layoutFilePath(QString layoutName)
 
 QString Importer::uniqueLayoutName(QString name)
 {
-    int pos_ = name.lastIndexOf(QRegExp(QString("[-][0-9]+")));
+    int pos_ = name.lastIndexOf(QRegExp(QString(" - [0-9]+")));
 
     if (layoutExists(name) && pos_ > 0) {
         name = name.left(pos_);
@@ -588,7 +588,7 @@ QString Importer::uniqueLayoutName(QString name)
     QString namePart = name;
 
     while (layoutExists(name)) {
-        name = namePart + "-" + QString::number(i);
+        name = namePart + " - " + QString::number(i);
         i++;
     }
 
