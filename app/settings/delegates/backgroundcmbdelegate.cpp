@@ -122,12 +122,16 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
         QString colorPath = backgroundStr.startsWith("/") ? backgroundStr : m_iconsPath + backgroundStr + "print.jpg";
 
         if (QFileInfo(colorPath).exists()) {
+            bool isSelected{Latte::isSelected(option)};
+            QPalette::ColorRole textColorRole = isSelected ? QPalette::HighlightedText : QPalette::Text;
+
             QPen pen;
 
             QBrush colorBrush;
             colorBrush.setTextureImage(QImage(colorPath));
 
-            pen.setColor("black");
+            pen.setWidth(1);
+            pen.setColor(option.palette.color(Latte::colorGroup(option), textColorRole));
 
             painter->setPen(pen);
             painter->setBrush(colorBrush);
