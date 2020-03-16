@@ -101,6 +101,7 @@ public:
 
 signals:
     void inMultipleModeChanged();
+    void rowsInserted();
 
 private slots:
     void updateActiveStates();

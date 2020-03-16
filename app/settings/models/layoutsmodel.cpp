@@ -119,6 +119,8 @@ void Layouts::appendLayout(const Settings::Data::Layout &layout)
     beginInsertRows(QModelIndex(), m_layoutsTable.rowCount(), m_layoutsTable.rowCount());
     m_layoutsTable << layout;
     endInsertRows();
+
+    emit rowsInserted();
 }
 
 void Layouts::applyCurrentNames()
@@ -140,7 +142,7 @@ void Layouts::removeLayout(const QString &id)
     if (index >= 0) {
         beginRemoveRows(QModelIndex(), index, index);
         m_layoutsTable.remove(index);
-        endInsertRows();
+        endRemoveRows();
     }
 }
 
@@ -643,6 +645,8 @@ void Layouts::setCurrentData(Data::LayoutsTable &data)
     beginInsertRows(QModelIndex(), 0, data.rowCount() - 1);
     m_layoutsTable = data;
     endInsertRows();
+
+    emit rowsInserted();
 }
 
 }

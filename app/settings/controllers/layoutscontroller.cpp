@@ -68,6 +68,7 @@ Layouts::Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view)
     loadLayouts();
 
     connect(m_model, &QAbstractItemModel::dataChanged, this, &Layouts::dataChanged);
+    connect(m_model, &Model::Layouts::rowsInserted, this, &Layouts::dataChanged);
 }
 
 Layouts::~Layouts()
