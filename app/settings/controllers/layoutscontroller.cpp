@@ -41,7 +41,6 @@
 #include <QFile>
 #include <QHeaderView>
 #include <QItemSelection>
-#include <QMessageBox>
 #include <QStringList>
 #include <QTemporaryDir>
 
@@ -51,8 +50,6 @@
 #include <KArchive/KArchiveEntry>
 #include <KArchive/KArchiveDirectory>
 #include <KMessageWidget>
-#include <KNotification>
-
 
 namespace Latte {
 namespace Settings {
@@ -163,7 +160,7 @@ bool Layouts::selectedLayoutIsCurrentActive() const
     return (selected.isActive && (selected.originalName() == m_corona->layoutsManager()->synchronizer()->currentLayoutName()));
 }
 
-const Data::Layout &Layouts::selectedLayout() const
+const Data::Layout Layouts::selectedLayout() const
 {
     int selectedRow = m_view->currentIndex().row();
     QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::DisplayRole).toString();
@@ -455,17 +452,17 @@ void Layouts::loadLayouts()
 
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
-        auto msg = new QMessageBox(m_parentDialog);
-        msg->setIcon(QMessageBox::Warning);
-        msg->setWindowTitle(i18n("Layout Warning"));
-        msg->setText(i18n("The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove them</b> to improve the system stability...").arg(brokenLayouts.join(",")));
-        msg->setStandardButtons(QMessageBox::Ok);
-
-        msg->open();
+        if (brokenLayouts.count() == 1) {
+            m_parentDialog->showInlineMessage(i18nc("settings:broken layouts", "Layout <b>%0</b> <i/>is broken</i>! Please <b>remove it</b> to improve stability...").arg(brokenLayouts.join(",")),
+                                              KMessageWidget::Error);
+        } else {
+            m_parentDialog->showInlineMessage(i18nc("settings:broken layouts", "Layouts <b>%0</b> <i/>are broken</i>! Please <b>remove them</b> to improve stability...").arg(brokenLayouts.join(",")),
+                                              KMessageWidget::Error);
+        }
     }
 }
 
-void Layouts::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory, bool showNotification)
+const Data::Layout Layouts::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory)
 {
     if (layoutName.isEmpty()) {
         layoutName = CentralLayout::layoutName(file);
@@ -473,7 +470,7 @@ void Layouts::addLayoutForFile(QString file, QString layoutName, bool newTempDir
 
     layoutName = uniqueLayoutName(layoutName);
 
-    Settings::Data::Layout copied;
+    Data::Layout copied;
 
     if (newTempDirectory) {
         copied.id = uniqueTempDirectory() + "/" + layoutName + ".layout.latte";
@@ -510,14 +507,9 @@ void Layouts::addLayoutForFile(QString file, QString layoutName, bool newTempDir
 
     m_model->appendLayout(copied);
 
-    //  ui->layoutsView->selectRow(row);
+    m_view->selectRow(rowForId(copied.id));
 
-    if (showNotification) {
-        //NOTE: The pointer is automatically deleted when the event is closed
-        auto notification = new KNotification("import-done", KNotification::CloseOnTimeout);
-        notification->setText(i18nc("import-done", "Layout: <b>%0</b> imported successfully<br>").arg(layoutName));
-        notification->sendEvent();
-    }
+    return copied;
 }
 
 void Layouts::copySelectedLayout()
@@ -585,13 +577,21 @@ void Layouts::importLayoutsFromV1ConfigFile(QString file)
 
         if (QFile(applets).exists()) {
             if (m_corona->layoutsManager()->importer()->importOldLayout(applets, name, false, tempDir.absolutePath())) {
-                addLayoutForFile(tempDir.absolutePath() + "/" + name + ".layout.latte", name, false);
+                Settings::Data::Layout imported = addLayoutForFile(tempDir.absolutePath() + "/" + name + ".layout.latte", name);
+
+                m_parentDialog->showInlineMessage(i18n("Layout <b>%0</b> imported successfully...").arg(imported.currentName()),
+                                                  KMessageWidget::Information,
+                                                  SettingsDialog::INFORMATIONINTERVAL);
             }
 
             QString alternativeName = name + "-" + i18nc("layout", "Alternative");
 
             if (m_corona->layoutsManager()->importer()->importOldLayout(applets, alternativeName, false, tempDir.absolutePath())) {
-                addLayoutForFile(tempDir.absolutePath() + "/" + alternativeName + ".layout.latte", alternativeName, false);
+                Settings::Data::Layout imported = addLayoutForFile(tempDir.absolutePath() + "/" + alternativeName + ".layout.latte", alternativeName, false);
+
+                m_parentDialog->showInlineMessage(i18n("Layout <b>%0</b> imported successfully...").arg(imported.currentName()),
+                                                  KMessageWidget::Information,
+                                                  SettingsDialog::INFORMATIONINTERVAL);
             }
         }
     }
@@ -849,35 +849,6 @@ void Layouts::saveColumnWidths()
 void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &trialId)
 {
     //! duplicated layout name
-    /*auto msg = new QMessageBox(m_parentDialog);
-    msg->setIcon(QMessageBox::Warning);
-    msg->setWindowTitle(i18n("Layout Warning"));
-    msg->setText(i18n("There are layouts with the same name, that is not permitted!!! Please update these names to re-apply the changes..."));
-    msg->setStandardButtons(QMessageBox::Ok);
-
-    connect(msg, &QMessageBox::finished, this, [ &, provenId, trialId](int result) {
-        int pRow = rowForId(provenId);
-        int tRow = rowForId(trialId);
-
-        if (pRow >= 0) {
-            QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::ClearAndSelect;
-            QItemSelection rowSelection;
-
-            QModelIndex pIndexS = m_proxyModel->index(pRow, Model::Layouts::BACKGROUNDCOLUMN);
-            QModelIndex pIndexE = m_proxyModel->index(pRow, Model::Layouts::SHAREDCOLUMN);
-
-            rowSelection.select(pIndexS, pIndexE);
-
-            m_view->selectionModel()->select(rowSelection, flags);
-        }
-
-        QModelIndex tIndex = m_proxyModel->index(tRow, Model::Layouts::NAMECOLUMN);
-        m_view->edit(tIndex);
-    });
-
-
-    msg->open();*/
-
     int pRow = rowForId(provenId);
     int tRow = rowForId(trialId);
 
@@ -893,7 +864,9 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
         m_view->selectionModel()->select(rowSelection, flags);
     }
 
-    m_parentDialog->showInlineMessage(i18n("Layouts with same name are not permitted! Please provide unique names to proceed..."), KMessageWidget::Error, 4000);
+    m_parentDialog->showInlineMessage(i18nc("settings:layout name error","Layout name is already used, please provide a different name..."),
+                                      KMessageWidget::Error,
+                                      SettingsDialog::ERRORINTERVAL);
 
     QModelIndex tIndex = m_proxyModel->index(tRow, Model::Layouts::NAMECOLUMN);
 

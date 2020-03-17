@@ -52,11 +52,15 @@
 #include <KWindowSystem>
 #include <KNewStuff3/KNS3/DownloadDialog>
 
+
 namespace Latte {
 
 const int SCREENTRACKERDEFAULTVALUE = 2500;
 const int OUTLINEDEFAULTWIDTH = 1;
 
+const int SettingsDialog::INFORMATIONINTERVAL;
+const int SettingsDialog::WARNINGINTERVAL;
+const int SettingsDialog::ERRORINTERVAL;
 
 SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     : QDialog(parent),
@@ -255,7 +259,10 @@ void SettingsDialog::on_newButton_clicked()
         QString presetName = CentralLayout::layoutName(preset);
 
         if (presetName == "Default") {
-            m_layoutsController->addLayoutForFile(preset, presetName, true, false);
+            Settings::Data::Layout newlayout = m_layoutsController->addLayoutForFile(preset, presetName, true);
+            showInlineMessage(i18nc("settings:layout added successfully","<b>%0</b> was added successfully...").arg(newlayout.currentName()),
+                              KMessageWidget::Information,
+                              SettingsDialog::INFORMATIONINTERVAL);
             break;
         }
     }
@@ -282,7 +289,10 @@ void SettingsDialog::on_downloadButton_clicked()
                 Layouts::Importer::LatteFileVersion version = Layouts::Importer::fileVersion(entryFile);
 
                 if (version == Layouts::Importer::LayoutVersion2) {
-                    m_layoutsController->addLayoutForFile(entryFile);
+                    Settings::Data::Layout downloaded = m_layoutsController->addLayoutForFile(entryFile);
+                    showInlineMessage(i18nc("settings:layout downloaded successfully","<b>%0</b> was downloaded successfully...").arg(downloaded.currentName()),
+                                      KMessageWidget::Information,
+                                      SettingsDialog::INFORMATIONINTERVAL);
                     break;
                 }
             }
@@ -348,7 +358,10 @@ void SettingsDialog::on_importButton_clicked()
         qDebug() << "VERSION :::: " << version;
 
         if (version == Layouts::Importer::LayoutVersion2) {
-            m_layoutsController->addLayoutForFile(file);
+            Settings::Data::Layout importedlayout = m_layoutsController->addLayoutForFile(file);
+            showInlineMessage(i18nc("settings:layout imported successfully","<b>%0</b> was imported successfully...").arg(importedlayout.currentName()),
+                              KMessageWidget::Information,
+                              SettingsDialog::INFORMATIONINTERVAL);
         } else if (version == Layouts::Importer::ConfigVersion1) {
             auto msg = new QMessageBox(this);
             msg->setIcon(QMessageBox::Warning);
@@ -648,7 +661,7 @@ void SettingsDialog::on_switchButton_clicked()
     bool hasChanges = (selectedLayout.nameWasEdited() || m_layoutsController->dataAreChanged());
 
     if (hasChanges) {
-        showInlineMessage(i18n("You need to save your changes before switching to other layout."), KMessageWidget::Warning);
+        showInlineMessage(i18nc("settings:not permitted switching layout","You need to save your changes to switch layout."), KMessageWidget::Warning);
         return;
     }
 

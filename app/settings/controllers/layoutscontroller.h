@@ -65,7 +65,7 @@ public:
 
     bool hasSelectedLayout() const;
     bool selectedLayoutIsCurrentActive() const;
-    const Data::Layout &selectedLayout() const;
+    const Data::Layout selectedLayout() const;
 
     //! actions
     void reset();
@@ -78,8 +78,9 @@ public:
     QString layoutNameForFreeActivities() const;
     void setLayoutNameForFreeActivities(const QString &name, bool updateOriginalData = false);
 
-    void addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true, bool showNotification = true);
     void copySelectedLayout();
+    const Data::Layout addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true);
+
     //! import layouts from Latte versions <= v0.7.x
     void importLayoutsFromV1ConfigFile(QString file);
 

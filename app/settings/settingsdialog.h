@@ -57,6 +57,10 @@ class SettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
+    static const int INFORMATIONINTERVAL = 3000;
+    static const int WARNINGINTERVAL = 3000;
+    static const int ERRORINTERVAL = 3000;
+
     SettingsDialog(QWidget *parent, Latte::Corona *corona);
     ~SettingsDialog();
 
