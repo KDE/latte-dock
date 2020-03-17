@@ -685,6 +685,10 @@ void Layouts::setCurrentData(Data::LayoutsTable &data)
 
     beginInsertRows(QModelIndex(), 0, data.rowCount() - 1);
     m_layoutsTable = data;
+
+    for(int i=0; i<m_layoutsTable.rowCount(); ++i) {
+        m_layoutsTable[i].isActive = m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].originalName());
+    }
     endInsertRows();
 
     emit rowsInserted();
