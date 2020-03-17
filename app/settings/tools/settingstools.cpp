@@ -25,6 +25,24 @@
 
 namespace Latte {
 
+bool isEnabled(const QStyleOptionViewItem &option)
+{
+    if (option.state & QStyle::State_Enabled) {
+        return true;
+    }
+
+    return false;
+}
+
+bool isActive(const QStyleOptionViewItem &option)
+{
+    if (option.state & QStyle::State_Active) {
+        return true;
+    }
+
+    return false;
+}
+
 bool isSelected(const QStyleOptionViewItem &option)
 {
     if (option.state & QStyle::State_Selected) {
@@ -43,13 +61,30 @@ bool isHovered(const QStyleOptionViewItem &option)
     return false;
 }
 
+bool isFocused(const QStyleOptionViewItem &option)
+{
+    if (option.state & QStyle::State_HasFocus) {
+        return true;
+    }
+
+    return false;
+}
+
 QPalette::ColorGroup colorGroup(const QStyleOptionViewItem &option)
 {
-    if (option.state & QStyle::State_Active) {
+    if (!isEnabled(option)) {
+        return QPalette::Disabled;
+    }
+
+    if (isActive(option) || isFocused(option)) {
         return QPalette::Active;
-    } else {
+    }
+
+    if (!isActive(option) && isSelected(option)) {
         return QPalette::Inactive;
     }
+
+    return QPalette::Normal;
 }
 
 QStringList subtracted(const QStringList &original, const QStringList &current)

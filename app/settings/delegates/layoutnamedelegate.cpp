@@ -81,6 +81,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     bool showTwoIcons = isLocked && isShared;
 
     QStyleOptionViewItem adjustedOption = option;
+
     //! Remove the focus dotted lines
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
     adjustedOption.displayAlignment = Qt::AlignLeft | Qt::AlignVCenter;
@@ -88,7 +89,12 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     if (isLocked || isShared) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
         QString nameText = index.data(Qt::DisplayRole).toString();
+
+        bool active = Latte::isActive(option);
+        bool enabled = Latte::isEnabled(option);
         bool selected = Latte::isSelected(option);
+        bool focused = Latte::isFocused(option);
+        bool hovered = Latte::isHovered(option);
 
         //! font metrics
         QFontMetrics fm(option.font);
@@ -122,7 +128,8 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
         //! Lock Icon
         QIcon firstIcon = isLocked && !showTwoIcons ? QIcon::fromTheme("object-locked") : QIcon::fromTheme("document-share");
-        QIcon::Mode mode = selected && (Latte::colorGroup(option) == QPalette::Active) ? QIcon::Selected : QIcon::Normal;
+
+        QIcon::Mode mode = ((active && (selected || focused)) ? QIcon::Selected : QIcon::Normal);
 
         if (qApp->layoutDirection() == Qt::RightToLeft) {
             painter->drawPixmap(QRect(option.rect.x(), option.rect.y(), thick, thick), firstIcon.pixmap(thick, thick, mode));
