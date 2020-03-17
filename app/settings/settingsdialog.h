@@ -65,6 +65,8 @@ public:
     SettingsDialog(QWidget *parent, Latte::Corona *corona);
     ~SettingsDialog();
 
+    Types::LatteConfigPage currentPage();
+
     void toggleCurrentPage();
     void setCurrentPage(int page);
 
@@ -72,6 +74,10 @@ public:
     void requestColorsDialog(int row);
 
     void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0);
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
 
 private slots:
     // auto connections

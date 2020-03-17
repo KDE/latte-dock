@@ -250,6 +250,13 @@ SettingsDialog::~SettingsDialog()
     m_corona->universalSettings()->setLayoutsWindowSize(size());
 }
 
+Types::LatteConfigPage SettingsDialog::currentPage()
+{
+    Types::LatteConfigPage cPage= static_cast<Types::LatteConfigPage>(ui->tabWidget->currentIndex());
+
+    return cPage;
+}
+
 void SettingsDialog::toggleCurrentPage()
 {
     if (ui->tabWidget->currentIndex() == 0) {
@@ -318,6 +325,26 @@ void SettingsDialog::on_downloadButton_clicked()
 
 void SettingsDialog::on_removeButton_clicked()
 {
+    if (!m_layoutsController->hasSelectedLayout()) {
+        return;
+    }
+
+    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
+
+    if (selectedLayout.isActive) {
+        showInlineMessage(i18nc("settings: active layout remove","Active layouts can not be removed..."),
+                          KMessageWidget::Error,
+                          SettingsDialog::WARNINGINTERVAL);
+        return;
+    }
+
+    if (selectedLayout.isLocked) {
+        showInlineMessage(i18nc("settings: locked layout remove","Locked layouts can not be removed..."),
+                          KMessageWidget::Error,
+                          SettingsDialog::WARNINGINTERVAL);
+        return;
+    }
+
     qDebug() << Q_FUNC_INFO;
 
     m_layoutsController->removeSelected();
@@ -778,11 +805,11 @@ void SettingsDialog::updatePerLayoutButtonsState()
     }
 
     //! Remove Layout Button
-    if (selectedLayout.isActive || selectedLayout.isLocked) {
+   /* if (selectedLayout.isActive || selectedLayout.isLocked) {
         ui->removeButton->setEnabled(false);
     } else {
         ui->removeButton->setEnabled(true);
-    }
+    }*/
 
     //! Layout Locked Button
     if (selectedLayout.isLocked) {
@@ -848,6 +875,29 @@ void SettingsDialog::showScreensInformation()
     msg->setText(m_corona->screenPool()->reportHtml(assignedScreens));
 
     msg->open();*/
+}
+
+void SettingsDialog::keyPressEvent(QKeyEvent *event)
+{
+    if (event && event->key() == Qt::Key_Escape) {
+        if (ui->messageWidget->isVisible()) {
+            m_hideInlineMessageTimer.stop();
+            ui->messageWidget->animatedHide();
+            ui->messageWidget->removeAction(m_openUrlAction);
+            return;
+        }
+    }
+
+    QDialog::keyPressEvent(event);
+}
+
+void SettingsDialog::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event && event->key() == Qt::Key_Delete && currentPage() == Types::LayoutPage){
+        on_removeButton_clicked();
+    }
+
+    QDialog::keyReleaseEvent(event);
 }
 
 void SettingsDialog::updateWindowActivities()

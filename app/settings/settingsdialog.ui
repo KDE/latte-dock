@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>941</width>
-    <height>703</height>
+    <height>727</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -113,6 +113,9 @@
              <property name="showGrid">
               <bool>false</bool>
              </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
              <attribute name="horizontalHeaderVisible">
               <bool>true</bool>
              </attribute>
@@ -123,7 +126,7 @@
               <bool>false</bool>
              </attribute>
              <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-              <bool>false</bool>
+              <bool>true</bool>
              </attribute>
              <attribute name="verticalHeaderVisible">
               <bool>false</bool>
