@@ -145,11 +145,14 @@
                  <string>Switch to selected layout</string>
                 </property>
                 <property name="text">
-                 <string comment="switch to layout">Switch</string>
+                 <string comment="switch to layout">&amp;Switch</string>
                 </property>
                 <property name="icon">
                  <iconset theme="user-identity">
                   <normaloff>.</normaloff>.</iconset>
+                </property>
+                <property name="shortcut">
+                 <string>Ctrl+Tab</string>
                 </property>
                </widget>
               </item>
@@ -159,11 +162,14 @@
                  <string>Pause all activities from the selected layout</string>
                 </property>
                 <property name="text">
-                 <string>Pause</string>
+                 <string>&amp;Pause</string>
                 </property>
                 <property name="icon">
                  <iconset theme="media-playback-pause">
                   <normaloff>.</normaloff>.</iconset>
+                </property>
+                <property name="shortcut">
+                 <string>Ctrl+P</string>
                 </property>
                </widget>
               </item>
@@ -218,11 +224,14 @@
                  <string>New layout</string>
                 </property>
                 <property name="text">
-                 <string comment="new layout">New</string>
+                 <string comment="new layout">&amp;New</string>
                 </property>
                 <property name="icon">
                  <iconset theme="add">
                   <normaloff>.</normaloff>.</iconset>
+                </property>
+                <property name="shortcut">
+                 <string>Ctrl+N</string>
                 </property>
                </widget>
               </item>
@@ -232,11 +241,14 @@
                  <string>Copy selected layout</string>
                 </property>
                 <property name="text">
-                 <string comment="copy layout">Copy</string>
+                 <string comment="copy layout">&amp;Copy</string>
                 </property>
                 <property name="icon">
                  <iconset theme="edit-copy">
                   <normaloff>.</normaloff>.</iconset>
+                </property>
+                <property name="shortcut">
+                 <string>Ctrl+C</string>
                 </property>
                 <property name="flat">
                  <bool>false</bool>
@@ -279,11 +291,14 @@
                  <string>Lock layout and make it read-only</string>
                 </property>
                 <property name="text">
-                 <string comment="locked layout">Locked</string>
+                 <string comment="locked layout">&amp;Locked</string>
                 </property>
                 <property name="icon">
                  <iconset theme="object-locked">
                   <normaloff>.</normaloff>.</iconset>
+                </property>
+                <property name="shortcut">
+                 <string>Meta+Shift+L</string>
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
@@ -296,11 +311,14 @@
                  <string>Share that layout with other central layouts</string>
                 </property>
                 <property name="text">
-                 <string>Shared</string>
+                 <string>Sha&amp;red</string>
                 </property>
                 <property name="icon">
                  <iconset theme="document-share">
                   <normaloff>.</normaloff>.</iconset>
+                </property>
+                <property name="shortcut">
+                 <string>Ctrl+R</string>
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
@@ -373,11 +391,14 @@
                  <string>Import a layout or full configuration file</string>
                 </property>
                 <property name="text">
-                 <string comment="import layout">Import</string>
+                 <string comment="import layout">&amp;Import</string>
                 </property>
                 <property name="icon">
                  <iconset theme="document-import">
                   <normaloff>.</normaloff>.</iconset>
+                </property>
+                <property name="shortcut">
+                 <string/>
                 </property>
                 <property name="default">
                  <bool>false</bool>
@@ -390,11 +411,17 @@
                  <string>Export selected layout or full configuration into a file</string>
                 </property>
                 <property name="text">
-                 <string comment="export layout">Export</string>
+                 <string comment="export layout">E&amp;xport</string>
                 </property>
                 <property name="icon">
                  <iconset theme="document-export">
                   <normaloff>.</normaloff>.</iconset>
+                </property>
+                <property name="shortcut">
+                 <string>Ctrl+Shift+X</string>
+                </property>
+                <property name="default">
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -404,11 +431,14 @@
                  <string>Download community layouts from the Internet</string>
                 </property>
                 <property name="text">
-                 <string comment="download layout">Download</string>
+                 <string comment="download layout">Do&amp;wnload</string>
                 </property>
                 <property name="icon">
                  <iconset theme="get-hot-new-stuff">
                   <normaloff>.</normaloff>.</iconset>
+                </property>
+                <property name="shortcut">
+                 <string>Ctrl+Shift+D</string>
                 </property>
                </widget>
               </item>
@@ -470,8 +500,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>890</width>
-            <height>662</height>
+            <width>885</width>
+            <height>613</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">

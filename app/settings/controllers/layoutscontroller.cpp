@@ -274,7 +274,7 @@ void Layouts::removeSelected()
 
 void Layouts::toggleLockedForSelected()
 {
-    if (m_view->currentIndex().row() < 0) {
+    if (!hasSelectedLayout()) {
         return;
     }
 
@@ -285,7 +285,7 @@ void Layouts::toggleLockedForSelected()
 
 void Layouts::toggleSharedForSelected()
 {  
-    if (m_view->currentIndex().row() < 0) {
+    if (!hasSelectedLayout()) {
         return;
     }
 

@@ -126,7 +126,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     QAction *screensAction = fileMenu->addAction(i18n("Sc&reens..."));
     screensAction->setIcon(QIcon::fromTheme("document-properties"));
-    screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+    //screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
 
     QAction *quitAction = fileMenu->addAction(i18n("&Quit Latte"));
     quitAction->setIcon(QIcon::fromTheme("application-exit"));
@@ -134,8 +134,12 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     m_editLayoutAction = layoutMenu->addAction(i18nc("edit layout","&Edit..."));
     m_editLayoutAction->setIcon(QIcon::fromTheme("document-edit"));
-    m_editLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+    //m_editLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
     m_editLayoutAction->setToolTip("You can edit layout file when layout is not active or locked");
+    m_editLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+
+    ui->buttonBox->button(QDialogButtonBox::Apply)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
+    ui->buttonBox->button(QDialogButtonBox::Reset)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
 
     m_openUrlAction = new QAction(i18n("Open Location..."), this);
     connect(m_openUrlAction, &QAction::triggered, this, [&]() {
@@ -148,7 +152,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     QAction *infoLayoutAction = layoutMenu->addAction(i18nc("layout information","&Information..."));
     infoLayoutAction->setIcon(QIcon::fromTheme("document-properties"));
-    infoLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
+    //infoLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
 
     //! RTL support for labels in preferences
     if (qApp->layoutDirection() == Qt::RightToLeft) {
@@ -376,7 +380,6 @@ void SettingsDialog::on_importButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
 
-
     QFileDialog *importFileDialog = new QFileDialog(this, i18nc("import layout/configuration", "Import Layout/Configuration")
                                               , QDir::homePath()
                                               , QStringLiteral("layout.latte"));
@@ -465,7 +468,7 @@ void SettingsDialog::on_importButton_clicked()
 
 void SettingsDialog::on_exportButton_clicked()
 {
-    if (ui->layoutsView->currentIndex().row() < 0) {
+    if (!m_layoutsController->hasSelectedLayout()) {
         return;
     }
 
@@ -597,6 +600,10 @@ void SettingsDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
 
+    if (!ui->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
+        return;
+    }
+
     saveAllChanges();
 
     updateApplyButtonsState();
@@ -605,6 +612,12 @@ void SettingsDialog::apply()
 
 void SettingsDialog::reset()
 {
+    qDebug() << Q_FUNC_INFO;
+
+    if (!ui->buttonBox->button(QDialogButtonBox::Reset)->isEnabled()) {
+        return;
+    }
+
     if (ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
         m_layoutsController->reset();
     }
