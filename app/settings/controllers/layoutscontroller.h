@@ -38,6 +38,7 @@
 namespace Latte {
 class Corona;
 class CentralLayout;
+class SettingsDialog;
 }
 
 namespace Latte {
@@ -49,7 +50,7 @@ class Layouts : public QObject
     Q_OBJECT
 
 public:
-    explicit Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view);
+    explicit Layouts(Latte::SettingsDialog *parent, Latte::Corona *corona, QTableView *view);
     ~Layouts();
 
     QAbstractItemModel *model() const;
@@ -100,7 +101,7 @@ private:
     QString uniqueLayoutName(QString name);
 
 private:
-    QDialog *m_parentDialog{nullptr};
+    Latte::SettingsDialog *m_parentDialog{nullptr};
     Latte::Corona *m_corona{nullptr};
     QTableView *m_view{nullptr};
     Settings::Layouts::HeaderView *m_headerView{nullptr};

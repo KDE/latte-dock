@@ -1186,6 +1186,9 @@ This tracker is used in order to not lose any screen related update.</string>
     </widget>
    </item>
    <item>
+    <widget class="KMessageWidget" name="messageWidget"/>
+   </item>
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1197,6 +1200,13 @@ This tracker is used in order to not lose any screen related update.</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KMessageWidget</class>
+   <extends>QFrame</extends>
+   <header>kmessagewidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

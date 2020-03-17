@@ -21,6 +21,7 @@
 #include "layoutscontroller.h"
 
 // local
+#include "../settingsdialog.h"
 #include "../universalsettings.h"
 #include "../delegates/activitiesdelegate.h"
 #include "../delegates/backgroundcmbdelegate.h"
@@ -49,6 +50,7 @@
 #include <KArchive/KTar>
 #include <KArchive/KArchiveEntry>
 #include <KArchive/KArchiveDirectory>
+#include <KMessageWidget>
 #include <KNotification>
 
 
@@ -56,7 +58,7 @@ namespace Latte {
 namespace Settings {
 namespace Controller {
 
-Layouts::Layouts(QDialog *parent, Latte::Corona *corona, QTableView *view)
+Layouts::Layouts(Latte::SettingsDialog *parent, Latte::Corona *corona, QTableView *view)
     : QObject(parent),
       m_parentDialog(parent),
       m_corona(corona),
@@ -847,7 +849,7 @@ void Layouts::saveColumnWidths()
 void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &trialId)
 {
     //! duplicated layout name
-    auto msg = new QMessageBox(m_parentDialog);
+    /*auto msg = new QMessageBox(m_parentDialog);
     msg->setIcon(QMessageBox::Warning);
     msg->setWindowTitle(i18n("Layout Warning"));
     msg->setText(i18n("There are layouts with the same name, that is not permitted!!! Please update these names to re-apply the changes..."));
@@ -874,7 +876,33 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
     });
 
 
-    msg->open();
+    msg->open();*/
+
+    int pRow = rowForId(provenId);
+    int tRow = rowForId(trialId);
+
+    if (pRow >= 0) {
+        QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::ClearAndSelect;
+        QItemSelection rowSelection;
+
+        QModelIndex pIndexS = m_proxyModel->index(pRow, Model::Layouts::BACKGROUNDCOLUMN);
+        QModelIndex pIndexE = m_proxyModel->index(pRow, Model::Layouts::SHAREDCOLUMN);
+
+        rowSelection.select(pIndexS, pIndexE);
+
+        m_view->selectionModel()->select(rowSelection, flags);
+    }
+
+    m_parentDialog->showInlineMessage(i18n("Layouts with same name are not permitted! Please provide unique names to proceed..."), KMessageWidget::Error, 4000);
+
+    QModelIndex tIndex = m_proxyModel->index(tRow, Model::Layouts::NAMECOLUMN);
+
+    //! avoid losing focuse
+    QTimer::singleShot(0, [this, tIndex]() {
+        m_view->edit(tIndex);
+    });
+
+
 }
 
 }

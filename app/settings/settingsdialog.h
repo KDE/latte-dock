@@ -36,6 +36,7 @@
 
 // KDE
 #include <KHelpMenu>
+#include <KMessageWidget>
 
 namespace Ui {
 class SettingsDialog;
@@ -64,6 +65,8 @@ public:
 
     void requestImagesDialog(int row);
     void requestColorsDialog(int row);
+
+    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0);
 
 private slots:
     // auto connections
@@ -111,6 +114,8 @@ private:
 
     //! workaround to assign ALLACTIVITIES during startup
     QTimer m_activitiesTimer;
+    //! Timer to hide the inline message widget
+    QTimer m_hideInlineMessageTimer;
 
     //! original data
     QList<int> o_settingsOriginalData;

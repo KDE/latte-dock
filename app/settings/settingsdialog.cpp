@@ -95,6 +95,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     ui->screenTrackerSpinBox->setValue(m_corona->universalSettings()->screenTrackerInterval());
     ui->outlineSpinBox->setValue(m_corona->themeExtended()->outlineWidth());
+    ui->messageWidget->setVisible(false);
 
     //! About Menu
     QMenuBar *menuBar = new QMenuBar(this);
@@ -216,6 +217,12 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     m_activitiesTimer.setInterval(750);
     connect(&m_activitiesTimer, &QTimer::timeout, this, &SettingsDialog::updateWindowActivities);
     m_activitiesTimer.start();
+
+    m_hideInlineMessageTimer.setSingleShot(true);
+    m_hideInlineMessageTimer.setInterval(2000);
+    connect(&m_hideInlineMessageTimer, &QTimer::timeout, this, [&]() {
+        ui->messageWidget->animatedHide();
+    });
 }
 
 SettingsDialog::~SettingsDialog()
@@ -638,6 +645,13 @@ void SettingsDialog::on_switchButton_clicked()
 {
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
 
+    bool hasChanges = (selectedLayout.nameWasEdited() || m_layoutsController->dataAreChanged());
+
+    if (hasChanges) {
+        showInlineMessage(i18n("You need to save your changes before switching to other layout."), KMessageWidget::Warning);
+        return;
+    }
+
     if (!m_layoutsController->selectedLayoutIsCurrentActive()) {
         bool appliedShared = m_layoutsController->inMultipleMode() && selectedLayout.isShared();
         bool freeActivitiesLayoutUpdated{false};
@@ -726,9 +740,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
 
     //! Switch Button
-    if (selectedLayout.nameWasEdited()
-            || m_layoutsController->dataAreChanged()
-            || (m_layoutsController->inMultipleMode() && selectedLayout.isShared())
+    if ((m_layoutsController->inMultipleMode() && selectedLayout.isShared())
             || m_layoutsController->selectedLayoutIsCurrentActive()) {
         ui->switchButton->setEnabled(false);
     } else {
@@ -855,6 +867,37 @@ void SettingsDialog::saveAllChanges()
 
     o_settingsOriginalData = currentSettings();
     m_layoutsController->save();
+}
+
+void SettingsDialog::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval)
+{
+    if (msg.isEmpty()) {
+        return;
+    }
+
+    m_hideInlineMessageTimer.stop();
+
+    if (ui->messageWidget->isVisible()) {
+        ui->messageWidget->animatedHide();
+    }
+
+    ui->messageWidget->setText(msg);
+
+    // TODO: wrap at arbitrary character positions once QLabel can do this
+    // https://bugreports.qt.io/browse/QTBUG-1276
+    ui->messageWidget->setWordWrap(true);
+    ui->messageWidget->setMessageType(type);
+    ui->messageWidget->setWordWrap(false);
+
+    const int unwrappedWidth = ui->messageWidget->sizeHint().width();
+    ui->messageWidget->setWordWrap(unwrappedWidth > size().width());
+
+    ui->messageWidget->animatedShow();
+
+    if (hideInterval > 0) {
+        m_hideInlineMessageTimer.setInterval(hideInterval);
+        m_hideInlineMessageTimer.start();
+    }
 }
 
 }//end of namespace
