@@ -52,6 +52,10 @@
 #include <KNewStuff3/KNS3/DownloadDialog>
 
 
+#define TWINENABLED "Enabled"
+#define TWINVISIBLE "Visible"
+#define TWINCHECKED "Checked"
+
 namespace Latte {
 
 const int SCREENTRACKERDEFAULTVALUE = 2500;
@@ -101,42 +105,9 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     ui->outlineSpinBox->setValue(m_corona->themeExtended()->outlineWidth());
     ui->messageWidget->setVisible(false);
 
-    //! About Menu
-    QMenuBar *menuBar = new QMenuBar(this);
-    // QMenuBar *rightAlignedMenuBar = new QMenuBar(menuBar);
+    //! Global Menu
+    initGlobalMenu();
 
-    layout()->setMenuBar(menuBar);
-    //menuBar->setCornerWidget(rightAlignedMenuBar);
-
-    QMenu *fileMenu = new QMenu(i18n("File"), menuBar);
-    menuBar->addMenu(fileMenu);
-
-    QMenu *layoutMenu = new QMenu(i18n("Layout"), menuBar);
-    menuBar->addMenu(layoutMenu);
-
-    //! Help menu
-    m_helpMenu = new KHelpMenu(menuBar);
-    menuBar->addMenu(m_helpMenu->menu());
-    //rightAlignedMenuBar->addMenu(helpMenu);
-
-    //! hide help menu actions that are not used
-    m_helpMenu->action(KHelpMenu::menuHelpContents)->setVisible(false);
-    m_helpMenu->action(KHelpMenu::menuWhatsThis)->setVisible(false);
-
-
-    QAction *screensAction = fileMenu->addAction(i18n("Sc&reens..."));
-    screensAction->setIcon(QIcon::fromTheme("document-properties"));
-    //screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
-
-    QAction *quitAction = fileMenu->addAction(i18n("&Quit Latte"));
-    quitAction->setIcon(QIcon::fromTheme("application-exit"));
-    quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
-
-    m_editLayoutAction = layoutMenu->addAction(i18nc("edit layout","&Edit..."));
-    m_editLayoutAction->setIcon(QIcon::fromTheme("document-edit"));
-    //m_editLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
-    m_editLayoutAction->setToolTip("You can edit layout file when layout is not active or locked");
-    m_editLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
 
     ui->buttonBox->button(QDialogButtonBox::Apply)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
     ui->buttonBox->button(QDialogButtonBox::Reset)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
@@ -150,9 +121,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         }
     });
 
-    QAction *infoLayoutAction = layoutMenu->addAction(i18nc("layout information","&Information..."));
-    infoLayoutAction->setIcon(QIcon::fromTheme("document-properties"));
-    //infoLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
 
     //! RTL support for labels in preferences
     if (qApp->layoutDirection() == Qt::RightToLeft) {
@@ -200,7 +168,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     connect(ui->metaPressChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->metaPressHoldChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->infoWindowChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
-    connect(ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::on_currentPageChanged);
 
     connect(ui->noBordersForMaximizedChkBox, &QCheckBox::stateChanged, this, [&]() {
         bool noBordersForMaximized = ui->noBordersForMaximizedChkBox->isChecked();
@@ -213,22 +181,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
         updateApplyButtonsState();
     });
-
-    connect(quitAction, &QAction::triggered, this, [&]() {
-        close();
-        m_corona->quitApplication();
-    });
-
-    connect(m_editLayoutAction, &QAction::triggered, this, [&]() {
-        QString file = m_layoutsController->selectedLayout().id;
-
-        if (!file.isEmpty()) {
-            QProcess::startDetached("kwrite \"" + file + "\"");
-        }
-    });
-
-    connect(infoLayoutAction, &QAction::triggered, this, &SettingsDialog::showLayoutInformation);
-    connect(screensAction, &QAction::triggered, this, &SettingsDialog::showScreensInformation);
 
     m_activitiesTimer.setSingleShot(true);
     m_activitiesTimer.setInterval(750);
@@ -254,6 +206,173 @@ SettingsDialog::~SettingsDialog()
     m_corona->universalSettings()->setLayoutsWindowSize(size());
 }
 
+void SettingsDialog::initGlobalMenu()
+{
+    m_globalMenuBar = new QMenuBar(this);
+
+    layout()->setMenuBar(m_globalMenuBar);
+
+    m_fileMenu = new QMenu(i18n("File"), m_globalMenuBar);
+    m_globalMenuBar->addMenu(m_fileMenu);
+
+    m_layoutMenu = new QMenu(i18n("Layout"), m_globalMenuBar);
+    m_globalMenuBar->addMenu(m_layoutMenu);
+
+    m_helpMenu = new KHelpMenu(m_globalMenuBar);
+    m_globalMenuBar->addMenu(m_helpMenu->menu());
+
+    initFileMenu();
+    initLayoutMenu();
+    initHelpMenu();
+}
+
+void SettingsDialog::initLayoutMenu()
+{
+    if (!m_layoutMenu) {
+        return;
+    }
+
+    m_switchLayoutAction = m_layoutMenu->addAction(i18nc("switch layout","Switch"));
+    m_switchLayoutAction->setToolTip(i18n("Switch to selected layout"));
+    m_switchLayoutAction->setIcon(QIcon::fromTheme("user-identity"));
+    m_switchLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Tab));
+    twinActionWithButton(ui->switchButton, m_switchLayoutAction);
+    connect(m_switchLayoutAction, &QAction::triggered, this, &SettingsDialog::on_switch_layout);
+
+    m_pauseLayoutAction = m_layoutMenu->addAction(i18nc("pause layout", "&Pause"));
+    m_pauseLayoutAction->setToolTip(i18n("Switch to selected layout"));
+    m_pauseLayoutAction->setIcon(QIcon::fromTheme("media-playback-pause"));
+    m_pauseLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_P));
+    twinActionWithButton(ui->pauseButton, m_pauseLayoutAction);
+    connect(m_pauseLayoutAction, &QAction::triggered, this, &SettingsDialog::on_pause_layout);
+
+    m_layoutMenu->addSeparator();
+
+    m_newLayoutAction = m_layoutMenu->addAction(i18nc("new layout", "&New"));
+    m_newLayoutAction->setToolTip(i18n("New layout"));
+    m_newLayoutAction->setIcon(QIcon::fromTheme("add"));
+    m_newLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
+    twinActionWithButton(ui->newButton, m_newLayoutAction);
+    connect(m_newLayoutAction, &QAction::triggered, this, &SettingsDialog::on_new_layout);
+
+    m_copyLayoutAction = m_layoutMenu->addAction(i18nc("copy layout", "&Copy"));
+    m_copyLayoutAction->setToolTip(i18n("Copy selected layout"));
+    m_copyLayoutAction->setIcon(QIcon::fromTheme("edit-copy"));
+    m_copyLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+    twinActionWithButton(ui->copyButton, m_copyLayoutAction);
+    connect(m_copyLayoutAction, &QAction::triggered, this, &SettingsDialog::on_copy_layout);
+
+    m_removeLayoutAction = m_layoutMenu->addAction(i18nc("remove layout", "Remove"));
+    m_removeLayoutAction->setToolTip(i18n("Remove selected layout"));
+    m_removeLayoutAction->setIcon(QIcon::fromTheme("delete"));
+    m_removeLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
+    twinActionWithButton(ui->removeButton, m_removeLayoutAction);
+    connect(m_removeLayoutAction, &QAction::triggered, this, &SettingsDialog::on_remove_layout);
+
+    m_layoutMenu->addSeparator();
+
+    m_lockedLayoutAction = m_layoutMenu->addAction(i18nc("locked layout", "&Locked"));
+    m_lockedLayoutAction->setToolTip(i18n("Lock/Unlock selected layout and make it read-only"));
+    m_lockedLayoutAction->setIcon(QIcon::fromTheme("object-locked"));
+    m_lockedLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
+    m_lockedLayoutAction->setCheckable(true);
+    twinActionWithButton(ui->lockedButton, m_lockedLayoutAction);
+    connect(m_lockedLayoutAction, &QAction::triggered, this, &SettingsDialog::on_locked_layout);
+
+    m_sharedLayoutAction = m_layoutMenu->addAction(i18nc("shared layout", "Sha&red"));
+    m_sharedLayoutAction->setToolTip(i18n("Share selected layout with other central layouts"));
+    m_sharedLayoutAction->setIcon(QIcon::fromTheme("document-share"));
+    m_sharedLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+    m_sharedLayoutAction->setCheckable(true);
+    twinActionWithButton(ui->sharedButton, m_sharedLayoutAction);
+    connect(m_sharedLayoutAction, &QAction::triggered, this, &SettingsDialog::on_shared_layout);
+
+    m_layoutMenu->addSeparator();
+
+    m_importLayoutAction = m_layoutMenu->addAction(i18nc("import layout", "&Import..."));
+    m_importLayoutAction->setToolTip(i18n("Import layout file from your system"));
+    m_importLayoutAction->setIcon(QIcon::fromTheme("document-import"));
+    m_importLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_I));
+    twinActionWithButton(ui->importButton, m_importLayoutAction);
+    connect(m_importLayoutAction, &QAction::triggered, this, &SettingsDialog::on_import_layout);
+
+    m_exportLayoutAction = m_layoutMenu->addAction(i18nc("export layout", "&Export..."));
+    m_exportLayoutAction->setToolTip(i18n("Export selected layout at your system"));
+    m_exportLayoutAction->setIcon(QIcon::fromTheme("document-export"));
+    m_exportLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_E));
+    twinActionWithButton(ui->exportButton, m_exportLayoutAction);
+    connect(m_exportLayoutAction, &QAction::triggered, this, &SettingsDialog::on_export_layout);
+
+    m_downloadLayoutAction = m_layoutMenu->addAction(i18nc("download layout", "&Download..."));
+    m_downloadLayoutAction->setToolTip(i18n("Download community layouts from KDE Store"));
+    m_downloadLayoutAction->setIcon(QIcon::fromTheme("get-hot-new-stuff"));
+    m_downloadLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_D));
+    twinActionWithButton(ui->downloadButton, m_downloadLayoutAction);
+    connect(m_downloadLayoutAction, &QAction::triggered, this, &SettingsDialog::on_download_layout);
+}
+
+void SettingsDialog::initFileMenu()
+{
+    if (!m_fileMenu) {
+        return;
+    }
+
+    QAction *screensAction = m_fileMenu->addAction(i18n("Sc&reens..."));
+    screensAction->setIcon(QIcon::fromTheme("document-properties"));
+    //screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+
+    QAction *quitAction = m_fileMenu->addAction(i18n("&Quit Latte"));
+    quitAction->setIcon(QIcon::fromTheme("application-exit"));
+    quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+
+
+    //! triggers
+    connect(quitAction, &QAction::triggered, this, [&]() {
+        close();
+        m_corona->quitApplication();
+    });
+
+}
+
+void SettingsDialog::initHelpMenu()
+{
+    //! hide help menu actions that are not used
+    m_helpMenu->action(KHelpMenu::menuHelpContents)->setVisible(false);
+    m_helpMenu->action(KHelpMenu::menuWhatsThis)->setVisible(false);
+}
+
+void SettingsDialog::twinActionWithButton(QPushButton *button, QAction *action)
+{
+    button->setText(action->text());
+    button->setToolTip(action->toolTip());
+    button->setWhatsThis(action->whatsThis());
+    button->setIcon(action->icon());
+    button->setCheckable(action->isCheckable());
+    button->setChecked(action->isChecked());
+
+    m_twinActions[action] = button;
+
+    connect(button, &QPushButton::clicked, action, &QAction::trigger);
+}
+
+void SettingsDialog::setTwinProperty(QAction *action, const QString &property, QVariant value)
+{
+    if (!m_twinActions.contains(action)) {
+        return;
+    }
+
+    if (property == TWINVISIBLE) {
+        action->setVisible(value.toBool());
+        m_twinActions[action]->setVisible(value.toBool());
+    } else if (property == TWINENABLED) {
+        action->setEnabled(value.toBool());
+        m_twinActions[action]->setEnabled(value.toBool());
+    } else if (property == TWINCHECKED) {
+        action->setChecked(value.toBool());
+        m_twinActions[action]->setChecked(value.toBool());
+    }
+}
+
 Types::LatteConfigPage SettingsDialog::currentPage()
 {
     Types::LatteConfigPage cPage= static_cast<Types::LatteConfigPage>(ui->tabWidget->currentIndex());
@@ -275,9 +394,29 @@ void SettingsDialog::setCurrentPage(int page)
     ui->tabWidget->setCurrentIndex(page);
 }
 
-void SettingsDialog::on_newButton_clicked()
+void SettingsDialog::on_currentPageChanged(int page)
+{
+    Types::LatteConfigPage cPage= static_cast<Types::LatteConfigPage>(page);
+
+    if (cPage == Types::LayoutPage) {
+        m_layoutMenu->setEnabled(true);
+        m_layoutMenu->menuAction()->setVisible(true);
+
+    } else {
+        m_layoutMenu->menuAction()->setVisible(false);
+        m_layoutMenu->setEnabled(false);
+    }
+
+    updateApplyButtonsState();
+}
+
+void SettingsDialog::on_new_layout()
 {
     qDebug() << Q_FUNC_INFO;
+
+    if (!m_layoutMenu->isEnabled() || !m_newLayoutAction->isEnabled() || currentPage() != Types::LayoutPage) {
+        return;
+    }
 
     //! find Default preset path
     for (const auto &preset : m_corona->layoutsManager()->presetsPaths()) {
@@ -293,16 +432,24 @@ void SettingsDialog::on_newButton_clicked()
     }
 }
 
-void SettingsDialog::on_copyButton_clicked()
+void SettingsDialog::on_copy_layout()
 {
     qDebug() << Q_FUNC_INFO;
+
+    if (!m_layoutMenu->isEnabled() || !m_copyLayoutAction->isEnabled() || currentPage() != Types::LayoutPage) {
+        return;
+    }
 
     m_layoutsController->copySelectedLayout();
 }
 
-void SettingsDialog::on_downloadButton_clicked()
+void SettingsDialog::on_download_layout()
 {
     qDebug() << Q_FUNC_INFO;
+
+    if (!m_layoutMenu->isEnabled() || !m_downloadLayoutAction->isEnabled() || currentPage() != Types::LayoutPage) {
+        return;
+    }
 
     KNS3::DownloadDialog dialog(QStringLiteral("latte-layouts.knsrc"), this);
     dialog.resize(m_corona->universalSettings()->downloadWindowSize());
@@ -327,8 +474,14 @@ void SettingsDialog::on_downloadButton_clicked()
     m_corona->universalSettings()->setDownloadWindowSize(dialog.size());
 }
 
-void SettingsDialog::on_removeButton_clicked()
+void SettingsDialog::on_remove_layout()
 {
+    qDebug() << Q_FUNC_INFO;
+
+    if (!m_layoutMenu->isEnabled() || !m_removeLayoutAction->isEnabled() || currentPage() != Types::LayoutPage) {
+        return;
+    }
+
     if (!m_layoutsController->hasSelectedLayout()) {
         return;
     }
@@ -356,9 +509,13 @@ void SettingsDialog::on_removeButton_clicked()
     updateApplyButtonsState();
 }
 
-void SettingsDialog::on_lockedButton_clicked()
+void SettingsDialog::on_locked_layout()
 {
     qDebug() << Q_FUNC_INFO;
+
+    if (!m_layoutMenu->isEnabled() || !m_lockedLayoutAction->isEnabled() || currentPage() != Types::LayoutPage) {
+        return;
+    }
 
     m_layoutsController->toggleLockedForSelected();
 
@@ -366,9 +523,13 @@ void SettingsDialog::on_lockedButton_clicked()
     updateApplyButtonsState();
 }
 
-void SettingsDialog::on_sharedButton_clicked()
+void SettingsDialog::on_shared_layout()
 {
     qDebug() << Q_FUNC_INFO;
+
+    if (!m_layoutMenu->isEnabled() || !m_sharedLayoutAction->isEnabled() || currentPage() != Types::LayoutPage) {
+        return;
+    }
 
     m_layoutsController->toggleSharedForSelected();
 
@@ -376,13 +537,17 @@ void SettingsDialog::on_sharedButton_clicked()
     updateApplyButtonsState();
 }
 
-void SettingsDialog::on_importButton_clicked()
+void SettingsDialog::on_import_layout()
 {
     qDebug() << Q_FUNC_INFO;
 
+    if (!m_layoutMenu->isEnabled() || !m_importLayoutAction->isEnabled() || currentPage() != Types::LayoutPage) {
+        return;
+    }
+
     QFileDialog *importFileDialog = new QFileDialog(this, i18nc("import layout/configuration", "Import Layout/Configuration")
-                                              , QDir::homePath()
-                                              , QStringLiteral("layout.latte"));
+                                                    , QDir::homePath()
+                                                    , QStringLiteral("layout.latte"));
 
     importFileDialog->setWindowIcon(QIcon::fromTheme("favorites"));
     importFileDialog->setLabelText(QFileDialog::Accept, i18nc("import layout","Import"));
@@ -466,8 +631,14 @@ void SettingsDialog::on_importButton_clicked()
     importFileDialog->open();
 }
 
-void SettingsDialog::on_exportButton_clicked()
+void SettingsDialog::on_export_layout()
 {
+    qDebug() << Q_FUNC_INFO;
+
+    if (!m_layoutMenu->isEnabled() || !m_exportLayoutAction->isEnabled() || currentPage() != Types::LayoutPage) {
+        return;
+    }
+
     if (!m_layoutsController->hasSelectedLayout()) {
         return;
     }
@@ -481,7 +652,7 @@ void SettingsDialog::on_exportButton_clicked()
     m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
 
     QFileDialog *exportFileDialog = new QFileDialog(this, i18nc("export layout/configuration", "Export Layout/Configuration")
-                                              , QDir::homePath(), QStringLiteral("layout.latte"));
+                                                    , QDir::homePath(), QStringLiteral("layout.latte"));
 
     exportFileDialog->setLabelText(QFileDialog::Accept, i18nc("export layout","Export"));
     exportFileDialog->setFileMode(QFileDialog::AnyFile);
@@ -693,8 +864,12 @@ QList<int> SettingsDialog::currentSettings()
     return settings;
 }
 
-void SettingsDialog::on_switchButton_clicked()
+void SettingsDialog::on_switch_layout()
 {
+    if (!m_layoutMenu->isEnabled() || !m_switchLayoutAction->isEnabled() || currentPage() != Types::LayoutPage) {
+        return;
+    }
+
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
 
     bool hasChanges = (selectedLayout.nameWasEdited() || m_layoutsController->dataAreChanged());
@@ -737,9 +912,15 @@ void SettingsDialog::on_switchButton_clicked()
     updatePerLayoutButtonsState();
 }
 
-void SettingsDialog::on_pauseButton_clicked()
+void SettingsDialog::on_pause_layout()
 {
-    ui->pauseButton->setEnabled(false);
+    qDebug() << Q_FUNC_INFO;
+
+    if (!m_layoutMenu->isEnabled() || !m_pauseLayoutAction->isEnabled() || currentPage() != Types::LayoutPage) {
+        return;
+    }
+
+    setTwinProperty(m_pauseLayoutAction, TWINENABLED, false);
 
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
     m_corona->layoutsManager()->synchronizer()->pauseLayout(selectedLayout.originalName());
@@ -796,29 +977,29 @@ void SettingsDialog::updatePerLayoutButtonsState()
     //! Switch Button
     if ((m_layoutsController->inMultipleMode() && selectedLayout.isShared())
             || m_layoutsController->selectedLayoutIsCurrentActive()) {
-        ui->switchButton->setEnabled(false);
+        setTwinProperty(m_switchLayoutAction, TWINENABLED, false);
     } else {
-        ui->switchButton->setEnabled(true);
+        setTwinProperty(m_switchLayoutAction, TWINENABLED, true);
     }
 
     //! Pause Button
     if (!m_layoutsController->inMultipleMode()) {
         //! Single Layout mode
-        ui->pauseButton->setVisible(false);
+        setTwinProperty(m_pauseLayoutAction, TWINVISIBLE, false);
     } else {
-        ui->pauseButton->setVisible(true);
+        setTwinProperty(m_pauseLayoutAction, TWINVISIBLE, true);
 
         if (selectedLayout.isActive
                 && !selectedLayout.isForFreeActivities()
                 && !selectedLayout.isShared()) {
-            ui->pauseButton->setEnabled(true);
+            setTwinProperty(m_pauseLayoutAction, TWINENABLED, true);
         } else {
-            ui->pauseButton->setEnabled(false);
+            setTwinProperty(m_pauseLayoutAction, TWINENABLED, false);
         }
     }
 
     //! Remove Layout Button
-   /* if (selectedLayout.isActive || selectedLayout.isLocked) {
+    /* if (selectedLayout.isActive || selectedLayout.isLocked) {
         ui->removeButton->setEnabled(false);
     } else {
         ui->removeButton->setEnabled(true);
@@ -826,23 +1007,23 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
     //! Layout Locked Button
     if (selectedLayout.isLocked) {
-        ui->lockedButton->setChecked(true);
+        setTwinProperty(m_lockedLayoutAction, TWINCHECKED, true);
     } else {
-        ui->lockedButton->setChecked(false);
+        setTwinProperty(m_lockedLayoutAction, TWINCHECKED, false);
     }
 
     //! UI Elements that need to be enabled/disabled
     if (m_layoutsController->inMultipleMode()) {
-        ui->sharedButton->setVisible(true);
+        setTwinProperty(m_sharedLayoutAction, TWINVISIBLE, true);
     } else {
-        ui->sharedButton->setVisible(false);
+        setTwinProperty(m_sharedLayoutAction, TWINVISIBLE, false);
     }
 
     //! Layout Shared Button
     if (selectedLayout.isShared()) {
-        ui->sharedButton->setChecked(true);
+        setTwinProperty(m_sharedLayoutAction, TWINCHECKED, true);
     } else {
-        ui->sharedButton->setChecked(false);
+        setTwinProperty(m_sharedLayoutAction, TWINCHECKED, false);
     }
 }
 
@@ -907,7 +1088,7 @@ void SettingsDialog::keyPressEvent(QKeyEvent *event)
 void SettingsDialog::keyReleaseEvent(QKeyEvent *event)
 {
     if (event && event->key() == Qt::Key_Delete && currentPage() == Types::LayoutPage){
-        on_removeButton_clicked();
+        on_remove_layout();
     }
 
     QDialog::keyReleaseEvent(event);
