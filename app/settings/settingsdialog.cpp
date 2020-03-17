@@ -660,8 +660,9 @@ void SettingsDialog::on_switchButton_clicked()
     bool hasChanges = (selectedLayout.nameWasEdited() || m_layoutsController->dataAreChanged());
 
     if (hasChanges) {
-        showInlineMessage(i18nc("settings:not permitted switching layout","You need to save your changes to switch layout."),
-                          KMessageWidget::Warning);
+        showInlineMessage(i18nc("settings:not permitted switching layout","You need to save your changes to switch layout..."),
+                          KMessageWidget::Warning,
+                          WARNINGINTERVAL);
         return;
     }
 
