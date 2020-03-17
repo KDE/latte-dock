@@ -58,6 +58,7 @@ class SettingsDialog : public QDialog
     Q_OBJECT
 public:
     static const int INFORMATIONINTERVAL = 3000;
+    static const int INFORMATIONWITHACTIONINTERVAL = 5000;
     static const int WARNINGINTERVAL = 3000;
     static const int ERRORINTERVAL = 3000;
 
@@ -112,6 +113,7 @@ private:
     QButtonGroup *m_inMemoryButtons;
     QButtonGroup *m_mouseSensitivityButtons;
 
+    QAction *m_openUrlAction{nullptr};
     QAction *m_editLayoutAction{nullptr};
 
     KHelpMenu *m_helpMenu{nullptr};
@@ -123,6 +125,8 @@ private:
 
     //! original data
     QList<int> o_settingsOriginalData;
+
+
 };
 
 }

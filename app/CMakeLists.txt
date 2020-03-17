@@ -51,6 +51,7 @@ if(${KF5_VERSION_MINOR} LESS "62")
         KF5::GlobalAccel
         KF5::I18n
         KF5::IconThemes
+        KF5::KIOWidgets
         KF5::Notifications
         KF5::NewStuff
         KF5::QuickAddons
@@ -75,6 +76,7 @@ else()
         KF5::GlobalAccel
         KF5::I18n
         KF5::IconThemes
+        KF5::KIOWidgets
         KF5::Notifications
         KF5::NewStuff
         KF5::QuickAddons

@@ -45,6 +45,7 @@ Minimum requirements:
  KF5Package >= 5.38.0
  KF5XmlGui >= 5.38.0
  KF5IconThemes >= 5.38.0
+ KF5KIO >= 5.38.0
  KF5I18n >= 5.38.0
  KF5Notifications >= 5.38.0
  KF5NewStuff >= 5.38.0

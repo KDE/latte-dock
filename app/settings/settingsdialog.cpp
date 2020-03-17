@@ -38,7 +38,6 @@
 // Qt
 #include <QButtonGroup>
 #include <QColorDialog>
-#include <QDesktopServices>
 #include <QDir>
 #include <QFileDialog>
 #include <QMenuBar>
@@ -47,8 +46,8 @@
 
 // KDE
 #include <KActivities/Controller>
+#include <KIO/OpenFileManagerWindowJob>
 #include <KLocalizedString>
-#include <KNotification>
 #include <KWindowSystem>
 #include <KNewStuff3/KNS3/DownloadDialog>
 
@@ -59,6 +58,7 @@ const int SCREENTRACKERDEFAULTVALUE = 2500;
 const int OUTLINEDEFAULTWIDTH = 1;
 
 const int SettingsDialog::INFORMATIONINTERVAL;
+const int SettingsDialog::INFORMATIONWITHACTIONINTERVAL;
 const int SettingsDialog::WARNINGINTERVAL;
 const int SettingsDialog::ERRORINTERVAL;
 
@@ -136,6 +136,15 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     m_editLayoutAction->setIcon(QIcon::fromTheme("document-edit"));
     m_editLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
     m_editLayoutAction->setToolTip("You can edit layout file when layout is not active or locked");
+
+    m_openUrlAction = new QAction(i18n("Open Location..."), this);
+    connect(m_openUrlAction, &QAction::triggered, this, [&]() {
+        QString file = m_openUrlAction->data().toString();
+
+        if (!file.isEmpty()) {
+            KIO::highlightInFileManager({file});
+        }
+    });
 
     QAction *infoLayoutAction = layoutMenu->addAction(i18nc("layout information","&Information..."));
     infoLayoutAction->setIcon(QIcon::fromTheme("document-properties"));
@@ -226,6 +235,11 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     m_hideInlineMessageTimer.setInterval(2000);
     connect(&m_hideInlineMessageTimer, &QTimer::timeout, this, [&]() {
         ui->messageWidget->animatedHide();
+        ui->messageWidget->removeAction(m_openUrlAction);
+    });
+
+    connect(ui->messageWidget, &KMessageWidget::hideAnimationFinished, this, [&]() {
+        ui->messageWidget->removeAction(m_openUrlAction);
     });
 }
 
@@ -336,24 +350,24 @@ void SettingsDialog::on_importButton_clicked()
     qDebug() << Q_FUNC_INFO;
 
 
-    QFileDialog *fileDialog = new QFileDialog(this, i18nc("import layout/configuration", "Import Layout/Configuration")
+    QFileDialog *importFileDialog = new QFileDialog(this, i18nc("import layout/configuration", "Import Layout/Configuration")
                                               , QDir::homePath()
                                               , QStringLiteral("layout.latte"));
 
-    fileDialog->setFileMode(QFileDialog::AnyFile);
-    fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog->setDefaultSuffix("layout.latte");
+    importFileDialog->setWindowIcon(QIcon::fromTheme("favorites"));
+    importFileDialog->setLabelText(QFileDialog::Accept, i18nc("import layout","Import"));
+    importFileDialog->setFileMode(QFileDialog::AnyFile);
+    importFileDialog->setAcceptMode(QFileDialog::AcceptOpen);
+    importFileDialog->setDefaultSuffix("layout.latte");
 
     QStringList filters;
     filters << QString(i18nc("import latte layout", "Latte Dock Layout file v0.2") + "(*.layout.latte)")
             << QString(i18nc("import latte layouts/configuration", "Latte Dock Full Configuration file (v0.1, v0.2)") + "(*.latterc)");
-    fileDialog->setNameFilters(filters);
+    importFileDialog->setNameFilters(filters);
 
-    connect(fileDialog, &QFileDialog::finished
-            , fileDialog, &QFileDialog::deleteLater);
+    connect(importFileDialog, &QFileDialog::finished, importFileDialog, &QFileDialog::deleteLater);
 
-    connect(fileDialog, &QFileDialog::fileSelected
-            , this, [&](const QString & file) {
+    connect(importFileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
         Layouts::Importer::LatteFileVersion version = Layouts::Importer::fileVersion(file);
         qDebug() << "VERSION :::: " << version;
 
@@ -419,7 +433,7 @@ void SettingsDialog::on_importButton_clicked()
         }
     });
 
-    fileDialog->open();
+    importFileDialog->open();
 }
 
 void SettingsDialog::on_exportButton_clicked()
@@ -428,7 +442,7 @@ void SettingsDialog::on_exportButton_clicked()
         return;
     }
 
-    QString layoutExported = m_layoutsController->selectedLayout().id;
+    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
 
     //! Update ALL active original layouts before exporting,
     //! this is needed because the export method can export also the full configuration
@@ -436,12 +450,13 @@ void SettingsDialog::on_exportButton_clicked()
 
     m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
 
-    QFileDialog *fileDialog = new QFileDialog(this, i18nc("export layout/configuration", "Export Layout/Configuration")
+    QFileDialog *exportFileDialog = new QFileDialog(this, i18nc("export layout/configuration", "Export Layout/Configuration")
                                               , QDir::homePath(), QStringLiteral("layout.latte"));
 
-    fileDialog->setFileMode(QFileDialog::AnyFile);
-    fileDialog->setAcceptMode(QFileDialog::AcceptSave);
-    fileDialog->setDefaultSuffix("layout.latte");
+    exportFileDialog->setLabelText(QFileDialog::Accept, i18nc("export layout","Export"));
+    exportFileDialog->setFileMode(QFileDialog::AnyFile);
+    exportFileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    exportFileDialog->setDefaultSuffix("layout.latte");
 
     QStringList filters;
     QString filter1(i18nc("export layout", "Latte Dock Layout file v0.2") + "(*.layout.latte)");
@@ -450,27 +465,24 @@ void SettingsDialog::on_exportButton_clicked()
     filters << filter1
             << filter2;
 
-    fileDialog->setNameFilters(filters);
+    exportFileDialog->setNameFilters(filters);
 
-    connect(fileDialog, &QFileDialog::finished
-            , fileDialog, &QFileDialog::deleteLater);
+    connect(exportFileDialog, &QFileDialog::finished, exportFileDialog, &QFileDialog::deleteLater);
 
-    connect(fileDialog, &QFileDialog::fileSelected
-            , this, [ &, layoutExported](const QString & file) {
-        auto showNotificationError = []() {
-            auto notification = new KNotification("export-fail", KNotification::CloseOnTimeout);
-            notification->setText(i18nc("export layout", "Failed to export layout"));
-            notification->sendEvent();
+    connect(exportFileDialog, &QFileDialog::fileSelected, this, [ &, selectedLayout](const QString & file) {
+        auto showExportLayoutError = [this](const Settings::Data::Layout &layout) {
+            showInlineMessage(i18nc("settings:layout export fail","<b>%0</b> export failed...").arg(layout.currentName()),
+                              KMessageWidget::Error);
         };
 
         if (QFile::exists(file) && !QFile::remove(file)) {
-            showNotificationError();
+            showExportLayoutError(selectedLayout);
             return;
         }
 
         if (file.endsWith(".layout.latte")) {
-            if (!QFile(layoutExported).copy(file)) {
-                showNotificationError();
+            if (!QFile(selectedLayout.id).copy(file)) {
+                showExportLayoutError(selectedLayout);
                 return;
             }
 
@@ -484,44 +496,31 @@ void SettingsDialog::on_exportButton_clicked()
             layoutS.setActivities(QStringList());
             layoutS.clearLastUsedActivity();
 
-            //NOTE: The pointer is automatically deleted when the event is closed
-            auto notification = new KNotification("export-done", KNotification::CloseOnTimeout);
-            notification->setActions({i18nc("export layout", "Open location")});
-            notification->setText(i18nc("export layout", "Layout exported successfully"));
-
-            connect(notification, &KNotification::action1Activated
-                    , this, [file]() {
-                QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
-            });
-
-            notification->sendEvent();
+            m_openUrlAction->setData(file);
+            ui->messageWidget->addAction(m_openUrlAction);
+            showInlineMessage(i18nc("settings:layout export success","<b>%0</b> export succeeded...").arg(selectedLayout.currentName()),
+                              KMessageWidget::Information,
+                              SettingsDialog::INFORMATIONWITHACTIONINTERVAL);
         } else if (file.endsWith(".latterc")) {
-            auto showNotificationError = []() {
-                auto notification = new KNotification("export-fail", KNotification::CloseOnTimeout);
-                notification->setText(i18nc("import/export config", "Failed to export configuration"));
-                notification->sendEvent();
+            auto showExportConfigurationError = [this]() {
+                showInlineMessage(i18nc("settings:full configuration export fail","Full configuration export failed..."),
+                                  KMessageWidget::Error);
             };
 
             if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {
-
-                auto notification = new KNotification("export-done", KNotification::CloseOnTimeout);
-                notification->setActions({i18nc("import/export config", "Open location")});
-                notification->setText(i18nc("import/export config", "Full Configuration exported successfully"));
-
-                connect(notification, &KNotification::action1Activated
-                        , this, [file]() {
-                    QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
-                });
-
-                notification->sendEvent();
+                m_openUrlAction->setData(file);
+                ui->messageWidget->addAction(m_openUrlAction);
+                showInlineMessage(i18nc("settings:full configuration export success","Full configuration export succeeded..."),
+                                  KMessageWidget::Information,
+                                  SettingsDialog::INFORMATIONWITHACTIONINTERVAL);
             } else {
-                showNotificationError();
+                showExportConfigurationError();
             }
         }
     });
 
-
-    fileDialog->open();
+    exportFileDialog->open();
+    exportFileDialog->selectFile(selectedLayout.currentName());
 }
 
 void SettingsDialog::requestImagesDialog(int row)
@@ -661,7 +660,8 @@ void SettingsDialog::on_switchButton_clicked()
     bool hasChanges = (selectedLayout.nameWasEdited() || m_layoutsController->dataAreChanged());
 
     if (hasChanges) {
-        showInlineMessage(i18nc("settings:not permitted switching layout","You need to save your changes to switch layout."), KMessageWidget::Warning);
+        showInlineMessage(i18nc("settings:not permitted switching layout","You need to save your changes to switch layout."),
+                          KMessageWidget::Warning);
         return;
     }
 
