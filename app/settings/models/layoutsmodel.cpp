@@ -427,7 +427,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
     QString activeCurrentId = m_layoutsTable.idForOriginalName(m_corona->layoutsManager()->currentLayoutName());
     int row = m_layoutsTable.indexOf(activeCurrentId);
 
-    if (row>=0 && m_layoutsTable[row].activities.isEmpty()) {
+    if (row>=0 && !(m_inMultipleMode && m_layoutsTable[row].isShared()) && m_layoutsTable[row].activities.isEmpty()) {
         m_layoutsTable[row].activities << Data::Layout::FREEACTIVITIESID;
         emit dataChanged(index(row,BACKGROUNDCOLUMN), index(row,ACTIVITYCOLUMN), roles);
         return;
@@ -435,7 +435,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
 
     //! Active layouts with no activities have mid priority
     for(int i=0; i<rowCount(); ++i) {
-        if (m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty()) {
+        if (m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty() && !(m_inMultipleMode && m_layoutsTable[i].isShared())) {
             m_layoutsTable[i].activities << Data::Layout::FREEACTIVITIESID;
             emit dataChanged(index(i,BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
             return;
@@ -444,7 +444,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
 
     //! Inactive layouts with no activities have lowest priority
     for(int i=0; i<rowCount(); ++i) {
-        if (!m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty()) {
+        if (!m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty() && !(m_inMultipleMode && m_layoutsTable[i].isShared())) {
             m_layoutsTable[i].activities << Data::Layout::FREEACTIVITIESID;
             emit dataChanged(index(i,BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
             return;
@@ -556,6 +556,13 @@ void Layouts::setShares(const int &row, const QStringList &shares)
             m_layoutsTable[i].shares = cleaned;
             emit dataChanged(index(i,IDCOLUMN), index(i,SHAREDCOLUMN), roles);
         }
+    }
+
+    if (m_layoutsTable[row].activities.contains(Data::Layout::FREEACTIVITIESID)
+            && m_inMultipleMode
+            && m_layoutsTable[row].isShared()) {
+        //! we need to remove the free_activities flag in such case
+        setActivities(row, QStringList());
     }
 }
 
