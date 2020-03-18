@@ -86,6 +86,8 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
     adjustedOption.displayAlignment = Qt::AlignLeft | Qt::AlignVCenter;
 
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
     if (isLocked || isShared) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
         QString nameText = index.data(Qt::DisplayRole).toString();

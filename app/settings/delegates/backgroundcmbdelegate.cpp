@@ -21,6 +21,7 @@
 
 // local
 #include "backgroundcmbitemdelegate.h"
+#include "../data/activitydata.h"
 #include "../models/layoutsmodel.h"
 #include "../tools/settingstools.h"
 
@@ -40,6 +41,8 @@ namespace Latte {
 namespace Settings {
 namespace Layout {
 namespace Delegate {
+
+const int MARGIN = 2;
 
 BackgroundCmbBox::BackgroundCmbBox(QObject *parent, QString iconsPath, QStringList colors)
     : QStyledItemDelegate(parent),
@@ -116,33 +119,87 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
     //! draw underlying background
     QStyledItemDelegate::paint(painter, myOptions, index);
 
-    if (background.isValid()) {
-        QString backgroundStr = background.toString();
+    QList<IconData> icons;
 
+    //! activities icons
+    Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Data::ActivitiesMap>();
+    QStringList assignedIds = index.data(Model::Layouts::ASSIGNEDACTIVITIESROLE).toStringList();
+
+    for(int i=0; i<assignedIds.count(); ++i) {
+        QString id = assignedIds[i];
+        if (allActivitiesData.contains(id)) {
+            IconData icon;
+            icon.isBackground = false;
+            icon.name = allActivitiesData[id].icon;
+            icons << icon;
+        }
+    }
+
+    //! background image
+    if (background.isValid() && icons.count() == 0) {
+        QString backgroundStr = background.toString();
         QString colorPath = backgroundStr.startsWith("/") ? backgroundStr : m_iconsPath + backgroundStr + "print.jpg";
 
         if (QFileInfo(colorPath).exists()) {
-            bool isSelected{Latte::isSelected(option)};
-            QPalette::ColorRole textColorRole = isSelected ? QPalette::HighlightedText : QPalette::Text;
-
-            QPen pen;
-
-            QBrush colorBrush;
-            colorBrush.setTextureImage(QImage(colorPath));
-
-            pen.setWidth(1);
-            pen.setColor(option.palette.color(Latte::colorGroup(option), textColorRole));
-
-            painter->setPen(pen);
-            painter->setBrush(colorBrush);
-
-            int cX = option.rect.x() + (option.rect.width() / 2);
-            int cY = option.rect.y() + (option.rect.height() / 2);
-            int radius = (option.rect.height() - 4) / 2;
-
-            painter->drawEllipse(QPointF(cX, cY), radius, radius);
+            IconData icon;
+            icon.isBackground = true;
+            icon.name = colorPath;
+            icons << icon;
         }
     }
+
+    if (icons.count() > 0) {
+        int localMargin = icons[0].isBackground ? MARGIN+1 : MARGIN-1;
+
+        int aY = option.rect.y() + localMargin;
+        int thick = option.rect.height() - localMargin*2;
+
+        int centerX = option.rect.x() + (option.rect.width() / 2);
+        int step = thick;
+        int total_icons_width = (thick-step) + icons.count() * step;
+
+        if (total_icons_width > option.rect.width()){
+            step = thick/2;
+            total_icons_width = (thick-step) + icons.count() * step;
+        }
+
+        int startX = centerX - (total_icons_width/2);
+
+        for (int i=0; i<icons.count(); ++i) {
+            int tX = startX + (i * step);
+            drawIcon(painter, option, QRect(tX, aY, thick, thick), icons[i]);
+        }
+    }
+}
+
+void BackgroundCmbBox::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const IconData &icon) const
+{
+    bool active = Latte::isActive(option);
+    bool selected = Latte::isSelected(option);
+    bool focused = Latte::isFocused(option);
+
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
+    if (icon.isBackground) {
+        QPixmap backImage(icon.name);
+        backImage = backImage.copy(QRect(MARGIN, MARGIN, target.width(),target.height()));
+
+        QPalette::ColorRole textColorRole = selected ? QPalette::HighlightedText : QPalette::Text;
+
+        QBrush imageBrush(backImage);
+        QPen pen; pen.setWidth(1);
+        pen.setColor(option.palette.color(Latte::colorGroup(option), textColorRole));
+
+        painter->setBrush(imageBrush);
+        painter->setPen(pen);
+
+        painter->drawEllipse(target);
+    } else {
+        QIcon::Mode mode = ((active && (selected || focused)) ? QIcon::Selected : QIcon::Normal);
+
+        painter->drawPixmap(target, QIcon::fromTheme(icon.name).pixmap(target.height(), target.height(), mode));
+    }
+
 }
 
 }

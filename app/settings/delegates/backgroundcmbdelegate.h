@@ -31,6 +31,12 @@ namespace Settings {
 namespace Layout {
 namespace Delegate {
 
+struct IconData
+{
+    bool isBackground{true};
+    QString name;
+};
+
 class BackgroundCmbBox : public QStyledItemDelegate
 {
     Q_OBJECT
@@ -42,6 +48,9 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+
+private:
+    void drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const IconData &icon) const;
 
 private:
     QString m_iconsPath;

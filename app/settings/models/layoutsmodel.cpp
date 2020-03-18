@@ -335,6 +335,8 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return inMultipleMode();
     } else if (role == LAYOUTNAMEWASEDITEDROLE) {
         return m_layoutsTable[row].nameWasEdited();
+    } else if (role == ASSIGNEDACTIVITIESROLE) {
+        return m_layoutsTable[row].activities;
     } else if (role == ALLACTIVITIESSORTEDROLE) {
         QStringList activities;
         activities << QString(Data::Layout::FREEACTIVITIESID);
@@ -425,7 +427,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
 
     if (row>=0 && m_layoutsTable[row].activities.isEmpty()) {
         m_layoutsTable[row].activities << Data::Layout::FREEACTIVITIESID;
-        emit dataChanged(index(row,ACTIVITYCOLUMN), index(row,ACTIVITYCOLUMN), roles);
+        emit dataChanged(index(row,BACKGROUNDCOLUMN), index(row,ACTIVITYCOLUMN), roles);
         return;
     }
 
@@ -433,7 +435,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
     for(int i=0; i<rowCount(); ++i) {
         if (m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty()) {
             m_layoutsTable[i].activities << Data::Layout::FREEACTIVITIESID;
-            emit dataChanged(index(i,ACTIVITYCOLUMN), index(i,ACTIVITYCOLUMN), roles);
+            emit dataChanged(index(i,BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
             return;
         }
     }
@@ -442,7 +444,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
     for(int i=0; i<rowCount(); ++i) {
         if (!m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty()) {
             m_layoutsTable[i].activities << Data::Layout::FREEACTIVITIESID;
-            emit dataChanged(index(i,ACTIVITYCOLUMN), index(i,ACTIVITYCOLUMN), roles);
+            emit dataChanged(index(i,BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
             return;
         }
     }
@@ -457,6 +459,7 @@ void Layouts::setActivities(const int &row, const QStringList &activities)
     QVector<int> roles;
     roles << Qt::DisplayRole;
     roles << Qt::UserRole;
+    roles << ASSIGNEDACTIVITIESROLE;
 
     bool freeActivitiesLayoutIsMissing{false};
 
@@ -467,7 +470,7 @@ void Layouts::setActivities(const int &row, const QStringList &activities)
     }
 
     m_layoutsTable[row].activities = activities;
-    emit dataChanged(index(row, ACTIVITYCOLUMN), index(row,ACTIVITYCOLUMN), roles);
+    emit dataChanged(index(row, BACKGROUNDCOLUMN), index(row,ACTIVITYCOLUMN), roles);
 
     for(int i=0; i<rowCount(); ++i) {
         if (i == row) {
