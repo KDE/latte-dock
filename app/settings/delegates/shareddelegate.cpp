@@ -126,7 +126,9 @@ void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const 
     Data::LayoutsTable assignedLayouts;
 
     for (const auto &id : assignedIds) {
-        assignedLayouts << allLayouts[id];
+        if (allLayouts.containsId(id)) {
+            assignedLayouts << allLayouts[id];
+        }
     }
 
     QStyleOptionViewItem myOptions = option;
@@ -185,7 +187,10 @@ void Shared::updateButtonText(QWidget *editor, const QModelIndex &index) const
 
     foreach (QAction *action, button->menu()->actions()) {
         if (action->isChecked()) {
-            assignedLayouts << allLayouts[action->data().toString()];
+            QString id = action->data().toString();
+            if (allLayouts.containsId(id)) {
+                assignedLayouts << allLayouts[action->data().toString()];
+            }
         }
     }
 

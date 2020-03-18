@@ -60,6 +60,7 @@
 #include <QFile>
 #include <QFontDatabase>
 #include <QQmlContext>
+#include <QProcess>
 
 // Plasma
 #include <Plasma>
@@ -202,6 +203,14 @@ Corona::~Corona()
     delete m_activityConsumer;
 
     qDebug() << "Latte Corona - deleted...";
+
+    if (!m_importFullConfigurationFile.isEmpty()) {
+        //!NOTE: Restart latte to import the new configuration
+        QString importCommand = "latte-dock --import-full \"" + m_importFullConfigurationFile + "\"";
+        qDebug() << "Executing Import Full Configuration command : " << importCommand;
+
+        QProcess::startDetached(importCommand);
+    }
 }
 
 void Corona::load()
@@ -1209,6 +1218,12 @@ void Corona::toggleHiddenState(QString layoutName, QString screenName, int scree
     if (gLayout) {
         gLayout->toggleHiddenState(screenName, (Plasma::Types::Location)screenEdge);
     }
+}
+
+void Corona::importFullConfiguration(const QString &file)
+{
+    m_importFullConfigurationFile = file;
+    quitApplication();
 }
 
 inline void Corona::qmlRegisterTypes() const

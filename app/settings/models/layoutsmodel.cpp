@@ -287,29 +287,16 @@ QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role)
 Qt::ItemFlags Layouts::flags(const QModelIndex &index) const
 {
     const int column = index.column();
-    const int row = index.column();
+    const int row = index.row();
 
     auto flags = QAbstractTableModel::flags(index);
 
-    bool isShared = m_inMultipleMode && m_layoutsTable[row].isShared();
-
     if (column == MENUCOLUMN || column == BORDERSCOLUMN) {
-        if (isShared) {
-            flags &= ~Qt::ItemIsEnabled;
-        } else {
-            flags |= Qt::ItemIsUserCheckable;
-        }
+        flags |= Qt::ItemIsUserCheckable;
     }
 
-    if (column == ACTIVITYCOLUMN) {
-        if (isShared) {
-            flags &= ~Qt::ItemIsEnabled;
-        } else {
-            flags |= Qt::ItemIsEditable;
-        }
-    }
-
-    if (column == BACKGROUNDCOLUMN
+    if (column == ACTIVITYCOLUMN
+            || column == BACKGROUNDCOLUMN
             || column == NAMECOLUMN
             || column == SHAREDCOLUMN) {
         flags |= Qt::ItemIsEditable;

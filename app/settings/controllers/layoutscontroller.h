@@ -82,7 +82,7 @@ public:
     const Data::Layout addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true);
 
     //! import layouts from Latte versions <= v0.7.x
-    void importLayoutsFromV1ConfigFile(QString file);
+    bool importLayoutsFromV1ConfigFile(QString file);
 
 signals:
     void dataChanged();

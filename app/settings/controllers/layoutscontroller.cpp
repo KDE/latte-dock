@@ -453,10 +453,10 @@ void Layouts::loadLayouts()
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
         if (brokenLayouts.count() == 1) {
-            m_parentDialog->showInlineMessage(i18nc("settings:broken layout", "Layout <b>%0</b> <i>is broken</i>! Please <b>remove it</b> to improve stability...").arg(brokenLayouts.join(",")),
+            m_parentDialog->showInlineMessage(i18nc("settings:broken layout", "Layout <b>%0</b> <i>is broken</i>! Please <b>remove</b> to improve stability...").arg(brokenLayouts.join(",")),
                                               KMessageWidget::Error);
         } else {
-            m_parentDialog->showInlineMessage(i18nc("settings:broken layouts", "Layouts <b>%0</b> <i>are broken</i>! Please <b>remove them</b> to improve stability...").arg(brokenLayouts.join(",")),
+            m_parentDialog->showInlineMessage(i18nc("settings:broken layouts", "Layouts <b>%0</b> <i>are broken</i>! Please <b>remove</b> to improve stability...").arg(brokenLayouts.join(",")),
                                               KMessageWidget::Error);
         }
     }
@@ -555,7 +555,7 @@ void Layouts::copySelectedLayout()
     m_view->selectRow(rowForId(copied.id));
 }
 
-void Layouts::importLayoutsFromV1ConfigFile(QString file)
+bool Layouts::importLayoutsFromV1ConfigFile(QString file)
 {
     KTar archive(file, QStringLiteral("application/x-tar"));
     archive.open(QIODevice::ReadOnly);
@@ -576,25 +576,37 @@ void Layouts::importLayoutsFromV1ConfigFile(QString file)
         QString applets(tempDir.absolutePath() + "/" + "lattedock-appletsrc");
 
         if (QFile(applets).exists()) {
+            QStringList importedlayouts;
+
             if (m_corona->layoutsManager()->importer()->importOldLayout(applets, name, false, tempDir.absolutePath())) {
                 Settings::Data::Layout imported = addLayoutForFile(tempDir.absolutePath() + "/" + name + ".layout.latte", name);
-
-                m_parentDialog->showInlineMessage(i18n("Layout <b>%0</b> imported successfully...").arg(imported.currentName()),
-                                                  KMessageWidget::Information,
-                                                  SettingsDialog::INFORMATIONINTERVAL);
+                importedlayouts << imported.currentName();
             }
 
             QString alternativeName = name + "-" + i18nc("layout", "Alternative");
 
             if (m_corona->layoutsManager()->importer()->importOldLayout(applets, alternativeName, false, tempDir.absolutePath())) {
                 Settings::Data::Layout imported = addLayoutForFile(tempDir.absolutePath() + "/" + alternativeName + ".layout.latte", alternativeName, false);
+                importedlayouts << imported.currentName();
+            }
 
-                m_parentDialog->showInlineMessage(i18n("Layout <b>%0</b> imported successfully...").arg(imported.currentName()),
-                                                  KMessageWidget::Information,
-                                                  SettingsDialog::INFORMATIONINTERVAL);
+            if (importedlayouts.count() > 0) {
+                if (importedlayouts.count() == 1) {
+                    m_parentDialog->showInlineMessage(i18n("Layout <b>%0</b> imported successfully...").arg(importedlayouts[0]),
+                                                      KMessageWidget::Information,
+                                                      SettingsDialog::INFORMATIONINTERVAL);
+                } else {
+                    m_parentDialog->showInlineMessage(i18n("Layouts <b>%0</b> imported successfully...").arg(importedlayouts.join(",")),
+                                                      KMessageWidget::Information,
+                                                      SettingsDialog::INFORMATIONINTERVAL);
+                }
+
+                return true;
             }
         }
     }
+
+    return false;
 }
 
 void Layouts::reset()
@@ -852,7 +864,9 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
     int pRow = rowForId(provenId);
     int tRow = rowForId(trialId);
 
-    if (pRow >= 0) {
+    //! Do not enable selecting the original layout because by pressing Enter during
+    //! layout name editing it can faulty switch to another layout
+    /* if (pRow >= 0) {
         QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::ClearAndSelect;
         QItemSelection rowSelection;
 
@@ -862,9 +876,12 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
         rowSelection.select(pIndexS, pIndexE);
 
         m_view->selectionModel()->select(rowSelection, flags);
-    }
+    }*/
 
-    m_parentDialog->showInlineMessage(i18nc("settings:layout name error","Layout name is already used, please provide a different name..."),
+    int originalRow = m_model->rowForId(provenId);
+    Data::Layout provenLayout = m_model->at(originalRow);
+
+    m_parentDialog->showInlineMessage(i18nc("settings: layout name used","Layout <b>%0</b> is already used, please provide a different name...").arg(provenLayout.currentName()),
                                       KMessageWidget::Error,
                                       SettingsDialog::ERRORINTERVAL);
 
@@ -874,8 +891,6 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
     QTimer::singleShot(0, [this, tIndex]() {
         m_view->edit(tIndex);
     });
-
-
 }
 
 }

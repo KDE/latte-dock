@@ -42,7 +42,6 @@
 #include <QFileDialog>
 #include <QMenuBar>
 #include <QMessageBox>
-#include <QProcess>
 
 // KDE
 #include <KActivities/Controller>
@@ -212,15 +211,6 @@ void SettingsDialog::initGlobalMenu()
 
     layout()->setMenuBar(m_globalMenuBar);
 
-    m_fileMenu = new QMenu(i18n("File"), m_globalMenuBar);
-    m_globalMenuBar->addMenu(m_fileMenu);
-
-    m_layoutMenu = new QMenu(i18n("Layout"), m_globalMenuBar);
-    m_globalMenuBar->addMenu(m_layoutMenu);
-
-    m_helpMenu = new KHelpMenu(m_globalMenuBar);
-    m_globalMenuBar->addMenu(m_helpMenu->menu());
-
     initFileMenu();
     initLayoutMenu();
     initHelpMenu();
@@ -229,7 +219,8 @@ void SettingsDialog::initGlobalMenu()
 void SettingsDialog::initLayoutMenu()
 {
     if (!m_layoutMenu) {
-        return;
+        m_layoutMenu = new QMenu(i18n("Layout"), m_globalMenuBar);
+        m_globalMenuBar->addMenu(m_layoutMenu);
     }
 
     m_switchLayoutAction = m_layoutMenu->addAction(i18nc("switch layout","Switch"));
@@ -314,8 +305,23 @@ void SettingsDialog::initLayoutMenu()
 void SettingsDialog::initFileMenu()
 {
     if (!m_fileMenu) {
-        return;
+        m_fileMenu = new QMenu(i18n("File"), m_globalMenuBar);
+        m_globalMenuBar->addMenu(m_fileMenu);
     }
+
+    m_importFullAction = m_fileMenu->addAction(i18n("Import Configuration..."));
+    m_importFullAction->setIcon(QIcon::fromTheme("document-import"));
+    m_importFullAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_I));
+    m_importFullAction->setToolTip(i18n("Import your full configuration from previous backup"));
+    connect(m_importFullAction, &QAction::triggered, this, &SettingsDialog::on_import_fullconfiguration);
+
+    m_exportFullAction = m_fileMenu->addAction(i18n("Export Configuration..."));
+    m_exportFullAction->setIcon(QIcon::fromTheme("document-export"));
+    m_exportFullAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_E));
+    m_exportFullAction->setToolTip(i18n("Export your full configuration to create backup"));
+    connect(m_exportFullAction, &QAction::triggered, this, &SettingsDialog::on_export_fullconfiguration);
+
+    m_fileMenu->addSeparator();
 
     QAction *screensAction = m_fileMenu->addAction(i18n("Sc&reens..."));
     screensAction->setIcon(QIcon::fromTheme("document-properties"));
@@ -336,6 +342,11 @@ void SettingsDialog::initFileMenu()
 
 void SettingsDialog::initHelpMenu()
 {
+    if (!m_helpMenu) {
+        m_helpMenu = new KHelpMenu(m_globalMenuBar);
+        m_globalMenuBar->addMenu(m_helpMenu->menu());
+    }
+
     //! hide help menu actions that are not used
     m_helpMenu->action(KHelpMenu::menuHelpContents)->setVisible(false);
     m_helpMenu->action(KHelpMenu::menuWhatsThis)->setVisible(false);
@@ -424,7 +435,7 @@ void SettingsDialog::on_new_layout()
 
         if (presetName == "Default") {
             Settings::Data::Layout newlayout = m_layoutsController->addLayoutForFile(preset, presetName, true);
-            showInlineMessage(i18nc("settings:layout added successfully","<b>%0</b> was added successfully...").arg(newlayout.currentName()),
+            showInlineMessage(i18nc("settings:layout added successfully","Layout <b>%0</b> added successfully...").arg(newlayout.currentName()),
                               KMessageWidget::Information,
                               SettingsDialog::INFORMATIONINTERVAL);
             break;
@@ -462,7 +473,7 @@ void SettingsDialog::on_download_layout()
 
                 if (version == Layouts::Importer::LayoutVersion2) {
                     Settings::Data::Layout downloaded = m_layoutsController->addLayoutForFile(entryFile);
-                    showInlineMessage(i18nc("settings:layout downloaded successfully","<b>%0</b> was downloaded successfully...").arg(downloaded.currentName()),
+                    showInlineMessage(i18nc("settings:layout downloaded successfully","Layout <b>%0</b> downloaded successfully...").arg(downloaded.currentName()),
                                       KMessageWidget::Information,
                                       SettingsDialog::INFORMATIONINTERVAL);
                     break;
@@ -489,7 +500,7 @@ void SettingsDialog::on_remove_layout()
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
 
     if (selectedLayout.isActive) {
-        showInlineMessage(i18nc("settings: active layout remove","Active layouts can not be removed..."),
+        showInlineMessage(i18nc("settings: active layout remove","<b>Active</b> layouts can not be removed..."),
                           KMessageWidget::Error,
                           SettingsDialog::WARNINGINTERVAL);
         return;
@@ -545,11 +556,11 @@ void SettingsDialog::on_import_layout()
         return;
     }
 
-    QFileDialog *importFileDialog = new QFileDialog(this, i18nc("import layout/configuration", "Import Layout/Configuration")
+    QFileDialog *importFileDialog = new QFileDialog(this, i18nc("import layout", "Import Layout")
                                                     , QDir::homePath()
                                                     , QStringLiteral("layout.latte"));
 
-    importFileDialog->setWindowIcon(QIcon::fromTheme("favorites"));
+    importFileDialog->setWindowIcon(QIcon::fromTheme("document-import"));
     importFileDialog->setLabelText(QFileDialog::Accept, i18nc("import layout","Import"));
     importFileDialog->setFileMode(QFileDialog::AnyFile);
     importFileDialog->setAcceptMode(QFileDialog::AcceptOpen);
@@ -557,7 +568,7 @@ void SettingsDialog::on_import_layout()
 
     QStringList filters;
     filters << QString(i18nc("import latte layout", "Latte Dock Layout file v0.2") + "(*.layout.latte)")
-            << QString(i18nc("import latte layouts/configuration", "Latte Dock Full Configuration file (v0.1, v0.2)") + "(*.latterc)");
+            << QString(i18nc("import older latte layout", "Latte Dock Layout file v0.1") + "(*.latterc)");
     importFileDialog->setNameFilters(filters);
 
     connect(importFileDialog, &QFileDialog::finished, importFileDialog, &QFileDialog::deleteLater);
@@ -568,60 +579,74 @@ void SettingsDialog::on_import_layout()
 
         if (version == Layouts::Importer::LayoutVersion2) {
             Settings::Data::Layout importedlayout = m_layoutsController->addLayoutForFile(file);
-            showInlineMessage(i18nc("settings:layout imported successfully","<b>%0</b> was imported successfully...").arg(importedlayout.currentName()),
+            showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedlayout.currentName()),
                               KMessageWidget::Information,
                               SettingsDialog::INFORMATIONINTERVAL);
         } else if (version == Layouts::Importer::ConfigVersion1) {
+            if (!m_layoutsController->importLayoutsFromV1ConfigFile(file)) {
+                showInlineMessage(i18nc("settings:deprecated layouts import failed","Import layouts from deprecated version <b>failed</b>..."),
+                                  KMessageWidget::Error);
+            }
+        }
+    });
+
+    importFileDialog->open();
+}
+
+void SettingsDialog::on_import_fullconfiguration()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    QFileDialog *importFileDialog = new QFileDialog(this, i18nc("import full configuration", "Import Full Configuration")
+                                                    , QDir::homePath()
+                                                    , QStringLiteral("latterc"));
+
+    importFileDialog->setWindowIcon(QIcon::fromTheme("document-import"));
+    importFileDialog->setLabelText(QFileDialog::Accept, i18nc("import full configuration","Import"));
+    importFileDialog->setFileMode(QFileDialog::AnyFile);
+    importFileDialog->setAcceptMode(QFileDialog::AcceptOpen);
+    importFileDialog->setDefaultSuffix("latterc");
+
+    QStringList filters;
+    filters << QString(i18nc("import full configuration", "Latte Dock Full Configuration file") + "(*.latterc)");
+    importFileDialog->setNameFilters(filters);
+
+    connect(importFileDialog, &QFileDialog::finished, importFileDialog, &QFileDialog::deleteLater);
+
+    connect(importFileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
+        Layouts::Importer::LatteFileVersion version = Layouts::Importer::fileVersion(file);
+        qDebug() << "VERSION :::: " << version;
+
+        if (version == Layouts::Importer::ConfigVersion2
+                || version == Layouts::Importer::ConfigVersion1) {
             auto msg = new QMessageBox(this);
             msg->setIcon(QMessageBox::Warning);
-            msg->setWindowTitle(i18n("Import: Configuration file version v0.1"));
-            msg->setText(
-                        i18n("You are going to import an old version <b>v0.1</b> configuration file.<br><b>Be careful</b>, importing the entire configuration <b>will erase all</b> your current configuration!!!<br><br> <i>Alternative, you can <b>import safely</b> from this file<br><b>only the contained layouts...</b></i>"));
+            msg->setWindowTitle(i18n("Import: Full Configuration File"));
+            msg->setText(i18n("You are importing full configuration file. Be careful, all <b>current settings and layouts will be lost</b>. It is advised to <b>take backup</b> first!<br>"));
             msg->setStandardButtons(QMessageBox::Cancel);
 
-            QPushButton *fullBtn = new QPushButton(msg);
-            QPushButton *layoutsBtn = new QPushButton(msg);
-            fullBtn->setText(i18nc("import full configuration", "Full Configuration"));
-            fullBtn->setIcon(QIcon::fromTheme("settings"));
-            layoutsBtn->setText(i18nc("import only the layouts", "Only Layouts"));
-            layoutsBtn->setIcon(QIcon::fromTheme("user-identity"));
+            QPushButton *takeBackupBtn = new QPushButton(msg);
+            takeBackupBtn->setText(i18nc("export full configuration", "Take Backup..."));
+            takeBackupBtn->setIcon(QIcon::fromTheme("document-export"));
+            takeBackupBtn->setToolTip(i18n("Export your full configuration in order to take backup"));
 
-            msg->addButton(fullBtn, QMessageBox::AcceptRole);
-            msg->addButton(layoutsBtn, QMessageBox::AcceptRole);
+            QPushButton *importBtn = new QPushButton(msg);
+            importBtn->setText(i18nc("import full configuration", "Import"));
+            importBtn->setIcon(QIcon::fromTheme("document-import"));
+            importBtn->setToolTip(i18n("Import your full configuration and drop all your current settings and layouts"));
 
-            msg->setDefaultButton(layoutsBtn);
+            msg->addButton(takeBackupBtn, QMessageBox::AcceptRole);
+            msg->addButton(importBtn, QMessageBox::AcceptRole);
+            msg->setDefaultButton(takeBackupBtn);
 
-            connect(msg, &QMessageBox::finished, msg, &QMessageBox::deleteLater);
+            connect(msg, &QFileDialog::finished, msg, &QFileDialog::deleteLater);
 
-            msg->open();
-
-            connect(layoutsBtn, &QPushButton::clicked
-                    , this, [ &, file](bool check) {
-                m_layoutsController->importLayoutsFromV1ConfigFile(file);
+            connect(importBtn, &QPushButton::clicked, this, [&, file](bool check) {
+                m_corona->importFullConfiguration(file);
             });
 
-            connect(fullBtn, &QPushButton::clicked
-                    , this, [ &, file](bool check) {
-                //!NOTE: Restart latte for import the new configuration
-                QProcess::startDetached(qGuiApp->applicationFilePath() + " --import-full \"" + file + "\"");
-                qGuiApp->exit();
-            });
-        } else if (version == Layouts::Importer::ConfigVersion2) {
-            auto msg = new QMessageBox(this);
-            msg->setIcon(QMessageBox::Warning);
-            msg->setWindowTitle(i18n("Import: Configuration file version v0.2"));
-            msg->setText(
-                        i18n("You are going to import a <b>v0.2</b> configuration file.<br><b>Be careful</b>, importing <b>will erase all</b> your current configuration!!!<br><br><i>Would you like to proceed?</i>"));
-            msg->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msg->setDefaultButton(QMessageBox::No);
-
-            connect(msg, &QMessageBox::finished, this, [ &, msg, file](int result) {
-                if (result == QMessageBox::Yes) {
-                    //!NOTE: Restart latte for import the new configuration
-                    msg->deleteLater();
-                    QProcess::startDetached(qGuiApp->applicationFilePath() + " --import-full \"" + file + "\"");
-                    qGuiApp->exit();
-                }
+            connect(takeBackupBtn, &QPushButton::clicked, this, [&](bool check) {
+                on_export_fullconfiguration();
             });
 
             msg->open();
@@ -646,13 +671,9 @@ void SettingsDialog::on_export_layout()
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
 
     //! Update ALL active original layouts before exporting,
-    //! this is needed because the export method can export also the full configuration
-    qDebug() << Q_FUNC_INFO;
-
     m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
 
-    QFileDialog *exportFileDialog = new QFileDialog(this, i18nc("export layout/configuration", "Export Layout/Configuration")
-                                                    , QDir::homePath(), QStringLiteral("layout.latte"));
+    QFileDialog *exportFileDialog = new QFileDialog(this, i18n("Export Layout"), QDir::homePath(), QStringLiteral("layout.latte"));
 
     exportFileDialog->setLabelText(QFileDialog::Accept, i18nc("export layout","Export"));
     exportFileDialog->setFileMode(QFileDialog::AnyFile);
@@ -661,10 +682,8 @@ void SettingsDialog::on_export_layout()
 
     QStringList filters;
     QString filter1(i18nc("export layout", "Latte Dock Layout file v0.2") + "(*.layout.latte)");
-    QString filter2(i18nc("export full configuration", "Latte Dock Full Configuration file v0.2") + "(*.latterc)");
 
-    filters << filter1
-            << filter2;
+    filters << filter1;
 
     exportFileDialog->setNameFilters(filters);
 
@@ -672,7 +691,7 @@ void SettingsDialog::on_export_layout()
 
     connect(exportFileDialog, &QFileDialog::fileSelected, this, [ &, selectedLayout](const QString & file) {
         auto showExportLayoutError = [this](const Settings::Data::Layout &layout) {
-            showInlineMessage(i18nc("settings:layout export fail","<b>%0</b> export failed...").arg(layout.currentName()),
+            showInlineMessage(i18nc("settings:layout export fail","Layout <b>%0</b> export <b>failed</b>...").arg(layout.currentName()),
                               KMessageWidget::Error);
         };
 
@@ -699,19 +718,18 @@ void SettingsDialog::on_export_layout()
 
             m_openUrlAction->setData(file);
             ui->messageWidget->addAction(m_openUrlAction);
-            showInlineMessage(i18nc("settings:layout export success","<b>%0</b> export succeeded...").arg(selectedLayout.currentName()),
+            showInlineMessage(i18nc("settings:layout export success","Layout <b>%0</b> export succeeded...").arg(selectedLayout.currentName()),
                               KMessageWidget::Information,
                               SettingsDialog::INFORMATIONWITHACTIONINTERVAL);
         } else if (file.endsWith(".latterc")) {
             auto showExportConfigurationError = [this]() {
-                showInlineMessage(i18nc("settings:full configuration export fail","Full configuration export failed..."),
-                                  KMessageWidget::Error);
+                showInlineMessage(i18n("Full configuration export <b>failed</b>..."), KMessageWidget::Error);
             };
 
             if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {
                 m_openUrlAction->setData(file);
                 ui->messageWidget->addAction(m_openUrlAction);
-                showInlineMessage(i18nc("settings:full configuration export success","Full configuration export succeeded..."),
+                showInlineMessage(i18n("Full configuration export succeeded..."),
                                   KMessageWidget::Information,
                                   SettingsDialog::INFORMATIONWITHACTIONINTERVAL);
             } else {
@@ -722,6 +740,53 @@ void SettingsDialog::on_export_layout()
 
     exportFileDialog->open();
     exportFileDialog->selectFile(selectedLayout.currentName());
+}
+
+void SettingsDialog::on_export_fullconfiguration()
+{
+    //! Update ALL active original layouts before exporting,
+    m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
+
+    QFileDialog *exportFileDialog = new QFileDialog(this, i18n("Export Full Configuration"),
+                                                    QDir::homePath(),
+                                                    QStringLiteral("latterc"));
+
+    exportFileDialog->setLabelText(QFileDialog::Accept, i18nc("export full configuration","Export"));
+    exportFileDialog->setFileMode(QFileDialog::AnyFile);
+    exportFileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    exportFileDialog->setDefaultSuffix("latterc");
+
+    QStringList filters;
+    QString filter2(i18nc("export full configuration", "Latte Dock Full Configuration file v0.2") + "(*.latterc)");
+
+    filters << filter2;
+
+    exportFileDialog->setNameFilters(filters);
+
+    connect(exportFileDialog, &QFileDialog::finished, exportFileDialog, &QFileDialog::deleteLater);
+
+    connect(exportFileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
+        auto showExportConfigurationError = [this]() {
+            showInlineMessage(i18n("Full configuration export <b>failed</b>..."), KMessageWidget::Error);
+        };
+
+        if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {
+            m_openUrlAction->setData(file);
+            ui->messageWidget->addAction(m_openUrlAction);
+            showInlineMessage(i18n("Full configuration export succeeded..."),
+                              KMessageWidget::Information,
+                              SettingsDialog::INFORMATIONWITHACTIONINTERVAL);
+        } else {
+            showExportConfigurationError();
+        }
+    });
+
+    exportFileDialog->open();
+
+    QDate currentDate = QDate::currentDate();
+    QString proposedName = QStringLiteral("Latte Dock (") + currentDate.toString("yyyy-MM-dd")+")";
+
+    exportFileDialog->selectFile(proposedName);
 }
 
 void SettingsDialog::requestImagesDialog(int row)
@@ -875,7 +940,7 @@ void SettingsDialog::on_switch_layout()
     bool hasChanges = (selectedLayout.nameWasEdited() || m_layoutsController->dataAreChanged());
 
     if (hasChanges) {
-        showInlineMessage(i18nc("settings:not permitted switching layout","You need to save your changes to switch layout..."),
+        showInlineMessage(i18nc("settings:not permitted switching layout","You need to <b>apply</b> your changes first to switch layout..."),
                           KMessageWidget::Warning,
                           WARNINGINTERVAL);
         return;
@@ -1159,4 +1224,3 @@ void SettingsDialog::showInlineMessage(const QString &msg, const KMessageWidget:
 }
 
 }//end of namespace
-

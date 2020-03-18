@@ -143,7 +143,11 @@ public:
 
     PanelShadows *dialogShadows() const;
 
-    //! these functions are used from context menu through containmentactions
+    //! Needs to be called in order to import and load application properly after application
+    //! finished all its exit operations
+    void importFullConfiguration(const QString &file);
+
+    //! these functions are used from context menu through containmentactions    
     void quitApplication();
     void switchToLayout(QString layout);
     void showSettingsWindow(int page);
@@ -211,6 +215,7 @@ private:
     int m_contextMenuViewId{-1};
 
     QString m_layoutNameOnStartUp;
+    QString m_importFullConfigurationFile;
 
     QList<KDeclarative::QmlObjectSharedEngine *> m_alternativesObjects;
 

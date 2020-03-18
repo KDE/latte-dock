@@ -53,7 +53,7 @@
               <string>Only one layout can be present in memory at all cases</string>
              </property>
              <property name="text">
-              <string comment="single layout">Single</string>
+              <string comment="single layout">Single Layout</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -66,7 +66,7 @@
               <string>Multiple layouts can be present and active in memory at the same time</string>
              </property>
              <property name="text">
-              <string comment="multiple layouts">Multiple</string>
+              <string comment="multiple layouts">Multiple Layouts</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -142,7 +142,7 @@
               <item>
                <widget class="QPushButton" name="switchButton">
                 <property name="text">
-                 <string comment="switch to layout">Switch</string>
+                 <string notr="true">Switch</string>
                 </property>
                 <property name="icon">
                  <iconset theme="user-identity">
@@ -153,7 +153,7 @@
               <item>
                <widget class="QPushButton" name="pauseButton">
                 <property name="text">
-                 <string>Pause</string>
+                 <string notr="true">Pause</string>
                 </property>
                 <property name="icon">
                  <iconset theme="media-playback-pause">
@@ -209,7 +209,7 @@
               <item>
                <widget class="QPushButton" name="newButton">
                 <property name="text">
-                 <string comment="new layout">New</string>
+                 <string notr="true">New</string>
                 </property>
                 <property name="icon">
                  <iconset theme="add">
@@ -220,7 +220,7 @@
               <item>
                <widget class="QPushButton" name="copyButton">
                 <property name="text">
-                 <string comment="copy layout">Copy</string>
+                 <string notr="true">Copy</string>
                 </property>
                 <property name="icon">
                  <iconset theme="edit-copy">
@@ -234,10 +234,11 @@
               <item>
                <widget class="QPushButton" name="removeButton">
                 <property name="text">
-                 <string comment="remove layout">Remove</string>
+                 <string notr="true">Remove</string>
                 </property>
                 <property name="icon">
-                 <iconset theme="delete"/>
+                 <iconset theme="delete">
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
               </item>
@@ -260,7 +261,7 @@
               <item>
                <widget class="QPushButton" name="lockedButton">
                 <property name="text">
-                 <string comment="locked layout">Locked</string>
+                 <string notr="true">Locked</string>
                 </property>
                 <property name="icon">
                  <iconset theme="object-locked">
@@ -274,7 +275,7 @@
               <item>
                <widget class="QPushButton" name="sharedButton">
                 <property name="text">
-                 <string>Shared</string>
+                 <string notr="true">Shared</string>
                 </property>
                 <property name="icon">
                  <iconset theme="document-share">
@@ -348,7 +349,7 @@
               <item>
                <widget class="QPushButton" name="importButton">
                 <property name="text">
-                 <string comment="import layout">Import</string>
+                 <string notr="true">Import...</string>
                 </property>
                 <property name="icon">
                  <iconset theme="document-import">
@@ -362,7 +363,7 @@
               <item>
                <widget class="QPushButton" name="exportButton">
                 <property name="text">
-                 <string comment="export layout">Export</string>
+                 <string notr="true">Export...</string>
                 </property>
                 <property name="icon">
                  <iconset theme="document-export">
@@ -379,7 +380,7 @@
               <item>
                <widget class="QPushButton" name="downloadButton">
                 <property name="text">
-                 <string comment="download layout">Download</string>
+                 <string notr="true">Download...</string>
                 </property>
                 <property name="icon">
                  <iconset theme="get-hot-new-stuff">
@@ -445,8 +446,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>885</width>
-            <height>610</height>
+            <width>890</width>
+            <height>662</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">

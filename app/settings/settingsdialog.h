@@ -83,6 +83,9 @@ protected:
 private slots:
     void on_currentPageChanged(int page);
 
+    void on_import_fullconfiguration();
+    void on_export_fullconfiguration();
+
     void on_new_layout();
     void on_copy_layout();
     void on_download_layout();
@@ -136,6 +139,8 @@ private:
 
     //! File menu actions
     QMenu *m_fileMenu{nullptr};
+    QAction *m_importFullAction{nullptr};
+    QAction *m_exportFullAction{nullptr};
 
     //! Layout menu actions
     QMenu *m_layoutMenu{nullptr};
