@@ -33,6 +33,7 @@ namespace Delegate {
 
 struct IconData
 {
+    bool isFreeActivities{false};
     bool isBackground{true};
     QString name;
 };

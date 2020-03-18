@@ -22,6 +22,7 @@
 // local
 #include "backgroundcmbitemdelegate.h"
 #include "../data/activitydata.h"
+#include "../data/layoutdata.h"
 #include "../models/layoutsmodel.h"
 #include "../tools/settingstools.h"
 
@@ -130,6 +131,7 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
         if (allActivitiesData.contains(id)) {
             IconData icon;
             icon.isBackground = false;
+            icon.isFreeActivities = (id == Data::Layout::FREEACTIVITIESID);
             icon.name = allActivitiesData[id].icon;
             icons << icon;
         }
@@ -143,6 +145,7 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
         if (QFileInfo(colorPath).exists()) {
             IconData icon;
             icon.isBackground = true;
+            icon.isFreeActivities = false;
             icon.name = colorPath;
             icons << icon;
         }
@@ -150,6 +153,10 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
     if (icons.count() > 0) {
         int localMargin = icons[0].isBackground ? MARGIN+1 : MARGIN-1;
+
+        if (icons[0].isFreeActivities) {
+            localMargin = 0;
+        }
 
         int aY = option.rect.y() + localMargin;
         int thick = option.rect.height() - localMargin*2;
