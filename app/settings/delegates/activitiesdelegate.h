@@ -20,6 +20,9 @@
 #ifndef ACTIVITIESDELEGATE_H
 #define ACTIVITIESDELEGATE_H
 
+// local
+#include "../data/activitydata.h"
+
 // Qt
 #include <QItemDelegate>
 
@@ -46,12 +49,9 @@ public:
     virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
 private:
-    void updateButton(QWidget *editor) const;
+    void updateButton(QWidget *editor, const Data::ActivitiesMap &allActivitiesData) const;
 
-    QString freeActivities_text() const;
-    QString freeActivities_icon() const;
-
-    QString joinedActivities(const QStringList &activities, bool isActive = false, bool formatText = true) const;
+    QString joinedActivities(const QList<Data::Activity> &activities, bool isActive = false, bool formatText = true) const;
 };
 
 }

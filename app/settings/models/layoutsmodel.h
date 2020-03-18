@@ -22,6 +22,7 @@
 #define SETTINGSLAYOUTSMODEL_H
 
 // local
+#include "../data/activitydata.h"
 #include "../data/layoutdata.h"
 #include "../data/layoutstable.h"
 #include "../../lattecorona.h"
@@ -59,12 +60,13 @@ public:
         LAYOUTISSHAREDROLE,
         LAYOUTNAMEWASEDITEDROLE,
         INMULTIPLELAYOUTSROLE,
-        ALLACTIVITIESROLE,
-        RUNNINGACTIVITIESROLE,
+        ALLACTIVITIESSORTEDROLE,
+        ALLACTIVITIESDATAROLE,
         ALLLAYOUTSROLE
     };
 
     explicit Layouts(QObject *parent, Latte::Corona *corona);
+    ~Layouts();
 
     bool containsCurrentName(const QString &name) const;
 
@@ -110,7 +112,15 @@ signals:
 private slots:
     void updateActiveStates();
 
+    void activitiesStatesChanged();
+    void on_activityAdded(const QString &id);
+    void on_activityRemoved(const QString &id);
+    void on_activityChanged(const QString &id);
+    void on_runningActivitiesChanged(const QStringList &runningIds);
+
 private:
+    void initActivities();
+
     void autoAssignFreeActivitiesLayout();
     void setActivities(const int &row, const QStringList &activities);
     void setId(const int &row, const QString &newId);
@@ -121,6 +131,9 @@ private:
 private:
     bool m_inMultipleMode{false};
     Data::LayoutsTable m_layoutsTable;
+
+    Data::ActivitiesMap m_activitiesMap;
+    QHash<QString, KActivities::Info *> m_activitiesInfo;
 
     Latte::Corona *m_corona{nullptr};
 };

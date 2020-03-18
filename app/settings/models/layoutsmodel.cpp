@@ -33,6 +33,10 @@
 // KDE
 #include <KLocalizedString>
 
+// KActivities
+#include <KActivities/Consumer>
+#include <KActivities/Info>
+
 const QChar CheckMark{0x2714};
 
 namespace Latte {
@@ -43,6 +47,8 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
     : QAbstractTableModel(parent),
       m_corona(corona)
 {
+    initActivities();
+
     connect(this, &Layouts::inMultipleModeChanged, this, [&]() {
         QVector<int> roles;
         roles << Qt::DisplayRole;
@@ -55,6 +61,11 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
 
     connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::currentLayoutNameChanged, this, &Layouts::updateActiveStates);
     connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::centralLayoutsChanged, this, &Layouts::updateActiveStates);
+}
+
+Layouts::~Layouts()
+{
+   qDeleteAll(m_activitiesInfo);
 }
 
 bool Layouts::containsCurrentName(const QString &name) const
@@ -324,11 +335,15 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return inMultipleMode();
     } else if (role == LAYOUTNAMEWASEDITEDROLE) {
         return m_layoutsTable[row].nameWasEdited();
-    } else if (role == ALLACTIVITIESROLE) {
+    } else if (role == ALLACTIVITIESSORTEDROLE) {
         QStringList activities;
         activities << QString(Data::Layout::FREEACTIVITIESID);
         activities << m_corona->layoutsManager()->synchronizer()->activities();
         return activities;
+    } else if (role == ALLACTIVITIESDATAROLE) {
+        QVariant activitiesData;
+        activitiesData.setValue(m_activitiesMap);
+        return activitiesData;
     } else if (role == ALLLAYOUTSROLE) {
         QVariant layouts;
         layouts.setValue(m_layoutsTable);
@@ -679,6 +694,107 @@ void Layouts::setCurrentData(Data::LayoutsTable &data)
     endInsertRows();
 
     emit rowsInserted();
+}
+
+
+//! Activities code
+void Layouts::initActivities()
+{
+    Data::Activity freeActivities;
+    freeActivities.id = Data::Layout::FREEACTIVITIESID;
+    freeActivities.name = QString("[ " + i18n("All Free Activities...") + " ]");
+    freeActivities.icon = "favorites";
+    freeActivities.state = KActivities::Info::Stopped;
+    m_activitiesMap[Data::Layout::FREEACTIVITIESID] = freeActivities;
+
+    QStringList activities = m_corona->layoutsManager()->synchronizer()->activities();;
+
+    for(const auto &id: activities) {
+        KActivities::Info info(id);
+
+        if (info.state() != KActivities::Info::Invalid) {
+            on_activityAdded(id);
+        }
+    }
+
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::activityAdded, this, &Layouts::on_activityAdded);
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::activityRemoved, this, &Layouts::on_activityRemoved);
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, &Layouts::on_runningActivitiesChanged);
+
+    activitiesStatesChanged();
+}
+
+void Layouts::activitiesStatesChanged()
+{
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+    roles << ALLACTIVITIESDATAROLE;
+    roles << ALLACTIVITIESSORTEDROLE;
+
+    emit dataChanged(index(0, BACKGROUNDCOLUMN), index(rowCount()-1, BACKGROUNDCOLUMN), roles);
+    emit dataChanged(index(0, ACTIVITYCOLUMN), index(rowCount()-1, ACTIVITYCOLUMN), roles);
+}
+
+void Layouts::on_activityAdded(const QString &id)
+{
+    m_activitiesInfo[id] = new KActivities::Info(id, this);
+
+    Data::Activity activity;
+    activity.id = m_activitiesInfo[id]->id();
+    activity.name = m_activitiesInfo[id]->name();
+    activity.icon = m_activitiesInfo[id]->icon();
+    activity.state = m_activitiesInfo[id]->state();
+
+    m_activitiesMap[id] = activity;
+
+    connect(m_activitiesInfo[id], &KActivities::Info::nameChanged, [this, id]() {
+        on_activityChanged(id);
+    });
+
+    connect(m_activitiesInfo[id], &KActivities::Info::iconChanged, [this, id]() {
+        on_activityChanged(id);
+    });
+}
+
+void Layouts::on_activityRemoved(const QString &id)
+{
+    if (m_activitiesMap.contains(id)) {
+        m_activitiesMap.remove(id);
+    }
+
+    if (m_activitiesInfo.contains(id)) {
+        KActivities::Info *info = m_activitiesInfo.take(id);
+        info->deleteLater();
+    }
+
+    activitiesStatesChanged();
+}
+
+void Layouts::on_activityChanged(const QString &id)
+{
+    if (m_activitiesMap.contains(id) && m_activitiesInfo.contains(id)) {
+        m_activitiesMap[id].name = m_activitiesInfo[id]->name();
+        m_activitiesMap[id].icon = m_activitiesInfo[id]->icon();
+        m_activitiesMap[id].state = m_activitiesInfo[id]->state();
+
+        activitiesStatesChanged();
+    }
+}
+
+void Layouts::on_runningActivitiesChanged(const QStringList &runningIds)
+{
+    Data::ActivitiesMap::iterator i;
+
+    for (i = m_activitiesMap.begin(); i != m_activitiesMap.end(); ++i){
+        if (runningIds.contains(i.key())) {
+            m_activitiesMap[i.key()].state = KActivities::Info::Running;
+        } else {
+            m_activitiesMap[i.key()].state = KActivities::Info::Stopped;
+        }
+    }
+
+    activitiesStatesChanged();
 }
 
 }
