@@ -121,7 +121,7 @@ void GenericLayout::unloadLatteViews()
     //!disconnect signals in order to avoid crashes when the layout is unloading
     disconnect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
     disconnect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
-    disconnect(m_corona->activityConsumer(), &KActivities::Consumer::currentActivityChanged, this, &GenericLayout::updateLastUsedActivity);
+    disconnect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, &GenericLayout::updateLastUsedActivity);
 
     for (const auto view : m_latteViews) {
         view->disconnectSensitiveSignals();
@@ -940,7 +940,7 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
     updateLastUsedActivity();
 
     //! signals
-    connect(m_corona->activityConsumer(), &KActivities::Consumer::currentActivityChanged,
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged,
             this, &GenericLayout::updateLastUsedActivity);
 
     connect(m_corona, &Plasma::Corona::containmentAdded, this, &GenericLayout::addContainment);

@@ -91,7 +91,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_defaultLayoutOnStartup(defaultLayoutOnStartup),
       m_userSetMemoryUsage(userSetMemoryUsage),
       m_layoutNameOnStartUp(layoutNameOnStartUp),
-      m_activityConsumer(new KActivities::Consumer(this)),
+      m_activitiesConsumer(new KActivities::Consumer(this)),
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_indicatorFactory(new Indicator::Factory(this)),
       m_universalSettings(new UniversalSettings(KSharedConfig::openConfig(), this)),
@@ -132,11 +132,11 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
 
     qmlRegisterTypes();
 
-    if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running)) {
+    if (m_activitiesConsumer && (m_activitiesConsumer->serviceStatus() == KActivities::Consumer::Running)) {
         load();
     }
 
-    connect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
+    connect(m_activitiesConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
 
     m_viewsScreenSyncTimer.setSingleShot(true);
     m_viewsScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
@@ -199,8 +199,8 @@ Corona::~Corona()
     m_themeExtended->deleteLater();
     m_indicatorFactory->deleteLater();
 
-    disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
-    delete m_activityConsumer;
+    disconnect(m_activitiesConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
+    delete m_activitiesConsumer;
 
     qDebug() << "Latte Corona - deleted...";
 
@@ -215,10 +215,10 @@ Corona::~Corona()
 
 void Corona::load()
 {
-    if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running) && m_activitiesStarting) {
+    if (m_activitiesConsumer && (m_activitiesConsumer->serviceStatus() == KActivities::Consumer::Running) && m_activitiesStarting) {
         m_activitiesStarting = false;
 
-        disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
+        disconnect(m_activitiesConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
 
         m_layoutsManager->load();
 
@@ -229,7 +229,7 @@ void Corona::load()
 
         connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &Corona::screenCountChanged);
 
-        QString assignedLayout = m_layoutsManager->synchronizer()->shouldSwitchToLayout(m_activityConsumer->currentActivity());
+        QString assignedLayout = m_layoutsManager->synchronizer()->shouldSwitchToLayout(m_activitiesConsumer->currentActivity());
 
         QString loadLayoutName = "";
 
@@ -336,11 +336,6 @@ void Corona::setupWaylandIntegration()
     connection->roundtrip();
 }
 
-KActivities::Consumer *Corona::activityConsumer() const
-{
-    return m_activityConsumer;
-}
-
 KWayland::Client::PlasmaShell *Corona::waylandCoronaInterface() const
 {
     return m_waylandCorona;
@@ -414,7 +409,7 @@ bool Corona::appletExists(uint containmentId, uint appletId) const
 
 KActivities::Consumer *Corona::activitiesConsumer() const
 {
-    return m_activityConsumer;
+    return m_activitiesConsumer;
 }
 
 PanelShadows *Corona::dialogShadows() const
@@ -915,7 +910,7 @@ int Corona::screenForContainment(const Plasma::Containment *containment) const
     for (auto screen : qGuiApp->screens()) {
         // containment->lastScreen() == m_screenPool->id(screen->name()) to check if the lastScreen refers to a screen that exists/it's known
         if (containment->lastScreen() == m_screenPool->id(screen->name()) &&
-                (containment->activity() == m_activityConsumer->currentActivity() ||
+                (containment->activity() == m_activitiesConsumer->currentActivity() ||
                  containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
             return containment->lastScreen();
         }

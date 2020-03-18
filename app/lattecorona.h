@@ -125,7 +125,6 @@ public:
 
     int screenForContainment(const Plasma::Containment *containment) const override;
 
-    KActivities::Consumer *activityConsumer() const;
     KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
 
     KActivities::Consumer *activitiesConsumer() const;
@@ -223,7 +222,7 @@ private:
 
     QTimer m_viewsScreenSyncTimer;
 
-    KActivities::Consumer *m_activityConsumer;
+    KActivities::Consumer *m_activitiesConsumer;
     QPointer<KAboutApplicationDialog> aboutDialog;
 
     ScreenPool *m_screenPool{nullptr};
