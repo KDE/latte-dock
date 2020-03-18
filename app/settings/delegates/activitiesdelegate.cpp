@@ -44,7 +44,7 @@ namespace Layout {
 namespace Delegate {
 
 Activities::Activities(QObject *parent)
-    : QItemDelegate(parent)
+    : QStyledItemDelegate(parent)
 {
 }
 
@@ -182,7 +182,7 @@ bool Activities::editorEvent(QEvent *event, QAbstractItemModel *model, const QSt
         return false;
     }
 
-    return QItemDelegate::editorEvent(event, model, option, index);
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
 void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -243,16 +243,19 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
         painter->restore();
     } else {
+        bool sharedInEdit = index.data(Model::Layouts::SHAREDTOINEDIT).toBool();
+
         // Disabled
         bool isSelected{Latte::isSelected(option)};
         QPalette::ColorRole backColorRole = isSelected ? QPalette::Highlight : QPalette::Base;
         QPalette::ColorRole textColorRole = isSelected ? QPalette::HighlightedText : QPalette::Text;
 
-        // background
-        painter->fillRect(option.rect, option.palette.brush(Latte::colorGroup(option), backColorRole));
+        //! draw background
+        //! HIDDENTEXTCOLUMN is just needed to draw empty background rectangles properly based on states
+        QStyledItemDelegate::paint(painter, option, index.model()->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
         // text
-        QPen pen(Qt::DashDotDotLine);
+        QPen pen(Qt::DotLine);
         QColor textColor = option.palette.brush(Latte::colorGroup(option), textColorRole).color();
 
         pen.setWidth(2); pen.setColor(textColor);
@@ -262,34 +265,38 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
         painter->setPen(pen);
 
-        if (qApp->layoutDirection() == Qt::LeftToRight) {
-            painter->drawLine(option.rect.x(), y,
-                              option.rect.x()+option.rect.width() - space, y);
+        if (sharedInEdit) {
+            //! shareto cell is in edit mode so circle indicator is moved inside
+            //! the activities cell
+            if (qApp->layoutDirection() == Qt::LeftToRight) {
+                painter->drawLine(option.rect.x(), y, option.rect.x()+option.rect.width() - space, y);
 
-            int xm = option.rect.x() + option.rect.width() - space;
-            int thick = option.rect.height() / 2;
-            int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
+                int xm = option.rect.x() + option.rect.width() - space;
+                int thick = option.rect.height() / 2;
+                int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
 
-            pen.setStyle(Qt::SolidLine);
-            painter->setPen(pen);
-            painter->setBrush(textColor);
+                pen.setStyle(Qt::SolidLine);
+                painter->setPen(pen);
+                painter->setBrush(textColor);
 
-            //! draw ending cirlce
-            painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
+                //! draw ending cirlce
+                painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
+            } else {
+                painter->drawLine(option.rect.x() + space, y, option.rect.x() + option.rect.width(), y);
+
+                int xm = option.rect.x() + space;
+                int thick = option.rect.height() / 2;
+                int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
+
+                pen.setStyle(Qt::SolidLine);
+                painter->setPen(pen);
+                painter->setBrush(textColor);
+
+                //! draw ending cirlce
+                painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
+            }
         } else {
-            painter->drawLine(option.rect.x() + space, y,
-                              option.rect.x() + option.rect.width(), y);
-
-            int xm = option.rect.x() + space;
-            int thick = option.rect.height() / 2;
-            int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
-
-            pen.setStyle(Qt::SolidLine);
-            painter->setPen(pen);
-            painter->setBrush(textColor);
-
-            //! draw ending cirlce
-            painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
+                painter->drawLine(option.rect.x(), y, option.rect.x()+option.rect.width(), y);
         }
     }
 }

@@ -22,9 +22,10 @@
 
 // local
 #include "../data/layoutstable.h"
+#include "../controllers/layoutscontroller.h"
 
 // Qt
-#include <QItemDelegate>
+#include <QStyledItemDelegate>
 
 class QModelIndex;
 class QWidget;
@@ -34,11 +35,11 @@ namespace Settings {
 namespace Layout {
 namespace Delegate {
 
-class Shared : public QItemDelegate
+class Shared : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    Shared(QObject *parent);
+    Shared(Controller::Layouts *parent);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     void setEditorData(QWidget *editor, const QModelIndex &index) const override;
@@ -47,9 +48,14 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
+    void paintSharedToIndicator(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void updateButtonText(QWidget *editor, const QModelIndex &index) const;
 
     QString joined(const Data::LayoutsTable &layouts, bool formatText = true) const;
+
+private:
+    // we need it in order to send to the model the information when the SHARETO cell is edited
+    Controller::Layouts *m_controller{nullptr};
 };
 
 }

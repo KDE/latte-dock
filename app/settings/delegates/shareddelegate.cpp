@@ -45,8 +45,9 @@ namespace Layout {
 namespace Delegate {
 
 
-Shared::Shared(QObject *parent)
-    : QItemDelegate(parent)
+Shared::Shared(Controller::Layouts *parent)
+    : QStyledItemDelegate(parent),
+      m_controller(parent)
 {
 }
 
@@ -88,6 +89,8 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
 
     updateButtonText(button, index);
 
+    m_controller->on_sharedToInEditChanged(index.row(), true);
+
     return button;
 }
 
@@ -109,6 +112,8 @@ void Shared::setModelData(QWidget *editor, QAbstractItemModel *model, const QMod
     }
 
     model->setData(index, assignedLayouts, Qt::UserRole);
+
+    m_controller->on_sharedToInEditChanged(index.row(), false);
 }
 
 void Shared::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -120,8 +125,9 @@ void Shared::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &o
 
 void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    bool sharedInEdit = index.data(Model::Layouts::SHAREDTOINEDIT).toBool();
     Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
-    QStringList assignedIds = index.data(Qt::UserRole).toStringList();
+    QStringList assignedIds = index.data(Qt::UserRole).toStringList();    
 
     Data::LayoutsTable assignedLayouts;
 
@@ -137,7 +143,21 @@ void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const 
     painter->save();
 
     if (assignedLayouts.rowCount() > 0) {
+        //! indicator
+        if (!sharedInEdit) {
+            paintSharedToIndicator(painter, myOptions, index);
+        }
+
+        //! Text code
         myOptions.text = joined(assignedLayouts);
+
+        int thick = option.rect.height();
+
+        if (qApp->layoutDirection() == Qt::LeftToRight) {
+            myOptions.rect = QRect(myOptions.rect.x() + thick, myOptions.rect.y(), myOptions.rect.width() - thick, myOptions.rect.height());
+        } else {
+            myOptions.rect = QRect(myOptions.rect.x(), myOptions.rect.y(), myOptions.rect.width() - thick, myOptions.rect.height());
+        }
 
         QTextDocument doc;
         QString css;
@@ -172,6 +192,66 @@ void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const 
     }
 
     painter->restore();
+}
+
+void Shared::paintSharedToIndicator(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    // Disabled
+    bool isSelected{Latte::isSelected(option)};
+    QPalette::ColorRole backColorRole = isSelected ? QPalette::Highlight : QPalette::Base;
+    QPalette::ColorRole textColorRole = isSelected ? QPalette::HighlightedText : QPalette::Text;
+
+    int space = option.rect.height() / 2;
+
+    //! draw background below icons
+    //! HIDDENTEXTCOLUMN is just needed to draw empty background rectangles properly based on states
+    QStyleOptionViewItem backOptions = option;
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        backOptions.rect = QRect(option.rect.x(), option.rect.y(), 2 * space, 2 * space);
+    } else {
+        backOptions.rect = QRect(option.rect.x() + option.rect.width() - (2*space), option.rect.y(), 2 * space, 2 * space);
+    }
+
+    QStyledItemDelegate::paint(painter, backOptions, index.model()->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
+
+    // text
+    QPen pen(Qt::DotLine);
+    QColor textColor = option.palette.brush(Latte::colorGroup(option), textColorRole).color();
+
+    pen.setWidth(2); pen.setColor(textColor);
+    int y = option.rect.y()+option.rect.height()/2;
+
+    painter->setPen(pen);
+
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        int xStart = option.rect.x();
+        painter->drawLine(xStart, y, xStart + space, y);
+
+        int xm = option.rect.x() + space;
+        int thick = option.rect.height() / 2;
+        int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
+
+        pen.setStyle(Qt::SolidLine);
+        painter->setPen(pen);
+        painter->setBrush(textColor);
+
+        //! draw ending cirlce
+        painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
+    } else {
+        int xEnd = option.rect.x() + option.rect.width();
+        painter->drawLine(xEnd, y, xEnd-space, y);
+
+        int xm = option.rect.x() + option.rect.width() - space;
+        int thick = option.rect.height() / 2;
+        int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
+
+        pen.setStyle(Qt::SolidLine);
+        painter->setPen(pen);
+        painter->setBrush(textColor);
+
+        //! draw ending cirlce
+        painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
+    }
 }
 
 void Shared::updateButtonText(QWidget *editor, const QModelIndex &index) const

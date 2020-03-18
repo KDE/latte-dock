@@ -609,6 +609,11 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
     return false;
 }
 
+void Layouts::on_sharedToInEditChanged(const int &row, const bool &inEdit)
+{
+    m_model->setData(m_model->index(row, Model::Layouts::SHAREDCOLUMN), inEdit, Model::Layouts::SHAREDTOINEDIT);
+}
+
 void Layouts::reset()
 {
     setOriginalInMultipleMode(o_originalInMultipleMode);

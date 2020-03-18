@@ -350,6 +350,8 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         QVariant layouts;
         layouts.setValue(m_layoutsTable);
         return layouts;
+    } else if (role == SHAREDTOINEDIT) {
+        return (m_sharedToInEditRow == row);
     }
 
     switch (column) {
@@ -639,6 +641,14 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
     case SHAREDCOLUMN:
         if (role == Qt::UserRole) {
             setShares(row, value.toStringList());
+            return true;
+        } else if (role == SHAREDTOINEDIT) {
+            bool inEdit = value.toBool();
+            m_sharedToInEditRow = inEdit ? row : -1;
+            roles << Qt::DisplayRole;
+            roles << Qt::UserRole;
+            emit dataChanged(this->index(row, ACTIVITYCOLUMN), this->index(row, SHAREDCOLUMN),  roles);
+
             return true;
         }
         break;

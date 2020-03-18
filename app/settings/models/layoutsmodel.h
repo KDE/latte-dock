@@ -63,7 +63,8 @@ public:
         ASSIGNEDACTIVITIESROLE,
         ALLACTIVITIESSORTEDROLE,
         ALLACTIVITIESDATAROLE,
-        ALLLAYOUTSROLE
+        ALLLAYOUTSROLE,
+        SHAREDTOINEDIT
     };
 
     explicit Layouts(QObject *parent, Latte::Corona *corona);
@@ -132,6 +133,8 @@ private:
 private:
     bool m_inMultipleMode{false};
     Data::LayoutsTable m_layoutsTable;
+
+    int m_sharedToInEditRow{-1};
 
     Data::ActivitiesMap m_activitiesMap;
     QHash<QString, KActivities::Info *> m_activitiesInfo;

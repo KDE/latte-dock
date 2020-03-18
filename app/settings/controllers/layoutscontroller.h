@@ -87,6 +87,10 @@ public:
 signals:
     void dataChanged();
 
+public slots:
+    //! needed for Delegate::Shared
+    void on_sharedToInEditChanged(const int &row, const bool &inEdit);
+
 private slots:
     void saveColumnWidths();
     void on_nameDuplicatedFrom(const QString &provenId,  const QString &trialId);

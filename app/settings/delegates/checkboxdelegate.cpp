@@ -59,11 +59,12 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
         QPalette::ColorRole backColorRole = isSelected ? QPalette::Highlight : QPalette::Base;
         QPalette::ColorRole textColorRole = isSelected ? QPalette::HighlightedText : QPalette::Text;
 
-        // background
-        painter->fillRect(option.rect, option.palette.brush(Latte::colorGroup(option), backColorRole));
+        //! draw background
+        //! HIDDENTEXTCOLUMN is just needed to draw empty background rectangles properly based on states
+        QStyledItemDelegate::paint(painter, option, index.model()->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
         // text
-        QPen pen(Qt::DashDotDotLine);
+        QPen pen(Qt::DotLine);
         pen.setWidth(2); pen.setColor(option.palette.brush(Latte::colorGroup(option), textColorRole).color());
         int y = option.rect.y()+option.rect.height()/2;
 

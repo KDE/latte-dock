@@ -24,7 +24,7 @@
 #include "../data/activitydata.h"
 
 // Qt
-#include <QItemDelegate>
+#include <QStyledItemDelegate>
 
 class QModelIndex;
 class QWidget;
@@ -35,7 +35,7 @@ namespace Settings {
 namespace Layout {
 namespace Delegate {
 
-class Activities : public QItemDelegate
+class Activities : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
