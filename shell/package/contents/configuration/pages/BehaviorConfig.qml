@@ -791,7 +791,9 @@ PlasmaComponents.Page {
                     text: i18n("Activate KWin edge after hiding")
                     checked: latteView.visibility.enableKWinEdges
                     tooltip: i18n("After the view becomes hidden, KWin is informed to track user feedback. For example an edge visual hint is shown whenever the mouse approaches the hidden view")
-                    enabled: !latteView.byPassWM && latteView.visibility.mode !== Latte.Types.SideBar
+                    enabled: !dialog.viewIsPanel
+                             && !latteView.byPassWM
+                             && latteView.visibility.mode !== Latte.Types.SideBar
 
                     onClicked: {
                         latteView.visibility.enableKWinEdges = checked;

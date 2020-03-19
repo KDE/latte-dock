@@ -66,6 +66,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
+        connect(m_latteView, &Latte::View::behaveAsPlasmaPanelChanged , this, &VisibilityManager::updateKWinEdgesSupport);
         connect(m_latteView, &Latte::View::byPassWMChanged, this, &VisibilityManager::updateKWinEdgesSupport);
         connect(m_latteView, &Latte::View::inEditModeChanged, this, &VisibilityManager::initViewFlags);
 
@@ -832,7 +833,7 @@ void VisibilityManager::updateKWinEdgesSupport()
          || m_mode == Types::DodgeMaximized)
             && !m_latteView->byPassWM()) {
 
-        if (m_enableKWinEdgesFromUser) {
+        if (m_enableKWinEdgesFromUser || m_latteView->behaveAsPlasmaPanel()) {
             createEdgeGhostWindow();
             if (m_latteView->isFloatingWindow()) {
                 createFloatingGapWindow();
