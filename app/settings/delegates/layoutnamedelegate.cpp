@@ -118,7 +118,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
         myOptionS.rect = destinationS;
         myOptionE.rect = destinationE;
-        myOptionMain.rect.setX(option.rect.x() + startWidth);
+        myOptionMain.rect.moveLeft(option.rect.x() + startWidth);
         myOptionMain.rect.setWidth(option.rect.width() - startWidth - endWidth);
 
         QStyledItemDelegate::paint(painter, myOptionMain, index);
