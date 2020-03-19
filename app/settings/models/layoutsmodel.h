@@ -123,7 +123,9 @@ private slots:
 private:
     void initActivities();
 
+    void assignFreeActivitiesLayoutAt(const QString &layoutName);
     void autoAssignFreeActivitiesLayout();
+
     void setActivities(const int &row, const QStringList &activities);
     void setId(const int &row, const QString &newId);
     void setShares(const int &row, const QStringList &shares);

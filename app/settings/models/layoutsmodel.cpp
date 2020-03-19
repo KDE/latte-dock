@@ -24,6 +24,7 @@
 #include "../data/layoutdata.h"
 #include "../../layouts/manager.h"
 #include "../../layouts/synchronizer.h"
+#include "../../settings/universalsettings.h"
 
 // Qt
 #include <QDebug>
@@ -61,6 +62,11 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
 
     connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::currentLayoutNameChanged, this, &Layouts::updateActiveStates);
     connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::centralLayoutsChanged, this, &Layouts::updateActiveStates);
+
+    connect(m_corona->universalSettings(), &Latte::UniversalSettings::lastNonAssignedLayoutNameChanged, this, [&]() {
+        //FREE ACTIVITES LAYOUT changed and our model must be updated...
+        assignFreeActivitiesLayoutAt(m_corona->universalSettings()->lastNonAssignedLayoutName());
+    });
 }
 
 Layouts::~Layouts()
@@ -416,6 +422,22 @@ QStringList Layouts::cleanStrings(const QStringList &original, const QStringList
     return result;
 }
 
+
+void Layouts::assignFreeActivitiesLayoutAt(const QString &layoutName)
+{
+    QString reqId = m_layoutsTable.idForOriginalName(layoutName);
+
+    if (reqId.isEmpty()) {
+        reqId = m_layoutsTable.idForCurrentName(layoutName);
+        if (reqId.isEmpty()) {
+            return;
+        }
+    }
+
+    int row = m_layoutsTable.indexOf(reqId);
+    setActivities(row, QStringList(Data::Layout::FREEACTIVITIESID));
+    setShares(row, QStringList());
+}
 
 void Layouts::autoAssignFreeActivitiesLayout()
 {
