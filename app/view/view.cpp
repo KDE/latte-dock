@@ -486,18 +486,19 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
     //! experience with struts. Removing them in order to restore correct
     //! behavior and keeping this comment in order to check for
     //! multi-screen breakage
-    QRect absGeometry {x() + m_localGeometry.x(), y() + m_localGeometry.y()
-                , m_localGeometry.width(), m_localGeometry.height()};
+    QRect absGeometry = m_localGeometry;
+    absGeometry.moveLeft(x() + m_localGeometry.x());
+    absGeometry.moveTop(y() + m_localGeometry.y());
 
-    if (isFloatingWindow()) {
+    if (behaveAsPlasmaPanel()) {
         if (location() == Plasma::Types::BottomEdge) {
-            absGeometry.setY(screenGeometry().bottom() - m_screenEdgeMargin - m_normalThickness);
+            absGeometry.moveTop(screenGeometry().bottom() - m_screenEdgeMargin - m_normalThickness);
         } else if (location() == Plasma::Types::TopEdge) {
-            absGeometry.setY(screenGeometry().top() + m_screenEdgeMargin);
+            absGeometry.moveTop(screenGeometry().top() + m_screenEdgeMargin);
         } else if (location() == Plasma::Types::LeftEdge) {
-            absGeometry.setX(screenGeometry().left() + m_screenEdgeMargin);
+            absGeometry.moveLeft(screenGeometry().left() + m_screenEdgeMargin);
         } else if (location() == Plasma::Types::RightEdge) {
-            absGeometry.setX(screenGeometry().right() - m_screenEdgeMargin - m_normalThickness);
+            absGeometry.moveLeft(screenGeometry().right() - m_screenEdgeMargin - m_normalThickness);
         }
     }
 
