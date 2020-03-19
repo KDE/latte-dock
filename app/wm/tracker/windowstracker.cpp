@@ -837,7 +837,7 @@ void Windows::updateHints(Latte::View *view)
     WindowId touchWinId;
     WindowId activeTouchWinId;
 
-    qDebug() << " -- TRACKING REPORT (SCREEN)--";
+    //qDebug() << " -- TRACKING REPORT (SCREEN)--";
 
     //! First Pass
     for (const auto &winfo : m_windows) {
@@ -851,8 +851,8 @@ void Windows::updateHints(Latte::View *view)
             continue;
         }
 
-        qDebug() << " _ _ _ ";
-        qDebug() << "TRACKING | WINDOW INFO :: " << winfo.wid() << " _ " << winfo.appName() << " _ " << winfo.geometry() << " _ " << winfo.display();
+        //qDebug() << " _ _ _ ";
+        //qDebug() << "TRACKING | WINDOW INFO :: " << winfo.wid() << " _ " << winfo.appName() << " _ " << winfo.geometry() << " _ " << winfo.display();
 
         if (isActive(winfo)) {
             foundActive = true;
@@ -885,8 +885,8 @@ void Windows::updateHints(Latte::View *view)
             }
         }
 
-        qDebug() << "TRACKING |       ACTIVE:"<< foundActive <<  " ACT_CUR_SCR:" << foundTouchInCurScreen << " MAXIM:"<<foundMaximizedInCurScreen;
-        qDebug() << "TRACKING |       TOUCHING VIEW EDGE:"<< touchingViewEdge << " TOUCHING VIEW:" << foundTouchInCurScreen;
+        //qDebug() << "TRACKING |       ACTIVE:"<< foundActive <<  " ACT_CUR_SCR:" << foundTouchInCurScreen << " MAXIM:"<<foundMaximizedInCurScreen;
+        //qDebug() << "TRACKING |       TOUCHING VIEW EDGE:"<< touchingViewEdge << " TOUCHING VIEW:" << foundTouchInCurScreen;
     }
 
     if (existsFaultyWindow) {
@@ -909,7 +909,7 @@ void Windows::updateHints(Latte::View *view)
         for (const auto &winfo : m_windows) {
             if (!m_wm->inCurrentDesktopActivity(winfo)
                     || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())
-                    || winfo.isMinimized())) {
+                    || winfo.isMinimized()) {
                 continue;
             }
 
@@ -965,12 +965,12 @@ void Windows::updateHints(Latte::View *view)
     }
 
     //! Debug
-    qDebug() << "TRACKING |      _________ FINAL RESULTS ________";
-    qDebug() << "TRACKING | SCREEN: " << view->positioner()->currentScreenId() << " , EDGE:" << view->location() << " , ENABLED:" << enabled(view);
-    qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
-    qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
-             << " , existsWindowTouching:"<<existsWindowTouching(view);
-    qDebug() << "TRACKING | existsActiveGroupTouching: " << foundActiveGroupTouchInCurScreen;
+    //qDebug() << "TRACKING |      _________ FINAL RESULTS ________";
+    //qDebug() << "TRACKING | SCREEN: " << view->positioner()->currentScreenId() << " , EDGE:" << view->location() << " , ENABLED:" << enabled(view);
+    //qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
+    //qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
+    //         << " , existsWindowTouching:"<<existsWindowTouching(view);
+    //qDebug() << "TRACKING | existsActiveGroupTouching: " << foundActiveGroupTouchInCurScreen;
 }
 
 void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
