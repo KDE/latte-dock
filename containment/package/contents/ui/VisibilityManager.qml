@@ -197,7 +197,14 @@ Item{
         target: latteView
         property: "screenEdgeMargin"
         when: latteView
-        value: !root.screenEdgeMarginEnabled || root.hideThickScreenGap ? -1 : plasmoid.configuration.screenEdgeMargin
+        value: plasmoid.configuration.screenEdgeMargin
+    }
+
+    Binding{
+        target: latteView
+        property: "screenEdgeMarginEnabled"
+        when: latteView
+        value: root.screenEdgeMarginEnabled && !root.hideThickScreenGap
     }
 
     Binding{
@@ -940,17 +947,10 @@ Item{
         }
     }
 
-    //! Slides Animations for FLOATING+BEHAVEASPLASMAPANEL
-    /*  DISABLED because they dont create a smooth transition
-
+    //! Slides Animations for FLOATING+BEHAVEASPLASMAPANEL when
+    //! HIDETHICKSCREENCAP dynamically is enabled/disabled
     SequentialAnimation{
         id: slidingInRealFloating
-
-        ScriptAction{
-            script: {
-                latteView.positioner.inSlideAnimation = true;
-            }
-        }
 
         PropertyAnimation {
             target: latteView.positioner
@@ -959,22 +959,10 @@ Item{
             duration: manager.animationSpeed
             easing.type: Easing.OutQuad
         }
-
-        ScriptAction{
-            script: {
-                latteView.positioner.inSlideAnimation = false;
-            }
-        }
     }
 
     SequentialAnimation{
         id: slidingOutRealFloating
-
-        ScriptAction{
-            script: {
-                latteView.positioner.inSlideAnimation = true;
-            }
-        }
 
         PropertyAnimation {
             target: latteView.positioner
@@ -983,12 +971,6 @@ Item{
             duration: manager.animationSpeed
             easing.type: Easing.OutQuad
         }
-
-        ScriptAction{
-            script: {
-                latteView.positioner.inSlideAnimation = false;
-            }
-        }
     }
 
     Connections {
@@ -996,14 +978,16 @@ Item{
         onHideThickScreenGapChanged: {
             if (root.behaveAsPlasmaPanel && !latteView.visibility.isHidden) {
                 if (hideThickScreenGap) {
+                    latteView.positioner.inSlideAnimation = true;
                     slidingInRealFloating.stop();
                     slidingOutRealFloating.start();
                 } else {
                     slidingOutRealFloating.stop();
                     slidingInRealFloating.start();
+                    latteView.positioner.inSlideAnimation = false;
                 }
             }
         }
-    }*/
+    }
 
 }

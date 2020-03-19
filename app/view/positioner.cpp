@@ -140,12 +140,6 @@ void Positioner::init()
     connect(m_view, &Latte::View::maxLengthChanged, this, &Positioner::syncGeometry);
     connect(m_view, &Latte::View::offsetChanged, this, &Positioner::syncGeometry);
 
-    connect(m_view, &Latte::View::absoluteGeometryChanged, this, [&]() {
-        if (m_view->behaveAsPlasmaPanel()) {
-            syncGeometry();
-        }
-    });
-
     connect(m_view, &Latte::View::locationChanged, this, [&]() {
         updateFormFactor();
         syncGeometry();
@@ -158,7 +152,7 @@ void Positioner::init()
     });
 
     connect(m_view, &Latte::View::screenEdgeMarginEnabledChanged, this, [&]() {
-        if (m_view->behaveAsPlasmaPanel() || m_view->inEditMode() ) {
+        if (m_view->inEditMode() ) {
             syncGeometry();
         }
     });

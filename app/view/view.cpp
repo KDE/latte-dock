@@ -231,6 +231,13 @@ void View::init()
     connect(this, &QQuickWindow::heightChanged, this, &View::heightChanged);
     connect(this, &QQuickWindow::heightChanged, this, &View::updateAbsoluteGeometry);
 
+    connect(this, &View::localGeometryChanged, this, [&]() {
+        updateAbsoluteGeometry();
+    });
+    connect(this, &View::screenEdgeMarginEnabledChanged, this, [&]() {
+        updateAbsoluteGeometry();
+    });
+
     //! used in order to disconnect it when it should NOT be called because it creates crashes
     connect(this, &View::availableScreenRectChangedFrom, m_corona, &Latte::Corona::availableScreenRectChangedFrom);
     connect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
@@ -465,7 +472,6 @@ void View::setLocalGeometry(const QRect &geometry)
 
     m_localGeometry = geometry;
     emit localGeometryChanged();
-    updateAbsoluteGeometry();
 }
 
 QString View::validTitle() const
@@ -491,7 +497,7 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
     absGeometry.moveTop(y() + m_localGeometry.y());
 
     if (behaveAsPlasmaPanel()) {
-        int currentScreenEdgeMargin = qMax(0, m_screenEdgeMargin);
+        int currentScreenEdgeMargin = m_screenEdgeMarginEnabled ? qMax(0, m_screenEdgeMargin) : 0;
 
         if (location() == Plasma::Types::BottomEdge) {
             absGeometry.moveTop(screenGeometry().bottom() - currentScreenEdgeMargin - m_normalThickness);
@@ -878,8 +884,6 @@ void View::setScreenEdgeMargin(int margin)
     }
 
     m_screenEdgeMargin = margin;
-    setScreenEdgeMarginEnabled(m_screenEdgeMargin>-1);
-
     emit screenEdgeMarginChanged();
 }
 

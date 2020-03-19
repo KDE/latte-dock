@@ -86,6 +86,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(bool isPreferredForShortcuts READ isPreferredForShortcuts WRITE setIsPreferredForShortcuts NOTIFY isPreferredForShortcutsChanged)
     Q_PROPERTY(bool latteTasksArePresent READ latteTasksArePresent WRITE setLatteTasksArePresent NOTIFY latteTasksArePresentChanged)
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
+    Q_PROPERTY(bool screenEdgeMarginEnabled READ screenEdgeMarginEnabled WRITE setScreenEdgeMarginEnabled NOTIFY screenEdgeMarginEnabledChanged)
 
     //! values to be used from Smart surrounding Views
     Q_PROPERTY(bool isTouchingBottomViewAndIsBusy READ isTouchingBottomViewAndIsBusy WRITE setIsTouchingBottomViewAndIsBusy NOTIFY isTouchingBottomViewAndIsBusyChanged)
@@ -165,6 +166,7 @@ public:
     void setIsTouchingTopViewAndIsBusy(bool touchAndBusy);
 
     bool screenEdgeMarginEnabled() const;
+    void setScreenEdgeMarginEnabled(bool enabled);
 
     float maxLength() const;
     void setMaxLength(float length);
@@ -332,7 +334,6 @@ private:
     void updateAppletContainsMethod();
 
     void setContainsDrag(bool contains);
-    void setScreenEdgeMarginEnabled(bool enabled);
 
 private:
     Plasma::Containment *containmentById(uint id);
