@@ -837,15 +837,22 @@ void Windows::updateHints(Latte::View *view)
     WindowId touchWinId;
     WindowId activeTouchWinId;
 
+    qDebug() << " -- TRACKING REPORT (SCREEN)--";
+
     //! First Pass
     for (const auto &winfo : m_windows) {
         if (!existsFaultyWindow && (winfo.wid()<=0 || winfo.geometry() == QRect(0, 0, 0, 0))) {
             existsFaultyWindow = true;
         }
 
-        if (!m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())) {
+        if ( !m_wm->inCurrentDesktopActivity(winfo)
+             || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())
+             || winfo.isMinimized()) {
             continue;
         }
+
+        qDebug() << " _ _ _ ";
+        qDebug() << "TRACKING | WINDOW INFO :: " << winfo.wid() << " _ " << winfo.appName() << " _ " << winfo.geometry() << " _ " << winfo.display();
 
         if (isActive(winfo)) {
             foundActive = true;
@@ -864,19 +871,22 @@ void Windows::updateHints(Latte::View *view)
         }
 
         //! Touching windows flags
-        if (isTouchingViewEdge(view, winfo) || isTouchingView(view, winfo)) {
+
+        bool touchingViewEdge = isTouchingViewEdge(view, winfo);
+        bool touchingView =  isTouchingView(view, winfo);
+
+        if (touchingViewEdge || touchingView) {
             if (winfo.isActive()) {
-                //qDebug() << " ACTIVE-TOUCH :: " << winfo.wid() << " _ " << winfo.appName() << " _ " << winfo.geometry() << " _ " << winfo.display();
                 foundActiveTouchInCurScreen = true;
                 activeTouchWinId = winfo.wid();
             } else {
-                //qDebug() << " TOUCH :: " << winfo.wid() << " _ " << winfo.appName() << " _ " << winfo.geometry() << " _ " << winfo.display();
                 foundTouchInCurScreen = true;
                 touchWinId = winfo.wid();
             }
         }
 
-        //qDebug() << "window geometry ::: " << winfo.geometry();
+        qDebug() << "TRACKING |       ACTIVE:"<< foundActive <<  " ACT_CUR_SCR:" << foundTouchInCurScreen << " MAXIM:"<<foundMaximizedInCurScreen;
+        qDebug() << "TRACKING |       TOUCHING VIEW EDGE:"<< touchingViewEdge << " TOUCHING VIEW:" << foundTouchInCurScreen;
     }
 
     if (existsFaultyWindow) {
@@ -897,7 +907,9 @@ void Windows::updateHints(Latte::View *view)
         WindowId mainWindowId = activeInfo.isChildWindow() ? activeInfo.parentId() : activeWinId;
 
         for (const auto &winfo : m_windows) {
-            if (!m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())) {
+            if (!m_wm->inCurrentDesktopActivity(winfo)
+                    || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())
+                    || winfo.isMinimized())) {
                 continue;
             }
 
@@ -953,12 +965,12 @@ void Windows::updateHints(Latte::View *view)
     }
 
     //! Debug
-    //qDebug() << " -- TRACKING REPORT (SCREEN)--";
-    //qDebug() << "TRACKING | SCREEN: " << view->positioner()->currentScreenId() << " , EDGE:" << view->location() << " , ENABLED:" << enabled(view);
-    //qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
-    //qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
-    //         << " , existsWindowTouching:"<<existsWindowTouching(view);
-    //qDebug() << "TRACKING | existsActiveGroupTouching: " << foundActiveGroupTouchInCurScreen;
+    qDebug() << "TRACKING |      _________ FINAL RESULTS ________";
+    qDebug() << "TRACKING | SCREEN: " << view->positioner()->currentScreenId() << " , EDGE:" << view->location() << " , ENABLED:" << enabled(view);
+    qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
+    qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
+             << " , existsWindowTouching:"<<existsWindowTouching(view);
+    qDebug() << "TRACKING | existsActiveGroupTouching: " << foundActiveGroupTouchInCurScreen;
 }
 
 void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
@@ -982,7 +994,9 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
             existsFaultyWindow = true;
         }
 
-        if (!m_wm->inCurrentDesktopActivity(winfo) || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())) {
+        if (!m_wm->inCurrentDesktopActivity(winfo)
+                || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())
+                || winfo.isMinimized()) {
             continue;
         }
 

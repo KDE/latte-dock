@@ -125,8 +125,16 @@ Item{
     Binding{
         target: latteView
         property:"normalThickness"
-        when: latteView && inPublishingState
-        value:  root.behaveAsPlasmaPanel && !root.editMode ? thicknessAsPanel : thicknessNormalOriginal
+        //! workaround Qt 5.14 bindings warning to not restore values because to qt 6.0 changes
+        //when: latteView && inPublishingState
+        readonly property bool inactiveness: latteView && inPublishingState
+        value:  {
+            if (!inactiveness) {
+                return;
+            }
+
+            return root.behaveAsPlasmaPanel && !root.editMode ? thicknessAsPanel : thicknessNormalOriginal
+        }
     }
 
     Binding{
@@ -714,7 +722,11 @@ Item{
         var validIconSize = (root.iconSize===root.maxIconSize || root.iconSize === automaticItemSizer.automaticIconSizeBasedSize);
 
         //console.log("reached updating geometry ::: "+dock.maskArea);
-        if(inPublishingState && (normalState || root.editMode)) {
+
+        if(inPublishingState && !latteView.visibility.isHidden && (normalState || root.editMode)) {
+            //! Important: Local Geometry must not be updated when view ISHIDDEN
+            //! because it breaks Dodge(s) modes in such case
+
             var localGeometry = Qt.rect(0, 0, root.width, root.height);
 
             //the shadows size must be removed from the maskArea
