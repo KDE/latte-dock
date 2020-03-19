@@ -601,7 +601,11 @@ Item{
         var validIconSize = (root.iconSize===root.maxIconSize || root.iconSize === automaticItemSizer.automaticIconSizeBasedSize);
 
         //console.log("reached updating geometry ::: "+dock.maskArea);
-        if(inPublishingState && (normalState || root.editMode)) {
+
+        if(inPublishingState && !latteView.visibility.isHidden && (normalState || root.editMode)) {
+            //! Important: Local Geometry must not be updated when view ISHIDDEN
+            //! because it breaks Dodge(s) modes in such case
+
             var tempGeometry = Qt.rect(latteView.effects.mask.x, latteView.effects.mask.y, latteView.effects.mask.width, latteView.effects.mask.height);
 
             //the shadows size must be removed from the maskArea
