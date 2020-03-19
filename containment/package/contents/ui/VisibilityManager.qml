@@ -976,7 +976,7 @@ Item{
     Connections {
         target: root
         onHideThickScreenGapChanged: {
-            if (root.behaveAsPlasmaPanel && !latteView.visibility.isHidden) {
+            if (root.behaveAsPlasmaPanel && !latteView.visibility.isHidden && !inSlidingIn && !inSlidingOut && !inStartup) {
                 if (hideThickScreenGap) {
                     latteView.positioner.inSlideAnimation = true;
                     slidingInRealFloating.stop();
