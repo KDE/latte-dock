@@ -491,14 +491,16 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
     absGeometry.moveTop(y() + m_localGeometry.y());
 
     if (behaveAsPlasmaPanel()) {
+        int currentScreenEdgeMargin = qMax(0, m_screenEdgeMargin);
+
         if (location() == Plasma::Types::BottomEdge) {
-            absGeometry.moveTop(screenGeometry().bottom() - m_screenEdgeMargin - m_normalThickness);
+            absGeometry.moveTop(screenGeometry().bottom() - currentScreenEdgeMargin - m_normalThickness);
         } else if (location() == Plasma::Types::TopEdge) {
-            absGeometry.moveTop(screenGeometry().top() + m_screenEdgeMargin);
+            absGeometry.moveTop(screenGeometry().top() + currentScreenEdgeMargin);
         } else if (location() == Plasma::Types::LeftEdge) {
-            absGeometry.moveLeft(screenGeometry().left() + m_screenEdgeMargin);
+            absGeometry.moveLeft(screenGeometry().left() + currentScreenEdgeMargin);
         } else if (location() == Plasma::Types::RightEdge) {
-            absGeometry.moveLeft(screenGeometry().right() - m_screenEdgeMargin - m_normalThickness);
+            absGeometry.moveLeft(screenGeometry().right() - currentScreenEdgeMargin - m_normalThickness);
         }
     }
 
