@@ -61,6 +61,7 @@ public:
         LAYOUTNAMEWASEDITEDROLE,
         INMULTIPLELAYOUTSROLE,
         ASSIGNEDACTIVITIESROLE,
+        ASSIGNEDACTIVITIESFROMSHAREDROLE,
         ALLACTIVITIESSORTEDROLE,
         ALLACTIVITIESDATAROLE,
         ALLLAYOUTSROLE,
@@ -131,6 +132,8 @@ private:
     void setShares(const int &row, const QStringList &shares);
 
     QStringList cleanStrings(const QStringList &original, const QStringList &occupied);
+
+    QStringList assignedActivitiesFromShared(const int &row) const;
 
 private:
     bool m_inMultipleMode{false};

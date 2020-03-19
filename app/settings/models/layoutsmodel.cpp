@@ -223,6 +223,28 @@ void Layouts::setLayoutNameForFreeActivities(const QString &name)
     }
 }
 
+QStringList Layouts::assignedActivitiesFromShared(const int &row) const
+{
+    QStringList assigns;
+
+    if (!m_layoutsTable.rowExists(row)) {
+        return assigns;
+    }
+
+    if (m_layoutsTable[row].isShared()) {
+        for (int i=0; i<m_layoutsTable[row].shares.count(); ++i) {
+            QString shareId = m_layoutsTable[row].shares[i];
+            int shareRow = rowForId(shareId);
+
+            if (shareRow>=0 && !m_layoutsTable[shareRow].activities.isEmpty()) {
+                assigns << m_layoutsTable[shareRow].activities;
+            }
+        }
+    }
+
+    return assigns;
+}
+
 QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation != Qt::Horizontal) {
@@ -343,6 +365,8 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return m_layoutsTable[row].nameWasEdited();
     } else if (role == ASSIGNEDACTIVITIESROLE) {
         return m_layoutsTable[row].activities;
+    } else if (role == ASSIGNEDACTIVITIESFROMSHAREDROLE) {
+        return assignedActivitiesFromShared(row);
     } else if (role == ALLACTIVITIESSORTEDROLE) {
         QStringList activities;
         activities << QString(Data::Layout::FREEACTIVITIESID);

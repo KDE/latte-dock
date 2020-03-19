@@ -124,7 +124,12 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
     //! activities icons
     Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Data::ActivitiesMap>();
-    QStringList assignedIds = index.data(Model::Layouts::ASSIGNEDACTIVITIESROLE).toStringList();
+
+    bool isShared = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+    QStringList assignedIds =  isShared ? index.data(Model::Layouts::ASSIGNEDACTIVITIESFROMSHAREDROLE).toStringList() :
+                                          index.data(Model::Layouts::ASSIGNEDACTIVITIESROLE).toStringList();
+
+    int freeActivitiesPos = -1;
 
     for(int i=0; i<assignedIds.count(); ++i) {
         QString id = assignedIds[i];
@@ -134,7 +139,13 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
             icon.isFreeActivities = (id == Data::Layout::FREEACTIVITIESID);
             icon.name = allActivitiesData[id].icon;
             icons << icon;
+            freeActivitiesPos = icons.count()-1;
         }
+    }
+
+    if (freeActivitiesPos>=0) {
+        IconData freeActsData = icons.takeAt(freeActivitiesPos);
+        icons.prepend(freeActsData);
     }
 
     //! background image
@@ -152,7 +163,7 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
     }
 
     if (icons.count() > 0) {
-        int localMargin = icons[0].isBackground ? MARGIN+1 : MARGIN-1;
+        int localMargin = icons[0].isBackground ? qMin(option.rect.height()/4,MARGIN+5) : MARGIN-1;
 
         if (icons[0].isFreeActivities) {
             localMargin = 0;
