@@ -59,8 +59,16 @@ Item{
     property bool inTempHiding: false
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
 
-    property int slidingOutToPos: ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) ?
-                                      -thicknessNormal : thicknessNormal;
+    property int slidingOutToPos: {
+        if (root.behaveAsPlasmaPanel) {
+            var edgeMargin = screenEdgeMarginEnabled ? plasmoid.configuration.screenEdgeMargin : 0
+
+           root.isHorizontal ? root.height + edgeMargin - 1 : root.width + edgeMargin - 1;
+        } else {
+            var topOrLeftEdge = ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge));
+            return (topOrLeftEdge ? -thicknessNormal : thicknessNormal);
+        }
+    }
 
     property int thicknessAutoHidden: Latte.WindowSystem.compositingActive ?  2 : 1
     property int thicknessMid: root.screenEdgeMargin + (1 + (0.65 * (root.maxZoomFactor-1)))*(root.iconSize+root.thickMargins+extraThickMask) //needed in some animations

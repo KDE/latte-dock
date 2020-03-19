@@ -22,6 +22,7 @@
 // local
 #include "effects.h"
 #include "view.h"
+#include "visibilitymanager.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
@@ -178,7 +179,19 @@ void Positioner::init()
     connect(qGuiApp, &QGuiApplication::screenAdded, this, &Positioner::screenChanged);
     connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Positioner::screenChanged);
 
+    connect(m_view, &Latte::View::visibilityChanged, this, &Positioner::initDelayedSignals);
+
     initSignalingForLocationChangeSliding();
+}
+
+void Positioner::initDelayedSignals()
+{
+    connect(m_view->visibility(), &ViewPart::VisibilityManager::isHiddenChanged, this, [&]() {
+        if (m_view->behaveAsPlasmaPanel() && !m_view->visibility()->isHidden() && qAbs(m_slideOffset)>0) {
+            //! ignore any checks to make sure the panel geometry is up-to-date
+            immediateSyncGeometry();
+        }
+    });
 }
 
 void Positioner::updateWaylandId()
@@ -375,9 +388,16 @@ void Positioner::syncGeometry()
         return;
     }
 
+    qDebug() << "syncGeometry() called...";
+
+    immediateSyncGeometry();
+}
+
+void Positioner::immediateSyncGeometry()
+{
     bool found{false};
 
-    qDebug() << "syncGeometry() called...";
+    qDebug() << "immediateSyncGeometry() called...";
 
     //! before updating the positioning and geometry of the dock
     //! we make sure that the dock is at the correct screen
@@ -573,6 +593,17 @@ void Positioner::updatePosition(QRect availableScreenRect)
 
     int screenEdgeMargin = (m_view->behaveAsPlasmaPanel() && m_view->screenEdgeMarginEnabled()) ? m_view->screenEdgeMargin() : 0;
 
+    if (m_view->behaveAsPlasmaPanel()) {
+        //! Update screenEdgeMargin to take into account slide_offset that is used
+        //! in real window animations for BEHAVEASPLASMAPANELS views
+
+        if (m_view->location() == Plasma::Types::TopEdge || m_view->location() == Plasma::Types::LeftEdge) {
+            screenEdgeMargin = screenEdgeMargin + qAbs(m_slideOffset);
+        } else {
+            screenEdgeMargin = screenEdgeMargin - qAbs(m_slideOffset);
+        }
+    }
+
     switch (m_view->location()) {
     case Plasma::Types::TopEdge:
         if (m_view->behaveAsPlasmaPanel()) {
@@ -619,7 +650,19 @@ void Positioner::updatePosition(QRect availableScreenRect)
                    << m_view->location();
     }
 
-    m_validGeometry.setTopLeft(position);
+    if (m_slideOffset == 0) {
+        //! update valid geometry in normal positioning
+        m_validGeometry.setTopLeft(position);
+    } else {
+        //! when sliding in/out update only the relevant axis for the screen_edge in
+        //! to not mess the calculations and the automatic geometry checkers that
+        //! View::Positioner is using.
+        if (m_view->formFactor() == Plasma::Types::Horizontal) {
+            m_validGeometry.moveLeft(position.x());
+        } else {
+            m_validGeometry.moveTop(position.y());
+        }
+    }
 
     m_view->setPosition(position);
 
@@ -644,7 +687,7 @@ void Positioner::setSlideOffset(int offset)
     QPoint slidedTopLeft;
 
     if (m_view->location() == Plasma::Types::TopEdge) {
-        int boundedY = qMax(m_view->screenGeometry().top() - (m_validGeometry.height() - 1), m_validGeometry.y() - qAbs(m_slideOffset));
+        int boundedY = qMax(m_view->screenGeometry().top() - (m_validGeometry.height() + 1), m_validGeometry.y() - qAbs(m_slideOffset));
         slidedTopLeft = {m_validGeometry.x(), boundedY};
 
     } else if (m_view->location() == Plasma::Types::BottomEdge) {
@@ -656,7 +699,7 @@ void Positioner::setSlideOffset(int offset)
         slidedTopLeft = {boundedX, m_validGeometry.y()};
 
     } else if (m_view->location() == Plasma::Types::LeftEdge) {
-        int boundedX = qMax(m_view->screenGeometry().left() - (m_validGeometry.width() - 1), m_validGeometry.x() - qAbs(m_slideOffset));
+        int boundedX = qMax(m_view->screenGeometry().left() - (m_validGeometry.width() + 1), m_validGeometry.x() - qAbs(m_slideOffset));
         slidedTopLeft = {boundedX, m_validGeometry.y()};
 
     }

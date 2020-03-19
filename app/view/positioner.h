@@ -94,6 +94,8 @@ public slots:
 
     void syncGeometry();
 
+    void initDelayedSignals();
+
 signals:
     void currentScreenChanged();
     void edgeChanged();
@@ -127,6 +129,10 @@ private slots:
     void updateWaylandId();
     void syncLatteViews();
     void updateContainmentScreen();
+
+    //! direct geometry calculations without any protections or checks
+    //! that might prevent them. It must be called with care.
+    void immediateSyncGeometry();
 
 private:
     void init();
