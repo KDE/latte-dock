@@ -692,7 +692,11 @@ bool Storage::layoutIsBroken(QStringList &errors) const
         }
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    QSet<QString> idsSet = QSet<QString>::fromList(ids);
+#else
     QSet<QString> idsSet(ids.begin(), ids.end());
+#endif
     /* a different way to count duplicates
     QMap<QString, int> countOfStrings;
 
