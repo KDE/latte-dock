@@ -55,6 +55,7 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
 {
     bool inMultiple = index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
+    QString layoutId = index.data(Model::Layouts::IDROLE).toString();
     Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
     QStringList assignedShares = index.data(Qt::UserRole).toStringList();
 
@@ -65,7 +66,7 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
     menu->setMinimumWidth(option.rect.width());
 
     for (int i = 0; i < allLayouts.rowCount(); ++i) {
-        if (inMultiple && allLayouts[i].isShared()) {
+        if ((inMultiple && allLayouts[i].isShared()) || (allLayouts[i].id == layoutId)) {
             continue;
         }
 
@@ -128,6 +129,7 @@ void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const 
     bool sharedInEdit = index.data(Model::Layouts::SHAREDTOINEDIT).toBool();
     Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
     QStringList assignedIds = index.data(Qt::UserRole).toStringList();    
+    QStringList originalIds = index.data(Model::Layouts::ORIGINALSHARESROLE).toStringList();
 
     Data::LayoutsTable assignedLayouts;
 
@@ -149,7 +151,7 @@ void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const 
         }
 
         //! Text code
-        myOptions.text = joined(assignedLayouts);
+        myOptions.text = joined(assignedLayouts, originalIds);
 
         int thick = option.rect.height();
 
@@ -274,10 +276,10 @@ void Shared::updateButtonText(QWidget *editor, const QModelIndex &index) const
         }
     }
 
-    button->setText(joined(assignedLayouts, false));
+    button->setText(joined(assignedLayouts, QStringList(), false));
 }
 
-QString Shared::joined(const Data::LayoutsTable &layouts, bool formatText) const
+QString Shared::joined(const Data::LayoutsTable &layouts, const QStringList &originalIds, bool formatText) const
 {
     QString finalText;
 
@@ -286,13 +288,20 @@ QString Shared::joined(const Data::LayoutsTable &layouts, bool formatText) const
             finalText += ", ";
         }
 
-        bool bold {false};
+        bool bold = layouts[i].isActive;
+        bool italic = !originalIds.contains(layouts[i].id);
 
-        if (formatText && layouts[i].isActive) {
-            bold = true;
+        QString name = layouts[i].name;
+
+        if (bold && formatText) {
+            name = "<b>" + name + "</b>";
         }
 
-        finalText += bold ? "<b>" + layouts[i].name + "</b>" : layouts[i].name;
+        if (italic && formatText) {
+            name = "<i>" + name + "</i>";
+        }
+
+        finalText += name;
     }
 
     return finalText;

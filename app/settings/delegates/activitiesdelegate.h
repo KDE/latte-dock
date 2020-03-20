@@ -51,7 +51,7 @@ public:
 private:
     void updateButton(QWidget *editor, const Data::ActivitiesMap &allActivitiesData) const;
 
-    QString joinedActivities(const QList<Data::Activity> &activities, bool isActive = false, bool formatText = true) const;
+    QString joinedActivities(const QList<Data::Activity> &activities, const QStringList &originalIds, bool isActive = false, bool formatText = true) const;
 };
 
 }

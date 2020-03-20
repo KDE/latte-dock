@@ -125,7 +125,7 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
     //! activities icons
     Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Data::ActivitiesMap>();
 
-    bool isShared = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+    bool isShared = index.data(Model::Layouts::ISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
     QStringList assignedIds =  isShared ? index.data(Model::Layouts::ASSIGNEDACTIVITIESFROMSHAREDROLE).toStringList() :
                                           index.data(Model::Layouts::ASSIGNEDACTIVITIESROLE).toStringList();
 

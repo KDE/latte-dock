@@ -56,7 +56,7 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
     button->setMenu(menu);
     menu->setMinimumWidth(option.rect.width());
 
-    bool isLayoutActive = index.data(Model::Layouts::LAYOUTISACTIVEROLE).toBool();
+    bool isLayoutActive = index.data(Model::Layouts::ISACTIVEROLE).toBool();
 
     QStringList allActivities = index.data(Model::Layouts::ALLACTIVITIESSORTEDROLE).toStringList();
     Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Data::ActivitiesMap>();
@@ -176,7 +176,7 @@ bool Activities::editorEvent(QEvent *event, QAbstractItemModel *model, const QSt
     Q_ASSERT(event);
     Q_ASSERT(model);
 
-    bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+    bool isSharedCapable = index.data(Model::Layouts::ISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
     if (isSharedCapable) {
         return false;
@@ -191,14 +191,15 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     //! Remove the focus dotted lines
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
 
-    bool isLayoutActive = index.data(Model::Layouts::LAYOUTISACTIVEROLE).toBool();
-    bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+    bool isLayoutActive = index.data(Model::Layouts::ISACTIVEROLE).toBool();
+    bool isSharedCapable = index.data(Model::Layouts::ISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
     if (!isSharedCapable) {
         painter->save();
 
         QList<Data::Activity> assignedActivities;
         QStringList assignedIds = index.model()->data(index, Qt::UserRole).toStringList();
+        QStringList assignedOriginalIds = index.model()->data(index, Model::Layouts::ORIGINALASSIGNEDACTIVITIESROLE).toStringList();
 
         Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Data::ActivitiesMap>();
 
@@ -207,7 +208,7 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         }
 
         if (assignedActivities.count() > 0) {
-            myOptions.text = joinedActivities(assignedActivities, isLayoutActive);
+            myOptions.text = joinedActivities(assignedActivities, assignedOriginalIds, isLayoutActive);
 
             QTextDocument doc;
             QString css;
@@ -301,7 +302,7 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     }
 }
 
-QString Activities::joinedActivities(const QList<Data::Activity> &activities, bool isActive, bool formatText) const
+QString Activities::joinedActivities(const QList<Data::Activity> &activities, const QStringList &originalIds, bool isActive, bool formatText) const
 {
     QString finalText;
 
@@ -309,23 +310,17 @@ QString Activities::joinedActivities(const QList<Data::Activity> &activities, bo
 
     for (int i=0; i<activities.count(); ++i) {
         bool bold{false};
-        bool italic{false};
+        bool italic = (!originalIds.contains(activities[i].id));
 
         if (activities[i].id == Data::Layout::FREEACTIVITIESID) {
-            if (formatText) {
-                bold = isActive;
-                italic = !isActive;
-            }
+            bold = isActive;
         } else {
-            if (formatText && activities[i].isRunning()) {
-                bold = true;
-            }
+            bold = activities[i].isRunning();
         }
 
         if (i > 0) {
             finalText += ", ";
         }
-
 
         QString styledText = activities[i].name;
 
@@ -358,7 +353,7 @@ void Activities::updateButton(QWidget *editor, const Data::ActivitiesMap &allAct
         }
     }
 
-    button->setText(joinedActivities(assignedActivities, false, false));
+    button->setText(joinedActivities(assignedActivities, QStringList(), false, false));
 }
 
 }

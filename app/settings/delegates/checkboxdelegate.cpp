@@ -37,6 +37,9 @@ namespace Settings {
 namespace Layout {
 namespace Delegate {
 
+const QChar HeavyCheckMark{0x2714};
+const QChar CheckMark{0x2713};
+
 CheckBox::CheckBox(QObject *parent)
     : QStyledItemDelegate(parent)
 {
@@ -49,9 +52,36 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
     adjustedOption.displayAlignment = Qt::AlignHCenter | Qt::AlignVCenter;
 
-    bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+    bool isSharedCapable = index.data(Model::Layouts::ISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
     if (!isSharedCapable) {
+        bool originalChecked{false};
+        bool currentChecked = index.data(Qt::UserRole).toBool();
+
+        if (index.column() == Model::Layouts::MENUCOLUMN) {
+            originalChecked =  index.data(Model::Layouts::ORIGINALISSHOWNINMENUROLE).toBool();
+        } else if (index.column() == Model::Layouts::BORDERSCOLUMN) {
+            originalChecked =  index.data(Model::Layouts::ORIGINALHASBORDERSROLE).toBool();
+        } else {
+            originalChecked = currentChecked;
+        }
+
+        bool isChanged = (originalChecked != currentChecked);
+
+        if (isChanged) {
+            adjustedOption.font.setPointSize(adjustedOption.font.pointSize() + 2);
+            adjustedOption.font.setBold(true);
+        } else {
+            // normal appearance
+        }
+
+        if (currentChecked) {
+            adjustedOption.text = isChanged ? HeavyCheckMark : CheckMark;
+        } else {
+            adjustedOption.text = "";
+        }
+
+
         QStyledItemDelegate::paint(painter, adjustedOption, index);
     } else {
         // Disabled
@@ -110,7 +140,7 @@ bool CheckBox::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyl
     Q_ASSERT(event);
     Q_ASSERT(model);
 
-    bool isSharedCapable = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+    bool isSharedCapable = index.data(Model::Layouts::ISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
     if (isSharedCapable) {
         return false;

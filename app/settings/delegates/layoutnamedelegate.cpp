@@ -73,10 +73,18 @@ void LayoutName::setModelData(QWidget *editor, QAbstractItemModel *model, const 
 
 void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    bool isLocked = index.data(Model::Layouts::LAYOUTISLOCKEDROLE).toBool();
-    bool isShared = index.data(Model::Layouts::LAYOUTISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
-    bool isActive = index.data(Model::Layouts::LAYOUTISACTIVEROLE).toBool();
-    bool isChanged = index.data(Model::Layouts::LAYOUTNAMEWASEDITEDROLE).toBool();
+    bool inMultiple = index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
+
+    bool isLocked = index.data(Model::Layouts::ISLOCKEDROLE).toBool();
+    bool isShared = inMultiple && index.data(Model::Layouts::ISSHAREDROLE).toBool();
+    bool isActive = index.data(Model::Layouts::ISACTIVEROLE).toBool();
+
+    bool isNewLayout = index.data(Model::Layouts::ISNEWLAYOUTROLE).toBool();
+    bool hasChanges = index.data(Model::Layouts::LAYOUTHASCHANGESROLE).toBool();
+
+    QString name = index.data(Qt::UserRole).toString();
+
+    bool isChanged = (isNewLayout || hasChanges);
 
     bool showTwoIcons = isLocked && isShared;
 
@@ -90,7 +98,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     if (isLocked || isShared) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
-        QString nameText = index.data(Qt::UserRole).toString();
+
 
         bool active = Latte::isActive(option);
         bool enabled = Latte::isEnabled(option);
@@ -100,7 +108,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
         //! font metrics
         QFontMetrics fm(option.font);
-        int textWidth = fm.boundingRect(nameText).width();
+        int textWidth = fm.boundingRect(name).width();
         int thick = option.rect.height();
         int length = showTwoIcons ? (2 * thick + 2) : thick;
 
@@ -115,6 +123,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         QStyleOptionViewItem myOptionMain = adjustedOption;
 
         myOptionMain.font.setBold(isActive);
+        myOptionMain.font.setItalic(isChanged);
 
         myOptionS.rect = destinationS;
         myOptionE.rect = destinationE;

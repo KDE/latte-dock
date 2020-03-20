@@ -38,8 +38,6 @@
 #include <KActivities/Consumer>
 #include <KActivities/Info>
 
-const QChar CheckMark{0x2714};
-
 namespace Latte {
 namespace Settings {
 namespace Model {
@@ -54,7 +52,7 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
         QVector<int> roles;
         roles << Qt::DisplayRole;
         roles << Qt::UserRole;
-        roles << LAYOUTISSHAREDROLE;
+        roles << ISSHAREDROLE;
         roles << INMULTIPLELAYOUTSROLE;
 
         emit dataChanged(index(0, NAMECOLUMN), index(rowCount()-1, SHAREDCOLUMN), roles);
@@ -400,23 +398,22 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
 {
     const int row = index.row();
     int column = index.column();
+    bool isNewLayout = !o_layoutsTable.containsId(m_layoutsTable[row].id);
 
     if (!m_layoutsTable.rowExists(row)) {
         return QVariant{};
     }
 
-    if (role == LAYOUTISACTIVEROLE) {
+    if (role == IDROLE) {
+        return m_layoutsTable[row].id;
+    } else if (role == ISACTIVEROLE) {
         return m_layoutsTable[row].isActive;
-    } else if (role == LAYOUTISLOCKEDROLE) {
+    } else if (role == ISLOCKEDROLE) {
         return m_layoutsTable[row].isLocked;
-    } else if (role == LAYOUTISSHAREDROLE) {
+    } else if (role == ISSHAREDROLE) {
         return m_layoutsTable[row].isShared();
     } else if (role == INMULTIPLELAYOUTSROLE) {
         return inMultipleMode();
-    } else if (role == LAYOUTNAMEWASEDITEDROLE) {
-        QString id = m_layoutsTable[row].id;
-        bool edited = !o_layoutsTable.containsId(id) || o_layoutsTable[id].name != m_layoutsTable[row].name;
-        return edited;
     } else if (role == ASSIGNEDACTIVITIESROLE) {
         return m_layoutsTable[row].activities;
     } else if (role == ASSIGNEDACTIVITIESFROMSHAREDROLE) {
@@ -436,6 +433,10 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return layouts;
     } else if (role == SHAREDTOINEDIT) {
         return (m_sharedToInEditRow == row);
+    } else if (role == ISNEWLAYOUTROLE) {
+        return isNewLayout;
+    } else if (role == LAYOUTHASCHANGESROLE) {
+        return (isNewLayout ? true : o_layoutsTable[m_layoutsTable[row].id] != m_layoutsTable[row]);
     }
 
     switch (column) {
@@ -475,9 +476,11 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
             return 0;
         }
 
-        if (role == Qt::DisplayRole) {
-            return m_layoutsTable[row].isShownInMenu ? CheckMark : QVariant{};
-        } else if (role == Qt::UserRole) {
+        if (role == ORIGINALISSHOWNINMENUROLE) {
+            return isNewLayout ? false : o_layoutsTable[row].isShownInMenu;
+        }
+
+        if (role == Qt::UserRole) {
             return m_layoutsTable[row].isShownInMenu;
         }
         break;
@@ -492,9 +495,11 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
             return 0;
         }
 
-        if (role == Qt::DisplayRole) {
-            return m_layoutsTable[row].hasDisabledBorders ? CheckMark : QVariant{};
-        } else if (role == Qt::UserRole) {
+        if (role == ORIGINALHASBORDERSROLE) {
+            return isNewLayout ? false : o_layoutsTable[row].hasDisabledBorders;
+        }
+
+        if (role == Qt::UserRole) {
             return m_layoutsTable[row].hasDisabledBorders;
         }
         break;
@@ -516,6 +521,10 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
             return 0;
         }
 
+        if (role == ORIGINALASSIGNEDACTIVITIESROLE) {
+            return isNewLayout ? QStringList() : o_layoutsTable[row].activities;
+        }
+
         if (role == Qt::UserRole) {
             return m_layoutsTable[row].activities;
         }
@@ -533,6 +542,10 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
             }
 
             return 0;
+        }
+
+        if (role == ORIGINALSHARESROLE) {
+            return isNewLayout ? QStringList() : o_layoutsTable[row].shares;
         }
 
         if (role == Qt::UserRole) {
@@ -738,7 +751,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
     roles << role;
 
     //! common roles for all row cells
-    if (role == LAYOUTISLOCKEDROLE) {
+    if (role == ISLOCKEDROLE) {
         m_layoutsTable[row].isLocked = value.toBool();
         emit dataChanged(this->index(row,0), this->index(row,SHAREDCOLUMN), roles);
         return true;
@@ -789,6 +802,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         if (role == Qt::UserRole) {
             m_layoutsTable[row].isShownInMenu = value.toBool();
             emit dataChanged(index, index, roles);
+            emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
             return true;
         }
         break;
@@ -796,18 +810,21 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         if (role == Qt::UserRole) {
             m_layoutsTable[row].hasDisabledBorders = value.toBool();
             emit dataChanged(index, index, roles);
+            emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
             return true;
         }
         break;
     case ACTIVITYCOLUMN:
         if (role == Qt::UserRole) {
             setActivities(row, value.toStringList());
+            emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
             return true;
         }
         break;
     case SHAREDCOLUMN:
         if (role == Qt::UserRole) {
             setShares(row, value.toStringList());
+            emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
             return true;
         } else if (role == SHAREDTOINEDIT) {
             bool inEdit = value.toBool();
@@ -815,7 +832,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
             roles << Qt::DisplayRole;
             roles << Qt::UserRole;
             emit dataChanged(this->index(row, ACTIVITYCOLUMN), this->index(row, SHAREDCOLUMN),  roles);
-
+            emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
             return true;
         }
         break;
@@ -829,7 +846,7 @@ void Layouts::updateActiveStates()
     QVector<int> roles;
     roles << Qt::DisplayRole;
     roles << Qt::UserRole;
-    roles << LAYOUTISACTIVEROLE;
+    roles << ISACTIVEROLE;
 
     for(int i=0; i<rowCount(); ++i) {
         bool iActive{false};

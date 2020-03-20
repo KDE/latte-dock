@@ -51,7 +51,7 @@ private:
     void paintSharedToIndicator(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void updateButtonText(QWidget *editor, const QModelIndex &index) const;
 
-    QString joined(const Data::LayoutsTable &layouts, bool formatText = true) const;
+    QString joined(const Data::LayoutsTable &layouts, const QStringList &originalIds, bool formatText = true) const;
 
 private:
     // we need it in order to send to the model the information when the SHARETO cell is edited

@@ -284,7 +284,7 @@ void Layouts::toggleLockedForSelected()
 
     Data::Layout selected = selectedLayoutCurrentData();
 
-    m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::NAMECOLUMN), !selected.isLocked, Settings::Model::Layouts::LAYOUTISLOCKEDROLE);
+    m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::NAMECOLUMN), !selected.isLocked, Settings::Model::Layouts::ISLOCKEDROLE);
 }
 
 void Layouts::toggleSharedForSelected()
