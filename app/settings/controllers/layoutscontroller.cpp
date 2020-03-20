@@ -66,12 +66,13 @@ Layouts::Layouts(Latte::SettingsDialog *parent, Latte::Corona *corona, QTableVie
 {   
     m_proxyModel->setSourceModel(m_model);
 
-    initView();
-    loadLayouts();
-
+    connect(m_model, &Model::Layouts::inMultipleModeChanged, this, &Layouts::updateLastColumnWidth);
     connect(m_model, &QAbstractItemModel::dataChanged, this, &Layouts::dataChanged);
     connect(m_model, &Model::Layouts::rowsInserted, this, &Layouts::dataChanged);
     connect(m_model, &Model::Layouts::nameDuplicated, this, &Layouts::on_nameDuplicatedFrom);
+
+    initView();
+    loadLayouts();       
 }
 
 Layouts::~Layouts()
@@ -187,8 +188,11 @@ bool Layouts::inMultipleMode() const
 void Layouts::setInMultipleMode(bool inMultiple)
 {
     m_model->setInMultipleMode(inMultiple);
+}
 
-    if (inMultiple) {
+void Layouts::updateLastColumnWidth()
+{
+    if (m_model->inMultipleMode()) {
         m_view->setColumnHidden(Model::Layouts::SHAREDCOLUMN, false);
 
         //! column widths
@@ -338,6 +342,7 @@ void Layouts::loadLayouts()
 {
     m_model->clear();
     bool inMultiple{m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts};
+    setInMultipleMode(inMultiple);
 
     //! The shares map needs to be constructed for start/scratch.
     //! We start feeding information with layout_names and during the process
@@ -443,7 +448,9 @@ void Layouts::loadLayouts()
     QStringList columnWidths = m_corona->universalSettings()->layoutsColumnWidths();
 
     if (!columnWidths.isEmpty()) {
-        for (int i=0; i<qMin(columnWidths.count(),4); ++i) {
+        int lastColumn = inMultiple ? 5 : 4;
+
+        for (int i=0; i<qMin(columnWidths.count(),lastColumn); ++i) {
             m_view->setColumnWidth(Model::Layouts::BACKGROUNDCOLUMN+i, columnWidths[i].toInt());
         }
     }

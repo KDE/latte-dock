@@ -93,6 +93,7 @@ public slots:
 private slots:
     void saveColumnWidths();
     void on_nameDuplicatedFrom(const QString &provenId,  const QString &trialId);
+    void updateLastColumnWidth();
 
 private:
     void initView();
