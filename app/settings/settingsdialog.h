@@ -80,6 +80,8 @@ public:
     void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0);
 
 protected:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
 

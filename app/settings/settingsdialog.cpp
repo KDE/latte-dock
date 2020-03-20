@@ -42,6 +42,7 @@
 #include <QFileDialog>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QMimeData>
 
 // KDE
 #include <KActivities/Controller>
@@ -67,6 +68,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
       m_ui(new Ui::SettingsDialog),
       m_corona(corona)
 {
+    setAcceptDrops(true);
     m_ui->setupUi(this);
 
     setAttribute(Qt::WA_DeleteOnClose, true);
@@ -1072,6 +1074,39 @@ void SettingsDialog::showScreensInformation()
     msg->setText(m_corona->screenPool()->reportHtml(assignedScreens));
 
     msg->open();*/
+}
+
+void SettingsDialog::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->acceptProposedAction();
+}
+
+void SettingsDialog::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urlList = event->mimeData()->urls();
+
+        QStringList layoutNames;
+
+        for (int i = 0; i < qMin(urlList.size(), 20); ++i) {
+            QString layoutPath = urlList[i].path();
+
+            if (layoutPath.endsWith(".layout.latte")) {
+                Settings::Data::Layout importedlayout = m_layoutsController->addLayoutForFile(layoutPath);
+                layoutNames << importedlayout.name;
+            }
+        }
+
+        if (layoutNames.count() == 1) {
+            showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(layoutNames[0]),
+                    KMessageWidget::Information,
+                    SettingsDialog::INFORMATIONINTERVAL);
+        } else if (layoutNames.count() > 1) {
+            showInlineMessage(i18nc("settings:layouts imported successfully","Layouts <b>%0</b> imported successfully...").arg(layoutNames.join(", )")),
+                              KMessageWidget::Information,
+                              SettingsDialog::INFORMATIONINTERVAL);
+        }
+    }
 }
 
 void SettingsDialog::keyPressEvent(QKeyEvent *event)
