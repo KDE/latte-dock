@@ -118,6 +118,11 @@ bool Layout::isForFreeActivities() const
     return ((activities.count() == 1) && (activities[0] == FREEACTIVITIESID));
 }
 
+bool Layout::isTemporary() const
+{
+    return id.startsWith("/tmp");
+}
+
 bool Layout::isEmpty() const
 {
     return isNull();

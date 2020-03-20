@@ -54,6 +54,7 @@ public:
     //! Functionality
     bool isShared() const;
     bool isForFreeActivities() const;
+    bool isTemporary() const;
     bool isNull() const;
     bool isEmpty() const;
 

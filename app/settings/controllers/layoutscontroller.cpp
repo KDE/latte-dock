@@ -718,7 +718,7 @@ void Layouts::save()
         }
 
         //! If the layout name changed OR the layout path is a temporary one
-        if (iLayoutCurrentData.name != iLayoutOriginalData.name) {
+        if ((iLayoutCurrentData.name != iLayoutOriginalData.name) || iLayoutCurrentData.isTemporary()) {
             //! If the layout is Active in MultipleLayouts
             if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts && generic->isActive()) {
                 qDebug() << " Active Layout Should Be Renamed From : " << generic->name() << " TO :: " << iLayoutCurrentData.name;
