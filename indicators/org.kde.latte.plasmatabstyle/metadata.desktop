@@ -2,6 +2,7 @@
 Name=Plasma Tab Style
 Name[ca]=Estil pestanya del Plasma
 Name[ca@valencia]=Estil pestanya del Plasma
+Name[cs]=Styl Karet Plasma
 Name[es]=Estilo de pestaña Plasma
 Name[et]=Plasma kaardistiil
 Name[eu]=Plasmako fitxen estiloa
@@ -18,6 +19,7 @@ Name[zh_TW]=Plasma 分頁樣式
 Comment=Plasma Tab style indicator for Latte
 Comment[ca]=Indicador a l'estil pestanya del Plasma per al Latte
 Comment[ca@valencia]=Indicador a l'estil pestanya del Plasma per al Latte
+Comment[cs]=Ukazatel stylu Karet Plasma pro Latte
 Comment[es]=Indicador de estilo de pestaña Plasma para Latte
 Comment[et]=Latte Plasma kaardistiili indikaator
 Comment[eu]=Plasmako fitxa estiloko adierazlea Latte-n
