@@ -153,7 +153,7 @@ QStringList LayoutsTable::allSharesNames() const
             for(int j=0; j<m_layouts[i].shares.count(); ++j) {
                 QString shareId = m_layouts[i].shares[j];
                 int sid = indexOf(shareId);
-                sharesNames << m_layouts[sid].currentName();
+                sharesNames << m_layouts[sid].name;
             }
         }
     }
@@ -189,10 +189,10 @@ Latte::Layouts::SharesMap LayoutsTable::sharesMap() const
             for(int j=0; j<m_layouts[i].shares.count(); ++j) {
                 QString shareId = m_layouts[i].shares[j];
                 int sid = indexOf(shareId);
-                sharesNames << m_layouts[sid].currentName();
+                sharesNames << m_layouts[sid].name;
             }
 
-            map[m_layouts[i].currentName()] = sharesNames;
+            map[m_layouts[i].name] = sharesNames;
         }
     }
 
@@ -210,10 +210,10 @@ bool LayoutsTable::containsId(const QString &id) const
     return false;
 }
 
-bool LayoutsTable::containsCurrentName(const QString &name) const
+bool LayoutsTable::containsName(const QString &name) const
 {
     for(int i=0; i<m_layouts.count(); ++i) {
-        if (m_layouts[i].currentName() == name){
+        if (m_layouts[i].name == name){
             return true;
         }
     }
@@ -242,21 +242,10 @@ int LayoutsTable::rowCount() const
     return m_layouts.count();
 }
 
-QString LayoutsTable::idForOriginalName(const QString &name) const
+QString LayoutsTable::idForName(const QString &name) const
 {
     for(int  i=0; i<m_layouts.count(); ++i) {
-        if (m_layouts[i].originalName() == name) {
-            return m_layouts[i].id;
-        }
-    }
-
-    return QString();
-}
-
-QString LayoutsTable::idForCurrentName(const QString &name) const
-{
-    for(int  i=0; i<m_layouts.count(); ++i) {
-        if ((m_layouts[i].currentName() == name)) {
+        if (m_layouts[i].name == name) {
             return m_layouts[i].id;
         }
     }

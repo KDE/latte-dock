@@ -61,11 +61,10 @@ public:
     bool inMultipleMode() const;
     void setInMultipleMode(bool inMultiple);
 
-    void setOriginalInMultipleMode(bool inMultiple);
-
     bool hasSelectedLayout() const;
     bool selectedLayoutIsCurrentActive() const;
-    const Data::Layout selectedLayout() const;
+    const Data::Layout selectedLayoutCurrentData() const;
+    const Data::Layout selectedLayoutOriginalData() const;
 
     //! actions
     void reset();
@@ -76,7 +75,7 @@ public:
     void toggleSharedForSelected();
 
     QString layoutNameForFreeActivities() const;
-    void setLayoutNameForFreeActivities(const QString &name, bool updateOriginalData = false);
+    void setOriginalLayoutForFreeActivities(const QString &id);
 
     void copySelectedLayout();
     const Data::Layout addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true);
@@ -110,10 +109,6 @@ private:
     Latte::Corona *m_corona{nullptr};
     QTableView *m_view{nullptr};
     Settings::Layouts::HeaderView *m_headerView{nullptr};
-
-    //! original data
-    bool o_originalInMultipleMode{false};
-    Settings::Data::LayoutsTable o_layoutsOriginalData;
 
     //! current data
     Model::Layouts *m_model{nullptr};

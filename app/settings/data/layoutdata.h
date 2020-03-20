@@ -40,6 +40,7 @@ public:
 
     //! Layout data
     QString id;
+    QString name;
     QString color;
     QString background;
     QString textColor;
@@ -50,27 +51,17 @@ public:
     QStringList activities;
     QStringList shares;
 
-    QString currentName() const;
-    void setCurrentName(const QString name);
-
-    QString originalName() const;
-    void setOriginalName(const QString name);
-
     //! Functionality
     bool isShared() const;
     bool isForFreeActivities() const;
-    bool nameWasEdited() const;
+    bool isNull() const;
+    bool isEmpty() const;
 
     //! Operators
     Layout &operator=(const Layout &rhs);
     Layout &operator=(Layout &&rhs);
     bool operator==(const Layout &rhs) const;
     bool operator!=(const Layout &rhs) const;
-
-protected:
-    QString m_currentName;
-    QString m_originalName;
-
 };
 
 }

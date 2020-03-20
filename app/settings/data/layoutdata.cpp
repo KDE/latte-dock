@@ -31,8 +31,7 @@ Layout::Layout()
 
 Layout::Layout(Layout &&o)
     : id(o.id),
-      m_currentName(o.m_currentName),
-      m_originalName(o.m_originalName),
+      name(o.name),
       color(o.color),
       background(o.background),
       textColor(o.textColor),
@@ -47,8 +46,7 @@ Layout::Layout(Layout &&o)
 
 Layout::Layout(const Layout &o)
     : id(o.id),
-      m_currentName(o.m_currentName),
-      m_originalName(o.m_originalName),
+      name(o.name),
       color(o.color),
       background(o.background),
       textColor(o.textColor),
@@ -64,8 +62,7 @@ Layout::Layout(const Layout &o)
 Layout &Layout::operator=(Layout &&rhs)
 {
     id = rhs.id;
-    m_currentName = rhs.m_currentName;
-    m_originalName = rhs.m_originalName;
+    name = rhs.name;
     color = rhs.color;
     background = rhs.background;
     textColor = rhs.textColor;
@@ -82,8 +79,7 @@ Layout &Layout::operator=(Layout &&rhs)
 Layout &Layout::operator=(const Layout &rhs)
 {
     id = rhs.id;
-    m_currentName = rhs.m_currentName;
-    m_originalName = rhs.m_originalName;
+    name = rhs.name;
     color = rhs.color;
     background = rhs.background;
     textColor = rhs.textColor;
@@ -100,8 +96,7 @@ Layout &Layout::operator=(const Layout &rhs)
 bool Layout::operator==(const Layout &rhs) const
 {
     return (id == rhs.id)
-            && (m_currentName == rhs.m_currentName)
-            && (m_originalName == rhs.m_originalName)
+            && (name == rhs.name)
             && (color == rhs.color)
             && (background == rhs.background)
             && (textColor == rhs.textColor)
@@ -123,35 +118,19 @@ bool Layout::isForFreeActivities() const
     return ((activities.count() == 1) && (activities[0] == FREEACTIVITIESID));
 }
 
+bool Layout::isEmpty() const
+{
+    return isNull();
+}
+
+bool Layout::isNull() const
+{
+    return (id.isEmpty() && name.isEmpty());
+}
+
 bool Layout::isShared() const
 {
     return !shares.isEmpty();
-}
-
-bool Layout::nameWasEdited() const
-{
-    return (!m_currentName.isEmpty() && (m_currentName != m_originalName)) || id.startsWith("/tmp");
-}
-
-QString Layout::currentName() const
-{
-    return m_currentName.isEmpty() ? m_originalName : m_currentName;
-}
-
-void Layout::setCurrentName(const QString name)
-{
-    m_currentName = name;
-}
-
-QString Layout::originalName() const
-{
-    return m_originalName;
-}
-
-void Layout::setOriginalName(const QString name)
-{
-    m_originalName = name;
-    m_currentName = name;
 }
 
 }

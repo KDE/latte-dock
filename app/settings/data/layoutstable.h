@@ -58,14 +58,13 @@ public:
     Latte::Layouts::SharesMap sharesMap() const;
 
     bool containsId(const QString &id) const;
-    bool containsCurrentName(const QString &name) const;
+    bool containsName(const QString &name) const;
     bool rowExists(const int &row) const;
 
     int indexOf(const QString &id) const;
     int rowCount() const;
 
-    QString idForOriginalName(const QString &name) const;
-    QString idForCurrentName(const QString &name) const;
+    QString idForName(const QString &name) const;
 
     void clear();
     void remove(const int &row);

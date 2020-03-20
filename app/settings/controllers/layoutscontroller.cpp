@@ -64,8 +64,6 @@ Layouts::Layouts(Latte::SettingsDialog *parent, Latte::Corona *corona, QTableVie
       m_view(view),
       m_headerView(new Settings::Layouts::HeaderView(Qt::Horizontal, m_parentDialog))
 {   
-    setOriginalInMultipleMode(m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts);
-
     m_proxyModel->setSourceModel(m_model);
 
     initView();
@@ -142,8 +140,7 @@ void Layouts::initView()
 
 bool Layouts::dataAreChanged() const
 {
-    return ((o_originalInMultipleMode != m_model->inMultipleMode())
-            || (o_layoutsOriginalData != m_model->currentData()));
+    return m_model->dataAreChanged();
 }
 
 bool Layouts::hasSelectedLayout() const
@@ -155,18 +152,27 @@ bool Layouts::hasSelectedLayout() const
 
 bool Layouts::selectedLayoutIsCurrentActive() const
 {
-    Data::Layout selected = selectedLayout();
+    Settings::Data::Layout selectedLayoutCurrent = selectedLayoutCurrentData();
+    Settings::Data::Layout selectedLayoutOriginal = selectedLayoutOriginalData();
+    selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
 
-    return (selected.isActive && (selected.originalName() == m_corona->layoutsManager()->synchronizer()->currentLayoutName()));
+    return (selectedLayoutCurrent.isActive && (selectedLayoutOriginal.name == m_corona->layoutsManager()->synchronizer()->currentLayoutName()));
 }
 
-const Data::Layout Layouts::selectedLayout() const
+const Data::Layout Layouts::selectedLayoutCurrentData() const
 {
     int selectedRow = m_view->currentIndex().row();
     QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::DisplayRole).toString();
 
-    int realRow = m_model->rowForId(selectedId);
-    return m_model->at(realRow);
+    return m_model->currentData(selectedId);
+}
+
+const Data::Layout Layouts::selectedLayoutOriginalData() const
+{
+    int selectedRow = m_view->currentIndex().row();
+    QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::DisplayRole).toString();
+
+    return m_model->originalData(selectedId);;
 }
 
 bool Layouts::inMultipleMode() const
@@ -190,12 +196,6 @@ void Layouts::setInMultipleMode(bool inMultiple)
     } else {
         m_view->setColumnHidden(Model::Layouts::SHAREDCOLUMN, true);
     }
-}
-
-void Layouts::setOriginalInMultipleMode(bool inMultiple)
-{
-    o_originalInMultipleMode = inMultiple;
-    setInMultipleMode(inMultiple);
 }
 
 int Layouts::rowForId(QString id) const
@@ -259,9 +259,9 @@ void Layouts::removeSelected()
         return;
     }
 
-    Data::Layout selected = selectedLayout();
+    Data::Layout selectedOriginal = selectedLayoutOriginalData();
 
-    if (m_corona->layoutsManager()->synchronizer()->layout(selected.originalName())) {
+    if (m_corona->layoutsManager()->synchronizer()->layout(selectedOriginal.name)) {
         return;
     }
 
@@ -278,7 +278,7 @@ void Layouts::toggleLockedForSelected()
         return;
     }
 
-    Data::Layout selected = selectedLayout();
+    Data::Layout selected = selectedLayoutCurrentData();
 
     m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::NAMECOLUMN), !selected.isLocked, Settings::Model::Layouts::LAYOUTISLOCKEDROLE);
 }
@@ -291,7 +291,7 @@ void Layouts::toggleSharedForSelected()
 
     int row = m_view->currentIndex().row();
 
-    Data::Layout selected = selectedLayout();
+    Data::Layout selected = selectedLayoutCurrentData();
 
     if (selected.isShared()) {
         m_proxyModel->setData(m_proxyModel->index(row, Model::Layouts::SHAREDCOLUMN), QStringList(), Qt::UserRole);
@@ -300,10 +300,11 @@ void Layouts::toggleSharedForSelected()
         QStringList availableShareIds = m_model->availableShareIdsFor(selected.id);
 
         for (const auto &id : availableShareIds) {
-            int iRow = m_model->rowForId(id);
-            Data::Layout iLayout = m_model->at(iRow);
+            Data::Layout iLayoutCurrent = m_model->currentData(id);
+            Data::Layout iLayoutOriginal = m_model->originalData(id);
+            iLayoutOriginal = iLayoutOriginal.isEmpty() ? iLayoutCurrent : iLayoutOriginal;
 
-            if (m_corona->layoutsManager()->synchronizer()->layout(iLayout.originalName())) {
+            if (m_corona->layoutsManager()->synchronizer()->layout(iLayoutOriginal.name)) {
                 assignedIds << id;
                 m_proxyModel->setData(m_proxyModel->index(row, Model::Layouts::SHAREDCOLUMN), assignedIds, Qt::UserRole);
                 break;
@@ -322,15 +323,9 @@ QString Layouts::layoutNameForFreeActivities() const
     return m_model->layoutNameForFreeActivities();
 }
 
-void Layouts::setLayoutNameForFreeActivities(const QString &name, bool updateOriginalData)
+void Layouts::setOriginalLayoutForFreeActivities(const QString &id)
 {
-    m_model->setLayoutNameForFreeActivities(name);
-
-    if(updateOriginalData) {
-        QString id = o_layoutsOriginalData.idForCurrentName(name);
-        o_layoutsOriginalData.setLayoutForFreeActivities(id);
-    }
-
+    m_model->setOriginalLayoutForFreeActivities(id);
     emit dataChanged();
 }
 
@@ -338,6 +333,7 @@ void Layouts::setLayoutNameForFreeActivities(const QString &name, bool updateOri
 void Layouts::loadLayouts()
 {
     m_model->clear();
+    bool inMultiple{m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts};
 
     //! The shares map needs to be constructed for start/scratch.
     //! We start feeding information with layout_names and during the process
@@ -359,11 +355,11 @@ void Layouts::loadLayouts()
 
         CentralLayout *central = new CentralLayout(this, original.id);
 
-        original.setOriginalName(central->name());
+        original.name = central->name();
         original.background = central->background();
         original.color = central->color();
         original.textColor = central->textColor();
-        original.isActive = (m_corona->layoutsManager()->synchronizer()->layout(original.originalName()) != nullptr);
+        original.isActive = (m_corona->layoutsManager()->synchronizer()->layout(original.name) != nullptr);
         original.isLocked = !central->isWritable();
         original.isShownInMenu = central->showInMenu();
         original.hasDisabledBorders = central->disableBordersForMaximizedWindows();
@@ -405,7 +401,7 @@ void Layouts::loadLayouts()
 
     //! update keys
     for (QHash<const QString, QStringList>::iterator i=sharesMap.begin(); i!=sharesMap.end(); ++i) {
-        QString shareid = layoutsBuffer.idForOriginalName(i.key());
+        QString shareid = layoutsBuffer.idForName(i.key());
         if (!shareid.isEmpty()) {
             sharesMap[shareid] = i.value();
         }
@@ -423,8 +419,8 @@ void Layouts::loadLayouts()
     }
 
     //! Send original loaded data to model
-    m_model->setCurrentData(layoutsBuffer);
-    m_model->setLayoutNameForFreeActivities(m_corona->universalSettings()->lastNonAssignedLayoutName());
+    m_model->setOriginalData(layoutsBuffer, inMultiple);
+    m_model->setOriginalLayoutForFreeActivities(layoutsBuffer.idForName(m_corona->universalSettings()->lastNonAssignedLayoutName()));
 
     m_view->selectRow(rowForName(m_corona->layoutsManager()->currentLayoutName()));
 
@@ -447,8 +443,6 @@ void Layouts::loadLayouts()
             m_view->setColumnWidth(Model::Layouts::BACKGROUNDCOLUMN+i, columnWidths[i].toInt());
         }
     }
-
-    o_layoutsOriginalData = m_model->currentData();
 
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
@@ -493,7 +487,7 @@ const Data::Layout Layouts::addLayoutForFile(QString file, QString layoutName, b
     CentralLayout *settings = new CentralLayout(this, copied.id);
     m_layouts[copied.id] = settings;
 
-    copied.setOriginalName(uniqueLayoutName(layoutName));
+    copied.name = uniqueLayoutName(layoutName);
     copied.color = settings->color();
     copied.textColor = settings->textColor();
     copied.background = settings->background();
@@ -520,26 +514,29 @@ void Layouts::copySelectedLayout()
         return;
     }
 
-    Settings::Data::Layout selected = selectedLayout();
+    Settings::Data::Layout selectedLayoutCurrent = selectedLayoutCurrentData();
+    Settings::Data::Layout selectedLayoutOriginal = selectedLayoutOriginalData();
+    selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
+
 
     //! Update original layout before copying if this layout is active
     if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
-        Latte::Layout::GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(selected.originalName());
+        Latte::Layout::GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(selectedLayoutOriginal.name);
         if (generic) {
             generic->syncToLayoutFile();
         }
     }
 
-    Settings::Data::Layout copied = selected;
+    Settings::Data::Layout copied = selectedLayoutCurrent;
 
-    copied.setOriginalName(uniqueLayoutName(selected.currentName()));
-    copied.id = uniqueTempDirectory() + "/" + copied.originalName() + ".layout.latte";;
+    copied.name = uniqueLayoutName(selectedLayoutCurrent.name);
+    copied.id = uniqueTempDirectory() + "/" + copied.name + ".layout.latte";;
     copied.isActive = false;
     copied.isLocked = false;
     copied.activities = QStringList();
     copied.shares = QStringList();
 
-    QFile(selected.id).copy(copied.id);
+    QFile(selectedLayoutCurrent.id).copy(copied.id);
     QFileInfo newFileInfo(copied.id);
 
     if (newFileInfo.exists() && !newFileInfo.isWritable()) {
@@ -580,14 +577,14 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
 
             if (m_corona->layoutsManager()->importer()->importOldLayout(applets, name, false, tempDir.absolutePath())) {
                 Settings::Data::Layout imported = addLayoutForFile(tempDir.absolutePath() + "/" + name + ".layout.latte", name);
-                importedlayouts << imported.currentName();
+                importedlayouts << imported.name;
             }
 
             QString alternativeName = name + "-" + i18nc("layout", "Alternative");
 
             if (m_corona->layoutsManager()->importer()->importOldLayout(applets, alternativeName, false, tempDir.absolutePath())) {
                 Settings::Data::Layout imported = addLayoutForFile(tempDir.absolutePath() + "/" + alternativeName + ".layout.latte", alternativeName, false);
-                importedlayouts << imported.currentName();
+                importedlayouts << imported.name;
             }
 
             if (importedlayouts.count() > 0) {
@@ -616,8 +613,7 @@ void Layouts::on_sharedToInEditChanged(const int &row, const bool &inEdit)
 
 void Layouts::reset()
 {
-    setOriginalInMultipleMode(o_originalInMultipleMode);
-    m_model->setCurrentData(o_layoutsOriginalData);
+    m_model->resetData();
     m_view->selectRow(rowForName(m_corona->layoutsManager()->currentLayoutName()));
 }
 
@@ -638,7 +634,9 @@ void Layouts::save()
 
     QHash<QString, Latte::Layout::GenericLayout *> activeLayoutsToRename;
 
-    Settings::Data::LayoutsTable removedLayouts = o_layoutsOriginalData.subtracted(m_model->currentData());
+    Settings::Data::LayoutsTable originalLayouts = m_model->originalLayoutsData();
+    Settings::Data::LayoutsTable currentLayouts = m_model->currentLayoutsData();
+    Settings::Data::LayoutsTable removedLayouts = originalLayouts.subtracted(currentLayouts);
 
     //! remove layouts that have been removed from the user
     for (int i=0; i<removedLayouts.rowCount(); ++i) {
@@ -651,11 +649,14 @@ void Layouts::save()
     }
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        Data::Layout iLayout = m_model->at(i);
+        Data::Layout iLayoutCurrentData = m_model->at(i);
+        Data::Layout iLayoutOriginalData = m_model->originalData(iLayoutCurrentData.id);
+        iLayoutOriginalData = iLayoutOriginalData.isEmpty() ? iLayoutCurrentData : iLayoutOriginalData;
+
         QStringList cleanedActivities;
 
         //!update only activities that are valid
-        for (const auto &activity : iLayout.activities) {
+        for (const auto &activity : iLayoutCurrentData.activities) {
             if (knownActivities.contains(activity) && activity != Settings::Data::Layout::FREEACTIVITIESID) {
                 cleanedActivities.append(activity);
             }
@@ -663,42 +664,42 @@ void Layouts::save()
 
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
         //! update the generic parts of the layouts
-        bool isOriginalLayout = o_layoutsOriginalData.containsId(iLayout.id);
-        Latte::Layout::GenericLayout *genericActive= isOriginalLayout ? m_corona->layoutsManager()->synchronizer()->layout(iLayout.originalName()) : nullptr;
-        Latte::Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[iLayout.id];
+        bool isOriginalLayout = m_model->originalLayoutsData().containsId(iLayoutCurrentData.id);
+        Latte::Layout::GenericLayout *genericActive= isOriginalLayout ? m_corona->layoutsManager()->synchronizer()->layout(iLayoutOriginalData.name) : nullptr;
+        Latte::Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[iLayoutCurrentData.id];
 
         //! unlock read-only layout
         if (!generic->isWritable()) {
             generic->unlock();
         }
 
-        if (iLayout.color.startsWith("/")) {
+        if (iLayoutCurrentData.color.startsWith("/")) {
             //it is image file in such case
-            if (iLayout.color != generic->background()) {
-                generic->setBackground(iLayout.color);
+            if (iLayoutCurrentData.color != generic->background()) {
+                generic->setBackground(iLayoutCurrentData.color);
             }
 
-            if (generic->textColor() != iLayout.textColor) {
-                generic->setTextColor(iLayout.textColor);
+            if (generic->textColor() != iLayoutCurrentData.textColor) {
+                generic->setTextColor(iLayoutCurrentData.textColor);
             }
         } else {
-            if (iLayout.color != generic->color()) {
-                generic->setColor(iLayout.color);
+            if (iLayoutCurrentData.color != generic->color()) {
+                generic->setColor(iLayoutCurrentData.color);
                 generic->setBackground(QString());
                 generic->setTextColor(QString());
             }
         }
 
         //! update only the Central-specific layout parts
-        CentralLayout *centralActive = isOriginalLayout ? m_corona->layoutsManager()->synchronizer()->centralLayout(iLayout.originalName()) : nullptr;
-        CentralLayout *central = centralActive ? centralActive : m_layouts[iLayout.id];
+        CentralLayout *centralActive = isOriginalLayout ? m_corona->layoutsManager()->synchronizer()->centralLayout(iLayoutOriginalData.name) : nullptr;
+        CentralLayout *central = centralActive ? centralActive : m_layouts[iLayoutCurrentData.id];
 
-        if (central->showInMenu() != iLayout.isShownInMenu) {
-            central->setShowInMenu(iLayout.isShownInMenu);
+        if (central->showInMenu() != iLayoutCurrentData.isShownInMenu) {
+            central->setShowInMenu(iLayoutCurrentData.isShownInMenu);
         }
 
-        if (central->disableBordersForMaximizedWindows() != iLayout.hasDisabledBorders) {
-            central->setDisableBordersForMaximizedWindows(iLayout.hasDisabledBorders);
+        if (central->disableBordersForMaximizedWindows() != iLayoutCurrentData.hasDisabledBorders) {
+            central->setDisableBordersForMaximizedWindows(iLayoutCurrentData.hasDisabledBorders);
         }
 
         if (central->activities() != cleanedActivities) {
@@ -706,28 +707,28 @@ void Layouts::save()
         }
 
         //! If the layout name changed OR the layout path is a temporary one
-        if (iLayout.nameWasEdited()) {
+        if (iLayoutCurrentData.name != iLayoutOriginalData.name) {
             //! If the layout is Active in MultipleLayouts
             if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts && generic->isActive()) {
-                qDebug() << " Active Layout Should Be Renamed From : " << generic->name() << " TO :: " << iLayout.currentName();
-                activeLayoutsToRename[iLayout.currentName()] = generic;
+                qDebug() << " Active Layout Should Be Renamed From : " << generic->name() << " TO :: " << iLayoutCurrentData.name;
+                activeLayoutsToRename[iLayoutCurrentData.name] = generic;
             }
 
             QString tempFile = layoutTempDir.path() + "/" + QString(generic->name() + ".layout.latte");
             qDebug() << "new temp file ::: " << tempFile;
 
             if ((m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) && (generic->name() == m_corona->layoutsManager()->currentLayoutName())) {
-                switchToLayout = iLayout.currentName();
+                switchToLayout = iLayoutCurrentData.name;
             }
 
-            generic = m_layouts.take(iLayout.id);
+            generic = m_layouts.take(iLayoutCurrentData.id);
             delete generic;
 
-            QFile(iLayout.id).rename(tempFile);
+            QFile(iLayoutCurrentData.id).rename(tempFile);
 
-            fromRenamePaths.append(iLayout.id);
+            fromRenamePaths.append(iLayoutCurrentData.id);
             toRenamePaths.append(tempFile);
-            toRenameNames.append(iLayout.currentName());
+            toRenameNames.append(iLayoutCurrentData.name);
         }
     }
 
@@ -761,14 +762,17 @@ void Layouts::save()
 
     //! lock layouts in the end when the user has chosen it
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        Data::Layout layout = m_model->at(i);
-        Latte::Layout::GenericLayout *layoutPtr = m_corona->layoutsManager()->synchronizer()->layout(layout.originalName());
+        Data::Layout layoutCurrentData = m_model->at(i);
+        Data::Layout layoutOriginalData = m_model->originalData(layoutCurrentData.id);
+        layoutOriginalData = layoutOriginalData.isEmpty() ? layoutCurrentData : layoutOriginalData;
 
-        if (!layoutPtr && m_layouts.contains(layout.id)) {
-            layoutPtr = m_layouts[layout.id];
+        Latte::Layout::GenericLayout *layoutPtr = m_corona->layoutsManager()->synchronizer()->layout(layoutOriginalData.name);
+
+        if (!layoutPtr && m_layouts.contains(layoutCurrentData.id)) {
+            layoutPtr = m_layouts[layoutCurrentData.id];
         }
 
-        if (layout.isLocked && layoutPtr && layoutPtr->isWritable()) {
+        if (layoutCurrentData.isLocked && layoutPtr && layoutPtr->isWritable()) {
             layoutPtr->lock();
         }
     }
@@ -802,10 +806,7 @@ void Layouts::save()
         }
     }
 
-    m_model->applyCurrentNames();
-
-    o_layoutsOriginalData = m_model->currentData();
-    o_originalInMultipleMode = m_model->inMultipleMode();
+    m_model->applyData();
 
     emit dataChanged();
 }
@@ -816,10 +817,11 @@ void Layouts::syncActiveShares()
         return;
     }
 
-    Settings::Data::LayoutsTable currentLayoutsData = m_model->currentData();
+    Settings::Data::LayoutsTable currentLayoutsData = m_model->currentLayoutsData();
+    Settings::Data::LayoutsTable originalLayoutsData = m_model->originalLayoutsData();
 
     Latte::Layouts::SharesMap  currentSharesNamesMap = currentLayoutsData.sharesMap();
-    QStringList originalSharesIds = o_layoutsOriginalData.allSharesIds();
+    QStringList originalSharesIds = originalLayoutsData.allSharesIds();
     QStringList currentSharesIds = currentLayoutsData.allSharesIds();
 
     QStringList deprecatedSharesIds = Latte::subtracted(originalSharesIds, currentSharesIds);
@@ -829,9 +831,9 @@ void Layouts::syncActiveShares()
         QString shareId = deprecatedSharesIds[i];
 
         if (currentLayoutsData.containsId(shareId)) {
-            deprecatedSharesNames << currentLayoutsData[shareId].currentName();
-        } else if (o_layoutsOriginalData.containsId(shareId)) {
-            deprecatedSharesNames << o_layoutsOriginalData[shareId].currentName();
+            deprecatedSharesNames << currentLayoutsData[shareId].name;
+        } else if (originalLayoutsData.containsId(shareId)) {
+            deprecatedSharesNames << originalLayoutsData[shareId].name;
         }
     }
 
@@ -886,7 +888,7 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
     int originalRow = m_model->rowForId(provenId);
     Data::Layout provenLayout = m_model->at(originalRow);
 
-    m_parentDialog->showInlineMessage(i18nc("settings: layout name used","Layout <b>%0</b> is already used, please provide a different name...").arg(provenLayout.currentName()),
+    m_parentDialog->showInlineMessage(i18nc("settings: layout name used","Layout <b>%0</b> is already used, please provide a different name...").arg(provenLayout.name),
                                       KMessageWidget::Error,
                                       SettingsDialog::ERRORINTERVAL);
 

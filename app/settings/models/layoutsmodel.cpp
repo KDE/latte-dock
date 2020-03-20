@@ -76,7 +76,12 @@ Layouts::~Layouts()
 
 bool Layouts::containsCurrentName(const QString &name) const
 {
-    return m_layoutsTable.containsCurrentName(name);
+    return m_layoutsTable.containsName(name);
+}
+
+bool Layouts::dataAreChanged() const
+{
+    return ((o_inMultipleMode != m_inMultipleMode) || (o_layoutsTable != m_layoutsTable));
 }
 
 bool Layouts::inMultipleMode() const
@@ -92,16 +97,6 @@ void Layouts::setInMultipleMode(bool inMultiple)
 
     m_inMultipleMode = inMultiple;
     emit inMultipleModeChanged();
-}
-
-QString Layouts::idForOriginalName(const QString &name)
-{
-    return m_layoutsTable.idForOriginalName(name);
-}
-
-QString Layouts::idForCurrentName(const QString &name)
-{
-    return m_layoutsTable.idForCurrentName(name);
 }
 
 int Layouts::rowCount() const
@@ -133,7 +128,7 @@ void Layouts::clear()
 }
 
 void Layouts::appendLayout(const Settings::Data::Layout &layout)
-{
+{    
     beginInsertRows(QModelIndex(), m_layoutsTable.rowCount(), m_layoutsTable.rowCount());
     m_layoutsTable << layout;
     endInsertRows();
@@ -141,13 +136,59 @@ void Layouts::appendLayout(const Settings::Data::Layout &layout)
     emit rowsInserted();
 }
 
-void Layouts::applyCurrentNames()
-{
+void Layouts::applyData()
+{   
+    bool appending{false};
+    bool removing{false};
+
+    if (o_layoutsTable.rowCount() > m_layoutsTable.rowCount()) {
+        removing = true;
+        beginRemoveRows(QModelIndex(), o_layoutsTable.rowCount(), m_layoutsTable.rowCount()-1);
+    } else if (o_layoutsTable.rowCount() < m_layoutsTable.rowCount()){
+        appending = true;
+        beginInsertRows(QModelIndex(), o_layoutsTable.rowCount(), m_layoutsTable.rowCount()-1);
+    }
+
     QVector<int> roles;
     roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
 
-    for(int i=0; i<rowCount(); ++i) {
-        m_layoutsTable[i].setOriginalName(m_layoutsTable[i].currentName());
+    o_inMultipleMode = m_inMultipleMode;
+    o_layoutsTable = m_layoutsTable;
+
+    if (appending) {
+        endInsertRows();
+    } else if (removing) {
+        endRemoveRows();
+    }
+
+    emit dataChanged(index(0, NAMECOLUMN), index(rowCount()-1,NAMECOLUMN), roles);
+}
+
+void Layouts::resetData()
+{
+    bool appending{false};
+    bool removing{false};
+
+    if (m_layoutsTable.rowCount() > o_layoutsTable.rowCount()) {
+        removing = true;
+        beginRemoveRows(QModelIndex(), m_layoutsTable.rowCount(), o_layoutsTable.rowCount()-1);
+    } else if (m_layoutsTable.rowCount() < o_layoutsTable.rowCount()){
+        appending = true;
+        beginInsertRows(QModelIndex(), m_layoutsTable.rowCount(), o_layoutsTable.rowCount()-1);
+    }
+
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+
+    m_inMultipleMode = o_inMultipleMode;
+    m_layoutsTable = o_layoutsTable;
+
+    if (appending) {
+        endInsertRows();
+    } else if (removing) {
+        endRemoveRows();
     }
 
     emit dataChanged(index(0, NAMECOLUMN), index(rowCount()-1,NAMECOLUMN), roles);
@@ -202,18 +243,29 @@ QString Layouts::layoutNameForFreeActivities() const
 {
     for(int i=0; i<rowCount(); ++i) {
         if (m_layoutsTable[i].activities.contains(Data::Layout::FREEACTIVITIESID)) {
-            return m_layoutsTable[i].currentName();
+            return m_layoutsTable[i].name;
         }
     }
 
     return QString();
 }
 
-void Layouts::setLayoutNameForFreeActivities(const QString &name)
+void Layouts::setCurrentLayoutForFreeActivities(const QString &id)
 {
-    QString id = m_layoutsTable.idForCurrentName(name);
+    if (m_layoutsTable.containsId(id)) {
+        m_layoutsTable.setLayoutForFreeActivities(id);
 
-    if (!id.isEmpty()) {
+        QVector<int> roles;
+        roles << Qt::DisplayRole;
+        roles << Qt::UserRole;
+        emit dataChanged(index(0, ACTIVITYCOLUMN), index(rowCount()-1, ACTIVITYCOLUMN), roles);
+    }
+}
+
+void Layouts::setOriginalLayoutForFreeActivities(const QString &id)
+{
+    if (o_layoutsTable.containsId(id)) {
+        o_layoutsTable.setLayoutForFreeActivities(id);
         m_layoutsTable.setLayoutForFreeActivities(id);
 
         QVector<int> roles;
@@ -362,7 +414,9 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     } else if (role == INMULTIPLELAYOUTSROLE) {
         return inMultipleMode();
     } else if (role == LAYOUTNAMEWASEDITEDROLE) {
-        return m_layoutsTable[row].nameWasEdited();
+        QString id = m_layoutsTable[row].id;
+        bool edited = !o_layoutsTable.containsId(id) || o_layoutsTable[id].name != m_layoutsTable[row].name;
+        return edited;
     } else if (role == ASSIGNEDACTIVITIESROLE) {
         return m_layoutsTable[row].activities;
     } else if (role == ASSIGNEDACTIVITIESFROMSHAREDROLE) {
@@ -399,7 +453,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {
-            return m_layoutsTable[row].currentName();
+            return m_layoutsTable[row].name;
         }
         break;
     case MENUCOLUMN:
@@ -449,10 +503,10 @@ QStringList Layouts::cleanStrings(const QStringList &original, const QStringList
 
 void Layouts::assignFreeActivitiesLayoutAt(const QString &layoutName)
 {
-    QString reqId = m_layoutsTable.idForOriginalName(layoutName);
+    QString reqId = o_layoutsTable.idForName(layoutName);
 
     if (reqId.isEmpty()) {
-        reqId = m_layoutsTable.idForCurrentName(layoutName);
+        reqId = m_layoutsTable.idForName(layoutName);
         if (reqId.isEmpty()) {
             return;
         }
@@ -470,7 +524,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
     roles << Qt::UserRole;
 
     //! ActiveCurrent with no activities has highest priority
-    QString activeCurrentId = m_layoutsTable.idForOriginalName(m_corona->layoutsManager()->currentLayoutName());
+    QString activeCurrentId = o_layoutsTable.idForName(m_corona->layoutsManager()->currentLayoutName());
     int row = m_layoutsTable.indexOf(activeCurrentId);
 
     if (row>=0 && !(m_inMultipleMode && m_layoutsTable[row].isShared()) && m_layoutsTable[row].activities.isEmpty()) {
@@ -658,14 +712,14 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole) {
-            QString provenId = m_layoutsTable.idForCurrentName(value.toString());
+            QString provenId = m_layoutsTable.idForName(value.toString());
 
             if (!provenId.isEmpty() && provenId != m_layoutsTable[row].id /*not the same row*/ ){
                 //! duplicate name should be rejected
                 emit nameDuplicated(provenId, m_layoutsTable[row].id);
                 return false;
             } else {
-                m_layoutsTable[row].setCurrentName(value.toString());
+                m_layoutsTable[row].name = value.toString();
                 emit dataChanged(index, index, roles);
                 return true;
             }
@@ -720,7 +774,7 @@ void Layouts::updateActiveStates()
     for(int i=0; i<rowCount(); ++i) {
         bool iActive{false};
 
-        if (m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].currentName())) {
+        if (m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].name)) {
             iActive = true;
         }
 
@@ -732,32 +786,58 @@ void Layouts::updateActiveStates()
     }
 }
 
-const Data::Layout &Layouts::at(const int &row)
-{
-    return m_layoutsTable[row];
-}
-
 int Layouts::rowForId(const QString &id) const
 {
     return m_layoutsTable.indexOf(id);
 }
 
-const Data::LayoutsTable &Layouts::currentData()
+const Data::Layout &Layouts::at(const int &row)
+{
+    return m_layoutsTable[row];
+}
+
+const Data::Layout &Layouts::currentData(const QString &id)
+{
+    return m_layoutsTable[id];
+}
+
+
+const Data::Layout Layouts::originalData(const QString &id)
+{
+    if (o_layoutsTable.containsId(id)){
+        return o_layoutsTable[id];
+    }
+
+    return Data::Layout();
+
+}
+
+const Data::LayoutsTable &Layouts::originalLayoutsData()
+{
+    return o_layoutsTable;
+}
+
+const Data::LayoutsTable &Layouts::currentLayoutsData()
 {
     return m_layoutsTable;
 }
 
-void Layouts::setCurrentData(Data::LayoutsTable &data)
+void Layouts::setOriginalData(Data::LayoutsTable &data, const bool &inmultiple)
 {
     clear();
 
     beginInsertRows(QModelIndex(), 0, data.rowCount() - 1);
+    o_inMultipleMode = inmultiple;
+    o_layoutsTable = data;
+
     m_layoutsTable = data;
 
     for(int i=0; i<m_layoutsTable.rowCount(); ++i) {
-        m_layoutsTable[i].isActive = m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].originalName());
+        m_layoutsTable[i].isActive = m_corona->layoutsManager()->synchronizer()->layout(o_layoutsTable[i].name);
     }
     endInsertRows();
+
+    setInMultipleMode(inmultiple);
 
     emit rowsInserted();
 }

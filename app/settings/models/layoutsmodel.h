@@ -73,11 +73,10 @@ public:
 
     bool containsCurrentName(const QString &name) const;
 
+    bool dataAreChanged() const;
+
     bool inMultipleMode() const;
     void setInMultipleMode(bool inMultiple);
-
-    QString idForOriginalName(const QString &name);
-    QString idForCurrentName(const QString &name);
 
     int rowCount() const;
     int rowCount(const QModelIndex &parent) const override;
@@ -88,6 +87,8 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const override;
 
     const Data::Layout &at(const int &row);
+    const Data::Layout &currentData(const QString &id);
+    const Data::Layout originalData(const QString &id);
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
@@ -95,17 +96,23 @@ public:
     int rowForId(const QString &id) const;
 
     void clear();
-    void applyCurrentNames();
+    //! all current data will become also original
+    void applyData();
+    //! all original data will become also current
+    void resetData();
+
     void appendLayout(const Settings::Data::Layout &layout);
     void removeLayout(const QString &id);
 
     QString layoutNameForFreeActivities() const;
-    void setLayoutNameForFreeActivities(const QString &name);
+    void setCurrentLayoutForFreeActivities(const QString &id);
+    void setOriginalLayoutForFreeActivities(const QString &id);
 
     QStringList availableShareIdsFor(const QString id) const;
 
-    const Data::LayoutsTable &currentData();
-    void setCurrentData(Data::LayoutsTable &data);
+    const Data::LayoutsTable &currentLayoutsData();
+    const Data::LayoutsTable &originalLayoutsData();
+    void setOriginalData(Data::LayoutsTable &data, const bool &inmultiple);
 
 signals:
     void inMultipleModeChanged();
@@ -136,13 +143,21 @@ private:
     QStringList assignedActivitiesFromShared(const int &row) const;
 
 private:
-    bool m_inMultipleMode{false};
-    Data::LayoutsTable m_layoutsTable;
-
+    //! break MVC only when a SharedTo editor is created
+    //! because we want to move the dot indicator in the Activities delegate
+    //! when that happens
     int m_sharedToInEditRow{-1};
 
     Data::ActivitiesMap m_activitiesMap;
     QHash<QString, KActivities::Info *> m_activitiesInfo;
+
+    //! original data
+    bool o_inMultipleMode{false};
+    Settings::Data::LayoutsTable o_layoutsTable;
+
+    //! current data
+    bool m_inMultipleMode{false};
+    Data::LayoutsTable m_layoutsTable;
 
     Latte::Corona *m_corona{nullptr};
 };

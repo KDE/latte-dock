@@ -69,7 +69,7 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
             continue;
         }
 
-        QAction *action = new QAction(allLayouts[i].currentName());
+        QAction *action = new QAction(allLayouts[i].name);
         action->setData(allLayouts[i].id);
         action->setCheckable(true);
         action->setChecked(assignedShares.contains(allLayouts[i].id));
@@ -292,7 +292,7 @@ QString Shared::joined(const Data::LayoutsTable &layouts, bool formatText) const
             bold = true;
         }
 
-        finalText += bold ? "<b>" + layouts[i].currentName() + "</b>" : layouts[i].currentName();
+        finalText += bold ? "<b>" + layouts[i].name + "</b>" : layouts[i].name;
     }
 
     return finalText;

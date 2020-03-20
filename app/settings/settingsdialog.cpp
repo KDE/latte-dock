@@ -427,7 +427,7 @@ void SettingsDialog::on_new_layout()
 
         if (presetName == "Default") {
             Settings::Data::Layout newlayout = m_layoutsController->addLayoutForFile(preset, presetName, true);
-            showInlineMessage(i18nc("settings:layout added successfully","Layout <b>%0</b> added successfully...").arg(newlayout.currentName()),
+            showInlineMessage(i18nc("settings:layout added successfully","Layout <b>%0</b> added successfully...").arg(newlayout.name),
                               KMessageWidget::Information,
                               SettingsDialog::INFORMATIONINTERVAL);
             break;
@@ -465,7 +465,7 @@ void SettingsDialog::on_download_layout()
 
                 if (version == Layouts::Importer::LayoutVersion2) {
                     Settings::Data::Layout downloaded = m_layoutsController->addLayoutForFile(entryFile);
-                    showInlineMessage(i18nc("settings:layout downloaded successfully","Layout <b>%0</b> downloaded successfully...").arg(downloaded.currentName()),
+                    showInlineMessage(i18nc("settings:layout downloaded successfully","Layout <b>%0</b> downloaded successfully...").arg(downloaded.name),
                                       KMessageWidget::Information,
                                       SettingsDialog::INFORMATIONINTERVAL);
                     break;
@@ -489,7 +489,7 @@ void SettingsDialog::on_remove_layout()
         return;
     }
 
-    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
+    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayoutCurrentData();
 
     if (selectedLayout.isActive) {
         showInlineMessage(i18nc("settings: active layout remove","<b>Active</b> layouts can not be removed..."),
@@ -571,7 +571,7 @@ void SettingsDialog::on_import_layout()
 
         if (version == Layouts::Importer::LayoutVersion2) {
             Settings::Data::Layout importedlayout = m_layoutsController->addLayoutForFile(file);
-            showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedlayout.currentName()),
+            showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedlayout.name),
                               KMessageWidget::Information,
                               SettingsDialog::INFORMATIONINTERVAL);
         } else if (version == Layouts::Importer::ConfigVersion1) {
@@ -660,7 +660,7 @@ void SettingsDialog::on_export_layout()
         return;
     }
 
-    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
+    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayoutCurrentData();
 
     //! Update ALL active original layouts before exporting,
     m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
@@ -683,7 +683,7 @@ void SettingsDialog::on_export_layout()
 
     connect(exportFileDialog, &QFileDialog::fileSelected, this, [ &, selectedLayout](const QString & file) {
         auto showExportLayoutError = [this](const Settings::Data::Layout &layout) {
-            showInlineMessage(i18nc("settings:layout export fail","Layout <b>%0</b> export <b>failed</b>...").arg(layout.currentName()),
+            showInlineMessage(i18nc("settings:layout export fail","Layout <b>%0</b> export <b>failed</b>...").arg(layout.name),
                               KMessageWidget::Error);
         };
 
@@ -710,7 +710,7 @@ void SettingsDialog::on_export_layout()
 
             m_openUrlAction->setData(file);
             ui->messageWidget->addAction(m_openUrlAction);
-            showInlineMessage(i18nc("settings:layout export success","Layout <b>%0</b> export succeeded...").arg(selectedLayout.currentName()),
+            showInlineMessage(i18nc("settings:layout export success","Layout <b>%0</b> export succeeded...").arg(selectedLayout.name),
                               KMessageWidget::Information,
                               SettingsDialog::INFORMATIONWITHACTIONINTERVAL);
         } else if (file.endsWith(".latterc")) {
@@ -731,7 +731,7 @@ void SettingsDialog::on_export_layout()
     });
 
     exportFileDialog->open();
-    exportFileDialog->selectFile(selectedLayout.currentName());
+    exportFileDialog->selectFile(selectedLayout.name);
 }
 
 void SettingsDialog::on_export_fullconfiguration()
@@ -876,7 +876,6 @@ void SettingsDialog::loadSettings()
     bool inMultiple{m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts};
 
     m_layoutsController->loadLayouts();
-    m_layoutsController->setOriginalInMultipleMode(inMultiple);
 
     if (inMultiple) {
         ui->multipleToolBtn->setChecked(true);
@@ -927,11 +926,11 @@ void SettingsDialog::on_switch_layout()
         return;
     }
 
-    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
+    Settings::Data::Layout selectedLayoutCurrent = m_layoutsController->selectedLayoutCurrentData();
+    Settings::Data::Layout selectedLayoutOriginal = m_layoutsController->selectedLayoutOriginalData();
+    selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
 
-    bool hasChanges = (selectedLayout.nameWasEdited() || m_layoutsController->dataAreChanged());
-
-    if (hasChanges) {
+    if (m_layoutsController->dataAreChanged()) {
         showInlineMessage(i18nc("settings:not permitted switching layout","You need to <b>apply</b> your changes first to switch layout..."),
                           KMessageWidget::Warning,
                           WARNINGINTERVAL);
@@ -939,23 +938,23 @@ void SettingsDialog::on_switch_layout()
     }
 
     if (!m_layoutsController->selectedLayoutIsCurrentActive()) {
-        bool appliedShared = m_layoutsController->inMultipleMode() && selectedLayout.isShared();
+        bool appliedShared = m_layoutsController->inMultipleMode() && selectedLayoutCurrent.isShared();
         bool freeActivitiesLayoutUpdated{false};
 
-        if (!appliedShared && selectedLayout.activities.isEmpty()) {
-            m_layoutsController->setLayoutNameForFreeActivities(selectedLayout.currentName(), true);
+        if (!appliedShared && selectedLayoutCurrent.activities.isEmpty()) {
+            m_layoutsController->setOriginalLayoutForFreeActivities(selectedLayoutOriginal.id);
             freeActivitiesLayoutUpdated = true;
         }
 
         if (m_layoutsController->inMultipleMode()) {
-            m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
+            m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name);
         } else {
             if (freeActivitiesLayoutUpdated) {
-                m_corona->layoutsManager()->switchToLayout(selectedLayout.originalName());
+                m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name);
             } else {
-                CentralLayout singleLayout(this, selectedLayout.id);
+                CentralLayout singleLayout(this, selectedLayoutCurrent.id);
 
-                QString switchToActivity = selectedLayout.isForFreeActivities() ? singleLayout.lastUsedActivity() : selectedLayout.activities[0];
+                QString switchToActivity = selectedLayoutCurrent.isForFreeActivities() ? singleLayout.lastUsedActivity() : selectedLayoutCurrent.activities[0];
 
                 if (!m_corona->activitiesConsumer()->runningActivities().contains(switchToActivity)) {
                     m_corona->layoutsManager()->synchronizer()->activitiesController()->startActivity(switchToActivity);
@@ -979,8 +978,11 @@ void SettingsDialog::on_pause_layout()
 
     setTwinProperty(m_pauseLayoutAction, TWINENABLED, false);
 
-    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
-    m_corona->layoutsManager()->synchronizer()->pauseLayout(selectedLayout.originalName());
+    Settings::Data::Layout selectedLayoutCurrent = m_layoutsController->selectedLayoutCurrentData();
+    Settings::Data::Layout selectedLayoutOriginal = m_layoutsController->selectedLayoutOriginalData();
+    selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
+
+    m_corona->layoutsManager()->synchronizer()->pauseLayout(selectedLayoutOriginal.name);
 }
 
 void SettingsDialog::updateApplyButtonsState()
@@ -1029,7 +1031,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
         return;
     }
 
-    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayout();
+    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayoutCurrentData();
 
     //! Switch Button
     if ((m_layoutsController->inMultipleMode() && selectedLayout.isShared())
