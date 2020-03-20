@@ -440,19 +440,19 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
 
     switch (column) {
     case IDCOLUMN:
-        if (role == Qt::DisplayRole) {
+        if (role == Qt::DisplayRole || role == Qt::UserRole){
             return m_layoutsTable[row].id;
         }
         break;
     case HIDDENTEXTCOLUMN:
         return QVariant{};
     case BACKGROUNDCOLUMN:
-        if (role == Qt::BackgroundRole) {
+        if (role == Qt::UserRole) {
             return m_layoutsTable[row].background.isEmpty() ? m_layoutsTable[row].color : m_layoutsTable[row].background;
         }
         break;
     case NAMECOLUMN:
-        if (role == Qt::DisplayRole) {
+        if ((role == Qt::DisplayRole) || (role == Qt::UserRole)) {
             return m_layoutsTable[row].name;
         }
         break;
@@ -471,12 +471,12 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         }
         break;
     case ACTIVITYCOLUMN:
-        if (role == Qt::DisplayRole || role == Qt::UserRole) {
+        if (role == Qt::UserRole) {
             return m_layoutsTable[row].activities;
         }
         break;
     case SHAREDCOLUMN:
-        if (role == Qt::DisplayRole || role == Qt::UserRole) {
+        if (role == Qt::UserRole) {
             return m_layoutsTable[row].shares;
         }
         break;
@@ -688,8 +688,9 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
     //! specific roles to each independent cell
     switch (column) {
     case IDCOLUMN:
-        if (role == Qt::DisplayRole) {
+        if (role==Qt::UserRole) {
             setId(row, value.toString());
+            emit dataChanged(index, index, roles);
             return true;
         }
         break;
@@ -697,7 +698,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         return true;
         break;
     case BACKGROUNDCOLUMN:
-        if (role == Qt::BackgroundRole) {
+        if (role == Qt::UserRole) {
             QString back = value.toString();
 
             if (back.startsWith("/")) {
@@ -711,7 +712,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         }
         break;
     case NAMECOLUMN:
-        if (role == Qt::DisplayRole) {
+        if (role == Qt::UserRole) {
             QString provenId = m_layoutsTable.idForName(value.toString());
 
             if (!provenId.isEmpty() && provenId != m_layoutsTable[row].id /*not the same row*/ ){
@@ -726,14 +727,14 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         }
         break;
     case MENUCOLUMN:
-        if (role == Qt::DisplayRole || role == Qt::UserRole) {
+        if (role == Qt::UserRole) {
             m_layoutsTable[row].isShownInMenu = value.toBool();
             emit dataChanged(index, index, roles);
             return true;
         }
         break;
     case BORDERSCOLUMN:
-        if (role == Qt::DisplayRole || role == Qt::UserRole) {
+        if (role == Qt::UserRole) {
             m_layoutsTable[row].hasDisabledBorders = value.toBool();
             emit dataChanged(index, index, roles);
             return true;

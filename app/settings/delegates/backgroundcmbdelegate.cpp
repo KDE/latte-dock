@@ -69,7 +69,7 @@ QWidget *BackgroundCmbBox::createEditor(QWidget *parent, const QStyleOptionViewI
         }
     }
 
-    QString value = index.model()->data(index, Qt::BackgroundRole).toString();
+    QString value = index.model()->data(index, Qt::UserRole).toString();
 
     //! add the background if exists
     if (value.startsWith("/")) {
@@ -83,7 +83,7 @@ QWidget *BackgroundCmbBox::createEditor(QWidget *parent, const QStyleOptionViewI
 void BackgroundCmbBox::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
-    QString value = index.model()->data(index, Qt::BackgroundRole).toString();
+    QString value = index.model()->data(index, Qt::UserRole).toString();
 
     int pos = Colors.indexOf(value);
 
@@ -99,7 +99,7 @@ void BackgroundCmbBox::setModelData(QWidget *editor, QAbstractItemModel *model, 
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
 
     QString itemData = comboBox->currentData().toString();
-    model->setData(index, comboBox->currentText(), Qt::BackgroundRole);
+    model->setData(index, comboBox->currentText(), Qt::UserRole);
 }
 
 void BackgroundCmbBox::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -115,7 +115,7 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
     //! Remove the focus dotted lines
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
 
-    QVariant background = index.data(Qt::BackgroundRole);
+    QVariant background = index.data(Qt::UserRole);
 
     //! draw underlying background
     QStyledItemDelegate::paint(painter, myOptions, index);

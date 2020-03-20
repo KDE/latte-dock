@@ -57,7 +57,7 @@ void LayoutName::setEditorData(QWidget *editor, const QModelIndex &index) const
     QLineEdit *lineEditor = qobject_cast<QLineEdit *>(editor);
 
     if (lineEditor) {
-        QString name = index.data(Qt::DisplayRole).toString();
+        QString name = index.data(Qt::UserRole).toString();
         lineEditor->setText(name);
     }
 }
@@ -67,7 +67,7 @@ void LayoutName::setModelData(QWidget *editor, QAbstractItemModel *model, const 
     QLineEdit *lineEditor = qobject_cast<QLineEdit *>(editor);
 
     if (lineEditor) {
-        model->setData(index, lineEditor->text(), Qt::DisplayRole);
+        model->setData(index, lineEditor->text(), Qt::UserRole);
     }
 }
 
@@ -90,7 +90,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     if (isLocked || isShared) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
-        QString nameText = index.data(Qt::DisplayRole).toString();
+        QString nameText = index.data(Qt::UserRole).toString();
 
         bool active = Latte::isActive(option);
         bool enabled = Latte::isEnabled(option);

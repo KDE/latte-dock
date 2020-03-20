@@ -105,6 +105,10 @@ void Layouts::initView()
     m_view->horizontalHeader()->setStretchLastSection(true);
     m_view->verticalHeader()->setVisible(false);
     m_view->setSortingEnabled(true);
+
+    m_proxyModel->setSortRole(Qt::UserRole);
+    m_proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+
     m_view->sortByColumn(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
 
     //!find the available colors
@@ -162,7 +166,7 @@ bool Layouts::selectedLayoutIsCurrentActive() const
 const Data::Layout Layouts::selectedLayoutCurrentData() const
 {
     int selectedRow = m_view->currentIndex().row();
-    QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::DisplayRole).toString();
+    QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
 
     return m_model->currentData(selectedId);
 }
@@ -170,7 +174,7 @@ const Data::Layout Layouts::selectedLayoutCurrentData() const
 const Data::Layout Layouts::selectedLayoutOriginalData() const
 {
     int selectedRow = m_view->currentIndex().row();
-    QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::DisplayRole).toString();
+    QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
 
     return m_model->originalData(selectedId);;
 }
@@ -201,7 +205,7 @@ void Layouts::setInMultipleMode(bool inMultiple)
 int Layouts::rowForId(QString id) const
 {
     for (int i = 0; i < m_proxyModel->rowCount(); ++i) {
-        QString rowId = m_proxyModel->data(m_proxyModel->index(i, Model::Layouts::IDCOLUMN), Qt::DisplayRole).toString();
+        QString rowId = m_proxyModel->data(m_proxyModel->index(i, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
 
         if (rowId == id) {
             return i;
@@ -214,7 +218,7 @@ int Layouts::rowForId(QString id) const
 int Layouts::rowForName(QString layoutName) const
 {
     for (int i = 0; i < m_proxyModel->rowCount(); ++i) {
-        QString rowName = m_proxyModel->data(m_proxyModel->index(i, Model::Layouts::NAMECOLUMN), Qt::DisplayRole).toString();
+        QString rowName = m_proxyModel->data(m_proxyModel->index(i, Model::Layouts::NAMECOLUMN), Qt::UserRole).toString();
 
         if (rowName == layoutName) {
             return i;
@@ -747,7 +751,7 @@ void Layouts::save()
             Data::Layout jLayout = m_model->at(j);
 
             if (jLayout.id == fromRenamePaths[i]) {
-                m_model->setData(m_model->index(j, Model::Layouts::IDCOLUMN), newFile, Qt::DisplayRole);
+                m_model->setData(m_model->index(j, Model::Layouts::IDCOLUMN), newFile, Qt::UserRole);
             }
         }
     }
