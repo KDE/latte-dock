@@ -25,6 +25,7 @@
 // local
 #include "../liblatte2/types.h"
 #include "controllers/layoutscontroller.h"
+#include "handlers/preferenceshandler.h"
 
 // Qt
 #include <QObject>
@@ -65,6 +66,8 @@ public:
 
     SettingsDialog(QWidget *parent, Latte::Corona *corona);
     ~SettingsDialog();
+
+    Ui::SettingsDialog *ui() const;
 
     Types::LatteConfigPage currentPage();
 
@@ -127,7 +130,8 @@ private:
 private:
     Latte::Corona *m_corona{nullptr};
     Settings::Controller::Layouts *m_layoutsController{nullptr};
-    Ui::SettingsDialog *ui;
+    Settings::Handler::Preferences *m_preferencesHandler{nullptr};
+    Ui::SettingsDialog *m_ui;
 
     QButtonGroup *m_inMemoryButtons;
     QButtonGroup *m_mouseSensitivityButtons;
@@ -166,10 +170,6 @@ private:
     QTimer m_activitiesTimer;
     //! Timer to hide the inline message widget
     QTimer m_hideInlineMessageTimer;
-
-    //! original data
-    QList<int> o_settingsOriginalData;
-
 
 };
 

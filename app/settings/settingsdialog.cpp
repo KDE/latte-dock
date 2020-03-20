@@ -57,9 +57,6 @@
 
 namespace Latte {
 
-const int SCREENTRACKERDEFAULTVALUE = 2500;
-const int OUTLINEDEFAULTWIDTH = 1;
-
 const int SettingsDialog::INFORMATIONINTERVAL;
 const int SettingsDialog::INFORMATIONWITHACTIONINTERVAL;
 const int SettingsDialog::WARNINGINTERVAL;
@@ -67,49 +64,41 @@ const int SettingsDialog::ERRORINTERVAL;
 
 SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     : QDialog(parent),
-      ui(new Ui::SettingsDialog),
+      m_ui(new Ui::SettingsDialog),
       m_corona(corona)
 {
-    ui->setupUi(this);
+    m_ui->setupUi(this);
 
     setAttribute(Qt::WA_DeleteOnClose, true);
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     resize(m_corona->universalSettings()->layoutsWindowSize());
 
-    connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
             , this, &SettingsDialog::apply);
-    connect(ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked
             , this, &SettingsDialog::reset);
-    connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
+    connect(m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
             , this, &SettingsDialog::restoreDefaults);
 
-    m_layoutsController = new Settings::Controller::Layouts(this, m_corona, ui->layoutsView);
+    m_preferencesHandler = new Settings::Handler::Preferences(this, m_corona);
+    m_layoutsController = new Settings::Controller::Layouts(this, m_corona, m_ui->layoutsView);
 
     m_inMemoryButtons = new QButtonGroup(this);
-    m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Types::SingleLayout);
-    m_inMemoryButtons->addButton(ui->multipleToolBtn, Latte::Types::MultipleLayouts);
+    m_inMemoryButtons->addButton(m_ui->singleToolBtn, Latte::Types::SingleLayout);
+    m_inMemoryButtons->addButton(m_ui->multipleToolBtn, Latte::Types::MultipleLayouts);
     m_inMemoryButtons->setExclusive(true);
 
     if (KWindowSystem::isPlatformWayland()) {
         m_inMemoryButtons->button(Latte::Types::MultipleLayouts)->setEnabled(false);
     }
 
-    m_mouseSensitivityButtons = new QButtonGroup(this);
-    m_mouseSensitivityButtons->addButton(ui->lowSensitivityBtn, Latte::Types::LowSensitivity);
-    m_mouseSensitivityButtons->addButton(ui->mediumSensitivityBtn, Latte::Types::MediumSensitivity);
-    m_mouseSensitivityButtons->addButton(ui->highSensitivityBtn, Latte::Types::HighSensitivity);
-    m_mouseSensitivityButtons->setExclusive(true);
-
-    ui->screenTrackerSpinBox->setValue(m_corona->universalSettings()->screenTrackerInterval());
-    ui->outlineSpinBox->setValue(m_corona->themeExtended()->outlineWidth());
-    ui->messageWidget->setVisible(false);
+    m_ui->messageWidget->setVisible(false);
 
     //! Global Menu
     initGlobalMenu();
 
-
-    ui->buttonBox->button(QDialogButtonBox::Apply)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
-    ui->buttonBox->button(QDialogButtonBox::Reset)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
+    m_ui->buttonBox->button(QDialogButtonBox::Apply)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
+    m_ui->buttonBox->button(QDialogButtonBox::Reset)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
 
     m_openUrlAction = new QAction(i18n("Open Location..."), this);
     connect(m_openUrlAction, &QAction::triggered, this, [&]() {
@@ -123,7 +112,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     loadSettings();
 
     //! SIGNALS
-    connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [&]() {
+    connect(m_ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [&]() {
         updatePerLayoutButtonsState();
         updateApplyButtonsState();
     });
@@ -141,38 +130,20 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
         }
     });
 
-    connect(m_mouseSensitivityButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
-            [ = ](int id, bool checked) {
-        updateApplyButtonsState();
-    });
+    connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::on_currentPageChanged);
 
-    connect(ui->screenTrackerSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), [ = ](int i) {
-        updateApplyButtonsState();
-    });
-
-    connect(ui->outlineSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), [ = ](int i) {
-        updateApplyButtonsState();
-    });
-
-    connect(ui->autostartChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
-    connect(ui->badges3DStyleChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
-    connect(ui->metaPressChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
-    connect(ui->metaPressHoldChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
-    connect(ui->infoWindowChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
-    connect(ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::on_currentPageChanged);
-
-    connect(ui->noBordersForMaximizedChkBox, &QCheckBox::stateChanged, this, [&]() {
-        bool noBordersForMaximized = ui->noBordersForMaximizedChkBox->isChecked();
+    connect(m_preferencesHandler, &Settings::Handler::Preferences::dataChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(m_preferencesHandler, &Settings::Handler::Preferences::borderlessMaximizedChanged,  this, [&]() {
+        bool noBordersForMaximized = m_ui->noBordersForMaximizedChkBox->isChecked();
 
         if (noBordersForMaximized) {
-            ui->layoutsView->setColumnHidden(Settings::Model::Layouts::BORDERSCOLUMN, false);
+            m_ui->layoutsView->setColumnHidden(Settings::Model::Layouts::BORDERSCOLUMN, false);
         } else {
-            ui->layoutsView->setColumnHidden(Settings::Model::Layouts::BORDERSCOLUMN, true);
+            m_ui->layoutsView->setColumnHidden(Settings::Model::Layouts::BORDERSCOLUMN, true);
         }
-
-        updateApplyButtonsState();
     });
 
+    //! timers
     m_activitiesTimer.setSingleShot(true);
     m_activitiesTimer.setInterval(750);
     connect(&m_activitiesTimer, &QTimer::timeout, this, &SettingsDialog::updateWindowActivities);
@@ -181,12 +152,12 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     m_hideInlineMessageTimer.setSingleShot(true);
     m_hideInlineMessageTimer.setInterval(2000);
     connect(&m_hideInlineMessageTimer, &QTimer::timeout, this, [&]() {
-        ui->messageWidget->animatedHide();
-        ui->messageWidget->removeAction(m_openUrlAction);
+        m_ui->messageWidget->animatedHide();
+        m_ui->messageWidget->removeAction(m_openUrlAction);
     });
 
-    connect(ui->messageWidget, &KMessageWidget::hideAnimationFinished, this, [&]() {
-        ui->messageWidget->removeAction(m_openUrlAction);
+    connect(m_ui->messageWidget, &KMessageWidget::hideAnimationFinished, this, [&]() {
+        m_ui->messageWidget->removeAction(m_openUrlAction);
     });
 }
 
@@ -219,14 +190,14 @@ void SettingsDialog::initLayoutMenu()
     m_switchLayoutAction->setToolTip(i18n("Switch to selected layout"));
     m_switchLayoutAction->setIcon(QIcon::fromTheme("user-identity"));
     m_switchLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Tab));
-    twinActionWithButton(ui->switchButton, m_switchLayoutAction);
+    twinActionWithButton(m_ui->switchButton, m_switchLayoutAction);
     connect(m_switchLayoutAction, &QAction::triggered, this, &SettingsDialog::on_switch_layout);
 
     m_pauseLayoutAction = m_layoutMenu->addAction(i18nc("pause layout", "&Pause"));
     m_pauseLayoutAction->setToolTip(i18n("Switch to selected layout"));
     m_pauseLayoutAction->setIcon(QIcon::fromTheme("media-playback-pause"));
     m_pauseLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_P));
-    twinActionWithButton(ui->pauseButton, m_pauseLayoutAction);
+    twinActionWithButton(m_ui->pauseButton, m_pauseLayoutAction);
     connect(m_pauseLayoutAction, &QAction::triggered, this, &SettingsDialog::on_pause_layout);
 
     m_layoutMenu->addSeparator();
@@ -235,21 +206,21 @@ void SettingsDialog::initLayoutMenu()
     m_newLayoutAction->setToolTip(i18n("New layout"));
     m_newLayoutAction->setIcon(QIcon::fromTheme("add"));
     m_newLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
-    twinActionWithButton(ui->newButton, m_newLayoutAction);
+    twinActionWithButton(m_ui->newButton, m_newLayoutAction);
     connect(m_newLayoutAction, &QAction::triggered, this, &SettingsDialog::on_new_layout);
 
     m_copyLayoutAction = m_layoutMenu->addAction(i18nc("copy layout", "&Copy"));
     m_copyLayoutAction->setToolTip(i18n("Copy selected layout"));
     m_copyLayoutAction->setIcon(QIcon::fromTheme("edit-copy"));
     m_copyLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
-    twinActionWithButton(ui->copyButton, m_copyLayoutAction);
+    twinActionWithButton(m_ui->copyButton, m_copyLayoutAction);
     connect(m_copyLayoutAction, &QAction::triggered, this, &SettingsDialog::on_copy_layout);
 
     m_removeLayoutAction = m_layoutMenu->addAction(i18nc("remove layout", "Remove"));
     m_removeLayoutAction->setToolTip(i18n("Remove selected layout"));
     m_removeLayoutAction->setIcon(QIcon::fromTheme("delete"));
     m_removeLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
-    twinActionWithButton(ui->removeButton, m_removeLayoutAction);
+    twinActionWithButton(m_ui->removeButton, m_removeLayoutAction);
     connect(m_removeLayoutAction, &QAction::triggered, this, &SettingsDialog::on_remove_layout);
 
     m_layoutMenu->addSeparator();
@@ -259,7 +230,7 @@ void SettingsDialog::initLayoutMenu()
     m_lockedLayoutAction->setIcon(QIcon::fromTheme("object-locked"));
     m_lockedLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
     m_lockedLayoutAction->setCheckable(true);
-    twinActionWithButton(ui->lockedButton, m_lockedLayoutAction);
+    twinActionWithButton(m_ui->lockedButton, m_lockedLayoutAction);
     connect(m_lockedLayoutAction, &QAction::triggered, this, &SettingsDialog::on_locked_layout);
 
     m_sharedLayoutAction = m_layoutMenu->addAction(i18nc("shared layout", "Sha&red"));
@@ -267,7 +238,7 @@ void SettingsDialog::initLayoutMenu()
     m_sharedLayoutAction->setIcon(QIcon::fromTheme("document-share"));
     m_sharedLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
     m_sharedLayoutAction->setCheckable(true);
-    twinActionWithButton(ui->sharedButton, m_sharedLayoutAction);
+    twinActionWithButton(m_ui->sharedButton, m_sharedLayoutAction);
     connect(m_sharedLayoutAction, &QAction::triggered, this, &SettingsDialog::on_shared_layout);
 
     m_layoutMenu->addSeparator();
@@ -276,21 +247,21 @@ void SettingsDialog::initLayoutMenu()
     m_importLayoutAction->setToolTip(i18n("Import layout file from your system"));
     m_importLayoutAction->setIcon(QIcon::fromTheme("document-import"));
     m_importLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_I));
-    twinActionWithButton(ui->importButton, m_importLayoutAction);
+    twinActionWithButton(m_ui->importButton, m_importLayoutAction);
     connect(m_importLayoutAction, &QAction::triggered, this, &SettingsDialog::on_import_layout);
 
     m_exportLayoutAction = m_layoutMenu->addAction(i18nc("export layout", "&Export..."));
     m_exportLayoutAction->setToolTip(i18n("Export selected layout at your system"));
     m_exportLayoutAction->setIcon(QIcon::fromTheme("document-export"));
     m_exportLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_E));
-    twinActionWithButton(ui->exportButton, m_exportLayoutAction);
+    twinActionWithButton(m_ui->exportButton, m_exportLayoutAction);
     connect(m_exportLayoutAction, &QAction::triggered, this, &SettingsDialog::on_export_layout);
 
     m_downloadLayoutAction = m_layoutMenu->addAction(i18nc("download layout", "&Download..."));
     m_downloadLayoutAction->setToolTip(i18n("Download community layouts from KDE Store"));
     m_downloadLayoutAction->setIcon(QIcon::fromTheme("get-hot-new-stuff"));
     m_downloadLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_D));
-    twinActionWithButton(ui->downloadButton, m_downloadLayoutAction);
+    twinActionWithButton(m_ui->downloadButton, m_downloadLayoutAction);
     connect(m_downloadLayoutAction, &QAction::triggered, this, &SettingsDialog::on_download_layout);
 }
 
@@ -344,6 +315,11 @@ void SettingsDialog::initHelpMenu()
     m_helpMenu->action(KHelpMenu::menuWhatsThis)->setVisible(false);
 }
 
+Ui::SettingsDialog *SettingsDialog::ui() const
+{
+    return m_ui;
+}
+
 void SettingsDialog::twinActionWithButton(QPushButton *button, QAction *action)
 {
     button->setText(action->text());
@@ -378,23 +354,23 @@ void SettingsDialog::setTwinProperty(QAction *action, const QString &property, Q
 
 Types::LatteConfigPage SettingsDialog::currentPage()
 {
-    Types::LatteConfigPage cPage= static_cast<Types::LatteConfigPage>(ui->tabWidget->currentIndex());
+    Types::LatteConfigPage cPage= static_cast<Types::LatteConfigPage>(m_ui->tabWidget->currentIndex());
 
     return cPage;
 }
 
 void SettingsDialog::toggleCurrentPage()
 {
-    if (ui->tabWidget->currentIndex() == 0) {
-        ui->tabWidget->setCurrentIndex(1);
+    if (m_ui->tabWidget->currentIndex() == 0) {
+        m_ui->tabWidget->setCurrentIndex(1);
     } else {
-        ui->tabWidget->setCurrentIndex(0);
+        m_ui->tabWidget->setCurrentIndex(0);
     }
 }
 
 void SettingsDialog::setCurrentPage(int page)
 {
-    ui->tabWidget->setCurrentIndex(page);
+    m_ui->tabWidget->setCurrentIndex(page);
 }
 
 void SettingsDialog::on_currentPageChanged(int page)
@@ -709,7 +685,7 @@ void SettingsDialog::on_export_layout()
             layoutS.clearLastUsedActivity();
 
             m_openUrlAction->setData(file);
-            ui->messageWidget->addAction(m_openUrlAction);
+            m_ui->messageWidget->addAction(m_openUrlAction);
             showInlineMessage(i18nc("settings:layout export success","Layout <b>%0</b> export succeeded...").arg(selectedLayout.name),
                               KMessageWidget::Information,
                               SettingsDialog::INFORMATIONWITHACTIONINTERVAL);
@@ -720,7 +696,7 @@ void SettingsDialog::on_export_layout()
 
             if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {
                 m_openUrlAction->setData(file);
-                ui->messageWidget->addAction(m_openUrlAction);
+                m_ui->messageWidget->addAction(m_openUrlAction);
                 showInlineMessage(i18n("Full configuration export succeeded..."),
                                   KMessageWidget::Information,
                                   SettingsDialog::INFORMATIONWITHACTIONINTERVAL);
@@ -764,7 +740,7 @@ void SettingsDialog::on_export_fullconfiguration()
 
         if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {
             m_openUrlAction->setData(file);
-            ui->messageWidget->addAction(m_openUrlAction);
+            m_ui->messageWidget->addAction(m_openUrlAction);
             showInlineMessage(i18n("Full configuration export succeeded..."),
                               KMessageWidget::Information,
                               SettingsDialog::INFORMATIONWITHACTIONINTERVAL);
@@ -828,7 +804,7 @@ void SettingsDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (!ui->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
+    if (!m_ui->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
         return;
     }
 
@@ -842,12 +818,14 @@ void SettingsDialog::reset()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (!ui->buttonBox->button(QDialogButtonBox::Reset)->isEnabled()) {
+    if (!m_ui->buttonBox->button(QDialogButtonBox::Reset)->isEnabled()) {
         return;
     }
 
-    if (ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
+    if (m_ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
         m_layoutsController->reset();
+    } else if (m_ui->tabWidget->currentIndex() == Latte::Types::PreferencesPage) {
+        m_preferencesHandler->reset();
     }
 }
 
@@ -855,19 +833,10 @@ void SettingsDialog::restoreDefaults()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (ui->tabWidget->currentIndex() == 0) {
+    if (m_ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
         //! do nothing, should be disabled
-    } else if (ui->tabWidget->currentIndex() == 1) {
-        //! Defaults for general Latte settings
-        ui->autostartChkBox->setChecked(true);
-        ui->badges3DStyleChkBox->setChecked(true);
-        ui->infoWindowChkBox->setChecked(true);
-        ui->metaPressChkBox->setChecked(false);
-        ui->metaPressHoldChkBox->setChecked(true);
-        ui->noBordersForMaximizedChkBox->setChecked(false);
-        ui->highSensitivityBtn->setChecked(true);
-        ui->screenTrackerSpinBox->setValue(SCREENTRACKERDEFAULTVALUE);
-        ui->outlineSpinBox->setValue(OUTLINEDEFAULTWIDTH);
+    } else if (m_ui->tabWidget->currentIndex() == Latte::Types::PreferencesPage) {
+        m_preferencesHandler->resetDefaults();
     }
 }
 
@@ -875,47 +844,28 @@ void SettingsDialog::loadSettings()
 {
     bool inMultiple{m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts};
 
-    m_layoutsController->loadLayouts();
-
     if (inMultiple) {
-        ui->multipleToolBtn->setChecked(true);
+        m_ui->multipleToolBtn->setChecked(true);
     } else {
-        ui->singleToolBtn->setChecked(true);
+        m_ui->singleToolBtn->setChecked(true);
     }
 
     updatePerLayoutButtonsState();
-
-    ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
-    ui->badges3DStyleChkBox->setChecked(m_corona->universalSettings()->badges3DStyle());
-    ui->infoWindowChkBox->setChecked(m_corona->universalSettings()->showInfoWindow());
-    ui->metaPressChkBox->setChecked(m_corona->universalSettings()->kwin_metaForwardedToLatte());
-    ui->metaPressHoldChkBox->setChecked(m_corona->universalSettings()->metaPressAndHoldEnabled());
-    ui->noBordersForMaximizedChkBox->setChecked(m_corona->universalSettings()->canDisableBorders());
-
-    if (m_corona->universalSettings()->mouseSensitivity() == Types::LowSensitivity) {
-        ui->lowSensitivityBtn->setChecked(true);
-    } else if (m_corona->universalSettings()->mouseSensitivity() == Types::MediumSensitivity) {
-        ui->mediumSensitivityBtn->setChecked(true);
-    } else if (m_corona->universalSettings()->mouseSensitivity() == Types::HighSensitivity) {
-        ui->highSensitivityBtn->setChecked(true);
-    }
-
-    o_settingsOriginalData = currentSettings();
     updateApplyButtonsState();
 }
 
 QList<int> SettingsDialog::currentSettings()
 {
     QList<int> settings;
-    settings << (int)ui->autostartChkBox->isChecked();
-    settings << (int)ui->badges3DStyleChkBox->isChecked();
-    settings << (int)ui->infoWindowChkBox->isChecked();
-    settings << (int)ui->metaPressChkBox->isChecked();
-    settings << (int)ui->metaPressHoldChkBox->isChecked();
-    settings << (int)ui->noBordersForMaximizedChkBox->isChecked();
+    settings << (int)m_ui->autostartChkBox->isChecked();
+    settings << (int)m_ui->badges3DStyleChkBox->isChecked();
+    settings << (int)m_ui->infoWindowChkBox->isChecked();
+    settings << (int)m_ui->metaPressChkBox->isChecked();
+    settings << (int)m_ui->metaPressHoldChkBox->isChecked();
+    settings << (int)m_ui->noBordersForMaximizedChkBox->isChecked();
     settings << m_mouseSensitivityButtons->checkedId();
-    settings << ui->screenTrackerSpinBox->value();
-    settings << ui->outlineSpinBox->value();
+    settings << m_ui->screenTrackerSpinBox->value();
+    settings << m_ui->outlineSpinBox->value();
 
     return settings;
 }
@@ -990,37 +940,31 @@ void SettingsDialog::updateApplyButtonsState()
     bool changed{false};
 
     //! Ok, Apply Buttons
-    if ((o_settingsOriginalData != currentSettings()) || (m_layoutsController->dataAreChanged())) {
+
+    if ((currentPage() == Latte::Types::LayoutPage && m_layoutsController->dataAreChanged())
+            ||(currentPage() == Latte::Types::PreferencesPage && m_preferencesHandler->dataAreChanged())) {
         changed = true;
     }
 
     if (changed) {
-        ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
-        ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(true);
+        m_ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+        m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(true);
     } else {
-        ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
-        ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(false);
+        m_ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+        m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(false);
     }
 
     //! RestoreDefaults Button
-    if (ui->tabWidget->currentIndex() == 0) {
-        ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setVisible(false);
-    } else if (ui->tabWidget->currentIndex() == 1) {
-        ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setVisible(true);
+    if (m_ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
+        m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setVisible(false);
+    } else if (m_ui->tabWidget->currentIndex() == Latte::Types::PreferencesPage) {
+        m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setVisible(true);
 
         //! Defaults for general Latte settings
-        if (!ui->autostartChkBox->isChecked()
-                || ui->badges3DStyleChkBox->isChecked()
-                || ui->metaPressChkBox->isChecked()
-                || !ui->metaPressHoldChkBox->isChecked()
-                || !ui->infoWindowChkBox->isChecked()
-                || ui->noBordersForMaximizedChkBox->isChecked()
-                || !ui->highSensitivityBtn->isChecked()
-                || ui->screenTrackerSpinBox->value() != SCREENTRACKERDEFAULTVALUE
-                || ui->outlineSpinBox->value() != OUTLINEDEFAULTWIDTH ) {
-            ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
+        if (m_preferencesHandler->inDefaultValues() ) {
+            m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
         } else {
-            ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
+            m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
         }
     }
 }
@@ -1059,9 +1003,9 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
     //! Remove Layout Button
     /* if (selectedLayout.isActive || selectedLayout.isLocked) {
-        ui->removeButton->setEnabled(false);
+        m_ui->removeButton->setEnabled(false);
     } else {
-        ui->removeButton->setEnabled(true);
+        m_ui->removeButton->setEnabled(true);
     }*/
 
     //! Layout Locked Button
@@ -1088,7 +1032,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
 
 void SettingsDialog::showLayoutInformation()
 {
-    /*  int currentRow = ui->layoutsView->currentIndex().row();
+    /*  int currentRow = m_ui->layoutsView->currentIndex().row();
 
     QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
     QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
@@ -1133,10 +1077,10 @@ void SettingsDialog::showScreensInformation()
 void SettingsDialog::keyPressEvent(QKeyEvent *event)
 {
     if (event && event->key() == Qt::Key_Escape) {
-        if (ui->messageWidget->isVisible()) {
+        if (m_ui->messageWidget->isVisible()) {
             m_hideInlineMessageTimer.stop();
-            ui->messageWidget->animatedHide();
-            ui->messageWidget->removeAction(m_openUrlAction);
+            m_ui->messageWidget->animatedHide();
+            m_ui->messageWidget->removeAction(m_openUrlAction);
             return;
         }
     }
@@ -1162,28 +1106,11 @@ void SettingsDialog::updateWindowActivities()
 
 void SettingsDialog::saveAllChanges()
 {
-    //! Update universal settings
-    Latte::Types::MouseSensitivity sensitivity = static_cast<Latte::Types::MouseSensitivity>(m_mouseSensitivityButtons->checkedId());
-    bool autostart = ui->autostartChkBox->isChecked();
-    bool badges3DStyle = ui->badges3DStyleChkBox->isChecked();
-    bool forwardMetaPress = ui->metaPressChkBox->isChecked();
-    bool metaPressAndHold = ui->metaPressHoldChkBox->isChecked();
-    bool showInfoWindow = ui->infoWindowChkBox->isChecked();
-    bool noBordersForMaximized = ui->noBordersForMaximizedChkBox->isChecked();
-
-    m_corona->universalSettings()->setMouseSensitivity(sensitivity);
-    m_corona->universalSettings()->setAutostart(autostart);
-    m_corona->universalSettings()->setBadges3DStyle(badges3DStyle);
-    m_corona->universalSettings()->kwin_forwardMetaToLatte(forwardMetaPress);
-    m_corona->universalSettings()->setMetaPressAndHoldEnabled(metaPressAndHold);
-    m_corona->universalSettings()->setShowInfoWindow(showInfoWindow);
-    m_corona->universalSettings()->setCanDisableBorders(noBordersForMaximized);
-    m_corona->universalSettings()->setScreenTrackerInterval(ui->screenTrackerSpinBox->value());
-
-    m_corona->themeExtended()->setOutlineWidth(ui->outlineSpinBox->value());
-
-    o_settingsOriginalData = currentSettings();
-    m_layoutsController->save();
+    if (currentPage() == Latte::Types::LayoutPage) {
+        m_layoutsController->save();
+    } else if (currentPage() == Latte::Types::PreferencesPage) {
+        m_preferencesHandler->save();
+    }
 }
 
 void SettingsDialog::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval)
@@ -1194,22 +1121,22 @@ void SettingsDialog::showInlineMessage(const QString &msg, const KMessageWidget:
 
     m_hideInlineMessageTimer.stop();
 
-    if (ui->messageWidget->isVisible()) {
-        ui->messageWidget->animatedHide();
+    if (m_ui->messageWidget->isVisible()) {
+        m_ui->messageWidget->animatedHide();
     }
 
-    ui->messageWidget->setText(msg);
+    m_ui->messageWidget->setText(msg);
 
     // TODO: wrap at arbitrary character positions once QLabel can do this
     // https://bugreports.qt.io/browse/QTBUG-1276
-    ui->messageWidget->setWordWrap(true);
-    ui->messageWidget->setMessageType(type);
-    ui->messageWidget->setWordWrap(false);
+    m_ui->messageWidget->setWordWrap(true);
+    m_ui->messageWidget->setMessageType(type);
+    m_ui->messageWidget->setWordWrap(false);
 
-    const int unwrappedWidth = ui->messageWidget->sizeHint().width();
-    ui->messageWidget->setWordWrap(unwrappedWidth > size().width());
+    const int unwrappedWidth = m_ui->messageWidget->sizeHint().width();
+    m_ui->messageWidget->setWordWrap(unwrappedWidth > size().width());
 
-    ui->messageWidget->animatedShow();
+    m_ui->messageWidget->animatedShow();
 
     if (hideInterval > 0) {
         m_hideInlineMessageTimer.setInterval(hideInterval);
