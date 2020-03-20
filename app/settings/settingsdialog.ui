@@ -29,7 +29,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="layoutsTab">
       <attribute name="title">
@@ -129,7 +129,7 @@
               <bool>true</bool>
              </property>
              <attribute name="horizontalHeaderVisible">
-              <bool>true</bool>
+              <bool>false</bool>
              </attribute>
              <attribute name="horizontalHeaderCascadingSectionResizes">
               <bool>true</bool>
@@ -863,12 +863,6 @@ This tracker is used in order to not lose any screen related update.</string>
                </item>
                <item>
                 <widget class="QLabel" name="appearanceLbl">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
                  <property name="text">
                   <string>Appearance:</string>
                  </property>
@@ -902,12 +896,6 @@ This tracker is used in order to not lose any screen related update.</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
                  <property name="text">
                   <string>Behavior:</string>
                  </property>
@@ -935,12 +923,6 @@ This tracker is used in order to not lose any screen related update.</string>
                </item>
                <item>
                 <widget class="QLabel" name="actionsLbl">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
                  <property name="text">
                   <string>Actions:</string>
                  </property>
@@ -973,12 +955,6 @@ This tracker is used in order to not lose any screen related update.</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
                  </property>
                  <property name="text">
                   <string>Parabolic Effect:</string>
@@ -1013,12 +989,6 @@ This tracker is used in order to not lose any screen related update.</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
                  <property name="text">
                   <string>Screens:</string>
                  </property>
@@ -1051,12 +1021,6 @@ This tracker is used in order to not lose any screen related update.</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
                  </property>
                  <property name="text">
                   <string>Plasma Theme:</string>
