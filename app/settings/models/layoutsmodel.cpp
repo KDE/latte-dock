@@ -136,17 +136,6 @@ void Layouts::appendLayout(const Settings::Data::Layout &layout)
 
 void Layouts::applyData()
 {   
-    bool appending{false};
-    bool removing{false};
-
-    if (o_layoutsTable.rowCount() > m_layoutsTable.rowCount()) {
-        removing = true;
-        beginRemoveRows(QModelIndex(), o_layoutsTable.rowCount(), m_layoutsTable.rowCount()-1);
-    } else if (o_layoutsTable.rowCount() < m_layoutsTable.rowCount()){
-        appending = true;
-        beginInsertRows(QModelIndex(), o_layoutsTable.rowCount(), m_layoutsTable.rowCount()-1);
-    }
-
     QVector<int> roles;
     roles << Qt::DisplayRole;
     roles << Qt::UserRole;
@@ -154,13 +143,7 @@ void Layouts::applyData()
     o_inMultipleMode = m_inMultipleMode;
     o_layoutsTable = m_layoutsTable;
 
-    if (appending) {
-        endInsertRows();
-    } else if (removing) {
-        endRemoveRows();
-    }
-
-    emit dataChanged(index(0, NAMECOLUMN), index(rowCount()-1,NAMECOLUMN), roles);
+    emit dataChanged(index(0, BACKGROUNDCOLUMN), index(rowCount()-1,SHAREDCOLUMN), roles);
 }
 
 void Layouts::resetData()
