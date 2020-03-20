@@ -65,7 +65,8 @@ public:
         ALLACTIVITIESSORTEDROLE,
         ALLACTIVITIESDATAROLE,
         ALLLAYOUTSROLE,
-        SHAREDTOINEDIT
+        SHAREDTOINEDIT,
+        SORTINGROLE
     };
 
     explicit Layouts(QObject *parent, Latte::Corona *corona);

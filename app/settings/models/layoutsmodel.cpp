@@ -71,7 +71,7 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
 
 Layouts::~Layouts()
 {
-   qDeleteAll(m_activitiesInfo);
+    qDeleteAll(m_activitiesInfo);
 }
 
 bool Layouts::containsCurrentName(const QString &name) const
@@ -447,16 +447,34 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     case HIDDENTEXTCOLUMN:
         return QVariant{};
     case BACKGROUNDCOLUMN:
+        if (role == SORTINGROLE) {
+            return m_layoutsTable[row].name;
+        }
+
         if (role == Qt::UserRole) {
             return m_layoutsTable[row].background.isEmpty() ? m_layoutsTable[row].color : m_layoutsTable[row].background;
         }
         break;
     case NAMECOLUMN:
+        if (role == SORTINGROLE) {
+            return m_layoutsTable[row].name;
+        }
+
         if ((role == Qt::DisplayRole) || (role == Qt::UserRole)) {
             return m_layoutsTable[row].name;
         }
         break;
     case MENUCOLUMN:
+        if (role == SORTINGROLE) {
+            if ((m_inMultipleMode && m_layoutsTable[row].isShared())) {
+                return 1;
+            } else if (m_layoutsTable[row].isShownInMenu) {
+                return 2;
+            }
+
+            return 0;
+        }
+
         if (role == Qt::DisplayRole) {
             return m_layoutsTable[row].isShownInMenu ? CheckMark : QVariant{};
         } else if (role == Qt::UserRole) {
@@ -464,6 +482,16 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         }
         break;
     case BORDERSCOLUMN:
+        if (role == SORTINGROLE) {
+            if ((m_inMultipleMode && m_layoutsTable[row].isShared())) {
+                return 1;
+            } else if (m_layoutsTable[row].hasDisabledBorders) {
+                return 2;
+            }
+
+            return 0;
+        }
+
         if (role == Qt::DisplayRole) {
             return m_layoutsTable[row].hasDisabledBorders ? CheckMark : QVariant{};
         } else if (role == Qt::UserRole) {
@@ -471,11 +499,42 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         }
         break;
     case ACTIVITYCOLUMN:
+        if (role == SORTINGROLE) {
+            if ((m_inMultipleMode && m_layoutsTable[row].isShared())) {
+                //! normal priority
+                return 1;
+            } else if (m_layoutsTable[row].activities.count() > 0) {
+                if (m_layoutsTable[row].activities.contains(Data::Layout::FREEACTIVITIESID)) {
+                    //! highest priority
+                    return 9999;
+                } else {
+                    //! high priority
+                    return m_layoutsTable[row].activities.count()+1;
+                }
+            }
+
+            return 0;
+        }
+
         if (role == Qt::UserRole) {
             return m_layoutsTable[row].activities;
         }
         break;
     case SHAREDCOLUMN:
+        if (role == SORTINGROLE) {
+            if (m_layoutsTable[row].shares.count() > 0) {
+                //! highest priority based on number of shares
+                return 9999 + m_layoutsTable[row].shares.count();
+            }
+
+            if (m_layoutsTable[row].activities.contains(Data::Layout::FREEACTIVITIESID)) {
+                //! high activity priority
+                return 9998;
+            }
+
+            return 0;
+        }
+
         if (role == Qt::UserRole) {
             return m_layoutsTable[row].shares;
         }

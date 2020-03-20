@@ -106,7 +106,7 @@ void Layouts::initView()
     m_view->verticalHeader()->setVisible(false);
     m_view->setSortingEnabled(true);
 
-    m_proxyModel->setSortRole(Qt::UserRole);
+    m_proxyModel->setSortRole(Model::Layouts::SORTINGROLE);
     m_proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
 
     m_view->sortByColumn(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
