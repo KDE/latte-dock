@@ -49,7 +49,7 @@ ScreenGeometries::ScreenGeometries(Latte::Corona *parent)
     m_startupInitTimer.setSingleShot(true);
     connect(&m_startupInitTimer, &QTimer::timeout, this, &ScreenGeometries::init);
 
-    m_publishTimer.setInterval(2000);
+    m_publishTimer.setInterval(1500);
     m_publishTimer.setSingleShot(true);
     connect(&m_publishTimer, &QTimer::timeout, this, &ScreenGeometries::updateGeometries);
 

@@ -40,6 +40,8 @@
 #define KWINCOLORSSCRIPT "kwin/scripts/lattewindowcolors"
 #define KWINRC "/.config/kwinrc"
 
+#define KWINRCTRACKERINTERVAL 2500
+
 namespace Latte {
 
 UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
@@ -103,6 +105,10 @@ void UniversalSettings::load()
     const QString kwinrcFilePath = QDir::homePath() + KWINRC;
     KDirWatch::self()->addFile(kwinrcFilePath);
     recoverKWinOptions();
+
+    m_kwinrcTrackerTimer.setSingleShot(true);
+    m_kwinrcTrackerTimer.setInterval(KWINRCTRACKERINTERVAL);
+    connect(&m_kwinrcTrackerTimer, &QTimer::timeout, this, &UniversalSettings::recoverKWinOptions);
 
     connect(KDirWatch::self(), &KDirWatch::created, this, &UniversalSettings::trackedFileChanged);
     connect(KDirWatch::self(), &KDirWatch::deleted, this, &UniversalSettings::trackedFileChanged);
@@ -356,7 +362,7 @@ void UniversalSettings::trackedFileChanged(const QString &file)
     }
 
     if (file.endsWith(KWINRC)) {
-        recoverKWinOptions();
+        m_kwinrcTrackerTimer.start();
     }
 }
 

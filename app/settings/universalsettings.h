@@ -208,6 +208,10 @@ private:
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;
 
+    //! reading kwinrc values is costly; a tracker protects from
+    //! reading too many times with no real reason
+    QTimer m_kwinrcTrackerTimer;
+
     friend class Layouts::Manager;
     friend class Latte::Corona;
 };
