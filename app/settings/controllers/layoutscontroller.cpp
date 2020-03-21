@@ -161,7 +161,7 @@ bool Layouts::selectedLayoutIsCurrentActive() const
     Settings::Data::Layout selectedLayoutOriginal = selectedLayoutOriginalData();
     selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
 
-    return (selectedLayoutCurrent.isActive && (selectedLayoutOriginal.name == m_corona->layoutsManager()->synchronizer()->currentLayoutName()));
+    return (selectedLayoutCurrent.isActive && (selectedLayoutOriginal.name == m_corona->layoutsManager()->currentLayoutName()));
 }
 
 const Data::Layout Layouts::selectedLayoutCurrentData() const

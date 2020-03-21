@@ -836,7 +836,7 @@ void Layouts::updateActiveStates()
         bool iActive{false};
 
         if (m_inMultipleMode && m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].name)
-                || (!m_inMultipleMode && o_layoutsTable[i].name == m_corona->layoutsManager()->synchronizer()->currentLayoutName())) {
+                || (!m_inMultipleMode && o_layoutsTable[i].name == m_corona->layoutsManager()->currentLayoutName())) {
             iActive = true;
         }
 
