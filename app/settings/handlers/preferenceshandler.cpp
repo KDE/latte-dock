@@ -164,9 +164,9 @@ void Preferences::resetDefaults()
     updateUi();
 }
 
-void Preferences::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval)
+void Preferences::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval, QList<QAction *> actions)
 {
-    m_parentDialog->showInlineMessage(msg, type, hideInterval);
+    m_parentDialog->showInlineMessage(msg, type, hideInterval, actions);
 }
 
 void Preferences::save()

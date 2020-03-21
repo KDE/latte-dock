@@ -54,7 +54,7 @@ public:
     virtual void resetDefaults() = 0;
     virtual void save() = 0;
 
-    virtual void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0) = 0;
+    virtual void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0, QList<QAction *> actions = QList<QAction *>()) = 0;
 
 signals:
     void dataChanged();

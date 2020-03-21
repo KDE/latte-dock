@@ -70,16 +70,16 @@ public:
 
     Latte::Corona *corona() const;
     Ui::SettingsDialog *ui() const;
+    QMenuBar *appMenuBar() const;
 
     Types::LatteConfigPage currentPage();
-
-    void toggleCurrentPage();
     void setCurrentPage(int page);
+    void toggleCurrentPage();
 
     void requestImagesDialog(int row);
     void requestColorsDialog(int row);
 
-    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0);
+    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0, QList<QAction *> actions = QList<QAction *>());
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -88,21 +88,8 @@ protected:
     void keyReleaseEvent(QKeyEvent *event) override;
 
 private slots:
-    void on_currentPageChanged(int page);
-
     void on_import_fullconfiguration();
     void on_export_fullconfiguration();
-
-    void on_new_layout();
-    void on_copy_layout();
-    void on_download_layout();
-    void on_pause_layout();
-    void on_remove_layout();
-    void on_switch_layout();
-    void on_import_layout();
-    void on_export_layout();
-    void on_locked_layout();
-    void on_shared_layout();
 
     void accept() override;
 
@@ -112,37 +99,26 @@ private slots:
     void showLayoutInformation();
     void showScreensInformation();
     void updateApplyButtonsState();
-    void updatePerLayoutButtonsState();
     void updateWindowActivities();
 
-private:
-    void loadSettings();
+    void clearCurrentMessageActions();
 
+private:
     void initGlobalMenu();
     void initLayoutMenu();
     void initFileMenu();
     void initHelpMenu();
 
-    void setTwinProperty(QAction *action, const QString &property, QVariant value);
-    void twinActionWithButton(QPushButton *button, QAction *action);
-
-    void saveAllChanges();
+    void save();
     void setCurrentFreeActivitiesLayout(const int &row);
-
-    QList<int> currentSettings();
 
 private:
     Latte::Corona *m_corona{nullptr};
     Ui::SettingsDialog *m_ui;
-    Settings::Controller::Layouts *m_layoutsController{nullptr};
+
     //! Handlers for UI
     Settings::Handler::TabLayouts *m_tabLayoutsHandler{nullptr};
     Settings::Handler::Preferences *m_preferencesHandler{nullptr};
-
-    QButtonGroup *m_inMemoryButtons;
-    QButtonGroup *m_mouseSensitivityButtons;
-
-    QAction *m_openUrlAction{nullptr};
 
     //! Global menu
     QMenuBar *m_globalMenuBar{nullptr};
@@ -152,25 +128,11 @@ private:
     QAction *m_importFullAction{nullptr};
     QAction *m_exportFullAction{nullptr};
 
-    //! Layout menu actions
-    QMenu *m_layoutMenu{nullptr};
-    QAction *m_switchLayoutAction{nullptr};
-    QAction *m_pauseLayoutAction{nullptr};
-    QAction *m_newLayoutAction{nullptr};
-    QAction *m_copyLayoutAction{nullptr};
-    QAction *m_removeLayoutAction{nullptr};
-    QAction *m_lockedLayoutAction{nullptr};
-    QAction *m_sharedLayoutAction{nullptr};
-    QAction *m_importLayoutAction{nullptr};
-    QAction *m_exportLayoutAction{nullptr};
-    QAction *m_downloadLayoutAction{nullptr};
-    QAction *m_editLayoutAction{nullptr};
-
-    //! Twin Actions bind QAction* behavior with QPushButton*
-    QHash<QAction *, QPushButton *> m_twinActions;
-
     //! Help menu actions
     KHelpMenu *m_helpMenu{nullptr};
+
+    //! Current shown KMessageActions
+    QList<QAction *> m_currentMessageActions;
 
     //! workaround to assign ALLACTIVITIES during startup
     QTimer m_activitiesTimer;
