@@ -36,6 +36,8 @@
 #define PLASMASERVICE "org.kde.plasmashell"
 #define PLASMASTRUTNAMESPACE "org.kde.PlasmaShell.StrutManager"
 
+#define PUBLISHINTERVAL 1000
+
 namespace Latte {
 namespace PlasmaExtended {
 
@@ -49,7 +51,7 @@ ScreenGeometries::ScreenGeometries(Latte::Corona *parent)
     m_startupInitTimer.setSingleShot(true);
     connect(&m_startupInitTimer, &QTimer::timeout, this, &ScreenGeometries::init);
 
-    m_publishTimer.setInterval(1500);
+    m_publishTimer.setInterval(PUBLISHINTERVAL);
     m_publishTimer.setSingleShot(true);
     connect(&m_publishTimer, &QTimer::timeout, this, &ScreenGeometries::updateGeometries);
 
