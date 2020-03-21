@@ -39,7 +39,7 @@ Preferences::Preferences(Latte::SettingsDialog *parent, Latte::Corona *corona)
       m_corona(corona),
       m_ui(parent->ui())
 {
-    loadSettings();
+    initSettings();
     initUi();
 }
 
@@ -102,7 +102,7 @@ void Preferences::initUi()
     });
 }
 
-void Preferences::loadSettings()
+void Preferences::initSettings()
 {
     o_preferences.autostart = m_corona->universalSettings()->autostart();
     o_preferences.badgeStyle3D = m_corona->universalSettings()->badges3DStyle();

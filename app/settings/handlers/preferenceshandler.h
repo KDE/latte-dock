@@ -54,22 +54,20 @@ class Preferences : public Generic
 public:
     Preferences(Latte::SettingsDialog *parent, Latte::Corona *corona);
 
-    bool dataAreChanged() const;
-    bool inDefaultValues() const;
+    bool dataAreChanged() const override;
+    bool inDefaultValues() const override;
 
-    void reset();
-    void resetDefaults();
-    void save();
+    void reset() override;
+    void resetDefaults() override;
+    void save() override;
 
 signals:
-    void dataChanged();
     void borderlessMaximizedChanged();
 
 private slots:
-    void initUi();
-    void updateUi();
-
-    void loadSettings();
+    void initUi() override;
+    void initSettings() override;
+    void updateUi() override;
 
 private:
     Latte::SettingsDialog *m_parentDialog{nullptr};

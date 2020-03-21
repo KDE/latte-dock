@@ -44,14 +44,31 @@ public:
 
     Generic(QObject *parent);
 
+    virtual bool dataAreChanged() const = 0;
+    virtual bool inDefaultValues() const = 0;
+
+    virtual void reset() = 0;
+    virtual void resetDefaults() = 0;
+    virtual void save() = 0;
+
+signals:
+    void dataChanged();
+
 protected:
     void setTwinProperty(QAction *action, const QString &property, QVariant value);
     void connectActionWithButton(QPushButton *button, QAction *action);
 
-protected:
+private slots:
+    virtual void initUi() = 0;
+    virtual void updateUi() = 0;
+    virtual void initSettings() = 0;
+
+private:
     //! Twin Actions bind QAction* behavior with QPushButton*
     //! for simplicity reasons
     QHash<QAction *, QPushButton *> m_twinActions;
+
+
 
 };
 
