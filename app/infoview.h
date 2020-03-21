@@ -23,6 +23,7 @@
 
 // local
 #include "lattecorona.h"
+#include "wm/windowinfowrap.h"
 
 // Qt
 #include <QObject>
@@ -47,6 +48,8 @@ public:
     InfoView(Latte::Corona *corona, QString message, QScreen *screen = qGuiApp->primaryScreen(), QWindow *parent = nullptr);
     ~InfoView() override;
 
+    QString validTitle() const;
+
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
     void init();
@@ -64,16 +67,20 @@ protected:
     void showEvent(QShowEvent *ev) override;
     bool event(QEvent *e) override;
 
-private:
+private slots:
     void setupWaylandIntegration();
+    void updateWaylandId();
 
 private:
+    QString m_id;
+
     QString m_message;
 
     QScreen *m_screen{nullptr};
 
     Plasma::FrameSvg::EnabledBorders m_borders{Plasma::FrameSvg::TopBorder | Plasma::FrameSvg::BottomBorder};
 
+    Latte::WindowSystem::WindowId m_trackedWindowId;
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 
     Latte::Corona *m_corona{nullptr};
