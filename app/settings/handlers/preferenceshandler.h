@@ -52,7 +52,7 @@ class Preferences : public Generic
 {
     Q_OBJECT
 public:
-    Preferences(Latte::SettingsDialog *parent, Latte::Corona *corona);
+    Preferences(Latte::SettingsDialog *parent);
 
     bool dataAreChanged() const override;
     bool inDefaultValues() const override;
@@ -61,13 +61,15 @@ public:
     void resetDefaults() override;
     void save() override;
 
+    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0) override;
+
 signals:
     void borderlessMaximizedChanged();
 
 private slots:
-    void initUi() override;
-    void initSettings() override;
-    void updateUi() override;
+    void initUi();
+    void initSettings();
+    void updateUi();
 
 private:
     Latte::SettingsDialog *m_parentDialog{nullptr};

@@ -33,11 +33,11 @@ namespace Settings {
 namespace Handler {
 
 
-Preferences::Preferences(Latte::SettingsDialog *parent, Latte::Corona *corona)
+Preferences::Preferences(Latte::SettingsDialog *parent)
     : Generic(parent),
       m_parentDialog(parent),
-      m_corona(corona),
-      m_ui(parent->ui())
+      m_corona(m_parentDialog->corona()),
+      m_ui(m_parentDialog->ui())
 {
     initSettings();
     initUi();
@@ -162,6 +162,11 @@ void Preferences::resetDefaults()
 {
     m_preferences.setToDefaults();
     updateUi();
+}
+
+void Preferences::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval)
+{
+    m_parentDialog->showInlineMessage(msg, type, hideInterval);
 }
 
 void Preferences::save()

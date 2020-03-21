@@ -25,6 +25,7 @@
 // local
 #include "../liblatte2/types.h"
 #include "controllers/layoutscontroller.h"
+#include "handlers/tablayoutshandler.h"
 #include "handlers/preferenceshandler.h"
 
 // Qt
@@ -67,6 +68,7 @@ public:
     SettingsDialog(QWidget *parent, Latte::Corona *corona);
     ~SettingsDialog();
 
+    Latte::Corona *corona() const;
     Ui::SettingsDialog *ui() const;
 
     Types::LatteConfigPage currentPage();
@@ -131,9 +133,11 @@ private:
 
 private:
     Latte::Corona *m_corona{nullptr};
-    Settings::Controller::Layouts *m_layoutsController{nullptr};
-    Settings::Handler::Preferences *m_preferencesHandler{nullptr};
     Ui::SettingsDialog *m_ui;
+    Settings::Controller::Layouts *m_layoutsController{nullptr};
+    //! Handlers for UI
+    Settings::Handler::TabLayouts *m_tabLayoutsHandler{nullptr};
+    Settings::Handler::Preferences *m_preferencesHandler{nullptr};
 
     QButtonGroup *m_inMemoryButtons;
     QButtonGroup *m_mouseSensitivityButtons;

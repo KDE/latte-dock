@@ -82,8 +82,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     connect(m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
             , this, &SettingsDialog::restoreDefaults);
 
-    m_preferencesHandler = new Settings::Handler::Preferences(this, m_corona);
-    m_layoutsController = new Settings::Controller::Layouts(this, m_corona, m_ui->layoutsView);
+    m_tabLayoutsHandler = new Settings::Handler::TabLayouts(this);
+    m_preferencesHandler = new Settings::Handler::Preferences(this);
+
+    m_layoutsController = new Settings::Controller::Layouts(m_tabLayoutsHandler);
 
     m_inMemoryButtons = new QButtonGroup(this);
     m_inMemoryButtons->addButton(m_ui->singleToolBtn, Latte::Types::SingleLayout);
@@ -315,6 +317,11 @@ void SettingsDialog::initHelpMenu()
     //! hide help menu actions that are not used
     m_helpMenu->action(KHelpMenu::menuHelpContents)->setVisible(false);
     m_helpMenu->action(KHelpMenu::menuWhatsThis)->setVisible(false);
+}
+
+Latte::Corona *SettingsDialog::corona() const
+{
+    return m_corona;
 }
 
 Ui::SettingsDialog *SettingsDialog::ui() const

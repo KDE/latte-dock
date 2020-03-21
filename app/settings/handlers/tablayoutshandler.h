@@ -18,16 +18,26 @@
  *
  */
 
-#ifndef SETTINGSGENERICHANDLER_H
-#define SETTINGSGENERICHANDLER_H
+#ifndef SETTINGSTABLAYOUTSHANDLER_H
+#define SETTINGSTABLAYOUTSHANDLER_H
 
-//! Qt
-#include <QAction>
-#include <QObject>
-#include <QPushButton>
+//! local
+#include "generichandler.h"
 
-// KDE
-#include <KMessageWidget>
+namespace Ui {
+class SettingsDialog;
+}
+
+namespace Latte {
+class Corona;
+class SettingsDialog;
+
+namespace Settings {
+namespace Controller {
+class Layouts;
+}
+}
+}
 
 namespace Latte {
 namespace Settings {
@@ -37,38 +47,36 @@ namespace Handler {
 //! ui::tabs or different windows. They are responsible also to handle the user interaction
 //! between controllers and views
 
-class Generic : public QObject
+class TabLayouts : public Generic
 {
     Q_OBJECT
 public:
-    static constexpr const char* TWINENABLED = "Enabled";
-    static constexpr const char* TWINVISIBLE = "Visible";
-    static constexpr const char* TWINCHECKED = "Checked";
+    TabLayouts(Latte::SettingsDialog *parent);
 
-    Generic(QObject *parent);
+    bool dataAreChanged() const override;
+    bool inDefaultValues() const override;
 
-    virtual bool dataAreChanged() const = 0;
-    virtual bool inDefaultValues() const = 0;
+    void reset() override;
+    void resetDefaults() override;
+    void save() override;
 
-    virtual void reset() = 0;
-    virtual void resetDefaults() = 0;
-    virtual void save() = 0;
+    Latte::Corona *corona() const;
+    Latte::SettingsDialog *dialog() const;
+    Ui::SettingsDialog *ui() const;
 
-    virtual void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0) = 0;
+    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0) override;
 
-signals:
-    void dataChanged();
-
-protected:
-    void setTwinProperty(QAction *action, const QString &property, QVariant value);
-    void connectActionWithButton(QPushButton *button, QAction *action);
+private slots:
+    void initUi();
+    void initSettings();
+    void updateUi();
 
 private:
-    //! Twin Actions bind QAction* behavior with QPushButton*
-    //! for simplicity reasons
-    QHash<QAction *, QPushButton *> m_twinActions;
+    Latte::SettingsDialog *m_parentDialog{nullptr};
+    Ui::SettingsDialog *m_ui{nullptr};
+    Latte::Corona *m_corona{nullptr};
 
-
+    Settings::Controller::Layouts *m_layoutsController{nullptr};
 
 };
 
