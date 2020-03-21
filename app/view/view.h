@@ -204,7 +204,10 @@ public:
 
     bool isOnActivity(const QString &activity) const;
     bool isOnAllActivities() const;
+
     QStringList activities() const;
+    void setActivities(const QStringList &ids);
+
 
     bool settingsWindowIsShown();
     void showSettingsWindow();
@@ -316,6 +319,7 @@ signals:
     void availableScreenRegionChangedFrom(Latte::View *origin);
 
 private slots:
+    void applyActivitiesToWindows();
     void availableScreenRectChangedFromSlot(View *origin);
     void configViewCreatedFor(Latte::View *view);
     void hideWindowsForSlidingOut();
@@ -328,7 +332,6 @@ private slots:
     void saveConfig();
 
 private:
-    void applyActivitiesToWindows();
     void initSignalingForLocationChangeSliding();
     void setupWaylandIntegration();
     void updateAppletContainsMethod();

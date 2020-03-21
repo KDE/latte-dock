@@ -231,6 +231,8 @@ void View::init()
     connect(this, &QQuickWindow::heightChanged, this, &View::heightChanged);
     connect(this, &QQuickWindow::heightChanged, this, &View::updateAbsoluteGeometry);
 
+    connect(this, &View::activitiesChanged, this, &View::applyActivitiesToWindows);
+
     connect(this, &View::localGeometryChanged, this, [&]() {
         updateAbsoluteGeometry();
     });
@@ -941,6 +943,16 @@ QStringList View::activities() const
     return running;
 }
 
+void View::setActivities(const QStringList &ids)
+{
+    if (m_activities == ids) {
+        return;
+    }
+
+    m_activities = ids;
+    emit activitiesChanged();
+}
+
 void View::applyActivitiesToWindows()
 {
     if (m_visibility && m_layout) {
@@ -999,10 +1011,8 @@ void View::setLayout(Layout::GenericLayout *layout)
         m_initLayoutTimer.setSingleShot(true);
         connectionsLayout << connect(&m_initLayoutTimer, &QTimer::timeout, this, [&]() {
             if (m_layout && m_visibility) {
-                m_activities = m_layout->appliedActivities();
+                setActivities(m_layout->appliedActivities());
                 qDebug() << "DOCK VIEW FROM LAYOUT ::: " << m_layout->name() << " - activities: " << m_activities;
-                applyActivitiesToWindows();
-                emit activitiesChanged();
             }
         });
         m_initLayoutTimer.start();
@@ -1012,30 +1022,32 @@ void View::setLayout(Layout::GenericLayout *layout)
 
         Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
+        connectionsLayout << connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
+            if (m_layout && m_visibility) {
+                setActivities(m_layout->appliedActivities());
+                applyActivitiesToWindows();
+                qDebug() << "DOCK VIEW FROM LAYOUT (currentActivityChanged) ::: " << m_layout->name() << " - activities: " << m_activities;
+            }
+        });
+
         if (latteCorona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
             connectionsLayout << connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
                 if (m_layout && m_visibility) {
-                    m_activities = m_layout->appliedActivities();
+                    setActivities(m_layout->appliedActivities());
                     qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_layout->name()
                              << " - activities: " << m_activities;
-                    applyActivitiesToWindows();
-                    emit activitiesChanged();
                 }
             });
 
             connectionsLayout << connect(m_layout, &Layout::GenericLayout::activitiesChanged, this, [&]() {
                 if (m_layout) {
-                    m_activities = m_layout->appliedActivities();
-                    applyActivitiesToWindows();
-                    emit activitiesChanged();
+                    setActivities(m_layout->appliedActivities());
                 }
             });
 
             connectionsLayout << connect(latteCorona->layoutsManager(), &Layouts::Manager::layoutsChanged, this, [&]() {
                 if (m_layout) {
-                    m_activities = m_layout->appliedActivities();
-                    applyActivitiesToWindows();
-                    emit activitiesChanged();
+                    setActivities(m_layout->appliedActivities());
                 }
             });
 
