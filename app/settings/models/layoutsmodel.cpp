@@ -58,6 +58,7 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
         emit dataChanged(index(0, NAMECOLUMN), index(rowCount()-1, SHAREDCOLUMN), roles);
     });
 
+    connect(this, &Layouts::inMultipleModeChanged, this, &Layouts::updateActiveStates);
     connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::currentLayoutNameChanged, this, &Layouts::updateActiveStates);
     connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::centralLayoutsChanged, this, &Layouts::updateActiveStates);
 
@@ -834,7 +835,8 @@ void Layouts::updateActiveStates()
     for(int i=0; i<rowCount(); ++i) {
         bool iActive{false};
 
-        if (m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].name)) {
+        if (m_inMultipleMode && m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].name)
+                || (!m_inMultipleMode && o_layoutsTable[i].name == m_corona->layoutsManager()->synchronizer()->currentLayoutName())) {
             iActive = true;
         }
 
