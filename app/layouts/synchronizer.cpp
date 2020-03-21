@@ -169,6 +169,16 @@ QString Synchronizer::currentLayoutNameInMultiEnvironment() const
     return m_currentLayoutNameInMultiEnvironment;
 }
 
+void Synchronizer::setCurrentLayoutNameInMultiEnvironment(const QString &name)
+{
+    if (m_currentLayoutNameInMultiEnvironment == name) {
+        return;
+    }
+
+    m_currentLayoutNameInMultiEnvironment = name;
+    emit currentLayoutNameChanged();
+}
+
 QString Synchronizer::layoutPath(QString layoutName)
 {
     QString path = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
@@ -601,16 +611,14 @@ void Synchronizer::updateCurrentLayoutNameInMultiEnvironment()
 {
     for (const auto layout : m_centralLayouts) {
         if (layout->activities().contains(m_manager->corona()->activitiesConsumer()->currentActivity())) {
-            m_currentLayoutNameInMultiEnvironment = layout->name();
-            emit currentLayoutNameChanged();
+            setCurrentLayoutNameInMultiEnvironment(layout->name());
             return;
         }
     }
 
     for (const auto layout : m_centralLayouts) {
         if (layout->activities().isEmpty()) {
-            m_currentLayoutNameInMultiEnvironment = layout->name();
-            emit currentLayoutNameChanged();
+            setCurrentLayoutNameInMultiEnvironment(layout->name());
             return;
         }
     }

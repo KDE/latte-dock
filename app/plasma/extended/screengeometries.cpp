@@ -49,7 +49,7 @@ ScreenGeometries::ScreenGeometries(Latte::Corona *parent)
     m_startupInitTimer.setSingleShot(true);
     connect(&m_startupInitTimer, &QTimer::timeout, this, &ScreenGeometries::init);
 
-    m_publishTimer.setInterval(1000);
+    m_publishTimer.setInterval(2000);
     m_publishTimer.setSingleShot(true);
     connect(&m_publishTimer, &QTimer::timeout, this, &ScreenGeometries::updateGeometries);
 
@@ -65,8 +65,6 @@ void ScreenGeometries::init()
 {
     QDBusInterface plasmaStrutsIface(PLASMASERVICE, "/StrutManager", PLASMASTRUTNAMESPACE, QDBusConnection::sessionBus());
 
-
-
     if (plasmaStrutsIface.isValid()) {
         m_plasmaInterfaceAvailable = true;
 
@@ -76,6 +74,11 @@ void ScreenGeometries::init()
         connect(m_corona, &Latte::Corona::availableScreenRegionChangedFrom, this, &ScreenGeometries::availableScreenGeometryChangedFrom);
 
         connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::currentLayoutNameChanged, this, [&]() {
+            m_publishTimer.start();
+        });
+
+        connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
+            m_forceGeometryBroadcast = true;
             m_publishTimer.start();
         });
 
@@ -124,10 +127,23 @@ void ScreenGeometries::updateGeometries()
                                                                                   m_ignoreModes,
                                                                                   QList<Plasma::Types::Location>());
 
-            if (!m_lastAvailableRect.contains(scrName) || m_lastAvailableRect[scrName] != availableRect) {
+            //! Workaround: Force update, to workaround Plasma not updating its layout at some cases
+            //! Example: Canvas,Music activities use the same Layout. Unity activity
+            //! is using a different layout. When the user from Unity is switching to
+            //! Music and afterwards to Canvas the desktop elements are not positioned properly
+            if (m_forceGeometryBroadcast) {
+                plasmaStrutsIface.call("setAvailableScreenRect", LATTESERVICE, scrName, QRect());
+            }
+
+            //! Disable checks because of the workaround concerning plasma desktop behavior
+            if (m_forceGeometryBroadcast || (!m_lastAvailableRect.contains(scrName) || m_lastAvailableRect[scrName] != availableRect)) {
                 m_lastAvailableRect[scrName] = availableRect;
                 plasmaStrutsIface.call("setAvailableScreenRect", LATTESERVICE, scrName, availableRect);
                 qDebug() << " PLASMA SCREEN GEOMETRIES AVAILABLE RECT :: " << screen->name() << " : " << availableRect;
+            }
+
+            if (m_forceGeometryBroadcast) {
+                m_forceGeometryBroadcast = false;
             }
 
             if (!m_lastAvailableRegion.contains(scrName) || m_lastAvailableRegion[scrName] != availableRegion) {

@@ -90,7 +90,10 @@ public:
     int centralLayoutPos(QString id) const;
 
     QString currentLayoutName() const;
+
     QString currentLayoutNameInMultiEnvironment() const;
+    void setCurrentLayoutNameInMultiEnvironment(const QString &name);
+
     QString shouldSwitchToLayout(QString activityId);
 
     QStringList centralLayoutsNames();
