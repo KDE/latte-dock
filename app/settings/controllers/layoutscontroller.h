@@ -24,7 +24,7 @@
 // local
 #include "../data/layoutdata.h"
 #include "../data/layoutstable.h"
-#include "../delegates/layoutsheaderview.h"
+#include "../views/layoutsheaderview.h"
 #include "../models/layoutsmodel.h"
 #include "../../lattecorona.h"
 #include "../../../liblatte2/types.h"
