@@ -172,9 +172,13 @@ bool Layouts::selectedLayoutIsCurrentActive() const
 const Data::Layout Layouts::selectedLayoutCurrentData() const
 {
     int selectedRow = m_view->currentIndex().row();
-    QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
+    if (selectedRow >= 0) {
+        QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
 
-    return m_model->currentData(selectedId);
+        return m_model->currentData(selectedId);
+    } else {
+        return Data::Layout();
+    }
 }
 
 const Data::Layout Layouts::selectedLayoutOriginalData() const

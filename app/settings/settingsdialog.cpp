@@ -88,7 +88,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     initGlobalMenu();
 
     m_tabLayoutsHandler = new Settings::Handler::TabLayouts(this);
-    m_preferencesHandler = new Settings::Handler::TabPreferences(this);
+    m_tabPreferencesHandler = new Settings::Handler::TabPreferences(this);
 
     //! load settings after handlers in order to make migration process correctly
     //! and remove deprecated values totally from universalsettings
@@ -101,12 +101,12 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     m_ui->buttonBox->button(QDialogButtonBox::Reset)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
 
     //! SIGNALS
-    connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::on_currentTabChanged);
 
     connect(m_tabLayoutsHandler, &Settings::Handler::TabLayouts::dataChanged, this, &SettingsDialog::updateApplyButtonsState);
 
-    connect(m_preferencesHandler, &Settings::Handler::TabPreferences::dataChanged, this, &SettingsDialog::updateApplyButtonsState);
-    connect(m_preferencesHandler, &Settings::Handler::TabPreferences::borderlessMaximizedChanged,  this, [&]() {
+    connect(m_tabPreferencesHandler, &Settings::Handler::TabPreferences::dataChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(m_tabPreferencesHandler, &Settings::Handler::TabPreferences::borderlessMaximizedChanged,  this, [&]() {
         bool noBordersForMaximized = m_ui->noBordersForMaximizedChkBox->isChecked();
 
         if (noBordersForMaximized) {
@@ -465,7 +465,7 @@ void SettingsDialog::reset()
     if (m_ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
         m_tabLayoutsHandler->reset();
     } else if (m_ui->tabWidget->currentIndex() == Latte::Types::PreferencesPage) {
-        m_preferencesHandler->reset();
+        m_tabPreferencesHandler->reset();
     }
 }
 
@@ -476,7 +476,7 @@ void SettingsDialog::restoreDefaults()
     if (m_ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
         //! do nothing, should be disabled
     } else if (m_ui->tabWidget->currentIndex() == Latte::Types::PreferencesPage) {
-        m_preferencesHandler->resetDefaults();
+        m_tabPreferencesHandler->resetDefaults();
     }
 }
 
@@ -487,7 +487,7 @@ void SettingsDialog::updateApplyButtonsState()
     //! Ok, Apply Buttons
 
     if ((currentPage() == Latte::Types::LayoutPage && m_tabLayoutsHandler->dataAreChanged())
-            ||(currentPage() == Latte::Types::PreferencesPage && m_preferencesHandler->dataAreChanged())) {
+            ||(currentPage() == Latte::Types::PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
         changed = true;
     }
 
@@ -506,12 +506,28 @@ void SettingsDialog::updateApplyButtonsState()
         m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setVisible(true);
 
         //! Defaults for general Latte settings
-        if (m_preferencesHandler->inDefaultValues() ) {
+        if (m_tabPreferencesHandler->inDefaultValues() ) {
             m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
         } else {
             m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
         }
     }
+}
+
+void SettingsDialog::on_currentTabChanged(int index)
+{
+    if ((m_currentAcceptedPage == Latte::Types::LayoutPage && m_tabLayoutsHandler->dataAreChanged())
+        || (m_currentAcceptedPage == Latte::Types::PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
+
+        if (index != m_currentAcceptedPage) {
+            setCurrentPage(m_currentAcceptedPage);
+        }
+
+        return;
+    }
+
+    m_currentAcceptedPage = index;
+    updateApplyButtonsState();
 }
 
 void SettingsDialog::showLayoutInformation()
@@ -626,7 +642,7 @@ void SettingsDialog::save()
     if (currentPage() == Latte::Types::LayoutPage) {
         m_tabLayoutsHandler->save();
     } else if (currentPage() == Latte::Types::PreferencesPage) {
-        m_preferencesHandler->save();
+        m_tabPreferencesHandler->save();
     }
 }
 

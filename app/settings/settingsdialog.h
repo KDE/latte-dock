@@ -114,6 +114,8 @@ private slots:
     void loadConfig();
     void saveConfig();
 
+    void on_currentTabChanged(int index);
+
 private:
     void initGlobalMenu();
     void initLayoutMenu();
@@ -131,7 +133,7 @@ private:
 
     //! Handlers for UI
     Settings::Handler::TabLayouts *m_tabLayoutsHandler{nullptr};
-    Settings::Handler::TabPreferences *m_preferencesHandler{nullptr};
+    Settings::Handler::TabPreferences *m_tabPreferencesHandler{nullptr};
 
     //! properties
     QSize m_windowSize;
@@ -139,6 +141,8 @@ private:
 
     //! Global menu
     QMenuBar *m_globalMenuBar{nullptr};
+
+    int m_currentAcceptedPage{-1};
 
     //! File menu actions
     QMenu *m_fileMenu{nullptr};
