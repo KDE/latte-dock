@@ -106,7 +106,7 @@ void TabLayouts::initLayoutMenu()
 {
     if (!m_layoutMenu) {
         m_layoutMenu = new QMenu(i18n("Layout"), m_parentDialog->appMenuBar());
-        m_parentDialog->appMenuBar()->addMenu(m_layoutMenu);
+        m_parentDialog->appMenuBar()->insertMenu(m_parentDialog->helpMenu()->menuAction(), m_layoutMenu);
     }
 
     m_switchLayoutAction = m_layoutMenu->addAction(i18nc("switch layout","Switch"));

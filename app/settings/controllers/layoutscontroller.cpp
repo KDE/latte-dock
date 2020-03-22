@@ -460,6 +460,8 @@ void Layouts::loadLayouts()
         }
     }
 
+    updateLastColumnWidth();
+
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
         if (brokenLayouts.count() == 1) {

@@ -247,6 +247,16 @@ QMenuBar *SettingsDialog::appMenuBar() const
     return m_globalMenuBar;
 }
 
+QMenu *SettingsDialog::fileMenu() const
+{
+    return m_fileMenu;
+}
+
+QMenu *SettingsDialog::helpMenu() const
+{
+    return m_helpMenu->menu();
+}
+
 Types::LatteConfigPage SettingsDialog::currentPage()
 {
     Types::LatteConfigPage cPage= static_cast<Types::LatteConfigPage>(m_ui->tabWidget->currentIndex());
