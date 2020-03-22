@@ -68,8 +68,11 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
     m_proxyModel->setSourceModel(m_model);
 
     connect(m_model, &Model::Layouts::inMultipleModeChanged, this, &Layouts::updateLastColumnWidth);
+
     connect(m_model, &QAbstractItemModel::dataChanged, this, &Layouts::dataChanged);
     connect(m_model, &Model::Layouts::rowsInserted, this, &Layouts::dataChanged);
+    connect(m_model, &Model::Layouts::rowsRemoved, this, &Layouts::dataChanged);
+
     connect(m_model, &Model::Layouts::nameDuplicated, this, &Layouts::on_nameDuplicatedFrom);
 
     initView();
@@ -275,10 +278,11 @@ void Layouts::removeSelected()
     }
 
     int row = m_view->currentIndex().row();
-    m_proxyModel->removeRow(row);
-
     row = qMin(row, m_proxyModel->rowCount() - 1);
     m_view->selectRow(row);
+
+    Data::Layout selected = selectedLayoutCurrentData();
+    m_model->removeLayout(selected.id);
 }
 
 void Layouts::toggleLockedForSelected()
