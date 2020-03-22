@@ -273,9 +273,7 @@ FocusScope {
 
                     smooth: true
                     source: "latte-dock"
-                    // animated: true
                     usesPlasmaTheme: false
-                    active: aboutArea.hovered
                 }
 
                 PlasmaComponents.Label {
@@ -300,29 +298,6 @@ FocusScope {
                     svg: PlasmaCore.Svg{
                         imagePath: universalSettings.trademarkIconPath()
                     }
-                }
-
-                PlasmaComponents.Button{
-                    id: aboutArea
-                    //! Used as tooltip
-                    anchors.fill: parent
-                    opacity: 0
-                    tooltip: i18n("Open Latte settings window")
-                    onPressedChanged: {
-                        if (pressed) {
-                            layoutsManager.showLatteSettingsDialog(Latte.Types.PreferencesPage)
-                        }
-                    }
-                }
-
-                Rectangle {
-                    anchors.top: parent.bottom
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.topMargin: 2
-                    width: parent.width + 4
-                    height: 2
-                    color: theme.highlightColor
-                    visible: aboutArea.hovered
                 }
             }
 
