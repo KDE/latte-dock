@@ -47,7 +47,6 @@
 #include <QTemporaryDir>
 
 // KDE
-#include <KActivities/Controller>
 #include <KArchive/KTar>
 #include <KArchive/KArchiveEntry>
 #include <KArchive/KArchiveDirectory>
@@ -138,13 +137,6 @@ void Layouts::initView()
     m_view->setItemDelegateForColumn(Model::Layouts::SHAREDCOLUMN, new Settings::Layout::Delegate::Shared(this));
 
     connect(m_view, &QObject::destroyed, this, &Controller::Layouts::saveColumnWidths);
-
-    //! update all layouts view when runningActivities changed. This way we update immediately
-    //! the running Activities in Activities checkboxes which are shown as bold
-    connect(m_handler->corona()->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
-            this, [&]() {
-        m_view->update();
-    });
 }
 
 bool Layouts::dataAreChanged() const
@@ -888,20 +880,6 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
     //! duplicated layout name
     int pRow = rowForId(provenId);
     int tRow = rowForId(trialId);
-
-    //! Do not enable selecting the original layout because by pressing Enter during
-    //! layout name editing it can faulty switch to another layout
-    /* if (pRow >= 0) {
-        QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::ClearAndSelect;
-        QItemSelection rowSelection;
-
-        QModelIndex pIndexS = m_proxyModel->index(pRow, Model::Layouts::BACKGROUNDCOLUMN);
-        QModelIndex pIndexE = m_proxyModel->index(pRow, Model::Layouts::SHAREDCOLUMN);
-
-        rowSelection.select(pIndexS, pIndexE);
-
-        m_view->selectionModel()->select(rowSelection, flags);
-    }*/
 
     int originalRow = m_model->rowForId(provenId);
     Data::Layout provenLayout = m_model->at(originalRow);
