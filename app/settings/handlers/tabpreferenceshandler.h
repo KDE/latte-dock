@@ -18,8 +18,8 @@
  *
  */
 
-#ifndef SETTINGSPREFERENCESHANDLER_H
-#define SETTINGSPREFERENCESHANDLER_H
+#ifndef SETTINGSTABPREFERENCESHANDLER_H
+#define SETTINGSTABPREFERENCESHANDLER_H
 
 //! local
 #include "generichandler.h"
@@ -48,11 +48,11 @@ namespace Handler {
 //! ui::tabs or different windows. They are responsible also to handle the user interaction
 //! between controllers and views
 
-class Preferences : public Generic
+class TabPreferences : public Generic
 {
     Q_OBJECT
 public:
-    Preferences(Latte::SettingsDialog *parent);
+    TabPreferences(Latte::SettingsDialog *parent);
 
     bool dataAreChanged() const override;
     bool inDefaultValues() const override;

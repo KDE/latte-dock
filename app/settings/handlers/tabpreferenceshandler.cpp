@@ -18,7 +18,7 @@
  *
  */
 
-#include "preferenceshandler.h"
+#include "tabpreferenceshandler.h"
 
 //! local
 #include "ui_settingsdialog.h"
@@ -33,7 +33,7 @@ namespace Settings {
 namespace Handler {
 
 
-Preferences::Preferences(Latte::SettingsDialog *parent)
+TabPreferences::TabPreferences(Latte::SettingsDialog *parent)
     : Generic(parent),
       m_parentDialog(parent),
       m_corona(m_parentDialog->corona()),
@@ -43,7 +43,7 @@ Preferences::Preferences(Latte::SettingsDialog *parent)
     initUi();
 }
 
-void Preferences::initUi()
+void TabPreferences::initUi()
 {
     //! exclusive group
     m_mouseSensitivityButtons = new QButtonGroup(this);
@@ -102,7 +102,7 @@ void Preferences::initUi()
     });
 }
 
-void Preferences::initSettings()
+void TabPreferences::initSettings()
 {
     o_preferences.autostart = m_corona->universalSettings()->autostart();
     o_preferences.badgeStyle3D = m_corona->universalSettings()->badges3DStyle();
@@ -119,7 +119,7 @@ void Preferences::initSettings()
     updateUi();
 }
 
-void Preferences::updateUi()
+void TabPreferences::updateUi()
 {
     //! ui load
     m_ui->autostartChkBox->setChecked(m_preferences.autostart);
@@ -142,34 +142,34 @@ void Preferences::updateUi()
     emit dataChanged();
 }
 
-bool Preferences::dataAreChanged() const
+bool TabPreferences::dataAreChanged() const
 {
     return o_preferences != m_preferences;
 }
 
-bool Preferences::inDefaultValues() const
+bool TabPreferences::inDefaultValues() const
 {
     return m_preferences.inDefaultValues();
 }
 
-void Preferences::reset()
+void TabPreferences::reset()
 {
     m_preferences = o_preferences;
     updateUi();
 }
 
-void Preferences::resetDefaults()
+void TabPreferences::resetDefaults()
 {
     m_preferences.setToDefaults();
     updateUi();
 }
 
-void Preferences::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval, QList<QAction *> actions)
+void TabPreferences::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval, QList<QAction *> actions)
 {
     m_parentDialog->showInlineMessage(msg, type, hideInterval, actions);
 }
 
-void Preferences::save()
+void TabPreferences::save()
 {
     m_corona->universalSettings()->setMouseSensitivity(m_preferences.mouseSensitivity);
     m_corona->universalSettings()->setAutostart(m_preferences.autostart);

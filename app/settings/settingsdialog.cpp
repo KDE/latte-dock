@@ -84,7 +84,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     initGlobalMenu();
 
     m_tabLayoutsHandler = new Settings::Handler::TabLayouts(this);
-    m_preferencesHandler = new Settings::Handler::Preferences(this);
+    m_preferencesHandler = new Settings::Handler::TabPreferences(this);
 
     m_ui->messageWidget->setVisible(false);
 
@@ -96,8 +96,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     connect(m_tabLayoutsHandler, &Settings::Handler::TabLayouts::dataChanged, this, &SettingsDialog::updateApplyButtonsState);
 
-    connect(m_preferencesHandler, &Settings::Handler::Preferences::dataChanged, this, &SettingsDialog::updateApplyButtonsState);
-    connect(m_preferencesHandler, &Settings::Handler::Preferences::borderlessMaximizedChanged,  this, [&]() {
+    connect(m_preferencesHandler, &Settings::Handler::TabPreferences::dataChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(m_preferencesHandler, &Settings::Handler::TabPreferences::borderlessMaximizedChanged,  this, [&]() {
         bool noBordersForMaximized = m_ui->noBordersForMaximizedChkBox->isChecked();
 
         if (noBordersForMaximized) {

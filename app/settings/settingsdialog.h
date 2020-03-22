@@ -26,7 +26,7 @@
 #include "../liblatte2/types.h"
 #include "controllers/layoutscontroller.h"
 #include "handlers/tablayoutshandler.h"
-#include "handlers/preferenceshandler.h"
+#include "handlers/tabpreferenceshandler.h"
 
 // Qt
 #include <QObject>
@@ -118,7 +118,7 @@ private:
 
     //! Handlers for UI
     Settings::Handler::TabLayouts *m_tabLayoutsHandler{nullptr};
-    Settings::Handler::Preferences *m_preferencesHandler{nullptr};
+    Settings::Handler::TabPreferences *m_preferencesHandler{nullptr};
 
     //! Global menu
     QMenuBar *m_globalMenuBar{nullptr};
