@@ -121,7 +121,9 @@ private:
     Settings::Layouts::HeaderView *m_headerView{nullptr};
 
     //! layoutsView ui settings
-    QStringList m_layoutsViewColumnWidths;
+    int m_viewSortColumn;
+    Qt::SortOrder m_viewSortOrder;
+    QStringList m_viewColumnWidths;
 
     KConfigGroup m_storage;
 

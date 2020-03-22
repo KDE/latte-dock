@@ -76,6 +76,11 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
 
     connect(m_model, &Model::Layouts::nameDuplicated, this, &Layouts::on_nameDuplicatedFrom);
 
+    connect(m_headerView, &QObject::destroyed, this, [&]() {
+        m_viewSortColumn = m_headerView->sortIndicatorSection();
+        m_viewSortOrder = m_headerView->sortIndicatorOrder();
+    });
+
     initView();
     loadLayouts();
 }
@@ -117,7 +122,7 @@ void Layouts::initView()
     m_proxyModel->setSortRole(Model::Layouts::SORTINGROLE);
     m_proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
 
-    m_view->sortByColumn(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
+    m_view->sortByColumn(m_viewSortColumn, m_viewSortOrder);
 
     //!find the available colors
     QString iconsPath(m_handler->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/");
@@ -196,8 +201,8 @@ void Layouts::updateLastColumnWidth()
         m_view->setColumnHidden(Model::Layouts::SHAREDCOLUMN, false);
 
         //! column widths
-        if (m_layoutsViewColumnWidths.count()>=5) {
-            m_view->setColumnWidth(Model::Layouts::ACTIVITYCOLUMN, m_layoutsViewColumnWidths[4].toInt());
+        if (m_viewColumnWidths.count()>=5) {
+            m_view->setColumnWidth(Model::Layouts::ACTIVITYCOLUMN, m_viewColumnWidths[4].toInt());
         }
     } else {
         m_view->setColumnHidden(Model::Layouts::SHAREDCOLUMN, true);
@@ -444,11 +449,11 @@ void Layouts::loadLayouts()
     m_view->resizeColumnsToContents();
 
 
-    if (!m_layoutsViewColumnWidths.isEmpty()) {
+    if (!m_viewColumnWidths.isEmpty()) {
         int lastColumn = inMultiple ? 5 : 4;
 
-        for (int i=0; i<qMin(m_layoutsViewColumnWidths.count(),lastColumn); ++i) {
-            m_view->setColumnWidth(Model::Layouts::BACKGROUNDCOLUMN+i, m_layoutsViewColumnWidths[i].toInt());
+        for (int i=0; i<qMin(m_viewColumnWidths.count(),lastColumn); ++i) {
+            m_view->setColumnWidth(Model::Layouts::BACKGROUNDCOLUMN+i, m_viewColumnWidths[i].toInt());
         }
     }
 
@@ -856,19 +861,19 @@ void Layouts::syncActiveShares()
 void Layouts::storeColumnWidths()
 {
     //! save column widths
-    m_layoutsViewColumnWidths.clear();
+    m_viewColumnWidths.clear();
 
-    m_layoutsViewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::BACKGROUNDCOLUMN));
-    m_layoutsViewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::NAMECOLUMN));
-    m_layoutsViewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::MENUCOLUMN));
-    m_layoutsViewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::BORDERSCOLUMN));
+    m_viewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::BACKGROUNDCOLUMN));
+    m_viewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::NAMECOLUMN));
+    m_viewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::MENUCOLUMN));
+    m_viewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::BORDERSCOLUMN));
 
     if (inMultipleMode()) {
-        m_layoutsViewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::ACTIVITYCOLUMN));
+        m_viewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::ACTIVITYCOLUMN));
     } else {
         //! In Single Mode, keed recorded value for ACTIVITYCOLUMN
-        if (m_layoutsViewColumnWidths.count()>=5) {
-            m_layoutsViewColumnWidths << m_layoutsViewColumnWidths[4];
+        if (m_viewColumnWidths.count()>=5) {
+            m_viewColumnWidths << m_viewColumnWidths[4];
         }
     }
 }
@@ -902,16 +907,20 @@ void Layouts::loadConfig()
 
     if (!columnWidths.isEmpty()) {
         //! migrating
-        m_layoutsViewColumnWidths = columnWidths;
+        m_viewColumnWidths = columnWidths;
     } else {
         //! new storage
-        m_layoutsViewColumnWidths = m_storage.readEntry("columnWidths", QStringList());
+        m_viewColumnWidths = m_storage.readEntry("columnWidths", QStringList());
+        m_viewSortColumn = m_storage.readEntry("sortColumn", (int)Model::Layouts::NAMECOLUMN);
+        m_viewSortOrder = static_cast<Qt::SortOrder>(m_storage.readEntry("sortOrder", (int)Qt::AscendingOrder));
     }
 }
 
 void Layouts::saveConfig()
 {
-    m_storage.writeEntry("columnWidths", m_layoutsViewColumnWidths);
+    m_storage.writeEntry("columnWidths", m_viewColumnWidths);
+    m_storage.writeEntry("sortColumn", m_viewSortColumn);
+    m_storage.writeEntry("sortOrder", (int)m_viewSortOrder);
 }
 
 }
