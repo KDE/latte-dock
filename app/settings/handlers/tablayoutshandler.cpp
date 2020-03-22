@@ -213,20 +213,6 @@ bool TabLayouts::inDefaultValues() const
     return true;
 }
 
-QStringList TabLayouts::layoutsViewColumnWidths() const
-{
-    return m_layoutsViewColumnWidths;
-}
-
-void TabLayouts::setLayoutsViewColumnWidths(const QStringList &widths)
-{
-    if (m_layoutsViewColumnWidths == widths) {
-        return;
-    }
-
-    m_layoutsViewColumnWidths = widths;
-}
-
 void TabLayouts::reset()
 {
     m_layoutsController->reset();
@@ -677,22 +663,12 @@ void TabLayouts::on_keyReleaseEvent(QKeyEvent *event)
 
 void TabLayouts::loadConfig()
 {
-    //! remove old unneeded oprtions
-    KConfigGroup deprecatedStorage(KConfigGroup(KSharedConfig::openConfig(), "UniversalSettings"));
-    QStringList columnWidths = deprecatedStorage.readEntry("layoutsColumnWidths", QStringList());
-
-    if (!columnWidths.isEmpty()) {
-        //! migrating
-        m_layoutsViewColumnWidths = columnWidths;
-    } else {
-        //! new storage
-        m_layoutsViewColumnWidths = m_storage.readEntry("columnWidths", QStringList());
-    }
+    //load settings
 }
 
 void TabLayouts::saveConfig()
 {
-    m_storage.writeEntry("columnWidths", m_layoutsViewColumnWidths);
+    //save settings
 }
 
 }

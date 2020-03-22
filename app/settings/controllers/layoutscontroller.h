@@ -97,9 +97,12 @@ public slots:
     void on_sharedToInEditChanged(const int &row, const bool &inEdit);
 
 private slots:
-    void saveColumnWidths();
-    void on_nameDuplicatedFrom(const QString &provenId,  const QString &trialId);
+    void loadConfig();
+    void saveConfig();
+    void storeColumnWidths();
     void updateLastColumnWidth();
+
+    void on_nameDuplicatedFrom(const QString &provenId,  const QString &trialId);
 
 private:
     void initView();
@@ -116,6 +119,11 @@ private:
 
     QTableView *m_view{nullptr};
     Settings::Layouts::HeaderView *m_headerView{nullptr};
+
+    //! layoutsView ui settings
+    QStringList m_layoutsViewColumnWidths;
+
+    KConfigGroup m_storage;
 
     //! current data
     Model::Layouts *m_model{nullptr};

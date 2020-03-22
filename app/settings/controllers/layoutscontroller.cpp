@@ -62,8 +62,10 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
       m_model(new Model::Layouts(this, m_handler->corona())),
       m_proxyModel(new QSortFilterProxyModel(this)),
       m_view(m_handler->ui()->layoutsView),
-      m_headerView(new Settings::Layouts::HeaderView(Qt::Horizontal, m_handler->dialog()))
+      m_headerView(new Settings::Layouts::HeaderView(Qt::Horizontal, m_handler->dialog())),
+      m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog").group("TabLayouts"))
 {   
+    loadConfig();
     m_proxyModel->setSourceModel(m_model);
 
     connect(m_model, &Model::Layouts::inMultipleModeChanged, this, &Layouts::updateLastColumnWidth);
@@ -80,6 +82,8 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
 
 Layouts::~Layouts()
 {
+    saveConfig();
+
     //! remove
     qDeleteAll(m_layouts);
 
@@ -136,7 +140,7 @@ void Layouts::initView()
     m_view->setItemDelegateForColumn(Model::Layouts::ACTIVITYCOLUMN, new Settings::Layout::Delegate::Activities(this));
     m_view->setItemDelegateForColumn(Model::Layouts::SHAREDCOLUMN, new Settings::Layout::Delegate::Shared(this));
 
-    connect(m_view, &QObject::destroyed, this, &Controller::Layouts::saveColumnWidths);
+    connect(m_view, &QObject::destroyed, this, &Controller::Layouts::storeColumnWidths);
 }
 
 bool Layouts::dataAreChanged() const
@@ -192,10 +196,8 @@ void Layouts::updateLastColumnWidth()
         m_view->setColumnHidden(Model::Layouts::SHAREDCOLUMN, false);
 
         //! column widths
-        QStringList cWidths = m_handler->layoutsViewColumnWidths();
-
-        if (cWidths.count()>=5) {
-            m_view->setColumnWidth(Model::Layouts::ACTIVITYCOLUMN, cWidths[4].toInt());
+        if (m_layoutsViewColumnWidths.count()>=5) {
+            m_view->setColumnWidth(Model::Layouts::ACTIVITYCOLUMN, m_layoutsViewColumnWidths[4].toInt());
         }
     } else {
         m_view->setColumnHidden(Model::Layouts::SHAREDCOLUMN, true);
@@ -334,7 +336,6 @@ void Layouts::setOriginalLayoutForFreeActivities(const QString &id)
     emit dataChanged();
 }
 
-
 void Layouts::loadLayouts()
 {
     m_model->clear();
@@ -442,13 +443,12 @@ void Layouts::loadLayouts()
 
     m_view->resizeColumnsToContents();
 
-    QStringList columnWidths = m_handler->layoutsViewColumnWidths();
 
-    if (!columnWidths.isEmpty()) {
+    if (!m_layoutsViewColumnWidths.isEmpty()) {
         int lastColumn = inMultiple ? 5 : 4;
 
-        for (int i=0; i<qMin(columnWidths.count(),lastColumn); ++i) {
-            m_view->setColumnWidth(Model::Layouts::BACKGROUNDCOLUMN+i, columnWidths[i].toInt());
+        for (int i=0; i<qMin(m_layoutsViewColumnWidths.count(),lastColumn); ++i) {
+            m_view->setColumnWidth(Model::Layouts::BACKGROUNDCOLUMN+i, m_layoutsViewColumnWidths[i].toInt());
         }
     }
 
@@ -853,26 +853,24 @@ void Layouts::syncActiveShares()
     m_handler->corona()->layoutsManager()->synchronizer()->syncActiveShares(currentSharesNamesMap, deprecatedSharesNames);
 }
 
-void Layouts::saveColumnWidths()
+void Layouts::storeColumnWidths()
 {
     //! save column widths
-    QStringList columnWidths;
-    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::BACKGROUNDCOLUMN));
-    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::NAMECOLUMN));
-    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::MENUCOLUMN));
-    columnWidths << QString::number(m_view->columnWidth(Model::Layouts::BORDERSCOLUMN));
+    m_layoutsViewColumnWidths.clear();
+
+    m_layoutsViewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::BACKGROUNDCOLUMN));
+    m_layoutsViewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::NAMECOLUMN));
+    m_layoutsViewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::MENUCOLUMN));
+    m_layoutsViewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::BORDERSCOLUMN));
 
     if (inMultipleMode()) {
-        columnWidths << QString::number(m_view->columnWidth(Model::Layouts::ACTIVITYCOLUMN));
+        m_layoutsViewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::ACTIVITYCOLUMN));
     } else {
         //! In Single Mode, keed recorded value for ACTIVITYCOLUMN
-        QStringList currentWidths = m_handler->layoutsViewColumnWidths();
-        if (currentWidths.count()>=5) {
-            columnWidths << currentWidths[4];
+        if (m_layoutsViewColumnWidths.count()>=5) {
+            m_layoutsViewColumnWidths << m_layoutsViewColumnWidths[4];
         }
     }
-
-    m_handler->setLayoutsViewColumnWidths(columnWidths);
 }
 
 void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &trialId)
@@ -894,6 +892,26 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
     QTimer::singleShot(0, [this, tIndex]() {
         m_view->edit(tIndex);
     });
+}
+
+void Layouts::loadConfig()
+{
+    //! remove old unneeded oprtions
+    KConfigGroup deprecatedStorage(KConfigGroup(KSharedConfig::openConfig(), "UniversalSettings"));
+    QStringList columnWidths = deprecatedStorage.readEntry("layoutsColumnWidths", QStringList());
+
+    if (!columnWidths.isEmpty()) {
+        //! migrating
+        m_layoutsViewColumnWidths = columnWidths;
+    } else {
+        //! new storage
+        m_layoutsViewColumnWidths = m_storage.readEntry("columnWidths", QStringList());
+    }
+}
+
+void Layouts::saveConfig()
+{
+    m_storage.writeEntry("columnWidths", m_layoutsViewColumnWidths);
 }
 
 }

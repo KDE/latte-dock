@@ -66,9 +66,6 @@ public:
     bool inDefaultValues() const override;
     bool isCurrentTab() const;
 
-    QStringList layoutsViewColumnWidths() const;
-    void setLayoutsViewColumnWidths(const QStringList &widths);
-
     void reset() override;
     void resetDefaults() override;
     void save() override;
@@ -109,8 +106,6 @@ private:
     Latte::Corona *m_corona{nullptr};
 
     Settings::Controller::Layouts *m_layoutsController{nullptr};
-
-    QStringList m_layoutsViewColumnWidths;
 
     KConfigGroup m_storage;
 
