@@ -28,7 +28,7 @@ Name[x-test]=xxLatte Layoutsxx
 Name[zh_CN]=Latte 布局
 Name[zh_TW]=Latte 版面
 
-ProvidersUrl=https://download.kde.org/ocs/providers.xml
+ProvidersUrl=https://autoconfig.kde.org/ocs/providers.xml
 Categories=Latte Layouts
 TargetDir=latte-layouts
 Uncompress=archive
