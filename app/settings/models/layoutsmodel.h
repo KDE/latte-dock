@@ -75,6 +75,14 @@ public:
         ORIGINALSHARESROLE
     };
 
+    enum SortingPriority
+    {
+        NORMALPRIORITY = 0,
+        MEDIUMPRIORITY = 1000,
+        HIGHPRIORITY = 2000,
+        HIGHESTPRIORITY = 3000
+    };
+
     explicit Layouts(QObject *parent, Latte::Corona *corona);
     ~Layouts();
 
@@ -144,6 +152,8 @@ private:
     void setActivities(const int &row, const QStringList &activities);
     void setId(const int &row, const QString &newId);
     void setShares(const int &row, const QStringList &shares);
+
+    int sortingPriority(const SortingPriority &priority, const int &row) const;
 
     QStringList cleanStrings(const QStringList &original, const QStringList &occupied);
 

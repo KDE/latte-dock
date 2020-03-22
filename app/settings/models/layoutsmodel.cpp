@@ -355,6 +355,11 @@ Qt::ItemFlags Layouts::flags(const QModelIndex &index) const
     return flags;
 }
 
+int Layouts::sortingPriority(const SortingPriority &priority, const int &row) const
+{
+    return m_layoutsTable[row].isActive ? 2 * (int)priority : (int)priority;
+}
+
 QVariant Layouts::data(const QModelIndex &index, int role) const
 {
     const int row = index.row();
@@ -429,12 +434,12 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     case MENUCOLUMN:
         if (role == SORTINGROLE) {
             if ((m_inMultipleMode && m_layoutsTable[row].isShared())) {
-                return 1;
+                return sortingPriority(MEDIUMPRIORITY, row);
             } else if (m_layoutsTable[row].isShownInMenu) {
-                return 2;
+                return sortingPriority(HIGHESTPRIORITY, row);
             }
 
-            return 0;
+            return sortingPriority(NORMALPRIORITY, row);
         }
 
         if (role == ORIGINALISSHOWNINMENUROLE) {
@@ -448,12 +453,12 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     case BORDERSCOLUMN:
         if (role == SORTINGROLE) {
             if ((m_inMultipleMode && m_layoutsTable[row].isShared())) {
-                return 1;
+                return sortingPriority(MEDIUMPRIORITY, row);
             } else if (m_layoutsTable[row].hasDisabledBorders) {
-                return 2;
+                return sortingPriority(HIGHESTPRIORITY, row);
             }
 
-            return 0;
+            return sortingPriority(NORMALPRIORITY, row);
         }
 
         if (role == ORIGINALHASBORDERSROLE) {
@@ -467,19 +472,16 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     case ACTIVITYCOLUMN:
         if (role == SORTINGROLE) {
             if ((m_inMultipleMode && m_layoutsTable[row].isShared())) {
-                //! normal priority
-                return 1;
+                return sortingPriority(MEDIUMPRIORITY, row) + m_layoutsTable[row].shares.count();
             } else if (m_layoutsTable[row].activities.count() > 0) {
                 if (m_layoutsTable[row].activities.contains(Data::Layout::FREEACTIVITIESID)) {
-                    //! highest priority
-                    return 9999;
+                    return sortingPriority(HIGHESTPRIORITY, row);
                 } else {
-                    //! high priority
-                    return m_layoutsTable[row].activities.count()+1;
+                    return sortingPriority(HIGHPRIORITY, row) + m_layoutsTable[row].activities.count();
                 }
             }
 
-            return 0;
+            return sortingPriority(NORMALPRIORITY, row) + m_layoutsTable[row].activities.count();
         }
 
         if (role == ORIGINALASSIGNEDACTIVITIESROLE) {
@@ -494,15 +496,15 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         if (role == SORTINGROLE) {
             if (m_layoutsTable[row].shares.count() > 0) {
                 //! highest priority based on number of shares
-                return 9999 + m_layoutsTable[row].shares.count();
+                return HIGHESTPRIORITY + m_layoutsTable[row].shares.count();
             }
 
             if (m_layoutsTable[row].activities.contains(Data::Layout::FREEACTIVITIESID)) {
                 //! high activity priority
-                return 9998;
+                return HIGHPRIORITY;
             }
 
-            return 0;
+            return NORMALPRIORITY;
         }
 
         if (role == ORIGINALSHARESROLE) {
