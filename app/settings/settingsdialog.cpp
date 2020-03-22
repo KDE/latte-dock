@@ -635,34 +635,37 @@ void SettingsDialog::showScreensInformation()
 
 void SettingsDialog::dragEnterEvent(QDragEnterEvent *event)
 {
-    event->acceptProposedAction();
+    if (currentPage() == Types::LayoutPage){
+        m_tabLayoutsHandler->on_dragEnterEvent(event);
+    } else {
+        QDialog::dragEnterEvent(event);
+    }
+}
+
+void SettingsDialog::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    if (currentPage() == Types::LayoutPage){
+        m_tabLayoutsHandler->on_dragLeaveEvent(event);
+    } else {
+        QDialog::dragLeaveEvent(event);
+    }
+}
+
+void SettingsDialog::dragMoveEvent(QDragMoveEvent *event)
+{
+    if (currentPage() == Types::LayoutPage){
+        m_tabLayoutsHandler->on_dragMoveEvent(event);
+    } else {
+        QDialog::dragMoveEvent(event);
+    }
 }
 
 void SettingsDialog::dropEvent(QDropEvent *event)
 {
-    if (event->mimeData()->hasUrls()) {
-        QList<QUrl> urlList = event->mimeData()->urls();
-
-        QStringList layoutNames;
-
-        for (int i = 0; i < qMin(urlList.size(), 20); ++i) {
-            QString layoutPath = urlList[i].path();
-
-            if (layoutPath.endsWith(".layout.latte")) {
-              //  Settings::Data::Layout importedlayout = m_layoutsController->addLayoutForFile(layoutPath);
-              //  layoutNames << importedlayout.name;
-            }
-        }
-
-        if (layoutNames.count() == 1) {
-            showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(layoutNames[0]),
-                    KMessageWidget::Information,
-                    SettingsDialog::INFORMATIONINTERVAL);
-        } else if (layoutNames.count() > 1) {
-            showInlineMessage(i18nc("settings:layouts imported successfully","Layouts <b>%0</b> imported successfully...").arg(layoutNames.join(", )")),
-                              KMessageWidget::Information,
-                              SettingsDialog::INFORMATIONINTERVAL);
-        }
+    if (currentPage() == Types::LayoutPage){
+        m_tabLayoutsHandler->on_dropEvent(event);
+    } else {
+        QDialog::dropEvent(event);
     }
 }
 

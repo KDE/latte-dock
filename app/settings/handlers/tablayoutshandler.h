@@ -74,9 +74,15 @@ public:
     Latte::SettingsDialog *dialog() const;
     Ui::SettingsDialog *ui() const;
 
+
+
     void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0, QList<QAction *> actions = QList<QAction *>()) override;
 
 public slots:
+    void on_dragEnterEvent(QDragEnterEvent *event);
+    void on_dragLeaveEvent(QDragLeaveEvent *event);
+    void on_dragMoveEvent(QDragMoveEvent *event);
+    void on_dropEvent(QDropEvent *event);
     void on_keyReleaseEvent(QKeyEvent *event);
 
 private slots:
@@ -98,7 +104,11 @@ private slots:
     void on_shared_layout();
 
     void on_currentPageChanged(int page);
+    void on_layoutFilesDropped(const QStringList &paths);
     void updatePerLayoutButtonsState();
+
+private:
+    bool isHoveringLayoutsTable(const QPoint &pos);
 
 private:
     Latte::SettingsDialog *m_parentDialog{nullptr};

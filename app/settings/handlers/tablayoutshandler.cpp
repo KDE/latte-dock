@@ -25,6 +25,7 @@
 #include "../settingsdialog.h"
 #include "../universalsettings.h"
 #include "../controllers/layoutscontroller.h"
+#include "../views/layoutstableview.h"
 #include "../../lattecorona.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/importer.h"
@@ -34,9 +35,11 @@
 //! Qt
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QMimeData>
 
 //! KDE
 #include <KWindowSystem>
+#include <KLocalizedString>
 #include <KActivities/Controller>
 #include <KIO/OpenFileManagerWindowJob>
 #include <KNewStuff3/KNS3/DownloadDialog>
@@ -85,6 +88,7 @@ void TabLayouts::initUi()
     }
 
     connect(m_ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &Generic::dataChanged);
+
     connect(m_layoutsController, &Settings::Controller::Layouts::dataChanged, this, &Generic::dataChanged);
 
     connect(this, &Settings::Handler::TabLayouts::dataChanged, this, &TabLayouts::updatePerLayoutButtonsState);
@@ -635,10 +639,42 @@ void TabLayouts::on_export_layout()
     exportFileDialog->selectFile(selectedLayout.name);
 }
 
+void TabLayouts::on_layoutFilesDropped(const QStringList &paths)
+{
+    QStringList layoutNames;
+
+    for (int i=0; i<paths.count(); ++i) {
+        if (paths[i].endsWith(".layout.latte")) {
+            Settings::Data::Layout importedlayout = m_layoutsController->addLayoutForFile(paths[i]);
+            layoutNames << importedlayout.name;
+        }
+    }
+
+    if (layoutNames.count() == 1) {
+        showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(layoutNames[0]),
+                KMessageWidget::Information,
+                SettingsDialog::INFORMATIONINTERVAL);
+    } else if (layoutNames.count() > 1) {
+        showInlineMessage(i18nc("settings:layouts imported successfully","Layouts <b>%0</b> imported successfully...").arg(layoutNames.join(", )")),
+                          KMessageWidget::Information,
+                          SettingsDialog::INFORMATIONINTERVAL);
+    }
+}
+
 bool TabLayouts::isCurrentTab() const
 {
     return (m_layoutMenu->isEnabled() && (m_parentDialog->currentPage() == Types::LayoutPage));
 }
+
+bool TabLayouts::isHoveringLayoutsTable(const QPoint &pos)
+{
+    QPoint topLeft = m_ui->layoutsView->mapTo(m_parentDialog, QPoint(0,0));
+    QRect geometry = m_ui->layoutsView->rect();
+    geometry.moveTopLeft(topLeft);
+
+    return geometry.contains(pos);
+}
+
 
 void TabLayouts::on_currentPageChanged(int page)
 {
@@ -651,6 +687,62 @@ void TabLayouts::on_currentPageChanged(int page)
     } else {
         m_layoutMenu->menuAction()->setVisible(false);
         m_layoutMenu->setEnabled(false);
+    }
+}
+
+void TabLayouts::on_dragEnterEvent(QDragEnterEvent *event)
+{
+    if (!isHoveringLayoutsTable(event->pos())) {
+        return;
+    }
+
+    event->acceptProposedAction();
+    m_ui->layoutsView->dragEntered();
+}
+
+void TabLayouts::on_dragLeaveEvent(QDragLeaveEvent *event)
+{
+    m_ui->layoutsView->dragLeft();
+}
+
+void TabLayouts::on_dragMoveEvent(QDragMoveEvent *event)
+{
+    if (!isHoveringLayoutsTable(event->pos())) {
+        event->ignore();
+        m_ui->layoutsView->dragLeft();
+        return;
+    }
+
+    event->acceptProposedAction();
+    m_ui->layoutsView->dragEntered();
+}
+
+void TabLayouts::on_dropEvent(QDropEvent *event)
+{
+    if (!isHoveringLayoutsTable(event->pos())) {
+        event->ignore();
+        m_ui->layoutsView->dragLeft();
+        return;
+    }
+
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urlList = event->mimeData()->urls();
+
+        QStringList paths;
+
+        for (int i = 0; i < qMin(urlList.size(), 20); ++i) {
+            QString layoutPath = urlList[i].path();
+
+            if (layoutPath.endsWith(".layout.latte")) {
+                paths << layoutPath;
+            }
+        }
+
+        if (paths.count() > 0) {
+            on_layoutFilesDropped(paths);
+        }
+
+        m_ui->layoutsView->dragLeft();
     }
 }
 
