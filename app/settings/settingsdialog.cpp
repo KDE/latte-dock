@@ -64,14 +64,18 @@ const int SettingsDialog::ERRORINTERVAL;
 SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     : QDialog(parent),
       m_ui(new Ui::SettingsDialog),
-      m_corona(corona)
+      m_corona(corona),
+      m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog"))
 {
     setAcceptDrops(true);
     m_ui->setupUi(this);
 
     setAttribute(Qt::WA_DeleteOnClose, true);
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
-    resize(m_corona->universalSettings()->layoutsWindowSize());
+
+    //! load window size
+    loadConfig();
+
 
     connect(m_ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
             , this, &SettingsDialog::apply);
@@ -85,6 +89,11 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     m_tabLayoutsHandler = new Settings::Handler::TabLayouts(this);
     m_preferencesHandler = new Settings::Handler::TabPreferences(this);
+
+    //! load settings after handlers in order to make migration process correctly
+    //! and remove deprecated values totally from universalsettings
+    loadConfig();
+    resize(m_windowSize);
 
     m_ui->messageWidget->setVisible(false);
 
@@ -130,7 +139,8 @@ SettingsDialog::~SettingsDialog()
 {
     qDebug() << Q_FUNC_INFO;
 
-    m_corona->universalSettings()->setLayoutsWindowSize(size());
+    setStoredWindowSize(size());
+    saveConfig();
 }
 
 void SettingsDialog::initGlobalMenu()
@@ -202,6 +212,35 @@ Ui::SettingsDialog *SettingsDialog::ui() const
 {
     return m_ui;
 }
+
+QSize SettingsDialog::storedWindowSize() const
+{
+    return m_windowSize;
+}
+
+void SettingsDialog::setStoredWindowSize(const QSize &size)
+{
+    if (m_windowSize == size) {
+        return;
+    }
+
+    m_windowSize = size;
+}
+
+QSize SettingsDialog::downloadWindowSize() const
+{
+    return m_downloadWindowSize;
+}
+
+void SettingsDialog::setDownloadWindowSize(const QSize &size)
+{
+    if (m_downloadWindowSize == size) {
+        return;
+    }
+
+    m_downloadWindowSize = size;
+}
+
 
 QMenuBar *SettingsDialog::appMenuBar() const
 {
@@ -629,6 +668,33 @@ void SettingsDialog::showInlineMessage(const QString &msg, const KMessageWidget:
         m_hideInlineMessageTimer.setInterval(hideInterval);
         m_hideInlineMessageTimer.start();
     }
+}
+
+void SettingsDialog::loadConfig()
+{
+    //! remove old unneeded oprtions
+    KConfigGroup deprecatedStorage(KConfigGroup(KSharedConfig::openConfig(), "UniversalSettings"));
+    QStringList columnWidths = deprecatedStorage.readEntry("layoutsColumnWidths", QStringList());
+
+    if (!columnWidths.isEmpty()) {
+        //! migrating
+        m_windowSize = deprecatedStorage.readEntry("layoutsWindowSize", QSize(700, 450));
+        m_downloadWindowSize = deprecatedStorage.readEntry("downloadWindowSize", QSize(800, 550));
+
+        deprecatedStorage.writeEntry("layoutsColumnWidths", QStringList());
+        deprecatedStorage.writeEntry("layoutsWindowSize", QSize());
+        deprecatedStorage.writeEntry("downloadWindowSize", QSize());
+    } else {
+        //! new storage
+        m_windowSize = m_storage.readEntry("windowSize", QSize(700, 450));
+        m_downloadWindowSize = m_storage.readEntry("downloadWindowSize", QSize(800, 550));
+    }
+}
+
+void SettingsDialog::saveConfig()
+{
+    m_storage.writeEntry("windowSize", m_windowSize);
+    m_storage.writeEntry("downloadWindowSize", m_downloadWindowSize);
 }
 
 }//end of namespace

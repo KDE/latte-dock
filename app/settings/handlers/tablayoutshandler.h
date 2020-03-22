@@ -29,6 +29,9 @@
 #include <QButtonGroup>
 #include <QMenu>
 
+//!
+#include <KConfigGroup>
+
 namespace Ui {
 class SettingsDialog;
 }
@@ -57,10 +60,14 @@ class TabLayouts : public Generic
     Q_OBJECT
 public:
     TabLayouts(Latte::SettingsDialog *parent);
+    ~TabLayouts();
 
     bool dataAreChanged() const override;
     bool inDefaultValues() const override;
     bool isCurrentTab() const;
+
+    QStringList layoutsViewColumnWidths() const;
+    void setLayoutsViewColumnWidths(const QStringList &widths);
 
     void reset() override;
     void resetDefaults() override;
@@ -78,6 +85,9 @@ public slots:
 private slots:
     void initUi();
     void initLayoutMenu();
+
+    void loadConfig();
+    void saveConfig();
 
     void on_new_layout();
     void on_copy_layout();
@@ -99,6 +109,10 @@ private:
     Latte::Corona *m_corona{nullptr};
 
     Settings::Controller::Layouts *m_layoutsController{nullptr};
+
+    QStringList m_layoutsViewColumnWidths;
+
+    KConfigGroup m_storage;
 
     QButtonGroup *m_inMemoryButtons;
 

@@ -50,10 +50,19 @@ TabLayouts::TabLayouts(Latte::SettingsDialog *parent)
       m_parentDialog(parent),
       m_corona(m_parentDialog->corona()),
       m_ui(m_parentDialog->ui()),
-      m_layoutsController(new Settings::Controller::Layouts(this))
-{    
+      m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog").group("TabLayouts"))
+{
+    //! load first the layouts view column widths
+    loadConfig();
+    m_layoutsController = new Settings::Controller::Layouts(this);
+
     initUi();
     initLayoutMenu();
+}
+
+TabLayouts::~TabLayouts()
+{
+    saveConfig();
 }
 
 void TabLayouts::initUi()
@@ -202,6 +211,20 @@ bool TabLayouts::dataAreChanged() const
 bool TabLayouts::inDefaultValues() const
 {
     return true;
+}
+
+QStringList TabLayouts::layoutsViewColumnWidths() const
+{
+    return m_layoutsViewColumnWidths;
+}
+
+void TabLayouts::setLayoutsViewColumnWidths(const QStringList &widths)
+{
+    if (m_layoutsViewColumnWidths == widths) {
+        return;
+    }
+
+    m_layoutsViewColumnWidths = widths;
 }
 
 void TabLayouts::reset()
@@ -392,7 +415,7 @@ void TabLayouts::on_download_layout()
     }
 
     KNS3::DownloadDialog dialog(QStringLiteral("latte-layouts.knsrc"), m_parentDialog);
-    dialog.resize(m_corona->universalSettings()->downloadWindowSize());
+    dialog.resize(m_parentDialog->downloadWindowSize());
     dialog.exec();
 
     if (!dialog.changedEntries().isEmpty() || !dialog.installedEntries().isEmpty()) {
@@ -411,7 +434,7 @@ void TabLayouts::on_download_layout()
         }
     }
 
-    m_corona->universalSettings()->setDownloadWindowSize(dialog.size());
+    m_parentDialog->setDownloadWindowSize(dialog.size());
 }
 
 void TabLayouts::on_remove_layout()
@@ -652,6 +675,25 @@ void TabLayouts::on_keyReleaseEvent(QKeyEvent *event)
     }
 }
 
+void TabLayouts::loadConfig()
+{
+    //! remove old unneeded oprtions
+    KConfigGroup deprecatedStorage(KConfigGroup(KSharedConfig::openConfig(), "UniversalSettings"));
+    QStringList columnWidths = deprecatedStorage.readEntry("layoutsColumnWidths", QStringList());
+
+    if (!columnWidths.isEmpty()) {
+        //! migrating
+        m_layoutsViewColumnWidths = columnWidths;
+    } else {
+        //! new storage
+        m_layoutsViewColumnWidths = m_storage.readEntry("columnWidths", QStringList());
+    }
+}
+
+void TabLayouts::saveConfig()
+{
+    m_storage.writeEntry("columnWidths", m_layoutsViewColumnWidths);
+}
 
 }
 }

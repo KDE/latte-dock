@@ -72,6 +72,11 @@ public:
     Ui::SettingsDialog *ui() const;
     QMenuBar *appMenuBar() const;
 
+    void setStoredWindowSize(const QSize &size);
+
+    QSize downloadWindowSize() const;
+    void setDownloadWindowSize(const QSize &size);
+
     Types::LatteConfigPage currentPage();
     void setCurrentPage(int page);
     void toggleCurrentPage();
@@ -103,6 +108,9 @@ private slots:
 
     void clearCurrentMessageActions();
 
+    void loadConfig();
+    void saveConfig();
+
 private:
     void initGlobalMenu();
     void initLayoutMenu();
@@ -112,6 +120,8 @@ private:
     void save();
     void setCurrentFreeActivitiesLayout(const int &row);
 
+    QSize storedWindowSize() const;
+
 private:
     Latte::Corona *m_corona{nullptr};
     Ui::SettingsDialog *m_ui;
@@ -119,6 +129,10 @@ private:
     //! Handlers for UI
     Settings::Handler::TabLayouts *m_tabLayoutsHandler{nullptr};
     Settings::Handler::TabPreferences *m_preferencesHandler{nullptr};
+
+    //! properties
+    QSize m_windowSize;
+    QSize m_downloadWindowSize;
 
     //! Global menu
     QMenuBar *m_globalMenuBar{nullptr};
@@ -133,6 +147,10 @@ private:
 
     //! Current shown KMessageActions
     QList<QAction *> m_currentMessageActions;
+
+    //! storage
+    KConfigGroup m_deprecatedStorage;
+    KConfigGroup m_storage;
 
     //! workaround to assign ALLACTIVITIES during startup
     QTimer m_activitiesTimer;

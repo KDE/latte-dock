@@ -107,15 +107,6 @@ public:
     QString lastNonAssignedLayoutName() const;
     void setLastNonAssignedLayoutName(QString layoutName);
 
-    QSize downloadWindowSize() const;
-    void setDownloadWindowSize(QSize size);
-
-    QSize layoutsWindowSize() const;
-    void setLayoutsWindowSize(QSize size);
-
-    QStringList layoutsColumnWidths() const;
-    void setLayoutsColumnWidths(QStringList widths);
-
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
 
@@ -190,10 +181,7 @@ private:
 
     QString m_currentLayoutName;
     QString m_lastNonAssignedLayoutName;
-    QSize m_downloadWindowSize{800, 550};
-    QSize m_layoutsWindowSize{700, 450};
 
-    QStringList m_layoutsColumnWidths;
     QStringList m_launchers;
 
     Types::LayoutsMemoryUsage m_memoryUsage;

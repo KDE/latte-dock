@@ -197,7 +197,7 @@ void Layouts::updateLastColumnWidth()
         m_view->setColumnHidden(Model::Layouts::SHAREDCOLUMN, false);
 
         //! column widths
-        QStringList cWidths = m_handler->corona()->universalSettings()->layoutsColumnWidths();
+        QStringList cWidths = m_handler->layoutsViewColumnWidths();
 
         if (cWidths.count()>=5) {
             m_view->setColumnWidth(Model::Layouts::ACTIVITYCOLUMN, cWidths[4].toInt());
@@ -446,7 +446,7 @@ void Layouts::loadLayouts()
 
     m_view->resizeColumnsToContents();
 
-    QStringList columnWidths = m_handler->corona()->universalSettings()->layoutsColumnWidths();
+    QStringList columnWidths = m_handler->layoutsViewColumnWidths();
 
     if (!columnWidths.isEmpty()) {
         int lastColumn = inMultiple ? 5 : 4;
@@ -868,13 +868,13 @@ void Layouts::saveColumnWidths()
         columnWidths << QString::number(m_view->columnWidth(Model::Layouts::ACTIVITYCOLUMN));
     } else {
         //! In Single Mode, keed recorded value for ACTIVITYCOLUMN
-        QStringList currentWidths = m_handler->corona()->universalSettings()->layoutsColumnWidths();
+        QStringList currentWidths = m_handler->layoutsViewColumnWidths();
         if (currentWidths.count()>=5) {
             columnWidths << currentWidths[4];
         }
     }
 
-    m_handler->corona()->universalSettings()->setLayoutsColumnWidths(columnWidths);
+    m_handler->setLayoutsViewColumnWidths(columnWidths);
 }
 
 void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &trialId)
