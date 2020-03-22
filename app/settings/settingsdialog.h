@@ -100,6 +100,7 @@ private slots:
     void on_export_fullconfiguration();
 
     void accept() override;
+    void reject() override;
 
     void apply();
     void reset();
@@ -125,6 +126,9 @@ private:
     void save();
     void setCurrentFreeActivitiesLayout(const int &row);
 
+    int saveChangesConfirmation();
+    bool saveChanges();
+
     QSize storedWindowSize() const;
 
 private:
@@ -142,7 +146,10 @@ private:
     //! Global menu
     QMenuBar *m_globalMenuBar{nullptr};
 
-    int m_currentAcceptedPage{-1};
+    //! are used for confirmation purposes, the user can choose to save or discard settings and
+    //! change its current tab also
+    int m_acceptedPage{-1};
+    int m_nextPage{-1};
 
     //! File menu actions
     QMenu *m_fileMenu{nullptr};

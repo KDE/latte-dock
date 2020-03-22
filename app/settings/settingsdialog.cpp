@@ -185,8 +185,12 @@ void SettingsDialog::initFileMenu()
 
     //! triggers
     connect(quitAction, &QAction::triggered, this, [&]() {
-        close();
-        m_corona->quitApplication();
+        bool accepted = saveChanges();
+
+        if (accepted) {
+            close();
+            m_corona->quitApplication();
+        }
     });
 
 }
@@ -443,6 +447,15 @@ void SettingsDialog::accept()
     qDebug() << Q_FUNC_INFO;
 }
 
+void SettingsDialog::reject()
+{
+    bool accepted = saveChanges();
+
+    if (accepted) {
+        QDialog::reject();
+    }
+}
+
 void SettingsDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
@@ -514,19 +527,65 @@ void SettingsDialog::updateApplyButtonsState()
     }
 }
 
-void SettingsDialog::on_currentTabChanged(int index)
+int SettingsDialog::saveChangesConfirmation()
 {
-    if ((m_currentAcceptedPage == Latte::Types::LayoutPage && m_tabLayoutsHandler->dataAreChanged())
-        || (m_currentAcceptedPage == Latte::Types::PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
+    auto msg = new QMessageBox(this);
+    msg->setIcon(QMessageBox::Warning);
+    msg->setWindowTitle(i18n("Apply Settings"));
+    QString tabName = m_ui->tabWidget->tabBar()->tabText(m_acceptedPage).remove("&");
+    msg->setText(i18n("The settings of <b>%0</b> tab have changed. Do you want to apply the changes or discard them?").arg(tabName));
+    msg->setStandardButtons(QMessageBox::Apply | QMessageBox::Discard | QMessageBox::Cancel);
+    msg->setDefaultButton(QMessageBox::Apply);
 
-        if (index != m_currentAcceptedPage) {
-            setCurrentPage(m_currentAcceptedPage);
+    connect(msg, &QFileDialog::finished, msg, &QFileDialog::deleteLater);
+    return msg->exec();
+}
+
+bool SettingsDialog::saveChanges()
+{
+    if ((m_acceptedPage == Latte::Types::LayoutPage && m_tabLayoutsHandler->dataAreChanged())
+        || (m_acceptedPage == Latte::Types::PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
+        int result = saveChangesConfirmation();
+
+        if (result == QMessageBox::Apply) {
+            save();
+        } else if (result == QMessageBox::Discard) {
+            reset();
+        } else {
+            return false;
         }
-
-        return;
     }
 
-    m_currentAcceptedPage = index;
+    return true;
+}
+
+void SettingsDialog::on_currentTabChanged(int index)
+{
+    //! Before switching into a new tab the user must confirm first if the data should be saved or not
+
+    if ((m_acceptedPage == Latte::Types::LayoutPage && m_tabLayoutsHandler->dataAreChanged())
+        || (m_acceptedPage == Latte::Types::PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
+
+        if (index != m_acceptedPage) {
+            m_nextPage = index;
+            setCurrentPage(m_acceptedPage);
+            return;
+        }
+
+        bool approvedNext = saveChanges();
+
+        if (!approvedNext) {
+            m_nextPage = m_acceptedPage;
+            return;
+        }
+    } else {
+        m_nextPage = index;
+    }
+
+    m_acceptedPage = m_nextPage >= 0 ? m_nextPage : index/*initialize*/;
+    m_nextPage = m_acceptedPage;
+
+    setCurrentPage(m_acceptedPage);
     updateApplyButtonsState();
 }
 
@@ -639,6 +698,8 @@ void SettingsDialog::updateWindowActivities()
 
 void SettingsDialog::save()
 {
+    qDebug() << Q_FUNC_INFO;
+
     if (currentPage() == Latte::Types::LayoutPage) {
         m_tabLayoutsHandler->save();
     } else if (currentPage() == Latte::Types::PreferencesPage) {
