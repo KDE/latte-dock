@@ -77,10 +77,10 @@ public:
 
     enum SortingPriority
     {
-        NORMALPRIORITY = 0,
-        MEDIUMPRIORITY = 1000,
-        HIGHPRIORITY = 2000,
-        HIGHESTPRIORITY = 3000
+        NORMALPRIORITY = 8000,
+        MEDIUMPRIORITY = 7000,
+        HIGHPRIORITY = 6000,
+        HIGHESTPRIORITY = 5000
     };
 
     explicit Layouts(QObject *parent, Latte::Corona *corona);
@@ -153,7 +153,8 @@ private:
     void setId(const int &row, const QString &newId);
     void setShares(const int &row, const QStringList &shares);
 
-    int sortingPriority(const SortingPriority &priority, const int &row) const;
+    QString sortingPriority(const SortingPriority &priority, const int &row) const;
+    QString sortableText(const int &priority, const int &row) const;
 
     QStringList cleanStrings(const QStringList &original, const QStringList &occupied);
 

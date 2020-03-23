@@ -355,9 +355,29 @@ Qt::ItemFlags Layouts::flags(const QModelIndex &index) const
     return flags;
 }
 
-int Layouts::sortingPriority(const SortingPriority &priority, const int &row) const
+QString Layouts::sortableText(const int &priority, const int &row) const
 {
-    return m_layoutsTable[row].isActive ? 2 * (int)priority : (int)priority;
+    QString numberPart;
+
+    if (priority < 10) {
+        numberPart = "0000" + QString::number(priority);
+    } else if (priority < 100) {
+        numberPart = "000" + QString::number(priority);
+    } else if (priority < 1000) {
+        numberPart = "00" + QString::number(priority);
+    } else if (priority < 10000) {
+        numberPart = "0" + QString::number(priority);
+    }
+
+    return (numberPart + m_layoutsTable[row].name);
+}
+
+
+QString Layouts::sortingPriority(const SortingPriority &priority, const int &row) const
+{
+    int validPriority = (m_layoutsTable[row].isActive ? (int)((int)priority / 2) : (int)priority);
+
+    return sortableText(validPriority, row);
 }
 
 QVariant Layouts::data(const QModelIndex &index, int role) const
