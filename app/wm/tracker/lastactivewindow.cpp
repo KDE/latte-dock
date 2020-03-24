@@ -485,8 +485,10 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 //! PRIVATE SLOTS
 void LastActiveWindow::applicationDataChanged(const WindowId &wid)
 {
-    setAppName(m_windowsTracker->appNameFor(wid));
-    setIcon(m_windowsTracker->iconFor(wid));
+    if (m_winId == wid) {
+        setAppName(m_windowsTracker->appNameFor(wid));
+        setIcon(m_windowsTracker->iconFor(wid));
+    }
 }
 
 
