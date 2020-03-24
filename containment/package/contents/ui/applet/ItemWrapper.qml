@@ -681,7 +681,7 @@ Item{
         visible: !indicators.info.providesHoveredAnimation
 
         Behavior on opacity {
-            NumberAnimation { duration: root.durationTime*units.longDuration }
+            NumberAnimation { duration: root.durationTime*root.longDuration }
         }
     }
 

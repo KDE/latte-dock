@@ -41,7 +41,7 @@ Item{
 
     readonly property int settingsThickness: settingsOverlay.thickness
 
-    property int speed: Latte.WindowSystem.compositingActive ? root.appliedDurationTime*3.6*units.longDuration : 10
+    property int speed: Latte.WindowSystem.compositingActive ? root.appliedDurationTime*3.6*root.longDuration : 10
     property int thickness: visibilityManager.thicknessEditMode + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow //- visibilityManager.thicknessEditMode
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.width)://root.maxLength) :

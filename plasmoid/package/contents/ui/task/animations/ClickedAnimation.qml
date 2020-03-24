@@ -27,7 +27,7 @@ SequentialAnimation{
     id: clickedAnimation
 
     property bool pressed: taskItem.pressed
-    property int speed: root.durationTime*units.longDuration
+    property int speed: root.durationTime*root.longDuration
     property real maxMScale: Math.max(1,root.zoomFactor - (root.zoomFactor - 1) / 2)
 
     ParallelAnimation{
@@ -77,7 +77,7 @@ SequentialAnimation{
         if( !taskItem.isDragged){
             //taskItem.animationEnded();
             if(!root.latteView)
-                checkListHovered.startDuration(6*units.longDuration);
+                checkListHovered.startDuration(6*root.longDuration);
         }
     }
 }

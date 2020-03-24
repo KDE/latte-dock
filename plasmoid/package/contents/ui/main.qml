@@ -245,6 +245,9 @@ Item {
 
     readonly property real animationsSpeed2: plasma518 ? 1.00 : 2.00
 
+    readonly property int shortDuration: latteView ? latteView.shortDuration : Latte.WindowSystem.shortDuration
+    readonly property int longDuration: latteView ? latteView.longDuration : Latte.WindowSystem.longDuration
+
     property real appliedDurationTime: animationsEnabled ? durationTime : animationsSpeed2
     property real durationTime: latteView ? latteView.durationTime : plasmoid.configuration.durationTime
     property real zoomFactor: latteView ? latteView.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
@@ -642,7 +645,7 @@ Item {
     Timer{
         id: delayWindowRemovalTimer
         //this is the animation time needed in order for tasks to restore their zoom first
-        interval: 7 * (root.durationTime * units.shortDuration)
+        interval: 7 * (root.durationTime * root.shortDuration)
 
         property var modelIndex
 
@@ -989,7 +992,7 @@ Item {
         repeat:false;
         interval: 120
 
-        property int normalInterval: Math.max(120, 2 * (root.durationTime * 1.2 * units.shortDuration) + 50)
+        property int normalInterval: Math.max(120, 2 * (root.durationTime * 1.2 * root.shortDuration) + 50)
 
         onTriggered: {
             if(root.latteView)
@@ -1027,7 +1030,7 @@ Item {
     //! zoom-in animations will have ended.
     Timer{
         id:directRenderDelayerForEnteringTimer
-        interval: 3.2 * root.durationTime * units.shortDuration
+        interval: 3.2 * root.durationTime * root.shortDuration
     }
 
     //this timer restores the draggingPhase flag to false
@@ -1066,7 +1069,7 @@ Item {
         property int smallSize: Math.max(0.10 * root.iconSize, 16)
 
         Behavior on opacity{
-            NumberAnimation { duration: root.durationTime*units.longDuration }
+            NumberAnimation { duration: root.durationTime*root.longDuration }
         }
 
         /// plasmoid's default panel
@@ -1083,7 +1086,7 @@ Item {
             verticalTileMode: BorderImage.Stretch
 
             Behavior on opacity{
-                NumberAnimation { duration: root.durationTime*units.longDuration }
+                NumberAnimation { duration: root.durationTime*root.longDuration }
             }
         }
 
@@ -1129,7 +1132,7 @@ Item {
                                         plasmoid.configuration.panelSize + belower.width
 
             Behavior on opacity{
-                NumberAnimation { duration: root.durationTime*units.longDuration }
+                NumberAnimation { duration: root.durationTime*root.longDuration }
             }
 
 
@@ -1262,7 +1265,7 @@ Item {
 
                     //more of a trouble
                     moveDisplaced: Transition {
-                        NumberAnimation { properties: "x,y"; duration: root.durationTime*units.longDuration; easing.type: Easing.Linear }
+                        NumberAnimation { properties: "x,y"; duration: root.durationTime*root.longDuration; easing.type: Easing.Linear }
                     }
 
                     ///this transition can not be used with dragging !!!! I breaks

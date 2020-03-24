@@ -28,7 +28,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 SequentialAnimation{
     id:newWindowAnimation
 
-    property int speed: root.appliedDurationTime*1.2*units.longDuration
+    property int speed: root.appliedDurationTime*1.2*root.longDuration
     property bool isDemandingAttention: taskItem.inAttention
     property bool containsMouse: taskItem.containsMouse
     property bool needsThicknessSent: false //flag to check if the signal for thickness was sent

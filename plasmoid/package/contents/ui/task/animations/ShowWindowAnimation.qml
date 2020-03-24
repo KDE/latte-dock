@@ -27,7 +27,7 @@ import org.kde.latte 0.2 as Latte
 ///item's added Animation
 SequentialAnimation{
     id:showWindowAnimation
-    property int speed: root.animationNewWindowSliding ? root.appliedDurationTime* (1.2*units.longDuration) : 0
+    property int speed: root.animationNewWindowSliding ? root.appliedDurationTime* (1.2*root.longDuration) : 0
     property bool animationSent: false
 
     //Ghost animation that acts as a delayer, in order to fix #342

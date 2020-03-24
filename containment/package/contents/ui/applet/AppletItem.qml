@@ -155,7 +155,7 @@ Item {
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
     readonly property bool supportsScreenEdgeMargin: communicator.supportsScreenEdgeMargin
 
-    property int animationTime: appliedDurationTime * (1.2 *units.shortDuration)
+    property int animationTime: appliedDurationTime * (1.2 *root.shortDuration)
     property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
     property int maxWidth: root.isHorizontal ? root.height : root.width
@@ -293,7 +293,7 @@ Item {
 
     NumberAnimation {
         id: translAnim
-        duration: units.longDuration
+        duration: root.longDuration
         easing.type: Easing.InOutQuad
         target: translation
         properties: "x,y"
@@ -1209,7 +1209,7 @@ Item {
                 target: wrapper.clickedEffect
                 property: "brightness"
                 to: -0.35
-                duration: units.longDuration
+                duration: root.longDuration
                 easing.type: Easing.OutQuad
             }
         }
@@ -1218,7 +1218,7 @@ Item {
                 target: wrapper.clickedEffect
                 property: "brightness"
                 to: 0
-                duration: units.longDuration
+                duration: root.longDuration
                 easing.type: Easing.OutQuad
             }
         }

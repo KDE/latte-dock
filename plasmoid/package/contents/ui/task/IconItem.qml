@@ -254,7 +254,7 @@ Item{
                     to: "*"
                     enabled: !fastRestoreAnimation.running && !taskItem.inMimicParabolicAnimation
 
-                    AnchorAnimation { duration: 1.5*root.durationTime*units.longDuration }
+                    AnchorAnimation { duration: 1.5*root.durationTime*root.longDuration }
                 }
             ]
         } //IconImageBuffer
@@ -296,7 +296,7 @@ Item{
             property bool showAudio: (root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator) && !shortcutBadge.active
 
             Behavior on activateProgress {
-                NumberAnimation { duration: root.durationTime*2*units.longDuration }
+                NumberAnimation { duration: root.durationTime*2*root.longDuration }
             }
 
             sourceComponent: Item{
@@ -564,7 +564,7 @@ Item{
             contrast: 0.1
 
             Behavior on opacity {
-                NumberAnimation { duration: root.durationTime*units.longDuration }
+                NumberAnimation { duration: root.durationTime*root.longDuration }
             }
         }
 
@@ -661,7 +661,7 @@ Item{
         Transition{
             id: isDraggedTransition
             to: "isDragged"
-            property int speed: root.durationTime*units.longDuration
+            property int speed: root.durationTime*root.longDuration
 
             SequentialAnimation{
                 ScriptAction{
@@ -730,7 +730,7 @@ Item{
             id: defaultTransition
             from: "isDragged"
             to: "*"
-            property int speed: root.durationTime*units.longDuration
+            property int speed: root.durationTime*root.longDuration
 
             SequentialAnimation{
                 ScriptAction{

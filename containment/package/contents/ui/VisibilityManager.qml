@@ -51,7 +51,7 @@ Item{
     property int maskFloatedGap: maskIsFloating ? Math.max(0, root.localScreenEdgeMargin - root.panelShadow) : 0
 
     property int animationSpeed: Latte.WindowSystem.compositingActive ?
-                                     (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : root.appliedDurationTime * 1.4 * units.longDuration) : 0
+                                     (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : root.appliedDurationTime * 1.62 * root.longDuration) : 0
 
     property bool inLocationAnimation: latteView && latteView.positioner && latteView.positioner.inLocationAnimation
     property bool inSlidingIn: false //necessary because of its init structure
@@ -977,7 +977,7 @@ Item{
             property: "slideOffset"
             to: plasmoid.configuration.screenEdgeMargin
             duration: manager.animationSpeed
-            easing.type: Easing.OutQuad
+            easing.type: Easing.InQuad
         }
     }
 

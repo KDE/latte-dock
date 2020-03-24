@@ -261,7 +261,7 @@ Item {
     property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
     readonly property bool thickAnimated: animationsNeedBothAxis>0 || animationsNeedThickness>0
 
-    property int animationTime: durationTime*2.8*units.longDuration
+    property int animationTime: durationTime*2.8*root.longDuration
 
     property int appletsNeedWindowsTracking: 0
 
@@ -565,10 +565,13 @@ Item {
     property bool animationWindowAddedInGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowAddedInGroup
     property bool animationWindowRemovedFromGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowRemovedFromGroup
 
+    readonly property int shortDuration: Latte.WindowSystem.shortDuration
+    readonly property int longDuration: Latte.WindowSystem.longDuration
+
     property real appliedDurationTime: animationsEnabled ? durationTime : animationsSpeed2
-    readonly property real animationsSpeed1: root.plasma518 ? 0.65 : 1.65
-    readonly property real animationsSpeed2: root.plasma518 ? 1.00 : 2.00
-    readonly property real animationsSpeed3: root.plasma518 ? 1.35 : 2.35
+    readonly property real animationsSpeed1: 0.75
+    readonly property real animationsSpeed2: 1.00
+    readonly property real animationsSpeed3: 1.15
 
     property real durationTime: {
         if (!animationsEnabled || plasmoid.configuration.durationTime === 0) {
@@ -1930,7 +1933,7 @@ Item {
     //! zoom-in animations will have ended.
     Timer{
         id:directRenderDelayerForEnteringTimer
-        interval: 3.2 * root.durationTime * units.shortDuration
+        interval: 3.2 * root.durationTime * root.shortDuration
     }
 
     //this is a delayer to update mask area, it is used in cases

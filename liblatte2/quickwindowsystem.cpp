@@ -33,6 +33,9 @@
 // X11
 #include <KWindowSystem>
 
+#define LONGDURATION 240
+#define SHORTDURATION 40
+
 namespace Latte {
 
 QuickWindowSystem::QuickWindowSystem(QObject *parent)
@@ -68,6 +71,16 @@ bool QuickWindowSystem::compositingActive() const
 bool QuickWindowSystem::isPlatformWayland() const
 {
     return KWindowSystem::isPlatformWayland();
+}
+
+uint QuickWindowSystem::shortDuration() const
+{
+    return SHORTDURATION;
+}
+
+uint QuickWindowSystem::longDuration() const
+{
+    return LONGDURATION;
 }
 
 uint QuickWindowSystem::frameworksVersion() const

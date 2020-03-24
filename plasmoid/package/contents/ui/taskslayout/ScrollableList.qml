@@ -209,7 +209,7 @@ Flickable{
     Behavior on contentX {
         NumberAnimation {
             id: horizontalAnimation
-            duration: root.durationTime*1.7*units.longDuration
+            duration: root.durationTime*1.7*root.longDuration
             easing.type: Easing.OutQuad
         }
     }
@@ -217,7 +217,7 @@ Flickable{
     Behavior on contentY {
         NumberAnimation {
             id: verticalAnimation
-            duration: root.durationTime*1.7*units.longDuration
+            duration: root.durationTime*1.7*root.longDuration
             easing.type: Easing.OutQuad
         }
     }

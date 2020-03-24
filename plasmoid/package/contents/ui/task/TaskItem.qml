@@ -125,7 +125,7 @@ MouseArea{
     property bool pressed: false
     property bool wheelIsBlocked: false
 
-    property int animationTime: (animationsEnabled ? root.durationTime : 2) * (1.2 *units.shortDuration)
+    property int animationTime: (animationsEnabled ? root.durationTime : 2) * (1.2 *root.shortDuration)
     property int badgeIndicator: 0 //it is used from external apps
     property int hoveredIndex: icList.hoveredIndex
     property int itemIndex: index
@@ -226,7 +226,7 @@ MouseArea{
 
     Behavior on opacity {
         // NumberAnimation { duration: (IsStartup || (IsLauncher) ) ? 0 : 400 }
-        NumberAnimation { duration: root.durationTime*units.longDuration }
+        NumberAnimation { duration: root.durationTime*root.longDuration }
     }
 
     Loader{
@@ -288,7 +288,7 @@ MouseArea{
         property real opacityN: isSeparator && root.contextMenu && root.contextMenu.visualParent === taskItem ? 1 : 0
 
         Behavior on opacityN {
-            NumberAnimation { duration: root.durationTime*units.longDuration }
+            NumberAnimation { duration: root.durationTime*root.longDuration }
         }
 
         sourceComponent: Rectangle{
@@ -331,7 +331,7 @@ MouseArea{
         property bool forceHiddenState: false
 
         Behavior on opacity {
-            NumberAnimation { duration: root.durationTime*units.longDuration }
+            NumberAnimation { duration: root.durationTime*root.longDuration }
         }
 
         function updateForceHiddenState() {
@@ -418,7 +418,7 @@ MouseArea{
         opacity: separatorItem.forceHiddenState ? 0 : 0.4
 
         Behavior on opacity {
-            NumberAnimation { duration: root.durationTime*units.longDuration }
+            NumberAnimation { duration: root.durationTime*root.longDuration }
         }
 
         sourceComponent: DropShadow{
@@ -879,7 +879,7 @@ MouseArea{
         pressed = false;
 
         if(!inAnimation) {
-            startCheckRestoreZoomTimer(3*units.longDuration);
+            startCheckRestoreZoomTimer(3*root.longDuration);
         }
     }
 
@@ -1637,7 +1637,7 @@ MouseArea{
     //I will blacklist google-chrome as I have not found any other case for this bug
     //to appear, but even this way there are cases that still appears...
     property int mainDelay: (AppId == "google-chrome") ? 0 : 2*root.durationTime*showWindowAnimation.speed
-    property int windowDelay: taskItem.isStartup ? 3*root.durationTime*units.longDuration : mainDelay
+    property int windowDelay: taskItem.isStartup ? 3*root.durationTime*root.longDuration : mainDelay
 
     Component {
         id: delayShowWindow
