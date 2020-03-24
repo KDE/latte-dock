@@ -186,6 +186,32 @@ bool GenericLayout::isCurrent() const
     return name() == m_corona->layoutsManager()->currentLayoutName();
 }
 
+bool GenericLayout::isInternalContainment(Plasma::Applet *applet) const
+{
+    for (const auto containment : m_containments) {
+        Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
+        if (parentApplet && parentApplet == applet) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+Plasma::Containment *GenericLayout::internalContainmentOf(Plasma::Applet *applet) const
+{
+    if (isInternalContainment(applet)) {
+        for (const auto containment : m_containments) {
+            Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
+            if (parentApplet && parentApplet == applet) {
+                return containment;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
 int GenericLayout::viewsCount(int screen) const
 {
     if (!m_corona) {
