@@ -379,6 +379,8 @@ void View::copyView()
 void View::removeView()
 {
     if (m_layout && m_layout->viewsCount() > 1) {
+        m_inDelete = true;
+
         QAction *removeAct = this->containment()->actions()->action(QStringLiteral("remove"));
 
         if (removeAct) {
@@ -1075,7 +1077,8 @@ void View::setLayout(Layout::GenericLayout *layout)
                     show();
                     //qDebug() << "View:: Enforce reshow from timer 1...";
                     emit forcedShown();
-                } else {
+                } else if (m_layout && isVisible()){
+                    m_inDelete = false;
                     //qDebug() << "View:: No needed reshow from timer 1...";
                 }
             });
@@ -1088,7 +1091,8 @@ void View::setLayout(Layout::GenericLayout *layout)
                     show();
                     //qDebug() << "View:: Enforce reshow from timer 1...";
                     emit forcedShown();
-                } else {
+                } else if (m_layout && isVisible()){
+                    m_inDelete = false;
                     //qDebug() << "View:: No needed reshow from timer 1...";
                 }
             });
