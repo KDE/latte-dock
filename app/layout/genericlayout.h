@@ -87,6 +87,9 @@ public:
     bool isWritable() const;
     bool layoutIsBroken() const;
 
+    bool isInternalContainment(Plasma::Applet *applet) const;
+    Plasma::Containment *internalContainmentOf(Plasma::Applet *applet) const;
+
     virtual bool configViewIsShown() const;
 
     virtual int viewsCount(int screen) const;

@@ -141,18 +141,11 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
 
             if (ai && ai->isVisible() && appletContainsMouse) {
                 applet = ai->applet();
-                KPluginMetaData meta = applet->kPackage().metadata();
+                if (m_latteView && m_latteView->layout() && m_latteView->layout()->isInternalContainment(applet)) {
+                    Plasma::Containment *internalC = m_latteView->layout()->internalContainmentOf(applet);
 
-                //Try to find applets inside a systray
-                if (meta.pluginId() == "org.kde.plasma.systemtray" ||
-                    meta.pluginId() == "org.nomad.systemtray") {
-                    auto systrayId = applet->config().readEntry("SystrayContainmentId");
-                    applet = 0;
-                    inSystray = true;
-                    Plasma::Containment *cont = containmentById(systrayId.toInt());
-
-                    if (cont) {
-                        for (const Plasma::Applet *appletCont : cont->applets()) {
+                    if (internalC) {
+                        for (const Plasma::Applet *appletCont : internalC->applets()) {
                             PlasmaQuick::AppletQuickItem *ai2 = appletCont->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
                             if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(m_latteView->contentItem(), event->pos()))) {
