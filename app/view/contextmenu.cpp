@@ -141,6 +141,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
 
             if (ai && ai->isVisible() && appletContainsMouse) {
                 applet = ai->applet();
+
                 if (m_latteView && m_latteView->layout() && m_latteView->layout()->isInternalContainment(applet)) {
                     Plasma::Containment *internalC = m_latteView->layout()->internalContainmentOf(applet);
 

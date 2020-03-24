@@ -188,6 +188,10 @@ bool GenericLayout::isCurrent() const
 
 bool GenericLayout::isInternalContainment(Plasma::Applet *applet) const
 {
+    if (!applet) {
+        return false;
+    }
+
     for (const auto containment : m_containments) {
         Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
         if (parentApplet && parentApplet == applet) {
@@ -200,6 +204,10 @@ bool GenericLayout::isInternalContainment(Plasma::Applet *applet) const
 
 Plasma::Containment *GenericLayout::internalContainmentOf(Plasma::Applet *applet) const
 {
+    if (!applet) {
+        return nullptr;
+    }
+
     if (isInternalContainment(applet)) {
         for (const auto containment : m_containments) {
             Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
