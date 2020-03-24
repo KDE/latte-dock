@@ -58,12 +58,20 @@ AbstractLayout::~AbstractLayout()
 
 void AbstractLayout::init()
 {
-    connect(this, &AbstractLayout::backgroundChanged, this, &AbstractLayout::saveConfig);
+    connect(this, &AbstractLayout::backgroundStyleChanged, this, &AbstractLayout::backgroundChanged);
+    connect(this, &AbstractLayout::backgroundStyleChanged, this, &AbstractLayout::textColorChanged);
+    connect(this, &AbstractLayout::customBackgroundChanged, this, &AbstractLayout::backgroundChanged);
+    connect(this, &AbstractLayout::customTextColorChanged, this, &AbstractLayout::textColorChanged);
+    connect(this, &AbstractLayout::colorChanged, this, &AbstractLayout::backgroundChanged);
     connect(this, &AbstractLayout::colorChanged, this, &AbstractLayout::textColorChanged);
+
+    connect(this, &AbstractLayout::customBackgroundChanged, this, &AbstractLayout::saveConfig);
+    connect(this, &AbstractLayout::customTextColorChanged, this, &AbstractLayout::saveConfig);
+    connect(this, &AbstractLayout::colorChanged, this, &AbstractLayout::saveConfig);
+
     connect(this, &AbstractLayout::lastUsedActivityChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::launchersChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::preferredForShortcutsTouchedChanged, this, &AbstractLayout::saveConfig);
-    connect(this, &AbstractLayout::textColorChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::versionChanged, this, &AbstractLayout::saveConfig);
 }
 
@@ -101,29 +109,53 @@ void AbstractLayout::setPreferredForShortcutsTouched(bool touched)
 
 QString AbstractLayout::background() const
 {
-    return m_background;
+    if (m_backgroundStyle == Types::ColorStyle) {
+        return m_color;
+    } else {
+        return m_customBackground;
+    }
 }
 
-void AbstractLayout::setBackground(QString path)
+QString AbstractLayout::textColor() const
 {
-    if (path == m_background) {
-        return;
+    if (m_backgroundStyle == Types::ColorStyle) {
+        return predefinedTextColor();
+    } else {
+        return m_customTextColor;
     }
-
-    if (!path.isEmpty() && !QFileInfo(path).exists()) {
-        return;
-    }
-
-    m_background = path;
-
-    //! initialize the text color also
-    if (path.isEmpty()) {
-        setTextColor(QString());
-    }
-
-    emit backgroundChanged();
 }
 
+Types::BackgroundStyle AbstractLayout::backgroundStyle() const
+{
+    return m_backgroundStyle;
+}
+
+void AbstractLayout::setBackgroundStyle(const Types::BackgroundStyle &style)
+{
+    if (m_backgroundStyle == style) {
+        return;
+    }
+
+    m_backgroundStyle = style;
+    emit backgroundStyleChanged();
+}
+
+
+QString AbstractLayout::customBackground() const
+{
+    return m_customBackground;
+}
+
+void AbstractLayout::setCustomBackground(const QString &background)
+{
+    if (m_customBackground == background) {
+        return;
+    }
+
+    m_customBackground = background;
+
+    emit customBackgroundChanged();
+}
 
 QString AbstractLayout::file() const
 {
@@ -190,53 +222,57 @@ void AbstractLayout::clearLastUsedActivity()
     emit lastUsedActivityChanged();
 }
 
-QString AbstractLayout::textColor() const
+QString AbstractLayout::predefinedTextColor() const
 {
     //! the user is in default layout theme
-    if (m_background.isEmpty()) {
-        if (m_color == "blue") {
-            return "#D7E3FF";
-        } else if (m_color == "brown") {
-            return "#F1DECB";
-        } else if (m_color == "darkgrey") {
-            return "#ECECEC";
-        } else if (m_color == "gold") {
-            return "#7C3636";
-        } else if (m_color == "green") {
-            return "#4D7549";
-        } else if (m_color == "lightskyblue") {
-            return "#0C2A43";
-        } else if (m_color == "orange") {
-            return "#6F3902";
-        } else if (m_color == "pink") {
-            return "#743C46";
-        } else if (m_color == "purple") {
-            return "#ECD9FF";
-        }  else if (m_color == "red") {
-            return "#F3E4E4";
-        }  else if (m_color == "wheat") {
-            return "#6A4E25";
-        }  else {
-            return "#FCFCFC";
-        }
-    }
 
-    return "#" + m_textColor;
+    if (m_color == "blue") {
+        return "#D7E3FF";
+    } else if (m_color == "brown") {
+        return "#F1DECB";
+    } else if (m_color == "darkgrey") {
+        return "#ECECEC";
+    } else if (m_color == "gold") {
+        return "#7C3636";
+    } else if (m_color == "green") {
+        return "#4D7549";
+    } else if (m_color == "lightskyblue") {
+        return "#0C2A43";
+    } else if (m_color == "orange") {
+        return "#6F3902";
+    } else if (m_color == "pink") {
+        return "#743C46";
+    } else if (m_color == "purple") {
+        return "#ECD9FF";
+    }  else if (m_color == "red") {
+        return "#F3E4E4";
+    }  else if (m_color == "wheat") {
+        return "#6A4E25";
+    }  else {
+        return "#FCFCFC";
+    }
 }
 
-void AbstractLayout::setTextColor(QString color)
+QString AbstractLayout::customTextColor() const
 {
+    return m_customTextColor;
+}
+
+void AbstractLayout::setCustomTextColor(const QString &customColor)
+{
+    QString cuColor = customColor;
+
     //! remove # if someone is trying to set it this way
-    if (color.startsWith("#")) {
-        color.remove(0, 1);
+    if (cuColor.startsWith("#")) {
+        cuColor.remove(0, 1);
     }
 
-    if (m_textColor == color) {
+    if (m_customTextColor == cuColor) {
         return;
     }
 
-    m_textColor = color;
-    emit textColorChanged();
+    m_customTextColor = cuColor;
+    emit customTextColorChanged();
 }
 
 QStringList AbstractLayout::launchers() const
@@ -288,23 +324,29 @@ QString AbstractLayout::layoutName(const QString &fileName)
 void AbstractLayout::loadConfig()
 {
     m_version = m_layoutGroup.readEntry("version", 2);
-    m_color = m_layoutGroup.readEntry("color", QString("blue"));
-    m_textColor = m_layoutGroup.readEntry("textColor", QString("fcfcfc"));
     m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
     m_lastUsedActivity = m_layoutGroup.readEntry("lastUsedActivity", QString());
     m_preferredForShortcutsTouched = m_layoutGroup.readEntry("preferredForShortcutsTouched", false);
 
-    QString back = m_layoutGroup.readEntry("background", "");
+    m_color = m_layoutGroup.readEntry("color", QString("blue"));
+    m_backgroundStyle = static_cast<Types::BackgroundStyle>(m_layoutGroup.readEntry("backgroundStyle", (int)Types::ColorStyle));
 
-    if (!back.isEmpty()) {
-        if (QFileInfo(back).exists()) {
-            m_background = back;
-        } else {
-            m_layoutGroup.writeEntry("background", QString());
-        }
+    QString deprecatedTextColor = m_layoutGroup.readEntry("textColor", QString("fcfcfc"));
+    QString deprecatedBackground = m_layoutGroup.readEntry("background", QString());
+
+    if (deprecatedBackground.startsWith("/")) {
+        m_customBackground = deprecatedBackground;
+        m_customTextColor = deprecatedTextColor;
+        setBackgroundStyle(Types::CustomBackgroundStyle);
+
+        m_layoutGroup.writeEntry("background", QString());
+        m_layoutGroup.writeEntry("textColor", QString());
+
+        saveConfig();
+    } else {
+        m_customBackground = m_layoutGroup.readEntry("customBackground", QString(""));
+        m_customTextColor = m_layoutGroup.readEntry("customTextColor", QString("fcfcfc"));
     }
-
-  //  emit activitiesChanged();*/
 }
 
 void AbstractLayout::saveConfig()
@@ -313,9 +355,10 @@ void AbstractLayout::saveConfig()
     m_layoutGroup.writeEntry("version", m_version);
     m_layoutGroup.writeEntry("color", m_color);
     m_layoutGroup.writeEntry("launchers", m_launchers);
-    m_layoutGroup.writeEntry("background", m_background);
+    m_layoutGroup.writeEntry("backgroundStyle", (int)m_backgroundStyle);
+    m_layoutGroup.writeEntry("customBackground", m_customBackground);
+    m_layoutGroup.writeEntry("customTextColor", m_customTextColor);
     m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
-    m_layoutGroup.writeEntry("textColor", m_textColor);
     m_layoutGroup.writeEntry("preferredForShortcutsTouched", m_preferredForShortcutsTouched);
 
     m_layoutGroup.sync();

@@ -251,6 +251,13 @@ public:
         Installed = 4
     };
     Q_ENUM(ImportExportState);
+
+    enum BackgroundStyle
+    {
+        ColorStyle = 0,
+        CustomBackgroundStyle
+    };
+    Q_ENUM(BackgroundStyle);
 };
 
 }//end of namespace

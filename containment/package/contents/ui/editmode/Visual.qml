@@ -128,7 +128,7 @@ Item{
         opacity: 0
 
         fillMode: Image.Tile
-        source: hasBackground ? latteView.layout.background : "../../icons/"+editVisual.layoutColor+"print.jpg"
+        source: hasBackground ? latteView.layout.background : "../../icons/"+latteView.layout.background+"print.jpg"
 
         readonly property bool hasBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                   true : false

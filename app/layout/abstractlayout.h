@@ -20,6 +20,9 @@
 #ifndef ABSTRACTLAYOUT_H
 #define ABSTRACTLAYOUT_H
 
+// local
+#include "../../liblatte2/types.h"
+
 // Qt
 #include <QObject>
 
@@ -59,11 +62,10 @@ class AbstractLayout : public QObject
     Q_PROPERTY(bool preferredForShortcutsTouched READ preferredForShortcutsTouched WRITE setPreferredForShortcutsTouched NOTIFY preferredForShortcutsTouchedChanged)
 
     Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)
-    Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
-    Q_PROPERTY(QString lastUsedActivity READ lastUsedActivity NOTIFY lastUsedActivityChanged)
     Q_PROPERTY(QString textColor READ textColor NOTIFY textColorChanged)
 
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
+    Q_PROPERTY(QString lastUsedActivity READ lastUsedActivity NOTIFY lastUsedActivityChanged)
 
 public:
     AbstractLayout(QObject *parent, QString layoutFile, QString assignedName = QString());
@@ -84,13 +86,23 @@ public:
     QString file() const;
 
     QString background() const;
-    void setBackground(QString path);
 
     QString color() const;
     void setColor(QString color);
 
+    QString customBackground() const;
+    void setCustomBackground(const QString &background);
+
+    QString customTextColor() const;
+    void setCustomTextColor(const QString &customColor);
+
+    QString predefinedTextColor() const;
+
     QString textColor() const;
     void setTextColor(QString color);
+
+    Types::BackgroundStyle backgroundStyle() const;
+    void setBackgroundStyle(const Types::BackgroundStyle &style);
 
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
@@ -104,6 +116,9 @@ public:
 
 signals:
     void backgroundChanged();
+    void backgroundStyleChanged();
+    void customBackgroundChanged();
+    void customTextColorChanged();
     void colorChanged();
     void fileChanged();
     void lastUsedActivityChanged();
@@ -129,11 +144,13 @@ protected:
     //if version doesn't exist it is and old layout file
     int m_version{2};
 
-    QString m_background;
+    QString m_customBackground;
+    QString m_customTextColor;
     QString m_color;
     QString m_lastUsedActivity; //the last used activity for this layout
 
-    QString m_textColor;
+
+    Types::BackgroundStyle m_backgroundStyle{Types::ColorStyle};
 
     QString m_layoutFile;
     QString m_layoutName;
@@ -141,6 +158,7 @@ protected:
     QStringList m_launchers;
 
     KConfigGroup m_layoutGroup;
+
 };
 
 }

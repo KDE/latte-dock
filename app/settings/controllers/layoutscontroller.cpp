@@ -692,7 +692,7 @@ void Layouts::save()
             generic->unlock();
         }
 
-        if (iLayoutCurrentData.color.startsWith("/")) {
+      /*  if (iLayoutCurrentData.color.startsWith("/")) {
             //it is image file in such case
             if (iLayoutCurrentData.color != generic->background()) {
                 generic->setBackground(iLayoutCurrentData.color);
@@ -707,7 +707,7 @@ void Layouts::save()
                 generic->setBackground(QString());
                 generic->setTextColor(QString());
             }
-        }
+        }*/
 
         //! update only the Central-specific layout parts
         CentralLayout *centralActive = isOriginalLayout ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(iLayoutOriginalData.name) : nullptr;

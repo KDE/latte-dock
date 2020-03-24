@@ -439,7 +439,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         }
 
         if (role == Qt::UserRole) {
-            return m_layoutsTable[row].background.isEmpty() ? m_layoutsTable[row].color : m_layoutsTable[row].background;
+            return m_layoutsTable[row].background;
         }
         break;
     case NAMECOLUMN:
