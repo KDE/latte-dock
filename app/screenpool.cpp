@@ -295,7 +295,7 @@ QList <int> ScreenPool::knownIds() const
 
 bool ScreenPool::hasId(int id) const
 {
-    return ((id!=-1) && m_connectorForId.keys().contains(id));
+    return ((id!=-1) &&  knownIds().contains(id));
 }
 
 bool ScreenPool::screenExists(int id) const

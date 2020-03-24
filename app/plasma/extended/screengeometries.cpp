@@ -113,10 +113,14 @@ void ScreenGeometries::updateGeometries()
 
     QStringList availableScreenNames;
 
+    qDebug() << " PLASMA SCREEN GEOMETRIES, LAST AVAILABLE SCREEN RECTS :: " << m_lastAvailableRect;
+
     //! check for available geometries changes
     for (QScreen *screen : qGuiApp->screens()) {
         QString scrName = screen->name();
         int scrId = m_corona->screenPool()->id(screen->name());
+
+        qDebug() << " PLASMA SCREEN GEOMETRIES, SCREEN :: " << scrId << " - " << scrName;
 
         if (m_corona->screenPool()->hasId(scrId)) {
             QRect availableRect = m_corona->availableScreenRectWithCriteria(scrId,
@@ -141,7 +145,7 @@ void ScreenGeometries::updateGeometries()
             if (m_forceGeometryBroadcast || (!m_lastAvailableRect.contains(scrName) || m_lastAvailableRect[scrName] != availableRect)) {
                 m_lastAvailableRect[scrName] = availableRect;
                 plasmaStrutsIface.call("setAvailableScreenRect", LATTESERVICE, scrName, availableRect);
-                qDebug() << " PLASMA SCREEN GEOMETRIES AVAILABLE RECT :: " << screen->name() << " : " << availableRect;
+                qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE RECT :: " << screen->name() << " : " << availableRect;
             }
 
             if (m_forceGeometryBroadcast) {
@@ -158,7 +162,7 @@ void ScreenGeometries::updateGeometries()
                 }
 
                 plasmaStrutsIface.call("setAvailableScreenRegion", LATTESERVICE, scrName, QVariant::fromValue(rects));
-                qDebug() << " PLASMA SCREEN GEOMETRIES AVAILABLE REGION :: " << screen->name() << " : " << availableRegion;
+                qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE REGION :: " << screen->name() << " : " << availableRegion;
             }
         }
 
@@ -170,7 +174,11 @@ void ScreenGeometries::updateGeometries()
         if (!screenIsActive(lastScrName)) {
             //! screen became inactive and its geometries could be unpublished
             plasmaStrutsIface.call("setAvailableScreenRect", LATTESERVICE, lastScrName, QRect());
-            plasmaStrutsIface.call("setAvailableScreenRegion", LATTESERVICE, lastScrName, QRegion());
+            plasmaStrutsIface.call("setAvailableScreenRegion", LATTESERVICE, lastScrName, QVariant::fromValue(QList<QRect>()));
+
+            m_lastAvailableRect.remove(lastScrName);
+            m_lastAvailableRegion.remove(lastScrName);
+            qDebug() << " PLASMA SCREEN GEOMETRIES, INACTIVE SCREEN :: " << lastScrName;
         }
     }
 
