@@ -58,10 +58,10 @@ Loader {
         return root.vertical ? taskItem.wrapperAlias.height - 2*taskItem.wrapperAlias.mScale*root.lengthExtMargin : taskItem.wrapperAlias.height;
     }
 
-    readonly property bool locked: inAttentionAnimation || inNewWindowAnimation
+    readonly property bool locked: inAttentionAnimation || inNewWindowAnimation || inBouncingAnimation
 
-    property real visualLockedWidth: root.iconSize + root.internalWidthMargins
-    property real visualLockedHeight: root.iconSize + root.internalHeightMargins
+    property real visualLockedWidth: root.vertical ? root.screenEdgeMargin + root.iconSize + root.internalWidthMargins : root.iconSize + root.internalWidthMargins
+    property real visualLockedHeight: !root.vertical ? root.screenEdgeMargin + root.iconSize + root.internalHeightMargins : root.iconSize + root.internalHeightMargins
 
     //! Connections !//
 
