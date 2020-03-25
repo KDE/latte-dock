@@ -360,12 +360,14 @@ QString Layouts::sortableText(const int &priority, const int &row) const
     QString numberPart;
 
     if (priority < 10) {
-        numberPart = "0000" + QString::number(priority);
+        numberPart = "00000" + QString::number(priority);
     } else if (priority < 100) {
-        numberPart = "000" + QString::number(priority);
+        numberPart = "0000" + QString::number(priority);
     } else if (priority < 1000) {
-        numberPart = "00" + QString::number(priority);
+        numberPart = "000" + QString::number(priority);
     } else if (priority < 10000) {
+        numberPart = "00" + QString::number(priority);
+    } else if (priority < 100000) {
         numberPart = "0" + QString::number(priority);
     }
 
@@ -375,9 +377,11 @@ QString Layouts::sortableText(const int &priority, const int &row) const
 
 QString Layouts::sortingPriority(const SortingPriority &priority, const int &row) const
 {
-    int validPriority = (m_layoutsTable[row].isActive ? (int)((int)priority / 2) : (int)priority);
+    int iPriority = (int)priority;
 
-    return sortableText(validPriority, row);
+    iPriority = (m_layoutsTable[row].isActive ? iPriority - 1000 : iPriority);
+
+    return sortableText(iPriority, row);
 }
 
 QVariant Layouts::data(const QModelIndex &index, int role) const

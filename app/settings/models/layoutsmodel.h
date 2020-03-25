@@ -78,9 +78,9 @@ public:
     enum SortingPriority
     {
         NORMALPRIORITY = 8000,
-        MEDIUMPRIORITY = 7000,
-        HIGHPRIORITY = 6000,
-        HIGHESTPRIORITY = 5000
+        MEDIUMPRIORITY = 6000,
+        HIGHPRIORITY = 4000,
+        HIGHESTPRIORITY = 2000
     };
 
     explicit Layouts(QObject *parent, Latte::Corona *corona);
