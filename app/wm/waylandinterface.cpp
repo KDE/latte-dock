@@ -760,7 +760,12 @@ bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) co
     //! e.g. widgets explorer, Activities etc. that are not used to hide
     //! the dodge views appropriately
 
-    return w->isValid() && !m_plasmaIgnoredWindows.contains(w->internalId()) && !m_ignoredWindows.contains(w->internalId());
+    bool hasSkipTaskbar = w->skipTaskbar();
+    bool hasSkipSwitcher = w->skipSwitcher();
+
+    bool isSkipped = hasSkipTaskbar && hasSkipSwitcher;
+
+    return w->isValid() && !isSkipped && !m_plasmaIgnoredWindows.contains(w->internalId()) && !m_ignoredWindows.contains(w->internalId());
 }
 
 void WaylandInterface::updateWindow()
