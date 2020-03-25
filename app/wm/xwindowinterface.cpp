@@ -656,7 +656,7 @@ bool XWindowInterface::isValidWindow(WindowId wid) const
         return true;
     }
 
-    const KWindowInfo winfo{wid.value<WId>(), NET::WMWindowType};
+    const KWindowInfo winfo{wid.value<WId>(), NET::WMWindowType | NET::WMState};
 
     return isValidWindow(winfo);
 }
@@ -672,30 +672,12 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
         return false;
     }
 
-    constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::PopupMenuMask | NET::NormalMask | NET::DialogMask;
-    NET::WindowType winType = winfo.windowType(types);
-    const auto winClass = KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName();
+    bool hasSkipTaskbar = winfo.hasState(NET::SkipTaskbar);
+    bool hasSkipPager = winfo.hasState(NET::SkipPager);
 
-    if (winType == -1) {
-        // Trying to get more types for verify if the window have any other type
-        winType = winfo.windowType(~types & NET::AllTypesMask);
+    bool isSkipped = hasSkipTaskbar && hasSkipPager;
 
-        if (winType == -1) {
-            qWarning() << KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName()
-                       << "doesn't have any WindowType, assuming as NET::Normal";
-            return true;
-        }
-    }
-
-    bool isMenu = ((winType & NET::Menu) == true);
-    bool isDock = ((winType & NET::Dock) == true);
-    bool isPopup = ((winType & NET::PopupMenu) == true);
-    bool isSplash = ((winType & NET::Splash) == true);
-
-    //! GTK2+ dialogs case e.g. inkscape, gimp2, etc...
-    //! are both Popups and Splash types, this is why
-    //! we can not black list them here
-    return !(isMenu || isDock);
+    return !isSkipped;
 }
 
 bool XWindowInterface::isAcceptableWindow(WId wid)
@@ -722,7 +704,7 @@ bool XWindowInterface::isAcceptableWindow(WId wid)
         }
     }
 
-    return true;
+    return isValidWindow(wid);
 }
 
 void XWindowInterface::windowAddedProxy(WId wid)
@@ -758,11 +740,6 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
          && !(prop1 & (NET::WMName | NET::WMVisibleName)
               && !(prop2 & NET::WM2TransientFor)
               && !(prop2 & NET::WM2Activities)) ) {
-        return;
-    }
-
-    //! ignore windows that do not respect normal windows types
-    if (!isValidWindow(wid)) {
         return;
     }
 
