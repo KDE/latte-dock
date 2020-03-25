@@ -846,7 +846,7 @@ void Windows::updateHints(Latte::View *view)
         }
 
         if ( !m_wm->inCurrentDesktopActivity(winfo)
-             || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())
+             || m_wm->hasBlockedTracking(winfo.wid())
              || winfo.isMinimized()) {
             continue;
         }
@@ -908,7 +908,7 @@ void Windows::updateHints(Latte::View *view)
 
         for (const auto &winfo : m_windows) {
             if (!m_wm->inCurrentDesktopActivity(winfo)
-                    || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())
+                    || m_wm->hasBlockedTracking(winfo.wid())
                     || winfo.isMinimized()) {
                 continue;
             }
@@ -995,7 +995,7 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
         }
 
         if (!m_wm->inCurrentDesktopActivity(winfo)
-                || m_wm->isRegisteredPlasmaIgnoredWindow(winfo.wid())
+                || m_wm->hasBlockedTracking(winfo.wid())
                 || winfo.isMinimized()) {
             continue;
         }

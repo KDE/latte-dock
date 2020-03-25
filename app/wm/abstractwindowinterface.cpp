@@ -35,6 +35,7 @@ namespace Latte {
 namespace WindowSystem {
 
 #define MAXPLASMAPANELTHICKNESS 96
+#define MAXSIDEPANELTHICKNESS 512
 
 AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
     : QObject(parent)
@@ -78,12 +79,12 @@ AbstractWindowInterface::~AbstractWindowInterface()
     m_windowsTracker->deleteLater();
 }
 
-QString AbstractWindowInterface::currentDesktop() const
+QString AbstractWindowInterface::currentDesktop()
 {
     return m_currentDesktop;
 }
 
-QString AbstractWindowInterface::currentActivity() const
+QString AbstractWindowInterface::currentActivity()
 {
     return m_currentActivity;
 }
@@ -103,7 +104,7 @@ Tracker::Windows *AbstractWindowInterface::windowsTracker() const
     return m_windowsTracker;
 }
 
-bool AbstractWindowInterface::isIgnored(const WindowId &wid)
+bool AbstractWindowInterface::isIgnored(const WindowId &wid) const
 {
     return m_ignoredWindows.contains(wid);
 }
@@ -156,12 +157,45 @@ bool AbstractWindowInterface::isPlasmaPanel(const QRect &wGeometry) const
     return false;
 }
 
-bool AbstractWindowInterface::isRegisteredPlasmaIgnoredWindow(const WindowId &wid)
+bool AbstractWindowInterface::isSidepanel(const QRect &wGeometry) const
+{
+    bool isVertical = wGeometry.height() > wGeometry.width();
+
+    int thickness = qMin(wGeometry.width(), wGeometry.height());
+    int length = qMax(wGeometry.width(), wGeometry.height());
+
+    QRect screenGeometry;
+
+    for (const auto scr : qGuiApp->screens()) {
+        if (scr->geometry().contains(wGeometry.center())) {
+            screenGeometry = scr->geometry();
+            break;
+        }
+    }
+
+    bool thicknessIsAcccepted = isVertical && ((thickness > MAXPLASMAPANELTHICKNESS) && (thickness < MAXSIDEPANELTHICKNESS));
+    bool lengthIsAccepted = isVertical && !screenGeometry.isEmpty() && (length > 0.6 * screenGeometry.height());
+    float sideRatio = (float)wGeometry.width() / (float)wGeometry.height();
+
+    return (thicknessIsAcccepted && lengthIsAccepted && sideRatio<0.4);
+}
+
+bool AbstractWindowInterface::hasBlockedTracking(const WindowId &wid) const
+{
+    return (!isWhitelistedWindow(wid) && (isRegisteredPlasmaIgnoredWindow(wid) || isIgnored(wid)));
+}
+
+bool AbstractWindowInterface::isRegisteredPlasmaIgnoredWindow(const WindowId &wid) const
 {
     return m_plasmaIgnoredWindows.contains(wid);
 }
 
-bool AbstractWindowInterface::inCurrentDesktopActivity(const WindowInfoWrap &winfo) const
+bool AbstractWindowInterface::isWhitelistedWindow(const WindowId &wid) const
+{
+    return m_whitelistedWindows.contains(wid);
+}
+
+bool AbstractWindowInterface::inCurrentDesktopActivity(const WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && winfo.isOnDesktop(currentDesktop()) && winfo.isOnActivity(currentActivity()));
 }
@@ -198,10 +232,33 @@ void AbstractWindowInterface::unregisterPlasmaIgnoredWindow(WindowId wid)
     }
 }
 
+void AbstractWindowInterface::registerWhitelistedWindow(WindowId wid)
+{
+    if (!wid.isNull() && !m_whitelistedWindows.contains(wid)) {
+        m_whitelistedWindows.append(wid);
+        emit windowChanged(wid);
+    }
+}
+
+void AbstractWindowInterface::unregisterWhitelistedWindow(WindowId wid)
+{
+    if (m_whitelistedWindows.contains(wid)) {
+        m_whitelistedWindows.removeAll(wid);
+    }
+}
+
 void AbstractWindowInterface::windowRemovedSlot(WindowId wid)
 {
     if (m_plasmaIgnoredWindows.contains(wid)) {
         unregisterPlasmaIgnoredWindow(wid);
+    }
+
+    if (m_ignoredWindows.contains(wid)) {
+        unregisterIgnoredWindow(wid);
+    }
+
+    if (m_whitelistedWindows.contains(wid)) {
+        unregisterWhitelistedWindow(wid);
     }
 }
 
