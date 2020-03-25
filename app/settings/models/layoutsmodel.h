@@ -123,6 +123,7 @@ public:
     void setCurrentLayoutForFreeActivities(const QString &id);
     void setOriginalLayoutForFreeActivities(const QString &id);
 
+    bool shareIsAvailable(const QString id) const;
     QStringList availableShareIdsFor(const QString id) const;
 
     const Data::LayoutsTable &currentLayoutsData();

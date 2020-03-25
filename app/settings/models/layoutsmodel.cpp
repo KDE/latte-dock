@@ -677,12 +677,23 @@ void Layouts::setId(const int &row, const QString &newId)
     }
 }
 
+bool Layouts::shareIsAvailable(const QString id) const
+{
+    for(int i=0; i<rowCount(); ++i) {
+        if (m_layoutsTable[i].isShared() && m_layoutsTable[i].shares.contains(id)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 QStringList Layouts::availableShareIdsFor(const QString id) const
 {
     QStringList shares;
 
     for(int i=0; i<rowCount(); ++i) {
-        if (m_layoutsTable[i].id == id || m_layoutsTable[i].isShared()) {
+        if (m_layoutsTable[i].id == id || m_layoutsTable[i].isShared() || !shareIsAvailable(m_layoutsTable[i].id)) {
             continue;
         }
 
