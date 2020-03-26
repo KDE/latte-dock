@@ -24,6 +24,7 @@
 // local
 #include "../data/activitydata.h"
 #include "../data/layoutdata.h"
+#include "../data/layouticondata.h"
 #include "../data/layoutstable.h"
 #include "../../lattecorona.h"
 
@@ -41,6 +42,7 @@ class Layouts : public QAbstractTableModel
     Q_OBJECT
 
 public:
+
     enum Columns
     {
         IDCOLUMN = 0,
@@ -123,6 +125,8 @@ public:
     void setCurrentLayoutForFreeActivities(const QString &id);
     void setOriginalLayoutForFreeActivities(const QString &id);
 
+    void setIconsPath(QString iconsPath);
+
     bool shareIsAvailable(const QString id) const;
     QStringList availableShareIdsFor(const QString id) const;
 
@@ -161,11 +165,15 @@ private:
 
     QStringList assignedActivitiesFromShared(const int &row) const;
 
+    QList<Data::LayoutIcon> icons(const int &row) const;
+
 private:
     //! break MVC only when a SharedTo editor is created
     //! because we want to move the dot indicator in the Activities delegate
     //! when that happens
     int m_sharedToInEditRow{-1};
+
+    QString m_iconsPath;
 
     Data::ActivitiesMap m_activitiesMap;
     QHash<QString, KActivities::Info *> m_activitiesInfo;

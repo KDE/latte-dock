@@ -80,6 +80,8 @@ public:
     void toggleLockedForSelected();
     void toggleSharedForSelected();
 
+    QString iconsPath() const;
+
     QString layoutNameForFreeActivities() const;
     void setOriginalLayoutForFreeActivities(const QString &id);
 
@@ -116,6 +118,8 @@ private:
 
 private:
     Settings::Handler::TabLayouts *m_handler{nullptr};
+
+    QString m_iconsPath;
 
     QTableView *m_view{nullptr};
     Settings::Layouts::HeaderView *m_headerView{nullptr};

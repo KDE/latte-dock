@@ -28,6 +28,7 @@
 
 // Qt
 #include <QDebug>
+#include <QFileInfo>
 #include <QFont>
 #include <QIcon>
 
@@ -355,6 +356,60 @@ Qt::ItemFlags Layouts::flags(const QModelIndex &index) const
     return flags;
 }
 
+void Layouts::setIconsPath(QString iconsPath)
+{
+    m_iconsPath = iconsPath;
+}
+
+QList<Data::LayoutIcon> Layouts::icons(const int &row) const
+{
+    QList<Data::LayoutIcon> icons;
+
+    QStringList activitiesIds = m_layoutsTable[row].isShared() ?
+                assignedActivitiesFromShared(row) : m_layoutsTable[row].activities;
+
+    int freeActivitiesPos = -1;
+
+    for(int i=0; i<activitiesIds.count(); ++i) {
+        QString id = activitiesIds[i];
+        if (m_activitiesMap.contains(id)) {
+            Data::LayoutIcon icon;
+
+            icon.isBackgroundFile = false;
+
+            if (id == Data::Layout::FREEACTIVITIESID) {
+                icon.isFreeActivities = true;
+                freeActivitiesPos = i;
+            } else {
+                icon.isFreeActivities = false;
+            }
+
+            icon.name = m_activitiesMap[id].icon;
+            icons << icon;
+        }
+    }
+
+    if (freeActivitiesPos >= 0) {
+        Data::LayoutIcon freeActsData = icons.takeAt(freeActivitiesPos);
+        icons.prepend(freeActsData);
+    }
+
+    //! background image
+    if (icons.count() == 0) {
+        QString colorPath = m_layoutsTable[row].background.startsWith("/") ? m_layoutsTable[row].background : m_iconsPath + m_layoutsTable[row].background + "print.jpg";
+
+        if (QFileInfo(colorPath).exists()) {
+            Data::LayoutIcon icon;
+            icon.isBackgroundFile = true;
+            icon.isFreeActivities = false;
+            icon.name = colorPath;
+            icons << icon;
+        }
+    }
+
+    return icons;
+}
+
 QString Layouts::sortableText(const int &priority, const int &row) const
 {
     QString numberPart;
@@ -442,8 +497,13 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
             return m_layoutsTable[row].name;
         }
 
-        if (role == Qt::UserRole) {
+        if (role == Qt::DisplayRole) {
             return m_layoutsTable[row].background;
+        } else if (role == Qt::UserRole) {
+            QList<Data::LayoutIcon> iconsList = icons(row);
+            QVariant iconsVariant;
+            iconsVariant.setValue<QList<Data::LayoutIcon>>(iconsList);
+            return iconsVariant;
         }
         break;
     case NAMECOLUMN:

@@ -125,8 +125,10 @@ void Layouts::initView()
     m_view->sortByColumn(m_viewSortColumn, m_viewSortOrder);
 
     //!find the available colors
-    QString iconsPath(m_handler->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/");
-    QDir layoutDir(iconsPath);
+    m_iconsPath = m_handler->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/";
+    m_model->setIconsPath(m_iconsPath);
+
+    QDir layoutDir(m_iconsPath);
     QStringList filter;
     filter.append(QString("*print.jpg"));
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
@@ -139,7 +141,7 @@ void Layouts::initView()
     }
 
     m_view->setItemDelegateForColumn(Model::Layouts::NAMECOLUMN, new Settings::Layout::Delegate::LayoutName(this));
-    m_view->setItemDelegateForColumn(Model::Layouts::BACKGROUNDCOLUMN, new Settings::Layout::Delegate::BackgroundCmbBox(this, iconsPath, colors));
+    m_view->setItemDelegateForColumn(Model::Layouts::BACKGROUNDCOLUMN, new Settings::Layout::Delegate::BackgroundCmbBox(this, m_iconsPath, colors));
     m_view->setItemDelegateForColumn(Model::Layouts::MENUCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     m_view->setItemDelegateForColumn(Model::Layouts::BORDERSCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     m_view->setItemDelegateForColumn(Model::Layouts::ACTIVITYCOLUMN, new Settings::Layout::Delegate::Activities(this));
@@ -167,6 +169,11 @@ bool Layouts::selectedLayoutIsCurrentActive() const
     selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
 
     return (selectedLayoutCurrent.isActive && (selectedLayoutOriginal.name == m_handler->corona()->layoutsManager()->currentLayoutName()));
+}
+
+QString Layouts::iconsPath() const
+{
+    return m_iconsPath;
 }
 
 const Data::Layout Layouts::selectedLayoutCurrentData() const

@@ -115,59 +115,13 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
     //! Remove the focus dotted lines
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
 
-    QVariant background = index.data(Qt::UserRole);
-
     //! draw underlying background
-    QStyledItemDelegate::paint(painter, myOptions, index);
+    QStyledItemDelegate::paint(painter, myOptions, index.model()->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
-    QList<IconData> icons;
-
-    //! activities icons
-    Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Data::ActivitiesMap>();
-
-    bool isShared = index.data(Model::Layouts::ISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
-    QStringList assignedIds =  isShared ? index.data(Model::Layouts::ASSIGNEDACTIVITIESFROMSHAREDROLE).toStringList() :
-                                          index.data(Model::Layouts::ASSIGNEDACTIVITIESROLE).toStringList();
-
-    int freeActivitiesPos = -1;
-
-    for(int i=0; i<assignedIds.count(); ++i) {
-        QString id = assignedIds[i];
-        if (allActivitiesData.contains(id)) {
-            IconData icon;
-            icon.isBackground = false;
-            icon.isFreeActivities = (id == Data::Layout::FREEACTIVITIESID);
-            icon.name = allActivitiesData[id].icon;
-            icons << icon;
-            freeActivitiesPos = icons.count()-1;
-        }
-    }
-
-    if (freeActivitiesPos>=0) {
-        IconData freeActsData = icons.takeAt(freeActivitiesPos);
-        icons.prepend(freeActsData);
-    }
-
-    //! background image
-    if (background.isValid() && icons.count() == 0) {
-        QString backgroundStr = background.toString();
-        QString colorPath = backgroundStr.startsWith("/") ? backgroundStr : m_iconsPath + backgroundStr + "print.jpg";
-
-        if (QFileInfo(colorPath).exists()) {
-            IconData icon;
-            icon.isBackground = true;
-            icon.isFreeActivities = false;
-            icon.name = colorPath;
-            icons << icon;
-        }
-    }
+    QList<Data::LayoutIcon> icons = index.data(Qt::UserRole).value<QList<Data::LayoutIcon>>();
 
     if (icons.count() > 0) {
-        int localMargin = icons[0].isBackground ? qMin(option.rect.height()/4,MARGIN+5) : MARGIN-1;
-
-        if (icons[0].isFreeActivities) {
-            localMargin = 0;
-        }
+        int localMargin = icons[0].isBackgroundFile && icons.count() == 1 ? qMin(option.rect.height()/4,MARGIN+5) : MARGIN-1;
 
         int aY = option.rect.y() + localMargin;
         int thick = option.rect.height() - localMargin*2;
@@ -190,7 +144,7 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
     }
 }
 
-void BackgroundCmbBox::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const IconData &icon) const
+void BackgroundCmbBox::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Data::LayoutIcon &icon) const
 {
     bool active = Latte::isActive(option);
     bool selected = Latte::isSelected(option);
@@ -198,7 +152,7 @@ void BackgroundCmbBox::drawIcon(QPainter *painter, const QStyleOptionViewItem &o
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    if (icon.isBackground) {
+    if (icon.isBackgroundFile) {
         QPixmap backImage(icon.name);
         backImage = backImage.copy(QRect(MARGIN, MARGIN, target.width(),target.height()));
 

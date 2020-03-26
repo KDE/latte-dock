@@ -20,6 +20,9 @@
 #ifndef BACKGROUNDCMBBOXDELEGATE_H
 #define BACKGROUNDCMBBOXDELEGATE_H
 
+// local
+#include "../data/layouticondata.h"
+
 // Qt
 #include <QStyledItemDelegate>
 
@@ -30,13 +33,6 @@ namespace Latte {
 namespace Settings {
 namespace Layout {
 namespace Delegate {
-
-struct IconData
-{
-    bool isFreeActivities{false};
-    bool isBackground{true};
-    QString name;
-};
 
 class BackgroundCmbBox : public QStyledItemDelegate
 {
@@ -51,7 +47,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
-    void drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const IconData &icon) const;
+    void drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Data::LayoutIcon &icon) const;
 
 private:
     QString m_iconsPath;
