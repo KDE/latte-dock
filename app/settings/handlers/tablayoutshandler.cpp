@@ -22,8 +22,8 @@
 
 //! local
 #include "ui_settingsdialog.h"
-#include "../settingsdialog.h"
 #include "../universalsettings.h"
+#include "../dialogs/settingsdialog.h"
 #include "../controllers/layoutscontroller.h"
 #include "../views/layoutstableview.h"
 #include "../../lattecorona.h"
@@ -48,7 +48,7 @@ namespace Latte {
 namespace Settings {
 namespace Handler {
 
-TabLayouts::TabLayouts(Latte::SettingsDialog *parent)
+TabLayouts::TabLayouts(Settings::Dialog::SettingsDialog *parent)
     : Generic(parent),
       m_parentDialog(parent),
       m_corona(m_parentDialog->corona()),
@@ -205,7 +205,7 @@ Latte::Corona *TabLayouts::corona() const
     return m_corona;
 }
 
-Latte::SettingsDialog *TabLayouts::dialog() const
+Settings::Dialog::SettingsDialog *TabLayouts::dialog() const
 {
     return m_parentDialog;
 }
@@ -258,7 +258,7 @@ void TabLayouts::on_switch_layout()
     if (m_layoutsController->dataAreChanged()) {
         showInlineMessage(i18nc("settings:not permitted switching layout","You need to <b>apply</b> your changes first to switch layout..."),
                           KMessageWidget::Warning,
-                          SettingsDialog::WARNINGINTERVAL);
+                          Settings::Dialog::WARNINGINTERVAL);
         return;
     }
 
@@ -394,7 +394,7 @@ void TabLayouts::on_new_layout()
             Settings::Data::Layout newlayout = m_layoutsController->addLayoutForFile(preset, presetName, true);
             showInlineMessage(i18nc("settings:layout added successfully","Layout <b>%0</b> added successfully...").arg(newlayout.name),
                               KMessageWidget::Information,
-                              SettingsDialog::INFORMATIONINTERVAL);
+                              Settings::Dialog::INFORMATIONINTERVAL);
             break;
         }
     }
@@ -432,7 +432,7 @@ void TabLayouts::on_download_layout()
                     Settings::Data::Layout downloaded = m_layoutsController->addLayoutForFile(entryFile);
                     showInlineMessage(i18nc("settings:layout downloaded successfully","Layout <b>%0</b> downloaded successfully...").arg(downloaded.name),
                                       KMessageWidget::Information,
-                                      SettingsDialog::INFORMATIONINTERVAL);
+                                      Settings::Dialog::INFORMATIONINTERVAL);
                     break;
                 }
             }
@@ -459,14 +459,14 @@ void TabLayouts::on_remove_layout()
     if (selectedLayout.isActive) {
         showInlineMessage(i18nc("settings: active layout remove","<b>Active</b> layouts can not be removed..."),
                           KMessageWidget::Error,
-                          SettingsDialog::WARNINGINTERVAL);
+                          Settings::Dialog::WARNINGINTERVAL);
         return;
     }
 
     if (selectedLayout.isLocked) {
         showInlineMessage(i18nc("settings: locked layout remove","Locked layouts can not be removed..."),
                           KMessageWidget::Error,
-                          SettingsDialog::WARNINGINTERVAL);
+                          Settings::Dialog::WARNINGINTERVAL);
         return;
     }
 
@@ -532,7 +532,7 @@ void TabLayouts::on_import_layout()
             Settings::Data::Layout importedlayout = m_layoutsController->addLayoutForFile(file);
             showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedlayout.name),
                               KMessageWidget::Information,
-                              SettingsDialog::INFORMATIONINTERVAL);
+                              Settings::Dialog::INFORMATIONINTERVAL);
         } else if (version == Latte::Layouts::Importer::ConfigVersion1) {
             if (!m_layoutsController->importLayoutsFromV1ConfigFile(file)) {
                 showInlineMessage(i18nc("settings:deprecated layouts import failed","Import layouts from deprecated version <b>failed</b>..."),
@@ -619,7 +619,7 @@ void TabLayouts::on_export_layout()
 
             showInlineMessage(i18nc("settings:layout export success","Layout <b>%0</b> export succeeded...").arg(selectedLayout.name),
                               KMessageWidget::Information,
-                              SettingsDialog::INFORMATIONWITHACTIONINTERVAL,
+                              Settings::Dialog::INFORMATIONWITHACTIONINTERVAL,
                               actions);
         } else if (file.endsWith(".latterc")) {
             auto showExportConfigurationError = [this]() {
@@ -642,7 +642,7 @@ void TabLayouts::on_export_layout()
 
                 showInlineMessage(i18n("Full configuration export succeeded..."),
                                   KMessageWidget::Information,
-                                  SettingsDialog::INFORMATIONWITHACTIONINTERVAL,
+                                  Settings::Dialog::INFORMATIONWITHACTIONINTERVAL,
                                   actions);
             } else {
                 showExportConfigurationError();
@@ -683,11 +683,11 @@ void TabLayouts::on_layoutFilesDropped(const QStringList &paths)
     if (layoutNames.count() == 1) {
         showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(layoutNames[0]),
                 KMessageWidget::Information,
-                SettingsDialog::INFORMATIONINTERVAL);
+                Settings::Dialog::INFORMATIONINTERVAL);
     } else if (layoutNames.count() > 1) {
         showInlineMessage(i18nc("settings:layouts imported successfully","Layouts <b>%0</b> imported successfully...").arg(layoutNames.join(", )")),
                           KMessageWidget::Information,
-                          SettingsDialog::INFORMATIONINTERVAL);
+                          Settings::Dialog::INFORMATIONINTERVAL);
     }
 }
 

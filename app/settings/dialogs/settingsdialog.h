@@ -24,9 +24,9 @@
 
 // local
 #include "../liblatte2/types.h"
-#include "controllers/layoutscontroller.h"
-#include "handlers/tablayoutshandler.h"
-#include "handlers/tabpreferenceshandler.h"
+#include "../controllers/layoutscontroller.h"
+#include "../handlers/tablayoutshandler.h"
+#include "../handlers/tabpreferenceshandler.h"
 
 // Qt
 #include <QObject>
@@ -55,16 +55,18 @@ class CentralLayout;
 }
 
 namespace Latte {
+namespace Settings {
+namespace Dialog {
+
+static const int INFORMATIONINTERVAL = 3000;
+static const int INFORMATIONWITHACTIONINTERVAL = 5000;
+static const int WARNINGINTERVAL = 3500;
+static const int ERRORINTERVAL = 4000;
 
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    static const int INFORMATIONINTERVAL = 3000;
-    static const int INFORMATIONWITHACTIONINTERVAL = 5000;
-    static const int WARNINGINTERVAL = 3500;
-    static const int ERRORINTERVAL = 4000;
-
     SettingsDialog(QWidget *parent, Latte::Corona *corona);
     ~SettingsDialog();
 
@@ -175,6 +177,8 @@ private:
 
 };
 
+}
+}
 }
 
 #endif // SETTINGSDIALOG_H

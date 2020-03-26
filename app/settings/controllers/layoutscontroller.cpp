@@ -22,8 +22,8 @@
 
 // local
 #include "ui_settingsdialog.h"
-#include "../settingsdialog.h"
 #include "../universalsettings.h"
+#include "../dialogs/settingsdialog.h"
 #include "../delegates/activitiesdelegate.h"
 #include "../delegates/backgroundcmbdelegate.h"
 #include "../delegates/checkboxdelegate.h"
@@ -617,11 +617,11 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
                 if (importedlayouts.count() == 1) {
                     m_handler->showInlineMessage(i18n("Layout <b>%0</b> imported successfully...").arg(importedlayouts[0]),
                             KMessageWidget::Information,
-                            SettingsDialog::INFORMATIONINTERVAL);
+                            Settings::Dialog::INFORMATIONINTERVAL);
                 } else {
                     m_handler->showInlineMessage(i18n("Layouts <b>%0</b> imported successfully...").arg(importedlayouts.join(",")),
                                                  KMessageWidget::Information,
-                                                 SettingsDialog::INFORMATIONINTERVAL);
+                                                 Settings::Dialog::INFORMATIONINTERVAL);
                 }
 
                 return true;
@@ -900,7 +900,7 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
 
     m_handler->showInlineMessage(i18nc("settings: layout name used","Layout <b>%0</b> is already used, please provide a different name...").arg(provenLayout.name),
                                  KMessageWidget::Error,
-                                 SettingsDialog::ERRORINTERVAL);
+                                 Settings::Dialog::ERRORINTERVAL);
 
     QModelIndex tIndex = m_proxyModel->index(tRow, Model::Layouts::NAMECOLUMN);
 

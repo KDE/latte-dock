@@ -22,18 +22,18 @@
 #include "settingsdialog.h"
 
 // local
-#include "universalsettings.h"
 #include "ui_settingsdialog.h"
-#include "../lattecorona.h"
-#include "../screenpool.h"
-#include "../layout/centrallayout.h"
-#include "../layouts/importer.h"
-#include "../layouts/manager.h"
-#include "../layouts/synchronizer.h"
-#include "../liblatte2/types.h"
-#include "../plasma/extended/theme.h"
-#include "data/layoutdata.h"
-#include "tools/settingstools.h"
+#include "../universalsettings.h"
+#include "../data/layoutdata.h"
+#include "../tools/settingstools.h"
+#include "../../lattecorona.h"
+#include "../../screenpool.h"
+#include "../../layout/centrallayout.h"
+#include "../../layouts/importer.h"
+#include "../../layouts/manager.h"
+#include "../../layouts/synchronizer.h"
+#include "../../liblatte2/types.h"
+#include "../../plasma/extended/theme.h"
 
 // Qt
 #include <QButtonGroup>
@@ -55,11 +55,8 @@
 #define TWINCHECKED "Checked"
 
 namespace Latte {
-
-const int SettingsDialog::INFORMATIONINTERVAL;
-const int SettingsDialog::INFORMATIONWITHACTIONINTERVAL;
-const int SettingsDialog::WARNINGINTERVAL;
-const int SettingsDialog::ERRORINTERVAL;
+namespace Settings {
+namespace Dialog {
 
 SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     : QDialog(parent),
@@ -303,11 +300,11 @@ void SettingsDialog::on_import_fullconfiguration()
     connect(importFileDialog, &QFileDialog::finished, importFileDialog, &QFileDialog::deleteLater);
 
     connect(importFileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
-        Layouts::Importer::LatteFileVersion version = Layouts::Importer::fileVersion(file);
+        Latte::Layouts::Importer::LatteFileVersion version = Latte::Layouts::Importer::fileVersion(file);
         qDebug() << "VERSION :::: " << version;
 
-        if (version == Layouts::Importer::ConfigVersion2
-                || version == Layouts::Importer::ConfigVersion1) {
+        if (version == Latte::Layouts::Importer::ConfigVersion2
+                || version == Latte::Layouts::Importer::ConfigVersion1) {
             auto msg = new QMessageBox(this);
             msg->setIcon(QMessageBox::Warning);
             msg->setWindowTitle(i18n("Import: Full Configuration File"));
@@ -389,7 +386,7 @@ void SettingsDialog::on_export_fullconfiguration()
 
             showInlineMessage(i18n("Full configuration export succeeded..."),
                               KMessageWidget::Information,
-                              SettingsDialog::INFORMATIONWITHACTIONINTERVAL,
+                              Settings::Dialog::INFORMATIONWITHACTIONINTERVAL,
                               actions);
         } else {
             showExportConfigurationError();
@@ -787,4 +784,6 @@ void SettingsDialog::saveConfig()
     m_storage.writeEntry("downloadWindowSize", m_downloadWindowSize);
 }
 
+}
+}
 }//end of namespace

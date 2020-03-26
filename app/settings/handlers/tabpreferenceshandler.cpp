@@ -22,8 +22,8 @@
 
 //! local
 #include "ui_settingsdialog.h"
-#include "../settingsdialog.h"
 #include "../universalsettings.h"
+#include "../dialogs/settingsdialog.h"
 #include "../../lattecorona.h"
 #include "../../plasma/extended/theme.h"
 #include "../../../liblatte2/types.h"
@@ -33,7 +33,7 @@ namespace Settings {
 namespace Handler {
 
 
-TabPreferences::TabPreferences(Latte::SettingsDialog *parent)
+TabPreferences::TabPreferences(Latte::Settings::Dialog::SettingsDialog *parent)
     : Generic(parent),
       m_parentDialog(parent),
       m_corona(m_parentDialog->corona()),

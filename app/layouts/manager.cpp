@@ -29,7 +29,7 @@
 #include "../screenpool.h"
 #include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"
-#include "../settings/settingsdialog.h"
+#include "../settings/dialogs/settingsdialog.h"
 #include "../settings/universalsettings.h"
 
 // Qt
@@ -427,7 +427,7 @@ void Manager::importPreset(int presetNo, bool newInstanceIfPresent)
 void Manager::showLatteSettingsDialog(int firstPage, bool toggleCurrentPage)
 {
     if (!m_latteSettingsDialog) {
-        m_latteSettingsDialog = new SettingsDialog(nullptr, m_corona);
+        m_latteSettingsDialog = new Latte::Settings::Dialog::SettingsDialog(nullptr, m_corona);
     }
     m_latteSettingsDialog->show();
 

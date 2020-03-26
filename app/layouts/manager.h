@@ -24,7 +24,7 @@
 // local
 #include "launcherssignals.h"
 #include "synchronizer.h"
-#include "settings/settingsdialog.h"
+#include "settings/dialogs/settingsdialog.h"
 
 // Qt
 #include <QAction>
@@ -149,14 +149,14 @@ private:
 private:
     QStringList m_presetsPaths;
 
-    QPointer<Latte::SettingsDialog> m_latteSettingsDialog;
+    QPointer<Latte::Settings::Dialog::SettingsDialog> m_latteSettingsDialog;
 
     Latte::Corona *m_corona{nullptr};
     Importer *m_importer{nullptr};
     LaunchersSignals *m_launchersSignals{nullptr};
     Synchronizer *m_synchronizer{nullptr};
 
-    friend class Latte::SettingsDialog;
+    friend class Latte::Settings::Dialog::SettingsDialog;
     friend class Synchronizer;
 };
 

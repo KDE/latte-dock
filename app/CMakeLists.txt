@@ -17,6 +17,7 @@ add_subdirectory(settings)
 add_subdirectory(settings/controllers)
 add_subdirectory(settings/data)
 add_subdirectory(settings/delegates)
+add_subdirectory(settings/dialogs)
 add_subdirectory(settings/handlers)
 add_subdirectory(settings/models)
 add_subdirectory(settings/tools)
@@ -32,7 +33,8 @@ add_subdirectory(wm/tracker)
 
 set(latte_dbusXML dbus/org.kde.LatteDock.xml)
 qt5_add_dbus_adaptor(lattedock-app_SRCS ${latte_dbusXML} lattecorona.h Latte::Corona lattedockadaptor)
-ki18n_wrap_ui(lattedock-app_SRCS settings/settingsdialog.ui)
+
+ki18n_wrap_ui(lattedock-app_SRCS settings/dialogs/settingsdialog.ui)
 
 add_executable(latte-dock ${lattedock-app_SRCS})
 

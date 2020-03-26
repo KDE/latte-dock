@@ -38,11 +38,14 @@ class SettingsDialog;
 
 namespace Latte {
 class Corona;
-class SettingsDialog;
 
 namespace Settings {
 namespace Controller {
 class Layouts;
+}
+
+namespace Dialog{
+class SettingsDialog;
 }
 }
 }
@@ -59,7 +62,7 @@ class TabLayouts : public Generic
 {
     Q_OBJECT
 public:
-    TabLayouts(Latte::SettingsDialog *parent);
+    TabLayouts(Dialog::SettingsDialog *parent);
     ~TabLayouts();
 
     bool dataAreChanged() const override;
@@ -71,7 +74,7 @@ public:
     void save() override;
 
     Latte::Corona *corona() const;
-    Latte::SettingsDialog *dialog() const;
+    Dialog::SettingsDialog *dialog() const;
     Ui::SettingsDialog *ui() const;
 
     void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0, QList<QAction *> actions = QList<QAction *>()) override;
@@ -110,7 +113,7 @@ private:
     bool isHoveringLayoutsTable(const QPoint &pos);
 
 private:
-    Latte::SettingsDialog *m_parentDialog{nullptr};
+    Settings::Dialog::SettingsDialog *m_parentDialog{nullptr};
     Ui::SettingsDialog *m_ui{nullptr};
     Latte::Corona *m_corona{nullptr};
 

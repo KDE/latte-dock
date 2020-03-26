@@ -37,7 +37,11 @@ class SettingsDialog;
 
 namespace Latte {
 class Corona;
+namespace Settings {
+namespace Dialog {
 class SettingsDialog;
+}
+}
 }
 
 namespace Latte {
@@ -52,7 +56,7 @@ class TabPreferences : public Generic
 {
     Q_OBJECT
 public:
-    TabPreferences(Latte::SettingsDialog *parent);
+    TabPreferences(Latte::Settings::Dialog::SettingsDialog *parent);
 
     bool dataAreChanged() const override;
     bool inDefaultValues() const override;
@@ -72,7 +76,7 @@ private slots:
     void updateUi();
 
 private:
-    Latte::SettingsDialog *m_parentDialog{nullptr};
+    Latte::Settings::Dialog::SettingsDialog *m_parentDialog{nullptr};
     Ui::SettingsDialog *m_ui{nullptr};
     Latte::Corona *m_corona{nullptr};
 
