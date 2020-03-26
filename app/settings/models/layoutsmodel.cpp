@@ -978,6 +978,21 @@ void Layouts::setOriginalData(Data::LayoutsTable &data, const bool &inmultiple)
     emit rowsInserted();
 }
 
+QList<Data::Layout> Layouts::alteredLayouts() const
+{
+    QList<Data::Layout> layouts;
+
+    for(int i=0; i<rowCount(); ++i) {
+        QString currentId = m_layoutsTable[i].id;
+
+        if ((!o_layoutsTable.containsId(currentId))
+                || m_layoutsTable[currentId] != o_layoutsTable[currentId]) {
+            layouts << m_layoutsTable[i];
+        }
+    }
+
+    return layouts;
+}
 
 //! Activities code
 void Layouts::initActivities()

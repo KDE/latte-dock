@@ -130,6 +130,8 @@ public:
     bool shareIsAvailable(const QString id) const;
     QStringList availableShareIdsFor(const QString id) const;
 
+    QList<Data::Layout> alteredLayouts() const;
+
     const Data::LayoutsTable &currentLayoutsData();
     const Data::LayoutsTable &originalLayoutsData();
     void setOriginalData(Data::LayoutsTable &data, const bool &inmultiple);

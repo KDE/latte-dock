@@ -673,8 +673,10 @@ void Layouts::save()
 
     QList<Data::UniqueIdInfo> alteredIdsInfo;
 
-    for (int i = 0; i < m_model->rowCount(); ++i) {
-        Data::Layout iLayoutCurrentData = m_model->at(i);
+    QList<Data::Layout> alteredLayouts = m_model->alteredLayouts();
+
+    for (int i = 0; i < alteredLayouts.count(); ++i) {
+        Data::Layout iLayoutCurrentData = alteredLayouts[i];
         Data::Layout iLayoutOriginalData = m_model->originalData(iLayoutCurrentData.id);
         iLayoutOriginalData = iLayoutOriginalData.isEmpty() ? iLayoutCurrentData : iLayoutOriginalData;
 
@@ -792,8 +794,8 @@ void Layouts::save()
     }
 
     //! lock layouts in the end when the user has chosen it
-    for (int i = 0; i < m_model->rowCount(); ++i) {
-        Data::Layout layoutCurrentData = m_model->at(i);
+    for (int i = 0; i < alteredLayouts.count(); ++i) {
+        Data::Layout layoutCurrentData = alteredLayouts[i];
         Data::Layout layoutOriginalData = m_model->originalData(layoutCurrentData.id);
         layoutOriginalData = layoutOriginalData.isEmpty() ? layoutCurrentData : layoutOriginalData;
 
