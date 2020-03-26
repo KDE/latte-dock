@@ -24,6 +24,7 @@
 #include "ui_settingsdialog.h"
 #include "../universalsettings.h"
 #include "../dialogs/settingsdialog.h"
+#include "../data/uniqueidinfo.h"
 #include "../delegates/activitiesdelegate.h"
 #include "../delegates/backgroundcmbdelegate.h"
 #include "../delegates/checkboxdelegate.h"
@@ -652,10 +653,6 @@ void Layouts::save()
 
     qDebug() << "Temporary Directory ::: " << layoutTempDir.path();
 
-    QStringList fromRenamePaths;
-    QStringList toRenamePaths;
-    QStringList toRenameNames;
-
     QString switchToLayout;
 
     QHash<QString, Latte::Layout::GenericLayout *> activeLayoutsToRename;
@@ -673,6 +670,8 @@ void Layouts::save()
             delete removedLayout;
         }
     }
+
+    QList<Data::UniqueIdInfo> alteredIdsInfo;
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
         Data::Layout iLayoutCurrentData = m_model->at(i);
@@ -752,18 +751,24 @@ void Layouts::save()
 
             QFile(iLayoutCurrentData.id).rename(tempFile);
 
-            fromRenamePaths.append(iLayoutCurrentData.id);
-            toRenamePaths.append(tempFile);
-            toRenameNames.append(iLayoutCurrentData.name);
+            Data::UniqueIdInfo idInfo;
+
+            idInfo.oldId = iLayoutCurrentData.id;
+            idInfo.newId = tempFile;
+            idInfo.newName = iLayoutCurrentData.name;
+
+            alteredIdsInfo << idInfo;
         }
     }
 
     //! this is necessary in case two layouts have to swap names
     //! so we copy first the layouts in a temp directory and afterwards all
     //! together we move them in the official layout directory
-    for (int i = 0; i < toRenamePaths.count(); ++i) {
-        QString newFile = QDir::homePath() + "/.config/latte/" + toRenameNames[i] + ".layout.latte";
-        QFile(toRenamePaths[i]).rename(newFile);
+    for (int i = 0; i < alteredIdsInfo.count(); ++i) {
+        Data::UniqueIdInfo idInfo = alteredIdsInfo[i];
+
+        QString newFile = QDir::homePath() + "/.config/latte/" + idInfo.newName + ".layout.latte";
+        QFile(idInfo.newId).rename(newFile);
 
         CentralLayout *nLayout = new CentralLayout(this, newFile);
         m_layouts[newFile] = nLayout;
@@ -772,7 +777,7 @@ void Layouts::save()
         for (int j = 0; j < m_model->rowCount(); ++j) {
             Data::Layout jLayout = m_model->at(j);
 
-            if (jLayout.id == fromRenamePaths[i]) {
+            if (jLayout.id == idInfo.oldId) {
                 m_model->setData(m_model->index(j, Model::Layouts::IDCOLUMN), newFile, Qt::UserRole);
             }
         }

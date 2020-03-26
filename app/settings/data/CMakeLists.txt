@@ -5,5 +5,6 @@ set(lattedock-app_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/layouticondata.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/layoutstable.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/preferencesdata.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/uniqueidinfo.cpp
     PARENT_SCOPE
 )
