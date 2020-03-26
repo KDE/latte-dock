@@ -1,5 +1,17 @@
 #**CHANGELOG**#
 
+#### Version 0.9.10
+
+* Dodge All Windows: work properly after the dock becomes hidden and not show inappropriately when any window touches the dock
+* fix mask calculations for NO COMPOSITING environment
+* fix blur for Latte panels when exiting edit mode
+* protect LastActiveWindow application data updating in multi-screen environments and dont assign faulty application name and icons to irrelevant last active windows
+* fix right click context menu for Group plasmoid. Take note that Group plasmoid can only be used in Single Layout mode and NOT in Multiple Layouts mode. It is scheduled to be fixed in next major stable version
+* fix Indicators positioning when a Tasks is bouncing or requires attention
+* x11: smart way to ignore all plasma popups
+* wayland: smart way to ignore all plasma popups but first Plasma needs to update its popups flags in order to work correctly
+* Support Chromium/Chrome audio channels for Tasks previews and context menu
+
 #### Version 0.9.9
 
 * CRITICAL: initialize properly configuration files during startup [kde#417886]
