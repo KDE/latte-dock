@@ -146,13 +146,21 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                     Plasma::Containment *internalC = m_latteView->layout()->internalContainmentOf(applet);
 
                     if (internalC) {
+                        Plasma::Applet *internalApplet{nullptr};
+
                         for (const Plasma::Applet *appletCont : internalC->applets()) {
                             PlasmaQuick::AppletQuickItem *ai2 = appletCont->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
                             if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(m_latteView->contentItem(), event->pos()))) {
-                                applet = ai2->applet();
+                                internalApplet = ai2->applet();
                                 break;
                             }
+                        }
+
+                        if (!internalApplet) {
+                            return true;
+                        } else {
+                            applet = internalApplet;
                         }
                     }
 
