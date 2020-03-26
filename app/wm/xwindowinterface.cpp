@@ -671,7 +671,11 @@ bool XWindowInterface::isAcceptableWindow(WindowId wid)
     bool hasSkipPager = info.hasState(NET::SkipPager);
     bool isSkipped = hasSkipTaskbar && hasSkipPager;
 
-    if (winClass == QLatin1String("plasmashell")) {
+    if (isSkipped
+            && ((winClass == QLatin1String("yakuake")
+                 || (winClass == QLatin1String("krunner"))) )) {
+        registerWhitelistedWindow(wid);
+    } else if (winClass == QLatin1String("plasmashell")) {
         if (isSkipped && isSidepanel(info.geometry())) {
             registerWhitelistedWindow(wid);
             return true;

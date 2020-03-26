@@ -794,7 +794,11 @@ bool WaylandInterface::isAcceptableWindow(const KWayland::Client::PlasmaWindow *
     bool hasSkipSwitcher = w->skipSwitcher();
     bool isSkipped = hasSkipTaskbar && hasSkipSwitcher;
 
-    if (w->appId() == QLatin1String("org.kde.plasmashell")) {
+    if (isSkipped
+            && ((w->appId() == QLatin1String("yakuake")
+                 || (w->appId() == QLatin1String("krunner"))) )) {
+        registerWhitelistedWindow(w->internalId());
+    } else if (w->appId() == QLatin1String("org.kde.plasmashell")) {
         if (isSkipped && isSidepanel(w)) {
             registerWhitelistedWindow(w->internalId());
             return true;
