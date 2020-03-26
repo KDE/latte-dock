@@ -59,8 +59,9 @@ TabLayouts::TabLayouts(Latte::SettingsDialog *parent)
     loadConfig();
     m_layoutsController = new Settings::Controller::Layouts(this);
 
-    initUi();
+    //! create menu and assign actions before initializing the user interface
     initLayoutMenu();
+    initUi();
 }
 
 TabLayouts::~TabLayouts()
@@ -167,6 +168,13 @@ void TabLayouts::initLayoutMenu()
     m_sharedLayoutAction->setCheckable(true);
     connectActionWithButton(m_ui->sharedButton, m_sharedLayoutAction);
     connect(m_sharedLayoutAction, &QAction::triggered, this, &TabLayouts::on_shared_layout);
+
+    m_detailsAction = m_layoutMenu->addAction(i18nc("layout details", "De&tails..."));
+    m_detailsAction->setToolTip(i18n("Show selected layout details"));
+    m_detailsAction->setIcon(QIcon::fromTheme("view-list-details"));
+    m_detailsAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
+    connectActionWithButton(m_ui->detailsButton, m_detailsAction);
+    connect(m_detailsAction, &QAction::triggered, this, &TabLayouts::on_details_action);
 
     m_layoutMenu->addSeparator();
 
@@ -304,6 +312,23 @@ void TabLayouts::on_pause_layout()
 
 void TabLayouts::updatePerLayoutButtonsState()
 {
+    //! UI Elements that need to be enabled/disabled
+
+    //! Shared Button - visible
+    if (m_layoutsController->inMultipleMode()) {
+        setTwinProperty(m_sharedLayoutAction, TWINVISIBLE, true);
+    } else {
+        setTwinProperty(m_sharedLayoutAction, TWINVISIBLE, false);
+    }
+
+    //! Pause Button - visible
+    if (!m_layoutsController->inMultipleMode()) {
+        //! Single Layout mode
+        setTwinProperty(m_pauseLayoutAction, TWINVISIBLE, false);
+    } else {
+        setTwinProperty(m_pauseLayoutAction, TWINVISIBLE, true);
+    }
+
     if (!m_layoutsController->hasSelectedLayout()) {
         return;
     }
@@ -318,13 +343,8 @@ void TabLayouts::updatePerLayoutButtonsState()
         setTwinProperty(m_switchLayoutAction, TWINENABLED, true);
     }
 
-    //! Pause Button
-    if (!m_layoutsController->inMultipleMode()) {
-        //! Single Layout mode
-        setTwinProperty(m_pauseLayoutAction, TWINVISIBLE, false);
-    } else {
-        setTwinProperty(m_pauseLayoutAction, TWINVISIBLE, true);
-
+    //! Pause Button - enabled
+    if (m_layoutsController->inMultipleMode()) {
         if (selectedLayout.isActive
                 && !selectedLayout.isForFreeActivities()
                 && !selectedLayout.isShared()) {
@@ -348,19 +368,14 @@ void TabLayouts::updatePerLayoutButtonsState()
         setTwinProperty(m_lockedLayoutAction, TWINCHECKED, false);
     }
 
-    //! UI Elements that need to be enabled/disabled
-    if (m_layoutsController->inMultipleMode()) {
-        setTwinProperty(m_sharedLayoutAction, TWINVISIBLE, true);
-    } else {
-        setTwinProperty(m_sharedLayoutAction, TWINVISIBLE, false);
-    }
-
     //! Layout Shared Button
     if (selectedLayout.isShared()) {
         setTwinProperty(m_sharedLayoutAction, TWINCHECKED, true);
     } else {
         setTwinProperty(m_sharedLayoutAction, TWINCHECKED, false);
     }
+
+    setTwinProperty(m_detailsAction, TWINENABLED, true);
 }
 
 void TabLayouts::on_new_layout()
@@ -637,6 +652,21 @@ void TabLayouts::on_export_layout()
 
     exportFileDialog->open();
     exportFileDialog->selectFile(selectedLayout.name);
+}
+
+void TabLayouts::on_details_action()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (!isCurrentTab() || !m_exportLayoutAction->isEnabled()) {
+        return;
+    }
+
+    if (!m_layoutsController->hasSelectedLayout()) {
+        return;
+    }
+
+    Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayoutCurrentData();
 }
 
 void TabLayouts::on_layoutFilesDropped(const QStringList &paths)

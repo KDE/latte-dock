@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>930</width>
-    <height>716</height>
+    <width>966</width>
+    <height>781</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -265,7 +265,7 @@
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>1</width>
-                  <height>11</height>
+                  <height>10</height>
                  </size>
                 </property>
                </spacer>
@@ -295,6 +295,48 @@
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_12">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>1</width>
+                  <height>10</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_13">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Expanding</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>15</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="detailsButton">
+                <property name="text">
+                 <string>Details...</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="view-list-details"/>
                 </property>
                </widget>
               </item>
@@ -405,10 +447,13 @@
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Preferred</enum>
+                </property>
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>20</width>
-                  <height>40</height>
+                  <height>20</height>
                  </size>
                 </property>
                </spacer>
@@ -455,7 +500,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>895</width>
+            <width>915</width>
             <height>375</height>
            </rect>
           </property>

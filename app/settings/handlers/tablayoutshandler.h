@@ -74,8 +74,6 @@ public:
     Latte::SettingsDialog *dialog() const;
     Ui::SettingsDialog *ui() const;
 
-
-
     void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0, QList<QAction *> actions = QList<QAction *>()) override;
 
 public slots:
@@ -102,6 +100,7 @@ private slots:
     void on_locked_layout();
     void on_remove_layout();
     void on_shared_layout();
+    void on_details_action();
 
     void on_currentPageChanged(int page);
     void on_layoutFilesDropped(const QStringList &paths);
@@ -133,6 +132,7 @@ private:
     QAction *m_importLayoutAction{nullptr};
     QAction *m_exportLayoutAction{nullptr};
     QAction *m_downloadLayoutAction{nullptr};
+    QAction *m_detailsAction{nullptr};
 };
 
 }
