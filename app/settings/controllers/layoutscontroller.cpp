@@ -633,9 +633,13 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
     return false;
 }
 
-void Layouts::on_sharedToInEditChanged(const int &row, const bool &inEdit)
+void Layouts::on_sharedToInEditChanged(const QString &id, const bool &inEdit)
 {
-    m_model->setData(m_model->index(row, Model::Layouts::SHAREDCOLUMN), inEdit, Model::Layouts::SHAREDTOINEDIT);
+    int row = m_model->rowForId(id);
+
+    if (row >= 0) {
+        m_model->setData(m_model->index(row, Model::Layouts::SHAREDCOLUMN), inEdit, Model::Layouts::SHAREDTOINEDITROLE);
+    }
 }
 
 void Layouts::reset()

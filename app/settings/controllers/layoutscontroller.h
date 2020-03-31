@@ -96,7 +96,7 @@ signals:
 
 public slots:
     //! needed for Delegate::Shared
-    void on_sharedToInEditChanged(const int &row, const bool &inEdit);
+    void on_sharedToInEditChanged(const QString &row, const bool &inEdit);
 
 private slots:
     void loadConfig();

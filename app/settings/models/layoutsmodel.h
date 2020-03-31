@@ -67,7 +67,7 @@ public:
         ALLACTIVITIESSORTEDROLE,
         ALLACTIVITIESDATAROLE,
         ALLLAYOUTSROLE,
-        SHAREDTOINEDIT,
+        SHAREDTOINEDITROLE,
         SORTINGROLE,
         ISNEWLAYOUTROLE,
         LAYOUTHASCHANGESROLE,
@@ -173,7 +173,7 @@ private:
     //! break MVC only when a SharedTo editor is created
     //! because we want to move the dot indicator in the Activities delegate
     //! when that happens
-    int m_sharedToInEditRow{-1};
+    int m_sharedToInEditRow;
 
     QString m_iconsPath;
 

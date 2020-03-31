@@ -244,7 +244,7 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
         painter->restore();
     } else {
-        bool sharedInEdit = index.data(Model::Layouts::SHAREDTOINEDIT).toBool();
+        bool sharedInEdit = index.data(Model::Layouts::SHAREDTOINEDITROLE).toBool();
 
         // Disabled
         bool isSelected{Latte::isSelected(option)};

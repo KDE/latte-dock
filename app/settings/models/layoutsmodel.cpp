@@ -476,7 +476,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         QVariant layouts;
         layouts.setValue(m_layoutsTable);
         return layouts;
-    } else if (role == SHAREDTOINEDIT) {
+    } else if (role == SHAREDTOINEDITROLE) {
         return (m_sharedToInEditRow == row);
     } else if (role == ISNEWLAYOUTROLE) {
         return isNewLayout;
@@ -884,11 +884,12 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
             setShares(row, value.toStringList());
             emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
             return true;
-        } else if (role == SHAREDTOINEDIT) {
+        } else if (role == SHAREDTOINEDITROLE) {
             bool inEdit = value.toBool();
             m_sharedToInEditRow = inEdit ? row : -1;
             roles << Qt::DisplayRole;
             roles << Qt::UserRole;
+            roles << SHAREDTOINEDITROLE;
             emit dataChanged(this->index(row, ACTIVITYCOLUMN), this->index(row, SHAREDCOLUMN),  roles);
             emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
             return true;

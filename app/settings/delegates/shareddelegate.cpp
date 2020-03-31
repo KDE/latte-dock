@@ -90,7 +90,7 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
 
     updateButtonText(button, index);
 
-    m_controller->on_sharedToInEditChanged(index.row(), true);
+    m_controller->on_sharedToInEditChanged(layoutId, true);
 
     return button;
 }
@@ -114,7 +114,8 @@ void Shared::setModelData(QWidget *editor, QAbstractItemModel *model, const QMod
 
     model->setData(index, assignedLayouts, Qt::UserRole);
 
-    m_controller->on_sharedToInEditChanged(index.row(), false);
+    QString layoutId = index.data(Model::Layouts::IDROLE).toString();
+    m_controller->on_sharedToInEditChanged(layoutId, false);
 }
 
 void Shared::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -126,7 +127,7 @@ void Shared::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &o
 
 void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    bool sharedInEdit = index.data(Model::Layouts::SHAREDTOINEDIT).toBool();
+    bool sharedInEdit = index.data(Model::Layouts::SHAREDTOINEDITROLE).toBool();
     Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
     QStringList assignedIds = index.data(Qt::UserRole).toStringList();    
     QStringList originalIds = index.data(Model::Layouts::ORIGINALSHARESROLE).toStringList();
@@ -144,7 +145,7 @@ void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const 
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
     painter->save();
 
-    if (assignedLayouts.rowCount() > 0) {
+    if (assignedLayouts.rowCount() > 0 && !sharedInEdit) {
         //! indicator
         if (!sharedInEdit) {
             paintSharedToIndicator(painter, myOptions, index);
