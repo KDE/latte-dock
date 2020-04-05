@@ -688,9 +688,12 @@ bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) co
     //! the dodge views appropriately
 
     bool hasSkipTaskbar = w->skipTaskbar();
-    bool hasSkipSwitcher = w->skipSwitcher();
+    bool isSkipped = hasSkipTaskbar;
 
-    bool isSkipped = hasSkipTaskbar && hasSkipSwitcher;
+#if KF5_VERSION_MINOR >= 47
+    bool hasSkipSwitcher = w->skipSwitcher();
+    isSkipped = hasSkipTaskbar && hasSkipSwitcher;
+#endif
 
     return w->isValid() && !isPlasmaDesktop(w) && !isSkipped && !m_plasmaPanels.contains(w->internalId()) && !m_ignoredWindows.contains(w->internalId());
 }
