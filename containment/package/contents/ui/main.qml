@@ -434,7 +434,7 @@ Item {
 
         return plasmoid.configuration.screenEdgeMargin;
     }
-    property int localScreenEdgeMargin: (screenEdgeMarginEnabled && behaveAsPlasmaPanel)
+    property int localScreenEdgeMargin: (screenEdgeMarginEnabled && behaveAsPlasmaPanel && !root.editMode)
                                         || !screenEdgeMarginEnabled
                                         || hideThickScreenGap ? 0 : plasmoid.configuration.screenEdgeMargin
 
