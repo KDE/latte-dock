@@ -40,8 +40,6 @@ import "../controls" as LatteExtraControls
 FocusScope {
     id: dialog
 
-    property alias backgroundMask: backgroundFrameSvgItem.mask
-
     width: typeSettings.width + units.smallSpacing * 4
     height: typeSettings.height + units.smallSpacing * 4
     Layout.minimumWidth: width
@@ -58,9 +56,6 @@ FocusScope {
         enabledBorders: viewConfig.enabledBorders
 
         onEnabledBordersChanged: viewConfig.updateEffects()
-        onWidthChanged: viewConfig.updateEffects()
-        onHeightChanged: viewConfig.updateEffects()
-
         Component.onCompleted: viewConfig.updateEffects()
     }
 

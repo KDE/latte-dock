@@ -163,6 +163,9 @@ private:
 
     Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
 
+    //only for the mask on disabled compositing, not to actually paint
+    Plasma::FrameSvg *m_background{nullptr};
+
     Latte::Corona *m_corona{nullptr};
     Latte::WindowSystem::WindowId m_waylandWindowId;
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};

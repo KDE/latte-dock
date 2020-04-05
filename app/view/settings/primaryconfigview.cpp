@@ -82,6 +82,9 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
 
+    connect(this, &QQuickView::widthChanged, this, &PrimaryConfigView::updateEffects);
+    connect(this, &QQuickView::heightChanged, this, &PrimaryConfigView::updateEffects);
+
     connect(this, &PrimaryConfigView::availableScreenGeometryChanged, this, &PrimaryConfigView::syncGeometry);
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::saveConfig);
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::updateShowInlineProperties);
@@ -714,27 +717,30 @@ void PrimaryConfigView::updateEffects()
         return;
     }
 
-    QRegion mask;
-
-    QQuickItem *rootObject = this->rootObject();
-    if (rootObject) {
-        const QVariant maskProperty = rootObject->property("backgroundMask");
-        if (static_cast<QMetaType::Type>(maskProperty.type()) == QMetaType::QRegion) {
-            qDebug() << "found 2...";
-            mask = maskProperty.value<QRegion>();
-        }
+    if (!m_background) {
+        m_background = new Plasma::FrameSvg(this);
     }
 
-    if (!mask.isEmpty()) {
-        if (KWindowSystem::compositingActive()) {
-            setMask(QRegion());
-        } else {
-            setMask(mask);
-        }
+    if (m_background->imagePath() != "widgets/panel-background") {
+        m_background->setImagePath(QStringLiteral("widgets/panel-background"));
+    }
 
-        KWindowEffects::enableBlurBehind(winId(), true, mask);
+    m_background->setEnabledBorders(m_enabledBorders);
+    m_background->resizeFrame(size());
+
+    QRegion mask = m_background->mask();
+
+    QRegion fixedMask = mask.isNull() ? QRegion(QRect(0,0,width(),height())) : mask;
+
+    if (!fixedMask.isEmpty()) {
+        setMask(fixedMask);
     } else {
         setMask(QRegion());
+    }
+
+    if (KWindowSystem::compositingActive()) {
+        KWindowEffects::enableBlurBehind(winId(), true, fixedMask);
+    } else {
         KWindowEffects::enableBlurBehind(winId(), false);
     }
 }

@@ -43,8 +43,6 @@ import "../controls" as LatteExtraControls
 FocusScope {
     id: dialog
 
-    property alias backgroundMask: backgroundFrameSvgItem.mask
-
     readonly property bool basicLevel: viewConfig.complexity === Latte.Types.BasicSettings
     readonly property bool advancedLevel: viewConfig.complexity === Latte.Types.AdvancedSettings
     readonly property bool expertLevel: viewConfig.complexity === Latte.Types.ExpertSettings
@@ -132,9 +130,6 @@ FocusScope {
         enabledBorders: viewConfig.enabledBorders
 
         onEnabledBordersChanged: viewConfig.updateEffects()
-        onWidthChanged: viewConfig.updateEffects()
-        onHeightChanged: viewConfig.updateEffects()
-
         Component.onCompleted: viewConfig.updateEffects()
     }
 

@@ -77,6 +77,9 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
 
+    connect(this, &QQuickView::widthChanged, this, &SecondaryConfigView::updateEffects);
+    connect(this, &QQuickView::heightChanged, this, &SecondaryConfigView::updateEffects);
+
     connect(this, &QQuickView::statusChanged, [&](QQuickView::Status status) {
         if (status == QQuickView::Ready) {
             updateEffects();
@@ -415,26 +418,30 @@ void SecondaryConfigView::updateEffects()
         return;
     }
 
-    QRegion mask;
-
-    QQuickItem *rootObject = this->rootObject();
-    if (rootObject) {
-        const QVariant maskProperty = rootObject->property("backgroundMask");
-        if (static_cast<QMetaType::Type>(maskProperty.type()) == QMetaType::QRegion) {
-            mask = maskProperty.value<QRegion>();
-        }
+    if (!m_background) {
+        m_background = new Plasma::FrameSvg(this);
     }
 
-    if (!mask.isEmpty()) {
-        if (KWindowSystem::compositingActive()) {
-            setMask(QRegion());
-        } else {
-            setMask(mask);
-        }
+    if (m_background->imagePath() != "widgets/panel-background") {
+        m_background->setImagePath(QStringLiteral("widgets/panel-background"));
+    }
 
-        KWindowEffects::enableBlurBehind(winId(), true, mask);
+    m_background->setEnabledBorders(m_enabledBorders);
+    m_background->resizeFrame(size());
+
+    QRegion mask = m_background->mask();
+
+    QRegion fixedMask = mask.isNull() ? QRegion(QRect(0,0,width(),height())) : mask;
+
+    if (!fixedMask.isEmpty()) {
+        setMask(fixedMask);
     } else {
         setMask(QRegion());
+    }
+
+    if (KWindowSystem::compositingActive()) {
+        KWindowEffects::enableBlurBehind(winId(), true, fixedMask);
+    } else {
         KWindowEffects::enableBlurBehind(winId(), false);
     }
 }
