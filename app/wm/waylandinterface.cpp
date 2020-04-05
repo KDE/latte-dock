@@ -791,8 +791,12 @@ bool WaylandInterface::isAcceptableWindow(const KWayland::Client::PlasmaWindow *
 
     //! Window Checks
     bool hasSkipTaskbar = w->skipTaskbar();
+    bool isSkipped = hasSkipTaskbar;
+
+#if KF5_VERSION_MINOR >= 47
     bool hasSkipSwitcher = w->skipSwitcher();
-    bool isSkipped = hasSkipTaskbar && hasSkipSwitcher;
+    isSkipped = hasSkipTaskbar && hasSkipSwitcher;
+#endif
 
     if (isSkipped
             && ((w->appId() == QLatin1String("yakuake")
