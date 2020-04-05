@@ -278,9 +278,9 @@ Item {
 
     property int minLength: {
         if (root.isHorizontal) {
-            return behaveAsPlasmaPanel ? width : width * (minLengthPerCentage/100)
+            return behaveAsPlasmaPanel && Latte.WindowSystem.compositingActive ? width : width * (minLengthPerCentage/100)
         } else {
-            return behaveAsPlasmaPanel ? height : height * (minLengthPerCentage/100)
+            return behaveAsPlasmaPanel && Latte.WindowSystem.compositingActive ? height : height * (minLengthPerCentage/100)
         }
     }
 
