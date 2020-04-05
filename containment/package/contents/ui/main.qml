@@ -1927,8 +1927,6 @@ Item {
             if (inStartup) {
                 visibilityManager.slotMustBeShown();
             }
-
-            latteView.updateAppletIsExpandedTracking();
         }
     }
 

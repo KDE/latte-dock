@@ -104,6 +104,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     m_releaseGrabTimer.setSingleShot(true);
     connect(&m_releaseGrabTimer, &QTimer::timeout, this, &View::releaseGrab);
 
+    m_appletsExpandedConnectionsTimer.setInterval(2000);
+    m_appletsExpandedConnectionsTimer.setSingleShot(true);
+    connect(&m_appletsExpandedConnectionsTimer, &QTimer::timeout, this, &View::updateAppletIsExpandedTracking);
+
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::updateTransientWindowsTracking);
 
     connect(this, &View::containmentChanged
@@ -151,6 +155,8 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
             m_indicator = new ViewPart::Indicator(this);
             emit indicatorChanged();
         }
+
+        m_appletsExpandedConnectionsTimer.start();
 
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);

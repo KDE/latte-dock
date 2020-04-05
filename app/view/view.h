@@ -407,6 +407,10 @@ private:
     int m_releaseGrab_x;
     int m_releaseGrab_y;
 
+    //! startup timer to initialize
+    //! applets expanded tracking
+    QTimer m_appletsExpandedConnectionsTimer;
+
     Layout::GenericLayout *m_layout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
 
