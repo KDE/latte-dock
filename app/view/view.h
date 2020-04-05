@@ -86,6 +86,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(bool byPassWM READ byPassWM WRITE setByPassWM NOTIFY byPassWMChanged)
     Q_PROPERTY(bool containsDrag READ containsDrag NOTIFY containsDragChanged)
     Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
+    Q_PROPERTY(bool hasExpandedApplet READ hasExpandedApplet NOTIFY hasExpandedAppletChanged)
     //! Because Latte uses animations, changing to edit mode it may be different than
     //! when the isUserConfiguring changes value
     Q_PROPERTY(bool inEditMode READ inEditMode WRITE setInEditMode NOTIFY inEditModeChanged)
@@ -99,7 +100,6 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(bool isTouchingTopViewAndIsBusy READ isTouchingTopViewAndIsBusy WRITE setIsTouchingTopViewAndIsBusy NOTIFY isTouchingTopViewAndIsBusyChanged)
 
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
-    Q_PROPERTY(int expandedInternalContainment READ expandedInternalContainment NOTIFY expandedInternalContainmentChanged);
     Q_PROPERTY(int fontPixelSize READ fontPixelSize WRITE setFontPixelSize NOTIFY fontPixelSizeChanged)
     Q_PROPERTY(int x READ x NOTIFY xChanged)
     Q_PROPERTY(int y READ y NOTIFY yChanged)
@@ -163,6 +163,8 @@ public:
     bool isPreferredForShortcuts() const;
     void setIsPreferredForShortcuts(bool preferred);
 
+    bool hasExpandedApplet() const;
+
     bool latteTasksArePresent() const;
     void setLatteTasksArePresent(bool present);
 
@@ -180,8 +182,6 @@ public:
 
     int fontPixelSize() const;
     void setFontPixelSize(int size);
-
-    int expandedInternalContainment() const;
 
     int editThickness() const;
     void setEditThickness(int thickness);
@@ -260,6 +260,8 @@ public slots:
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
     Q_INVOKABLE bool tasksPresent();
 
+    Q_INVOKABLE void updateAppletIsExpandedTracking();
+
     void updateAbsoluteGeometry(bool bypassChecks = false);
 
     Q_INVOKABLE bool isHighestPriorityView();
@@ -288,9 +290,10 @@ signals:
     void dockLocationChanged();
     void editThicknessChanged();
     void effectsChanged();
-    void expandedInternalContainmentChanged();
     void fontPixelSizeChanged();
     void forcedShown(); //[workaround] forced shown to avoid a KWin issue that hides windows when closing activities
+    void hasExpandedAppletChanged();
+    void expandedAppletStateChanged();
     void widthChanged();
     void heightChanged();
     void inEditModeChanged();
@@ -341,7 +344,7 @@ private slots:
     void addTransientWindow(QWindow *window);
     void removeTransientWindow(const bool &visible);
 
-    void on_internalContainmentExpandedChanged();
+    void on_appletExpandedChanged();
 
     void restoreConfig();
     void saveConfig();
@@ -350,6 +353,9 @@ private:
     void initSignalingForLocationChangeSliding();
     void setupWaylandIntegration();
     void updateAppletContainsMethod();
+
+    void addExpandedApplet(const int &id);
+    void removeExpandedApplet(const int &id);
 
     void setContainsDrag(bool contains);
 
@@ -373,7 +379,6 @@ private:
 
     int m_fontPixelSize{ -1};
     int m_editThickness{24};
-    int m_expandedInternalContainemt{-1};
     int m_maxThickness{24};
     int m_normalThickness{24};
     int m_offset{0};
@@ -416,7 +421,8 @@ private:
     //! Connections to release and bound for the assigned layout
     QList<QMetaObject::Connection> connectionsLayout;
 
-    QHash<PlasmaQuick::AppletQuickItem *, QMetaObject::Connection> m_internalContainmentsConnections;
+    QHash<PlasmaQuick::AppletQuickItem *, QMetaObject::Connection> m_appletsExpandedConnections;
+    QList<int> m_expandedAppletIds;
 
     //! track transientWindows
     QList<QWindow *> m_transientWindows;

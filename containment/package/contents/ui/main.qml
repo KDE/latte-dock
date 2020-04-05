@@ -203,12 +203,7 @@ Item {
 
     property bool plasmaBackgroundForPopups: plasmoid.configuration.plasmaBackgroundForPopups
 
-    readonly property bool hasExpandedApplet: (latteView && latteView.expandedInternalContainment>-1)
-                                              || plasmoid.applets.some(function (item) {
-        var isExpanded = latteView.appletIsExpandable(item.id) && latteView.appletIsExpanded(item.id);
-        return (latteView && item.status >= PlasmaCore.Types.UnknownStatus && isExpanded);
-    });
-
+    readonly property bool hasExpandedApplet: latteView && latteView.hasExpandedApplet;
     readonly property bool hasUserSpecifiedBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                            true : false
 
@@ -862,6 +857,7 @@ Item {
         console.log(applet.pluginName);
         LayoutManager.save();
         updateIndexes();
+        latteView.updateAppletIsExpandedTracking();
     }
 
     Containment.onAppletRemoved: {
@@ -1942,6 +1938,8 @@ Item {
             if (inStartup) {
                 visibilityManager.slotMustBeShown();
             }
+
+            latteView.updateAppletIsExpandedTracking();
         }
     }
 

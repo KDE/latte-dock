@@ -1470,71 +1470,61 @@ bool View::appletIsExpandable(const int id)
     return false;
 }
 
-int View::expandedInternalContainment() const
+bool View::hasExpandedApplet() const
 {
-    return m_expandedInternalContainemt;
+    return m_expandedAppletIds.count() > 0;
 }
 
-void View::on_internalContainmentExpandedChanged()
+void View::addExpandedApplet(const int &id)
 {
-    PlasmaQuick::AppletQuickItem *internalContainmentAppletItem = static_cast<PlasmaQuick::AppletQuickItem *>(QObject::sender());
+    if (m_expandedAppletIds.contains(id) && appletIsExpandable(id)) {
+        return;
+    }
 
-    if (internalContainmentAppletItem) {
-        if (internalContainmentAppletItem->isExpanded()) {
-            m_expandedInternalContainemt = internalContainmentAppletItem->applet()->id();
-            emit expandedInternalContainmentChanged();
-        } else if (m_expandedInternalContainemt == (int)internalContainmentAppletItem->applet()->id()){
-            m_expandedInternalContainemt = -1;
-            emit expandedInternalContainmentChanged();
+    bool isExpanded = hasExpandedApplet();
+
+    m_expandedAppletIds << id;
+
+    if (isExpanded != hasExpandedApplet()) {
+        emit hasExpandedAppletChanged();
+    }
+
+    emit expandedAppletStateChanged();
+}
+
+void View::removeExpandedApplet(const int &id)
+{
+    if (!m_expandedAppletIds.contains(id)) {
+        return;
+    }
+
+    bool isExpanded = hasExpandedApplet();
+
+    m_expandedAppletIds.removeAll(id);
+
+    if (isExpanded != hasExpandedApplet()) {
+        emit hasExpandedAppletChanged();
+    }
+
+    emit expandedAppletStateChanged();
+}
+
+void View::on_appletExpandedChanged()
+{
+    PlasmaQuick::AppletQuickItem *appletItem = static_cast<PlasmaQuick::AppletQuickItem *>(QObject::sender());
+
+    if (appletItem) {
+        if (appletItem->isExpanded()) {
+            addExpandedApplet(appletItem->applet()->id());
+        } else {
+            removeExpandedApplet(appletItem->applet()->id());
         }
     }
 }
 
 bool View::appletIsExpanded(const int id)
 {
-    if (!containment()) {
-        return false;
-    }
-
-    for (const auto applet : containment()->applets()) {
-        if (applet->id() == (uint)id) {
-            if (m_layout && m_layout->isInternalContainment(applet)) {
-                //! internal containment case
-                Plasma::Containment *internalC = layout()->internalContainmentOf(applet);
-                PlasmaQuick::AppletQuickItem *contAi = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-                if (contAi && !m_internalContainmentsConnections.contains(contAi)) {
-                    //! For some reason internal containments change their expanded state when showing their
-                    //! general popup with delay, we make sure to catch that signal correctly
-                    m_internalContainmentsConnections[contAi] = connect(contAi, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &View::on_internalContainmentExpandedChanged);
-
-                    connect(contAi, &QObject::destroyed, this, [&, contAi](){
-                        m_internalContainmentsConnections.remove(contAi);
-                    });
-                }
-
-                for (const auto internalApplet : internalC->applets()) {
-                    PlasmaQuick::AppletQuickItem *ai = internalApplet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-                    if (ai) {
-                        if (ai->isExpanded()) {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            } else {
-                PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-                if (ai) {
-                    return (ai->isExpanded());
-                }
-            }
-        }
-    }
-
-    return false;
+    return m_expandedAppletIds.contains(id);
 }
 
 void View::toggleAppletExpanded(const int id)
@@ -1553,6 +1543,55 @@ void View::toggleAppletExpanded(const int id)
                 }
 
                 emit applet->activated();
+            }
+        }
+    }
+}
+
+void View::updateAppletIsExpandedTracking()
+{
+    if (!containment()) {
+        return;
+    }
+
+    for (const auto applet : containment()->applets()) {
+        if (m_layout && m_layout->isInternalContainment(applet)) {
+            //! internal containment case
+            Plasma::Containment *internalC = layout()->internalContainmentOf(applet);
+            PlasmaQuick::AppletQuickItem *contAi = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (contAi && !m_appletsExpandedConnections.contains(contAi)) {
+                m_appletsExpandedConnections[contAi] = connect(contAi, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &View::on_appletExpandedChanged);
+
+                connect(contAi, &QObject::destroyed, this, [&, contAi](){
+                    m_appletsExpandedConnections.remove(contAi);
+                    removeExpandedApplet(contAi->applet()->id());
+                });
+            }
+
+            for (const auto internalApplet : internalC->applets()) {
+                PlasmaQuick::AppletQuickItem *ai = internalApplet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+
+                if (ai && !m_appletsExpandedConnections.contains(ai) ){
+                    m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &View::on_appletExpandedChanged);
+
+                    connect(ai, &QObject::destroyed, this, [&, ai](){
+                        m_appletsExpandedConnections.remove(ai);
+                        removeExpandedApplet(ai->applet()->id());
+                    });
+                }
+            }
+        } else {
+            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (ai && !m_appletsExpandedConnections.contains(ai)) {
+                m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &View::on_appletExpandedChanged);
+
+                connect(ai, &QObject::destroyed, this, [&, ai](){
+                    m_appletsExpandedConnections.remove(ai);
+                    removeExpandedApplet(ai->applet()->id());
+                });
             }
         }
     }

@@ -634,17 +634,21 @@ Item {
     }
 
     Connections {
-        target: applet
-        onStatusChanged: appletItem.isExpanded = (root.latteView.appletIsExpandable(applet.id) && root.latteView.appletIsExpanded(applet.id));
-    }
-
-    Connections {
         id: viewSignalsConnector
         target: root.latteView ? root.latteView : null
         enabled: !appletItem.isLattePlasmoid && !appletItem.isSeparator && !appletItem.isSpacer && !appletItem.isHidden
 
         property bool pressed: false
         property bool blockWheel: false
+
+        onExpandedAppletStateChanged: {
+            if (latteView.hasExpandedApplet && appletItem.applet) {
+                appletItem.isExpanded = appletItem.isExpanded = latteView.appletIsExpandable(appletItem.applet.id)
+                        && latteView.appletIsExpanded(appletItem.applet.id);
+            } else {
+                appletItem.isExpanded = false;
+            }
+        }
 
         onMousePressed: {
             if (appletItem.containsPos(pos)) {
