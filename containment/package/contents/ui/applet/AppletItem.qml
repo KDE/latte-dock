@@ -72,8 +72,7 @@ Item {
                              && applet.pluginName !== "org.kde.activeWindowControl"
                              && applet.pluginName !== "org.kde.plasma.appmenu")
 
-    property bool isExpanded: applet && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
-                              && applet.status !== PlasmaCore.Types.HiddenStatus
+    property bool isExpanded: false
 
     property bool isHidden: applet && applet.status === PlasmaCore.Types.HiddenStatus ? true : false
     property bool isInternalViewSplitter: (internalSplitterId > 0)
@@ -632,6 +631,11 @@ Item {
                 restoreAnimation.stop();
             }
         }
+    }
+
+    Connections {
+        target: applet
+        onStatusChanged: appletItem.isExpanded = (root.latteView.appletIsExpandable(applet.id) && root.latteView.appletIsExpanded(applet.id));
     }
 
     Connections {

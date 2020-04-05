@@ -203,13 +203,11 @@ Item {
 
     property bool plasmaBackgroundForPopups: plasmoid.configuration.plasmaBackgroundForPopups
 
-    readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
-        return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.status !== PlasmaCore.Types.HiddenStatus
-                && item.pluginName !== root.plasmoidName
-                && item.pluginName !== "org.kde.plasma.appmenu"
-                && item.pluginName !== "org.kde.windowappmenu"
-                && item.pluginName !== "org.kde.activeWindowControl");
-    })
+    readonly property bool hasExpandedApplet: (latteView && latteView.expandedInternalContainment>-1)
+                                              || plasmoid.applets.some(function (item) {
+        var isExpanded = latteView.appletIsExpandable(item.id) && latteView.appletIsExpanded(item.id);
+        return (latteView && item.status >= PlasmaCore.Types.UnknownStatus && isExpanded);
+    });
 
     readonly property bool hasUserSpecifiedBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                            true : false

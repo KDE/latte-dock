@@ -53,6 +53,11 @@ class Corona;
 class Containment;
 }
 
+namespace PlasmaQuick {
+class AppletQuickItem;
+}
+
+
 namespace KWayland {
 namespace Client {
 class PlasmaShellSurface;
@@ -94,6 +99,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(bool isTouchingTopViewAndIsBusy READ isTouchingTopViewAndIsBusy WRITE setIsTouchingTopViewAndIsBusy NOTIFY isTouchingTopViewAndIsBusyChanged)
 
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
+    Q_PROPERTY(int expandedInternalContainment READ expandedInternalContainment NOTIFY expandedInternalContainmentChanged);
     Q_PROPERTY(int fontPixelSize READ fontPixelSize WRITE setFontPixelSize NOTIFY fontPixelSizeChanged)
     Q_PROPERTY(int x READ x NOTIFY xChanged)
     Q_PROPERTY(int y READ y NOTIFY yChanged)
@@ -174,6 +180,8 @@ public:
 
     int fontPixelSize() const;
     void setFontPixelSize(int size);
+
+    int expandedInternalContainment() const;
 
     int editThickness() const;
     void setEditThickness(int thickness);
@@ -280,6 +288,7 @@ signals:
     void dockLocationChanged();
     void editThicknessChanged();
     void effectsChanged();
+    void expandedInternalContainmentChanged();
     void fontPixelSizeChanged();
     void forcedShown(); //[workaround] forced shown to avoid a KWin issue that hides windows when closing activities
     void widthChanged();
@@ -332,6 +341,8 @@ private slots:
     void addTransientWindow(QWindow *window);
     void removeTransientWindow(const bool &visible);
 
+    void on_internalContainmentExpandedChanged();
+
     void restoreConfig();
     void saveConfig();
 
@@ -362,6 +373,7 @@ private:
 
     int m_fontPixelSize{ -1};
     int m_editThickness{24};
+    int m_expandedInternalContainemt{-1};
     int m_maxThickness{24};
     int m_normalThickness{24};
     int m_offset{0};
@@ -403,6 +415,8 @@ private:
 
     //! Connections to release and bound for the assigned layout
     QList<QMetaObject::Connection> connectionsLayout;
+
+    QHash<PlasmaQuick::AppletQuickItem *, QMetaObject::Connection> m_internalContainmentsConnections;
 
     //! track transientWindows
     QList<QWindow *> m_transientWindows;
