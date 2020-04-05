@@ -60,7 +60,8 @@ Item{
     property string layoutColor: latteView && latteView.layout ? latteView.layout.color : "blue"
 
     readonly property real appliedOpacity: imageTiler.opacity
-    readonly property real maxOpacity: root.inConfigureAppletsMode ? 1 : plasmoid.configuration.editBackgroundOpacity
+    readonly property real maxOpacity: root.inConfigureAppletsMode || !Latte.WindowSystem.compositingActive ?
+                                           1 : plasmoid.configuration.editBackgroundOpacity
 
     LatteComponents.ExternalShadow{
         id: editExternalShadow

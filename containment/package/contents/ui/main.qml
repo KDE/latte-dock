@@ -1696,17 +1696,6 @@ Item {
         sourceComponent: DebugWindow{}
     }
 
-    //! Load a sepia background in order to avoid black background
-    Loader{
-        anchors.fill: parent
-        active: !Latte.WindowSystem.compositingActive
-        sourceComponent: Image{
-            anchors.fill: parent
-            fillMode: Image.Tile
-            source: root.hasUserSpecifiedBackground ? latteView.layout.background : "../icons/wheatprint.jpg"
-        }
-    }
-
     EditMode.Visual{
         id:editModeVisual
         //   z: root.behaveAsPlasmaPanel ? 1 : 0
