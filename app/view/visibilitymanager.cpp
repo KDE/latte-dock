@@ -444,7 +444,7 @@ void VisibilityManager::addBlockHidingEvent(const QString &type)
         return;
     }
 
-    qDebug() << " adding block hiding event :: " << type;
+    //qDebug() << " adding block hiding event :: " << type;
 
     bool prevHidingIsBlocked = hidingIsBlocked();
 
@@ -460,7 +460,7 @@ void VisibilityManager::removeBlockHidingEvent(const QString &type)
     if (!m_blockHidingEvents.contains(type) || type.isEmpty()) {
         return;
     }
-    qDebug() << " remove block hiding event :: " << type;
+    //qDebug() << " remove block hiding event :: " << type;
 
     bool prevHidingIsBlocked = hidingIsBlocked();
 
