@@ -59,6 +59,10 @@
 #include <Plasma/ContainmentActions>
 #include <PlasmaQuick/AppletQuickItem>
 
+#define BLOCKHIDINGDRAGTYPE "View::ContainsDrag()"
+#define BLOCKHIDINGNEEDSATTENTIONTYPE "View::Containment::NeedsAttentionState()"
+#define BLOCKHIDINGREQUESTSINPUTTYPE "View::Containment::RequestsInputState()"
+
 namespace Latte {
 
 //! both alwaysVisible and byPassWM are passed through corona because
@@ -100,6 +104,8 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     m_releaseGrabTimer.setSingleShot(true);
     connect(&m_releaseGrabTimer, &QTimer::timeout, this, &View::releaseGrab);
 
+    connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::updateTransientWindowsTracking);
+
     connect(this, &View::containmentChanged
             , this, [ &, byPassWM]() {
         qDebug() << "dock view c++ containment changed 1...";
@@ -134,6 +140,9 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
                     deactivateApplets();
                 }
             });
+
+            connect(m_visibility, &ViewPart::VisibilityManager::containsMouseChanged,
+                    this, &View::updateTransientWindowsTracking);
 
             emit visibilityChanged();
         }
@@ -534,12 +543,57 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
 
 void View::statusChanged(Plasma::Types::ItemStatus status)
 {
-    if (containment()) {
-        if (containment()->status() >= Plasma::Types::NeedsAttentionStatus &&
-                containment()->status() != Plasma::Types::HiddenStatus) {
-            setBlockHiding(true);
-        } else if (!containment()->isUserConfiguring()){
-            setBlockHiding(false);
+    if (!containment()) {
+        return;
+    }
+
+    if (status == Plasma::Types::NeedsAttentionStatus) {
+        m_visibility->addBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
+        setFlags(flags() | Qt::WindowDoesNotAcceptFocus);
+    } else if (status == Plasma::Types::AcceptingInputStatus) {
+        m_visibility->removeBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
+        setFlags(flags() & ~Qt::WindowDoesNotAcceptFocus);
+        KWindowSystem::forceActiveWindow(winId());
+    } else {
+        updateTransientWindowsTracking();
+        m_visibility->removeBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
+        setFlags(flags() | Qt::WindowDoesNotAcceptFocus);
+    }    
+}
+
+void View::addTransientWindow(QWindow *window)
+{
+    if (!m_transientWindows.contains(window)) {
+        m_transientWindows.append(window);
+
+        QString winPtrStr = "0x" + QString::number((qulonglong)window,16);
+        m_visibility->addBlockHidingEvent(winPtrStr);
+        connect(window, &QWindow::visibleChanged, this, &View::removeTransientWindow);
+    }
+}
+
+void View::removeTransientWindow(const bool &visible)
+{
+    QWindow *window = static_cast<QWindow *>(QObject::sender());
+
+    if (window && !visible) {
+        QString winPtrStr = "0x" + QString::number((qulonglong)window,16);
+        m_visibility->removeBlockHidingEvent(winPtrStr);
+        disconnect(window, &QWindow::visibleChanged, this, &View::removeTransientWindow);
+        m_transientWindows.removeAll(window);
+
+        updateTransientWindowsTracking();
+    }
+}
+
+void View::updateTransientWindowsTracking()
+{
+    for(QWindow *window: qApp->topLevelWindows()) {
+        if (window->transientParent() == this){
+            if (window->isVisible()) {
+                addTransientWindow(window);
+                break;
+            }
         }
     }
 }
@@ -572,7 +626,6 @@ void View::setAlternativesIsShown(bool show)
 
     m_alternativesIsShown = show;
 
-    setBlockHiding(show);
     emit alternativesIsShownChanged();
 }
 
@@ -588,6 +641,14 @@ void View::setContainsDrag(bool contains)
     }
 
     m_containsDrag = contains;
+
+
+    if (m_containsDrag) {
+        m_visibility->addBlockHidingEvent(BLOCKHIDINGDRAGTYPE);
+    } else {
+        m_visibility->removeBlockHidingEvent(BLOCKHIDINGDRAGTYPE);
+    }
+
     emit containsDragChanged();
 }
 
@@ -1125,25 +1186,6 @@ void View::moveToLayout(QString layoutName)
     }
 }
 
-void View::setBlockHiding(bool block)
-{
-    if (!block) {
-        auto *configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
-
-        if (m_alternativesIsShown || (configView && configView->sticker() && configView->isVisible())) {
-            return;
-        }
-
-        if (m_visibility) {
-            m_visibility->setBlockHiding(false);
-        }
-    } else {
-        if (m_visibility) {
-            m_visibility->setBlockHiding(true);
-        }
-    }
-}
-
 void View::configViewCreatedFor(Latte::View *view)
 {
     if (view!=this && m_configView) {
@@ -1160,8 +1202,6 @@ void View::configViewCreatedFor(Latte::View *view)
 
 void View::hideWindowsForSlidingOut()
 {
-    setBlockHiding(false);
-
     if (m_configView) {
         auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
@@ -1512,6 +1552,7 @@ void View::mousePressEvent(QMouseEvent *event)
 
     if (result) {
         PlasmaQuick::ContainmentView::mousePressEvent(event);
+        updateTransientWindowsTracking();
     }
 }
 //!END overriding context menus behavior

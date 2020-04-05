@@ -58,6 +58,8 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     m_corona = qobject_cast<Latte::Corona *>(view->corona());
     m_wm = m_corona->wm();
 
+    connect(this, &VisibilityManager::hidingIsBlockedChanged, this, &VisibilityManager::on_hidingIsBlockedChanged);
+
     connect(this, &VisibilityManager::slideOutFinished, this, &VisibilityManager::updateHiddenState);
     connect(this, &VisibilityManager::slideInFinished, this, &VisibilityManager::updateHiddenState);
 
@@ -99,7 +101,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         }
     });
     connect(&m_timerHide, &QTimer::timeout, this, [&]() {
-        if (!m_blockHiding && !m_isHidden && !m_isBelowLayer && !m_dragEnter) {
+        if (!hidingIsBlocked() && !m_isHidden && !m_isBelowLayer && !m_dragEnter) {
             if (m_latteView->isFloatingWindow()) {
                 //! first check if mouse is inside the floating gap
                 checkMouseInFloatingArea();
@@ -418,7 +420,7 @@ void VisibilityManager::setIsHidden(bool isHidden)
     if (m_isHidden == isHidden)
         return;
 
-    if (m_blockHiding && isHidden) {
+    if (hidingIsBlocked() && isHidden) {
         qWarning() << "isHidden property is blocked, ignoring update";
         return;
     }
@@ -430,21 +432,48 @@ void VisibilityManager::setIsHidden(bool isHidden)
     emit isHiddenChanged();
 }
 
-bool VisibilityManager::blockHiding() const
+bool VisibilityManager::hidingIsBlocked() const
 {
-    return m_blockHiding;
+    return (m_blockHidingEvents.count() > 0);
 }
 
-void VisibilityManager::setBlockHiding(bool blockHiding)
+
+void VisibilityManager::addBlockHidingEvent(const QString &type)
 {
-    if (m_blockHiding == blockHiding) {
+    if (m_blockHidingEvents.contains(type) || type.isEmpty()) {
         return;
     }
 
-    m_blockHiding = blockHiding;
-    //qDebug() << "blockHiding:" << blockHiding;
+    qDebug() << " adding block hiding event :: " << type;
 
-    if (m_blockHiding) {
+    bool prevHidingIsBlocked = hidingIsBlocked();
+
+    m_blockHidingEvents << type;
+
+    if (prevHidingIsBlocked != hidingIsBlocked()) {
+        emit hidingIsBlockedChanged();
+    }
+}
+
+void VisibilityManager::removeBlockHidingEvent(const QString &type)
+{
+    if (!m_blockHidingEvents.contains(type) || type.isEmpty()) {
+        return;
+    }
+    qDebug() << " remove block hiding event :: " << type;
+
+    bool prevHidingIsBlocked = hidingIsBlocked();
+
+    m_blockHidingEvents.removeAll(type);
+
+    if (prevHidingIsBlocked != hidingIsBlocked()) {
+        emit hidingIsBlockedChanged();
+    }
+}
+
+void VisibilityManager::on_hidingIsBlockedChanged()
+{
+    if (hidingIsBlocked()) {
         m_timerHide.stop();
 
         if (m_isHidden) {
@@ -453,8 +482,6 @@ void VisibilityManager::setBlockHiding(bool blockHiding)
     } else {
         updateHiddenState();
     }
-
-    emit blockHidingChanged();
 }
 
 int VisibilityManager::timerShow() const
@@ -542,7 +569,7 @@ void VisibilityManager::show()
 
 void VisibilityManager::raiseView(bool raise)
 {
-    if (m_blockHiding || m_mode == Latte::Types::SideBar)
+    if (hidingIsBlocked() || m_mode == Latte::Types::SideBar)
         return;
 
     if (raise) {
@@ -592,7 +619,11 @@ void VisibilityManager::toggleHiddenState()
                 emit mustBeHide();
             }
         } else {
-            setBlockHiding(!m_blockHiding);
+            if (!m_blockHidingEvents.contains(Q_FUNC_INFO)) {
+                addBlockHidingEvent(Q_FUNC_INFO);
+            } else {
+                removeBlockHidingEvent(Q_FUNC_INFO);
+            }
         }
     }
 }

@@ -52,13 +52,13 @@ namespace ViewPart {
 class VisibilityManager : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool hidingIsBlocked READ hidingIsBlocked NOTIFY hidingIsBlockedChanged)
 
     Q_PROPERTY(Latte::Types::Visibility mode READ mode WRITE setMode NOTIFY modeChanged)
     Q_PROPERTY(bool raiseOnDesktop READ raiseOnDesktop WRITE setRaiseOnDesktop NOTIFY raiseOnDesktopChanged)
-    Q_PROPERTY(bool raiseOnActivity READ raiseOnActivity WRITE setRaiseOnActivity NOTIFY raiseOnActivityChanged)
+    Q_PROPERTY(bool raiseOnActivity READ raiseOnActivity WRITE setRaiseOnActivity NOTIFY raiseOnActivityChanged)    
     Q_PROPERTY(bool isHidden READ isHidden WRITE setIsHidden NOTIFY isHiddenChanged)
-    Q_PROPERTY(bool isBelowLayer READ isBelowLayer NOTIFY isBelowLayerChanged)
-    Q_PROPERTY(bool blockHiding READ blockHiding WRITE setBlockHiding NOTIFY blockHidingChanged)
+    Q_PROPERTY(bool isBelowLayer READ isBelowLayer NOTIFY isBelowLayerChanged)    
     Q_PROPERTY(bool containsMouse READ containsMouse NOTIFY containsMouseChanged)
 
     //! KWin Edges Support Options
@@ -88,8 +88,7 @@ public:
     bool isHidden() const;
     void setIsHidden(bool isHidden);
 
-    bool blockHiding() const;
-    void setBlockHiding(bool blockHiding);
+    bool hidingIsBlocked() const;
 
     bool containsMouse() const;
 
@@ -115,6 +114,9 @@ public slots:
     Q_INVOKABLE void setViewOnBackLayer();
     Q_INVOKABLE void setViewOnFrontLayer();
 
+    Q_INVOKABLE void addBlockHidingEvent(const QString &type);
+    Q_INVOKABLE void removeBlockHidingEvent(const QString &type);
+
     void initViewFlags();
 
 signals:
@@ -129,7 +131,7 @@ signals:
     void raiseOnActivityChanged();
     void isBelowLayerChanged();
     void isHiddenChanged();
-    void blockHidingChanged();
+    void hidingIsBlockedChanged();
     void containsMouseChanged();
     void timerShowChanged();
     void timerHideChanged();
@@ -143,6 +145,8 @@ private slots:
     void restoreConfig();
 
     void setIsBelowLayer(bool below);
+
+    void on_hidingIsBlockedChanged();
 
     //! KWin Edges Support functions
     void updateKWinEdgesSupport();
@@ -190,12 +194,13 @@ private:
     bool m_isBelowLayer{false};
     bool m_isHidden{false};
     bool m_dragEnter{false};
-    bool m_blockHiding{false};
     bool m_containsMouse{false};
     bool m_raiseTemporarily{false};
     bool m_raiseOnDesktopChange{false};
     bool m_raiseOnActivityChange{false};
     bool m_hideNow{false};
+
+    QStringList m_blockHidingEvents;
 
     QRect m_publishedStruts;
     QRegion m_lastMask;

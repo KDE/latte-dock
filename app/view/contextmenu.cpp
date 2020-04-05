@@ -40,6 +40,8 @@
 #include <Plasma/Corona>
 #include <PlasmaQuick/AppletQuickItem>
 
+#define BLOCKHIDINGTYPE "View::contextMenu()"
+
 namespace Latte {
 namespace ViewPart {
 
@@ -65,10 +67,6 @@ void ContextMenu::menuAboutToHide()
     }
 
     m_contextMenu = 0;
-
-    if (!m_latteView->containment()->isUserConfiguring()) {
-        m_latteView->visibility()->setBlockHiding(false);
-    }
 
     emit menuChanged();
 }
@@ -284,7 +282,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                 }
 
                 connect(desktopMenu, SIGNAL(aboutToHide()), this, SLOT(menuAboutToHide()));
-                m_latteView->visibility()->setBlockHiding(true);
+
                 desktopMenu->popup(pos);
                 event->setAccepted(true);
                 emit menuChanged();

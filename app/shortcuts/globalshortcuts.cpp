@@ -51,6 +51,8 @@
 #include <Plasma/Applet>
 #include <Plasma/Containment>
 
+#define SHORTCUTBLOCKHIDINGTYPE "globalshortcuts::blockHiding()"
+
 namespace Latte {
 
 const int APPLETEXECUTIONDELAY = 400;
@@ -254,11 +256,12 @@ void GlobalShortcuts::activateLauncherMenu()
         if (highestPriorityView->visibility()->isHidden() && highestPriorityView->interface()->applicationLauncherInPopup()) {
             m_lastInvokedAction = m_singleMetaAction;
 
-            highestPriorityView->visibility()->setBlockHiding(true);
+            highestPriorityView->visibility()->addBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
 
             //! delay the execution in order to show first the view
             QTimer::singleShot(APPLETEXECUTIONDELAY, [this, highestPriorityView]() {
                 highestPriorityView->toggleAppletExpanded(highestPriorityView->interface()->applicationLauncherId());
+                 highestPriorityView->visibility()->removeBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
             });
         } else {
             highestPriorityView->toggleAppletExpanded(highestPriorityView->interface()->applicationLauncherId());
@@ -348,7 +351,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
             }
 
             if (delayed) {
-                view->visibility()->setBlockHiding(true);
+                view->visibility()->addBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
                 m_hideViewsTimer.start();
             }
 
@@ -421,7 +424,7 @@ void GlobalShortcuts::showViews()
 
         if (!m_hideViewsTimer.isActive()) {
             m_hideViews.append(viewWithTasks);
-            viewWithTasks->visibility()->setBlockHiding(true);
+            viewWithTasks->visibility()->addBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
         }
     }
 
@@ -431,7 +434,7 @@ void GlobalShortcuts::showViews()
 
         if (!m_hideViewsTimer.isActive()) {
             m_hideViews.append(viewWithMeta);
-            viewWithMeta->visibility()->setBlockHiding(true);
+            viewWithMeta->visibility()->addBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
         }
     }
 
@@ -450,7 +453,7 @@ void GlobalShortcuts::showViews()
                 if (view != viewWithTasks && view != viewWithMeta) {
                     if (view->interface()->showShortcutBadges(false, false)) {
                         m_hideViews.append(view);
-                        view->visibility()->setBlockHiding(true);
+                        view->visibility()->addBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
                     }
                 }
             }
@@ -525,7 +528,7 @@ void GlobalShortcuts::hideViewsTimerSlot()
 
         if (viewsToHideAreValid()) {
             for(const auto latteView : m_hideViews) {
-                latteView->visibility()->setBlockHiding(false);
+                latteView->visibility()->removeBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
                 latteView->interface()->hideShortcutBadges();
             }
         }

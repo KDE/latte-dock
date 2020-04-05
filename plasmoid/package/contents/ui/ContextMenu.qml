@@ -83,7 +83,6 @@ PlasmaComponents.ContextMenu {
     function show() {
         //trying to use the dragging mechanism in order to not hide the dock
         root.disableRestoreZoom = true;
-        root.signalActionsBlockHiding(1);
         //root.signalDraggingState(true);
         loadDynamicLaunchActions(visualParent.m.LauncherUrlWithoutIcon);
         // backend.ungrabMouse(visualParent);
@@ -334,7 +333,6 @@ PlasmaComponents.ContextMenu {
         if (!changingLayout) {
             root.contextMenu = null;
             backend.ungrabMouse(visualParent);
-            root.signalActionsBlockHiding(-1);
             //root.signalDraggingState(false);
             root.disableRestoreZoom = false;
             root.startCheckRestoreZoomTimer(100);

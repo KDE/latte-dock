@@ -300,7 +300,6 @@ Item {
     signal presentWindows(variant winIds);
     signal requestLayout;
     signal separatorsUpdated();
-    signal signalActionsBlockHiding(int value);
     signal signalAnimationsNeedBothAxis(int value);
     signal signalAnimationsNeedLength(int value);
     signal signalAnimationsNeedThickness(int value);
@@ -379,6 +378,12 @@ Item {
         }
     }
 
+    Binding {
+        target: plasmoid
+        property: "status"
+        value: (tasksModel.anyTaskDemandsAttentionInValidTime || root.dragSource ?
+                    PlasmaCore.Types.NeedsAttentionStatus : PlasmaCore.Types.PassiveStatus);
+    }
 
     /////
     PlasmaCore.ColorScope{
@@ -530,13 +535,11 @@ Item {
     onDragSourceChanged: {
         if (dragSource == null) {
             root.draggingFinished();
-            root.signalActionsBlockHiding(-1);
             tasksModel.syncLaunchers();
 
             restoreDraggingPhaseTimer.start();
         } else {
             inDraggingPhase = true;
-            root.signalActionsBlockHiding(1);
         }
     }
 
@@ -569,7 +572,6 @@ Item {
 
             if (latteView && signalSent) {
                 //it is used to unblock dock hiding
-                root.signalActionsBlockHiding(-1);
                 signalSent = false;
             }
 
@@ -601,7 +603,6 @@ Item {
 
                 if (latteView && !signalSent) {
                     //it is used to block dock hiding
-                    root.signalActionsBlockHiding(1);
                     signalSent = true;
                 }
 
@@ -703,6 +704,8 @@ Item {
         groupMode: groupTasksByDefault ? TaskManager.TasksModel.GroupApplications : TaskManager.TasksModel.GroupDisabled
         sortMode: TaskManager.TasksModel.SortManual
 
+        property bool anyTaskDemandsAttentionInValidTime: false
+
         function updateLaunchersList(){
             if (latteView.universalSettings
                     && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
@@ -771,7 +774,7 @@ Item {
 
         onAnyTaskDemandsAttentionChanged: {
             if (anyTaskDemandsAttention){
-                plasmoid.status = PlasmaCore.Types.RequiresAttentionStatus;
+                anyTaskDemandsAttentionInValidTime = true;
                 attentionTimerComponent.createObject(root);
             }
         }
@@ -971,7 +974,7 @@ Item {
             id: attentionTimer
             interval:8500
             onTriggered: {
-                plasmoid.status = PlasmaCore.Types.PassiveStatus;
+                tasksModel.anyTaskDemandsAttentionInValidTime = false;
                 destroy();
 
                 if (latteView && latteView.debugModeTimers) {

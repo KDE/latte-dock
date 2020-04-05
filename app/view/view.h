@@ -41,6 +41,7 @@
 // Qt
 #include <QQuickView>
 #include <QMenu>
+#include <QMetaObject>
 #include <QMimeData>
 #include <QScreen>
 #include <QPointer>
@@ -244,7 +245,6 @@ public slots:
     Q_INVOKABLE void deactivateApplets();
     Q_INVOKABLE void moveToLayout(QString layoutName);
     Q_INVOKABLE void removeTasksPlasmoid();
-    Q_INVOKABLE void setBlockHiding(bool block);
     Q_INVOKABLE void toggleAppletExpanded(const int id);
 
     Q_INVOKABLE bool appletIsExpandable(const int id);
@@ -326,7 +326,11 @@ private slots:
     void preferredViewForShortcutsChangedSlot(Latte::View *view);
     void releaseGrab();
     void reloadSource();
+    void updateTransientWindowsTracking();
     void statusChanged(Plasma::Types::ItemStatus);
+
+    void addTransientWindow(QWindow *window);
+    void removeTransientWindow(const bool &visible);
 
     void restoreConfig();
     void saveConfig();
@@ -399,6 +403,9 @@ private:
 
     //! Connections to release and bound for the assigned layout
     QList<QMetaObject::Connection> connectionsLayout;
+
+    //! track transientWindows
+    QList<QWindow *> m_transientWindows;
 
     QPointer<Latte::Corona> m_corona;
 

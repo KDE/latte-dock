@@ -238,10 +238,9 @@ Item{
 
     onInEditModeChanged: {
         if (inEditMode) {
-            latteView.setBlockHiding(true);
+            latteView.visibility.addBlockHidingEvent("EditVisual[qml]::inEditMode()");
         } else {
-            latteView.setBlockHiding(false);
-
+            latteView.visibility.removeBlockHidingEvent("EditVisual[qml]::inEditMode()");
             if (latteView.visibility.isHidden) {
                 latteView.visibility.mustBeShown();
             }

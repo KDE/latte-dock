@@ -250,14 +250,6 @@ Window{
             }
 
             Text{
-                text: "Actions Block Hiding "+space
-            }
-
-            Text{
-                text: root.actionsBlockHiding
-            }
-
-            Text{
                 text: "Contains Mouse (flag)"+space
             }
 

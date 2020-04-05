@@ -254,8 +254,6 @@ Item {
     property alias hoveredIndex: layoutsContainer.hoveredIndex
     property alias directRenderDelayerIsRunning: directRenderDelayerForEnteringTimer.running
 
-    property int actionsBlockHiding: 0 //actions that block hiding
-
     property int animationsNeedBothAxis:0 //animations need space in both axes, e.g zooming a task
     property int animationsNeedLength: 0 // animations need length, e.g. adding a task
     property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
@@ -1382,27 +1380,6 @@ Item {
         }
 
         appletsNeedWindowsTracking = Math.max(appletsNeedWindowsTracking + step, 0);
-    }
-
-    //this is used when dragging a task in order to not hide the dock
-    //and also by the menu appearing from tasks for the same reason
-    function slotActionsBlockHiding(step) {
-        //if (root.editMode) {
-        //    return;
-        // }
-
-        if ((step === 0) || (!latteView)) {
-            return;
-        }
-
-        actionsBlockHiding = Math.max(actionsBlockHiding + step, 0);
-
-        if (actionsBlockHiding > 0){
-            latteView.setBlockHiding(true);
-        } else {
-            if (!root.editMode)
-                latteView.setBlockHiding(false);
-        }
     }
 
     function slotPreviewsShown(){
