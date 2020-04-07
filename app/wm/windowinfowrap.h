@@ -36,193 +36,109 @@ class WindowInfoWrap
 {
 
 public:
-    WindowInfoWrap() noexcept
-        : m_isValid(false)
-        , m_isActive(false)
-        , m_isMinimized(false)
-        , m_isMaxVert(false)
-        , m_isMaxHoriz(false)
-        , m_isFullscreen(false)
-        , m_isShaded(false)
-        , m_isKeepAbove(false)
-        , m_isKeepBelow(false)
-        , m_hasSkipTaskbar(false)
-        , m_isOnAllDesktops(false)
-        , m_isOnAllActivities(false)
-        , m_isClosable(false)
-        , m_isFullScreenable(false)
-        , m_isGroupable(false)
-        , m_isMaximizable(false)
-        , m_isMinimizable(false)
-        , m_isMovable(false)
-        , m_isResizable(false)
-        , m_isShadeable(false)
-        , m_isVirtualDesktopsChangeable(false)
-    {
-    }
+    WindowInfoWrap();
+    WindowInfoWrap(const WindowInfoWrap &o);
+    WindowInfoWrap(WindowInfoWrap &&o);
 
-    WindowInfoWrap(const WindowInfoWrap &o) noexcept
-        : m_wid(o.m_wid)
-        , m_parentId(o.m_parentId)
-        , m_geometry(o.m_geometry)
-        , m_isValid(o.m_isValid)
-        , m_isActive(o.m_isActive)
-        , m_isMinimized(o.m_isMinimized)
-        , m_isMaxVert(o.m_isMaxVert)
-        , m_isMaxHoriz(o.m_isMaxHoriz)
-        , m_isFullscreen(o.m_isFullscreen)
-        , m_isShaded(o.m_isShaded)
-        , m_isKeepAbove(o.m_isKeepAbove)
-        , m_isKeepBelow(o.m_isKeepBelow)
-        , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
-        , m_isOnAllDesktops(o.m_isOnAllDesktops)
-        , m_isOnAllActivities(o.m_isOnAllActivities)
-        , m_isClosable(o.m_isClosable)
-        , m_isFullScreenable(o.m_isFullScreenable)
-        , m_isGroupable(o.m_isGroupable)
-        , m_isMaximizable(o.m_isMaximizable)
-        , m_isMinimizable(o.m_isMinimizable)
-        , m_isMovable(o.m_isMovable)
-        , m_isResizable(o.m_isResizable)
-        , m_isShadeable(o.m_isShadeable)
-        , m_isVirtualDesktopsChangeable(o.m_isVirtualDesktopsChangeable)
-        , m_desktops(o.m_desktops)
-        , m_activities(o.m_activities)
-        , m_display(o.m_display) {
-    }
+    WindowInfoWrap &operator=(WindowInfoWrap &&rhs);
+    WindowInfoWrap &operator=(const WindowInfoWrap &rhs);
 
-    WindowInfoWrap(WindowInfoWrap &&o) noexcept
-        : m_wid(o.m_wid)
-        , m_parentId(o.m_parentId)
-        , m_geometry(o.m_geometry)
-        , m_isValid(o.m_isValid)
-        , m_isActive(o.m_isActive)
-        , m_isMinimized(o.m_isMinimized)
-        , m_isMaxVert(o.m_isMaxVert)
-        , m_isMaxHoriz(o.m_isMaxHoriz)
-        , m_isFullscreen(o.m_isFullscreen)
-        , m_isShaded(o.m_isShaded)
-        , m_isKeepAbove(o.m_isKeepAbove)
-        , m_isKeepBelow(o.m_isKeepBelow)
-        , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
-        , m_isOnAllDesktops(o.m_isOnAllDesktops)
-        , m_isOnAllActivities(o.m_isOnAllActivities)
-        , m_isClosable(o.m_isClosable)
-        , m_isFullScreenable(o.m_isFullScreenable)
-        , m_isGroupable(o.m_isGroupable)
-        , m_isMaximizable(o.m_isMaximizable)
-        , m_isMinimizable(o.m_isMinimizable)
-        , m_isMovable(o.m_isMovable)
-        , m_isResizable(o.m_isResizable)
-        , m_isShadeable(o.m_isShadeable)
-        , m_isVirtualDesktopsChangeable(o.m_isVirtualDesktopsChangeable)
-        , m_desktops(o.m_desktops)
-        , m_activities(o.m_activities)
-        , m_display(o.m_display) {
-    }
+    bool isValid() const;
+    void setIsValid(bool isValid);
 
-    inline WindowInfoWrap &operator=(WindowInfoWrap &&rhs) noexcept;
-    inline WindowInfoWrap &operator=(const WindowInfoWrap &rhs) noexcept;
-    inline bool operator==(const WindowInfoWrap &rhs) const noexcept;
-    inline bool operator<(const WindowInfoWrap &rhs) const noexcept;
-    inline bool operator>(const WindowInfoWrap &rhs) const noexcept;
+    bool isActive() const;
+    void setIsActive(bool isActive);
 
-    inline bool isValid() const noexcept;
-    inline void setIsValid(bool isValid) noexcept;
+    bool isMinimized() const;
+    void setIsMinimized(bool isMinimized);
 
-    inline bool isActive() const noexcept;
-    inline void setIsActive(bool isActive) noexcept;
+    bool isMaximized() const;
 
-    inline bool isMinimized() const noexcept;
-    inline void setIsMinimized(bool isMinimized) noexcept;
+    bool isMaxVert() const;
+    void setIsMaxVert(bool isMaxVert);
 
-    inline bool isMaximized() const noexcept;
+    bool isMaxHoriz() const;
+    void setIsMaxHoriz(bool isMaxHoriz);
 
-    inline bool isMaxVert() const noexcept;
-    inline void setIsMaxVert(bool isMaxVert) noexcept;
+    bool isFullscreen() const;
+    void setIsFullscreen(bool isFullscreen);
 
-    inline bool isMaxHoriz() const noexcept;
-    inline void setIsMaxHoriz(bool isMaxHoriz) noexcept;
+    bool isShaded() const;
+    void setIsShaded(bool isShaded);
 
-    inline bool isFullscreen() const noexcept;
-    inline void setIsFullscreen(bool isFullscreen) noexcept;
+    bool isKeepAbove() const;
+    void setIsKeepAbove(bool isKeepAbove);
 
-    inline bool isShaded() const noexcept;
-    inline void setIsShaded(bool isShaded) noexcept;
+    bool isKeepBelow() const;
+    void setIsKeepBelow(bool isKeepBelow);
 
-    inline bool isKeepAbove() const noexcept;
-    inline void setIsKeepAbove(bool isKeepAbove) noexcept;
+    bool hasSkipTaskbar() const;
+    void setHasSkipTaskbar(bool skipTaskbar);
 
-    inline bool isKeepBelow() const noexcept;
-    inline void setIsKeepBelow(bool isKeepBelow) noexcept;
+    bool isOnAllDesktops() const;
+    void setIsOnAllDesktops(bool alldesktops);
 
-    inline bool hasSkipTaskbar() const noexcept;
-    inline void setHasSkipTaskbar(bool skipTaskbar) noexcept;
-
-    inline bool isOnAllDesktops() const noexcept;
-    inline void setIsOnAllDesktops(bool alldesktops) noexcept;
-
-    inline bool isOnAllActivities() const noexcept;
-    inline void setIsOnAllActivities(bool allactivities) noexcept;
+    bool isOnAllActivities() const;
+    void setIsOnAllActivities(bool allactivities);
 
     //!BEGIN: Window Abilities
-    inline bool isCloseable() const noexcept;
-    inline void setIsClosable(bool closable) noexcept;
+    bool isCloseable() const;
+    void setIsClosable(bool closable);
 
-    inline bool isFullScreenable() const noexcept;
-    inline void setIsFullScreenable(bool fullscreenable) noexcept;
+    bool isFullScreenable() const;
+    void setIsFullScreenable(bool fullscreenable);
 
-    inline bool isGroupable() const noexcept;
-    inline void setIsGroupable(bool groupable) noexcept;
+    bool isGroupable() const;
+    void setIsGroupable(bool groupable);
 
-    inline bool isMaximizable() const noexcept;
-    inline void setIsMaximizable(bool maximizable) noexcept;
+    bool isMaximizable() const;
+    void setIsMaximizable(bool maximizable);
 
-    inline bool isMinimizable() const noexcept;
-    inline void setIsMinimizable(bool minimizable) noexcept;
+    bool isMinimizable() const;
+    void setIsMinimizable(bool minimizable);
 
-    inline bool isMovable() const noexcept;
-    inline void setIsMovable(bool movable) noexcept;
+    bool isMovable() const;
+    void setIsMovable(bool movable);
 
-    inline bool isResizable() const noexcept;
-    inline void setIsResizable(bool resizable) noexcept;
+    bool isResizable() const;
+    void setIsResizable(bool resizable);
 
-    inline bool isShadeable() const noexcept;
-    inline void setIsShadeable(bool shadeble) noexcept;
+    bool isShadeable() const;
+    void setIsShadeable(bool shadeble);
 
-    inline bool isVirtualDesktopsChangeable() const noexcept;
-    inline void setIsVirtualDesktopsChangeable(bool virtualdesktopchangeable) noexcept;
+    bool isVirtualDesktopsChangeable() const;
+    void setIsVirtualDesktopsChangeable(bool virtualdesktopchangeable);
     //!END: Window Abilities
 
-    inline bool isMainWindow() const noexcept;
-    inline bool isChildWindow() const noexcept;
+    bool isMainWindow() const;
+    bool isChildWindow() const;
 
-    inline QRect geometry() const noexcept;
-    inline void setGeometry(const QRect &geometry) noexcept;
+    QRect geometry() const;
+    void setGeometry(const QRect &geometry);
 
-    inline QString appName() const noexcept;
-    inline void setAppName(const QString &appName) noexcept;
+    QString appName() const;
+    void setAppName(const QString &appName);
 
-    inline QString display() const noexcept;
-    inline void setDisplay(const QString &display) noexcept;
+    QString display() const;
+    void setDisplay(const QString &display);
 
-    inline QIcon icon() const noexcept;
-    inline void setIcon(const QIcon &icon) noexcept;
+    QIcon icon() const;
+    void setIcon(const QIcon &icon);
 
-    inline WindowId wid() const noexcept;
-    inline void setWid(const WindowId &wid) noexcept;
+    WindowId wid() const;
+    void setWid(const WindowId &wid);
 
-    inline WindowId parentId() const noexcept;
-    inline void setParentId(const WindowId &parentId) noexcept;
+    WindowId parentId() const;
+    void setParentId(const WindowId &parentId);
 
-    inline QStringList desktops() const noexcept;
-    inline void setDesktops(const QStringList &desktops) noexcept;
+    QStringList desktops() const;
+    void setDesktops(const QStringList &desktops);
 
-    inline QStringList activities() const noexcept;
-    inline void setActivities(const QStringList &activities) noexcept;
+    QStringList activities() const;
+    void setActivities(const QStringList &activities);
 
-    inline bool isOnDesktop(const QString &desktop) const noexcept;
-    inline bool isOnActivity(const QString &activity) const noexcept;
+    bool isOnDesktop(const QString &desktop) const;
+    bool isOnActivity(const QString &activity) const;
 
 private:
     WindowId m_wid{0};
@@ -230,29 +146,29 @@ private:
 
     QRect m_geometry;
 
-    bool m_isValid : 1;
-    bool m_isActive : 1;
-    bool m_isMinimized : 1;
-    bool m_isMaxVert : 1;
-    bool m_isMaxHoriz : 1;
-    bool m_isFullscreen : 1;
-    bool m_isShaded : 1;
-    bool m_isKeepAbove: 1;
-    bool m_isKeepBelow: 1;
-    bool m_hasSkipTaskbar: 1;
-    bool m_isOnAllDesktops: 1;
-    bool m_isOnAllActivities: 1;
+    bool m_isValid{false};
+    bool m_isActive{false};
+    bool m_isMinimized{false};
+    bool m_isMaxVert{false};
+    bool m_isMaxHoriz{false};
+    bool m_isFullscreen{false};
+    bool m_isShaded{false};
+    bool m_isKeepAbove{false};
+    bool m_isKeepBelow{false};
+    bool m_hasSkipTaskbar{false};
+    bool m_isOnAllDesktops{false};
+    bool m_isOnAllActivities{false};
 
     //!BEGIN: Window Abilities
-    bool m_isClosable : 1;
-    bool m_isFullScreenable : 1;
-    bool m_isGroupable : 1;
-    bool m_isMaximizable : 1;
-    bool m_isMinimizable : 1;
-    bool m_isMovable : 1;
-    bool m_isResizable : 1;
-    bool m_isShadeable : 1;
-    bool m_isVirtualDesktopsChangeable : 1;
+    bool m_isClosable{false};
+    bool m_isFullScreenable{false};
+    bool m_isGroupable{false};
+    bool m_isMaximizable{false};
+    bool m_isMinimizable{false};
+    bool m_isMovable{false};
+    bool m_isResizable{false};
+    bool m_isShadeable{false};
+    bool m_isVirtualDesktopsChangeable{false};
     //!END: Window Abilities
 
     QString m_appName;
@@ -263,405 +179,6 @@ private:
     QStringList m_desktops;
     QStringList m_activities;
 };
-
-// BEGIN: definitions
-inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
-{
-    m_wid = rhs.m_wid;
-    m_parentId = rhs.m_parentId;
-    m_geometry = rhs.m_geometry;
-    m_isValid = rhs.m_isValid;
-    m_isActive = rhs.m_isActive;
-    m_isMinimized = rhs.m_isMinimized;
-    m_isMaxVert = rhs.m_isMaxVert;
-    m_isMaxHoriz = rhs.m_isMaxHoriz;
-    m_isFullscreen = rhs.m_isFullscreen;
-    m_isShaded = rhs.m_isShaded;
-    m_isKeepAbove = rhs.m_isKeepAbove;
-    m_isKeepBelow = rhs.m_isKeepBelow;
-    m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
-    m_isOnAllDesktops = rhs.m_isOnAllDesktops;
-    m_isOnAllActivities = rhs.m_isOnAllActivities;
-    m_isClosable = rhs.m_isClosable;
-    m_isFullScreenable = rhs.m_isFullScreenable;
-    m_isGroupable = rhs.m_isGroupable;
-    m_isMaximizable = rhs.m_isMaximizable;
-    m_isMinimizable = rhs.m_isMinimizable;
-    m_isMovable = rhs.m_isMovable;
-    m_isResizable = rhs.m_isResizable;
-    m_isShadeable = rhs.m_isShadeable;
-    m_isVirtualDesktopsChangeable = rhs.m_isVirtualDesktopsChangeable;
-
-    m_display = rhs.m_display;
-    m_desktops = rhs.m_desktops;
-    m_activities = rhs.m_activities;
-    return *this;
-}
-
-inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noexcept
-{
-    m_wid = rhs.m_wid;
-    m_parentId = rhs.m_parentId;
-    m_geometry = std::move(rhs.m_geometry);
-    m_isValid = rhs.m_isValid;
-    m_isActive = rhs.m_isActive;
-    m_isMinimized = rhs.m_isMinimized;
-    m_isMaxVert = rhs.m_isMaxVert;
-    m_isMaxHoriz = rhs.m_isMaxHoriz;
-    m_isFullscreen = rhs.m_isFullscreen;
-    m_isShaded = rhs.m_isShaded;
-    m_isKeepAbove = rhs.m_isKeepAbove;
-    m_isKeepBelow = rhs.m_isKeepBelow;
-    m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
-    m_isOnAllDesktops = rhs.m_isOnAllDesktops;
-    m_isOnAllActivities = rhs.m_isOnAllActivities;
-    m_isClosable = rhs.m_isClosable;
-    m_isFullScreenable = rhs.m_isFullScreenable;
-    m_isGroupable = rhs.m_isGroupable;
-    m_isMaximizable = rhs.m_isMaximizable;
-    m_isMinimizable = rhs.m_isMinimizable;
-    m_isMovable = rhs.m_isMovable;
-    m_isResizable = rhs.m_isResizable;
-    m_isShadeable = rhs.m_isShadeable;
-    m_isVirtualDesktopsChangeable = rhs.m_isVirtualDesktopsChangeable;;
-
-    m_display = rhs.m_display;
-    m_desktops = rhs.m_desktops;
-    m_activities = rhs.m_activities;
-    return *this;
-}
-
-inline bool WindowInfoWrap::operator==(const WindowInfoWrap &rhs) const noexcept
-{
-    return m_wid == rhs.m_wid;
-}
-
-inline bool WindowInfoWrap::operator<(const WindowInfoWrap &rhs) const noexcept
-{
-    return m_wid < rhs.m_wid;
-}
-
-inline bool WindowInfoWrap::operator>(const WindowInfoWrap &rhs) const noexcept
-{
-    return m_wid > rhs.m_wid;
-}
-
-inline bool WindowInfoWrap::isValid() const noexcept
-{
-    return m_isValid;
-}
-
-inline void WindowInfoWrap::setIsValid(bool isValid) noexcept
-{
-    m_isValid = isValid;
-}
-
-inline bool WindowInfoWrap::isActive() const noexcept
-{
-    return m_isActive;
-}
-
-inline void WindowInfoWrap::setIsActive(bool isActive) noexcept
-{
-    m_isActive = isActive;
-}
-
-inline bool WindowInfoWrap::isMinimized() const noexcept
-{
-    return m_isMinimized;
-}
-
-inline void WindowInfoWrap::setIsMinimized(bool isMinimized) noexcept
-{
-    m_isMinimized = isMinimized;
-}
-
-inline bool WindowInfoWrap::isMaximized() const noexcept
-{
-    return m_isMaxVert && m_isMaxHoriz;
-}
-
-inline bool WindowInfoWrap::isMaxVert() const noexcept
-{
-    return m_isMaxVert;
-}
-
-inline void WindowInfoWrap::setIsMaxVert(bool isMaxVert) noexcept
-{
-    m_isMaxVert = isMaxVert;
-}
-
-inline bool WindowInfoWrap::isMaxHoriz() const noexcept
-{
-    return m_isMaxHoriz;
-}
-
-inline void WindowInfoWrap::setIsMaxHoriz(bool isMaxHoriz) noexcept
-{
-    m_isMaxHoriz = isMaxHoriz;
-}
-
-inline bool WindowInfoWrap::isFullscreen() const noexcept
-{
-    return m_isFullscreen;
-}
-
-inline void WindowInfoWrap::setIsFullscreen(bool isFullscreen) noexcept
-{
-    m_isFullscreen = isFullscreen;
-}
-
-inline bool WindowInfoWrap::isShaded() const noexcept
-{
-    return m_isShaded;
-}
-
-inline void WindowInfoWrap::setIsShaded(bool isShaded) noexcept
-{
-    m_isShaded = isShaded;
-}
-
-inline bool WindowInfoWrap::isKeepAbove() const noexcept
-{
-    return m_isKeepAbove;
-}
-
-inline void WindowInfoWrap::setIsKeepAbove(bool isKeepAbove) noexcept
-{
-    m_isKeepAbove = isKeepAbove;
-}
-
-inline bool WindowInfoWrap::isKeepBelow() const noexcept
-{
-    return m_isKeepBelow;
-}
-
-inline void WindowInfoWrap::setIsKeepBelow(bool isKeepBelow) noexcept
-{
-    m_isKeepBelow = isKeepBelow;
-}
-
-inline bool WindowInfoWrap::hasSkipTaskbar() const noexcept
-{
-    return m_hasSkipTaskbar;
-}
-
-inline void WindowInfoWrap::setHasSkipTaskbar(bool skipTaskbar) noexcept
-{
-    m_hasSkipTaskbar = skipTaskbar;
-}
-
-inline bool WindowInfoWrap::isOnAllDesktops() const noexcept
-{
-    return m_isOnAllDesktops;
-}
-
-inline void WindowInfoWrap::setIsOnAllDesktops(bool alldesktops) noexcept
-{
-    m_isOnAllDesktops = alldesktops;
-}
-
-inline bool WindowInfoWrap::isOnAllActivities() const noexcept
-{
-    return m_isOnAllActivities;
-}
-
-inline void WindowInfoWrap::setIsOnAllActivities(bool allactivities) noexcept
-{
-    m_isOnAllActivities = allactivities;
-}
-
-//!BEGIN: Window Abilities
-inline bool WindowInfoWrap::isCloseable() const noexcept
-{
-    return m_isClosable;
-}
-inline void WindowInfoWrap::setIsClosable(bool closable) noexcept
-{
-    m_isClosable = closable;
-}
-
-inline bool WindowInfoWrap::isFullScreenable() const noexcept
-{
-    return m_isFullScreenable;
-}
-inline void WindowInfoWrap::setIsFullScreenable(bool fullscreenable) noexcept
-{
-    m_isFullScreenable = fullscreenable;
-}
-
-inline bool WindowInfoWrap::isGroupable() const noexcept
-{
-    return m_isGroupable;
-}
-inline void WindowInfoWrap::setIsGroupable(bool groupable) noexcept
-{
-    m_isGroupable = groupable;
-}
-
-inline bool WindowInfoWrap::isMaximizable() const noexcept
-{
-    return m_isMaximizable;
-}
-inline void WindowInfoWrap::setIsMaximizable(bool maximizable) noexcept
-{
-    m_isMaximizable = maximizable;
-}
-
-inline bool WindowInfoWrap::isMinimizable() const noexcept
-{
-    return m_isMinimizable;
-}
-inline void WindowInfoWrap::setIsMinimizable(bool minimizable) noexcept
-{
-    m_isMinimizable = minimizable;
-}
-
-inline bool WindowInfoWrap::isMovable() const noexcept
-{
-    return m_isMovable;
-}
-inline void WindowInfoWrap::setIsMovable(bool movable) noexcept
-{
-    m_isMovable = movable;
-}
-
-inline bool WindowInfoWrap::isResizable() const noexcept
-{
-    return m_isResizable;
-}
-inline void WindowInfoWrap::setIsResizable(bool resizable) noexcept
-{
-    m_isResizable = resizable;
-}
-
-inline bool WindowInfoWrap::isShadeable() const noexcept
-{
-    return m_isShadeable;
-}
-inline void WindowInfoWrap::setIsShadeable(bool shadeble) noexcept
-{
-    m_isShadeable = shadeble;
-}
-
-inline bool WindowInfoWrap::isVirtualDesktopsChangeable() const noexcept
-{
-    return m_isVirtualDesktopsChangeable;
-}
-inline void WindowInfoWrap::setIsVirtualDesktopsChangeable(bool virtualdesktopchangeable) noexcept
-{
-    m_isVirtualDesktopsChangeable = virtualdesktopchangeable;
-}
-//!END: Window Abilities
-
-
-
-inline bool WindowInfoWrap::isMainWindow() const noexcept
-{
-    return (m_parentId.toInt() <= 0);
-}
-
-inline bool WindowInfoWrap::isChildWindow() const noexcept
-{
-    return (m_parentId.toInt() > 0);
-}
-
-
-inline QString WindowInfoWrap::appName() const noexcept
-{
-    return m_appName;
-}
-
-inline void WindowInfoWrap::setAppName(const QString &appName) noexcept
-{
-    m_appName = appName;
-}
-
-inline QString WindowInfoWrap::display() const noexcept
-{
-    return m_display;
-}
-
-inline void WindowInfoWrap::setDisplay(const QString &display) noexcept
-{
-    m_display = display;
-}
-
-inline QIcon WindowInfoWrap::icon() const noexcept
-{
-    return m_icon;
-}
-
-inline void WindowInfoWrap::setIcon(const QIcon &icon) noexcept
-{
-    m_icon = icon;
-}
-
-inline QRect WindowInfoWrap::geometry() const noexcept
-{
-    return m_geometry;
-}
-
-inline void WindowInfoWrap::setGeometry(const QRect &geometry) noexcept
-{
-    m_geometry = geometry;
-}
-
-inline WindowId WindowInfoWrap::wid() const noexcept
-{
-    return m_wid;
-}
-
-inline void WindowInfoWrap::setWid(const WindowId &wid) noexcept
-{
-    m_wid = wid;
-}
-
-inline WindowId WindowInfoWrap::parentId() const noexcept
-{
-    return m_parentId;
-}
-
-inline void WindowInfoWrap::setParentId(const WindowId &parentId) noexcept
-{
-    if (m_wid == parentId) {
-        return;
-    }
-
-    m_parentId = parentId;
-}
-
-inline QStringList WindowInfoWrap::desktops() const noexcept
-{
-    return m_desktops;
-}
-
-inline void WindowInfoWrap::setDesktops(const QStringList &desktops) noexcept
-{
-    m_desktops = desktops;
-}
-
-inline QStringList WindowInfoWrap::activities() const noexcept
-{
-    return m_activities;
-}
-
-inline void WindowInfoWrap::setActivities(const QStringList &activities) noexcept
-{
-    m_activities = activities;
-}
-// END: definitions
-
-inline bool WindowInfoWrap::isOnDesktop(const QString &desktop) const noexcept
-{
-    return m_isOnAllDesktops || m_desktops.contains(desktop);
-}
-
-inline bool WindowInfoWrap::isOnActivity(const QString &activity) const noexcept
-{
-    return m_isOnAllActivities || m_activities.contains(activity);
-}
-
 
 }
 }
