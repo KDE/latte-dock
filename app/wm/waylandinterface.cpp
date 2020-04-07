@@ -487,6 +487,10 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid)
         winfoWrap.setIsKeepAbove(w->isKeepAbove());
         winfoWrap.setIsKeepBelow(w->isKeepBelow());
         winfoWrap.setGeometry(w->geometry());
+
+#if KF5_VERSION_MINOR >= 47
+        winfoWrap.setHasSkipSwitcher(w->skipSwitcher());
+#endif
         winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
 
         //! BEGIN:Window Abilities

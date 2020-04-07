@@ -434,6 +434,15 @@ void LastActiveWindow::setWinId(QVariant winId)
 
 void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 {
+    bool isIgnored = info.hasSkipTaskbar() && (info.hasSkipPager() || info.hasSkipSwitcher());
+
+    if (isIgnored) {
+        if (m_history.contains(info.wid())) {
+            windowRemoved(info.wid());
+        }
+        return;
+    }
+
     bool firstActiveness{false};
 
     if (m_winId != info.wid()) {

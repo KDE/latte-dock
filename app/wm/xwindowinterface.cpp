@@ -387,6 +387,10 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid)
 #endif
         winfoWrap.setIsKeepAbove(winfo.hasState(NET::KeepAbove));
         winfoWrap.setIsKeepBelow(winfo.hasState(NET::KeepBelow));
+        winfoWrap.setHasSkipPager(winfo.hasState(NET::SkipPager));
+#if KF5_VERSION_MINOR >= 45
+        winfoWrap.setHasSkipSwitcher(winfo.hasState(NET::SkipSwitcher));
+#endif
         winfoWrap.setHasSkipTaskbar(winfo.hasState(NET::SkipTaskbar));
 
         //! BEGIN:Window Abilities
