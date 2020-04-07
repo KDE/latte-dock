@@ -27,6 +27,11 @@ sudo pacman -Syu
 sudo pacman -S cmake extra-cmake-modules python plasma-framework plasma-desktop
 ```
 
+### Fedora/REHL
+```
+sudo dnf install cmake extra-cmake-modules qt5-qtdeclarative-devel qt5-qtx11extras-devel kf5-kiconthemes-devel kf5-plasma-devel kf5-kwindowsystem-devel kf5-kdeclarative-devel kf5-kxmlgui-devel kf5-kactivities-devel gcc-c++ gcc xcb-util-devel kf5-kwayland-devel git gettext kf5-karchive-devel kf5-knotifications-devel libSM-devel kf5-kcrash-devel kf5-knewstuff-devel kf5-kdbusaddons-devel kf5-kxmlgui-devel kf5-kglobalaccel-devel kf5-kio-devel
+```
+
 ### Building and Installing
 
 **Now you can run the installation script.**
