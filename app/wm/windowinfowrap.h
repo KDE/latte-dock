@@ -72,6 +72,12 @@ public:
     bool isKeepBelow() const;
     void setIsKeepBelow(bool isKeepBelow);
 
+    bool hasSkipPager() const;
+    void setHasSkipPager(bool skipPager);
+
+    bool hasSkipSwitcher() const;
+    void setHasSkipSwitcher(bool skipSwitcher);
+
     bool hasSkipTaskbar() const;
     void setHasSkipTaskbar(bool skipTaskbar);
 
@@ -155,6 +161,8 @@ private:
     bool m_isShaded{false};
     bool m_isKeepAbove{false};
     bool m_isKeepBelow{false};
+    bool m_hasSkipPager{false};
+    bool m_hasSkipSwitcher{false};
     bool m_hasSkipTaskbar{false};
     bool m_isOnAllDesktops{false};
     bool m_isOnAllActivities{false};

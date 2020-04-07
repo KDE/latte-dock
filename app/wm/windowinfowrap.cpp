@@ -41,6 +41,8 @@ WindowInfoWrap::WindowInfoWrap(const WindowInfoWrap &o)
     , m_isShaded(o.m_isShaded)
     , m_isKeepAbove(o.m_isKeepAbove)
     , m_isKeepBelow(o.m_isKeepBelow)
+    , m_hasSkipPager(o.m_hasSkipPager)
+    , m_hasSkipSwitcher(o.m_hasSkipSwitcher)
     , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
     , m_isOnAllDesktops(o.m_isOnAllDesktops)
     , m_isOnAllActivities(o.m_isOnAllActivities)
@@ -72,6 +74,8 @@ WindowInfoWrap::WindowInfoWrap(WindowInfoWrap &&o)
     , m_isShaded(o.m_isShaded)
     , m_isKeepAbove(o.m_isKeepAbove)
     , m_isKeepBelow(o.m_isKeepBelow)
+    , m_hasSkipPager(o.m_hasSkipPager)
+    , m_hasSkipSwitcher(o.m_hasSkipSwitcher)
     , m_hasSkipTaskbar(o.m_hasSkipTaskbar)
     , m_isOnAllDesktops(o.m_isOnAllDesktops)
     , m_isOnAllActivities(o.m_isOnAllActivities)
@@ -106,6 +110,8 @@ WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs)
     m_isShaded = rhs.m_isShaded;
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_isKeepBelow = rhs.m_isKeepBelow;
+    m_hasSkipPager = rhs.m_hasSkipPager;
+    m_hasSkipSwitcher = rhs.m_hasSkipSwitcher;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
     m_isOnAllActivities = rhs.m_isOnAllActivities;
@@ -129,7 +135,7 @@ WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs)
 {
     m_wid = rhs.m_wid;
     m_parentId = rhs.m_parentId;
-    m_geometry = std::move(rhs.m_geometry);
+    m_geometry = rhs.m_geometry;
     m_isValid = rhs.m_isValid;
     m_isActive = rhs.m_isActive;
     m_isMinimized = rhs.m_isMinimized;
@@ -139,6 +145,8 @@ WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs)
     m_isShaded = rhs.m_isShaded;
     m_isKeepAbove = rhs.m_isKeepAbove;
     m_isKeepBelow = rhs.m_isKeepBelow;
+    m_hasSkipPager = rhs.m_hasSkipPager;
+    m_hasSkipSwitcher = rhs.m_hasSkipSwitcher;
     m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     m_isOnAllDesktops = rhs.m_isOnAllDesktops;
     m_isOnAllActivities = rhs.m_isOnAllActivities;
@@ -150,7 +158,7 @@ WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs)
     m_isMovable = rhs.m_isMovable;
     m_isResizable = rhs.m_isResizable;
     m_isShadeable = rhs.m_isShadeable;
-    m_isVirtualDesktopsChangeable = rhs.m_isVirtualDesktopsChangeable;;
+    m_isVirtualDesktopsChangeable = rhs.m_isVirtualDesktopsChangeable;
 
     m_display = rhs.m_display;
     m_desktops = rhs.m_desktops;
@@ -252,6 +260,26 @@ bool WindowInfoWrap::isKeepBelow() const
 void WindowInfoWrap::setIsKeepBelow(bool isKeepBelow)
 {
     m_isKeepBelow = isKeepBelow;
+}
+
+bool WindowInfoWrap::hasSkipPager() const
+{
+    return m_hasSkipPager;
+}
+
+void WindowInfoWrap::setHasSkipPager(bool skipPager)
+{
+    m_hasSkipPager = skipPager;
+}
+
+bool WindowInfoWrap::hasSkipSwitcher() const
+{
+    return m_hasSkipSwitcher;
+}
+
+void WindowInfoWrap::setHasSkipSwitcher(bool skipSwitcher)
+{
+    m_hasSkipSwitcher = skipSwitcher;
 }
 
 bool WindowInfoWrap::hasSkipTaskbar() const
