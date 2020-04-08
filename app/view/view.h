@@ -116,6 +116,7 @@ class View : public PlasmaQuick::ContainmentView
 
     Q_PROPERTY(Latte::Layout::GenericLayout *layout READ layout WRITE setLayout NOTIFY layoutChanged)
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
+    Q_PROPERTY(Latte::ViewPart::ContainmentInterface *extendedInterface READ extendedInterface NOTIFY extendedInterfaceChanged)
     Q_PROPERTY(Latte::ViewPart::Indicator *indicator READ indicator NOTIFY indicatorChanged)
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(Latte::ViewPart::VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
@@ -224,8 +225,8 @@ public:
     PlasmaQuick::ConfigView *configView();
 
     ViewPart::Effects *effects() const;   
+    ViewPart::ContainmentInterface *extendedInterface() const;
     ViewPart::Indicator *indicator() const;
-    ViewPart::ContainmentInterface *interface() const;
     ViewPart::Positioner *positioner() const;
     ViewPart::VisibilityManager *visibility() const;
     ViewPart::WindowsTracker *windowsTracker() const;
@@ -290,6 +291,7 @@ signals:
     void dockLocationChanged();
     void editThicknessChanged();
     void effectsChanged();
+    void extendedInterfaceChanged();
     void fontPixelSizeChanged();
     void forcedShown(); //[workaround] forced shown to avoid a KWin issue that hides windows when closing activities
     void hasExpandedAppletChanged();

@@ -1287,7 +1287,7 @@ ViewPart::Indicator *View::indicator() const
     return m_indicator;
 }
 
-ViewPart::ContainmentInterface *View::interface() const
+ViewPart::ContainmentInterface *View::extendedInterface() const
 {
     return m_interface;
 }
