@@ -30,6 +30,7 @@
 // Plasma
 #include <Plasma/Applet>
 #include <Plasma/Containment>
+#include <PlasmaQuick/AppletQuickItem>
 
 // KDE
 #include <KLocalizedString>
@@ -368,6 +369,21 @@ int ContainmentInterface::appletIdForIndex(const int index)
     return appletId.toInt();
 }
 
+
+void ContainmentInterface::deactivateApplets()
+{
+    if (!m_view->containment()) {
+        return;
+    }
+
+    for (const auto applet : m_view->containment()->applets()) {
+        PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+        if (ai) {
+            ai->setExpanded(false);
+        }
+    }
+}
 
 }
 }

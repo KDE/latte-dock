@@ -26,10 +26,15 @@
 #include <QPointer>
 #include <QQuickItem>
 
+namespace PlasmaQuick {
+class AppletQuickItem;
+}
+
 namespace Latte {
 class Corona;
 class View;
 }
+
 
 namespace Latte {
 namespace ViewPart {
@@ -62,6 +67,9 @@ public:
 
     int applicationLauncherId() const;
     int appletIdForIndex(const int index);
+
+public slots:
+    Q_INVOKABLE void deactivateApplets();
 
 private slots:
     void identifyMainItem();

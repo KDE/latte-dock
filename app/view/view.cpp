@@ -141,7 +141,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
 
             connect(m_visibility, &ViewPart::VisibilityManager::isHiddenChanged, this, [&]() {
                 if (m_visibility->isHidden()) {
-                    deactivateApplets();
+                    m_interface->deactivateApplets();
                 }
             });
 
@@ -1435,21 +1435,6 @@ void View::releaseGrab()
     //! Send a fake QEvent::Leave to inform applets for mouse leaving the view
     QHoverEvent e(QEvent::Leave, QPoint(-5,-5),  QPoint(m_releaseGrab_x, m_releaseGrab_y));
     QCoreApplication::instance()->sendEvent(this, &e);
-}
-
-void View::deactivateApplets()
-{
-    if (!containment()) {
-        return;
-    }
-
-    for (const auto applet : containment()->applets()) {
-        PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-        if (ai) {
-            ai->setExpanded(false);
-        }
-    }
 }
 
 bool View::appletIsExpandable(const int id)

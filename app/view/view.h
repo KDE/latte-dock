@@ -251,7 +251,6 @@ public slots:
 
     Q_INVOKABLE QVariantList containmentActions();
 
-    Q_INVOKABLE void deactivateApplets();
     Q_INVOKABLE void moveToLayout(QString layoutName);
     Q_INVOKABLE void removeTasksPlasmoid();
     Q_INVOKABLE void toggleAppletExpanded(const int id);

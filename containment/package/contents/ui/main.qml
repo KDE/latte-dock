@@ -1378,7 +1378,7 @@ Item {
 
     function slotPreviewsShown(){
         if (latteView) {
-            latteView.deactivateApplets();
+            latteView.extendedInterface.deactivateApplets();
         }
     }
 
