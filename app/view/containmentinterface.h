@@ -25,6 +25,7 @@
 #include <QObject>
 #include <QPointer>
 #include <QQuickItem>
+#include <QTimer>
 
 namespace PlasmaQuick {
 class AppletQuickItem;
@@ -42,10 +43,13 @@ namespace ViewPart {
 class ContainmentInterface: public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool hasExpandedApplet READ hasExpandedApplet NOTIFY hasExpandedAppletChanged)
 
 public:
     ContainmentInterface(Latte::View *parent);
     virtual ~ContainmentInterface();
+
+    bool hasExpandedApplet() const;
 
     bool applicationLauncherInPopup() const;
     bool applicationLauncherHasGlobalShortcut() const;
@@ -70,10 +74,25 @@ public:
 
 public slots:
     Q_INVOKABLE void deactivateApplets();
+    Q_INVOKABLE void toggleAppletExpanded(const int id);
+    Q_INVOKABLE void updateAppletIsExpandedTracking();
+
+    Q_INVOKABLE bool appletIsExpandable(const int id);
+    Q_INVOKABLE bool appletIsExpanded(const int id);
+
+signals:
+    void hasExpandedAppletChanged();
+    void expandedAppletStateChanged();
 
 private slots:
     void identifyMainItem();
     void identifyMethods();
+
+    void on_appletExpandedChanged();
+
+private:
+    void addExpandedApplet(const int &id);
+    void removeExpandedApplet(const int &id);
 
 private:
     QMetaMethod m_activateEntryMethod;
@@ -84,6 +103,13 @@ private:
     QPointer<Latte::Corona> m_corona;
     QPointer<Latte::View> m_view;
     QPointer<QQuickItem> m_mainItem;
+
+    //! startup timer to initialize
+    //! applets expanded tracking
+    QTimer m_appletsExpandedConnectionsTimer;
+
+    QHash<PlasmaQuick::AppletQuickItem *, QMetaObject::Connection> m_appletsExpandedConnections;
+    QList<int> m_expandedAppletIds;
 };
 
 }

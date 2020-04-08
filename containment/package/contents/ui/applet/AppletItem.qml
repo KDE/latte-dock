@@ -326,7 +326,7 @@ Item {
 
         if (appletItemContainsMouse && !wrapperContainsMouse && appletNeutralAreaEnabled) {
             //console.log("PASSED");
-            latteView.toggleAppletExpanded(applet.id);
+            latteView.extendedInterface.toggleAppletExpanded(applet.id);
         } else {
             //console.log("REJECTED");
         }
@@ -596,7 +596,7 @@ Item {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
                 latteApplet.activateTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
             } else if (root.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
-                latteView.toggleAppletExpanded(applet.id);
+                latteView.extendedInterface.toggleAppletExpanded(applet.id);
             }
         }
 
@@ -604,7 +604,7 @@ Item {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
                 latteApplet.newInstanceForTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
             } else if (root.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
-                latteView.toggleAppletExpanded(applet.id);
+                latteView.extendedInterface.toggleAppletExpanded(applet.id);
             }
         }
     }
@@ -641,15 +641,6 @@ Item {
         property bool pressed: false
         property bool blockWheel: false
 
-        onExpandedAppletStateChanged: {
-            if (latteView.hasExpandedApplet && appletItem.applet) {
-                appletItem.isExpanded = appletItem.isExpanded = latteView.appletIsExpandable(appletItem.applet.id)
-                        && latteView.appletIsExpanded(appletItem.applet.id);
-            } else {
-                appletItem.isExpanded = false;
-            }
-        }
-
         onMousePressed: {
             if (appletItem.containsPos(pos)) {
                 viewSignalsConnector.pressed = true;
@@ -680,17 +671,32 @@ Item {
             blockWheel = true;
             scrollDelayer.start();
 
-            if (appletItem.containsPos(pos) /*&& root.latteView.appletIsExpandable(applet.id)*/) {
+            if (appletItem.containsPos(pos) /*&& root.latteView.extendedInterface.appletIsExpandable(applet.id)*/) {
                 var angle = angleDelta.y / 8;
-                var expanded = root.latteView.appletIsExpanded(applet.id);
+                var expanded = root.latteView.extendedInterface.appletIsExpanded(applet.id);
 
                 if ((angle > 12 && !expanded) /*positive direction*/
                         || (angle < -12 && expanded) /*negative direction*/) {
-                    latteView.toggleAppletExpanded(applet.id);
+                    latteView.extendedInterface.toggleAppletExpanded(applet.id);
                 }
             }
         }
     }
+
+    Connections {
+        target: root.latteView ? root.latteView.extendedInterface : null
+        enabled: !appletItem.isLattePlasmoid && !appletItem.isSeparator && !appletItem.isSpacer && !appletItem.isHidden
+
+        onExpandedAppletStateChanged: {
+            if (latteView.extendedInterface.hasExpandedApplet && appletItem.applet) {
+                appletItem.isExpanded = latteView.extendedInterface.appletIsExpandable(appletItem.applet.id)
+                        && latteView.extendedInterface.appletIsExpanded(appletItem.applet.id);
+            } else {
+                appletItem.isExpanded = false;
+            }
+        }
+    }
+
     ///END connections
 
     //! It is used for any communication needed with the underlying applet

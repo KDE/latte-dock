@@ -86,7 +86,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(bool byPassWM READ byPassWM WRITE setByPassWM NOTIFY byPassWMChanged)
     Q_PROPERTY(bool containsDrag READ containsDrag NOTIFY containsDragChanged)
     Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
-    Q_PROPERTY(bool hasExpandedApplet READ hasExpandedApplet NOTIFY hasExpandedAppletChanged)
+
     //! Because Latte uses animations, changing to edit mode it may be different than
     //! when the isUserConfiguring changes value
     Q_PROPERTY(bool inEditMode READ inEditMode WRITE setInEditMode NOTIFY inEditModeChanged)
@@ -163,8 +163,6 @@ public:
 
     bool isPreferredForShortcuts() const;
     void setIsPreferredForShortcuts(bool preferred);
-
-    bool hasExpandedApplet() const;
 
     bool latteTasksArePresent() const;
     void setLatteTasksArePresent(bool present);
@@ -253,14 +251,9 @@ public slots:
 
     Q_INVOKABLE void moveToLayout(QString layoutName);
     Q_INVOKABLE void removeTasksPlasmoid();
-    Q_INVOKABLE void toggleAppletExpanded(const int id);
 
-    Q_INVOKABLE bool appletIsExpandable(const int id);
-    Q_INVOKABLE bool appletIsExpanded(const int id);
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
     Q_INVOKABLE bool tasksPresent();
-
-    Q_INVOKABLE void updateAppletIsExpandedTracking();
 
     void updateAbsoluteGeometry(bool bypassChecks = false);
 
@@ -293,8 +286,6 @@ signals:
     void extendedInterfaceChanged();
     void fontPixelSizeChanged();
     void forcedShown(); //[workaround] forced shown to avoid a KWin issue that hides windows when closing activities
-    void hasExpandedAppletChanged();
-    void expandedAppletStateChanged();
     void widthChanged();
     void heightChanged();
     void inEditModeChanged();
@@ -345,8 +336,6 @@ private slots:
     void addTransientWindow(QWindow *window);
     void removeTransientWindow(const bool &visible);
 
-    void on_appletExpandedChanged();
-
     void restoreConfig();
     void saveConfig();
 
@@ -354,9 +343,6 @@ private:
     void initSignalingForLocationChangeSliding();
     void setupWaylandIntegration();
     void updateAppletContainsMethod();
-
-    void addExpandedApplet(const int &id);
-    void removeExpandedApplet(const int &id);
 
     void setContainsDrag(bool contains);
 
@@ -408,10 +394,6 @@ private:
     int m_releaseGrab_x;
     int m_releaseGrab_y;
 
-    //! startup timer to initialize
-    //! applets expanded tracking
-    QTimer m_appletsExpandedConnectionsTimer;
-
     Layout::GenericLayout *m_layout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
 
@@ -425,9 +407,6 @@ private:
 
     //! Connections to release and bound for the assigned layout
     QList<QMetaObject::Connection> connectionsLayout;
-
-    QHash<PlasmaQuick::AppletQuickItem *, QMetaObject::Connection> m_appletsExpandedConnections;
-    QList<int> m_expandedAppletIds;
 
     //! track transientWindows
     QList<QWindow *> m_transientWindows;

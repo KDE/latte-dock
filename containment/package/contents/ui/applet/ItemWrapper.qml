@@ -477,7 +477,7 @@ Item{
                     && !appletItem.acceptMouseEvents
 
             sourceComponent: MouseArea{
-                onClicked: latteView.toggleAppletExpanded(applet.id);
+                onClicked: latteView.extendedInterface.toggleAppletExpanded(applet.id);
             }
         }
 

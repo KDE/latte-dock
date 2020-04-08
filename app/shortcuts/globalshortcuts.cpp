@@ -260,11 +260,11 @@ void GlobalShortcuts::activateLauncherMenu()
 
             //! delay the execution in order to show first the view
             QTimer::singleShot(APPLETEXECUTIONDELAY, [this, highestPriorityView]() {
-                highestPriorityView->toggleAppletExpanded(highestPriorityView->extendedInterface()->applicationLauncherId());
+                highestPriorityView->extendedInterface()->toggleAppletExpanded(highestPriorityView->extendedInterface()->applicationLauncherId());
                  highestPriorityView->visibility()->removeBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
             });
         } else {
-            highestPriorityView->toggleAppletExpanded(highestPriorityView->extendedInterface()->applicationLauncherId());
+            highestPriorityView->extendedInterface()->toggleAppletExpanded(highestPriorityView->extendedInterface()->applicationLauncherId());
         }
     }
 }
@@ -300,7 +300,7 @@ bool GlobalShortcuts::activateLatteEntry(Latte::View *view, int index, Qt::Key m
     bool newInstance{!activation};
 
     int appletId = view->extendedInterface()->appletIdForIndex(index);
-    bool hasPopUp {(appletId>-1 && view->appletIsExpandable(appletId))};
+    bool hasPopUp {(appletId>-1 && view->extendedInterface()->appletIsExpandable(appletId))};
 
     if (view->visibility()->isHidden() && hasPopUp) {
         //! delay the execution in order to show first the view

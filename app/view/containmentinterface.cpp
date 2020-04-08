@@ -22,6 +22,7 @@
 // local
 #include "view.h"
 #include "../lattecorona.h"
+#include "../layout/genericlayout.h"
 #include "../settings/universalsettings.h"
 
 // Qt
@@ -44,6 +45,20 @@ ContainmentInterface::ContainmentInterface(Latte::View *parent)
       m_view(parent)
 {
     m_corona = qobject_cast<Latte::Corona *>(m_view->corona());
+
+    m_appletsExpandedConnectionsTimer.setInterval(2000);
+    m_appletsExpandedConnectionsTimer.setSingleShot(true);
+
+    connect(&m_appletsExpandedConnectionsTimer, &QTimer::timeout, this, &ContainmentInterface::updateAppletIsExpandedTracking);
+
+    connect(m_view, &View::containmentChanged
+            , this, [&]() {
+        if (m_view->containment()) {
+            connect(m_view->containment(), &Plasma::Containment::appletAdded, this, &ContainmentInterface::updateAppletIsExpandedTracking);
+
+            m_appletsExpandedConnectionsTimer.start();
+        }
+    });
 }
 
 ContainmentInterface::~ContainmentInterface()
@@ -384,6 +399,158 @@ void ContainmentInterface::deactivateApplets()
         }
     }
 }
+
+bool ContainmentInterface::appletIsExpandable(const int id)
+{
+    if (!m_view->containment()) {
+        return false;
+    }
+
+    for (const auto applet : m_view->containment()->applets()) {
+        if (applet->id() == (uint)id) {
+            if (m_view->layout() && m_view->layout()->isInternalContainment(applet)) {
+                return true;
+            }
+
+            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (ai) {
+                return (ai->fullRepresentation() != nullptr
+                        && ai->preferredRepresentation() != ai->fullRepresentation());
+            }
+        }
+    }
+
+    return false;
+}
+
+bool ContainmentInterface::hasExpandedApplet() const
+{
+    return m_expandedAppletIds.count() > 0;
+}
+
+void ContainmentInterface::addExpandedApplet(const int &id)
+{
+    if (m_expandedAppletIds.contains(id) && appletIsExpandable(id)) {
+        return;
+    }
+
+    bool isExpanded = hasExpandedApplet();
+
+    m_expandedAppletIds << id;
+
+    if (isExpanded != hasExpandedApplet()) {
+        emit hasExpandedAppletChanged();
+    }
+
+    emit expandedAppletStateChanged();
+}
+
+void ContainmentInterface::removeExpandedApplet(const int &id)
+{
+    if (!m_expandedAppletIds.contains(id)) {
+        return;
+    }
+
+    bool isExpanded = hasExpandedApplet();
+
+    m_expandedAppletIds.removeAll(id);
+
+    if (isExpanded != hasExpandedApplet()) {
+        emit hasExpandedAppletChanged();
+    }
+
+    emit expandedAppletStateChanged();
+}
+
+void ContainmentInterface::on_appletExpandedChanged()
+{
+    PlasmaQuick::AppletQuickItem *appletItem = static_cast<PlasmaQuick::AppletQuickItem *>(QObject::sender());
+
+    if (appletItem) {
+        if (appletItem->isExpanded()) {
+            addExpandedApplet(appletItem->applet()->id());
+        } else {
+            removeExpandedApplet(appletItem->applet()->id());
+        }
+    }
+}
+
+bool ContainmentInterface::appletIsExpanded(const int id)
+{
+    return m_expandedAppletIds.contains(id);
+}
+
+void ContainmentInterface::toggleAppletExpanded(const int id)
+{
+    if (!m_view->containment()) {
+        return;
+    }
+
+    for (const auto applet : m_view->containment()->applets()) {
+        if (applet->id() == (uint)id) {
+            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (ai) {
+                if (!ai->isActivationTogglesExpanded()) {
+                    ai->setActivationTogglesExpanded(true);
+                }
+
+                emit applet->activated();
+            }
+        }
+    }
+}
+
+void ContainmentInterface::updateAppletIsExpandedTracking()
+{
+    if (!m_view->containment()) {
+        return;
+    }
+
+    for (const auto applet : m_view->containment()->applets()) {
+        if (m_view->layout() && m_view->layout()->isInternalContainment(applet)) {
+            //! internal containment case
+            Plasma::Containment *internalC = m_view->layout()->internalContainmentOf(applet);
+            PlasmaQuick::AppletQuickItem *contAi = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (contAi && !m_appletsExpandedConnections.contains(contAi)) {
+                m_appletsExpandedConnections[contAi] = connect(contAi, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::on_appletExpandedChanged);
+
+                connect(contAi, &QObject::destroyed, this, [&, contAi](){
+                    m_appletsExpandedConnections.remove(contAi);
+                    removeExpandedApplet(contAi->applet()->id());
+                });
+            }
+
+            for (const auto internalApplet : internalC->applets()) {
+                PlasmaQuick::AppletQuickItem *ai = internalApplet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+
+                if (ai && !m_appletsExpandedConnections.contains(ai) ){
+                    m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::on_appletExpandedChanged);
+
+                    connect(ai, &QObject::destroyed, this, [&, ai](){
+                        m_appletsExpandedConnections.remove(ai);
+                        removeExpandedApplet(ai->applet()->id());
+                    });
+                }
+            }
+        } else {
+            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (ai && !m_appletsExpandedConnections.contains(ai)) {
+                m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::on_appletExpandedChanged);
+
+                connect(ai, &QObject::destroyed, this, [&, ai](){
+                    m_appletsExpandedConnections.remove(ai);
+                    removeExpandedApplet(ai->applet()->id());
+                });
+            }
+        }
+    }
+}
+
 
 }
 }

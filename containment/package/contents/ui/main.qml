@@ -203,7 +203,7 @@ Item {
 
     property bool plasmaBackgroundForPopups: plasmoid.configuration.plasmaBackgroundForPopups
 
-    readonly property bool hasExpandedApplet: latteView && latteView.hasExpandedApplet;
+    readonly property bool hasExpandedApplet: latteView && latteView.extendedInterface.hasExpandedApplet;
     readonly property bool hasUserSpecifiedBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                            true : false
 
@@ -857,7 +857,6 @@ Item {
         console.log(applet.pluginName);
         LayoutManager.save();
         updateIndexes();
-        latteView.updateAppletIsExpandedTracking();
     }
 
     Containment.onAppletRemoved: {

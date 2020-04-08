@@ -104,10 +104,6 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     m_releaseGrabTimer.setSingleShot(true);
     connect(&m_releaseGrabTimer, &QTimer::timeout, this, &View::releaseGrab);
 
-    m_appletsExpandedConnectionsTimer.setInterval(2000);
-    m_appletsExpandedConnectionsTimer.setSingleShot(true);
-    connect(&m_appletsExpandedConnectionsTimer, &QTimer::timeout, this, &View::updateAppletIsExpandedTracking);
-
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::updateTransientWindowsTracking);
 
     connect(this, &View::containmentChanged
@@ -155,8 +151,6 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
             m_indicator = new ViewPart::Indicator(this);
             emit indicatorChanged();
         }
-
-        m_appletsExpandedConnectionsTimer.start();
 
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
@@ -1435,157 +1429,6 @@ void View::releaseGrab()
     //! Send a fake QEvent::Leave to inform applets for mouse leaving the view
     QHoverEvent e(QEvent::Leave, QPoint(-5,-5),  QPoint(m_releaseGrab_x, m_releaseGrab_y));
     QCoreApplication::instance()->sendEvent(this, &e);
-}
-
-bool View::appletIsExpandable(const int id)
-{
-    if (!containment()) {
-        return false;
-    }
-
-    for (const auto applet : containment()->applets()) {
-        if (applet->id() == (uint)id) {
-            if (layout() && layout()->isInternalContainment(applet)) {
-                return true;
-            }
-
-            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-            if (ai) {
-                return (ai->fullRepresentation() != nullptr
-                        && ai->preferredRepresentation() != ai->fullRepresentation());
-            }
-        }
-    }
-
-    return false;
-}
-
-bool View::hasExpandedApplet() const
-{
-    return m_expandedAppletIds.count() > 0;
-}
-
-void View::addExpandedApplet(const int &id)
-{
-    if (m_expandedAppletIds.contains(id) && appletIsExpandable(id)) {
-        return;
-    }
-
-    bool isExpanded = hasExpandedApplet();
-
-    m_expandedAppletIds << id;
-
-    if (isExpanded != hasExpandedApplet()) {
-        emit hasExpandedAppletChanged();
-    }
-
-    emit expandedAppletStateChanged();
-}
-
-void View::removeExpandedApplet(const int &id)
-{
-    if (!m_expandedAppletIds.contains(id)) {
-        return;
-    }
-
-    bool isExpanded = hasExpandedApplet();
-
-    m_expandedAppletIds.removeAll(id);
-
-    if (isExpanded != hasExpandedApplet()) {
-        emit hasExpandedAppletChanged();
-    }
-
-    emit expandedAppletStateChanged();
-}
-
-void View::on_appletExpandedChanged()
-{
-    PlasmaQuick::AppletQuickItem *appletItem = static_cast<PlasmaQuick::AppletQuickItem *>(QObject::sender());
-
-    if (appletItem) {
-        if (appletItem->isExpanded()) {
-            addExpandedApplet(appletItem->applet()->id());
-        } else {
-            removeExpandedApplet(appletItem->applet()->id());
-        }
-    }
-}
-
-bool View::appletIsExpanded(const int id)
-{
-    return m_expandedAppletIds.contains(id);
-}
-
-void View::toggleAppletExpanded(const int id)
-{
-    if (!containment()) {
-        return;
-    }
-
-    for (const auto applet : containment()->applets()) {
-        if (applet->id() == (uint)id) {
-            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-            if (ai) {
-                if (!ai->isActivationTogglesExpanded()) {
-                    ai->setActivationTogglesExpanded(true);
-                }
-
-                emit applet->activated();
-            }
-        }
-    }
-}
-
-void View::updateAppletIsExpandedTracking()
-{
-    if (!containment()) {
-        return;
-    }
-
-    for (const auto applet : containment()->applets()) {
-        if (m_layout && m_layout->isInternalContainment(applet)) {
-            //! internal containment case
-            Plasma::Containment *internalC = layout()->internalContainmentOf(applet);
-            PlasmaQuick::AppletQuickItem *contAi = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-            if (contAi && !m_appletsExpandedConnections.contains(contAi)) {
-                m_appletsExpandedConnections[contAi] = connect(contAi, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &View::on_appletExpandedChanged);
-
-                connect(contAi, &QObject::destroyed, this, [&, contAi](){
-                    m_appletsExpandedConnections.remove(contAi);
-                    removeExpandedApplet(contAi->applet()->id());
-                });
-            }
-
-            for (const auto internalApplet : internalC->applets()) {
-                PlasmaQuick::AppletQuickItem *ai = internalApplet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-
-                if (ai && !m_appletsExpandedConnections.contains(ai) ){
-                    m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &View::on_appletExpandedChanged);
-
-                    connect(ai, &QObject::destroyed, this, [&, ai](){
-                        m_appletsExpandedConnections.remove(ai);
-                        removeExpandedApplet(ai->applet()->id());
-                    });
-                }
-            }
-        } else {
-            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-            if (ai && !m_appletsExpandedConnections.contains(ai)) {
-                m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &View::on_appletExpandedChanged);
-
-                connect(ai, &QObject::destroyed, this, [&, ai](){
-                    m_appletsExpandedConnections.remove(ai);
-                    removeExpandedApplet(ai->applet()->id());
-                });
-            }
-        }
-    }
 }
 
 QVariantList View::containmentActions()
