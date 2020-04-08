@@ -63,7 +63,11 @@ private:
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
     void updateAppletContainsMethod();
 
+    QPoint popUpTopLeft(const QRect &parentItem, const QRect popUpRect);
+    QPoint popUpTopLeft(const Plasma::Applet *applet, const QRect popUpRect);
+
     Plasma::Containment *containmentById(uint id);
+
 
 private:
     QMenu *m_contextMenu{nullptr};

@@ -71,6 +71,58 @@ void ContextMenu::menuAboutToHide()
     emit menuChanged();
 }
 
+QPoint ContextMenu::popUpTopLeft(const QRect &parentItem, const QRect popUpRect)
+{
+    QPoint resultPoint;
+
+    if (m_latteView->behaveAsPlasmaPanel() && m_latteView->normalThickness() > 96) {
+        if (m_latteView->location() == Plasma::Types::TopEdge) {
+            resultPoint.setX(popUpRect.x());
+            resultPoint.setY(popUpRect.y() + 1);
+        } else if (m_latteView->location() == Plasma::Types::BottomEdge) {
+            resultPoint.setX(popUpRect.x());
+            resultPoint.setY(popUpRect.y() - popUpRect.height() - 1);
+        } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
+            resultPoint.setX(popUpRect.x() + 1);
+            resultPoint.setY(popUpRect.y());
+        } else if (m_latteView->location() == Plasma::Types::RightEdge) {
+            resultPoint.setX(popUpRect.x() - popUpRect.width() - 1);
+            resultPoint.setY(popUpRect.y());
+        }
+    } else {
+        if (m_latteView->location() == Plasma::Types::TopEdge) {
+            resultPoint.setX(parentItem.left());
+            resultPoint.setY(parentItem.bottom());
+        } else if (m_latteView->location() == Plasma::Types::BottomEdge) {
+            resultPoint.setX(parentItem.left());
+            resultPoint.setY(parentItem.top() - popUpRect.height() - 1);
+        } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
+            resultPoint.setX(parentItem.right());
+            resultPoint.setY(parentItem.top());
+        } else if (m_latteView->location() == Plasma::Types::RightEdge) {
+            resultPoint.setX(parentItem.left() - popUpRect.width());
+            resultPoint.setY(parentItem.top());
+        }
+    }
+
+    return resultPoint;
+}
+
+QPoint ContextMenu::popUpTopLeft(const Plasma::Applet *applet, const QRect popUpRect)
+{
+    PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+    QRect globalItemRect;
+
+    if (ai) {
+        QPointF appletGlobalTopLeft = ai->mapToGlobal(QPointF(ai->x(), ai->y()));
+        globalItemRect = QRect(appletGlobalTopLeft.x(), appletGlobalTopLeft.y(), ai->width(), ai->height());
+    }
+
+    return popUpTopLeft(globalItemRect, popUpRect);
+}
+
+
 bool ContextMenu::mousePressEvent(QMouseEvent *event)
 {
     //qDebug() << "Step -1 ...";
@@ -246,30 +298,15 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                 //in .exec before oxygen can polish it and set the following attribute
                 desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
                 //end workaround
-                QPoint pos = event->globalPos();
+                QPoint globalPos = event->globalPos();
+                desktopMenu->adjustSize();
+
+                QRect popUpRect(globalPos.x(), globalPos.y(), desktopMenu->width(), desktopMenu->height());
 
                 if (applet) {
-                    //qDebug() << "6 ...";
-                    desktopMenu->adjustSize();
-
-                    if (m_latteView->screen()) {
-                        const QRect scr = m_latteView->screen()->geometry();
-                        int smallStep = 3;
-                        int x = event->globalPos().x() + smallStep;
-                        int y = event->globalPos().y() + smallStep;
-
-                        //qDebug()<<x << " - "<<y;
-
-                        if (event->globalPos().x() > scr.center().x()) {
-                            x = event->globalPos().x() - desktopMenu->width() - smallStep;
-                        }
-
-                        if (event->globalPos().y() > scr.center().y()) {
-                            y = event->globalPos().y() - desktopMenu->height() - smallStep;
-                        }
-
-                        pos = QPoint(x, y);
-                    }
+                    globalPos = popUpTopLeft(applet, popUpRect);
+                } else {
+                    globalPos = popUpTopLeft(QRect(0,0,0,0), popUpRect);
                 }
 
                 //qDebug() << "7...";
@@ -283,7 +320,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
 
                 connect(desktopMenu, SIGNAL(aboutToHide()), this, SLOT(menuAboutToHide()));
 
-                desktopMenu->popup(pos);
+                desktopMenu->popup(globalPos);
                 event->setAccepted(true);
                 emit menuChanged();
                 return false;
