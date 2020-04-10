@@ -71,55 +71,66 @@ void ContextMenu::menuAboutToHide()
     emit menuChanged();
 }
 
-QPoint ContextMenu::popUpTopLeft(const QRect &parentItem, const QRect popUpRect)
+QPoint ContextMenu::popUpRelevantToParent(const QRect &parentItem, const QRect popUpRect)
 {
     QPoint resultPoint;
 
-    if (m_latteView->behaveAsPlasmaPanel() && m_latteView->normalThickness() > 96) {
-        if (m_latteView->location() == Plasma::Types::TopEdge) {
-            resultPoint.setX(popUpRect.x());
-            resultPoint.setY(popUpRect.y() + 1);
-        } else if (m_latteView->location() == Plasma::Types::BottomEdge) {
-            resultPoint.setX(popUpRect.x());
-            resultPoint.setY(popUpRect.y() - popUpRect.height() - 1);
-        } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
-            resultPoint.setX(popUpRect.x() + 1);
-            resultPoint.setY(popUpRect.y());
-        } else if (m_latteView->location() == Plasma::Types::RightEdge) {
-            resultPoint.setX(popUpRect.x() - popUpRect.width() - 1);
-            resultPoint.setY(popUpRect.y());
-        }
-    } else {
-        if (m_latteView->location() == Plasma::Types::TopEdge) {
-            resultPoint.setX(parentItem.left());
-            resultPoint.setY(parentItem.bottom());
-        } else if (m_latteView->location() == Plasma::Types::BottomEdge) {
-            resultPoint.setX(parentItem.left());
-            resultPoint.setY(parentItem.top() - popUpRect.height() - 1);
-        } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
-            resultPoint.setX(parentItem.right());
-            resultPoint.setY(parentItem.top());
-        } else if (m_latteView->location() == Plasma::Types::RightEdge) {
-            resultPoint.setX(parentItem.left() - popUpRect.width());
-            resultPoint.setY(parentItem.top());
-        }
+    if (m_latteView->location() == Plasma::Types::TopEdge) {
+        resultPoint.setX(parentItem.left());
+        resultPoint.setY(parentItem.bottom());
+    } else if (m_latteView->location() == Plasma::Types::BottomEdge) {
+        resultPoint.setX(parentItem.left());
+        resultPoint.setY(parentItem.top() - popUpRect.height() - 1);
+    } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
+        resultPoint.setX(parentItem.right());
+        resultPoint.setY(parentItem.top());
+    } else if (m_latteView->location() == Plasma::Types::RightEdge) {
+        resultPoint.setX(parentItem.left() - popUpRect.width());
+        resultPoint.setY(parentItem.top());
     }
 
     return resultPoint;
 }
 
-QPoint ContextMenu::popUpTopLeft(const Plasma::Applet *applet, const QRect popUpRect)
+QPoint ContextMenu::popUpRelevantToGlobalPoint(const QRect &parentItem, const QRect popUpRect)
+{
+    QPoint resultPoint;
+
+    if (m_latteView->location() == Plasma::Types::TopEdge) {
+        resultPoint.setX(popUpRect.x());
+        resultPoint.setY(popUpRect.y() + 1);
+    } else if (m_latteView->location() == Plasma::Types::BottomEdge) {
+        resultPoint.setX(popUpRect.x());
+        resultPoint.setY(popUpRect.y() - popUpRect.height() - 1);
+    } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
+        resultPoint.setX(popUpRect.x() + 1);
+        resultPoint.setY(popUpRect.y());
+    } else if (m_latteView->location() == Plasma::Types::RightEdge) {
+        resultPoint.setX(popUpRect.x() - popUpRect.width() - 1);
+        resultPoint.setY(popUpRect.y());
+    }
+
+    return resultPoint;
+}
+
+QPoint ContextMenu::popUpTopLeft(Plasma::Applet *applet, const QRect popUpRect)
 {
     PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
-    QRect globalItemRect;
+    QRect globalItemRect = m_latteView->absoluteGeometry();
 
-    if (ai) {
+    if (ai && applet != m_latteView->containment()) {
         QPointF appletGlobalTopLeft = ai->mapToGlobal(QPointF(ai->x(), ai->y()));
         globalItemRect = QRect(appletGlobalTopLeft.x(), appletGlobalTopLeft.y(), ai->width(), ai->height());
     }
 
-    return popUpTopLeft(globalItemRect, popUpRect);
+    if ((m_latteView->behaveAsPlasmaPanel() && m_latteView->normalThickness() > 96)
+            || (applet == m_latteView->containment())
+            || (m_latteView && m_latteView->layout() && m_latteView->layout()->isInternalContainment(applet)) ) {
+        return popUpRelevantToGlobalPoint(globalItemRect, popUpRect);
+    } else {
+        return popUpRelevantToParent(globalItemRect, popUpRect);
+    }
 }
 
 
@@ -306,7 +317,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                 if (applet) {
                     globalPos = popUpTopLeft(applet, popUpRect);
                 } else {
-                    globalPos = popUpTopLeft(QRect(0,0,0,0), popUpRect);
+                    globalPos = popUpRelevantToGlobalPoint(QRect(0,0,0,0), popUpRect);
                 }
 
                 //qDebug() << "7...";
@@ -428,7 +439,7 @@ void ContextMenu::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, Q
     }
 
     if (m_latteView->containment()->immutability() == Plasma::Types::Mutable &&
-        (m_latteView->containment()->containmentType() != Plasma::Types::PanelContainment || m_latteView->containment()->isUserConfiguring())) {
+            (m_latteView->containment()->containmentType() != Plasma::Types::PanelContainment || m_latteView->containment()->isUserConfiguring())) {
         QAction *closeApplet = applet->actions()->action(QStringLiteral("remove"));
 
         //qDebug() << "checking for removal" << closeApplet;
@@ -450,7 +461,7 @@ void ContextMenu::addContainmentActions(QMenu *desktopMenu, QEvent *event)
     }
 
     if (m_latteView->containment()->corona()->immutability() != Plasma::Types::Mutable &&
-        !KAuthorized::authorizeAction(QStringLiteral("plasma/containment_actions"))) {
+            !KAuthorized::authorizeAction(QStringLiteral("plasma/containment_actions"))) {
         //qDebug() << "immutability";
         return;
     }
