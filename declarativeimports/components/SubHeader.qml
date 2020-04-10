@@ -27,7 +27,7 @@ PlasmaComponents.Label {
     Layout.topMargin: isFirstSubCategory ? 0 : units.smallSpacing * 2
     Layout.bottomMargin: units.smallSpacing
     horizontalAlignment: Text.AlignHCenter
-    opacity: 0.3
+    opacity: 0.4
 
     property bool isFirstSubCategory: false
 }
