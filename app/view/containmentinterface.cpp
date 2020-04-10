@@ -488,7 +488,7 @@ void ContainmentInterface::toggleAppletExpanded(const int id)
     }
 
     for (const auto applet : m_view->containment()->applets()) {
-        if (applet->id() == (uint)id) {
+        if (applet->id() == (uint)id && !m_view->layout()->isInternalContainment(applet)/*block for internal containments*/) {
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {

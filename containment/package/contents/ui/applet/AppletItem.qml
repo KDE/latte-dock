@@ -663,7 +663,7 @@ Item {
         }
 
         onWheelScrolled: {
-            if (!root.mouseWheelActions || viewSignalsConnector.blockWheel
+            if (!appletItem.applet || !root.mouseWheelActions || viewSignalsConnector.blockWheel
                     || (root.latteViewIsHidden || root.inSlidingIn || root.inSlidingOut)) {
                 return;
             }
@@ -671,7 +671,7 @@ Item {
             blockWheel = true;
             scrollDelayer.start();
 
-            if (appletItem.containsPos(pos) /*&& root.latteView.extendedInterface.appletIsExpandable(applet.id)*/) {
+            if (appletItem.containsPos(pos) && root.latteView.extendedInterface.appletIsExpandable(applet.id)) {
                 var angle = angleDelta.y / 8;
                 var expanded = root.latteView.extendedInterface.appletIsExpanded(applet.id);
 
