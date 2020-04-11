@@ -124,7 +124,10 @@ QPoint ContextMenu::popUpTopLeft(Plasma::Applet *applet, const QRect popUpRect)
         globalItemRect = QRect(appletGlobalTopLeft.x(), appletGlobalTopLeft.y(), ai->width(), ai->height());
     }
 
-    if ((m_latteView->behaveAsPlasmaPanel() && m_latteView->normalThickness() > 96)
+    int itemLength = (m_latteView->formFactor() == Plasma::Types::Horizontal ? globalItemRect.width() : globalItemRect.height());
+    int menuLength = (m_latteView->formFactor() == Plasma::Types::Horizontal ? popUpRect.width() : popUpRect.height());
+
+    if ((itemLength > menuLength)
             || (applet == m_latteView->containment())
             || (m_latteView && m_latteView->layout() && m_latteView->layout()->isInternalContainment(applet)) ) {
         return popUpRelevantToGlobalPoint(globalItemRect, popUpRect);
