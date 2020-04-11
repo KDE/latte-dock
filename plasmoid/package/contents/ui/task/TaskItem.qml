@@ -49,8 +49,17 @@ MouseArea{
         if (!visible)
             return 0;
 
-        if (isSeparator)
-            return root.vertical ? root.iconSize + root.thickMargins + root.screenEdgeMargin : (root.dragSource || !root.parabolicEffectEnabled ? 5+2*root.lengthExtMargin : 0);
+        if (isSeparator) {
+            if (root.vertical) {
+                return root.iconSize + root.thickMargins + root.screenEdgeMargin;
+            } else {
+                if (root.dragSource || !root.parabolicEffectEnabled) {
+                    return Latte.Environment.separatorLength+2*root.lengthExtMargin;
+                }
+            }
+
+            return 0;
+        }
 
         if (root.vertical) {
             return wrapper.width;
@@ -67,8 +76,17 @@ MouseArea{
         if (!visible)
             return 0;
 
-        if (isSeparator)
-            return !root.vertical ? root.iconSize + root.thickMargins + root.screenEdgeMargin : (root.dragSource || !root.parabolicEffectEnabled ? 5+2*root.lengthExtMargin: 0);
+        if (isSeparator) {
+            if (!root.vertical) {
+                return root.iconSize + root.thickMargins + root.screenEdgeMargin;
+            } else {
+                if (root.dragSource || !root.parabolicEffectEnabled) {
+                    return Latte.Environment.separatorLength+2*root.lengthExtMargin;
+                }
+            }
+
+            return 0;
+        }
 
         if (root.vertical) {
             return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;
@@ -325,8 +343,8 @@ MouseArea{
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
 
-        width: root.vertical ? root.iconSize : ((root.dragSource || root.editMode) ? 5+root.lengthMargins: 1)
-        height: !root.vertical ? root.iconSize : ((root.dragSource || root.editMode) ? 5+root.lengthMargins: 1)
+        width: root.vertical ? root.iconSize : ((root.dragSource || root.editMode) ? Latte.Environment.separatorLength+root.lengthMargins: 1)
+        height: !root.vertical ? root.iconSize : ((root.dragSource || root.editMode) ? Latte.Environment.separatorLength+root.lengthMargins: 1)
 
         property bool forceHiddenState: false
 

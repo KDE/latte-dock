@@ -3,6 +3,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-latte-lib.h.cmake ${CMAKE_CURR
 set(latteplugin_SRCS
     latteplugin.cpp
     backgroundtracker.cpp
+    environment.cpp
     commontools.cpp
     iconitem.cpp
     quickwindowsystem.cpp

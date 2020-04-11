@@ -132,21 +132,6 @@ Item {
     property Item parabolicManager: _parabolicManager
     property Item tasksExtendedManager: _tasksExtendedManager
 
-    //separator calculations based on audoban's design
-    property int maxSeparatorLength: {
-        if (root.vertical)
-            return 5 + heightMargins;
-        else
-            return 5 + widthMargins;
-    }
-
-    property real missingSeparatorLength: {
-        if (!root.isVertical)
-            return ((iconSize + widthMargins) * zoomFactor) - maxSeparatorLength;
-        else
-            return ((iconSize + heightMargins) * zoomFactor) - maxSeparatorLength;
-    }
-
     readonly property alias containsDrag: mouseHandler.containsDrag
     readonly property bool dragAreaEnabled: latteView ? (root.dragSource !== null
                                                          || latteView.dragInfo.isSeparator
