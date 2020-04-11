@@ -838,21 +838,28 @@ Item {
 
                 width: {
                     if (root.isHorizontal) {
-                        return rectangled ? root.iconSize * wrapper.zoomScale : wrapper.width
+                        return root.iconSize * wrapper.zoomScale
                     } else {
-                        return ((root.iconSize + root.thickMargin) * wrapper.zoomScale) + root.localScreenEdgeMargin
+                        return badgeThickness;
                     }
                 }
 
                 height: {
                     if (root.isHorizontal) {
-                        return ((root.iconSize + root.thickMargin) * wrapper.zoomScale) + root.localScreenEdgeMargin
+                        return badgeThickness;
                     } else {
-                        return rectangled ? root.iconSize * wrapper.zoomScale : wrapper.height
+                        return root.iconSize * wrapper.zoomScale
                     }
                 }
 
-                property bool rectangled: canBeHovered && !lockZoom
+                readonly property int badgeThickness: {
+                    if (plasmoid.location === PlasmaCore.Types.BottomEdge
+                            || plasmoid.location === PlasmaCore.Types.RightEdge) {
+                        return ((root.iconSize + root.thickMargin) * wrapper.zoomScale) + root.localScreenEdgeMargin;
+                    }
+
+                    return ((root.iconSize + root.thickMargin) * wrapper.zoomScale);
+                }
 
                 ShortcutBadge{
                     anchors.fill: parent
@@ -860,8 +867,8 @@ Item {
 
                 states:[
                     State{
-                        name: "bottom"
-                        when: plasmoid.location === PlasmaCore.Types.BottomEdge
+                        name: "horizontal"
+                        when: plasmoid.formFactor === PlasmaCore.Types.Horizontal
 
                         AnchorChanges{
                             target: shortcutBadgeContainer;
@@ -870,28 +877,8 @@ Item {
                         }
                     },
                     State{
-                        name: "top"
-                        when: plasmoid.location === PlasmaCore.Types.TopEdge
-
-                        AnchorChanges{
-                            target: shortcutBadgeContainer;
-                            anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
-                            anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
-                        }
-                    },
-                    State{
-                        name: "left"
-                        when: plasmoid.location === PlasmaCore.Types.LeftEdge
-
-                        AnchorChanges{
-                            target: shortcutBadgeContainer;
-                            anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
-                            anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
-                        }
-                    },
-                    State{
-                        name: "right"
-                        when: plasmoid.location === PlasmaCore.Types.RightEdge
+                        name: "vertical"
+                        when: plasmoid.formFactor === PlasmaCore.Types.Vertical
 
                         AnchorChanges{
                             target: shortcutBadgeContainer;
