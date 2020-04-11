@@ -1,5 +1,10 @@
 #**CHANGELOG**#
 
+#### Version 0.9.11
+
+* fix context menu for classic systray items such as Viber and Telegram
+* fix compatibility with KDE Frameworks 5.38
+
 #### Version 0.9.10
 
 * Dodge All Windows: work properly after the dock becomes hidden and not show inappropriately when any window touches the dock
