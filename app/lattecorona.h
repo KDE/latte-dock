@@ -115,13 +115,15 @@ public:
                                           QString forLayout = QString(),
                                           QList<Types::Visibility> ignoreModes = QList<Types::Visibility>(),
                                           QList<Plasma::Types::Location> ignoreEdges = QList<Plasma::Types::Location>(),
-                                          bool ignoreExternalPanels = true) const;
+                                          bool ignoreExternalPanels = true,
+                                          bool desktopUse = false) const;
 
     QRegion availableScreenRegionWithCriteria(int id,
                                               QString forLayout = QString(),
                                               QList<Types::Visibility> ignoreModes = QList<Types::Visibility>(),
                                               QList<Plasma::Types::Location> ignoreEdges = QList<Plasma::Types::Location>(),
-                                              bool ignoreExternalPanels = true) const;
+                                              bool ignoreExternalPanels = true,
+                                              bool desktopUse = false) const;
 
     int screenForContainment(const Plasma::Containment *containment) const override;
 

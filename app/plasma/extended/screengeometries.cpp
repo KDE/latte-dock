@@ -126,12 +126,16 @@ void ScreenGeometries::updateGeometries()
             QRect availableRect = m_corona->availableScreenRectWithCriteria(scrId,
                                                                             QString(),
                                                                             m_ignoreModes,
-                                                                            QList<Plasma::Types::Location>());
+                                                                            QList<Plasma::Types::Location>(),
+                                                                            true,
+                                                                            true);
 
             QRegion availableRegion = m_corona->availableScreenRegionWithCriteria(scrId,
                                                                                   QString(),
                                                                                   m_ignoreModes,
-                                                                                  QList<Plasma::Types::Location>());
+                                                                                  QList<Plasma::Types::Location>(),
+                                                                                  true,
+                                                                                  true);
 
             //! Workaround: Force update, to workaround Plasma not updating its layout at some cases
             //! Example: Canvas,Music activities use the same Layout. Unity activity

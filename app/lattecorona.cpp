@@ -536,7 +536,8 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
                                                   QString forLayout,
                                                   QList<Types::Visibility> ignoreModes,
                                                   QList<Plasma::Types::Location> ignoreEdges,
-                                                  bool ignoreExternalPanels) const
+                                                  bool ignoreExternalPanels,
+                                                  bool desktopUse) const
 {
     const QScreen *screen = m_screenPool->screenForId(id);
     CentralLayout *layout = centralLayout(forLayout);
@@ -576,7 +577,14 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
             switch (view->location()) {
             case Plasma::Types::TopEdge:
                 if (view->behaveAsPlasmaPanel()) {
-                    available -= view->geometry();
+                    QRect viewGeometry = view->geometry();
+
+                    if (desktopUse) {
+                        //! ignore any real window slide outs in all cases
+                        viewGeometry.moveTop(view->screen()->geometry().top() + view->screenEdgeMargin());
+                    }
+
+                    available -= viewGeometry;
                 } else {
                     QRect realGeometry;
                     int realWidth = view->maxLength() * view->width();
@@ -606,7 +614,14 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
 
             case Plasma::Types::BottomEdge:
                 if (view->behaveAsPlasmaPanel()) {
-                    available -= view->geometry();
+                    QRect viewGeometry = view->geometry();
+
+                    if (desktopUse) {
+                        //! ignore any real window slide outs in all cases
+                        viewGeometry.moveTop(view->screen()->geometry().bottom() - view->screenEdgeMargin() - viewGeometry.height());
+                    }
+
+                    available -= viewGeometry;
                 } else {
                     QRect realGeometry;
                     int realWidth = view->maxLength() * view->width();
@@ -637,7 +652,14 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
 
             case Plasma::Types::LeftEdge:
                 if (view->behaveAsPlasmaPanel()) {
-                    available -= view->geometry();
+                    QRect viewGeometry = view->geometry();
+
+                    if (desktopUse) {
+                        //! ignore any real window slide outs in all cases
+                        viewGeometry.moveLeft(view->screen()->geometry().left() + view->screenEdgeMargin());
+                    }
+
+                    available -= viewGeometry;
                 } else {
                     QRect realGeometry;
                     int realHeight = view->maxLength() * view->height();
@@ -667,7 +689,14 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
 
             case Plasma::Types::RightEdge:
                 if (view->behaveAsPlasmaPanel()) {
-                    available -= view->geometry();
+                    QRect viewGeometry = view->geometry();
+
+                    if (desktopUse) {
+                        //! ignore any real window slide outs in all cases
+                        viewGeometry.moveLeft(view->screen()->geometry().right() - view->screenEdgeMargin() - viewGeometry.width());
+                    }
+
+                    available -= viewGeometry;
                 } else {
                     QRect realGeometry;
                     int realHeight = view->maxLength() * view->height();
@@ -723,7 +752,8 @@ QRect Corona::availableScreenRectWithCriteria(int id,
                                               QString forLayout,
                                               QList<Types::Visibility> ignoreModes,
                                               QList<Plasma::Types::Location> ignoreEdges,
-                                              bool ignoreExternalPanels) const
+                                              bool ignoreExternalPanels,
+                                              bool desktopUse) const
 {
     const QScreen *screen = m_screenPool->screenForId(id);
     CentralLayout *layout = centralLayout(forLayout);
@@ -755,25 +785,47 @@ QRect Corona::availableScreenRectWithCriteria(int id,
                 && ((allEdges || !ignoreEdges.contains(view->location()))
                     && (view->visibility() && !ignoreModes.contains(view->visibility()->mode())))) {
 
+            int appliedThickness = view->behaveAsPlasmaPanel() ? view->screenEdgeMargin() + view->normalThickness() : view->normalThickness();
+
             // Usually availableScreenRect is used by the desktop,
             // but Latte don't have desktop, then here just
             // need calculate available space for top and bottom location,
             // because the left and right are those who dodge others docks
             switch (view->location()) {
             case Plasma::Types::TopEdge:
-                available.setTop(qMax(available.top(), view->y() + view->normalThickness()));
+                if (view->behaveAsPlasmaPanel() && desktopUse) {
+                    //! ignore any real window slide outs in all cases
+                    available.setTop(qMax(available.top(), view->screen()->geometry().top() + appliedThickness));
+                } else {
+                    available.setTop(qMax(available.top(), view->y() + appliedThickness));
+                }
                 break;
 
             case Plasma::Types::BottomEdge:
-                available.setBottom(qMin(available.bottom(), view->y() + view->height() - view->normalThickness()));
+                if (view->behaveAsPlasmaPanel() && desktopUse) {
+                    //! ignore any real window slide outs in all cases
+                    available.setBottom(qMin(available.bottom(), view->screen()->geometry().bottom() - appliedThickness));
+                } else {
+                    available.setBottom(qMin(available.bottom(), view->y() + view->height() - appliedThickness));
+                }
                 break;
 
             case Plasma::Types::LeftEdge:
-                available.setLeft(qMax(available.left(), view->x() + view->normalThickness()));
+                if (view->behaveAsPlasmaPanel() && desktopUse) {
+                    //! ignore any real window slide outs in all cases
+                    available.setLeft(qMax(available.left(), view->screen()->geometry().bottom() + appliedThickness));
+                } else {
+                    available.setLeft(qMax(available.left(), view->x() + appliedThickness));
+                }
                 break;
 
             case Plasma::Types::RightEdge:
-                available.setRight(qMin(available.right(), view->x() + view->width() - view->normalThickness()));
+                if (view->behaveAsPlasmaPanel() && desktopUse) {
+                    //! ignore any real window slide outs in all cases
+                    available.setRight(qMin(available.right(), view->screen()->geometry().right() - appliedThickness));
+                } else {
+                    available.setRight(qMin(available.right(), view->x() + view->width() - appliedThickness));
+                }
                 break;
 
             default:
