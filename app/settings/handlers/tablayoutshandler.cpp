@@ -23,6 +23,7 @@
 //! local
 #include "ui_settingsdialog.h"
 #include "../universalsettings.h"
+#include "../dialogs/detailsdialog.h"
 #include "../dialogs/settingsdialog.h"
 #include "../controllers/layoutscontroller.h"
 #include "../views/layoutstableview.h"
@@ -658,7 +659,7 @@ void TabLayouts::on_details_action()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (!isCurrentTab() || !m_exportLayoutAction->isEnabled()) {
+    if (!isCurrentTab() || !m_detailsAction->isEnabled()) {
         return;
     }
 
@@ -667,6 +668,10 @@ void TabLayouts::on_details_action()
     }
 
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayoutCurrentData();
+
+    auto detailsDlg = new Settings::Dialog::DetailsDialog(m_parentDialog);
+
+    detailsDlg->exec();
 }
 
 void TabLayouts::on_layoutFilesDropped(const QStringList &paths)

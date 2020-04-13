@@ -63,7 +63,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
       m_ui(new Ui::SettingsDialog),
       m_corona(corona),
       m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog"))
-{
+{    
     setAcceptDrops(true);
     m_ui->setupUi(this);
 
