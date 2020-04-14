@@ -23,6 +23,7 @@
 
 // Qt
 #include <QLabel>
+#include <QGraphicsDropShadowEffect>
 #include <QWidget>
 
 
@@ -60,6 +61,9 @@ private:
     QString m_background;
     QString m_textColor;
 
+    float m_textColorBrightness;
+
+    QGraphicsDropShadowEffect* m_shadowEffect{nullptr};
 };
 
 }

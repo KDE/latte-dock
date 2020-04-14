@@ -20,12 +20,15 @@
 
 #include "patternwidget.h"
 
+//! local
+#include "../../../liblatte2/commontools.h"
+
 //! Qt
 #include <QDebug>
 #include <QFont>
-#include <QGraphicsDropShadowEffect>
 #include <QHBoxLayout>
 #include <QPainter>
+#include <QPalette>
 #include <QStyleOption>
 
 //! KDE
@@ -61,21 +64,18 @@ void PatternWidget::initUi()
     m_label->setFont(font);
 
     //! shadow
-    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
-    effect->setColor(Qt::black);
-    effect->setBlurRadius(3);
-    effect->setXOffset(0);
-    effect->setYOffset(0);
-    m_label->setGraphicsEffect(effect);
+    m_shadowEffect = new QGraphicsDropShadowEffect(this);
+    m_shadowEffect->setXOffset(0);
+    m_shadowEffect->setYOffset(0);
+    m_label->setGraphicsEffect(m_shadowEffect);
 }
 
 void PatternWidget::setBackground(const QString &file)
 {
-    if (m_background == file) {
-        return;
+    if (m_background != file) {
+        m_background = file;
     }
 
-    m_background = file;
     emit backgroundChanged();
 }
 
@@ -92,18 +92,35 @@ void PatternWidget::setTextColor(const QString &color)
     }
 
     m_textColor = color;
+
+    m_textColorBrightness = Latte::colorBrightness(QColor(color));
+
     emit textColorChanged();
 }
 
 void PatternWidget::updateUi()
 {
-    QString backgroundImage = "url(" + m_background + ");";
+    QPalette systemPalette;
+
+    QColor textColor = systemPalette.color(QPalette::Active, QPalette::Text);
+    QString background = "background-image: url(" + m_background + ");";
+
+    int radius = qMax(2, height() / 4);
 
     if (m_background.isEmpty()) {
-        backgroundImage = "none;";
+        background = "background-image: none;";
+        m_shadowEffect->setColor(Qt::transparent);
+    } else {
+        m_shadowEffect->setColor(Qt::black);
     }
 
-    setStyleSheet("[isBackground=true] {border: 1px solid black; border-radius: 8px; background-image: " + backgroundImage + "}");
+    if (m_textColorBrightness > 127) {
+        m_shadowEffect->setBlurRadius(12);
+    } else {
+        m_shadowEffect->setBlurRadius(1);
+    }
+
+    setStyleSheet("[isBackground=true] {border: 1px solid " + textColor.name() + "; border-radius: " + QString::number(radius) + "px; " + background + "}");
     m_label->setStyleSheet("QLabel {border: 0px; background-image:none; color:" + m_textColor + "}");
 }
 
@@ -114,6 +131,8 @@ void PatternWidget::paintEvent(QPaintEvent* event)
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing, true);
+
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 
     QWidget::paintEvent(event);
