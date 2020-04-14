@@ -34,6 +34,17 @@ class DetailsDialog;
 
 namespace Latte {
 namespace Settings {
+namespace Controller {
+class Layouts;
+}
+namespace Handler {
+class DetailsHandler;
+}
+}
+}
+
+namespace Latte {
+namespace Settings {
 namespace Dialog {
 
 class DetailsDialog : public QDialog
@@ -41,12 +52,18 @@ class DetailsDialog : public QDialog
     Q_OBJECT
 
 public:
-    DetailsDialog(SettingsDialog *parent);
+    DetailsDialog(SettingsDialog *parent, Controller::Layouts *controller);
     ~DetailsDialog();
+
+    Ui::DetailsDialog *ui() const;
+    Controller::Layouts *layoutsController() const;
 
 private:
     SettingsDialog *m_parentDlg{nullptr};
     Ui::DetailsDialog *m_ui;
+    Controller::Layouts *m_layoutsController{nullptr};
+
+    Handler::DetailsHandler *m_handler;
 };
 
 }

@@ -669,7 +669,7 @@ void TabLayouts::on_details_action()
 
     Settings::Data::Layout selectedLayout = m_layoutsController->selectedLayoutCurrentData();
 
-    auto detailsDlg = new Settings::Dialog::DetailsDialog(m_parentDialog);
+    auto detailsDlg = new Settings::Dialog::DetailsDialog(m_parentDialog, m_layoutsController);
 
     detailsDlg->exec();
 }

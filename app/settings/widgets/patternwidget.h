@@ -18,46 +18,52 @@
  *
  */
 
-#include "detailsdialog.h"
+#ifndef SETTINGSPATTERNWIDGET_H
+#define SETTINGSPATTERNWIDGET_H
 
-// local
-#include "ui_detailsdialog.h"
-#include "../controllers/layoutscontroller.h"
-#include "../handlers/detailshandler.h"
+// Qt
+#include <QLabel>
+#include <QWidget>
 
 
 namespace Latte {
 namespace Settings {
-namespace Dialog {
+namespace Widget {
 
-DetailsDialog::DetailsDialog(SettingsDialog *parent, Controller::Layouts *controller)
-    : QDialog(parent),
-      m_parentDlg(parent),
-      m_ui(new Ui::DetailsDialog),
-      m_layoutsController(controller)
+class PatternWidget : public QWidget
 {
-    //! first we need to setup the ui
-    m_ui->setupUi(this);
-    //! we must create handlers after creating/adjusting the ui
-    m_handler = new Handler::DetailsHandler(this);
+    Q_OBJECT
 
-    m_ui->messageWidget->setVisible(false);
+public:
+    explicit PatternWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+
+    void setBackground(const QString &file);
+    void setText(const QString &text);
+    void setTextColor(const QString &color);
+
+signals:
+    void backgroundChanged();
+    void textColorChanged();
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
+
+private slots:
+    void updateUi();
+
+private:
+    void initUi();
+
+private:
+    QLabel *m_label{nullptr};
+
+    QString m_background;
+    QString m_textColor;
+
+};
+
+}
+}
 }
 
-DetailsDialog::~DetailsDialog()
-{
-}
-
-Controller::Layouts *DetailsDialog::layoutsController() const
-{
-    return m_layoutsController;
-}
-
-Ui::DetailsDialog *DetailsDialog::ui() const
-{
-    return m_ui;
-}
-
-}
-}
-}
+#endif

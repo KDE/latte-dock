@@ -396,7 +396,7 @@ QList<Data::LayoutIcon> Layouts::icons(const int &row) const
 
     //! background image
     if (icons.count() == 0) {
-        QString colorPath = m_layoutsTable[row].background.startsWith("/") ? m_layoutsTable[row].background : m_iconsPath + m_layoutsTable[row].background + "print.jpg";
+        QString colorPath = m_layoutsTable[row].background.startsWith("/") ? m_layoutsTable[row].background : m_iconsPath + m_layoutsTable[row].color + "print.jpg";
 
         if (QFileInfo(colorPath).exists()) {
             Data::LayoutIcon icon;

@@ -172,6 +172,17 @@ bool Layouts::selectedLayoutIsCurrentActive() const
     return (selectedLayoutCurrent.isActive && (selectedLayoutOriginal.name == m_handler->corona()->layoutsManager()->currentLayoutName()));
 }
 
+QString Layouts::colorPath(const QString color) const
+{
+    QString path = m_iconsPath + color + "print.jpg";
+
+    if (!QFileInfo(path).exists()) {
+        return m_iconsPath + "blueprint.jpg";
+    }
+
+    return path;
+}
+
 QString Layouts::iconsPath() const
 {
     return m_iconsPath;
@@ -380,9 +391,9 @@ void Layouts::loadLayouts()
         CentralLayout *central = new CentralLayout(this, original.id);
 
         original.name = central->name();
-        original.background = central->background();
         original.color = central->color();
-        original.textColor = central->textColor();
+        original.background = central->customBackground();
+        original.textColor = central->customTextColor();
         original.isActive = (m_handler->corona()->layoutsManager()->synchronizer()->layout(original.name) != nullptr);
         original.isLocked = !central->isWritable();
         original.isShownInMenu = central->showInMenu();
@@ -516,8 +527,8 @@ const Data::Layout Layouts::addLayoutForFile(QString file, QString layoutName, b
 
     copied.name = uniqueLayoutName(layoutName);
     copied.color = settings->color();
-    copied.textColor = settings->textColor();
-    copied.background = settings->background();
+    copied.textColor = settings->customTextColor();
+    copied.background = settings->customBackground();
     copied.isLocked = !settings->isWritable();
     copied.isShownInMenu = settings->showInMenu();
     copied.hasDisabledBorders = settings->disableBordersForMaximizedWindows();

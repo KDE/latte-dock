@@ -222,35 +222,39 @@ void AbstractLayout::clearLastUsedActivity()
     emit lastUsedActivityChanged();
 }
 
-QString AbstractLayout::predefinedTextColor() const
+QString AbstractLayout::defaultTextColor(const QString &color)
 {
     //! the user is in default layout theme
-
-    if (m_color == "blue") {
+    if (color == "blue") {
         return "#D7E3FF";
-    } else if (m_color == "brown") {
+    } else if (color == "brown") {
         return "#F1DECB";
-    } else if (m_color == "darkgrey") {
+    } else if (color == "darkgrey") {
         return "#ECECEC";
-    } else if (m_color == "gold") {
+    } else if (color == "gold") {
         return "#7C3636";
-    } else if (m_color == "green") {
+    } else if (color == "green") {
         return "#4D7549";
-    } else if (m_color == "lightskyblue") {
+    } else if (color == "lightskyblue") {
         return "#0C2A43";
-    } else if (m_color == "orange") {
+    } else if (color == "orange") {
         return "#6F3902";
-    } else if (m_color == "pink") {
+    } else if (color == "pink") {
         return "#743C46";
-    } else if (m_color == "purple") {
+    } else if (color == "purple") {
         return "#ECD9FF";
-    }  else if (m_color == "red") {
+    }  else if (color == "red") {
         return "#F3E4E4";
-    }  else if (m_color == "wheat") {
+    }  else if (color == "wheat") {
         return "#6A4E25";
     }  else {
         return "#FCFCFC";
     }
+}
+
+QString AbstractLayout::predefinedTextColor() const
+{
+    return AbstractLayout::defaultTextColor(m_color);
 }
 
 QString AbstractLayout::customTextColor() const

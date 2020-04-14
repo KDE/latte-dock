@@ -110,6 +110,7 @@ public:
     virtual Type type() const;
 
 // STATIC
+    static QString defaultTextColor(const QString &color);
     static QString layoutName(const QString &fileName);
     static QList<Plasma::Types::Location> combinedFreeEdges(const QList<Plasma::Types::Location> &edges1,
                                                             const QList<Plasma::Types::Location> &edges2);

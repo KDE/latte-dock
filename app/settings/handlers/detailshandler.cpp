@@ -18,44 +18,54 @@
  *
  */
 
-#include "detailsdialog.h"
 
-// local
-#include "ui_detailsdialog.h"
-#include "../controllers/layoutscontroller.h"
-#include "../handlers/detailshandler.h"
+#include "detailshandler.h"
 
+#include "../dialogs/detailsdialog.h"
 
 namespace Latte {
 namespace Settings {
-namespace Dialog {
+namespace Handler {
 
-DetailsDialog::DetailsDialog(SettingsDialog *parent, Controller::Layouts *controller)
-    : QDialog(parent),
-      m_parentDlg(parent),
-      m_ui(new Ui::DetailsDialog),
-      m_layoutsController(controller)
-{
-    //! first we need to setup the ui
-    m_ui->setupUi(this);
-    //! we must create handlers after creating/adjusting the ui
-    m_handler = new Handler::DetailsHandler(this);
-
-    m_ui->messageWidget->setVisible(false);
-}
-
-DetailsDialog::~DetailsDialog()
+DetailsHandler::DetailsHandler(Dialog::DetailsDialog *parentDialog)
+    : Generic(parentDialog),
+      m_parentDialog(parentDialog),
+      m_ui(m_parentDialog->ui()),
+      m_infoHandler(new DetailsInfoHandler(this, parentDialog))
 {
 }
 
-Controller::Layouts *DetailsDialog::layoutsController() const
+DetailsHandler::~DetailsHandler()
 {
-    return m_layoutsController;
 }
 
-Ui::DetailsDialog *DetailsDialog::ui() const
+bool DetailsHandler::dataAreChanged() const
 {
-    return m_ui;
+    return m_infoHandler->dataAreChanged();
+}
+
+bool DetailsHandler::inDefaultValues() const
+{
+    //nothing special
+    return true;
+}
+
+
+void DetailsHandler::reset()
+{
+}
+
+void DetailsHandler::resetDefaults()
+{
+    //do nothing
+}
+
+void DetailsHandler::save()
+{
+}
+
+void DetailsHandler::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval, QList<QAction *> actions)
+{
 }
 
 }

@@ -81,6 +81,7 @@ public:
     void toggleSharedForSelected();
 
     QString iconsPath() const;
+    QString colorPath(const QString color) const;
 
     QString layoutNameForFreeActivities() const;
     void setOriginalLayoutForFreeActivities(const QString &id);
