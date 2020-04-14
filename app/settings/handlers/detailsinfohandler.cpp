@@ -30,8 +30,8 @@ namespace Latte {
 namespace Settings {
 namespace Handler {
 
-DetailsInfoHandler::DetailsInfoHandler(QObject *parent, Dialog::DetailsDialog *parentDialog)
-    : Generic(parent),
+DetailsInfoHandler::DetailsInfoHandler(Dialog::DetailsDialog *parentDialog)
+    : Generic(parentDialog),
       m_parentDialog(parentDialog),
       m_ui(m_parentDialog->ui())
 {
@@ -82,10 +82,6 @@ void DetailsInfoHandler::resetDefaults()
 }
 
 void DetailsInfoHandler::save()
-{
-}
-
-void DetailsInfoHandler::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval, QList<QAction *> actions)
 {
 }
 

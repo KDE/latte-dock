@@ -486,10 +486,12 @@ void Layouts::loadLayouts()
     if (brokenLayouts.count() > 0) {
         if (brokenLayouts.count() == 1) {
             m_handler->showInlineMessage(i18nc("settings:broken layout", "Layout <b>%0</b> <i>is broken</i>! Please <b>remove</b> to improve stability...").arg(brokenLayouts.join(",")),
-                                         KMessageWidget::Error);
+                                         KMessageWidget::Error,
+                                         true);
         } else {
             m_handler->showInlineMessage(i18nc("settings:broken layouts", "Layouts <b>%0</b> <i>are broken</i>! Please <b>remove</b> to improve stability...").arg(brokenLayouts.join(",")),
-                                         KMessageWidget::Error);
+                                         KMessageWidget::Error,
+                                         true);
         }
     }
 }
@@ -628,12 +630,10 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
             if (importedlayouts.count() > 0) {
                 if (importedlayouts.count() == 1) {
                     m_handler->showInlineMessage(i18n("Layout <b>%0</b> imported successfully...").arg(importedlayouts[0]),
-                            KMessageWidget::Information,
-                            Settings::Dialog::INFORMATIONINTERVAL);
+                            KMessageWidget::Information);
                 } else {
                     m_handler->showInlineMessage(i18n("Layouts <b>%0</b> imported successfully...").arg(importedlayouts.join(",")),
-                                                 KMessageWidget::Information,
-                                                 Settings::Dialog::INFORMATIONINTERVAL);
+                                                 KMessageWidget::Information);
                 }
 
                 return true;
@@ -921,8 +921,7 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
     Data::Layout provenLayout = m_model->at(originalRow);
 
     m_handler->showInlineMessage(i18nc("settings: layout name used","Layout <b>%0</b> is already used, please provide a different name...").arg(provenLayout.name),
-                                 KMessageWidget::Error,
-                                 Settings::Dialog::ERRORINTERVAL);
+                                 KMessageWidget::Error);
 
     QModelIndex tIndex = m_proxyModel->index(tRow, Model::Layouts::NAMECOLUMN);
 

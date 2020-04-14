@@ -51,7 +51,7 @@ class DetailsInfoHandler : public Generic
 {
     Q_OBJECT
 public:
-    DetailsInfoHandler(QObject *parent, Dialog::DetailsDialog *parentDialog);
+    DetailsInfoHandler(Dialog::DetailsDialog *parentDialog);
     ~DetailsInfoHandler();
 
     bool dataAreChanged() const override;
@@ -60,8 +60,6 @@ public:
     void reset() override;
     void resetDefaults() override;
     void save() override;
-
-    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0, QList<QAction *> actions = QList<QAction *>()) override;
 
 private slots:
     void init();

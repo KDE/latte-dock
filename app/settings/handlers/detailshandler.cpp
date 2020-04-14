@@ -31,7 +31,7 @@ DetailsHandler::DetailsHandler(Dialog::DetailsDialog *parentDialog)
     : Generic(parentDialog),
       m_parentDialog(parentDialog),
       m_ui(m_parentDialog->ui()),
-      m_infoHandler(new DetailsInfoHandler(this, parentDialog))
+      m_infoHandler(new DetailsInfoHandler(parentDialog))
 {
 }
 
@@ -61,10 +61,6 @@ void DetailsHandler::resetDefaults()
 }
 
 void DetailsHandler::save()
-{
-}
-
-void DetailsHandler::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval, QList<QAction *> actions)
 {
 }
 

@@ -236,11 +236,6 @@ void TabLayouts::resetDefaults()
     //do nothing because there are no defaults
 }
 
-void TabLayouts::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval, QList<QAction *> actions)
-{
-    m_parentDialog->showInlineMessage(msg, type, hideInterval, actions);
-}
-
 void TabLayouts::save()
 {
     m_layoutsController->save();
@@ -258,8 +253,7 @@ void TabLayouts::on_switch_layout()
 
     if (m_layoutsController->dataAreChanged()) {
         showInlineMessage(i18nc("settings:not permitted switching layout","You need to <b>apply</b> your changes first to switch layout..."),
-                          KMessageWidget::Warning,
-                          Settings::Dialog::WARNINGINTERVAL);
+                          KMessageWidget::Warning);
         return;
     }
 
@@ -394,8 +388,7 @@ void TabLayouts::on_new_layout()
         if (presetName == "Default") {
             Settings::Data::Layout newlayout = m_layoutsController->addLayoutForFile(preset, presetName, true);
             showInlineMessage(i18nc("settings:layout added successfully","Layout <b>%0</b> added successfully...").arg(newlayout.name),
-                              KMessageWidget::Information,
-                              Settings::Dialog::INFORMATIONINTERVAL);
+                              KMessageWidget::Information);
             break;
         }
     }
@@ -432,8 +425,7 @@ void TabLayouts::on_download_layout()
                 if (version == Latte::Layouts::Importer::LayoutVersion2) {
                     Settings::Data::Layout downloaded = m_layoutsController->addLayoutForFile(entryFile);
                     showInlineMessage(i18nc("settings:layout downloaded successfully","Layout <b>%0</b> downloaded successfully...").arg(downloaded.name),
-                                      KMessageWidget::Information,
-                                      Settings::Dialog::INFORMATIONINTERVAL);
+                                      KMessageWidget::Information);
                     break;
                 }
             }
@@ -459,15 +451,13 @@ void TabLayouts::on_remove_layout()
 
     if (selectedLayout.isActive) {
         showInlineMessage(i18nc("settings: active layout remove","<b>Active</b> layouts can not be removed..."),
-                          KMessageWidget::Error,
-                          Settings::Dialog::WARNINGINTERVAL);
+                          KMessageWidget::Error);
         return;
     }
 
     if (selectedLayout.isLocked) {
         showInlineMessage(i18nc("settings: locked layout remove","Locked layouts can not be removed..."),
-                          KMessageWidget::Error,
-                          Settings::Dialog::WARNINGINTERVAL);
+                          KMessageWidget::Error);
         return;
     }
 
@@ -532,12 +522,12 @@ void TabLayouts::on_import_layout()
         if (version == Latte::Layouts::Importer::LayoutVersion2) {
             Settings::Data::Layout importedlayout = m_layoutsController->addLayoutForFile(file);
             showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedlayout.name),
-                              KMessageWidget::Information,
-                              Settings::Dialog::INFORMATIONINTERVAL);
+                              KMessageWidget::Information);
         } else if (version == Latte::Layouts::Importer::ConfigVersion1) {
             if (!m_layoutsController->importLayoutsFromV1ConfigFile(file)) {
                 showInlineMessage(i18nc("settings:deprecated layouts import failed","Import layouts from deprecated version <b>failed</b>..."),
-                                  KMessageWidget::Error);
+                                  KMessageWidget::Error,
+                                  true);
             }
         }
     });
@@ -581,7 +571,8 @@ void TabLayouts::on_export_layout()
     connect(exportFileDialog, &QFileDialog::fileSelected, this, [ &, selectedLayout](const QString & file) {
         auto showExportLayoutError = [this](const Settings::Data::Layout &layout) {
             showInlineMessage(i18nc("settings:layout export fail","Layout <b>%0</b> export <b>failed</b>...").arg(layout.name),
-                              KMessageWidget::Error);
+                              KMessageWidget::Error,
+                              true);
         };
 
         if (QFile::exists(file) && !QFile::remove(file)) {
@@ -620,11 +611,11 @@ void TabLayouts::on_export_layout()
 
             showInlineMessage(i18nc("settings:layout export success","Layout <b>%0</b> export succeeded...").arg(selectedLayout.name),
                               KMessageWidget::Information,
-                              Settings::Dialog::INFORMATIONWITHACTIONINTERVAL,
+                              false,
                               actions);
         } else if (file.endsWith(".latterc")) {
             auto showExportConfigurationError = [this]() {
-                showInlineMessage(i18n("Full configuration export <b>failed</b>..."), KMessageWidget::Error);
+                showInlineMessage(i18n("Full configuration export <b>failed</b>..."), KMessageWidget::Error, true);
             };
 
             if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {
@@ -643,7 +634,7 @@ void TabLayouts::on_export_layout()
 
                 showInlineMessage(i18n("Full configuration export succeeded..."),
                                   KMessageWidget::Information,
-                                  Settings::Dialog::INFORMATIONWITHACTIONINTERVAL,
+                                  false,
                                   actions);
             } else {
                 showExportConfigurationError();
@@ -687,12 +678,10 @@ void TabLayouts::on_layoutFilesDropped(const QStringList &paths)
 
     if (layoutNames.count() == 1) {
         showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(layoutNames[0]),
-                KMessageWidget::Information,
-                Settings::Dialog::INFORMATIONINTERVAL);
+                KMessageWidget::Information);
     } else if (layoutNames.count() > 1) {
         showInlineMessage(i18nc("settings:layouts imported successfully","Layouts <b>%0</b> imported successfully...").arg(layoutNames.join(", )")),
-                          KMessageWidget::Information,
-                          Settings::Dialog::INFORMATIONINTERVAL);
+                          KMessageWidget::Information);
     }
 }
 

@@ -77,8 +77,6 @@ public:
     Dialog::SettingsDialog *dialog() const;
     Ui::SettingsDialog *ui() const;
 
-    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0, QList<QAction *> actions = QList<QAction *>()) override;
-
 public slots:
     void on_dragEnterEvent(QDragEnterEvent *event);
     void on_dragLeaveEvent(QDragLeaveEvent *event);

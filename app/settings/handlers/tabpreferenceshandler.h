@@ -65,8 +65,6 @@ public:
     void resetDefaults() override;
     void save() override;
 
-    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0, QList<QAction *> actions = QList<QAction *>()) override;
-
 signals:
     void borderlessMaximizedChanged();
 

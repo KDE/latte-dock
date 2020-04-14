@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="optionsLayout">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -378,9 +378,6 @@
     </spacer>
    </item>
    <item>
-    <widget class="KMessageWidget" name="messageWidget"/>
-   </item>
-   <item>
     <widget class="QDialogButtonBox" name="mainButtonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -393,11 +390,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>KMessageWidget</class>
-   <extends>QFrame</extends>
-   <header>kmessagewidget.h</header>
-  </customwidget>
   <customwidget>
    <class>Latte::Settings::Widget::PatternWidget</class>
    <extends>QWidget</extends>

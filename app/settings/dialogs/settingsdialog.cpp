@@ -59,7 +59,7 @@ namespace Settings {
 namespace Dialog {
 
 SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
-    : QDialog(parent),
+    : GenericDialog(parent),
       m_ui(new Ui::SettingsDialog),
       m_corona(corona),
       m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog"))
@@ -92,8 +92,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     loadConfig();
     resize(m_windowSize);
 
-    m_ui->messageWidget->setVisible(false);
-
     m_ui->buttonBox->button(QDialogButtonBox::Apply)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
     m_ui->buttonBox->button(QDialogButtonBox::Reset)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
 
@@ -118,16 +116,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     m_activitiesTimer.setInterval(750);
     connect(&m_activitiesTimer, &QTimer::timeout, this, &SettingsDialog::updateWindowActivities);
     m_activitiesTimer.start();
-
-    m_hideInlineMessageTimer.setSingleShot(true);
-    m_hideInlineMessageTimer.setInterval(2000);
-    connect(&m_hideInlineMessageTimer, &QTimer::timeout, this, [&]() {
-        m_ui->messageWidget->animatedHide();
-    });
-
-    connect(m_ui->messageWidget, &KMessageWidget::hideAnimationFinished, this, [&]() {
-        clearCurrentMessageActions();
-    });
 
     updateApplyButtonsState();
 }
@@ -367,7 +355,7 @@ void SettingsDialog::on_export_fullconfiguration()
 
     connect(exportFileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
         auto showExportConfigurationError = [this]() {
-            showInlineMessage(i18n("Full configuration export <b>failed</b>..."), KMessageWidget::Error);
+            showInlineMessage(i18n("Full configuration export <b>failed</b>..."), KMessageWidget::Error, true);
         };
 
         if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {
@@ -386,7 +374,7 @@ void SettingsDialog::on_export_fullconfiguration()
 
             showInlineMessage(i18n("Full configuration export succeeded..."),
                               KMessageWidget::Information,
-                              Settings::Dialog::INFORMATIONWITHACTIONINTERVAL,
+                              false,
                               actions);
         } else {
             showExportConfigurationError();
@@ -666,20 +654,6 @@ void SettingsDialog::dropEvent(QDropEvent *event)
     }
 }
 
-void SettingsDialog::keyPressEvent(QKeyEvent *event)
-{
-    if (event && event->key() == Qt::Key_Escape) {
-        if (m_ui->messageWidget->isVisible()) {
-            m_hideInlineMessageTimer.stop();
-            m_ui->messageWidget->animatedHide();
-            clearCurrentMessageActions();
-            return;
-        }
-    }
-
-    QDialog::keyPressEvent(event);
-}
-
 void SettingsDialog::keyReleaseEvent(QKeyEvent *event)
 {
     if (event && currentPage() == Types::LayoutPage){
@@ -704,56 +678,6 @@ void SettingsDialog::save()
         m_tabLayoutsHandler->save();
     } else if (currentPage() == Latte::Types::PreferencesPage) {
         m_tabPreferencesHandler->save();
-    }
-}
-
-void SettingsDialog::clearCurrentMessageActions()
-{
-    while(m_currentMessageActions.count() > 0) {
-        QAction *action = m_currentMessageActions.takeAt(0);
-        m_ui->messageWidget->removeAction(action);
-        action->deleteLater();
-    }
-}
-
-void SettingsDialog::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval, QList<QAction *> actions)
-{
-    if (msg.isEmpty()) {
-        return;
-    }
-
-    if (!m_currentMessageActions.isEmpty()) {
-        clearCurrentMessageActions();
-    }
-
-    m_currentMessageActions = actions;
-
-    for (int i=0; i<actions.count(); ++i) {
-        m_ui->messageWidget->addAction(actions[i]);
-    }
-
-    m_hideInlineMessageTimer.stop();
-
-    if (m_ui->messageWidget->isVisible()) {
-        m_ui->messageWidget->animatedHide();
-    }
-
-    m_ui->messageWidget->setText(msg);
-
-    // TODO: wrap at arbitrary character positions once QLabel can do this
-    // https://bugreports.qt.io/browse/QTBUG-1276
-    m_ui->messageWidget->setWordWrap(true);
-    m_ui->messageWidget->setMessageType(type);
-    m_ui->messageWidget->setWordWrap(false);
-
-    const int unwrappedWidth = m_ui->messageWidget->sizeHint().width();
-    m_ui->messageWidget->setWordWrap(unwrappedWidth > size().width());
-
-    m_ui->messageWidget->animatedShow();
-
-    if (hideInterval > 0) {
-        m_hideInlineMessageTimer.setInterval(hideInterval);
-        m_hideInlineMessageTimer.start();
     }
 }
 

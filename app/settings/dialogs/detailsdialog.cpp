@@ -31,7 +31,7 @@ namespace Settings {
 namespace Dialog {
 
 DetailsDialog::DetailsDialog(SettingsDialog *parent, Controller::Layouts *controller)
-    : QDialog(parent),
+    : GenericDialog(parent),
       m_parentDlg(parent),
       m_ui(new Ui::DetailsDialog),
       m_layoutsController(controller)
@@ -40,8 +40,6 @@ DetailsDialog::DetailsDialog(SettingsDialog *parent, Controller::Layouts *contro
     m_ui->setupUi(this);
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::DetailsHandler(this);
-
-    m_ui->messageWidget->setVisible(false);
 }
 
 DetailsDialog::~DetailsDialog()

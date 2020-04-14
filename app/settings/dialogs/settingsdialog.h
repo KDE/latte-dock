@@ -23,6 +23,7 @@
 #define SETTINGSDIALOG_H
 
 // local
+#include "genericdialog.h"
 #include "../liblatte2/types.h"
 #include "../controllers/layoutscontroller.h"
 #include "../handlers/tablayoutshandler.h"
@@ -39,7 +40,6 @@
 
 // KDE
 #include <KHelpMenu>
-#include <KMessageWidget>
 
 namespace Ui {
 class SettingsDialog;
@@ -58,12 +58,7 @@ namespace Latte {
 namespace Settings {
 namespace Dialog {
 
-static const int INFORMATIONINTERVAL = 3000;
-static const int INFORMATIONWITHACTIONINTERVAL = 5000;
-static const int WARNINGINTERVAL = 3500;
-static const int ERRORINTERVAL = 4000;
-
-class SettingsDialog : public QDialog
+class SettingsDialog : public GenericDialog
 {
     Q_OBJECT
 public:
@@ -89,14 +84,11 @@ public:
     void requestImagesDialog(int row);
     void requestColorsDialog(int row);
 
-    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0, QList<QAction *> actions = QList<QAction *>());
-
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragLeaveEvent(QDragLeaveEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
-    void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
 
 private slots:
@@ -112,9 +104,7 @@ private slots:
     void showLayoutInformation();
     void showScreensInformation();
     void updateApplyButtonsState();
-    void updateWindowActivities();
-
-    void clearCurrentMessageActions();
+    void updateWindowActivities();    
 
     void loadConfig();
     void saveConfig();
@@ -163,18 +153,12 @@ private:
     //! Help menu actions
     KHelpMenu *m_helpMenu{nullptr};
 
-    //! Current shown KMessageActions
-    QList<QAction *> m_currentMessageActions;
-
     //! storage
     KConfigGroup m_deprecatedStorage;
     KConfigGroup m_storage;
 
     //! workaround to assign ALLACTIVITIES during startup
     QTimer m_activitiesTimer;
-    //! Timer to hide the inline message widget
-    QTimer m_hideInlineMessageTimer;
-
 };
 
 }

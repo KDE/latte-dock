@@ -20,14 +20,16 @@
 
 #include "generichandler.h"
 
-
+// local
+#include "../dialogs/genericdialog.h"
 
 namespace Latte {
 namespace Settings {
 namespace Handler {
 
-Generic::Generic(QObject *parent)
-    : QObject(parent)
+Generic::Generic(Dialog::GenericDialog *parent)
+    : QObject(parent),
+      m_dialog(parent)
 {
 }
 
@@ -64,6 +66,11 @@ void Generic::connectActionWithButton(QPushButton *button, QAction *action)
     connect(button, &QPushButton::clicked, action, &QAction::trigger);
 }
 
+void Generic::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent, QList<QAction *> actions)
+{
+    m_dialog->showInlineMessage(msg, type, isPersistent, actions);
 }
+}
+
 }
 }

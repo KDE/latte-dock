@@ -18,53 +18,52 @@
  *
  */
 
-#ifndef DETAILSDIALOG_H
-#define DETAILSDIALOG_H
-
-// local
-#include "genericdialog.h"
-#include "settingsdialog.h"
+#ifndef SETTINGSGENERICDIALOG_H
+#define SETTINGSGENERICDIALOG_H
 
 // Qt
+#include <QAction>
 #include <QDialog>
 #include <QObject>
+#include <QTimer>
+#include <QWidget>
 
-namespace Ui {
-class DetailsDialog;
-}
-
-namespace Latte {
-namespace Settings {
-namespace Controller {
-class Layouts;
-}
-namespace Handler {
-class DetailsHandler;
-}
-}
-}
+// KDE
+#include <KMessageWidget>
 
 namespace Latte {
 namespace Settings {
 namespace Dialog {
 
-class DetailsDialog : public GenericDialog
+class GenericDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    DetailsDialog(SettingsDialog *parent, Controller::Layouts *controller);
-    ~DetailsDialog();
+    GenericDialog(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+    ~GenericDialog();
 
-    Ui::DetailsDialog *ui() const;
-    Controller::Layouts *layoutsController() const;
+    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent = false, QList<QAction *> actions = QList<QAction *>());
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
+private slots:
+    void initMessageWidget();
 
 private:
-    SettingsDialog *m_parentDlg{nullptr};
-    Ui::DetailsDialog *m_ui;
-    Controller::Layouts *m_layoutsController{nullptr};
+    void clearCurrentMessageActions();
 
-    Handler::DetailsHandler *m_handler;
+private:
+    KMessageWidget *m_messageWidget{nullptr};
+
+    //! Current shown KMessageActions
+    QList<QAction *> m_currentMessageActions;
+
+    //! Timer to hide the inline message widget
+    QTimer m_hideInlineMessageTimer;
+
+
 };
 
 }

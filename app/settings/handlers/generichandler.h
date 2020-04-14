@@ -31,6 +31,15 @@
 
 namespace Latte {
 namespace Settings {
+namespace Dialog {
+class GenericDialog;
+}
+}
+}
+
+
+namespace Latte {
+namespace Settings {
 namespace Handler {
 
 //! Handlers are objects to handle the UI elements that semantically associate with specific
@@ -45,7 +54,7 @@ public:
     static constexpr const char* TWINVISIBLE = "Visible";
     static constexpr const char* TWINCHECKED = "Checked";
 
-    Generic(QObject *parent);
+    Generic(Dialog::GenericDialog *parent);
 
     virtual bool dataAreChanged() const = 0;
     virtual bool inDefaultValues() const = 0;
@@ -54,7 +63,7 @@ public:
     virtual void resetDefaults() = 0;
     virtual void save() = 0;
 
-    virtual void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const int &hideInterval = 0, QList<QAction *> actions = QList<QAction *>()) = 0;
+    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent = false, QList<QAction *> actions = QList<QAction *>());
 
 signals:
     void dataChanged();
@@ -68,6 +77,7 @@ private:
     //! for simplicity reasons
     QHash<QAction *, QPushButton *> m_twinActions;
 
+    Dialog::GenericDialog *m_dialog;
 
 
 };
