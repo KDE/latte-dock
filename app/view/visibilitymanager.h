@@ -182,6 +182,8 @@ private slots:
     void dodgeMaximized();
     void updateHiddenState();
 
+    bool isValidMode() const;
+
 private:
     WindowSystem::AbstractWindowInterface *m_wm;
     Types::Visibility m_mode{Types::None};

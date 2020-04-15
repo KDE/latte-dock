@@ -492,11 +492,7 @@ void ContainmentInterface::toggleAppletExpanded(const int id)
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {
-                if (!ai->isActivationTogglesExpanded()) {
-                    ai->setActivationTogglesExpanded(true);
-                }
-
-                emit applet->activated();
+                ai->setExpanded(!ai->isExpanded());
             }
         }
     }

@@ -609,10 +609,19 @@ void VisibilityManager::raiseViewTemporarily()
     });
 }
 
+bool VisibilityManager::isValidMode() const
+{
+    return (m_mode != Types::None && m_mode != Types::NormalWindow);
+}
+
 void VisibilityManager::toggleHiddenState()
 {
     if (!m_latteView->inEditMode()) {
         if (m_mode == Latte::Types::SideBar) {
+            if (m_blockHidingEvents.contains(Q_FUNC_INFO)) {
+                removeBlockHidingEvent(Q_FUNC_INFO);
+            }
+
             if (m_isHidden) {
                 emit mustBeShown();
             } else {
