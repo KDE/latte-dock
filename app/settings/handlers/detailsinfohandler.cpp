@@ -22,6 +22,7 @@
 
 // local
 #include "ui_detailsdialog.h"
+#include "detailshandler.h"
 #include "../dialogs/detailsdialog.h"
 #include "../widgets/patternwidget.h"
 #include "../../layout/abstractlayout.h"
@@ -30,10 +31,11 @@ namespace Latte {
 namespace Settings {
 namespace Handler {
 
-DetailsInfoHandler::DetailsInfoHandler(Dialog::DetailsDialog *parentDialog)
-    : Generic(parentDialog),
+DetailsInfoHandler::DetailsInfoHandler(Dialog::DetailsDialog *parentDialog, DetailsHandler *parentHandler)
+    : Generic(parentDialog, parentHandler),
       m_parentDialog(parentDialog),
-      m_ui(m_parentDialog->ui())
+      m_ui(m_parentDialog->ui()),
+      m_parentHandler(parentHandler)
 {
     init();
 }
@@ -44,20 +46,16 @@ DetailsInfoHandler::~DetailsInfoHandler()
 
 void DetailsInfoHandler::init()
 {
-    Settings::Data::Layout selectedLayoutCurrent = m_parentDialog->layoutsController()->selectedLayoutCurrentData();
-    initLayout(selectedLayoutCurrent);
+    initLayout(m_parentHandler->currentData());
 }
 
 void DetailsInfoHandler::initLayout(const Data::Layout &data)
 {
-    o_data = data;
-    c_data = data;
+    m_ui->colorPatternWidget->setBackground(m_parentDialog->layoutsController()->colorPath(data.color));
+    m_ui->backPatternWidget->setBackground(data.background);
 
-    m_ui->colorPatternWidget->setBackground(m_parentDialog->layoutsController()->colorPath(o_data.color));
-    m_ui->backPatternWidget->setBackground(o_data.background);
-
-    m_ui->colorPatternWidget->setTextColor(Layout::AbstractLayout::defaultTextColor(o_data.color));
-    m_ui->backPatternWidget->setTextColor(o_data.textColor);
+    m_ui->colorPatternWidget->setTextColor(Layout::AbstractLayout::defaultTextColor(data.color));
+    m_ui->backPatternWidget->setTextColor(data.textColor);
 }
 
 bool DetailsInfoHandler::dataAreChanged() const

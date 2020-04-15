@@ -33,6 +33,12 @@ Generic::Generic(Dialog::GenericDialog *parent)
 {
 }
 
+Generic::Generic(Dialog::GenericDialog *parentDialog, QObject *parent)
+    : QObject(parent),
+      m_dialog(parentDialog)
+{
+}
+
 
 void Generic::setTwinProperty(QAction *action, const QString &property, QVariant value)
 {

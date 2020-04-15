@@ -55,6 +55,7 @@ public:
     static constexpr const char* TWINCHECKED = "Checked";
 
     Generic(Dialog::GenericDialog *parent);
+    Generic(Dialog::GenericDialog *parentDialog, QObject *parent);
 
     virtual bool dataAreChanged() const = 0;
     virtual bool inDefaultValues() const = 0;

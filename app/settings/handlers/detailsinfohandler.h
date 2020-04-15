@@ -38,6 +38,14 @@ class DetailsDialog;
 }
 }
 
+namespace Latte{
+namespace Settings{
+namespace Handler {
+class DetailsHandler;
+}
+}
+}
+
 
 namespace Latte {
 namespace Settings {
@@ -51,7 +59,7 @@ class DetailsInfoHandler : public Generic
 {
     Q_OBJECT
 public:
-    DetailsInfoHandler(Dialog::DetailsDialog *parentDialog);
+    DetailsInfoHandler(Dialog::DetailsDialog *parentDialog, DetailsHandler *parentHandler);
     ~DetailsInfoHandler();
 
     bool dataAreChanged() const override;
@@ -71,8 +79,7 @@ private:
     Dialog::DetailsDialog *m_parentDialog{nullptr};
     Ui::DetailsDialog *m_ui{nullptr};
 
-    Data::Layout o_data;
-    Data::Layout c_data;
+    DetailsHandler *m_parentHandler{nullptr};
 };
 
 }

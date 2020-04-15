@@ -60,11 +60,19 @@ public:
     void resetDefaults() override;
     void save() override;
 
+    Data::Layout currentData() const;
+
+private:
+    void init();
+
 private:
     Dialog::DetailsDialog *m_parentDialog{nullptr};
     Ui::DetailsDialog *m_ui{nullptr};
 
     DetailsInfoHandler *m_infoHandler{nullptr};
+
+    Data::Layout o_data;
+    Data::Layout c_data;
 };
 
 }

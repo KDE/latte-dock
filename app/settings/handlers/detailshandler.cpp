@@ -18,10 +18,12 @@
  *
  */
 
-
 #include "detailshandler.h"
 
+// local
+#include "../data/layoutdata.h"
 #include "../dialogs/detailsdialog.h"
+#include "../controllers/layoutscontroller.h"
 
 namespace Latte {
 namespace Settings {
@@ -30,18 +32,33 @@ namespace Handler {
 DetailsHandler::DetailsHandler(Dialog::DetailsDialog *parentDialog)
     : Generic(parentDialog),
       m_parentDialog(parentDialog),
-      m_ui(m_parentDialog->ui()),
-      m_infoHandler(new DetailsInfoHandler(parentDialog))
+      m_ui(m_parentDialog->ui())
 {
+    init();
+
+    //! create it after initializing
+    m_infoHandler = new DetailsInfoHandler(parentDialog, this);
 }
 
 DetailsHandler::~DetailsHandler()
 {
 }
 
+
+void DetailsHandler::init()
+{
+    o_data = m_parentDialog->layoutsController()->selectedLayoutCurrentData();
+    c_data = o_data;
+}
+
+Data::Layout DetailsHandler::currentData() const
+{
+    return c_data;
+}
+
 bool DetailsHandler::dataAreChanged() const
 {
-    return m_infoHandler->dataAreChanged();
+    return o_data != c_data;
 }
 
 bool DetailsHandler::inDefaultValues() const
