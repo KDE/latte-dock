@@ -96,6 +96,9 @@ Grid {
                 plasmoid.configuration.backgroundOnlyOnMaximized = false;
                 plasmoid.configuration.disablePanelShadowForMaximized = false;
                 plasmoid.configuration.plasmaBackgroundForPopups = false;
+
+                //! Floating
+                plasmoid.configuration.fittsLawIsRequested = true;
             }
         }
     }
@@ -138,6 +141,9 @@ Grid {
                 plasmoid.configuration.backgroundOnlyOnMaximized = false;
                 plasmoid.configuration.disablePanelShadowForMaximized = false;
                 plasmoid.configuration.plasmaBackgroundForPopups = true;
+
+                //! Floating
+                plasmoid.configuration.fittsLawIsRequested = false;
             }
         }
     }
