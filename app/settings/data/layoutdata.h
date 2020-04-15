@@ -21,6 +21,10 @@
 #ifndef SETTINGSDATALAYOUT_H
 #define SETTINGSDATALAYOUT_H
 
+//local
+#include "../../../liblatte2/types.h"
+
+//Qt
 #include <QMetaType>
 #include <QString>
 #include <QStringList>
@@ -50,6 +54,8 @@ public:
     bool hasDisabledBorders{false};
     QStringList activities;
     QStringList shares;
+
+    Types::BackgroundStyle backgroundStyle{Types::ColorStyle};
 
     //! Functionality
     bool isShared() const;

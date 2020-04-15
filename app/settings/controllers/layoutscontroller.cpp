@@ -396,6 +396,7 @@ void Layouts::loadLayouts()
         CentralLayout *central = new CentralLayout(this, original.id);
 
         original.name = central->name();
+        original.backgroundStyle = central->backgroundStyle();
         original.color = central->color();
         original.background = central->customBackground();
         original.textColor = central->customTextColor();
@@ -404,11 +405,6 @@ void Layouts::loadLayouts()
         original.isShownInMenu = central->showInMenu();
         original.hasDisabledBorders = central->disableBordersForMaximizedWindows();
         original.activities = central->activities();
-
-        //! add central layout properties
-        if (original.background.isEmpty()) {
-            original.textColor = QString();
-        }
 
         m_layouts[original.id] = central;
 
@@ -533,16 +529,13 @@ const Data::Layout Layouts::addLayoutForFile(QString file, QString layoutName, b
     m_layouts[copied.id] = settings;
 
     copied.name = uniqueLayoutName(layoutName);
+    copied.backgroundStyle = settings->backgroundStyle();
     copied.color = settings->color();
     copied.textColor = settings->customTextColor();
     copied.background = settings->customBackground();
     copied.isLocked = !settings->isWritable();
     copied.isShownInMenu = settings->showInMenu();
     copied.hasDisabledBorders = settings->disableBordersForMaximizedWindows();
-
-    if (copied.background.isEmpty()) {
-        copied.textColor = QString();
-    }
 
     m_model->appendLayout(copied);
 

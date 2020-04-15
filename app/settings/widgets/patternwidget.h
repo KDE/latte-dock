@@ -47,7 +47,9 @@ signals:
     void textColorChanged();
 
 protected:
-    void paintEvent(QPaintEvent* event) override;
+    void enterEvent(QEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event ) override;
+    void paintEvent(QPaintEvent *event) override;
 
 private slots:
     void updateUi();

@@ -26,6 +26,7 @@
 #include "../dialogs/detailsdialog.h"
 #include "../widgets/patternwidget.h"
 #include "../../layout/abstractlayout.h"
+#include "../../../liblatte2/types.h"
 
 namespace Latte {
 namespace Settings {
@@ -38,8 +39,6 @@ DetailsInfoHandler::DetailsInfoHandler(Dialog::DetailsDialog *parentDialog, Deta
       m_parentHandler(parentHandler)
 {
     init();
-
-    connect(m_parentHandler, &DetailsHandler::currentLayoutChanged, this, &DetailsInfoHandler::reload);
 }
 
 DetailsInfoHandler::~DetailsInfoHandler()
@@ -48,21 +47,45 @@ DetailsInfoHandler::~DetailsInfoHandler()
 
 void DetailsInfoHandler::init()
 {
+    m_backButtonsGroup = new QButtonGroup(this);
+    m_backButtonsGroup->addButton(m_ui->colorRadioBtn, Types::ColorStyle);
+    m_backButtonsGroup->addButton(m_ui->backRadioBtn, Types::CustomBackgroundStyle);
+    m_backButtonsGroup->setExclusive(true);
+
+    connect(m_backButtonsGroup, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
+            [ = ](int id, bool checked) {
+
+        if (checked) {
+            //m_layoutsController->setInMultipleMode(id == Latte::Types::MultipleLayouts);
+        }
+    });
+
+    connect(m_parentHandler, &DetailsHandler::currentLayoutChanged, this, &DetailsInfoHandler::reload);
+
     reload();
 }
 
 void DetailsInfoHandler::reload()
 {
-    initLayout(m_parentHandler->currentData());
+    loadLayout(m_parentHandler->currentData());
 }
 
-void DetailsInfoHandler::initLayout(const Data::Layout &data)
+void DetailsInfoHandler::loadLayout(const Data::Layout &data)
 {
+    if (data.backgroundStyle == Types::ColorStyle) {
+        m_ui->colorRadioBtn->setChecked(true);
+    } else {
+        m_ui->backRadioBtn->setChecked(true);
+    }
+
     m_ui->colorPatternWidget->setBackground(m_parentDialog->layoutsController()->colorPath(data.color));
     m_ui->backPatternWidget->setBackground(data.background);
 
     m_ui->colorPatternWidget->setTextColor(Layout::AbstractLayout::defaultTextColor(data.color));
     m_ui->backPatternWidget->setTextColor(data.textColor);
+
+    m_ui->inMenuChk->setChecked(data.isShownInMenu);
+    m_ui->borderlessChk->setChecked(data.hasDisabledBorders);
 }
 
 bool DetailsInfoHandler::dataAreChanged() const

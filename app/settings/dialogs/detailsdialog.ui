@@ -286,7 +286,7 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QRadioButton" name="backgroundRadioBtn">
+          <widget class="QRadioButton" name="backRadioBtn">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>

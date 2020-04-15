@@ -41,6 +41,8 @@ namespace Widget {
 PatternWidget::PatternWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
 {
+    setMouseTracking(true);
+
     setProperty("isBackground", true);
 
     initUi();
@@ -124,7 +126,18 @@ void PatternWidget::updateUi()
     m_label->setStyleSheet("QLabel {border: 0px; background-image:none; color:" + m_textColor + "}");
 }
 
-void PatternWidget::paintEvent(QPaintEvent* event)
+void PatternWidget::enterEvent(QEvent *event)
+{
+    setCursor(Qt::PointingHandCursor);
+    QWidget::enterEvent(event);
+}
+
+void PatternWidget::mouseMoveEvent(QMouseEvent *event )
+{
+    QWidget::mouseMoveEvent(event);
+}
+
+void PatternWidget::paintEvent(QPaintEvent *event)
 {
     //! it is needed from Qt, otherwise QWidget is not updated
     //! https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget

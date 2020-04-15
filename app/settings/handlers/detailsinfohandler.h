@@ -74,13 +74,15 @@ private slots:
     void reload();
 
 private:
-    void initLayout(const Data::Layout &data);
+    void loadLayout(const Data::Layout &data);
 
 private:
     Dialog::DetailsDialog *m_parentDialog{nullptr};
     Ui::DetailsDialog *m_ui{nullptr};
 
     DetailsHandler *m_parentHandler{nullptr};
+
+    QButtonGroup *m_backButtonsGroup;
 };
 
 }

@@ -40,7 +40,8 @@ Layout::Layout(Layout &&o)
       isShownInMenu(o.isShownInMenu),
       hasDisabledBorders(o.hasDisabledBorders),
       activities(o.activities),
-      shares(o.shares)
+      shares(o.shares),
+      backgroundStyle(o.backgroundStyle)
 {
 }
 
@@ -55,7 +56,8 @@ Layout::Layout(const Layout &o)
       isShownInMenu(o.isShownInMenu),
       hasDisabledBorders(o.hasDisabledBorders),
       activities(o.activities),
-      shares(o.shares)
+      shares(o.shares),
+      backgroundStyle(o.backgroundStyle)
 {
 }
 
@@ -72,6 +74,7 @@ Layout &Layout::operator=(Layout &&rhs)
     hasDisabledBorders = rhs.hasDisabledBorders;
     activities = rhs.activities;
     shares = rhs.shares;
+    backgroundStyle = rhs.backgroundStyle;
 
     return (*this);
 }
@@ -89,6 +92,7 @@ Layout &Layout::operator=(const Layout &rhs)
     hasDisabledBorders = rhs.hasDisabledBorders;
     activities = rhs.activities;
     shares = rhs.shares;
+    backgroundStyle = rhs.backgroundStyle;
 
     return (*this);
 }
@@ -105,7 +109,8 @@ bool Layout::operator==(const Layout &rhs) const
             && (isShownInMenu == rhs.isShownInMenu)
             && (hasDisabledBorders == rhs.hasDisabledBorders)
             && (activities == rhs.activities)
-            && (shares == rhs.shares);
+            && (shares == rhs.shares)
+            && (backgroundStyle == rhs.backgroundStyle);
 }
 
 bool Layout::operator!=(const Layout &rhs) const
