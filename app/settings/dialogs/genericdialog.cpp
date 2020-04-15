@@ -73,7 +73,7 @@ void GenericDialog::initMessageWidget()
 void GenericDialog::keyPressEvent(QKeyEvent *event)
 {
     if (event && event->key() == Qt::Key_Escape) {
-        if (m_messageWidget->isVisible()) {
+        if (m_messageWidget && m_messageWidget->isVisible()) {
             m_hideInlineMessageTimer.stop();
             m_messageWidget->animatedHide();
             clearCurrentMessageActions();
