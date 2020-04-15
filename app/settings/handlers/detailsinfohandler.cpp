@@ -38,6 +38,8 @@ DetailsInfoHandler::DetailsInfoHandler(Dialog::DetailsDialog *parentDialog, Deta
       m_parentHandler(parentHandler)
 {
     init();
+
+    connect(m_parentHandler, &DetailsHandler::currentLayoutChanged, this, &DetailsInfoHandler::reload);
 }
 
 DetailsInfoHandler::~DetailsInfoHandler()
@@ -45,6 +47,11 @@ DetailsInfoHandler::~DetailsInfoHandler()
 }
 
 void DetailsInfoHandler::init()
+{
+    reload();
+}
+
+void DetailsInfoHandler::reload()
 {
     initLayout(m_parentHandler->currentData());
 }

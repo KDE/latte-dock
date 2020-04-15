@@ -62,8 +62,15 @@ public:
 
     Data::Layout currentData() const;
 
+signals:
+    void currentLayoutChanged();
+
+private:
+    void on_currentIndexChanged(int index);
+
 private:
     void init();
+    void reload();
 
 private:
     Dialog::DetailsDialog *m_parentDialog{nullptr};

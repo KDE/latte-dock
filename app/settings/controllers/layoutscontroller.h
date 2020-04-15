@@ -72,6 +72,8 @@ public:
     const Data::Layout selectedLayoutCurrentData() const;
     const Data::Layout selectedLayoutOriginalData() const;
 
+    void selectRow(int index);
+
     //! actions
     void reset();
     void save();

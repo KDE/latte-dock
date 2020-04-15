@@ -35,11 +35,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QPushButton" name="layoutBtn">
-         <property name="text">
-          <string notr="true">&lt;Layout&gt;</string>
-         </property>
-        </widget>
+        <widget class="QComboBox" name="layoutsCmb"/>
        </item>
        <item>
         <spacer name="verticalSpacer">

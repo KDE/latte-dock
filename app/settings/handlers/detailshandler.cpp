@@ -21,9 +21,12 @@
 #include "detailshandler.h"
 
 // local
-#include "../data/layoutdata.h"
-#include "../dialogs/detailsdialog.h"
+#include "ui_detailsdialog.h"
 #include "../controllers/layoutscontroller.h"
+#include "../data/layoutdata.h"
+#include "../data/layoutstable.h"
+#include "../dialogs/detailsdialog.h"
+#include "../models/layoutsmodel.h"
 
 namespace Latte {
 namespace Settings {
@@ -38,17 +41,29 @@ DetailsHandler::DetailsHandler(Dialog::DetailsDialog *parentDialog)
 
     //! create it after initializing
     m_infoHandler = new DetailsInfoHandler(parentDialog, this);
+
+
 }
 
 DetailsHandler::~DetailsHandler()
 {
 }
 
-
 void DetailsHandler::init()
+{
+    connect(m_ui->layoutsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::on_currentIndexChanged);
+
+    reload();
+}
+
+void DetailsHandler::reload()
 {
     o_data = m_parentDialog->layoutsController()->selectedLayoutCurrentData();
     c_data = o_data;
+
+    m_ui->layoutsCmb->setModel(m_parentDialog->layoutsController()->model());
+    m_ui->layoutsCmb->setModelColumn(Model::Layouts::NAMECOLUMN);
+    m_ui->layoutsCmb->setCurrentText(o_data.name);
 }
 
 Data::Layout DetailsHandler::currentData() const
@@ -79,6 +94,13 @@ void DetailsHandler::resetDefaults()
 
 void DetailsHandler::save()
 {
+}
+
+void DetailsHandler::on_currentIndexChanged(int index)
+{
+    m_parentDialog->layoutsController()->selectRow(index);
+    init();
+    emit currentLayoutChanged();
 }
 
 }

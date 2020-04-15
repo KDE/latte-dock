@@ -71,6 +71,7 @@ public:
 
 private slots:
     void init();
+    void reload();
 
 private:
     void initLayout(const Data::Layout &data);

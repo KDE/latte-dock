@@ -353,6 +353,11 @@ void Layouts::toggleSharedForSelected()
     }
 }
 
+void Layouts::selectRow(int index)
+{
+    m_view->selectRow(index);
+}
+
 QString Layouts::layoutNameForFreeActivities() const
 {
     return m_model->layoutNameForFreeActivities();
