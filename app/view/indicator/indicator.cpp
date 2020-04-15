@@ -122,6 +122,11 @@ void Indicator::setEnabledForApplets(bool enabled)
     emit enabledForAppletsChanged();
 }
 
+bool Indicator::isCustomIndicator() const
+{
+    return m_corona->indicatorFactory()->isCustomType(type());
+}
+
 bool Indicator::latteTasksArePresent()
 {
     return m_view->latteTasksArePresent();

@@ -280,7 +280,7 @@ void View::init()
     });
 
     connect(this, &View::indicatorPluginChanged, this, [&](const QString &indicatorId) {
-        if (m_indicator && m_indicator->type() == indicatorId) {
+        if (m_indicator && m_indicator->isCustomIndicator() && m_indicator->type() == indicatorId) {
             reloadSource();
         }
     });

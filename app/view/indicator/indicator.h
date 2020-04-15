@@ -96,6 +96,8 @@ public:
     bool enabledForApplets() const;
     void setEnabledForApplets(bool enabled);
 
+    bool isCustomIndicator() const;
+
     bool latteTasksArePresent();
     bool providesConfigUi() const;
 
