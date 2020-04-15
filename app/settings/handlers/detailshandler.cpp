@@ -85,6 +85,8 @@ bool DetailsHandler::inDefaultValues() const
 
 void DetailsHandler::reset()
 {
+    c_data = o_data;
+    emit currentLayoutChanged();
 }
 
 void DetailsHandler::resetDefaults()
@@ -101,6 +103,16 @@ void DetailsHandler::on_currentIndexChanged(int index)
     m_parentDialog->layoutsController()->selectRow(index);
     init();
     emit currentLayoutChanged();
+}
+
+void DetailsHandler::setIsShownInMenu(bool inMenu)
+{
+    c_data.isShownInMenu = inMenu;
+}
+
+void DetailsHandler::setHasDisabledBorders(bool disabled)
+{
+    c_data.hasDisabledBorders = disabled;
 }
 
 }

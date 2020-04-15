@@ -62,6 +62,9 @@ public:
 
     Data::Layout currentData() const;
 
+    void setIsShownInMenu(bool inMenu);
+    void setHasDisabledBorders(bool disabled);
+
 signals:
     void currentLayoutChanged();
 

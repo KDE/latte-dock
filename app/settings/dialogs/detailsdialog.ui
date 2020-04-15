@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Details</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -68,7 +68,7 @@
             <widget class="Latte::Settings::Widget::PatternWidget" name="backPatternWidget" native="true">
              <property name="minimumSize">
               <size>
-               <width>160</width>
+               <width>220</width>
                <height>60</height>
               </size>
              </property>
@@ -317,7 +317,7 @@
             <widget class="Latte::Settings::Widget::PatternWidget" name="colorPatternWidget" native="true">
              <property name="minimumSize">
               <size>
-               <width>160</width>
+               <width>220</width>
                <height>60</height>
               </size>
              </property>
@@ -374,7 +374,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="mainButtonBox">
+    <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -396,7 +396,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>mainButtonBox</sender>
+   <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>DetailsDialog</receiver>
    <slot>accept()</slot>
@@ -412,7 +412,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>mainButtonBox</sender>
+   <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>DetailsDialog</receiver>
    <slot>reject()</slot>

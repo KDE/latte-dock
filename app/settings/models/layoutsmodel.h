@@ -118,8 +118,9 @@ public:
     //! all original data will become also current
     void resetData();
 
-    void appendLayout(const Settings::Data::Layout &layout);
+    void appendLayout(const Data::Layout &layout);
     void removeLayout(const QString &id);
+    void setLayoutProperties(const Data::Layout &layout);
 
     QString layoutNameForFreeActivities() const;
     void setCurrentLayoutForFreeActivities(const QString &id);

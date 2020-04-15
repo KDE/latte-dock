@@ -50,10 +50,6 @@
 #include <KWindowSystem>
 
 
-#define TWINENABLED "Enabled"
-#define TWINVISIBLE "Visible"
-#define TWINCHECKED "Checked"
-
 namespace Latte {
 namespace Settings {
 namespace Dialog {
@@ -74,12 +70,12 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     loadConfig();
 
 
-    connect(m_ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
-            , this, &SettingsDialog::apply);
-    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked
-            , this, &SettingsDialog::reset);
-    connect(m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
-            , this, &SettingsDialog::restoreDefaults);
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked,
+            this, &SettingsDialog::apply);
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked,
+            this, &SettingsDialog::reset);
+    connect(m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked,
+            this, &SettingsDialog::restoreDefaults);
 
     //! Global Menu
     initGlobalMenu();

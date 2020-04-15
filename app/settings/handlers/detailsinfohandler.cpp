@@ -60,6 +60,14 @@ void DetailsInfoHandler::init()
         }
     });
 
+    connect(m_ui->inMenuChk, &QCheckBox::stateChanged, this, [&]() {
+        m_parentHandler->setIsShownInMenu(m_ui->inMenuChk->isChecked());
+    });
+
+    connect(m_ui->borderlessChk, &QCheckBox::stateChanged, this, [&]() {
+        m_parentHandler->setHasDisabledBorders(m_ui->borderlessChk->isChecked());
+    });
+
     connect(m_parentHandler, &DetailsHandler::currentLayoutChanged, this, &DetailsInfoHandler::reload);
 
     reload();

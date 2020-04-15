@@ -59,6 +59,12 @@ public:
     Ui::DetailsDialog *ui() const;
     Controller::Layouts *layoutsController() const;
 
+private slots:
+    void accept() override;
+
+    void on_apply();
+    void on_reset();
+
 private:
     SettingsDialog *m_parentDlg{nullptr};
     Ui::DetailsDialog *m_ui;

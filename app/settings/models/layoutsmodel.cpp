@@ -165,6 +165,19 @@ void Layouts::removeLayout(const QString &id)
     }
 }
 
+void Layouts::setLayoutProperties(const Data::Layout &layout)
+{
+    if (m_layoutsTable.containsId(layout.id) && m_layoutsTable[layout.id] != layout) {
+        m_layoutsTable[layout.id] = layout;
+        int dataRow = m_layoutsTable.indexOf(layout.id);
+
+        QVector<int> roles;
+        roles << Qt::DisplayRole;
+        roles << Qt::UserRole;
+        emit dataChanged(index(dataRow, IDCOLUMN), index(dataRow, SHAREDCOLUMN), roles);
+    }
+}
+
 bool Layouts::removeRows(int row, int count, const QModelIndex &parent)
 {
     Q_UNUSED(parent)

@@ -73,6 +73,7 @@ public:
     const Data::Layout selectedLayoutOriginalData() const;
 
     void selectRow(int index);
+    void setLayoutProperties(const Data::Layout &layout);
 
     //! actions
     void reset();

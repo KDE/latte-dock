@@ -358,6 +358,11 @@ void Layouts::selectRow(int index)
     m_view->selectRow(index);
 }
 
+void Layouts::setLayoutProperties(const Data::Layout &layout)
+{
+    m_model->setLayoutProperties(layout);
+}
+
 QString Layouts::layoutNameForFreeActivities() const
 {
     return m_model->layoutNameForFreeActivities();
