@@ -40,7 +40,7 @@ DetailsHandler::DetailsHandler(Dialog::DetailsDialog *parentDialog)
     init();
 
     //! create it after initializing
-    m_infoHandler = new DetailsInfoHandler(parentDialog, this);
+    m_infoHandler = new DetailsInfoHandler(parentDialog, this);   
 }
 
 DetailsHandler::~DetailsHandler()
@@ -49,6 +49,15 @@ DetailsHandler::~DetailsHandler()
 
 void DetailsHandler::init()
 {
+    m_proxyModel = new QSortFilterProxyModel(this);
+    m_proxyModel->setSourceModel(m_parentDialog->layoutsController()->baseModel());
+    m_proxyModel->setSortRole(Model::Layouts::SORTINGROLE);
+    m_proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+    m_proxyModel->sort(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
+
+    m_ui->layoutsCmb->setModel(m_proxyModel);
+    m_ui->layoutsCmb->setModelColumn(Model::Layouts::NAMECOLUMN);
+
     reload();
 
     //! connect combobox after the selected layout has been loaded
@@ -60,8 +69,6 @@ void DetailsHandler::reload()
     o_data = m_parentDialog->layoutsController()->selectedLayoutCurrentData();
     c_data = o_data;
 
-    m_ui->layoutsCmb->setModel(m_parentDialog->layoutsController()->model());
-    m_ui->layoutsCmb->setModelColumn(Model::Layouts::NAMECOLUMN);
     m_ui->layoutsCmb->setCurrentText(o_data.name);
 }
 
@@ -97,10 +104,12 @@ void DetailsHandler::save()
 {
 }
 
-void DetailsHandler::on_currentIndexChanged(int index)
+void DetailsHandler::on_currentIndexChanged(int row)
 {
-    m_parentDialog->layoutsController()->selectRow(index);
-    init();
+    QString layoutId = m_proxyModel->data(m_proxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
+    m_parentDialog->layoutsController()->selectRow(layoutId);
+    reload();
+
     emit currentLayoutChanged();
 }
 

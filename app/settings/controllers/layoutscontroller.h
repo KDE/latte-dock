@@ -59,7 +59,8 @@ public:
     explicit Layouts(Settings::Handler::TabLayouts *parent);
     ~Layouts();
 
-    QAbstractItemModel *model() const;
+    QAbstractItemModel *proxyModel() const;
+    QAbstractItemModel *baseModel() const;
     QTableView *view() const;
 
     bool dataAreChanged() const;
@@ -72,7 +73,7 @@ public:
     const Data::Layout selectedLayoutCurrentData() const;
     const Data::Layout selectedLayoutOriginalData() const;
 
-    void selectRow(int index);
+    void selectRow(const QString &id);
     void setLayoutProperties(const Data::Layout &layout);
 
     //! actions

@@ -102,9 +102,14 @@ Layouts::~Layouts()
     }
 }
 
-QAbstractItemModel *Layouts::model() const
+QAbstractItemModel *Layouts::proxyModel() const
 {
     return m_proxyModel;
+}
+
+QAbstractItemModel *Layouts::baseModel() const
+{
+    return m_model;
 }
 
 QTableView *Layouts::view() const
@@ -353,9 +358,9 @@ void Layouts::toggleSharedForSelected()
     }
 }
 
-void Layouts::selectRow(int index)
-{
-    m_view->selectRow(index);
+void Layouts::selectRow(const QString &id)
+{    
+    m_view->selectRow(rowForId(id));
 }
 
 void Layouts::setLayoutProperties(const Data::Layout &layout)

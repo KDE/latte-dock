@@ -25,6 +25,9 @@
 #include "generichandler.h"
 #include "detailsinfohandler.h"
 
+// Qt
+#include <QSortFilterProxyModel>
+
 namespace Ui {
 class DetailsDialog;
 }
@@ -69,7 +72,7 @@ signals:
     void currentLayoutChanged();
 
 private:
-    void on_currentIndexChanged(int index);
+    void on_currentIndexChanged(int row);
 
 private:
     void init();
@@ -80,6 +83,8 @@ private:
     Ui::DetailsDialog *m_ui{nullptr};
 
     DetailsInfoHandler *m_infoHandler{nullptr};
+
+    QSortFilterProxyModel *m_proxyModel{nullptr};
 
     Data::Layout o_data;
     Data::Layout c_data;
