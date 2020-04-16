@@ -145,7 +145,7 @@ DragDrop.DropArea {
             }
         }
 
-        if (!root.ignoreRegularFilesDragging && !dragResistaner.running && (!latteApplet || (latteApplet && !dragInfo.isLatteTasks))) {
+        if (!root.ignoreRegularFilesDragging && !dragResistaner.running) {
             if (!isForeground) {
                 dragResistaner.start();
             }
@@ -180,7 +180,7 @@ DragDrop.DropArea {
             }
         }
 
-        if (!root.ignoreRegularFilesDragging && !dragResistaner.running && (!latteApplet || (latteApplet && !dragInfo.isLatteTasks))) {
+        if (!root.ignoreRegularFilesDragging && !dragResistaner.running) {
             if (!isForeground) {
                 dragResistaner.start();
             }
@@ -221,7 +221,7 @@ DragDrop.DropArea {
 
         if (latteApplet && dragInfo.onlyLaunchers && (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event))) {
             latteApplet.launchersDropped(event.mimeData.urls);
-        } else if (!latteApplet || (latteApplet && !dragInfo.isLatteTasks)) {
+        } else {
             plasmoid.processMimeData(event.mimeData, event.x, event.y);
             event.accept(event.proposedAction);
         }

@@ -423,12 +423,14 @@ FocusScope {
                 tab: effectsPage
                 visible: dialog.highLevel
             }
-            PlasmaComponents.TabButton {
-                id: tasksTabBtn
-                text: i18n("Tasks")
-                tab: tasksPage
 
-                visible: latteView.latteTasksArePresent
+
+            Repeater {
+                model: latteView.extendedInterface.tasksModel
+                PlasmaComponents.TabButton {
+                    text: index >= 1 ? i18nc("tasks header and index","Tasks <%0>").arg(index+1) : i18n("Tasks")
+                    tab: tasksRepeater.count > 0 ? tasksRepeater.itemAt(index) : null
+                }
             }
         }
 
@@ -477,8 +479,12 @@ FocusScope {
                         id: effectsPage
                     }
 
-                    Pages.TasksConfig {
-                        id: tasksPage
+                    Repeater {
+                        id: tasksRepeater
+                        model: latteView.extendedInterface.tasksModel
+
+                        Pages.TasksConfig {
+                        }
                     }
                 }
             }

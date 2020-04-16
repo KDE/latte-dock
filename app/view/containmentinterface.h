@@ -20,6 +20,9 @@
 #ifndef VIEWCONTAINMENTINTERFACE_H
 #define VIEWCONTAINMENTINTERFACE_H
 
+// local
+#include "tasksmodel.h"
+
 // Qt
 #include <QMetaMethod>
 #include <QObject>
@@ -44,6 +47,8 @@ class ContainmentInterface: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool hasExpandedApplet READ hasExpandedApplet NOTIFY hasExpandedAppletChanged)
+
+    Q_PROPERTY(QAbstractListModel *tasksModel READ tasksModel() NOTIFY tasksModelChanged)
 
 public:
     ContainmentInterface(Latte::View *parent);
@@ -72,10 +77,11 @@ public:
     int applicationLauncherId() const;
     int appletIdForIndex(const int index);
 
+    QAbstractListModel *tasksModel() const;
+
 public slots:
     Q_INVOKABLE void deactivateApplets();
     Q_INVOKABLE void toggleAppletExpanded(const int id);
-    Q_INVOKABLE void updateAppletIsExpandedTracking();
 
     Q_INVOKABLE bool appletIsExpandable(const int id);
     Q_INVOKABLE bool appletIsExpanded(const int id);
@@ -83,11 +89,13 @@ public slots:
 signals:
     void hasExpandedAppletChanged();
     void expandedAppletStateChanged();
+    void tasksModelChanged();
 
 private slots:
     void identifyMainItem();
     void identifyMethods();
 
+    void updateAppletsTracking();
     void on_appletExpandedChanged();
 
 private:
@@ -105,8 +113,10 @@ private:
     QPointer<QQuickItem> m_mainItem;
 
     //! startup timer to initialize
-    //! applets expanded tracking
+    //! applets tracking
     QTimer m_appletsExpandedConnectionsTimer;
+
+    TasksModel *m_tasksModel;
 
     QHash<PlasmaQuick::AppletQuickItem *, QMetaObject::Connection> m_appletsExpandedConnections;
     QList<int> m_expandedAppletIds;

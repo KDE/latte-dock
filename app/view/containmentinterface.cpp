@@ -46,15 +46,17 @@ ContainmentInterface::ContainmentInterface(Latte::View *parent)
 {
     m_corona = qobject_cast<Latte::Corona *>(m_view->corona());
 
+    m_tasksModel = new TasksModel(this);
+
     m_appletsExpandedConnectionsTimer.setInterval(2000);
     m_appletsExpandedConnectionsTimer.setSingleShot(true);
 
-    connect(&m_appletsExpandedConnectionsTimer, &QTimer::timeout, this, &ContainmentInterface::updateAppletIsExpandedTracking);
+    connect(&m_appletsExpandedConnectionsTimer, &QTimer::timeout, this, &ContainmentInterface::updateAppletsTracking);
 
     connect(m_view, &View::containmentChanged
             , this, [&]() {
         if (m_view->containment()) {
-            connect(m_view->containment(), &Plasma::Containment::appletAdded, this, &ContainmentInterface::updateAppletIsExpandedTracking);
+            connect(m_view->containment(), &Plasma::Containment::appletAdded, this, &ContainmentInterface::updateAppletsTracking);
 
             m_appletsExpandedConnectionsTimer.start();
         }
@@ -463,6 +465,11 @@ void ContainmentInterface::removeExpandedApplet(const int &id)
     emit expandedAppletStateChanged();
 }
 
+QAbstractListModel *ContainmentInterface::tasksModel() const
+{
+    return m_tasksModel;
+}
+
 void ContainmentInterface::on_appletExpandedChanged()
 {
     PlasmaQuick::AppletQuickItem *appletItem = static_cast<PlasmaQuick::AppletQuickItem *>(QObject::sender());
@@ -498,7 +505,7 @@ void ContainmentInterface::toggleAppletExpanded(const int id)
     }
 }
 
-void ContainmentInterface::updateAppletIsExpandedTracking()
+void ContainmentInterface::updateAppletsTracking()
 {
     if (!m_view->containment()) {
         return;
@@ -522,7 +529,6 @@ void ContainmentInterface::updateAppletIsExpandedTracking()
             for (const auto internalApplet : internalC->applets()) {
                 PlasmaQuick::AppletQuickItem *ai = internalApplet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
-
                 if (ai && !m_appletsExpandedConnections.contains(ai) ){
                     m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::on_appletExpandedChanged);
 
@@ -534,8 +540,11 @@ void ContainmentInterface::updateAppletIsExpandedTracking()
             }
         } else {
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+            KPluginMetaData meta = applet->kPackage().metadata();
 
-            if (ai && !m_appletsExpandedConnections.contains(ai)) {
+            if (meta.pluginId() == "org.kde.latte.plasmoid" && ai) {
+                m_tasksModel->addTask(ai);
+            } else if (ai && !m_appletsExpandedConnections.contains(ai)) {
                 m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::on_appletExpandedChanged);
 
                 connect(ai, &QObject::destroyed, this, [&, ai](){
