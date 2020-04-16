@@ -224,10 +224,10 @@ Item{
                         target:iconImageBuffer;
                         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
                         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
-                        anchors.right: root.position === PlasmaCore.Types.RightPositioned ? parent.right : undefined;
-                        anchors.left: root.position === PlasmaCore.Types.LeftPositioned ? parent.left : undefined;
-                        anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
-                        anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
+                        anchors.right: root.location === PlasmaCore.Types.RightEdge ? parent.right : undefined;
+                        anchors.left: root.location === PlasmaCore.Types.LeftEdge ? parent.left : undefined;
+                        anchors.top: root.location === PlasmaCore.Types.TopEdge ? parent.top : undefined;
+                        anchors.bottom: root.location === PlasmaCore.Types.BottomEdge ? parent.bottom : undefined;
                     }
                 },
 
@@ -239,10 +239,10 @@ Item{
                         target:iconImageBuffer;
                         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
                         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
-                        anchors.right: root.position === PlasmaCore.Types.LeftPositioned ? parent.right : undefined;
-                        anchors.left: root.position === PlasmaCore.Types.RightPositioned ? parent.left : undefined;
-                        anchors.top: root.position === PlasmaCore.Types.BottomPositioned ? parent.top : undefined;
-                        anchors.bottom: root.position === PlasmaCore.Types.TopPositioned ? parent.bottom : undefined;
+                        anchors.right: root.location === PlasmaCore.Types.LeftEdge ? parent.right : undefined;
+                        anchors.left: root.location === PlasmaCore.Types.RightEdge ? parent.left : undefined;
+                        anchors.top: root.location === PlasmaCore.Types.BottomEdge ? parent.top : undefined;
+                        anchors.bottom: root.location === PlasmaCore.Types.TopEdge ? parent.bottom : undefined;
                     }
                 }
             ]
@@ -347,7 +347,7 @@ Item{
                                 states: [
                                     State {
                                         name: "default"
-                                        when: (plasmoid.location !== PlasmaCore.Types.RightEdge)
+                                        when: (root.location !== PlasmaCore.Types.RightEdge)
 
                                         AnchorChanges {
                                             target: maskRect
@@ -360,7 +360,7 @@ Item{
                                     },
                                     State {
                                         name: "right"
-                                        when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+                                        when: (root.location === PlasmaCore.Types.RightEdge)
 
                                         AnchorChanges {
                                             target: maskRect
@@ -390,7 +390,7 @@ Item{
                                 states: [
                                     State {
                                         name: "default"
-                                        when: (plasmoid.location !== PlasmaCore.Types.RightEdge)
+                                        when: (root.location !== PlasmaCore.Types.RightEdge)
 
                                         AnchorChanges {
                                             target: maskRect2
@@ -403,7 +403,7 @@ Item{
                                     },
                                     State {
                                         name: "right"
-                                        when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+                                        when: (root.location === PlasmaCore.Types.RightEdge)
 
                                         AnchorChanges {
                                             target: maskRect2

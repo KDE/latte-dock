@@ -67,17 +67,17 @@ Item{
 
             Latte.IconItem{
                 id: tempRemoveIcon
-                anchors.rightMargin: root.position === PlasmaCore.Types.LeftPositioned ? root.thickMargin : 0
-                anchors.leftMargin: root.position === PlasmaCore.Types.RightPositioned ? root.thickMargin : 0
-                anchors.topMargin: root.position === PlasmaCore.Types.BottomPositioned ? root.thickMargin : 0
-                anchors.bottomMargin: root.position === PlasmaCore.Types.TopPositioned ? root.thickMargin : 0
+                anchors.rightMargin: root.location === PlasmaCore.Types.LeftEdge ? root.thickMargin : 0
+                anchors.leftMargin: root.location === PlasmaCore.Types.RightEdge ? root.thickMargin : 0
+                anchors.topMargin: root.location === PlasmaCore.Types.BottomEdge ? root.thickMargin : 0
+                anchors.bottomMargin: root.location === PlasmaCore.Types.TopEdge ? root.thickMargin : 0
 
                 anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
                 anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
-                anchors.right: root.position === PlasmaCore.Types.LeftPositioned ? parent.right : undefined;
-                anchors.left: root.position === PlasmaCore.Types.RightPositioned ? parent.left : undefined;
-                anchors.top: root.position === PlasmaCore.Types.BottomPositioned ? parent.top : undefined;
-                anchors.bottom: root.position === PlasmaCore.Types.TopPositioned ? parent.bottom : undefined;
+                anchors.right: root.location === PlasmaCore.Types.LeftEdge ? parent.right : undefined;
+                anchors.left: root.location === PlasmaCore.Types.RightEdge ? parent.left : undefined;
+                anchors.top: root.location === PlasmaCore.Types.BottomEdge ? parent.top : undefined;
+                anchors.bottom: root.location === PlasmaCore.Types.TopEdge ? parent.bottom : undefined;
 
                 width: iconImageBuffer.width
                 height: width
@@ -147,8 +147,8 @@ Item{
                 else
                     tempPoint = x;
 
-                if( (root.position === PlasmaCore.Types.BottomPositioned) ||
-                        (root.position === PlasmaCore.Types.RightPositioned) ){
+                if( (root.location === PlasmaCore.Types.BottomEdge) ||
+                        (root.location === PlasmaCore.Types.RightEdge) ){
                     componentRemoveAnimation.toPoint = tempPoint + root.iconSize;
                 }
                 else{

@@ -62,7 +62,7 @@ Item {
     states: [
         State {
             name: "bottom"
-            when: plasmoid.location === PlasmaCore.Types.BottomEdge
+            when: root.location === PlasmaCore.Types.BottomEdge
 
             AnchorChanges {
                 target: firstGradient
@@ -87,7 +87,7 @@ Item {
         },
         State {
             name: "top"
-            when: plasmoid.location === PlasmaCore.Types.TopEdge
+            when: root.location === PlasmaCore.Types.TopEdge
 
             AnchorChanges {
                 target: firstGradient
@@ -112,7 +112,7 @@ Item {
         },
         State {
             name: "left"
-            when: plasmoid.location === PlasmaCore.Types.LeftEdge
+            when: root.location === PlasmaCore.Types.LeftEdge
 
             AnchorChanges {
                 target: firstGradient
@@ -137,7 +137,7 @@ Item {
         },
         State {
             name: "right"
-            when: plasmoid.location === PlasmaCore.Types.RightEdge
+            when: root.location === PlasmaCore.Types.RightEdge
 
             AnchorChanges {
                 target: firstGradient

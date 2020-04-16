@@ -29,11 +29,11 @@ Rectangle {
             if (plasmoid.location===PlasmaCore.Types.Floating) {
                 //! Center position Tasks when are located in the Desktop
                 return root.width < icList.width ? (root.width/2) : icList.width/2;
-            } else if (root.userPanelPosition === Latte.Types.Center) {
+            } else if (root.alignment === Latte.Types.Center) {
                 return icList.width / 2;
-            } else if (root.userPanelPosition === Latte.Types.Left){
+            } else if (root.alignment === Latte.Types.Left){
                 return 0;
-            } else if (root.userPanelPosition === Latte.Types.Right){
+            } else if (root.alignment === Latte.Types.Right){
                 return icList.width;
             }
         } else {
@@ -45,11 +45,11 @@ Rectangle {
         if (!root.vertical) {
             return 0;
         } else {
-            if (root.userPanelPosition === Latte.Types.Center) {
+            if (root.alignment === Latte.Types.Center) {
                 return icList.height / 2;
-            } else if (root.userPanelPosition === Latte.Types.Top){
+            } else if (root.alignment === Latte.Types.Top){
                 return 0;
-            } else if (root.userPanelPosition === Latte.Types.Bottom){
+            } else if (root.alignment === Latte.Types.Bottom){
                 return icList.height;
             }
         }

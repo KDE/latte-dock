@@ -26,10 +26,10 @@ import org.kde.latte 0.2 as Latte
 
 Loader {
     id: indicatorLoader
-    anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-    anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-    anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-    anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+    anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+    anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+    anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+    anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
     anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
     anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined

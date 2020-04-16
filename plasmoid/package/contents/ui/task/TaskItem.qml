@@ -38,10 +38,10 @@ MouseArea{
 
     visible: false //true//(isStartup && root.durationTime !== 0) ? false : true
 
-    anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-    anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-    anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-    anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+    anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+    anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+    anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+    anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
     objectName: "TaskItem"
 
@@ -327,18 +327,18 @@ MouseArea{
     Item{
         id:separatorItem
 
-        anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+        anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+        anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+        anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+        anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-        anchors.bottomMargin: (root.position === PlasmaCore.Types.BottomPositioned) ? root.screenEdgeMargin + root.thickMargin : 0
-        anchors.topMargin: (root.position === PlasmaCore.Types.TopPositioned) ? root.screenEdgeMargin + root.thickMargin : 0
-        anchors.leftMargin: (root.position === PlasmaCore.Types.LeftPositioned) ? root.screenEdgeMargin + root.thickMargin : 0
-        anchors.rightMargin: (root.position === PlasmaCore.Types.RightPositioned) ? root.screenEdgeMargin + root.thickMargin : 0
+        anchors.bottomMargin: (root.location === PlasmaCore.Types.BottomEdge) ? root.screenEdgeMargin + root.thickMargin : 0
+        anchors.topMargin: (root.location === PlasmaCore.Types.TopEdge) ? root.screenEdgeMargin + root.thickMargin : 0
+        anchors.leftMargin: (root.location === PlasmaCore.Types.LeftEdge) ? root.screenEdgeMargin + root.thickMargin : 0
+        anchors.rightMargin: (root.location === PlasmaCore.Types.RightEdge) ? root.screenEdgeMargin + root.thickMargin : 0
 
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
@@ -1340,16 +1340,16 @@ MouseArea{
             globalChoords.y = adjY;
 
             if (latteView && latteView.dockIsHidden) {
-                if (root.position === PlasmaCore.Types.BottomPositioned) {
+                if (root.location === PlasmaCore.Types.BottomEdge) {
                     globalChoords.y = root.screenGeometry.y+root.screenGeometry.height-1;
                     globalChoords.height = 1;
-                } else if (root.position === PlasmaCore.Types.TopPositioned) {
+                } else if (root.location === PlasmaCore.Types.TopEdge) {
                     globalChoords.y = root.screenGeometry.y+1;
                     globalChoords.height = 1;
-                } else if (root.position === PlasmaCore.Types.LeftPositioned) {
+                } else if (root.location === PlasmaCore.Types.LeftEdge) {
                     globalChoords.x = root.screenGeometry.x+1;
                     globalChoords.width = 1;
-                } else if (root.position === PlasmaCore.Types.RightPositioned) {
+                } else if (root.location === PlasmaCore.Types.RightEdge) {
                     globalChoords.x = root.screenGeometry.x+root.screenGeometry.width - 1;
                     globalChoords.width = 1;
                 }

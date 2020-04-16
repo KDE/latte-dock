@@ -36,7 +36,7 @@ Item{
     states:[
         State{
             name: "bottom"
-            when: root.position === PlasmaCore.Types.BottomPositioned
+            when: root.location === PlasmaCore.Types.BottomEdge
 
             AnchorChanges{
                 target: visual;
@@ -47,7 +47,7 @@ Item{
         },
         State{
             name: "top"
-            when: root.position === PlasmaCore.Types.TopPositioned
+            when: root.location === PlasmaCore.Types.TopEdge
 
             AnchorChanges{
                 target:visual;
@@ -58,7 +58,7 @@ Item{
         },
         State{
             name: "left"
-            when: root.position === PlasmaCore.Types.LeftPositioned
+            when: root.location === PlasmaCore.Types.LeftEdge
 
             AnchorChanges{
                 target: visual;
@@ -69,7 +69,7 @@ Item{
         },
         State{
             name: "right"
-            when: root.position === PlasmaCore.Types.RightPositioned
+            when: root.location === PlasmaCore.Types.RightEdge
 
             AnchorChanges{
                 target: visual;

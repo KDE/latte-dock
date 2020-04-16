@@ -89,16 +89,14 @@ Item {
     property int noTasksInAnimation: 0
     property int themePanelSize: plasmoid.configuration.panelSize
 
-    property int position : {
-        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-            return PlasmaCore.Types.LeftPositioned;
-        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-            return PlasmaCore.Types.RightPositioned;
-        } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-            return PlasmaCore.Types.TopPositioned;
+    property int location : {
+        if (plasmoid.location === PlasmaCore.Types.LeftEdge
+                || plasmoid.location === PlasmaCore.Types.RightEdge
+                || plasmoid.location === PlasmaCore.Types.TopEdge) {
+            return plasmoid.location;
         }
 
-        return PlasmaCore.Types.BottomPositioned;
+        return PlasmaCore.Types.BottomEdge;
     }
 
     property int tasksStarting: 0
@@ -218,7 +216,7 @@ Item {
     property int tasksHeight: mouseHandler.height
     property int tasksWidth: mouseHandler.width
     //updated from Binding
-    property int userPanelPosition
+    property int alignment
 
     readonly property real currentPanelOpacity: latteView ? latteView.currentPanelTransparency / 100 : 1
 
@@ -394,7 +392,7 @@ Item {
 
     Binding {
         target: root
-        property: "userPanelPosition"
+        property: "alignment"
         value: {
             if (latteView) {
                 if (latteView.panelUserSetAlignment === -1) {
@@ -547,7 +545,7 @@ Item {
         type: PlasmaCore.Dialog.Tooltip
         flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
 
-        location: plasmoid.location
+        location: root.location
         mainItem: toolTipDelegate
         visible: false
 
@@ -813,7 +811,7 @@ Item {
         type: PlasmaCore.Dialog.PopupMenu
         flags: Qt.WindowStaysOnTopHint
         hideOnWindowDeactivate: true
-        location: plasmoid.location
+        location: root.location
     }
 
 
@@ -1043,8 +1041,8 @@ Item {
         width: root.vertical ? 1 : 2 * root.iconSize
         height: root.vertical ? 2 * root.iconSize : 1
         color: "red"
-        x: (root.position === PlasmaCore.Types.LeftPositioned) ? neededSpace : parent.width - neededSpace
-        y: (root.position === PlasmaCore.Types.TopPositioned) ? neededSpace : parent.height - neededSpace
+        x: (root.location === PlasmaCore.Types.LeftEdge) ? neededSpace : parent.width - neededSpace
+        y: (root.location === PlasmaCore.Types.TopEdge) ? neededSpace : parent.height - neededSpace
 
         visible: plasmoid.configuration.zoomHelper
 
@@ -1053,10 +1051,10 @@ Item {
 
     Item{
         id:barLine
-        anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+        anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+        anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+        anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+        anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
@@ -1094,13 +1092,13 @@ Item {
         Item{
             id:belower
 
-            width: (root.position === PlasmaCore.Types.LeftPositioned) ? shadowsSvgItem.margins.left : shadowsSvgItem.margins.right
-            height: (root.position === PlasmaCore.Types.BottomPositioned)? shadowsSvgItem.margins.bottom : shadowsSvgItem.margins.top
+            width: (root.location === PlasmaCore.Types.LeftEdge) ? shadowsSvgItem.margins.left : shadowsSvgItem.margins.right
+            height: (root.location === PlasmaCore.Types.BottomEdge)? shadowsSvgItem.margins.bottom : shadowsSvgItem.margins.top
 
-            anchors.top: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-            anchors.bottom: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-            anchors.right: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-            anchors.left: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+            anchors.top: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+            anchors.bottom: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+            anchors.right: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+            anchors.left: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
         }
 
 
@@ -1108,10 +1106,10 @@ Item {
         PlasmaCore.FrameSvgItem{
             id: shadowsSvgItem
 
-            anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? belower.bottom : undefined
-            anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? belower.top : undefined
-            anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? belower.left : undefined
-            anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? belower.right : undefined
+            anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? belower.bottom : undefined
+            anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? belower.top : undefined
+            anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? belower.left : undefined
+            anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? belower.right : undefined
 
             anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
             anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
@@ -1125,8 +1123,8 @@ Item {
             opacity: (plasmoid.configuration.showBarLine && plasmoid.configuration.useThemePanel && !root.forceHidePanel) ? 1 : 0
             visible: (opacity == 0) ? false : true
 
-            property int panelSize: ((root.position === PlasmaCore.Types.BottomPositioned) ||
-                                     (root.position === PlasmaCore.Types.TopPositioned)) ?
+            property int panelSize: ((root.location === PlasmaCore.Types.BottomEdge) ||
+                                     (root.location === PlasmaCore.Types.TopEdge)) ?
                                         plasmoid.configuration.panelSize + belower.height:
                                         plasmoid.configuration.panelSize + belower.width
 
@@ -1146,10 +1144,10 @@ Item {
 
         TasksLayout.MouseHandler {
             id: mouseHandler
-            anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? scrollableList.bottom : undefined
-            anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? scrollableList.top : undefined
-            anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? scrollableList.left : undefined
-            anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? scrollableList.right : undefined
+            anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? scrollableList.bottom : undefined
+            anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? scrollableList.top : undefined
+            anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? scrollableList.left : undefined
+            anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? scrollableList.right : undefined
 
             anchors.horizontalCenter: !root.vertical ? scrollableList.horizontalCenter : undefined
             anchors.verticalCenter: root.vertical ? scrollableList.verticalCenter : undefined
@@ -1243,10 +1241,10 @@ Item {
 
                 ListView {
                     id:icList
-                    anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-                    anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-                    anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-                    anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+                    anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+                    anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+                    anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+                    anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
                     anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
                     anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
@@ -1920,14 +1918,13 @@ Item {
     }
 
     //BEGIN states
-    //user set Panel Positions
+    // Alignments
     // 0-Center, 1-Left, 2-Right, 3-Top, 4-Bottom
     states: [
         ///Bottom Edge
         State {
             name: "bottomCenter"
-            when: ((plasmoid.location===PlasmaCore.Types.BottomEdge || plasmoid.location===PlasmaCore.Types.Floating)
-                   && root.userPanelPosition===Latte.Types.Center)
+            when: (root.location===PlasmaCore.Types.BottomEdge && root.alignment===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -1940,8 +1937,7 @@ Item {
         },
         State {
             name: "bottomLeft"
-            when: ((plasmoid.location===PlasmaCore.Types.BottomEdge || plasmoid.location===PlasmaCore.Types.Floating)
-                   && root.userPanelPosition===Latte.Types.Left)
+            when: (root.location===PlasmaCore.Types.BottomEdge && root.alignment===Latte.Types.Left)
 
             AnchorChanges {
                 target: barLine
@@ -1954,8 +1950,7 @@ Item {
         },
         State {
             name: "bottomRight"
-            when: ((plasmoid.location===PlasmaCore.Types.BottomEdge || plasmoid.location===PlasmaCore.Types.Floating)
-                   && root.userPanelPosition===Latte.Types.Right)
+            when: (root.location===PlasmaCore.Types.BottomEdge && root.alignment===Latte.Types.Right)
 
             AnchorChanges {
                 target: barLine
@@ -1969,7 +1964,7 @@ Item {
         ///Top Edge
         State {
             name: "topCenter"
-            when: (plasmoid.location===PlasmaCore.Types.TopEdge && root.userPanelPosition===Latte.Types.Center)
+            when: (root.location===PlasmaCore.Types.TopEdge && root.alignment===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -1982,7 +1977,7 @@ Item {
         },
         State {
             name: "topLeft"
-            when: (plasmoid.location===PlasmaCore.Types.TopEdge && root.userPanelPosition===Latte.Types.Left)
+            when: (root.location===PlasmaCore.Types.TopEdge && root.alignment===Latte.Types.Left)
 
             AnchorChanges {
                 target: barLine
@@ -1995,7 +1990,7 @@ Item {
         },
         State {
             name: "topRight"
-            when: (plasmoid.location===PlasmaCore.Types.TopEdge && root.userPanelPosition===Latte.Types.Right)
+            when: (root.location===PlasmaCore.Types.TopEdge && root.alignment===Latte.Types.Right)
 
             AnchorChanges {
                 target: barLine
@@ -2009,7 +2004,7 @@ Item {
         ////Left Edge
         State {
             name: "leftCenter"
-            when: (plasmoid.location===PlasmaCore.Types.LeftEdge && root.userPanelPosition===Latte.Types.Center)
+            when: (root.location===PlasmaCore.Types.LeftEdge && root.alignment===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -2022,7 +2017,7 @@ Item {
         },
         State {
             name: "leftTop"
-            when: (plasmoid.location===PlasmaCore.Types.LeftEdge && root.userPanelPosition===Latte.Types.Top)
+            when: (root.location===PlasmaCore.Types.LeftEdge && root.alignment===Latte.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -2035,7 +2030,7 @@ Item {
         },
         State {
             name: "leftBottom"
-            when: (plasmoid.location===PlasmaCore.Types.LeftEdge && root.userPanelPosition===Latte.Types.Bottom)
+            when: (root.location===PlasmaCore.Types.LeftEdge && root.alignment===Latte.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -2049,7 +2044,7 @@ Item {
         ///Right Edge
         State {
             name: "rightCenter"
-            when: (plasmoid.location===PlasmaCore.Types.RightEdge && root.userPanelPosition===Latte.Types.Center)
+            when: (root.location===PlasmaCore.Types.RightEdge && root.alignment===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -2062,7 +2057,7 @@ Item {
         },
         State {
             name: "rightTop"
-            when: (plasmoid.location===PlasmaCore.Types.RightEdge && root.userPanelPosition===Latte.Types.Top)
+            when: (root.location===PlasmaCore.Types.RightEdge && root.alignment===Latte.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -2075,7 +2070,7 @@ Item {
         },
         State {
             name: "rightBottom"
-            when: (plasmoid.location===PlasmaCore.Types.RightEdge && root.userPanelPosition===Latte.Types.Bottom)
+            when: (root.location===PlasmaCore.Types.RightEdge && root.alignment===Latte.Types.Bottom)
 
             AnchorChanges {
                 target: barLine

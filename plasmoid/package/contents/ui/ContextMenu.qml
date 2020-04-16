@@ -45,11 +45,11 @@ PlasmaComponents.ContextMenu {
     readonly property var containmentActions: latteView ? latteView.containmentActions() : []
 
     placement: {
-        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+        if (root.location === PlasmaCore.Types.LeftEdge) {
             return PlasmaCore.Types.RightPosedTopAlignedPopup;
-        } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+        } else if (root.location === PlasmaCore.Types.TopEdge) {
             return PlasmaCore.Types.BottomPosedLeftAlignedPopup;
-        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+        } else if (root.location === PlasmaCore.Types.RightEdge) {
             return PlasmaCore.Types.LeftPosedTopAlignedPopup;
         } else {
             return PlasmaCore.Types.TopPosedLeftAlignedPopup;

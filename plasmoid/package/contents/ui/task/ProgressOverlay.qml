@@ -38,7 +38,7 @@ Item {
         states: [
             State {
                 name: "default"
-                when: (root.position !== PlasmaCore.Types.RightPositioned)
+                when: (root.location !== PlasmaCore.Types.RightEdge)
 
                 AnchorChanges {
                     target: subRectangle
@@ -47,7 +47,7 @@ Item {
             },
             State {
                 name: "right"
-                when: (root.position === PlasmaCore.Types.RightPositioned)
+                when: (root.location === PlasmaCore.Types.RightEdge)
 
                 AnchorChanges {
                     target: subRectangle

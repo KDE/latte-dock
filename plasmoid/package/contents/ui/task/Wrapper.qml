@@ -135,18 +135,18 @@ Item{
 
     IconItem{
         id: taskIconItem
-        anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+        anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+        anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+        anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+        anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-        anchors.bottomMargin: (root.position === PlasmaCore.Types.BottomPositioned) ? root.screenEdgeMargin : 0
-        anchors.topMargin: (root.position === PlasmaCore.Types.TopPositioned) ? root.screenEdgeMargin : 0
-        anchors.leftMargin: (root.position === PlasmaCore.Types.LeftPositioned) ? root.screenEdgeMargin : 0
-        anchors.rightMargin: (root.position === PlasmaCore.Types.RightPositioned) ? root.screenEdgeMargin : 0
+        anchors.bottomMargin: (root.location === PlasmaCore.Types.BottomEdge) ? root.screenEdgeMargin : 0
+        anchors.topMargin: (root.location === PlasmaCore.Types.TopEdge) ? root.screenEdgeMargin : 0
+        anchors.leftMargin: (root.location === PlasmaCore.Types.LeftEdge) ? root.screenEdgeMargin : 0
+        anchors.rightMargin: (root.location === PlasmaCore.Types.RightEdge) ? root.screenEdgeMargin : 0
 
         anchors.horizontalCenterOffset: taskItem.iconOffsetX
         anchors.verticalCenterOffset: taskItem.iconOffsetY

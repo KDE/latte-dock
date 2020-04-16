@@ -32,7 +32,7 @@ Flickable{
     property int offset: 0
 
     readonly property bool animationsFinished: !horizontalAnimation.running && !verticalAnimation.running
-    readonly property bool centered: userPanelPosition === Latte.Types.Center
+    readonly property bool centered: root.alignment === Latte.Types.Center
     readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
 
     readonly property bool contentsExceed:  {
@@ -62,42 +62,42 @@ Flickable{
     readonly property int autoScrollTriggerLength: root.iconSize + root.lengthMargins/2
 
     readonly property int alignment: {
-        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+        if (root.location === PlasmaCore.Types.LeftEdge) {
             if (centered) return Latte.Types.LeftEdgeCenterAlign;
-            if (userPanelPosition === Latte.Types.Top) return Latte.Types.LeftEdgeTopAlign;
-            if (userPanelPosition === Latte.Types.Bottom) return Latte.Types.LeftEdgeBottomAlign;
+            if (root.alignment === Latte.Types.Top) return Latte.Types.LeftEdgeTopAlign;
+            if (root.alignment === Latte.Types.Bottom) return Latte.Types.LeftEdgeBottomAlign;
         }
 
-        if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+        if (root.location === PlasmaCore.Types.RightEdge) {
             if (centered) return Latte.Types.RightEdgeCenterAlign;
-            if (userPanelPosition === Latte.Types.Top) return Latte.Types.RightEdgeTopAlign;
-            if (userPanelPosition === Latte.Types.Bottom) return Latte.Types.RightEdgeBottomAlign;
+            if (root.alignment === Latte.Types.Top) return Latte.Types.RightEdgeTopAlign;
+            if (root.alignment === Latte.Types.Bottom) return Latte.Types.RightEdgeBottomAlign;
         }
 
-        if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+        if (root.location === PlasmaCore.Types.BottomEdge) {
             if (centered) return Latte.Types.BottomEdgeCenterAlign;
 
-            if ((userPanelPosition === Latte.Types.Left && !reversed)
-                    || (userPanelPosition === Latte.Types.Right && reversed)) {
+            if ((root.alignment === Latte.Types.Left && !reversed)
+                    || (root.alignment === Latte.Types.Right && reversed)) {
                 return Latte.Types.BottomEdgeLeftAlign;
             }
 
-            if ((userPanelPosition === Latte.Types.Right && !reversed)
-                    || (userPanelPosition === Latte.Types.Left && reversed)) {
+            if ((root.alignment === Latte.Types.Right && !reversed)
+                    || (root.alignment === Latte.Types.Left && reversed)) {
                 return Latte.Types.BottomEdgeRightAlign;
             }
         }
 
-        if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+        if (root.location === PlasmaCore.Types.TopEdge) {
             if (centered) return Latte.Types.TopEdgeCenterAlign;
 
-            if ((userPanelPosition === Latte.Types.Left && !reversed)
-                    || (userPanelPosition === Latte.Types.Right && reversed)) {
+            if ((root.alignment === Latte.Types.Left && !reversed)
+                    || (root.alignment === Latte.Types.Right && reversed)) {
                 return Latte.Types.TopEdgeLeftAlign;
             }
 
-            if ((userPanelPosition === Latte.Types.Right && !reversed)
-                    || (userPanelPosition === Latte.Types.Left && reversed)) {
+            if ((root.alignment === Latte.Types.Right && !reversed)
+                    || (root.alignment === Latte.Types.Left && reversed)) {
                 return Latte.Types.TopEdgeRightAlign;
             }
         }
@@ -223,7 +223,7 @@ Flickable{
     }
 
     //////////////////////////BEGIN states
-    //user set Panel Positions
+    // Alignment
     // 0-Center, 1-Left, 2-Right, 3-Top, 4-Bottom
     states: [
         ///Left Edge
