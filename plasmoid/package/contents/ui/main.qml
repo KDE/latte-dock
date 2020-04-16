@@ -47,20 +47,15 @@ Item {
     Layout.fillWidth: scrollingEnabled && !root.vertical
     Layout.fillHeight: scrollingEnabled && root.vertical
 
-    ///IMPORTANT: These values must be tested when the Now Dock Panel support
-    ///also the four new anchors. A small issue is shown between the animation
-    /// of the now dock plasmoid and the neighbour widgets...
-    Layout.minimumWidth: -1 //(userPanelPosition !== 0)&&(!latteView) ? clearWidth : -1
-    Layout.minimumHeight: -1 //(userPanelPosition !== 0)&&(!latteView) ? clearHeight : -1
-    Layout.preferredWidth: tasksWidth   //(userPanelPosition !== 0)&&(!latteView) ? tasksWidth : tasksWidth
-    Layout.preferredHeight: tasksHeight //(userPanelPosition !== 0)&&(!latteView) ? tasksHeight : tasksHeight
+    Layout.minimumWidth: -1
+    Layout.minimumHeight: -1
+    Layout.preferredWidth: tasksWidth
+    Layout.preferredHeight: tasksHeight
     Layout.maximumWidth: -1
     Layout.maximumHeight: -1
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft && !root.vertical
     LayoutMirroring.childrenInherit: true
-
-    property bool debugLocation: false
 
     //it is used to check both the applet and the containment for direct render
     property bool globalDirectRender: latteView ? latteView.globalDirectRender : icList.directRender
@@ -89,13 +84,23 @@ Item {
     property int clearWidth
     property int clearHeight
 
-    property int newLocationDebugUse: PlasmaCore.Types.BottomPositioned
     property int newDroppedPosition: -1
     property int noInitCreatedBuffers: 0
     property int noTasksInAnimation: 0
     property int themePanelSize: plasmoid.configuration.panelSize
 
-    property int position : PlasmaCore.Types.BottomPositioned
+    property int position : {
+        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+            return PlasmaCore.Types.LeftPositioned;
+        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+            return PlasmaCore.Types.RightPositioned;
+        } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+            return PlasmaCore.Types.TopPositioned;
+        }
+
+        return PlasmaCore.Types.BottomPositioned;
+    }
+
     property int tasksStarting: 0
 
     ///Don't use Math.floor it adds one pixel in animations and creates glitches
@@ -317,7 +322,6 @@ Item {
     Connections {
         target: plasmoid
         onLocationChanged: {
-            root.updatePosition();
             iconGeometryTimer.start();
         }
     }
@@ -414,7 +418,7 @@ Item {
                 return latteView.panelUserSetAlignment;
             }
 
-            return plasmoid.configuration.plasmoidPosition;
+            return Latte.Types.Center;
         }
     }
 
@@ -1049,6 +1053,13 @@ Item {
 
     Item{
         id:barLine
+        anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+
+        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
         width: ( icList.orientation === Qt.Horizontal ) ? icList.width + spacing : smallSize
         height: ( icList.orientation === Qt.Vertical ) ? icList.height + spacing : smallSize
@@ -1232,10 +1243,18 @@ Item {
 
                 ListView {
                     id:icList
+                    anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+                    anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+                    anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+                    anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+
+                    anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+                    anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
+
                     width: !root.vertical ? contentWidth : mouseHandler.maxSize
                     height: root.vertical ? contentHeight : mouseHandler.maxSize
                     boundsBehavior: Flickable.StopAtBounds
-                    orientation: Qt.Horizontal
+                    orientation: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Qt.Vertical : Qt.Horizontal
                     delegate: Task.TaskItem{}
 
                     property int currentSpot : -1000
@@ -1527,102 +1546,6 @@ Item {
     /////////
 
     //// functions
-    function movePanel(obj, newPosition){
-        var bLine = obj;
-        if (newPosition === PlasmaCore.Types.BottomPositioned){
-            bLine.anchors.horizontalCenter = bLine.parent.horizontalCenter;
-            bLine.anchors.verticalCenter = undefined;
-            bLine.anchors.bottom = bLine.parent.bottom;
-            bLine.anchors.top = undefined;
-            bLine.anchors.left = undefined;
-            bLine.anchors.right = undefined;
-        }
-        else if (newPosition === PlasmaCore.Types.TopPositioned){
-            bLine.anchors.horizontalCenter = bLine.parent.horizontalCenter;
-            bLine.anchors.verticalCenter = undefined;
-            bLine.anchors.bottom = undefined;
-            bLine.anchors.top = bLine.parent.top;
-            bLine.anchors.left = undefined;
-            bLine.anchors.right = undefined;
-        }
-        else if (newPosition === PlasmaCore.Types.LeftPositioned){
-            bLine.anchors.horizontalCenter = undefined;
-            bLine.anchors.verticalCenter = bLine.parent.verticalCenter;
-            bLine.anchors.bottom = undefined;
-            bLine.anchors.top = undefined;
-            bLine.anchors.left = bLine.parent.left;
-            bLine.anchors.right = undefined;
-        }
-        else if (newPosition === PlasmaCore.Types.RightPositioned){
-            bLine.anchors.horizontalCenter = undefined;
-            bLine.anchors.verticalCenter = bLine.parent.verticalCenter;
-            bLine.anchors.bottom = undefined;
-            bLine.anchors.top = undefined;
-            bLine.anchors.left =undefined;
-            bLine.anchors.right = bLine.parent.right;
-        }
-    }
-
-    property int ncounter:0
-
-    function updateImplicits(){
-        if(icList.previousCount !== icList.count){
-            icList.previousCount = icList.count;
-
-            var zoomedLength = Math.floor( 1.2 * (iconSize+thickMargins) * (root.zoomFactor));
-            var bigAxis = (tasksModel.count-1) * (iconSize+thickMargins) + zoomedLength;
-            var smallAxis = zoomedLength;
-
-            var clearBigAxis = tasksModel.count * (iconSize+thickMargins) + (barLine.spacing/2);
-            var clearSmallAxis = iconSize+thickMargins;
-
-            //  debugging code
-            //     ncounter++;
-            //      console.log("Implicits______ "+ncounter+". - "+tasksModel.count);
-
-            if (root.vertical){
-                root.implicitWidth = smallAxis;
-                root.implicitHeight = bigAxis;
-                root.clearWidth = clearSmallAxis;
-                root.clearHeight = clearBigAxis;
-            }
-            else{
-                root.implicitWidth = bigAxis;
-                root.implicitHeight = smallAxis;
-                root.clearWidth = clearBigAxis;
-                root.clearHeight = clearSmallAxis;
-            }
-
-            iconGeometryTimer.restart();
-        }
-    }
-
-    PlasmaComponents.Button{
-        id: orientationBtn
-        text:"Orientation"
-
-        anchors.centerIn: parent
-        visible: root.debugLocation
-
-        onClicked:{
-            switch(root.position){
-            case PlasmaCore.Types.BottomPositioned:
-                root.newLocationDebugUse = PlasmaCore.Types.LeftEdge;
-                break;
-            case PlasmaCore.Types.LeftPositioned:
-                root.newLocationDebugUse = PlasmaCore.Types.TopEdge;
-                break;
-            case PlasmaCore.Types.TopPositioned:
-                root.newLocationDebugUse = PlasmaCore.Types.RightEdge;
-                break;
-            case PlasmaCore.Types.RightPositioned:
-                root.newLocationDebugUse = PlasmaCore.Types.BottomEdge;
-                break;
-            }
-            updatePosition();
-        }
-    }
-
     function addInternalSeparatorAtPos(pos) {
         var separatorName = parabolicManager.freeAvailableSeparatorName();
 
@@ -1686,46 +1609,6 @@ Item {
 
     function setHoveredIndex(ind) {
         icList.hoveredIndex = ind;
-    }
-
-    function updatePosition(){
-        var newPosition;
-        var tempVertical=false;
-
-        var positionUsed;
-
-
-        if (root.debugLocation)
-            positionUsed = root.newLocationDebugUse;
-        else
-            positionUsed = plasmoid.location;
-
-        switch (positionUsed) {
-        case PlasmaCore.Types.LeftEdge:
-            newPosition = PlasmaCore.Types.LeftPositioned;
-            tempVertical = true;
-            break;
-        case PlasmaCore.Types.RightEdge:
-            newPosition = PlasmaCore.Types.RightPositioned;
-            tempVertical = true;
-            break;
-        case PlasmaCore.Types.TopEdge:
-            newPosition = PlasmaCore.Types.TopPositioned;
-            break;
-        default:
-            newPosition = PlasmaCore.Types.BottomPositioned;
-            break
-        }
-
-        movePanel(barLine,newPosition);
-        movePanel(icList,newPosition);
-
-        if(tempVertical)
-            icList.orientation = Qt.Vertical;
-        else
-            icList.orientation = Qt.Horizontal;
-
-        root.position = newPosition;
     }
 
     function getBadger(identifier) {
@@ -2025,8 +1908,6 @@ Item {
     }
 
     Component.onCompleted:  {
-        updatePosition();
-
         root.presentWindows.connect(backend.presentWindows);
         root.windowsHovered.connect(backend.windowsHovered);
         dragHelper.dropped.connect(resetDragSource);

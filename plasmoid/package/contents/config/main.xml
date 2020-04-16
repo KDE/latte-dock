@@ -43,16 +43,6 @@
       </choices>
       <default>2</default>
     </entry>
-    <entry name="plasmoidPosition" type="Enum">
-      <choices>
-            <choice name="Center"/>
-            <choice name="Left"/>
-            <choice name="Right"/>
-            <choice name="Top"/>
-            <choice name="Bottom"/>
-      </choices>
-      <default>0</default>
-    </entry>
     <entry name="showBarLine" type="Bool">
       <default>true</default>
     </entry>

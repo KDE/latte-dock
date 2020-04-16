@@ -38,7 +38,6 @@ Item {
     property alias cfg_useThemePanel: useThemePanel.checked
     property alias cfg_panelSize: panelSize.value
     property alias cfg_transparentPanel: transparentPanel.checked
-    property alias cfg_plasmoidPosition: panelPositionCmb.currentIndex
     property alias cfg_isInNowDockPanel: mainItem.isInNowDockPanel
 
     property bool isInNowDockPanel
@@ -55,20 +54,7 @@ Item {
             columns: 3
             property bool panelConfigEnabled: showBarLine.checked && useThemePanel.checked
 
-
-            Label {
-                text: i18n("Position: ")
-            }
-
-            ComboBox {
-                // 16, 22, 32, 48, 64,128, 256
-                id: panelPositionCmb
-
-                Layout.fillWidth: true
-                model: [i18n("Center"), i18n("Left"), i18n("Right"), i18n("Top"), i18n("Bottom")]
-            }
             Label{}
-
 
             CheckBox {
                 id: showBarLine
