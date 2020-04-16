@@ -41,8 +41,6 @@ DetailsHandler::DetailsHandler(Dialog::DetailsDialog *parentDialog)
 
     //! create it after initializing
     m_infoHandler = new DetailsInfoHandler(parentDialog, this);
-
-
 }
 
 DetailsHandler::~DetailsHandler()
@@ -51,9 +49,10 @@ DetailsHandler::~DetailsHandler()
 
 void DetailsHandler::init()
 {
-    connect(m_ui->layoutsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::on_currentIndexChanged);
-
     reload();
+
+    //! connect combobox after the selected layout has been loaded
+    connect(m_ui->layoutsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::on_currentIndexChanged);
 }
 
 void DetailsHandler::reload()
