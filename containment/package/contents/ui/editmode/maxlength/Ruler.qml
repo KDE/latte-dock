@@ -87,7 +87,7 @@ Item{
         property: "xL"
         value: {
             if (root.isHorizontal) {
-                if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
+                if (plasmoid.configuration.alignment === Latte.Types.Justify) {
                     return root.width/2 - rulerItem.length/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Types.Left) {
                     return root.offset;
@@ -107,7 +107,7 @@ Item{
         property: "yL"
         value: {
             if (root.isVertical) {
-                if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
+                if (plasmoid.configuration.alignment === Latte.Types.Justify) {
                     return root.height/2 - rulerItem.length/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Types.Top) {
                     return root.offset;

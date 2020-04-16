@@ -314,7 +314,7 @@ Window{
 
             Text{
                 text: {
-                    switch(plasmoid.configuration.panelPosition){
+                    switch(plasmoid.configuration.alignment){
                     case Latte.Types.Left:
                         return "Left";
                         break;
@@ -335,7 +335,7 @@ Window{
                         break;
                     }
 
-                    return "<unknown> : " + plasmoid.configuration.panelPosition;
+                    return "<unknown> : " + plasmoid.configuration.alignment;
                 }
             }
 

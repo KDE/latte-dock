@@ -365,13 +365,13 @@ PlasmaComponents.Page {
                                 var newTotal = Math.abs(plasmoid.configuration.offset) + value;
 
                                 //centered and justify alignments based on offset and get out of the screen in some cases
-                                var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                                                     || (plasmoid.configuration.panelPosition === Latte.Types.Justify))
+                                var centeredCheck = ((plasmoid.configuration.alignment === Latte.Types.Center)
+                                                     || (plasmoid.configuration.alignment === Latte.Types.Justify))
                                         && ((Math.abs(plasmoid.configuration.offset) + value/2) > 50);
 
                                 if (newTotal > 100 || centeredCheck) {
-                                    if ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                                            || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) {
+                                    if ((plasmoid.configuration.alignment === Latte.Types.Center)
+                                            || (plasmoid.configuration.alignment === Latte.Types.Justify)) {
 
                                         var suggestedValue = (plasmoid.configuration.offset<0) ? Math.min(0, -(100-value)): Math.max(0, 100-value);
 
@@ -425,7 +425,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
                     visible: dialog.expertLevel
-                    enabled: (plasmoid.configuration.panelPosition !== Latte.Types.Justify)
+                    enabled: (plasmoid.configuration.alignment !== Latte.Types.Justify)
 
                     PlasmaComponents.Label {
                         id: minLengthLbl
@@ -497,10 +497,10 @@ PlasmaComponents.Page {
                         id: offsetSlider
 
                         value: plasmoid.configuration.offset
-                        from: ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                               || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ? -20 :  0
-                        to: ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                             || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ? 20 :  40
+                        from: ((plasmoid.configuration.alignment === Latte.Types.Center)
+                               || (plasmoid.configuration.alignment === Latte.Types.Justify)) ? -20 :  0
+                        to: ((plasmoid.configuration.alignment === Latte.Types.Center)
+                             || (plasmoid.configuration.alignment === Latte.Types.Justify)) ? 20 :  40
                         stepSize: 1
                         wheelEnabled: false
 
@@ -510,12 +510,12 @@ PlasmaComponents.Page {
                                 var newTotal = Math.abs(value) + plasmoid.configuration.maxLength;
 
                                 //centered and justify alignments based on offset and get out of the screen in some cases
-                                var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                                                     || (plasmoid.configuration.panelPosition === Latte.Types.Justify))
+                                var centeredCheck = ((plasmoid.configuration.alignment === Latte.Types.Center)
+                                                     || (plasmoid.configuration.alignment === Latte.Types.Justify))
                                         && ((Math.abs(value) + plasmoid.configuration.maxLength/2) > 50);
                                 if (newTotal > 100 || centeredCheck) {
-                                    plasmoid.configuration.maxLength = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                                                                        || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ?
+                                    plasmoid.configuration.maxLength = ((plasmoid.configuration.alignment === Latte.Types.Center)
+                                                                        || (plasmoid.configuration.alignment === Latte.Types.Justify)) ?
                                                 2*(50 - Math.abs(value)) :100 - Math.abs(value);
                                 }
                             }

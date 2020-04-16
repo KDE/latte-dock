@@ -32,7 +32,7 @@ Item{
     id: layoutsContainer
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
-    readonly property bool useMaxLength: (plasmoid.configuration.panelPosition === Latte.Types.Justify && !root.inConfigureAppletsMode)
+    readonly property bool useMaxLength: (plasmoid.configuration.alignment === Latte.Types.Justify && !root.inConfigureAppletsMode)
     /*   && ((!root.inConfigureAppletsMode && !root.behaveAsPlasmaPanel )
                                              || (behaveAsPlasmaPanel && root.inConfigureAppletsMode))*/
 
@@ -123,7 +123,7 @@ Item{
     z:10
 
     property bool animationSent: false
-    property bool shouldCheckHalfs: (plasmoid.configuration.panelPosition === Latte.Types.Justify) && (_mainLayout.children>1)
+    property bool shouldCheckHalfs: (plasmoid.configuration.alignment === Latte.Types.Justify) && (_mainLayout.children>1)
 
     property int contentsWidth: _startLayout.width + _mainLayout.width + _endLayout.width
     property int contentsHeight: _startLayout.height + _mainLayout.height + _endLayout.height

@@ -508,13 +508,13 @@ Item{
                     tempLength = root.isHorizontal ? root.width : root.height;
                 } else {
                     if(root.isHorizontal) {
-                        if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
+                        if (plasmoid.configuration.alignment === Latte.Types.Justify) {
                             tempLength = layoutsContainer.width;
                         } else {
                             tempLength = Math.max(root.realPanelLength, layoutsContainer.mainLayout.width);
                         }
                     } else {
-                        if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
+                        if (plasmoid.configuration.alignment === Latte.Types.Justify) {
                             tempLength = layoutsContainer.height;
                         } else {
                             tempLength = Math.max(root.realPanelLength, layoutsContainer.mainLayout.height);
@@ -560,7 +560,7 @@ Item{
 
                     if (noCompositingEdit) {
                         localX = 0;
-                    } else if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
+                    } else if (plasmoid.configuration.alignment === Latte.Types.Justify) {
                         localX = (latteView.width/2) - tempLength/2 + root.offset;
                     } else if (root.panelAlignment === Latte.Types.Left) {
                         localX = root.offset;
@@ -590,7 +590,7 @@ Item{
 
                     if (noCompositingEdit) {
                         localY = 0;
-                    } else if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
+                    } else if (plasmoid.configuration.alignment === Latte.Types.Justify) {
                         localY = (latteView.height/2) - tempLength/2 + root.offset;
                     } else if (root.panelAlignment === Latte.Types.Top) {
                         localY = root.offset;

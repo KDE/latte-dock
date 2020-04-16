@@ -4,8 +4,11 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name=""/>
-
   <group name="General">
+    <entry name="alignment" type="Int">
+      <default>0</default>
+      <label>introduced in v0.10, "0" stands for "Center"</label>      
+    </entry>      
     <entry name="appletOrder" type="String">
       <label>encoded order of items</label>
     </entry>
@@ -14,16 +17,6 @@
     </entry>
     <entry name="userBlocksColorizingApplets" type="String">
       <label>applets that do not want to be colorized in any case</label>
-    </entry>
-    <entry name="panelPosition" type="Enum">
-      <choices>
-            <choice name="Center"/>
-            <choice name="Left"/>
-            <choice name="Right"/>
-            <choice name="Top"/>
-            <choice name="Bottom"/>
-      </choices>
-      <default>0</default>
     </entry>
     <entry name="zoomLevel" type="Int">
       <default>10</default>
@@ -391,6 +384,25 @@
     <entry name="unifiedGlobalShortcuts" type="Bool">
       <default>true</default>
       <label>Global Shortcuts are combined between applets and tasks</label>
+    </entry>
+    
+    <!-- Upgrade Flags -->
+    <entry name="alignmentUpgraded" type="Bool">
+      <default>false</default>
+      <label>flag to check it deprecated panelPosition was changed to "alignment"</label>
+    </entry>
+    
+    <!-- Deprecated Section -->
+    <entry name="panelPosition" type="Enum">
+      <choices>
+            <choice name="Center"/>
+            <choice name="Left"/>
+            <choice name="Right"/>
+            <choice name="Top"/>
+            <choice name="Bottom"/>
+      </choices>
+      <default>0</default>
+      <label>DEPRECATED in 0.10 in favour of "alignment"</label>
     </entry>
   </group>
 </kcfg>

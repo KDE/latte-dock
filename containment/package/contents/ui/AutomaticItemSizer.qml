@@ -150,10 +150,10 @@ Item {
             //console.log("max length: "+ maxLength);
 
             if (root.isVertical) {
-                layoutLength = (plasmoid.configuration.panelPosition === Latte.Types.Justify) ?
+                layoutLength = (plasmoid.configuration.alignment === Latte.Types.Justify) ?
                             layoutsContainer.startLayout.height+layoutsContainer.mainLayout.height+layoutsContainer.endLayout.height : layoutsContainer.mainLayout.height
             } else {
-                layoutLength = (plasmoid.configuration.panelPosition === Latte.Types.Justify) ?
+                layoutLength = (plasmoid.configuration.alignment === Latte.Types.Justify) ?
                             layoutsContainer.startLayout.width+layoutsContainer.mainLayout.width+layoutsContainer.endLayout.width : layoutsContainer.mainLayout.width
             }
 

@@ -60,7 +60,7 @@ function restore() {
         root.addApplet(appletsOrder[i], -1, -1)
     }
 
-    if (plasmoid.configuration.panelPosition === 10 /*Justify*/) {
+    if (plasmoid.configuration.alignment === 10 /*Justify*/) {
         // console.log("splitters restored:"+plasmoid.configuration.splitterPosition+ " - " + plasmoid.configuration.splitterPosition2);
         //add the splitters in the correct position if they exist
 
@@ -110,7 +110,7 @@ function restore() {
 
     inRestore = false;
 
-    if (plasmoid.configuration.panelPosition === 10/*Justify*/) {
+    if (plasmoid.configuration.alignment === 10/*Justify*/) {
         root.splitMainLayoutToLayouts();
         root.updateIndexes();
     }
@@ -158,10 +158,10 @@ function save() {
 
         if (child.applet && !child.isInternalViewSplitter) {
             ids.push(child.applet.id);
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && !splitterExists){
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && !splitterExists){
             splitterExists = true;
             plasmoid.configuration.splitterPosition = i;
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && splitterExists){
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && splitterExists){
             splitterExists2 = true;
             plasmoid.configuration.splitterPosition2 = i;
         }
@@ -172,10 +172,10 @@ function save() {
 
         if (child.applet && !child.isInternalViewSplitter) {
             ids.push(child.applet.id);
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && !splitterExists){
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && !splitterExists){
             splitterExists = true;
             plasmoid.configuration.splitterPosition = i + layoutS.children.length;
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && splitterExists){
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && splitterExists){
             splitterExists2 = true;
             plasmoid.configuration.splitterPosition2 = i + layoutS.children.length;
         }
@@ -186,10 +186,10 @@ function save() {
 
         if (child.applet && !child.isInternalViewSplitter) {
             ids.push(child.applet.id);
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && !splitterExists){
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && !splitterExists){
             splitterExists = true;
             plasmoid.configuration.splitterPosition = i + layoutS.children.length + layout.children.length;
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && splitterExists){
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && splitterExists){
             splitterExists2 = true;
             plasmoid.configuration.splitterPosition2 = i + layoutS.children.length + layout.children.length;
         }

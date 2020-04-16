@@ -58,13 +58,13 @@ MouseArea{
         var newTotal = Math.abs(plasmoid.configuration.offset) + value;
 
         //centered and justify alignments based on offset and get out of the screen in some cases
-        var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                             || (plasmoid.configuration.panelPosition === Latte.Types.Justify))
+        var centeredCheck = ((plasmoid.configuration.alignment === Latte.Types.Center)
+                             || (plasmoid.configuration.alignment === Latte.Types.Justify))
                 && ((Math.abs(plasmoid.configuration.offset) + value/2) > 50);
 
         if (newTotal > 100 || centeredCheck) {
-            if ((plasmoid.configuration.panelPosition === Latte.Types.Center)
-                    || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) {
+            if ((plasmoid.configuration.alignment === Latte.Types.Center)
+                    || (plasmoid.configuration.alignment === Latte.Types.Justify)) {
 
                 var suggestedValue = (plasmoid.configuration.offset<0) ? Math.min(0, -(100-value)): Math.max(0, 100-value);
 

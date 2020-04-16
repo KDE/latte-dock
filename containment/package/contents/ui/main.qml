@@ -93,13 +93,13 @@ Item {
 
         return (visibilityManager.panelIsBiggerFromIconSize
                 && (maxZoomFactor === 1.0)
-                && (plasmoid.configuration.panelPosition === Latte.Types.Justify)
+                && (plasmoid.configuration.alignment === Latte.Types.Justify)
                 && !root.editMode
                 && !visibilityManager.inLocationAnimation);
     }
 
     property int viewType: {
-        if ((plasmoid.configuration.panelPosition === Latte.Types.Justify)
+        if ((plasmoid.configuration.alignment === Latte.Types.Justify)
                 && (plasmoid.configuration.useThemePanel)
                 && (plasmoid.configuration.panelSize === 100)
                 && (maxZoomFactor === 1.0)) {
@@ -190,7 +190,7 @@ Item {
     property bool hideLengthScreenGaps: hideThickScreenGap
                                         && (latteView.visibility.mode === Latte.Types.AlwaysVisible
                                             || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
-                                        && (plasmoid.configuration.panelPosition === Latte.Types.Justify)
+                                        && (plasmoid.configuration.alignment === Latte.Types.Justify)
                                         && plasmoid.configuration.maxLength>85
                                         && !root.editMode
 
@@ -214,7 +214,7 @@ Item {
     property bool closeActiveWindowEnabled: plasmoid.configuration.closeActiveWindowEnabled
     property bool dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled
     property bool immutable: plasmoid.immutable
-    property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Types.Justify) && (maxLengthPerCentage===100)
+    property bool inFullJustify: (plasmoid.configuration.alignment === Latte.Types.Justify) && (maxLengthPerCentage===100)
     property bool inSlidingIn: visibilityManager ? visibilityManager.inSlidingIn : false
     property bool inSlidingOut: visibilityManager ? visibilityManager.inSlidingOut : false
     property bool inStartup: true
@@ -377,7 +377,7 @@ Item {
     }
 
     //center the layout correctly when the user uses an offset
-    property int offsetFixed: (offset===0 || panelAlignment === Latte.Types.Center || plasmoid.configuration.panelPosition === Latte.Types.Justify)?
+    property int offsetFixed: (offset===0 || panelAlignment === Latte.Types.Center || plasmoid.configuration.alignment === Latte.Types.Justify)?
                                   offset : offset+panelMarginLength/2+totalPanelEdgeSpacing/2
 
     property int realPanelSize: 0
@@ -454,13 +454,13 @@ Item {
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Types.Center : (root.isVertical ? Latte.Types.Top : Latte.Types.Left)
-    //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Types.Justify ? plasmoid.configuration.panelPosition : layoutsContainer.mainLayoutPosition
+    //property int panelAlignment: plasmoid.configuration.alignment !== Latte.Types.Justify ? plasmoid.configuration.alignment : layoutsContainer.mainLayoutPosition
 
-    property int panelAlignment: !root.inConfigureAppletsMode ? plasmoid.configuration.panelPosition :
-                                                                ( plasmoid.configuration.panelPosition === Latte.Types.Justify ?
-                                                                     Latte.Types.Center : plasmoid.configuration.panelPosition )
+    property int panelAlignment: !root.inConfigureAppletsMode ? plasmoid.configuration.alignment :
+                                                                ( plasmoid.configuration.alignment === Latte.Types.Justify ?
+                                                                     Latte.Types.Center : plasmoid.configuration.alignment )
 
-    property int panelUserSetAlignment: plasmoid.configuration.panelPosition
+    property int panelUserSetAlignment: plasmoid.configuration.alignment
 
     property real zoomFactor: Latte.WindowSystem.compositingActive && root.animationsEnabled ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
@@ -799,15 +799,15 @@ Item {
 
     onIsVerticalChanged: {
         if (isVertical) {
-            if (plasmoid.configuration.panelPosition === Latte.Types.Left)
-                plasmoid.configuration.panelPosition = Latte.Types.Top;
-            else if (plasmoid.configuration.panelPosition === Latte.Types.Right)
-                plasmoid.configuration.panelPosition = Latte.Types.Bottom;
+            if (plasmoid.configuration.alignment === Latte.Types.Left)
+                plasmoid.configuration.alignment = Latte.Types.Top;
+            else if (plasmoid.configuration.alignment === Latte.Types.Right)
+                plasmoid.configuration.alignment = Latte.Types.Bottom;
         } else {
-            if (plasmoid.configuration.panelPosition === Latte.Types.Top)
-                plasmoid.configuration.panelPosition = Latte.Types.Left;
-            else if (plasmoid.configuration.panelPosition === Latte.Types.Bottom)
-                plasmoid.configuration.panelPosition = Latte.Types.Right;
+            if (plasmoid.configuration.alignment === Latte.Types.Top)
+                plasmoid.configuration.alignment = Latte.Types.Left;
+            else if (plasmoid.configuration.alignment === Latte.Types.Bottom)
+                plasmoid.configuration.alignment = Latte.Types.Right;
         }
     }
 
@@ -821,6 +821,9 @@ Item {
         LayoutManager.layoutS = layoutsContainer.startLayout;
         LayoutManager.layoutE = layoutsContainer.endLayout;
         LayoutManager.lastSpacer = lastSpacer;
+
+        upgrader_v010_alignment();
+
         LayoutManager.restore();
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
@@ -928,10 +931,10 @@ Item {
         ///to add applets
         /*   if (plasmoid.immutable) {
             if(root.isHorizontal) {
-                root.Layout.preferredWidth = (plasmoid.configuration.panelPosition === Latte.Types.Justify ?
+                root.Layout.preferredWidth = (plasmoid.configuration.alignment === Latte.Types.Justify ?
                                                   layoutsContainer.width + 0.5*iconMargin : layoutsContainer.mainLayout.width + iconMargin);
             } else {
-                root.Layout.preferredHeight = (plasmoid.configuration.panelPosition === Latte.Types.Justify ?
+                root.Layout.preferredHeight = (plasmoid.configuration.alignment === Latte.Types.Justify ?
                                                    layoutsContainer.height + 0.5*iconMargin : layoutsContainer.mainLayout.height + iconMargin);
             }
         } else {
@@ -1475,6 +1478,14 @@ Item {
             itemL.parent = layoutsContainer.mainLayout;
         }
     }
+
+    function upgrader_v010_alignment() {
+        //! IMPORTANT, special case because it needs to be loaded on Component constructor
+        if (!plasmoid.configuration.alignmentUpgraded) {
+            plasmoid.configuration.alignment = plasmoid.configuration.panelPosition;
+            plasmoid.configuration.alignmentUpgraded = true;
+        }
+    }
     //END functions
 
 
@@ -1673,6 +1684,10 @@ Item {
         id: graphicsSystem
         readonly property bool isAccelerated: (GraphicsInfo.api !== GraphicsInfo.Software)
                                               && (GraphicsInfo.api !== GraphicsInfo.Unknown)
+    }
+
+    Upgrader {
+        id: upgrader
     }
 
     ///////////////END components

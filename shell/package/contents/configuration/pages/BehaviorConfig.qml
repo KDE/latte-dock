@@ -276,14 +276,14 @@ PlasmaComponents.Page {
                 LayoutMirroring.enabled: false
                 spacing: 2
 
-                readonly property int panelPosition: plasmoid.configuration.panelPosition
+                readonly property int configAlignment: plasmoid.configuration.alignment
                 readonly property int buttonSize: (dialog.optionsWidth - (spacing * 3)) / 4
 
                 ExclusiveGroup {
                     id: alignmentGroup
                     onCurrentChanged: {
                         if (current.checked)
-                            plasmoid.configuration.panelPosition = current.position
+                            plasmoid.configuration.alignment = current.alignment
                     }
                 }
 
@@ -292,33 +292,33 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: panelIsVertical ? i18nc("top alignment", "Top") : i18nc("left alignment", "Left")
                     iconSource: panelIsVertical ? "format-align-vertical-top" : "format-justify-left"
-                    checked: parent.panelPosition === position
+                    checked: parent.configAlignment === alignment
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int position: panelIsVertical ? Latte.Types.Top : Latte.Types.Left
+                    property int alignment: panelIsVertical ? Latte.Types.Top : Latte.Types.Left
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("center alignment", "Center")
                     iconSource: panelIsVertical ? "format-align-vertical-center" : "format-justify-center"
-                    checked: parent.panelPosition === position
+                    checked: parent.configAlignment === alignment
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int position: Latte.Types.Center
+                    property int alignment: Latte.Types.Center
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
                     Layout.maximumWidth: Layout.minimumWidth
                     text: panelIsVertical ? i18nc("bottom alignment", "Bottom") : i18nc("right alignment", "Right")
                     iconSource: panelIsVertical ? "format-align-vertical-bottom" : "format-justify-right"
-                    checked: parent.panelPosition === position
+                    checked: parent.configAlignment === alignment
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int position: panelIsVertical ? Latte.Types.Bottom : Latte.Types.Right
+                    property int alignment: panelIsVertical ? Latte.Types.Bottom : Latte.Types.Right
                 }
 
                 PlasmaComponents.Button {
@@ -326,11 +326,11 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("justify alignment", "Justify")
                     iconSource: "format-justify-fill"
-                    checked: parent.panelPosition === position
+                    checked: parent.configAlignment === alignment
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int position: Latte.Types.Justify
+                    property int alignment: Latte.Types.Justify
                 }
             }
         }
