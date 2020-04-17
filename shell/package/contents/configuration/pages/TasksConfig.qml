@@ -34,7 +34,7 @@ PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
 
-    property bool disableAllWindowsFunctionality: plasmoid.configuration.showWindowsOnlyFromLaunchers
+    property bool disableAllWindowsFunctionality: tasks.configuration.showWindowsOnlyFromLaunchers
                                                   && plasmoid.configuration.activeIndicator === Latte.Types.NoneIndicator
 
     ColumnLayout {
@@ -63,57 +63,57 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Notifications from tasks")
-                    checked: plasmoid.configuration.showInfoBadge
+                    checked: tasks.configuration.showInfoBadge
                     tooltip: i18n("Show unread messages or notifications from tasks")
 
                     onClicked: {
-                        plasmoid.configuration.showInfoBadge = checked
+                        tasks.configuration.showInfoBadge = checked
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Progress information for tasks")
-                    checked: plasmoid.configuration.showProgressBadge
+                    checked: tasks.configuration.showProgressBadge
                     tooltip: i18n("Show a progress animation for tasks e.g. when copying files with Dolphin")
 
                     onClicked: {
-                        plasmoid.configuration.showProgressBadge = checked
+                        tasks.configuration.showProgressBadge = checked
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Audio playing from tasks")
-                    checked: plasmoid.configuration.showAudioBadge
+                    checked: tasks.configuration.showAudioBadge
                     tooltip: i18n("Show audio playing from tasks")
 
                     onClicked: {
-                        plasmoid.configuration.showAudioBadge = checked
+                        tasks.configuration.showAudioBadge = checked
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Prominent color for notification badge")
-                    checked: plasmoid.configuration.infoBadgeProminentColorEnabled
-                    enabled: plasmoid.configuration.showInfoBadge
+                    checked: tasks.configuration.infoBadgeProminentColorEnabled
+                    enabled: tasks.configuration.showInfoBadge
                     tooltip: i18n("Notification badge uses a more prominent background which is usually red")
 
                     onClicked: {
-                        plasmoid.configuration.infoBadgeProminentColorEnabled = !plasmoid.configuration.infoBadgeProminentColorEnabled;
+                        tasks.configuration.infoBadgeProminentColorEnabled = !tasks.configuration.infoBadgeProminentColorEnabled;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Change volume when scrolling audio badge")
-                    checked: plasmoid.configuration.audioBadgeActionsEnabled
-                    enabled: plasmoid.configuration.showAudioBadge
+                    checked: tasks.configuration.audioBadgeActionsEnabled
+                    enabled: tasks.configuration.showAudioBadge
                     tooltip: i18n("The user is able to mute/unmute with click or change the volume with mouse wheel")
 
                     onClicked: {
-                        plasmoid.configuration.audioBadgeActionsEnabled = checked
+                        tasks.configuration.audioBadgeActionsEnabled = checked
                     }
                 }
             }
@@ -148,12 +148,12 @@ PlasmaComponents.Page {
                     id: windowActionsChk
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Window actions in the context menu")
-                    checked: plasmoid.configuration.showWindowActions
+                    checked: tasks.configuration.showWindowActions
                     visible: dialog.highLevel
                     enabled: !disableAllWindowsFunctionality
 
                     onClicked: {
-                        plasmoid.configuration.showWindowActions = checked
+                        tasks.configuration.showWindowActions = checked
                     }
                 }
 
@@ -190,53 +190,53 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current screen")
-                    checked: plasmoid.configuration.showOnlyCurrentScreen
+                    checked: tasks.configuration.showOnlyCurrentScreen
 
                     onClicked: {
-                        plasmoid.configuration.showOnlyCurrentScreen = checked
+                        tasks.configuration.showOnlyCurrentScreen = checked
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current desktop")
-                    checked: plasmoid.configuration.showOnlyCurrentDesktop
+                    checked: tasks.configuration.showOnlyCurrentDesktop
 
                     onClicked: {
-                        plasmoid.configuration.showOnlyCurrentDesktop = checked
+                        tasks.configuration.showOnlyCurrentDesktop = checked
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current activity")
-                    checked: plasmoid.configuration.showOnlyCurrentActivity
+                    checked: tasks.configuration.showOnlyCurrentActivity
 
                     onClicked: {
-                        plasmoid.configuration.showOnlyCurrentActivity = checked
+                        tasks.configuration.showOnlyCurrentActivity = checked
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from launchers")
-                    checked: plasmoid.configuration.showWindowsOnlyFromLaunchers
+                    checked: tasks.configuration.showWindowsOnlyFromLaunchers
                     visible: dialog.highLevel
 
                     onClicked: {
-                        plasmoid.configuration.showWindowsOnlyFromLaunchers = checked
+                        tasks.configuration.showWindowsOnlyFromLaunchers = checked
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Group tasks of the same application")
-                    checked: plasmoid.configuration.groupTasksByDefault
+                    checked: tasks.configuration.groupTasksByDefault
                     tooltip: i18n("By default group tasks of the same application")
                     visible: dialog.highLevel
 
                     onClicked: {
-                        plasmoid.configuration.groupTasksByDefault = checked
+                        tasks.configuration.groupTasksByDefault = checked
                     }
                 }
             }
@@ -261,50 +261,50 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Bounce launchers when triggered")
-                    checked: plasmoid.configuration.animationLauncherBouncing
+                    checked: tasks.configuration.animationLauncherBouncing
 
                     onClicked: {
-                        plasmoid.configuration.animationLauncherBouncing = !plasmoid.configuration.animationLauncherBouncing;
+                        tasks.configuration.animationLauncherBouncing = !tasks.configuration.animationLauncherBouncing;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Bounce tasks that need attention")
-                    checked: plasmoid.configuration.animationWindowInAttention
+                    checked: tasks.configuration.animationWindowInAttention
 
                     onClicked: {
-                        plasmoid.configuration.animationWindowInAttention = !plasmoid.configuration.animationWindowInAttention;
+                        tasks.configuration.animationWindowInAttention = !tasks.configuration.animationWindowInAttention;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Slide in and out single windows")
-                    checked: plasmoid.configuration.animationNewWindowSliding
+                    checked: tasks.configuration.animationNewWindowSliding
 
                     onClicked: {
-                        plasmoid.configuration.animationNewWindowSliding = !plasmoid.configuration.animationNewWindowSliding;
+                        tasks.configuration.animationNewWindowSliding = !tasks.configuration.animationNewWindowSliding;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Grouped tasks bounce their new windows")
-                    checked: plasmoid.configuration.animationWindowAddedInGroup
+                    checked: tasks.configuration.animationWindowAddedInGroup
 
                     onClicked: {
-                        plasmoid.configuration.animationWindowAddedInGroup = !plasmoid.configuration.animationWindowAddedInGroup;
+                        tasks.configuration.animationWindowAddedInGroup = !tasks.configuration.animationWindowAddedInGroup;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Grouped tasks slide out their closed windows")
-                    checked: plasmoid.configuration.animationWindowRemovedFromGroup
+                    checked: tasks.configuration.animationWindowRemovedFromGroup
 
                     onClicked: {
-                        plasmoid.configuration.animationWindowRemovedFromGroup = !plasmoid.configuration.animationWindowRemovedFromGroup;
+                        tasks.configuration.animationWindowRemovedFromGroup = !tasks.configuration.animationWindowRemovedFromGroup;
                     }
                 }
             }
@@ -336,7 +336,7 @@ PlasmaComponents.Page {
 
                     spacing: 2
 
-                    property int group: plasmoid.configuration.launchersGroup
+                    property int group: tasks.configuration.launchersGroup
 
                     readonly property int buttonsCount: layoutGroupButton.visible ? 3 : 2
                     readonly property int buttonSize: (dialog.optionsWidth - (spacing * buttonsCount-1)) / buttonsCount
@@ -346,7 +346,7 @@ PlasmaComponents.Page {
                         onCurrentChanged: {
                             if (current.checked) {
                                 viewConfig.updateLaunchersForGroup(current.group);
-                                plasmoid.configuration.launchersGroup = current.group;
+                                tasks.configuration.launchersGroup = current.group;
                             }
                         }
                     }
@@ -373,7 +373,7 @@ PlasmaComponents.Page {
                         exclusiveGroup: launchersGroup
                         tooltip: i18n("Use the current layout set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views in the <b>same layout</b>")
                         //! it is shown only when the user has activated that option manually from the text layout file
-                        visible: plasmoid.configuration.launchersGroup === group
+                        visible: tasks.configuration.launchersGroup === group
 
                         readonly property int group: Latte.Types.LayoutLaunchers
                     }
@@ -407,12 +407,12 @@ PlasmaComponents.Page {
                 Layout.bottomMargin: units.smallSpacing
                 enabled: Latte.WindowSystem.compositingActive
 
-                checked: plasmoid.configuration.scrollTasksEnabled
+                checked: tasks.configuration.scrollTasksEnabled
                 text: i18n("Scrolling")
                 tooltip: i18n("Enable tasks scrolling when they overflow and exceed the available space");
 
                 onPressed: {
-                    plasmoid.configuration.scrollTasksEnabled = !plasmoid.configuration.scrollTasksEnabled;;
+                    tasks.configuration.scrollTasksEnabled = !tasks.configuration.scrollTasksEnabled;;
                 }
             }
 
@@ -442,8 +442,8 @@ PlasmaComponents.Page {
                             dialog.panelIsVertical ? i18n("Only vertical scrolling") : i18n("Only horizontal scrolling"),
                             i18n("Horizontal and vertical scrolling")]
 
-                        currentIndex: plasmoid.configuration.manualScrollTasksType
-                        onCurrentIndexChanged: plasmoid.configuration.manualScrollTasksType = currentIndex;
+                        currentIndex: tasks.configuration.manualScrollTasksType
+                        onCurrentIndexChanged: tasks.configuration.manualScrollTasksType = currentIndex;
                     }
 
                     PlasmaComponents.Label {
@@ -461,12 +461,12 @@ PlasmaComponents.Page {
                             i18n("Enabled")
                         ]
 
-                        currentIndex: plasmoid.configuration.autoScrollTasksEnabled
+                        currentIndex: tasks.configuration.autoScrollTasksEnabled
                         onCurrentIndexChanged: {
                             if (currentIndex === 0) {
-                                plasmoid.configuration.autoScrollTasksEnabled = false;
+                                tasks.configuration.autoScrollTasksEnabled = false;
                             } else {
-                                plasmoid.configuration.autoScrollTasksEnabled = true;
+                                tasks.configuration.autoScrollTasksEnabled = true;
                             }
                         }
                     }
@@ -511,7 +511,7 @@ PlasmaComponents.Page {
                             i18n("Preview Windows")]
 
                         currentIndex: {
-                            switch(plasmoid.configuration.leftClickAction) {
+                            switch(tasks.configuration.leftClickAction) {
                             case Latte.Types.PresentWindows:
                                 return 0;
                             case Latte.Types.CycleThroughTasks:
@@ -526,13 +526,13 @@ PlasmaComponents.Page {
                         onCurrentIndexChanged: {
                             switch(currentIndex) {
                             case 0:
-                                plasmoid.configuration.leftClickAction = Latte.Types.PresentWindows;
+                                tasks.configuration.leftClickAction = Latte.Types.PresentWindows;
                                 break;
                             case 1:
-                                plasmoid.configuration.leftClickAction = Latte.Types.CycleThroughTasks;
+                                tasks.configuration.leftClickAction = Latte.Types.CycleThroughTasks;
                                 break;
                             case 2:
-                                plasmoid.configuration.leftClickAction = Latte.Types.PreviewWindows;
+                                tasks.configuration.leftClickAction = Latte.Types.PreviewWindows;
                                 break;
                             }
                         }
@@ -555,8 +555,8 @@ PlasmaComponents.Page {
                             i18n("Toggle Task Grouping")
                         ]
 
-                        currentIndex: plasmoid.configuration.middleClickAction
-                        onCurrentIndexChanged: plasmoid.configuration.middleClickAction = currentIndex
+                        currentIndex: tasks.configuration.middleClickAction
+                        onCurrentIndexChanged: tasks.configuration.middleClickAction = currentIndex
                     }
 
                     PlasmaComponents.Label {
@@ -574,7 +574,7 @@ PlasmaComponents.Page {
                         ]
 
                         currentIndex: {
-                            switch(plasmoid.configuration.hoverAction) {
+                            switch(tasks.configuration.hoverAction) {
                             case Latte.Types.NoneAction:
                                 return 0;
                             case Latte.Types.PreviewWindows:
@@ -591,16 +591,16 @@ PlasmaComponents.Page {
                         onCurrentIndexChanged: {
                             switch(currentIndex) {
                             case 0:
-                                plasmoid.configuration.hoverAction = Latte.Types.NoneAction;
+                                tasks.configuration.hoverAction = Latte.Types.NoneAction;
                                 break;
                             case 1:
-                                plasmoid.configuration.hoverAction = Latte.Types.PreviewWindows;
+                                tasks.configuration.hoverAction = Latte.Types.PreviewWindows;
                                 break;
                             case 2:
-                                plasmoid.configuration.hoverAction = Latte.Types.HighlightWindows;
+                                tasks.configuration.hoverAction = Latte.Types.HighlightWindows;
                                 break;
                             case 3:
-                                plasmoid.configuration.hoverAction = Latte.Types.PreviewAndHighlightWindows;
+                                tasks.configuration.hoverAction = Latte.Types.PreviewAndHighlightWindows;
                                 break;
                             }
                         }
@@ -620,7 +620,7 @@ PlasmaComponents.Page {
                         ]
 
                         currentIndex: {
-                            switch(plasmoid.configuration.taskScrollAction) {
+                            switch(tasks.configuration.taskScrollAction) {
                             case Latte.Types.NoneAction:
                                 return 0;
                             case Latte.Types.ScrollTasks:
@@ -635,13 +635,13 @@ PlasmaComponents.Page {
                         onCurrentIndexChanged: {
                             switch(currentIndex) {
                             case 0:
-                                plasmoid.configuration.taskScrollAction = Latte.Types.NoneAction;
+                                tasks.configuration.taskScrollAction = Latte.Types.NoneAction;
                                 break;
                             case 1:
-                                plasmoid.configuration.taskScrollAction = Latte.Types.ScrollTasks;
+                                tasks.configuration.taskScrollAction = Latte.Types.ScrollTasks;
                                 break;
                             case 2:
-                                plasmoid.configuration.taskScrollAction = Latte.Types.ScrollToggleMinimized;
+                                tasks.configuration.taskScrollAction = Latte.Types.ScrollToggleMinimized;
                                 break;
                             }
                         }
@@ -659,8 +659,8 @@ PlasmaComponents.Page {
                             Layout.fillWidth: true
                             model: ["Shift", "Ctrl", "Alt", "Meta"]
 
-                            currentIndex: plasmoid.configuration.modifier
-                            onCurrentIndexChanged: plasmoid.configuration.modifier = currentIndex
+                            currentIndex: tasks.configuration.modifier
+                            onCurrentIndexChanged: tasks.configuration.modifier = currentIndex
                         }
 
                         PlasmaComponents.Label {
@@ -680,8 +680,8 @@ PlasmaComponents.Page {
                             Layout.maximumWidth: parent.maxSize
                             model: [i18n("Left Click"), i18n("Middle Click"), i18n("Right Click")]
 
-                            currentIndex: plasmoid.configuration.modifierClick
-                            onCurrentIndexChanged: plasmoid.configuration.modifierClick = currentIndex
+                            currentIndex: tasks.configuration.modifierClick
+                            onCurrentIndexChanged: tasks.configuration.modifierClick = currentIndex
                         }
 
                         PlasmaComponents.Label {
@@ -694,8 +694,8 @@ PlasmaComponents.Page {
                             model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
                                 i18n("New Instance"), i18n("Minimize/Restore Window or Group"),  i18n("Cycle Through Tasks"), i18n("Toggle Task Grouping")]
 
-                            currentIndex: plasmoid.configuration.modifierClickAction
-                            onCurrentIndexChanged: plasmoid.configuration.modifierClickAction = currentIndex
+                            currentIndex: tasks.configuration.modifierClickAction
+                            onCurrentIndexChanged: tasks.configuration.modifierClickAction = currentIndex
                         }
                     }
                 }

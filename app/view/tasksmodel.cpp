@@ -19,6 +19,9 @@
 
 #include "tasksmodel.h"
 
+// Qt
+#include <QDebug>
+
 namespace Latte {
 namespace ViewPart {
 

@@ -540,11 +540,16 @@ void ContainmentInterface::updateAppletsTracking()
             }
         } else {
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (!ai) {
+                continue;
+            }
+
             KPluginMetaData meta = applet->kPackage().metadata();
 
-            if (meta.pluginId() == "org.kde.latte.plasmoid" && ai) {
+            if (meta.pluginId() == "org.kde.latte.plasmoid") {
                 m_tasksModel->addTask(ai);
-            } else if (ai && !m_appletsExpandedConnections.contains(ai)) {
+            } else if (!m_appletsExpandedConnections.contains(ai)) {
                 m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::on_appletExpandedChanged);
 
                 connect(ai, &QObject::destroyed, this, [&, ai](){

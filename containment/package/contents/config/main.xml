@@ -189,7 +189,148 @@
             <choice name="FromAllScreens"/>
       </choices>
       <default>0</default>
-    </entry>    
+    </entry>
+    <entry name="mouseWheelActions" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="scrollAction" type="Enum">
+      <choices>
+            <choice name="ScrollNone"/>
+            <choice name="ScrollDesktops"/>
+            <choice name="ScrollActivities"/>
+            <choice name="ScrollTasks"/>
+            <choice name="ScrollToggleMinimized"/>
+      </choices>
+      <default>0</default>
+    </entry>
+    <entry name="titleTooltips" type="Bool">
+      <default>true</default>
+    </entry>
+<!-- Config properties  -->
+    <entry name="configurationSticker" type="Bool">
+        <default>false</default>
+    </entry>
+<!-- Animations -->
+    <entry name="animationsEnabled" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="durationTime" type="Enum">
+      <choices>
+            <choice name="None"/>
+            <choice name="x1"/>
+            <choice name="x2"/>
+            <choice name="x3"/>
+      </choices>
+      <default>2</default>
+    </entry>
+    
+<!-- Upgrade Flags -->
+<!-- _____________ -->
+    <entry name="alignmentUpgraded" type="Bool">
+      <default>false</default>
+      <label>flag to check it deprecated panelPosition was changed to "alignment"</label>
+    </entry>
+    <entry name="tasksUpgraded" type="Bool">
+      <default>false</default>
+      <label>flag to check if Tasks properties were moved to Tasks plasmoid configuration. Since Latte v0.10 we can have multiple Tasks applets in the same dock</label>
+    </entry>
+    
+<!-- Deprecated Section Containment -->
+<!-- ______________________________ -->
+    <entry name="panelPosition" type="Enum">
+      <choices>
+            <choice name="Center"/>
+            <choice name="Left"/>
+            <choice name="Right"/>
+            <choice name="Top"/>
+            <choice name="Bottom"/>
+      </choices>
+      <default>0</default>
+      <label>DEPRECATED in 0.10 in favour of "alignment"</label>
+    </entry>
+
+<!-- Deprecated Section Tasks -->
+<!-- ________________________ -->
+<!-- All Tasks properties are DEPRECATED and scheduled to be removed in v0.11 or v0.12 -->
+<!-- This is happening because these values can now be properly provided from each Tasks applet -->
+<!-- BE CAREFUL: Until these values are removed totally and their UPGRADE procedures also, -->
+<!-- their default values should be updated both <here> and at their plasmoid configuration file counterpart -->
+
+    <entry name="launchersGroup" type="Enum">
+      <choices>
+            <choice name="Unique"/>
+            <choice name="Layout"/>
+            <choice name="Global"/>
+      </choices>
+      <default>0</default>
+    </entry>
+    <entry name="showWindowActions" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showWindowsOnlyFromLaunchers" type="Bool">
+      <default>false</default>
+      <label>show only windows that there is a launcher for them</label>
+    </entry>
+    <entry name="groupTasksByDefault" type="Bool">
+      <default>true</default>
+      <label>by default group same tasks</label>
+    </entry>
+    <entry name="showOnlyCurrentScreen" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showOnlyCurrentDesktop" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showOnlyCurrentActivity" type="Bool">
+      <default>true</default>
+    </entry>
+
+    <entry name="showInfoBadge" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="showProgressBadge" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="showAudioBadge" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="audioBadgeActionsEnabled" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="infoBadgeProminentColorEnabled" type="Bool">
+      <default>false</default>
+    </entry>
+
+    <entry name="animationLauncherBouncing" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationWindowInAttention" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationNewWindowSliding" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationWindowAddedInGroup" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationWindowRemovedFromGroup" type="Bool">
+        <default>true</default>
+    </entry>
+
+    <entry name="scrollTasksEnabled" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="autoScrollTasksEnabled" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="manualScrollTasksType" type="Enum">
+      <choices>
+            <choice name="Disabled"/>
+            <choice name="Parallel"/>
+            <choice name="VerticalHorizontal"/>
+      </choices>
+      <default>1</default>
+    </entry>
     <entry name="leftClickAction" type="Enum">
       <choices>
             <choice name="None"/>
@@ -235,16 +376,6 @@
       </choices>
       <default>0</default>
     </entry>
-    <entry name="scrollAction" type="Enum">
-      <choices>
-            <choice name="ScrollNone"/>
-            <choice name="ScrollDesktops"/>
-            <choice name="ScrollActivities"/>
-            <choice name="ScrollTasks"/>
-            <choice name="ScrollToggleMinimized"/>
-      </choices>
-      <default>0</default>
-    </entry>
     <entry name="taskScrollAction" type="Enum">
       <choices>
             <choice name="ScrollNone"/>
@@ -284,125 +415,6 @@
             <choice name="RightClick"/>
       </choices>
       <default>0</default>
-    </entry>
-<!-- Config properties  -->
-    <entry name="configurationSticker" type="Bool">
-        <default>false</default>
-    </entry>
-<!-- Animations -->
-    <entry name="animationsEnabled" type="Bool">
-        <default>true</default>
-    </entry>
-    <entry name="durationTime" type="Enum">
-      <choices>
-            <choice name="None"/>
-            <choice name="x1"/>
-            <choice name="x2"/>
-            <choice name="x3"/>
-      </choices>
-      <default>2</default>
-    </entry>
-    <entry name="animationLauncherBouncing" type="Bool">
-        <default>true</default>
-    </entry>
-    <entry name="animationWindowInAttention" type="Bool">
-        <default>true</default>
-    </entry>
-    <entry name="animationNewWindowSliding" type="Bool">
-        <default>true</default>
-    </entry>
-    <entry name="animationWindowAddedInGroup" type="Bool">
-        <default>true</default>
-    </entry>
-    <entry name="animationWindowRemovedFromGroup" type="Bool">
-        <default>true</default>
-    </entry>
-<!-- Tasks properties  -->
-    <entry name="launchersGroup" type="Enum">
-      <choices>
-            <choice name="Unique"/>
-            <choice name="Layout"/>
-            <choice name="Global"/>
-      </choices>
-      <default>0</default>
-    </entry>
-    <entry name="showWindowActions" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="showWindowsOnlyFromLaunchers" type="Bool">
-      <default>false</default>
-      <label>show only windows that there is a launcher for them</label>
-    </entry>
-    <entry name="groupTasksByDefault" type="Bool">
-      <default>true</default>
-      <label>by default group same tasks</label>
-    </entry>
-    <entry name="showOnlyCurrentScreen" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="showOnlyCurrentDesktop" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="showOnlyCurrentActivity" type="Bool">
-      <default>true</default>
-    </entry>
-    <entry name="titleTooltips" type="Bool">
-      <default>true</default>
-    </entry>
-    <entry name="showInfoBadge" type="Bool">
-      <default>true</default>
-    </entry>
-    <entry name="showProgressBadge" type="Bool">
-      <default>true</default>
-    </entry>
-    <entry name="showAudioBadge" type="Bool">
-      <default>true</default>
-    </entry>
-    <entry name="audioBadgeActionsEnabled" type="Bool">
-      <default>true</default>
-    </entry>
-    <entry name="infoBadgeProminentColorEnabled" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="mouseWheelActions" type="Bool">
-      <default>true</default>
-    </entry>
-    <entry name="scrollTasksEnabled" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="autoScrollTasksEnabled" type="Bool">
-      <default>true</default>
-    </entry>
-    <entry name="manualScrollTasksType" type="Enum">
-      <choices>
-            <choice name="Disabled"/>
-            <choice name="Parallel"/>
-            <choice name="VerticalHorizontal"/>
-      </choices>
-      <default>1</default>
-    </entry>
-    <entry name="unifiedGlobalShortcuts" type="Bool">
-      <default>true</default>
-      <label>Global Shortcuts are combined between applets and tasks</label>
-    </entry>
-    
-    <!-- Upgrade Flags -->
-    <entry name="alignmentUpgraded" type="Bool">
-      <default>false</default>
-      <label>flag to check it deprecated panelPosition was changed to "alignment"</label>
-    </entry>
-    
-    <!-- Deprecated Section -->
-    <entry name="panelPosition" type="Enum">
-      <choices>
-            <choice name="Center"/>
-            <choice name="Left"/>
-            <choice name="Right"/>
-            <choice name="Top"/>
-            <choice name="Bottom"/>
-      </choices>
-      <default>0</default>
-      <label>DEPRECATED in 0.10 in favour of "alignment"</label>
     </entry>
   </group>
 </kcfg>

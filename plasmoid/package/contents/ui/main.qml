@@ -154,28 +154,28 @@ Item {
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
     property bool dockIsHidden: latteView ? latteView.dockIsHidden : false
-    property bool groupTasksByDefault: latteView ? latteView.groupTasksByDefault: true
+    property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool highlightWindows: latteView ? latteView.hoverAction === Latte.Types.HighlightWindows || latteView.hoverAction === Latte.Types.PreviewAndHighlightWindows :
                                                 plasmoid.configuration.highlightWindows
     property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : zoomFactor>1 && !root.editMode
 
-    property bool scrollingEnabled: latteView ? latteView.scrollTasksEnabled : false
-    property bool autoScrollTasksEnabled: latteView ? (scrollingEnabled && latteView.autoScrollTasksEnabled) : false
-    property bool manualScrollTasksEnabled: latteView ? (scrollingEnabled &&  manualScrollTasksType !== Latte.Types.ManualScrollDisabled) : Latte.Types.ManualScrollDisabled
-    property int manualScrollTasksType: latteView ? latteView.manualScrollTasksType : 0
+    property bool scrollingEnabled: plasmoid.configuration.scrollTasksEnabled
+    property bool autoScrollTasksEnabled: scrollingEnabled && plasmoid.configuration.autoScrollTasksEnabled
+    property bool manualScrollTasksEnabled: scrollingEnabled &&  manualScrollTasksType !== Latte.Types.ManualScrollDisabled
+    property int manualScrollTasksType: plasmoid.configuration.manualScrollTasksType
 
-    property bool showInfoBadge: latteView ? latteView.showInfoBadge : plasmoid.configuration.showInfoBadge
-    property bool showProgressBadge: latteView ? latteView.showProgressBadge : plasmoid.configuration.showInfoBadge
-    property bool showAudioBadge: latteView ? latteView.showAudioBadge : plasmoid.configuration.showAudioBadge
-    property bool infoBadgeProminentColorEnabled: latteView ? latteView.infoBadgeProminentColorEnabled : false
-    property bool audioBadgeActionsEnabled: latteView ? latteView.audioBadgeActionsEnabled : true
-    property bool showOnlyCurrentScreen: latteView ? latteView.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
-    property bool showOnlyCurrentDesktop: latteView ? latteView.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
-    property bool showOnlyCurrentActivity: latteView ? latteView.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
+    property bool showInfoBadge: plasmoid.configuration.showInfoBadge
+    property bool showProgressBadge: plasmoid.configuration.showInfoBadge
+    property bool showAudioBadge: plasmoid.configuration.showAudioBadge
+    property bool infoBadgeProminentColorEnabled: plasmoid.configuration.infoBadgeProminentColorEnabled
+    property bool audioBadgeActionsEnabled: plasmoid.configuration.audioBadgeActionsEnabled
+    property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen
+    property bool showOnlyCurrentDesktop: plasmoid.configuration.showOnlyCurrentDesktop
+    property bool showOnlyCurrentActivity: plasmoid.configuration.showOnlyCurrentActivity
     property bool showPreviews:  latteView ? latteView.hoverAction === Latte.Types.PreviewWindows || latteView.hoverAction === Latte.Types.PreviewAndHighlightWindows :
                                              plasmoid.configuration.showToolTips
-    property bool showWindowActions: latteView ? latteView.showWindowActions : plasmoid.configuration.showWindowActions
-    property bool showWindowsOnlyFromLaunchers: latteView ? latteView.showWindowsOnlyFromLaunchers : false
+    property bool showWindowActions: plasmoid.configuration.showWindowActions
+    property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers
 
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
@@ -185,14 +185,15 @@ Item {
     property int dockHoveredIndex : latteView ? latteView.hoveredIndex : -1
 
     property int iconSize: latteView ? latteView.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
+    property int launchersGroup: plasmoid.configuration.launchersGroup
     property int maxIconSize: latteView ? latteView.maxIconSize : iconSize
 
-    property int leftClickAction: latteView ? latteView.leftClickAction : Latte.Types.PresentWindows
-    property int middleClickAction: latteView ? latteView.middleClickAction : plasmoid.configuration.middleClickAction
-    property int hoverAction: latteView ? latteView.hoverAction : Latte.Types.NoneAction
-    property int modifier: latteView ? latteView.modifier : -1
-    property int modifierClickAction: latteView ? latteView.modifierClickAction : -1
-    property int modifierClick: latteView ? latteView.modifierClick : -1
+    property int leftClickAction: plasmoid.configuration.leftClickAction
+    property int middleClickAction: plasmoid.configuration.middleClickAction
+    property int hoverAction: plasmoid.configuration.hoverAction
+    property int modifier: plasmoid.configuration.modifier
+    property int modifierClickAction: plasmoid.configuration.modifierClickAction
+    property int modifierClick: plasmoid.configuration.modifierClick
     property int modifierQt:{
         if (modifier === Latte.Types.Shift)
             return Qt.ShiftModifier;
@@ -204,7 +205,7 @@ Item {
             return Qt.MetaModifier;
         else return -1;
     }
-    property int taskScrollAction: latteView ? latteView.taskScrollAction : Latte.Types.ScrollNone
+    property int taskScrollAction: plasmoid.configuration.taskScrollAction
 
     property int thickMargin: latteView ? latteView.thickMargin : 0.16*iconSize
     property int thickMargins: 2 * thickMargin
@@ -222,11 +223,11 @@ Item {
 
     //! Animations
     property bool animationsEnabled: latteView ? latteView.animationsEnabled : durationTime !== 0
-    property bool animationLauncherBouncing: latteView ? latteView.animationLauncherBouncing : durationTime !== 0
-    property bool animationWindowInAttention: latteView ? latteView.animationWindowInAttention : durationTime !== 0
-    property bool animationNewWindowSliding: latteView ? latteView.animationNewWindowSliding : durationTime !== 0
-    property bool animationWindowAddedInGroup: latteView ? latteView.animationWindowAddedInGroup : durationTime !== 0
-    property bool animationWindowRemovedFromGroup: latteView ? latteView.animationWindowRemovedFromGroup : durationTime !== 0
+    property bool animationLauncherBouncing: animationsEnabled && plasmoid.configuration.animationLauncherBouncing
+    property bool animationWindowInAttention: animationsEnabled && plasmoid.configuration.animationWindowInAttention
+    property bool animationNewWindowSliding: animationsEnabled && plasmoid.configuration.animationNewWindowSliding
+    property bool animationWindowAddedInGroup: animationsEnabled && plasmoid.configuration.animationWindowAddedInGroup
+    property bool animationWindowRemovedFromGroup: animationsEnabled && plasmoid.configuration.animationWindowRemovedFromGroup
 
     property real animationsZoomFactor: latteView ? latteView.animationsZoomFactor : durationTime === 0 ? 1 : 1.65
     property real maxZoomFactor: latteView ? latteView.maxZoomFactor : Math.max(zoomFactor, animationsZoomFactor)
@@ -311,11 +312,21 @@ Item {
         if (latteView) {
             plasmoid.action("configure").visible = false;
             plasmoid.configuration.isInLatteDock = true;
+
+            if (root.launchersGroup === Latte.Types.LayoutLaunchers
+                    || root.launchersGroup === Latte.Types.GlobalLaunchers) {
+                tasksModel.updateLaunchersList();
+            }
         } else {
             plasmoid.configuration.isInLatteDock = false;
         }
     }
 
+    onLaunchersGroupChanged:{
+        if(latteView) {
+            tasksModel.updateLaunchersList();
+        }
+    }
 
     Connections {
         target: plasmoid
@@ -338,12 +349,6 @@ Item {
         onDockIsHiddenChanged:{
             if (latteView.dockIsHidden) {
                 windowsPreviewDlg.hide("3.3");
-            }
-        }
-
-        onLaunchersGroupChanged:{
-            if( latteView && latteView.editMode) {
-                tasksModel.updateLaunchersList();
             }
         }
     }
@@ -467,12 +472,12 @@ Item {
         if (viewLayout) {
             if (latteView && latteView.layoutsManager
                     && latteView.viewLayout && latteView.universalSettings
-                    && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
-                        || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
+                    && (root.launchersGroup === Latte.Types.LayoutLaunchers
+                        || root.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
-                if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
+                if (root.launchersGroup === Latte.Types.LayoutLaunchers) {
                     launchersList = latteView.viewLayout.launchers;
-                } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
+                } else if (root.launchersGroup === Latte.Types.GlobalLaunchers) {
                     launchersList = latteView.universalSettings.launchers;
                 }
             }
@@ -694,15 +699,18 @@ Item {
         property bool anyTaskDemandsAttentionInValidTime: false
 
         function updateLaunchersList(){
-            if (latteView.universalSettings
-                    && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
-                        || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
-                if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
+            if (latteView
+                    && (root.launchersGroup === Latte.Types.LayoutLaunchers
+                        || root.launchersGroup === Latte.Types.GlobalLaunchers)) {
+                if (root.launchersGroup === Latte.Types.LayoutLaunchers) {
+                    console.log("Tasks: Applying LAYOUT Launchers List...");
                     tasksModel.launcherList = latteView.viewLayout.launchers;
-                } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
+                } else if (root.launchersGroup === Latte.Types.GlobalLaunchers) {
+                    console.log("Tasks: Applying GLOBAL Launchers List...");
                     tasksModel.launcherList = latteView.universalSettings.launchers;
                 }
             } else {
+                console.log("Tasks: Applying UNIQUE Launchers List...");
                 tasksModel.launcherList = plasmoid.configuration.launchers59;
             }
         }
@@ -726,20 +734,20 @@ Item {
             if (viewLayout) {
                 if (latteView && latteView.layoutsManager
                         && latteView.viewLayout && latteView.universalSettings
-                        && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
-                            || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
+                        && (root.launchersGroup === Latte.Types.LayoutLaunchers
+                            || root.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
-                    if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
+                    if (root.launchersGroup === Latte.Types.LayoutLaunchers) {
                         latteView.viewLayout.launchers = launcherList;
-                    } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
+                    } else if (root.launchersGroup === Latte.Types.GlobalLaunchers) {
                         latteView.universalSettings.launchers = launcherList;
                     }
 
                     if (inDraggingPhase) {
-                        if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                        if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers) {
                             latteView.layoutsManager.launchersSignals.validateLaunchersOrder(root.viewLayoutName,
                                                                                              plasmoid.id,
-                                                                                             latteView.launchersGroup,
+                                                                                             root.launchersGroup,
                                                                                              currentLauncherList());
                         }
                     }
@@ -776,12 +784,12 @@ Item {
             ActivitiesTools.importLaunchersToNewArchitecture();
 
             if (viewLayout && latteView.universalSettings
-                    && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
-                        || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
+                    && (root.launchersGroup === Latte.Types.LayoutLaunchers
+                        || root.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
-                if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
+                if (root.launchersGroup === Latte.Types.LayoutLaunchers) {
                     launcherList = latteView.viewLayout.launchers;
-                } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
+                } else if (root.launchersGroup === Latte.Types.GlobalLaunchers) {
                     launcherList = latteView.universalSettings.launchers;
                 }
             } else {
@@ -1192,9 +1200,9 @@ Item {
 
             onUrlsDropped: {               
                 //! inform synced docks for new dropped launchers
-                if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
+                if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
                     latteView.layoutsManager.launchersSignals.urlsDropped(root.viewLayoutName,
-                                                                          latteView.launchersGroup, urls);
+                                                                          root.launchersGroup, urls);
                     return;
                 }
 
@@ -1550,9 +1558,9 @@ Item {
         if (separatorName !== "") {
             tasksExtendedManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
-            if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+            if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
-                                                                      latteView.launchersGroup, separatorName);
+                                                                      root.launchersGroup, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
             }
@@ -1647,7 +1655,7 @@ Item {
 
     //! BEGIN ::: external launchers signals in order to update the tasks model
     function extSignalAddLauncher(group, launcher) {
-        if (group === latteView.launchersGroup) {
+        if (group === root.launchersGroup) {
             tasksModel.requestAddLauncher(launcher);
             launchersUpdatedFor(launcher);
             tasksModel.syncLaunchers();
@@ -1655,7 +1663,7 @@ Item {
     }
 
     function extSignalRemoveLauncher(group, launcher) {
-        if (group === latteView.launchersGroup) {
+        if (group === root.launchersGroup) {
             root.launcherForRemoval = launcher;
             tasksModel.requestRemoveLauncher(launcher);
             launchersUpdatedFor(launcher);
@@ -1664,7 +1672,7 @@ Item {
     }
 
     function extSignalAddLauncherToActivity(group, launcher, activity) {
-        if (group === latteView.launchersGroup) {
+        if (group === root.launchersGroup) {
             var launcherActivities = tasksModel.launcherActivities(launcher);
 
             if (activity !== tasksModel.activity && (launcherActivities[0] === "00000000-0000-0000-0000-000000000000")) {
@@ -1678,7 +1686,7 @@ Item {
     }
 
     function extSignalRemoveLauncherFromActivity(group, launcher, activity) {
-        if (group === latteView.launchersGroup) {
+        if (group === root.launchersGroup) {
             if (activity === tasksModel.activity) {
                 root.launcherForRemoval = launcher;
             }
@@ -1690,13 +1698,13 @@ Item {
     }
 
     function extSignalUrlsDropped(group, urls) {
-        if (group === latteView.launchersGroup) {
+        if (group === root.launchersGroup) {
             mouseHandler.urlsDroppedOnArea(urls);
         }
     }
 
     function extSignalMoveTask(group, from, to) {
-        if (group === latteView.launchersGroup && !root.dragSource) {
+        if (group === root.launchersGroup && !root.dragSource) {
             tasksModel.move(from, to);
             parabolicManager.updateTasksEdgesIndexes();
             root.separatorsUpdated();
@@ -1705,7 +1713,7 @@ Item {
     }
 
     function extSignalValidateLaunchersOrder(group, launchers) {
-        if (group === latteView.launchersGroup && !root.dragSource) {
+        if (group === root.launchersGroup && !root.dragSource) {
             launchersOrderValidatorTimer.stop();
             launchersOrderValidatorTimer.launchers = launchers;
             launchersOrderValidatorTimer.start();
@@ -1723,8 +1731,8 @@ Item {
         if (separatorName !== "") {
             tasksExtendedManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
-            if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteView.layoutsManager.launchersSignals.addLauncher(latteView.launchersGroup, separatorName);
+            if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                latteView.layoutsManager.launchersSignals.addLauncher(root.launchersGroup, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
             }
@@ -1735,9 +1743,9 @@ Item {
         var separatorName = parabolicManager.lastPresentSeparatorName();
 
         if (separatorName !== "") {
-            if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+            if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
-                                                                         latteView.launchersGroup, separatorName);
+                                                                         root.launchersGroup, separatorName);
             } else {
                 root.launcherForRemoval = separatorName;
                 tasksModel.requestRemoveLauncher(separatorName);

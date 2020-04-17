@@ -424,12 +424,13 @@ FocusScope {
                 visible: dialog.highLevel
             }
 
-
             Repeater {
+                id: tasksTabButtonRepeater
                 model: latteView.extendedInterface.tasksModel
+
                 PlasmaComponents.TabButton {
                     text: index >= 1 ? i18nc("tasks header and index","Tasks <%0>").arg(index+1) : i18n("Tasks")
-                    tab: tasksRepeater.count > 0 ? tasksRepeater.itemAt(index) : null
+                    tab: tasksRepeater.itemAt(index)
                 }
             }
         }
@@ -478,13 +479,41 @@ FocusScope {
                     Pages.EffectsConfig {
                         id: effectsPage
                     }
+                }
+            }
 
-                    Repeater {
-                        id: tasksRepeater
-                        model: latteView.extendedInterface.tasksModel
+            Repeater {
+                id: tasksRepeater
+                //! needs to be out of TabGroup otherwise the Repeater is consider as TabGroup direct children
+                //! and thus only the first Tasks tab is shown
+                model: latteView.extendedInterface.tasksModel
 
-                        Pages.TasksConfig {
+                //! Reparent TasksPages when all of them are loaded
+                //! this way we avoid warnings from ::stackAfter
+                //! After startup any new TasksPages can be added directly
+                property bool isReady: false
+                property int pages: 0
+
+                Pages.TasksConfig {
+                    id: tasksPage
+                    Component.onCompleted: {
+                        if (tasksRepeater.isReady) {
+                            parent = tabGroup;
+                        } else {
+                            tasksRepeater.pages = tasksRepeater.pages + 1;
                         }
+                    }
+                }
+
+                onPagesChanged: {
+                    if (pages === latteView.extendedInterface.tasksModel.rowCount()) {
+                        //! Reparent TasksPages when all of them are loaded
+                        //! this way we avoid warnings from ::stackAfter
+                        for(var i=0; i<pages; ++i) {
+                            itemAt(i).parent = tabGroup;
+                        }
+
+                        isReady = true;
                     }
                 }
             }

@@ -6,15 +6,6 @@
   <kcfgfile name=""/>
 
   <group name="General">
-    <entry name="showOnlyCurrentScreen" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="showOnlyCurrentDesktop" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="showOnlyCurrentActivity" type="Bool">
-      <default>true</default>
-    </entry>
     <entry name="groupingAppIdBlacklist" type="StringList">
       <default></default>
     </entry>
@@ -33,15 +24,6 @@
     <entry name="launchers59" type="StringList">
       <label>New launchers mechanism. The list of launcher tasks on the widget. Usually .desktop file or executable URLs. Special URLs such as preferred://browser that expand to default applications are supported.</label>
       <default></default>
-    </entry>
-    <entry name="middleClickAction" type="Enum">
-      <choices>
-            <choice name="None"/>
-            <choice name="Close"/>
-            <choice name="NewInstance"/>
-            <choice name="ToggleMinimized"/>
-      </choices>
-      <default>2</default>
     </entry>
     <entry name="showBarLine" type="Bool">
       <default>true</default>
@@ -88,9 +70,49 @@
     <entry name="durationTime" type="Int">
       <default>2</default>
     </entry>
+    <entry name="previewsDelay" type="Int">
+      <label>Delay in order to show previews or highlight windows. Values lower than 150ms are ignored because previews do not work correctly</label>
+      <default>600</default>
+    </entry>
+    <entry name="forceMonochromaticIcons" type="Bool">
+      <default>false</default>
+      <label>When "true" Latte color palette is used in order to provide monochromatic icons at all times. It is not needed in general and can be used only with specific icon themes</label>
+    </entry>
+
+<!-- MERGED FROM CONTAINMENT -->
+<!-- _______________________ -->
+<!-- BE CAREFUL: Until these values are removed from CONTAINMENT totally and their UPGRADE procedures also, -->
+<!-- their default values should be updated both <here> and at their containment configuration file counterpart -->
+
+    <entry name="launchersGroup" type="Enum">
+      <choices>
+            <choice name="Unique"/>
+            <choice name="Layout"/>
+            <choice name="Global"/>
+      </choices>
+      <default>0</default>
+    </entry>
     <entry name="showWindowActions" type="Bool">
       <default>false</default>
     </entry>
+    <entry name="showWindowsOnlyFromLaunchers" type="Bool">
+      <default>false</default>
+      <label>show only windows that there is a launcher for them</label>
+    </entry>
+    <entry name="groupTasksByDefault" type="Bool">
+      <default>true</default>
+      <label>by default group same tasks</label>
+    </entry>
+    <entry name="showOnlyCurrentScreen" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showOnlyCurrentDesktop" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showOnlyCurrentActivity" type="Bool">
+      <default>true</default>
+    </entry>
+
     <entry name="showInfoBadge" type="Bool">
       <default>true</default>
     </entry>
@@ -100,13 +122,127 @@
     <entry name="showAudioBadge" type="Bool">
       <default>true</default>
     </entry>
-    <entry name="previewsDelay" type="Int">
-      <label>Delay in order to show previews or highlight windows. Values lower than 150ms are ignored because previews do not work correctly</label>
-      <default>600</default>
+    <entry name="audioBadgeActionsEnabled" type="Bool">
+      <default>true</default>
     </entry>
-    <entry name="forceMonochromaticIcons" type="Bool">
+    <entry name="infoBadgeProminentColorEnabled" type="Bool">
       <default>false</default>
-      <label>When "true" Latte color palette is used in order to provide monochromatic icons at all times. It is not needed in general and can be used only with specific icon themes</label>
+    </entry>
+
+    <entry name="animationLauncherBouncing" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationWindowInAttention" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationNewWindowSliding" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationWindowAddedInGroup" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationWindowRemovedFromGroup" type="Bool">
+        <default>true</default>
+    </entry>
+
+    <entry name="scrollTasksEnabled" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="autoScrollTasksEnabled" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="manualScrollTasksType" type="Enum">
+      <choices>
+            <choice name="Disabled"/>
+            <choice name="Parallel"/>
+            <choice name="VerticalHorizontal"/>
+      </choices>
+      <default>1</default>
+    </entry>
+    <entry name="leftClickAction" type="Enum">
+      <choices>
+            <choice name="None"/>
+            <choice name="Close"/>
+            <choice name="NewInstance"/>
+            <choice name="ToggleMinimized"/>
+            <choice name="CycleThroughTasks"/>
+            <choice name="ToggleGrouping"/>
+            <choice name="PresentWindows"/>
+            <choice name="PreviewWindows"/>
+            <choice name="HighlightWindows"/>
+            <choice name="PreviewAndHighlightWindows"/>
+      </choices>
+      <default>6</default>
+    </entry>
+    <entry name="middleClickAction" type="Enum">
+      <choices>
+            <choice name="None"/>
+            <choice name="Close"/>
+            <choice name="NewInstance"/>
+            <choice name="ToggleMinimized"/>
+            <choice name="CycleThroughTasks"/>
+            <choice name="ToggleGrouping"/>
+            <choice name="PresentWindows"/>
+            <choice name="PreviewWindows"/>
+            <choice name="HighlightWindows"/>
+            <choice name="PreviewAndHighlightWindows"/>
+      </choices>
+      <default>2</default>
+    </entry>
+    <entry name="hoverAction" type="Enum">
+      <choices>
+            <choice name="None"/>
+            <choice name="Close"/>
+            <choice name="NewInstance"/>
+            <choice name="ToggleMinimized"/>
+            <choice name="CycleThroughTasks"/>
+            <choice name="ToggleGrouping"/>
+            <choice name="PresentWindows"/>
+            <choice name="PreviewWindows"/>
+            <choice name="HighlightWindows"/>
+            <choice name="PreviewAndHighlightWindows"/>
+      </choices>
+      <default>0</default>
+    </entry>
+    <entry name="taskScrollAction" type="Enum">
+      <choices>
+            <choice name="ScrollNone"/>
+            <choice name="ScrollTasks"/>
+            <choice name="ScrollToggleMinimized"/>
+      </choices>
+      <default>1</default>
+    </entry>
+    <entry name="modifierClickAction" type="Enum">
+      <choices>
+            <choice name="None"/>
+            <choice name="Close"/>
+            <choice name="NewInstance"/>
+            <choice name="ToggleMinimized"/>
+            <choice name="CycleThroughTasks"/>
+            <choice name="ToggleGrouping"/>
+            <choice name="PresentWindows"/>
+            <choice name="PreviewWindows"/>
+            <choice name="HighlightWindows"/>
+            <choice name="PreviewAndHighlightWindows"/>
+      </choices>
+      <default>0</default>
+    </entry>
+    <entry name="modifier" type="Enum">
+      <choices>
+            <choice name="Shift"/>
+            <choice name="Control"/>
+            <choice name="Alt"/>
+            <choice name="Meta"/>
+      </choices>
+      <default>1</default>
+    </entry>
+    <entry name="modifierClick" type="Enum">
+      <choices>
+            <choice name="LeftClick"/>
+            <choice name="MiddleClick"/>
+            <choice name="RightClick"/>
+      </choices>
+      <default>0</default>
     </entry>
   </group>
 </kcfg>

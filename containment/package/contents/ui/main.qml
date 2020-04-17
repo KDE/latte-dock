@@ -292,14 +292,7 @@ Item {
         }
     }
 
-    property int leftClickAction: plasmoid.configuration.leftClickAction
-    property int middleClickAction: plasmoid.configuration.middleClickAction
-    property int hoverAction: plasmoid.configuration.hoverAction
-    property int modifier: plasmoid.configuration.modifier
-    property int modifierClickAction: plasmoid.configuration.modifierClickAction
-    property int modifierClick: plasmoid.configuration.modifierClick
     property int scrollAction: plasmoid.configuration.scrollAction
-    property int taskScrollAction: plasmoid.configuration.taskScrollAction
 
     property bool panelOutline: plasmoid.configuration.panelOutline
     property int panelEdgeSpacing: Math.max(panelBoxBackground.lengthMargins, 1.5*appShadowSize)
@@ -511,26 +504,9 @@ Item {
     property bool badges3DStyle: universalSettings ? universalSettings.badges3DStyle : true
     property bool enableShadows: plasmoid.configuration.shadows || (root.forceTransparentPanel && plasmoid.configuration.shadows>0)
     property bool dockIsHidden: latteView ? latteView.visibility.isHidden : true
-    property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
-
-    property bool showInfoBadge: plasmoid.configuration.showInfoBadge
-    property bool showProgressBadge: plasmoid.configuration.showProgressBadge
-    property bool showAudioBadge: plasmoid.configuration.showAudioBadge
-    property bool audioBadgeActionsEnabled: plasmoid.configuration.audioBadgeActionsEnabled
-    property bool infoBadgeProminentColorEnabled: plasmoid.configuration.infoBadgeProminentColorEnabled
-
-    property bool scrollTasksEnabled: plasmoid.configuration.scrollTasksEnabled
-    property bool autoScrollTasksEnabled: plasmoid.configuration.autoScrollTasksEnabled
-    property int manualScrollTasksType: plasmoid.configuration.manualScrollTasksType
-
-    property bool showWindowActions: plasmoid.configuration.showWindowActions
-    property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers
-    property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen
-    property bool showOnlyCurrentDesktop: plasmoid.configuration.showOnlyCurrentDesktop
-    property bool showOnlyCurrentActivity: plasmoid.configuration.showOnlyCurrentActivity
 
     property bool titleTooltips: plasmoid.configuration.titleTooltips
-    property bool unifiedGlobalShortcuts: plasmoid.configuration.unifiedGlobalShortcuts
+    property bool unifiedGlobalShortcuts: true
 
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
@@ -545,16 +521,10 @@ Item {
     }
 
     property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
-    property int launchersGroup: plasmoid.configuration.launchersGroup
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
     //! Animations
     property bool animationsEnabled: plasmoid.configuration.animationsEnabled && Latte.WindowSystem.compositingActive
-    property bool animationLauncherBouncing: animationsEnabled && latteApplet && plasmoid.configuration.animationLauncherBouncing
-    property bool animationWindowInAttention: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowInAttention
-    property bool animationNewWindowSliding: animationsEnabled && latteApplet && plasmoid.configuration.animationNewWindowSliding
-    property bool animationWindowAddedInGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowAddedInGroup
-    property bool animationWindowRemovedFromGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowRemovedFromGroup
 
     readonly property int shortDuration: Latte.WindowSystem.shortDuration
     readonly property int longDuration: Latte.WindowSystem.longDuration
@@ -585,9 +555,9 @@ Item {
             return 1;
         }
 
-        if (latteApplet && (animationLauncherBouncing || animationWindowInAttention || animationWindowAddedInGroup)) {
+       /* if (latteApplet && (animationLauncherBouncing || animationWindowInAttention || animationWindowAddedInGroup)) {
             return 1.65;
-        }
+        }*/
 
         return 1;
     }
