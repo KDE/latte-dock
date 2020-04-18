@@ -68,7 +68,7 @@ Item {
     property bool debugModeWindow: Qt.application.arguments.indexOf("--with-window")>=0
     property bool debugModeOverloadedIcons: Qt.application.arguments.indexOf("--overloaded-icons")>=0
 
-    readonly property int version: LatteCore.WindowSystem.makeVersion(0,9,4)
+    readonly property int version: LatteCore.Environment.makeVersion(0,9,4)
 
     property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
     property int directRenderAnimationTime: 0
@@ -242,8 +242,8 @@ Item {
     property bool useThemePanel: noApplets === 0 || !LatteCore.WindowSystem.compositingActive ?
                                      true : (plasmoid.configuration.useThemePanel || plasmoid.configuration.solidBackgroundForMaximized)
 
-    property bool plasma515: LatteCore.WindowSystem.plasmaDesktopVersion >= LatteCore.WindowSystem.makeVersion(5,15,0)
-    property bool plasma518: LatteCore.WindowSystem.plasmaDesktopVersion >= LatteCore.WindowSystem.makeVersion(5,18,0)
+    property bool plasma515: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
+    property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
 
     property alias hoveredIndex: layoutsContainer.hoveredIndex
     property alias directRenderDelayerIsRunning: directRenderDelayerForEnteringTimer.running
@@ -527,8 +527,8 @@ Item {
     //! Animations
     property bool animationsEnabled: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
 
-    readonly property int shortDuration: LatteCore.WindowSystem.shortDuration
-    readonly property int longDuration: LatteCore.WindowSystem.longDuration
+    readonly property int shortDuration: LatteCore.Environment.shortDuration
+    readonly property int longDuration: LatteCore.Environment.longDuration
 
     property real appliedDurationTime: animationsEnabled ? durationTime : animationsSpeed2
     readonly property real animationsSpeed1: 0.75

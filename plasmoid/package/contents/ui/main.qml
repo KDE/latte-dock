@@ -61,8 +61,8 @@ Item {
     //it is used to check both the applet and the containment for direct render
     property bool globalDirectRender: latteView ? latteView.globalDirectRender : icList.directRender
 
-    property bool plasma515: latteView ? latteView.plasma515 : LatteCore.WindowSystem.plasmaDesktopVersion >= LatteCore.WindowSystem.makeVersion(5,15,0)
-    property bool plasma518: latteView ? latteView.plasma518 : LatteCore.WindowSystem.plasmaDesktopVersion >= LatteCore.WindowSystem.makeVersion(5,18,0)
+    property bool plasma515: latteView ? latteView.plasma515 : LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
+    property bool plasma518: latteView ? latteView.plasma518 : LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
 
     property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool inConfigureAppletsMode: latteView ? latteView.inConfigureAppletsMode : true
@@ -235,8 +235,8 @@ Item {
 
     readonly property real animationsSpeed2: plasma518 ? 1.00 : 2.00
 
-    readonly property int shortDuration: latteView ? latteView.shortDuration : LatteCore.WindowSystem.shortDuration
-    readonly property int longDuration: latteView ? latteView.longDuration : LatteCore.WindowSystem.longDuration
+    readonly property int shortDuration: latteView ? latteView.shortDuration : LatteCore.Environment.shortDuration
+    readonly property int longDuration: latteView ? latteView.longDuration : LatteCore.Environment.longDuration
 
     property real appliedDurationTime: animationsEnabled ? durationTime : animationsSpeed2
     property real durationTime: latteView ? latteView.durationTime : plasmoid.configuration.durationTime
@@ -804,7 +804,7 @@ Item {
             tasksStarting = count;
 
             ///Plasma 5.9 enforce grouping at all cases
-            if (LatteCore.WindowSystem.plasmaDesktopVersion >= LatteCore.WindowSystem.makeVersion(5,9,0)) {
+            if (LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,9,0)) {
                 groupingWindowTasksThreshold = -1;
             }
         }
@@ -842,7 +842,7 @@ Item {
             //! work only after Plasma 5.9 and frameworks 5.29
             //! + added a check for groupDialog also when it is present
             //!   in plasma 5.8 (that was introduced after 5.8.5)
-            if (LatteCore.WindowSystem.frameworksVersion >= 335104 || (groupDialog !== undefined)) {
+            if (LatteCore.Environment.frameworksVersion >= 335104 || (groupDialog !== undefined)) {
                 groupDialog = groupDialogGhost;
             }
         }

@@ -123,6 +123,6 @@ Item{
     }
 
     function version(major, minor, patch) {
-        return LatteCore.WindowSystem.makeVersion(major, minor, patch)
+        return LatteCore.Environment.makeVersion(major, minor, patch)
     }
 }

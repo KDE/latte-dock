@@ -122,7 +122,7 @@ PlasmaComponents.ContextMenu {
         var sections = [];
 
         //From Plasma 5.10 and frameworks 5.34, places are also supported
-        if (LatteCore.WindowSystem.frameworksVersion >= 336384
+        if (LatteCore.Environment.frameworksVersion >= 336384
                 && (typeof backend.placesActions === "function")) {
             sections = [
                         {
@@ -320,7 +320,7 @@ PlasmaComponents.ContextMenu {
 
         //From Plasma 5.10 and frameworks 5.34 jumpLists and
         //places are supported
-        if (LatteCore.WindowSystem.frameworksVersion >= 336384) {
+        if (LatteCore.Environment.frameworksVersion >= 336384) {
             // Cannot have "Connections" as child of PlasmaCoponents.ContextMenu.
             backend.showAllPlaces.connect(function() {
                 visualParent.showContextMenu({showAllPlaces: true});
