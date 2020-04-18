@@ -228,9 +228,9 @@ Item{
         property int panelSize: automaticPanelSize
         property int automaticPanelSize: {
             if (root.behaveAsPlasmaPanel) {
-                return root.iconSize + root.thickMargins;// + 2;
+                return containmentAb.iconSize + root.thickMargins;// + 2;
             } else {
-                var icons = root.iconSize + root.thickMargins;// + 2;
+                var icons = containmentAb.iconSize + root.thickMargins;// + 2;
                 var panelt = root.themePanelThickness;// + 2;
 
                 root.realPanelThickness = icons + root.localScreenEdgeMargin;

@@ -412,7 +412,7 @@ Window{
             }
 
             Text{
-                text: root.iconSize
+                text: containmentAb.iconSize
             }
 
             Text{
@@ -428,7 +428,7 @@ Window{
             }
 
             Text{
-                text: root.proportionIconSize
+                text: containmentAb.proportionIconSize
             }
 
             Text{

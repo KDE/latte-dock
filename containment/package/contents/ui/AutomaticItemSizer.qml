@@ -63,14 +63,19 @@ Item {
                 sizer.updateAutomaticIconSize();
             }
         }
+    }
+
+    Connections {
+        target: containmentAb
+
         onProportionIconSizeChanged: {
-            if (root.proportionIconSize!==-1) {
+            if (containmentAb.proportionIconSize!==-1) {
                 sizer.updateAutomaticIconSize();
             }
         }
 
         onIconSizeChanged: {
-            if (((root.iconSize === sizer.automaticIconSizeBasedSize) || (root.iconSize === root.maxIconSize)) && sizer.automaticSizeAnimation){
+            if (((containmentAb.iconSize === sizer.automaticIconSizeBasedSize) || (containmentAb.iconSize === containmentAb.maxIconSize)) && sizer.automaticSizeAnimation){
                 root.slotAnimationsNeedBothAxis(-1);
                 sizer.automaticSizeAnimation=false;
             }
@@ -80,13 +85,13 @@ Item {
     Connections {
         target: latteView
         onWidthChanged:{
-            if (root.isHorizontal && root.proportionIconSize!==-1) {
+            if (root.isHorizontal && containmentAb.proportionIconSize!==-1) {
                 sizer.updateAutomaticIconSize();
             }
         }
 
         onHeightChanged:{
-            if (root.isVertical && root.proportionIconSize!==-1) {
+            if (root.isVertical && containmentAb.proportionIconSize!==-1) {
                 sizer.updateAutomaticIconSize();
             }
         }
@@ -133,8 +138,8 @@ Item {
     function updateAutomaticIconSize() {
         if ( !doubleCallAutomaticUpdateIconSize.running && !visibilityManager.inTempHiding
                 && ((visibilityManager.normalState || root.editMode)
-                    && (sizer.isActive || (!sizer.isActive && root.iconSize!==root.maxIconSize)))
-                && (root.iconSize===root.maxIconSize || root.iconSize === sizer.automaticIconSizeBasedSize) ) {
+                    && (sizer.isActive || (!sizer.isActive && containmentAb.iconSize!==root.maxIconSize)))
+                && (containmentAb.iconSize===containmentAb.maxIconSize || containmentAb.iconSize === sizer.automaticIconSizeBasedSize) ) {
 
             //!doubler timer
             if (!doubleCallAutomaticUpdateIconSize.secondTimeCallApplied) {
@@ -157,7 +162,7 @@ Item {
                             layoutsContainer.startLayout.width+layoutsContainer.mainLayout.width+layoutsContainer.endLayout.width : layoutsContainer.mainLayout.width
             }
 
-            var itemLength = root.iconSize + lengthMargins;
+            var itemLength = containmentAb.iconSize + lengthMargins;
 
             var toShrinkLimit = maxLength - (root.zoomFactor * itemLength);
             //! to grow limit must be a little less than the shrink one in order to be more robust and
@@ -170,11 +175,11 @@ Item {
             var newIconSizeFound = false;
             if (layoutLength > toShrinkLimit) { //must shrink
                 // console.log("step3");
-                var nextIconSize = root.maxIconSize;
+                var nextIconSize = containmentAb.maxIconSize;
 
                 do {
                     nextIconSize = nextIconSize - automaticStep;
-                    var factor = nextIconSize / root.iconSize;
+                    var factor = nextIconSize / containmentAb.iconSize;
                     var nextLength = factor * layoutLength;
 
                 } while ( (nextLength>toShrinkLimit) && (nextIconSize !== 16));
@@ -188,7 +193,7 @@ Item {
                 addPrediction(intLength, intNextLength);
                 // console.log("Step 3 - found:"+automaticIconSizeBasedSize);
             } else if ((layoutLength<toGrowLimit
-                        && (root.iconSize === automaticIconSizeBasedSize)) ) { //must grow probably
+                        && (containmentAb.iconSize === automaticIconSizeBasedSize)) ) { //must grow probably
                 // console.log("step4");
                 var nextIconSize2 = automaticIconSizeBasedSize;
                 var foundGoodSize = -1;
@@ -201,13 +206,13 @@ Item {
                     if (nextLength2 < toGrowLimit) {
                         foundGoodSize = nextIconSize2;
                     }
-                } while ( (nextLength2<toGrowLimit) && (nextIconSize2 !== root.maxIconSize ));
+                } while ( (nextLength2<toGrowLimit) && (nextIconSize2 !== containmentAb.maxIconSize ));
 
                 var intLength2 = Math.round(layoutLength);
                 var intNextLength2 = Math.round(nextLength2);
 
                 if (foundGoodSize > 0 && !producesEndlessLoop(intLength2, intNextLength2)) {
-                    if (foundGoodSize === root.maxIconSize) {
+                    if (foundGoodSize === containmentAb.maxIconSize) {
                         automaticIconSizeBasedSize = -1;
                     } else {
                         automaticIconSizeBasedSize = foundGoodSize;

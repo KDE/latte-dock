@@ -50,7 +50,7 @@ Item{
 
                 var constrainedWidth = MathTools.bound(applet.Layout.minimumWidth, applet.Layout.preferredWidth, maximumValue);
 
-                return root.inConfigureAppletsMode ? Math.max(constrainedWidth, root.iconSize) : constrainedWidth;
+                return root.inConfigureAppletsMode ? Math.max(constrainedWidth, containmentAb.iconSize) : constrainedWidth;
             }
 
             if(appletItem.sizeForFill>-1){
@@ -62,7 +62,7 @@ Item{
             return latteApplet.tasksWidth;
         } else {
             if (root.isHorizontal && root.inConfigureAppletsMode) {
-                return Math.max(Math.min(root.iconSize, root.minAppletLengthInConfigure), scaledWidth);
+                return Math.max(Math.min(containmentAb.iconSize, root.minAppletLengthInConfigure), scaledWidth);
             }
 
             return root.isVertical ? scaledWidth + root.localScreenEdgeMargin : scaledWidth;
@@ -85,7 +85,7 @@ Item{
 
                 var constrainedHeight = MathTools.bound(applet.Layout.minimumHeight, applet.Layout.preferredHeight, maximumValue);
 
-                return root.inConfigureAppletsMode ? Math.max(constrainedHeight, root.iconSize) : constrainedHeight;
+                return root.inConfigureAppletsMode ? Math.max(constrainedHeight, containmentAb.iconSize) : constrainedHeight;
             }
 
             if (appletItem.sizeForFill>-1){
@@ -97,7 +97,7 @@ Item{
             return latteApplet.tasksHeight;
         } else {
             if (root.isVertical && root.inConfigureAppletsMode) {
-                return Math.max(Math.min(root.iconSize, root.minAppletLengthInConfigure), scaledHeight);
+                return Math.max(Math.min(containmentAb.iconSize, root.minAppletLengthInConfigure), scaledHeight);
             }
 
             return root.isHorizontal ? scaledHeight + root.localScreenEdgeMargin : scaledHeight;
@@ -124,7 +124,7 @@ Item{
     property int appletMaximumWidth: applet && applet.Layout ?  applet.Layout.maximumWidth : -1
     property int appletMaximumHeight: applet && applet.Layout ?  applet.Layout.maximumHeight : -1
 
-    property int iconSize: root.iconSize
+    property int iconSize: containmentAb.iconSize
 
     property int marginWidth: root.isVertical ?
                                   root.thickMargins :
@@ -188,11 +188,11 @@ Item{
             console.log("Real Wrapper Height: "+wrapper.height);
             console.log("-----");
             console.log("Can be hovered: " + canBeHovered);
-            console.log("Icon size: " + root.iconSize);
+            console.log("Icon size: " + containmentAb.iconSize);
             console.log("Thick Margins: " + root.thickMargins);
             console.log("Intern. Margins: " + (root.lengthIntMargin * 2));
             console.log("Intern. Margins: " + (root.lengthExtMargin * 2));
-            console.log("Max hovered criteria: " + (root.iconSize + thickMargins));
+            console.log("Max hovered criteria: " + (containmentAb.iconSize + thickMargins));
             console.log("-----");
             console.log("LayoutW: " + layoutWidth);
             console.log("LayoutH: " + layoutHeight);
@@ -314,39 +314,39 @@ Item{
             if(!root.inConfigureAppletsMode) {
                 layoutHeight = 0;
             } else {
-                layoutHeight = (root.isHorizontal ? root.iconSize : Math.min(root.iconSize, root.maxJustifySplitterSize));
+                layoutHeight = (root.isHorizontal ? containmentAb.iconSize : Math.min(containmentAb.iconSize, root.maxJustifySplitterSize));
             }
         }
         else if(appletItem.isSystray && root.isHorizontal){
-            layoutHeight = root.iconSize;
+            layoutHeight = containmentAb.iconSize;
         }
         else{
-            if(applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical && !canBeHovered && !communicator.overlayLatteIconIsActive){
+            if(applet && (applet.Layout.minimumHeight > containmentAb.iconSize) && root.isVertical && !canBeHovered && !communicator.overlayLatteIconIsActive){
                 blockParabolicEffect = true;
                 layoutHeight = applet.Layout.minimumHeight;
             } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
             else if(applet
-                    && ( applet.Layout.maximumHeight < root.iconSize
-                        || applet.Layout.preferredHeight > root.iconSize
+                    && ( applet.Layout.maximumHeight < containmentAb.iconSize
+                        || applet.Layout.preferredHeight > containmentAb.iconSize
                         || appletItem.originalAppletBehavior)
                     && root.isVertical
                     && !disableScaleWidth
                     && !communicator.overlayLatteIconIsActive) {
                 //this way improves performance, probably because during animation the preferred sizes update a lot
-                if((applet.Layout.maximumHeight < root.iconSize)){
+                if((applet.Layout.maximumHeight < containmentAb.iconSize)){
                     layoutHeight = applet.Layout.maximumHeight;
-                } else if (applet.Layout.minimumHeight > root.iconSize){
+                } else if (applet.Layout.minimumHeight > containmentAb.iconSize){
                     blockParabolicEffect = true;
                     layoutHeight = applet.Layout.minimumHeight;
-                } else if ((applet.Layout.preferredHeight > root.iconSize)
+                } else if ((applet.Layout.preferredHeight > containmentAb.iconSize)
                            || (appletItem.originalAppletBehavior && applet.Layout.preferredHeight > 0 )){
                     blockParabolicEffect = true;
                     layoutHeight = applet.Layout.preferredHeight;
                 } else{
-                    layoutHeight = root.iconSize;
+                    layoutHeight = containmentAb.iconSize;
                 }
             } else {
-                layoutHeight = root.iconSize;
+                layoutHeight = containmentAb.iconSize;
             }
         }
 
@@ -375,41 +375,41 @@ Item{
             if(!root.inConfigureAppletsMode) {
                 layoutWidth = 0;
             } else {
-                layoutWidth = (root.isVertical ? root.iconSize : Math.min(root.iconSize, root.maxJustifySplitterSize));
+                layoutWidth = (root.isVertical ? containmentAb.iconSize : Math.min(containmentAb.iconSize, root.maxJustifySplitterSize));
             }
         }
         else if(appletItem.isSystray && root.isVertical){
-            layoutWidth = root.iconSize;
+            layoutWidth = containmentAb.iconSize;
         }
         else{
-            if(applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal && !canBeHovered && !communicator.overlayLatteIconIsActive){
+            if(applet && (applet.Layout.minimumWidth > containmentAb.iconSize) && root.isHorizontal && !canBeHovered && !communicator.overlayLatteIconIsActive){
                 blockParabolicEffect = true;
                 layoutWidth = applet.Layout.minimumWidth;
             } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
             else if(applet
-                    && ( applet.Layout.maximumWidth < root.iconSize
-                        || applet.Layout.preferredWidth > root.iconSize
+                    && ( applet.Layout.maximumWidth < containmentAb.iconSize
+                        || applet.Layout.preferredWidth > containmentAb.iconSize
                         || appletItem.originalAppletBehavior)
                     && root.isHorizontal
                     && !disableScaleHeight
                     && !communicator.overlayLatteIconIsActive){
 
                 //this way improves performance, probably because during animation the preferred sizes update a lot
-                if((applet.Layout.maximumWidth < root.iconSize)){
+                if((applet.Layout.maximumWidth < containmentAb.iconSize)){
                     //   return applet.Layout.maximumWidth;
                     layoutWidth = applet.Layout.maximumWidth;
-                } else if (applet.Layout.minimumWidth > root.iconSize){
+                } else if (applet.Layout.minimumWidth > containmentAb.iconSize){
                     blockParabolicEffect = true;
                     layoutWidth = applet.Layout.minimumWidth;
-                } else if ((applet.Layout.preferredWidth > root.iconSize)
+                } else if ((applet.Layout.preferredWidth > containmentAb.iconSize)
                            || (appletItem.originalAppletBehavior && applet.Layout.preferredWidth > 0 )){
                     blockParabolicEffect = true;
                     layoutWidth = applet.Layout.preferredWidth;
                 } else{
-                    layoutWidth = root.iconSize;
+                    layoutWidth = containmentAb.iconSize;
                 }
             } else{
-                layoutWidth = root.iconSize;
+                layoutWidth = containmentAb.iconSize;
             }
         }
 
@@ -434,7 +434,7 @@ Item{
                 return wrapper.layoutWidth;
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    var wrapperContainerThickness = parent.zoomScaleWidth * (root.iconSize + root.thickMargins);
+                    var wrapperContainerThickness = parent.zoomScaleWidth * (containmentAb.iconSize + root.thickMargins);
                     return appletItem.supportsScreenEdgeMargin ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleWidth * wrapper.layoutWidth;
@@ -451,7 +451,7 @@ Item{
                 return wrapper.layoutHeight;
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                    var wrapperContainerThickness = parent.zoomScaleHeight * (root.iconSize + root.thickMargins);
+                    var wrapperContainerThickness = parent.zoomScaleHeight * (containmentAb.iconSize + root.thickMargins);
                     return appletItem.supportsScreenEdgeMargin ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleHeight * wrapper.layoutHeight;
@@ -612,7 +612,7 @@ Item{
             PlasmaCore.SvgItem{
                 id:splitterImage
                 anchors.centerIn: parent
-                width: Math.min(root.maxJustifySplitterSize, root.iconSize)
+                width: Math.min(root.maxJustifySplitterSize, containmentAb.iconSize)
                 height: width
                 rotation: root.isVertical ? 90 : 0
 

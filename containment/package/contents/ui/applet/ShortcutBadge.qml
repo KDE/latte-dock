@@ -102,13 +102,13 @@ Loader{
 
             // when iconSize < 48, height is always = 24, height / iconSize > 50%
             // we prefer center aligned badges to top-left aligned ones
-            property bool centerInParent: root.iconSize < 48
+            property bool centerInParent: containmentAb.iconSize < 48
 
             anchors.left: centerInParent? undefined : parent.left
             anchors.top: centerInParent? undefined : parent.top
             anchors.centerIn: centerInParent? parent : undefined
-            minimumWidth: 0.4 * (wrapper.zoomScale * root.iconSize)
-            height: Math.max(24, 0.4 * (wrapper.zoomScale * root.iconSize))
+            minimumWidth: 0.4 * (wrapper.zoomScale * containmentAb.iconSize)
+            height: Math.max(24, 0.4 * (wrapper.zoomScale * containmentAb.iconSize))
 
             borderColor: colorizerManager.originalLightTextColor
             proportion: 0

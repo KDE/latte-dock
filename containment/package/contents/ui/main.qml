@@ -32,6 +32,7 @@ import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
+import "abilities" as Ability
 import "applet" as Applet
 import "colorizer" as Colorizer
 import "editmode" as EditMode
@@ -260,19 +261,6 @@ Item {
     readonly property int minAppletLengthInConfigure: 64
     readonly property int maxJustifySplitterSize: 96
 
-    //what is the highest icon size based on what icon size is used, screen calculated or user specified
-    property int maxIconSize: proportionIconSize!==-1 ? proportionIconSize : plasmoid.configuration.iconSize
-    property int iconSize: automaticItemSizer.automaticIconSizeBasedSize > 0 && automaticItemSizer.isActive ?
-                               Math.min(automaticItemSizer.automaticIconSizeBasedSize, root.maxIconSize) :
-                               root.maxIconSize
-
-    property int proportionIconSize: { //icon size based on screen height
-        if ((plasmoid.configuration.proportionIconSize===-1) || !latteView)
-            return -1;
-
-        return Math.max(16,Math.round(latteView.screenGeometry.height * plasmoid.configuration.proportionIconSize/100/8)*8);
-    }
-
     property int latteAppletPos: -1
     property int minLengthPerCentage: plasmoid.configuration.minLength
     property int maxLengthPerCentage: hideLengthScreenGaps ? 100 : plasmoid.configuration.maxLength
@@ -339,8 +327,8 @@ Item {
     }
 
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
-    property int appShadowSize: enableShadows ? (0.5*root.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
-    property int appShadowSizeOriginal: enableShadows ? (0.5*maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
+    property int appShadowSize: enableShadows ? (0.5*containmentAb.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
+    property int appShadowSizeOriginal: enableShadows ? (0.5*containmentAb.maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
 
     property string appChosenShadowColor: {
         if (plasmoid.configuration.shadowColorType === Latte.Types.ThemeColorShadow) {
@@ -395,13 +383,13 @@ Item {
     property int themePanelThickness: {
         var panelBase = root.panelThickMarginHigh + root.panelThickMarginBase;
         var margin = shrinkThickMargins ? 0 : thickMargins + localScreenEdgeMargin;
-        var maxPanelSize = (iconSize + margin) - panelBase;
+        var maxPanelSize = (containmentAb.iconSize + margin) - panelBase;
         var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
-    property int lengthIntMargin: lengthIntMarginFactor * root.iconSize
-    property int lengthExtMargin: lengthExtMarginFactor * root.iconSize
+    property int lengthIntMargin: lengthIntMarginFactor * containmentAb.iconSize
+    property int lengthExtMargin: lengthExtMarginFactor * containmentAb.iconSize
     property real lengthIntMarginFactor: indicators.isEnabled ? indicators.padding : 0
     property real lengthExtMarginFactor: plasmoid.configuration.lengthExtMargin / 100
 
@@ -415,7 +403,7 @@ Item {
         //0.075 old statesLineSize and 0.06 old default thickMargin
         return  Math.max(indicators.info.minThicknessPadding, plasmoid.configuration.thickMargin / 100)
     }
-    property int thickMargin: thickMarginFactor * root.iconSize
+    property int thickMargin: thickMarginFactor * containmentAb.iconSize
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
     property int screenEdgeMargin: {
@@ -438,7 +426,7 @@ Item {
 
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
-    property int maxThickMargin: thickMarginFactor * maxIconSize
+    property int maxThickMargin: thickMarginFactor * containmentAb.maxIconSize
 
     property int lengthMargin: lengthIntMargin + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
@@ -474,6 +462,9 @@ Item {
     property Item toolBox
     property Item latteAppletContainer
     property Item latteApplet
+
+    readonly property Item autoItemSizerAb: automaticItemSizer
+    readonly property Item containmentAb: _containmentAb
     readonly property Item indicatorsManager: indicators
     readonly property Item parabolicManager: _parabolicManager
     readonly property Item maskManager: visibilityManager
@@ -515,9 +506,9 @@ Item {
         if (!universalSettings || universalSettings.mouseSensitivity === Latte.Types.HighSensitivity) {
             return 1;
         } else if (universalSettings.mouseSensitivity === Latte.Types.MediumSensitivity) {
-            return Math.max(3, root.iconSize / 18);
+            return Math.max(3, containmentAb.iconSize / 18);
         } else if (universalSettings.mouseSensitivity === Latte.Types.LowSensitivity) {
-            return Math.max(5, root.iconSize / 10);
+            return Math.max(5, containmentAb.iconSize / 10);
         }
     }
 
@@ -602,7 +593,7 @@ Item {
     ///The index of user's current icon size
     property int currentIconIndex:{
         for(var i=iconsArray.length-1; i>=0; --i){
-            if(iconsArray[i] === iconSize){
+            if(iconsArray[i] === containmentAb.iconSize){
                 return i;
             }
         }
@@ -642,19 +633,6 @@ Item {
         NumberAnimation {
             duration: 0.8 * root.animationTime
             easing.type: Easing.OutCubic
-        }
-    }
-
-    Behavior on iconSize {
-        enabled: !(root.editMode && root.behaveAsPlasmaPanel)
-        NumberAnimation {
-            duration: 0.8 * root.animationTime
-
-            onRunningChanged: {
-                if (!running) {
-                    delayUpdateMaskArea.start();
-                }
-            }
         }
     }
 
@@ -782,12 +760,11 @@ Item {
         }
     }
 
-    //  onIconSizeChanged: console.log("Icon Size Changed:"+iconSize);
-
     Component.onCompleted: {
         //  currentLayout.isLayoutHorizontal = isHorizontal
         LayoutManager.plasmoid = plasmoid;
         LayoutManager.root = root;
+        LayoutManager.containmentAb = containmentAb;
         LayoutManager.layout = layoutsContainer.mainLayout;
         LayoutManager.layoutS = layoutsContainer.startLayout;
         LayoutManager.layoutE = layoutsContainer.endLayout;
@@ -1766,8 +1743,8 @@ Item {
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
 
-        readonly property int length: root.iconSize + root.lengthMargins
-        readonly property int thickness: root.iconSize + root.thickMargins + root.localScreenEdgeMargin
+        readonly property int length: containmentAb.iconSize + root.lengthMargins
+        readonly property int thickness: containmentAb.iconSize + root.thickMargins + root.localScreenEdgeMargin
 
         Layout.preferredWidth: width
         Layout.preferredHeight: height
@@ -1845,6 +1822,14 @@ Item {
     }
 
     ///////////////END UI elements
+
+    ///////////////BEGIN ABILITIES
+
+    Ability.Containment{
+        id: _containmentAb
+    }
+
+    ///////////////END ABILITIES
 
     ///////////////BEGIN TIMER elements
 
