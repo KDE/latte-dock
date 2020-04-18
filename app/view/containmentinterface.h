@@ -102,6 +102,8 @@ private:
     void addExpandedApplet(const int &id);
     void removeExpandedApplet(const int &id);
 
+    bool appletIsExpandable(PlasmaQuick::AppletQuickItem *appletQuickItem);
+
 private:
     QMetaMethod m_activateEntryMethod;
     QMetaMethod m_appletIdForIndexMethod;

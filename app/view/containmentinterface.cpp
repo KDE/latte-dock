@@ -417,13 +417,22 @@ bool ContainmentInterface::appletIsExpandable(const int id)
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {
-                return (ai->fullRepresentation() != nullptr
-                        && ai->preferredRepresentation() != ai->fullRepresentation());
+                return appletIsExpandable(ai);
             }
         }
     }
 
     return false;
+}
+
+bool ContainmentInterface::appletIsExpandable(PlasmaQuick::AppletQuickItem *appletQuickItem)
+{
+    if (!appletQuickItem) {
+        return false;
+    }
+
+    return (appletQuickItem->fullRepresentation() != nullptr
+            && appletQuickItem->preferredRepresentation() != appletQuickItem->fullRepresentation());
 }
 
 bool ContainmentInterface::hasExpandedApplet() const
@@ -499,7 +508,11 @@ void ContainmentInterface::toggleAppletExpanded(const int id)
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {
-                ai->setExpanded(!ai->isExpanded());
+                if (appletIsExpandable(ai)) {
+                    ai->setExpanded(!ai->isExpanded());
+                } else {
+                    emit applet->activated();
+                }
             }
         }
     }
