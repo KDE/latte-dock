@@ -814,7 +814,7 @@ QRect Corona::availableScreenRectWithCriteria(int id,
             case Plasma::Types::LeftEdge:
                 if (view->behaveAsPlasmaPanel() && desktopUse) {
                     //! ignore any real window slide outs in all cases
-                    available.setLeft(qMax(available.left(), view->screen()->geometry().bottom() + appliedThickness));
+                    available.setLeft(qMax(available.left(), view->screen()->geometry().left() + appliedThickness));
                 } else {
                     available.setLeft(qMax(available.left(), view->x() + appliedThickness));
                 }
