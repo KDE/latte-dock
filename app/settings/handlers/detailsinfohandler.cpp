@@ -26,7 +26,7 @@
 #include "../dialogs/detailsdialog.h"
 #include "../widgets/patternwidget.h"
 #include "../../layout/abstractlayout.h"
-#include "../../../liblatte2/types.h"
+#include "../../types/types.h"
 
 namespace Latte {
 namespace Settings {

@@ -29,9 +29,10 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
-import "colorizer" as Colorizer
-
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
+
+import "colorizer" as Colorizer
 
 Item{
     id:barLine
@@ -52,7 +53,7 @@ Item{
     }
 
     property int panelWidth: {
-        if (root.behaveAsPlasmaPanel && Latte.WindowSystem.compositingActive && !root.editMode) {
+        if (root.behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive && !root.editMode) {
             return root.width;
         } else {
             if ((root.panelAlignment === Latte.Types.Justify) && root.isHorizontal) {
@@ -64,7 +65,7 @@ Item{
     }
 
     property int panelHeight: {
-        if (root.behaveAsPlasmaPanel && Latte.WindowSystem.compositingActive && !root.editMode) {
+        if (root.behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive && !root.editMode) {
             return root.height;
         } else {
             if ((root.panelAlignment === Latte.Types.Justify) && root.isVertical) {
@@ -78,7 +79,7 @@ Item{
     property int spacing: {
         if (root.panelAlignment === Latte.Types.Justify && root.maxLengthPerCentage === 100) {
             return 0;
-        } else if (!Latte.WindowSystem.compositingActive) {
+        } else if (!LatteCore.WindowSystem.compositingActive) {
             return root.panelEdgeSpacing/2;
         } else if (root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify || root.offset!==0) {
             return root.panelEdgeSpacing/2;
@@ -89,14 +90,14 @@ Item{
     property int smallSize: 16 //Math.max(3.7*root.statesLineSize, 16)
 
     Behavior on opacity{
-        enabled: Latte.WindowSystem.compositingActive
+        enabled: LatteCore.WindowSystem.compositingActive
         NumberAnimation {
             duration: barLine.animationTime
         }
     }
 
     Behavior on opacity{
-        enabled: !Latte.WindowSystem.compositingActive
+        enabled: !LatteCore.WindowSystem.compositingActive
         NumberAnimation {
             duration: 0
         }
@@ -167,18 +168,18 @@ Item{
         readonly property bool themeHasShadow: themeExtended ? themeExtended.hasShadow : true
 
         readonly property bool hideShadow: (root.behaveAsPlasmaPanel && !root.editMode)
-                                           || !Latte.WindowSystem.compositingActive
+                                           || !LatteCore.WindowSystem.compositingActive
                                            || !root.panelShadowsActive
                                            || !themeHasShadow
 
         Behavior on opacity {
-            enabled: Latte.WindowSystem.compositingActive
+            enabled: LatteCore.WindowSystem.compositingActive
             NumberAnimation { duration: barLine.animationTime }
         }
 
 
         Behavior on opacity{
-            enabled: !Latte.WindowSystem.compositingActive
+            enabled: !LatteCore.WindowSystem.compositingActive
             NumberAnimation { duration: 0 }
         }
 
@@ -263,12 +264,12 @@ Item{
         }
 
         Behavior on opacity{
-            enabled: Latte.WindowSystem.compositingActive
+            enabled: LatteCore.WindowSystem.compositingActive
             NumberAnimation { duration: barLine.animationTime }
         }
 
         Behavior on opacity{
-            enabled: !Latte.WindowSystem.compositingActive
+            enabled: !LatteCore.WindowSystem.compositingActive
             NumberAnimation { duration: 0 }
         }
 
@@ -352,34 +353,34 @@ Item{
             opacity: normalizedOpacity
             backgroundColor: colorizerManager.backgroundColor
             roundness: overlayedBackground.roundness
-            visible: Latte.WindowSystem.compositingActive && solidBackground.exceedsThemeOpacityLimits
+            visible: LatteCore.WindowSystem.compositingActive && solidBackground.exceedsThemeOpacityLimits
 
             readonly property real normalizedOpacity: visible ?  Math.min(1, (appliedOpacity - solidBackground.themeMaxOpacity)/(1-solidBackground.themeMaxOpacity)) : 0
             readonly property real appliedOpacity: visible ? solidBackground.appliedOpacity : 0
 
             Behavior on opacity{
-                enabled: Latte.WindowSystem.compositingActive
+                enabled: LatteCore.WindowSystem.compositingActive
                 NumberAnimation { duration: barLine.animationTime }
             }
 
             Behavior on opacity{
-                enabled: !Latte.WindowSystem.compositingActive
+                enabled: !LatteCore.WindowSystem.compositingActive
                 NumberAnimation { duration: 0 }
             }
         }
 
         PlasmaCore.FrameSvgItem{
             id: solidBackground
-            anchors.leftMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.left : 0
-            anchors.rightMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.right : 0
-            anchors.topMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.top : 0
-            anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom : 0
+            anchors.leftMargin: LatteCore.WindowSystem.compositingActive ? shadowsSvgItem.margins.left : 0
+            anchors.rightMargin: LatteCore.WindowSystem.compositingActive ? shadowsSvgItem.margins.right : 0
+            anchors.topMargin: LatteCore.WindowSystem.compositingActive ? shadowsSvgItem.margins.top : 0
+            anchors.bottomMargin: LatteCore.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom : 0
             anchors.fill:parent
 
             opacity: normalizedOpacity
 
             readonly property bool exceedsThemeOpacityLimits: appliedOpacity > themeMaxOpacity
-            readonly property bool forceSolidness: root.forceSolidPanel || !Latte.WindowSystem.compositingActive
+            readonly property bool forceSolidness: root.forceSolidPanel || !LatteCore.WindowSystem.compositingActive
 
             //! must be normalized to plasma theme maximum opacity
             readonly property real normalizedOpacity: Math.min(1, appliedOpacity / themeMaxOpacity)
@@ -458,7 +459,7 @@ Item{
                 if (!latteView)
                     return;
 
-                if (!Latte.WindowSystem.compositingActive) {
+                if (!LatteCore.WindowSystem.compositingActive) {
                     //! NOCOMPOSITING mode is a special case and Effects Area is also used for
                     //! different calculations for View::mask()
                     var rootGeometry = mapToItem(root, 0, 0);
@@ -555,12 +556,12 @@ Item{
             enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
             Behavior on opacity{
-                enabled: Latte.WindowSystem.compositingActive && !solidBackground.paintInstantly
+                enabled: LatteCore.WindowSystem.compositingActive && !solidBackground.paintInstantly
                 NumberAnimation { duration: barLine.animationTime }
             }
 
             Behavior on opacity{
-                enabled: !Latte.WindowSystem.compositingActive
+                enabled: !LatteCore.WindowSystem.compositingActive
                 NumberAnimation { duration: 0 }
             }
 
@@ -639,26 +640,26 @@ Item{
                 }
             }
 
-            readonly property bool forceSolidness: root.forceSolidPanel || !Latte.WindowSystem.compositingActive
+            readonly property bool forceSolidness: root.forceSolidPanel || !LatteCore.WindowSystem.compositingActive
 
 
             Behavior on opacity{
-                enabled: Latte.WindowSystem.compositingActive
+                enabled: LatteCore.WindowSystem.compositingActive
                 NumberAnimation { duration: barLine.animationTime }
             }
 
             Behavior on opacity{
-                enabled: !Latte.WindowSystem.compositingActive
+                enabled: !LatteCore.WindowSystem.compositingActive
                 NumberAnimation { duration: 0 }
             }
                         
             Behavior on backgroundColor{
-                enabled: Latte.WindowSystem.compositingActive
+                enabled: LatteCore.WindowSystem.compositingActive
                 ColorAnimation { duration: barLine.animationTime }
             }
 
             Behavior on backgroundColor{
-                enabled: !Latte.WindowSystem.compositingActive
+                enabled: !LatteCore.WindowSystem.compositingActive
                 ColorAnimation { duration: 0 }
             }
         }

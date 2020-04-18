@@ -28,13 +28,11 @@ namespace Latte {
 BackgroundTracker::BackgroundTracker(QObject *parent)
     : QObject(parent)
 {
-    m_cache = PlasmaExtended::BackgroundCache::self();
-
     connect(this, &BackgroundTracker::activityChanged, this, &BackgroundTracker::update);
     connect(this, &BackgroundTracker::locationChanged, this, &BackgroundTracker::update);
     connect(this, &BackgroundTracker::screenNameChanged, this, &BackgroundTracker::update);
 
-    connect(m_cache, &PlasmaExtended::BackgroundCache::backgroundChanged, this, &BackgroundTracker::backgroundChanged);
+    connect(PlasmaExtended::BackgroundCache::self(), &PlasmaExtended::BackgroundCache::backgroundChanged, this, &BackgroundTracker::backgroundChanged);
 }
 
 BackgroundTracker::~BackgroundTracker()
@@ -114,8 +112,8 @@ void BackgroundTracker::update()
         return;
     }
 
-    m_brightness = m_cache->brightnessFor(m_activity, m_screenName, m_location);
-    m_busy = m_cache->busyFor(m_activity, m_screenName, m_location);
+    m_brightness = PlasmaExtended::BackgroundCache::self()->brightnessFor(m_activity, m_screenName, m_location);
+    m_busy = PlasmaExtended::BackgroundCache::self()->busyFor(m_activity, m_screenName, m_location);
 
     emit currentBrightnessChanged();
     emit isBusyChanged();
@@ -123,12 +121,12 @@ void BackgroundTracker::update()
 
 void BackgroundTracker::setBackgroundFromBroadcast(QString activity, QString screen, QString filename)
 {
-    m_cache->setBackgroundFromBroadcast(activity, screen, filename);
+    PlasmaExtended::BackgroundCache::self()->setBackgroundFromBroadcast(activity, screen, filename);
 }
 
 void BackgroundTracker::setBroadcastedBackgroundsEnabled(QString activity, QString screen, bool enabled)
 {
-    m_cache->setBroadcastedBackgroundsEnabled(activity, screen, enabled);
+    PlasmaExtended::BackgroundCache::self()->setBroadcastedBackgroundsEnabled(activity, screen, enabled);
 }
 
 }

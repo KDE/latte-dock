@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QTimer>
 
-#include "../../../liblatte2/types.h"
+#include "../../types/types.h"
 
 namespace Latte {
 class Corona;

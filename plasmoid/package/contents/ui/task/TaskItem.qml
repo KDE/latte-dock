@@ -29,6 +29,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 import "animations" as TaskAnimations
 import "indicator" as Indicator
@@ -54,7 +55,7 @@ MouseArea{
                 return root.iconSize + root.thickMargins + root.screenEdgeMargin;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
-                    return Latte.Environment.separatorLength+2*root.lengthExtMargin;
+                    return LatteCore.Environment.separatorLength+2*root.lengthExtMargin;
                 }
             }
 
@@ -81,7 +82,7 @@ MouseArea{
                 return root.iconSize + root.thickMargins + root.screenEdgeMargin;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
-                    return Latte.Environment.separatorLength+2*root.lengthExtMargin;
+                    return LatteCore.Environment.separatorLength+2*root.lengthExtMargin;
                 }
             }
 
@@ -343,8 +344,8 @@ MouseArea{
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
 
-        width: root.vertical ? root.iconSize : ((root.dragSource || root.editMode) ? Latte.Environment.separatorLength+root.lengthMargins: 1)
-        height: !root.vertical ? root.iconSize : ((root.dragSource || root.editMode) ? Latte.Environment.separatorLength+root.lengthMargins: 1)
+        width: root.vertical ? root.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
+        height: !root.vertical ? root.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
 
         property bool forceHiddenState: false
 
@@ -788,7 +789,7 @@ MouseArea{
 
     onPressed: {
         //console.log("Pressed Task Delegate..");
-        if (Latte.WindowSystem.compositingActive && !Latte.WindowSystem.isPlatformWayland) {
+        if (LatteCore.WindowSystem.compositingActive && !LatteCore.WindowSystem.isPlatformWayland) {
             if(root.leftClickAction !== Latte.Types.PreviewWindows) {
                 isAbleToShowPreview = false;
                 windowsPreviewDlg.hide(2);
@@ -869,7 +870,7 @@ MouseArea{
             } else if (mouse.button == Qt.LeftButton){
                 if( !taskItem.isLauncher ){
                     if ( (root.leftClickAction === Latte.Types.PreviewWindows && isGroupParent)
-                            || ( (Latte.WindowSystem.isPlatformWayland || !Latte.WindowSystem.compositingActive)
+                            || ( (LatteCore.WindowSystem.isPlatformWayland || !LatteCore.WindowSystem.compositingActive)
                                 && root.leftClickAction === Latte.Types.PresentWindows
                                 && isGroupParent) ) {
                         if(windowsPreviewDlg.activeItem !== taskItem){
@@ -877,7 +878,7 @@ MouseArea{
                         } else {
                             hidePreviewWindow();
                         }
-                    } else if ( (root.leftClickAction === Latte.Types.PresentWindows && !(isGroupParent && !Latte.WindowSystem.compositingActive))
+                    } else if ( (root.leftClickAction === Latte.Types.PresentWindows && !(isGroupParent && !LatteCore.WindowSystem.compositingActive))
                                || ((root.leftClickAction === Latte.Types.PreviewWindows && !isGroupParent)) ) {
                         activateTask();
                     } else if (root.leftClickAction === Latte.Types.CycleThroughTasks) {
@@ -1043,7 +1044,7 @@ MouseArea{
 
     function activateTask() {
         if( taskItem.isLauncher || root.disableAllWindowsFunctionality){
-            if (Latte.WindowSystem.compositingActive) {
+            if (LatteCore.WindowSystem.compositingActive) {
                 wrapper.runLauncherAnimation();
             } else {
                 launcherAction();
@@ -1051,7 +1052,7 @@ MouseArea{
         }
         else{
             if (model.IsGroupParent) {
-                if (Latte.WindowSystem.compositingActive && backend.canPresentWindows()) {
+                if (LatteCore.WindowSystem.compositingActive && backend.canPresentWindows()) {
                     root.presentWindows(root.plasma515 ? model.WinIdList: model.LegacyWinIdList );
                 }
             } else {
@@ -1180,7 +1181,7 @@ MouseArea{
 
     function launcherAction(){
         // if ((lastButtonClicked == Qt.LeftButton)||(lastButtonClicked == Qt.MidButton)){
-        if (Latte.WindowSystem.compositingActive) {
+        if (LatteCore.WindowSystem.compositingActive) {
             inBouncingAnimation = true;
             tasksExtendedManager.addWaitingLauncher(taskItem.launcherUrl);
         }
@@ -1545,7 +1546,7 @@ MouseArea{
         var hideStartup =  ((!hasShownLauncher || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl))
                             && taskItem.isStartup);
 
-        if (!Latte.WindowSystem.compositingActive) {
+        if (!LatteCore.WindowSystem.compositingActive) {
             visible = true;
         } else if ( (isWindow || isStartup || isLauncher) && tasksExtendedManager.waitingLauncherExists(launcherUrl)) {
             tasksExtendedManager.waitingLauncherRemoved.connect(slotWaitingLauncherRemoved);

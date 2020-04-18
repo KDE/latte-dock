@@ -34,6 +34,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 import "../controls" as LatteExtraControls
 
@@ -84,9 +85,9 @@ FocusScope {
         shadowOpacity: Math.max(0.35, maxOpacity)
         shadowDirection: plasmoid.location
 
-        visible: !Latte.WindowSystem.isPlatformWayland && Latte.WindowSystem.compositingActive && latteView.effects.settingsMaskSubtracted
+        visible: !LatteCore.WindowSystem.isPlatformWayland && LatteCore.WindowSystem.compositingActive && latteView.effects.settingsMaskSubtracted
 
-        readonly property real maxOpacity: Latte.WindowSystem.compositingActive && !plasmoid.configuration.inConfigureAppletsMode ?
+        readonly property real maxOpacity: LatteCore.WindowSystem.compositingActive && !plasmoid.configuration.inConfigureAppletsMode ?
                                                plasmoid.configuration.editBackgroundOpacity : 1
     }
 }

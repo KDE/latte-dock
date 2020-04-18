@@ -20,6 +20,7 @@
 import QtQuick 2.7
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Item{
     // NAME: latteSideColoringEnabled
@@ -122,6 +123,6 @@ Item{
     }
 
     function version(major, minor, patch) {
-        return Latte.WindowSystem.makeVersion(major, minor, patch)
+        return LatteCore.WindowSystem.makeVersion(major, minor, patch)
     }
 }

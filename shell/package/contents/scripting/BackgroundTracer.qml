@@ -19,9 +19,10 @@
 
 import QtQuick 2.7
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Item{
-    Latte.BackgroundTracker {
+    LatteCore.BackgroundTracker {
         id: backgroundTracker
     }
 

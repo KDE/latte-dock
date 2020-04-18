@@ -23,6 +23,7 @@ import QtQuick 2.0
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 ///item's added Animation
 SequentialAnimation{
@@ -124,17 +125,17 @@ SequentialAnimation{
         //Animation Add/Remove (3) - when is launcher with no window, animations enabled
         var animation2 = ((!hasShownLauncher || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl))
                           && taskItem.isWindow
-                          && Latte.WindowSystem.compositingActive);
+                          && LatteCore.WindowSystem.compositingActive);
 
         var animation3 = (!tasksExtendedManager.immediateLauncherExists(taskItem.launcherUrl)
                           && taskItem.isLauncher
-                          && Latte.WindowSystem.compositingActive);
+                          && LatteCore.WindowSystem.compositingActive);
 
         var activities = tasksModel.launcherActivities(taskItem.launcherUrl);
         var animation6 = (root.inActivityChange && taskItem.isWindow
                           && activities.indexOf(activityInfo.currentActivity)>=0
                           && activities.indexOf(activityInfo.previousActivity) === -1
-                          && Latte.WindowSystem.compositingActive);
+                          && LatteCore.WindowSystem.compositingActive);
 
 
         //startup without launcher, animation should be blocked
@@ -155,7 +156,7 @@ SequentialAnimation{
             wrapper.tempScaleHeight = 0;
             wrapper.opacity = 0;
             taskItem.inAnimation = false;
-        } else if (!Latte.WindowSystem.compositingActive || root.inDraggingPhase
+        } else if (!LatteCore.WindowSystem.compositingActive || root.inDraggingPhase
                    || taskItem.isSeparator) {
             isForcedHidden = false;
             taskItem.visible = true;

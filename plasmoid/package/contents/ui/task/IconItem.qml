@@ -30,6 +30,7 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 import "animations" as TaskAnimations
@@ -152,7 +153,7 @@ Item{
             }
         }
 
-        Latte.IconItem{
+        LatteCore.IconItem{
             id: iconImageBuffer
 
             anchors.centerIn: parent
@@ -305,7 +306,7 @@ Item{
                     enabled: false
                     anchors.fill: parent
                     property var source: ShaderEffectSource {
-                        sourceItem: Latte.IconItem{
+                        sourceItem: LatteCore.IconItem{
                             width: iconImageBuffer.width
                             height: iconImageBuffer.height
                             source: iconImageBuffer.source

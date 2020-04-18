@@ -19,9 +19,6 @@
 
 #include "menu.h"
 
-// local
-#include "../../liblatte2/types.h"
-
 // Qt
 #include <QAction>
 #include <QDebug>
@@ -40,6 +37,24 @@
 #include <Plasma/ServiceJob>
 
 const int LAYOUTSPOS = 3;
+
+enum ViewType
+{
+    DockView = 0,
+    PanelView
+};
+
+enum LayoutsMemoryUsage
+{
+    SingleLayout = 0,
+    MultipleLayouts
+};
+
+enum LatteConfigPage
+{
+    LayoutPage = 0,
+    PreferencesPage
+};
 
 Menu::Menu(QObject *parent, const QVariantList &args)
     : Plasma::ContainmentActions(parent, args)
@@ -109,7 +124,7 @@ void Menu::makeActions()
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
         if (iface.isValid()) {
-            iface.call("showSettingsWindow", (int)Latte::Types::PreferencesPage);
+            iface.call("showSettingsWindow", (int)PreferencesPage);
         }
     });
 }
@@ -154,13 +169,13 @@ QList<QAction *> Menu::contextualActions()
         m_layoutsAction->setVisible(false);
     }
 
-    Latte::Types::ViewType viewType{Latte::Types::DockView};
+    ViewType viewType{DockView};
 
     if (m_data.size() >= LAYOUTSPOS + 1) {
-        viewType = static_cast<Latte::Types::ViewType>((m_data[2]).toInt());
+        viewType = static_cast<ViewType>((m_data[2]).toInt());
     }
 
-    const QString configureActionText = (viewType == Latte::Types::DockView) ? i18nc("dock settings window", "&Edit Dock...") : i18nc("panel settings window", "&Edit Panel...");
+    const QString configureActionText = (viewType == DockView) ? i18nc("dock settings window", "&Edit Dock...") : i18nc("panel settings window", "&Edit Panel...");
     m_configureAction->setText(configureActionText);
 
     return actions;
@@ -187,7 +202,7 @@ void Menu::populateLayouts()
 
     if (m_data.size() > LAYOUTSPOS + 1) {
         //when there are more than 1 layouts present
-        Latte::Types::LayoutsMemoryUsage memoryUsage = static_cast<Latte::Types::LayoutsMemoryUsage>((m_data[0]).toInt());
+        LayoutsMemoryUsage memoryUsage = static_cast<LayoutsMemoryUsage>((m_data[0]).toInt());
         QString currentName = m_data[1];
 
         for (int i = LAYOUTSPOS; i < m_data.size(); ++i) {
@@ -195,7 +210,7 @@ void Menu::populateLayouts()
 
             QString layout = m_data[i].right(m_data[i].length() - 2);
 
-            QString currentText = (memoryUsage == Latte::Types::MultipleLayouts && layout == currentName) ?
+            QString currentText = (memoryUsage == MultipleLayouts && layout == currentName) ?
                                   (" " + i18nc("current layout", "(Current)")) : "";
             QString layoutName = layout + currentText;
 
@@ -237,7 +252,7 @@ void Menu::switchToLayout(QAction *action)
             QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
             if (iface.isValid()) {
-                iface.call("showSettingsWindow", (int)Latte::Types::LayoutPage);
+                iface.call("showSettingsWindow", (int)LayoutPage);
             }
         });
     } else {

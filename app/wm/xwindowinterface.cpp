@@ -24,8 +24,7 @@
 #include "tasktools.h"
 #include "view/view.h"
 #include "view/helpers/screenedgeghostwindow.h"
-#include "../../liblatte2/extras.h"
-#include "../../liblatte2/types.h"
+#include "../types/types.h"
 
 // Qt
 #include <QDebug>
@@ -169,7 +168,7 @@ void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
     }
 
     default:
-        qWarning() << "wrong location:" << qEnumToStr(location);
+        qWarning() << "wrong location:" << location;
         return;
     }
 

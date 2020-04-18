@@ -30,11 +30,12 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
 
+import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
+
 import org.kde.draganddrop 2.0
 
 import org.kde.taskmanager 0.1 as TaskManager
-
-import org.kde.latte 0.2 as Latte
 
 Column {
     id: instance
@@ -190,7 +191,7 @@ Column {
             Loader{
                 id:previewThumbX11Loader
                 anchors.fill: parent
-                active: !Latte.WindowSystem.isPlatformWayland
+                active: !LatteCore.WindowSystem.isPlatformWayland
                 visible: !albumArtImage.visible && !thumbnailSourceItem.isMinimized
 
                 sourceComponent: PlasmaCore.WindowThumbnail {
@@ -201,7 +202,7 @@ Column {
             ToolTipWindowMouseArea {
                 id: area2
 
-                anchors.fill: Latte.WindowSystem.isPlatformWayland ? parent : previewThumbX11Loader
+                anchors.fill: LatteCore.WindowSystem.isPlatformWayland ? parent : previewThumbX11Loader
                 rootTask: parentTask
                 modelIndex: submodelIndex
                 winId: thumbnailSourceItem.winId

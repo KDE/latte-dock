@@ -21,6 +21,7 @@
 import QtQuick 2.1
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Item{
     id: hiddenSpacer
@@ -35,7 +36,7 @@ Item{
     property bool neighbourSeparator: false;
 
     property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && root.parabolicEffectEnabled
-                                 && !appletItem.latteApplet ? ((Latte.Environment.separatorLength/2)+root.lengthExtMargin) : subtrackedMargins
+                                 && !appletItem.latteApplet ? ((LatteCore.Environment.separatorLength/2)+root.lengthExtMargin) : subtrackedMargins
 
     property real nHiddenSize: {
         if (isSeparator || !communicator.lengthMarginsEnabled) {

@@ -23,7 +23,7 @@
 
 // local
 #include "../lattecorona.h"
-#include "../liblatte2/types.h"
+#include "../types/types.h"
 
 // Qt
 #include <QObject>

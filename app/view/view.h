@@ -33,7 +33,7 @@
 #include "../layout/genericlayout.h"
 #include "../plasma/quick/containmentview.h"
 #include "../plasma/quick/configview.h"
-#include "../../liblatte2/types.h"
+#include "../types/types.h"
 
 // C++
 #include <array>

@@ -23,7 +23,7 @@
 #include "iconitem.h"
 
 // local
-#include "../liblatte2/extras.h"
+#include "extras.h"
 
 // Qt
 #include <QDebug>

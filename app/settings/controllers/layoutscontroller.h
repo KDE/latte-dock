@@ -27,7 +27,7 @@
 #include "../views/layoutsheaderview.h"
 #include "../models/layoutsmodel.h"
 #include "../../lattecorona.h"
-#include "../../../liblatte2/types.h"
+#include "../../types/types.h"
 
 // Qt
 #include <QAbstractItemModel>

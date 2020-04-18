@@ -21,11 +21,11 @@
 #ifndef BACKGROUNDTRACKER_H
 #define BACKGROUNDTRACKER_H
 
-// local
-#include "plasma/extended/backgroundcache.h"
-
 // Qt
 #include <QObject>
+
+// Plasma
+#include <Plasma>
 
 namespace Latte{
 
@@ -78,7 +78,6 @@ private:
     // local
     bool m_busy{false};
     float m_brightness{-1000};
-    PlasmaExtended::BackgroundCache *m_cache{nullptr};
 
     // Qt
     QString m_activity;

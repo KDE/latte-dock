@@ -24,7 +24,7 @@
 #include "../view.h"
 #include "../../lattecorona.h"
 #include "../../indicator/factory.h"
-#include "../../../liblatte2/types.h"
+#include "../../types/types.h"
 
 // Qt
 #include <QFileDialog>

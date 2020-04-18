@@ -23,6 +23,7 @@ import QtQuick 2.0
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 SequentialAnimation {
     id: taskRealRemovalAnimation
@@ -36,11 +37,11 @@ SequentialAnimation {
     property bool animation1: ((((tasksModel.launcherPosition(taskItem.launcherUrl) === -1)
                                  && (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) === -1) )
                                 || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl))
-                               && !taskItem.isStartup && Latte.WindowSystem.compositingActive)
+                               && !taskItem.isStartup && LatteCore.WindowSystem.compositingActive)
 
     property bool animation4: ((taskItem.launcherUrl===root.launcherForRemoval
                                 || taskItem.launcherUrlWithIcon===root.launcherForRemoval )
-                               && !taskItem.isStartup && Latte.WindowSystem.compositingActive)
+                               && !taskItem.isStartup && LatteCore.WindowSystem.compositingActive)
 
     property bool enabledAnimation: (animation1 || animation4) && (root.animationNewWindowSliding)
                                     && !taskItem.inBouncingAnimation
@@ -91,7 +92,7 @@ SequentialAnimation {
             root.signalAnimationsNeedLength(1);
 
             if (wrapper.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation
-                    && !taskItem.inBouncingAnimation && Latte.WindowSystem.compositingActive) {
+                    && !taskItem.inBouncingAnimation && LatteCore.WindowSystem.compositingActive) {
                 tasksExtendedManager.setFrozenTask(taskItem.launcherUrl, wrapper.mScale);
             }
         }

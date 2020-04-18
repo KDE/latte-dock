@@ -55,7 +55,7 @@ public:
     bool busyFor(QString activity, QString screen, Plasma::Types::Location location);
     float brightnessFor(QString activity, QString screen, Plasma::Types::Location location);
 
-    QString background(QString activity, QString screen);
+    QString background(QString activity, QString screen) const;
 
     void setBackgroundFromBroadcast(QString activity, QString screen, QString filename);
     void setBroadcastedBackgroundsEnabled(QString activity, QString screen, bool enabled);
@@ -70,9 +70,9 @@ private slots:
 private:
     BackgroundCache(QObject *parent = nullptr);
 
-    bool backgroundIsBroadcasted(QString activity, QString screenName);
-    bool pluginExistsFor(QString activity, QString screenName);
-    bool areaIsBusy(float bright1, float bright2);
+    bool backgroundIsBroadcasted(QString activity, QString screenName) const;
+    bool pluginExistsFor(QString activity, QString screenName) const;
+    bool areaIsBusy(float bright1, float bright2) const;
     bool busyForFile(QString imageFile, Plasma::Types::Location location);
     bool isDesktopContainment(const KConfigGroup &containment) const;
 

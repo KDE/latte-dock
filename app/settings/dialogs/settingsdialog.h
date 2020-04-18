@@ -24,10 +24,10 @@
 
 // local
 #include "genericdialog.h"
-#include "../liblatte2/types.h"
 #include "../controllers/layoutscontroller.h"
 #include "../handlers/tablayoutshandler.h"
 #include "../handlers/tabpreferenceshandler.h"
+#include "../../types/types.h"
 
 // Qt
 #include <QObject>

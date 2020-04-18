@@ -20,9 +20,6 @@
 
 #include "quickwindowsystem.h"
 
-// local
-#include "../app/config-latte.h"
-
 // Qt
 #include <QDebug>
 #include <QProcess>

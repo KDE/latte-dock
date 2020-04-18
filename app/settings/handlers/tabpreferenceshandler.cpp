@@ -26,7 +26,7 @@
 #include "../dialogs/settingsdialog.h"
 #include "../../lattecorona.h"
 #include "../../plasma/extended/theme.h"
-#include "../../../liblatte2/types.h"
+#include "../../types/types.h"
 
 namespace Latte {
 namespace Settings {

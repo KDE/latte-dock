@@ -21,6 +21,7 @@
 import QtQuick 2.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Item{
     id: hiddenSpacer
@@ -47,7 +48,7 @@ Item{
     //! && !root.inActivityChange (deprecated) in order to check if it is fixed
     property int separatorSpace: neighbourSeparator && !isSeparator && root.parabolicEffectEnabled
                                  && !(parabolicManager.hasInternalSeparator && root.dragSource) ?
-                                     ((Latte.Environment.separatorLength/2)+root.lengthExtMargin) : 0
+                                     ((LatteCore.Environment.separatorLength/2)+root.lengthExtMargin) : 0
 
     property bool rightSpacer: false
 

@@ -24,8 +24,8 @@
 // local
 #include "plasma/quick/configview.h"
 #include "layout/storage.h"
+#include "types/types.h"
 #include "view/panelshadows_p.h"
-#include "../liblatte2/types.h"
 
 // Qt
 #include <QObject>

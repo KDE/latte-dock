@@ -1,0 +1,2 @@
+module org.kde.latte.core
+plugin lattecoreplugin

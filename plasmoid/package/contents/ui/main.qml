@@ -32,6 +32,7 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 import org.kde.activities 0.1 as Activities
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 import "previews" as Previews
@@ -60,8 +61,8 @@ Item {
     //it is used to check both the applet and the containment for direct render
     property bool globalDirectRender: latteView ? latteView.globalDirectRender : icList.directRender
 
-    property bool plasma515: latteView ? latteView.plasma515 : Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,15,0)
-    property bool plasma518: latteView ? latteView.plasma518 : Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,18,0)
+    property bool plasma515: latteView ? latteView.plasma515 : LatteCore.WindowSystem.plasmaDesktopVersion >= LatteCore.WindowSystem.makeVersion(5,15,0)
+    property bool plasma518: latteView ? latteView.plasma518 : LatteCore.WindowSystem.plasmaDesktopVersion >= LatteCore.WindowSystem.makeVersion(5,18,0)
 
     property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool inConfigureAppletsMode: latteView ? latteView.inConfigureAppletsMode : true
@@ -234,8 +235,8 @@ Item {
 
     readonly property real animationsSpeed2: plasma518 ? 1.00 : 2.00
 
-    readonly property int shortDuration: latteView ? latteView.shortDuration : Latte.WindowSystem.shortDuration
-    readonly property int longDuration: latteView ? latteView.longDuration : Latte.WindowSystem.longDuration
+    readonly property int shortDuration: latteView ? latteView.shortDuration : LatteCore.WindowSystem.shortDuration
+    readonly property int longDuration: latteView ? latteView.longDuration : LatteCore.WindowSystem.longDuration
 
     property real appliedDurationTime: animationsEnabled ? durationTime : animationsSpeed2
     property real durationTime: latteView ? latteView.durationTime : plasmoid.configuration.durationTime
@@ -803,7 +804,7 @@ Item {
             tasksStarting = count;
 
             ///Plasma 5.9 enforce grouping at all cases
-            if (Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,9,0)) {
+            if (LatteCore.WindowSystem.plasmaDesktopVersion >= LatteCore.WindowSystem.makeVersion(5,9,0)) {
                 groupingWindowTasksThreshold = -1;
             }
         }
@@ -841,7 +842,7 @@ Item {
             //! work only after Plasma 5.9 and frameworks 5.29
             //! + added a check for groupDialog also when it is present
             //!   in plasma 5.8 (that was introduced after 5.8.5)
-            if (Latte.WindowSystem.frameworksVersion >= 335104 || (groupDialog !== undefined)) {
+            if (LatteCore.WindowSystem.frameworksVersion >= 335104 || (groupDialog !== undefined)) {
                 groupDialog = groupDialogGhost;
             }
         }

@@ -23,6 +23,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 import "../../code/ColorizerTools.js" as ColorizerTools
 
@@ -140,7 +141,7 @@ Loader{
     readonly property color textColor: {
         if (latteView && latteView.layout
                 && root.inConfigureAppletsMode
-                && Latte.WindowSystem.compositingActive
+                && LatteCore.WindowSystem.compositingActive
                 && root.panelTransparency<40
                 && (root.themeColors === Latte.Types.SmartThemeColors)) {
             return latteView.layout.textColor;
@@ -165,7 +166,7 @@ Loader{
 
     readonly property string scheme: {
         if (root.inConfigureAppletsMode && (root.themeColors === Latte.Types.SmartThemeColors)) {
-            if (!Latte.WindowSystem.compositingActive && applyTheme !== theme) {
+            if (!LatteCore.WindowSystem.compositingActive && applyTheme !== theme) {
                 return applyTheme.schemeFile;
             }
 
@@ -197,7 +198,7 @@ Loader{
         return applyTheme.schemeFile;
     }
 
-    sourceComponent: Latte.BackgroundTracker {
+    sourceComponent: LatteCore.BackgroundTracker {
         activity: viewLayout ? viewLayout.lastUsedActivity : ""
         location: plasmoid.location
         screenName: latteView && latteView.positioner ? latteView.positioner.currentScreenName : ""

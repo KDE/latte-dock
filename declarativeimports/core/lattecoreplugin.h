@@ -18,24 +18,19 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "latteplugin.h"
-
-// local
-#include "backgroundtracker.h"
-#include "environment.h"
-#include "iconitem.h"
-#include "quickwindowsystem.h"
-#include "types.h"
+#ifndef LATTECOREPLUGIN_H
+#define LATTECOREPLUGIN_H
 
 // Qt
-#include <QtQml>
+#include <QQmlExtensionPlugin>
 
-void LattePlugin::registerTypes(const char *uri)
+class LatteCorePlugin : public QQmlExtensionPlugin
 {
-    Q_ASSERT(uri == QLatin1String("org.kde.latte"));
-    qmlRegisterUncreatableType<Latte::Types>(uri, 0, 2, "Types", "Latte Types uncreatable");
-    qmlRegisterType<Latte::BackgroundTracker>(uri, 0, 2, "BackgroundTracker");
-    qmlRegisterType<Latte::IconItem>(uri, 0, 2, "IconItem");
-    qmlRegisterSingletonType<Latte::Environment>(uri, 0, 2, "Environment", &Latte::environment_qobject_singletontype_provider);
-    qmlRegisterSingletonType<Latte::QuickWindowSystem>(uri, 0, 2, "WindowSystem", &Latte::windowsystem_qobject_singletontype_provider);
-}
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
+
+public:
+    void registerTypes(const char *uri) override;
+};
+
+#endif

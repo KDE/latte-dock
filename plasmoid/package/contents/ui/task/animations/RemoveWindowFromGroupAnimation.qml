@@ -25,6 +25,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 /////Removing a Window from a group////
 Item{
@@ -65,7 +66,7 @@ Item{
 
             visible: false
 
-            Latte.IconItem{
+            LatteCore.IconItem{
                 id: tempRemoveIcon
                 anchors.rightMargin: root.location === PlasmaCore.Types.LeftEdge ? root.thickMargin : 0
                 anchors.leftMargin: root.location === PlasmaCore.Types.RightEdge ? root.thickMargin : 0

@@ -83,7 +83,6 @@ string(REPLACE "-Wformat-security" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 message(STATUS "COMPILER FLAGS : ${CMAKE_CXX_FLAGS}")
 
 add_subdirectory(declarativeimports)
-add_subdirectory(liblatte2)
 add_subdirectory(indicators)
 add_subdirectory(app)
 add_subdirectory(containmentactions)

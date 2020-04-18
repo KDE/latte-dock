@@ -28,6 +28,7 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 PlasmaComponents.Page {
@@ -405,7 +406,7 @@ PlasmaComponents.Page {
                 Layout.maximumWidth: Layout.minimumWidth
                 Layout.minimumHeight: implicitHeight
                 Layout.bottomMargin: units.smallSpacing
-                enabled: Latte.WindowSystem.compositingActive
+                enabled: LatteCore.WindowSystem.compositingActive
 
                 checked: tasks.configuration.scrollTasksEnabled
                 text: i18n("Scrolling")

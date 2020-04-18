@@ -29,7 +29,7 @@
 #include "../layouts/synchronizer.h"
 #include "../settings/universalsettings.h"
 #include "../view/view.h"
-#include "../../liblatte2/types.h"
+#include "../types/types.h"
 
 // KDE
 #include <KConfigGroup>

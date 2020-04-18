@@ -26,6 +26,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 import "../applet" as Applet
@@ -41,7 +42,7 @@ Item{
 
     readonly property int settingsThickness: settingsOverlay.thickness
 
-    property int speed: Latte.WindowSystem.compositingActive ? root.appliedDurationTime*3.6*root.longDuration : 10
+    property int speed: LatteCore.WindowSystem.compositingActive ? root.appliedDurationTime*3.6*root.longDuration : 10
     property int thickness: visibilityManager.thicknessEditMode + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow //- visibilityManager.thicknessEditMode
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.width)://root.maxLength) :
@@ -60,14 +61,14 @@ Item{
     property string layoutColor: latteView && latteView.layout ? latteView.layout.color : "blue"
 
     readonly property real appliedOpacity: imageTiler.opacity
-    readonly property real maxOpacity: root.inConfigureAppletsMode || !Latte.WindowSystem.compositingActive ?
+    readonly property real maxOpacity: root.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive ?
                                            1 : plasmoid.configuration.editBackgroundOpacity
 
     LatteComponents.ExternalShadow{
         id: editExternalShadow
         width: root.isHorizontal ? imageTiler.width : root.editShadow
         height: root.isHorizontal ? root.editShadow : imageTiler.height
-        visible: !editTransition.running && root.editMode && Latte.WindowSystem.compositingActive
+        visible: !editTransition.running && root.editMode && LatteCore.WindowSystem.compositingActive
 
         shadowSize: root.editShadow
         shadowOpacity: Math.max(0.35, imageTiler.opacity)
@@ -276,7 +277,7 @@ Item{
     }
 
     function updateEffectsArea(){
-       if (Latte.WindowSystem.compositingActive ||
+       if (LatteCore.WindowSystem.compositingActive ||
                !latteView || state !== "edit" || !editAnimationEnded) {
             return;
        }

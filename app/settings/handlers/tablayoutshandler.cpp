@@ -31,7 +31,7 @@
 #include "../../layout/centrallayout.h"
 #include "../../layouts/importer.h"
 #include "../../layouts/manager.h"
-#include "../../../liblatte2/types.h"
+#include "../../types/types.h"
 
 //! Qt
 #include <QFileDialog>

@@ -29,6 +29,7 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 import "applet" as Applet
@@ -67,7 +68,7 @@ Item {
     property bool debugModeWindow: Qt.application.arguments.indexOf("--with-window")>=0
     property bool debugModeOverloadedIcons: Qt.application.arguments.indexOf("--overloaded-icons")>=0
 
-    readonly property int version: Latte.WindowSystem.makeVersion(0,9,4)
+    readonly property int version: LatteCore.WindowSystem.makeVersion(0,9,4)
 
     property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
     property int directRenderAnimationTime: 0
@@ -76,7 +77,7 @@ Item {
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: {
-        if (!Latte.WindowSystem.compositingActive) {
+        if (!LatteCore.WindowSystem.compositingActive) {
             //! In NOCOMPOSITING mode VIEWS should behave as real windows and that way
             //! we gain also the snapping features from KWin
             return true;
@@ -130,14 +131,14 @@ Item {
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
     property bool dockContainsMouse: latteView && latteView.visibility ? latteView.visibility.containsMouse : false
 
-    property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized && Latte.WindowSystem.compositingActive
+    property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized && LatteCore.WindowSystem.compositingActive
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
     property bool editMode: editModeVisual.inEditMode
     property bool windowIsTouching: latteView && latteView.windowsTracker
                                     && (latteView.windowsTracker.currentScreen.activeWindowTouching || hasExpandedApplet)
 
     property bool forceSolidPanel: (latteView && latteView.visibility
-                                    && Latte.WindowSystem.compositingActive
+                                    && LatteCore.WindowSystem.compositingActive
                                     && !inConfigureAppletsMode
                                     && userShowPanelBackground
                                     && ( (plasmoid.configuration.solidBackgroundForMaximized
@@ -146,11 +147,11 @@ Item {
                                         || (hasExpandedApplet && plasmaBackgroundForPopups) ))
                                    || solidBusyForTouchingBusyVerticalView
                                    || plasmaStyleBusyForTouchingBusyVerticalView
-                                   || !Latte.WindowSystem.compositingActive
+                                   || !LatteCore.WindowSystem.compositingActive
 
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
                                          && latteView && latteView.visibility
-                                         && Latte.WindowSystem.compositingActive
+                                         && LatteCore.WindowSystem.compositingActive
                                          && !inConfigureAppletsMode
                                          && !forceSolidPanel
                                          && !latteView.windowsTracker.currentScreen.existsWindowTouching
@@ -207,7 +208,7 @@ Item {
     readonly property bool hasUserSpecifiedBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                            true : false
 
-    readonly property bool inConfigureAppletsMode: root.editMode && (plasmoid.configuration.inConfigureAppletsMode || !Latte.WindowSystem.compositingActive)
+    readonly property bool inConfigureAppletsMode: root.editMode && (plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive)
     readonly property bool parabolicEffectEnabled: zoomFactor>1 && !inConfigureAppletsMode
 
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
@@ -237,12 +238,12 @@ Item {
     //property bool smallAutomaticIconJumps: plasmoid.configuration.smallAutomaticIconJumps
     property bool smallAutomaticIconJumps: true
 
-    property bool userShowPanelBackground: Latte.WindowSystem.compositingActive ? plasmoid.configuration.useThemePanel : true
-    property bool useThemePanel: noApplets === 0 || !Latte.WindowSystem.compositingActive ?
+    property bool userShowPanelBackground: LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.useThemePanel : true
+    property bool useThemePanel: noApplets === 0 || !LatteCore.WindowSystem.compositingActive ?
                                      true : (plasmoid.configuration.useThemePanel || plasmoid.configuration.solidBackgroundForMaximized)
 
-    property bool plasma515: Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,15,0)
-    property bool plasma518: Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,18,0)
+    property bool plasma515: LatteCore.WindowSystem.plasmaDesktopVersion >= LatteCore.WindowSystem.makeVersion(5,15,0)
+    property bool plasma518: LatteCore.WindowSystem.plasmaDesktopVersion >= LatteCore.WindowSystem.makeVersion(5,18,0)
 
     property alias hoveredIndex: layoutsContainer.hoveredIndex
     property alias directRenderDelayerIsRunning: directRenderDelayerForEnteringTimer.running
@@ -278,9 +279,9 @@ Item {
 
     property int minLength: {
         if (root.isHorizontal) {
-            return behaveAsPlasmaPanel && Latte.WindowSystem.compositingActive ? width : width * (minLengthPerCentage/100)
+            return behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive ? width : width * (minLengthPerCentage/100)
         } else {
-            return behaveAsPlasmaPanel && Latte.WindowSystem.compositingActive ? height : height * (minLengthPerCentage/100)
+            return behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive ? height : height * (minLengthPerCentage/100)
         }
     }
 
@@ -382,7 +383,7 @@ Item {
     property int panelMarginLength: 0
     property int panelShadow: 0 //shadowsSize
     property int editShadow: {
-        if (!Latte.WindowSystem.compositingActive) {
+        if (!LatteCore.WindowSystem.compositingActive) {
             return 0;
         } else if (latteView && latteView.screenGeometry) {
             return latteView.screenGeometry.height/90;
@@ -395,7 +396,7 @@ Item {
         var panelBase = root.panelThickMarginHigh + root.panelThickMarginBase;
         var margin = shrinkThickMargins ? 0 : thickMargins + localScreenEdgeMargin;
         var maxPanelSize = (iconSize + margin) - panelBase;
-        var percentage = Latte.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
+        var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
@@ -455,7 +456,7 @@ Item {
 
     property int panelUserSetAlignment: plasmoid.configuration.alignment
 
-    property real zoomFactor: Latte.WindowSystem.compositingActive && root.animationsEnabled ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
+    property real zoomFactor: LatteCore.WindowSystem.compositingActive && root.animationsEnabled ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
@@ -524,10 +525,10 @@ Item {
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
     //! Animations
-    property bool animationsEnabled: plasmoid.configuration.animationsEnabled && Latte.WindowSystem.compositingActive
+    property bool animationsEnabled: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
 
-    readonly property int shortDuration: Latte.WindowSystem.shortDuration
-    readonly property int longDuration: Latte.WindowSystem.longDuration
+    readonly property int shortDuration: LatteCore.WindowSystem.shortDuration
+    readonly property int longDuration: LatteCore.WindowSystem.longDuration
 
     property real appliedDurationTime: animationsEnabled ? durationTime : animationsSpeed2
     readonly property real animationsSpeed1: 0.75
@@ -551,7 +552,7 @@ Item {
     }
 
     property real animationsZoomFactor : {
-        if (!animationsEnabled || !Latte.WindowSystem.compositingActive) {
+        if (!animationsEnabled || !LatteCore.WindowSystem.compositingActive) {
             return 1;
         }
 
@@ -1462,7 +1463,7 @@ Item {
     ////BEGIN interfaces
 
     Connections {
-        target: Latte.WindowSystem
+        target: LatteCore.WindowSystem
 
         onCompositingActiveChanged: {
             visibilityManager.updateMaskArea();

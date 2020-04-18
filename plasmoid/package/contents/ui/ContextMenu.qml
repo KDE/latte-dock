@@ -28,6 +28,7 @@ import org.kde.activities 0.1 as Activities
 import org.kde.taskmanager 0.1 as TaskManager
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 import "../code/activitiesTools.js" as ActivitiesTools
 
@@ -88,7 +89,7 @@ PlasmaComponents.ContextMenu {
         // backend.ungrabMouse(visualParent);
         openRelative();
 
-        if (Latte.WindowSystem.isPlatformWayland){
+        if (LatteCore.WindowSystem.isPlatformWayland){
             //!Hiding previews under wayland it needs a delay otherwise it creates crashes
             windowsPreviewCheckerToNotShowTimer.start();
         } else {
@@ -121,7 +122,7 @@ PlasmaComponents.ContextMenu {
         var sections = [];
 
         //From Plasma 5.10 and frameworks 5.34, places are also supported
-        if (Latte.WindowSystem.frameworksVersion >= 336384
+        if (LatteCore.WindowSystem.frameworksVersion >= 336384
                 && (typeof backend.placesActions === "function")) {
             sections = [
                         {
@@ -319,7 +320,7 @@ PlasmaComponents.ContextMenu {
 
         //From Plasma 5.10 and frameworks 5.34 jumpLists and
         //places are supported
-        if (Latte.WindowSystem.frameworksVersion >= 336384) {
+        if (LatteCore.WindowSystem.frameworksVersion >= 336384) {
             // Cannot have "Connections" as child of PlasmaCoponents.ContextMenu.
             backend.showAllPlaces.connect(function() {
                 visualParent.showContextMenu({showAllPlaces: true});

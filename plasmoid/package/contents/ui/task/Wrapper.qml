@@ -22,7 +22,7 @@ import QtQuick 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Item{
     id: wrapper
@@ -259,7 +259,7 @@ Item{
     }
 
     Component.onCompleted: {
-        if (!Latte.WindowSystem.compositingActive) {
+        if (!LatteCore.WindowSystem.compositingActive) {
             opacity = 1;
         }
 

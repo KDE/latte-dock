@@ -26,6 +26,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 PlasmaCore.FrameSvgItem {
     id: dialog
@@ -49,7 +50,7 @@ PlasmaCore.FrameSvgItem {
             Layout.fillWidth: true
             Layout.minimumHeight: logo.height
 
-            Latte.IconItem {
+            LatteCore.IconItem {
                 id: logo
                 anchors.centerIn: parent
 

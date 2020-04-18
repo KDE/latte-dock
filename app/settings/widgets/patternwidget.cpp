@@ -21,7 +21,7 @@
 #include "patternwidget.h"
 
 //! local
-#include "../../../liblatte2/commontools.h"
+#include "../../tools/commontools.h"
 
 //! Qt
 #include <QDebug>

@@ -30,7 +30,6 @@
 #include "../screenpool.h"
 #include "../layouts/manager.h"
 #include "../wm/abstractwindowinterface.h"
-#include "../../liblatte2/extras.h"
 
 // Qt
 #include <QDebug>

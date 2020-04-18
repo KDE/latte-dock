@@ -25,7 +25,7 @@
 #include "../../layouts/importer.h"
 #include "../../view/panelshadows_p.h"
 #include "../../wm/schemecolors.h"
-#include "../../../liblatte2/commontools.h"
+#include "../../tools/commontools.h"
 
 // Qt
 #include <QDebug>

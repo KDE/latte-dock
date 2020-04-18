@@ -26,7 +26,7 @@
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
-#include "../../liblatte2/types.h"
+#include "../types/types.h"
 
 // Qt
 #include <QDebug>

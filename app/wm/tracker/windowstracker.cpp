@@ -31,7 +31,6 @@
 #include "../../layouts/manager.h"
 #include "../../view/view.h"
 #include "../../view/positioner.h"
-#include "../../../liblatte2/types.h"
 
 namespace Latte {
 namespace WindowSystem {

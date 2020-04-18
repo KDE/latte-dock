@@ -23,7 +23,7 @@
 #include "panelshadows_p.h"
 #include "view.h"
 #include "settings/primaryconfigview.h"
-#include "../../liblatte2/types.h"
+#include "../types/types.h"
 
 // Qt
 #include <QRegion>

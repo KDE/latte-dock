@@ -36,7 +36,6 @@
 #include "../settings/universalsettings.h"
 #include "../shortcuts/globalshortcuts.h"
 #include "../shortcuts/shortcutstracker.h"
-#include "../../liblatte2/extras.h"
 
 // Qt
 #include <QAction>

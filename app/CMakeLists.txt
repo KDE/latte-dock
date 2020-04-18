@@ -1,6 +1,4 @@
 set(lattedock-app_SRCS
-    ../liblatte2/commontools.cpp
-    ../liblatte2/types.cpp
     alternativeshelper.cpp
     infoview.cpp
     lattecorona.cpp
@@ -24,6 +22,8 @@ add_subdirectory(settings/tools)
 add_subdirectory(settings/views)
 add_subdirectory(settings/widgets)
 add_subdirectory(shortcuts)
+add_subdirectory(tools)
+add_subdirectory(types)
 add_subdirectory(view)
 add_subdirectory(view/helpers)
 add_subdirectory(view/indicator)

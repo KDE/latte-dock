@@ -30,6 +30,7 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 PlasmaComponents.Page {
@@ -863,7 +864,7 @@ PlasmaComponents.Page {
                 Layout.maximumWidth: Layout.minimumWidth
                 Layout.minimumHeight: implicitHeight
                 Layout.bottomMargin: units.smallSpacing
-                enabled: Latte.WindowSystem.compositingActive
+                enabled: LatteCore.WindowSystem.compositingActive
 
                 checked: plasmoid.configuration.useThemePanel
                 text: i18n("Background")
@@ -882,7 +883,7 @@ PlasmaComponents.Page {
                 RowLayout {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
-                    enabled: Latte.WindowSystem.compositingActive
+                    enabled: LatteCore.WindowSystem.compositingActive
 
                     PlasmaComponents.Label {
                         enabled: showBackground.checked
@@ -931,7 +932,7 @@ PlasmaComponents.Page {
                 RowLayout {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
-                    enabled: Latte.WindowSystem.compositingActive
+                    enabled: LatteCore.WindowSystem.compositingActive
 
                     PlasmaComponents.Label {
                         text: plasmoid.configuration.backgroundOnlyOnMaximized && plasmoid.configuration.solidBackgroundForMaximized ?
@@ -1003,7 +1004,7 @@ PlasmaComponents.Page {
                         text: i18n("Blur")
                         checked: plasmoid.configuration.blurEnabled
                         checkable: true
-                        enabled: showBackground.checked && Latte.WindowSystem.compositingActive
+                        enabled: showBackground.checked && LatteCore.WindowSystem.compositingActive
                         tooltip: i18n("Background is blurred underneath")
 
                         onClicked: {
@@ -1018,7 +1019,7 @@ PlasmaComponents.Page {
                         text: i18n("Shadows")
                         checked: plasmoid.configuration.panelShadows
                         checkable: true
-                        enabled: showBackground.checked && Latte.WindowSystem.compositingActive
+                        enabled: showBackground.checked && LatteCore.WindowSystem.compositingActive
                         tooltip: i18n("Background shows its shadows")
 
                         onClicked: {
@@ -1045,11 +1046,11 @@ PlasmaComponents.Page {
                 LatteComponents.SubHeader {
                     visible: dialog.expertLevel
                     text: i18nc("dynamic visibility for background", "Dynamic Visibility")
-                    enabled: Latte.WindowSystem.compositingActive
+                    enabled: LatteCore.WindowSystem.compositingActive
                 }
 
                 LatteComponents.CheckBoxesColumn {
-                    enabled: Latte.WindowSystem.compositingActive
+                    enabled: LatteCore.WindowSystem.compositingActive
                     LatteComponents.CheckBox {
                         id: solidForMaximizedChk
                         Layout.maximumWidth: dialog.optionsWidth
@@ -1096,7 +1097,7 @@ PlasmaComponents.Page {
                 LatteComponents.SubHeader {
                     visible: dialog.expertLevel
                     text: i18n("Exceptions")
-                    enabled: Latte.WindowSystem.compositingActive
+                    enabled: LatteCore.WindowSystem.compositingActive
                 }
 
                 LatteComponents.CheckBox {

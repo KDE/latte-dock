@@ -26,6 +26,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 LatteComponents.IndicatorItem{
@@ -113,7 +114,7 @@ LatteComponents.IndicatorItem{
 
                 size: root.size
                 glow3D: glow3D
-                animation: Math.max(1.65*3*Latte.WindowSystem.longDuration,indicator.durationTime*3*Latte.WindowSystem.longDuration)
+                animation: Math.max(1.65*3*LatteCore.WindowSystem.longDuration,indicator.durationTime*3*LatteCore.WindowSystem.longDuration)
                 location: plasmoid.location
                 glowOpacity: root.glowOpacity
                 contrastColor: indicator.shadowColor
@@ -134,7 +135,7 @@ LatteComponents.IndicatorItem{
                 property int stateWidth: indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width
                 property int stateHeight: indicator.isGroup ? root.height - secondPoint.height : root.height - spacer.height
 
-                property int animationTime: indicator.durationTime* (0.7*Latte.WindowSystem.longDuration)
+                property int animationTime: indicator.durationTime* (0.7*LatteCore.WindowSystem.longDuration)
 
                 property bool isActive: indicator.hasActive || indicator.isActive
 
@@ -228,7 +229,7 @@ LatteComponents.IndicatorItem{
 
                 size: root.size
                 glow3D: glow3D
-                animation: Math.max(1.65*3*Latte.WindowSystem.longDuration,indicator.durationTime*3*Latte.WindowSystem.longDuration)
+                animation: Math.max(1.65*3*LatteCore.WindowSystem.longDuration,indicator.durationTime*3*LatteCore.WindowSystem.longDuration)
                 location: plasmoid.location
                 glowOpacity: root.glowOpacity
                 contrastColor: indicator.shadowColor

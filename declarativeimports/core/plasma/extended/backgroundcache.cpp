@@ -94,7 +94,8 @@ void BackgroundCache::settingsFileChanged(const QString &file) {
     }
 }
 
-QString BackgroundCache::backgroundFromConfig(const KConfigGroup &config, QString wallpaperPlugin) const {
+QString BackgroundCache::backgroundFromConfig(const KConfigGroup &config, QString wallpaperPlugin) const
+{
     auto wallpaperConfig = config.group("Wallpaper").group(wallpaperPlugin).group("General");
 
     if (wallpaperConfig.hasKey("Image")) {
@@ -187,7 +188,7 @@ void BackgroundCache::reload()
     }
 }
 
-QString BackgroundCache::background(QString activity, QString screen)
+QString BackgroundCache::background(QString activity, QString screen) const
 {
     if (m_backgrounds.contains(activity) && m_backgrounds[activity].contains(screen)) {
         return m_backgrounds[activity][screen];
@@ -241,7 +242,7 @@ float BackgroundCache::brightnessFromArea(QImage &image, int firstRow, int first
     return areaBrightness;
 }
 
-bool BackgroundCache::areaIsBusy(float bright1, float bright2)
+bool BackgroundCache::areaIsBusy(float bright1, float bright2) const
 {
     bool bright1IsLight = bright1>=123;
     bool bright2IsLight = bright2>=123;
@@ -460,12 +461,12 @@ void BackgroundCache::setBroadcastedBackgroundsEnabled(QString activity, QString
     }
 }
 
-bool BackgroundCache::backgroundIsBroadcasted(QString activity, QString screenName)
+bool BackgroundCache::backgroundIsBroadcasted(QString activity, QString screenName) const
 {
     return m_broadcasted.contains(activity) && m_broadcasted[activity].contains(screenName);
 }
 
-bool BackgroundCache::pluginExistsFor(QString activity, QString screenName)
+bool BackgroundCache::pluginExistsFor(QString activity, QString screenName) const
 {
     return m_plugins.contains(activity) && m_plugins[activity].contains(screenName);
 }

@@ -22,7 +22,7 @@
 #define LAUNCHERSSIGNALS_H
 
 // local
-#include "../liblatte2/types.h"
+#include "../types/types.h"
 
 // Qt
 #include <QObject>

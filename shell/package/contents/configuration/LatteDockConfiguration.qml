@@ -35,6 +35,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 import "pages" as Pages
@@ -49,7 +50,7 @@ FocusScope {
 
     readonly property bool highLevel: advancedLevel || expertLevel
 
-    readonly property bool inConfigureAppletsMode: plasmoid.configuration.inConfigureAppletsMode || !Latte.WindowSystem.compositingActive
+    readonly property bool inConfigureAppletsMode: plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive
 
     //! max size based on screen resolution
     //!    TODO: if we can access availableScreenGeometry.height this can be improved, currently
@@ -260,7 +261,7 @@ FocusScope {
                 width: Qt.application.layoutDirection !== Qt.RightToLeft ? logo.width + latteTxt.width + units.smallSpacing : logo.width + units.smallSpacing
                 height: logo.height
 
-                Latte.IconItem {
+                LatteCore.IconItem {
                     id: logo
 
                     width: Math.round(1.4 * latteTxtMetrics.font.pixelSize)
@@ -706,9 +707,9 @@ FocusScope {
         shadowOpacity: Math.max(0.35, maxOpacity)
         shadowDirection: plasmoid.location
 
-        visible: !Latte.WindowSystem.isPlatformWayland && Latte.WindowSystem.compositingActive && latteView.effects.settingsMaskSubtracted
+        visible: !LatteCore.WindowSystem.isPlatformWayland && LatteCore.WindowSystem.compositingActive && latteView.effects.settingsMaskSubtracted
 
-        readonly property real maxOpacity: Latte.WindowSystem.compositingActive && !plasmoid.configuration.inConfigureAppletsMode ?
+        readonly property real maxOpacity: LatteCore.WindowSystem.compositingActive && !plasmoid.configuration.inConfigureAppletsMode ?
                                                plasmoid.configuration.editBackgroundOpacity : 1
     }
 }

@@ -25,6 +25,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Item{
     id: manager
@@ -50,7 +51,7 @@ Item{
 
     property int maskFloatedGap: maskIsFloating ? Math.max(0, root.localScreenEdgeMargin - root.panelShadow) : 0
 
-    property int animationSpeed: Latte.WindowSystem.compositingActive ?
+    property int animationSpeed: LatteCore.WindowSystem.compositingActive ?
                                      (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : root.appliedDurationTime * 1.62 * root.longDuration) : 0
 
     property bool inLocationAnimation: latteView && latteView.positioner && latteView.positioner.inLocationAnimation
@@ -70,7 +71,7 @@ Item{
         }
     }
 
-    property int thicknessAutoHidden: Latte.WindowSystem.compositingActive ?  2 : 1
+    property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
     property int thicknessMid: root.screenEdgeMargin + (1 + (0.65 * (root.maxZoomFactor-1)))*(root.iconSize+root.thickMargins+extraThickMask) //needed in some animations
     property int thicknessNormal: root.screenEdgeMargin + Math.max(root.iconSize + root.thickMargins + extraThickMask + 1, root.realPanelSize + root.panelShadow)
 
@@ -84,7 +85,7 @@ Item{
     property int thicknessNormalOriginalValue: root.screenEdgeMargin + root.maxIconSize + (root.maxThickMargin * 2) + extraThickMask + 1
     property int thicknessZoomOriginal:root.screenEdgeMargin + Math.max( ((root.maxIconSize+(root.maxThickMargin * 2)) * root.maxZoomFactor) + extraThickMask + 2,
                                                                         root.realPanelSize + root.panelShadow,
-                                                                        (Latte.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
+                                                                        (LatteCore.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
 
     //! is used from Panel in edit mode in order to provide correct masking
     property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness
@@ -97,7 +98,7 @@ Item{
     //! this is set from indicators when they need extra thickness mask size
     readonly property int indicatorsExtraThickMask: indicators.info.extraMaskThickness
     property int shadowsExtraThickMask: {
-        if (Latte.WindowSystem.isPlatformWayland) {
+        if (LatteCore.WindowSystem.isPlatformWayland) {
             return 0;
         }
 
@@ -261,10 +262,10 @@ Item{
         target: latteView && latteView.effects ? latteView.effects : null
         property: "drawEffects"
         when: latteView && latteView.effects
-        value: Latte.WindowSystem.compositingActive
+        value: LatteCore.WindowSystem.compositingActive
                && !root.inConfigureAppletsMode
                && (((root.blurEnabled && root.useThemePanel)
-                    || (root.blurEnabled && root.forceSolidPanel && Latte.WindowSystem.compositingActive))
+                    || (root.blurEnabled && root.forceSolidPanel && LatteCore.WindowSystem.compositingActive))
                    && (!root.inStartup || inForceHiding || inTempHiding))
     }
 
@@ -300,7 +301,7 @@ Item{
         property: "settingsMaskSubtracted"
         when: latteView && latteView.effects
         value: {
-            if (Latte.WindowSystem.compositingActive
+            if (LatteCore.WindowSystem.compositingActive
                     && root.editMode
                     && editModeVisual.editAnimationEnded
                     && (root.animationsNeedBothAxis === 0 || root.zoomFactor===1) ) {
@@ -355,7 +356,7 @@ Item{
     Connections{
         target: layoutsManager
         onCurrentLayoutIsSwitching: {
-            if (Latte.WindowSystem.compositingActive && latteView && latteView.layout && latteView.layout.name === layoutName) {
+            if (LatteCore.WindowSystem.compositingActive && latteView && latteView.layout && latteView.layout.name === layoutName) {
                 manager.inTempHiding = true;
                 manager.inForceHiding = true;
                 root.clearZoom();
@@ -485,7 +486,7 @@ Item{
 
         var space = 0;
 
-        if (Latte.WindowSystem.compositingActive) {
+        if (LatteCore.WindowSystem.compositingActive) {
             if (root.useThemePanel){
                 space = root.totalPanelEdgeSpacing + root.panelMarginLength + 1;
             } else {
@@ -495,9 +496,9 @@ Item{
             space = root.totalPanelEdgeSpacing + root.panelMarginLength;
         }
 
-        var noCompositingEdit = !Latte.WindowSystem.compositingActive && root.editMode;
+        var noCompositingEdit = !LatteCore.WindowSystem.compositingActive && root.editMode;
 
-        if (Latte.WindowSystem.compositingActive || noCompositingEdit) {
+        if (LatteCore.WindowSystem.compositingActive || noCompositingEdit) {
             if (normalState) {
                 //console.log("entered normal state...");
                 //count panel length
@@ -527,7 +528,7 @@ Item{
                 tempThickness = thicknessNormal;
 
                 if (root.animationsNeedThickness > 0) {
-                    tempThickness = Latte.WindowSystem.compositingActive ? thicknessZoom : thicknessNormal;
+                    tempThickness = LatteCore.WindowSystem.compositingActive ? thicknessZoom : thicknessNormal;
                 }
 
                 if (maskIsFloating) {
@@ -631,7 +632,7 @@ Item{
                 } else{
                     //use all thickness space
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                        tempThickness = Latte.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
+                        tempThickness = LatteCore.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
                     } else {
                         tempThickness = !maskIsFloating ? thicknessZoomOriginal : thicknessZoomOriginal - maskFloatedGap;
                     }
@@ -662,7 +663,7 @@ Item{
 
         var maskArea = latteView.effects.mask;
 
-        if (Latte.WindowSystem.compositingActive) {
+        if (LatteCore.WindowSystem.compositingActive) {
             var maskLength = maskArea.width; //in Horizontal
             if (root.isVertical) {
                 maskLength = maskArea.height;
@@ -723,7 +724,7 @@ Item{
                 newMaskArea.height = tempLength;
             }
 
-            if (!Latte.WindowSystem.compositingActive) {
+            if (!LatteCore.WindowSystem.compositingActive) {
                 latteView.effects.mask = newMaskArea;
             } else {
                 if (latteView.behaveAsPlasmaPanel && !root.editMode) {
@@ -838,7 +839,7 @@ Item{
                     return slidingOutToPos;
                 }
 
-                if (Latte.WindowSystem.compositingActive) {
+                if (LatteCore.WindowSystem.compositingActive) {
                     return slidingOutToPos;
                 } else {
                     if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {

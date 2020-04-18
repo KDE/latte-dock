@@ -25,6 +25,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 import "controls" as SettingsControls
 
@@ -127,7 +128,7 @@ Item {
         icon: SettingsControls.RearrangeIcon{}
 
         onPressedChanged: {
-            if (Latte.WindowSystem.compositingActive && pressed) {
+            if (LatteCore.WindowSystem.compositingActive && pressed) {
                 plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
             }
         }

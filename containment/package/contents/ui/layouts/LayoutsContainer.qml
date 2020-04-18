@@ -24,7 +24,9 @@ import QtQuick.Layouts 1.1
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
+
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 import "../../code/HeuristicTools.js" as HeuristicTools
 
@@ -66,7 +68,7 @@ Item{
                 }
 
                 if (layoutsContainer.isHidden && root.isVertical) {
-                    if (Latte.WindowSystem.compositingActive) {
+                    if (LatteCore.WindowSystem.compositingActive) {
                         return visibilityManager.slidingOutToPos;
                     } else {
                         if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
@@ -102,7 +104,7 @@ Item{
                 }
 
                 if (layoutsContainer.isHidden && root.isHorizontal) {
-                    if (Latte.WindowSystem.compositingActive) {
+                    if (LatteCore.WindowSystem.compositingActive) {
                         return visibilityManager.slidingOutToPos;
                     } else {
                         if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
