@@ -32,6 +32,7 @@
 #include "../../settings/universalsettings.h"
 #include "../../shortcuts/globalshortcuts.h"
 #include "../../shortcuts/shortcutstracker.h"
+#include "../../types/tasks.h"
 #include "../../wm/abstractwindowinterface.h"
 
 // Qt
@@ -623,13 +624,13 @@ void PrimaryConfigView::hideConfigWindow()
 
 void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
 {
-    Types::LaunchersGroup group = (Types::LaunchersGroup)groupInt;
+    Tasks::LaunchersGroup group = (Tasks::LaunchersGroup)groupInt;
 
     //! when the layout/global launchers list is empty then the current dock launchers are used for them
     //! as a start point
     if (m_corona &&  m_latteView->layout()) {
-        if ((group == Types::LayoutLaunchers && m_latteView->layout()->launchers().isEmpty())
-                || (group == Types::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
+        if ((group == Tasks::LayoutLaunchers && m_latteView->layout()->launchers().isEmpty())
+                || (group == Tasks::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
 
             Plasma::Containment *c = m_latteView->containment();
 
@@ -664,9 +665,9 @@ void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
                                 QVariant launchers;
 
                                 if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
-                                    if (group == Types::LayoutLaunchers) {
+                                    if (group == Tasks::LayoutLaunchers) {
                                         m_latteView->layout()->setLaunchers(launchers.toStringList());
-                                    } else if (group == Types::GlobalLaunchers) {
+                                    } else if (group == Tasks::GlobalLaunchers) {
                                         m_corona->universalSettings()->setLaunchers(launchers.toStringList());
                                     }
                                 }

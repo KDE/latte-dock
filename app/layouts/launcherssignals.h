@@ -21,9 +21,6 @@
 #ifndef LAUNCHERSSIGNALS_H
 #define LAUNCHERSSIGNALS_H
 
-// local
-#include "../types/types.h"
-
 // Qt
 #include <QObject>
 

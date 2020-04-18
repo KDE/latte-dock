@@ -29,7 +29,7 @@ Item{
 
     readonly property bool extraDotOnActive: plasmoid.configuration.dotsOnActive
     readonly property bool minimizedTaskColoredDifferently: plasmoid.configuration.threeColorsWindows
-    readonly property int activeStyle: Latte.Types.LineIndicator
+    readonly property int activeStyle: 0 //LineIndicator
 
     //!glow options
     readonly property bool glowEnabled: plasmoid.configuration.showGlow

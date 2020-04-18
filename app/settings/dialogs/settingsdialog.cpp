@@ -242,9 +242,9 @@ QMenu *SettingsDialog::helpMenu() const
     return m_helpMenu->menu();
 }
 
-Types::LatteConfigPage SettingsDialog::currentPage()
+ConfigurationPage SettingsDialog::currentPage()
 {
-    Types::LatteConfigPage cPage= static_cast<Types::LatteConfigPage>(m_ui->tabWidget->currentIndex());
+    ConfigurationPage cPage= static_cast<ConfigurationPage>(m_ui->tabWidget->currentIndex());
 
     return cPage;
 }
@@ -456,9 +456,9 @@ void SettingsDialog::reset()
         return;
     }
 
-    if (m_ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
+    if (m_ui->tabWidget->currentIndex() == LayoutPage) {
         m_tabLayoutsHandler->reset();
-    } else if (m_ui->tabWidget->currentIndex() == Latte::Types::PreferencesPage) {
+    } else if (m_ui->tabWidget->currentIndex() == PreferencesPage) {
         m_tabPreferencesHandler->reset();
     }
 }
@@ -467,9 +467,9 @@ void SettingsDialog::restoreDefaults()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (m_ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
+    if (m_ui->tabWidget->currentIndex() == LayoutPage) {
         //! do nothing, should be disabled
-    } else if (m_ui->tabWidget->currentIndex() == Latte::Types::PreferencesPage) {
+    } else if (m_ui->tabWidget->currentIndex() == PreferencesPage) {
         m_tabPreferencesHandler->resetDefaults();
     }
 }
@@ -480,8 +480,8 @@ void SettingsDialog::updateApplyButtonsState()
 
     //! Ok, Apply Buttons
 
-    if ((currentPage() == Latte::Types::LayoutPage && m_tabLayoutsHandler->dataAreChanged())
-            ||(currentPage() == Latte::Types::PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
+    if ((currentPage() == LayoutPage && m_tabLayoutsHandler->dataAreChanged())
+            ||(currentPage() == PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
         changed = true;
     }
 
@@ -494,9 +494,9 @@ void SettingsDialog::updateApplyButtonsState()
     }
 
     //! RestoreDefaults Button
-    if (m_ui->tabWidget->currentIndex() == Latte::Types::LayoutPage) {
+    if (m_ui->tabWidget->currentIndex() == LayoutPage) {
         m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setVisible(false);
-    } else if (m_ui->tabWidget->currentIndex() == Latte::Types::PreferencesPage) {
+    } else if (m_ui->tabWidget->currentIndex() == PreferencesPage) {
         m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setVisible(true);
 
         //! Defaults for general Latte settings
@@ -524,8 +524,8 @@ int SettingsDialog::saveChangesConfirmation()
 
 bool SettingsDialog::saveChanges()
 {
-    if ((m_acceptedPage == Latte::Types::LayoutPage && m_tabLayoutsHandler->dataAreChanged())
-        || (m_acceptedPage == Latte::Types::PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
+    if ((m_acceptedPage == LayoutPage && m_tabLayoutsHandler->dataAreChanged())
+        || (m_acceptedPage == PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
         int result = saveChangesConfirmation();
 
         if (result == QMessageBox::Apply) {
@@ -544,8 +544,8 @@ void SettingsDialog::on_currentTabChanged(int index)
 {
     //! Before switching into a new tab the user must confirm first if the data should be saved or not
 
-    if ((m_acceptedPage == Latte::Types::LayoutPage && m_tabLayoutsHandler->dataAreChanged())
-        || (m_acceptedPage == Latte::Types::PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
+    if ((m_acceptedPage == LayoutPage && m_tabLayoutsHandler->dataAreChanged())
+        || (m_acceptedPage == PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
 
         if (index != m_acceptedPage) {
             m_nextPage = index;
@@ -616,7 +616,7 @@ void SettingsDialog::showScreensInformation()
 
 void SettingsDialog::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (currentPage() == Types::LayoutPage){
+    if (currentPage() == LayoutPage){
         m_tabLayoutsHandler->on_dragEnterEvent(event);
     } else {
         QDialog::dragEnterEvent(event);
@@ -625,7 +625,7 @@ void SettingsDialog::dragEnterEvent(QDragEnterEvent *event)
 
 void SettingsDialog::dragLeaveEvent(QDragLeaveEvent *event)
 {
-    if (currentPage() == Types::LayoutPage){
+    if (currentPage() == LayoutPage){
         m_tabLayoutsHandler->on_dragLeaveEvent(event);
     } else {
         QDialog::dragLeaveEvent(event);
@@ -634,7 +634,7 @@ void SettingsDialog::dragLeaveEvent(QDragLeaveEvent *event)
 
 void SettingsDialog::dragMoveEvent(QDragMoveEvent *event)
 {
-    if (currentPage() == Types::LayoutPage){
+    if (currentPage() == LayoutPage){
         m_tabLayoutsHandler->on_dragMoveEvent(event);
     } else {
         QDialog::dragMoveEvent(event);
@@ -643,7 +643,7 @@ void SettingsDialog::dragMoveEvent(QDragMoveEvent *event)
 
 void SettingsDialog::dropEvent(QDropEvent *event)
 {
-    if (currentPage() == Types::LayoutPage){
+    if (currentPage() == LayoutPage){
         m_tabLayoutsHandler->on_dropEvent(event);
     } else {
         QDialog::dropEvent(event);
@@ -652,7 +652,7 @@ void SettingsDialog::dropEvent(QDropEvent *event)
 
 void SettingsDialog::keyReleaseEvent(QKeyEvent *event)
 {
-    if (event && currentPage() == Types::LayoutPage){
+    if (event && currentPage() == LayoutPage){
         m_tabLayoutsHandler->on_keyReleaseEvent(event);
     }
 
@@ -670,9 +670,9 @@ void SettingsDialog::save()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (currentPage() == Latte::Types::LayoutPage) {
+    if (currentPage() == LayoutPage) {
         m_tabLayoutsHandler->save();
-    } else if (currentPage() == Latte::Types::PreferencesPage) {
+    } else if (currentPage() == PreferencesPage) {
         m_tabPreferencesHandler->save();
     }
 }

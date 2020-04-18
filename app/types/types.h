@@ -94,31 +94,6 @@ public:
     };
     Q_ENUM(SessionType)
 
-    enum Modifier
-    {
-        Shift = 0,
-        Ctrl,
-        Alt,
-        Meta
-    };
-    Q_ENUM(Modifier);
-
-    enum ClickAction
-    {
-        LeftClick = 0,
-        MiddleClick,
-        RightClick
-    };
-    Q_ENUM(ClickAction);
-
-    enum ManualScrollType
-    {
-        ManualScrollDisabled = 0,
-        ManualScrollOnlyParallel,
-        ManualScrollVerticalHorizontal
-    };
-    Q_ENUM(ManualScrollType);
-
     enum ScrollAction
     {
         ScrollNone = 0,
@@ -128,52 +103,6 @@ public:
         ScrollToggleMinimized
     };
     Q_ENUM(ScrollAction);
-
-    enum TaskAction
-    {
-        NoneAction = 0,
-        Close,
-        NewInstance,
-        ToggleMinimized,
-        CycleThroughTasks,
-        ToggleGrouping,
-        PresentWindows,
-        PreviewWindows,
-        HighlightWindows,
-        PreviewAndHighlightWindows
-    };
-    Q_ENUM(TaskAction);
-
-    enum IndicatorStyle
-    {
-        LatteIndicator = 0,
-        PlasmaIndicator,
-        UnityIndicator
-    };
-    Q_ENUM(IndicatorStyle);
-
-    enum ActiveIndicatorType
-    {
-        LineIndicator = 0,
-        DotIndicator = 1
-    };
-    Q_ENUM(ActiveIndicatorType);
-
-    enum LaunchersGroup
-    {
-        UniqueLaunchers = 0,
-        LayoutLaunchers = 1,
-        GlobalLaunchers = 2
-    };
-    Q_ENUM(LaunchersGroup);
-
-    enum GlowGroup
-    {
-        GlowNone = -1,
-        GlowOnlyOnActive = 0,
-        GlowAll = 1
-    };
-    Q_ENUM(GlowGroup);
 
     enum ShadowGroup
     {
@@ -228,13 +157,6 @@ public:
         HighSensitivity
     };
     Q_ENUM(MouseSensitivity);
-
-    enum LatteConfigPage
-    {
-        LayoutPage = 0,
-        PreferencesPage
-    };
-    Q_ENUM(LatteConfigPage);
 
     enum SettingsComplexity
     {

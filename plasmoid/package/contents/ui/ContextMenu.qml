@@ -730,7 +730,7 @@ PlasmaComponents.ContextMenu {
             if (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) != -1) {
                 var launcher = get(atm.LauncherUrl);
 
-                if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
                     latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
                                                                              root.launchersGroup, launcher);
                 } else {
@@ -741,7 +741,7 @@ PlasmaComponents.ContextMenu {
 
             } else {
                 var launcher = get(atm.LauncherUrl);
-                if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
                     latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
                                                                           root.launchersGroup, launcher);
                 } else {
@@ -790,7 +790,7 @@ PlasmaComponents.ContextMenu {
                     result.clicked.connect(
                                 function() {
                                     if (result.checked) {
-                                        if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                                        if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
                                             latteView.layoutsManager.launchersSignals.addLauncherToActivity(root.viewLayoutName,
                                                                                                             root.launchersGroup, url, id);
                                         } else {
@@ -802,7 +802,7 @@ PlasmaComponents.ContextMenu {
                                             root.launchersUpdatedFor(url);
                                         }
                                     } else {
-                                        if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                                        if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
                                             latteView.layoutsManager.launchersSignals.removeLauncherFromActivity(root.viewLayoutName,
                                                                                                                  root.launchersGroup, url, id);
                                         } else {
@@ -861,7 +861,7 @@ PlasmaComponents.ContextMenu {
         onClicked: {
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
-            if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers) {
+            if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
                 latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
                                                                          root.launchersGroup, launcher);
             } else {
@@ -905,7 +905,7 @@ PlasmaComponents.ContextMenu {
             //root.removeLastSeparator();
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
-            if (latteView && root.launchersGroup >= Latte.Types.LayoutLaunchers) {
+            if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
                 latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
                                                                          root.launchersGroup, launcher);
             } else {

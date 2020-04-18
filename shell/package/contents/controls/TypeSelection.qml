@@ -78,7 +78,6 @@ Grid {
                 plasmoid.configuration.shadows = 2;
                 plasmoid.configuration.zoomLevel = 16;
                 plasmoid.configuration.titleTooltips = true;
-                plasmoid.configuration.activeIndicator = Latte.Types.InternalsIndicator;
                 //plasmoid.configuration.autoDecreaseIconSize = true;
 
                 //! Empty Areas
@@ -124,7 +123,6 @@ Grid {
                 plasmoid.configuration.shadows = 0;
                 plasmoid.configuration.zoomLevel = 0;
                 plasmoid.configuration.titleTooltips = false;
-                plasmoid.configuration.activeIndicator = Latte.Types.NoneIndicator;
                 //plasmoid.configuration.autoDecreaseIconSize = false;
 
                 //! Empty Areas

@@ -38,6 +38,7 @@
 #include "plasma/extended/screenpool.h"
 #include "plasma/extended/theme.h"
 #include "settings/universalsettings.h"
+#include "settings/dialogs/settingsdialog.h"
 #include "view/view.h"
 #include "view/windowstracker/windowstracker.h"
 #include "view/windowstracker/allscreenstracker.h"
@@ -1193,10 +1194,10 @@ void Corona::switchToLayout(QString layout)
 
 void Corona::showSettingsWindow(int page)
 {
-    Types::LatteConfigPage p = Types::LayoutPage;
+    Settings::Dialog::ConfigurationPage p = Settings::Dialog::LayoutPage;
 
-    if (page >= Types::LayoutPage && page <= Types::PreferencesPage) {
-        p = static_cast<Types::LatteConfigPage>(page);
+    if (page >= Settings::Dialog::LayoutPage && page <= Settings::Dialog::PreferencesPage) {
+        p = static_cast<Settings::Dialog::ConfigurationPage>(page);
     }
 
     m_layoutsManager->showLatteSettingsDialog(p);

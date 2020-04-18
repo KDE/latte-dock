@@ -36,7 +36,7 @@ PlasmaComponents.Page {
     Layout.maximumHeight: content.height + units.smallSpacing * 2
 
     property bool disableAllWindowsFunctionality: tasks.configuration.showWindowsOnlyFromLaunchers
-                                                  && plasmoid.configuration.activeIndicator === Latte.Types.NoneIndicator
+                                                  && !latteView.indicator.enabled
 
     ColumnLayout {
         id: content
@@ -361,7 +361,7 @@ PlasmaComponents.Page {
                         exclusiveGroup: launchersGroup
                         tooltip: i18n("Use a unique set of launchers for this view which is independent from any other view")
 
-                        readonly property int group: Latte.Types.UniqueLaunchers
+                        readonly property int group: Latte.Tasks.UniqueLaunchers
                     }
 
                     PlasmaComponents.Button {
@@ -376,7 +376,7 @@ PlasmaComponents.Page {
                         //! it is shown only when the user has activated that option manually from the text layout file
                         visible: tasks.configuration.launchersGroup === group
 
-                        readonly property int group: Latte.Types.LayoutLaunchers
+                        readonly property int group: Latte.Tasks.LayoutLaunchers
                     }
 
                     PlasmaComponents.Button {
@@ -388,7 +388,7 @@ PlasmaComponents.Page {
                         exclusiveGroup: launchersGroup
                         tooltip: i18n("Use the global set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views and between <b>different layouts</b>")
 
-                        readonly property int group: Latte.Types.GlobalLaunchers
+                        readonly property int group: Latte.Tasks.GlobalLaunchers
                     }
                 }
             }
@@ -513,11 +513,11 @@ PlasmaComponents.Page {
 
                         currentIndex: {
                             switch(tasks.configuration.leftClickAction) {
-                            case Latte.Types.PresentWindows:
+                            case Latte.Tasks.PresentWindows:
                                 return 0;
-                            case Latte.Types.CycleThroughTasks:
+                            case Latte.Tasks.CycleThroughTasks:
                                 return 1;
-                            case Latte.Types.PreviewWindows:
+                            case Latte.Tasks.PreviewWindows:
                                 return 2;
                             }
 
@@ -527,13 +527,13 @@ PlasmaComponents.Page {
                         onCurrentIndexChanged: {
                             switch(currentIndex) {
                             case 0:
-                                tasks.configuration.leftClickAction = Latte.Types.PresentWindows;
+                                tasks.configuration.leftClickAction = Latte.Tasks.PresentWindows;
                                 break;
                             case 1:
-                                tasks.configuration.leftClickAction = Latte.Types.CycleThroughTasks;
+                                tasks.configuration.leftClickAction = Latte.Tasks.CycleThroughTasks;
                                 break;
                             case 2:
-                                tasks.configuration.leftClickAction = Latte.Types.PreviewWindows;
+                                tasks.configuration.leftClickAction = Latte.Tasks.PreviewWindows;
                                 break;
                             }
                         }
@@ -576,13 +576,13 @@ PlasmaComponents.Page {
 
                         currentIndex: {
                             switch(tasks.configuration.hoverAction) {
-                            case Latte.Types.NoneAction:
+                            case Latte.Tasks.NoneAction:
                                 return 0;
-                            case Latte.Types.PreviewWindows:
+                            case Latte.Tasks.PreviewWindows:
                                 return 1;
-                            case Latte.Types.HighlightWindows:
+                            case Latte.Tasks.HighlightWindows:
                                 return 2;
-                            case Latte.Types.PreviewAndHighlightWindows:
+                            case Latte.Tasks.PreviewAndHighlightWindows:
                                 return 3;
                             }
 
@@ -592,16 +592,16 @@ PlasmaComponents.Page {
                         onCurrentIndexChanged: {
                             switch(currentIndex) {
                             case 0:
-                                tasks.configuration.hoverAction = Latte.Types.NoneAction;
+                                tasks.configuration.hoverAction = Latte.Tasks.NoneAction;
                                 break;
                             case 1:
-                                tasks.configuration.hoverAction = Latte.Types.PreviewWindows;
+                                tasks.configuration.hoverAction = Latte.Tasks.PreviewWindows;
                                 break;
                             case 2:
-                                tasks.configuration.hoverAction = Latte.Types.HighlightWindows;
+                                tasks.configuration.hoverAction = Latte.Tasks.HighlightWindows;
                                 break;
                             case 3:
-                                tasks.configuration.hoverAction = Latte.Types.PreviewAndHighlightWindows;
+                                tasks.configuration.hoverAction = Latte.Tasks.PreviewAndHighlightWindows;
                                 break;
                             }
                         }
@@ -620,32 +620,8 @@ PlasmaComponents.Page {
                             i18n("Cycle And Minimize Tasks")
                         ]
 
-                        currentIndex: {
-                            switch(tasks.configuration.taskScrollAction) {
-                            case Latte.Types.NoneAction:
-                                return 0;
-                            case Latte.Types.ScrollTasks:
-                                return 1;
-                            case Latte.Types.ScrollToggleMinimized:
-                                return 2;
-                            }
-
-                            return 0;
-                        }
-
-                        onCurrentIndexChanged: {
-                            switch(currentIndex) {
-                            case 0:
-                                tasks.configuration.taskScrollAction = Latte.Types.NoneAction;
-                                break;
-                            case 1:
-                                tasks.configuration.taskScrollAction = Latte.Types.ScrollTasks;
-                                break;
-                            case 2:
-                                tasks.configuration.taskScrollAction = Latte.Types.ScrollToggleMinimized;
-                                break;
-                            }
-                        }
+                        currentIndex: tasks.configuration.taskScrollAction
+                        onCurrentIndexChanged: tasks.configuration.taskScrollAction = currentIndex
                     }
 
                     RowLayout {

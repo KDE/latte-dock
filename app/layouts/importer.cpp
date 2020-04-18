@@ -40,6 +40,12 @@
 #include <KLocalizedString>
 #include <KNotification>
 
+enum SessionType
+{
+    DefaultSession = 0,
+    AlternativeSession
+};
+
 namespace Latte {
 namespace Layouts {
 
@@ -106,14 +112,14 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
         KConfigGroup containmentGroup = containments.group(containmentId);
 
         QString plugin = containmentGroup.readEntry("plugin", QString());
-        Types::SessionType session = (Types::SessionType)containmentGroup.readEntry("session", (int)Types::DefaultSession);
+        SessionType session = (SessionType)containmentGroup.readEntry("session", (int)DefaultSession);
 
         bool shouldImport = false;
 
-        if (plugin == "org.kde.latte.containment" && session == Types::DefaultSession && !alternative) {
+        if (plugin == "org.kde.latte.containment" && session == DefaultSession && !alternative) {
             qDebug() << containmentId << " - " << plugin << " - " << session;
             shouldImport = true;
-        } else if (plugin == "org.kde.latte.containment" && session == Types::AlternativeSession && alternative) {
+        } else if (plugin == "org.kde.latte.containment" && session == AlternativeSession && alternative) {
             qDebug() << containmentId << " - " << plugin << " - " << session;
             shouldImport = true;
         }

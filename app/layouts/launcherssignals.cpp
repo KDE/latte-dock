@@ -25,6 +25,7 @@
 #include "../layout/centrallayout.h"
 #include "../layouts/manager.h"
 #include "../layouts/synchronizer.h"
+#include "../types/tasks.h"
 
 // Qt
 #include <QQuickItem>
@@ -74,13 +75,13 @@ QList<Plasma::Applet *> LaunchersSignals::lattePlasmoids(QString layoutName)
 
 void LaunchersSignals::addLauncher(QString layoutName, int launcherGroup, QString launcher)
 {
-    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
+    Tasks::LaunchersGroup group = static_cast<Tasks::LaunchersGroup>(launcherGroup);
 
-    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
+    if ((Tasks::LaunchersGroup)group == Tasks::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Tasks::LayoutLaunchers) ? layoutName : "";
 
     for(const auto applet : lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -108,13 +109,13 @@ void LaunchersSignals::addLauncher(QString layoutName, int launcherGroup, QStrin
 
 void LaunchersSignals::removeLauncher(QString layoutName, int launcherGroup, QString launcher)
 {
-    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
+    Tasks::LaunchersGroup group = static_cast<Tasks::LaunchersGroup>(launcherGroup);
 
-    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
+    if ((Tasks::LaunchersGroup)group == Tasks::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Tasks::LayoutLaunchers) ? layoutName : "";
 
     for(const auto applet : lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -142,13 +143,13 @@ void LaunchersSignals::removeLauncher(QString layoutName, int launcherGroup, QSt
 
 void LaunchersSignals::addLauncherToActivity(QString layoutName, int launcherGroup, QString launcher, QString activity)
 {
-    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
+    Tasks::LaunchersGroup group = static_cast<Tasks::LaunchersGroup>(launcherGroup);
 
-    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
+    if ((Tasks::LaunchersGroup)group == Tasks::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Tasks::LayoutLaunchers) ? layoutName : "";
 
     for(const auto applet : lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -176,13 +177,13 @@ void LaunchersSignals::addLauncherToActivity(QString layoutName, int launcherGro
 
 void LaunchersSignals::removeLauncherFromActivity(QString layoutName, int launcherGroup, QString launcher, QString activity)
 {
-    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
+    Tasks::LaunchersGroup group = static_cast<Tasks::LaunchersGroup>(launcherGroup);
 
-    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
+    if ((Tasks::LaunchersGroup)group == Tasks::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Tasks::LayoutLaunchers) ? layoutName : "";
 
     for(const auto applet : lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -210,13 +211,13 @@ void LaunchersSignals::removeLauncherFromActivity(QString layoutName, int launch
 
 void LaunchersSignals::urlsDropped(QString layoutName, int launcherGroup, QStringList urls)
 {
-    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
+    Tasks::LaunchersGroup group = static_cast<Tasks::LaunchersGroup>(launcherGroup);
 
-    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
+    if ((Tasks::LaunchersGroup)group == Tasks::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Tasks::LayoutLaunchers) ? layoutName : "";
 
     for(const auto applet : lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -244,13 +245,13 @@ void LaunchersSignals::urlsDropped(QString layoutName, int launcherGroup, QStrin
 
 void LaunchersSignals::moveTask(QString layoutName, uint senderId, int launcherGroup, int from, int to)
 {
-    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
+    Tasks::LaunchersGroup group = static_cast<Tasks::LaunchersGroup>(launcherGroup);
 
-    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
+    if ((Tasks::LaunchersGroup)group == Tasks::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Tasks::LayoutLaunchers) ? layoutName : "";
 
     for(const auto applet : lattePlasmoids(lName)) {
         if (applet->id() != senderId) {
@@ -280,13 +281,13 @@ void LaunchersSignals::moveTask(QString layoutName, uint senderId, int launcherG
 
 void LaunchersSignals::validateLaunchersOrder(QString layoutName, uint senderId, int launcherGroup, QStringList launchers)
 {
-    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
+    Tasks::LaunchersGroup group = static_cast<Tasks::LaunchersGroup>(launcherGroup);
 
-    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
+    if ((Tasks::LaunchersGroup)group == Tasks::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Tasks::LayoutLaunchers) ? layoutName : "";
 
     for(const auto applet : lattePlasmoids(lName)) {
         if (applet->id() != senderId) {

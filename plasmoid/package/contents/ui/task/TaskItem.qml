@@ -790,7 +790,7 @@ MouseArea{
     onPressed: {
         //console.log("Pressed Task Delegate..");
         if (LatteCore.WindowSystem.compositingActive && !LatteCore.WindowSystem.isPlatformWayland) {
-            if(root.leftClickAction !== Latte.Types.PreviewWindows) {
+            if(root.leftClickAction !== Latte.Tasks.PreviewWindows) {
                 isAbleToShowPreview = false;
                 windowsPreviewDlg.hide(2);
             }
@@ -831,18 +831,18 @@ MouseArea{
 
             if (modifierAccepted(mouse) && !root.disableAllWindowsFunctionality){
                 if( !taskItem.isLauncher ){
-                    if (root.modifierClickAction == Latte.Types.NewInstance) {
+                    if (root.modifierClickAction == Latte.Tasks.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
-                    } else if (root.modifierClickAction == Latte.Types.Close) {
+                    } else if (root.modifierClickAction == Latte.Tasks.Close) {
                         tasksModel.requestClose(modelIndex());
-                    } else if (root.modifierClickAction == Latte.Types.ToggleMinimized) {
+                    } else if (root.modifierClickAction == Latte.Tasks.ToggleMinimized) {
                         tasksModel.requestToggleMinimized(modelIndex());
-                    } else if ( root.modifierClickAction == Latte.Types.CycleThroughTasks) {
+                    } else if ( root.modifierClickAction == Latte.Tasks.CycleThroughTasks) {
                         if (isGroupParent)
                             subWindows.activateNextTask();
                         else
                             activateTask();
-                    } else if (root.modifierClickAction == Latte.Types.ToggleGrouping) {
+                    } else if (root.modifierClickAction == Latte.Tasks.ToggleGrouping) {
                         tasksModel.requestToggleGrouping(modelIndex());
                     }
                 } else {
@@ -850,18 +850,18 @@ MouseArea{
                 }
             } else if (mouse.button == Qt.MidButton && !root.disableAllWindowsFunctionality){
                 if( !taskItem.isLauncher ){
-                    if (root.middleClickAction == Latte.Types.NewInstance) {
+                    if (root.middleClickAction == Latte.Tasks.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
-                    } else if (root.middleClickAction == Latte.Types.Close) {
+                    } else if (root.middleClickAction == Latte.Tasks.Close) {
                         tasksModel.requestClose(modelIndex());
-                    } else if (root.middleClickAction == Latte.Types.ToggleMinimized) {
+                    } else if (root.middleClickAction == Latte.Tasks.ToggleMinimized) {
                         tasksModel.requestToggleMinimized(modelIndex());
-                    } else if ( root.middleClickAction == Latte.Types.CycleThroughTasks) {
+                    } else if ( root.middleClickAction == Latte.Tasks.CycleThroughTasks) {
                         if (isGroupParent)
                             subWindows.activateNextTask();
                         else
                             activateTask();
-                    } else if (root.middleClickAction == Latte.Types.ToggleGrouping) {
+                    } else if (root.middleClickAction == Latte.Tasks.ToggleGrouping) {
                         tasksModel.requestToggleGrouping(modelIndex());
                     }
                 } else {
@@ -869,19 +869,19 @@ MouseArea{
                 }
             } else if (mouse.button == Qt.LeftButton){
                 if( !taskItem.isLauncher ){
-                    if ( (root.leftClickAction === Latte.Types.PreviewWindows && isGroupParent)
+                    if ( (root.leftClickAction === Latte.Tasks.PreviewWindows && isGroupParent)
                             || ( (LatteCore.WindowSystem.isPlatformWayland || !LatteCore.WindowSystem.compositingActive)
-                                && root.leftClickAction === Latte.Types.PresentWindows
+                                && root.leftClickAction === Latte.Tasks.PresentWindows
                                 && isGroupParent) ) {
                         if(windowsPreviewDlg.activeItem !== taskItem){
                             showPreviewWindow();
                         } else {
                             hidePreviewWindow();
                         }
-                    } else if ( (root.leftClickAction === Latte.Types.PresentWindows && !(isGroupParent && !LatteCore.WindowSystem.compositingActive))
-                               || ((root.leftClickAction === Latte.Types.PreviewWindows && !isGroupParent)) ) {
+                    } else if ( (root.leftClickAction === Latte.Tasks.PresentWindows && !(isGroupParent && !LatteCore.WindowSystem.compositingActive))
+                               || ((root.leftClickAction === Latte.Tasks.PreviewWindows && !isGroupParent)) ) {
                         activateTask();
-                    } else if (root.leftClickAction === Latte.Types.CycleThroughTasks) {
+                    } else if (root.leftClickAction === Latte.Tasks.CycleThroughTasks) {
                         if (isGroupParent)
                             subWindows.activateNextTask();
                         else
@@ -934,8 +934,8 @@ MouseArea{
 
             var overflowScrollingAccepted = (root.manualScrollTasksEnabled
                                              && scrollableList.contentsExceed
-                                             && (root.manualScrollTasksType === Latte.Types.ManualScrollVerticalHorizontal
-                                                 || (root.manualScrollTasksType === Latte.Types.ManualScrollOnlyParallel && parallelScrolling)) );
+                                             && (root.manualScrollTasksType === Latte.Tasks.ManualScrollVerticalHorizontal
+                                                 || (root.manualScrollTasksType === Latte.Tasks.ManualScrollOnlyParallel && parallelScrolling)) );
 
 
             if (overflowScrollingAccepted) {
@@ -962,8 +962,8 @@ MouseArea{
 
             var overflowScrollingAccepted = (root.manualScrollTasksEnabled
                                              && scrollableList.contentsExceed
-                                             && (root.manualScrollTasksType === Latte.Types.ManualScrollVerticalHorizontal
-                                                 || (root.manualScrollTasksType === Latte.Types.ManualScrollOnlyParallel && parallelScrolling)) );
+                                             && (root.manualScrollTasksType === Latte.Tasks.ManualScrollVerticalHorizontal
+                                                 || (root.manualScrollTasksType === Latte.Tasks.ManualScrollOnlyParallel && parallelScrolling)) );
 
 
             if (overflowScrollingAccepted) {
@@ -972,7 +972,7 @@ MouseArea{
                 if (isLauncher || root.disableAllWindowsFunctionality) {
                     // do nothing
                 } else if (isGroupParent) {
-                    if (root.taskScrollAction === Latte.Types.ScrollToggleMinimized) {
+                    if (root.taskScrollAction === Latte.Tasks.ScrollToggleMinimized) {
                         subWindows.minimizeTask();
                     } else {
                         subWindows.activatePreviousTask();
@@ -980,7 +980,7 @@ MouseArea{
                 } else {
                     var taskIndex = modelIndex();
 
-                    var hidingTask = (!isMinimized && root.taskScrollAction === Latte.Types.ScrollToggleMinimized);
+                    var hidingTask = (!isMinimized && root.taskScrollAction === Latte.Tasks.ScrollToggleMinimized);
 
                     if (isMinimized || hidingTask) {
                         tasksModel.requestToggleMinimized(taskIndex);
@@ -1264,9 +1264,9 @@ MouseArea{
 
     function modifierAccepted(mouse){
         if (mouse.modifiers & root.modifierQt){
-            if ((mouse.button === Qt.LeftButton && root.modifierClick === Latte.Types.LeftClick)
-                    || (mouse.button === Qt.MiddleButton && root.modifierClick === Latte.Types.MiddleClick)
-                    || (mouse.button === Qt.RightButton && root.modifierClick === Latte.Types.RightClick))
+            if ((mouse.button === Qt.LeftButton && root.modifierClick === Latte.Tasks.LeftClick)
+                    || (mouse.button === Qt.MiddleButton && root.modifierClick === Latte.Tasks.MiddleClick)
+                    || (mouse.button === Qt.RightButton && root.modifierClick === Latte.Tasks.RightClick))
                 return true;
         }
 

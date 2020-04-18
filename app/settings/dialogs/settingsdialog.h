@@ -58,6 +58,12 @@ namespace Latte {
 namespace Settings {
 namespace Dialog {
 
+enum ConfigurationPage
+{
+    LayoutPage = 0,
+    PreferencesPage
+};
+
 class SettingsDialog : public GenericDialog
 {
     Q_OBJECT
@@ -77,7 +83,7 @@ public:
     QSize downloadWindowSize() const;
     void setDownloadWindowSize(const QSize &size);
 
-    Types::LatteConfigPage currentPage();
+    ConfigurationPage currentPage();
     void setCurrentPage(int page);
     void toggleCurrentPage();
 

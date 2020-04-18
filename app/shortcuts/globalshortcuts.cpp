@@ -27,6 +27,7 @@
 #include "../layout/centrallayout.h"
 #include "../layouts/manager.h"
 #include "../layouts/synchronizer.h"
+#include "../settings/dialogs/settingsdialog.h"
 #include "../settings/universalsettings.h"
 #include "../view/containmentinterface.h"
 #include "../view/view.h"
@@ -122,7 +123,7 @@ void GlobalShortcuts::init()
     KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_W));
     connect(layoutsAction, &QAction::triggered, this, [this]() {
         m_modifierTracker->cancelMetaPressed();
-        m_corona->layoutsManager()->showLatteSettingsDialog(Types::PreferencesPage, true);
+        m_corona->layoutsManager()->showLatteSettingsDialog(Settings::Dialog::PreferencesPage, true);
     });
 
     KActionCollection *taskbarActions = new KActionCollection(m_corona);

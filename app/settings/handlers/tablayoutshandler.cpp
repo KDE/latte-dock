@@ -687,7 +687,7 @@ void TabLayouts::on_layoutFilesDropped(const QStringList &paths)
 
 bool TabLayouts::isCurrentTab() const
 {
-    return (m_layoutMenu->isEnabled() && (m_parentDialog->currentPage() == Types::LayoutPage));
+    return (m_layoutMenu->isEnabled() && (m_parentDialog->currentPage() == Dialog::LayoutPage));
 }
 
 bool TabLayouts::isHoveringLayoutsTable(const QPoint &pos)
@@ -702,9 +702,9 @@ bool TabLayouts::isHoveringLayoutsTable(const QPoint &pos)
 
 void TabLayouts::on_currentPageChanged(int page)
 {
-    Types::LatteConfigPage cPage= static_cast<Types::LatteConfigPage>(page);
+    Dialog::ConfigurationPage cPage= static_cast<Dialog::ConfigurationPage>(page);
 
-    if (cPage == Types::LayoutPage) {
+    if (cPage == Dialog::LayoutPage) {
         m_layoutMenu->setEnabled(true);
         m_layoutMenu->menuAction()->setVisible(true);
 
@@ -772,7 +772,7 @@ void TabLayouts::on_dropEvent(QDropEvent *event)
 
 void TabLayouts::on_keyReleaseEvent(QKeyEvent *event)
 {
-    if (event && event->key() == Qt::Key_Delete && m_parentDialog->currentPage() == Types::LayoutPage){
+    if (event && event->key() == Qt::Key_Delete && m_parentDialog->currentPage() == Dialog::LayoutPage){
         on_remove_layout();
     }
 }
