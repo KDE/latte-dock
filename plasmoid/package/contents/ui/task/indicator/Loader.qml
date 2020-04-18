@@ -60,8 +60,8 @@ Loader {
 
     readonly property bool locked: inAttentionAnimation || inNewWindowAnimation || inBouncingAnimation
 
-    property real visualLockedWidth: root.vertical ? root.screenEdgeMargin + root.iconSize + root.internalWidthMargins : root.iconSize + root.internalWidthMargins
-    property real visualLockedHeight: !root.vertical ? root.screenEdgeMargin + root.iconSize + root.internalHeightMargins : root.iconSize + root.internalHeightMargins
+    property real visualLockedWidth: root.vertical ? root.screenEdgeMargin + containment.iconSize + root.internalWidthMargins : containment.iconSize + root.internalWidthMargins
+    property real visualLockedHeight: !root.vertical ? root.screenEdgeMargin + containment.iconSize + root.internalHeightMargins : containment.iconSize + root.internalHeightMargins
 
     //! Connections !//
 

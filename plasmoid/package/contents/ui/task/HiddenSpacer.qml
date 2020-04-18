@@ -64,7 +64,7 @@ Item{
             } else if (!inAttentionAnimation && !inMimicParabolicAnimation && !inFastRestoreAnimation) {
                 return (nScale > 0) ? (taskItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
             } else {
-                return (nScale > 0) ? (root.iconSize * nScale) + separatorSpace : separatorSpace;
+                return (nScale > 0) ? (containment.iconSize * nScale) + separatorSpace : separatorSpace;
             }
         }
     }

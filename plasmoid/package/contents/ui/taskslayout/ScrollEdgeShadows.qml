@@ -26,8 +26,8 @@ Item {
     id: shadowsContainer
     opacity: 0.4
 
-    readonly property int gradientLength: root.iconSize / 3
-    readonly property int thickness: latteView ? latteView.realPanelSize : root.iconSize + root.thickMargins
+    readonly property int gradientLength: containment.iconSize / 3
+    readonly property int thickness: latteView ? latteView.realPanelSize : containment.iconSize + root.thickMargins
     readonly property color appliedColor: root.appShadowColorSolid
 
     property Item flickable

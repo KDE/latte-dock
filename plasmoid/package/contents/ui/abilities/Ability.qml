@@ -19,11 +19,5 @@
 
 import QtQuick 2.7
 
-ContainmentPrivate {
-    id: apis
-
-    publicApi: Item {
-        readonly property alias iconSize: apis.iconSize
-        readonly property alias maxIconSize: apis.maxIconSize
-    }
+Item {
 }

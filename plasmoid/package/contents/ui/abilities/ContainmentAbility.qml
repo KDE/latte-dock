@@ -19,11 +19,10 @@
 
 import QtQuick 2.7
 
-ContainmentPrivate {
-    id: apis
+Item {
+    readonly property int iconSize: latteBridge ? latteBridge.containment.iconSize : localIconSize
+    readonly property int maxIconSize: latteBridge ? latteBridge.containment.maxIconSize : iconSize
 
-    publicApi: Item {
-        readonly property alias iconSize: apis.iconSize
-        readonly property alias maxIconSize: apis.maxIconSize
-    }
+    property int localIconSize: 48
+
 }

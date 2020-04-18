@@ -35,6 +35,7 @@ import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
+import "abilities" as Ability
 import "previews" as Previews
 import "task" as Task
 import "taskslayout" as TasksLayout
@@ -135,6 +136,7 @@ Item {
     property Item dragSource: null
     property Item parabolicManager: _parabolicManager
     property Item tasksExtendedManager: _tasksExtendedManager
+    readonly property Item containment: _containment
 
     readonly property alias containsDrag: mouseHandler.containsDrag
     readonly property bool dragAreaEnabled: latteView ? (root.dragSource !== null
@@ -185,9 +187,7 @@ Item {
     property int directRenderAnimationTime: latteView ? latteView.directRenderAnimationTime : 0
     property int dockHoveredIndex : latteView ? latteView.hoveredIndex : -1
 
-    property int iconSize: latteView ? latteView.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
     property int launchersGroup: plasmoid.configuration.launchersGroup
-    property int maxIconSize: latteView ? latteView.maxIconSize : iconSize
 
     property int leftClickAction: plasmoid.configuration.leftClickAction
     property int middleClickAction: plasmoid.configuration.middleClickAction
@@ -215,10 +215,10 @@ Item {
         }
     }
 
-    property int thickMargin: latteView ? latteView.thickMargin : 0.16*iconSize
+    property int thickMargin: latteView ? latteView.thickMargin : 0.16*containment.iconSize
     property int thickMargins: 2 * thickMargin
-    property int lengthIntMargin: latteView ? latteView.lengthIntMargin : 0.04*iconSize
-    property int lengthExtMargin: latteView ? latteView.lengthExtMargin : 0.1 * iconSize
+    property int lengthIntMargin: latteView ? latteView.lengthIntMargin : 0.04 * containment.iconSize
+    property int lengthExtMargin: latteView ? latteView.lengthExtMargin : 0.1 * containment.iconSize
     property int lengthMargin: lengthIntMargin + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
 
@@ -249,7 +249,7 @@ Item {
     property real durationTime: latteView ? latteView.durationTime : plasmoid.configuration.durationTime
     property real zoomFactor: latteView ? latteView.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
 
-    property int appShadowSize: latteView ? latteView.appShadowSize : Math.ceil(0.12*iconSize)
+    property int appShadowSize: latteView ? latteView.appShadowSize : Math.ceil(0.12*containment.iconSize)
     property string appShadowColor: latteView ? latteView.appShadowColor : "#ff080808"
     property string appShadowColorSolid: latteView ? latteView.appShadowColorSolid : "#ff080808"
 
@@ -967,9 +967,11 @@ Item {
         id: _tasksExtendedManager
     }
 
-    /*  IconsModel{
-        id: iconsmdl
-    }*/
+    Ability.ContainmentAbility {
+        id: _containment
+        localIconSize: Math.max(plasmoid.configuration.iconSize, 16)
+    }
+
 
     Component{
         id: attentionTimerComponent
@@ -1054,15 +1056,15 @@ Item {
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-        width: root.vertical ? 1 : 2 * root.iconSize
-        height: root.vertical ? 2 * root.iconSize : 1
+        width: root.vertical ? 1 : 2 * containment.iconSize
+        height: root.vertical ? 2 * containment.iconSize : 1
         color: "red"
         x: (root.location === PlasmaCore.Types.LeftEdge) ? neededSpace : parent.width - neededSpace
         y: (root.location === PlasmaCore.Types.TopEdge) ? neededSpace : parent.height - neededSpace
 
         visible: plasmoid.configuration.zoomHelper
 
-        property int neededSpace: zoomFactor*(iconSize+lengthMargins)
+        property int neededSpace: zoomFactor*(containment.iconSize+lengthMargins)
     }
 
     Item{
@@ -1078,8 +1080,8 @@ Item {
         width: ( icList.orientation === Qt.Horizontal ) ? icList.width + spacing : smallSize
         height: ( icList.orientation === Qt.Vertical ) ? icList.height + spacing : smallSize
 
-        property int spacing: latteView ? 0 : root.iconSize / 2
-        property int smallSize: Math.max(0.10 * root.iconSize, 16)
+        property int spacing: latteView ? 0 : containment.iconSize / 2
+        property int smallSize: Math.max(0.10 * containment.iconSize, 16)
 
         Behavior on opacity{
             NumberAnimation { duration: root.durationTime*root.longDuration }
@@ -1176,8 +1178,8 @@ Item {
             visible: root.dragAreaEnabled
 
             property int maxSize: (((root.hoveredIndex>=0 || dockHoveredIndex>=0 ) || windowPreviewIsShown) && !root.dragSource) ?
-                                      root.zoomFactor * (root.iconSize + root.thickMargins) + root.screenEdgeMargin :
-                                      root.iconSize + root.thickMargins + root.screenEdgeMargin
+                                      root.zoomFactor * (containment.iconSize + root.thickMargins) + root.screenEdgeMargin :
+                                      containment.iconSize + root.thickMargins + root.screenEdgeMargin
 
             function onlyLaunchersInList(list){
                 return list.every(function (item) {
@@ -1239,7 +1241,7 @@ Item {
                     return !latteView.thickAnimated ? latteView.maskManager.thicknessNormal : latteView.maskManager.thicknessZoom;
                 }
 
-                return (root.thickMargins + root.iconSize) * root.zoomFactor;
+                return (root.thickMargins + containment.iconSize) * root.zoomFactor;
             }
 
             //onCurrentPosChanged: console.log("CP :: "+ currentPos + " icW:"+icList.width + " rw: "+root.width + " w:" +width);
@@ -1360,7 +1362,7 @@ Item {
             id: newDroppedLauncherVisual
             anchors.fill: parent
             visible: backgroundOpacity > 0
-            radius: root.iconSize/10
+            radius: containment.iconSize/10
             backgroundOpacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 0.75 : 0
             duration: root.durationTime
 

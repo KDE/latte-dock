@@ -119,12 +119,12 @@ Item{
 
     TitleTooltipParent{
         id: titleTooltipParent
-        thickness: root.zoomFactor * (root.iconSize + root.thickMargins)
+        thickness: root.zoomFactor * (containment.iconSize + root.thickMargins)
     }
 
     TitleTooltipParent{
         id: previewsTooltipParent
-        thickness: root.zoomFactor * (root.iconSize + root.thickMargins) + 1
+        thickness: root.zoomFactor * (containment.iconSize + root.thickMargins) + 1
     }
 
     //!
@@ -186,12 +186,12 @@ Item{
                 }
             }
 
-            property int zoomedSize: root.zoomFactor * root.iconSize
+            property int zoomedSize: root.zoomFactor * containment.iconSize
 
-            property real basicScalingWidth : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleWidth) :
-                                                                      root.iconSize * wrapper.mScale
-            property real basicScalingHeight : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleHeight) :
-                                                                       root.iconSize * wrapper.mScale
+            property real basicScalingWidth : wrapper.inTempScaling ? (containment.iconSize * wrapper.scaleWidth) :
+                                                                      containment.iconSize * wrapper.mScale
+            property real basicScalingHeight : wrapper.inTempScaling ? (containment.iconSize * wrapper.scaleHeight) :
+                                                                       containment.iconSize * wrapper.mScale
 
             property real newTempSize: {
                 if (wrapper.opacity === 1 ) {
@@ -600,8 +600,8 @@ Item{
         height: !root.vertical ? thickness : length
         anchors.centerIn: parent
 
-        readonly property int length: root.iconSize + root.lengthMargins
-        readonly property int thickness: root.iconSize + root.thickMargins
+        readonly property int length: containment.iconSize + root.lengthMargins
+        readonly property int thickness: containment.iconSize + root.thickMargins
 
         readonly property real applyOpacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
                                              && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 0.7 : 0
@@ -788,7 +788,7 @@ Item{
                 if(!running){
                     var halfZoom = 1 + ((root.zoomFactor - 1) / 2);
 
-                    wrapper.calculateScales((root.iconSize+root.thickMargins)/2);
+                    wrapper.calculateScales((containment.iconSize+root.thickMargins)/2);
 
                     taskItem.animationEnded();
                     //   root.animations--;

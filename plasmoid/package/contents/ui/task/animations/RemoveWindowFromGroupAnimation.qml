@@ -150,10 +150,10 @@ Item{
 
                 if( (root.location === PlasmaCore.Types.BottomEdge) ||
                         (root.location === PlasmaCore.Types.RightEdge) ){
-                    componentRemoveAnimation.toPoint = tempPoint + root.iconSize;
+                    componentRemoveAnimation.toPoint = tempPoint + containment.iconSize;
                 }
                 else{
-                    componentRemoveAnimation.toPoint = tempPoint - root.iconSize;
+                    componentRemoveAnimation.toPoint = tempPoint - containment.iconSize;
                 }
 
                 visible = true;
