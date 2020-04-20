@@ -396,7 +396,7 @@ Item{
                         editVisual.editAnimationEnded = true;
                         editVisual.editAnimationInFullThickness = true;
                         updateEffectsArea();
-                        automaticItemSizer.updateAutomaticIconSize();
+                        autosize.updateIconSize();
                         visibilityManager.updateMaskArea();
                         editVisual.editAnimationRunning = false;
                     }

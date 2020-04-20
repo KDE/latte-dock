@@ -463,7 +463,7 @@ Item {
     property Item latteAppletContainer
     property Item latteApplet
 
-    readonly property Item autoItemSizerAb: automaticItemSizer
+    readonly property Item autosize: _autosize
     readonly property Item container: _container
     readonly property Item indicatorsManager: indicators
     readonly property Item parabolicManager: _parabolicManager
@@ -1693,10 +1693,6 @@ Item {
         }
     }
 
-    AutomaticItemSizer {
-        id: automaticItemSizer
-    }
-
     VisibilityManager{ id: visibilityManager }
 
     DragDropArea {
@@ -1827,6 +1823,14 @@ Item {
 
     Ability.Container{
         id: _container
+        autosize: _autosize
+    }
+
+    Ability.AutoSizePrivate {
+        id: _autosize
+        container: _container
+        layouts: layoutsContainer
+        visibility: visibilityManager
     }
 
     ///////////////END ABILITIES

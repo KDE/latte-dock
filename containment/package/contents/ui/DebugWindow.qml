@@ -437,7 +437,7 @@ Window{
 
             Text{
                 text: {
-                    if (automaticItemSizer.isActive)
+                    if (autosize.isActive)
                         return "Yes";
                     else
                         return "No";
@@ -449,7 +449,7 @@ Window{
             }
 
             Text{
-                text: automaticItemSizer.automaticIconSizeBasedSize
+                text: autosize.iconSize
             }
 
             Text{

@@ -21,8 +21,8 @@ import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
 Ability {
-    property int iconSize: autoItemSizerAb.automaticIconSizeBasedSize > 0 && autoItemSizerAb.isActive ?
-                               Math.min(autoItemSizerAb.automaticIconSizeBasedSize, maxIconSize) :
+    property int iconSize: autosizeEnabled && autosize.iconSize > 0 ?
+                               Math.min(autosize.iconSize, maxIconSize) :
                                maxIconSize
 
     //what is the highest icon size based on what icon size is used, screen calculated or user specified
@@ -34,6 +34,10 @@ Ability {
 
         return Math.max(16,Math.round(latteView.screenGeometry.height * plasmoid.configuration.proportionIconSize/100/8)*8);
     }
+
+    readonly property bool autosizeEnabled: autosize !== undefined && autosize.isActive
+
+    property Item autosize
 
     //! Behaviors
     Behavior on iconSize {

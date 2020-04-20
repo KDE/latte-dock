@@ -24,27 +24,33 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
 
-Item {
+Ability {
     id: sizer
 
     // when there are only plasma style task managers OR any applets that fill width or height
     // the automatic icon size algorithm should better be disabled
     readonly property bool isActive: !root.containsOnlyPlasmaTasks
-                                     && layoutsContainer.fillApplets<=0
+                                     && layouts.fillApplets<=0
                                      && latteView && latteView.visibility.mode !== Latte.Types.SideBar
+    property int iconSize: -1 //it is not set, this is the default
 
     property bool automaticSizeAnimation: false
 
     readonly property int automaticStep: 8
     readonly property int historyMaxSize: 10
     readonly property int historyMinSize: 4
-    property int automaticIconSizeBasedSize: -1 //it is not set, this is the default
+
 
     //! Prediction History of the algorithm in order to track cases where the algorithm produces
     //! grows and shrinks endlessly
     property variant history: []
 
-    onAutomaticIconSizeBasedSizeChanged: {
+    //! required elements
+    property Item container
+    property Item layouts
+    property Item visibility
+
+    onIconSizeChanged: {
         if (!automaticSizeAnimation) {
             automaticSizeAnimation = true;
             root.slotAnimationsNeedBothAxis(1);
@@ -56,11 +62,11 @@ Item {
     Connections {
         target: root
 
-        onContainsOnlyPlasmaTasksChanged: sizer.updateAutomaticIconSize();
-        onEditModeChanged: sizer.updateAutomaticIconSize();
+        onContainsOnlyPlasmaTasksChanged: sizer.updateIconSize();
+        onEditModeChanged: sizer.updateIconSize();
         onMaxLengthChanged: {
             if (root.editMode) {
-                sizer.updateAutomaticIconSize();
+                sizer.updateIconSize();
             }
         }
     }
@@ -70,12 +76,12 @@ Item {
 
         onProportionIconSizeChanged: {
             if (container.proportionIconSize!==-1) {
-                sizer.updateAutomaticIconSize();
+                sizer.updateIconSize();
             }
         }
 
         onIconSizeChanged: {
-            if (((container.iconSize === sizer.automaticIconSizeBasedSize) || (container.iconSize === container.maxIconSize)) && sizer.automaticSizeAnimation){
+            if (((container.iconSize === sizer.iconSize) || (container.iconSize === container.maxIconSize)) && sizer.automaticSizeAnimation){
                 root.slotAnimationsNeedBothAxis(-1);
                 sizer.automaticSizeAnimation=false;
             }
@@ -86,13 +92,13 @@ Item {
         target: latteView
         onWidthChanged:{
             if (root.isHorizontal && container.proportionIconSize!==-1) {
-                sizer.updateAutomaticIconSize();
+                sizer.updateIconSize();
             }
         }
 
         onHeightChanged:{
             if (root.isVertical && container.proportionIconSize!==-1) {
-                sizer.updateAutomaticIconSize();
+                sizer.updateIconSize();
             }
         }
     }
@@ -135,11 +141,12 @@ Item {
     }
 
 
-    function updateAutomaticIconSize() {
-        if ( !doubleCallAutomaticUpdateIconSize.running && !visibilityManager.inTempHiding
-                && ((visibilityManager.normalState || root.editMode)
-                    && (sizer.isActive || (!sizer.isActive && container.iconSize!==root.maxIconSize)))
-                && (container.iconSize===container.maxIconSize || container.iconSize === sizer.automaticIconSizeBasedSize) ) {
+    function updateIconSize() {
+
+        if ( !doubleCallAutomaticUpdateIconSize.running && !visibility.inTempHiding
+                && ((visibility.normalState || root.editMode)
+                    && (sizer.isActive || (!sizer.isActive && container.iconSize!==container.maxIconSize)))
+                && (container.iconSize===container.maxIconSize || container.iconSize === sizer.iconSize) ) {
 
             //!doubler timer
             if (!doubleCallAutomaticUpdateIconSize.secondTimeCallApplied) {
@@ -156,10 +163,10 @@ Item {
 
             if (root.isVertical) {
                 layoutLength = (plasmoid.configuration.alignment === Latte.Types.Justify) ?
-                            layoutsContainer.startLayout.height+layoutsContainer.mainLayout.height+layoutsContainer.endLayout.height : layoutsContainer.mainLayout.height
+                            layouts.startLayout.height+layouts.mainLayout.height+layouts.endLayout.height : layouts.mainLayout.height
             } else {
                 layoutLength = (plasmoid.configuration.alignment === Latte.Types.Justify) ?
-                            layoutsContainer.startLayout.width+layoutsContainer.mainLayout.width+layoutsContainer.endLayout.width : layoutsContainer.mainLayout.width
+                            layouts.startLayout.width+layouts.mainLayout.width+layouts.endLayout.width : layouts.mainLayout.width
             }
 
             var itemLength = container.iconSize + lengthMargins;
@@ -187,20 +194,20 @@ Item {
                 var intLength = Math.round(layoutLength);
                 var intNextLength = Math.round(nextLength);
 
-                automaticIconSizeBasedSize = nextIconSize;
+                iconSize = nextIconSize;
                 newIconSizeFound = true;
 
                 addPrediction(intLength, intNextLength);
-                // console.log("Step 3 - found:"+automaticIconSizeBasedSize);
+                // console.log("Step 3 - found:"+iconSize);
             } else if ((layoutLength<toGrowLimit
-                        && (container.iconSize === automaticIconSizeBasedSize)) ) { //must grow probably
+                        && (container.iconSize === iconSize)) ) { //must grow probably
                 // console.log("step4");
-                var nextIconSize2 = automaticIconSizeBasedSize;
+                var nextIconSize2 = iconSize;
                 var foundGoodSize = -1;
 
                 do {
                     nextIconSize2 = nextIconSize2 + automaticStep;
-                    var factor2 = nextIconSize2 / automaticIconSizeBasedSize;
+                    var factor2 = nextIconSize2 / iconSize;
                     var nextLength2 = factor2 * layoutLength;
 
                     if (nextLength2 < toGrowLimit) {
@@ -213,14 +220,14 @@ Item {
 
                 if (foundGoodSize > 0 && !producesEndlessLoop(intLength2, intNextLength2)) {
                     if (foundGoodSize === container.maxIconSize) {
-                        automaticIconSizeBasedSize = -1;
+                        iconSize = -1;
                     } else {
-                        automaticIconSizeBasedSize = foundGoodSize;
+                        iconSize = foundGoodSize;
                     }
                     newIconSizeFound = true
 
                     addPrediction(intLength2, intNextLength2);
-                    //        console.log("Step 4 - found:"+automaticIconSizeBasedSize);
+                    //        console.log("Step 4 - found:"+iconSize);
                 } else {
                     //       console.log("Step 4 - did not found...");
                 }
@@ -228,7 +235,7 @@ Item {
         }
     }
 
-    //! This functions makes sure to call the updateAutomaticIconSize(); function which is costly
+    //! This functions makes sure to call the updateIconSize(); function which is costly
     //! one more time after its last call to confirm the applied icon size found
     Timer{
         id:doubleCallAutomaticUpdateIconSize
@@ -238,7 +245,7 @@ Item {
         onTriggered: {
             if (!secondTimeCallApplied) {
                 secondTimeCallApplied = true;
-                sizer.updateAutomaticIconSize();
+                sizer.updateIconSize();
             }
         }
     }
