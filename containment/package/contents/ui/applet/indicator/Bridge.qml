@@ -29,7 +29,7 @@ Item{
 
     readonly property bool active: appletIsValid &&
                                    ((indicators.isEnabled
-                                     && appletItem.communicatorAlias.activeIndicatorEnabled
+                                     && appletItem.communicatorAlias.requires.activeIndicatorEnabled
                                      && indicators.info.enabledForApplets)
                                     || (!indicators.info.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive))
 

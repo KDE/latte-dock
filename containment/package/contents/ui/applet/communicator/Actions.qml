@@ -78,37 +78,37 @@ Item{
 
     function setProperty(appletId, parameter, value) {
         if (parameter === "latteSideColoringEnabled") {
-            mainCommunicator.latteSideColoringEnabled = value;
+            mainCommunicator.requires.latteSideColoringEnabled = value;
         } else if (parameter === "latteIconOverlayEnabled") {
-            mainCommunicator.latteIconOverlayEnabled = value;
+            mainCommunicator.requires.latteIconOverlayEnabled = value;
         } else if (parameter === "activeIndicatorEnabled") {
-            mainCommunicator.activeIndicatorEnabled = value;
+            mainCommunicator.requires.activeIndicatorEnabled = value;
         } else if (parameter === "lengthMarginsEnabled") {
-           mainCommunicator.lengthMarginsEnabled = value;
+           mainCommunicator.requires.lengthMarginsEnabled = value;
         } else if (parameter === "parabolicEffectLocked") {
-            mainCommunicator.parabolicEffectLocked = value;
-        } else if (parameter === "supportsScreenEdgeMargin") {
-            mainCommunicator.supportsScreenEdgeMargin = value;
+            mainCommunicator.requires.parabolicEffectLocked = value;
+        } else if (parameter === "screenEdgeMarginSupported") {
+            mainCommunicator.requires.screenEdgeMarginSupported = value;
         } else if (parameter === "windowsTrackingEnabled") {
-            mainCommunicator.windowsTrackingEnabled = value;
+            mainCommunicator.requires.windowsTrackingEnabled = value;
         }
     }
 
     function getProperty(appletId, parameter) {
         if (parameter === "latteSideColoringEnabled") {
-            return mainCommunicator.latteSideColoringEnabled;
+            return mainCommunicator.requires.latteSideColoringEnabled;
         } else if (parameter === "latteIconOverlayEnabled") {
-            return mainCommunicator.latteIconOverlayEnabled;
+            return mainCommunicator.requires.latteIconOverlayEnabled;
         } else if (parameter === "activeIndicatorEnabled") {
-            return mainCommunicator.activeIndicatorEnabled;
+            return mainCommunicator.requires.activeIndicatorEnabled;
         } else if (parameter === "lengthMarginsEnabled") {
-            return mainCommunicator.lengthMarginsEnabled;
+            return mainCommunicator.requires.lengthMarginsEnabled;
         } else if (parameter === "parabolicEffectLocked") {
-            return mainCommunicator.parabolicEffectLocked;
-        } else if (parameter === "supportsScreenEdgeMargin") {
-            return mainCommunicator.supportsScreenEdgeMargin;
+            return mainCommunicator.requires.parabolicEffectLocked;
+        } else if (parameter === "screenEdgeMarginSupported") {
+            return mainCommunicator.requires.screenEdgeMarginSupported;
         } else if (parameter === "windowsTrackingEnabled") {
-            return mainCommunicator.windowsTrackingEnabled;
+            return mainCommunicator.requires.windowsTrackingEnabled;
         }
 
         return null;

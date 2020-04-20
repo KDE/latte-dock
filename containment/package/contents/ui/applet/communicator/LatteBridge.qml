@@ -61,7 +61,7 @@ Item{
     //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
     //       to look consistent with the underlying desktop background
     // @since: 0.9
-    readonly property QtObject palette: !latteSideColoringEnabled ? colorizerManager : null
+    readonly property QtObject palette: !applet.latteSideColoringEnabled ? colorizerManager : null
 
     // NAME: applyPalette
     //   USAGE: read-only
@@ -70,7 +70,7 @@ Item{
     //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
     //       to look consistent with the underlying desktop background
     // @since: 0.9
-    readonly property bool applyPalette: !latteSideColoringEnabled ? colorizerManager.mustBeShown : false
+    readonly property bool applyPalette: !applet.latteSideColoringEnabled ? colorizerManager.mustBeShown : false
 
     // NAME: parabolicEffectEnabled
     //   USAGE: read-only
@@ -110,12 +110,12 @@ Item{
     //   USE CASE: it can be used from applets that want windows tracking in order
     //       to update their appearance or their behavior accordingly
     // @since: 0.9
-    readonly property QtObject windowsTracker: mainCommunicator.windowsTrackingEnabled && latteView && latteView.windowsTracker ?
+    readonly property QtObject windowsTracker: applet.windowsTrackingEnabled && latteView && latteView.windowsTracker ?
                                                    latteView.windowsTracker : null
 
+    readonly property Item actions: Actions{}
     readonly property Item container: root.container
-
-    property Item actions: Actions{}
+    readonly property Item applet: mainCommunicator.requires
 
     Connections {
         target: root

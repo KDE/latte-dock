@@ -39,7 +39,7 @@ Item{
     //! BEGIN OF PROPERTIES
     //this is used for folderView and icon widgets to fake their visual icons
     readonly property bool canShowOverlaiedLatteIcon: appletIconItem && appletIconItem.visible
-    readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon && latteIconOverlayEnabled
+    readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon && requires.latteIconOverlayEnabled
 
     property Item appletRootItem: appletDiscoveredRootItem ? appletDiscoveredRootItem : appletDefaultRootItem
     property Item appletDiscoveredRootItem: null
@@ -50,13 +50,16 @@ Item{
     //! END OF PROPERTIES
 
     //! BEGIN OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
-    property bool latteSideColoringEnabled: true
-    property bool latteIconOverlayEnabled: true
-    property bool activeIndicatorEnabled: true
-    property bool lengthMarginsEnabled: true
-    property bool windowsTrackingEnabled: false
-    property bool parabolicEffectLocked: false
-    property bool supportsScreenEdgeMargin: false
+    readonly property Item requires: Item {
+        property bool latteSideColoringEnabled: true
+        property bool latteIconOverlayEnabled: true
+        property bool activeIndicatorEnabled: true
+        property bool lengthMarginsEnabled: true
+        property bool windowsTrackingEnabled: false
+        property bool parabolicEffectLocked: false
+        property bool screenEdgeMarginSupported: false
+    }
+
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
 
     //! BEGIN OF PROPERTY CHANGES
@@ -84,13 +87,17 @@ Item{
     }
     //! END OF FUNCTIONS
 
-    onWindowsTrackingEnabledChanged: {
-        if (windowsTrackingEnabled && !windowsTrackingEnabledSent) {
-            windowsTrackingEnabledSent = true;
-            root.slotAppletsNeedWindowsTracking(1);
-        } else if (!windowsTrackingEnabled && windowsTrackingEnabledSent) {
-            windowsTrackingEnabledSent = false;
-            root.slotAppletsNeedWindowsTracking(-1);
+    Connections {
+        target: requires
+
+        onWindowsTrackingEnabledChanged: {
+            if (requires.windowsTrackingEnabled && !mainCommunicator.windowsTrackingEnabledSent) {
+                mainCommunicator.windowsTrackingEnabledSent = true;
+                root.slotAppletsNeedWindowsTracking(1);
+            } else if (!requires.windowsTrackingEnabled && mainCommunicator.windowsTrackingEnabledSent) {
+                mainCommunicator.windowsTrackingEnabledSent = false;
+                root.slotAppletsNeedWindowsTracking(-1);
+            }
         }
     }
 
@@ -107,7 +114,7 @@ Item{
     }
 
     Component.onDestruction: {
-        if (windowsTrackingEnabled && windowsTrackingEnabledSent) {
+        if (requires.windowsTrackingEnabled && windowsTrackingEnabledSent) {
             windowsTrackingEnabledSent = false;
             root.slotAppletsNeedWindowsTracking(-1);
         }

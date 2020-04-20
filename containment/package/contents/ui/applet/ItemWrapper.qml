@@ -110,7 +110,7 @@ Item{
     property bool disableScaleHeight: false
     property bool editMode: root.inConfigureAppletsMode
 
-    property bool edgeLengthMarginsDisabled: isSeparator || !communicator.lengthMarginsEnabled || !canBeHovered
+    property bool edgeLengthMarginsDisabled: isSeparator || !communicator.requires.lengthMarginsEnabled || !canBeHovered
 
     property int appletWidth: applet ?  applet.width : -1
     property int appletHeight: applet ?  applet.height : -1
@@ -133,7 +133,7 @@ Item{
                                    root.thickMargins :
                                    (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
 
-    property int localLengthMargins: isSeparator || !communicator.lengthMarginsEnabled || isInternalViewSplitter ? 0 : appletItem.lengthAppletFullMargins
+    property int localLengthMargins: isSeparator || !communicator.requires.lengthMarginsEnabled || isInternalViewSplitter ? 0 : appletItem.lengthAppletFullMargins
     property int edgeLengthMargins: edgeLengthMarginsDisabled ? 0 : appletItem.lengthAppletIntMargin * 2
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
@@ -435,7 +435,7 @@ Item{
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                     var wrapperContainerThickness = parent.zoomScaleWidth * (container.iconSize + root.thickMargins);
-                    return appletItem.supportsScreenEdgeMargin ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
+                    return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleWidth * wrapper.layoutWidth;
                 }
@@ -452,7 +452,7 @@ Item{
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
                     var wrapperContainerThickness = parent.zoomScaleHeight * (container.iconSize + root.thickMargins);
-                    return appletItem.supportsScreenEdgeMargin ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
+                    return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleHeight * wrapper.layoutHeight;
                 }
@@ -467,7 +467,7 @@ Item{
                 return root.localScreenEdgeMargin + root.thickMargin;
             }
 
-            return appletItem.supportsScreenEdgeMargin ? 0 : root.localScreenEdgeMargin;
+            return appletItem.screenEdgeMarginSupported ? 0 : root.localScreenEdgeMargin;
         }
 
         ///Secret MouseArea to be used by the folder widget

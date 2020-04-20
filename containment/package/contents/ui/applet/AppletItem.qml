@@ -63,8 +63,8 @@ Item {
     }
 
     property bool userBlocksColorizing: false
-    property bool appletBlocksColorizing: !communicator.latteSideColoringEnabled
-    property bool appletBlocksParabolicEffect: communicator.parabolicEffectLocked
+    property bool appletBlocksColorizing: !communicator.requires.latteSideColoringEnabled
+    property bool appletBlocksParabolicEffect: communicator.requires.parabolicEffectLocked
     property bool lockZoom: false
 
     property bool isActive: (isExpanded
@@ -146,13 +146,13 @@ Item {
                                           || (index === layoutsContainer.mainLayout.lastVisibleIndex)
                                           || (index === layoutsContainer.endLayout.lastVisibleIndex))
 
-    readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.parabolicEffectLocked
+    readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.requires.parabolicEffectLocked
     readonly property bool originalAppletBehavior: (root.zoomFactor === 1 && !lockZoom /*hacky flag to keep Latte behavior*/)
                                                    || (root.zoomFactor>1 && !canBeHovered)
                                                    || (root.zoomFactor>1 && canBeHovered && lockZoom)
 
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
-    readonly property bool supportsScreenEdgeMargin: communicator.supportsScreenEdgeMargin
+    readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported
 
     property int animationTime: appliedDurationTime * (1.2 *root.shortDuration)
     property int hoveredIndex: layoutsContainer.hoveredIndex
@@ -1007,7 +1007,7 @@ Item {
         property bool blockWheel: false
 
         onEntered: {
-            if (containsMouse && !originalAppletBehavior && !communicator.parabolicEffectLocked && appletItem.canBeHovered){
+            if (containsMouse && !originalAppletBehavior && !communicator.requires.parabolicEffectLocked && appletItem.canBeHovered){
                 root.stopCheckRestoreZoomTimer();
             }
 
@@ -1030,7 +1030,7 @@ Item {
                 layoutsContainer.hoveredIndex = index;
             }
 
-            if (originalAppletBehavior || communicator.parabolicEffectLocked || !canBeHovered) {
+            if (originalAppletBehavior || communicator.requires.parabolicEffectLocked || !canBeHovered) {
                 return;
             }
 

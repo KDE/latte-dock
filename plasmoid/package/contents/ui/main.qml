@@ -275,7 +275,7 @@ Item {
     onLatteBridgeChanged: {
         if (latteBridge) {
             latteBridge.actions.setProperty(plasmoid.id, "latteSideColoringEnabled", false);
-            latteBridge.actions.setProperty(plasmoid.id, "supportsScreenEdgeMargin", true);
+            latteBridge.actions.setProperty(plasmoid.id, "screenEdgeMarginSupported", true);
         }
     }
 
