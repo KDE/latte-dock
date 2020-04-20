@@ -195,7 +195,7 @@ View::~View()
     //! this->disconnect();
 
     if (m_configView) {
-        m_configView->deleteLater();
+        delete m_configView;
     }
 
     if (m_contextMenu) {

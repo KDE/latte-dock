@@ -223,7 +223,7 @@ void PrimaryConfigView::deleteSecondaryWindow()
         m_secConfigView = nullptr;
         secWindow->deleteLater();
 
-        if (KWindowSystem::isPlatformX11()) {
+        if (KWindowSystem::isPlatformX11() && m_latteView->effects()) {
             //! this is needed in order for subtracked mask of secondary window to
             //! be released properly when changing for Advanced to Basic mode.
             //! Under wayland this is not needed because masks do not break any visuals.
