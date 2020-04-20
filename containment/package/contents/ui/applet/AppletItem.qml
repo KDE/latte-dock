@@ -163,14 +163,14 @@ Item {
 
     property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * containmentAb.iconSize) - root.lengthMargins)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * container.iconSize) - root.lengthMargins)
     property int status: applet ? applet.status : -1
 
     //! local margins
     readonly property bool parabolicEffectMarginsEnabled: root.zoomFactor>1 && !originalAppletBehavior
 
     property int lengthAppletIntMargin: root.lengthAppletIntMarginFactor === -1 || parabolicEffectMarginsEnabled ?
-                                            root.lengthIntMargin : root.lengthAppletIntMarginFactor * containmentAb.iconSize
+                                            root.lengthIntMargin : root.lengthAppletIntMarginFactor * container.iconSize
 
     property int lengthAppletFullMargin: lengthAppletIntMargin + root.lengthExtMargin
     property int lengthAppletFullMargins: 2 * lengthAppletFullMargin
@@ -398,8 +398,8 @@ Item {
                 return;
             }
 
-            var maxSize = containmentAb.iconSize + root.thickMargins;
-            var maxForMinimumSize = containmentAb.iconSize + root.thickMargins;
+            var maxSize = container.iconSize + root.thickMargins;
+            var maxForMinimumSize = container.iconSize + root.thickMargins;
 
             if ( isSystray
                     || appletItem.needsFillSpace
@@ -838,7 +838,7 @@ Item {
 
                 width: {
                     if (root.isHorizontal) {
-                        return containmentAb.iconSize * wrapper.zoomScale
+                        return container.iconSize * wrapper.zoomScale
                     } else {
                         return badgeThickness;
                     }
@@ -848,17 +848,17 @@ Item {
                     if (root.isHorizontal) {
                         return badgeThickness;
                     } else {
-                        return containmentAb.iconSize * wrapper.zoomScale
+                        return container.iconSize * wrapper.zoomScale
                     }
                 }
 
                 readonly property int badgeThickness: {
                     if (plasmoid.location === PlasmaCore.Types.BottomEdge
                             || plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        return ((containmentAb.iconSize + root.thickMargin) * wrapper.zoomScale) + root.localScreenEdgeMargin;
+                        return ((container.iconSize + root.thickMargin) * wrapper.zoomScale) + root.localScreenEdgeMargin;
                     }
 
-                    return ((containmentAb.iconSize + root.thickMargin) * wrapper.zoomScale);
+                    return ((container.iconSize + root.thickMargin) * wrapper.zoomScale);
                 }
 
                 ShortcutBadge{
@@ -917,7 +917,7 @@ Item {
             // width: root.isHorizontal ? parent.width : parent.width - root.localScreenEdgeMargin
             // height: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.height
 
-            radius: containmentAb.iconSize/10
+            radius: container.iconSize/10
             opacity: root.addLaunchersMessage ? 1 : 0
             backgroundOpacity: 0.75
             duration: root.durationTime

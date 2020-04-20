@@ -68,8 +68,8 @@ Loader {
 
     readonly property bool locked: appletItem.lockZoom || root.zoomFactor === 1
 
-    property real visualLockedWidth: containmentAb.iconSize + appletItem.internalWidthMargins
-    property real visualLockedHeight: containmentAb.iconSize + appletItem.internalHeightMargins
+    property real visualLockedWidth: container.iconSize + appletItem.internalWidthMargins
+    property real visualLockedHeight: container.iconSize + appletItem.internalHeightMargins
 
     //! Communications !//
 

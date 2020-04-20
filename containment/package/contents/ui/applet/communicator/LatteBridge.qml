@@ -86,7 +86,7 @@ Item{
     //   USE CASE: it can be used from applets that want their size to be always
     //       relevant to the view icon size
     // @since: 0.9
-    readonly property int iconSize: containmentAb.iconSize
+    readonly property int iconSize: container.iconSize
 
     // NAME: screenEdgeMargin
     //   USAGE: read-only
@@ -113,7 +113,7 @@ Item{
     readonly property QtObject windowsTracker: mainCommunicator.windowsTrackingEnabled && latteView && latteView.windowsTracker ?
                                                    latteView.windowsTracker : null
 
-    readonly property Item containment: containmentAb
+    readonly property Item containment: container
 
     property Item actions: Actions{}
 

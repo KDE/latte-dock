@@ -327,8 +327,8 @@ Item {
     }
 
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
-    property int appShadowSize: enableShadows ? (0.5*containmentAb.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
-    property int appShadowSizeOriginal: enableShadows ? (0.5*containmentAb.maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
+    property int appShadowSize: enableShadows ? (0.5*container.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
+    property int appShadowSizeOriginal: enableShadows ? (0.5*container.maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
 
     property string appChosenShadowColor: {
         if (plasmoid.configuration.shadowColorType === Latte.Types.ThemeColorShadow) {
@@ -383,13 +383,13 @@ Item {
     property int themePanelThickness: {
         var panelBase = root.panelThickMarginHigh + root.panelThickMarginBase;
         var margin = shrinkThickMargins ? 0 : thickMargins + localScreenEdgeMargin;
-        var maxPanelSize = (containmentAb.iconSize + margin) - panelBase;
+        var maxPanelSize = (container.iconSize + margin) - panelBase;
         var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
-    property int lengthIntMargin: lengthIntMarginFactor * containmentAb.iconSize
-    property int lengthExtMargin: lengthExtMarginFactor * containmentAb.iconSize
+    property int lengthIntMargin: lengthIntMarginFactor * container.iconSize
+    property int lengthExtMargin: lengthExtMarginFactor * container.iconSize
     property real lengthIntMarginFactor: indicators.isEnabled ? indicators.padding : 0
     property real lengthExtMarginFactor: plasmoid.configuration.lengthExtMargin / 100
 
@@ -403,7 +403,7 @@ Item {
         //0.075 old statesLineSize and 0.06 old default thickMargin
         return  Math.max(indicators.info.minThicknessPadding, plasmoid.configuration.thickMargin / 100)
     }
-    property int thickMargin: thickMarginFactor * containmentAb.iconSize
+    property int thickMargin: thickMarginFactor * container.iconSize
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
     property int screenEdgeMargin: {
@@ -426,7 +426,7 @@ Item {
 
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
-    property int maxThickMargin: thickMarginFactor * containmentAb.maxIconSize
+    property int maxThickMargin: thickMarginFactor * container.maxIconSize
 
     property int lengthMargin: lengthIntMargin + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
@@ -464,7 +464,7 @@ Item {
     property Item latteApplet
 
     readonly property Item autoItemSizerAb: automaticItemSizer
-    readonly property Item containmentAb: _containmentAb
+    readonly property Item container: _container
     readonly property Item indicatorsManager: indicators
     readonly property Item parabolicManager: _parabolicManager
     readonly property Item maskManager: visibilityManager
@@ -506,9 +506,9 @@ Item {
         if (!universalSettings || universalSettings.mouseSensitivity === Latte.Types.HighSensitivity) {
             return 1;
         } else if (universalSettings.mouseSensitivity === Latte.Types.MediumSensitivity) {
-            return Math.max(3, containmentAb.iconSize / 18);
+            return Math.max(3, container.iconSize / 18);
         } else if (universalSettings.mouseSensitivity === Latte.Types.LowSensitivity) {
-            return Math.max(5, containmentAb.iconSize / 10);
+            return Math.max(5, container.iconSize / 10);
         }
     }
 
@@ -593,7 +593,7 @@ Item {
     ///The index of user's current icon size
     property int currentIconIndex:{
         for(var i=iconsArray.length-1; i>=0; --i){
-            if(iconsArray[i] === containmentAb.iconSize){
+            if(iconsArray[i] === container.iconSize){
                 return i;
             }
         }
@@ -764,7 +764,7 @@ Item {
         //  currentLayout.isLayoutHorizontal = isHorizontal
         LayoutManager.plasmoid = plasmoid;
         LayoutManager.root = root;
-        LayoutManager.containmentAb = containmentAb;
+        LayoutManager.container = container;
         LayoutManager.layout = layoutsContainer.mainLayout;
         LayoutManager.layoutS = layoutsContainer.startLayout;
         LayoutManager.layoutE = layoutsContainer.endLayout;
@@ -1743,8 +1743,8 @@ Item {
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
 
-        readonly property int length: containmentAb.iconSize + root.lengthMargins
-        readonly property int thickness: containmentAb.iconSize + root.thickMargins + root.localScreenEdgeMargin
+        readonly property int length: container.iconSize + root.lengthMargins
+        readonly property int thickness: container.iconSize + root.thickMargins + root.localScreenEdgeMargin
 
         Layout.preferredWidth: width
         Layout.preferredHeight: height
@@ -1826,7 +1826,7 @@ Item {
     ///////////////BEGIN ABILITIES
 
     Ability.Containment{
-        id: _containmentAb
+        id: _container
     }
 
     ///////////////END ABILITIES

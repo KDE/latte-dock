@@ -45,8 +45,8 @@ Item{
     property int speed: LatteCore.WindowSystem.compositingActive ? root.appliedDurationTime*3.6*root.longDuration : 10
     property int thickness: visibilityManager.thicknessEditMode + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow //- visibilityManager.thicknessEditMode
-    property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - containmentAb.maxIconSize/4 : root.width)://root.maxLength) :
-                                                 (root.behaveAsPlasmaPanel ? root.height - containmentAb.maxIconSize/4 : root.height)
+    property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - container.maxIconSize/4 : root.width)://root.maxLength) :
+                                                 (root.behaveAsPlasmaPanel ? root.height - container.maxIconSize/4 : root.height)
 
     property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
