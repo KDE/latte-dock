@@ -1,0 +1,3 @@
+module org.kde.latte.abilities
+
+AppletRequirements 0.1 AppletRequirements.qml

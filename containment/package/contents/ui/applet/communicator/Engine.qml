@@ -19,6 +19,8 @@
 
 import QtQuick 2.7
 
+import org.kde.latte.abilities 0.1 as Abilities
+
 import "../../../code/AppletIdentifier.js" as AppletIdentifier
 
 Item{
@@ -50,15 +52,7 @@ Item{
     //! END OF PROPERTIES
 
     //! BEGIN OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
-    readonly property Item requires: Item {
-        property bool latteSideColoringEnabled: true
-        property bool latteIconOverlayEnabled: true
-        property bool activeIndicatorEnabled: true
-        property bool lengthMarginsEnabled: true
-        property bool windowsTrackingEnabled: false
-        property bool parabolicEffectLocked: false
-        property bool screenEdgeMarginSupported: false
-    }
+    readonly property Item requires: Abilities.AppletRequirements{}
 
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
 
