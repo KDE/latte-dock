@@ -362,7 +362,7 @@ bool ContainmentInterface::showShortcutBadges(const bool showLatteShortcuts, con
 {
     identifyMainItem();
 
-    if (!m_showShortcutsMethod.isValid()) {
+    if (!m_showShortcutsMethod.isValid() || !isCapableToShowShortcutBadges()) {
         return false;
     }
 

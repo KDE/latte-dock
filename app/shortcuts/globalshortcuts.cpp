@@ -323,6 +323,33 @@ bool GlobalShortcuts::activateLatteEntry(Latte::View *view, int index, Qt::Key m
     }
 }
 
+bool GlobalShortcuts::activateEntryForView(Latte::View *view, int index, Qt::Key modifier)
+{
+    if (!view) {
+        return false;
+    }
+
+    bool delayed{false};
+
+    bool executed = ((!view->latteTasksArePresent() && view->tasksPresent() &&
+                      activatePlasmaTaskManager(view, index, modifier, &delayed))
+                         || activateLatteEntry(view, index, modifier, &delayed));
+
+    if (executed) {
+        if (!m_hideViews.contains(view)) {
+            m_hideViews.append(view);
+        }
+
+        if (delayed) {
+            view->visibility()->addBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
+            m_hideViewsTimer.start();
+        }
+
+        return true;
+    }
+
+    return false;
+}
 
 //! Activate task manager entry
 void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
@@ -336,30 +363,24 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
         sortedViews = currentLayout->sortedLatteViews();
     }
 
+    Latte::View *highest{nullptr};
+
     for (const auto view : sortedViews) {
-        if (view->layout()->preferredForShortcutsTouched() && !view->isPreferredForShortcuts()) {
-            continue;
-        }
-
-        bool delayed{false};
-
-        if ((!view->latteTasksArePresent() && view->tasksPresent() &&
-             activatePlasmaTaskManager(view, index, modifier, &delayed))
-                || activateLatteEntry(view, index, modifier, &delayed)) {
-
-            if (!m_hideViews.contains(view)) {
-                m_hideViews.append(view);
-            }
-
-            if (delayed) {
-                view->visibility()->addBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
-                m_hideViewsTimer.start();
-            }
-
-            return;
+        if (view->isPreferredForShortcuts()) {
+            highest = view;
+            break;
         }
     }
 
+    if (highest) {
+        activateEntryForView(highest, index, modifier);
+    } else {
+        for (const auto view : sortedViews) {
+            if (activateEntryForView(view, index, modifier)) {
+                return;
+            }
+        }
+    }
 }
 
 //! update badge for specific view item
@@ -396,10 +417,18 @@ void GlobalShortcuts::showViews()
     Latte::View *viewWithTasks{nullptr};
     Latte::View *viewWithMeta{nullptr};
 
+    bool hasPreferredForShortcutsView{false};
+
+    for (const auto view : sortedViews) {
+        if (view->isPreferredForShortcuts()) {
+            hasPreferredForShortcutsView = true;
+            break;
+        }
+    }
+
     for(const auto view : sortedViews) {
         if (!viewWithTasks
-                && view->extendedInterface()->isCapableToShowShortcutBadges()
-                && (!view->layout()->preferredForShortcutsTouched() || view->isPreferredForShortcuts())) {
+                && (!hasPreferredForShortcutsView || view->isPreferredForShortcuts())) {
             viewWithTasks = view;
             break;
         }
@@ -531,6 +560,10 @@ void GlobalShortcuts::hideViewsTimerSlot()
             for(const auto latteView : m_hideViews) {
                 latteView->visibility()->removeBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
                 latteView->extendedInterface()->hideShortcutBadges();
+
+                if (latteView->visibility()->mode() == Latte::Types::SideBar && !latteView->visibility()->isHidden()) {
+                    latteView->visibility()->toggleHiddenState();
+                }
             }
         }
 
