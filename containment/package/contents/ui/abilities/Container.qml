@@ -19,7 +19,7 @@
 
 import QtQuick 2.7
 
-ContainmentPrivate {
+ContainerPrivate {
     id: apis
 
     publicApi: Item {

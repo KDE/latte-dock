@@ -64,7 +64,7 @@ Item {
                 if (showsAudioBadge) {
                     return height;
                 } else if ( index === parabolicManager.firstRealTaskIndex && !taskItem.containsMouse) {
-                    return (wrapper.mScale * (containment.iconSize - (root.enableShadows ? shadowSize/2 : 0)));
+                    return (wrapper.mScale * (container.iconSize - (root.enableShadows ? shadowSize/2 : 0)));
                 } else {
                     return 999999;
                 }

@@ -20,8 +20,8 @@
 import QtQuick 2.7
 
 Item {
-    readonly property int iconSize: latteBridge ? latteBridge.containment.iconSize : localIconSize
-    readonly property int maxIconSize: latteBridge ? latteBridge.containment.maxIconSize : iconSize
+    readonly property int iconSize: latteBridge ? latteBridge.container.iconSize : localIconSize
+    readonly property int maxIconSize: latteBridge ? latteBridge.container.maxIconSize : iconSize
 
     property int localIconSize: 48
 

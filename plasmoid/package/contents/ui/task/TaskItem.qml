@@ -52,7 +52,7 @@ MouseArea{
 
         if (isSeparator) {
             if (root.vertical) {
-                return containment.iconSize + root.thickMargins + root.screenEdgeMargin;
+                return container.iconSize + root.thickMargins + root.screenEdgeMargin;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
                     return LatteCore.Environment.separatorLength+2*root.lengthExtMargin;
@@ -79,7 +79,7 @@ MouseArea{
 
         if (isSeparator) {
             if (!root.vertical) {
-                return containment.iconSize + root.thickMargins + root.screenEdgeMargin;
+                return container.iconSize + root.thickMargins + root.screenEdgeMargin;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
                     return LatteCore.Environment.separatorLength+2*root.lengthExtMargin;
@@ -137,7 +137,7 @@ MouseArea{
     property bool isWindow: (IsWindow === true) ? true : false
     property bool isZoomed: false
 
-    property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=containment.iconSize && height>=containment.iconSize
+    property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=container.iconSize && height>=container.iconSize
                                         && !taskItem.delayingRemove
                                         && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //don't publish during zoomFactor
 
@@ -153,7 +153,7 @@ MouseArea{
     property int pressX: -1
     property int pressY: -1
     property int resistanceDelay: 450
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*containment.iconSize) - root.lengthMargins)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*container.iconSize) - root.lengthMargins)
     property int windowsCount: subWindows.windowsCount
     property int windowsMinimizedCount: subWindows.windowsMinimized
 
@@ -344,8 +344,8 @@ MouseArea{
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
 
-        width: root.vertical ? containment.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
-        height: !root.vertical ? containment.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
+        width: root.vertical ? container.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
+        height: !root.vertical ? container.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
 
         property bool forceHiddenState: false
 
@@ -421,8 +421,8 @@ MouseArea{
         Rectangle {
             anchors.centerIn: parent
 
-            width: root.vertical ? containment.iconSize - 4  : 1
-            height: !root.vertical ? containment.iconSize - 4 : 1
+            width: root.vertical ? container.iconSize - 4  : 1
+            height: !root.vertical ? container.iconSize - 4 : 1
             color: enforceLattePalette ? latteBridge.palette.textColor : theme.textColor
         }
 
@@ -1305,7 +1305,7 @@ MouseArea{
             var adjX = Math.min(limits.x+limits.width, Math.max(limits.x, globalChoords.x));
             var adjY = Math.min(limits.y+limits.height, Math.max(limits.y, globalChoords.y));
 
-            var length = containment.iconSize * wrapper.mScale;
+            var length = container.iconSize * wrapper.mScale;
             var thickness = length;
 
             //! Magic Lamp effect doesn't like coordinates outside the screen and

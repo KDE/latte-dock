@@ -113,7 +113,7 @@ Item{
     readonly property QtObject windowsTracker: mainCommunicator.windowsTrackingEnabled && latteView && latteView.windowsTracker ?
                                                    latteView.windowsTracker : null
 
-    readonly property Item containment: container
+    readonly property Item container: root.container
 
     property Item actions: Actions{}
 

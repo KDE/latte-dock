@@ -136,7 +136,7 @@ Item {
     property Item dragSource: null
     property Item parabolicManager: _parabolicManager
     property Item tasksExtendedManager: _tasksExtendedManager
-    readonly property Item containment: _containment
+    readonly property Item container: _container
 
     readonly property alias containsDrag: mouseHandler.containsDrag
     readonly property bool dragAreaEnabled: latteView ? (root.dragSource !== null
@@ -215,10 +215,10 @@ Item {
         }
     }
 
-    property int thickMargin: latteView ? latteView.thickMargin : 0.16*containment.iconSize
+    property int thickMargin: latteView ? latteView.thickMargin : 0.16*container.iconSize
     property int thickMargins: 2 * thickMargin
-    property int lengthIntMargin: latteView ? latteView.lengthIntMargin : 0.04 * containment.iconSize
-    property int lengthExtMargin: latteView ? latteView.lengthExtMargin : 0.1 * containment.iconSize
+    property int lengthIntMargin: latteView ? latteView.lengthIntMargin : 0.04 * container.iconSize
+    property int lengthExtMargin: latteView ? latteView.lengthExtMargin : 0.1 * container.iconSize
     property int lengthMargin: lengthIntMargin + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
 
@@ -249,7 +249,7 @@ Item {
     property real durationTime: latteView ? latteView.durationTime : plasmoid.configuration.durationTime
     property real zoomFactor: latteView ? latteView.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
 
-    property int appShadowSize: latteView ? latteView.appShadowSize : Math.ceil(0.12*containment.iconSize)
+    property int appShadowSize: latteView ? latteView.appShadowSize : Math.ceil(0.12*container.iconSize)
     property string appShadowColor: latteView ? latteView.appShadowColor : "#ff080808"
     property string appShadowColorSolid: latteView ? latteView.appShadowColorSolid : "#ff080808"
 
@@ -967,8 +967,8 @@ Item {
         id: _tasksExtendedManager
     }
 
-    Ability.ContainmentAbility {
-        id: _containment
+    Ability.ContainerAbility {
+        id: _container
         localIconSize: Math.max(plasmoid.configuration.iconSize, 16)
     }
 
@@ -1056,15 +1056,15 @@ Item {
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-        width: root.vertical ? 1 : 2 * containment.iconSize
-        height: root.vertical ? 2 * containment.iconSize : 1
+        width: root.vertical ? 1 : 2 * container.iconSize
+        height: root.vertical ? 2 * container.iconSize : 1
         color: "red"
         x: (root.location === PlasmaCore.Types.LeftEdge) ? neededSpace : parent.width - neededSpace
         y: (root.location === PlasmaCore.Types.TopEdge) ? neededSpace : parent.height - neededSpace
 
         visible: plasmoid.configuration.zoomHelper
 
-        property int neededSpace: zoomFactor*(containment.iconSize+lengthMargins)
+        property int neededSpace: zoomFactor*(container.iconSize+lengthMargins)
     }
 
     Item{
@@ -1080,8 +1080,8 @@ Item {
         width: ( icList.orientation === Qt.Horizontal ) ? icList.width + spacing : smallSize
         height: ( icList.orientation === Qt.Vertical ) ? icList.height + spacing : smallSize
 
-        property int spacing: latteView ? 0 : containment.iconSize / 2
-        property int smallSize: Math.max(0.10 * containment.iconSize, 16)
+        property int spacing: latteView ? 0 : container.iconSize / 2
+        property int smallSize: Math.max(0.10 * container.iconSize, 16)
 
         Behavior on opacity{
             NumberAnimation { duration: root.durationTime*root.longDuration }
@@ -1178,8 +1178,8 @@ Item {
             visible: root.dragAreaEnabled
 
             property int maxSize: (((root.hoveredIndex>=0 || dockHoveredIndex>=0 ) || windowPreviewIsShown) && !root.dragSource) ?
-                                      root.zoomFactor * (containment.iconSize + root.thickMargins) + root.screenEdgeMargin :
-                                      containment.iconSize + root.thickMargins + root.screenEdgeMargin
+                                      root.zoomFactor * (container.iconSize + root.thickMargins) + root.screenEdgeMargin :
+                                      container.iconSize + root.thickMargins + root.screenEdgeMargin
 
             function onlyLaunchersInList(list){
                 return list.every(function (item) {
@@ -1241,7 +1241,7 @@ Item {
                     return !latteView.thickAnimated ? latteView.maskManager.thicknessNormal : latteView.maskManager.thicknessZoom;
                 }
 
-                return (root.thickMargins + containment.iconSize) * root.zoomFactor;
+                return (root.thickMargins + container.iconSize) * root.zoomFactor;
             }
 
             //onCurrentPosChanged: console.log("CP :: "+ currentPos + " icW:"+icList.width + " rw: "+root.width + " w:" +width);
@@ -1362,7 +1362,7 @@ Item {
             id: newDroppedLauncherVisual
             anchors.fill: parent
             visible: backgroundOpacity > 0
-            radius: containment.iconSize/10
+            radius: container.iconSize/10
             backgroundOpacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 0.75 : 0
             duration: root.durationTime
 

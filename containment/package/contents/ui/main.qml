@@ -1825,7 +1825,7 @@ Item {
 
     ///////////////BEGIN ABILITIES
 
-    Ability.Containment{
+    Ability.Container{
         id: _container
     }
 
