@@ -34,6 +34,8 @@ import org.kde.activities 0.1 as Activities
 import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
+import org.kde.latte.applet.abilities 0.1 as AppletAbility
+
 
 import "abilities" as Ability
 import "previews" as Previews
@@ -272,20 +274,11 @@ Item {
 
     //BEGIN Latte Dock Communicator
     property QtObject latteBridge: null
-    onLatteBridgeChanged: {
-        if (latteBridge) {
-            latteBridge.actions.setProperty(plasmoid.id, "latteSideColoringEnabled", false);
-            latteBridge.actions.setProperty(plasmoid.id, "screenEdgeMarginSupported", true);
-        }
-    }
 
-    readonly property int screenEdgeMargin: latteBridge ? latteBridge.screenEdgeMargin : 0
-    //END  Latte Dock Communicator
-
-    //BEGIN Latte based properties
     readonly property bool enforceLattePalette: latteBridge && latteBridge.applyPalette && latteBridge.palette
     readonly property bool latteInEditMode: latteBridge && latteBridge.inEditMode
-    //END Latte based properties
+    readonly property int screenEdgeMargin: latteBridge ? latteBridge.screenEdgeMargin : 0
+    //END  Latte Dock Communicator
 
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
@@ -967,11 +960,17 @@ Item {
         id: _tasksExtendedManager
     }
 
-    Ability.ContainerAbility {
+    Ability.Container {
         id: _container
         localIconSize: Math.max(plasmoid.configuration.iconSize, 16)
     }
 
+    AppletAbility.Requirements{
+        latteSideColoringEnabled: false
+        screenEdgeMarginSupported: true
+
+        bridge: latteBridge
+    }
 
     Component{
         id: attentionTimerComponent
