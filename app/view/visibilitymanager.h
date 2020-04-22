@@ -34,7 +34,7 @@
 #include <Plasma/Containment>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace Latte {
 class Corona;

@@ -37,7 +37,7 @@
 #include <KIconThemes/KIconLoader>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 // X11
 #include <NETWM>

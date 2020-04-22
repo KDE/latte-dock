@@ -34,7 +34,7 @@
 #include <QRasterWindow>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 // KDE
 #include <KWindowSystem>

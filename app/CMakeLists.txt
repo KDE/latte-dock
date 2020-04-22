@@ -65,6 +65,7 @@ if(${KF5_VERSION_MINOR} LESS "62")
         KF5::ProcessCore
         KF5::WaylandClient
         KF5::XmlGui
+        Latte
     )
 else()
     target_link_libraries(latte-dock
@@ -89,6 +90,7 @@ else()
         KF5::PlasmaQuick
         KF5::WaylandClient
         KF5::XmlGui
+        Latte
     )
 
 endif()

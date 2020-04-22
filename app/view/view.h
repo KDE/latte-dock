@@ -47,7 +47,7 @@
 #include <QTimer>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace Plasma {
 class Types;

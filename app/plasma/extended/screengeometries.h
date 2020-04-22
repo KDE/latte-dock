@@ -22,11 +22,12 @@
 #define PLASMASCREENGEOMETRIES_H
 
 // Qt
+#include <QHash>
 #include <QObject>
 #include <QTimer>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace Latte {
 class Corona;

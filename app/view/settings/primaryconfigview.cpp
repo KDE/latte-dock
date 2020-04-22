@@ -51,9 +51,6 @@
 // Plasma
 #include <Plasma/Package>
 
-// Latte
-#include <Latte/tasks.h>
-
 namespace Latte {
 namespace ViewPart {
 
@@ -626,13 +623,13 @@ void PrimaryConfigView::hideConfigWindow()
 
 void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
 {
-    Tasks::LaunchersGroup group = (Tasks::LaunchersGroup)groupInt;
+    Types::LaunchersGroup group = (Types::LaunchersGroup)groupInt;
 
     //! when the layout/global launchers list is empty then the current dock launchers are used for them
     //! as a start point
     if (m_corona &&  m_latteView->layout()) {
-        if ((group == Tasks::LayoutLaunchers && m_latteView->layout()->launchers().isEmpty())
-                || (group == Tasks::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
+        if ((group == Types::LayoutLaunchers && m_latteView->layout()->launchers().isEmpty())
+                || (group == Types::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
 
             Plasma::Containment *c = m_latteView->containment();
 
@@ -667,9 +664,9 @@ void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
                                 QVariant launchers;
 
                                 if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
-                                    if (group == Tasks::LayoutLaunchers) {
+                                    if (group == Types::LayoutLaunchers) {
                                         m_latteView->layout()->setLaunchers(launchers.toStringList());
-                                    } else if (group == Tasks::GlobalLaunchers) {
+                                    } else if (group == Types::GlobalLaunchers) {
                                         m_corona->universalSettings()->setLaunchers(launchers.toStringList());
                                     }
                                 }

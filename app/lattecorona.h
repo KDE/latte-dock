@@ -37,7 +37,7 @@
 #include <KAboutApplicationDialog>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace KDeclarative {
 class QmlObjectSharedEngine;

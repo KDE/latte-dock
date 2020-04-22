@@ -45,7 +45,7 @@
 #include <KNewStuff3/KNS3/DownloadDialog>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace Latte {
 namespace Settings {

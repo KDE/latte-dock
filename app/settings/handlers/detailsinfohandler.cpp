@@ -28,7 +28,7 @@
 #include "../../layout/abstractlayout.h"
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace Latte {
 namespace Settings {

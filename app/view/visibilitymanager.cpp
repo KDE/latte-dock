@@ -752,7 +752,7 @@ void VisibilityManager::restoreConfig()
     setRaiseOnDesktop(config.readEntry("raiseOnDesktopChange", false));
     setRaiseOnActivity(config.readEntry("raiseOnActivityChange", false));
 
-    auto storedMode = static_cast<Types::Visibility>(m_latteView->containment()->config().readEntry("visibility", static_cast<int>(Types::DodgeActive)));
+    auto storedMode = (Types::Visibility)(m_latteView->containment()->config().readEntry("visibility", (int)(Types::DodgeActive)));
 
     if (storedMode == Types::AlwaysVisible) {
         qDebug() << "Loading visibility mode: Always Visible , on startup...";
@@ -763,7 +763,7 @@ void VisibilityManager::restoreConfig()
                 return;
             }
 
-            auto fMode = static_cast<Types::Visibility>(m_latteView->containment()->config().readEntry("visibility", static_cast<int>(Types::DodgeActive)));
+            Types::Visibility fMode = (Types::Visibility)(m_latteView->containment()->config().readEntry("visibility", (int)(Types::DodgeActive)));
             qDebug() << "Loading visibility mode:" << fMode << " on startup...";
             setMode(fMode);
         });

@@ -35,7 +35,7 @@
 #include <KActivities/Consumer>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace Latte {
 

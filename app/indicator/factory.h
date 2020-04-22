@@ -26,7 +26,7 @@
 #include <QWidget>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 class KPluginMetaData;
 

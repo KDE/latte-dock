@@ -41,7 +41,7 @@
 #include <KHelpMenu>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace Ui {
 class SettingsDialog;

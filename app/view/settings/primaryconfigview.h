@@ -36,7 +36,7 @@
 #include <Plasma/FrameSvg>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace Plasma {
 class Applet;

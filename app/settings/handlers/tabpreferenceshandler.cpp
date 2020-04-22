@@ -28,7 +28,7 @@
 #include "../../plasma/extended/theme.h"
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace Latte {
 namespace Settings {

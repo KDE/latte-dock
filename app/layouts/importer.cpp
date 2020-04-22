@@ -40,7 +40,7 @@
 #include <KNotification>
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 enum SessionType
 {

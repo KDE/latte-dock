@@ -22,7 +22,7 @@
 #define SETTINGSDATAPREFERENCES_H
 
 // Latte
-#include <Latte/types.h>
+#include <Latte>
 
 namespace Latte {
 namespace Settings {
