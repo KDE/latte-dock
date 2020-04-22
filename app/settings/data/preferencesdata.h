@@ -21,7 +21,8 @@
 #ifndef SETTINGSDATAPREFERENCES_H
 #define SETTINGSDATAPREFERENCES_H
 
-#include "../../types/types.h"
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 namespace Settings {

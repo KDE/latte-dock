@@ -20,9 +20,6 @@
 #ifndef ABSTRACTLAYOUT_H
 #define ABSTRACTLAYOUT_H
 
-// local
-#include "../types/types.h"
-
 // Qt
 #include <QObject>
 
@@ -31,6 +28,9 @@
 
 // Plasma
 #include <Plasma>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Plasma {
 class Types;

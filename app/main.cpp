@@ -22,8 +22,6 @@
 #include "config-latte.h"
 #include "lattecorona.h"
 #include "layouts/importer.h"
-#include "types/tasks.h"
-#include "types/types.h"
 
 // C++
 #include <memory>
@@ -60,9 +58,6 @@ inline void detectPlatform(int argc, char **argv);
 
 int main(int argc, char **argv)
 {
-    qmlRegisterUncreatableType<Latte::Tasks>("org.kde.latte", 0, 2, "Tasks", "Latte Tasks Types uncreatable");
-    qmlRegisterUncreatableType<Latte::Types>("org.kde.latte", 0, 2, "Types", "Latte Types uncreatable");
-
     //Plasma scales itself to font DPI
     //on X, where we don't have compositor scaling, this generally works fine.
     //also there are bugs on older Qt, especially when it comes to fractional scaling

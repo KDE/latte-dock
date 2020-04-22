@@ -24,7 +24,6 @@
 // local
 #include "plasma/quick/configview.h"
 #include "layout/storage.h"
-#include "types/types.h"
 #include "view/panelshadows_p.h"
 
 // Qt
@@ -36,6 +35,9 @@
 
 // KDE
 #include <KAboutApplicationDialog>
+
+// Latte
+#include <Latte/types.h>
 
 namespace KDeclarative {
 class QmlObjectSharedEngine;

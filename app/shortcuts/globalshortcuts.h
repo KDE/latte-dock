@@ -21,9 +21,6 @@
 #ifndef GLOBALSHORTCUTS_H
 #define GLOBALSHORTCUTS_H
 
-// local
-#include "../types/types.h"
-
 // Qt
 #include <QAction>
 #include <QPointer>
@@ -31,6 +28,9 @@
 
 // KDE
 #include <kmodifierkeyinfo.h>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Plasma {
 class Containment;

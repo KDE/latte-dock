@@ -25,7 +25,6 @@
 #include "../layout/centrallayout.h"
 #include "../layouts/manager.h"
 #include "../layouts/synchronizer.h"
-#include "../types/tasks.h"
 
 // Qt
 #include <QQuickItem>
@@ -33,6 +32,9 @@
 // Plasma
 #include <Plasma/Applet>
 #include <Plasma/Containment>
+
+// Latte
+#include <Latte/tasks.h>
 
 namespace Latte {
 namespace Layouts {

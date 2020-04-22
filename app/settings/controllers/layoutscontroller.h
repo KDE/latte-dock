@@ -27,13 +27,15 @@
 #include "../views/layoutsheaderview.h"
 #include "../models/layoutsmodel.h"
 #include "../../lattecorona.h"
-#include "../../types/types.h"
 
 // Qt
 #include <QAbstractItemModel>
 #include <QHash>
 #include <QSortFilterProxyModel>
 #include <QTableView>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 class Corona;

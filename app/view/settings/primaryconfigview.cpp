@@ -32,7 +32,6 @@
 #include "../../settings/universalsettings.h"
 #include "../../shortcuts/globalshortcuts.h"
 #include "../../shortcuts/shortcutstracker.h"
-#include "../../types/tasks.h"
 #include "../../wm/abstractwindowinterface.h"
 
 // Qt
@@ -51,6 +50,9 @@
 
 // Plasma
 #include <Plasma/Package>
+
+// Latte
+#include <Latte/tasks.h>
 
 namespace Latte {
 namespace ViewPart {

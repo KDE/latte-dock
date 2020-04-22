@@ -23,7 +23,6 @@
 
 // local
 #include "../lattecorona.h"
-#include "../types/types.h"
 
 // Qt
 #include <QObject>
@@ -37,6 +36,9 @@
 // KDE
 #include <KConfigGroup>
 #include <KSharedConfig>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 namespace Layouts {

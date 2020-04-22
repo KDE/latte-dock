@@ -27,7 +27,6 @@
 #include "../controllers/layoutscontroller.h"
 #include "../handlers/tablayoutshandler.h"
 #include "../handlers/tabpreferenceshandler.h"
-#include "../../types/types.h"
 
 // Qt
 #include <QObject>
@@ -40,6 +39,9 @@
 
 // KDE
 #include <KHelpMenu>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Ui {
 class SettingsDialog;

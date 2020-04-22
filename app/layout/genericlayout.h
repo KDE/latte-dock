@@ -22,7 +22,6 @@
 
 // local
 #include "abstractlayout.h"
-#include "../types/types.h"
 
 // Qt
 #include <QObject>
@@ -32,6 +31,9 @@
 
 // Plasma
 #include <Plasma>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Plasma {
 class Applet;

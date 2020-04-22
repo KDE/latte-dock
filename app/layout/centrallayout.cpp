@@ -29,11 +29,13 @@
 #include "../layouts/synchronizer.h"
 #include "../settings/universalsettings.h"
 #include "../view/view.h"
-#include "../types/types.h"
 
 // KDE
 #include <KConfigGroup>
 #include <KActivities/Consumer>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 

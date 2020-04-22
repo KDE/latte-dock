@@ -31,7 +31,6 @@
 #include "../../layout/centrallayout.h"
 #include "../../layouts/importer.h"
 #include "../../layouts/manager.h"
-#include "../../types/types.h"
 
 //! Qt
 #include <QFileDialog>
@@ -44,6 +43,9 @@
 #include <KActivities/Controller>
 #include <KIO/OpenFileManagerWindowJob>
 #include <KNewStuff3/KNS3/DownloadDialog>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 namespace Settings {

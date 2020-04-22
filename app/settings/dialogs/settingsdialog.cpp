@@ -33,7 +33,6 @@
 #include "../../layouts/manager.h"
 #include "../../layouts/synchronizer.h"
 #include "../../plasma/extended/theme.h"
-#include "../../types/types.h"
 
 // Qt
 #include <QButtonGroup>

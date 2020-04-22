@@ -24,7 +24,6 @@
 #include "../view.h"
 #include "../../lattecorona.h"
 #include "../../indicator/factory.h"
-#include "../../types/types.h"
 
 // Qt
 #include <QFileDialog>
@@ -34,6 +33,9 @@
 #include <KPluginMetaData>
 #include <KDeclarative/ConfigPropertyMap>
 #include <KDeclarative/QmlObjectSharedEngine>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 namespace ViewPart {

@@ -22,7 +22,6 @@
 
 // local
 #include "../windowinfowrap.h"
-#include "../../types/types.h"
 
 // Qt
 #include <QObject>
@@ -30,6 +29,9 @@
 #include <QHash>
 #include <QMap>
 #include <QTimer>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 class View;

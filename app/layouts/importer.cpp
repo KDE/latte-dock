@@ -26,7 +26,6 @@
 #include "../screenpool.h"
 #include "../layout/abstractlayout.h"
 #include "../settings/universalsettings.h"
-#include "../types/types.h"
 
 // Qt
 #include <QFile>
@@ -39,6 +38,9 @@
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KNotification>
+
+// Latte
+#include <Latte/types.h>
 
 enum SessionType
 {

@@ -24,7 +24,6 @@
 #include "tasktools.h"
 #include "view/view.h"
 #include "view/helpers/screenedgeghostwindow.h"
-#include "../types/types.h"
 
 // Qt
 #include <QDebug>
@@ -36,6 +35,9 @@
 #include <KWindowSystem>
 #include <KWindowInfo>
 #include <KIconThemes/KIconLoader>
+
+// Latte
+#include <Latte/types.h>
 
 // X11
 #include <NETWM>

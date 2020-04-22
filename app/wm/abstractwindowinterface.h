@@ -26,8 +26,6 @@
 #include "tasktools.h"
 #include "windowinfowrap.h"
 #include "tracker/windowstracker.h"
-#include "../types/types.h"
-//#include "../liblatte2/extras.h"
 
 // C++
 #include <unordered_map>
@@ -50,6 +48,9 @@
 
 // Plasma
 #include <Plasma>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 class Corona;

@@ -24,7 +24,6 @@
 // local
 #include "../../plasma/quick/configview.h"
 #include "../../wm/windowinfowrap.h"
-#include "../../types/types.h"
 
 //Qt
 #include <QObject>
@@ -35,6 +34,9 @@
 // Plasma
 #include <plasma/package.h>
 #include <Plasma/FrameSvg>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Plasma {
 class Applet;

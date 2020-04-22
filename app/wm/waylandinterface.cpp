@@ -25,7 +25,6 @@
 #include "view/view.h"
 #include "view/helpers/screenedgeghostwindow.h"
 #include "../lattecorona.h"
-#include "../types/types.h"
 
 // Qt
 #include <QDebug>
@@ -33,6 +32,9 @@
 #include <QApplication>
 #include <QtX11Extras/QX11Info>
 #include <QRasterWindow>
+
+// Latte
+#include <Latte/types.h>
 
 // KDE
 #include <KWindowSystem>

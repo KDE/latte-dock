@@ -23,7 +23,6 @@
 #include "panelshadows_p.h"
 #include "view.h"
 #include "settings/primaryconfigview.h"
-#include "../types/types.h"
 
 // Qt
 #include <QRegion>
@@ -31,6 +30,9 @@
 // KDE
 #include <KWindowEffects>
 #include <KWindowSystem>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 namespace ViewPart {

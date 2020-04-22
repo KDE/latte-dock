@@ -20,13 +20,13 @@
 #ifndef INDICATORFACTORY_H
 #define INDICATORFACTORY_H
 
-// local
-#include "../types/types.h"
-
 // Qt
 #include <QHash>
 #include <QObject>
 #include <QWidget>
+
+// Latte
+#include <Latte/types.h>
 
 class KPluginMetaData;
 

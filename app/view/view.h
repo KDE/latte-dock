@@ -33,7 +33,6 @@
 #include "../layout/genericlayout.h"
 #include "../plasma/quick/containmentview.h"
 #include "../plasma/quick/configview.h"
-#include "../types/types.h"
 
 // C++
 #include <array>
@@ -46,6 +45,9 @@
 #include <QScreen>
 #include <QPointer>
 #include <QTimer>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Plasma {
 class Types;

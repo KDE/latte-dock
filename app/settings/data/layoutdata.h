@@ -21,13 +21,13 @@
 #ifndef SETTINGSDATALAYOUT_H
 #define SETTINGSDATALAYOUT_H
 
-//local
-#include "../../types/types.h"
-
 //Qt
 #include <QMetaType>
 #include <QString>
 #include <QStringList>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 namespace Settings {

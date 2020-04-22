@@ -26,7 +26,6 @@
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
-#include "../types/types.h"
 
 // Qt
 #include <QDebug>
@@ -35,6 +34,9 @@
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
 #include <KWindowSystem>
+
+// Latte
+#include <Latte/types.h>
 
 namespace Latte {
 namespace ViewPart {
