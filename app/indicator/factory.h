@@ -20,13 +20,13 @@
 #ifndef INDICATORFACTORY_H
 #define INDICATORFACTORY_H
 
+// local
+#include "../types.h"
+
 // Qt
 #include <QHash>
 #include <QObject>
 #include <QWidget>
-
-// Latte
-#include <Latte>
 
 class KPluginMetaData;
 
@@ -62,7 +62,7 @@ public:
     static bool metadataAreValid(QString &file);
 
     //! imports an indicator compressed file
-    static Latte::Types::ImportExportState importIndicatorFile(QString compressedFile);
+    static Latte::ImportExport::State importIndicatorFile(QString compressedFile);
 signals:
     void indicatorChanged(const QString &indicatorId);
     void indicatorRemoved(const QString &indicatorId);

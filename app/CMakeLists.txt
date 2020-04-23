@@ -3,6 +3,7 @@ set(lattedock-app_SRCS
     infoview.cpp
     lattecorona.cpp
     screenpool.cpp
+    types.cpp
     main.cpp
 )
 

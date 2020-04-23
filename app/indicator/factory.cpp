@@ -251,7 +251,7 @@ QString Factory::uiPath(QString pluginName) const
     return m_pluginUiPaths[pluginName];
 }
 
-Latte::Types::ImportExportState Factory::importIndicatorFile(QString compressedFile)
+Latte::ImportExport::State Factory::importIndicatorFile(QString compressedFile)
 {
     auto showNotificationError = []() {
         auto notification = new KNotification("import-fail", KNotification::CloseOnTimeout);
@@ -281,7 +281,7 @@ Latte::Types::ImportExportState Factory::importIndicatorFile(QString compressedF
         if (!tarArchive->isOpen()) {
             delete tarArchive;
             showNotificationError();
-            return Latte::Types::Failed;
+            return Latte::ImportExport::FailedState;
         } else {
             archive = tarArchive;
         }
@@ -329,11 +329,11 @@ Latte::Types::ImportExportState Factory::importIndicatorFile(QString compressedF
         QString output(process.readAllStandardOutput());
 
         showNotificationSucceed(metadata.name(), updated);
-        return Latte::Types::Installed;
+        return Latte::ImportExport::InstalledState;
     }
 
     showNotificationError();
-    return Latte::Types::Failed;
+    return Latte::ImportExport::FailedState;
 }
 
 void Factory::removeIndicator(QString id)
