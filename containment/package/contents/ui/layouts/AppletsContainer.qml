@@ -21,7 +21,7 @@ import QtQuick 2.7
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Grid {
     id: appletsContainer
@@ -35,7 +35,7 @@ Grid {
     //Layout.preferredWidth: width
     //Layout.preferredHeight: height
 
-    property int alignment: Latte.Types.BottomEdgeCenterAlign
+    property int alignment: LatteCore.Types.BottomEdgeCenterAlign
     property int beginIndex: 0
     property int offset: 0
 
@@ -162,7 +162,7 @@ Grid {
         ///Left Edge
         State {
             name: "leftCenter"
-            when: appletsContainer.alignment === Latte.Types.LeftEdgeCenterAlign
+            when: appletsContainer.alignment === LatteCore.Types.LeftEdgeCenterAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -176,7 +176,7 @@ Grid {
         },
         State {
             name: "leftTop"
-            when: appletsContainer.alignment === Latte.Types.LeftEdgeTopAlign
+            when: appletsContainer.alignment === LatteCore.Types.LeftEdgeTopAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -190,7 +190,7 @@ Grid {
         },
         State {
             name: "leftBottom"
-            when: appletsContainer.alignment === Latte.Types.LeftEdgeBottomAlign
+            when: appletsContainer.alignment === LatteCore.Types.LeftEdgeBottomAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -205,7 +205,7 @@ Grid {
         ///Right Edge
         State {
             name: "rightCenter"
-            when: appletsContainer.alignment === Latte.Types.RightEdgeCenterAlign
+            when: appletsContainer.alignment === LatteCore.Types.RightEdgeCenterAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -219,7 +219,7 @@ Grid {
         },
         State {
             name: "rightTop"
-            when: appletsContainer.alignment === Latte.Types.RightEdgeTopAlign
+            when: appletsContainer.alignment === LatteCore.Types.RightEdgeTopAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -233,7 +233,7 @@ Grid {
         },
         State {
             name: "rightBottom"
-            when: appletsContainer.alignment === Latte.Types.RightEdgeBottomAlign
+            when: appletsContainer.alignment === LatteCore.Types.RightEdgeBottomAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -248,7 +248,7 @@ Grid {
         ///Bottom Edge
         State {
             name: "bottomCenter"
-            when: appletsContainer.alignment === Latte.Types.BottomEdgeCenterAlign
+            when: appletsContainer.alignment === LatteCore.Types.BottomEdgeCenterAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -262,7 +262,7 @@ Grid {
         },
         State {
             name: "bottomLeft"
-            when: appletsContainer.alignment === Latte.Types.BottomEdgeLeftAlign
+            when: appletsContainer.alignment === LatteCore.Types.BottomEdgeLeftAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -276,7 +276,7 @@ Grid {
         },
         State {
             name: "bottomRight"
-            when: appletsContainer.alignment === Latte.Types.BottomEdgeRightAlign
+            when: appletsContainer.alignment === LatteCore.Types.BottomEdgeRightAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -291,7 +291,7 @@ Grid {
         ///Top Edge
         State {
             name: "topCenter"
-            when: appletsContainer.alignment === Latte.Types.TopEdgeCenterAlign
+            when: appletsContainer.alignment === LatteCore.Types.TopEdgeCenterAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -305,7 +305,7 @@ Grid {
         },
         State {
             name: "topLeft"
-            when: appletsContainer.alignment === Latte.Types.TopEdgeLeftAlign
+            when: appletsContainer.alignment === LatteCore.Types.TopEdgeLeftAlign
 
             AnchorChanges {
                 target: appletsContainer
@@ -319,7 +319,7 @@ Grid {
         },
         State {
             name: "topRight"
-            when: appletsContainer.alignment === Latte.Types.TopEdgeRightAlign
+            when: appletsContainer.alignment === LatteCore.Types.TopEdgeRightAlign
 
             AnchorChanges {
                 target: appletsContainer

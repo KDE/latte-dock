@@ -28,7 +28,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Grid {
     id: typeRow
@@ -63,15 +63,15 @@ Grid {
         width: horizontal ? (parent.width - parent.spacing)/ 2 : parent.width
 
         checkable: true
-        checked: latteView.type === Latte.Types.DockView
+        checked: latteView.type === LatteCore.Types.DockView
         text: i18nc("dock type","Dock")
         exclusiveGroup: viewTypeGroup
         tooltip: i18n("Change the behavior and appearance to Dock type")
 
         onPressedChanged: {
             if (pressed && !checked) {
-                latteView.visibility.mode = Latte.Types.DodgeActive;
-                plasmoid.configuration.alignment = Latte.Types.Center;
+                latteView.visibility.mode = LatteCore.Types.DodgeActive;
+                plasmoid.configuration.alignment = LatteCore.Types.Center;
                 plasmoid.configuration.useThemePanel = true;
                 plasmoid.configuration.solidPanel = false;
                 plasmoid.configuration.panelSize = 5;
@@ -82,7 +82,7 @@ Grid {
 
                 //! Empty Areas
                 plasmoid.configuration.dragActiveWindowEnabled = false;
-                plasmoid.configuration.scrollAction = Latte.Types.ScrollNone;
+                plasmoid.configuration.scrollAction = LatteCore.Types.ScrollNone;
 
                 //! Animations
                 plasmoid.configuration.animationLauncherBouncing = true;
@@ -107,15 +107,15 @@ Grid {
         width: dockTypeButton.width
 
         checkable: true
-        checked: latteView.type === Latte.Types.PanelView
+        checked: latteView.type === LatteCore.Types.PanelView
         text: i18nc("panel type","Panel")
         exclusiveGroup: viewTypeGroup
         tooltip: i18n("Change the behavior and appearance to Panel type")
 
         onPressedChanged: {
             if (pressed && !checked) {
-                latteView.visibility.mode = Latte.Types.AlwaysVisible;
-                plasmoid.configuration.alignment = Latte.Types.Justify;
+                latteView.visibility.mode = LatteCore.Types.AlwaysVisible;
+                plasmoid.configuration.alignment = LatteCore.Types.Justify;
                 plasmoid.configuration.useThemePanel = true;
                 plasmoid.configuration.solidPanel = false;
                 plasmoid.configuration.panelSize = 100;

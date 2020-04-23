@@ -29,9 +29,13 @@
 // Qt
 #include <QtQml>
 
+// Latte
+#include <Latte>
+
 void LatteCorePlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(uri == QLatin1String("org.kde.latte.core"));
+    qmlRegisterUncreatableType<Latte::Types>(uri, 0, 2, "Types", "Latte Types uncreatable");
     qmlRegisterType<Latte::BackgroundTracker>(uri, 0, 2, "BackgroundTracker");
     qmlRegisterType<Latte::IconItem>(uri, 0, 2, "IconItem");
     qmlRegisterSingletonType<Latte::Environment>(uri, 0, 2, "Environment", &Latte::environment_qobject_singletontype_provider);

@@ -28,7 +28,6 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
@@ -95,20 +94,20 @@ Item {
 
         return (visibilityManager.panelIsBiggerFromIconSize
                 && (maxZoomFactor === 1.0)
-                && (plasmoid.configuration.alignment === Latte.Types.Justify)
+                && (plasmoid.configuration.alignment === LatteCore.Types.Justify)
                 && !root.editMode
                 && !visibilityManager.inLocationAnimation);
     }
 
     property int viewType: {
-        if ((plasmoid.configuration.alignment === Latte.Types.Justify)
+        if ((plasmoid.configuration.alignment === LatteCore.Types.Justify)
                 && (plasmoid.configuration.useThemePanel)
                 && (plasmoid.configuration.panelSize === 100)
                 && (maxZoomFactor === 1.0)) {
-            return Latte.Types.PanelView;
+            return LatteCore.Types.PanelView;
         }
 
-        return Latte.Types.DockView;
+        return LatteCore.Types.DockView;
     }
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && (!forceTransparentPanel || forcePanelForBusyBackground)
@@ -156,15 +155,15 @@ Item {
                                          && !inConfigureAppletsMode
                                          && !forceSolidPanel
                                          && !latteView.windowsTracker.currentScreen.existsWindowTouching
-                                         && !(windowColors === Latte.Types.ActiveWindowColors && selectedWindowsTracker.existsWindowActive)
+                                         && !(windowColors === LatteCore.Types.ActiveWindowColors && selectedWindowsTracker.existsWindowActive)
 
-    property bool forcePanelForBusyBackground: userShowPanelBackground && (root.themeColors === Latte.Types.SmartThemeColors)
+    property bool forcePanelForBusyBackground: userShowPanelBackground && (root.themeColors === LatteCore.Types.SmartThemeColors)
                                                && ( (root.forceTransparentPanel && colorizerManager.backgroundIsBusy)
                                                    || normalBusyForTouchingBusyVerticalView )
 
     property bool normalBusyForTouchingBusyVerticalView: (latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers isBusy transparency*/
                                                           && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
-                                                          && root.themeColors === Latte.Types.SmartThemeColors
+                                                          && root.themeColors === LatteCore.Types.SmartThemeColors
                                                           && plasmoid.configuration.backgroundOnlyOnMaximized
                                                           /*&& !plasmoid.configuration.solidBackgroundForMaximized
                                                           && !plasmaBackgroundForPopups*/)
@@ -172,7 +171,7 @@ Item {
     property bool solidBusyForTouchingBusyVerticalView: false //DISABLED, until to check if the normalBusyForTouchingBusyVerticalView is enough to catch and handle the case
     /*(latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
     /* && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
-                                                         && root.themeColors === Latte.Types.SmartThemeColors
+                                                         && root.themeColors === LatteCore.Types.SmartThemeColors
                                                          && plasmoid.configuration.backgroundOnlyOnMaximized
                                                          && plasmoid.configuration.solidBackgroundForMaximized
                                                          && !plasmaBackgroundForPopups)*/
@@ -180,7 +179,7 @@ Item {
     property bool plasmaStyleBusyForTouchingBusyVerticalView: false //DISABLED, until to check if the normalBusyForTouchingBusyVerticalView is enough to catch and handle the case
     //(latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
     /* && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
-                                                               && root.themeColors === Latte.Types.SmartThemeColors
+                                                               && root.themeColors === LatteCore.Types.SmartThemeColors
                                                                && plasmoid.configuration.backgroundOnlyOnMaximized
                                                                && plasmaBackgroundForPopups)*/
 
@@ -190,9 +189,9 @@ Item {
                                       && latteView.windowsTracker.currentScreen.existsWindowMaximized
 
     property bool hideLengthScreenGaps: hideThickScreenGap
-                                        && (latteView.visibility.mode === Latte.Types.AlwaysVisible
-                                            || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
-                                        && (plasmoid.configuration.alignment === Latte.Types.Justify)
+                                        && (latteView.visibility.mode === LatteCore.Types.AlwaysVisible
+                                            || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow)
+                                        && (plasmoid.configuration.alignment === LatteCore.Types.Justify)
                                         && plasmoid.configuration.maxLength>85
                                         && !root.editMode
 
@@ -201,7 +200,7 @@ Item {
     property int themeColors: plasmoid.configuration.themeColors
     property int windowColors: plasmoid.configuration.windowColors
 
-    property bool colorizerEnabled: themeColors !== Latte.Types.PlasmaThemeColors || windowColors !== Latte.Types.NoneWindowColors
+    property bool colorizerEnabled: themeColors !== LatteCore.Types.PlasmaThemeColors || windowColors !== LatteCore.Types.NoneWindowColors
 
     property bool plasmaBackgroundForPopups: plasmoid.configuration.plasmaBackgroundForPopups
 
@@ -216,7 +215,7 @@ Item {
     property bool closeActiveWindowEnabled: plasmoid.configuration.closeActiveWindowEnabled
     property bool dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled
     property bool immutable: plasmoid.immutable
-    property bool inFullJustify: (plasmoid.configuration.alignment === Latte.Types.Justify) && (maxLengthPerCentage===100)
+    property bool inFullJustify: (plasmoid.configuration.alignment === LatteCore.Types.Justify) && (maxLengthPerCentage===100)
     property bool inSlidingIn: visibilityManager ? visibilityManager.inSlidingIn : false
     property bool inSlidingOut: visibilityManager ? visibilityManager.inSlidingOut : false
     property bool inStartup: true
@@ -331,10 +330,10 @@ Item {
     property int appShadowSizeOriginal: enableShadows ? (0.5*container.maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
 
     property string appChosenShadowColor: {
-        if (plasmoid.configuration.shadowColorType === Latte.Types.ThemeColorShadow) {
+        if (plasmoid.configuration.shadowColorType === LatteCore.Types.ThemeColorShadow) {
             var strC = String(theme.textColor);
             return strC.indexOf("#") === 0 ? strC.substr(1) : strC;
-        } else if (plasmoid.configuration.shadowColorType === Latte.Types.UserColorShadow) {
+        } else if (plasmoid.configuration.shadowColorType === LatteCore.Types.UserColorShadow) {
             return plasmoid.configuration.shadowColor;
         }
 
@@ -359,7 +358,7 @@ Item {
     }
 
     //center the layout correctly when the user uses an offset
-    property int offsetFixed: (offset===0 || panelAlignment === Latte.Types.Center || plasmoid.configuration.alignment === Latte.Types.Justify)?
+    property int offsetFixed: (offset===0 || panelAlignment === LatteCore.Types.Center || plasmoid.configuration.alignment === LatteCore.Types.Justify)?
                                   offset : offset+panelMarginLength/2+totalPanelEdgeSpacing/2
 
     property int realPanelSize: 0
@@ -435,12 +434,12 @@ Item {
     property int heightMargins: root.isHorizontal ? thickMargins : lengthMargins
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
-    //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Types.Center : (root.isVertical ? Latte.Types.Top : Latte.Types.Left)
-    //property int panelAlignment: plasmoid.configuration.alignment !== Latte.Types.Justify ? plasmoid.configuration.alignment : layoutsContainer.mainLayoutPosition
+    //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? LatteCore.Types.Center : (root.isVertical ? LatteCore.Types.Top : LatteCore.Types.Left)
+    //property int panelAlignment: plasmoid.configuration.alignment !== LatteCore.Types.Justify ? plasmoid.configuration.alignment : layoutsContainer.mainLayoutPosition
 
     property int panelAlignment: !root.inConfigureAppletsMode ? plasmoid.configuration.alignment :
-                                                                ( plasmoid.configuration.alignment === Latte.Types.Justify ?
-                                                                     Latte.Types.Center : plasmoid.configuration.alignment )
+                                                                ( plasmoid.configuration.alignment === LatteCore.Types.Justify ?
+                                                                     LatteCore.Types.Center : plasmoid.configuration.alignment )
 
     property int panelUserSetAlignment: plasmoid.configuration.alignment
 
@@ -479,9 +478,9 @@ Item {
     property QtObject selectedWindowsTracker: {
         if (latteView && latteView.windowsTracker) {
             switch(plasmoid.configuration.activeWindowFilter) {
-            case Latte.Types.ActiveInCurrentScreen:
+            case LatteCore.Types.ActiveInCurrentScreen:
                 return latteView.windowsTracker.currentScreen;
-            case Latte.Types.ActiveFromAllScreens:
+            case LatteCore.Types.ActiveFromAllScreens:
                 return latteView.windowsTracker.allScreens;
             }
         }
@@ -503,11 +502,11 @@ Item {
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
     property int animationStep: {
-        if (!universalSettings || universalSettings.mouseSensitivity === Latte.Types.HighSensitivity) {
+        if (!universalSettings || universalSettings.mouseSensitivity === LatteCore.Types.HighSensitivity) {
             return 1;
-        } else if (universalSettings.mouseSensitivity === Latte.Types.MediumSensitivity) {
+        } else if (universalSettings.mouseSensitivity === LatteCore.Types.MediumSensitivity) {
             return Math.max(3, container.iconSize / 18);
-        } else if (universalSettings.mouseSensitivity === Latte.Types.LowSensitivity) {
+        } else if (universalSettings.mouseSensitivity === LatteCore.Types.LowSensitivity) {
             return Math.max(5, container.iconSize / 10);
         }
     }
@@ -665,7 +664,7 @@ Item {
     }
 
     onInConfigureAppletsModeChanged: {
-        if (inConfigureAppletsMode && panelUserSetAlignment===Latte.Types.Justify) {
+        if (inConfigureAppletsMode && panelUserSetAlignment===LatteCore.Types.Justify) {
             joinLayoutsToMainLayout();
         } else if (!inConfigureAppletsMode) {
             splitMainLayoutToLayouts();
@@ -682,7 +681,7 @@ Item {
         }
 
         if (!inConfigureAppletsMode){
-            if (panelUserSetAlignment===Latte.Types.Justify) {
+            if (panelUserSetAlignment===LatteCore.Types.Justify) {
                 addInternalViewSplitters();
                 splitMainLayoutToLayouts();
             } else {
@@ -690,7 +689,7 @@ Item {
                 root.destroyInternalViewSplitters();
             }
         } else {
-            if (panelUserSetAlignment===Latte.Types.Justify) {
+            if (panelUserSetAlignment===LatteCore.Types.Justify) {
                 addInternalViewSplitters();
             } else {
                 root.destroyInternalViewSplitters();
@@ -748,15 +747,15 @@ Item {
 
     onIsVerticalChanged: {
         if (isVertical) {
-            if (plasmoid.configuration.alignment === Latte.Types.Left)
-                plasmoid.configuration.alignment = Latte.Types.Top;
-            else if (plasmoid.configuration.alignment === Latte.Types.Right)
-                plasmoid.configuration.alignment = Latte.Types.Bottom;
+            if (plasmoid.configuration.alignment === LatteCore.Types.Left)
+                plasmoid.configuration.alignment = LatteCore.Types.Top;
+            else if (plasmoid.configuration.alignment === LatteCore.Types.Right)
+                plasmoid.configuration.alignment = LatteCore.Types.Bottom;
         } else {
-            if (plasmoid.configuration.alignment === Latte.Types.Top)
-                plasmoid.configuration.alignment = Latte.Types.Left;
-            else if (plasmoid.configuration.alignment === Latte.Types.Bottom)
-                plasmoid.configuration.alignment = Latte.Types.Right;
+            if (plasmoid.configuration.alignment === LatteCore.Types.Top)
+                plasmoid.configuration.alignment = LatteCore.Types.Left;
+            else if (plasmoid.configuration.alignment === LatteCore.Types.Bottom)
+                plasmoid.configuration.alignment = LatteCore.Types.Right;
         }
     }
 
@@ -879,10 +878,10 @@ Item {
         ///to add applets
         /*   if (plasmoid.immutable) {
             if(root.isHorizontal) {
-                root.Layout.preferredWidth = (plasmoid.configuration.alignment === Latte.Types.Justify ?
+                root.Layout.preferredWidth = (plasmoid.configuration.alignment === LatteCore.Types.Justify ?
                                                   layoutsContainer.width + 0.5*iconMargin : layoutsContainer.mainLayout.width + iconMargin);
             } else {
-                root.Layout.preferredHeight = (plasmoid.configuration.alignment === Latte.Types.Justify ?
+                root.Layout.preferredHeight = (plasmoid.configuration.alignment === LatteCore.Types.Justify ?
                                                    layoutsContainer.height + 0.5*iconMargin : layoutsContainer.mainLayout.height + iconMargin);
             }
         } else {

@@ -25,7 +25,6 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 
 import "../../code/HeuristicTools.js" as HeuristicTools
@@ -34,7 +33,7 @@ Item{
     id: layoutsContainer
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
-    readonly property bool useMaxLength: (plasmoid.configuration.alignment === Latte.Types.Justify && !root.inConfigureAppletsMode)
+    readonly property bool useMaxLength: (plasmoid.configuration.alignment === LatteCore.Types.Justify && !root.inConfigureAppletsMode)
     /*   && ((!root.inConfigureAppletsMode && !root.behaveAsPlasmaPanel )
                                              || (behaveAsPlasmaPanel && root.inConfigureAppletsMode))*/
 
@@ -125,7 +124,7 @@ Item{
     z:10
 
     property bool animationSent: false
-    property bool shouldCheckHalfs: (plasmoid.configuration.alignment === Latte.Types.Justify) && (_mainLayout.children>1)
+    property bool shouldCheckHalfs: (plasmoid.configuration.alignment === LatteCore.Types.Justify) && (_mainLayout.children>1)
 
     property int contentsWidth: _startLayout.width + _mainLayout.width + _endLayout.width
     property int contentsHeight: _startLayout.height + _mainLayout.height + _endLayout.height
@@ -184,7 +183,7 @@ Item{
     onYChanged: root.updateEffectsArea();
 
     EnvironmentActions {
-        active: root.scrollAction !== Latte.Types.ScrollNone || root.dragActiveWindowEnabled || root.closeActiveWindowEnabled
+        active: root.scrollAction !== LatteCore.Types.ScrollNone || root.dragActiveWindowEnabled || root.closeActiveWindowEnabled
         alignment: _mainLayout.alignment
     }
 
@@ -194,13 +193,13 @@ Item{
         offset: root.totalPanelEdgeSpacing/2
         alignment: {
             switch(plasmoid.location) {
-            case PlasmaCore.Types.BottomEdge: return Latte.Types.BottomEdgeLeftAlign;
-            case PlasmaCore.Types.TopEdge: return Latte.Types.TopEdgeLeftAlign;
-            case PlasmaCore.Types.LeftEdge: return Latte.Types.LeftEdgeTopAlign;
-            case PlasmaCore.Types.RightEdge: return Latte.Types.RightEdgeTopAlign;
+            case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeLeftAlign;
+            case PlasmaCore.Types.TopEdge: return LatteCore.Types.TopEdgeLeftAlign;
+            case PlasmaCore.Types.LeftEdge: return LatteCore.Types.LeftEdgeTopAlign;
+            case PlasmaCore.Types.RightEdge: return LatteCore.Types.RightEdgeTopAlign;
             }
 
-            return Latte.Types.BottomEdgeLeftAlign;
+            return LatteCore.Types.BottomEdgeLeftAlign;
         }
     }
 
@@ -209,52 +208,52 @@ Item{
         beginIndex: 100
         offset: centered ? appliedOffset : root.offsetFixed
 
-        readonly property bool centered: (root.panelAlignment === Latte.Types.Center) || (root.panelAlignment === Latte.Types.Justify)
+        readonly property bool centered: (root.panelAlignment === LatteCore.Types.Center) || (root.panelAlignment === LatteCore.Types.Justify)
         readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
-        readonly property int appliedOffset: root.panelAlignment === Latte.Types.Justify ? 0 : root.offset
+        readonly property int appliedOffset: root.panelAlignment === LatteCore.Types.Justify ? 0 : root.offset
 
         alignment: {
             if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                if (centered) return Latte.Types.LeftEdgeCenterAlign;
-                if (root.panelAlignment === Latte.Types.Top) return Latte.Types.LeftEdgeTopAlign;
-                if (root.panelAlignment === Latte.Types.Bottom) return Latte.Types.LeftEdgeBottomAlign;
+                if (centered) return LatteCore.Types.LeftEdgeCenterAlign;
+                if (root.panelAlignment === LatteCore.Types.Top) return LatteCore.Types.LeftEdgeTopAlign;
+                if (root.panelAlignment === LatteCore.Types.Bottom) return LatteCore.Types.LeftEdgeBottomAlign;
             }
 
             if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                if (centered) return Latte.Types.RightEdgeCenterAlign;
-                if (root.panelAlignment === Latte.Types.Top) return Latte.Types.RightEdgeTopAlign;
-                if (root.panelAlignment === Latte.Types.Bottom) return Latte.Types.RightEdgeBottomAlign;
+                if (centered) return LatteCore.Types.RightEdgeCenterAlign;
+                if (root.panelAlignment === LatteCore.Types.Top) return LatteCore.Types.RightEdgeTopAlign;
+                if (root.panelAlignment === LatteCore.Types.Bottom) return LatteCore.Types.RightEdgeBottomAlign;
             }
 
             if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                if (centered) return Latte.Types.BottomEdgeCenterAlign;
+                if (centered) return LatteCore.Types.BottomEdgeCenterAlign;
 
-                if ((root.panelAlignment === Latte.Types.Left && !reversed)
-                        || (root.panelAlignment === Latte.Types.Right && reversed)) {
-                    return Latte.Types.BottomEdgeLeftAlign;
+                if ((root.panelAlignment === LatteCore.Types.Left && !reversed)
+                        || (root.panelAlignment === LatteCore.Types.Right && reversed)) {
+                    return LatteCore.Types.BottomEdgeLeftAlign;
                 }
 
-                if ((root.panelAlignment === Latte.Types.Right && !reversed)
-                        || (root.panelAlignment === Latte.Types.Left && reversed)) {
-                    return Latte.Types.BottomEdgeRightAlign;
+                if ((root.panelAlignment === LatteCore.Types.Right && !reversed)
+                        || (root.panelAlignment === LatteCore.Types.Left && reversed)) {
+                    return LatteCore.Types.BottomEdgeRightAlign;
                 }
             }
 
             if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                if (centered) return Latte.Types.TopEdgeCenterAlign;
+                if (centered) return LatteCore.Types.TopEdgeCenterAlign;
 
-                if ((root.panelAlignment === Latte.Types.Left && !reversed)
-                        || (root.panelAlignment === Latte.Types.Right && reversed)) {
-                    return Latte.Types.TopEdgeLeftAlign;
+                if ((root.panelAlignment === LatteCore.Types.Left && !reversed)
+                        || (root.panelAlignment === LatteCore.Types.Right && reversed)) {
+                    return LatteCore.Types.TopEdgeLeftAlign;
                 }
 
-                if ((root.panelAlignment === Latte.Types.Right && !reversed)
-                        || (root.panelAlignment === Latte.Types.Left && reversed)) {
-                    return Latte.Types.TopEdgeRightAlign;
+                if ((root.panelAlignment === LatteCore.Types.Right && !reversed)
+                        || (root.panelAlignment === LatteCore.Types.Left && reversed)) {
+                    return LatteCore.Types.TopEdgeRightAlign;
                 }
             }
 
-            return Latte.Types.BottomEdgeCenterAlign;
+            return LatteCore.Types.BottomEdgeCenterAlign;
         }
 
         transitions: Transition {
@@ -272,13 +271,13 @@ Item{
         offset: root.totalPanelEdgeSpacing/2
         alignment: {
             switch(plasmoid.location) {
-            case PlasmaCore.Types.BottomEdge: return Latte.Types.BottomEdgeRightAlign;
-            case PlasmaCore.Types.TopEdge: return Latte.Types.TopEdgeRightAlign;
-            case PlasmaCore.Types.LeftEdge: return Latte.Types.LeftEdgeBottomAlign;
-            case PlasmaCore.Types.RightEdge: return Latte.Types.RightEdgeBottomAlign;
+            case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeRightAlign;
+            case PlasmaCore.Types.TopEdge: return LatteCore.Types.TopEdgeRightAlign;
+            case PlasmaCore.Types.LeftEdge: return LatteCore.Types.LeftEdgeBottomAlign;
+            case PlasmaCore.Types.RightEdge: return LatteCore.Types.RightEdgeBottomAlign;
             }
 
-            return Latte.Types.BottomEdgeLeftAlign;
+            return LatteCore.Types.BottomEdgeLeftAlign;
         }
     }
 

@@ -29,7 +29,6 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
@@ -174,7 +173,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
                         value: plasmoid.configuration.iconSize
                         from: 16
-                        to: latteView.visibility.mode === Latte.Types.SideBar ? 512 : 256
+                        to: latteView.visibility.mode === LatteCore.Types.SideBar ? 512 : 256
                         stepSize: dialog.highLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 1 : 8
                         wheelEnabled: false
 
@@ -223,7 +222,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
                         value: plasmoid.configuration.proportionIconSize
                         from: 1.0
-                        to: latteView.visibility.mode === Latte.Types.SideBar ? 25 : 12
+                        to: latteView.visibility.mode === LatteCore.Types.SideBar ? 25 : 12
                         stepSize: 0.5
                         wheelEnabled: false
 
@@ -366,13 +365,13 @@ PlasmaComponents.Page {
                                 var newTotal = Math.abs(plasmoid.configuration.offset) + value;
 
                                 //centered and justify alignments based on offset and get out of the screen in some cases
-                                var centeredCheck = ((plasmoid.configuration.alignment === Latte.Types.Center)
-                                                     || (plasmoid.configuration.alignment === Latte.Types.Justify))
+                                var centeredCheck = ((plasmoid.configuration.alignment === LatteCore.Types.Center)
+                                                     || (plasmoid.configuration.alignment === LatteCore.Types.Justify))
                                         && ((Math.abs(plasmoid.configuration.offset) + value/2) > 50);
 
                                 if (newTotal > 100 || centeredCheck) {
-                                    if ((plasmoid.configuration.alignment === Latte.Types.Center)
-                                            || (plasmoid.configuration.alignment === Latte.Types.Justify)) {
+                                    if ((plasmoid.configuration.alignment === LatteCore.Types.Center)
+                                            || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) {
 
                                         var suggestedValue = (plasmoid.configuration.offset<0) ? Math.min(0, -(100-value)): Math.max(0, 100-value);
 
@@ -426,7 +425,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
                     visible: dialog.expertLevel
-                    enabled: (plasmoid.configuration.alignment !== Latte.Types.Justify)
+                    enabled: (plasmoid.configuration.alignment !== LatteCore.Types.Justify)
 
                     PlasmaComponents.Label {
                         id: minLengthLbl
@@ -498,10 +497,10 @@ PlasmaComponents.Page {
                         id: offsetSlider
 
                         value: plasmoid.configuration.offset
-                        from: ((plasmoid.configuration.alignment === Latte.Types.Center)
-                               || (plasmoid.configuration.alignment === Latte.Types.Justify)) ? -20 :  0
-                        to: ((plasmoid.configuration.alignment === Latte.Types.Center)
-                             || (plasmoid.configuration.alignment === Latte.Types.Justify)) ? 20 :  40
+                        from: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
+                               || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? -20 :  0
+                        to: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
+                             || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? 20 :  40
                         stepSize: 1
                         wheelEnabled: false
 
@@ -511,12 +510,12 @@ PlasmaComponents.Page {
                                 var newTotal = Math.abs(value) + plasmoid.configuration.maxLength;
 
                                 //centered and justify alignments based on offset and get out of the screen in some cases
-                                var centeredCheck = ((plasmoid.configuration.alignment === Latte.Types.Center)
-                                                     || (plasmoid.configuration.alignment === Latte.Types.Justify))
+                                var centeredCheck = ((plasmoid.configuration.alignment === LatteCore.Types.Center)
+                                                     || (plasmoid.configuration.alignment === LatteCore.Types.Justify))
                                         && ((Math.abs(value) + plasmoid.configuration.maxLength/2) > 50);
                                 if (newTotal > 100 || centeredCheck) {
-                                    plasmoid.configuration.maxLength = ((plasmoid.configuration.alignment === Latte.Types.Center)
-                                                                        || (plasmoid.configuration.alignment === Latte.Types.Justify)) ?
+                                    plasmoid.configuration.maxLength = ((plasmoid.configuration.alignment === LatteCore.Types.Center)
+                                                                        || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ?
                                                 2*(50 - Math.abs(value)) :100 - Math.abs(value);
                                 }
                             }
@@ -756,7 +755,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: themeColorsGroup
                     tooltip: i18n("Plasma theme color palette is going to be used")
 
-                    readonly property int colors: Latte.Types.PlasmaThemeColors
+                    readonly property int colors: LatteCore.Types.PlasmaThemeColors
                 }
 
                 PlasmaComponents.Button {
@@ -768,7 +767,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: themeColorsGroup
                     tooltip: i18n("Reverse color palette from plasma theme is going to be used")
 
-                    readonly property int colors: Latte.Types.ReverseThemeColors
+                    readonly property int colors: LatteCore.Types.ReverseThemeColors
                 }
 
                 PlasmaComponents.Button {
@@ -780,7 +779,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: themeColorsGroup
                     tooltip: i18n("Smart color palette is going to provide best contrast after taking into account the environment such as the underlying background")
 
-                    readonly property int colors: Latte.Types.SmartThemeColors
+                    readonly property int colors: LatteCore.Types.SmartThemeColors
                 }
 
                 LatteComponents.SubHeader {
@@ -797,7 +796,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: windowColorsGroup
                     tooltip: i18n("Colors are not going to be based on any window")
 
-                    readonly property int colors: Latte.Types.NoneWindowColors
+                    readonly property int colors: LatteCore.Types.NoneWindowColors
                 }
 
                 PlasmaComponents.Button {
@@ -811,7 +810,7 @@ PlasmaComponents.Page {
                                  i18n("Colors are going to be based on the active window") :
                                  i18n("Colors are going to be based on the active window.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
 
-                    readonly property int colors: Latte.Types.ActiveWindowColors
+                    readonly property int colors: LatteCore.Types.ActiveWindowColors
 
                     PlasmaCore.IconItem {
                         anchors.right: parent.right
@@ -836,7 +835,7 @@ PlasmaComponents.Page {
                                  i18n("Colors are going to be based on windows that are touching the view") :
                                  i18n("Colors are going to be based on windows that are touching the view.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
 
-                    readonly property int colors: Latte.Types.TouchingWindowColors
+                    readonly property int colors: LatteCore.Types.TouchingWindowColors
 
                     PlasmaCore.IconItem {
                         anchors.right: parent.right

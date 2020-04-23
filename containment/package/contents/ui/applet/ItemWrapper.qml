@@ -26,7 +26,6 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
-import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 
 import "../../code/MathTools.js" as MathTools
@@ -44,7 +43,7 @@ Item{
 
         //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
         if (appletItem.needsFillSpace && root.isHorizontal) {
-            if (root.panelAlignment !== Latte.Types.Justify) {
+            if (root.panelAlignment !== LatteCore.Types.Justify) {
                 var maximumValue = (applet.Layout.maximumWidth === Infinity) || applet.Layout.maximumWidth === -1 ?
                             appletItem.sizeForFill : Math.min(appletItem.sizeForFill, applet.Layout.maximumWidth);
 
@@ -79,7 +78,7 @@ Item{
 
         //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
         if (appletItem.needsFillSpace && root.isVertical) {
-            if (root.panelAlignment !== Latte.Types.Justify) {
+            if (root.panelAlignment !== LatteCore.Types.Justify) {
                 var maximumValue = (applet.Layout.maximumHeight === Infinity) || applet.Layout.maximumHeight === -1 ?
                             appletItem.sizeForFill : Math.min(appletItem.sizeForFill, applet.Layout.maximumHeight);
 

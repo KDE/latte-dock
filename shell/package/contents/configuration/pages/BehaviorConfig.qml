@@ -28,7 +28,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 import "../../controls" as LatteExtraControls
@@ -296,7 +296,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int alignment: panelIsVertical ? Latte.Types.Top : Latte.Types.Left
+                    property int alignment: panelIsVertical ? LatteCore.Types.Top : LatteCore.Types.Left
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
@@ -307,7 +307,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int alignment: Latte.Types.Center
+                    property int alignment: LatteCore.Types.Center
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
@@ -318,7 +318,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int alignment: panelIsVertical ? Latte.Types.Bottom : Latte.Types.Right
+                    property int alignment: panelIsVertical ? LatteCore.Types.Bottom : LatteCore.Types.Right
                 }
 
                 PlasmaComponents.Button {
@@ -330,7 +330,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int alignment: Latte.Types.Justify
+                    property int alignment: LatteCore.Types.Justify
                 }
             }
         }
@@ -379,7 +379,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Types.AlwaysVisible
+                    property int mode: LatteCore.Types.AlwaysVisible
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
@@ -389,7 +389,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Types.AutoHide
+                    property int mode: LatteCore.Types.AutoHide
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
@@ -399,7 +399,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Types.DodgeActive
+                    property int mode: LatteCore.Types.DodgeActive
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
@@ -409,7 +409,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Types.DodgeMaximized
+                    property int mode: LatteCore.Types.DodgeMaximized
                 }
                 PlasmaComponents.Button {
                     id: dodgeAllWindowsBtn
@@ -420,7 +420,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Types.DodgeAllWindows
+                    property int mode: LatteCore.Types.DodgeAllWindows
                 }
 
                 LatteExtraControls.CustomWindowsModeButton {
@@ -443,10 +443,10 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             spacing: units.smallSpacing
 
-            enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
-                       || latteView.visibility.mode === Latte.Types.WindowsGoBelow
-                       || latteView.visibility.mode === Latte.Types.WindowsAlwaysCover
-                       || latteView.visibility.mode === Latte.Types.SideBar)
+            enabled: !(latteView.visibility.mode === LatteCore.Types.AlwaysVisible
+                       || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow
+                       || latteView.visibility.mode === LatteCore.Types.WindowsAlwaysCover
+                       || latteView.visibility.mode === LatteCore.Types.SideBar)
 
             LatteComponents.Header {
                 text: i18n("Delay")
@@ -574,11 +574,11 @@ PlasmaComponents.Page {
 
                             onCurrentIndexChanged: {
                                 switch(currentIndex) {
-                                case Latte.Types.ActiveInCurrentScreen:
-                                    plasmoid.configuration.activeWindowFilter = Latte.Types.ActiveInCurrentScreen;
+                                case LatteCore.Types.ActiveInCurrentScreen:
+                                    plasmoid.configuration.activeWindowFilter = LatteCore.Types.ActiveInCurrentScreen;
                                     break;
-                                case Latte.Types.ActiveFromAllScreens:
-                                    plasmoid.configuration.activeWindowFilter = Latte.Types.ActiveFromAllScreens;
+                                case LatteCore.Types.ActiveFromAllScreens:
+                                    plasmoid.configuration.activeWindowFilter = LatteCore.Types.ActiveFromAllScreens;
                                     break;
                                 }
                             }
@@ -659,20 +659,20 @@ PlasmaComponents.Page {
 
                             onCurrentIndexChanged: {
                                 switch(currentIndex) {
-                                case Latte.Types.ScrollNone:
-                                    plasmoid.configuration.scrollAction = Latte.Types.ScrollNone;
+                                case LatteCore.Types.ScrollNone:
+                                    plasmoid.configuration.scrollAction = LatteCore.Types.ScrollNone;
                                     break;
-                                case Latte.Types.ScrollDesktops:
-                                    plasmoid.configuration.scrollAction = Latte.Types.ScrollDesktops;
+                                case LatteCore.Types.ScrollDesktops:
+                                    plasmoid.configuration.scrollAction = LatteCore.Types.ScrollDesktops;
                                     break;
-                                case Latte.Types.ScrollActivities:
-                                    plasmoid.configuration.scrollAction = Latte.Types.ScrollActivities;
+                                case LatteCore.Types.ScrollActivities:
+                                    plasmoid.configuration.scrollAction = LatteCore.Types.ScrollActivities;
                                     break;
-                                case Latte.Types.ScrollTasks:
-                                    plasmoid.configuration.scrollAction = Latte.Types.ScrollTasks;
+                                case LatteCore.Types.ScrollTasks:
+                                    plasmoid.configuration.scrollAction = LatteCore.Types.ScrollTasks;
                                     break;
-                                case Latte.Types.ScrollToggleMinimized:
-                                    plasmoid.configuration.scrollAction = Latte.Types.ScrollToggleMinimized;
+                                case LatteCore.Types.ScrollToggleMinimized:
+                                    plasmoid.configuration.scrollAction = LatteCore.Types.ScrollToggleMinimized;
                                     break;
                                 }
                             }
@@ -773,10 +773,10 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
 
             visible: dialog.expertLevel
-            enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
-                       || latteView.visibility.mode === Latte.Types.WindowsGoBelow
-                       || latteView.visibility.mode === Latte.Types.WindowsCanCover
-                       || latteView.visibility.mode === Latte.Types.WindowsAlwaysCover)
+            enabled: !(latteView.visibility.mode === LatteCore.Types.AlwaysVisible
+                       || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow
+                       || latteView.visibility.mode === LatteCore.Types.WindowsCanCover
+                       || latteView.visibility.mode === LatteCore.Types.WindowsAlwaysCover)
 
             LatteComponents.Header {
                 text: i18n("Environment")
@@ -793,7 +793,7 @@ PlasmaComponents.Page {
                     tooltip: i18n("After the view becomes hidden, KWin is informed to track user feedback. For example an edge visual hint is shown whenever the mouse approaches the hidden view")
                     enabled: !dialog.viewIsPanel
                              && !latteView.byPassWM
-                             && latteView.visibility.mode !== Latte.Types.SideBar
+                             && latteView.visibility.mode !== LatteCore.Types.SideBar
 
                     onClicked: {
                         latteView.visibility.enableKWinEdges = checked;

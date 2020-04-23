@@ -29,7 +29,6 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
-import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 
 import "colorizer" as Colorizer
@@ -56,7 +55,7 @@ Item{
         if (root.behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive && !root.editMode) {
             return root.width;
         } else {
-            if ((root.panelAlignment === Latte.Types.Justify) && root.isHorizontal) {
+            if ((root.panelAlignment === LatteCore.Types.Justify) && root.isHorizontal) {
                 return root.maxLength;
             } else {
                 return Math.max(root.minLength, layoutsContainerItem.mainLayout.width + spacing);
@@ -68,7 +67,7 @@ Item{
         if (root.behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive && !root.editMode) {
             return root.height;
         } else {
-            if ((root.panelAlignment === Latte.Types.Justify) && root.isVertical) {
+            if ((root.panelAlignment === LatteCore.Types.Justify) && root.isVertical) {
                 return root.maxLength;
             } else {
                 return Math.max(root.minLength, layoutsContainerItem.mainLayout.height + spacing);
@@ -77,11 +76,11 @@ Item{
     }
 
     property int spacing: {
-        if (root.panelAlignment === Latte.Types.Justify && root.maxLengthPerCentage === 100) {
+        if (root.panelAlignment === LatteCore.Types.Justify && root.maxLengthPerCentage === 100) {
             return 0;
         } else if (!LatteCore.WindowSystem.compositingActive) {
             return root.panelEdgeSpacing/2;
-        } else if (root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify || root.offset!==0) {
+        } else if (root.panelAlignment === LatteCore.Types.Center || root.panelAlignment === LatteCore.Types.Justify || root.offset!==0) {
             return root.panelEdgeSpacing/2;
         } else {
             return root.panelEdgeSpacing/4;
@@ -203,9 +202,9 @@ Item{
             if (imagePath === "") {
                 return 0;
             } else {
-                if (root.panelAlignment === Latte.Types.Left && root.offset===0)
+                if (root.panelAlignment === LatteCore.Types.Left && root.offset===0)
                     return margins.right;
-                else if (root.panelAlignment === Latte.Types.Right && root.offset===0)
+                else if (root.panelAlignment === LatteCore.Types.Right && root.offset===0)
                     return margins.left;
                 else
                     return margins.left+margins.right;
@@ -216,9 +215,9 @@ Item{
             if (imagePath === "") {
                 return 0;
             } else {
-                if (root.panelAlignment === Latte.Types.Top && root.offset===0)
+                if (root.panelAlignment === LatteCore.Types.Top && root.offset===0)
                     return margins.bottom;
-                else if (root.panelAlignment === Latte.Types.Bottom && root.offset===0)
+                else if (root.panelAlignment === LatteCore.Types.Bottom && root.offset===0)
                     return margins.top;
                 else
                     return margins.top + margins.bottom;
@@ -701,7 +700,7 @@ Item{
         ///Left
         State {
             name: "leftCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteCore.Types.Center || root.panelAlignment === LatteCore.Types.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -714,13 +713,13 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0);
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === LatteCore.Types.Center ? root.offset : 0);
             }
         },
         ///Left
         State {
             name: "leftTop"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Top)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteCore.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -739,7 +738,7 @@ Item{
         ///Left
         State {
             name: "leftBottom"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Bottom)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteCore.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -758,7 +757,7 @@ Item{
         ///Right
         State {
             name: "rightCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteCore.Types.Center || root.panelAlignment === LatteCore.Types.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -771,12 +770,12 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0);
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === LatteCore.Types.Center ? root.offset : 0);
             }
         },
         State {
             name: "rightTop"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Top)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteCore.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -794,7 +793,7 @@ Item{
         },
         State {
             name: "rightBottom"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Bottom)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteCore.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -813,7 +812,7 @@ Item{
         ///Bottom
         State {
             name: "bottomCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteCore.Types.Center || root.panelAlignment === LatteCore.Types.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -826,14 +825,14 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
-                anchors.horizontalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
+                anchors.horizontalCenterOffset: (root.panelAlignment === LatteCore.Types.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
             }
         },
         State {
             name: "bottomLeft"
             when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                  &&(((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                     || ((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                  &&(((root.panelAlignment === LatteCore.Types.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     || ((root.panelAlignment === LatteCore.Types.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine
@@ -853,8 +852,8 @@ Item{
         State {
             name: "bottomRight"
             when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                  &&(((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                     ||((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                  &&(((root.panelAlignment === LatteCore.Types.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     ||((root.panelAlignment === LatteCore.Types.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine
@@ -873,7 +872,7 @@ Item{
         ///Top
         State {
             name: "topCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteCore.Types.Center || root.panelAlignment === LatteCore.Types.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -886,14 +885,14 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
+                anchors.horizontalCenterOffset: (root.panelAlignment === LatteCore.Types.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
             }
         },
         State {
             name: "topLeft"
             when: (plasmoid.location === PlasmaCore.Types.TopEdge)
-                  &&(((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                     || ((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                  &&(((root.panelAlignment === LatteCore.Types.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     || ((root.panelAlignment === LatteCore.Types.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine
@@ -912,8 +911,8 @@ Item{
         State {
             name: "topRight"
             when: (plasmoid.location === PlasmaCore.Types.TopEdge)
-                  &&(((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                     ||((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                  &&(((root.panelAlignment === LatteCore.Types.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     ||((root.panelAlignment === LatteCore.Types.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine

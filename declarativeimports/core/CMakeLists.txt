@@ -21,6 +21,7 @@ target_link_libraries(lattecoreplugin
     KF5::PlasmaQuick
     KF5::QuickAddons
     KF5::IconThemes
+    Latte
 )
 
 if(HAVE_X11)

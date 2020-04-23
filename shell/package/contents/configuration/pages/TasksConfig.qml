@@ -27,9 +27,10 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
+
+import org.kde.latte.private.tasks 0.1 as LatteTasks
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
@@ -361,7 +362,7 @@ PlasmaComponents.Page {
                         exclusiveGroup: launchersGroup
                         tooltip: i18n("Use a unique set of launchers for this view which is independent from any other view")
 
-                        readonly property int group: Latte.Tasks.UniqueLaunchers
+                        readonly property int group: LatteCore.Types.UniqueLaunchers
                     }
 
                     PlasmaComponents.Button {
@@ -376,7 +377,7 @@ PlasmaComponents.Page {
                         //! it is shown only when the user has activated that option manually from the text layout file
                         visible: tasks.configuration.launchersGroup === group
 
-                        readonly property int group: Latte.Tasks.LayoutLaunchers
+                        readonly property int group: LatteCore.Types.LayoutLaunchers
                     }
 
                     PlasmaComponents.Button {
@@ -388,7 +389,7 @@ PlasmaComponents.Page {
                         exclusiveGroup: launchersGroup
                         tooltip: i18n("Use the global set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views and between <b>different layouts</b>")
 
-                        readonly property int group: Latte.Tasks.GlobalLaunchers
+                        readonly property int group: LatteCore.Types.GlobalLaunchers
                     }
                 }
             }
@@ -513,11 +514,11 @@ PlasmaComponents.Page {
 
                         currentIndex: {
                             switch(tasks.configuration.leftClickAction) {
-                            case Latte.Tasks.PresentWindows:
+                            case LatteTasks.Types.PresentWindows:
                                 return 0;
-                            case Latte.Tasks.CycleThroughTasks:
+                            case LatteTasks.Types.CycleThroughTasks:
                                 return 1;
-                            case Latte.Tasks.PreviewWindows:
+                            case LatteTasks.Types.PreviewWindows:
                                 return 2;
                             }
 
@@ -527,13 +528,13 @@ PlasmaComponents.Page {
                         onCurrentIndexChanged: {
                             switch(currentIndex) {
                             case 0:
-                                tasks.configuration.leftClickAction = Latte.Tasks.PresentWindows;
+                                tasks.configuration.leftClickAction = LatteTasks.Types.PresentWindows;
                                 break;
                             case 1:
-                                tasks.configuration.leftClickAction = Latte.Tasks.CycleThroughTasks;
+                                tasks.configuration.leftClickAction = LatteTasks.Types.CycleThroughTasks;
                                 break;
                             case 2:
-                                tasks.configuration.leftClickAction = Latte.Tasks.PreviewWindows;
+                                tasks.configuration.leftClickAction = LatteTasks.Types.PreviewWindows;
                                 break;
                             }
                         }
@@ -576,13 +577,13 @@ PlasmaComponents.Page {
 
                         currentIndex: {
                             switch(tasks.configuration.hoverAction) {
-                            case Latte.Tasks.NoneAction:
+                            case LatteTasks.Types.NoneAction:
                                 return 0;
-                            case Latte.Tasks.PreviewWindows:
+                            case LatteTasks.Types.PreviewWindows:
                                 return 1;
-                            case Latte.Tasks.HighlightWindows:
+                            case LatteTasks.Types.HighlightWindows:
                                 return 2;
-                            case Latte.Tasks.PreviewAndHighlightWindows:
+                            case LatteTasks.Types.PreviewAndHighlightWindows:
                                 return 3;
                             }
 
@@ -592,16 +593,16 @@ PlasmaComponents.Page {
                         onCurrentIndexChanged: {
                             switch(currentIndex) {
                             case 0:
-                                tasks.configuration.hoverAction = Latte.Tasks.NoneAction;
+                                tasks.configuration.hoverAction = LatteTasks.Types.NoneAction;
                                 break;
                             case 1:
-                                tasks.configuration.hoverAction = Latte.Tasks.PreviewWindows;
+                                tasks.configuration.hoverAction = LatteTasks.Types.PreviewWindows;
                                 break;
                             case 2:
-                                tasks.configuration.hoverAction = Latte.Tasks.HighlightWindows;
+                                tasks.configuration.hoverAction = LatteTasks.Types.HighlightWindows;
                                 break;
                             case 3:
-                                tasks.configuration.hoverAction = Latte.Tasks.PreviewAndHighlightWindows;
+                                tasks.configuration.hoverAction = LatteTasks.Types.PreviewAndHighlightWindows;
                                 break;
                             }
                         }

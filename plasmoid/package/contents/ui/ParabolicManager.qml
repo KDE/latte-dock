@@ -22,8 +22,6 @@ import QtQuick 2.0
 
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
-
 // holds all the logic around parabolic effect signals into one place.
 // ParabolicManager is responsible for triggering all the messages to tasks
 // that are neighbour to the hovered task. This will help a lot to catch cases

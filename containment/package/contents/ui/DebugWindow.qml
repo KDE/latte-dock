@@ -24,7 +24,7 @@ import QtQuick.Window 2.2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Window{
     width: mainGrid.width + 10
@@ -315,22 +315,22 @@ Window{
             Text{
                 text: {
                     switch(plasmoid.configuration.alignment){
-                    case Latte.Types.Left:
+                    case LatteCore.Types.Left:
                         return "Left";
                         break;
-                    case Latte.Types.Right:
+                    case LatteCore.Types.Right:
                         return "Right";
                         break;
-                    case Latte.Types.Center:
+                    case LatteCore.Types.Center:
                         return "Center";
                         break;
-                    case Latte.Types.Top:
+                    case LatteCore.Types.Top:
                         return "Top";
                         break;
-                    case Latte.Types.Bottom:
+                    case LatteCore.Types.Bottom:
                         return "Bottom";
                         break;
-                    case Latte.Types.Justify:
+                    case LatteCore.Types.Justify:
                         return "Justify";
                         break;
                     }
@@ -349,40 +349,40 @@ Window{
                         return "";
 
                     switch(latteView.visibility.mode){
-                    case Latte.Types.AlwaysVisible:
+                    case LatteCore.Types.AlwaysVisible:
                         return "Always Visible";
                         break;
-                    case Latte.Types.AutoHide:
+                    case LatteCore.Types.AutoHide:
                         return "Auto Hide";
                         break;
-                    case Latte.Types.DodgeActive:
+                    case LatteCore.Types.DodgeActive:
                         return "Dodge Active";
                         break;
-                    case Latte.Types.DodgeMaximized:
+                    case LatteCore.Types.DodgeMaximized:
                         return "Dodge Maximized";
                         break;
-                    case Latte.Types.DodgeAllWindows:
+                    case LatteCore.Types.DodgeAllWindows:
                         return "Dodge All Windows";
                         break;
-                    case Latte.Types.DodgeAllWindows:
+                    case LatteCore.Types.DodgeAllWindows:
                         return "Dodge All Windows";
                         break;
-                    case Latte.Types.WindowsGoBelow:
+                    case LatteCore.Types.WindowsGoBelow:
                         return "Windows Go Below";
                         break;
-                    case Latte.Types.WindowsCanCover:
+                    case LatteCore.Types.WindowsCanCover:
                         return "Windows Can Cover";
                         break;
-                    case Latte.Types.WindowsAlwaysCover:
+                    case LatteCore.Types.WindowsAlwaysCover:
                         return "Windows Always Cover";
                         break;
-                    case Latte.Types.SideBar:
+                    case LatteCore.Types.SideBar:
                         return "OnDemand SideBar";
                         break;
-                    case Latte.Types.NormalWindow:
+                    case LatteCore.Types.NormalWindow:
                         return "Normal Window";
                         break;
-                    case Latte.Types.None:
+                    case LatteCore.Types.None:
                         return "None";
                         break;
                     }

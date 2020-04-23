@@ -21,11 +21,11 @@ import QtQuick 2.7
 
 import org.kde.taskmanager 0.1 as TaskManager
 
-import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Loader {
     id: tasksLoader
-    active: root.scrollAction === Latte.Types.ScrollTasks || root.scrollAction === Latte.Types.ScrollToggleMinimized
+    active: root.scrollAction === LatteCore.Types.ScrollTasks || root.scrollAction === LatteCore.Types.ScrollToggleMinimized
     sourceComponent: Item {
         TaskManager.TasksModel {
             id: tasksModel

@@ -22,8 +22,6 @@ import QtQuick 2.0
 
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
-
 //! Trying to WORKAROUND all the Plasma LibTaskManager limitations
 //! concerning Tasks AND Launchers.
 //!

@@ -22,7 +22,7 @@ import QtQuick 2.8
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Ability {
     id: sizer
@@ -31,7 +31,7 @@ Ability {
     // the automatic icon size algorithm should better be disabled
     readonly property bool isActive: !root.containsOnlyPlasmaTasks
                                      && layouts.fillApplets<=0
-                                     && latteView && latteView.visibility.mode !== Latte.Types.SideBar
+                                     && latteView && latteView.visibility.mode !== LatteCore.Types.SideBar
     property int iconSize: -1 //it is not set, this is the default
 
     property bool automaticSizeAnimation: false
@@ -162,10 +162,10 @@ Ability {
             //console.log("max length: "+ maxLength);
 
             if (root.isVertical) {
-                layoutLength = (plasmoid.configuration.alignment === Latte.Types.Justify) ?
+                layoutLength = (plasmoid.configuration.alignment === LatteCore.Types.Justify) ?
                             layouts.startLayout.height+layouts.mainLayout.height+layouts.endLayout.height : layouts.mainLayout.height
             } else {
-                layoutLength = (plasmoid.configuration.alignment === Latte.Types.Justify) ?
+                layoutLength = (plasmoid.configuration.alignment === LatteCore.Types.Justify) ?
                             layouts.startLayout.width+layouts.mainLayout.width+layouts.endLayout.width : layouts.mainLayout.width
             }
 

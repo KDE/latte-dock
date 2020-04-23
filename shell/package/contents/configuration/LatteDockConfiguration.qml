@@ -34,7 +34,6 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
-import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
@@ -44,9 +43,9 @@ import "../controls" as LatteExtraControls
 FocusScope {
     id: dialog
 
-    readonly property bool basicLevel: viewConfig.complexity === Latte.Types.BasicSettings
-    readonly property bool advancedLevel: viewConfig.complexity === Latte.Types.AdvancedSettings
-    readonly property bool expertLevel: viewConfig.complexity === Latte.Types.ExpertSettings
+    readonly property bool basicLevel: viewConfig.complexity === LatteCore.Types.BasicSettings
+    readonly property bool advancedLevel: viewConfig.complexity === LatteCore.Types.AdvancedSettings
+    readonly property bool expertLevel: viewConfig.complexity === LatteCore.Types.ExpertSettings
 
     readonly property bool highLevel: advancedLevel || expertLevel
 
@@ -93,7 +92,7 @@ FocusScope {
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    readonly property bool viewIsPanel: latteView.type === Latte.Types.PanelView
+    readonly property bool viewIsPanel: latteView.type === LatteCore.Types.PanelView
 
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     property int subGroupSpacing: units.largeSpacing + units.smallSpacing * 1.5
@@ -389,13 +388,13 @@ FocusScope {
 
                     LatteComponents.Switch {
                         id: complexitySwitch
-                        checked: (viewConfig.complexity === Latte.Types.ExpertSettings)
+                        checked: (viewConfig.complexity === LatteCore.Types.ExpertSettings)
 
                         onCheckedChanged: {
                             if (checked) {
-                                viewConfig.complexity = Latte.Types.ExpertSettings;
+                                viewConfig.complexity = LatteCore.Types.ExpertSettings;
                             } else {
-                                viewConfig.complexity = Latte.Types.BasicSettings;
+                                viewConfig.complexity = LatteCore.Types.BasicSettings;
                             }
                         }
                     }
@@ -666,7 +665,7 @@ FocusScope {
                 }
 
                 function updateCopyText() {
-                    var copyText = latteView.type === Latte.Types.DockView ? i18n("Copy Dock") : i18n("Copy Panel")
+                    var copyText = latteView.type === LatteCore.Types.DockView ? i18n("Copy Dock") : i18n("Copy Panel")
                     actionsModel.get(0).name = copyText;
                 }
             }

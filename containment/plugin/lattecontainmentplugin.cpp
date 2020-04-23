@@ -1,5 +1,5 @@
 /*
-*  Copyright 2019 Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -17,21 +17,17 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
+#include "lattecontainmentplugin.h"
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+// local
+#include "types.h"
 
-Item{
-    readonly property string styleName: "Latte"
+// Qt
+#include <QtQml>
 
-    readonly property bool extraDotOnActive: plasmoid.configuration.dotsOnActive
-    readonly property bool minimizedTaskColoredDifferently: plasmoid.configuration.threeColorsWindows
-    readonly property int activeStyle: 0 //LineIndicator
-
-    //!glow options
-    readonly property bool glowEnabled: plasmoid.configuration.showGlow
-    readonly property bool glow3D: false
-    readonly property int glowApplyTo: 2 /*All*/
-    readonly property real glowOpacity: 0.35
+void LatteContainmentPlugin::registerTypes(const char *uri)
+{
+    Q_ASSERT(uri == QLatin1String("org.kde.latte.private.containment"));
+    qmlRegisterUncreatableType<Latte::Containment::Types>(uri, 0, 1, "Types", "Latte Containment Types uncreatable");
 }
+

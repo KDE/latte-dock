@@ -24,7 +24,6 @@ import QtQuick.Window 2.2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
 
 Item{
@@ -333,15 +332,15 @@ Item{
         property: "enabled"
         when: latteView && latteView.windowsTracker && latteView.visibility
         value: (latteView && latteView.visibility
-                && !(latteView.visibility.mode === Latte.Types.AlwaysVisible /* Visibility */
-                     || latteView.visibility.mode === Latte.Types.WindowsGoBelow
-                     || latteView.visibility.mode === Latte.Types.AutoHide))
+                && !(latteView.visibility.mode === LatteCore.Types.AlwaysVisible /* Visibility */
+                     || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow
+                     || latteView.visibility.mode === LatteCore.Types.AutoHide))
                || root.appletsNeedWindowsTracking > 0                        /*Applets Neew Windows Tracking */
                || root.dragActiveWindowEnabled                               /*Dragging Active Window(Empty Areas)*/
                || ((root.backgroundOnlyOnMaximized                           /*Dynamic Background */
                     || plasmoid.configuration.solidBackgroundForMaximized
                     || root.disablePanelShadowMaximized
-                    || root.windowColors !== Latte.Types.NoneWindowColors))
+                    || root.windowColors !== LatteCore.Types.NoneWindowColors))
                || (root.screenEdgeMarginsEnabled                             /*Dynamic Screen Edge Margin*/
                    && plasmoid.configuration.hideScreenGapForMaximized)
     }
@@ -385,7 +384,7 @@ Item{
     }
 
     function slotContainsMouseChanged() {
-        if(latteView.visibility.containsMouse && latteView.visibility.mode !== Latte.Types.SideBar) {
+        if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SideBar) {
             updateMaskArea();
 
             if (slidingAnimationAutoHiddenOut.running && !inTempHiding && !inForceHiding) {
@@ -396,7 +395,7 @@ Item{
 
     function slotMustBeShown() {
         //! WindowsCanCover case
-        if (latteView && latteView.visibility.mode === Latte.Types.WindowsCanCover) {
+        if (latteView && latteView.visibility.mode === LatteCore.Types.WindowsCanCover) {
             latteView.visibility.setViewOnFrontLayer();
             return;
         }
@@ -408,7 +407,7 @@ Item{
     }
 
     function slotMustBeHide() {
-        if (latteView && latteView.visibility.mode === Latte.Types.WindowsCanCover) {
+        if (latteView && latteView.visibility.mode === LatteCore.Types.WindowsCanCover) {
             latteView.visibility.setViewOnBackLayer();
             return;
         }
@@ -421,7 +420,7 @@ Item{
         //! Normal Dodge/AutoHide case
         if((!slidingAnimationAutoHiddenOut.running
             && !latteView.visibility.blockHiding
-            && (!latteView.visibility.containsMouse || latteView.visibility.mode === Latte.Types.SideBar))
+            && (!latteView.visibility.containsMouse || latteView.visibility.mode === LatteCore.Types.SideBar))
                 || inForceHiding) {
             slidingAnimationAutoHiddenOut.init();
         }
@@ -509,13 +508,13 @@ Item{
                     tempLength = root.isHorizontal ? root.width : root.height;
                 } else {
                     if(root.isHorizontal) {
-                        if (plasmoid.configuration.alignment === Latte.Types.Justify) {
+                        if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
                             tempLength = layoutsContainer.width;
                         } else {
                             tempLength = Math.max(root.realPanelLength, layoutsContainer.mainLayout.width);
                         }
                     } else {
-                        if (plasmoid.configuration.alignment === Latte.Types.Justify) {
+                        if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
                             tempLength = layoutsContainer.height;
                         } else {
                             tempLength = Math.max(root.realPanelLength, layoutsContainer.mainLayout.height);
@@ -561,13 +560,13 @@ Item{
 
                     if (noCompositingEdit) {
                         localX = 0;
-                    } else if (plasmoid.configuration.alignment === Latte.Types.Justify) {
+                    } else if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
                         localX = (latteView.width/2) - tempLength/2 + root.offset;
-                    } else if (root.panelAlignment === Latte.Types.Left) {
+                    } else if (root.panelAlignment === LatteCore.Types.Left) {
                         localX = root.offset;
-                    } else if (root.panelAlignment === Latte.Types.Center) {
+                    } else if (root.panelAlignment === LatteCore.Types.Center) {
                         localX = (latteView.width/2) - tempLength/2 + root.offset;
-                    } else if (root.panelAlignment === Latte.Types.Right) {
+                    } else if (root.panelAlignment === LatteCore.Types.Right) {
                         localX = latteView.width - tempLength - root.offset;
                     }
                 } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
@@ -591,18 +590,18 @@ Item{
 
                     if (noCompositingEdit) {
                         localY = 0;
-                    } else if (plasmoid.configuration.alignment === Latte.Types.Justify) {
+                    } else if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
                         localY = (latteView.height/2) - tempLength/2 + root.offset;
-                    } else if (root.panelAlignment === Latte.Types.Top) {
+                    } else if (root.panelAlignment === LatteCore.Types.Top) {
                         localY = root.offset;
-                    } else if (root.panelAlignment === Latte.Types.Center) {
+                    } else if (root.panelAlignment === LatteCore.Types.Center) {
                         localY = (latteView.height/2) - tempLength/2 + root.offset;
-                    } else if (root.panelAlignment === Latte.Types.Bottom) {
+                    } else if (root.panelAlignment === LatteCore.Types.Bottom) {
                         localY = latteView.height - tempLength - root.offset;
                     }
                 }
 
-                if (latteView.visibility.isHidden && latteView && latteView.visibility.mode === Latte.Types.SideBar) {
+                if (latteView.visibility.isHidden && latteView && latteView.visibility.mode === LatteCore.Types.SideBar) {
                     //!hide completely
                     localX = -1;
                     localY = -1;

@@ -28,7 +28,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 import "../../controls" as LatteExtraControls
@@ -58,15 +58,15 @@ PlasmaComponents.Page {
                 Layout.minimumHeight: implicitHeight
                 Layout.topMargin: units.smallSpacing
 
-                checked: plasmoid.configuration.shadows !== Latte.Types.NoneShadow
+                checked: plasmoid.configuration.shadows !== LatteCore.Types.NoneShadow
                 text: i18n("Shadows")
                 tooltip: i18n("Enable/disable applet shadows")
 
                 onPressed: {
-                    if(plasmoid.configuration.shadows !== Latte.Types.AllAppletsShadow){
-                        plasmoid.configuration.shadows = Latte.Types.AllAppletsShadow;
+                    if(plasmoid.configuration.shadows !== LatteCore.Types.AllAppletsShadow){
+                        plasmoid.configuration.shadows = LatteCore.Types.AllAppletsShadow;
                     } else {
-                        plasmoid.configuration.shadows = Latte.Types.NoneShadow;
+                        plasmoid.configuration.shadows = LatteCore.Types.NoneShadow;
                     }
                 }
             }
@@ -199,11 +199,11 @@ PlasmaComponents.Page {
                             }
 
                             if (current === defaultShadowBtn) {
-                                plasmoid.configuration.shadowColorType = Latte.Types.DefaultColorShadow;
+                                plasmoid.configuration.shadowColorType = LatteCore.Types.DefaultColorShadow;
                             } else if (current === themeShadowBtn) {
-                                plasmoid.configuration.shadowColorType = Latte.Types.ThemeColorShadow;
+                                plasmoid.configuration.shadowColorType = LatteCore.Types.ThemeColorShadow;
                             } else if (current === userShadowBtn) {
-                                plasmoid.configuration.shadowColorType = Latte.Types.UserColorShadow;
+                                plasmoid.configuration.shadowColorType = LatteCore.Types.UserColorShadow;
                             }
                         }
 
@@ -215,7 +215,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
 
                         text: i18nc("default shadow", "Default")
-                        checked: plasmoid.configuration.shadowColorType === Latte.Types.DefaultColorShadow
+                        checked: plasmoid.configuration.shadowColorType === LatteCore.Types.DefaultColorShadow
                         checkable: true
                         exclusiveGroup: shadowColorGroup
                         tooltip: i18n("Default shadow for applets")
@@ -226,7 +226,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
 
                         text: i18nc("theme shadow", "Theme")
-                        checked: plasmoid.configuration.shadowColorType === Latte.Types.ThemeColorShadow
+                        checked: plasmoid.configuration.shadowColorType === LatteCore.Types.ThemeColorShadow
                         checkable: true
                         exclusiveGroup: shadowColorGroup
                         tooltip: i18n("Shadow from theme color palette")
@@ -240,7 +240,7 @@ PlasmaComponents.Page {
                         text: " "
 
                         checkable: true
-                        checked: plasmoid.configuration.shadowColorType === Latte.Types.UserColorShadow
+                        checked: plasmoid.configuration.shadowColorType === LatteCore.Types.UserColorShadow
                         tooltip: i18n("Use set shadow color")
                         exclusiveGroup: shadowColorGroup
 

@@ -27,7 +27,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
-import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 import "colorizer" as Colorizer
@@ -89,11 +89,11 @@ Item {
     property bool lastChildOfEndLayout: index === layoutsContainer.endLayout.lastVisibleIndex
 
     readonly property bool atScreenEdge: {
-        if (root.panelAlignment !== Latte.Types.Justify || root.inConfigureAppletsMode || plasmoid.configuration.offset!==0) {
+        if (root.panelAlignment !== LatteCore.Types.Justify || root.inConfigureAppletsMode || plasmoid.configuration.offset!==0) {
             return false;
         }
 
-        if (root.panelAlignment === Latte.Types.Justify) {
+        if (root.panelAlignment === LatteCore.Types.Justify) {
             //! Justify case
             if (root.maxLengthPerCentage!==100) {
                 return false;
@@ -118,17 +118,17 @@ Item {
 
         //! [disabled] because it is probably not needed at all. If in the future there is a report
         //! describing a case that this would be useful this disablement choice can be rethought
-        /*if (root.panelAlignment === Latte.Types.Left) {
+        /*if (root.panelAlignment === LatteCore.Types.Left) {
             //! Left case
             return firstChildOfMainLayout;
-        } else if (root.panelAlignment === Latte.Types.Right) {
+        } else if (root.panelAlignment === LatteCore.Types.Right) {
             //! Right case
             return lastChildOfMainLayout
         }
 
-        if (root.panelAlignment === Latte.Types.Top) {
+        if (root.panelAlignment === LatteCore.Types.Top) {
             return firstChildOfMainLayout && latteView && latteView.y === latteView.screenGeometry.y;
-        } else if (root.panelAlignment === Latte.Types.Bottom) {
+        } else if (root.panelAlignment === LatteCore.Types.Bottom) {
             return lastChildOfMainLayout && latteView && ((latteView.y + latteView.height) === (latteView.screenGeometry.y + latteView.screenGeometry.height));
         }*/
 

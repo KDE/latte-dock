@@ -1,5 +1,5 @@
 /*
-*  Copyright 2019 Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -17,21 +17,19 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
+#ifndef LATTECONTAINMENTPLUGIN_H
+#define LATTECONTAINMENTPLUGIN_H
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+// Qt
+#include <QQmlExtensionPlugin>
 
-Item{
-    readonly property string styleName: "Latte"
+class LatteContainmentPlugin : public QQmlExtensionPlugin
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
 
-    readonly property bool extraDotOnActive: plasmoid.configuration.dotsOnActive
-    readonly property bool minimizedTaskColoredDifferently: plasmoid.configuration.threeColorsWindows
-    readonly property int activeStyle: 0 //LineIndicator
+public:
+    void registerTypes(const char *uri) override;
+};
 
-    //!glow options
-    readonly property bool glowEnabled: plasmoid.configuration.showGlow
-    readonly property bool glow3D: false
-    readonly property int glowApplyTo: 2 /*All*/
-    readonly property real glowOpacity: 0.35
-}
+#endif

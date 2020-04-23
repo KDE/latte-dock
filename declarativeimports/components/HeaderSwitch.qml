@@ -27,8 +27,6 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.2 as Latte
-
 import "." as LatteExtraControls
 
 import "private" as Private

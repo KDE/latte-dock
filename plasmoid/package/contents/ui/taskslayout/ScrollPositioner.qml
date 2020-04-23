@@ -20,7 +20,7 @@ import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-import org.kde.latte 0.2 as Latte
+import org.kde.latte.core 0.2 as LatteCore
 
 Rectangle {
     id: listViewBase
@@ -29,11 +29,11 @@ Rectangle {
             if (plasmoid.location===PlasmaCore.Types.Floating) {
                 //! Center position Tasks when are located in the Desktop
                 return root.width < icList.width ? (root.width/2) : icList.width/2;
-            } else if (root.alignment === Latte.Types.Center) {
+            } else if (root.alignment === LatteCore.Types.Center) {
                 return icList.width / 2;
-            } else if (root.alignment === Latte.Types.Left){
+            } else if (root.alignment === LatteCore.Types.Left){
                 return 0;
-            } else if (root.alignment === Latte.Types.Right){
+            } else if (root.alignment === LatteCore.Types.Right){
                 return icList.width;
             }
         } else {
@@ -45,11 +45,11 @@ Rectangle {
         if (!root.vertical) {
             return 0;
         } else {
-            if (root.alignment === Latte.Types.Center) {
+            if (root.alignment === LatteCore.Types.Center) {
                 return icList.height / 2;
-            } else if (root.alignment === Latte.Types.Top){
+            } else if (root.alignment === LatteCore.Types.Top){
                 return 0;
-            } else if (root.alignment === Latte.Types.Bottom){
+            } else if (root.alignment === LatteCore.Types.Bottom){
                 return icList.height;
             }
         }

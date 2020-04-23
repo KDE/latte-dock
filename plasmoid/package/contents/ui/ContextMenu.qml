@@ -27,8 +27,8 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.activities 0.1 as Activities
 import org.kde.taskmanager 0.1 as TaskManager
 
-import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
+import org.kde.latte.private.tasks 0.1 as LatteTasks
 
 import "../code/activitiesTools.js" as ActivitiesTools
 
@@ -730,7 +730,7 @@ PlasmaComponents.ContextMenu {
             if (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) != -1) {
                 var launcher = get(atm.LauncherUrl);
 
-                if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
+                if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
                     latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
                                                                              root.launchersGroup, launcher);
                 } else {
@@ -741,7 +741,7 @@ PlasmaComponents.ContextMenu {
 
             } else {
                 var launcher = get(atm.LauncherUrl);
-                if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
+                if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
                     latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
                                                                           root.launchersGroup, launcher);
                 } else {
@@ -790,7 +790,7 @@ PlasmaComponents.ContextMenu {
                     result.clicked.connect(
                                 function() {
                                     if (result.checked) {
-                                        if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
+                                        if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
                                             latteView.layoutsManager.launchersSignals.addLauncherToActivity(root.viewLayoutName,
                                                                                                             root.launchersGroup, url, id);
                                         } else {
@@ -802,7 +802,7 @@ PlasmaComponents.ContextMenu {
                                             root.launchersUpdatedFor(url);
                                         }
                                     } else {
-                                        if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
+                                        if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
                                             latteView.layoutsManager.launchersSignals.removeLauncherFromActivity(root.viewLayoutName,
                                                                                                                  root.launchersGroup, url, id);
                                         } else {
@@ -861,7 +861,7 @@ PlasmaComponents.ContextMenu {
         onClicked: {
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
-            if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
+            if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
                 latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
                                                                          root.launchersGroup, launcher);
             } else {
@@ -905,7 +905,7 @@ PlasmaComponents.ContextMenu {
             //root.removeLastSeparator();
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
-            if (latteView && root.launchersGroup >= Latte.Tasks.LayoutLaunchers) {
+            if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
                 latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
                                                                          root.launchersGroup, launcher);
             } else {

@@ -1,0 +1,2 @@
+module org.kde.latte.private.tasks
+plugin lattetasksplugin 

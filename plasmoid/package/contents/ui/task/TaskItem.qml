@@ -28,8 +28,9 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
-import org.kde.latte 0.2 as Latte
 import org.kde.latte.core 0.2 as LatteCore
+
+import org.kde.latte.private.tasks 0.1 as LatteTasks
 
 import "animations" as TaskAnimations
 import "indicator" as Indicator
@@ -790,7 +791,7 @@ MouseArea{
     onPressed: {
         //console.log("Pressed Task Delegate..");
         if (LatteCore.WindowSystem.compositingActive && !LatteCore.WindowSystem.isPlatformWayland) {
-            if(root.leftClickAction !== Latte.Tasks.PreviewWindows) {
+            if(root.leftClickAction !== LatteTasks.Types.PreviewWindows) {
                 isAbleToShowPreview = false;
                 windowsPreviewDlg.hide(2);
             }
@@ -831,18 +832,18 @@ MouseArea{
 
             if (modifierAccepted(mouse) && !root.disableAllWindowsFunctionality){
                 if( !taskItem.isLauncher ){
-                    if (root.modifierClickAction == Latte.Tasks.NewInstance) {
+                    if (root.modifierClickAction == LatteTasks.Types.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
-                    } else if (root.modifierClickAction == Latte.Tasks.Close) {
+                    } else if (root.modifierClickAction == LatteTasks.Types.Close) {
                         tasksModel.requestClose(modelIndex());
-                    } else if (root.modifierClickAction == Latte.Tasks.ToggleMinimized) {
+                    } else if (root.modifierClickAction == LatteTasks.Types.ToggleMinimized) {
                         tasksModel.requestToggleMinimized(modelIndex());
-                    } else if ( root.modifierClickAction == Latte.Tasks.CycleThroughTasks) {
+                    } else if ( root.modifierClickAction == LatteTasks.Types.CycleThroughTasks) {
                         if (isGroupParent)
                             subWindows.activateNextTask();
                         else
                             activateTask();
-                    } else if (root.modifierClickAction == Latte.Tasks.ToggleGrouping) {
+                    } else if (root.modifierClickAction == LatteTasks.Types.ToggleGrouping) {
                         tasksModel.requestToggleGrouping(modelIndex());
                     }
                 } else {
@@ -850,18 +851,18 @@ MouseArea{
                 }
             } else if (mouse.button == Qt.MidButton && !root.disableAllWindowsFunctionality){
                 if( !taskItem.isLauncher ){
-                    if (root.middleClickAction == Latte.Tasks.NewInstance) {
+                    if (root.middleClickAction == LatteTasks.Types.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
-                    } else if (root.middleClickAction == Latte.Tasks.Close) {
+                    } else if (root.middleClickAction == LatteTasks.Types.Close) {
                         tasksModel.requestClose(modelIndex());
-                    } else if (root.middleClickAction == Latte.Tasks.ToggleMinimized) {
+                    } else if (root.middleClickAction == LatteTasks.Types.ToggleMinimized) {
                         tasksModel.requestToggleMinimized(modelIndex());
-                    } else if ( root.middleClickAction == Latte.Tasks.CycleThroughTasks) {
+                    } else if ( root.middleClickAction == LatteTasks.Types.CycleThroughTasks) {
                         if (isGroupParent)
                             subWindows.activateNextTask();
                         else
                             activateTask();
-                    } else if (root.middleClickAction == Latte.Tasks.ToggleGrouping) {
+                    } else if (root.middleClickAction == LatteTasks.Types.ToggleGrouping) {
                         tasksModel.requestToggleGrouping(modelIndex());
                     }
                 } else {
@@ -869,19 +870,19 @@ MouseArea{
                 }
             } else if (mouse.button == Qt.LeftButton){
                 if( !taskItem.isLauncher ){
-                    if ( (root.leftClickAction === Latte.Tasks.PreviewWindows && isGroupParent)
+                    if ( (root.leftClickAction === LatteTasks.Types.PreviewWindows && isGroupParent)
                             || ( (LatteCore.WindowSystem.isPlatformWayland || !LatteCore.WindowSystem.compositingActive)
-                                && root.leftClickAction === Latte.Tasks.PresentWindows
+                                && root.leftClickAction === LatteTasks.Types.PresentWindows
                                 && isGroupParent) ) {
                         if(windowsPreviewDlg.activeItem !== taskItem){
                             showPreviewWindow();
                         } else {
                             hidePreviewWindow();
                         }
-                    } else if ( (root.leftClickAction === Latte.Tasks.PresentWindows && !(isGroupParent && !LatteCore.WindowSystem.compositingActive))
-                               || ((root.leftClickAction === Latte.Tasks.PreviewWindows && !isGroupParent)) ) {
+                    } else if ( (root.leftClickAction === LatteTasks.Types.PresentWindows && !(isGroupParent && !LatteCore.WindowSystem.compositingActive))
+                               || ((root.leftClickAction === LatteTasks.Types.PreviewWindows && !isGroupParent)) ) {
                         activateTask();
-                    } else if (root.leftClickAction === Latte.Tasks.CycleThroughTasks) {
+                    } else if (root.leftClickAction === LatteTasks.Types.CycleThroughTasks) {
                         if (isGroupParent)
                             subWindows.activateNextTask();
                         else
@@ -903,7 +904,7 @@ MouseArea{
     }
 
     onWheel: {
-        var wheelActionsEnabled = (root.taskScrollAction !== Latte.Types.ScrollNone || manualScrollTasksEnabled);
+        var wheelActionsEnabled = (root.taskScrollAction !== LatteCore.Types.ScrollNone || manualScrollTasksEnabled);
 
         if (isSeparator
                 || wheelIsBlocked
@@ -934,8 +935,8 @@ MouseArea{
 
             var overflowScrollingAccepted = (root.manualScrollTasksEnabled
                                              && scrollableList.contentsExceed
-                                             && (root.manualScrollTasksType === Latte.Tasks.ManualScrollVerticalHorizontal
-                                                 || (root.manualScrollTasksType === Latte.Tasks.ManualScrollOnlyParallel && parallelScrolling)) );
+                                             && (root.manualScrollTasksType === LatteTasks.Types.ManualScrollVerticalHorizontal
+                                                 || (root.manualScrollTasksType === LatteTasks.Types.ManualScrollOnlyParallel && parallelScrolling)) );
 
 
             if (overflowScrollingAccepted) {
@@ -962,8 +963,8 @@ MouseArea{
 
             var overflowScrollingAccepted = (root.manualScrollTasksEnabled
                                              && scrollableList.contentsExceed
-                                             && (root.manualScrollTasksType === Latte.Tasks.ManualScrollVerticalHorizontal
-                                                 || (root.manualScrollTasksType === Latte.Tasks.ManualScrollOnlyParallel && parallelScrolling)) );
+                                             && (root.manualScrollTasksType === LatteTasks.Types.ManualScrollVerticalHorizontal
+                                                 || (root.manualScrollTasksType === LatteTasks.Types.ManualScrollOnlyParallel && parallelScrolling)) );
 
 
             if (overflowScrollingAccepted) {
@@ -972,7 +973,7 @@ MouseArea{
                 if (isLauncher || root.disableAllWindowsFunctionality) {
                     // do nothing
                 } else if (isGroupParent) {
-                    if (root.taskScrollAction === Latte.Tasks.ScrollToggleMinimized) {
+                    if (root.taskScrollAction === LatteTasks.Types.ScrollToggleMinimized) {
                         subWindows.minimizeTask();
                     } else {
                         subWindows.activatePreviousTask();
@@ -980,7 +981,7 @@ MouseArea{
                 } else {
                     var taskIndex = modelIndex();
 
-                    var hidingTask = (!isMinimized && root.taskScrollAction === Latte.Tasks.ScrollToggleMinimized);
+                    var hidingTask = (!isMinimized && root.taskScrollAction === LatteTasks.Types.ScrollToggleMinimized);
 
                     if (isMinimized || hidingTask) {
                         tasksModel.requestToggleMinimized(taskIndex);
@@ -1264,9 +1265,9 @@ MouseArea{
 
     function modifierAccepted(mouse){
         if (mouse.modifiers & root.modifierQt){
-            if ((mouse.button === Qt.LeftButton && root.modifierClick === Latte.Tasks.LeftClick)
-                    || (mouse.button === Qt.MiddleButton && root.modifierClick === Latte.Tasks.MiddleClick)
-                    || (mouse.button === Qt.RightButton && root.modifierClick === Latte.Tasks.RightClick))
+            if ((mouse.button === Qt.LeftButton && root.modifierClick === LatteTasks.Types.LeftClick)
+                    || (mouse.button === Qt.MiddleButton && root.modifierClick === LatteTasks.Types.MiddleClick)
+                    || (mouse.button === Qt.RightButton && root.modifierClick === LatteTasks.Types.RightClick))
                 return true;
         }
 

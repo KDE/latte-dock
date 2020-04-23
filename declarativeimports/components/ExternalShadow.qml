@@ -22,8 +22,6 @@ import QtQuick 2.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import QtGraphicalEffects 1.0
 
-import org.kde.latte 0.2 as Latte
-
 Item{
     id: shadowRoot
 
