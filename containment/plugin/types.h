@@ -35,6 +35,13 @@ class Types
 public:
     Types() = delete;
     ~Types() {}
+
+    enum ActiveWindowFilterGroup
+    {
+        ActiveInCurrentScreen = 0,
+        ActiveFromAllScreens
+    };
+    Q_ENUM(ActiveWindowFilterGroup);
 };
 
 }

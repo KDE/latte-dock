@@ -30,6 +30,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
+import org.kde.latte.private.containment 0.1 as LatteContainment
 
 import "abilities" as Ability
 import "applet" as Applet
@@ -478,9 +479,9 @@ Item {
     property QtObject selectedWindowsTracker: {
         if (latteView && latteView.windowsTracker) {
             switch(plasmoid.configuration.activeWindowFilter) {
-            case LatteCore.Types.ActiveInCurrentScreen:
+            case LatteContainment.Types.ActiveInCurrentScreen:
                 return latteView.windowsTracker.currentScreen;
-            case LatteCore.Types.ActiveFromAllScreens:
+            case LatteContainment.Types.ActiveFromAllScreens:
                 return latteView.windowsTracker.allScreens;
             }
         }

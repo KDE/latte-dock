@@ -30,6 +30,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
+import org.kde.latte.private.containment 0.1 as LatteContainment
 
 import "../../controls" as LatteExtraControls
 
@@ -574,11 +575,11 @@ PlasmaComponents.Page {
 
                             onCurrentIndexChanged: {
                                 switch(currentIndex) {
-                                case LatteCore.Types.ActiveInCurrentScreen:
-                                    plasmoid.configuration.activeWindowFilter = LatteCore.Types.ActiveInCurrentScreen;
+                                case LatteContainment.Types.ActiveInCurrentScreen:
+                                    plasmoid.configuration.activeWindowFilter = LatteContainment.Types.ActiveInCurrentScreen;
                                     break;
-                                case LatteCore.Types.ActiveFromAllScreens:
-                                    plasmoid.configuration.activeWindowFilter = LatteCore.Types.ActiveFromAllScreens;
+                                case LatteContainment.Types.ActiveFromAllScreens:
+                                    plasmoid.configuration.activeWindowFilter = LatteContainment.Types.ActiveFromAllScreens;
                                     break;
                                 }
                             }
