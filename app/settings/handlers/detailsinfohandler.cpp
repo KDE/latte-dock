@@ -27,8 +27,6 @@
 #include "../widgets/patternwidget.h"
 #include "../../layout/abstractlayout.h"
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 namespace Settings {
@@ -50,8 +48,8 @@ DetailsInfoHandler::~DetailsInfoHandler()
 void DetailsInfoHandler::init()
 {
     m_backButtonsGroup = new QButtonGroup(this);
-    m_backButtonsGroup->addButton(m_ui->colorRadioBtn, Types::ColorStyle);
-    m_backButtonsGroup->addButton(m_ui->backRadioBtn, Types::CustomBackgroundStyle);
+    m_backButtonsGroup->addButton(m_ui->colorRadioBtn, Latte::Layout::ColorBackgroundStyle);
+    m_backButtonsGroup->addButton(m_ui->backRadioBtn, Latte::Layout::PatternBackgroundStyle);
     m_backButtonsGroup->setExclusive(true);
 
     connect(m_backButtonsGroup, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
@@ -82,7 +80,7 @@ void DetailsInfoHandler::reload()
 
 void DetailsInfoHandler::loadLayout(const Data::Layout &data)
 {
-    if (data.backgroundStyle == Types::ColorStyle) {
+    if (data.backgroundStyle == Latte::Layout::ColorBackgroundStyle) {
         m_ui->colorRadioBtn->setChecked(true);
     } else {
         m_ui->backRadioBtn->setChecked(true);

@@ -109,7 +109,7 @@ void AbstractLayout::setPreferredForShortcutsTouched(bool touched)
 
 QString AbstractLayout::background() const
 {
-    if (m_backgroundStyle == Types::ColorStyle) {
+    if (m_backgroundStyle == ColorBackgroundStyle) {
         return m_color;
     } else {
         return m_customBackground;
@@ -118,19 +118,19 @@ QString AbstractLayout::background() const
 
 QString AbstractLayout::textColor() const
 {
-    if (m_backgroundStyle == Types::ColorStyle) {
+    if (m_backgroundStyle == ColorBackgroundStyle) {
         return predefinedTextColor();
     } else {
         return m_customTextColor;
     }
 }
 
-Types::BackgroundStyle AbstractLayout::backgroundStyle() const
+BackgroundStyle AbstractLayout::backgroundStyle() const
 {
     return m_backgroundStyle;
 }
 
-void AbstractLayout::setBackgroundStyle(const Types::BackgroundStyle &style)
+void AbstractLayout::setBackgroundStyle(const BackgroundStyle &style)
 {
     if (m_backgroundStyle == style) {
         return;
@@ -333,7 +333,7 @@ void AbstractLayout::loadConfig()
     m_preferredForShortcutsTouched = m_layoutGroup.readEntry("preferredForShortcutsTouched", false);
 
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
-    m_backgroundStyle = static_cast<Types::BackgroundStyle>(m_layoutGroup.readEntry("backgroundStyle", (int)Types::ColorStyle));
+    m_backgroundStyle = static_cast<BackgroundStyle>(m_layoutGroup.readEntry("backgroundStyle", (int)ColorBackgroundStyle));
 
     QString deprecatedTextColor = m_layoutGroup.readEntry("textColor", QString("fcfcfc"));
     QString deprecatedBackground = m_layoutGroup.readEntry("background", QString());
@@ -341,7 +341,7 @@ void AbstractLayout::loadConfig()
     if (deprecatedBackground.startsWith("/")) {
         m_customBackground = deprecatedBackground;
         m_customTextColor = deprecatedTextColor;
-        setBackgroundStyle(Types::CustomBackgroundStyle);
+        setBackgroundStyle(PatternBackgroundStyle);
 
         m_layoutGroup.writeEntry("background", QString());
         m_layoutGroup.writeEntry("textColor", QString());

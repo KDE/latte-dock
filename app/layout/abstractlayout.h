@@ -29,9 +29,6 @@
 // Plasma
 #include <Plasma>
 
-// Latte
-#include <Latte>
-
 namespace Plasma {
 class Types;
 }
@@ -47,6 +44,13 @@ enum Type {
     Shared
 };
 Q_ENUM_NS(Type);
+
+enum BackgroundStyle
+{
+    ColorBackgroundStyle = 0,
+    PatternBackgroundStyle
+};
+Q_ENUM_NS(BackgroundStyle);
 
 }
 }
@@ -101,8 +105,8 @@ public:
     QString textColor() const;
     void setTextColor(QString color);
 
-    Types::BackgroundStyle backgroundStyle() const;
-    void setBackgroundStyle(const Types::BackgroundStyle &style);
+    BackgroundStyle backgroundStyle() const;
+    void setBackgroundStyle(const BackgroundStyle &style);
 
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
@@ -151,7 +155,7 @@ protected:
     QString m_lastUsedActivity; //the last used activity for this layout
 
 
-    Types::BackgroundStyle m_backgroundStyle{Types::ColorStyle};
+    BackgroundStyle m_backgroundStyle{ColorBackgroundStyle};
 
     QString m_layoutFile;
     QString m_layoutName;

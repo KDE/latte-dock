@@ -21,13 +21,13 @@
 #ifndef SETTINGSDATALAYOUT_H
 #define SETTINGSDATALAYOUT_H
 
+// local
+#include "../../layout/abstractlayout.h"
+
 //Qt
 #include <QMetaType>
 #include <QString>
 #include <QStringList>
-
-// Latte
-#include <Latte>
 
 namespace Latte {
 namespace Settings {
@@ -55,7 +55,7 @@ public:
     QStringList activities;
     QStringList shares;
 
-    Types::BackgroundStyle backgroundStyle{Types::ColorStyle};
+    Latte::Layout::BackgroundStyle backgroundStyle{Latte::Layout::ColorBackgroundStyle};
 
     //! Functionality
     bool isShared() const;
