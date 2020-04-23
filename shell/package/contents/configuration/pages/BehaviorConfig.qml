@@ -53,7 +53,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.topMargin: units.smallSpacing
 
-            visible: dialog.highLevel && viewConfig.showInlineProperties
+            visible: dialog.advancedLevel && viewConfig.showInlineProperties
 
             LatteComponents.Header {
                 text: i18n("Type")
@@ -88,7 +88,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 3
                 spacing: 2
-                visible: screensCount > 1 || dialog.expertLevel
+                visible: screensCount > 1 || dialog.advancedLevel
 
                 property int screensCount: 1
 
@@ -533,7 +533,7 @@ PlasmaComponents.Page {
         //! BEGIN: Actions
         ColumnLayout {
             spacing: units.smallSpacing
-            visible: dialog.expertLevel
+            visible: dialog.advancedLevel
 
             LatteComponents.Header {
                 text: i18n("Actions")
@@ -705,7 +705,7 @@ PlasmaComponents.Page {
                         text: i18n("Expand popup through mouse wheel")
                         checked: plasmoid.configuration.mouseWheelActions
                         tooltip: i18n("Show or Hide applet popup through mouse wheel action")
-                        visible: dialog.highLevel
+                        visible: dialog.advancedLevel
 
                         onClicked: {
                             plasmoid.configuration.mouseWheelActions = checked
@@ -773,7 +773,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             spacing: units.smallSpacing
 
-            visible: dialog.expertLevel
+            visible: dialog.advancedLevel
             enabled: !(latteView.visibility.mode === LatteCore.Types.AlwaysVisible
                        || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow
                        || latteView.visibility.mode === LatteCore.Types.WindowsCanCover

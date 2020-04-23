@@ -70,8 +70,7 @@ class PrimaryConfigView : public PlasmaQuick::ConfigView
     Q_OBJECT
     //! used when the secondary config window can not be shown
     Q_PROPERTY(bool showInlineProperties READ showInlineProperties NOTIFY showInlinePropertiesChanged)
-
-    Q_PROPERTY(int complexity READ complexity WRITE setComplexity NOTIFY complexityChanged)
+    Q_PROPERTY(bool inAdvancedMode READ inAdvancedMode WRITE setInAdvancedMode NOTIFY inAdvancedModeChanged)
 
     Q_PROPERTY(QRect availableScreenGeometry READ availableScreenGeometry NOTIFY availableScreenGeometryChanged)
 
@@ -92,11 +91,11 @@ public:
 
     Qt::WindowFlags wFlags() const;
 
+    bool inAdvancedMode() const;
+    void setInAdvancedMode(bool advanced);
+
     bool showInlineProperties() const;
     bool sticker() const;
-
-    int complexity() const;
-    void setComplexity(int complexity);
 
     QRect availableScreenGeometry() const;
     QRect geometryWhenVisible() const;
@@ -116,8 +115,8 @@ public slots:
 
 signals:
     void availableScreenGeometryChanged();
-    void complexityChanged();
     void enabledBordersChanged();
+    void inAdvancedModeChanged();
     void raiseDocksTemporaryChanged();
     void showInlinePropertiesChanged();
     void showSignal();
@@ -151,11 +150,11 @@ private:
     bool m_blockFocusLost{false};
     bool m_blockFocusLostOnStartup{true};
     bool m_originalByPassWM{false};
+    bool m_inAdvancedMode{false};
     bool m_inReverse{false};    //! it is used by the borders
     bool m_showInlineProperties{false};
 
     Latte::Types::Visibility m_originalMode{Latte::Types::DodgeActive};
-    Latte::Types::SettingsComplexity m_complexity{Latte::Types::BasicSettings};
 
     QRect m_availableScreenGeometry;
     QRect m_geometryWhenVisible;

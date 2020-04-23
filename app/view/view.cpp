@@ -776,6 +776,19 @@ void View::setLatteTasksArePresent(bool present)
     emit latteTasksArePresentChanged();
 }
 
+bool View::inSettingsAdvancedMode() const
+{
+    if (m_configView) {
+        auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+
+        if (configView) {
+            return configView->inAdvancedMode();
+        }
+    }
+
+    return false;
+}
+
 bool View::isTouchingBottomViewAndIsBusy() const
 {
     return m_isTouchingBottomViewAndIsBusy;
@@ -949,19 +962,6 @@ void View::setScreenEdgeMargin(int margin)
 
     m_screenEdgeMargin = margin;
     emit screenEdgeMarginChanged();
-}
-
-int View::settingsLevel() const
-{
-    if (m_configView) {
-        auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
-
-        if (configView) {
-            return (int)configView->complexity();
-        }
-    }
-
-    return (int)Latte::Types::BasicSettings;
 }
 
 int View::fontPixelSize() const

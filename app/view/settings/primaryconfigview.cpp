@@ -83,11 +83,11 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
     connect(this, &QQuickView::heightChanged, this, &PrimaryConfigView::updateEffects);
 
     connect(this, &PrimaryConfigView::availableScreenGeometryChanged, this, &PrimaryConfigView::syncGeometry);
-    connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::saveConfig);
-    connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::updateShowInlineProperties);
-    connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::syncGeometry);
+    connect(this, &PrimaryConfigView::inAdvancedModeChanged, this, &PrimaryConfigView::saveConfig);
+    connect(this, &PrimaryConfigView::inAdvancedModeChanged, this, &PrimaryConfigView::updateShowInlineProperties);
+    connect(this, &PrimaryConfigView::inAdvancedModeChanged, this, &PrimaryConfigView::syncGeometry);
 
-    connect(this, &PrimaryConfigView::complexityChanged, m_latteView, &Latte::View::settingsLevelChanged);
+    connect(this, &PrimaryConfigView::inAdvancedModeChanged, m_latteView, &Latte::View::inSettingsAdvancedModeChanged);
 
     connect(this, &QQuickView::statusChanged, [&](QQuickView::Status status) {
         if (status == QQuickView::Ready) {
@@ -153,7 +153,7 @@ void PrimaryConfigView::init()
 
     loadConfig();
     //! inform view about the current settings level
-    emit m_latteView->settingsLevelChanged();
+    emit m_latteView->inSettingsAdvancedModeChanged();
 
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
@@ -290,7 +290,7 @@ void PrimaryConfigView::syncGeometry()
 
     switch (m_latteView->formFactor()) {
     case Plasma::Types::Horizontal: {
-        if (m_complexity == Latte::Types::ExpertSettings) {
+        if (m_inAdvancedMode) {
             if (qApp->isLeftToRight()) {
                 xPos = availGeometry.x() + availGeometry.width() - size.width();
             } else {
@@ -546,13 +546,11 @@ void PrimaryConfigView::updateShowInlineProperties()
     }
 
     bool showSecWindow{false};
-    bool complexityApprovedSecWindow{false};
+    bool advancedApprovedSecWindow{false};
 
-
-    if (m_complexity != Latte::Types::BasicSettings
-            && !(m_complexity == Latte::Types::ExpertSettings && m_latteView->formFactor() == Plasma::Types::Vertical)) {
+    if (m_inAdvancedMode && m_latteView->formFactor() != Plasma::Types::Vertical) {
         showSecWindow = true;
-        complexityApprovedSecWindow = true;
+        advancedApprovedSecWindow = true;
     }
 
     //! consider screen geometry for showing or not the secondary window
@@ -561,7 +559,7 @@ void PrimaryConfigView::updateShowInlineProperties()
 
         if (m_secConfigView->geometryWhenVisible().intersects(geometryWhenVisible())) {
             showSecWindow = false;
-        } else if (complexityApprovedSecWindow) {
+        } else if (advancedApprovedSecWindow) {
             showSecWindow = true;
         }
     }
@@ -595,20 +593,19 @@ void PrimaryConfigView::updateWaylandId()
     }
 }
 
-int PrimaryConfigView::complexity() const
+bool PrimaryConfigView::inAdvancedMode() const
 {
-    return (int)m_complexity;
+    return m_inAdvancedMode;
 }
 
-void PrimaryConfigView::setComplexity(int complexity)
+void PrimaryConfigView::setInAdvancedMode(bool advanced)
 {
-    if ((int)m_complexity == complexity) {
+    if (m_inAdvancedMode == advanced) {
         return;
     }
 
-    m_complexity = static_cast<Latte::Types::SettingsComplexity>(complexity);
-
-    emit complexityChanged();
+    m_inAdvancedMode = advanced;
+    emit inAdvancedModeChanged();
 }
 
 void PrimaryConfigView::hideConfigWindow()
@@ -768,8 +765,8 @@ void PrimaryConfigView::loadConfig()
         return;
     }
     auto config = m_latteView->containment()->config();
-    int complexity = config.readEntry("settingsComplexity", (int)Latte::Types::BasicSettings);
-    setComplexity(static_cast<Latte::Types::SettingsComplexity>(complexity));
+    int complexity = config.readEntry("settingsComplexity", 0);
+    setInAdvancedMode(complexity>0);
 }
 
 void PrimaryConfigView::saveConfig()
@@ -779,7 +776,8 @@ void PrimaryConfigView::saveConfig()
     }
 
     auto config = m_latteView->containment()->config();
-    config.writeEntry("settingsComplexity", (int)m_complexity);
+    int complexity = m_inAdvancedMode ? 1 : 0;
+    config.writeEntry("settingsComplexity", complexity);
     config.sync();
 }
 //!END configuration

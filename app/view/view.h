@@ -88,6 +88,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(bool byPassWM READ byPassWM WRITE setByPassWM NOTIFY byPassWMChanged)
     Q_PROPERTY(bool containsDrag READ containsDrag NOTIFY containsDragChanged)
     Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
+    Q_PROPERTY(bool inSettingsAdvancedMode READ inSettingsAdvancedMode NOTIFY inSettingsAdvancedModeChanged)
 
     //! Because Latte uses animations, changing to edit mode it may be different than
     //! when the isUserConfiguring changes value
@@ -112,7 +113,6 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
     Q_PROPERTY(int offset READ offset WRITE setOffset NOTIFY offsetChanged)
     Q_PROPERTY(int screenEdgeMargin READ screenEdgeMargin WRITE setScreenEdgeMargin NOTIFY screenEdgeMarginChanged)
-    Q_PROPERTY(int settingsLevel READ settingsLevel NOTIFY settingsLevelChanged)
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
@@ -169,6 +169,8 @@ public:
     bool latteTasksArePresent() const;
     void setLatteTasksArePresent(bool present);
 
+    bool inSettingsAdvancedMode() const;
+
     bool isTouchingBottomViewAndIsBusy() const;
     void setIsTouchingBottomViewAndIsBusy(bool touchAndBusy);
 
@@ -201,8 +203,6 @@ public:
 
     int alignment() const;
     void setAlignment(int alignment);
-
-    int settingsLevel() const;
 
     QRect absoluteGeometry() const;
     QRect screenGeometry() const;
@@ -292,6 +292,7 @@ signals:
     void heightChanged();
     void inEditModeChanged();
     void indicatorChanged();
+    void inSettingsAdvancedModeChanged();
     void isPreferredForShortcutsChanged();
     void isTouchingBottomViewAndIsBusyChanged();
     void isTouchingTopViewAndIsBusyChanged();
@@ -304,7 +305,6 @@ signals:
     void offsetChanged();
     void onPrimaryChanged();
     void positionerChanged();
-    void settingsLevelChanged();
     void screenEdgeMarginChanged();
     void screenEdgeMarginEnabledChanged();
     void screenGeometryChanged();

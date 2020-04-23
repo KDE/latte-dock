@@ -52,7 +52,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             spacing: units.smallSpacing
             Layout.topMargin: units.smallSpacing
-            visible: dialog.highLevel
+            visible: dialog.advancedLevel
 
             LatteComponents.Header {
                 text: i18n("Badges")
@@ -151,7 +151,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Window actions in the context menu")
                     checked: tasks.configuration.showWindowActions
-                    visible: dialog.highLevel
+                    visible: dialog.advancedLevel
                     enabled: !disableAllWindowsFunctionality
 
                     onClicked: {
@@ -165,7 +165,7 @@ PlasmaComponents.Page {
                     text: i18n("➊ Based on position shortcuts apply only for tasks")
                     checked: !plasmoid.configuration.unifiedGlobalShortcuts
                     tooltip: i18n("Based on position global shortcuts are enabled only for tasks and not for applets")
-                    visible: dialog.highLevel
+                    visible: dialog.advancedLevel
                     enabled: latteView.isPreferredForShortcuts || (!latteView.layout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
 
                     onClicked: {
@@ -223,7 +223,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from launchers")
                     checked: tasks.configuration.showWindowsOnlyFromLaunchers
-                    visible: dialog.highLevel
+                    visible: dialog.advancedLevel
 
                     onClicked: {
                         tasks.configuration.showWindowsOnlyFromLaunchers = checked
@@ -235,7 +235,7 @@ PlasmaComponents.Page {
                     text: i18n("Group tasks of the same application")
                     checked: tasks.configuration.groupTasksByDefault
                     tooltip: i18n("By default group tasks of the same application")
-                    visible: dialog.highLevel
+                    visible: dialog.advancedLevel
 
                     onClicked: {
                         tasks.configuration.groupTasksByDefault = checked
@@ -250,7 +250,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             spacing: units.smallSpacing
             enabled: plasmoid.configuration.animationsEnabled
-            visible: dialog.highLevel
+            visible: dialog.advancedLevel
 
             LatteComponents.Header {
                 text: i18n("Animations")
@@ -399,7 +399,7 @@ PlasmaComponents.Page {
         //! BEGIN: Scrolling
         ColumnLayout {
             spacing: units.smallSpacing
-            visible: dialog.expertLevel
+            visible: dialog.advancedLevel
 
             LatteComponents.HeaderSwitch {
                 id: scrollingHeader
@@ -481,7 +481,7 @@ PlasmaComponents.Page {
         //! BEGIN: Actions
         ColumnLayout {
             spacing: units.smallSpacing
-            visible: dialog.expertLevel
+            visible: dialog.advancedLevel
 
             LatteComponents.Header {
                 text: i18n("Actions")
@@ -693,7 +693,7 @@ PlasmaComponents.Page {
         //! BEGIN: Recycling
        /* ColumnLayout {
             spacing: units.smallSpacing
-            visible: dialog.expertLevel
+            visible: dialog.advancedLevel
 
             LatteComponents.Header {
                 text: i18n("Recycling")

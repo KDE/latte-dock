@@ -58,7 +58,7 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             Layout.topMargin: units.smallSpacing
             spacing: units.smallSpacing
-            visible: false //dialog.highLevel
+            visible: false
 
             LatteComponents.Header {
                 text: i18n("Layout")
@@ -138,7 +138,6 @@ PlasmaComponents.Page {
         //! BEGIN: Items
         ColumnLayout {
             Layout.fillWidth: true
-            //Layout.topMargin: dialog.highLevel ? 0 : units.smallSpacing
             Layout.topMargin: units.smallSpacing
 
             spacing: units.smallSpacing
@@ -174,7 +173,7 @@ PlasmaComponents.Page {
                         value: plasmoid.configuration.iconSize
                         from: 16
                         to: latteView.visibility.mode === LatteCore.Types.SideBar ? 512 : 256
-                        stepSize: dialog.highLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 1 : 8
+                        stepSize: dialog.advancedLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 1 : 8
                         wheelEnabled: false
 
                         function updateIconSize() {
@@ -209,7 +208,7 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
-                    visible: dialog.expertLevel || plasmoid.configuration.proportionIconSize>0
+                    visible: dialog.advancedLevel || plasmoid.configuration.proportionIconSize>0
 
                     PlasmaComponents.Label {
                         text: i18nc("relative size", "Relative")
@@ -424,7 +423,7 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
-                    visible: dialog.expertLevel
+                    visible: dialog.advancedLevel
                     enabled: (plasmoid.configuration.alignment !== LatteCore.Types.Justify)
 
                     PlasmaComponents.Label {
@@ -483,7 +482,7 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
-                    visible: dialog.expertLevel
+                    visible: dialog.advancedLevel
 
                     PlasmaComponents.Label {
                         id: offsetLbl
@@ -551,7 +550,7 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
 
             spacing: units.smallSpacing
-            visible: dialog.expertLevel
+            visible: dialog.advancedLevel
 
             readonly property int maxMargin: 25
 
@@ -701,7 +700,7 @@ PlasmaComponents.Page {
         //! BEGIN: Colors
         ColumnLayout {
             spacing: units.smallSpacing
-            visible: dialog.expertLevel
+            visible: dialog.advancedLevel
 
             LatteComponents.Header {
                 Layout.columnSpan: 4
@@ -984,7 +983,7 @@ PlasmaComponents.Page {
                 }
 
                 LatteComponents.SubHeader {
-                    visible: dialog.expertLevel
+                    visible: dialog.advancedLevel
                     isFirstSubCategory: true
                     text: i18n("Options")
                 }
@@ -992,7 +991,7 @@ PlasmaComponents.Page {
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: 2
-                    visible: dialog.expertLevel
+                    visible: dialog.advancedLevel
 
                     readonly property int buttonSize: (dialog.optionsWidth - (spacing*2)) / 3
 
@@ -1043,7 +1042,7 @@ PlasmaComponents.Page {
                 }
 
                 LatteComponents.SubHeader {
-                    visible: dialog.expertLevel
+                    visible: dialog.advancedLevel
                     text: i18nc("dynamic visibility for background", "Dynamic Visibility")
                     enabled: LatteCore.WindowSystem.compositingActive
                 }
@@ -1057,7 +1056,7 @@ PlasmaComponents.Page {
                         checked: plasmoid.configuration.solidBackgroundForMaximized
                         tooltip: i18n("Background removes its transparency setting when a window is touching")
                         enabled: showBackground.checked
-                        visible: dialog.expertLevel
+                        visible: dialog.advancedLevel
 
                         onClicked: {
                             plasmoid.configuration.solidBackgroundForMaximized = checked;
@@ -1071,7 +1070,7 @@ PlasmaComponents.Page {
                         checked: plasmoid.configuration.backgroundOnlyOnMaximized
                         tooltip: i18n("Background becomes hidden except when a window is touching or the desktop background is busy")
                         enabled: showBackground.checked
-                        visible: dialog.expertLevel
+                        visible: dialog.advancedLevel
 
                         onClicked: {
                             plasmoid.configuration.backgroundOnlyOnMaximized = checked;
@@ -1085,7 +1084,7 @@ PlasmaComponents.Page {
                         checked: plasmoid.configuration.disablePanelShadowForMaximized
                         tooltip: i18n("Background shadows become hidden when an active maximized window is touching the view")
                         enabled: showBackground.checked
-                        visible: dialog.expertLevel
+                        visible: dialog.advancedLevel
 
                         onClicked: {
                             plasmoid.configuration.disablePanelShadowForMaximized = checked;
@@ -1094,7 +1093,7 @@ PlasmaComponents.Page {
                 }
 
                 LatteComponents.SubHeader {
-                    visible: dialog.expertLevel
+                    visible: dialog.advancedLevel
                     text: i18n("Exceptions")
                     enabled: LatteCore.WindowSystem.compositingActive
                 }
@@ -1106,7 +1105,7 @@ PlasmaComponents.Page {
                     checked: plasmoid.configuration.plasmaBackgroundForPopups
                     tooltip: i18n("Background becomes opaque in plasma style when applets are expanded")
                     enabled: showBackground.checked
-                    visible: dialog.expertLevel
+                    visible: dialog.advancedLevel
 
                     onClicked: {
                         plasmoid.configuration.plasmaBackgroundForPopups = checked;

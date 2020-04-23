@@ -43,11 +43,8 @@ import "../controls" as LatteExtraControls
 FocusScope {
     id: dialog
 
-    readonly property bool basicLevel: viewConfig.complexity === LatteCore.Types.BasicSettings
-    readonly property bool advancedLevel: viewConfig.complexity === LatteCore.Types.AdvancedSettings
-    readonly property bool expertLevel: viewConfig.complexity === LatteCore.Types.ExpertSettings
-
-    readonly property bool highLevel: advancedLevel || expertLevel
+    readonly property bool basicLevel: !advancedLevel
+    readonly property bool advancedLevel: viewConfig.inAdvancedMode
 
     readonly property bool inConfigureAppletsMode: plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive
 
@@ -74,7 +71,7 @@ FocusScope {
     property real userScaleWidth: 1
     property real userScaleHeight: 1
 
-    readonly property real heightLevel: (dialog.expertLevel ? 100 : 1)
+    readonly property real heightLevel: (dialog.advancedLevel ? 100 : 1)
 
     onHeightChanged: viewConfig.syncGeometry();
 
@@ -100,10 +97,10 @@ FocusScope {
     property color bC: theme.backgroundColor
     property color transparentBackgroundColor: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
 
-    onHighLevelChanged: {
+    onAdvancedLevelChanged: {
         //! switch to appearancePage when effectsPage becomes hidden because
         //! advancedLevel was disabled by the user
-        if (!highLevel && tabGroup.currentTab === effectsPage) {
+        if (!advancedLevel && tabGroup.currentTab === effectsPage) {
             tabGroup.currentTab = appearancePage;
             tabBar.currentTab = appearanceTabBtn;
         }
@@ -152,8 +149,8 @@ FocusScope {
                 return;
             }
 
-            updatingWidthScale = metaModifier || (dialog.expertLevel && ctrlModifier);
-            updatingHeightScale = !dialog.expertLevel && ctrlModifier;
+            updatingWidthScale = metaModifier || (dialog.advancedLevel && ctrlModifier);
+            updatingHeightScale = dialog.basicLevel && ctrlModifier;
 
             blockWheel = true;
             wheelTriggeredOnce = true;
@@ -298,7 +295,7 @@ FocusScope {
 
             Item{
                 id: headerSpacer
-                Layout.minimumHeight: complexitySettings.height + 2*units.smallSpacing
+                Layout.minimumHeight: advancedSettings.height + 2*units.smallSpacing
             }
 
             ColumnLayout {
@@ -335,7 +332,7 @@ FocusScope {
                 }
 
                 RowLayout {
-                    id: complexitySettings
+                    id: advancedSettings
                     Layout.fillWidth: true
                     Layout.rightMargin: units.smallSpacing * 2
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
@@ -346,7 +343,7 @@ FocusScope {
                     }
 
                     PlasmaComponents.Label {
-                        id: complexityLbl
+                        id: advancedLbl
                         Layout.alignment: Qt.AlignRight
                       //  opacity: dialog.basicLevel ? basicOpacity : 1
 
@@ -377,26 +374,20 @@ FocusScope {
                         }
 
                         MouseArea {
-                            id: complexityMouseArea
+                            id: advancedMouseArea
                             anchors.fill: parent
                             hoverEnabled: true
                             onClicked: {
-                                complexitySwitch.checked = !complexitySwitch.checked;
+                                advancedSwitch.checked = !advancedSwitch.checked;
                             }
                         }
                     }
 
                     LatteComponents.Switch {
-                        id: complexitySwitch
-                        checked: (viewConfig.complexity === LatteCore.Types.ExpertSettings)
+                        id: advancedSwitch
+                        checked: viewConfig.inAdvancedMode
 
-                        onCheckedChanged: {
-                            if (checked) {
-                                viewConfig.complexity = LatteCore.Types.ExpertSettings;
-                            } else {
-                                viewConfig.complexity = LatteCore.Types.BasicSettings;
-                            }
-                        }
+                        onCheckedChanged: viewConfig.inAdvancedMode = checked;
                     }
                 }
             }
@@ -421,7 +412,7 @@ FocusScope {
                 id: effectsTabBtn
                 text: i18n("Effects")
                 tab: effectsPage
-                visible: dialog.highLevel
+                visible: dialog.advancedLevel
             }
 
             Repeater {
