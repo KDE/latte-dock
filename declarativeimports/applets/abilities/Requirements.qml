@@ -19,7 +19,7 @@
 
 import QtQuick 2.0
 
-import org.kde.latte.container.abilities 0.1 as ContainerAbility
+import org.kde.latte.containers.abilities 0.1 as ContainerAbility
 
 ContainerAbility.AppletRequirements{
     id: requirements

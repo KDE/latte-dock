@@ -19,7 +19,7 @@
 
 import QtQuick 2.7
 
-import org.kde.latte.container.abilities 0.1 as ContainerAbility
+import org.kde.latte.containers.abilities 0.1 as ContainerAbility
 
 import "../../../code/AppletIdentifier.js" as AppletIdentifier
 
