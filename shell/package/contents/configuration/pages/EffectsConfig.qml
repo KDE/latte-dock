@@ -58,17 +58,11 @@ PlasmaComponents.Page {
                 Layout.minimumHeight: implicitHeight
                 Layout.topMargin: units.smallSpacing
 
-                checked: plasmoid.configuration.shadows !== LatteCore.Types.NoneShadow
+                checked: plasmoid.configuration.appletShadowsEnabled
                 text: i18n("Shadows")
                 tooltip: i18n("Enable/disable applet shadows")
 
-                onPressed: {
-                    if(plasmoid.configuration.shadows !== LatteCore.Types.AllAppletsShadow){
-                        plasmoid.configuration.shadows = LatteCore.Types.AllAppletsShadow;
-                    } else {
-                        plasmoid.configuration.shadows = LatteCore.Types.NoneShadow;
-                    }
-                }
+                onPressed: plasmoid.configuration.appletShadowsEnabled = !plasmoid.configuration.appletShadowsEnabled;
             }
 
             ColumnLayout {

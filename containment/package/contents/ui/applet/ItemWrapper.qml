@@ -640,11 +640,7 @@ Item{
         active: appletItem.applet
                 && graphicsSystem.isAccelerated
                 && !appletColorizer.mustBeShown
-                && (((plasmoid.configuration.shadows === 1 /*Locked Applets*/
-                      && (!appletItem.canBeHovered || (appletItem.originalAppletBehavior && (applet.pluginName !== root.plasmoidName))) )
-                     || (plasmoid.configuration.shadows === 2 /*All Applets*/
-                         && (applet.pluginName !== root.plasmoidName)))
-                    || (root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
+                && (root.enableShadows && applet.pluginName !== root.plasmoidName)
 
         onActiveChanged: {
             if (active && !isSeparator && graphicsSystem.isAccelerated) {

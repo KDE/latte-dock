@@ -36,7 +36,7 @@ Item {
         id: colorizedAppletShadow
         anchors.fill: colorizer
 
-        active: graphicsSystem.isAccelerated && (plasmoid.configuration.shadows >= 1) && (appletColorizer.opacity>0)
+        active: graphicsSystem.isAccelerated && plasmoid.configuration.appletShadowsEnabled && (appletColorizer.opacity>0)
 
         sourceComponent: DropShadow{
             anchors.fill: parent
@@ -49,7 +49,7 @@ Item {
 
             readonly property int shadowSize : root.appShadowSize
 
-            readonly property bool forcedShadow: root.forceTransparentPanel && plasmoid.configuration.shadows>0
+            readonly property bool forcedShadow: root.forceTransparentPanel && plasmoid.configuration.appletShadowsEnabled
                                                  && applet && applet.pluginName !== root.plasmoidName ? true : false
         }
     }

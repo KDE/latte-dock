@@ -32,6 +32,10 @@
       <default>5</default>
       <label>last windows visibility mode used, 5 stands for "Windows Go Below"</label>
     </entry>
+    <entry name="appletShadowsEnabled" type="Bool">
+      <default>true</default>
+      <label>enable latte drawn applet shadows</label>
+    </entry>
 
     <!-- this is percentage -->
     <entry name="thickMargin" type="Int">
@@ -136,15 +140,6 @@
     <entry name="splitterPosition2" type="Int">
       <default>-1</default>
     </entry>
-    <entry name="shadows" type="Enum">
-      <label>Shadows for the applets</label>
-        <choices>
-          <choice name="None"/>
-          <choice name="Locked"/>
-          <choice name="All"/>
-        </choices>
-      <default>2</default>
-    </entry>
     <entry name="shadowColorType" type="Enum">
       <label>Applets shadow color type</label>
         <choices>
@@ -230,6 +225,10 @@
       <default>false</default>
       <label>flag to check it deprecated panelPosition was changed to "alignment"</label>
     </entry>
+    <entry name="shadowsUpgraded" type="Bool">
+      <default>false</default>
+      <label>flag to check it deprecated shadows was changed to "appletShadowsEnabled"</label>
+    </entry>
     <entry name="tasksUpgraded" type="Bool">
       <default>false</default>
       <label>flag to check if Tasks properties were moved to Tasks plasmoid configuration. Since Latte v0.10 we can have multiple Tasks applets in the same dock</label>
@@ -247,6 +246,16 @@
       </choices>
       <default>0</default>
       <label>DEPRECATED in 0.10 in favour of "alignment"</label>
+    </entry>
+
+    <entry name="shadows" type="Enum">
+      <label>Shadows for the applets</label>
+        <choices>
+          <choice name="None"/>
+          <choice name="Locked"/>
+          <choice name="All"/>
+        </choices>
+      <default>2</default>
     </entry>
 
 <!-- Deprecated Section Tasks -->

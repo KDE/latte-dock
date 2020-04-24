@@ -76,7 +76,7 @@ Grid {
                 plasmoid.configuration.useThemePanel = true;
                 plasmoid.configuration.solidPanel = false;
                 plasmoid.configuration.panelSize = 5;
-                plasmoid.configuration.shadows = 2;
+                plasmoid.configuration.appletShadowsEnabled = true;
                 plasmoid.configuration.zoomLevel = 16;
                 plasmoid.configuration.titleTooltips = true;
                 //plasmoid.configuration.autoDecreaseIconSize = true;
@@ -121,7 +121,7 @@ Grid {
                 plasmoid.configuration.solidPanel = false;
                 plasmoid.configuration.panelSize = 100;
                 plasmoid.configuration.panelShadows = true;
-                plasmoid.configuration.shadows = 0;
+                plasmoid.configuration.appletShadowsEnabled = false;
                 plasmoid.configuration.zoomLevel = 0;
                 plasmoid.configuration.titleTooltips = false;
                 //plasmoid.configuration.autoDecreaseIconSize = false;

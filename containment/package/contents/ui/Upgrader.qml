@@ -32,9 +32,20 @@ Item{
     function v010_upgrade() {
         root.upgrader_v010_alignment();
 
+        if (!plasmoid.configuration.shadowsUpgraded) {
+            if (plasmoid.configuration.shadows > 0) {
+                plasmoid.configuration.appletShadowsEnabled = true;
+            } else {
+                plasmoid.configuration.appletShadowsEnabled = false;
+            }
+
+            plasmoid.configuration.shadowsUpgraded = true;
+        }
+
         if (!plasmoid.configuration.tasksUpgraded) {
             v010_tasksMigrateTimer.start();
         }
+
     }
 
     Item {
