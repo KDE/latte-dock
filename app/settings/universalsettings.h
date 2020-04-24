@@ -163,8 +163,8 @@ private:
 
     void setColorsScriptIsPresent(bool present);
 
-    Types::LayoutsMemoryUsage layoutsMemoryUsage() const;
-    void setLayoutsMemoryUsage(Types::LayoutsMemoryUsage layoutsMemoryUsage);
+    MemoryUsage::LayoutsMemory layoutsMemoryUsage() const;
+    void setLayoutsMemoryUsage(MemoryUsage::LayoutsMemory layoutsMemoryUsage);
 
 private:
     bool m_badges3DStyle{false};
@@ -187,7 +187,7 @@ private:
 
     QStringList m_launchers;
 
-    Types::LayoutsMemoryUsage m_memoryUsage;
+    MemoryUsage::LayoutsMemory m_memoryUsage;
     Settings::MouseSensitivity m_sensitivity{Settings::HighMouseSensitivity};
 
     //! ScreenName, <width_scale, height_scale>

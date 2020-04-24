@@ -22,6 +22,7 @@
 //! local
 #include "importer.h"
 #include "manager.h"
+#include "../apptypes.h"
 #include "../lattecorona.h"
 #include "../layout/centrallayout.h"
 #include "../layout/genericlayout.h"
@@ -61,7 +62,7 @@ Synchronizer::Synchronizer(QObject *parent)
 
     connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
             this, [&]() {
-        if (m_manager->memoryUsage() == Types::MultipleLayouts) {
+        if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
             syncMultipleLayoutsToActivities();
         }
     });
@@ -114,7 +115,7 @@ bool Synchronizer::mapHasRecord(const QString &record, SharesMap &map)
 
 bool Synchronizer::registerAtSharedLayout(CentralLayout *central, QString id)
 {
-    if (m_manager->memoryUsage() == Types::SingleLayout || centralLayout(id)) {
+    if (m_manager->memoryUsage() == MemoryUsage::SingleLayout || centralLayout(id)) {
         //! if memory is functioning to SINGLE mode OR shared layout has already
         //! been loaded as CentralLayout
         return false;
@@ -155,9 +156,9 @@ int Synchronizer::centralLayoutPos(QString id) const
 
 QString Synchronizer::currentLayoutName() const
 {
-    if (m_manager->memoryUsage() == Types::SingleLayout) {
+    if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
         return m_manager->corona()->universalSettings()->currentLayoutName();
-    } else if (m_manager->memoryUsage() == Types::MultipleLayouts) {
+    } else if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
         return currentLayoutNameInMultiEnvironment();
     }
 
@@ -217,7 +218,7 @@ QStringList Synchronizer::centralLayoutsNames()
 {
     QStringList names;
 
-    if (m_manager->memoryUsage() == Types::SingleLayout) {
+    if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
         names << currentLayoutName();
     } else {
         for (int i = 0; i < m_centralLayouts.size(); ++i) {
@@ -240,9 +241,9 @@ QStringList Synchronizer::menuLayouts() const
 
     //! in case the current layout isnt checked to be shown in the menus
     //! we must add it on top
-    if (!fixedMenuLayouts.contains(currentLayoutName()) && m_manager->memoryUsage() == Types::SingleLayout) {
+    if (!fixedMenuLayouts.contains(currentLayoutName()) && m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
         fixedMenuLayouts.prepend(currentLayoutName());
-    } else if (m_manager->memoryUsage() == Types::MultipleLayouts) {
+    } else if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
         for (const auto layout : m_centralLayouts) {
             if (!fixedMenuLayouts.contains(layout->name())) {
                 fixedMenuLayouts.prepend(layout->name());
@@ -322,7 +323,7 @@ CentralLayout *Synchronizer::centralLayout(QString id) const
 
 CentralLayout *Synchronizer::currentLayout() const
 {
-    if (m_manager->memoryUsage() == Types::SingleLayout) {
+    if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
         return m_centralLayouts.at(0);
     } else {
         for (auto layout : m_centralLayouts) {
@@ -447,13 +448,13 @@ void Synchronizer::confirmDynamicSwitch()
 
 void Synchronizer::currentActivityChanged(const QString &id)
 {
-    if (m_manager->memoryUsage() == Types::SingleLayout) {
+    if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
         m_shouldSwitchToLayout = shouldSwitchToLayout(id);
         qDebug() << "activity changed :: " << id;
         qDebug() << "should switch to layout :: " << m_shouldSwitchToLayout;
 
         m_dynamicSwitchTimer.start();
-    } else if (m_manager->memoryUsage() == Types::MultipleLayouts) {
+    } else if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
         updateCurrentLayoutNameInMultiEnvironment();
     }
 }
@@ -467,7 +468,7 @@ void Synchronizer::hideAllViews()
 
 void Synchronizer::pauseLayout(QString layoutName)
 {
-    if (m_manager->memoryUsage() == Types::MultipleLayouts) {
+    if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
         CentralLayout *layout = centralLayout(layoutName);
 
         if (layout && !layout->activities().isEmpty()) {
@@ -488,7 +489,7 @@ void Synchronizer::pauseLayout(QString layoutName)
 
 void Synchronizer::syncActiveLayoutsToOriginalFiles()
 {
-    if (m_manager->memoryUsage() == Types::MultipleLayouts) {
+    if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
         for (const auto layout : m_centralLayouts) {
             layout->syncToLayoutFile();
         }
@@ -641,7 +642,7 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
 
     //! First Check If that Layout is already present and in that case
     //! we can just switch to the proper Activity
-    if (m_manager->memoryUsage() == Types::MultipleLayouts && previousMemoryUsage == -1) {
+    if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && previousMemoryUsage == -1) {
         CentralLayout *layout = centralLayout(layoutName);
 
         if (layout) {
@@ -677,9 +678,9 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
     }
 
     if (!lPath.isEmpty()) {
-        if (m_manager->memoryUsage() == Types::SingleLayout) {
+        if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
             //  emit currentLayoutIsSwitching(currentLayoutName());
-        } else if (m_manager->memoryUsage() == Types::MultipleLayouts && layoutName != Layout::AbstractLayout::MultipleLayoutsName) {
+        } else if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && layoutName != Layout::AbstractLayout::MultipleLayoutsName) {
             CentralLayout toLayout(this, lPath);
 
             QStringList toActivities = toLayout.activities();
@@ -710,11 +711,11 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
 
             bool initializingMultipleLayouts{false};
 
-            if (m_manager->memoryUsage() == Types::MultipleLayouts && !m_multipleModeInitialized) {
+            if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && !m_multipleModeInitialized) {
                 initializingMultipleLayouts = true;
             }
 
-            if (m_manager->memoryUsage() == Types::SingleLayout || initializingMultipleLayouts || previousMemoryUsage == Types::MultipleLayouts) {
+            if (m_manager->memoryUsage() == MemoryUsage::SingleLayout || initializingMultipleLayouts || previousMemoryUsage == MemoryUsage::MultipleLayouts) {
                 unloadLayouts();
 
                 if (initializingMultipleLayouts) {
@@ -736,7 +737,7 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
                 emit centralLayoutsChanged();
             }
 
-            if (m_manager->memoryUsage() == Types::MultipleLayouts) {
+            if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
                 if (!initializingMultipleLayouts && !centralLayout(layoutName)) {
                     //! When we are in Multiple Layouts Environment and the user activates
                     //! a Layout that is assigned to specific activities but this
@@ -907,7 +908,7 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
 
 void Synchronizer::syncActiveShares(SharesMap &sharesMap, QStringList &deprecatedShares)
 {
-    if (m_manager->memoryUsage() != Types::MultipleLayouts) {
+    if (m_manager->memoryUsage() != MemoryUsage::MultipleLayouts) {
         return;
     }
 

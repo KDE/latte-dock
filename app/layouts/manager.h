@@ -24,7 +24,8 @@
 // local
 #include "launcherssignals.h"
 #include "synchronizer.h"
-#include "settings/dialogs/settingsdialog.h"
+#include "../apptypes.h"
+#include "../settings/dialogs/settingsdialog.h"
 
 // Qt
 #include <QAction>
@@ -96,8 +97,8 @@ public:
     QStringList presetsPaths() const;
     QStringList storedSharedLayouts() const;
 
-    Types::LayoutsMemoryUsage memoryUsage() const;
-    void setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage);
+    MemoryUsage::LayoutsMemory memoryUsage() const;
+    void setMemoryUsage(MemoryUsage::LayoutsMemory memoryUsage);
 
     //! returns the current and central layout based on activities and user preferences
     CentralLayout *currentLayout() const;
@@ -115,8 +116,6 @@ public slots:
 
     //! switch to specified layout, default previousMemoryUsage means that it didn't change
     Q_INVOKABLE bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);
-
-    Q_INVOKABLE int layoutsMemoryUsage();
 
     //! creates a new layout with layoutName based on the preset
     Q_INVOKABLE QString newLayout(QString layoutName, QString preset = i18n("Default"));

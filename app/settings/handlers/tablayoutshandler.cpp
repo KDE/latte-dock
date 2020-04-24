@@ -27,6 +27,7 @@
 #include "../dialogs/settingsdialog.h"
 #include "../controllers/layoutscontroller.h"
 #include "../views/layoutstableview.h"
+#include "../../apptypes.h"
 #include "../../lattecorona.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/importer.h"
@@ -75,15 +76,15 @@ TabLayouts::~TabLayouts()
 void TabLayouts::initUi()
 {
     m_inMemoryButtons = new QButtonGroup(this);
-    m_inMemoryButtons->addButton(m_ui->singleToolBtn, Latte::Types::SingleLayout);
-    m_inMemoryButtons->addButton(m_ui->multipleToolBtn, Latte::Types::MultipleLayouts);
+    m_inMemoryButtons->addButton(m_ui->singleToolBtn, MemoryUsage::SingleLayout);
+    m_inMemoryButtons->addButton(m_ui->multipleToolBtn, MemoryUsage::MultipleLayouts);
     m_inMemoryButtons->setExclusive(true);
 
     if (KWindowSystem::isPlatformWayland()) {
-        m_inMemoryButtons->button(Latte::Types::MultipleLayouts)->setEnabled(false);
+        m_inMemoryButtons->button(MemoryUsage::MultipleLayouts)->setEnabled(false);
     }
 
-    bool inMultiple{m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts};
+    bool inMultiple{m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts};
 
     if (inMultiple) {
         m_ui->multipleToolBtn->setChecked(true);
@@ -101,7 +102,7 @@ void TabLayouts::initUi()
             [ = ](int id, bool checked) {
 
         if (checked) {
-            m_layoutsController->setInMultipleMode(id == Latte::Types::MultipleLayouts);
+            m_layoutsController->setInMultipleMode(id == MemoryUsage::MultipleLayouts);
         }
     });
 

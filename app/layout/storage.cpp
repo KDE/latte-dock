@@ -20,6 +20,7 @@
 #include "storage.h"
 
 // local
+#include "../apptypes.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../layouts/manager.h"
@@ -588,7 +589,7 @@ QString Storage::newUniqueIdsLayoutFromFile(QString file)
             }
         }
 
-        if (m_layout->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+        if (m_layout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
             investigate_conts.group(cId).writeEntry("layoutId", m_layout->name());
         }
     }
@@ -710,7 +711,7 @@ bool Storage::layoutIsBroken(QStringList &errors) const
         if (!m_layout->corona()) {
             qDebug() << "   --- storaged file : " << m_layout->file();
         } else {
-            if (m_layout->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+            if (m_layout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
                 qDebug() << "   --- in multiple layouts hidden file : " << Layouts::Importer::layoutFilePath(AbstractLayout::MultipleLayoutsName);
             } else {
                 qDebug() << "   --- in active layout file : " << m_layout->file();

@@ -22,6 +22,7 @@
 
 // local
 #include "sharedlayout.h"
+#include "../apptypes.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../layouts/importer.h"
@@ -84,10 +85,9 @@ void CentralLayout::initToCorona(Latte::Corona *corona)
             }
         });
 
-
-        if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout && m_corona->universalSettings()->canDisableBorders()) {
+        if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout && m_corona->universalSettings()->canDisableBorders()) {
             kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
-        } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+        } else if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
             connect(m_corona->layoutsManager(), &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
                 if (m_corona->universalSettings()->canDisableBorders()
                     && m_corona->layoutsManager()->currentLayoutName() == name()) {
@@ -97,7 +97,7 @@ void CentralLayout::initToCorona(Latte::Corona *corona)
         }
 
         //! Request the SharedLayout in case there is one and Latte is functioning in MultipleLayouts mode
-        if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts && !m_sharedLayoutName.isEmpty()) {
+        if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts && !m_sharedLayoutName.isEmpty()) {
             if (m_corona->layoutsManager()->synchronizer()->registerAtSharedLayout(this, m_sharedLayoutName)) {
                 setSharedLayout(m_corona->layoutsManager()->synchronizer()->sharedLayout(m_sharedLayoutName));
             }

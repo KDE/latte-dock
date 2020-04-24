@@ -382,7 +382,7 @@ void Layouts::setOriginalLayoutForFreeActivities(const QString &id)
 void Layouts::loadLayouts()
 {
     m_model->clear();
-    bool inMultiple{m_handler->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts};
+    bool inMultiple{m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts};
     setInMultipleMode(inMultiple);
 
     //! The shares map needs to be constructed for start/scratch.
@@ -393,7 +393,7 @@ void Layouts::loadLayouts()
     int i = 0;
     QStringList brokenLayouts;
 
-    if (m_handler->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+    if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
         m_handler->corona()->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
     }
 
@@ -568,7 +568,7 @@ void Layouts::copySelectedLayout()
 
 
     //! Update original layout before copying if this layout is active
-    if (m_handler->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+    if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
         Latte::Layout::GenericLayout *generic = m_handler->corona()->layoutsManager()->synchronizer()->layout(selectedLayoutOriginal.name);
         if (generic) {
             generic->syncToLayoutFile();
@@ -759,7 +759,7 @@ void Layouts::save()
         //! If the layout name changed OR the layout path is a temporary one
         if ((iLayoutCurrentData.name != iLayoutOriginalData.name) || iLayoutCurrentData.isTemporary()) {
             //! If the layout is Active in MultipleLayouts
-            if (m_handler->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts && generic->isActive()) {
+            if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts && generic->isActive()) {
                 qDebug() << " Active Layout Should Be Renamed From : " << generic->name() << " TO :: " << iLayoutCurrentData.name;
                 activeLayoutsToRename[iLayoutCurrentData.name] = generic;
             }
@@ -767,7 +767,7 @@ void Layouts::save()
             QString tempFile = layoutTempDir.path() + "/" + QString(generic->name() + ".layout.latte");
             qDebug() << "new temp file ::: " << tempFile;
 
-            if ((m_handler->corona()->layoutsManager()->memoryUsage() == Types::SingleLayout) && (generic->name() == m_handler->corona()->layoutsManager()->currentLayoutName())) {
+            if ((m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) && (generic->name() == m_handler->corona()->layoutsManager()->currentLayoutName())) {
                 switchToLayout = iLayoutCurrentData.name;
             }
 
@@ -808,7 +808,7 @@ void Layouts::save()
         }
     }
 
-    if (m_handler->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+    if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
         for (const auto &newLayoutName : activeLayoutsToRename.keys()) {
             Latte::Layout::GenericLayout *layoutPtr = activeLayoutsToRename[newLayoutName];
             qDebug() << " Active Layout of Type: " << layoutPtr->type() << " Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
@@ -842,19 +842,19 @@ void Layouts::save()
     if (!m_model->layoutNameForFreeActivities().isEmpty()) {
         //! make sure that there is a layout for free activities
         //! send to layout manager in which layout to switch
-        Latte::Types::LayoutsMemoryUsage inMemoryOption = Latte::Types::SingleLayout;
+        MemoryUsage::LayoutsMemory inMemoryOption = Latte::MemoryUsage::SingleLayout;
 
         if (inMultipleMode()) {
-            inMemoryOption = Latte::Types::MultipleLayouts;
+            inMemoryOption = Latte::MemoryUsage::MultipleLayouts;
         }
 
         if (m_handler->corona()->layoutsManager()->memoryUsage() != inMemoryOption) {
-            Types::LayoutsMemoryUsage previousMemoryUsage = m_handler->corona()->layoutsManager()->memoryUsage();
+            MemoryUsage::LayoutsMemory previousMemoryUsage = m_handler->corona()->layoutsManager()->memoryUsage();
             m_handler->corona()->layoutsManager()->setMemoryUsage(inMemoryOption);
 
             m_handler->corona()->layoutsManager()->switchToLayout(m_model->layoutNameForFreeActivities(), previousMemoryUsage);
         } else {
-            if (m_handler->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+            if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
                 m_handler->corona()->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities(m_model->layoutNameForFreeActivities());
             } else {
                 m_handler->corona()->layoutsManager()->switchToLayout(m_model->layoutNameForFreeActivities());
@@ -869,7 +869,7 @@ void Layouts::save()
 
 void Layouts::syncActiveShares()
 {
-    if (m_handler->corona()->layoutsManager()->memoryUsage() != Types::MultipleLayouts) {
+    if (m_handler->corona()->layoutsManager()->memoryUsage() != MemoryUsage::MultipleLayouts) {
         return;
     }
 

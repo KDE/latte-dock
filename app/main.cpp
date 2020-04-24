@@ -20,6 +20,7 @@
 
 // local
 #include "config-latte.h"
+#include "apptypes.h"
 #include "lattecorona.h"
 #include "layouts/importer.h"
 
@@ -248,9 +249,9 @@ int main(int argc, char **argv)
 
     //! memory usage option
     if (parser.isSet(QStringLiteral("multiple"))) {
-        memoryUsage = (int)(Latte::Types::MultipleLayouts);
+        memoryUsage = (int)(Latte::MemoryUsage::MultipleLayouts);
     } else if (parser.isSet(QStringLiteral("single"))) {
-        memoryUsage = (int)(Latte::Types::SingleLayout);
+        memoryUsage = (int)(Latte::MemoryUsage::SingleLayout);
     }
 
     //! debug/mask options

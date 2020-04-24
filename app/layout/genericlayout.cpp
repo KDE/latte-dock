@@ -22,6 +22,7 @@
 // local
 #include "abstractlayout.h"
 #include "storage.h"
+#include "../apptypes.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../layouts/importer.h"
@@ -648,10 +649,10 @@ void GenericLayout::addContainment(Plasma::Containment *containment)
 
     bool containmentInLayout{false};
 
-    if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
+    if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
         m_containments.append(containment);
         containmentInLayout = true;
-    } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+    } else if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
         QString layoutId = containment->config().readEntry("layoutId", QString());
 
         if (!layoutId.isEmpty() && (layoutId == m_layoutName)) {
@@ -750,7 +751,7 @@ void GenericLayout::destroyedChanged(bool destroyed)
 
 void GenericLayout::renameLayout(QString newName)
 {
-    if (!m_corona || m_corona->layoutsManager()->memoryUsage() != Types::MultipleLayouts) {
+    if (!m_corona || m_corona->layoutsManager()->memoryUsage() != MemoryUsage::MultipleLayouts) {
         return;
     }
 
@@ -958,9 +959,9 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
     m_corona = corona;
 
     for (const auto containment : m_corona->containments()) {
-        if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout) {
+        if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
             addContainment(containment);
-        } else if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+        } else if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
             QString layoutId = containment->config().readEntry("layoutId", QString());
 
             if (!layoutId.isEmpty() && (layoutId == m_layoutName)) {
@@ -1038,7 +1039,7 @@ void GenericLayout::assignToLayout(Latte::View *latteView, QList<Plasma::Contain
     }
 
     //! sync the original layout file for integrity
-    if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+    if (m_corona && m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
         m_storage->syncToLayoutFile(false);
     }
 }
@@ -1076,7 +1077,7 @@ QList<Plasma::Containment *> GenericLayout::unassignFromLayout(Latte::View *latt
     }
 
     //! sync the original layout file for integrity
-    if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+    if (m_corona && m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
         m_storage->syncToLayoutFile(false);
     }
 

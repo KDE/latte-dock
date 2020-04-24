@@ -27,8 +27,9 @@
 #include "visibilitymanager.h"
 #include "settings/primaryconfigview.h"
 #include "settings/secondaryconfigview.h"
-#include "../indicator/factory.h"
+#include "../apptypes.h"
 #include "../lattecorona.h"
+#include "../indicator/factory.h"
 #include "../layout/genericlayout.h"
 #include "../layouts/manager.h"
 #include "../plasma/extended/theme.h"
@@ -1061,7 +1062,7 @@ void View::setLayout(Layout::GenericLayout *layout)
         connectionsLayout << connect(containment(), &Plasma::Applet::locationChanged, m_corona, &Latte::Corona::viewLocationChanged);
         connectionsLayout << connect(containment(), &Plasma::Containment::appletAlternativesRequested, m_corona, &Latte::Corona::showAlternativesForApplet, Qt::QueuedConnection);
 
-        if (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+        if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
             connectionsLayout << connect(containment(), &Plasma::Containment::appletCreated, m_layout, &Layout::GenericLayout::appletCreated);
         }
 
@@ -1092,7 +1093,7 @@ void View::setLayout(Layout::GenericLayout *layout)
             }
         });
 
-        if (latteCorona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+        if (latteCorona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
             connectionsLayout << connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
                 if (m_layout && m_visibility) {
                     setActivities(m_layout->appliedActivities());

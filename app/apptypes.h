@@ -43,6 +43,21 @@ Q_ENUM_NS(State);
 }
 
 namespace Latte {
+namespace MemoryUsage {
+
+enum LayoutsMemory
+{
+    SingleLayout = 0,  /* a single Layout is loaded in each time */
+    MultipleLayouts  /* multiple layouts are loaded on runtime,based on Activities and one central layout for the rest unassigned Activities */
+};
+
+}
+}
+
+//! These are LatteApp::Types that will be used from Latte App c++ implementation AND
+//! Latte containment qml. Such types are irrelevant and not used from plasma applets.
+
+namespace Latte {
 namespace Settings {
 Q_NAMESPACE
 
@@ -56,8 +71,5 @@ Q_ENUM_NS(MouseSensitivity);
 
 }
 }
-
-//! These are LatteApp::Types that will be used from Latte App c++ implementation AND
-//! Latte containment qml. Such types are irrelevant and not used from plasma applets.
 
 #endif

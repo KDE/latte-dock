@@ -26,6 +26,7 @@
 #include "trackedviewinfo.h"
 #include "../abstractwindowinterface.h"
 #include "../schemecolors.h"
+#include "../../apptypes.h"
 #include "../../lattecorona.h"
 #include "../../layout/genericlayout.h"
 #include "../../layouts/manager.h"
@@ -124,7 +125,7 @@ void Windows::init()
     });
 
     connect(m_wm, &AbstractWindowInterface::currentActivityChanged, this, [&] {
-        if (m_wm->corona()->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+        if (m_wm->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
             //! this is needed in MultipleLayouts because there is a chance that multiple
             //! layouts are providing different available screen geometries in different Activities
             updateAvailableScreenGeometries();

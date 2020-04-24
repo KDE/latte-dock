@@ -181,7 +181,7 @@ Corona::~Corona()
 
     m_viewsScreenSyncTimer.stop();
 
-    if (m_layoutsManager->memoryUsage() == Types::SingleLayout) {
+    if (m_layoutsManager->memoryUsage() == MemoryUsage::SingleLayout) {
         cleanConfig();
     }
 
@@ -254,13 +254,13 @@ void Corona::load()
         }
 
         if (m_userSetMemoryUsage != -1 && !KWindowSystem::isPlatformWayland()) {
-            Types::LayoutsMemoryUsage usage = static_cast<Types::LayoutsMemoryUsage>(m_userSetMemoryUsage);
+            MemoryUsage::LayoutsMemory usage = static_cast<MemoryUsage::LayoutsMemory>(m_userSetMemoryUsage);
 
             m_universalSettings->setLayoutsMemoryUsage(usage);
         }
 
         if (KWindowSystem::isPlatformWayland()) {
-            m_universalSettings->setLayoutsMemoryUsage(Types::SingleLayout);
+            m_universalSettings->setLayoutsMemoryUsage(MemoryUsage::SingleLayout);
         }
 
         m_layoutsManager->loadLayoutOnStartup(loadLayoutName);
@@ -1081,7 +1081,7 @@ void Corona::addViewForLayout(QString layoutName)
         defaultContainment->setLocation(Plasma::Types::BottomEdge);
     }
 
-    if (m_layoutsManager->memoryUsage() == Latte::Types::MultipleLayouts) {
+    if (m_layoutsManager->memoryUsage() == MemoryUsage::MultipleLayouts) {
         config.writeEntry("layoutId", layoutName);
     }
 
@@ -1279,8 +1279,8 @@ inline void Corona::qmlRegisterTypes() const
 {
     qmlRegisterUncreatableMetaObject(Latte::Settings::staticMetaObject,
                                      "org.kde.latte.private.app",          // import statement
-                                     0, 1,                         // major and minor version of the import
-                                     "Settings",                 // name in QML
+                                     0, 1,                                 // major and minor version of the import
+                                     "Settings",                           // name in QML
                                      "Error: only enums of latte app settings");
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)

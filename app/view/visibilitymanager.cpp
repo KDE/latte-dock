@@ -26,6 +26,7 @@
 #include "helpers/floatinggapwindow.h"
 #include "helpers/screenedgeghostwindow.h"
 #include "windowstracker/currentscreentracker.h"
+#include "../apptypes.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../layouts/manager.h"
@@ -209,13 +210,13 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         });
 
         m_connections[base+1] = connect(m_corona->layoutsManager(),  &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
-            if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+            if (m_corona && m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities(true);
             }
         });
 
         m_connections[base+2] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
-            if (m_corona && m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts) {
+            if (m_corona && m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities(true);
             }
         });
@@ -308,11 +309,11 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
 void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate)
 {
-    bool multipleLayoutsAndCurrent = (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts
+    bool multipleLayoutsAndCurrent = (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts
                                       && m_latteView->layout() && !m_latteView->positioner()->inLocationAnimation()
                                       && m_latteView->layout()->isCurrent());
 
-    if (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
+    if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout || multipleLayoutsAndCurrent) {
         QRect computedStruts = acceptableStruts();
         if (m_publishedStruts != computedStruts || forceUpdate) {
             //! Force update is needed when very important events happen in DE and there is a chance
@@ -523,8 +524,8 @@ bool VisibilityManager::supportsKWinEdges() const
 void VisibilityManager::updateGhostWindowState()
 {
     if (supportsKWinEdges()) {
-        bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout ||
-                                (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts
+        bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout ||
+                                (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts
                                  && m_latteView->layout() && !m_latteView->positioner()->inLocationAnimation()
                                  && m_latteView->layout()->isCurrent()));
 
@@ -912,8 +913,8 @@ void VisibilityManager::createEdgeGhostWindow()
 
         m_connectionsKWinEdges[0] = connect(m_wm, &WindowSystem::AbstractWindowInterface::currentActivityChanged,
                                             this, [&]() {
-            bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == Types::SingleLayout ||
-                                    (m_corona->layoutsManager()->memoryUsage() == Types::MultipleLayouts
+            bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout ||
+                                    (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts
                                      && m_latteView->layout() && !m_latteView->positioner()->inLocationAnimation()
                                      && m_latteView->layout()->isCurrent()));
 

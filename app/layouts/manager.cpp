@@ -201,17 +201,12 @@ QStringList Manager::presetsPaths() const
     return m_presetsPaths;
 }
 
-Types::LayoutsMemoryUsage Manager::memoryUsage() const
+MemoryUsage::LayoutsMemory Manager::memoryUsage() const
 {
     return m_corona->universalSettings()->layoutsMemoryUsage();
 }
 
-int Manager::layoutsMemoryUsage()
-{
-    return (int)m_corona->universalSettings()->layoutsMemoryUsage();
-}
-
-void Manager::setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage)
+void Manager::setMemoryUsage(MemoryUsage::LayoutsMemory memoryUsage)
 {
     m_corona->universalSettings()->setLayoutsMemoryUsage(memoryUsage);
 }
@@ -326,7 +321,7 @@ void Manager::showAboutDialog()
 
 void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks)
 {
-    if (!m_corona || (memoryUsage() == Types::SingleLayout && !bypassChecks)) {
+    if (!m_corona || (memoryUsage() == MemoryUsage::SingleLayout && !bypassChecks)) {
         return;
     }
 

@@ -411,12 +411,12 @@ void UniversalSettings::setMetaPressAndHoldEnabled(bool enabled)
     emit metaPressAndHoldEnabledChanged();
 }
 
-Types::LayoutsMemoryUsage UniversalSettings::layoutsMemoryUsage() const
+MemoryUsage::LayoutsMemory UniversalSettings::layoutsMemoryUsage() const
 {
     return m_memoryUsage;
 }
 
-void UniversalSettings::setLayoutsMemoryUsage(Types::LayoutsMemoryUsage layoutsMemoryUsage)
+void UniversalSettings::setLayoutsMemoryUsage(MemoryUsage::LayoutsMemory layoutsMemoryUsage)
 {
     if (m_memoryUsage == layoutsMemoryUsage) {
         return;
@@ -488,7 +488,7 @@ void UniversalSettings::loadConfig()
     m_metaPressAndHoldEnabled = m_universalGroup.readEntry("metaPressAndHoldEnabled", true);
     m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
-    m_memoryUsage = static_cast<Types::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Types::SingleLayout));
+    m_memoryUsage = static_cast<MemoryUsage::LayoutsMemory>(m_universalGroup.readEntry("memoryUsage", (int)MemoryUsage::SingleLayout));
     m_sensitivity = static_cast<Settings::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Settings::HighMouseSensitivity));
 
     loadScalesConfig();
