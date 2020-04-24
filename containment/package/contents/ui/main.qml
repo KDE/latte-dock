@@ -158,7 +158,7 @@ Item {
                                          && !inConfigureAppletsMode
                                          && !forceSolidPanel
                                          && !latteView.windowsTracker.currentScreen.existsWindowTouching
-                                         && !(windowColors === LatteCore.Types.ActiveWindowColors && selectedWindowsTracker.existsWindowActive)
+                                         && !(windowColors === LatteContainment.Types.ActiveWindowColors && selectedWindowsTracker.existsWindowActive)
 
     property bool forcePanelForBusyBackground: userShowPanelBackground && (root.themeColors === LatteContainment.Types.SmartThemeColors)
                                                && ( (root.forceTransparentPanel && colorizerManager.backgroundIsBusy)
@@ -203,7 +203,7 @@ Item {
     property int themeColors: plasmoid.configuration.themeColors
     property int windowColors: plasmoid.configuration.windowColors
 
-    property bool colorizerEnabled: themeColors !== LatteContainment.Types.PlasmaThemeColors || windowColors !== LatteCore.Types.NoneWindowColors
+    property bool colorizerEnabled: themeColors !== LatteContainment.Types.PlasmaThemeColors || windowColors !== LatteContainment.Types.NoneWindowColors
 
     property bool plasmaBackgroundForPopups: plasmoid.configuration.plasmaBackgroundForPopups
 

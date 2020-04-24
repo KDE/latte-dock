@@ -796,7 +796,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: windowColorsGroup
                     tooltip: i18n("Colors are not going to be based on any window")
 
-                    readonly property int colors: LatteCore.Types.NoneWindowColors
+                    readonly property int colors: LatteContainment.Types.NoneWindowColors
                 }
 
                 PlasmaComponents.Button {
@@ -810,7 +810,7 @@ PlasmaComponents.Page {
                                  i18n("Colors are going to be based on the active window") :
                                  i18n("Colors are going to be based on the active window.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
 
-                    readonly property int colors: LatteCore.Types.ActiveWindowColors
+                    readonly property int colors: LatteContainment.Types.ActiveWindowColors
 
                     PlasmaCore.IconItem {
                         anchors.right: parent.right
@@ -835,7 +835,7 @@ PlasmaComponents.Page {
                                  i18n("Colors are going to be based on windows that are touching the view") :
                                  i18n("Colors are going to be based on windows that are touching the view.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
 
-                    readonly property int colors: LatteCore.Types.TouchingWindowColors
+                    readonly property int colors: LatteContainment.Types.TouchingWindowColors
 
                     PlasmaCore.IconItem {
                         anchors.right: parent.right

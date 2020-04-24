@@ -62,6 +62,14 @@ public:
     };
     Q_ENUM(ThemeColorsGroup);
 
+    enum WindowColorsGroup
+    {
+        NoneWindowColors = 0,
+        ActiveWindowColors,
+        TouchingWindowColors
+    };
+    Q_ENUM(WindowColorsGroup);
+
     enum ActiveWindowFilterGroup
     {
         ActiveInCurrentScreen = 0,

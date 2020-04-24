@@ -66,9 +66,9 @@ Loader{
 
     readonly property real currentBackgroundBrightness: item ? item.currentBrightness : -1000
 
-    readonly property bool applyingWindowColors: (root.windowColors === LatteCore.Types.ActiveWindowColors && latteView && latteView.windowsTracker
+    readonly property bool applyingWindowColors: (root.windowColors === LatteContainment.Types.ActiveWindowColors && latteView && latteView.windowsTracker
                                                   && selectedWindowsTracker.activeWindowScheme)
-                                                 || (root.windowColors === LatteCore.Types.TouchingWindowColors && latteView && latteView.windowsTracker
+                                                 || (root.windowColors === LatteContainment.Types.TouchingWindowColors && latteView && latteView.windowsTracker
                                                      && latteView.windowsTracker.currentScreen.touchingWindowScheme)
 
     property QtObject applyTheme: {
@@ -77,11 +77,11 @@ Loader{
         }
 
         if (latteView && latteView.windowsTracker && !root.hasExpandedApplet) {
-            if (root.windowColors === LatteCore.Types.ActiveWindowColors && selectedWindowsTracker.activeWindowScheme) {
+            if (root.windowColors === LatteContainment.Types.ActiveWindowColors && selectedWindowsTracker.activeWindowScheme) {
                 return selectedWindowsTracker.activeWindowScheme;
             }
 
-            if (root.windowColors === LatteCore.Types.TouchingWindowColors && latteView.windowsTracker.currentScreen.touchingWindowScheme) {
+            if (root.windowColors === LatteContainment.Types.TouchingWindowColors && latteView.windowsTracker.currentScreen.touchingWindowScheme) {
                 //! we must track touching windows and when they are not ative
                 //! the active window scheme is used for convenience
                 if (latteView.windowsTracker.currentScreen.existsWindowTouching
@@ -98,7 +98,7 @@ Loader{
             if (root.userShowPanelBackground && root.plasmaBackgroundForPopups && root.hasExpandedApplet /*for expanded popups when it is enabled*/
                     || root.plasmaStyleBusyForTouchingBusyVerticalView
                     || (root.themeColors === LatteContainment.Types.SmartThemeColors /*for Smart theming that Windows colors are not used and the user wants solidness at some cases*/
-                        && root.windowColors === LatteCore.Types.NoneWindowColors
+                        && root.windowColors === LatteContainment.Types.NoneWindowColors
                         && root.forceSolidPanel) ) {
                 /* plasma style*/
                 return theme;
