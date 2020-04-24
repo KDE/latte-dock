@@ -22,6 +22,7 @@
 
 // local
 #include "alternativeshelper.h"
+#include "apptypes.h"
 #include "lattedockadaptor.h"
 #include "screenpool.h"
 #include "indicator/factory.h"
@@ -1276,6 +1277,12 @@ void Corona::importFullConfiguration(const QString &file)
 
 inline void Corona::qmlRegisterTypes() const
 {
+    qmlRegisterUncreatableMetaObject(Latte::Settings::staticMetaObject,
+                                     "org.kde.latte.private.app",          // import statement
+                                     0, 1,                         // major and minor version of the import
+                                     "Settings",                 // name in QML
+                                     "Error: only enums of latte app settings");
+
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     qmlRegisterType<QScreen>();
     qmlRegisterType<Latte::View>();

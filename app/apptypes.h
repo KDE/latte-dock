@@ -24,6 +24,9 @@
 // Qt
 #include <QObject>
 
+//! These are LatteApp::Types that will be used ONLY from Latte App c++ implementation.
+//! Such types are irrelevant and not used from plasma applets.
+
 namespace Latte {
 namespace ImportExport {
 Q_NAMESPACE
@@ -38,5 +41,23 @@ Q_ENUM_NS(State);
 
 }
 }
+
+namespace Latte {
+namespace Settings {
+Q_NAMESPACE
+
+enum MouseSensitivity
+{
+    LowMouseSensitivity = 0,
+    MediumMouseSensitivity,
+    HighMouseSensitivity
+};
+Q_ENUM_NS(MouseSensitivity);
+
+}
+}
+
+//! These are LatteApp::Types that will be used from Latte App c++ implementation AND
+//! Latte containment qml. Such types are irrelevant and not used from plasma applets.
 
 #endif

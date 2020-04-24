@@ -32,7 +32,7 @@ const bool Preferences::METAPRESSFORAPPLAUNCHER;
 const bool Preferences::METAHOLDFORBADGES;
 const int Preferences::SCREENSDELAY;
 const int Preferences::OUTLINEWIDTH;
-const Latte::Types::MouseSensitivity Preferences::MOUSESENSITIVITY;
+const Settings::MouseSensitivity Preferences::MOUSESENSITIVITY;
 
 Preferences::Preferences()
 {

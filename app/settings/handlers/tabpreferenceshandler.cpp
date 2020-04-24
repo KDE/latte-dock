@@ -24,6 +24,7 @@
 #include "ui_settingsdialog.h"
 #include "../universalsettings.h"
 #include "../dialogs/settingsdialog.h"
+#include "../../apptypes.h"
 #include "../../lattecorona.h"
 #include "../../plasma/extended/theme.h"
 
@@ -49,16 +50,16 @@ void TabPreferences::initUi()
 {
     //! exclusive group
     m_mouseSensitivityButtons = new QButtonGroup(this);
-    m_mouseSensitivityButtons->addButton(m_ui->lowSensitivityBtn, Latte::Types::LowSensitivity);
-    m_mouseSensitivityButtons->addButton(m_ui->mediumSensitivityBtn, Latte::Types::MediumSensitivity);
-    m_mouseSensitivityButtons->addButton(m_ui->highSensitivityBtn, Latte::Types::HighSensitivity);
+    m_mouseSensitivityButtons->addButton(m_ui->lowSensitivityBtn, Latte::Settings::LowMouseSensitivity);
+    m_mouseSensitivityButtons->addButton(m_ui->mediumSensitivityBtn, Latte::Settings::MediumMouseSensitivity);
+    m_mouseSensitivityButtons->addButton(m_ui->highSensitivityBtn, Latte::Settings::HighMouseSensitivity);
     m_mouseSensitivityButtons->setExclusive(true);
 
     //! signals
     connect(m_mouseSensitivityButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
             [ = ](int id, bool checked) {
         if (checked) {
-            m_preferences.mouseSensitivity = static_cast<Latte::Types::MouseSensitivity>(id);
+            m_preferences.mouseSensitivity = static_cast<Latte::Settings::MouseSensitivity>(id);
             emit dataChanged();
         }
     });
@@ -112,7 +113,7 @@ void TabPreferences::initSettings()
     o_preferences.metaPressForAppLauncher = m_corona->universalSettings()->kwin_metaForwardedToLatte();
     o_preferences.metaHoldForBadges = m_corona->universalSettings()->metaPressAndHoldEnabled();
     o_preferences.borderlessMaximized = m_corona->universalSettings()->canDisableBorders();
-    o_preferences.mouseSensitivity = m_corona->universalSettings()->mouseSensitivity();
+    o_preferences.mouseSensitivity = m_corona->universalSettings()->sensitivity();
     o_preferences.screensDelay = m_corona->universalSettings()->screenTrackerInterval();
     o_preferences.outlineWidth = m_corona->themeExtended()->outlineWidth();
 
@@ -133,11 +134,11 @@ void TabPreferences::updateUi()
     m_ui->screenTrackerSpinBox->setValue(m_preferences.screensDelay);
     m_ui->outlineSpinBox->setValue(m_preferences.outlineWidth);
 
-    if (m_preferences.mouseSensitivity == Types::LowSensitivity) {
+    if (m_preferences.mouseSensitivity == Settings::LowMouseSensitivity) {
         m_ui->lowSensitivityBtn->setChecked(true);
-    } else if (m_preferences.mouseSensitivity == Types::MediumSensitivity) {
+    } else if (m_preferences.mouseSensitivity == Settings::MediumMouseSensitivity) {
         m_ui->mediumSensitivityBtn->setChecked(true);
-    } else if (m_preferences.mouseSensitivity == Types::HighSensitivity) {
+    } else if (m_preferences.mouseSensitivity == Settings::HighMouseSensitivity) {
         m_ui->highSensitivityBtn->setChecked(true);
     }
 
@@ -168,7 +169,7 @@ void TabPreferences::resetDefaults()
 
 void TabPreferences::save()
 {
-    m_corona->universalSettings()->setMouseSensitivity(m_preferences.mouseSensitivity);
+    m_corona->universalSettings()->setSensitivity(m_preferences.mouseSensitivity);
     m_corona->universalSettings()->setAutostart(m_preferences.autostart);
     m_corona->universalSettings()->setBadges3DStyle(m_preferences.badgeStyle3D);
     m_corona->universalSettings()->kwin_forwardMetaToLatte(m_preferences.metaPressForAppLauncher);

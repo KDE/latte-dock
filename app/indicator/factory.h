@@ -21,7 +21,7 @@
 #define INDICATORFACTORY_H
 
 // local
-#include "../types.h"
+#include "../apptypes.h"
 
 // Qt
 #include <QHash>

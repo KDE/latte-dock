@@ -58,7 +58,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::metaPressAndHoldEnabledChanged, this, &UniversalSettings::saveConfig);
-    connect(this, &UniversalSettings::mouseSensitivityChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::sensitivityChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::screenTrackerIntervalChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
@@ -426,19 +426,19 @@ void UniversalSettings::setLayoutsMemoryUsage(Types::LayoutsMemoryUsage layoutsM
     emit layoutsMemoryUsageChanged();
 }
 
-Types::MouseSensitivity UniversalSettings::mouseSensitivity() const
+Settings::MouseSensitivity UniversalSettings::sensitivity()
 {
-    return m_mouseSensitivity;
+    return m_sensitivity;
 }
 
-void UniversalSettings::setMouseSensitivity(Types::MouseSensitivity sensitivity)
+void UniversalSettings::setSensitivity(Settings::MouseSensitivity sense)
 {
-    if (m_mouseSensitivity == sensitivity) {
+    if (m_sensitivity == sense) {
         return;
     }
 
-    m_mouseSensitivity = sensitivity;
-    emit mouseSensitivityChanged();
+    m_sensitivity = sense;
+    emit sensitivityChanged();
 }
 
 float UniversalSettings::screenWidthScale(QString screenName) const
@@ -489,7 +489,7 @@ void UniversalSettings::loadConfig()
     m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
     m_memoryUsage = static_cast<Types::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Types::SingleLayout));
-    m_mouseSensitivity = static_cast<Types::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Types::HighSensitivity));
+    m_sensitivity = static_cast<Settings::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Settings::HighMouseSensitivity));
 
     loadScalesConfig();
 }
@@ -506,7 +506,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("screenTrackerInterval", m_screenTrackerInterval);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
-    m_universalGroup.writeEntry("mouseSensitivity", (int)m_mouseSensitivity);
+    m_universalGroup.writeEntry("mouseSensitivity", (int)m_sensitivity);
 
     m_universalGroup.sync();
 }

@@ -21,8 +21,8 @@
 #ifndef SETTINGSDATAPREFERENCES_H
 #define SETTINGSDATAPREFERENCES_H
 
-// Latte
-#include <Latte>
+// local
+#include "../../apptypes.h"
 
 namespace Latte {
 namespace Settings {
@@ -39,7 +39,7 @@ public:
     static const bool METAHOLDFORBADGES = true;
     static const int SCREENSDELAY = 2500;
     static const int OUTLINEWIDTH = 1;
-    static const Latte::Types::MouseSensitivity MOUSESENSITIVITY = Latte::Types::HighSensitivity;
+    static const Settings::MouseSensitivity MOUSESENSITIVITY = Settings::HighMouseSensitivity;
 
     Preferences();
     Preferences(Preferences &&o);
@@ -54,7 +54,7 @@ public:
     bool metaHoldForBadges{METAHOLDFORBADGES};
     int screensDelay{SCREENSDELAY};
     int outlineWidth{OUTLINEWIDTH};
-    Latte::Types::MouseSensitivity mouseSensitivity{MOUSESENSITIVITY};
+    Settings::MouseSensitivity mouseSensitivity{MOUSESENSITIVITY};
 
     bool inDefaultValues() const;
     void setToDefaults();

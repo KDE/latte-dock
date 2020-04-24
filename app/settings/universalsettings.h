@@ -22,6 +22,7 @@
 #define UNIVERSALSETTINGS_H
 
 // local
+#include "../apptypes.h"
 #include "../lattecorona.h"
 
 // Qt
@@ -64,7 +65,7 @@ class UniversalSettings : public QObject
 
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
 
-    Q_PROPERTY(Latte::Types::MouseSensitivity mouseSensitivity READ mouseSensitivity WRITE setMouseSensitivity NOTIFY mouseSensitivityChanged)
+    Q_PROPERTY(Latte::Settings::MouseSensitivity sensitivity READ sensitivity WRITE setSensitivity NOTIFY sensitivityChanged)
 
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
 
@@ -112,8 +113,8 @@ public:
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
 
-    Types::MouseSensitivity mouseSensitivity() const;
-    void setMouseSensitivity(Types::MouseSensitivity sensitivity);
+    Settings::MouseSensitivity sensitivity();
+    void setSensitivity(Settings::MouseSensitivity sense);
 
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property); //! is needed by screens()
@@ -140,7 +141,7 @@ signals:
     void launchersChanged();
     void layoutsMemoryUsageChanged();
     void metaPressAndHoldEnabledChanged();
-    void mouseSensitivityChanged();
+    void sensitivityChanged();
     void screensCountChanged();
     void screenScalesChanged();
     void screenTrackerIntervalChanged();
@@ -187,7 +188,7 @@ private:
     QStringList m_launchers;
 
     Types::LayoutsMemoryUsage m_memoryUsage;
-    Types::MouseSensitivity m_mouseSensitivity{Types::HighSensitivity};
+    Settings::MouseSensitivity m_sensitivity{Settings::HighMouseSensitivity};
 
     //! ScreenName, <width_scale, height_scale>
     QHash<QString, ScreenScales> m_screenScales;

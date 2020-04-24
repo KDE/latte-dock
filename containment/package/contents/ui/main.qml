@@ -30,7 +30,9 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
+import org.kde.latte.private.app 0.1 as LatteApp
 import org.kde.latte.private.containment 0.1 as LatteContainment
+
 
 import "abilities" as Ability
 import "applet" as Applet
@@ -503,11 +505,11 @@ Item {
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
     property int animationStep: {
-        if (!universalSettings || universalSettings.mouseSensitivity === LatteCore.Types.HighSensitivity) {
+        if (!universalSettings || universalSettings.sensitivity === LatteApp.Settings.HighMouseSensitivity) {
             return 1;
-        } else if (universalSettings.mouseSensitivity === LatteCore.Types.MediumSensitivity) {
+        } else if (universalSettings.sensitivity === LatteApp.Settings.MediumMouseSensitivity) {
             return Math.max(3, container.iconSize / 18);
-        } else if (universalSettings.mouseSensitivity === LatteCore.Types.LowSensitivity) {
+        } else if (universalSettings.sensitivity === LatteApp.Settings.LowMouseSensitivity) {
             return Math.max(5, container.iconSize / 10);
         }
     }

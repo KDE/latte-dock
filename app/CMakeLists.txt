@@ -1,9 +1,9 @@
 set(lattedock-app_SRCS
     alternativeshelper.cpp
+    apptypes.cpp
     infoview.cpp
     lattecorona.cpp
     screenpool.cpp
-    types.cpp
     main.cpp
 )
 
