@@ -160,13 +160,13 @@ Item {
                                          && !latteView.windowsTracker.currentScreen.existsWindowTouching
                                          && !(windowColors === LatteCore.Types.ActiveWindowColors && selectedWindowsTracker.existsWindowActive)
 
-    property bool forcePanelForBusyBackground: userShowPanelBackground && (root.themeColors === LatteCore.Types.SmartThemeColors)
+    property bool forcePanelForBusyBackground: userShowPanelBackground && (root.themeColors === LatteContainment.Types.SmartThemeColors)
                                                && ( (root.forceTransparentPanel && colorizerManager.backgroundIsBusy)
                                                    || normalBusyForTouchingBusyVerticalView )
 
     property bool normalBusyForTouchingBusyVerticalView: (latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers isBusy transparency*/
                                                           && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
-                                                          && root.themeColors === LatteCore.Types.SmartThemeColors
+                                                          && root.themeColors === LatteContainment.Types.SmartThemeColors
                                                           && plasmoid.configuration.backgroundOnlyOnMaximized
                                                           /*&& !plasmoid.configuration.solidBackgroundForMaximized
                                                           && !plasmaBackgroundForPopups*/)
@@ -174,7 +174,7 @@ Item {
     property bool solidBusyForTouchingBusyVerticalView: false //DISABLED, until to check if the normalBusyForTouchingBusyVerticalView is enough to catch and handle the case
     /*(latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
     /* && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
-                                                         && root.themeColors === LatteCore.Types.SmartThemeColors
+                                                         && root.themeColors === LatteContainment.Types.SmartThemeColors
                                                          && plasmoid.configuration.backgroundOnlyOnMaximized
                                                          && plasmoid.configuration.solidBackgroundForMaximized
                                                          && !plasmaBackgroundForPopups)*/
@@ -182,7 +182,7 @@ Item {
     property bool plasmaStyleBusyForTouchingBusyVerticalView: false //DISABLED, until to check if the normalBusyForTouchingBusyVerticalView is enough to catch and handle the case
     //(latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers solidness*/
     /* && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
-                                                               && root.themeColors === LatteCore.Types.SmartThemeColors
+                                                               && root.themeColors === LatteContainment.Types.SmartThemeColors
                                                                && plasmoid.configuration.backgroundOnlyOnMaximized
                                                                && plasmaBackgroundForPopups)*/
 
@@ -203,7 +203,7 @@ Item {
     property int themeColors: plasmoid.configuration.themeColors
     property int windowColors: plasmoid.configuration.windowColors
 
-    property bool colorizerEnabled: themeColors !== LatteCore.Types.PlasmaThemeColors || windowColors !== LatteCore.Types.NoneWindowColors
+    property bool colorizerEnabled: themeColors !== LatteContainment.Types.PlasmaThemeColors || windowColors !== LatteCore.Types.NoneWindowColors
 
     property bool plasmaBackgroundForPopups: plasmoid.configuration.plasmaBackgroundForPopups
 

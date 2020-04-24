@@ -54,6 +54,14 @@ public:
     };
     Q_ENUM(ShadowColorGroup);
 
+    enum ThemeColorsGroup
+    {
+        PlasmaThemeColors = 0,
+        ReverseThemeColors,
+        SmartThemeColors
+    };
+    Q_ENUM(ThemeColorsGroup);
+
     enum ActiveWindowFilterGroup
     {
         ActiveInCurrentScreen = 0,

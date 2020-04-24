@@ -31,6 +31,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
+import org.kde.latte.private.containment 0.1 as LatteContainment
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
@@ -754,7 +755,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: themeColorsGroup
                     tooltip: i18n("Plasma theme color palette is going to be used")
 
-                    readonly property int colors: LatteCore.Types.PlasmaThemeColors
+                    readonly property int colors: LatteContainment.Types.PlasmaThemeColors
                 }
 
                 PlasmaComponents.Button {
@@ -766,7 +767,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: themeColorsGroup
                     tooltip: i18n("Reverse color palette from plasma theme is going to be used")
 
-                    readonly property int colors: LatteCore.Types.ReverseThemeColors
+                    readonly property int colors: LatteContainment.Types.ReverseThemeColors
                 }
 
                 PlasmaComponents.Button {
@@ -778,7 +779,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: themeColorsGroup
                     tooltip: i18n("Smart color palette is going to provide best contrast after taking into account the environment such as the underlying background")
 
-                    readonly property int colors: LatteCore.Types.SmartThemeColors
+                    readonly property int colors: LatteContainment.Types.SmartThemeColors
                 }
 
                 LatteComponents.SubHeader {
