@@ -26,6 +26,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.core 0.2 as LatteCore
+import org.kde.latte.private.containment 0.1 as LatteContainment
 
 import "../../code/HeuristicTools.js" as HeuristicTools
 
@@ -183,7 +184,7 @@ Item{
     onYChanged: root.updateEffectsArea();
 
     EnvironmentActions {
-        active: root.scrollAction !== LatteCore.Types.ScrollNone || root.dragActiveWindowEnabled || root.closeActiveWindowEnabled
+        active: root.scrollAction !== LatteContainment.Types.ScrollNone || root.dragActiveWindowEnabled || root.closeActiveWindowEnabled
         alignment: _mainLayout.alignment
     }
 

@@ -660,20 +660,20 @@ PlasmaComponents.Page {
 
                             onCurrentIndexChanged: {
                                 switch(currentIndex) {
-                                case LatteCore.Types.ScrollNone:
-                                    plasmoid.configuration.scrollAction = LatteCore.Types.ScrollNone;
+                                case LatteContainment.Types.ScrollNone:
+                                    plasmoid.configuration.scrollAction = LatteContainment.Types.ScrollNone;
                                     break;
-                                case LatteCore.Types.ScrollDesktops:
-                                    plasmoid.configuration.scrollAction = LatteCore.Types.ScrollDesktops;
+                                case LatteContainment.Types.ScrollDesktops:
+                                    plasmoid.configuration.scrollAction = LatteContainment.Types.ScrollDesktops;
                                     break;
-                                case LatteCore.Types.ScrollActivities:
-                                    plasmoid.configuration.scrollAction = LatteCore.Types.ScrollActivities;
+                                case LatteContainment.Types.ScrollActivities:
+                                    plasmoid.configuration.scrollAction = LatteContainment.Types.ScrollActivities;
                                     break;
-                                case LatteCore.Types.ScrollTasks:
-                                    plasmoid.configuration.scrollAction = LatteCore.Types.ScrollTasks;
+                                case LatteContainment.Types.ScrollTasks:
+                                    plasmoid.configuration.scrollAction = LatteContainment.Types.ScrollTasks;
                                     break;
-                                case LatteCore.Types.ScrollToggleMinimized:
-                                    plasmoid.configuration.scrollAction = LatteCore.Types.ScrollToggleMinimized;
+                                case LatteContainment.Types.ScrollToggleMinimized:
+                                    plasmoid.configuration.scrollAction = LatteContainment.Types.ScrollToggleMinimized;
                                     break;
                                 }
                             }

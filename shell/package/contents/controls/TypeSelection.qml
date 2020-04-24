@@ -29,6 +29,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
+import org.kde.latte.private.containment 0.1 as LatteContainment
 
 Grid {
     id: typeRow
@@ -82,7 +83,7 @@ Grid {
 
                 //! Empty Areas
                 plasmoid.configuration.dragActiveWindowEnabled = false;
-                plasmoid.configuration.scrollAction = LatteCore.Types.ScrollNone;
+                plasmoid.configuration.scrollAction = LatteContainment.Types.ScrollNone;
 
                 //! Animations
                 plasmoid.configuration.animationLauncherBouncing = true;

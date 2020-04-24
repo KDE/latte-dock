@@ -36,6 +36,16 @@ public:
     Types() = delete;
     ~Types() {}
 
+    enum ScrollAction
+    {
+        ScrollNone = 0,
+        ScrollDesktops,
+        ScrollActivities,
+        ScrollTasks,
+        ScrollToggleMinimized
+    };
+    Q_ENUM(ScrollAction);
+
     enum ActiveWindowFilterGroup
     {
         ActiveInCurrentScreen = 0,

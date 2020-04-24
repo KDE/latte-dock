@@ -24,6 +24,8 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 
+import org.kde.latte.private.containment 0.1 as LatteContainment
+
 import "loaders" as Loaders
 import "indicator" as Indicator
 import "../applet/indicator" as AppletIndicator
@@ -124,7 +126,7 @@ Loader {
                 return;
             }
 
-            if (root.scrollAction === LatteCore.Types.ScrollNone) {
+            if (root.scrollAction === LatteContainment.Types.ScrollNone) {
                 root.emptyAreasWheel(wheel);
                 return;
             }
@@ -146,11 +148,11 @@ Loader {
 
             if (angle>10) {
                 //! upwards
-                if (root.scrollAction === LatteCore.Types.ScrollDesktops) {
+                if (root.scrollAction === LatteContainment.Types.ScrollDesktops) {
                     latteView.windowsTracker.switchToPreviousVirtualDesktop();
-                } else if (root.scrollAction === LatteCore.Types.ScrollActivities) {
+                } else if (root.scrollAction === LatteContainment.Types.ScrollActivities) {
                     latteView.windowsTracker.switchToPreviousActivity();
-                } else if (root.scrollAction === LatteCore.Types.ScrollToggleMinimized) {
+                } else if (root.scrollAction === LatteContainment.Types.ScrollToggleMinimized) {
                     if (!ctrlPressed) {
                         tasksLoader.item.activateNextPrevTask(true);
                     } else if (!selectedWindowsTracker.lastActiveWindow.isMaximized){
@@ -161,11 +163,11 @@ Loader {
                 }
             } else if (angle<-10) {
                 //! downwards
-                if (root.scrollAction === LatteCore.Types.ScrollDesktops) {
+                if (root.scrollAction === LatteContainment.Types.ScrollDesktops) {
                     latteView.windowsTracker.switchToNextVirtualDesktop();
-                } else if (root.scrollAction === LatteCore.Types.ScrollActivities) {
+                } else if (root.scrollAction === LatteContainment.Types.ScrollActivities) {
                     latteView.windowsTracker.switchToNextActivity();
-                } else if (root.scrollAction === LatteCore.Types.ScrollToggleMinimized) {
+                } else if (root.scrollAction === LatteContainment.Types.ScrollToggleMinimized) {
                     if (!ctrlPressed) {
                         if (selectedWindowsTracker.lastActiveWindow.isValid
                                 && !selectedWindowsTracker.lastActiveWindow.isMinimized
