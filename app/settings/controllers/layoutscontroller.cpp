@@ -496,11 +496,11 @@ void Layouts::loadLayouts()
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
         if (brokenLayouts.count() == 1) {
-            m_handler->showInlineMessage(i18nc("settings:broken layout", "Layout <b>%0</b> <i>is broken</i>! Please <b>remove</b> to improve stability...").arg(brokenLayouts.join(",")),
+            m_handler->showInlineMessage(i18nc("settings:broken layout", "Layout <b>%0</b> <i>is broken</i>! Please <b>remove</b> it to improve stability...").arg(brokenLayouts.join(", ")),
                                          KMessageWidget::Error,
                                          true);
         } else {
-            m_handler->showInlineMessage(i18nc("settings:broken layouts", "Layouts <b>%0</b> <i>are broken</i>! Please <b>remove</b> to improve stability...").arg(brokenLayouts.join(",")),
+            m_handler->showInlineMessage(i18nc("settings:broken layouts", "Layouts <b>%0</b> <i>are broken</i>! Please <b>remove</b> them to improve stability...").arg(brokenLayouts.join(", ")),
                                          KMessageWidget::Error,
                                          true);
         }
