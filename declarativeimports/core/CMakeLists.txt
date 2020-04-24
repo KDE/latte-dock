@@ -7,6 +7,7 @@ set(lattecoreplugin_SRCS
     commontools.cpp
     iconitem.cpp
     quickwindowsystem.cpp
+    types.h
 )
 
 add_subdirectory(plasma/extended)
@@ -21,7 +22,6 @@ target_link_libraries(lattecoreplugin
     KF5::PlasmaQuick
     KF5::QuickAddons
     KF5::IconThemes
-    Latte
 )
 
 if(HAVE_X11)

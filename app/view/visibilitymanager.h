@@ -24,6 +24,7 @@
 #include <array>
 
 // local
+#include <coretypes.h>
 #include "../plasma/quick/containmentview.h"
 
 // Qt
@@ -33,8 +34,6 @@
 // Plasma
 #include <Plasma/Containment>
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 class Corona;

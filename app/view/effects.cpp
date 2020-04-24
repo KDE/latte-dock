@@ -20,6 +20,7 @@
 #include "effects.h"
 
 // local
+#include <coretypes.h>
 #include "panelshadows_p.h"
 #include "view.h"
 #include "settings/primaryconfigview.h"
@@ -31,8 +32,6 @@
 #include <KWindowEffects>
 #include <KWindowSystem>
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 namespace ViewPart {

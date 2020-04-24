@@ -22,6 +22,7 @@
 #define PRIMARYCONFIGVIEW_H
 
 // local
+#include <coretypes.h>
 #include "../../plasma/quick/configview.h"
 #include "../../wm/windowinfowrap.h"
 
@@ -34,9 +35,6 @@
 // Plasma
 #include <plasma/package.h>
 #include <Plasma/FrameSvg>
-
-// Latte
-#include <Latte>
 
 namespace Plasma {
 class Applet;

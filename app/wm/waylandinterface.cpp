@@ -21,6 +21,7 @@
 #include "waylandinterface.h"
 
 // local
+#include <coretypes.h>
 #include "view/positioner.h"
 #include "view/view.h"
 #include "view/helpers/screenedgeghostwindow.h"
@@ -32,9 +33,6 @@
 #include <QApplication>
 #include <QtX11Extras/QX11Info>
 #include <QRasterWindow>
-
-// Latte
-#include <Latte>
 
 // KDE
 #include <KWindowSystem>

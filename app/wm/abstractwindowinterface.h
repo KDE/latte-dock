@@ -22,6 +22,7 @@
 #define ABSTRACTWINDOWINTERFACE_H
 
 // local
+#include <coretypes.h>
 #include "schemecolors.h"
 #include "tasktools.h"
 #include "windowinfowrap.h"
@@ -49,8 +50,6 @@
 // Plasma
 #include <Plasma>
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 class Corona;

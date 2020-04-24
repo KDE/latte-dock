@@ -22,6 +22,7 @@
 #define SETTINGSLAYOUTSCONTROLLER_H
 
 // local
+#include <coretypes.h>
 #include "../data/layoutdata.h"
 #include "../data/layoutstable.h"
 #include "../views/layoutsheaderview.h"
@@ -34,8 +35,6 @@
 #include <QSortFilterProxyModel>
 #include <QTableView>
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 class Corona;

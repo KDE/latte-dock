@@ -21,6 +21,7 @@
 #include "tabpreferenceshandler.h"
 
 //! local
+#include <coretypes.h>
 #include "ui_settingsdialog.h"
 #include "../universalsettings.h"
 #include "../dialogs/settingsdialog.h"
@@ -28,8 +29,6 @@
 #include "../../lattecorona.h"
 #include "../../plasma/extended/theme.h"
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 namespace Settings {

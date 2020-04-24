@@ -21,6 +21,7 @@
 #include "launcherssignals.h"
 
 // local
+#include <coretypes.h>
 #include "../lattecorona.h"
 #include "../layout/centrallayout.h"
 #include "../layouts/manager.h"
@@ -33,8 +34,6 @@
 #include <Plasma/Applet>
 #include <Plasma/Containment>
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 namespace Layouts {

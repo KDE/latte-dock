@@ -22,9 +22,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS DBus Gui
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Activities Archive CoreAddons GuiAddons Crash DBusAddons Declarative GlobalAccel I18n 
     IconThemes KIO NewStuff Notifications Plasma PlasmaQuick Wayland WindowSystem XmlGui)
-
-find_package(Latte REQUIRED REQUIRED NO_MODULE)
-    
+   
 find_package(X11 REQUIRED)
 set_package_properties(X11 PROPERTIES DESCRIPTION "X11 libraries"
     URL "http://www.x.org"
@@ -84,6 +82,13 @@ string(REPLACE "-Wformat-security" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 
 message(STATUS "COMPILER FLAGS : ${CMAKE_CXX_FLAGS}")
 
+# Share Same Core Types between declarativeimports and app
+set(CORETYPESHEADER "LIBCORETYPES_H")
+configure_file(declarativeimports/coretypes.h.in declarativeimports/core/types.h)
+set(CORETYPESHEADER "APPCORETYPES_H")
+configure_file(declarativeimports/coretypes.h.in app/coretypes.h)
+
+# subdirectories
 add_subdirectory(declarativeimports)
 add_subdirectory(indicators)
 add_subdirectory(app)

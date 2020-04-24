@@ -22,6 +22,7 @@
 #define UNIVERSALSETTINGS_H
 
 // local
+#include <coretypes.h>
 #include "../apptypes.h"
 #include "../lattecorona.h"
 
@@ -37,9 +38,6 @@
 // KDE
 #include <KConfigGroup>
 #include <KSharedConfig>
-
-// Latte
-#include <Latte>
 
 namespace Latte {
 namespace Layouts {

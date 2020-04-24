@@ -26,11 +26,11 @@
 #include "iconitem.h"
 #include "quickwindowsystem.h"
 
+#include <types.h>
+
 // Qt
 #include <QtQml>
 
-// Latte
-#include <Latte>
 
 void LatteCorePlugin::registerTypes(const char *uri)
 {

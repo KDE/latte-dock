@@ -21,6 +21,7 @@
 #include "centrallayout.h"
 
 // local
+#include <coretypes.h>
 #include "sharedlayout.h"
 #include "../apptypes.h"
 #include "../lattecorona.h"
@@ -35,8 +36,6 @@
 #include <KConfigGroup>
 #include <KActivities/Consumer>
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 

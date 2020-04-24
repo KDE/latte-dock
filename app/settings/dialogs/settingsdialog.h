@@ -23,6 +23,7 @@
 #define SETTINGSDIALOG_H
 
 // local
+#include <coretypes.h>
 #include "genericdialog.h"
 #include "../controllers/layoutscontroller.h"
 #include "../handlers/tablayoutshandler.h"
@@ -39,9 +40,6 @@
 
 // KDE
 #include <KHelpMenu>
-
-// Latte
-#include <Latte>
 
 namespace Ui {
 class SettingsDialog;

@@ -21,6 +21,7 @@
 #define SECONDARYCONFIGVIEW_H
 
 // local
+#include <coretypes.h>
 #include "../../wm/windowinfowrap.h"
 
 //Qt
@@ -33,8 +34,6 @@
 #include <plasma/package.h>
 #include <Plasma/FrameSvg>
 
-// Latte
-#include <Latte>
 
 namespace Plasma {
 class Applet;

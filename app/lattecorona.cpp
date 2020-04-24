@@ -21,6 +21,7 @@
 #include "lattecorona.h"
 
 // local
+#include <coretypes.h>
 #include "alternativeshelper.h"
 #include "apptypes.h"
 #include "lattedockadaptor.h"
@@ -1276,7 +1277,7 @@ void Corona::importFullConfiguration(const QString &file)
 }
 
 inline void Corona::qmlRegisterTypes() const
-{
+{   
     qmlRegisterUncreatableMetaObject(Latte::Settings::staticMetaObject,
                                      "org.kde.latte.private.app",          // import statement
                                      0, 1,                                 // major and minor version of the import
@@ -1291,6 +1292,7 @@ inline void Corona::qmlRegisterTypes() const
     qmlRegisterType<Latte::ViewPart::TrackerPart::AllScreensTracker>();
     qmlRegisterType<Latte::WindowSystem::SchemeColors>();
     qmlRegisterType<Latte::WindowSystem::Tracker::LastActiveWindow>();
+    qmlRegisterType<Latte::Types>();
 #else
     qmlRegisterAnonymousType<QScreen>("latte-dock", 1);
     qmlRegisterAnonymousType<Latte::View>("latte-dock", 1);
@@ -1299,6 +1301,7 @@ inline void Corona::qmlRegisterTypes() const
     qmlRegisterAnonymousType<Latte::ViewPart::TrackerPart::AllScreensTracker>("latte-dock", 1);
     qmlRegisterAnonymousType<Latte::WindowSystem::SchemeColors>("latte-dock", 1);
     qmlRegisterAnonymousType<Latte::WindowSystem::Tracker::LastActiveWindow>("latte-dock", 1);
+    qmlRegisterAnonymousType<Latte::Types>("latte-dock", 1);
 #endif
 }
 

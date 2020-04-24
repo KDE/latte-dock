@@ -21,6 +21,7 @@
 #include "xwindowinterface.h"
 
 // local
+#include <coretypes.h>
 #include "tasktools.h"
 #include "view/view.h"
 #include "view/helpers/screenedgeghostwindow.h"
@@ -35,9 +36,6 @@
 #include <KWindowSystem>
 #include <KWindowInfo>
 #include <KIconThemes/KIconLoader>
-
-// Latte
-#include <Latte>
 
 // X11
 #include <NETWM>

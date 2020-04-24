@@ -21,6 +21,7 @@
 #include "importer.h"
 
 // local
+#include <coretypes.h>
 #include "manager.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
@@ -39,8 +40,6 @@
 #include <KLocalizedString>
 #include <KNotification>
 
-// Latte
-#include <Latte>
 
 enum SessionType
 {

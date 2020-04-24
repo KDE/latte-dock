@@ -22,6 +22,7 @@
 #define LATTECORONA_H
 
 // local
+#include <coretypes.h>
 #include "plasma/quick/configview.h"
 #include "layout/storage.h"
 #include "view/panelshadows_p.h"
@@ -35,9 +36,6 @@
 
 // KDE
 #include <KAboutApplicationDialog>
-
-// Latte
-#include <Latte>
 
 namespace KDeclarative {
 class QmlObjectSharedEngine;

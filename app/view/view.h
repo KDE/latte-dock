@@ -22,6 +22,7 @@
 #define VIEW_H
 
 // local
+#include <coretypes.h>
 #include "containmentinterface.h"
 #include "effects.h"
 #include "positioner.h"
@@ -46,8 +47,6 @@
 #include <QPointer>
 #include <QTimer>
 
-// Latte
-#include <Latte>
 
 namespace Plasma {
 class Types;

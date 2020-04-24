@@ -21,6 +21,7 @@
 #define WINDOWSYSTEMWINDOWSTRACKER_H
 
 // local
+#include <coretypes.h>
 #include "../windowinfowrap.h"
 
 // Qt
@@ -30,8 +31,6 @@
 #include <QMap>
 #include <QTimer>
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 class View;

@@ -20,6 +20,7 @@
 #include "indicator.h"
 
 // local
+#include <coretypes.h>
 #include "indicatorinfo.h"
 #include "../view.h"
 #include "../../lattecorona.h"
@@ -34,8 +35,6 @@
 #include <KDeclarative/ConfigPropertyMap>
 #include <KDeclarative/QmlObjectSharedEngine>
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 namespace ViewPart {

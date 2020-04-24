@@ -21,6 +21,7 @@
 #define GENERICLAYOUT_H
 
 // local
+#include <coretypes.h>
 #include "abstractlayout.h"
 
 // Qt
@@ -31,9 +32,6 @@
 
 // Plasma
 #include <Plasma>
-
-// Latte
-#include <Latte>
 
 namespace Plasma {
 class Applet;

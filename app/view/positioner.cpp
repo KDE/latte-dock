@@ -20,6 +20,7 @@
 #include "positioner.h"
 
 // local
+#include <coretypes.h>
 #include "effects.h"
 #include "view.h"
 #include "visibilitymanager.h"
@@ -35,8 +36,6 @@
 #include <KWayland/Client/surface.h>
 #include <KWindowSystem>
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 namespace ViewPart {

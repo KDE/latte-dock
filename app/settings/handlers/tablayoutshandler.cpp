@@ -21,6 +21,7 @@
 #include "tablayoutshandler.h"
 
 //! local
+#include <coretypes.h>
 #include "ui_settingsdialog.h"
 #include "../universalsettings.h"
 #include "../dialogs/detailsdialog.h"
@@ -45,8 +46,6 @@
 #include <KIO/OpenFileManagerWindowJob>
 #include <KNewStuff3/KNS3/DownloadDialog>
 
-// Latte
-#include <Latte>
 
 namespace Latte {
 namespace Settings {
