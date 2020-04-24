@@ -119,14 +119,4 @@ void BackgroundTracker::update()
     emit isBusyChanged();
 }
 
-void BackgroundTracker::setBackgroundFromBroadcast(QString activity, QString screen, QString filename)
-{
-    PlasmaExtended::BackgroundCache::self()->setBackgroundFromBroadcast(activity, screen, filename);
-}
-
-void BackgroundTracker::setBroadcastedBackgroundsEnabled(QString activity, QString screen, bool enabled)
-{
-    PlasmaExtended::BackgroundCache::self()->setBroadcastedBackgroundsEnabled(activity, screen, enabled);
-}
-
 }

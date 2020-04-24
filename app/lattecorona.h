@@ -220,8 +220,6 @@ private:
 
     QList<KDeclarative::QmlObjectSharedEngine *> m_alternativesObjects;
 
-    KDeclarative::QmlObjectSharedEngine *m_backgroundTracer;
-
     QTimer m_viewsScreenSyncTimer;
 
     KActivities::Consumer *m_activitiesConsumer;

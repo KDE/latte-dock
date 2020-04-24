@@ -36,6 +36,8 @@
 #include "layouts/launcherssignals.h"
 #include "shortcuts/globalshortcuts.h"
 #include "package/lattepackage.h"
+#include "plasma/extended/backgroundcache.h"
+#include "plasma/extended/backgroundtracker.h"
 #include "plasma/extended/screengeometries.h"
 #include "plasma/extended/screenpool.h"
 #include "plasma/extended/theme.h"
@@ -148,12 +150,6 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
         m_viewsScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
     });
 
-    //! initialize the background tracer for broadcasted backgrounds
-    m_backgroundTracer = new KDeclarative::QmlObjectSharedEngine(this);
-    m_backgroundTracer->setInitializationDelayed(true);
-    m_backgroundTracer->setSource(kPackage().filePath("backgroundTracer"));
-    m_backgroundTracer->completeInitialization();
-
     //! Dbus adaptor initialization
     new LatteDockAdaptor(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
@@ -198,7 +194,6 @@ Corona::~Corona()
     m_screenPool->deleteLater();
     m_universalSettings->deleteLater();
     m_plasmaScreenPool->deleteLater();
-    m_backgroundTracer->deleteLater();
     m_themeExtended->deleteLater();
     m_indicatorFactory->deleteLater();
 
@@ -1245,20 +1240,12 @@ void Corona::setBackgroundFromBroadcast(QString activity, QString screenName, QS
         filename = filename.remove(0,7);
     }
 
-    QMetaObject::invokeMethod(m_backgroundTracer->rootObject(),
-                              "setBackgroundFromBroadcast",
-                              Q_ARG(QVariant, activity),
-                              Q_ARG(QVariant, screenName),
-                              Q_ARG(QVariant, filename));
+    PlasmaExtended::BackgroundCache::self()->setBackgroundFromBroadcast(activity, screenName, filename);
 }
 
 void Corona::setBroadcastedBackgroundsEnabled(QString activity, QString screenName, bool enabled)
 {
-    QMetaObject::invokeMethod(m_backgroundTracer->rootObject(),
-                              "setBroadcastedBackgroundsEnabled",
-                              Q_ARG(QVariant, activity),
-                              Q_ARG(QVariant, screenName),
-                              Q_ARG(QVariant, enabled));
+    PlasmaExtended::BackgroundCache::self()->setBroadcastedBackgroundsEnabled(activity, screenName, enabled);
 }
 
 void Corona::toggleHiddenState(QString layoutName, QString screenName, int screenEdge)
@@ -1283,6 +1270,9 @@ inline void Corona::qmlRegisterTypes() const
                                      0, 1,                                 // major and minor version of the import
                                      "Settings",                           // name in QML
                                      "Error: only enums of latte app settings");
+
+    qmlRegisterType<Latte::BackgroundTracker>("org.kde.latte.private.app", 0, 1, "BackgroundTracker");
+
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     qmlRegisterType<QScreen>();

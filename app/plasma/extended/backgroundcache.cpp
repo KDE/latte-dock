@@ -20,7 +20,7 @@
 #include "backgroundcache.h"
 
 // local
-#include "../../commontools.h"
+#include "../../tools/commontools.h"
 
 // Qt
 #include <QDebug>

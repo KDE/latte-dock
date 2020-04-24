@@ -2,15 +2,11 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-latte-lib.h.cmake ${CMAKE_CURR
 
 set(lattecoreplugin_SRCS
     lattecoreplugin.cpp
-    backgroundtracker.cpp
     environment.cpp
-    commontools.cpp
     iconitem.cpp
     quickwindowsystem.cpp
     types.h
 )
-
-add_subdirectory(plasma/extended)
 
 add_library(lattecoreplugin SHARED ${lattecoreplugin_SRCS})
 
