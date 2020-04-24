@@ -333,10 +333,10 @@ Item {
     property int appShadowSizeOriginal: enableShadows ? (0.5*container.maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
 
     property string appChosenShadowColor: {
-        if (plasmoid.configuration.shadowColorType === LatteCore.Types.ThemeColorShadow) {
+        if (plasmoid.configuration.shadowColorType === LatteContainment.Types.ThemeColorShadow) {
             var strC = String(theme.textColor);
             return strC.indexOf("#") === 0 ? strC.substr(1) : strC;
-        } else if (plasmoid.configuration.shadowColorType === LatteCore.Types.UserColorShadow) {
+        } else if (plasmoid.configuration.shadowColorType === LatteContainment.Types.UserColorShadow) {
             return plasmoid.configuration.shadowColor;
         }
 

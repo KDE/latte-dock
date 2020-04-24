@@ -30,6 +30,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
+import org.kde.latte.private.containment 0.1 as LatteContainment
 
 import "../../controls" as LatteExtraControls
 
@@ -193,11 +194,11 @@ PlasmaComponents.Page {
                             }
 
                             if (current === defaultShadowBtn) {
-                                plasmoid.configuration.shadowColorType = LatteCore.Types.DefaultColorShadow;
+                                plasmoid.configuration.shadowColorType = LatteContainment.Types.DefaultColorShadow;
                             } else if (current === themeShadowBtn) {
-                                plasmoid.configuration.shadowColorType = LatteCore.Types.ThemeColorShadow;
+                                plasmoid.configuration.shadowColorType = LatteContainment.Types.ThemeColorShadow;
                             } else if (current === userShadowBtn) {
-                                plasmoid.configuration.shadowColorType = LatteCore.Types.UserColorShadow;
+                                plasmoid.configuration.shadowColorType = LatteContainment.Types.UserColorShadow;
                             }
                         }
 
@@ -209,7 +210,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
 
                         text: i18nc("default shadow", "Default")
-                        checked: plasmoid.configuration.shadowColorType === LatteCore.Types.DefaultColorShadow
+                        checked: plasmoid.configuration.shadowColorType === LatteContainment.Types.DefaultColorShadow
                         checkable: true
                         exclusiveGroup: shadowColorGroup
                         tooltip: i18n("Default shadow for applets")
@@ -220,7 +221,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
 
                         text: i18nc("theme shadow", "Theme")
-                        checked: plasmoid.configuration.shadowColorType === LatteCore.Types.ThemeColorShadow
+                        checked: plasmoid.configuration.shadowColorType === LatteContainment.Types.ThemeColorShadow
                         checkable: true
                         exclusiveGroup: shadowColorGroup
                         tooltip: i18n("Shadow from theme color palette")
@@ -234,7 +235,7 @@ PlasmaComponents.Page {
                         text: " "
 
                         checkable: true
-                        checked: plasmoid.configuration.shadowColorType === LatteCore.Types.UserColorShadow
+                        checked: plasmoid.configuration.shadowColorType === LatteContainment.Types.UserColorShadow
                         tooltip: i18n("Use set shadow color")
                         exclusiveGroup: shadowColorGroup
 

@@ -46,6 +46,14 @@ public:
     };
     Q_ENUM(ScrollAction);
 
+    enum ShadowColorGroup
+    {
+        DefaultColorShadow = 0,
+        ThemeColorShadow,
+        UserColorShadow
+    };
+    Q_ENUM(ShadowColorGroup);
+
     enum ActiveWindowFilterGroup
     {
         ActiveInCurrentScreen = 0,
