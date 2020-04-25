@@ -44,8 +44,8 @@ Ability {
     //C7 property int durationTime -> speedFactor.current
     //C6 property int animationTime -> duration.proposed
 
-    //root.shortDuration -> animations.shortDuration
-    //root.longDuration -> animations.longDuration
+    //C20 root.shortDuration -> animations.shortDuration
+    //C21 root.longDuration -> animations.longDuration
 
     //parabolic
     //C3 property int animationStep -> hoverPixelSensitivity

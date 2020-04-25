@@ -34,7 +34,8 @@ Ability {
                                      && latteView && latteView.visibility.mode !== LatteCore.Types.SideBar
     property int iconSize: -1 //it is not set, this is the default
 
-    property bool automaticSizeAnimation: false
+    readonly property bool inCalculatedIconSize: ((container.iconSize === sizer.iconSize) || (container.iconSize === container.maxIconSize))
+    readonly property bool inAutoSizeAnimation: !inCalculatedIconSize
 
     readonly property int automaticStep: 8
     readonly property int historyMaxSize: 10
@@ -50,10 +51,13 @@ Ability {
     property Item layouts
     property Item visibility
 
-    onIconSizeChanged: {
-        if (!automaticSizeAnimation) {
-            automaticSizeAnimation = true;
+
+
+    onInAutoSizeAnimationChanged: {
+        if (inAutoSizeAnimation) {
             animations.needBothAxis.addEvent(sizer);
+        } else {
+            animations.needBothAxis.removeEvent(sizer);
         }
     }
 
@@ -77,13 +81,6 @@ Ability {
         onProportionIconSizeChanged: {
             if (container.proportionIconSize!==-1) {
                 sizer.updateIconSize();
-            }
-        }
-
-        onIconSizeChanged: {
-            if (((container.iconSize === sizer.iconSize) || (container.iconSize === container.maxIconSize)) && sizer.automaticSizeAnimation){
-                animations.needBothAxis.removeEvent(sizer);
-                sizer.automaticSizeAnimation=false;
             }
         }
     }
