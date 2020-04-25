@@ -19,9 +19,9 @@
 
 import QtQuick 2.0
 
-import org.kde.latte.containers.abilities 0.1 as ContainerAbility
+import org.kde.latte.abilities.components 0.1 as AbilityComponent
 
-ContainerAbility.AppletRequirements{
+AbilityComponent.AppletRequirements{
     id: requirements
     readonly property bool isActive: bridge !== null
 

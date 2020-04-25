@@ -23,7 +23,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.app 0.1 as LatteApp
 
-import "animations" as AnimationComponents
+import org.kde.latte.abilities.components.animations 0.1 as AnimationComponents
 
 Ability {
     property Item container: null
@@ -64,13 +64,13 @@ Ability {
 
     readonly property bool hasThicknessAnimation:  (needBothAxis.count>0) || (needThickness.count>0)
 
-    readonly property Item duration: Item {
-        readonly property int proposed: speedFactor.current * 2.8 * longDuration
+    readonly property Item duration: AnimationComponents.Duration {
+        proposed: speedFactor.current * 2.8 * longDuration
     }
 
-    readonly property Item speedFactor: Item {
-        readonly property real normal: 1.0
-        readonly property real current: {
+    readonly property Item speedFactor: AnimationComponents.SpeedFactor {
+        normal: 1.0
+        current: {
             if (!active || plasmoid.configuration.durationTime === 0) {
                 return 0;
             }
@@ -86,7 +86,6 @@ Ability {
             return normal;
         }
     }
-
 
     //! animations related to parabolic effect
     /////!!!!!!

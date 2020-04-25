@@ -19,7 +19,7 @@
 
 import QtQuick 2.7
 
-import org.kde.latte.containers.abilities 0.1 as ContainerAbility
+import org.kde.latte.abilities.components 0.1 as AbilityComponents
 
 import "../../../code/AppletIdentifier.js" as AppletIdentifier
 
@@ -52,7 +52,7 @@ Item{
     //! END OF PROPERTIES
 
     //! BEGIN OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
-    readonly property Item requires: ContainerAbility.AppletRequirements{}
+    readonly property Item requires: AbilityComponents.AppletRequirements{}
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
 
     property bool windowsTrackingEnabledSent: false
