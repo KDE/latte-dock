@@ -19,29 +19,7 @@
 
 import QtQuick 2.7
 
-Item {
-    readonly property bool hasThicknessAnimation: latteBridge ? latteBridge.animations.hasThicknessAnimation : false
+AnimationsBase {
 
-
-    //! COntainment properties
-    readonly property alias active: apis.active
-
-    //! animations tracking
-    readonly property alias needBothAxis: apis.needBothAxis
-    readonly property alias needLength: apis.needLength
-    readonly property alias needThickness: apis.needThickness
-
-    //! animations properties
-    readonly property alias shortDuration: apis.shortDuration
-    readonly property alias longDuration: apis.longDuration
-
-    readonly property alias hasThicknessAnimation:  apis.hasThicknessAnimation
-
-    readonly property Item duration: apis.duration
-    readonly property Item speedFactor: apis.speedFactor
-
-    //! parabolic effect animations
-    readonly property alias minZoomFactor: apis.minZoomFactor
-    readonly property alias hoverPixelSensitivity: apis.hoverPixelSensitivity
 }
 
