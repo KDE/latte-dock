@@ -963,6 +963,7 @@ Item {
 
     Ability.Animations {
         id: _animations
+        bridge: latteBridge
     }
 
     Ability.Container {

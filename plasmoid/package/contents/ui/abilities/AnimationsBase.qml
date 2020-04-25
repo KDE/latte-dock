@@ -19,26 +19,26 @@
 
 import QtQuick 2.7
 
-Item {
-    readonly property bool active: latteBridge ? latteBridge.animations.active : /?/
+import org.kde.latte.abitilies.definitions 0.1 as AbilityDefinition
 
-    readonly property bool hasThicknessAnimation: latteBridge ? latteBridge.animations.hasThicknessAnimation : false
+AbilityDefinition.Animations {
+    property Item bridge: null
+
+    active: bridge ? bridge.animations.active : local.active
+    hasThicknessAnimation: bridge ? bridge.animations.hasThicknessAnimation : local.hasThicknessAnimation
 
     //! animations tracking
-    readonly property Item needBothAxis: latteBridge ? latteBridge.animations.needBothAxis : /?/
-    readonly property Item needLength: latteBridge ? latteBridge.animations.needLength : /?/
-    readonly property Item needThickness: latteBridge ? latteBridge.animations.needThickness : /?/
+    needBothAxis: bridge ? bridge.animations.needBothAxis : local.needBothAxis
+    needLength: bridge ? bridge.animations.needLength : local.needLength
+    needThickness: bridge ? bridge.animations.needThickness : local.needThickness
 
     //! animations properties
-    readonly property int shortDuration: latteBridge ? latteBridge.animations.shortDuration : /?/
-    readonly property int longDuration: latteBridge ? latteBridge.animations.longDuration : /?/
-
-    readonly property alias hasThicknessAnimation:  latteBridge ? latteBridge.animations.hasThicknessAnimation : /?/
-
-    readonly property Item duration: latteBridge ? latteBridge.animations.duration : /?/
-    readonly property Item speedFactor: latteBridge ? latteBridge.animations.speedFactor : /?/
+    duration: bridge ? bridge.animations.duration : local.duration
+    speedFactor: bridge ? bridge.animations.speedFactor : local.speedFactor
 
     //! parabolic effect animations
-    readonly property real minZoomFactor: latteBridge ? latteBridge.animations.minZoomFactor : /?/
-    readonly property alias hoverPixelSensitivity: latteBridge ? latteBridge.animations.hoverPixelSensitivity : /?/
+    minZoomFactor: bridge ? bridge.animations.minZoomFactor : local.minZoomFactor
+    hoverPixelSensitivity: bridge ? bridge.animations.hoverPixelSensitivity : local.hoverPixelSensitivity
+
+    readonly property AbilityDefinition.Animations local: AbilityDefinition.Animations{}
 }
