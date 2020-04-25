@@ -19,13 +19,13 @@
 
 import QtQuick 2.0
 
-import org.kde.latte.abilities.components 0.1 as AbilityComponent
+import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
-AbilityComponent.AppletRequirements{
+AbilityDefinition.AppletRequirements {
     id: requirements
-    readonly property bool isActive: bridge !== null
-
     property Item bridge: null
+
+    readonly property bool isActive: bridge !== null
 
     onIsActiveChanged: {
         if (isActive) {

@@ -291,7 +291,7 @@ Item {
 
     NumberAnimation {
         id: translAnim
-        duration: animations.longDuration
+        duration: animations.duration.large
         easing.type: Easing.InOutQuad
         target: translation
         properties: "x,y"
@@ -1204,7 +1204,7 @@ Item {
                 target: wrapper.clickedEffect
                 property: "brightness"
                 to: -0.35
-                duration: animations.longDuration
+                duration: animations.duration.large
                 easing.type: Easing.OutQuad
             }
         }
@@ -1213,7 +1213,7 @@ Item {
                 target: wrapper.clickedEffect
                 property: "brightness"
                 to: 0
-                duration: animations.longDuration
+                duration: animations.duration.large
                 easing.type: Easing.OutQuad
             }
         }

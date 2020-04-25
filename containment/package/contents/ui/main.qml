@@ -1786,7 +1786,7 @@ Item {
     //! zoom-in animations will have ended.
     Timer{
         id:directRenderDelayerForEnteringTimer
-        interval: 3.2 * animations.speedFactor.current * animations.shortDuration
+        interval: 3.2 * animations.speedFactor.current * animations.duration.small
     }
 
     //! It is used in order to slide-in the latteView on startup

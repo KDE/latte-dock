@@ -52,7 +52,7 @@ Item{
     property int maskFloatedGap: maskIsFloating ? Math.max(0, root.localScreenEdgeMargin - root.panelShadow) : 0
 
     property int animationSpeed: LatteCore.WindowSystem.compositingActive ?
-                                     (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : animations.speedFactor.normal * 1.62 * animations.longDuration) : 0
+                                     (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : animations.speedFactor.normal * 1.62 * animations.duration.large) : 0
 
     property bool inLocationAnimation: latteView && latteView.positioner && latteView.positioner.inLocationAnimation
     property bool inSlidingIn: false //necessary because of its init structure

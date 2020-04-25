@@ -23,11 +23,13 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.app 0.1 as LatteApp
 
-import org.kde.latte.abilities.components.animations 0.1 as AnimationComponents
+import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
-Ability {
+AbilityDefinition.Animations {
     property Item container: null
     property Item settings: null
+
+    property Item publicApi: null
 
     //DEPRECATED
     //C1 property bool animationsEnabled:  -> active
@@ -44,52 +46,41 @@ Ability {
     //C7 property int durationTime -> speedFactor.current
     //C6 property int animationTime -> duration.proposed
 
-    //C20 root.shortDuration -> animations.shortDuration
-    //C21 root.longDuration -> animations.longDuration
+    //C20 root.shortDuration -> animations.duration.small
+    //C21 root.longDuration -> animations.duration.large
 
     //parabolic
     //C3 property int animationStep -> hoverPixelSensitivity
     //C4 property int animationsZoomFactor -> minZoomFactor
 
-    readonly property bool active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
-
-    //! animations tracking
-    readonly property Item needBothAxis: AnimationComponents.Tracker{}
-    readonly property Item needLength: AnimationComponents.Tracker{}
-    readonly property Item needThickness: AnimationComponents.Tracker{}
+    active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
 
     //! animations properties
-    readonly property int shortDuration: LatteCore.Environment.shortDuration
-    readonly property int longDuration: LatteCore.Environment.longDuration
+    hasThicknessAnimation:  (needBothAxis.count>0) || (needThickness.count>0)
 
-    readonly property bool hasThicknessAnimation:  (needBothAxis.count>0) || (needThickness.count>0)
+    duration.large: LatteCore.Environment.longDuration
+    duration.proposed: speedFactor.current * 2.8 * duration.large
+    duration.small: LatteCore.Environment.shortDuration
 
-    readonly property Item duration: AnimationComponents.Duration {
-        proposed: speedFactor.current * 2.8 * longDuration
-    }
-
-    readonly property Item speedFactor: AnimationComponents.SpeedFactor {
-        normal: 1.0
-        current: {
-            if (!active || plasmoid.configuration.durationTime === 0) {
-                return 0;
-            }
-
-            if (plasmoid.configuration.durationTime === 1 ) {
-                return 0.75;
-            } else if (plasmoid.configuration.durationTime === 2) {
-                return normal;
-            } else if (plasmoid.configuration.durationTime === 3) {
-                return 1.15;
-            }
-
-            return normal;
+    speedFactor.normal: 1.0
+    speedFactor.current: {
+        if (!active || plasmoid.configuration.durationTime === 0) {
+            return 0;
         }
+
+        if (plasmoid.configuration.durationTime === 1 ) {
+            return 0.75;
+        } else if (plasmoid.configuration.durationTime === 2) {
+            return speedFactor.normal;
+        } else if (plasmoid.configuration.durationTime === 3) {
+            return 1.15;
+        }
+
+        return speedFactor.normal;
     }
 
     //! animations related to parabolic effect
-    /////!!!!!!
-    property int hoverPixelSensitivity: {
+    hoverPixelSensitivity: {
         if (!settings || settings.sensitivity === LatteApp.Settings.HighMouseSensitivity) {
             return 1;
         } else if (settings.sensitivity === LatteApp.Settings.MediumMouseSensitivity) {
@@ -99,12 +90,12 @@ Ability {
         }
     }
 
-    property real minZoomFactor : {
+    minZoomFactor : {
         if (!active || !LatteCore.WindowSystem.compositingActive) {
             return 1;
         }
 
-       /* if (latteApplet && (animationLauncherBouncing || animationWindowInAttention || animationWindowAddedInGroup)) {
+        /* if (latteApplet && (animationLauncherBouncing || animationWindowInAttention || animationWindowAddedInGroup)) {
             return 1.65;
         }*/
 

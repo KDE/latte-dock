@@ -20,5 +20,7 @@
 import QtQuick 2.7
 
 Item {
-    property int proposed: 700
+    property int large: 500
+    property int proposed: 1000
+    property int small: 250
 }

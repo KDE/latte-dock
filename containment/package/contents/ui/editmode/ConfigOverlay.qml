@@ -235,7 +235,7 @@ MouseArea {
 
     Timer {
         id: hideTimer
-        interval: animations.longDuration * 2
+        interval: animations.duration.large * 2
         onTriggered: {
             if (!tooltipMouseArea.containsMouse) {
                 tooltip.visible = false;
@@ -364,7 +364,7 @@ MouseArea {
             enabled: !configurationArea.pressed
             NumberAnimation {
                 id: xAnim
-                duration: animations.longDuration
+                duration: animations.duration.large
                 easing.type: Easing.InOutQuad
             }
         }
@@ -372,27 +372,27 @@ MouseArea {
             id: yAnim
             enabled: !configurationArea.pressed
             NumberAnimation {
-                duration: animations.longDuration
+                duration: animations.duration.large
                 easing.type: Easing.InOutQuad
             }
         }
         Behavior on width {
             enabled: !configurationArea.pressed
             NumberAnimation {
-                duration: animations.longDuration
+                duration: animations.duration.large
                 easing.type: Easing.InOutQuad
             }
         }
         Behavior on height {
             enabled: !configurationArea.pressed
             NumberAnimation {
-                duration: animations.longDuration
+                duration: animations.duration.large
                 easing.type: Easing.InOutQuad
             }
         }
         Behavior on opacity {
             NumberAnimation {
-                duration: animations.longDuration
+                duration: animations.duration.large
                 easing.type: Easing.InOutQuad
             }
         }

@@ -43,7 +43,7 @@ Item{
 
     readonly property bool isShown: (solidBackground.opacity > 0) || (overlayedBackground.opacity > 0)
 
-    property int animationTime: 6*animations.speedFactor.current*animations.shortDuration
+    property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
     property int screenEdgeMargin: root.screenEdgeMarginEnabled ? root.localScreenEdgeMargin - shadowsSvgItem.screenEdgeShadow : 0
 

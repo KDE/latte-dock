@@ -671,7 +671,7 @@ Item{
         visible: !indicators.info.providesHoveredAnimation
 
         Behavior on opacity {
-            NumberAnimation { duration: animations.speedFactor.current*animations.longDuration }
+            NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
         }
     }
 

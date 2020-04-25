@@ -1,5 +1,0 @@
-module org.kde.latte.abilities.components.animations
-
-Duration 0.1 Duration.qml
-SpeedFactor 0.1 SpeedFactor.qml
-Tracker 0.1 Tracker.qml
