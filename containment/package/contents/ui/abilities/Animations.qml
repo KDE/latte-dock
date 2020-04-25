@@ -31,13 +31,10 @@ AnimationsPrivate {
         readonly property alias needThickness: apis.needThickness
 
         //! animations properties
-        readonly property alias shortDuration: apis.shortDuration
-        readonly property alias longDuration: apis.longDuration
-
         readonly property alias hasThicknessAnimation:  apis.hasThicknessAnimation
 
-        readonly property Item duration: apis.duration
-        readonly property Item speedFactor: apis.speedFactor
+        readonly property alias duration: apis.duration
+        readonly property alias speedFactor: apis.speedFactor
 
         //! parabolic effect animations
         readonly property alias minZoomFactor: apis.minZoomFactor

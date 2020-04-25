@@ -27,17 +27,13 @@ Item {
     property bool hasThicknessAnimation: false
 
     //! animations properties
-    property int shortDuration: 250
-    property int longDuration: 500   
-
     readonly property alias duration: _duration
-
     readonly property alias speedFactor: _speedFactor
 
     //! animations tracking
-    readonly property alias needBothAxis: _bothAxis
-    readonly property alias needLength: _needLength
-    readonly property alias needThickness: _needThickness
+    property QtObject needBothAxis: _bothAxis
+    property QtObject needLength: _needLength
+    property QtObject needThickness: _needThickness
 
     //! animations related to parabolic effect
     property int hoverPixelSensitivity: 1
