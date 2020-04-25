@@ -21,6 +21,13 @@ import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
 Ability {
+    id: privateContainer
+    property Item animations: null
+
+    //! signals
+    signal iconSizeAnimationEnded();
+
+    //! properties
     property int iconSize: autosizeEnabled && autosize.iconSize > 0 ?
                                Math.min(autosize.iconSize, maxIconSize) :
                                maxIconSize
@@ -43,11 +50,11 @@ Ability {
     Behavior on iconSize {
         enabled: !(root.editMode && root.behaveAsPlasmaPanel)
         NumberAnimation {
-            duration: 0.8 * root.animationTime
+            duration: 0.8 * animations.duration.proposed
 
             onRunningChanged: {
                 if (!running) {
-                    delayUpdateMaskArea.start();
+                    privateContainer.iconSizeAnimationEnded();
                 }
             }
         }

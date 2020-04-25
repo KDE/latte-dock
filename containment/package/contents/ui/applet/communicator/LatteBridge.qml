@@ -114,8 +114,9 @@ Item{
                                                    latteView.windowsTracker : null
 
     readonly property Item actions: Actions{}
-    readonly property Item container: root.container
     readonly property Item applet: mainCommunicator.requires
+    readonly property Item animations: root.animations.publicApi
+    readonly property Item container: root.container.publicApi
 
     Connections {
         target: root

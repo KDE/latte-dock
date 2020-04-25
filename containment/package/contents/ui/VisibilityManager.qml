@@ -34,7 +34,7 @@ Item{
 
     property QtObject window
 
-    property bool debugMagager: Qt.application.arguments.indexOf("--mask") >= 0
+    property bool debugManager: Qt.application.arguments.indexOf("--mask") >= 0
 
     property bool blockUpdateMask: false
     property bool inForceHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
@@ -52,7 +52,7 @@ Item{
     property int maskFloatedGap: maskIsFloating ? Math.max(0, root.localScreenEdgeMargin - root.panelShadow) : 0
 
     property int animationSpeed: LatteCore.WindowSystem.compositingActive ?
-                                     (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : root.appliedDurationTime * 1.62 * root.longDuration) : 0
+                                     (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : animations.speedFactor.normal * 1.62 * animations.longDuration) : 0
 
     property bool inLocationAnimation: latteView && latteView.positioner && latteView.positioner.inLocationAnimation
     property bool inSlidingIn: false //necessary because of its init structure
@@ -304,7 +304,7 @@ Item{
             if (LatteCore.WindowSystem.compositingActive
                     && root.editMode
                     && editModeVisual.editAnimationEnded
-                    && (root.animationsNeedBothAxis === 0 || root.zoomFactor===1) ) {
+                    && (animations.needBothAxis.count === 0 || root.zoomFactor===1) ) {
                 return true;
             } else {
                 return false;
@@ -450,7 +450,7 @@ Item{
         latteView.visibility.hide();
         latteView.visibility.isHidden = true;
 
-        if (visibilityManager.debugMagager) {
+        if (visibilityManager.debugManager) {
             console.log("hiding animation ended...");
         }
 
@@ -466,14 +466,14 @@ Item{
         var localX = 0;
         var localY = 0;
 
-        normalState = ((root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0))
-                || (latteView.visibility.isHidden && !latteView.visibility.containsMouse && root.animationsNeedThickness == 0);
+        normalState = ((animations.needBothAxis.count === 0) && (animations.needLength.count === 0))
+                || (latteView.visibility.isHidden && !latteView.visibility.containsMouse && animations.needThickness.count === 0);
 
 
         // debug maskArea criteria
-        if (debugMagager) {
-            console.log(root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " +
-                        root.animationsNeedThickness + ", " + latteView.visibility.isHidden);
+        if (debugManager) {
+            console.log(animations.needBothAxis.count + ", " + animations.needLength.count + ", " +
+                        animations.needThickness.count + ", " + latteView.visibility.isHidden);
 
             if (previousNormalState !== normalState) {
                 console.log("normal state changed to:" + normalState);
@@ -527,7 +527,7 @@ Item{
 
                 tempThickness = thicknessNormal;
 
-                if (root.animationsNeedThickness > 0) {
+                if (animations.needThickness.count > 0) {
                     tempThickness = LatteCore.WindowSystem.compositingActive ? thicknessZoom : thicknessNormal;
                 }
 
@@ -618,7 +618,9 @@ Item{
                     tempLength = Screen.height; //screenGeometry.height;
 
                 //grow only on length and not thickness
-                if(root.animationsNeedLength>0 && root.animationsNeedBothAxis === 0) {
+                var onlyLengthAnimation = (animations.needLength.count>0 && animations.needBothAxis.count === 0);
+
+                if(onlyLengthAnimation) {
 
                     //this is used to fix a bug with shadow showing when the animation of edit mode
                     //is triggered
@@ -626,7 +628,7 @@ Item{
 
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                         tempThickness = thicknessAutoHidden;
-                    } else if (root.animationsNeedThickness > 0) {
+                    } else if (animations.needThickness.count > 0) {
                         tempThickness = thicknessZoomOriginal;
                     }
                 } else{
@@ -865,7 +867,7 @@ Item{
         }
 
         onStarted: {
-            if (manager.debugMagager) {
+            if (manager.debugManager) {
                 console.log("hiding animation started...");
             }
         }
@@ -894,7 +896,7 @@ Item{
         id: slidingAnimationAutoHiddenIn
 
         PauseAnimation{
-            duration: manager.inTempHiding && animationsEnabled ? 500 : 0
+            duration: manager.inTempHiding && animations.active ? 500 : 0
         }
 
         PropertyAnimation {
@@ -915,7 +917,7 @@ Item{
         onStarted: {
             latteView.visibility.show();
 
-            if (manager.debugMagager) {
+            if (manager.debugManager) {
                 console.log("showing animation started...");
             }
         }
@@ -931,7 +933,7 @@ Item{
             manager.inTempHiding = false;
             autosize.updateIconSize();
 
-            if (manager.debugMagager) {
+            if (manager.debugManager) {
                 console.log("showing animation ended...");
             }
 

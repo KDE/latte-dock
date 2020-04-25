@@ -658,7 +658,7 @@ Window{
             }
 
             Text{
-                text: root.animationsNeedBothAxis
+                text: animations.needBothAxis.count
             }
 
             Text{
@@ -666,7 +666,7 @@ Window{
             }
 
             Text{
-                text: root.animationsNeedLength
+                text: animations.needLength.count
             }
 
             Text{
@@ -674,7 +674,7 @@ Window{
             }
 
             Text{
-                text: root.animationsNeedThickness
+                text: animations.needThickness.count
             }
 
             Text{

@@ -38,8 +38,6 @@ DragDrop.DropArea {
         property bool computationsAreValid: false
     }
 
-    property bool animationSent: false
-
     Connections{
         target: root.dragInfo
 
@@ -119,10 +117,7 @@ DragDrop.DropArea {
 
         //! Send signal AFTER the dragging is confirmed otherwise the restore mask signal from animations
         //! may not be triggered #408926
-        if (!animationSent) {
-            animationSent = true;
-            slotAnimationsNeedLength(1);
-        }
+        animations.needLength.addEvent(dragArea);
 
         if (latteApplet && (dragInfo.onlyLaunchers || dragInfo.isSeparator || !dragInfo.isPlasmoid)) {
             if (dragInfo.onlyLaunchers) {
@@ -194,10 +189,7 @@ DragDrop.DropArea {
     }
 
     onDragLeave: {
-        if (animationSent) {
-            animationSent = false;
-            slotAnimationsNeedLength(-1);
-        }
+        animations.needLength.removeEvent(dragArea);
 
         root.addLaunchersMessage = false;
 
@@ -208,10 +200,7 @@ DragDrop.DropArea {
     }
 
     onDrop: {
-        if (animationSent) {
-            animationSent = false;
-            slotAnimationsNeedLength(-1);
-        }
+        animations.needLength.removeEvent(dragArea);
 
         if (root.ignoreRegularFilesDragging && dragInfo.isTask || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
             return;

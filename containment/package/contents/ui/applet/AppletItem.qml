@@ -45,7 +45,6 @@ Item {
     signal mouseReleased(int x, int y, int button);
 
     property bool animationsEnabled: true
-    property bool animationWasSent: false  //protection flag for animation broadcasting
     property bool canBeHovered: true
     property bool canShowAppletNumberBadge: !isSeparator && !isHidden && !isLattePlasmoid
                                             && !isSpacer && !isInternalViewSplitter
@@ -154,7 +153,7 @@ Item {
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
     readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported
 
-    property int animationTime: appliedDurationTime * (1.2 *root.shortDuration)
+    property int animationTime: animations.speedFactor.normal * (1.2 *animations.shortDuration)
     property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
     property int maxWidth: root.isHorizontal ? root.height : root.width
@@ -292,7 +291,7 @@ Item {
 
     NumberAnimation {
         id: translAnim
-        duration: root.longDuration
+        duration: animations.longDuration
         easing.type: Easing.InOutQuad
         target: translation
         properties: "x,y"
@@ -301,7 +300,7 @@ Item {
 
     Behavior on lengthAppletIntMargin {
         NumberAnimation {
-            duration: 0.8 * root.animationTime
+            duration: 0.8 * animations.duration.proposed
             easing.type: Easing.OutCubic
         }
     }
@@ -507,9 +506,9 @@ Item {
             appletItem.latteApplet.latteView = root;
             appletItem.latteApplet.forceHidePanel = true;
 
-            appletItem.latteApplet.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
+          /*  appletItem.latteApplet.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
             appletItem.latteApplet.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
-            appletItem.latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
+            appletItem.latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);*/
             appletItem.latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
             appletItem.latteApplet.clearZoomSignal.connect(titleTooltipDialog.hide);
         }
@@ -525,10 +524,7 @@ Item {
     }
 
     Component.onDestruction: {
-        if (animationWasSent) {
-            root.slotAnimationsNeedBothAxis(-1);
-            animationWasSent = false;
-        }
+        animations.needBothAxis.removeEvent(appletItem);
 
         if (isSeparator){
             parabolicManager.setSeparator(previousIndex, -1);
@@ -549,9 +545,9 @@ Item {
         root.destroyInternalViewSplitters.disconnect(slotDestroyInternalViewSplitters);
 
         if (appletItem.latteApplet) {
-            appletItem.latteApplet.signalAnimationsNeedBothAxis.disconnect(slotAnimationsNeedBothAxis);
+            /*appletItem.latteApplet.signalAnimationsNeedBothAxis.disconnect(slotAnimationsNeedBothAxis);
             appletItem.latteApplet.signalAnimationsNeedLength.disconnect(slotAnimationsNeedLength);
-            appletItem.latteApplet.signalAnimationsNeedThickness.disconnect(slotAnimationsNeedThickness);
+            appletItem.latteApplet.signalAnimationsNeedThickness.disconnect(slotAnimationsNeedThickness);*/
             appletItem.latteApplet.signalPreviewsShown.disconnect(slotPreviewsShown);
             appletItem.latteApplet.clearZoomSignal.disconnect(titleTooltipDialog.hide);
         }
@@ -817,7 +813,7 @@ Item {
 
                 Behavior on opacity {
                     NumberAnimation {
-                        duration: 1.2 * root.animationTime
+                        duration: 1.2 * animations.duration.proposed
                         easing.type: Easing.OutCubic
                     }
                 }
@@ -920,7 +916,7 @@ Item {
             radius: container.iconSize/10
             opacity: root.addLaunchersMessage ? 1 : 0
             backgroundOpacity: 0.75
-            duration: root.durationTime
+            duration: animations.speedFactor.current
 
             title: i18n("Tasks Area")
         }
@@ -1087,7 +1083,7 @@ Item {
             if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
                 if (root.isHorizontal){
                     var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
-                    if (step >= root.animationStep){
+                    if (step >= animations.hoverPixelSensitivity){
                         layoutsContainer.currentSpot = mouse.x;
 
                         wrapper.calculateScales(mouse.x);
@@ -1095,7 +1091,7 @@ Item {
                 }
                 else{
                     var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
-                    if (step >= root.animationStep){
+                    if (step >= animations.hoverPixelSensitivity){
                         layoutsContainer.currentSpot = mouse.y;
 
                         wrapper.calculateScales(mouse.y);
@@ -1201,14 +1197,14 @@ Item {
         id: clickedAnimation
         alwaysRunToEnd: true
         running: appletItem.isSquare && !originalAppletBehavior && appletItem.pressed
-                 && (root.durationTime > 0) && !indicators.info.providesClickedAnimation
+                 && (animations.speedFactor.current > 0) && !indicators.info.providesClickedAnimation
 
         ParallelAnimation{
             PropertyAnimation {
                 target: wrapper.clickedEffect
                 property: "brightness"
                 to: -0.35
-                duration: root.longDuration
+                duration: animations.longDuration
                 easing.type: Easing.OutQuad
             }
         }
@@ -1217,7 +1213,7 @@ Item {
                 target: wrapper.clickedEffect
                 property: "brightness"
                 to: 0
-                duration: root.longDuration
+                duration: animations.longDuration
                 easing.type: Easing.OutQuad
             }
         }

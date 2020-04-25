@@ -251,13 +251,6 @@ Item {
     property alias hoveredIndex: layoutsContainer.hoveredIndex
     property alias directRenderDelayerIsRunning: directRenderDelayerForEnteringTimer.running
 
-    property int animationsNeedBothAxis:0 //animations need space in both axes, e.g zooming a task
-    property int animationsNeedLength: 0 // animations need length, e.g. adding a task
-    property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
-    readonly property bool thickAnimated: animationsNeedBothAxis>0 || animationsNeedThickness>0
-
-    property int animationTime: durationTime*2.8*root.longDuration
-
     property int appletsNeedWindowsTracking: 0
 
     readonly property int minAppletLengthInConfigure: 64
@@ -446,7 +439,7 @@ Item {
 
     property int panelUserSetAlignment: plasmoid.configuration.alignment
 
-    property real zoomFactor: LatteCore.WindowSystem.compositingActive && root.animationsEnabled ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
+    property real zoomFactor: LatteCore.WindowSystem.compositingActive && animations.active ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
@@ -465,6 +458,7 @@ Item {
     property Item latteAppletContainer
     property Item latteApplet
 
+    readonly property Item animations: _animations
     readonly property Item autosize: _autosize
     readonly property Item container: _container
     readonly property Item indicatorsManager: indicators
@@ -504,59 +498,11 @@ Item {
 
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
-    property int animationStep: {
-        if (!universalSettings || universalSettings.sensitivity === LatteApp.Settings.HighMouseSensitivity) {
-            return 1;
-        } else if (universalSettings.sensitivity === LatteApp.Settings.MediumMouseSensitivity) {
-            return Math.max(3, container.iconSize / 18);
-        } else if (universalSettings.sensitivity === LatteApp.Settings.LowMouseSensitivity) {
-            return Math.max(5, container.iconSize / 10);
-        }
-    }
-
     property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
-    //! Animations
-    property bool animationsEnabled: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
 
-    readonly property int shortDuration: LatteCore.Environment.shortDuration
-    readonly property int longDuration: LatteCore.Environment.longDuration
-
-    property real appliedDurationTime: animationsEnabled ? durationTime : animationsSpeed2
-    readonly property real animationsSpeed1: 0.75
-    readonly property real animationsSpeed2: 1.00
-    readonly property real animationsSpeed3: 1.15
-
-    property real durationTime: {
-        if (!animationsEnabled || plasmoid.configuration.durationTime === 0) {
-            return 0;
-        }
-
-        if (plasmoid.configuration.durationTime === 1 ) {
-            return animationsSpeed1;
-        } else if (plasmoid.configuration.durationTime === 2) {
-            return animationsSpeed2;
-        } else if (plasmoid.configuration.durationTime === 3) {
-            return animationsSpeed3;
-        }
-
-        return animationsSpeed2;
-    }
-
-    property real animationsZoomFactor : {
-        if (!animationsEnabled || !LatteCore.WindowSystem.compositingActive) {
-            return 1;
-        }
-
-       /* if (latteApplet && (animationLauncherBouncing || animationWindowInAttention || animationWindowAddedInGroup)) {
-            return 1.65;
-        }*/
-
-        return 1;
-    }
-
-    property real maxZoomFactor: Math.max(zoomFactor, animationsZoomFactor)
+    property real maxZoomFactor: Math.max(zoomFactor, animations.minZoomFactor)
 
     property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
@@ -1284,42 +1230,6 @@ Item {
         return false;
     }
 
-    function slotAnimationsNeedBothAxis(step) {
-        if (step === 0) {
-            return;
-        }
-
-        animationsNeedBothAxis = Math.max(animationsNeedBothAxis + step, 0);
-
-        visibilityManager.updateMaskArea();
-    }
-
-    function slotAnimationsNeedLength(step) {
-        if (step === 0) {
-            return;
-        }
-
-        animationsNeedLength = Math.max(animationsNeedLength + step, 0);
-
-        //when need length animations are ended it would be a good idea
-        //to update the tasks geometries in the plasmoid
-        if(animationsNeedLength === 0 && latteApplet) {
-            latteApplet.publishTasksGeometries();
-        }
-
-        visibilityManager.updateMaskArea();
-    }
-
-    function slotAnimationsNeedThickness(step) {
-        if (step === 0) {
-            return;
-        }
-
-        animationsNeedThickness = Math.max(animationsNeedThickness + step, 0);
-
-        visibilityManager.updateMaskArea();
-    }
-
     function slotAppletsNeedWindowsTracking(step) {
         if (step === 0) {
             return;
@@ -1823,9 +1733,10 @@ Item {
 
     ///////////////BEGIN ABILITIES
 
-    Ability.Container{
-        id: _container
-        autosize: _autosize
+    Ability.Animations {
+        id: _animations
+        container: _container
+        settings: universalSettings
     }
 
     Ability.AutoSizePrivate {
@@ -1833,6 +1744,12 @@ Item {
         container: _container
         layouts: layoutsContainer
         visibility: visibilityManager
+    }
+
+    Ability.Container {
+        id: _container
+        animations: _animations
+        autosize: _autosize
     }
 
     ///////////////END ABILITIES
@@ -1869,29 +1786,7 @@ Item {
     //! zoom-in animations will have ended.
     Timer{
         id:directRenderDelayerForEnteringTimer
-        interval: 3.2 * root.durationTime * root.shortDuration
-    }
-
-    //this is a delayer to update mask area, it is used in cases
-    //that animations can not catch up with animations signals
-    //e.g. the automaicIconSize case
-    Timer{
-        id:delayUpdateMaskArea
-        repeat:false;
-        interval:300;
-
-        onTriggered: {
-            if (layoutsContainer.animationSent) {
-                root.slotAnimationsNeedLength(-1);
-                layoutsContainer.animationSent = false;
-            }
-
-            visibilityManager.updateMaskArea();
-
-            if (root.debugModeTimers) {
-                console.log("containment timer: delayUpdateMaskArea called...");
-            }
-        }
+        interval: 3.2 * animations.speedFactor.current * animations.shortDuration
     }
 
     //! It is used in order to slide-in the latteView on startup

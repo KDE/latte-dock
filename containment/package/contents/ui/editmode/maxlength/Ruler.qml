@@ -35,7 +35,7 @@ Item{
 
     opacity: root.editMode ? 1 : 0
 
-    property int rulerAnimationTime: 0.8 * root.animationTime
+    property int rulerAnimationTime: 0.8 * animations.duration.proposed
     property int thicknessMargin: 0
 
     readonly property bool containsMouse: rulerMouseArea.containsMouse

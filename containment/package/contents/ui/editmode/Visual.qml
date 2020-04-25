@@ -41,13 +41,12 @@ Item{
 
     readonly property int settingsThickness: settingsOverlay.thickness
 
-    property int speed: LatteCore.WindowSystem.compositingActive ? root.appliedDurationTime*3.6*root.longDuration : 10
+    property int speed: LatteCore.WindowSystem.compositingActive ? animations.speedFactor.normal*3.6*animations.longDuration : 10
     property int thickness: visibilityManager.thicknessEditMode + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow //- visibilityManager.thicknessEditMode
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - container.maxIconSize/4 : root.width)://root.maxLength) :
                                                  (root.behaveAsPlasmaPanel ? root.height - container.maxIconSize/4 : root.height)
 
-    property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
     property bool editAnimationEnded: false
     property bool editAnimationInFullThickness: false
@@ -147,7 +146,7 @@ Item{
         Behavior on opacity {
             enabled: editVisual.editAnimationEnded
             NumberAnimation {
-                duration: 0.8 * root.animationTime
+                duration: 0.8 * animations.duration.proposed
                 easing.type: Easing.OutCubic
             }
         }
@@ -358,10 +357,7 @@ Item{
 
                         initializeNormalPosition();
 
-                        if(!animationSent) {
-                            animationSent = true;
-                            root.slotAnimationsNeedLength(1);
-                        }
+                        animations.needLength.addEvent(editVisual);
                     }
                 }
 
@@ -369,7 +365,7 @@ Item{
                     id: pauseAnimation
                     //! give the time to CREATE the settings windows and not break
                     //! the sliding in animation
-                    duration: root.animationsEnabled ? 100 : 0
+                    duration: animations.active ? 100 : 0
                 }
 
                 ParallelAnimation{
@@ -419,7 +415,7 @@ Item{
                     id: pauseAnimation2
                     //! give the time to DELETE the settings windows and not break
                     //! the sliding out animation
-                    duration: root.animationsEnabled ? 100 : 0
+                    duration: animations.isActive ? 100 : 0
                 }
 
                 ParallelAnimation{
@@ -443,10 +439,7 @@ Item{
                     script:{
                         editVisual.inEditMode = false;
                         editVisual.editAnimationEnded = false;
-                        if (editVisual.animationSent) {
-                            root.slotAnimationsNeedLength(-1);
-                            editVisual.animationSent = false;
-                        }
+                        animations.needLength.removeEvent(editVisual);
 
                         //! That part was at the end of the Containers sliding-out animation
                         //! but it looks much better here

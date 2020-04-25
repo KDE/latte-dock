@@ -43,7 +43,7 @@ Item{
 
     readonly property bool isShown: (solidBackground.opacity > 0) || (overlayedBackground.opacity > 0)
 
-    property int animationTime: 6*root.durationTime*root.shortDuration
+    property int animationTime: 6*animations.speedFactor.current*animations.shortDuration
 
     property int screenEdgeMargin: root.screenEdgeMarginEnabled ? root.localScreenEdgeMargin - shadowsSvgItem.screenEdgeShadow : 0
 
@@ -688,7 +688,7 @@ Item{
     transitions: Transition {
         enabled: editModeVisual.plasmaEditMode
         AnchorAnimation {
-            duration: 0.8 * root.animationTime
+            duration: 0.8 * animations.duration.proposed
             easing.type: Easing.OutCubic
         }
     }

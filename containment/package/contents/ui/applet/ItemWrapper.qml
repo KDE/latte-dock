@@ -160,7 +160,7 @@ Item{
 
     Behavior on opacity {
         NumberAnimation {
-            duration: 0.8 * root.animationTime
+            duration: 0.8 * animations.duration.proposed
             easing.type: Easing.OutCubic
         }
     }
@@ -264,16 +264,10 @@ Item{
 
         if ((zoomScale > 1) && !appletItem.isZoomed) {
             appletItem.isZoomed = true;
-            if (!animationWasSent) {
-                root.slotAnimationsNeedBothAxis(1);
-                animationWasSent = true;
-            }
+            animations.needBothAxis.addEvent(appletItem);
         } else if (zoomScale == 1) {
             appletItem.isZoomed = false;
-            if (animationWasSent) {
-                root.slotAnimationsNeedBothAxis(-1);
-                animationWasSent = false;
-            }
+            animations.needBothAxis.removeEvent(appletItem);
         }
     }
 
@@ -677,7 +671,7 @@ Item{
         visible: !indicators.info.providesHoveredAnimation
 
         Behavior on opacity {
-            NumberAnimation { duration: root.durationTime*root.longDuration }
+            NumberAnimation { duration: animations.speedFactor.current*animations.longDuration }
         }
     }
 

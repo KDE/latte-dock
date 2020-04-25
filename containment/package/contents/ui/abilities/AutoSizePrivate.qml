@@ -53,7 +53,7 @@ Ability {
     onIconSizeChanged: {
         if (!automaticSizeAnimation) {
             automaticSizeAnimation = true;
-            root.slotAnimationsNeedBothAxis(1);
+            animations.needBothAxis.addEvent(sizer);
         }
     }
 
@@ -82,7 +82,7 @@ Ability {
 
         onIconSizeChanged: {
             if (((container.iconSize === sizer.iconSize) || (container.iconSize === container.maxIconSize)) && sizer.automaticSizeAnimation){
-                root.slotAnimationsNeedBothAxis(-1);
+                animations.needBothAxis.removeEvent(sizer);
                 sizer.automaticSizeAnimation=false;
             }
         }

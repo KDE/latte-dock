@@ -138,6 +138,7 @@ Item {
     property Item dragSource: null
     property Item parabolicManager: _parabolicManager
     property Item tasksExtendedManager: _tasksExtendedManager
+    readonly property Item animations: _animations
     readonly property Item container: _container
 
     readonly property alias containsDrag: mouseHandler.containsDrag
@@ -960,6 +961,10 @@ Item {
         id: _tasksExtendedManager
     }
 
+    Ability.Animations {
+        id: _animations
+    }
+
     Ability.Container {
         id: _container
         localIconSize: Math.max(plasmoid.configuration.iconSize, 16)
@@ -1237,7 +1242,7 @@ Item {
 
             property int thickness: {
                 if (latteView) {
-                    return !latteView.thickAnimated ? latteView.maskManager.thicknessNormal : latteView.maskManager.thicknessZoom;
+                    return animations.hasThicknessAnimation ? latteView.maskManager.thicknessNormal : latteView.maskManager.thicknessZoom;
                 }
 
                 return (root.thickMargins + container.iconSize) * root.zoomFactor;

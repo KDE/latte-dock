@@ -146,7 +146,7 @@ Item{
 
             if (!animationSent) {
                 animationSent = true;
-                slotAnimationsNeedLength(1);
+                animations.needLength.addEvent(layoutsContainer);
             }
 
             layoutsContainer.updateSizeForAppletsInFill();
@@ -171,7 +171,7 @@ Item{
 
             if (!animationSent) {
                 animationSent = true;
-                slotAnimationsNeedLength(1);
+                animations.needLength.removeEvent(layoutsContainer);
             }
 
             layoutsContainer.updateSizeForAppletsInFill();
@@ -260,7 +260,7 @@ Item{
         transitions: Transition {
             enabled: editModeVisual.plasmaEditMode
             AnchorAnimation {
-                duration: 0.8 * root.animationTime
+                duration: 0.8 * animations.duration.proposed
                 easing.type: Easing.OutCubic
             }
         }
@@ -288,11 +288,36 @@ Item{
         }
     }
 
+    Connections {
+        target: container
+        onIconSizeAnimationEnded: delayUpdateMaskArea.start();
+    }
+
     //! This timer is needed in order to reduce the calls to heavy cpu function
     //! HeuristicTools.updateSizeForAppletsInFill()
     Timer{
         id: updateSizeForAppletsInFillTimer
         interval: 10
         onTriggered: HeuristicTools.updateSizeForAppletsInFill();
+    }
+
+    //! This timer is needed in order to update mask area after ContentsWidth/Height and iconSize changes
+    Timer{
+        id:delayUpdateMaskArea
+        repeat:false;
+        interval:300;
+
+        onTriggered: {
+            if (layoutsContainer.animationSent) {
+                animations.needLength.removeEvent(layoutsContainer);
+                layoutsContainer.animationSent = false;
+            }
+
+            visibilityManager.updateMaskArea();
+
+            if (root.debugModeTimers) {
+                console.log("LayoutsContainer timer: delayUpdateMaskArea called...");
+            }
+        }
     }
 }

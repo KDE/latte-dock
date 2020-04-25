@@ -218,7 +218,7 @@ function initializationPhase(availableSpace, sizePerApplet, noOfApplets){
 
 
 function updateSizeForAppletsInFill() {
-    if ((!visibilityManager.thickAnimated && !root.inConfigureAppletsMode)
+    if ((!animations.hasThicknessAnimation && !root.inConfigureAppletsMode)
             || (behaveAsPlasmaPanel && root.inConfigureAppletsMode)) {
         // console.log("-------------");
         // console.log("s1...");
