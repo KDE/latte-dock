@@ -23,18 +23,17 @@ AnimationsPrivate {
     id: apis
 
     publicApi: Item {
+        //! animations properties
         readonly property alias active: apis.active
+        readonly property alias hasThicknessAnimation:  apis.hasThicknessAnimation
+
+        readonly property alias duration: apis.duration
+        readonly property alias speedFactor: apis.speedFactor
 
         //! animations tracking
         readonly property alias needBothAxis: apis.needBothAxis
         readonly property alias needLength: apis.needLength
         readonly property alias needThickness: apis.needThickness
-
-        //! animations properties
-        readonly property alias hasThicknessAnimation:  apis.hasThicknessAnimation
-
-        readonly property alias duration: apis.duration
-        readonly property alias speedFactor: apis.speedFactor
 
         //! parabolic effect animations
         readonly property alias minZoomFactor: apis.minZoomFactor

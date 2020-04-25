@@ -74,6 +74,7 @@ Item {
     readonly property int version: LatteCore.Environment.makeVersion(0,9,4)
 
     property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
+
     property int directRenderAnimationTime: 0
 
     property bool addLaunchersMessage: false

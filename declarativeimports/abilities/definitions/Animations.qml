@@ -23,45 +23,27 @@ import "./animations" as AnimationsTypes
 
 Item {
     property bool active: false
-
     property bool hasThicknessAnimation: false
 
     //! animations properties
-    readonly property alias duration: _duration
-    readonly property alias speedFactor: _speedFactor
-
-    //! animations tracking
-    property QtObject needBothAxis: _bothAxis
-    property QtObject needLength: _needLength
-    property QtObject needThickness: _needThickness
-
-    //! animations related to parabolic effect
-    property int hoverPixelSensitivity: 1
-    property real minZoomFactor : 1.0
-
-    //! Grouped Properties Structures
-    AnimationsTypes.SpeedFactor {
-        id: _speedFactor
-        normal: 1.0
-        current: 1.0
-    }
-
-    AnimationsTypes.Duration {
-        id: _duration
+    property AnimationsTypes.Duration duration: AnimationsTypes.Duration {
         large: 500
         proposed: 1000
         small: 250
     }
 
-    AnimationsTypes.Tracker {
-        id: _bothAxis
+    property AnimationsTypes.SpeedFactor speedFactor: AnimationsTypes.SpeedFactor {
+        id: _speedFactor
+        normal: 1.0
+        current: 1.0
     }
 
-    AnimationsTypes.Tracker {
-        id: _needLength
-    }
+    //! animations tracking
+    property AnimationsTypes.Tracker needBothAxis: AnimationsTypes.Tracker{}
+    property AnimationsTypes.Tracker needLength: AnimationsTypes.Tracker{}
+    property AnimationsTypes.Tracker needThickness: AnimationsTypes.Tracker{}
 
-    AnimationsTypes.Tracker {
-        id: _needThickness
-    }
+    //! animations related to parabolic effect
+    property int hoverPixelSensitivity: 1
+    property real minZoomFactor : 1.0
 }

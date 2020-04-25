@@ -153,7 +153,7 @@ Item {
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
     readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported
 
-    property int animationTime: animations.speedFactor.normal * (1.2 *animations.shortDuration)
+    property int animationTime: animations.speedFactor.normal * (1.2*animations.duration.small)
     property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
     property int maxWidth: root.isHorizontal ? root.height : root.width

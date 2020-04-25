@@ -53,9 +53,9 @@ AbilityDefinition.Animations {
     //C3 property int animationStep -> hoverPixelSensitivity
     //C4 property int animationsZoomFactor -> minZoomFactor
 
-    active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
 
     //! animations properties
+    active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
     hasThicknessAnimation:  (needBothAxis.count>0) || (needThickness.count>0)
 
     duration.large: LatteCore.Environment.longDuration
