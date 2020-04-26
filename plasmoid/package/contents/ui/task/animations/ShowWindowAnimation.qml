@@ -27,7 +27,7 @@ import org.kde.latte.core 0.2 as LatteCore
 ///item's added Animation
 SequentialAnimation{
     id:showWindowAnimation
-    property int speed: root.animationNewWindowSliding ? taskItem.animations.speedFactor.normal * (1.2*taskItem.animations.duration.large) : 0
+    property int speed: root.animationNewWindowSliding ? (1.2 * taskItem.animations.speedFactor.normal * taskItem.animations.duration.large) : 0
     property bool animationSent: false
 
     readonly property string needLengthEvent: showWindowAnimation + "_showwindow"

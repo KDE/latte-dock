@@ -1266,6 +1266,7 @@ Item {
                     orientation: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Qt.Vertical : Qt.Horizontal
                     delegate: Task.TaskItem{
                         animations: _animations
+                        container: _container
                     }
 
                     property int currentSpot : -1000

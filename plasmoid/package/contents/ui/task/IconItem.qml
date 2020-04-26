@@ -118,12 +118,12 @@ Item{
 
     TitleTooltipParent{
         id: titleTooltipParent
-        thickness: root.zoomFactor * (container.iconSize + root.thickMargins)
+        thickness: root.zoomFactor * (taskItem.container.iconSize + root.thickMargins)
     }
 
     TitleTooltipParent{
         id: previewsTooltipParent
-        thickness: root.zoomFactor * (container.iconSize + root.thickMargins) + 1
+        thickness: root.zoomFactor * (taskItem.container.iconSize + root.thickMargins) + 1
     }
 
     //!
@@ -185,12 +185,12 @@ Item{
                 }
             }
 
-            property int zoomedSize: root.zoomFactor * container.iconSize
+            property int zoomedSize: root.zoomFactor * taskItem.container.iconSize
 
-            property real basicScalingWidth : wrapper.inTempScaling ? (container.iconSize * wrapper.scaleWidth) :
-                                                                      container.iconSize * wrapper.mScale
-            property real basicScalingHeight : wrapper.inTempScaling ? (container.iconSize * wrapper.scaleHeight) :
-                                                                       container.iconSize * wrapper.mScale
+            property real basicScalingWidth : wrapper.inTempScaling ? (taskItem.container.iconSize * wrapper.scaleWidth) :
+                                                                      taskItem.container.iconSize * wrapper.mScale
+            property real basicScalingHeight : wrapper.inTempScaling ? (taskItem.container.iconSize * wrapper.scaleHeight) :
+                                                                       taskItem.container.iconSize * wrapper.mScale
 
             property real newTempSize: {
                 if (wrapper.opacity === 1 ) {
@@ -254,7 +254,7 @@ Item{
                     to: "*"
                     enabled: !fastRestoreAnimation.running && !taskItem.inMimicParabolicAnimation
 
-                    AnchorAnimation { duration: 1.5*taskItem.animations.speedFactor.current*taskItem.animations.duration.large }
+                    AnchorAnimation { duration: 1.5 * taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
                 }
             ]
         } //IconImageBuffer
@@ -296,7 +296,7 @@ Item{
             property bool showAudio: (root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator) && !shortcutBadge.active
 
             Behavior on activateProgress {
-                NumberAnimation { duration: taskItem.animations.speedFactor.current*2*taskItem.animations.duration.large }
+                NumberAnimation { duration: 2 * taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
             }
 
             sourceComponent: Item{
@@ -564,7 +564,7 @@ Item{
             contrast: 0.1
 
             Behavior on opacity {
-                NumberAnimation { duration: taskItem.animations.speedFactor.current*taskItem.animations.duration.large }
+                NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
             }
         }
 
@@ -599,8 +599,8 @@ Item{
         height: !root.vertical ? thickness : length
         anchors.centerIn: parent
 
-        readonly property int length: container.iconSize + root.lengthMargins
-        readonly property int thickness: container.iconSize + root.thickMargins
+        readonly property int length: taskItem.container.iconSize + root.lengthMargins
+        readonly property int thickness: taskItem.container.iconSize + root.thickMargins
 
         readonly property real applyOpacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
                                              && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 0.7 : 0
@@ -661,7 +661,7 @@ Item{
         Transition{
             id: isDraggedTransition
             to: "isDragged"
-            property int speed: taskItem.animations.speedFactor.current*taskItem.animations.duration.large
+            property int speed: taskItem.animations.speedFactor.current * taskItem.animations.duration.large
 
             SequentialAnimation{
                 ScriptAction{
@@ -730,7 +730,7 @@ Item{
             id: defaultTransition
             from: "isDragged"
             to: "*"
-            property int speed: taskItem.animations.speedFactor.current*taskItem.animations.duration.large
+            property int speed: taskItem.animations.speedFactor.current * taskItem.animations.duration.large
 
             SequentialAnimation{
                 ScriptAction{
@@ -787,7 +787,7 @@ Item{
                 if(!running){
                     var halfZoom = 1 + ((root.zoomFactor - 1) / 2);
 
-                    wrapper.calculateScales((container.iconSize+root.thickMargins)/2);
+                    wrapper.calculateScales((taskItem.container.iconSize+root.thickMargins)/2);
 
                     taskItem.animationEnded();
                     //   root.animations--;

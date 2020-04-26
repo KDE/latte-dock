@@ -28,7 +28,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 SequentialAnimation{
     id:newWindowAnimation
 
-    property int speed: taskItem.animations.speedFactor.normal*1.2*taskItem.animations.duration.large
+    property int speed: 1.2 * taskItem.animations.speedFactor.normal * taskItem.animations.duration.large
     property bool isDemandingAttention: taskItem.inAttention
     property bool containsMouse: taskItem.containsMouse
 

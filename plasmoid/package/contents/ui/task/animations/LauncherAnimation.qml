@@ -28,7 +28,7 @@ SequentialAnimation{
     id:launcherAnimation
 
     property bool launchedAlready: false
-    property int speed: taskItem.animations.speedFactor.current * 0.9 * taskItem.animations.duration.large
+    property int speed: 0.9 * taskItem.animations.speedFactor.current * taskItem.animations.duration.large
 
     readonly property string needThicknessEvent: launcherAnimation + "_launcher"
 

@@ -59,14 +59,14 @@ Item {
     readonly property int windowsCount: taskIsValid ? taskItem.windowsCount : 0
     readonly property int windowsMinimizedCount: taskIsValid ? taskItem.windowsMinimizedCount : 0
 
-    readonly property int currentIconSize: container.iconSize
-    readonly property int maxIconSize: container.maxIconSize
+    readonly property int currentIconSize: taskIsValid ? taskItem.container.iconSize : container.iconSize
+    readonly property int maxIconSize: taskIsValid ? taskItem.container.maxIconSize : container.iconSize
     readonly property real scaleFactor: taskIsValid ? taskItem.wrapperAlias.mScale : 1
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
-    readonly property bool animationsEnabled: animations.active
-    readonly property real durationTime: animations.speedFactor.current
+    readonly property bool animationsEnabled: taskIsValid ? taskItem.animations.active : animations.active
+    readonly property real durationTime: taskIsValid ? taskItem.animations.speedFactor.current : animations.speedFactor.current
 
     readonly property bool progressVisible: wrapper.progressVisible /*since 0.9.2*/
     readonly property real progress: wrapper.progress /*since 0.9.2*/

@@ -114,7 +114,7 @@ Item{
             ParallelAnimation{
                 id: componentRemoveAnimation
 
-                property int speed: 2*taskItem.animations.speedFactor.normal*taskItem.animations.duration.large
+                property int speed: 2 * taskItem.animations.speedFactor.normal * taskItem.animations.duration.large
                 property Item removingItem: parent
                 property int toPoint: 0
 
@@ -149,10 +149,10 @@ Item{
 
                 if( (root.location === PlasmaCore.Types.BottomEdge) ||
                         (root.location === PlasmaCore.Types.RightEdge) ){
-                    componentRemoveAnimation.toPoint = tempPoint + container.iconSize;
+                    componentRemoveAnimation.toPoint = tempPoint + taskItem.container.iconSize;
                 }
                 else{
-                    componentRemoveAnimation.toPoint = tempPoint - container.iconSize;
+                    componentRemoveAnimation.toPoint = tempPoint - taskItem.container.iconSize;
                 }
 
                 visible = true;

@@ -53,7 +53,7 @@ MouseArea{
 
         if (isSeparator) {
             if (root.vertical) {
-                return container.iconSize + root.thickMargins + root.screenEdgeMargin;
+                return taskItem.container.iconSize + root.thickMargins + root.screenEdgeMargin;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
                     return LatteCore.Environment.separatorLength+2*root.lengthExtMargin;
@@ -80,7 +80,7 @@ MouseArea{
 
         if (isSeparator) {
             if (!root.vertical) {
-                return container.iconSize + root.thickMargins + root.screenEdgeMargin;
+                return taskItem.container.iconSize + root.thickMargins + root.screenEdgeMargin;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
                     return LatteCore.Environment.separatorLength+2*root.lengthExtMargin;
@@ -138,14 +138,14 @@ MouseArea{
     property bool isWindow: (IsWindow === true) ? true : false
     property bool isZoomed: false
 
-    property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=container.iconSize && height>=container.iconSize
+    property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=taskItem.container.iconSize && height>=taskItem.container.iconSize
                                         && !taskItem.delayingRemove
                                         && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //don't publish during zoomFactor
 
     property bool pressed: false
     property bool wheelIsBlocked: false
 
-    property int animationTime: (animations.active ? animations.speedFactor.current : 2) * (1.2 *animations.duration.small)
+    property int animationTime: (taskItem.animations.active ? taskItem.animations.speedFactor.current : 2) * (1.2 *taskItem.animations.duration.small)
     property int badgeIndicator: 0 //it is used from external apps
     property int hoveredIndex: icList.hoveredIndex
     property int itemIndex: index
@@ -154,7 +154,7 @@ MouseArea{
     property int pressX: -1
     property int pressY: -1
     property int resistanceDelay: 450
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*container.iconSize) - root.lengthMargins)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*taskItem.container.iconSize) - root.lengthMargins)
     property int windowsCount: subWindows.windowsCount
     property int windowsMinimizedCount: subWindows.windowsMinimized
 
@@ -180,6 +180,7 @@ MouseArea{
 
     //abilities
     property Item animations: null
+    property Item container: null
 
     onModelLauncherUrlChanged: {
         if (modelLauncherUrl !== ""){
@@ -249,7 +250,7 @@ MouseArea{
 
     Behavior on opacity {
         // NumberAnimation { duration: (IsStartup || (IsLauncher) ) ? 0 : 400 }
-        NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
+        NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
     }
 
     Loader{
@@ -311,7 +312,7 @@ MouseArea{
         property real opacityN: isSeparator && root.contextMenu && root.contextMenu.visualParent === taskItem ? 1 : 0
 
         Behavior on opacityN {
-            NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
+            NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
         }
 
         sourceComponent: Rectangle{
@@ -348,13 +349,13 @@ MouseArea{
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
 
-        width: root.vertical ? container.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
-        height: !root.vertical ? container.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
+        width: root.vertical ? taskItem.container.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
+        height: !root.vertical ? taskItem.container.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
 
         property bool forceHiddenState: false
 
         Behavior on opacity {
-            NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
+            NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
         }
 
         function updateForceHiddenState() {
@@ -425,8 +426,8 @@ MouseArea{
         Rectangle {
             anchors.centerIn: parent
 
-            width: root.vertical ? container.iconSize - 4  : 1
-            height: !root.vertical ? container.iconSize - 4 : 1
+            width: root.vertical ? taskItem.container.iconSize - 4  : 1
+            height: !root.vertical ? taskItem.container.iconSize - 4 : 1
             color: enforceLattePalette ? latteBridge.palette.textColor : theme.textColor
         }
 
@@ -441,7 +442,7 @@ MouseArea{
         opacity: separatorItem.forceHiddenState ? 0 : 0.4
 
         Behavior on opacity {
-            NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
+            NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
         }
 
         sourceComponent: DropShadow{
@@ -734,7 +735,7 @@ MouseArea{
                     || root.globalDirectRender || !scalesUpdatedOnce) {
                 if(root.dragSource == null){
                     var step = Math.abs(icList.currentSpot-mousePos);
-                    if (step >= animations.hoverPixelSensitivity){
+                    if (step >= taskItem.animations.hoverPixelSensitivity){
                         icList.currentSpot = mousePos;
 
                         wrapper.calculateScales(mousePos);
@@ -902,7 +903,7 @@ MouseArea{
         pressed = false;
 
         if(!inAnimation) {
-            startCheckRestoreZoomTimer(3*animations.duration.large);
+            startCheckRestoreZoomTimer(3 * taskItem.animations.duration.large);
         }
     }
 
@@ -1309,7 +1310,7 @@ MouseArea{
             var adjX = Math.min(limits.x+limits.width, Math.max(limits.x, globalChoords.x));
             var adjY = Math.min(limits.y+limits.height, Math.max(limits.y, globalChoords.y));
 
-            var length = container.iconSize * wrapper.mScale;
+            var length = taskItem.container.iconSize * wrapper.mScale;
             var thickness = length;
 
             //! Magic Lamp effect doesn't like coordinates outside the screen and
@@ -1659,8 +1660,8 @@ MouseArea{
     //launchers delay A LOT to reappear, e.g google-chrome
     //I will blacklist google-chrome as I have not found any other case for this bug
     //to appear, but even this way there are cases that still appears...
-    property int mainDelay: (AppId == "google-chrome") ? 0 : 2*animations.speedFactor.current*showWindowAnimation.speed
-    property int windowDelay: taskItem.isStartup ? 3*animations.speedFactor.current*animations.duration.large : mainDelay
+    property int mainDelay: (AppId == "google-chrome") ? 0 : 2 * taskItem.animations.speedFactor.current * showWindowAnimation.speed
+    property int windowDelay: taskItem.isStartup ? 3 * taskItem.animations.speedFactor.current * taskItem.animations.duration.large : mainDelay
 
     Component {
         id: delayShowWindow

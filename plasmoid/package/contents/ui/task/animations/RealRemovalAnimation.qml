@@ -112,7 +112,7 @@ SequentialAnimation {
         duration:  taskItem.inBouncingAnimation  && !taskItem.isSeparator? 4*launcherSpeedStep + 50 : 0
         easing.type: Easing.InQuad
 
-        property int launcherSpeedStep: taskItem.animations.speedFactor.current * 0.8 * taskItem.animations.duration.large
+        property int launcherSpeedStep: 0.8 * taskItem.animations.speedFactor.current * taskItem.animations.duration.large
     }
     //end of ghost animation
 
