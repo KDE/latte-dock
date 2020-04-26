@@ -65,8 +65,8 @@ Item {
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
-    readonly property bool animationsEnabled: root.animationsEnabled
-    readonly property real durationTime: root.durationTime
+    readonly property bool animationsEnabled: animations.active
+    readonly property real durationTime: animations.speedFactor.current
 
     readonly property bool progressVisible: wrapper.progressVisible /*since 0.9.2*/
     readonly property real progress: wrapper.progress /*since 0.9.2*/

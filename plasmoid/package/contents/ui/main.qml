@@ -33,6 +33,7 @@ import org.kde.activities 0.1 as Activities
 
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
+
 import org.kde.latte.abilities.applets 0.1 as AppletAbility
 
 import org.kde.latte.private.tasks 0.1 as LatteTasks
@@ -186,7 +187,6 @@ Item {
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
-    property int animationStep: latteView ? latteView.animationStep : 1
     property int directRenderAnimationTime: latteView ? latteView.directRenderAnimationTime : 0
     property int dockHoveredIndex : latteView ? latteView.hoveredIndex : -1
 
@@ -233,23 +233,14 @@ Item {
     readonly property real currentPanelOpacity: latteView ? latteView.currentPanelTransparency / 100 : 1
 
     //! Animations
-    property bool animationsEnabled: latteView ? latteView.animationsEnabled : durationTime !== 0
-    property bool animationLauncherBouncing: animationsEnabled && plasmoid.configuration.animationLauncherBouncing
-    property bool animationWindowInAttention: animationsEnabled && plasmoid.configuration.animationWindowInAttention
-    property bool animationNewWindowSliding: animationsEnabled && plasmoid.configuration.animationNewWindowSliding
-    property bool animationWindowAddedInGroup: animationsEnabled && plasmoid.configuration.animationWindowAddedInGroup
-    property bool animationWindowRemovedFromGroup: animationsEnabled && plasmoid.configuration.animationWindowRemovedFromGroup
+    property bool animationLauncherBouncing: animations.active && plasmoid.configuration.animationLauncherBouncing
+    property bool animationWindowInAttention: animations.active && plasmoid.configuration.animationWindowInAttention
+    property bool animationNewWindowSliding: animations.active && plasmoid.configuration.animationNewWindowSliding
+    property bool animationWindowAddedInGroup: animations.active && plasmoid.configuration.animationWindowAddedInGroup
+    property bool animationWindowRemovedFromGroup: animations.active && plasmoid.configuration.animationWindowRemovedFromGroup
 
-    property real animationsZoomFactor: latteView ? latteView.animationsZoomFactor : durationTime === 0 ? 1 : 1.65
-    property real maxZoomFactor: latteView ? latteView.maxZoomFactor : Math.max(zoomFactor, animationsZoomFactor)
+    property real maxZoomFactor: latteView ? latteView.maxZoomFactor : Math.max(zoomFactor, animations.minZoomFactor)
 
-    readonly property real animationsSpeed2: plasma518 ? 1.00 : 2.00
-
-    readonly property int shortDuration: latteView ? latteView.shortDuration : LatteCore.Environment.shortDuration
-    readonly property int longDuration: latteView ? latteView.longDuration : LatteCore.Environment.longDuration
-
-    property real appliedDurationTime: animationsEnabled ? durationTime : animationsSpeed2
-    property real durationTime: latteView ? latteView.durationTime : plasmoid.configuration.durationTime
     property real zoomFactor: latteView ? latteView.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
 
     property int appShadowSize: latteView ? latteView.appShadowSize : Math.ceil(0.12*container.iconSize)
@@ -291,9 +282,6 @@ Item {
     signal presentWindows(variant winIds);
     signal requestLayout;
     signal separatorsUpdated();
-    signal signalAnimationsNeedBothAxis(int value);
-    signal signalAnimationsNeedLength(int value);
-    signal signalAnimationsNeedThickness(int value);
     signal signalPreviewsShown();
     //signal signalDraggingState(bool value);
     signal showPreviewForTasks(QtObject group);
@@ -640,7 +628,7 @@ Item {
     Timer{
         id: delayWindowRemovalTimer
         //this is the animation time needed in order for tasks to restore their zoom first
-        interval: 7 * (root.durationTime * root.shortDuration)
+        interval: 7 * (animations.speedFactor.current * animations.duration.small)
 
         property var modelIndex
 
@@ -1005,7 +993,7 @@ Item {
         repeat:false;
         interval: 120
 
-        property int normalInterval: Math.max(120, 2 * (root.durationTime * 1.2 * root.shortDuration) + 50)
+        property int normalInterval: Math.max(120, 2 * (animations.speedFactor.current * 1.2 * animations.duration.small) + 50)
 
         onTriggered: {
             if(root.latteView)
@@ -1043,7 +1031,7 @@ Item {
     //! zoom-in animations will have ended.
     Timer{
         id:directRenderDelayerForEnteringTimer
-        interval: 3.2 * root.durationTime * root.shortDuration
+        interval: 3.2 * animations.speedFactor.current * animations.duration.small
     }
 
     //this timer restores the draggingPhase flag to false
@@ -1089,7 +1077,7 @@ Item {
         property int smallSize: Math.max(0.10 * container.iconSize, 16)
 
         Behavior on opacity{
-            NumberAnimation { duration: root.durationTime*root.longDuration }
+            NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
         }
 
         /// plasmoid's default panel
@@ -1106,7 +1094,7 @@ Item {
             verticalTileMode: BorderImage.Stretch
 
             Behavior on opacity{
-                NumberAnimation { duration: root.durationTime*root.longDuration }
+                NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
             }
         }
 
@@ -1152,7 +1140,7 @@ Item {
                                         plasmoid.configuration.panelSize + belower.width
 
             Behavior on opacity{
-                NumberAnimation { duration: root.durationTime*root.longDuration }
+                NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
             }
 
 
@@ -1276,7 +1264,9 @@ Item {
                     height: root.vertical ? contentHeight : mouseHandler.maxSize
                     boundsBehavior: Flickable.StopAtBounds
                     orientation: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Qt.Vertical : Qt.Horizontal
-                    delegate: Task.TaskItem{}
+                    delegate: Task.TaskItem{
+                        animations: _animations
+                    }
 
                     property int currentSpot : -1000
                     property int hoveredIndex : -1
@@ -1293,7 +1283,7 @@ Item {
 
                     //more of a trouble
                     moveDisplaced: Transition {
-                        NumberAnimation { properties: "x,y"; duration: root.durationTime*root.longDuration; easing.type: Easing.Linear }
+                        NumberAnimation { properties: "x,y"; duration: animations.speedFactor.current*animations.duration.large; easing.type: Easing.Linear }
                     }
 
                     ///this transition can not be used with dragging !!!! I breaks
@@ -1369,7 +1359,7 @@ Item {
             visible: backgroundOpacity > 0
             radius: container.iconSize/10
             backgroundOpacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 0.75 : 0
-            duration: root.durationTime
+            duration: animations.speedFactor.current
 
             title: i18n("Tasks Area")
         }

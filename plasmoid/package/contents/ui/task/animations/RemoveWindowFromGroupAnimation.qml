@@ -114,7 +114,7 @@ Item{
             ParallelAnimation{
                 id: componentRemoveAnimation
 
-                property int speed: 2*root.appliedDurationTime*root.longDuration
+                property int speed: 2*taskItem.animations.speedFactor.normal*taskItem.animations.duration.large
                 property Item removingItem: parent
                 property int toPoint: 0
 

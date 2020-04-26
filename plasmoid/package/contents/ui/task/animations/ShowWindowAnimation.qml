@@ -27,8 +27,10 @@ import org.kde.latte.core 0.2 as LatteCore
 ///item's added Animation
 SequentialAnimation{
     id:showWindowAnimation
-    property int speed: root.animationNewWindowSliding ? root.appliedDurationTime* (1.2*root.longDuration) : 0
+    property int speed: root.animationNewWindowSliding ? taskItem.animations.speedFactor.normal * (1.2*taskItem.animations.duration.large) : 0
     property bool animationSent: false
+
+    readonly property string needLengthEvent: showWindowAnimation + "_showwindow"
 
     //Ghost animation that acts as a delayer, in order to fix #342
     PropertyAnimation {
@@ -45,7 +47,7 @@ SequentialAnimation{
         script:{
             if (!showWindowAnimation.animationSent) {
                 showWindowAnimation.animationSent = true;
-                root.signalAnimationsNeedLength(1);
+                taskItem.animations.needLength.addEvent(needLengthEvent);
             }
         }
     }
@@ -95,7 +97,7 @@ SequentialAnimation{
         taskItem.inAnimation = false;
 
         if (showWindowAnimation.animationSent) {
-            root.signalAnimationsNeedLength(-1);
+            taskItem.animations.needLength.removeEvent(needLengthEvent);
             showWindowAnimation.animationSent = false;
         }
     }
@@ -165,7 +167,7 @@ SequentialAnimation{
             wrapper.opacity = 1;
             taskItem.inAnimation = false;
         } else if (( animation2 || animation3 || animation6 || isForcedHidden)
-                   && (root.durationTime !== 0) && !launcherIsAlreadyShown){
+                   && (taskItem.animations.speedFactor.current !== 0) && !launcherIsAlreadyShown){
             isForcedHidden = false;
             taskItem.visible = true;
             wrapper.tempScaleWidth = 0;
@@ -198,7 +200,7 @@ SequentialAnimation{
         if (animationSent){
             //console.log("SAFETY REMOVAL 2: animation removing ended");
             animationSent = false;
-            root.signalAnimationsNeedLength(-1);
+            taskItem.animations.needLength.removeEvent(needLengthEvent);
         }
     }
 }

@@ -38,7 +38,7 @@ import "indicator" as Indicator
 MouseArea{
     id: taskItem
 
-    visible: false //true//(isStartup && root.durationTime !== 0) ? false : true
+    visible: false //true//(isStartup && animations.speedFactor.current !== 0) ? false : true
 
     anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
     anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
@@ -145,7 +145,7 @@ MouseArea{
     property bool pressed: false
     property bool wheelIsBlocked: false
 
-    property int animationTime: (animationsEnabled ? root.durationTime : 2) * (1.2 *root.shortDuration)
+    property int animationTime: (animations.active ? animations.speedFactor.current : 2) * (1.2 *animations.duration.small)
     property int badgeIndicator: 0 //it is used from external apps
     property int hoveredIndex: icList.hoveredIndex
     property int itemIndex: index
@@ -177,6 +177,9 @@ MouseArea{
     property Item tooltipVisualParent: wrapper.titleTooltipVisualParent
     property Item previewsVisualParent: wrapper.previewsTooltipVisualParent
     property Item wrapperAlias: wrapper
+
+    //abilities
+    property Item animations: null
 
     onModelLauncherUrlChanged: {
         if (modelLauncherUrl !== ""){
@@ -246,7 +249,7 @@ MouseArea{
 
     Behavior on opacity {
         // NumberAnimation { duration: (IsStartup || (IsLauncher) ) ? 0 : 400 }
-        NumberAnimation { duration: root.durationTime*root.longDuration }
+        NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
     }
 
     Loader{
@@ -308,7 +311,7 @@ MouseArea{
         property real opacityN: isSeparator && root.contextMenu && root.contextMenu.visualParent === taskItem ? 1 : 0
 
         Behavior on opacityN {
-            NumberAnimation { duration: root.durationTime*root.longDuration }
+            NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
         }
 
         sourceComponent: Rectangle{
@@ -351,7 +354,7 @@ MouseArea{
         property bool forceHiddenState: false
 
         Behavior on opacity {
-            NumberAnimation { duration: root.durationTime*root.longDuration }
+            NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
         }
 
         function updateForceHiddenState() {
@@ -438,7 +441,7 @@ MouseArea{
         opacity: separatorItem.forceHiddenState ? 0 : 0.4
 
         Behavior on opacity {
-            NumberAnimation { duration: root.durationTime*root.longDuration }
+            NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
         }
 
         sourceComponent: DropShadow{
@@ -731,7 +734,7 @@ MouseArea{
                     || root.globalDirectRender || !scalesUpdatedOnce) {
                 if(root.dragSource == null){
                     var step = Math.abs(icList.currentSpot-mousePos);
-                    if (step >= root.animationStep){
+                    if (step >= animations.hoverPixelSensitivity){
                         icList.currentSpot = mousePos;
 
                         wrapper.calculateScales(mousePos);
@@ -899,7 +902,7 @@ MouseArea{
         pressed = false;
 
         if(!inAnimation) {
-            startCheckRestoreZoomTimer(3*root.longDuration);
+            startCheckRestoreZoomTimer(3*animations.duration.large);
         }
     }
 
@@ -1579,7 +1582,7 @@ MouseArea{
 
     TaskAnimations.ShowWindowAnimation{ id: showWindowAnimation }
 
-    TaskAnimations.RestoreAnimation{ id: restoreAnimation}
+    TaskAnimations.RestoreAnimation{ id: restoreAnimation }
 
     //A Timer to check how much time the task is hovered in order to check if we must
     //show window previews
@@ -1656,8 +1659,8 @@ MouseArea{
     //launchers delay A LOT to reappear, e.g google-chrome
     //I will blacklist google-chrome as I have not found any other case for this bug
     //to appear, but even this way there are cases that still appears...
-    property int mainDelay: (AppId == "google-chrome") ? 0 : 2*root.durationTime*showWindowAnimation.speed
-    property int windowDelay: taskItem.isStartup ? 3*root.durationTime*root.longDuration : mainDelay
+    property int mainDelay: (AppId == "google-chrome") ? 0 : 2*animations.speedFactor.current*showWindowAnimation.speed
+    property int windowDelay: taskItem.isStartup ? 3*animations.speedFactor.current*animations.duration.large : mainDelay
 
     Component {
         id: delayShowWindow

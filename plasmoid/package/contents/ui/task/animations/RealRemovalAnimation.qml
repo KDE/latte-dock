@@ -46,6 +46,9 @@ SequentialAnimation {
                                     && !taskItem.inBouncingAnimation
                                     && !taskItem.isSeparator
                                     && taskItem.visible;
+
+    readonly property string needLengthEvent: taskRealRemovalAnimation + "_realremoval"
+
     ScriptAction{
         script:{
             //! When a window is removed and afterwards its launcher must be shown immediately!
@@ -88,7 +91,7 @@ SequentialAnimation {
             // console.log("1." + taskItem.launcherUrl + " - " + taskRealRemovalAnimation.enabledAnimation);
             // console.log("2." + root.launcherForRemoval + " - " + taskItem.isLauncher);
 
-            root.signalAnimationsNeedLength(1);
+            taskItem.animations.needLength.addEvent(needLengthEvent);
 
             if (wrapper.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation
                     && !taskItem.inBouncingAnimation && LatteCore.WindowSystem.compositingActive) {
@@ -109,7 +112,7 @@ SequentialAnimation {
         duration:  taskItem.inBouncingAnimation  && !taskItem.isSeparator? 4*launcherSpeedStep + 50 : 0
         easing.type: Easing.InQuad
 
-        property int launcherSpeedStep: root.durationTime * 0.8 * root.longDuration
+        property int launcherSpeedStep: taskItem.animations.speedFactor.current * 0.8 * taskItem.animations.duration.large
     }
     //end of ghost animation
 
@@ -159,10 +162,10 @@ SequentialAnimation {
             if (showWindowAnimation.animationSent){
                 //console.log("SAFETY REMOVAL 1: animation removing ended");
                 showWindowAnimation.animationSent = false;
-                root.signalAnimationsNeedLength(-1);
+                taskItem.animations.needLength.removeEvent(showWindowAnimation.needLengthEvent);
             }
 
-            root.signalAnimationsNeedLength(-1);
+            taskItem.animations.needLength.removeEvent(needLengthEvent);
 
             if(taskItem.launcherUrl===root.launcherForRemoval && taskItem.isLauncher)
                 root.launcherForRemoval="";

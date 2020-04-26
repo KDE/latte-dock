@@ -39,7 +39,7 @@ Item{
                 return (container.iconSize + root.widthMargins + root.screenEdgeMargin);
         }
 
-        if (taskItem.isStartup && root.durationTime !==0 ) {
+        if (taskItem.isStartup && taskItem.animations.speedFactor.current !==0 ) {
             return root.vertical ? cleanScalingWidth + root.screenEdgeMargin : cleanScalingWidth;
         } else {
             return root.vertical ? showDelegateWidth + root.screenEdgeMargin : showDelegateWidth;
@@ -57,7 +57,7 @@ Item{
                 return (container.iconSize + root.heightMargins + root.screenEdgeMargin);
         }
 
-        if (taskItem.isStartup && root.durationTime !==0){
+        if (taskItem.isStartup && taskItem.animations.speedFactor.current !==0){
             return !root.vertical ? cleanScalingHeight + root.screenEdgeMargin : cleanScalingHeight;
         } else {
             return !root.vertical ? showDelegateHeight + root.screenEdgeMargin : showDelegateHeight;
@@ -113,6 +113,7 @@ Item{
 
     signal runLauncherAnimation();
 
+    readonly property string bothAxisZoomEvent: wrapper + "_zoom"
      /* Rectangle{
             anchors.fill: parent
             border.width: 1
@@ -227,7 +228,7 @@ Item{
     function sendEndOfNeedBothAxisAnimation(){
         if (taskItem.isZoomed) {
             taskItem.isZoomed = false;
-            root.signalAnimationsNeedBothAxis(-1);
+            taskItem.animations.needBothAxis.removeEvent(bothAxisZoomEvent);
         }
     }
 
@@ -252,7 +253,7 @@ Item{
 
         if ((mScale > 1) && !taskItem.isZoomed) {
             taskItem.isZoomed = true;
-            root.signalAnimationsNeedBothAxis(1);
+            taskItem.animations.needBothAxis.addEvent(bothAxisZoomEvent);
         } else if ((mScale == 1) && taskItem.isZoomed) {
             sendEndOfNeedBothAxisAnimation();
         }

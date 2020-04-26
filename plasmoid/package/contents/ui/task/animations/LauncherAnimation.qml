@@ -28,7 +28,9 @@ SequentialAnimation{
     id:launcherAnimation
 
     property bool launchedAlready: false
-    property int speed: root.durationTime * 0.9 * root.longDuration
+    property int speed: taskItem.animations.speedFactor.current * 0.9 * taskItem.animations.duration.large
+
+    readonly property string needThicknessEvent: launcherAnimation + "_launcher"
 
     SequentialAnimation{
         ScriptAction {
@@ -76,7 +78,7 @@ SequentialAnimation{
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
                 to: 1
-                duration: root.durationTime*launcherAnimation.speed
+                duration: taskItem.animations.speedFactor.current*launcherAnimation.speed
                 easing.type: Easing.OutBounce
             }
 
@@ -84,7 +86,7 @@ SequentialAnimation{
                 target: wrapper
                 property: "mScale"
                 to: 1
-                duration: root.durationTime*launcherAnimation.speed
+                duration: taskItem.animations.speedFactor.current*launcherAnimation.speed
                 easing.type: Easing.OutQuad
             }
         }
@@ -109,7 +111,7 @@ SequentialAnimation{
         }
 
         if ( launchedAlready ) {
-            root.signalAnimationsNeedThickness(-1);
+            taskItem.animations.needThickness.removeEvent(needThicknessEvent);
         }
 
         launchedAlready = false;
@@ -119,7 +121,7 @@ SequentialAnimation{
         //console.log ("Nooo 1 : "+root.noTasksInAnimation);
         if(!launchedAlready) {
             launchedAlready = true;
-            root.signalAnimationsNeedThickness(1);
+            taskItem.animations.needThickness.addEvent(needThicknessEvent);
 
             if (root.latteView)
                 root.latteView.disableDirectRender();

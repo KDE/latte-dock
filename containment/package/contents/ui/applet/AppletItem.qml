@@ -506,9 +506,6 @@ Item {
             appletItem.latteApplet.latteView = root;
             appletItem.latteApplet.forceHidePanel = true;
 
-          /*  appletItem.latteApplet.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
-            appletItem.latteApplet.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
-            appletItem.latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);*/
             appletItem.latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
             appletItem.latteApplet.clearZoomSignal.connect(titleTooltipDialog.hide);
         }
@@ -545,9 +542,6 @@ Item {
         root.destroyInternalViewSplitters.disconnect(slotDestroyInternalViewSplitters);
 
         if (appletItem.latteApplet) {
-            /*appletItem.latteApplet.signalAnimationsNeedBothAxis.disconnect(slotAnimationsNeedBothAxis);
-            appletItem.latteApplet.signalAnimationsNeedLength.disconnect(slotAnimationsNeedLength);
-            appletItem.latteApplet.signalAnimationsNeedThickness.disconnect(slotAnimationsNeedThickness);*/
             appletItem.latteApplet.signalPreviewsShown.disconnect(slotPreviewsShown);
             appletItem.latteApplet.clearZoomSignal.disconnect(titleTooltipDialog.hide);
         }

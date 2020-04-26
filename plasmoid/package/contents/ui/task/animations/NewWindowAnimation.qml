@@ -28,10 +28,11 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 SequentialAnimation{
     id:newWindowAnimation
 
-    property int speed: root.appliedDurationTime*1.2*root.longDuration
+    property int speed: taskItem.animations.speedFactor.normal*1.2*taskItem.animations.duration.large
     property bool isDemandingAttention: taskItem.inAttention
     property bool containsMouse: taskItem.containsMouse
-    property bool needsThicknessSent: false //flag to check if the signal for thickness was sent
+
+    readonly property string needThicknessEvent: newWindowAnimation + "_newwindow"
 
     SequentialAnimation{
         alwaysRunToEnd: true
@@ -40,7 +41,7 @@ SequentialAnimation{
             PropertyAnimation {
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                to: 1 + (thickPercentage * 2 * (root.animationsZoomFactor-1))
+                to: 1 + (thickPercentage * 2 * (taskItem.animations.minZoomFactor-1))
                 duration: newWindowAnimation.speed
                 easing.type: Easing.OutQuad
 
@@ -79,20 +80,13 @@ SequentialAnimation{
     }
 
     onStopped: {
-        sendEndOfNeedThicknessAnimation();
+        taskItem.animations.needThickness.removeEvent(needThicknessEvent);
         clear();
     }
 
     onIsDemandingAttentionChanged: {
         if(isDemandingAttention){
             bounceNewWindow();
-        }
-    }
-
-    function sendEndOfNeedThicknessAnimation(){
-        if (needsThicknessSent) {
-            needsThicknessSent = false;
-            root.signalAnimationsNeedThickness(-1);
         }
     }
 
@@ -110,12 +104,7 @@ SequentialAnimation{
             taskItem.inAttentionAnimation = true;
         }
 
-        if (!needsThicknessSent) {
-            needsThicknessSent = true;
-            root.signalAnimationsNeedThickness(1);
-        }
-
-        // icList.hoveredIndex = -1;
+        taskItem.animations.needThickness.addEvent(needThicknessEvent);
     }
 
     function bounceNewWindow(){
@@ -134,6 +123,6 @@ SequentialAnimation{
 
     Component.onDestruction: {
         taskItem.groupWindowAdded.disconnect(bounceNewWindow);
-        sendEndOfNeedThicknessAnimation();
+        taskItem.animations.needThickness.removeEvent(needThicknessEvent);
     }
 }
