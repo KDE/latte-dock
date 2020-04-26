@@ -181,6 +181,7 @@ MouseArea{
     //abilities
     property Item animations: null
     property Item container: null
+    property Item requires: null
 
     onModelLauncherUrlChanged: {
         if (modelLauncherUrl !== ""){

@@ -953,10 +953,20 @@ Item {
     }
 
     AppletAbility.Requirements{
-        latteSideColoringEnabled: false
-        screenEdgeMarginSupported: true
-
+        id: _requires
         bridge: latteBridge
+
+        latteSideColoringEnabled: false
+        screenEdgeMarginSupported: true        
+        innerZoomFactor: {
+            if (!_animations.active || !LatteCore.WindowSystem.compositingActive) {
+                return 1;
+            }
+
+            var hasHighThicknessAnimation = _animations.launcherBouncingEnabled || _animations.windowInAttentionEnabled || _animations.windowAddedInGroupEnabled;
+
+            return hasHighThicknessAnimation ? 1.65 : 1.0;
+        }
     }
 
     Component{
@@ -1260,6 +1270,7 @@ Item {
                     delegate: Task.TaskItem{
                         animations: _animations
                         container: _container
+                        requires: _requires
                     }
 
                     property int currentSpot : -1000

@@ -45,5 +45,4 @@ Item {
 
     //! animations related to parabolic effect
     property int hoverPixelSensitivity: 1
-    property real maxZoomFactor : 1.0
 }

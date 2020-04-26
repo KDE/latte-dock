@@ -30,6 +30,7 @@ AbilityDefinition.AppletRequirements {
     onIsActiveChanged: {
         if (isActive) {
             bridge.applet.activeIndicatorEnabled = requirements.activeIndicatorEnabled;
+            bridge.applet.innerZoomFactor = requirements.innerZoomFactor;
             bridge.applet.latteSideColoringEnabled = requirements.latteSideColoringEnabled;
             bridge.applet.latteIconOverlayEnabled = requirements.latteIconOverlayEnabled;
             bridge.applet.lengthMarginsEnabled = requirements.lengthMarginsEnabled;
@@ -42,6 +43,12 @@ AbilityDefinition.AppletRequirements {
     onActiveIndicatorEnabledChanged: {
         if (isActive) {
             bridge.applet.activeIndicatorEnabled = requirements.activeIndicatorEnabled;
+        }
+    }
+
+    onInnerZoomFactorChanged: {
+        if (isActive) {
+            bridge.applet.innerZoomFactor = requirements.innerZoomFactor;
         }
     }
 

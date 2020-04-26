@@ -38,7 +38,6 @@ AbilityDefinition.Animations {
     speedFactor: bridge ? bridge.animations.speedFactor : local.speedFactor
 
     //! parabolic effect animations
-    maxZoomFactor: bridge ? bridge.animations.maxZoomFactor : local.maxZoomFactor
     hoverPixelSensitivity: bridge ? bridge.animations.hoverPixelSensitivity : local.hoverPixelSensitivity
 
     readonly property AbilityDefinition.Animations local: AbilityDefinition.Animations{}

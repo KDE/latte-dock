@@ -64,16 +64,4 @@ ContainerAbility.Animations {
             return Math.max(5, container.iconSize / 10);
         }
     }
-
-    maxZoomFactor : {
-        if (!active || !LatteCore.WindowSystem.compositingActive) {
-            return 1;
-        }
-
-        /* if (latteApplet && (animationLauncherBouncing || animationWindowInAttention || animationWindowAddedInGroup)) {
-            return 1.65;
-        }*/
-
-        return 1;
-    }
 }
