@@ -503,7 +503,7 @@ Item {
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
 
-    property real maxZoomFactor: zoomFactor//Math.max(zoomFactor, animations.maxZoomFactor)
+    property real maxZoomFactor: Math.max(zoomFactor, _appletsRecords.maxInnerZoomFactor)
 
     property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
@@ -1532,6 +1532,7 @@ Item {
         id: appletContainerComponent
         Applet.AppletItem{
             animations: _animations
+            appletsRecords: _appletsRecords
             container: _container
         }
     }
@@ -1741,6 +1742,10 @@ Item {
         id: _animations
         container: _container
         settings: universalSettings
+    }
+
+    Ability.AppletsRecords {
+        id: _appletsRecords
     }
 
     Ability.AutoSize {

@@ -224,6 +224,7 @@ Item {
     property Item wrapperAlias: wrapper
 
     property Item animations: null
+    property Item appletsRecords: null
     property Item container: null
 
     property bool containsMouse: appletMouseArea.containsMouse /*|| appletMouseAreaBottom.containsMouse*/
@@ -525,6 +526,7 @@ Item {
 
     Component.onDestruction: {
         appletItem.animations.needBothAxis.removeEvent(appletItem);
+        appletItem.appletsRecords.removeApplet(appletItem);
 
         if (isSeparator){
             parabolicManager.setSeparator(previousIndex, -1);

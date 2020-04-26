@@ -80,6 +80,10 @@ Item{
     Connections {
         target: requires
 
+        onInnerZoomFactorChanged: {
+            appletItem.appletsRecords.setInnerZoomFactor(appletItem, requires.innerZoomFactor);
+        }
+
         onWindowsTrackingEnabledChanged: {
             if (requires.windowsTrackingEnabled && !mainCommunicator.windowsTrackingEnabledSent) {
                 mainCommunicator.windowsTrackingEnabledSent = true;
