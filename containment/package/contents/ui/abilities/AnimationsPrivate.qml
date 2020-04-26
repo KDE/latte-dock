@@ -31,29 +31,6 @@ AbilityDefinition.Animations {
 
     property Item publicApi: null
 
-    //DEPRECATED
-    //C1 property bool animationsEnabled:  -> active
-    //C11 property int animationsNeedBothAxis:0 //animations need space in both axes, e.g zooming a task
-    //C12 property int animationsNeedLength: 0 // animations need length, e.g. adding a task
-    //C13 property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
-
-    //C8 function slotAnimationsNeedBothAxis(step) {  -> events
-    //C9 function slotAnimationsNeedLength(step) {  -> event
-    //C10 function slotAnimationsNeedThickness(step) {  -> events
-
-    //C2 property bool thickAnimated: -> hasThicknessAnimation
-    //C5 property int appliedDurationTime: -> speedFactor.normal
-    //C7 property int durationTime -> speedFactor.current
-    //C6 property int animationTime -> duration.proposed
-
-    //C20 root.shortDuration -> animations.duration.small
-    //C21 root.longDuration -> animations.duration.large
-
-    //parabolic
-    //C3 property int animationStep -> hoverPixelSensitivity
-    //C4 property int animationsZoomFactor -> minZoomFactor
-
-
     //! animations properties
     active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
     hasThicknessAnimation:  (needBothAxis.count>0) || (needThickness.count>0)

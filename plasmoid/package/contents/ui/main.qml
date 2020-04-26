@@ -139,8 +139,8 @@ Item {
     property Item dragSource: null
     property Item parabolicManager: _parabolicManager
     property Item tasksExtendedManager: _tasksExtendedManager
-    readonly property Item animations: _animations
-    readonly property Item container: _container
+    readonly property alias animations: _animations
+    readonly property alias container: _container
 
     readonly property alias containsDrag: mouseHandler.containsDrag
     readonly property bool dragAreaEnabled: latteView ? (root.dragSource !== null

@@ -459,13 +459,13 @@ Item {
     property Item latteAppletContainer
     property Item latteApplet
 
-    readonly property Item animations: _animations
-    readonly property Item autosize: _autosize
-    readonly property Item container: _container
-    readonly property Item indicatorsManager: indicators
-    readonly property Item parabolicManager: _parabolicManager
-    readonly property Item maskManager: visibilityManager
-    readonly property Item layoutsContainerItem: layoutsContainer
+    readonly property alias animations: _animations
+    readonly property alias autosize: _autosize
+    readonly property alias container: _container
+    readonly property alias indicatorsManager: indicators
+    readonly property alias parabolicManager: _parabolicManager
+    readonly property alias maskManager: visibilityManager
+    readonly property alias layoutsContainerItem: layoutsContainer
 
     property QtObject latteView: null
     property QtObject shortcutsEngine: null
