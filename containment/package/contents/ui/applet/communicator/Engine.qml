@@ -55,8 +55,6 @@ Item{
     readonly property Item requires: AbilityDefinition.AppletRequirements{}
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
 
-    property bool windowsTrackingEnabledSent: false
-
     //! BEGIN OF FUNCTIONS
     function appletIconItemIsShown() {
         return appletIconItem && appletIconItem.visible;
@@ -85,13 +83,7 @@ Item{
         }
 
         onWindowsTrackingEnabledChanged: {
-            if (requires.windowsTrackingEnabled && !mainCommunicator.windowsTrackingEnabledSent) {
-                mainCommunicator.windowsTrackingEnabledSent = true;
-                root.slotAppletsNeedWindowsTracking(1);
-            } else if (!requires.windowsTrackingEnabled && mainCommunicator.windowsTrackingEnabledSent) {
-                mainCommunicator.windowsTrackingEnabledSent = false;
-                root.slotAppletsNeedWindowsTracking(-1);
-            }
+            appletItem.appletsRecords.setWindowsTrackingEnabled(appletItem, requires.windowsTrackingEnabled);
         }
     }
 
@@ -104,13 +96,6 @@ Item{
                 AppletIdentifier.reconsiderAppletIconItem();
                 overlayInitTimer.start();
             }
-        }
-    }
-
-    Component.onDestruction: {
-        if (requires.windowsTrackingEnabled && windowsTrackingEnabledSent) {
-            windowsTrackingEnabledSent = false;
-            root.slotAppletsNeedWindowsTracking(-1);
         }
     }
 

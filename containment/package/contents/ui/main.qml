@@ -252,8 +252,6 @@ Item {
     property alias hoveredIndex: layoutsContainer.hoveredIndex
     property alias directRenderDelayerIsRunning: directRenderDelayerForEnteringTimer.running
 
-    property int appletsNeedWindowsTracking: 0
-
     readonly property int minAppletLengthInConfigure: 64
     readonly property int maxJustifySplitterSize: 96
 
@@ -460,10 +458,12 @@ Item {
     property Item latteApplet
 
     readonly property alias animations: _animations
+    readonly property alias appletsRecords: _appletsRecords
     readonly property alias autosize: _autosize
     readonly property alias container: _container
     readonly property alias indicatorsManager: indicators
     readonly property alias parabolicManager: _parabolicManager
+
     readonly property alias maskManager: visibilityManager
     readonly property alias layoutsContainerItem: layoutsContainer
 
@@ -1229,14 +1229,6 @@ Item {
         }
 
         return false;
-    }
-
-    function slotAppletsNeedWindowsTracking(step) {
-        if (step === 0) {
-            return;
-        }
-
-        appletsNeedWindowsTracking = Math.max(appletsNeedWindowsTracking + step, 0);
     }
 
     function slotPreviewsShown(){

@@ -22,6 +22,7 @@ import QtQuick 2.0
 Item {
     id: records
 
+    property int windowsTrackingCount: 0 //! number of applets requesting windows tracking
     property real maxInnerZoomFactor: 1.0 //! maximum inner zoom factor based on all applets
 
     property var applets: []
@@ -44,8 +45,12 @@ Item {
         if (ind>=0) {
             //! remove
             applets.splice(ind, 1);
-            updateInnerZoomFactor();
+            updateValues();
         }
+    }
+
+    function addDefaultRecord(applet) {
+        applets.push({id: applet, innerZoomFactor: 1.0, windowsTrackingEnabled: false});
     }
 
     function setInnerZoomFactor(applet, inner) {
@@ -60,9 +65,33 @@ Item {
             }
         } else {
             //! add
-            applets.push({id: applet, innerZoomFactor: inner});
+            addDefaultRecord(applet);
+            applets[len].innerZoomFactor = inner;
             updateInnerZoomFactor();
         }
+    }
+
+    function setWindowsTrackingEnabled(applet, value) {
+        var len = applets.length;
+        var ind = indexOf(applet);
+
+        if (ind>=0) {
+            //! update
+            if(applets[ind].windowsTrackingEnabled !== value) {
+                applets[ind].windowsTrackingEnabled = value;
+                updateWindowsTrackingCount();
+            }
+        } else {
+            //! add
+            addDefaultRecord(applet);
+            applets[len].windowsTrackingEnabled = value;
+            updateWindowsTrackingCount();
+        }
+    }
+
+    function updateValues() {
+        updateInnerZoomFactor();
+        updateWindowsTrackingCount();
     }
 
     function updateInnerZoomFactor() {
@@ -76,5 +105,18 @@ Item {
         }
 
         maxInnerZoomFactor = max;
+    }
+
+    function updateWindowsTrackingCount() {
+        var len = applets.length;
+        var cnt = 0;
+
+        for (var i=0; i<len; ++i) {
+            if (applets[i].windowsTrackingEnabled) {
+                cnt = cnt + 1;
+            }
+        }
+
+        windowsTrackingCount = cnt;
     }
 }

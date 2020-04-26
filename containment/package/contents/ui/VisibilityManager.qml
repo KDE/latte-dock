@@ -336,7 +336,7 @@ Item{
                 && !(latteView.visibility.mode === LatteCore.Types.AlwaysVisible /* Visibility */
                      || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow
                      || latteView.visibility.mode === LatteCore.Types.AutoHide))
-               || root.appletsNeedWindowsTracking > 0                        /*Applets Neew Windows Tracking */
+               || appletsRecords.windowsTrackingCount > 0                    /*Applets Need Windows Tracking */
                || root.dragActiveWindowEnabled                               /*Dragging Active Window(Empty Areas)*/
                || ((root.backgroundOnlyOnMaximized                           /*Dynamic Background */
                     || plasmoid.configuration.solidBackgroundForMaximized

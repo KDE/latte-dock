@@ -786,7 +786,7 @@ Window{
             }
 
             Text{
-                text: root.appletsNeedWindowsTracking
+                text: appletsRecords.windowsTrackingCount
             }
 
             Text{
