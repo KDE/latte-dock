@@ -1,3 +1,4 @@
 module org.kde.latte.abilities.applets
 
+Animations 0.1 Animations.qml
 Requirements 0.1 Requirements.qml

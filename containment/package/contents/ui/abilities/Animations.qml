@@ -18,25 +18,62 @@
 */
 
 import QtQuick 2.7
+import org.kde.plasma.plasmoid 2.0
 
-AnimationsPrivate {
-    id: apis
+import org.kde.latte.core 0.2 as LatteCore
+import org.kde.latte.private.app 0.1 as LatteApp
 
-    publicApi: Item {
-        //! animations properties
-        readonly property alias active: apis.active
-        readonly property alias hasThicknessAnimation:  apis.hasThicknessAnimation
+import org.kde.latte.abilities.containers 0.1 as ContainerAbility
 
-        readonly property alias duration: apis.duration
-        readonly property alias speedFactor: apis.speedFactor
+ContainerAbility.Animations {
+    property Item container: null
+    property Item settings: null
 
-        //! animations tracking
-        readonly property alias needBothAxis: apis.needBothAxis
-        readonly property alias needLength: apis.needLength
-        readonly property alias needThickness: apis.needThickness
+    //! animations properties
+    active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
+    hasThicknessAnimation:  (needBothAxis.count>0) || (needThickness.count>0)
 
-        //! parabolic effect animations
-        readonly property alias minZoomFactor: apis.minZoomFactor
-        readonly property alias hoverPixelSensitivity: apis.hoverPixelSensitivity
+    duration.large: LatteCore.Environment.longDuration
+    duration.proposed: speedFactor.current * 2.8 * duration.large
+    duration.small: LatteCore.Environment.shortDuration
+
+    speedFactor.normal: 1.0
+    speedFactor.current: {
+        if (!active || plasmoid.configuration.durationTime === 0) {
+            return 0;
+        }
+
+        if (plasmoid.configuration.durationTime === 1 ) {
+            return 0.75;
+        } else if (plasmoid.configuration.durationTime === 2) {
+            return speedFactor.normal;
+        } else if (plasmoid.configuration.durationTime === 3) {
+            return 1.15;
+        }
+
+        return speedFactor.normal;
+    }
+
+    //! animations related to parabolic effect
+    hoverPixelSensitivity: {
+        if (!settings || settings.sensitivity === LatteApp.Settings.HighMouseSensitivity) {
+            return 1;
+        } else if (settings.sensitivity === LatteApp.Settings.MediumMouseSensitivity) {
+            return Math.max(3, container.iconSize / 18);
+        } else if (settings.sensitivity === LatteApp.Settings.LowMouseSensitivity) {
+            return Math.max(5, container.iconSize / 10);
+        }
+    }
+
+    minZoomFactor : {
+        if (!active || !LatteCore.WindowSystem.compositingActive) {
+            return 1;
+        }
+
+        /* if (latteApplet && (animationLauncherBouncing || animationWindowInAttention || animationWindowAddedInGroup)) {
+            return 1.65;
+        }*/
+
+        return 1;
     }
 }

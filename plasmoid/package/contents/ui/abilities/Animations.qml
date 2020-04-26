@@ -20,13 +20,13 @@
 import QtQuick 2.7
 
 import org.kde.plasma.plasmoid 2.0
-import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
 import org.kde.latte.core 0.2 as LatteCore
+import org.kde.latte.abilities.applets 0.1 as AppletAbility
 
-AnimationsBase {
-    readonly property AbilityDefinition.Animations local: AbilityDefinition.Animations{
-        active: animations.speedFactor.current !== 0
+AppletAbility.Animations {
+    local {
+        active: speedFactor.current !== 0
         hoverPixelSensitivity: 1
 
         minZoomFactor: speedFactor.current === 0 ? 1 : 1.65

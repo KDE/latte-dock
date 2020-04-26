@@ -22,6 +22,7 @@ import QtQuick 2.7
 import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
 AbilityDefinition.Animations {
+    id: apis
     property Item bridge: null
 
     active: bridge ? bridge.animations.active : local.active
@@ -39,4 +40,6 @@ AbilityDefinition.Animations {
     //! parabolic effect animations
     minZoomFactor: bridge ? bridge.animations.minZoomFactor : local.minZoomFactor
     hoverPixelSensitivity: bridge ? bridge.animations.hoverPixelSensitivity : local.hoverPixelSensitivity
+
+    readonly property AbilityDefinition.Animations local: AbilityDefinition.Animations{}
 }
