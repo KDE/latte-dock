@@ -956,7 +956,7 @@ Item {
 
     Ability.Container {
         id: _container
-        localIconSize: Math.max(plasmoid.configuration.iconSize, 16)
+        bridge: latteBridge
     }
 
     AppletAbility.Requirements{

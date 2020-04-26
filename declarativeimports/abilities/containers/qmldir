@@ -1,3 +1,4 @@
 module org.kde.latte.abilities.containers
 
 Animations 0.1 Animations.qml
+Container 0.1 Container.qml

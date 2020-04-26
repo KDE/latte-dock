@@ -17,12 +17,16 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
+import QtQuick 2.0
 
-import org.kde.plasma.plasmoid 2.0
+import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
-import org.kde.latte.abilities.applets 0.1 as AppletAbility
+AbilityDefinition.Container {
+    id: apis
+    property Item bridge: null
 
-AppletAbility.Container {
-    local.iconSize: Math.max(plasmoid.configuration.iconSize, 16)
+    iconSize: bridge ? bridge.container.iconSize : local.iconSize
+    maxIconSize: bridge ? bridge.container.maxIconSize : local.iconSize
+
+    readonly property AbilityDefinition.Container local: AbilityDefinition.Container {}
 }

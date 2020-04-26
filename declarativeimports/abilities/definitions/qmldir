@@ -2,4 +2,5 @@ module org.kde.latte.abilities.definitions
 
 Animations 0.1 Animations.qml
 AppletRequirements 0.1 AppletRequirements.qml
+Container 0.1 Container.qml
 
