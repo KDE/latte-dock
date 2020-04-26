@@ -1743,7 +1743,7 @@ Item {
         settings: universalSettings
     }
 
-    Ability.AutoSizePrivate {
+    Ability.AutoSize {
         id: _autosize
         container: _container
         layouts: layoutsContainer

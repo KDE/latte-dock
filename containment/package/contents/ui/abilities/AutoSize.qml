@@ -24,7 +24,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 
-Ability {
+Item {
     id: sizer
 
     // when there are only plasma style task managers OR any applets that fill width or height
