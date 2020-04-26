@@ -25,6 +25,7 @@ import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.abilities.applets 0.1 as AppletAbility
 
 AppletAbility.Animations {
+    //! Public Local Properties
     local {
         active: speedFactor.current !== 0
         hoverPixelSensitivity: 1
@@ -37,5 +38,12 @@ AppletAbility.Animations {
         duration.small: LatteCore.Environment.shortDuration
         duration.large: LatteCore.Environment.longDuration
     }
+
+    //! Private Local Properties
+    readonly property bool launcherBouncingEnabled: active && plasmoid.configuration.animationLauncherBouncing
+    readonly property bool windowInAttentionEnabled: active && plasmoid.configuration.animationWindowInAttention
+    readonly property bool newWindowSlidingEnabled: active && plasmoid.configuration.animationNewWindowSliding
+    readonly property bool windowAddedInGroupEnabled: active && plasmoid.configuration.animationWindowAddedInGroup
+    readonly property bool windowRemovedFromGroupEnabled: active && plasmoid.configuration.animationWindowRemovedFromGroup
 }
 

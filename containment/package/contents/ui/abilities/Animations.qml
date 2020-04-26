@@ -29,7 +29,7 @@ ContainerAbility.Animations {
     property Item container: null
     property Item settings: null
 
-    //! animations properties
+    //! Public Properties
     active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
     hasThicknessAnimation:  (needBothAxis.count>0) || (needThickness.count>0)
 

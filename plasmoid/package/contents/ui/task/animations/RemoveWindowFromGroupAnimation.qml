@@ -41,7 +41,7 @@ Item{
     }
 
     function removeTask(){
-        if(!taskIcon.toBeDestroyed && root.animationWindowRemovedFromGroup){
+        if(!taskIcon.toBeDestroyed && taskItem.animations.windowRemovedFromGroupEnabled){
             removingAnimation.init();
         }
     }

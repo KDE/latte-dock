@@ -42,7 +42,7 @@ SequentialAnimation {
                                 || taskItem.launcherUrlWithIcon===root.launcherForRemoval )
                                && !taskItem.isStartup && LatteCore.WindowSystem.compositingActive)
 
-    property bool enabledAnimation: (animation1 || animation4) && (root.animationNewWindowSliding)
+    property bool enabledAnimation: (animation1 || animation4) && (taskItem.animations.newWindowSlidingEnabled)
                                     && !taskItem.inBouncingAnimation
                                     && !taskItem.isSeparator
                                     && taskItem.visible;

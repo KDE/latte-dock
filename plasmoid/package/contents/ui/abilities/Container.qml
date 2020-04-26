@@ -24,5 +24,6 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte.abilities.applets 0.1 as AppletAbility
 
 AppletAbility.Container {
+    //! Public Local Properties
     local.iconSize: Math.max(plasmoid.configuration.iconSize, 16)
 }

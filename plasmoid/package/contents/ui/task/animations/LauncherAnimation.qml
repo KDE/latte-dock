@@ -153,7 +153,7 @@ SequentialAnimation{
     }
 
     function bounceLauncher(){
-        if(root.animationLauncherBouncing){
+        if(taskItem.animations.launcherBouncingEnabled){
             taskItem.animationStarted();
             init();
             start();

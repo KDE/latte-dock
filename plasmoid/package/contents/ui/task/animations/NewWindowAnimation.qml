@@ -110,8 +110,8 @@ SequentialAnimation{
     function bounceNewWindow(){
         //if (isDemandingAttention && !root.dockIsHidden && (root.zoomFactor > 1)){
 
-        if (!root.dockIsHidden && ((root.animationWindowInAttention && isDemandingAttention)
-                                   || root.animationWindowAddedInGroup)){
+        if (!root.dockIsHidden && ((taskItem.animations.windowInAttentionEnabled && isDemandingAttention)
+                                   || taskItem.animations.windowAddedInGroupEnabled)){
             newWindowAnimation.init();
             start();
         }

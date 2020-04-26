@@ -232,13 +232,6 @@ Item {
 
     readonly property real currentPanelOpacity: latteView ? latteView.currentPanelTransparency / 100 : 1
 
-    //! Animations
-    property bool animationLauncherBouncing: animations.active && plasmoid.configuration.animationLauncherBouncing
-    property bool animationWindowInAttention: animations.active && plasmoid.configuration.animationWindowInAttention
-    property bool animationNewWindowSliding: animations.active && plasmoid.configuration.animationNewWindowSliding
-    property bool animationWindowAddedInGroup: animations.active && plasmoid.configuration.animationWindowAddedInGroup
-    property bool animationWindowRemovedFromGroup: animations.active && plasmoid.configuration.animationWindowRemovedFromGroup
-
     property real maxZoomFactor: latteView ? latteView.maxZoomFactor : Math.max(zoomFactor, animations.minZoomFactor)
 
     property real zoomFactor: latteView ? latteView.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
