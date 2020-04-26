@@ -131,4 +131,8 @@ Item{
     Component.onCompleted: {
         appletRootItem.latteBridge = settings;
     }
+
+    Component.onDestruction: {
+        appletRootItem.latteBridge = null;
+    }
 }
