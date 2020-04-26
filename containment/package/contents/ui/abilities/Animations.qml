@@ -65,7 +65,7 @@ ContainerAbility.Animations {
         }
     }
 
-    minZoomFactor : {
+    maxZoomFactor : {
         if (!active || !LatteCore.WindowSystem.compositingActive) {
             return 1;
         }

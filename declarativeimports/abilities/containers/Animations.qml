@@ -38,7 +38,7 @@ AbilityDefinition.Animations {
         readonly property alias needThickness: apis.needThickness
 
         //! parabolic effect animations
-        readonly property alias minZoomFactor: apis.minZoomFactor
+        readonly property alias maxZoomFactor: apis.maxZoomFactor
         readonly property alias hoverPixelSensitivity: apis.hoverPixelSensitivity
     }
 }

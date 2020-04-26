@@ -30,7 +30,7 @@ AppletAbility.Animations {
         active: speedFactor.current !== 0
         hoverPixelSensitivity: 1
 
-        minZoomFactor: speedFactor.current === 0 ? 1 : 1.65
+        maxZoomFactor: speedFactor.current === 0 ? 1 : 1.65
 
         speedFactor.normal: active ? speedFactor.current : 1.0
         speedFactor.current: plasmoid.configuration.durationTime

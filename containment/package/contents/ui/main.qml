@@ -503,7 +503,7 @@ Item {
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
 
-    property real maxZoomFactor: Math.max(zoomFactor, animations.minZoomFactor)
+    property real maxZoomFactor: Math.max(zoomFactor, animations.maxZoomFactor)
 
     property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 

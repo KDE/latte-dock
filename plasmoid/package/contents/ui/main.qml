@@ -232,7 +232,7 @@ Item {
 
     readonly property real currentPanelOpacity: latteView ? latteView.currentPanelTransparency / 100 : 1
 
-    property real maxZoomFactor: latteView ? latteView.maxZoomFactor : Math.max(zoomFactor, animations.minZoomFactor)
+    property real maxZoomFactor: latteView ? latteView.maxZoomFactor : Math.max(zoomFactor, animations.maxZoomFactor)
 
     property real zoomFactor: latteView ? latteView.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
 
