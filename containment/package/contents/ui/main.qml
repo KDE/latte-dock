@@ -1530,7 +1530,10 @@ Item {
     ///////////////BEGIN components
     Component {
         id: appletContainerComponent
-        Applet.AppletItem{}
+        Applet.AppletItem{
+            animations: _animations
+            container: _container
+        }
     }
 
     ParabolicManager{

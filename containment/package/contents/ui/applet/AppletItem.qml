@@ -153,7 +153,7 @@ Item {
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
     readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported
 
-    property int animationTime: animations.speedFactor.normal * (1.2*animations.duration.small)
+    property int animationTime: appletItem.animations.speedFactor.normal * (1.2*appletItem.animations.duration.small)
     property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
     property int maxWidth: root.isHorizontal ? root.height : root.width
@@ -223,6 +223,9 @@ Item {
     property Item communicatorAlias: communicator
     property Item wrapperAlias: wrapper
 
+    property Item animations: null
+    property Item container: null
+
     property bool containsMouse: appletMouseArea.containsMouse /*|| appletMouseAreaBottom.containsMouse*/
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
 
@@ -291,7 +294,7 @@ Item {
 
     NumberAnimation {
         id: translAnim
-        duration: animations.duration.large
+        duration: appletItem.animations.duration.large
         easing.type: Easing.InOutQuad
         target: translation
         properties: "x,y"
@@ -300,7 +303,7 @@ Item {
 
     Behavior on lengthAppletIntMargin {
         NumberAnimation {
-            duration: 0.8 * animations.duration.proposed
+            duration: 0.8 * appletItem.animations.duration.proposed
             easing.type: Easing.OutCubic
         }
     }
@@ -397,8 +400,8 @@ Item {
                 return;
             }
 
-            var maxSize = container.iconSize + root.thickMargins;
-            var maxForMinimumSize = container.iconSize + root.thickMargins;
+            var maxSize = appletItem.container.iconSize + root.thickMargins;
+            var maxForMinimumSize = appletItem.container.iconSize + root.thickMargins;
 
             if ( isSystray
                     || appletItem.needsFillSpace
@@ -521,7 +524,7 @@ Item {
     }
 
     Component.onDestruction: {
-        animations.needBothAxis.removeEvent(appletItem);
+        appletItem.animations.needBothAxis.removeEvent(appletItem);
 
         if (isSeparator){
             parabolicManager.setSeparator(previousIndex, -1);
@@ -791,6 +794,7 @@ Item {
 
                 TitleTooltipParent{
                     id: titleTooltipParent
+                    container: appletItem.container
                 }
             }
 
@@ -807,7 +811,7 @@ Item {
 
                 Behavior on opacity {
                     NumberAnimation {
-                        duration: 1.2 * animations.duration.proposed
+                        duration: 1.2 * appletItem.animations.duration.proposed
                         easing.type: Easing.OutCubic
                     }
                 }
@@ -828,7 +832,7 @@ Item {
 
                 width: {
                     if (root.isHorizontal) {
-                        return container.iconSize * wrapper.zoomScale
+                        return appletItem.container.iconSize * wrapper.zoomScale
                     } else {
                         return badgeThickness;
                     }
@@ -838,17 +842,17 @@ Item {
                     if (root.isHorizontal) {
                         return badgeThickness;
                     } else {
-                        return container.iconSize * wrapper.zoomScale
+                        return appletItem.container.iconSize * wrapper.zoomScale
                     }
                 }
 
                 readonly property int badgeThickness: {
                     if (plasmoid.location === PlasmaCore.Types.BottomEdge
                             || plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        return ((container.iconSize + root.thickMargin) * wrapper.zoomScale) + root.localScreenEdgeMargin;
+                        return ((appletItem.container.iconSize + root.thickMargin) * wrapper.zoomScale) + root.localScreenEdgeMargin;
                     }
 
-                    return ((container.iconSize + root.thickMargin) * wrapper.zoomScale);
+                    return ((appletItem.container.iconSize + root.thickMargin) * wrapper.zoomScale);
                 }
 
                 ShortcutBadge{
@@ -907,10 +911,10 @@ Item {
             // width: root.isHorizontal ? parent.width : parent.width - root.localScreenEdgeMargin
             // height: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.height
 
-            radius: container.iconSize/10
+            radius: appletItem.container.iconSize/10
             opacity: root.addLaunchersMessage ? 1 : 0
             backgroundOpacity: 0.75
-            duration: animations.speedFactor.current
+            duration: appletItem.animations.speedFactor.current
 
             title: i18n("Tasks Area")
         }
@@ -1077,7 +1081,7 @@ Item {
             if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
                 if (root.isHorizontal){
                     var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
-                    if (step >= animations.hoverPixelSensitivity){
+                    if (step >= appletItem.animations.hoverPixelSensitivity){
                         layoutsContainer.currentSpot = mouse.x;
 
                         wrapper.calculateScales(mouse.x);
@@ -1085,7 +1089,7 @@ Item {
                 }
                 else{
                     var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
-                    if (step >= animations.hoverPixelSensitivity){
+                    if (step >= appletItem.animations.hoverPixelSensitivity){
                         layoutsContainer.currentSpot = mouse.y;
 
                         wrapper.calculateScales(mouse.y);
@@ -1191,14 +1195,14 @@ Item {
         id: clickedAnimation
         alwaysRunToEnd: true
         running: appletItem.isSquare && !originalAppletBehavior && appletItem.pressed
-                 && (animations.speedFactor.current > 0) && !indicators.info.providesClickedAnimation
+                 && (appletItem.animations.speedFactor.current > 0) && !indicators.info.providesClickedAnimation
 
         ParallelAnimation{
             PropertyAnimation {
                 target: wrapper.clickedEffect
                 property: "brightness"
                 to: -0.35
-                duration: animations.duration.large
+                duration: appletItem.animations.duration.large
                 easing.type: Easing.OutQuad
             }
         }
@@ -1207,7 +1211,7 @@ Item {
                 target: wrapper.clickedEffect
                 property: "brightness"
                 to: 0
-                duration: animations.duration.large
+                duration: appletItem.animations.duration.large
                 easing.type: Easing.OutQuad
             }
         }

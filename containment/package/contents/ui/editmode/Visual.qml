@@ -221,7 +221,7 @@ Item{
 
     Applet.TitleTooltipParent {
         id: titleTooltipParent
-
+        container: root.container
         minimumThickness: visibilityManager.thicknessEditMode
         maximumThickness: root.inConfigureAppletsMode ? visibilityManager.thicknessEditMode : 9999
     }

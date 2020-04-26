@@ -34,6 +34,7 @@ Item{
     readonly property int preferredThickness: (root.zoomFactor * (container.iconSize + root.thickMargins)) + root.localScreenEdgeMargin
     property int maximumThickness: 9999
 
+    property Item container: null
     //border.width: 1
     //border.color: "green"
     //color: "transparent"

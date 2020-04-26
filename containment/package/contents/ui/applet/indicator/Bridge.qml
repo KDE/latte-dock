@@ -56,14 +56,14 @@ Item{
     readonly property int windowsCount: 0
     readonly property int windowsMinimizedCount: 0
 
-    readonly property int currentIconSize: container.iconSize
-    readonly property int maxIconSize: container.maxIconSize
+    readonly property int currentIconSize: appletIsValid ? appletItem.container.iconSize : container.iconSize
+    readonly property int maxIconSize: appletIsValid ? appletItem.container.maxIconSize : container.maxIconSize
     readonly property real scaleFactor: appletIsValid ? appletItem.wrapperAlias.zoomScale : 1
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
-    readonly property bool animationsEnabled: animations.active
-    readonly property real durationTime: animations.speedFactor.current
+    readonly property bool animationsEnabled: appletIsValid ? appletItem.animations.active : animations.active
+    readonly property real durationTime: appletIsValid ? appletItem.animations.speedFactor.current : animations.speedFactor.current
 
     readonly property bool progressVisible: false /*since 0.9.2*/
     readonly property real progress: 0 /*since 0.9.2*/
