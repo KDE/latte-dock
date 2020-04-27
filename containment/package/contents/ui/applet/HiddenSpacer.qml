@@ -75,6 +75,15 @@ Item{
         onSeparatorsUpdated: updateNeighbour();
     }
 
+    Connections{
+        target: appletItem
+        onContainsMouseChanged: {
+            if (!appletItem.containsMouse) {
+                hiddenSpacer.nScale = 0;
+            }
+        }
+    }
+
     function updateNeighbour() {
         hiddenSpacer.neighbourSeparator = hiddenSpacer.rightSpacer ?
                     parabolicManager.isSeparator(index+1) : parabolicManager.isSeparator(index-1)

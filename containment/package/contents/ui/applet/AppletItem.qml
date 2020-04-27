@@ -446,17 +446,6 @@ Item {
         }
     }
 
-    onHoveredIndexChanged:{
-        if ( (Math.abs(hoveredIndex-index) > 1) && (hoveredIndex !== -1) ) {
-            wrapper.zoomScale = 1;
-        }
-
-        if (Math.abs(hoveredIndex-index) >= 1) {
-            hiddenSpacerLeft.nScale = 0;
-            hiddenSpacerRight.nScale = 0;
-        }
-    }
-
     onIndexChanged: {
         if (appletItem.latteApplet) {
             root.latteAppletPos = index;
@@ -1170,22 +1159,6 @@ Item {
             target: wrapper
             property: "zoomScale"
             to: 1
-            duration: 4 * appletItem.animationTime
-            easing.type: Easing.InCubic
-        }
-
-        PropertyAnimation {
-            target: hiddenSpacerLeft
-            property: "nScale"
-            to: 0
-            duration: 4 * appletItem.animationTime
-            easing.type: Easing.InCubic
-        }
-
-        PropertyAnimation {
-            target: hiddenSpacerRight
-            property: "nScale"
-            to: 0
             duration: 4 * appletItem.animationTime
             easing.type: Easing.InCubic
         }
