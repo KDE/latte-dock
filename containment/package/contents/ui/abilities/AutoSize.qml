@@ -34,7 +34,7 @@ Item {
                                      && latteView && latteView.visibility.mode !== LatteCore.Types.SideBar
     property int iconSize: -1 //it is not set, this is the default
 
-    readonly property bool inCalculatedIconSize: ((container.iconSize === sizer.iconSize) || (container.iconSize === container.maxIconSize))
+    readonly property bool inCalculatedIconSize: ((metrics.iconSize === sizer.iconSize) || (metrics.iconSize === metrics.maxIconSize))
     readonly property bool inAutoSizeAnimation: !inCalculatedIconSize
 
     readonly property int automaticStep: 8
@@ -47,11 +47,9 @@ Item {
     property variant history: []
 
     //! required elements
-    property Item container
+    property Item metrics
     property Item layouts
     property Item visibility
-
-
 
     onInAutoSizeAnimationChanged: {
         if (inAutoSizeAnimation) {
@@ -76,10 +74,10 @@ Item {
     }
 
     Connections {
-        target: container
+        target: metrics
 
         onProportionIconSizeChanged: {
-            if (container.proportionIconSize!==-1) {
+            if (metrics.proportionIconSize!==-1) {
                 sizer.updateIconSize();
             }
         }
@@ -88,13 +86,13 @@ Item {
     Connections {
         target: latteView
         onWidthChanged:{
-            if (root.isHorizontal && container.proportionIconSize!==-1) {
+            if (root.isHorizontal && metrics.proportionIconSize!==-1) {
                 sizer.updateIconSize();
             }
         }
 
         onHeightChanged:{
-            if (root.isVertical && container.proportionIconSize!==-1) {
+            if (root.isVertical && metrics.proportionIconSize!==-1) {
                 sizer.updateIconSize();
             }
         }
@@ -142,8 +140,8 @@ Item {
 
         if ( !doubleCallAutomaticUpdateIconSize.running && !visibility.inTempHiding
                 && ((visibility.normalState || root.editMode)
-                    && (sizer.isActive || (!sizer.isActive && container.iconSize!==container.maxIconSize)))
-                && (container.iconSize===container.maxIconSize || container.iconSize === sizer.iconSize) ) {
+                    && (sizer.isActive || (!sizer.isActive && metrics.iconSize!==metrics.maxIconSize)))
+                && (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === sizer.iconSize) ) {
 
             //!doubler timer
             if (!doubleCallAutomaticUpdateIconSize.secondTimeCallApplied) {
@@ -166,7 +164,7 @@ Item {
                             layouts.startLayout.width+layouts.mainLayout.width+layouts.endLayout.width : layouts.mainLayout.width
             }
 
-            var itemLength = container.iconSize + lengthMargins;
+            var itemLength = metrics.iconSize + lengthMargins;
 
             var toShrinkLimit = maxLength - (root.zoomFactor * itemLength);
             //! to grow limit must be a little less than the shrink one in order to be more robust and
@@ -179,11 +177,11 @@ Item {
             var newIconSizeFound = false;
             if (layoutLength > toShrinkLimit) { //must shrink
                 // console.log("step3");
-                var nextIconSize = container.maxIconSize;
+                var nextIconSize = metrics.maxIconSize;
 
                 do {
                     nextIconSize = nextIconSize - automaticStep;
-                    var factor = nextIconSize / container.iconSize;
+                    var factor = nextIconSize / metrics.iconSize;
                     var nextLength = factor * layoutLength;
 
                 } while ( (nextLength>toShrinkLimit) && (nextIconSize !== 16));
@@ -197,7 +195,7 @@ Item {
                 addPrediction(intLength, intNextLength);
                 // console.log("Step 3 - found:"+iconSize);
             } else if ((layoutLength<toGrowLimit
-                        && (container.iconSize === iconSize)) ) { //must grow probably
+                        && (metrics.iconSize === iconSize)) ) { //must grow probably
                 // console.log("step4");
                 var nextIconSize2 = iconSize;
                 var foundGoodSize = -1;
@@ -210,13 +208,13 @@ Item {
                     if (nextLength2 < toGrowLimit) {
                         foundGoodSize = nextIconSize2;
                     }
-                } while ( (nextLength2<toGrowLimit) && (nextIconSize2 !== container.maxIconSize ));
+                } while ( (nextLength2<toGrowLimit) && (nextIconSize2 !== metrics.maxIconSize ));
 
                 var intLength2 = Math.round(layoutLength);
                 var intNextLength2 = Math.round(nextLength2);
 
                 if (foundGoodSize > 0 && !producesEndlessLoop(intLength2, intNextLength2)) {
-                    if (foundGoodSize === container.maxIconSize) {
+                    if (foundGoodSize === metrics.maxIconSize) {
                         iconSize = -1;
                     } else {
                         iconSize = foundGoodSize;

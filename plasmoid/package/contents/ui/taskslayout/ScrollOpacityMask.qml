@@ -24,7 +24,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item {
 
-    readonly property int gradientLength: container.iconSize / 3
+    readonly property int gradientLength: metrics.iconSize / 3
 
     LinearGradient {
         id: firstGradient

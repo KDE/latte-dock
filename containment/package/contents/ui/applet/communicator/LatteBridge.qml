@@ -86,7 +86,7 @@ Item{
     //   USE CASE: it can be used from applets that want their size to be always
     //       relevant to the view icon size
     // @since: 0.9
-    readonly property int iconSize: appletItem.container.iconSize
+    readonly property int iconSize: appletItem.metrics.iconSize
 
     // NAME: screenEdgeMargin
     //   USAGE: read-only
@@ -116,7 +116,7 @@ Item{
     readonly property Item actions: Actions{}
     readonly property Item applet: mainCommunicator.requires
     readonly property Item animations: appletItem.animations.publicApi
-    readonly property Item container: appletItem.container.publicApi
+    readonly property Item metrics: appletItem.metrics.publicApi
 
     Connections {
         target: root

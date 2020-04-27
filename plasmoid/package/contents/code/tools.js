@@ -122,7 +122,7 @@ function insertIndexAt(above, x, y) {
     } else {
         var distance = root.vertical ? y : x;
         //var step = root.vertical ? LayoutManager.taskWidth() : LayoutManager.taskHeight();
-        var step = container.iconSize + root.lengthMargins;
+        var step = metrics.iconSize + root.lengthMargins;
         var stripe = Math.ceil(distance / step);
 
         /* if (stripe === LayoutManager.calculateStripes()) {

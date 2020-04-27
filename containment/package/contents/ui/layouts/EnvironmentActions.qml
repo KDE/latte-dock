@@ -45,7 +45,7 @@ Loader {
 
         acceptedButtons: Qt.LeftButton | Qt.MidButton
 
-        readonly property int localThickness: (root.isHovered ? (container.iconSize + root.thickMargins)*root.zoomFactor : (container.iconSize + root.thickMargins))
+        readonly property int localThickness: (root.isHovered ? (metrics.iconSize + root.thickMargins)*root.zoomFactor : (metrics.iconSize + root.thickMargins))
         readonly property int length: {
             if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
                 return root.isHorizontal ? root.width : root.height;

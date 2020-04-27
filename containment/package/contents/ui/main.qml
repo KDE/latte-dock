@@ -321,8 +321,8 @@ Item {
     }
 
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
-    property int appShadowSize: enableShadows ? (0.5*container.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
-    property int appShadowSizeOriginal: enableShadows ? (0.5*container.maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
+    property int appShadowSize: enableShadows ? (0.5*metrics.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
+    property int appShadowSizeOriginal: enableShadows ? (0.5*metrics.maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
 
     property string appChosenShadowColor: {
         if (plasmoid.configuration.shadowColorType === LatteContainment.Types.ThemeColorShadow) {
@@ -377,13 +377,13 @@ Item {
     property int themePanelThickness: {
         var panelBase = root.panelThickMarginHigh + root.panelThickMarginBase;
         var margin = shrinkThickMargins ? 0 : thickMargins + localScreenEdgeMargin;
-        var maxPanelSize = (container.iconSize + margin) - panelBase;
+        var maxPanelSize = (metrics.iconSize + margin) - panelBase;
         var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
-    property int lengthIntMargin: lengthIntMarginFactor * container.iconSize
-    property int lengthExtMargin: lengthExtMarginFactor * container.iconSize
+    property int lengthIntMargin: lengthIntMarginFactor * metrics.iconSize
+    property int lengthExtMargin: lengthExtMarginFactor * metrics.iconSize
     property real lengthIntMarginFactor: indicators.isEnabled ? indicators.padding : 0
     property real lengthExtMarginFactor: plasmoid.configuration.lengthExtMargin / 100
 
@@ -397,7 +397,7 @@ Item {
         //0.075 old statesLineSize and 0.06 old default thickMargin
         return  Math.max(indicators.info.minThicknessPadding, plasmoid.configuration.thickMargin / 100)
     }
-    property int thickMargin: thickMarginFactor * container.iconSize
+    property int thickMargin: thickMarginFactor * metrics.iconSize
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
     property int screenEdgeMargin: {
@@ -420,7 +420,7 @@ Item {
 
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
-    property int maxThickMargin: thickMarginFactor * container.maxIconSize
+    property int maxThickMargin: thickMarginFactor * metrics.maxIconSize
 
     property int lengthMargin: lengthIntMargin + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
@@ -460,8 +460,8 @@ Item {
     readonly property alias animations: _animations
     readonly property alias appletsRecords: _appletsRecords
     readonly property alias autosize: _autosize
-    readonly property alias container: _container
     readonly property alias indicatorsManager: indicators
+    readonly property alias metrics: _metrics
     readonly property alias parabolicManager: _parabolicManager
 
     readonly property alias maskManager: visibilityManager
@@ -542,7 +542,7 @@ Item {
     ///The index of user's current icon size
     property int currentIconIndex:{
         for(var i=iconsArray.length-1; i>=0; --i){
-            if(iconsArray[i] === container.iconSize){
+            if(iconsArray[i] === metrics.iconSize){
                 return i;
             }
         }
@@ -713,11 +713,11 @@ Item {
         //  currentLayout.isLayoutHorizontal = isHorizontal
         LayoutManager.plasmoid = plasmoid;
         LayoutManager.root = root;
-        LayoutManager.container = container;
         LayoutManager.layout = layoutsContainer.mainLayout;
         LayoutManager.layoutS = layoutsContainer.startLayout;
         LayoutManager.layoutE = layoutsContainer.endLayout;
         LayoutManager.lastSpacer = lastSpacer;
+        LayoutManager.metrics = metrics;
 
         upgrader_v010_alignment();
 
@@ -1525,7 +1525,7 @@ Item {
         Applet.AppletItem{
             animations: _animations
             appletsRecords: _appletsRecords
-            container: _container
+            metrics: _metrics
         }
     }
 
@@ -1648,8 +1648,8 @@ Item {
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
 
-        readonly property int length: container.iconSize + root.lengthMargins
-        readonly property int thickness: container.iconSize + root.thickMargins + root.localScreenEdgeMargin
+        readonly property int length: metrics.iconSize + root.lengthMargins
+        readonly property int thickness: metrics.iconSize + root.thickMargins + root.localScreenEdgeMargin
 
         Layout.preferredWidth: width
         Layout.preferredHeight: height
@@ -1732,7 +1732,7 @@ Item {
 
     Ability.Animations {
         id: _animations
-        container: _container
+        metrics: _metrics
         settings: universalSettings
     }
 
@@ -1742,13 +1742,13 @@ Item {
 
     Ability.AutoSize {
         id: _autosize
-        container: _container
         layouts: layoutsContainer
+        metrics: _metrics
         visibility: visibilityManager
     }
 
-    Ability.Container {
-        id: _container
+    Ability.Metrics {
+        id: _metrics
         animations: _animations
         autosize: _autosize
     }

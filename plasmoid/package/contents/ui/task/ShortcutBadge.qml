@@ -59,13 +59,13 @@ Loader{
             id: taskNumber
             // when iconSize < 48, height is always = 24, height / iconSize > 50%
             // we prefer center aligned badges to top-left aligned ones
-            property bool centerInParent: taskItem.container.iconSize < 48
+            property bool centerInParent: taskItem.metrics.iconSize < 48
 
             anchors.left: centerInParent? undefined : parent.left
             anchors.top: centerInParent? undefined : parent.top
             anchors.centerIn: centerInParent? parent : undefined
-            minimumWidth: 0.4 * (wrapper.mScale * taskItem.container.iconSize)
-            height: Math.max(24, 0.4 * (wrapper.mScale * taskItem.container.iconSize))
+            minimumWidth: 0.4 * (wrapper.mScale * taskItem.metrics.iconSize)
+            height: Math.max(24, 0.4 * (wrapper.mScale * taskItem.metrics.iconSize))
 
             style3d: root.badges3DStyle
             textValue: shorcutBadge.badgeString

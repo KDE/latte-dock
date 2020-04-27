@@ -31,10 +31,10 @@ Item{
     property int size: 1
     property int thickness: Math.min(Math.max(minimumThickness, preferredThickness), maximumThickness)
     property int minimumThickness: 0
-    readonly property int preferredThickness: (root.zoomFactor * (container.iconSize + root.thickMargins)) + root.localScreenEdgeMargin
+    readonly property int preferredThickness: (root.zoomFactor * (metrics.iconSize + root.thickMargins)) + root.localScreenEdgeMargin
     property int maximumThickness: 9999
 
-    property Item container: null
+    property Item metrics: null
     //border.width: 1
     //border.color: "green"
     //color: "transparent"

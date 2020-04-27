@@ -118,12 +118,12 @@ Item{
 
     TitleTooltipParent{
         id: titleTooltipParent
-        thickness: root.zoomFactor * (taskItem.container.iconSize + root.thickMargins)
+        thickness: root.zoomFactor * (taskItem.metrics.iconSize + root.thickMargins)
     }
 
     TitleTooltipParent{
         id: previewsTooltipParent
-        thickness: root.zoomFactor * (taskItem.container.iconSize + root.thickMargins) + 1
+        thickness: root.zoomFactor * (taskItem.metrics.iconSize + root.thickMargins) + 1
     }
 
     //!
@@ -185,12 +185,12 @@ Item{
                 }
             }
 
-            property int zoomedSize: root.zoomFactor * taskItem.container.iconSize
+            property int zoomedSize: root.zoomFactor * taskItem.metrics.iconSize
 
-            property real basicScalingWidth : wrapper.inTempScaling ? (taskItem.container.iconSize * wrapper.scaleWidth) :
-                                                                      taskItem.container.iconSize * wrapper.mScale
-            property real basicScalingHeight : wrapper.inTempScaling ? (taskItem.container.iconSize * wrapper.scaleHeight) :
-                                                                       taskItem.container.iconSize * wrapper.mScale
+            property real basicScalingWidth : wrapper.inTempScaling ? (taskItem.metrics.iconSize * wrapper.scaleWidth) :
+                                                                      taskItem.metrics.iconSize * wrapper.mScale
+            property real basicScalingHeight : wrapper.inTempScaling ? (taskItem.metrics.iconSize * wrapper.scaleHeight) :
+                                                                       taskItem.metrics.iconSize * wrapper.mScale
 
             property real newTempSize: {
                 if (wrapper.opacity === 1 ) {
@@ -599,8 +599,8 @@ Item{
         height: !root.vertical ? thickness : length
         anchors.centerIn: parent
 
-        readonly property int length: taskItem.container.iconSize + root.lengthMargins
-        readonly property int thickness: taskItem.container.iconSize + root.thickMargins
+        readonly property int length: taskItem.metrics.iconSize + root.lengthMargins
+        readonly property int thickness: taskItem.metrics.iconSize + root.thickMargins
 
         readonly property real applyOpacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
                                              && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 0.7 : 0
@@ -787,7 +787,7 @@ Item{
                 if(!running){
                     var halfZoom = 1 + ((root.zoomFactor - 1) / 2);
 
-                    wrapper.calculateScales((taskItem.container.iconSize+root.thickMargins)/2);
+                    wrapper.calculateScales((taskItem.metrics.iconSize+root.thickMargins)/2);
 
                     taskItem.animationEnded();
                     //   root.animations--;

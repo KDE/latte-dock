@@ -56,10 +56,10 @@ Flickable{
 
     readonly property int scrollFirstPos: 0
     readonly property int scrollLastPos: contentsExtraSpace
-    readonly property int scrollStep: container.iconSize * 1.5
+    readonly property int scrollStep: metrics.iconSize * 1.5
     readonly property int currentPos: !root.vertical ? contentX : contentY
 
-    readonly property int autoScrollTriggerLength: container.iconSize + root.lengthMargins/2
+    readonly property int autoScrollTriggerLength: metrics.iconSize + root.lengthMargins/2
 
     readonly property int alignment: {
         if (root.location === PlasmaCore.Types.LeftEdge) {
@@ -140,18 +140,18 @@ Flickable{
 
         if (!root.vertical) {
             if (cP.x < 0) {
-                distance = Math.abs(cP.x - container.iconSize);
+                distance = Math.abs(cP.x - metrics.iconSize);
                 decreasePosWithStep(distance);
             } else if ((cP.x+task.width) > scrollableList.width) {
-                distance = Math.abs(cP.x - scrollableList.width + task.width + container.iconSize);
+                distance = Math.abs(cP.x - scrollableList.width + task.width + metrics.iconSize);
                 increasePosWithStep(distance);
             }
         } else {
             if (cP.y < 0) {
-                distance = Math.abs(cP.y - container.iconSize);
+                distance = Math.abs(cP.y - metrics.iconSize);
                 decreasePosWithStep(distance);
             } else if ((cP.y+task.height) > scrollableList.height) {
-                distance = Math.abs(cP.y - scrollableList.height + task.height + container.iconSize);
+                distance = Math.abs(cP.y - scrollableList.height + task.height + metrics.iconSize);
                 increasePosWithStep(distance);
             }
         }
@@ -176,15 +176,15 @@ Flickable{
 
         if (!root.vertical) {
             if (currentPos !== scrollFirstPos && cP.x < autoScrollTriggerLength) {
-                decreasePosWithStep(container.iconSize*1.5);
+                decreasePosWithStep(metrics.iconSize*1.5);
             } else if (currentPos !== scrollLastPos && (cP.x+task.width > (scrollableList.width-autoScrollTriggerLength))) {
-                increasePosWithStep(container.iconSize*1.5);
+                increasePosWithStep(metrics.iconSize*1.5);
             }
         } else {
             if (currentPos !== scrollFirstPos && cP.y < autoScrollTriggerLength) {
-                decreasePosWithStep(container.iconSize*1.5);
+                decreasePosWithStep(metrics.iconSize*1.5);
             } else if (currentPos !== scrollLastPos && (cP.y+task.height > (scrollableList.height-autoScrollTriggerLength))) {
-                increasePosWithStep(container.iconSize*1.5);
+                increasePosWithStep(metrics.iconSize*1.5);
             }
         }
 

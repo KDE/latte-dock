@@ -22,8 +22,8 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.abilities.containers 0.1 as ContainerAbility
 
-ContainerAbility.Container {
-    id: privateContainer
+ContainerAbility.Metrics {
+    id: mets
     property Item animations: null
     property Item autosize: null
 
@@ -55,7 +55,7 @@ ContainerAbility.Container {
 
             onRunningChanged: {
                 if (!running) {
-                    privateContainer.iconSizeAnimationEnded();
+                    mets.iconSizeAnimationEnded();
                 }
             }
         }

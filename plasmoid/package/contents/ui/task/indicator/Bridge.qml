@@ -59,8 +59,8 @@ Item {
     readonly property int windowsCount: taskIsValid ? taskItem.windowsCount : 0
     readonly property int windowsMinimizedCount: taskIsValid ? taskItem.windowsMinimizedCount : 0
 
-    readonly property int currentIconSize: taskIsValid ? taskItem.container.iconSize : container.iconSize
-    readonly property int maxIconSize: taskIsValid ? taskItem.container.maxIconSize : container.iconSize
+    readonly property int currentIconSize: taskIsValid ? taskItem.metrics.iconSize : metrics.iconSize
+    readonly property int maxIconSize: taskIsValid ? taskItem.metrics.maxIconSize : metrics.iconSize
     readonly property real scaleFactor: taskIsValid ? taskItem.wrapperAlias.mScale : 1
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid

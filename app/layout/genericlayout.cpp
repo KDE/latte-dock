@@ -907,6 +907,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
 
     latteView->setLayout(this);
 
+
     //! Qt 5.9 creates a crash for this in wayland, that is why the check is used
     //! but on the other hand we need this for copy to work correctly and show
     //! the copied dock under X11

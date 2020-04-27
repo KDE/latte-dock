@@ -56,8 +56,8 @@ Item{
     readonly property int windowsCount: 0
     readonly property int windowsMinimizedCount: 0
 
-    readonly property int currentIconSize: appletIsValid ? appletItem.container.iconSize : container.iconSize
-    readonly property int maxIconSize: appletIsValid ? appletItem.container.maxIconSize : container.maxIconSize
+    readonly property int currentIconSize: appletIsValid ? appletItem.metrics.iconSize : metrics.iconSize
+    readonly property int maxIconSize: appletIsValid ? appletItem.metrics.maxIconSize : metrics.maxIconSize
     readonly property real scaleFactor: appletIsValid ? appletItem.wrapperAlias.zoomScale : 1
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid

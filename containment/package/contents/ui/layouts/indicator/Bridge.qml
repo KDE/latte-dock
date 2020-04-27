@@ -50,8 +50,8 @@ Item{
     readonly property int windowsCount: 0
     readonly property int windowsMinimizedCount: 0
 
-    readonly property int currentIconSize: container.iconSize
-    readonly property int maxIconSize: container.maxIconSize
+    readonly property int currentIconSize: metrics.iconSize
+    readonly property int maxIconSize: metrics.maxIconSize
     readonly property real scaleFactor: 1
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid

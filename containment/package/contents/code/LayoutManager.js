@@ -22,7 +22,7 @@ var layout;
 var layoutS;
 var layoutE;
 var root;
-var container;
+var metrics;
 var plasmoid;
 var lastSpacer;
 
@@ -450,7 +450,7 @@ function insertAtLayoutCoordinates(tLayout, item, x, y) {
 
     if (!child) {
         // check if dragging takes place after the end of the layout
-        var neededSpace = 1.5 * (container.iconSize + root.lengthMargin);
+        var neededSpace = 1.5 * (metrics.iconSize + root.lengthMargin);
         if ( (((root.isVertical && (y - neededSpace) <= tLayout.height) && y>=0)
               ||(root.isHorizontal && (x - neededSpace) <= tLayout.width) && x>=0)
                 && tLayout.children.length>0  ){

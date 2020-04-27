@@ -26,8 +26,8 @@ import org.kde.latte.private.app 0.1 as LatteApp
 import org.kde.latte.abilities.containers 0.1 as ContainerAbility
 
 ContainerAbility.Animations {
-    property Item container: null
-    property Item settings: null
+    property Item metrics: null
+    property QtObject settings: null
 
     //! Public Properties
     active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
@@ -59,9 +59,9 @@ ContainerAbility.Animations {
         if (!settings || settings.sensitivity === LatteApp.Settings.HighMouseSensitivity) {
             return 1;
         } else if (settings.sensitivity === LatteApp.Settings.MediumMouseSensitivity) {
-            return Math.max(3, container.iconSize / 18);
+            return Math.max(3, metrics.iconSize / 18);
         } else if (settings.sensitivity === LatteApp.Settings.LowMouseSensitivity) {
-            return Math.max(5, container.iconSize / 10);
+            return Math.max(5, metrics.iconSize / 10);
         }
     }
 }

@@ -412,7 +412,7 @@ Window{
             }
 
             Text{
-                text: container.iconSize
+                text: metrics.iconSize
             }
 
             Text{
@@ -428,7 +428,7 @@ Window{
             }
 
             Text{
-                text: container.proportionIconSize
+                text: metrics.proportionIconSize
             }
 
             Text{

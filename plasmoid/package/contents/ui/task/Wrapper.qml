@@ -36,7 +36,7 @@ Item{
             if (!root.vertical)
                 return 0;
             else
-                return (taskItem.container.iconSize + root.widthMargins + root.screenEdgeMargin);
+                return (taskItem.metrics.iconSize + root.widthMargins + root.screenEdgeMargin);
         }
 
         if (taskItem.isStartup && taskItem.animations.speedFactor.current !==0 ) {
@@ -54,7 +54,7 @@ Item{
             if (root.vertical)
                 return 0;
             else
-                return (taskItem.container.iconSize + root.heightMargins + root.screenEdgeMargin);
+                return (taskItem.metrics.iconSize + root.heightMargins + root.screenEdgeMargin);
         }
 
         if (taskItem.isStartup && taskItem.animations.speedFactor.current !==0){
@@ -64,8 +64,8 @@ Item{
         }
     }
 
-    property int maxThickness: !root.vertical ? root.zoomFactor*(taskItem.container.iconSize+root.heightMargins)
-                                              : root.zoomFactor*(taskItem.container.iconSize+root.widthMargins)
+    property int maxThickness: !root.vertical ? root.zoomFactor*(taskItem.metrics.iconSize+root.heightMargins)
+                                              : root.zoomFactor*(taskItem.metrics.iconSize+root.widthMargins)
 
     property real showDelegateWidth: basicScalingWidth
     property real showDelegateHeight: basicScalingHeight
@@ -81,17 +81,17 @@ Item{
     property real scaleWidth: (inTempScaling == true) ? tempScaleWidth : mScale
     property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : mScale
 
-    property real cleanScalingWidth: (taskItem.container.iconSize + root.widthMargins) * mScale
-    property real cleanScalingHeight: (taskItem.container.iconSize + root.heightMargins) * mScale
+    property real cleanScalingWidth: (taskItem.metrics.iconSize + root.widthMargins) * mScale
+    property real cleanScalingHeight: (taskItem.metrics.iconSize + root.heightMargins) * mScale
 
-    property real basicScalingWidth : (inTempScaling == true) ? ((taskItem.container.iconSize + root.widthMargins) * scaleWidth) : cleanScalingWidth
-    property real basicScalingHeight : (inTempScaling == true) ? ((taskItem.container.iconSize + root.heightMargins) * scaleHeight) : cleanScalingHeight
+    property real basicScalingWidth : (inTempScaling == true) ? ((taskItem.metrics.iconSize + root.widthMargins) * scaleWidth) : cleanScalingWidth
+    property real basicScalingHeight : (inTempScaling == true) ? ((taskItem.metrics.iconSize + root.heightMargins) * scaleHeight) : cleanScalingHeight
 
     property real regulatorWidth: taskItem.isSeparator ? width : basicScalingWidth;
     property real regulatorHeight: taskItem.isSeparator ? height : basicScalingHeight;
 
-    property real visualScaledWidth: (taskItem.container.iconSize + root.internalWidthMargins) * mScale
-    property real visualScaledHeight: (taskItem.container.iconSize + root.internalHeightMargins) * mScale
+    property real visualScaledWidth: (taskItem.metrics.iconSize + root.internalWidthMargins) * mScale
+    property real visualScaledHeight: (taskItem.metrics.iconSize + root.internalHeightMargins) * mScale
     /// end of Scalers///////
 
     //property int curIndex: icList.hoveredIndex

@@ -21,11 +21,17 @@ import QtQuick 2.0
 
 import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
-AbilityDefinition.Container {
+AbilityDefinition.Metrics {
     id: apis
+    property Item bridge: null
 
-    readonly property Item publicApi: Item {
-        readonly property alias iconSize: apis.iconSize
-        readonly property alias maxIconSize: apis.maxIconSize
+    Item {
+        id: refs
+        readonly property Item metrics: bridge ? bridge.metrics : local
     }
+
+    iconSize: refs.metrics.iconSize
+    maxIconSize: refs.metrics.maxIconSize
+
+    readonly property AbilityDefinition.Metrics local: AbilityDefinition.Metrics {}
 }

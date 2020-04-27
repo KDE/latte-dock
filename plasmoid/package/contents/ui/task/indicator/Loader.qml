@@ -58,10 +58,10 @@ Loader {
 
     readonly property bool locked: inAttentionAnimation || inNewWindowAnimation || inBouncingAnimation
 
-    property real visualLockedWidth: root.vertical ? root.screenEdgeMargin + taskItem.container.iconSize + root.internalWidthMargins :
-                                                     taskItem.container.iconSize + root.internalWidthMargins
-    property real visualLockedHeight: !root.vertical ? root.screenEdgeMargin + taskItem.container.iconSize + root.internalHeightMargins :
-                                                       taskItem.container.iconSize + root.internalHeightMargins
+    property real visualLockedWidth: root.vertical ? root.screenEdgeMargin + taskItem.metrics.iconSize + root.internalWidthMargins :
+                                                     taskItem.metrics.iconSize + root.internalWidthMargins
+    property real visualLockedHeight: !root.vertical ? root.screenEdgeMargin + taskItem.metrics.iconSize + root.internalHeightMargins :
+                                                       taskItem.metrics.iconSize + root.internalHeightMargins
 
     //! Connections !//
 

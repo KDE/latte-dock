@@ -289,7 +289,7 @@ Item{
     }
 
     Connections {
-        target: container
+        target: metrics
         onIconSizeAnimationEnded: delayUpdateMaskArea.start();
     }
 

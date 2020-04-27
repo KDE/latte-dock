@@ -44,8 +44,8 @@ Item{
     property int speed: LatteCore.WindowSystem.compositingActive ? animations.speedFactor.normal*3.6*animations.duration.large : 10
     property int thickness: visibilityManager.thicknessEditMode + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow //- visibilityManager.thicknessEditMode
-    property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - container.maxIconSize/4 : root.width)://root.maxLength) :
-                                                 (root.behaveAsPlasmaPanel ? root.height - container.maxIconSize/4 : root.height)
+    property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - metrics.maxIconSize/4 : root.width)://root.maxLength) :
+                                                 (root.behaveAsPlasmaPanel ? root.height - metrics.maxIconSize/4 : root.height)
 
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
     property bool editAnimationEnded: false
@@ -221,7 +221,7 @@ Item{
 
     Applet.TitleTooltipParent {
         id: titleTooltipParent
-        container: root.container
+        metrics: root.metrics
         minimumThickness: visibilityManager.thicknessEditMode
         maximumThickness: root.inConfigureAppletsMode ? visibilityManager.thicknessEditMode : 9999
     }
