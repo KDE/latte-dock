@@ -557,20 +557,6 @@ MouseArea{
         }
     }
 
-    onHoveredIndexChanged: {
-        var distanceFromHovered = Math.abs(index - icList.hoveredIndex);
-
-        /*if( (distanceFromHovered > 1) && (hoveredIndex !== -1)){
-            if(!isDragged)
-                wrapper.mScale = 1;
-        }*/
-
-        if (distanceFromHovered >= 1 && !inAttentionAnimation && !inFastRestoreAnimation && !inMimicParabolicAnimation) {
-            hiddenSpacerLeft.nScale = 0;
-            hiddenSpacerRight.nScale = 0;
-        }
-    }
-
     onItemIndexChanged: {
         if (isSeparator) {
             root.separatorsUpdated();

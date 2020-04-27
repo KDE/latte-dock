@@ -34,22 +34,6 @@ SequentialAnimation{
             duration: 4 * taskItem.animationTime
             easing.type: Easing.InCubic
         }
-
-        PropertyAnimation {
-            target: hiddenSpacerLeft
-            property: "nScale"
-            to: 0
-            duration: 4 * taskItem.animationTime
-            easing.type: Easing.InCubic
-        }
-
-        PropertyAnimation {
-            target: hiddenSpacerRight
-            property: "nScale"
-            to: 0
-            duration: 4 * taskItem.animationTime
-            easing.type: Easing.InCubic
-        }
     }
     //! debug code based on third task
     /*ScriptAction{

@@ -109,6 +109,15 @@ Item{
     }
 
     Connections{
+        target: taskItem
+        onContainsMouseChanged: {
+            if (!taskItem.containsMouse && !inAttentionAnimation && !inFastRestoreAnimation && !inMimicParabolicAnimation) {
+                hiddenSpacer.nScale = 0;
+            }
+        }
+    }
+
+    Connections{
         target: latteView
         onSeparatorsUpdated: hiddenSpacer.updateNeighbour();
         onLatteAppletPosChanged: hiddenSpacer.updateNeighbour();
