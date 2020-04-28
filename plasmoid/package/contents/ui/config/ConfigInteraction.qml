@@ -25,6 +25,8 @@ import QtQuick.Layouts 1.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
+import org.kde.latte.private.tasks 0.1 as LatteTasks
+
 Item {
     width: childrenRect.width
     height: childrenRect.height
@@ -33,14 +35,13 @@ Item {
 
     property alias cfg_wheelEnabled: wheelEnabled.checked
     property alias cfg_middleClickAction: middleClickAction.currentIndex
+    property alias cfg_hoverAction: hoverActionCmb.currentIndex
 
     property alias cfg_showOnlyCurrentScreen: showOnlyCurrentScreen.checked
     property alias cfg_showOnlyCurrentDesktop: showOnlyCurrentDesktop.checked
     property alias cfg_showOnlyCurrentActivity: showOnlyCurrentActivity.checked
 
-    property alias cfg_highlightWindows: highlightWindowsChk.checked
     property alias cfg_showInfoBadge: showInfoBadgeChk.checked
-    property alias cfg_showToolTips: showPreviewsChk.checked
     property alias cfg_showWindowActions: windowActionsChk.checked
 
     ColumnLayout{
@@ -61,18 +62,6 @@ Item {
                 }
 
                 CheckBox {
-                    id: showPreviewsChk
-                    Layout.fillWidth: true
-                    text: i18n("Preview windows on hovering")
-                }
-
-                CheckBox {
-                    id: highlightWindowsChk
-                    Layout.fillWidth: true
-                    text: i18n("Highlight windows on hovering")
-                }
-
-                CheckBox {
                     id: windowActionsChk
                     Layout.fillWidth: true
                     text: i18n("Show window actions in the context menu")
@@ -84,9 +73,11 @@ Item {
                     text: i18n("Show progress information for tasks")
                 }
 
-                RowLayout {
+                GridLayout {
+                    columns: 2
+
                     Label {
-                        text: i18n("On middle-click:")
+                        text: i18n("Middle Click")
                     }
 
                     ComboBox {
@@ -94,6 +85,54 @@ Item {
                         Layout.fillWidth: true
                         model: [i18nc("The click action", "None"), i18n("Close Window or Group"), i18n("New Instance"), i18n("Minimize/Restore Window or Group")]
                     }
+
+                    Label {
+                        text: i18n("Hover")
+                    }
+
+                    ComboBox {
+                        id: hoverActionCmb
+                        Layout.fillWidth: true
+                        model: [
+                            i18nc("none action", "None"),
+                            i18n("Preview Windows"),
+                            i18n("Highlight Windows"),
+                            i18n("Preview and Highlight Windows"),
+                        ]
+
+                        currentIndex: {
+                            switch(plasmoid.configuration.hoverAction) {
+                            case LatteTasks.Types.NoneAction:
+                                return 0;
+                            case LatteTasks.Types.PreviewWindows:
+                                return 1;
+                            case LatteTasks.Types.HighlightWindows:
+                                return 2;
+                            case LatteTasks.Types.PreviewAndHighlightWindows:
+                                return 3;
+                            }
+
+                            return 0;
+                        }
+
+                        onCurrentIndexChanged: {
+                            switch(currentIndex) {
+                            case 0:
+                                plasmoid.configuration.hoverAction = LatteTasks.Types.NoneAction;
+                                break;
+                            case 1:
+                                plasmoid.configuration.hoverAction = LatteTasks.Types.PreviewWindows;
+                                break;
+                            case 2:
+                                plasmoid.configuration.hoverAction = LatteTasks.Types.HighlightWindows;
+                                break;
+                            case 3:
+                                plasmoid.configuration.hoverAction = LatteTasks.Types.PreviewAndHighlightWindows;
+                                break;
+                            }
+                        }
+                    }
+
                 }
             }
         }

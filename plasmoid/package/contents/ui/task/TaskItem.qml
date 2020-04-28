@@ -1591,7 +1591,9 @@ MouseArea{
                 if (taskItem.containsMouse) {
                     if (root.showPreviews) {
                         showPreviewWindow();
-                    } else if (taskItem.isWindow && root.highlightWindows) {
+                    }
+
+                    if (taskItem.isWindow && root.highlightWindows) {
                         root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , taskItem.containsMouse);
                     }
                 }

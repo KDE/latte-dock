@@ -162,8 +162,7 @@ Item {
     property bool disableRightSpacer: false
     property bool dockIsHidden: latteView ? latteView.dockIsHidden : false
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
-    property bool highlightWindows: latteView ? latteView.hoverAction === LatteTasks.Types.HighlightWindows || latteView.hoverAction === LatteTasks.Types.PreviewAndHighlightWindows :
-                                                plasmoid.configuration.highlightWindows
+    property bool highlightWindows: hoverAction === LatteTasks.Types.HighlightWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
     property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : zoomFactor>1 && !root.editMode
 
     property bool scrollingEnabled: plasmoid.configuration.scrollTasksEnabled
@@ -179,8 +178,7 @@ Item {
     property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen
     property bool showOnlyCurrentDesktop: plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: plasmoid.configuration.showOnlyCurrentActivity
-    property bool showPreviews:  latteView ? latteView.hoverAction === LatteTasks.Types.PreviewWindows || latteView.hoverAction === LatteTasks.Types.PreviewAndHighlightWindows :
-                                             plasmoid.configuration.showToolTips
+    property bool showPreviews:  hoverAction === LatteTasks.Types.PreviewWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
     property bool showWindowActions: plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers
 
