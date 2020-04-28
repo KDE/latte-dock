@@ -53,8 +53,6 @@ PlasmaExtras.ScrollArea {
     property bool isLauncher
     property bool isMinimizedParent
 
-    property bool containsMouse: false
-
     // Needed for generateSubtext()
     property string displayParent
     property string genericName
@@ -111,17 +109,6 @@ PlasmaExtras.ScrollArea {
             }
         } //! DropArea
 
-        //! Underneath MouseArea
-        MouseArea {
-            id: contentItemMouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-
-            onContainsMouseChanged: {
-                mainToolTip.mouseIsInside();
-            }
-        }//! MouseArea
-
         Loader {
             id: contentItem
             active: mainToolTip.rootIndex !== undefined
@@ -160,38 +147,6 @@ PlasmaExtras.ScrollArea {
             }
         } //! Loader
     } //! Item
-
-    //! Central Functionality
-    function mouseIsInside(){
-        var isInside = contentItemMouseArea.containsMouse || instancesContainMouse();
-
-        if (isInside){
-            mainToolTip.containsMouse = true;
-
-            if(!root.latteView)
-                checkListHovered.stop();
-        } else {
-            mainToolTip.containsMouse = false;
-
-            if(!root.latteView)
-                checkListHovered.startDuration(100);
-            else
-                root.latteView.startCheckRestoreZoomTimer();
-        }
-    }
-
-    function instancesContainMouse() {
-        var previewInstances = isGroup ? contentItem.children[0].children : contentItem.children;
-        var instancesLength = previewInstances.length;
-
-        for(var i=instancesLength-1; i>=0; --i) {
-            if( (typeof(previewInstances[i].containsMouse) === "function") //ignore unrelevant objects
-                    &&  previewInstances[i].containsMouse())
-                return true;
-        }
-
-        return false;
-    }
 
     function instanceAtPos(x, y){
         var previewInstances = isGroup ? contentItem.children[0].children : contentItem.children;

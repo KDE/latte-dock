@@ -525,7 +525,7 @@ Item {
 
     ////BEGIN interfaces
 
-    PlasmaCore.Dialog{
+    LatteTasks.Dialog{
         id: windowsPreviewDlg
         // hideOnWindowDeactivate: false
         type: PlasmaCore.Dialog.Tooltip
@@ -540,16 +540,31 @@ Item {
 
         Component.onCompleted: mainItem.visible = true;
 
+        onContainsMouseChanged: {
+            //! Orchestrate restore zoom and previews window hiding. Both should be
+            //! triggered together.
+            if (containsMouse) {
+                stopCheckRestoreZoomTimer();
+                hidePreviewWinTimer.stop();
+            } else {
+                hide(7.3);
+            }
+        }
+
         function hide(debug){
             // console.log("on hide previews event called: "+debug);
+            if (containsMouse || !visible) {
+                return;
+            }
 
             if (latteView && signalSent) {
                 //it is used to unblock dock hiding
                 signalSent = false;
             }
 
-            if (!root.contextMenu)
+            if (!root.contextMenu) {
                 root.disableRestoreZoom = false;
+            }
 
             hidePreviewWinTimer.start();
         }
@@ -591,11 +606,17 @@ Item {
     //! Delay windows previews hiding
     Timer {
         id: hidePreviewWinTimer
-        interval: 350
+        interval: 300
         onTriggered: {
-            windowsPreviewDlg.visible = false;
-            windowsPreviewDlg.mainItem.visible = false;
-            windowsPreviewDlg.activeItem = null;
+            //! Orchestrate restore zoom and previews window hiding. Both should be
+            //! triggered together.
+            if (!windowsPreviewDlg.containsMouse
+                    && !(windowsPreviewDlg.activeItem && windowsPreviewDlg.activeItem.containsMouse)) {
+                windowsPreviewDlg.visible = false;
+                windowsPreviewDlg.mainItem.visible = false;
+                windowsPreviewDlg.activeItem = null;
+                startCheckRestoreZoomTimer();
+            }
         }
     }
 
@@ -1773,11 +1794,7 @@ Item {
     }
 
     function previewContainsMouse() {
-        if(toolTipDelegate && toolTipDelegate.containsMouse && toolTipDelegate.parentTask) {
-            return true;
-        } else {
-            return false;
-        }
+        return windowsPreviewDlg.containsMouse;
     }
 
     function containsMouse(){
@@ -1817,8 +1834,9 @@ Item {
             disableRestoreZoom = false;
         }
 
-        if (!previewContainsMouse())
+        if (!previewContainsMouse()) {
             windowsPreviewDlg.hide(4.2);
+        }
 
         if (!latteView) {
             initializeHoveredIndex();
@@ -1874,6 +1892,7 @@ Item {
 
     function startCheckRestoreZoomTimer(duration) {
         if (latteView) {
+
             latteView.startCheckRestoreZoomTimer();
         } else {
             if (duration > 0) {

@@ -1764,11 +1764,13 @@ Item {
         interval: 90
 
         onTriggered: {
-            if (latteApplet && (latteApplet.previewContainsMouse() || latteApplet.contextMenu))
+            if (latteApplet && (latteApplet.previewContainsMouse() || latteApplet.contextMenu)) {
                 return;
+            }
 
-            if (latteView.contextMenuIsShown)
+            if (latteView.contextMenuIsShown) {
                 return;
+            }
 
             if (!mouseInHoverableArea()) {
                 setGlobalDirectRender(false);

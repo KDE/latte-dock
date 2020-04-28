@@ -57,7 +57,6 @@ MouseArea {
     }
 
     onContainsMouseChanged: {
-        mainToolTip.mouseIsInside();
         root.windowsHovered([winId], containsMouse);
     }
 }

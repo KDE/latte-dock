@@ -84,11 +84,6 @@ Column {
     readonly property string albumArt: currentMetadata["mpris:artUrl"] || ""
 
     //
-    function containsMouse() {
-        return closeButton.hovered || area2.containsMouse
-               || (playbackLoader.active && playbackLoader.item.containsMouse());
-    }
-
     function isTaskActive() {
         return (isGroup ? isActive : (parentTask ? parentTask.isActive : false));
     }
@@ -162,7 +157,6 @@ Column {
                 backend.cancelHighlightWindows();
                 tasksModel.requestClose(submodelIndex);
             }
-            onHoveredChanged: mainToolTip.mouseIsInside()
         }
     }
 
@@ -278,10 +272,6 @@ Column {
                 //                    onClicked: mpris2Source.raise(mprisSourceName)
                 //                }
 
-                function containsMouse() {
-                    return area3.containsMouse || canGoBackButton.hovered || playingButton.hovered || canGoNextButton.hovered;
-                }
-
                 Item {
                     id: playerControlsFrostedGlass
                     anchors.fill: parent
@@ -313,9 +303,6 @@ Column {
                 MouseArea {
                     id: area3
                     anchors.fill: playerControlsRow
-
-                    hoverEnabled: true
-                    onContainsMouseChanged: mainToolTip.mouseIsInside();
                 }
 
                 RowLayout {
@@ -359,7 +346,6 @@ Column {
                        enabled: canGoBack
                        iconSource: LayoutMirroring.enabled ? "media-skip-forward" : "media-skip-backward"
                        onClicked: mpris2Source.goPrevious(mprisSourceName)
-                       onHoveredChanged: mainToolTip.mouseIsInside()
                    }
 
                    PlasmaComponents.ToolButton {
@@ -373,7 +359,6 @@ Column {
                                mpris2Source.pause(mprisSourceName);
                            }
                        }
-                       onHoveredChanged: mainToolTip.mouseIsInside()
                    }
 
                    PlasmaComponents.ToolButton {
@@ -381,7 +366,6 @@ Column {
                        enabled: canGoNext
                        iconSource: LayoutMirroring.enabled ? "media-skip-backward" : "media-skip-forward"
                        onClicked: mpris2Source.goNext(mprisSourceName)
-                       onHoveredChanged: mainToolTip.mouseIsInside()
                    }
 
                 }
