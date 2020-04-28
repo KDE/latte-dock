@@ -552,7 +552,7 @@ Item {
         }
 
         function hide(debug){
-            // console.log("on hide previews event called: "+debug);
+            //console.log("   Tasks: hide previews event called: "+debug);
             if (containsMouse || !visible) {
                 return;
             }
@@ -610,8 +610,14 @@ Item {
         onTriggered: {
             //! Orchestrate restore zoom and previews window hiding. Both should be
             //! triggered together.
-            if (!windowsPreviewDlg.containsMouse
-                    && !(windowsPreviewDlg.activeItem && windowsPreviewDlg.activeItem.containsMouse)) {
+            var contains = (windowsPreviewDlg.containsMouse
+                            || (windowsPreviewDlg.activeItem && windowsPreviewDlg.activeItem.containsMouse) /*main task*/
+                            || (windowsPreviewDlg.activeItem /*dragging file(s) from outside*/
+                                && mouseHandler.hoveredItem
+                                && !root.dragSource
+                                && mouseHandler.hoveredItem === windowsPreviewDlg.activeItem));
+
+            if (!contains) {
                 windowsPreviewDlg.visible = false;
                 windowsPreviewDlg.mainItem.visible = false;
                 windowsPreviewDlg.activeItem = null;

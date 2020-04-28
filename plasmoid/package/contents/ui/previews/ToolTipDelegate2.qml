@@ -96,7 +96,7 @@ PlasmaExtras.ScrollArea {
             property QtObject currentWindow
 
             onDragLeave: {
-                windowsPreviewDlg.hide();
+                windowsPreviewDlg.hide(9.9);
             }
 
             onDragMove: {

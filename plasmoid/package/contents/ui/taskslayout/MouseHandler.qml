@@ -82,6 +82,12 @@ Item {
             return ((event.mimeData.formats.indexOf("text/x-plasmoidservicename") === 0) && isSeparator);
         }
 
+        onHoveredItemChanged: {
+            if (hoveredItem && windowsPreviewDlg.activeItem && hoveredItem !== windowsPreviewDlg.activeItem ) {
+                windowsPreviewDlg.hide(6.7);
+            }
+        }
+
         onDragEnter:{
             dArea.containsDrag = true;
 

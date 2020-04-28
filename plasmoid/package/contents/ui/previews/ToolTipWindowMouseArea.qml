@@ -52,7 +52,8 @@ MouseArea {
 
         if (!keepVisibility) {
             icList.hoveredIndex = -1;
-            windowsPreviewDlg.hide("7.1");
+            windowsPreviewDlg.visible = false;
+            startCheckRestoreZoomTimer();
         }
     }
 
