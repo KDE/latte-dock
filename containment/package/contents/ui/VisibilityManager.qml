@@ -199,7 +199,7 @@ Item{
         target: latteView
         property: "offset"
         when: latteView
-        value: plasmoid.configuration.offset
+        value: plasmoid.configuration.offset/100
     }
 
     Binding{

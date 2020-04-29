@@ -586,10 +586,16 @@ void Positioner::updatePosition(QRect availableScreenRect)
     QPoint position;
     position = {0, 0};
 
-    const auto length = [&](int length) -> int {
-        float offs = static_cast<float>(m_view->offset());
-        return static_cast<int>(length * ((1 - m_view->maxLength()) / 2) + length * (offs / 100));
+    const auto gap = [&](int scr_length) -> int {
+        return static_cast<int>(scr_length * m_view->offset());
     };
+    const auto gapCentered = [&](int scr_length) -> int {
+        return static_cast<int>(scr_length * ((1 - m_view->maxLength()) / 2) + scr_length * m_view->offset());
+    };
+    const auto gapReversed = [&](int scr_length) -> int {
+        return static_cast<int>(scr_length - (scr_length * m_view->maxLength()) - gap(scr_length));
+    };
+
     int cleanThickness = m_view->normalThickness() - m_view->effects()->innerShadow();
 
     int screenEdgeMargin = (m_view->behaveAsPlasmaPanel() && m_view->screenEdgeMarginEnabled()) ? m_view->screenEdgeMargin() : 0;
@@ -608,8 +614,15 @@ void Positioner::updatePosition(QRect availableScreenRect)
     switch (m_view->location()) {
     case Plasma::Types::TopEdge:
         if (m_view->behaveAsPlasmaPanel()) {
-            position = {screenGeometry.x() + length(screenGeometry.width()),
-                        screenGeometry.y() + screenEdgeMargin};
+            int y = screenGeometry.y() + screenEdgeMargin;
+
+            if (m_view->alignment() == Latte::Types::Left) {
+                position = {screenGeometry.x() + gap(screenGeometry.width()), y};
+            } else if (m_view->alignment() == Latte::Types::Right) {
+                position = {screenGeometry.x() + gapReversed(screenGeometry.width()), y};
+            } else {
+                position = {screenGeometry.x() + gapCentered(screenGeometry.width()), y};
+            }
         } else {
             position = {screenGeometry.x(), screenGeometry.y()};
         }
@@ -618,8 +631,15 @@ void Positioner::updatePosition(QRect availableScreenRect)
 
     case Plasma::Types::BottomEdge:
         if (m_view->behaveAsPlasmaPanel()) {
-            position = {screenGeometry.x() + length(screenGeometry.width()),
-                        screenGeometry.y() + screenGeometry.height() - cleanThickness - screenEdgeMargin};
+            int y = screenGeometry.y() + screenGeometry.height() - cleanThickness - screenEdgeMargin;
+
+            if (m_view->alignment() == Latte::Types::Left) {
+                position = {screenGeometry.x() + gap(screenGeometry.width()), y};
+            } else if (m_view->alignment() == Latte::Types::Right) {
+                position = {screenGeometry.x() + gapReversed(screenGeometry.width()), y};
+            } else {
+                position = {screenGeometry.x() + gapCentered(screenGeometry.width()), y};
+            }
         } else {
             position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - m_view->height()};
         }
@@ -628,8 +648,15 @@ void Positioner::updatePosition(QRect availableScreenRect)
 
     case Plasma::Types::RightEdge:
         if (m_view->behaveAsPlasmaPanel()) {
-            position = {availableScreenRect.right() - cleanThickness + 1 - screenEdgeMargin,
-                        availableScreenRect.y() + length(availableScreenRect.height())};
+            int x = availableScreenRect.right() - cleanThickness + 1 - screenEdgeMargin;
+
+            if (m_view->alignment() == Latte::Types::Top) {
+                position = {x, availableScreenRect.y() + gap(availableScreenRect.height())};
+            } else if (m_view->alignment() == Latte::Types::Bottom) {
+                position = {x, availableScreenRect.y() + gapReversed(availableScreenRect.height())};
+            } else {
+                position = {x, availableScreenRect.y() + gapCentered(availableScreenRect.height())};
+            }
         } else {
             position = {availableScreenRect.right() - m_view->width() + 1, availableScreenRect.y()};
         }
@@ -638,8 +665,15 @@ void Positioner::updatePosition(QRect availableScreenRect)
 
     case Plasma::Types::LeftEdge:
         if (m_view->behaveAsPlasmaPanel()) {
-            position = {availableScreenRect.x() + screenEdgeMargin,
-                        availableScreenRect.y() + length(availableScreenRect.height())};
+            int x = availableScreenRect.x() + screenEdgeMargin;
+
+            if (m_view->alignment() == Latte::Types::Top) {
+                position = {x, availableScreenRect.y() + gap(availableScreenRect.height())};
+            } else if (m_view->alignment() == Latte::Types::Bottom) {
+                position = {x, availableScreenRect.y() + gapReversed(availableScreenRect.height())};
+            } else {
+                position = {x, availableScreenRect.y() + gapCentered(availableScreenRect.height())};
+            }
         } else {
             position = {availableScreenRect.x(), availableScreenRect.y()};
         }
