@@ -865,10 +865,10 @@ MouseArea{
                             || ( (LatteCore.WindowSystem.isPlatformWayland || !LatteCore.WindowSystem.compositingActive)
                                 && root.leftClickAction === LatteTasks.Types.PresentWindows
                                 && isGroupParent) ) {
-                        if(windowsPreviewDlg.activeItem !== taskItem){
+                        if(windowsPreviewDlg.activeItem !== taskItem || !windowsPreviewDlg.visible){
                             showPreviewWindow();
                         } else {
-                            hidePreviewWindow();
+                            root.forcePreviewsHiding(21.1);
                         }
                     } else if ( (root.leftClickAction === LatteTasks.Types.PresentWindows && !(isGroupParent && !LatteCore.WindowSystem.compositingActive))
                                || ((root.leftClickAction === LatteTasks.Types.PreviewWindows && !isGroupParent)) ) {
@@ -947,7 +947,7 @@ MouseArea{
                     tasksModel.requestActivate(taskIndex);
                 }
 
-                hidePreviewWindow();
+               // hidePreviewWindow();
             }
         } else if (negativeDirection) {
             slotPublishGeometries();
@@ -983,7 +983,7 @@ MouseArea{
                     }
                 }
 
-                hidePreviewWindow();
+               // hidePreviewWindow();
             }
         }
     }

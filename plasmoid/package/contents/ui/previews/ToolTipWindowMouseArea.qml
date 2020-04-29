@@ -53,6 +53,7 @@ MouseArea {
         if (!keepVisibility) {
             icList.hoveredIndex = -1;
             windowsPreviewDlg.visible = false;
+            root.forcePreviewsHiding(14.5);
             startCheckRestoreZoomTimer();
         }
     }

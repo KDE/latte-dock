@@ -501,6 +501,13 @@ Item {
         return launch;
     }
 
+    function forcePreviewsHiding(debug) {
+        //console.log("   Tasks: Force hide previews event called: "+debug);
+        windowsPreviewDlg.visible = false;
+        windowsPreviewDlg.mainItem.visible = false;
+        windowsPreviewDlg.activeItem = null;
+    }
+
     function hidePreview(){
         windowsPreviewDlg.hide(11);
     }
@@ -618,9 +625,7 @@ Item {
                                 && mouseHandler.hoveredItem === windowsPreviewDlg.activeItem));
 
             if (!contains) {
-                windowsPreviewDlg.visible = false;
-                windowsPreviewDlg.mainItem.visible = false;
-                windowsPreviewDlg.activeItem = null;
+                root.forcePreviewsHiding();
                 startCheckRestoreZoomTimer();
             }
         }
