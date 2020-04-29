@@ -29,7 +29,8 @@ Item {
 
     // when there are only plasma style task managers OR any applets that fill width or height
     // the automatic icon size algorithm should better be disabled
-    readonly property bool isActive: !root.containsOnlyPlasmaTasks
+    readonly property bool isActive: plasmoid.configuration.autoSizeEnabled
+                                     && !root.containsOnlyPlasmaTasks
                                      && layouts.fillApplets<=0
                                      && latteView && latteView.visibility.mode !== LatteCore.Types.SideBar
     property int iconSize: -1 //it is not set, this is the default
@@ -47,8 +48,8 @@ Item {
     property variant history: []
 
     //! required elements
-    property Item metrics
     property Item layouts
+    property Item metrics
     property Item visibility
 
     onInAutoSizeAnimationChanged: {

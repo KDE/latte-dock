@@ -20,7 +20,8 @@
 //! applets that haven't identified properly their Latte behavior and
 //! create broken results when used in Latte
 var blacklistedApplets = ["org.kde.redshiftControl",
-                          "org.kde.plasma.notifications"];
+                          "org.kde.plasma.notifications",
+                          "menuZ"];
 
 function typeOf(obj, className){
     var name = obj.toString();

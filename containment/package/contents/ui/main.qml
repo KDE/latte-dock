@@ -96,15 +96,19 @@ Item {
             return false;
         }
 
+        var staticLayout = (plasmoid.configuration.minLength === plasmoid.configuration.maxLength);
+
         return (visibilityManager.panelIsBiggerFromIconSize
                 && (maxZoomFactor === 1.0)
-                && (plasmoid.configuration.alignment === LatteCore.Types.Justify)
+                && (plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout)
                 && !root.editMode
                 && !visibilityManager.inLocationAnimation);
     }
 
     property int viewType: {
-        if ((plasmoid.configuration.alignment === LatteCore.Types.Justify)
+        var staticLayout = (plasmoid.configuration.minLength === plasmoid.configuration.maxLength);
+
+        if ((plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout)
                 && (plasmoid.configuration.useThemePanel)
                 && (plasmoid.configuration.panelSize === 100)
                 && (maxZoomFactor === 1.0)) {
@@ -256,8 +260,8 @@ Item {
     readonly property int maxJustifySplitterSize: 96
 
     property int latteAppletPos: -1
-    property int minLengthPerCentage: plasmoid.configuration.minLength
-    property int maxLengthPerCentage: hideLengthScreenGaps ? 100 : plasmoid.configuration.maxLength
+    property real minLengthPerCentage: plasmoid.configuration.minLength
+    property real maxLengthPerCentage: hideLengthScreenGaps ? 100 : plasmoid.configuration.maxLength
 
     property int minLength: {
         if (root.isHorizontal) {

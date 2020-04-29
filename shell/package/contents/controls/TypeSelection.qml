@@ -85,6 +85,9 @@ Grid {
                 plasmoid.configuration.dragActiveWindowEnabled = false;
                 plasmoid.configuration.scrollAction = LatteContainment.Types.ScrollNone;
 
+                //! Items
+                plasmoid.configuration.autoSizeEnabled = true;
+
                 //! Animations
                 plasmoid.configuration.animationLauncherBouncing = true;
                 plasmoid.configuration.animationWindowInAttention = true;
@@ -128,6 +131,9 @@ Grid {
 
                 //! Empty Areas
                 plasmoid.configuration.dragActiveWindowEnabled = true;
+
+                //! Items
+                plasmoid.configuration.autoSizeEnabled = false;
 
                 //! Animations
                 plasmoid.configuration.animationLauncherBouncing = false;

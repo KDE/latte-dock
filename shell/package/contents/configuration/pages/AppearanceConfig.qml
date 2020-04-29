@@ -357,7 +357,7 @@ PlasmaComponents.Page {
                         stepSize: 1
                         wheelEnabled: false
 
-                        readonly property int localMinValue: 30
+                        readonly property int localMinValue: 1
 
                         function updateMaxLength() {
                             if (!pressed) {
@@ -417,6 +417,31 @@ PlasmaComponents.Page {
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+                        LatteComponents.ScrollArea {
+                            anchors.fill: parent
+                            delayIsEnabled: false
+
+                            readonly property real smallStep: 0.1
+
+                            onScrolledUp:  {
+                                var ctrlModifier = (wheel.modifiers & Qt.ControlModifier);
+                                if (ctrlModifier) {
+                                    plasmoid.configuration.maxLength = plasmoid.configuration.maxLength + smallStep;
+                                }
+                            }
+
+                            onScrolledDown: {
+                                var ctrlModifier = (wheel.modifiers & Qt.ControlModifier);
+                                if (ctrlModifier) {
+                                    plasmoid.configuration.maxLength = plasmoid.configuration.maxLength - smallStep;
+                                }
+                            }
+
+                            onClicked: {
+                                plasmoid.configuration.maxLength = Math.round(plasmoid.configuration.maxLength);
+                            }
+                        }
                     }
                 }
 
@@ -476,6 +501,31 @@ PlasmaComponents.Page {
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+                        LatteComponents.ScrollArea {
+                            anchors.fill: parent
+                            delayIsEnabled: false
+
+                            readonly property real smallStep: 0.1
+
+                            onScrolledUp:  {
+                                var ctrlModifier = (wheel.modifiers & Qt.ControlModifier);
+                                if (ctrlModifier) {
+                                    plasmoid.configuration.minLength = plasmoid.configuration.minLength + smallStep;
+                                }
+                            }
+
+                            onScrolledDown: {
+                                var ctrlModifier = (wheel.modifiers & Qt.ControlModifier);
+                                if (ctrlModifier) {
+                                    plasmoid.configuration.minLength = plasmoid.configuration.minLength - smallStep;
+                                }
+                            }
+
+                            onClicked: {
+                                plasmoid.configuration.minLength = Math.round(plasmoid.configuration.minLength);
+                            }
+                        }
                     }
                 }
 
@@ -498,11 +548,13 @@ PlasmaComponents.Page {
 
                         value: plasmoid.configuration.offset
                         from: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
-                               || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? -20 :  0
+                               || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? -screenLengthMaxFactor :  0
                         to: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
-                             || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? 20 :  40
+                             || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? screenLengthMaxFactor :  2*screenLengthMaxFactor
                         stepSize: 1
                         wheelEnabled: false
+
+                        readonly property int screenLengthMaxFactor: (100 - plasmoid.configuration.maxLength) / 2
 
                         function updateOffset() {
                             if (!pressed) {
@@ -539,6 +591,31 @@ PlasmaComponents.Page {
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+                        LatteComponents.ScrollArea {
+                            anchors.fill: parent
+                            delayIsEnabled: false
+
+                            readonly property real smallStep: 0.1
+
+                            onScrolledUp:  {
+                                var ctrlModifier = (wheel.modifiers & Qt.ControlModifier);
+                                if (ctrlModifier) {
+                                    plasmoid.configuration.offset= plasmoid.configuration.offset + smallStep;
+                                }
+                            }
+
+                            onScrolledDown: {
+                                var ctrlModifier = (wheel.modifiers & Qt.ControlModifier);
+                                if (ctrlModifier) {
+                                    plasmoid.configuration.offset = plasmoid.configuration.offset - smallStep;
+                                }
+                            }
+
+                            onClicked: {
+                                plasmoid.configuration.offset = Math.round(plasmoid.configuration.offset);
+                            }
+                        }
                     }
                 }
             }

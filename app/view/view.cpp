@@ -920,12 +920,12 @@ QRect View::screenGeometry() const
     return QRect();
 }
 
-int View::offset() const
+float View::offset() const
 {
     return m_offset;
 }
 
-void View::setOffset(int offset)
+void View::setOffset(float offset)
 {
     if (m_offset == offset) {
         return;

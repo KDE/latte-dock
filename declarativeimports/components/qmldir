@@ -14,6 +14,7 @@ HeaderSwitch 1.0 HeaderSwitch.qml
 IndicatorItem 1.0 IndicatorItem.qml
 ItemDelegate 1.0 ItemDelegate.qml
 Label 1.0 Label.qml
+ScrollArea 1.0 ScrollArea.qml
 Slider 1.0 Slider.qml
 SpinBox 1.0 SpinBox.qml
 SubHeader 1.0 SubHeader.qml

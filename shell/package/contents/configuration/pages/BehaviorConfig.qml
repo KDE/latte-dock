@@ -708,7 +708,20 @@ PlasmaComponents.Page {
                         visible: dialog.advancedLevel
 
                         onClicked: {
-                            plasmoid.configuration.mouseWheelActions = checked
+                            plasmoid.configuration.mouseWheelActions = !plasmoid.configuration.mouseWheelActions;
+                        }
+                    }
+
+                    LatteComponents.CheckBox {
+                        id: autoSizeChk
+                        Layout.maximumWidth: dialog.optionsWidth
+                        text: i18n("Adjust size automatically when needed")
+                        checked: plasmoid.configuration.autoSizeEnabled
+                        tooltip: i18n("Items decrease their size when exceed maximum length and increase it when they can fit in")
+                        visible: dialog.advancedLevel
+
+                        onClicked: {
+                            plasmoid.configuration.autoSizeEnabled = !plasmoid.configuration.autoSizeEnabled
                         }
                     }
 

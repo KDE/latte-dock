@@ -110,10 +110,10 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int editThickness READ editThickness WRITE setEditThickness NOTIFY editThicknessChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
-    Q_PROPERTY(int offset READ offset WRITE setOffset NOTIFY offsetChanged)
     Q_PROPERTY(int screenEdgeMargin READ screenEdgeMargin WRITE setScreenEdgeMargin NOTIFY screenEdgeMarginChanged)
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
+    Q_PROPERTY(float offset READ offset WRITE setOffset NOTIFY offsetChanged)
 
     Q_PROPERTY(Latte::Layout::GenericLayout *layout READ layout WRITE setLayout NOTIFY layoutChanged)
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
@@ -177,10 +177,7 @@ public:
     void setIsTouchingTopViewAndIsBusy(bool touchAndBusy);
 
     bool screenEdgeMarginEnabled() const;
-    void setScreenEdgeMarginEnabled(bool enabled);
-
-    float maxLength() const;
-    void setMaxLength(float length);
+    void setScreenEdgeMarginEnabled(bool enabled); 
 
     int fontPixelSize() const;
     void setFontPixelSize(int size);
@@ -194,14 +191,17 @@ public:
     int normalThickness() const;
     void setNormalThickness(int thickness);
 
-    int offset() const;
-    void setOffset(int offset);
-
     int screenEdgeMargin() const;
     void setScreenEdgeMargin(int margin);
 
     int alignment() const;
     void setAlignment(int alignment);
+
+    float maxLength() const;
+    void setMaxLength(float length);
+
+    float offset() const;
+    void setOffset(float offset);
 
     QRect absoluteGeometry() const;
     QRect screenGeometry() const;
@@ -369,9 +369,9 @@ private:
     int m_editThickness{24};
     int m_maxThickness{24};
     int m_normalThickness{24};
-    int m_offset{0};
     int m_screenEdgeMargin{-1};
     float m_maxLength{1};
+    float m_offset{0};
 
     Types::Alignment m_alignment{Types::Center};
     Types::ViewType m_type{Types::DockView};
