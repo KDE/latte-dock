@@ -731,7 +731,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:root.offset;    anchors.bottomMargin:0;
+                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:root.offset - shadowsSvgItem.margins.top;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -750,7 +750,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offset;
+                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offset - shadowsSvgItem.margins.bottom;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -787,7 +787,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:root.offset;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:root.offset-shadowsSvgItem.margins.top;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -805,7 +805,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:root.offset;
+                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:root.offset-shadowsSvgItem.margins.bottom;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -844,7 +844,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: root.offset;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
+                anchors.leftMargin: root.offset-shadowsSvgItem.margins.left;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
 
@@ -865,7 +865,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
+                anchors.leftMargin: 0;    anchors.rightMargin:root.offset-shadowsSvgItem.margins.right;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -904,7 +904,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: root.offset;    anchors.rightMargin:0;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
+                anchors.leftMargin: root.offset-shadowsSvgItem.margins.left;    anchors.rightMargin:0;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -924,7 +924,7 @@ Item{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:root.offset-shadowsSvgItem.margins.right;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         }
