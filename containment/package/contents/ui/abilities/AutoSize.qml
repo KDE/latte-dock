@@ -77,8 +77,8 @@ Item {
     Connections {
         target: metrics
 
-        onProportionIconSizeChanged: {
-            if (metrics.proportionIconSize!==-1) {
+        onPortionIconSizeChanged: {
+            if (metrics.portionIconSize!==-1) {
                 sizer.updateIconSize();
             }
         }
@@ -87,13 +87,13 @@ Item {
     Connections {
         target: latteView
         onWidthChanged:{
-            if (root.isHorizontal && metrics.proportionIconSize!==-1) {
+            if (root.isHorizontal && metrics.portionIconSize!==-1) {
                 sizer.updateIconSize();
             }
         }
 
         onHeightChanged:{
-            if (root.isVertical && metrics.proportionIconSize!==-1) {
+            if (root.isVertical && metrics.portionIconSize!==-1) {
                 sizer.updateIconSize();
             }
         }

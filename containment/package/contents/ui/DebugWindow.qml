@@ -424,11 +424,11 @@ Window{
             }
 
             Text{
-                text: "Icon Size (proportion)"+space
+                text: "Icon Size (portion)"+space
             }
 
             Text{
-                text: metrics.proportionIconSize
+                text: metrics.portionIconSize
             }
 
             Text{

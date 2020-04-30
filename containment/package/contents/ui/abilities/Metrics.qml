@@ -32,11 +32,11 @@ ContainerAbility.Metrics {
 
     //! Public Properties
     iconSize: autosizeEnabled && autosize.iconSize > 0 ? Math.min(autosize.iconSize, maxIconSize) : maxIconSize
-    maxIconSize: proportionIconSize!==-1 ? proportionIconSize : plasmoid.configuration.iconSize
+    maxIconSize: portionIconSize!==-1 ? portionIconSize : plasmoid.configuration.iconSize
 
 
     //! Private Properties
-    readonly property int proportionIconSize: { //icon size based on screen height
+    readonly property int portionIconSize: { //icon size based on screen height
         if ((plasmoid.configuration.proportionIconSize===-1) || !latteView)
             return -1;
 
