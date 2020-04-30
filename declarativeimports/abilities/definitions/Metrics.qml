@@ -19,7 +19,14 @@
 
 import QtQuick 2.0
 
+import "./metrics" as MetricsTypes
+
 Item {
     property int iconSize: 48
     property int maxIconSize: 48
+
+    property MetricsTypes.Margin margin: MetricsTypes.Margin{}
+    property MetricsTypes.Padding padding: MetricsTypes.Padding{}
+    property MetricsTypes.Fraction fraction: MetricsTypes.Fraction{}
+    property MetricsTypes.Totals totals: MetricsTypes.Totals{}
 }

@@ -31,9 +31,7 @@ ContainerAbility.Metrics {
     signal iconSizeAnimationEnded();
 
     //! Public Properties
-    iconSize: autosizeEnabled && autosize.iconSize > 0 ?
-                               Math.min(autosize.iconSize, maxIconSize) :
-                               maxIconSize
+    iconSize: autosizeEnabled && autosize.iconSize > 0 ? Math.min(autosize.iconSize, maxIconSize) : maxIconSize
     maxIconSize: proportionIconSize!==-1 ? proportionIconSize : plasmoid.configuration.iconSize
 
 

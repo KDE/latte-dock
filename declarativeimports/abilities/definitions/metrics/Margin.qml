@@ -19,24 +19,9 @@
 
 import QtQuick 2.0
 
-import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
-
-AbilityDefinition.Metrics {
-    id: apis
-    property Item bridge: null
-
-    Item {
-        id: refs
-        readonly property Item metrics: bridge ? bridge.metrics : local
-    }
-
-    iconSize: refs.metrics.iconSize
-    maxIconSize: refs.metrics.maxIconSize
-
-    margin: refs.metrics.margin
-    padding: refs.metrics.padding
-    fraction: refs.metrics.fraction
-    totals: refs.metrics.totals
-
-    readonly property AbilityDefinition.Metrics local: AbilityDefinition.Metrics {}
+Item {
+    property int thickness: 4
+    property int maxThickness: 4
+    property int length: 4
+    property int screenEdge: 0
 }
