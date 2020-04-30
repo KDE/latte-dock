@@ -20,7 +20,7 @@
 import QtQuick 2.0
 
 Item {
-    property int lengthSingleMargin: margin.length + padding.length
-    property int lengthBilateralMargins: 2 * lengthSingleMargin
-    property int thicknessBilateralMargins: 2 * margin.thickness
+    readonly property int lengthMargin: margin.length + padding.length
+    readonly property int lengthMargins: 2 * lengthMargin
+    readonly property int thicknessMargins: 2 * margin.thickness
 }

@@ -21,4 +21,5 @@ import QtQuick 2.0
 
 Item {
     property int length: 4
+    property int lengthApplet: 4
 }
