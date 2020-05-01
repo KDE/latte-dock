@@ -20,41 +20,13 @@
 import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte.abilities.containers 0.1 as ContainerAbility
+import "./privates" as AbilityPrivate
 
-ContainerAbility.Metrics {
-    id: mets
-    property Item animations: null
-    property Item autosize: null
-
+AbilityPrivate.MetricsPrivate {
     //! Signals
     signal iconSizeAnimationEnded();
 
     //! Public Properties
     iconSize: autosizeEnabled && autosize.iconSize > 0 ? Math.min(autosize.iconSize, maxIconSize) : maxIconSize
     maxIconSize: portionIconSize!==-1 ? portionIconSize : plasmoid.configuration.iconSize
-
-    //! Private Properties
-    readonly property int portionIconSize: { //icon size based on screen height
-        if ((plasmoid.configuration.proportionIconSize===-1) || !latteView)
-            return -1;
-
-        return Math.max(16,Math.round(latteView.screenGeometry.height * plasmoid.configuration.proportionIconSize/100/8)*8);
-    }
-
-    readonly property bool autosizeEnabled: autosize !== undefined && autosize.isActive
-
-    //! Behaviors
-    Behavior on iconSize {
-        enabled: !(root.editMode && root.behaveAsPlasmaPanel)
-        NumberAnimation {
-            duration: 0.8 * animations.duration.proposed
-
-            onRunningChanged: {
-                if (!running) {
-                    mets.iconSizeAnimationEnded();
-                }
-            }
-        }
-    }
 }

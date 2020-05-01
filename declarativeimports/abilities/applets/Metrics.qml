@@ -35,7 +35,6 @@ AbilityDefinition.Metrics {
 
     margin: refs.metrics.margin
     padding: refs.metrics.padding
-    fraction: refs.metrics.fraction
     totals: refs.metrics.totals
 
     readonly property AbilityDefinition.Metrics local: AbilityDefinition.Metrics {}

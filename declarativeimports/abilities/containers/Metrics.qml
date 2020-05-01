@@ -30,7 +30,6 @@ AbilityDefinition.Metrics {
 
         readonly property alias margin: apis.margin
         readonly property alias padding: apis.padding
-        readonly property alias fraction: apis.fraction
         readonly property alias totals: apis.totals
     }
 }

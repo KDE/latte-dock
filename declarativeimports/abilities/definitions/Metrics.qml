@@ -27,6 +27,5 @@ Item {
 
     property MetricsTypes.Margin margin: MetricsTypes.Margin{}
     property MetricsTypes.Padding padding: MetricsTypes.Padding{}
-    property MetricsTypes.Fraction fraction: MetricsTypes.Fraction{}
     property MetricsTypes.Totals totals: MetricsTypes.Totals{}
 }
