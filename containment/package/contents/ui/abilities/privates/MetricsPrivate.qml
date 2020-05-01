@@ -28,6 +28,7 @@ ContainerAbility.Metrics {
     id: mets
     property Item animations: null
     property Item autosize: null
+    property Item indicators: null
 
     //! Private Properties
     readonly property int portionIconSize: { //icon size based on screen height
@@ -39,9 +40,18 @@ ContainerAbility.Metrics {
 
     readonly property bool autosizeEnabled: autosize !== undefined && autosize.isActive
 
-    readonly property MetricsPrivateTypes.Fraction fraction: MetricsPrivateTypes.Fraction{}
+    readonly property MetricsPrivateTypes.Fraction fraction: MetricsPrivateTypes.Fraction{
+        thicknessMargin: root.shrinkThickMargins ? indicators.info.minThicknessPadding :
+                                                   Math.max(indicators.info.minThicknessPadding, plasmoid.configuration.thickMargin / 100)
 
-    //! Behaviors
+        lengthMargin: plasmoid.configuration.lengthExtMargin / 100
+        lengthPadding: indicators.isEnabled ? indicators.padding : 0
+        lengthAppletPadding: indicators.infoLoaded ? indicators.info.appletLengthPadding : -1
+    }
+
+
+
+    //! BEHAVIORS
     Behavior on iconSize {
         enabled: !(root.editMode && root.behaveAsPlasmaPanel)
         NumberAnimation {

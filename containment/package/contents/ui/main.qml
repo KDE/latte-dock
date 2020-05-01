@@ -386,22 +386,10 @@ Item {
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
-    property int lengthIntMargin: lengthIntMarginFactor * metrics.iconSize
-    property int lengthExtMargin: lengthExtMarginFactor * metrics.iconSize
-    property real lengthIntMarginFactor: indicators.isEnabled ? indicators.padding : 0
-    property real lengthExtMarginFactor: plasmoid.configuration.lengthExtMargin / 100
+    property int lengthIntMargin: metrics.fraction.lengthPadding * metrics.iconSize
+    property int lengthExtMargin: metrics.fraction.lengthMargin * metrics.iconSize
 
-    property real lengthAppletIntMarginFactor: indicators.infoLoaded ? indicators.info.appletLengthPadding : -1
-
-    property real thickMarginFactor: {
-        if (shrinkThickMargins) {
-            return indicators.info.minThicknessPadding;
-        }
-
-        //0.075 old statesLineSize and 0.06 old default thickMargin
-        return  Math.max(indicators.info.minThicknessPadding, plasmoid.configuration.thickMargin / 100)
-    }
-    property int thickMargin: thickMarginFactor * metrics.iconSize
+    property int thickMargin: metrics.fraction.thicknessMargin * metrics.iconSize
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
     property int screenEdgeMargin: {
@@ -424,7 +412,7 @@ Item {
 
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
-    property int maxThickMargin: thickMarginFactor * metrics.maxIconSize
+    property int maxThickMargin: metrics.fraction.thicknessMargin * metrics.maxIconSize
 
     property int lengthMargin: lengthIntMargin + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
@@ -1755,6 +1743,7 @@ Item {
         id: _metrics
         animations: _animations
         autosize: _autosize
+        indicators: indicatorsManager
     }
 
     ///////////////END ABILITIES

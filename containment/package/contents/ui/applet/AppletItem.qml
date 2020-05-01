@@ -168,8 +168,8 @@ Item {
     //! local margins
     readonly property bool parabolicEffectMarginsEnabled: root.zoomFactor>1 && !originalAppletBehavior
 
-    property int lengthAppletIntMargin: root.lengthAppletIntMarginFactor === -1 || parabolicEffectMarginsEnabled ?
-                                            root.lengthIntMargin : root.lengthAppletIntMarginFactor * metrics.iconSize
+    property int lengthAppletIntMargin: metrics.fraction.lengthAppletPadding === -1 || parabolicEffectMarginsEnabled ?
+                                            root.lengthIntMargin : metrics.fraction.lengthAppletPadding * metrics.iconSize
 
     property int lengthAppletFullMargin: lengthAppletIntMargin + root.lengthExtMargin
     property int lengthAppletFullMargins: 2 * lengthAppletFullMargin
