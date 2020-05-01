@@ -29,4 +29,6 @@ AbilityPrivate.MetricsPrivate {
     //! Public Properties
     iconSize: autosizeEnabled && autosize.iconSize > 0 ? Math.min(autosize.iconSize, maxIconSize) : maxIconSize
     maxIconSize: portionIconSize!==-1 ? portionIconSize : plasmoid.configuration.iconSize
+
+    margin.maxThickness: fraction.thicknessMargin * maxIconSize
 }

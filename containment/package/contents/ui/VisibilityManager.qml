@@ -77,13 +77,13 @@ Item{
 
     property int thicknessZoom: root.screenEdgeMargin + ((metrics.iconSize+root.thickMargins+extraThickMask) * root.maxZoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: root.screenEdgeMargin + Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.maxIconSize+root.maxThickMargin)) //needed in some animations
-    property int thicknessNormalOriginal: root.screenEdgeMargin + metrics.maxIconSize + (root.maxThickMargin * 2) //this way we always have the same thickness published at all states
+    property int thicknessMidOriginal: root.screenEdgeMargin + Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
+    property int thicknessNormalOriginal: root.screenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
     /*property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
                                                thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow*/
 
-    property int thicknessNormalOriginalValue: root.screenEdgeMargin + metrics.maxIconSize + (root.maxThickMargin * 2) + extraThickMask + 1
-    property int thicknessZoomOriginal:root.screenEdgeMargin + Math.max( ((metrics.maxIconSize+(root.maxThickMargin * 2)) * root.maxZoomFactor) + extraThickMask + 2,
+    property int thicknessNormalOriginalValue: root.screenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraThickMask + 1
+    property int thicknessZoomOriginal:root.screenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * root.maxZoomFactor) + extraThickMask + 2,
                                                                         root.realPanelSize + root.panelShadow,
                                                                         (LatteCore.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
 
@@ -113,8 +113,8 @@ Item{
         shadowMaxNeededMargin = (shadowMaxNeededMargin * shadowOpacity);
 
         //! give some more space when items shadows are enabled and extremely big
-        if (root.enableShadows && root.maxThickMargin < shadowMaxNeededMargin) {
-            return shadowMaxNeededMargin - root.maxThickMargin;
+        if (root.enableShadows && metrics.margin.maxThickness < shadowMaxNeededMargin) {
+            return shadowMaxNeededMargin - metrics.margin.maxThickness;
         }
 
         return 0;

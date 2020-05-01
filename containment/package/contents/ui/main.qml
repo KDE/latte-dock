@@ -410,10 +410,6 @@ Item {
     //! to be always correctly centered
     property int thickMargins: 2 * thickMargin
 
-    //it is used in order to not break the calculations for the thickness placement
-    //especially in automatic icon sizes calculations
-    property int maxThickMargin: metrics.fraction.thicknessMargin * metrics.maxIconSize
-
     property int lengthMargin: lengthIntMargin + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
 
