@@ -168,10 +168,10 @@ Item {
     //! local margins
     readonly property bool parabolicEffectMarginsEnabled: root.zoomFactor>1 && !originalAppletBehavior
 
-    property int lengthAppletIntMargin: metrics.fraction.lengthAppletPadding === -1 || parabolicEffectMarginsEnabled ?
-                                            root.lengthIntMargin : metrics.fraction.lengthAppletPadding * metrics.iconSize
+    property int lengthAppletPadding: metrics.fraction.lengthAppletPadding === -1 || parabolicEffectMarginsEnabled ?
+                                          metrics.padding.length : metrics.padding.lengthApplet
 
-    property int lengthAppletFullMargin: lengthAppletIntMargin + root.lengthExtMargin
+    property int lengthAppletFullMargin: lengthAppletPadding + root.lengthExtMargin
     property int lengthAppletFullMargins: 2 * lengthAppletFullMargin
 
     property int internalWidthMargins: {
@@ -180,10 +180,10 @@ Item {
         }
 
         /*TODO, Fitt's case: is temporary until the atScreenEdge applets are aligned properly to the corner and the wrapper
-          is taking all the space needed in order to fill right. For atScreenEdge appplets that should be: applet size + lengthAppletIntMargin + lengthAppletExtMargin.
+          is taking all the space needed in order to fill right. For atScreenEdge appplets that should be: applet size + lengthAppletPadding + lengthAppletExtMargin.
           The indicator should follow also the applet alignment in this in order to feel right
           */
-        return 2 * lengthAppletIntMargin;
+        return 2 * lengthAppletPadding;
     }
 
     property int internalHeightMargins: {
@@ -192,10 +192,10 @@ Item {
         }
 
         /*TODO,Fitt's case: is temporary until the atScreenEdge applets are aligned properly to the corner and the wrapper
-          is taking all the space needed in order to fill right. For atScreenEdge appplets that should be: applet size + lengthAppletIntMargin + lengthAppletExtMargin.
+          is taking all the space needed in order to fill right. For atScreenEdge appplets that should be: applet size + lengthAppletPadding + lengthAppletExtMargin.
           The indicator should follow also the applet alignment in this in order to feel right
           */
-        return 2 * lengthAppletIntMargin;
+        return 2 * lengthAppletPadding;
     }
 
     //! are set by the indicator
@@ -302,7 +302,7 @@ Item {
         to: 0
     }
 
-    Behavior on lengthAppletIntMargin {
+    Behavior on lengthAppletPadding {
         NumberAnimation {
             duration: 0.8 * appletItem.animations.duration.proposed
             easing.type: Easing.OutCubic

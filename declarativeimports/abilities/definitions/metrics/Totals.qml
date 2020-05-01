@@ -23,6 +23,7 @@ Item {
     readonly property int length: iconSize + lengthMargins
     readonly property int lengthMargin: margin.length + padding.length
     readonly property int lengthMargins: 2 * lengthMargin
+    readonly property int lengthPaddings: 2 * padding.length
     readonly property int thickness: iconSize + thicknessMargins
     readonly property int thicknessMargins: 2 * margin.thickness
 }

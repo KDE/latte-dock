@@ -50,7 +50,7 @@ Item{
     readonly property bool atEdgeForcingFittsLaw: !isSeparator && !parabolicEffectMarginsEnabled && atScreenEdge
     readonly property int subtrackedMargins: {
         if (atEdgeForcingFittsLaw && ((firstAppletInContainer && rightSpacer) || (lastAppletInContainer && !rightSpacer ))) {
-            return (wrapperAlias.edgeLengthMarginsDisabled ? root.lengthExtMargin + appletItem.lengthAppletIntMargin : root.lengthExtMargin);
+            return (wrapperAlias.edgeLengthMarginsDisabled ? root.lengthExtMargin + appletItem.lengthAppletPadding : root.lengthExtMargin);
         }
 
         return 0;

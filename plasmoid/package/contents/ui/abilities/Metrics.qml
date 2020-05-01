@@ -28,4 +28,5 @@ AppletAbility.Metrics {
     local.iconSize: Math.max(plasmoid.configuration.iconSize, 16)
 
     local.margin.thickness: 0.16 * iconSize
+    local.padding.length: 0.04 * iconSize
 }

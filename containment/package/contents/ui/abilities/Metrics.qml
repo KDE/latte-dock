@@ -32,4 +32,7 @@ AbilityPrivate.MetricsPrivate {
 
     margin.thickness: fraction.thicknessMargin * iconSize
     margin.maxThickness: fraction.thicknessMargin * maxIconSize
+
+    padding.length: fraction.lengthPadding * iconSize
+    padding.lengthApplet: fraction.lengthAppletPadding * iconSize
 }

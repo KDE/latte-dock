@@ -110,8 +110,8 @@ Item {
     property int widthMargins: root.vertical ? metrics.totals.thicknessMargins : lengthMargins
     property int heightMargins: !root.vertical ? metrics.totals.thicknessMargins : lengthMargins
 
-    property int internalWidthMargins: root.vertical ? metrics.totals.thicknessMargins : 2 * lengthIntMargin
-    property int internalHeightMargins: !root.vertical ? metrics.totals.thicknessMargins : 2 * lengthIntMargin
+    property int internalWidthMargins: root.vertical ? metrics.totals.thicknessMargins : metrics.totals.lengthPaddings
+    property int internalHeightMargins: !root.vertical ? metrics.totals.thicknessMargins : metrics.totals.lengthPaddings
 
     property real textColorBrightness: ColorizerTools.colorBrightness(themeTextColor)
     property color minimizedDotColor: {
@@ -216,9 +216,8 @@ Item {
         }
     }
 
-    property int lengthIntMargin: latteView ? latteView.lengthIntMargin : 0.04 * metrics.iconSize
     property int lengthExtMargin: latteView ? latteView.lengthExtMargin : 0.1 * metrics.iconSize
-    property int lengthMargin: lengthIntMargin + lengthExtMargin
+    property int lengthMargin: metrics.padding.length + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
 
     property int tasksHeight: mouseHandler.height

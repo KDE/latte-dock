@@ -386,7 +386,6 @@ Item {
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
-    property int lengthIntMargin: metrics.fraction.lengthPadding * metrics.iconSize
     property int lengthExtMargin: metrics.fraction.lengthMargin * metrics.iconSize
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
@@ -404,7 +403,7 @@ Item {
                                         || !screenEdgeMarginEnabled
                                         || hideThickScreenGap ? 0 : plasmoid.configuration.screenEdgeMargin
 
-    property int lengthMargin: lengthIntMargin + lengthExtMargin
+    property int lengthMargin: metrics.padding.length + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
 
     property int widthMargins: root.isVertical ? metrics.totals.thicknessMargins : lengthMargins
@@ -536,13 +535,6 @@ Item {
     ////////////////END properties
 
     //// BEGIN OF Behaviors
-    Behavior on lengthIntMargin {
-        NumberAnimation {
-            duration: 0.8 * animations.duration.proposed
-            easing.type: Easing.OutCubic
-        }
-    }
-
     Behavior on lengthExtMargin {
         NumberAnimation {
             duration: 0.8 * animations.duration.proposed

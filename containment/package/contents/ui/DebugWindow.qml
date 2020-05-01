@@ -453,11 +453,11 @@ Window{
             }
 
             Text{
-                text: "Length Internal Margin (pixels)"+space
+                text: "Length Padding (pixels)"+space
             }
 
             Text{
-                text: root.lengthIntMargin
+                text: metrics.padding.length
             }
 
             Text{

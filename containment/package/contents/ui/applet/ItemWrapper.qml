@@ -133,7 +133,7 @@ Item{
                                    (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
 
     property int localLengthMargins: isSeparator || !communicator.requires.lengthMarginsEnabled || isInternalViewSplitter ? 0 : appletItem.lengthAppletFullMargins
-    property int edgeLengthMargins: edgeLengthMarginsDisabled ? 0 : appletItem.lengthAppletIntMargin * 2
+    property int edgeLengthMargins: edgeLengthMarginsDisabled ? 0 : appletItem.lengthAppletPadding * 2
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
     property real scaledHeight: zoomScaleHeight * (layoutHeight + marginHeight)
@@ -188,8 +188,8 @@ Item{
             console.log("-----");
             console.log("Can be hovered: " + canBeHovered);
             console.log("Icon size: " + appletItem.metrics.iconSize);
-            console.log("Thick Margins: " + metrics.totals.thicknessMargins);
-            console.log("Intern. Margins: " + (root.lengthIntMargin * 2));
+            console.log("Thick Margins: " + appletItem.metrics.totals.thicknessMargins);
+            console.log("Intern. Margins: " + (appletItem.metrics.padding.length * 2));
             console.log("Intern. Margins: " + (root.lengthExtMargin * 2));
             console.log("Max hovered criteria: " + (appletItem.metrics.iconSize + metrics.totals.thicknessMargins));
             console.log("-----");
