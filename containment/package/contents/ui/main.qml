@@ -380,7 +380,7 @@ Item {
 
     property int themePanelThickness: {
         var panelBase = root.panelThickMarginHigh + root.panelThickMarginBase;
-        var margin = shrinkThickMargins ? 0 : metrics.totals.thicknessMargins + localScreenEdgeMargin;
+        var margin = shrinkThickMargins ? 0 : metrics.totals.thicknessEdges + localScreenEdgeMargin;
         var maxPanelSize = (metrics.iconSize + margin) - panelBase;
         var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
@@ -406,8 +406,8 @@ Item {
     property int lengthMargin: metrics.padding.length + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
 
-    property int widthMargins: root.isVertical ? metrics.totals.thicknessMargins : lengthMargins
-    property int heightMargins: root.isHorizontal ? metrics.totals.thicknessMargins : lengthMargins
+    property int widthMargins: root.isVertical ? metrics.totals.thicknessEdges : lengthMargins
+    property int heightMargins: root.isHorizontal ? metrics.totals.thicknessEdges : lengthMargins
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? LatteCore.Types.Center : (root.isVertical ? LatteCore.Types.Top : LatteCore.Types.Left)
@@ -1616,7 +1616,7 @@ Item {
         height: root.isHorizontal ? thickness : length
 
         readonly property int length: metrics.iconSize + root.lengthMargins
-        readonly property int thickness: metrics.iconSize + metrics.totals.thicknessMargins + root.localScreenEdgeMargin
+        readonly property int thickness: metrics.iconSize + metrics.totals.thicknessEdges + root.localScreenEdgeMargin
 
         Layout.preferredWidth: width
         Layout.preferredHeight: height

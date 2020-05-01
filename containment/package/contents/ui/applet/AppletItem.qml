@@ -176,7 +176,7 @@ Item {
 
     property int internalWidthMargins: {
         if (root.isVertical) {
-            return metrics.totals.thicknessMargins;
+            return metrics.totals.thicknessEdges;
         }
 
         /*TODO, Fitt's case: is temporary until the atScreenEdge applets are aligned properly to the corner and the wrapper
@@ -188,7 +188,7 @@ Item {
 
     property int internalHeightMargins: {
         if (root.isHorizontal) {
-            return root.metrics.totals.thicknessMargins;
+            return root.metrics.totals.thicknessEdges;
         }
 
         /*TODO,Fitt's case: is temporary until the atScreenEdge applets are aligned properly to the corner and the wrapper
@@ -401,8 +401,8 @@ Item {
                 return;
             }
 
-            var maxSize = appletItem.metrics.iconSize + metrics.totals.thicknessMargins;
-            var maxForMinimumSize = appletItem.metrics.iconSize + metrics.totals.thicknessMargins;
+            var maxSize = appletItem.metrics.iconSize + metrics.totals.thicknessEdges;
+            var maxForMinimumSize = appletItem.metrics.iconSize + metrics.totals.thicknessEdges;
 
             if ( isSystray
                     || appletItem.needsFillSpace

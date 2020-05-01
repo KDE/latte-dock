@@ -107,11 +107,11 @@ Item {
     property int tasksStarting: 0
 
     ///Don't use Math.floor it adds one pixel in animations and creates glitches
-    property int widthMargins: root.vertical ? metrics.totals.thicknessMargins : lengthMargins
-    property int heightMargins: !root.vertical ? metrics.totals.thicknessMargins : lengthMargins
+    property int widthMargins: root.vertical ? metrics.totals.thicknessEdges : lengthMargins
+    property int heightMargins: !root.vertical ? metrics.totals.thicknessEdges : lengthMargins
 
-    property int internalWidthMargins: root.vertical ? metrics.totals.thicknessMargins : metrics.totals.lengthPaddings
-    property int internalHeightMargins: !root.vertical ? metrics.totals.thicknessMargins : metrics.totals.lengthPaddings
+    property int internalWidthMargins: root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthPaddings
+    property int internalHeightMargins: !root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthPaddings
 
     property real textColorBrightness: ColorizerTools.colorBrightness(themeTextColor)
     property color minimizedDotColor: {
