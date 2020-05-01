@@ -107,11 +107,11 @@ Item {
     property int tasksStarting: 0
 
     ///Don't use Math.floor it adds one pixel in animations and creates glitches
-    property int widthMargins: root.vertical ? thickMargins : lengthMargins
-    property int heightMargins: !root.vertical ? thickMargins : lengthMargins
+    property int widthMargins: root.vertical ? metrics.totals.thicknessMargins : lengthMargins
+    property int heightMargins: !root.vertical ? metrics.totals.thicknessMargins : lengthMargins
 
-    property int internalWidthMargins: root.vertical ? thickMargins : 2 * lengthIntMargin
-    property int internalHeightMargins: !root.vertical ? thickMargins : 2 * lengthIntMargin
+    property int internalWidthMargins: root.vertical ? metrics.totals.thicknessMargins : 2 * lengthIntMargin
+    property int internalHeightMargins: !root.vertical ? metrics.totals.thicknessMargins : 2 * lengthIntMargin
 
     property real textColorBrightness: ColorizerTools.colorBrightness(themeTextColor)
     property color minimizedDotColor: {
@@ -216,8 +216,6 @@ Item {
         }
     }
 
-    property int thickMargin: latteView ? latteView.thickMargin : 0.16*metrics.iconSize
-    property int thickMargins: 2 * thickMargin
     property int lengthIntMargin: latteView ? latteView.lengthIntMargin : 0.04 * metrics.iconSize
     property int lengthExtMargin: latteView ? latteView.lengthExtMargin : 0.1 * metrics.iconSize
     property int lengthMargin: lengthIntMargin + lengthExtMargin
@@ -1204,8 +1202,8 @@ Item {
             visible: root.dragAreaEnabled
 
             property int maxSize: (((root.hoveredIndex>=0 || dockHoveredIndex>=0 ) || windowPreviewIsShown) && !root.dragSource) ?
-                                      root.zoomFactor * (metrics.iconSize + root.thickMargins) + root.screenEdgeMargin :
-                                      metrics.iconSize + root.thickMargins + root.screenEdgeMargin
+                                      (root.zoomFactor * metrics.totals.thickness) + root.screenEdgeMargin :
+                                      metrics.totals.thickness + root.screenEdgeMargin
 
             function onlyLaunchersInList(list){
                 return list.every(function (item) {
@@ -1267,7 +1265,7 @@ Item {
                     return animations.hasThicknessAnimation ? latteView.maskManager.thicknessNormal : latteView.maskManager.thicknessZoom;
                 }
 
-                return (root.thickMargins + metrics.iconSize) * root.zoomFactor;
+                return metrics.totals.thickness * root.zoomFactor;
             }
 
             //onCurrentPosChanged: console.log("CP :: "+ currentPos + " icW:"+icList.width + " rw: "+root.width + " w:" +width);

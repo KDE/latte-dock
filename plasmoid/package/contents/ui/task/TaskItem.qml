@@ -53,7 +53,7 @@ MouseArea{
 
         if (isSeparator) {
             if (root.vertical) {
-                return taskItem.metrics.iconSize + root.thickMargins + root.screenEdgeMargin;
+                return taskItem.metrics.totals.thickness + root.screenEdgeMargin;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
                     return LatteCore.Environment.separatorLength+2*root.lengthExtMargin;
@@ -80,7 +80,7 @@ MouseArea{
 
         if (isSeparator) {
             if (!root.vertical) {
-                return taskItem.metrics.iconSize + root.thickMargins + root.screenEdgeMargin;
+                return taskItem.metrics.totals.thickness + root.screenEdgeMargin;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
                     return LatteCore.Environment.separatorLength+2*root.lengthExtMargin;
@@ -342,10 +342,10 @@ MouseArea{
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-        anchors.bottomMargin: (root.location === PlasmaCore.Types.BottomEdge) ? root.screenEdgeMargin + root.thickMargin : 0
-        anchors.topMargin: (root.location === PlasmaCore.Types.TopEdge) ? root.screenEdgeMargin + root.thickMargin : 0
-        anchors.leftMargin: (root.location === PlasmaCore.Types.LeftEdge) ? root.screenEdgeMargin + root.thickMargin : 0
-        anchors.rightMargin: (root.location === PlasmaCore.Types.RightEdge) ? root.screenEdgeMargin + root.thickMargin : 0
+        anchors.bottomMargin: (root.location === PlasmaCore.Types.BottomEdge) ? margin : 0
+        anchors.topMargin: (root.location === PlasmaCore.Types.TopEdge) ? margin : 0
+        anchors.leftMargin: (root.location === PlasmaCore.Types.LeftEdge) ? margin : 0
+        anchors.rightMargin: (root.location === PlasmaCore.Types.RightEdge) ? margin : 0
 
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
@@ -354,6 +354,8 @@ MouseArea{
         height: !root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
 
         property bool forceHiddenState: false
+
+        readonly property int margin: root.screenEdgeMargin + metrics.margin.thickness
 
         Behavior on opacity {
             NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }

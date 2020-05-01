@@ -126,10 +126,10 @@ Item{
     property int iconSize: appletItem.metrics.iconSize
 
     property int marginWidth: root.isVertical ?
-                                  root.thickMargins :
+                                  appletItem.metrics.totals.thicknessMargins :
                                   (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
     property int marginHeight: root.isHorizontal ?
-                                   root.thickMargins :
+                                   appletItem.metrics.totals.thicknessMargins :
                                    (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins)  //Fitt's Law
 
     property int localLengthMargins: isSeparator || !communicator.requires.lengthMarginsEnabled || isInternalViewSplitter ? 0 : appletItem.lengthAppletFullMargins
@@ -188,10 +188,10 @@ Item{
             console.log("-----");
             console.log("Can be hovered: " + canBeHovered);
             console.log("Icon size: " + appletItem.metrics.iconSize);
-            console.log("Thick Margins: " + root.thickMargins);
+            console.log("Thick Margins: " + metrics.totals.thicknessMargins);
             console.log("Intern. Margins: " + (root.lengthIntMargin * 2));
             console.log("Intern. Margins: " + (root.lengthExtMargin * 2));
-            console.log("Max hovered criteria: " + (appletItem.metrics.iconSize + thickMargins));
+            console.log("Max hovered criteria: " + (appletItem.metrics.iconSize + metrics.totals.thicknessMargins));
             console.log("-----");
             console.log("LayoutW: " + layoutWidth);
             console.log("LayoutH: " + layoutHeight);
@@ -427,7 +427,7 @@ Item{
                 return wrapper.layoutWidth;
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    var wrapperContainerThickness = parent.zoomScaleWidth * (appletItem.metrics.iconSize + root.thickMargins);
+                    var wrapperContainerThickness = parent.zoomScaleWidth * (appletItem.metrics.totals.thickness);
                     return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleWidth * wrapper.layoutWidth;
@@ -444,7 +444,7 @@ Item{
                 return wrapper.layoutHeight;
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                    var wrapperContainerThickness = parent.zoomScaleHeight * (appletItem.metrics.iconSize + root.thickMargins);
+                    var wrapperContainerThickness = parent.zoomScaleHeight * (appletItem.metrics.totals.thickness);
                     return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleHeight * wrapper.layoutHeight;
@@ -457,7 +457,7 @@ Item{
 
         readonly property int appliedEdgeMargin: {
             if (appletItem.isInternalViewSplitter) {
-                return root.localScreenEdgeMargin + root.thickMargin;
+                return root.localScreenEdgeMargin + appletItem.metrics.margin.thickness;
             }
 
             return appletItem.screenEdgeMarginSupported ? 0 : root.localScreenEdgeMargin;

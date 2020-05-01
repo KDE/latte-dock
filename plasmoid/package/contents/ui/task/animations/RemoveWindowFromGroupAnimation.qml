@@ -67,10 +67,10 @@ Item{
 
             LatteCore.IconItem{
                 id: tempRemoveIcon
-                anchors.rightMargin: root.location === PlasmaCore.Types.LeftEdge ? root.thickMargin : 0
-                anchors.leftMargin: root.location === PlasmaCore.Types.RightEdge ? root.thickMargin : 0
-                anchors.topMargin: root.location === PlasmaCore.Types.BottomEdge ? root.thickMargin : 0
-                anchors.bottomMargin: root.location === PlasmaCore.Types.TopEdge ? root.thickMargin : 0
+                anchors.rightMargin: root.location === PlasmaCore.Types.LeftEdge ? taskItem.metrics.margin.thickness : 0
+                anchors.leftMargin: root.location === PlasmaCore.Types.RightEdge ? taskItem.metrics.margin.thickness : 0
+                anchors.topMargin: root.location === PlasmaCore.Types.BottomEdge ? taskItem.metrics.margin.thickness : 0
+                anchors.bottomMargin: root.location === PlasmaCore.Types.TopEdge ? taskItem.metrics.margin.thickness : 0
 
                 anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
                 anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;

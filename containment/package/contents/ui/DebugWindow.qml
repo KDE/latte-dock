@@ -473,7 +473,7 @@ Window{
             }
 
             Text{
-                text: root.thickMargin
+                text: metrics.margin.thickness
             }
 
             Text{

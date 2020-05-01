@@ -27,7 +27,7 @@ Item {
     opacity: 0.4
 
     readonly property int gradientLength: metrics.iconSize / 3
-    readonly property int thickness: latteView ? latteView.realPanelSize : metrics.iconSize + root.thickMargins
+    readonly property int thickness: latteView ? latteView.realPanelSize : metrics.totals.thickness
     readonly property color appliedColor: root.appShadowColorSolid
 
     property Item flickable

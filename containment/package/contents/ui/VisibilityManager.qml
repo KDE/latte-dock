@@ -40,7 +40,7 @@ Item{
     property bool inForceHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
-    property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelThickness >= (metrics.iconSize + root.thickMargin))
+    property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelThickness >= (metrics.iconSize + metrics.margin.thickness))
 
     property bool maskIsFloating: !root.behaveAsPlasmaPanel
                                   && !root.editMode
@@ -72,10 +72,10 @@ Item{
     }
 
     property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
-    property int thicknessMid: root.screenEdgeMargin + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.iconSize+root.thickMargins+extraThickMask) //needed in some animations
-    property int thicknessNormal: root.screenEdgeMargin + Math.max(metrics.iconSize + root.thickMargins + extraThickMask + 1, root.realPanelSize + root.panelShadow)
+    property int thicknessMid: root.screenEdgeMargin + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.totals.thickness+extraThickMask) //needed in some animations
+    property int thicknessNormal: root.screenEdgeMargin + Math.max(metrics.totals.thickness + extraThickMask + 1, root.realPanelSize + root.panelShadow)
 
-    property int thicknessZoom: root.screenEdgeMargin + ((metrics.iconSize+root.thickMargins+extraThickMask) * root.maxZoomFactor) + 2
+    property int thicknessZoom: root.screenEdgeMargin + ((metrics.totals.thickness+extraThickMask) * root.maxZoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
     property int thicknessMidOriginal: root.screenEdgeMargin + Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
     property int thicknessNormalOriginal: root.screenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
@@ -90,7 +90,7 @@ Item{
     //! is used from Panel in edit mode in order to provide correct masking
     property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness
     //! when Latte behaves as Plasma panel
-    property int thicknessAsPanel: metrics.iconSize + root.thickMargins
+    property int thicknessAsPanel: metrics.totals.thickness
 
     //! is used to increase the mask thickness
     readonly property int marginBetweenContentsAndRuler: root.editMode ? 10 : 0
@@ -750,7 +750,7 @@ Item{
             //the shadows size must be removed from the maskArea
             //before updating the localDockGeometry
             if (!latteView.behaveAsPlasmaPanel || root.editMode) {
-                var cleanThickness = metrics.iconSize + root.thickMargins;
+                var cleanThickness = metrics.totals.thickness;
                 var edgeMargin = root.screenEdgeMargin;
 
                 if (plasmoid.location === PlasmaCore.Types.TopEdge) {

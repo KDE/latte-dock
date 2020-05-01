@@ -380,7 +380,7 @@ Item {
 
     property int themePanelThickness: {
         var panelBase = root.panelThickMarginHigh + root.panelThickMarginBase;
-        var margin = shrinkThickMargins ? 0 : thickMargins + localScreenEdgeMargin;
+        var margin = shrinkThickMargins ? 0 : metrics.totals.thicknessMargins + localScreenEdgeMargin;
         var maxPanelSize = (metrics.iconSize + margin) - panelBase;
         var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
@@ -388,8 +388,6 @@ Item {
 
     property int lengthIntMargin: metrics.fraction.lengthPadding * metrics.iconSize
     property int lengthExtMargin: metrics.fraction.lengthMargin * metrics.iconSize
-
-    property int thickMargin: metrics.fraction.thicknessMargin * metrics.iconSize
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
     property int screenEdgeMargin: {
@@ -406,15 +404,11 @@ Item {
                                         || !screenEdgeMarginEnabled
                                         || hideThickScreenGap ? 0 : plasmoid.configuration.screenEdgeMargin
 
-    //! thickness margins are always two and equal in order for items
-    //! to be always correctly centered
-    property int thickMargins: 2 * thickMargin
-
     property int lengthMargin: lengthIntMargin + lengthExtMargin
     property int lengthMargins: 2 * lengthMargin
 
-    property int widthMargins: root.isVertical ? thickMargins : lengthMargins
-    property int heightMargins: root.isHorizontal ? thickMargins : lengthMargins
+    property int widthMargins: root.isVertical ? metrics.totals.thicknessMargins : lengthMargins
+    property int heightMargins: root.isHorizontal ? metrics.totals.thicknessMargins : lengthMargins
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? LatteCore.Types.Center : (root.isVertical ? LatteCore.Types.Top : LatteCore.Types.Left)
@@ -542,23 +536,16 @@ Item {
     ////////////////END properties
 
     //// BEGIN OF Behaviors
-    Behavior on thickMargin {
-        NumberAnimation {
-            duration: 0.8 * root.animationTime
-            easing.type: Easing.OutCubic
-        }
-    }
-
     Behavior on lengthIntMargin {
         NumberAnimation {
-            duration: 0.8 * root.animationTime
+            duration: 0.8 * animations.duration.proposed
             easing.type: Easing.OutCubic
         }
     }
 
     Behavior on lengthExtMargin {
         NumberAnimation {
-            duration: 0.8 * root.animationTime
+            duration: 0.8 * animations.duration.proposed
             easing.type: Easing.OutCubic
         }
     }
@@ -568,7 +555,7 @@ Item {
                  && !editModeVisual.editAnimationRunning /*avoid slide-out animation when from editMode we change to real floating*/
 
         NumberAnimation {
-            duration: 0.8 * root.animationTime
+            duration: 0.8 * animations.duration.proposed
             easing.type: Easing.OutCubic
         }
     }
@@ -578,7 +565,7 @@ Item {
         NumberAnimation {
             id: offsetAnimation
 
-            duration: 0.8 * root.animationTime
+            duration: 0.8 * animations.duration.proposed
             easing.type: Easing.OutCubic
         }
     }
@@ -1637,7 +1624,7 @@ Item {
         height: root.isHorizontal ? thickness : length
 
         readonly property int length: metrics.iconSize + root.lengthMargins
-        readonly property int thickness: metrics.iconSize + root.thickMargins + root.localScreenEdgeMargin
+        readonly property int thickness: metrics.iconSize + metrics.totals.thicknessMargins + root.localScreenEdgeMargin
 
         Layout.preferredWidth: width
         Layout.preferredHeight: height

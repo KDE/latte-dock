@@ -118,12 +118,12 @@ Item{
 
     TitleTooltipParent{
         id: titleTooltipParent
-        thickness: root.zoomFactor * (taskItem.metrics.iconSize + root.thickMargins)
+        thickness: root.zoomFactor * taskItem.metrics.totals.thickness
     }
 
     TitleTooltipParent{
         id: previewsTooltipParent
-        thickness: root.zoomFactor * (taskItem.metrics.iconSize + root.thickMargins) + 1
+        thickness: (root.zoomFactor * taskItem.metrics.totals.thickness) + 1
     }
 
     //!
@@ -600,7 +600,7 @@ Item{
         anchors.centerIn: parent
 
         readonly property int length: taskItem.metrics.iconSize + root.lengthMargins
-        readonly property int thickness: taskItem.metrics.iconSize + root.thickMargins
+        readonly property int thickness: taskItem.metrics.totals.thickness
 
         readonly property real applyOpacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
                                              && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 0.7 : 0
@@ -787,7 +787,7 @@ Item{
                 if(!running){
                     var halfZoom = 1 + ((root.zoomFactor - 1) / 2);
 
-                    wrapper.calculateScales((taskItem.metrics.iconSize+root.thickMargins)/2);
+                    wrapper.calculateScales(taskItem.metrics.totals.thickness/2);
 
                     taskItem.animationEnded();
                     //   root.animations--;

@@ -176,7 +176,7 @@ Item {
 
     property int internalWidthMargins: {
         if (root.isVertical) {
-            return root.thickMargins;
+            return metrics.totals.thicknessMargins;
         }
 
         /*TODO, Fitt's case: is temporary until the atScreenEdge applets are aligned properly to the corner and the wrapper
@@ -188,7 +188,7 @@ Item {
 
     property int internalHeightMargins: {
         if (root.isHorizontal) {
-            return root.thickMargins;
+            return root.metrics.totals.thicknessMargins;
         }
 
         /*TODO,Fitt's case: is temporary until the atScreenEdge applets are aligned properly to the corner and the wrapper
@@ -401,8 +401,8 @@ Item {
                 return;
             }
 
-            var maxSize = appletItem.metrics.iconSize + root.thickMargins;
-            var maxForMinimumSize = appletItem.metrics.iconSize + root.thickMargins;
+            var maxSize = appletItem.metrics.iconSize + metrics.totals.thicknessMargins;
+            var maxForMinimumSize = appletItem.metrics.iconSize + metrics.totals.thicknessMargins;
 
             if ( isSystray
                     || appletItem.needsFillSpace
@@ -840,10 +840,10 @@ Item {
                 readonly property int badgeThickness: {
                     if (plasmoid.location === PlasmaCore.Types.BottomEdge
                             || plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        return ((appletItem.metrics.iconSize + root.thickMargin) * wrapper.zoomScale) + root.localScreenEdgeMargin;
+                        return ((appletItem.metrics.iconSize + appletItem.metrics.margin.thickness) * wrapper.zoomScale) + root.localScreenEdgeMargin;
                     }
 
-                    return ((appletItem.metrics.iconSize + root.thickMargin) * wrapper.zoomScale);
+                    return ((appletItem.metrics.iconSize + appletItem.metrics.margin.thickness) * wrapper.zoomScale);
                 }
 
                 ShortcutBadge{

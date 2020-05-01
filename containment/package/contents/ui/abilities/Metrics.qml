@@ -30,5 +30,6 @@ AbilityPrivate.MetricsPrivate {
     iconSize: autosizeEnabled && autosize.iconSize > 0 ? Math.min(autosize.iconSize, maxIconSize) : maxIconSize
     maxIconSize: portionIconSize!==-1 ? portionIconSize : plasmoid.configuration.iconSize
 
+    margin.thickness: fraction.thicknessMargin * iconSize
     margin.maxThickness: fraction.thicknessMargin * maxIconSize
 }
