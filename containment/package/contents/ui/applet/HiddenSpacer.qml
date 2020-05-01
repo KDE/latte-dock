@@ -35,7 +35,7 @@ Item{
     property bool neighbourSeparator: false;
 
     property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && root.parabolicEffectEnabled
-                                 && !appletItem.latteApplet ? ((LatteCore.Environment.separatorLength/2)+root.lengthExtMargin) : subtrackedMargins
+                                 && !appletItem.latteApplet ? ((LatteCore.Environment.separatorLength/2)+appletItem.metrics.margin.length) : subtrackedMargins
 
     property real nHiddenSize: {
         if (isSeparator || !communicator.requires.lengthMarginsEnabled) {
@@ -50,7 +50,7 @@ Item{
     readonly property bool atEdgeForcingFittsLaw: !isSeparator && !parabolicEffectMarginsEnabled && atScreenEdge
     readonly property int subtrackedMargins: {
         if (atEdgeForcingFittsLaw && ((firstAppletInContainer && rightSpacer) || (lastAppletInContainer && !rightSpacer ))) {
-            return (wrapperAlias.edgeLengthMarginsDisabled ? root.lengthExtMargin + appletItem.lengthAppletPadding : root.lengthExtMargin);
+            return (wrapperAlias.edgeLengthMarginsDisabled ? appletItem.metrics.margin.length + appletItem.lengthAppletPadding : appletItem.metrics.margin.length);
         }
 
         return 0;

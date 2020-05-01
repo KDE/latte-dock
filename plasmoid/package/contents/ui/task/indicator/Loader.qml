@@ -45,7 +45,7 @@ Loader {
             return visualLockedWidth;
         }
 
-        return !root.vertical ? taskItem.wrapperAlias.width - 2*taskItem.wrapperAlias.mScale*root.lengthExtMargin : taskItem.wrapperAlias.width;
+        return !root.vertical ? taskItem.wrapperAlias.width - 2*taskItem.wrapperAlias.mScale*taskItem.metrics.margin.length: taskItem.wrapperAlias.width;
     }
 
     height: {
@@ -53,7 +53,7 @@ Loader {
             return visualLockedHeight;
         }
 
-        return root.vertical ? taskItem.wrapperAlias.height - 2*taskItem.wrapperAlias.mScale*root.lengthExtMargin : taskItem.wrapperAlias.height;
+        return root.vertical ? taskItem.wrapperAlias.height - 2*taskItem.wrapperAlias.mScale*taskItem.metrics.margin.length : taskItem.wrapperAlias.height;
     }
 
     readonly property bool locked: inAttentionAnimation || inNewWindowAnimation || inBouncingAnimation

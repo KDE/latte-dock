@@ -47,7 +47,7 @@ Item{
     //! && !root.inActivityChange (deprecated) in order to check if it is fixed
     property int separatorSpace: neighbourSeparator && !isSeparator && root.parabolicEffectEnabled
                                  && !(parabolicManager.hasInternalSeparator && root.dragSource) ?
-                                     ((LatteCore.Environment.separatorLength/2)+root.lengthExtMargin) : 0
+                                     ((LatteCore.Environment.separatorLength/2)+taskItem.metrics.margin.length) : 0
 
     property bool rightSpacer: false
 

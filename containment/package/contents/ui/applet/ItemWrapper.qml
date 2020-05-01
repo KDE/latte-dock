@@ -190,7 +190,7 @@ Item{
             console.log("Icon size: " + appletItem.metrics.iconSize);
             console.log("Thick Margins: " + appletItem.metrics.totals.thicknessEdges);
             console.log("Intern. Margins: " + (appletItem.metrics.padding.length * 2));
-            console.log("Intern. Margins: " + (root.lengthExtMargin * 2));
+            console.log("Intern. Margins: " + (appletItem.metrics.margin.length * 2));
             console.log("Max hovered criteria: " + (appletItem.metrics.iconSize + metrics.totals.thicknessEdges));
             console.log("-----");
             console.log("LayoutW: " + layoutWidth);

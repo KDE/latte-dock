@@ -461,11 +461,11 @@ Window{
             }
 
             Text{
-                text: "Length External Margin (pixels)"+space
+                text: "Length Margin (pixels)"+space
             }
 
             Text{
-                text: root.lengthExtMargin
+                text: metrics.margin.length
             }
 
             Text{

@@ -56,7 +56,7 @@ MouseArea{
                 return taskItem.metrics.totals.thickness + root.screenEdgeMargin;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
-                    return LatteCore.Environment.separatorLength+2*root.lengthExtMargin;
+                    return LatteCore.Environment.separatorLength+2*taskItem.metrics.margin.length;
                 }
             }
 
@@ -83,7 +83,7 @@ MouseArea{
                 return taskItem.metrics.totals.thickness + root.screenEdgeMargin;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
-                    return LatteCore.Environment.separatorLength+2*root.lengthExtMargin;
+                    return LatteCore.Environment.separatorLength+2*taskItem.metrics.margin.length;
                 }
             }
 
@@ -154,7 +154,7 @@ MouseArea{
     property int pressX: -1
     property int pressY: -1
     property int resistanceDelay: 450
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*taskItem.metrics.iconSize) - root.lengthMargins)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*taskItem.metrics.iconSize) - taskItem.metrics.totals.lengthEdges)
     property int windowsCount: subWindows.windowsCount
     property int windowsMinimizedCount: subWindows.windowsMinimized
 
@@ -350,8 +350,8 @@ MouseArea{
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
 
-        width: root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
-        height: !root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+root.lengthMargins: 1)
+        width: root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+taskItem.metrics.totals.lengthEdges: 1)
+        height: !root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+taskItem.metrics.totals.lengthEdges: 1)
 
         property bool forceHiddenState: false
 

@@ -162,7 +162,7 @@ Item {
 
     property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * metrics.iconSize) - root.lengthMargins)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * metrics.iconSize) - metrics.totals.lengthEdges)
     property int status: applet ? applet.status : -1
 
     //! local margins
@@ -171,7 +171,7 @@ Item {
     property int lengthAppletPadding: metrics.fraction.lengthAppletPadding === -1 || parabolicEffectMarginsEnabled ?
                                           metrics.padding.length : metrics.padding.lengthApplet
 
-    property int lengthAppletFullMargin: lengthAppletPadding + root.lengthExtMargin
+    property int lengthAppletFullMargin: lengthAppletPadding + metrics.margin.length
     property int lengthAppletFullMargins: 2 * lengthAppletFullMargin
 
     property int internalWidthMargins: {

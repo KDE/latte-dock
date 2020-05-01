@@ -599,7 +599,7 @@ Item{
         height: !root.vertical ? thickness : length
         anchors.centerIn: parent
 
-        readonly property int length: taskItem.metrics.iconSize + root.lengthMargins
+        readonly property int length: taskItem.metrics.totals.length
         readonly property int thickness: taskItem.metrics.totals.thickness
 
         readonly property real applyOpacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers

@@ -386,8 +386,6 @@ Item {
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
-    property int lengthExtMargin: metrics.fraction.lengthMargin * metrics.iconSize
-
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
     property int screenEdgeMargin: {
         //! is used for window geometry calculations
@@ -403,11 +401,8 @@ Item {
                                         || !screenEdgeMarginEnabled
                                         || hideThickScreenGap ? 0 : plasmoid.configuration.screenEdgeMargin
 
-    property int lengthMargin: metrics.padding.length + lengthExtMargin
-    property int lengthMargins: 2 * lengthMargin
-
-    property int widthMargins: root.isVertical ? metrics.totals.thicknessEdges : lengthMargins
-    property int heightMargins: root.isHorizontal ? metrics.totals.thicknessEdges : lengthMargins
+    property int widthMargins: root.isVertical ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
+    property int heightMargins: root.isHorizontal ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? LatteCore.Types.Center : (root.isVertical ? LatteCore.Types.Top : LatteCore.Types.Left)
@@ -535,13 +530,6 @@ Item {
     ////////////////END properties
 
     //// BEGIN OF Behaviors
-    Behavior on lengthExtMargin {
-        NumberAnimation {
-            duration: 0.8 * animations.duration.proposed
-            easing.type: Easing.OutCubic
-        }
-    }
-
     Behavior on localScreenEdgeMargin {
         enabled: !root.behaveAsPlasmaPanel
                  && !editModeVisual.editAnimationRunning /*avoid slide-out animation when from editMode we change to real floating*/
@@ -1615,8 +1603,8 @@ Item {
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
 
-        readonly property int length: metrics.iconSize + root.lengthMargins
-        readonly property int thickness: metrics.iconSize + metrics.totals.thicknessEdges + root.localScreenEdgeMargin
+        readonly property int length: metrics.totals.length
+        readonly property int thickness: metrics.totals.thickness + root.localScreenEdgeMargin
 
         Layout.preferredWidth: width
         Layout.preferredHeight: height

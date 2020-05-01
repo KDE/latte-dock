@@ -165,7 +165,7 @@ Item {
                             layouts.startLayout.width+layouts.mainLayout.width+layouts.endLayout.width : layouts.mainLayout.width
             }
 
-            var itemLength = metrics.iconSize + lengthMargins;
+            var itemLength = metrics.totals.length;
 
             var toShrinkLimit = maxLength - (root.zoomFactor * itemLength);
             //! to grow limit must be a little less than the shrink one in order to be more robust and

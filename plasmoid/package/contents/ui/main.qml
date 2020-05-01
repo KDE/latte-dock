@@ -107,8 +107,8 @@ Item {
     property int tasksStarting: 0
 
     ///Don't use Math.floor it adds one pixel in animations and creates glitches
-    property int widthMargins: root.vertical ? metrics.totals.thicknessEdges : lengthMargins
-    property int heightMargins: !root.vertical ? metrics.totals.thicknessEdges : lengthMargins
+    property int widthMargins: root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
+    property int heightMargins: !root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
 
     property int internalWidthMargins: root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthPaddings
     property int internalHeightMargins: !root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthPaddings
@@ -215,10 +215,6 @@ Item {
             plasmoid.configuration.taskScrollAction = plasmoid.configuration.taskScrollAction-LatteTasks.Types.ScrollToggleMinimized;
         }
     }
-
-    property int lengthExtMargin: latteView ? latteView.lengthExtMargin : 0.1 * metrics.iconSize
-    property int lengthMargin: metrics.padding.length + lengthExtMargin
-    property int lengthMargins: 2 * lengthMargin
 
     property int tasksHeight: mouseHandler.height
     property int tasksWidth: mouseHandler.width
@@ -1087,7 +1083,7 @@ Item {
 
         visible: plasmoid.configuration.zoomHelper
 
-        property int neededSpace: zoomFactor*(metrics.iconSize+lengthMargins)
+        property int neededSpace: zoomFactor*metrics.totals.length
     }
 
     Item{

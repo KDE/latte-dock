@@ -66,6 +66,13 @@ ContainerAbility.Metrics {
     }
 
     margin {
+        Behavior on length {
+            NumberAnimation {
+                duration: 0.8 * animations.duration.proposed
+                easing.type: Easing.OutCubic
+            }
+        }
+
         Behavior on thickness {
             NumberAnimation {
                 duration: 0.8 * animations.duration.proposed

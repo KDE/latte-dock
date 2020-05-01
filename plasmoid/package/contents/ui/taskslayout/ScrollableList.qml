@@ -59,7 +59,7 @@ Flickable{
     readonly property int scrollStep: metrics.iconSize * 1.5
     readonly property int currentPos: !root.vertical ? contentX : contentY
 
-    readonly property int autoScrollTriggerLength: metrics.iconSize + root.lengthMargins/2
+    readonly property int autoScrollTriggerLength: metrics.iconSize + metrics.totals.lengthEdge
 
     readonly property int alignment: {
         if (root.location === PlasmaCore.Types.LeftEdge) {
