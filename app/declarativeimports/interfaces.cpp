@@ -34,9 +34,43 @@ QObject *Interfaces::globalShortcuts() const
     return m_globalShortcuts;
 }
 
+void Interfaces::setGlobalShortcuts(QObject *shortcuts)
+{
+    if (m_globalShortcuts == shortcuts) {
+        return;
+    }
+
+    m_globalShortcuts = shortcuts;
+
+    if (m_globalShortcuts) {
+        connect(m_globalShortcuts, &QObject::destroyed, this, [&]() {
+            setGlobalShortcuts(nullptr);
+        });
+    }
+
+    emit globalShortcutsChanged();
+}
+
 QObject *Interfaces::layoutsManager() const
 {
     return m_layoutsManager;
+}
+
+void Interfaces::setLayoutsManager(QObject *manager)
+{
+    if (m_layoutsManager == manager) {
+        return;
+    }
+
+    m_layoutsManager = manager;
+
+    if (m_layoutsManager) {
+        connect(m_layoutsManager, &QObject::destroyed, this, [&]() {
+            setLayoutsManager(nullptr);
+        });
+    }
+
+    emit layoutsManagerChanged();
 }
 
 QObject *Interfaces::themeExtended() const
@@ -44,9 +78,43 @@ QObject *Interfaces::themeExtended() const
     return m_themeExtended;
 }
 
+void Interfaces::setThemeExtended(QObject *theme)
+{
+    if (m_themeExtended == theme) {
+        return;
+    }
+
+    m_themeExtended = theme;
+
+    if (m_themeExtended) {
+        connect(m_themeExtended, &QObject::destroyed, this, [&]() {
+            setThemeExtended(nullptr);
+        });
+    }
+
+    emit themeExtendedChanged();
+}
+
 QObject *Interfaces::universalSettings() const
 {
     return m_universalSettings;
+}
+
+void Interfaces::setUniversalSettings(QObject *settings)
+{
+    if (m_universalSettings == settings) {
+        return;
+    }
+
+    m_universalSettings = settings;
+
+    if (m_universalSettings) {
+        connect(m_universalSettings, &QObject::destroyed, this, [&]() {
+            setUniversalSettings(nullptr);
+        });
+    }
+
+    emit universalSettingsChanged();
 }
 
 QObject *Interfaces::view() const
@@ -61,7 +129,14 @@ void Interfaces::setView(QObject *view)
     }
 
     m_view = view;
-    emit interfacesChanged();
+
+    if (m_view) {
+        connect(m_view, &QObject::destroyed, this, [&]() {
+            setView(nullptr);
+        });
+    }
+
+    emit viewChanged();
 }
 
 QObject *Interfaces::plasmoidInterface() const
@@ -76,15 +151,13 @@ void Interfaces::setPlasmoidInterface(QObject *interface)
     if (plasmoid && m_plasmoid != plasmoid) {
         m_plasmoid = plasmoid;
 
-        m_globalShortcuts = plasmoid->property("_latte_globalShortcuts_object").value<QObject *>();
-        m_layoutsManager = plasmoid->property("_latte_layoutsManager_object").value<QObject *>();
-        m_themeExtended = plasmoid->property("_latte_themeExtended_object").value<QObject *>();
-        m_universalSettings = plasmoid->property("_latte_universalSettings_object").value<QObject *>();
+        setGlobalShortcuts(plasmoid->property("_latte_globalShortcuts_object").value<QObject *>());
+        setLayoutsManager(plasmoid->property("_latte_layoutsManager_object").value<QObject *>());
+        setThemeExtended(plasmoid->property("_latte_themeExtended_object").value<QObject *>());
+        setUniversalSettings(plasmoid->property("_latte_universalSettings_object").value<QObject *>());
         setView(plasmoid->property("_latte_view_object").value<QObject *>());
 
-        connect(m_view, &QObject::destroyed, this, [&]() {
-            setView(nullptr);
-        });
+        emit interfaceChanged();
     }
 }
 

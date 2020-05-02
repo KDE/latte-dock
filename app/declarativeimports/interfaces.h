@@ -33,34 +33,39 @@ namespace Latte{
 class Interfaces: public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QObject *plasmoidInterface READ plasmoidInterface WRITE setPlasmoidInterface NOTIFY interfacesChanged)
+    Q_PROPERTY(QObject *plasmoidInterface READ plasmoidInterface WRITE setPlasmoidInterface NOTIFY interfaceChanged)
 
-    Q_PROPERTY(QObject *globalShortcuts READ globalShortcuts NOTIFY interfacesChanged)
-    Q_PROPERTY(QObject *layoutsManager READ layoutsManager NOTIFY interfacesChanged)
-    Q_PROPERTY(QObject *themeExtended READ themeExtended NOTIFY interfacesChanged)
-    Q_PROPERTY(QObject *universalSettings READ universalSettings NOTIFY interfacesChanged)
-    Q_PROPERTY(QObject *view READ view NOTIFY interfacesChanged)
+    Q_PROPERTY(QObject *globalShortcuts READ globalShortcuts NOTIFY globalShortcutsChanged)
+    Q_PROPERTY(QObject *layoutsManager READ layoutsManager NOTIFY layoutsManagerChanged)
+    Q_PROPERTY(QObject *themeExtended READ themeExtended NOTIFY themeExtendedChanged)
+    Q_PROPERTY(QObject *universalSettings READ universalSettings NOTIFY universalSettingsChanged)
+    Q_PROPERTY(QObject *view READ view NOTIFY viewChanged)
 
 public:
     explicit Interfaces(QObject *parent = nullptr);
 
     QObject *globalShortcuts() const;
-
     QObject *layoutsManager() const;
-
     QObject *themeExtended() const;
-
     QObject *universalSettings() const;
-
     QObject *view() const;
 
     QObject *plasmoidInterface() const;
     void setPlasmoidInterface(QObject *interface);
 
 signals:
-    void interfacesChanged();
+    void interfaceChanged();
+    void globalShortcutsChanged();
+    void layoutsManagerChanged();
+    void themeExtendedChanged();
+    void universalSettingsChanged();
+    void viewChanged();
 
 private:
+    void setGlobalShortcuts(QObject *shortcuts);
+    void setLayoutsManager(QObject *manager);
+    void setThemeExtended(QObject *theme);
+    void setUniversalSettings(QObject *settings);
     void setView(QObject *view);
 
 private:
