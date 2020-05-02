@@ -1098,7 +1098,7 @@ Item {
         width: ( icList.orientation === Qt.Horizontal ) ? icList.width + spacing : smallSize
         height: ( icList.orientation === Qt.Vertical ) ? icList.height + spacing : smallSize
 
-        property int spacing: latteView ? 0 : metrics.iconSize / 2
+        property int spacing: latteBridge ? 0 : metrics.iconSize / 2
         property int smallSize: Math.max(0.10 * metrics.iconSize, 16)
 
         Behavior on opacity{
@@ -1382,13 +1382,81 @@ Item {
 
         LatteComponents.AddingArea {
             id: newDroppedLauncherVisual
-            anchors.fill: parent
+            width: root.vertical ? metrics.totals.thickness : mouseHandler.width
+            height: root.vertical ? mouseHandler.height : metrics.totals.thickness
+
             visible: backgroundOpacity > 0
             radius: metrics.iconSize/10
             backgroundOpacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 0.75 : 0
             duration: animations.speedFactor.current
 
             title: i18n("Tasks Area")
+
+            states: [
+                ///Bottom Edge
+                State {
+                    name: "left"
+                    when: root.location===PlasmaCore.Types.LeftEdge
+
+                    AnchorChanges {
+                        target: newDroppedLauncherVisual
+                        anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
+                            horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                    }
+
+                    PropertyChanges {
+                        target: newDroppedLauncherVisual
+                        anchors{ topMargin:0; bottomMargin:0; leftMargin:metrics.margin.screenEdge; rightMargin:0;}
+                    }
+                },
+                State {
+                    name: "right"
+                    when: root.location===PlasmaCore.Types.RightEdge
+
+                    AnchorChanges {
+                        target: newDroppedLauncherVisual
+                        anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
+                            horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                    }
+
+                    PropertyChanges {
+                        target: newDroppedLauncherVisual
+                        anchors{ topMargin:0; bottomMargin:0; leftMargin:0; rightMargin:metrics.margin.screenEdge;}
+                    }
+                },
+                State {
+                    name: "top"
+                    when: root.location===PlasmaCore.Types.TopEdge
+
+                    AnchorChanges {
+                        target: newDroppedLauncherVisual
+                        anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right;
+                            horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                    }
+
+                    PropertyChanges {
+                        target: newDroppedLauncherVisual
+                        anchors{ topMargin:metrics.margin.screenEdge; bottomMargin:0; leftMargin:0; rightMargin:0;}
+                    }
+                },
+                State {
+                    name: "bottom"
+                    when: root.location!==PlasmaCore.Types.TopEdge
+                          && root.location !== PlasmaCore.Types.LeftEdge
+                          && root.location !== PlasmaCore.Types.RightEdge
+
+                    AnchorChanges {
+                        target: newDroppedLauncherVisual
+                        anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right;
+                            horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                    }
+
+                    PropertyChanges {
+                        target: newDroppedLauncherVisual
+                        anchors{ topMargin:0; bottomMargin:metrics.margin.screenEdge; leftMargin:0; rightMargin:0;}
+                    }
+                }
+            ]
         }
     }
 

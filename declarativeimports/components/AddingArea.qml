@@ -21,7 +21,6 @@ import QtQuick 2.7
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 import "code/ColorizerTools.js" as ColorizerTools
 
@@ -45,40 +44,110 @@ Rectangle{
     property real duration: 2
     property string title: ""
 
-
     Behavior on opacity{
         NumberAnimation { duration: 2*addingArea.duration*appletItem.animationTime }
     }
 
-    PlasmaExtras.Heading {
-        id: heading
-        width: parent.width
-        height: parent.height * 0.4
 
-        text: title
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.WordWrap
-        elide: Text.ElideRight
-        fontSizeMode: Text.Fit
+    Label {
+        id: heading
+        text: title       
         color: theme.textColor
+        font.bold: true
 
         rotation: {
-            if (plasmoid.formFactor === PlasmaCore.Types.Horizontal)
-                return 0;
-            else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
-                return -90;
-            else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
                 return 90;
+            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                return -90;
+            }
+
+            return 0;
         }
+
+        transformOrigin: {
+            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                return Item.TopLeft;
+            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                return Item.TopRight;
+            }
+
+            return Item.Center;
+        }
+
+        readonly property int lengthEdge: addingArea.radius + units.smallSpacing
+
+        states: [
+            ///Bottom Edge
+            State {
+                name: "left"
+                when: plasmoid.location === PlasmaCore.Types.LeftEdge
+
+                AnchorChanges {
+                    target: heading
+                    anchors{ top:parent.top; bottom:undefined; left:parent.right; right:undefined;}
+                }
+
+                PropertyChanges {
+                    target: heading
+                    anchors{ topMargin: heading.lengthEdge; bottomMargin:0; leftMargin:-units.smallSpacing; rightMargin:-0;}
+                }
+            },
+            State {
+                name: "right"
+                when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                AnchorChanges {
+                    target: heading
+                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.left;}
+                }
+
+                PropertyChanges {
+                    target: heading
+                    anchors{ topMargin:heading.lengthEdge; bottomMargin:0; leftMargin: 0; rightMargin:-units.smallSpacing;}
+                }
+            },
+            State {
+                name: "top"
+                when:  plasmoid.location === PlasmaCore.Types.TopEdge
+
+                AnchorChanges {
+                    target: heading
+                    anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined;}
+                }
+
+                PropertyChanges {
+                    target: heading
+                    anchors{ topMargin:0; bottomMargin:units.smallSpacing; leftMargin: heading.lengthEdge; rightMargin:0;}
+                }
+            },
+            State {
+                name: "bottom"
+                when: plasmoid.location !== PlasmaCore.Types.TopEdge
+                      && plasmoid.location !== PlasmaCore.Types.LeftEdge
+                      && plasmoid.location !== PlasmaCore.Types.RightEdge
+
+                AnchorChanges {
+                    target: heading
+                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined;}
+                }
+
+                PropertyChanges {
+                    target: heading
+                    anchors{ topMargin:units.smallSpacing; bottomMargin:0; leftMargin: heading.lengthEdge; rightMargin:0;}
+                }
+            }
+        ]
     }
 
     AddItem {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: heading.bottom
-        anchors.topMargin: units.smallSpacing
+        anchors.centerIn: parent
 
-        width: height
-        height: (parent.height * 0.5) - 2 * units.smallSpacing
+        width: thickness
+        height: thickness
+
+        readonly property int thickness: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? (parent.height - freeSpace):(parent.width - freeSpace)
+
+        readonly property int freeSpace: Math.max(16, (heading.implicitHeight + units.smallSpacing*2))
     }
 }
