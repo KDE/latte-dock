@@ -54,6 +54,16 @@ QObject *Interfaces::view() const
     return m_view;
 }
 
+void Interfaces::setView(QObject *view)
+{
+    if (m_view == view) {
+        return;
+    }
+
+    m_view = view;
+    emit interfacesChanged();
+}
+
 QObject *Interfaces::plasmoidInterface() const
 {
     return m_plasmoid;
@@ -70,9 +80,11 @@ void Interfaces::setPlasmoidInterface(QObject *interface)
         m_layoutsManager = plasmoid->property("_latte_layoutsManager_object").value<QObject *>();
         m_themeExtended = plasmoid->property("_latte_themeExtended_object").value<QObject *>();
         m_universalSettings = plasmoid->property("_latte_universalSettings_object").value<QObject *>();
-        m_view = plasmoid->property("_latte_view_object").value<QObject *>();
+        setView(plasmoid->property("_latte_view_object").value<QObject *>());
 
-        emit interfacesChanged();
+        connect(m_view, &QObject::destroyed, this, [&]() {
+            setView(nullptr);
+        });
     }
 }
 

@@ -61,6 +61,9 @@ signals:
     void interfacesChanged();
 
 private:
+    void setView(QObject *view);
+
+private:
     QObject *m_globalShortcuts{nullptr};
     QObject *m_layoutsManager{nullptr};
     QObject *m_themeExtended{nullptr};
