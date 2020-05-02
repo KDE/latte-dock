@@ -324,7 +324,7 @@ Item {
         //console.log(" APPLET :: " + mouse.x +  " _ " + mouse.y);
         //console.log(" WRAPPER :: " + choords.x + " _ " + choords.y);
 
-        var inThicknessNeutralArea = !wrapperContainsMouse && (root.localScreenEdgeMargin>0);
+        var inThicknessNeutralArea = !wrapperContainsMouse && (appletItem.metrics.margin.screenEdge>0);
         var appletNeutralAreaEnabled = !(inThicknessNeutralArea && root.dragActiveWindowEnabled);
 
         if (appletItemContainsMouse && !wrapperContainsMouse && appletNeutralAreaEnabled) {
@@ -840,7 +840,7 @@ Item {
                 readonly property int badgeThickness: {
                     if (plasmoid.location === PlasmaCore.Types.BottomEdge
                             || plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        return ((appletItem.metrics.iconSize + appletItem.metrics.margin.thickness) * wrapper.zoomScale) + root.localScreenEdgeMargin;
+                        return ((appletItem.metrics.iconSize + appletItem.metrics.margin.thickness) * wrapper.zoomScale) + appletItem.metrics.margin.screenEdge;
                     }
 
                     return ((appletItem.metrics.iconSize + appletItem.metrics.margin.thickness) * wrapper.zoomScale);
@@ -891,16 +891,16 @@ Item {
 
     Loader {
         id: addingAreaLoader
-        width: root.isHorizontal ? parent.width : parent.width - root.localScreenEdgeMargin
-        height: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.height
+        width: root.isHorizontal ? parent.width : parent.width - appletItem.metrics.margin.screenEdge
+        height: root.isHorizontal ? parent.height - appletItem.metrics.margin.screenEdge : parent.height
 
         active: isLattePlasmoid
 
         sourceComponent: LatteComponents.AddingArea{
             id: addingAreaItem
             anchors.fill: parent
-            // width: root.isHorizontal ? parent.width : parent.width - root.localScreenEdgeMargin
-            // height: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.height
+            // width: root.isHorizontal ? parent.width : parent.width - appletItem.metrics.margin.screenEdge
+            // height: root.isHorizontal ? parent.height - appletItem.metrics.margin.screenEdge : parent.height
 
             radius: appletItem.metrics.iconSize/10
             opacity: root.addLaunchersMessage ? 1 : 0
@@ -923,7 +923,7 @@ Item {
                 }
                 PropertyChanges{
                     target: addingAreaLoader
-                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.localScreenEdgeMargin;
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: appletItem.metrics.margin.screenEdge;
                     anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                 }
             },
@@ -938,7 +938,7 @@ Item {
                 }
                 PropertyChanges{
                     target: addingAreaLoader
-                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.localScreenEdgeMargin;    anchors.bottomMargin: 0;
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: appletItem.metrics.margin.screenEdge;    anchors.bottomMargin: 0;
                     anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                 }
             },
@@ -953,7 +953,7 @@ Item {
                 }
                 PropertyChanges{
                     target: addingAreaLoader
-                    anchors.leftMargin: root.localScreenEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                    anchors.leftMargin: appletItem.metrics.margin.screenEdge;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                     anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                 }
             },
@@ -968,7 +968,7 @@ Item {
                 }
                 PropertyChanges{
                     target: addingAreaLoader
-                    anchors.leftMargin: 0;    anchors.rightMargin: root.localScreenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                    anchors.leftMargin: 0;    anchors.rightMargin: appletItem.metrics.margin.screenEdge;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                     anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                 }
             }

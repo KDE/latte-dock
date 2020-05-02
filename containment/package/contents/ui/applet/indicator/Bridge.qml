@@ -68,7 +68,7 @@ Item{
     readonly property bool progressVisible: false /*since 0.9.2*/
     readonly property real progress: 0 /*since 0.9.2*/
 
-    readonly property int screenEdgeMargin: root.localScreenEdgeMargin /*since 0.10*/
+    readonly property int screenEdgeMargin: appletIsValid ? appletItem.metrics.margin.screenEdge : metrics.margin.screenEdge /*since 0.10*/
 
     readonly property QtObject palette: colorizerManager.applyTheme
 

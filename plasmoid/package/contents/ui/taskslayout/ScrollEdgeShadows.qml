@@ -81,7 +81,7 @@ Item {
             }
             PropertyChanges {
                 target: shadowsContainer
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: 0;    anchors.bottomMargin:root.screenEdgeMargin;
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: 0;    anchors.bottomMargin: metrics.margin.screenEdge;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -106,7 +106,7 @@ Item {
             }
             PropertyChanges {
                 target: shadowsContainer
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: root.screenEdgeMargin;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: metrics.margin.screenEdge;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -131,7 +131,7 @@ Item {
             }
             PropertyChanges {
                 target: shadowsContainer
-                anchors.leftMargin: root.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin: 0;    anchors.bottomMargin:0;
+                anchors.leftMargin: metrics.margin.screenEdge;    anchors.rightMargin:0;     anchors.topMargin: 0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -156,7 +156,7 @@ Item {
             }
             PropertyChanges {
                 target: shadowsContainer
-                anchors.leftMargin: 0;    anchors.rightMargin:root.screenEdgeMargin;     anchors.topMargin: 0;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin: metrics.margin.screenEdge;     anchors.topMargin: 0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         }

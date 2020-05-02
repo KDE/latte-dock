@@ -29,5 +29,6 @@ AppletAbility.Metrics {
 
     local.margin.length: 0.1 * iconSize
     local.margin.thickness: 0.16 * iconSize
+    local.margin.screenEdge: 0
     local.padding.length: 0.04 * iconSize
 }

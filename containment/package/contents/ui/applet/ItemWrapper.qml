@@ -64,7 +64,7 @@ Item{
                 return Math.max(Math.min(appletItem.metrics.iconSize, root.minAppletLengthInConfigure), scaledWidth);
             }
 
-            return root.isVertical ? scaledWidth + root.localScreenEdgeMargin : scaledWidth;
+            return root.isVertical ? scaledWidth + appletItem.metrics.margin.screenEdge : scaledWidth;
         }
     }
 
@@ -99,7 +99,7 @@ Item{
                 return Math.max(Math.min(appletItem.metrics.iconSize, root.minAppletLengthInConfigure), scaledHeight);
             }
 
-            return root.isHorizontal ? scaledHeight + root.localScreenEdgeMargin : scaledHeight;
+            return root.isHorizontal ? scaledHeight + appletItem.metrics.margin.screenEdge : scaledHeight;
         }
     }
 
@@ -428,7 +428,7 @@ Item{
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                     var wrapperContainerThickness = parent.zoomScaleWidth * (appletItem.metrics.totals.thickness);
-                    return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
+                    return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + appletItem.metrics.margin.screenEdge : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleWidth * wrapper.layoutWidth;
                 }
@@ -445,7 +445,7 @@ Item{
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
                     var wrapperContainerThickness = parent.zoomScaleHeight * (appletItem.metrics.totals.thickness);
-                    return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + root.localScreenEdgeMargin : wrapperContainerThickness;
+                    return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + appletItem.metrics.margin.screenEdge : wrapperContainerThickness;
                 } else {
                     return parent.zoomScaleHeight * wrapper.layoutHeight;
                 }
@@ -457,10 +457,10 @@ Item{
 
         readonly property int appliedEdgeMargin: {
             if (appletItem.isInternalViewSplitter) {
-                return root.localScreenEdgeMargin + appletItem.metrics.margin.thickness;
+                return appletItem.metrics.margin.screenEdge + appletItem.metrics.margin.thickness;
             }
 
-            return appletItem.screenEdgeMarginSupported ? 0 : root.localScreenEdgeMargin;
+            return appletItem.screenEdgeMarginSupported ? 0 : appletItem.metrics.margin.screenEdge;
         }
 
         ///Secret MouseArea to be used by the folder widget

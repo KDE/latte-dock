@@ -253,7 +253,6 @@ Item {
 
     readonly property bool enforceLattePalette: latteBridge && latteBridge.applyPalette && latteBridge.palette
     readonly property bool latteInEditMode: latteBridge && latteBridge.inEditMode
-    readonly property int screenEdgeMargin: latteBridge ? latteBridge.screenEdgeMargin : 0
     //END  Latte Dock Communicator
 
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
@@ -1197,8 +1196,8 @@ Item {
             visible: root.dragAreaEnabled
 
             property int maxSize: (((root.hoveredIndex>=0 || dockHoveredIndex>=0 ) || windowPreviewIsShown) && !root.dragSource) ?
-                                      (root.zoomFactor * metrics.totals.thickness) + root.screenEdgeMargin :
-                                      metrics.totals.thickness + root.screenEdgeMargin
+                                      (root.zoomFactor * metrics.totals.thickness) + metrics.margin.screenEdge :
+                                      metrics.totals.thickness + metrics.margin.screenEdge
 
             function onlyLaunchersInList(list){
                 return list.every(function (item) {

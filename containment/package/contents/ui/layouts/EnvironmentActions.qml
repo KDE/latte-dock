@@ -40,8 +40,8 @@ Loader {
 
     sourceComponent: MouseArea{
         id: mainArea
-        width: root.isHorizontal ? length : localThickness + root.localScreenEdgeMargin
-        height: root.isVertical ? length :  localThickness + root.localScreenEdgeMargin
+        width: root.isHorizontal ? length : localThickness + metrics.margin.screenEdge
+        height: root.isVertical ? length :  localThickness + metrics.margin.screenEdge
 
         acceptedButtons: Qt.LeftButton | Qt.MidButton
 

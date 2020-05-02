@@ -277,7 +277,7 @@ MouseArea {
             width: root.isHorizontal ? parent.width : thickness
             height: root.isHorizontal ? thickness : parent.height
 
-            readonly property int thickness: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.width - root.localScreenEdgeMargin
+            readonly property int thickness: root.isHorizontal ? parent.height - metrics.margin.screenEdge : parent.width - metrics.margin.screenEdge
 
             Rectangle{
                 anchors.fill: parent
@@ -307,7 +307,7 @@ MouseArea {
                     }
                     PropertyChanges{
                         target: handleVisualItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.localScreenEdgeMargin;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: metrics.margin.screenEdge;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -322,7 +322,7 @@ MouseArea {
                     }
                     PropertyChanges{
                         target: handleVisualItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.localScreenEdgeMargin;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: metrics.margin.screenEdge;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -337,7 +337,7 @@ MouseArea {
                     }
                     PropertyChanges{
                         target: handleVisualItem;
-                        anchors.leftMargin: root.localScreenEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: metrics.margin.screenEdge;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -352,7 +352,7 @@ MouseArea {
                     }
                     PropertyChanges{
                         target: handleVisualItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: root.localScreenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: 0;    anchors.rightMargin: metrics.margin.screenEdge;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 }

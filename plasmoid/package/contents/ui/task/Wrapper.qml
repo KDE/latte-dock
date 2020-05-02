@@ -36,13 +36,13 @@ Item{
             if (!root.vertical)
                 return 0;
             else
-                return (taskItem.metrics.iconSize + root.widthMargins + root.screenEdgeMargin);
+                return (taskItem.metrics.iconSize + root.widthMargins + taskItem.metrics.margin.screenEdge);
         }
 
         if (taskItem.isStartup && taskItem.animations.speedFactor.current !==0 ) {
-            return root.vertical ? cleanScalingWidth + root.screenEdgeMargin : cleanScalingWidth;
+            return root.vertical ? cleanScalingWidth + taskItem.metrics.margin.screenEdge : cleanScalingWidth;
         } else {
-            return root.vertical ? showDelegateWidth + root.screenEdgeMargin : showDelegateWidth;
+            return root.vertical ? showDelegateWidth + taskItem.metrics.margin.screenEdge : showDelegateWidth;
         }
     }
 
@@ -54,13 +54,13 @@ Item{
             if (root.vertical)
                 return 0;
             else
-                return (taskItem.metrics.iconSize + root.heightMargins + root.screenEdgeMargin);
+                return (taskItem.metrics.iconSize + root.heightMargins + taskItem.metrics.margin.screenEdge);
         }
 
         if (taskItem.isStartup && taskItem.animations.speedFactor.current !==0){
-            return !root.vertical ? cleanScalingHeight + root.screenEdgeMargin : cleanScalingHeight;
+            return !root.vertical ? cleanScalingHeight + taskItem.metrics.margin.screenEdge : cleanScalingHeight;
         } else {
-            return !root.vertical ? showDelegateHeight + root.screenEdgeMargin : showDelegateHeight;
+            return !root.vertical ? showDelegateHeight + taskItem.metrics.margin.screenEdge : showDelegateHeight;
         }
     }
 
@@ -144,10 +144,10 @@ Item{
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-        anchors.bottomMargin: (root.location === PlasmaCore.Types.BottomEdge) ? root.screenEdgeMargin : 0
-        anchors.topMargin: (root.location === PlasmaCore.Types.TopEdge) ? root.screenEdgeMargin : 0
-        anchors.leftMargin: (root.location === PlasmaCore.Types.LeftEdge) ? root.screenEdgeMargin : 0
-        anchors.rightMargin: (root.location === PlasmaCore.Types.RightEdge) ? root.screenEdgeMargin : 0
+        anchors.bottomMargin: (root.location === PlasmaCore.Types.BottomEdge) ? taskItem.metrics.margin.screenEdge : 0
+        anchors.topMargin: (root.location === PlasmaCore.Types.TopEdge) ? taskItem.metrics.margin.screenEdge : 0
+        anchors.leftMargin: (root.location === PlasmaCore.Types.LeftEdge) ? taskItem.metrics.margin.screenEdge : 0
+        anchors.rightMargin: (root.location === PlasmaCore.Types.RightEdge) ? taskItem.metrics.margin.screenEdge : 0
 
         anchors.horizontalCenterOffset: taskItem.iconOffsetX
         anchors.verticalCenterOffset: taskItem.iconOffsetY

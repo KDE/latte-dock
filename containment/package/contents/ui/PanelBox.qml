@@ -45,7 +45,7 @@ Item{
 
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
-    property int screenEdgeMargin: root.screenEdgeMarginEnabled ? root.localScreenEdgeMargin - shadowsSvgItem.screenEdgeShadow : 0
+    property int screenEdgeMargin: root.screenEdgeMarginEnabled ? metrics.margin.screenEdge - shadowsSvgItem.screenEdgeShadow : 0
 
     property int lengthMargins: {
         return root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
@@ -232,7 +232,7 @@ Item{
                 var icons = metrics.totals.thickness;// + 2;
                 var panelt = root.themePanelThickness;// + 2;
 
-                root.realPanelThickness = icons + root.localScreenEdgeMargin;
+                root.realPanelThickness = icons + metrics.margin.screenEdge;
 
                 return Math.min(icons, panelt);
             }

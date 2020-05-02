@@ -53,7 +53,7 @@ MouseArea{
 
         if (isSeparator) {
             if (root.vertical) {
-                return taskItem.metrics.totals.thickness + root.screenEdgeMargin;
+                return taskItem.metrics.totals.thickness + taskItem.metrics.margin.screenEdge;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
                     return LatteCore.Environment.separatorLength+2*taskItem.metrics.margin.length;
@@ -80,7 +80,7 @@ MouseArea{
 
         if (isSeparator) {
             if (!root.vertical) {
-                return taskItem.metrics.totals.thickness + root.screenEdgeMargin;
+                return taskItem.metrics.totals.thickness + taskItem.metrics.margin.screenEdge;
             } else {
                 if (root.dragSource || !root.parabolicEffectEnabled) {
                     return LatteCore.Environment.separatorLength+2*taskItem.metrics.margin.length;
@@ -355,7 +355,7 @@ MouseArea{
 
         property bool forceHiddenState: false
 
-        readonly property int margin: root.screenEdgeMargin + metrics.margin.thickness
+        readonly property int margin: taskItem.metrics.margin.screenEdge + metrics.margin.thickness
 
         Behavior on opacity {
             NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }

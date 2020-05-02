@@ -380,17 +380,13 @@ Item {
 
     property int themePanelThickness: {
         var panelBase = root.panelThickMarginHigh + root.panelThickMarginBase;
-        var margin = shrinkThickMargins ? 0 : metrics.totals.thicknessEdges + localScreenEdgeMargin;
+        var margin = shrinkThickMargins ? 0 : metrics.totals.thicknessEdges + metrics.margin.screenEdge;
         var maxPanelSize = (metrics.iconSize + margin) - panelBase;
         var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
-
-    property int localScreenEdgeMargin: (screenEdgeMarginEnabled && behaveAsPlasmaPanel && !root.editMode)
-                                        || !screenEdgeMarginEnabled
-                                        || hideThickScreenGap ? 0 : plasmoid.configuration.screenEdgeMargin
 
     property int widthMargins: root.isVertical ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
     property int heightMargins: root.isHorizontal ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
@@ -522,16 +518,6 @@ Item {
     ////////////////END properties
 
     //// BEGIN OF Behaviors
-    Behavior on localScreenEdgeMargin {
-        enabled: !root.behaveAsPlasmaPanel
-                 && !editModeVisual.editAnimationRunning /*avoid slide-out animation when from editMode we change to real floating*/
-
-        NumberAnimation {
-            duration: 0.8 * animations.duration.proposed
-            easing.type: Easing.OutCubic
-        }
-    }
-
     Behavior on offset {
         enabled: editModeVisual.editAnimationInFullThickness
         NumberAnimation {
@@ -1596,7 +1582,7 @@ Item {
         height: root.isHorizontal ? thickness : length
 
         readonly property int length: metrics.totals.length
-        readonly property int thickness: metrics.totals.thickness + root.localScreenEdgeMargin
+        readonly property int thickness: metrics.totals.thickness + metrics.margin.screenEdge
 
         Layout.preferredWidth: width
         Layout.preferredHeight: height
@@ -1605,8 +1591,8 @@ Item {
 
         LatteComponents.AddItem{
             id: dndSpacerAddItem
-            width: root.isHorizontal ? parent.width : parent.width - root.localScreenEdgeMargin
-            height: root.isHorizontal ? parent.height - root.localScreenEdgeMargin : parent.height
+            width: root.isHorizontal ? parent.width : parent.width - metrics.margin.screenEdge
+            height: root.isHorizontal ? parent.height - metrics.margin.screenEdge: parent.height
 
             states:[
                 State{
@@ -1620,7 +1606,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.localScreenEdgeMargin;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: metrics.margin.screenEdge;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -1635,7 +1621,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.localScreenEdgeMargin;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: metrics.margin.screenEdge;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -1650,7 +1636,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: root.localScreenEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: metrics.margin.screenEdge;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -1665,7 +1651,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: root.localScreenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: 0;    anchors.rightMargin: metrics.margin.screenEdge;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 }
