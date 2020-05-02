@@ -387,16 +387,7 @@ Item {
     }
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins
-    property int screenEdgeMargin: {
-        //! is used for window geometry calculations
-        if (!screenEdgeMarginEnabled
-                || (hideThickScreenGap && localScreenEdgeMargin === 0)) {
-                /*window geometry is updated after the local screen margin animation was zeroed*/
-            return 0;
-        }
 
-        return plasmoid.configuration.screenEdgeMargin;
-    }
     property int localScreenEdgeMargin: (screenEdgeMarginEnabled && behaveAsPlasmaPanel && !root.editMode)
                                         || !screenEdgeMarginEnabled
                                         || hideThickScreenGap ? 0 : plasmoid.configuration.screenEdgeMargin

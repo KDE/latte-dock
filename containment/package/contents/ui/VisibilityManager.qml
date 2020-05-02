@@ -64,28 +64,39 @@ Item{
         if (root.behaveAsPlasmaPanel) {
             var edgeMargin = screenEdgeMarginEnabled ? plasmoid.configuration.screenEdgeMargin : 0
 
-           root.isHorizontal ? root.height + edgeMargin - 1 : root.width + edgeMargin - 1;
+            root.isHorizontal ? root.height + edgeMargin - 1 : root.width + edgeMargin - 1;
         } else {
             var topOrLeftEdge = ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge));
             return (topOrLeftEdge ? -thicknessNormal : thicknessNormal);
         }
     }
 
-    property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
-    property int thicknessMid: root.screenEdgeMargin + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.totals.thickness+extraThickMask) //needed in some animations
-    property int thicknessNormal: root.screenEdgeMargin + Math.max(metrics.totals.thickness + extraThickMask + 1, root.realPanelSize + root.panelShadow)
+    property int finalScreenEdgeMargin: {
+        //! is used for window geometry calculations
+        if (!screenEdgeMarginEnabled
+                || (hideThickScreenGap && root.localScreenEdgeMargin === 0)) {
+            /*window geometry is updated after the local screen margin animation was zeroed*/
+            return 0;
+        }
 
-    property int thicknessZoom: root.screenEdgeMargin + ((metrics.totals.thickness+extraThickMask) * root.maxZoomFactor) + 2
+        return plasmoid.configuration.screenEdgeMargin;
+    }
+
+    property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
+    property int thicknessMid: finalScreenEdgeMargin + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.totals.thickness+extraThickMask) //needed in some animations
+    property int thicknessNormal: finalScreenEdgeMargin + Math.max(metrics.totals.thickness + extraThickMask + 1, root.realPanelSize + root.panelShadow)
+
+    property int thicknessZoom: finalScreenEdgeMargin + ((metrics.totals.thickness+extraThickMask) * root.maxZoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: root.screenEdgeMargin + Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
-    property int thicknessNormalOriginal: root.screenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
+    property int thicknessMidOriginal: finalScreenEdgeMargin + Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
+    property int thicknessNormalOriginal: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
     /*property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
                                                thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow*/
 
-    property int thicknessNormalOriginalValue: root.screenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraThickMask + 1
-    property int thicknessZoomOriginal:root.screenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * root.maxZoomFactor) + extraThickMask + 2,
-                                                                        root.realPanelSize + root.panelShadow,
-                                                                        (LatteCore.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
+    property int thicknessNormalOriginalValue: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraThickMask + 1
+    property int thicknessZoomOriginal: finalScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * root.maxZoomFactor) + extraThickMask + 2,
+                                                                         root.realPanelSize + root.panelShadow,
+                                                                         (LatteCore.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
 
     //! is used from Panel in edit mode in order to provide correct masking
     property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness
@@ -751,7 +762,7 @@ Item{
             //before updating the localDockGeometry
             if (!latteView.behaveAsPlasmaPanel || root.editMode) {
                 var cleanThickness = metrics.totals.thickness;
-                var edgeMargin = root.screenEdgeMargin;
+                var edgeMargin = finalScreenEdgeMargin;
 
                 if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                     localGeometry.x = latteView.effects.rect.x; // from effects area
