@@ -131,7 +131,7 @@ public:
     View(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool byPassWM = false);
     virtual ~View();
 
-    void init();
+    void init(Plasma::Containment *plasma_containment = nullptr);
 
     Types::ViewType type() const;
     void setType(Types::ViewType type);

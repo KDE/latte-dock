@@ -76,6 +76,8 @@ Indicator::Indicator(Latte::View *parent)
 
 Indicator::~Indicator()
 {
+    unloadIndicators();
+
     if (m_component) {
         m_component->deleteLater();
     }

@@ -96,11 +96,6 @@ PlasmaCore.FrameSvgItem {
         for(var i=0; i<containment.children.length; ++i){
             if (containment.children[i].objectName === "containmentViewLayout") {
                 viewLayout = containment.children[i];
-                viewLayout.latteView = latteView;
-                viewLayout.shortcutsEngine = shortcutsEngine;
-                viewLayout.themeExtended = themeExtended;
-                viewLayout.universalSettings = universalSettings;
-                viewLayout.layoutsManager = layoutsManager;
             }
         }
     }

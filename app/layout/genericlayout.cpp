@@ -895,7 +895,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
 
     auto latteView = new Latte::View(m_corona, nextScreen, byPassWM);
 
-    latteView->init();
+    latteView->init(containment);
     latteView->setContainment(containment);
 
     //! force this special dock case to become primary

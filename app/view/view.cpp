@@ -182,11 +182,6 @@ View::~View()
     disconnect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), this, SLOT(statusChanged(Plasma::Types::ItemStatus)));
 
     qDebug() << "dock view deleting...";
-    rootContext()->setContextProperty(QStringLiteral("dock"), nullptr);
-    rootContext()->setContextProperty(QStringLiteral("layoutsManager"), nullptr);
-    rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), nullptr);
-    rootContext()->setContextProperty(QStringLiteral("themeExtended"), nullptr);
-    rootContext()->setContextProperty(QStringLiteral("universalSettings"), nullptr);
 
     //! this disconnect does not free up connections correctly when
     //! latteView is deleted. A crash for this example is the following:
@@ -229,7 +224,7 @@ View::~View()
     }
 }
 
-void View::init()
+void View::init(Plasma::Containment *plasma_containment)
 {
     connect(this, &QQuickWindow::xChanged, this, &View::xChanged);
     connect(this, &QQuickWindow::xChanged, this, &View::updateAbsoluteGeometry);
@@ -287,17 +282,19 @@ void View::init()
 
     connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::indicatorRemoved, this, &View::indicatorPluginRemoved);
 
-    ///!!!!!
-    rootContext()->setContextProperty(QStringLiteral("latteView"), this);
+    //! Assign app interfaces in be accessible through containment graphic item
+    QQuickItem *containmentGraphicItem = qobject_cast<QQuickItem *>(plasma_containment->property("_plasma_graphicObject").value<QObject *>());
 
-    if (m_corona) {
-        rootContext()->setContextProperty(QStringLiteral("layoutsManager"), m_corona->layoutsManager());
-        rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), m_corona->globalShortcuts()->shortcutsTracker());
-        rootContext()->setContextProperty(QStringLiteral("themeExtended"), m_corona->themeExtended());
-        rootContext()->setContextProperty(QStringLiteral("universalSettings"), m_corona->universalSettings());
+    if (containmentGraphicItem) {
+        containmentGraphicItem->setProperty("_latte_globalShortcuts_object", QVariant::fromValue(m_corona->globalShortcuts()->shortcutsTracker()));
+        containmentGraphicItem->setProperty("_latte_layoutsManager_object", QVariant::fromValue(m_corona->layoutsManager()));
+        containmentGraphicItem->setProperty("_latte_themeExtended_object", QVariant::fromValue(m_corona->themeExtended()));
+        containmentGraphicItem->setProperty("_latte_universalSettings_object", QVariant::fromValue(m_corona->universalSettings()));
+        containmentGraphicItem->setProperty("_latte_view_object", QVariant::fromValue(this));
     }
 
     setSource(corona()->kPackage().filePath("lattedockui"));
+
     m_positioner->syncGeometry();
 
     qDebug() << "SOURCE:" << source();

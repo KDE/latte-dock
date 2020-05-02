@@ -26,6 +26,7 @@
 #include "apptypes.h"
 #include "lattedockadaptor.h"
 #include "screenpool.h"
+#include "declarativeimports/interfaces.h"
 #include "indicator/factory.h"
 #include "layout/centrallayout.h"
 #include "layout/genericlayout.h"
@@ -1272,6 +1273,7 @@ inline void Corona::qmlRegisterTypes() const
                                      "Error: only enums of latte app settings");
 
     qmlRegisterType<Latte::BackgroundTracker>("org.kde.latte.private.app", 0, 1, "BackgroundTracker");
+    qmlRegisterType<Latte::Interfaces>("org.kde.latte.private.app", 0, 1, "Interfaces");
 
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)

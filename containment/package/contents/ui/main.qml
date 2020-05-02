@@ -443,13 +443,14 @@ Item {
     readonly property alias maskManager: visibilityManager
     readonly property alias layoutsContainerItem: layoutsContainer
 
-    property QtObject latteView: null
-    property QtObject shortcutsEngine: null
-    property QtObject themeExtended: null
-    property QtObject universalSettings: null
-    property QtObject layoutsManager: null
-    property QtObject viewLayout: latteView && latteView.layout ? latteView.layout : null
-    property QtObject selectedWindowsTracker: {
+    readonly property alias latteView: _interfaces.view
+    readonly property alias layoutsManager: _interfaces.layoutsManager
+    readonly property alias shortcutsEngine: _interfaces.globalShortcuts
+    readonly property alias themeExtended: _interfaces.themeExtended
+    readonly property alias universalSettings: _interfaces.universalSettings
+
+    readonly property QtObject viewLayout: latteView && latteView.layout ? latteView.layout : null
+    readonly property QtObject selectedWindowsTracker: {
         if (latteView && latteView.windowsTracker) {
             switch(plasmoid.configuration.activeWindowFilter) {
             case LatteContainment.Types.ActiveInCurrentScreen:
@@ -1707,6 +1708,11 @@ Item {
         animations: _animations
         autosize: _autosize
         indicators: indicatorsManager
+    }
+
+    LatteApp.Interfaces {
+        id: _interfaces
+        plasmoidInterface: plasmoid
     }
 
     ///////////////END ABILITIES
