@@ -118,6 +118,16 @@ Item{
     readonly property Item animations: appletItem.animations.publicApi
     readonly property Item metrics: appletItem.metrics.publicApi
 
+    readonly property Item parabolic: Item {
+        function clientRequestUpdateLowerItemScale(newScale, step) {
+            parabolicManager.sglUpdateLowerItemScale(index-1, newScale, step);
+        }
+
+        function clientRequestUpdateHigherItemScale(newScale, step) {
+            parabolicManager.sglUpdateHigherItemScale(index+1, newScale, step);
+        }
+    }
+
     Connections {
         target: root
         onBroadcastedToApplet: {

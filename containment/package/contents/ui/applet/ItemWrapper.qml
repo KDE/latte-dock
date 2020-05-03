@@ -773,11 +773,71 @@ Item{
         }
     }
 
+    function sltUpdateLowerItemScale(delegateIndex, newScale, step) {
+        if (delegateIndex === appletItem.index) {
+            if (appletItem.isLattePlasmoid) {
+                appletItem.latteApplet.parabolicManager.hostRequestUpdateLowerItemScale(newScale, step);
+                return;
+            }
+
+            if (!appletItem.isSeparator && !appletItem.isHidden) {
+                //! when accepted
+                signalUpdateScale(delegateIndex, newScale, step);
+
+                if (newScale > 1) { // clear lower items
+                    parabolicManager.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
+                }
+            } else {
+                parabolicManager.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
+            }
+        } else if ((newScale === 1) && (appletItem.index < delegateIndex)) {
+            //! apply zoom clearing
+            if (appletItem.isLattePlasmoid) {
+                appletItem.latteApplet.parabolicManager.hostRequestUpdateLowerItemScale(1, step);
+            } else {
+                signalUpdateScale(appletItem.index, 1, 0);
+            }
+        }
+    }
+
+    function sltUpdateHigherItemScale(delegateIndex, newScale, step) {
+        if (delegateIndex === appletItem.index) {
+            if (appletItem.isLattePlasmoid) {
+                appletItem.latteApplet.parabolicManager.hostRequestUpdateHigherItemScale(newScale, step);
+                return;
+            }
+
+            if (!appletItem.isSeparator && !appletItem.isHidden) {
+                //! when accepted
+                signalUpdateScale(delegateIndex, newScale, step);
+
+                if (newScale > 1) { // clear higher items
+                    parabolicManager.sglUpdateHigherItemScale(delegateIndex+1, 1, 0);
+                }
+            } else {
+                parabolicManager.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
+            }
+        } else if ((newScale === 1) && (appletItem.index > delegateIndex)) {
+            //! apply zoom clearing
+            if (appletItem.isLattePlasmoid) {
+                appletItem.latteApplet.parabolicManager.hostRequestUpdateHigherItemScale(1, step);
+            } else {
+                signalUpdateScale(appletItem.index, 1, 0);
+            }
+        }
+    }
+
     Component.onCompleted: {
         root.updateScale.connect(signalUpdateScale);
+
+        parabolicManager.sglUpdateLowerItemScale.connect(sltUpdateLowerItemScale);
+        parabolicManager.sglUpdateHigherItemScale.connect(sltUpdateHigherItemScale);
     }
 
     Component.onDestruction: {
         root.updateScale.disconnect(signalUpdateScale);
+
+        parabolicManager.sglUpdateLowerItemScale.disconnect(sltUpdateLowerItemScale);
+        parabolicManager.sglUpdateHigherItemScale.disconnect(sltUpdateHigherItemScale);
     }
 }// Main task area // id:wrapper

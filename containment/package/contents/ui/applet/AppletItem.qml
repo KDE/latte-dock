@@ -386,6 +386,10 @@ Item {
         if (layoutsContainer.hoveredIndex === -1 && root.latteAppletHoveredIndex === -1) {
             restoreAnimation.start();
         }
+
+        if (latteApplet) {
+            latteApplet.clearZoom();
+        }
     }
 
     function checkCanBeHovered(){

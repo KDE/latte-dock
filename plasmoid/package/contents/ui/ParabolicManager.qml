@@ -36,6 +36,9 @@ Item {
     property int lastRealTaskIndex: -1
     property int countRealTasks: -1
 
+    signal sglUpdateLowerItemScale(int delegateIndex, real newScale, real step);
+    signal sglUpdateHigherItemScale(int delegateIndex, real newScale, real step);
+
     Connections{
         target: root
         onTasksCountChanged: parManager.updateTasksEdgesIndexes();
@@ -46,10 +49,16 @@ Item {
         updateHasInternalSeparator();
         updateTasksEdgesIndexes();
         root.separatorsUpdated.connect(updateHasInternalSeparator);
+
+        parManager.sglUpdateLowerItemScale.connect(sltTrackLowerItemScale);
+        parManager.sglUpdateHigherItemScale.connect(sltTrackHigherItemScale);
     }
 
     Component.onDestruction: {
         root.separatorsUpdated.disconnect(updateHasInternalSeparator);
+
+        parManager.sglUpdateLowerItemScale.disconnect(sltTrackLowerItemScale);
+        parManager.sglUpdateHigherItemScale.disconnect(sltTrackHigherItemScale);
     }
 
     function updateTasksEdgesIndexes() {
@@ -80,23 +89,35 @@ Item {
         hasInternalSeparator = false;
     }
 
-    //!this is used in order to update the index when the signal is for applets
-    //!outside the latte plasmoid
-    function updateIdSendScale(index, zScale, zStep){
-        if ((index>=0 && index<=root.tasksCount-1) || (!root.latteView)){
-            root.updateScale(index, zScale, zStep);
-            return -1;
-        } else{
-            var appletId = latteView.latteAppletPos;
-            if (index<0)
-                appletId = latteView.parabolicManager.availableLowerId(latteView.latteAppletPos + index);
-            else if (index>root.tasksCount-1){
-                var step=index-root.tasksCount+1;
-                appletId = latteView.parabolicManager.availableHigherId(latteView.latteAppletPos + step);
-            }
+    function hostRequestUpdateLowerItemScale(newScale, step){
+        //! function called from host
+        sglUpdateLowerItemScale(root.tasksCount-1, newScale, step);
+    }
 
-            latteView.updateScale(appletId, zScale, zStep);
-            return appletId;
+    function hostRequestUpdateHigherItemScale(newScale, step){
+        //! function called from host
+        sglUpdateHigherItemScale(0, newScale, step);
+    }
+
+    function sltTrackLowerItemScale(delegateIndex, newScale, step){
+        //! send update signal to host
+        if (latteBridge) {
+            if (delegateIndex === -1) {
+                latteBridge.parabolic.clientRequestUpdateLowerItemScale(newScale, step);
+            } else if (newScale === 1 && delegateIndex>=0) {
+                latteBridge.parabolic.clientRequestUpdateLowerItemScale(1, 0);
+            }
+        }
+    }
+
+    function sltTrackHigherItemScale(delegateIndex, newScale, step) {
+        //! send update signal to host
+        if (latteBridge) {
+            if (delegateIndex >= root.tasksCount) {
+                latteBridge.parabolic.clientRequestUpdateHigherItemScale(newScale, step);
+            } else if (newScale === 1 && delegateIndex<root.tasksCount) {
+                latteBridge.parabolic.clientRequestUpdateHigherItemScale(1, 0);
+            }
         }
     }
 
@@ -137,80 +158,17 @@ Item {
             leftScale = bigNeighbourZoom;
         }
 
+        sglUpdateHigherItemScale(index+1 , rightScale, 0);
+        sglUpdateLowerItemScale(index-1, leftScale, 0);
+
         // console.debug(leftScale + "  " + rightScale + " " + index);
-
-        //first applets accessed
-        var gPAppletId = -1;
-        var lPAppletId = -1;
-
-        //secondary applets accessed to restore zoom
-        var gAppletId = -1;
-        var lAppletId = -1;
-
-        var gStep = 1;
-        var lStep = 1;
-
-
-        //console.log("--- task style 2...");
-        var aGId1 = availableHigherIndex(index+1);
-        var aLId1 = availableLowerIndex(index-1);
-
-        gPAppletId = updateIdSendScale(aGId1, rightScale, 0);
-        lPAppletId = updateIdSendScale(aLId1, leftScale, 0);
-
-        // console.log("index:"+index + " lattePos:"+latteView.latteAppletPos);
-        // console.log("gApp:"+gPAppletId+" lApp:"+lPAppletId+ " aG1:"+aGId1+" aLId1:"+aLId1);
-
-        gStep = aGId1 - index;
-        lStep = index - aLId1;
-
-        if (latteView) {
-            if (gPAppletId > -1)
-                gStep = Math.abs(gPAppletId - latteView.latteAppletPos + (root.tasksCount-1-index));
-
-            if (lPAppletId > -1)
-                lStep = Math.abs(lPAppletId - latteView.latteAppletPos - index);
-        }
-
-        //console.log("gs:"+gStep+" ls:"+lStep);
-
-        gAppletId = updateIdSendScale(index+gStep+1, 1, 0);
-        lAppletId = updateIdSendScale(index-lStep-1, 1, 0);
-
-        //console.log(" cgApp:"+gAppletId+" clApp:"+lAppletId);
-
-        clearTasksGreaterThan(aGId1+1);
-        clearTasksLowerThan(aLId1-1);
-
-        if (latteView){
-            if (gAppletId > -1) {
-                latteView.parabolicManager.clearAppletsGreaterThan(gAppletId);
-             } else if (index < lastRealTaskIndex && lastRealTaskIndex!==-1) {
-                latteView.parabolicManager.clearAppletsGreaterThan(latteView.latteAppletPos);
-            }
-
-            if (lAppletId > -1) {
-                latteView.parabolicManager.clearAppletsLowerThan(lAppletId);
-            } else if (index > firstRealTaskIndex && firstRealTaskIndex!==-1) {
-                latteView.parabolicManager.clearAppletsLowerThan(latteView.latteAppletPos);
-            }
-        }
-
         return {leftScale:leftScale, rightScale:rightScale};
     }
 
     function clearTasksGreaterThan(index) {
-        if (index<root.tasksCount-1){
-            for(var i=index+1; i<root.tasksCount; ++i)
-                root.updateScale(i, 1, 0);
-        }
     }
 
     function clearTasksLowerThan(index) {
-        if (index>0 && root.tasksCount>2) {
-            for(var i=0; i<index; ++i)
-                root.updateScale(i, 1, 0);
-        }
     }
 
     function neighbourIsHovered(index) {

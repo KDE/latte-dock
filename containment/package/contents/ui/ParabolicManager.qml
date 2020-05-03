@@ -34,51 +34,8 @@ Item {
     property var hidden: []
     property var separators: []
 
-    //!this is used in order to update the index when the signal is for the internal latte plasmoid
-    //!this is used in order to update the index when the signal is for the internal latte plasmoid
-    function updateIdSendScale(appIndex, index, zScale, zStep){
-        // console.log(appIndex + " _ "+index+ " _ "+zScale + " _ "+ zStep);
-        if(root.latteApplet
-                && root.latteApplet.parabolicManager.firstRealTaskIndex !== -1
-                && ((appIndex<root.latteAppletPos && index>=root.latteAppletPos)
-                    || (appIndex>root.latteAppletPos && index<=root.latteAppletPos)) ){
-            var appStep = Math.abs(root.latteAppletPos-appIndex);
-            var signalStep = Math.abs(index - appIndex);
-
-            var taskIndex = -1;
-            var internSepStep = 0;
-            if(appIndex<root.latteAppletPos){
-                if (root.latteApplet.parabolicManager.taskIsSeparator(0)
-                        || (!root.showWindowsWithNoLaunchers && root.latteApplet.parabolicManager.taskIsForcedHidden(0)) )
-                    internSepStep = root.latteApplet.parabolicManager.availableHigherIndex(0);
-
-                taskIndex = signalStep-appStep+internSepStep;
-                if (root.latteApplet.parabolicManager.taskIsSeparator(taskIndex))
-                    taskIndex = root.latteApplet.parabolicManager.availableHigherIndex(taskIndex + 1);
-
-                //console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
-            } else if (appIndex>root.latteAppletPos){
-                if (root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1)
-                        || (!root.showWindowsWithNoLaunchers && root.latteApplet.parabolicManager.taskIsForcedHidden(root.tasksCount-1)) )
-                    internSepStep = Math.abs(root.tasksCount-1 - root.latteApplet.parabolicManager.availableLowerIndex(root.tasksCount-1));
-
-                taskIndex = root.tasksCount-1 - (signalStep-appStep) - internSepStep;
-                if (root.latteApplet.parabolicManager.taskIsSeparator(taskIndex))
-                    taskIndex = root.latteApplet.parabolicManager.availableLowerIndex(taskIndex - 1);
-
-                //console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
-            }
-
-            root.latteApplet.updateScale(taskIndex, zScale,zStep);
-
-            return taskIndex;
-        } else {
-            // console.log("ch 2...");
-            root.updateScale(index, zScale, zStep);
-            return -1;
-        }
-    }
-
+    signal sglUpdateLowerItemScale(int delegateIndex, real newScale, real step);
+    signal sglUpdateHigherItemScale(int delegateIndex, real newScale, real step);
 
     function applyParabolicEffect(index, currentMousePosition, center) {
         var rDistance = Math.abs(currentMousePosition  - center);
@@ -116,127 +73,16 @@ Item {
             leftScale = bigNeighbourZoom;
         }
 
-        var gAppletIndex = -1;
-        var lAppletIndex = -1;
-
-        var gTaskIndex = -1;
-        var lTaskIndex = -1;
-
-        var tLIndex = -1;
-        var tHIndex = -1;
-
-        var gAppN = availableHigherId(index+1);
-        var lAppN = availableLowerId(index-1);
-
-        var latteNeighbour = root.latteApplet && ((gAppN === root.latteAppletPos) || (lAppN === root.latteAppletPos ));
-
-        if(!root.latteApplet || !latteNeighbour || !root.hasInternalSeparator
-                || (root.latteApplet && root.latteApplet.parabolicManager.firstRealTaskIndex===-1)
-                || (root.latteApplet && root.hasInternalSeparator
-                    && ((!root.latteApplet.parabolicManager.taskIsSeparator(0) && !root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1))
-                        || (root.latteApplet.parabolicManager.taskIsSeparator(0) && index>root.latteAppletPos)
-                        || (root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1) && index<root.latteAppletPos)))
-                ){
-            //console.log("style 1...");
-            gAppletIndex = gAppN;
-            lAppletIndex = lAppN;
-
-            updateIdSendScale(index, gAppletIndex, rightScale, 0);
-            updateIdSendScale(index, lAppletIndex, leftScale, 0);
-
-            tLIndex = (lAppletIndex !== root.latteAppletPos) ? availableLowerId(lAppletIndex-1) : lAppletIndex-1;
-            tHIndex = (gAppletIndex !== root.latteAppletPos) ? availableHigherId(gAppletIndex+1) : gAppletIndex+1;
-
-            gTaskIndex = updateIdSendScale(index, tHIndex, 1 ,0);
-            lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
-        } else{
-            if(gAppN === root.latteAppletPos && root.latteApplet.parabolicManager.taskIsSeparator(0)){
-                //console.log("style 2...");
-                gAppletIndex = availableHigherId(index+1);
-                lAppletIndex= availableLowerId(index-1);
-                updateIdSendScale(index, gAppletIndex, rightScale, 0);
-                updateIdSendScale(index, lAppletIndex, leftScale, 0);
-
-                tLIndex = availableLowerId(lAppletIndex-1);
-                gTaskIndex = updateIdSendScale(index, gAppletIndex+1, 1, 0);
-                lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
-            } else if(lAppN === root.latteAppletPos && root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1))  {
-                //console.log("style 3...");
-                gAppletIndex = gAppN;
-                lAppletIndex= lAppN;
-                updateIdSendScale(index, lAppletIndex, leftScale, 0);
-                updateIdSendScale(index, gAppletIndex, rightScale, 0);
-
-                tHIndex = availableHigherId(gAppletIndex+1);
-                gTaskIndex = updateIdSendScale(index, tHIndex, 1, 0);
-                lTaskIndex = updateIdSendScale(index, lAppletIndex-1, 1, 0);
-            }
-        }
-
-        //!when there isnt a single task
-        if (latteApplet && (root.latteApplet.parabolicManager.firstRealTaskIndex !== root.latteApplet.parabolicManager.lastRealTaskIndex)) {
-            if (gTaskIndex === -1 && lTaskIndex === -1){
-                latteApplet.parabolicManager.clearTasksGreaterThan(-1);
-            } else {
-                if (gTaskIndex > -1)
-                    latteApplet.parabolicManager.clearTasksGreaterThan(gTaskIndex);
-                if (lTaskIndex > -1)
-                    latteApplet.parabolicManager.clearTasksLowerThan(lTaskIndex);
-            }
-        }
-
-        clearAppletsGreaterThan(gAppletIndex+1, 1, 0);
-        clearAppletsLowerThan(lAppletIndex-1, 1, 0);
+        sglUpdateHigherItemScale(index+1 , rightScale, 0);
+        sglUpdateLowerItemScale(index-1, leftScale, 0);
 
         return {leftScale:leftScale, rightScale:rightScale};
     }
 
     function clearAppletsGreaterThan(index) {
-        var startLastIndex = layoutsContainer.startLayout.beginIndex+layoutsContainer.startLayout.count-1;
-        if (index<startLastIndex) {
-            for (var i=index+1; i<=startLastIndex; ++i)
-                root.updateScale(i, 1, 0);
-        }
-
-        var mainLastIndex = layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-1;
-        if (index<mainLastIndex){
-            var mainClearStart = index>layoutsContainer.mainLayout.beginIndex ? index+1 : layoutsContainer.mainLayout.beginIndex;
-            for (var j=mainClearStart; j<=mainLastIndex; ++j)
-                root.updateScale(j, 1, 0);
-        }
-
-        var endLastIndex = layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1;
-        if (index<endLastIndex){
-            var endClearStart = index>layoutsContainer.endLayout.beginIndex ? index+1 : layoutsContainer.endLayout.beginIndex;
-            for (var k=endClearStart; k<=endLastIndex; ++k)
-                root.updateScale(k, 1, 0);
-        }
     }
 
     function clearAppletsLowerThan(index) {
-        var startBeginIndex = layoutsContainer.startLayout.beginIndex;
-        var startLastIndex = layoutsContainer.startLayout.beginIndex+layoutsContainer.startLayout.count-1;
-        if (index>startBeginIndex) {
-            var startClearStart = index<=startLastIndex ? index-1 : startLastIndex;
-            for (var i=startClearStart; i>=startBeginIndex; --i)
-                root.updateScale(i, 1, 0);
-        }
-
-        var mainBeginIndex = layoutsContainer.mainLayout.beginIndex;
-        var mainLastIndex = layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-1;
-        if (index>mainBeginIndex) {
-            var mainClearStart = index<=mainLastIndex ? index-1 : mainLastIndex;
-            for (var j=mainClearStart; j>=mainBeginIndex; --j)
-                root.updateScale(j, 1, 0);
-        }
-
-        var endBeginIndex = layoutsContainer.endLayout.beginIndex;
-        var endLastIndex = layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1;
-        if (index>endBeginIndex) {
-            var endClearStart = index<=endLastIndex ? index-1 : endLastIndex;
-            for (var k=endClearStart; k>=endBeginIndex; --k)
-                root.updateScale(k, 1, 0);
-        }
     }
 
     // update the registered separators

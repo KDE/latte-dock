@@ -225,6 +225,41 @@ Item{
         }
     }
 
+    function sltUpdateLowerItemScale(delegateIndex, newScale, step) {
+        if (delegateIndex === index) {
+            if (!taskItem.isSeparator) {
+                //! when accepted
+                signalUpdateScale(delegateIndex, newScale, step);
+
+                if (newScale > 1) { // clear lower items
+                    parabolicManager.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
+                }
+            } else {
+                parabolicManager.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
+            }
+        } else if ((newScale === 1) && (index < delegateIndex)) {
+            signalUpdateScale(index, 1, 0);
+        }
+    }
+
+    function sltUpdateHigherItemScale(delegateIndex, newScale, step) {
+        if (delegateIndex === index) {
+            if (!taskItem.isSeparator) {
+                //! when accepted
+                signalUpdateScale(delegateIndex, newScale, step);
+
+                if (newScale > 1) { // clear lower items
+                    parabolicManager.sglUpdateHigherItemScale(delegateIndex+1, 1, 0); // clear higher items
+                }
+            } else {
+                parabolicManager.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
+            }
+        } else if ((newScale === 1) && (index > delegateIndex)) {
+            signalUpdateScale(index, 1, 0);
+        }
+    }
+
+
     function sendEndOfNeedBothAxisAnimation(){
         if (taskItem.isZoomed) {
             taskItem.isZoomed = false;
@@ -265,9 +300,15 @@ Item{
         }
 
         root.updateScale.connect(signalUpdateScale);
+
+        parabolicManager.sglUpdateLowerItemScale.connect(sltUpdateLowerItemScale);
+        parabolicManager.sglUpdateHigherItemScale.connect(sltUpdateHigherItemScale);
     }
 
     Component.onDestruction: {
         root.updateScale.disconnect(signalUpdateScale);
+
+        parabolicManager.sglUpdateLowerItemScale.disconnect(sltUpdateLowerItemScale);
+        parabolicManager.sglUpdateHigherItemScale.disconnect(sltUpdateHigherItemScale);
     }
 }// Main task area // id:wrapper
