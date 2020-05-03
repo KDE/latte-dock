@@ -53,6 +53,7 @@ Item {
     signal clearZoomSignal();
     signal destroyInternalViewSplitters();
     signal emptyAreasWheel(QtObject wheel);
+    signal sglInitializeHoveredIndexes();
     signal separatorsUpdated();
     signal signalActivateEntryAtIndex(int entryIndex);
     signal signalNewInstanceForEntryAtIndex(int entryIndex);
@@ -936,10 +937,6 @@ Item {
     }
 
     function clearZoom(){
-        if (latteApplet){
-            latteApplet.clearZoom();
-        }
-
         root.clearZoomSignal();
     }
 
@@ -992,9 +989,8 @@ Item {
     function initializeHoveredIndexes() {
         layoutsContainer.hoveredIndex = -1;
         layoutsContainer.currentSpot = -1000;
-        if (latteApplet) {
-            latteApplet.initializeHoveredIndex();
-        }
+
+        root.sglInitializeHoveredIndexes();
     }
 
     function layoutManager() {
@@ -1018,9 +1014,6 @@ Item {
     }
 
     function mouseInCanBeHoveredApplet(){
-        if (latteApplet && latteApplet.containsMouse())
-            return true;
-
         var applets = layoutsContainer.startLayout.children;
 
         for(var i=0; i<applets.length; ++i){

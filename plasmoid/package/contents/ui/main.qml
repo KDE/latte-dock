@@ -1963,7 +1963,6 @@ Item {
 
     function startCheckRestoreZoomTimer(duration) {
         if (latteView) {
-
             latteView.startCheckRestoreZoomTimer();
         } else {
             if (duration > 0) {

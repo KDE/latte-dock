@@ -227,7 +227,7 @@ Item {
     property Item appletsRecords: null
     property Item metrics: null
 
-    property bool containsMouse: appletMouseArea.containsMouse /*|| appletMouseAreaBottom.containsMouse*/
+    property bool containsMouse: appletMouseArea.containsMouse || (isLattePlasmoid && latteApplet.containsMouse)
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
 
 
@@ -396,12 +396,23 @@ Item {
         canBeHoveredTimer.start();
     }
 
+    function sltInitializeHoveredIndexes() {
+        if (latteApplet) {
+            latteApplet.initializeHoveredIndex();
+        }
+    }
+
     //! Reduce calculations and give the time to applet to adjust to prevent binding loops
     Timer{
         id: canBeHoveredTimer
         interval: 100
         onTriggered: {
             if (wrapper.zoomScale !== 1) {
+                return;
+            }
+
+            if (appletItem.isLattePlasmoid) {
+                appletItem.canBeHovered = true;
                 return;
             }
 
@@ -515,6 +526,7 @@ Item {
         root.updateIndexes.connect(checkIndex);
         root.clearZoomSignal.connect(clearZoom);
         root.destroyInternalViewSplitters.connect(slotDestroyInternalViewSplitters);
+        root.sglInitializeHoveredIndexes.connect(sltInitializeHoveredIndexes);
     }
 
     Component.onDestruction: {
@@ -538,6 +550,7 @@ Item {
         root.updateIndexes.disconnect(checkIndex);
         root.clearZoomSignal.disconnect(clearZoom);
         root.destroyInternalViewSplitters.disconnect(slotDestroyInternalViewSplitters);
+        root.sglInitializeHoveredIndexes.disconnect(sltInitializeHoveredIndexes);
 
         if (appletItem.latteApplet) {
             appletItem.latteApplet.signalPreviewsShown.disconnect(slotPreviewsShown);
