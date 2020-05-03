@@ -227,7 +227,7 @@ Item{
 
     function sltUpdateLowerItemScale(delegateIndex, newScale, step) {
         if (delegateIndex === index) {
-            if (!taskItem.isSeparator) {
+            if (!taskItem.isSeparator && !taskItem.isHidden) {
                 //! when accepted
                 signalUpdateScale(delegateIndex, newScale, step);
 
@@ -244,7 +244,7 @@ Item{
 
     function sltUpdateHigherItemScale(delegateIndex, newScale, step) {
         if (delegateIndex === index) {
-            if (!taskItem.isSeparator) {
+            if (!taskItem.isSeparator && !taskItem.isHidden) {
                 //! when accepted
                 signalUpdateScale(delegateIndex, newScale, step);
 

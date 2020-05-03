@@ -130,6 +130,7 @@ MouseArea{
     property bool isDragged: false
     property bool isGroupable: (IsGroupable === true) ? true : false
     property bool isGroupParent: (IsGroupParent === true) ? true : false
+    readonly property bool isHidden: !visible || isForcedHidden
     property bool isForcedHidden: false
     property bool isLauncher: (IsLauncher === true) ? true : false
     property bool isMinimized: (IsMinimized === true) ? true : false
