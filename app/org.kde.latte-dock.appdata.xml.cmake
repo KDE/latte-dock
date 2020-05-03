@@ -16,6 +16,7 @@
   <name xml:lang="et">Latte</name>
   <name xml:lang="eu">Latte</name>
   <name xml:lang="fi">Latte</name>
+  <name xml:lang="fr">Latte</name>
   <name xml:lang="gl">Latte</name>
   <name xml:lang="ia">Latte</name>
   <name xml:lang="id">Latte</name>
