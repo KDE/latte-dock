@@ -149,7 +149,6 @@ SequentialAnimation{
 
         wrapper.tempScaleWidth = wrapper.mScale;
         wrapper.tempScaleHeight = wrapper.mScale;
-        icList.hoveredIndex = -1;
     }
 
     function bounceLauncher(){

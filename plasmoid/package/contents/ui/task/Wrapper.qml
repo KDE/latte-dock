@@ -94,7 +94,6 @@ Item{
     property real visualScaledHeight: (taskItem.metrics.iconSize + root.internalHeightMargins) * mScale
     /// end of Scalers///////
 
-    //property int curIndex: icList.hoveredIndex
     //  property int index: taskItem.Positioner.index
     //property real center: (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
     property real center: !root.vertical ?
@@ -161,15 +160,7 @@ Item{
             return;
         }
 
-        var distanceFromHovered = Math.abs(index - icList.hoveredIndex);
-
-        // A new algorithm trying to make the zoom calculation only once
-        // and at the same time fixing glitches
-        if ((distanceFromHovered === 0) &&
-                //! IMPORTANT: IS FIXING A BUG THAT NEGATIVE VALUES ARE SENT onEntered EVENT OF MOUSEAREA
-                // (currentMousePosition>=0) &&
-                (root.dragSource === null) ){
-
+        if (root.dragSource === null) {
             //use the new parabolicManager in order to handle all parabolic effect messages
             var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
 
@@ -196,7 +187,6 @@ Item{
 
             taskItem.scalesUpdatedOnce = false;
         }
-
     } //nScale
 
     function signalUpdateScale(nIndex, nScale, step){

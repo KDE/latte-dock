@@ -148,7 +148,6 @@ MouseArea{
 
     property int animationTime: (taskItem.animations.active ? taskItem.animations.speedFactor.current : 2) * (1.2 *taskItem.animations.duration.small)
     property int badgeIndicator: 0 //it is used from external apps
-    property int hoveredIndex: icList.hoveredIndex
     property int itemIndex: index
     property int lastValidIndex: -1 //used for the removal animation
     property int lastButtonClicked: -1;
@@ -629,16 +628,12 @@ MouseArea{
             restoreAnimation.stop();
         }
 
-        if (icList.hoveredIndex === -1 && root.dockHoveredIndex ===-1) {
+        if (!root.directRenderDelayerIsRunning) {
             root.startDirectRenderDelayerDuringEntering();
         }
 
-        if ((icList.hoveredIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
+        if ((parabolicManager.lastIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
             windowsPreviewDlg.hide(1);
-        }
-
-        if (!latteView || (latteView && !(latteView.dockIsHidden || latteView.inSlidingIn || latteView.inSlidingOut))){
-            icList.hoveredIndex = index;
         }
 
         if (root.latteView && !root.showPreviews && root.titleTooltips){
@@ -678,20 +673,7 @@ MouseArea{
             root.latteView.hideTooltipLabel();
         }
 
-        if(taskItem.contextMenu && taskItem.contextMenu.status == PlasmaComponents.DialogStatus.Open){
-            ///don't check to restore zooms
-        }
-        else{
-            if(!inAnimation){
-                root.startCheckRestoreZoomTimer();
-            }
-        }
-
-        /* if(draggingResistaner != null){
-                draggingResistaner.destroy();
-                draggingResistaner = null;
-                isDragged = false;
-            }*/
+        root.startCheckRestoreZoomTimer();
     }
 
     //! mouseX-Y values are delayed to be updated onEntered events and at the same time
@@ -702,23 +684,15 @@ MouseArea{
                 (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
 
-        root.stopCheckRestoreZoomTimer();
-
         if (root.latteView && root.latteView.isHalfShown) {
             return;
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
-            if (icList.hoveredIndex === -1 && root.dockHoveredIndex ===-1) {
-                root.startDirectRenderDelayerDuringEntering();
-            }
-
-            if (!latteView || (latteView && !(latteView.dockIsHidden || latteView.inSlidingIn || latteView.inSlidingOut))){
-                icList.hoveredIndex = index;
-            }
-
-            if (!root.globalDirectRender && !root.directRenderDelayerIsRunning) {
+            if (parabolicManager.lastIndex>=0 && parabolicManager.lastIndex !== itemIndex) {
                 root.setGlobalDirectRender(true);
+            } else if (!root.directRenderDelayerIsRunning) {
+                root.startDirectRenderDelayerDuringEntering();
             }
 
             if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender)
@@ -1017,12 +991,7 @@ MouseArea{
     }
 
     function clearZoom(){
-        if(!root)
-            return;
-
-        if (root.hoveredIndex === -1 && root.dockHoveredIndex === -1) {
-            restoreAnimation.start();
-        }
+        restoreAnimation.start();
     }
 
     function handlerDraggingFinished(){
@@ -1482,21 +1451,6 @@ MouseArea{
         //after dragging an existent task with audio
         onDragSourceChanged: taskItem.updateAudioStreams()
         onShowAudioBadgeChanged: taskItem.updateAudioStreams()
-    }
-
-    Connections {
-        target: root
-        onHoveredIndexChanged: {
-            if ((restoreAnimation.running) && (root.hoveredIndex !== -1)) {
-                restoreAnimation.stop();
-            }
-        }
-
-        onDockHoveredIndexChanged: {
-            if ((restoreAnimation.running) && (root.dockHoveredIndex !== -1)) {
-                restoreAnimation.stop();
-            }
-        }
     }
 
     Connections {

@@ -39,10 +39,14 @@ Item {
     signal sglUpdateLowerItemScale(int delegateIndex, real newScale, real step);
     signal sglUpdateHigherItemScale(int delegateIndex, real newScale, real step);
 
+    property int lastIndex: -1
+
     Connections{
         target: root
         onTasksCountChanged: parManager.updateTasksEdgesIndexes();
         onHiddenTasksUpdated: parManager.updateTasksEdgesIndexes();
+
+        onClearZoomSignal: parManager.lastIndex = -1;
     }
 
     Component.onCompleted: {
@@ -122,6 +126,8 @@ Item {
     }
 
     function applyParabolicEffect(index, currentMousePosition, center) {
+        lastIndex = index;
+
         var rDistance = Math.abs(currentMousePosition  - center);
 
         //check if the mouse goes right or down according to the center
@@ -172,20 +178,11 @@ Item {
     }
 
     function neighbourIsHovered(index) {
-        if (icList.hoveredIndex<0)
+        if (parManager.lastIndex<0)
             return;
 
-        if (Math.abs(index - icList.hoveredIndex)<=1)
+        if (Math.abs(index - parManager.lastIndex)<=1)
             return true;
-
-        var hovered = icList.hoveredIndex;
-
-        if (root.hasInternalSeparator && hovered>-1
-                && (hovered === index
-                    || hovered === availableLowerIndex(index-1)
-                    || hovered === availableHigherIndex(index+1) )) {
-            return true;
-        }
 
         return false;
     }

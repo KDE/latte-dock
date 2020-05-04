@@ -1250,27 +1250,12 @@ Item {
         }
     }
 
-    Connections {
-        target: latteView
-
-        onContextMenuIsShownChanged: {
-            if (!latteView.contextMenuIsShown) {
-                checkRestoreZoom.start();
-            } else {
-                root.setGlobalDirectRender(false);
-            }
-        }
-    }
-
     Connections{
         target: latteView && latteView.visibility ? latteView.visibility : root
-
         ignoreUnknownSignals : true
 
         onContainsMouseChanged: {
-            if (mouseInHoverableArea()) {
-                stopCheckRestoreZoomTimer();
-            } else {
+            if (!latteView.visibility.containsMouse) {
                 startCheckRestoreZoomTimer();
             }
         }
@@ -1654,10 +1639,6 @@ Item {
         interval: 10
 
         onTriggered: {
-            if (latteApplet && (latteApplet.previewContainsMouse() || latteApplet.contextMenu)) {
-                return;
-            }
-
             if (latteView.contextMenuIsShown) {
                 return;
             }

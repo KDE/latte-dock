@@ -186,7 +186,6 @@ Item {
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
     property int directRenderAnimationTime: latteView ? latteView.directRenderAnimationTime : 0
-    property int dockHoveredIndex : latteView ? latteView.hoveredIndex : -1
 
     property int launchersGroup: plasmoid.configuration.launchersGroup
 
@@ -232,7 +231,6 @@ Item {
     property string appShadowColorSolid: latteView ? latteView.appShadowColorSolid : "#ff080808"
 
     property alias tasksCount: tasksModel.count
-    property alias hoveredIndex: icList.hoveredIndex
 
     readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
@@ -333,16 +331,6 @@ Item {
         onCurrentLayoutNameChanged: root.publishTasksGeometries();
     }
 
-    Connections{
-        target: icList
-
-        onHoveredIndexChanged:{
-            if (latteView && icList.hoveredIndex>-1){
-                latteView.setHoveredIndex(-1);
-            }
-        }
-    }
-
     Binding {
         target: plasmoid
         property: "status"
@@ -399,11 +387,6 @@ Item {
     }
 
     /////
-
-    function initializeHoveredIndex() {
-        icList.hoveredIndex = -1;
-        icList.currentSpot = -1000;
-    }
 
     function launchersDropped(urls){
         mouseHandler.urlsDropped(urls);
@@ -1015,21 +998,17 @@ Item {
     //is not inside a Latte dock
     Timer{
         id:checkListHovered
-        repeat:false;
-        interval: 120
+        interval: 10
 
         property int normalInterval: Math.max(120, 2 * (animations.speedFactor.current * 1.2 * animations.duration.small) + 50)
 
         onTriggered: {
-            if(root.latteView)
+            if(root.latteView) {
                 console.log("Plasmoid, checkListHoveredTimer was called, even though it shouldn't...");
-
-            if (!root.containsMouse()) {
-
-                icList.directRender = false;
-
-                root.clearZoom();
             }
+
+            icList.directRender = false;
+            root.clearZoom();
 
             interval = normalInterval;
 
@@ -1195,7 +1174,7 @@ Item {
 
             visible: root.dragAreaEnabled
 
-            property int maxSize: (((root.hoveredIndex>=0 || dockHoveredIndex>=0 ) || windowPreviewIsShown) && !root.dragSource) ?
+            property int maxSize: ((parabolicManager.lastIndex>=0 || windowPreviewIsShown) && !root.dragSource) ?
                                       (root.zoomFactor * metrics.totals.thickness) + metrics.margin.screenEdge :
                                       metrics.totals.thickness + metrics.margin.screenEdge
 
@@ -1296,7 +1275,6 @@ Item {
                     }
 
                     property int currentSpot : -1000
-                    property int hoveredIndex : -1
                     property int previousCount : 0
 
                     property int tasksCount: tasksModel.count
@@ -1713,10 +1691,6 @@ Item {
         }
     }
 
-    function setHoveredIndex(ind) {
-        icList.hoveredIndex = ind;
-    }
-
     function getBadger(identifier) {
         var ident1 = identifier;
         var n = ident1.lastIndexOf('/');
@@ -1907,10 +1881,6 @@ Item {
 
         if (!previewContainsMouse()) {
             windowsPreviewDlg.hide(4.2);
-        }
-
-        if (!latteView) {
-            initializeHoveredIndex();
         }
 
         root.clearZoomSignal();
