@@ -139,6 +139,8 @@ MouseArea{
     property bool isWindow: (IsWindow === true) ? true : false
     property bool isZoomed: false
 
+    property bool blockClearZoom: root.contextMenu
+
     property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=taskItem.metrics.iconSize && height>=taskItem.metrics.iconSize
                                         && !taskItem.delayingRemove
                                         && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //don't publish during zoomFactor
@@ -660,7 +662,11 @@ MouseArea{
             root.latteView.hideTooltipLabel();
         }
 
-        if (root.zoomFactor>1){
+        if (root.showPreviews) {
+            root.hidePreview(17.5);
+        }
+
+        if (root.zoomFactor>1 && !blockClearZoom){
             root.startCheckRestoreZoomTimer();
         }
     }

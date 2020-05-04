@@ -1244,6 +1244,15 @@ Item {
         }
     }
 
+    Connections {
+        target: latteView
+        onContextMenuIsShownChanged: {
+            if (!latteView.contextMenuIsShown) {
+                root.startCheckRestoreZoomTimer();
+            }
+        }
+    }
+
     ////END interfaces
 
     /////BEGIN: Title Tooltip///////////

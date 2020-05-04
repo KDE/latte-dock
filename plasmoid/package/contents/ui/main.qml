@@ -525,8 +525,11 @@ Item {
             //! triggered together.
             if (containsMouse) {
                 hidePreviewWinTimer.stop();
+                root.stopCheckRestoreZoomTimer();
+                root.setGlobalDirectRender(false);
             } else {
-                hide(7.3);
+                hide(7.3);                
+                root.startCheckRestoreZoomTimer();
             }
         }
 
