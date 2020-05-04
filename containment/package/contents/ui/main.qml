@@ -1236,7 +1236,6 @@ Item {
     Connections{
         target: latteView && latteView.visibility ? latteView.visibility : root
         ignoreUnknownSignals : true
-
         onContainsMouseChanged: {
             if (!latteView.visibility.containsMouse && !checkRestoreZoom.running) {
                 startCheckRestoreZoomTimer();

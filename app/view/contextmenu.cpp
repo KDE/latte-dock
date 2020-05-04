@@ -153,8 +153,6 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
         //qDebug() << "Step 0.5 ...";
         m_contextMenu->close();
         m_contextMenu = 0;
-        emit menuChanged();
-        // PlasmaQuick::ContainmentView::mousePressEvent(event);
         return false;
     }
 
@@ -261,6 +259,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
 
                 desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
                 m_contextMenu = desktopMenu;
+                emit menuChanged();
 
                 //! deprecated old code that can be removed if the following plasma approach doesn't
                 //! create any issues with context menu creation in Latte
@@ -336,7 +335,6 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
 
                 desktopMenu->popup(globalPos);
                 event->setAccepted(true);
-                emit menuChanged();
                 return false;
             }
 
@@ -347,7 +345,6 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
     }
 
     //qDebug() << "10 ...";
-    emit menuChanged();
     return true;
     //  PlasmaQuick::ContainmentView::mousePressEvent(event);
 }

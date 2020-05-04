@@ -1471,7 +1471,6 @@ bool View::isHighestPriorityView() {
 void View::mousePressEvent(QMouseEvent *event)
 {
     bool result = m_contextMenu->mousePressEvent(event);
-    emit contextMenuIsShownChanged();
 
     if (result) {
         PlasmaQuick::ContainmentView::mousePressEvent(event);
