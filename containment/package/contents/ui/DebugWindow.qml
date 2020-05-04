@@ -634,7 +634,7 @@ Window{
             }
 
             Text{
-                text: layoutsContainer.hoveredIndex
+                text: "--"//layoutsContainer.hoveredIndex
             }
 
             Text{
@@ -642,7 +642,7 @@ Window{
             }
 
             Text{
-                text: root.latteAppletHoveredIndex
+                text: "--"//root.latteAppletHoveredIndex
             }
 
             Text{

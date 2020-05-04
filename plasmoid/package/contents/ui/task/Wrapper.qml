@@ -268,7 +268,7 @@ Item{
     }
 
     onMScaleChanged: {
-        if ((mScale === root.zoomFactor) && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
+        if ((mScale === root.zoomFactor) /*&& !root.directRenderTimerIsRunning*/ && !root.globalDirectRender) {
             root.setGlobalDirectRender(true);
         }
 

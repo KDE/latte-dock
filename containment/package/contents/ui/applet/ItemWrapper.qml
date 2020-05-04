@@ -727,33 +727,20 @@ Item{
             return;
         }
 
-        var distanceFromHovered = Math.abs(index - layoutsContainer.hoveredIndex);
+        //use the new parabolicManager in order to handle all parabolic effect messages
+        var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
 
-        // A new algorithm trying to make the zoom calculation only once
-        // and at the same time fixing glitches
-        if ((distanceFromHovered == 0)&&
-                (currentMousePosition  > 0) ){
-
-            //use the new parabolicManager in order to handle all parabolic effect messages
-            var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
-
-            /*if (root.latteApplet && Math.abs(index - root.latteAppletPos) > 2){
-                root.latteApplet.clearZoom();
-            }*/
-
-            //Left hiddenSpacer
-            if(appletItem.firstAppletInContainer){
-                hiddenSpacerLeft.nScale = scales.leftScale - 1;
-            }
-
-            //Right hiddenSpacer  ///there is one more item in the currentLayout ????
-            if(appletItem.lastAppletInContainer){
-                hiddenSpacerRight.nScale =  scales.rightScale - 1;
-            }
-
-            zoomScale = root.zoomFactor;
+        //Left hiddenSpacer
+        if(appletItem.firstAppletInContainer){
+            hiddenSpacerLeft.nScale = scales.leftScale - 1;
         }
 
+        //Right hiddenSpacer  ///there is one more item in the currentLayout ????
+        if(appletItem.lastAppletInContainer){
+            hiddenSpacerRight.nScale =  scales.rightScale - 1;
+        }
+
+        zoomScale = root.zoomFactor;
     } //scale
 
 
@@ -761,7 +748,6 @@ Item{
         if(appletItem && !appletItem.containsMouse && (appletItem.index === nIndex)){
             if ( ((canBeHovered && !appletItem.originalAppletBehavior) || appletItem.latteApplet)
                     && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)
-                    //&& (index != currentLayout.hoveredIndex)
                     ){
                 if(!appletItem.latteApplet){
                     if(nScale >= 0)

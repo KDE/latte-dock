@@ -53,7 +53,6 @@ Item {
     signal clearZoomSignal();
     signal destroyInternalViewSplitters();
     signal emptyAreasWheel(QtObject wheel);
-    signal sglInitializeHoveredIndexes();
     signal separatorsUpdated();
     signal signalActivateEntryAtIndex(int entryIndex);
     signal signalNewInstanceForEntryAtIndex(int entryIndex);
@@ -232,8 +231,7 @@ Item {
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
     property bool isReady: !(dockIsHidden || inSlidingIn || inSlidingOut)
     property bool isVertical: !isHorizontal
-    property bool isHovered: latteApplet ? ((latteAppletHoveredIndex !== -1) || (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse
-                                         : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
+
     property bool mouseWheelActions: plasmoid.configuration.mouseWheelActions
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there aren't removals, this variable provides a way to grow icon size
     property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins
@@ -254,7 +252,6 @@ Item {
     property bool plasma515: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
     property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
 
-    property alias hoveredIndex: layoutsContainer.hoveredIndex
     property alias directRenderDelayerIsRunning: directRenderDelayerForEnteringTimer.running
 
     readonly property int minAppletLengthInConfigure: 64
@@ -464,7 +461,6 @@ Item {
 
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
-    property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
 
@@ -604,12 +600,6 @@ Item {
             latteView.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
 
             updateContainsOnlyPlasmaTasks();
-        }
-    }
-
-    onDockContainsMouseChanged: {
-        if (!dockContainsMouse) {
-            initializeHoveredIndexes();
         }
     }
 
@@ -957,7 +947,7 @@ Item {
 
 
     function disableDirectRender(){
-        //  root.globalDirectRender = false;
+        // root.globalDirectRender = false;
     }
 
     function internalViewSplittersCount(){
@@ -984,13 +974,6 @@ Item {
         }
 
         return splitters;
-    }
-
-    function initializeHoveredIndexes() {
-        layoutsContainer.hoveredIndex = -1;
-        layoutsContainer.currentSpot = -1000;
-
-        root.sglInitializeHoveredIndexes();
     }
 
     function layoutManager() {
@@ -1050,10 +1033,6 @@ Item {
 
     function mouseInHoverableArea() {
         return (latteView.visibility.containsMouse && !rootMouseArea.containsMouse && mouseInCanBeHoveredApplet());
-    }
-
-    function setHoveredIndex(ind) {
-        layoutsContainer.hoveredIndex = ind;
     }
 
     function hideTooltipLabel(debug){
@@ -1176,18 +1155,11 @@ Item {
     }
 
     function setGlobalDirectRender(value) {
-        if (latteApplet && latteApplet.tasksExtendedManager.waitingLaunchersLength() > 0)
-            return;
-
-        if (value === true) {
-            if (mouseInCanBeHoveredApplet()) {
-                root.globalDirectRender = true;
-            } else {
-                //    console.log("direct render true ignored...");
-            }
-        } else {
-            root.globalDirectRender = false;
+        if (value === false) {
+            directRenderDelayerForEnteringTimer.stop();
         }
+
+        root.globalDirectRender = value;
     }
 
     function updateContainsOnlyPlasmaTasks() {
@@ -1300,20 +1272,6 @@ Item {
                 stopCheckRestoreZoomTimer();
             } else {
                 startCheckRestoreZoomTimer();
-            }
-        }
-    }
-
-    Connections{
-        target: layoutsContainer
-
-        onHoveredIndexChanged: {
-            if (latteApplet && layoutsContainer.hoveredIndex>-1){
-                latteApplet.setHoveredIndex(-1);
-            }
-
-            if (latteApplet && latteApplet.windowPreviewIsShown && layoutsContainer.hoveredIndex>-1) {
-                latteApplet.hidePreview();
             }
         }
     }
@@ -1693,7 +1651,7 @@ Item {
     //Timer to check if the mouse is still outside the latteView in order to restore zooms to 1.0
     Timer{
         id:checkRestoreZoom
-        interval: 90
+        interval: 10
 
         onTriggered: {
             if (latteApplet && (latteApplet.previewContainsMouse() || latteApplet.contextMenu)) {
@@ -1704,11 +1662,8 @@ Item {
                 return;
             }
 
-            if (!mouseInHoverableArea()) {
-                setGlobalDirectRender(false);
-                root.initializeHoveredIndexes();
-                root.clearZoom();
-            }
+            setGlobalDirectRender(false);
+            root.clearZoom();
 
             if (root.debugModeTimers) {
                 console.log("containment timer: checkRestoreZoom called...");
@@ -1722,6 +1677,7 @@ Item {
     Timer{
         id:directRenderDelayerForEnteringTimer
         interval: 3.2 * animations.speedFactor.current * animations.duration.small
+        onTriggered: setGlobalDirectRender(true);
     }
 
     //! It is used in order to slide-in the latteView on startup

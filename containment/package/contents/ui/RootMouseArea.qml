@@ -22,13 +22,4 @@ import QtQuick 2.7
 MouseArea{
     anchors.fill: parent
     hoverEnabled: true
-
-    onContainsMouseChanged: {
-        if (root.mouseInHoverableArea()) {
-            root.stopCheckRestoreZoomTimer();
-        } else {
-            root.initializeHoveredIndexes();
-            root.startCheckRestoreZoomTimer()
-        }
-    }
 }

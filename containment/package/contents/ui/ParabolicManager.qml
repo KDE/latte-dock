@@ -37,7 +37,17 @@ Item {
     signal sglUpdateLowerItemScale(int delegateIndex, real newScale, real step);
     signal sglUpdateHigherItemScale(int delegateIndex, real newScale, real step);
 
+    property int lastIndex: -1
+
+    Connections {
+        target: root
+        onClearZoomSignal: parManager.lastIndex = -1;
+    }
+
     function applyParabolicEffect(index, currentMousePosition, center) {
+        //! last item requested calculations
+        lastIndex = index;
+
         var rDistance = Math.abs(currentMousePosition  - center);
 
         //check if the mouse goes right or down according to the center

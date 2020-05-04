@@ -40,7 +40,6 @@ Item{
 
     property int allCount: root.latteApplet ? _mainLayout.count-1+latteApplet.tasksCount : _mainLayout.count
     property int currentSpot: -1000
-    property int hoveredIndex: -1
 
     readonly property int fillApplets: _startLayout.fillApplets + _mainLayout.fillApplets + _endLayout.fillApplets
 

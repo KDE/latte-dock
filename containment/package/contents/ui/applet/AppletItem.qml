@@ -154,7 +154,6 @@ Item {
     readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported
 
     property int animationTime: appletItem.animations.speedFactor.normal * (1.2*appletItem.animations.duration.small)
-    property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
     property int maxWidth: root.isHorizontal ? root.height : root.width
     property int maxHeight: root.isHorizontal ? root.height : root.width
@@ -383,9 +382,7 @@ Item {
     //outside the LatteApplet Plasmoid
     //property int debCounter: 0;
     function clearZoom(){
-        if (layoutsContainer.hoveredIndex === -1 && root.latteAppletHoveredIndex === -1) {
-            restoreAnimation.start();
-        }
+        restoreAnimation.start();
 
         if (latteApplet) {
             latteApplet.clearZoom();
@@ -394,12 +391,6 @@ Item {
 
     function checkCanBeHovered(){
         canBeHoveredTimer.start();
-    }
-
-    function sltInitializeHoveredIndexes() {
-        if (latteApplet) {
-            latteApplet.initializeHoveredIndex();
-        }
     }
 
     //! Reduce calculations and give the time to applet to adjust to prevent binding loops
@@ -526,7 +517,6 @@ Item {
         root.updateIndexes.connect(checkIndex);
         root.clearZoomSignal.connect(clearZoom);
         root.destroyInternalViewSplitters.connect(slotDestroyInternalViewSplitters);
-        root.sglInitializeHoveredIndexes.connect(sltInitializeHoveredIndexes);
     }
 
     Component.onDestruction: {
@@ -550,7 +540,6 @@ Item {
         root.updateIndexes.disconnect(checkIndex);
         root.clearZoomSignal.disconnect(clearZoom);
         root.destroyInternalViewSplitters.disconnect(slotDestroyInternalViewSplitters);
-        root.sglInitializeHoveredIndexes.disconnect(sltInitializeHoveredIndexes);
 
         if (appletItem.latteApplet) {
             appletItem.latteApplet.signalPreviewsShown.disconnect(slotPreviewsShown);
@@ -560,38 +549,6 @@ Item {
 
     Connections{
         target: root
-
-        /* onGlobalDirectRenderChanged:{
-            if (root.globalDirectRender && restoreAnimation.running) {
-                // console.log("CLEAR APPLET SCALE !!!!");
-                //restoreAnimation.stop();
-                //wrapper.zoomScale = 1;
-            }
-        }*/
-
-        onLatteAppletHoveredIndexChanged: {
-            if ( (root.zoomFactor>1) && (root.latteAppletHoveredIndex >= 0) ){
-                var distance = 2;
-                //for Tasks plasmoid distance of 2 is not always safe there are
-                //cases that needs to be 3, when an internal separator there is
-                //between the hovered task and the current applet
-                if (root.hasInternalSeparator) {
-                    if (index < root.latteAppletPos) {
-                        var firstTaskIndex = root.latteApplet.parabolicManager.availableHigherIndex(0);
-
-                        distance = firstTaskIndex+2;
-                    } else if (index > root.latteAppletPos) {
-                        var lastTaskIndex = root.latteApplet.parabolicManager.availableLowerIndex(root.tasksCount-1);
-
-                        distance = root.tasksCount-1-lastTaskIndex+2;
-                    }
-                }
-
-                if(Math.abs(index-root.latteAppletPos+root.latteAppletHoveredIndex)>=Math.max(2,distance)) {
-                    appletItem.clearZoom();
-                }
-            }
-        }
 
         onSignalActivateEntryAtIndex: {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
@@ -606,30 +563,6 @@ Item {
                 latteApplet.newInstanceForTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
             } else if (root.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
                 latteView.extendedInterface.toggleAppletExpanded(applet.id);
-            }
-        }
-    }
-
-    Connections{
-        target: layoutsContainer
-        onHoveredIndexChanged:{
-            //for applets it is safe to consider that a distance of 2
-            //is enough to clearZoom
-            if ( (root.zoomFactor>1) && (layoutsContainer.hoveredIndex>=0)
-                    && (Math.abs(index-layoutsContainer.hoveredIndex)>=2))
-                appletItem.clearZoom();
-
-            if ((restoreAnimation.running) && (layoutsContainer.hoveredIndex !== -1)) {
-                restoreAnimation.stop();
-            }
-        }
-    }
-
-    Connections{
-        target: root
-        onLatteAppletHoveredIndexChanged: {
-            if ((restoreAnimation.running) && (root.latteAppletHoveredIndex !== -1)) {
-                restoreAnimation.stop();
             }
         }
     }
@@ -1008,10 +941,8 @@ Item {
 
         property bool blockWheel: false
 
-        onEntered: {
-            if (containsMouse && !originalAppletBehavior && !communicator.requires.parabolicEffectLocked && appletItem.canBeHovered){
-                root.stopCheckRestoreZoomTimer();
-            }
+        onEntered: {            
+            root.stopCheckRestoreZoomTimer();
 
             if (restoreAnimation.running) {
                 restoreAnimation.stop();
@@ -1021,15 +952,8 @@ Item {
                 root.showTooltipLabel(appletItem, applet.title);
             }
 
-            //console.log("entered applet:" + layoutsContainer.hoveredIndex);
-
-
-            if (layoutsContainer.hoveredIndex === -1 && root.latteAppletHoveredIndex===-1) {
+            if (!root.directRenderDelayerIsRunning) {
                 root.startDirectRenderDelayerDuringEntering();
-            }
-
-            if (!(root.latteViewIsHidden || root.inSlidingIn || root.inSlidingOut)){
-                layoutsContainer.hoveredIndex = index;
             }
 
             if (originalAppletBehavior || communicator.requires.parabolicEffectLocked || !canBeHovered) {
@@ -1074,16 +998,10 @@ Item {
                 return;
             }
 
-            if (layoutsContainer.hoveredIndex === -1 && root.latteAppletHoveredIndex===-1) {
-                root.startDirectRenderDelayerDuringEntering();
-            }
-
-            if (!(root.latteViewIsHidden || root.inSlidingIn || root.inSlidingOut)){
-                layoutsContainer.hoveredIndex = index;
-            }
-
-            if (!root.globalDirectRender && !root.directRenderDelayerIsRunning) {
+            if (parabolicManager.lastIndex>=0 && parabolicManager.lastIndex != index) {
                 root.setGlobalDirectRender(true);
+            } else if (!root.directRenderDelayerIsRunning) {
+                root.startDirectRenderDelayerDuringEntering();
             }
 
             if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {

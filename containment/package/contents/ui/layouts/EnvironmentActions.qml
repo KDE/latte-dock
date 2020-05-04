@@ -45,7 +45,7 @@ Loader {
 
         acceptedButtons: Qt.LeftButton | Qt.MidButton
 
-        readonly property int localThickness: (root.isHovered ? (metrics.totals.thickness)*root.zoomFactor : (metrics.totals.thickness))
+        readonly property int localThickness: metrics.totals.thickness
         readonly property int length: {
             if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
                 return root.isHorizontal ? root.width : root.height;
@@ -62,15 +62,6 @@ Loader {
 
         property int lastPressX: -1
         property int lastPressY: -1
-
-        onContainsMouseChanged: {
-            if (root.mouseInHoverableArea()) {
-                root.stopCheckRestoreZoomTimer();
-            } else {
-                root.initializeHoveredIndexes();
-                root.startCheckRestoreZoomTimer()
-            }
-        }
 
         onClicked: {
             if (root.closeActiveWindowEnabled && mouse.button === Qt.MidButton) {
