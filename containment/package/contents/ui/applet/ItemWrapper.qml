@@ -787,7 +787,7 @@ Item{
     }
 
     function sltUpdateHigherItemScale(delegateIndex, newScale, step) {
-        if (delegateIndex === appletItem.index) {
+        if (delegateIndex === appletItem.index) {          
             if (appletItem.isLattePlasmoid) {
                 appletItem.latteApplet.parabolicManager.hostRequestUpdateHigherItemScale(newScale, step);
                 return;

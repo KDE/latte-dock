@@ -157,7 +157,7 @@ Item {
     property bool dockIsShownCompletely: latteView ? latteView.dockIsShownCompletely : true
     property bool enableShadows: latteView ? latteView.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
-    property bool directRenderDelayerIsRunning: latteView ? latteView.directRenderDelayerIsRunning : directRenderDelayerForEnteringTimer.running
+
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
     property bool dockIsHidden: latteView ? latteView.dockIsHidden : false
@@ -184,8 +184,6 @@ Item {
 
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
-
-    property int directRenderAnimationTime: latteView ? latteView.directRenderAnimationTime : 0
 
     property int launchersGroup: plasmoid.configuration.launchersGroup
 
@@ -1005,7 +1003,6 @@ Item {
                 console.log("Plasmoid, checkListHoveredTimer was called, even though it shouldn't...");
             }
 
-            icList.directRender = false;
             root.clearZoom();
 
             interval = normalInterval;
@@ -1026,14 +1023,6 @@ Item {
 
             start();
         }
-    }
-
-    //! Delayer in order to not activate directRendering when the mouse
-    //! enters until the timer has ended. This way we make sure that the
-    //! zoom-in animations will have ended.
-    Timer{
-        id:directRenderDelayerForEnteringTimer
-        interval: 3.2 * animations.speedFactor.current * animations.duration.small
     }
 
     //this timer restores the draggingPhase flag to false
@@ -1917,15 +1906,7 @@ Item {
         if (latteView) {
             latteView.setGlobalDirectRender(value);
         } else {
-            if (value === true) {
-                if (root.containsMouse()) {
-                    icList.directRender = true;
-                } else {
-                    //    console.log("direct render true ignored...");
-                }
-            } else {
-                icList.directRender = false;
-            }
+            icList.directRender = value;
         }
     }
 
@@ -1946,14 +1927,6 @@ Item {
             latteView.stopCheckRestoreZoomTimer();
         } else {
             checkListHovered.stop();
-        }
-    }
-
-    function startDirectRenderDelayerDuringEntering(){
-        if (latteView) {
-            latteView.startDirectRenderDelayerDuringEntering();
-        } else {
-            directRenderDelayerForEnteringTimer.start();
         }
     }
 

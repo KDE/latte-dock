@@ -123,10 +123,7 @@ SequentialAnimation{
             launchedAlready = true;
             taskItem.animations.needThickness.addEvent(needThicknessEvent);
 
-            if (root.latteView)
-                root.latteView.disableDirectRender();
-            else
-                icList.directRender=false;
+            root.setGlobalDirectRender(false);
 
             parabolicManager.clearTasksGreaterThan(index);
             parabolicManager.clearTasksLowerThan(index);

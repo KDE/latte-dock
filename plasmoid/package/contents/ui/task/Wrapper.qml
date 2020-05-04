@@ -121,7 +121,8 @@ Item{
         }*/
 
     Behavior on mScale {
-        enabled: !root.globalDirectRender || inMimicParabolicAnimation
+        id: animatedBehavior
+        enabled: !root.globalDirectRender || inMimicParabolicAnimation || restoreAnimation.running
         NumberAnimation{
             duration: 3 * taskItem.animationTime
             easing.type: Easing.OutCubic
@@ -129,8 +130,8 @@ Item{
     }
 
     Behavior on mScale {
-        enabled: root.globalDirectRender && !inMimicParabolicAnimation && !restoreAnimation.running
-        NumberAnimation { duration: root.directRenderAnimationTime }
+        enabled: !animatedBehavior.enabled
+        NumberAnimation { duration: 0 }
     }
 
     IconItem{
@@ -258,7 +259,7 @@ Item{
     }
 
     onMScaleChanged: {
-        if ((mScale === root.zoomFactor) /*&& !root.directRenderTimerIsRunning*/ && !root.globalDirectRender) {
+        if ((mScale === root.zoomFactor) && !root.globalDirectRender) {
             root.setGlobalDirectRender(true);
         }
 

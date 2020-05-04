@@ -126,6 +126,10 @@ Item {
     }
 
     function applyParabolicEffect(index, currentMousePosition, center) {
+        if (lastIndex === -1) {
+            root.setGlobalDirectRender(false);
+        }
+
         lastIndex = index;
 
         var rDistance = Math.abs(currentMousePosition  - center);

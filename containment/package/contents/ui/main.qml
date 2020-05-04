@@ -75,8 +75,6 @@ Item {
 
     property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
 
-    property int directRenderAnimationTime: 0
-
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
@@ -251,8 +249,6 @@ Item {
 
     property bool plasma515: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
     property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
-
-    property alias directRenderDelayerIsRunning: directRenderDelayerForEnteringTimer.running
 
     readonly property int minAppletLengthInConfigure: 64
     readonly property int maxJustifySplitterSize: 96
@@ -945,11 +941,6 @@ Item {
         return hex;
     }
 
-
-    function disableDirectRender(){
-        // root.globalDirectRender = false;
-    }
-
     function internalViewSplittersCount(){
         var splitters = 0;
         for (var container in layoutsContainer.startLayout.children) {
@@ -1150,15 +1141,7 @@ Item {
         checkRestoreZoom.stop();
     }
 
-    function startDirectRenderDelayerDuringEntering(){
-        directRenderDelayerForEnteringTimer.start();
-    }
-
     function setGlobalDirectRender(value) {
-        if (value === false) {
-            directRenderDelayerForEnteringTimer.stop();
-        }
-
         root.globalDirectRender = value;
     }
 
@@ -1643,21 +1626,12 @@ Item {
                 return;
             }
 
-            setGlobalDirectRender(false);
             root.clearZoom();
 
             if (root.debugModeTimers) {
                 console.log("containment timer: checkRestoreZoom called...");
             }
         }
-    }
-
-    //! Delayer in order to not activate directRendering when the mouse
-    //! enters until the timer has ended. This way we make sure that the
-    //! zoom-in animations will have ended.
-    Timer{
-        id:directRenderDelayerForEnteringTimer
-        interval: 3.2 * animations.speedFactor.current * animations.duration.small
     }
 
     //! It is used in order to slide-in the latteView on startup

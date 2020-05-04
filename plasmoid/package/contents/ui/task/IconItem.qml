@@ -666,11 +666,7 @@ Item{
             SequentialAnimation{
                 ScriptAction{
                     script: {
-                        icList.directRender = false;
-                        if(latteView) {
-                            latteView.globalDirectRender=false;
-                        }
-
+                        root.setGlobalDirectRender(false);
                         taskItem.inBlockingAnimation = true;
                         root.clearZoom();
                     }
@@ -735,10 +731,7 @@ Item{
             SequentialAnimation{
                 ScriptAction{
                     script: {
-                        icList.directRender = false;
-                        if(latteView) {
-                            latteView.globalDirectRender=false;
-                        }
+                        root.setGlobalDirectRender(false);
                     }
                 }
 

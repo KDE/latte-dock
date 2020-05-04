@@ -617,13 +617,7 @@ MouseArea{
     onEntered: {
         root.stopCheckRestoreZoomTimer();
 
-        if (restoreAnimation.running) {
-            restoreAnimation.stop();
-        }
-
-        if (!root.directRenderDelayerIsRunning) {
-            root.startDirectRenderDelayerDuringEntering();
-        }
+        restoreAnimation.stop();
 
         if ((parabolicManager.lastIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
             windowsPreviewDlg.hide(1);
@@ -666,7 +660,9 @@ MouseArea{
             root.latteView.hideTooltipLabel();
         }
 
-        root.startCheckRestoreZoomTimer();
+        if (root.zoomFactor>1){
+            root.startCheckRestoreZoomTimer();
+        }
     }
 
     //! mouseX-Y values are delayed to be updated onEntered events and at the same time
@@ -686,8 +682,6 @@ MouseArea{
 
             if (rapidMovement) {
                 root.setGlobalDirectRender(true);
-            } else if (!root.directRenderDelayerIsRunning) {
-                root.startDirectRenderDelayerDuringEntering();
             }
 
             if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender)

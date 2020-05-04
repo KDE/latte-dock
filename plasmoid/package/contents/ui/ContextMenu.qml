@@ -96,11 +96,10 @@ PlasmaComponents.ContextMenu {
             windowsPreviewDlg.hide("9.4");
         }
 
-        icList.directRender = false;
+        root.setGlobalDirectRender(false);
 
         if (root.latteView){
-            root.latteView.hideTooltipLabel();
-            root.latteView.globalDirectRender = false;
+            root.latteView.hideTooltipLabel();            
         }
     }
 

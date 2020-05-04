@@ -952,10 +952,6 @@ Item {
                 root.showTooltipLabel(appletItem, applet.title);
             }
 
-            if (!root.directRenderDelayerIsRunning) {
-                root.startDirectRenderDelayerDuringEntering();
-            }
-
             if (originalAppletBehavior || communicator.requires.parabolicEffectLocked || !canBeHovered) {
                 return;
             }
@@ -1002,8 +998,6 @@ Item {
 
             if (rapidMovement) {
                 root.setGlobalDirectRender(true);
-            } else if (!root.directRenderDelayerIsRunning) {
-                root.startDirectRenderDelayerDuringEntering();
             }
 
             if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {

@@ -66,8 +66,8 @@ Item{
 
     Behavior on nHiddenSize {
         id: directBehavior
-        enabled: !animatedBehavior.running
-        NumberAnimation { duration: root.directRenderAnimationTime }
+        enabled: !animatedBehavior.enabled
+        NumberAnimation { duration: 0 }
     }
 
     Connections{
