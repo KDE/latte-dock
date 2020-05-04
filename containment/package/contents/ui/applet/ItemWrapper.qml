@@ -814,15 +814,11 @@ Item{
     }
 
     Component.onCompleted: {
-        root.updateScale.connect(signalUpdateScale);
-
         parabolicManager.sglUpdateLowerItemScale.connect(sltUpdateLowerItemScale);
         parabolicManager.sglUpdateHigherItemScale.connect(sltUpdateHigherItemScale);
     }
 
     Component.onDestruction: {
-        root.updateScale.disconnect(signalUpdateScale);
-
         parabolicManager.sglUpdateLowerItemScale.disconnect(sltUpdateLowerItemScale);
         parabolicManager.sglUpdateHigherItemScale.disconnect(sltUpdateHigherItemScale);
     }

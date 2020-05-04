@@ -526,7 +526,6 @@ Item {
             //! Orchestrate restore zoom and previews window hiding. Both should be
             //! triggered together.
             if (containsMouse) {
-                stopCheckRestoreZoomTimer();
                 hidePreviewWinTimer.stop();
             } else {
                 hide(7.3);
@@ -601,7 +600,6 @@ Item {
 
             if (!contains) {
                 root.forcePreviewsHiding();
-                startCheckRestoreZoomTimer();
             }
         }
     }

@@ -1658,7 +1658,6 @@ Item {
     Timer{
         id:directRenderDelayerForEnteringTimer
         interval: 3.2 * animations.speedFactor.current * animations.duration.small
-        onTriggered: setGlobalDirectRender(true);
     }
 
     //! It is used in order to slide-in the latteView on startup

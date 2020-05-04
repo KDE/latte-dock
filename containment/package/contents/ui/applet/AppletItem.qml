@@ -998,7 +998,9 @@ Item {
                 return;
             }
 
-            if (parabolicManager.lastIndex>=0 && parabolicManager.lastIndex != index) {
+            var rapidMovement = parabolicManager.lastIndex>=0 && Math.abs(parabolicManager.lastIndex-index)>2;
+
+            if (rapidMovement) {
                 root.setGlobalDirectRender(true);
             } else if (!root.directRenderDelayerIsRunning) {
                 root.startDirectRenderDelayerDuringEntering();

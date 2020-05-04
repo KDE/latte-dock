@@ -53,7 +53,6 @@ MouseArea {
         if (!keepVisibility) {
             windowsPreviewDlg.visible = false;
             root.forcePreviewsHiding(14.5);
-            startCheckRestoreZoomTimer();
         }
     }
 

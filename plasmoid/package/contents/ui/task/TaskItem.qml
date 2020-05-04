@@ -404,13 +404,6 @@ MouseArea{
                 }
             }
 
-            onGlobalDirectRenderChanged:{
-                if (root.globalDirectRender && restoreAnimation.running) {
-                    // console.log("Cleat Task Scale !!!!");
-                    restoreAnimation.stop();
-                }
-            }
-
             onShowWindowsOnlyFromLaunchersChanged: {
                 if (!root.editMode) {
                     return;
@@ -689,7 +682,9 @@ MouseArea{
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
-            if (parabolicManager.lastIndex>=0 && parabolicManager.lastIndex !== itemIndex) {
+            var rapidMovement = parabolicManager.lastIndex>=0 && Math.abs(parabolicManager.lastIndex-itemIndex)>2;
+
+            if (rapidMovement) {
                 root.setGlobalDirectRender(true);
             } else if (!root.directRenderDelayerIsRunning) {
                 root.startDirectRenderDelayerDuringEntering();
@@ -865,10 +860,6 @@ MouseArea{
         }
 
         pressed = false;
-
-        if(!inAnimation) {
-            startCheckRestoreZoomTimer(3 * taskItem.animations.duration.large);
-        }
     }
 
     onWheel: {

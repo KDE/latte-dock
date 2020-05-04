@@ -35,6 +35,7 @@ SequentialAnimation{
             easing.type: Easing.InCubic
         }
     }
+
     //! debug code based on third task
     /*ScriptAction{
         script: {
