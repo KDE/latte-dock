@@ -31,7 +31,7 @@ SequentialAnimation{
             target: wrapper
             property: "mScale"
             to: 1
-            duration: 4 * taskItem.animationTime
+            duration: 3 * taskItem.animationTime
             easing.type: Easing.InCubic
         }
     }

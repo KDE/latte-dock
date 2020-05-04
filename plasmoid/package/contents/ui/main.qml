@@ -994,7 +994,7 @@ Item {
     //is not inside a Latte dock
     Timer{
         id:checkListHovered
-        interval: 10
+        interval: 90
 
         property int normalInterval: Math.max(120, 2 * (animations.speedFactor.current * 1.2 * animations.duration.small) + 50)
 

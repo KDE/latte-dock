@@ -1238,7 +1238,7 @@ Item {
         ignoreUnknownSignals : true
 
         onContainsMouseChanged: {
-            if (!latteView.visibility.containsMouse) {
+            if (!latteView.visibility.containsMouse && !checkRestoreZoom.running) {
                 startCheckRestoreZoomTimer();
             }
         }
@@ -1619,7 +1619,7 @@ Item {
     //Timer to check if the mouse is still outside the latteView in order to restore zooms to 1.0
     Timer{
         id:checkRestoreZoom
-        interval: 10
+        interval: 90
 
         onTriggered: {
             if (latteView.contextMenuIsShown) {

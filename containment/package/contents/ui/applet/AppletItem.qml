@@ -994,7 +994,7 @@ Item {
                 return;
             }
 
-            var rapidMovement = parabolicManager.lastIndex>=0 && Math.abs(parabolicManager.lastIndex-index)>2;
+            var rapidMovement = parabolicManager.lastIndex>=0 && Math.abs(parabolicManager.lastIndex-index)>1;
 
             if (rapidMovement) {
                 root.setGlobalDirectRender(true);
@@ -1090,7 +1090,7 @@ Item {
             target: wrapper
             property: "zoomScale"
             to: 1
-            duration: 4 * appletItem.animationTime
+            duration: 3 * appletItem.animationTime
             easing.type: Easing.InCubic
         }
     }

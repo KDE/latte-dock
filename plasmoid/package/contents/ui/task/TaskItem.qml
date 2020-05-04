@@ -678,7 +678,7 @@ MouseArea{
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
-            var rapidMovement = parabolicManager.lastIndex>=0 && Math.abs(parabolicManager.lastIndex-itemIndex)>2;
+            var rapidMovement = parabolicManager.lastIndex>=0 && Math.abs(parabolicManager.lastIndex-itemIndex)>1;
 
             if (rapidMovement) {
                 root.setGlobalDirectRender(true);
