@@ -19,6 +19,8 @@
 
 import QtQuick 2.7
 
+import org.kde.latte.abilities.bridge 0.1 as AbilityBridge
+
 Item{
     id: settings
 
@@ -118,14 +120,9 @@ Item{
     readonly property Item animations: appletItem.animations.publicApi
     readonly property Item metrics: appletItem.metrics.publicApi
 
-    readonly property Item parabolic: Item {
-        function clientRequestUpdateLowerItemScale(newScale, step) {
-            parabolicManager.sglUpdateLowerItemScale(index-1, newScale, step);
-        }
-
-        function clientRequestUpdateHigherItemScale(newScale, step) {
-            parabolicManager.sglUpdateHigherItemScale(index+1, newScale, step);
-        }
+    readonly property AbilityBridge.ParabolicEffect parabolic: AbilityBridge.ParabolicEffect {
+        host: parabolicManager
+        appletIndex: index
     }
 
     Connections {

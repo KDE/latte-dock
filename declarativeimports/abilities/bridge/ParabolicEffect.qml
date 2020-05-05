@@ -17,24 +17,21 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
+import QtQuick 2.7
 
 import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
-AbilityDefinition.Metrics {
-    property Item bridge: null
+Item {
+    property int appletIndex: -1
 
-    iconSize: ref.metrics.iconSize
-    maxIconSize: ref.metrics.maxIconSize
+    property Item host
+    property Item client
 
-    margin: ref.metrics.margin
-    padding: ref.metrics.padding
-    totals: ref.metrics.totals
+    function clientRequestUpdateLowerItemScale(newScale, step) {
+        host.sglUpdateLowerItemScale(appletIndex-1, newScale, step);
+    }
 
-    readonly property AbilityDefinition.Metrics local: AbilityDefinition.Metrics {}
-
-    Item {
-        id: ref
-        readonly property Item metrics: bridge ? bridge.metrics : local
+    function clientRequestUpdateHigherItemScale(newScale, step) {
+        host.sglUpdateHigherItemScale(appletIndex+1, newScale, step);
     }
 }

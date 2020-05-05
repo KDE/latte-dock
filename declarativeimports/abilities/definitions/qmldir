@@ -3,4 +3,5 @@ module org.kde.latte.abilities.definitions
 Animations 0.1 Animations.qml
 AppletRequirements 0.1 AppletRequirements.qml
 Metrics 0.1 Metrics.qml
+ParabolicEffect 0.1 ParabolicEffect.qml
 

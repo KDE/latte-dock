@@ -22,23 +22,27 @@ import QtQuick 2.7
 import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
 AbilityDefinition.Animations {
-    id: apis
     property Item bridge: null
 
-    active: bridge ? bridge.animations.active : local.active
-    hasThicknessAnimation: bridge ? bridge.animations.hasThicknessAnimation : local.hasThicknessAnimation
+    active: ref.animations.active
+    hasThicknessAnimation: ref.animations.hasThicknessAnimation
 
     //! animations tracking
-    needBothAxis: bridge ? bridge.animations.needBothAxis : local.needBothAxis
-    needLength: bridge ? bridge.animations.needLength : local.needLength
-    needThickness: bridge ? bridge.animations.needThickness : local.needThickness
+    needBothAxis: ref.animations.needBothAxis
+    needLength: ref.animations.needLength
+    needThickness: ref.animations.needThickness
 
     //! animations properties
-    duration: bridge ? bridge.animations.duration : local.duration
-    speedFactor: bridge ? bridge.animations.speedFactor : local.speedFactor
+    duration: ref.animations.duration
+    speedFactor: ref.animations.speedFactor
 
     //! parabolic effect animations
-    hoverPixelSensitivity: bridge ? bridge.animations.hoverPixelSensitivity : local.hoverPixelSensitivity
+    hoverPixelSensitivity: ref.animations.hoverPixelSensitivity
 
     readonly property AbilityDefinition.Animations local: AbilityDefinition.Animations{}
+
+    Item {
+        id: ref
+        readonly property Item animations: bridge ? bridge.animations : local
+    }
 }

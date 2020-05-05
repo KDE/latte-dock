@@ -21,20 +21,10 @@ import QtQuick 2.0
 
 import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
-AbilityDefinition.Metrics {
-    property Item bridge: null
+AbilityDefinition.ParabolicEffect {
+    id: apis
 
-    iconSize: ref.metrics.iconSize
-    maxIconSize: ref.metrics.maxIconSize
-
-    margin: ref.metrics.margin
-    padding: ref.metrics.padding
-    totals: ref.metrics.totals
-
-    readonly property AbilityDefinition.Metrics local: AbilityDefinition.Metrics {}
-
-    Item {
-        id: ref
-        readonly property Item metrics: bridge ? bridge.metrics : local
+    readonly property Item publicApi: Item {
+        readonly property alias factor: apis.factor
     }
 }

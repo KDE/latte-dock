@@ -1,5 +1,5 @@
 /*
-*  Copyright 2020 Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -19,22 +19,8 @@
 
 import QtQuick 2.0
 
-import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
+import "./paraboliceffect" as ParabolicEffectTypes
 
-AbilityDefinition.Metrics {
-    property Item bridge: null
-
-    iconSize: ref.metrics.iconSize
-    maxIconSize: ref.metrics.maxIconSize
-
-    margin: ref.metrics.margin
-    padding: ref.metrics.padding
-    totals: ref.metrics.totals
-
-    readonly property AbilityDefinition.Metrics local: AbilityDefinition.Metrics {}
-
-    Item {
-        id: ref
-        readonly property Item metrics: bridge ? bridge.metrics : local
-    }
+Item {
+    property ParabolicEffectTypes.Factor factor: ParabolicEffectTypes.Factor{}
 }

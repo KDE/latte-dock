@@ -51,9 +51,15 @@ Item{
     property Item appletImageItem; //first applet's ImageItem to be used by Latte
     //! END OF PROPERTIES
 
-    //! BEGIN OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
-    readonly property Item requires: AbilityDefinition.AppletRequirements{}
+    //! BEGIN OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS   
+    readonly property Item requires: AbilityDefinition.AppletRequirements{}    
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
+
+    //! BEGIN OF ABILITIES SUPPORT
+    readonly property bool parabolicEffectIsSupported: bridge && bridge.parabolic.client
+
+    readonly property Item bridge: bridgeLoader.active ? bridgeLoader.item : null
+    //! END OF ABILITIES SUPPORT
 
     //! BEGIN OF FUNCTIONS
     function appletIconItemIsShown() {

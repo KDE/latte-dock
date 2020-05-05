@@ -21,20 +21,35 @@ import QtQuick 2.0
 
 import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
-AbilityDefinition.Metrics {
+AbilityDefinition.ParabolicEffect {
+    id: parabolic
     property Item bridge: null
+    readonly property bool isActive: bridge !== null
 
-    iconSize: ref.metrics.iconSize
-    maxIconSize: ref.metrics.maxIconSize
+    factor: ref.parabolic.factor
 
-    margin: ref.metrics.margin
-    padding: ref.metrics.padding
-    totals: ref.metrics.totals
-
-    readonly property AbilityDefinition.Metrics local: AbilityDefinition.Metrics {}
+    readonly property AbilityDefinition.ParabolicEffect local: AbilityDefinition.ParabolicEffect {}
 
     Item {
         id: ref
-        readonly property Item metrics: bridge ? bridge.metrics : local
+        readonly property Item parabolic: bridge ? bridge.parabolic.host : local
+    }
+
+    onIsActiveChanged: {
+        if (isActive) {
+            bridge.parabolic.client = parabolic;
+        }
+    }
+
+    Component.onCompleted: {
+        if (isActive) {
+            bridge.parabolic.client = parabolic;
+        }
+    }
+
+    Component.onDestruction: {
+        if (isActive) {
+            bridge.parabolic.client = null;
+        }
     }
 }

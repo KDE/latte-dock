@@ -761,8 +761,8 @@ Item{
 
     function sltUpdateLowerItemScale(delegateIndex, newScale, step) {
         if (delegateIndex === appletItem.index) {
-            if (appletItem.isLattePlasmoid) {
-                appletItem.latteApplet.parabolicManager.hostRequestUpdateLowerItemScale(newScale, step);
+            if (communicator.parabolicEffectIsSupported) {
+                communicator.bridge.parabolic.client.hostRequestUpdateLowerItemScale(newScale, step);
                 return;
             }
 
@@ -788,8 +788,8 @@ Item{
 
     function sltUpdateHigherItemScale(delegateIndex, newScale, step) {
         if (delegateIndex === appletItem.index) {          
-            if (appletItem.isLattePlasmoid) {
-                appletItem.latteApplet.parabolicManager.hostRequestUpdateHigherItemScale(newScale, step);
+            if (communicator.parabolicEffectIsSupported) {
+                communicator.bridge.parabolic.client.hostRequestUpdateHigherItemScale(newScale, step);
                 return;
             }
 

@@ -2,3 +2,4 @@ module org.kde.latte.abilities.containers
 
 Animations 0.1 Animations.qml
 Metrics 0.1 Metrics.qml
+ParabolicEffect 0.1 ParabolicEffect.qml

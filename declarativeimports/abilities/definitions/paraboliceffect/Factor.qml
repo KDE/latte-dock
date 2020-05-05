@@ -17,24 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
+import QtQuick 2.7
 
-import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
-
-AbilityDefinition.Metrics {
-    property Item bridge: null
-
-    iconSize: ref.metrics.iconSize
-    maxIconSize: ref.metrics.maxIconSize
-
-    margin: ref.metrics.margin
-    padding: ref.metrics.padding
-    totals: ref.metrics.totals
-
-    readonly property AbilityDefinition.Metrics local: AbilityDefinition.Metrics {}
-
-    Item {
-        id: ref
-        readonly property Item metrics: bridge ? bridge.metrics : local
-    }
+Item {
+    property real zoom: 1.6
 }
