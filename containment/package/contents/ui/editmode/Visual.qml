@@ -225,6 +225,7 @@ Item{
     Applet.TitleTooltipParent {
         id: titleTooltipParent
         metrics: root.metrics
+        parabolic: root.parabolic
         minimumThickness: visibilityManager.thicknessEditMode
         maximumThickness: root.inConfigureAppletsMode ? visibilityManager.thicknessEditMode : 9999
     }

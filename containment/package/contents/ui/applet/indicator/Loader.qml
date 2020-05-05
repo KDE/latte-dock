@@ -64,7 +64,7 @@ Loader {
         }
     }
 
-    readonly property bool locked: appletItem.lockZoom || root.zoomFactor === 1
+    readonly property bool locked: appletItem.lockZoom || appletItem.parabolic.factor.zoom === 1
 
     property real visualLockedWidth: appletItem.metrics.iconSize + appletItem.internalWidthMargins
     property real visualLockedHeight: appletItem.metrics.iconSize + appletItem.internalHeightMargins

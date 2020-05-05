@@ -22,10 +22,11 @@ import QtQuick 2.7
 import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
 Item {
+    id: parabolicBridge
     property int appletIndex: -1
 
-    property Item host
-    property Item client
+    property Item host: null
+    property Item client: null
 
     function clientRequestUpdateLowerItemScale(newScale, step) {
         host.sglUpdateLowerItemScale(appletIndex-1, newScale, step);
@@ -33,5 +34,23 @@ Item {
 
     function clientRequestUpdateHigherItemScale(newScale, step) {
         host.sglUpdateHigherItemScale(appletIndex+1, newScale, step);
+    }
+
+    Connections {
+        target: client ? client : null
+        onSglClearZoom: {
+            if (parabolicBridge.host) {
+                parabolicBridge.host.sglClearZoom();
+            }
+        }
+    }
+
+    Connections {
+        target: host ? host : null
+        onSglClearZoom: {
+            if (parabolicBridge.client) {
+                parabolicBridge.client.sglClearZoom();
+            }
+        }
     }
 }

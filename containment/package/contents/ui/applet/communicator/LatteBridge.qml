@@ -104,7 +104,7 @@ Item{
     //   USE CASE: it can be used from applets that want to be informed what is the maximum
     //       zoom factor currently used
     // @since: 0.9
-    readonly property real maxZoomFactor: root.zoomFactor
+    readonly property real maxZoomFactor: appletItem.parabolic.factor.zoom
 
     // NAME: windowsTracker
     //   USAGE: read-only
@@ -121,7 +121,7 @@ Item{
     readonly property Item metrics: appletItem.metrics.publicApi
 
     readonly property AbilityBridge.ParabolicEffect parabolic: AbilityBridge.ParabolicEffect {
-        host: parabolicManager
+        host: appletItem.parabolic.publicApi
         appletIndex: index
     }
 

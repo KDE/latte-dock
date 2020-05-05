@@ -50,7 +50,6 @@ Item {
     LayoutMirroring.childrenInherit: true
 
     //// BEGIN SIGNALS
-    signal clearZoomSignal();
     signal destroyInternalViewSplitters();
     signal emptyAreasWheel(QtObject wheel);
     signal separatorsUpdated();
@@ -58,7 +57,6 @@ Item {
     signal signalNewInstanceForEntryAtIndex(int entryIndex);
     signal updateEffectsArea();
     signal updateIndexes();
-    signal updateScale(int delegateIndex, real newScale, real step);
 
     signal broadcastedToApplet(string pluginName, string action, variant value);
     //// END SIGNALS
@@ -72,8 +70,6 @@ Item {
     property bool debugModeOverloadedIcons: Qt.application.arguments.indexOf("--overloaded-icons")>=0
 
     readonly property int version: LatteCore.Environment.makeVersion(0,9,4)
-
-    property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
 
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
@@ -97,7 +93,7 @@ Item {
         var staticLayout = (plasmoid.configuration.minLength === plasmoid.configuration.maxLength);
 
         return (visibilityManager.panelIsBiggerFromIconSize
-                && (maxZoomFactor === 1.0)
+                && (parabolic.factor.maxZoom === 1.0)
                 && (plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout)
                 && !root.editMode
                 && !visibilityManager.inLocationAnimation);
@@ -109,7 +105,7 @@ Item {
         if ((plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout)
                 && (plasmoid.configuration.useThemePanel)
                 && (plasmoid.configuration.panelSize === 100)
-                && (maxZoomFactor === 1.0)) {
+                && (parabolic.factor.maxZoom === 1.0)) {
             return LatteCore.Types.PanelView;
         }
 
@@ -215,7 +211,7 @@ Item {
                                                            true : false
 
     readonly property bool inConfigureAppletsMode: root.editMode && (plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive)
-    readonly property bool parabolicEffectEnabled: zoomFactor>1 && !inConfigureAppletsMode
+    readonly property bool parabolicEffectEnabled: parabolic.factor.zoom>1 && !inConfigureAppletsMode
 
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
     property bool closeActiveWindowEnabled: plasmoid.configuration.closeActiveWindowEnabled
@@ -395,8 +391,6 @@ Item {
 
     property int panelUserSetAlignment: plasmoid.configuration.alignment
 
-    property real zoomFactor: LatteCore.WindowSystem.compositingActive && animations.active ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
-
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
     property var badgesForActivate: {
@@ -419,6 +413,7 @@ Item {
     readonly property alias autosize: _autosize
     readonly property alias indicatorsManager: indicators
     readonly property alias metrics: _metrics
+    readonly property alias parabolic: _parabolic
     readonly property alias parabolicManager: _parabolicManager
 
     readonly property alias maskManager: visibilityManager
@@ -457,10 +452,7 @@ Item {
 
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
-    property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
-
-
-    property real maxZoomFactor: Math.max(zoomFactor, _appletsRecords.maxInnerZoomFactor)
+    property int tasksCount: latteApplet ? latteApplet.tasksCount : 0  
 
     property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
@@ -1133,18 +1125,6 @@ Item {
         }
     }
 
-    function startCheckRestoreZoomTimer(){
-        checkRestoreZoom.start();
-    }
-
-    function stopCheckRestoreZoomTimer(){
-        checkRestoreZoom.stop();
-    }
-
-    function setGlobalDirectRender(value) {
-        root.globalDirectRender = value;
-    }
-
     function updateContainsOnlyPlasmaTasks() {
         if (latteView) {
             root.containsOnlyPlasmaTasks = (latteView.tasksPresent() && !latteApplet);
@@ -1233,25 +1213,6 @@ Item {
         }
     }
 
-    Connections{
-        target: latteView && latteView.visibility ? latteView.visibility : root
-        ignoreUnknownSignals : true
-        onContainsMouseChanged: {
-            if (!latteView.visibility.containsMouse && !checkRestoreZoom.running) {
-                startCheckRestoreZoomTimer();
-            }
-        }
-    }
-
-    Connections {
-        target: latteView
-        onContextMenuIsShownChanged: {
-            if (!latteView.contextMenuIsShown) {
-                root.startCheckRestoreZoomTimer();
-            }
-        }
-    }
-
     ////END interfaces
 
     /////BEGIN: Title Tooltip///////////
@@ -1286,11 +1247,11 @@ Item {
 
 
         Component.onCompleted: {
-            root.clearZoomSignal.connect(titleTooltipDialog.hide);
+            parabolic.sglClearZoom.connect(titleTooltipDialog.hide);
         }
 
         Component.onDestruction: {
-            root.clearZoomSignal.disconnect(titleTooltipDialog.hide);
+            parabolic.sglClearZoom.disconnect(titleTooltipDialog.hide);
         }
 
         function hide(debug){
@@ -1386,6 +1347,7 @@ Item {
             animations: _animations
             appletsRecords: _appletsRecords
             metrics: _metrics
+            parabolic: _parabolic
         }
     }
 
@@ -1614,6 +1576,12 @@ Item {
         indicators: indicatorsManager
     }
 
+    Ability.ParabolicEffect {
+        id: _parabolic
+        animations: _animations
+        view: latteView
+    }
+
     LatteApp.Interfaces {
         id: _interfaces
         plasmoidInterface: plasmoid
@@ -1622,25 +1590,6 @@ Item {
     ///////////////END ABILITIES
 
     ///////////////BEGIN TIMER elements
-
-
-    //Timer to check if the mouse is still outside the latteView in order to restore zooms to 1.0
-    Timer{
-        id:checkRestoreZoom
-        interval: 90
-
-        onTriggered: {
-            if (latteView.contextMenuIsShown) {
-                return;
-            }
-
-            root.clearZoom();
-
-            if (root.debugModeTimers) {
-                console.log("containment timer: checkRestoreZoom called...");
-            }
-        }
-    }
 
     //! It is used in order to slide-in the latteView on startup
     Timer{

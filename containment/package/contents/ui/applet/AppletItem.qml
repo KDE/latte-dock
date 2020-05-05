@@ -146,9 +146,9 @@ Item {
                                           || (index === layoutsContainer.endLayout.lastVisibleIndex))
 
     readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.requires.parabolicEffectLocked
-    readonly property bool originalAppletBehavior: (root.zoomFactor === 1 && !lockZoom /*hacky flag to keep Latte behavior*/)
-                                                   || (root.zoomFactor>1 && !canBeHovered)
-                                                   || (root.zoomFactor>1 && canBeHovered && lockZoom)
+    readonly property bool originalAppletBehavior: (appletItem.parabolic.factor.zoom === 1 && !lockZoom /*hacky flag to keep Latte behavior*/)
+                                                   || (appletItem.parabolic.factor.zoom>1 && !canBeHovered)
+                                                   || (appletItem.parabolic.factor.zoom>1 && canBeHovered && lockZoom)
 
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
     readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported
@@ -165,7 +165,7 @@ Item {
     property int status: applet ? applet.status : -1
 
     //! local margins
-    readonly property bool parabolicEffectMarginsEnabled: root.zoomFactor>1 && !originalAppletBehavior
+    readonly property bool parabolicEffectMarginsEnabled: appletItem.parabolic.factor.zoom>1 && !originalAppletBehavior
 
     property int lengthAppletPadding: metrics.fraction.lengthAppletPadding === -1 || parabolicEffectMarginsEnabled ?
                                           metrics.padding.length : metrics.padding.lengthApplet
@@ -225,6 +225,7 @@ Item {
     property Item animations: null
     property Item appletsRecords: null
     property Item metrics: null
+    property Item parabolic: null
 
     property bool containsMouse: appletMouseArea.containsMouse || (isLattePlasmoid && latteApplet.containsMouse)
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
@@ -381,11 +382,12 @@ Item {
     //this functions gets the signal from the plasmoid, it can be used for signal items
     //outside the LatteApplet Plasmoid
     //property int debCounter: 0;
-    function clearZoom(){
-        restoreAnimation.start();
 
-        if (latteApplet) {
-            latteApplet.clearZoom();
+    function sltClearZoom(){
+        if (communicator.parabolicEffectIsSupported) {
+            communicator.bridge.parabolic.client.sglClearZoom();
+        } else {
+            restoreAnimation.start();
         }
     }
 
@@ -506,7 +508,6 @@ Item {
             appletItem.latteApplet.forceHidePanel = true;
 
             appletItem.latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
-            appletItem.latteApplet.clearZoomSignal.connect(titleTooltipDialog.hide);
         }
     }
 
@@ -515,8 +516,9 @@ Item {
     Component.onCompleted: {
         checkIndex();
         root.updateIndexes.connect(checkIndex);
-        root.clearZoomSignal.connect(clearZoom);
         root.destroyInternalViewSplitters.connect(slotDestroyInternalViewSplitters);
+
+        parabolic.sglClearZoom.connect(sltClearZoom);
     }
 
     Component.onDestruction: {
@@ -538,12 +540,12 @@ Item {
         }
 
         root.updateIndexes.disconnect(checkIndex);
-        root.clearZoomSignal.disconnect(clearZoom);
         root.destroyInternalViewSplitters.disconnect(slotDestroyInternalViewSplitters);
+
+        parabolic.sglClearZoom.disconnect(sltClearZoom);
 
         if (appletItem.latteApplet) {
             appletItem.latteApplet.signalPreviewsShown.disconnect(slotPreviewsShown);
-            appletItem.latteApplet.clearZoomSignal.disconnect(titleTooltipDialog.hide);
         }
     }
 
@@ -630,7 +632,6 @@ Item {
             }
         }
     }
-
     ///END connections
 
     //! It is used for any communication needed with the underlying applet
@@ -736,6 +737,7 @@ Item {
                 TitleTooltipParent{
                     id: titleTooltipParent
                     metrics: appletItem.metrics
+                    parabolic: appletItem.parabolic
                 }
             }
 
@@ -941,8 +943,8 @@ Item {
 
         property bool blockWheel: false
 
-        onEntered: {            
-            root.stopCheckRestoreZoomTimer();
+        onEntered: {
+            appletItem.parabolic.stopRestoreZoomTimer();
 
             if (restoreAnimation.running) {
                 restoreAnimation.stop();
@@ -978,8 +980,8 @@ Item {
 
             root.hideTooltipLabel();
 
-            if (root.zoomFactor>1){
-                root.startCheckRestoreZoomTimer();
+            if (appletItem.parabolic.factor.zoom>1){
+                appletItem.parabolic.startRestoreZoomTimer();
             }
         }
 
@@ -994,13 +996,13 @@ Item {
                 return;
             }
 
-            var rapidMovement = parabolicManager.lastIndex>=0 && Math.abs(parabolicManager.lastIndex-index)>1;
+            var rapidMovement = appletItem.parabolic.lastIndex>=0 && Math.abs(appletItem.parabolic.lastIndex-index)>1;
 
             if (rapidMovement) {
-                root.setGlobalDirectRender(true);
+                parabolic.setDirectRenderingEnabled(true);
             }
 
-            if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
+            if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === appletItem.parabolic.factor.zoom) && !parabolic.directRenderingEnabled) || parabolic.directRenderingEnabled) {
                 if (root.isHorizontal){
                     var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
                     if (step >= appletItem.animations.hoverPixelSensitivity){

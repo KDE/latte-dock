@@ -258,8 +258,8 @@ Item{
     }
 
     onZoomScaleChanged: {
-        if ((zoomScale === root.zoomFactor) && !root.globalDirectRender) {
-            root.setGlobalDirectRender(true);
+        if ((zoomScale === appletItem.parabolic.factor.zoom) && !appletItem.parabolic.directRenderingEnabled) {
+            appletItem.parabolic.setDirectRenderingEnabled(true);
         }
 
         if ((zoomScale > 1) && !appletItem.isZoomed) {
@@ -710,7 +710,8 @@ Item{
     }
 
     Behavior on zoomScale {
-        enabled: !root.globalDirectRender
+        id: animatedScaleBehavior
+        enabled: !appletItem.parabolic.directRenderingEnabled || restoreAnimation.running
         NumberAnimation {
             duration: 3 * appletItem.animationTime
             easing.type: Easing.OutCubic
@@ -718,17 +719,17 @@ Item{
     }
 
     Behavior on zoomScale {
-        enabled: root.globalDirectRender && !restoreAnimation.running
-        NumberAnimation { duration: root.directRenderAnimationTime }
+        enabled: !animatedScaleBehavior.enabled
+        NumberAnimation { duration: 0 }
     }
 
     function calculateScales( currentMousePosition ){
-        if (root.zoomFactor===1) {
+        if (parabolic.factor.zoom===1) {
             return;
         }
 
-        //use the new parabolicManager in order to handle all parabolic effect messages
-        var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
+        //use the new parabolic effect manager in order to handle all parabolic effect messages
+        var scales = parabolic.applyParabolicEffect(index, currentMousePosition, center);
 
         //Left hiddenSpacer
         if(appletItem.firstAppletInContainer){
@@ -740,7 +741,7 @@ Item{
             hiddenSpacerRight.nScale =  scales.rightScale - 1;
         }
 
-        zoomScale = root.zoomFactor;
+        zoomScale = parabolic.factor.zoom;
     } //scale
 
 
@@ -771,15 +772,15 @@ Item{
                 signalUpdateScale(delegateIndex, newScale, step);
 
                 if (newScale > 1) { // clear lower items
-                    parabolicManager.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
+                    parabolic.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
                 }
             } else {
-                parabolicManager.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
+                parabolic.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
             }
         } else if ((newScale === 1) && (appletItem.index < delegateIndex)) {
             //! apply zoom clearing
-            if (appletItem.isLattePlasmoid) {
-                appletItem.latteApplet.parabolicManager.hostRequestUpdateLowerItemScale(1, step);
+            if (communicator.parabolicEffectIsSupported) {
+                communicator.bridge.parabolic.client.hostRequestUpdateLowerItemScale(1, step);
             } else {
                 signalUpdateScale(appletItem.index, 1, 0);
             }
@@ -798,15 +799,15 @@ Item{
                 signalUpdateScale(delegateIndex, newScale, step);
 
                 if (newScale > 1) { // clear higher items
-                    parabolicManager.sglUpdateHigherItemScale(delegateIndex+1, 1, 0);
+                    parabolic.sglUpdateHigherItemScale(delegateIndex+1, 1, 0);
                 }
             } else {
-                parabolicManager.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
+                parabolic.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
             }
         } else if ((newScale === 1) && (appletItem.index > delegateIndex)) {
             //! apply zoom clearing
-            if (appletItem.isLattePlasmoid) {
-                appletItem.latteApplet.parabolicManager.hostRequestUpdateHigherItemScale(1, step);
+            if (communicator.parabolicEffectIsSupported) {
+                communicator.bridge.parabolic.client.hostRequestUpdateHigherItemScale(1, step);
             } else {
                 signalUpdateScale(appletItem.index, 1, 0);
             }
@@ -814,12 +815,12 @@ Item{
     }
 
     Component.onCompleted: {
-        parabolicManager.sglUpdateLowerItemScale.connect(sltUpdateLowerItemScale);
-        parabolicManager.sglUpdateHigherItemScale.connect(sltUpdateHigherItemScale);
+        parabolic.sglUpdateLowerItemScale.connect(sltUpdateLowerItemScale);
+        parabolic.sglUpdateHigherItemScale.connect(sltUpdateHigherItemScale);
     }
 
     Component.onDestruction: {
-        parabolicManager.sglUpdateLowerItemScale.disconnect(sltUpdateLowerItemScale);
-        parabolicManager.sglUpdateHigherItemScale.disconnect(sltUpdateHigherItemScale);
+        parabolic.sglUpdateLowerItemScale.disconnect(sltUpdateLowerItemScale);
+        parabolic.sglUpdateHigherItemScale.disconnect(sltUpdateHigherItemScale);
     }
 }// Main task area // id:wrapper

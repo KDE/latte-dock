@@ -23,4 +23,8 @@ import "./paraboliceffect" as ParabolicEffectTypes
 
 Item {
     property ParabolicEffectTypes.Factor factor: ParabolicEffectTypes.Factor{}
+
+    signal sglClearZoom();
+    signal sglUpdateLowerItemScale(int delegateIndex, real newScale, real step);
+    signal sglUpdateHigherItemScale(int delegateIndex, real newScale, real step);
 }

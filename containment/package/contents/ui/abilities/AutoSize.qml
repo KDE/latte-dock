@@ -167,10 +167,10 @@ Item {
 
             var itemLength = metrics.totals.length;
 
-            var toShrinkLimit = maxLength - (root.zoomFactor * itemLength);
+            var toShrinkLimit = maxLength - (parabolic.factor.zoom * itemLength);
             //! to grow limit must be a little less than the shrink one in order to be more robust and
             //! not create endless loops from early calculations
-            var toGrowLimit = maxLength - (1.2 * root.zoomFactor * itemLength);
+            var toGrowLimit = maxLength - (1.2 * parabolic.factor.zoom * itemLength);
 
             //console.log("toShrinkLimit: "+ toShrinkLimit);
             //console.log("toGrowLimit: "+ toGrowLimit);

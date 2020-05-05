@@ -396,7 +396,7 @@ Window{
             }
 
             Text{
-                text: root.zoomFactor
+                text: parabolic.factor.zoom
             }
 
             Text{

@@ -83,18 +83,18 @@ Item{
     }
 
     property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
-    property int thicknessMid: finalScreenEdgeMargin + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.totals.thickness+extraThickMask) //needed in some animations
+    property int thicknessMid: finalScreenEdgeMargin + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.totals.thickness+extraThickMask) //needed in some animations
     property int thicknessNormal: finalScreenEdgeMargin + Math.max(metrics.totals.thickness + extraThickMask + 1, root.realPanelSize + root.panelShadow)
 
-    property int thicknessZoom: finalScreenEdgeMargin + ((metrics.totals.thickness+extraThickMask) * root.maxZoomFactor) + 2
+    property int thicknessZoom: finalScreenEdgeMargin + ((metrics.totals.thickness+extraThickMask) * parabolic.factor.maxZoom) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: finalScreenEdgeMargin + Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (root.maxZoomFactor-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
+    property int thicknessMidOriginal: finalScreenEdgeMargin + Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
     property int thicknessNormalOriginal: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
     /*property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
                                                thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow*/
 
     property int thicknessNormalOriginalValue: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraThickMask + 1
-    property int thicknessZoomOriginal: finalScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * root.maxZoomFactor) + extraThickMask + 2,
+    property int thicknessZoomOriginal: finalScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraThickMask + 2,
                                                                          root.realPanelSize + root.panelShadow,
                                                                          (LatteCore.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
 
@@ -315,7 +315,7 @@ Item{
             if (LatteCore.WindowSystem.compositingActive
                     && root.editMode
                     && editModeVisual.editAnimationEnded
-                    && (animations.needBothAxis.count === 0 || root.zoomFactor===1) ) {
+                    && (animations.needBothAxis.count === 0 || parabolic.factor.maxZoom===1) ) {
                 return true;
             } else {
                 return false;
@@ -370,7 +370,7 @@ Item{
             if (LatteCore.WindowSystem.compositingActive && latteView && latteView.layout && latteView.layout.name === layoutName) {
                 manager.inTempHiding = true;
                 manager.inForceHiding = true;
-                root.clearZoom();
+                parabolic.sglClearZoom();
                 manager.slotMustBeHide();
             }
         }

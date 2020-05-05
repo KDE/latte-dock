@@ -60,7 +60,7 @@ Item{
 
     Behavior on nHiddenSize {
         id: animatedBehavior
-        enabled: !root.globalDirectRender || restoreAnimation.running
+        enabled: !appletItem.parabolic.directRenderingEnabled || restoreAnimation.running
         NumberAnimation { duration: 3 * appletItem.animationTime }
     }
 
