@@ -27,6 +27,8 @@ AbilityDefinition.ParabolicEffect {
     readonly property bool isActive: bridge !== null
 
     factor: ref.parabolic.factor
+    directRenderingEnabled: ref.parabolic.directRenderingEnabled
+    lastIndex: local.lastIndex /*special property that needs to remain the same*/
 
     readonly property AbilityDefinition.ParabolicEffect local: AbilityDefinition.ParabolicEffect {}
 

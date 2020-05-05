@@ -1579,6 +1579,7 @@ Item {
     Ability.ParabolicEffect {
         id: _parabolic
         animations: _animations
+        appletsRecords: _appletsRecords
         view: latteView
     }
 

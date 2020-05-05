@@ -31,19 +31,12 @@ ContainerAbility.ParabolicEffect {
 
     property Item animations: null
     property Item appletsRecords: null
-    property Item view: null
+    property QtObject view: null
 
     factor.zoom: LatteCore.WindowSystem.compositingActive && animations.active ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
     factor.maxZoom: Math.max(factor.zoom, appletsRecords.maxInnerZoomFactor)
 
     readonly property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
-    readonly property bool directRenderingEnabled: _privates.directRenderingEnabled
-    readonly property int lastIndex: _privates.lastIndex
-
-    readonly property Item _privates: Item {
-        property bool directRenderingEnabled: false
-        property int lastIndex: -1
-    }
 
     Connections {
         target: parabolic

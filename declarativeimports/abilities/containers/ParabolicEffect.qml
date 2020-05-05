@@ -25,6 +25,18 @@ AbilityDefinition.ParabolicEffect {
     id: apis
 
     readonly property Item publicApi: Item {
+        readonly property alias directRenderingEnabled: apis.directRenderingEnabled
         readonly property alias factor: apis.factor
+        readonly property alias lastIndex: apis.lastIndex
+
+        signal sglClearZoom();
+    }
+
+    Component.onCompleted: {
+        apis.sglClearZoom.connect(publicApi.sglClearZoom)
+    }
+
+    Component.onDestruction: {
+        apis.sglClearZoom.disconnect(publicApi.sglClearZoom)
     }
 }
