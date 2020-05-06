@@ -52,7 +52,7 @@ Item{
     //! END OF PROPERTIES
 
     //! BEGIN OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS   
-    readonly property Item requires: AbilityDefinition.AppletRequirements{}    
+    readonly property Item requires: AbilityDefinition.AppletRequirements{}
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
 
     //! BEGIN OF ABILITIES SUPPORT
@@ -80,18 +80,6 @@ Item{
         }
     }
     //! END OF FUNCTIONS
-
-    Connections {
-        target: requires
-
-        onInnerZoomFactorChanged: {
-            appletItem.appletsRecords.setInnerZoomFactor(appletItem, requires.innerZoomFactor);
-        }
-
-        onWindowsTrackingEnabledChanged: {
-            appletItem.appletsRecords.setWindowsTrackingEnabled(appletItem, requires.windowsTrackingEnabled);
-        }
-    }
 
     //! BEGIN OF CONNECTIONS
     Connections{

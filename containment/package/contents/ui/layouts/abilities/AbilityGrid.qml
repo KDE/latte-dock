@@ -25,7 +25,6 @@ AbilityGridPrivate {
     id: grid
 
     ability.parabolic.restoreZoomIsBlocked: {
-        var cnts = 0;
 
         for (var i=0; i<grid.children.length; ++i){
             var appletItem = grid.children[i];
@@ -37,5 +36,31 @@ AbilityGridPrivate {
         }
 
         return false;
+    }
+
+    ability.require.windowsTrackingCount: {
+        var cnts = 0;
+
+        for (var i=0; i<grid.children.length; ++i){
+            var appletItem = grid.children[i];
+            if (appletItem && appletItem.communicator.requires.windowsTrackingEnabled) {
+                cnts = cnts + 1;
+            }
+        }
+
+        return cnts;
+    }
+
+    ability.require.maxInnerZoomFactor: {
+        var max = 1.0;
+
+        for (var i=0; i<grid.children.length; ++i){
+            var appletItem = grid.children[i];
+            if (appletItem && appletItem.communicator.requires.innerZoomFactor > max) {
+                max = appletItem.communicator.requires.innerZoomFactor;
+            }
+        }
+
+        return max;
     }
 }

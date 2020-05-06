@@ -20,6 +20,6 @@
 import QtQuick 2.7
 
 Item {
-    readonly property ParabolicEffect parabolic: ParabolicEffect{}
-    readonly property Requirements require: Requirements{}
+    property int windowsTrackingCount: 0 //! number of applets requesting windows tracking
+    property real maxInnerZoomFactor: 1.0 //! maximum inner zoom factor based on all applets
 }

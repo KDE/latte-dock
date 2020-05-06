@@ -30,8 +30,7 @@ ContainerAbility.ParabolicEffect {
     id: parabolic
 
     property Item animations: null
-    property Item appletsRecords: null
-    property Item layouts: null
+    property Item applets: null
     property QtObject view: null
 
     readonly property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal

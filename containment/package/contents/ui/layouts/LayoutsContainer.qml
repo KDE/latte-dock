@@ -48,7 +48,7 @@ Item{
     readonly property alias mainLayout: _mainLayout
     readonly property alias endLayout: _endLayout
 
-    readonly property AbilitiesTypes.AbilityLayouts ability: AbilitiesTypes.AbilityLayouts{
+    readonly property AbilitiesTypes.AbilityLayouts applets: AbilitiesTypes.AbilityLayouts{
         startLayout: _startLayout
         mainLayout: _mainLayout
         endLayout: _endLayout

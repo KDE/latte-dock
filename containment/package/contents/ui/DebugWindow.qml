@@ -786,7 +786,7 @@ Window{
             }
 
             Text{
-                text: appletsRecords.windowsTrackingCount
+                text: layoutsContainer.applets.require.windowsTrackingCount
             }
 
             Text{

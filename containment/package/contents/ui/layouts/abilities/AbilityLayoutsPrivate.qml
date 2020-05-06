@@ -29,4 +29,5 @@ Item {
     property Item endLayout: null
 
     readonly property AbilityTypes.ParabolicEffect parabolic: AbilityTypes.ParabolicEffect{}
+    readonly property AbilityTypes.Requirements require: AbilityTypes.Requirements{}
 }

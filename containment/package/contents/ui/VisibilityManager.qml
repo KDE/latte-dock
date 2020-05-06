@@ -131,6 +131,8 @@ Item{
         return 0;
     }
 
+    property Item applets: null
+
     Binding{
         target: latteView
         property:"maxThickness"
@@ -347,7 +349,7 @@ Item{
                 && !(latteView.visibility.mode === LatteCore.Types.AlwaysVisible /* Visibility */
                      || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow
                      || latteView.visibility.mode === LatteCore.Types.AutoHide))
-               || appletsRecords.windowsTrackingCount > 0                    /*Applets Need Windows Tracking */
+               || applets.require.windowsTrackingCount > 0                   /*Applets Need Windows Tracking */
                || root.dragActiveWindowEnabled                               /*Dragging Active Window(Empty Areas)*/
                || ((root.backgroundOnlyOnMaximized                           /*Dynamic Background */
                     || plasmoid.configuration.solidBackgroundForMaximized

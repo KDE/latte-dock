@@ -409,7 +409,6 @@ Item {
     property Item latteApplet
 
     readonly property alias animations: _animations
-    readonly property alias appletsRecords: _appletsRecords
     readonly property alias autosize: _autosize
     readonly property alias indicatorsManager: indicators
     readonly property alias metrics: _metrics
@@ -1345,7 +1344,6 @@ Item {
         id: appletContainerComponent
         Applet.AppletItem{
             animations: _animations
-            appletsRecords: _appletsRecords
             metrics: _metrics
             parabolic: _parabolic
         }
@@ -1424,7 +1422,10 @@ Item {
         }
     }
 
-    VisibilityManager{ id: visibilityManager }
+    VisibilityManager{
+        id: visibilityManager
+        applets: layoutsContainer.applets
+    }
 
     DragDropArea {
         id: backDropArea
@@ -1558,10 +1559,6 @@ Item {
         settings: universalSettings
     }
 
-    Ability.AppletsRecords {
-        id: _appletsRecords
-    }
-
     Ability.AutoSize {
         id: _autosize
         layouts: layoutsContainer
@@ -1579,8 +1576,7 @@ Item {
     Ability.ParabolicEffect {
         id: _parabolic
         animations: _animations
-        appletsRecords: _appletsRecords
-        layouts: layoutsContainer
+        applets: layoutsContainer.applets
         view: latteView
     }
 

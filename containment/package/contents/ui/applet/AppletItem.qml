@@ -223,7 +223,6 @@ Item {
     readonly property alias wrapper: _wrapper
 
     property Item animations: null
-    property Item appletsRecords: null
     property Item metrics: null
     property Item parabolic: null
 
@@ -523,7 +522,6 @@ Item {
 
     Component.onDestruction: {
         appletItem.animations.needBothAxis.removeEvent(appletItem);
-        appletItem.appletsRecords.removeApplet(appletItem);
 
         if (isSeparator){
             parabolicManager.setSeparator(previousIndex, -1);
