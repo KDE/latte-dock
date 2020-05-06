@@ -36,26 +36,16 @@ Item {
     property int lastRealTaskIndex: -1
     property int countRealTasks: -1
 
-    signal sglUpdateLowerItemScale(int delegateIndex, real newScale, real step);
-    signal sglUpdateHigherItemScale(int delegateIndex, real newScale, real step);
-
-    property int lastIndex: -1
-
     Connections{
         target: root
         onTasksCountChanged: parManager.updateTasksEdgesIndexes();
         onHiddenTasksUpdated: parManager.updateTasksEdgesIndexes();
-
-        onClearZoomSignal: parManager.lastIndex = -1;
     }
 
     Component.onCompleted: {
         updateHasInternalSeparator();
         updateTasksEdgesIndexes();
         root.separatorsUpdated.connect(updateHasInternalSeparator);
-
-        parManager.sglUpdateLowerItemScale.connect(sltTrackLowerItemScale);
-        parManager.sglUpdateHigherItemScale.connect(sltTrackHigherItemScale);
     }
 
     Component.onDestruction: {
@@ -91,94 +81,6 @@ Item {
         }
 
         hasInternalSeparator = false;
-    }
-
-    function hostRequestUpdateLowerItemScale(newScale, step){
-        //! function called from host
-        sglUpdateLowerItemScale(root.tasksCount-1, newScale, step);
-    }
-
-    function hostRequestUpdateHigherItemScale(newScale, step){
-        //! function called from host
-        sglUpdateHigherItemScale(0, newScale, step);
-    }
-
-    function sltTrackLowerItemScale(delegateIndex, newScale, step){
-        //! send update signal to host
-        if (latteBridge) {
-            if (delegateIndex === -1) {
-                latteBridge.parabolic.clientRequestUpdateLowerItemScale(newScale, step);
-            } else if (newScale === 1 && delegateIndex>=0) {
-                latteBridge.parabolic.clientRequestUpdateLowerItemScale(1, 0);
-            }
-        }
-    }
-
-    function sltTrackHigherItemScale(delegateIndex, newScale, step) {
-        //! send update signal to host
-        if (latteBridge) {
-            if (delegateIndex >= root.tasksCount) {
-                latteBridge.parabolic.clientRequestUpdateHigherItemScale(newScale, step);
-            } else if (newScale === 1 && delegateIndex<root.tasksCount) {
-                latteBridge.parabolic.clientRequestUpdateHigherItemScale(1, 0);
-            }
-        }
-    }
-
-    function applyParabolicEffect(index, currentMousePosition, center) {
-        if (lastIndex === -1) {
-            root.setGlobalDirectRender(false);
-        }
-
-        lastIndex = index;
-
-        var rDistance = Math.abs(currentMousePosition  - center);
-
-        //check if the mouse goes right or down according to the center
-        var positiveDirection =  ((currentMousePosition  - center) >= 0 );
-
-        if (Qt.application.layoutDirection === Qt.RightToLeft && !root.vertical) {
-            positiveDirection = !positiveDirection;
-        }
-
-        var minimumZoom = 1;
-
-        //finding the zoom center e.g. for zoom:1.7, calculates 0.35
-        var zoomCenter = ((root.zoomFactor + minimumZoom)/2) - 1;
-
-        //computes the in the scale e.g. 0...0.35 according to the mouse distance
-        //0.35 on the edge and 0 in the center
-        var firstComputation = (rDistance / center) * (zoomCenter-minimumZoom+1);
-
-        //calculates the scaling for the neighbour tasks
-        var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, root.zoomFactor);
-        var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, minimumZoom);
-
-        //bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
-        //smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
-
-        var leftScale;
-        var rightScale;
-
-        if(positiveDirection === true){
-            rightScale = bigNeighbourZoom;
-            leftScale = smallNeighbourZoom;
-        } else {
-            rightScale = smallNeighbourZoom;
-            leftScale = bigNeighbourZoom;
-        }
-
-        sglUpdateHigherItemScale(index+1 , rightScale, 0);
-        sglUpdateLowerItemScale(index-1, leftScale, 0);
-
-        // console.debug(leftScale + "  " + rightScale + " " + index);
-        return {leftScale:leftScale, rightScale:rightScale};
-    }
-
-    function clearTasksGreaterThan(index) {
-    }
-
-    function clearTasksLowerThan(index) {
     }
 
     function neighbourIsHovered(index) {

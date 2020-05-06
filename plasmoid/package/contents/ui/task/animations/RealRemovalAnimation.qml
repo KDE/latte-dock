@@ -190,7 +190,7 @@ SequentialAnimation {
             //send signal that the launcher is really removing
             if (taskItem.inBouncingAnimation) {
                 tasksExtendedManager.removeWaitingLauncher(taskItem.launcherUrl);
-                root.setGlobalDirectRender(false);
+                taskItem.parabolic.setDirectRenderingEnabled(false);
             }
         }
     }

@@ -27,10 +27,18 @@ AbilityDefinition.ParabolicEffect {
     readonly property bool isActive: bridge !== null
 
     factor: ref.parabolic.factor
-    directRenderingEnabled: ref.parabolic.directRenderingEnabled
-    lastIndex: local.lastIndex /*special property that needs to remain the same*/
+    restoreZoomIsBlocked: bridge ? (bridge.parabolic.host.restoreZoomIsBlocked || local.restoreZoomIsBlocked) : local.restoreZoomIsBlocked
 
-    readonly property AbilityDefinition.ParabolicEffect local: AbilityDefinition.ParabolicEffect {}
+    //! private properties can not go to definition because can not be made readonly in there
+    //! special care must be taken in order to be redefined in local properties
+    readonly property bool directRenderingEnabled: ref.parabolic._privates.directRenderingEnabled
+    readonly property int lastIndex: local._privates.lastIndex /*special property that needs to remain the same*/
+
+    readonly property AbilityDefinition.ParabolicEffect local: AbilityDefinition.ParabolicEffect {
+        id: _localref
+        readonly property bool directRenderingEnabled: _localref._privates.directRenderingEnabled
+        readonly property int lastIndex: _localref._privates.lastIndex
+    }
 
     Item {
         id: ref

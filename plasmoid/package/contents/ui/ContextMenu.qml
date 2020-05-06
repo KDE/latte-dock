@@ -80,10 +80,7 @@ PlasmaComponents.ContextMenu {
         return tasksModel.data(modelIndex, modelProp)
     }
 
-    function show() {
-        //trying to use the dragging mechanism in order to not hide the dock
-        root.disableRestoreZoom = true;
-        //root.signalDraggingState(true);
+    function show() {       
         loadDynamicLaunchActions(visualParent.m.LauncherUrlWithoutIcon);
         // backend.ungrabMouse(visualParent);
         openRelative();
@@ -94,8 +91,6 @@ PlasmaComponents.ContextMenu {
         } else {
             windowsPreviewDlg.hide("9.4");
         }
-
-        root.setGlobalDirectRender(false);
 
         if (root.latteView){
             root.latteView.hideTooltipLabel();            
@@ -332,9 +327,6 @@ PlasmaComponents.ContextMenu {
         if (!changingLayout) {
             root.contextMenu = null;
             backend.ungrabMouse(visualParent);
-            //root.signalDraggingState(false);
-            root.disableRestoreZoom = false;
-            root.startCheckRestoreZoomTimer();
         }
     }
 
@@ -1003,7 +995,7 @@ PlasmaComponents.ContextMenu {
         icon: "window-close"
 
         onClicked: {
-            if (root.zoomFactor>1) {
+            if (parabolic.factor.zoom>1) {
                 delayWindowRemovalTimer.modelIndex = menu.modelIndex;
                 delayWindowRemovalTimer.start();
             } else {

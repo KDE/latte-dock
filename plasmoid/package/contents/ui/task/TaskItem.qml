@@ -139,11 +139,9 @@ MouseArea{
     property bool isWindow: (IsWindow === true) ? true : false
     property bool isZoomed: false
 
-    property bool blockClearZoom: root.contextMenu
-
     property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=taskItem.metrics.iconSize && height>=taskItem.metrics.iconSize
                                         && !taskItem.delayingRemove
-                                        && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //don't publish during zoomFactor
+                                        && (wrapper.mScale===1 || wrapper.mScale===taskItem.parabolic.factor.zoom) //don't publish during zoom animation
 
     property bool pressed: false
     property bool wheelIsBlocked: false
@@ -183,6 +181,7 @@ MouseArea{
     //abilities
     property Item animations: null
     property Item metrics: null
+    property Item parabolic: null
     property Item requires: null
 
     onModelLauncherUrlChanged: {
@@ -617,11 +616,11 @@ MouseArea{
 
     ///////////////// Mouse Area Events ///////////////////
     onEntered: {
-        root.stopCheckRestoreZoomTimer();
+        taskItem.parabolic.stopRestoreZoomTimer();
 
         restoreAnimation.stop();
 
-        if ((parabolicManager.lastIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
+        if ((taskItem.parabolic.local.lastIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
             windowsPreviewDlg.hide(1);
         }
 
@@ -666,8 +665,8 @@ MouseArea{
             root.hidePreview(17.5);
         }
 
-        if (root.zoomFactor>1 && !blockClearZoom){
-            root.startCheckRestoreZoomTimer();
+        if (taskItem.parabolic.factor.zoom>1){
+            taskItem.parabolic.startRestoreZoomTimer();
         }
     }
 
@@ -684,14 +683,14 @@ MouseArea{
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
-            var rapidMovement = parabolicManager.lastIndex>=0 && Math.abs(parabolicManager.lastIndex-itemIndex)>1;
+            var rapidMovement = taskItem.parabolic.local.lastIndex>=0 && Math.abs(taskItem.parabolic.local.lastIndex-itemIndex)>1;
 
             if (rapidMovement) {
-                root.setGlobalDirectRender(true);
+                taskItem.parabolic.setDirectRenderingEnabled(true);
             }
 
-            if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender)
-                    || root.globalDirectRender || !scalesUpdatedOnce) {
+            if( ((wrapper.mScale == 1 || wrapper.mScale === taskItem.parabolic.factor.zoom) && !taskItem.parabolic.directRenderingEnabled)
+                    || taskItem.parabolic.directRenderingEnabled || !scalesUpdatedOnce) {
                 if(root.dragSource == null){
                     var step = Math.abs(icList.currentSpot-mousePos);
                     if (step >= taskItem.animations.hoverPixelSensitivity){
@@ -981,7 +980,7 @@ MouseArea{
         inAnimation = false;
     }
 
-    function clearZoom(){
+    function sltClearZoom(){
         restoreAnimation.start();
     }
 
@@ -1235,7 +1234,7 @@ MouseArea{
     function slotMimicEnterForParabolic(){
         if (containsMouse) {
             if (inMimicParabolicAnimation) {
-                mimicParabolicScale = root.zoomFactor;
+                mimicParabolicScale = taskItem.parabolic.factor.zoom;
             }
 
             wrapper.calculateScales(icList.currentSpot);
@@ -1473,11 +1472,12 @@ MouseArea{
 
     Component.onCompleted: {
         root.draggingFinished.connect(handlerDraggingFinished);
-        root.clearZoomSignal.connect(clearZoom);
         root.publishTasksGeometries.connect(slotPublishGeometries);
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);
         root.mimicEnterForParabolic.connect(slotMimicEnterForParabolic);
         root.launchersUpdatedFor.connect(slotLaunchersChangedFor);
+
+        parabolic.sglClearZoom.connect(sltClearZoom);
 
         var hasShownLauncher = ((tasksModel.launcherPosition(taskItem.launcherUrl) !== -1)
                                 || (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) !== -1) );
@@ -1503,11 +1503,12 @@ MouseArea{
 
     Component.onDestruction: {
         root.draggingFinished.disconnect(handlerDraggingFinished);
-        root.clearZoomSignal.disconnect(clearZoom);
         root.publishTasksGeometries.disconnect(slotPublishGeometries);
         root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
         root.mimicEnterForParabolic.disconnect(slotMimicEnterForParabolic);
         root.launchersUpdatedFor.disconnect(slotLaunchersChangedFor);
+
+        parabolic.sglClearZoom.disconnect(sltClearZoom);
 
         tasksExtendedManager.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);
 

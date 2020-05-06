@@ -118,12 +118,12 @@ Item{
 
     TitleTooltipParent{
         id: titleTooltipParent
-        thickness: root.zoomFactor * taskItem.metrics.totals.thickness
+        thickness: taskItem.parabolic.factor.zoom * taskItem.metrics.totals.thickness
     }
 
     TitleTooltipParent{
         id: previewsTooltipParent
-        thickness: (root.zoomFactor * taskItem.metrics.totals.thickness) + 1
+        thickness: (taskItem.parabolic.factor.zoom * taskItem.metrics.totals.thickness) + 1
     }
 
     //!
@@ -160,7 +160,7 @@ Item{
             width: Math.round(newTempSize)
             height: Math.round(width)
             source: decoration
-            smooth: root.zoomFactor === 1 ? true : false
+            smooth: taskItem.parabolic.factor.zoom === 1 ? true : false
             providesColors: indicators ? indicators.info.needsIconColors : false
 
             opacity: root.enableShadows
@@ -185,7 +185,7 @@ Item{
                 }
             }
 
-            property int zoomedSize: root.zoomFactor * taskItem.metrics.iconSize
+            property int zoomedSize: taskItem.parabolic.factor.zoom * taskItem.metrics.iconSize
 
             property real basicScalingWidth : wrapper.inTempScaling ? (taskItem.metrics.iconSize * wrapper.scaleWidth) :
                                                                       taskItem.metrics.iconSize * wrapper.mScale
@@ -509,7 +509,7 @@ Item{
 
                 //! HACK TO AVOID PIXELIZATION
                 //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
-                //! the icon appears pixelated. It is even most notable when zoomFactor === 1
+                //! the icon appears pixelated. It is even most notable when parabolic.factor.zoom === 1
                 //! I don't know enabling cached=true helps, but it does.
                 cached: true
 
@@ -530,7 +530,7 @@ Item{
 
             //! HACK TO AVOID PIXELIZATION
             //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
-            //! the icon appears pixelated. It is even most notable when zoomFactor === 1
+            //! the icon appears pixelated. It is even most notable when parabolic.factor.zoom === 1
             //! I don't know enabling cached=true helps, but it does.
             cached: true
 
@@ -552,7 +552,7 @@ Item{
 
             //! HACK TO AVOID PIXELIZATION
             //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
-            //! the icon appears pixelated. It is even most notable when zoomFactor === 1
+            //! the icon appears pixelated. It is even most notable when parabolic.factor.zoom === 1
             //! I don't know enabling cached=true helps, but it does.
             cached: true
 
@@ -576,7 +576,7 @@ Item{
 
             //! HACK TO AVOID PIXELIZATION
             //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
-            //! the icon appears pixelated. It is even most notable when zoomFactor === 1
+            //! the icon appears pixelated. It is even most notable when parabolic.factor.zoom === 1
             //! I don't know enabling cached=true helps, but it does.
             cached: true
 
@@ -666,16 +666,16 @@ Item{
             SequentialAnimation{
                 ScriptAction{
                     script: {
-                        root.setGlobalDirectRender(false);
                         taskItem.inBlockingAnimation = true;
-                        root.clearZoom();
+                        taskItem.parabolic.startRestoreZoomTimer();
+                        taskItem.parabolic.setDirectRenderingEnabled(false);
                     }
                 }
 
                 PropertyAnimation {
                     target: wrapper
                     property: "mScale"
-                    to: 1 + ((root.zoomFactor - 1) / 3)
+                    to: 1 + ((taskItem.parabolic.factor.zoom - 1) / 3)
                     duration: isDraggedTransition.speed / 2
                     easing.type: Easing.OutQuad
                 }
@@ -710,15 +710,6 @@ Item{
             onRunningChanged: {
                 if(running){
                     taskItem.animationStarted();
-                    //root.animations++;
-
-                    parabolicManager.clearTasksGreaterThan(index);
-                    parabolicManager.clearTasksLowerThan(index);
-
-                    if (latteView){
-                        latteView.parabolicManager.clearAppletsGreaterThan(latteView.latteAppletPos);
-                        latteView.parabolicManager.clearAppletsLowerThan(latteView.latteAppletPos);
-                    }
                 }
             }
         },
@@ -731,7 +722,7 @@ Item{
             SequentialAnimation{
                 ScriptAction{
                     script: {
-                        root.setGlobalDirectRender(false);
+                        taskItem.parabolic.setDirectRenderingEnabled(false);
                     }
                 }
 
@@ -778,7 +769,7 @@ Item{
 
             onRunningChanged: {
                 if(!running){
-                    var halfZoom = 1 + ((root.zoomFactor - 1) / 2);
+                    var halfZoom = 1 + ((taskItem.parabolic.factor.zoom - 1) / 2);
 
                     wrapper.calculateScales(taskItem.metrics.totals.thickness/2);
 

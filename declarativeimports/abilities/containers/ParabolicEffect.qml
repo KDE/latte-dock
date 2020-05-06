@@ -24,12 +24,26 @@ import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 AbilityDefinition.ParabolicEffect {
     id: apis
 
+    readonly property bool directRenderingEnabled: _privates.directRenderingEnabled
+    readonly property int lastIndex: _privates.lastIndex
+
+    //! This needs to be rethought and rechecked in order for public api to provide
+    //! functionality that functionality must already exist in the definition
     readonly property Item publicApi: Item {
         readonly property alias directRenderingEnabled: apis.directRenderingEnabled
         readonly property alias factor: apis.factor
         readonly property alias lastIndex: apis.lastIndex
+        readonly property alias restoreZoomIsBlocked: apis.restoreZoomIsBlocked
 
         signal sglClearZoom();
+
+        function startRestoreZoomTimer() {
+            apis.startRestoreZoomTimer();
+        }
+
+        function stopRestoreZoomTimer() {
+            apis.stopRestoreZoomTimer();
+        }
     }
 
     Component.onCompleted: {

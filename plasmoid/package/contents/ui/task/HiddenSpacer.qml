@@ -147,7 +147,7 @@ Item{
         id: animatedBehavior
         enabled: (taskItem.inFastRestoreAnimation || showWindowAnimation.running || restoreAnimation.running
                   || root.inActivityChange || taskItem.inRemoveStage)
-                 || (taskItem.containsMouse && inAttentionAnimation && wrapper.mScale!==root.zoomFactor)
+                 || (taskItem.containsMouse && inAttentionAnimation && wrapper.mScale!==taskItem.parabolic.factor.zoom)
         NumberAnimation{ duration: 3 * taskItem.animationTime }
     }
 

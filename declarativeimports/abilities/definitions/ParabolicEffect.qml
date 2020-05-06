@@ -23,9 +23,7 @@ import "./paraboliceffect" as ParabolicEffectTypes
 
 Item {
     property ParabolicEffectTypes.Factor factor: ParabolicEffectTypes.Factor{}
-
-    readonly property bool directRenderingEnabled: _privates.directRenderingEnabled
-    readonly property int lastIndex: _privates.lastIndex
+    property bool restoreZoomIsBlocked: false
 
     readonly property ParabolicEffectTypes.PrivateProperties _privates: ParabolicEffectTypes.PrivateProperties {}
 

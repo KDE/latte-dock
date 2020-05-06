@@ -121,7 +121,7 @@ Item{
     readonly property Item metrics: appletItem.metrics.publicApi
 
     readonly property AbilityBridge.ParabolicEffect parabolic: AbilityBridge.ParabolicEffect {
-        host: appletItem.parabolic.publicApi
+        host: appletItem.parabolic
         appletIndex: index
     }
 

@@ -64,8 +64,8 @@ Item{
         }
     }
 
-    property int maxThickness: !root.vertical ? root.zoomFactor*(taskItem.metrics.iconSize+root.heightMargins)
-                                              : root.zoomFactor*(taskItem.metrics.iconSize+root.widthMargins)
+    property int maxThickness: !root.vertical ? taskItem.parabolic.factor.zoom*(taskItem.metrics.iconSize+root.heightMargins)
+                                              : taskItem.parabolic.factor.zoom*(taskItem.metrics.iconSize+root.widthMargins)
 
     property real showDelegateWidth: basicScalingWidth
     property real showDelegateHeight: basicScalingHeight
@@ -122,7 +122,7 @@ Item{
 
     Behavior on mScale {
         id: animatedBehavior
-        enabled: !root.globalDirectRender || inMimicParabolicAnimation || restoreAnimation.running
+        enabled: !taskItem.parabolic.directRenderingEnabled || inMimicParabolicAnimation || restoreAnimation.running
         NumberAnimation{
             duration: 3 * taskItem.animationTime
             easing.type: Easing.OutCubic
@@ -157,13 +157,13 @@ Item{
     }
 
     function calculateScales( currentMousePosition ){
-        if (root.zoomFactor===1) {
+        if (taskItem.parabolic.factor.zoom===1) {
             return;
         }
 
         if (root.dragSource === null) {
-            //use the new parabolicManager in order to handle all parabolic effect messages
-            var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
+            //use the new parabolic ability in order to handle all parabolic effect messages
+            var scales = taskItem.parabolic.applyParabolicEffect(index, currentMousePosition, center);
 
             //Left hiddenSpacer for first task
             if(((index === parabolicManager.firstRealTaskIndex )&&(root.tasksCount>0)) && !root.disableLeftSpacer
@@ -178,9 +178,9 @@ Item{
             }
 
             if (!taskItem.inAttentionAnimation) {
-                mScale = root.zoomFactor;
+                mScale = taskItem.parabolic.factor.zoom;
             } else {
-                var subSpacerScale = (root.zoomFactor-1)/2;
+                var subSpacerScale = (taskItem.parabolic.factor.zoom-1)/2;
 
                 hiddenSpacerLeft.nScale = subSpacerScale;
                 hiddenSpacerRight.nScale = subSpacerScale;
@@ -223,10 +223,10 @@ Item{
                 signalUpdateScale(delegateIndex, newScale, step);
 
                 if (newScale > 1) { // clear lower items
-                    parabolicManager.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
+                    taskItem.parabolic.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
                 }
             } else {
-                parabolicManager.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
+                taskItem.parabolic.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
             }
         } else if ((newScale === 1) && (index < delegateIndex)) {
             signalUpdateScale(index, 1, 0);
@@ -240,10 +240,10 @@ Item{
                 signalUpdateScale(delegateIndex, newScale, step);
 
                 if (newScale > 1) { // clear lower items
-                    parabolicManager.sglUpdateHigherItemScale(delegateIndex+1, 1, 0); // clear higher items
+                    taskItem.parabolic.sglUpdateHigherItemScale(delegateIndex+1, 1, 0); // clear higher items
                 }
             } else {
-                parabolicManager.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
+                taskItem.parabolic.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
             }
         } else if ((newScale === 1) && (index > delegateIndex)) {
             signalUpdateScale(index, 1, 0);
@@ -259,8 +259,8 @@ Item{
     }
 
     onMScaleChanged: {
-        if ((mScale === root.zoomFactor) && !root.globalDirectRender) {
-            root.setGlobalDirectRender(true);
+        if ((mScale === taskItem.parabolic.factor.zoom) && !taskItem.parabolic.directRenderingEnabled) {
+            taskItem.parabolic.setDirectRenderingEnabled(true);
         }
 
         if (inMimicParabolicAnimation){
@@ -270,7 +270,7 @@ Item{
                 inBlockingAnimation = false;
                 mimicParabolicScale = -1;
             } else {
-                var tempScale = (root.zoomFactor - mScale) / 2;
+                var tempScale = (taskItem.parabolic.factor.zoom - mScale) / 2;
 
                 hiddenSpacerLeft.nScale = tempScale;
                 hiddenSpacerRight.nScale = tempScale;
@@ -290,12 +290,12 @@ Item{
             opacity = 1;
         }
 
-        parabolicManager.sglUpdateLowerItemScale.connect(sltUpdateLowerItemScale);
-        parabolicManager.sglUpdateHigherItemScale.connect(sltUpdateHigherItemScale);
+        taskItem.parabolic.sglUpdateLowerItemScale.connect(sltUpdateLowerItemScale);
+        taskItem.parabolic.sglUpdateHigherItemScale.connect(sltUpdateHigherItemScale);
     }
 
     Component.onDestruction: {
-        parabolicManager.sglUpdateLowerItemScale.disconnect(sltUpdateLowerItemScale);
-        parabolicManager.sglUpdateHigherItemScale.disconnect(sltUpdateHigherItemScale);
+        taskItem.parabolic.sglUpdateLowerItemScale.disconnect(sltUpdateLowerItemScale);
+        taskItem.parabolic.sglUpdateHigherItemScale.disconnect(sltUpdateHigherItemScale);
     }
 }// Main task area // id:wrapper

@@ -62,9 +62,6 @@ Item {
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft && !root.vertical
     LayoutMirroring.childrenInherit: true
 
-    //it is used to check both the applet and the containment for direct render
-    property bool globalDirectRender: latteView ? latteView.globalDirectRender : icList.directRender
-
     property bool plasma515: latteView ? latteView.plasma515 : LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
     property bool plasma518: latteView ? latteView.plasma518 : LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
 
@@ -141,6 +138,7 @@ Item {
     property Item tasksExtendedManager: _tasksExtendedManager
     readonly property alias animations: _animations
     readonly property alias metrics: _metrics
+    readonly property alias parabolic: _parabolic
 
     readonly property alias containsDrag: mouseHandler.containsDrag
     readonly property bool dragAreaEnabled: latteView ? (root.dragSource !== null
@@ -163,7 +161,7 @@ Item {
     property bool dockIsHidden: latteView ? latteView.dockIsHidden : false
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool highlightWindows: hoverAction === LatteTasks.Types.HighlightWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
-    property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : zoomFactor>1 && !root.editMode
+    property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : parabolic.factor.zoom && !root.editMode
 
     property bool scrollingEnabled: plasmoid.configuration.scrollTasksEnabled
     property bool autoScrollTasksEnabled: scrollingEnabled && plasmoid.configuration.autoScrollTasksEnabled
@@ -220,10 +218,6 @@ Item {
 
     readonly property real currentPanelOpacity: latteView ? latteView.currentPanelTransparency / 100 : 1
 
-    property real maxZoomFactor: latteView ? latteView.maxZoomFactor : Math.max(zoomFactor, animations.maxZoomFactor)
-
-    property real zoomFactor: latteView ? latteView.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
-
     property int appShadowSize: latteView ? latteView.appShadowSize : Math.ceil(0.12*metrics.iconSize)
     property string appShadowColor: latteView ? latteView.appShadowColor : "#ff080808"
     property string appShadowColorSolid: latteView ? latteView.appShadowColorSolid : "#ff080808"
@@ -254,7 +248,6 @@ Item {
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
 
-    signal clearZoomSignal();
     signal draggingFinished();
     signal hiddenTasksUpdated();
     signal launchersUpdatedFor(string launcher);
@@ -525,11 +518,11 @@ Item {
             //! triggered together.
             if (containsMouse) {
                 hidePreviewWinTimer.stop();
-                root.stopCheckRestoreZoomTimer();
-                root.setGlobalDirectRender(false);
+                parabolic.stopRestoreZoomTimer();
+                parabolic.setDirectRenderingEnabled(false);
             } else {
-                hide(7.3);                
-                root.startCheckRestoreZoomTimer();
+                hide(7.3);
+                parabolic.startRestoreZoomTimer();
             }
         }
 
@@ -956,6 +949,12 @@ Item {
         bridge: latteBridge
     }
 
+    Ability.ParabolicEffect {
+        id: _parabolic
+        bridge: latteBridge
+        restoreZoomIsBlocked: root.contextMenu || windowsPreviewDlg.visible
+    }
+
     AppletAbility.Requirements{
         id: _requires
         bridge: latteBridge
@@ -992,42 +991,6 @@ Item {
         }
     }
 
-    //Timer to check if the mouse is still inside the ListView
-    //IMPORTANT ::: This timer should be used only when the Latte plasmoid
-    //is not inside a Latte dock
-    Timer{
-        id:checkListHovered
-        interval: 90
-
-        property int normalInterval: Math.max(120, 2 * (animations.speedFactor.current * 1.2 * animations.duration.small) + 50)
-
-        onTriggered: {
-            if(root.latteView) {
-                console.log("Plasmoid, checkListHoveredTimer was called, even though it shouldn't...");
-            }
-
-            root.clearZoom();
-
-            interval = normalInterval;
-
-            if (latteView && latteView.debugModeTimers) {
-                console.log("plasmoid timer: checkListHovered called...");
-            }
-        }
-
-        function startNormal(){
-            interval = normalInterval;
-
-            start();
-        }
-
-        function startDuration( duration){
-            interval = duration;
-
-            start();
-        }
-    }
-
     //this timer restores the draggingPhase flag to false
     //after a dragging has finished... This delay is needed
     //in order to not animate any tasks are added after a
@@ -1051,7 +1014,7 @@ Item {
 
         visible: plasmoid.configuration.zoomHelper
 
-        property int neededSpace: zoomFactor*metrics.totals.length
+        property int neededSpace: parabolic.factor.zoom*metrics.totals.length
     }
 
     Item{
@@ -1164,8 +1127,8 @@ Item {
 
             visible: root.dragAreaEnabled
 
-            property int maxSize: ((parabolicManager.lastIndex>=0 || windowPreviewIsShown) && !root.dragSource) ?
-                                      (root.zoomFactor * metrics.totals.thickness) + metrics.margin.screenEdge :
+            property int maxSize: ((parabolic.local.lastIndex>=0 || windowPreviewIsShown) && !root.dragSource) ?
+                                      (parabolic.factor.zoom * metrics.totals.thickness) + metrics.margin.screenEdge :
                                       metrics.totals.thickness + metrics.margin.screenEdge
 
             function onlyLaunchersInList(list){
@@ -1228,7 +1191,7 @@ Item {
                     return animations.hasThicknessAnimation ? latteView.maskManager.thicknessNormal : latteView.maskManager.thicknessZoom;
                 }
 
-                return metrics.totals.thickness * root.zoomFactor;
+                return metrics.totals.thickness * parabolic.factor.zoom;
             }
 
             //onCurrentPosChanged: console.log("CP :: "+ currentPos + " icW:"+icList.width + " rw: "+root.width + " w:" +width);
@@ -1261,6 +1224,7 @@ Item {
                     delegate: Task.TaskItem{
                         animations: _animations
                         metrics: _metrics
+                        parabolic: _parabolic
                         requires: _requires
                     }
 
@@ -1268,8 +1232,6 @@ Item {
                     property int previousCount : 0
 
                     property int tasksCount: tasksModel.count
-
-                    property bool directRender: false
 
                     //the duration of this animation should be as small as possible
                     //it fixes a small issue with the dragging an item to change it's
@@ -1861,21 +1823,6 @@ Item {
         return false;
     }
 
-    function clearZoom(){
-        //console.log("Plasmoid clear...");
-        if (disableRestoreZoom && (root.contextMenu || windowsPreviewDlg.visible)) {
-            return;
-        } else {
-            disableRestoreZoom = false;
-        }
-
-        if (!previewContainsMouse()) {
-            windowsPreviewDlg.hide(4.2);
-        }
-
-        root.clearZoomSignal();
-    }
-
     function hasLauncher(url) {
         return tasksModel.launcherPosition(url) != -1;
     }
@@ -1900,37 +1847,6 @@ Item {
     function resetDragSource() {
         dragSource.z = 0;
         dragSource = null;
-    }
-
-    function setGlobalDirectRender(value) {
-        if (tasksExtendedManager.waitingLaunchersLength() > 0)
-            return;
-
-        if (latteView) {
-            latteView.setGlobalDirectRender(value);
-        } else {
-            icList.directRender = value;
-        }
-    }
-
-    function startCheckRestoreZoomTimer(duration) {
-        if (latteView) {
-            latteView.startCheckRestoreZoomTimer();
-        } else {
-            if (duration > 0) {
-                checkListHovered.startDuration(duration);
-            } else {
-                checkListHovered.startNormal();
-            }
-        }
-    }
-
-    function stopCheckRestoreZoomTimer() {
-        if (latteView) {
-            latteView.stopCheckRestoreZoomTimer();
-        } else {
-            checkListHovered.stop();
-        }
     }
 
     ///REMOVE

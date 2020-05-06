@@ -51,7 +51,7 @@ SequentialAnimation{
             PropertyAnimation {
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                to: taskItem.containsMouse ? 1+2*(root.maxZoomFactor-1) : 1 + (0.65 * (root.maxZoomFactor-1))
+                to: taskItem.containsMouse ? 1+2*(taskItem.parabolic.factor.maxZoom-1) : 1 + (0.65 * (taskItem.parabolic.factor.maxZoom-1))
                 duration: launcherAnimation.speed
                 easing.type: Easing.OutQuad
             }
@@ -98,7 +98,7 @@ SequentialAnimation{
             tasksExtendedManager.removeWaitingLauncher(taskItem.launcherUrl);
         }
 
-        root.setGlobalDirectRender(false);
+        taskItem.parabolic.setDirectRenderingEnabled(false);
         clearAnimationsSignals();
 
         taskItem.setBlockingAnimation(false);
@@ -123,10 +123,7 @@ SequentialAnimation{
             launchedAlready = true;
             taskItem.animations.needThickness.addEvent(needThicknessEvent);
 
-            root.setGlobalDirectRender(false);
-
-            parabolicManager.clearTasksGreaterThan(index);
-            parabolicManager.clearTasksLowerThan(index);
+            taskItem.parabolic.setDirectRenderingEnabled(false);
 
             root.noTasksInAnimation++;
             taskItem.inBouncingAnimation = true;
