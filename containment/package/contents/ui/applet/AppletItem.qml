@@ -219,8 +219,8 @@ Item {
 
     property Item tooltipVisualParent: titleTooltipParent
 
-    property Item communicatorAlias: communicator
-    property Item wrapperAlias: wrapper
+    readonly property alias communicator: _communicator
+    readonly property alias wrapper: _wrapper
 
     property Item animations: null
     property Item appletsRecords: null
@@ -636,7 +636,7 @@ Item {
 
     //! It is used for any communication needed with the underlying applet
     Communicator.Engine{
-        id: communicator
+        id: _communicator
 
         //set up the overlayed appletItems and properties for when a overlaiedIconItem must be presented to the user
         //because the plasma widgets specific implementation breaks the Latte experience
@@ -732,7 +732,7 @@ Item {
             }
 
             ItemWrapper{
-                id: wrapper
+                id: _wrapper
 
                 TitleTooltipParent{
                     id: titleTooltipParent

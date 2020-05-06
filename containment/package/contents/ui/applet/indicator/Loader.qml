@@ -33,7 +33,7 @@ Loader {
 
     active: level.bridge && level.bridge.active && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
     sourceComponent: {
-        if (!indicators.info.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
+        if (!indicators.info.enabledForApplets && appletItem.communicator.overlayLatteIconIsActive) {
             return indicators.plasmaStyleComponent;
         }
 
@@ -43,24 +43,24 @@ Loader {
     width: {
         if (root.isHorizontal) {
             if (canBeHovered) {
-                return appletItem.wrapperAlias.zoomScale * visualLockedWidth;
+                return appletItem.wrapper.zoomScale * visualLockedWidth;
             }
 
             return appletWrapper.width + appletItem.internalWidthMargins;
         } else {
-            return appletItem.wrapperAlias.width;
+            return appletItem.wrapper.width;
         }
     }
 
     height: {
         if (root.isVertical) {
             if (canBeHovered) {
-               return appletItem.wrapperAlias.zoomScale * visualLockedHeight;
+               return appletItem.wrapper.zoomScale * visualLockedHeight;
             }
 
             return appletWrapper.height + appletItem.internalHeightMargins;
         } else {
-            return appletItem.wrapperAlias.height;
+            return appletItem.wrapper.height;
         }
     }
 

@@ -27,9 +27,9 @@ Item{
 
     readonly property bool active: appletIsValid &&
                                    ((indicators.isEnabled
-                                     && appletItem.communicatorAlias.requires.activeIndicatorEnabled
+                                     && appletItem.communicator.requires.activeIndicatorEnabled
                                      && indicators.info.enabledForApplets)
-                                    || (!indicators.info.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive))
+                                    || (!indicators.info.enabledForApplets && appletItem.communicator.overlayLatteIconIsActive))
 
     /* Indicators Properties in order use them*/
     readonly property bool isTask: false
@@ -58,7 +58,7 @@ Item{
 
     readonly property int currentIconSize: appletIsValid ? appletItem.metrics.iconSize : metrics.iconSize
     readonly property int maxIconSize: appletIsValid ? appletItem.metrics.maxIconSize : metrics.maxIconSize
-    readonly property real scaleFactor: appletIsValid ? appletItem.wrapperAlias.zoomScale : 1
+    readonly property real scaleFactor: appletIsValid ? appletItem.wrapper.zoomScale : 1
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
@@ -75,7 +75,7 @@ Item{
     //!icon colors
     property color iconBackgroundColor: {
         if (appletIsValid) {
-            return isSquare ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : colorizerManager.buttonFocusColor;
+            return isSquare ? appletItem.wrapper.overlayIconLoader.backgroundColor : colorizerManager.buttonFocusColor;
         }
 
         return "black";
@@ -83,7 +83,7 @@ Item{
 
     property color iconGlowColor:{
         if (appletIsValid) {
-            return isSquare ? appletItem.wrapperAlias.overlayIconLoader.glowColor : colorizerManager.focusGlowColor;
+            return isSquare ? appletItem.wrapper.overlayIconLoader.glowColor : colorizerManager.focusGlowColor;
         }
 
         return "white";
