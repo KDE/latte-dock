@@ -223,6 +223,7 @@ Item {
     readonly property alias wrapper: _wrapper
 
     property Item animations: null
+    property Item indexer: null
     property Item metrics: null
     property Item parabolic: null
 
@@ -458,14 +459,6 @@ Item {
             root.latteAppletPos = index;
         }
 
-        if (isHidden) {
-            parabolicManager.setHidden(previousIndex, index);
-        }
-
-        if (isSeparator) {
-            parabolicManager.setSeparator(previousIndex, index);
-        }
-
         if (index>-1) {
             previousIndex = index;
         }
@@ -475,23 +468,6 @@ Item {
         if (isExpanded) {
             root.hideTooltipLabel();
         }
-    }
-
-    onIsHiddenChanged: {
-        if (isHidden) {
-            parabolicManager.setHidden(-1, index);
-        } else {
-            parabolicManager.setHidden(index, -1);
-        }
-    }
-
-    onIsSeparatorChanged: {
-        if (isSeparator) {
-            parabolicManager.setSeparator(-1, index);
-        } else {
-            parabolicManager.setSeparator(index, -1);
-        }
-
     }
 
     onIsSystrayChanged: {
@@ -522,14 +498,6 @@ Item {
 
     Component.onDestruction: {
         appletItem.animations.needBothAxis.removeEvent(appletItem);
-
-        if (isSeparator){
-            parabolicManager.setSeparator(previousIndex, -1);
-        }
-
-        if (isHidden) {
-            parabolicManager.setHidden(previousIndex, -1);
-        }
 
         if(root.latteAppletPos>=0 && root.latteAppletPos === index){
             root.latteApplet = null;

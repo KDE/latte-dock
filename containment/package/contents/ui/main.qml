@@ -410,6 +410,7 @@ Item {
 
     readonly property alias animations: _animations
     readonly property alias autosize: _autosize
+    readonly property alias indexer: _indexer
     readonly property alias indicatorsManager: indicators
     readonly property alias metrics: _metrics
     readonly property alias parabolic: _parabolic
@@ -1327,6 +1328,7 @@ Item {
         id: appletContainerComponent
         Applet.AppletItem{
             animations: _animations
+            indexer: _indexer
             metrics: _metrics
             parabolic: _parabolic
         }
@@ -1547,6 +1549,11 @@ Item {
         layouts: layoutsContainer
         metrics: _metrics
         visibility: visibilityManager
+    }
+
+    Ability.Indexer {
+        id: _indexer
+        layouts: layoutsContainer
     }
 
     Ability.Metrics {
