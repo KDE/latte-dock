@@ -782,6 +782,22 @@ Window{
             }
 
             Text{
+                text: "Applets Max Inner ZoomFactor" + space
+            }
+
+            Text{
+                text: layoutsContainer.applets.require.maxInnerZoomFactor
+            }
+
+            Text{
+                text: "   -----------   "
+            }
+
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
                 text: "Applets need Windows Tracking"+space
             }
 
