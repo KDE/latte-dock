@@ -360,10 +360,38 @@ Item{
     }
 
     Connections{
-        target:root
+        target:root      
         onPanelShadowChanged: updateMaskArea();
         onPanelThickMarginHighChanged: updateMaskArea();
         onRealPanelLengthChanged: updateMaskArea();
+        onEditModeChanged: {
+            if (root.editMode) {
+                visibilityManager.updateMaskArea();
+            }
+        }
+    }
+
+    Connections{
+        target: latteView ? latteView : null
+        onXChanged: updateMaskArea();
+        onYChanged: updateMaskArea()
+        onWidthChanged: updateMaskArea();
+        onHeightChanged: updateMaskArea();
+    }
+
+    Connections{
+        target: animations.needBothAxis
+        onCountChanged: updateMaskArea();
+    }
+
+    Connections{
+        target: animations.needLength
+        onCountChanged: updateMaskArea();
+    }
+
+    Connections{
+        target: animations.needThickness
+        onCountChanged: updateMaskArea();
     }
 
     Connections{

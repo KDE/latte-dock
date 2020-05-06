@@ -515,10 +515,7 @@ Item {
 
     //////////////START OF CONNECTIONS
     onEditModeChanged: {
-        if (editMode) {
-            visibilityManager.updateMaskArea();
-            clearZoom();
-        } else {
+        if (!editMode) {
             layoutsContainer.updateSizeForAppletsInFill();
         }
 
@@ -569,11 +566,6 @@ Item {
 
     onLatteViewChanged: {
         if (latteView) {
-            latteView.onXChanged.connect(visibilityManager.updateMaskArea);
-            latteView.onYChanged.connect(visibilityManager.updateMaskArea);
-            latteView.onWidthChanged.connect(visibilityManager.updateMaskArea);
-            latteView.onHeightChanged.connect(visibilityManager.updateMaskArea);
-
             latteView.positioner.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
             latteView.positioner.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
             latteView.positioner.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
@@ -643,11 +635,6 @@ Item {
         console.debug("Destroying Latte Dock Containment ui...");
 
         if (latteView) {
-            latteView.onXChanged.disconnect(visibilityManager.updateMaskArea);
-            latteView.onYChanged.disconnect(visibilityManager.updateMaskArea);
-            latteView.onWidthChanged.disconnect(visibilityManager.updateMaskArea);
-            latteView.onHeightChanged.disconnect(visibilityManager.updateMaskArea);
-
             latteView.positioner.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
             latteView.positioner.showDockAfterLocationChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
             latteView.positioner.hideDockDuringScreenChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
@@ -911,10 +898,6 @@ Item {
         if (!expands) {
             lastSpacer.parent = layoutsContainer.mainLayout
         }
-    }
-
-    function clearZoom(){
-        root.clearZoomSignal();
     }
 
     function containmentActions(){
