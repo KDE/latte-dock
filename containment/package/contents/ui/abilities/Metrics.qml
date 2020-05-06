@@ -20,9 +20,9 @@
 import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
-import "./privates" as AbilityPrivate
+import "./privates" as Ability
 
-AbilityPrivate.MetricsPrivate {
+Ability.MetricsPrivate {
     //! Signals
     signal iconSizeAnimationEnded();
 
