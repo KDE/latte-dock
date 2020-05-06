@@ -1580,6 +1580,7 @@ Item {
         id: _parabolic
         animations: _animations
         appletsRecords: _appletsRecords
+        layouts: layoutsContainer
         view: latteView
     }
 

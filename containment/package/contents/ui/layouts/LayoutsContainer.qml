@@ -28,6 +28,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.containment 0.1 as LatteContainment
 
+import "./abilities" as AbilitiesTypes
 import "../../code/HeuristicTools.js" as HeuristicTools
 
 Item{
@@ -43,9 +44,15 @@ Item{
 
     readonly property int fillApplets: _startLayout.fillApplets + _mainLayout.fillApplets + _endLayout.fillApplets
 
-    property Item startLayout : _startLayout
-    property Item mainLayout: _mainLayout
-    property Item endLayout: _endLayout
+    readonly property alias startLayout : _startLayout
+    readonly property alias mainLayout: _mainLayout
+    readonly property alias endLayout: _endLayout
+
+    readonly property AbilitiesTypes.AbilityLayouts ability: AbilitiesTypes.AbilityLayouts{
+        startLayout: _startLayout
+        mainLayout: _mainLayout
+        endLayout: _endLayout
+    }
 
     Binding {
         target: layoutsContainer

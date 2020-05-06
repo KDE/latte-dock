@@ -1,5 +1,5 @@
 /*
-*  Copyright 2020 Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -19,15 +19,23 @@
 
 import QtQuick 2.7
 
-import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-import org.kde.latte.core 0.2 as LatteCore
+AbilityGridPrivate {
+    id: grid
 
-import "./privates" as Ability
+    ability.parabolic.restoreZoomIsBlocked: {
+        var cnts = 0;
 
-Ability.ParabolicEffectPrivate {
-    factor.zoom: LatteCore.WindowSystem.compositingActive && animations.active ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
-    factor.maxZoom: Math.max(factor.zoom, appletsRecords.maxInnerZoomFactor)
-    restoreZoomIsBlocked: (view && view.contextMenuIsShown) || (layouts.ability.parabolic.restoreZoomIsBlocked)
+        for (var i=0; i<grid.children.length; ++i){
+            var appletItem = grid.children[i];
+            if (appletItem
+                    && appletItem.communicator.parabolicEffectIsSupported
+                    && appletItem.communicator.bridge.parabolic.client.restoreZoomIsBlocked) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

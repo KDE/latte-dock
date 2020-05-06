@@ -31,6 +31,7 @@ ContainerAbility.ParabolicEffect {
 
     property Item animations: null
     property Item appletsRecords: null
+    property Item layouts: null
     property QtObject view: null
 
     readonly property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
@@ -52,11 +53,6 @@ ContainerAbility.ParabolicEffect {
         ignoreUnknownSignals : true
         onContainsMouseChanged: {
             if (!parabolic.view.visibility.containsMouse && !restoreZoomTimer.running) {
-                //! applets context menus is a good example that restoreZoomIsBlocked of host should track down
-                //! all clients restoreZoomIsBlocked properties ??
-                //! OR it must be tracked down why in multi-clients environment releasing
-                //! parabolic effect is not applied when the user rapid moves the mouse
-                //! between multiple parabolic clients/applets
                 parabolic.startRestoreZoomTimer()
             }
         }
