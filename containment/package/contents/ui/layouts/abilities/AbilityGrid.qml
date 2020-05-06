@@ -29,6 +29,7 @@ AbilityGridPrivate {
         for (var i=0; i<grid.children.length; ++i){
             var appletItem = grid.children[i];
             if (appletItem
+                    && appletItem.communicator
                     && appletItem.communicator.parabolicEffectIsSupported
                     && appletItem.communicator.bridge.parabolic.client.restoreZoomIsBlocked) {
                 return true;
@@ -43,7 +44,9 @@ AbilityGridPrivate {
 
         for (var i=0; i<grid.children.length; ++i){
             var appletItem = grid.children[i];
-            if (appletItem && appletItem.communicator.requires.windowsTrackingEnabled) {
+            if (appletItem
+                    && appletItem.communicator
+                    && appletItem.communicator.requires.windowsTrackingEnabled) {
                 cnts = cnts + 1;
             }
         }
@@ -56,7 +59,9 @@ AbilityGridPrivate {
 
         for (var i=0; i<grid.children.length; ++i){
             var appletItem = grid.children[i];
-            if (appletItem && appletItem.communicator.requires.innerZoomFactor > max) {
+            if (appletItem
+                    && appletItem.communicator
+                    && appletItem.communicator.requires.innerZoomFactor > max) {
                 max = appletItem.communicator.requires.innerZoomFactor;
             }
         }
