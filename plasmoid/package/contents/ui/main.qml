@@ -669,7 +669,7 @@ Item {
         filterByActivity: root.showOnlyCurrentActivity
 
         launchInPlace: true
-        separateLaunchers: true
+        separateLaunchers: false
         groupInline: false
 
         groupMode: groupTasksByDefault ? TaskManager.TasksModel.GroupApplications : TaskManager.TasksModel.GroupDisabled
