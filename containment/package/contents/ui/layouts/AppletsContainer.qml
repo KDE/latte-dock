@@ -51,12 +51,15 @@ Abilities.AbilityGrid {
         property:"sizeWithNoFillApplets"
         when: appletsContainer
         value: {
-            if (!visibilityManager || !visibilityManager.normalState && !(root.editMode && !root.inConfigureAppletsMode))
+            if (!animations.inNormalFillCalculationsState) {
                 return;
+            }
 
             var space = 0;
             for (var i=0; i<appletsContainer.children.length; ++i){
-                if (appletsContainer.children[i] && !appletsContainer.children[i].needsFillSpace && !appletsContainer.children[i].isHidden) {
+                if (appletsContainer.children[i]
+                        && !appletsContainer.children[i].needsFillSpace
+                        && !appletsContainer.children[i].isHidden) {
                     space = root.isHorizontal ? space + appletsContainer.children[i].width : space + appletsContainer.children[i].height;
                 }
             }
@@ -69,10 +72,9 @@ Abilities.AbilityGrid {
         var res = 0;
 
         for (var i=0; i<children.length; ++i){
-            if (children[i] && children[i].applet
-                    && (children[i].applet.status === PlasmaCore.Types.HiddenStatus || children[i].isInternalViewSplitter)) {
+            if (children[i] && children[i].isHidden) {
                 //do nothing
-            } else if (children[i] && children[i].applet){
+            } else if (children[i] && (children[i].applet || children[i].isInternalViewSplitter)){
                 res = res + 1;
             }
         }
@@ -156,7 +158,6 @@ Abilities.AbilityGrid {
     onFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
     onShownAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
     onSizeWithNoFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
-
 
     //////////////////////////BEGIN states
     //user set Panel Positions

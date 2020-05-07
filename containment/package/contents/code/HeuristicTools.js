@@ -218,8 +218,7 @@ function initializationPhase(availableSpace, sizePerApplet, noOfApplets){
 
 
 function updateSizeForAppletsInFill() {
-    if ((!animations.hasThicknessAnimation && !root.inConfigureAppletsMode)
-            || (behaveAsPlasmaPanel && root.inConfigureAppletsMode)) {
+    if (animations.inNormalFillCalculationsState) {
         // console.log("-------------");
         // console.log("s1...");
         var noA = startLayout.fillApplets + mainLayout.fillApplets + endLayout.fillApplets;
@@ -229,6 +228,8 @@ function updateSizeForAppletsInFill() {
 
         // console.log("s2...");
         if (mainLayout.shownApplets === 0 || root.panelAlignment !== LatteCore.Types.Justify) {
+            // console.log("  S2 _ SIZES ::: " + root.maxLength + " ___ " + startLayout.sizeWithNoFillApplets + " ___ " + mainLayout.sizeWithNoFillApplets + " ___ " + endLayout.sizeWithNoFillApplets);
+
             var availableSpace = Math.max(0, root.maxLength - startLayout.sizeWithNoFillApplets - mainLayout.sizeWithNoFillApplets - endLayout.sizeWithNoFillApplets - root.panelEdgeSpacing);
             var sizePerApplet = availableSpace / noA;
 
@@ -271,6 +272,8 @@ function updateSizeForAppletsInFill() {
         } else {
             //! Justify mode in all remaining cases
 
+            // console.log(" S3 _ SIZES ::: " + root.maxLength + " ___ " + startLayout.sizeWithNoFillApplets + " ___ " + mainLayout.sizeWithNoFillApplets + " ___ " + endLayout.sizeWithNoFillApplets);
+
             //! compute the two free spaces around the centered layout
             //! they are called start and end accordingly
             var halfMainLayout = mainLayout.sizeWithNoFillApplets / 2;
@@ -289,7 +292,6 @@ function updateSizeForAppletsInFill() {
             initLayoutForFillsCalculations(mainLayout);
             initLayoutForFillsCalculations(endLayout);
 
-            //console.log("s3...");
             var res;
 
             //! first pass

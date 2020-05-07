@@ -290,6 +290,7 @@ Item{
 
     function updateSizeForAppletsInFill() {
         if (!updateSizeForAppletsInFillTimer.running) {
+            HeuristicTools.updateSizeForAppletsInFill();
             updateSizeForAppletsInFillTimer.start();
         }
     }
@@ -299,11 +300,20 @@ Item{
         onIconSizeAnimationEnded: delayUpdateMaskArea.start();
     }
 
+    Connections {
+        target: animations
+        onInNormalFillCalculationsStateChanged: {
+            if (animations.inNormalFillCalculationsState) {
+                layoutsContainer.updateSizeForAppletsInFill();
+            }
+        }
+    }
+
     //! This timer is needed in order to reduce the calls to heavy cpu function
     //! HeuristicTools.updateSizeForAppletsInFill()
     Timer{
         id: updateSizeForAppletsInFillTimer
-        interval: 10
+        interval: 50
         onTriggered: HeuristicTools.updateSizeForAppletsInFill();
     }
 
