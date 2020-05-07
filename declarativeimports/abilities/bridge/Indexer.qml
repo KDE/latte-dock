@@ -18,24 +18,14 @@
 */
 
 import QtQuick 2.7
-import org.kde.plasma.plasmoid 2.0
 
-import "./privates" as Ability
+Item {
+    id: indexerBridge
+    property int appletIndex: -1
 
-Ability.IndexerPrivate {
-    function getIndexerBridge(index) {
-        if (indexerBridges.length<=0) {
-            return false;
-        }
+    property Item client: null
+    property Item host: null
 
-        var ibl = indexerBridges.length;
-
-        for(var i=0; i<ibl; ++i) {
-            if (indexerBridges[i].appletIndex === index) {
-                return indexerBridges[i];
-            }
-        }
-
-        return false;
-    }
+    property bool tailAppletIsSeparator: false
+    property bool headAppletIsSeparator: false
 }

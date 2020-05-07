@@ -32,27 +32,7 @@ Item{
     ///check also if this is the first/last plasmoid in anylayout
     visible: (rightSpacer ? appletItem.lastAppletInContainer : appletItem.firstAppletInContainer) || separatorSpace>0
 
-    property bool neighbourSeparator: {
-        if (appletItem.isSeparator || index === -1) {
-            return false;
-        }
-
-        if (rightSpacer) {
-            var step = index + 1;
-            while(step>=0 && appletItem.indexer.hidden.indexOf(step)>=0) {
-                step = step + 1;
-            }
-
-            return (appletItem.indexer.separators.indexOf(step)>=0);
-        } else {
-            var step = index - 1;
-            while(step>=0 && appletItem.indexer.hidden.indexOf(step)>=0) {
-                step = step - 1;
-            }
-
-            return (appletItem.indexer.separators.indexOf(step)>=0);
-        }
-    }
+    property bool neighbourSeparator: rightSpacer ? appletItem.headAppletIsSeparator : appletItem.tailAppletIsSeparator
 
     property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && root.parabolicEffectEnabled
                                  && !appletItem.latteApplet ? ((LatteCore.Environment.separatorLength/2)+appletItem.metrics.margin.length) : subtrackedMargins

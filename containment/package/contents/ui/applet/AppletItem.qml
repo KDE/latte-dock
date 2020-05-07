@@ -164,6 +164,59 @@ Item {
     property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * metrics.iconSize) - metrics.totals.lengthEdges)
     property int status: applet ? applet.status : -1
 
+    //! separators tracking
+    readonly property bool tailAppletIsSeparator: {
+        if (isSeparator || index<0) {
+            return false;
+        }
+
+        var tail = index - 1;
+
+        while(tail>=0 && indexer.hidden.indexOf(tail)>=0) {
+            //! when a tail applet contains sub-indexing and does not influence
+            //! tracking is considered hidden
+            tail = tail - 1;
+        }
+
+        if (tail >= 0 && indexer.indexers.indexOf(tail)>=0) {
+            //! tail applet contains items sub-indexing
+            var tailBridge = indexer.getIndexerBridge(tail);
+
+            if (tailBridge && tailBridge.client) {
+                return tailBridge.client.lastHeadItemIsSeparator;
+            }
+        }
+
+        // tail applet is normal
+        return (indexer.separators.indexOf(tail)>=0);
+    }
+
+    readonly property bool headAppletIsSeparator: {
+        if (isSeparator || index<0) {
+            return false;
+        }
+
+        var head = index + 1;
+
+        while(head>=0 && indexer.hidden.indexOf(head)>=0) {
+            //! when a head applet contains sub-indexing and does not influence
+            //! tracking is considered hidden
+            head = head + 1;
+        }
+
+        if (head >= 0 && indexer.indexers.indexOf(head)>=0) {
+            //! head applet contains items sub-indexing
+            var headBridge = indexer.getIndexerBridge(head);
+
+            if (headBridge && headBridge.client) {
+                return headBridge.client.firstTailItemIsSeparator;
+            }
+        }
+
+        // head applet is normal
+        return (indexer.separators.indexOf(head)>=0);
+    }
+
     //! local margins
     readonly property bool parabolicEffectMarginsEnabled: appletItem.parabolic.factor.zoom>1 && !originalAppletBehavior
 

@@ -1,5 +1,5 @@
 /*
-*  Copyright 2020 Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -17,25 +17,9 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
-import org.kde.plasma.plasmoid 2.0
+import QtQuick 2.0
 
-import "./privates" as Ability
-
-Ability.IndexerPrivate {
-    function getIndexerBridge(index) {
-        if (indexerBridges.length<=0) {
-            return false;
-        }
-
-        var ibl = indexerBridges.length;
-
-        for(var i=0; i<ibl; ++i) {
-            if (indexerBridges[i].appletIndex === index) {
-                return indexerBridges[i];
-            }
-        }
-
-        return false;
-    }
+Item {
+    property var separators: []
+    property var hidden: []
 }

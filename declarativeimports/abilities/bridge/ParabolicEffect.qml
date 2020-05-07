@@ -17,9 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
-
-import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
+import QtQuick 2.0
 
 Item {
     id: parabolicBridge

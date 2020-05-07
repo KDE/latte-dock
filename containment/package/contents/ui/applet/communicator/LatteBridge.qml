@@ -120,6 +120,13 @@ Item{
     readonly property Item animations: appletItem.animations.publicApi
     readonly property Item metrics: appletItem.metrics.publicApi
 
+    readonly property AbilityBridge.Indexer indexer: AbilityBridge.Indexer {
+        host: appletItem.indexer
+        appletIndex: index
+        headAppletIsSeparator: appletItem.headAppletIsSeparator
+        tailAppletIsSeparator: appletItem.tailAppletIsSeparator
+    }
+
     readonly property AbilityBridge.ParabolicEffect parabolic: AbilityBridge.ParabolicEffect {
         host: appletItem.parabolic
         appletIndex: index

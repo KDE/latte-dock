@@ -20,14 +20,14 @@
 import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte.abilities.containers 0.1 as ContainerAbility
+import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
-Item {
+AbilityDefinition.Indexer {
     id: indxr
 
     property Item layouts: null
 
-    readonly property var separators: {
+    separators: {
         var seps = [];
 
         var sLayout = layouts.startLayout;
@@ -57,7 +57,7 @@ Item {
         return seps;
     }
 
-    readonly property var hidden: {
+    hidden: {
         var hdn = [];
 
         var sLayout = layouts.startLayout;
@@ -85,5 +85,82 @@ Item {
         }
 
         return hdn;
+    }
+
+
+    readonly property var indexers: {
+        var inxs = [];
+
+        var sLayout = layouts.startLayout;
+        for (var i=0; i<sLayout.children.length; ++i){
+            var appletItem = sLayout.children[i];
+            if (indexerIsSupported(appletItem)) {
+                inxs.push(appletItem.index);
+            }
+        }
+
+        var mLayout = layouts.mainLayout;
+        for (var i=0; i<mLayout.children.length; ++i){
+            var appletItem = mLayout.children[i];
+            if (indexerIsSupported(appletItem)) {
+                inxs.push(appletItem.index);
+            }
+        }
+
+        var eLayout = layouts.endLayout;
+        for (var i=0; i<eLayout.children.length; ++i){
+            var appletItem = eLayout.children[i];
+            if (indexerIsSupported(appletItem)) {
+                inxs.push(appletItem.index);
+            }
+        }
+
+        return inxs;
+    }
+
+    readonly property var indexerBridges: {
+        var inbdgs = [];
+
+        var sLayout = layouts.startLayout;
+        for (var i=0; i<sLayout.children.length; ++i){
+            var appletItem = sLayout.children[i];
+            if (indexerBridgeIsValid(appletItem)) {
+                inbdgs.push(appletItem.communicator.bridge.indexer);
+            }
+        }
+
+        var mLayout = layouts.mainLayout;
+        for (var i=0; i<mLayout.children.length; ++i){
+            var appletItem = mLayout.children[i];
+            if (indexerBridgeIsValid(appletItem)) {
+                inbdgs.push(appletItem.communicator.bridge.indexer);
+            }
+        }
+
+        var eLayout = layouts.endLayout;
+        for (var i=0; i<eLayout.children.length; ++i){
+            var appletItem = eLayout.children[i];
+            if (indexerBridgeIsValid(appletItem)) {
+                inbdgs.push(appletItem.communicator.bridge.indexer);
+            }
+        }
+
+        return inbdgs;
+    }
+
+    function indexerIsSupported(appletItem) {
+        return (appletItem
+                && appletItem.index>=0
+                && appletItem.communicator
+                && appletItem.communicator.indexerIsSupported);
+    }
+
+    function indexerBridgeIsValid(appletItem) {
+        return (appletItem
+                && appletItem.index>=0
+                && appletItem.communicator
+                && appletItem.communicator.indexerIsSupported
+                && appletItem.communicator.bridge
+                && appletItem.communicator.bridge.indexer);
     }
 }

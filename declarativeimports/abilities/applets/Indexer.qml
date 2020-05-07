@@ -17,25 +17,30 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
-import org.kde.plasma.plasmoid 2.0
+import QtQuick 2.0
 
-import "./privates" as Ability
+import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
-Ability.IndexerPrivate {
-    function getIndexerBridge(index) {
-        if (indexerBridges.length<=0) {
-            return false;
+AbilityDefinition.Indexer {
+    id: indexer
+    property Item bridge: null
+    readonly property bool isActive: bridge !== null
+
+    onIsActiveChanged: {
+        if (isActive) {
+            bridge.indexer.client = indexer;
         }
+    }
 
-        var ibl = indexerBridges.length;
-
-        for(var i=0; i<ibl; ++i) {
-            if (indexerBridges[i].appletIndex === index) {
-                return indexerBridges[i];
-            }
+    Component.onCompleted: {
+        if (isActive) {
+            bridge.indexer.client = indexer;
         }
+    }
 
-        return false;
+    Component.onDestruction: {
+        if (isActive) {
+            bridge.indexer.client = null;
+        }
     }
 }
