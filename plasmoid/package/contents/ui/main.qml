@@ -1193,7 +1193,7 @@ Item {
 
             property int thickness: {
                 if (latteView) {
-                    return animations.hasThicknessAnimation ? latteView.maskManager.thicknessNormal : latteView.maskManager.thicknessZoom;
+                    return animations.hasThicknessAnimation ? latteView.maskManager.thicknessZoom : latteView.maskManager.thicknessNormal;
                 }
 
                 return metrics.totals.thickness * parabolic.factor.zoom;
