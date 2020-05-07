@@ -70,7 +70,6 @@ Item {
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && !indicators.isEnabled
     property bool dropNewLauncher: false
-    readonly property bool hasInternalSeparator: parabolicManager.hasInternalSeparator
     property bool inActivityChange: false
     property bool inDraggingPhase: false
     property bool initializationStep: false //true
@@ -137,6 +136,7 @@ Item {
     property Item parabolicManager: _parabolicManager
     property Item tasksExtendedManager: _tasksExtendedManager
     readonly property alias animations: _animations
+    readonly property alias indexer: _indexer
     readonly property alias metrics: _metrics
     readonly property alias parabolic: _parabolic
 
@@ -253,7 +253,6 @@ Item {
     signal launchersUpdatedFor(string launcher);
     signal presentWindows(variant winIds);
     signal requestLayout;
-    signal separatorsUpdated();
     signal signalPreviewsShown();
     //signal signalDraggingState(bool value);
     signal showPreviewForTasks(QtObject group);
@@ -944,6 +943,12 @@ Item {
         bridge: latteBridge
     }
 
+    Ability.Indexer {
+        id: _indexer
+        bridge: latteBridge
+        layout: icList.contentItem
+    }
+
     Ability.Metrics {
         id: _metrics
         bridge: latteBridge
@@ -1223,6 +1228,7 @@ Item {
                     orientation: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Qt.Vertical : Qt.Horizontal
                     delegate: Task.TaskItem{
                         animations: _animations
+                        indexer: _indexer
                         metrics: _metrics
                         parabolic: _parabolic
                         requires: _requires
@@ -1517,7 +1523,6 @@ Item {
                 console.log("launchers synced at:" + launchers);
                 launchers.length = 0;
                 parabolicManager.updateTasksEdgesIndexes();
-                root.separatorsUpdated();
                 tasksModel.syncLaunchers();
             } else {
                 var currentLaunchers = currentListViewLauncherList();
@@ -1733,7 +1738,6 @@ Item {
         if (group === root.launchersGroup && !root.dragSource) {
             tasksModel.move(from, to);
             parabolicManager.updateTasksEdgesIndexes();
-            root.separatorsUpdated();
             tasksModel.syncLaunchers();
         }
     }

@@ -45,12 +45,9 @@ Item {
     Component.onCompleted: {
         updateHasInternalSeparator();
         updateTasksEdgesIndexes();
-        root.separatorsUpdated.connect(updateHasInternalSeparator);
     }
 
     Component.onDestruction: {
-        root.separatorsUpdated.disconnect(updateHasInternalSeparator);
-
         parManager.sglUpdateLowerItemScale.disconnect(sltTrackLowerItemScale);
         parManager.sglUpdateHigherItemScale.disconnect(sltTrackHigherItemScale);
     }
@@ -62,8 +59,6 @@ Item {
         if (newFirstTask !== firstRealTaskIndex || newLastTask !== lastRealTaskIndex ){
             firstRealTaskIndex = newFirstTask;
             lastRealTaskIndex = newLastTask;
-
-            root.separatorsUpdated();
         }
 
         countRealTasks = realTasks();

@@ -94,7 +94,10 @@ AbilityDefinition.Indexer {
         var sLayout = layouts.startLayout;
         for (var i=0; i<sLayout.children.length; ++i){
             var appletItem = sLayout.children[i];
-            if (indexerIsSupported(appletItem)) {
+            if (appletItem
+                    && appletItem.index>=0
+                    && appletItem.communicator
+                    && appletItem.communicator.indexerIsSupported) {
                 inxs.push(appletItem.index);
             }
         }
@@ -102,7 +105,10 @@ AbilityDefinition.Indexer {
         var mLayout = layouts.mainLayout;
         for (var i=0; i<mLayout.children.length; ++i){
             var appletItem = mLayout.children[i];
-            if (indexerIsSupported(appletItem)) {
+            if (appletItem
+                    && appletItem.index>=0
+                    && appletItem.communicator
+                    && appletItem.communicator.indexerIsSupported) {
                 inxs.push(appletItem.index);
             }
         }
@@ -110,7 +116,10 @@ AbilityDefinition.Indexer {
         var eLayout = layouts.endLayout;
         for (var i=0; i<eLayout.children.length; ++i){
             var appletItem = eLayout.children[i];
-            if (indexerIsSupported(appletItem)) {
+            if (appletItem
+                    && appletItem.index>=0
+                    && appletItem.communicator
+                    && appletItem.communicator.indexerIsSupported) {
                 inxs.push(appletItem.index);
             }
         }
@@ -124,7 +133,12 @@ AbilityDefinition.Indexer {
         var sLayout = layouts.startLayout;
         for (var i=0; i<sLayout.children.length; ++i){
             var appletItem = sLayout.children[i];
-            if (indexerBridgeIsValid(appletItem)) {
+            if (appletItem
+                    && appletItem.index>=0
+                    && appletItem.communicator
+                    && appletItem.communicator.indexerIsSupported
+                    && appletItem.communicator.bridge
+                    && appletItem.communicator.bridge.indexer) {
                 inbdgs.push(appletItem.communicator.bridge.indexer);
             }
         }
@@ -132,7 +146,12 @@ AbilityDefinition.Indexer {
         var mLayout = layouts.mainLayout;
         for (var i=0; i<mLayout.children.length; ++i){
             var appletItem = mLayout.children[i];
-            if (indexerBridgeIsValid(appletItem)) {
+            if (appletItem
+                    && appletItem.index>=0
+                    && appletItem.communicator
+                    && appletItem.communicator.indexerIsSupported
+                    && appletItem.communicator.bridge
+                    && appletItem.communicator.bridge.indexer) {
                 inbdgs.push(appletItem.communicator.bridge.indexer);
             }
         }
@@ -140,27 +159,16 @@ AbilityDefinition.Indexer {
         var eLayout = layouts.endLayout;
         for (var i=0; i<eLayout.children.length; ++i){
             var appletItem = eLayout.children[i];
-            if (indexerBridgeIsValid(appletItem)) {
+            if (appletItem
+                    && appletItem.index>=0
+                    && appletItem.communicator
+                    && appletItem.communicator.indexerIsSupported
+                    && appletItem.communicator.bridge
+                    && appletItem.communicator.bridge.indexer) {
                 inbdgs.push(appletItem.communicator.bridge.indexer);
             }
         }
 
         return inbdgs;
-    }
-
-    function indexerIsSupported(appletItem) {
-        return (appletItem
-                && appletItem.index>=0
-                && appletItem.communicator
-                && appletItem.communicator.indexerIsSupported);
-    }
-
-    function indexerBridgeIsValid(appletItem) {
-        return (appletItem
-                && appletItem.index>=0
-                && appletItem.communicator
-                && appletItem.communicator.indexerIsSupported
-                && appletItem.communicator.bridge
-                && appletItem.communicator.bridge.indexer);
     }
 }

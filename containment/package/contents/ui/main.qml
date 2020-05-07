@@ -450,8 +450,6 @@ Item {
     property bool titleTooltips: plasmoid.configuration.titleTooltips
     property bool unifiedGlobalShortcuts: true
 
-    readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
-
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0  
 
     property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry

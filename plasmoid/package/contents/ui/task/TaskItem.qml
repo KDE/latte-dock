@@ -180,6 +180,7 @@ MouseArea{
 
     //abilities
     property Item animations: null
+    property Item indexer: null
     property Item metrics: null
     property Item parabolic: null
     property Item requires: null
@@ -212,6 +213,47 @@ MouseArea{
         if (modelLauncherUrlWithIcon !== ""){
             launcherUrlWithIcon = modelLauncherUrlWithIcon;
         }
+    }
+
+    //! separators flags
+    readonly property bool tailItemIsSeparator: {
+        if (isSeparator || itemIndex < 0 ) {
+            return false;
+        }
+
+        var tail = index - 1;
+
+        while(tail>=0 && taskItem.indexer.hidden.indexOf(tail)>=0) {
+            tail = tail - 1;
+        }
+
+        var hasTailItemSeparator = taskItem.indexer.separators.indexOf(tail)>=0;
+
+        if (!hasTailItemSeparator && itemIndex === taskItem.indexer.firstVisibleItemIndex){
+            return taskItem.indexer.tailAppletIsSeparator;
+        }
+
+        return hasTailItemSeparator;
+    }
+
+    readonly property bool headItemIsSeparator: {
+        if (isSeparator || itemIndex < 0 ) {
+            return false;
+        }
+
+        var head = index + 1;
+
+        while(head>=0 && taskItem.indexer.hidden.indexOf(head)>=0) {
+            head = head + 1;
+        }
+
+        var hasHeadItemSeparator = taskItem.indexer.separators.indexOf(head)>=0;
+
+        if (!hasHeadItemSeparator && itemIndex === taskItem.indexer.lastVisibleItemIndex){
+            return taskItem.indexer.headAppletIsSeparator;
+        }
+
+        return hasHeadItemSeparator;
     }
 
     ////// Audio streams //////
@@ -362,34 +404,8 @@ MouseArea{
             NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
         }
 
-        function updateForceHiddenState() {
-            if (!isSeparator || root.editMode || root.dragSource) {
-                forceHiddenState = false;
-            } else {
-                var firstPosition = (index>=0) && (index < parabolicManager.firstRealTaskIndex);
-                var sepNeighbour = taskItem.hasNeighbourSeparator(index-1, false);
-                var firstSepFromLastSeparatorsGroup = (index>=0) && (index > parabolicManager.lastRealTaskIndex);
-
-                forceHiddenState = (firstPosition || sepNeighbour || firstSepFromLastSeparatorsGroup);
-            }
-        }
-
-        Component.onCompleted: {
-            updateForceHiddenState();
-            root.hiddenTasksUpdated.connect(updateForceHiddenState);
-        }
-
-        Component.onDestruction: {
-            root.hiddenTasksUpdated.disconnect(updateForceHiddenState);
-        }
-
-        onForceHiddenStateChanged: root.separatorsUpdated();
-
         Connections{
             target: root
-            onEditModeChanged: separatorItem.updateForceHiddenState();
-            onDragSourceChanged: separatorItem.updateForceHiddenState();
-            onSeparatorsUpdated: separatorItem.updateForceHiddenState();
 
             //! During dock sliding-in because the parabolic effect isnt trigerred
             //! immediately but we wait first the dock to go to its final normal
@@ -554,12 +570,9 @@ MouseArea{
     }
 
     onItemIndexChanged: {
-        if (isSeparator) {
-            root.separatorsUpdated();
-        }
-
-        if (itemIndex>=0)
+        if (itemIndex>=0) {
             lastValidTimer.start();
+        }
     }
 
     onLastValidIndexChanged: {
@@ -567,10 +580,6 @@ MouseArea{
             if (!isForcedHidden && (lastValidIndex < parabolicManager.firstRealTaskIndex || lastValidIndex > parabolicManager.lastRealTaskIndex)) {
                 parabolicManager.updateTasksEdgesIndexes();
             }
-        }
-
-        if (parabolicManager.hasInternalSeparator) {
-            root.separatorsUpdated();
         }
     }
 
@@ -595,17 +604,11 @@ MouseArea{
         }
     }
 
-    onIsForcedHiddenChanged: root.hiddenTasksUpdated();
-
     onIsSeparatorChanged: {
         if (isSeparator) {
-            root.separatorsUpdated();
-
             if (tasksExtendedManager.isLauncherToBeMoved(launcherUrl) && itemIndex>=0) {
                 tasksExtendedManager.moveLauncherToCorrectPos(launcherUrl, itemIndex);
             }
-        } else {
-            root.separatorsUpdated();
         }
     }
 
@@ -1021,17 +1024,6 @@ MouseArea{
                 }
             }
         }
-    }
-
-    function hasNeighbourSeparator(ind, positive) {
-        var cursor = ind;
-
-        while (((!positive && cursor>=0) || (positive && cursor<=root.tasksCount-1))
-               && parabolicManager.taskIsForcedHidden(cursor) ) {
-            cursor = positive ? cursor + 1 : cursor - 1;
-        }
-
-        return parabolicManager.taskIsSeparator(cursor);
     }
 
     function showPreviewWindow() {

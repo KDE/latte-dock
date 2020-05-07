@@ -170,7 +170,6 @@ Item {
                     var pos = root.dragSource.itemIndex;
                     tasksModel.move(pos, insertAt);
 
-                    root.separatorsUpdated();
                     ignoreItemTimer.restart();
                 }
             } else if (!root.dragSource && above && hoveredItem != above) {
@@ -193,7 +192,6 @@ Item {
             hoveredItem = null;
             root.dropNewLauncher = false;
             onlyLaunchers = false;
-            root.separatorsUpdated();
             activationTimer.stop();
         }
 
@@ -202,7 +200,6 @@ Item {
             dArea.containsDrag = false;
             root.dropNewLauncher = false;
             onlyLaunchers = false;
-            root.separatorsUpdated();
 
             if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0) {
                 return;

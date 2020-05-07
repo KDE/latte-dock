@@ -32,7 +32,7 @@ Item{
              || (separatorSpace > 0) || taskItem.inAttentionAnimation
              || taskItem.inFastRestoreAnimation || taskItem.inMimicParabolicAnimation
 
-    property bool neighbourSeparator: false
+    property bool neighbourSeparator: rightSpacer ? taskItem.headItemIsSeparator : taskItem.tailItemIsSeparator
     //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
     //when the task is removed
     property int indexUsed: index === -1 ? lastValidIndex : index
@@ -46,7 +46,7 @@ Item{
     //the activity change animations from removal/additions of tasks
     //! && !root.inActivityChange (deprecated) in order to check if it is fixed
     property int separatorSpace: neighbourSeparator && !isSeparator && root.parabolicEffectEnabled
-                                 && !(parabolicManager.hasInternalSeparator && root.dragSource) ?
+                                 && !(taskItem.indexer.separators.length>0 && root.dragSource) ?
                                      ((LatteCore.Environment.separatorLength/2)+taskItem.metrics.margin.length) : 0
 
     property bool rightSpacer: false
@@ -68,46 +68,6 @@ Item{
         }
     }
 
-    function updateNeighbour() {
-        //index===-1 indicates that this item is removed
-        if (taskItem.inBouncingAnimation) {
-            return;
-        }
-
-        if (root.editMode && root.inConfigureAppletsMode) {
-            neighbourSeparator = false;
-        } else if (latteView && index!==-1) {
-            if (!rightSpacer) {
-                neighbourSeparator = (taskItem.hasNeighbourSeparator(itemIndex-1, false) && !isSeparator && itemIndex!==parabolicManager.firstRealTaskIndex)
-                        || (latteView.parabolicManager.isSeparator(latteView.latteAppletPos-1) && parabolicManager.firstRealTaskIndex === itemIndex);
-            } else {
-                if (itemIndex >= root.tasksCount) {
-                    return;
-                }
-
-                neighbourSeparator = (taskItem.hasNeighbourSeparator(itemIndex+1,true) && !isSeparator && itemIndex!==parabolicManager.lastRealTaskIndex)
-                        || (latteView.parabolicManager.isSeparator(latteView.latteAppletPos+1) && parabolicManager.lastRealTaskIndex === itemIndex );
-            }
-
-            /* if (launcherUrl.indexOf("kwrite") > -1 || launcherUrl.indexOf("dolphin") > -1 ) {
-                var spacerName = "left";
-                if (rightSpacer)
-                    spacerName = "right";
-
-                console.log(launcherUrl +":" + itemIndex +"," + spacerName + " _-_- " +neighbourSeparator);
-            }*/
-        }
-    }
-
-    Connections{
-        target: root
-        onEditModeChanged: hiddenSpacer.updateNeighbour();
-        onInConfigureAppletsModeChanged: hiddenSpacer.updateNeighbour();
-        onLatteViewChanged: hiddenSpacer.updateNeighbour();
-        // onInternalSeparatorHiddenChanged: hiddenSpacer.updateNeighbour();
-        onSeparatorsUpdated: hiddenSpacer.updateNeighbour();
-    }
-
     Connections{
         target: taskItem
         onContainsMouseChanged: {
@@ -115,32 +75,6 @@ Item{
                 hiddenSpacer.nScale = 0;
             }
         }
-    }
-
-    Connections{
-        target: latteView
-        onSeparatorsUpdated: hiddenSpacer.updateNeighbour();
-        onLatteAppletPosChanged: hiddenSpacer.updateNeighbour();
-    }
-
-    Connections{
-        target: parabolicManager
-        onFirstRealTaskIndexChanged: hiddenSpacer.updateNeighbour();
-        onLastRealTaskIndexChanged: hiddenSpacer.updateNeighbour();
-    }
-
-    Connections{
-        target: taskItem
-        onItemIndexChanged: hiddenSpacer.updateNeighbour();
-    }
-
-    Component.onCompleted: {
-        root.hiddenTasksUpdated.connect(updateNeighbour);
-        hiddenSpacer.updateNeighbour();
-    }
-
-    Component.onDestruction: {
-        root.hiddenTasksUpdated.disconnect(updateNeighbour);
     }
 
     Behavior on nHiddenSize {

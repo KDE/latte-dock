@@ -66,15 +66,7 @@ SequentialAnimation {
                 //! When removing a task and there are surrounding separators then the hidden spacers
                 //! are updated immediately for the neighbour tasks. In such case in order to not break
                 //! the removal animation a small margin must applied
-                var nextTaskIsSeparator = (lastValidIndex !== -1) && enabledAnimation &&
-                        ((taskItem.hasNeighbourSeparator(lastValidIndex+1,true) && !taskItem.isSeparator && lastValidIndex<parabolicManager.lastRealTaskIndex)
-                         || (latteView && latteView.parabolicManager.isSeparator(latteView.latteAppletPos+1) && lastValidIndex>parabolicManager.lastRealTaskIndex));
-
-                var previousTaskIsSeparator = (lastValidIndex !== -1) && enabledAnimation &&
-                        ((taskItem.hasNeighbourSeparator(lastValidIndex-1,false) && !taskItem.isSeparator && lastValidIndex>parabolicManager.firstRealTaskIndex)
-                         || (latteView && latteView.parabolicManager.isSeparator(latteView.latteAppletPos-1) && lastValidIndex<=parabolicManager.firstRealTaskIndex));
-
-                var spacer = nextTaskIsSeparator ? -(2+taskItem.metrics.totals.lengthEdge) : ( previousTaskIsSeparator ? (2+taskItem.metrics.totals.lengthEdge)/2 : 0);
+                var spacer = taskItem.headItemIsSeparator ? -(2+taskItem.metrics.totals.lengthEdge) : ( taskItem.headItemIsSeparator ? (2+taskItem.metrics.totals.lengthEdge)/2 : 0);
 
                 //console.log("EDGES ::: " + parabolicManager.firstRealTaskIndex + " _ " + parabolicManager.lastRealTaskIndex);
                 //console.log("Removing ::: " + lastValidIndex + " _ " + launcherUrl + " _ " + previousTaskIsSeparator + " _ " + nextTaskIsSeparator);
