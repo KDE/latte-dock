@@ -73,7 +73,7 @@ Item {
 
     property bool isExpanded: false
 
-    property bool isHidden: applet && applet.status === PlasmaCore.Types.HiddenStatus ? true : false
+    property bool isHidden: (applet && applet.status === PlasmaCore.Types.HiddenStatus) || isInternalViewSplitter
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isLattePlasmoid: latteApplet !== null
     property bool isZoomed: false

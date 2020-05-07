@@ -93,6 +93,7 @@ Abilities.AbilityGrid {
         return no;
     }
 
+    readonly property int maxIndex: 99999
     property int firstVisibleIndex: -1
     property int lastVisibleIndex: -1
 
@@ -105,18 +106,18 @@ Abilities.AbilityGrid {
                 return;
             }
 
-            var ind = -1;
-            for (var i=0; i<=children.length-1; ++i){
-                if (children[i]
-                        && (children[i].index<ind || ind === -1)
-                        && children[i].applet
-                        && !children[i].isHidden
-                        && !children[i].isInternalViewSplitter) {
-                    ind = children[i].index;
+            var ind = maxIndex;
+            for(var i=0; i<appletsContainer.children.length; ++i) {
+                var appletItem = appletsContainer.children[i];
+                if (appletItem && appletItem.index>=0
+                        && indexer.hidden.indexOf(appletItem.index)<0
+                        && indexer.separators.indexOf(appletItem.index)<0
+                        && appletItem.index < ind) {
+                    ind = appletItem.index;
                 }
             }
 
-            return ind;
+            return ind === maxIndex ? -1 : ind;
         }
     }
 
@@ -130,13 +131,13 @@ Abilities.AbilityGrid {
             }
 
             var ind = -1;
-            for (var i=children.length-1; i>=0; --i){
-                if (children[i]
-                        && children[i].index>ind
-                        && children[i].applet
-                        && !children[i].isHidden
-                        && !children[i].isInternalViewSplitter) {
-                    ind = children[i].index;
+            for(var i=0; i<appletsContainer.children.length; ++i) {
+                var appletItem = appletsContainer.children[i];
+                if (appletItem && appletItem.index>=0
+                        && indexer.hidden.indexOf(appletItem.index)<0
+                        && indexer.separators.indexOf(appletItem.index)<0
+                        && appletItem.index > ind) {
+                    ind = appletItem.index;
                 }
             }
 
