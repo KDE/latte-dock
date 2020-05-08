@@ -1108,12 +1108,57 @@ Item {
         layoutsContainer.updateSizeForAppletsInFill();
     }
 
-    function layoutManagerMoveAppletsOutOfMainLayoutToLayouts() {
+    function layoutManagerMoveAppletsBasedOnJustifyAlignment() {
         if (plasmoid.configuration.alignment !== 10) {
             return;
         }
         animations.appletsInParentChange = true;
+
+        var splitter = -1;
+        var startChildrenLength = layoutsContainer.startLayout.children.length;
+
+        //! Check if there is a splitter inside start layout after the user was dragging its applets
+        for (var i=0; i<startChildrenLength; ++i) {
+            var item = layoutsContainer.startLayout.children[i];
+            if(item.isInternalViewSplitter) {
+                splitter = i;
+                break;
+            }
+        }
+
+        //! If a splitter was found inside the startlayout move the head applets after splitter as tail
+        //! applets of mainlayout
+        if (splitter>=0) {
+            for (var i=startChildrenLength-1; i>=splitter; --i){
+                var item = layoutsContainer.startLayout.children[i];
+                LayoutManager.insertAtIndex(layoutsContainer.mainLayout, item, 0);
+            }
+        }
+
+        var splitter2 = -1;
+        var endChildrenLength = layoutsContainer.endLayout.children.length;
+
+        //! Check if there is a splitter inside endlayout after the user was dragging its applets
+        for (var i=0; i<endChildrenLength; ++i) {
+            var item = layoutsContainer.endLayout.children[i];
+            if(item.isInternalViewSplitter) {
+                splitter2 = i;
+                break;
+            }
+        }
+
+        //! If a splitter was found inside the endlayout move the tail applets until splitter as head
+        //! applets of mainlayout
+        if (splitter2>=0) {
+            for (var i=0; i<=splitter2; ++i){
+                var item = layoutsContainer.endLayout.children[0];
+                item.parent = layoutsContainer.mainLayout;
+            }
+        }
+
+        //! Validate applets positioning and move applets out of splitters to start/endlayouts accordingly
         splitMainLayoutToLayouts();
+
         animations.appletsInParentChange = false;
     }
 
@@ -1137,19 +1182,24 @@ Item {
             }
 
             // console.log("update layouts 1:"+splitter + " - "+splitter2);
-            for (var i=0; i<splitter; ++i){
-                var item = layoutsContainer.mainLayout.children[0];
-                item.parent = layoutsContainer.startLayout;
+
+            if (splitter > 0) {
+                for (var i=0; i<splitter; ++i){
+                    var item = layoutsContainer.mainLayout.children[0];
+                    item.parent = layoutsContainer.startLayout;
+                }
             }
 
-            splitter2 = splitter2 - splitter;
-            // console.log("update layouts 2:"+splitter + " - "+splitter2);
+            if (splitter2 > 0) {
+                splitter2 = splitter2 - splitter;
+                // console.log("update layouts 2:"+splitter + " - "+splitter2);
 
-            totalChildren = layoutsContainer.mainLayout.children.length;
+                totalChildren = layoutsContainer.mainLayout.children.length;
 
-            for (var i=totalChildren-1; i>=splitter2+1; --i){
-                var item = layoutsContainer.mainLayout.children[i];
-                LayoutManager.insertAtIndex(layoutsContainer.endLayout, item, 0);
+                for (var i=totalChildren-1; i>=splitter2+1; --i){
+                    var item = layoutsContainer.mainLayout.children[i];
+                    LayoutManager.insertAtIndex(layoutsContainer.endLayout, item, 0);
+                }
             }
 
             animations.appletsInParentChange = false;

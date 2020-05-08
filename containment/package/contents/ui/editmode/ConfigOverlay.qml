@@ -237,7 +237,7 @@ MouseArea {
         //     handle.width = currentApplet.width;
         //    handle.height = currentApplet.height;
         root.layoutManagerSave();
-        root.layoutManagerMoveAppletsOutOfMainLayoutToLayouts();
+        root.layoutManagerMoveAppletsBasedOnJustifyAlignment();
         layoutsContainer.updateSizeForAppletsInFill();
     }
 
