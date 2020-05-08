@@ -385,9 +385,9 @@ Item {
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? LatteCore.Types.Center : (root.isVertical ? LatteCore.Types.Top : LatteCore.Types.Left)
     //property int panelAlignment: plasmoid.configuration.alignment !== LatteCore.Types.Justify ? plasmoid.configuration.alignment : layoutsContainer.mainLayoutPosition
 
-    property int panelAlignment: !root.inConfigureAppletsMode ? plasmoid.configuration.alignment :
+    property int panelAlignment: plasmoid.configuration.alignment /*!root.inConfigureAppletsMode ? plasmoid.configuration.alignment :
                                                                 ( plasmoid.configuration.alignment === LatteCore.Types.Justify ?
-                                                                     LatteCore.Types.Center : plasmoid.configuration.alignment )
+                                                                     LatteCore.Types.Center : plasmoid.configuration.alignment )*/
 
     property int panelUserSetAlignment: plasmoid.configuration.alignment
 
@@ -527,11 +527,11 @@ Item {
     }
 
     onInConfigureAppletsModeChanged: {
-        if (inConfigureAppletsMode && panelUserSetAlignment===LatteCore.Types.Justify) {
+      /*  if (inConfigureAppletsMode && panelUserSetAlignment===LatteCore.Types.Justify) {
             joinLayoutsToMainLayout();
         } else if (!inConfigureAppletsMode) {
             splitMainLayoutToLayouts();
-        }
+        }*/
 
         updateIndexes();
     }
