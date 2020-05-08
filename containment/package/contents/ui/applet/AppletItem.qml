@@ -179,9 +179,9 @@ Item {
             tail = tail - 1;
         }
 
-        if (tail >= 0 && indexer.indexers.indexOf(tail)>=0) {
+        if (tail >= 0 && indexer.clients.indexOf(tail)>=0) {
             //! tail applet contains items sub-indexing
-            var tailBridge = indexer.getIndexerBridge(tail);
+            var tailBridge = indexer.getClientBridge(tail);
 
             if (tailBridge && tailBridge.client) {
                 return tailBridge.client.lastHeadItemIsSeparator;
@@ -205,9 +205,9 @@ Item {
             head = head + 1;
         }
 
-        if (head >= 0 && indexer.indexers.indexOf(head)>=0) {
+        if (head >= 0 && indexer.clients.indexOf(head)>=0) {
             //! head applet contains items sub-indexing
-            var headBridge = indexer.getIndexerBridge(head);
+            var headBridge = indexer.getClientBridge(head);
 
             if (headBridge && headBridge.client) {
                 return headBridge.client.firstTailItemIsSeparator;

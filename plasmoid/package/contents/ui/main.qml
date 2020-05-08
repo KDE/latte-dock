@@ -1318,8 +1318,8 @@ Item {
 
         LatteComponents.AddingArea {
             id: newDroppedLauncherVisual
-            width: root.vertical ? metrics.totals.thickness : mouseHandler.width
-            height: root.vertical ? mouseHandler.height : metrics.totals.thickness
+            width: root.vertical ? metrics.totals.thickness : scrollableList.width
+            height: root.vertical ? scrollableList.height : metrics.totals.thickness
 
             visible: backgroundOpacity > 0
             radius: metrics.iconSize/10
@@ -1336,8 +1336,8 @@ Item {
 
                     AnchorChanges {
                         target: newDroppedLauncherVisual
-                        anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
-                            horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                        anchors{ top:undefined; bottom:undefined; left:scrollableList.left; right:undefined;
+                            horizontalCenter:undefined; verticalCenter:scrollableList.verticalCenter}
                     }
 
                     PropertyChanges {
@@ -1351,8 +1351,8 @@ Item {
 
                     AnchorChanges {
                         target: newDroppedLauncherVisual
-                        anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
-                            horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                        anchors{ top:undefined; bottom:undefined; left:undefined; right:scrollableList.right;
+                            horizontalCenter:undefined; verticalCenter:scrollableList.verticalCenter}
                     }
 
                     PropertyChanges {
@@ -1366,8 +1366,8 @@ Item {
 
                     AnchorChanges {
                         target: newDroppedLauncherVisual
-                        anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right;
-                            horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                        anchors{ top:scrollableList.top; bottom:undefined; left:undefined; right:undefined;
+                            horizontalCenter:scrollableList.horizontalCenter; verticalCenter:undefined}
                     }
 
                     PropertyChanges {
@@ -1383,8 +1383,8 @@ Item {
 
                     AnchorChanges {
                         target: newDroppedLauncherVisual
-                        anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right;
-                            horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                        anchors{ top:undefined; bottom:scrollableList.bottom; left:undefined; right:undefined;
+                            horizontalCenter:scrollableList.horizontalCenter; verticalCenter:undefined}
                     }
 
                     PropertyChanges {

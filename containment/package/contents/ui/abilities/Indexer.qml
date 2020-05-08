@@ -23,16 +23,16 @@ import org.kde.plasma.plasmoid 2.0
 import "./privates" as Ability
 
 Ability.IndexerPrivate {
-    function getIndexerBridge(index) {
-        if (indexerBridges.length<=0) {
+    function getClientBridge(index) {
+        if (clientsBridges.length<=0) {
             return false;
         }
 
-        var ibl = indexerBridges.length;
+        var ibl = clientsBridges.length;
 
         for(var i=0; i<ibl; ++i) {
-            if (indexerBridges[i].appletIndex === index) {
-                return indexerBridges[i];
+            if (clientsBridges[i].appletIndex === index) {
+                return clientsBridges[i];
             }
         }
 

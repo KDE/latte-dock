@@ -88,8 +88,8 @@ AbilityDefinition.Indexer {
     }
 
 
-    readonly property var indexers: {
-        var inxs = [];
+    readonly property var clients: {
+        var clns = [];
 
         var sLayout = layouts.startLayout;
         for (var i=0; i<sLayout.children.length; ++i){
@@ -98,7 +98,7 @@ AbilityDefinition.Indexer {
                     && appletItem.index>=0
                     && appletItem.communicator
                     && appletItem.communicator.indexerIsSupported) {
-                inxs.push(appletItem.index);
+                clns.push(appletItem.index);
             }
         }
 
@@ -109,7 +109,7 @@ AbilityDefinition.Indexer {
                     && appletItem.index>=0
                     && appletItem.communicator
                     && appletItem.communicator.indexerIsSupported) {
-                inxs.push(appletItem.index);
+                clns.push(appletItem.index);
             }
         }
 
@@ -120,15 +120,15 @@ AbilityDefinition.Indexer {
                     && appletItem.index>=0
                     && appletItem.communicator
                     && appletItem.communicator.indexerIsSupported) {
-                inxs.push(appletItem.index);
+                clns.push(appletItem.index);
             }
         }
 
-        return inxs;
+        return clns;
     }
 
-    readonly property var indexerBridges: {
-        var inbdgs = [];
+    readonly property var clientsBridges: {
+        var bdgs = [];
 
         var sLayout = layouts.startLayout;
         for (var i=0; i<sLayout.children.length; ++i){
@@ -139,7 +139,7 @@ AbilityDefinition.Indexer {
                     && appletItem.communicator.indexerIsSupported
                     && appletItem.communicator.bridge
                     && appletItem.communicator.bridge.indexer) {
-                inbdgs.push(appletItem.communicator.bridge.indexer);
+                bdgs.push(appletItem.communicator.bridge.indexer);
             }
         }
 
@@ -152,7 +152,7 @@ AbilityDefinition.Indexer {
                     && appletItem.communicator.indexerIsSupported
                     && appletItem.communicator.bridge
                     && appletItem.communicator.bridge.indexer) {
-                inbdgs.push(appletItem.communicator.bridge.indexer);
+                bdgs.push(appletItem.communicator.bridge.indexer);
             }
         }
 
@@ -165,10 +165,10 @@ AbilityDefinition.Indexer {
                     && appletItem.communicator.indexerIsSupported
                     && appletItem.communicator.bridge
                     && appletItem.communicator.bridge.indexer) {
-                inbdgs.push(appletItem.communicator.bridge.indexer);
+                bdgs.push(appletItem.communicator.bridge.indexer);
             }
         }
 
-        return inbdgs;
+        return bdgs;
     }
 }
