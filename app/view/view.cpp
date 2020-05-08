@@ -318,6 +318,11 @@ bool View::inDelete() const
     return m_inDelete;
 }
 
+bool View::inReadyState() const
+{
+    return (m_layout != nullptr);
+}
+
 void View::disconnectSensitiveSignals()
 {
     m_initLayoutTimer.stop();

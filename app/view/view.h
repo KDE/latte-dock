@@ -140,6 +140,7 @@ public:
     void setAlternativesIsShown(bool show);
 
     bool inDelete() const;
+    bool inReadyState() const;
 
     bool onPrimary() const;
     void setOnPrimary(bool flag);

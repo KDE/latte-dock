@@ -389,7 +389,7 @@ int ContainmentInterface::appletIdForIndex(const int index)
 
 void ContainmentInterface::deactivateApplets()
 {
-    if (!m_view->containment()) {
+    if (!m_view->containment() || !m_view->inReadyState()) {
         return;
     }
 
@@ -404,12 +404,12 @@ void ContainmentInterface::deactivateApplets()
 
 bool ContainmentInterface::appletIsExpandable(const int id)
 {
-    if (!m_view->containment()) {
+    if (!m_view->containment() || !m_view->inReadyState()) {
         return false;
     }
 
     for (const auto applet : m_view->containment()->applets()) {
-        if (applet->id() == (uint)id) {
+        if (applet && applet->id() == (uint)id) {
             if (m_view->layout() && m_view->layout()->isInternalContainment(applet)) {
                 return true;
             }
@@ -427,7 +427,7 @@ bool ContainmentInterface::appletIsExpandable(const int id)
 
 bool ContainmentInterface::appletIsExpandable(PlasmaQuick::AppletQuickItem *appletQuickItem)
 {
-    if (!appletQuickItem) {
+    if (!appletQuickItem || !m_view->inReadyState()) {
         return false;
     }
 
@@ -499,7 +499,7 @@ bool ContainmentInterface::appletIsExpanded(const int id)
 
 void ContainmentInterface::toggleAppletExpanded(const int id)
 {
-    if (!m_view->containment()) {
+    if (!m_view->containment() || !m_view->inReadyState()) {
         return;
     }
 
