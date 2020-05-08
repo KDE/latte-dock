@@ -299,7 +299,7 @@ FocusScope {
             }
 
             ColumnLayout {
-                PlasmaComponents.ToolButton {
+                PlasmaComponents3.ToolButton {
                     id: pinButton
 
                     Layout.fillWidth: false
@@ -307,15 +307,15 @@ FocusScope {
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                    Layout.bottomMargin: units.smallSpacing
+                    Layout.bottomMargin: units.smallSpacing * 1.5
                     //!avoid editMode box shadow
                     Layout.topMargin: units.smallSpacing * 2
                     Layout.rightMargin: units.smallSpacing
 
-                    iconSource: "window-pin"
+                    icon.name: "window-pin"
                     checkable: true
 
-                    width: Math.round(units.gridUnit * 1.25)
+                    width: 7 * units.smallSpacing
                     height: width
 
                     property bool inStartup: true
