@@ -28,7 +28,7 @@ AbilityGridPrivate {
     readonly property bool updateIsBlocked: root.dragOverlay && root.dragOverlay.pressed
 
     Binding{
-        target: ability.require
+        target: ability.parabolic
         property: "restoreZoomIsBlocked"
         value: {
             if (grid.updateIsBlocked) {

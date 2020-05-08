@@ -29,11 +29,14 @@ ContainerAbility.Animations {
     property Item metrics: null
     property QtObject settings: null
 
+    //TO BE MOVED in LAYOUTER ability
+    property bool appletsInParentChange: false
     readonly property bool inNormalFillCalculationsState: needBothAxis.count === 0
                                                           && needThickness.count === 0
                                                           && ((needLength.count === 0)
                                                               || (needLength.count===1 && editModeVisual.inEditMode))
                                                           && (!dragOverlay || (dragOverlay && !dragOverlay.pressed)) /*do not update during moving/dragging applets*/
+                                                          && !appletsInParentChange
 
     //! Public Properties
     active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive

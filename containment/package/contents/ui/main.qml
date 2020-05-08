@@ -527,12 +527,6 @@ Item {
     }
 
     onInConfigureAppletsModeChanged: {
-      /*  if (inConfigureAppletsMode && panelUserSetAlignment===LatteCore.Types.Justify) {
-            joinLayoutsToMainLayout();
-        } else if (!inConfigureAppletsMode) {
-            splitMainLayoutToLayouts();
-        }*/
-
         updateIndexes();
     }
 
@@ -626,6 +620,8 @@ Item {
 
     Component.onDestruction: {
         console.debug("Destroying Latte Dock Containment ui...");
+
+        animations.appletsInParentChange = true;
 
         if (latteView) {
             latteView.positioner.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
@@ -1116,12 +1112,15 @@ Item {
         if (plasmoid.configuration.alignment !== 10) {
             return;
         }
-
+        animations.appletsInParentChange = true;
         splitMainLayoutToLayouts();
+        animations.appletsInParentChange = false;
     }
 
     function splitMainLayoutToLayouts() {
         if (internalViewSplittersCount() === 2) {
+            animations.appletsInParentChange = true;
+
             console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
             var splitter = -1;
             var splitter2 = -1;
@@ -1152,10 +1151,14 @@ Item {
                 var item = layoutsContainer.mainLayout.children[i];
                 LayoutManager.insertAtIndex(layoutsContainer.endLayout, item, 0);
             }
+
+            animations.appletsInParentChange = false;
         }
     }
 
     function joinLayoutsToMainLayout() {
+        animations.appletsInParentChange = true;
+
         console.log("LAYOUTS: Moving applets from THREE to MAIN Layout mode...");
         var totalChildren1 = layoutsContainer.mainLayout.children.length;
         for (var i=totalChildren1-1; i>=0; --i) {
@@ -1175,6 +1178,8 @@ Item {
             var itemL = layoutsContainer.startLayout.children[0];
             itemL.parent = layoutsContainer.mainLayout;
         }
+
+        animations.appletsInParentChange = false;
     }
 
     function upgrader_v010_alignment() {

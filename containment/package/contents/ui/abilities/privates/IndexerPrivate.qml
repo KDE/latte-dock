@@ -36,8 +36,8 @@ AbilityDefinition.Indexer {
         target: indxr
         property: "separators"
         value: {
-            if (index.updateIsBlocked) {
-                return;
+            if (updateIsBlocked) {
+                return [];
             }
 
             var seps = [];
@@ -74,8 +74,8 @@ AbilityDefinition.Indexer {
         target: indxr
         property: "hidden"
         value: {
-            if (index.updateIsBlocked) {
-                return;
+            if (updateIsBlocked) {
+                return [];
             }
 
             var hdn = [];
@@ -112,8 +112,8 @@ AbilityDefinition.Indexer {
         target: indxr
         property: "clients"
         value: {
-            if (index.updateIsBlocked) {
-                return;
+            if (updateIsBlocked) {
+                return [];
             }
 
             var clns = [];
@@ -159,8 +159,8 @@ AbilityDefinition.Indexer {
         target: indxr
         property: "clientsBridges"
         value: {
-            if (index.updateIsBlocked) {
-                return;
+            if (updateIsBlocked) {
+                return [];
             }
 
             var bdgs = [];

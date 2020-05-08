@@ -55,7 +55,8 @@ Abilities.AbilityGrid {
     property int lastVisibleIndex: -1
 
     //! do not update during dragging/moving applets inConfigureAppletsMode
-    readonly property bool updateIsBlocked: root.dragOverlay && root.dragOverlay.pressed
+    readonly property bool updateIsBlocked: (root.dragOverlay && root.dragOverlay.pressed)
+                                            || animations.appletsInParentChange
 
     Binding{
         target: appletsContainer
