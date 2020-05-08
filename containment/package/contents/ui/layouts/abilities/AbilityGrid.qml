@@ -24,48 +24,75 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 AbilityGridPrivate {
     id: grid
 
-    ability.parabolic.restoreZoomIsBlocked: {
+    //! do not update during dragging/moving applets inConfigureAppletsMode
+    readonly property bool updateIsBlocked: root.dragOverlay && root.dragOverlay.pressed
 
-        for (var i=0; i<grid.children.length; ++i){
-            var appletItem = grid.children[i];
-            if (appletItem
-                    && appletItem.communicator
-                    && appletItem.communicator.parabolicEffectIsSupported
-                    && appletItem.communicator.bridge.parabolic.client.restoreZoomIsBlocked) {
-                return true;
+    Binding{
+        target: ability.require
+        property: "restoreZoomIsBlocked"
+        value: {
+            if (grid.updateIsBlocked) {
+                return;
             }
-        }
 
-        return false;
+            for (var i=0; i<grid.children.length; ++i){
+                var appletItem = grid.children[i];
+                if (appletItem
+                        && appletItem.communicator
+                        && appletItem.communicator.parabolicEffectIsSupported
+                        && appletItem.communicator.bridge.parabolic.client.restoreZoomIsBlocked) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
-    ability.require.windowsTrackingCount: {
-        var cnts = 0;
-
-        for (var i=0; i<grid.children.length; ++i){
-            var appletItem = grid.children[i];
-            if (appletItem
-                    && appletItem.communicator
-                    && appletItem.communicator.requires.windowsTrackingEnabled) {
-                cnts = cnts + 1;
+    Binding{
+        target: ability.require
+        property: "windowsTrackingCount"
+        value: {
+            if (grid.updateIsBlocked) {
+                return;
             }
-        }
 
-        return cnts;
+            var cnts = 0;
+
+            for (var i=0; i<grid.children.length; ++i){
+                var appletItem = grid.children[i];
+                if (appletItem
+                        && appletItem.communicator
+                        && appletItem.communicator.requires.windowsTrackingEnabled) {
+                    cnts = cnts + 1;
+                }
+            }
+
+            return cnts;
+        }
     }
 
-    ability.require.maxInnerZoomFactor: {
-        var max = 1.0;
 
-        for (var i=0; i<grid.children.length; ++i){
-            var appletItem = grid.children[i];
-            if (appletItem
-                    && appletItem.communicator
-                    && appletItem.communicator.requires.innerZoomFactor > max) {
-                max = appletItem.communicator.requires.innerZoomFactor;
+    Binding{
+        target: ability.require
+        property: "maxInnerZoomFactor"
+        value: {
+            if (grid.updateIsBlocked) {
+                return;
             }
-        }
 
-        return max;
+            var max = 1.0;
+
+            for (var i=0; i<grid.children.length; ++i){
+                var appletItem = grid.children[i];
+                if (appletItem
+                        && appletItem.communicator
+                        && appletItem.communicator.requires.innerZoomFactor > max) {
+                    max = appletItem.communicator.requires.innerZoomFactor;
+                }
+            }
+
+            return max;
+        }
     }
 }

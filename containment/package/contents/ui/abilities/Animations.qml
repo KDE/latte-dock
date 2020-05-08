@@ -33,7 +33,7 @@ ContainerAbility.Animations {
                                                           && needThickness.count === 0
                                                           && ((needLength.count === 0)
                                                               || (needLength.count===1 && editModeVisual.inEditMode))
-
+                                                          && (!dragOverlay || (dragOverlay && !dragOverlay.pressed)) /*do not update during moving/dragging applets*/
 
     //! Public Properties
     active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive

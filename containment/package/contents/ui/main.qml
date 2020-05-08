@@ -543,18 +543,12 @@ Item {
             return;
         }
 
-        if (!inConfigureAppletsMode){
+        if (root.editMode/*!inConfigureAppletsMode*/){
             if (panelUserSetAlignment===LatteCore.Types.Justify) {
                 addInternalViewSplitters();
                 splitMainLayoutToLayouts();
             } else {
                 joinLayoutsToMainLayout();
-                root.destroyInternalViewSplitters();
-            }
-        } else {
-            if (panelUserSetAlignment===LatteCore.Types.Justify) {
-                addInternalViewSplitters();
-            } else {
                 root.destroyInternalViewSplitters();
             }
         }
@@ -827,7 +821,7 @@ Item {
         if (internalViewSplittersCount() === 0) {
             addInternalViewSplitter(plasmoid.configuration.splitterPosition);
             addInternalViewSplitter(plasmoid.configuration.splitterPosition2);
-        }
+        }        
     }
 
     function addInternalViewSplitter(pos){
@@ -839,9 +833,9 @@ Item {
             container.visible = true;
 
             if(pos>=0 ){
-                LayoutManager.insertAtIndex(container, pos);
+                LayoutManager.insertAtIndex(layoutsContainer.mainLayout, container, pos);
             } else {
-                LayoutManager.insertAtIndex(container, Math.floor(layoutsContainer.mainLayout.count / 2));
+                LayoutManager.insertAtIndex(layoutsContainer.mainLayout, container, Math.floor(layoutsContainer.mainLayout.count / 2));
             }
         }
     }
@@ -1118,6 +1112,14 @@ Item {
         layoutsContainer.updateSizeForAppletsInFill();
     }
 
+    function layoutManagerMoveAppletsOutOfMainLayoutToLayouts() {
+        if (plasmoid.configuration.alignment !== 10) {
+            return;
+        }
+
+        splitMainLayoutToLayouts();
+    }
+
     function splitMainLayoutToLayouts() {
         if (internalViewSplittersCount() === 2) {
             console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
@@ -1136,18 +1138,19 @@ Item {
             }
 
             // console.log("update layouts 1:"+splitter + " - "+splitter2);
-            for (var i=0; i<=splitter; ++i){
+            for (var i=0; i<splitter; ++i){
                 var item = layoutsContainer.mainLayout.children[0];
                 item.parent = layoutsContainer.startLayout;
             }
 
-            splitter2 = splitter2 - splitter - 1;
+            splitter2 = splitter2 - splitter;
             // console.log("update layouts 2:"+splitter + " - "+splitter2);
 
             totalChildren = layoutsContainer.mainLayout.children.length;
-            for (var i=splitter2+1; i<totalChildren; ++i){
-                var item = layoutsContainer.mainLayout.children[splitter2+1];
-                item.parent = layoutsContainer.endLayout;
+
+            for (var i=totalChildren-1; i>=splitter2+1; --i){
+                var item = layoutsContainer.mainLayout.children[i];
+                LayoutManager.insertAtIndex(layoutsContainer.endLayout, item, 0);
             }
         }
     }

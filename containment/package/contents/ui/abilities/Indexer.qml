@@ -23,6 +23,9 @@ import org.kde.plasma.plasmoid 2.0
 import "./privates" as Ability
 
 Ability.IndexerPrivate {
+    //! do not update during dragging/moving applets inConfigureAppletsMode
+    updateIsBlocked: root.dragOverlay && root.dragOverlay.pressed
+
     function getClientBridge(index) {
         if (clientsBridges.length<=0) {
             return false;

@@ -27,148 +27,184 @@ AbilityDefinition.Indexer {
 
     property Item layouts: null
 
-    separators: {
-        var seps = [];
+    property bool updateIsBlocked: false
 
-        var sLayout = layouts.startLayout;
-        for (var i=0; i<sLayout.children.length; ++i){
-            var appletItem = sLayout.children[i];
-            if (appletItem && appletItem.isSeparator && appletItem.index>=0) {
-                seps.push(appletItem.index);
+    property var clients: []
+    property var clientsBridges: []
+
+    Binding{
+        target: indxr
+        property: "separators"
+        value: {
+            if (index.updateIsBlocked) {
+                return;
             }
-        }
 
-        var mLayout = layouts.mainLayout;
-        for (var i=0; i<mLayout.children.length; ++i){
-            var appletItem = mLayout.children[i];
-            if (appletItem && appletItem.isSeparator && appletItem.index>=0) {
-                seps.push(appletItem.index);
+            var seps = [];
+
+            var sLayout = layouts.startLayout;
+            for (var i=0; i<sLayout.children.length; ++i){
+                var appletItem = sLayout.children[i];
+                if (appletItem && appletItem.isSeparator && appletItem.index>=0) {
+                    seps.push(appletItem.index);
+                }
             }
-        }
 
-        var eLayout = layouts.endLayout;
-        for (var i=0; i<eLayout.children.length; ++i){
-            var appletItem = eLayout.children[i];
-            if (appletItem && appletItem.isSeparator && appletItem.index>=0) {
-                seps.push(appletItem.index);
+            var mLayout = layouts.mainLayout;
+            for (var i=0; i<mLayout.children.length; ++i){
+                var appletItem = mLayout.children[i];
+                if (appletItem && appletItem.isSeparator && appletItem.index>=0) {
+                    seps.push(appletItem.index);
+                }
             }
-        }
 
-        return seps;
+            var eLayout = layouts.endLayout;
+            for (var i=0; i<eLayout.children.length; ++i){
+                var appletItem = eLayout.children[i];
+                if (appletItem && appletItem.isSeparator && appletItem.index>=0) {
+                    seps.push(appletItem.index);
+                }
+            }
+
+            return seps;
+        }
     }
 
-    hidden: {
-        var hdn = [];
-
-        var sLayout = layouts.startLayout;
-        for (var i=0; i<sLayout.children.length; ++i){
-            var appletItem = sLayout.children[i];
-            if (appletItem && appletItem.isHidden && appletItem.index>=0) {
-                hdn.push(appletItem.index);
+    Binding {
+        target: indxr
+        property: "hidden"
+        value: {
+            if (index.updateIsBlocked) {
+                return;
             }
-        }
 
-        var mLayout = layouts.mainLayout;
-        for (var i=0; i<mLayout.children.length; ++i){
-            var appletItem = mLayout.children[i];
-            if (appletItem && appletItem.isHidden && appletItem.index>=0) {
-                hdn.push(appletItem.index);
+            var hdn = [];
+
+            var sLayout = layouts.startLayout;
+            for (var i=0; i<sLayout.children.length; ++i){
+                var appletItem = sLayout.children[i];
+                if (appletItem && appletItem.isHidden && appletItem.index>=0) {
+                    hdn.push(appletItem.index);
+                }
             }
-        }
 
-        var eLayout = layouts.endLayout;
-        for (var i=0; i<eLayout.children.length; ++i){
-            var appletItem = eLayout.children[i];
-            if (appletItem && appletItem.isHidden && appletItem.index>=0) {
-                hdn.push(appletItem.index);
+            var mLayout = layouts.mainLayout;
+            for (var i=0; i<mLayout.children.length; ++i){
+                var appletItem = mLayout.children[i];
+                if (appletItem && appletItem.isHidden && appletItem.index>=0) {
+                    hdn.push(appletItem.index);
+                }
             }
-        }
 
-        return hdn;
+            var eLayout = layouts.endLayout;
+            for (var i=0; i<eLayout.children.length; ++i){
+                var appletItem = eLayout.children[i];
+                if (appletItem && appletItem.isHidden && appletItem.index>=0) {
+                    hdn.push(appletItem.index);
+                }
+            }
+
+            return hdn;
+        }
     }
 
-
-    readonly property var clients: {
-        var clns = [];
-
-        var sLayout = layouts.startLayout;
-        for (var i=0; i<sLayout.children.length; ++i){
-            var appletItem = sLayout.children[i];
-            if (appletItem
-                    && appletItem.index>=0
-                    && appletItem.communicator
-                    && appletItem.communicator.indexerIsSupported) {
-                clns.push(appletItem.index);
+    Binding {
+        target: indxr
+        property: "clients"
+        value: {
+            if (index.updateIsBlocked) {
+                return;
             }
-        }
 
-        var mLayout = layouts.mainLayout;
-        for (var i=0; i<mLayout.children.length; ++i){
-            var appletItem = mLayout.children[i];
-            if (appletItem
-                    && appletItem.index>=0
-                    && appletItem.communicator
-                    && appletItem.communicator.indexerIsSupported) {
-                clns.push(appletItem.index);
+            var clns = [];
+
+            var sLayout = layouts.startLayout;
+            for (var i=0; i<sLayout.children.length; ++i){
+                var appletItem = sLayout.children[i];
+                if (appletItem
+                        && appletItem.index>=0
+                        && appletItem.communicator
+                        && appletItem.communicator.indexerIsSupported) {
+                    clns.push(appletItem.index);
+                }
             }
-        }
 
-        var eLayout = layouts.endLayout;
-        for (var i=0; i<eLayout.children.length; ++i){
-            var appletItem = eLayout.children[i];
-            if (appletItem
-                    && appletItem.index>=0
-                    && appletItem.communicator
-                    && appletItem.communicator.indexerIsSupported) {
-                clns.push(appletItem.index);
+            var mLayout = layouts.mainLayout;
+            for (var i=0; i<mLayout.children.length; ++i){
+                var appletItem = mLayout.children[i];
+                if (appletItem
+                        && appletItem.index>=0
+                        && appletItem.communicator
+                        && appletItem.communicator.indexerIsSupported) {
+                    clns.push(appletItem.index);
+                }
             }
-        }
 
-        return clns;
+            var eLayout = layouts.endLayout;
+            for (var i=0; i<eLayout.children.length; ++i){
+                var appletItem = eLayout.children[i];
+                if (appletItem
+                        && appletItem.index>=0
+                        && appletItem.communicator
+                        && appletItem.communicator.indexerIsSupported) {
+                    clns.push(appletItem.index);
+                }
+            }
+
+            return clns;
+        }
     }
 
-    readonly property var clientsBridges: {
-        var bdgs = [];
-
-        var sLayout = layouts.startLayout;
-        for (var i=0; i<sLayout.children.length; ++i){
-            var appletItem = sLayout.children[i];
-            if (appletItem
-                    && appletItem.index>=0
-                    && appletItem.communicator
-                    && appletItem.communicator.indexerIsSupported
-                    && appletItem.communicator.bridge
-                    && appletItem.communicator.bridge.indexer) {
-                bdgs.push(appletItem.communicator.bridge.indexer);
+    Binding {
+        target: indxr
+        property: "clientsBridges"
+        value: {
+            if (index.updateIsBlocked) {
+                return;
             }
-        }
 
-        var mLayout = layouts.mainLayout;
-        for (var i=0; i<mLayout.children.length; ++i){
-            var appletItem = mLayout.children[i];
-            if (appletItem
-                    && appletItem.index>=0
-                    && appletItem.communicator
-                    && appletItem.communicator.indexerIsSupported
-                    && appletItem.communicator.bridge
-                    && appletItem.communicator.bridge.indexer) {
-                bdgs.push(appletItem.communicator.bridge.indexer);
+            var bdgs = [];
+
+            var sLayout = layouts.startLayout;
+            for (var i=0; i<sLayout.children.length; ++i){
+                var appletItem = sLayout.children[i];
+                if (appletItem
+                        && appletItem.index>=0
+                        && appletItem.communicator
+                        && appletItem.communicator.indexerIsSupported
+                        && appletItem.communicator.bridge
+                        && appletItem.communicator.bridge.indexer) {
+                    bdgs.push(appletItem.communicator.bridge.indexer);
+                }
             }
-        }
 
-        var eLayout = layouts.endLayout;
-        for (var i=0; i<eLayout.children.length; ++i){
-            var appletItem = eLayout.children[i];
-            if (appletItem
-                    && appletItem.index>=0
-                    && appletItem.communicator
-                    && appletItem.communicator.indexerIsSupported
-                    && appletItem.communicator.bridge
-                    && appletItem.communicator.bridge.indexer) {
-                bdgs.push(appletItem.communicator.bridge.indexer);
+            var mLayout = layouts.mainLayout;
+            for (var i=0; i<mLayout.children.length; ++i){
+                var appletItem = mLayout.children[i];
+                if (appletItem
+                        && appletItem.index>=0
+                        && appletItem.communicator
+                        && appletItem.communicator.indexerIsSupported
+                        && appletItem.communicator.bridge
+                        && appletItem.communicator.bridge.indexer) {
+                    bdgs.push(appletItem.communicator.bridge.indexer);
+                }
             }
-        }
 
-        return bdgs;
+            var eLayout = layouts.endLayout;
+            for (var i=0; i<eLayout.children.length; ++i){
+                var appletItem = eLayout.children[i];
+                if (appletItem
+                        && appletItem.index>=0
+                        && appletItem.communicator
+                        && appletItem.communicator.indexerIsSupported
+                        && appletItem.communicator.bridge
+                        && appletItem.communicator.bridge.indexer) {
+                    bdgs.push(appletItem.communicator.bridge.indexer);
+                }
+            }
+
+            return bdgs;
+        }
     }
 }

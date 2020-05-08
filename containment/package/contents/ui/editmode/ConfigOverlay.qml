@@ -64,6 +64,40 @@ MouseArea {
     onWidthChanged: tooltip.visible = false;
 
 
+    function hoveredItem(x, y) {
+        //! main layout
+        var relevantLayout = mapFromItem(layoutsContainer.mainLayout,0,0);
+        var item = layoutsContainer.mainLayout.childAt(x-relevantLayout.x, y-relevantLayout.y);
+
+        if (!item) {
+            // start layout
+            relevantLayout = mapFromItem(layoutsContainer.startLayout,0,0);
+            item = layoutsContainer.startLayout.childAt(x-relevantLayout.x, y-relevantLayout.y);
+        }
+
+        if (!item) {
+            relevantLayout = mapFromItem(layoutsContainer.endLayout,0,0);
+            item = layoutsContainer.endLayout.childAt(x-relevantLayout.x, y-relevantLayout.y);
+        }
+
+        return item;
+    }
+
+    function relevantLayoutForApplet(curapplet) {
+        var relevantLayout;
+
+        if (curapplet.parent === layoutsContainer.mainLayout) {
+            relevantLayout = mapFromItem(layoutsContainer.mainLayout, 0, 0);
+        } else if (curapplet.parent === layoutsContainer.startLayout) {
+            relevantLayout = mapFromItem(layoutsContainer.startLayout, 0, 0);
+        } else if (curapplet.parent === layoutsContainer.endLayout) {
+            relevantLayout = mapFromItem(layoutsContainer.endLayout, 0, 0);
+        }
+
+        return relevantLayout;
+    }
+
+
     onPositionChanged: {
         if (pressed) {
             var padding = units.gridUnit * 3;
@@ -92,8 +126,7 @@ MouseArea {
             lastX = mouse.x;
             lastY = mouse.y;
 
-            var relevantLayout = mapFromItem(layoutsContainer.mainLayout, 0, 0);
-            var item = layoutsContainer.mainLayout.childAt(mouse.x-relevantLayout.x, mouse.y-relevantLayout.y);
+            var item =  hoveredItem(mouse.x, mouse.y);
 
             if (item && item !== placeHolder) {
                 placeHolder.parent = configurationArea;
@@ -107,10 +140,9 @@ MouseArea {
                 }
             }
 
-        } else {
-            var relevantLayout = mapFromItem(layoutsContainer.mainLayout,0,0);
+        } else {           
+            var item = hoveredItem(mouse.x, mouse.y);
 
-            var item = layoutsContainer.mainLayout.childAt(mouse.x-relevantLayout.x, mouse.y-relevantLayout.y);
             if (root.dragOverlay && item && item !== lastSpacer) {
                 root.dragOverlay.currentApplet = item;
             } else {
@@ -132,13 +164,16 @@ MouseArea {
     onCurrentAppletChanged: {
         previousCurrentApplet = currentApplet;
 
-        if (!currentApplet
-                || !root.dragOverlay.currentApplet) {
+        if (!currentApplet || !root.dragOverlay.currentApplet) {
             hideTimer.restart();
             return;
         }
 
-        var relevantLayout = mapFromItem(layoutsContainer.mainLayout, 0, 0);
+        var relevantLayout = relevantLayoutForApplet(currentApplet) ;
+
+        if (!relevantLayout) {
+            return;
+        }
 
         handle.x = relevantLayout.x + currentApplet.x;
         handle.y = relevantLayout.y + currentApplet.y;
@@ -202,6 +237,8 @@ MouseArea {
         //     handle.width = currentApplet.width;
         //    handle.height = currentApplet.height;
         root.layoutManagerSave();
+        root.layoutManagerMoveAppletsOutOfMainLayoutToLayouts();
+        layoutsContainer.updateSizeForAppletsInFill();
     }
 
     onWheel: {

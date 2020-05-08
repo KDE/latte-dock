@@ -238,7 +238,7 @@ function removeApplet (applet) {
 
 //insert item2 before item1
 function insertBefore(item1, item2) {
-    return insertBeforeForLayout(layout, item1, item2);
+    return insertBeforeForLayout(item1.parent, item1, item2);;
 }
 
 //insert item2 before item1
@@ -273,7 +273,7 @@ function insertBeforeForLayout(tLayout, item1, item2) {
 
 //insert item2 after item1
 function insertAfter(item1, item2) {
-    return insertAfterForLayout(layout, item1, item2);
+    return insertAfterForLayout(item1.parent, item1, item2);
 }
 
 //insert item2 after item1
@@ -315,16 +315,16 @@ function insertAfterForLayout(tLayout, item1, item2) {
 }
 
 
-function insertAtIndex(item, position) {
+function insertAtIndex(relevantLayout, item, position) {
     var addToEnd = false;
-    if (position < 0 || (position > layout.children.length && !item.isInternalViewSplitter)) {
+    if (position < 0 || (position > relevantLayout.children.length && !item.isInternalViewSplitter)) {
         return;
-    } else if (position >= layout.children.length) {
+    } else if (position >= relevantLayout.children.length) {
         addToEnd = true;
     }
 
     //never ever insert after lastSpacer
-    var firstItem = (layout.children.length === 1) && (layout.children[0] === lastSpacer);
+    var firstItem = (relevantLayout.children.length === 1) && (relevantLayout.children[0] === lastSpacer);
 
     //Important !!! , this is used to add the first item
     if(firstItem){
@@ -333,28 +333,28 @@ function insertAtIndex(item, position) {
     }
 
     if (addToEnd){
-        item.parent=layout;
+        item.parent=relevantLayout;
         return;
     }
 
-    if(layout.children.length > 0){
-        if (layout.children[position] === lastSpacer) {
+    if(relevantLayout.children.length > 0){
+        if (relevantLayout.children[position] === lastSpacer) {
             --position;
         }
     }
 
     var removedItems = new Array();
 
-    var totalChildren = layout.children.length;
+    var totalChildren = relevantLayout.children.length;
     for (var i = position; i < totalChildren; ++i) {
-        var child = layout.children[position];
+        var child = relevantLayout.children[position];
         child.parent = root;
         removedItems.push(child);
     }
 
-    item.parent = layout;
+    item.parent = relevantLayout;
     for (var i in removedItems) {
-        removedItems[i].parent = layout;
+        removedItems[i].parent = relevantLayout;
     }
 }
 
@@ -479,14 +479,12 @@ function insertAtLayoutCoordinates(tLayout, item, x, y) {
 function insertAtCoordinates2(item, x, y) {
     var pos = -1;
 
-    if (!root.inConfigureAppletsMode) {
-        var layoutPosS = layoutS.mapFromItem(root, x, y);
-        pos = insertAtLayoutCoordinates(layoutS, item, layoutPosS.x, layoutPosS.y);
+    var layoutPosS = layoutS.mapFromItem(root, x, y);
+    pos = insertAtLayoutCoordinates(layoutS, item, layoutPosS.x, layoutPosS.y);
 
-        if (pos === -1){
-            var layoutPosE = layoutE.mapFromItem(root, x, y);
-            pos = insertAtLayoutCoordinates(layoutE, item, layoutPosE.x, layoutPosE.y);
-        }
+    if (pos === -1){
+        var layoutPosE = layoutE.mapFromItem(root, x, y);
+        pos = insertAtLayoutCoordinates(layoutE, item, layoutPosE.x, layoutPosE.y);
     }
 
     if (pos!==childFoundId && pos === -1) {

@@ -44,14 +44,25 @@ Abilities.AbilityGrid {
     readonly property int count: children.length
 
     //it is used in calculations for fillWidth,fillHeight applets
+    property int shownApplets: 0
+    property int fillApplets: 0
+
+    //it is used in calculations for fillWidth,fillHeight applets
     property int sizeWithNoFillApplets: 0
+
+    readonly property int maxIndex: 99999
+    property int firstVisibleIndex: -1
+    property int lastVisibleIndex: -1
+
+    //! do not update during dragging/moving applets inConfigureAppletsMode
+    readonly property bool updateIsBlocked: root.dragOverlay && root.dragOverlay.pressed
 
     Binding{
         target: appletsContainer
         property:"sizeWithNoFillApplets"
         when: appletsContainer
         value: {
-            if (!animations.inNormalFillCalculationsState) {
+            if (!animations.inNormalFillCalculationsState || updateIsBlocked) {
                 return;
             }
 
@@ -68,43 +79,58 @@ Abilities.AbilityGrid {
         }
     }
 
-    property int shownApplets: {
-        var res = 0;
 
-        for (var i=0; i<children.length; ++i){
-            if (children[i] && children[i].isHidden) {
-                //do nothing
-            } else if (children[i] && (children[i].applet || children[i].isInternalViewSplitter)){
-                res = res + 1;
+    Binding{
+        target: appletsContainer
+        property:"shownApplets"
+        when: appletsContainer
+        value: {
+            if (updateIsBlocked) {
+                return;
             }
-        }
 
-        return res;
+            var res = 0;
+
+            for (var i=0; i<children.length; ++i){
+                if (children[i] && children[i].isHidden) {
+                    //do nothing
+                } else if (children[i] && (children[i].applet || children[i].isInternalViewSplitter)){
+                    res = res + 1;
+                }
+            }
+
+            return res;
+        }
     }
 
-    //it is used in calculations for fillWidth,fillHeight applets
-    property int fillApplets:{
-        var no = 0;
-        for (var i=0; i<children.length; ++i){
-            if (children[i] && children[i].needsFillSpace) {
-                //console.log("fill :::: " + children[i].applet.pluginName);
-                no++;
+
+    Binding{
+        target: appletsContainer
+        property:"fillApplets"
+        when: appletsContainer
+        value: {
+            if (updateIsBlocked) {
+                return;
             }
+
+            var no = 0;
+            for (var i=0; i<children.length; ++i){
+                if (children[i] && children[i].needsFillSpace) {
+                    //console.log("fill :::: " + children[i].applet.pluginName);
+                    no++;
+                }
+            }
+
+            return no;
         }
-
-        return no;
     }
-
-    readonly property int maxIndex: 99999
-    property int firstVisibleIndex: -1
-    property int lastVisibleIndex: -1
 
     Binding{
         target: appletsContainer
         property:"firstVisibleIndex"
         when: appletsContainer
         value: {
-            if (root.inConfigureAppletsMode) {
+            if (updateIsBlocked) {
                 return;
             }
 
@@ -128,7 +154,7 @@ Abilities.AbilityGrid {
         property:"lastVisibleIndex"
         when: appletsContainer
         value: {
-            if (root.inConfigureAppletsMode) {
+            if (updateIsBlocked) {
                 return;
             }
 
