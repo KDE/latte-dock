@@ -35,11 +35,8 @@ AbilityDefinition.Indexer {
     Binding{
         target: indxr
         property: "separators"
+        when: !updateIsBlocked
         value: {
-            if (updateIsBlocked) {
-                return [];
-            }
-
             var seps = [];
 
             var sLayout = layouts.startLayout;
@@ -73,11 +70,8 @@ AbilityDefinition.Indexer {
     Binding {
         target: indxr
         property: "hidden"
+        when: !updateIsBlocked
         value: {
-            if (updateIsBlocked) {
-                return [];
-            }
-
             var hdn = [];
 
             var sLayout = layouts.startLayout;
@@ -111,11 +105,8 @@ AbilityDefinition.Indexer {
     Binding {
         target: indxr
         property: "clients"
+        when: !updateIsBlocked
         value: {
-            if (updateIsBlocked) {
-                return [];
-            }
-
             var clns = [];
 
             var sLayout = layouts.startLayout;
@@ -158,11 +149,8 @@ AbilityDefinition.Indexer {
     Binding {
         target: indxr
         property: "clientsBridges"
+        when: !updateIsBlocked
         value: {
-            if (updateIsBlocked) {
-                return [];
-            }
-
             var bdgs = [];
 
             var sLayout = layouts.startLayout;

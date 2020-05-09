@@ -55,12 +55,8 @@ Loader{
     Binding{
         target: appletNumberLoader
         property:"badgeString"
+        when: root.showMetaBadge || root.showAppletShortcutBadges
         value: {
-            //! don't change value on hiding/releasing
-            if (!root.showMetaBadge && !root.showAppletShortcutBadges) {
-                return;
-            }
-
             if (root.showMetaBadge && applet && applet.id === applicationLauncherId) {
                 return '\u2318';
             }

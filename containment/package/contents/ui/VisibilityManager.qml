@@ -147,16 +147,8 @@ Item{
     Binding{
         target: latteView
         property:"normalThickness"
-        //! workaround Qt 5.14 bindings warning to not restore values because to qt 6.0 changes
-        //when: latteView && inPublishingState
-        readonly property bool inactiveness: latteView && inPublishingState
-        value:  {
-            if (!inactiveness) {
-                return;
-            }
-
-            return root.behaveAsPlasmaPanel && !root.editMode ? thicknessAsPanel : thicknessNormalOriginal
-        }
+        when: latteView && inPublishingState
+        value: root.behaveAsPlasmaPanel && !root.editMode ? thicknessAsPanel : thicknessNormalOriginal
     }
 
     Binding{

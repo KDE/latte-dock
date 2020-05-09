@@ -57,11 +57,8 @@ Item{
     Binding {
         target: layoutsContainer
         property: "x"
+        when: !visibilityManager.inLocationAnimation
         value: {
-            if (visibilityManager.inLocationAnimation) {
-                return;
-            }
-
             if (root.behaveAsPlasmaPanel) {
                 return 0;
             }
@@ -93,11 +90,8 @@ Item{
     Binding{
         target: layoutsContainer
         property: "y"
+        when: !visibilityManager.inLocationAnimation
         value: {
-            if (visibilityManager.inLocationAnimation) {
-                return;
-            }
-
             if (root.behaveAsPlasmaPanel) {
                 return 0;
             }

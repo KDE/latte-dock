@@ -61,12 +61,8 @@ Abilities.AbilityGrid {
     Binding{
         target: appletsContainer
         property:"sizeWithNoFillApplets"
-        when: appletsContainer
+        when: appletsContainer && !updateIsBlocked && animations.inNormalFillCalculationsState
         value: {
-            if (!animations.inNormalFillCalculationsState || updateIsBlocked) {
-                return;
-            }
-
             var space = 0;
             for (var i=0; i<appletsContainer.children.length; ++i){
                 if (appletsContainer.children[i]
@@ -84,12 +80,8 @@ Abilities.AbilityGrid {
     Binding{
         target: appletsContainer
         property:"shownApplets"
-        when: appletsContainer
+        when: appletsContainer && !updateIsBlocked
         value: {
-            if (updateIsBlocked) {
-                return;
-            }
-
             var res = 0;
 
             for (var i=0; i<children.length; ++i){
@@ -108,12 +100,8 @@ Abilities.AbilityGrid {
     Binding{
         target: appletsContainer
         property:"fillApplets"
-        when: appletsContainer
+        when: appletsContainer && !updateIsBlocked
         value: {
-            if (updateIsBlocked) {
-                return;
-            }
-
             var no = 0;
             for (var i=0; i<children.length; ++i){
                 if (children[i] && children[i].needsFillSpace) {
@@ -129,12 +117,8 @@ Abilities.AbilityGrid {
     Binding{
         target: appletsContainer
         property:"firstVisibleIndex"
-        when: appletsContainer
+        when: appletsContainer && !updateIsBlocked
         value: {
-            if (updateIsBlocked) {
-                return;
-            }
-
             var ind = maxIndex;
             for(var i=0; i<appletsContainer.children.length; ++i) {
                 var appletItem = appletsContainer.children[i];
@@ -153,12 +137,8 @@ Abilities.AbilityGrid {
     Binding{
         target: appletsContainer
         property:"lastVisibleIndex"
-        when: appletsContainer
+        when: appletsContainer && !updateIsBlocked
         value: {
-            if (updateIsBlocked) {
-                return;
-            }
-
             var ind = -1;
             for(var i=0; i<appletsContainer.children.length; ++i) {
                 var appletItem = appletsContainer.children[i];

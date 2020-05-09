@@ -30,11 +30,8 @@ AbilityGridPrivate {
     Binding{
         target: ability.parabolic
         property: "restoreZoomIsBlocked"
+        when: !updateIsBlocked
         value: {
-            if (grid.updateIsBlocked) {
-                return;
-            }
-
             for (var i=0; i<grid.children.length; ++i){
                 var appletItem = grid.children[i];
                 if (appletItem
@@ -52,11 +49,8 @@ AbilityGridPrivate {
     Binding{
         target: ability.require
         property: "windowsTrackingCount"
+        when: !updateIsBlocked
         value: {
-            if (grid.updateIsBlocked) {
-                return;
-            }
-
             var cnts = 0;
 
             for (var i=0; i<grid.children.length; ++i){
@@ -76,11 +70,8 @@ AbilityGridPrivate {
     Binding{
         target: ability.require
         property: "maxInnerZoomFactor"
+        when: !updateIsBlocked
         value: {
-            if (grid.updateIsBlocked) {
-                return;
-            }
-
             var max = 1.0;
 
             for (var i=0; i<grid.children.length; ++i){
