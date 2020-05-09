@@ -329,7 +329,7 @@ inline void filterDebugMessageOutput(QtMsgType type, const QMessageLogContext &c
     const char *TypeColor;
 
     if (type == QtInfoMsg || type == QtWarningMsg) {
-        TypeColor = CICYAN;
+        TypeColor = CGREEN;
     } else if (type == QtCriticalMsg || type == QtFatalMsg) {
         TypeColor = CRED;
     } else {
