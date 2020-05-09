@@ -177,6 +177,7 @@ signals:
     void raiseViewsTemporaryChanged();
     void availableScreenRectChangedFrom(Latte::View *origin);
     void availableScreenRegionChangedFrom(Latte::View *origin);
+    void verticalUnityViewHasFocus();
 
 private slots:
     void alternativesVisibilityChanged(bool visible);

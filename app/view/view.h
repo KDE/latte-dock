@@ -338,6 +338,10 @@ private slots:
     void addTransientWindow(QWindow *window);
     void removeTransientWindow(const bool &visible);
 
+    //! workaround in order for top panels to be always on top
+    void topViewAlwaysOnTop();
+    void verticalUnityViewHasFocus();
+
     void restoreConfig();
     void saveConfig();
 

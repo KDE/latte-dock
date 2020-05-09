@@ -248,6 +248,7 @@ void View::init(Plasma::Containment *plasma_containment)
     connect(this, &View::availableScreenRectChangedFrom, m_corona, &Latte::Corona::availableScreenRectChangedFrom);
     connect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
     connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFromSlot);
+    connect(m_corona, &Latte::Corona::verticalUnityViewHasFocus, this, &View::topViewAlwaysOnTop);
 
     connect(this, &View::byPassWMChanged, this, &View::saveConfig);
     connect(this, &View::isPreferredForShortcutsChanged, this, &View::saveConfig);
@@ -268,6 +269,8 @@ void View::init(Plasma::Containment *plasma_containment)
     });
 
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
+
+    connect(m_interface, &ViewPart::ContainmentInterface::hasExpandedAppletChanged, this, &View::verticalUnityViewHasFocus);
 
     //! View sends this signal in order to avoid crashes from ViewPart::Indicator when the view is recreated
     connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::indicatorChanged, this, [&](const QString &indicatorId) {
@@ -330,6 +333,7 @@ void View::disconnectSensitiveSignals()
     disconnect(this, &View::availableScreenRectChangedFrom, m_corona, &Latte::Corona::availableScreenRectChangedFrom);
     disconnect(this, &View::availableScreenRegionChangedFrom, m_corona, &Latte::Corona::availableScreenRegionChangedFrom);
     disconnect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &View::availableScreenRectChangedFromSlot);
+    disconnect(m_corona, &Latte::Corona::verticalUnityViewHasFocus, this, &View::topViewAlwaysOnTop);
 
     setLayout(nullptr);
 }
@@ -1472,6 +1476,34 @@ bool View::isHighestPriorityView() {
     return false;
 }
 
+//! BEGIN: WORKAROUND order to force top panels always on top and above left/right panels
+void View::topViewAlwaysOnTop()
+{
+    if (!m_visibility) {
+        return;
+    }
+
+    if (location() == Plasma::Types::TopEdge
+            && m_visibility->mode() != Latte::Types::WindowsCanCover
+            && m_visibility->mode() != Latte::Types::WindowsAlwaysCover) {
+        //! this is needed in order to preserve that the top dock will be above others.
+        //! Unity layout paradigm is a good example for this. The top panel shadow
+        //! should be always on top compared to left panel
+        m_visibility->setViewOnFrontLayer();
+    }
+}
+
+void View::verticalUnityViewHasFocus()
+{
+    if (formFactor() == Plasma::Types::Vertical
+            && (y() != screenGeometry().y())
+            && ( (m_alignment == Latte::Types::Justify && m_maxLength == 1.0)
+                 ||(m_alignment == Latte::Types::Top && m_offset == 0.0) )) {
+        emit m_corona->verticalUnityViewHasFocus();
+    }
+}
+//! END: WORKAROUND
+
 //!BEGIN overriding context menus behavior
 void View::mousePressEvent(QMouseEvent *event)
 {
@@ -1481,6 +1513,8 @@ void View::mousePressEvent(QMouseEvent *event)
         PlasmaQuick::ContainmentView::mousePressEvent(event);
         updateTransientWindowsTracking();
     }
+
+    verticalUnityViewHasFocus();
 }
 //!END overriding context menus behavior
 
