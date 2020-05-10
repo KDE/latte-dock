@@ -100,6 +100,8 @@ Item {
                 && !visibilityManager.inLocationAnimation);
     }
 
+    readonly property bool behaveAsDockWithMask: !behaveAsPlasmaPanel
+
     property int viewType: {
         var staticLayout = (plasmoid.configuration.minLength === plasmoid.configuration.maxLength);
 

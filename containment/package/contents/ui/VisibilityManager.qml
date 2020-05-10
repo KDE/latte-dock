@@ -58,6 +58,8 @@ Item{
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
     property bool inTempHiding: false
+    property bool inScreenEdgeInternalWindowSliding: root.behaveAsDockWithMask && hideThickScreenGap
+
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
 
     property int slidingOutToPos: {
@@ -137,7 +139,7 @@ Item{
         target: latteView
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
-        when: latteView && !inTempHiding && !inForceHiding
+        when: latteView && !inTempHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding
         value: root.behaveAsPlasmaPanel && !root.editMode ? thicknessAsPanel : thicknessZoomOriginal
     }
 
