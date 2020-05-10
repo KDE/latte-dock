@@ -191,7 +191,7 @@ Item{
     AppletsContainer {
         id: _startLayout
         beginIndex: 0
-        offset: root.totalPanelEdgeSpacing/2
+        offset: background.totals.shadowsLength/2
         alignment: {
             switch(plasmoid.location) {
             case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeLeftAlign;
@@ -269,7 +269,7 @@ Item{
     AppletsContainer {
         id: _endLayout
         beginIndex: 200
-        offset: root.totalPanelEdgeSpacing/2
+        offset: background.totals.shadowsLength/2
         alignment: {
             switch(plasmoid.location) {
             case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeRightAlign;

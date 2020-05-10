@@ -275,9 +275,6 @@ Item {
     property bool panelOutline: plasmoid.configuration.panelOutline
     property int panelEdgeSpacing: Math.max(background.lengthMargins, 1.5*appShadowSize)
     property int panelTransparency: plasmoid.configuration.panelTransparency //user set
-    property int currentPanelTransparency: 0 //application override
-
-    readonly property real currentPanelOpacity: currentPanelTransparency/100
 
     property bool panelShadowsActive: {
         if (!userShowPanelBackground) {
@@ -295,7 +292,7 @@ Item {
             return false;
         }
 
-        var transparencyCheck = (blurEnabled || (!blurEnabled && currentPanelTransparency>20));
+        var transparencyCheck = (blurEnabled || (!blurEnabled && background.currentOpacity>20));
 
         //! Draw shadows for isBusy state only when current panelTransparency is greater than 10%
         if (plasmoid.configuration.panelShadows && root.forcePanelForBusyBackground && transparencyCheck) {
@@ -334,7 +331,6 @@ Item {
     property string appShadowColor: "#" + decimalToHex(appShadowOpacity) + appChosenShadowColor
     property string appShadowColorSolid: "#" + appChosenShadowColor
 
-    property int totalPanelEdgeSpacing: 0 //this is set by Background
     property int offset: {
         if (behaveAsPlasmaPanel) {
             return 0;
@@ -349,15 +345,8 @@ Item {
 
     //center the layout correctly when the user uses an offset
     property int offsetFixed: (offset===0 || panelAlignment === LatteCore.Types.Center || plasmoid.configuration.alignment === LatteCore.Types.Justify)?
-                                  offset : offset+panelMarginLength/2+totalPanelEdgeSpacing/2
+                                  offset : offset + background.totals.shadowsLength/2
 
-    property int realPanelSize: 0
-    property int realPanelLength: 0
-    //this is set by the Background
-    property int panelThickMarginBase: 0
-    property int panelThickMarginHigh: 0
-    property int panelMarginLength: 0
-    property int panelShadow: 0 //shadowsSize
     property int editShadow: {
         if (!LatteCore.WindowSystem.compositingActive) {
             return 0;
@@ -366,14 +355,6 @@ Item {
         } else {
             return 7;
         }
-    }
-
-    property int themePanelThickness: {
-        var panelBase = root.panelThickMarginHigh + root.panelThickMarginBase;
-        var margin = shrinkThickMargins ? 0 : metrics.totals.thicknessEdges + metrics.margin.screenEdge;
-        var maxPanelSize = (metrics.iconSize + margin) - panelBase;
-        var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
-        return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
     property bool screenEdgeMarginEnabled: plasmoid.configuration.screenEdgeMargin >= 0 && !plasmoid.configuration.shrinkThickMargins

@@ -33,29 +33,62 @@ import org.kde.latte.core 0.2 as LatteCore
 
 import "../colorizer" as Colorizer
 
-Item{
+BackgroundProperties{
     id:barLine
 
     //! Layer 0: Multi-Layer container in order to provide a consistent final element that acts
     //! as a single entity/background
-
-    width: root.isHorizontal ? totalLength : 16
-    height: root.isVertical ? totalLength : 16
+    width: root.isHorizontal ? totals.visualLength : 16
+    height: root.isVertical ? totals.visualLength : 16
 
     opacity: root.useThemePanel ? 1 : 0
+    currentOpacity: overlayedBackground.opacity>0 ? overlayedBackground.opacity : solidBackground.opacity
 
-    readonly property bool isShown: (solidBackground.opacity > 0) || (overlayedBackground.opacity > 0)
+    isShown: (solidBackground.opacity > 0) || (overlayedBackground.opacity > 0)
 
-    property int animationTime: 6*animations.speedFactor.current*animations.duration.small
+    shadows.left: shadowsSvgItem.margins.left
+    shadows.right: shadowsSvgItem.margins.right
+    shadows.top: shadowsSvgItem.margins.top
+    shadows.bottom: shadowsSvgItem.margins.bottom
 
-    property int screenEdgeMargin: root.screenEdgeMarginEnabled ? metrics.margin.screenEdge - shadowsSvgItem.screenEdgeShadow : 0
+    screenEdgeMargin: root.screenEdgeMarginEnabled ? Math.max(0, metrics.margin.screenEdge - shadows.tailThickness) : 0
 
-    readonly property int totalLength: Math.max(length + lengthMargins, lengthPaddings + lengthMargins)
+    paddings.top: {
+        if (root.isHorizontal) {
+            var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.topEdgeRoundness : 0;
+            return Math.max(minimum, solidBackground.margins.top);
+        }
 
-    property int lengthMargins: root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
-    property int lengthPaddings: root.isVertical ? solidBackground.paddingsHeight : solidBackground.paddingsWidth
+        return 0;
+    }
+    paddings.bottom: {
+        if (root.isHorizontal) {
+            var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.bottomEdgeRoundness : 0;
+            return Math.max(minimum, solidBackground.margins.bottom);
+        }
 
-    readonly property int length: {
+        return 0;
+    }
+
+    paddings.left: {
+        if (root.isVertical) {
+            var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.leftEdgeRoundness : 0;
+            return Math.max(minimum, solidBackground.margins.left);
+        }
+
+        return 0;
+    }
+
+    paddings.right: {
+        if (root.isVertical) {
+            var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.rightEdgeRoundness : 0;
+            return Math.max(minimum, solidBackground.margins.right);
+        }
+
+        return 0;
+    }
+
+    length: {
         if (root.behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive && !root.editMode) {
             return root.isVertical ? root.height : root.width;
         }
@@ -71,6 +104,27 @@ Item{
         }
     }
 
+    thickness: {
+        if (root.behaveAsPlasmaPanel) {
+            return metrics.totals.thickness;
+        } else {
+            return Math.min(metrics.totals.thickness, background.totals.visualThickness);
+        }
+    }
+
+    totals.visualThickness: {
+        var minimumBackground = paddings.headThickness + paddings.tailThickness;
+        var itemMargins = root.shrinkThickMargins ? 0 : metrics.totals.thicknessEdges + metrics.margin.screenEdge;
+        var maximumItem = metrics.iconSize + itemMargins;
+        var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
+        return Math.max(minimumBackground, percentage*maximumItem);
+    }
+
+    totals.visualLength: Math.max(background.length + totals.shadowsLength, totals.paddingsLength + totals.shadowsLength)
+
+    property int animationTime: 6*animations.speedFactor.current*animations.duration.small
+
+
     Behavior on opacity{
         enabled: LatteCore.WindowSystem.compositingActive
         NumberAnimation {
@@ -85,24 +139,6 @@ Item{
         }
     }
 
-    Binding{
-        target: root
-        property: "currentPanelTransparency"
-        value: overlayedBackground.opacity>0 ? overlayedBackground.opacity*100 : solidBackground.opacity*100
-    }
-
-    Binding {
-        target: root
-        property: "realPanelLength"
-        value: root.isVertical ? barLine.height : barLine.width
-    }
-
-    Binding {
-        target: root
-        property: "totalPanelEdgeSpacing"
-        value: lengthMargins
-    }
-
     onXChanged: solidBackground.updateEffectsArea();
     onYChanged: solidBackground.updateEffectsArea();
 
@@ -111,8 +147,8 @@ Item{
     //!          in such case the internal drawn shadows are NOT drawn at all.
     PlasmaCore.FrameSvgItem{
         id: shadowsSvgItem
-        width: root.isVertical ? backgroundThickness + marginsWidth : totalLength
-        height: root.isVertical ? totalLength : backgroundThickness + marginsHeight
+        width: root.isVertical ?  background.thickness + totals.shadowsThickness : totals.visualLength
+        height: root.isVertical ? totals.visualLength : background.thickness + totals.shadowsThickness
 
         imagePath: hideShadow ? "" : "widgets/panel-background"
         prefix: hideShadow ? "" : "shadow"
@@ -148,70 +184,6 @@ Item{
             NumberAnimation { duration: 0 }
         }
 
-        property int screenEdgeShadow: {
-            if (imagePath === "" || !root.screenEdgeMarginEnabled) {
-                return 0;
-            }
-
-            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                return margins.left;
-            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                return margins.right;
-            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                return margins.top;
-            }
-
-            return margins.bottom;
-        }
-
-        property int marginsWidth: {
-            if (imagePath === "") {
-                return 0;
-            }
-
-            return margins.left+margins.right;
-        }
-
-        property int marginsHeight: {
-            if (imagePath === "") {
-                return 0;
-            }
-
-            return margins.top + margins.bottom;
-        }
-
-        property int backgroundThickness: {
-            if (root.behaveAsPlasmaPanel) {
-                return metrics.totals.thickness;
-            } else {
-                return Math.min(metrics.totals.thickness, root.themePanelThickness);
-            }
-        }
-
-        property int shadowsSize: 0
-
-        Binding{
-            target: shadowsSvgItem
-            property: "shadowsSize"
-            value:{
-                if (shadowsSvgItem && !root.behaveAsPlasmaPanel && root.useThemePanel && root.panelShadowsActive){
-                    if (root.isVertical){
-                        if (plasmoid.location === PlasmaCore.Types.LeftEdge)
-                            return shadowsSvgItem.margins.right;
-                        else if (plasmoid.location === PlasmaCore.Types.RightEdge)
-                            return shadowsSvgItem.margins.left;
-                    } else {
-                        if (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                            return shadowsSvgItem.margins.top;
-                        else if (plasmoid.location === PlasmaCore.Types.TopEdge)
-                            return shadowsSvgItem.margins.bottom;
-                    }
-                } else {
-                    return 0;
-                }
-            }
-        }
-
         Behavior on opacity{
             enabled: LatteCore.WindowSystem.compositingActive
             NumberAnimation { duration: barLine.animationTime }
@@ -220,27 +192,6 @@ Item{
         Behavior on opacity{
             enabled: !LatteCore.WindowSystem.compositingActive
             NumberAnimation { duration: 0 }
-        }
-
-        Binding {
-            target: root
-            property: "panelShadow"
-            when: shadowsSvgItem
-            value: shadowsSvgItem.shadowsSize
-        }
-
-        Binding {
-            target: root
-            property: "realPanelSize"
-            when: shadowsSvgItem
-            value: shadowsSvgItem.backgroundThickness
-        }
-
-        Binding {
-            target: root
-            property: "panelMarginLength"
-            when: shadowsSvgItem
-            value: root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
         }
 
 
@@ -255,7 +206,7 @@ Item{
                     visible: false
 
                     fillMode: Image.Tile
-                    source: hasBackground ? latteView.layout.background : "../icons/"+latteView.layout.background+"print.jpg"
+                    source: hasBackground ? latteView.layout.background : "../../icons/"+latteView.layout.background+"print.jpg"
 
                     readonly property bool hasBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                               true : false
@@ -455,58 +406,6 @@ Item{
                 visibilityManager.updateMaskArea();
             }
 
-            Binding {
-                target: root
-                property: "panelThickMarginBase"
-                value: {
-                    var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.topEdgeRoundness : 0;
-
-                    if (root.useThemePanel){
-                        if (root.isVertical){
-                            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                                return Math.max(minimum, solidBackground.margins.left);
-                            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                                return Math.max(minimum, solidBackground.margins.right);
-                            }
-                        } else {
-                            if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                                return Math.max(minimum, solidBackground.margins.bottom);
-                            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                                return Math.max(minimum, solidBackground.margins.top);
-                            }
-                        }
-                    } else {
-                        return 0;
-                    }
-                }
-            }
-
-            Binding {
-                target: root
-                property: "panelThickMarginHigh"
-                value: {
-                    var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.topEdgeRoundness : 0;
-
-                    if (root.useThemePanel){
-                        if (root.isVertical){
-                            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                                return Math.max(minimum, solidBackground.margins.right);
-                            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                                return Math.max(minimum, solidBackground.margins.left);
-                            }
-                        } else {
-                            if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                                return Math.max(minimum, solidBackground.margins.top);
-                            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                                return Math.max(minimum, solidBackground.margins.bottom);
-                            }
-                        }
-                    } else {
-                        return 0;
-                    }
-                }
-            }
-
             onRepaintNeeded: {
                 if (root.behaveAsPlasmaPanel)
                     adjustPrefix();
@@ -613,7 +512,7 @@ Item{
                 enabled: !LatteCore.WindowSystem.compositingActive
                 NumberAnimation { duration: 0 }
             }
-                        
+
             Behavior on backgroundColor{
                 enabled: LatteCore.WindowSystem.compositingActive
                 ColorAnimation { duration: barLine.animationTime }

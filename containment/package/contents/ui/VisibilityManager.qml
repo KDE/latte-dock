@@ -40,7 +40,7 @@ Item{
     property bool inForceHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
-    property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelThickness >= (metrics.iconSize + metrics.margin.thickness))
+    property bool panelIsBiggerFromIconSize: root.useThemePanel && (background.totals.visualThickness >= (metrics.iconSize + metrics.margin.thickness))
 
     property bool maskIsFloating: !root.behaveAsPlasmaPanel
                                   && !root.editMode
@@ -49,7 +49,7 @@ Item{
                                   && !inSlidingIn
                                   && !inSlidingOut
 
-    property int maskFloatedGap: maskIsFloating ? Math.max(0, metrics.margin.screenEdge - root.panelShadow) : 0
+    property int maskFloatedGap: maskIsFloating ? Math.max(0, metrics.margin.screenEdge - background.shadows.headThickness) : 0
 
     property int animationSpeed: LatteCore.WindowSystem.compositingActive ?
                                      (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : animations.speedFactor.normal * 1.62 * animations.duration.large) : 0
@@ -84,18 +84,18 @@ Item{
 
     property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
     property int thicknessMid: finalScreenEdgeMargin + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.totals.thickness+extraThickMask) //needed in some animations
-    property int thicknessNormal: finalScreenEdgeMargin + Math.max(metrics.totals.thickness + extraThickMask + 1, root.realPanelSize + root.panelShadow)
+    property int thicknessNormal: finalScreenEdgeMargin + Math.max(metrics.totals.thickness + extraThickMask + 1, background.thickness + background.shadows.headThickness)
 
     property int thicknessZoom: finalScreenEdgeMargin + ((metrics.totals.thickness+extraThickMask) * parabolic.factor.maxZoom) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
     property int thicknessMidOriginal: finalScreenEdgeMargin + Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
     property int thicknessNormalOriginal: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
     /*property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
-                                               thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow*/
+                                               thicknessNormalOriginalValue : background.thickness + background.shadows.headThickness*/
 
     property int thicknessNormalOriginalValue: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraThickMask + 1
     property int thicknessZoomOriginal: finalScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraThickMask + 2,
-                                                                         root.realPanelSize + root.panelShadow,
+                                                                         background.thickness + background.shadows.headThickness,
                                                                          (LatteCore.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
 
     //! is used from Panel in edit mode in order to provide correct masking
@@ -260,7 +260,7 @@ Item{
         target: latteView && latteView.effects ? latteView.effects : null
         property: "backgroundOpacity"
         when: latteView && latteView.effects
-        value: root.currentPanelTransparency
+        value: background.currentOpacity
     }
 
     Binding{
@@ -296,7 +296,7 @@ Item{
             if (editModeVisual.editAnimationEnded && !root.behaveAsPlasmaPanel) {
                 return root.editShadow;
             } else {
-                return root.panelShadow;
+                return background.shadows.headThickness;
             }
         }
     }
@@ -353,14 +353,22 @@ Item{
 
     Connections{
         target:root      
-        onPanelShadowChanged: updateMaskArea();
-        onPanelThickMarginHighChanged: updateMaskArea();
-        onRealPanelLengthChanged: updateMaskArea();
         onEditModeChanged: {
             if (root.editMode) {
                 visibilityManager.updateMaskArea();
             }
         }
+    }
+
+    Connections{
+        target: background.totals
+        onVisualLengthChanged: updateMaskArea();
+        onVisualThicknessChanged: updateMaskArea();
+    }
+
+    Connections{
+        target: background.shadows
+        onHeadThicknessChanged: updateMaskArea();
     }
 
     Connections{
@@ -517,18 +525,6 @@ Item{
         var tempLength = root.isHorizontal ? width : height;
         var tempThickness = root.isHorizontal ? height : width;
 
-        var space = 0;
-
-        if (LatteCore.WindowSystem.compositingActive) {
-            if (root.useThemePanel){
-                space = root.totalPanelEdgeSpacing + root.panelMarginLength + 1;
-            } else {
-                space = root.totalPanelEdgeSpacing + 1;
-            }
-        } else {
-            space = root.totalPanelEdgeSpacing + root.panelMarginLength;
-        }
-
         var noCompositingEdit = !LatteCore.WindowSystem.compositingActive && root.editMode;
 
         if (LatteCore.WindowSystem.compositingActive || noCompositingEdit) {
@@ -541,21 +537,7 @@ Item{
                 if (noCompositingEdit) {
                     tempLength = root.isHorizontal ? root.width : root.height;
                 } else {
-                    if(root.isHorizontal) {
-                        if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
-                            tempLength = layoutsContainer.width;
-                        } else {
-                            tempLength = Math.max(root.realPanelLength, layoutsContainer.mainLayout.width);
-                        }
-                    } else {
-                        if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
-                            tempLength = layoutsContainer.height;
-                        } else {
-                            tempLength = Math.max(root.realPanelLength, layoutsContainer.mainLayout.height);
-                        }
-                    }
-
-                    tempLength = tempLength + space;
+                    tempLength = background.totals.visualLength;
                 }
 
                 tempThickness = thicknessNormal;

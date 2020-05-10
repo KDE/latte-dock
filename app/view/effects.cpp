@@ -157,12 +157,12 @@ void Effects::setForceTopBorder(bool draw)
     updateEnabledBorders();
 }
 
-int Effects::backgroundOpacity() const
+float Effects::backgroundOpacity() const
 {
     return m_backgroundOpacity;
 }
 
-void Effects::setBackgroundOpacity(int opacity)
+void Effects::setBackgroundOpacity(float opacity)
 {
     if (m_backgroundOpacity == opacity) {
         return;
@@ -496,10 +496,9 @@ void Effects::updateBackgroundContrastValues()
         return;
     }
 
-    const qreal factor = (qreal)m_backgroundOpacity / (qreal)100;
-    m_backEffectContrast = currentMidValue(m_theme.backgroundContrast(), factor, 1);
-    m_backEffectIntesity = currentMidValue(m_theme.backgroundIntensity(), factor, 1);
-    m_backEffectSaturation = currentMidValue(m_theme.backgroundSaturation(), factor, 1);
+    m_backEffectContrast = currentMidValue(m_theme.backgroundContrast(), m_backgroundOpacity, 1);
+    m_backEffectIntesity = currentMidValue(m_theme.backgroundIntensity(), m_backgroundOpacity, 1);
+    m_backEffectSaturation = currentMidValue(m_theme.backgroundSaturation(), m_backgroundOpacity, 1);
 }
 
 void Effects::updateEnabledBorders()

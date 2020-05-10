@@ -59,7 +59,7 @@ Item{
     readonly property int currentIconSize: appletIsValid ? appletItem.metrics.iconSize : metrics.iconSize
     readonly property int maxIconSize: appletIsValid ? appletItem.metrics.maxIconSize : metrics.maxIconSize
     readonly property real scaleFactor: appletIsValid ? appletItem.wrapper.zoomScale : 1
-    readonly property real panelOpacity: root.currentPanelOpacity
+    readonly property real panelOpacity: root.background.currentOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
     readonly property bool animationsEnabled: appletIsValid ? appletItem.animations.active : animations.active

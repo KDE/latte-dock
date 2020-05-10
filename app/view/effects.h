@@ -46,9 +46,10 @@ class Effects: public QObject
     Q_PROPERTY(bool settingsMaskSubtracted READ settingsMaskSubtracted WRITE setSettingsMaskSubtracted NOTIFY settingsMaskSubtractedChanged)
 
     //! thickness shadow size when is drawn inside the window from qml
-    Q_PROPERTY(int backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
     Q_PROPERTY(int editShadow READ editShadow WRITE setEditShadow NOTIFY editShadowChanged)
     Q_PROPERTY(int innerShadow READ innerShadow WRITE setInnerShadow NOTIFY innerShadowChanged)
+
+    Q_PROPERTY(float backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
 
     Q_PROPERTY(QRect mask READ mask WRITE setMask NOTIFY maskChanged)
     Q_PROPERTY(QRect rect READ rect WRITE setRect NOTIFY rectChanged)
@@ -74,14 +75,14 @@ public:
     bool settingsMaskSubtracted() const;
     void setSettingsMaskSubtracted(bool enabled);
 
-    int backgroundOpacity() const;
-    void setBackgroundOpacity(int opacity);
-
     int editShadow() const;
     void setEditShadow(int shadow);
 
     int innerShadow() const;
     void setInnerShadow(int shadow);
+
+    float backgroundOpacity() const;
+    void setBackgroundOpacity(float opacity);
 
     QRect mask() const;
     void setMask(QRect area);
@@ -131,9 +132,10 @@ private:
     bool m_forceBottomBorder{false};
     bool m_settingsMaskSubtracted{false};
 
-    int m_backgroundOpacity{100};
     int m_editShadow{0};
     int m_innerShadow{0};
+
+    float m_backgroundOpacity{1.0};
 
     qreal m_backEffectContrast{1};
     qreal m_backEffectIntesity{1};

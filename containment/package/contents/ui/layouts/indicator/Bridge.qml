@@ -53,7 +53,7 @@ Item{
     readonly property int currentIconSize: metrics.iconSize
     readonly property int maxIconSize: metrics.maxIconSize
     readonly property real scaleFactor: 1
-    readonly property real panelOpacity: root.currentPanelOpacity
+    readonly property real panelOpacity: root.background.currentOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
     readonly property bool animationsEnabled: animations.active

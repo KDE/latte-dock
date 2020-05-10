@@ -51,7 +51,7 @@ Loader {
                 return root.isHorizontal ? root.width : root.height;
             }
 
-            return useAllLayouts ? root.maxLength : root.realPanelLength;
+            return useAllLayouts ? root.maxLength : background.totals.visualLength;
         }
 
         property bool wheelIsBlocked: false

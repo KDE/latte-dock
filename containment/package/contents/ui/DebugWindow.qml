@@ -511,15 +511,15 @@ Window{
             }
 
             Text{
-                text: "Panel Background Length"+space
+                text: "Background Length"+space
             }
 
             Text{
-                text: root.realPanelLength
+                text: background.totals.visualLength
             }
 
             Text{
-                text: "Panel Background Thickness(user)"+space
+                text: "Background Thickness(user)"+space
             }
 
             Text{
@@ -527,15 +527,15 @@ Window{
             }
 
             Text{
-                text: "Panel Background Thickness(automatic)"+space
+                text: "Background Thickness(auto)"+space
             }
 
             Text{
-                text: root.realPanelSize
+                text: background.totals.visualThickness
             }
 
             Text{
-                text: "Panel Transparency"+space
+                text: "Background Transparency"+space
             }
 
             Text{
@@ -543,7 +543,7 @@ Window{
             }
 
             Text{
-                text: "Panel Shadows Active"+space
+                text: "Background Shadows Active"+space
             }
 
             Text{
@@ -556,19 +556,19 @@ Window{
             }
 
             Text{
-                text: "Panel Background Shadow"+space
+                text: "Background Shadow"+space
             }
 
             Text{
-                text: root.panelShadow
+                text: background.shadows.headThickness
             }
 
             Text{
-                text: "Panel Thickness Margin High"+space
+                text: "Background Head Thickness Padding"+space
             }
 
             Text{
-                text: root.panelThickMarginHigh
+                text: background.paddings.headThickness
             }
 
             Text{
