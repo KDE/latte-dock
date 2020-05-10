@@ -889,7 +889,7 @@ PlasmaComponents.ContextMenu {
 
         icon: "remove"
         text: i18n("Remove Separator")
-        enabled: parabolicManager.hasInternalSeparator
+        enabled: (root.indexer.separators.length > 0) && visualParent && visualParent.isSeparator
 
         onClicked: {
             //root.removeLastSeparator();
