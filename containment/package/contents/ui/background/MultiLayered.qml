@@ -39,8 +39,8 @@ Item{
     //! Layer 0: Multi-Layer container in order to provide a consistent final element that acts
     //! as a single entity/background
 
-    width: root.isHorizontal ? panelWidth : smallSize
-    height: root.isVertical ? panelHeight : smallSize
+    width: root.isHorizontal ? totalLength : 16
+    height: root.isVertical ? totalLength : 16
 
     opacity: root.useThemePanel ? 1 : 0
 
@@ -49,44 +49,27 @@ Item{
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
     property int screenEdgeMargin: root.screenEdgeMarginEnabled ? metrics.margin.screenEdge - shadowsSvgItem.screenEdgeShadow : 0
+
+    readonly property int totalLength: Math.max(length + lengthMargins, lengthPaddings + lengthMargins)
+
     property int lengthMargins: root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
+    property int lengthPaddings: root.isVertical ? solidBackground.paddingsHeight : solidBackground.paddingsWidth
 
-    property int panelWidth: {
+    readonly property int length: {
         if (root.behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive && !root.editMode) {
-            return root.width;
-        } else {
-            if ((root.panelAlignment === LatteCore.Types.Justify) && root.isHorizontal) {
-                return root.maxLength;
-            } else {
-                return Math.max(root.minLength, layoutsContainerItem.mainLayout.width + spacing);
-            }
+            return root.isVertical ? root.height : root.width;
         }
-    }
 
-    property int panelHeight: {
-        if (root.behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive && !root.editMode) {
-            return root.height;
-        } else {
-            if ((root.panelAlignment === LatteCore.Types.Justify) && root.isVertical) {
-                return root.maxLength;
-            } else {
-                return Math.max(root.minLength, layoutsContainerItem.mainLayout.height + spacing);
-            }
+        if ((root.panelAlignment === LatteCore.Types.Justify) && root.isHorizontal) {
+            return root.maxLength;
         }
-    }
 
-    property int spacing: {
-        if (root.panelAlignment === LatteCore.Types.Justify && root.maxLengthPerCentage === 100) {
-            return 0;
-        } else if (!LatteCore.WindowSystem.compositingActive) {
-            return root.panelEdgeSpacing/2;
-        } else if (root.panelAlignment === LatteCore.Types.Center || root.panelAlignment === LatteCore.Types.Justify || root.offset!==0) {
-            return root.panelEdgeSpacing/2;
+        if (root.isVertical) {
+            return Math.max(root.minLength, layoutsContainerItem.mainLayout.height);
         } else {
-            return root.panelEdgeSpacing/4;
+            return Math.max(root.minLength, layoutsContainerItem.mainLayout.width);
         }
     }
-    property int smallSize: 16 //Math.max(3.7*root.statesLineSize, 16)
 
     Behavior on opacity{
         enabled: LatteCore.WindowSystem.compositingActive
@@ -117,7 +100,7 @@ Item{
     Binding {
         target: root
         property: "totalPanelEdgeSpacing"
-        value: spacing
+        value: lengthMargins
     }
 
     onXChanged: solidBackground.updateEffectsArea();
@@ -128,9 +111,8 @@ Item{
     //!          in such case the internal drawn shadows are NOT drawn at all.
     PlasmaCore.FrameSvgItem{
         id: shadowsSvgItem
-
-        width: root.isVertical ? panelSize + marginsWidth : Math.min(parent.width + marginsWidth, root.width - marginsWidth)
-        height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) : panelSize + marginsHeight
+        width: root.isVertical ? panelSize + marginsWidth : totalLength
+        height: root.isVertical ? totalLength : panelSize + marginsHeight
 
         imagePath: hideShadow ? "" : "widgets/panel-background"
         prefix: hideShadow ? "" : "shadow"
@@ -177,35 +159,25 @@ Item{
                 return margins.right;
             } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                 return margins.top;
-            } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                return margins.bottom;
             }
+
+            return margins.bottom;
         }
 
         property int marginsWidth: {
             if (imagePath === "") {
                 return 0;
-            } else {
-                if (root.panelAlignment === LatteCore.Types.Left && root.offset===0)
-                    return margins.right;
-                else if (root.panelAlignment === LatteCore.Types.Right && root.offset===0)
-                    return margins.left;
-                else
-                    return margins.left+margins.right;
             }
+
+            return margins.left+margins.right;
         }
 
         property int marginsHeight: {
             if (imagePath === "") {
                 return 0;
-            } else {
-                if (root.panelAlignment === LatteCore.Types.Top && root.offset===0)
-                    return margins.bottom;
-                else if (root.panelAlignment === LatteCore.Types.Bottom && root.offset===0)
-                    return margins.top;
-                else
-                    return margins.top + margins.bottom;
             }
+
+            return margins.top + margins.bottom;
         }
 
         property int panelSize: automaticPanelSize
@@ -399,8 +371,13 @@ Item{
 
             imagePath: "widgets/panel-background"
 
+            property int paddingsWidth: margins.left+margins.right
+            property int paddingsHeight: margins.top + margins.bottom
+
             onWidthChanged: updateEffectsArea();
             onHeightChanged: updateEffectsArea();
+            onImagePathChanged: solidBackground.adjustPrefix();
+
 
             Component.onCompleted: {
                 root.updateEffectsArea.connect(updateEffectsArea);
@@ -410,8 +387,6 @@ Item{
             Component.onDestruction: {
                 root.updateEffectsArea.disconnect(updateEffectsArea);
             }
-
-            onImagePathChanged: solidBackground.adjustPrefix();
 
             Connections{
                 target: root
