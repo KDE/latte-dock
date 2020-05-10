@@ -585,18 +585,7 @@ void Positioner::updatePosition(QRect availableScreenRect)
 
     int cleanThickness = m_view->normalThickness() - m_view->effects()->innerShadow();
 
-    int screenEdgeMargin = (m_view->behaveAsPlasmaPanel() && m_view->screenEdgeMarginEnabled()) ? m_view->screenEdgeMargin() : 0;
-
-    if (m_view->behaveAsPlasmaPanel()) {
-        //! Update screenEdgeMargin to take into account slide_offset that is used
-        //! in real window animations for BEHAVEASPLASMAPANELS views
-
-        if (m_view->location() == Plasma::Types::TopEdge || m_view->location() == Plasma::Types::LeftEdge) {
-            screenEdgeMargin = screenEdgeMargin + qAbs(m_slideOffset);
-        } else {
-            screenEdgeMargin = screenEdgeMargin - qAbs(m_slideOffset);
-        }
-    }
+    int screenEdgeMargin = m_view->behaveAsPlasmaPanel() ? m_view->screenEdgeMargin() - qAbs(m_slideOffset) : 0;
 
     switch (m_view->location()) {
     case Plasma::Types::TopEdge:
