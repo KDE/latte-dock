@@ -40,6 +40,7 @@ import "colorizer" as Colorizer
 import "editmode" as EditMode
 import "indicators" as Indicators
 import "layouts" as Layouts
+import "./background" as Background
 import "../code/LayoutManager.js" as LayoutManager
 
 Item {
@@ -272,7 +273,7 @@ Item {
     property int scrollAction: plasmoid.configuration.scrollAction
 
     property bool panelOutline: plasmoid.configuration.panelOutline
-    property int panelEdgeSpacing: Math.max(panelBoxBackground.lengthMargins, 1.5*appShadowSize)
+    property int panelEdgeSpacing: Math.max(background.lengthMargins, 1.5*appShadowSize)
     property int panelTransparency: plasmoid.configuration.panelTransparency //user set
     property int currentPanelTransparency: 0 //application override
 
@@ -333,7 +334,7 @@ Item {
     property string appShadowColor: "#" + decimalToHex(appShadowOpacity) + appChosenShadowColor
     property string appShadowColorSolid: "#" + appChosenShadowColor
 
-    property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
+    property int totalPanelEdgeSpacing: 0 //this is set by Background
     property int offset: {
         if (behaveAsPlasmaPanel) {
             return 0;
@@ -353,7 +354,7 @@ Item {
     property int realPanelSize: 0
     property int realPanelLength: 0
     property int realPanelThickness: 0
-    //this is set by the PanelBox
+    //this is set by the Background
     property int panelThickMarginBase: 0
     property int panelThickMarginHigh: 0
     property int panelMarginLength: 0
@@ -409,6 +410,7 @@ Item {
     property Item latteApplet
 
     readonly property alias animations: _animations
+    readonly property alias background: _background
     readonly property alias autosize: _autosize
     readonly property alias indexer: _indexer
     readonly property alias indicatorsManager: indicators
@@ -1476,11 +1478,10 @@ Item {
                                                    || (foreDropArea.dragInfo.computationsAreValid && !root.dragInfo.isPlasmoid && !root.dragInfo.onlyLaunchers))
 
         Item{
-            id: panelBox
             anchors.fill: layoutsContainer
 
-            PanelBox{
-                id: panelBoxBackground
+            Background.MultiLayered{
+                id: _background
             }
         }
 

@@ -31,10 +31,13 @@ import org.kde.kquickcontrolsaddons 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 
-import "colorizer" as Colorizer
+import "../colorizer" as Colorizer
 
 Item{
     id:barLine
+
+    //! Layer 0: Multi-Layer container in order to provide a consistent final element that acts
+    //! as a single entity/background
 
     width: root.isHorizontal ? panelWidth : smallSize
     height: root.isVertical ? panelHeight : smallSize
@@ -46,10 +49,7 @@ Item{
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
     property int screenEdgeMargin: root.screenEdgeMarginEnabled ? metrics.margin.screenEdge - shadowsSvgItem.screenEdgeShadow : 0
-
-    property int lengthMargins: {
-        return root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
-    }
+    property int lengthMargins: root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
 
     property int panelWidth: {
         if (root.behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive && !root.editMode) {
@@ -123,25 +123,9 @@ Item{
     onXChanged: solidBackground.updateEffectsArea();
     onYChanged: solidBackground.updateEffectsArea();
 
-    /// plasmoid's default panel
-    /*  BorderImage{
-            anchors.fill:parent
-            source: "../images/panel-west.png"
-            border { left:8; right:8; top:8; bottom:8 }
-
-            opacity: (!root.useThemePanel) ? 1 : 0
-
-            visible: (opacity == 0) ? false : true
-
-            horizontalTileMode: BorderImage.Stretch
-            verticalTileMode: BorderImage.Stretch
-
-            Behavior on opacity{
-                NumberAnimation { duration: 200 }
-            }
-        }*/
-
-    /// the current theme's panel
+    //! Layer 1: Shadows that are drawn around the background but always inside the View window (these are internal drawn shadows).
+    //!          When the container has chosen external shadows (these are shadows that are drawn out of the View window from the compositor)
+    //!          in such case the internal drawn shadows are NOT drawn at all.
     PlasmaCore.FrameSvgItem{
         id: shadowsSvgItem
 
@@ -293,7 +277,8 @@ Item{
             value: root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
         }
 
-        //! Show a fake blurness under panel background for editMode visual feedback
+
+        //! Layer 2: Draw fake blurness under background when the user is INEDITMODE state for visual feedback
         Loader {
             anchors.fill: solidBackground
             active: editModeVisual.inEditMode && root.userShowPanelBackground && plasmoid.configuration.blurEnabled
@@ -345,7 +330,9 @@ Item{
             }
         }
 
-        //! This is used to provide real solidness
+        //! Layer 3: Provide visual solidness. Plasma themes by design may provide a panel-background svg that is not
+        //!          solid. That means that user can not gain full solidness in such cases. This layer is responsible
+        //!          to solve the previous mentioned plasma theme limitation.
         Colorizer.CustomBackground {
             id: backgroundLowestRectangle
             anchors.fill: solidBackground
@@ -368,6 +355,10 @@ Item{
             }
         }
 
+        //! Layer 4: Original Plasma Theme "panel-background" svg. It is used for calculations and also to draw
+        //!          the original background when to special settings and options exist from the user. It is also
+        //!          doing one very important job which is to calculate the Effects Rectangle which is used from
+        //!          the compositor to provide blurriness and from Mask calculations to provide the View Local Geometry
         PlasmaCore.FrameSvgItem{
             id: solidBackground
             anchors.leftMargin: LatteCore.WindowSystem.compositingActive ? shadowsSvgItem.margins.left : 0
@@ -590,6 +581,8 @@ Item{
             }
         }
 
+        //! Layer 5: Plasma theme design does not provide a way to colorize the background. This layer
+        //!          solves this by providing a custom background layer that respects the Colorizer palette
         Colorizer.CustomBackground {
             id: overlayedBackground
             anchors.fill: solidBackground
@@ -663,7 +656,9 @@ Item{
             }
         }
 
-        //! Outline drawing
+        //! Layer 6: Plasma theme design does not provide a way to draw background outline on demand. This layer
+        //!          solves this by providing a custom background layer that only draws an outline on top of all
+        //!          previous layers
         Loader{
             anchors.fill: solidBackground
             active: root.panelOutline && !(root.hasExpandedApplet && root.plasmaBackgroundForPopups)
