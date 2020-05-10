@@ -20,9 +20,25 @@
 import QtQuick 2.0
 
 import "./types" as BackgroundTypes
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item{
     property bool isShown: false
+
+    property bool hasAllBorders: false
+    property bool hasLeftBorder: false
+    property bool hasRightBorder: false
+    property bool hasTopBorder: false
+    property bool hasBottomBorder: false
+    readonly property bool hasBothLengthShadows:{
+        if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+            return (hasTopBorder && hasBottomBorder);
+        }
+
+        return (hasLeftBorder && hasRightBorder);
+    }
+
     property int offset: 0
     property int length: 0
     property int thickness: 0

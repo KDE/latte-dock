@@ -64,7 +64,7 @@ Item{
             }
 
             if ( latteView && root.isHorizontal && useMaxLength ){
-                return ((latteView.width/2) - (root.maxLength/2) + root.offset);
+                return ((latteView.width/2) - (root.maxLength/2) + background.offset);
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
                     return;
@@ -97,7 +97,7 @@ Item{
             }
 
             if ( latteView && root.isVertical && useMaxLength ) {
-                return ((latteView.height/2) - (root.maxLength/2) + root.offset);
+                return ((latteView.height/2) - (root.maxLength/2) + background.offset);
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
                     return;
@@ -191,7 +191,7 @@ Item{
     AppletsContainer {
         id: _startLayout
         beginIndex: 0
-        offset: background.totals.shadowsLength/2
+        offset: background.totals.shadowsLength/2 //it is applied only in Justify when both background length shadows are drawn
         alignment: {
             switch(plasmoid.location) {
             case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeLeftAlign;
@@ -207,11 +207,17 @@ Item{
     AppletsContainer {
         id: _mainLayout
         beginIndex: 100
-        offset: centered ? appliedOffset : root.offsetFixed
+        offset: {
+            if (background.hasBothLengthShadows && !centered) {
+                //! it is used for Top/Bottom/Left/Right alignments when they show both background length shadows
+                return background.offset + background.totals.shadowsLength/2;
+            }
+
+            return (root.panelAlignment === LatteCore.Types.Justify) ? 0 : background.offset
+        }
 
         readonly property bool centered: (root.panelAlignment === LatteCore.Types.Center) || (root.panelAlignment === LatteCore.Types.Justify)
         readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
-        readonly property int appliedOffset: root.panelAlignment === LatteCore.Types.Justify ? 0 : root.offset
 
         alignment: {
             if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -269,7 +275,7 @@ Item{
     AppletsContainer {
         id: _endLayout
         beginIndex: 200
-        offset: background.totals.shadowsLength/2
+        offset: background.totals.shadowsLength/2 //it is applied only in Justify when both background length shadows are drawn
         alignment: {
             switch(plasmoid.location) {
             case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeRightAlign;

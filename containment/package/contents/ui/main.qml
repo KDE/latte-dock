@@ -343,10 +343,6 @@ Item {
         }
     }
 
-    //center the layout correctly when the user uses an offset
-    property int offsetFixed: (offset===0 || panelAlignment === LatteCore.Types.Center || plasmoid.configuration.alignment === LatteCore.Types.Justify)?
-                                  offset : offset + background.totals.shadowsLength/2
-
     property int editShadow: {
         if (!LatteCore.WindowSystem.compositingActive) {
             return 0;

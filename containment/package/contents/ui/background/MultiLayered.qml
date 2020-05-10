@@ -46,15 +46,21 @@ BackgroundProperties{
 
     isShown: (solidBackground.opacity > 0) || (overlayedBackground.opacity > 0)
 
-    shadows.left: shadowsSvgItem.margins.left
-    shadows.right: shadowsSvgItem.margins.right
-    shadows.top: shadowsSvgItem.margins.top
-    shadows.bottom: shadowsSvgItem.margins.bottom
+    hasAllBorders: solidBackground.enabledBorders === PlasmaCore.FrameSvg.AllBorders
+    hasLeftBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.LeftBorder) > 0)
+    hasRightBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.RightBorder) > 0)
+    hasTopBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.TopBorder) > 0)
+    hasBottomBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.BottomBorder) > 0)
+
+    shadows.left: hasLeftBorder ? shadowsSvgItem.margins.left : 0
+    shadows.right: hasRightBorder ? shadowsSvgItem.margins.right : 0
+    shadows.top: hasTopBorder ? shadowsSvgItem.margins.top : 0
+    shadows.bottom: hasBottomBorder ? shadowsSvgItem.margins.bottom : 0
 
     screenEdgeMargin: root.screenEdgeMarginEnabled ? Math.max(0, metrics.margin.screenEdge - shadows.tailThickness) : 0
 
     paddings.top: {
-        if (root.isHorizontal) {
+        if (root.isHorizontal && hasTopBorder) {
             var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.topEdgeRoundness : 0;
             return Math.max(minimum, solidBackground.margins.top);
         }
@@ -62,7 +68,7 @@ BackgroundProperties{
         return 0;
     }
     paddings.bottom: {
-        if (root.isHorizontal) {
+        if (root.isHorizontal && hasBottomBorder) {
             var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.bottomEdgeRoundness : 0;
             return Math.max(minimum, solidBackground.margins.bottom);
         }
@@ -71,7 +77,7 @@ BackgroundProperties{
     }
 
     paddings.left: {
-        if (root.isVertical) {
+        if (root.isVertical && hasLeftBorder) {
             var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.leftEdgeRoundness : 0;
             return Math.max(minimum, solidBackground.margins.left);
         }
@@ -80,7 +86,7 @@ BackgroundProperties{
     }
 
     paddings.right: {
-        if (root.isVertical) {
+        if (root.isVertical && hasRightBorder) {
             var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.rightEdgeRoundness : 0;
             return Math.max(minimum, solidBackground.margins.right);
         }
@@ -93,7 +99,7 @@ BackgroundProperties{
             return root.isVertical ? root.height : root.width;
         }
 
-        if ((root.panelAlignment === LatteCore.Types.Justify) && root.isHorizontal) {
+        if (root.panelAlignment === LatteCore.Types.Justify) {
             return root.maxLength;
         }
 
@@ -110,6 +116,30 @@ BackgroundProperties{
         } else {
             return Math.min(metrics.totals.thickness, background.totals.visualThickness);
         }
+    }
+
+    offset: {
+        if (behaveAsPlasmaPanel || !LatteCore.WindowSystem.compositingActive) {
+            return 0;
+        }
+
+        if (root.isHorizontal) {
+            if (root.panelAlignment === LatteCore.Types.Left) {
+                return root.offset - shadows.left;
+            } else if (root.panelAlignment === LatteCore.Types.Right) {
+                return root.offset - shadows.right;
+            }
+        }
+
+        if (root.isVertical) {
+            if (root.panelAlignment === LatteCore.Types.Top) {
+                return root.offset - shadows.top;
+            } else if (root.panelAlignment === LatteCore.Types.Bottom) {
+                return root.offset - shadows.bottom;
+            }
+        }
+
+        return root.offset;// (root.panelAlignment === LatteCore.Types.Center ? root.offset : 0);
     }
 
     totals.visualThickness: {
@@ -562,8 +592,8 @@ BackgroundProperties{
     states: [
         ///Left
         State {
-            name: "leftCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteCore.Types.Center || root.panelAlignment === LatteCore.Types.Justify)
+            name: "leftCenter"
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteCore.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -576,7 +606,25 @@ BackgroundProperties{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === LatteCore.Types.Center ? root.offset : 0);
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: background.offset;
+            }
+        },
+        State {
+            name: "leftJustify"
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteCore.Types.Justify)
+
+            AnchorChanges {
+                target: barLine
+                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+            AnchorChanges {
+                target: shadowsSvgItem
+                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         ///Left
@@ -594,7 +642,7 @@ BackgroundProperties{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:root.offset - shadowsSvgItem.margins.top;    anchors.bottomMargin:0;
+                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:background.offset;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -613,14 +661,14 @@ BackgroundProperties{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offset - shadowsSvgItem.margins.bottom;
+                anchors.leftMargin: barLine.screenEdgeMargin;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:background.offset;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         ///Right
         State {
-            name: "rightCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteCore.Types.Center || root.panelAlignment === LatteCore.Types.Justify)
+            name: "rightCenter"
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteCore.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -633,7 +681,25 @@ BackgroundProperties{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === LatteCore.Types.Center ? root.offset : 0);
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: background.offset;
+            }
+        },
+        State {
+            name: "rightJustify"
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteCore.Types.Justify)
+
+            AnchorChanges {
+                target: barLine
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+            AnchorChanges {
+                target: shadowsSvgItem
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         State {
@@ -650,7 +716,7 @@ BackgroundProperties{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:root.offset-shadowsSvgItem.margins.top;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:background.offset;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -668,14 +734,14 @@ BackgroundProperties{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:root.offset-shadowsSvgItem.margins.bottom;
+                anchors.leftMargin: 0;    anchors.rightMargin: barLine.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:background.offset;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         ///Bottom
         State {
-            name: "bottomCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteCore.Types.Center || root.panelAlignment === LatteCore.Types.Justify)
+            name: "bottomCenter"
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteCore.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -688,7 +754,25 @@ BackgroundProperties{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
-                anchors.horizontalCenterOffset: (root.panelAlignment === LatteCore.Types.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
+                anchors.horizontalCenterOffset: background.offset; anchors.verticalCenterOffset: 0;
+            }
+        },
+        State {
+            name: "bottomJustify"
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteCore.Types.Justify)
+
+            AnchorChanges {
+                target: barLine
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+            AnchorChanges {
+                target: shadowsSvgItem
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         State {
@@ -707,7 +791,7 @@ BackgroundProperties{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: root.offset-shadowsSvgItem.margins.left;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
+                anchors.leftMargin: background.offset;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
 
@@ -728,14 +812,14 @@ BackgroundProperties{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:root.offset-shadowsSvgItem.margins.right;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
+                anchors.leftMargin: 0;    anchors.rightMargin:background.offset;     anchors.topMargin:0;    anchors.bottomMargin: barLine.screenEdgeMargin;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         ///Top
         State {
-            name: "topCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteCore.Types.Center || root.panelAlignment === LatteCore.Types.Justify)
+            name: "topCenter"
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteCore.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -748,7 +832,25 @@ BackgroundProperties{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: (root.panelAlignment === LatteCore.Types.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
+                anchors.horizontalCenterOffset: background.offset; anchors.verticalCenterOffset: 0;
+            }
+        },
+        State {
+            name: "topJustify"
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteCore.Types.Justify)
+
+            AnchorChanges {
+                target: barLine
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+            AnchorChanges {
+                target: shadowsSvgItem
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         State {
@@ -767,7 +869,7 @@ BackgroundProperties{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: root.offset-shadowsSvgItem.margins.left;    anchors.rightMargin:0;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
+                anchors.leftMargin: background.offset;    anchors.rightMargin:0;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -787,7 +889,7 @@ BackgroundProperties{
             }
             PropertyChanges{
                 target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:root.offset-shadowsSvgItem.margins.right;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:background.offset;     anchors.topMargin: barLine.screenEdgeMargin;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         }

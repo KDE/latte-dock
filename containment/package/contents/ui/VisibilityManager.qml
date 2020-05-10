@@ -577,13 +577,13 @@ Item{
                     if (noCompositingEdit) {
                         localX = 0;
                     } else if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
-                        localX = (latteView.width/2) - tempLength/2 + root.offset;
+                        localX = (latteView.width/2) - tempLength/2 + background.offset;
                     } else if (root.panelAlignment === LatteCore.Types.Left) {
-                        localX = root.offset;
+                        localX = background.offset;
                     } else if (root.panelAlignment === LatteCore.Types.Center) {
-                        localX = (latteView.width/2) - tempLength/2 + root.offset;
+                        localX = (latteView.width/2) - tempLength/2 + background.offset;
                     } else if (root.panelAlignment === LatteCore.Types.Right) {
-                        localX = latteView.width - tempLength - root.offset;
+                        localX = latteView.width - tempLength - background.offset;
                     }
                 } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
                     if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -607,13 +607,13 @@ Item{
                     if (noCompositingEdit) {
                         localY = 0;
                     } else if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
-                        localY = (latteView.height/2) - tempLength/2 + root.offset;
+                        localY = (latteView.height/2) - tempLength/2 + background.offset;
                     } else if (root.panelAlignment === LatteCore.Types.Top) {
-                        localY = root.offset;
+                        localY = background.offset;
                     } else if (root.panelAlignment === LatteCore.Types.Center) {
-                        localY = (latteView.height/2) - tempLength/2 + root.offset;
+                        localY = (latteView.height/2) - tempLength/2 + background.offset;
                     } else if (root.panelAlignment === LatteCore.Types.Bottom) {
-                        localY = latteView.height - tempLength - root.offset;
+                        localY = latteView.height - tempLength - background.offset;
                     }
                 }
 
