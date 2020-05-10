@@ -353,7 +353,6 @@ Item {
 
     property int realPanelSize: 0
     property int realPanelLength: 0
-    property int realPanelThickness: 0
     //this is set by the Background
     property int panelThickMarginBase: 0
     property int panelThickMarginHigh: 0

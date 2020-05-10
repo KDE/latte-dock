@@ -111,8 +111,8 @@ Item{
     //!          in such case the internal drawn shadows are NOT drawn at all.
     PlasmaCore.FrameSvgItem{
         id: shadowsSvgItem
-        width: root.isVertical ? panelSize + marginsWidth : totalLength
-        height: root.isVertical ? totalLength : panelSize + marginsHeight
+        width: root.isVertical ? backgroundThickness + marginsWidth : totalLength
+        height: root.isVertical ? totalLength : backgroundThickness + marginsHeight
 
         imagePath: hideShadow ? "" : "widgets/panel-background"
         prefix: hideShadow ? "" : "shadow"
@@ -180,17 +180,11 @@ Item{
             return margins.top + margins.bottom;
         }
 
-        property int panelSize: automaticPanelSize
-        property int automaticPanelSize: {
+        property int backgroundThickness: {
             if (root.behaveAsPlasmaPanel) {
-                return metrics.totals.thickness;// + 2;
+                return metrics.totals.thickness;
             } else {
-                var icons = metrics.totals.thickness;// + 2;
-                var panelt = root.themePanelThickness;// + 2;
-
-                root.realPanelThickness = icons + metrics.margin.screenEdge;
-
-                return Math.min(icons, panelt);
+                return Math.min(metrics.totals.thickness, root.themePanelThickness);
             }
         }
 
@@ -239,7 +233,7 @@ Item{
             target: root
             property: "realPanelSize"
             when: shadowsSvgItem
-            value: shadowsSvgItem.panelSize
+            value: shadowsSvgItem.backgroundThickness
         }
 
         Binding {
