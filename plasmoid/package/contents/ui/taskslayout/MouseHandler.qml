@@ -130,7 +130,9 @@ Item {
                 return;
             }
 
-            var above = target.childAtPos(event.x, event.y);
+            var eventToTarget = mapToItem(target, event.x, event.y);
+
+            var above = target.childAtPos(eventToTarget.x, eventToTarget.y);
 
             // If we're mixing launcher tasks with other tasks and are moving
             // a (small) launcher task across a non-launcher task, don't allow
@@ -160,7 +162,7 @@ Item {
             //I use the ignoredItem in order to reduce the move calls as much
             //as possible
             if (tasksModel.sortMode == TaskManager.TasksModel.SortManual && root.dragSource && ignoredItem == null) {
-                var insertAt = TaskTools.insertIndexAt(above, event.x, event.y);
+                var insertAt = TaskTools.insertIndexAt(above, eventToTarget.x, eventToTarget.y);
 
                 if (root.dragSource != above && root.dragSource.itemIndex != insertAt) {
                     //      console.log(root.dragSource.itemIndex + " - "+insertAt);

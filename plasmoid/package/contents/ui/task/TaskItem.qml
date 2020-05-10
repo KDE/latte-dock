@@ -143,6 +143,8 @@ MouseArea{
                                         && !taskItem.delayingRemove
                                         && (wrapper.mScale===1 || wrapper.mScale===taskItem.parabolic.factor.zoom) //don't publish during zoom animation
 
+    property bool hoveredFromDragging: (mouseHandler.hoveredItem === taskItem) || (mouseHandler.ignoredItem === taskItem)
+
     property bool pressed: false
     property bool wheelIsBlocked: false
 
@@ -212,6 +214,12 @@ MouseArea{
     onModelLauncherUrlWithIconChanged: {
         if (modelLauncherUrlWithIcon !== ""){
             launcherUrlWithIcon = modelLauncherUrlWithIcon;
+        }
+    }
+
+    onHoveredFromDraggingChanged: {
+        if (hoveredFromDragging) {
+            scrollableList.autoScrollFor(taskItem, true);
         }
     }
 
@@ -527,7 +535,7 @@ MouseArea{
 
         // a hidden spacer on the right for the last item to add stability
         HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
-    }// Flow with hidden spacers inside   
+    }// Flow with hidden spacers inside
 
     Component {
         id: taskInitComponent
@@ -647,7 +655,7 @@ MouseArea{
         }
 
         if (root.autoScrollTasksEnabled) {
-            scrollableList.autoScrollFor(taskItem);
+            scrollableList.autoScrollFor(taskItem, false);
         }
 
         if (root.latteView && root.latteView.isHalfShown) {
@@ -901,7 +909,7 @@ MouseArea{
 
 
             if (overflowScrollingAccepted) {
-                scrollableList.increasePos();
+                scrollableList.decreasePos();
             } else {
                 if (isLauncher || root.disableAllWindowsFunctionality) {
                     wrapper.runLauncherAnimation();
@@ -917,7 +925,7 @@ MouseArea{
                     tasksModel.requestActivate(taskIndex);
                 }
 
-               // hidePreviewWindow();
+                // hidePreviewWindow();
             }
         } else if (negativeDirection) {
             slotPublishGeometries();
@@ -929,7 +937,7 @@ MouseArea{
 
 
             if (overflowScrollingAccepted) {
-                scrollableList.decreasePos();
+                scrollableList.increasePos();
             } else {
                 if (isLauncher || root.disableAllWindowsFunctionality) {
                     // do nothing
@@ -953,7 +961,7 @@ MouseArea{
                     }
                 }
 
-               // hidePreviewWindow();
+                // hidePreviewWindow();
             }
         }
     }
@@ -1280,7 +1288,7 @@ MouseArea{
                     }
 
                     globalChoords.width = length;
-                }                
+                }
             }
 
             globalChoords.x = adjX;

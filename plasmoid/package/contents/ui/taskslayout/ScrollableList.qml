@@ -157,7 +157,7 @@ Flickable{
         }
     }
 
-    function autoScrollFor(task) {
+    function autoScrollFor(task, duringDragging) {
         //! It has TWO IN-QUESTION issues that may have been solved by the
         //! initial checks
         //! 1. when the user uses the mouse wheel at the first or the last task
@@ -166,7 +166,9 @@ Flickable{
         //!    at the view boundaries, parabolic effect AND autoscroll at the
         //!    boundaries create animation breakage
 
-        if (!root.autoScrollTasksEnabled || !contentsExceed || root.tasksCount < 3
+        var block = !root.autoScrollTasksEnabled && !duringDragging;
+
+        if (block || !contentsExceed || root.tasksCount < 3
                 || (task.itemIndex===parabolicManager.lastRealTaskIndex && parabolic.factor.zoom>1)) {
             //last task with parabolic effect breaks the autoscolling behavior
             return;
