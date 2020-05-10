@@ -26,6 +26,7 @@ AbilityDefinition.Metrics {
 
     iconSize: ref.metrics.iconSize
     maxIconSize: ref.metrics.maxIconSize
+    backgroundThickness: ref.metrics.backgroundThickness
 
     margin: ref.metrics.margin
     padding: ref.metrics.padding

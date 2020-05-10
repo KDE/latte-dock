@@ -26,6 +26,7 @@ import org.kde.latte.abilities.applets 0.1 as AppletAbility
 AppletAbility.Metrics {
     //! Public Local Properties
     local.iconSize: Math.max(plasmoid.configuration.iconSize, 16)
+    local.backgroundThickness: totals.thickness
 
     local.margin.length: 0.1 * iconSize
     local.margin.thickness: 0.16 * iconSize

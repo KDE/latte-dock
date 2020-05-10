@@ -1593,6 +1593,7 @@ Item {
         id: _metrics
         animations: _animations
         autosize: _autosize
+        background: _background
         indicators: indicatorsManager
     }
 

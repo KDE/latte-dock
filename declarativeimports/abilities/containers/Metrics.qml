@@ -27,6 +27,7 @@ AbilityDefinition.Metrics {
     readonly property Item publicApi: Item {
         readonly property alias iconSize: apis.iconSize
         readonly property alias maxIconSize: apis.maxIconSize
+        readonly property alias backgroundThickness: apis.backgroundThickness
 
         readonly property alias margin: apis.margin
         readonly property alias padding: apis.padding

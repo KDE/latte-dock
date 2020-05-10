@@ -24,6 +24,7 @@ import "./metrics" as MetricsTypes
 Item {
     property int iconSize: 48
     property int maxIconSize: 48
+    property int backgroundThickness: 16
 
     property MetricsTypes.Margin margin: MetricsTypes.Margin{}
     property MetricsTypes.Padding padding: MetricsTypes.Padding{}

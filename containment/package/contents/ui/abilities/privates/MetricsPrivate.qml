@@ -28,6 +28,7 @@ ContainerAbility.Metrics {
     id: mets
     property Item animations: null
     property Item autosize: null
+    property Item background: null
     property Item indicators: null
 
     //! Private Properties
