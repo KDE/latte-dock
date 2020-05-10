@@ -397,36 +397,6 @@ MouseArea {
 
         }
 
-        Behavior on x {
-            enabled: !configurationArea.pressed
-            NumberAnimation {
-                id: xAnim
-                duration: animations.duration.large
-                easing.type: Easing.InOutQuad
-            }
-        }
-        Behavior on y {
-            id: yAnim
-            enabled: !configurationArea.pressed
-            NumberAnimation {
-                duration: animations.duration.large
-                easing.type: Easing.InOutQuad
-            }
-        }
-        Behavior on width {
-            enabled: !configurationArea.pressed
-            NumberAnimation {
-                duration: animations.duration.large
-                easing.type: Easing.InOutQuad
-            }
-        }
-        Behavior on height {
-            enabled: !configurationArea.pressed
-            NumberAnimation {
-                duration: animations.duration.large
-                easing.type: Easing.InOutQuad
-            }
-        }
         Behavior on opacity {
             NumberAnimation {
                 duration: animations.duration.large

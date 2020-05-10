@@ -294,8 +294,20 @@ Item {
     property int oldY: y
 
     onXChanged: {
-        if (!foreDropArea.visible || movingForResize || !root.dragInfo.entered) {
+        if (root.isVertical) {
+            return;
+        }
+
+        if (movingForResize) {
             movingForResize = false;
+            return;
+        }
+
+        var draggingAppletInConfigure = root.dragOverlay && root.dragOverlay.currentApplet;
+        var isCurrentAppletInDragging = draggingAppletInConfigure && (root.dragOverlay.currentApplet === appletItem);
+        var dropApplet = root.dragInfo.entered && foreDropArea.visible
+
+        if (isCurrentAppletInDragging || !draggingAppletInConfigure && !dropApplet) {
             return;
         }
 
@@ -319,11 +331,22 @@ Item {
     }
 
     onYChanged: {
-        if (!foreDropArea.visible || movingForResize || !root.dragInfo.entered) {
+        if (root.isHorizontal) {
+            return;
+        }
+
+        if (movingForResize) {
             movingForResize = false;
             return;
         }
 
+        var draggingAppletInConfigure = root.dragOverlay && root.dragOverlay.currentApplet;
+        var isCurrentAppletInDragging = draggingAppletInConfigure && (root.dragOverlay.currentApplet === appletItem);
+        var dropApplet = root.dragInfo.entered && foreDropArea.visible
+
+        if (isCurrentAppletInDragging || !draggingAppletInConfigure && !dropApplet) {
+            return;
+        }
         if (!root.isVertical) {
             translation.x = oldX - x;
             translation.y = 0;
