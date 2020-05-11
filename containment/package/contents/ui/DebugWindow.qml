@@ -30,6 +30,7 @@ Window{
     width: mainGrid.width + 10
     height: Math.min(mainGrid.height+10, Screen.height - visibilityManager.thicknessNormalOriginal)
     visible: true
+    title: "#debugwindow#"
 
     property string space:" :   "
 

@@ -569,7 +569,7 @@ void View::statusChanged(Plasma::Types::ItemStatus status)
 
 void View::addTransientWindow(QWindow *window)
 {
-    if (!m_transientWindows.contains(window)) {
+    if (!m_transientWindows.contains(window) && !window->title().startsWith("#debugwindow#")) {
         m_transientWindows.append(window);
 
         QString winPtrStr = "0x" + QString::number((qulonglong)window,16);
