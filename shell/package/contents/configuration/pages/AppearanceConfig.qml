@@ -534,6 +534,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
                     visible: dialog.advancedLevel
+                    enabled: offsetSlider.to > offsetSlider.from
 
                     PlasmaComponents.Label {
                         id: offsetLbl
