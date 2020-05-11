@@ -35,7 +35,7 @@ Item{
     id: layoutsContainer
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
-    readonly property bool useMaxLength: (plasmoid.configuration.alignment === LatteCore.Types.Justify && !root.inConfigureAppletsMode)
+    readonly property bool useMaxLength: plasmoid.configuration.alignment === LatteCore.Types.Justify
     /*   && ((!root.inConfigureAppletsMode && !root.behaveAsPlasmaPanel )
                                              || (behaveAsPlasmaPanel && root.inConfigureAppletsMode))*/
 

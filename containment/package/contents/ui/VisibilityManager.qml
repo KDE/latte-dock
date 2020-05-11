@@ -199,7 +199,7 @@ Item{
         target: latteView
         property: "maxLength"
         when: latteView
-        value: root.inConfigureAppletsMode ? 1 : maxLengthPerCentage/100
+        value: maxLengthPerCentage/100
     }
 
     Binding{
