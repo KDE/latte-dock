@@ -569,6 +569,59 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
                     && (view->visibility() && !ignoreModes.contains(view->visibility()->mode())))) {
             int realThickness = view->normalThickness();
 
+            int x = 0; int y = 0; int w = 0; int h = 0;
+
+            switch (view->formFactor()) {
+            case Plasma::Types::Horizontal:
+                if (view->behaveAsPlasmaPanel()) {
+                    w = view->width();
+                    x = view->x();
+                } else {
+                    w = view->maxLength() * view->width();
+                    int offsetW = view->offset() * view->width();
+
+                    switch (view->alignment()) {
+                    case Latte::Types::Left:
+                        x = view->x() + offsetW;
+                        break;
+
+                    case Latte::Types::Center:
+                    case Latte::Types::Justify:
+                        x = (view->geometry().center().x() - w/2) + offsetW;
+                        break;
+
+                    case Latte::Types::Right:
+                        x = view->geometry().right() - w - offsetW;
+                        break;
+                    }
+                }
+                break;
+            case Plasma::Types::Vertical:
+                if (view->behaveAsPlasmaPanel()) {
+                    h = view->height();
+                    y = view->y();
+                } else {
+                    h = view->maxLength() * view->height();
+                    int offsetH = view->offset() * view->height();
+
+                    switch (view->alignment()) {
+                    case Latte::Types::Top:
+                        y = view->y() + offsetH;
+                        break;
+
+                    case Latte::Types::Center:
+                    case Latte::Types::Justify:
+                        y = (view->geometry().center().y() - h/2) + offsetH;
+                        break;
+
+                    case Latte::Types::Bottom:
+                        y = view->geometry().bottom() - h - offsetH;
+                        break;
+                    }
+                }
+                break;
+            }
+
             // Usually availableScreenRect is used by the desktop,
             // but Latte don't have desktop, then here just
             // need calculate available space for top and bottom location,
@@ -584,29 +637,9 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
                     }
 
                     available -= viewGeometry;
-                } else {
-                    QRect realGeometry;
-                    int realWidth = view->maxLength() * view->width();
-
-                    switch (view->alignment()) {
-                    case Latte::Types::Left:
-                        realGeometry = QRect(view->x(), view->y(),
-                                             realWidth, realThickness);
-                        break;
-
-                    case Latte::Types::Center:
-                    case Latte::Types::Justify:
-                        realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2), view->y(),
-                                             realWidth, realThickness);
-                        break;
-
-                    case Latte::Types::Right:
-                        realGeometry = QRect(view->geometry().right() - realWidth + 1, view->y(),
-                                             realWidth, realThickness);
-                        break;
-                    }
-
-                    available -= realGeometry;
+                } else {                  
+                    y = view->y();
+                    available -= QRect(x, y, w, realThickness);
                 }
 
                 break;
@@ -622,29 +655,8 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
 
                     available -= viewGeometry;
                 } else {
-                    QRect realGeometry;
-                    int realWidth = view->maxLength() * view->width();
-                    int realY = view->geometry().bottom() - realThickness + 1;
-
-                    switch (view->alignment()) {
-                    case Latte::Types::Left:
-                        realGeometry = QRect(view->x(), realY,
-                                             realWidth, realThickness);
-                        break;
-
-                    case Latte::Types::Center:
-                    case Latte::Types::Justify:
-                        realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2),
-                                             realY, realWidth, realThickness);
-                        break;
-
-                    case Latte::Types::Right:
-                        realGeometry = QRect(view->geometry().right() - realWidth + 1, realY,
-                                             realWidth, realThickness);
-                        break;
-                    }
-
-                    available -= realGeometry;
+                    y = view->geometry().bottom() - realThickness + 1;
+                    available -= QRect(x, y, w, realThickness);
                 }
 
                 break;
@@ -660,28 +672,8 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
 
                     available -= viewGeometry;
                 } else {
-                    QRect realGeometry;
-                    int realHeight = view->maxLength() * view->height();
-
-                    switch (view->alignment()) {
-                    case Latte::Types::Top:
-                        realGeometry = QRect(view->x(), view->y(),
-                                             realThickness, realHeight);
-                        break;
-
-                    case Latte::Types::Center:
-                    case Latte::Types::Justify:
-                        realGeometry = QRect(view->x(), qMax(view->geometry().y(), view->geometry().center().y() - realHeight / 2),
-                                             realThickness, realHeight);
-                        break;
-
-                    case Latte::Types::Bottom:
-                        realGeometry = QRect(view->x(), view->geometry().bottom() - realHeight + 1,
-                                             realThickness, realHeight);
-                        break;
-                    }
-
-                    available -= realGeometry;
+                    x = view->x();
+                    available -= QRect(x, y, realThickness, h);
                 }
 
                 break;
@@ -696,30 +688,9 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
                     }
 
                     available -= viewGeometry;
-                } else {
-                    QRect realGeometry;
-                    int realHeight = view->maxLength() * view->height();
-                    int realX = view->geometry().right() - realThickness + 1;
-
-                    switch (view->alignment()) {
-                    case Latte::Types::Top:
-                        realGeometry = QRect(realX, view->y(),
-                                             realThickness, realHeight);
-                        break;
-
-                    case Latte::Types::Center:
-                    case Latte::Types::Justify:
-                        realGeometry = QRect(realX, qMax(view->geometry().y(), view->geometry().center().y() - realHeight / 2),
-                                             realThickness, realHeight);
-                        break;
-
-                    case Latte::Types::Bottom:
-                        realGeometry = QRect(realX, view->geometry().bottom() - realHeight + 1,
-                                             realThickness, realHeight);
-                        break;
-                    }
-
-                    available -= realGeometry;
+                } else {                    
+                    x = view->geometry().right() - realThickness + 1;
+                    available -= QRect(x, y, realThickness, h);
                 }
 
                 break;
