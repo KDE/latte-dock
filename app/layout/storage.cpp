@@ -158,7 +158,6 @@ void Storage::syncToLayoutFile(bool removeLayoutId)
 
     KConfigGroup oldContainments = KConfigGroup(filePtr, "Containments");
     oldContainments.deleteGroup();
-    oldContainments.sync();
 
     qDebug() << " LAYOUT :: " << m_layout->name() << " is syncing its original file.";
 

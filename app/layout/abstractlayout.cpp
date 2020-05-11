@@ -364,8 +364,6 @@ void AbstractLayout::saveConfig()
     m_layoutGroup.writeEntry("customTextColor", m_customTextColor);
     m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
     m_layoutGroup.writeEntry("preferredForShortcutsTouched", m_preferredForShortcutsTouched);
-
-    m_layoutGroup.sync();
 }
 
 }

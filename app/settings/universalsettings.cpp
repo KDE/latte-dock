@@ -507,8 +507,6 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
     m_universalGroup.writeEntry("mouseSensitivity", (int)m_sensitivity);
-
-    m_universalGroup.sync();
 }
 
 void UniversalSettings::cleanupSettings()

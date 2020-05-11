@@ -307,10 +307,6 @@ void Manager::cleanupOnStartup(QString path)
     for (const auto &cId : removeContaimentsList) {
         containmentGroups.group(cId).deleteGroup();
     }
-
-
-    actionGroups.sync();
-    containmentGroups.sync();
 }
 
 
@@ -332,8 +328,6 @@ void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsId
         KConfigGroup containment = containments.group(conId);
         containment.deleteGroup();
     }
-
-    containments.sync();
 }
 
 QString Manager::newLayout(QString layoutName, QString preset)

@@ -439,8 +439,6 @@ void Indicator::saveConfig()
     config.writeEntry("customType", m_customType);
     config.writeEntry("enabled", m_enabled);
     config.writeEntry("type", m_type);
-
-    config.sync();
 }
 
 }

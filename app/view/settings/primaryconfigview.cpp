@@ -778,7 +778,6 @@ void PrimaryConfigView::saveConfig()
     auto config = m_latteView->containment()->config();
     int complexity = m_inAdvancedMode ? 1 : 0;
     config.writeEntry("settingsComplexity", complexity);
-    config.sync();
 }
 //!END configuration
 

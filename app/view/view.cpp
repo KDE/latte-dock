@@ -1548,7 +1548,6 @@ void View::saveConfig()
     config.writeEntry("byPassWM", byPassWM());
     config.writeEntry("isPreferredForShortcuts", isPreferredForShortcuts());
     config.writeEntry("viewType", (int)m_type);
-    config.sync();
 }
 
 void View::restoreConfig()

@@ -50,9 +50,6 @@ CentralLayout::CentralLayout(QObject *parent, QString layoutFile, QString assign
 
 CentralLayout::~CentralLayout()
 {
-    if (!m_layoutFile.isEmpty()) {
-        m_layoutGroup.sync();
-    }
 }
 
 void CentralLayout::unloadContainments()
@@ -256,8 +253,6 @@ void CentralLayout::saveConfig()
     m_layoutGroup.writeEntry("disableBordersForMaximizedWindows", m_disableBordersForMaximizedWindows);
     m_layoutGroup.writeEntry("sharedLayout", m_sharedLayoutName);
     m_layoutGroup.writeEntry("activities", m_activities);
-
-    m_layoutGroup.sync();
 }
 
 //! OVERRIDES
