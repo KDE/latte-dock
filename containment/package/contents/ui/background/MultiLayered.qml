@@ -57,7 +57,8 @@ BackgroundProperties{
     shadows.top: hasTopBorder ? shadowsSvgItem.margins.top : 0
     shadows.bottom: hasBottomBorder ? shadowsSvgItem.margins.bottom : 0
 
-    screenEdgeMargin: root.screenEdgeMarginEnabled ? Math.max(0, metrics.margin.screenEdge - shadows.tailThickness) : 0
+    //! it can accept negative values in DockMode
+    screenEdgeMargin: root.screenEdgeMarginEnabled ? metrics.margin.screenEdge - shadows.tailThickness : 0
 
     paddings.top: {
         if (root.isHorizontal && hasTopBorder) {
