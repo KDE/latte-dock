@@ -25,7 +25,7 @@ import org.kde.latte.core 0.2 as LatteCore
 
 Flickable{
     id: flickableContainer
-    clip: false
+    clip: root.screenGeometry && contentsExceed
     flickableDirection: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Flickable.HorizontalFlick : Flickable.VerticalFlick
     interactive: false
 
