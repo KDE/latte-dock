@@ -395,7 +395,13 @@ BackgroundProperties{
                 onLocationChanged: solidBackground.adjustPrefix();
             }
 
-            function updateEffectsArea(){
+            function updateEffectsArea() {
+                if (!updateEffectsAreaTimer.running) {
+                    updateEffectsAreaTimer.start();
+                }
+            }
+
+            function invUpdateEffectsArea(){
                 if (!latteView)
                     return;
 
@@ -434,6 +440,12 @@ BackgroundProperties{
                 //! needed both for NOCOMPOSITING environments AND
                 //! View::localGeometry calculations
                 visibilityManager.updateMaskArea();
+            }
+
+            Timer {
+                id: updateEffectsAreaTimer
+                interval: 50
+                onTriggered: solidBackground.invUpdateEffectsArea();
             }
 
             onRepaintNeeded: {
@@ -576,14 +588,6 @@ BackgroundProperties{
             borderColor: "red"
             roundness: overlayedBackground.roundness
         }*/
-    }
-
-    transitions: Transition {
-        enabled: editModeVisual.plasmaEditMode
-        AnchorAnimation {
-            duration: 0.8 * animations.duration.proposed
-            easing.type: Easing.OutCubic
-        }
     }
 
     //BEGIN states
