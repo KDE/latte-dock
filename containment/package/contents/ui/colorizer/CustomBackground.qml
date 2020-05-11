@@ -121,7 +121,7 @@ Item{
             } else if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                 if (drawWithoutRoundness) {
                     return parent.width + 2 * borderWidth;
-                } else if (noOfBorders === 2 || (noOfBorders === 3 && bothHorizontals)) {
+                } else if ((noOfBorders === 2 && !bothVerticals) || (noOfBorders === 3 && bothHorizontals)) {
                     return parent.width + Math.max(roundness, 2 * borderWidth);
                 }
             }
@@ -134,7 +134,7 @@ Item{
             if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
                 if (drawWithoutRoundness) {
                     return parent.height + 2 * borderWidth;
-                } else if (noOfBorders === 2 || (noOfBorders === 3 && bothVerticals)) {
+                } else if ((noOfBorders === 2 && !bothHorizontals) || (noOfBorders === 3 && bothVerticals)) {
                     return parent.height + Math.max(roundness,2 * borderWidth);
                 }
             } else if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
@@ -184,7 +184,7 @@ Item{
                         return 0;
                     }
                     anchors.verticalCenterOffset: {
-                        if (allBorders || (noOfBorders === 3 && bothHorizontals)) {
+                        if (allBorders || (noOfBorders>=2 && bothHorizontals)) {
                             return 0;
                         }
 
@@ -213,7 +213,7 @@ Item{
                         return 0;
                     }
                     anchors.horizontalCenterOffset: {
-                        if (allBorders || (noOfBorders === 3 && bothVerticals)) {
+                        if (allBorders || (noOfBorders>=2 && bothVerticals)) {
                             return 0;
                         }
 
