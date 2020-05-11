@@ -164,9 +164,9 @@ Item{
     Binding {
         target: latteView
         property: "headThicknessGap"
-        when: latteView && !inTempHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
+        when: latteView && !root.editMode && !editModeVisual.inEditMode && !inTempHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
         value: {
-            if (root.behaveAsPlasmaPanel) {
+            if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView) {
                 return 0;
             }
 

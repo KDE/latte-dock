@@ -80,7 +80,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
         //! Frame Extents
         connect(m_latteView, &Latte::View::headThicknessGapChanged , this, &VisibilityManager::on_publishFrameExtents);
-        connect(m_latteView, &Latte::View::locationChanged , this, &VisibilityManager::publishFrameExtents);
+        connect(m_latteView, &Latte::View::inEditModeChanged , this, &VisibilityManager::publishFrameExtents);
 
         connect(m_latteView, &Latte::View::screenEdgeMarginEnabledChanged, this, [&]() {
             if (!m_latteView->screenEdgeMarginEnabled()) {
