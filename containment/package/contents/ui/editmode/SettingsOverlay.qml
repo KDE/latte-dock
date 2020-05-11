@@ -34,7 +34,7 @@ Item{
     id: settingsRoot
     readonly property bool containsMouse: false /*headerSettings.containsMouse || ruler.containsMouse
                                           || tooltipMouseArea.containsMouse || editBackMouseArea.containsMouse*/
-    readonly property int thickness: ruler.thickness + headerSettings.thickness + spacing * 3
+    readonly property int thickness: ruler.thickness + headerSettings.thickness + spacing * 5
     readonly property int spacing: 4
 
     property int textShadow: {

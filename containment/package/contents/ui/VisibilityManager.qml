@@ -108,7 +108,7 @@ Item{
     //! is used to increase the mask thickness
     readonly property int marginBetweenContentsAndRuler: 10
     property int extraNormalThickMask: Math.max(indicatorsExtraThickMask, shadowsExtraThickMask)
-    property int extraZoomThickMask: Math.max(marginBetweenContentsAndRuler, indicatorsExtraThickMask, shadowsExtraThickMask)
+    property int extraZoomThickMask: marginBetweenContentsAndRuler + Math.max(indicatorsExtraThickMask, shadowsExtraThickMask)
     //! this is set from indicators when they need extra thickness mask size
     readonly property int indicatorsExtraThickMask: indicators.info.extraMaskThickness
     property int shadowsExtraThickMask: {
