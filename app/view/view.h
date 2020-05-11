@@ -347,6 +347,9 @@ private slots:
     void topViewAlwaysOnTop();
     void verticalUnityViewHasFocus();
 
+    //!workround for when kwin hides view when an activity is closing
+    void showHiddenViewFromActivityStopping();
+
     void restoreConfig();
     void saveConfig();
 

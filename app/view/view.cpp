@@ -1044,6 +1044,7 @@ void View::applyActivitiesToWindows()
 
         m_windowsTracker->setWindowOnActivities(*this, runningActivities);
 
+        //! config windows
         if (m_configView) {
             m_windowsTracker->setWindowOnActivities(*m_configView, runningActivities);
 
@@ -1054,9 +1055,27 @@ void View::applyActivitiesToWindows()
             }
         }
 
+        //! hidden windows
         if (m_visibility->supportsKWinEdges()) {
             m_visibility->applyActivitiesToHiddenWindows(runningActivities);
         }
+    }
+}
+
+void View::showHiddenViewFromActivityStopping()
+{
+    if (m_layout && m_visibility && !inDelete() && !isVisible() && !m_visibility->isHidden()) {
+        show();
+
+        if (m_effects) {
+            m_effects->updateEnabledBorders();
+        }
+
+        //qDebug() << "View:: Enforce reshow from timer 1...";
+        emit forcedShown();
+    } else if (m_layout && isVisible()) {
+        m_inDelete = false;
+        //qDebug() << "View:: No needed reshow from timer 1...";
     }
 }
 
@@ -1110,6 +1129,7 @@ void View::setLayout(Layout::GenericLayout *layout)
             if (m_layout && m_visibility) {
                 setActivities(m_layout->appliedActivities());
                 applyActivitiesToWindows();
+                showHiddenViewFromActivityStopping();
                 qDebug() << "DOCK VIEW FROM LAYOUT (currentActivityChanged) ::: " << m_layout->name() << " - activities: " << m_activities;
             }
         });
@@ -1153,30 +1173,14 @@ void View::setLayout(Layout::GenericLayout *layout)
 
             connectionsLayout << connect(&m_visibleHackTimer1, &QTimer::timeout, this, [&]() {
                 applyActivitiesToWindows();
+                showHiddenViewFromActivityStopping();
                 emit activitiesChanged();
-
-                if (m_layout && !inDelete() & !isVisible()) {
-                    show();
-                    //qDebug() << "View:: Enforce reshow from timer 1...";
-                    emit forcedShown();
-                } else if (m_layout && isVisible()){
-                    m_inDelete = false;
-                    //qDebug() << "View:: No needed reshow from timer 1...";
-                }
             });
 
             connectionsLayout << connect(&m_visibleHackTimer2, &QTimer::timeout, this, [&]() {
                 applyActivitiesToWindows();
+                showHiddenViewFromActivityStopping();
                 emit activitiesChanged();
-
-                if (m_layout && !inDelete() & !isVisible()) {
-                    show();
-                    //qDebug() << "View:: Enforce reshow from timer 1...";
-                    emit forcedShown();
-                } else if (m_layout && isVisible()){
-                    m_inDelete = false;
-                    //qDebug() << "View:: No needed reshow from timer 1...";
-                }
             });
 
             //! END OF KWIN HACK
