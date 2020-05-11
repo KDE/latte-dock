@@ -351,13 +351,13 @@ Item {
         property: "alignment"
         value: {
             if (latteView) {
-                if (latteView.panelUserSetAlignment === -1) {
+                if (latteView.panelAlignment === -1) {
                     return;
                 }
 
                 if (inConfigureAppletsMode) {
                     return LatteCore.Types.Center;
-                } else if (latteView.panelUserSetAlignment === LatteCore.Types.Justify) {
+                } else if (latteView.panelAlignment === LatteCore.Types.Justify) {
                     if (latteView.latteAppletPos>=0 && latteView.latteAppletPos<100) {
                         return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? LatteCore.Types.Left : LatteCore.Types.Top;
                     } else if (latteView.latteAppletPos>=100 && latteView.latteAppletPos<200) {
@@ -369,7 +369,7 @@ Item {
                     return LatteCore.Types.Center;
                 }
 
-                return latteView.panelUserSetAlignment;
+                return latteView.panelAlignment;
             }
 
             return LatteCore.Types.Center;

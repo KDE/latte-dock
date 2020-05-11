@@ -58,7 +58,7 @@ Loader {
 
         hoverEnabled: true
 
-        readonly property bool useAllLayouts: panelUserSetAlignment === LatteCore.Types.Justify && !root.inConfigureAppletsMode
+        readonly property bool useAllLayouts: root.panelAlignment === LatteCore.Types.Justify
 
         property int lastPressX: -1
         property int lastPressY: -1

@@ -360,15 +360,7 @@ Item {
     property int widthMargins: root.isVertical ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
     property int heightMargins: root.isHorizontal ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
 
-    ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
-    //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? LatteCore.Types.Center : (root.isVertical ? LatteCore.Types.Top : LatteCore.Types.Left)
-    //property int panelAlignment: plasmoid.configuration.alignment !== LatteCore.Types.Justify ? plasmoid.configuration.alignment : layoutsContainer.mainLayoutPosition
-
-    property int panelAlignment: plasmoid.configuration.alignment /*!root.inConfigureAppletsMode ? plasmoid.configuration.alignment :
-                                                                ( plasmoid.configuration.alignment === LatteCore.Types.Justify ?
-                                                                     LatteCore.Types.Center : plasmoid.configuration.alignment )*/
-
-    property int panelUserSetAlignment: plasmoid.configuration.alignment
+    property int panelAlignment: plasmoid.configuration.alignment
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
@@ -512,13 +504,13 @@ Item {
 
     //! It is used only when the user chooses different alignment types
     //! and not during startup
-    onPanelUserSetAlignmentChanged: {
+    onPanelAlignmentChanged: {
         if (!root.editMode) {
             return;
         }
 
         if (root.editMode/*!inConfigureAppletsMode*/){
-            if (panelUserSetAlignment===LatteCore.Types.Justify) {
+            if (panelAlignment===LatteCore.Types.Justify) {
                 addInternalViewSplitters();
                 splitMainLayoutToLayouts();
             } else {
