@@ -176,10 +176,10 @@ Loader{
             if ((editModeTextColorIsBright && themeExtended.isLightTheme)
                     || (!editModeTextColorIsBright && !themeExtended.isLightTheme)) {
                 if (themeExtended.darkTheme === themeExtended.defaultTheme) {
-                    console.log("light theme..." + themeExtended.isLightTheme);
+                    console.log("light theme... : " + themeExtended.isLightTheme);
                     return themeExtended.lightTheme.schemeFile;
                 } else {
-                    console.log("dark theme..." + themeExtended.isLightTheme);
+                    console.log("dark theme... : " + themeExtended.isDarkTheme);
                     return themeExtended.darkTheme.schemeFile;
                 }
             } else {
