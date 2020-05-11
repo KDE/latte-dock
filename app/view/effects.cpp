@@ -429,8 +429,14 @@ void Effects::updateEffects()
                 //! Example: SideBar from v0.10 that BEHAVEASPLASMAPANEL in EditMode
                 //! switching multiple times between inConfigureAppletsMode and LiveEditMode
                 //! is such a case
-                QRegion fixedMask = backMask.isNull() ? m_rect : backMask;
-                fixedMask.translate(m_rect.x(), m_rect.y());
+                QRegion fixedMask;
+
+                if (!backMask.isNull()) {
+                    fixedMask = backMask;
+                    fixedMask.translate(m_rect.x(), m_rect.y());
+                } else {
+                    fixedMask = m_rect;
+                }
 
                 if (!fixedMask.isEmpty()) {
                     clearEffects = false;
