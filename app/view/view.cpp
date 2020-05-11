@@ -696,6 +696,21 @@ void View::setNormalThickness(int thickness)
     emit normalThicknessChanged();
 }
 
+int View::headThicknessGap() const
+{
+    return m_headThicknessGap;
+}
+
+void View::setHeadThicknessGap(int thickness)
+{
+    if (m_headThicknessGap == thickness) {
+        return;
+    }
+
+    m_headThicknessGap = thickness;
+    emit headThicknessGapChanged();
+}
+
 bool View::byPassWM() const
 {
     return m_byPassWM;

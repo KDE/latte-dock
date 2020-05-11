@@ -110,6 +110,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int editThickness READ editThickness WRITE setEditThickness NOTIFY editThicknessChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
+    Q_PROPERTY(int headThicknessGap READ headThicknessGap WRITE setHeadThicknessGap NOTIFY headThicknessGapChanged)
     Q_PROPERTY(int screenEdgeMargin READ screenEdgeMargin WRITE setScreenEdgeMargin NOTIFY screenEdgeMarginChanged)
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
@@ -191,6 +192,9 @@ public:
 
     int normalThickness() const;
     void setNormalThickness(int thickness);
+
+    int headThicknessGap() const;
+    void setHeadThicknessGap(int thickness);
 
     int screenEdgeMargin() const;
     void setScreenEdgeMargin(int margin);
@@ -289,6 +293,7 @@ signals:
     void fontPixelSizeChanged();
     void forcedShown(); //[workaround] forced shown to avoid a KWin issue that hides windows when closing activities
     void widthChanged();
+    void headThicknessGapChanged();
     void heightChanged();
     void inEditModeChanged();
     void indicatorChanged();
@@ -374,6 +379,7 @@ private:
     int m_editThickness{24};
     int m_maxThickness{24};
     int m_normalThickness{24};
+    int m_headThicknessGap{0};
     int m_screenEdgeMargin{-1};
     float m_maxLength{1};
     float m_offset{0};

@@ -137,6 +137,8 @@ public:
     virtual void switchToNextVirtualDesktop() = 0;
     virtual void switchToPreviousVirtualDesktop() = 0;
 
+    virtual void setFrameExtents(QWindow *view, const QMargins &margins) = 0;
+
     Latte::Corona *corona();
     Tracker::Schemes *schemesTracker();
     Tracker::Windows *windowsTracker() const;

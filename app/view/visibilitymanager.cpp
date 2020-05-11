@@ -78,6 +78,10 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
             }
         });
 
+        //! Frame Extents
+        connect(m_latteView, &Latte::View::headThicknessGapChanged , this, &VisibilityManager::on_publishFrameExtents);
+        connect(m_latteView, &Latte::View::locationChanged , this, &VisibilityManager::publishFrameExtents);
+
         connect(m_latteView, &Latte::View::screenEdgeMarginEnabledChanged, this, [&]() {
             if (!m_latteView->screenEdgeMarginEnabled()) {
                 deleteFloatingGapWindow();
@@ -111,6 +115,10 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
             }
         }
     });
+
+    m_timerPublishFrameExtents.setInterval(2000);
+    m_timerPublishFrameExtents.setSingleShot(true);
+    connect(&m_timerPublishFrameExtents, &QTimer::timeout, this, &VisibilityManager::publishFrameExtents);
 
     restoreConfig();
 }
@@ -481,6 +489,38 @@ void VisibilityManager::on_hidingIsBlockedChanged()
         }
     } else {
         updateHiddenState();
+    }
+}
+
+void VisibilityManager::on_publishFrameExtents()
+{
+    if (!m_timerPublishFrameExtents.isActive()) {
+        m_timerPublishFrameExtents.start();
+    }
+}
+
+void VisibilityManager::publishFrameExtents()
+{
+    if (m_frameExtentsHeadThicknessGap != m_latteView->headThicknessGap()
+            || m_frameExtentsLocation != m_latteView->location()) {
+
+        m_frameExtentsHeadThicknessGap = m_latteView->headThicknessGap();
+        m_frameExtentsLocation = m_latteView->location();
+
+        QMargins frameExtents;
+
+        if (m_latteView->location() == Plasma::Types::LeftEdge) {
+            frameExtents.setRight(m_frameExtentsHeadThicknessGap);
+        } else if (m_latteView->location() == Plasma::Types::TopEdge) {
+            frameExtents.setBottom(m_frameExtentsHeadThicknessGap);
+        } else if (m_latteView->location() == Plasma::Types::RightEdge) {
+            frameExtents.setLeft(m_frameExtentsHeadThicknessGap);
+        } else {
+            frameExtents.setTop(m_frameExtentsHeadThicknessGap);
+        }
+
+        qDebug() << " -> Frame Extents :: " << m_frameExtentsLocation << " __ " << " extents :: " << frameExtents;
+        m_wm->setFrameExtents(m_latteView, frameExtents);
     }
 }
 

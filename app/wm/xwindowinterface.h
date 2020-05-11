@@ -82,6 +82,8 @@ public:
     void switchToNextVirtualDesktop() override;
     void switchToPreviousVirtualDesktop() override;
 
+    void setFrameExtents(QWindow *view, const QMargins &margins) override;
+
 private:
     bool isAcceptableWindow(WindowId wid);
     bool isValidWindow(WindowId wid);

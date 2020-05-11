@@ -149,6 +149,9 @@ private slots:
 
     void on_hidingIsBlockedChanged();
 
+    void on_publishFrameExtents(); //! delayed
+    void publishFrameExtents(); //! direct
+
     //! KWin Edges Support functions
     void updateKWinEdgesSupport();
 
@@ -193,6 +196,7 @@ private:
     QTimer m_timerShow;
     QTimer m_timerHide;
     QTimer m_timerStartUp;
+    QTimer m_timerPublishFrameExtents;
 
     bool m_isBelowLayer{false};
     bool m_isHidden{false};
@@ -202,6 +206,9 @@ private:
     bool m_raiseOnDesktopChange{false};
     bool m_raiseOnActivityChange{false};
     bool m_hideNow{false};
+
+    int m_frameExtentsHeadThicknessGap{0};
+    Plasma::Types::Location m_frameExtentsLocation{Plasma::Types::BottomEdge};
 
     QStringList m_blockHidingEvents;
 

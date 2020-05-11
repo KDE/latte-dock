@@ -330,7 +330,6 @@ void XWindowInterface::setActiveEdge(QWindow *view, bool active)
 #if KF5_VERSION_MINOR >= 65
 QRect XWindowInterface::visibleGeometry(const WindowId &wid, const QRect &frameGeometry) const
 {
-
     NETWinInfo ni(QX11Info::connection(), wid.toUInt(), QX11Info::appRootWindow(), 0, NET::WM2GTKFrameExtents);
     NETStrut struts = ni.gtkFrameExtents();
     QMargins margins(struts.left, struts.top, struts.right, struts.bottom);
@@ -343,6 +342,31 @@ QRect XWindowInterface::visibleGeometry(const WindowId &wid, const QRect &frameG
     return visibleGeometry;
 }
 #endif
+
+
+void XWindowInterface::setFrameExtents(QWindow *view, const QMargins &margins)
+{
+    if (!view) {
+        return;
+    }
+
+#if KF5_VERSION_MINOR >= 65
+    NETWinInfo ni(QX11Info::connection(), view->winId(), QX11Info::appRootWindow(), 0, NET::WM2GTKFrameExtents);
+
+    NETStrut struts;
+    struts.left = margins.left();
+    struts.top = margins.top();
+    struts.right = margins.right();
+    struts.bottom = margins.bottom();
+
+    ni.setGtkFrameExtents(struts);
+
+    NETStrut applied = ni.gtkFrameExtents();
+    QMargins amargins(applied.left, applied.top, applied.right, applied.bottom);
+    qDebug() << "     window applied extents :: " << amargins;
+#endif
+}
+
 
 WindowInfoWrap XWindowInterface::requestInfoActive()
 {

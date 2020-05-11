@@ -85,18 +85,18 @@ Item{
     }
 
     property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
-    property int thicknessMid: finalScreenEdgeMargin + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.totals.thickness+extraThickMask) //needed in some animations
-    property int thicknessNormal: finalScreenEdgeMargin + Math.max(metrics.totals.thickness + extraThickMask + 1, background.thickness + background.shadows.headThickness)
+    property int thicknessMid: finalScreenEdgeMargin + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.totals.thickness+extraZoomThickMask) //needed in some animations
+    property int thicknessNormal: finalScreenEdgeMargin + Math.max(metrics.totals.thickness + extraNormalThickMask + 1, background.thickness + background.shadows.headThickness)
 
-    property int thicknessZoom: finalScreenEdgeMargin + ((metrics.totals.thickness+extraThickMask) * parabolic.factor.maxZoom) + 2
+    property int thicknessZoom: finalScreenEdgeMargin + ((metrics.totals.thickness+extraZoomThickMask) * parabolic.factor.maxZoom) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: finalScreenEdgeMargin + Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
+    property int thicknessMidOriginal: finalScreenEdgeMargin + Math.max(thicknessNormalOriginal,extraNormalThickMask + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
     property int thicknessNormalOriginal: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
     /*property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
                                                thicknessNormalOriginalValue : background.thickness + background.shadows.headThickness*/
 
-    property int thicknessNormalOriginalValue: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraThickMask + 1
-    property int thicknessZoomOriginal: finalScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraThickMask + 2,
+    property int thicknessNormalOriginalValue: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraNormalThickMask + 1
+    property int thicknessZoomOriginal: finalScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraZoomThickMask + 2,
                                                                          background.thickness + background.shadows.headThickness,
                                                                          (LatteCore.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
 
@@ -106,8 +106,9 @@ Item{
     property int thicknessAsPanel: metrics.totals.thickness
 
     //! is used to increase the mask thickness
-    readonly property int marginBetweenContentsAndRuler: root.editMode ? 10 : 0
-    property int extraThickMask: marginBetweenContentsAndRuler + Math.max(indicatorsExtraThickMask, shadowsExtraThickMask)
+    readonly property int marginBetweenContentsAndRuler: 10
+    property int extraNormalThickMask: Math.max(indicatorsExtraThickMask, shadowsExtraThickMask)
+    property int extraZoomThickMask: Math.max(marginBetweenContentsAndRuler, indicatorsExtraThickMask, shadowsExtraThickMask)
     //! this is set from indicators when they need extra thickness mask size
     readonly property int indicatorsExtraThickMask: indicators.info.extraMaskThickness
     property int shadowsExtraThickMask: {
@@ -158,6 +159,19 @@ Item{
         property:"editThickness"
         when: latteView
         value: thicknessEditMode
+    }
+
+    Binding {
+        target: latteView
+        property: "headThicknessGap"
+        when: latteView && !inTempHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
+        value: {
+            if (root.behaveAsPlasmaPanel) {
+                return 0;
+            }
+
+            return thicknessZoomOriginal - thicknessNormalOriginalValue;
+        }
     }
 
     Binding{
@@ -423,9 +437,7 @@ Item{
         }
     }
 
-    onThicknessZoomOriginalChanged: {
-        updateMaskArea();
-    }
+    onThicknessZoomOriginalChanged: updateMaskArea();
 
     function slotContainsMouseChanged() {
         if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SideBar) {

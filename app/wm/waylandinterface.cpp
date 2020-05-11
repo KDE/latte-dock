@@ -452,6 +452,11 @@ void WaylandInterface::setActiveEdge(QWindow *view, bool active)
     }
 }
 
+void WaylandInterface::setFrameExtents(QWindow *view, const QMargins &extents)
+{
+     //! do nothing yet until there is a wayland way to provide this
+}
+
 WindowInfoWrap WaylandInterface::requestInfoActive()
 {
     if (!m_windowManagement) {

@@ -98,6 +98,8 @@ public:
     void switchToNextVirtualDesktop() override;
     void switchToPreviousVirtualDesktop() override;
 
+    void setFrameExtents(QWindow *view, const QMargins &margins) override;
+
     void registerIgnoredWindow(WindowId wid) override;
     void unregisterIgnoredWindow(WindowId wid) override;
 
