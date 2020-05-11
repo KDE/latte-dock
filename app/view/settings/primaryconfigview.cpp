@@ -134,6 +134,11 @@ PrimaryConfigView::~PrimaryConfigView()
 {
     qDebug() << "ConfigView deleting ...";
 
+    if (m_latteView->indicator()) {
+        //! destroy indicator config ui when the configuration window is closed
+        m_latteView->indicator()->releaseConfigUi();
+    }
+
     m_corona->dialogShadows()->removeWindow(this);
 
     m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_waylandWindowId);

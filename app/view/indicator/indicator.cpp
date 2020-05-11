@@ -320,6 +320,7 @@ void Indicator::configUiFor(QString type, QQuickItem *parent)
         delete m_lastCreatedConfigUi;
         m_lastCreatedConfigUi = nullptr;
     }
+
     auto prevConfigUi = m_lastCreatedConfigUi;
 
     KPluginMetaData metadata;
@@ -350,6 +351,14 @@ void Indicator::configUiFor(QString type, QQuickItem *parent)
         } else {
             setProvidesConfigUi(false);
         }
+    }
+}
+
+void Indicator::releaseConfigUi()
+{
+    if (m_lastCreatedConfigUi) {
+        delete m_lastCreatedConfigUi;
+        m_lastCreatedConfigUi = nullptr;
     }
 }
 

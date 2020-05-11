@@ -130,6 +130,7 @@ public slots:
     Q_INVOKABLE void addIndicator();
     Q_INVOKABLE void downloadIndicator();
     Q_INVOKABLE void removeIndicator(QString pluginId);
+    void releaseConfigUi();
 
 signals:
     void customPluginsChanged();
