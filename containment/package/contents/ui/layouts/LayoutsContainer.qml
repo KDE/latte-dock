@@ -206,6 +206,7 @@ Item{
 
     AppletsContainer {
         id: _mainLayout
+        z:10 //be on top of start and end layouts
         beginIndex: 100
         offset: {
             if (background.hasBothLengthShadows && !centered) {
