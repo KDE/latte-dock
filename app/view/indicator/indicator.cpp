@@ -316,6 +316,10 @@ void Indicator::loadPlasmaComponent()
 
 void Indicator::configUiFor(QString type, QQuickItem *parent)
 {
+    if (!parent) {
+        return;
+    }
+
     if (m_lastCreatedConfigUi) {
         delete m_lastCreatedConfigUi;
         m_lastCreatedConfigUi = nullptr;
@@ -345,9 +349,10 @@ void Indicator::configUiFor(QString type, QQuickItem *parent)
             m_lastCreatedConfigUi->completeInitialization();
 
             QQuickItem *qmlItem = qobject_cast<QQuickItem*>(m_lastCreatedConfigUi->rootObject());
-            qmlItem->setParentItem(parent);
-
-            setProvidesConfigUi(true);
+            if (qmlItem) {
+                qmlItem->setParentItem(parent);
+                setProvidesConfigUi(true);
+            }
         } else {
             setProvidesConfigUi(false);
         }
