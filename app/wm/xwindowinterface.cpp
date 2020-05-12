@@ -353,17 +353,34 @@ void XWindowInterface::setFrameExtents(QWindow *view, const QMargins &margins)
 #if KF5_VERSION_MINOR >= 65
     NETWinInfo ni(QX11Info::connection(), view->winId(), QX11Info::appRootWindow(), 0, NET::WM2GTKFrameExtents);
 
-    NETStrut struts;
-    struts.left = margins.left();
-    struts.top = margins.top();
-    struts.right = margins.right();
-    struts.bottom = margins.bottom();
+    if (margins.isNull()) {
+        //! delete property
+        xcb_connection_t *c = QX11Info::connection();
+        const QByteArray atomName = QByteArrayLiteral("_GTK_FRAME_EXTENTS");
+        xcb_intern_atom_cookie_t atomCookie = xcb_intern_atom_unchecked(c, false, atomName.length(), atomName.constData());
+        QScopedPointer<xcb_intern_atom_reply_t, QScopedPointerPodDeleter> atom(xcb_intern_atom_reply(c, atomCookie, nullptr));
 
-    ni.setGtkFrameExtents(struts);
+        if (!atom) {
+            return;
+        }
 
-    NETStrut applied = ni.gtkFrameExtents();
+        // qDebug() << "   deleting gtk frame extents atom..";
+
+        xcb_delete_property(c, view->winId(), atom->atom);
+    } else {
+        NETStrut struts;
+        struts.left = margins.left();
+        struts.top = margins.top();
+        struts.right = margins.right();
+        struts.bottom = margins.bottom();
+
+        ni.setGtkFrameExtents(struts);
+    }
+
+  /*NETWinInfo ni2(QX11Info::connection(), view->winId(), QX11Info::appRootWindow(), 0, NET::WM2GTKFrameExtents);
+    NETStrut applied = ni2.gtkFrameExtents();
     QMargins amargins(applied.left, applied.top, applied.right, applied.bottom);
-    qDebug() << "     window applied extents :: " << amargins;
+    qDebug() << "     window gtk frame extents applied :: " << amargins;*/
 #endif
 }
 

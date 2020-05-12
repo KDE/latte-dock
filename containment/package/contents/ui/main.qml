@@ -138,6 +138,7 @@ Item {
 
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized && LatteCore.WindowSystem.compositingActive
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
+
     property bool editMode: editModeVisual.inEditMode
     property bool windowIsTouching: latteView && latteView.windowsTracker
                                     && (latteView.windowsTracker.currentScreen.activeWindowTouching || hasExpandedApplet)
@@ -1601,6 +1602,16 @@ Item {
     LatteApp.Interfaces {
         id: _interfaces
         plasmoidInterface: plasmoid
+
+        Component.onCompleted: {
+            view.interfacesGraphicObj = _interfaces;
+        }
+
+        onViewChanged: {
+            if (view) {
+                view.interfacesGraphicObj = _interfaces;
+            }
+        }
     }
 
     ///////////////END ABILITIES

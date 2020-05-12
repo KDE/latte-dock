@@ -29,6 +29,7 @@
 #include "settings/secondaryconfigview.h"
 #include "../apptypes.h"
 #include "../lattecorona.h"
+#include "../declarativeimports/interfaces.h"
 #include "../indicator/factory.h"
 #include "../layout/genericlayout.h"
 #include "../layouts/manager.h"
@@ -143,6 +144,15 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
 
             connect(m_visibility, &ViewPart::VisibilityManager::containsMouseChanged,
                     this, &View::updateTransientWindowsTracking);
+
+            connect(m_visibility, &ViewPart::VisibilityManager::frameExtentsCleared, this, [&]() {
+                if (behaveAsPlasmaPanel()) {
+                    //! recreate view because otherwise compositor frame extents implementation
+                    //! is triggering a crazy behavior of moving/hiding the view and freezing Latte
+                    //! in some cases.
+                    reloadSource();
+                }
+            });
 
             emit visibilityChanged();
         }
@@ -294,6 +304,13 @@ void View::init(Plasma::Containment *plasma_containment)
         containmentGraphicItem->setProperty("_latte_themeExtended_object", QVariant::fromValue(m_corona->themeExtended()));
         containmentGraphicItem->setProperty("_latte_universalSettings_object", QVariant::fromValue(m_corona->universalSettings()));
         containmentGraphicItem->setProperty("_latte_view_object", QVariant::fromValue(this));
+
+        Latte::Interfaces *ifacesGraphicObject = qobject_cast<Latte::Interfaces *>(containmentGraphicItem->property("_latte_view_interfacesobject").value<QObject *>());
+
+        if (ifacesGraphicObject) {
+            ifacesGraphicObject->updateView();
+            setInterfacesGraphicObj(ifacesGraphicObject);
+        }
     }
 
     setSource(corona()->kPackage().filePath("lattedockui"));
@@ -1324,6 +1341,33 @@ ViewPart::VisibilityManager *View::visibility() const
 ViewPart::WindowsTracker *View::windowsTracker() const
 {
     return m_windowsTracker;
+}
+
+Latte::Interfaces *View::interfacesGraphicObj() const
+{
+    return m_interfacesGraphicObj;
+}
+
+void View::setInterfacesGraphicObj(Latte::Interfaces *ifaces)
+{
+    if (m_interfacesGraphicObj == ifaces) {
+        return;
+    }
+
+    m_interfacesGraphicObj = ifaces;
+
+    qDebug() << " @#$@#$@#$@#$ @#$ @#$ @#$ @#$ SETINTERFACESGRAPHICOBJECT 111";
+    if (containment()) {
+        QQuickItem *containmentGraphicItem = qobject_cast<QQuickItem *>(containment()->property("_plasma_graphicObject").value<QObject *>());
+        qDebug() << " @#$@#$@#$@#$ @#$ @#$ @#$ @#$ SETINTERFACESGRAPHICOBJECT 222";
+
+        if (containmentGraphicItem) {
+            qDebug() << " @#$@#$@#$@#$ @#$ @#$ @#$ @#$ SETINTERFACESGRAPHICOBJECT 333";
+            containmentGraphicItem->setProperty("_latte_view_interfacesobject", QVariant::fromValue(m_interfacesGraphicObj));
+        }
+    }
+
+    emit interfacesGraphicObjChanged();
 }
 
 bool View::event(QEvent *e)

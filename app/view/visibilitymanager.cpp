@@ -80,9 +80,9 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
         //! Frame Extents
         connect(m_latteView, &Latte::View::headThicknessGapChanged, this, &VisibilityManager::on_publishFrameExtents);
-        connect(m_latteView, &Latte::View::inEditModeChanged, this, [&]() { publishFrameExtents(); });
         connect(m_latteView, &Latte::View::forcedShown, this, [&]() {
-            //resend information to compositor otherwise it is lost from compositor abnormal behavior
+            //! Resend frame extents to compositor otherwise because compositor cleared
+            //! them with no reason when the user is closing an activity
             const bool forceUpdate{true};
             publishFrameExtents(forceUpdate);
         });
@@ -98,7 +98,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         });
     }
 
-    m_timerStartUp.setInterval(5000);
+    m_timerStartUp.setInterval(4000);
     m_timerStartUp.setSingleShot(true);
     m_timerShow.setSingleShot(true);
     m_timerHide.setSingleShot(true);
@@ -121,7 +121,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         }
     });
 
-    m_timerPublishFrameExtents.setInterval(2000);
+    m_timerPublishFrameExtents.setInterval(1500);
     m_timerPublishFrameExtents.setSingleShot(true);
     connect(&m_timerPublishFrameExtents, &QTimer::timeout, this, [&]() { publishFrameExtents(); });
 
@@ -526,7 +526,15 @@ void VisibilityManager::publishFrameExtents(bool forceUpdate)
         }
 
         qDebug() << " -> Frame Extents :: " << m_frameExtentsLocation << " __ " << " extents :: " << frameExtents;
-        m_wm->setFrameExtents(m_latteView, frameExtents);
+
+        if (!frameExtents.isNull()) {
+            //! When a view returns its frame extents to zero then that triggers a compositor
+            //! strange behavior that moves/hides the view totally and freezes entire Latte
+            //! this is why we have blocked that setting
+            m_wm->setFrameExtents(m_latteView, frameExtents);
+        } else if (m_latteView->behaveAsPlasmaPanel()) {
+            emit frameExtentsCleared();
+        }
     }
 }
 
@@ -942,12 +950,12 @@ void VisibilityManager::createEdgeGhostWindow()
     if (!m_edgeGhostWindow) {
         m_edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
 
-        connect(m_edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {            
+        connect(m_edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
                 raiseView(true);
             } else {
-                 m_timerShow.stop();
-                 updateGhostWindowState();
+                m_timerShow.stop();
+                updateGhostWindowState();
             }
         });
 

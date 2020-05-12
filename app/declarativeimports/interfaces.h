@@ -53,6 +53,9 @@ public:
     QObject *plasmoidInterface() const;
     void setPlasmoidInterface(QObject *interface);
 
+public slots:
+    Q_INVOKABLE void updateView();
+
 signals:
     void interfaceChanged();
     void globalShortcutsChanged();

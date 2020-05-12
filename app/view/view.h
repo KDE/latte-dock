@@ -67,6 +67,7 @@ class PlasmaShellSurface;
 
 namespace Latte {
 class Corona;
+class Interfaces;
 class GenericLayout;
 
 namespace ViewPart {
@@ -123,6 +124,8 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(Latte::ViewPart::VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(Latte::ViewPart::WindowsTracker *windowsTracker READ windowsTracker NOTIFY windowsTrackerChanged)
+
+    Q_PROPERTY(Latte::Interfaces *interfacesGraphicObj READ interfacesGraphicObj WRITE setInterfacesGraphicObj NOTIFY interfacesGraphicObjChanged)
 
     Q_PROPERTY(QRect absoluteGeometry READ absoluteGeometry NOTIFY absoluteGeometryChanged)
     Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
@@ -235,6 +238,9 @@ public:
     ViewPart::VisibilityManager *visibility() const;
     ViewPart::WindowsTracker *windowsTracker() const;
 
+    Latte::Interfaces *interfacesGraphicObj() const;
+    void setInterfacesGraphicObj(Latte::Interfaces *ifaces);
+
     Layout::GenericLayout *layout() const;
     void setLayout(Layout::GenericLayout *layout);
 
@@ -298,6 +304,7 @@ signals:
     void inEditModeChanged();
     void indicatorChanged();
     void inSettingsAdvancedModeChanged();
+    void interfacesGraphicObjChanged();
     void isPreferredForShortcutsChanged();
     void isTouchingBottomViewAndIsBusyChanged();
     void isTouchingTopViewAndIsBusyChanged();
@@ -419,6 +426,8 @@ private:
     QPointer<ViewPart::Positioner> m_positioner;
     QPointer<ViewPart::VisibilityManager> m_visibility;
     QPointer<ViewPart::WindowsTracker> m_windowsTracker;
+
+    QPointer<Latte::Interfaces> m_interfacesGraphicObj;
 
     //! Connections to release and bound for the assigned layout
     QList<QMetaObject::Connection> connectionsLayout;

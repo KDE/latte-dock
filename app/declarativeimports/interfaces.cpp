@@ -117,6 +117,13 @@ void Interfaces::setUniversalSettings(QObject *settings)
     emit universalSettingsChanged();
 }
 
+void Interfaces::updateView()
+{
+    if (m_plasmoid) {
+        setView(m_plasmoid->property("_latte_view_object").value<QObject *>());
+    }
+}
+
 QObject *Interfaces::view() const
 {
     return m_view;
