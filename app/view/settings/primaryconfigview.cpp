@@ -739,8 +739,8 @@ void PrimaryConfigView::updateEffects()
         m_background = new Plasma::FrameSvg(this);
     }
 
-    if (m_background->imagePath() != "widgets/panel-background") {
-        m_background->setImagePath(QStringLiteral("widgets/panel-background"));
+    if (m_background->imagePath() != "dialogs/background") {
+        m_background->setImagePath(QStringLiteral("dialogs/background"));
     }
 
     m_background->setEnabledBorders(m_enabledBorders);
