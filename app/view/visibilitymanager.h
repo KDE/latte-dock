@@ -150,7 +150,7 @@ private slots:
     void on_hidingIsBlockedChanged();
 
     void on_publishFrameExtents(); //! delayed
-    void publishFrameExtents(); //! direct
+    void publishFrameExtents(bool forceUpdate = false); //! direct
 
     //! KWin Edges Support functions
     void updateKWinEdgesSupport();

@@ -79,8 +79,13 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         });
 
         //! Frame Extents
-        connect(m_latteView, &Latte::View::headThicknessGapChanged , this, &VisibilityManager::on_publishFrameExtents);
-        connect(m_latteView, &Latte::View::inEditModeChanged , this, &VisibilityManager::publishFrameExtents);
+        connect(m_latteView, &Latte::View::headThicknessGapChanged, this, &VisibilityManager::on_publishFrameExtents);
+        connect(m_latteView, &Latte::View::inEditModeChanged, this, [&]() { publishFrameExtents(); });
+        connect(m_latteView, &Latte::View::forcedShown, this, [&]() {
+            //resend information to compositor otherwise it is lost from compositor abnormal behavior
+            const bool forceUpdate{true};
+            publishFrameExtents(forceUpdate);
+        });
 
         connect(m_latteView, &Latte::View::screenEdgeMarginEnabledChanged, this, [&]() {
             if (!m_latteView->screenEdgeMarginEnabled()) {
@@ -118,7 +123,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     m_timerPublishFrameExtents.setInterval(2000);
     m_timerPublishFrameExtents.setSingleShot(true);
-    connect(&m_timerPublishFrameExtents, &QTimer::timeout, this, &VisibilityManager::publishFrameExtents);
+    connect(&m_timerPublishFrameExtents, &QTimer::timeout, this, [&]() { publishFrameExtents(); });
 
     restoreConfig();
 }
@@ -499,10 +504,11 @@ void VisibilityManager::on_publishFrameExtents()
     }
 }
 
-void VisibilityManager::publishFrameExtents()
+void VisibilityManager::publishFrameExtents(bool forceUpdate)
 {
     if (m_frameExtentsHeadThicknessGap != m_latteView->headThicknessGap()
-            || m_frameExtentsLocation != m_latteView->location()) {
+            || m_frameExtentsLocation != m_latteView->location()
+            || forceUpdate) {
 
         m_frameExtentsHeadThicknessGap = m_latteView->headThicknessGap();
         m_frameExtentsLocation = m_latteView->location();
