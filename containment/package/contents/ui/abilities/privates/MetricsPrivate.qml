@@ -31,6 +31,10 @@ ContainerAbility.Metrics {
     property Item background: null
     property Item indicators: null
 
+    //! private properties to avoid too many not needed animation calculations
+    readonly property int _iconSize: autosizeEnabled && autosize.iconSize > 0 ? Math.min(autosize.iconSize, maxIconSize) : maxIconSize
+    readonly property int _maxIconSize: portionIconSize!==-1 ? portionIconSize : plasmoid.configuration.iconSize
+
     //! Private Properties
     readonly property int portionIconSize: { //icon size based on screen height
         if ((plasmoid.configuration.proportionIconSize===-1) || !latteView)
@@ -50,6 +54,8 @@ ContainerAbility.Metrics {
         lengthAppletPadding: indicators.infoLoaded ? indicators.info.appletLengthPadding : -1
     }
 
+    //! based on background / plasma theme minimum thickness requirements; behaveAsPlasmaPanel and floating is a good scenario for this
+    readonly property int marginMinThickness: Math.max(0, (background.totals.minThickness - _maxIconSize) / 2)
 
     //! BEHAVIORS
     Behavior on iconSize {

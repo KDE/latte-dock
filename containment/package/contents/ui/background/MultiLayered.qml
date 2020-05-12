@@ -144,16 +144,15 @@ BackgroundProperties{
     }
 
     totals.visualThickness: {
-        var minimumBackground = paddings.headThickness + paddings.tailThickness;
         var itemMargins = root.shrinkThickMargins ? 0 : metrics.totals.thicknessEdges;
         var maximumItem = metrics.iconSize + itemMargins;
 
-        if (minimumBackground < maximumItem) {
-            maximumItem = maximumItem - minimumBackground;
+        if (totals.minThickness < maximumItem) {
+            maximumItem = maximumItem - totals.minThickness;
         }
 
         var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
-        return Math.max(minimumBackground, minimumBackground + (percentage*maximumItem) + 1/*needed to not leave a gap at max values*/);
+        return Math.max(totals.minThickness, totals.minThickness + (percentage*maximumItem) + 1/*needed to not leave a gap at max values*/);
     }
 
     totals.visualLength: Math.max(background.length + totals.shadowsLength, totals.paddingsLength + totals.shadowsLength)

@@ -49,4 +49,6 @@ QtObject{
             return paddings.top+paddings.bottom;
         }
     }
+
+    readonly property int minThickness: paddings.headThickness + paddings.tailThickness;
 }

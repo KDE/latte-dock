@@ -27,13 +27,15 @@ Ability.MetricsPrivate {
     signal iconSizeAnimationEnded();
 
     //! Public Properties
-    iconSize: autosizeEnabled && autosize.iconSize > 0 ? Math.min(autosize.iconSize, maxIconSize) : maxIconSize
-    maxIconSize: portionIconSize!==-1 ? portionIconSize : plasmoid.configuration.iconSize
+    iconSize: _iconSize
+    maxIconSize: _maxIconSize
     backgroundThickness: background.thickness
 
     margin.length: fraction.lengthMargin * iconSize
-    margin.thickness: fraction.thicknessMargin * iconSize
-    margin.maxThickness: fraction.thicknessMargin * maxIconSize
+    margin.thickness: marginMinThickness + fraction.thicknessMargin * Math.max(0, _iconSize - marginMinThickness)
+    margin.maxThickness: marginMinThickness + fraction.thicknessMargin * Math.max(0, _maxIconSize - marginMinThickness)
+    //margin.thickness: fraction.thicknessMargin * iconSize
+   // margin.maxThickness: fraction.thicknessMargin * maxIconSize
     margin.screenEdge: (root.screenEdgeMarginEnabled && root.behaveAsPlasmaPanel && !root.editMode)
                        || !root.screenEdgeMarginEnabled
                        || root.hideThickScreenGap ?
