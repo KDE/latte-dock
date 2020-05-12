@@ -33,6 +33,7 @@ import org.kde.latte.components 1.0 as LatteComponents
 import "colorizer" as Colorizer
 import "communicator" as Communicator
 import "indicator" as Indicator
+import "../debug" as Debug
 
 Item {
     id: appletItem
@@ -1075,6 +1076,18 @@ Item {
         //! when parabolic effect was used
         onPressed: mouse.accepted = false;
         onReleased: mouse.accepted = false;
+    }
+
+    //! Debug Elements
+    Loader{
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+
+        active: root.debugModeLayouter
+        sourceComponent: Debug.Tag{
+            label.text: root.isHorizontal ? appletItem.width : appletItem.height
+            label.color: appletItem.needsFillSpace ? "green" : "white"
+        }
     }
 
     //! A timer is needed in order to handle also touchpads that probably

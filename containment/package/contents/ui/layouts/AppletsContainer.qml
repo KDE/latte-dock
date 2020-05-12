@@ -166,6 +166,7 @@ Abilities.AbilityGrid {
     onShownAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
     onSizeWithNoFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
 
+
     //////////////////////////BEGIN states
     //user set Panel Positions
     // 0-Center, 1-Left, 2-Right, 3-Top, 4-Bottom

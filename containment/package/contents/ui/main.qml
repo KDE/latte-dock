@@ -41,6 +41,7 @@ import "editmode" as EditMode
 import "indicators" as Indicators
 import "layouts" as Layouts
 import "./background" as Background
+import "./debug" as Debug
 import "../code/LayoutManager.js" as LayoutManager
 
 Item {
@@ -64,6 +65,7 @@ Item {
 
     ////BEGIN properties
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
+    property bool debugModeLayouter: Qt.application.arguments.indexOf("--layouter")>=0
     property bool debugModeLocalGeometry: Qt.application.arguments.indexOf("--localgeometry")>=0
     property bool debugModeSpacers: Qt.application.arguments.indexOf("--spacers")>=0
     property bool debugModeTimers: Qt.application.arguments.indexOf("--timers")>=0
@@ -1398,7 +1400,7 @@ Item {
 
     Loader{
         active: root.debugModeWindow
-        sourceComponent: DebugWindow{}
+        sourceComponent: Debug.DebugWindow{}
     }
 
     EditMode.Visual{

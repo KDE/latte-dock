@@ -1356,13 +1356,10 @@ void View::setInterfacesGraphicObj(Latte::Interfaces *ifaces)
 
     m_interfacesGraphicObj = ifaces;
 
-    qDebug() << " @#$@#$@#$@#$ @#$ @#$ @#$ @#$ SETINTERFACESGRAPHICOBJECT 111";
     if (containment()) {
         QQuickItem *containmentGraphicItem = qobject_cast<QQuickItem *>(containment()->property("_plasma_graphicObject").value<QObject *>());
-        qDebug() << " @#$@#$@#$@#$ @#$ @#$ @#$ @#$ SETINTERFACESGRAPHICOBJECT 222";
 
         if (containmentGraphicItem) {
-            qDebug() << " @#$@#$@#$@#$ @#$ @#$ @#$ @#$ SETINTERFACESGRAPHICOBJECT 333";
             containmentGraphicItem->setProperty("_latte_view_interfacesobject", QVariant::fromValue(m_interfacesGraphicObj));
         }
     }

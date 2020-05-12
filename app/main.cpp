@@ -153,6 +153,11 @@ int main(int argc, char **argv)
     localGeometryOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(localGeometryOption);
 
+    QCommandLineOption layouterOption(QStringList() << QStringLiteral("layouter"));
+    layouterOption.setDescription(QStringLiteral("Show visual debug tags for items sizes."));
+    layouterOption.setFlags(QCommandLineOption::HiddenFromHelp);
+    parser.addOption(layouterOption);
+
     QCommandLineOption filterDebugTextOption(QStringList() << QStringLiteral("debug-text"));
     filterDebugTextOption.setDescription(QStringLiteral("Show only debug messages that contain specific text."));
     filterDebugTextOption.setFlags(QCommandLineOption::HiddenFromHelp);

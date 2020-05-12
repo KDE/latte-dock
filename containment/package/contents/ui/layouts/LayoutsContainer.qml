@@ -29,6 +29,7 @@ import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.containment 0.1 as LatteContainment
 
 import "./abilities" as AbilitiesTypes
+import "../debug" as Debug
 import "../../code/HeuristicTools.js" as HeuristicTools
 
 Item{
@@ -306,6 +307,97 @@ Item{
         onInNormalFillCalculationsStateChanged: {
             if (animations.inNormalFillCalculationsState) {
                 layoutsContainer.updateSizeForAppletsInFill();
+            }
+        }
+    }
+
+    //! Debug Elements
+    Loader{
+        anchors.top: debugLayout.top
+        anchors.horizontalCenter: debugLayout.horizontalCenter
+        active: root.debugModeLayouter
+
+        readonly property Item debugLayout: _startLayout
+
+        sourceComponent: Debug.Tag{
+            background.color: "white"
+            label.text: tagText
+            label.color: "black"
+            label.font.pointSize: 13
+            readonly property int layoutLength: root.isHorizontal ? debugLayout.width : debugLayout.height
+
+            readonly property string tagText: {
+                return "no_show:" + debugLayout.shownApplets + " / no_fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
+            }
+        }
+    }
+
+    Loader{
+        anchors.top: debugLayout.top
+        anchors.horizontalCenter: debugLayout.horizontalCenter
+        active: root.debugModeLayouter
+
+        readonly property Item debugLayout: _endLayout
+
+        sourceComponent: Debug.Tag{
+            background.color: "white"
+            label.text: tagText
+            label.color: "black"
+            label.font.pointSize: 13
+            readonly property int layoutLength: root.isHorizontal ? debugLayout.width : debugLayout.height
+
+            readonly property string tagText: {
+                return "no_show:" + debugLayout.shownApplets + " / no_fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
+            }
+        }
+    }
+
+    Loader{
+        anchors.top: debugLayout.top
+        anchors.horizontalCenter: debugLayout.horizontalCenter
+        active: root.debugModeLayouter
+        z:70
+
+        readonly property Item debugLayout: _mainLayout
+
+        sourceComponent: Debug.Tag{
+            background.color: "white"
+            label.text: tagText
+            label.color: "black"
+            label.font.pointSize: 13
+            readonly property int layoutLength: root.isHorizontal ? debugLayout.width : debugLayout.height
+
+            readonly property string tagText: {
+                return "no_show:" + debugLayout.shownApplets + " / no_fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
+            }
+        }
+    }
+
+    Loader{
+        anchors.top: _mainLayout.top
+        anchors.left: parent.left
+        active: root.debugModeLayouter
+
+        readonly property Item debugLayout: layoutsContainer
+
+        sourceComponent: Debug.Tag{
+            background.color: "blue"
+            label.text: tagText
+            label.color: "yellow"
+            label.font.pointSize: 13
+            label.font.bold: true
+            readonly property int layoutLength: root.isHorizontal ? debugLayout.width : debugLayout.height
+
+            readonly property int layoutsLength: {
+                if (root.isVertical) {
+                    return _startLayout.height + _mainLayout.height + _endLayout.height;
+                }
+
+                return _startLayout.width + _mainLayout.width + _endLayout.width;
+            }
+
+            readonly property string tagText: {
+                return "MAX:" + root.maxLength + " / TOT:"+layoutLength + " / LAYS:"+ layoutsLength;
             }
         }
     }
