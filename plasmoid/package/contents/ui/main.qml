@@ -1132,8 +1132,8 @@ Item {
 
             visible: root.dragAreaEnabled
 
-            property int maxSize: ((parabolic.local.lastIndex>=0 || windowPreviewIsShown) && !root.dragSource) ?
-                                      (parabolic.factor.zoom * metrics.totals.thickness) + metrics.margin.screenEdge :
+            property int maxSize: ((parabolic.local.lastIndex>=0 || windowPreviewIsShown || animations.hasThicknessAnimation) && !root.dragSource) ?
+                                      (parabolic.factor.maxZoom * metrics.totals.thickness) + metrics.margin.screenEdge :
                                       metrics.totals.thickness + metrics.margin.screenEdge
 
             function onlyLaunchersInList(list){

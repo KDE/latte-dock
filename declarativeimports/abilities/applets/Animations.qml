@@ -25,7 +25,7 @@ AbilityDefinition.Animations {
     property Item bridge: null
 
     active: ref.animations.active
-    hasThicknessAnimation: ref.animations.hasThicknessAnimation
+    readonly property bool hasThicknessAnimation: ref.animations.hasThicknessAnimation //redefined to make it readonly and switchable
 
     //! animations tracking
     needBothAxis: ref.animations.needBothAxis

@@ -23,7 +23,7 @@ import "./animations" as AnimationsTypes
 
 Item {
     property bool active: false
-    property bool hasThicknessAnimation: false
+    readonly property bool hasThicknessAnimation: (needBothAxis.count>0) || (needThickness.count>0)
 
     //! animations properties
     property AnimationsTypes.Duration duration: AnimationsTypes.Duration {

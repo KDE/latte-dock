@@ -40,7 +40,6 @@ ContainerAbility.Animations {
 
     //! Public Properties
     active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
-    hasThicknessAnimation:  (needBothAxis.count>0) || (needThickness.count>0)
 
     duration.large: LatteCore.Environment.longDuration
     duration.proposed: speedFactor.current * 2.8 * duration.large
