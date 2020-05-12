@@ -657,6 +657,8 @@ Item{
 
     //////////// Transitions //////////////
 
+    readonly property string draggingNeedThicknessEvent: taskIcon + "_dragging"
+
     transitions: [
         Transition{
             id: isDraggedTransition
@@ -666,8 +668,8 @@ Item{
             SequentialAnimation{
                 ScriptAction{
                     script: {
+                        taskItem.animations.needThickness.addEvent(draggingNeedThicknessEvent);
                         taskItem.inBlockingAnimation = true;
-                        taskItem.parabolic.startRestoreZoomTimer();
                         taskItem.parabolic.setDirectRenderingEnabled(false);
                     }
                 }
@@ -675,8 +677,8 @@ Item{
                 PropertyAnimation {
                     target: wrapper
                     property: "mScale"
-                    to: 1 + ((taskItem.parabolic.factor.zoom - 1) / 3)
-                    duration: isDraggedTransition.speed / 2
+                    to: 1
+                    duration: taskItem.parabolic.factor.zoom === 1 ? 0 : (isDraggedTransition.speed*1.2)
                     easing.type: Easing.OutQuad
                 }
 
@@ -705,11 +707,19 @@ Item{
                         easing.type: Easing.OutQuad
                     }
                 }
+
+                ScriptAction{
+                    script: {
+                        taskItem.animations.needThickness.removeEvent(draggingNeedThicknessEvent);
+                    }
+                }
             }
 
             onRunningChanged: {
                 if(running){
                     taskItem.animationStarted();
+                } else {
+                    taskItem.animations.needThickness.removeEvent(draggingNeedThicknessEvent);
                 }
             }
         },

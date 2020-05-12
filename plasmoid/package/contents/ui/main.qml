@@ -211,8 +211,11 @@ Item {
         }
     }
 
-    property int tasksHeight: mouseHandler.height
-    property int tasksWidth: mouseHandler.width
+    //! Real properties are need in order for parabolic effect to be 1px precise perfect.
+    //! This way moving from Tasks to Applets and vice versa is pretty stable when hovering with parabolic effect.
+    property real tasksHeight:  mouseHandler.height
+    property real tasksWidth: mouseHandler.width
+
     //updated from Binding
     property int alignment
 
@@ -1132,7 +1135,7 @@ Item {
 
             visible: root.dragAreaEnabled
 
-            property int maxSize: ((parabolic.local.lastIndex>=0 || windowPreviewIsShown || animations.hasThicknessAnimation) && !root.dragSource) ?
+            property int maxSize: (parabolic.local.lastIndex>=0 || windowPreviewIsShown || animations.hasThicknessAnimation) ?
                                       (parabolic.factor.maxZoom * metrics.totals.thickness) + metrics.margin.screenEdge :
                                       metrics.totals.thickness + metrics.margin.screenEdge
 
