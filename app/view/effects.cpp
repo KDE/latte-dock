@@ -20,6 +20,7 @@
 #include "effects.h"
 
 // local
+#include <config-latte.h>
 #include <coretypes.h>
 #include "panelshadows_p.h"
 #include "view.h"
@@ -431,11 +432,26 @@ void Effects::updateEffects()
                 //! is such a case
                 QRegion fixedMask;
 
+                int fX = m_rect.x(); int fY = m_rect.y();
+
+#if KF5_VERSION_MINOR >= 65
+                //! Latte is now using GtkFrameExtents so Effects geometries must be adjusted
+                //! windows that use GtkFrameExtents and apply Effects on them they take GtkFrameExtents
+                //! as granted
+                if (KWindowSystem::isPlatformX11()) {
+                        if (m_view->location() == Plasma::Types::BottomEdge) {
+                            fY = qMax(0, fY - m_view->headThicknessGap());
+                        } else if (m_view->location() == Plasma::Types::RightEdge) {
+                            fX = qMax(0, fX - m_view->headThicknessGap());
+                        }
+                }
+#endif
+
                 if (!backMask.isNull()) {
                     fixedMask = backMask;
-                    fixedMask.translate(m_rect.x(), m_rect.y());
+                    fixedMask.translate(fX, fY);
                 } else {
-                    fixedMask = m_rect;
+                    fixedMask = QRect(fX, fY, m_rect.width(), m_rect.height());
                 }
 
                 if (!fixedMask.isEmpty()) {
