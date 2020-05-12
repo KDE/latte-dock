@@ -123,7 +123,7 @@ Item{
 
     TitleTooltipParent{
         id: previewsTooltipParent
-        thickness: (taskItem.parabolic.factor.zoom * taskItem.metrics.totals.thickness) + 1
+        thickness: (taskItem.parabolic.factor.zoom * taskItem.metrics.totals.thickness)
     }
 
     //!
