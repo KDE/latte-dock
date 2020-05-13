@@ -34,8 +34,19 @@ Abilities.AbilityGrid {
     rows: root.isHorizontal ? 1 : 0
     rowSpacing: 0
 
-    //Layout.preferredWidth: width
-    //Layout.preferredHeight: height
+    opacity: {
+        if (root.inConfigureAppletsMode && root.panelAlignment===LatteCore.Types.Justify && layoutsContainer.mainLayout.isCoveredFromSideLayouts){
+            if (dragOverlay && (!dragOverlay.currentHoveredLayout || dragOverlay.currentHoveredLayout === appletsContainer)) {
+                return 1;
+            } else {
+                return 0.3;
+            }
+        }
+
+        return 1;
+    }
+
+    readonly property int length : root.isHorizontal ? childrenRect.width : childrenRect.height;
 
     property int alignment: LatteCore.Types.BottomEdgeCenterAlign
     property int beginIndex: 0

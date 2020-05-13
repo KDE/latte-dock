@@ -223,6 +223,7 @@ Item{
 
         //! do not update during dragging/moving applets inConfigureAppletsMode
         readonly property bool offsetUpdateIsBlocked: ((root.dragOverlay && root.dragOverlay.pressed) || layouter.appletsInParentChange)
+        property bool isCoveredFromSideLayouts: false
         property int inConfigureOffset: 0
 
         alignment: {
@@ -279,6 +280,22 @@ Item{
 
         Binding{
             target: _mainLayout
+            property:"isCoveredFromSideLayouts"
+            when: !_mainLayout.offsetUpdateIsBlocked && layouter.inNormalFillCalculationsState
+            value: {
+                if (!layouter.mainLayout.onlyInternalSplitters) {
+                    //! one of side layouts goes underneath the main layout when the main layout contains valid applets
+                    var limit = (root.maxLength - mainLayout.length)/2;
+                    return ((startLayout.length > limit ) || (endLayout.length > limit));
+                }
+
+                //! start and end layouts length exceed the maximum length
+                return (startLayout.length + endLayout.length) > (root.maxLength);
+            }
+        }
+
+        Binding{
+            target: _mainLayout
             property:"inConfigureOffset"
             when: !_mainLayout.offsetUpdateIsBlocked && layouter.inNormalFillCalculationsState
             value: {
@@ -290,14 +307,14 @@ Item{
 
                 var layoutMaxLength = root.maxLength / 2;
 
-                var startLength = root.isHorizontal ? startLayout.childrenRect.width : startLayout.childrenRect.height;
-                var endLength = root.isHorizontal ? endLayout.childrenRect.width : endLayout.childrenRect.height;
-                var mainLength = root.isHorizontal ? mainLayout.childrenRect.width : mainLayout.childrenRect.height;
+                if (_mainLayout.isCoveredFromSideLayouts) {
+                    return layoutMaxLength - mainLayout.length/2;
+                }
 
-                if (startLength > layoutMaxLength) {
-                    return (layoutMaxLength - endLength - mainLength/2);
-                } else if (endLength > layoutMaxLength) {
-                    return -(layoutMaxLength - startLength - mainLength/2);
+                if (startLayout.length > layoutMaxLength) {
+                    return (layoutMaxLength - endLayout.length - mainLayout.length/2);
+                } else if (endLayout.length > layoutMaxLength) {
+                    return -(layoutMaxLength - startLayout.length - mainLayout.length/2);
                 }
 
                 return 0;

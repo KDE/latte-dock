@@ -52,6 +52,14 @@ MouseArea {
     property Item currentApplet
     property Item previousCurrentApplet
 
+    property Item currentHoveredLayout: {
+        if (placeHolder.parent !== configurationArea) {
+            return placeHolder.parent;
+        }
+
+        return currentApplet ? currentApplet.parent : null
+    }
+
     property int lastX
     property int lastY
     property int appletX
