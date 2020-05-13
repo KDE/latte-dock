@@ -361,10 +361,20 @@ Item {
                 }
 
                 if (startLayout.fillApplets > 0) {
+                    if (mainLayout.fillApplets > 0) {
+                        //! adjust final fill applet size in mainlayouts final length
+                        sizePerAppletStart = ((maxLength/2) - (mainLayout.grid.length/2) - startLayout.sizeWithNoFillApplets) / noStart;
+                    }
+
                     computeStep2ForLayout(startLayout.grid, sizePerAppletStart, noStart);
                 }
 
                 if (endLayout.fillApplets > 0) {
+                    if (mainLayout.fillApplets > 0) {
+                        //! adjust final fill applet size in mainlayouts final length
+                        sizePerAppletEnd = ((maxLength/2) - (mainLayout.grid.length/2) - endLayout.sizeWithNoFillApplets) / noEnd;
+                    }
+
                     computeStep2ForLayout(endLayout.grid, sizePerAppletEnd, noEnd);
                 }
             }
