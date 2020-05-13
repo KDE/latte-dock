@@ -201,6 +201,8 @@ MouseArea {
             return;
         }
 
+        root.layouter.appletsInParentChange = true;
+
         var relevantApplet = mapFromItem(currentApplet, 0, 0);
         var rootArea = mapFromItem(root, 0, 0);
 
@@ -248,6 +250,7 @@ MouseArea {
         //    handle.height = currentApplet.height;
         root.layoutManagerSave();
         root.layoutManagerMoveAppletsBasedOnJustifyAlignment();
+        root.layouter.appletsInParentChange = false;
         layouter.updateSizeForAppletsInFill();
     }
 

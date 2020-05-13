@@ -58,7 +58,7 @@ Ability.LayouterPrivate {
     //! updateSizeForAppletsInFill()
     Timer{
         id: updateSizeForAppletsInFillTimer
-        interval: 50
+        interval: 75
         onTriggered: _layouter._updateSizeForAppletsInFill();
     }
 }
