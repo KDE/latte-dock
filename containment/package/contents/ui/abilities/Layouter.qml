@@ -51,7 +51,6 @@ Ability.LayouterPrivate {
     Connections {
         target: layouts
         onContentsLengthChanged: _layouter.updateSizeForAppletsInFill();
-
     }
 
     //! This timer is needed in order to reduce the calls to heavy cpu function

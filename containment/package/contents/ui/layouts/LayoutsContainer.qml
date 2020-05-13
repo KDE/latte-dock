@@ -36,6 +36,8 @@ Item{
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
     readonly property bool useMaxLength: plasmoid.configuration.alignment === LatteCore.Types.Justify
+                                         || (plasmoid.configuration.alignment !== LatteCore.Types.Justify && layouter.mainLayout.fillApplets>0)
+
 
     property int currentSpot: -1000
 
@@ -60,7 +62,7 @@ Item{
                 return 0;
             }
 
-            if ( latteView && root.isHorizontal && useMaxLength ){
+            if ( latteView && root.isHorizontal && root.panelAlignment === LatteCore.Types.Justify ){
                 return ((latteView.width/2) - (root.maxLength/2) + background.offset);
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
@@ -93,7 +95,7 @@ Item{
                 return 0;
             }
 
-            if ( latteView && root.isVertical && useMaxLength ) {
+            if ( latteView && root.isVertical && root.panelAlignment === LatteCore.Types.Justify ) {
                 return ((latteView.height/2) - (root.maxLength/2) + background.offset);
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
@@ -117,8 +119,8 @@ Item{
         }
     }
 
-    width:  root.isHorizontal && useMaxLength ? root.maxLength : parent.width
-    height: root.isVertical && useMaxLength ? root.maxLength : parent.height
+    width:  root.isHorizontal && root.panelAlignment === LatteCore.Types.Justify ? root.maxLength : parent.width
+    height: root.isVertical && root.panelAlignment === LatteCore.Types.Justify ? root.maxLength : parent.height
     z:10
 
     property bool animationSent: false

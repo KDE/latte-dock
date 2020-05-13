@@ -31,6 +31,8 @@ Item {
 
     readonly property int fillApplets: startLayout.fillApplets + mainLayout.fillApplets + endLayout.fillApplets
 
+    readonly property int maxLength: root.maxLength
+
     readonly property Item startLayout: LayouterElements.AppletsContainer {
         grid: layouts.startLayout
     }
@@ -254,9 +256,9 @@ Item {
 
             // console.log("s2...");
             if (mainLayout.shownApplets === 0 || root.panelAlignment !== LatteCore.Types.Justify) {
-                // console.log("  S2 _ SIZES ::: " + root.maxLength + " ___ " + startLayout.sizeWithNoFillApplets + " ___ " + mainLayout.sizeWithNoFillApplets + " ___ " + endLayout.sizeWithNoFillApplets);
+                // console.log("  S2 _ SIZES ::: " + maxLength + " ___ " + startLayout.sizeWithNoFillApplets + " ___ " + mainLayout.sizeWithNoFillApplets + " ___ " + endLayout.sizeWithNoFillApplets);
 
-                var availableSpace = Math.max(0, root.maxLength - startLayout.sizeWithNoFillApplets - mainLayout.sizeWithNoFillApplets - endLayout.sizeWithNoFillApplets - root.panelEdgeSpacing);
+                var availableSpace = Math.max(0, maxLength - startLayout.sizeWithNoFillApplets - mainLayout.sizeWithNoFillApplets - endLayout.sizeWithNoFillApplets - root.panelEdgeSpacing);
                 var sizePerApplet = availableSpace / noA;
 
                 var res = initializationPhase(availableSpace, sizePerApplet, noA);
@@ -303,12 +305,12 @@ Item {
                 //! compute the two free spaces around the centered layout
                 //! they are called start and end accordingly
                 var halfMainLayout = mainLayout.sizeWithNoFillApplets / 2;
-                var availableSpaceStart = Math.max(0, root.maxLength/2 - startLayout.sizeWithNoFillApplets - halfMainLayout - root.panelEdgeSpacing/2);
-                var availableSpaceEnd = Math.max(0, root.maxLength/2 - endLayout.sizeWithNoFillApplets - halfMainLayout - root.panelEdgeSpacing/2);
+                var availableSpaceStart = Math.max(0, maxLength/2 - startLayout.sizeWithNoFillApplets - halfMainLayout - root.panelEdgeSpacing/2);
+                var availableSpaceEnd = Math.max(0, maxLength/2 - endLayout.sizeWithNoFillApplets - halfMainLayout - root.panelEdgeSpacing/2);
                 var availableSpace;
 
-                if (mainLayout.fillApplets === 0){
-                    //! no fill applets in main
+                if (mainLayout.fillApplets === 0 || (startLayout.shownApplets ===0 && endLayout.shownApplets===0)){
+                    //! no fill applets in main OR we are in alignment that all applets are in main
                     availableSpace = availableSpaceStart + availableSpaceEnd - mainLayout.sizeWithNoFillApplets;
                 } else {
                     //! use the minimum available space in order to avoid overlaps
