@@ -305,7 +305,15 @@ Item {
                 var halfMainLayout = mainLayout.sizeWithNoFillApplets / 2;
                 var availableSpaceStart = Math.max(0, root.maxLength/2 - startLayout.sizeWithNoFillApplets - halfMainLayout - root.panelEdgeSpacing/2);
                 var availableSpaceEnd = Math.max(0, root.maxLength/2 - endLayout.sizeWithNoFillApplets - halfMainLayout - root.panelEdgeSpacing/2);
-                var availableSpace = availableSpaceStart + availableSpaceEnd - mainLayout.sizeWithNoFillApplets;
+                var availableSpace;
+
+                if (mainLayout.fillApplets === 0){
+                    //! no fill applets in main
+                    availableSpace = availableSpaceStart + availableSpaceEnd - mainLayout.sizeWithNoFillApplets;
+                } else {
+                    //! use the minimum available space in order to avoid overlaps
+                    availableSpace = 2 * Math.min(availableSpaceStart, availableSpaceEnd) - mainLayout.sizeWithNoFillApplets;
+                }
 
                 var sizePerAppletMain = mainLayout.fillApplets > 0 ? availableSpace / noA : 0 ;
 
