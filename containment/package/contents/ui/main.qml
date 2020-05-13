@@ -253,7 +253,7 @@ Item {
     property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
 
     readonly property int minAppletLengthInConfigure: 64
-    readonly property int maxJustifySplitterSize: 96
+    readonly property int maxJustifySplitterSize: 64
 
     property int latteAppletPos: -1
     property real minLengthPerCentage: plasmoid.configuration.minLength
