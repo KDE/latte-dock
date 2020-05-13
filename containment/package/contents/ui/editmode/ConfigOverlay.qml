@@ -238,7 +238,7 @@ MouseArea {
         //    handle.height = currentApplet.height;
         root.layoutManagerSave();
         root.layoutManagerMoveAppletsBasedOnJustifyAlignment();
-        layoutsContainer.updateSizeForAppletsInFill();
+        layouter.updateSizeForAppletsInFill();
     }
 
     onWheel: {

@@ -387,6 +387,7 @@ Item {
     readonly property alias autosize: _autosize
     readonly property alias indexer: _indexer
     readonly property alias indicatorsManager: indicators
+    readonly property alias layouter: _layouter
     readonly property alias metrics: _metrics
     readonly property alias parabolic: _parabolic
     readonly property alias parabolicManager: _parabolicManager
@@ -490,7 +491,7 @@ Item {
     //////////////START OF CONNECTIONS
     onEditModeChanged: {
         if (!editMode) {
-            layoutsContainer.updateSizeForAppletsInFill();
+            layouter.updateSizeForAppletsInFill();
         }
 
         //! This is used in case the dndspacer has been left behind
@@ -545,7 +546,7 @@ Item {
     }
 
     onMaxLengthChanged: {
-        layoutsContainer.updateSizeForAppletsInFill();
+        layouter.updateSizeForAppletsInFill();
     }
 
     onToolBoxChanged: {
@@ -596,7 +597,7 @@ Item {
     Component.onDestruction: {
         console.debug("Destroying Latte Dock Containment ui...");
 
-        animations.appletsInParentChange = true;
+        layouter.appletsInParentChange = true;
 
         if (latteView) {
             latteView.positioner.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
@@ -806,7 +807,7 @@ Item {
             if(pos>=0 ){
                 LayoutManager.insertAtIndex(layoutsContainer.mainLayout, container, pos);
             } else {
-                LayoutManager.insertAtIndex(layoutsContainer.mainLayout, container, Math.floor(layoutsContainer.mainLayout.count / 2));
+                LayoutManager.insertAtIndex(layoutsContainer.mainLayout, container, Math.floor(layouter.mainLayout.count / 2));
             }
         }
     }
@@ -1079,15 +1080,11 @@ Item {
         }
     }
 
-    function updateSizeForAppletsInFill() {
-        layoutsContainer.updateSizeForAppletsInFill();
-    }
-
     function layoutManagerMoveAppletsBasedOnJustifyAlignment() {
         if (plasmoid.configuration.alignment !== 10) {
             return;
         }
-        animations.appletsInParentChange = true;
+        layouter.appletsInParentChange = true;
 
         var splitter = -1;
         var startChildrenLength = layoutsContainer.startLayout.children.length;
@@ -1134,12 +1131,12 @@ Item {
         //! Validate applets positioning and move applets out of splitters to start/endlayouts accordingly
         splitMainLayoutToLayouts();
 
-        animations.appletsInParentChange = false;
+        layouter.appletsInParentChange = false;
     }
 
     function splitMainLayoutToLayouts() {
         if (internalViewSplittersCount() === 2) {
-            animations.appletsInParentChange = true;
+            layouter.appletsInParentChange = true;
 
             console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
             var splitter = -1;
@@ -1177,12 +1174,12 @@ Item {
                 }
             }
 
-            animations.appletsInParentChange = false;
+            layouter.appletsInParentChange = false;
         }
     }
 
     function joinLayoutsToMainLayout() {
-        animations.appletsInParentChange = true;
+        layouter.appletsInParentChange = true;
 
         console.log("LAYOUTS: Moving applets from THREE to MAIN Layout mode...");
         var totalChildren1 = layoutsContainer.mainLayout.children.length;
@@ -1204,7 +1201,7 @@ Item {
             itemL.parent = layoutsContainer.mainLayout;
         }
 
-        animations.appletsInParentChange = false;
+        layouter.appletsInParentChange = false;
     }
 
     function upgrader_v010_alignment() {
@@ -1360,6 +1357,7 @@ Item {
         Applet.AppletItem{
             animations: _animations
             indexer: _indexer
+            layouter: _layouter
             metrics: _metrics
             parabolic: _parabolic
         }
@@ -1577,12 +1575,20 @@ Item {
     Ability.AutoSize {
         id: _autosize
         layouts: layoutsContainer
+        layouter: _layouter
         metrics: _metrics
         visibility: visibilityManager
     }
 
     Ability.Indexer {
         id: _indexer
+        layouts: layoutsContainer
+    }
+
+    Ability.Layouter {
+        id: _layouter
+        animations: _animations
+        indexer: _indexer
         layouts: layoutsContainer
     }
 

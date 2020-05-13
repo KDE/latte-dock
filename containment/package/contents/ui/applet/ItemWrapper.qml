@@ -295,7 +295,7 @@ Item{
         appletItem.movingForResize = true;
 
         if (appletItem.needsFillSpace && root.isVertical) {
-            layoutsContainer.updateSizeForAppletsInFill();
+            appletItem.layouter.updateSizeForAppletsInFill();
             return;
         }
 
@@ -356,7 +356,7 @@ Item{
         appletItem.movingForResize = true;
 
         if (appletItem.needsFillSpace && root.isHorizontal) {
-            layoutsContainer.updateSizeForAppletsInFill();
+            appletItem.layouter.updateSizeForAppletsInFill();
             return;
         }
 

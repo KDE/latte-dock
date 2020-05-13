@@ -25,7 +25,7 @@ import "./privates" as Ability
 Ability.IndexerPrivate {
     //! do not update during dragging/moving applets inConfigureAppletsMode
     updateIsBlocked: (root.dragOverlay && root.dragOverlay.pressed)
-                     || animations.appletsInParentChange
+                     || layouter.appletsInParentChange
 
     function getClientBridge(index) {
         if (clientsBridges.length<=0) {

@@ -31,7 +31,7 @@ Item {
     // the automatic icon size algorithm should better be disabled
     readonly property bool isActive: plasmoid.configuration.autoSizeEnabled
                                      && !root.containsOnlyPlasmaTasks
-                                     && layouts.fillApplets<=0
+                                     && layouter.fillApplets<=0
                                      && latteView && latteView.visibility.mode !== LatteCore.Types.SideBar
     property int iconSize: -1 //it is not set, this is the default
 
@@ -49,6 +49,7 @@ Item {
 
     //! required elements
     property Item layouts
+    property Item layouter
     property Item metrics
     property Item visibility
 

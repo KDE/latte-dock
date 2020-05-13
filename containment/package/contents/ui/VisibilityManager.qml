@@ -433,7 +433,7 @@ Item{
     onNormalStateChanged: {
         if (normalState) {
             autosize.updateIconSize();
-            root.updateSizeForAppletsInFill();
+            layouter.updateSizeForAppletsInFill();
         }
     }
 

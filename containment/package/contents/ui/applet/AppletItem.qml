@@ -87,10 +87,10 @@ Item {
     property bool isSpacer: applet && (applet.pluginName === "org.kde.latte.spacer")
     property bool isSystray: applet && (applet.pluginName === "org.kde.plasma.systemtray" || applet.pluginName === "org.nomad.systemtray" )
 
-    property bool firstChildOfStartLayout: index === layoutsContainer.startLayout.firstVisibleIndex
-    property bool firstChildOfMainLayout: index === layoutsContainer.mainLayout.firstVisibleIndex
-    property bool lastChildOfMainLayout: index === layoutsContainer.mainLayout.lastVisibleIndex
-    property bool lastChildOfEndLayout: index === layoutsContainer.endLayout.lastVisibleIndex
+    property bool firstChildOfStartLayout: index === appletItem.layouter.startLayout.firstVisibleIndex
+    property bool firstChildOfMainLayout: index === appletItem.layouter.mainLayout.firstVisibleIndex
+    property bool lastChildOfMainLayout: index === appletItem.layouter.mainLayout.lastVisibleIndex
+    property bool lastChildOfEndLayout: index === appletItem.layouter.endLayout.lastVisibleIndex
 
     readonly property bool atScreenEdge: {
         if (root.panelAlignment !== LatteCore.Types.Justify || root.inConfigureAppletsMode || plasmoid.configuration.offset!==0) {
@@ -141,14 +141,14 @@ Item {
 
     //applet is in starting edge
     property bool firstAppletInContainer: (index >=0) &&
-                                          ((index === layoutsContainer.startLayout.firstVisibleIndex)
-                                           || (index === layoutsContainer.mainLayout.firstVisibleIndex)
-                                           || (index === layoutsContainer.endLayout.firstVisibleIndex))
+                                          ((index === layouter.startLayout.firstVisibleIndex)
+                                           || (index === layouter.mainLayout.firstVisibleIndex)
+                                           || (index === layouter.endLayout.firstVisibleIndex))
     //applet is in ending edge
     property bool lastAppletInContainer: (index >=0) &&
-                                         ((index === layoutsContainer.startLayout.lastVisibleIndex)
-                                          || (index === layoutsContainer.mainLayout.lastVisibleIndex)
-                                          || (index === layoutsContainer.endLayout.lastVisibleIndex))
+                                         ((index === layouter.startLayout.lastVisibleIndex)
+                                          || (index === layouter.mainLayout.lastVisibleIndex)
+                                          || (index === layouter.endLayout.lastVisibleIndex))
 
     readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.requires.parabolicEffectLocked
     readonly property bool originalAppletBehavior: (appletItem.parabolic.factor.zoom === 1 && !lockZoom /*hacky flag to keep Latte behavior*/)
@@ -282,6 +282,7 @@ Item {
 
     property Item animations: null
     property Item indexer: null
+    property Item layouter: null
     property Item metrics: null
     property Item parabolic: null
 
@@ -419,7 +420,7 @@ Item {
     function checkIndex(){
         index = -1;
 
-        for(var i=0; i<layoutsContainer.startLayout.count; ++i){
+        for(var i=0; i<appletItem.layouter.startLayout.count; ++i){
             var child = layoutsContainer.startLayout.children[i];
             if (child === appletItem){
                 index = layoutsContainer.startLayout.beginIndex + i;
@@ -427,7 +428,7 @@ Item {
             }
         }
 
-        for(var i=0; i<layoutsContainer.mainLayout.count; ++i){
+        for(var i=0; i<appletItem.layouter.mainLayout.count; ++i){
             var child = layoutsContainer.mainLayout.children[i];
             if (child === appletItem){
                 index = layoutsContainer.mainLayout.beginIndex + i;
@@ -435,7 +436,7 @@ Item {
             }
         }
 
-        for(var i=0; i<layoutsContainer.endLayout.count; ++i){
+        for(var i=0; i<appletItem.layouter.endLayout.count; ++i){
             var child = layoutsContainer.endLayout.children[i];
             if (child === appletItem){
                 //create a very high index in order to not need to exchange hovering messages
@@ -451,9 +452,9 @@ Item {
             else
                 latteApplet.disableLeftSpacer = true;
 
-            if( index === layoutsContainer.startLayout.beginIndex + layoutsContainer.startLayout.count - 1
-                    || index===layoutsContainer.mainLayout.beginIndex + layoutsContainer.mainLayout.count - 1
-                    || index === layoutsContainer.endLayout.beginIndex + layoutsContainer.endLayout.count - 1)
+            if( index === layoutsContainer.startLayout.beginIndex + appletItem.layouter.startLayout.count - 1
+                    || index===layoutsContainer.mainLayout.beginIndex + appletItem.layouter.mainLayout.count - 1
+                    || index === layoutsContainer.endLayout.beginIndex + appletItem.layouter.endLayout.count - 1)
                 latteApplet.disableRightSpacer = false;
             else
                 latteApplet.disableRightSpacer = true;

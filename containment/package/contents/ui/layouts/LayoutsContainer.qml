@@ -30,20 +30,14 @@ import org.kde.latte.private.containment 0.1 as LatteContainment
 
 import "./abilities" as AbilitiesTypes
 import "../debug" as Debug
-import "../../code/HeuristicTools.js" as HeuristicTools
 
 Item{
     id: layoutsContainer
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
     readonly property bool useMaxLength: plasmoid.configuration.alignment === LatteCore.Types.Justify
-    /*   && ((!root.inConfigureAppletsMode && !root.behaveAsPlasmaPanel )
-                                             || (behaveAsPlasmaPanel && root.inConfigureAppletsMode))*/
 
-    property int allCount: root.latteApplet ? _mainLayout.count-1+latteApplet.tasksCount : _mainLayout.count
     property int currentSpot: -1000
-
-    readonly property int fillApplets: _startLayout.fillApplets + _mainLayout.fillApplets + _endLayout.fillApplets
 
     readonly property alias startLayout : _startLayout
     readonly property alias mainLayout: _mainLayout
@@ -54,6 +48,8 @@ Item{
         mainLayout: _mainLayout
         endLayout: _endLayout
     }
+
+    signal contentsLengthChanged();
 
     Binding {
         target: layoutsContainer
@@ -150,7 +146,7 @@ Item{
                 animations.needLength.addEvent(layoutsContainer);
             }
 
-            layoutsContainer.updateSizeForAppletsInFill();
+            contentsLengthChanged();
 
             delayUpdateMaskArea.start();
         }
@@ -175,7 +171,7 @@ Item{
                 animations.needLength.removeEvent(layoutsContainer);
             }
 
-            layoutsContainer.updateSizeForAppletsInFill();
+            contentsLengthChanged();
 
             delayUpdateMaskArea.start();
         }
@@ -290,91 +286,75 @@ Item{
         }
     }
 
-    function updateSizeForAppletsInFill() {
-        if (!updateSizeForAppletsInFillTimer.running) {
-            HeuristicTools.updateSizeForAppletsInFill();
-            updateSizeForAppletsInFillTimer.start();
-        }
-    }
-
     Connections {
         target: metrics
         onIconSizeAnimationEnded: delayUpdateMaskArea.start();
     }
 
-    Connections {
-        target: animations
-        onInNormalFillCalculationsStateChanged: {
-            if (animations.inNormalFillCalculationsState) {
-                layoutsContainer.updateSizeForAppletsInFill();
-            }
-        }
-    }
-
     //! Debug Elements
     Loader{
-        anchors.top: debugLayout.top
-        anchors.horizontalCenter: debugLayout.horizontalCenter
+        anchors.top: startLayout.top
+        anchors.horizontalCenter: startLayout.horizontalCenter
         active: root.debugModeLayouter
 
-        readonly property Item debugLayout: _startLayout
+        readonly property Item debugLayout: layouter.startLayout
 
         sourceComponent: Debug.Tag{
             background.color: "white"
             label.text: tagText
             label.color: "black"
             label.font.pointSize: 13
-            readonly property int layoutLength: root.isHorizontal ? debugLayout.width : debugLayout.height
+            readonly property int layoutLength: root.isHorizontal ? debugLayout.grid.width : debugLayout.grid.height
 
             readonly property string tagText: {
-                return "no_show:" + debugLayout.shownApplets + " / no_fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
+                return "normal:" + debugLayout.shownApplets + " / fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
             }
         }
     }
 
     Loader{
-        anchors.top: debugLayout.top
-        anchors.horizontalCenter: debugLayout.horizontalCenter
+        anchors.top: endLayout.top
+        anchors.horizontalCenter: endLayout.horizontalCenter
         active: root.debugModeLayouter
 
-        readonly property Item debugLayout: _endLayout
+        readonly property Item debugLayout: layouter.endLayout
 
         sourceComponent: Debug.Tag{
             background.color: "white"
             label.text: tagText
             label.color: "black"
             label.font.pointSize: 13
-            readonly property int layoutLength: root.isHorizontal ? debugLayout.width : debugLayout.height
+            readonly property int layoutLength: root.isHorizontal ? debugLayout.grid.width : debugLayout.grid.height
 
             readonly property string tagText: {
-                return "no_show:" + debugLayout.shownApplets + " / no_fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
+                return "normal:" + debugLayout.shownApplets + " / fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
             }
         }
     }
 
     Loader{
-        anchors.top: debugLayout.top
-        anchors.horizontalCenter: debugLayout.horizontalCenter
+        anchors.top: mainLayout.top
+        anchors.horizontalCenter: mainLayout.horizontalCenter
         active: root.debugModeLayouter
         z:70
 
-        readonly property Item debugLayout: _mainLayout
+        readonly property Item debugLayout: layouter.mainLayout
 
         sourceComponent: Debug.Tag{
             background.color: "white"
             label.text: tagText
             label.color: "black"
             label.font.pointSize: 13
-            readonly property int layoutLength: root.isHorizontal ? debugLayout.width : debugLayout.height
+            readonly property int layoutLength: root.isHorizontal ? debugLayout.grid.width : debugLayout.grid.height
 
             readonly property string tagText: {
-                return "no_show:" + debugLayout.shownApplets + " / no_fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
+                return "normal:" + debugLayout.shownApplets + " / fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
             }
         }
     }
 
     Loader{
-        anchors.top: _mainLayout.top
+        anchors.top: mainLayout.top
         anchors.left: parent.left
         active: root.debugModeLayouter
 
@@ -390,24 +370,16 @@ Item{
 
             readonly property int layoutsLength: {
                 if (root.isVertical) {
-                    return _startLayout.height + _mainLayout.height + _endLayout.height;
+                    return layouter.startLayout.grid.height + layouter.mainLayout.grid.height + layouter.endLayout.grid.height;
                 }
 
-                return _startLayout.width + _mainLayout.width + _endLayout.width;
+                return layouter.startLayout.grid.width + layouter.mainLayout.grid.width + layouter.endLayout.grid.width;
             }
 
             readonly property string tagText: {
                 return "MAX:" + root.maxLength + " / TOT:"+layoutLength + " / LAYS:"+ layoutsLength;
             }
         }
-    }
-
-    //! This timer is needed in order to reduce the calls to heavy cpu function
-    //! HeuristicTools.updateSizeForAppletsInFill()
-    Timer{
-        id: updateSizeForAppletsInFillTimer
-        interval: 50
-        onTriggered: HeuristicTools.updateSizeForAppletsInFill();
     }
 
     //! This timer is needed in order to update mask area after ContentsWidth/Height and iconSize changes
