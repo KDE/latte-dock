@@ -206,6 +206,10 @@ Item{
         z:10 //be on top of start and end layouts
         beginIndex: 100
         offset: {
+            if (inConfigureOffset!==0) {
+                return inConfigureOffset;
+            }
+
             if (background.hasBothLengthShadows && !centered) {
                 //! it is used for Top/Bottom/Left/Right alignments when they show both background length shadows
                 return background.offset + background.totals.shadowsLength/2;
@@ -216,6 +220,10 @@ Item{
 
         readonly property bool centered: (root.panelAlignment === LatteCore.Types.Center) || (root.panelAlignment === LatteCore.Types.Justify)
         readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
+
+        //! do not update during dragging/moving applets inConfigureAppletsMode
+        readonly property bool offsetUpdateIsBlocked: ((root.dragOverlay && root.dragOverlay.pressed) || layouter.appletsInParentChange)
+        property int inConfigureOffset: 0
 
         alignment: {
             if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -266,6 +274,33 @@ Item{
             AnchorAnimation {
                 duration: 0.8 * animations.duration.proposed
                 easing.type: Easing.OutCubic
+            }
+        }
+
+        Binding{
+            target: _mainLayout
+            property:"inConfigureOffset"
+            when: !_mainLayout.offsetUpdateIsBlocked && layouter.inNormalFillCalculationsState
+            value: {
+                if (!root.inConfigureAppletsMode
+                        || root.panelAlignment !== LatteCore.Types.Justify
+                        || !layouter.mainLayout.onlyInternalSplitters) {
+                    return 0;
+                }
+
+                var layoutMaxLength = root.maxLength / 2;
+
+                var startLength = root.isHorizontal ? startLayout.childrenRect.width : startLayout.childrenRect.height;
+                var endLength = root.isHorizontal ? endLayout.childrenRect.width : endLayout.childrenRect.height;
+                var mainLength = root.isHorizontal ? mainLayout.childrenRect.width : mainLayout.childrenRect.height;
+
+                if (startLength > layoutMaxLength) {
+                    return (layoutMaxLength - endLength - mainLength/2);
+                } else if (endLength > layoutMaxLength) {
+                    return -(layoutMaxLength - startLength - mainLength/2);
+                }
+
+                return 0;
             }
         }
     }

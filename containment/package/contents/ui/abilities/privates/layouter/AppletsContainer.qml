@@ -27,6 +27,8 @@ Item {
     // items in grid
     readonly property int count: grid.children.length
 
+    property bool onlyInternalSplitters: false
+
     //it is used in calculations for fillWidth,fillHeight applets
     property int shownApplets: 0
     property int fillApplets: 0
@@ -70,7 +72,7 @@ Item {
             for (var i=0; i<grid.children.length; ++i){
                 if (grid.children[i] && grid.children[i].isHidden) {
                     //do nothing
-                } else if (grid.children[i] && (grid.children[i].applet || grid.children[i].isInternalViewSplitter)){
+                } else if (grid.children[i] && grid.children[i].applet){/*internal splitters are ignored this way*/
                     res = res + 1;
                 }
             }
@@ -137,6 +139,26 @@ Item {
         }
     }
 
+    Binding{
+        target: appletsContainer
+        property:"onlyInternalSplitters"
+        when: appletsContainer && grid && !updateIsBlocked && inNormalFillCalculationsState
+        value: {
+            var intsSplits = 0;
+
+            for (var i=0; i<grid.children.length; ++i){
+                if (grid.children[i]
+                        && grid.children[i].isPlaceHolder
+                        || (grid.children[i].isInternalViewSplitter
+                            && !grid.children[i].isHidden)) {
+                    intsSplits = intsSplits + 1;
+                }
+            }
+
+            return ((intsSplits > 0) && (intsSplits === grid.children.length));
+        }
+    }
+
     onCountChanged: {
         if (root.editMode) {
             //! this is mainly used when removing/adding internal view splitters
@@ -147,9 +169,5 @@ Item {
 
     onFillAppletsChanged: layouter.updateSizeForAppletsInFill();
     onShownAppletsChanged: layouter.updateSizeForAppletsInFill();
-    onSizeWithNoFillAppletsChanged: {
-        console.log(sizeWithNoFillApplets)
-        layouter.updateSizeForAppletsInFill();
-
-    }
+    onSizeWithNoFillAppletsChanged: layouter.updateSizeForAppletsInFill();
 }

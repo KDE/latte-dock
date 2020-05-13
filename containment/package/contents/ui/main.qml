@@ -1484,6 +1484,7 @@ Item {
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
 
+        readonly property bool isDndSpacer: true
         readonly property int length: metrics.totals.length
         readonly property int thickness: metrics.totals.thickness + metrics.margin.screenEdge
 

@@ -259,6 +259,8 @@ MouseArea {
         visible: configurationArea.containsMouse
         Layout.fillWidth: currentApplet ? currentApplet.Layout.fillWidth : false
         Layout.fillHeight: currentApplet ? currentApplet.Layout.fillHeight : false
+
+        readonly property bool isPlaceHolder: true
     }
 
     //Because of the animations for the applets the handler can not catch up to
