@@ -26,6 +26,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
+import QtGraphicalEffects 1.0
+
 MouseArea {
     id: configurationArea
 
@@ -303,6 +305,16 @@ MouseArea {
         id: handle
         visible: currentApplet && (configurationArea.containsMouse || tooltipMouseArea.containsMouse)
 
+        Loader {
+            anchors.fill: parent
+            active: root.debugMode
+            sourceComponent: Rectangle {
+                color: "transparent"
+                border.width:1
+                border.color: "yellow"
+            }
+        }
+
         //BEGIN functions
         function updatePlacement(){
             if(currentApplet){
@@ -330,15 +342,24 @@ MouseArea {
                 anchors.fill: parent
                 color: theme.backgroundColor
                 radius: 3
-                opacity: 0.5
+                opacity: 0.35
             }
 
             PlasmaCore.IconItem {
                 source: "transform-move"
-                width: Math.min(parent.width, parent.height)
+                width: Math.min(144, parent.width, parent.height)
                 height: width
                 anchors.centerIn: parent
-                opacity: 0.5
+                opacity: 0.9
+                layer.enabled: graphicsSystem.isAccelerated
+                layer.effect: DropShadow {
+                    radius: root.appShadowSize
+                    fast: true
+                    samples: 2 * radius
+                    color: root.appShadowColor
+
+                    verticalOffset: 2
+                }
             }
 
 

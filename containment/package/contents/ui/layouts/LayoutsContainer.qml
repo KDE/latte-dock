@@ -188,7 +188,7 @@ Item{
     AppletsContainer {
         id: _startLayout
         beginIndex: 0
-        offset: background.totals.shadowsLength/2 //it is applied only in Justify when both background length shadows are drawn
+        offset: 0
         alignment: {
             switch(plasmoid.location) {
             case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeLeftAlign;
@@ -283,7 +283,7 @@ Item{
             property:"isCoveredFromSideLayouts"
             when: !_mainLayout.offsetUpdateIsBlocked && layouter.inNormalFillCalculationsState
             value: {
-                if (!layouter.mainLayout.onlyInternalSplitters) {
+                if (!layouter.mainLayout.onlyInternalSplitters && !_mainLayout.offsetUpdateIsBlocked) {
                     //! one of side layouts goes underneath the main layout when the main layout contains valid applets
                     var limit = (root.maxLength - mainLayout.length)/2;
                     return ((startLayout.length > limit ) || (endLayout.length > limit));
@@ -325,7 +325,7 @@ Item{
     AppletsContainer {
         id: _endLayout
         beginIndex: 200
-        offset: background.totals.shadowsLength/2 //it is applied only in Justify when both background length shadows are drawn
+        offset: 0
         alignment: {
             switch(plasmoid.location) {
             case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeRightAlign;
