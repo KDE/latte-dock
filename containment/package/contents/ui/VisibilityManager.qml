@@ -170,7 +170,7 @@ Item{
                 return 0;
             }
 
-            return thicknessZoomOriginal - thicknessNormalOriginalValue;
+            return thicknessZoomOriginal - thicknessNormalOriginalValue + extraNormalThickMask;/*extra normal thickness from indicators/applets requirements must be ignored*/
         }
     }
 
