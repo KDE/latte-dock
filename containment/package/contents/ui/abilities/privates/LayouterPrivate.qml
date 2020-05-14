@@ -69,7 +69,7 @@ Item {
     function initLayoutForFillsCalculations(layout) {
         for(var i=0; i<layout.children.length; ++i) {
             var curApplet = layout.children[i];
-            if (curApplet.needsFillSpace) {
+            if (curApplet.isAutoFillApplet) {
                 curApplet.inFillCalculations = true;
             }
         }
@@ -81,7 +81,7 @@ Item {
         for(var i=0; i<layout.children.length; ++i) {
             var curApplet = layout.children[i];
 
-            if (curApplet.needsFillSpace) {
+            if (curApplet.isAutoFillApplet) {
                 if (curApplet && curApplet.applet && curApplet.applet.Layout) {
                     var minSize = root.isVertical ? curApplet.applet.Layout.minimumHeight : curApplet.applet.Layout.minimumWidth;
                     var prefSize = root.isVertical ? curApplet.applet.Layout.preferredHeight : curApplet.applet.Layout.preferredWidth;
@@ -162,7 +162,7 @@ Item {
                     //! the most demanding applet is the one that has maximum size set to Infinity
                     //! AND is not Neutral, meaning that it provided some valid metrics
                     //! AND at the same time gained from step one the biggest space
-                    if (curApplet && curApplet.needsFillSpace && curApplet.applet && curApplet.applet.Layout) {
+                    if (curApplet && curApplet.isAutoFillApplet && curApplet.applet && curApplet.applet.Layout) {
                         var minSize = root.isVertical ? curApplet.applet.Layout.minimumHeight : curApplet.applet.Layout.minimumWidth;
                         var prefSize = root.isVertical ? curApplet.applet.Layout.preferredHeight : curApplet.applet.Layout.preferredWidth;
                         var maxSize = root.isVertical ? curApplet.applet.Layout.maximumHeight : curApplet.applet.Layout.maximumWidth;
@@ -202,7 +202,7 @@ Item {
                 for(var i=0; i<layout.children.length; ++i) {
                     var curApplet = layout.children[i];
 
-                    if (curApplet && curApplet.needsFillSpace && curApplet.inFillCalculations) {
+                    if (curApplet && curApplet.isAutoFillApplet && curApplet.inFillCalculations) {
                         curApplet.sizeForFill = sizePerApplet;
                         // console.log("s4_3  "+ curApplet.applet.pluginName + " assigned: "  + sizePerApplet + "\n");
                         curApplet.inFillCalculations = false;

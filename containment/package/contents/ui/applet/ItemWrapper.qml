@@ -42,7 +42,7 @@ Item{
         }
 
         //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
-        if (appletItem.needsFillSpace && root.isHorizontal && appletItem.sizeForFill>-1) {
+        if (appletItem.isAutoFillApplet && root.isHorizontal && appletItem.sizeForFill>-1) {
             return appletItem.sizeForFill;
         }
 
@@ -66,7 +66,7 @@ Item{
         }
 
         //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
-        if (appletItem.needsFillSpace && root.isVertical && appletItem.sizeForFill>-1) {
+        if (appletItem.isAutoFillApplet && root.isVertical && appletItem.sizeForFill>-1) {
             return appletItem.sizeForFill;
         }
 
@@ -272,7 +272,7 @@ Item{
     function updateLayoutHeight(){
         appletItem.movingForResize = true;
 
-        if (appletItem.needsFillSpace && root.isVertical) {
+        if (appletItem.isAutoFillApplet && root.isVertical) {
             appletItem.layouter.updateSizeForAppletsInFill();
             return;
         }
@@ -333,7 +333,7 @@ Item{
     function updateLayoutWidth(){
         appletItem.movingForResize = true;
 
-        if (appletItem.needsFillSpace && root.isHorizontal) {
+        if (appletItem.isAutoFillApplet && root.isHorizontal) {
             appletItem.layouter.updateSizeForAppletsInFill();
             return;
         }
@@ -397,7 +397,7 @@ Item{
         id:_wrapperContainer
 
         width:{
-            if (appletItem.needsFillSpace && (appletItem.sizeForFill>-1) && root.isHorizontal){
+            if (appletItem.isAutoFillApplet && (appletItem.sizeForFill>-1) && root.isHorizontal){
                 return wrapper.width;
             }
 
@@ -414,7 +414,7 @@ Item{
         }
 
         height:{
-            if (appletItem.needsFillSpace && (appletItem.sizeForFill>-1) && root.isVertical){
+            if (appletItem.isAutoFillApplet && (appletItem.sizeForFill>-1) && root.isVertical){
                 return wrapper.height;
             }
 
@@ -682,7 +682,7 @@ Item{
             color: "transparent"
             //! red visualizer, in debug mode for the applets that use fillWidth or fillHeight
             //! green, for the rest
-            border.color:  (appletItem.needsFillSpace && (appletItem.sizeForFill>-1) && root.isHorizontal) ? "red" : "green"
+            border.color:  (appletItem.isAutoFillApplet && (appletItem.sizeForFill>-1) && root.isHorizontal) ? "red" : "green"
             border.width: 1
         }
     }

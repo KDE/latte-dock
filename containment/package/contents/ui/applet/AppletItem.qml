@@ -52,8 +52,10 @@ Item {
     property bool canBeHovered: true
     property bool canShowAppletNumberBadge: !isSeparator && !isHidden && !isLattePlasmoid
                                             && !isSpacer && !isInternalViewSplitter
+
+    //! Fill Applet(s)
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
-    property bool needsFillSpace: { //fill flag, it is used in calculations for fillWidth,fillHeight applets
+    property bool isAutoFillApplet: {
         if (!applet || !applet.Layout)
             return false;
 
@@ -495,7 +497,7 @@ Item {
             var maxForMinimumSize = appletItem.metrics.iconSize + metrics.totals.thicknessEdges;
 
             if ( isSystray
-                    || appletItem.needsFillSpace
+                    || appletItem.isAutoFillApplet
                     || (((applet && root.isHorizontal && (applet.width > maxSize || applet.Layout.minimumWidth > maxForMinimumSize))
                          || (applet && root.isVertical && (applet.height > maxSize || applet.Layout.minimumHeight > maxForMinimumSize)))
                         && !appletItem.isSpacer
@@ -568,7 +570,7 @@ Item {
         }
     }
 
-    onNeedsFillSpaceChanged: checkCanBeHovered();
+    onIsAutoFillAppletChanged: checkCanBeHovered();
 
     Component.onCompleted: {
         checkIndex();
@@ -1087,7 +1089,7 @@ Item {
         active: root.debugModeLayouter
         sourceComponent: Debug.Tag{
             label.text: (root.isHorizontal ? appletItem.width : appletItem.height) + " / fill_size:"+appletItem.sizeForFill
-            label.color: appletItem.needsFillSpace ? "green" : "white"
+            label.color: appletItem.isAutoFillApplet ? "green" : "white"
         }
     }
 

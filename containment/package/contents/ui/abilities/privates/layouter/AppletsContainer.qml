@@ -51,7 +51,7 @@ Item {
             var space = 0;
             for (var i=0; i<grid.children.length; ++i){
                 if (grid.children[i]
-                        && !grid.children[i].needsFillSpace
+                        && !grid.children[i].isAutoFillApplet
                         && !grid.children[i].isHidden) {
                     space = root.isHorizontal ? space + grid.children[i].width : space + grid.children[i].height;
                 }
@@ -89,7 +89,7 @@ Item {
         value: {
             var no = 0;
             for (var i=0; i<grid.children.length; ++i){
-                if (grid.children[i] && grid.children[i].needsFillSpace) {
+                if (grid.children[i] && grid.children[i].isAutoFillApplet) {
                     //console.log("fill :::: " + children[i].applet.pluginName);
                     no++;
                 }
