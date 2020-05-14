@@ -694,11 +694,11 @@ Item {
             if (!overlayLatteIconIsActive && applet.opacity===0) {
                 applet.opacity = 1;
 
-                wrapper.disableScaleWidth = false;
-                wrapper.disableScaleHeight = false;
+                wrapper.disableLengthScale = false;
+                wrapper.disableThicknessScale = false;
 
-                wrapper.updateLayoutWidth();
-                wrapper.updateLayoutHeight();
+                wrapper.updateLength();
+                wrapper.updateThickness();
             } else if (overlayLatteIconIsActive && applet.opacity>0) {
                 applet.opacity = 0;
 
@@ -707,11 +707,11 @@ Item {
                     applet.anchors.fill = wrapper.containerForOverlayIcon;
                 }
 
-                wrapper.disableScaleWidth = false;
-                wrapper.disableScaleHeight = false;
+                wrapper.disableLengthScale = false;
+                wrapper.disableThicknessScale = false;
 
-                wrapper.updateLayoutWidth();
-                wrapper.updateLayoutHeight();
+                wrapper.updateLength();
+                wrapper.updateThickness();
             }
         }
     }
