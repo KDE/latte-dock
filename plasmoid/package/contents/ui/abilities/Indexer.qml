@@ -24,7 +24,8 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte.abilities.applets 0.1 as AppletAbility
 
 AppletAbility.Indexer {
-    property Item layout: null
+    id: _indexer
+    property Item layout: null   
 
     readonly property bool tailAppletIsSeparator: isActive ? bridge.indexer.tailAppletIsSeparator : false
     readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
@@ -33,34 +34,52 @@ AppletAbility.Indexer {
 
     readonly property int maxIndex: 99999
 
-    readonly property int firstVisibleItemIndex: {
-        var ind = maxIndex;
-        for(var i=0; i<layout.children.length; ++i) {
-            var item = layout.children[i];
-            if (item && item.itemIndex>=0
-                    && hidden.indexOf(item.itemIndex)<0
-                    && separators.indexOf(item.itemIndex)<0
-                    && item.itemIndex < ind) {
-                ind = item.itemIndex;
-            }
-        }
+    property int allItemsCount: 0 /*is needed to be set from consumer developer in order to avoid binding loops warnings*/
 
-        return ind === maxIndex ? -1 : ind;
+    property int firstVisibleItemIndex: -1
+    property int lastVisibleItemIndex: -1
+
+    Binding {
+        target: _indexer
+        property: "firstVisibleItemIndex"
+        when: layout.children.length >= allItemsCount
+        value: {
+            var ind = maxIndex;
+            for(var i=0; i<layout.children.length; ++i) {
+                var item = layout.children[i];
+                if (item && item.itemIndex>=0
+                        && hidden.indexOf(item.itemIndex)<0
+                        && separators.indexOf(item.itemIndex)<0
+                        && item.itemIndex < ind) {
+                    ind = item.itemIndex;
+                }
+            }
+
+            return ind === maxIndex ? -1 : ind;
+        }
     }
 
-    readonly property int lastVisibleItemIndex: {
-        var ind = -1;
-        for(var i=0; i<layout.children.length; ++i) {
-            var item = layout.children[i];
-            if (item && item.itemIndex>=0
-                    && hidden.indexOf(item.itemIndex)<0
-                    && separators.indexOf(item.itemIndex)<0
-                    && item.itemIndex > ind) {
-                ind = item.itemIndex;
-            }
-        }
+    Binding {
+        target: _indexer
+        property: "lastVisibleItemIndex"
+        when: layout.children.length >= allItemsCount
+        value: {
+            var ind = -1;
 
-        return ind;
+            for(var i=0; i<layout.children.length; ++i) {
+                var item = layout.children[i];
+                if (item && item.itemIndex>=0
+                        && hidden.indexOf(item.itemIndex)<0
+                        && separators.indexOf(item.itemIndex)<0
+                        && item.itemIndex > ind) {
+
+                    //console.log("org.kde.latte SETTING UP ::: " + item.itemIndex + " / " + layout.children.length);
+                    ind = item.itemIndex;
+                }
+            }
+
+            return ind;
+        }
     }
 
     readonly property bool firstTailItemIsSeparator: {

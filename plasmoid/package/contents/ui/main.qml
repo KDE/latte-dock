@@ -950,6 +950,8 @@ Item {
         id: _indexer
         bridge: latteBridge
         layout: icList.contentItem
+
+        allItemsCount: tasksModel.count
     }
 
     Ability.Metrics {
