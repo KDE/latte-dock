@@ -42,19 +42,8 @@ Item{
         }
 
         //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
-        if (appletItem.needsFillSpace && root.isHorizontal) {
-            /*if (root.panelAlignment !== LatteCore.Types.Justify) {
-                var maximumValue = (applet.Layout.maximumWidth === Infinity) || applet.Layout.maximumWidth === -1 ?
-                            appletItem.sizeForFill : Math.min(appletItem.sizeForFill, applet.Layout.maximumWidth);
-
-                var constrainedWidth = MathTools.bound(applet.Layout.minimumWidth, applet.Layout.preferredWidth, maximumValue);
-
-                return root.inConfigureAppletsMode ? Math.max(constrainedWidth, appletItem.metrics.iconSize) : constrainedWidth;
-            }*/
-
-            if(appletItem.sizeForFill>-1){
-                return appletItem.sizeForFill;
-            }
+        if (appletItem.needsFillSpace && root.isHorizontal && appletItem.sizeForFill>-1) {
+            return appletItem.sizeForFill;
         }
 
         if (appletItem.latteApplet) {
@@ -77,19 +66,8 @@ Item{
         }
 
         //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
-        if (appletItem.needsFillSpace && root.isVertical) {
-            /*if (root.panelAlignment !== LatteCore.Types.Justify) {
-                var maximumValue = (applet.Layout.maximumHeight === Infinity) || applet.Layout.maximumHeight === -1 ?
-                            appletItem.sizeForFill : Math.min(appletItem.sizeForFill, applet.Layout.maximumHeight);
-
-                var constrainedHeight = MathTools.bound(applet.Layout.minimumHeight, applet.Layout.preferredHeight, maximumValue);
-
-                return root.inConfigureAppletsMode ? Math.max(constrainedHeight, appletItem.metrics.iconSize) : constrainedHeight;
-            }*/
-
-            if (appletItem.sizeForFill>-1){
-                return appletItem.sizeForFill;
-            }
+        if (appletItem.needsFillSpace && root.isVertical && appletItem.sizeForFill>-1) {
+            return appletItem.sizeForFill;
         }
 
         if (appletItem.latteApplet) {

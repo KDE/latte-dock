@@ -31,7 +31,7 @@ Item {
 
     readonly property int fillApplets: startLayout.fillApplets + mainLayout.fillApplets + endLayout.fillApplets
 
-    readonly property int maxLength: root.maxLength
+    readonly property int maxLength: root.panelAlignment === LatteCore.Types.Justify ? root.maxLength : Math.min(root.minLength, root.maxLength)
 
     readonly property Item startLayout: LayouterElements.AppletsContainer {
         grid: layouts.startLayout
@@ -52,15 +52,15 @@ Item {
     //! qBound style function that is specialized in Layouts
     //! meaning that -1 values are ignored for fillWidth(s)/Height(s)
     function layoutBound(min, pref, max){
-        if (max === -1) {
+      /*  if (max === -1) {
             max = pref === -1 ? min : pref;
         }
 
         if (pref === -1) {
             pref = max === -1 ? min : pref;
-        }
+        }*/
 
-        return Math.min(Math.max(min,pref),max);
+        return Math.max(min, pref, max);//  Math.min(Math.max(min,pref),max);
     }
 
 

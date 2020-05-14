@@ -48,6 +48,10 @@ Ability.LayouterPrivate {
         }
     }
 
+    onMaxLengthChanged: {
+        _layouter.updateSizeForAppletsInFill();
+    }
+
     Connections {
         target: layouts
         onContentsLengthChanged: _layouter.updateSizeForAppletsInFill();

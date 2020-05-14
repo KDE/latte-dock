@@ -1086,7 +1086,7 @@ Item {
 
         active: root.debugModeLayouter
         sourceComponent: Debug.Tag{
-            label.text: root.isHorizontal ? appletItem.width : appletItem.height
+            label.text: (root.isHorizontal ? appletItem.width : appletItem.height) + " / fill_size:"+appletItem.sizeForFill
             label.color: appletItem.needsFillSpace ? "green" : "white"
         }
     }
