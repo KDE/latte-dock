@@ -143,10 +143,15 @@ Item{
 
     //! Initialize
     Component.onCompleted: {
-        appletRootItem.latteBridge = settings;
+        if (appletContainsLatteBridge) {
+            appletRootItem.latteBridge = settings;
+        }
     }
 
     Component.onDestruction: {
-        appletRootItem.latteBridge = null;
+        if (appletContainsLatteBridge) {
+            console.log("org.kde.latte  " + appletItem.applet.pluginName);
+            appletRootItem.latteBridge = null;
+        }
     }
 }
