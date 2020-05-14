@@ -43,7 +43,7 @@ Item {
     height: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeHeight
 
     //any applets that exceed their limits should not take events from their surrounding applets
-    clip: true
+    clip: !isSeparator
 
     signal mousePressed(int x, int y, int button);
     signal mouseReleased(int x, int y, int button);
