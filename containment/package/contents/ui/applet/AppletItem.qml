@@ -66,6 +66,7 @@ Item {
         else
             return false;
     }
+    property int maxAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
 
     property bool userBlocksColorizing: false
     property bool appletBlocksColorizing: !communicator.requires.latteSideColoringEnabled
@@ -167,7 +168,6 @@ Item {
     property int internalSplitterId: 0
 
     property int previousIndex: -1
-    property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
     property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * metrics.iconSize) - metrics.totals.lengthEdges)
     property int status: applet ? applet.status : -1
 
@@ -1088,7 +1088,7 @@ Item {
 
         active: root.debugModeLayouter
         sourceComponent: Debug.Tag{
-            label.text: (root.isHorizontal ? appletItem.width : appletItem.height) + " / fill_size:"+appletItem.sizeForFill
+            label.text: (root.isHorizontal ? appletItem.width : appletItem.height) + " / fill_size:"+appletItem.maxAutoFillLength
             label.color: appletItem.isAutoFillApplet ? "green" : "white"
         }
     }

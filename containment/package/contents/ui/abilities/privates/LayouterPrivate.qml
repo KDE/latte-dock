@@ -122,13 +122,13 @@ Item {
                             var thickness = root.isVertical ? root.width : root.height;
                             var adjustedSize = curApplet.isHidden ? 0 : Math.max(thickness, properSize);
 
-                            curApplet.sizeForFill = adjustedSize;
+                            curApplet.maxAutoFillLength = adjustedSize;
                             curApplet.inFillCalculations = false;
-                            availableSpace = Math.max(0, availableSpace - curApplet.sizeForFill);
+                            availableSpace = Math.max(0, availableSpace - curApplet.maxAutoFillLength);
                             noOfApplets = noOfApplets - 1;
                             sizePerApplet = noOfApplets > 1 ? Math.floor(availableSpace / noOfApplets) : availableSpace;
 
-                            // console.log( " s3_3 " + curApplet.applet.pluginName + " assigned: " + curApplet.sizeForFill);
+                            // console.log( " s3_3 " + curApplet.applet.pluginName + " assigned: " + curApplet.maxAutoFillLength);
                         }
                     }
 
@@ -171,9 +171,9 @@ Item {
 
                         // console.log( " s4_0 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
 
-                        if (!isNeutral && maxSize===Infinity && curApplet.sizeForFill>mostDemandingAppletSize) {
+                        if (!isNeutral && maxSize===Infinity && curApplet.maxAutoFillLength>mostDemandingAppletSize) {
                             mostDemandingApplet = curApplet;
-                            mostDemandingAppletSize = curApplet.sizeForFill;
+                            mostDemandingAppletSize = curApplet.maxAutoFillLength;
                         } else if (isNeutral) {
                             neutralAppletsNo = neutralAppletsNo + 1;
                             neutralApplets.push(curApplet);
@@ -183,17 +183,17 @@ Item {
 
                 if (mostDemandingApplet) {
                     //! the most demanding applet gains all the remaining space
-                    mostDemandingApplet.sizeForFill = mostDemandingApplet.sizeForFill + sizePerApplet;
+                    mostDemandingApplet.maxAutoFillLength = mostDemandingApplet.maxAutoFillLength + sizePerApplet;
 
-                    // console.log("s4_1  "+ mostDemandingApplet.applet.pluginName + " assigned: "  + mostDemandingApplet.sizeForFill + "\n");
+                    // console.log("s4_1  "+ mostDemandingApplet.applet.pluginName + " assigned: "  + mostDemandingApplet.maxAutoFillLength + "\n");
                 } else if (neutralAppletsNo>0) {
                     //! if no demanding applets was found then the available space is splitted equally
                     //! between all neutralApplets
                     var adjustedAppletSize = (sizePerApplet / neutralAppletsNo);
                     for (var j=0; j<neutralApplets.length; ++j) {
-                        // console.log("s4_2.0  "+ neutralApplets[j].applet.pluginName + " _ " + neutralApplets[j].sizeForFill + " _ " + adjustedAppletSize);
+                        // console.log("s4_2.0  "+ neutralApplets[j].applet.pluginName + " _ " + neutralApplets[j].maxAutoFillLength + " _ " + adjustedAppletSize);
 
-                        neutralApplets[j].sizeForFill = neutralApplets[j].sizeForFill + adjustedAppletSize;
+                        neutralApplets[j].maxAutoFillLength = neutralApplets[j].maxAutoFillLength + adjustedAppletSize;
 
                         // console.log("s4_2  "+ neutralApplets[j].applet.pluginName + " assigned: "  + sizePerApplet + "\n");
                     }
@@ -203,7 +203,7 @@ Item {
                     var curApplet = layout.children[i];
 
                     if (curApplet && curApplet.isAutoFillApplet && curApplet.inFillCalculations) {
-                        curApplet.sizeForFill = sizePerApplet;
+                        curApplet.maxAutoFillLength = sizePerApplet;
                         // console.log("s4_3  "+ curApplet.applet.pluginName + " assigned: "  + sizePerApplet + "\n");
                         curApplet.inFillCalculations = false;
                     }
