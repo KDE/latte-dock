@@ -192,7 +192,7 @@ Item{
             checkCanBeHovered();
         }
 
-        updateLength();
+        updateAutoFillLength();
     }
 
     onAppletMinimumThicknessChanged: {
@@ -201,24 +201,8 @@ Item{
         }
     }
 
-    onAppletPreferredLengthChanged: updateLength();
-    onAppletMaximumLengthChanged: updateLength();
-
-
-    Connections {
-        target: appletItem
-        onCanBeHoveredChanged: {
-            updateLength();
-        }
-    }
-
-    onIconSizeChanged: {
-        updateLength();
-    }
-
-    onEditModeChanged: {
-        updateLength();
-    }
+    onAppletPreferredLengthChanged: updateAutoFillLength();
+    onAppletMaximumLengthChanged: updateAutoFillLength();
 
     onZoomScaleChanged: {
         if ((zoomScale === appletItem.parabolic.factor.zoom) && !appletItem.parabolic.directRenderingEnabled) {
@@ -231,18 +215,6 @@ Item{
         } else if (zoomScale == 1) {
             appletItem.isZoomed = false;
             appletItem.animations.needBothAxis.removeEvent(appletItem);
-        }
-    }
-
-    Connections {
-        target: root
-        onIsVerticalChanged: {
-            if (appletItem.latteApplet) {
-                return;
-            }
-
-            wrapper.disableLengthScale = false;
-            updateLength();
         }
     }
 
@@ -259,51 +231,77 @@ Item{
         }
     }
 
-    function updateLength() {
-        appletItem.movingForResize = true;
+    Binding {
+        target: wrapper
+        property: "layoutLength"
+        when: !isLattePlasmoid && !appletItem.isAutoFillApplet
+        value: {
+            if (appletItem.isInternalViewSplitter){
+                return !root.inConfigureAppletsMode ? 0 : Math.min(appletItem.metrics.iconSize, root.maxJustifySplitterSize);
+            } else {
+                if(applet && (appletMinimumLength > appletItem.metrics.iconSize) && !canBeHovered && !communicator.overlayLatteIconIsActive){
+                    return appletMinimumLength;
+                } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
+                else if(applet
+                        && ( appletMaximumLength < appletItem.metrics.iconSize
+                            || appletPreferredLength > appletItem.metrics.iconSize
+                            || appletItem.originalAppletBehavior)
+                        && !communicator.overlayLatteIconIsActive) {
 
+                    //this way improves performance, probably because during animation the preferred sizes update a lot
+                    if (appletMaximumLength>0 && appletMaximumLength < appletItem.metrics.iconSize){
+                        return appletMaximumLength;
+                    } else if (appletMinimumLength > appletItem.metrics.iconSize){
+                        return appletMinimumLength;
+                    } else if ((appletPreferredLength > appletItem.metrics.iconSize)
+                               || (appletItem.originalAppletBehavior && appletPreferredLength > 0 )){
+                        return appletPreferredLength;
+                    }
+                }
+            }
+
+            return appletItem.metrics.iconSize;
+        }
+    }
+
+    Binding {
+        target: wrapper
+        property: "disableLengthScale"
+        when: !(appletItem.isAutoFillApplet || appletItem.isLattePlasmoid)
+        value: {
+            var blockParabolicEffectInLength = false;
+
+            if (appletItem.isInternalViewSplitter){
+                return false;
+            } else {
+                if(applet && (appletMinimumLength > appletItem.metrics.iconSize) && !canBeHovered && !communicator.overlayLatteIconIsActive){
+                    return (wrapper.zoomScale === 1);
+                } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
+                else if(applet
+                        && ( appletMaximumLength < appletItem.metrics.iconSize
+                            || appletPreferredLength > appletItem.metrics.iconSize
+                            || appletItem.originalAppletBehavior)
+                        && !communicator.overlayLatteIconIsActive) {
+
+                    //this way improves performance, probably because during animation the preferred sizes update a lot
+                    if (appletMaximumLength>0 && appletMaximumLength < appletItem.metrics.iconSize){
+                        return false;
+                    } else if (appletMinimumLength > appletItem.metrics.iconSize){
+                        return (wrapper.zoomScale === 1);
+                    } else if ((appletPreferredLength > appletItem.metrics.iconSize)
+                               || (appletItem.originalAppletBehavior && appletPreferredLength > 0 )){
+                        return (wrapper.zoomScale === 1);
+                    }
+                }
+            }
+
+            return false;
+        }
+    }
+
+    function updateAutoFillLength() {
         if (appletItem.isAutoFillApplet) {
             appletItem.layouter.updateSizeForAppletsInFill();
-            return;
-        }
-
-        var blockParabolicEffectInLength = false;
-
-        if (isLattePlasmoid) {
-            return;
-        } else if (appletItem.isInternalViewSplitter){
-            layoutLength = !root.inConfigureAppletsMode ? 0 : Math.min(appletItem.metrics.iconSize, root.maxJustifySplitterSize);
-        } else {
-            if(applet && (appletMinimumLength > appletItem.metrics.iconSize) && !canBeHovered && !communicator.overlayLatteIconIsActive){
-                blockParabolicEffectInLength = true;
-                layoutLength = appletMinimumLength;
-            } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
-            else if(applet
-                    && ( appletMaximumLength < appletItem.metrics.iconSize
-                        || appletPreferredLength > appletItem.metrics.iconSize
-                        || appletItem.originalAppletBehavior)
-                    && !communicator.overlayLatteIconIsActive) {
-
-                //this way improves performance, probably because during animation the preferred sizes update a lot
-                if (appletMaximumLength>0 && appletMaximumLength < appletItem.metrics.iconSize){
-                    layoutLength = appletMaximumLength;
-                } else if (appletMinimumLength > appletItem.metrics.iconSize){
-                    blockParabolicEffectInLength = true;
-                    layoutLength = appletMinimumLength;
-                } else if ((appletPreferredLength > appletItem.metrics.iconSize)
-                           || (appletItem.originalAppletBehavior && appletPreferredLength > 0 )){
-                    blockParabolicEffectInLength = true;
-                    layoutLength = appletPreferredLength;
-                } else{
-                    layoutLength = appletItem.metrics.iconSize;
-                }
-            } else {
-                layoutLength = appletItem.metrics.iconSize;
-            }
-        }
-
-        if (wrapper.zoomScale === 1) {
-            disableLengthScale = blockParabolicEffectInLength;
         }
     }
 

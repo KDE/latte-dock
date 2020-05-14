@@ -694,11 +694,6 @@ Item {
         onOverlayLatteIconIsActiveChanged:{
             if (!overlayLatteIconIsActive && applet.opacity===0) {
                 applet.opacity = 1;
-
-                wrapper.disableLengthScale = false;
-                wrapper.disableThicknessScale = false;
-
-                wrapper.updateLength();
             } else if (overlayLatteIconIsActive && applet.opacity>0) {
                 applet.opacity = 0;
 
@@ -706,11 +701,6 @@ Item {
                     applet.parent =  wrapper.containerForOverlayIcon;
                     applet.anchors.fill = wrapper.containerForOverlayIcon;
                 }
-
-                wrapper.disableLengthScale = false;
-                wrapper.disableThicknessScale = false;
-
-                wrapper.updateLength();
             }
         }
     }

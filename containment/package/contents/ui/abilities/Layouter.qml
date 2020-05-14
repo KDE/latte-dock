@@ -58,6 +58,16 @@ Ability.LayouterPrivate {
         onContentsLengthChanged: _layouter.updateSizeForAppletsInFill();
     }
 
+    Connections {
+        target: metrics
+        onIconSizeChanged: _layouter.updateSizeForAppletsInFill();
+    }
+
+    Connections {
+        target: plasmoid
+        onFormFactorChanged: _layouter.updateSizeForAppletsInFill();
+    }
+
     //! This timer is needed in order to reduce the calls to heavy cpu function
     //! updateSizeForAppletsInFill()
     Timer{
