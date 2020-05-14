@@ -34,6 +34,7 @@ Ability.LayouterPrivate {
                                                           && (!dragOverlay || (dragOverlay && !dragOverlay.pressed)) /*do not update during moving/dragging applets*/
                                                           && !appletsInParentChange
 
+    readonly property bool maxMetricsInHigherPriority: root.minLength === root.maxLength
 
     function updateSizeForAppletsInFill() {
         if (!updateSizeForAppletsInFillTimer.running) {

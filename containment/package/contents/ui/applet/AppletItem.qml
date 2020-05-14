@@ -67,6 +67,7 @@ Item {
             return false;
     }
     property int maxAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
+    property int minAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
 
     property bool userBlocksColorizing: false
     property bool appletBlocksColorizing: !communicator.requires.latteSideColoringEnabled
@@ -698,7 +699,6 @@ Item {
                 wrapper.disableThicknessScale = false;
 
                 wrapper.updateLength();
-                wrapper.updateThickness();
             } else if (overlayLatteIconIsActive && applet.opacity>0) {
                 applet.opacity = 0;
 
@@ -711,7 +711,6 @@ Item {
                 wrapper.disableThicknessScale = false;
 
                 wrapper.updateLength();
-                wrapper.updateThickness();
             }
         }
     }
@@ -1088,8 +1087,16 @@ Item {
 
         active: root.debugModeLayouter
         sourceComponent: Debug.Tag{
-            label.text: (root.isHorizontal ? appletItem.width : appletItem.height) + " / fill_size:"+appletItem.maxAutoFillLength
+            label.text: (root.isHorizontal ? appletItem.width : appletItem.height) + labeltext
             label.color: appletItem.isAutoFillApplet ? "green" : "white"
+
+            readonly property string labeltext: {
+                if (appletItem.isAutoFillApplet) {
+                    return " / max_fill:"+appletItem.maxAutoFillLength + " / min_fill:"+appletItem.minAutoFillLength;
+                }
+
+                return "";
+            }
         }
     }
 

@@ -44,8 +44,9 @@ Item{
             return -1;
         }
 
-        if (appletItem.isAutoFillApplet && appletItem.maxAutoFillLength>-1) {
-            return appletItem.maxAutoFillLength;
+        if (appletItem.isAutoFillApplet) {
+            return appletItem.layouter.maxMetricsInHigherPriority ?
+                        appletItem.maxAutoFillLength : Math.max(appletItem.minAutoFillLength, appletPreferredLength);
         }
 
         if (appletItem.latteApplet) {
@@ -79,14 +80,14 @@ Item{
     property int appletWidth: applet ?  applet.width : -1
     property int appletHeight: applet ?  applet.height : -1
 
-    property int appletMinimumWidth: applet && applet.Layout ?  applet.Layout.minimumWidth : metrics.iconSize
-    property int appletMinimumHeight: applet && applet.Layout ? applet.Layout.minimumHeight : metrics.iconSize
+    property int appletMinimumWidth: applet && applet.Layout ?  applet.Layout.minimumWidth : -1
+    property int appletMinimumHeight: applet && applet.Layout ? applet.Layout.minimumHeight : -1
 
-    property int appletPreferredWidth: applet && applet.Layout ?  applet.Layout.preferredWidth : metrics.iconSize
-    property int appletPreferredHeight: applet && applet.Layout ?  applet.Layout.preferredHeight : metrics.iconSize
+    property int appletPreferredWidth: applet && applet.Layout ?  applet.Layout.preferredWidth : -1
+    property int appletPreferredHeight: applet && applet.Layout ?  applet.Layout.preferredHeight : -1
 
-    property int appletMaximumWidth: applet && applet.Layout ?  applet.Layout.maximumWidth : metrics.iconSize
-    property int appletMaximumHeight: applet && applet.Layout ?  applet.Layout.maximumHeight : metrics.iconSize
+    property int appletMaximumWidth: applet && applet.Layout ?  applet.Layout.maximumWidth : -1
+    property int appletMaximumHeight: applet && applet.Layout ?  applet.Layout.maximumHeight : -1
 
     readonly property int appletLength: root.isHorizontal ? appletWidth : appletHeight
     readonly property int appletThickness: root.isHorizontal ? appletHeight : appletWidth
@@ -99,12 +100,8 @@ Item{
 
     property int iconSize: appletItem.metrics.iconSize
 
-    property int marginsLength: root.isVertical ?
-                                    (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins) :  //Fitt's Law
-                                    appletItem.metrics.totals.thicknessEdges
-    property int marginsThickness: root.isHorizontal ?
-                                       (root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins) :  //Fitt's Law
-                                       appletItem.metrics.totals.thicknessEdges
+    property int marginsThickness:  appletItem.metrics.totals.thicknessEdges
+    property int marginsLength: root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins  //Fitt's Law
 
     property int localLengthMargins: isSeparator || !communicator.requires.lengthMarginsEnabled || isInternalViewSplitter ? 0 : appletItem.lengthAppletFullMargins
     property int edgeLengthMargins: edgeLengthMarginsDisabled ? 0 : appletItem.lengthAppletPadding * 2
@@ -202,32 +199,25 @@ Item{
         if(zoomScale === 1) {
             checkCanBeHovered();
         }
-
-        updateThickness();
     }
 
     onAppletPreferredLengthChanged: updateLength();
-    onAppletPreferredThicknessChanged: updateThickness();
-
     onAppletMaximumLengthChanged: updateLength();
-    onAppletMaximumThicknessChanged: updateThickness();
+
 
     Connections {
         target: appletItem
         onCanBeHoveredChanged: {
             updateLength();
-            updateThickness();
         }
     }
 
     onIconSizeChanged: {
         updateLength();
-        updateThickness();
     }
 
     onEditModeChanged: {
         updateLength();
-        updateThickness();
     }
 
     onZoomScaleChanged: {
@@ -252,9 +242,20 @@ Item{
             }
 
             wrapper.disableLengthScale = false;
-
             updateLength();
-            updateThickness();
+        }
+    }
+
+    Binding {
+        target: wrapper
+        property: "layoutThickness"
+        when: !isLattePlasmoid
+        value: {
+            if (appletItem.isInternalViewSplitter){
+                return !root.inConfigureAppletsMode ? 0 : appletItem.metrics.iconSize;
+            }
+
+            return appletItem.metrics.iconSize;
         }
     }
 
@@ -303,18 +304,6 @@ Item{
 
         if (wrapper.zoomScale === 1) {
             disableLengthScale = blockParabolicEffectInLength;
-        }
-    }
-
-    function updateThickness() {
-        appletItem.movingForResize = true;
-
-        if (isLattePlasmoid) {
-            return;
-        } else if (appletItem.isInternalViewSplitter){
-            layoutThickness = !root.inConfigureAppletsMode ? 0 : appletItem.metrics.iconSize;
-        } else {
-            layoutThickness = appletItem.metrics.iconSize;
         }
     }
 

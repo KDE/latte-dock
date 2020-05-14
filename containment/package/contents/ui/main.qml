@@ -260,6 +260,10 @@ Item {
     property real maxLengthPerCentage: hideLengthScreenGaps ? 100 : plasmoid.configuration.maxLength
 
     property int minLength: {
+        if (root.panelAlignment === LatteCore.Types.Justify) {
+            return maxLength;
+        }
+
         if (root.isHorizontal) {
             return behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive ? width : width * (minLengthPerCentage/100)
         } else {
