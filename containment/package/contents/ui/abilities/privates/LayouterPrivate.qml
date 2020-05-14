@@ -144,7 +144,7 @@ Item {
     //! that remained with no computations from pass1
     //! are updated with the algorithm's proposed size
     function computeStep2ForLayout(layout, sizePerApplet, noOfApplets) {
-        if (sizePerApplet>0) {
+        if (sizePerApplet>=0) {
             if (noOfApplets === 0) {
                 //! when all applets have assigned some size and there is still free space, we must find
                 //! the most demanding space applet and assign the remaining space to it

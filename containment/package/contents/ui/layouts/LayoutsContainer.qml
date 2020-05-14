@@ -428,7 +428,7 @@ Item{
             }
 
             readonly property string tagText: {
-                return "MAX:" + root.maxLength + " / TOT:"+layoutLength + " / LAYS:"+ layoutsLength;
+                return "MAX:" + root.maxLength + " / MIN: " + root.minLength + " TOT:"+layoutLength + " / LAYS:"+ layoutsLength;
             }
         }
     }
