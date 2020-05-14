@@ -150,7 +150,6 @@ Item{
 
     Component.onDestruction: {
         if (appletContainsLatteBridge) {
-            console.log("org.kde.latte  " + appletItem.applet.pluginName);
             appletRootItem.latteBridge = null;
         }
     }
