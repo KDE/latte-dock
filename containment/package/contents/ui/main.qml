@@ -427,7 +427,7 @@ Item {
     //shadows for applets, it should be removed as the appleitems don't need it any more
     property bool badges3DStyle: universalSettings ? universalSettings.badges3DStyle : true
     property bool enableShadows: plasmoid.configuration.appletShadowsEnabled
-    property bool dockIsHidden: latteView ? latteView.visibility.isHidden : true
+    property bool dockIsHidden: latteView && latteView.visibility ? latteView.visibility.isHidden : true
 
     property bool titleTooltips: plasmoid.configuration.titleTooltips
     property bool unifiedGlobalShortcuts: true
@@ -535,21 +535,47 @@ Item {
 
     onLatteViewChanged: {
         if (latteView) {
-            latteView.positioner.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-            latteView.positioner.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
-            latteView.positioner.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-            latteView.positioner.showDockAfterScreenChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
-            latteView.positioner.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-            latteView.positioner.showDockAfterMovingToLayoutFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+            if (latteView.positioner) {
+                latteView.positioner.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+                latteView.positioner.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showDockAfterScreenChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+                latteView.positioner.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showDockAfterMovingToLayoutFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+            }
 
-
-            latteView.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
-            latteView.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
-            latteView.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
+            if (latteView.visibility) {
+                latteView.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
+                latteView.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
+                latteView.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
+            }
 
             updateContainsOnlyPlasmaTasks();
         }
     }
+
+    Connections {
+        target: latteView
+        onPositionerChanged: {
+            if (latteView.positioner) {
+                latteView.positioner.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+                latteView.positioner.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showDockAfterScreenChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+                latteView.positioner.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showDockAfterMovingToLayoutFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+            }
+        }
+
+        onVisibilityChanged: {
+            if (latteView.visibility) {
+                latteView.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
+                latteView.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
+                latteView.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
+            }
+        }
+    }
+
 
     onMaxLengthChanged: {
         layouter.updateSizeForAppletsInFill();
@@ -606,12 +632,14 @@ Item {
         layouter.appletsInParentChange = true;
 
         if (latteView) {
-            latteView.positioner.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-            latteView.positioner.showDockAfterLocationChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
-            latteView.positioner.hideDockDuringScreenChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-            latteView.positioner.showDockAfterScreenChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
-            latteView.positioner.hideDockDuringMovingToLayoutStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-            latteView.positioner.showDockAfterMovingToLayoutFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+            if (latteView.positioner) {
+                latteView.positioner.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showDockAfterLocationChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+                latteView.positioner.hideDockDuringScreenChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showDockAfterScreenChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+                latteView.positioner.hideDockDuringMovingToLayoutStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showDockAfterMovingToLayoutFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+            }
 
             if (latteView.visibility) {
                 latteView.visibility.onContainsMouseChanged.disconnect(visibilityManager.slotContainsMouseChanged);
