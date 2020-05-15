@@ -31,11 +31,11 @@ Loader {
         TaskManager.TasksModel {
             id: tasksModel
             virtualDesktop: virtualDesktopInfo.currentDesktop
-            screenGeometry: latteView.screenGeometry
+            screenGeometry: latteView ? latteView.screenGeometry : Qt.rect(-1, -1, 0, 0)
             activity: activityInfo.currentActivity
 
             filterByVirtualDesktop: true
-            filterByScreen: true
+            filterByScreen:latteView ?  true : false
             filterByActivity: true
 
             launchInPlace: true

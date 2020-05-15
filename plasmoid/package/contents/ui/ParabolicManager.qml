@@ -47,11 +47,6 @@ Item {
         updateTasksEdgesIndexes();
     }
 
-    Component.onDestruction: {
-        parManager.sglUpdateLowerItemScale.disconnect(sltTrackLowerItemScale);
-        parManager.sglUpdateHigherItemScale.disconnect(sltTrackHigherItemScale);
-    }
-
     function updateTasksEdgesIndexes() {
         var newFirstTask = firstRealTask();
         var newLastTask = lastRealTask();

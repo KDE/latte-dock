@@ -208,7 +208,7 @@ Item {
                 svg: groupSvg
                 elementId: elementForLocation(plasmoid.location)
 
-                readonly property QtObject groupSvg: indicator.resources.svgs.length > 0 ? indicator.resources.svgs[0] : null
+                readonly property QtObject groupSvg: indicator.resources && indicator.resources.svgs.length > 0 ? indicator.resources.svgs[0] : null
 
                 function elementForLocation(location) {
                     switch (location) {

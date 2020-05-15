@@ -104,6 +104,8 @@ Item {
 
     readonly property bool behaveAsDockWithMask: !behaveAsPlasmaPanel
 
+    readonly property bool viewIsAvailable: latteView && latteView.visibility && latteView.effects
+
     property int viewType: {
         var staticLayout = (plasmoid.configuration.minLength === plasmoid.configuration.maxLength);
 

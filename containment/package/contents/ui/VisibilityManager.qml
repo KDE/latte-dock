@@ -247,8 +247,12 @@ Item{
     Binding{
         target: latteView
         property: "isTouchingTopViewAndIsBusy"
-        when: latteView
+        when: root.viewIsAvailable
         value: {
+            if (!root.viewIsAvailable) {
+                return false;
+            }
+
             var isTouchingTopScreenEdge = (latteView.y === latteView.screenGeometry.y);
             var hasTopBorder = ((latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.TopBorder)) > 0);
 
@@ -261,6 +265,10 @@ Item{
         property: "isTouchingBottomViewAndIsBusy"
         when: latteView
         value: {
+            if (!root.viewIsAvailable) {
+                return false;
+            }
+
             var latteBottom = latteView.y + latteView.height;
             var screenBottom = latteView.screenGeometry.y + latteView.screenGeometry.height;
             var isTouchingBottomScreenEdge = (latteBottom === screenBottom);
@@ -514,7 +522,7 @@ Item{
 
     ///test maskArea
     function updateMaskArea() {
-        if (!latteView || blockUpdateMask) {
+        if (!latteView || !root.viewIsAvailable || blockUpdateMask) {
             return;
         }
 
@@ -522,7 +530,7 @@ Item{
         var localY = 0;
 
         normalState = ((animations.needBothAxis.count === 0) && (animations.needLength.count === 0))
-                || (latteView.visibility.isHidden && !latteView.visibility.containsMouse && animations.needThickness.count === 0);
+                || (latteView && latteView.visibility.isHidden && !latteView.visibility.containsMouse && animations.needThickness.count === 0);
 
 
         // debug maskArea criteria
@@ -974,6 +982,10 @@ Item{
         }
 
         function init() {
+            if (!root.viewIsAvailable) {
+                return;
+            }
+
             inSlidingIn = true;
 
             if (slidingAnimationAutoHiddenOut.running) {
@@ -993,7 +1005,7 @@ Item{
         id: slidingInRealFloating
 
         PropertyAnimation {
-            target: latteView.positioner
+            target: latteView ? latteView.positioner : null
             property: "slideOffset"
             to: 0
             duration: manager.animationSpeed
@@ -1005,7 +1017,7 @@ Item{
         id: slidingOutRealFloating
 
         PropertyAnimation {
-            target: latteView.positioner
+            target: latteView ? latteView.positioner : null
             property: "slideOffset"
             to: plasmoid.configuration.screenEdgeMargin
             duration: manager.animationSpeed
@@ -1016,6 +1028,10 @@ Item{
     Connections {
         target: root
         onHideThickScreenGapChanged: {
+            if (!latteView || !root.viewIsAvailable) {
+                return;
+            }
+
             if (root.behaveAsPlasmaPanel && !latteView.visibility.isHidden && !inSlidingIn && !inSlidingOut && !inStartup) {
                 if (hideThickScreenGap) {
                     latteView.positioner.inSlideAnimation = true;
