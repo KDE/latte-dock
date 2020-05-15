@@ -187,7 +187,7 @@ Item{
         }
     }
 
-    onAppletMinimumLengthChanged: {
+    onAppletMinimumLengthChanged: {        
         if(zoomScale === 1) {
             appletItem.updateParabolicEffectIsSupported();
         }
@@ -221,7 +221,7 @@ Item{
     Binding {
         target: wrapper
         property: "layoutThickness"
-        when: !isLattePlasmoid && (wrapper.zoomScale === 1)
+        when: latteView && !isLattePlasmoid && (wrapper.zoomScale === 1)
         value: {
             if (appletItem.isInternalViewSplitter){
                 return !root.inConfigureAppletsMode ? 0 : appletItem.metrics.iconSize;
@@ -234,7 +234,7 @@ Item{
     Binding {
         target: wrapper
         property: "layoutLength"
-        when: !isLattePlasmoid && !appletItem.isAutoFillApplet && (wrapper.zoomScale === 1)
+        when: latteView && !isLattePlasmoid && !appletItem.isAutoFillApplet && (wrapper.zoomScale === 1)
         value: {
             if (appletItem.isInternalViewSplitter){
                 return !root.inConfigureAppletsMode ? 0 : Math.min(appletItem.metrics.iconSize, root.maxJustifySplitterSize);
@@ -261,7 +261,7 @@ Item{
     Binding {
         target: wrapper
         property: "disableLengthScale"
-        when: !(appletItem.isAutoFillApplet || appletItem.isLattePlasmoid)
+        when: latteView && !(appletItem.isAutoFillApplet || appletItem.isLattePlasmoid)
         value: {
             var blockParabolicEffectInLength = false;
 
