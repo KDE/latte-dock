@@ -38,6 +38,8 @@ Item {
 
     readonly property bool inSettingsAdvancedMode: latteView && latteView.inSettingsAdvancedMode
 
+    readonly property int headMargin: spacing * 2
+
     rotation: {
         if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
             return  0;
@@ -56,9 +58,9 @@ Item {
         }
 
         if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-            return visibilityManager.thicknessNormalOriginalValue + ruler.thickness + spacing * 2 - width/2 + height/2;
+            return visibilityManager.thicknessNormalOriginalValue + ruler.thickness + headMargin * 2 - width/2 + height/2;
         } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-            return spacing - width/2 + height/2;
+            return headMargin - width/2 + height/2;
         }
     }
 
@@ -68,9 +70,9 @@ Item {
         }
 
         if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-            return spacing;
+            return headMargin;
         } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-            return parent.height - rearrangeBtn.height - spacing;
+            return parent.height - rearrangeBtn.height - headMargin;
         }
     }
 
