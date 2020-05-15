@@ -494,8 +494,8 @@ Item {
                 return;
             }
 
-            var maxSize = appletItem.metrics.iconSize + metrics.totals.thicknessEdges;
-            var maxForMinimumSize = appletItem.metrics.iconSize + metrics.totals.thicknessEdges;
+            var maxSize = appletItem.metrics.iconSize + lengthAppletFullMargins;
+            var maxForMinimumSize = appletItem.metrics.iconSize + lengthAppletFullMargins;
 
             if ( isSystray
                     || appletItem.isAutoFillApplet

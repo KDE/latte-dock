@@ -221,7 +221,7 @@ Item{
     Binding {
         target: wrapper
         property: "layoutThickness"
-        when: !isLattePlasmoid
+        when: !isLattePlasmoid && (wrapper.zoomScale === 1)
         value: {
             if (appletItem.isInternalViewSplitter){
                 return !root.inConfigureAppletsMode ? 0 : appletItem.metrics.iconSize;
@@ -234,29 +234,23 @@ Item{
     Binding {
         target: wrapper
         property: "layoutLength"
-        when: !isLattePlasmoid && !appletItem.isAutoFillApplet
+        when: !isLattePlasmoid && !appletItem.isAutoFillApplet && (wrapper.zoomScale === 1)
         value: {
             if (appletItem.isInternalViewSplitter){
                 return !root.inConfigureAppletsMode ? 0 : Math.min(appletItem.metrics.iconSize, root.maxJustifySplitterSize);
-            } else {
-                if(applet && (appletMinimumLength > appletItem.metrics.iconSize) && !canBeHovered && !communicator.overlayLatteIconIsActive){
-                    return appletMinimumLength;
-                } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
-                else if(applet
-                        && ( appletMaximumLength < appletItem.metrics.iconSize
-                            || appletPreferredLength > appletItem.metrics.iconSize
-                            || appletItem.originalAppletBehavior)
-                        && !communicator.overlayLatteIconIsActive) {
+            } else if (applet && ( appletMaximumLength < appletItem.metrics.iconSize
+                                  || appletPreferredLength > appletItem.metrics.iconSize
+                                  || appletItem.originalAppletBehavior)
+                       && !communicator.overlayLatteIconIsActive) {
 
-                    //this way improves performance, probably because during animation the preferred sizes update a lot
-                    if (appletMaximumLength>0 && appletMaximumLength < appletItem.metrics.iconSize){
-                        return appletMaximumLength;
-                    } else if (appletMinimumLength > appletItem.metrics.iconSize){
-                        return appletMinimumLength;
-                    } else if ((appletPreferredLength > appletItem.metrics.iconSize)
-                               || (appletItem.originalAppletBehavior && appletPreferredLength > 0 )){
-                        return appletPreferredLength;
-                    }
+                //this way improves performance, probably because during animation the preferred sizes update a lot
+                if (appletMaximumLength>0 && appletMaximumLength < appletItem.metrics.iconSize){
+                    return appletMaximumLength;
+                } else if (appletMinimumLength > appletItem.metrics.iconSize){
+                    return appletMinimumLength;
+                } else if ((appletPreferredLength > appletItem.metrics.iconSize)
+                           || (appletItem.originalAppletBehavior && appletPreferredLength > 0 )){
+                    return appletPreferredLength;
                 }
             }
 
@@ -666,7 +660,7 @@ Item{
     }
 
     function sltUpdateHigherItemScale(delegateIndex, newScale, step) {
-        if (delegateIndex === appletItem.index) {          
+        if (delegateIndex === appletItem.index) {
             if (communicator.parabolicEffectIsSupported) {
                 communicator.bridge.parabolic.client.hostRequestUpdateHigherItemScale(newScale, step);
                 return;
