@@ -49,7 +49,7 @@ Item {
     signal mouseReleased(int x, int y, int button);
 
     property bool animationsEnabled: true
-    property bool canBeHovered: true
+    property bool parabolicEffectIsSupported: true
     property bool canShowAppletNumberBadge: !isSeparator && !isHidden && !isLattePlasmoid
                                             && !isSpacer && !isInternalViewSplitter
 
@@ -156,8 +156,8 @@ Item {
 
     readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.requires.parabolicEffectLocked
     readonly property bool originalAppletBehavior: (appletItem.parabolic.factor.zoom === 1 && !lockZoom /*hacky flag to keep Latte behavior*/)
-                                                   || (appletItem.parabolic.factor.zoom>1 && !canBeHovered)
-                                                   || (appletItem.parabolic.factor.zoom>1 && canBeHovered && lockZoom)
+                                                   || (appletItem.parabolic.factor.zoom>1 && !parabolicEffectIsSupported)
+                                                   || (appletItem.parabolic.factor.zoom>1 && parabolicEffectIsSupported && lockZoom)
 
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
     readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported
@@ -476,13 +476,13 @@ Item {
         }
     }
 
-    function checkCanBeHovered(){
-        canBeHoveredTimer.start();
+    function updateParabolicEffectIsSupported(){
+        parabolicEffectIsSupportedTimer.start();
     }
 
     //! Reduce calculations and give the time to applet to adjust to prevent binding loops
     Timer{
-        id: canBeHoveredTimer
+        id: parabolicEffectIsSupportedTimer
         interval: 100
         onTriggered: {
             if (wrapper.zoomScale !== 1) {
@@ -490,7 +490,7 @@ Item {
             }
 
             if (appletItem.isLattePlasmoid) {
-                appletItem.canBeHovered = true;
+                appletItem.parabolicEffectIsSupported = true;
                 return;
             }
 
@@ -503,9 +503,9 @@ Item {
                          || (applet && root.isVertical && (applet.height > maxSize || applet.Layout.minimumHeight > maxForMinimumSize)))
                         && !appletItem.isSpacer
                         && !communicator.canShowOverlaiedLatteIcon) ) {
-                appletItem.canBeHovered = false;
+                appletItem.parabolicEffectIsSupported = false;
             } else {
-                appletItem.canBeHovered = true;
+                appletItem.parabolicEffectIsSupported = true;
             }
         }
     }
@@ -556,7 +556,7 @@ Item {
     }
 
     onIsSystrayChanged: {
-        checkCanBeHovered();
+        updateParabolicEffectIsSupported();
     }
 
     onLatteAppletChanged: {
@@ -571,7 +571,7 @@ Item {
         }
     }
 
-    onIsAutoFillAppletChanged: checkCanBeHovered();
+    onIsAutoFillAppletChanged: updateParabolicEffectIsSupported();
 
     Component.onCompleted: {
         checkIndex();
@@ -993,7 +993,7 @@ Item {
                 root.showTooltipLabel(appletItem, applet.title);
             }
 
-            if (originalAppletBehavior || communicator.requires.parabolicEffectLocked || !canBeHovered) {
+            if (originalAppletBehavior || communicator.requires.parabolicEffectLocked || !parabolicEffectIsSupported) {
                 return;
             }
 
@@ -1025,7 +1025,7 @@ Item {
         }
 
         onPositionChanged: {
-            if (originalAppletBehavior || !canBeHovered) {
+            if (originalAppletBehavior || !parabolicEffectIsSupported) {
                 mouse.accepted = false;
                 return;
             }

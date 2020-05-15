@@ -75,7 +75,7 @@ Item{
 
     property bool editMode: root.inConfigureAppletsMode
 
-    property bool edgeLengthMarginsDisabled: isSeparator || !communicator.requires.lengthMarginsEnabled || !canBeHovered
+    property bool edgeLengthMarginsDisabled: isSeparator || !communicator.requires.lengthMarginsEnabled || !parabolicEffectIsSupported
 
     property int appletWidth: applet ?  applet.width : -1
     property int appletHeight: applet ?  applet.height : -1
@@ -155,7 +155,7 @@ Item{
             console.log("Real Wrapper Width: "+wrapper.width);
             console.log("Real Wrapper Height: "+wrapper.height);
             console.log("-----");
-            console.log("Can be hovered: " + canBeHovered);
+            console.log("Can be hovered: " + parabolicEffectIsSupported);
             console.log("Icon size: " + appletItem.metrics.iconSize);
             console.log("Thick Margins: " + appletItem.metrics.totals.thicknessEdges);
             console.log("Intern. Margins: " + (appletItem.metrics.padding.length * 2));
@@ -177,19 +177,19 @@ Item{
 
     onAppletLengthChanged: {
         if(zoomScale === 1) {
-            checkCanBeHovered();
+            appletItem.updateParabolicEffectIsSupported();
         }
     }
 
     onAppletThicknessChanged: {
         if(zoomScale === 1) {
-            checkCanBeHovered();
+            appletItem.updateParabolicEffectIsSupported();
         }
     }
 
     onAppletMinimumLengthChanged: {
         if(zoomScale === 1) {
-            checkCanBeHovered();
+            appletItem.updateParabolicEffectIsSupported();
         }
 
         updateAutoFillLength();
@@ -197,7 +197,7 @@ Item{
 
     onAppletMinimumThicknessChanged: {
         if(zoomScale === 1) {
-            checkCanBeHovered();
+            appletItem.updateParabolicEffectIsSupported();
         }
     }
 
@@ -268,7 +268,7 @@ Item{
             if (appletItem.isInternalViewSplitter){
                 return false;
             } else {
-                if(applet && (appletMinimumLength > appletItem.metrics.iconSize) && !canBeHovered && !communicator.overlayLatteIconIsActive){
+                if(applet && (appletMinimumLength > appletItem.metrics.iconSize) && !appletItem.parabolicEffectIsSupported && !communicator.overlayLatteIconIsActive){
                     return (wrapper.zoomScale === 1);
                 } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
                 else if(applet
@@ -619,7 +619,7 @@ Item{
 
     function signalUpdateScale(nIndex, nScale, step){
         if(appletItem && !appletItem.containsMouse && (appletItem.index === nIndex)){
-            if ( ((canBeHovered && !appletItem.originalAppletBehavior) || appletItem.latteApplet)
+            if ( ((parabolicEffectIsSupported && !appletItem.originalAppletBehavior) || appletItem.latteApplet)
                     && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)
                     ){
                 if(!appletItem.latteApplet){

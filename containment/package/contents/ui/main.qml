@@ -936,7 +936,7 @@ Item {
         for(var i=0; i<applets.length; ++i){
             var applet = applets[i];
 
-            if(applet && applet.containsMouse && !applet.originalAppletBehavior && applet.canBeHovered){
+            if(applet && applet.containsMouse && !applet.originalAppletBehavior && applet.parabolicEffectIsSupported){
                 return true;
             }
         }
@@ -946,7 +946,7 @@ Item {
         for(var i=0; i<applets.length; ++i){
             var applet = applets[i];
 
-            if(applet && applet.containsMouse && !applet.originalAppletBehavior && applet.canBeHovered){
+            if(applet && applet.containsMouse && !applet.originalAppletBehavior && applet.parabolicEffectIsSupported){
                 return true;
             }
         }
@@ -957,7 +957,7 @@ Item {
         for(var i=0; i<applets.length; ++i){
             var applet = applets[i];
 
-            if(applet && applet.containsMouse && !applet.originalAppletBehavior && applet.canBeHovered){
+            if(applet && applet.containsMouse && !applet.originalAppletBehavior && applet.parabolicEffectIsSupported){
                 return true;
             }
         }

@@ -42,7 +42,7 @@ Loader {
 
     width: {
         if (root.isHorizontal) {
-            if (canBeHovered) {
+            if (appletItem.parabolicEffectIsSupported) {
                 return appletItem.wrapper.zoomScale * visualLockedWidth;
             }
 
@@ -54,7 +54,7 @@ Loader {
 
     height: {
         if (root.isVertical) {
-            if (canBeHovered) {
+            if (appletItem.parabolicEffectIsSupported) {
                return appletItem.wrapper.zoomScale * visualLockedHeight;
             }
 
