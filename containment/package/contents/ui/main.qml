@@ -642,7 +642,6 @@ Item {
             lastSpacer.parent = layoutsContainer.mainLayout;
         }
 
-        console.log(applet.pluginName);
         LayoutManager.save();
 
         updateIndexes();
