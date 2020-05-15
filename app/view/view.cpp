@@ -332,6 +332,10 @@ void View::reloadSource()
     }
 }
 
+bool View::hiddenConfigWindowsAreDeleted() const
+{
+    return false;
+}
 
 bool View::inDelete() const
 {
@@ -423,9 +427,15 @@ void View::removeView()
 
 bool View::settingsWindowIsShown()
 {
-    auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+    auto cview = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
-    return (configView != nullptr);
+    if (hiddenConfigWindowsAreDeleted()) {
+        return (cview != nullptr);
+    } else if (cview) {
+        return cview->isVisible();
+    }
+
+    return false;
 }
 
 void View::showSettingsWindow()
@@ -1138,7 +1148,7 @@ void View::setLayout(Layout::GenericLayout *layout)
         m_initLayoutTimer.start();
 
         connectionsLayout << connect(m_layout, &Layout::GenericLayout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
-        connectionsLayout << connect(m_layout, &Layout::GenericLayout::lastConfigViewForChanged, this, &View::configViewCreatedFor);
+        connectionsLayout << connect(m_layout, &Layout::GenericLayout::lastConfigViewForChanged, this, &View::configViewShownFor);
 
         Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
@@ -1228,7 +1238,7 @@ void View::moveToLayout(QString layoutName)
     }
 }
 
-void View::configViewCreatedFor(Latte::View *view)
+void View::configViewShownFor(Latte::View *view)
 {
     if (view!=this && m_configView) {
         //! for each layout only one dock should show its configuration windows
@@ -1237,7 +1247,11 @@ void View::configViewCreatedFor(Latte::View *view)
         auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
         if (configDialog) {
-            configDialog->hideConfigWindow();
+            if (hiddenConfigWindowsAreDeleted()) {
+                configDialog->deleteLater();
+            } else if (configDialog->isVisible()) {
+                configDialog->hideConfigWindow();
+            }
         }
     }
 }

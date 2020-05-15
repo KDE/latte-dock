@@ -134,8 +134,8 @@ private slots:
     void updateShowInlineProperties();
     void updateWaylandId();
 
-    void createSecondaryWindow();
-    void deleteSecondaryWindow();
+    void showSecondaryWindow();
+    void hideSecondaryWindow();
 
     void setShowInlineProperties(bool show);
 

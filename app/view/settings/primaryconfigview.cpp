@@ -124,10 +124,6 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
         connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &PrimaryConfigView::raiseDocksTemporaryChanged);
         connections << connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &PrimaryConfigView::updateAvailableScreenGeometry);
     }
-
-    if (m_latteView->layout()) {
-        emit m_latteView->layout()->setLastConfigViewFor(m_latteView);
-    }
 }
 
 PrimaryConfigView::~PrimaryConfigView()
@@ -143,7 +139,9 @@ PrimaryConfigView::~PrimaryConfigView()
 
     m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_waylandWindowId);
 
-    deleteSecondaryWindow();
+    if (m_secConfigView) {
+        m_secConfigView->deleteLater();
+    }
 
     for (const auto &var : connections) {
         QObject::disconnect(var);
@@ -210,22 +208,26 @@ QQuickView *PrimaryConfigView::secondaryWindow()
     return m_secConfigView;
 }
 
-void PrimaryConfigView::createSecondaryWindow()
-{
-    if (m_secConfigView) {
-        return;
+void PrimaryConfigView::showSecondaryWindow()
+{       
+    if (!m_secConfigView) {
+        m_secConfigView = new SecondaryConfigView(m_latteView, this);
+        m_secConfigView->init();
+    } else if (m_secConfigView && !m_latteView->hiddenConfigWindowsAreDeleted() && !m_secConfigView->isVisible()){
+        m_secConfigView->show();
     }
-
-    m_secConfigView = new SecondaryConfigView(m_latteView, this);
-    m_secConfigView->init();
 }
 
-void PrimaryConfigView::deleteSecondaryWindow()
+void PrimaryConfigView::hideSecondaryWindow()
 {
     if (m_secConfigView) {
-        auto secWindow = m_secConfigView;
-        m_secConfigView = nullptr;
-        secWindow->deleteLater();
+        if (m_latteView->hiddenConfigWindowsAreDeleted()) {
+            auto secWindow = m_secConfigView;
+            m_secConfigView = nullptr;
+            secWindow->deleteLater();
+        } else {
+            m_secConfigView->hide();
+        }
 
         if (KWindowSystem::isPlatformX11() && m_latteView->effects()) {
             //! this is needed in order for subtracked mask of secondary window to
@@ -341,7 +343,7 @@ void PrimaryConfigView::syncGeometry()
         m_shellSurface->setPosition(position);
     }
 
-    updateShowInlineProperties();
+   // updateShowInlineProperties();
 
     emit m_latteView->configWindowGeometryChanged();
 }
@@ -393,28 +395,37 @@ void PrimaryConfigView::showEvent(QShowEvent *ev)
     syncGeometry();
     syncSlideEffect();
 
-    if (m_latteView && m_latteView->containment())
+    if (m_latteView && m_latteView->containment()) {
         m_latteView->containment()->setUserConfiguring(true);
+    }
 
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &PrimaryConfigView::syncGeometry);
 
+    updateShowInlineProperties();
+
     emit showSignal();
+
+    if (m_latteView && m_latteView->layout()) {
+        m_latteView->layout()->setLastConfigViewFor(m_latteView);
+    }
+
+    if (m_shellSurface) {
+        //! readd shadows after hiding because the window shadows are not shown again after first showing
+        m_corona->dialogShadows()->addWindow(this, m_enabledBorders);
+    }
 }
 
 void PrimaryConfigView::hideEvent(QHideEvent *ev)
 {
     if (!m_latteView) {
         deleteLater();
-        //QQuickWindow::hideEvent(ev);
         return;
     }
 
     if (m_latteView->containment()) {
         m_latteView->containment()->setUserConfiguring(false);
     }
-
-    // QQuickWindow::hideEvent(ev);
 
     const auto mode = m_latteView->visibility()->mode();
 
@@ -429,7 +440,11 @@ void PrimaryConfigView::hideEvent(QHideEvent *ev)
         m_latteView->layout()->recreateView(m_latteView->containment());
     }
 
-    deleteLater();
+    if (m_latteView->hiddenConfigWindowsAreDeleted()) {
+        deleteLater();
+    } else {
+        setVisible(false);
+    }
 }
 
 void PrimaryConfigView::focusOutEvent(QFocusEvent *ev)
@@ -559,9 +574,7 @@ void PrimaryConfigView::updateShowInlineProperties()
     }
 
     //! consider screen geometry for showing or not the secondary window
-    if (!geometryWhenVisible().isNull()) {
-        createSecondaryWindow();
-
+    if (showSecWindow && !geometryWhenVisible().isNull()) {
         if (m_secConfigView->geometryWhenVisible().intersects(geometryWhenVisible())) {
             showSecWindow = false;
         } else if (advancedApprovedSecWindow) {
@@ -570,14 +583,12 @@ void PrimaryConfigView::updateShowInlineProperties()
     }
 
     if (showSecWindow) {
-        if (!m_secConfigView) {
-            createSecondaryWindow();
-        }
+        showSecondaryWindow();
 
-        QTimer::singleShot(150, m_secConfigView, SLOT(show()));
+       // QTimer::singleShot(150, m_secConfigView, SLOT(show()));
         setShowInlineProperties(false);
     } else {
-        deleteSecondaryWindow();
+        hideSecondaryWindow();
         setShowInlineProperties(true);
     }
 
@@ -621,6 +632,8 @@ void PrimaryConfigView::hideConfigWindow()
     } else {
         hide();
     }
+
+    hideSecondaryWindow();
 }
 
 void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
