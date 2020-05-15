@@ -254,7 +254,7 @@ Item {
     property bool plasma515: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
     property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
 
-    readonly property int minAppletLengthInConfigure: 64
+    readonly property int minAppletLengthInConfigure: 16
     readonly property int maxJustifySplitterSize: 64
 
     property int latteAppletPos: -1
