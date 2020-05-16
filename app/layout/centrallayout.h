@@ -74,7 +74,6 @@ public:
     void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr) override;
     void syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap = nullptr) override;
     void unloadContainments() override;
-    bool configViewIsShown() const override;
     const QStringList appliedActivities() override;
     Types::ViewType latteViewType(uint containmentId) const override;
     QList<Latte::View *> latteViews() override;
@@ -84,6 +83,9 @@ public:
     int viewsCount() const override;
 
     Layout::Type type() const override;
+
+    void setLastConfigViewFor(Latte::View *view) override;
+    Latte::View *lastConfigViewFor() override;
 
     //! Available edges for specific view in that screen
     QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const override;

@@ -152,17 +152,6 @@ void GenericLayout::setBlockAutomaticLatteViewCreation(bool block)
     m_blockAutomaticLatteViewCreation = block;
 }
 
-bool GenericLayout::configViewIsShown() const
-{
-    for (const auto view : m_latteViews) {
-        if (view && view->settingsWindowIsShown()) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 bool GenericLayout::isActive() const
 {
     if (!m_corona) {
@@ -378,11 +367,6 @@ Latte::View *GenericLayout::highestPriorityView()
 
 Latte::View *GenericLayout::lastConfigViewFor()
 {
-    if (!latteViews().contains(m_lastConfigViewFor)) {
-        m_lastConfigViewFor = nullptr;
-        return nullptr;
-    }
-
     return m_lastConfigViewFor;
 }
 

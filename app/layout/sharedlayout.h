@@ -60,9 +60,6 @@ public:
 
     Layout::Type type() const override;
 
-    void setLastConfigViewFor(Latte::View *view) override;
-    Latte::View *lastConfigViewFor() override;
-
     //! Available edges for specific view in that screen
     QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const override;
     //! All free edges in that screen

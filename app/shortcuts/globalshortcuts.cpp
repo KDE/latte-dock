@@ -262,7 +262,7 @@ void GlobalShortcuts::activateLauncherMenu()
             //! delay the execution in order to show first the view
             QTimer::singleShot(APPLETEXECUTIONDELAY, [this, highestPriorityView]() {
                 highestPriorityView->extendedInterface()->toggleAppletExpanded(highestPriorityView->extendedInterface()->applicationLauncherId());
-                 highestPriorityView->visibility()->removeBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
+                highestPriorityView->visibility()->removeBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
             });
         } else {
             highestPriorityView->extendedInterface()->toggleAppletExpanded(highestPriorityView->extendedInterface()->applicationLauncherId());
@@ -333,7 +333,7 @@ bool GlobalShortcuts::activateEntryForView(Latte::View *view, int index, Qt::Key
 
     bool executed = ((!view->latteTasksArePresent() && view->tasksPresent() &&
                       activatePlasmaTaskManager(view, index, modifier, &delayed))
-                         || activateLatteEntry(view, index, modifier, &delayed));
+                     || activateLatteEntry(view, index, modifier, &delayed));
 
     if (executed) {
         if (!m_hideViews.contains(view)) {
@@ -525,7 +525,7 @@ void GlobalShortcuts::showSettings()
     if (sortedViews.count() > 0) {
         int openSettings = -1;
 
-        //! check if there is a view with opened settings window
+        //! find last view that showed its config view
         for (int i = 0; i < sortedViews.size(); ++i) {
             if (sortedViews[i] == currentLayout->lastConfigViewFor()) {
                 openSettings = i;
@@ -534,7 +534,8 @@ void GlobalShortcuts::showSettings()
         }
 
         if (openSettings >= 0 && sortedViews.count() > 1) {
-            openSettings = currentLayout->configViewIsShown() ? openSettings + 1 : openSettings;
+            //! check if there is a view with opened settings window
+            openSettings = sortedViews[openSettings]->settingsWindowIsShown() ? openSettings + 1 : openSettings;
 
             if (openSettings >= sortedViews.size()) {
                 openSettings = 0;

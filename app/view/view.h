@@ -226,7 +226,6 @@ public:
     QStringList activities() const;
     void setActivities(const QStringList &ids);
 
-
     bool settingsWindowIsShown();
     void showSettingsWindow();
 

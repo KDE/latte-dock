@@ -213,6 +213,8 @@ void CentralLayout::setSharedLayout(SharedLayout *layout)
         m_sharedConnections << connect(m_sharedLayout, &Layout::GenericLayout::viewEdgeChanged, this, [this]() {
             syncLatteViewsToScreens();
         });
+
+        m_sharedConnections << connect(m_sharedLayout, &GenericLayout::lastConfigViewForChanged, this, &GenericLayout::lastConfigViewForChanged);
     } else {
         setSharedLayoutName(QString());
     }
@@ -229,6 +231,24 @@ void CentralLayout::disconnectSharedConnections()
     }
 
     m_sharedConnections.clear();
+}
+
+void CentralLayout::setLastConfigViewFor(Latte::View *view)
+{
+    if (m_sharedLayout) {
+        m_sharedLayout->setLastConfigViewFor(view);
+    } else {
+        GenericLayout::setLastConfigViewFor(view);
+    }
+}
+
+Latte::View *CentralLayout::lastConfigViewFor()
+{
+    if (m_sharedLayout) {
+        return m_sharedLayout->lastConfigViewFor();
+    } else {
+        return GenericLayout::lastConfigViewFor();
+    }
 }
 
 void CentralLayout::loadConfig()
@@ -267,16 +287,6 @@ void CentralLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     } else {
         Layout::GenericLayout::addView(containment, forceOnPrimary, explicitScreen, occupied);
     }
-}
-
-bool CentralLayout::configViewIsShown() const
-{
-    bool genericShown = GenericLayout::configViewIsShown();
-    if (m_sharedLayout) {
-        return (m_sharedLayout->configViewIsShown() || genericShown);
-    }
-
-    return genericShown;
 }
 
 const QStringList CentralLayout::appliedActivities()

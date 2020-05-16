@@ -189,7 +189,7 @@ int SharedLayout::viewsCount() const
 
 QList<Plasma::Types::Location> SharedLayout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
 {
- /*   using Plasma::Types;
+    /*   using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                 Types::TopEdge, Types::RightEdge};
 
@@ -202,7 +202,7 @@ QList<Plasma::Types::Location> SharedLayout::availableEdgesForView(QScreen *scr,
 
 QList<Plasma::Types::Location> SharedLayout::freeEdges(QScreen *scr) const
 {
- /*   using Plasma::Types;
+    /*   using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                 Types::TopEdge, Types::RightEdge};
 
@@ -221,7 +221,7 @@ QList<Plasma::Types::Location> SharedLayout::freeEdges(QScreen *scr) const
 
 QList<Plasma::Types::Location> SharedLayout::freeEdges(int screen) const
 {
-  /*  using Plasma::Types;
+    /*  using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                 Types::TopEdge, Types::RightEdge};
 
@@ -236,28 +236,6 @@ QList<Plasma::Types::Location> SharedLayout::freeEdges(int screen) const
     }*/
 
     return Layout::GenericLayout::freeEdges(screen);
-}
-
-void SharedLayout::setLastConfigViewFor(Latte::View *view)
-{
-    CentralLayout *current = currentCentralLayout();
-
-    if (current) {
-        return current->setLastConfigViewFor(view);
-    }
-
-    return GenericLayout::setLastConfigViewFor(view);
-}
-
-Latte::View *SharedLayout::lastConfigViewFor()
-{
-    CentralLayout *current = currentCentralLayout();
-
-    if (current) {
-        return current->lastConfigViewFor();
-    }
-
-    return GenericLayout::lastConfigViewFor();
 }
 
 QList<Latte::View *> SharedLayout::sortedLatteViews(QList<Latte::View *> views)

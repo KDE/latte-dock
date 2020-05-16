@@ -90,8 +90,6 @@ public:
     bool isInternalContainment(Plasma::Applet *applet) const;
     Plasma::Containment *internalContainmentOf(Plasma::Applet *applet) const;
 
-    virtual bool configViewIsShown() const;
-
     virtual int viewsCount(int screen) const;
     virtual int viewsCount(QScreen *screen) const;
     virtual int viewsCount() const;
