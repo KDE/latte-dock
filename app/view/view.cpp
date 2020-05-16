@@ -294,6 +294,8 @@ void View::init(Plasma::Containment *plasma_containment)
     });
 
     connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::indicatorRemoved, this, &View::indicatorPluginRemoved);
+    connect(m_corona->universalSettings(), &Latte::UniversalSettings::hiddenConfigurationWindowsAreDeletedChanged,
+            this, &View::hiddenConfigurationWindowsAreDeletedChanged);
 
     //! Assign app interfaces in be accessible through containment graphic item
     QQuickItem *containmentGraphicItem = qobject_cast<QQuickItem *>(plasma_containment->property("_plasma_graphicObject").value<QObject *>());
@@ -332,9 +334,9 @@ void View::reloadSource()
     }
 }
 
-bool View::hiddenConfigWindowsAreDeleted() const
+bool View::hiddenConfigurationWindowsAreDeleted() const
 {
-    return false;
+    return m_corona->universalSettings()->hiddenConfigurationWindowsAreDeleted();
 }
 
 bool View::inDelete() const
@@ -429,7 +431,7 @@ bool View::settingsWindowIsShown()
 {
     auto cview = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
-    if (hiddenConfigWindowsAreDeleted()) {
+    if (hiddenConfigurationWindowsAreDeleted()) {
         return (cview != nullptr);
     } else if (cview) {
         return cview->isVisible();
@@ -1247,7 +1249,7 @@ void View::configViewShownFor(Latte::View *view)
         auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
         if (configDialog) {
-            if (hiddenConfigWindowsAreDeleted()) {
+            if (hiddenConfigurationWindowsAreDeleted()) {
                 configDialog->deleteLater();
             } else if (configDialog->isVisible()) {
                 configDialog->hideConfigWindow();

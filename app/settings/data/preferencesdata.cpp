@@ -28,6 +28,7 @@ const bool Preferences::BADGE3DSTYLE;
 const bool Preferences::LAYOUTSINFORMATIONWINDOW;
 const bool Preferences::AUTOSTART;
 const bool Preferences::BORDERLESSMAXIMIZED;
+const bool Preferences::HIDDENCONFIGURATIONWINDOWSAREDELETED;
 const bool Preferences::METAPRESSFORAPPLAUNCHER;
 const bool Preferences::METAHOLDFORBADGES;
 const int Preferences::SCREENSDELAY;
@@ -43,6 +44,7 @@ Preferences::Preferences(Preferences &&o)
       layoutsInformationWindow(o.layoutsInformationWindow),
       autostart(o.autostart),
       borderlessMaximized(o.borderlessMaximized),
+      hiddenConfigurationWindowsAreDeleted(o.hiddenConfigurationWindowsAreDeleted),
       metaPressForAppLauncher(o.metaPressForAppLauncher),
       metaHoldForBadges(o.metaHoldForBadges),
       mouseSensitivity(o.mouseSensitivity),
@@ -56,6 +58,7 @@ Preferences::Preferences(const Preferences &o)
       layoutsInformationWindow(o.layoutsInformationWindow),
       autostart(o.autostart),
       borderlessMaximized(o.borderlessMaximized),
+      hiddenConfigurationWindowsAreDeleted(o.hiddenConfigurationWindowsAreDeleted),
       metaPressForAppLauncher(o.metaPressForAppLauncher),
       metaHoldForBadges(o.metaHoldForBadges),
       mouseSensitivity(o.mouseSensitivity),
@@ -70,6 +73,7 @@ Preferences &Preferences::operator=(const Preferences &rhs)
     layoutsInformationWindow = rhs.layoutsInformationWindow;
     autostart = rhs.autostart;
     borderlessMaximized = rhs.borderlessMaximized;
+    hiddenConfigurationWindowsAreDeleted = rhs.hiddenConfigurationWindowsAreDeleted;
     metaPressForAppLauncher = rhs.metaPressForAppLauncher;
     metaHoldForBadges = rhs.metaHoldForBadges;
     mouseSensitivity = rhs.mouseSensitivity;
@@ -85,6 +89,7 @@ Preferences &Preferences::operator=(Preferences &&rhs)
     layoutsInformationWindow = rhs.layoutsInformationWindow;
     autostart = rhs.autostart;
     borderlessMaximized = rhs.borderlessMaximized;
+    hiddenConfigurationWindowsAreDeleted = rhs.hiddenConfigurationWindowsAreDeleted;
     metaPressForAppLauncher = rhs.metaPressForAppLauncher;
     metaHoldForBadges = rhs.metaHoldForBadges;
     mouseSensitivity = rhs.mouseSensitivity;
@@ -100,6 +105,7 @@ bool Preferences::operator==(const Preferences &rhs) const
             && (layoutsInformationWindow == rhs.layoutsInformationWindow)
             && (autostart == rhs.autostart)
             && (borderlessMaximized == rhs.borderlessMaximized)
+            && (hiddenConfigurationWindowsAreDeleted == rhs.hiddenConfigurationWindowsAreDeleted)
             && (metaPressForAppLauncher == rhs.metaPressForAppLauncher)
             && (metaHoldForBadges == rhs.metaHoldForBadges)
             && (mouseSensitivity == rhs.mouseSensitivity)
@@ -118,6 +124,7 @@ bool Preferences::inDefaultValues() const
             && (layoutsInformationWindow == LAYOUTSINFORMATIONWINDOW)
             && (autostart == AUTOSTART)
             && (borderlessMaximized == BORDERLESSMAXIMIZED)
+            && (hiddenConfigurationWindowsAreDeleted == HIDDENCONFIGURATIONWINDOWSAREDELETED)
             && (metaPressForAppLauncher == METAPRESSFORAPPLAUNCHER)
             && (metaHoldForBadges == METAHOLDFORBADGES)
             && (mouseSensitivity == MOUSESENSITIVITY)
@@ -131,6 +138,7 @@ void Preferences::setToDefaults()
     layoutsInformationWindow = LAYOUTSINFORMATIONWINDOW;
     autostart = AUTOSTART;
     borderlessMaximized = BORDERLESSMAXIMIZED;
+    hiddenConfigurationWindowsAreDeleted = HIDDENCONFIGURATIONWINDOWSAREDELETED;
     metaPressForAppLauncher = METAPRESSFORAPPLAUNCHER;
     metaHoldForBadges = METAHOLDFORBADGES;
     mouseSensitivity = MOUSESENSITIVITY;

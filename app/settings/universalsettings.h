@@ -57,6 +57,7 @@ class UniversalSettings : public QObject
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
     Q_PROPERTY(bool badges3DStyle READ badges3DStyle WRITE setBadges3DStyle NOTIFY badges3DStyleChanged)
     Q_PROPERTY(bool colorsScriptIsPresent READ colorsScriptIsPresent NOTIFY colorsScriptIsPresentChanged)
+    Q_PROPERTY(bool hiddenConfigurationWindowsAreDeleted READ hiddenConfigurationWindowsAreDeleted WRITE setHiddenConfigurationWindowsAreDeleted NOTIFY hiddenConfigurationWindowsAreDeletedChanged)
     Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)
 
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
@@ -89,6 +90,9 @@ public:
 
     bool kwin_borderlessMaximizedWindowsEnabled() const;
     void kwin_setDisabledMaximizedBorders(bool disable);
+
+    bool hiddenConfigurationWindowsAreDeleted() const;
+    void setHiddenConfigurationWindowsAreDeleted(bool enabled);
 
     bool metaPressAndHoldEnabled() const;
     void setMetaPressAndHoldEnabled(bool enabled);
@@ -133,6 +137,7 @@ signals:
     void colorsScriptIsPresentChanged();
     void currentLayoutNameChanged();
     void downloadWindowSizeChanged();
+    void hiddenConfigurationWindowsAreDeletedChanged();
     void lastNonAssignedLayoutNameChanged();
     void layoutsColumnWidthsChanged();
     void layoutsWindowSizeChanged();
@@ -168,6 +173,7 @@ private:
     bool m_badges3DStyle{false};
     bool m_canDisableBorders{false};
     bool m_colorsScriptIsPresent{false};
+    bool m_hiddenConfigurationWindowsAreDeleted{true};
     bool m_metaPressAndHoldEnabled{true};
     bool m_showInfoWindow{true};
 

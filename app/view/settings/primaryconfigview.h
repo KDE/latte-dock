@@ -129,6 +129,7 @@ protected:
 
 private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
+    void onHiddenConfigurationWindowsAreDeletedChanged();
     void updateAvailableScreenGeometry(View *origin = nullptr);
     void updateEnabledBorders();
     void updateShowInlineProperties();

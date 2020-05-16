@@ -107,6 +107,7 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
         syncSlideEffect();
     });
 
+    connections << connect(m_latteView, &View::hiddenConfigurationWindowsAreDeletedChanged, this, &PrimaryConfigView::onHiddenConfigurationWindowsAreDeletedChanged);
     connections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &PrimaryConfigView::syncGeometry);
     connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);
 
@@ -213,7 +214,7 @@ void PrimaryConfigView::showSecondaryWindow()
     if (!m_secConfigView) {
         m_secConfigView = new SecondaryConfigView(m_latteView, this);
         m_secConfigView->init();
-    } else if (m_secConfigView && !m_latteView->hiddenConfigWindowsAreDeleted() && !m_secConfigView->isVisible()){
+    } else if (m_secConfigView && !m_latteView->hiddenConfigurationWindowsAreDeleted() && !m_secConfigView->isVisible()){
         m_secConfigView->show();
     }
 }
@@ -221,7 +222,7 @@ void PrimaryConfigView::showSecondaryWindow()
 void PrimaryConfigView::hideSecondaryWindow()
 {
     if (m_secConfigView) {
-        if (m_latteView->hiddenConfigWindowsAreDeleted()) {
+        if (m_latteView->hiddenConfigurationWindowsAreDeleted()) {
             auto secWindow = m_secConfigView;
             m_secConfigView = nullptr;
             secWindow->deleteLater();
@@ -235,6 +236,13 @@ void PrimaryConfigView::hideSecondaryWindow()
             //! Under wayland this is not needed because masks do not break any visuals.
             m_latteView->effects()->updateMask();
         }
+    }
+}
+
+void PrimaryConfigView::onHiddenConfigurationWindowsAreDeletedChanged()
+{
+    if (m_latteView && m_latteView->hiddenConfigurationWindowsAreDeleted() && !isVisible()) {
+        deleteLater();
     }
 }
 
@@ -440,7 +448,7 @@ void PrimaryConfigView::hideEvent(QHideEvent *ev)
         m_latteView->layout()->recreateView(m_latteView->containment());
     }
 
-    if (m_latteView->hiddenConfigWindowsAreDeleted()) {
+    if (m_latteView->hiddenConfigurationWindowsAreDeleted()) {
         deleteLater();
     } else {
         setVisible(false);
