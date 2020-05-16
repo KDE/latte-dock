@@ -288,10 +288,6 @@ void PrimaryConfigView::syncGeometry()
     }
 
     const QSize size(rootObject()->width(), rootObject()->height());
-    setMaximumSize(size);
-    setMinimumSize(size);
-    resize(size);
-
     const auto location = m_latteView->containment()->location();
     const auto scrGeometry = m_latteView->screenGeometry();
     const auto availGeometry = m_availableScreenGeometry;
@@ -343,7 +339,13 @@ void PrimaryConfigView::syncGeometry()
 
     updateEnabledBorders();
 
-    m_geometryWhenVisible = QRect(position.x(), position.y(), size.width(), size.height());
+    auto geometry = QRect(position.x(), position.y(), size.width(), size.height());
+
+    if (m_geometryWhenVisible == geometry) {
+        return;
+    }
+
+    m_geometryWhenVisible = geometry;
 
     setPosition(position);
 
@@ -351,7 +353,9 @@ void PrimaryConfigView::syncGeometry()
         m_shellSurface->setPosition(position);
     }
 
-   // updateShowInlineProperties();
+    setMaximumSize(size);
+    setMinimumSize(size);
+    resize(size);
 
     emit m_latteView->configWindowGeometryChanged();
 }
@@ -583,7 +587,7 @@ void PrimaryConfigView::updateShowInlineProperties()
 
     //! consider screen geometry for showing or not the secondary window
     if (showSecWindow && !geometryWhenVisible().isNull()) {
-        if (m_secConfigView->geometryWhenVisible().intersects(geometryWhenVisible())) {
+        if (m_secConfigView && m_secConfigView->geometryWhenVisible().intersects(geometryWhenVisible())) {
             showSecWindow = false;
         } else if (advancedApprovedSecWindow) {
             showSecWindow = true;
