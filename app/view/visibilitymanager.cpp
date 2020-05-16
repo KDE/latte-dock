@@ -80,6 +80,12 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
         //! Frame Extents
         connect(m_latteView, &Latte::View::headThicknessGapChanged, this, &VisibilityManager::on_publishFrameExtents);
+        connect(m_latteView, &Latte::View::locationChanged, this, [&]() {
+            //! Resend frame extents because their geometry has changed
+            const bool forceUpdate{true};
+            publishFrameExtents(forceUpdate);
+        });
+
         connect(m_latteView, &Latte::View::forcedShown, this, [&]() {
             //! Resend frame extents to compositor otherwise because compositor cleared
             //! them with no reason when the user is closing an activity
