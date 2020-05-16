@@ -152,7 +152,7 @@ BackgroundProperties{
         }
 
         var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
-        return Math.max(totals.minThickness, totals.minThickness + (percentage*maximumItem) + 1/*needed to not leave a gap at max values*/);
+        return Math.max(totals.minThickness, totals.minThickness + (percentage*maximumItem));
     }
 
     totals.visualLength: Math.max(background.length + totals.shadowsLength, totals.paddingsLength + totals.shadowsLength)

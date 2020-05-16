@@ -86,7 +86,7 @@ Item{
 
     property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
     property int thicknessMid: finalScreenEdgeMargin + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.totals.thickness+extraZoomThickMask) //needed in some animations
-    property int thicknessNormal: finalScreenEdgeMargin + Math.max(metrics.totals.thickness + extraNormalThickMask + 1, background.thickness + background.shadows.headThickness)
+    property int thicknessNormal: finalScreenEdgeMargin + Math.max(metrics.totals.thickness + extraNormalThickMask, background.thickness + background.shadows.headThickness)
 
     property int thicknessZoom: finalScreenEdgeMargin + ((metrics.totals.thickness+extraZoomThickMask) * parabolic.factor.maxZoom) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
@@ -95,8 +95,8 @@ Item{
     /*property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
                                                thicknessNormalOriginalValue : background.thickness + background.shadows.headThickness*/
 
-    property int thicknessNormalOriginalValue: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraNormalThickMask + 1
-    property int thicknessZoomOriginal: finalScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraZoomThickMask + 2,
+    property int thicknessNormalOriginalValue: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraNormalThickMask
+    property int thicknessZoomOriginal: finalScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraZoomThickMask,
                                                                          background.thickness + background.shadows.headThickness,
                                                                          (LatteCore.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
 
@@ -170,7 +170,7 @@ Item{
                 return 0;
             }
 
-            return thicknessZoomOriginal - thicknessNormalOriginalValue + extraNormalThickMask;/*extra normal thickness from indicators/applets requirements must be ignored*/
+            return thicknessZoomOriginal - thicknessNormalOriginalValue + extraNormalThickMask;
         }
     }
 
