@@ -130,6 +130,12 @@ void Positioner::init()
         }
     });
 
+    connect(this, &Positioner::slideOffsetChanged, this, [&]() {
+        if (m_slideOffset == 0 && m_view->inEditMode()) {
+            syncGeometry();
+        }
+    });
+
     connect(m_view, &QQuickWindow::xChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::yChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::widthChanged, this, &Positioner::validateDockGeometry);
