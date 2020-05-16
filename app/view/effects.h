@@ -90,6 +90,10 @@ public:
 
 public slots:
     Q_INVOKABLE void forceMaskRedraw();
+    Q_INVOKABLE void setSubtractedMaskRegion(const QString &regionid, const QRegion &region);
+    Q_INVOKABLE void removeSubtractedMaskRegion(const QString &regionid);
+    Q_INVOKABLE void setUnitedMaskRegion(const QString &regionid, const QRegion &region);
+    Q_INVOKABLE void removeUnitedMaskRegion(const QString &regionid);
 
     void clearShadows();
     void updateShadows();
@@ -108,6 +112,9 @@ signals:
     void innerShadowChanged();
     void rectChanged();
 
+    void subtractedMaskRegionsChanged();
+    void unitedMaskRegionsChanged();
+
 private slots:
     void init();
 
@@ -115,6 +122,7 @@ private slots:
 
 private:
     qreal currentMidValue(const qreal &max, const qreal &factor, const qreal &min) const;
+    QRegion maskCombinedRegion();
 
 private:
     bool m_animationsBlocked{false};
@@ -143,6 +151,10 @@ private:
 
     //only for the mask, not to actually paint
     Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
+
+    //! Subtracted and United Mask regions
+    QHash<QString, QRegion> m_subtractedMaskRegions;
+    QHash<QString, QRegion> m_unitedMaskRegions;
 };
 
 }
