@@ -140,6 +140,8 @@ private slots:
 
     void setShowInlineProperties(bool show);
 
+    void updateViewMask();
+
     void loadConfig();
     void saveConfig();
 

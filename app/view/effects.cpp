@@ -249,7 +249,7 @@ void Effects::forceMaskRedraw()
 
 void Effects::setSubtractedMaskRegion(const QString &regionid, const QRegion &region)
 {
-    if (!m_subtractedMaskRegions.contains(regionid) || m_subtractedMaskRegions[regionid] != region) {
+    if (m_subtractedMaskRegions.contains(regionid) && m_subtractedMaskRegions[regionid] == region) {
         return;
     }
 
@@ -269,7 +269,7 @@ void Effects::removeSubtractedMaskRegion(const QString &regionid)
 
 void Effects::setUnitedMaskRegion(const QString &regionid, const QRegion &region)
 {
-    if (!m_unitedMaskRegions.contains(regionid) || m_unitedMaskRegions[regionid] != region) {
+    if (m_unitedMaskRegions.contains(regionid) && m_unitedMaskRegions[regionid] == region) {
         return;
     }
 

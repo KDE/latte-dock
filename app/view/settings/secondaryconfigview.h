@@ -101,6 +101,7 @@ protected:
 private slots:
     void updateEnabledBorders();
     void updateWaylandId();
+    void updateViewMask();
 
 private:
     void setupWaylandIntegration();
