@@ -154,11 +154,10 @@ Item{
 
         LatteCore.IconItem{
             id: iconImageBuffer
-
             anchors.centerIn: parent
+            width: newTempSize
+            height: width
 
-            width: Math.round(newTempSize)
-            height: Math.round(width)
             source: decoration
             smooth: taskItem.parabolic.factor.zoom === 1 ? true : false
             providesColors: indicators ? indicators.info.needsIconColors : false
