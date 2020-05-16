@@ -24,7 +24,6 @@
 #include <coretypes.h>
 #include "panelshadows_p.h"
 #include "view.h"
-#include "settings/primaryconfigview.h"
 
 // Qt
 #include <QRegion>
@@ -54,7 +53,6 @@ void Effects::init()
     connect(this, &Effects::drawEffectsChanged, this, &Effects::updateEffects);
     connect(this, &Effects::enabledBordersChanged, this, &Effects::updateEffects);
     connect(this, &Effects::rectChanged, this, &Effects::updateEffects);
-    connect(this, &Effects::settingsMaskSubtractedChanged, this, &Effects::updateMask);
 
     connect(this, &Effects::drawShadowsChanged, this, [&]() {
         if (m_view->behaveAsPlasmaPanel()) {
@@ -201,98 +199,6 @@ void Effects::setInnerShadow(int shadow)
     emit innerShadowChanged();
 }
 
-bool Effects::settingsMaskSubtracted() const
-{
-    return m_settingsMaskSubtracted;
-}
-
-void Effects::setSettingsMaskSubtracted(bool enabled)
-{
-    if (m_settingsMaskSubtracted == enabled) {
-        return;
-    }
-
-    m_settingsMaskSubtracted = enabled;
-
-    emit settingsMaskSubtractedChanged();
-}
-
-QRegion Effects::subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *window)
-{
-    QRegion subtractedMask = initialRegion;
-
-    int start;
-    int length;
-
-    if (m_view->formFactor() == Plasma::Types::Horizontal) {
-        if (KWindowSystem::isPlatformX11()) {
-            start = window->x();
-            length = window->width();
-        } else {
-            start = m_view->x();
-            length = m_view->width();
-        }
-    } else {
-        if (KWindowSystem::isPlatformX11()) {
-            start = window->y();
-            length = window->height();
-        } else {
-            start = m_view->y();
-            length = m_view->height();
-        }
-    }
-
-    if (m_settingsMaskSubtracted && window) {
-        QRect windowMask;
-        //! we need to subtrack the mask areas that overlap with underlying window
-        switch (m_view->location()) {
-        case Plasma::Types::TopEdge:
-            windowMask.setTopLeft(QPoint(start - m_view->x(), m_mask.y() + m_mask.height() - m_editShadow));
-            windowMask.setSize(QSize(length, m_editShadow));
-            break;
-
-        case Plasma::Types::LeftEdge:
-            windowMask.setTopLeft(QPoint(m_mask.right() + 1 - m_editShadow, start - m_view->y()));
-            windowMask.setSize(QSize(m_editShadow, length));
-            break;
-
-        case Plasma::Types::RightEdge:
-            windowMask.setTopLeft(QPoint(m_mask.x(), start - m_view->y()));
-            windowMask.setSize(QSize(m_editShadow, length));
-            break;
-
-        case Plasma::Types::BottomEdge:
-            windowMask.setTopLeft(QPoint(start - m_view->x(), m_mask.y()));
-            windowMask.setSize(QSize(length, m_editShadow));
-            break;
-
-        default:
-            break;
-        }
-
-        subtractedMask = subtractedMask.subtracted(windowMask);
-    }
-
-    return subtractedMask;
-}
-
-QRegion Effects::subtractedMask()
-{
-    QRegion subMask = m_mask;
-
-    if (m_settingsMaskSubtracted && m_view->configView()) {
-        subMask = subtrackedMaskFromWindow(subMask, m_view->configView());
-
-        ViewPart::PrimaryConfigView *primaryConfig = qobject_cast<ViewPart::PrimaryConfigView *>(m_view->configView());
-
-        if (primaryConfig && m_view->formFactor() == Plasma::Types::Horizontal && primaryConfig->secondaryWindow()) {
-            subMask = subtrackedMaskFromWindow(subMask, primaryConfig->secondaryWindow());
-        }
-    }
-
-    return subMask;
-}
-
 QRect Effects::rect() const
 {
     return m_rect;
@@ -345,7 +251,7 @@ void Effects::updateMask()
         if (m_view->behaveAsPlasmaPanel()) {
             m_view->setMask(QRect());
         } else {
-            m_view->setMask(subtractedMask());
+            m_view->setMask(m_mask);
         }
     } else {
         //! this is used when compositing is disabled and provides

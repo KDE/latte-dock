@@ -43,7 +43,6 @@ class Effects: public QObject
     Q_PROPERTY(bool animationsBlocked READ animationsBlocked NOTIFY animationsBlockedChanged)
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
-    Q_PROPERTY(bool settingsMaskSubtracted READ settingsMaskSubtracted WRITE setSettingsMaskSubtracted NOTIFY settingsMaskSubtractedChanged)
 
     //! thickness shadow size when is drawn inside the window from qml
     Q_PROPERTY(int editShadow READ editShadow WRITE setEditShadow NOTIFY editShadowChanged)
@@ -71,9 +70,6 @@ public:
 
     void setForceTopBorder(bool draw);
     void setForceBottomBorder(bool draw);
-
-    bool settingsMaskSubtracted() const;
-    void setSettingsMaskSubtracted(bool enabled);
 
     int editShadow() const;
     void setEditShadow(int shadow);
@@ -111,7 +107,6 @@ signals:
     void maskChanged();
     void innerShadowChanged();
     void rectChanged();
-    void settingsMaskSubtractedChanged();
 
 private slots:
     void init();
@@ -121,16 +116,12 @@ private slots:
 private:
     qreal currentMidValue(const qreal &max, const qreal &factor, const qreal &min) const;
 
-    QRegion subtractedMask();
-    QRegion subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *window);
-
 private:
     bool m_animationsBlocked{false};
     bool m_drawShadows{true};
     bool m_drawEffects{false};
     bool m_forceTopBorder{false};
     bool m_forceBottomBorder{false};
-    bool m_settingsMaskSubtracted{false};
 
     int m_editShadow{0};
     int m_innerShadow{0};

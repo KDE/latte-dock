@@ -325,22 +325,6 @@ Item{
         }
     }
 
-    Binding{
-        target: latteView && latteView.effects ? latteView.effects : null
-        property: "settingsMaskSubtracted"
-        when: latteView && latteView.effects
-        value: {
-            if (LatteCore.WindowSystem.compositingActive
-                    && root.editMode
-                    && editModeVisual.editAnimationEnded
-                    && (animations.needBothAxis.count === 0 || parabolic.factor.maxZoom===1) ) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
     //! View::Positioner bindings
     Binding{
         target: latteView && latteView.positioner ? latteView.positioner : null
