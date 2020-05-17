@@ -50,9 +50,11 @@ class CurrentScreenTracker : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool activeWindowMaximized READ activeWindowMaximized NOTIFY activeWindowMaximizedChanged)
     Q_PROPERTY(bool activeWindowTouching READ activeWindowTouching NOTIFY activeWindowTouchingChanged)
+    Q_PROPERTY(bool activeWindowTouchingEdge READ activeWindowTouchingEdge NOTIFY activeWindowTouchingEdgeChanged)
     Q_PROPERTY(bool existsWindowActive READ existsWindowActive NOTIFY existsWindowActiveChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
     Q_PROPERTY(bool existsWindowTouching READ existsWindowTouching NOTIFY existsWindowTouchingChanged)
+    Q_PROPERTY(bool existsWindowTouchingEdge READ existsWindowTouchingEdge NOTIFY existsWindowTouchingEdgeChanged)
     Q_PROPERTY(bool isTouchingBusyVerticalView READ isTouchingBusyVerticalView NOTIFY isTouchingBusyVerticalViewChanged)
     Q_PROPERTY(Latte::WindowSystem::SchemeColors *activeWindowScheme READ activeWindowScheme NOTIFY activeWindowSchemeChanged)
     Q_PROPERTY(Latte::WindowSystem::SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
@@ -65,9 +67,11 @@ public:
 
     bool activeWindowMaximized() const;
     bool activeWindowTouching() const;
+    bool activeWindowTouchingEdge() const;
     bool existsWindowActive() const;
     bool existsWindowMaximized() const;
     bool existsWindowTouching() const;
+    bool existsWindowTouchingEdge() const;
 
     bool isTouchingBusyVerticalView() const;
 
@@ -82,9 +86,11 @@ public slots:
 signals:
     void activeWindowMaximizedChanged();
     void activeWindowTouchingChanged();
+    void activeWindowTouchingEdgeChanged();
     void existsWindowActiveChanged();
     void existsWindowMaximizedChanged();
     void existsWindowTouchingChanged();
+    void existsWindowTouchingEdgeChanged();
     void isTouchingBusyVerticalViewChanged();
 
     void activeWindowSchemeChanged();

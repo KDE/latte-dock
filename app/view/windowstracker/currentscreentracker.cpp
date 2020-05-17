@@ -72,6 +72,12 @@ void  CurrentScreenTracker::init()
         }
     });
 
+    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::activeWindowTouchingEdgeChanged, this, [&](const Latte::View *view) {
+        if (m_latteView == view) {
+            emit activeWindowTouchingEdgeChanged();
+        }
+    });
+
     connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::existsWindowActiveChanged, this, [&](const Latte::View *view) {
         if (m_latteView == view) {
             emit existsWindowActiveChanged();
@@ -87,6 +93,12 @@ void  CurrentScreenTracker::init()
     connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::existsWindowTouchingChanged, this, [&](const Latte::View *view) {
         if (m_latteView == view) {
             emit existsWindowTouchingChanged();
+        }
+    });
+
+    connect(m_wm->windowsTracker(), &WindowSystem::Tracker::Windows::existsWindowTouchingEdgeChanged, this, [&](const Latte::View *view) {
+        if (m_latteView == view) {
+            emit existsWindowTouchingEdgeChanged();
         }
     });
 
@@ -114,9 +126,11 @@ void CurrentScreenTracker::initSignalsForInformation()
     emit lastActiveWindowChanged();
     emit activeWindowMaximizedChanged();
     emit activeWindowTouchingChanged();
+    emit activeWindowTouchingEdgeChanged();
     emit existsWindowActiveChanged();
     emit existsWindowMaximizedChanged();
     emit existsWindowTouchingChanged();
+    emit existsWindowTouchingEdgeChanged();
     emit activeWindowSchemeChanged();
     emit touchingWindowSchemeChanged();
 }
@@ -129,6 +143,11 @@ bool CurrentScreenTracker::activeWindowMaximized() const
 bool CurrentScreenTracker::activeWindowTouching() const
 {
     return m_wm->windowsTracker()->activeWindowTouching(m_latteView);
+}
+
+bool CurrentScreenTracker::activeWindowTouchingEdge() const
+{
+    return m_wm->windowsTracker()->activeWindowTouchingEdge(m_latteView);
 }
 
 bool CurrentScreenTracker::existsWindowActive() const
@@ -144,6 +163,11 @@ bool CurrentScreenTracker::existsWindowMaximized() const
 bool CurrentScreenTracker::existsWindowTouching() const
 {
     return m_wm->windowsTracker()->existsWindowTouching(m_latteView);
+}
+
+bool CurrentScreenTracker::existsWindowTouchingEdge() const
+{
+    return m_wm->windowsTracker()->existsWindowTouchingEdge(m_latteView);
 }
 
 bool CurrentScreenTracker::isTouchingBusyVerticalView() const

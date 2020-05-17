@@ -155,8 +155,10 @@ void Windows::initViewHints(Latte::View *view)
 
     setActiveWindowMaximized(view, false);
     setActiveWindowTouching(view, false);
+    setActiveWindowTouchingEdge(view, false);
     setExistsWindowActive(view, false);
     setExistsWindowTouching(view, false);
+    setExistsWindowTouchingEdge(view, false);
     setExistsWindowMaximized(view, false);
     setIsTouchingBusyVerticalView(view, false);
     setActiveWindowScheme(view, nullptr);
@@ -342,6 +344,25 @@ void Windows::setActiveWindowTouching(Latte::View *view, bool activeTouching)
     emit activeWindowTouchingChanged(view);
 }
 
+bool Windows::activeWindowTouchingEdge(Latte::View *view) const
+{
+    if (!m_views.contains(view)) {
+        return false;
+    }
+
+    return m_views[view]->activeWindowTouchingEdge();
+}
+
+void Windows::setActiveWindowTouchingEdge(Latte::View *view, bool activeTouchingEdge)
+{
+    if (!m_views.contains(view) || m_views[view]->activeWindowTouchingEdge() == activeTouchingEdge) {
+        return;
+    }
+
+    m_views[view]->setActiveWindowTouchingEdge(activeTouchingEdge);
+    emit activeWindowTouchingEdgeChanged(view);
+}
+
 bool Windows::existsWindowActive(Latte::View *view) const
 {
     if (!m_views.contains(view)) {
@@ -398,6 +419,26 @@ void Windows::setExistsWindowTouching(Latte::View *view, bool windowTouching)
     m_views[view]->setExistsWindowTouching(windowTouching);
     emit existsWindowTouchingChanged(view);
 }
+
+bool Windows::existsWindowTouchingEdge(Latte::View *view) const
+{
+    if (!m_views.contains(view)) {
+        return false;
+    }
+
+    return m_views[view]->existsWindowTouchingEdge();
+}
+
+void Windows::setExistsWindowTouchingEdge(Latte::View *view, bool windowTouchingEdge)
+{
+    if (!m_views.contains(view) || m_views[view]->existsWindowTouchingEdge() == windowTouchingEdge) {
+        return;
+    }
+
+    m_views[view]->setExistsWindowTouchingEdge(windowTouchingEdge);
+    emit existsWindowTouchingEdgeChanged(view);
+}
+
 
 bool Windows::isTouchingBusyVerticalView(Latte::View *view) const
 {
@@ -823,7 +864,9 @@ void Windows::updateHints(Latte::View *view)
     bool foundActive{false};
     bool foundActiveInCurScreen{false};
     bool foundActiveTouchInCurScreen{false};
+    bool foundActiveEdgeTouchInCurScreen{false};
     bool foundTouchInCurScreen{false};
+    bool foundTouchEdgeInCurScreen{false};
     bool foundMaximizedInCurScreen{false};
 
     bool foundActiveGroupTouchInCurScreen{false};
@@ -835,7 +878,9 @@ void Windows::updateHints(Latte::View *view)
     WindowId maxWinId;
     WindowId activeWinId;
     WindowId touchWinId;
+    WindowId touchEdgeWinId;
     WindowId activeTouchWinId;
+    WindowId activeTouchEdgeWinId;
 
     //qDebug() << " -- TRACKING REPORT (SCREEN)--";
 
@@ -875,13 +920,23 @@ void Windows::updateHints(Latte::View *view)
         bool touchingViewEdge = isTouchingViewEdge(view, winfo);
         bool touchingView =  isTouchingView(view, winfo);
 
-        if (touchingViewEdge || touchingView) {
+        if (touchingView) {
             if (winfo.isActive()) {
                 foundActiveTouchInCurScreen = true;
                 activeTouchWinId = winfo.wid();
             } else {
                 foundTouchInCurScreen = true;
                 touchWinId = winfo.wid();
+            }
+        }
+
+        if (touchingViewEdge) {
+            if (winfo.isActive()) {
+                foundActiveEdgeTouchInCurScreen = true;
+                activeTouchEdgeWinId = winfo.wid();
+            } else {
+                foundTouchEdgeInCurScreen = true;
+                touchEdgeWinId = winfo.wid();
             }
         }
 
@@ -921,7 +976,7 @@ void Windows::updateHints(Latte::View *view)
                 continue;
             }
 
-            if (isTouchingViewEdge(view, winfo) || isTouchingView(view, winfo)) {
+            if (isTouchingView(view, winfo)) {
                 foundActiveGroupTouchInCurScreen = true;
                 break;
             }
@@ -942,19 +997,25 @@ void Windows::updateHints(Latte::View *view)
     //! assign flags
     setExistsWindowActive(view, foundActiveInCurScreen);
     setActiveWindowTouching(view, foundActiveTouchInCurScreen || foundActiveGroupTouchInCurScreen);
+    setActiveWindowTouchingEdge(view, foundActiveEdgeTouchInCurScreen);
     setActiveWindowMaximized(view, (maxWinId.toInt()>0 && (maxWinId == activeTouchWinId)));
     setExistsWindowMaximized(view, foundMaximizedInCurScreen);
     setExistsWindowTouching(view, (foundTouchInCurScreen || foundActiveTouchInCurScreen || foundActiveGroupTouchInCurScreen));
+    setExistsWindowTouchingEdge(view, (foundActiveEdgeTouchInCurScreen || foundTouchEdgeInCurScreen));
 
     //! update color schemes for active and touching windows
     setActiveWindowScheme(view, (foundActiveInCurScreen ? m_wm->schemesTracker()->schemeForWindow(activeWinId) : nullptr));
 
     if (foundActiveTouchInCurScreen) {
         setTouchingWindowScheme(view, m_wm->schemesTracker()->schemeForWindow(activeTouchWinId));
+    } else if (foundActiveEdgeTouchInCurScreen) {
+        setTouchingWindowScheme(view, m_wm->schemesTracker()->schemeForWindow(activeTouchEdgeWinId));
     } else if (foundMaximizedInCurScreen) {
         setTouchingWindowScheme(view, m_wm->schemesTracker()->schemeForWindow(maxWinId));
     } else if (foundTouchInCurScreen) {
         setTouchingWindowScheme(view, m_wm->schemesTracker()->schemeForWindow(touchWinId));
+    } else if (foundTouchEdgeInCurScreen) {
+        setTouchingWindowScheme(view, m_wm->schemesTracker()->schemeForWindow(touchEdgeWinId));
     } else {
         setTouchingWindowScheme(view, nullptr);
     }
@@ -970,6 +1031,7 @@ void Windows::updateHints(Latte::View *view)
     //qDebug() << "TRACKING | activeWindowTouching: " << foundActiveTouchInCurScreen << " ,activeWindowMaximized: " << activeWindowMaximized(view);
     //qDebug() << "TRACKING | existsWindowActive: " << foundActiveInCurScreen << " , existsWindowMaximized:" << existsWindowMaximized(view)
     //         << " , existsWindowTouching:"<<existsWindowTouching(view);
+    //qDebug() << "TRACKING | activeEdgeWindowTouch: " <<  activeWindowTouchingEdge(view) << " , existsEdgeWindowTouch:" << existsWindowTouchingEdge(view);
     //qDebug() << "TRACKING | existsActiveGroupTouching: " << foundActiveGroupTouchInCurScreen;
 }
 

@@ -74,6 +74,34 @@ void TrackedViewInfo::setExistsWindowTouching(bool touching)
     m_existsWindowTouching = touching;
 }
 
+bool TrackedViewInfo::activeWindowTouchingEdge() const
+{
+    return m_activeWindowTouchingEdge;
+}
+
+void TrackedViewInfo::setActiveWindowTouchingEdge(bool touching)
+{
+    if (m_activeWindowTouchingEdge == touching) {
+        return;
+    }
+
+    m_activeWindowTouchingEdge = touching;
+}
+
+bool TrackedViewInfo::existsWindowTouchingEdge() const
+{
+    return m_existsWindowTouchingEdge;
+}
+
+void TrackedViewInfo::setExistsWindowTouchingEdge(bool touching)
+{
+    if (m_existsWindowTouchingEdge == touching) {
+        return;
+    }
+
+    m_existsWindowTouchingEdge = touching;
+}
+
 bool TrackedViewInfo::isTouchingBusyVerticalView() const
 {
     return m_isTouchingBusyVerticalView;

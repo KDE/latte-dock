@@ -56,6 +56,12 @@ public:
     bool existsWindowTouching() const;
     void setExistsWindowTouching(bool touching);
 
+    bool activeWindowTouchingEdge() const;
+    void setActiveWindowTouchingEdge(bool touching);
+
+    bool existsWindowTouchingEdge() const;
+    void setExistsWindowTouchingEdge(bool touching);
+
     bool isTouchingBusyVerticalView() const;
     void setIsTouchingBusyVerticalView(bool touching);
 
@@ -72,6 +78,8 @@ public:
 private:
     bool m_activeWindowTouching{false};
     bool m_existsWindowTouching{false};
+    bool m_activeWindowTouchingEdge{false};
+    bool m_existsWindowTouchingEdge{false};
     bool m_isTouchingBusyVerticalView{false};
 
     QRect m_availableScreenGeometry;

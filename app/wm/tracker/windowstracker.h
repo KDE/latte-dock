@@ -68,9 +68,11 @@ public:
 
     bool activeWindowMaximized(Latte::View *view) const;
     bool activeWindowTouching(Latte::View *view) const;
+    bool activeWindowTouchingEdge(Latte::View *view) const;
     bool existsWindowActive(Latte::View *view) const;
     bool existsWindowMaximized(Latte::View *view) const;
     bool existsWindowTouching(Latte::View *view) const;
+    bool existsWindowTouchingEdge(Latte::View *view) const;
     bool isTouchingBusyVerticalView(Latte::View *view) const;
     SchemeColors *activeWindowScheme(Latte::View *view) const;
     SchemeColors *touchingWindowScheme(Latte::View *view) const;
@@ -97,9 +99,11 @@ signals:
     void enabledChanged(const Latte::View *view);
     void activeWindowMaximizedChanged(const Latte::View *view);
     void activeWindowTouchingChanged(const Latte::View *view);
+    void activeWindowTouchingEdgeChanged(const Latte::View *view);
     void existsWindowActiveChanged(const Latte::View *view);
     void existsWindowMaximizedChanged(const Latte::View *view);
     void existsWindowTouchingChanged(const Latte::View *view);
+    void existsWindowTouchingEdgeChanged(const Latte::View *view);
     void isTouchingBusyVerticalViewChanged(const Latte::View *view);
     void activeWindowSchemeChanged(const Latte::View *view);
     void touchingWindowSchemeChanged(const Latte::View *view);
@@ -144,9 +148,11 @@ private:
 
     void setActiveWindowMaximized(Latte::View *view, bool activeMaximized);
     void setActiveWindowTouching(Latte::View *view, bool activeTouching);
+    void setActiveWindowTouchingEdge(Latte::View *view, bool activeTouchingEdge);
     void setExistsWindowActive(Latte::View *view, bool windowActive);
     void setExistsWindowMaximized(Latte::View *view, bool windowMaximized);
     void setExistsWindowTouching(Latte::View *view, bool windowTouching);
+    void setExistsWindowTouchingEdge(Latte::View *view, bool windowTouchingEdge);
     void setIsTouchingBusyVerticalView(Latte::View *view, bool viewTouching);
     void setActiveWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme);
     void setTouchingWindowScheme(Latte::View *view, WindowSystem::SchemeColors *scheme);

@@ -145,7 +145,9 @@ Item {
 
     property bool editMode: editModeVisual.inEditMode
     property bool windowIsTouching: latteView && latteView.windowsTracker
-                                    && (latteView.windowsTracker.currentScreen.activeWindowTouching || hasExpandedApplet)
+                                    && (latteView.windowsTracker.currentScreen.activeWindowTouching
+                                        || latteView.windowsTracker.currentScreen.activeWindowTouchingEdge
+                                        || hasExpandedApplet)
 
     property bool forceSolidPanel: (latteView && latteView.visibility
                                     && LatteCore.WindowSystem.compositingActive
@@ -153,7 +155,8 @@ Item {
                                     && userShowPanelBackground
                                     && ( (plasmoid.configuration.solidBackgroundForMaximized
                                           && !(hasExpandedApplet && !plasmaBackgroundForPopups)
-                                          && latteView.windowsTracker.currentScreen.existsWindowTouching)
+                                          && (latteView.windowsTracker.currentScreen.existsWindowTouching
+                                              || latteView.windowsTracker.currentScreen.existsWindowTouchingEdge))
                                         || (hasExpandedApplet && plasmaBackgroundForPopups) ))
                                    || solidBusyForTouchingBusyVerticalView
                                    || plasmaStyleBusyForTouchingBusyVerticalView
@@ -164,7 +167,8 @@ Item {
                                          && LatteCore.WindowSystem.compositingActive
                                          && !inConfigureAppletsMode
                                          && !forceSolidPanel
-                                         && !latteView.windowsTracker.currentScreen.existsWindowTouching
+                                         && !(latteView.windowsTracker.currentScreen.existsWindowTouching
+                                              || latteView.windowsTracker.currentScreen.existsWindowTouchingEdge)
                                          && !(windowColors === LatteContainment.Types.ActiveWindowColors && selectedWindowsTracker.existsWindowActive)
 
     property bool forcePanelForBusyBackground: userShowPanelBackground && (root.themeColors === LatteContainment.Types.SmartThemeColors)
