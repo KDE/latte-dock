@@ -417,7 +417,7 @@ FocusScope {
 
             Repeater {
                 id: tasksTabButtonRepeater
-                model: latteView.extendedInterface.tasksModel
+                model: latteView.extendedInterface.latteTasksModel
 
                 PlasmaComponents.TabButton {
                     text: index >= 1 ? i18nc("tasks header and index","Tasks <%0>").arg(index+1) : i18n("Tasks")
@@ -477,7 +477,7 @@ FocusScope {
                 id: tasksRepeater
                 //! needs to be out of TabGroup otherwise the Repeater is consider as TabGroup direct children
                 //! and thus only the first Tasks tab is shown
-                model: latteView.extendedInterface.tasksModel
+                model: latteView.extendedInterface.latteTasksModel
 
                 //! Reparent TasksPages when all of them are loaded
                 //! this way we avoid warnings from ::stackAfter
@@ -497,7 +497,7 @@ FocusScope {
                 }
 
                 onPagesChanged: {
-                    if (pages === latteView.extendedInterface.tasksModel.rowCount()) {
+                    if (pages === latteView.extendedInterface.latteTasksModel.count) {
                         //! Reparent TasksPages when all of them are loaded
                         //! this way we avoid warnings from ::stackAfter
                         for(var i=0; i<pages; ++i) {

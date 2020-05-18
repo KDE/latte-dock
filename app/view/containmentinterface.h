@@ -48,7 +48,7 @@ class ContainmentInterface: public QObject
     Q_OBJECT
     Q_PROPERTY(bool hasExpandedApplet READ hasExpandedApplet NOTIFY hasExpandedAppletChanged)
 
-    Q_PROPERTY(QAbstractListModel *tasksModel READ tasksModel() NOTIFY tasksModelChanged)
+    Q_PROPERTY(QAbstractListModel *latteTasksModel READ latteTasksModel() NOTIFY latteTasksModelChanged)
 
 public:
     ContainmentInterface(Latte::View *parent);
@@ -77,7 +77,7 @@ public:
     int applicationLauncherId() const;
     int appletIdForIndex(const int index);
 
-    QAbstractListModel *tasksModel() const;
+    QAbstractListModel *latteTasksModel() const;
 
 public slots:
     Q_INVOKABLE void deactivateApplets();
@@ -89,7 +89,7 @@ public slots:
 signals:
     void hasExpandedAppletChanged();
     void expandedAppletStateChanged();
-    void tasksModelChanged();
+    void latteTasksModelChanged();
 
 private slots:
     void identifyMainItem();
@@ -118,7 +118,7 @@ private:
     //! applets tracking
     QTimer m_appletsExpandedConnectionsTimer;
 
-    TasksModel *m_tasksModel;
+    TasksModel *m_latteTasksModel;
 
     QHash<PlasmaQuick::AppletQuickItem *, QMetaObject::Connection> m_appletsExpandedConnections;
     QList<int> m_expandedAppletIds;

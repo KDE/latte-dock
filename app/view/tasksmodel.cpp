@@ -30,6 +30,11 @@ TasksModel::TasksModel(QObject *parent)
 {
 }
 
+int TasksModel::count() const
+{
+    return m_tasks.count();
+}
+
 int TasksModel::rowCount(const QModelIndex &parent) const
 {
     return m_tasks.count();
@@ -69,6 +74,8 @@ void TasksModel::addTask(QObject *plasmoid)
     connect(plasmoid, &QObject::destroyed, this, [&, plasmoid](){
         removeTask(plasmoid);
     });
+
+    emit countChanged();
 }
 
 void TasksModel::removeTask(QObject *plasmoid)
@@ -82,6 +89,8 @@ void TasksModel::removeTask(QObject *plasmoid)
     beginRemoveRows(QModelIndex(), iex, iex);
     m_tasks.removeAll(plasmoid);
     endRemoveRows();
+
+    emit countChanged();
 }
 
 }

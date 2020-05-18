@@ -46,7 +46,7 @@ ContainmentInterface::ContainmentInterface(Latte::View *parent)
 {
     m_corona = qobject_cast<Latte::Corona *>(m_view->corona());
 
-    m_tasksModel = new TasksModel(this);
+    m_latteTasksModel = new TasksModel(this);
 
     m_appletsExpandedConnectionsTimer.setInterval(2000);
     m_appletsExpandedConnectionsTimer.setSingleShot(true);
@@ -474,9 +474,9 @@ void ContainmentInterface::removeExpandedApplet(const int &id)
     emit expandedAppletStateChanged();
 }
 
-QAbstractListModel *ContainmentInterface::tasksModel() const
+QAbstractListModel *ContainmentInterface::latteTasksModel() const
 {
-    return m_tasksModel;
+    return m_latteTasksModel;
 }
 
 void ContainmentInterface::on_appletExpandedChanged()
@@ -561,7 +561,7 @@ void ContainmentInterface::updateAppletsTracking()
             KPluginMetaData meta = applet->kPackage().metadata();
 
             if (meta.pluginId() == "org.kde.latte.plasmoid") {
-                m_tasksModel->addTask(ai);
+                m_latteTasksModel->addTask(ai);
             } else if (!m_appletsExpandedConnections.contains(ai)) {
                 m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::on_appletExpandedChanged);
 
