@@ -231,7 +231,7 @@ Item {
     property int lengthAppletPadding: metrics.fraction.lengthAppletPadding === -1 || parabolicEffectMarginsEnabled ?
                                           metrics.padding.length : metrics.padding.lengthApplet
 
-    property int lengthAppletFullMargin: lengthAppletPadding + metrics.margin.length
+    property int lengthAppletFullMargin: 0
     property int lengthAppletFullMargins: 2 * lengthAppletFullMargin
 
     property int internalWidthMargins: {
@@ -600,6 +600,17 @@ Item {
         }
     }
 
+    //! Bindings
+
+    Binding {
+        //! is used to aboid loop binding warnings on startup
+        target: appletItem
+        property: "lengthAppletFullMargin"
+        when: !communicator.inStartup
+        value: lengthAppletPadding + metrics.margin.length;
+    }
+
+    //! Connections
     Connections{
         target: root
 
