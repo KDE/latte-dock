@@ -49,20 +49,12 @@ Item{
                         appletItem.maxAutoFillLength : Math.max(appletItem.minAutoFillLength, appletPreferredLength);
         }
 
-        if (appletItem.latteApplet) {
-            return root.isHorizontal ? latteApplet.tasksWidth : latteApplet.tasksHeight;
-        }
-
         return root.inConfigureAppletsMode ? Math.max(Math.min(appletItem.metrics.iconSize, root.minAppletLengthInConfigure), scaledLength) : scaledLength;
     }
 
     readonly property int thickness: {
         if (appletItem.isInternalViewSplitter && !root.inConfigureAppletsMode) {
             return 0;
-        }
-
-        if (appletItem.latteApplet) {
-            return root.isHorizontal ? latteApplet.tasksHeight : latteApplet.tasksWidth;
         }
 
         return scaledThickness + appletItem.metrics.margin.screenEdge
@@ -221,10 +213,14 @@ Item{
     Binding {
         target: wrapper
         property: "layoutThickness"
-        when: latteView && !isLattePlasmoid && (wrapper.zoomScale === 1)
+        when: latteView && (wrapper.zoomScale === 1)
         value: {
             if (appletItem.isInternalViewSplitter){
                 return !root.inConfigureAppletsMode ? 0 : appletItem.metrics.iconSize;
+            }
+
+            if (communicator.parabolicEffectIsSupported) {
+                return appletPreferredThickness;
             }
 
             return appletItem.metrics.iconSize;
@@ -234,7 +230,7 @@ Item{
     Binding {
         target: wrapper
         property: "layoutLength"
-        when: latteView && !isLattePlasmoid && !appletItem.isAutoFillApplet && (wrapper.zoomScale === 1)
+        when: latteView && !appletItem.isAutoFillApplet && (wrapper.zoomScale === 1)
         value: {
             if (appletItem.isInternalViewSplitter){
                 return !root.inConfigureAppletsMode ? 0 : Math.min(appletItem.metrics.iconSize, root.maxJustifySplitterSize);
@@ -264,6 +260,10 @@ Item{
         when: latteView && !(appletItem.isAutoFillApplet || appletItem.isLattePlasmoid)
         value: {
             var blockParabolicEffectInLength = false;
+
+            if (communicator.parabolicEffectIsSupported) {
+                return true;
+            }
 
             if (appletItem.isInternalViewSplitter){
                 return false;
