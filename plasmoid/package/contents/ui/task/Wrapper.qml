@@ -157,7 +157,7 @@ Item{
     }
 
     function calculateScales( currentMousePosition ){
-        if (taskItem.parabolic.factor.zoom===1) {
+        if (taskItem.parabolic.factor.zoom===1 || parabolic.restoreZoomIsBlocked) {
             return;
         }
 

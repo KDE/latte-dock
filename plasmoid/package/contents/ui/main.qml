@@ -962,7 +962,7 @@ Item {
     Ability.ParabolicEffect {
         id: _parabolic
         bridge: latteBridge
-        restoreZoomIsBlocked: root.contextMenu || windowsPreviewDlg.visible
+        local.restoreZoomIsBlocked: root.contextMenu || windowsPreviewDlg.visible
     }
 
     AppletAbility.Requirements{

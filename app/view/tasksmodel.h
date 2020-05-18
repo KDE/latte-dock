@@ -36,12 +36,6 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-        /*void appendSample(Sample * sample)
-        {
-            beginInsertRows(QModelIndex(), rowCount(), rowCount());
-            mSamples << sample;
-            endInsertRows();
-        }*/
    void addTask(QObject *plasmoid);
    void removeTask(QObject *plasmoid);
 

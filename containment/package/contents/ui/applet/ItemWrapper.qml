@@ -596,7 +596,7 @@ Item{
     }
 
     function calculateScales( currentMousePosition ){
-        if (parabolic.factor.zoom===1) {
+        if (parabolic.factor.zoom===1 || parabolic.restoreZoomIsBlocked) {
             return;
         }
 

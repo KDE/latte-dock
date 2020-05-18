@@ -37,7 +37,7 @@ AbilityGridPrivate {
                 if (appletItem
                         && appletItem.communicator
                         && appletItem.communicator.parabolicEffectIsSupported
-                        && appletItem.communicator.bridge.parabolic.client.restoreZoomIsBlocked) {
+                        && appletItem.communicator.bridge.parabolic.client.local.restoreZoomIsBlocked) {
                     return true;
                 }
             }
