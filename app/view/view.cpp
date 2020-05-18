@@ -812,21 +812,6 @@ void View::setIsPreferredForShortcuts(bool preferred)
     }
 }
 
-bool View::latteTasksArePresent() const
-{
-    return m_latteTasksArePresent;
-}
-
-void View::setLatteTasksArePresent(bool present)
-{
-    if (m_latteTasksArePresent == present) {
-        return;
-    }
-
-    m_latteTasksArePresent = present;
-    emit latteTasksArePresentChanged();
-}
-
 bool View::inSettingsAdvancedMode() const
 {
     if (m_configView) {
@@ -1267,46 +1252,6 @@ void View::hideWindowsForSlidingOut()
             configDialog->hideConfigWindow();
         }
     }
-}
-
-//! remove latte tasks plasmoid
-void View::removeTasksPlasmoid()
-{
-    if (!tasksPresent() || !containment()) {
-        return;
-    }
-
-    for (const Plasma::Applet *applet : containment()->applets()) {
-        KPluginMetaData meta = applet->kPackage().metadata();
-
-        if (meta.pluginId() == "org.kde.latte.plasmoid") {
-            QAction *closeApplet = applet->actions()->action(QStringLiteral("remove"));
-
-            if (closeApplet) {
-                closeApplet->trigger();
-                //! remove only the first found
-                return;
-            }
-        }
-    }
-}
-
-//! check if the tasks plasmoid exist in the dock
-bool View::tasksPresent()
-{
-    if (!this->containment()) {
-        return false;
-    }
-
-    for (const Plasma::Applet *applet : this->containment()->applets()) {
-        const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
-
-        if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 //!check if the plasmoid with _name_ exists in the midedata

@@ -204,13 +204,6 @@ Item{
 
     Binding{
         target: latteView
-        property:"latteTasksArePresent"
-        when: latteView
-        value: latteApplet !== null
-    }
-
-    Binding{
-        target: latteView
         property: "maxLength"
         when: latteView
         value: maxLengthPerCentage/100

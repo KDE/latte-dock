@@ -331,8 +331,8 @@ bool GlobalShortcuts::activateEntryForView(Latte::View *view, int index, Qt::Key
 
     bool delayed{false};
 
-    bool executed = ((!view->latteTasksArePresent() && view->tasksPresent() &&
-                      activatePlasmaTaskManager(view, index, modifier, &delayed))
+    bool executed = ((!view->extendedInterface()->hasLatteTasks() && view->extendedInterface()->hasPlasmaTasks()
+                      && activatePlasmaTaskManager(view, index, modifier, &delayed))
                      || activateLatteEntry(view, index, modifier, &delayed));
 
     if (executed) {

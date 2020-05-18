@@ -22,6 +22,7 @@
 // local
 #include <coretypes.h>
 #include "indicatorinfo.h"
+#include "../containmentinterface.h"
 #include "../view.h"
 #include "../../lattecorona.h"
 #include "../../indicator/factory.h"
@@ -51,7 +52,7 @@ Indicator::Indicator(Latte::View *parent)
     connect(this, &Indicator::enabledChanged, this, &Indicator::saveConfig);
     connect(this, &Indicator::pluginChanged, this, &Indicator::saveConfig);
 
-    connect(m_view, &Latte::View::latteTasksArePresentChanged, this, &Indicator::latteTasksArePresentChanged);
+    connect(m_view->extendedInterface(), &ContainmentInterface::hasLatteTasksChanged, this, &Indicator::latteTasksArePresentChanged);
 
     connect(m_view, &Latte::View::indicatorPluginChanged, [this](const QString &indicatorId) {
         if (m_corona && m_corona->indicatorFactory()->isCustomType(indicatorId)) {
@@ -132,7 +133,7 @@ bool Indicator::isCustomIndicator() const
 
 bool Indicator::latteTasksArePresent()
 {
-    return m_view->latteTasksArePresent();
+    return m_view->extendedInterface()->hasLatteTasks();
 }
 
 bool Indicator::providesConfigUi() const

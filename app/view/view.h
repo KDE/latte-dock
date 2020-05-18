@@ -94,7 +94,6 @@ class View : public PlasmaQuick::ContainmentView
     //! when the isUserConfiguring changes value
     Q_PROPERTY(bool inEditMode READ inEditMode WRITE setInEditMode NOTIFY inEditModeChanged)
     Q_PROPERTY(bool isPreferredForShortcuts READ isPreferredForShortcuts WRITE setIsPreferredForShortcuts NOTIFY isPreferredForShortcutsChanged)
-    Q_PROPERTY(bool latteTasksArePresent READ latteTasksArePresent WRITE setLatteTasksArePresent NOTIFY latteTasksArePresentChanged)
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
     Q_PROPERTY(bool screenEdgeMarginEnabled READ screenEdgeMarginEnabled WRITE setScreenEdgeMarginEnabled NOTIFY screenEdgeMarginEnabledChanged)
 
@@ -170,9 +169,6 @@ public:
 
     bool isPreferredForShortcuts() const;
     void setIsPreferredForShortcuts(bool preferred);
-
-    bool latteTasksArePresent() const;
-    void setLatteTasksArePresent(bool present);
 
     bool inSettingsAdvancedMode() const;
 
@@ -262,10 +258,8 @@ public slots:
     Q_INVOKABLE QVariantList containmentActions();
 
     Q_INVOKABLE void moveToLayout(QString layoutName);
-    Q_INVOKABLE void removeTasksPlasmoid();
 
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
-    Q_INVOKABLE bool tasksPresent();
 
     void updateAbsoluteGeometry(bool bypassChecks = false);
 
@@ -309,7 +303,6 @@ signals:
     void isPreferredForShortcutsChanged();
     void isTouchingBottomViewAndIsBusyChanged();
     void isTouchingTopViewAndIsBusyChanged();
-    void latteTasksArePresentChanged();
     void layoutChanged();
     void localGeometryChanged();
     void maxLengthChanged();
@@ -379,7 +372,6 @@ private:
     bool m_inDelete{false};
     bool m_inEditMode{false};
     bool m_isPreferredForShortcuts{false};
-    bool m_latteTasksArePresent{false};
     bool m_onPrimary{true};
     bool m_screenEdgeMarginEnabled{false};
 

@@ -137,7 +137,7 @@ Item {
         //  onEnteredChanged: console.log("entered :: " + backDropArea.dragInfo.entered + " _ " + foreDropArea.dragInfo.entered );
     }
 
-    property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
+    property bool containsOnlyPlasmaTasks: latteView ? latteView.extendedInterface.hasPlasmaTasks && !latteView.extendedInterface.hasLatteTasks : false
     property bool dockContainsMouse: latteView && latteView.visibility ? latteView.visibility.containsMouse : false
 
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized && LatteCore.WindowSystem.compositingActive
@@ -553,8 +553,6 @@ Item {
                 latteView.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
                 latteView.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
             }
-
-            updateContainsOnlyPlasmaTasks();
         }
     }
 
@@ -679,7 +677,6 @@ Item {
         LayoutManager.save();
 
         updateIndexes();
-        updateContainsOnlyPlasmaTasks();
     }
 
     Plasmoid.onUserConfiguringChanged: {
@@ -765,8 +762,6 @@ Item {
         })
 
         addContainerInLayout(container, applet, x, y);
-
-        updateContainsOnlyPlasmaTasks();
     }
 
     function addContainerInLayout(container, applet, x, y){
@@ -1106,14 +1101,6 @@ Item {
     function slotPreviewsShown(){
         if (latteView) {
             latteView.extendedInterface.deactivateApplets();
-        }
-    }
-
-    function updateContainsOnlyPlasmaTasks() {
-        if (latteView) {
-            root.containsOnlyPlasmaTasks = (latteView.tasksPresent() && !latteApplet);
-        } else {
-            root.containsOnlyPlasmaTasks = false;
         }
     }
 

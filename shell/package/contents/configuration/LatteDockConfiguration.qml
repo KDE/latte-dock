@@ -528,7 +528,7 @@ FocusScope {
                 if (actionsModel.count > 0) {
                     actionsModel.get(0).enabled = actionsComboBtn.buttonEnabled;
                 }
-                removeView.enabled = latteView.layout.viewsCount>1 /*&& !(latteView.layout.viewsWithTasks()===1 && latteView.tasksPresent())*/
+                removeView.enabled = latteView.layout.viewsCount>1
             }
 
             LatteComponents.ComboBoxButton {

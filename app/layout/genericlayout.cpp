@@ -329,7 +329,7 @@ int GenericLayout::viewsWithTasks() const
     int result = 0;
 
     for (const auto view : m_latteViews) {
-        if (view->tasksPresent()) {
+        if (view->extendedInterface()->hasLatteTasks() || view->extendedInterface()->hasPlasmaTasks()) {
             result++;
         }
     }
