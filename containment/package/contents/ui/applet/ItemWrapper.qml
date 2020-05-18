@@ -57,7 +57,7 @@ Item{
             return 0;
         }
 
-        return scaledThickness + appletItem.metrics.margin.screenEdge
+        return screenEdgeMarginSupported ? layoutThickness : scaledThickness + appletItem.metrics.margin.screenEdge
     }
 
     opacity: appletColorizer.mustBeShown && graphicsSystem.isAccelerated ? 0 : 1
