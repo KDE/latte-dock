@@ -151,7 +151,7 @@ bool ContainmentInterface::isCapableToShowShortcutBadges()
 {
     identifyMainItem();
 
-    if (!m_view->latteTasksArePresent() && m_view->tasksPresent()) {
+    if (!hasLatteTasks() && hasPlasmaTasks()) {
         return false;
     }
 
@@ -181,7 +181,7 @@ int ContainmentInterface::applicationLauncherId() const
 
 bool ContainmentInterface::updateBadgeForLatteTask(const QString identifier, const QString value)
 {
-    if (!m_view->latteTasksArePresent()) {
+    if (!hasLatteTasks()) {
         return false;
     }
 
@@ -228,7 +228,7 @@ bool ContainmentInterface::updateBadgeForLatteTask(const QString identifier, con
 
 bool ContainmentInterface::activatePlasmaTask(const int index)
 {
-    bool containsPlasmaTaskManager{m_view->tasksPresent() && !m_view->latteTasksArePresent()};
+    bool containsPlasmaTaskManager{hasPlasmaTasks() && !hasLatteTasks()};
 
     if (!containsPlasmaTaskManager) {
         return false;
@@ -275,7 +275,7 @@ bool ContainmentInterface::activatePlasmaTask(const int index)
 
 bool ContainmentInterface::newInstanceForPlasmaTask(const int index)
 {
-    bool containsPlasmaTaskManager{m_view->tasksPresent() && !m_view->latteTasksArePresent()};
+    bool containsPlasmaTaskManager{hasPlasmaTasks() && !hasLatteTasks()};
 
     if (!containsPlasmaTaskManager) {
         return false;
