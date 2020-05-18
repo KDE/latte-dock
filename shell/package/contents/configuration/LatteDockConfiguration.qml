@@ -517,20 +517,6 @@ FocusScope {
 
             spacing: units.largeSpacing
 
-            Connections{
-                target: latteView.layout
-                onViewsCountChanged: actionButtons.updateEnabled();
-            }
-
-            function updateEnabled() {
-                var screenFreeEdges = latteView.layout.qmlFreeEdges(latteView.positioner.currentScreenId);
-                actionsComboBtn.buttonEnabled = screenFreeEdges.length > 0;
-                if (actionsModel.count > 0) {
-                    actionsModel.get(0).enabled = actionsComboBtn.buttonEnabled;
-                }
-                removeView.enabled = latteView.layout.viewsCount>1
-            }
-
             LatteComponents.ComboBoxButton {
                 id: actionsComboBtn
                 Layout.fillWidth: true
@@ -555,7 +541,6 @@ FocusScope {
 
                 Component.onCompleted: {
                     comboBox.model = actionsModel;
-                    actionButtons.updateEnabled();
                 }
 
                 ListModel {
@@ -567,7 +552,6 @@ FocusScope {
 
                     Component.onCompleted:{
                         actionsComboBtn.addModel();
-                        actionButtons.updateEnabled();
                     }
 
                     onActivated: {
@@ -664,10 +648,9 @@ FocusScope {
             PlasmaComponents.Button {
                 id: removeView
                 Layout.fillWidth: true
-
                 text: i18n("Remove")
                 iconSource: "delete"
-                opacity: latteView.layout.viewsCount > 1 ? 1 : 0
+                visible: latteView.layout.viewsCount > 1
                 tooltip: i18n("Remove current dock")
 
                 onClicked: latteView.removeView()
