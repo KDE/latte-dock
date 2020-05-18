@@ -22,6 +22,10 @@
 
 #include <QAbstractListModel>
 
+namespace PlasmaQuick {
+class AppletQuickItem;
+}
+
 namespace Latte {
 namespace ViewPart {
 
@@ -39,14 +43,14 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-   void addTask(QObject *plasmoid);
-   void removeTask(QObject *plasmoid);
+   void addTask(PlasmaQuick::AppletQuickItem *plasmoid);
+   void removeTask(PlasmaQuick::AppletQuickItem *plasmoid);
 
 signals:
    void countChanged();
 
 private:
-    QList<QObject *> m_tasks;
+    QList<PlasmaQuick::AppletQuickItem *> m_tasks;
 };
 
 }

@@ -22,6 +22,9 @@
 // Qt
 #include <QDebug>
 
+// Plasma
+#include <PlasmaQuick/AppletQuickItem>
+
 namespace Latte {
 namespace ViewPart {
 
@@ -61,7 +64,7 @@ QHash<int, QByteArray> TasksModel::roleNames() const{
     return roles;
 }
 
-void TasksModel::addTask(QObject *plasmoid)
+void TasksModel::addTask(PlasmaQuick::AppletQuickItem *plasmoid)
 {
     if (plasmoid && m_tasks.contains(plasmoid)) {
         return;
@@ -78,7 +81,7 @@ void TasksModel::addTask(QObject *plasmoid)
     emit countChanged();
 }
 
-void TasksModel::removeTask(QObject *plasmoid)
+void TasksModel::removeTask(PlasmaQuick::AppletQuickItem *plasmoid)
 {
     if (!plasmoid || (plasmoid && !m_tasks.contains(plasmoid))) {
         return;

@@ -30,6 +30,10 @@
 #include <QQuickItem>
 #include <QTimer>
 
+namespace Plasma {
+class Applet;
+}
+
 namespace PlasmaQuick {
 class AppletQuickItem;
 }
@@ -38,7 +42,6 @@ namespace Latte {
 class Corona;
 class View;
 }
-
 
 namespace Latte {
 namespace ViewPart {
@@ -49,6 +52,7 @@ class ContainmentInterface: public QObject
     Q_PROPERTY(bool hasExpandedApplet READ hasExpandedApplet NOTIFY hasExpandedAppletChanged)
 
     Q_PROPERTY(QAbstractListModel *latteTasksModel READ latteTasksModel() NOTIFY latteTasksModelChanged)
+    Q_PROPERTY(QAbstractListModel *plasmaTasksModel READ plasmaTasksModel() NOTIFY plasmaTasksModelChanged)
 
 public:
     ContainmentInterface(Latte::View *parent);
@@ -78,6 +82,7 @@ public:
     int appletIdForIndex(const int index);
 
     QAbstractListModel *latteTasksModel() const;
+    QAbstractListModel *plasmaTasksModel() const;
 
 public slots:
     Q_INVOKABLE void deactivateApplets();
@@ -90,12 +95,14 @@ signals:
     void hasExpandedAppletChanged();
     void expandedAppletStateChanged();
     void latteTasksModelChanged();
+    void plasmaTasksModelChanged();
 
 private slots:
     void identifyMainItem();
     void identifyMethods();
 
     void updateAppletsTracking();
+    void on_appletAdded(Plasma::Applet *applet);
     void on_appletExpandedChanged();
 
 private:
@@ -119,6 +126,7 @@ private:
     QTimer m_appletsExpandedConnectionsTimer;
 
     TasksModel *m_latteTasksModel;
+    TasksModel *m_plasmaTasksModel;
 
     QHash<PlasmaQuick::AppletQuickItem *, QMetaObject::Connection> m_appletsExpandedConnections;
     QList<int> m_expandedAppletIds;
