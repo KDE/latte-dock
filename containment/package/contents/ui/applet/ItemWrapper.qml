@@ -213,13 +213,13 @@ Item{
     Binding {
         target: wrapper
         property: "layoutThickness"
-        when: latteView && (wrapper.zoomScale === 1)
+        when: latteView && (wrapper.zoomScale === 1 || communicator.parabolicEffectIsSupported)
         value: {
             if (appletItem.isInternalViewSplitter){
                 return !root.inConfigureAppletsMode ? 0 : appletItem.metrics.iconSize;
             }
 
-            if (communicator.parabolicEffectIsSupported) {
+            if (communicator.parabolicEffectIsSupported && !communicator.inStartup/*avoid binding loops on startup*/) {
                 return appletPreferredThickness;
             }
 

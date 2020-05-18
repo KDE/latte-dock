@@ -43,6 +43,8 @@ Item{
     readonly property bool canShowOverlaiedLatteIcon: appletIconItem && appletIconItem.visible
     readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon && requires.latteIconOverlayEnabled
 
+    property bool inStartup: true
+
     property Item appletRootItem: appletDiscoveredRootItem ? appletDiscoveredRootItem : appletDefaultRootItem
     property Item appletDiscoveredRootItem: null
     property Item appletDefaultRootItem: applet && applet.children && applet.children.length>0 ? applet.children[0] : null
@@ -108,10 +110,11 @@ Item{
     //a timer that is used in  order to init some Communicator values
     Timer {
         id: overlayInitTimer
-        interval: 4000
+        interval: 1000
         onTriggered: {
             AppletIdentifier.checkAndUpdateAppletRootItem();
             AppletIdentifier.reconsiderAppletIconItem();
+            mainCommunicator.inStartup = false;
 
             if (root.debugModeTimers) {
                 console.log("containment timer: appletItem fakeInitTimer called...");
