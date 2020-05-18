@@ -50,6 +50,8 @@ class ContainmentInterface: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool hasExpandedApplet READ hasExpandedApplet NOTIFY hasExpandedAppletChanged)
+    Q_PROPERTY(bool hasLatteTasks READ hasLatteTasks NOTIFY hasLatteTasksChanged)
+    Q_PROPERTY(bool hasPlasmaTasks READ hasPlasmaTasks NOTIFY hasPlasmaTasksChanged)
 
     Q_PROPERTY(QAbstractListModel *latteTasksModel READ latteTasksModel() NOTIFY latteTasksModelChanged)
     Q_PROPERTY(QAbstractListModel *plasmaTasksModel READ plasmaTasksModel() NOTIFY plasmaTasksModelChanged)
@@ -59,6 +61,8 @@ public:
     virtual ~ContainmentInterface();
 
     bool hasExpandedApplet() const;
+    bool hasLatteTasks() const;
+    bool hasPlasmaTasks() const;
 
     bool applicationLauncherInPopup() const;
     bool applicationLauncherHasGlobalShortcut() const;
@@ -92,8 +96,10 @@ public slots:
     Q_INVOKABLE bool appletIsExpanded(const int id);
 
 signals:
-    void hasExpandedAppletChanged();
     void expandedAppletStateChanged();
+    void hasExpandedAppletChanged();
+    void hasLatteTasksChanged();
+    void hasPlasmaTasksChanged();
     void latteTasksModelChanged();
     void plasmaTasksModelChanged();
 
@@ -104,6 +110,8 @@ private slots:
     void updateAppletsTracking();
     void on_appletAdded(Plasma::Applet *applet);
     void on_appletExpandedChanged();
+    void onLatteTasksCountChanged();
+    void onPlasmaTasksCountChanged();
 
 private:
     void addExpandedApplet(const int &id);
@@ -112,6 +120,9 @@ private:
     bool appletIsExpandable(PlasmaQuick::AppletQuickItem *appletQuickItem);
 
 private:
+    bool m_hasLatteTasks{false};
+    bool m_hasPlasmaTasks{false};
+
     QMetaMethod m_activateEntryMethod;
     QMetaMethod m_appletIdForIndexMethod;
     QMetaMethod m_newInstanceMethod;

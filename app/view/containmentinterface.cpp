@@ -62,6 +62,9 @@ ContainmentInterface::ContainmentInterface(Latte::View *parent)
             m_appletsExpandedConnectionsTimer.start();
         }
     });
+
+    connect(m_latteTasksModel, &TasksModel::countChanged, this, &ContainmentInterface::onLatteTasksCountChanged);
+    connect(m_plasmaTasksModel, &TasksModel::countChanged, this, &ContainmentInterface::onPlasmaTasksCountChanged);
 }
 
 ContainmentInterface::~ContainmentInterface()
@@ -441,6 +444,16 @@ bool ContainmentInterface::hasExpandedApplet() const
     return m_expandedAppletIds.count() > 0;
 }
 
+bool ContainmentInterface::hasLatteTasks() const
+{
+    return (m_latteTasksModel->count() > 0);
+}
+
+bool ContainmentInterface::hasPlasmaTasks() const
+{
+    return (m_plasmaTasksModel->count() > 0);
+}
+
 void ContainmentInterface::addExpandedApplet(const int &id)
 {
     if (m_expandedAppletIds.contains(id) && appletIsExpandable(id)) {
@@ -496,6 +509,28 @@ void ContainmentInterface::on_appletExpandedChanged()
             removeExpandedApplet(appletItem->applet()->id());
         }
     }
+}
+
+void ContainmentInterface::onLatteTasksCountChanged()
+{
+    if ((m_hasLatteTasks && m_latteTasksModel->count()>0)
+            || (!m_hasLatteTasks && m_latteTasksModel->count() == 0)) {
+        return;
+    }
+
+    m_hasLatteTasks = (m_latteTasksModel->count() > 0);
+    emit hasLatteTasksChanged();
+}
+
+void ContainmentInterface::onPlasmaTasksCountChanged()
+{
+    if ((m_hasPlasmaTasks && m_plasmaTasksModel->count()>0)
+            || (!m_hasPlasmaTasks && m_plasmaTasksModel->count() == 0)) {
+        return;
+    }
+
+    m_hasPlasmaTasks = (m_plasmaTasksModel->count() > 0);
+    emit hasPlasmaTasksChanged();
 }
 
 bool ContainmentInterface::appletIsExpanded(const int id)
