@@ -358,9 +358,7 @@ Item {
                     return;
                 }
 
-                if (inConfigureAppletsMode) {
-                    return LatteCore.Types.Center;
-                } else if (latteView.panelAlignment === LatteCore.Types.Justify) {
+                if (latteView.panelAlignment === LatteCore.Types.Justify) {
                     if (latteView.latteAppletPos>=0 && latteView.latteAppletPos<100) {
                         return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? LatteCore.Types.Left : LatteCore.Types.Top;
                     } else if (latteView.latteAppletPos>=100 && latteView.latteAppletPos<200) {
