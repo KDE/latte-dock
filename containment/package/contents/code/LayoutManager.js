@@ -210,8 +210,28 @@ function saveOptions() {
 
 function saveOption(option) {
     var ids = new Array();
+    for (var i = 0; i < layoutS.children.length; ++i) {
+        var child = layoutS.children[i];
+
+        if (child.applet
+                && (option === "lockedZoomApplets" && child.lockZoom)
+                || (option === "userBlocksColorizingApplets" && child.userBlocksColorizing)) {
+            ids.push(child.applet.id);
+        }
+    }
+
     for (var i = 0; i < layout.children.length; ++i) {
         var child = layout.children[i];
+
+        if (child.applet
+                && (option === "lockedZoomApplets" && child.lockZoom)
+                || (option === "userBlocksColorizingApplets" && child.userBlocksColorizing)) {
+            ids.push(child.applet.id);
+        }
+    }
+
+    for (var i = 0; i < layoutE.children.length; ++i) {
+        var child = layoutE.children[i];
 
         if (child.applet
                 && (option === "lockedZoomApplets" && child.lockZoom)
