@@ -93,7 +93,7 @@ Item{
     property int iconSize: appletItem.metrics.iconSize
 
     property int marginsThickness:  appletItem.metrics.totals.thicknessEdges
-    property int marginsLength: root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins  //Fitt's Law
+    property int marginsLength: 0   //Fitt's Law, through Binding to avoid Binding loops
 
     property int localLengthMargins: isSeparator || !communicator.requires.lengthMarginsEnabled || isInternalViewSplitter ? 0 : appletItem.lengthAppletFullMargins
     property int edgeLengthMargins: edgeLengthMarginsDisabled ? 0 : appletItem.lengthAppletPadding * 2
@@ -291,6 +291,13 @@ Item{
 
             return false;
         }
+    }
+
+    Binding {
+        target: wrapper
+        property: "marginsLength"
+        when: latteView && (!root.inStartup || visibilityManager.inTempHiding)
+        value: root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins
     }
 
     function updateAutoFillLength() {
