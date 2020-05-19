@@ -45,8 +45,11 @@ Item{
         }
 
         if (appletItem.isAutoFillApplet) {
-            return appletItem.layouter.maxMetricsInHigherPriority ?
-                        appletItem.maxAutoFillLength : Math.max(appletItem.minAutoFillLength, appletPreferredLength);
+            if (appletItem.layouter.maxMetricsInHigherPriority) {
+                return appletItem.maxAutoFillLength;
+            }
+
+            return Math.max(appletItem.minAutoFillLength,Math.min(appletPreferredLength,appletItem.maxAutoFillLength));
         }
 
         return root.inConfigureAppletsMode ? Math.max(Math.min(appletItem.metrics.iconSize, root.minAppletLengthInConfigure), scaledLength) : scaledLength;
