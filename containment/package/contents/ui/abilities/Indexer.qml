@@ -42,4 +42,16 @@ Ability.IndexerPrivate {
 
         return false;
     }
+
+    function visibleIndex(actualIndex) {
+        if ((separators.indexOf(actualIndex) >= 0) || (hidden.indexOf(actualIndex) >= 0)) {
+            return -1;
+        }
+
+        var visibleItems = visibleItemsBeforeCount(layouts.startLayout, actualIndex) +
+                visibleItemsBeforeCount(layouts.mainLayout, actualIndex) +
+                visibleItemsBeforeCount(layouts.endLayout, actualIndex);
+
+        return visibleItems;
+    }
 }

@@ -30,14 +30,13 @@ AppletAbility.Indexer {
     readonly property bool tailAppletIsSeparator: isActive ? bridge.indexer.tailAppletIsSeparator : false
     readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
 
-    readonly property int visibleItemsCount: Math.max(0, layout.children.length - separators.length - hidden.length)
-
-    readonly property int maxIndex: 99999
-
+    property int visibleItemsCount: 0
     property int allItemsCount: 0 /*is needed to be set from consumer developer in order to avoid binding loops warnings*/
 
     property int firstVisibleItemIndex: -1
     property int lastVisibleItemIndex: -1
+
+    readonly property int maxIndex: 99999
 
     Binding {
         target: _indexer
@@ -79,6 +78,23 @@ AppletAbility.Indexer {
             }
 
             return ind;
+        }
+    }
+
+    Binding {
+        target: _indexer
+        property: "visibleItemsCount"
+        value: {
+            var count = 0;
+            for(var i=0; i<layout.children.length; ++i) {
+                var item = layout.children[i];
+                if (item && item.itemIndex>=0
+                        && hidden.indexOf(item.itemIndex)<0
+                        && separators.indexOf(item.itemIndex)<0) {
+                    count = count + 1;
+                }
+            }
+            return count;
         }
     }
 
@@ -136,6 +152,31 @@ AppletAbility.Indexer {
         }
 
         return hdns;
+    }
+
+    function visibleIndex(taskIndex) {
+        if (taskIndex < firstVisibleItemIndex || taskIndex>lastVisibleItemIndex) {
+            return -1;
+        }
+
+        var vindex = -1;
+        if (latteBridge) {
+            vindex = latteBridge.indexer.host.visibleIndex(latteBridge.indexer.appletIndex);
+        }
+
+        for (var i=0; i<layout.children.length; ++i){
+            var item = layout.children[i];
+            if (hidden.indexOf(item.itemIndex) >=0 || separators.indexOf(item.itemIndex) >=0) {
+                continue;
+            }
+
+            if (item.itemIndex<taskIndex) {
+                vindex = vindex + 1;
+            }
+        }
+
+        return vindex;
+
     }
 
 }

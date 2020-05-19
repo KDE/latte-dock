@@ -35,10 +35,14 @@ Loader{
 
     Connections {
         target: root
-        onShowTaskShortcutBadgesChanged: shorcutBadge.fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
+        onShowTaskShortcutBadgesChanged: {
+            shorcutBadge.fixedIndex = taskItem.indexer.visibleIndex(taskItem.itemIndex);
+        }
     }
 
-    Component.onCompleted: fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
+    Component.onCompleted: {
+        fixedIndex = taskItem.indexer.visibleIndex(taskItem.itemIndex);
+    }
 
     sourceComponent: Item{
         Loader{

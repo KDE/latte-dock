@@ -195,4 +195,26 @@ AbilityDefinition.Indexer {
             return bdgs;
         }
     }
+
+    function visibleItemsBeforeCount(layout, actualIndex) {
+        var visibleItems = 0;
+
+        for (var i=0; i<layout.children.length; ++i){
+            var appletItem = layout.children[i];
+            if (appletItem && appletItem.index<actualIndex) {
+                if ((separators.indexOf(appletItem.index) >= 0) || (hidden.indexOf(appletItem.index) >= 0)) {
+                    //! ignore hidden and separators applets
+                    continue;
+                } else if (!appletItem.communicator || !appletItem.communicator.indexerIsSupported) {
+                    //! single item applet
+                    visibleItems = visibleItems + 1;
+                } else if (appletItem.communicator && appletItem.communicator.indexerIsSupported) {
+                    //! multi items applet
+                    visibleItems = visibleItems + appletItem.communicator.bridge.indexer.client.visibleItemsCount;
+                }
+            }
+        }
+
+        return visibleItems;
+    }
 }
