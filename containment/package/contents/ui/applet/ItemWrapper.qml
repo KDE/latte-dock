@@ -301,31 +301,12 @@ Item{
 
     Item{
         id:_wrapperContainer
-
         width: root.isHorizontal ? _length : _thickness
         height: root.isHorizontal ? _thickness : _length
         opacity: appletShadow.active ? 0 : 1
 
-        property int _length: {
-            if (appletItem.isAutoFillApplet && (appletItem.maxAutoFillLength>-1)){
-                return wrapper.length;
-            }
-
-            if (appletItem.isInternalViewSplitter) {
-                return wrapper.layoutLength;
-            }
-
-            return wrapper.zoomScaleLength * wrapper.layoutLength;
-        }
-
-        property int _thickness: {
-            if (appletItem.isInternalViewSplitter) {
-                return wrapper.layoutThickness;
-            }
-
-            var wrapperContainerThickness = wrapper.zoomScaleThickness * (appletItem.metrics.totals.thickness);
-            return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + appletItem.metrics.margin.screenEdge : wrapperContainerThickness;
-        }
+        property int _length:0 // through Binding to avoid binding loops
+        property int _thickness:0 // through Binding to avoid binding loops
 
         readonly property int appliedEdgeMargin: {
             if (appletItem.isInternalViewSplitter) {
@@ -333,6 +314,37 @@ Item{
             }
 
             return appletItem.screenEdgeMarginSupported ? 0 : appletItem.metrics.margin.screenEdge;
+        }
+
+        Binding {
+            target: _wrapperContainer
+            property: "_thickness"
+            when: !visibilityManager.inTempHiding
+            value: {
+                if (appletItem.isInternalViewSplitter) {
+                    return wrapper.layoutThickness;
+                }
+
+                var wrapperContainerThickness = wrapper.zoomScaleThickness * (appletItem.metrics.totals.thickness);
+                return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + appletItem.metrics.margin.screenEdge : wrapperContainerThickness;
+            }
+        }
+
+        Binding {
+            target: _wrapperContainer
+            property: "_length"
+            when: !visibilityManager.inTempHiding
+            value: {
+                if (appletItem.isAutoFillApplet && (appletItem.maxAutoFillLength>-1)){
+                    return wrapper.length;
+                }
+
+                if (appletItem.isInternalViewSplitter) {
+                    return wrapper.layoutLength;
+                }
+
+                return wrapper.zoomScaleLength * wrapper.layoutLength;
+            }
         }
 
         ///Secret MouseArea to be used by the folder widget

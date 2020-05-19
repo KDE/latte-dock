@@ -1192,18 +1192,13 @@ Item {
 
         TasksLayout.ScrollableList {
             id: scrollableList
-            width: !root.vertical ? Math.min(root.width, icList.width) : thickness
-            height: root.vertical ? Math.min(root.height, icList.height) : thickness
+            width: !root.vertical ? length : thickness
+            height: root.vertical ? length : thickness
             contentWidth: icList.width
             contentHeight: icList.height
 
-            property int thickness: {
-                if (latteView) {
-                    return animations.hasThicknessAnimation ? latteView.maskManager.thicknessZoom : latteView.maskManager.thicknessNormal;
-                }
-
-                return metrics.totals.thickness * parabolic.factor.zoom;
-            }
+            property int thickness:0 // through Binding to avoid binding loops
+            property int length:0 // through Binding to avoid binding loops
 
             //onCurrentPosChanged: console.log("CP :: "+ currentPos + " icW:"+icList.width + " rw: "+root.width + " w:" +width);
 
@@ -1212,6 +1207,32 @@ Item {
                 maskSource: TasksLayout.ScrollOpacityMask{
                     width: scrollableList.width
                     height: scrollableList.height
+                }
+            }
+
+            Binding {
+                target: scrollableList
+                property: "thickness"
+                when: latteView && !latteView.maskManager.inTempHiding
+                value: {
+                    if (latteView) {
+                        return animations.hasThicknessAnimation ? latteView.maskManager.thicknessZoom : latteView.maskManager.thicknessNormal;
+                    }
+
+                    return metrics.totals.thickness * parabolic.factor.zoom;
+                }
+            }
+
+            Binding {
+                target: scrollableList
+                property: "length"
+                when: latteView && !latteView.maskManager.inTempHiding
+                value: {
+                    if (root.vertical) {
+                        return Math.min(root.height, icList.height)
+                    }
+
+                    return Math.min(root.width, icList.width);
                 }
             }
 

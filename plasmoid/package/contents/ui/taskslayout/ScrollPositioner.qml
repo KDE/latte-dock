@@ -36,15 +36,13 @@ Rectangle {
             } else if (root.alignment === LatteCore.Types.Right){
                 return icList.width;
             }
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
     y: {
-        if (!root.vertical) {
-            return 0;
-        } else {
+        if (root.vertical) {
             if (root.alignment === LatteCore.Types.Center) {
                 return icList.height / 2;
             } else if (root.alignment === LatteCore.Types.Top){
@@ -53,6 +51,8 @@ Rectangle {
                 return icList.height;
             }
         }
+
+        return 0;
     }
 
     width: !root.vertical ? 1 : scrollableList.width
