@@ -83,7 +83,7 @@ public:
     bool updateBadgeForLatteTask(const QString identifier, const QString value);
 
     int applicationLauncherId() const;
-    int appletIdForIndex(const int index);
+    int appletIdForVisualIndex(const int index);
 
     QAbstractListModel *latteTasksModel() const;
     QAbstractListModel *plasmaTasksModel() const;

@@ -300,7 +300,7 @@ bool GlobalShortcuts::activateLatteEntry(Latte::View *view, int index, Qt::Key m
     bool activation{modifier == static_cast<Qt::Key>(Qt::META)};
     bool newInstance{!activation};
 
-    int appletId = view->extendedInterface()->appletIdForIndex(index);
+    int appletId = view->extendedInterface()->appletIdForVisualIndex(index);
     bool hasPopUp {(appletId>-1 && view->extendedInterface()->appletIsExpandable(appletId))};
 
     if (view->visibility()->isHidden() && hasPopUp) {

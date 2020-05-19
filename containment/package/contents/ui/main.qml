@@ -33,7 +33,6 @@ import org.kde.latte.components 1.0 as LatteComponents
 import org.kde.latte.private.app 0.1 as LatteApp
 import org.kde.latte.private.containment 0.1 as LatteContainment
 
-
 import "abilities" as Ability
 import "applet" as Applet
 import "colorizer" as Colorizer
@@ -55,8 +54,6 @@ Item {
     signal destroyInternalViewSplitters();
     signal emptyAreasWheel(QtObject wheel);
     signal separatorsUpdated();
-    signal signalActivateEntryAtIndex(int entryIndex);
-    signal signalNewInstanceForEntryAtIndex(int entryIndex);
     signal updateEffectsArea();
     signal updateIndexes();
 
@@ -241,10 +238,6 @@ Item {
     property bool mouseWheelActions: plasmoid.configuration.mouseWheelActions
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there aren't removals, this variable provides a way to grow icon size
     property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins
-    property bool showLatteShortcutBadges: false
-    property bool showAppletShortcutBadges: false
-    property bool showMetaBadge: false
-    property int applicationLauncherId: -1
 
     //FIXME: possibly this is going to be the default behavior, this user choice
     //has been dropped from the Dock Configuration Window
@@ -434,7 +427,6 @@ Item {
     property bool dockIsHidden: latteView && latteView.visibility ? latteView.visibility.isHidden : true
 
     property bool titleTooltips: plasmoid.configuration.titleTooltips
-    property bool unifiedGlobalShortcuts: true
 
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0  
 
@@ -1000,88 +992,6 @@ Item {
     function hideTooltipLabel(debug){
         titleTooltipDialog.hide(debug);
     }
-
-    //! this is called from globalshortcuts c++ side
-    function setShowAppletShortcutBadges(showLatteShortcuts, showShortcuts, showMeta, applicationLauncher){
-        if (latteApplet) {
-            var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
-            latteApplet.setTasksBaseIndex(base - 1);
-            latteApplet.setShowTaskShortcutBadges(showLatteShortcuts);
-        }
-
-        showLatteShortcutBadges = showLatteShortcuts;
-        showAppletShortcutBadges = showShortcuts;
-        showMetaBadge = showMeta;
-        applicationLauncherId = applicationLauncher;
-
-        if (latteApplet) {
-            latteApplet.parabolicManager.updateTasksEdgesIndexes();
-        }
-    }
-
-    //! this is called from Latte::View::ContainmentInterface
-    function activateEntryAtIndex(index) {
-        if (typeof index !== "number") {
-            return;
-        }
-
-        if (latteApplet) {
-            var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
-            latteApplet.setTasksBaseIndex(base - 1);
-            latteApplet.parabolicManager.updateTasksEdgesIndexes();
-        }
-
-        signalActivateEntryAtIndex(index);
-    }
-
-    //! this is called from Latte::View::ContainmentInterface
-    function newInstanceForEntryAtIndex(index) {
-        if (typeof index !== "number") {
-            return;
-        }
-
-        if (latteApplet) {
-            var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
-            latteApplet.setTasksBaseIndex(base - 1);
-            latteApplet.parabolicManager.updateTasksEdgesIndexes();
-        }
-
-        signalNewInstanceForEntryAtIndex(index);
-    }
-
-    //! this is called from Latte::View::ContainmentInterface
-    function appletIdForIndex(index) {
-        if (!root.unifiedGlobalShortcuts || parabolicManager.pseudoIndexBelongsToLatteApplet(index)) {
-            return -1;
-        }
-
-        for (var i=0; i<layoutsContainer.startLayout.children.length; ++i){
-            var appletItem = layoutsContainer.startLayout.children[i];
-
-            if (appletItem && appletItem.refersEntryIndex(index)) {
-                return appletItem.applet.id;
-            }
-        }
-
-        for (var j=0; j<layoutsContainer.mainLayout.children.length; ++j){
-            var appletItem2 = layoutsContainer.mainLayout.children[j];
-
-            if (appletItem2 && appletItem2.refersEntryIndex(index)) {
-                return appletItem2.applet.id;
-            }
-        }
-
-        for (var k=0; j<layoutsContainer.endLayout.children.length; ++k){
-            var appletItem3 = layoutsContainer.endLayout.children[k];
-
-            if (appletItem3 && appletItem3.refersEntryIndex(index)) {
-                return appletItem3.applet.id;
-            }
-        }
-
-        return -1;
-    }
-
 
     function showTooltipLabel(taskItem, text){
         titleTooltipDialog.show(taskItem, text);

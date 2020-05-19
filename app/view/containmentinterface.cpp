@@ -375,7 +375,7 @@ bool ContainmentInterface::showShortcutBadges(const bool showLatteShortcuts, con
     return m_showShortcutsMethod.invoke(m_mainItem, Q_ARG(QVariant, showLatteShortcuts), Q_ARG(QVariant, true), Q_ARG(QVariant, showMeta), Q_ARG(QVariant, appLauncherId));
 }
 
-int ContainmentInterface::appletIdForIndex(const int index)
+int ContainmentInterface::appletIdForVisualIndex(const int index)
 {
     identifyMainItem();
 
