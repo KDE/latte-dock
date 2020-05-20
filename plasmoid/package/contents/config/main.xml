@@ -37,6 +37,9 @@
     <entry name="zoomLevel" type="Int">
       <default>14</default>
     </entry>
+    <entry name="launcherBounceLevel" type="Int">
+      <default>20</default>
+    </entry>
     <entry name="iconSize" type="Int">
       <default>48</default>
     </entry>

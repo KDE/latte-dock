@@ -51,7 +51,8 @@ SequentialAnimation{
             PropertyAnimation {
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                to: taskItem.containsMouse ? 1+2*(taskItem.parabolic.factor.maxZoom-1) : 1 + (0.65 * (taskItem.parabolic.factor.maxZoom-1))
+                //TODO Add a slider in the AppearanceConfig to adjust the launcherBounceLevel value
+                to: taskItem.containsMouse ? 1+2*(plasmoid.configuration.launcherBounceLevel/10 -1) : 1 + (0.65 * (plasmoid.configuration.launcherBounceLevel /10-1))
                 duration: launcherAnimation.speed
                 easing.type: Easing.OutQuad
             }
