@@ -288,6 +288,7 @@ Item {
     property Item layouter: null
     property Item metrics: null
     property Item parabolic: null
+    property Item shortcuts: null
 
     property bool containsMouse: appletMouseArea.containsMouse || (isLattePlasmoid && latteApplet.containsMouse)
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
@@ -612,20 +613,20 @@ Item {
 
     //! Connections
     Connections{
-        target: root
+        target: appletItem.shortcuts
 
-        onSignalActivateEntryAtIndex: {
+        onSglActivateEntryAtIndex: {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
                 latteApplet.activateTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
-            } else if (root.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
+            } else if (shortcuts.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
                 latteView.extendedInterface.toggleAppletExpanded(applet.id);
             }
         }
 
-        onSignalNewInstanceForEntryAtIndex: {
+        onSglNewInstanceForEntryAtIndex: {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
                 latteApplet.newInstanceForTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
-            } else if (root.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
+            } else if (shortcuts.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
                 latteView.extendedInterface.toggleAppletExpanded(applet.id);
             }
         }

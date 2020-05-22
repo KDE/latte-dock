@@ -59,6 +59,7 @@ Item{
 
     //! BEGIN OF ABILITIES SUPPORT
     readonly property bool indexerIsSupported: bridge && bridge.indexer.client
+    readonly property bool onPositionShortcutsAreSupported: bridge && bridge.shortcuts.client
     readonly property bool parabolicEffectIsSupported: bridge && bridge.parabolic.client
 
     readonly property Item bridge: bridgeLoader.active ? bridgeLoader.item : null

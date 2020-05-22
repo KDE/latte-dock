@@ -24,9 +24,7 @@ import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
 AbilityDefinition.Indexer {
     id: indxr
-
     property Item layouts: null
-
     property bool updateIsBlocked: false
 
     property var clients: []
@@ -216,5 +214,39 @@ AbilityDefinition.Indexer {
         }
 
         return visibleItems;
+    }
+
+    function visibleIndex(actualIndex) {
+        if ((separators.indexOf(actualIndex) >= 0) || (hidden.indexOf(actualIndex) >= 0)) {
+            return -1;
+        }
+
+        var visibleItems = visibleItemsBeforeCount(layouts.startLayout, actualIndex) +
+                visibleItemsBeforeCount(layouts.mainLayout, actualIndex) +
+                visibleItemsBeforeCount(layouts.endLayout, actualIndex);
+
+        return visibleItems;
+    }
+
+    function visibleIndexBelongsAtApplet(applet, itemVisibleIndex) {
+        if (itemVisibleIndex<0 || !applet) {
+            return false;
+        }
+
+        var vIndexBase = visibleIndex(applet.index);
+
+        if (vIndexBase === itemVisibleIndex) {
+            return true;
+        } else if (applet.communicator
+                   && applet.communicator.indexerIsSupported
+                   && applet.communicator.bridge
+                   && applet.communicator.bridge.indexer) {
+            if (itemVisibleIndex >= vIndexBase
+                    && itemVisibleIndex< (vIndexBase + appletItem.communicator.bridge.indexer.client.visibleItemsCount)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

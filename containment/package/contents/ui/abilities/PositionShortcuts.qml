@@ -25,5 +25,42 @@ import org.kde.plasma.plasmoid 2.0
 import "./privates" as Ability
 
 Ability.PositionShortcutsPrivate {
+    id: _shortcuts
+    objectName: "PositionShortcutsAbilityHost"
 
+    //! do not update during dragging/moving applets inConfigureAppletsMode
+    updateIsBlocked: (root.dragOverlay && root.dragOverlay.pressed)
+                     || layouter.appletsInParentChange
+
+
+    //! this is called from globalshortcuts c++ side
+    function setShowAppletShortcutBadges(showPositionShortcuts, showShortcuts, showMeta, applicationLauncher){
+        showPositionShortcutBadges = showPositionShortcuts;
+        showAppletShortcutBadges = showShortcuts;
+        showMetaBadge = showMeta;
+        applicationLauncherId = applicationLauncher;
+    }
+
+    //! this is called from Latte::View::ContainmentInterface
+    function activateEntryAtIndex(index) {
+        if (typeof index !== "number") {
+            return;
+        }
+
+        sglActivateEntryAtIndex(index);
+    }
+
+    //! this is called from Latte::View::ContainmentInterface
+    function newInstanceForEntryAtIndex(index) {
+        if (typeof index !== "number") {
+            return;
+        }
+
+        sglNewInstanceForEntryAtIndex(index);
+    }
+
+    //! this is called from Latte::View::ContainmentInterface
+    function appletIdForIndex(index) {
+        return indexer.appletIdForVisibleIndex(index);
+    }
 }

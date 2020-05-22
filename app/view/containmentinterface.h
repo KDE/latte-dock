@@ -104,7 +104,7 @@ signals:
     void plasmaTasksModelChanged();
 
 private slots:
-    void identifyMainItem();
+    void identifyShortcutsHost();
     void identifyMethods();
 
     void updateAppletsTracking();
@@ -130,7 +130,7 @@ private:
 
     QPointer<Latte::Corona> m_corona;
     QPointer<Latte::View> m_view;
-    QPointer<QQuickItem> m_mainItem;
+    QPointer<QQuickItem> m_shortcutsHost;
 
     //! startup timer to initialize
     //! applets tracking

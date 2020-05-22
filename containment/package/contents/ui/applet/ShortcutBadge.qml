@@ -26,9 +26,9 @@ Loader{
     id: appletNumberLoader
 
     active: appletItem.canShowAppletNumberBadge &&
-            (root.showLatteShortcutBadges
-             || root.showAppletShortcutBadges
-             || root.showMetaBadge && applet.id===applicationLauncherId)
+            (appletItem.shortcuts.showPositionShortcutBadges
+             || appletItem.shortcuts.showAppletShortcutBadges
+             || appletItem.shortcuts.showMetaBadge && applet.id===appletItem.shortcuts.applicationLauncherId)
 
     asynchronous: true
     visible: badgeString!==""
@@ -37,7 +37,7 @@ Loader{
     property string badgeString: ""
 
     onActiveChanged: {
-        if (active && root.showLatteShortcutBadges && root.unifiedGlobalShortcuts) {
+        if (active && appletItem.shortcuts.showPositionShortcutBadges && appletItem.shortcuts.unifiedGlobalShortcuts) {
             fixedIndex = appletItem.indexer.visibleIndex(index);
         } else {
             fixedIndex = -1;
@@ -45,7 +45,7 @@ Loader{
     }
 
     Component.onCompleted: {
-        if (active && root.showLatteShortcutBadges && root.unifiedGlobalShortcuts) {
+        if (active && appletItem.shortcuts.showPositionShortcutBadges && appletItem.shortcuts.unifiedGlobalShortcuts) {
             fixedIndex = appletItem.indexer.visibleIndex(index);
         } else {
             fixedIndex = -1;
@@ -55,13 +55,13 @@ Loader{
     Binding{
         target: appletNumberLoader
         property:"badgeString"
-        when: root.showMetaBadge || root.showAppletShortcutBadges
+        when: appletItem.shortcuts.showMetaBadge || appletItem.shortcuts.showAppletShortcutBadges
         value: {
-            if (root.showMetaBadge && applet && applet.id === applicationLauncherId) {
+            if (appletItem.shortcuts.showMetaBadge && applet && applet.id === appletItem.shortcuts.applicationLauncherId) {
                 return '\u2318';
             }
 
-            if (root.showAppletShortcutBadges) {
+            if (appletItem.shortcuts.showAppletShortcutBadges) {
                 var plasmaShortcut = applet ? shortcutsEngine.appletShortcutBadge(applet.id) : "";
 
                 if (plasmaShortcut !== "") {

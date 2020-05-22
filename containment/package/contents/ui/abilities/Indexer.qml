@@ -23,6 +23,8 @@ import org.kde.plasma.plasmoid 2.0
 import "./privates" as Ability
 
 Ability.IndexerPrivate {
+    objectName: "IndexerAbilityHost"
+
     //! do not update during dragging/moving applets inConfigureAppletsMode
     updateIsBlocked: (root.dragOverlay && root.dragOverlay.pressed)
                      || layouter.appletsInParentChange
@@ -43,15 +45,34 @@ Ability.IndexerPrivate {
         return false;
     }
 
-    function visibleIndex(actualIndex) {
-        if ((separators.indexOf(actualIndex) >= 0) || (hidden.indexOf(actualIndex) >= 0)) {
-            return -1;
+    function appletIdForVisibleIndex(itemVisibleIndex) {
+        var sLayout = layouts.startLayout;
+        for (var i=0; i<sLayout.children.length; ++i){
+            var appletItem = sLayout.children[i];
+
+            if (visibleIndexBelongsAtApplet(appletItem, itemVisibleIndex)) {
+                return appletItem.index;
+            }
         }
 
-        var visibleItems = visibleItemsBeforeCount(layouts.startLayout, actualIndex) +
-                visibleItemsBeforeCount(layouts.mainLayout, actualIndex) +
-                visibleItemsBeforeCount(layouts.endLayout, actualIndex);
+        var mLayout = layouts.mainLayout;
+        for (var i=0; i<mLayout.children.length; ++i){
+            var appletItem = sLayout.children[i];
 
-        return visibleItems;
+            if (visibleIndexBelongsAtApplet(appletItem, itemVisibleIndex)) {
+                return appletItem.index;
+            }
+        }
+
+        var eLayout = layouts.endLayout;
+        for (var i=0; i<eLayout.children.length; ++i){
+            var appletItem = sLayout.children[i];
+
+            if (visibleIndexBelongsAtApplet(appletItem, itemVisibleIndex)) {
+                return appletItem.index;
+            }
+        }
+
+        return -1;
     }
 }

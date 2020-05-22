@@ -20,96 +20,64 @@
 import QtQuick 2.7
 
 Item {
-    objectName: "PositionShortcuts"
+    id: _shortcutsprivate
+    property Item layouts: null
+    property bool updateIsBlocked: false
 
-    property bool unifiedGlobalShortcuts: true
+    readonly property bool unifiedGlobalShortcuts: appletIdStealingPositionShortcuts === -1
 
-    property bool showLatteShortcutBadges: false
+    property bool showPositionShortcutBadges: false
     property bool showAppletShortcutBadges: false
     property bool showMetaBadge: false
     property int applicationLauncherId: -1
 
+    property int appletIdStealingPositionShortcuts: -1
+
     signal sglActivateEntryAtIndex(int entryIndex);
     signal sglNewInstanceForEntryAtIndex(int entryIndex);
 
-    //! this is called from globalshortcuts c++ side
-    function setShowAppletShortcutBadges(showLatteShortcuts, showShortcuts, showMeta, applicationLauncher){
-        if (latteApplet) {
-            var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
-            latteApplet.setTasksBaseIndex(base - 1);
-            latteApplet.setShowTaskShortcutBadges(showLatteShortcuts);
-        }
+    Binding {
+        target: _shortcutsprivate
+        property: "appletIdStealingPositionShortcuts"
+        when: !updateIsBlocked
+        value: {
+            var sLayout = layouts.startLayout;
+            for (var i=0; i<sLayout.children.length; ++i){
+                var appletItem = sLayout.children[i];
+                if (appletItem
+                        && appletItem.index>=0
+                        && appletItem.communicator
+                        && appletItem.communicator.onPositionShortcutsAreSupported
+                        && appletItem.communicator.bridge.shortcuts.client.isStealingGlobalPositionShortcuts) {
+                    return appletItem.index;
+                }
+            }
 
-        showLatteShortcutBadges = showLatteShortcuts;
-        showAppletShortcutBadges = showShortcuts;
-        showMetaBadge = showMeta;
-        applicationLauncherId = applicationLauncher;
+            var mLayout = layouts.mainLayout;
+            for (var i=0; i<mLayout.children.length; ++i){
+                var appletItem = mLayout.children[i];
+                if (appletItem
+                        && appletItem.index>=0
+                        && appletItem.communicator
+                        && appletItem.communicator.onPositionShortcutsAreSupported
+                        && appletItem.communicator.bridge.shortcuts.client.isStealingGlobalPositionShortcuts) {
+                    return appletItem.index;
+                }
+            }
 
-        if (latteApplet) {
-            latteApplet.parabolicManager.updateTasksEdgesIndexes();
-        }
-    }
+            var eLayout = layouts.endLayout;
+            for (var i=0; i<eLayout.children.length; ++i){
+                var appletItem = eLayout.children[i];
+                if (appletItem
+                        && appletItem.index>=0
+                        && appletItem.communicator
+                        && appletItem.communicator.onPositionShortcutsAreSupported
+                        && appletItem.communicator.bridge.shortcuts.client.isStealingGlobalPositionShortcuts) {
+                    return appletItem.index;
+                }
+            }
 
-    //! this is called from Latte::View::ContainmentInterface
-    function activateEntryAtIndex(index) {
-        if (typeof index !== "number") {
-            return;
-        }
-
-        if (latteApplet) {
-            var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
-            latteApplet.setTasksBaseIndex(base - 1);
-            latteApplet.parabolicManager.updateTasksEdgesIndexes();
-        }
-
-        signalActivateEntryAtIndex(index);
-    }
-
-    //! this is called from Latte::View::ContainmentInterface
-    function newInstanceForEntryAtIndex(index) {
-        if (typeof index !== "number") {
-            return;
-        }
-
-        if (latteApplet) {
-            var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
-            latteApplet.setTasksBaseIndex(base - 1);
-            latteApplet.parabolicManager.updateTasksEdgesIndexes();
-        }
-
-        signalNewInstanceForEntryAtIndex(index);
-    }
-
-    //! this is called from Latte::View::ContainmentInterface
-    function appletIdForIndex(index) {
-        if (!root.unifiedGlobalShortcuts || parabolicManager.pseudoIndexBelongsToLatteApplet(index)) {
             return -1;
         }
-
-        for (var i=0; i<layoutsContainer.startLayout.children.length; ++i){
-            var appletItem = layoutsContainer.startLayout.children[i];
-
-            if (appletItem && appletItem.refersEntryIndex(index)) {
-                return appletItem.applet.id;
-            }
-        }
-
-        for (var j=0; j<layoutsContainer.mainLayout.children.length; ++j){
-            var appletItem2 = layoutsContainer.mainLayout.children[j];
-
-            if (appletItem2 && appletItem2.refersEntryIndex(index)) {
-                return appletItem2.applet.id;
-            }
-        }
-
-        for (var k=0; j<layoutsContainer.endLayout.children.length; ++k){
-            var appletItem3 = layoutsContainer.endLayout.children[k];
-
-            if (appletItem3 && appletItem3.refersEntryIndex(index)) {
-                return appletItem3.applet.id;
-            }
-        }
-
-        return -1;
     }
 }

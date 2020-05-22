@@ -71,9 +71,9 @@ ContainmentInterface::~ContainmentInterface()
 {
 }
 
-void ContainmentInterface::identifyMainItem()
+void ContainmentInterface::identifyShortcutsHost()
 {
-    if (m_mainItem) {
+    if (m_shortcutsHost) {
         return;
     }
 
@@ -82,9 +82,13 @@ void ContainmentInterface::identifyMainItem()
 
         for (QQuickItem *item : childItems) {
             if (item->objectName() == "containmentViewLayout" ) {
-                m_mainItem = item;
-                identifyMethods();
-                return;
+                for (QQuickItem *subitem : item->childItems()) {
+                    if (subitem->objectName() == "PositionShortcutsAbilityHost") {
+                        m_shortcutsHost = subitem;
+                        identifyMethods();
+                        return;
+                    }
+                }
             }
         }
     }
@@ -92,15 +96,15 @@ void ContainmentInterface::identifyMainItem()
 
 void ContainmentInterface::identifyMethods()
 {
-    int aeIndex = m_mainItem->metaObject()->indexOfMethod("activateEntryAtIndex(QVariant)");
-    int niIndex = m_mainItem->metaObject()->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
-    int sbIndex = m_mainItem->metaObject()->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
-    int afiIndex = m_mainItem->metaObject()->indexOfMethod("appletIdForIndex(QVariant)");
+    int aeIndex = m_shortcutsHost->metaObject()->indexOfMethod("activateEntryAtIndex(QVariant)");
+    int niIndex = m_shortcutsHost->metaObject()->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
+    int sbIndex = m_shortcutsHost->metaObject()->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
+    int afiIndex = m_shortcutsHost->metaObject()->indexOfMethod("appletIdForIndex(QVariant)");
 
-    m_activateEntryMethod = m_mainItem->metaObject()->method(aeIndex);
-    m_appletIdForIndexMethod = m_mainItem->metaObject()->method(afiIndex);
-    m_newInstanceMethod = m_mainItem->metaObject()->method(niIndex);
-    m_showShortcutsMethod = m_mainItem->metaObject()->method(sbIndex);
+    m_activateEntryMethod = m_shortcutsHost->metaObject()->method(aeIndex);
+    m_appletIdForIndexMethod = m_shortcutsHost->metaObject()->method(afiIndex);
+    m_newInstanceMethod = m_shortcutsHost->metaObject()->method(niIndex);
+    m_showShortcutsMethod = m_shortcutsHost->metaObject()->method(sbIndex);
 }
 
 bool ContainmentInterface::applicationLauncherHasGlobalShortcut() const
@@ -149,7 +153,7 @@ bool ContainmentInterface::containsApplicationLauncher() const
 
 bool ContainmentInterface::isCapableToShowShortcutBadges()
 {
-    identifyMainItem();
+    identifyShortcutsHost();
 
     if (!hasLatteTasks() && hasPlasmaTasks()) {
         return false;
@@ -322,35 +326,35 @@ bool ContainmentInterface::newInstanceForPlasmaTask(const int index)
 
 bool ContainmentInterface::activateEntry(const int index)
 {
-    identifyMainItem();
+    identifyShortcutsHost();
 
     if (!m_activateEntryMethod.isValid()) {
         return false;
     }
 
-    return m_activateEntryMethod.invoke(m_mainItem, Q_ARG(QVariant, index));
+    return m_activateEntryMethod.invoke(m_shortcutsHost, Q_ARG(QVariant, index));
 }
 
 bool ContainmentInterface::newInstanceForEntry(const int index)
 {
-    identifyMainItem();
+    identifyShortcutsHost();
 
     if (!m_newInstanceMethod.isValid()) {
         return false;
     }
 
-    return m_newInstanceMethod.invoke(m_mainItem, Q_ARG(QVariant, index));
+    return m_newInstanceMethod.invoke(m_shortcutsHost, Q_ARG(QVariant, index));
 }
 
 bool ContainmentInterface::hideShortcutBadges()
 {
-    identifyMainItem();
+    identifyShortcutsHost();
 
     if (!m_showShortcutsMethod.isValid()) {
         return false;
     }
 
-    return m_showShortcutsMethod.invoke(m_mainItem, Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, -1));
+    return m_showShortcutsMethod.invoke(m_shortcutsHost, Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, -1));
 }
 
 bool ContainmentInterface::showOnlyMeta()
@@ -364,7 +368,7 @@ bool ContainmentInterface::showOnlyMeta()
 
 bool ContainmentInterface::showShortcutBadges(const bool showLatteShortcuts, const bool showMeta)
 {
-    identifyMainItem();
+    identifyShortcutsHost();
 
     if (!m_showShortcutsMethod.isValid() || !isCapableToShowShortcutBadges()) {
         return false;
@@ -372,12 +376,12 @@ bool ContainmentInterface::showShortcutBadges(const bool showLatteShortcuts, con
 
     int appLauncherId = m_corona->universalSettings()->kwin_metaForwardedToLatte() && showMeta ? applicationLauncherId() : -1;
 
-    return m_showShortcutsMethod.invoke(m_mainItem, Q_ARG(QVariant, showLatteShortcuts), Q_ARG(QVariant, true), Q_ARG(QVariant, showMeta), Q_ARG(QVariant, appLauncherId));
+    return m_showShortcutsMethod.invoke(m_shortcutsHost, Q_ARG(QVariant, showLatteShortcuts), Q_ARG(QVariant, true), Q_ARG(QVariant, showMeta), Q_ARG(QVariant, appLauncherId));
 }
 
 int ContainmentInterface::appletIdForVisualIndex(const int index)
 {
-    identifyMainItem();
+    identifyShortcutsHost();
 
     if (!m_appletIdForIndexMethod.isValid()) {
         return false;
@@ -385,7 +389,7 @@ int ContainmentInterface::appletIdForVisualIndex(const int index)
 
     QVariant appletId{-1};
 
-    m_appletIdForIndexMethod.invoke(m_mainItem, Q_RETURN_ARG(QVariant, appletId), Q_ARG(QVariant, index));
+    m_appletIdForIndexMethod.invoke(m_shortcutsHost, Q_RETURN_ARG(QVariant, appletId), Q_ARG(QVariant, index));
 
     return appletId.toInt();
 }

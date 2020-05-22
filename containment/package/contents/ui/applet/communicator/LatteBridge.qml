@@ -132,6 +132,11 @@ Item{
         appletIndex: index
     }
 
+    readonly property AbilityBridge.PositionShortcuts shortcuts: AbilityBridge.PositionShortcuts {
+        host: appletItem.shortcuts
+        appletIndex: index
+    }
+
     Connections {
         target: root
         onBroadcastedToApplet: {

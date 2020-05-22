@@ -1294,6 +1294,7 @@ Item {
             layouter: _layouter
             metrics: _metrics
             parabolic: _parabolic
+            shortcuts: _shortcuts
         }
     }
 
@@ -1540,6 +1541,11 @@ Item {
         animations: _animations
         applets: layoutsContainer.applets
         view: latteView
+    }
+
+    Ability.PositionShortcuts {
+        id: _shortcuts
+        layouts: layoutsContainer
     }
 
     LatteApp.Interfaces {
