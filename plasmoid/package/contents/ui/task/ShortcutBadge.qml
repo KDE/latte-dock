@@ -25,7 +25,7 @@ import org.kde.latte.components 1.0 as LatteComponents
 Loader{
     id: shorcutBadge
     anchors.fill: iconImageBuffer
-    active: taskItem.shortcuts.showPositionShortcutBadges && !taskItem.isSeparator && !taskItem.isHidden
+    active: taskItem.shortcuts.showPositionShortcutBadges && !taskItem.isSeparator && !taskItem.isHidden && taskItem.shortcuts.isEnabled
     asynchronous: true
     visible: badgeString !== ""
 
@@ -35,14 +35,16 @@ Loader{
 
     onActiveChanged: {
         if (active && taskItem.shortcuts.showPositionShortcutBadges) {
-            fixedIndex = taskItem.indexer.visibleIndex(taskItem.itemIndex);
+            fixedIndex = taskItem.shortcuts.shortcutIndex(taskItem.itemIndex);
         } else {
             fixedIndex = -1;
         }
     }
 
     Component.onCompleted: {
-        fixedIndex = taskItem.indexer.visibleIndex(taskItem.itemIndex);
+        if (taskItem.shortcuts.isEnabled) {
+            fixedIndex = taskItem.shortcuts.shortcutIndex(taskItem.itemIndex);
+        }
     }
 
     sourceComponent: Item{

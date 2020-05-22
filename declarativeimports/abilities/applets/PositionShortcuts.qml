@@ -29,6 +29,15 @@ AbilityDefinition.PositionShortcuts {
     property bool isStealingGlobalPositionShortcuts: false
     readonly property bool showPositionShortcutBadges: ref.shortcuts.showPositionShortcutBadges
 
+    readonly property bool isEnabled: {
+        if (bridge) {
+            return bridge.shortcuts.host.unifiedGlobalShortcuts
+                    || (!bridge.shortcuts.host.unifiedGlobalShortcuts && bridge.shortcuts.appletIndex === bridge.shortcuts.host.appletIdStealingPositionShortcuts);
+        }
+
+        return true;
+    }
+
     signal disabledIsStealingGlobalPositionShortcuts();
 
     Item {

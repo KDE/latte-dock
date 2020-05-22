@@ -616,6 +616,10 @@ Item {
         target: appletItem.shortcuts
 
         onSglActivateEntryAtIndex: {
+            if (!appletItem.shortcuts.unifiedGlobalShortcuts) {
+                return;
+            }
+
             var visibleIndex = appletItem.indexer.visibleIndex(appletItem.index);
 
             if (visibleIndex === entryIndex && !communicator.positionShortcutsAreSupported) {
@@ -624,6 +628,10 @@ Item {
         }
 
         onSglNewInstanceForEntryAtIndex: {
+            if (!appletItem.shortcuts.unifiedGlobalShortcuts) {
+                return;
+            }
+
             var visibleIndex = appletItem.indexer.visibleIndex(appletItem.index);
 
             if (visibleIndex === entryIndex && !communicator.positionShortcutsAreSupported) {

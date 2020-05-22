@@ -1456,9 +1456,13 @@ MouseArea{
     Connections {
         target: shortcuts
         onSglActivateEntryAtIndex: {
-            var visibleIndex = taskItem.indexer.visibleIndex(taskItem.itemIndex);
+            if (!taskItem.shortcuts.isEnabled) {
+                return;
+            }
 
-            if (visibleIndex === entryIndex) {
+            var shortcutIndex = taskItem.shortcuts.shortcutIndex(taskItem.itemIndex);
+
+            if (shortcutIndex === entryIndex) {
                 if (taskItem.isGroupParent) {
                     taskItem.activateNextTask();
                 } else {
@@ -1468,9 +1472,13 @@ MouseArea{
         }
 
         onSglNewInstanceForEntryAtIndex: {
-            var visibleIndex = taskItem.indexer.visibleIndex(taskItem.itemIndex);
+            if (!taskItem.shortcuts.isEnabled) {
+                return;
+            }
 
-            if (visibleIndex === entryIndex) {
+            var shortcutIndex = taskItem.shortcuts.shortcutIndex(taskItem.itemIndex);
+
+            if (shortcutIndex === entryIndex) {
                 tasksModel.requestNewInstance(taskItem.modelIndex());
             }
         }

@@ -26,4 +26,14 @@ import org.kde.latte.abilities.applets 0.1 as AppletAbility
 
 AppletAbility.PositionShortcuts {
     id: shortcuts
+
+    function shortcutIndex(entryIndex) {
+        if (!bridge) {
+            return indexer.visibleIndex(entryIndex);
+        }
+
+        var base = bridge.indexer.host.visibleIndex(bridge.shortcuts.appletIndex);
+
+        return (indexer.visibleIndex(entryIndex) - base);
+    }
 }
