@@ -370,14 +370,6 @@ Item {
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
-    property var badgesForActivate: {
-        if (!shortcutsEngine) {
-            return ['1','2','3','4','5','6','7','8','9','0', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.'];
-        }
-
-        return shortcutsEngine.badgesForActivate;
-    }
-
     property var iconsArray: [16, 22, 32, 48, 64, 96, 128, 256]
 
     property Item dragOverlay

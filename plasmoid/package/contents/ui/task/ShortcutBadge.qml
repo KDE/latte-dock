@@ -30,8 +30,8 @@ Loader{
     visible: badgeString !== ""
 
     property int fixedIndex:-1
-    property string badgeString: (shorcutBadge.fixedIndex>=1 && shorcutBadge.fixedIndex<20 && root.badgesForActivate.length===19) ?
-                                     root.badgesForActivate[shorcutBadge.fixedIndex-1] : ""
+    property string badgeString: (shorcutBadge.fixedIndex>=1 && shorcutBadge.fixedIndex<20 && taskItem.shortcuts.badges.length===19) ?
+                                     taskItem.shortcuts.badges[shorcutBadge.fixedIndex-1] : ""
 
     onActiveChanged: {
         if (active && taskItem.shortcuts.showPositionShortcutBadges) {

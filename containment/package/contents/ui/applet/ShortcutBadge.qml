@@ -70,7 +70,7 @@ Loader{
             }
 
              if (appletNumberLoader.fixedIndex>=1 && appletNumberLoader.fixedIndex<20) {
-                return root.badgesForActivate[appletNumberLoader.fixedIndex-1];
+                return appletItem.shortcuts.badges[appletNumberLoader.fixedIndex-1];
             } else {
                 return "";
             }

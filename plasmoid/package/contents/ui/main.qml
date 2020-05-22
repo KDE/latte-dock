@@ -233,9 +233,6 @@ Item {
     readonly property string viewLayoutName: viewLayout ? viewLayout.name : ""
     readonly property QtObject viewLayout : latteView && latteView.viewLayout ? latteView.viewLayout : null
 
-    property var badgesForActivate: latteView ? latteView.badgesForActivate : []
-
-
     property Item latteView: null
     readonly property Item indicators: latteView ? latteView.indicatorsManager : indicatorsStandaloneLoader.item
     //END Latte Dock Panel properties

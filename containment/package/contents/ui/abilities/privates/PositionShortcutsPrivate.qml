@@ -36,6 +36,13 @@ AbilityDefinition.PositionShortcuts {
 
     Binding {
         target: _shortcutsprivate
+        property: "badges"
+        when: !updateIsBlocked && shortcutsEngine
+        value: shortcutsEngine.badgesForActivate
+    }
+
+    Binding {
+        target: _shortcutsprivate
         property: "appletIdStealingPositionShortcuts"
         when: !updateIsBlocked
         value: {
