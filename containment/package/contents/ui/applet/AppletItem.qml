@@ -527,10 +527,6 @@ Item {
         return false;
     }
 
-    function refersEntryIndex(entryIndex) {
-        return (entryIndex === parabolicManager.pseudoAppletIndex(appletItem.index));
-    }
-
     ///END functions
 
     //BEGIN connections

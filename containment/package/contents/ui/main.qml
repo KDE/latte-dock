@@ -385,7 +385,6 @@ Item {
     readonly property alias layouter: _layouter
     readonly property alias metrics: _metrics
     readonly property alias parabolic: _parabolic
-    readonly property alias parabolicManager: _parabolicManager
 
     readonly property alias maskManager: visibilityManager
     readonly property alias layoutsContainerItem: layoutsContainer
@@ -1288,10 +1287,6 @@ Item {
             parabolic: _parabolic
             shortcuts: _shortcuts
         }
-    }
-
-    ParabolicManager{
-        id: _parabolicManager
     }
 
     Indicators.Manager{
