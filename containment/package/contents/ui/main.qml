@@ -72,7 +72,7 @@ Item {
     readonly property int version: LatteCore.Environment.makeVersion(0,9,4)
 
     property bool addLaunchersMessage: false
-    property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
+    property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager && latteView && (latteView.extendedInterface.latteTasksModel.count === 1)
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: {
         if (!LatteCore.WindowSystem.compositingActive) {

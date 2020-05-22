@@ -140,6 +140,7 @@ PlasmaComponents.Page {
                     text: i18n("Add launchers only in the Tasks Area")
                     checked: plasmoid.configuration.addLaunchersInTaskManager
                     tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
+                    enabled: latteView.extendedInterface.latteTasksModel.count === 1
 
                     onClicked: {
                         plasmoid.configuration.addLaunchersInTaskManager = checked;
