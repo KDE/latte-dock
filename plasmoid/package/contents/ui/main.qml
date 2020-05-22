@@ -131,7 +131,7 @@ Item {
     property QtObject contextMenu: null
     property QtObject contextMenuComponent: Qt.createComponent("ContextMenu.qml");
     property Item dragSource: null
-    property Item parabolicManager: _parabolicManager
+
     property Item tasksExtendedManager: _tasksExtendedManager
     readonly property alias animations: _animations
     readonly property alias indexer: _indexer
@@ -928,10 +928,6 @@ Item {
         active: root.showAudioBadge
     }
 
-    ParabolicManager{
-        id: _parabolicManager
-    }
-
     TasksExtendedManager {
         id: _tasksExtendedManager
     }
@@ -1562,7 +1558,6 @@ Item {
                 stop();
                 console.log("launchers synced at:" + launchers);
                 launchers.length = 0;
-                parabolicManager.updateTasksEdgesIndexes();
                 tasksModel.syncLaunchers();
             } else {
                 var currentLaunchers = currentListViewLauncherList();
@@ -1741,7 +1736,6 @@ Item {
     function extSignalMoveTask(group, from, to) {
         if (group === root.launchersGroup && !root.dragSource) {
             tasksModel.move(from, to);
-            parabolicManager.updateTasksEdgesIndexes();
             tasksModel.syncLaunchers();
         }
     }
@@ -1760,7 +1754,7 @@ Item {
     //! it is used to add the fake desktop file which represents
     //! the separator (fake launcher)
     function addSeparator(pos){
-        var separatorName = parabolicManager.freeAvailableSeparatorName();
+        var separatorName = launchers.freeAvailableSeparatorName();
 
         if (separatorName !== "") {
             tasksExtendedManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
