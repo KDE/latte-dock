@@ -584,14 +584,6 @@ MouseArea{
         }
     }
 
-    onLastValidIndexChanged: {
-        if (lastValidIndex>=0 && lastValidIndex<root.tasksCount){
-            if (!isForcedHidden && (lastValidIndex < parabolicManager.firstRealTaskIndex || lastValidIndex > parabolicManager.lastRealTaskIndex)) {
-                parabolicManager.updateTasksEdgesIndexes();
-            }
-        }
-    }
-
     onIsDraggedChanged: {
         if(isDragged && (!root.inConfigureAppletsMode)){
             root.dragSource = taskItem;

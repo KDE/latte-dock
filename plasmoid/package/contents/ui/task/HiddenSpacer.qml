@@ -28,7 +28,7 @@ Item{
     width: root.vertical ? wrapper.width : nHiddenSize
     height: root.vertical ? nHiddenSize : wrapper.height
 
-    visible: (rightSpacer ? index === parabolicManager.lastRealTaskIndex : index === parabolicManager.firstRealTaskIndex)
+    visible: (rightSpacer ? index === taskItem.indexer.lastVisibleItemIndex : index === taskItem.indexer.firstVisibleItemIndex)
              || (separatorSpace > 0) || taskItem.inAttentionAnimation
              || taskItem.inFastRestoreAnimation || taskItem.inMimicParabolicAnimation
 

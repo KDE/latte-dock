@@ -166,13 +166,13 @@ Item{
             var scales = taskItem.parabolic.applyParabolicEffect(index, currentMousePosition, center);
 
             //Left hiddenSpacer for first task
-            if(((index === parabolicManager.firstRealTaskIndex )&&(root.tasksCount>0)) && !root.disableLeftSpacer
+            if(((index === taskItem.indexer.firstVisibleItemIndex)&&(root.tasksCount>0)) && !root.disableLeftSpacer
                     && !inMimicParabolicAnimation && !inFastRestoreAnimation && !inAttentionAnimation){
                 hiddenSpacerLeft.nScale = scales.leftScale - 1;
             }
 
             //Right hiddenSpacer for last task
-            if(((index === parabolicManager.lastRealTaskIndex )&&(root.tasksCount>0)) && !root.disableRightSpacer
+            if(((index === taskItem.indexer.lastVisibleItemIndex )&&(root.tasksCount>0)) && !root.disableRightSpacer
                     && !inMimicParabolicAnimation && !inFastRestoreAnimation && !inAttentionAnimation){
                 hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }

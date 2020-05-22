@@ -62,7 +62,7 @@ Item {
             maximumWidth: {
                 if (showsAudioBadge) {
                     return height;
-                } else if ( index === parabolicManager.firstRealTaskIndex && !taskItem.containsMouse) {
+                } else if ( index === taskItem.indexer.firstVisibleItemIndex && !taskItem.containsMouse) {
                     return (wrapper.mScale * (taskItem.metrics.iconSize - (root.enableShadows ? shadowSize/2 : 0)));
                 } else {
                     return 999999;

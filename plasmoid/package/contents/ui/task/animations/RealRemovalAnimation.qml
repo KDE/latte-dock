@@ -68,9 +68,6 @@ SequentialAnimation {
                 //! the removal animation a small margin must applied
                 var spacer = taskItem.headItemIsSeparator ? -(2+taskItem.metrics.totals.lengthEdge) : ( taskItem.headItemIsSeparator ? (2+taskItem.metrics.totals.lengthEdge)/2 : 0);
 
-                //console.log("EDGES ::: " + parabolicManager.firstRealTaskIndex + " _ " + parabolicManager.lastRealTaskIndex);
-                //console.log("Removing ::: " + lastValidIndex + " _ " + launcherUrl + " _ " + previousTaskIsSeparator + " _ " + nextTaskIsSeparator);
-
                 if (root.vertical) {
                     taskItem.anchors.top = previousTask.bottom;
                     taskItem.anchors.topMargin = spacer;
