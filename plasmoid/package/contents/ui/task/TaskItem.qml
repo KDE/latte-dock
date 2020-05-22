@@ -329,15 +329,17 @@ MouseArea{
                 return;
             }
 
-            if ((windowsCount >= 2) && (windowsCount > previousCount)
-                    && !(taskItem.containsMouse || parabolicManager.neighbourIsHovered(itemIndex)) ){
-                if(root.dragSource == null)
-                    taskItem.groupWindowAdded();
-            }
-            else if ((windowsCount >=1) &&(windowsCount < previousCount)){
+            if ((windowsCount >= 2)
+                    && (windowsCount > previousCount)
+                    && !(taskItem.containsMouse)
+                    && !root.dragSource ){
+                taskItem.groupWindowAdded();
+            } else if ((windowsCount >= 1)
+                     && (windowsCount < previousCount)
+                     && !root.dragSource
+                     && !taskItem.delayingRemove){
                 //sometimes this is triggered in dragging with no reason
-                if(root.dragSource == null && !taskItem.delayingRemove)
-                    taskItem.groupWindowRemoved();
+                taskItem.groupWindowRemoved();
             }
 
             if (windowsCount>=1) {

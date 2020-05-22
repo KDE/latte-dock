@@ -62,17 +62,17 @@ SequentialAnimation{
     }
 
     onStopped: {
-        if (!taskItem.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
+        /*if (!taskItem.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
             taskItem.inMimicParabolicAnimation = false;
         } else {
             taskItem.inMimicParabolicAnimation = true;
-        }
+        }*/
 
         newWindowAnimation.stop();
 
-        if (!taskItem.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
-            taskItem.inBlockingAnimation = false;
-        }
+        //if (!taskItem.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
+        taskItem.inBlockingAnimation = false;
+        //}
 
         root.mimicEnterForParabolic();
 
