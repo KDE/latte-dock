@@ -733,9 +733,9 @@ PlasmaComponents.Page {
                         tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
 
                         onClicked: {
-                            latteView.isPreferredForShortcuts = checked
+                            latteView.isPreferredForShortcuts = checked;
                             if (!latteView.layout.preferredForShortcutsTouched) {
-                                latteView.layout.preferredForShortcutsTouched = true
+                                latteView.layout.preferredForShortcutsTouched = true;
                             }
                         }
                     }

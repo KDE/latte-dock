@@ -962,6 +962,11 @@ Item {
     Ability.PositionShortcuts {
         id: _shortcuts
         bridge: latteBridge
+        isStealingGlobalPositionShortcuts: plasmoid.configuration.isPreferredForPositionShortcuts
+
+        onDisabledIsStealingGlobalPositionShortcuts: {
+            plasmoid.configuration.isPreferredForPositionShortcuts = false;
+        }
     }
 
     AppletAbility.Requirements{

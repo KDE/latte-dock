@@ -38,6 +38,31 @@ Item {
         }
     }
 
+    onClientChanged: {
+        if (client) {
+            if (host.appletIdStealingPositionShortcuts !== shortcutsBridge.appletIndex) {
+                client.disabledIsStealingGlobalPositionShortcuts();
+            }
+        }
+    }
+    Connections {
+        target: client
+        onIsStealingGlobalPositionShortcutsChanged: {
+            if (isConnected && client.isStealingGlobalPositionShortcuts) {
+                host.currentAppletStealingPositionShortcuts(appletIndex);
+            }
+        }
+    }
+
+    Connections {
+        target: host
+        onCurrentAppletStealingPositionShortcuts: {
+            if (appletIndex !== id && client) {
+                client.disabledIsStealingGlobalPositionShortcuts();
+            }
+        }
+    }
+
     Component.onDestruction: {
         if (isConnected) {
             host.sglActivateEntryAtIndex.disconnect(client.sglActivateEntryAtIndex);

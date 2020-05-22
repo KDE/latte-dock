@@ -162,14 +162,18 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     id: unifyGlobalShortcutsChk
                     Layout.maximumWidth: dialog.optionsWidth
-                    text: i18n("➊ Based on position shortcuts apply only for tasks")
-                    checked: !plasmoid.configuration.unifiedGlobalShortcuts
+                    text: i18n("➊ Based on position shortcuts apply only on tasks")
+                    // checked: tasks.configuration.isPreferredForPositionShortcuts //! Disabled because it was not updated between multiple Tasks
                     tooltip: i18n("Based on position global shortcuts are enabled only for tasks and not for applets")
                     visible: dialog.advancedLevel
                     enabled: latteView.isPreferredForShortcuts || (!latteView.layout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
 
+                    readonly property bool isPreferredForShotcuts: tasks.configuration.isPreferredForPositionShortcuts
+
+                    onIsPreferredForShotcutsChanged: checked = isPreferredForShotcuts;
+
                     onClicked: {
-                        plasmoid.configuration.unifiedGlobalShortcuts = !checked
+                        tasks.configuration.isPreferredForPositionShortcuts = !tasks.configuration.isPreferredForPositionShortcuts;
                     }
                 }
             }

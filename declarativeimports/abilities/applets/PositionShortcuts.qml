@@ -29,7 +29,7 @@ AbilityDefinition.PositionShortcuts {
     property bool isStealingGlobalPositionShortcuts: false
     readonly property bool showPositionShortcutBadges: ref.shortcuts.showPositionShortcutBadges
 
-    readonly property AbilityDefinition.ParabolicEffect local: AbilityDefinition.ParabolicEffect {}
+    signal disabledIsStealingGlobalPositionShortcuts();
 
     Item {
         id: ref

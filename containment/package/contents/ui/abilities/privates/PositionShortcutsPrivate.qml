@@ -34,6 +34,8 @@ AbilityDefinition.PositionShortcuts {
 
     property int appletIdStealingPositionShortcuts: -1
 
+    signal currentAppletStealingPositionShortcuts(int id);
+
     Binding {
         target: _shortcutsprivate
         property: "badges"
