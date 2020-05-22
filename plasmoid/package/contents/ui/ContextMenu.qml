@@ -892,7 +892,6 @@ PlasmaComponents.ContextMenu {
         enabled: (root.indexer.separators.length > 0) && visualParent && visualParent.isSeparator
 
         onClicked: {
-            //root.removeLastSeparator();
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
             if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {

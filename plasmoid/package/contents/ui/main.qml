@@ -135,6 +135,7 @@ Item {
     property Item tasksExtendedManager: _tasksExtendedManager
     readonly property alias animations: _animations
     readonly property alias indexer: _indexer
+    readonly property alias launchers: _launchers
     readonly property alias metrics: _metrics
     readonly property alias parabolic: _parabolic
     readonly property alias shortcuts: _shortcuts
@@ -948,6 +949,10 @@ Item {
         allItemsCount: tasksModel.count
     }
 
+    Ability.Launchers {
+        id: _launchers
+    }
+
     Ability.Metrics {
         id: _metrics
         bridge: latteBridge
@@ -1262,6 +1267,7 @@ Item {
                     delegate: Task.TaskItem{
                         animations: _animations
                         indexer: _indexer
+                        launchers: _launchers
                         metrics: _metrics
                         parabolic: _parabolic
                         requires: _requires
@@ -1622,7 +1628,7 @@ Item {
 
     //// functions
     function addInternalSeparatorAtPos(pos) {
-        var separatorName = parabolicManager.freeAvailableSeparatorName();
+        var separatorName = launchers.freeAvailableSeparatorName();
 
         if (separatorName !== "") {
             tasksExtendedManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
@@ -1763,20 +1769,6 @@ Item {
                 latteView.layoutsManager.launchersSignals.addLauncher(root.launchersGroup, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
-            }
-        }
-    }
-
-    function removeLastSeparator(){
-        var separatorName = parabolicManager.lastPresentSeparatorName();
-
-        if (separatorName !== "") {
-            if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
-                latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
-                                                                         root.launchersGroup, separatorName);
-            } else {
-                root.launcherForRemoval = separatorName;
-                tasksModel.requestRemoveLauncher(separatorName);
             }
         }
     }

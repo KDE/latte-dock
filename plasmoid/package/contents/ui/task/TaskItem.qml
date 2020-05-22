@@ -183,6 +183,7 @@ MouseArea{
     //abilities
     property Item animations: null
     property Item indexer: null
+    property Item launchers: null
     property Item metrics: null
     property Item parabolic: null
     property Item requires: null
@@ -205,7 +206,7 @@ MouseArea{
             }
         }
 
-        if (parabolicManager.isSeparator(modelLauncherUrl)){
+        if (launchers.isSeparator(modelLauncherUrl)){
             isSeparator = true;
         } else {
             isSeparator = false;
@@ -1666,10 +1667,6 @@ MouseArea{
         onTriggered: {
             if (taskItem.itemIndex >= 0){
                 taskItem.lastValidIndex = taskItem.itemIndex;
-
-                if (root.showWindowsOnlyFromLaunchers) {
-                    parabolicManager.updateTasksEdgesIndexes();
-                }
             }
 
             if (latteView && latteView.debugModeTimers) {
