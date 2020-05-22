@@ -780,7 +780,7 @@ Item{
                 if(!running){
                     var halfZoom = 1 + ((taskItem.parabolic.factor.zoom - 1) / 2);
 
-                    wrapper.calculateScales(taskItem.metrics.totals.thickness/2);
+                    wrapper.calculateParabolicScales(taskItem.metrics.totals.thickness/2);
 
                     taskItem.animationEnded();
                     //   root.animations--;

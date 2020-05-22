@@ -703,7 +703,7 @@ MouseArea{
                     if (step >= taskItem.animations.hoverPixelSensitivity){
                         icList.currentSpot = mousePos;
 
-                        wrapper.calculateScales(mousePos);
+                        wrapper.calculateParabolicScales(mousePos);
                     }
                 }
             }
@@ -1233,7 +1233,7 @@ MouseArea{
                 mimicParabolicScale = taskItem.parabolic.factor.zoom;
             }
 
-            wrapper.calculateScales(icList.currentSpot);
+            wrapper.calculateParabolicScales(icList.currentSpot);
         }
     }
 

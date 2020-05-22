@@ -1020,11 +1020,11 @@ Item {
 
             if (root.isHorizontal){
                 layoutsContainer.currentSpot = mouseX;
-                wrapper.calculateScales(mouseX);
+                wrapper.calculateParabolicScales(mouseX);
             }
             else{
                 layoutsContainer.currentSpot = mouseY;
-                wrapper.calculateScales(mouseY);
+                wrapper.calculateParabolicScales(mouseY);
             }
         }
 
@@ -1063,7 +1063,7 @@ Item {
                     if (step >= appletItem.animations.hoverPixelSensitivity){
                         layoutsContainer.currentSpot = mouse.x;
 
-                        wrapper.calculateScales(mouse.x);
+                        wrapper.calculateParabolicScales(mouse.x);
                     }
                 }
                 else{
@@ -1071,7 +1071,7 @@ Item {
                     if (step >= appletItem.animations.hoverPixelSensitivity){
                         layoutsContainer.currentSpot = mouse.y;
 
-                        wrapper.calculateScales(mouse.y);
+                        wrapper.calculateParabolicScales(mouse.y);
                     }
                 }
             }

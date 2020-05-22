@@ -617,7 +617,7 @@ Item{
         NumberAnimation { duration: 0 }
     }
 
-    function calculateScales( currentMousePosition ){
+    function calculateParabolicScales( currentMousePosition ){
         if (parabolic.factor.zoom===1 || parabolic.restoreZoomIsBlocked) {
             return;
         }
@@ -639,7 +639,7 @@ Item{
     } //scale
 
 
-    function signalUpdateScale(nIndex, nScale, step){
+    function updateScale(nIndex, nScale, step){
         if(appletItem && !appletItem.containsMouse && (appletItem.index === nIndex)){
             if ( ((parabolicEffectIsSupported && !appletItem.originalAppletBehavior) || appletItem.latteApplet)
                     && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)
@@ -663,7 +663,7 @@ Item{
 
             if (!appletItem.isSeparator && !appletItem.isHidden) {
                 //! when accepted
-                signalUpdateScale(delegateIndex, newScale, step);
+                updateScale(delegateIndex, newScale, step);
 
                 if (newScale > 1) { // clear lower items
                     parabolic.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
@@ -676,7 +676,7 @@ Item{
             if (communicator.parabolicEffectIsSupported) {
                 communicator.bridge.parabolic.client.hostRequestUpdateLowerItemScale(1, step);
             } else {
-                signalUpdateScale(appletItem.index, 1, 0);
+                updateScale(appletItem.index, 1, 0);
             }
         }
     }
@@ -690,7 +690,7 @@ Item{
 
             if (!appletItem.isSeparator && !appletItem.isHidden) {
                 //! when accepted
-                signalUpdateScale(delegateIndex, newScale, step);
+                updateScale(delegateIndex, newScale, step);
 
                 if (newScale > 1) { // clear higher items
                     parabolic.sglUpdateHigherItemScale(delegateIndex+1, 1, 0);
@@ -703,7 +703,7 @@ Item{
             if (communicator.parabolicEffectIsSupported) {
                 communicator.bridge.parabolic.client.hostRequestUpdateHigherItemScale(1, step);
             } else {
-                signalUpdateScale(appletItem.index, 1, 0);
+                updateScale(appletItem.index, 1, 0);
             }
         }
     }

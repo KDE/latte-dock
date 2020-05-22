@@ -156,7 +156,7 @@ Item{
         height: wrapper.regulatorHeight
     }
 
-    function calculateScales( currentMousePosition ){
+    function calculateParabolicScales( currentMousePosition ){
         if (taskItem.parabolic.factor.zoom===1 || parabolic.restoreZoomIsBlocked) {
             return;
         }
@@ -190,7 +190,7 @@ Item{
         }
     } //nScale
 
-    function signalUpdateScale(nIndex, nScale, step){
+    function updateScale(nIndex, nScale, step){
         if (!taskItem.containsMouse && (index === nIndex)
                 && (taskItem.hoverEnabled || inMimicParabolicAnimation)&&(tasksExtendedManager.waitingLaunchersLength()===0)){
             if (taskItem.inAttentionAnimation) {
@@ -220,7 +220,7 @@ Item{
         if (delegateIndex === index) {
             if (!taskItem.isSeparator && !taskItem.isHidden) {
                 //! when accepted
-                signalUpdateScale(delegateIndex, newScale, step);
+                updateScale(delegateIndex, newScale, step);
 
                 if (newScale > 1) { // clear lower items
                     taskItem.parabolic.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
@@ -229,7 +229,7 @@ Item{
                 taskItem.parabolic.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
             }
         } else if ((newScale === 1) && (index < delegateIndex)) {
-            signalUpdateScale(index, 1, 0);
+            updateScale(index, 1, 0);
         }
     }
 
@@ -237,7 +237,7 @@ Item{
         if (delegateIndex === index) {
             if (!taskItem.isSeparator && !taskItem.isHidden) {
                 //! when accepted
-                signalUpdateScale(delegateIndex, newScale, step);
+                updateScale(delegateIndex, newScale, step);
 
                 if (newScale > 1) { // clear lower items
                     taskItem.parabolic.sglUpdateHigherItemScale(delegateIndex+1, 1, 0); // clear higher items
@@ -246,7 +246,7 @@ Item{
                 taskItem.parabolic.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
             }
         } else if ((newScale === 1) && (index > delegateIndex)) {
-            signalUpdateScale(index, 1, 0);
+            updateScale(index, 1, 0);
         }
     }
 
