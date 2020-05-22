@@ -650,7 +650,8 @@ FocusScope {
                 Layout.fillWidth: true
                 text: i18n("Remove")
                 iconSource: "delete"
-                visible: latteView.layout.viewsCount > 1
+                enabled: latteView.layout.viewsCount > 1
+                opacity: enabled ? 1 : 0
                 tooltip: i18n("Remove current dock")
 
                 onClicked: latteView.removeView()
