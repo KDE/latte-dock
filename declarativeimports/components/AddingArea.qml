@@ -18,6 +18,7 @@
 */
 
 import QtQuick 2.7
+import QtGraphicalEffects 1.0
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -29,6 +30,8 @@ Rectangle{
     color: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, backgroundOpacity)
     border.width: 1
     border.color: outlineColor
+
+    property bool drawAddCross: true
 
     readonly property color outlineColorBase: theme.backgroundColor
     readonly property real outlineColorBaseBrightness: ColorizerTools.colorBrightness(outlineColorBase)
@@ -76,6 +79,14 @@ Rectangle{
         }
 
         readonly property int lengthEdge: addingArea.radius + units.smallSpacing
+
+        layer.enabled: true
+        layer.effect: DropShadow {
+            radius: 4
+            fast: true
+            samples: 2 * radius
+            color: "#020202"
+        }
 
         states: [
             ///Bottom Edge
@@ -142,7 +153,7 @@ Rectangle{
 
     AddItem {
         anchors.centerIn: parent
-
+        visible: drawAddCross
         width: thickness
         height: thickness
 
