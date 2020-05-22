@@ -25,4 +25,23 @@ Item {
 
     property Item host: null
     property Item client: null
+
+    readonly property bool isConnected: host && client
+
+    onIsConnectedChanged: {
+        if (isConnected) {
+            host.sglActivateEntryAtIndex.connect(client.sglActivateEntryAtIndex);
+            host.sglNewInstanceForEntryAtIndex.connect(client.sglNewInstanceForEntryAtIndex);
+        } else {
+            host.sglActivateEntryAtIndex.disconnect(client.sglActivateEntryAtIndex);
+            host.sglNewInstanceForEntryAtIndex.disconnect(client.sglNewInstanceForEntryAtIndex);
+        }
+    }
+
+    Component.onDestruction: {
+        if (isConnected) {
+            host.sglActivateEntryAtIndex.disconnect(client.sglActivateEntryAtIndex);
+            host.sglNewInstanceForEntryAtIndex.disconnect(client.sglNewInstanceForEntryAtIndex);
+        }
+    }
 }

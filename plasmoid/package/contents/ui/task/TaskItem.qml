@@ -186,6 +186,7 @@ MouseArea{
     property Item metrics: null
     property Item parabolic: null
     property Item requires: null
+    property Item shortcuts: null
 
     onModelLauncherUrlChanged: {
         if (modelLauncherUrl !== ""){
@@ -1448,6 +1449,29 @@ MouseArea{
         onAnimationsFinishedChanged: {
             if (scrollableList.animationsFinished) {
                 taskItem.slotPublishGeometries();
+            }
+        }
+    }
+
+    Connections {
+        target: shortcuts
+        onSglActivateEntryAtIndex: {
+            var visibleIndex = taskItem.indexer.visibleIndex(taskItem.itemIndex);
+
+            if (visibleIndex === entryIndex) {
+                if (taskItem.isGroupParent) {
+                    taskItem.activateNextTask();
+                } else {
+                    taskItem.activateTask();
+                }
+            }
+        }
+
+        onSglNewInstanceForEntryAtIndex: {
+            var visibleIndex = taskItem.indexer.visibleIndex(taskItem.itemIndex);
+
+            if (visibleIndex === entryIndex) {
+                tasksModel.requestNewInstance(taskItem.modelIndex());
             }
         }
     }

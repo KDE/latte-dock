@@ -302,7 +302,7 @@ bool ContainmentInterface::newInstanceForPlasmaTask(const int index)
 
                 for (QQuickItem *item : childItems) {
                     if (auto *metaObject = item->metaObject()) {
-                        int methodIndex{metaObject->indexOfMethod("ewInstanceForTaskAtIndex(QVariant)")};
+                        int methodIndex{metaObject->indexOfMethod("newInstanceForTaskAtIndex(QVariant)")};
 
                         if (methodIndex == -1) {
                             continue;

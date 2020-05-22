@@ -155,7 +155,10 @@ AppletAbility.Indexer {
     }
 
     function visibleIndex(taskIndex) {
-        if (taskIndex < firstVisibleItemIndex || taskIndex>lastVisibleItemIndex) {
+        if (taskIndex<firstVisibleItemIndex
+                || taskIndex>lastVisibleItemIndex
+                || hidden.indexOf(taskIndex) >= 0
+                || separators.indexOf(taskIndex) >= 0) {
             return -1;
         }
 
@@ -166,7 +169,7 @@ AppletAbility.Indexer {
 
         for (var i=0; i<layout.children.length; ++i){
             var item = layout.children[i];
-            if (hidden.indexOf(item.itemIndex) >=0 || separators.indexOf(item.itemIndex) >=0) {
+            if (hidden.indexOf(item.itemIndex)>=0 || separators.indexOf(item.itemIndex)>=0) {
                 continue;
             }
 

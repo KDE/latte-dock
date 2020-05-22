@@ -42,25 +42,25 @@ Ability.PositionShortcutsPrivate {
     }
 
     //! this is called from Latte::View::ContainmentInterface
-    function activateEntryAtIndex(index) {
-        if (typeof index !== "number") {
+    function activateEntryAtIndex(entryIndex) {
+        if (typeof entryIndex !== "number") {
             return;
         }
 
-        sglActivateEntryAtIndex(index);
+        sglActivateEntryAtIndex(entryIndex);
     }
 
     //! this is called from Latte::View::ContainmentInterface
-    function newInstanceForEntryAtIndex(index) {
-        if (typeof index !== "number") {
+    function newInstanceForEntryAtIndex(entryIndex) {
+        if (typeof entryIndex !== "number") {
             return;
         }
 
-        sglNewInstanceForEntryAtIndex(index);
+        sglNewInstanceForEntryAtIndex(entryIndex);
     }
 
     //! this is called from Latte::View::ContainmentInterface
-    function appletIdForIndex(index) {
-        return indexer.appletIdForVisibleIndex(index);
+    function appletIdForIndex(entryIndex) {
+        return indexer.appletIdForVisibleIndex(entryIndex);
     }
 }

@@ -75,8 +75,6 @@ Item {
     property bool initializationStep: false //true
     property bool isHovered: false
     property bool showBarLine: plasmoid.configuration.showBarLine
-    property bool showTaskShortcutBadges: false
-    property int tasksBaseIndex: 0
     property bool useThemePanel: plasmoid.configuration.useThemePanel
     property bool taskInAnimation: noTasksInAnimation > 0 ? true : false
     property bool transparentPanel: plasmoid.configuration.transparentPanel
@@ -139,6 +137,7 @@ Item {
     readonly property alias indexer: _indexer
     readonly property alias metrics: _metrics
     readonly property alias parabolic: _parabolic
+    readonly property alias shortcuts: _shortcuts
 
     readonly property alias containsDrag: mouseHandler.containsDrag
     readonly property bool dragAreaEnabled: latteView ? (root.dragSource !== null
@@ -963,6 +962,11 @@ Item {
         local.restoreZoomIsBlocked: root.contextMenu || windowsPreviewDlg.containsMouse
     }
 
+    Ability.PositionShortcuts {
+        id: _shortcuts
+        bridge: latteBridge
+    }
+
     AppletAbility.Requirements{
         id: _requires
         bridge: latteBridge
@@ -1259,6 +1263,7 @@ Item {
                         metrics: _metrics
                         parabolic: _parabolic
                         requires: _requires
+                        shortcuts: _shortcuts
                     }
 
                     property int currentSpot : -1000
@@ -1629,50 +1634,14 @@ Item {
         }
     }
 
-    // This is called by dockcorona in response to a Meta+number shortcut.
     function activateTaskAtIndex(index) {
-        if (typeof index !== "number") {
-            return;
-        }
-
-        var tasks = icList.contentItem.children;
-
-        //! this is used to bypass the internal separators if they exist
-        var confirmedIndex = parabolicManager.realTaskIndex(index - 1);
-
-        for(var i=0; i<tasks.length; ++i){
-            var task = tasks[i];
-
-            if (task.itemIndex === confirmedIndex) {
-                if (task.isGroupParent) {
-                    task.activateNextTask();
-                } else {
-                    task.activateTask();
-                }
-                break;
-            }
-        }
+        // This is called with Meta+number shortcuts by plasmashell when Tasks are in a plasma panel.
+        shortcuts.sglActivateEntryAtIndex(index);
     }
 
-    // This is called by dockcorona in response to a Meta+Alt+number shortcut.
     function newInstanceForTaskAtIndex(index) {
-        if (typeof index !== "number") {
-            return;
-        }
-
-        var tasks = icList.contentItem.children;
-
-        //! this is used to bypass the internal separators if they exist
-        var confirmedIndex = parabolicManager.realTaskIndex(index - 1);
-
-        for(var i=0; i<tasks.length; ++i){
-            var task = tasks[i];
-
-            if (task.itemIndex === confirmedIndex) {
-                TaskTools.activateTask(task.modelIndex(), task.m, Qt.ControlModifier , task);
-                break;
-            }
-        }
+        // This is called with Meta+Alt+number shortcuts by plasmashell when Tasks are in a plasma panel.
+        shortcuts.sglNewInstanceForEntryAtIndex(index);
     }
 
     function getBadger(identifier) {
@@ -1808,17 +1777,6 @@ Item {
                 tasksModel.requestRemoveLauncher(separatorName);
             }
         }
-    }
-
-    //! show/hide tasks numbered badges e.g. from global shortcuts
-    function setShowTaskShortcutBadges(showBadges){
-        showTaskShortcutBadges = showBadges;
-    }
-
-    //! setup the tasks first index based on the fact that this is a plasmoid
-    //! and applets could exist before it
-    function setTasksBaseIndex(base){
-        tasksBaseIndex = base;
     }
 
     function previewContainsMouse() {

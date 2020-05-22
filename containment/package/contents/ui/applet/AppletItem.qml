@@ -616,17 +616,17 @@ Item {
         target: appletItem.shortcuts
 
         onSglActivateEntryAtIndex: {
-            if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
-                latteApplet.activateTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
-            } else if (shortcuts.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
+            var visibleIndex = appletItem.indexer.visibleIndex(appletItem.index);
+
+            if (visibleIndex === entryIndex && !communicator.positionShortcutsAreSupported) {
                 latteView.extendedInterface.toggleAppletExpanded(applet.id);
             }
         }
 
         onSglNewInstanceForEntryAtIndex: {
-            if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
-                latteApplet.newInstanceForTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
-            } else if (shortcuts.unifiedGlobalShortcuts && refersEntryIndex(entryIndex)) {
+            var visibleIndex = appletItem.indexer.visibleIndex(appletItem.index);
+
+            if (visibleIndex === entryIndex && !communicator.positionShortcutsAreSupported) {
                 latteView.extendedInterface.toggleAppletExpanded(applet.id);
             }
         }

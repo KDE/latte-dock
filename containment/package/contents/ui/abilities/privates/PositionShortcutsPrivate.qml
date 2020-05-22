@@ -19,22 +19,20 @@
 
 import QtQuick 2.7
 
-Item {
+import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
+
+AbilityDefinition.PositionShortcuts {
     id: _shortcutsprivate
     property Item layouts: null
     property bool updateIsBlocked: false
 
     readonly property bool unifiedGlobalShortcuts: appletIdStealingPositionShortcuts === -1
 
-    property bool showPositionShortcutBadges: false
     property bool showAppletShortcutBadges: false
     property bool showMetaBadge: false
     property int applicationLauncherId: -1
 
     property int appletIdStealingPositionShortcuts: -1
-
-    signal sglActivateEntryAtIndex(int entryIndex);
-    signal sglNewInstanceForEntryAtIndex(int entryIndex);
 
     Binding {
         target: _shortcutsprivate
@@ -47,7 +45,7 @@ Item {
                 if (appletItem
                         && appletItem.index>=0
                         && appletItem.communicator
-                        && appletItem.communicator.onPositionShortcutsAreSupported
+                        && appletItem.communicator.positionShortcutsAreSupported
                         && appletItem.communicator.bridge.shortcuts.client.isStealingGlobalPositionShortcuts) {
                     return appletItem.index;
                 }
@@ -59,7 +57,7 @@ Item {
                 if (appletItem
                         && appletItem.index>=0
                         && appletItem.communicator
-                        && appletItem.communicator.onPositionShortcutsAreSupported
+                        && appletItem.communicator.positionShortcutsAreSupported
                         && appletItem.communicator.bridge.shortcuts.client.isStealingGlobalPositionShortcuts) {
                     return appletItem.index;
                 }
@@ -71,7 +69,7 @@ Item {
                 if (appletItem
                         && appletItem.index>=0
                         && appletItem.communicator
-                        && appletItem.communicator.onPositionShortcutsAreSupported
+                        && appletItem.communicator.positionShortcutsAreSupported
                         && appletItem.communicator.bridge.shortcuts.client.isStealingGlobalPositionShortcuts) {
                     return appletItem.index;
                 }
