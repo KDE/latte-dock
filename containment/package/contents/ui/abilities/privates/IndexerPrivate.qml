@@ -242,7 +242,7 @@ AbilityDefinition.Indexer {
                    && applet.communicator.bridge
                    && applet.communicator.bridge.indexer) {
             if (itemVisibleIndex >= vIndexBase
-                    && itemVisibleIndex< (vIndexBase + appletItem.communicator.bridge.indexer.client.visibleItemsCount)) {
+                    && itemVisibleIndex< (vIndexBase + applet.communicator.bridge.indexer.client.visibleItemsCount)) {
                 return true;
             }
         }
