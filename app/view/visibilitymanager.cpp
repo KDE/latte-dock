@@ -73,7 +73,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         connect(m_latteView, &Latte::View::inEditModeChanged, this, &VisibilityManager::initViewFlags);
 
         connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, [&]() {
-            if (m_mode == Types::AlwaysVisible && m_latteView->screen()) {
+            if (m_mode == Types::AlwaysVisible) {
                 updateStrutsBasedOnLayoutsAndActivities();
             }
         });
@@ -235,9 +235,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         });
 
         m_connections[base+2] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
-            if (m_corona && m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-                updateStrutsBasedOnLayoutsAndActivities(true);
-            }
+            updateStrutsBasedOnLayoutsAndActivities(true);
         });
 
         raiseView(true);

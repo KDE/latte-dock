@@ -570,7 +570,6 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
     //! this is needed in order to update correctly the screenGeometries
     if (visibility() && corona() && visibility()->mode() == Types::AlwaysVisible) {
         //! main use of BYPASSCKECKS is from Positioner when the view changes screens
-
         emit availableScreenRectChangedFrom(this);
         emit availableScreenRegionChangedFrom(this);
     }
