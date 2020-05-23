@@ -248,7 +248,8 @@ Item{
                 } else if (appletMinimumLength > appletItem.metrics.iconSize){
                     return appletMinimumLength;
                 } else if ((appletPreferredLength > appletItem.metrics.iconSize)
-                           || (appletItem.originalAppletBehavior && appletPreferredLength > 0 )){
+                           || (appletPreferredLength === 0)/*applet wants to hide itself*/
+                           || (appletItem.originalAppletBehavior && appletPreferredLength > 0)){
                     return appletPreferredLength;
                 }
             }

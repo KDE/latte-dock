@@ -20,6 +20,7 @@
 import QtQuick 2.0
 
 import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.abilities.applets 0.1 as AppletAbility
 
@@ -36,12 +37,13 @@ AppletAbility.Indexer {
     property int firstVisibleItemIndex: -1
     property int lastVisibleItemIndex: -1
 
+    readonly property bool isReady: layout.children.length >= allItemsCount
     readonly property int maxIndex: 99999
 
     Binding {
         target: _indexer
         property: "firstVisibleItemIndex"
-        when: layout.children.length >= allItemsCount
+        when: isReady
         value: {
             var ind = maxIndex;
             for(var i=0; i<layout.children.length; ++i) {
@@ -61,7 +63,7 @@ AppletAbility.Indexer {
     Binding {
         target: _indexer
         property: "lastVisibleItemIndex"
-        when: layout.children.length >= allItemsCount
+        when: isReady
         value: {
             var ind = -1;
 
@@ -94,6 +96,7 @@ AppletAbility.Indexer {
                     count = count + 1;
                 }
             }
+
             return count;
         }
     }

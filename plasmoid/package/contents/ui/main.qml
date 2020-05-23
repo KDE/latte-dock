@@ -48,7 +48,6 @@ import "../code/ColorizerTools.js" as ColorizerTools
 
 Item {
     id:root
-
     Layout.fillWidth: scrollingEnabled && !root.vertical
     Layout.fillHeight: scrollingEnabled && root.vertical
 
@@ -238,6 +237,8 @@ Item {
     readonly property Item indicators: latteView ? latteView.indicatorsManager : indicatorsStandaloneLoader.item
     //END Latte Dock Panel properties
 
+    readonly property bool inEditMode: latteInEditMode || plasmoid.userConfiguring
+
     //BEGIN Latte Dock Communicator
     property QtObject latteBridge: null
 
@@ -324,8 +325,13 @@ Item {
     Binding {
         target: plasmoid
         property: "status"
-        value: (tasksModel.anyTaskDemandsAttentionInValidTime || root.dragSource ?
-                    PlasmaCore.Types.NeedsAttentionStatus : PlasmaCore.Types.PassiveStatus);
+        value: {
+            if (tasksModel.anyTaskDemandsAttentionInValidTime || root.dragSource) {
+                return PlasmaCore.Types.NeedsAttentionStatus;
+            }
+
+            return PlasmaCore.Types.PassiveStatus;
+        }
     }
 
     /////
