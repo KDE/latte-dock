@@ -109,6 +109,10 @@
     <entry name="showOnlyCurrentActivity" type="Bool">
       <default>true</default>
     </entry>
+    <entry name="hideAllTasks" type="Bool">
+      <default>false</default>
+      <label>When "true" all tasks are filtered and its behavior also</label>
+    </entry>
 
     <entry name="showInfoBadge" type="Bool">
       <default>true</default>

@@ -838,7 +838,7 @@ MouseArea{
                     activateTask();
                 }
             } else if (mouse.button == Qt.LeftButton){
-                if( !taskItem.isLauncher ){
+                if( !taskItem.isLauncher && !root.disableAllWindowsFunctionality ){
                     if ( (root.leftClickAction === LatteTasks.Types.PreviewWindows && isGroupParent)
                             || ( (LatteCore.WindowSystem.isPlatformWayland || !LatteCore.WindowSystem.compositingActive)
                                 && root.leftClickAction === LatteTasks.Types.PresentWindows

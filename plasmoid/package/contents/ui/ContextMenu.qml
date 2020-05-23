@@ -986,7 +986,7 @@ PlasmaComponents.ContextMenu {
     //!comparing with the design decisions of other taskmanagers
     PlasmaComponents.MenuItem {
         id: closeWindowItem
-        visible: (visualParent && visualParent.m.IsLauncher !== true && visualParent.m.IsStartup !== true)
+        visible: (visualParent && visualParent.m.IsLauncher !== true && visualParent.m.IsStartup !== true) && !root.disableAllWindowsFunctionality
 
         enabled: visualParent && visualParent.m.IsClosable === true
 

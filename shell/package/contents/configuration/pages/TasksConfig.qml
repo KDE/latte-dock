@@ -36,8 +36,7 @@ PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
 
-    property bool disableAllWindowsFunctionality: tasks.configuration.showWindowsOnlyFromLaunchers
-                                                  && !latteView.indicator.enabled
+    property bool disableAllWindowsFunctionality: tasks.configuration.hideAllTasks
 
     ColumnLayout {
         id: content
@@ -199,6 +198,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current screen")
                     checked: tasks.configuration.showOnlyCurrentScreen
+                    enabled: !disableAllWindowsFunctionality
 
                     onClicked: {
                         tasks.configuration.showOnlyCurrentScreen = checked
@@ -209,6 +209,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current desktop")
                     checked: tasks.configuration.showOnlyCurrentDesktop
+                    enabled: !disableAllWindowsFunctionality
 
                     onClicked: {
                         tasks.configuration.showOnlyCurrentDesktop = checked
@@ -219,6 +220,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current activity")
                     checked: tasks.configuration.showOnlyCurrentActivity
+                    enabled: !disableAllWindowsFunctionality
 
                     onClicked: {
                         tasks.configuration.showOnlyCurrentActivity = checked
@@ -230,6 +232,7 @@ PlasmaComponents.Page {
                     text: i18n("Show only tasks from launchers")
                     checked: tasks.configuration.showWindowsOnlyFromLaunchers
                     visible: dialog.advancedLevel
+                    enabled: !disableAllWindowsFunctionality
 
                     onClicked: {
                         tasks.configuration.showWindowsOnlyFromLaunchers = checked
@@ -238,10 +241,23 @@ PlasmaComponents.Page {
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
-                    text: i18n("Group tasks of the same application")
+                    text: i18n("Show only launchers and hide all tasks")
+                    checked: tasks.configuration.hideAllTasks
+                    tooltip: i18n("Tasks become hidden and only launchers are shown")
+                    visible: dialog.advancedLevel
+
+                    onClicked: {
+                        tasks.configuration.hideAllTasks = checked
+                    }
+                }
+
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
+                    text: i18n("Show only grouped tasks for same application")
                     checked: tasks.configuration.groupTasksByDefault
                     tooltip: i18n("By default group tasks of the same application")
                     visible: dialog.advancedLevel
+                    enabled: !disableAllWindowsFunctionality
 
                     onClicked: {
                         tasks.configuration.groupTasksByDefault = checked

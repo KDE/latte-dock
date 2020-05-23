@@ -68,7 +68,7 @@ Item {
     property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool inConfigureAppletsMode: latteView ? latteView.inConfigureAppletsMode : true
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
-    property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && !indicators.isEnabled
+    property bool disableAllWindowsFunctionality: plasmoid.configuration.hideAllTasks
     property bool dropNewLauncher: false
     property bool inActivityChange: false
     property bool inDraggingPhase: false
@@ -177,8 +177,8 @@ Item {
     property bool showOnlyCurrentDesktop: plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: plasmoid.configuration.showOnlyCurrentActivity
     property bool showPreviews:  hoverAction === LatteTasks.Types.PreviewWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
-    property bool showWindowActions: plasmoid.configuration.showWindowActions
-    property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers
+    property bool showWindowActions: plasmoid.configuration.showWindowActions && !disableAllWindowsFunctionality
+    property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers || disableAllWindowsFunctionality
 
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
