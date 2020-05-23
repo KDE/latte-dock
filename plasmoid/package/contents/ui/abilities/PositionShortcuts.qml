@@ -28,12 +28,13 @@ AppletAbility.PositionShortcuts {
     id: shortcuts
 
     function shortcutIndex(entryIndex) {
-        if (!bridge) {
+        if (!bridge || bridge.shortcuts.host.unifiedGlobalShortcuts) {
             return indexer.visibleIndex(entryIndex);
         }
 
         var base = bridge.indexer.host.visibleIndex(bridge.shortcuts.appletIndex);
 
-        return (indexer.visibleIndex(entryIndex) - base);
+        //!visible indexes start counting from 1
+        return (indexer.visibleIndex(entryIndex) - base + 1);
     }
 }
