@@ -143,7 +143,7 @@ SequentialAnimation{
         var launcherExists = !(!hasShownLauncher || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl));
 
         //var hideStartup =  launcherExists && taskItem.isStartup; //! fix #976
-        var hideWindow =  root.showWindowsOnlyFromLaunchers && !launcherExists && taskItem.isWindow;
+        var hideWindow =  (root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) && !launcherExists && taskItem.isWindow;
 
         if (tasksExtendedManager.immediateLauncherExists(taskItem.launcherUrl) && taskItem.isLauncher) {
             tasksExtendedManager.removeImmediateLauncher(taskItem.launcherUrl);

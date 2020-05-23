@@ -326,7 +326,7 @@ MouseArea{
         property int previousCount: 0
 
         onWindowsCountChanged: {
-            if (root.showWindowsOnlyFromLaunchers && !root.indicatorsEnabled) {
+            if (root.disableAllWindowsFunctionality) {
                 return;
             }
 
@@ -433,6 +433,14 @@ MouseArea{
                 }
             }
 
+            onDisableAllWindowsFunctionalityChanged: {
+                if (!root.editMode) {
+                    return;
+                }
+
+                taskItem.updateVisibilityBasedOnLaunchers();
+            }
+
             onShowWindowsOnlyFromLaunchersChanged: {
                 if (!root.editMode) {
                     return;
@@ -442,7 +450,7 @@ MouseArea{
             }
 
             onInActivityChangeChanged: {
-                if (root.showWindowsOnlyFromLaunchers && !root.inActivityChange) {
+                if ((root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) && !root.inActivityChange) {
                     taskItem.updateVisibilityBasedOnLaunchers();
                 }
             }
@@ -1369,7 +1377,7 @@ MouseArea{
     }
 
     function slotLaunchersChangedFor(launcher) {
-        if (root.showWindowsOnlyFromLaunchers && launcher === launcherUrl) {
+        if ((root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) && launcher === launcherUrl) {
             updateVisibilityBasedOnLaunchers()
         }
     }
@@ -1379,8 +1387,8 @@ MouseArea{
                                 && (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) == -1) )
                                || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl));
 
-        if (root.showWindowsOnlyFromLaunchers) {
-            var hideWindow =  !launcherExists && taskItem.isWindow;
+        if (root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) {
+            var hideWindow =  !launcherExists && (taskItem.isWindow || root.disableAllWindowsFunctionality);
 
             if (hideWindow) {
                 isForcedHidden = true;

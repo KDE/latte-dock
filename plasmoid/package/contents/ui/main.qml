@@ -178,7 +178,7 @@ Item {
     property bool showOnlyCurrentActivity: plasmoid.configuration.showOnlyCurrentActivity
     property bool showPreviews:  hoverAction === LatteTasks.Types.PreviewWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
     property bool showWindowActions: plasmoid.configuration.showWindowActions && !disableAllWindowsFunctionality
-    property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers || disableAllWindowsFunctionality
+    property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers && !disableAllWindowsFunctionality
 
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
@@ -697,8 +697,9 @@ Item {
 
             var NULL_UUID = "00000000-0000-0000-0000-000000000000";
 
-            if (activities.indexOf(NULL_UUID) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1)
+            if (activities.length === 0 || activities.indexOf(NULL_UUID) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1) {
                 return true;
+            }
 
             return false;
         }

@@ -164,7 +164,7 @@ SequentialAnimation {
                 hidePreview();
             }
 
-            if (root.showWindowsOnlyFromLaunchers) {
+            if (root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) {
                 if (root.vertical) {
                     taskItem.anchors.top = undefined;
                     taskItem.anchors.topMargin = 0;

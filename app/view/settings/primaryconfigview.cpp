@@ -752,7 +752,6 @@ void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
             }
         }
     }
-
 }
 
 //!BEGIN borders
