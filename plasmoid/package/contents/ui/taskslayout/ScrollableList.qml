@@ -56,7 +56,7 @@ Flickable{
 
     readonly property int scrollFirstPos: 0
     readonly property int scrollLastPos: contentsExtraSpace
-    readonly property int scrollStep: metrics.iconSize * 1.5
+    readonly property int scrollStep: metrics.totals.length * 3.5
     readonly property int currentPos: !root.vertical ? contentX : contentY
 
     readonly property int autoScrollTriggerLength: metrics.iconSize + metrics.totals.lengthEdge
@@ -176,17 +176,19 @@ Flickable{
 
         var cP = task.mapToItem(scrollableList, 0, 0);
 
+        var localStep = horizontalAnimation.running || verticalAnimation.running ? 3.5 * metrics.totals.length : metrics.totals.length;
+
         if (!root.vertical) {
             if (currentPos !== scrollFirstPos && cP.x < autoScrollTriggerLength) {
-                decreasePosWithStep(metrics.iconSize*1.5);
+                decreasePosWithStep(localStep);
             } else if (currentPos !== scrollLastPos && (cP.x+task.width > (scrollableList.width-autoScrollTriggerLength))) {
-                increasePosWithStep(metrics.iconSize*1.5);
+                increasePosWithStep(localStep);
             }
         } else {
             if (currentPos !== scrollFirstPos && cP.y < autoScrollTriggerLength) {
-                decreasePosWithStep(metrics.iconSize*1.5);
+                decreasePosWithStep(localStep);
             } else if (currentPos !== scrollLastPos && (cP.y+task.height > (scrollableList.height-autoScrollTriggerLength))) {
-                increasePosWithStep(metrics.iconSize*1.5);
+                increasePosWithStep(localStep);
             }
         }
 
@@ -211,7 +213,7 @@ Flickable{
     Behavior on contentX {
         NumberAnimation {
             id: horizontalAnimation
-            duration: animations.speedFactor.current*1.7*animations.duration.large
+            duration: animations.speedFactor.current*4.1*animations.duration.large
             easing.type: Easing.OutQuad
         }
     }
@@ -219,7 +221,7 @@ Flickable{
     Behavior on contentY {
         NumberAnimation {
             id: verticalAnimation
-            duration: animations.speedFactor.current*1.7*animations.duration.large
+            duration: animations.speedFactor.current*4.1*animations.duration.large
             easing.type: Easing.OutQuad
         }
     }
