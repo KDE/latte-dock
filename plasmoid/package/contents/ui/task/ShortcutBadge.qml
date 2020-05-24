@@ -33,17 +33,18 @@ Loader{
     property string badgeString: (shorcutBadge.fixedIndex>=1 && shorcutBadge.fixedIndex<20 && taskItem.shortcuts.badges.length===19) ?
                                      taskItem.shortcuts.badges[shorcutBadge.fixedIndex-1] : ""
 
-    onActiveChanged: {
-        if (active && taskItem.shortcuts.showPositionShortcutBadges) {
+    onActiveChanged: updateShorcutIndex();
+
+    Connections {
+        target: taskItem
+        onItemIndexChanged: shortcutBadge.updateShorcutIndex();
+    }
+
+    function updateShorcutIndex() {
+        if (shorcutBadge.active && taskItem.shortcuts.showPositionShortcutBadges) {
             fixedIndex = taskItem.shortcuts.shortcutIndex(taskItem.itemIndex);
         } else {
             fixedIndex = -1;
-        }
-    }
-
-    Component.onCompleted: {
-        if (taskItem.shortcuts.isEnabled) {
-            fixedIndex = taskItem.shortcuts.shortcutIndex(taskItem.itemIndex);
         }
     }
 
