@@ -77,7 +77,7 @@ Loader{
             return theme;
         }
 
-        if (latteView && latteView.windowsTracker && !root.hasExpandedApplet) {
+        if (latteView && latteView.windowsTracker && !(root.plasmaBackgroundForPopups && root.hasExpandedApplet)) {
             if (root.windowColors === LatteContainment.Types.ActiveWindowColors && selectedWindowsTracker.activeWindowScheme) {
                 return selectedWindowsTracker.activeWindowScheme;
             }

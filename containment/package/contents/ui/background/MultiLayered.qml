@@ -549,7 +549,6 @@ BackgroundProperties{
 
             readonly property bool forceSolidness: root.forceSolidPanel || !LatteCore.WindowSystem.compositingActive
 
-
             Behavior on opacity{
                 enabled: LatteCore.WindowSystem.compositingActive
                 NumberAnimation { duration: barLine.animationTime }
