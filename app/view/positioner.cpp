@@ -601,7 +601,7 @@ void Positioner::updatePosition(QRect availableScreenRect)
             if (m_view->alignment() == Latte::Types::Left) {
                 position = {screenGeometry.x() + gap(screenGeometry.width()), y};
             } else if (m_view->alignment() == Latte::Types::Right) {
-                position = {screenGeometry.x() + gapReversed(screenGeometry.width()), y};
+                position = {screenGeometry.x() + gapReversed(screenGeometry.width()) + 1, y};
             } else {
                 position = {screenGeometry.x() + gapCentered(screenGeometry.width()), y};
             }
@@ -618,7 +618,7 @@ void Positioner::updatePosition(QRect availableScreenRect)
             if (m_view->alignment() == Latte::Types::Left) {
                 position = {screenGeometry.x() + gap(screenGeometry.width()), y};
             } else if (m_view->alignment() == Latte::Types::Right) {
-                position = {screenGeometry.x() + gapReversed(screenGeometry.width()), y};
+                position = {screenGeometry.x() + gapReversed(screenGeometry.width()) + 1, y};
             } else {
                 position = {screenGeometry.x() + gapCentered(screenGeometry.width()), y};
             }
@@ -635,7 +635,7 @@ void Positioner::updatePosition(QRect availableScreenRect)
             if (m_view->alignment() == Latte::Types::Top) {
                 position = {x, availableScreenRect.y() + gap(availableScreenRect.height())};
             } else if (m_view->alignment() == Latte::Types::Bottom) {
-                position = {x, availableScreenRect.y() + gapReversed(availableScreenRect.height())};
+                position = {x, availableScreenRect.y() + gapReversed(availableScreenRect.height()) + 1};
             } else {
                 position = {x, availableScreenRect.y() + gapCentered(availableScreenRect.height())};
             }
@@ -652,7 +652,7 @@ void Positioner::updatePosition(QRect availableScreenRect)
             if (m_view->alignment() == Latte::Types::Top) {
                 position = {x, availableScreenRect.y() + gap(availableScreenRect.height())};
             } else if (m_view->alignment() == Latte::Types::Bottom) {
-                position = {x, availableScreenRect.y() + gapReversed(availableScreenRect.height())};
+                position = {x, availableScreenRect.y() + gapReversed(availableScreenRect.height()) + 1};
             } else {
                 position = {x, availableScreenRect.y() + gapCentered(availableScreenRect.height())};
             }

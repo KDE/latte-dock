@@ -97,13 +97,13 @@ Item {
     property bool lastChildOfEndLayout: index === appletItem.layouter.endLayout.lastVisibleIndex
 
     readonly property bool atScreenEdge: {
-        if (root.panelAlignment !== LatteCore.Types.Justify || root.inConfigureAppletsMode || plasmoid.configuration.offset!==0) {
+        if (root.panelAlignment === LatteCore.Types.Center) {
             return false;
         }
 
         if (root.panelAlignment === LatteCore.Types.Justify) {
             //! Justify case
-            if (root.maxLengthPerCentage!==100) {
+            if (root.maxLengthPerCentage!==100 || plasmoid.configuration.offset!==0) {
                 return false;
             }
 
@@ -124,21 +124,19 @@ Item {
             return false;
         }
 
-        //! [disabled] because it is probably not needed at all. If in the future there is a report
-        //! describing a case that this would be useful this disablement choice can be rethought
-        /*if (root.panelAlignment === LatteCore.Types.Left) {
+        if (root.panelAlignment === LatteCore.Types.Left && plasmoid.configuration.offset===0) {
             //! Left case
             return firstChildOfMainLayout;
-        } else if (root.panelAlignment === LatteCore.Types.Right) {
+        } else if (root.panelAlignment === LatteCore.Types.Right && plasmoid.configuration.offset===0) {
             //! Right case
-            return lastChildOfMainLayout
+            return lastChildOfMainLayout;
         }
 
-        if (root.panelAlignment === LatteCore.Types.Top) {
+        if (root.panelAlignment === LatteCore.Types.Top && plasmoid.configuration.offset===0) {
             return firstChildOfMainLayout && latteView && latteView.y === latteView.screenGeometry.y;
-        } else if (root.panelAlignment === LatteCore.Types.Bottom) {
+        } else if (root.panelAlignment === LatteCore.Types.Bottom && plasmoid.configuration.offset===0) {
             return lastChildOfMainLayout && latteView && ((latteView.y + latteView.height) === (latteView.screenGeometry.y + latteView.screenGeometry.height));
-        }*/
+        }
 
         return false;
     }

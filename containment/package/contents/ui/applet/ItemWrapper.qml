@@ -301,7 +301,7 @@ Item{
         target: wrapper
         property: "marginsLength"
         when: latteView && (!root.inStartup || visibilityManager.inTempHiding)
-        value: root.inFullJustify && atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins
+        value: atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins
     }
 
     function updateAutoFillLength() {

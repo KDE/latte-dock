@@ -49,8 +49,17 @@ Item{
 
     readonly property bool atEdgeForcingFittsLaw: !isSeparator && !parabolicEffectMarginsEnabled && atScreenEdge
     readonly property int subtrackedMargins: {
-        if (atEdgeForcingFittsLaw && !appletItem.isAutoFillApplet && ((firstChildOfStartLayout && rightSpacer) || (lastChildOfEndLayout && !rightSpacer ))) {
-            return (wrapper.edgeLengthMarginsDisabled ? appletItem.metrics.margin.length + appletItem.lengthAppletPadding : appletItem.metrics.margin.length);
+        if (atEdgeForcingFittsLaw && !appletItem.isAutoFillApplet) {
+            var inJustifyStart = (root.inFullJustify && firstChildOfStartLayout && rightSpacer);
+            var inJustifyEnd = (root.inFullJustify && lastChildOfEndLayout && !rightSpacer);
+
+            var singleApplet = firstChildOfMainLayout && lastChildOfMainLayout;
+            var inSideStart = ((root.panelAlignment === LatteCore.Types.Left || root.panelAlignment === LatteCore.Types.Top) && firstChildOfMainLayout && rightSpacer);
+            var inSideEnd = ((root.panelAlignment === LatteCore.Types.Right || root.panelAlignment === LatteCore.Types.Bottom) && lastChildOfMainLayout && !rightSpacer);
+
+            if (inJustifyStart || inJustifyEnd || inSideStart || inSideEnd) {
+                return (wrapper.edgeLengthMarginsDisabled ? appletItem.metrics.margin.length + appletItem.lengthAppletPadding : appletItem.metrics.margin.length);
+            }
         }
 
         return 0;
