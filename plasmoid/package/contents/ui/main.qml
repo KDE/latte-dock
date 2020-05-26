@@ -168,7 +168,7 @@ Item {
     property int manualScrollTasksType: plasmoid.configuration.manualScrollTasksType
 
     property bool showInfoBadge: plasmoid.configuration.showInfoBadge
-    property bool showProgressBadge: plasmoid.configuration.showInfoBadge
+    property bool showProgressBadge: plasmoid.configuration.showProgressBadge
     property bool showAudioBadge: plasmoid.configuration.showAudioBadge
     property bool infoBadgeProminentColorEnabled: plasmoid.configuration.infoBadgeProminentColorEnabled
     property bool audioBadgeActionsEnabled: plasmoid.configuration.audioBadgeActionsEnabled
