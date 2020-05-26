@@ -651,15 +651,25 @@ MouseArea{
                 && (((root.showPreviews || (windowsPreviewDlg.visible && !isLauncher))
                      && windowsPreviewDlg.activeItem !== taskItem)
                     || root.highlightWindows)){
-            if (hoveredTimerObj) {
+            if (hoveredTimerObj)  {
                 //! don't delay showing preview in normal states,
                 //! that is when the dock wasn't hidden
-                if (!hoveredTimerObj.running) {
+                if (!hoveredTimerObj.running && !windowsPreviewDlg.visible) {
+                    //! first task with no previews shown can trigger the delay
                     hoveredTimerObj.start();
+                } else {
+                    //! when the previews are already shown, update them immediately
+                    showPreviewWindow();
                 }
             } else {
                 if (!root.disableAllWindowsFunctionality) {
-                    hoveredTimerObj = hoveredTimerComponent.createObject(taskItem);
+                    if (!windowsPreviewDlg.visible) {
+                        //! first task with no previews shown can trigger the delay
+                        hoveredTimerObj = hoveredTimerComponent.createObject(taskItem);
+                    } else {
+                        //! when the previews are already shown, update them immediately
+                        showPreviewWindow();
+                    }
                 }
             }
         }
@@ -1584,7 +1594,6 @@ MouseArea{
             id: hoveredTimer
 
             interval: Math.max(150,plasmoid.configuration.previewsDelay)
-
             repeat: false
 
             onTriggered: {
