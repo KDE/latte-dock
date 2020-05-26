@@ -471,10 +471,9 @@ Item {
     }
 
     function forcePreviewsHiding(debug) {
-        //console.log("   Tasks: Force hide previews event called: "+debug);
-        windowsPreviewDlg.visible = false;
-        windowsPreviewDlg.mainItem.visible = false;
+        // console.log(" org.kde.latte   Tasks: Force hide previews event called: "+debug);
         windowsPreviewDlg.activeItem = null;
+        windowsPreviewDlg.visible = false;
     }
 
     function hidePreview(){
@@ -503,9 +502,9 @@ Item {
 
     LatteTasks.Dialog{
         id: windowsPreviewDlg
-        // hideOnWindowDeactivate: false
-        type: PlasmaCore.Dialog.Tooltip
-        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
+        type: plasmoid.configuration.previewWindowAsPopup ? PlasmaCore.Dialog.PopupMenu : PlasmaCore.Dialog.Tooltip
+        flags: plasmoid.configuration.previewWindowAsPopup ? Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.Popup :
+                                                             Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
 
         location: root.location
         mainItem: toolTipDelegate
@@ -596,7 +595,7 @@ Item {
                                 && mouseHandler.hoveredItem === windowsPreviewDlg.activeItem));
 
             if (!contains) {
-                root.forcePreviewsHiding();
+                root.forcePreviewsHiding(9.9);
             }
         }
     }

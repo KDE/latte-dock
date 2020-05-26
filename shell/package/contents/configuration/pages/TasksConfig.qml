@@ -161,6 +161,19 @@ PlasmaComponents.Page {
                 }
 
                 LatteComponents.CheckBox {
+                    id: previewPopupChk
+                    Layout.maximumWidth: dialog.optionsWidth
+                    text: i18n("Preview window behaves as popup")
+                    checked: tasks.configuration.previewWindowAsPopup
+                    visible: dialog.advancedLevel
+                    enabled: !disableAllWindowsFunctionality
+
+                    onClicked: {
+                        tasks.configuration.previewWindowAsPopup = checked;
+                    }
+                }
+
+                LatteComponents.CheckBox {
                     id: unifyGlobalShortcutsChk
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("➊ Based on position shortcuts apply only on tasks")

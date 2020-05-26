@@ -124,6 +124,9 @@ MouseArea{
     property bool inPopup: false
     property bool inRemoveStage: false
 
+    //! after clicking to show/hide preview enter events are trigerred even though the should not
+    property bool showPreviewsIsBlockedFromReleaseEvent: false
+
     property bool isAbleToShowPreview: true
     property bool isActive: (IsActive === true) ? true : false
     property bool isDemandingAttention: (IsDemandingAttention === true) ? true : false
@@ -336,9 +339,9 @@ MouseArea{
                     && !root.dragSource ){
                 taskItem.groupWindowAdded();
             } else if ((windowsCount >= 1)
-                     && (windowsCount < previousCount)
-                     && !root.dragSource
-                     && !taskItem.delayingRemove){
+                       && (windowsCount < previousCount)
+                       && !root.dragSource
+                       && !taskItem.delayingRemove){
                 //sometimes this is triggered in dragging with no reason
                 taskItem.groupWindowRemoved();
             }
@@ -644,7 +647,10 @@ MouseArea{
         }
 
         //! show previews if enabled
-        if(isAbleToShowPreview && ((root.showPreviews && windowsPreviewDlg.activeItem !== taskItem) || root.highlightWindows)){
+        if(isAbleToShowPreview && !showPreviewsIsBlockedFromReleaseEvent
+                && (((root.showPreviews || (windowsPreviewDlg.visible && !isLauncher))
+                     && windowsPreviewDlg.activeItem !== taskItem)
+                    || root.highlightWindows)){
             if (hoveredTimerObj) {
                 //! don't delay showing preview in normal states,
                 //! that is when the dock wasn't hidden
@@ -657,6 +663,8 @@ MouseArea{
                 }
             }
         }
+
+        showPreviewsIsBlockedFromReleaseEvent = false;
 
         if (root.autoScrollTasksEnabled) {
             scrollableList.autoScrollFor(taskItem, false);
@@ -854,7 +862,7 @@ MouseArea{
                         if(windowsPreviewDlg.activeItem !== taskItem || !windowsPreviewDlg.visible){
                             showPreviewWindow();
                         } else {
-                            root.forcePreviewsHiding(21.1);
+                            forceHidePreview(21.1);
                         }
                     } else if ( (root.leftClickAction === LatteTasks.Types.PresentWindows && !(isGroupParent && !LatteCore.WindowSystem.compositingActive))
                                || ((root.leftClickAction === LatteTasks.Types.PreviewWindows && !isGroupParent)) ) {
@@ -1018,13 +1026,16 @@ MouseArea{
             } else {
                 launcherAction();
             }
-        }
-        else{
+        } else{
             if (model.IsGroupParent) {
                 if (LatteCore.WindowSystem.compositingActive && backend.canPresentWindows()) {
                     root.presentWindows(root.plasma515 ? model.WinIdList: model.LegacyWinIdList );
                 }
             } else {
+                if (windowsPreviewDlg.visible) {
+                    forceHidePreview(8.3);
+                }
+
                 if (isMinimized) {
                     var i = modelIndex();
                     tasksModel.requestToggleMinimized(i);
@@ -1036,6 +1047,15 @@ MouseArea{
                 }
             }
         }
+    }
+
+    function forceHidePreview(debugtext) {
+        showPreviewsIsBlockedFromReleaseEvent = true;
+        if (hoveredTimerObj) {
+            hoveredTimerObj.stop();
+        }
+
+        root.forcePreviewsHiding(debugtext);
     }
 
     function showPreviewWindow() {
@@ -1573,7 +1593,7 @@ MouseArea{
                 }
 
                 if (taskItem.containsMouse) {
-                    if (root.showPreviews) {
+                    if (root.showPreviews || (windowsPreviewDlg.visible && !isLauncher)) {
                         showPreviewWindow();
                     }
 

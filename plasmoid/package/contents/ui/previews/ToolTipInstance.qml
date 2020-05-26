@@ -163,11 +163,12 @@ Column {
     // thumbnail container
     Item {
         id: thumbnail
+        anchors.horizontalCenter: parent.horizontalCenter
+
         width: header.width
         // similar to 0.5625 = 1 / (16:9) as most screens are
         // round necessary, otherwise shadow mask for players has gap!
         height: Math.round(0.5 * width) + (!winTitle.visible? Math.round(winTitle.height) : 0)
-        anchors.horizontalCenter: parent.horizontalCenter
 
         visible: isWin
 
@@ -371,15 +372,14 @@ Column {
                 }
             }
         }
+    }
 
-        //active window line
-        Rectangle{
-            width: parent.width
-            height: 2
-            color: isTaskActive() ? theme.buttonFocusColor : theme.buttonHoverColor
-            anchors.bottom: parent.bottom
-            visible: isTaskActive() || area2.containsMouse
-        }
+    //active window line
+    Rectangle{
+        width: header.width
+        height: 3
+        opacity: isTaskActive() || area2.containsMouse ? 1 : 0 /*this way avoid trebbling when moving from task to task in groups*/
+        color: isTaskActive() ? theme.buttonFocusColor : theme.buttonHoverColor
     }
 
     function generateTitle() {
