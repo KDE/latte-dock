@@ -66,8 +66,10 @@ Loader {
 
     readonly property bool locked: appletItem.lockZoom || appletItem.parabolic.factor.zoom === 1
 
-    property real visualLockedWidth: appletItem.metrics.iconSize + appletItem.internalWidthMargins
-    property real visualLockedHeight: appletItem.metrics.iconSize + appletItem.internalHeightMargins
+    //! Qt.min() is used to make sure that indicators always take into account the current applet length provided
+    //! and as such always look centered even when applet are aligned to length screen edge
+    property real visualLockedWidth: Math.min(appletItem.metrics.iconSize, appletWrapper.width) + appletItem.internalWidthMargins
+    property real visualLockedHeight: Math.min(appletItem.metrics.iconSize, appletWrapper.height) + appletItem.internalHeightMargins
 
     //! Communications !//
 
