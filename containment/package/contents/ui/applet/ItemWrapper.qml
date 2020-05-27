@@ -70,7 +70,7 @@ Item{
 
     property bool editMode: root.inConfigureAppletsMode
 
-    property bool edgeLengthMarginsDisabled: isSeparator || !communicator.requires.lengthMarginsEnabled || !parabolicEffectIsSupported
+    property bool edgeLengthMarginsDisabled: (isSeparator || !communicator.requires.lengthMarginsEnabled || !parabolicEffectIsSupported) && !isSquare
 
     property int appletWidth: applet ?  applet.width : -1
     property int appletHeight: applet ?  applet.height : -1
