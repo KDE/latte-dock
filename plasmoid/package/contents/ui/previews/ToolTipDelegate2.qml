@@ -34,7 +34,6 @@ import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
 
 import org.kde.taskmanager 0.1 as TaskManager
 
-
 PlasmaExtras.ScrollArea {
     id: mainToolTip
     property Item parentTask
@@ -111,36 +110,21 @@ PlasmaExtras.ScrollArea {
 
         Loader {
             id: contentItem
-            active: mainToolTip.rootIndex !== undefined
-            asynchronous: true
-            sourceComponent: isGroup ? groupToolTip : singleTooltip
+            active: !isLauncher
+            sourceComponent: Grid {
+                rows: !isVerticalPanel
+                columns: isVerticalPanel
+                flow: isVerticalPanel ? Grid.TopToBottom : Grid.LeftToRight
+                spacing: units.largeSpacing
 
-            Component {
-                id: singleTooltip
+                Repeater {
+                    id: groupRepeater
+                    model: DelegateModel {
+                        model: isGroup ? tasksModel : 1
+                        rootIndex: mainToolTip.rootIndex
 
-                ToolTipInstance {
-                    submodelIndex: mainToolTip.rootIndex
-                }
-            }
-
-            Component {
-                id: groupToolTip
-
-                Grid {
-                    rows: !isVerticalPanel
-                    columns: isVerticalPanel
-                    flow: isVerticalPanel ? Grid.TopToBottom : Grid.LeftToRight
-                    spacing: units.largeSpacing
-
-                    Repeater {
-                        id: groupRepeater
-                        model: DelegateModel {
-                            model: mainToolTip.rootIndex ? tasksModel : null
-                            rootIndex: mainToolTip.rootIndex
-
-                            delegate: ToolTipInstance {
-                                submodelIndex: tasksModel.makeModelIndex(mainToolTip.rootIndex.row, index)
-                            }
+                        delegate: ToolTipInstance {
+                            submodelIndex: isGroup ? tasksModel.makeModelIndex(mainToolTip.rootIndex.row, index) : mainToolTip.rootIndex
                         }
                     }
                 }

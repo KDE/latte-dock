@@ -1109,12 +1109,7 @@ MouseArea{
 
     function preparePreviewWindow(hideClose){
         windowsPreviewDlg.visualParent = previewsVisualParent;
-
         toolTipDelegate.parentTask = taskItem;
-
-        //! WORKAROUND, in order for toolTipDelegate to re-instantiate the previews model when
-        //! previews are changing from single instance preview to another single instance
-        toolTipDelegate.rootIndex = undefined;
         toolTipDelegate.rootIndex = tasksModel.makeModelIndex(itemIndex, -1);
 
         toolTipDelegate.hideCloseButtons = hideClose;
