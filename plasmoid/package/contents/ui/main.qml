@@ -573,9 +573,10 @@ Item {
 
                 //! Workaround in order to update properly the previews thumbnails
                 //! when switching between single thumbnail to another single thumbnail
-                mainItem.visible = false;
+                //! maybe is not needed any more, let's disable it
+                //mainItem.visible = false;
                 visible = true;
-                mainItem.visible = true;
+                //mainItem.visible = true;
             }
         }
     }
