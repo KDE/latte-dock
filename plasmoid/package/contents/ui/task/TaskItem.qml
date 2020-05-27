@@ -642,12 +642,12 @@ MouseArea{
             windowsPreviewDlg.hide(1);
         }
 
-        if (root.latteView && !root.showPreviews && root.titleTooltips){
+        if (root.latteView && (!root.showPreviews && root.titleTooltips) || (root.showPreviews && root.titleTooltips && isLauncher)){
             showTitleTooltip();
         }
 
         //! show previews if enabled
-        if(isAbleToShowPreview && !showPreviewsIsBlockedFromReleaseEvent
+        if(isAbleToShowPreview && !showPreviewsIsBlockedFromReleaseEvent && !isLauncher
                 && (((root.showPreviews || (windowsPreviewDlg.visible && !isLauncher))
                      && windowsPreviewDlg.activeItem !== taskItem)
                     || root.highlightWindows)){
