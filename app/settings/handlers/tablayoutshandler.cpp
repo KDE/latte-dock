@@ -775,7 +775,9 @@ void TabLayouts::on_dropEvent(QDropEvent *event)
 void TabLayouts::on_keyReleaseEvent(QKeyEvent *event)
 {
     if (event && event->key() == Qt::Key_Delete && m_parentDialog->currentPage() == Dialog::LayoutPage){
-        on_remove_layout();
+        //! Disabled because it deletes a layout when the user is editing its layout name and presses Delete
+        //! there must be a way to block that deletion
+        //on_remove_layout();
     }
 }
 
