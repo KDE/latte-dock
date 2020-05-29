@@ -33,32 +33,32 @@ import "../applet/indicator" as AppletIndicator
 Loader {
     id: environmentLoader
 
-    width: active ? item.width : 0
-    height: active ? item.height: 0
+    width: root.isHorizontal ? length : localThickness
+    height: root.isVertical ? length :  localThickness
 
     property int alignment: LatteCore.Types.BottomEdgeCenterAlign
 
-    sourceComponent: MouseArea{
-        id: mainArea
-        width: root.isHorizontal ? length : localThickness + metrics.margin.screenEdge
-        height: root.isVertical ? length :  localThickness + metrics.margin.screenEdge
+    readonly property bool useAllLayouts: root.panelAlignment === LatteCore.Types.Justify
 
-        acceptedButtons: Qt.LeftButton | Qt.MidButton
-
-        readonly property int localThickness: metrics.totals.thickness
-        readonly property int length: {
-            if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
-                return root.isHorizontal ? root.width : root.height;
-            }
-
-            return useAllLayouts ? root.maxLength : background.totals.visualLength;
+    readonly property int localThickness: active ? metrics.totals.thickness + metrics.margin.screenEdge : 0
+    readonly property int length: {
+        if (!active) {
+            return 0;
         }
 
-        property bool wheelIsBlocked: false
+        if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
+            return root.isHorizontal ? root.width : root.height;
+        }
 
+        return useAllLayouts ? root.maxLength : background.totals.visualLength;
+    }
+
+    sourceComponent: MouseArea{
+        id: mainArea
+        acceptedButtons: Qt.LeftButton | Qt.MidButton
         hoverEnabled: true
 
-        readonly property bool useAllLayouts: root.panelAlignment === LatteCore.Types.Justify
+        property bool wheelIsBlocked: false
 
         property int lastPressX: -1
         property int lastPressY: -1
@@ -245,7 +245,7 @@ Loader {
 
             AnchorChanges {
                 target: environmentLoader
-                anchors{ top:undefined; bottom:_mainLayout.bottom; left:parent.left; right:undefined;
+                anchors{ top:undefined; bottom:_mainLayout.bottom; left:_mainLayout.left; right:undefined;
                     horizontalCenter: undefined; verticalCenter:undefined}
             }
         },
@@ -255,7 +255,7 @@ Loader {
 
             AnchorChanges {
                 target: environmentLoader
-                anchors{ top:undefined; bottom: _mainLayout.bottom; left:undefined; right:parent.right;
+                anchors{ top:undefined; bottom: _mainLayout.bottom; left:undefined; right:_mainLayout.right;
                     horizontalCenter: undefined; verticalCenter:undefined}
             }
         },
