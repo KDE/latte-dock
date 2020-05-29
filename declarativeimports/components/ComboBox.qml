@@ -161,8 +161,8 @@ T.ComboBox {
 
             PlasmaCore.IconItem {
                 id: selectedIcon
-                width: textLabel.height
-                height: textLabel.height
+                implicitWidth: textLabel.height
+                implicitHeight: textLabel.height
 
                 colorGroup: PlasmaCore.Theme.ButtonColorGroup
                 source: {
