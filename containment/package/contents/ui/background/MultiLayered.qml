@@ -402,6 +402,7 @@ BackgroundProperties{
 
             function updateEffectsArea() {
                 if (!updateEffectsAreaTimer.running) {
+                    invUpdateEffectsArea();
                     updateEffectsAreaTimer.start();
                 }
             }
@@ -449,7 +450,7 @@ BackgroundProperties{
 
             Timer {
                 id: updateEffectsAreaTimer
-                interval: 50
+                interval: 16 //! 60Hz or 60calls/sec
                 onTriggered: solidBackground.invUpdateEffectsArea();
             }
 
