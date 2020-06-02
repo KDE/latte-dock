@@ -166,7 +166,7 @@ Item{
         property: "headThicknessGap"
         when: latteView && !root.editMode && !editModeVisual.inEditMode && !inTempHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
         value: {
-            if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView) {
+            if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView || latteView.byPassWM) {
                 return 0;
             }
 
