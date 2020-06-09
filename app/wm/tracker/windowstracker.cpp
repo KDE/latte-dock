@@ -998,7 +998,7 @@ void Windows::updateHints(Latte::View *view)
     setExistsWindowActive(view, foundActiveInCurScreen);
     setActiveWindowTouching(view, foundActiveTouchInCurScreen || foundActiveGroupTouchInCurScreen);
     setActiveWindowTouchingEdge(view, foundActiveEdgeTouchInCurScreen);
-    setActiveWindowMaximized(view, (maxWinId.toInt()>0 && (maxWinId == activeTouchWinId)));
+    setActiveWindowMaximized(view, (maxWinId.toInt()>0 && (maxWinId == activeTouchWinId || maxWinId == activeTouchEdgeWinId)));
     setExistsWindowMaximized(view, foundMaximizedInCurScreen);
     setExistsWindowTouching(view, (foundTouchInCurScreen || foundActiveTouchInCurScreen || foundActiveGroupTouchInCurScreen));
     setExistsWindowTouchingEdge(view, (foundActiveEdgeTouchInCurScreen || foundTouchEdgeInCurScreen));
