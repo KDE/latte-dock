@@ -300,8 +300,11 @@ int main(int argc, char **argv)
 
 inline void filterDebugMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    if (msg.endsWith("QML Binding: Not restoring previous value because restoreMode has not been set.This behavior is deprecated.In Qt < 6.0 the default is Binding.RestoreBinding.In Qt >= 6.0 the default is Binding.RestoreBindingOrValue.")) {
-        //! block that warning because it will be needed only after qt6.0 support. Currently Binding.restoreMode can not be supported because
+    if (msg.endsWith("QML Binding: Not restoring previous value because restoreMode has not been set.This behavior is deprecated.In Qt < 6.0 the default is Binding.RestoreBinding.In Qt >= 6.0 the default is Binding.RestoreBindingOrValue.")
+        || msg.endsWith("QML Binding: Not restoring previous value because restoreMode has not been set.\nThis behavior is deprecated.\nYou have to import QtQml 2.15 after any QtQuick imports and set\nthe restoreMode of the binding to fix this warning.\nIn Qt < 6.0 the default is Binding.RestoreBinding.\nIn Qt >= 6.0 the default is Binding.RestoreBindingOrValue.\n")
+        || msg.endsWith("QML Binding: Not restoring previous value because restoreMode has not been set.\nThis behavior is deprecated.\nYou have to import QtQml 2.15 after any QtQuick imports and set\nthe restoreMode of the binding to fix this warning.\nIn Qt < 6.0 the default is Binding.RestoreBinding.\nIn Qt >= 6.0 the default is Binding.RestoreBindingOrValue.")
+        || msg.endsWith("QML Connections: Implicitly defined onFoo properties in Connections are deprecated. Use this syntax instead: function onFoo(<arguments>) { ... }")) {
+        //! block warnings because they will be needed only after qt6.0 support. Currently Binding.restoreMode can not be supported because
         //! qt5.9 is the minimum supported version.
         return;
     }
