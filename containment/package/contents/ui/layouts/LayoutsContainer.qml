@@ -405,7 +405,7 @@ Item{
             readonly property int layoutLength: root.isHorizontal ? debugLayout.grid.width : debugLayout.grid.height
 
             readonly property string tagText: {
-                return "normal:" + debugLayout.shownApplets + " / fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
+                return "normal:" + debugLayout.shownApplets + " / fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength + " / off:" + _mainLayout.inJustifyCenterOffset;
             }
         }
     }
