@@ -205,8 +205,8 @@ Item{
         z:10 //be on top of start and end layouts
         beginIndex: 100
         offset: {
-            if (inConfigureOffset!==0) {
-                return inConfigureOffset;
+            if (inJustifyCenterOffset!==0) {
+                return inJustifyCenterOffset;
             }
 
             if (background.hasBothLengthShadows && !centered) {
@@ -222,8 +222,8 @@ Item{
 
         //! do not update during dragging/moving applets inConfigureAppletsMode
         readonly property bool offsetUpdateIsBlocked: ((root.dragOverlay && root.dragOverlay.pressed) || layouter.appletsInParentChange)
-        property bool isCoveredFromSideLayouts: false
-        property int inConfigureOffset: 0
+        property bool isCoveredFromBothSideLayouts: false
+        property int inJustifyCenterOffset: 0
 
         alignment: {
             if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -279,13 +279,13 @@ Item{
 
         Binding{
             target: _mainLayout
-            property:"isCoveredFromSideLayouts"
+            property:"isCoveredFromBothSideLayouts"
             when: !_mainLayout.offsetUpdateIsBlocked && layouter.inNormalFillCalculationsState
             value: {
                 if (!layouter.mainLayout.onlyInternalSplitters && !_mainLayout.offsetUpdateIsBlocked) {
                     //! one of side layouts goes underneath the main layout when the main layout contains valid applets
                     var limit = (root.maxLength - mainLayout.length)/2;
-                    return ((startLayout.length > limit ) || (endLayout.length > limit));
+                    return ((startLayout.length > limit ) && (endLayout.length > limit));
                 }
 
                 //! start and end layouts length exceed the maximum length
@@ -295,28 +295,34 @@ Item{
 
         Binding{
             target: _mainLayout
-            property:"inConfigureOffset"
+            property:"inJustifyCenterOffset"
             when: !_mainLayout.offsetUpdateIsBlocked && layouter.inNormalFillCalculationsState
             value: {
-                if (!root.inConfigureAppletsMode
-                        || root.panelAlignment !== LatteCore.Types.Justify
-                        || !layouter.mainLayout.onlyInternalSplitters) {
+                if (root.panelAlignment !== LatteCore.Types.Justify) {
                     return 0;
                 }
 
                 var layoutMaxLength = root.maxLength / 2;
+                var sideLayoutMaxLength = layoutMaxLength - mainLayout.length/2;
 
-                if (_mainLayout.isCoveredFromSideLayouts) {
-                    return layoutMaxLength - mainLayout.length/2;
+                if (_mainLayout.isCoveredFromBothSideLayouts && root.inConfigureAppletsMode) {
+                    return sideLayoutMaxLength;
                 }
 
-                if (startLayout.length > layoutMaxLength) {
-                    return (layoutMaxLength - endLayout.length - mainLayout.length/2);
-                } else if (endLayout.length > layoutMaxLength) {
-                    return -(layoutMaxLength - startLayout.length - mainLayout.length/2);
+                if (startLayout.length > sideLayoutMaxLength) {
+                    return (startLayout.length - sideLayoutMaxLength);
+                } else if (endLayout.length > sideLayoutMaxLength) {
+                    return -(endLayout.length - sideLayoutMaxLength);
                 }
 
                 return 0;
+            }
+        }
+
+        Behavior on inJustifyCenterOffset {
+            NumberAnimation {
+                duration: 0.8 * animations.duration.proposed
+                easing.type: Easing.OutCubic
             }
         }
     }
