@@ -51,6 +51,8 @@ Column {
 
     spacing: units.smallSpacing
 
+    readonly property bool descriptionIsVisible: winDescription.text !== ""
+
     readonly property string mprisSourceName: mpris2Source.sourceNameForLauncherUrl(toolTipDelegate.launcherUrl, isGroup ? appPid : pidParent)
     readonly property var playerData: mprisSourceName != "" ? mpris2Source.data[mprisSourceName] : 0
     readonly property bool hasPlayer: !!mprisSourceName && !!playerData
@@ -145,7 +147,7 @@ Column {
                 text: isWin ? generateSubText() : ""
                 textFormat: Text.PlainText
                 opacity: 0.6
-                //visible: text !== "" || isGroup
+                visible: text !== "" || instance.parent.hasVisibleDescription
             }
         }
         // close button

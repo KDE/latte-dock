@@ -117,6 +117,18 @@ PlasmaExtras.ScrollArea {
                 flow: isVerticalPanel ? Grid.TopToBottom : Grid.LeftToRight
                 spacing: units.largeSpacing
 
+                readonly property bool hasVisibleDescription: {
+                    for (var i=0; i<children.length; ++i) {
+                        var child = children[i];
+
+                        if (child && child.descriptionIsVisible) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+
                 Repeater {
                     id: groupRepeater
                     model: DelegateModel {
