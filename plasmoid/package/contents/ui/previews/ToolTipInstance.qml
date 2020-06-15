@@ -136,6 +136,7 @@ Column {
             }
             // subtext
             PlasmaExtras.Heading {
+                id: winDescription
                 level: 6
                 width: isWin ? textWidth : undefined
                 height: undefined
@@ -168,7 +169,7 @@ Column {
         width: header.width
         // similar to 0.5625 = 1 / (16:9) as most screens are
         // round necessary, otherwise shadow mask for players has gap!
-        height: Math.round(root.screenGeometryHeightRatio * width) + (!winTitle.visible? Math.round(winTitle.height) : 0)
+        height: Math.round(root.screenGeometryHeightRatio * width) + (!winTitle.visible? Math.round(winTitle.height) : 0) + activeTaskLine.height
 
         visible: isWin
 
@@ -386,14 +387,15 @@ Column {
                 }
             }
         }
-    }
 
-    //active window line
-    Rectangle{
-        width: header.width
-        height: 3
-        opacity: isTaskActive() ? 1 : 0
-        color: theme.buttonFocusColor
+        Rectangle{
+            id: activeTaskLine
+            anchors.bottom: parent.bottom
+            width: header.width
+            height: 3
+            opacity: isTaskActive() ? 1 : 0
+            color: theme.buttonFocusColor
+        }
     }
 
     function generateTitle() {
