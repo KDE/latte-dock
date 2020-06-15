@@ -226,6 +226,7 @@ Item {
 
     property alias tasksCount: tasksModel.count
 
+    readonly property real screenGeometryHeightRatio: screenGeometry.height / screenGeometry.width
     readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
     readonly property bool viewLayoutIsCurrent: latteView && viewLayout && latteView.layoutsManager

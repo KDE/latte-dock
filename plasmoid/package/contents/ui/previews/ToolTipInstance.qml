@@ -144,7 +144,7 @@ Column {
                 text: isWin ? generateSubText() : ""
                 textFormat: Text.PlainText
                 opacity: 0.6
-                visible: text !== ""
+                //visible: text !== "" || isGroup
             }
         }
         // close button
@@ -168,7 +168,7 @@ Column {
         width: header.width
         // similar to 0.5625 = 1 / (16:9) as most screens are
         // round necessary, otherwise shadow mask for players has gap!
-        height: Math.round(0.5 * width) + (!winTitle.visible? Math.round(winTitle.height) : 0)
+        height: Math.round(root.screenGeometryHeightRatio * width) + (!winTitle.visible? Math.round(winTitle.height) : 0)
 
         visible: isWin
 
@@ -181,10 +181,17 @@ Column {
             // TODO: this causes XCB error message when being visible the first time
             property int winId: isWin && windows[flatIndex] !== undefined ? windows[flatIndex] : 0
 
+            // There's no PlasmaComponents3 version
+            PlasmaComponents.Highlight {
+                anchors.fill: hoverHandler
+                visible: hoverHandler.containsMouse
+                pressed: hoverHandler.containsPress
+            }
 
             Loader{
                 id:previewThumbX11Loader
                 anchors.fill: parent
+                anchors.margins: 2
                 active: !LatteCore.WindowSystem.isPlatformWayland
                 visible: !albumArtImage.visible && !thumbnailSourceItem.isMinimized
 
@@ -201,9 +208,9 @@ Column {
             }
 
             ToolTipWindowMouseArea {
-                id: area2
+                id: hoverHandler
 
-                anchors.fill: LatteCore.WindowSystem.isPlatformWayland ? parent : previewThumbX11Loader
+                anchors.fill: parent
                 rootTask: parentTask
                 modelIndex: submodelIndex
                 winId: thumbnailSourceItem.winId
@@ -385,8 +392,8 @@ Column {
     Rectangle{
         width: header.width
         height: 3
-        opacity: isTaskActive() || area2.containsMouse ? 1 : 0 /*this way avoid trebbling when moving from task to task in groups*/
-        color: isTaskActive() ? theme.buttonFocusColor : theme.buttonHoverColor
+        opacity: isTaskActive() ? 1 : 0
+        color: theme.buttonFocusColor
     }
 
     function generateTitle() {
