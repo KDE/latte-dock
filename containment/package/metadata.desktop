@@ -26,7 +26,6 @@ Name[ru]=Latte
 Name[sk]=Latte
 Name[sv]=Latte
 Name[uk]=Латте
-Name[x-test]=xxLattexx
 Name[zh_CN]=Latte
 Name[zh_TW]=Latte
 Comment=Containment provided for the Latte Dock
@@ -53,7 +52,6 @@ Comment[ru]=Контейнер Latte Dock
 Comment[sk]=Politika poskytovaná pre dok Latte
 Comment[sv]=Omgivning tillhandahållen för Latte dockningsfönster
 Comment[uk]=Контейнер панелі Латте
-Comment[x-test]=xxContainment provided for the Latte Dockxx
 Comment[zh_CN]=用于 Latte 停靠栏的容器
 Comment[zh_TW]=提供 Latte Dock 使用的容器
 
