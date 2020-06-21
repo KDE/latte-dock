@@ -696,64 +696,6 @@ void PrimaryConfigView::hideConfigWindow()
     hideSecondaryWindow();
 }
 
-void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
-{
-    Types::LaunchersGroup group = (Types::LaunchersGroup)groupInt;
-
-    //! when the layout/global launchers list is empty then the current dock launchers are used for them
-    //! as a start point
-    if (m_corona &&  m_latteView->layout()) {
-        if ((group == Types::LayoutLaunchers && m_latteView->layout()->launchers().isEmpty())
-                || (group == Types::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
-
-            Plasma::Containment *c = m_latteView->containment();
-
-            const auto &applets = c->applets();
-
-            for (auto *applet : applets) {
-                KPluginMetaData meta = applet->kPackage().metadata();
-
-                if (meta.pluginId() == "org.kde.latte.plasmoid") {
-                    if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-                        const auto &childItems = appletInterface->childItems();
-
-                        if (childItems.isEmpty()) {
-                            continue;
-                        }
-
-                        for (QQuickItem *item : childItems) {
-                            if (auto *metaObject = item->metaObject()) {
-                                // not using QMetaObject::invokeMethod to avoid warnings when calling
-                                // this on applets that don't have it or other child items since this
-                                // is pretty much trial and error.
-                                // Also, "var" arguments are treated as QVariant in QMetaObject
-
-                                int methodIndex = metaObject->indexOfMethod("getLauncherList()");
-
-                                if (methodIndex == -1) {
-                                    continue;
-                                }
-
-                                QMetaMethod method = metaObject->method(methodIndex);
-
-                                QVariant launchers;
-
-                                if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
-                                    if (group == Types::LayoutLaunchers) {
-                                        m_latteView->layout()->setLaunchers(launchers.toStringList());
-                                    } else if (group == Types::GlobalLaunchers) {
-                                        m_corona->universalSettings()->setLaunchers(launchers.toStringList());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 //!BEGIN borders
 Plasma::FrameSvg::EnabledBorders PrimaryConfigView::enabledBorders() const
 {

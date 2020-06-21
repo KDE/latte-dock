@@ -382,7 +382,6 @@ PlasmaComponents.Page {
                         id: launchersGroup
                         onCurrentChanged: {
                             if (current.checked) {
-                                viewConfig.updateLaunchersForGroup(current.group);
                                 tasks.configuration.launchersGroup = current.group;
                             }
                         }
