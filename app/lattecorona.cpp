@@ -45,6 +45,7 @@
 #include "settings/universalsettings.h"
 #include "settings/dialogs/settingsdialog.h"
 #include "view/view.h"
+#include "view/settings/viewsettingsfactory.h"
 #include "view/windowstracker/windowstracker.h"
 #include "view/windowstracker/allscreenstracker.h"
 #include "view/windowstracker/currentscreentracker.h"
@@ -104,6 +105,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_globalShortcuts(new GlobalShortcuts(this)),
       m_plasmaScreenPool(new PlasmaExtended::ScreenPool(this)),
       m_themeExtended(new PlasmaExtended::Theme(KSharedConfig::openConfig(), this)),
+      m_viewSettingsFactory(new ViewSettingsFactory(this)),
       m_layoutsManager(new Layouts::Manager(this)),
       m_plasmaGeometries(new PlasmaExtended::ScreenGeometries(this)),
       m_dialogShadows(new PanelShadows(this, QStringLiteral("dialogs/background")))
@@ -191,6 +193,7 @@ Corona::~Corona()
     m_wm->deleteLater();
     m_dialogShadows->deleteLater();
     m_globalShortcuts->deleteLater();
+    m_viewSettingsFactory->deleteLater();
     m_layoutsManager->deleteLater();
     m_screenPool->deleteLater();
     m_universalSettings->deleteLater();
@@ -429,6 +432,11 @@ ScreenPool *Corona::screenPool() const
 UniversalSettings *Corona::universalSettings() const
 {
     return m_universalSettings;
+}
+
+ViewSettingsFactory *Corona::viewSettingsFactory() const
+{
+    return m_viewSettingsFactory;
 }
 
 WindowSystem::AbstractWindowInterface *Corona::wm() const

@@ -67,6 +67,7 @@ class ScreenPool;
 class GlobalShortcuts;
 class UniversalSettings;
 class View;
+class ViewSettingsFactory;
 namespace Indicator{
 class Factory;
 }
@@ -133,6 +134,7 @@ public:
     GlobalShortcuts *globalShortcuts() const;
     ScreenPool *screenPool() const;
     UniversalSettings *universalSettings() const;
+    ViewSettingsFactory *viewSettingsFactory() const;
     Layouts::Manager *layoutsManager() const;   
 
     Indicator::Factory *indicatorFactory() const;
@@ -228,6 +230,7 @@ private:
 
     ScreenPool *m_screenPool{nullptr};
     UniversalSettings *m_universalSettings{nullptr};
+    ViewSettingsFactory *m_viewSettingsFactory{nullptr};
     GlobalShortcuts *m_globalShortcuts{nullptr};
 
     Indicator::Factory *m_indicatorFactory{nullptr};
