@@ -39,7 +39,6 @@ Comment[en_GB]=Containment provided for the Latte Dock
 Comment[es]=Contención proporcionada para Latte Dock
 Comment[eu]=Konfinamendua hornitu da Latte Dockentzako
 Comment[fi]=Latte-telakalla tarjottu sisällytys
-Comment[fr]=Contrôle fourni pour le panneau de Latte
 Comment[gl]=Contedor fornecido para a doca Latte.
 Comment[id]=Kontainmen disediakan untuk Dock Latte
 Comment[it]=Contenitore fornito per Latte Dock
