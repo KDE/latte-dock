@@ -54,8 +54,8 @@
 namespace Latte {
 namespace ViewPart {
 
-PrimaryConfigView::PrimaryConfigView(Latte::View *view, QWindow *parent)
-    : QQuickView(parent),
+PrimaryConfigView::PrimaryConfigView(Latte::View *view)
+    : QQuickView(nullptr),
       m_latteView(view)
 {
     m_corona = qobject_cast<Latte::Corona *>(m_latteView->containment()->corona());
@@ -130,6 +130,10 @@ PrimaryConfigView::~PrimaryConfigView()
 {
     qDebug() << "ConfigView deleting ...";
 
+    if (m_secConfigView) {
+        delete m_secConfigView;
+    }
+
     if (m_latteView->indicator()) {
         //! destroy indicator config ui when the configuration window is closed
         m_latteView->indicator()->releaseConfigUi();
@@ -138,10 +142,6 @@ PrimaryConfigView::~PrimaryConfigView()
     m_corona->dialogShadows()->removeWindow(this);
 
     m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_waylandWindowId);
-
-    if (m_secConfigView) {
-        m_secConfigView->deleteLater();
-    }
 
     for (const auto &var : connections) {
         QObject::disconnect(var);

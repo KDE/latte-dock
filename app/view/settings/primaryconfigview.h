@@ -81,7 +81,7 @@ public:
         SecondaryConfig
     };
 
-    PrimaryConfigView(Latte::View *view, QWindow *parent = nullptr);
+    PrimaryConfigView(Latte::View *view);
     ~PrimaryConfigView() override;
 
     void init();

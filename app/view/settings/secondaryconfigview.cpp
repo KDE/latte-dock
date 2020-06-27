@@ -47,11 +47,11 @@
 namespace Latte {
 namespace ViewPart {
 
-SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
+SecondaryConfigView::SecondaryConfigView(Latte::View *view, PrimaryConfigView *parent)
     : QQuickView(nullptr),
+      m_parent(parent),
       m_latteView(view)
 {
-    m_parent = qobject_cast<PrimaryConfigView *>(parent);
     m_corona = qobject_cast<Latte::Corona *>(m_latteView->containment()->corona());
 
     setupWaylandIntegration();

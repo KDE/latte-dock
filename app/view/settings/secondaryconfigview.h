@@ -69,7 +69,7 @@ class SecondaryConfigView : public QQuickView
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
-    SecondaryConfigView(Latte::View *view, QWindow *parent);
+    SecondaryConfigView(Latte::View *view, PrimaryConfigView *parent);
     ~SecondaryConfigView() override;
 
     void init();
