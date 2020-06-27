@@ -54,8 +54,8 @@
 namespace Latte {
 namespace ViewPart {
 
-PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::View *view, QWindow *parent)
-    : PlasmaQuick::ConfigView(containment, parent),
+PrimaryConfigView::PrimaryConfigView(Latte::View *view, QWindow *parent)
+    : QQuickView(parent),
       m_latteView(view)
 {
     m_corona = qobject_cast<Latte::Corona *>(m_latteView->containment()->corona());
@@ -70,11 +70,8 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
         connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &PrimaryConfigView::updateWaylandId);
     }
 
-    setScreen(m_latteView->screen());
-
-    if (containment) {
-        setIcon(qGuiApp->windowIcon());
-    }
+    setScreen(m_latteView->screen());    
+    setIcon(qGuiApp->windowIcon());
 
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
@@ -109,7 +106,7 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
 
     connections << connect(m_latteView, &View::hiddenConfigurationWindowsAreDeletedChanged, this, &PrimaryConfigView::onHiddenConfigurationWindowsAreDeletedChanged);
     connections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &PrimaryConfigView::syncGeometry);
-    connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);
+    connections << connect(m_latteView->containment(), &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);
 
     m_thicknessSyncTimer.setSingleShot(true);
     m_thicknessSyncTimer.setInterval(200);
@@ -125,6 +122,8 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
         connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &PrimaryConfigView::raiseDocksTemporaryChanged);
         connections << connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &PrimaryConfigView::updateAvailableScreenGeometry);
     }
+
+    init();
 }
 
 PrimaryConfigView::~PrimaryConfigView()
@@ -162,6 +161,11 @@ void PrimaryConfigView::init()
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     m_corona->dialogShadows()->addWindow(this);
+
+    //! Assign app interfaces in be accessible through containment graphic item
+    QQuickItem *containmentGraphicItem = qobject_cast<QQuickItem *>(m_latteView->containment()->property("_plasma_graphicObject").value<QObject *>());
+
+    rootContext()->setContextProperty(QStringLiteral("plasmoid"), containmentGraphicItem);
     rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
     rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), m_corona->globalShortcuts()->shortcutsTracker());
     rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
@@ -582,14 +586,15 @@ bool PrimaryConfigView::event(QEvent *e)
         }
     }
 
-    return PlasmaQuick::ConfigView::event(e);
+    return QQuickView::event(e);
 }
 
 
 void PrimaryConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
 {
-    if (type != Plasma::Types::Mutable && isVisible())
+    if (type != Plasma::Types::Mutable && isVisible()) {
         hideConfigWindow();
+    }
 }
 
 bool PrimaryConfigView::sticker() const

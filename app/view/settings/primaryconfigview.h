@@ -23,12 +23,12 @@
 
 // local
 #include <coretypes.h>
-#include "../../plasma/quick/configview.h"
 #include "../../wm/windowinfowrap.h"
 
 //Qt
 #include <QObject>
 #include <QPointer>
+#include <QQuickView>
 #include <QTimer>
 #include <QWindow>
 
@@ -63,7 +63,7 @@ class SecondaryConfigView;
 namespace Latte {
 namespace ViewPart {
 
-class PrimaryConfigView : public PlasmaQuick::ConfigView
+class PrimaryConfigView : public QQuickView
 {
     Q_OBJECT
     //! used when the secondary config window can not be shown
@@ -81,10 +81,10 @@ public:
         SecondaryConfig
     };
 
-    PrimaryConfigView(Plasma::Containment *containment, Latte::View *view, QWindow *parent = nullptr);
+    PrimaryConfigView(Latte::View *view, QWindow *parent = nullptr);
     ~PrimaryConfigView() override;
 
-    void init() override;
+    void init();
     void requestActivate();
 
     Qt::WindowFlags wFlags() const;

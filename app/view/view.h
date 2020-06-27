@@ -225,7 +225,7 @@ public:
     bool settingsWindowIsShown();
     void showSettingsWindow();
 
-    PlasmaQuick::ConfigView *configView();
+    QQuickView *configView();
 
     ViewPart::Effects *effects() const;   
     ViewPart::ContainmentInterface *extendedInterface() const;
@@ -410,7 +410,8 @@ private:
     int m_releaseGrab_y;
 
     Layout::GenericLayout *m_layout{nullptr};
-    QPointer<PlasmaQuick::ConfigView> m_configView;
+    QPointer<PlasmaQuick::ConfigView> m_appletConfigView;
+    QPointer<QQuickView> m_containmentConfigView;
 
     QPointer<ViewPart::ContextMenu> m_contextMenu;
     QPointer<ViewPart::Effects> m_effects;

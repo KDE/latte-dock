@@ -200,8 +200,12 @@ View::~View()
     //! windows.
     //! this->disconnect();
 
-    if (m_configView) {
-        delete m_configView;
+    if (m_containmentConfigView) {
+        delete m_containmentConfigView;
+    }
+
+    if (m_appletConfigView) {
+        delete m_appletConfigView;
     }
 
     if (m_contextMenu) {
@@ -325,9 +329,9 @@ void View::init(Plasma::Containment *plasma_containment)
 void View::reloadSource()
 {
     if (m_layout && containment()) {
-        if (settingsWindowIsShown()) {
-            m_configView->deleteLater();
-        }
+       // if (settingsWindowIsShown()) {
+       //     m_configView->deleteLater();
+       // }
 
         engine()->clearComponentCache();
         m_layout->recreateView(containment(), settingsWindowIsShown());
@@ -429,7 +433,7 @@ void View::removeView()
 
 bool View::settingsWindowIsShown()
 {
-    auto cview = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+    auto cview = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
 
     if (hiddenConfigurationWindowsAreDeleted()) {
         return (cview != nullptr);
@@ -449,9 +453,9 @@ void View::showSettingsWindow()
     }
 }
 
-PlasmaQuick::ConfigView *View::configView()
+QQuickView *View::configView()
 {
-    return m_configView;
+    return m_containmentConfigView.data();
 }
 
 void View::showConfigurationInterface(Plasma::Applet *applet)
@@ -461,49 +465,44 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
 
     Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
 
-    if (m_configView && c && c->isContainment() && c == this->containment()) {
-        if (m_configView->isVisible()) {
-            m_configView->hide();
+    if (m_containmentConfigView && c && c->isContainment() && c == this->containment()) {
+        if (m_containmentConfigView->isVisible()) {
+            m_containmentConfigView->hide();
         } else {
-            m_configView->show();
+            m_containmentConfigView->show();
         }
 
         return;
-    } else if (m_configView) {
-        if (m_configView->applet() == applet) {
-            m_configView->show();
+    } else if (m_appletConfigView) {
+        if (m_appletConfigView->applet() == applet) {
+            m_appletConfigView->show();
 
             if (KWindowSystem::isPlatformX11()) {
-                m_configView->requestActivate();
+                m_appletConfigView->requestActivate();
             }
             return;
         } else {
-            m_configView->hide();
+            m_appletConfigView->hide();
         }
     }
 
     bool delayConfigView = false;
 
-    if (c && containment() && c->isContainment() && c->id() == this->containment()->id()) {
-        m_configView = new ViewPart::PrimaryConfigView(c, this);
-        delayConfigView = true;
-    } else {
-        m_configView = new PlasmaQuick::ConfigView(applet);
-    }
+    if (c && containment() && c->isContainment() && c->id() == containment()->id()) {
+        m_containmentConfigView = new ViewPart::PrimaryConfigView(this);
 
-    m_configView.data()->init();
-
-    if (!delayConfigView) {
-        m_configView->show();
-    } else {
         //add a timer for showing the configuration window the first time it is
         //created in order to give the containment's layouts the time to
         //calculate the window's height
         QTimer::singleShot(150, [this]() {
-            if (m_configView) {
-                m_configView->show();
+            if (m_containmentConfigView) {
+                m_containmentConfigView->show();
             }
         });
+    } else {
+        m_appletConfigView = new PlasmaQuick::ConfigView(applet);
+        m_appletConfigView.data()->init();
+        m_appletConfigView->show();
     }
 }
 
@@ -813,8 +812,8 @@ void View::setIsPreferredForShortcuts(bool preferred)
 
 bool View::inSettingsAdvancedMode() const
 {
-    if (m_configView) {
-        auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+    if (m_containmentConfigView) {
+        auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
 
         if (configView) {
             return configView->inAdvancedMode();
@@ -1058,14 +1057,18 @@ void View::applyActivitiesToWindows()
         m_windowsTracker->setWindowOnActivities(*this, runningActivities);
 
         //! config windows
-        if (m_configView) {
-            m_windowsTracker->setWindowOnActivities(*m_configView, runningActivities);
+        if (m_containmentConfigView) {
+            m_windowsTracker->setWindowOnActivities(*m_containmentConfigView, runningActivities);
 
-            auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+            auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
 
             if (configView && configView->secondaryWindow()) {
                 m_windowsTracker->setWindowOnActivities(*configView->secondaryWindow(), runningActivities);
             }
+        }
+
+        if (m_appletConfigView) {
+            m_windowsTracker->setWindowOnActivities(*m_appletConfigView, runningActivities);
         }
 
         //! hidden windows
@@ -1226,11 +1229,11 @@ void View::moveToLayout(QString layoutName)
 
 void View::configViewShownFor(Latte::View *view)
 {
-    if (view!=this && m_configView) {
+    if (view!=this && m_containmentConfigView) {
         //! for each layout only one dock should show its configuration windows
         //! otherwise we could reach a point that because a settings window
         //! is below another Latte View its options are not reachable
-        auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+        auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
 
         if (configDialog) {
             if (hiddenConfigurationWindowsAreDeleted()) {
@@ -1244,8 +1247,8 @@ void View::configViewShownFor(Latte::View *view)
 
 void View::hideWindowsForSlidingOut()
 {
-    if (m_configView) {
-        auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+    if (m_containmentConfigView) {
+        auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
 
         if (configDialog) {
             configDialog->hideConfigWindow();
@@ -1336,8 +1339,8 @@ bool View::event(QEvent *e)
         case QEvent::Enter:
             m_containsMouse = true;
 
-            if (m_configView) {
-                ViewPart::PrimaryConfigView *primaryConfigView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+            if (m_containmentConfigView) {
+                ViewPart::PrimaryConfigView *primaryConfigView = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
 
                 if (primaryConfigView) {
                     if (primaryConfigView->secondaryWindow()) {
