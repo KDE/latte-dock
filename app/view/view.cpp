@@ -471,6 +471,7 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
             m_containmentConfigView->hide();
         } else {
             m_containmentConfigView->show();
+            applyActivitiesToWindows();
         }
 
         return;
@@ -491,6 +492,7 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
 
     if (c && containment() && c->isContainment() && c->id() == containment()->id()) {
         m_containmentConfigView = m_corona->viewSettingsFactory()->primary(this);
+        applyActivitiesToWindows();
     } else {       
         m_appletConfigView = new PlasmaQuick::ConfigView(applet);
         m_appletConfigView.data()->init();
