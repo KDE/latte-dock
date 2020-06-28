@@ -19,6 +19,9 @@
 
 #include "viewsettingsfactory.h"
 
+#include "primaryconfigview.h"
+#include "../view.h"
+
 namespace Latte {
 
 ViewSettingsFactory::ViewSettingsFactory(QObject *parent)
@@ -29,5 +32,23 @@ ViewSettingsFactory::ViewSettingsFactory(QObject *parent)
 ViewSettingsFactory::~ViewSettingsFactory()
 {
 }
+
+ViewPart::PrimaryConfigView *ViewSettingsFactory::primary(Latte::View *view)
+{
+    if (!m_primaryConfigView) {
+        m_primaryConfigView = new ViewPart::PrimaryConfigView(view);
+    } else {
+        auto previousView = m_primaryConfigView->view();
+
+        if (previousView) {
+            previousView->releaseConfigView();
+        }
+
+        m_primaryConfigView->setView(view);
+    }
+
+    return m_primaryConfigView;
+}
+
 
 }

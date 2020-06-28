@@ -69,6 +69,7 @@ class PrimaryConfigView : public QQuickView
     //! used when the secondary config window can not be shown
     Q_PROPERTY(bool showInlineProperties READ showInlineProperties NOTIFY showInlinePropertiesChanged)
     Q_PROPERTY(bool inAdvancedMode READ inAdvancedMode WRITE setInAdvancedMode NOTIFY inAdvancedModeChanged)
+    Q_PROPERTY(bool inParentViewChange READ inParentViewChange NOTIFY inParentViewChangeChanged)
 
     Q_PROPERTY(QRect availableScreenGeometry READ availableScreenGeometry NOTIFY availableScreenGeometryChanged)
 
@@ -92,6 +93,8 @@ public:
     bool inAdvancedMode() const;
     void setInAdvancedMode(bool advanced);
 
+    bool inParentViewChange() const;
+
     bool showInlineProperties() const;
     bool sticker() const;
 
@@ -101,6 +104,9 @@ public:
     QString validTitle() const;
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
+
+    Latte::View *view() const;
+    void setView(Latte::View *view);
 
     QQuickView *secondaryWindow();
 
@@ -114,6 +120,7 @@ signals:
     void availableScreenGeometryChanged();
     void enabledBordersChanged();
     void inAdvancedModeChanged();
+    void inParentViewChangeChanged();
     void raiseDocksTemporaryChanged();
     void showInlinePropertiesChanged();
     void showSignal();
@@ -141,16 +148,22 @@ private slots:
 
     void updateViewMask();
 
+    void initView(Latte::View *view);
+
     void loadConfig();
     void saveConfig();
 
 private:
     void setupWaylandIntegration();
 
+    void setInParentViewChange(bool inChange);
+
+private:
     bool m_blockFocusLost{false};
     bool m_blockFocusLostOnStartup{true};
     bool m_originalByPassWM{false};
     bool m_inAdvancedMode{false};
+    bool m_inParentViewChange{false};
     bool m_inReverse{false};    //! it is used by the borders
     bool m_showInlineProperties{false};
 
@@ -164,6 +177,7 @@ private:
     QTimer m_screenSyncTimer;
     QTimer m_thicknessSyncTimer;
     QList<QMetaObject::Connection> connections;
+    QList<QMetaObject::Connection> viewconnections;
 
     Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
 

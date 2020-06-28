@@ -251,6 +251,9 @@ public:
     //! when its containment is destroyed
     void disconnectSensitiveSignals();
 
+    //! used from ViewSettingsFactory in order to move Configuration Windows to different View
+    void releaseConfigView();
+
 public slots:
     Q_INVOKABLE void copyView();
     Q_INVOKABLE void removeView();

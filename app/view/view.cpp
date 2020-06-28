@@ -27,6 +27,7 @@
 #include "visibilitymanager.h"
 #include "settings/primaryconfigview.h"
 #include "settings/secondaryconfigview.h"
+#include "settings/viewsettingsfactory.h"
 #include "../apptypes.h"
 #include "../lattecorona.h"
 #include "../declarativeimports/interfaces.h"
@@ -489,17 +490,8 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
     bool delayConfigView = false;
 
     if (c && containment() && c->isContainment() && c->id() == containment()->id()) {
-        m_containmentConfigView = new ViewPart::PrimaryConfigView(this);
-
-        //add a timer for showing the configuration window the first time it is
-        //created in order to give the containment's layouts the time to
-        //calculate the window's height
-        QTimer::singleShot(150, [this]() {
-            if (m_containmentConfigView) {
-                m_containmentConfigView->show();
-            }
-        });
-    } else {
+        m_containmentConfigView = m_corona->viewSettingsFactory()->primary(this);
+    } else {       
         m_appletConfigView = new PlasmaQuick::ConfigView(applet);
         m_appletConfigView.data()->init();
         m_appletConfigView->show();
@@ -1432,6 +1424,11 @@ bool View::event(QEvent *e)
     }
 
     return ContainmentView::event(e);
+}
+
+void View::releaseConfigView()
+{
+    m_containmentConfigView = nullptr;
 }
 
 //! release grab and restore mouse state

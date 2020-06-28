@@ -22,6 +22,16 @@
 
 //Qt
 #include <QObject>
+#include <QPointer>
+
+namespace Latte {
+class View;
+
+namespace ViewPart {
+class PrimaryConfigView;
+}
+
+}
 
 namespace Latte {
 
@@ -33,7 +43,11 @@ public:
     ViewSettingsFactory(QObject *parent);
     ~ViewSettingsFactory() override;
 
+    ViewPart::PrimaryConfigView *primary(Latte::View *view);
+
 private:
+    QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;
+
 };
 
 }

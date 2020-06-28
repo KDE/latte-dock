@@ -200,7 +200,7 @@ PlasmaComponents.Page {
                     property bool inStartup: true
 
                     onCurrentChanged: {
-                        if (current.checked && !inStartup) {
+                        if (current.checked && !inStartup && !viewConfig.inParentViewChange) {
                             latteView.positioner.hideDockDuringLocationChange(current.edge);
                         }
                         inStartup = false;
