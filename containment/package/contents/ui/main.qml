@@ -682,22 +682,16 @@ Item {
                 //    console.log("applet:"+i);
                 plasmoid.applets[i].expanded = false;
             }
+
             if (!dragOverlay) {
                 var component = Qt.createComponent("editmode/ConfigOverlay.qml");
-                if (component.status == Component.Ready) {
+                if (component.status === Component.Ready) {
                     dragOverlay = component.createObject(root);
                 } else {
                     console.log("Could not create ConfigOverlay");
                     console.log(component.errorString());
                 }
                 component.destroy();
-            } else {
-                dragOverlay.visible = true;
-            }
-        } else {
-            if (dragOverlay) {
-                dragOverlay.visible = false;
-                dragOverlay.destroy();
             }
         }
     }
