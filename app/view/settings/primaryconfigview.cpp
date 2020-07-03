@@ -212,7 +212,7 @@ void PrimaryConfigView::hideSecondaryWindow()
             m_secConfigView = nullptr;
             secWindow->deleteLater();
         } else {
-            m_secConfigView->hide();
+            m_secConfigView->hideConfigWindow();
         }
 
         if (KWindowSystem::isPlatformX11() && m_latteView->effects()) {
@@ -291,6 +291,10 @@ void PrimaryConfigView::initView(Latte::View *view)
     show();
 
     setInParentViewChange(false);
+
+    if (m_secConfigView) {
+        m_secConfigView->setView(view);
+    }
 }
 
 void PrimaryConfigView::updateAvailableScreenGeometry(View *origin)

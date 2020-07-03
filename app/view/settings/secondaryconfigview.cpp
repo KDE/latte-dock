@@ -49,10 +49,9 @@ namespace ViewPart {
 
 SecondaryConfigView::SecondaryConfigView(Latte::View *view, PrimaryConfigView *parent)
     : QQuickView(nullptr),
-      m_parent(parent),
-      m_latteView(view)
+      m_parent(parent)
 {
-    m_corona = qobject_cast<Latte::Corona *>(m_latteView->containment()->corona());
+    m_corona = qobject_cast<Latte::Corona *>(view->containment()->corona());
 
     setupWaylandIntegration();
 
@@ -65,9 +64,9 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, PrimaryConfigView *p
     }
 
     setResizeMode(QQuickView::SizeViewToRootObject);
-    setScreen(m_latteView->screen());
+    setScreen(view->screen());
 
-    if (m_latteView && m_latteView->containment()) {
+    if (view && view->containment()) {
         setIcon(qGuiApp->windowIcon());
     }
 
@@ -96,7 +95,6 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, PrimaryConfigView *p
         syncGeometry();
         syncSlideEffect();
     });
-    connections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &SecondaryConfigView::syncGeometry);
 
     m_thicknessSyncTimer.setSingleShot(true);
     m_thicknessSyncTimer.setInterval(200);
@@ -104,9 +102,8 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, PrimaryConfigView *p
         syncGeometry();
     });
 
-    connections << connect(m_latteView, &Latte::View::normalThicknessChanged, [&]() {
-        m_thicknessSyncTimer.start();
-    });
+    setView(view);
+    init();
 }
 
 SecondaryConfigView::~SecondaryConfigView()
@@ -120,6 +117,10 @@ SecondaryConfigView::~SecondaryConfigView()
     for (const auto &var : connections) {
         QObject::disconnect(var);
     }
+
+    for (const auto &var : viewconnections) {
+        QObject::disconnect(var);
+    }
 }
 
 void SecondaryConfigView::init()
@@ -129,9 +130,8 @@ void SecondaryConfigView::init()
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     m_corona->dialogShadows()->addWindow(this);
-    rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
+
     rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
-    rootContext()->setContextProperty(QStringLiteral("plasmoid"), m_latteView->containment()->property("_plasma_graphicObject").value<QObject *>());
 
     KDeclarative::KDeclarative kdeclarative;
     kdeclarative.setDeclarativeEngine(engine());
@@ -166,12 +166,52 @@ inline Qt::WindowFlags SecondaryConfigView::wFlags() const
 
 QString SecondaryConfigView::validTitle() const
 {
-    return QString("#secconfig#" + QString::number(m_latteView->containment()->id()));
+    return QString("#secondaryconfigview#");
 }
 
 QRect SecondaryConfigView::geometryWhenVisible() const
 {
     return m_geometryWhenVisible;
+}
+
+Latte::View *SecondaryConfigView::view() const
+{
+    return m_latteView;
+}
+
+void SecondaryConfigView::setView(Latte::View *view)
+{
+    if (m_latteView == view) {
+        return;
+    }
+
+    initView(view);
+}
+
+void SecondaryConfigView::initView(Latte::View *view)
+{
+    for (const auto &var : viewconnections) {
+        QObject::disconnect(var);
+    }
+
+    m_latteView = view;
+
+    viewconnections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &SecondaryConfigView::syncGeometry);
+    viewconnections << connect(m_latteView, &Latte::View::normalThicknessChanged, [&]() {
+        m_thicknessSyncTimer.start();
+    });
+
+    //! Assign app interfaces in be accessible through containment graphic item
+    QQuickItem *containmentGraphicItem = qobject_cast<QQuickItem *>(m_latteView->containment()->property("_plasma_graphicObject").value<QObject *>());
+    rootContext()->setContextProperty(QStringLiteral("plasmoid"), containmentGraphicItem);
+    rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
+
+    updateEnabledBorders();
+    syncGeometry();
+
+    if (m_latteView->formFactor() == Plasma::Types::Horizontal && m_parent->inAdvancedMode()) {
+        show();
+    }
 }
 
 void SecondaryConfigView::requestActivate()

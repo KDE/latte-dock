@@ -148,15 +148,13 @@ private slots:
 
     void updateViewMask();
 
-    void initView(Latte::View *view);
-
     void loadConfig();
     void saveConfig();
 
 private:
     void setupWaylandIntegration();
-
     void setInParentViewChange(bool inChange);
+    void initView(Latte::View *view);
 
 private:
     bool m_blockFocusLost{false};

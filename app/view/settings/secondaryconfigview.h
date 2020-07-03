@@ -82,6 +82,9 @@ public:
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
+    Latte::View *view() const;
+    void setView(Latte::View *view);
+
 public slots:
     Q_INVOKABLE void hideConfigWindow();
     Q_INVOKABLE void syncGeometry();
@@ -104,6 +107,9 @@ private slots:
     void updateViewMask();
 
 private:
+    void initView(Latte::View *view);
+
+private:
     void setupWaylandIntegration();
 
     QRect m_geometryWhenVisible;
@@ -113,6 +119,7 @@ private:
     QTimer m_screenSyncTimer;
     QTimer m_thicknessSyncTimer;
     QList<QMetaObject::Connection> connections;
+    QList<QMetaObject::Connection> viewconnections;
 
     Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
     //only for the mask on disabled compositing, not to actually paint
