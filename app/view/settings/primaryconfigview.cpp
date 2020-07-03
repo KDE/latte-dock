@@ -125,7 +125,7 @@ PrimaryConfigView::~PrimaryConfigView()
         delete m_secConfigView;
     }
 
-    if (m_latteView->indicator()) {
+    if (m_latteView && m_latteView->indicator()) {
         //! destroy indicator config ui when the configuration window is closed
         m_latteView->indicator()->releaseConfigUi();
     }

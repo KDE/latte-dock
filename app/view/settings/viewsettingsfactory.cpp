@@ -31,6 +31,9 @@ ViewSettingsFactory::ViewSettingsFactory(QObject *parent)
 
 ViewSettingsFactory::~ViewSettingsFactory()
 {
+    if (m_primaryConfigView) {
+        delete m_primaryConfigView;
+    }
 }
 
 ViewPart::PrimaryConfigView *ViewSettingsFactory::primary(Latte::View *view)
