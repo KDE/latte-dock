@@ -93,6 +93,11 @@ void TabPreferences::initUi()
         emit dataChanged();
     });
 
+    connect(m_ui->metaPressChkBox, &QCheckBox::stateChanged, this, [&]() {
+        m_preferences.metaPressForAppLauncher = m_ui->metaPressChkBox->isChecked();
+        emit dataChanged();
+    });
+
     connect(m_ui->metaPressHoldChkBox, &QCheckBox::stateChanged, this, [&]() {
         m_preferences.metaHoldForBadges = m_ui->metaPressHoldChkBox->isChecked();
         emit dataChanged();
