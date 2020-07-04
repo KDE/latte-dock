@@ -197,13 +197,11 @@ PlasmaComponents.Page {
 
                 ExclusiveGroup {
                     id: locationGroup
-                    property bool inStartup: true
 
                     onCurrentChanged: {
-                        if (current.checked && !inStartup && !viewConfig.inParentViewChange) {
+                        if (current.checked && viewConfig.isReady) {
                             latteView.positioner.hideDockDuringLocationChange(current.edge);
                         }
-                        inStartup = false;
                     }
                 }
 

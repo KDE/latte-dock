@@ -255,7 +255,7 @@ void PrimaryConfigView::setView(Latte::View *view)
 
 void PrimaryConfigView::initView(Latte::View *view)
 {
-    setInParentViewChange(true);
+    setIsReady(false);
 
     for (const auto &var : viewconnections) {
         QObject::disconnect(var);
@@ -290,7 +290,7 @@ void PrimaryConfigView::initView(Latte::View *view)
 
     show();
 
-    setInParentViewChange(false);
+    setIsReady(true);
 
     if (m_secConfigView) {
         m_secConfigView->setView(view);
@@ -648,19 +648,19 @@ void PrimaryConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type
     }
 }
 
-bool PrimaryConfigView::inParentViewChange() const
+bool PrimaryConfigView::isReady() const
 {
-    return m_inParentViewChange;
+    return m_isReady;
 }
 
-void PrimaryConfigView::setInParentViewChange(bool inChange)
+void PrimaryConfigView::setIsReady(bool ready)
 {
-    if (m_inParentViewChange == inChange) {
+    if (m_isReady == ready) {
         return;
     }
 
-    m_inParentViewChange = inChange;
-    emit inParentViewChangeChanged();
+    m_isReady = ready;
+    emit isReadyChanged();
 }
 
 

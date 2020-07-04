@@ -548,9 +548,7 @@ FocusScope {
                 Connections{
                     target: actionsComboBtn.comboBox
 
-                    Component.onCompleted:{
-                        actionsComboBtn.addModel();
-                    }
+                    Component.onCompleted:actionsComboBtn.updateModel();
 
                     onActivated: {
                         if (index==0) {
@@ -566,7 +564,7 @@ FocusScope {
 
                     onEnabledChanged: {
                         if (enabled) {
-                            actionsComboBtn.addModel();
+                            actionsComboBtn.updateModel();
                         } else {
                             actionsComboBtn.emptyModel();
                         }
@@ -584,7 +582,16 @@ FocusScope {
                     onTypeChanged: actionsComboBtn.updateCopyText()
                 }
 
-                function addModel() {
+                Connections{
+                    target: viewConfig
+                    onIsReadyChanged: {
+                        if (viewConfig.isReady) {
+                            actionsComboBtn.updateModel();
+                        }
+                    }
+                }
+
+                function updateModel() {
                     actionsModel.clear();
 
                     var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
