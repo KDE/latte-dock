@@ -521,9 +521,14 @@ QString UniversalSettings::splitterIconPath()
     return m_corona->kPackage().filePath("splitter");
 }
 
-QString UniversalSettings::trademarkIconPath()
+QString UniversalSettings::trademarkPath()
 {
     return m_corona->kPackage().filePath("trademark");
+}
+
+QString UniversalSettings::trademarkIconPath()
+{
+    return m_corona->kPackage().filePath("trademarkicon");
 }
 
 QQmlListProperty<QScreen> UniversalSettings::screens()

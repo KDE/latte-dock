@@ -120,6 +120,7 @@ public:
 
 public slots:
     Q_INVOKABLE QString splitterIconPath();
+    Q_INVOKABLE QString trademarkPath();
     Q_INVOKABLE QString trademarkIconPath();
 
     Q_INVOKABLE float screenWidthScale(QString screenName) const;

@@ -51,6 +51,7 @@ void Package::initPackage(KPackage::Package *package)
     package->addFileDefinition("configmodel", QStringLiteral("configuration/config.qml"), i18n("Config model"));
     package->addFileDefinition("splitter", QStringLiteral("images/splitter.svgz"), i18n("Splitter"));
     package->addFileDefinition("trademark", QStringLiteral("images/trademark.svgz"), i18n("Latte Trademark"));
+    package->addFileDefinition("trademarkicon", QStringLiteral("images/trademarkicon.svgz"), i18n("Latte Trademark Icon"));
     package->addFileDefinition("infoviewui", QStringLiteral("views/InfoView.qml"), i18n("Info View Window"));
 
     package->addFileDefinition("layout1", QStringLiteral("layouts/Default.latterc"), i18n("default layout file"));

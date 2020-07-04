@@ -246,47 +246,25 @@ FocusScope {
             spacing: 0
 
             Item {
+                id: trademark
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 Layout.fillWidth: false
                 Layout.topMargin: units.smallSpacing
                 Layout.preferredWidth: width
                 Layout.preferredHeight: height
 
-                width: Qt.application.layoutDirection !== Qt.RightToLeft ? logo.width + latteTxt.width + units.smallSpacing : logo.width + units.smallSpacing
-                height: logo.height
+                width: latteTrademark.width + units.smallSpacing
+                height: trademarkHeight
 
-                LatteCore.IconItem {
-                    id: logo
-
-                    width: Math.round(1.4 * latteTxtMetrics.font.pixelSize)
-                    height: width
-
-                    smooth: true
-                    source: "latte-dock"
-                    usesPlasmaTheme: false
-                }
-
-                PlasmaComponents.Label {
-                    id: latteTxtMetrics
-                    text: i18n("Latte")
-                    width: 0
-                    font.pointSize: 2 * theme.defaultFont.pointSize
-                    visible: false
-                }
+                readonly property int trademarkHeight: 48
 
                 PlasmaCore.SvgItem{
-                    id: latteTxt
-
-                    width: 2.2 * height
-                    height: 0.4 * latteTxtMetrics.font.pixelSize
-
-                    visible: Qt.application.layoutDirection !== Qt.RightToLeft
-
-                    anchors.left: logo.right
-                    anchors.verticalCenter: logo.verticalCenter
+                    id: latteTrademark
+                    width: Qt.application.layoutDirection !== Qt.RightToLeft ? Math.ceil(1.70 * height) : height
+                    height: trademark.height
 
                     svg: PlasmaCore.Svg{
-                        imagePath: universalSettings.trademarkIconPath()
+                        imagePath: Qt.application.layoutDirection !== Qt.RightToLeft ? universalSettings.trademarkPath() : universalSettings.trademarkIconPath()
                     }
                 }
             }
@@ -343,7 +321,7 @@ FocusScope {
                     PlasmaComponents.Label {
                         id: advancedLbl
                         Layout.alignment: Qt.AlignRight
-                      //  opacity: dialog.basicLevel ? basicOpacity : 1
+                        //  opacity: dialog.basicLevel ? basicOpacity : 1
 
                         //! TODO: the term here is not accurate because the expert settings mode
                         //! is used currently. In the future this term will be rethought if
