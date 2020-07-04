@@ -119,7 +119,7 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
         });
     }
 
-    setView(view);
+    setParentView(view);
     init();
 }
 
@@ -224,12 +224,12 @@ void PrimaryConfigView::hideSecondaryWindow()
     }
 }
 
-Latte::View *PrimaryConfigView::view() const
+Latte::View *PrimaryConfigView::parentView() const
 {
     return m_latteView;
 }
 
-void PrimaryConfigView::setView(Latte::View *view)
+void PrimaryConfigView::setParentView(Latte::View *view)
 {
     if (m_latteView == view) {
         return;
@@ -239,14 +239,14 @@ void PrimaryConfigView::setView(Latte::View *view)
         hideConfigWindow();
 
         QTimer::singleShot(400, [this, view]() {
-            initView(view);
+            initParentView(view);
         });
     } else {
-        initView(view);
+        initParentView(view);
     }
 }
 
-void PrimaryConfigView::initView(Latte::View *view)
+void PrimaryConfigView::initParentView(Latte::View *view)
 {
     setIsReady(false);
 
@@ -290,7 +290,7 @@ void PrimaryConfigView::initView(Latte::View *view)
     setIsReady(true);
 
     if (m_secConfigView) {
-        m_secConfigView->setView(view);
+        m_secConfigView->setParentView(view);
     }
 }
 

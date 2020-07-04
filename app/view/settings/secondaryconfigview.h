@@ -82,8 +82,8 @@ public:
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
-    Latte::View *view() const;
-    void setView(Latte::View *view);
+    Latte::View *parentView() const;
+    void setParentView(Latte::View *view);
 
 public slots:
     Q_INVOKABLE void hideConfigWindow();
@@ -107,7 +107,7 @@ private slots:
     void updateViewMask();
 
 private:
-    void initView(Latte::View *view);
+    void initParentView(Latte::View *view);
 
 private:
     void setupWaylandIntegration();

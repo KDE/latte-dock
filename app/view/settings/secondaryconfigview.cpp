@@ -102,7 +102,7 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, PrimaryConfigView *p
         syncGeometry();
     });
 
-    setView(view);
+    setParentView(view);
     init();
 }
 
@@ -174,21 +174,21 @@ QRect SecondaryConfigView::geometryWhenVisible() const
     return m_geometryWhenVisible;
 }
 
-Latte::View *SecondaryConfigView::view() const
+Latte::View *SecondaryConfigView::parentView() const
 {
     return m_latteView;
 }
 
-void SecondaryConfigView::setView(Latte::View *view)
+void SecondaryConfigView::setParentView(Latte::View *view)
 {
     if (m_latteView == view) {
         return;
     }
 
-    initView(view);
+    initParentView(view);
 }
 
-void SecondaryConfigView::initView(Latte::View *view)
+void SecondaryConfigView::initParentView(Latte::View *view)
 {
     for (const auto &var : viewconnections) {
         QObject::disconnect(var);

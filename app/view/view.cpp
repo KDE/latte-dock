@@ -430,7 +430,7 @@ bool View::settingsWindowIsShown()
 {
     auto cview = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
 
-    return cview && (cview->view() == this) && cview->isVisible();
+    return cview && (cview->parentView()==this) && cview->isVisible();
 }
 
 void View::showSettingsWindow()
