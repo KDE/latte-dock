@@ -111,6 +111,12 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
     if (m_corona) {
         connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &PrimaryConfigView::raiseDocksTemporaryChanged);
         connections << connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &PrimaryConfigView::updateAvailableScreenGeometry);
+
+        connections << connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::currentLayoutIsSwitching, this, [this]() {
+            if (isVisible()) {
+                hideConfigWindow();
+            }
+        });
     }
 
     setView(view);
