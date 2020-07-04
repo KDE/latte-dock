@@ -486,6 +486,15 @@ PlasmaComponents.Page {
                         target: latteView.indicator
                         onPluginChanged: latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
                     }
+
+                    Connections {
+                        target: viewConfig
+                        onIsReadyChanged: {
+                            if (viewConfig.isReady) {
+                                latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
+                            }
+                        }
+                    }
                 }
                 //! END: Indicator specific sub-options
             }

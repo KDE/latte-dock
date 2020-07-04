@@ -267,6 +267,11 @@ void PrimaryConfigView::initView(Latte::View *view)
         QObject::disconnect(var);
     }
 
+    if (m_latteView && m_latteView->indicator()) {
+        //! destroy indicator config ui when the configuration window is closed
+        m_latteView->indicator()->releaseConfigUi();
+    }
+
     m_latteView = view;
 
     viewconnections << connect(this, &PrimaryConfigView::inAdvancedModeChanged, m_latteView, &Latte::View::inSettingsAdvancedModeChanged);
