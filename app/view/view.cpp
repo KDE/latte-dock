@@ -201,7 +201,8 @@ View::~View()
     //! windows.
     //! this->disconnect();
 
-    if (m_containmentConfigView) {
+    if (m_containmentConfigView && m_corona->inQuit()) {
+        //! delete only when application is quitting
         delete m_containmentConfigView;
     }
 

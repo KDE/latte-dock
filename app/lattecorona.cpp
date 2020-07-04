@@ -161,6 +161,8 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
 
 Corona::~Corona()
 {
+    m_inQuit = true;
+
     //! BEGIN: Give the time to slide-out views when closing
     m_layoutsManager->synchronizer()->hideAllViews();
 
@@ -407,6 +409,11 @@ bool Corona::appletExists(uint containmentId, uint appletId) const
     }
 
     return false;
+}
+
+bool Corona::inQuit() const
+{
+    return m_inQuit;
 }
 
 KActivities::Consumer *Corona::activitiesConsumer() const
@@ -872,6 +879,8 @@ int Corona::primaryScreenId() const
 
 void Corona::quitApplication()
 {
+    m_inQuit = true;
+
     //! this code must be called asynchronously because it is called
     //! also from qml (Settings window).
     QTimer::singleShot(300, [this]() {
