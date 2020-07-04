@@ -299,6 +299,10 @@ void PrimaryConfigView::initView(Latte::View *view)
 
 void PrimaryConfigView::updateAvailableScreenGeometry(View *origin)
 {    
+    if (!m_latteView) {
+        return;
+    }
+
     int currentScrId = m_latteView->positioner()->currentScreenId();
 
     QList<Latte::Types::Visibility> ignoreModes{Latte::Types::SideBar};
