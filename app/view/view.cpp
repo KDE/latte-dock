@@ -300,8 +300,6 @@ void View::init(Plasma::Containment *plasma_containment)
     });
 
     connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::indicatorRemoved, this, &View::indicatorPluginRemoved);
-    connect(m_corona->universalSettings(), &Latte::UniversalSettings::hiddenConfigurationWindowsAreDeletedChanged,
-            this, &View::hiddenConfigurationWindowsAreDeletedChanged);
 
     //! Assign app interfaces in be accessible through containment graphic item
     QQuickItem *containmentGraphicItem = qobject_cast<QQuickItem *>(plasma_containment->property("_plasma_graphicObject").value<QObject *>());
@@ -338,11 +336,6 @@ void View::reloadSource()
         engine()->clearComponentCache();
         m_layout->recreateView(containment(), settingsWindowIsShown());
     }
-}
-
-bool View::hiddenConfigurationWindowsAreDeleted() const
-{
-    return m_corona->universalSettings()->hiddenConfigurationWindowsAreDeleted();
 }
 
 bool View::inDelete() const
@@ -437,13 +430,7 @@ bool View::settingsWindowIsShown()
 {
     auto cview = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
 
-    if (hiddenConfigurationWindowsAreDeleted()) {
-        return (cview != nullptr);
-    } else if (cview) {
-        return cview->isVisible();
-    }
-
-    return false;
+    return cview && (cview->view() == this) && cview->isVisible();
 }
 
 void View::showSettingsWindow()
@@ -1132,7 +1119,6 @@ void View::setLayout(Layout::GenericLayout *layout)
         m_initLayoutTimer.start();
 
         connectionsLayout << connect(m_layout, &Layout::GenericLayout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
-        connectionsLayout << connect(m_layout, &Layout::GenericLayout::lastConfigViewForChanged, this, &View::configViewShownFor);
 
         Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
@@ -1218,24 +1204,6 @@ void View::moveToLayout(QString layoutName)
 
         if (newLayout) {
             newLayout->assignToLayout(this, containments);
-        }
-    }
-}
-
-void View::configViewShownFor(Latte::View *view)
-{
-    if (view!=this && m_containmentConfigView) {
-        //! for each layout only one dock should show its configuration windows
-        //! otherwise we could reach a point that because a settings window
-        //! is below another Latte View its options are not reachable
-        auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
-
-        if (configDialog) {
-            if (hiddenConfigurationWindowsAreDeleted()) {
-                configDialog->deleteLater();
-            } else if (configDialog->isVisible()) {
-                configDialog->hideConfigWindow();
-            }
         }
     }
 }

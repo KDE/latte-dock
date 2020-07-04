@@ -144,7 +144,6 @@ public:
 
     bool inDelete() const;
     bool inReadyState() const;
-    bool hiddenConfigurationWindowsAreDeleted() const;
 
     bool onPrimary() const;
     void setOnPrimary(bool flag);
@@ -298,7 +297,6 @@ signals:
     void widthChanged();
     void headThicknessGapChanged();
     void heightChanged();
-    void hiddenConfigurationWindowsAreDeletedChanged();
     void inEditModeChanged();
     void indicatorChanged();
     void inSettingsAdvancedModeChanged();
@@ -336,7 +334,6 @@ signals:
 private slots:
     void applyActivitiesToWindows();
     void availableScreenRectChangedFromSlot(View *origin);
-    void configViewShownFor(Latte::View *view);
     void hideWindowsForSlidingOut();
     void preferredViewForShortcutsChangedSlot(Latte::View *view);
     void releaseGrab();

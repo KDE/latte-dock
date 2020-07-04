@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>966</width>
-    <height>781</height>
+    <width>1000</width>
+    <height>750</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -504,8 +504,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>931</width>
-            <height>402</height>
+            <width>965</width>
+            <height>375</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -516,322 +516,8 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
-            <layout class="QGridLayout" name="preferencesGridLayout" columnstretch="5,8">
-             <item row="10" column="1">
-              <widget class="QCheckBox" name="metaPressHoldChkBox">
-               <property name="toolTip">
-                <string>Press and hold ⌘ to show shortcuts badges for applets and tasks</string>
-               </property>
-               <property name="text">
-                <string>Press and Hold ⌘ to show shortcuts badges</string>
-               </property>
-              </widget>
-             </item>
-             <item row="12" column="0">
-              <layout class="QHBoxLayout" name="parabolicHeaderRowLayout">
-               <item>
-                <spacer name="horizontalSpacer_7">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLabel" name="parabolicEffectLbl">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Parabolic Effect:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="16" column="0">
-              <layout class="QHBoxLayout" name="plasmaThemeHeaderRowLayout">
-               <item>
-                <spacer name="horizontalSpacer_10">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLabel" name="plasmaLbl">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Plasma Theme:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="4" column="0">
-              <layout class="QHBoxLayout" name="behaviorHeaderRowLayout">
-               <item>
-                <spacer name="horizontalSpacer_5">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLabel" name="behaviorLbl">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Behavior:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="8" column="1">
-              <spacer name="verticalSpacer_7">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="14" column="1">
-              <layout class="QHBoxLayout" name="screenDelayRowLayout">
-               <item>
-                <widget class="QSpinBox" name="screenTrackerSpinBox">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>70</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>110</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Different hardware can have different delays during screen changes.
-This tracker is used in order to not lose any screen related update.</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
-                 <property name="specialValueText">
-                  <string/>
-                 </property>
-                 <property name="suffix">
-                  <string> ms.</string>
-                 </property>
-                 <property name="minimum">
-                  <number>1000</number>
-                 </property>
-                 <property name="maximum">
-                  <number>10000</number>
-                 </property>
-                 <property name="singleStep">
-                  <number>100</number>
-                 </property>
-                 <property name="value">
-                  <number>2500</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="trackScreensDelayLbl">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="toolTip">
-                  <string>Different hardware can have different delays during screen changes.
-This tracker is used in order to not lose any screen related update.</string>
-                 </property>
-                 <property name="text">
-                  <string>reaction delay for changes</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_9">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Expanding</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
+            <layout class="QGridLayout" name="preferencesGridLayout" columnstretch="5,9">
              <item row="11" column="1">
-              <spacer name="verticalSpacer_8">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="16" column="1">
-              <layout class="QHBoxLayout" name="plasmaThemeRowLayout">
-               <item>
-                <widget class="QSpinBox" name="outlineSpinBox">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>70</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>110</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Outline width used from background to draw its borders</string>
-                 </property>
-                 <property name="suffix">
-                  <string> px.</string>
-                 </property>
-                 <property name="minimum">
-                  <number>1</number>
-                 </property>
-                 <property name="maximum">
-                  <number>20</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="outlineLbl">
-                 <property name="enabled">
-                  <bool>true</bool>
-                 </property>
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="toolTip">
-                  <string>Outline width used from background to draw its borders</string>
-                 </property>
-                 <property name="text">
-                  <string>outline width </string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_16">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Expanding</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-             <item row="3" column="1">
-              <spacer name="verticalSpacer_6">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="12" column="1">
               <layout class="QHBoxLayout" name="mouseSensitivityRowLayout">
                <item>
                 <widget class="QToolButton" name="lowSensitivityBtn">
@@ -915,7 +601,241 @@ This tracker is used in order to not lose any screen related update.</string>
                </item>
               </layout>
              </item>
-             <item row="14" column="0">
+             <item row="9" column="1">
+              <widget class="QCheckBox" name="metaPressHoldChkBox">
+               <property name="toolTip">
+                <string>Press and hold ⌘ to show shortcuts badges for applets and tasks</string>
+               </property>
+               <property name="text">
+                <string>Press and Hold ⌘ to show shortcuts badges</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <layout class="QHBoxLayout" name="behaviorHeaderRowLayout">
+               <item>
+                <spacer name="horizontalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="behaviorLbl">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Behavior:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="7" column="1">
+              <spacer name="verticalSpacer_7">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="11" column="0">
+              <layout class="QHBoxLayout" name="parabolicHeaderRowLayout">
+               <item>
+                <spacer name="horizontalSpacer_7">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="parabolicEffectLbl">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Parabolic Effect:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="15" column="1">
+              <layout class="QHBoxLayout" name="plasmaThemeRowLayout">
+               <item>
+                <widget class="QSpinBox" name="outlineSpinBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>70</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>110</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Outline width used from background to draw its borders</string>
+                 </property>
+                 <property name="suffix">
+                  <string> px.</string>
+                 </property>
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>20</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="outlineLbl">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>Outline width used from background to draw its borders</string>
+                 </property>
+                 <property name="text">
+                  <string>outline width </string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_16">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Expanding</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item row="14" column="1">
+              <spacer name="verticalSpacer_11">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="4" column="1">
+              <widget class="QCheckBox" name="autostartChkBox">
+               <property name="toolTip">
+                <string>Start the application automatically after each relogin</string>
+               </property>
+               <property name="text">
+                <string>Enable autostart during startup</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <layout class="QHBoxLayout" name="actionsHeaderRowLayout">
+               <item>
+                <spacer name="horizontalSpacer_6">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="actionsLbl">
+                 <property name="text">
+                  <string>Actions:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="3" column="1">
+              <spacer name="verticalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="13" column="0">
               <layout class="QHBoxLayout" name="screensHeaderRowLayout">
                <item>
                 <spacer name="horizontalSpacer_8">
@@ -958,6 +878,172 @@ This tracker is used in order to not lose any screen related update.</string>
                </property>
               </widget>
              </item>
+             <item row="15" column="0">
+              <layout class="QHBoxLayout" name="plasmaThemeHeaderRowLayout">
+               <item>
+                <spacer name="horizontalSpacer_10">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="plasmaLbl">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Plasma Theme:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="0" column="1">
+              <widget class="QCheckBox" name="badges3DStyleChkBox">
+               <property name="text">
+                <string>Use 3D style for notification and shortcut badges</string>
+               </property>
+              </widget>
+             </item>
+             <item row="13" column="1">
+              <layout class="QHBoxLayout" name="screenDelayRowLayout">
+               <item>
+                <widget class="QSpinBox" name="screenTrackerSpinBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>70</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>110</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Different hardware can have different delays during screen changes.
+This tracker is used in order to not lose any screen related update.</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="specialValueText">
+                  <string/>
+                 </property>
+                 <property name="suffix">
+                  <string> ms.</string>
+                 </property>
+                 <property name="minimum">
+                  <number>1000</number>
+                 </property>
+                 <property name="maximum">
+                  <number>10000</number>
+                 </property>
+                 <property name="singleStep">
+                  <number>100</number>
+                 </property>
+                 <property name="value">
+                  <number>2500</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="trackScreensDelayLbl">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>Different hardware can have different delays during screen changes.
+This tracker is used in order to not lose any screen related update.</string>
+                 </property>
+                 <property name="text">
+                  <string>reaction delay for changes</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_9">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Expanding</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item row="5" column="1">
+              <widget class="QCheckBox" name="noBordersForMaximizedChkBox">
+               <property name="toolTip">
+                <string>Activate support for borderless maximized windows between different layouts</string>
+               </property>
+               <property name="text">
+                <string>Support borderless maximized windows in different layouts</string>
+               </property>
+              </widget>
+             </item>
+             <item row="12" column="1">
+              <spacer name="verticalSpacer_9">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="10" column="1">
+              <spacer name="verticalSpacer_8">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
              <item row="0" column="0">
               <layout class="QHBoxLayout" name="apperanceHeaderRowLayout">
                <item>
@@ -985,109 +1071,13 @@ This tracker is used in order to not lose any screen related update.</string>
                </item>
               </layout>
              </item>
-             <item row="15" column="1">
-              <spacer name="verticalSpacer_11">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="0" column="1">
-              <widget class="QCheckBox" name="badges3DStyleChkBox">
-               <property name="text">
-                <string>Use 3D style for notification and shortcut badges</string>
-               </property>
-              </widget>
-             </item>
-             <item row="9" column="0">
-              <layout class="QHBoxLayout" name="actionsHeaderRowLayout">
-               <item>
-                <spacer name="horizontalSpacer_6">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLabel" name="actionsLbl">
-                 <property name="text">
-                  <string>Actions:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="13" column="1">
-              <spacer name="verticalSpacer_9">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="6" column="1">
-              <widget class="QCheckBox" name="noBordersForMaximizedChkBox">
-               <property name="toolTip">
-                <string>Activate support for borderless maximized windows between different layouts</string>
-               </property>
-               <property name="text">
-                <string>Support borderless maximized windows in different layouts</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QCheckBox" name="autostartChkBox">
-               <property name="toolTip">
-                <string>Start the application automatically after each relogin</string>
-               </property>
-               <property name="text">
-                <string>Enable autostart during startup</string>
-               </property>
-              </widget>
-             </item>
-             <item row="9" column="1">
+             <item row="8" column="1">
               <widget class="QCheckBox" name="metaPressChkBox">
                <property name="toolTip">
                 <string>Forward ⌘ press from KWin to Latte in order to activate Application Launcher. It is suggested to disable that option if you remove Latte.</string>
                </property>
                <property name="text">
                 <string>Press ⌘ to activate Application Launcher</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="1">
-              <widget class="QCheckBox" name="hiddenConfigsAreDeletedChk">
-               <property name="toolTip">
-                <string>Memory consumption is deleted when hidden configuration windows are deleted. On the other hand if you disable that option the configuration windows responsiveness during showing and hiding is flawlessly.</string>
-               </property>
-               <property name="text">
-                <string>Hidden configuration windows are deleted for memory efficiency</string>
                </property>
               </widget>
              </item>

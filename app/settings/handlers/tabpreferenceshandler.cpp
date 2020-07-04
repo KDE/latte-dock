@@ -88,11 +88,6 @@ void TabPreferences::initUi()
         emit dataChanged();
     });
 
-    connect(m_ui->hiddenConfigsAreDeletedChk, &QCheckBox::stateChanged, this, [&]() {
-        m_preferences.hiddenConfigurationWindowsAreDeleted = m_ui->hiddenConfigsAreDeletedChk->isChecked();
-        emit dataChanged();
-    });
-
     connect(m_ui->metaPressChkBox, &QCheckBox::stateChanged, this, [&]() {
         m_preferences.metaPressForAppLauncher = m_ui->metaPressChkBox->isChecked();
         emit dataChanged();
@@ -119,7 +114,6 @@ void TabPreferences::initSettings()
     o_preferences.autostart = m_corona->universalSettings()->autostart();
     o_preferences.badgeStyle3D = m_corona->universalSettings()->badges3DStyle();
     o_preferences.layoutsInformationWindow = m_corona->universalSettings()->showInfoWindow();
-    o_preferences.hiddenConfigurationWindowsAreDeleted = m_corona->universalSettings()->hiddenConfigurationWindowsAreDeleted();
     o_preferences.metaPressForAppLauncher = m_corona->universalSettings()->kwin_metaForwardedToLatte();
     o_preferences.metaHoldForBadges = m_corona->universalSettings()->metaPressAndHoldEnabled();
     o_preferences.borderlessMaximized = m_corona->universalSettings()->canDisableBorders();
@@ -138,7 +132,6 @@ void TabPreferences::updateUi()
     m_ui->autostartChkBox->setChecked(m_preferences.autostart);
     m_ui->badges3DStyleChkBox->setChecked(m_preferences.badgeStyle3D);
     m_ui->infoWindowChkBox->setChecked(m_preferences.layoutsInformationWindow);
-    m_ui->hiddenConfigsAreDeletedChk->setChecked(m_preferences.hiddenConfigurationWindowsAreDeleted);
     m_ui->metaPressChkBox->setChecked(m_preferences.metaPressForAppLauncher);
     m_ui->metaPressHoldChkBox->setChecked(m_preferences.metaHoldForBadges);
     m_ui->noBordersForMaximizedChkBox->setChecked(m_preferences.borderlessMaximized);
@@ -183,7 +176,6 @@ void TabPreferences::save()
     m_corona->universalSettings()->setSensitivity(m_preferences.mouseSensitivity);
     m_corona->universalSettings()->setAutostart(m_preferences.autostart);
     m_corona->universalSettings()->setBadges3DStyle(m_preferences.badgeStyle3D);
-    m_corona->universalSettings()->setHiddenConfigurationWindowsAreDeleted(m_preferences.hiddenConfigurationWindowsAreDeleted);
     m_corona->universalSettings()->kwin_forwardMetaToLatte(m_preferences.metaPressForAppLauncher);
     m_corona->universalSettings()->setMetaPressAndHoldEnabled(m_preferences.metaHoldForBadges);
     m_corona->universalSettings()->setShowInfoWindow(m_preferences.layoutsInformationWindow);

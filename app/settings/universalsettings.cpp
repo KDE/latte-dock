@@ -57,7 +57,6 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
-    connect(this, &UniversalSettings::hiddenConfigurationWindowsAreDeletedChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::metaPressAndHoldEnabledChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::sensitivityChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::screenTrackerIntervalChanged, this, &UniversalSettings::saveConfig);
@@ -395,21 +394,6 @@ void UniversalSettings::recoverKWinOptions()
     m_kwinBorderlessMaximizedWindows = (output == "true");
 }
 
-bool UniversalSettings::hiddenConfigurationWindowsAreDeleted() const
-{
-    return m_hiddenConfigurationWindowsAreDeleted;
-}
-
-void UniversalSettings::setHiddenConfigurationWindowsAreDeleted(bool enabled)
-{
-    if (m_hiddenConfigurationWindowsAreDeleted == enabled) {
-        return;
-    }
-
-    m_hiddenConfigurationWindowsAreDeleted = enabled;
-    emit hiddenConfigurationWindowsAreDeletedChanged();
-}
-
 bool UniversalSettings::metaPressAndHoldEnabled() const
 {
     return m_metaPressAndHoldEnabled;
@@ -500,7 +484,6 @@ void UniversalSettings::loadConfig()
     m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
     m_lastNonAssignedLayoutName = m_universalGroup.readEntry("lastNonAssignedLayout", QString());
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
-    m_hiddenConfigurationWindowsAreDeleted = m_universalGroup.readEntry("hiddenConfigurationWindowsAreDeleted", true);
     m_metaPressAndHoldEnabled = m_universalGroup.readEntry("metaPressAndHoldEnabled", true);
     m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
@@ -518,7 +501,6 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
     m_universalGroup.writeEntry("lastNonAssignedLayout", m_lastNonAssignedLayoutName);
     m_universalGroup.writeEntry("launchers", m_launchers);
-    m_universalGroup.writeEntry("hiddenConfigurationWindowsAreDeleted", m_hiddenConfigurationWindowsAreDeleted);
     m_universalGroup.writeEntry("metaPressAndHoldEnabled", m_metaPressAndHoldEnabled);
     m_universalGroup.writeEntry("screenTrackerInterval", m_screenTrackerInterval);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
