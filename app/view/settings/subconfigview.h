@@ -66,7 +66,7 @@ public:
     void setParentView(Latte::View *view);
 
 public slots:
-    Q_INVOKABLE virtual void syncGeometry() = 0;
+    virtual void syncGeometry() = 0;
 
 signals:
     void enabledBordersChanged();
@@ -74,8 +74,8 @@ signals:
 protected:
     void syncSlideEffect();
 
-    void init();
-    void initParentView(Latte::View *view);
+    virtual void init();
+    virtual void initParentView(Latte::View *view);
     virtual void updateEnabledBorders() = 0;
 
     bool event(QEvent *e) override;
@@ -86,12 +86,17 @@ private slots:
     void updateWaylandId();
 
 protected:
+    QTimer m_screenSyncTimer;
+
     QPointer<Latte::View> m_latteView;
 
     QList<QMetaObject::Connection> connections;
     QList<QMetaObject::Connection> viewconnections;
 
+    Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
+
     Latte::Corona *m_corona{nullptr};
+    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 
 private:
     void setupWaylandIntegration();
@@ -99,13 +104,9 @@ private:
 private:
     QString m_validTitle;
 
-    QTimer m_screenSyncTimer;
     QTimer m_thicknessSyncTimer;
 
-    Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
-
     Latte::WindowSystem::WindowId m_waylandWindowId;
-    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 
 }

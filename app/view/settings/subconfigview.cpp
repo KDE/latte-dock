@@ -163,9 +163,6 @@ void SubConfigView::initParentView(Latte::View *view)
     QQuickItem *containmentGraphicItem = qobject_cast<QQuickItem *>(m_latteView->containment()->property("_plasma_graphicObject").value<QObject *>());
     rootContext()->setContextProperty(QStringLiteral("plasmoid"), containmentGraphicItem);
     rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
-
-    updateEnabledBorders();
-    syncGeometry();
 }
 
 void SubConfigView::requestActivate()

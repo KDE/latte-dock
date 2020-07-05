@@ -204,7 +204,6 @@ void PrimaryConfigView::showSecondaryWindow()
 {       
     if (!m_secConfigView) {
         m_secConfigView = new SecondaryConfigView(m_latteView, this);
-        m_secConfigView->init();
     } else if (m_secConfigView && !m_secConfigView->isVisible()){
         m_secConfigView->show();
     }
