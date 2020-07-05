@@ -85,7 +85,6 @@ public:
     PrimaryConfigView(Latte::View *view);
     ~PrimaryConfigView() override;
 
-    void init();
     void requestActivate();
 
     Qt::WindowFlags wFlags() const;
@@ -153,6 +152,7 @@ private slots:
 private:
     void setupWaylandIntegration();
     void setIsReady(bool ready);
+    void init();
     void initParentView(Latte::View *view);
 
 private:
