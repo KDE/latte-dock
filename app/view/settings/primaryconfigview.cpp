@@ -108,9 +108,22 @@ void PrimaryConfigView::init()
     syncSlideEffect();
 }
 
-QQuickView *PrimaryConfigView::secondaryWindow()
+void PrimaryConfigView::setOnActivities(QStringList activities)
 {
-    return m_secConfigView;
+    m_corona->wm()->setWindowOnActivities(*this, activities);
+
+    if (m_secConfigView) {
+        m_corona->wm()->setWindowOnActivities(*m_secConfigView.data(), activities);
+    }
+}
+
+void PrimaryConfigView::requestActivate()
+{
+    if (m_secConfigView) {
+        m_secConfigView->requestActivate();
+    }
+
+    SubConfigView::requestActivate();
 }
 
 void PrimaryConfigView::showSecondaryWindow()

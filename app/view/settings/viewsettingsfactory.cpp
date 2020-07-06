@@ -36,7 +36,7 @@ ViewSettingsFactory::~ViewSettingsFactory()
     }
 }
 
-ViewPart::PrimaryConfigView *ViewSettingsFactory::primary(Latte::View *view)
+ViewPart::PrimaryConfigView *ViewSettingsFactory::primaryConfigView(Latte::View *view)
 {
     if (!m_primaryConfigView) {
         m_primaryConfigView = new ViewPart::PrimaryConfigView(view);

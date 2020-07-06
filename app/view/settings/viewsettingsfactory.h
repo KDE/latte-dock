@@ -43,7 +43,7 @@ public:
     ViewSettingsFactory(QObject *parent);
     ~ViewSettingsFactory() override;
 
-    ViewPart::PrimaryConfigView *primary(Latte::View *view);
+    ViewPart::PrimaryConfigView *primaryConfigView(Latte::View *view);
 
 private:
     QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;

@@ -56,7 +56,7 @@ public:
     SubConfigView(Latte::View *view, const QString &title);
     ~SubConfigView() override;
 
-    void requestActivate();
+    virtual void requestActivate();
 
     QString validTitle() const;
 

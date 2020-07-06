@@ -201,9 +201,9 @@ View::~View()
     //! windows.
     //! this->disconnect();
 
-    if (m_containmentConfigView && m_corona->inQuit()) {
+    if (m_primaryConfigView && m_corona->inQuit()) {
         //! delete only when application is quitting
-        delete m_containmentConfigView;
+        delete m_primaryConfigView;
     }
 
     if (m_appletConfigView) {
@@ -428,9 +428,7 @@ void View::removeView()
 
 bool View::settingsWindowIsShown()
 {
-    auto cview = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
-
-    return cview && (cview->parentView()==this) && cview->isVisible();
+    return m_primaryConfigView && (m_primaryConfigView->parentView()==this) && m_primaryConfigView->isVisible();
 }
 
 void View::showSettingsWindow()
@@ -444,7 +442,7 @@ void View::showSettingsWindow()
 
 QQuickView *View::configView()
 {
-    return m_containmentConfigView.data();
+    return m_primaryConfigView.data();
 }
 
 void View::showConfigurationInterface(Plasma::Applet *applet)
@@ -454,11 +452,11 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
 
     Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
 
-    if (m_containmentConfigView && c && c->isContainment() && c == this->containment()) {
-        if (m_containmentConfigView->isVisible()) {
-            m_containmentConfigView->hide();
+    if (m_primaryConfigView && c && c->isContainment() && c == this->containment()) {
+        if (m_primaryConfigView->isVisible()) {
+            m_primaryConfigView->hide();
         } else {
-            m_containmentConfigView->show();
+            m_primaryConfigView->show();
             applyActivitiesToWindows();
         }
 
@@ -479,7 +477,7 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
     bool delayConfigView = false;
 
     if (c && containment() && c->isContainment() && c->id() == containment()->id()) {
-        m_containmentConfigView = m_corona->viewSettingsFactory()->primary(this);
+        m_primaryConfigView = m_corona->viewSettingsFactory()->primaryConfigView(this);
         applyActivitiesToWindows();
     } else {       
         m_appletConfigView = new PlasmaQuick::ConfigView(applet);
@@ -794,15 +792,7 @@ void View::setIsPreferredForShortcuts(bool preferred)
 
 bool View::inSettingsAdvancedMode() const
 {
-    if (m_containmentConfigView) {
-        auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
-
-        if (configView) {
-            return configView->inAdvancedMode();
-        }
-    }
-
-    return false;
+    return m_primaryConfigView && m_primaryConfigView->inAdvancedMode();
 }
 
 bool View::isTouchingBottomViewAndIsBusy() const
@@ -1039,14 +1029,8 @@ void View::applyActivitiesToWindows()
         m_windowsTracker->setWindowOnActivities(*this, runningActivities);
 
         //! config windows
-        if (m_containmentConfigView) {
-            m_windowsTracker->setWindowOnActivities(*m_containmentConfigView, runningActivities);
-
-            auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
-
-            if (configView && configView->secondaryWindow()) {
-                m_windowsTracker->setWindowOnActivities(*configView->secondaryWindow(), runningActivities);
-            }
+        if (m_primaryConfigView) {
+            m_primaryConfigView->setOnActivities(runningActivities);
         }
 
         if (m_appletConfigView) {
@@ -1210,12 +1194,8 @@ void View::moveToLayout(QString layoutName)
 
 void View::hideWindowsForSlidingOut()
 {
-    if (m_containmentConfigView) {
-        auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
-
-        if (configDialog) {
-            configDialog->hideConfigWindow();
-        }
+    if (m_primaryConfigView) {
+        m_primaryConfigView->hideConfigWindow();
     }
 }
 
@@ -1302,19 +1282,8 @@ bool View::event(QEvent *e)
         case QEvent::Enter:
             m_containsMouse = true;
 
-            if (m_containmentConfigView) {
-                ViewPart::PrimaryConfigView *primaryConfigView = qobject_cast<ViewPart::PrimaryConfigView *>(m_containmentConfigView);
-
-                if (primaryConfigView) {
-                    if (primaryConfigView->secondaryWindow()) {
-                        ViewPart::SecondaryConfigView *secConfigView = qobject_cast<ViewPart::SecondaryConfigView *>(primaryConfigView->secondaryWindow());
-                        if (secConfigView) {
-                            secConfigView->requestActivate();
-                        }
-                    }
-
-                    primaryConfigView->requestActivate();
-                }
+            if (m_primaryConfigView) {
+                m_primaryConfigView->requestActivate();
             }
             break;
 
@@ -1399,7 +1368,7 @@ bool View::event(QEvent *e)
 
 void View::releaseConfigView()
 {
-    m_containmentConfigView = nullptr;
+    m_primaryConfigView = nullptr;
 }
 
 //! release grab and restore mouse state

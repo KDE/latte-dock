@@ -411,7 +411,7 @@ private:
 
     Layout::GenericLayout *m_layout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_appletConfigView;
-    QPointer<QQuickView> m_containmentConfigView;
+    QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;
 
     QPointer<ViewPart::ContextMenu> m_contextMenu;
     QPointer<ViewPart::Effects> m_effects;

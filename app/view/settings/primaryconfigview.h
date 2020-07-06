@@ -96,8 +96,9 @@ public:
     QRect geometryWhenVisible() const;
 
     void setParentView(Latte::View *view) override;
+    void setOnActivities(QStringList activities);
 
-    QQuickView *secondaryWindow();
+    void requestActivate() override;
 
 public slots:
     Q_INVOKABLE void syncGeometry() override;
