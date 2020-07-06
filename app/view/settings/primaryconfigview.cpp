@@ -30,8 +30,6 @@
 #include "../../layouts/manager.h"
 #include "../../layout/genericlayout.h"
 #include "../../settings/universalsettings.h"
-#include "../../shortcuts/globalshortcuts.h"
-#include "../../shortcuts/shortcutstracker.h"
 #include "../../wm/abstractwindowinterface.h"
 
 // Qt
@@ -55,26 +53,8 @@ namespace Latte {
 namespace ViewPart {
 
 PrimaryConfigView::PrimaryConfigView(Latte::View *view)
-    : QQuickView(nullptr)
+    : SubConfigView(view, QString("#primaryconfigview#"))
 {
-    m_corona = qobject_cast<Latte::Corona *>(view->containment()->corona());
-
-    setupWaylandIntegration();
-
-    setTitle(validTitle());
-
-    if (KWindowSystem::isPlatformX11()) {
-        m_corona->wm()->registerIgnoredWindow(winId());
-    } else {
-        connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &PrimaryConfigView::updateWaylandId);
-    }
-
-    setScreen(view->screen());
-    setIcon(qGuiApp->windowIcon());
-
-    m_screenSyncTimer.setSingleShot(true);
-    m_screenSyncTimer.setInterval(100);
-
     connect(this, &QQuickView::widthChanged, this, &PrimaryConfigView::updateEffects);
     connect(this, &QQuickView::heightChanged, this, &PrimaryConfigView::updateEffects);
 
@@ -88,25 +68,6 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
             updateEffects();
         }
     });
-
-    connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
-        setScreen(m_latteView->screen());
-        setFlags(wFlags());
-
-        if (KWindowSystem::isPlatformX11()) {
-            m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
-        }
-
-        syncGeometry();
-        syncSlideEffect();
-    });
-
-    m_thicknessSyncTimer.setSingleShot(true);
-    m_thicknessSyncTimer.setInterval(200);
-    connections << connect(&m_thicknessSyncTimer, &QTimer::timeout, this, [this]() {
-        syncGeometry();
-    });
-
 
     if (m_corona) {
         connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &PrimaryConfigView::raiseDocksTemporaryChanged);
@@ -125,8 +86,6 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
 
 PrimaryConfigView::~PrimaryConfigView()
 {
-    qDebug() << "ConfigView deleting ...";
-
     if (m_secConfigView) {
         delete m_secConfigView;
     }
@@ -135,45 +94,11 @@ PrimaryConfigView::~PrimaryConfigView()
         //! destroy indicator config ui when the configuration window is closed
         m_latteView->indicator()->releaseConfigUi();
     }
-
-    m_corona->dialogShadows()->removeWindow(this);
-
-    m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_waylandWindowId);
-
-    for (const auto &var : connections) {
-        QObject::disconnect(var);
-    }
-
-    for (const auto &var : viewconnections) {
-        QObject::disconnect(var);
-    }
 }
 
 void PrimaryConfigView::init()
 {
-    qDebug() << "dock config view : initialization started...";
-
-    setDefaultAlphaBuffer(true);
-    setColor(Qt::transparent);
-    m_corona->dialogShadows()->addWindow(this);
-
-    rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), m_corona->globalShortcuts()->shortcutsTracker());
-    rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
-
-    if (m_corona) {
-        rootContext()->setContextProperty(QStringLiteral("universalSettings"), m_corona->universalSettings());
-        rootContext()->setContextProperty(QStringLiteral("layoutsManager"), m_corona->layoutsManager());
-    }
-
-    KDeclarative::KDeclarative kdeclarative;
-    kdeclarative.setDeclarativeEngine(engine());
-    kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));
-#if KF5_VERSION_MINOR >= 45
-    kdeclarative.setupContext();
-    kdeclarative.setupEngine(engine());
-#else
-    kdeclarative.setupBindings();
-#endif
+    SubConfigView::init();
 
     QByteArray tempFilePath = "lattedockconfigurationui";
 
@@ -181,18 +106,6 @@ void PrimaryConfigView::init()
     setSource(source);
     syncGeometry();
     syncSlideEffect();
-
-    qDebug() << "dock config view : initialization ended...";
-}
-
-inline Qt::WindowFlags PrimaryConfigView::wFlags() const
-{
-    return (flags() | Qt::FramelessWindowHint) & ~Qt::WindowDoesNotAcceptFocus;
-}
-
-QString PrimaryConfigView::validTitle() const
-{
-    return QString("#primaryconfigview#");
 }
 
 QQuickView *PrimaryConfigView::secondaryWindow()
@@ -223,11 +136,6 @@ void PrimaryConfigView::hideSecondaryWindow()
     }
 }
 
-Latte::View *PrimaryConfigView::parentView() const
-{
-    return m_latteView;
-}
-
 void PrimaryConfigView::setParentView(Latte::View *view)
 {
     if (m_latteView == view) {
@@ -249,23 +157,15 @@ void PrimaryConfigView::initParentView(Latte::View *view)
 {
     setIsReady(false);
 
-    for (const auto &var : viewconnections) {
-        QObject::disconnect(var);
-    }
-
     if (m_latteView && m_latteView->indicator()) {
         //! destroy indicator config ui when the configuration window is closed
         m_latteView->indicator()->releaseConfigUi();
     }
 
-    m_latteView = view;
+    SubConfigView::initParentView(view);
 
     viewconnections << connect(this, &PrimaryConfigView::inAdvancedModeChanged, m_latteView, &Latte::View::inSettingsAdvancedModeChanged);
-    viewconnections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &PrimaryConfigView::syncGeometry);
     viewconnections << connect(m_latteView->containment(), &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);
-    viewconnections << connect(m_latteView, &Latte::View::normalThicknessChanged, [&]() {
-        m_thicknessSyncTimer.start();
-    });
 
     m_originalByPassWM = m_latteView->byPassWM();
     m_originalMode = m_latteView->visibility()->mode();
@@ -274,11 +174,6 @@ void PrimaryConfigView::initParentView(Latte::View *view)
 
     //! inform view about the current settings level
     emit m_latteView->inSettingsAdvancedModeChanged();
-
-    //! Assign app interfaces in be accessible through containment graphic item
-    QQuickItem *containmentGraphicItem = qobject_cast<QQuickItem *>(m_latteView->containment()->property("_plasma_graphicObject").value<QObject *>());
-    rootContext()->setContextProperty(QStringLiteral("plasmoid"), containmentGraphicItem);
-    rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
 
     updateEnabledBorders();
     updateAvailableScreenGeometry();
@@ -320,16 +215,6 @@ QRect PrimaryConfigView::availableScreenGeometry() const
 QRect PrimaryConfigView::geometryWhenVisible() const
 {
     return m_geometryWhenVisible;
-}
-
-void PrimaryConfigView::requestActivate()
-{
-    if (KWindowSystem::isPlatformWayland() && m_shellSurface) {
-        updateWaylandId();
-        m_corona->wm()->requestActivate(m_waylandWindowId);
-    } else {
-        QQuickView::requestActivate();
-    }
 }
 
 void PrimaryConfigView::syncGeometry()
@@ -456,39 +341,6 @@ void PrimaryConfigView::updateViewMask()
     m_latteView->effects()->setSubtractedMaskRegion(validTitle(), area);
 }
 
-void PrimaryConfigView::syncSlideEffect()
-{
-    if (!m_latteView || !m_latteView->containment()) {
-        return;
-    }
-
-    auto slideLocation = WindowSystem::AbstractWindowInterface::Slide::None;
-
-    switch (m_latteView->containment()->location()) {
-    case Plasma::Types::TopEdge:
-        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Top;
-        break;
-
-    case Plasma::Types::RightEdge:
-        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Right;
-        break;
-
-    case Plasma::Types::BottomEdge:
-        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Bottom;
-        break;
-
-    case Plasma::Types::LeftEdge:
-        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Left;
-        break;
-
-    default:
-        qDebug() << staticMetaObject.className() << "wrong location";
-        break;
-    }
-
-    m_corona->wm()->slideWindow(*this, slideLocation);
-}
-
 void PrimaryConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
@@ -572,66 +424,6 @@ void PrimaryConfigView::focusOutEvent(QFocusEvent *ev)
         hideConfigWindow();
     }
 }
-
-void PrimaryConfigView::setupWaylandIntegration()
-{
-    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
-        // already setup
-        return;
-    }
-
-    if (m_corona) {
-        using namespace KWayland::Client;
-        PlasmaShell *interface = m_corona->waylandCoronaInterface();
-
-        if (!interface) {
-            return;
-        }
-
-        Surface *s = Surface::fromWindow(this);
-
-        if (!s) {
-            return;
-        }
-
-        qDebug() << "wayland primary settings surface was created...";
-
-        m_shellSurface = interface->createSurface(s, this);
-        m_corona->wm()->setViewExtraFlags(m_shellSurface, false);
-
-        syncGeometry();
-    }
-}
-
-bool PrimaryConfigView::event(QEvent *e)
-{
-    if (e->type() == QEvent::PlatformSurface) {
-        if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
-            switch (pe->surfaceEventType()) {
-            case QPlatformSurfaceEvent::SurfaceCreated:
-
-                if (m_shellSurface) {
-                    break;
-                }
-
-                setupWaylandIntegration();
-                break;
-
-            case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-                if (m_shellSurface) {
-                    delete m_shellSurface;
-                    m_shellSurface = nullptr;
-                    qDebug() << "WAYLAND config window surface was deleted...";
-                }
-
-                break;
-            }
-        }
-    }
-
-    return QQuickView::event(e);
-}
-
 
 void PrimaryConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
 {
@@ -719,20 +511,6 @@ void PrimaryConfigView::updateShowInlineProperties()
     // qDebug() << " showSecWindow:" << showSecWindow << " _ " << " inline:"<< !showSecWindow;
 }
 
-void PrimaryConfigView::updateWaylandId()
-{
-    Latte::WindowSystem::WindowId newId = m_corona->wm()->winIdFor("latte-dock", validTitle());
-
-    if (m_waylandWindowId != newId) {
-        if (!m_waylandWindowId.isNull()) {
-            m_corona->wm()->unregisterIgnoredWindow(m_waylandWindowId);
-        }
-
-        m_waylandWindowId = newId;
-        m_corona->wm()->registerIgnoredWindow(m_waylandWindowId);
-    }
-}
-
 bool PrimaryConfigView::inAdvancedMode() const
 {
     return m_inAdvancedMode;
@@ -761,11 +539,6 @@ void PrimaryConfigView::hideConfigWindow()
 }
 
 //!BEGIN borders
-Plasma::FrameSvg::EnabledBorders PrimaryConfigView::enabledBorders() const
-{
-    return m_enabledBorders;
-}
-
 void PrimaryConfigView::updateEnabledBorders()
 {
     if (!this->screen()) {

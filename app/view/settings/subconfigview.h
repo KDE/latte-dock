@@ -63,7 +63,7 @@ public:
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
     Latte::View *parentView() const;
-    void setParentView(Latte::View *view);
+    virtual void setParentView(Latte::View *view);
 
 public slots:
     virtual void syncGeometry() = 0;

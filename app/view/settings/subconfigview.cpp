@@ -26,6 +26,7 @@
 #include "../../layouts/manager.h"
 #include "../../settings/universalsettings.h"
 #include "../../shortcuts/globalshortcuts.h"
+#include "../../shortcuts/shortcutstracker.h"
 #include "../../wm/abstractwindowinterface.h"
 
 // KDE
@@ -77,8 +78,6 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title)
     connections << connect(&m_thicknessSyncTimer, &QTimer::timeout, this, [this]() {
         syncGeometry();
     });
-
-    setParentView(view);
 }
 
 SubConfigView::~SubConfigView()
@@ -105,6 +104,9 @@ void SubConfigView::init()
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     m_corona->dialogShadows()->addWindow(this);
+
+    rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
+    rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), m_corona->globalShortcuts()->shortcutsTracker());
 
     if (m_corona) {
         rootContext()->setContextProperty(QStringLiteral("universalSettings"), m_corona->universalSettings());

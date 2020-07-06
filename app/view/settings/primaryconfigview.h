@@ -23,6 +23,7 @@
 
 // local
 #include <coretypes.h>
+#include "subconfigview.h"
 #include "../../wm/windowinfowrap.h"
 
 //Qt
@@ -63,7 +64,7 @@ class SecondaryConfigView;
 namespace Latte {
 namespace ViewPart {
 
-class PrimaryConfigView : public QQuickView
+class PrimaryConfigView : public SubConfigView
 {
     Q_OBJECT
     //! used when the secondary config window can not be shown
@@ -72,8 +73,6 @@ class PrimaryConfigView : public QQuickView
     Q_PROPERTY(bool isReady READ isReady NOTIFY isReadyChanged)
 
     Q_PROPERTY(QRect availableScreenGeometry READ availableScreenGeometry NOTIFY availableScreenGeometryChanged)
-
-    Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
     enum ConfigViewType
@@ -84,10 +83,6 @@ public:
 
     PrimaryConfigView(Latte::View *view);
     ~PrimaryConfigView() override;
-
-    void requestActivate();
-
-    Qt::WindowFlags wFlags() const;
 
     bool inAdvancedMode() const;
     void setInAdvancedMode(bool advanced);
@@ -100,24 +95,18 @@ public:
     QRect availableScreenGeometry() const;
     QRect geometryWhenVisible() const;
 
-    QString validTitle() const;
-
-    Plasma::FrameSvg::EnabledBorders enabledBorders() const;
-
-    Latte::View *parentView() const;
-    void setParentView(Latte::View *view);
+    void setParentView(Latte::View *view) override;
 
     QQuickView *secondaryWindow();
 
 public slots:
+    Q_INVOKABLE void syncGeometry() override;
     Q_INVOKABLE void hideConfigWindow();
-    Q_INVOKABLE void setSticker(bool blockFocusLost);
-    Q_INVOKABLE void syncGeometry();
+    Q_INVOKABLE void setSticker(bool blockFocusLost);    
     Q_INVOKABLE void updateEffects();
 
 signals:
     void availableScreenGeometryChanged();
-    void enabledBordersChanged();
     void inAdvancedModeChanged();
     void isReadyChanged();
     void raiseDocksTemporaryChanged();
@@ -128,16 +117,15 @@ protected:
     void showEvent(QShowEvent *ev) override;
     void hideEvent(QHideEvent *ev) override;
     void focusOutEvent(QFocusEvent *ev) override;
-    bool event(QEvent *e) override;
 
-    void syncSlideEffect();
+    void init() override;
+    void initParentView(Latte::View *view) override;
+    void updateEnabledBorders() override;
 
 private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
     void updateAvailableScreenGeometry(View *origin = nullptr);
-    void updateEnabledBorders();
     void updateShowInlineProperties();
-    void updateWaylandId();
 
     void showSecondaryWindow();
     void hideSecondaryWindow();
@@ -150,10 +138,7 @@ private slots:
     void saveConfig();
 
 private:
-    void setupWaylandIntegration();
     void setIsReady(bool ready);
-    void init();
-    void initParentView(Latte::View *view);
 
 private:
     bool m_blockFocusLost{false};
@@ -169,21 +154,10 @@ private:
     QRect m_availableScreenGeometry;
     QRect m_geometryWhenVisible;
 
-    QPointer<Latte::View> m_latteView;
     QPointer<SecondaryConfigView> m_secConfigView;
-    QTimer m_screenSyncTimer;
-    QTimer m_thicknessSyncTimer;
-    QList<QMetaObject::Connection> connections;
-    QList<QMetaObject::Connection> viewconnections;
-
-    Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
 
     //only for the mask on disabled compositing, not to actually paint
     Plasma::FrameSvg *m_background{nullptr};
-
-    Latte::Corona *m_corona{nullptr};
-    Latte::WindowSystem::WindowId m_waylandWindowId;
-    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 
 }

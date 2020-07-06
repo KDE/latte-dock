@@ -62,14 +62,13 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, PrimaryConfigView *p
 
     connections << connect(m_parent, &PrimaryConfigView::availableScreenGeometryChanged, this, &SecondaryConfigView::syncGeometry);
 
+    setParentView(view);
     init();
 }
 
 void SecondaryConfigView::init()
 {
     SubConfigView::init();
-
-    rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
 
     QByteArray tempFilePath = "lattedocksecondaryconfigurationui";
 
@@ -83,8 +82,6 @@ void SecondaryConfigView::init()
     if (m_parent && KWindowSystem::isPlatformX11()) {
         m_parent->requestActivate();
     }
-
-    qDebug() << "dock secondary config view : initialization ended...";
 }
 
 QRect SecondaryConfigView::geometryWhenVisible() const
