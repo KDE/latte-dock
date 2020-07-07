@@ -1230,6 +1230,21 @@ bool View::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
     return false;
 }
 
+QQuickItem *View::colorizer() const
+{
+    return m_colorizer;
+}
+
+void View::setColorizer(QQuickItem *colorizer)
+{
+    if (m_colorizer == colorizer) {
+        return;
+    }
+
+    m_colorizer = colorizer;
+    emit colorizerChanged();
+}
+
 ViewPart::Effects *View::effects() const
 {
     return m_effects;

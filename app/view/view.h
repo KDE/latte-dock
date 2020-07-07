@@ -117,6 +117,8 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
     Q_PROPERTY(float offset READ offset WRITE setOffset NOTIFY offsetChanged)
 
+    Q_PROPERTY(QQuickItem *colorizer READ colorizer WRITE setColorizer NOTIFY colorizerChanged)
+
     Q_PROPERTY(Latte::Layout::GenericLayout *layout READ layout WRITE setLayout NOTIFY layoutChanged)
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Latte::ViewPart::ContainmentInterface *extendedInterface READ extendedInterface NOTIFY extendedInterfaceChanged)
@@ -227,6 +229,9 @@ public:
     bool settingsWindowIsShown();
     void showSettingsWindow();
 
+    QQuickItem *colorizer() const;
+    void setColorizer(QQuickItem *colorizer);
+
     QQuickView *configView();
 
     ViewPart::Effects *effects() const;   
@@ -288,6 +293,7 @@ signals:
     void alignmentChanged();
     void behaveAsPlasmaPanelChanged();
     void byPassWMChanged();
+    void colorizerChanged();
     void configWindowGeometryChanged(); // is called from config windows
     void containsDragChanged();
     void contextMenuIsShownChanged();
@@ -414,6 +420,9 @@ private:
     int m_releaseGrab_y;
 
     Layout::GenericLayout *m_layout{nullptr};
+
+    QQuickItem *m_colorizer{nullptr};
+
     QPointer<PlasmaQuick::ConfigView> m_appletConfigView;
     QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;
 
