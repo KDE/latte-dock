@@ -251,6 +251,9 @@ void View::init(Plasma::Containment *plasma_containment)
     connect(this, &QQuickWindow::heightChanged, this, &View::heightChanged);
     connect(this, &QQuickWindow::heightChanged, this, &View::updateAbsoluteGeometry);
 
+    connect(this, &View::fontPixelSizeChanged, this, &View::editThicknessChanged);
+    connect(this, &View::normalHighestThicknessChanged, this, &View::editThicknessChanged);
+
     connect(this, &View::activitiesChanged, this, &View::applyActivitiesToWindows);
 
     connect(this, &View::localGeometryChanged, this, [&]() {
@@ -703,6 +706,21 @@ void View::setNormalThickness(int thickness)
     emit normalThicknessChanged();
 }
 
+int View::normalHighestThickness() const
+{
+    return m_normalHighestThickness;
+}
+
+void View::setNormalHighestThickness(int thickness)
+{
+    if (m_normalHighestThickness == thickness) {
+        return;
+    }
+
+    m_normalHighestThickness = thickness;
+    emit normalHighestThicknessChanged();
+}
+
 int View::headThicknessGap() const
 {
     return m_headThicknessGap;
@@ -865,18 +883,11 @@ void View::setMaxLength(float length)
 
 int View::editThickness() const
 {
-    return m_editThickness;
-}
+    int smallspacing = 4;
+    int ruler_height{m_fontPixelSize};
+    int header_height{m_fontPixelSize + 2*smallspacing};
 
-void View::setEditThickness(int thickness)
-{
-    if (m_editThickness == thickness) {
-        return;
-    }
-
-    m_editThickness = thickness;
-
-    emit editThicknessChanged();
+    return m_normalHighestThickness + ruler_height + header_height + 6*smallspacing;
 }
 
 int View::maxThickness() const

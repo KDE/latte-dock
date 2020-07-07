@@ -156,9 +156,9 @@ Item{
 
     Binding{
         target: latteView
-        property:"editThickness"
-        when: latteView
-        value: thicknessEditMode
+        property:"normalHighestThickness"
+        when: latteView && inPublishingState
+        value: thicknessNormalOriginalValue
     }
 
     Binding {

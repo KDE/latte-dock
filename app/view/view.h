@@ -107,9 +107,10 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int y READ y NOTIFY yChanged)
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
-    Q_PROPERTY(int editThickness READ editThickness WRITE setEditThickness NOTIFY editThicknessChanged)
+    Q_PROPERTY(int editThickness READ editThickness NOTIFY editThicknessChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
+    Q_PROPERTY(int normalHighestThickness READ normalHighestThickness WRITE setNormalHighestThickness NOTIFY normalHighestThicknessChanged)
     Q_PROPERTY(int headThicknessGap READ headThicknessGap WRITE setHeadThicknessGap NOTIFY headThicknessGapChanged)
     Q_PROPERTY(int screenEdgeMargin READ screenEdgeMargin WRITE setScreenEdgeMargin NOTIFY screenEdgeMarginChanged)
 
@@ -184,13 +185,15 @@ public:
     void setFontPixelSize(int size);
 
     int editThickness() const;
-    void setEditThickness(int thickness);
 
     int maxThickness() const;
     void setMaxThickness(int thickness);
 
     int normalThickness() const;
     void setNormalThickness(int thickness);
+
+    int normalHighestThickness() const;
+    void setNormalHighestThickness(int thickness);
 
     int headThicknessGap() const;
     void setHeadThicknessGap(int thickness);
@@ -309,6 +312,7 @@ signals:
     void maxLengthChanged();
     void maxThicknessChanged();
     void normalThicknessChanged();
+    void normalHighestThicknessChanged();
     void offsetChanged();
     void onPrimaryChanged();
     void positionerChanged();
@@ -379,9 +383,9 @@ private:
     bool m_isTouchingTopViewAndIsBusy{false};
 
     int m_fontPixelSize{ -1};
-    int m_editThickness{24};
     int m_maxThickness{24};
     int m_normalThickness{24};
+    int m_normalHighestThickness{24};
     int m_headThicknessGap{0};
     int m_screenEdgeMargin{-1};
     float m_maxLength{1};
