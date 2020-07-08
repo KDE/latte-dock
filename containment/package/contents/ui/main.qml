@@ -99,7 +99,6 @@ Item {
         return (visibilityManager.panelIsBiggerFromIconSize
                 && (parabolic.factor.maxZoom === 1.0)
                 && (plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout)
-                && !root.editMode
                 && !visibilityManager.inLocationAnimation);
     }
 
@@ -226,7 +225,7 @@ Item {
     readonly property bool inConfigureAppletsMode: root.editMode && (plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive)
     readonly property bool parabolicEffectEnabled: parabolic.factor.zoom>1 && !inConfigureAppletsMode
 
-    property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
+    property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut)
     property bool closeActiveWindowEnabled: plasmoid.configuration.closeActiveWindowEnabled
     property bool dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled
     property bool immutable: plasmoid.immutable
@@ -1323,7 +1322,6 @@ Item {
 
     EditMode.Visual{
         id:editModeVisual
-        //   z: root.behaveAsPlasmaPanel ? 1 : 0
     }
 
     Item {

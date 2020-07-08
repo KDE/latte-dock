@@ -43,7 +43,6 @@ Item{
     property bool panelIsBiggerFromIconSize: root.useThemePanel && (background.totals.visualThickness >= (metrics.iconSize + metrics.margin.thickness))
 
     property bool maskIsFloating: !root.behaveAsPlasmaPanel
-                                  && !root.editMode
                                   && screenEdgeMarginEnabled
                                   && !plasmoid.configuration.fittsLawIsRequested
                                   && !inSlidingIn
@@ -97,8 +96,7 @@ Item{
 
     property int thicknessNormalOriginalValue: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraNormalThickMask
     property int thicknessZoomOriginal: finalScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraZoomThickMask,
-                                                                         background.thickness + background.shadows.headThickness,
-                                                                         (LatteCore.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
+                                                                         background.thickness + background.shadows.headThickness)
 
     //! is used from Panel in edit mode in order to provide correct masking
     property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness
@@ -141,7 +139,7 @@ Item{
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
         when: latteView && !inTempHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding
-        value: root.behaveAsPlasmaPanel && !root.editMode ? thicknessAsPanel : thicknessZoomOriginal
+        value: root.behaveAsPlasmaPanel ? thicknessAsPanel : thicknessZoomOriginal
     }
 
     property bool validIconSize: (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === autosize.iconSize)
@@ -151,7 +149,7 @@ Item{
         target: latteView
         property:"normalThickness"
         when: latteView && inPublishingState
-        value: root.behaveAsPlasmaPanel && !root.editMode ? thicknessAsPanel : thicknessNormalOriginal
+        value: root.behaveAsPlasmaPanel ? thicknessAsPanel : thicknessNormalOriginal
     }
 
     Binding{
@@ -164,7 +162,7 @@ Item{
     Binding {
         target: latteView
         property: "headThicknessGap"
-        when: latteView && !root.editMode && !editModeVisual.inEditMode && !inTempHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
+        when: latteView && !inTempHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
         value: {
             if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView || latteView.byPassWM) {
                 return 0;
@@ -185,7 +183,7 @@ Item{
         target: latteView
         property: "behaveAsPlasmaPanel"
         when: latteView
-        value: root.editMode ? false : root.behaveAsPlasmaPanel
+        value: root.behaveAsPlasmaPanel
     }
 
     Binding{
@@ -316,13 +314,7 @@ Item{
         target: latteView && latteView.effects ? latteView.effects : null
         property:"innerShadow"
         when: latteView && latteView.effects
-        value: {
-            if (editModeVisual.editAnimationEnded && !root.behaveAsPlasmaPanel) {
-                return root.editShadow;
-            } else {
-                return background.shadows.headThickness;
-            }
-        }
+        value: background.shadows.headThickness
     }
 
     //! View::Positioner bindings
@@ -357,15 +349,6 @@ Item{
                     || root.windowColors !== LatteContainment.Types.NoneWindowColors))
                || (root.screenEdgeMarginsEnabled                             /*Dynamic Screen Edge Margin*/
                    && plasmoid.configuration.hideScreenGapForMaximized)
-    }
-
-    Connections{
-        target:root      
-        onEditModeChanged: {
-            if (root.editMode) {
-                visibilityManager.updateMaskArea();
-            }
-        }
     }
 
     Connections{
@@ -531,7 +514,7 @@ Item{
         var tempLength = root.isHorizontal ? width : height;
         var tempThickness = root.isHorizontal ? height : width;
 
-        var noCompositingEdit = !LatteCore.WindowSystem.compositingActive && root.editMode;
+        var noCompositingEdit = false; //!LatteCore.WindowSystem.compositingActive && root.editMode;
 
         if (LatteCore.WindowSystem.compositingActive || noCompositingEdit) {
             if (normalState) {
@@ -642,10 +625,9 @@ Item{
                 var onlyLengthAnimation = (animations.needLength.count>0 && animations.needBothAxis.count === 0);
 
                 if(onlyLengthAnimation) {
-
                     //this is used to fix a bug with shadow showing when the animation of edit mode
                     //is triggered
-                    tempThickness = editModeVisual.editAnimationEnded ? thicknessEditMode + root.editShadow : thicknessEditMode
+                    tempThickness = thicknessNormal;
 
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                         tempThickness = thicknessAutoHidden;
@@ -750,7 +732,7 @@ Item{
             if (!LatteCore.WindowSystem.compositingActive) {
                 latteView.effects.mask = newMaskArea;
             } else {
-                if (latteView.behaveAsPlasmaPanel && !root.editMode) {
+                if (latteView.behaveAsPlasmaPanel) {
                     latteView.effects.mask = Qt.rect(0,0,root.width,root.height);
                 } else {
                     latteView.effects.mask = newMaskArea;
@@ -762,7 +744,7 @@ Item{
 
         //console.log("reached updating geometry ::: "+dock.maskArea);
 
-        if(inPublishingState && !latteView.visibility.isHidden && (normalState || root.editMode)) {
+        if(inPublishingState && !latteView.visibility.isHidden && normalState) {
             //! Important: Local Geometry must not be updated when view ISHIDDEN
             //! because it breaks Dodge(s) modes in such case
 
@@ -770,7 +752,7 @@ Item{
 
             //the shadows size must be removed from the maskArea
             //before updating the localDockGeometry
-            if (!latteView.behaveAsPlasmaPanel || root.editMode) {
+            if (!latteView.behaveAsPlasmaPanel) {
                 var cleanThickness = metrics.totals.thickness;
                 var edgeMargin = finalScreenEdgeMargin;
 
