@@ -62,6 +62,10 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title)
     m_screenSyncTimer.setInterval(100);
 
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
+        if (!m_latteView) {
+            return;
+        }
+
         setScreen(m_latteView->screen());
         setFlags(wFlags());
 

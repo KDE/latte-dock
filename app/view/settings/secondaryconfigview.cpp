@@ -224,8 +224,6 @@ void SecondaryConfigView::updateViewMask()
     } else {
         area = QRect(x, y, thickness, length);
     }
-
-    m_latteView->effects()->setSubtractedMaskRegion(validTitle(), area);
 }
 
 void SecondaryConfigView::showEvent(QShowEvent *ev)
@@ -270,8 +268,6 @@ void SecondaryConfigView::focusOutEvent(QFocusEvent *ev)
 
 void SecondaryConfigView::hideConfigWindow()
 {
-    m_latteView->effects()->removeSubtractedMaskRegion(validTitle());
-
     if (m_shellSurface) {
         //!NOTE: Avoid crash in wayland environment with qt5.9
         close();

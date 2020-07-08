@@ -57,6 +57,7 @@ class View;
 
 namespace Latte {
 namespace ViewPart {
+class CanvasConfigView;
 class SecondaryConfigView;
 }
 }
@@ -131,6 +132,9 @@ private slots:
     void showSecondaryWindow();
     void hideSecondaryWindow();
 
+    void showCanvasWindow();
+    void hideCanvasWindow();
+
     void setShowInlineProperties(bool show);
 
     void updateViewMask();
@@ -156,6 +160,7 @@ private:
     QRect m_geometryWhenVisible;
 
     QPointer<SecondaryConfigView> m_secConfigView;
+    QPointer<CanvasConfigView> m_canvasConfigView;
 
     //only for the mask on disabled compositing, not to actually paint
     Plasma::FrameSvg *m_background{nullptr};

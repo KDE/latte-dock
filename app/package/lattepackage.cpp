@@ -48,6 +48,7 @@ void Package::initPackage(KPackage::Package *package)
     //Configuration
     package->addFileDefinition("lattedockconfigurationui", QStringLiteral("configuration/LatteDockConfiguration.qml"), i18n("Dock configuration UI"));
     package->addFileDefinition("lattedocksecondaryconfigurationui", QStringLiteral("configuration/LatteDockSecondaryConfiguration.qml"), i18n("Dock secondary configuration UI"));
+    package->addFileDefinition("canvasconfigurationui", QStringLiteral("configuration/Canvas.qml"), i18n("Dock canvas configuration UI"));
     package->addFileDefinition("configmodel", QStringLiteral("configuration/config.qml"), i18n("Config model"));
     package->addFileDefinition("splitter", QStringLiteral("images/splitter.svgz"), i18n("Splitter"));
     package->addFileDefinition("trademark", QStringLiteral("images/trademark.svgz"), i18n("Latte Trademark"));

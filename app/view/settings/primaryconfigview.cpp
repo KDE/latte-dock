@@ -22,6 +22,7 @@
 
 // local
 #include <config-latte.h>
+#include "canvasconfigview.h"
 #include "secondaryconfigview.h"
 #include "../effects.h"
 #include "../panelshadows_p.h"
@@ -115,15 +116,39 @@ void PrimaryConfigView::setOnActivities(QStringList activities)
     if (m_secConfigView) {
         m_corona->wm()->setWindowOnActivities(*m_secConfigView.data(), activities);
     }
+
+    if (m_canvasConfigView) {
+        m_corona->wm()->setWindowOnActivities(*m_canvasConfigView.data(), activities);
+    }
 }
 
 void PrimaryConfigView::requestActivate()
 {
+    if (m_canvasConfigView) {
+        m_canvasConfigView->requestActivate();
+    }
+
     if (m_secConfigView) {
         m_secConfigView->requestActivate();
     }
 
     SubConfigView::requestActivate();
+}
+
+void PrimaryConfigView::showCanvasWindow()
+{
+    if (!m_canvasConfigView) {
+        m_canvasConfigView = new CanvasConfigView(m_latteView, this);
+    } else if (m_canvasConfigView && !m_canvasConfigView->isVisible()){
+        m_canvasConfigView->show();
+    }
+}
+
+void PrimaryConfigView::hideCanvasWindow()
+{
+    if (m_canvasConfigView) {
+        m_canvasConfigView->hideConfigWindow();
+    }
 }
 
 void PrimaryConfigView::showSecondaryWindow()
@@ -193,8 +218,13 @@ void PrimaryConfigView::initParentView(Latte::View *view)
     syncGeometry();
 
     show();
+    showCanvasWindow();
 
     setIsReady(true);
+
+    if (m_canvasConfigView) {
+        m_canvasConfigView->setParentView(view);
+    }
 
     if (m_secConfigView) {
         m_secConfigView->setParentView(view);
@@ -378,6 +408,8 @@ void PrimaryConfigView::showEvent(QShowEvent *ev)
     updateShowInlineProperties();
     updateViewMask();
 
+    showCanvasWindow();
+
     emit showSignal();
 
     if (m_latteView && m_latteView->layout()) {
@@ -548,6 +580,7 @@ void PrimaryConfigView::hideConfigWindow()
         hide();
     }
 
+    hideCanvasWindow();
     hideSecondaryWindow();
 }
 
