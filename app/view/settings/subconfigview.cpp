@@ -39,8 +39,9 @@
 namespace Latte {
 namespace ViewPart {
 
-SubConfigView::SubConfigView(Latte::View *view, const QString &title)
-    : QQuickView(nullptr)
+SubConfigView::SubConfigView(Latte::View *view, const QString &title, const bool &isNormalWindow)
+    : QQuickView(nullptr),
+      m_isNormalWindow(isNormalWindow)
 {
     m_corona = qobject_cast<Latte::Corona *>(view->containment()->corona());
 
@@ -58,6 +59,10 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title)
     setScreen(view->screen());
     setIcon(qGuiApp->windowIcon());
 
+    if (!m_isNormalWindow) {
+        m_corona->wm()->setViewExtraFlags(this, true, Latte::Types::AlwaysVisible);
+    }
+
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
 
@@ -67,10 +72,12 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title)
         }
 
         setScreen(m_latteView->screen());
-        setFlags(wFlags());
 
         if (KWindowSystem::isPlatformX11()) {
-            m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
+            if (m_isNormalWindow) {
+                setFlags(wFlags());
+                m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
+            }
         }
 
         syncGeometry();
@@ -238,7 +245,12 @@ void SubConfigView::setupWaylandIntegration()
         qDebug() << "wayland primary settings surface was created...";
 
         m_shellSurface = interface->createSurface(s, this);
-        m_corona->wm()->setViewExtraFlags(m_shellSurface, false);
+
+        if (m_isNormalWindow) {
+            m_corona->wm()->setViewExtraFlags(m_shellSurface, false);
+        } else {
+            m_corona->wm()->setViewExtraFlags(m_shellSurface, true, Latte::Types::AlwaysVisible);
+        }
 
         syncGeometry();
     }

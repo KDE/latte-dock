@@ -1307,16 +1307,11 @@ bool View::event(QEvent *e)
         switch (e->type()) {
         case QEvent::Enter:
             m_containsMouse = true;
-
-            if (m_primaryConfigView) {
-                m_primaryConfigView->requestActivate();
-            }
             break;
 
         case QEvent::Leave:
             m_containsMouse = false;
             setContainsDrag(false);
-            engine()->trimComponentCache();
             break;
 
         case QEvent::DragEnter:

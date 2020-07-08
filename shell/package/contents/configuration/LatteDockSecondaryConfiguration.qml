@@ -70,21 +70,4 @@ FocusScope {
             }
         }
     }
-
-    //! HACK FOR X11 environments
-    //! show an inner shadow similar to Latte::View editShadow in order to
-    //! not break the visual user experience
-    LatteExtraControls.InnerShadow{
-        width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? dialog.width + 2*shadowSize : shadowSize
-        height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? shadowSize : dialog.height + 2*shadowSize
-
-        shadowSize: latteView.effects.editShadow
-        shadowOpacity: Math.max(0.35, maxOpacity)
-        shadowDirection: plasmoid.location
-
-        visible: !LatteCore.WindowSystem.isPlatformWayland && LatteCore.WindowSystem.compositingActive
-
-        readonly property real maxOpacity: LatteCore.WindowSystem.compositingActive && !plasmoid.configuration.inConfigureAppletsMode ?
-                                               plasmoid.configuration.editBackgroundOpacity : 1
-    }
 }

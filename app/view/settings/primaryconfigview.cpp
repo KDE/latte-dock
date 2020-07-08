@@ -124,8 +124,8 @@ void PrimaryConfigView::setOnActivities(QStringList activities)
 
 void PrimaryConfigView::requestActivate()
 {
-    if (m_canvasConfigView) {
-        m_canvasConfigView->requestActivate();
+    if (m_latteView && m_latteView->visibility()) {
+        m_latteView->visibility()->setViewOnFrontLayer();
     }
 
     if (m_secConfigView) {
@@ -164,13 +164,6 @@ void PrimaryConfigView::hideSecondaryWindow()
 {
     if (m_secConfigView) {
         m_secConfigView->hideConfigWindow();
-
-        if (KWindowSystem::isPlatformX11() && m_latteView->effects()) {
-            //! this is needed in order for subtracked mask of secondary window to
-            //! be released properly when changing for Advanced to Basic mode.
-            //! Under wayland this is not needed because masks do not break any visuals.
-            m_latteView->effects()->updateMask();
-        }
     }
 }
 
@@ -380,8 +373,6 @@ void PrimaryConfigView::updateViewMask()
     } else {
         area = QRect(x, y, thickness, length);
     }
-
-    m_latteView->effects()->setSubtractedMaskRegion(validTitle(), area);
 }
 
 void PrimaryConfigView::showEvent(QShowEvent *ev)
@@ -432,8 +423,6 @@ void PrimaryConfigView::hideEvent(QHideEvent *ev)
     if (m_latteView->containment()) {
         m_latteView->containment()->setUserConfiguring(false);
     }
-
-    m_latteView->effects()->removeSubtractedMaskRegion(validTitle());
 
     const auto mode = m_latteView->visibility()->mode();
 

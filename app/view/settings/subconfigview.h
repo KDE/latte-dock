@@ -21,6 +21,7 @@
 #define SUBCONFIGVIEW_H
 
 // local
+#include <coretypes.h>
 #include "../../wm/windowinfowrap.h"
 
 //Qt
@@ -53,7 +54,7 @@ class SubConfigView : public QQuickView
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
-    SubConfigView(Latte::View *view, const QString &title);
+    SubConfigView(Latte::View *view, const QString &title, const bool &isNormalWindow = true);
     ~SubConfigView() override;
 
     virtual void requestActivate();
@@ -86,6 +87,7 @@ private slots:
     void updateWaylandId();
 
 protected:
+    bool m_isNormalWindow{true};
     QTimer m_screenSyncTimer;
 
     QPointer<Latte::View> m_latteView;

@@ -41,7 +41,7 @@ namespace Latte {
 namespace ViewPart {
 
 CanvasConfigView::CanvasConfigView(Latte::View *view, PrimaryConfigView *parent)
-    : SubConfigView(view, QString("#canvasconfigview#")),
+    : SubConfigView(view, QString("#canvasconfigview#"), false),
       m_parent(parent)
 {
     setResizeMode(QQuickView::SizeRootObjectToView);
@@ -164,6 +164,23 @@ void CanvasConfigView::syncGeometry()
     }
 }
 
+bool CanvasConfigView::event(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::Enter:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+        if (m_parent) {
+            m_parent->requestActivate();
+        }
+        break;
+    default:
+        break;
+    }
+
+    return SubConfigView::event(e);
+}
+
 void CanvasConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
@@ -172,11 +189,12 @@ void CanvasConfigView::showEvent(QShowEvent *ev)
         return;
     }
 
-    setFlags(wFlags());
-    m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
-
     syncGeometry();
     syncSlideEffect();
+
+    if (m_parent) {
+        m_parent->requestActivate();
+    }
 
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &CanvasConfigView::syncGeometry);
