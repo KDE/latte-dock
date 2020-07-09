@@ -24,6 +24,7 @@
 #include "../view.h"
 #include "../../lattecorona.h"
 #include "../../layouts/manager.h"
+#include "../../plasma/extended/theme.h"
 #include "../../settings/universalsettings.h"
 #include "../../shortcuts/globalshortcuts.h"
 #include "../../shortcuts/shortcutstracker.h"
@@ -122,6 +123,7 @@ void SubConfigView::init()
     if (m_corona) {
         rootContext()->setContextProperty(QStringLiteral("universalSettings"), m_corona->universalSettings());
         rootContext()->setContextProperty(QStringLiteral("layoutsManager"), m_corona->layoutsManager());
+        rootContext()->setContextProperty(QStringLiteral("themeExtended"), m_corona->themeExtended());
     }
 
     KDeclarative::KDeclarative kdeclarative;

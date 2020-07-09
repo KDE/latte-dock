@@ -87,6 +87,10 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
 
 PrimaryConfigView::~PrimaryConfigView()
 {
+    if (m_canvasConfigView) {
+        delete m_canvasConfigView;
+    }
+
     if (m_secConfigView) {
         delete m_secConfigView;
     }

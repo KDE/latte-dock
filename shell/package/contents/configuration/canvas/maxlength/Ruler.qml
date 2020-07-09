@@ -21,7 +21,6 @@ import QtQuick 2.7
 
 import QtQuick.Layouts 1.0
 
-import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
@@ -33,9 +32,7 @@ Item{
     width: root.isHorizontal ? userMaxLength : thickness
     height: root.isVertical ? userMaxLength : thickness
 
-    opacity: root.editMode ? 1 : 0
-
-    property int rulerAnimationTime: 0.8 * animations.duration.proposed
+    property int rulerAnimationTime: root.animationSpeed
     property int thicknessMargin: 0
 
     readonly property bool containsMouse: rulerMouseArea.containsMouse

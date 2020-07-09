@@ -20,7 +20,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.1
 
-import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
@@ -58,7 +57,7 @@ Item {
         }
 
         if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-            return visibilityManager.thicknessNormalOriginalValue + ruler.thickness + headMargin * 2 - width/2 + height/2;
+            return latteView.normalHighestThickness + ruler.thickness + headMargin * 2 - width/2 + height/2;
         } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
             return headMargin - width/2 + height/2;
         }
@@ -123,7 +122,7 @@ Item {
 
         text: i18n("Rearrange and configure your widgets")
         tooltip: i18n("Feel free to move around your widgets and configure them from their tooltips")
-        checked: root.inConfigureAppletsMode
+        checked: plasmoid.configuration.inConfigureAppletsMode
         iconPositionReversed: plasmoid.location === PlasmaCore.Types.RightEdge
 
         icon: SettingsControls.RearrangeIcon{}

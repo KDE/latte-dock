@@ -21,14 +21,13 @@ import QtQuick 2.7
 import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.1
 
-import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import "controls" as SettingsControls
 import "maxlength" as MaximumLength
 
-import "../../code/ColorizerTools.js" as ColorizerTools
+//import "../../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: settingsRoot
@@ -47,12 +46,12 @@ Item{
 
     property string tooltip: ""
 
-    readonly property real textColorBrightness: ColorizerTools.colorBrightness(textColor)
+    readonly property real textColorBrightness: 150// ColorizerTools.colorBrightness(textColor)
     readonly property bool textColorIsDark: textColorBrightness < 127.5
 
     readonly property color bestContrastedTextColor: {
-        if (imageTiler.opacity <= 0.4 && !root.inConfigureAppletsMode && themeExtended) {
-            return colorizerManager.currentBackgroundBrightness > 127.5 ?
+        if (imageTiler.opacity <= 0.4 && !plasmoid.configuration.inConfigureAppletsMode && themeExtended) {
+            return latteView.colorizer.currentBackgroundBrightness > 127.5 ?
                         themeExtended.lightTheme.textColor :
                         themeExtended.darkTheme.textColor;
         }

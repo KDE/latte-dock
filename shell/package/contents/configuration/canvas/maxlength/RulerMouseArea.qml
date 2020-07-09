@@ -27,8 +27,7 @@ import org.kde.latte.core 0.2 as LatteCore
 
 MouseArea{
     id: rulerMouseArea
-    visible: root.editMode
-    hoverEnabled: root.editMode
+    hoverEnabled: true
     cursorShape: root.isHorizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor
 
     onVisibleChanged: {

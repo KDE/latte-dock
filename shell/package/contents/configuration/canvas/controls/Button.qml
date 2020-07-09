@@ -20,7 +20,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.1
 
-import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
@@ -43,19 +42,19 @@ Item{
     readonly property color appliedTextColor: checked ? checkedTextColor : textColor
     readonly property color appliedBackgroundColor: checked ? checkedBackgroundColor : backgroundColor
 
-    readonly property color textColor: containsMouse ? colorizerManager.buttonTextColor : settingsRoot.textColor
+    readonly property color textColor: containsMouse ? latteView.colorizer.buttonTextColor : settingsRoot.textColor
     readonly property color backgroundColor: containsMouse ? hoveredBackground : normalBackground// "transparent"
-    readonly property color checkedTextColor: colorizerManager.buttonTextColor
-    readonly property color checkedBackgroundColor: colorizerManager.buttonFocusColor
+    readonly property color checkedTextColor: latteView.colorizer.buttonTextColor
+    readonly property color checkedBackgroundColor: latteView.colorizer.buttonFocusColor
 
-    readonly property color normalBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
-                                                      colorizerManager.buttonHoverColor.g,
-                                                      colorizerManager.buttonHoverColor.b,
+    readonly property color normalBackground: Qt.rgba(latteView.colorizer.buttonHoverColor.r,
+                                                      latteView.colorizer.buttonHoverColor.g,
+                                                      latteView.colorizer.buttonHoverColor.b,
                                                       0.3)
 
-    readonly property color hoveredBackground: Qt.rgba(colorizerManager.buttonHoverColor.r,
-                                                       colorizerManager.buttonHoverColor.g,
-                                                       colorizerManager.buttonHoverColor.b,
+    readonly property color hoveredBackground: Qt.rgba(latteView.colorizer.buttonHoverColor.r,
+                                                       latteView.colorizer.buttonHoverColor.g,
+                                                       latteView.colorizer.buttonHoverColor.b,
                                                        0.7)
 
     property Component icon
