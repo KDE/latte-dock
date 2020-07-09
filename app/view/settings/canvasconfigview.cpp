@@ -148,9 +148,16 @@ void CanvasConfigView::showEvent(QShowEvent *ev)
     syncGeometry();
     syncSlideEffect();
 
-    if (m_parent) {
-        m_parent->requestActivate();
-    }
+    //! show Canvas on top of all other panels/docks and show
+    //! its parent view on top afterwards
+    m_corona->wm()->setViewExtraFlags(this, true, Latte::Types::AlwaysVisible);
+
+    QTimer::singleShot(100, [this]() {
+        //! delay execution in order to take influence after last Canvas on top call
+        if (m_parent) {
+            m_parent->requestActivate();
+        }
+    });
 
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &CanvasConfigView::syncGeometry);

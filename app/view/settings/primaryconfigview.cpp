@@ -180,7 +180,7 @@ void PrimaryConfigView::setParentView(Latte::View *view)
     if (m_latteView) {
         hideConfigWindow();
 
-        QTimer::singleShot(400, [this, view]() {
+        QTimer::singleShot(700, [this, view]() {
             initParentView(view);
         });
     } else {
