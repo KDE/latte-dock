@@ -485,8 +485,10 @@ void Positioner::immediateSyncGeometry()
         }
 
         m_view->effects()->updateEnabledBorders();
+
         resizeWindow(availableScreenRect);
         updatePosition(availableScreenRect);
+        updateCanvasGeometry(availableScreenRect);
 
         qDebug() << "syncGeometry() calculations for screen: " << m_view->screen()->name() << " _ " << m_view->screen()->geometry();
         qDebug() << "syncGeometry() calculations for edge: " << m_view->location();
@@ -503,6 +505,22 @@ void Positioner::validateDockGeometry()
         m_validateGeometryTimer.start();
     }
 }
+
+QRect Positioner::canvasGeometry()
+{
+    return m_canvasGeometry;
+}
+
+void Positioner::setCanvasGeometry(const QRect &geometry)
+{
+    if (m_canvasGeometry == geometry) {
+        return;
+    }
+
+    m_canvasGeometry = geometry;
+    emit canvasGeometryChanged();
+}
+
 
 //! this is used mainly from vertical panels in order to
 //! to get the maximum geometry that can be used from the dock
@@ -571,6 +589,48 @@ void Positioner::validateTopBottomBorders(QRect availableScreenRect, QRegion ava
     } else {
         m_view->effects()->setForceBottomBorder(false);
     }
+}
+
+void Positioner::updateCanvasGeometry(QRect availableScreenRect)
+{
+    QRect canvas;
+    QRect screenGeometry{m_view->screen()->geometry()};
+    int thickness{m_view->editThickness()};
+
+    if (m_view->formFactor() == Plasma::Types::Vertical) {
+        canvas.setWidth(thickness);
+        canvas.setHeight(availableScreenRect.height());
+    } else {
+        canvas.setWidth(screenGeometry.width());
+        canvas.setHeight(thickness);
+    }
+
+    switch (m_view->location()) {
+    case Plasma::Types::TopEdge:
+        canvas.moveLeft(screenGeometry.x());
+        canvas.moveTop(screenGeometry.y());
+        break;
+
+    case Plasma::Types::BottomEdge:
+        canvas.moveLeft(screenGeometry.x());
+        canvas.moveTop(screenGeometry.bottom() - thickness + 1);
+        break;
+
+    case Plasma::Types::RightEdge:
+        canvas.moveLeft(screenGeometry.right() - thickness + 1);
+        canvas.moveTop(availableScreenRect.y());
+        break;
+
+    case Plasma::Types::LeftEdge:
+        canvas.moveLeft(availableScreenRect.x());
+        canvas.moveTop(availableScreenRect.y());
+        break;
+
+    default:
+        qWarning() << "wrong location, couldn't update the canvas config window geometry " << m_view->location();
+    }
+
+    setCanvasGeometry(canvas);
 }
 
 void Positioner::updatePosition(QRect availableScreenRect)

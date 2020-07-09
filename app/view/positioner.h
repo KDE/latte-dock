@@ -80,6 +80,8 @@ public:
     bool isStickedOnBottomEdge() const;
     void setIsStickedOnBottomEdge(bool sticked);
 
+    QRect canvasGeometry();
+
     void setScreenToFollow(QScreen *scr, bool updateScreenId = true);
 
     void reconsiderScreen();
@@ -97,6 +99,7 @@ public slots:
     void initDelayedSignals();
 
 signals:
+    void canvasGeometryChanged();
     void currentScreenChanged();
     void edgeChanged();
     void screenGeometryChanged();
@@ -137,12 +140,15 @@ private slots:
 private:
     void init();
     void initSignalingForLocationChangeSliding();
-    void resizeWindow(QRect availableScreenRect = QRect());
 
     void updateFormFactor();
+    void resizeWindow(QRect availableScreenRect = QRect());
     void updatePosition(QRect availableScreenRect = QRect());
+    void updateCanvasGeometry(QRect availableScreenRect = QRect());
 
     void validateTopBottomBorders(QRect availableScreenRect, QRegion availableScreenRegion);
+
+    void setCanvasGeometry(const QRect &geometry);
 
     QRect maximumNormalGeometry();
 
@@ -156,6 +162,7 @@ private:
 
     int m_slideOffset{0};
 
+    QRect m_canvasGeometry;
     //! it is used in order to enforce X11 to never miss window geometry
     QRect m_validGeometry;
 

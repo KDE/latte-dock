@@ -46,7 +46,7 @@ CanvasConfigView::CanvasConfigView(Latte::View *view, PrimaryConfigView *parent)
 {
     setResizeMode(QQuickView::SizeRootObjectToView);
 
-    connections << connect(m_parent, &PrimaryConfigView::availableScreenGeometryChanged, this, &CanvasConfigView::syncGeometry);
+    //connections << connect(m_parent, &PrimaryConfigView::availableScreenGeometryChanged, this, &CanvasConfigView::syncGeometry);
 
     setParentView(view);
     init();
@@ -79,6 +79,8 @@ void CanvasConfigView::initParentView(Latte::View *view)
 {
     SubConfigView::initParentView(view);
 
+    viewconnections << connect(m_latteView->positioner(), &ViewPart::Positioner::canvasGeometryChanged, this, &CanvasConfigView::syncGeometry);
+
     updateEnabledBorders();
     syncGeometry();
 
@@ -91,55 +93,9 @@ void CanvasConfigView::syncGeometry()
         return;
     }
 
-    const auto location = m_latteView->containment()->location();
-    const auto scrGeometry = m_latteView->screenGeometry();
-    const auto availGeometry = m_parent->availableScreenGeometry();
-    QSize size;
-
-    int editThickness = m_latteView->editThickness();
-
-    QPoint position{0, 0};
-
-    int xPos{0};
-    int yPos{0};
-
-    switch (m_latteView->containment()->formFactor()) {
-    case Plasma::Types::Horizontal: {
-        xPos = availGeometry.x();
-        size.setWidth(availGeometry.width());
-        size.setHeight(editThickness);
-
-        if (location == Plasma::Types::TopEdge) {
-            yPos = scrGeometry.y();
-        } else if (location == Plasma::Types::BottomEdge) {
-            yPos = scrGeometry.y() + scrGeometry.height() - editThickness;
-        }
-    }
-        break;
-
-    case Plasma::Types::Vertical: {
-        yPos = availGeometry.y();
-        size.setWidth(editThickness);
-        size.setHeight(availGeometry.height());
-
-        if (location == Plasma::Types::LeftEdge) {
-            xPos = scrGeometry.x();
-        } else if (location == Plasma::Types::RightEdge) {
-            xPos = scrGeometry.x() + scrGeometry.width() - editThickness;
-        }
-    }
-        break;
-
-    default:
-        qWarning() << "no sync geometry, wrong formFactor";
-        break;
-    }
-
-    position = {xPos, yPos};
-
     updateEnabledBorders();
 
-    auto geometry = QRect(position.x(), position.y(), size.width(), size.height());
+    auto geometry = m_latteView->positioner()->canvasGeometry();
 
     if (m_geometryWhenVisible == geometry) {
         return;
@@ -147,15 +103,15 @@ void CanvasConfigView::syncGeometry()
 
     m_geometryWhenVisible = geometry;
 
-    setPosition(position);
+    setPosition(geometry.topLeft());
 
     if (m_shellSurface) {
-        m_shellSurface->setPosition(position);
+        m_shellSurface->setPosition(geometry.topLeft());
     }
 
-    setMaximumSize(size);
-    setMinimumSize(size);
-    resize(size);
+    setMaximumSize(geometry.size());
+    setMinimumSize(geometry.size());
+    resize(geometry.size());
 
     //! after placement request to activate the main config window in order to avoid
     //! rare cases of closing settings window from secondaryConfigView->focusOutEvent

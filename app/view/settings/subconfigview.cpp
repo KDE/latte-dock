@@ -168,7 +168,7 @@ void SubConfigView::initParentView(Latte::View *view)
     m_latteView = view;
 
     viewconnections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &SubConfigView::syncGeometry);
-    viewconnections << connect(m_latteView, &Latte::View::normalThicknessChanged, [&]() {
+    viewconnections << connect(m_latteView, &Latte::View::editThicknessChanged, [&]() {
         m_thicknessSyncTimer.start();
     });
 
