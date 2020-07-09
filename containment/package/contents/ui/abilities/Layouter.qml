@@ -29,8 +29,7 @@ Ability.LayouterPrivate {
 
     readonly property bool inNormalFillCalculationsState: animations.needBothAxis.count === 0
                                                           && animations.needThickness.count === 0
-                                                          && ((animations.needLength.count === 0)
-                                                              || (animations.needLength.count===1 && editModeVisual.inEditMode))
+                                                          && animations.needLength.count === 0
                                                           && (!dragOverlay || (dragOverlay && !dragOverlay.pressed)) /*do not update during moving/dragging applets*/
                                                           && !appletsInParentChange
 

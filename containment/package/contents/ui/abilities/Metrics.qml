@@ -36,7 +36,7 @@ Ability.MetricsPrivate {
     margin.maxThickness: marginMinThickness + fraction.thicknessMargin * Math.max(0, _maxIconSize - marginMinThickness)
     //margin.thickness: fraction.thicknessMargin * iconSize
    // margin.maxThickness: fraction.thicknessMargin * maxIconSize
-    margin.screenEdge: (root.screenEdgeMarginEnabled && root.behaveAsPlasmaPanel && !root.editMode)
+    margin.screenEdge: (root.screenEdgeMarginEnabled && root.behaveAsPlasmaPanel)
                        || !root.screenEdgeMarginEnabled
                        || root.hideThickScreenGap ?
                            0 : plasmoid.configuration.screenEdgeMargin

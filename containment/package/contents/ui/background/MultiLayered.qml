@@ -96,7 +96,7 @@ BackgroundProperties{
     }
 
     length: {
-        if (root.behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive && !root.editMode) {
+        if (root.behaveAsPlasmaPanel && LatteCore.WindowSystem.compositingActive) {
             return root.isVertical ? root.height : root.width;
         }
 
@@ -203,7 +203,7 @@ BackgroundProperties{
         //! set true by default in order to avoid crash on startup because imagePath is set to ""
         readonly property bool themeHasShadow: themeExtended ? themeExtended.hasShadow : true
 
-        readonly property bool hideShadow: (root.behaveAsPlasmaPanel && !root.editMode)
+        readonly property bool hideShadow: root.behaveAsPlasmaPanel
                                            || !LatteCore.WindowSystem.compositingActive
                                            || !root.panelShadowsActive
                                            || !themeHasShadow
@@ -229,60 +229,7 @@ BackgroundProperties{
             NumberAnimation { duration: 0 }
         }
 
-
-        //! Layer 2: Draw fake blurness under background when the user is INEDITMODE state for visual feedback
-        Loader {
-            anchors.fill: solidBackground
-            active: editModeVisual.inEditMode && root.userShowPanelBackground && plasmoid.configuration.blurEnabled
-            sourceComponent: Item {
-                Image{
-                    id: backTiler
-                    anchors.fill: parent
-                    visible: false
-
-                    fillMode: Image.Tile
-                    source: hasBackground ? latteView.layout.background : "../../icons/"+latteView.layout.background+"print.jpg"
-
-                    readonly property bool hasBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
-                                                              true : false
-                }
-
-                ShaderEffectSource {
-                    id: effectSource
-                    anchors.fill: parent
-                    visible: false
-
-                    sourceItem: backTiler
-                    sourceRect: Qt.rect(0,0, width, height)
-                }
-
-                FastBlur{
-                    id: blur
-                    anchors.fill: parent
-                    opacity: editModeVisual.appliedOpacity * 1.4
-
-                    source: effectSource
-                    radius: 50
-                    visible: false
-                }
-
-                OpacityMask {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenterOffset: overlayedBackground.painterRectangle.anchors.horizontalCenterOffset
-                    anchors.verticalCenterOffset: overlayedBackground.painterRectangle.anchors.verticalCenterOffset
-
-                    width: overlayedBackground.painterRectangle.width
-                    height: overlayedBackground.painterRectangle.height
-
-                    source: blur
-                    maskSource: overlayedBackground.painterRectangle
-                    opacity: blur.opacity
-                }
-            }
-        }
-
-        //! Layer 3: Provide visual solidness. Plasma themes by design may provide a panel-background svg that is not
+        //! Layer 2: Provide visual solidness. Plasma themes by design may provide a panel-background svg that is not
         //!          solid. That means that user can not gain full solidness in such cases. This layer is responsible
         //!          to solve the previous mentioned plasma theme limitation.
         Colorizer.CustomBackground {
@@ -307,7 +254,7 @@ BackgroundProperties{
             }
         }
 
-        //! Layer 4: Original Plasma Theme "panel-background" svg. It is used for calculations and also to draw
+        //! Layer 3: Original Plasma Theme "panel-background" svg. It is used for calculations and also to draw
         //!          the original background when to special settings and options exist from the user. It is also
         //!          doing one very important job which is to calculate the Effects Rectangle which is used from
         //!          the compositor to provide blurriness and from Mask calculations to provide the View Local Geometry
@@ -368,14 +315,6 @@ BackgroundProperties{
                 root.updateEffectsArea.disconnect(updateEffectsArea);
             }
 
-            Connections{
-                target: root
-
-                onEditModeChanged: {
-                    solidBackground.updateEffectsArea();
-                }
-            }
-
             //! Fix for FrameSvgItem QML version not updating its margins after a theme change
             //! with this hack we enforce such update. I could use the repaintNeeded signal but
             //! it is called more often than the themeChanged one.
@@ -427,7 +366,7 @@ BackgroundProperties{
                         efGeometry.width = 1;
                         efGeometry.height = 1;
                     } else {
-                        if (!root.behaveAsPlasmaPanel || root.editMode) {
+                        if (!root.behaveAsPlasmaPanel) {
                             var rootGeometry = mapToItem(root, 0, 0);
                             efGeometry.x = rootGeometry.x;
                             efGeometry.y = rootGeometry.y;
@@ -497,7 +436,7 @@ BackgroundProperties{
             }
         }
 
-        //! Layer 5: Plasma theme design does not provide a way to colorize the background. This layer
+        //! Layer 4: Plasma theme design does not provide a way to colorize the background. This layer
         //!          solves this by providing a custom background layer that respects the Colorizer palette
         Colorizer.CustomBackground {
             id: overlayedBackground
@@ -571,7 +510,7 @@ BackgroundProperties{
             }
         }
 
-        //! Layer 6: Plasma theme design does not provide a way to draw background outline on demand. This layer
+        //! Layer 5: Plasma theme design does not provide a way to draw background outline on demand. This layer
         //!          solves this by providing a custom background layer that only draws an outline on top of all
         //!          previous layers
         Loader{

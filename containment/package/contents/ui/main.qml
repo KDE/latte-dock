@@ -143,7 +143,7 @@ Item {
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized && LatteCore.WindowSystem.compositingActive
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
 
-    property bool editMode: editModeVisual.inEditMode
+    property bool editMode: plasmoid.userConfiguring
     property bool windowIsTouching: latteView && latteView.windowsTracker
                                     && (latteView.windowsTracker.currentScreen.activeWindowTouching
                                         || latteView.windowsTracker.currentScreen.activeWindowTouchingEdge
@@ -207,8 +207,6 @@ Item {
                                             || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow)
                                         && (plasmoid.configuration.alignment === LatteCore.Types.Justify)
                                         && plasmoid.configuration.maxLength>85
-                                        && !root.editMode
-
 
 
     property int themeColors: plasmoid.configuration.themeColors
@@ -472,18 +470,6 @@ Item {
 
     ////////////////END properties
 
-    //// BEGIN OF Behaviors
-    Behavior on offset {
-        enabled: editModeVisual.editAnimationInFullThickness
-        NumberAnimation {
-            id: offsetAnimation
-
-            duration: 0.8 * animations.duration.proposed
-            easing.type: Easing.OutCubic
-        }
-    }
-    //// END OF Behaviors
-
     //////////////START OF CONNECTIONS
     onEditModeChanged: {
         if (!editMode) {
@@ -509,7 +495,7 @@ Item {
             return;
         }
 
-        if (root.editMode/*!inConfigureAppletsMode*/){
+        if (root.editMode){
             if (panelAlignment===LatteCore.Types.Justify) {
                 addInternalViewSplitters();
                 splitMainLayoutToLayouts();
@@ -1318,10 +1304,6 @@ Item {
     Loader{
         active: root.debugModeWindow
         sourceComponent: Debug.DebugWindow{}
-    }
-
-    EditMode.Visual{
-        id:editModeVisual
     }
 
     Item {

@@ -59,7 +59,6 @@ ContainerAbility.Metrics {
 
     //! BEHAVIORS
     Behavior on iconSize {
-        enabled: !(root.editMode && root.behaveAsPlasmaPanel)
         NumberAnimation {
             duration: 0.8 * animations.duration.proposed
 
@@ -81,8 +80,6 @@ ContainerAbility.Metrics {
 
         Behavior on screenEdge {
             enabled: !root.behaveAsPlasmaPanel
-                     && !editModeVisual.editAnimationRunning /*avoid slide-out animation when from editMode we change to real floating*/
-
             NumberAnimation {
                 duration: 0.8 * animations.duration.proposed
                 easing.type: Easing.OutCubic

@@ -270,7 +270,7 @@ Item{
         }
 
         transitions: Transition {
-            enabled: editModeVisual.plasmaEditMode
+            enabled: root.editMode
             AnchorAnimation {
                 duration: 0.8 * animations.duration.proposed
                 easing.type: Easing.OutCubic

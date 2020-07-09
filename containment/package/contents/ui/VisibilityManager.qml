@@ -51,7 +51,7 @@ Item{
     property int maskFloatedGap: maskIsFloating ? Math.max(0, metrics.margin.screenEdge - background.shadows.headThickness) : 0
 
     property int animationSpeed: LatteCore.WindowSystem.compositingActive ?
-                                     (editModeVisual.inEditMode ? editModeVisual.speed * 0.8 : animations.speedFactor.normal * 1.62 * animations.duration.large) : 0
+                                     (root.editMode ? 400 : animations.speedFactor.normal * 1.62 * animations.duration.large) : 0
 
     property bool inLocationAnimation: latteView && latteView.positioner && latteView.positioner.inLocationAnimation
     property bool inSlidingIn: false //necessary because of its init structure
@@ -98,8 +98,6 @@ Item{
     property int thicknessZoomOriginal: finalScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraZoomThickMask,
                                                                          background.thickness + background.shadows.headThickness)
 
-    //! is used from Panel in edit mode in order to provide correct masking
-    property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness
     //! when Latte behaves as Plasma panel
     property int thicknessAsPanel: metrics.totals.thickness
 
@@ -880,7 +878,7 @@ Item{
             if (!manager.inTempHiding) {
                 manager.updateMaskArea();
             } else {
-                if (!editModeVisual.inEditMode) {
+                if (!root.editMode) {
                     manager.sendSlidingOutAnimationEnded();
                 }
             }
