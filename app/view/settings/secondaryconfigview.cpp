@@ -252,6 +252,10 @@ void SecondaryConfigView::focusOutEvent(QFocusEvent *ev)
 {
     Q_UNUSED(ev);
 
+    if (!m_latteView) {
+        return;
+    }
+
     const auto *focusWindow = qGuiApp->focusWindow();
 
     if ((focusWindow && (focusWindow->flags().testFlag(Qt::Popup)

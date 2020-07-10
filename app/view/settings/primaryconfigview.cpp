@@ -449,6 +449,10 @@ void PrimaryConfigView::focusOutEvent(QFocusEvent *ev)
 {
     Q_UNUSED(ev);
 
+    if (!m_latteView) {
+        return;
+    }
+
     const auto *focusWindow = qGuiApp->focusWindow();
 
     if (!m_latteView
