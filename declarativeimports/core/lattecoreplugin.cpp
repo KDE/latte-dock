@@ -24,6 +24,7 @@
 #include "environment.h"
 #include "iconitem.h"
 #include "quickwindowsystem.h"
+#include "tools.h"
 
 #include <types.h>
 
@@ -37,5 +38,6 @@ void LatteCorePlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Latte::Types>(uri, 0, 2, "Types", "Latte Types uncreatable");
     qmlRegisterType<Latte::IconItem>(uri, 0, 2, "IconItem");
     qmlRegisterSingletonType<Latte::Environment>(uri, 0, 2, "Environment", &Latte::environment_qobject_singletontype_provider);
+    qmlRegisterSingletonType<Latte::Tools>(uri, 0, 2, "Tools", &Latte::tools_qobject_singletontype_provider);
     qmlRegisterSingletonType<Latte::QuickWindowSystem>(uri, 0, 2, "WindowSystem", &Latte::windowsystem_qobject_singletontype_provider);
 }

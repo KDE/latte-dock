@@ -24,6 +24,8 @@ import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
+import org.kde.latte.core 0.2 as LatteCore
+
 import "controls" as SettingsControls
 import "maxlength" as MaximumLength
 
@@ -46,7 +48,7 @@ Item{
 
     property string tooltip: ""
 
-    readonly property real textColorBrightness: 150// ColorizerTools.colorBrightness(textColor)
+    readonly property real textColorBrightness: LatteCore.Tools.colorBrightness(textColor)
     readonly property bool textColorIsDark: textColorBrightness < 127.5
 
     readonly property color bestContrastedTextColor: {

@@ -288,7 +288,6 @@ Item{
         property: "drawEffects"
         when: latteView && latteView.effects
         value: LatteCore.WindowSystem.compositingActive
-               && !root.inConfigureAppletsMode
                && (((root.blurEnabled && root.useThemePanel)
                     || (root.blurEnabled && root.forceSolidPanel && LatteCore.WindowSystem.compositingActive))
                    && (!root.inStartup || inForceHiding || inTempHiding))

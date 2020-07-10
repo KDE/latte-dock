@@ -5,6 +5,7 @@ set(lattecoreplugin_SRCS
     environment.cpp
     iconitem.cpp
     quickwindowsystem.cpp
+    tools.cpp
     types.h
 )
 
