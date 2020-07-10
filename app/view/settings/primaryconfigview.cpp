@@ -267,8 +267,9 @@ void PrimaryConfigView::syncGeometry()
     const auto location = m_latteView->containment()->location();
     const auto scrGeometry = m_latteView->screenGeometry();
     const auto availGeometry = m_availableScreenGeometry;
+    const auto canvasGeometry = m_latteView->positioner()->canvasGeometry();
 
-    int clearThickness = m_latteView->editThickness();
+    int canvasThickness = m_latteView->formFactor() == Plasma::Types::Vertical ? canvasGeometry.width() : canvasGeometry.height();
 
     QPoint position{0, 0};
 
@@ -288,19 +289,19 @@ void PrimaryConfigView::syncGeometry()
         }
 
         if (location == Plasma::Types::TopEdge) {
-            yPos = scrGeometry.y() + clearThickness;
+            yPos = scrGeometry.y() + canvasThickness;
         } else if (location == Plasma::Types::BottomEdge) {
-            yPos = scrGeometry.y() + scrGeometry.height() - clearThickness - size.height();
+            yPos = scrGeometry.y() + scrGeometry.height() - canvasThickness - size.height();
         }
     }
         break;
 
     case Plasma::Types::Vertical: {
         if (location == Plasma::Types::LeftEdge) {
-            xPos = scrGeometry.x() + clearThickness;
+            xPos = scrGeometry.x() + canvasThickness;
             yPos =  availGeometry.y() + (availGeometry.height() - size.height())/2;
         } else if (location == Plasma::Types::RightEdge) {
-            xPos = scrGeometry.x() + scrGeometry.width() - clearThickness - size.width();
+            xPos = scrGeometry.x() + scrGeometry.width() - canvasThickness - size.width();
             yPos =  availGeometry.y() + (availGeometry.height() - size.height())/2;
         }
     }

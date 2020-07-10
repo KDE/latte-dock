@@ -111,8 +111,9 @@ void SecondaryConfigView::syncGeometry()
     const auto location = m_latteView->containment()->location();
     const auto scrGeometry = m_latteView->screenGeometry();
     const auto availGeometry = m_parent->availableScreenGeometry();
+    const auto canvasGeometry = m_latteView->positioner()->canvasGeometry();
 
-    int clearThickness = m_latteView->editThickness();
+    int canvasThickness = m_latteView->formFactor() == Plasma::Types::Vertical ? canvasGeometry.width() : canvasGeometry.height();
 
     int secondaryConfigSpacing = 2 * m_latteView->fontPixelSize();
 
@@ -130,9 +131,9 @@ void SecondaryConfigView::syncGeometry()
         }
 
         if (location == Plasma::Types::TopEdge) {
-            yPos = scrGeometry.y() + clearThickness;
+            yPos = scrGeometry.y() + canvasThickness;
         } else if (location == Plasma::Types::BottomEdge) {
-            yPos = scrGeometry.y() + scrGeometry.height() - clearThickness - size.height();
+            yPos = scrGeometry.y() + scrGeometry.height() - canvasThickness - size.height();
         }
     }
         break;
@@ -141,9 +142,9 @@ void SecondaryConfigView::syncGeometry()
         yPos = availGeometry.y() + secondaryConfigSpacing;
 
         if (location == Plasma::Types::LeftEdge) {
-            xPos = scrGeometry.x() + clearThickness;
+            xPos = scrGeometry.x() + canvasThickness;
         } else if (location == Plasma::Types::RightEdge) {
-            xPos = scrGeometry.x() + scrGeometry.width() - clearThickness - size.width();
+            xPos = scrGeometry.x() + scrGeometry.width() - canvasThickness - size.width();
         }
     }
         break;
