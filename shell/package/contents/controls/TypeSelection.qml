@@ -78,7 +78,6 @@ Grid {
                 plasmoid.configuration.panelSize = 5;
                 plasmoid.configuration.appletShadowsEnabled = true;
                 plasmoid.configuration.zoomLevel = 16;
-                plasmoid.configuration.titleTooltips = true;
                 //plasmoid.configuration.autoDecreaseIconSize = true;
 
                 //! Empty Areas
@@ -87,11 +86,6 @@ Grid {
 
                 //! Items
                 plasmoid.configuration.autoSizeEnabled = true;
-
-                //! Animations
-                plasmoid.configuration.animationLauncherBouncing = true;
-                plasmoid.configuration.animationWindowInAttention = true;
-                plasmoid.configuration.animationWindowAddedInGroup = true;
 
                 //! Dynamic Background
                 plasmoid.configuration.solidBackgroundForMaximized = false;
@@ -134,11 +128,6 @@ Grid {
 
                 //! Items
                 plasmoid.configuration.autoSizeEnabled = false;
-
-                //! Animations
-                plasmoid.configuration.animationLauncherBouncing = false;
-                plasmoid.configuration.animationWindowInAttention = false;
-                plasmoid.configuration.animationWindowAddedInGroup = false;
 
                 //! Dynamic Background
                 plasmoid.configuration.solidBackgroundForMaximized = (plasmoid.configuration.panelTransparency !== 100 ? true : false);
