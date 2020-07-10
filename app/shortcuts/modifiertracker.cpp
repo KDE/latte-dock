@@ -140,7 +140,7 @@ bool ModifierTracker::singleModifierPressed(Qt::Key key)
 
 Qt::Key ModifierTracker::normalizeKey(Qt::Key key)
 {
-    return key == Qt::Key_Super_L || key == key == Qt::Key_Super_R ? Qt::Key_Super_L : key;
+    return ((key == Qt::Key_Super_L || key == Qt::Key_Super_R) ? Qt::Key_Super_L : key);
 }
 
 void ModifierTracker::cancelMetaPressed()
