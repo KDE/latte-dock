@@ -61,6 +61,7 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title, const bool
     setIcon(qGuiApp->windowIcon());
 
     if (!m_isNormalWindow) {
+        setFlags(wFlags());
         m_corona->wm()->setViewExtraFlags(this, true, Latte::Types::AlwaysVisible);
     }
 

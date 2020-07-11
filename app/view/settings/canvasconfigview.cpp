@@ -138,6 +138,11 @@ bool CanvasConfigView::event(QEvent *e)
 
 void CanvasConfigView::showEvent(QShowEvent *ev)
 {
+    if (m_shellSurface) {
+        //! under wayland it needs to be set again after its hiding
+        m_shellSurface->setPosition(m_geometryWhenVisible.topLeft());
+    }
+
     QQuickWindow::showEvent(ev);
 
     if (!m_latteView) {
