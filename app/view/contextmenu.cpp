@@ -157,59 +157,55 @@ bool ContextMenu::mousePressEventForContainmentMenu(QQuickView *view, QMouseEven
             event->setAccepted(false);
             return false;
         }
-    }
 
-    if (m_latteView->containment()) {
-        QMenu *desktopMenu = new QMenu;
-        desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
+        if (m_latteView->containment()) {
+            QMenu *desktopMenu = new QMenu;
+            desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
 
-        if (desktopMenu->winId()) {
-            desktopMenu->windowHandle()->setTransientParent(view);
-        }
-
-        desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
-        m_contextMenu = desktopMenu;
-        emit menuChanged();
-
-        auto ungrabMouseHack = [this, view]() {
-            if (m_latteView->mouseGrabberItem()) {
-                m_latteView->mouseGrabberItem()->ungrabMouse();
+            if (desktopMenu->winId()) {
+                desktopMenu->windowHandle()->setTransientParent(m_latteView);
             }
 
-            if (view->mouseGrabberItem()) {
-                view->mouseGrabberItem()->ungrabMouse();
+            desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
+            m_contextMenu = desktopMenu;
+            emit menuChanged();
+
+            auto ungrabMouseHack = [this]() {
+                if (m_latteView->mouseGrabberItem()) {
+                    m_latteView->mouseGrabberItem()->ungrabMouse();
+                }
+            };
+
+            if (QVersionNumber::fromString(qVersion()) > QVersionNumber(5, 8, 0)) {
+                QTimer::singleShot(0, this, ungrabMouseHack);
+            } else {
+                ungrabMouseHack();
             }
-        };
 
-        if (QVersionNumber::fromString(qVersion()) > QVersionNumber(5, 8, 0)) {
-            QTimer::singleShot(0, this, ungrabMouseHack);
-        } else {
-            ungrabMouseHack();
-        }
+            emit m_latteView->containment()->contextualActionsAboutToShow();
+            addContainmentActions(desktopMenu, event);
 
-        emit m_latteView->containment()->contextualActionsAboutToShow();
-        addContainmentActions(desktopMenu, event);
+            desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
 
-        desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
+            QPoint globalPos = event->globalPos();
+            desktopMenu->adjustSize();
 
-        QPoint globalPos = event->globalPos();
-        desktopMenu->adjustSize();
+            QRect popUpRect(globalPos.x(), globalPos.y(), desktopMenu->width(), desktopMenu->height());
 
-        QRect popUpRect(globalPos.x(), globalPos.y(), desktopMenu->width(), desktopMenu->height());
+            globalPos = popUpRelevantToGlobalPoint(QRect(0,0,0,0), popUpRect);
 
-        globalPos = popUpRelevantToGlobalPoint(QRect(0,0,0,0), popUpRect);
+            if (desktopMenu->isEmpty()) {
+                delete desktopMenu;
+                event->accept();
+                return false;
+            }
 
-        if (desktopMenu->isEmpty()) {
-            delete desktopMenu;
-            event->accept();
+            connect(desktopMenu, SIGNAL(aboutToHide()), this, SLOT(menuAboutToHide()));
+
+            desktopMenu->popup(globalPos);
+            event->setAccepted(true);
             return false;
         }
-
-        connect(desktopMenu, SIGNAL(aboutToHide()), this, SLOT(menuAboutToHide()));
-
-        desktopMenu->popup(globalPos);
-        event->setAccepted(true);
-        return false;
     }
 
     return true;

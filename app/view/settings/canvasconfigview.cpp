@@ -125,6 +125,7 @@ void CanvasConfigView::mousePressEvent(QMouseEvent *event)
     bool result = m_latteView->contextMenu()->mousePressEventForContainmentMenu(this, event);
 
     QQuickView::mousePressEvent(event);
+
 }
 
 bool CanvasConfigView::event(QEvent *e)

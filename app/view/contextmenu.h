@@ -74,7 +74,7 @@ private:
 
 
 private:
-    QMenu *m_contextMenu{nullptr};
+    QPointer<QMenu> m_contextMenu;
     QMetaMethod m_appletContainsMethod;
     QQuickItem *m_appletContainsMethodItem{nullptr};
 
