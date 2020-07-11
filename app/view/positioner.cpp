@@ -153,6 +153,10 @@ void Positioner::init()
         syncGeometry();
     });
 
+    connect(m_view, &Latte::View::editThicknessChanged, this, [&]() {
+        updateCanvasGeometry(m_lastAvailableScreenRect);
+    });
+
     connect(m_view, &Latte::View::normalThicknessChanged, this, [&]() {
         if (m_view->behaveAsPlasmaPanel()) {
             syncGeometry();
@@ -479,10 +483,14 @@ void Positioner::immediateSyncGeometry()
             }
 
             validateTopBottomBorders(availableScreenRect, freeRegion);
+
+            m_lastAvailableScreenRegion = freeRegion;
         } else {
             m_view->effects()->setForceTopBorder(false);
             m_view->effects()->setForceBottomBorder(false);
         }
+
+        m_lastAvailableScreenRect = availableScreenRect;
 
         m_view->effects()->updateEnabledBorders();
 
@@ -593,6 +601,10 @@ void Positioner::validateTopBottomBorders(QRect availableScreenRect, QRegion ava
 
 void Positioner::updateCanvasGeometry(QRect availableScreenRect)
 {
+    if (availableScreenRect.isEmpty()) {
+        return;
+    }
+
     QRect canvas;
     QRect screenGeometry{m_view->screen()->geometry()};
     int thickness{m_view->editThickness()};

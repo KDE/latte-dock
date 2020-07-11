@@ -165,6 +165,9 @@ private:
     QRect m_canvasGeometry;
     //! it is used in order to enforce X11 to never miss window geometry
     QRect m_validGeometry;
+    //! it is used to update geometry calculations without requesting no needed Corona calculations
+    QRect m_lastAvailableScreenRect;
+    QRegion m_lastAvailableScreenRegion;
 
     QPointer<Latte::View> m_view;
     QPointer<Latte::Corona> m_corona;
