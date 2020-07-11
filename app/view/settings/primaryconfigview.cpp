@@ -50,6 +50,11 @@
 // Plasma
 #include <Plasma/Package>
 
+#define CANVASWINDOWINTERVAL 50
+#define PRIMARYWINDOWINTERVAL 250
+#define SECONDARYWINDOWINTERVAL 250
+#define SLIDEOUTINTERVAL 400
+
 namespace Latte {
 namespace ViewPart {
 
@@ -110,7 +115,6 @@ void PrimaryConfigView::init()
     auto source = QUrl::fromLocalFile(m_latteView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
     syncGeometry();
-    syncSlideEffect();
 }
 
 void PrimaryConfigView::setOnActivities(QStringList activities)
@@ -139,12 +143,30 @@ void PrimaryConfigView::requestActivate()
     SubConfigView::requestActivate();
 }
 
+void PrimaryConfigView::showPrimaryWindow()
+{
+    if (isVisible()) {
+        return;
+    }
+
+    showAfter(PRIMARYWINDOWINTERVAL);
+    showCanvasWindow();
+    showSecondaryWindow();
+}
+
+void PrimaryConfigView::hidePrimaryWindow()
+{
+    hide();
+}
+
 void PrimaryConfigView::showCanvasWindow()
 {
     if (!m_canvasConfigView) {
         m_canvasConfigView = new CanvasConfigView(m_latteView, this);
-    } else if (m_canvasConfigView && !m_canvasConfigView->isVisible()){
-        m_canvasConfigView->show();
+    }
+
+    if (m_canvasConfigView && !m_canvasConfigView->isVisible()){
+        m_canvasConfigView->showAfter(CANVASWINDOWINTERVAL);
     }
 }
 
@@ -156,11 +178,19 @@ void PrimaryConfigView::hideCanvasWindow()
 }
 
 void PrimaryConfigView::showSecondaryWindow()
-{       
+{
+    bool isValidShowing{m_latteView->formFactor() == Plasma::Types::Horizontal && inAdvancedMode()};
+
+    if (!isValidShowing) {
+        return;
+    }
+
     if (!m_secConfigView) {
         m_secConfigView = new SecondaryConfigView(m_latteView, this);
-    } else if (m_secConfigView && !m_secConfigView->isVisible()){
-        m_secConfigView->show();
+    }
+
+    if (m_secConfigView && !m_secConfigView->isVisible()){
+        m_secConfigView->showAfter(SECONDARYWINDOWINTERVAL);
     }
 }
 
@@ -180,11 +210,14 @@ void PrimaryConfigView::setParentView(Latte::View *view)
     if (m_latteView) {
         hideConfigWindow();
 
-        QTimer::singleShot(700, [this, view]() {
+        //!slide-out delay
+        QTimer::singleShot(SLIDEOUTINTERVAL, [this, view]() {
             initParentView(view);
+            showPrimaryWindow();
         });
     } else {
         initParentView(view);
+        showPrimaryWindow();
     }
 }
 
@@ -213,9 +246,6 @@ void PrimaryConfigView::initParentView(Latte::View *view)
     updateEnabledBorders();
     updateAvailableScreenGeometry();
     syncGeometry();
-
-    show();
-    showCanvasWindow();
 
     setIsReady(true);
 
@@ -349,7 +379,6 @@ void PrimaryConfigView::showEvent(QShowEvent *ev)
     m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
 
     syncGeometry();
-    syncSlideEffect();
 
     if (m_latteView && m_latteView->containment()) {
         m_latteView->containment()->setUserConfiguring(true);

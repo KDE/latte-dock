@@ -65,6 +65,7 @@ public:
 
     Latte::View *parentView() const;
     virtual void setParentView(Latte::View *view);
+    virtual void showAfter(int msecs = 0);
 
 public slots:
     virtual void syncGeometry() = 0;
@@ -83,9 +84,6 @@ protected:
 
     Qt::WindowFlags wFlags() const;
 
-private slots:
-    void updateWaylandId();
-
 protected:
     bool m_isNormalWindow{true};
     QTimer m_screenSyncTimer;
@@ -100,11 +98,16 @@ protected:
     Latte::Corona *m_corona{nullptr};
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 
+private slots:
+    void updateWaylandId();
+
 private:
     void setupWaylandIntegration();
 
 private:
     QString m_validTitle;
+
+    QTimer m_showTimer;
 
     Latte::WindowSystem::WindowId m_waylandWindowId;
 };

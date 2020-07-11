@@ -77,7 +77,6 @@ void SecondaryConfigView::init()
     auto source = QUrl::fromLocalFile(m_latteView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
     syncGeometry();
-    syncSlideEffect();
 
     if (m_parent && KWindowSystem::isPlatformX11()) {
         m_parent->requestActivate();
@@ -90,15 +89,11 @@ QRect SecondaryConfigView::geometryWhenVisible() const
 }
 
 void SecondaryConfigView::initParentView(Latte::View *view)
-{
+{   
     SubConfigView::initParentView(view);
 
     updateEnabledBorders();
     syncGeometry();
-
-    if (m_latteView->formFactor() == Plasma::Types::Horizontal && m_parent->inAdvancedMode()) {
-        show();
-    }
 }
 
 void SecondaryConfigView::syncGeometry()
@@ -195,7 +190,6 @@ void SecondaryConfigView::showEvent(QShowEvent *ev)
     m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
 
     syncGeometry();
-    syncSlideEffect();
 
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &SecondaryConfigView::syncGeometry);

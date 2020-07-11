@@ -99,6 +99,9 @@ public:
     void setParentView(Latte::View *view) override;
     void setOnActivities(QStringList activities);
 
+    void showPrimaryWindow();
+    void hidePrimaryWindow();
+
     void requestActivate() override;
 
 public slots:

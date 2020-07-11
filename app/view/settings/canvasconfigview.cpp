@@ -63,7 +63,6 @@ void CanvasConfigView::init()
     auto source = QUrl::fromLocalFile(m_latteView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
     syncGeometry();
-    syncSlideEffect();
 
     if (m_parent && KWindowSystem::isPlatformX11()) {
         m_parent->requestActivate();
@@ -81,8 +80,6 @@ void CanvasConfigView::initParentView(Latte::View *view)
 
     updateEnabledBorders();
     syncGeometry();
-
-    show();
 }
 
 void CanvasConfigView::syncGeometry()
@@ -144,7 +141,6 @@ void CanvasConfigView::showEvent(QShowEvent *ev)
     }
 
     syncGeometry();
-    syncSlideEffect();
 
     //! show Canvas on top of all other panels/docks and show
     //! its parent view on top afterwards

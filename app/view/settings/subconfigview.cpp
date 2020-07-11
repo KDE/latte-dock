@@ -82,7 +82,14 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title, const bool
         }
 
         syncGeometry();
+    });
+
+    m_showTimer.setSingleShot(true);
+    m_showTimer.setInterval(0);
+
+    connections << connect(&m_showTimer, &QTimer::timeout, this, [this]() {
         syncSlideEffect();
+        show();
     });
 }
 
@@ -179,6 +186,17 @@ void SubConfigView::requestActivate()
     } else {
         QQuickView::requestActivate();
     }
+}
+
+void SubConfigView::showAfter(int msecs)
+{
+    if (isVisible()) {
+        return;
+    }
+
+    m_showTimer.setInterval(msecs);
+    m_showTimer.start();
+
 }
 
 void SubConfigView::syncSlideEffect()
