@@ -396,6 +396,9 @@ void View::setupWaylandIntegration()
         if (m_visibility) {
             m_visibility->initViewFlags();
         }
+        if (m_positioner) {
+            m_positioner->updateWaylandId();
+        }
     }
 }
 

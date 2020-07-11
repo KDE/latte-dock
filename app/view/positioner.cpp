@@ -237,6 +237,10 @@ int Positioner::currentScreenId() const
 
 Latte::WindowSystem::WindowId Positioner::trackedWindowId()
 {
+    if (KWindowSystem::isPlatformWayland() && m_trackedWindowId.toInt() <= 0) {
+        updateWaylandId();
+    }
+
     return m_trackedWindowId;
 }
 

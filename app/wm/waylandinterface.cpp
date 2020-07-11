@@ -303,7 +303,6 @@ void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latt
         QTimer::singleShot(50, [this, surface]() {
             surface->setRole(PlasmaShellSurface::Role::ToolTip);
         });
-
     }
 }
 

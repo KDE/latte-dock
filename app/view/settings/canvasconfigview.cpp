@@ -151,7 +151,7 @@ void CanvasConfigView::showEvent(QShowEvent *ev)
 
     //! show Canvas on top of all other panels/docks and show
     //! its parent view on top afterwards
-    m_corona->wm()->setViewExtraFlags(this, true, Latte::Types::AlwaysVisible);
+    m_corona->wm()->setViewExtraFlags(this, true);
 
     QTimer::singleShot(100, [this]() {
         //! delay execution in order to take influence after last Canvas on top call

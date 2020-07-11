@@ -97,6 +97,7 @@ public slots:
     void syncGeometry();
 
     void initDelayedSignals();
+    void updateWaylandId();
 
 signals:
     void canvasGeometryChanged();
@@ -129,7 +130,6 @@ private slots:
     void screenChanged(QScreen *screen);
     void validateDockGeometry();
     void updateInLocationAnimation();
-    void updateWaylandId();
     void syncLatteViews();
     void updateContainmentScreen();
 

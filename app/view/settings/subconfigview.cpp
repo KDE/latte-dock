@@ -63,7 +63,7 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title, const bool
 
     if (!m_isNormalWindow) {
         setFlags(wFlags());
-        m_corona->wm()->setViewExtraFlags(this, true, Latte::Types::AlwaysVisible);
+        m_corona->wm()->setViewExtraFlags(this, true);
     }
 
     m_screenSyncTimer.setSingleShot(true);
@@ -152,6 +152,10 @@ QString SubConfigView::validTitle() const
 
 Latte::WindowSystem::WindowId SubConfigView::trackedWindowId()
 {
+    if (KWindowSystem::isPlatformWayland() && m_waylandWindowId.toInt() <= 0) {
+        updateWaylandId();
+    }
+
     return !KWindowSystem::isPlatformWayland() ? winId() :  m_waylandWindowId;
 }
 
@@ -272,9 +276,10 @@ void SubConfigView::setupWaylandIntegration()
         if (m_isNormalWindow) {
             m_corona->wm()->setViewExtraFlags(m_shellSurface, false);
         } else {
-            m_corona->wm()->setViewExtraFlags(m_shellSurface, true, Latte::Types::AlwaysVisible);
+            m_corona->wm()->setViewExtraFlags(m_shellSurface, true);
         }
 
+        updateWaylandId();
         syncGeometry();
     }
 }
