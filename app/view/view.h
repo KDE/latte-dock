@@ -235,6 +235,7 @@ public:
     QQuickView *configView();
 
     ViewPart::Effects *effects() const;   
+    ViewPart::ContextMenu *contextMenu() const;
     ViewPart::ContainmentInterface *extendedInterface() const;
     ViewPart::Indicator *indicator() const;
     ViewPart::Positioner *positioner() const;

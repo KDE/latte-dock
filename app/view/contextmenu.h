@@ -25,6 +25,7 @@
 #include <QMenu>
 #include <QMetaMethod>
 #include <QQuickItem>
+#include <QQuickView>
 #include <QMouseEvent>
 #include <QObject>
 
@@ -51,6 +52,7 @@ public:
     QMenu *menu();
 
     bool mousePressEvent(QMouseEvent *event);
+    bool mousePressEventForContainmentMenu(QQuickView *view, QMouseEvent *event);
 
 signals:
     void menuChanged();

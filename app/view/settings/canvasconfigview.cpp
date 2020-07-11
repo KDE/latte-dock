@@ -21,6 +21,7 @@
 
 // local
 #include "primaryconfigview.h"
+#include "../contextmenu.h"
 #include "../panelshadows_p.h"
 #include "../view.h"
 #include "../../lattecorona.h"
@@ -115,6 +116,17 @@ void CanvasConfigView::syncGeometry()
     }
 }
 
+void CanvasConfigView::mousePressEvent(QMouseEvent *event)
+{
+    if (!m_latteView) {
+        return;
+    }
+
+    bool result = m_latteView->contextMenu()->mousePressEventForContainmentMenu(this, event);
+
+    QQuickView::mousePressEvent(event);
+}
+
 bool CanvasConfigView::event(QEvent *e)
 {
     bool result = SubConfigView::event(e);
@@ -141,7 +153,7 @@ void CanvasConfigView::showEvent(QShowEvent *ev)
         m_shellSurface->setPosition(m_geometryWhenVisible.topLeft());
     }
 
-    QQuickWindow::showEvent(ev);
+    SubConfigView::showEvent(ev);
 
     if (!m_latteView) {
         return;

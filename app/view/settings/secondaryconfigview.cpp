@@ -187,7 +187,7 @@ void SecondaryConfigView::showEvent(QShowEvent *ev)
         m_shellSurface->setPosition(m_geometryWhenVisible.topLeft());
     }
 
-    QQuickWindow::showEvent(ev);
+    SubConfigView::showEvent(ev);
 
     if (!m_latteView) {
         return;

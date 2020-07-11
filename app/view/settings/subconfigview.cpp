@@ -118,7 +118,6 @@ void SubConfigView::init()
 
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
-    m_corona->dialogShadows()->addWindow(this);
 
     rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
     rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), m_corona->globalShortcuts()->shortcutsTracker());
@@ -281,6 +280,16 @@ void SubConfigView::setupWaylandIntegration()
 
         updateWaylandId();
         syncGeometry();
+    }
+}
+
+void SubConfigView::showEvent(QShowEvent *ev)
+{
+    QQuickView::showEvent(ev);
+
+    if (m_shellSurface) {
+        //! readd shadows after hiding because the window shadows are not shown again after first showing
+        m_corona->dialogShadows()->addWindow(this, m_enabledBorders);
     }
 }
 

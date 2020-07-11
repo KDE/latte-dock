@@ -84,6 +84,7 @@ protected:
     virtual void initParentView(Latte::View *view);
     virtual void updateEnabledBorders() = 0;
 
+    void showEvent(QShowEvent *ev) override;
     bool event(QEvent *e) override;
 
     Qt::WindowFlags wFlags() const;

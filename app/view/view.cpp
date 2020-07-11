@@ -1258,6 +1258,11 @@ ViewPart::Indicator *View::indicator() const
     return m_indicator;
 }
 
+ViewPart::ContextMenu *View::contextMenu() const
+{
+    return m_contextMenu;
+}
+
 ViewPart::ContainmentInterface *View::extendedInterface() const
 {
     return m_interface;

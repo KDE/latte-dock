@@ -386,7 +386,7 @@ void PrimaryConfigView::showEvent(QShowEvent *ev)
         m_shellSurface->setPosition(m_geometryWhenVisible.topLeft());
     }
 
-    QQuickWindow::showEvent(ev);
+    SubConfigView::showEvent(ev);
 
     if (!m_latteView) {
         return;
@@ -412,11 +412,6 @@ void PrimaryConfigView::showEvent(QShowEvent *ev)
 
     if (m_latteView && m_latteView->layout()) {
         m_latteView->layout()->setLastConfigViewFor(m_latteView);
-    }
-
-    if (m_shellSurface) {
-        //! readd shadows after hiding because the window shadows are not shown again after first showing
-        m_corona->dialogShadows()->addWindow(this, m_enabledBorders);
     }
 }
 
