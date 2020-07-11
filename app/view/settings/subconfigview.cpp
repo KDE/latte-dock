@@ -48,14 +48,15 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title, const bool
 
     setupWaylandIntegration();
 
-    m_validTitle = title;
-    setTitle(m_validTitle);
-
     if (KWindowSystem::isPlatformX11()) {
         m_corona->wm()->registerIgnoredWindow(winId());
     } else {
+        connect(this, &QWindow::windowTitleChanged, this, &SubConfigView::updateWaylandId);
         connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &SubConfigView::updateWaylandId);
     }
+
+    m_validTitle = title;
+    setTitle(m_validTitle);
 
     setScreen(view->screen());
     setIcon(qGuiApp->windowIcon());
@@ -149,6 +150,11 @@ QString SubConfigView::validTitle() const
     return m_validTitle;
 }
 
+Latte::WindowSystem::WindowId SubConfigView::trackedWindowId()
+{
+    return !KWindowSystem::isPlatformWayland() ? winId() :  m_waylandWindowId;
+}
+
 Latte::View *SubConfigView::parentView() const
 {
     return m_latteView;
@@ -231,6 +237,11 @@ void SubConfigView::syncSlideEffect()
     }
 
     m_corona->wm()->slideWindow(*this, slideLocation);
+}
+
+KWayland::Client::PlasmaShellSurface *SubConfigView::surface()
+{
+    return m_shellSurface;
 }
 
 void SubConfigView::setupWaylandIntegration()

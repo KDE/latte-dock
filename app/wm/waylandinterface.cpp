@@ -22,9 +22,10 @@
 
 // local
 #include <coretypes.h>
-#include "view/positioner.h"
-#include "view/view.h"
-#include "view/helpers/screenedgeghostwindow.h"
+#include "../view/positioner.h"
+#include "../view/view.h"
+#include "../view/settings/subconfigview.h"
+#include "../view/helpers/screenedgeghostwindow.h"
 #include "../lattecorona.h"
 
 // Qt
@@ -247,9 +248,16 @@ void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latt
 {
     KWayland::Client::PlasmaShellSurface *surface = qobject_cast<KWayland::Client::PlasmaShellSurface *>(view);
     Latte::View *latteView = qobject_cast<Latte::View *>(view);
+    Latte::ViewPart::SubConfigView *configView = qobject_cast<Latte::ViewPart::SubConfigView *>(view);
+
+    WindowId winId;
 
     if (latteView) {
         surface = latteView->surface();
+        winId = latteView->positioner()->trackedWindowId();
+    } else if (configView) {
+        surface = configView->surface();
+        winId = configView->trackedWindowId();
     }
 
     if (!surface) {
@@ -270,9 +278,7 @@ void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latt
         surface->setRole(PlasmaShellSurface::Role::Normal);
     }
 
-    if (latteView) {
-        WindowId winId = latteView->positioner()->trackedWindowId();
-
+    if (latteView || configView) {
         auto w = windowFor(winId);
         if (w && !w->isOnAllDesktops()) {
             requestToggleIsOnAllDesktops(winId);

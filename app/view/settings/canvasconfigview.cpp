@@ -46,8 +46,6 @@ CanvasConfigView::CanvasConfigView(Latte::View *view, PrimaryConfigView *parent)
 {
     setResizeMode(QQuickView::SizeRootObjectToView);
 
-    //connections << connect(m_parent, &PrimaryConfigView::availableScreenGeometryChanged, this, &CanvasConfigView::syncGeometry);
-
     setParentView(view);
     init();
 }

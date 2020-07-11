@@ -63,9 +63,13 @@ public:
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
+
     Latte::View *parentView() const;
     virtual void setParentView(Latte::View *view);
     virtual void showAfter(int msecs = 0);
+
+    Latte::WindowSystem::WindowId trackedWindowId();
+    KWayland::Client::PlasmaShellSurface *surface();
 
 public slots:
     virtual void syncGeometry() = 0;
