@@ -185,7 +185,7 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
-                    enabled: plasmoid.configuration.animationsEnabled
+                    enabled: LatteCore.WindowSystem.compositingActive && plasmoid.configuration.animationsEnabled
 
                     PlasmaComponents.Label {
                         text: i18n("Zoom On Hover")

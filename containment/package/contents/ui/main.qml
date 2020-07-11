@@ -220,7 +220,7 @@ Item {
     readonly property bool hasUserSpecifiedBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                            true : false
 
-    readonly property bool inConfigureAppletsMode: root.editMode && (plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive)
+    readonly property bool inConfigureAppletsMode: root.editMode && plasmoid.configuration.inConfigureAppletsMode
     readonly property bool parabolicEffectEnabled: parabolic.factor.zoom>1 && !inConfigureAppletsMode
 
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut)

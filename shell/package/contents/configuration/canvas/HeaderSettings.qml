@@ -128,7 +128,7 @@ Item {
         icon: SettingsControls.RearrangeIcon{}
 
         onPressedChanged: {
-            if (LatteCore.WindowSystem.compositingActive && pressed) {
+            if (pressed) {
                 plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
             }
         }
