@@ -70,9 +70,10 @@ public:
 
     QRect geometryWhenVisible() const;
 
+    void hideConfigWindow();
+
 public slots:
     Q_INVOKABLE void syncGeometry() override;
-    Q_INVOKABLE void hideConfigWindow();
 
 signals:
     void showSignal();

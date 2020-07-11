@@ -66,7 +66,7 @@ FocusScope {
 
         Keys.onPressed: {
             if (event.key === Qt.Key_Escape) {
-                viewConfig.hideConfigWindow();
+                primaryConfigView.hideConfigWindow();
             }
         }
     }

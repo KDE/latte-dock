@@ -143,7 +143,7 @@ void PrimaryConfigView::requestActivate()
     SubConfigView::requestActivate();
 }
 
-void PrimaryConfigView::showPrimaryWindow()
+void PrimaryConfigView::showConfigWindow()
 {
     if (isVisible()) {
         return;
@@ -154,9 +154,17 @@ void PrimaryConfigView::showPrimaryWindow()
     showSecondaryWindow();
 }
 
-void PrimaryConfigView::hidePrimaryWindow()
+void PrimaryConfigView::hideConfigWindow()
 {
-    hide();
+    if (m_shellSurface) {
+        //!NOTE: Avoid crash in wayland environment with qt5.9
+        close();
+    } else {
+        hide();
+    }
+
+    hideCanvasWindow();
+    hideSecondaryWindow();
 }
 
 void PrimaryConfigView::showCanvasWindow()
@@ -213,11 +221,11 @@ void PrimaryConfigView::setParentView(Latte::View *view)
         //!slide-out delay
         QTimer::singleShot(SLIDEOUTINTERVAL, [this, view]() {
             initParentView(view);
-            showPrimaryWindow();
+            showConfigWindow();
         });
     } else {
         initParentView(view);
-        showPrimaryWindow();
+        showConfigWindow();
     }
 }
 
@@ -430,6 +438,16 @@ void PrimaryConfigView::hideEvent(QHideEvent *ev)
     setVisible(false);
 }
 
+bool PrimaryConfigView::hasFocus() const
+{
+    bool primaryHasHocus{isActive()};
+    bool secHasFocus{m_secConfigView && m_secConfigView->isActive()};
+    bool canvasHasFocus{m_canvasConfigView && m_canvasConfigView->isActive()};
+    bool viewHasFocus{m_latteView && (m_latteView->containsMouse() || m_latteView->alternativesIsShown())};
+
+    return (m_blockFocusLost || viewHasFocus || primaryHasHocus || secHasFocus || canvasHasFocus);
+}
+
 void PrimaryConfigView::focusOutEvent(QFocusEvent *ev)
 {
     Q_UNUSED(ev);
@@ -440,15 +458,12 @@ void PrimaryConfigView::focusOutEvent(QFocusEvent *ev)
 
     const auto *focusWindow = qGuiApp->focusWindow();
 
-    if (!m_latteView
-            || (focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
-                                || focusWindow->flags().testFlag(Qt::ToolTip)))
-            || m_latteView->alternativesIsShown()) {
+    if (focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
+                                || focusWindow->flags().testFlag(Qt::ToolTip))) {
         return;
     }
 
-    if (!m_blockFocusLost && !m_latteView->containsMouse()
-            && (!m_secConfigView || (m_secConfigView && !m_secConfigView->isActive()))) {
+    if (!hasFocus()) {
         hideConfigWindow();
     }
 }
@@ -552,19 +567,6 @@ void PrimaryConfigView::setInAdvancedMode(bool advanced)
 
     m_inAdvancedMode = advanced;
     emit inAdvancedModeChanged();
-}
-
-void PrimaryConfigView::hideConfigWindow()
-{
-    if (m_shellSurface) {
-        //!NOTE: Avoid crash in wayland environment with qt5.9
-        close();
-    } else {
-        hide();
-    }
-
-    hideCanvasWindow();
-    hideSecondaryWindow();
 }
 
 //!BEGIN borders

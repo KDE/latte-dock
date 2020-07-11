@@ -78,6 +78,8 @@ void CanvasConfigView::initParentView(Latte::View *view)
 {
     SubConfigView::initParentView(view);
 
+    rootContext()->setContextProperty(QStringLiteral("primaryConfigView"), m_parent);
+
     updateEnabledBorders();
     syncGeometry();
 }
@@ -117,6 +119,8 @@ void CanvasConfigView::syncGeometry()
 
 bool CanvasConfigView::event(QEvent *e)
 {
+    bool result = SubConfigView::event(e);
+
     switch (e->type()) {
     case QEvent::Enter:
     case QEvent::MouseButtonPress:
@@ -129,7 +133,7 @@ bool CanvasConfigView::event(QEvent *e)
         break;
     }
 
-    return SubConfigView::event(e);
+    return result;
 }
 
 void CanvasConfigView::showEvent(QShowEvent *ev)
@@ -169,15 +173,14 @@ void CanvasConfigView::focusOutEvent(QFocusEvent *ev)
 
     const auto *focusWindow = qGuiApp->focusWindow();
 
-    if ((focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
-                         || focusWindow->flags().testFlag(Qt::ToolTip)))
-            || m_latteView->alternativesIsShown()) {
+    if (focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
+                         || focusWindow->flags().testFlag(Qt::ToolTip))) {
         return;
     }
 
     const auto parent = qobject_cast<PrimaryConfigView *>(m_parent);
 
-    if (!m_latteView->containsMouse() && parent && !parent->sticker() && !parent->isActive()) {
+    if (!parent->hasFocus()) {
         parent->hideConfigWindow();
     }
 }

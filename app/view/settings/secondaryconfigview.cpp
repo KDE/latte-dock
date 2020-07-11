@@ -92,6 +92,8 @@ void SecondaryConfigView::initParentView(Latte::View *view)
 {   
     SubConfigView::initParentView(view);
 
+    rootContext()->setContextProperty(QStringLiteral("primaryConfigView"), m_parent);
+
     updateEnabledBorders();
     syncGeometry();
 }
@@ -207,15 +209,14 @@ void SecondaryConfigView::focusOutEvent(QFocusEvent *ev)
 
     const auto *focusWindow = qGuiApp->focusWindow();
 
-    if ((focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
-                         || focusWindow->flags().testFlag(Qt::ToolTip)))
-            || m_latteView->alternativesIsShown()) {
+    if (focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
+                         || focusWindow->flags().testFlag(Qt::ToolTip))) {
         return;
     }
 
     const auto parent = qobject_cast<PrimaryConfigView *>(m_parent);
 
-    if (!m_latteView->containsMouse() && parent && !parent->sticker() && !parent->isActive()) {
+    if (!parent->hasFocus()) {
         parent->hideConfigWindow();
     }
 }

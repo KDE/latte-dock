@@ -457,9 +457,9 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
 
     if (m_primaryConfigView && c && c->isContainment() && c == this->containment()) {
         if (m_primaryConfigView->isVisible()) {
-            m_primaryConfigView->hidePrimaryWindow();
+            m_primaryConfigView->hideConfigWindow();
         } else {
-            m_primaryConfigView->showPrimaryWindow();
+            m_primaryConfigView->showConfigWindow();
             applyActivitiesToWindows();
         }
 
