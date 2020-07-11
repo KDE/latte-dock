@@ -40,10 +40,10 @@ MouseArea{
 
     visible: false //true//(isStartup && animations.speedFactor.current !== 0) ? false : true
 
-    anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
-    anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
-    anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
-    anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
+    anchors.bottom: (parent && root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+    anchors.top: (parent && root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+    anchors.left: (parent && root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+    anchors.right: (parent && root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
     objectName: "TaskItem"
 
