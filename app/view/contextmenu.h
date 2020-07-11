@@ -28,6 +28,7 @@
 #include <QQuickView>
 #include <QMouseEvent>
 #include <QObject>
+#include <QPointer>
 
 namespace Plasma {
 class Applet;
