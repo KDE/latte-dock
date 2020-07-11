@@ -79,8 +79,6 @@ void CanvasConfigView::initParentView(Latte::View *view)
 {
     SubConfigView::initParentView(view);
 
-    viewconnections << connect(m_latteView->positioner(), &ViewPart::Positioner::canvasGeometryChanged, this, &CanvasConfigView::syncGeometry);
-
     updateEnabledBorders();
     syncGeometry();
 

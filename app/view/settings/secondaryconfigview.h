@@ -88,9 +88,6 @@ protected:
     void initParentView(Latte::View *view) override;
     void updateEnabledBorders() override;
 
-private slots:    
-    void updateViewMask();
-
 private:
     QRect m_geometryWhenVisible;
 

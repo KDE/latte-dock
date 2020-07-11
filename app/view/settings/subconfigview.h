@@ -106,8 +106,6 @@ private:
 private:
     QString m_validTitle;
 
-    QTimer m_thicknessSyncTimer;
-
     Latte::WindowSystem::WindowId m_waylandWindowId;
 };
 

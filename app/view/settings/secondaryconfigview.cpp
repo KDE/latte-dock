@@ -176,54 +176,10 @@ void SecondaryConfigView::syncGeometry()
     setMinimumSize(size);
     resize(size);
 
-    updateViewMask();
-
     //! after placement request to activate the main config window in order to avoid
     //! rare cases of closing settings window from secondaryConfigView->focusOutEvent
     if (m_parent && KWindowSystem::isPlatformX11()) {
         m_parent->requestActivate();
-    }
-}
-
-void SecondaryConfigView::updateViewMask()
-{
-    bool environmentState = (KWindowSystem::isPlatformX11() && KWindowSystem::compositingActive());
-
-    if (!environmentState) {
-        return;
-    }
-
-    int x, y, thickness, length;
-    QRegion area;
-
-    thickness = m_latteView->effects()->editShadow();
-
-    if (m_latteView->formFactor() == Plasma::Types::Vertical) {
-        length = m_geometryWhenVisible.height();
-    } else {
-        length = m_geometryWhenVisible.width();
-    }
-
-    if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
-        x = m_geometryWhenVisible.x() - m_latteView->x();
-    } else {
-        y = m_geometryWhenVisible.y() - m_latteView->y();
-    }
-
-    if (m_latteView->location() == Plasma::Types::BottomEdge) {
-        y = m_latteView->height() - m_latteView->editThickness() - m_latteView->effects()->editShadow();
-    } else if (m_latteView->location() == Plasma::Types::TopEdge) {
-        y = m_latteView->editThickness();
-    } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
-        x = m_latteView->editThickness();
-    } else if (m_latteView->location() == Plasma::Types::RightEdge) {
-        x = m_latteView->width() - m_latteView->editThickness() - m_latteView->effects()->editShadow();
-    }
-
-    if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
-        area = QRect(x, y, length, thickness);
-    } else {
-        area = QRect(x, y, thickness, length);
     }
 }
 
@@ -244,7 +200,6 @@ void SecondaryConfigView::showEvent(QShowEvent *ev)
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &SecondaryConfigView::syncGeometry);
 
-    updateViewMask();
     emit showSignal();
 }
 

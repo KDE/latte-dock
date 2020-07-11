@@ -84,12 +84,6 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title, const bool
         syncGeometry();
         syncSlideEffect();
     });
-
-    m_thicknessSyncTimer.setSingleShot(true);
-    m_thicknessSyncTimer.setInterval(200);
-    connections << connect(&m_thicknessSyncTimer, &QTimer::timeout, this, [this]() {
-        syncGeometry();
-    });
 }
 
 SubConfigView::~SubConfigView()
@@ -169,10 +163,7 @@ void SubConfigView::initParentView(Latte::View *view)
 
     m_latteView = view;
 
-    viewconnections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &SubConfigView::syncGeometry);
-    viewconnections << connect(m_latteView, &Latte::View::editThicknessChanged, [&]() {
-        m_thicknessSyncTimer.start();
-    });
+    viewconnections << connect(m_latteView->positioner(), &ViewPart::Positioner::canvasGeometryChanged, this, &SubConfigView::syncGeometry);
 
     //! Assign app interfaces in be accessible through containment graphic item
     QQuickItem *containmentGraphicItem = qobject_cast<QQuickItem *>(m_latteView->containment()->property("_plasma_graphicObject").value<QObject *>());
