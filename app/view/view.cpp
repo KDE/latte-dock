@@ -163,6 +163,11 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
             emit indicatorChanged();
         }
 
+        if (m_positioner) {
+            //! immediateSyncGeometry helps avoiding binding loops from containment qml side
+            m_positioner->immediateSyncGeometry();
+        }
+
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
 
@@ -324,7 +329,8 @@ void View::init(Plasma::Containment *plasma_containment)
 
     setSource(corona()->kPackage().filePath("lattedockui"));
 
-    m_positioner->syncGeometry();
+    //! immediateSyncGeometry helps avoiding binding loops from containment qml side
+    m_positioner->immediateSyncGeometry();
 
     qDebug() << "SOURCE:" << source();
 }
@@ -1353,7 +1359,8 @@ bool View::event(QEvent *e)
                     setupWaylandIntegration();
 
                     if (m_shellSurface) {
-                        m_positioner->syncGeometry();
+                        //! immediateSyncGeometry helps avoiding binding loops from containment qml side
+                        m_positioner->immediateSyncGeometry();
                         m_effects->updateShadows();
                     }
 

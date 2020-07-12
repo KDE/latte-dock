@@ -96,6 +96,10 @@ public slots:
 
     void syncGeometry();
 
+    //! direct geometry calculations without any protections or checks
+    //! that might prevent them. It must be called with care.
+    void immediateSyncGeometry();
+
     void initDelayedSignals();
     void updateWaylandId();
 
@@ -132,10 +136,6 @@ private slots:
     void updateInLocationAnimation();
     void syncLatteViews();
     void updateContainmentScreen();
-
-    //! direct geometry calculations without any protections or checks
-    //! that might prevent them. It must be called with care.
-    void immediateSyncGeometry();
 
 private:
     void init();
