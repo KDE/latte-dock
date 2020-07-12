@@ -980,6 +980,8 @@ void View::setScreenEdgeMargin(int margin)
         return;
     }
 
+
+
     m_screenEdgeMargin = margin;
     emit screenEdgeMarginChanged();
 }

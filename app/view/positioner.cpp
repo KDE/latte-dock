@@ -59,6 +59,11 @@ Positioner::Positioner(Latte::View *parent)
     m_validateGeometryTimer.setInterval(500);
     connect(&m_validateGeometryTimer, &QTimer::timeout, this, &Positioner::syncGeometry);
 
+    //! syncGeometry() function is costly, so now we make sure that is not executed too often
+    m_syncGeometryTimer.setSingleShot(true);
+    m_syncGeometryTimer.setInterval(150);
+    connect(&m_syncGeometryTimer, &QTimer::timeout, this, &Positioner::immediateSyncGeometry);
+
     m_corona = qobject_cast<Latte::Corona *>(m_view->corona());
 
     if (m_corona) {
@@ -133,12 +138,6 @@ void Positioner::init()
         }
     });
 
-    connect(this, &Positioner::slideOffsetChanged, this, [&]() {
-        if (m_slideOffset == 0 && m_view->inEditMode()) {
-            syncGeometry();
-        }
-    });
-
     connect(m_view, &QQuickWindow::xChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::yChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::widthChanged, this, &Positioner::validateDockGeometry);
@@ -167,15 +166,11 @@ void Positioner::init()
     });
 
     connect(m_view, &Latte::View::screenEdgeMarginEnabledChanged, this, [&]() {
-        if (m_view->inEditMode() ) {
-            syncGeometry();
-        }
+        syncGeometry();
     });
 
     connect(m_view, &Latte::View::screenEdgeMarginChanged, this, [&]() {
-        if (m_view->screenEdgeMarginEnabled() && m_view->inEditMode()) {
-            syncGeometry();
-        }
+        syncGeometry();
     });
 
     connect(m_view->effects(), &Latte::ViewPart::Effects::drawShadowsChanged, this, [&]() {
@@ -408,7 +403,9 @@ void Positioner::syncGeometry()
 
     qDebug() << "syncGeometry() called...";
 
-    immediateSyncGeometry();
+    if (!m_syncGeometryTimer.isActive()) {
+        m_syncGeometryTimer.start();
+    }
 }
 
 void Positioner::immediateSyncGeometry()

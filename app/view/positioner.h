@@ -175,7 +175,7 @@ private:
     QString m_screenToFollowId;
     QPointer<QScreen> m_screenToFollow;
     QTimer m_screenSyncTimer;
-
+    QTimer m_syncGeometryTimer;
     QTimer m_validateGeometryTimer;
 
     //!used at sliding out/in animation

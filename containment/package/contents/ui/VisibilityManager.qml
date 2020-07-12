@@ -216,7 +216,7 @@ Item{
         target: latteView
         property: "screenEdgeMargin"
         when: latteView
-        value: Math.max(0, plasmoid.configuration.screenEdgeMargin)
+        value: plasmoid.configuration.shrinkThickMargins ? 0 :Math.max(0, plasmoid.configuration.screenEdgeMargin)
     }
 
     Binding{
