@@ -244,8 +244,16 @@ void PrimaryConfigView::initParentView(Latte::View *view)
 
     SubConfigView::initParentView(view);
 
+    viewconnections << connect(m_latteView, &Latte::View::locationChanged, this, [this]() {
+        updateAvailableScreenGeometry();
+    });
+
+    viewconnections << connect(m_latteView->positioner(), &Latte::ViewPart::Positioner::currentScreenChanged, this, [this]() {
+        updateAvailableScreenGeometry();
+    });
+
     viewconnections << connect(this, &PrimaryConfigView::inAdvancedModeChanged, m_latteView, &Latte::View::inSettingsAdvancedModeChanged);
-    viewconnections << connect(m_latteView->containment(), &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);
+    viewconnections << connect(m_latteView->containment(), &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);   
 
     m_originalByPassWM = m_latteView->byPassWM();
     m_originalMode = m_latteView->visibility()->mode();
@@ -272,7 +280,7 @@ void PrimaryConfigView::initParentView(Latte::View *view)
 
 void PrimaryConfigView::updateAvailableScreenGeometry(View *origin)
 {    
-    if (!m_latteView) {
+    if (!m_latteView || m_latteView == origin) {
         return;
     }
 
