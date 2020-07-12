@@ -53,6 +53,7 @@ public:
 
     //! OVERRIDE GeneralLayout implementations
     bool isCurrent() const override;
+    bool contains(const QString &layoutName);
 
     int viewsCount(int screen) const override;
     int viewsCount(QScreen *screen) const override;

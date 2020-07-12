@@ -45,6 +45,17 @@ SharedLayout::~SharedLayout()
     qDebug() << " SHARED LAYOUT destroying ::: " << name();
 }
 
+bool SharedLayout::contains(const QString &layoutName)
+{
+    for (const auto  &layout : m_centralLayouts) {
+        if (layout->name() == layoutName) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool SharedLayout::isCurrent() const
 {
     for (const auto  &layout : m_centralLayouts) {

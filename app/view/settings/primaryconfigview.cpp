@@ -86,6 +86,13 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
         });
     }
 
+    m_availableScreemGeometryTimer.setSingleShot(true);
+    m_availableScreemGeometryTimer.setInterval(250);
+
+    connections << connect(&m_availableScreemGeometryTimer, &QTimer::timeout, this, [this]() {
+        instantUpdateAvailableScreenGeometry();
+    });
+
     setParentView(view);
     init();
 }
@@ -244,6 +251,20 @@ void PrimaryConfigView::initParentView(Latte::View *view)
 
     SubConfigView::initParentView(view);
 
+    viewconnections << connect(m_latteView, &Latte::View::layoutChanged, this, [this]() {
+        if (m_latteView->layout()) {
+            updateAvailableScreenGeometry();
+        }
+    });
+
+    viewconnections << connect(m_latteView, &Latte::View::editThicknessChanged, this, [this]() {
+        updateAvailableScreenGeometry();
+    });
+
+    viewconnections << connect(m_latteView, &Latte::View::normalHighestThicknessChanged, this, [this]() {
+        updateAvailableScreenGeometry();
+    });
+
     viewconnections << connect(m_latteView, &Latte::View::locationChanged, this, [this]() {
         updateAvailableScreenGeometry();
     });
@@ -278,11 +299,8 @@ void PrimaryConfigView::initParentView(Latte::View *view)
     }
 }
 
-void PrimaryConfigView::updateAvailableScreenGeometry(View *origin)
-{    
-    if (!m_latteView || m_latteView == origin) {
-        return;
-    }
+void PrimaryConfigView::instantUpdateAvailableScreenGeometry()
+{
 
     int currentScrId = m_latteView->positioner()->currentScreenId();
 
@@ -292,9 +310,20 @@ void PrimaryConfigView::updateAvailableScreenGeometry(View *origin)
         ignoreModes.removeAll(Latte::Types::SideBar);
     }
 
-    m_availableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, QString(), ignoreModes, {}, false);
+    m_availableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, m_latteView->layout()->name(), ignoreModes, {}, false, true);
 
     emit availableScreenGeometryChanged();
+}
+
+void PrimaryConfigView::updateAvailableScreenGeometry(View *origin)
+{    
+    if (!m_latteView || !m_latteView->layout() || m_latteView == origin) {
+        return;
+    }
+
+    if (!m_availableScreemGeometryTimer.isActive()) {
+        m_availableScreemGeometryTimer.start();
+    }
 }
 
 QRect PrimaryConfigView::availableScreenGeometry() const

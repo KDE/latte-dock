@@ -146,6 +146,7 @@ private slots:
 
 private:
     void setIsReady(bool ready);
+    void instantUpdateAvailableScreenGeometry();
 
 private:
     bool m_blockFocusLost{false};
@@ -157,6 +158,8 @@ private:
     bool m_showInlineProperties{false};
 
     Latte::Types::Visibility m_originalMode{Latte::Types::DodgeActive};
+
+    QTimer m_availableScreemGeometryTimer;
 
     QRect m_availableScreenGeometry;
     QRect m_geometryWhenVisible;

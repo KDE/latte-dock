@@ -26,6 +26,9 @@
 #include "visibilitymanager.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
+#include "../layout/centrallayout.h"
+#include "../layout/sharedlayout.h"
+#include "../layouts/manager.h"
 #include "../settings/universalsettings.h"
 
 // Qt
@@ -990,8 +993,23 @@ void Positioner::hideDockDuringLocationChange(int goToLocation)
 
 void Positioner::hideDockDuringMovingToLayout(QString layoutName)
 {
-    m_moveToLayout = layoutName;
-    emit hideDockDuringMovingToLayoutStarted();
+    //Check if the new layout is in the same visible workarea
+
+    auto layout = m_view->layout();
+
+    auto central = qobject_cast<CentralLayout *>(layout);
+    auto shared = qobject_cast<SharedLayout *>(layout);
+
+    bool inVisibleWorkarea = ((central && central->sharedLayout() && central->sharedLayout()->name() == layoutName)
+            || (shared && shared->contains(layoutName) && m_corona->layoutsManager()->currentLayoutName() == layoutName));
+
+    if (inVisibleWorkarea) {
+        m_view->moveToLayout(layoutName);
+    } else {
+        //! slide-out and move to new layout later
+        m_moveToLayout = layoutName;
+        emit hideDockDuringMovingToLayoutStarted();
+    }
 }
 
 }

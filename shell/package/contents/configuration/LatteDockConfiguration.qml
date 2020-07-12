@@ -40,6 +40,8 @@ import "../controls" as LatteExtraControls
 
 FocusScope {
     id: dialog
+    width: appliedWidth
+    height: appliedHeight
 
     readonly property bool basicLevel: !advancedLevel
     readonly property bool advancedLevel: viewConfig.inAdvancedMode
@@ -51,8 +53,9 @@ FocusScope {
     //!    we use 100px. or 50px. in order to give space for othe views to be shown and to have also
     //!    some space around the settings window
     property int maxHeight: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
-                                viewConfig.availableScreenGeometry.height - (latteView.editThickness - latteView.normalThickness) - 16 :
+                                viewConfig.availableScreenGeometry.height - (latteView.editThickness - latteView.normalHighestThickness) - units.largeSpacing :
                                 viewConfig.availableScreenGeometry.height - 2 * units.largeSpacing
+
     property int maxWidth: 0.6 * latteView.screenGeometry.width
 
     //! propose size based on font size
@@ -77,10 +80,7 @@ FocusScope {
     //! width can be between 200px - maxWidth
     //! height can be between 400px - maxHeight
     property int appliedWidth: Math.min(maxWidth, Math.max(200, chosenWidth))
-    property int appliedHeight: Math.min(maxHeight, Math.max(400, chosenHeight))
-
-    width: appliedWidth
-    height: appliedHeight
+    property int appliedHeight: viewConfig.inAdvancedMode ? maxHeight : Math.min(maxHeight, Math.max(400, chosenHeight))
 
     Layout.minimumWidth: width
     Layout.minimumHeight: height
@@ -551,13 +551,13 @@ FocusScope {
 
                 Connections{
                     target: actionsComboBtn.button
-
                     onClicked: latteView.layout.addNewView();
                 }
 
                 Connections{
                     target: latteView
                     onTypeChanged: actionsComboBtn.updateCopyText()
+                    onLayoutChanged: actionsComboBtn.updateModel();
                 }
 
                 Connections{
