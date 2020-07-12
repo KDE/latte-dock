@@ -472,8 +472,14 @@ FocusScope {
                     }
                 }
 
+                onModelChanged: {
+                    if (latteView.extendedInterface.latteTasksModel.count === 0) {
+                        isReady = true;
+                        tasksRepeater.pages = 0;
+                    }
+                }
                 onPagesChanged: {
-                    if (pages === latteView.extendedInterface.latteTasksModel.count) {
+                    if (pages === latteView.extendedInterface.latteTasksModel.count && pages > 0) {
                         //! Reparent TasksPages when all of them are loaded
                         //! this way we avoid warnings from ::stackAfter
                         for(var i=0; i<pages; ++i) {
@@ -481,6 +487,17 @@ FocusScope {
                         }
 
                         isReady = true;
+                    }
+                }
+            }
+
+            //! initialize Tasks Repeater
+            Connections {
+                target: viewConfig
+                onIsReadyChanged:{
+                    if (!viewConfig.isReady) {
+                        tasksRepeater.isReady = false;
+                        tasksRepeater.pages = 0;
                     }
                 }
             }
