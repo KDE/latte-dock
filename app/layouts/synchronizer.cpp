@@ -205,7 +205,7 @@ QStringList Synchronizer::freeActivities()
 {
     QStringList fActivities;
 
-    for (const auto &activity : activities()) {
+    for (const auto &activity : runningActivities()) {
         if (!m_assignedLayouts.contains(activity)) {
             fActivities.append(activity);
         }

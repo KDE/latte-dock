@@ -1131,7 +1131,6 @@ void View::setLayout(Layout::GenericLayout *layout)
         connectionsLayout << connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
             if (m_layout && m_visibility) {
                 setActivities(m_layout->appliedActivities());
-                applyActivitiesToWindows();
                 showHiddenViewFromActivityStopping();
                 qDebug() << "DOCK VIEW FROM LAYOUT (currentActivityChanged) ::: " << m_layout->name() << " - activities: " << m_activities;
             }
