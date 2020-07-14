@@ -26,6 +26,7 @@
 #include <QMetaMethod>
 #include <QQuickItem>
 #include <QQuickView>
+#include <QPointer>
 #include <QMouseEvent>
 #include <QObject>
 
