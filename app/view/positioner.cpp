@@ -123,8 +123,14 @@ void Positioner::init()
 
     connect(this, &Positioner::showDockAfterLocationChangeFinished, this, &Positioner::syncLatteViews);
     connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::syncLatteViews);
-    connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::syncLatteViews);
+    connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::syncLatteViews);    
     connect(m_view, &Latte::View::onPrimaryChanged, this, &Positioner::syncLatteViews);
+
+    connect(this, &Positioner::inSlideAnimationChanged, this, [&]() {
+        if (!inSlideAnimation()) {
+            syncGeometry();
+        }
+    });
 
     connect(this, &Positioner::isStickedOnTopEdgeChanged, this, [&]() {
         if (m_view->formFactor() == Plasma::Types::Vertical) {

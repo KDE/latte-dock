@@ -974,10 +974,25 @@ Item{
             duration: manager.animationSpeed
             easing.type: Easing.OutQuad
         }
+
+        ScriptAction{
+            script: {
+                latteView.positioner.inSlideAnimation = false;
+            }
+        }
+
+        onStopped: latteView.positioner.inSlideAnimation = false;
+
     }
 
     SequentialAnimation{
         id: slidingOutRealFloating
+
+        ScriptAction{
+            script: {
+                latteView.positioner.inSlideAnimation = true;
+            }
+        }
 
         PropertyAnimation {
             target: latteView ? latteView.positioner : null
@@ -997,13 +1012,11 @@ Item{
 
             if (root.behaveAsPlasmaPanel && !latteView.visibility.isHidden && !inSlidingIn && !inSlidingOut && !inStartup) {
                 if (hideThickScreenGap) {
-                    latteView.positioner.inSlideAnimation = true;
                     slidingInRealFloating.stop();
                     slidingOutRealFloating.start();
                 } else {
                     slidingOutRealFloating.stop();
                     slidingInRealFloating.start();
-                    latteView.positioner.inSlideAnimation = false;
                 }
             }
         }
