@@ -34,26 +34,20 @@ Item{
     readonly property bool isVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     readonly property bool isHorizontal: !isVertical
 
-    property int offset: {
-        if (latteView.behaveAsPlasmaPanel) {
-            return 0;
-        }
-
-        if (root.isHorizontal) {
-            return width * (plasmoid.configuration.offset/100);
-        } else {
-            height * (plasmoid.configuration.offset/100)
-        }
-    }
-
     property int animationSpeed: LatteCore.WindowSystem.compositingActive ? 500 : 0
-
     property int panelAlignment: plasmoid.configuration.alignment
 
     readonly property real appliedOpacity: imageTiler.opacity
     readonly property real maxOpacity: plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive ?
                                            1 : plasmoid.configuration.editBackgroundOpacity
 
+    property real offset: {
+        if (root.isHorizontal) {
+            return width * (plasmoid.configuration.offset/100);
+        } else {
+            return height * (plasmoid.configuration.offset/100)
+        }
+    }
 
     property string appChosenShadowColor: {
         if (plasmoid.configuration.shadowColorType === LatteContainment.Types.ThemeColorShadow) {
