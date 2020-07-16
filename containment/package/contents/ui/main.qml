@@ -98,8 +98,7 @@ Item {
 
         return (visibilityManager.panelIsBiggerFromIconSize
                 && (parabolic.factor.maxZoom === 1.0)
-                && (plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout)
-                && !visibilityManager.inLocationAnimation);
+                && (plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout));
     }
 
     readonly property bool behaveAsDockWithMask: !behaveAsPlasmaPanel

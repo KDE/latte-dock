@@ -455,7 +455,6 @@ void PrimaryConfigView::showEvent(QShowEvent *ev)
 void PrimaryConfigView::hideEvent(QHideEvent *ev)
 {
     if (!m_latteView) {
-        deleteLater();
         return;
     }
 

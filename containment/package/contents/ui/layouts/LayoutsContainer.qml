@@ -53,7 +53,7 @@ Item{
     Binding {
         target: layoutsContainer
         property: "x"
-        when: !visibilityManager.inLocationAnimation
+        when: root.behaveAsDockWithMask && !visibilityManager.inLocationAnimation
         value: {
             if (root.behaveAsPlasmaPanel) {
                 return 0;
@@ -86,7 +86,7 @@ Item{
     Binding{
         target: layoutsContainer
         property: "y"
-        when: !visibilityManager.inLocationAnimation
+        when: root.behaveAsDockWithMask && !visibilityManager.inLocationAnimation
         value: {
             if (root.behaveAsPlasmaPanel) {
                 return 0;

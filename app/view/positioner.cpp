@@ -871,6 +871,7 @@ void Positioner::initSignalingForLocationChangeSliding()
     connect(m_view, &View::locationChanged, this, [&]() {
         if (m_goToLocation != Plasma::Types::Floating) {
             m_goToLocation = Plasma::Types::Floating;
+
             QTimer::singleShot(100, [this]() {
                 m_view->effects()->setAnimationsBlocked(false);
                 emit showDockAfterLocationChangeFinished();

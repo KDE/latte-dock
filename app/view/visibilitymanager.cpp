@@ -81,9 +81,11 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         //! Frame Extents
         connect(m_latteView, &Latte::View::headThicknessGapChanged, this, &VisibilityManager::on_publishFrameExtents);
         connect(m_latteView, &Latte::View::locationChanged, this, [&]() {
-            //! Resend frame extents because their geometry has changed
-            const bool forceUpdate{true};
-            publishFrameExtents(forceUpdate);
+            if (!m_latteView->behaveAsPlasmaPanel()) {
+                //! Resend frame extents because their geometry has changed
+                const bool forceUpdate{true};
+                publishFrameExtents(forceUpdate);
+            }
         });
 
         connect(m_latteView, &Latte::View::typeChanged, this, [&]() {
