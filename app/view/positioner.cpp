@@ -144,6 +144,10 @@ void Positioner::init()
         }
     });
 
+    connect(this, &Positioner::slideOffsetChanged, this, [&]() {
+        updatePosition(m_lastAvailableScreenRect);
+    });
+
     connect(m_view, &QQuickWindow::xChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::yChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::widthChanged, this, &Positioner::validateDockGeometry);
@@ -749,9 +753,9 @@ void Positioner::updatePosition(QRect availableScreenRect)
                    << m_view->location();
     }
 
-    if (m_slideOffset == 0) {
+    if (m_slideOffset == 0 || m_goToLocation != Plasma::Types::Floating /*exactly after relocating and changing screen edge*/) {
         //! update valid geometry in normal positioning
-        m_validGeometry.setTopLeft(position);
+        m_validGeometry.moveTopLeft(position);
     } else {
         //! when sliding in/out update only the relevant axis for the screen_edge in
         //! to not mess the calculations and the automatic geometry checkers that
@@ -782,33 +786,6 @@ void Positioner::setSlideOffset(int offset)
     }
 
     m_slideOffset = offset;
-
-    QPoint slidedTopLeft;
-
-    if (m_view->location() == Plasma::Types::TopEdge) {
-        int boundedY = qMax(m_view->screenGeometry().top() - (m_validGeometry.height() + 1), m_validGeometry.y() - qAbs(m_slideOffset));
-        slidedTopLeft = {m_validGeometry.x(), boundedY};
-
-    } else if (m_view->location() == Plasma::Types::BottomEdge) {
-        int boundedY = qMin(m_view->screenGeometry().bottom() - 1, m_validGeometry.y() + qAbs(m_slideOffset));
-        slidedTopLeft = {m_validGeometry.x(), boundedY};
-
-    } else if (m_view->location() == Plasma::Types::RightEdge) {
-        int boundedX = qMin(m_view->screenGeometry().right() - 1, m_validGeometry.x() + qAbs(m_slideOffset));
-        slidedTopLeft = {boundedX, m_validGeometry.y()};
-
-    } else if (m_view->location() == Plasma::Types::LeftEdge) {
-        int boundedX = qMax(m_view->screenGeometry().left() - (m_validGeometry.width() + 1), m_validGeometry.x() - qAbs(m_slideOffset));
-        slidedTopLeft = {boundedX, m_validGeometry.y()};
-
-    }
-
-    m_view->setPosition(slidedTopLeft);
-
-    if (m_view->surface()) {
-        m_view->surface()->setPosition(slidedTopLeft);
-    }
-
     emit slideOffsetChanged();
 }
 
@@ -870,6 +847,8 @@ void Positioner::initSignalingForLocationChangeSliding()
 
     connect(m_view, &View::locationChanged, this, [&]() {
         if (m_goToLocation != Plasma::Types::Floating) {
+            immediateSyncGeometry();
+
             m_goToLocation = Plasma::Types::Floating;
 
             QTimer::singleShot(100, [this]() {

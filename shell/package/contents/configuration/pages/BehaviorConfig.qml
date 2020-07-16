@@ -214,7 +214,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("bottom location", "Bottom")
                     iconSource: "arrow-down"
-                    checked: latteView.location === edge
+                    checked: plasmoid.location === edge
                     checkable: true
                     exclusiveGroup: locationGroup
 
@@ -226,7 +226,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("left location", "Left")
                     iconSource: "arrow-left"
-                    checked: latteView.location === edge
+                    checked: plasmoid.location === edge
                     checkable: true
                     exclusiveGroup: locationGroup
 
@@ -238,7 +238,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("top location", "Top")
                     iconSource: "arrow-up"
-                    checked: latteView.location === edge
+                    checked: plasmoid.location === edge
                     checkable: true
                     exclusiveGroup: locationGroup
 
@@ -250,7 +250,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18nc("right location", "Right")
                     iconSource: "arrow-right"
-                    checked: latteView.location === edge
+                    checked: plasmoid.location === edge
                     checkable: true
                     exclusiveGroup: locationGroup
 
