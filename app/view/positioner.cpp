@@ -157,8 +157,10 @@ void Positioner::init()
 
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Positioner::syncGeometry);
     connect(m_view, &Latte::View::maxThicknessChanged, this, &Positioner::syncGeometry);
-    connect(m_view, &Latte::View::maxLengthChanged, this, &Positioner::syncGeometry);
-    connect(m_view, &Latte::View::offsetChanged, this, &Positioner::syncGeometry);
+
+    connect(m_view, &Latte::View::offsetChanged, this, [&]() {
+        updatePosition(m_lastAvailableScreenRect);
+    });
 
     connect(m_view, &Latte::View::locationChanged, this, [&]() {
         updateFormFactor();
@@ -167,6 +169,12 @@ void Positioner::init()
 
     connect(m_view, &Latte::View::editThicknessChanged, this, [&]() {
         updateCanvasGeometry(m_lastAvailableScreenRect);
+    });
+
+    connect(m_view, &Latte::View::maxLengthChanged, this, [&]() {
+        if (m_view->behaveAsPlasmaPanel()) {
+            syncGeometry();
+        }
     });
 
     connect(m_view, &Latte::View::normalThicknessChanged, this, [&]() {
