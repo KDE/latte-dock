@@ -265,8 +265,8 @@ PlasmaComponents.Page {
                     }
 
                     LatteComponents.Slider {
-                        Layout.fillWidth: true
                         id: maxLengthSlider
+                        Layout.fillWidth: true
 
                         value: plasmoid.configuration.maxLength
                         from: 0
@@ -377,8 +377,8 @@ PlasmaComponents.Page {
                     }
 
                     LatteComponents.Slider {
-                        Layout.fillWidth: true
                         id: minLengthSlider
+                        Layout.fillWidth: true
 
                         value: plasmoid.configuration.minLength
                         from: 0
@@ -461,18 +461,40 @@ PlasmaComponents.Page {
                     }
 
                     LatteComponents.Slider {
-                        Layout.fillWidth: true
                         id: offsetSlider
+                        Layout.fillWidth: true
 
-                        value: plasmoid.configuration.offset
-                        from: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
-                               || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? -screenLengthMaxFactor :  0
-                        to: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
-                             || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? screenLengthMaxFactor :  2*screenLengthMaxFactor
                         stepSize: 1
                         wheelEnabled: false
 
                         readonly property int screenLengthMaxFactor: (100 - plasmoid.configuration.maxLength) / 2
+
+                        //! Bindings are needed because from/to/value(s) are updated when PrimaryConfigView updates
+                        //! its ParentView property. During that change these values must be recalculated only when
+                        //! their final/new View properties are available; otherwise when changing from Center alignments
+                        //! to Left or Right might alter the true Offset of the newly shown View
+                        Binding {
+                            target: offsetSlider
+                            property: "value"
+                            when: viewConfig.isReady
+                            value: plasmoid.configuration.offset
+                        }
+
+                        Binding {
+                            target: offsetSlider
+                            property: "from"
+                            when: viewConfig.isReady
+                            value: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
+                                    || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? -offsetSlider.screenLengthMaxFactor :  0
+                        }
+
+                        Binding {
+                            target: offsetSlider
+                            property: "to"
+                            when: viewConfig.isReady
+                            value: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
+                                    || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? offsetSlider.screenLengthMaxFactor :  2*offsetSlider.screenLengthMaxFactor
+                        }
 
                         function updateOffset() {
                             if (!pressed) {
