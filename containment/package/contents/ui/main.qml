@@ -201,11 +201,7 @@ Item {
                                       && latteView && latteView.windowsTracker
                                       && latteView.windowsTracker.currentScreen.existsWindowMaximized
 
-    property bool hideLengthScreenGaps: hideThickScreenGap
-                                        && (latteView.visibility.mode === LatteCore.Types.AlwaysVisible
-                                            || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow)
-                                        && (plasmoid.configuration.alignment === LatteCore.Types.Justify)
-                                        && plasmoid.configuration.maxLength>85
+    property bool hideLengthScreenGaps: false /*set through binding*/
 
 
     property int themeColors: plasmoid.configuration.themeColors
@@ -468,6 +464,24 @@ Item {
     //// END properties in functions
 
     ////////////////END properties
+
+    //////////////START OF BINDINGS
+
+    //! Binding is needed in order for hideLengthScreenGaps to be activated or not only after
+    //! View sliding in/out has finished. This way the animation is smoother for behaveAsPlasmaPanels
+    Binding{
+        target: root
+        property: "hideLengthScreenGaps"
+        when: latteView && latteView.positioner && latteView.visibility && (latteView.positioner.slideOffset === 0)
+        value: (hideThickScreenGap
+               && (latteView.visibility.mode === LatteCore.Types.AlwaysVisible
+                   || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow)
+               && (plasmoid.configuration.alignment === LatteCore.Types.Justify)
+               && plasmoid.configuration.maxLength>85)
+    }
+
+    //////////////END OF BINDINGS
+
 
     //////////////START OF CONNECTIONS
     onEditModeChanged: {

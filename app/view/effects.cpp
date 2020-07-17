@@ -64,6 +64,7 @@ void Effects::init()
     });
 
     connect(m_view, &Latte::View::alignmentChanged, this, &Effects::updateEnabledBorders);
+    connect(m_view, &Latte::View::maxLengthChanged, this, &Effects::updateEnabledBorders);
     connect(m_view, &Latte::View::screenEdgeMarginEnabledChanged, this, &Effects::updateEnabledBorders);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
     connect(this, &Effects::drawShadowsChanged, this, &Effects::updateShadows);
