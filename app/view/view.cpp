@@ -146,14 +146,18 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
             connect(m_visibility, &ViewPart::VisibilityManager::containsMouseChanged,
                     this, &View::updateTransientWindowsTracking);
 
-            connect(m_visibility, &ViewPart::VisibilityManager::frameExtentsCleared, this, [&]() {
+            //! Deprecated because with Plasma 5.19.3 the issue does not appear.
+            //! The issue was that when FrameExtents where zero strange behaviors were
+            //! occuring from KWin, e.g. the panels were moving outside of screen and
+            //! panel external shadows were positioned out of place.
+            /*connect(m_visibility, &ViewPart::VisibilityManager::frameExtentsCleared, this, [&]() {
                 if (behaveAsPlasmaPanel()) {
                     //! recreate view because otherwise compositor frame extents implementation
                     //! is triggering a crazy behavior of moving/hiding the view and freezing Latte
                     //! in some cases.
-                    reloadSource();
+                    //reloadSource();
                 }
-            });
+            });*/
 
             emit visibilityChanged();
         }

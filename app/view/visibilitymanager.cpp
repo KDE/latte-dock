@@ -524,10 +524,10 @@ void VisibilityManager::publishFrameExtents(bool forceUpdate)
             || m_frameExtentsLocation != m_latteView->location()
             || forceUpdate) {
 
-        m_frameExtentsHeadThicknessGap = m_latteView->headThicknessGap();
         m_frameExtentsLocation = m_latteView->location();
+        m_frameExtentsHeadThicknessGap = m_latteView->headThicknessGap();
 
-        QMargins frameExtents;
+        QMargins frameExtents(0, 0, 0, 0);
 
         if (m_latteView->location() == Plasma::Types::LeftEdge) {
             frameExtents.setRight(m_frameExtentsHeadThicknessGap);
@@ -541,12 +541,14 @@ void VisibilityManager::publishFrameExtents(bool forceUpdate)
 
         qDebug() << " -> Frame Extents :: " << m_frameExtentsLocation << " __ " << " extents :: " << frameExtents;
 
-        if (!frameExtents.isNull()) {
+        if (!frameExtents.isNull() && !m_latteView->behaveAsPlasmaPanel()) {
             //! When a view returns its frame extents to zero then that triggers a compositor
             //! strange behavior that moves/hides the view totally and freezes entire Latte
             //! this is why we have blocked that setting
             m_wm->setFrameExtents(m_latteView, frameExtents);
         } else if (m_latteView->behaveAsPlasmaPanel()) {
+            QMargins panelExtents(0, 0, 0, 0);
+            m_wm->setFrameExtents(m_latteView, panelExtents);
             emit frameExtentsCleared();
         }
     }
