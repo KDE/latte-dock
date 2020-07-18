@@ -169,6 +169,15 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         }
 
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
+
+        if (m_corona->viewSettingsFactory()->hasOrphanSettings()
+                && m_corona->viewSettingsFactory()->hasVisibleSettings()
+                && m_corona->viewSettingsFactory()->lastContainment() == containment()) {
+            //! used mostly from view recreations in order to inform config windows that view has been updated
+            m_primaryConfigView = m_corona->viewSettingsFactory()->primaryConfigView();
+            m_primaryConfigView->setParentView(this, true);
+        }
+
     }, Qt::DirectConnection);
 
     m_corona = qobject_cast<Latte::Corona *>(this->corona());

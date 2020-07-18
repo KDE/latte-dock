@@ -62,6 +62,7 @@ Grid {
     PlasmaComponents.Button {
         id: dockTypeButton
         width: horizontal ? (parent.width - parent.spacing)/ 2 : parent.width
+        enabled: LatteCore.WindowSystem.compositingActive
 
         checkable: true
         checked: latteView.type === LatteCore.Types.DockView
@@ -105,6 +106,7 @@ Grid {
     PlasmaComponents.Button {
         id: panelTypeButton
         width: dockTypeButton.width
+        enabled: LatteCore.WindowSystem.compositingActive
 
         checkable: true
         checked: latteView.type === LatteCore.Types.PanelView

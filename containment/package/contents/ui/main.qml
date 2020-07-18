@@ -80,25 +80,12 @@ Item {
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: {
         if (!LatteCore.WindowSystem.compositingActive) {
-            //! In NOCOMPOSITING mode VIEWS should behave as real windows and that way
-            //! we gain also the snapping features from KWin
-            return true;
-        }
-
-        if (!latteView || !latteView.visibility) {
+            //! In NOCOMPOSITING mode VIEWS are ALWAYS using mask techniques because
+            //! this is what works much better. In the future that might change.
             return false;
         }
 
-        if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
-            //! dont use when floating views are requesting Fitt's Law
-            return false;
-        }
-
-        var staticLayout = (plasmoid.configuration.minLength === plasmoid.configuration.maxLength);
-
-        return (visibilityManager.panelIsBiggerFromIconSize
-                && (parabolic.factor.maxZoom === 1.0)
-                && (plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout));
+        return viewType === LatteCore.Types.PanelView;
     }
 
     readonly property bool behaveAsDockWithMask: !behaveAsPlasmaPanel
@@ -106,11 +93,19 @@ Item {
     readonly property bool viewIsAvailable: latteView && latteView.visibility && latteView.effects
 
     property int viewType: {
+        if (!latteView || !latteView.visibility) {
+            return LatteCore.Types.DockView;
+        }
+
+        if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
+            //! dont use when floating views are requesting Fitt's Law
+            return LatteCore.Types.DockView;
+        }
+
         var staticLayout = (plasmoid.configuration.minLength === plasmoid.configuration.maxLength);
 
         if ((plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout)
-                && (plasmoid.configuration.useThemePanel)
-                && (plasmoid.configuration.panelSize === 100)
+                && visibilityManager.panelIsBiggerFromIconSize
                 && (parabolic.factor.maxZoom === 1.0)) {
             return LatteCore.Types.PanelView;
         }

@@ -22,6 +22,9 @@
 #include "primaryconfigview.h"
 #include "../view.h"
 
+// Plasma
+#include <Plasma/Containment>
+
 namespace Latte {
 
 ViewSettingsFactory::ViewSettingsFactory(QObject *parent)
@@ -36,6 +39,27 @@ ViewSettingsFactory::~ViewSettingsFactory()
     }
 }
 
+bool ViewSettingsFactory::hasOrphanSettings() const
+{
+    return m_primaryConfigView && !m_primaryConfigView->parentView();
+}
+
+bool ViewSettingsFactory::hasVisibleSettings() const
+{
+    return m_primaryConfigView && m_primaryConfigView->isVisible();
+}
+
+
+Plasma::Containment *ViewSettingsFactory::lastContainment()
+{
+    return m_lastContainment;
+}
+
+ViewPart::PrimaryConfigView *ViewSettingsFactory::primaryConfigView()
+{
+    return m_primaryConfigView;
+}
+
 ViewPart::PrimaryConfigView *ViewSettingsFactory::primaryConfigView(Latte::View *view)
 {
     if (!m_primaryConfigView) {
@@ -48,6 +72,10 @@ ViewPart::PrimaryConfigView *ViewSettingsFactory::primaryConfigView(Latte::View 
         }
 
         m_primaryConfigView->setParentView(view);
+    }
+
+    if (view) {
+        m_lastContainment = view->containment();
     }
 
     return m_primaryConfigView;

@@ -163,7 +163,7 @@ Latte::View *SubConfigView::parentView() const
     return m_latteView;
 }
 
-void SubConfigView::setParentView(Latte::View *view)
+void SubConfigView::setParentView(Latte::View *view, const bool &immediate)
 {
     if (m_latteView == view) {
         return;

@@ -78,6 +78,7 @@ Indicator::Indicator(Latte::View *parent)
 Indicator::~Indicator()
 {
     unloadIndicators();
+    releaseConfigUi();
 
     if (m_component) {
         m_component->deleteLater();
@@ -363,7 +364,7 @@ void Indicator::configUiFor(QString type, QQuickItem *parent)
 void Indicator::releaseConfigUi()
 {
     if (m_lastCreatedConfigUi) {
-        delete m_lastCreatedConfigUi;
+        m_lastCreatedConfigUi->deleteLater();
         m_lastCreatedConfigUi = nullptr;
     }
 }

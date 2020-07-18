@@ -24,6 +24,11 @@
 #include <QObject>
 #include <QPointer>
 
+namespace Plasma {
+class Containment;
+}
+
+
 namespace Latte {
 class View;
 
@@ -43,10 +48,17 @@ public:
     ViewSettingsFactory(QObject *parent);
     ~ViewSettingsFactory() override;
 
+    bool hasOrphanSettings() const;
+    bool hasVisibleSettings() const;
+
+    ViewPart::PrimaryConfigView *primaryConfigView();
+
+    Plasma::Containment *lastContainment();
     ViewPart::PrimaryConfigView *primaryConfigView(Latte::View *view);
 
 private:
     QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;
+    QPointer<Plasma::Containment> m_lastContainment;
 
 };
 

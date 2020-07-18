@@ -220,13 +220,13 @@ void PrimaryConfigView::hideSecondaryWindow()
     }
 }
 
-void PrimaryConfigView::setParentView(Latte::View *view)
+void PrimaryConfigView::setParentView(Latte::View *view, const bool &immediate)
 {
     if (m_latteView == view) {
         return;
     }
 
-    if (m_latteView) {
+    if (m_latteView && !immediate) {
         hideConfigWindow();
 
         //!slide-out delay

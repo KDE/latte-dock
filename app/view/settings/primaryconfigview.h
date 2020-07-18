@@ -98,7 +98,7 @@ public:
     QRect availableScreenGeometry() const;
     QRect geometryWhenVisible() const;
 
-    void setParentView(Latte::View *view) override;
+    void setParentView(Latte::View *view, const bool &immediate = false) override;
     void setOnActivities(QStringList activities);
 
     void showConfigWindow();
