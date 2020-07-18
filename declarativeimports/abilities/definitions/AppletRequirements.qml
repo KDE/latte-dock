@@ -28,20 +28,11 @@ Item{
     property bool screenEdgeMarginSupported: false
     property bool windowsTrackingEnabled: false
 
-    property real innerZoomFactor: 1.0
-
     //   NAME: activeIndicatorEnabled
     //   EXPLANATION: when is TRUE, Latte can show its own Active Indicator
     //       when needed. For FALSE, the Latte Active Indicator is not drawn
     //       or used for that applet.
     //   SINCE: 0.9
-
-    //   NAME: innerZoomFactor
-    //   EXPLANATION: zoom factor that can be used from applets in order to draw
-    //       some of their elements in specific cases, for example during animations.
-    //       That zoom factor is irrelevant of parabolic effect and in used only
-    //       occasionaly. It provides a hint for the container maximum zoom factor.
-    //   SINCE: 0.10
 
     //   NAME: latteSideColoringEnabled
     //   EXPLANATION: when is FALSE, Latte is not painting/colorizing this applet

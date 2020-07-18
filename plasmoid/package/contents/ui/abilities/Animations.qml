@@ -35,6 +35,16 @@ AppletAbility.Animations {
 
         duration.small: LatteCore.Environment.shortDuration
         duration.large: LatteCore.Environment.longDuration
+
+        requirements.zoomFactor: {
+            if (!active || !LatteCore.WindowSystem.compositingActive) {
+                return 1;
+            }
+
+            var hasHighThicknessAnimation = launcherBouncingEnabled || windowInAttentionEnabled || windowAddedInGroupEnabled;
+
+            return hasHighThicknessAnimation ? 1.65 : 1.0;
+        }
     }
 
     //! Private Local Properties

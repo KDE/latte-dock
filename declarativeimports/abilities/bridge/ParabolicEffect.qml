@@ -19,12 +19,8 @@
 
 import QtQuick 2.0
 
-Item {
+BridgeItem {
     id: parabolicBridge
-    property int appletIndex: -1
-
-    property Item host: null
-    property Item client: null
 
     function clientRequestUpdateLowerItemScale(newScale, step) {
         host.sglUpdateLowerItemScale(appletIndex-1, newScale, step);

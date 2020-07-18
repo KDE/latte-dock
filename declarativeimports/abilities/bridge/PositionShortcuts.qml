@@ -19,13 +19,8 @@
 
 import QtQuick 2.0
 
-Item {
+BridgeItem {
     id: shortcutsBridge
-    property int appletIndex: -1
-
-    property Item host: null
-    property Item client: null
-
     readonly property bool isConnected: host && client
 
     onIsConnectedChanged: {

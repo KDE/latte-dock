@@ -117,8 +117,12 @@ Item{
 
     readonly property Item actions: Actions{}
     readonly property Item applet: mainCommunicator.requires
-    readonly property Item animations: appletItem.animations.publicApi
     readonly property Item metrics: appletItem.metrics.publicApi
+
+    readonly property AbilityBridge.Animations animations: AbilityBridge.Animations {
+        host: appletItem.animations.publicApi
+        appletIndex: index
+    }
 
     readonly property AbilityBridge.Indexer indexer: AbilityBridge.Indexer {
         host: appletItem.indexer

@@ -23,12 +23,9 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.app 0.1 as LatteApp
 
-import org.kde.latte.abilities.containers 0.1 as ContainerAbility
+import "./privates" as Ability
 
-ContainerAbility.Animations {
-    property Item metrics: null
-    property QtObject settings: null
-
+Ability.AnimationsPrivate {
     //! Public Properties
     active: plasmoid.configuration.animationsEnabled && LatteCore.WindowSystem.compositingActive
 
@@ -63,4 +60,8 @@ ContainerAbility.Animations {
             return Math.max(5, metrics.iconSize / 10);
         }
     }
+
+    //! do not update during dragging/moving applets inConfigureAppletsMode
+    updateIsBlocked: (root.dragOverlay && root.dragOverlay.pressed)
+                     || layouter.appletsInParentChange
 }

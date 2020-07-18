@@ -755,7 +755,7 @@ Window{
             }
 
             Text{
-                text: layoutsContainer.endLayout.shownApplets
+                text: layouter.endLayout.shownApplets
             }
 
             Text{
@@ -783,11 +783,11 @@ Window{
             }
 
             Text{
-                text: "Applets Max Inner ZoomFactor" + space
+                text: "Animations ZoomFactor" + space
             }
 
             Text{
-                text: layoutsContainer.applets.require.maxInnerZoomFactor
+                text: animations.requirements.zoomFactor
             }
 
             Text{
@@ -811,7 +811,7 @@ Window{
             }
 
             Text{
-                text: latteView && latteView.windowsTracker && latteView.windowsTracker.currentScreen.lastActiveWindow.isValid ?
+                text: latteView && latteView.windowsTracker && latteView.windowsTracker.currentScreen.lastActiveWindow && latteView.windowsTracker.currentScreen.lastActiveWindow.isValid ?
                           latteView.windowsTracker.currentScreen.lastActiveWindow.winId : "--"
             }
 
@@ -820,7 +820,7 @@ Window{
             }
 
             Text{
-                text: latteView && latteView.windowsTracker && latteView.windowsTracker.currentScreen.lastActiveWindow.isValid ?
+                text: latteView && latteView.windowsTracker && latteView.windowsTracker.currentScreen.lastActiveWindow && latteView.windowsTracker.currentScreen.lastActiveWindow.isValid ?
                           latteView.windowsTracker.currentScreen.lastActiveWindow.display : "--"
                 elide: Text.ElideRight
             }
@@ -830,7 +830,7 @@ Window{
             }
 
             Text{
-                text: latteView && latteView.windowsTracker && latteView.windowsTracker.allScreens.lastActiveWindow.isValid ?
+                text: latteView && latteView.windowsTracker && latteView.windowsTracker.allScreens.lastActiveWindow && latteView.windowsTracker.allScreens.lastActiveWindow.isValid ?
                           latteView.windowsTracker.allScreens.lastActiveWindow.winId : "--"
             }
 
@@ -839,7 +839,7 @@ Window{
             }
 
             Text{
-                text: latteView && latteView.windowsTracker && latteView.windowsTracker.allScreens.lastActiveWindow.isValid ?
+                text: latteView && latteView.windowsTracker && latteView.windowsTracker.allScreens.lastActiveWindow && latteView.windowsTracker.allScreens.lastActiveWindow.isValid ?
                           latteView.windowsTracker.allScreens.lastActiveWindow.display : "--"
                 elide: Text.ElideRight
             }

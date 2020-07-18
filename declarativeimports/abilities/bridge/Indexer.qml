@@ -17,14 +17,10 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
+import QtQuick 2.0
 
-Item {
+BridgeItem {
     id: indexerBridge
-    property int appletIndex: -1
-
-    property Item client: null
-    property Item host: null
 
     property bool tailAppletIsSeparator: false
     property bool headAppletIsSeparator: false

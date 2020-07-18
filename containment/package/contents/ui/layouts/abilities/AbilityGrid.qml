@@ -65,25 +65,4 @@ AbilityGridPrivate {
             return cnts;
         }
     }
-
-
-    Binding{
-        target: ability.require
-        property: "maxInnerZoomFactor"
-        when: !updateIsBlocked
-        value: {
-            var max = 1.0;
-
-            for (var i=0; i<grid.children.length; ++i){
-                var appletItem = grid.children[i];
-                if (appletItem
-                        && appletItem.communicator
-                        && appletItem.communicator.requires.innerZoomFactor > max) {
-                    max = appletItem.communicator.requires.innerZoomFactor;
-                }
-            }
-
-            return max;
-        }
-    }
 }

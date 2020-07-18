@@ -58,6 +58,7 @@ Item{
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
 
     //! BEGIN OF ABILITIES SUPPORT
+    readonly property bool animationsAreSupported: bridge && bridge.animations.client
     readonly property bool indexerIsSupported: bridge && bridge.indexer.client
     readonly property bool parabolicEffectIsSupported: bridge && bridge.parabolic.client
     readonly property bool positionShortcutsAreSupported: bridge && bridge.shortcuts.client

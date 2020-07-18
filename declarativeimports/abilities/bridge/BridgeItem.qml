@@ -1,5 +1,5 @@
 /*
-*  Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020 Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -17,8 +17,11 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
+import QtQuick 2.0
 
 Item {
-    property int windowsTrackingCount: 0 //! number of applets requesting windows tracking
+    property int appletIndex: -1
+
+    property Item host: null
+    property Item client: null
 }

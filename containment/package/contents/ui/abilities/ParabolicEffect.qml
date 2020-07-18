@@ -28,7 +28,7 @@ import "./privates" as Ability
 
 Ability.ParabolicEffectPrivate {
     factor.zoom: LatteCore.WindowSystem.compositingActive && animations.active ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
-    factor.maxZoom: Math.max(factor.zoom, applets.require.maxInnerZoomFactor)
+    factor.maxZoom: Math.max(factor.zoom, animations.requirements.zoomFactor)
     restoreZoomIsBlocked: (view && view.contextMenuIsShown)
                           || (applets.parabolic.restoreZoomIsBlocked)
 }

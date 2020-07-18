@@ -986,16 +986,7 @@ Item {
         latteIconOverlayEnabled: false
         lengthMarginsEnabled: false
         latteSideColoringEnabled: false
-        screenEdgeMarginSupported: true        
-        innerZoomFactor: {
-            if (!_animations.active || !LatteCore.WindowSystem.compositingActive) {
-                return 1;
-            }
-
-            var hasHighThicknessAnimation = _animations.launcherBouncingEnabled || _animations.windowInAttentionEnabled || _animations.windowAddedInGroupEnabled;
-
-            return hasHighThicknessAnimation ? 1.65 : 1.0;
-        }
+        screenEdgeMarginSupported: true
     }
 
     Component{
@@ -1184,7 +1175,7 @@ Item {
                 tasksModel.requestOpenUrls(hoveredItem.modelIndex(), urlsList);
             }
 
-            onUrlsDropped: {               
+            onUrlsDropped: {
                 //! inform synced docks for new dropped launchers
                 if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
                     latteView.layoutsManager.launchersSignals.urlsDropped(root.viewLayoutName,

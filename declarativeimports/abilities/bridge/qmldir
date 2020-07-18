@@ -1,5 +1,6 @@
 module org.kde.latte.abilities.applets
 
+Animations 0.1 Animations.qml
 Indexer 0.1 Indexer.qml
 ParabolicEffect 0.1 ParabolicEffect.qml
 PositionShortcuts 0.1 PositionShortcuts.qml

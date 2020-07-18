@@ -27,8 +27,4 @@ AbilityLayoutsPrivate {
     require.windowsTrackingCount: startLayout.ability.require.windowsTrackingCount +
                                   mainLayout.ability.require.windowsTrackingCount +
                                   endLayout.ability.require.windowsTrackingCount
-
-    require.maxInnerZoomFactor: Math.max(startLayout.ability.require.maxInnerZoomFactor,
-                                         mainLayout.ability.require.maxInnerZoomFactor,
-                                         endLayout.ability.require.maxInnerZoomFactor)
 }

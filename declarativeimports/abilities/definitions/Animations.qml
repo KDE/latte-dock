@@ -38,6 +38,10 @@ Item {
         current: 1.0
     }
 
+    property AnimationsTypes.Requirements requirements: AnimationsTypes.Requirements {
+        zoomFactor: 1.0
+    }
+
     //! animations tracking
     property AnimationsTypes.Tracker needBothAxis: AnimationsTypes.Tracker{}
     property AnimationsTypes.Tracker needLength: AnimationsTypes.Tracker{}

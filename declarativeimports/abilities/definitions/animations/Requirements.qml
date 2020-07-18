@@ -1,5 +1,5 @@
 /*
-*  Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020 Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -20,5 +20,5 @@
 import QtQuick 2.7
 
 Item {
-    property int windowsTrackingCount: 0 //! number of applets requesting windows tracking
+    property real zoomFactor: 1.0
 }

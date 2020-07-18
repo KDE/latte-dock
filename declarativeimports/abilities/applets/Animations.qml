@@ -22,7 +22,9 @@ import QtQuick 2.7
 import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
 
 AbilityDefinition.Animations {
+    id: _animations
     property Item bridge: null
+    readonly property bool bridgeIsActive: bridge !== null
 
     active: ref.animations.active
     readonly property bool hasThicknessAnimation: ref.animations.hasThicknessAnimation //redefined to make it readonly and switchable
@@ -39,10 +41,32 @@ AbilityDefinition.Animations {
     //! parabolic effect animations
     hoverPixelSensitivity: ref.animations.hoverPixelSensitivity
 
+    //! requirements
+    requirements: local.requirements
+
     readonly property AbilityDefinition.Animations local: AbilityDefinition.Animations{}
 
     Item {
         id: ref
-        readonly property Item animations: bridge ? bridge.animations : local
+        readonly property Item animations: bridge ? bridge.animations.host : local
+    }
+
+    //! Bridge - Client assignment
+    onBridgeIsActiveChanged: {
+        if (bridgeIsActive) {
+            bridge.animations.client = _animations;
+        }
+    }
+
+    Component.onCompleted: {
+        if (bridgeIsActive) {
+            bridge.animations.client = _animations;
+        }
+    }
+
+    Component.onDestruction: {
+        if (bridgeIsActive) {
+            bridge.animations.client = null;
+        }
     }
 }
