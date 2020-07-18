@@ -336,6 +336,7 @@ signals:
 
     void indicatorPluginChanged(const QString &indicatorId);
     void indicatorPluginRemoved(const QString &indicatorId);
+    void userRequestedViewType(const int &type);
 
     //! are used to trigger the Corona relevant signals and in that
     //! way we can disable any such signaling all together, e.g. through disconnectSensitiveSignals()

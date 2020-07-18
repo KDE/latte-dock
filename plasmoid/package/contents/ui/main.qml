@@ -989,6 +989,11 @@ Item {
         screenEdgeMarginSupported: true
     }
 
+    Ability.UserRequests {
+        id: _userRequests
+        bridge: latteBridge
+    }
+
     Component{
         id: attentionTimerComponent
         Timer{

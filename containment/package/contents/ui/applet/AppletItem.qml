@@ -287,6 +287,7 @@ Item {
     property Item metrics: null
     property Item parabolic: null
     property Item shortcuts: null
+    property Item userRequests: null
 
     property bool containsMouse: appletMouseArea.containsMouse || (isLattePlasmoid && latteApplet.containsMouse)
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running

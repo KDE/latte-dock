@@ -71,6 +71,8 @@ Grid {
 
         onPressedChanged: {
             if (pressed && !checked) {
+                latteView.userRequestedViewType(LatteCore.Types.DockView);
+
                 latteView.visibility.mode = LatteCore.Types.DodgeActive;
                 plasmoid.configuration.alignment = LatteCore.Types.Center;
                 plasmoid.configuration.useThemePanel = true;
@@ -112,6 +114,8 @@ Grid {
 
         onPressedChanged: {
             if (pressed && !checked) {
+                latteView.userRequestedViewType(LatteCore.Types.PanelView);
+
                 latteView.visibility.mode = LatteCore.Types.AlwaysVisible;
                 plasmoid.configuration.alignment = LatteCore.Types.Justify;
                 plasmoid.configuration.useThemePanel = true;

@@ -381,6 +381,7 @@ Item {
     readonly property alias layouter: _layouter
     readonly property alias metrics: _metrics
     readonly property alias parabolic: _parabolic
+    readonly property alias userRequests: _userRequests
 
     readonly property alias maskManager: visibilityManager
     readonly property alias layoutsContainerItem: layoutsContainer
@@ -1282,6 +1283,7 @@ Item {
             metrics: _metrics
             parabolic: _parabolic
             shortcuts: _shortcuts
+            userRequests: _userRequests
         }
     }
 
@@ -1525,6 +1527,11 @@ Item {
     Ability.PositionShortcuts {
         id: _shortcuts
         layouts: layoutsContainer
+    }
+
+    Ability.UserRequests {
+        id: _userRequests
+        view: latteView
     }
 
     LatteApp.Interfaces {
