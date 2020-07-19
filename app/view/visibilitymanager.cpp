@@ -372,23 +372,23 @@ QRect VisibilityManager::acceptableStruts()
 
     switch (m_latteView->location()) {
     case Plasma::Types::TopEdge: {
-        calcs = QRect(m_latteView->x(), m_latteView->y(), m_latteView->width(), shownThickness);
+        calcs = QRect(m_latteView->x(), m_latteView->screenGeometry().top(), m_latteView->width(), shownThickness);
         break;
     }
 
     case Plasma::Types::BottomEdge: {
-        int y = m_latteView->y() + m_latteView->height() - shownThickness;
+        int y = m_latteView->screenGeometry().bottom() - shownThickness + 1 /* +1, is needed in order to not leave a gap at screen_edge*/;
         calcs = QRect(m_latteView->x(), y, m_latteView->width(), shownThickness);
         break;
     }
 
     case Plasma::Types::LeftEdge: {
-        calcs = QRect(m_latteView->x(), m_latteView->y(), shownThickness, m_latteView->height());
+        calcs = QRect(m_latteView->screenGeometry().left(), m_latteView->y(), shownThickness, m_latteView->height());
         break;
     }
 
     case Plasma::Types::RightEdge: {
-        int x = m_latteView->x() + m_latteView->width() - shownThickness;
+        int x = m_latteView->screenGeometry().right() - shownThickness + 1 /* +1, is needed in order to not leave a gap at screen_edge*/;
         calcs = QRect(x, m_latteView->y(), shownThickness, m_latteView->height());
         break;
     }
