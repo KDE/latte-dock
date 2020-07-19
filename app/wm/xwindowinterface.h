@@ -83,6 +83,7 @@ public:
     void switchToPreviousVirtualDesktop() override;
 
     void setFrameExtents(QWindow *view, const QMargins &margins) override;
+    void setInputMask(QWindow *window, const QRect &rect) override;
 
 private:
     bool isAcceptableWindow(WindowId wid);
@@ -97,6 +98,12 @@ private:
 
     QUrl windowUrl(WindowId wid);
 
+    void checkShapeExtension();
+
+private:
+    //xcb_shape
+    bool m_shapeExtensionChecked{false};
+    bool m_shapeAvailable{false};
 };
 
 }

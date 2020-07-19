@@ -99,6 +99,7 @@ public:
     void switchToPreviousVirtualDesktop() override;
 
     void setFrameExtents(QWindow *view, const QMargins &margins) override;
+    void setInputMask(QWindow *window, const QRect &rect) override;
 
     void registerIgnoredWindow(WindowId wid) override;
     void unregisterIgnoredWindow(WindowId wid) override;

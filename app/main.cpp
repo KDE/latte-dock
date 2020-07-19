@@ -163,6 +163,11 @@ int main(int argc, char **argv)
     filterDebugTextOption.setFlags(QCommandLineOption::HiddenFromHelp);
     filterDebugTextOption.setValueName(i18nc("command line: debug-text", "filter_debug_text"));
     parser.addOption(filterDebugTextOption);
+
+    QCommandLineOption filterDebugInputMask(QStringList() << QStringLiteral("input"));
+    filterDebugInputMask.setDescription(QStringLiteral("Show visual window indicators for calculated input mask."));
+    filterDebugInputMask.setFlags(QCommandLineOption::HiddenFromHelp);
+    parser.addOption(filterDebugInputMask);
     //! END: Hidden options
 
     parser.process(app);

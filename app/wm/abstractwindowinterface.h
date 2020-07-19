@@ -138,6 +138,7 @@ public:
     virtual void switchToPreviousVirtualDesktop() = 0;
 
     virtual void setFrameExtents(QWindow *view, const QMargins &margins) = 0;
+    virtual void setInputMask(QWindow *window, const QRect &rect) = 0;
 
     Latte::Corona *corona();
     Tracker::Schemes *schemesTracker();

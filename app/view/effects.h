@@ -31,6 +31,7 @@
 #include <Plasma/Theme>
 
 namespace Latte {
+class Corona;
 class View;
 }
 
@@ -52,6 +53,7 @@ class Effects: public QObject
 
     Q_PROPERTY(QRect mask READ mask WRITE setMask NOTIFY maskChanged)
     Q_PROPERTY(QRect rect READ rect WRITE setRect NOTIFY rectChanged)
+    Q_PROPERTY(QRect inputMask READ inputMask WRITE setInputMask NOTIFY inputMaskChanged)
 
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
@@ -83,6 +85,9 @@ public:
     QRect mask() const;
     void setMask(QRect area);
 
+    QRect inputMask() const;
+    void setInputMask(QRect area);
+
     QRect rect() const;
     void setRect(QRect area);
 
@@ -110,6 +115,7 @@ signals:
     void enabledBordersChanged();
     void maskChanged();
     void innerShadowChanged();
+    void inputMaskChanged();
     void rectChanged();
 
     void subtractedMaskRegionsChanged();
@@ -142,8 +148,10 @@ private:
 
     QRect m_rect;
     QRect m_mask;
+    QRect m_inputMask;
 
     QPointer<Latte::View> m_view;
+    QPointer<Latte::Corona> m_corona;
 
     Plasma::Theme m_theme;
     //only for the mask on disabled compositing, not to actually paint

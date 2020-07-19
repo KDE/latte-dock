@@ -62,6 +62,7 @@ Item {
 
     ////BEGIN properties
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
+    property bool debugModeInputMask:  Qt.application.arguments.indexOf("--input")>=0
     property bool debugModeLayouter: Qt.application.arguments.indexOf("--layouter")>=0
     property bool debugModeLocalGeometry: Qt.application.arguments.indexOf("--localgeometry")>=0
     property bool debugModeSpacers: Qt.application.arguments.indexOf("--spacers")>=0
@@ -1574,6 +1575,23 @@ Item {
             color: "blue"
             border.width: 2
             border.color: "red"
+
+            opacity: 0.35
+        }
+    }
+
+    Loader{
+        anchors.fill: parent
+        active: latteView && latteView.effects && root.debugModeInputMask
+        sourceComponent: Rectangle{
+            x: latteView.effects.inputMask.x
+            y: latteView.effects.inputMask.y
+            width: latteView.effects.inputMask.width
+            height: latteView.effects.inputMask.height
+
+            color: "purple"
+            border.width: 2
+            border.color: "purple"
 
             opacity: 0.35
         }

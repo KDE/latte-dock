@@ -59,6 +59,8 @@ Minimum requirements:
     KF5WindowSystem >= 5.38.0
     Qt5X11Extras >= 5.7.0
     libxcb
+    libxcb-randr
+    libxcb-shape
     libSM
 ```
 

@@ -24,6 +24,8 @@
 #include <coretypes.h>
 #include "panelshadows_p.h"
 #include "view.h"
+#include "../lattecorona.h"
+#include "../wm/abstractwindowinterface.h"
 
 // Qt
 #include <QRegion>
@@ -40,6 +42,8 @@ Effects::Effects(Latte::View *parent)
     : QObject(parent),
       m_view(parent)
 {
+    m_corona = qobject_cast<Latte::Corona *>(m_view->corona());
+
     init();
 }
 
@@ -233,6 +237,24 @@ void Effects::setMask(QRect area)
 
     // qDebug() << "dock mask set:" << m_mask;
     emit maskChanged();
+}
+
+QRect Effects::inputMask() const
+{
+    return m_inputMask;
+}
+
+void Effects::setInputMask(QRect area)
+{
+    if (m_inputMask == area) {
+        return;
+    }
+
+    m_inputMask = area;
+
+    m_corona->wm()->setInputMask(m_view, area);
+
+    emit inputMaskChanged();
 }
 
 void Effects::forceMaskRedraw()

@@ -40,6 +40,7 @@
 // X11
 #include <NETWM>
 #include <xcb/xcb.h>
+#include <xcb/shape.h>
 
 namespace Latte {
 namespace WindowSystem {
@@ -384,6 +385,56 @@ void XWindowInterface::setFrameExtents(QWindow *view, const QMargins &margins)
 #endif
 }
 
+void XWindowInterface::checkShapeExtension()
+{
+    if (!m_shapeExtensionChecked) {
+        xcb_connection_t *c = QX11Info::connection();
+        xcb_prefetch_extension_data(c, &xcb_shape_id);
+        const xcb_query_extension_reply_t *extension = xcb_get_extension_data(c, &xcb_shape_id);
+        if (extension->present) {
+            // query version
+            auto cookie = xcb_shape_query_version(c);
+            QScopedPointer<xcb_shape_query_version_reply_t, QScopedPointerPodDeleter> version(xcb_shape_query_version_reply(c, cookie, nullptr));
+            if (!version.isNull()) {
+                m_shapeAvailable = (version->major_version * 0x10 + version->minor_version) >= 0x11;
+            }
+        }
+        m_shapeExtensionChecked = true;
+    }
+}
+
+void XWindowInterface::setInputMask(QWindow *window, const QRect &rect)
+{
+    if (!window || !window->isVisible()) {
+        return;
+    }
+
+    xcb_connection_t *c = QX11Info::connection();
+
+    if (!m_shapeExtensionChecked) {
+        checkShapeExtension();
+    }
+
+    if (!m_shapeAvailable) {
+        return;
+    }
+
+    if (!rect.isEmpty()) {
+        xcb_rectangle_t xcbrect;
+        xcbrect.x = qMax(SHRT_MIN, rect.x());
+        xcbrect.y = qMax(SHRT_MIN, rect.y());
+        xcbrect.width = qMin((int)USHRT_MAX, rect.width());
+        xcbrect.height = qMin((int)USHRT_MAX, rect.height());
+
+        // set input shape, so that it doesn't accept any input events
+        xcb_shape_rectangles(c, XCB_SHAPE_SO_SET, XCB_SHAPE_SK_INPUT,
+                             XCB_CLIP_ORDERING_UNSORTED, window->winId(), 0, 0, 1, &xcbrect);
+    } else {
+        // delete the shape
+        xcb_shape_mask(c, XCB_SHAPE_SO_INTERSECT, XCB_SHAPE_SK_INPUT,
+                       window->winId(), 0, 0, XCB_PIXMAP_NONE);
+    }
+}
 
 WindowInfoWrap XWindowInterface::requestInfoActive()
 {

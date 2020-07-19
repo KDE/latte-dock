@@ -38,6 +38,7 @@ class QuickWindowSystem final : public QObject
 
     Q_PROPERTY(bool compositingActive READ compositingActive NOTIFY compositingChanged FINAL)
     Q_PROPERTY(bool isPlatformWayland READ isPlatformWayland NOTIFY isPlatformWaylandChanged FINAL)
+    Q_PROPERTY(bool isPlatformX11 READ isPlatformX11 NOTIFY isPlatformX11Changed FINAL)
 
 public:
     explicit QuickWindowSystem(QObject *parent = nullptr);
@@ -45,10 +46,12 @@ public:
 
     bool compositingActive() const;
     bool isPlatformWayland() const;
+    bool isPlatformX11() const;
 
 signals:
     void compositingChanged();
     void isPlatformWaylandChanged();
+    void isPlatformX11Changed();
 
 private:
     bool m_compositing{true};

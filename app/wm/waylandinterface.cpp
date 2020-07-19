@@ -459,7 +459,12 @@ void WaylandInterface::setActiveEdge(QWindow *view, bool active)
 
 void WaylandInterface::setFrameExtents(QWindow *view, const QMargins &extents)
 {
-     //! do nothing yet until there is a wayland way to provide this
+    //! do nothing until there is a wayland way to provide this
+}
+
+void WaylandInterface::setInputMask(QWindow *window, const QRect &rect)
+{
+    //! do nothins, QWindow::mask() is sufficient enough in order to define Window input mask
 }
 
 WindowInfoWrap WaylandInterface::requestInfoActive()

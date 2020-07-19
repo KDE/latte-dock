@@ -511,21 +511,11 @@ Item{
         var tempLength = root.isHorizontal ? width : height;
         var tempThickness = root.isHorizontal ? height : width;
 
-        var noCompositingEdit = false; //!LatteCore.WindowSystem.compositingActive && root.editMode;
-
-        if (LatteCore.WindowSystem.compositingActive || noCompositingEdit) {
+        if (LatteCore.WindowSystem.compositingActive) {
             if (normalState) {
                 //console.log("entered normal state...");
                 //count panel length
-
-
-                //used when !compositing and in editMode
-                if (noCompositingEdit) {
-                    tempLength = root.isHorizontal ? root.width : root.height;
-                } else {
-                    tempLength = background.totals.visualLength;
-                }
-
+                tempLength = background.totals.visualLength;
                 tempThickness = thicknessNormal;
 
                 if (animations.needThickness.count > 0) {
@@ -560,9 +550,7 @@ Item{
                         }
                     }
 
-                    if (noCompositingEdit) {
-                        localX = 0;
-                    } else if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
+                    if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
                         localX = (latteView.width/2) - tempLength/2 + background.offset;
                     } else if (root.panelAlignment === LatteCore.Types.Left) {
                         localX = background.offset;
@@ -590,9 +578,7 @@ Item{
                         }
                     }
 
-                    if (noCompositingEdit) {
-                        localY = 0;
-                    } else if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
+                    if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
                         localY = (latteView.height/2) - tempLength/2 + background.offset;
                     } else if (root.panelAlignment === LatteCore.Types.Top) {
                         localY = background.offset;
@@ -675,7 +661,7 @@ Item{
             if (root.isVertical) {
                 maskThickness = maskArea.width;
             }
-        } else if (!noCompositingEdit){
+        } else {
             //! no compositing case
             var overridesHidden = latteView.visibility.isHidden && !latteView.visibility.supportsKWinEdges;
 
@@ -790,6 +776,60 @@ Item{
 
             //console.log("update geometry ::: "+localGeometry);
             latteView.localGeometry = localGeometry;
+        }
+
+
+        //! Input Mask
+        if (LatteCore.WindowSystem.isPlatformX11) {
+            //! This is not needed under wayland environment, mask() can be used instead
+
+            var animated = ( animations.needBothAxis.count>0
+                            || animations.needLength.count>0
+                            || animations.needThickness.count>0
+                            || latteView.visibility.isHidden);
+
+            if (!LatteCore.WindowSystem.compositingActive || animated || latteView.behaveAsPlasmaPanel) {
+                latteView.effects.inputMask = Qt.rect(0, 0, -1, -1);
+            } else {
+                var inputThickness = finalScreenEdgeMargin + metrics.totals.thickness;
+                var inputGeometry = Qt.rect(0, 0, root.width, root.height);
+
+                if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                    inputGeometry.x = latteView.effects.rect.x; // from effects area
+                    inputGeometry.y = 0;
+
+                    inputGeometry.width = latteView.effects.rect.width; // from effects area
+                    inputGeometry.height = inputThickness ;
+                } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                    inputGeometry.x = latteView.effects.rect.x; // from effects area
+                    inputGeometry.y = root.height - inputThickness;
+
+                    inputGeometry.width = latteView.effects.rect.width; // from effects area
+                    inputGeometry.height = inputThickness;
+                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                    inputGeometry.x = 0;
+                    inputGeometry.y = latteView.effects.rect.y; // from effects area
+
+                    inputGeometry.width = inputThickness;
+                    inputGeometry.height = latteView.effects.rect.height; // from effects area
+                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                    inputGeometry.x = root.width - inputThickness;
+                    inputGeometry.y = latteView.effects.rect.y; // from effects area
+
+                    inputGeometry.width = inputThickness;
+                    inputGeometry.height = latteView.effects.rect.height; // from effects area
+                }
+
+                //set the boundaries for latteView local geometry
+                //qBound = qMax(min, qMin(value, max)).
+
+                inputGeometry.x = Math.max(0, Math.min(inputGeometry.x, latteView.width));
+                inputGeometry.y = Math.max(0, Math.min(inputGeometry.y, latteView.height));
+                inputGeometry.width = Math.min(inputGeometry.width, latteView.width);
+                inputGeometry.height = Math.min(inputGeometry.height, latteView.height);
+
+                latteView.effects.inputMask = inputGeometry;
+            }
         }
     }
 
