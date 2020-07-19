@@ -457,7 +457,12 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid)
 
     WindowInfoWrap winfoWrap;
 
-    if (!winfo.valid()) {
+    const auto winClass = QString(winfo.windowClassName());
+
+    //!used to track Plasma DesktopView windows because during startup can not be identified properly
+    bool plasmaBlockedWindow = (winClass == QLatin1String("plasmashell") && !isAcceptableWindow(wid));
+
+    if (!winfo.valid() || plasmaBlockedWindow) {
         winfoWrap.setIsValid(false);
     } else if (isValidWindow(wid)) {
         winfoWrap.setIsValid(true);
@@ -498,6 +503,10 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid)
         winfoWrap.setDisplay(winfo.visibleName());
         winfoWrap.setDesktops({QString(winfo.desktop())});
         winfoWrap.setActivities(winfo.activities());
+    }
+
+    if (plasmaBlockedWindow) {
+        windowRemoved(wid);
     }
 
     return winfoWrap;

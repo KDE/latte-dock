@@ -486,7 +486,10 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid)
 
     auto w = windowFor(wid);
 
-    if (w && isValidWindow(w)) {
+    //!used to track Plasma DesktopView windows because during startup can not be identified properly
+    bool plasmaBlockedWindow = w && (w->appId() == QLatin1String("org.kde.plasmashell")) && !isAcceptableWindow(w);
+
+    if (w && isValidWindow(w) && !plasmaBlockedWindow) {
         winfoWrap.setIsValid(true);
         winfoWrap.setWid(wid);
         winfoWrap.setParentId(w->parentWindow() ? w->parentWindow()->internalId() : 0);
@@ -525,6 +528,10 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid)
         winfoWrap.setActivities(QStringList());
     } else {
         winfoWrap.setIsValid(false);
+    }
+
+    if (plasmaBlockedWindow) {
+        windowRemoved(w->internalId());
     }
 
     return winfoWrap;
