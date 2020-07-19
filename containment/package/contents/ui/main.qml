@@ -136,7 +136,7 @@ Item {
     property bool dockContainsMouse: latteView && latteView.visibility ? latteView.visibility.containsMouse : false
 
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized && LatteCore.WindowSystem.compositingActive
-    property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
+    property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel
 
     property bool editMode: plasmoid.userConfiguring
     property bool windowIsTouching: latteView && latteView.windowsTracker
