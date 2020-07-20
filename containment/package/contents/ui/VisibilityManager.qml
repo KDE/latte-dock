@@ -281,8 +281,11 @@ Item{
         property: "backgroundAllCorners"
         when: latteView && latteView.effects
         value: plasmoid.configuration.backgroundAllCorners
-               && (!root.screenEdgeMarginEnabled
-                   || (root.screenEdgeMarginEnabled && plasmoid.configuration.maxLength===100 && !root.hideLengthScreenGaps))
+               && (!root.screenEdgeMarginEnabled /*no-floating*/
+                   || (root.screenEdgeMarginEnabled /*floating with justify alignment and 100% maxlength*/
+                       && plasmoid.configuration.maxLength===100
+                       && root.panelAlignment===LatteCore.Types.Justify
+                       && !root.hideLengthScreenGaps))
     }
 
     Binding{

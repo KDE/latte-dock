@@ -1066,8 +1066,10 @@ PlasmaComponents.Page {
                         checked: plasmoid.configuration.backgroundAllCorners
                         checkable: true
                         enabled: showBackground.checked
-                                 && ((plasmoid.configuration.screenEdgeMargin===-1)
-                                     || (plasmoid.configuration.screenEdgeMargin>-1 && plasmoid.configuration.maxLength===100))
+                                 && ((plasmoid.configuration.screenEdgeMargin===-1) /*no-floating*/
+                                     || (plasmoid.configuration.screenEdgeMargin > -1 /*floating with justify alignment and 100% maxlength*/
+                                         && plasmoid.configuration.alignment ===LatteCore.Types.Justify
+                                         && plasmoid.configuration.maxLength===100))
                         tooltip: i18n("Background draws all corners at all cases.")
 
                         onClicked: {
