@@ -281,9 +281,6 @@ void PrimaryConfigView::initParentView(Latte::View *view)
 
     loadConfig();
 
-    //! inform view about the current settings level
-    emit m_latteView->inSettingsAdvancedModeChanged();
-
     updateEnabledBorders();
     updateAvailableScreenGeometry();
     syncGeometry();
@@ -297,6 +294,9 @@ void PrimaryConfigView::initParentView(Latte::View *view)
     if (m_secConfigView) {
         m_secConfigView->setParentView(view);
     }
+
+    //! inform view about the current settings level
+    emit m_latteView->inSettingsAdvancedModeChanged();
 }
 
 void PrimaryConfigView::instantUpdateAvailableScreenGeometry()

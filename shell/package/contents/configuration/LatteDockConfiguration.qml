@@ -361,9 +361,13 @@ FocusScope {
 
                     LatteComponents.Switch {
                         id: advancedSwitch
-                        checked: viewConfig.inAdvancedMode
+                        checked: viewConfig.inAdvancedMode && viewConfig.isReady
 
-                        onCheckedChanged: viewConfig.inAdvancedMode = checked;
+                        onCheckedChanged: {
+                            if (viewConfig.isReady) {
+                                viewConfig.inAdvancedMode = checked;
+                            }
+                        }
                     }
                 }
             }
