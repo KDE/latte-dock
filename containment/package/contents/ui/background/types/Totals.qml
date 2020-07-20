@@ -22,7 +22,8 @@ import QtQuick 2.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-QtObject{
+Item{
+    id: totalsItem
     property int visualThickness: 0
     property int visualLength: 0
 
@@ -50,5 +51,13 @@ QtObject{
         }
     }
 
-    readonly property int minThickness: paddings.headThickness + paddings.tailThickness;
+    /*updated through binding in order to not change its value when hiding screen gaps for maximized windows*/
+    property int minThickness: 0
+
+    Binding {
+        target: totalsItem
+        property: "minThickness"
+        when: !(hideThickScreenGap || hideLengthScreenGaps)
+        value: (paddings.headThickness + paddings.tailThickness)
+    }
 }
