@@ -1011,7 +1011,7 @@ PlasmaComponents.Page {
                     spacing: 2
                     visible: dialog.advancedLevel
 
-                    readonly property int buttonSize: (dialog.optionsWidth - (spacing*2)) / 3
+                    readonly property int buttonSize: (dialog.optionsWidth - (spacing * (children.length-1))) / children.length
 
                     PlasmaComponents.Button {
                         id: panelBlur
@@ -1055,6 +1055,23 @@ PlasmaComponents.Page {
 
                         onClicked: {
                             plasmoid.configuration.panelOutline = !plasmoid.configuration.panelOutline;
+                        }
+                    }
+
+                    PlasmaComponents.Button {
+                        id: allCorners
+                        Layout.minimumWidth: parent.buttonSize
+                        Layout.maximumWidth: Layout.minimumWidth
+                        text: i18n("All Corners")
+                        checked: plasmoid.configuration.backgroundAllCorners
+                        checkable: true
+                        enabled: showBackground.checked
+                                 && ((plasmoid.configuration.screenEdgeMargin===-1)
+                                     || (plasmoid.configuration.screenEdgeMargin>-1 && plasmoid.configuration.maxLength===100))
+                        tooltip: i18n("Background draws all corners at all cases.")
+
+                        onClicked: {
+                            plasmoid.configuration.backgroundAllCorners = !plasmoid.configuration.backgroundAllCorners;
                         }
                     }
                 }

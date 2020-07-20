@@ -278,6 +278,15 @@ Item{
     //! View::Effects bindings
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null
+        property: "backgroundAllCorners"
+        when: latteView && latteView.effects
+        value: plasmoid.configuration.backgroundAllCorners
+               && (!root.screenEdgeMarginEnabled
+                   || (root.screenEdgeMarginEnabled && plasmoid.configuration.maxLength===100 && !root.hideLengthScreenGaps))
+    }
+
+    Binding{
+        target: latteView && latteView.effects ? latteView.effects : null
         property: "backgroundOpacity"
         when: latteView && latteView.effects
         value: background.currentOpacity

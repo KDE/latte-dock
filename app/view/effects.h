@@ -49,6 +49,7 @@ class Effects: public QObject
     Q_PROPERTY(int editShadow READ editShadow WRITE setEditShadow NOTIFY editShadowChanged)
     Q_PROPERTY(int innerShadow READ innerShadow WRITE setInnerShadow NOTIFY innerShadowChanged)
 
+    Q_PROPERTY(bool backgroundAllCorners READ backgroundAllCorners WRITE setBackgroundAllCorners NOTIFY backgroundAllCornersChanged)
     Q_PROPERTY(float backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
 
     Q_PROPERTY(QRect mask READ mask WRITE setMask NOTIFY maskChanged)
@@ -63,6 +64,9 @@ public:
 
     bool animationsBlocked() const;
     void setAnimationsBlocked(bool blocked);
+
+    bool backgroundAllCorners() const;
+    void setBackgroundAllCorners(bool allcorners);
 
     bool drawShadows() const;
     void setDrawShadows(bool draw);
@@ -108,6 +112,7 @@ public slots:
 
 signals:
     void animationsBlockedChanged();
+    void backgroundAllCornersChanged();
     void backgroundOpacityChanged();
     void drawShadowsChanged();
     void drawEffectsChanged();
@@ -132,6 +137,7 @@ private:
 
 private:
     bool m_animationsBlocked{false};
+    bool m_backgroundAllCorners{false};
     bool m_drawShadows{true};
     bool m_drawEffects{false};
     bool m_forceTopBorder{false};

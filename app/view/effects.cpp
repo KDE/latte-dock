@@ -67,6 +67,8 @@ void Effects::init()
         }
     });
 
+    connect(this, &Effects::backgroundAllCornersChanged, this, &Effects::updateEnabledBorders);
+
     connect(m_view, &Latte::View::alignmentChanged, this, &Effects::updateEnabledBorders);
     connect(m_view, &Latte::View::maxLengthChanged, this, &Effects::updateEnabledBorders);
     connect(m_view, &Latte::View::offsetChanged, this, &Effects::updateEnabledBorders);
@@ -106,6 +108,21 @@ void Effects::setAnimationsBlocked(bool blocked)
 
     m_animationsBlocked = blocked;
     emit animationsBlockedChanged();
+}
+
+bool Effects::backgroundAllCorners() const
+{
+    return m_backgroundAllCorners;
+}
+
+void Effects::setBackgroundAllCorners(bool allcorners)
+{
+    if (m_backgroundAllCorners == allcorners) {
+        return;
+    }
+
+    m_backgroundAllCorners = allcorners;
+    emit backgroundAllCornersChanged();
 }
 
 bool Effects::drawShadows() const
@@ -422,11 +439,11 @@ void Effects::updateEffects()
                 //! windows that use GtkFrameExtents and apply Effects on them they take GtkFrameExtents
                 //! as granted
                 if (KWindowSystem::isPlatformX11()) {
-                        if (m_view->location() == Plasma::Types::BottomEdge) {
-                            fY = qMax(0, fY - m_view->headThicknessGap());
-                        } else if (m_view->location() == Plasma::Types::RightEdge) {
-                            fX = qMax(0, fX - m_view->headThicknessGap());
-                        }
+                    if (m_view->location() == Plasma::Types::BottomEdge) {
+                        fY = qMax(0, fY - m_view->headThicknessGap());
+                    } else if (m_view->location() == Plasma::Types::RightEdge) {
+                        fX = qMax(0, fX - m_view->headThicknessGap());
+                    }
                 }
 #endif
 
@@ -514,7 +531,7 @@ void Effects::updateEnabledBorders()
 
     Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
 
-    if (!m_view->screenEdgeMarginEnabled()) {
+    if (!m_view->screenEdgeMarginEnabled() && !m_backgroundAllCorners) {
         switch (m_view->location()) {
         case Plasma::Types::TopEdge:
             borders &= ~Plasma::FrameSvg::TopBorder;
@@ -537,38 +554,40 @@ void Effects::updateEnabledBorders()
         }
     }
 
-    if ((m_view->location() == Plasma::Types::LeftEdge || m_view->location() == Plasma::Types::RightEdge)) {
-        if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Types::Justify) {
-            if (!m_forceTopBorder) {
+    if (!m_backgroundAllCorners) {
+        if ((m_view->location() == Plasma::Types::LeftEdge || m_view->location() == Plasma::Types::RightEdge)) {
+            if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Types::Justify) {
+                if (!m_forceTopBorder) {
+                    borders &= ~Plasma::FrameSvg::TopBorder;
+                }
+
+                if (!m_forceBottomBorder) {
+                    borders &= ~Plasma::FrameSvg::BottomBorder;
+                }
+            }
+
+            if (m_view->alignment() == Latte::Types::Top && !m_forceTopBorder && m_view->offset() == 0) {
                 borders &= ~Plasma::FrameSvg::TopBorder;
             }
 
-            if (!m_forceBottomBorder) {
+            if (m_view->alignment() == Latte::Types::Bottom && !m_forceBottomBorder && m_view->offset() == 0) {
                 borders &= ~Plasma::FrameSvg::BottomBorder;
             }
         }
 
-        if (m_view->alignment() == Latte::Types::Top && !m_forceTopBorder && m_view->offset() == 0) {
-            borders &= ~Plasma::FrameSvg::TopBorder;
-        }
+        if (m_view->location() == Plasma::Types::TopEdge || m_view->location() == Plasma::Types::BottomEdge) {
+            if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Types::Justify) {
+                borders &= ~Plasma::FrameSvg::LeftBorder;
+                borders &= ~Plasma::FrameSvg::RightBorder;
+            }
 
-        if (m_view->alignment() == Latte::Types::Bottom && !m_forceBottomBorder && m_view->offset() == 0) {
-            borders &= ~Plasma::FrameSvg::BottomBorder;
-        }
-    }
+            if (m_view->alignment() == Latte::Types::Left && m_view->offset() == 0) {
+                borders &= ~Plasma::FrameSvg::LeftBorder;
+            }
 
-    if (m_view->location() == Plasma::Types::TopEdge || m_view->location() == Plasma::Types::BottomEdge) {
-        if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Types::Justify) {
-            borders &= ~Plasma::FrameSvg::LeftBorder;
-            borders &= ~Plasma::FrameSvg::RightBorder;
-        }
-
-        if (m_view->alignment() == Latte::Types::Left && m_view->offset() == 0) {
-            borders &= ~Plasma::FrameSvg::LeftBorder;
-        }
-
-        if (m_view->alignment() == Latte::Types::Right  && m_view->offset() == 0) {
-            borders &= ~Plasma::FrameSvg::RightBorder;
+            if (m_view->alignment() == Latte::Types::Right  && m_view->offset() == 0) {
+                borders &= ~Plasma::FrameSvg::RightBorder;
+            }
         }
     }
 
