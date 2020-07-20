@@ -116,7 +116,7 @@ Item{
         }
     }
 
-    width:  root.isHorizontal && root.panelAlignment === LatteCore.Types.Justify ? root.maxLength : parent.width
+    width: root.isHorizontal && root.panelAlignment === LatteCore.Types.Justify ? root.maxLength : parent.width
     height: root.isVertical && root.panelAlignment === LatteCore.Types.Justify ? root.maxLength : parent.height
     z:10
 
@@ -125,6 +125,75 @@ Item{
 
     property int contentsWidth: _startLayout.width + _mainLayout.width + _endLayout.width
     property int contentsHeight: _startLayout.height + _mainLayout.height + _endLayout.height
+
+
+    readonly property int backgroundShadowTailLength: {
+        if (root.behaveAsPlasmaPanel) {
+            return 0;
+        }
+
+        if (root.panelAlignment === LatteCore.Types.Left) {
+            return background.shadows.left;
+        } else if (root.panelAlignment === LatteCore.Types.Right) {
+            return background.shadows.right;
+        } else if (root.panelAlignment === LatteCore.Types.Top) {
+            return background.shadows.top;
+        } else if (root.panelAlignment === LatteCore.Types.Bottom) {
+            return background.shadows.bottom;
+        }
+
+        //! centered case
+        return root.isHorizontal ? background.shadows.left : background.shadows.top;
+    }
+
+    readonly property int backgroundShadowHeadLength: {
+        if (root.behaveAsPlasmaPanel) {
+            return 0;
+        }
+
+        if (root.panelAlignment === LatteCore.Types.Left) {
+            return background.shadows.right;
+        } else if (root.panelAlignment === LatteCore.Types.Right) {
+            return background.shadows.left;
+        } else if (root.panelAlignment === LatteCore.Types.Top) {
+            return background.shadows.bottom;
+        } else if (root.panelAlignment === LatteCore.Types.Bottom) {
+            return background.shadows.top;
+        }
+
+        //! centered case
+        return root.isHorizontal ? background.shadows.right : background.shadows.bottom;
+    }
+
+    readonly property int backgroundTailLength: {
+        if (root.panelAlignment === LatteCore.Types.Left) {
+            return backgroundShadowTailLength + background.paddings.left;
+        } else if (root.panelAlignment === LatteCore.Types.Right) {
+            return backgroundShadowTailLength + background.paddings.right;
+        } else if (root.panelAlignment === LatteCore.Types.Top) {
+            return backgroundShadowTailLength + background.paddings.top;
+        } else if (root.panelAlignment === LatteCore.Types.Bottom) {
+            return backgroundShadowTailLength + background.paddings.bottom;
+        }
+
+        //! centered case
+        return root.isHorizontal ? background.paddings.left : background.paddings.top; //shadow is already calculated
+    }
+
+    readonly property int backgroundHeadLength: {
+        if (root.panelAlignment === LatteCore.Types.Left) {
+            return backgroundShadowHeadLength + background.paddings.right;
+        } else if (root.panelAlignment === LatteCore.Types.Right) {
+            return backgroundShadowHeadLength + background.paddings.left;
+        } else if (root.panelAlignment === LatteCore.Types.Top) {
+            return backgroundShadowHeadLength + background.paddings.bottom;
+        } else if (root.panelAlignment === LatteCore.Types.Bottom) {
+            return backgroundShadowHeadLength + background.paddings.top;
+        }
+
+        //! centered case
+        return root.isHorizontal ? background.paddings.right : background.paddings.bottom; //shadow is already calculated
+    }
 
     onContentsWidthChanged: {
         if (root.isHorizontal){
@@ -187,7 +256,7 @@ Item{
     AppletsContainer {
         id: _startLayout
         beginIndex: 0
-        offset: 0
+        offset: backgroundTailLength
         alignment: {
             switch(plasmoid.location) {
             case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeLeftAlign;
@@ -209,9 +278,9 @@ Item{
                 return inJustifyCenterOffset;
             }
 
-            if (background.hasBothLengthShadows && !centered) {
+            if (!centered) {
                 //! it is used for Top/Bottom/Left/Right alignments when they show both background length shadows
-                return background.offset + background.totals.shadowsLength/2;
+                return background.offset + backgroundTailLength;
             }
 
             return (root.panelAlignment === LatteCore.Types.Justify) ? 0 : background.offset
@@ -330,7 +399,7 @@ Item{
     AppletsContainer {
         id: _endLayout
         beginIndex: 200
-        offset: 0
+        offset: backgroundHeadLength
         alignment: {
             switch(plasmoid.location) {
             case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeRightAlign;

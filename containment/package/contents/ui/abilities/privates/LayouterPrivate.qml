@@ -31,7 +31,9 @@ Item {
 
     readonly property int fillApplets: startLayout.fillApplets + mainLayout.fillApplets + endLayout.fillApplets
 
-    readonly property int maxLength: root.panelAlignment === LatteCore.Types.Justify ? root.maxLength : Math.min(root.minLength, root.maxLength)
+    readonly property int maxLength: root.panelAlignment === LatteCore.Types.Justify ? contentsMaxLength : Math.min(root.minLength, contentsMaxLength)
+
+    readonly property int contentsMaxLength: root.maxLength - background.totals.paddingsLength
 
     readonly property Item startLayout: LayouterElements.AppletsContainer {
         grid: layouts.startLayout
@@ -267,15 +269,15 @@ Item {
 
     function updateFillAppletsWithTwoSteps(inMaxAutoFillCalculations) {
         var noA = startLayout.fillApplets + mainLayout.fillApplets + endLayout.fillApplets;
-        var max_length = inMaxAutoFillCalculations ? root.maxLength : root.minLength
+        var max_length = inMaxAutoFillCalculations ? contentsMaxLength : root.minLength
 
         // console.log(" S3 _ SIZES ::: " + max_length + " ___ " + inMaxAutoFillCalculations + " __ " + startLayout.sizeWithNoFillApplets + " ___ " + mainLayout.sizeWithNoFillApplets + " ___ " + endLayout.sizeWithNoFillApplets);
 
         //! compute the two free spaces around the centered layout
         //! they are called start and end accordingly
         var halfMainLayout = mainLayout.sizeWithNoFillApplets / 2;
-        var availableSpaceStart = Math.max(0, max_length/2 - startLayout.sizeWithNoFillApplets - halfMainLayout - root.panelEdgeSpacing/2);
-        var availableSpaceEnd = Math.max(0, max_length/2 - endLayout.sizeWithNoFillApplets - halfMainLayout - root.panelEdgeSpacing/2);
+        var availableSpaceStart = Math.max(0, max_length/2 - startLayout.sizeWithNoFillApplets - halfMainLayout /*- layoutsContainer.backgroundTailLength*/);
+        var availableSpaceEnd = Math.max(0, max_length/2 - endLayout.sizeWithNoFillApplets - halfMainLayout /*- layoutsContainer.backgroundHeadLength*/);
         var availableSpace;
 
         if (mainLayout.fillApplets === 0 || (startLayout.shownApplets ===0 && endLayout.shownApplets===0)){
@@ -350,12 +352,12 @@ Item {
     }
 
     function updateFillAppletsWithOneStep(inMaxAutoFillCalculations) {
-        var max_length = inMaxAutoFillCalculations ? root.maxLength : root.minLength
+        var max_length = inMaxAutoFillCalculations ? contentsMaxLength : root.minLength
         var noA = startLayout.fillApplets + mainLayout.fillApplets + endLayout.fillApplets;
 
         // console.log("  S2 _ SIZES ::: " + max_length + " ___ " + inMaxAutoFillCalculations + " __ " + startLayout.sizeWithNoFillApplets + " ___ " + mainLayout.sizeWithNoFillApplets + " ___ " + endLayout.sizeWithNoFillApplets);
 
-        var availableSpace = Math.max(0, max_length - startLayout.sizeWithNoFillApplets - mainLayout.sizeWithNoFillApplets - endLayout.sizeWithNoFillApplets - root.panelEdgeSpacing);
+        var availableSpace = Math.max(0, max_length - startLayout.sizeWithNoFillApplets - mainLayout.sizeWithNoFillApplets - endLayout.sizeWithNoFillApplets);
         var sizePerApplet = availableSpace / noA;
 
         var res = initializationPhase(availableSpace, sizePerApplet, noA, inMaxAutoFillCalculations);

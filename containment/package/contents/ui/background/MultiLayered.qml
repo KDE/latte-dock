@@ -61,16 +61,16 @@ BackgroundProperties{
     screenEdgeMargin: root.screenEdgeMarginEnabled ? metrics.margin.screenEdge - shadows.tailThickness : 0
 
     paddings.top: {
-        if (root.isHorizontal && hasTopBorder) {
-            var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.topEdgeRoundness : 0;
+        if (hasTopBorder) {
+            var minimum = themeExtended ? themeExtended.topEdgeRoundness : 0;
             return Math.max(minimum, solidBackground.margins.top);
         }
 
         return 0;
     }
     paddings.bottom: {
-        if (root.isHorizontal && hasBottomBorder) {
-            var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.bottomEdgeRoundness : 0;
+        if (hasBottomBorder) {
+            var minimum = themeExtended ? themeExtended.bottomEdgeRoundness : 0;
             return Math.max(minimum, solidBackground.margins.bottom);
         }
 
@@ -78,8 +78,8 @@ BackgroundProperties{
     }
 
     paddings.left: {
-        if (root.isVertical && hasLeftBorder) {
-            var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.leftEdgeRoundness : 0;
+        if (hasLeftBorder) {
+            var minimum = themeExtended ? themeExtended.leftEdgeRoundness : 0;
             return Math.max(minimum, solidBackground.margins.left);
         }
 
@@ -87,8 +87,8 @@ BackgroundProperties{
     }
 
     paddings.right: {
-        if (root.isVertical && hasRightBorder) {
-            var minimum = root.screenEdgeMarginEnabled && themeExtended ? themeExtended.rightEdgeRoundness : 0;
+        if (hasRightBorder) {
+            var minimum = themeExtended ? themeExtended.rightEdgeRoundness : 0;
             return Math.max(minimum, solidBackground.margins.right);
         }
 
@@ -105,9 +105,9 @@ BackgroundProperties{
         }
 
         if (root.isVertical) {
-            return Math.max(root.minLength, layoutsContainerItem.mainLayout.height);
+            return Math.max(root.minLength, layoutsContainerItem.mainLayout.height + totals.paddingsLength);
         } else {
-            return Math.max(root.minLength, layoutsContainerItem.mainLayout.width);
+            return Math.max(root.minLength, layoutsContainerItem.mainLayout.width + totals.paddingsLength);
         }
     }
 
