@@ -182,7 +182,6 @@ AppletAbility.Indexer {
         }
 
         return vindex;
-
     }
 
 }

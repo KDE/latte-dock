@@ -225,7 +225,7 @@ AbilityDefinition.Indexer {
                 visibleItemsBeforeCount(layouts.mainLayout, actualIndex) +
                 visibleItemsBeforeCount(layouts.endLayout, actualIndex);
 
-        return visibleItems;
+        return visibleItems + 1;
     }
 
     function visibleIndexBelongsAtApplet(applet, itemVisibleIndex) {
