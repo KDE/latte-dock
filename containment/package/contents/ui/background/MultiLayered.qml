@@ -62,7 +62,7 @@ BackgroundProperties{
 
     paddings.top: {
         if (hasTopBorder) {
-            var minimum = themeExtended ? themeExtended.topEdgeRoundness : 0;
+            var minimum = themeExtendedBackground ? themeExtendedBackground.paddingTop : 0;
             return Math.max(minimum, solidBackground.margins.top);
         }
 
@@ -70,7 +70,7 @@ BackgroundProperties{
     }
     paddings.bottom: {
         if (hasBottomBorder) {
-            var minimum = themeExtended ? themeExtended.bottomEdgeRoundness : 0;
+            var minimum = themeExtendedBackground ? themeExtendedBackground.paddingBottom : 0;
             return Math.max(minimum, solidBackground.margins.bottom);
         }
 
@@ -79,7 +79,7 @@ BackgroundProperties{
 
     paddings.left: {
         if (hasLeftBorder) {
-            var minimum = themeExtended ? themeExtended.leftEdgeRoundness : 0;
+            var minimum = themeExtendedBackground ? themeExtendedBackground.paddingLeft : 0;
             return Math.max(minimum, solidBackground.margins.left);
         }
 
@@ -88,7 +88,7 @@ BackgroundProperties{
 
     paddings.right: {
         if (hasRightBorder) {
-            var minimum = themeExtended ? themeExtended.rightEdgeRoundness : 0;
+            var minimum = themeExtendedBackground ? themeExtendedBackground.paddingRight : 0;
             return Math.max(minimum, solidBackground.margins.right);
         }
 
@@ -159,6 +159,7 @@ BackgroundProperties{
 
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
+    property QtObject themeExtendedBackground: null
 
     Behavior on opacity{
         enabled: LatteCore.WindowSystem.compositingActive
@@ -171,6 +172,21 @@ BackgroundProperties{
         enabled: !LatteCore.WindowSystem.compositingActive
         NumberAnimation {
             duration: 0
+        }
+    }
+
+    Binding {
+        target: barLine
+        property: "themeExtendedBackground"
+        when: themeExtended
+        value: {
+            switch(plasmoid.location) {
+            case PlasmaCore.Types.BottomEdge: return themeExtended.backgroundBottomEdge;
+            case PlasmaCore.Types.LeftEdge: return themeExtended.backgroundLeftEdge;
+            case PlasmaCore.Types.TopEdge: return themeExtended.backgroundTopEdge;
+            case PlasmaCore.Types.RightEdge: return themeExtended.backgroundRightEdge;
+            default: return null;
+            }
         }
     }
 
@@ -275,19 +291,7 @@ BackgroundProperties{
             readonly property real normalizedOpacity: Math.min(1, appliedOpacity / themeMaxOpacity)
 
             readonly property real appliedOpacity: overlayedBackground.opacity > 0 && !paintInstantly ? 0 : overlayedBackground.midOpacity
-            readonly property real themeMaxOpacity: {
-                if (themeExtended) {
-                    switch(plasmoid.location) {
-                    case PlasmaCore.Types.BottomEdge: return themeExtended.bottomEdgeMaxOpacity;
-                    case PlasmaCore.Types.LeftEdge: return themeExtended.leftEdgeMaxOpacity;
-                    case PlasmaCore.Types.TopEdge: return themeExtended.topEdgeMaxOpacity;
-                    case PlasmaCore.Types.RightEdge: return themeExtended.rightEdgeMaxOpacity;
-                    default: return 0;
-                    }
-                }
-
-                return 1;
-            }
+            readonly property real themeMaxOpacity: themeExtendedBackground ? themeExtendedBackground.maxOpacity : 1
 
             //! When switching from overlaied background to regular one this must be done
             //! instantly otherwise the transition is not smooth
@@ -459,23 +463,9 @@ BackgroundProperties{
             }
 
             backgroundColor: colorizerManager.backgroundColor
-
             borderWidth: 1
             borderColor: backgroundColor
-
-            roundness: {
-                if (themeExtended) {
-                    switch(plasmoid.location) {
-                    case PlasmaCore.Types.BottomEdge: return themeExtended.bottomEdgeRoundness;
-                    case PlasmaCore.Types.LeftEdge: return themeExtended.leftEdgeRoundness;
-                    case PlasmaCore.Types.TopEdge: return themeExtended.topEdgeRoundness;
-                    case PlasmaCore.Types.RightEdge: return themeExtended.rightEdgeRoundness;
-                    default: return 0;
-                    }
-                }
-
-                return 0;
-            }
+            roundness: themeExtendedBackground ? themeExtendedBackground.roundness : 0
 
             property real midOpacity: {
                 if (forceSolidness) {

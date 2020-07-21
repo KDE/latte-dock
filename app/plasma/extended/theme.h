@@ -45,6 +45,12 @@ class SchemeColors;
 
 namespace Latte {
 namespace PlasmaExtended {
+class PanelBackground;
+}
+}
+
+namespace Latte {
+namespace PlasmaExtended {
 
 class Theme: public QObject
 {
@@ -53,17 +59,12 @@ class Theme: public QObject
     Q_PROPERTY(bool isLightTheme READ isLightTheme NOTIFY themeChanged)
     Q_PROPERTY(bool isDarkTheme READ isDarkTheme NOTIFY themeChanged)
 
-    Q_PROPERTY(int bottomEdgeRoundness READ bottomEdgeRoundness NOTIFY roundnessChanged)
-    Q_PROPERTY(int leftEdgeRoundness READ leftEdgeRoundness NOTIFY roundnessChanged)
-    Q_PROPERTY(int topEdgeRoundness READ topEdgeRoundness NOTIFY roundnessChanged)
-    Q_PROPERTY(int rightEdgeRoundness READ rightEdgeRoundness NOTIFY roundnessChanged)
-
     Q_PROPERTY(int outlineWidth READ outlineWidth NOTIFY outlineWidthChanged)
 
-    Q_PROPERTY(float bottomEdgeMaxOpacity READ bottomEdgeMaxOpacity NOTIFY maxOpacityChanged)
-    Q_PROPERTY(float leftEdgeMaxOpacity READ leftEdgeMaxOpacity NOTIFY maxOpacityChanged)
-    Q_PROPERTY(float topEdgeMaxOpacity READ topEdgeMaxOpacity NOTIFY maxOpacityChanged)
-    Q_PROPERTY(float rightEdgeMaxOpacity READ rightEdgeMaxOpacity NOTIFY maxOpacityChanged)
+    Q_PROPERTY(Latte::PlasmaExtended::PanelBackground *backgroundTopEdge READ backgroundTopEdge NOTIFY backgroundsChanged)
+    Q_PROPERTY(Latte::PlasmaExtended::PanelBackground *backgroundLeftEdge READ backgroundLeftEdge NOTIFY backgroundsChanged)
+    Q_PROPERTY(Latte::PlasmaExtended::PanelBackground *backgroundBottomEdge READ backgroundBottomEdge NOTIFY backgroundsChanged)
+    Q_PROPERTY(Latte::PlasmaExtended::PanelBackground *backgroundRightEdge READ backgroundRightEdge NOTIFY backgroundsChanged)
 
     Q_PROPERTY(Latte::WindowSystem::SchemeColors *defaultTheme READ defaultTheme NOTIFY themeChanged)
     Q_PROPERTY(Latte::WindowSystem::SchemeColors *lightTheme READ lightTheme NOTIFY themeChanged)
@@ -77,18 +78,13 @@ public:
     bool isLightTheme() const;
     bool isDarkTheme() const;
 
-    int bottomEdgeRoundness() const;
-    int leftEdgeRoundness() const;
-    int topEdgeRoundness() const;
-    int rightEdgeRoundness() const;
-
     int outlineWidth() const;
     void setOutlineWidth(int width);
 
-    float bottomEdgeMaxOpacity() const;
-    float leftEdgeMaxOpacity() const;
-    float topEdgeMaxOpacity() const;
-    float rightEdgeMaxOpacity() const;
+    PanelBackground *backgroundTopEdge() const;
+    PanelBackground *backgroundLeftEdge() const;
+    PanelBackground *backgroundBottomEdge() const;
+    PanelBackground *backgroundRightEdge() const;
 
     WindowSystem::SchemeColors *defaultTheme() const;
     WindowSystem::SchemeColors *lightTheme() const;
@@ -97,11 +93,10 @@ public:
     void load();
 
 signals:
+    void backgroundsChanged();
     void compositingChanged();
     void hasShadowChanged();
-    void maxOpacityChanged();
     void outlineWidthChanged();
-    void roundnessChanged();
     void themeChanged();
 
 private slots:
@@ -111,8 +106,8 @@ private slots:
 
 private:
     void loadThemePaths();
-    void loadRoundness();
     void loadCompositingRoundness();
+    void updateBackgrounds();
 
     void setOriginalSchemeFile(const QString &file);
     void updateDefaultScheme();
@@ -120,23 +115,13 @@ private:
     void updateReversedScheme();
     void updateReversedSchemeValues();
 
-    int roundness(const QImage &svgImage, Plasma::Types::Location edge);
+    void qmlRegisterTypes();
 
 private:
     bool m_isLightTheme{false};
     bool m_compositing{true};
 
-    int m_bottomEdgeRoundness{0};
-    int m_leftEdgeRoundness{0};
-    int m_topEdgeRoundness{0};
-    int m_rightEdgeRoundness{0};
-
     int m_outlineWidth{1};
-
-    float m_bottomEdgeMaxOpacity{1};
-    float m_leftEdgeMaxOpacity{1};
-    float m_topEdgeMaxOpacity{1};
-    float m_rightEdgeMaxOpacity{1};
 
     QString m_themePath;
     QString m_themeWidgetsPath;
@@ -149,6 +134,11 @@ private:
     QTemporaryDir m_extendedThemeDir;
     KConfigGroup m_themeGroup;
     Plasma::Theme m_theme;
+
+    PanelBackground *m_backgroundTopEdge{nullptr};
+    PanelBackground *m_backgroundLeftEdge{nullptr};
+    PanelBackground *m_backgroundBottomEdge{nullptr};
+    PanelBackground *m_backgroundRightEdge{nullptr};
 
     Latte::Corona *m_corona{nullptr};
     WindowSystem::SchemeColors *m_defaultScheme{nullptr};

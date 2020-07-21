@@ -22,6 +22,7 @@
 
 // local
 #include "lattecorona.h"
+#include "panelbackground.h"
 #include "../../layouts/importer.h"
 #include "../../view/panelshadows_p.h"
 #include "../../wm/schemecolors.h"
@@ -48,8 +49,14 @@ namespace PlasmaExtended {
 
 Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
     QObject(parent),
-    m_themeGroup(KConfigGroup(config, QStringLiteral("PlasmaThemeExtended")))
+    m_themeGroup(KConfigGroup(config, QStringLiteral("PlasmaThemeExtended"))),
+    m_backgroundTopEdge(new PanelBackground(Plasma::Types::TopEdge, this)),
+    m_backgroundLeftEdge(new PanelBackground(Plasma::Types::LeftEdge, this)),
+    m_backgroundBottomEdge(new PanelBackground(Plasma::Types::BottomEdge, this)),
+    m_backgroundRightEdge(new PanelBackground(Plasma::Types::RightEdge, this))
 {
+    qmlRegisterTypes();
+
     m_corona = qobject_cast<Latte::Corona *>(parent);
 
     //! compositing tracking
@@ -72,7 +79,7 @@ Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
 
     loadConfig();
 
-    connect(this, &Theme::compositingChanged, this, &Theme::roundnessChanged);
+    connect(this, &Theme::compositingChanged, this, &Theme::updateBackgrounds);
     connect(this, &Theme::outlineWidthChanged, this, &Theme::saveConfig);
 
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::hasShadowChanged);
@@ -83,7 +90,7 @@ Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
 void Theme::load()
 {
     loadThemePaths();
-    loadRoundness();
+    updateBackgrounds();
 }
 
 Theme::~Theme()
@@ -109,26 +116,6 @@ bool Theme::isDarkTheme() const
     return !m_isLightTheme;
 }
 
-int Theme::bottomEdgeRoundness() const
-{
-    return m_bottomEdgeRoundness;
-}
-
-int Theme::leftEdgeRoundness() const
-{
-    return m_leftEdgeRoundness;
-}
-
-int Theme::topEdgeRoundness() const
-{
-    return m_topEdgeRoundness;
-}
-
-int Theme::rightEdgeRoundness() const
-{
-    return m_rightEdgeRoundness;
-}
-
 int Theme::outlineWidth() const
 {
     return m_outlineWidth;
@@ -144,24 +131,24 @@ void Theme::setOutlineWidth(int width)
     emit outlineWidthChanged();
 }
 
-float Theme::bottomEdgeMaxOpacity() const
+PanelBackground *Theme::backgroundTopEdge() const
 {
-    return m_bottomEdgeMaxOpacity;
+    return m_backgroundTopEdge;
 }
 
-float Theme::leftEdgeMaxOpacity() const
+PanelBackground *Theme::backgroundLeftEdge() const
 {
-    return m_leftEdgeMaxOpacity;
+    return m_backgroundLeftEdge;
 }
 
-float Theme::topEdgeMaxOpacity() const
+PanelBackground *Theme::backgroundBottomEdge() const
 {
-    return m_topEdgeMaxOpacity;
+    return m_backgroundBottomEdge;
 }
 
-float Theme::rightEdgeMaxOpacity() const
+PanelBackground *Theme::backgroundRightEdge() const
 {
-    return m_rightEdgeMaxOpacity;
+    return m_backgroundRightEdge;
 }
 
 WindowSystem::SchemeColors *Theme::defaultTheme() const
@@ -321,125 +308,12 @@ void Theme::updateReversedSchemeValues()
     }
 }
 
-int Theme::roundness(const QImage &svgImage, Plasma::Types::Location edge)
+void Theme::updateBackgrounds()
 {
-    int discovRow = (edge == Plasma::Types::TopEdge ? svgImage.height()-1 : 0);
-    int discovCol = (edge == Plasma::Types::LeftEdge ? svgImage.width()-1 : 0);
-
-    int round{0};
-
-    //! find opacity in the center and consider also Oxygen that in the center provides big transparency
-    int maxOpacity = qAlpha(svgImage.pixel(49,30));// qMin(), 200);
-
-    if (edge == Plasma::Types::BottomEdge) {
-        m_bottomEdgeMaxOpacity = (float)maxOpacity / (float)255;
-    } else if (edge == Plasma::Types::LeftEdge) {
-        m_leftEdgeMaxOpacity = (float)maxOpacity / (float)255;
-    } else if (edge == Plasma::Types::TopEdge) {
-        m_topEdgeMaxOpacity = (float)maxOpacity / (float)255;
-    } else if (edge == Plasma::Types::RightEdge) {
-        m_rightEdgeMaxOpacity = (float)maxOpacity / (float)255;
-    }
-
-    if (edge == Plasma::Types::BottomEdge || edge == Plasma::Types::RightEdge || edge == Plasma::Types::TopEdge) {
-        //! TOPLEFT corner
-        //! first LEFT pixel found
-        QRgb *line = (QRgb *)svgImage.scanLine(discovRow);
-
-        for (int col=0; col<50; ++col) {
-            QRgb pixelData = line[col];
-
-            if (qAlpha(pixelData) < maxOpacity) {
-                discovCol++;
-                round++;
-            } else {
-                break;
-            }
-        }
-    } else if (edge == Plasma::Types::LeftEdge) {
-        //! it should be TOPRIGHT corner in that case
-        //! first RIGHT pixel found
-        QRgb *line = (QRgb *)svgImage.scanLine(discovRow);
-        for (int col=99; col>50; --col) {
-            QRgb pixelData = line[col];
-
-            if (qAlpha(pixelData) < maxOpacity) {
-                discovCol--;
-                round++;
-            } else {
-                break;
-            }
-        }
-    }
-
-    //! this needs investigation (the x2) I don't know if it is really needed
-    //! but it gives me the impression that returns better results
-    return round; ///**2*/;
-}
-
-void Theme::loadCompositingRoundness()
-{
-    Plasma::FrameSvg *svg = new Plasma::FrameSvg(this);
-    svg->setImagePath(QStringLiteral("widgets/panel-background"));
-    svg->setEnabledBorders(Plasma::FrameSvg::AllBorders);
-    svg->resizeFrame(QSize(100,100));
-
-    //! New approach
-    QPixmap pxm = svg->framePixmap();
-
-    //! bottom roundness
-    if (svg->hasElementPrefix("south")) {
-        svg->setElementPrefix("south");
-        pxm = svg->framePixmap();
-    } else {
-        svg->setElementPrefix("");
-        pxm = svg->framePixmap();
-    }
-    m_bottomEdgeRoundness = roundness(pxm.toImage(), Plasma::Types::BottomEdge);
-
-    //! left roundness
-    if (svg->hasElementPrefix("west")) {
-        svg->setElementPrefix("west");
-        pxm = svg->framePixmap();
-    } else {
-        svg->setElementPrefix("");
-        pxm = svg->framePixmap();
-    }
-    m_leftEdgeRoundness = roundness(pxm.toImage(), Plasma::Types::LeftEdge);
-
-    //! top roundness
-    if (svg->hasElementPrefix("north")) {
-        svg->setElementPrefix("north");
-        pxm = svg->framePixmap();
-    } else {
-        svg->setElementPrefix("");
-        pxm = svg->framePixmap();
-    }
-    m_topEdgeRoundness = roundness(pxm.toImage(), Plasma::Types::TopEdge);
-
-    //! right roundness
-    if (svg->hasElementPrefix("east")) {
-        svg->setElementPrefix("east");
-        pxm = svg->framePixmap();
-    } else {
-        svg->setElementPrefix("");
-        pxm = svg->framePixmap();
-    }
-    m_rightEdgeRoundness = roundness(pxm.toImage(), Plasma::Types::RightEdge);
-
-  /*  qDebug() << " COMPOSITING MASK ::: " << svg->mask();
-    qDebug() << " COMPOSITING MASK BOUNDING RECT ::: " << svg->mask().boundingRect();*/
-    qDebug() << " COMPOSITING ROUNDNESS ::: " << m_bottomEdgeRoundness << " _ " << m_leftEdgeRoundness << " _ " << m_topEdgeRoundness << " _ " << m_rightEdgeRoundness;
-
-    svg->deleteLater();
-}
-
-void Theme::loadRoundness()
-{
-    loadCompositingRoundness();
-
-    emit maxOpacityChanged();
-    emit roundnessChanged();
+    m_backgroundTopEdge->update();
+    m_backgroundLeftEdge->update();
+    m_backgroundBottomEdge->update();
+    m_backgroundRightEdge->update();
 }
 
 void Theme::loadThemePaths()
@@ -515,6 +389,17 @@ void Theme::loadConfig()
 void Theme::saveConfig()
 {
     m_themeGroup.writeEntry("outlineWidth", m_outlineWidth);
+}
+
+void Theme::qmlRegisterTypes()
+{
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    qmlRegisterType<Latte::PlasmaExtended::Theme>();
+    qmlRegisterType<Latte::PlasmaExtended::PanelBackground>();
+#else
+    qmlRegisterAnonymousType<Latte::PlasmaExtended::Theme>("latte-dock", 1);
+    qmlRegisterAnonymousType<Latte::PlasmaExtended::PanelBackground>("latte-dock", 1);
+#endif
 }
 
 }
