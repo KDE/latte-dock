@@ -132,7 +132,7 @@ Item{
     // property int pHeight: applet ? applet.Layout.preferredHeight : -10
 
     /*function debugLayouts(){
-        if(applet){
+        if(applet && applet.pluginName==="org.kde.plasma.systemtray"){
             console.log("---------- "+ applet.pluginName +" ----------");
             console.log("MinW "+applet.Layout.minimumWidth);
             console.log("PW "+applet.Layout.preferredWidth);
@@ -157,17 +157,9 @@ Item{
             console.log("Intern. Margins: " + (appletItem.metrics.margin.length * 2));
             console.log("Max hovered criteria: " + (appletItem.metrics.iconSize + metrics.totals.thicknessEdges));
             console.log("-----");
-            console.log("LayoutW: " + layoutWidth);
-            console.log("LayoutH: " + layoutHeight);
+            console.log("LayoutLength: " + layoutLength);
+            console.log("LayoutThickness: " + layoutThickness);
         }
-    }
-
-    onLayoutWidthChanged: {
-        debugLayouts();
-    }
-
-    onLayoutHeightChanged: {
-        debugLayouts();
     }*/
 
     onAppletLengthChanged: {
@@ -196,8 +188,12 @@ Item{
         }
     }
 
-    onAppletPreferredLengthChanged: updateAutoFillLength();
-    onAppletMaximumLengthChanged: updateAutoFillLength();
+    onAppletPreferredLengthChanged: {
+        updateAutoFillLength();
+    }
+    onAppletMaximumLengthChanged: {
+        updateAutoFillLength();
+    }
 
     onZoomScaleChanged: {
         if ((zoomScale === appletItem.parabolic.factor.zoom) && !appletItem.parabolic.directRenderingEnabled) {
@@ -248,7 +244,6 @@ Item{
                 } else if (appletMinimumLength > appletItem.metrics.iconSize){
                     return appletMinimumLength;
                 } else if ((appletPreferredLength > appletItem.metrics.iconSize)
-                           || (appletPreferredLength === 0)/*applet wants to hide itself*/
                            || (appletItem.originalAppletBehavior && appletPreferredLength > 0)){
                     return appletPreferredLength;
                 }
