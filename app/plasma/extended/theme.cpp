@@ -328,7 +328,8 @@ int Theme::roundness(const QImage &svgImage, Plasma::Types::Location edge)
 
     int round{0};
 
-    int maxOpacity = qMin(qAlpha(svgImage.pixel(49,0)), 200);
+    //! find opacity in the center and consider also Oxygen that in the center provides big transparency
+    int maxOpacity = qAlpha(svgImage.pixel(49,30));// qMin(), 200);
 
     if (edge == Plasma::Types::BottomEdge) {
         m_bottomEdgeMaxOpacity = (float)maxOpacity / (float)255;
@@ -486,116 +487,6 @@ void Theme::loadThemePaths()
 
         setOriginalSchemeFile(WindowSystem::SchemeColors::possibleSchemeFile("kdeglobals"));
     }
-
-    //! this is probably not needed at all in order to provide full transparency for all
-    //! plasma themes, so we disable it in order to confirm from user testing
-    //! that it is not needed at all
-    //parseThemeSvgFiles();
-}
-
-void Theme::parseThemeSvgFiles()
-{
-    QString origBackgroundSvgFile;
-    QString curBackgroundSvgFile = m_extendedThemeDir.path()+"/widgets/panel-background.svg";
-
-    if (QFileInfo(curBackgroundSvgFile).exists()) {
-        QDir(m_extendedThemeDir.path()+"/widgets").remove("panel-background.svg");
-    }
-
-    if (!QDir(m_extendedThemeDir.path()+"/widgets").exists()) {
-        QDir(m_extendedThemeDir.path()).mkdir("widgets");
-    }
-
-    if (QFileInfo(m_themeWidgetsPath+"/panel-background.svg").exists()) {
-        origBackgroundSvgFile = m_themeWidgetsPath+"/panel-background.svg";
-        QFile(origBackgroundSvgFile).copy(curBackgroundSvgFile);
-    } else if (QFileInfo(m_themeWidgetsPath+"/panel-background.svgz").exists()) {
-        origBackgroundSvgFile = m_themeWidgetsPath+"/panel-background.svgz";
-        QString tempBackFile = m_extendedThemeDir.path()+"/widgets/panel-background.svg.gz";
-        QFile(origBackgroundSvgFile).copy(tempBackFile);
-
-        //! Identify Plasma Desktop version
-        QProcess process;
-        process.start("gzip -d " + tempBackFile);
-        process.waitForFinished();
-        QString output(process.readAllStandardOutput());
-
-        qDebug() << "plasma theme, background extraction output ::: " << output;
-        qDebug() << "plasma theme, original background svg file was decompressed...";
-    }
-
-    if (QFileInfo(curBackgroundSvgFile).exists()) {
-        qDebug() << "plasma theme, panel background ::: " << curBackgroundSvgFile;
-    } else {
-        qDebug() << "plasma theme, panel background ::: was not found...";
-    }
-
-    //! Find panel-background transparency
-    QFile svgFile(curBackgroundSvgFile);
-    QString styleSvgStr;
-
-    if (svgFile.open(QIODevice::ReadOnly)) {
-        QTextStream in(&svgFile);
-        bool centerIdFound{false};
-        bool styleFound{false};
-
-        while (!in.atEnd() && !styleFound) {
-            QString line = in.readLine();
-
-            //! each time a rect starts then style can be reset
-            if (line.contains("<rect")) {
-                styleSvgStr = "";
-            }
-
-            //! identify the id "center
-            if (line.contains("id=\"center\"")) {
-                centerIdFound = true;
-            }
-
-            //! if valid style for center exists we can break
-            if (centerIdFound && !styleSvgStr.isEmpty()) {
-                break;
-            }
-
-            if (centerIdFound && line.contains("style=\"") ) {
-                styleSvgStr = line;
-            }
-
-            //! when end of "center" you can break
-            if (centerIdFound && line.contains("/rect>")) {
-                break;
-            }
-        }
-        svgFile.close();
-    }
-
-    if (!styleSvgStr.isEmpty()) {
-        int styleInd = styleSvgStr.indexOf("style=");
-        QString cleanedStr = styleSvgStr.remove(0, styleInd+7);
-        int endInd = cleanedStr.indexOf("\"");
-        styleSvgStr = cleanedStr.mid(0,endInd);
-
-        QStringList styleValues = styleSvgStr.split(";");
-        // qDebug() << "plasma theme, discovered svg style ::: " << styleValues;
-
-        float opacity{1};
-        float fillOpacity{1};
-
-        for (QString &value : styleValues) {
-            if (value.startsWith("opacity:")) {
-                opacity = value.remove(0,8).toFloat();
-            }
-            if (value.startsWith("fill-opacity:")) {
-                fillOpacity = value.remove(0,13).toFloat();
-            }
-        }
-
-      //  m_backgroundMaxOpacity = opacity * fillOpacity;
-
-      //  qDebug() << "plasma theme opacity :: " << m_backgroundMaxOpacity << " from : " << opacity << " * " << fillOpacity;
-    }
-
- //   emit backgroundMaxOpacityChanged();
 }
 
 void Theme::loadThemeLightness()

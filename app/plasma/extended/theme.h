@@ -115,7 +115,6 @@ private:
     void loadCompositingRoundness();
 
     void setOriginalSchemeFile(const QString &file);
-    void parseThemeSvgFiles();
     void updateDefaultScheme();
     void updateDefaultSchemeValues();
     void updateReversedScheme();
