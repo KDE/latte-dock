@@ -142,7 +142,159 @@ void PanelBackground::updatePaddings(Plasma::Svg *svg)
     emit paddingsChanged();
 }
 
-void PanelBackground::updateRoundness(Plasma::Svg *svg)
+bool PanelBackground::hasVisibleShadow(Plasma::Svg *svg) const
+{
+    if (!svg || !svg->hasElement("shadow-topleft")) {
+        return false;
+    }
+
+    QString cornerId = "shadow-topleft";
+    QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
+
+    int fullTransparentPixels = 0;
+
+    for(int c=0; c<corner.width(); ++c) {
+        for(int r=0; r<corner.height(); ++r) {
+            QRgb *line = (QRgb *)corner.scanLine(r);
+            QRgb point = line[c];
+
+            if (qAlpha(point) == 0) {
+                fullTransparentPixels++;
+            }
+        }
+    }
+
+    int pixels = (corner.width() * corner.height());
+
+    qDebug() << "  PLASMA THEME TOPLEFT SHADOW :: pixels : " << pixels << "  transparent pixels" << fullTransparentPixels;
+
+    return (fullTransparentPixels != pixels );
+}
+
+void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
+{
+    if (!svg) {
+        return;
+    }
+
+    bool topLeftCorner = (m_location == Plasma::Types::BottomEdge || m_location == Plasma::Types::RightEdge);
+
+    QString cornerId = (topLeftCorner ? "shadow-topleft" : "shadow-bottomright");
+    QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
+
+    int baseRow = (topLeftCorner ? corner.height()-1 : 0);
+    int baseCol = (topLeftCorner ? corner.width()-1 : 0);
+
+    int baseLineLength = 0;
+    int roundnessLines = 0;
+
+    if (topLeftCorner) {
+        //! TOPLEFT corner
+        QRgb *line = (QRgb *)corner.scanLine(baseRow);
+        QRgb basePoint = line[baseCol];
+
+        if (qAlpha(basePoint) == 0) {
+            //! calculate the base line transparent pixels
+            for(int c = baseCol; c>=0; --c) {
+                QRgb *l = (QRgb *)corner.scanLine(baseRow);
+                QRgb point = line[c];
+
+                if (qAlpha(point) != 0) {
+                    break;
+                }
+
+                baseLineLength++;
+            }
+        }
+        //qDebug() << " TOP LEFT CORNER base line length :: " << baseLineLength;
+
+        if (baseLineLength>0) {
+            for (int r = baseRow-1; r>=0; --r) {
+                QRgb *line = (QRgb *)corner.scanLine(r);
+                QRgb fpoint = line[baseCol];
+                if (qAlpha(fpoint) != 0) {
+                    //! a line that is not part of the roundness because its first pixel is not trasparent
+                    break;
+                }
+
+                int transPixels = 0;
+
+                for(int c = baseCol; c>=0; --c) {
+                    QRgb *l = (QRgb *)corner.scanLine(r);
+                    QRgb point = line[c];
+
+                    if (qAlpha(point) == 0) {
+                        transPixels++;
+                        continue;
+                    }
+
+                    if (transPixels != baseLineLength) {
+                        roundnessLines++;
+                        break;
+                    }
+                }
+
+                //qDebug() << "   -> line: " << r << ", transparent pixels :" << transPixels << " | " << (transPixels != baseLineLength);
+            }
+        }
+    } else {
+        //! BOTTOMRIGHT CORNER
+        //! it should be TOPRIGHT corner in that case
+        QRgb *line = (QRgb *)corner.scanLine(baseRow);
+        QRgb basePoint = line[baseCol];
+
+        if (qAlpha(basePoint) == 0) {
+            //! calculate the base line transparent pixels
+            for(int c = baseCol; c<corner.width(); ++c) {
+                QRgb *l = (QRgb *)corner.scanLine(baseRow);
+                QRgb point = line[c];
+
+                if (qAlpha(point) != 0) {
+                    break;
+                }
+
+                baseLineLength++;
+            }
+        }
+
+        //qDebug() << " BOTTOM RIGHT CORNER base line length :: " << baseLineLength;
+
+        if (baseLineLength>0) {
+            for (int r = baseRow+1; r<=corner.height(); ++r) {
+                QRgb *line = (QRgb *)corner.scanLine(r);
+                QRgb fpoint = line[baseCol];
+                if (qAlpha(fpoint) != 0) {
+                    //! a line that is not part of the roundness because its first pixel is not trasparent
+                    break;
+                }
+
+                int transPixels = 0;
+
+                for(int c = baseCol; c<corner.width(); ++c) {
+                    QRgb *l = (QRgb *)corner.scanLine(r);
+                    QRgb point = line[c];
+
+                    if (qAlpha(point) == 0) {
+                        transPixels++;
+                        continue;
+                    }
+
+                    if (transPixels != baseLineLength) {
+                        roundnessLines++;
+                        break;
+                    }
+                }
+
+                //qDebug() << "   -> line: " << r << ", transparent pixels :" << transPixels << " | " << (transPixels != baseLineLength);
+            }
+        }
+    }
+
+    m_roundness = roundnessLines;
+    emit roundnessChanged();
+}
+
+void PanelBackground::updateRoundnessFallback(Plasma::Svg *svg)
 {
     if (!svg) {
         return;
@@ -191,6 +343,22 @@ void PanelBackground::updateRoundness(Plasma::Svg *svg)
 
     m_roundness = round;
     emit roundnessChanged();
+}
+
+
+void PanelBackground::updateRoundness(Plasma::Svg *svg)
+{
+    if (!svg) {
+        return;
+    }
+
+    if (hasVisibleShadow(svg)) {
+        qDebug() << "PLASMA THEME, calculating roundness from shadows...";
+        updateRoundnessFromShadows(svg);
+    } else {
+        qDebug() << "PLASMA THEME, calculating roundness from fallback code...";
+        updateRoundnessFallback(svg);
+    }
 }
 
 void PanelBackground::update()

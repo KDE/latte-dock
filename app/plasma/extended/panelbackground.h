@@ -65,12 +65,17 @@ signals:
     void maxOpacityChanged();
 
 private:
+    bool hasVisibleShadow(Plasma::Svg *svg) const;
+
     QString prefixed(const QString &id);
     QString element(Plasma::Svg *svg, const QString &id);
 
     void updateMaxOpacity(Plasma::Svg *svg);
     void updatePaddings(Plasma::Svg *svg);
     void updateRoundness(Plasma::Svg *svg);
+
+    void updateRoundnessFromShadows(Plasma::Svg *svg);
+    void updateRoundnessFallback(Plasma::Svg *svg);
 
 private:
     int m_paddingTop{0};
