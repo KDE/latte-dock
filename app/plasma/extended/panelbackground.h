@@ -71,6 +71,8 @@ signals:
     void maxOpacityChanged();
 
 private:
+    bool hasMask(Plasma::Svg *svg) const;
+
     QString prefixed(const QString &id);
     QString element(Plasma::Svg *svg, const QString &id);
 
@@ -78,6 +80,7 @@ private:
     void updatePaddings(Plasma::Svg *svg);
     void updateRoundness(Plasma::Svg *svg);
 
+    void updateRoundnessFromMask(Plasma::Svg *svg);
     void updateRoundnessFromShadows(Plasma::Svg *svg);
     void updateRoundnessFallback(Plasma::Svg *svg);
 
