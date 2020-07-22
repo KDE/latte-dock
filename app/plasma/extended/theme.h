@@ -110,6 +110,7 @@ private:
     void updateBackgrounds();
 
     void setOriginalSchemeFile(const QString &file);
+    void updateHasShadow();
     void updateDefaultScheme();
     void updateDefaultSchemeValues();
     void updateReversedScheme();
@@ -118,6 +119,7 @@ private:
     void qmlRegisterTypes();
 
 private:
+    bool m_hasShadow{false};
     bool m_isLightTheme{false};
     bool m_compositing{true};
 

@@ -82,7 +82,6 @@ Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
     connect(this, &Theme::compositingChanged, this, &Theme::updateBackgrounds);
     connect(this, &Theme::outlineWidthChanged, this, &Theme::saveConfig);
 
-    connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::hasShadowChanged);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::load);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::themeChanged);
 }
@@ -103,7 +102,7 @@ Theme::~Theme()
 
 bool Theme::hasShadow() const
 {
-    return PanelShadows::self()->hasShadows();
+    return m_hasShadow;
 }
 
 bool Theme::isLightTheme() const
@@ -310,10 +309,44 @@ void Theme::updateReversedSchemeValues()
 
 void Theme::updateBackgrounds()
 {
+    updateHasShadow();
+
     m_backgroundTopEdge->update();
     m_backgroundLeftEdge->update();
     m_backgroundBottomEdge->update();
     m_backgroundRightEdge->update();
+}
+
+void Theme::updateHasShadow()
+{
+    Plasma::Svg *svg = new Plasma::Svg(this);
+    svg->setImagePath(QStringLiteral("widgets/panel-background"));
+    svg->resize();
+
+    QString cornerId = "shadow-topleft";
+    QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
+
+    int fullTransparentPixels = 0;
+
+    for(int c=0; c<corner.width(); ++c) {
+        for(int r=0; r<corner.height(); ++r) {
+            QRgb *line = (QRgb *)corner.scanLine(r);
+            QRgb point = line[c];
+
+            if (qAlpha(point) == 0) {
+                fullTransparentPixels++;
+            }
+        }
+    }
+
+    int pixels = (corner.width() * corner.height());
+
+    m_hasShadow = (fullTransparentPixels != pixels );
+    emit hasShadowChanged();
+
+    qDebug() << "  PLASMA THEME TOPLEFT SHADOW :: pixels : " << pixels << "  transparent pixels" << fullTransparentPixels << " | HAS SHADOWS :" << m_hasShadow;
+
+    svg->deleteLater();
 }
 
 void Theme::loadThemePaths()

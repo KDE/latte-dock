@@ -30,6 +30,12 @@
 
 namespace Latte {
 namespace PlasmaExtended {
+class Theme;
+}
+}
+
+namespace Latte {
+namespace PlasmaExtended {
 
 class PanelBackground: public QObject
 {
@@ -44,7 +50,7 @@ class PanelBackground: public QObject
     Q_PROPERTY(float maxOpacity READ maxOpacity NOTIFY maxOpacityChanged)
 
 public:
-    PanelBackground(Plasma::Types::Location edge, QObject *parent);
+    PanelBackground(Plasma::Types::Location edge, Theme *parent);
     ~PanelBackground();
 
     int paddingTop() const;
@@ -65,8 +71,6 @@ signals:
     void maxOpacityChanged();
 
 private:
-    bool hasVisibleShadow(Plasma::Svg *svg) const;
-
     QString prefixed(const QString &id);
     QString element(Plasma::Svg *svg, const QString &id);
 
@@ -89,6 +93,7 @@ private:
 
     Plasma::Types::Location m_location{Plasma::Types::BottomEdge};
 
+    Theme *m_parentTheme{nullptr};
 };
 
 }

@@ -20,6 +20,9 @@
 
 #include "panelbackground.h"
 
+// local
+#include "theme.h"
+
 // Qt
 #include <QDebug>
 #include <QImage>
@@ -31,9 +34,10 @@
 namespace Latte {
 namespace PlasmaExtended {
 
-PanelBackground::PanelBackground(Plasma::Types::Location edge, QObject *parent)
+PanelBackground::PanelBackground(Plasma::Types::Location edge, Theme *parent)
     : QObject(parent),
-      m_location(edge)
+      m_location(edge),
+      m_parentTheme(parent)
 {
 }
 
@@ -141,35 +145,6 @@ void PanelBackground::updatePaddings(Plasma::Svg *svg)
     m_paddingRight = svg->elementSize(element(svg, "right")).width();
 
     emit paddingsChanged();
-}
-
-bool PanelBackground::hasVisibleShadow(Plasma::Svg *svg) const
-{
-    if (!svg || !svg->hasElement("shadow-topleft")) {
-        return false;
-    }
-
-    QString cornerId = "shadow-topleft";
-    QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
-
-    int fullTransparentPixels = 0;
-
-    for(int c=0; c<corner.width(); ++c) {
-        for(int r=0; r<corner.height(); ++r) {
-            QRgb *line = (QRgb *)corner.scanLine(r);
-            QRgb point = line[c];
-
-            if (qAlpha(point) == 0) {
-                fullTransparentPixels++;
-            }
-        }
-    }
-
-    int pixels = (corner.width() * corner.height());
-
-    qDebug() << "  PLASMA THEME TOPLEFT SHADOW :: pixels : " << pixels << "  transparent pixels" << fullTransparentPixels;
-
-    return (fullTransparentPixels != pixels );
 }
 
 void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
@@ -353,7 +328,7 @@ void PanelBackground::updateRoundness(Plasma::Svg *svg)
         return;
     }
 
-    if (hasVisibleShadow(svg)) {
+    if (m_parentTheme->hasShadow()) {
         qDebug() << "PLASMA THEME, calculating roundness from shadows...";
         updateRoundnessFromShadows(svg);
     } else {

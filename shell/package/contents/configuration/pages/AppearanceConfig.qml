@@ -1035,7 +1035,7 @@ PlasmaComponents.Page {
                         text: i18n("Shadows")
                         checked: plasmoid.configuration.panelShadows
                         checkable: true
-                        enabled: showBackground.checked && LatteCore.WindowSystem.compositingActive
+                        enabled: showBackground.checked && LatteCore.WindowSystem.compositingActive && themeExtended.hasShadow
                         tooltip: i18n("Background shows its shadows")
 
                         onClicked: {
