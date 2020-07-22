@@ -30,6 +30,7 @@
 #define CENTERWIDTH 100
 #define CENTERHEIGHT 50
 
+#define BASELINESHADOWTHRESHOLD 5
 
 namespace Latte {
 namespace PlasmaExtended {
@@ -149,6 +150,20 @@ void PanelBackground::updatePaddings(Plasma::Svg *svg)
 
 void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
 {
+    //! 1.  Algorithm is choosing which corner shadow based on panel location
+    //! 2.  For that corner discovers the maxOpacity (most solid shadow point) and
+    //!     how pixels (distance) is to the most solid point, that is called [baseLineLength]
+    //! 3.  After [2] the algorigthm for each next line calculates the maxOpacity
+    //!     for that line and how many points are needed to reach there. If the points
+    //!     to reach the line max opacity are shorter than baseLineLength then that line
+    //!     is considered part of the roundness
+    //! 3.1 Avoid zig-zag cases such as the Air plasma theme case. When the shadow is not
+    //!     following a straight line until reaching the rounded part the algorithm is
+    //!     considering as valid roundness only the last part of the discovered roundness and
+    //!     ignores all the previous.
+    //! 4.  Calculating the lines that are shorter than the baseline provides
+    //!     the discovered roundness
+
     if (!svg) {
         return;
     }
@@ -169,20 +184,22 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
         QRgb *line = (QRgb *)corner.scanLine(baseRow);
         QRgb basePoint = line[baseCol];
 
+        int baseShadowMaxOpacity = 0;
+
         if (qAlpha(basePoint) == 0) {
-            //! calculate the base line transparent pixels
+            //! calculate the shadow maxOpacity in the base line
+            //! and number of pixels to reach there
             for(int c = baseCol; c>=0; --c) {
                 QRgb *l = (QRgb *)corner.scanLine(baseRow);
                 QRgb point = line[c];
 
-                if (qAlpha(point) != 0) {
-                    break;
+                if (qAlpha(point) > baseShadowMaxOpacity) {
+                    baseShadowMaxOpacity = qAlpha(point);
+                    baseLineLength = (baseCol - c + 1);
                 }
-
-                baseLineLength++;
             }
         }
-        //qDebug() << " TOP LEFT CORNER base line length :: " << baseLineLength;
+        //qDebug() << " TOP LEFT CORNER base line length :: " << baseLineLength << " with max shadow opacity : " << baseShadowMaxOpacity;
 
         if (baseLineLength>0) {
             for (int r = baseRow-1; r>=0; --r) {
@@ -194,12 +211,23 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
                 }
 
                 int transPixels = 0;
+                int rowMaxOpacity = 0;
 
                 for(int c = baseCol; c>=0; --c) {
                     QRgb *l = (QRgb *)corner.scanLine(r);
                     QRgb point = line[c];
 
-                    if (qAlpha(point) == 0) {
+                    if (qAlpha(point) > rowMaxOpacity) {
+                        rowMaxOpacity = qAlpha(point);
+                        continue;
+                    }
+                }
+
+                for(int c = baseCol; c>=(baseCol - baseLineLength + 1); --c) {
+                    QRgb *l = (QRgb *)corner.scanLine(r);
+                    QRgb point = line[c];
+
+                    if (qAlpha(point) != rowMaxOpacity) {
                         transPixels++;
                         continue;
                     }
@@ -210,7 +238,12 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
                     }
                 }
 
-                //qDebug() << "   -> line: " << r << ", transparent pixels :" << transPixels << " | " << (transPixels != baseLineLength);
+                if (transPixels == baseLineLength) {
+                    //! 3.1 avoid zig-zag shadows Air plasma theme case
+                    roundnessLines = 0;
+                }
+
+                //qDebug() << "   -> line: " << r << ", low transparency pixels :" << transPixels << " | " << (transPixels != baseLineLength);
             }
         }
     } else {
@@ -219,21 +252,22 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
         QRgb *line = (QRgb *)corner.scanLine(baseRow);
         QRgb basePoint = line[baseCol];
 
+        int baseShadowMaxOpacity = 0;
+
         if (qAlpha(basePoint) == 0) {
             //! calculate the base line transparent pixels
             for(int c = baseCol; c<corner.width(); ++c) {
                 QRgb *l = (QRgb *)corner.scanLine(baseRow);
                 QRgb point = line[c];
 
-                if (qAlpha(point) != 0) {
-                    break;
+                if (qAlpha(point) > baseShadowMaxOpacity) {
+                    baseShadowMaxOpacity = qAlpha(point);
+                    baseLineLength = c + 1;
                 }
-
-                baseLineLength++;
             }
         }
 
-        //qDebug() << " BOTTOM RIGHT CORNER base line length :: " << baseLineLength;
+        //qDebug() << " BOTTOM RIGHT CORNER base line length :: " << baseLineLength << " with max shadow opacity : " << baseShadowMaxOpacity;
 
         if (baseLineLength>0) {
             for (int r = baseRow+1; r<=corner.height(); ++r) {
@@ -245,12 +279,23 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
                 }
 
                 int transPixels = 0;
+                int rowMaxOpacity = 0;
 
                 for(int c = baseCol; c<corner.width(); ++c) {
                     QRgb *l = (QRgb *)corner.scanLine(r);
                     QRgb point = line[c];
 
-                    if (qAlpha(point) == 0) {
+                    if (qAlpha(point) > rowMaxOpacity) {
+                        rowMaxOpacity = qAlpha(point);
+                        baseLineLength = c + 1;
+                    }
+                }
+
+                for(int c = baseCol; c<baseLineLength; ++c) {
+                    QRgb *l = (QRgb *)corner.scanLine(r);
+                    QRgb point = line[c];
+
+                    if (qAlpha(point) != rowMaxOpacity) {
                         transPixels++;
                         continue;
                     }
@@ -261,7 +306,12 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
                     }
                 }
 
-                //qDebug() << "   -> line: " << r << ", transparent pixels :" << transPixels << " | " << (transPixels != baseLineLength);
+                if (transPixels == baseLineLength) {
+                    //! 3.1 avoid zig-zag shadows Air plasma theme case
+                    roundnessLines = 0;
+                }
+
+                //qDebug() << "   -> line: " << r << ", low transparent pixels :" << transPixels << " | " << (transPixels != baseLineLength);
             }
         }
     }
