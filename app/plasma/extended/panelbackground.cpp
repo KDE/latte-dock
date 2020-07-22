@@ -21,6 +21,7 @@
 #include "panelbackground.h"
 
 // Qt
+#include <QDebug>
 #include <QImage>
 
 #define CENTERWIDTH 100
