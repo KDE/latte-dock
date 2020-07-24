@@ -87,9 +87,6 @@ public:
     void setCurrentPage(int page);
     void toggleCurrentPage();
 
-    void requestImagesDialog(int row);
-    void requestColorsDialog(int row);
-
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragLeaveEvent(QDragLeaveEvent *event) override;

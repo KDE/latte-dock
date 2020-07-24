@@ -38,8 +38,12 @@ class PatternWidget : public QWidget
 public:
     explicit PatternWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
+    QString background() const;
     void setBackground(const QString &file);
+
     void setText(const QString &text);
+
+    QString textColor() const;
     void setTextColor(const QString &color);
 
 signals:

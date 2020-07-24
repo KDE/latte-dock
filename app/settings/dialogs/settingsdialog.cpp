@@ -36,7 +36,6 @@
 
 // Qt
 #include <QButtonGroup>
-#include <QColorDialog>
 #include <QDir>
 #include <QFileDialog>
 #include <QMenuBar>
@@ -382,43 +381,6 @@ void SettingsDialog::on_export_fullconfiguration()
     QString proposedName = QStringLiteral("Latte Dock (") + currentDate.toString("yyyy-MM-dd")+")";
 
     exportFileDialog->selectFile(proposedName);
-}
-
-void SettingsDialog::requestImagesDialog(int row)
-{
-    QStringList mimeTypeFilters;
-    mimeTypeFilters << "image/jpeg" // will show "JPEG image (*.jpeg *.jpg)
-                    << "image/png";  // will show "PNG image (*.png)"
-
-    QFileDialog dialog(this);
-    dialog.setMimeTypeFilters(mimeTypeFilters);
-
-    QString background = "";// m_model->data(m_model->index(row, COLORCOLUMN), Qt::BackgroundRole).toString();
-
-    if (background.startsWith("/") && QFileInfo(background).exists()) {
-        dialog.setDirectory(QFileInfo(background).absolutePath());
-        dialog.selectFile(background);
-    }
-
-    if (dialog.exec()) {
-        QStringList files = dialog.selectedFiles();
-
-        if (files.count() > 0) {
-            // m_model->setData(m_model->index(row, COLORCOLUMN), files[0], Qt::BackgroundRole);
-        }
-    }
-}
-
-void SettingsDialog::requestColorsDialog(int row)
-{
-    /*QColorDialog dialog(this);
-    QString textColor = m_model->data(m_model->index(row, Settings::Model::Layouts::BACKGROUNDCOLUMN), Qt::UserRole).toString();
-    dialog.setCurrentColor(QColor(textColor));
-
-    if (dialog.exec()) {
-        qDebug() << dialog.selectedColor().name();
-        m_model->setData(m_model->index(row, COLORCOLUMN), dialog.selectedColor().name(), Qt::UserRole);
-    }*/
 }
 
 void SettingsDialog::accept()

@@ -69,6 +69,9 @@ public:
     void resetDefaults() override;
     void save() override;
 
+    void selectBackground();
+    void selectTextColor();
+
 private slots:
     void init();
     void reload();

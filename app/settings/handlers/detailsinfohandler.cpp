@@ -27,6 +27,9 @@
 #include "../widgets/patternwidget.h"
 #include "../../layout/abstractlayout.h"
 
+// Qt
+#include <QColorDialog>
+#include <QFileDialog>
 
 namespace Latte {
 namespace Settings {
@@ -59,6 +62,9 @@ void DetailsInfoHandler::init()
             //m_layoutsController->setInMultipleMode(id == Latte::Types::MultipleLayouts);
         }
     });
+
+    connect(m_ui->backgroundBtn, &QPushButton::pressed, this, &DetailsInfoHandler::selectBackground);
+    connect(m_ui->textColorBtn, &QPushButton::pressed, this, &DetailsInfoHandler::selectTextColor);
 
     connect(m_ui->inMenuChk, &QCheckBox::stateChanged, this, [&]() {
         m_parentHandler->setIsShownInMenu(m_ui->inMenuChk->isChecked());
@@ -119,6 +125,42 @@ void DetailsInfoHandler::resetDefaults()
 
 void DetailsInfoHandler::save()
 {
+}
+
+void DetailsInfoHandler::selectBackground()
+{
+    QStringList mimeTypeFilters;
+    mimeTypeFilters << "image/jpeg" // will show "JPEG image (*.jpeg *.jpg)
+                    << "image/png";  // will show "PNG image (*.png)"
+
+    QFileDialog dialog(m_parentDialog);
+    dialog.setMimeTypeFilters(mimeTypeFilters);
+
+    QString background =  m_ui->backPatternWidget->background();
+
+    if (background.startsWith("/") && QFileInfo(background).exists()) {
+        dialog.setDirectory(QFileInfo(background).absolutePath());
+        dialog.selectFile(background);
+    }
+
+    if (dialog.exec()) {
+        QStringList files = dialog.selectedFiles();
+
+        if (files.count() > 0) {
+            m_parentHandler->setBackground(files[0]);
+        }
+    }
+}
+
+void DetailsInfoHandler::selectTextColor()
+{
+    QColorDialog dialog(m_parentDialog);
+    dialog.setCurrentColor(QColor(m_ui->backPatternWidget->textColor()));
+
+    if (dialog.exec()) {
+        qDebug() << "layout selected text color: " << dialog.selectedColor().name();
+        m_parentHandler->setTextColor(dialog.selectedColor().name());
+    }
 }
 
 }

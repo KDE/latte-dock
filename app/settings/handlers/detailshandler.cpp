@@ -113,6 +113,16 @@ void DetailsHandler::on_currentIndexChanged(int row)
     emit currentLayoutChanged();
 }
 
+void DetailsHandler::setBackground(const QString &background)
+{
+    c_data.background = background;
+}
+
+void DetailsHandler::setTextColor(const QString &textColor)
+{
+    c_data.textColor = textColor;
+}
+
 void DetailsHandler::setIsShownInMenu(bool inMenu)
 {
     c_data.isShownInMenu = inMenu;

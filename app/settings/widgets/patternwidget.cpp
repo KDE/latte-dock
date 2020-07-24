@@ -72,6 +72,11 @@ void PatternWidget::initUi()
     m_label->setGraphicsEffect(m_shadowEffect);
 }
 
+QString PatternWidget::background() const
+{
+    return m_background;
+}
+
 void PatternWidget::setBackground(const QString &file)
 {
     if (m_background != file) {
@@ -86,6 +91,10 @@ void PatternWidget::setText(const QString &text)
     m_label->setText(text);
 }
 
+QString PatternWidget::textColor() const
+{
+    return m_textColor;
+}
 
 void PatternWidget::setTextColor(const QString &color)
 {

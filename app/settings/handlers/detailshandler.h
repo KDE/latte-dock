@@ -68,6 +68,9 @@ public:
     void setIsShownInMenu(bool inMenu);
     void setHasDisabledBorders(bool disabled);
 
+    void setBackground(const QString &background);
+    void setTextColor(const QString &textColor);
+
 signals:
     void currentLayoutChanged();
 
