@@ -55,20 +55,49 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout" columnstretch="5,0,8">
-         <item row="3" column="1">
-          <widget class="QCheckBox" name="inMenuChk">
-           <property name="text">
-            <string notr="true"/>
-           </property>
-          </widget>
+         <item row="4" column="2">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="colorBtn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>320</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Color...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
-         <item row="2" column="2">
+         <item row="7" column="2">
           <layout class="QHBoxLayout" name="backgroundOptLayout">
            <item>
             <widget class="Latte::Settings::Widget::PatternWidget" name="backPatternWidget" native="true">
              <property name="minimumSize">
               <size>
-               <width>220</width>
+               <width>320</width>
                <height>60</height>
               </size>
              </property>
@@ -113,14 +142,134 @@
            </item>
           </layout>
          </item>
-         <item row="2" column="0">
+         <item row="2" column="1">
+          <widget class="QRadioButton" name="colorRadioBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QLabel" name="borderlessChkLbl">
+             <property name="text">
+              <string>Hide window borders for maximized windows</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="11" column="1">
+          <widget class="QCheckBox" name="borderlessChk">
+           <property name="text">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>15</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="10" column="1">
+          <widget class="QCheckBox" name="inMenuChk">
+           <property name="text">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="0">
+          <widget class="QLabel" name="behaviorSecRowLbl">
+           <property name="text">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QPushButton" name="backgroundBtn">
+               <property name="minimumSize">
+                <size>
+                 <width>157</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Background...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="textColorBtn">
+               <property name="minimumSize">
+                <size>
+                 <width>157</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Text Color...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item row="7" column="0">
           <widget class="QLabel" name="backSecondRowLbl">
            <property name="text">
             <string notr="true"/>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="2" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
             <spacer name="horizontalSpacer_4">
@@ -150,7 +299,7 @@
            </item>
           </layout>
          </item>
-         <item row="3" column="0">
+         <item row="10" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
             <spacer name="horizontalSpacer_5">
@@ -171,6 +320,44 @@
               <string>Behavior:</string>
              </property>
             </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="10" column="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <widget class="QLabel" name="inMenuChkLbl">
+             <property name="text">
+              <string>Show in layouts context menu</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="2">
+          <layout class="QHBoxLayout" name="colorsOptLayout">
+           <item>
+            <widget class="Latte::Settings::Widget::PatternWidget" name="colorPatternWidget" native="true">
+             <property name="minimumSize">
+              <size>
+               <width>320</width>
+               <height>60</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
@@ -231,61 +418,7 @@
            </item>
           </layout>
          </item>
-         <item row="1" column="1">
-          <widget class="QRadioButton" name="colorRadioBtn">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string notr="true"/>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
-            <widget class="QLabel" name="borderlessChkLbl">
-             <property name="text">
-              <string>Hide window borders for maximized windows</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
-           <item>
-            <widget class="QLabel" name="inMenuChkLbl">
-             <property name="text">
-              <string>Show in layouts context menu</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="behaviorSecRowLbl">
-           <property name="text">
-            <string notr="true"/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
+         <item row="7" column="1">
           <widget class="QRadioButton" name="backRadioBtn">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -304,39 +437,37 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QCheckBox" name="borderlessChk">
-           <property name="text">
-            <string notr="true"/>
+         <item row="9" column="2">
+          <spacer name="verticalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
            </property>
-          </widget>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>15</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
-         <item row="1" column="2">
-          <layout class="QHBoxLayout" name="colorsOptLayout">
-           <item>
-            <widget class="Latte::Settings::Widget::PatternWidget" name="colorPatternWidget" native="true">
-             <property name="minimumSize">
-              <size>
-               <width>220</width>
-               <height>60</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_6">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
+         <item row="5" column="2">
+          <spacer name="verticalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </item>
