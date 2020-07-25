@@ -58,21 +58,12 @@
          <item row="4" column="2">
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QPushButton" name="colorBtn">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="QComboBox" name="colorCmb">
              <property name="minimumSize">
               <size>
                <width>320</width>
                <height>0</height>
               </size>
-             </property>
-             <property name="text">
-              <string>Color...</string>
              </property>
             </widget>
            </item>
