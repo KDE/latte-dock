@@ -52,6 +52,8 @@ public:
     void copyView(Plasma::Containment *containment);
     void syncToLayoutFile(bool removeLayoutId);
 
+    void setStorageTmpDir(const QString &tmpDir);
+
     /// STATIC
     //! Check if an applet config group is valid or belongs to removed applet
     static bool appletGroupIsValid(KConfigGroup appletGroup);
@@ -76,6 +78,8 @@ private:
 
 private:
     GenericLayout *m_layout;
+
+    QString m_storageTmpDir;
 };
 
 }

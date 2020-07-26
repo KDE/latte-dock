@@ -942,6 +942,7 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
     }
 
     m_corona = corona;
+    m_storage->setStorageTmpDir(m_corona->layoutsManager()->importer()->storageTmpDir());
 
     for (const auto containment : m_corona->containments()) {
         if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {

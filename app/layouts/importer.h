@@ -23,6 +23,7 @@
 
 // Qt
 #include <QObject>
+#include <QTemporaryDir>
 
 namespace Latte {
 namespace Layouts {
@@ -70,6 +71,8 @@ public:
 
     bool exportFullConfiguration(QString file);
 
+    QString storageTmpDir() const;
+
     static Importer::LatteFileVersion fileVersion(QString file);
 
     static bool importHelper(QString fileName);
@@ -80,7 +83,7 @@ public:
     //! returns all application data standard paths
     //! local paths have higher priority by default
     static QStringList standardPaths(bool localfirst = true);
-    static QStringList standardPathsFor(QString subPath, bool localfirst = true);
+    static QStringList standardPathsFor(QString subPath, bool localfirst = true);   
 
     //! check if this layout exists already in the latte directory
     static bool layoutExists(QString layoutName);
@@ -104,6 +107,8 @@ private:
     //! checks if this old layout can be imported. If it can it returns
     //! the new layout path and an empty string if it cant
     QString layoutCanBeImported(QString oldAppletsPath, QString newName, QString exportDirectory = QString());
+
+    QTemporaryDir m_storageTmpDir;
 
     Layouts::Manager *m_manager;
 };

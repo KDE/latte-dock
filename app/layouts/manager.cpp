@@ -128,21 +128,6 @@ void Manager::load()
 void Manager::unload()
 {
     m_synchronizer->unloadLayouts();
-
-    //! Remove no-needed temp files
-    QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
-    QString temp2File = QDir::homePath() + "/.config/lattedock.copy2.bak";
-
-    QFile file1(temp1File);
-    QFile file2(temp2File);
-
-    if (file1.exists()) {
-        file1.remove();
-    }
-
-    if (file2.exists()) {
-        file2.remove();
-    }
 }
 
 Latte::Corona *Manager::corona()

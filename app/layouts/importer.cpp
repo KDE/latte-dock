@@ -30,7 +30,6 @@
 
 // Qt
 #include <QFile>
-#include <QTemporaryDir>
 
 // KDE
 #include <KArchive/KTar>
@@ -54,6 +53,8 @@ Importer::Importer(QObject *parent)
     : QObject(parent)
 {
     m_manager = qobject_cast<Layouts::Manager *>(parent);
+
+    qDebug() << " IMPORTER, STORAGE TEMP DIR ::: " << m_storageTmpDir.path();
 }
 
 Importer::~Importer()
@@ -222,7 +223,6 @@ QStringList Importer::standardPathsFor(QString subPath, bool localfirst)
     return paths;
 }
 
-
 QString Importer::standardPath(QString subPath, bool localfirst)
 {
     QStringList paths = standardPaths(localfirst);
@@ -240,6 +240,11 @@ QString Importer::standardPath(QString subPath, bool localfirst)
     }
 
     return "";
+}
+
+QString Importer::storageTmpDir() const
+{
+    return m_storageTmpDir.path();
 }
 
 QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName, QString exportDirectory)

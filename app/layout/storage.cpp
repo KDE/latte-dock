@@ -101,6 +101,11 @@ void Storage::unlock()
     }
 }
 
+void Storage::setStorageTmpDir(const QString &tmpDir)
+{
+    m_storageTmpDir = tmpDir;
+}
+
 void Storage::importToCorona()
 {
     if (!m_layout->corona()) {
@@ -110,12 +115,12 @@ void Storage::importToCorona()
     //! Setting mutable for create a containment
     m_layout->corona()->setImmutability(Plasma::Types::Mutable);
 
-    QString temp1FilePath = QDir::homePath() + "/.config/lattedock.copy1.bak";
+    QString temp1FilePath = m_storageTmpDir +  "/" + m_layout->name() + ".multiple.views";
     //! we need to copy first the layout file because the kde cache
     //! may not have yet been updated (KSharedConfigPtr)
     //! this way we make sure at the latest changes stored in the layout file
     //! will be also available when changing to Multiple Layouts
-    QString tempLayoutFilePath = QDir::homePath() + "/.config/lattedock.layout.bak";
+    QString tempLayoutFilePath = m_storageTmpDir +  "/" + m_layout->name() + ".multiple.tmplayout";
 
     //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
     QFile tempLayoutFile(tempLayoutFilePath);
@@ -187,7 +192,7 @@ void Storage::copyView(Plasma::Containment *containment)
     //! Setting mutable for create a containment
     m_layout->corona()->setImmutability(Plasma::Types::Mutable);
 
-    QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
+    QString temp1File = m_storageTmpDir +  "/" + m_layout->name() + ".copy.view";
 
     //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
     QFile copyFile(temp1File);
@@ -462,7 +467,7 @@ QString Storage::newUniqueIdsLayoutFromFile(QString file)
         return QString();
     }
 
-    QString tempFile = QDir::homePath() + "/.config/lattedock.copy2.bak";
+    QString tempFile = m_storageTmpDir + "/" + m_layout->name() + ".views.newids";
 
     QFile copyFile(tempFile);
 
