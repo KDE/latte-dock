@@ -55,12 +55,12 @@ namespace Handler {
 //! ui::tabs or different windows. They are responsible also to handle the user interaction
 //! between controllers and views
 
-class DetailsInfoHandler : public Generic
+class DetailsOptionsHandler : public Generic
 {
     Q_OBJECT
 public:
-    DetailsInfoHandler(Dialog::DetailsDialog *parentDialog, DetailsHandler *parentHandler);
-    ~DetailsInfoHandler();
+    DetailsOptionsHandler(Dialog::DetailsDialog *parentDialog, DetailsHandler *parentHandler);
+    ~DetailsOptionsHandler();
 
     bool dataAreChanged() const override;
     bool inDefaultValues() const override;

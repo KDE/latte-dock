@@ -18,7 +18,7 @@
  *
  */
 
-#include "detailsinfohandler.h"
+#include "detailsoptionshandler.h"
 
 // local
 #include "ui_detailsdialog.h"
@@ -35,7 +35,7 @@ namespace Latte {
 namespace Settings {
 namespace Handler {
 
-DetailsInfoHandler::DetailsInfoHandler(Dialog::DetailsDialog *parentDialog, DetailsHandler *parentHandler)
+DetailsOptionsHandler::DetailsOptionsHandler(Dialog::DetailsDialog *parentDialog, DetailsHandler *parentHandler)
     : Generic(parentDialog, parentHandler),
       m_parentDialog(parentDialog),
       m_ui(m_parentDialog->ui()),
@@ -44,11 +44,11 @@ DetailsInfoHandler::DetailsInfoHandler(Dialog::DetailsDialog *parentDialog, Deta
     init();
 }
 
-DetailsInfoHandler::~DetailsInfoHandler()
+DetailsOptionsHandler::~DetailsOptionsHandler()
 {
 }
 
-void DetailsInfoHandler::init()
+void DetailsOptionsHandler::init()
 {
     m_backButtonsGroup = new QButtonGroup(this);
     m_backButtonsGroup->addButton(m_ui->colorRadioBtn, Latte::Layout::ColorBackgroundStyle);
@@ -63,8 +63,8 @@ void DetailsInfoHandler::init()
         }
     });
 
-    connect(m_ui->backgroundBtn, &QPushButton::pressed, this, &DetailsInfoHandler::selectBackground);
-    connect(m_ui->textColorBtn, &QPushButton::pressed, this, &DetailsInfoHandler::selectTextColor);
+    connect(m_ui->backgroundBtn, &QPushButton::pressed, this, &DetailsOptionsHandler::selectBackground);
+    connect(m_ui->textColorBtn, &QPushButton::pressed, this, &DetailsOptionsHandler::selectTextColor);
 
     connect(m_ui->inMenuChk, &QCheckBox::stateChanged, this, [&]() {
         m_parentHandler->setIsShownInMenu(m_ui->inMenuChk->isChecked());
@@ -74,17 +74,17 @@ void DetailsInfoHandler::init()
         m_parentHandler->setHasDisabledBorders(m_ui->borderlessChk->isChecked());
     });
 
-    connect(m_parentHandler, &DetailsHandler::currentLayoutChanged, this, &DetailsInfoHandler::reload);
+    connect(m_parentHandler, &DetailsHandler::currentLayoutChanged, this, &DetailsOptionsHandler::reload);
 
     reload();
 }
 
-void DetailsInfoHandler::reload()
+void DetailsOptionsHandler::reload()
 {
     loadLayout(m_parentHandler->currentData());
 }
 
-void DetailsInfoHandler::loadLayout(const Data::Layout &data)
+void DetailsOptionsHandler::loadLayout(const Data::Layout &data)
 {
     if (data.backgroundStyle == Latte::Layout::ColorBackgroundStyle) {
         m_ui->colorRadioBtn->setChecked(true);
@@ -102,32 +102,32 @@ void DetailsInfoHandler::loadLayout(const Data::Layout &data)
     m_ui->borderlessChk->setChecked(data.hasDisabledBorders);
 }
 
-bool DetailsInfoHandler::dataAreChanged() const
+bool DetailsOptionsHandler::dataAreChanged() const
 {
     return true;
 }
 
-bool DetailsInfoHandler::inDefaultValues() const
+bool DetailsOptionsHandler::inDefaultValues() const
 {
     //nothing special
     return true;
 }
 
 
-void DetailsInfoHandler::reset()
+void DetailsOptionsHandler::reset()
 {
 }
 
-void DetailsInfoHandler::resetDefaults()
+void DetailsOptionsHandler::resetDefaults()
 {
     //do nothing
 }
 
-void DetailsInfoHandler::save()
+void DetailsOptionsHandler::save()
 {
 }
 
-void DetailsInfoHandler::selectBackground()
+void DetailsOptionsHandler::selectBackground()
 {
     QStringList mimeTypeFilters;
     mimeTypeFilters << "image/jpeg" // will show "JPEG image (*.jpeg *.jpg)
@@ -152,7 +152,7 @@ void DetailsInfoHandler::selectBackground()
     }
 }
 
-void DetailsInfoHandler::selectTextColor()
+void DetailsOptionsHandler::selectTextColor()
 {
     QColorDialog dialog(m_parentDialog);
     dialog.setCurrentColor(QColor(m_ui->backPatternWidget->textColor()));

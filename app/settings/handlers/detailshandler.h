@@ -23,7 +23,7 @@
 
 //! local
 #include "generichandler.h"
-#include "detailsinfohandler.h"
+#include "detailsoptionshandler.h"
 
 // Qt
 #include <QSortFilterProxyModel>
@@ -85,7 +85,7 @@ private:
     Dialog::DetailsDialog *m_parentDialog{nullptr};
     Ui::DetailsDialog *m_ui{nullptr};
 
-    DetailsInfoHandler *m_infoHandler{nullptr};
+    DetailsOptionsHandler *m_optionsHandler{nullptr};
 
     QSortFilterProxyModel *m_proxyModel{nullptr};
 

@@ -40,7 +40,7 @@ DetailsHandler::DetailsHandler(Dialog::DetailsDialog *parentDialog)
     init();
 
     //! create it after initializing
-    m_infoHandler = new DetailsInfoHandler(parentDialog, this);   
+    m_optionsHandler = new DetailsOptionsHandler(parentDialog, this);
 }
 
 DetailsHandler::~DetailsHandler()
