@@ -424,7 +424,7 @@ Item{
     onThicknessZoomOriginalChanged: updateMaskArea();
 
     function slotContainsMouseChanged() {
-        if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SideBar) {
+        if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand) {
             updateMaskArea();
 
             if (slidingAnimationAutoHiddenOut.running && !inTempHiding && !inForceHiding) {
@@ -460,7 +460,7 @@ Item{
         //! Normal Dodge/AutoHide case
         if((!slidingAnimationAutoHiddenOut.running
             && !latteView.visibility.blockHiding
-            && (!latteView.visibility.containsMouse || latteView.visibility.mode === LatteCore.Types.SideBar))
+            && (!latteView.visibility.containsMouse || latteView.visibility.mode === LatteCore.Types.SidebarOnDemand))
                 || inForceHiding) {
             slidingAnimationAutoHiddenOut.init();
         }
@@ -601,7 +601,7 @@ Item{
                     }
                 }
 
-                if (latteView.visibility.isHidden && latteView && latteView.visibility.mode === LatteCore.Types.SideBar) {
+                if (latteView.visibility.isHidden && latteView && latteView.visibility.mode === LatteCore.Types.SidebarOnDemand) {
                     //!hide completely
                     localX = -1;
                     localY = -1;

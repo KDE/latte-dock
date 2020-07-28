@@ -189,7 +189,7 @@ private:
         Latte::Types::WindowsGoBelow,
         Latte::Types::WindowsCanCover,
         Latte::Types::WindowsAlwaysCover,
-        Latte::Types::SideBar,
+        Latte::Types::SidebarOnDemand,
         Latte::Types::SidebarAutoHide
     };
 

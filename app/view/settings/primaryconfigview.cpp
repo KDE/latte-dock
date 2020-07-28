@@ -304,10 +304,10 @@ void PrimaryConfigView::instantUpdateAvailableScreenGeometry()
 
     int currentScrId = m_latteView->positioner()->currentScreenId();
 
-    QList<Latte::Types::Visibility> ignoreModes{Latte::Types::SideBar,Latte::Types::SidebarAutoHide};
+    QList<Latte::Types::Visibility> ignoreModes{Latte::Types::SidebarOnDemand,Latte::Types::SidebarAutoHide};
 
     if (m_latteView->visibility() && m_latteView->visibility()->isSidebar()) {
-        ignoreModes.removeAll(Latte::Types::SideBar);
+        ignoreModes.removeAll(Latte::Types::SidebarOnDemand);
         ignoreModes.removeAll(Latte::Types::SidebarAutoHide);
     }
 

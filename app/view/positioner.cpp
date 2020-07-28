@@ -464,7 +464,7 @@ void Positioner::immediateSyncGeometry()
             int fixedScreen = m_view->onPrimary() ? latteCorona->screenPool()->primaryScreenId() : m_view->containment()->screen();
 
             QList<Types::Visibility> ignoreModes({Latte::Types::AutoHide,
-                                                  Latte::Types::SideBar,
+                                                  Latte::Types::SidebarOnDemand,
                                                   Latte::Types::SidebarAutoHide});
 
             QList<Plasma::Types::Location> ignoreEdges({Plasma::Types::LeftEdge,

@@ -427,7 +427,7 @@ void Effects::updateEffects()
                 QRegion backMask = m_background->mask();
 
                 //! There are cases that mask is NULL even though it should not
-                //! Example: SideBar from v0.10 that BEHAVEASPLASMAPANEL in EditMode
+                //! Example: SidebarOnDemand from v0.10 that BEHAVEASPLASMAPANEL in EditMode
                 //! switching multiple times between inConfigureAppletsMode and LiveEditMode
                 //! is such a case
                 QRegion fixedMask;

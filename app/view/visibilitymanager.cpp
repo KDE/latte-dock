@@ -317,7 +317,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     case Types::WindowsAlwaysCover:
         break;
 
-    case Types::SideBar:
+    case Types::SidebarOnDemand:
         m_connections[base] = connect(m_latteView, &Latte::View::inEditModeChanged, this, [&]() {
             if (!m_latteView->inEditMode()) {
                 //! Give the time to View to change from !behaveAsPlasmaPanel to behaveAsPlasmaPanel
@@ -611,7 +611,7 @@ void VisibilityManager::setTimerHide(int msec)
 
 bool VisibilityManager::isSidebar() const
 {
-    return m_mode == Latte::Types::SideBar || m_mode == Latte::Types::SidebarAutoHide;
+    return m_mode == Latte::Types::SidebarOnDemand || m_mode == Latte::Types::SidebarAutoHide;
 }
 
 bool VisibilityManager::supportsKWinEdges() const
@@ -667,7 +667,7 @@ void VisibilityManager::show()
 
 void VisibilityManager::raiseView(bool raise)
 {
-    if (hidingIsBlocked() || m_mode == Latte::Types::SideBar)
+    if (hidingIsBlocked() || m_mode == Latte::Types::SidebarOnDemand)
         return;
 
     if (raise) {

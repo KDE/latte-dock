@@ -377,8 +377,8 @@ Window{
                     case LatteCore.Types.WindowsAlwaysCover:
                         return "Windows Always Cover";
                         break;
-                    case LatteCore.Types.SideBar:
-                        return "OnDemand SideBar";
+                    case LatteCore.Types.SidebarOnDemand:
+                        return "OnDemand Sidebar";
                         break;
                     case LatteCore.Types.SidebarAutoHide:
                         return "AutoHide Sidebar";

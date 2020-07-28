@@ -29,7 +29,7 @@ LatteComponents.ComboBoxButton{
     id: custom
     checkable: true
 
-    buttonToolTip: mode === LatteCore.Types.SideBar ? i18n("SideBar can be shown only when the user has explicitly requested it. For example through an external applet, shortcut or script") : ""
+    buttonToolTip: mode === LatteCore.Types.SidebarOnDemand ? i18n("Sidebar can be shown only when the user has explicitly requested it. For example through an external applet, shortcut or script") : ""
 
     comboBoxTextRole: "name"
     comboBoxBlankSpaceForEmptyIcons: false
@@ -135,9 +135,9 @@ LatteComponents.ComboBoxButton{
             name: i18n("Windows Always Cover"),
         }
 
-        var sideBar = {
+        var sidebarOnDemand = {
             pluginId: '8',
-            name: i18n("On Demand SideBar")
+            name: i18n("On Demand Sidebar")
         }
 
         var sidebarAutoHide = {
@@ -148,7 +148,7 @@ LatteComponents.ComboBoxButton{
         actionsModel.append(windowsGoBelow);
         actionsModel.append(windowsCanCover);
         actionsModel.append(windowsAlwaysCover);
-        actionsModel.append(sideBar);
+        actionsModel.append(sidebarOnDemand);
         actionsModel.append(sidebarAutoHide);
     }
 

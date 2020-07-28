@@ -33,7 +33,7 @@ Item {
                                      && !root.containsOnlyPlasmaTasks
                                      && layouter.fillApplets<=0
                                      && latteView 
-                                     && latteView.visibility.mode !== LatteCore.Types.SideBar
+                                     && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand
                                      && latteView.visibility.mode !== LatteCore.Types.SidebarAutoHide
     property int iconSize: -1 //it is not set, this is the default
 
