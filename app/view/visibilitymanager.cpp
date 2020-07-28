@@ -594,17 +594,18 @@ void VisibilityManager::setTimerShow(int msec)
 
 int VisibilityManager::timerHide() const
 {
-    return m_timerHide.interval();
+    return m_timerHideInterval;
 }
 
 void VisibilityManager::setTimerHide(int msec)
 {
     int interval = qMax(HIDEMINIMUMINTERVAL, msec);
 
-    if (m_timerHide.interval() == interval) {
+    if (m_timerHideInterval == interval) {
         return;
     }
 
+    m_timerHideInterval = interval;
     m_timerHide.setInterval(interval);
     emit timerHideChanged();
 }
@@ -683,7 +684,7 @@ void VisibilityManager::raiseView(bool raise)
             m_hideNow = false;
             emit mustBeHide();
         } else if (!m_timerHide.isActive()) {
-            m_timerHide.start();
+            startTimerHide();
         }
     }
 }
@@ -724,7 +725,7 @@ void VisibilityManager::toggleHiddenState()
                 emit mustBeShown();
 
                 if(m_mode == Latte::Types::SidebarAutoHide) {
-                    m_timerHide.start();
+                    startTimerHide();
                 }
             } else {
                 emit mustBeHide();
@@ -775,6 +776,15 @@ void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activi
 
     if (m_floatingGapWindow) {
         m_wm->setWindowOnActivities(*m_floatingGapWindow, activities);
+    }
+}
+
+void VisibilityManager::startTimerHide(const int &msec)
+{
+    if (msec == 0) {
+        m_timerHide.start(m_timerHideInterval);
+    } else {
+        m_timerHide.start(msec);
     }
 }
 
@@ -830,7 +840,7 @@ void VisibilityManager::saveConfig()
 
     config.writeEntry("enableKWinEdges", m_enableKWinEdgesFromUser);
     config.writeEntry("timerShow", m_timerShow.interval());
-    config.writeEntry("timerHide", m_timerHide.interval());
+    config.writeEntry("timerHide", m_timerHideInterval);
     config.writeEntry("raiseOnDesktopChange", m_raiseOnDesktopChange);
     config.writeEntry("raiseOnActivityChange", m_raiseOnActivityChange);
 
@@ -845,7 +855,7 @@ void VisibilityManager::restoreConfig()
 
     auto config = m_latteView->containment()->config();
     m_timerShow.setInterval(config.readEntry("timerShow", 0));
-    m_timerHide.setInterval(qMax(HIDEMINIMUMINTERVAL, config.readEntry("timerHide", 700)));
+    m_timerHideInterval = qMax(HIDEMINIMUMINTERVAL, config.readEntry("timerHide", 700));
     emit timerShowChanged();
     emit timerHideChanged();
 

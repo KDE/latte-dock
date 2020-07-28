@@ -192,6 +192,9 @@ private slots:
     bool isValidMode() const;
 
 private:
+    void startTimerHide(const int &msec = 0);
+
+private:
     WindowSystem::AbstractWindowInterface *m_wm;
     Types::Visibility m_mode{Types::None};
     std::array<QMetaObject::Connection, 5> m_connections;
@@ -211,6 +214,7 @@ private:
     bool m_hideNow{false};
 
     int m_frameExtentsHeadThicknessGap{0};
+    int m_timerHideInterval{700};
     Plasma::Types::Location m_frameExtentsLocation{Plasma::Types::BottomEdge};
 
     QStringList m_blockHidingEvents;
