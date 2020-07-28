@@ -90,7 +90,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
                         value: plasmoid.configuration.iconSize
                         from: 16
-                        to: latteView.visibility.mode === LatteCore.Types.SideBar ? 512 : 256
+                        to: (latteView.visibility.mode === LatteCore.Types.SideBar || latteView.visibility.mode === LatteCore.Types.SidebarAutoHide)  ? 512 : 256
                         stepSize: dialog.advancedLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 1 : 8
                         wheelEnabled: false
 
@@ -139,7 +139,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
                         value: plasmoid.configuration.proportionIconSize
                         from: 1.0
-                        to: latteView.visibility.mode === LatteCore.Types.SideBar ? 25 : 12
+                        to: (latteView.visibility.mode === LatteCore.Types.SideBar || latteView.visibility.mode === LatteCore.Types.SidebarAutoHide)  ? 25 : 12
                         stepSize: 0.5
                         wheelEnabled: false
 

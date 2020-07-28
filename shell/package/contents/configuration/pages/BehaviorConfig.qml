@@ -478,6 +478,7 @@ PlasmaComponents.Page {
                     RowLayout{
                         id: showTimerRow
                         anchors.horizontalCenter: parent.horizontalCenter
+                        enabled: latteView.visibility.mode !== LatteCore.Types.SidebarAutoHide
                         PlasmaComponents.Label {
                             Layout.leftMargin: Qt.application.layoutDirection === Qt.RightToLeft ? units.smallSpacing : 0
                             Layout.rightMargin: Qt.application.layoutDirection === Qt.RightToLeft ? 0 : units.smallSpacing

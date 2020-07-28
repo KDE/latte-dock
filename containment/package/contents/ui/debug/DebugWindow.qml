@@ -380,6 +380,9 @@ Window{
                     case LatteCore.Types.SideBar:
                         return "OnDemand SideBar";
                         break;
+                    case LatteCore.Types.SidebarAutoHide:
+                        return "AutoHide Sidebar";
+                    break;
                     case LatteCore.Types.NormalWindow:
                         return "Normal Window";
                         break;

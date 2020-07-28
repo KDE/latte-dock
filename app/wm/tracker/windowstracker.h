@@ -189,7 +189,8 @@ private:
         Latte::Types::WindowsGoBelow,
         Latte::Types::WindowsCanCover,
         Latte::Types::WindowsAlwaysCover,
-        Latte::Types::SideBar
+        Latte::Types::SideBar,
+        Latte::Types::SidebarAutoHide
     };
 
     QMap<WindowId, WindowInfoWrap> m_windows;

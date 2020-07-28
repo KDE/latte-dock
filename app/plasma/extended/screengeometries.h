@@ -69,7 +69,8 @@ private:
 
     QList<Latte::Types::Visibility> m_ignoreModes{
         Latte::Types::AutoHide,
-        Latte::Types::SideBar
+        Latte::Types::SideBar,
+        Latte::Types::SidebarAutoHide
     };
 
     QStringList m_lastScreenNames;

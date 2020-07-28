@@ -54,6 +54,7 @@ public:
         WindowsCanCover,
         WindowsAlwaysCover,
         SideBar,
+        SidebarAutoHide,
         NormalWindow = 20
     };
     Q_ENUM(Visibility);

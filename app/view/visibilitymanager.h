@@ -99,6 +99,8 @@ public:
     int timerHide() const;
     void setTimerHide(int msec);
 
+    bool isSidebar() const;
+
     //! KWin Edges Support functions
     bool enableKWinEdges() const;
     void setEnableKWinEdges(bool enable);

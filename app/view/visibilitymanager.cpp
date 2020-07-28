@@ -44,6 +44,7 @@
 //! view to be show. For example !compositing+kwin_edges+hide inteval<50ms
 const int HIDEMINIMUMINTERVAL = 50;
 
+
 namespace Latte {
 namespace ViewPart {
 
@@ -328,7 +329,23 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         });
 
         toggleHiddenState();
+        break;
 
+    case Types::SidebarAutoHide:
+        m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
+            if(!isHidden()){
+                raiseView(m_containsMouse);
+            }
+        });
+        
+        m_connections[base] = connect(m_latteView, &Latte::View::inEditModeChanged, this, [&]() {
+            if (!m_latteView->inEditMode()) {
+                toggleHiddenState();
+            }
+        });
+        toggleHiddenState();
+        break;
+    
     default:
         break;
     }
@@ -592,6 +609,11 @@ void VisibilityManager::setTimerHide(int msec)
     emit timerHideChanged();
 }
 
+bool VisibilityManager::isSidebar() const
+{
+    return m_mode == Latte::Types::SideBar || m_mode == Latte::Types::SidebarAutoHide;
+}
+
 bool VisibilityManager::supportsKWinEdges() const
 {
     return (m_edgeGhostWindow != nullptr);
@@ -693,13 +715,17 @@ bool VisibilityManager::isValidMode() const
 void VisibilityManager::toggleHiddenState()
 {
     if (!m_latteView->inEditMode()) {
-        if (m_mode == Latte::Types::SideBar) {
+        if (isSidebar()) {
             if (m_blockHidingEvents.contains(Q_FUNC_INFO)) {
                 removeBlockHidingEvent(Q_FUNC_INFO);
             }
 
             if (m_isHidden) {
                 emit mustBeShown();
+
+                if(m_mode == Latte::Types::SidebarAutoHide) {
+                    m_timerHide.start();
+                }
             } else {
                 emit mustBeHide();
             }
@@ -907,7 +933,7 @@ void VisibilityManager::viewEventManager(QEvent *ev)
     case QEvent::DragEnter:
         m_dragEnter = true;
 
-        if (m_isHidden && m_mode != Latte::Types::SideBar) {
+        if (m_isHidden && !isSidebar()) {
             emit mustBeShown();
         }
 

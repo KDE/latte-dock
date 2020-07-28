@@ -926,7 +926,7 @@ void GenericLayout::toggleHiddenState(QString screenName, Plasma::Types::Locatio
     if (viewsOnEdge >= 1) {
         for(const auto view : latteViews()) {
             if (view->positioner()->currentScreenName() == validScreenName && view->location() == edge) {
-                if (viewsOnEdge == 1 || (viewsOnEdge >1 && view->visibility() && view->visibility()->mode() == Latte::Types::SideBar)) {
+                if (viewsOnEdge == 1 || (viewsOnEdge >1 && view->visibility() && view->visibility()->isSidebar())) {
                     view->visibility()->toggleHiddenState();
                     return;
                 }

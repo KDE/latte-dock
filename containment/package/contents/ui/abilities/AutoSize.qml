@@ -32,7 +32,9 @@ Item {
     readonly property bool isActive: plasmoid.configuration.autoSizeEnabled
                                      && !root.containsOnlyPlasmaTasks
                                      && layouter.fillApplets<=0
-                                     && latteView && latteView.visibility.mode !== LatteCore.Types.SideBar
+                                     && latteView 
+                                     && latteView.visibility.mode !== LatteCore.Types.SideBar
+                                     && latteView.visibility.mode !== LatteCore.Types.SidebarAutoHide
     property int iconSize: -1 //it is not set, this is the default
 
     readonly property bool inCalculatedIconSize: ((metrics.iconSize === sizer.iconSize) || (metrics.iconSize === metrics.maxIconSize))

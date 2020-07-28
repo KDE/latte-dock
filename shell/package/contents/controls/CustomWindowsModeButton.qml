@@ -140,10 +140,16 @@ LatteComponents.ComboBoxButton{
             name: i18n("On Demand SideBar")
         }
 
+        var sidebarAutoHide = {
+            pluginId: '9',
+            name: i18n("Auto Hide Sidebar")
+        }
+
         actionsModel.append(windowsGoBelow);
         actionsModel.append(windowsCanCover);
         actionsModel.append(windowsAlwaysCover);
         actionsModel.append(sideBar);
+        actionsModel.append(sidebarAutoHide);
     }
 
 }

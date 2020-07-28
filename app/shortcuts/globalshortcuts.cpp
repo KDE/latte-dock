@@ -562,7 +562,7 @@ void GlobalShortcuts::hideViewsTimerSlot()
                 latteView->visibility()->removeBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
                 latteView->extendedInterface()->hideShortcutBadges();
 
-                if (latteView->visibility()->mode() == Latte::Types::SideBar && !latteView->visibility()->isHidden()) {
+                if (latteView->visibility()->isSidebar() && !latteView->visibility()->isHidden()) {
                     latteView->visibility()->toggleHiddenState();
                 }
             }
