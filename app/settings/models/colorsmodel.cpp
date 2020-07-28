@@ -100,10 +100,10 @@ QVariant Colors::data(const QModelIndex &index, int role) const
         return QVariant{};
     }
 
-    if (role == IDROLE) {
-        return m_colorsTable[row].id;
-    } else if (role == NAMEROLE) {
+    if (role == NAMEROLE || role == Qt::DisplayRole) {
         return m_colorsTable[row].name;
+    } else if (role == IDROLE) {
+            return m_colorsTable[row].id;
     } else if (role == PATHROLE) {
         return m_colorsTable[row].path;
     } else if (role == TEXTCOLORROLE) {
