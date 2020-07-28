@@ -56,6 +56,8 @@ public:
     DetailsDialog(SettingsDialog *parent, Controller::Layouts *controller);
     ~DetailsDialog();
 
+    Latte::Corona *corona() const;
+
     Ui::DetailsDialog *ui() const;
     Controller::Layouts *layoutsController() const;
 

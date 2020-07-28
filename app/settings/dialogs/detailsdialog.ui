@@ -58,7 +58,7 @@
          <item row="4" column="2">
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QComboBox" name="colorCmb">
+            <widget class="QComboBox" name="colorsCmb">
              <property name="minimumSize">
               <size>
                <width>320</width>

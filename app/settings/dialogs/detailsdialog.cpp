@@ -62,6 +62,11 @@ Ui::DetailsDialog *DetailsDialog::ui() const
     return m_ui;
 }
 
+Latte::Corona *DetailsDialog::corona() const
+{
+    return m_parentDlg->corona();
+}
+
 void DetailsDialog::accept()
 {
     qDebug() << Q_FUNC_INFO;

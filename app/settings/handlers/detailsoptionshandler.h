@@ -25,7 +25,6 @@
 #include "generichandler.h"
 #include "../data/layoutdata.h"
 
-
 namespace Ui {
 class DetailsDialog;
 }
@@ -42,6 +41,14 @@ namespace Latte{
 namespace Settings{
 namespace Handler {
 class DetailsHandler;
+}
+}
+}
+
+namespace Latte{
+namespace Settings{
+namespace Model {
+class Colors;
 }
 }
 }
@@ -84,6 +91,9 @@ private:
     Ui::DetailsDialog *m_ui{nullptr};
 
     DetailsHandler *m_parentHandler{nullptr};
+
+    //! current data
+    Model::Colors *m_colorsModel{nullptr};
 
     QButtonGroup *m_backButtonsGroup;
 };

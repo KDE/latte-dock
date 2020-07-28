@@ -24,6 +24,7 @@
 #include "ui_detailsdialog.h"
 #include "detailshandler.h"
 #include "../dialogs/detailsdialog.h"
+#include "../models/colorsmodel.h"
 #include "../widgets/patternwidget.h"
 #include "../../layout/abstractlayout.h"
 
@@ -39,7 +40,8 @@ DetailsOptionsHandler::DetailsOptionsHandler(Dialog::DetailsDialog *parentDialog
     : Generic(parentDialog, parentHandler),
       m_parentDialog(parentDialog),
       m_ui(m_parentDialog->ui()),
-      m_parentHandler(parentHandler)
+      m_parentHandler(parentHandler),
+      m_colorsModel(new Model::Colors(this, parentDialog->corona()))
 {
     init();
 }
@@ -54,6 +56,8 @@ void DetailsOptionsHandler::init()
     m_backButtonsGroup->addButton(m_ui->colorRadioBtn, Latte::Layout::ColorBackgroundStyle);
     m_backButtonsGroup->addButton(m_ui->backRadioBtn, Latte::Layout::PatternBackgroundStyle);
     m_backButtonsGroup->setExclusive(true);
+
+    m_ui->colorsCmb->setModel(m_colorsModel);
 
     connect(m_backButtonsGroup, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
             [ = ](int id, bool checked) {
