@@ -167,7 +167,7 @@ public:
     bool inEditMode() const;
     void setInEditMode(bool edit);
 
-    bool isFloatingWindow() const;
+    bool isFloatingPanel() const;
 
     bool isPreferredForShortcuts() const;
     void setIsPreferredForShortcuts(bool preferred);

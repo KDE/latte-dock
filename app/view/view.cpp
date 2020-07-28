@@ -805,7 +805,7 @@ void View::setInEditMode(bool edit)
     emit inEditModeChanged();
 }
 
-bool View::isFloatingWindow() const
+bool View::isFloatingPanel() const
 {
     return m_behaveAsPlasmaPanel && m_screenEdgeMarginEnabled && (m_screenEdgeMargin>0);
 }

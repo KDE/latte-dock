@@ -134,7 +134,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     });
     connect(&m_timerHide, &QTimer::timeout, this, [&]() {
         if (!hidingIsBlocked() && !m_isHidden && !m_isBelowLayer && !m_dragEnter) {
-            if (m_latteView->isFloatingWindow()) {
+            if (m_latteView->isFloatingPanel()) {
                 //! first check if mouse is inside the floating gap
                 checkMouseInFloatingArea();
             } else {
@@ -909,7 +909,7 @@ bool VisibilityManager::windowContainsMouse()
 
 void VisibilityManager::checkMouseInFloatingArea()
 {
-    if (m_latteView->isFloatingWindow()) {
+    if (m_latteView->isFloatingPanel()) {
         if (!m_floatingGapWindow) {
             createFloatingGapWindow();
         }
@@ -977,7 +977,7 @@ void VisibilityManager::updateKWinEdgesSupport()
 
         if (m_enableKWinEdgesFromUser || m_latteView->behaveAsPlasmaPanel()) {
             createEdgeGhostWindow();
-            if (m_latteView->isFloatingWindow()) {
+            if (m_latteView->isFloatingPanel()) {
                 createFloatingGapWindow();
             }
         } else if (!m_enableKWinEdgesFromUser) {
@@ -1054,12 +1054,12 @@ void VisibilityManager::createFloatingGapWindow()
 
         connect(m_floatingGapWindow, &FloatingGapWindow::asyncContainsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
-                if (m_latteView->isFloatingWindow() && !m_isHidden) {
+                if (m_latteView->isFloatingPanel() && !m_isHidden) {
                     //! immediate call after contains mouse checks for mouse in sensitive floating areas
                     updateHiddenState();
                 }
             } else {
-                if (m_latteView->isFloatingWindow() && !m_isHidden) {
+                if (m_latteView->isFloatingPanel() && !m_isHidden) {
                     //! immediate call after contains mouse checks for mouse in sensitive floating areas
                     emit mustBeHide();
                 }
