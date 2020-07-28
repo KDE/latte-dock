@@ -412,7 +412,7 @@ Item {
 
     property bool titleTooltips: plasmoid.configuration.titleTooltips
 
-    property int tasksCount: latteApplet ? latteApplet.tasksCount : 0  
+    property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
     property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
@@ -471,10 +471,10 @@ Item {
         property: "hideLengthScreenGaps"
         when: latteView && latteView.positioner && latteView.visibility && (latteView.positioner.slideOffset === 0)
         value: (hideThickScreenGap
-               && (latteView.visibility.mode === LatteCore.Types.AlwaysVisible
-                   || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow)
-               && (plasmoid.configuration.alignment === LatteCore.Types.Justify)
-               && plasmoid.configuration.maxLength>85)
+                && (latteView.visibility.mode === LatteCore.Types.AlwaysVisible
+                    || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow)
+                && (plasmoid.configuration.alignment === LatteCore.Types.Justify)
+                && plasmoid.configuration.maxLength>85)
     }
 
     //////////////END OF BINDINGS
@@ -491,6 +491,13 @@ Item {
         //! but the user decides to not make a choice for the applet type
         if (dndSpacer.parent !== root) {
             dndSpacer.parent = root;
+        }
+
+        //Block Hiding events
+        if (editMode) {
+            latteView.visibility.addBlockHidingEvent("main[qml]::inEditMode()");
+        } else {
+            latteView.visibility.removeBlockHidingEvent("main[qml]::inEditMode()");
         }
     }
 
@@ -801,7 +808,7 @@ Item {
         if (internalViewSplittersCount() === 0) {
             addInternalViewSplitter(plasmoid.configuration.splitterPosition);
             addInternalViewSplitter(plasmoid.configuration.splitterPosition2);
-        }        
+        }
     }
 
     function addInternalViewSplitter(pos){

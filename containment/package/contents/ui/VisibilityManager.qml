@@ -193,13 +193,6 @@ Item{
 
     Binding{
         target: latteView
-        property:"inEditMode"
-        when: latteView
-        value: root.editMode
-    }
-
-    Binding{
-        target: latteView
         property: "maxLength"
         when: latteView
         value: maxLengthPerCentage/100

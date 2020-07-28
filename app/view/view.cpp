@@ -173,6 +173,11 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         }
 
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
+        connect(this->containment(), &Plasma::Containment::userConfiguringChanged, this, [&]() {
+            emit inEditModeChanged();
+        });
+
+        void userConfiguringChanged(bool configuring);
 
         if (m_corona->viewSettingsFactory()->hasOrphanSettings()
                 && m_corona->viewSettingsFactory()->hasVisibleSettings()
@@ -791,18 +796,7 @@ void View::setBehaveAsPlasmaPanel(bool behavior)
 
 bool View::inEditMode() const
 {
-    return m_inEditMode;
-}
-
-void View::setInEditMode(bool edit)
-{
-    if (m_inEditMode == edit) {
-        return;
-    }
-
-    m_inEditMode = edit;
-
-    emit inEditModeChanged();
+    return containment() && containment()->isUserConfiguring();
 }
 
 bool View::isFloatingPanel() const

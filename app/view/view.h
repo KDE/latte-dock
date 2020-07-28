@@ -90,9 +90,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
     Q_PROPERTY(bool inSettingsAdvancedMode READ inSettingsAdvancedMode NOTIFY inSettingsAdvancedModeChanged)
 
-    //! Because Latte uses animations, changing to edit mode it may be different than
-    //! when the isUserConfiguring changes value
-    Q_PROPERTY(bool inEditMode READ inEditMode WRITE setInEditMode NOTIFY inEditModeChanged)
+    Q_PROPERTY(bool inEditMode READ inEditMode NOTIFY inEditModeChanged)
     Q_PROPERTY(bool isPreferredForShortcuts READ isPreferredForShortcuts WRITE setIsPreferredForShortcuts NOTIFY isPreferredForShortcutsChanged)
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
     Q_PROPERTY(bool screenEdgeMarginEnabled READ screenEdgeMarginEnabled WRITE setScreenEdgeMarginEnabled NOTIFY screenEdgeMarginEnabledChanged)
@@ -165,7 +163,6 @@ public:
     void setByPassWM(bool bypass);
 
     bool inEditMode() const;
-    void setInEditMode(bool edit);
 
     bool isFloatingPanel() const;
 
@@ -382,7 +379,6 @@ private:
     bool m_containsDrag{false};
     bool m_containsMouse{false};
     bool m_inDelete{false};
-    bool m_inEditMode{false};
     bool m_isPreferredForShortcuts{false};
     bool m_onPrimary{true};
     bool m_screenEdgeMarginEnabled{false};
