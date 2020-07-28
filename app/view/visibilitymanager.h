@@ -155,6 +155,8 @@ private slots:
     void on_publishFrameExtents(); //! delayed
     void publishFrameExtents(bool forceUpdate = false); //! direct
 
+    //! Floating Gap Helper window creation/removal
+    void updateFloatingGapWindow();
     //! KWin Edges Support functions
     void updateKWinEdgesSupport();
 

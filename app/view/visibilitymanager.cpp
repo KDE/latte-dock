@@ -70,6 +70,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     connect(this, &VisibilityManager::enableKWinEdgesChanged, this, &VisibilityManager::updateKWinEdgesSupport);
     connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateKWinEdgesSupport);
+    connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateFloatingGapWindow);
 
     connect(this, &VisibilityManager::mustBeShown, this, [&]() {
         if (m_latteView && !m_latteView->isVisible()) {
@@ -79,8 +80,11 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
+        connect(m_latteView, &Latte::View::behaveAsPlasmaPanelChanged , this, &VisibilityManager::updateFloatingGapWindow);
         connect(m_latteView, &Latte::View::behaveAsPlasmaPanelChanged , this, &VisibilityManager::updateKWinEdgesSupport);
+        connect(m_latteView, &Latte::View::byPassWMChanged, this, &VisibilityManager::updateFloatingGapWindow);
         connect(m_latteView, &Latte::View::byPassWMChanged, this, &VisibilityManager::updateKWinEdgesSupport);
+
         connect(m_latteView, &Latte::View::inEditModeChanged, this, &VisibilityManager::initViewFlags);
 
         connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, [&]() {
@@ -332,27 +336,23 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
     case Types::SidebarAutoHide:
-        m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
-            if(!m_latteView->inEditMode() && !isHidden()){
-                raiseView(m_containsMouse);
-            }
-        });
+        m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged,
+                                      this, &VisibilityManager::updateHiddenState);
         
-        m_connections[base] = connect(m_latteView, &Latte::View::inEditModeChanged, this, [&]() {
+        m_connections[base+1] = connect(m_latteView, &Latte::View::inEditModeChanged, this, [&]() {
             if (!m_latteView->inEditMode()) {
                 toggleHiddenState();
             }
         });
+
         toggleHiddenState();
         break;
-    
+
     default:
         break;
     }
 
     m_latteView->containment()->config().writeEntry("visibility", static_cast<int>(m_mode));
-
-    updateKWinEdgesSupport();
 
     emit modeChanged();
 }
@@ -763,6 +763,9 @@ void VisibilityManager::updateHiddenState()
         dodgeAllWindows();
         break;
 
+    case Types::SidebarAutoHide:
+        raiseView(m_latteView->inEditMode() || (m_containsMouse && !m_isHidden));
+
     default:
         break;
     }
@@ -994,11 +997,27 @@ void VisibilityManager::updateKWinEdgesSupport()
             deleteEdgeGhostWindow();
             deleteFloatingGapWindow();
         }
-
     } else if (m_mode == Types::WindowsCanCover) {
         createEdgeGhostWindow();
     } else {
         deleteEdgeGhostWindow();
+        deleteFloatingGapWindow();
+    }
+}
+
+void VisibilityManager::updateFloatingGapWindow()
+{
+    if (m_latteView->isFloatingPanel() && !m_latteView->byPassWM()) {
+        if (m_mode == Types::AutoHide
+                || m_mode == Types::DodgeActive
+                || m_mode == Types::DodgeAllWindows
+                || m_mode == Types::DodgeMaximized
+                || m_mode == Types::SidebarAutoHide) {
+            createFloatingGapWindow();
+        } else {
+            deleteFloatingGapWindow();
+        }
+    } else {
         deleteFloatingGapWindow();
     }
 }
