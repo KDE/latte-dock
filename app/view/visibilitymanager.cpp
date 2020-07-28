@@ -43,6 +43,10 @@
 //! Hide Timer can create cases that when it is low it does not allow the
 //! view to be show. For example !compositing+kwin_edges+hide inteval<50ms
 const int HIDEMINIMUMINTERVAL = 50;
+//! After calling SidebarAutoHide panel to show for example through Sidebar button
+//! or global shortcuts we make sure bar will be shown enough time
+//! in order for the user to observe its contents
+const int SIDEBARAUTOHIDEMINIMUMSHOW = 1000;
 
 
 namespace Latte {
@@ -320,11 +324,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     case Types::SidebarOnDemand:
         m_connections[base] = connect(m_latteView, &Latte::View::inEditModeChanged, this, [&]() {
             if (!m_latteView->inEditMode()) {
-                //! Give the time to View to change from !behaveAsPlasmaPanel to behaveAsPlasmaPanel
-                //! if this is needed when changing to !inEditMode
-                QTimer::singleShot(100, [this]() {
-                    toggleHiddenState();
-                });
+                toggleHiddenState();
             }
         });
 
@@ -333,7 +333,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
     case Types::SidebarAutoHide:
         m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
-            if(!isHidden()){
+            if(!m_latteView->inEditMode() && !isHidden()){
                 raiseView(m_containsMouse);
             }
         });
@@ -725,7 +725,7 @@ void VisibilityManager::toggleHiddenState()
                 emit mustBeShown();
 
                 if(m_mode == Latte::Types::SidebarAutoHide) {
-                    startTimerHide();
+                    startTimerHide(SIDEBARAUTOHIDEMINIMUMSHOW + m_timerHideInterval);
                 }
             } else {
                 emit mustBeHide();
