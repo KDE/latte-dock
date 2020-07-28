@@ -33,7 +33,7 @@
   <name xml:lang="zh-TW">Latte</name>
   <summary>Dock for the masses</summary>
   <summary xml:lang="ar">رصيف للأمور الكبيرة</summary>
-  <summary xml:lang="ca">Dock per a les masses</summary>
+  <summary xml:lang="ca">Acoblador per a les masses</summary>
   <summary xml:lang="ca-valencia">Dock per a les masses</summary>
   <summary xml:lang="cs">Dok pro masy</summary>
   <summary xml:lang="da">Dok til masserne</summary>
@@ -91,7 +91,7 @@
     <p xml:lang="zh-TW">Latte 是一個基於 Plasma 框架並提供您的工作與 plasmoid 優雅與直觀體驗的 dock。它使用拋物線縮放效果來讓您的內容動畫化，並試著只在您需要它時出現。</p>
     <p> "Art In Coffee" </p>
     <p xml:lang="ar">”الفنّ في القهوة“</p>
-    <p xml:lang="ca">"Art al cafè"</p>
+    <p xml:lang="ca">«Art al cafè»</p>
     <p xml:lang="ca-valencia">"Art al cafè"</p>
     <p xml:lang="da">"Kunst i kaffe"</p>
     <p xml:lang="de">„Art In Coffee“</p>
