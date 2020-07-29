@@ -298,7 +298,6 @@ MouseArea{
     //////
 
     property QtObject contextMenu: null
-    property QtObject draggingResistaner: null
 
     signal groupWindowAdded();
     signal groupWindowRemoved();
@@ -792,8 +791,9 @@ MouseArea{
             pressX = mouse.x;
             pressY = mouse.y;
 
-            if(draggingResistaner == null && !modAccepted)
-                draggingResistaner = resistanerTimerComponent.createObject(taskItem);
+            if(!modAccepted){
+                resistanerTimer.start();
+            }
         }
         else if (mouse.button == Qt.RightButton && !modAccepted){
             // When we're a launcher, there's no window controls, so we can show all
@@ -808,10 +808,7 @@ MouseArea{
 
     onReleased: {
         //console.log("Released Task Delegate...");
-        if (draggingResistaner != null){
-            draggingResistaner.destroy();
-            draggingResistaner = null;
-        }
+        resistanerTimer.stop();
 
         if(pressed && (!inBlockingAnimation || inAttentionAnimation) && !isSeparator){
 
@@ -1595,26 +1592,19 @@ MouseArea{
 
     //A Timer to help in resist a bit to dragging, the user must try
     //to press a little first before dragging Started
-    Component {
-        id: resistanerTimerComponent
-        Timer {
-            id: resistanerTimer
-            interval: taskItem.resistanceDelay
-            repeat: false
+    Timer {
+        id: resistanerTimer
+        interval: taskItem.resistanceDelay
+        repeat: false
 
-            onTriggered: {
-                if (!taskItem.inBlockingAnimation){
-                    taskItem.isDragged = true;
-                }
-
-                if (latteView && latteView.debugModeTimers) {
-                    console.log("plasmoid timer: resistanerTimer called...");
-                }
-
-                resistanerTimer.destroy();
+        onTriggered: {
+            if (!taskItem.inBlockingAnimation){
+                taskItem.isDragged = true;
             }
 
-            Component.onCompleted: resistanerTimer.start()
+            if (latteView && latteView.debugModeTimers) {
+                console.log("plasmoid timer: resistanerTimer called...");
+            }
         }
     }
 
