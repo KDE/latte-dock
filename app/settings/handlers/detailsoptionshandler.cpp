@@ -23,6 +23,7 @@
 // local
 #include "ui_detailsdialog.h"
 #include "detailshandler.h"
+#include "../delegates/colorcmbitemdelegate.h"
 #include "../dialogs/detailsdialog.h"
 #include "../models/colorsmodel.h"
 #include "../widgets/patternwidget.h"
@@ -57,6 +58,7 @@ void DetailsOptionsHandler::init()
     m_backButtonsGroup->addButton(m_ui->backRadioBtn, Latte::Layout::PatternBackgroundStyle);
     m_backButtonsGroup->setExclusive(true);
 
+    m_ui->colorsCmb->setItemDelegate(new Details::Delegate::ColorCmbBoxItem(this));
     m_ui->colorsCmb->setModel(m_colorsModel);
 
     connect(m_backButtonsGroup, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
