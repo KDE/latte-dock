@@ -89,7 +89,7 @@ SequentialAnimation{
         }
 
         if(taskItem.isWindow || taskItem.isStartup){
-            taskInitComponent.createObject(wrapper);
+            publishGeometryTimer.start();
             if (taskItem.isDemandingAttention){
                 taskItem.groupWindowAdded();
             }

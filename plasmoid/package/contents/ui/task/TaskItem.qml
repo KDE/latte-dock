@@ -550,26 +550,17 @@ MouseArea{
         HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
     }// Flow with hidden spacers inside
 
-    Component {
-        id: taskInitComponent
-        Timer {
-            id: timer
+    Timer {
+        id: publishGeometryTimer
+        interval: 800
+        repeat: false
 
-            interval: 800
-            repeat: false
+        onTriggered: {
+            slotPublishGeometries();
 
-            onTriggered: {
-                //      taskItem.hoverEnabled = true;
-                slotPublishGeometries();
-
-                if (latteView && latteView.debugModeTimers) {
-                    console.log("plasmoid timer: taskInitComponentTimer called...");
-                }
-
-                timer.destroy();
+            if (latteView && latteView.debugModeTimers) {
+                console.log("plasmoid timer: publishGeometryTimer called...");
             }
-
-            Component.onCompleted: timer.start()
         }
     }
 
@@ -586,7 +577,7 @@ MouseArea{
     onCanPublishGeometriesChanged: {
         if (canPublishGeometries) {
             slotPublishGeometries();
-            taskInitComponent.createObject(taskItem);
+            publishGeometryTimer.start();
         }
     }
 
