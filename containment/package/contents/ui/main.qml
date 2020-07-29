@@ -364,7 +364,7 @@ Item {
 
     property var iconsArray: [16, 22, 32, 48, 64, 96, 128, 256]
 
-    property Item dragOverlay
+    property Item dragOverlay: _dragOverlay
     property Item toolBox
     property Item latteAppletContainer
     property Item latteApplet
@@ -669,31 +669,9 @@ Item {
     }
 
     Plasmoid.onUserConfiguringChanged: {
-        if (plasmoid.immutable) {
-            if (dragOverlay) {
-                dragOverlay.destroy();
-            }
-            return;
-        }
-
-        // console.debug("user configuring", plasmoid.userConfiguring)
-
         if (plasmoid.userConfiguring) {
-            //  console.log("applets------");
             for (var i = 0; i < plasmoid.applets.length; ++i) {
-                //    console.log("applet:"+i);
                 plasmoid.applets[i].expanded = false;
-            }
-
-            if (!dragOverlay) {
-                var component = Qt.createComponent("editmode/ConfigOverlay.qml");
-                if (component.status === Component.Ready) {
-                    dragOverlay = component.createObject(root);
-                } else {
-                    console.log("Could not create ConfigOverlay");
-                    console.log(component.errorString());
-                }
-                component.destroy();
             }
         }
     }
@@ -701,26 +679,6 @@ Item {
     Plasmoid.onImmutableChanged: {
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
-
-        ///Set Preferred Sizes///
-        ///Notice: they are set here because if they are set with a binding
-        ///they break the !immutable experience, the latteView becomes too small
-        ///to add applets
-        /*   if (plasmoid.immutable) {
-            if(root.isHorizontal) {
-                root.Layout.preferredWidth = (plasmoid.configuration.alignment === LatteCore.Types.Justify ?
-                                                  layoutsContainer.width + 0.5*iconMargin : layoutsContainer.mainLayout.width + iconMargin);
-            } else {
-                root.Layout.preferredHeight = (plasmoid.configuration.alignment === LatteCore.Types.Justify ?
-                                                   layoutsContainer.height + 0.5*iconMargin : layoutsContainer.mainLayout.height + iconMargin);
-            }
-        } else {
-            if (root.isHorizontal) {
-                root.Layout.preferredWidth = Screen.width;
-            } else {
-                root.Layout.preferredHeight = Screen.height;
-            }
-        }*/
 
         visibilityManager.updateMaskArea();
     }
@@ -1394,6 +1352,10 @@ Item {
 
     Colorizer.Manager {
         id: colorizerManager
+    }
+
+    EditMode.ConfigOverlay{
+        id: _dragOverlay
     }
 
     Item {
