@@ -40,7 +40,7 @@
   <summary xml:lang="ar">رصيف للأمور الكبيرة</summary>
   <summary xml:lang="ast">Árees d'anclaxe pa les mases</summary>
   <summary xml:lang="ca">Acoblador per a les masses</summary>
-  <summary xml:lang="ca-valencia">Dock per a les masses</summary>
+  <summary xml:lang="ca-valencia">Acoblador per a les masses</summary>
   <summary xml:lang="cs">Dok pro masy</summary>
   <summary xml:lang="da">Dok til masserne</summary>
   <summary xml:lang="de">Dock für die Massen</summary>
@@ -106,7 +106,7 @@
     <p xml:lang="ar">”الفنّ في القهوة“</p>
     <p xml:lang="ast">«Arte nel café»</p>
     <p xml:lang="ca">«Art al cafè»</p>
-    <p xml:lang="ca-valencia">"Art al cafè"</p>
+    <p xml:lang="ca-valencia">«Art al cafè»</p>
     <p xml:lang="da">"Kunst i kaffe"</p>
     <p xml:lang="de">„Art In Coffee“</p>
     <p xml:lang="el">"Τέχνη στον Καφέ"</p>
