@@ -299,7 +299,6 @@ MouseArea{
 
     property QtObject contextMenu: null
     property QtObject draggingResistaner: null
-    property QtObject hoveredTimerObj: null
 
     signal groupWindowAdded();
     signal groupWindowRemoved();
@@ -651,25 +650,16 @@ MouseArea{
                 && (((root.showPreviews || (windowsPreviewDlg.visible && !isLauncher))
                      && windowsPreviewDlg.activeItem !== taskItem)
                     || root.highlightWindows)){
-            if (hoveredTimerObj)  {
+
+            if (!root.disableAllWindowsFunctionality) {
                 //! don't delay showing preview in normal states,
                 //! that is when the dock wasn't hidden
-                if (!hoveredTimerObj.running && !windowsPreviewDlg.visible) {
+                if (!hoveredTimer.running && !windowsPreviewDlg.visible) {
                     //! first task with no previews shown can trigger the delay
-                    hoveredTimerObj.start();
+                    hoveredTimer.start();
                 } else {
                     //! when the previews are already shown, update them immediately
                     showPreviewWindow();
-                }
-            } else {
-                if (!root.disableAllWindowsFunctionality) {
-                    if (!windowsPreviewDlg.visible) {
-                        //! first task with no previews shown can trigger the delay
-                        hoveredTimerObj = hoveredTimerComponent.createObject(taskItem);
-                    } else {
-                        //! when the previews are already shown, update them immediately
-                        showPreviewWindow();
-                    }
                 }
             }
         }
@@ -1061,9 +1051,7 @@ MouseArea{
 
     function forceHidePreview(debugtext) {
         showPreviewsIsBlockedFromReleaseEvent = true;
-        if (hoveredTimerObj) {
-            hoveredTimerObj.stop();
-        }
+        hoveredTimer.stop();
 
         root.forcePreviewsHiding(debugtext);
     }
@@ -1583,36 +1571,27 @@ MouseArea{
 
     //A Timer to check how much time the task is hovered in order to check if we must
     //show window previews
-    Component {
-        id: hoveredTimerComponent
-        Timer {
-            id: hoveredTimer
+    Timer {
+        id: hoveredTimer
+        interval: Math.max(150,plasmoid.configuration.previewsDelay)
+        repeat: false
 
-            interval: Math.max(150,plasmoid.configuration.previewsDelay)
-            repeat: false
-
-            onTriggered: {
-                if (root.disableAllWindowsFunctionality || !isAbleToShowPreview) {
-                    return;
-                }
-
-                if (taskItem.containsMouse) {
-                    if (root.showPreviews || (windowsPreviewDlg.visible && !isLauncher)) {
-                        showPreviewWindow();
-                    }
-
-                    if (taskItem.isWindow && root.highlightWindows) {
-                        root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , taskItem.containsMouse);
-                    }
-                }
-
-                hoveredTimer.destroy();
+        onTriggered: {
+            if (root.disableAllWindowsFunctionality || !isAbleToShowPreview) {
+                return;
             }
 
-            Component.onCompleted: hoveredTimer.start()
+            if (taskItem.containsMouse) {
+                if (root.showPreviews || (windowsPreviewDlg.visible && !isLauncher)) {
+                    showPreviewWindow();
+                }
+
+                if (taskItem.isWindow && root.highlightWindows) {
+                    root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , taskItem.containsMouse);
+                }
+            }
         }
     }
-
 
     //A Timer to help in resist a bit to dragging, the user must try
     //to press a little first before dragging Started
