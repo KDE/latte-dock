@@ -611,14 +611,7 @@ void SettingsDialog::dropEvent(QDropEvent *event)
     }
 }
 
-void SettingsDialog::keyReleaseEvent(QKeyEvent *event)
-{
-    if (event && currentPage() == LayoutPage){
-        m_tabLayoutsHandler->on_keyReleaseEvent(event);
-    }
 
-    QDialog::keyReleaseEvent(event);
-}
 
 void SettingsDialog::updateWindowActivities()
 {

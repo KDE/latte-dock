@@ -150,7 +150,7 @@ void TabLayouts::initLayoutMenu()
     m_removeLayoutAction = m_layoutMenu->addAction(i18nc("remove layout", "Remove"));
     m_removeLayoutAction->setToolTip(i18n("Remove selected layout"));
     m_removeLayoutAction->setIcon(QIcon::fromTheme("delete"));
-    m_removeLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
+    m_removeLayoutAction->setShortcut(QKeySequence(Qt::Key_Delete));
     connectActionWithButton(m_ui->removeButton, m_removeLayoutAction);
     connect(m_removeLayoutAction, &QAction::triggered, this, &TabLayouts::on_remove_layout);
 
@@ -772,14 +772,6 @@ void TabLayouts::on_dropEvent(QDropEvent *event)
     }
 }
 
-void TabLayouts::on_keyReleaseEvent(QKeyEvent *event)
-{
-    if (event && event->key() == Qt::Key_Delete && m_parentDialog->currentPage() == Dialog::LayoutPage){
-        //! Disabled because it deletes a layout when the user is editing its layout name and presses Delete
-        //! there must be a way to block that deletion
-        //on_remove_layout();
-    }
-}
 
 void TabLayouts::loadConfig()
 {

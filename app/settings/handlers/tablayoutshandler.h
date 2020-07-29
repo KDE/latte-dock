@@ -82,7 +82,6 @@ public slots:
     void on_dragLeaveEvent(QDragLeaveEvent *event);
     void on_dragMoveEvent(QDragMoveEvent *event);
     void on_dropEvent(QDropEvent *event);
-    void on_keyReleaseEvent(QKeyEvent *event);
 
 private slots:
     void initUi();

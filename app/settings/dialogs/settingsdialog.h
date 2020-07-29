@@ -92,7 +92,6 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
-    void keyReleaseEvent(QKeyEvent *event) override;
 
 private slots:
     void on_import_fullconfiguration();
