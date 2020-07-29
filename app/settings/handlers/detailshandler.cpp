@@ -23,10 +23,15 @@
 // local
 #include "ui_detailsdialog.h"
 #include "../controllers/layoutscontroller.h"
-#include "../data/layoutdata.h"
 #include "../data/layoutstable.h"
+#include "../delegates/colorcmbitemdelegate.h"
 #include "../dialogs/detailsdialog.h"
+#include "../models/colorsmodel.h"
 #include "../models/layoutsmodel.h"
+
+// Qt
+#include <QColorDialog>
+#include <QFileDialog>
 
 namespace Latte {
 namespace Settings {
@@ -35,12 +40,10 @@ namespace Handler {
 DetailsHandler::DetailsHandler(Dialog::DetailsDialog *parentDialog)
     : Generic(parentDialog),
       m_parentDialog(parentDialog),
-      m_ui(m_parentDialog->ui())
+      m_ui(m_parentDialog->ui()),
+      m_colorsModel(new Model::Colors(this, parentDialog->corona()))
 {
     init();
-
-    //! create it after initializing
-    m_optionsHandler = new DetailsOptionsHandler(parentDialog, this);
 }
 
 DetailsHandler::~DetailsHandler()
@@ -49,14 +52,46 @@ DetailsHandler::~DetailsHandler()
 
 void DetailsHandler::init()
 {
-    m_proxyModel = new QSortFilterProxyModel(this);
-    m_proxyModel->setSourceModel(m_parentDialog->layoutsController()->baseModel());
-    m_proxyModel->setSortRole(Model::Layouts::SORTINGROLE);
-    m_proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
-    m_proxyModel->sort(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
+    //! Layouts
+    m_layoutsProxyModel = new QSortFilterProxyModel(this);
+    m_layoutsProxyModel->setSourceModel(m_parentDialog->layoutsController()->baseModel());
+    m_layoutsProxyModel->setSortRole(Model::Layouts::SORTINGROLE);
+    m_layoutsProxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+    m_layoutsProxyModel->sort(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
 
-    m_ui->layoutsCmb->setModel(m_proxyModel);
+    m_ui->layoutsCmb->setModel(m_layoutsProxyModel);
     m_ui->layoutsCmb->setModelColumn(Model::Layouts::NAMECOLUMN);
+
+    //! Background Pattern
+    m_backButtonsGroup = new QButtonGroup(this);
+    m_backButtonsGroup->addButton(m_ui->colorRadioBtn, Latte::Layout::ColorBackgroundStyle);
+    m_backButtonsGroup->addButton(m_ui->backRadioBtn, Latte::Layout::PatternBackgroundStyle);
+    m_backButtonsGroup->setExclusive(true);
+
+    m_ui->colorsCmb->setItemDelegate(new Details::Delegate::ColorCmbBoxItem(this));
+    m_ui->colorsCmb->setModel(m_colorsModel);
+
+    connect(m_backButtonsGroup, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
+            [ = ](int id, bool checked) {
+
+        if (checked) {
+            //m_layoutsController->setInMultipleMode(id == Latte::Types::MultipleLayouts);
+        }
+    });
+
+    connect(m_ui->backgroundBtn, &QPushButton::pressed, this, &DetailsHandler::selectBackground);
+    connect(m_ui->textColorBtn, &QPushButton::pressed, this, &DetailsHandler::selectTextColor);
+
+    //! Options
+    connect(m_ui->inMenuChk, &QCheckBox::stateChanged, this, [&]() {
+        setIsShownInMenu(m_ui->inMenuChk->isChecked());
+    });
+
+    connect(m_ui->borderlessChk, &QCheckBox::stateChanged, this, [&]() {
+        setHasDisabledBorders(m_ui->borderlessChk->isChecked());
+    });
+
+    connect(this, &DetailsHandler::currentLayoutChanged, this, &DetailsHandler::reload);
 
     reload();
 
@@ -70,6 +105,26 @@ void DetailsHandler::reload()
     c_data = o_data;
 
     m_ui->layoutsCmb->setCurrentText(o_data.name);
+
+    loadLayout(c_data);
+}
+
+void DetailsHandler::loadLayout(const Data::Layout &data)
+{
+    if (data.backgroundStyle == Latte::Layout::ColorBackgroundStyle) {
+        m_ui->colorRadioBtn->setChecked(true);
+    } else {
+        m_ui->backRadioBtn->setChecked(true);
+    }
+
+    m_ui->colorPatternWidget->setBackground(m_parentDialog->layoutsController()->colorPath(data.color));
+    m_ui->backPatternWidget->setBackground(data.background);
+
+    m_ui->colorPatternWidget->setTextColor(Layout::AbstractLayout::defaultTextColor(data.color));
+    m_ui->backPatternWidget->setTextColor(data.textColor);
+
+    m_ui->inMenuChk->setChecked(data.isShownInMenu);
+    m_ui->borderlessChk->setChecked(data.hasDisabledBorders);
 }
 
 Data::Layout DetailsHandler::currentData() const
@@ -106,7 +161,7 @@ void DetailsHandler::save()
 
 void DetailsHandler::on_currentIndexChanged(int row)
 {
-    QString layoutId = m_proxyModel->data(m_proxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
+    QString layoutId = m_layoutsProxyModel->data(m_layoutsProxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
     m_parentDialog->layoutsController()->selectRow(layoutId);
     reload();
 
@@ -131,6 +186,42 @@ void DetailsHandler::setIsShownInMenu(bool inMenu)
 void DetailsHandler::setHasDisabledBorders(bool disabled)
 {
     c_data.hasDisabledBorders = disabled;
+}
+
+void DetailsHandler::selectBackground()
+{
+    QStringList mimeTypeFilters;
+    mimeTypeFilters << "image/jpeg" // will show "JPEG image (*.jpeg *.jpg)
+                    << "image/png";  // will show "PNG image (*.png)"
+
+    QFileDialog dialog(m_parentDialog);
+    dialog.setMimeTypeFilters(mimeTypeFilters);
+
+    QString background =  m_ui->backPatternWidget->background();
+
+    if (background.startsWith("/") && QFileInfo(background).exists()) {
+        dialog.setDirectory(QFileInfo(background).absolutePath());
+        dialog.selectFile(background);
+    }
+
+    if (dialog.exec()) {
+        QStringList files = dialog.selectedFiles();
+
+        if (files.count() > 0) {
+            setBackground(files[0]);
+        }
+    }
+}
+
+void DetailsHandler::selectTextColor()
+{
+    QColorDialog dialog(m_parentDialog);
+    dialog.setCurrentColor(QColor(m_ui->backPatternWidget->textColor()));
+
+    if (dialog.exec()) {
+        qDebug() << "layout selected text color: " << dialog.selectedColor().name();
+        setTextColor(dialog.selectedColor().name());
+    }
 }
 
 }

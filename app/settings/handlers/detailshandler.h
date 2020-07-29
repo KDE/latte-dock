@@ -21,11 +21,12 @@
 #ifndef DETAILSDIALOGHANDLER_H
 #define DETAILSDIALOGHANDLER_H
 
-//! local
+// local
 #include "generichandler.h"
-#include "detailsoptionshandler.h"
+#include "../data/layoutdata.h"
 
 // Qt
+#include <QButtonGroup>
 #include <QSortFilterProxyModel>
 
 namespace Ui {
@@ -36,6 +37,14 @@ namespace Latte{
 namespace Settings{
 namespace Dialog{
 class DetailsDialog;
+}
+}
+}
+
+namespace Latte{
+namespace Settings{
+namespace Model {
+class Colors;
 }
 }
 }
@@ -79,15 +88,22 @@ private:
 
 private:
     void init();
+    void selectBackground();
+    void selectTextColor();
     void reload();
+
+    void loadLayout(const Data::Layout &data);
 
 private:
     Dialog::DetailsDialog *m_parentDialog{nullptr};
     Ui::DetailsDialog *m_ui{nullptr};
 
-    DetailsOptionsHandler *m_optionsHandler{nullptr};
+    QSortFilterProxyModel *m_layoutsProxyModel{nullptr};
 
-    QSortFilterProxyModel *m_proxyModel{nullptr};
+    //! current data
+    Model::Colors *m_colorsModel{nullptr};
+
+    QButtonGroup *m_backButtonsGroup;
 
     Data::Layout o_data;
     Data::Layout c_data;
