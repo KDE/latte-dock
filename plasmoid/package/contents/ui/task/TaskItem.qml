@@ -1608,55 +1608,6 @@ MouseArea{
         }
     }
 
-    ///trying to compete with the crazy situation in the tasksModel
-    ///with launchers and startups... There are windows that stay
-    ///startup mode e.g. chrome, libreoffice... not showing startups
-    ///the user can lose windows...
-    ///Based on the animations, windows are shown directly, startups
-    ///are shown after 5secs of existence, and launchers after 200ms
-    ///for launchers this is set in order to give to a window the time
-    ///to disappear and then show the launcher...
-
-
-    //   property int mainDelay: IsLauncher ? 800 : 400
-    //   property int mainDelay: icList.delayingRemoval ? 2*showWindowAnimation.speed : 450
-
-    //BE CAREFUL: this interval (e.g. 700ms) must be lower from the removal animation
-    //duration e.g.(800ms) because there are situations that because of this some
-    //launchers delay A LOT to reappear, e.g google-chrome
-    //I will blacklist google-chrome as I have not found any other case for this bug
-    //to appear, but even this way there are cases that still appears...
-    property int mainDelay: (AppId == "google-chrome") ? 0 : 2 * taskItem.animations.speedFactor.current * showWindowAnimation.speed
-    property int windowDelay: taskItem.isStartup ? 3 * taskItem.animations.speedFactor.current * taskItem.animations.duration.large : mainDelay
-
-    Component {
-        id: delayShowWindow
-        Timer {
-            id: timerWindow
-
-            interval: windowDelay
-
-            repeat: false
-
-            onTriggered: {
-                //console.log("I am in here: "+taskItem.windowDelay);
-                // showWindowAnimation.execute();
-                if(!taskItem.buffersAreReady)
-                    showWindowAnimation.showWindow();
-                else
-                    showWindowAnimation.execute();
-
-                if (latteView && latteView.debugModeTimers) {
-                    console.log("plasmoid timer: timerWindow called...");
-                }
-
-                timerWindow.destroy();
-            }
-
-            Component.onCompleted: timerWindow.start()
-        }
-    }
-
     // when changing activities and desktops the index of the tasks
     // is updated immediately to -1, this timer protects this indexing
     // change in order to provide a beautiful removal tasks animation
