@@ -134,6 +134,12 @@ void DetailsHandler::reload()
 
 void DetailsHandler::loadLayout(const Data::Layout &data)
 {
+    if (data.icon.isEmpty()) {
+        m_ui->iconClearBtn->setVisible(false);
+    } else {
+        m_ui->iconClearBtn->setVisible(true);
+    }
+
     if (data.backgroundStyle == Latte::Layout::ColorBackgroundStyle) {
         m_ui->colorRadioBtn->setChecked(true);
         m_ui->backRadioBtn->setChecked(false);
@@ -165,7 +171,6 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
         m_ui->backPatternWidget->setTextColor(data.textColor);
     }
 
-    qDebug() << " VALUES : " << data.background << "_" << data.textColor;
     if (!data.background.isEmpty() || !data.textColor.isEmpty()) {
         m_ui->patternClearBtn->setEnabled(true);
     } else {

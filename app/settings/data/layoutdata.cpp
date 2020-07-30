@@ -32,6 +32,7 @@ Layout::Layout()
 Layout::Layout(Layout &&o)
     : id(o.id),
       name(o.name),
+      icon(o.icon),
       color(o.color),
       background(o.background),
       textColor(o.textColor),
@@ -48,6 +49,7 @@ Layout::Layout(Layout &&o)
 Layout::Layout(const Layout &o)
     : id(o.id),
       name(o.name),
+      icon(o.icon),
       color(o.color),
       background(o.background),
       textColor(o.textColor),
@@ -65,6 +67,7 @@ Layout &Layout::operator=(Layout &&rhs)
 {
     id = rhs.id;
     name = rhs.name;
+    icon = rhs.icon;
     color = rhs.color;
     background = rhs.background;
     textColor = rhs.textColor;
@@ -83,6 +86,7 @@ Layout &Layout::operator=(const Layout &rhs)
 {
     id = rhs.id;
     name = rhs.name;
+    icon = rhs.icon;
     color = rhs.color;
     background = rhs.background;
     textColor = rhs.textColor;
@@ -101,6 +105,7 @@ bool Layout::operator==(const Layout &rhs) const
 {
     return (id == rhs.id)
             && (name == rhs.name)
+            && (icon == rhs.icon)
             && (color == rhs.color)
             && (background == rhs.background)
             && (textColor == rhs.textColor)

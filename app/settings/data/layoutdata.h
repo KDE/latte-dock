@@ -45,6 +45,7 @@ public:
     //! Layout data
     QString id;
     QString name;
+    QString icon;
     QString color;
     QString background;
     QString textColor;
