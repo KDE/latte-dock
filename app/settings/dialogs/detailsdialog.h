@@ -64,7 +64,8 @@ public:
 private slots:
     void accept() override;
 
-    void on_apply();
+    void on_ok();
+    void on_cancel();
     void on_reset();
 
 private:

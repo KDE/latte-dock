@@ -41,8 +41,11 @@ DetailsDialog::DetailsDialog(SettingsDialog *parent, Controller::Layouts *contro
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::DetailsHandler(this);
 
-    connect(m_ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked,
-            this, &DetailsDialog::on_apply);
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked,
+            this, &DetailsDialog::on_ok);
+
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked,
+            this, &DetailsDialog::on_cancel);
 
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked,
             this, &DetailsDialog::on_reset);
@@ -72,10 +75,17 @@ void DetailsDialog::accept()
     qDebug() << Q_FUNC_INFO;
 }
 
-void DetailsDialog::on_apply()
+void DetailsDialog::on_ok()
 {
     qDebug() << Q_FUNC_INFO;
     m_layoutsController->setLayoutProperties(m_handler->currentData());
+    close();
+}
+
+void DetailsDialog::on_cancel()
+{
+    qDebug() << Q_FUNC_INFO;
+    close();
 }
 
 void DetailsDialog::on_reset()

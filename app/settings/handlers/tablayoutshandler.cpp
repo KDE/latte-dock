@@ -665,6 +665,8 @@ void TabLayouts::on_details_action()
     auto detailsDlg = new Settings::Dialog::DetailsDialog(m_parentDialog, m_layoutsController);
 
     detailsDlg->exec();
+
+    detailsDlg->deleteLater();
 }
 
 void TabLayouts::on_layoutFilesDropped(const QStringList &paths)
