@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
+    <width>569</width>
     <height>615</height>
    </rect>
   </property>
@@ -79,7 +79,7 @@
             <widget class="Latte::Settings::Widget::PatternWidget" name="backPatternWidget" native="true">
              <property name="minimumSize">
               <size>
-               <width>320</width>
+               <width>358</width>
                <height>60</height>
               </size>
              </property>
@@ -147,7 +147,7 @@
             <widget class="QComboBox" name="colorsCmb">
              <property name="minimumSize">
               <size>
-               <width>320</width>
+               <width>358</width>
                <height>0</height>
               </size>
              </property>
@@ -286,6 +286,29 @@
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QPushButton" name="patternClearBtn">
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>5</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset theme="edit-clear">
+                 <normaloff>.</normaloff>.</iconset>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
            <item>
@@ -325,7 +348,7 @@
             <widget class="Latte::Settings::Widget::PatternWidget" name="colorPatternWidget" native="true">
              <property name="minimumSize">
               <size>
-               <width>320</width>
+               <width>358</width>
                <height>60</height>
               </size>
              </property>
@@ -487,7 +510,7 @@
             <widget class="QComboBox" name="layoutsCmb">
              <property name="minimumSize">
               <size>
-               <width>320</width>
+               <width>358</width>
                <height>0</height>
               </size>
              </property>

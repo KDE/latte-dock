@@ -78,9 +78,10 @@ public:
 signals:
     void currentLayoutChanged();
 
-private:
+private slots:
     void on_currentLayoutIndexChanged(int row);
     void on_currentColorIndexChanged(int row);
+    void on_clearPattern();
 
 private:
     void init();

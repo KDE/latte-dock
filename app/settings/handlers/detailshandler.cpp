@@ -72,6 +72,8 @@ void DetailsHandler::init()
     m_ui->colorsCmb->setItemDelegate(new Details::Delegate::ColorCmbBoxItem(this));
     m_ui->colorsCmb->setModel(m_colorsModel);
 
+    m_ui->patternClearBtn->setFixedHeight(m_ui->backgroundBtn->height()+2);
+
     connect(m_backButtonsGroup, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
             [ = ](int id, bool checked) {
 
@@ -82,6 +84,8 @@ void DetailsHandler::init()
 
     connect(m_ui->backgroundBtn, &QPushButton::pressed, this, &DetailsHandler::selectBackground);
     connect(m_ui->textColorBtn, &QPushButton::pressed, this, &DetailsHandler::selectTextColor);
+    connect(m_ui->patternClearBtn, &QPushButton::pressed, this, &DetailsHandler::on_clearPattern);
+
 
     //! Options
     connect(m_ui->inMenuChk, &QCheckBox::stateChanged, this, [&]() {
@@ -137,6 +141,7 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
         m_ui->colorsCmb->setVisible(true);
         m_ui->backgroundBtn->setVisible(false);
         m_ui->textColorBtn->setVisible(false);
+        m_ui->patternClearBtn->setVisible(false);
     } else {
         m_ui->colorRadioBtn->setChecked(false);
         m_ui->backRadioBtn->setChecked(true);
@@ -144,6 +149,7 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
         m_ui->colorsCmb->setVisible(false);
         m_ui->backgroundBtn->setVisible(true);
         m_ui->textColorBtn->setVisible(true);
+        m_ui->patternClearBtn->setVisible(true);
     }
 
     m_ui->colorPatternWidget->setBackground(m_colorsModel->colorPath(data.color));
@@ -157,6 +163,13 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
     } else {
         m_ui->backPatternWidget->setBackground(data.background);
         m_ui->backPatternWidget->setTextColor(data.textColor);
+    }
+
+    qDebug() << " VALUES : " << data.background << "_" << data.textColor;
+    if (!data.background.isEmpty() || !data.textColor.isEmpty()) {
+        m_ui->patternClearBtn->setEnabled(true);
+    } else {
+        m_ui->patternClearBtn->setEnabled(false);
     }
 
     m_ui->inMenuChk->setChecked(data.isShownInMenu);
@@ -193,6 +206,12 @@ void DetailsHandler::resetDefaults()
 
 void DetailsHandler::save()
 {
+}
+
+void DetailsHandler::on_clearPattern()
+{
+    setBackground("");
+    setTextColor("");
 }
 
 void DetailsHandler::on_currentColorIndexChanged(int row)

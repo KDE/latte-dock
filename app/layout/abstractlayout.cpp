@@ -345,7 +345,7 @@ void AbstractLayout::loadConfig()
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
     m_backgroundStyle = static_cast<BackgroundStyle>(m_layoutGroup.readEntry("backgroundStyle", (int)ColorBackgroundStyle));
 
-    QString deprecatedTextColor = m_layoutGroup.readEntry("textColor", QString("fcfcfc"));
+    QString deprecatedTextColor = m_layoutGroup.readEntry("textColor", QString());
     QString deprecatedBackground = m_layoutGroup.readEntry("background", QString());
 
     if (deprecatedBackground.startsWith("/")) {
@@ -359,7 +359,7 @@ void AbstractLayout::loadConfig()
         saveConfig();
     } else {
         m_customBackground = m_layoutGroup.readEntry("customBackground", QString(""));
-        m_customTextColor = m_layoutGroup.readEntry("customTextColor", QString("fcfcfc"));
+        m_customTextColor = m_layoutGroup.readEntry("customTextColor", QString(""));
     }
 }
 
