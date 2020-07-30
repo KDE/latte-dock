@@ -152,8 +152,8 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
     m_ui->colorsCmb->setCurrentIndex(m_colorsModel->row(data.color));
 
     if (data.background.isEmpty()) {
-        m_ui->backPatternWidget->setBackground(m_colorsModel->colorPath("defaultcustom"));
-        m_ui->backPatternWidget->setTextColor("#3C1C00");
+        m_ui->backPatternWidget->setBackground(m_colorsModel->colorPath(Layout::AbstractLayout::defaultCustomBackground()));
+        m_ui->backPatternWidget->setTextColor(Layout::AbstractLayout::defaultCustomTextColor());
     } else {
         m_ui->backPatternWidget->setBackground(data.background);
         m_ui->backPatternWidget->setTextColor(data.textColor);

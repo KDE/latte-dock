@@ -77,6 +77,9 @@ public:
     GenericLayout(QObject *parent, QString layoutFile, QString assignedName = QString());
     ~GenericLayout() override;
 
+    QString background() const override;
+    QString textColor() const override;
+
     virtual const QStringList appliedActivities() = 0; // to move at an interface
 
     void importToCorona();

@@ -84,16 +84,7 @@ Item{
         anchors.fill: parent
         opacity: root.maxOpacity
         fillMode: Image.Tile
-
-        source: {
-            if (hasBackground) {
-                return latteView.layout.background;
-            }
-
-            return latteView.layout ? "../images/canvas/"+latteView.layout.background+"print.jpg" : "../images/canvas/blueprint.jpg"
-        }
-
-        readonly property bool hasBackground: (latteView.layout && latteView.layout.background.startsWith("/")) ? true : false
+        source: latteView.layout ? latteView.layout.background : "../images/canvas/blueprint.jpg"
 
         Behavior on opacity {
             NumberAnimation {

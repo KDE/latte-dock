@@ -192,6 +192,31 @@ bool GenericLayout::isInternalContainment(Plasma::Applet *applet) const
     return false;
 }
 
+QString GenericLayout::background() const
+{
+    QString colorsPath = m_corona->kPackage().path() + "../../shells/org.kde.latte.shell/contents/images/canvas/";
+
+    if (backgroundStyle() == Layout::PatternBackgroundStyle) {
+        if (customBackground().isEmpty()) {
+
+            return colorsPath + "defaultcustomprint.jpg";
+        } else {
+            return AbstractLayout::customBackground();
+        }
+    }
+
+    return colorsPath + AbstractLayout::color() + "print.jpg";
+}
+
+QString GenericLayout::textColor() const
+{
+    if (backgroundStyle() == Layout::PatternBackgroundStyle && customBackground().isEmpty()) {
+        return AbstractLayout::defaultCustomTextColor();
+    }
+
+    return AbstractLayout::textColor();
+}
+
 Plasma::Containment *GenericLayout::internalContainmentOf(Plasma::Applet *applet) const
 {
     if (!applet) {

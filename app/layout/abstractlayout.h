@@ -89,7 +89,7 @@ public:
     QString name() const;
     QString file() const;
 
-    QString background() const;
+    virtual QString background() const;
 
     QString color() const;
     void setColor(QString color);
@@ -102,7 +102,7 @@ public:
 
     QString predefinedTextColor() const;
 
-    QString textColor() const;
+    virtual QString textColor() const;
     void setTextColor(QString color);
 
     BackgroundStyle backgroundStyle() const;
@@ -114,6 +114,8 @@ public:
     virtual Type type() const;
 
 // STATIC
+    static QString defaultCustomTextColor();
+    static QString defaultCustomBackground();
     static QString defaultTextColor(const QString &color);
     static QString layoutName(const QString &fileName);
     static QList<Plasma::Types::Location> combinedFreeEdges(const QList<Plasma::Types::Location> &edges1,

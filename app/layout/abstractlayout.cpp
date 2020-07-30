@@ -222,6 +222,16 @@ void AbstractLayout::clearLastUsedActivity()
     emit lastUsedActivityChanged();
 }
 
+QString AbstractLayout::defaultCustomTextColor()
+{
+    return "#3C1C00";
+}
+
+QString AbstractLayout::defaultCustomBackground()
+{
+    return "defaultcustom";
+}
+
 QString AbstractLayout::defaultTextColor(const QString &color)
 {
     //! the user is in default layout theme
