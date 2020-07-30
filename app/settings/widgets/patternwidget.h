@@ -49,10 +49,12 @@ public:
 signals:
     void backgroundChanged();
     void textColorChanged();
+    void mouseReleased();
 
 protected:
     void enterEvent(QEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event ) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
 
 private slots:

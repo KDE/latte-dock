@@ -24,6 +24,7 @@
 // local
 #include "generichandler.h"
 #include "../data/layoutdata.h"
+#include "../../layout/abstractlayout.h"
 
 // Qt
 #include <QButtonGroup>
@@ -93,6 +94,8 @@ private:
     void setBackground(const QString &background);
     void setTextColor(const QString &textColor);
     void setColor(const QString &color);
+
+    void setBackgroundStyle(const Latte::Layout::BackgroundStyle &style);
 
     void loadLayout(const Data::Layout &data);
 

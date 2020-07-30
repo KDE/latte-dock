@@ -28,6 +28,7 @@
 #include "../dialogs/detailsdialog.h"
 #include "../models/colorsmodel.h"
 #include "../models/layoutsmodel.h"
+#include "../widgets/patternwidget.h"
 
 // Qt
 #include <QColorDialog>
@@ -75,7 +76,7 @@ void DetailsHandler::init()
             [ = ](int id, bool checked) {
 
         if (checked) {
-            //m_layoutsController->setInMultipleMode(id == Latte::Types::MultipleLayouts);
+            setBackgroundStyle(static_cast<Latte::Layout::BackgroundStyle>(id));
         }
     });
 
@@ -101,6 +102,17 @@ void DetailsHandler::init()
     //! connect colors combobox after the selected layout has been loaded
     connect(m_ui->colorsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::on_currentColorIndexChanged);
 
+
+    //! pattern widgets
+    connect(m_ui->backPatternWidget, &Widget::PatternWidget::mouseReleased, this, [&]() {
+        setBackgroundStyle(Latte::Layout::PatternBackgroundStyle);
+    });
+    connect(m_ui->colorPatternWidget, &Widget::PatternWidget::mouseReleased, this, [&]() {
+        setBackgroundStyle(Latte::Layout::ColorBackgroundStyle);
+    });
+
+
+    //! data were changed
     connect(this, &DetailsHandler::dataChanged, this, [&]() {
         loadLayout(c_data);
     });
@@ -121,9 +133,17 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
     if (data.backgroundStyle == Latte::Layout::ColorBackgroundStyle) {
         m_ui->colorRadioBtn->setChecked(true);
         m_ui->backRadioBtn->setChecked(false);
+
+        m_ui->colorsCmb->setVisible(true);
+        m_ui->backgroundBtn->setVisible(false);
+        m_ui->textColorBtn->setVisible(false);
     } else {
         m_ui->colorRadioBtn->setChecked(false);
         m_ui->backRadioBtn->setChecked(true);
+
+        m_ui->colorsCmb->setVisible(false);
+        m_ui->backgroundBtn->setVisible(true);
+        m_ui->textColorBtn->setVisible(true);
     }
 
     m_ui->colorPatternWidget->setBackground(m_colorsModel->colorPath(data.color));
@@ -231,6 +251,16 @@ void DetailsHandler::setHasDisabledBorders(bool disabled)
     }
 
     c_data.hasDisabledBorders = disabled;
+    emit dataChanged();
+}
+
+void DetailsHandler::setBackgroundStyle(const Latte::Layout::BackgroundStyle &style)
+{
+    if (c_data.backgroundStyle == style) {
+        return;
+    }
+
+    c_data.backgroundStyle = style;
     emit dataChanged();
 }
 

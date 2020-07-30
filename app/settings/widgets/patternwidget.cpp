@@ -146,6 +146,12 @@ void PatternWidget::mouseMoveEvent(QMouseEvent *event )
     QWidget::mouseMoveEvent(event);
 }
 
+void PatternWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    emit mouseReleased();
+    QWidget::mouseReleaseEvent(event);
+}
+
 void PatternWidget::paintEvent(QPaintEvent *event)
 {
     //! it is needed from Qt, otherwise QWidget is not updated
