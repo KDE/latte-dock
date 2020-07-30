@@ -344,8 +344,11 @@ void DetailsHandler::selectBackground()
 
 void DetailsHandler::selectIcon()
 {
-    KIconDialog iconDialog(m_parentDialog);
-    setIcon(iconDialog.openDialog());
+    QString icon = KIconDialog::getIcon();
+
+    if (!icon.isEmpty()) {
+        setIcon(icon);
+    }
 }
 
 void DetailsHandler::selectTextColor()
