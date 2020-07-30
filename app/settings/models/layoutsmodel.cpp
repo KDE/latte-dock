@@ -360,7 +360,6 @@ Qt::ItemFlags Layouts::flags(const QModelIndex &index) const
     }
 
     if (column == ACTIVITYCOLUMN
-            || column == BACKGROUNDCOLUMN
             || column == NAMECOLUMN
             || column == SHAREDCOLUMN) {
         flags |= Qt::ItemIsEditable;
