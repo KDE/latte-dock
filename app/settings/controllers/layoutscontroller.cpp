@@ -723,26 +723,26 @@ void Layouts::save()
             generic->unlock();
         }
 
-      /*  if (iLayoutCurrentData.color.startsWith("/")) {
-            //it is image file in such case
-            if (iLayoutCurrentData.color != generic->background()) {
-                generic->setBackground(iLayoutCurrentData.color);
-            }
+        //! Backgrounds
+        if (generic->backgroundStyle() != iLayoutCurrentData.backgroundStyle) {
+            generic->setBackgroundStyle(iLayoutCurrentData.backgroundStyle);
+        }
 
-            if (generic->textColor() != iLayoutCurrentData.textColor) {
-                generic->setTextColor(iLayoutCurrentData.textColor);
-            }
-        } else {
-            if (iLayoutCurrentData.color != generic->color()) {
-                generic->setColor(iLayoutCurrentData.color);
-                generic->setBackground(QString());
-                generic->setTextColor(QString());
-            }
-        }*/
+        if (generic->color() != iLayoutCurrentData.color) {
+            generic->setColor(iLayoutCurrentData.color);
+        }
+
+        if (generic->customBackground() != iLayoutCurrentData.background) {
+            generic->setCustomBackground(iLayoutCurrentData.background);
+        }
+
+        if (generic->customTextColor() != iLayoutCurrentData.textColor) {
+            generic->setCustomTextColor(iLayoutCurrentData.textColor);
+        }
 
         //! update only the Central-specific layout parts
         CentralLayout *centralActive = isOriginalLayout ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(iLayoutOriginalData.name) : nullptr;
-        CentralLayout *central = centralActive ? centralActive : m_layouts[iLayoutCurrentData.id];
+        CentralLayout *central = centralActive ? centralActive : m_layouts[iLayoutCurrentData.id];       
 
         if (central->showInMenu() != iLayoutCurrentData.isShownInMenu) {
             central->setShowInMenu(iLayoutCurrentData.isShownInMenu);
