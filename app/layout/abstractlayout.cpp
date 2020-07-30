@@ -69,6 +69,7 @@ void AbstractLayout::init()
     connect(this, &AbstractLayout::customTextColorChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::colorChanged, this, &AbstractLayout::saveConfig);
 
+    connect(this, &AbstractLayout::iconChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::lastUsedActivityChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::launchersChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::preferredForShortcutsTouchedChanged, this, &AbstractLayout::saveConfig);
@@ -209,6 +210,21 @@ void AbstractLayout::setColor(QString color)
 
     m_color = color;
     emit colorChanged();
+}
+
+QString AbstractLayout::icon() const
+{
+    return m_icon;
+}
+
+void AbstractLayout::setIcon(const QString &icon)
+{
+    if (m_icon == icon) {
+        return;
+    }
+
+    m_icon = icon;
+    emit iconChanged();
 }
 
 QString AbstractLayout::lastUsedActivity()
@@ -358,9 +374,11 @@ void AbstractLayout::loadConfig()
 
         saveConfig();
     } else {
-        m_customBackground = m_layoutGroup.readEntry("customBackground", QString(""));
-        m_customTextColor = m_layoutGroup.readEntry("customTextColor", QString(""));
+        m_customBackground = m_layoutGroup.readEntry("customBackground", QString());
+        m_customTextColor = m_layoutGroup.readEntry("customTextColor", QString());
     }
+
+    m_icon = m_layoutGroup.readEntry("icon", QString());
 }
 
 void AbstractLayout::saveConfig()
@@ -372,6 +390,7 @@ void AbstractLayout::saveConfig()
     m_layoutGroup.writeEntry("backgroundStyle", (int)m_backgroundStyle);
     m_layoutGroup.writeEntry("customBackground", m_customBackground);
     m_layoutGroup.writeEntry("customTextColor", m_customTextColor);
+    m_layoutGroup.writeEntry("icon", m_icon);
     m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
     m_layoutGroup.writeEntry("preferredForShortcutsTouched", m_preferredForShortcutsTouched);
 }

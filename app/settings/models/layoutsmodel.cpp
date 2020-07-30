@@ -406,6 +406,18 @@ QList<Data::LayoutIcon> Layouts::icons(const int &row) const
         icons.prepend(freeActsData);
     }
 
+    if (!m_layoutsTable[row].icon.isEmpty() && freeActivitiesPos<0) {
+        //! if there is specific icon set from the user for this layout
+        //! we draw only that icon
+        icons.clear();
+        Data::LayoutIcon icon;
+        icon.name = m_layoutsTable[row].icon;
+        icon.isFreeActivities = false;
+        icon.isBackgroundFile = false;
+        icons << icon;
+        return icons;
+    }
+
     //! background image
     if (icons.count() == 0) {
         QString colorPath;

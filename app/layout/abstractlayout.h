@@ -65,6 +65,7 @@ class AbstractLayout : public QObject
 
     Q_PROPERTY(bool preferredForShortcutsTouched READ preferredForShortcutsTouched WRITE setPreferredForShortcutsTouched NOTIFY preferredForShortcutsTouchedChanged)
 
+    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged)
     Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)
     Q_PROPERTY(QString textColor READ textColor NOTIFY textColorChanged)
 
@@ -100,6 +101,9 @@ public:
     QString customTextColor() const;
     void setCustomTextColor(const QString &customColor);
 
+    QString icon() const;
+    void setIcon(const QString &icon);
+
     QString predefinedTextColor() const;
 
     virtual QString textColor() const;
@@ -128,6 +132,7 @@ signals:
     void customTextColorChanged();
     void colorChanged();
     void fileChanged();
+    void iconChanged();
     void lastUsedActivityChanged();
     void launchersChanged();
     void nameChanged();
@@ -155,7 +160,7 @@ protected:
     QString m_customTextColor;
     QString m_color;
     QString m_lastUsedActivity; //the last used activity for this layout
-
+    QString m_icon;
 
     BackgroundStyle m_backgroundStyle{ColorBackgroundStyle};
 

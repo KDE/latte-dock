@@ -33,6 +33,10 @@
 // Qt
 #include <QColorDialog>
 #include <QFileDialog>
+#include <QIcon>
+
+// KDE
+#include <KIconDialog>
 
 namespace Latte {
 namespace Settings {
@@ -83,6 +87,8 @@ void DetailsHandler::init()
     });
 
     connect(m_ui->backgroundBtn, &QPushButton::pressed, this, &DetailsHandler::selectBackground);
+    connect(m_ui->iconBtn, &QPushButton::pressed, this, &DetailsHandler::selectIcon);
+    connect(m_ui->iconClearBtn, &QPushButton::pressed, this, &DetailsHandler::on_clearIcon);
     connect(m_ui->textColorBtn, &QPushButton::pressed, this, &DetailsHandler::selectTextColor);
     connect(m_ui->patternClearBtn, &QPushButton::pressed, this, &DetailsHandler::on_clearPattern);
 
@@ -135,8 +141,10 @@ void DetailsHandler::reload()
 void DetailsHandler::loadLayout(const Data::Layout &data)
 {
     if (data.icon.isEmpty()) {
+        m_ui->iconBtn->setIcon(QIcon::fromTheme("add"));
         m_ui->iconClearBtn->setVisible(false);
     } else {
+        m_ui->iconBtn->setIcon(QIcon::fromTheme(data.icon));
         m_ui->iconClearBtn->setVisible(true);
     }
 
@@ -213,6 +221,11 @@ void DetailsHandler::save()
 {
 }
 
+void DetailsHandler::on_clearIcon()
+{
+    setIcon("");
+}
+
 void DetailsHandler::on_clearPattern()
 {
     setBackground("");
@@ -251,6 +264,16 @@ void DetailsHandler::setColor(const QString &color)
     }
 
     c_data.color = color;
+    emit dataChanged();
+}
+
+void DetailsHandler::setIcon(const QString &icon)
+{
+    if (c_data.icon == icon) {
+        return;
+    }
+
+    c_data.icon = icon;
     emit dataChanged();
 }
 
@@ -317,6 +340,12 @@ void DetailsHandler::selectBackground()
             setBackground(files[0]);
         }
     }
+}
+
+void DetailsHandler::selectIcon()
+{
+    KIconDialog iconDialog(m_parentDialog);
+    setIcon(iconDialog.openDialog());
 }
 
 void DetailsHandler::selectTextColor()

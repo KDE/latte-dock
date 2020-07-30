@@ -406,6 +406,7 @@ void Layouts::loadLayouts()
         CentralLayout *central = new CentralLayout(this, original.id);
 
         original.name = central->name();
+        original.icon = central->icon();
         original.backgroundStyle = central->backgroundStyle();
         original.color = central->color();
         original.background = central->customBackground();
@@ -539,6 +540,7 @@ const Data::Layout Layouts::addLayoutForFile(QString file, QString layoutName, b
     m_layouts[copied.id] = settings;
 
     copied.name = uniqueLayoutName(layoutName);
+    copied.icon = settings->icon();
     copied.backgroundStyle = settings->backgroundStyle();
     copied.color = settings->color();
     copied.textColor = settings->customTextColor();
@@ -723,38 +725,22 @@ void Layouts::save()
             generic->unlock();
         }
 
+        //! Icon
+        generic->setIcon(iLayoutCurrentData.icon);
+
         //! Backgrounds
-        if (generic->backgroundStyle() != iLayoutCurrentData.backgroundStyle) {
-            generic->setBackgroundStyle(iLayoutCurrentData.backgroundStyle);
-        }
-
-        if (generic->color() != iLayoutCurrentData.color) {
-            generic->setColor(iLayoutCurrentData.color);
-        }
-
-        if (generic->customBackground() != iLayoutCurrentData.background) {
-            generic->setCustomBackground(iLayoutCurrentData.background);
-        }
-
-        if (generic->customTextColor() != iLayoutCurrentData.textColor) {
-            generic->setCustomTextColor(iLayoutCurrentData.textColor);
-        }
+        generic->setBackgroundStyle(iLayoutCurrentData.backgroundStyle);
+        generic->setColor(iLayoutCurrentData.color);
+        generic->setCustomBackground(iLayoutCurrentData.background);
+        generic->setCustomTextColor(iLayoutCurrentData.textColor);
 
         //! update only the Central-specific layout parts
         CentralLayout *centralActive = isOriginalLayout ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(iLayoutOriginalData.name) : nullptr;
         CentralLayout *central = centralActive ? centralActive : m_layouts[iLayoutCurrentData.id];       
 
-        if (central->showInMenu() != iLayoutCurrentData.isShownInMenu) {
-            central->setShowInMenu(iLayoutCurrentData.isShownInMenu);
-        }
-
-        if (central->disableBordersForMaximizedWindows() != iLayoutCurrentData.hasDisabledBorders) {
-            central->setDisableBordersForMaximizedWindows(iLayoutCurrentData.hasDisabledBorders);
-        }
-
-        if (central->activities() != cleanedActivities) {
-            central->setActivities(cleanedActivities);
-        }
+        central->setShowInMenu(iLayoutCurrentData.isShownInMenu);
+        central->setDisableBordersForMaximizedWindows(iLayoutCurrentData.hasDisabledBorders);
+        central->setActivities(cleanedActivities);
 
         //! If the layout name changed OR the layout path is a temporary one
         if ((iLayoutCurrentData.name != iLayoutOriginalData.name) || iLayoutCurrentData.isTemporary()) {

@@ -81,12 +81,15 @@ signals:
 private slots:
     void on_currentLayoutIndexChanged(int row);
     void on_currentColorIndexChanged(int row);
+    void on_clearIcon();
     void on_clearPattern();
+
+    void selectBackground();
+    void selectIcon();
+    void selectTextColor();
 
 private:
     void init();
-    void selectBackground();
-    void selectTextColor();
     void reload();
 
     void setIsShownInMenu(bool inMenu);
@@ -95,6 +98,7 @@ private:
     void setBackground(const QString &background);
     void setTextColor(const QString &textColor);
     void setColor(const QString &color);
+    void setIcon(const QString &icon);
 
     void setBackgroundStyle(const Latte::Layout::BackgroundStyle &style);
 

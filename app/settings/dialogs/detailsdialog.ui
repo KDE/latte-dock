@@ -178,11 +178,24 @@
                <height>40</height>
               </size>
              </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
              <property name="text">
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset theme="add"/>
+              <iconset theme="add">
+               <normaloff>.</normaloff>.</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
              </property>
             </widget>
            </item>
