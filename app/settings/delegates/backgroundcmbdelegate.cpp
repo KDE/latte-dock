@@ -121,7 +121,7 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
     QList<Data::LayoutIcon> icons = index.data(Qt::UserRole).value<QList<Data::LayoutIcon>>();
 
     if (icons.count() > 0) {
-        int localMargin = icons[0].isBackgroundFile && icons.count() == 1 ? qMin(option.rect.height()/4,MARGIN+5) : MARGIN-1;
+        int localMargin = MARGIN-1;// icons[0].isBackgroundFile && icons.count() == 1 ? qMin(option.rect.height()/4,MARGIN+5) : MARGIN-1;
 
         int aY = option.rect.y() + localMargin;
         int thick = option.rect.height() - localMargin*2;
@@ -153,8 +153,11 @@ void BackgroundCmbBox::drawIcon(QPainter *painter, const QStyleOptionViewItem &o
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     if (icon.isBackgroundFile) {
+        int backImageMargin = qMin(option.rect.height()/4, MARGIN+2);
+        QRect backTarget(target.x() + backImageMargin, target.y() + backImageMargin, target.width() - 2*backImageMargin, target.height() - 2*backImageMargin);
+
         QPixmap backImage(icon.name);
-        backImage = backImage.copy(QRect(MARGIN, MARGIN, target.width(),target.height()));
+        backImage = backImage.copy(backTarget);
 
         QPalette::ColorRole textColorRole = selected ? QPalette::HighlightedText : QPalette::Text;
 
@@ -165,7 +168,7 @@ void BackgroundCmbBox::drawIcon(QPainter *painter, const QStyleOptionViewItem &o
         painter->setBrush(imageBrush);
         painter->setPen(pen);
 
-        painter->drawEllipse(target);
+        painter->drawEllipse(backTarget);
     } else {
         QIcon::Mode mode = ((active && (selected || focused)) ? QIcon::Selected : QIcon::Normal);
 

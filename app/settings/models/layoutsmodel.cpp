@@ -373,12 +373,11 @@ void Layouts::setIconsPath(QString iconsPath)
     m_iconsPath = iconsPath;
 }
 
-QList<Data::LayoutIcon> Layouts::icons(const int &row) const
+QList<Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) const
 {
     QList<Data::LayoutIcon> icons;
 
-    QStringList activitiesIds = m_layoutsTable[row].isShared() ?
-                assignedActivitiesFromShared(row) : m_layoutsTable[row].activities;
+    QStringList activitiesIds = m_layoutsTable[row].activities;
 
     int freeActivitiesPos = -1;
 
@@ -403,7 +402,9 @@ QList<Data::LayoutIcon> Layouts::icons(const int &row) const
 
     if (freeActivitiesPos >= 0) {
         Data::LayoutIcon freeActsData = icons.takeAt(freeActivitiesPos);
-        icons.prepend(freeActsData);
+        icons.clear();
+        icons << freeActsData;
+        return icons;
     }
 
     if (!m_layoutsTable[row].icon.isEmpty() && freeActivitiesPos<0) {
@@ -438,6 +439,58 @@ QList<Data::LayoutIcon> Layouts::icons(const int &row) const
     }
 
     return icons;
+}
+
+QList<Data::LayoutIcon> Layouts::iconsForSharedLayout(const int &row) const
+{
+    //! SHARED layout case
+    QList<Data::LayoutIcon> icons;
+
+    if (!m_layoutsTable[row].icon.isEmpty()) {
+        //! if there is specific icon set from the user for this layout
+        //! we draw only that icon
+        Data::LayoutIcon icon;
+        icon.name = m_layoutsTable[row].icon;
+        icon.isFreeActivities = false;
+        icon.isBackgroundFile = false;
+        icons << icon;
+        return icons;
+    }
+
+    for (int i=0; i<m_layoutsTable[row].shares.count(); ++i) {
+        QString shareId = m_layoutsTable[row].shares[i];
+        int shareRow = rowForId(shareId);
+
+        if (shareRow>=0) {
+            icons << iconsForCentralLayout(shareRow);
+        }
+    }
+
+    int freeActivitiesPos = -1;
+
+    for (int i=0; i<icons.count(); ++i) {
+        if (icons[i].isFreeActivities) {
+            freeActivitiesPos = i;
+            break;
+        }
+    }
+
+    if (freeActivitiesPos >= 0) {
+        //! Put FreeActivities icon on top of the rest icons
+        Data::LayoutIcon freeActsData = icons.takeAt(freeActivitiesPos);
+        icons << freeActsData;
+    }
+
+    return icons;
+}
+
+QList<Data::LayoutIcon> Layouts::icons(const int &row) const
+{
+    if (!m_layoutsTable[row].isShared()) {
+        return iconsForCentralLayout(row);
+    } else {
+        return iconsForSharedLayout(row);
+    }
 }
 
 QString Layouts::sortableText(const int &priority, const int &row) const

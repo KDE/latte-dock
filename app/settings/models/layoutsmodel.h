@@ -169,6 +169,8 @@ private:
     QStringList assignedActivitiesFromShared(const int &row) const;
 
     QList<Data::LayoutIcon> icons(const int &row) const;
+    QList<Data::LayoutIcon> iconsForCentralLayout(const int &row) const;
+    QList<Data::LayoutIcon> iconsForSharedLayout(const int &row) const;
 
 private:
     //! break MVC only when a SharedTo editor is created
