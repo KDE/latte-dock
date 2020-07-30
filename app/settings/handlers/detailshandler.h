@@ -74,23 +74,25 @@ public:
 
     Data::Layout currentData() const;
 
-    void setIsShownInMenu(bool inMenu);
-    void setHasDisabledBorders(bool disabled);
-
-    void setBackground(const QString &background);
-    void setTextColor(const QString &textColor);
-
 signals:
     void currentLayoutChanged();
 
 private:
-    void on_currentIndexChanged(int row);
+    void on_currentLayoutIndexChanged(int row);
+    void on_currentColorIndexChanged(int row);
 
 private:
     void init();
     void selectBackground();
     void selectTextColor();
     void reload();
+
+    void setIsShownInMenu(bool inMenu);
+    void setHasDisabledBorders(bool disabled);
+
+    void setBackground(const QString &background);
+    void setTextColor(const QString &textColor);
+    void setColor(const QString &color);
 
     void loadLayout(const Data::Layout &data);
 

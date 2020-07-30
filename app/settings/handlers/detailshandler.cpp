@@ -95,8 +95,15 @@ void DetailsHandler::init()
 
     reload();
 
-    //! connect combobox after the selected layout has been loaded
-    connect(m_ui->layoutsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::on_currentIndexChanged);
+    //! connect layout combobox after the selected layout has been loaded
+    connect(m_ui->layoutsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::on_currentLayoutIndexChanged);
+
+    //! connect colors combobox after the selected layout has been loaded
+    connect(m_ui->colorsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::on_currentColorIndexChanged);
+
+    connect(this, &DetailsHandler::dataChanged, this, [&]() {
+        loadLayout(c_data);
+    });
 }
 
 void DetailsHandler::reload()
@@ -113,11 +120,14 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
 {
     if (data.backgroundStyle == Latte::Layout::ColorBackgroundStyle) {
         m_ui->colorRadioBtn->setChecked(true);
+        m_ui->backRadioBtn->setChecked(false);
     } else {
+        m_ui->colorRadioBtn->setChecked(false);
         m_ui->backRadioBtn->setChecked(true);
     }
 
-    m_ui->colorPatternWidget->setBackground(m_parentDialog->layoutsController()->colorPath(data.color));
+    m_ui->colorPatternWidget->setBackground(m_colorsModel->colorPath(data.color));
+    m_ui->colorsCmb->setCurrentIndex(m_colorsModel->row(data.color));
     m_ui->backPatternWidget->setBackground(data.background);
 
     m_ui->colorPatternWidget->setTextColor(Layout::AbstractLayout::defaultTextColor(data.color));
@@ -159,7 +169,13 @@ void DetailsHandler::save()
 {
 }
 
-void DetailsHandler::on_currentIndexChanged(int row)
+void DetailsHandler::on_currentColorIndexChanged(int row)
+{
+    QString selectedColor = m_ui->colorsCmb->itemData(row, Model::Colors::IDROLE).toString();
+    setColor(selectedColor);
+}
+
+void DetailsHandler::on_currentLayoutIndexChanged(int row)
 {
     QString layoutId = m_layoutsProxyModel->data(m_layoutsProxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
     m_parentDialog->layoutsController()->selectRow(layoutId);
@@ -170,22 +186,52 @@ void DetailsHandler::on_currentIndexChanged(int row)
 
 void DetailsHandler::setBackground(const QString &background)
 {
+    if (c_data.background == background) {
+        return;
+    }
+
     c_data.background = background;
+    emit dataChanged();
+}
+
+void DetailsHandler::setColor(const QString &color)
+{
+    if (c_data.color == color) {
+        return;
+    }
+
+    c_data.color = color;
+    emit dataChanged();
 }
 
 void DetailsHandler::setTextColor(const QString &textColor)
 {
+    if (c_data.textColor == textColor) {
+        return;
+    }
+
     c_data.textColor = textColor;
+    emit dataChanged();
 }
 
 void DetailsHandler::setIsShownInMenu(bool inMenu)
 {
+    if (c_data.isShownInMenu == inMenu) {
+        return;
+    }
+
     c_data.isShownInMenu = inMenu;
+    emit dataChanged();
 }
 
 void DetailsHandler::setHasDisabledBorders(bool disabled)
 {
+    if (c_data.hasDisabledBorders == disabled) {
+        return;
+    }
+
     c_data.hasDisabledBorders = disabled;
+    emit dataChanged();
 }
 
 void DetailsHandler::selectBackground()

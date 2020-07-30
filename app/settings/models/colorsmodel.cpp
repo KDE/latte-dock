@@ -91,6 +91,17 @@ int Colors::columnCount(const QModelIndex &parent) const
     return TEXTCOLORROLE+1;
 }
 
+int Colors::row(const QString &id)
+{
+    for (int i=0; i<m_colorsTable.count(); ++i){
+        if (m_colorsTable[i].id == id) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 QVariant Colors::data(const QModelIndex &index, int role) const
 {
     const int row = index.row();

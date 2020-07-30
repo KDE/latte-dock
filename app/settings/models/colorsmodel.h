@@ -41,7 +41,7 @@ class Colors : public QAbstractTableModel
 public:
     enum ColorsRoles
     {
-        IDROLE = 0,
+        IDROLE = Qt::UserRole + 1,
         NAMEROLE,
         PATHROLE,
         TEXTCOLORROLE
@@ -54,13 +54,15 @@ public:
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
 
+    int row(const QString &id);
+
+    QString colorPath(const QString &color);
+
     QVariant data(const QModelIndex &index, int role) const override;
 
 private:
     void init();
-    void add(const QString &newid, const QString &newname, const QString &newpath, const QString &newtextcolor);
-
-    QString colorPath(const QString &color);
+    void add(const QString &newid, const QString &newname, const QString &newpath, const QString &newtextcolor);  
 
 private:
     QString m_colorsPath;
