@@ -147,11 +147,17 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
     }
 
     m_ui->colorPatternWidget->setBackground(m_colorsModel->colorPath(data.color));
-    m_ui->colorsCmb->setCurrentIndex(m_colorsModel->row(data.color));
-    m_ui->backPatternWidget->setBackground(data.background);
-
     m_ui->colorPatternWidget->setTextColor(Layout::AbstractLayout::defaultTextColor(data.color));
-    m_ui->backPatternWidget->setTextColor(data.textColor);
+
+    m_ui->colorsCmb->setCurrentIndex(m_colorsModel->row(data.color));
+
+    if (data.background.isEmpty()) {
+        m_ui->backPatternWidget->setBackground(m_colorsModel->colorPath("defaultcustom"));
+        m_ui->backPatternWidget->setTextColor("#3C1C00");
+    } else {
+        m_ui->backPatternWidget->setBackground(data.background);
+        m_ui->backPatternWidget->setTextColor(data.textColor);
+    }
 
     m_ui->inMenuChk->setChecked(data.isShownInMenu);
     m_ui->borderlessChk->setChecked(data.hasDisabledBorders);

@@ -35,7 +35,7 @@ Colors::Colors(QObject *parent, Latte::Corona *corona)
       m_corona(corona)
 {
     //!find the available colors
-    m_colorsPath = m_corona->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/";
+    m_colorsPath = m_corona->kPackage().path() + "../../shells/org.kde.latte.shell/contents/images/canvas/";
 
     init();
 }

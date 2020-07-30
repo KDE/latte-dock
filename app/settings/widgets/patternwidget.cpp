@@ -103,7 +103,6 @@ void PatternWidget::setTextColor(const QString &color)
     }
 
     m_textColor = color;
-
     m_textColorBrightness = Latte::colorBrightness(QColor(color));
 
     emit textColorChanged();
@@ -122,7 +121,7 @@ void PatternWidget::updateUi()
         background = "background-image: none;";
         m_shadowEffect->setColor(Qt::transparent);
     } else {
-        m_shadowEffect->setColor(Qt::black);
+        m_shadowEffect->setColor("#020202");
     }
 
     if (m_textColorBrightness > 127) {
