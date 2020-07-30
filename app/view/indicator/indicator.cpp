@@ -322,6 +322,16 @@ void Indicator::configUiFor(QString type, QQuickItem *parent)
         return;
     }
 
+    if (m_lastCreatedConfigUi && m_lastCreatedConfigUiType == type && !type.isEmpty()) {
+        //! config ui has already been created and can be provided again
+        QQuickItem *qmlItem = qobject_cast<QQuickItem*>(m_lastCreatedConfigUi->rootObject());
+        if (qmlItem) {
+            qmlItem->setParentItem(parent);
+            qmlItem->setVisible(true);
+        }
+        return;
+    }
+
     if (m_lastCreatedConfigUi) {
         delete m_lastCreatedConfigUi;
         m_lastCreatedConfigUi = nullptr;
@@ -341,7 +351,7 @@ void Indicator::configUiFor(QString type, QQuickItem *parent)
         QString uiPath = metadata.value("X-Latte-ConfigUi");
 
         if (!uiPath.isEmpty()) {
-            m_lastCreatedConfigUi = new KDeclarative::QmlObjectSharedEngine(parent);
+            m_lastCreatedConfigUi = new KDeclarative::QmlObjectSharedEngine(this);
             m_lastCreatedConfigUi->setTranslationDomain(QLatin1String("latte_indicator_") + m_metadata.pluginId());
             m_lastCreatedConfigUi->setInitializationDelayed(true);
             uiPath = m_pluginPath + "package/" + uiPath;
@@ -353,10 +363,22 @@ void Indicator::configUiFor(QString type, QQuickItem *parent)
             QQuickItem *qmlItem = qobject_cast<QQuickItem*>(m_lastCreatedConfigUi->rootObject());
             if (qmlItem) {
                 qmlItem->setParentItem(parent);
+                m_lastCreatedConfigUiType = type;
                 setProvidesConfigUi(true);
             }
         } else {
+            m_lastCreatedConfigUiType = "";
             setProvidesConfigUi(false);
+        }
+    }
+}
+
+void Indicator::hideConfigUi()
+{
+    if (m_lastCreatedConfigUi) {
+        QQuickItem *qmlItem = qobject_cast<QQuickItem*>(m_lastCreatedConfigUi->rootObject());
+        if (qmlItem) {
+            qmlItem->setVisible(false);
         }
     }
 }

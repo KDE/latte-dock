@@ -130,6 +130,7 @@ public slots:
     Q_INVOKABLE void addIndicator();
     Q_INVOKABLE void downloadIndicator();
     Q_INVOKABLE void removeIndicator(QString pluginId);
+    void hideConfigUi();
     void releaseConfigUi();
 
 signals:
@@ -181,6 +182,8 @@ private:
     QPointer<IndicatorPart::Resources> m_resources;
 
     QPointer<KDeclarative::ConfigPropertyMap> m_configuration;
+
+    QString m_lastCreatedConfigUiType;
     QPointer<KDeclarative::QmlObjectSharedEngine> m_lastCreatedConfigUi;
 };
 

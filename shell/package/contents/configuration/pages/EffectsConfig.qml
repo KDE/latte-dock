@@ -421,9 +421,9 @@ PlasmaComponents.Page {
                         onCurrentChanged: {
                             if (current.checked) {
                                 if (current === customIndicator.button) {
-                                    latteView.indicator.type = customIndicator.type
+                                    latteView.indicator.type = customIndicator.type;
                                 } else {
-                                    latteView.indicator.type = current.type
+                                    latteView.indicator.type = current.type;
                                 }
                             }
                         }

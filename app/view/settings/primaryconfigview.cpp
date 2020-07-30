@@ -245,8 +245,8 @@ void PrimaryConfigView::initParentView(Latte::View *view)
     setIsReady(false);
 
     if (m_latteView && m_latteView->indicator()) {
-        //! destroy indicator config ui when the configuration window is closed
-        m_latteView->indicator()->releaseConfigUi();
+        //! hide indicator config ui when parent view is changing
+        m_latteView->indicator()->hideConfigUi();
     }
 
     SubConfigView::initParentView(view);
