@@ -51,6 +51,7 @@ IndicatorUiManager::IndicatorUiManager(ViewPart::PrimaryConfigView *parent)
 
 IndicatorUiManager::~IndicatorUiManager()
 {
+    m_uidata.clear();
 }
 
 bool IndicatorUiManager::contains(const QString &type)

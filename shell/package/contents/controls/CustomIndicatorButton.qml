@@ -55,7 +55,16 @@ LatteComponents.ComboBoxButton{
         target: latteView.indicator
         onCustomPluginsCountChanged: {
             custom.reloadModel();
-            custom.updateButtonInformation()
+            custom.updateButtonInformation();
+        }
+    }
+
+    Connections {
+        target: viewConfig
+        onIsReadyChanged: {
+            if (viewConfig.isReady) {
+                custom.updateButtonInformation();
+            }
         }
     }
 
