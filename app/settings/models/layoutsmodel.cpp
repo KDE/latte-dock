@@ -159,9 +159,7 @@ void Layouts::removeLayout(const QString &id)
     int index = m_layoutsTable.indexOf(id);
 
     if (index >= 0) {
-        beginRemoveRows(QModelIndex(), index, index);
-        m_layoutsTable.remove(index);
-        endRemoveRows();
+        removeRows(index,1);
     }
 }
 
@@ -532,6 +530,13 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return QVariant{};
     }
 
+    //! original data
+    Data::Layout original;
+
+    if (!isNewLayout) {
+        original = o_layoutsTable[m_layoutsTable[row].id];
+    }
+
     if (role == IDROLE) {
         return m_layoutsTable[row].id;
     } else if (role == ISACTIVEROLE) {
@@ -564,7 +569,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     } else if (role == ISNEWLAYOUTROLE) {
         return isNewLayout;
     } else if (role == LAYOUTHASCHANGESROLE) {
-        return (isNewLayout ? true : o_layoutsTable[m_layoutsTable[row].id] != m_layoutsTable[row]);
+        return (isNewLayout ? true : (original != m_layoutsTable[row]));
     }
 
     switch (column) {
@@ -610,7 +615,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         }
 
         if (role == ORIGINALISSHOWNINMENUROLE) {
-            return isNewLayout ? false : o_layoutsTable[row].isShownInMenu;
+            return isNewLayout ? false : original.isShownInMenu;
         }
 
         if (role == Qt::UserRole) {
@@ -629,7 +634,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         }
 
         if (role == ORIGINALHASBORDERSROLE) {
-            return isNewLayout ? false : o_layoutsTable[row].hasDisabledBorders;
+            return isNewLayout ? false : original.hasDisabledBorders;
         }
 
         if (role == Qt::UserRole) {
@@ -652,7 +657,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         }
 
         if (role == ORIGINALASSIGNEDACTIVITIESROLE) {
-            return isNewLayout ? QStringList() : o_layoutsTable[row].activities;
+            return isNewLayout ? QStringList() : original.activities;
         }
 
         if (role == Qt::UserRole) {
@@ -675,7 +680,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         }
 
         if (role == ORIGINALSHARESROLE) {
-            return isNewLayout ? QStringList() : o_layoutsTable[row].shares;
+            return isNewLayout ? QStringList() : original.shares;
         }
 
         if (role == Qt::UserRole) {
@@ -994,7 +999,7 @@ void Layouts::updateActiveStates()
         bool iActive{false};
 
         if (m_inMultipleMode && m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].name)
-                || (!m_inMultipleMode && o_layoutsTable[i].name == m_corona->layoutsManager()->currentLayoutName())) {
+                || (!m_inMultipleMode && originalData(m_layoutsTable[i].id).name == m_corona->layoutsManager()->currentLayoutName())) {
             iActive = true;
         }
 
@@ -1029,7 +1034,6 @@ const Data::Layout Layouts::originalData(const QString &id)
     }
 
     return Data::Layout();
-
 }
 
 const Data::LayoutsTable &Layouts::originalLayoutsData()
@@ -1053,7 +1057,7 @@ void Layouts::setOriginalData(Data::LayoutsTable &data, const bool &inmultiple)
     m_layoutsTable = data;
 
     for(int i=0; i<m_layoutsTable.rowCount(); ++i) {
-        m_layoutsTable[i].isActive = m_corona->layoutsManager()->synchronizer()->layout(o_layoutsTable[i].name);
+        m_layoutsTable[i].isActive = m_corona->layoutsManager()->synchronizer()->layout(originalData(m_layoutsTable[i].id).name);
     }
     endInsertRows();
 
