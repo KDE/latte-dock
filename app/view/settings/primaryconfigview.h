@@ -59,6 +59,10 @@ namespace Latte {
 namespace ViewPart {
 class CanvasConfigView;
 class SecondaryConfigView;
+
+namespace Config{
+class IndicatorUiManager;
+}
 }
 }
 
@@ -74,6 +78,8 @@ class PrimaryConfigView : public SubConfigView
     Q_PROPERTY(bool isReady READ isReady NOTIFY isReadyChanged)
 
     Q_PROPERTY(QRect availableScreenGeometry READ availableScreenGeometry NOTIFY availableScreenGeometryChanged)
+
+    Q_PROPERTY(Latte::ViewPart::Config::IndicatorUiManager *indicatorUiManager READ indicatorUiManager NOTIFY indicatorUiManagerChanged)
 
 public:
     enum ConfigViewType
@@ -98,6 +104,8 @@ public:
     QRect availableScreenGeometry() const;
     QRect geometryWhenVisible() const;
 
+    Config::IndicatorUiManager *indicatorUiManager();
+
     void setParentView(Latte::View *view, const bool &immediate = false) override;
     void setOnActivities(QStringList activities);
 
@@ -114,6 +122,7 @@ public slots:
 signals:
     void availableScreenGeometryChanged();
     void inAdvancedModeChanged();
+    void indicatorUiManagerChanged();
     void isReadyChanged();
     void raiseDocksTemporaryChanged();
     void showInlinePropertiesChanged();
@@ -166,6 +175,8 @@ private:
 
     QPointer<SecondaryConfigView> m_secConfigView;
     QPointer<CanvasConfigView> m_canvasConfigView;
+
+    Config::IndicatorUiManager *m_indicatorUiManager{nullptr};
 
     //only for the mask on disabled compositing, not to actually paint
     Plasma::FrameSvg *m_background{nullptr};

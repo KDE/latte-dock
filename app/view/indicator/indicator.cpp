@@ -78,7 +78,6 @@ Indicator::Indicator(Latte::View *parent)
 Indicator::~Indicator()
 {
     unloadIndicators();
-    releaseConfigUi();
 
     if (m_component) {
         m_component->deleteLater();
@@ -135,21 +134,6 @@ bool Indicator::isCustomIndicator() const
 bool Indicator::latteTasksArePresent()
 {
     return m_view->extendedInterface()->hasLatteTasks();
-}
-
-bool Indicator::providesConfigUi() const
-{
-    return m_providesConfigUi;
-}
-
-void Indicator::setProvidesConfigUi(bool provides)
-{
-    if (m_providesConfigUi == provides) {
-        return;
-    }
-
-    m_providesConfigUi = provides;
-    emit providesConfigUiChanged();
 }
 
 bool Indicator::pluginIsReady()
@@ -316,81 +300,6 @@ void Indicator::loadPlasmaComponent()
     emit plasmaComponentChanged();
 }
 
-void Indicator::configUiFor(QString type, QQuickItem *parent)
-{
-    if (!parent) {
-        return;
-    }
-
-    if (m_lastCreatedConfigUi && m_lastCreatedConfigUiType == type && !type.isEmpty()) {
-        //! config ui has already been created and can be provided again
-        QQuickItem *qmlItem = qobject_cast<QQuickItem*>(m_lastCreatedConfigUi->rootObject());
-        if (qmlItem) {
-            qmlItem->setParentItem(parent);
-            qmlItem->setVisible(true);
-        }
-        return;
-    }
-
-    if (m_lastCreatedConfigUi) {
-        delete m_lastCreatedConfigUi;
-        m_lastCreatedConfigUi = nullptr;
-    }
-
-    auto prevConfigUi = m_lastCreatedConfigUi;
-
-    KPluginMetaData metadata;
-
-    if (m_metadata.pluginId() == type) {
-        metadata = m_metadata;
-    } else {
-        metadata = m_corona->indicatorFactory()->metadata(type);
-    }
-
-    if (metadata.isValid()) {
-        QString uiPath = metadata.value("X-Latte-ConfigUi");
-
-        if (!uiPath.isEmpty()) {
-            m_lastCreatedConfigUi = new KDeclarative::QmlObjectSharedEngine(this);
-            m_lastCreatedConfigUi->setTranslationDomain(QLatin1String("latte_indicator_") + m_metadata.pluginId());
-            m_lastCreatedConfigUi->setInitializationDelayed(true);
-            uiPath = m_pluginPath + "package/" + uiPath;
-            m_lastCreatedConfigUi->setSource(QUrl::fromLocalFile(uiPath));
-            m_lastCreatedConfigUi->rootContext()->setContextProperty(QStringLiteral("dialog"), parent);
-            m_lastCreatedConfigUi->rootContext()->setContextProperty(QStringLiteral("indicator"), this);
-            m_lastCreatedConfigUi->completeInitialization();
-
-            QQuickItem *qmlItem = qobject_cast<QQuickItem*>(m_lastCreatedConfigUi->rootObject());
-            if (qmlItem) {
-                qmlItem->setParentItem(parent);
-                m_lastCreatedConfigUiType = type;
-                setProvidesConfigUi(true);
-            }
-        } else {
-            m_lastCreatedConfigUiType = "";
-            setProvidesConfigUi(false);
-        }
-    }
-}
-
-void Indicator::hideConfigUi()
-{
-    if (m_lastCreatedConfigUi) {
-        QQuickItem *qmlItem = qobject_cast<QQuickItem*>(m_lastCreatedConfigUi->rootObject());
-        if (qmlItem) {
-            qmlItem->setVisible(false);
-        }
-    }
-}
-
-void Indicator::releaseConfigUi()
-{
-    if (m_lastCreatedConfigUi) {
-        m_lastCreatedConfigUi->deleteLater();
-        m_lastCreatedConfigUi = nullptr;
-    }
-}
-
 void Indicator::unloadIndicators()
 {
     setPluginIsReady(false);
@@ -419,48 +328,6 @@ void Indicator::updateScheme()
     if (prevConfiguration) {
         prevConfiguration->deleteLater();
     }
-}
-
-void Indicator::addIndicator()
-{
-    QFileDialog *fileDialog = new QFileDialog(nullptr
-                                              , i18nc("add indicator", "Add Indicator")
-                                              , QDir::homePath()
-                                              , QStringLiteral("indicator.latte"));
-
-    fileDialog->setFileMode(QFileDialog::AnyFile);
-    fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog->setDefaultSuffix("indicator.latte");
-
-    QStringList filters;
-    filters << QString(i18nc("add indicator file", "Latte Indicator") + "(*.indicator.latte)");
-    fileDialog->setNameFilters(filters);
-
-    connect(fileDialog, &QFileDialog::finished, fileDialog, &QFileDialog::deleteLater);
-
-    connect(fileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
-        qDebug() << "Trying to import indicator file ::: " << file;
-        m_corona->indicatorFactory()->importIndicatorFile(file);
-    });
-
-    fileDialog->open();
-}
-
-void Indicator::downloadIndicator()
-{
-    //! call asynchronously in order to not crash when view settings window
-    //! loses focus and it closes
-    QTimer::singleShot(0, [this]() {
-        m_corona->indicatorFactory()->downloadIndicator();
-    });
-}
-
-void Indicator::removeIndicator(QString pluginId)
-{    //! call asynchronously in order to not crash when view settings window
-    //! loses focus and it closes
-    QTimer::singleShot(0, [this, pluginId]() {
-        m_corona->indicatorFactory()->removeIndicator(pluginId);
-    });
 }
 
 void Indicator::loadConfig()

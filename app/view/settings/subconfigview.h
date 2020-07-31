@@ -63,7 +63,7 @@ public:
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
-
+    Latte::Corona *corona() const;
     Latte::View *parentView() const;
     virtual void setParentView(Latte::View *view, const bool &immediate = false);
     virtual void showAfter(int msecs = 0);

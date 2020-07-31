@@ -23,6 +23,7 @@
 // local
 #include <config-latte.h>
 #include "canvasconfigview.h"
+#include "indicatoruimanager.h"
 #include "secondaryconfigview.h"
 #include "../effects.h"
 #include "../panelshadows_p.h"
@@ -59,7 +60,8 @@ namespace Latte {
 namespace ViewPart {
 
 PrimaryConfigView::PrimaryConfigView(Latte::View *view)
-    : SubConfigView(view, QString("#primaryconfigview#"))
+    : SubConfigView(view, QString("#primaryconfigview#")),
+      m_indicatorUiManager(new Config::IndicatorUiManager(this))
 {
     connect(this, &QQuickView::widthChanged, this, &PrimaryConfigView::updateEffects);
     connect(this, &QQuickView::heightChanged, this, &PrimaryConfigView::updateEffects);
@@ -106,11 +108,6 @@ PrimaryConfigView::~PrimaryConfigView()
     if (m_secConfigView) {
         delete m_secConfigView;
     }
-
-    if (m_latteView && m_latteView->indicator()) {
-        //! destroy indicator config ui when the configuration window is closed
-        m_latteView->indicator()->releaseConfigUi();
-    }
 }
 
 void PrimaryConfigView::init()
@@ -122,6 +119,11 @@ void PrimaryConfigView::init()
     auto source = QUrl::fromLocalFile(m_latteView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
     syncGeometry();
+}
+
+Config::IndicatorUiManager *PrimaryConfigView::indicatorUiManager()
+{
+    return m_indicatorUiManager;
 }
 
 void PrimaryConfigView::setOnActivities(QStringList activities)
@@ -243,11 +245,6 @@ void PrimaryConfigView::setParentView(Latte::View *view, const bool &immediate)
 void PrimaryConfigView::initParentView(Latte::View *view)
 {
     setIsReady(false);
-
-    if (m_latteView && m_latteView->indicator()) {
-        //! hide indicator config ui when parent view is changing
-        m_latteView->indicator()->hideConfigUi();
-    }
 
     SubConfigView::initParentView(view);
 

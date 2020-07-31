@@ -470,7 +470,6 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     Layout.topMargin: units.smallSpacing * 2
                     spacing: 0
-                    visible: latteView.indicator.providesConfigUi
                     enabled: latteView.indicator.enabled
 
                     // @since 0.10.0
@@ -479,19 +478,20 @@ PlasmaComponents.Page {
                     readonly property int optionsWidth: dialog.optionsWidth
 
                     Component.onCompleted: {
-                        latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
+                        viewConfig.indicatorUiManager.setParentItem(indicatorSpecificOptions);
+                        viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
                     }
 
                     Connections {
                         target: latteView.indicator
-                        onPluginChanged: latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
+                        onPluginChanged: viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
                     }
 
                     Connections {
                         target: viewConfig
                         onIsReadyChanged: {
                             if (viewConfig.isReady) {
-                                latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
+                                viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
                             }
                         }
                     }

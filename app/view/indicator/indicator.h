@@ -56,7 +56,6 @@ class Indicator: public QObject
     Q_PROPERTY(bool enabledForApplets READ enabledForApplets WRITE setEnabledForApplets NOTIFY enabledForAppletsChanged)
     Q_PROPERTY(bool latteTasksArePresent READ latteTasksArePresent NOTIFY latteTasksArePresentChanged)
     Q_PROPERTY(bool pluginIsReady READ pluginIsReady NOTIFY pluginIsReadyChanged)
-    Q_PROPERTY(bool providesConfigUi READ providesConfigUi NOTIFY providesConfigUiChanged)
 
     Q_PROPERTY(QString type READ type WRITE setType NOTIFY pluginChanged)
     Q_PROPERTY(QString customType READ customType NOTIFY customPluginChanged)
@@ -99,7 +98,6 @@ public:
     bool isCustomIndicator() const;
 
     bool latteTasksArePresent();
-    bool providesConfigUi() const;
 
     bool pluginIsReady();
 
@@ -125,14 +123,6 @@ public:
     void load(QString type);
     void unloadIndicators();
 
-public slots:
-    Q_INVOKABLE void configUiFor(QString type, QQuickItem *parent);
-    Q_INVOKABLE void addIndicator();
-    Q_INVOKABLE void downloadIndicator();
-    Q_INVOKABLE void removeIndicator(QString pluginId);
-    void hideConfigUi();
-    void releaseConfigUi();
-
 signals:
     void customPluginsChanged();
     void enabledChanged();
@@ -143,7 +133,6 @@ signals:
     void plasmaComponentChanged();
     void pluginChanged();
     void pluginIsReadyChanged();
-    void providesConfigUiChanged();
     void resourcesChanged();
 
 private:
@@ -151,7 +140,6 @@ private:
     void saveConfig();
 
     void setPluginIsReady(bool ready);
-    void setProvidesConfigUi(bool provides);
 
     void setCustomType(QString type);
 
@@ -163,7 +151,6 @@ private:
     bool m_enabled{true};
     bool m_enabledForApplets{true};
     bool m_pluginIsReady{false};
-    bool m_providesConfigUi{true};
 
     QString m_pluginPath;
     QString m_type{"org.kde.latte.default"};
@@ -182,9 +169,6 @@ private:
     QPointer<IndicatorPart::Resources> m_resources;
 
     QPointer<KDeclarative::ConfigPropertyMap> m_configuration;
-
-    QString m_lastCreatedConfigUiType;
-    QPointer<KDeclarative::QmlObjectSharedEngine> m_lastCreatedConfigUi;
 };
 
 }

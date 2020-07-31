@@ -158,6 +158,11 @@ Latte::WindowSystem::WindowId SubConfigView::trackedWindowId()
     return !KWindowSystem::isPlatformWayland() ? winId() :  m_waylandWindowId;
 }
 
+Latte::Corona *SubConfigView::corona() const
+{
+    return m_corona;
+}
+
 Latte::View *SubConfigView::parentView() const
 {
     return m_latteView;
