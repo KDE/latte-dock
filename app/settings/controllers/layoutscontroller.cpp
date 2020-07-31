@@ -595,6 +595,8 @@ void Layouts::copySelectedLayout()
 
     CentralLayout *settings = new CentralLayout(this, copied.id);
     settings->clearLastUsedActivity();
+    settings->setSharedLayoutName("");
+    settings->setActivities(QStringList());
 
     m_layouts[copied.id] = settings;
     m_model->appendLayout(copied);
