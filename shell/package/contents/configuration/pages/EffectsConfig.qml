@@ -419,9 +419,9 @@ PlasmaComponents.Page {
                     ExclusiveGroup {
                         id: indicatorStyleGroup
                         onCurrentChanged: {
-                            if (current.checked) {
-                                if (current === customIndicator.button) {
-                                    latteView.indicator.type = customIndicator.type;
+                            if (current.checked){
+                                if (current.parent.hasOwnProperty("button")) {
+                                    latteView.indicator.type = current.parent.type;
                                 } else {
                                     latteView.indicator.type = current.type;
                                 }
@@ -459,7 +459,7 @@ PlasmaComponents.Page {
                         implicitHeight: latteBtn.implicitHeight
 
                         checked: checkable ? parent.type === type : false
-                        buttonExclusiveGroup:  indicatorStyleGroup
+                        exclusiveGroup:  indicatorStyleGroup
                         comboBoxMinimumPopUpWidth: 1.5 * customIndicator.width
                     }
                 }

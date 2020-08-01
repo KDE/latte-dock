@@ -17,6 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import QtQuick.Controls 1.4
 import QtQuick 2.2
 import QtQuick.Layouts 1.3
 
@@ -32,6 +33,10 @@ Rectangle {
     implicitWidth: buttonMetrics.implicitWidth
     implicitHeight: buttonMetrics.implicitHeight
 
+    property ExclusiveGroup exclusiveGroup: null
+    property bool checked: false
+    property bool checkable: false
+
     readonly property Item comboBox: mainComboBox
     readonly property Item button: mainButton
 
@@ -39,10 +44,6 @@ Rectangle {
     property string buttonText:""
     property string buttonIconSource:""
     property string buttonToolTip: ""
-    property QtObject buttonExclusiveGroup: null
-
-    property bool checked: false
-    property bool checkable: false
 
     property bool comboBoxEnabled: true
     property bool comboBoxBlankSpaceForEmptyIcons: false
@@ -58,6 +59,16 @@ Rectangle {
 
     signal iconClicked(int index);
 
+    onExclusiveGroupChanged: {
+        if (exclusiveGroup) {
+            exclusiveGroup.bindCheckable(root);
+        }
+    }
+
+    ExclusiveGroup {
+        id: hiddenExclusiveGroup
+    }
+
     PlasmaComponents.Button {
         id: mainButton
         anchors.left: Qt.application.layoutDirection === Qt.RightToLeft ? undefined : parent.left
@@ -65,13 +76,16 @@ Rectangle {
         LayoutMirroring.enabled: false
         enabled: buttonEnabled
         checked: root.checked
-        checkable: root.checkable
-        exclusiveGroup: buttonExclusiveGroup
+
+        /*workaround in order to replicate the proper Buttons Exclusive Group Behavior*/
+        checkable: root.checkable && !parent.exclusiveGroup
+        /*workaround in order to replicate the proper Buttons Exclusive Group Behavior*/
+        exclusiveGroup: parent.exclusiveGroup ? hiddenExclusiveGroup : null
 
         width: parent.width
         height: mainComboBox.height
 
-        text: checkable ?  " " : buttonText
+        text: root.checkable ?  " " : buttonText
         iconSource: buttonIconSource
         tooltip: buttonToolTip
     }

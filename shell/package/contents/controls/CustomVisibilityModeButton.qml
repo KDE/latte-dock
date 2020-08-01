@@ -57,14 +57,12 @@ LatteComponents.ComboBoxButton{
         id: actionsModel
     }
 
-/*
     Connections{
         target: custom.button
-
         onClicked: {
             latteView.visibility.mode = custom.mode;
         }
-    }*/
+    }
 
     Connections{
         target: custom.comboBox.popup

@@ -368,14 +368,6 @@ PlasmaComponents.Page {
                                 latteView.visibility.mode = current.mode;
                             }
                         }
-
-                        if (current) {
-                            if (current.parent.hasOwnProperty("button")) {
-                                console.log("  org.kde.latte    CURRENT :: " + current.parent.mode);
-                            } else {
-                                console.log("  org.kde.latte    CURRENT :: " + current.mode);
-                            }
-                        }
                     }
                 }
 
@@ -419,11 +411,9 @@ PlasmaComponents.Page {
                     implicitHeight: alwaysVisibleBtn.implicitHeight
 
                     checked: parent.mode === mode
-                    buttonExclusiveGroup:  visibilityGroup
+                    exclusiveGroup:  visibilityGroup
 
                     mode: plasmoid.configuration.lastDodgeVisibilityMode
-                    onModeChanged: console.log(" org.kde.latte, last dodge mode : " + mode);
-
                     modes: [
                         {
                             pluginId: LatteCore.Types.DodgeMaximized,
@@ -448,11 +438,9 @@ PlasmaComponents.Page {
                     implicitHeight: alwaysVisibleBtn.implicitHeight
 
                     checked: parent.mode === mode
-                    buttonExclusiveGroup:  visibilityGroup
+                    exclusiveGroup:  visibilityGroup
 
                     mode: plasmoid.configuration.lastWindowsVisibilityMode
-                    onModeChanged: console.log(" org.kde.latte, last windows mode : " + mode);
-
                     modes: [
                         {
                             pluginId: LatteCore.Types.WindowsGoBelow,
@@ -482,11 +470,9 @@ PlasmaComponents.Page {
                     implicitHeight: alwaysVisibleBtn.implicitHeight
 
                     checked: parent.mode === mode
-                    buttonExclusiveGroup:  visibilityGroup
+                    exclusiveGroup:  visibilityGroup
 
                     mode: plasmoid.configuration.lastSidebarVisibilityMode
-                    onModeChanged: console.log(" org.kde.latte, last sidebar mode : " + mode);
-
                     modes: [
                         {
                             pluginId: LatteCore.Types.SidebarOnDemand,
