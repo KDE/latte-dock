@@ -190,6 +190,8 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
 
     m_ui->inMenuChk->setChecked(data.isShownInMenu);
     m_ui->borderlessChk->setChecked(data.hasDisabledBorders);
+
+    updateWindowTitle();
 }
 
 Data::Layout DetailsHandler::currentData() const
@@ -363,6 +365,11 @@ void DetailsHandler::selectTextColor()
         qDebug() << "layout selected text color: " << dialog.selectedColor().name();
         setTextColor(dialog.selectedColor().name());
     }
+}
+
+void DetailsHandler::updateWindowTitle()
+{
+    m_parentDialog->setWindowTitle(m_ui->layoutsCmb->currentText());
 }
 
 }

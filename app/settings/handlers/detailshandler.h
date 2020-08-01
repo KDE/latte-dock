@@ -88,6 +88,8 @@ private slots:
     void selectIcon();
     void selectTextColor();
 
+    void updateWindowTitle();
+
 private:
     void init();
     void reload();
