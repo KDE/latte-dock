@@ -17,8 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef BACKGROUNDCMBBOXDELEGATE_H
-#define BACKGROUNDCMBBOXDELEGATE_H
+#ifndef LAYOUTBACKGROUNDDELEGATE_H
+#define LAYOUTBACKGROUNDDELEGATE_H
 
 // local
 #include "../data/layouticondata.h"
@@ -34,11 +34,11 @@ namespace Settings {
 namespace Layout {
 namespace Delegate {
 
-class BackgroundCmbBox : public QStyledItemDelegate
+class BackgroundDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    BackgroundCmbBox(QObject *parent = 0);
+    BackgroundDelegate(QObject *parent = 0);
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 

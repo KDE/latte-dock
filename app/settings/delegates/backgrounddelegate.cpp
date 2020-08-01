@@ -17,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "backgroundcmbdelegate.h"
+#include "backgrounddelegate.h"
 
 // local
 #include "../models/layoutsmodel.h"
@@ -37,12 +37,12 @@ namespace Delegate {
 
 const int MARGIN = 2;
 
-BackgroundCmbBox::BackgroundCmbBox(QObject *parent)
+BackgroundDelegate::BackgroundDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
 {
 }
 
-void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void BackgroundDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOptions = option;
     //! Remove the focus dotted lines
@@ -77,7 +77,7 @@ void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &opti
     }
 }
 
-void BackgroundCmbBox::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Data::LayoutIcon &icon) const
+void BackgroundDelegate::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Data::LayoutIcon &icon) const
 {
     bool active = Latte::isActive(option);
     bool selected = Latte::isSelected(option);

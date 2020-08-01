@@ -26,7 +26,7 @@
 #include "../dialogs/settingsdialog.h"
 #include "../data/uniqueidinfo.h"
 #include "../delegates/activitiesdelegate.h"
-#include "../delegates/backgroundcmbdelegate.h"
+#include "../delegates/backgrounddelegate.h"
 #include "../delegates/checkboxdelegate.h"
 #include "../delegates/layoutnamedelegate.h"
 #include "../delegates/shareddelegate.h"
@@ -147,7 +147,7 @@ void Layouts::initView()
     }
 
     m_view->setItemDelegateForColumn(Model::Layouts::NAMECOLUMN, new Settings::Layout::Delegate::LayoutName(this));
-    m_view->setItemDelegateForColumn(Model::Layouts::BACKGROUNDCOLUMN, new Settings::Layout::Delegate::BackgroundCmbBox(this));
+    m_view->setItemDelegateForColumn(Model::Layouts::BACKGROUNDCOLUMN, new Settings::Layout::Delegate::BackgroundDelegate(this));
     m_view->setItemDelegateForColumn(Model::Layouts::MENUCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     m_view->setItemDelegateForColumn(Model::Layouts::BORDERSCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     m_view->setItemDelegateForColumn(Model::Layouts::ACTIVITYCOLUMN, new Settings::Layout::Delegate::Activities(this));
