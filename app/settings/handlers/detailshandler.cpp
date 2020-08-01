@@ -25,10 +25,12 @@
 #include "../controllers/layoutscontroller.h"
 #include "../data/layoutstable.h"
 #include "../delegates/colorcmbitemdelegate.h"
+#include "../delegates/layoutcmbitemdelegate.h"
 #include "../dialogs/detailsdialog.h"
 #include "../models/colorsmodel.h"
 #include "../models/layoutsmodel.h"
 #include "../widgets/patternwidget.h"
+#include "../../layout/abstractlayout.h"
 
 // Qt
 #include <QColorDialog>
@@ -66,6 +68,7 @@ void DetailsHandler::init()
 
     m_ui->layoutsCmb->setModel(m_layoutsProxyModel);
     m_ui->layoutsCmb->setModelColumn(Model::Layouts::NAMECOLUMN);
+    m_ui->layoutsCmb->setItemDelegate(new Settings::Layout::Delegate::LayoutCmbItemDelegate(this));
 
     //! Background Pattern
     m_backButtonsGroup = new QButtonGroup(this);
@@ -167,13 +170,13 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
     }
 
     m_ui->colorPatternWidget->setBackground(m_colorsModel->colorPath(data.color));
-    m_ui->colorPatternWidget->setTextColor(Layout::AbstractLayout::defaultTextColor(data.color));
+    m_ui->colorPatternWidget->setTextColor(Latte::Layout::AbstractLayout::defaultTextColor(data.color));
 
     m_ui->colorsCmb->setCurrentIndex(m_colorsModel->row(data.color));
 
     if (data.background.isEmpty()) {
-        m_ui->backPatternWidget->setBackground(m_colorsModel->colorPath(Layout::AbstractLayout::defaultCustomBackground()));
-        m_ui->backPatternWidget->setTextColor(Layout::AbstractLayout::defaultCustomTextColor());
+        m_ui->backPatternWidget->setBackground(m_colorsModel->colorPath(Latte::Layout::AbstractLayout::defaultCustomBackground()));
+        m_ui->backPatternWidget->setTextColor(Latte::Layout::AbstractLayout::defaultCustomTextColor());
     } else {
         m_ui->backPatternWidget->setBackground(data.background);
         m_ui->backPatternWidget->setTextColor(data.textColor);

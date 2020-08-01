@@ -570,6 +570,11 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return isNewLayout;
     } else if (role == LAYOUTHASCHANGESROLE) {
         return (isNewLayout ? true : (original != m_layoutsTable[row]));
+    } else if (role == BACKGROUNDUSERROLE) {
+        QList<Data::LayoutIcon> iconsList = icons(row);
+        QVariant iconsVariant;
+        iconsVariant.setValue<QList<Data::LayoutIcon>>(iconsList);
+        return iconsVariant;
     }
 
     switch (column) {
