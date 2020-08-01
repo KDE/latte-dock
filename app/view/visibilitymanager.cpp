@@ -336,12 +336,15 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         break;
 
     case Types::SidebarAutoHide:
-        m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged,
-                                      this, &VisibilityManager::updateHiddenState);
+        m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
+            if (!m_latteView->inEditMode()) {
+                updateHiddenState();
+            }
+        });
         
         m_connections[base+1] = connect(m_latteView, &Latte::View::inEditModeChanged, this, [&]() {
-            if (!m_latteView->inEditMode()) {
-                toggleHiddenState();
+            if (m_latteView->inEditMode() && !m_isHidden) {
+                updateHiddenState();
             }
         });
 
@@ -470,13 +473,7 @@ void VisibilityManager::setIsHidden(bool isHidden)
     if (m_isHidden == isHidden)
         return;
 
-    if (hidingIsBlocked() && isHidden) {
-        qWarning() << "isHidden property is blocked, ignoring update";
-        return;
-    }
-
     m_isHidden = isHidden;
-
     updateGhostWindowState();
 
     emit isHiddenChanged();
@@ -525,10 +522,7 @@ void VisibilityManager::on_hidingIsBlockedChanged()
 {
     if (hidingIsBlocked()) {
         m_timerHide.stop();
-
-        if (m_isHidden) {
-            emit mustBeShown();
-        }
+        emit mustBeShown();
     } else {
         updateHiddenState();
     }
@@ -668,8 +662,9 @@ void VisibilityManager::show()
 
 void VisibilityManager::raiseView(bool raise)
 {
-    if (hidingIsBlocked() || m_mode == Latte::Types::SidebarOnDemand)
+    if (m_mode == Latte::Types::SidebarOnDemand) {
         return;
+    }
 
     if (raise) {
         m_timerHide.stop();
@@ -677,7 +672,7 @@ void VisibilityManager::raiseView(bool raise)
         if (!m_timerShow.isActive()) {
             m_timerShow.start();
         }
-    } else if (!m_dragEnter) {
+    } else if (!m_dragEnter && !hidingIsBlocked()) {
         m_timerShow.stop();
 
         if (m_hideNow) {
@@ -765,6 +760,7 @@ void VisibilityManager::updateHiddenState()
 
     case Types::SidebarAutoHide:
         raiseView(m_latteView->inEditMode() || (m_containsMouse && !m_isHidden));
+        break;
 
     default:
         break;

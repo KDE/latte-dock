@@ -162,6 +162,10 @@ void PrimaryConfigView::showConfigWindow()
         return;
     }
 
+    if (m_latteView && m_latteView->containment()) {
+        m_latteView->containment()->setUserConfiguring(true);
+    }
+
     showAfter(PRIMARYWINDOWINTERVAL);
     showCanvasWindow();
     showSecondaryWindow();
@@ -431,10 +435,6 @@ void PrimaryConfigView::showEvent(QShowEvent *ev)
     m_corona->wm()->setViewExtraFlags(this, false, Latte::Types::NormalWindow);
 
     syncGeometry();
-
-    if (m_latteView && m_latteView->containment()) {
-        m_latteView->containment()->setUserConfiguring(true);
-    }
 
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &PrimaryConfigView::syncGeometry);
