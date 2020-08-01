@@ -38,20 +38,13 @@ class BackgroundCmbBox : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    BackgroundCmbBox(QObject *parent = 0, QString iconsPath = QString(), QStringList colors = QStringList());
+    BackgroundCmbBox(QObject *parent = 0);
 
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
     void drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Data::LayoutIcon &icon) const;
 
-private:
-    QString m_iconsPath;
-    QStringList Colors;
 };
 
 }

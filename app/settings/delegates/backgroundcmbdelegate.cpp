@@ -20,23 +20,15 @@
 #include "backgroundcmbdelegate.h"
 
 // local
-#include "backgroundcmbitemdelegate.h"
-#include "../data/activitydata.h"
-#include "../data/layoutdata.h"
 #include "../models/layoutsmodel.h"
 #include "../tools/settingstools.h"
 
 // Qt
-#include <QComboBox>
 #include <QDebug>
-#include <QFileInfo>
-#include <QWidget>
 #include <QModelIndex>
 #include <QPainter>
 #include <QString>
 
-// KDE
-#include <KLocalizedString>
 
 namespace Latte {
 namespace Settings {
@@ -45,68 +37,9 @@ namespace Delegate {
 
 const int MARGIN = 2;
 
-BackgroundCmbBox::BackgroundCmbBox(QObject *parent, QString iconsPath, QStringList colors)
-    : QStyledItemDelegate(parent),
-      m_iconsPath(iconsPath),
-      Colors(colors)
+BackgroundCmbBox::BackgroundCmbBox(QObject *parent)
+    : QStyledItemDelegate(parent)
 {
-}
-
-QWidget *BackgroundCmbBox::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-    Q_UNUSED(option)
-
-    QComboBox *editor = new QComboBox(parent);
-    editor->setItemDelegate(new BackgroundCmbBoxItem(editor, m_iconsPath));
-
-    for (int i = 0; i < Colors.count(); ++i) {
-        if (Colors[i] != "sepia") {
-            QPixmap pixmap(50, 50);
-            pixmap.fill(QColor(Colors[i]));
-            QIcon icon(pixmap);
-
-            editor->addItem(icon, Colors[i]);
-        }
-    }
-
-    QString value = index.model()->data(index, Qt::UserRole).toString();
-
-    //! add the background if exists
-    if (value.startsWith("/")) {
-        QIcon icon(value);
-        editor->addItem(icon, value);
-    }
-
-    return editor;
-}
-
-void BackgroundCmbBox::setEditorData(QWidget *editor, const QModelIndex &index) const
-{
-    QComboBox *comboBox = static_cast<QComboBox *>(editor);
-    QString value = index.model()->data(index, Qt::UserRole).toString();
-
-    int pos = Colors.indexOf(value);
-
-    if (pos == -1 && value.startsWith("/")) {
-        comboBox->setCurrentIndex(Colors.count());
-    } else {
-        comboBox->setCurrentIndex(Colors.indexOf(value));
-    }
-}
-
-void BackgroundCmbBox::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
-{   
-    QComboBox *comboBox = static_cast<QComboBox *>(editor);
-
-    QString itemData = comboBox->currentData().toString();
-    model->setData(index, comboBox->currentText(), Qt::UserRole);
-}
-
-void BackgroundCmbBox::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-    Q_UNUSED(index)
-
-    editor->setGeometry(option.rect);
 }
 
 void BackgroundCmbBox::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
