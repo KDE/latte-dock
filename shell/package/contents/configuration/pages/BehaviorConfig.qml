@@ -362,10 +362,18 @@ PlasmaComponents.Page {
                     id: visibilityGroup
                     onCurrentChanged: {
                         if (current.checked){
-                            if (current !== windowsModeBtn.button){
-                                latteView.visibility.mode = current.mode;
+                            if (current.parent.hasOwnProperty("button")) {
+                                latteView.visibility.mode = current.parent.mode;
                             } else {
-                                latteView.visibility.mode = windowsModeBtn.mode;
+                                latteView.visibility.mode = current.mode;
+                            }
+                        }
+
+                        if (current) {
+                            if (current.parent.hasOwnProperty("button")) {
+                                console.log("  org.kde.latte    CURRENT :: " + current.parent.mode);
+                            } else {
+                                console.log("  org.kde.latte    CURRENT :: " + current.mode);
                             }
                         }
                     }
@@ -402,39 +410,99 @@ PlasmaComponents.Page {
 
                     property int mode: LatteCore.Types.DodgeActive
                 }
-                PlasmaComponents.Button {
+
+                LatteExtraControls.CustomVisibilityModeButton {
+                    id: dodgeModeBtn
                     Layout.minimumWidth: parent.buttonSize
                     Layout.maximumWidth: Layout.minimumWidth
-                    text: i18n("Dodge Maximized")
-                    checked: parent.mode === mode
-                    checkable: true
-                    exclusiveGroup: visibilityGroup
-
-                    property int mode: LatteCore.Types.DodgeMaximized
-                }
-                PlasmaComponents.Button {
-                    id: dodgeAllWindowsBtn
-                    Layout.minimumWidth: parent.buttonSize
-                    Layout.maximumWidth: Layout.minimumWidth
-                    text: i18n("Dodge All Windows")
-                    checked: parent.mode === mode
-                    checkable: true
-                    exclusiveGroup: visibilityGroup
-
-                    property int mode: LatteCore.Types.DodgeAllWindows
-                }
-
-                LatteExtraControls.CustomWindowsModeButton {
-                    id: windowsModeBtn
-                    Layout.minimumWidth: parent.buttonSize
-                    Layout.maximumWidth: Layout.minimumWidth
-                    implicitWidth: dodgeAllWindowsBtn.implicitWidth
-                    implicitHeight: dodgeAllWindowsBtn.implicitHeight
+                    implicitWidth: alwaysVisibleBtn.implicitWidth
+                    implicitHeight: alwaysVisibleBtn.implicitHeight
 
                     checked: parent.mode === mode
                     buttonExclusiveGroup:  visibilityGroup
-                    comboBoxMinimumPopUpWidth: windowsModeBtn.width
+
+                    mode: plasmoid.configuration.lastDodgeVisibilityMode
+                    onModeChanged: console.log(" org.kde.latte, last dodge mode : " + mode);
+
+                    modes: [
+                        {
+                            pluginId: LatteCore.Types.DodgeMaximized,
+                            name: i18n("Dodge Maximized"),
+                            tooltip: ""
+                        },
+                        {
+                            pluginId: LatteCore.Types.DodgeAllWindows,
+                            name: i18n("Dodge All Windows"),
+                            tooltip: ""
+                        }
+                    ]
+
+                    onViewRelevantVisibilityModeChanged: plasmoid.configuration.lastDodgeVisibilityMode = latteView.visibility.mode;
                 }
+
+                LatteExtraControls.CustomVisibilityModeButton {
+                    id: windowsModeBtn
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
+                    implicitWidth: alwaysVisibleBtn.implicitWidth
+                    implicitHeight: alwaysVisibleBtn.implicitHeight
+
+                    checked: parent.mode === mode
+                    buttonExclusiveGroup:  visibilityGroup
+
+                    mode: plasmoid.configuration.lastWindowsVisibilityMode
+                    onModeChanged: console.log(" org.kde.latte, last windows mode : " + mode);
+
+                    modes: [
+                        {
+                            pluginId: LatteCore.Types.WindowsGoBelow,
+                            name: i18n("Windows Go Below"),
+                            tooltip: ""
+                        },
+                        {
+                            pluginId: LatteCore.Types.WindowsCanCover,
+                            name: i18n("Windows Can Cover"),
+                            tooltip: ""
+                        },
+                        {
+                            pluginId: LatteCore.Types.WindowsAlwaysCover,
+                            name: i18n("Windows Always Cover"),
+                            tooltip: ""
+                        }
+                    ]
+
+                    onViewRelevantVisibilityModeChanged: plasmoid.configuration.lastWindowsVisibilityMode = latteView.visibility.mode;
+                }
+
+                LatteExtraControls.CustomVisibilityModeButton {
+                    id: sidebarModeBtn
+                    Layout.minimumWidth: parent.buttonSize
+                    Layout.maximumWidth: Layout.minimumWidth
+                    implicitWidth: alwaysVisibleBtn.implicitWidth
+                    implicitHeight: alwaysVisibleBtn.implicitHeight
+
+                    checked: parent.mode === mode
+                    buttonExclusiveGroup:  visibilityGroup
+
+                    mode: plasmoid.configuration.lastSidebarVisibilityMode
+                    onModeChanged: console.log(" org.kde.latte, last sidebar mode : " + mode);
+
+                    modes: [
+                        {
+                            pluginId: LatteCore.Types.SidebarOnDemand,
+                            name: i18n("On Demand Sidebar"),
+                            tooltip: i18n("Sidebar can be shown and become hidden only through an external applet, shortcut or script")
+                        },
+                        {
+                            pluginId: LatteCore.Types.SidebarAutoHide,
+                            name: i18n("Auto Hide Sidebar"),
+                            tooltip: i18n("Sidebar can be shown only through an external applet, shortcut or script but it can also autohide itself when it does not contain mouse")
+                        }
+                    ]
+
+                    onViewRelevantVisibilityModeChanged: plasmoid.configuration.lastSidebarVisibilityMode = latteView.visibility.mode;
+                }
+
             }
         }
         //! END: Visibility
@@ -472,8 +540,8 @@ PlasmaComponents.Page {
                     implicitWidth: width
                     implicitHeight: height
 
-                    readonly property bool overlap: oneLineWidth > dodgeAllWindowsBtn.width
-                    readonly property int oneLineWidth: Math.max(dodgeAllWindowsBtn.width, showTimerRow.width)
+                    readonly property bool overlap: oneLineWidth > alwaysVisibleBtn.width
+                    readonly property int oneLineWidth: Math.max(alwaysVisibleBtn.width, showTimerRow.width)
 
                     RowLayout{
                         id: showTimerRow

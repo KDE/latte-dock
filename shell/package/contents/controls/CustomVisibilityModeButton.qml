@@ -1,5 +1,5 @@
 /*
-*  Copyright 2019  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -29,46 +29,42 @@ LatteComponents.ComboBoxButton{
     id: custom
     checkable: true
 
-    buttonToolTip: mode === LatteCore.Types.SidebarOnDemand ? i18n("Sidebar can be shown only when the user has explicitly requested it. For example through an external applet, shortcut or script") : ""
+    buttonText: modes[currentModeIndex].name
+    buttonToolTip: modes[currentModeIndex].tooltip
 
     comboBoxTextRole: "name"
+    comboBoxMinimumPopUpWidth: width
     comboBoxBlankSpaceForEmptyIcons: false
-    comboBoxForcePressed: latteView.visibility.mode === mode
+    comboBoxForcePressed: checked // latteView.visibility.mode === mode
     comboBoxPopUpAlignRight: Qt.application.layoutDirection !== Qt.RightToLeft
     comboBoxPopupTextHorizontalAlignment: Text.AlignHCenter
 
-    readonly property int mode: plasmoid.configuration.lastWindowsVisibilityMode
+    property int mode: LatteCore.Types.WindowsGoBelow
+    readonly property int currentModeIndex: Math.min(Math.max(0, mode-firstVisibilityMode), lastVisibilityMode-firstVisibilityMode)
+
+    readonly property int firstVisibilityMode:  modes[0].pluginId
+    readonly property int lastVisibilityMode: firstVisibilityMode + modes.length - 1
+
+    property variant modes: []
+
+    signal viewRelevantVisibilityModeChanged();
 
     Component.onCompleted: {
         reloadModel();
-        updateButtonInformation();
     }
 
     ListModel {
         id: actionsModel
     }
 
+/*
     Connections{
         target: custom.button
 
         onClicked: {
             latteView.visibility.mode = custom.mode;
         }
-    }
-
-    Connections{
-        target: custom.comboBox
-
-        onActivated: {
-            if (index>=0) {
-                var item = actionsModel.get(index);
-                plasmoid.configuration.lastWindowsVisibilityMode = parseInt(item.pluginId);
-                latteView.visibility.mode = parseInt(item.pluginId);
-            }
-
-            custom.updateButtonInformation();
-        }
-    }
+    }*/
 
     Connections{
         target: custom.comboBox.popup
@@ -79,11 +75,23 @@ LatteComponents.ComboBoxButton{
         }
     }
 
-    function updateButtonInformation() {       
-        var curCustomIndex = plasmoid.configuration.lastWindowsVisibilityMode - 5;
+    Connections {
+        target: latteView.visibility
+        onModeChanged: {
+            if (latteView.visibility.mode >= custom.firstVisibilityMode && latteView.visibility.mode<=custom.lastVisibilityMode) {
+                custom.viewRelevantVisibilityModeChanged();
+            }
+        }
+    }
 
-        if (curCustomIndex>=0) {
-            custom.buttonText = actionsModel.get(curCustomIndex).name;
+    Connections{
+        target: custom.comboBox
+
+        onActivated: {
+            if (index>=0) {
+                var item = actionsModel.get(index);
+                latteView.visibility.mode = item.pluginId;
+            }
         }
     }
 
@@ -98,7 +106,7 @@ LatteComponents.ComboBoxButton{
         var found = false;
 
         for (var i=0; i<actionsModel.count; ++i) {
-            if (parseInt(actionsModel.get(i).pluginId) === custom.mode) {
+            if (actionsModel.get(i).pluginId === custom.mode) {
                 found = true;
                 custom.comboBox.currentIndex = i;
                 break;
@@ -119,37 +127,8 @@ LatteComponents.ComboBoxButton{
     }
 
     function appendDefaults() {
-        var windowsGoBelow = {
-            pluginId: '5',
-            name: i18n("Windows Go Below"),
-        };
-
-        var windowsCanCover = {
-            pluginId: '6',
-            name: i18n("Windows Can Cover"),
-
+        for (var i=0; i<modes.length; ++i) {
+            actionsModel.append(modes[i]);
         }
-
-        var windowsAlwaysCover = {
-            pluginId: '7',
-            name: i18n("Windows Always Cover"),
-        }
-
-        var sidebarOnDemand = {
-            pluginId: '8',
-            name: i18n("On Demand Sidebar")
-        }
-
-        var sidebarAutoHide = {
-            pluginId: '9',
-            name: i18n("Auto Hide Sidebar")
-        }
-
-        actionsModel.append(windowsGoBelow);
-        actionsModel.append(windowsCanCover);
-        actionsModel.append(windowsAlwaysCover);
-        actionsModel.append(sidebarOnDemand);
-        actionsModel.append(sidebarAutoHide);
     }
-
 }

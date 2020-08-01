@@ -32,6 +32,15 @@
       <default>5</default>
       <label>last windows visibility mode used, 5 stands for "Windows Go Below"</label>
     </entry>
+    <entry name="lastDodgeVisibilityMode" type="Int">
+      <default>3</default>
+      <label>last dodge visibility mode used, 3 stands for "Dodge Maximized"</label>
+    </entry>
+    <entry name="lastSidebarVisibilityMode" type="Int">
+      <default>8</default>
+      <label>last dodge visibility mode used, 8 stands for "On Demand Sidebar"</label>
+    </entry>   
+    
     <entry name="appletShadowsEnabled" type="Bool">
       <default>true</default>
       <label>enable latte drawn applet shadows</label>
