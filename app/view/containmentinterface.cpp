@@ -418,7 +418,7 @@ bool ContainmentInterface::appletIsExpandable(const int id)
 
     for (const auto applet : m_view->containment()->applets()) {
         if (applet && applet->id() == (uint)id) {
-            if (m_view->layout() && m_view->layout()->isInternalContainment(applet)) {
+            if (m_view->layout() && m_view->layout()->isSubContainment(applet)) {
                 return true;
             }
 
@@ -549,7 +549,7 @@ void ContainmentInterface::toggleAppletExpanded(const int id)
     }
 
     for (const auto applet : m_view->containment()->applets()) {
-        if (applet->id() == (uint)id && !m_view->layout()->isInternalContainment(applet)/*block for internal containments*/) {
+        if (applet->id() == (uint)id && !m_view->layout()->isSubContainment(applet)/*block for sub-containments*/) {
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {
@@ -580,9 +580,9 @@ void ContainmentInterface::on_appletAdded(Plasma::Applet *applet)
         return;
     }
 
-    if (m_view->layout() && m_view->layout()->isInternalContainment(applet)) {
+    if (m_view->layout() && m_view->layout()->isSubContainment(applet)) {
         //! internal containment case
-        Plasma::Containment *internalC = m_view->layout()->internalContainmentOf(applet);
+        Plasma::Containment *subContainment = m_view->layout()->subContainmentOf(applet);
         PlasmaQuick::AppletQuickItem *contAi = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
         if (contAi && !m_appletsExpandedConnections.contains(contAi)) {
@@ -594,7 +594,7 @@ void ContainmentInterface::on_appletAdded(Plasma::Applet *applet)
             });
         }
 
-        for (const auto internalApplet : internalC->applets()) {
+        for (const auto internalApplet : subContainment->applets()) {
             PlasmaQuick::AppletQuickItem *ai = internalApplet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai && !m_appletsExpandedConnections.contains(ai) ){

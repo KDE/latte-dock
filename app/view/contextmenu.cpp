@@ -129,7 +129,7 @@ QPoint ContextMenu::popUpTopLeft(Plasma::Applet *applet, const QRect popUpRect)
 
     if ((itemLength > menuLength)
             || (applet == m_latteView->containment())
-            || (m_latteView && m_latteView->layout() && m_latteView->layout()->isInternalContainment(applet)) ) {
+            || (m_latteView && m_latteView->layout() && m_latteView->layout()->isSubContainment(applet)) ) {
         return popUpRelevantToGlobalPoint(globalItemRect, popUpRect);
     } else {
         return popUpRelevantToParent(globalItemRect, popUpRect);
@@ -279,13 +279,13 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
             if (ai && ai->isVisible() && appletContainsMouse) {
                 applet = ai->applet();
 
-                if (m_latteView && m_latteView->layout() && m_latteView->layout()->isInternalContainment(applet)) {
-                    Plasma::Containment *internalC = m_latteView->layout()->internalContainmentOf(applet);
+                if (m_latteView && m_latteView->layout() && m_latteView->layout()->isSubContainment(applet)) {
+                    Plasma::Containment *subContainment = m_latteView->layout()->subContainmentOf(applet);
 
-                    if (internalC) {
+                    if (subContainment) {
                         Plasma::Applet *internalApplet{nullptr};
 
-                        for (const Plasma::Applet *appletCont : internalC->applets()) {
+                        for (const Plasma::Applet *appletCont : subContainment->applets()) {
                             PlasmaQuick::AppletQuickItem *ai2 = appletCont->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
                             if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(m_latteView->contentItem(), event->pos()))) {
