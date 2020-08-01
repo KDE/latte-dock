@@ -458,15 +458,15 @@ bool ContainmentInterface::hasPlasmaTasks() const
     return (m_plasmaTasksModel->count() > 0);
 }
 
-void ContainmentInterface::addExpandedApplet(const int &id)
+void ContainmentInterface::addExpandedApplet(PlasmaQuick::AppletQuickItem * appletQuickItem)
 {
-    if (m_expandedAppletIds.contains(id) && appletIsExpandable(id)) {
+    if (appletQuickItem && m_expandedAppletIds.contains(appletQuickItem) && appletIsExpandable(appletQuickItem)) {
         return;
     }
 
     bool isExpanded = hasExpandedApplet();
 
-    m_expandedAppletIds << id;
+    m_expandedAppletIds[appletQuickItem] = appletQuickItem->applet()->id();
 
     if (isExpanded != hasExpandedApplet()) {
         emit hasExpandedAppletChanged();
@@ -475,15 +475,15 @@ void ContainmentInterface::addExpandedApplet(const int &id)
     emit expandedAppletStateChanged();
 }
 
-void ContainmentInterface::removeExpandedApplet(const int &id)
+void ContainmentInterface::removeExpandedApplet(PlasmaQuick::AppletQuickItem *appletQuickItem)
 {
-    if (!m_expandedAppletIds.contains(id)) {
+    if (!m_expandedAppletIds.contains(appletQuickItem)) {
         return;
     }
 
     bool isExpanded = hasExpandedApplet();
 
-    m_expandedAppletIds.removeAll(id);
+    m_expandedAppletIds.remove(appletQuickItem);
 
     if (isExpanded != hasExpandedApplet()) {
         emit hasExpandedAppletChanged();
@@ -508,9 +508,9 @@ void ContainmentInterface::on_appletExpandedChanged()
 
     if (appletItem) {
         if (appletItem->isExpanded()) {
-            addExpandedApplet(appletItem->applet()->id());
+            addExpandedApplet(appletItem);
         } else {
-            removeExpandedApplet(appletItem->applet()->id());
+            removeExpandedApplet(appletItem);
         }
     }
 }
@@ -539,7 +539,7 @@ void ContainmentInterface::onPlasmaTasksCountChanged()
 
 bool ContainmentInterface::appletIsExpanded(const int id)
 {
-    return m_expandedAppletIds.contains(id);
+    return m_expandedAppletIds.values().contains(id);
 }
 
 void ContainmentInterface::toggleAppletExpanded(const int id)
@@ -590,7 +590,7 @@ void ContainmentInterface::on_appletAdded(Plasma::Applet *applet)
 
             connect(contAi, &QObject::destroyed, this, [&, contAi](){
                 m_appletsExpandedConnections.remove(contAi);
-                removeExpandedApplet(contAi->applet()->id());
+                removeExpandedApplet(contAi);
             });
         }
 
@@ -602,7 +602,7 @@ void ContainmentInterface::on_appletAdded(Plasma::Applet *applet)
 
                 connect(ai, &QObject::destroyed, this, [&, ai](){
                     m_appletsExpandedConnections.remove(ai);
-                    removeExpandedApplet(ai->applet()->id());
+                    removeExpandedApplet(ai);
                 });
             }
         }
@@ -627,7 +627,7 @@ void ContainmentInterface::on_appletAdded(Plasma::Applet *applet)
 
             connect(ai, &QObject::destroyed, this, [&, ai](){
                 m_appletsExpandedConnections.remove(ai);
-                removeExpandedApplet(ai->applet()->id());
+                removeExpandedApplet(ai);
             });
         }
     }

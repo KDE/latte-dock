@@ -25,6 +25,7 @@
 
 // Qt
 #include <QMetaMethod>
+#include <QHash>
 #include <QObject>
 #include <QPointer>
 #include <QQuickItem>
@@ -114,8 +115,8 @@ private slots:
     void onPlasmaTasksCountChanged();
 
 private:
-    void addExpandedApplet(const int &id);
-    void removeExpandedApplet(const int &id);
+    void addExpandedApplet(PlasmaQuick::AppletQuickItem * appletQuickItem);
+    void removeExpandedApplet(PlasmaQuick::AppletQuickItem *appletQuickItem);
 
     bool appletIsExpandable(PlasmaQuick::AppletQuickItem *appletQuickItem);
 
@@ -139,8 +140,9 @@ private:
     TasksModel *m_latteTasksModel;
     TasksModel *m_plasmaTasksModel;
 
+    //!keep record of applet ids and avoid crashes when trying to access ids for already destroyed applets
+    QHash<PlasmaQuick::AppletQuickItem *, int> m_expandedAppletIds;
     QHash<PlasmaQuick::AppletQuickItem *, QMetaObject::Connection> m_appletsExpandedConnections;
-    QList<int> m_expandedAppletIds;
 };
 
 }
