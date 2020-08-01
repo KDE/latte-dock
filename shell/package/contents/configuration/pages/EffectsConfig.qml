@@ -418,15 +418,6 @@ PlasmaComponents.Page {
 
                     ExclusiveGroup {
                         id: indicatorStyleGroup
-                        onCurrentChanged: {
-                            if (current.checked){
-                                if (current.parent.hasOwnProperty("button")) {
-                                    latteView.indicator.type = current.parent.type;
-                                } else {
-                                    latteView.indicator.type = current.type;
-                                }
-                            }
-                        }
                     }
 
                     PlasmaComponents.Button {
@@ -434,22 +425,34 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
                         text: i18nc("latte indicator style", "Latte")
                         checked: parent.type === type
-                        checkable: true
+                        checkable: false
                         exclusiveGroup:  indicatorStyleGroup
                         tooltip: i18n("Use Latte style for your indicators")
 
                         readonly property string type: "org.kde.latte.default"
+
+                        onPressedChanged: {
+                            if (pressed) {
+                                latteView.indicator.type = type;
+                            }
+                        }
                     }
 
                     PlasmaComponents.Button {
                         Layout.fillWidth: true
                         text: i18nc("plasma indicator style", "Plasma")
                         checked: parent.type === type
-                        checkable: true
+                        checkable: false
                         exclusiveGroup:  indicatorStyleGroup
                         tooltip: i18n("Use Plasma style for your indicators")
 
                         readonly property string type: "org.kde.latte.plasma"
+
+                        onPressedChanged: {
+                            if (pressed) {
+                                latteView.indicator.type = type;
+                            }
+                        }
                     }
 
                     LatteExtraControls.CustomIndicatorButton {
@@ -458,7 +461,7 @@ PlasmaComponents.Page {
                         implicitWidth: latteBtn.implicitWidth
                         implicitHeight: latteBtn.implicitHeight
 
-                        checked: checkable ? parent.type === type : false
+                        checked: parent.type === type
                         exclusiveGroup:  indicatorStyleGroup
                         comboBoxMinimumPopUpWidth: 1.5 * customIndicator.width
                     }

@@ -360,15 +360,6 @@ PlasmaComponents.Page {
 
                 ExclusiveGroup {
                     id: visibilityGroup
-                    onCurrentChanged: {
-                        if (current.checked){
-                            if (current.parent.hasOwnProperty("button")) {
-                                latteView.visibility.mode = current.parent.mode;
-                            } else {
-                                latteView.visibility.mode = current.mode;
-                            }
-                        }
-                    }
                 }
 
                 PlasmaComponents.Button {
@@ -377,30 +368,48 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Always Visible")
                     checked: parent.mode === mode
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: visibilityGroup
 
                     property int mode: LatteCore.Types.AlwaysVisible
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            latteView.visibility.mode = mode;
+                        }
+                    }
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Auto Hide")
                     checked: parent.mode === mode
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: visibilityGroup
 
                     property int mode: LatteCore.Types.AutoHide
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            latteView.visibility.mode = mode;
+                        }
+                    }
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Dodge Active")
                     checked: parent.mode === mode
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: visibilityGroup
 
                     property int mode: LatteCore.Types.DodgeActive
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            latteView.visibility.mode = mode;
+                        }
+                    }
                 }
 
                 LatteExtraControls.CustomVisibilityModeButton {
