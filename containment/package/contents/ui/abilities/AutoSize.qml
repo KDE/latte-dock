@@ -142,7 +142,7 @@ Item {
 
     function updateIconSize() {
 
-        if ( !doubleCallAutomaticUpdateIconSize.running && !visibility.inTempHiding
+        if ( !doubleCallAutomaticUpdateIconSize.running && !visibility.inRelocationHiding
                 && ((visibility.normalState || root.editMode)
                     && (sizer.isActive || (!sizer.isActive && metrics.iconSize!==metrics.maxIconSize)))
                 && (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === sizer.iconSize) ) {

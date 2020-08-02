@@ -295,7 +295,7 @@ Item{
     Binding {
         target: wrapper
         property: "marginsLength"
-        when: latteView && (!root.inStartup || visibilityManager.inTempHiding)
+        when: latteView && (!root.inStartup || visibilityManager.inRelocationHiding)
         value: atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins
     }
 
@@ -325,7 +325,7 @@ Item{
         Binding {
             target: _wrapperContainer
             property: "_thickness"
-            when: !visibilityManager.inTempHiding
+            when: !visibilityManager.inRelocationHiding
             value: {
                 if (appletItem.isInternalViewSplitter) {
                     return wrapper.layoutThickness;
@@ -339,7 +339,7 @@ Item{
         Binding {
             target: _wrapperContainer
             property: "_length"
-            when: !visibilityManager.inTempHiding
+            when: !visibilityManager.inRelocationHiding
             value: {
                 if (appletItem.isAutoFillApplet && (appletItem.maxAutoFillLength>-1)){
                     return wrapper.length;

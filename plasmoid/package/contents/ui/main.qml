@@ -1224,7 +1224,7 @@ Item {
             Binding {
                 target: scrollableList
                 property: "thickness"
-                when: latteView && !latteView.maskManager.inTempHiding
+                when: latteView && !latteView.maskManager.inRelocationHiding
                 value: {
                     if (latteView) {
                         return animations.hasThicknessAnimation ? latteView.maskManager.thicknessZoom : latteView.maskManager.thicknessNormal;
@@ -1237,7 +1237,7 @@ Item {
             Binding {
                 target: scrollableList
                 property: "length"
-                when: latteView && !latteView.maskManager.inTempHiding
+                when: latteView && !latteView.maskManager.inRelocationHiding
                 value: {
                     if (root.vertical) {
                         return Math.min(root.height, icList.height)

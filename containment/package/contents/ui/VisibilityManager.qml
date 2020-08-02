@@ -56,7 +56,7 @@ Item{
     property bool inLocationAnimation: latteView && latteView.positioner && latteView.positioner.inLocationAnimation
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
-    property bool inTempHiding: false
+    property bool inRelocationHiding: false
     property bool inScreenEdgeInternalWindowSliding: root.behaveAsDockWithMask && hideThickScreenGap
 
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
@@ -136,12 +136,12 @@ Item{
         target: latteView
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
-        when: latteView && !inTempHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding
+        when: latteView && !inRelocationHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding
         value: root.behaveAsPlasmaPanel ? thicknessAsPanel : thicknessZoomOriginal
     }
 
     property bool validIconSize: (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === autosize.iconSize)
-    property bool inPublishingState: validIconSize && !inSlidingIn && !inSlidingOut && !inTempHiding && !inForceHiding
+    property bool inPublishingState: validIconSize && !inSlidingIn && !inSlidingOut && !inRelocationHiding && !inForceHiding
 
     Binding{
         target: latteView
@@ -160,7 +160,7 @@ Item{
     Binding {
         target: latteView
         property: "headThicknessGap"
-        when: latteView && !inTempHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
+        when: latteView && !inRelocationHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
         value: {
             if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView || latteView.byPassWM) {
                 return 0;
@@ -295,14 +295,14 @@ Item{
         value: LatteCore.WindowSystem.compositingActive
                && (((root.blurEnabled && root.useThemePanel)
                     || (root.blurEnabled && root.forceSolidPanel && LatteCore.WindowSystem.compositingActive))
-                   && (!root.inStartup || inForceHiding || inTempHiding))
+                   && (!root.inStartup || inForceHiding || inRelocationHiding))
     }
 
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null
         property: "drawShadows"
         when: latteView && latteView.effects
-        value: root.drawShadowsExternal && (!root.inStartup || inForceHiding || inTempHiding) && !(latteView && latteView.visibility.isHidden)
+        value: root.drawShadowsExternal && (!root.inStartup || inForceHiding || inRelocationHiding) && !(latteView && latteView.visibility.isHidden)
     }
 
     Binding{
@@ -391,7 +391,7 @@ Item{
         target: layoutsManager
         onCurrentLayoutIsSwitching: {
             if (LatteCore.WindowSystem.compositingActive && latteView && latteView.layout && latteView.layout.name === layoutName) {
-                manager.inTempHiding = true;
+                manager.inRelocationHiding = true;
                 manager.inForceHiding = true;
                 parabolic.sglClearZoom();
                 manager.slotMustBeHide();
@@ -419,7 +419,7 @@ Item{
         if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand) {
             updateMaskArea();
 
-            if (slidingAnimationAutoHiddenOut.running && !inTempHiding && !inForceHiding) {
+            if (slidingAnimationAutoHiddenOut.running && !inRelocationHiding && !inForceHiding) {
                 slotMustBeShown();
             }
         }
@@ -433,7 +433,7 @@ Item{
         }
 
         //! Normal Dodge/AutoHide case
-        if (!slidingAnimationAutoHiddenIn.running && !inTempHiding && !inForceHiding){
+        if (!slidingAnimationAutoHiddenIn.running && !inRelocationHiding && !inForceHiding){
             slidingAnimationAutoHiddenIn.init();
         }
     }
@@ -465,7 +465,7 @@ Item{
 
     //! functions used for sliding out/in during location/screen changes
     function slotHideDockDuringLocationChange() {
-        inTempHiding = true;
+        inRelocationHiding = true;
         blockUpdateMask = true;
 
         if(!slidingAnimationAutoHiddenOut.running) {
@@ -923,7 +923,7 @@ Item{
 
         onStopped: {
             //! Trying to move the ending part of the signals at the end of editing animation
-            if (!manager.inTempHiding) {
+            if (!manager.inRelocationHiding) {
                 manager.updateMaskArea();
             } else {
                 if (!root.editMode) {
@@ -945,7 +945,7 @@ Item{
         id: slidingAnimationAutoHiddenIn
 
         PauseAnimation{
-            duration: manager.inTempHiding && animations.active ? 500 : 0
+            duration: manager.inRelocationHiding && animations.active ? 500 : 0
         }
 
         PropertyAnimation {
@@ -974,12 +974,12 @@ Item{
         onStopped: {
             inSlidingIn = false;
 
-            if (manager.inTempHiding) {
-                manager.inTempHiding = false;
+            if (manager.inRelocationHiding) {
+                manager.inRelocationHiding = false;
                 autosize.updateIconSize();
             }
 
-            manager.inTempHiding = false;
+            manager.inRelocationHiding = false;
             autosize.updateIconSize();
 
             if (manager.debugManager) {
