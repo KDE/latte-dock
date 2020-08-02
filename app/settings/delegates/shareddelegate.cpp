@@ -30,14 +30,16 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QDebug>
+#include <QDialogButtonBox>
 #include <QMenu>
-#include <QWidget>
 #include <QModelIndex>
 #include <QPainter>
 #include <QPushButton>
 #include <QString>
 #include <QTextDocument>
+#include <QWidgetAction>
 
+#define OKPRESSED "OKPRESSED"
 
 namespace Latte {
 namespace Settings {
@@ -92,6 +94,25 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
 
     m_controller->on_sharedToInEditChanged(layoutId, true);
 
+    //! Ok, Apply Buttons behavior
+    menu->addSeparator();
+
+    QDialogButtonBox *menuDialogButtons = new QDialogButtonBox(menu);
+    menuDialogButtons->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+    QWidgetAction* menuDialogButtonsWidgetAction = new QWidgetAction(menu);
+    menuDialogButtonsWidgetAction->setDefaultWidget(menuDialogButtons);
+
+    menu->addAction(menuDialogButtonsWidgetAction);
+
+    connect(menuDialogButtons->button(QDialogButtonBox::Ok), &QPushButton::clicked,  [this, menu, button]() {
+        button->setProperty(OKPRESSED, true);
+        menu->hide();
+    });
+
+    connect(menuDialogButtons->button(QDialogButtonBox::Cancel), &QPushButton::clicked,  menu, &QMenu::hide);
+    connect(menu, &QMenu::aboutToHide, button, &QWidget::clearFocus);
+
     return button;
 }
 
@@ -105,6 +126,13 @@ void Shared::setModelData(QWidget *editor, QAbstractItemModel *model, const QMod
 {
     QPushButton *button = static_cast<QPushButton *>(editor);
 
+    QString layoutId = index.data(Model::Layouts::IDROLE).toString();
+
+    if (button->property(OKPRESSED).isNull() || !button->property(OKPRESSED).toBool()) {
+        m_controller->on_sharedToInEditChanged(layoutId, false);
+        return;
+    }
+
     QStringList assignedLayouts;
     foreach (QAction *action, button->menu()->actions()) {
         if (action->isChecked()) {
@@ -114,7 +142,6 @@ void Shared::setModelData(QWidget *editor, QAbstractItemModel *model, const QMod
 
     model->setData(index, assignedLayouts, Qt::UserRole);
 
-    QString layoutId = index.data(Model::Layouts::IDROLE).toString();
     m_controller->on_sharedToInEditChanged(layoutId, false);
 }
 
