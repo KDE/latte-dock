@@ -42,7 +42,11 @@
 
 //! Hide Timer can create cases that when it is low it does not allow the
 //! view to be show. For example !compositing+kwin_edges+hide inteval<50ms
-const int HIDEMINIMUMINTERVAL = 50;
+//!   FIXED: As it appears because we dont hide any view anymore before its sliding in
+//!   animation has ended that probably allows to set the hide minimum interval to zero
+//!   without any further issues, such as to not show the view even though the
+//!   user is touching the screen edge
+const int HIDEMINIMUMINTERVAL = 0;
 //! After calling SidebarAutoHide panel to show for example through Sidebar button
 //! or global shortcuts we make sure bar will be shown enough time
 //! in order for the user to observe its contents

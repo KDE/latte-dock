@@ -439,6 +439,11 @@ Item{
     }
 
     function slotMustBeHide() {
+        if (inSlidingIn) {
+            /*consider hiding after sliding in has finished*/
+            return;
+        }
+
         if (latteView && latteView.visibility.mode === LatteCore.Types.WindowsCanCover) {
             latteView.visibility.setViewOnBackLayer();
             return;
