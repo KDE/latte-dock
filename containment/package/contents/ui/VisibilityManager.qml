@@ -439,7 +439,7 @@ Item{
     }
 
     function slotMustBeHide() {
-        if (inSlidingIn) {
+        if (inSlidingIn && !inRelocationHiding) {
             /*consider hiding after sliding in has finished*/
             return;
         }
