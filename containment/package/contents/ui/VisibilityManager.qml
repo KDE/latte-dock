@@ -391,10 +391,7 @@ Item{
         target: layoutsManager
         onCurrentLayoutIsSwitching: {
             if (LatteCore.WindowSystem.compositingActive && latteView && latteView.layout && latteView.layout.name === layoutName) {
-                manager.inRelocationHiding = true;
-                manager.inForceHiding = true;
                 parabolic.sglClearZoom();
-                manager.slotMustBeHide();
             }
         }
     }

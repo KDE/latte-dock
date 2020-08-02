@@ -132,6 +132,8 @@ signals:
 
 private slots:
     void screenChanged(QScreen *screen);
+    void onCurrentLayoutIsSwitching(const QString &layoutName);
+
     void validateDockGeometry();
     void updateInLocationAnimation();
     void syncLatteViews();

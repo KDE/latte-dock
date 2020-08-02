@@ -536,6 +536,7 @@ void Synchronizer::unloadCentralLayout(CentralLayout *layout)
 void Synchronizer::unloadSharedLayout(SharedLayout *layout)
 {
     if (m_sharedLayouts.contains(layout)) {
+        emit currentLayoutIsSwitching(layout->name());
         disconnect(layout, &SharedLayout::layoutDestroyed, this, &Synchronizer::unloadSharedLayout);
         int pos = m_sharedLayouts.indexOf(layout);
         SharedLayout *shared = m_sharedLayouts.takeAt(pos);

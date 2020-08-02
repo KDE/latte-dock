@@ -30,6 +30,7 @@
 #include "../layout/sharedlayout.h"
 #include "../layouts/manager.h"
 #include "../settings/universalsettings.h"
+#include "../wm/abstractwindowinterface.h"
 
 // Qt
 #include <QDebug>
@@ -81,6 +82,7 @@ Positioner::Positioner(Latte::View *parent)
             connect(m_corona->wm(), &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &Positioner::updateWaylandId);
         }
 
+        connect(m_corona->layoutsManager(), &Layouts::Manager::currentLayoutIsSwitching, this, &Positioner::onCurrentLayoutIsSwitching);
         /////
 
         m_screenSyncTimer.setInterval(qMax(m_corona->universalSettings()->screenTrackerInterval() - 500, 1000));
@@ -263,6 +265,40 @@ Latte::WindowSystem::WindowId Positioner::trackedWindowId()
 QString Positioner::currentScreenName() const
 {
     return m_screenToFollowId;
+}
+
+void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)
+{
+    if (!m_view || !m_view->layout() || m_view->layout()->name() != layoutName) {
+        return;
+    }
+
+    auto slideLocation = WindowSystem::AbstractWindowInterface::Slide::None;
+
+    switch (m_view->containment()->location()) {
+    case Plasma::Types::TopEdge:
+        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Top;
+        break;
+
+    case Plasma::Types::RightEdge:
+        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Right;
+        break;
+
+    case Plasma::Types::BottomEdge:
+        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Bottom;
+        break;
+
+    case Plasma::Types::LeftEdge:
+        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Left;
+        break;
+
+    default:
+        qDebug() << staticMetaObject.className() << "wrong location";
+        break;
+    }
+
+    m_corona->wm()->slideWindow(*m_view, slideLocation);
+    m_view->setVisible(false);
 }
 
 void Positioner::syncLatteViews()
