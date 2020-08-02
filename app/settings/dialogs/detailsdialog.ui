@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>569</width>
+    <width>561</width>
     <height>615</height>
    </rect>
   </property>
@@ -36,17 +36,6 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <layout class="QGridLayout" name="gridLayout" columnstretch="5,0,8">
-         <item row="13" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
-           <item>
-            <widget class="QLabel" name="inMenuChkLbl">
-             <property name="text">
-              <string>Show in layouts context menu</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
          <item row="10" column="1">
           <widget class="QRadioButton" name="backRadioBtn">
            <property name="sizePolicy">
@@ -57,8 +46,8 @@
            </property>
            <property name="maximumSize">
             <size>
-             <width>16777215</width>
-             <height>16777215</height>
+             <width>20</width>
+             <height>20</height>
             </size>
            </property>
            <property name="text">
@@ -116,8 +105,8 @@
            </property>
            <property name="maximumSize">
             <size>
-             <width>16777215</width>
-             <height>16777215</height>
+             <width>20</width>
+             <height>20</height>
             </size>
            </property>
            <property name="text">
@@ -261,13 +250,6 @@
            </item>
           </layout>
          </item>
-         <item row="14" column="1">
-          <widget class="QCheckBox" name="borderlessChk">
-           <property name="text">
-            <string notr="true"/>
-           </property>
-          </widget>
-         </item>
          <item row="11" column="2">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
@@ -381,13 +363,6 @@
            </item>
           </layout>
          </item>
-         <item row="13" column="1">
-          <widget class="QCheckBox" name="inMenuChk">
-           <property name="text">
-            <string notr="true"/>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout_7">
            <item>
@@ -465,17 +440,6 @@
            </item>
           </layout>
          </item>
-         <item row="14" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
-            <widget class="QLabel" name="borderlessChkLbl">
-             <property name="text">
-              <string>Hide window borders for maximized windows</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
          <item row="3" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
@@ -542,6 +506,26 @@
             </spacer>
            </item>
           </layout>
+         </item>
+         <item row="13" column="1" colspan="2">
+          <widget class="QCheckBox" name="inMenuChk">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Show in layouts context menu</string>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="1" colspan="2">
+          <widget class="QCheckBox" name="borderlessChk">
+           <property name="text">
+            <string>Hide window borders for maximized windows</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
