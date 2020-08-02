@@ -1055,15 +1055,29 @@ Item{
             }
 
             if (root.behaveAsPlasmaPanel && !latteView.visibility.isHidden && !inSlidingIn && !inSlidingOut && !inStartup) {
-                if (hideThickScreenGap) {
-                    slidingInRealFloating.stop();
-                    slidingOutRealFloating.start();
-                } else {
-                    slidingOutRealFloating.stop();
-                    slidingInRealFloating.start();
+                slideInOutRealFloating();
+            }
+        }
+
+        onInStartupChanged: {
+            //! used for positioning properly real floating panels when there is a maximized window
+            if (root.hideThickScreenGap && !inStartup && latteView.positioner.slideOffset===0) {
+                if (root.behaveAsPlasmaPanel && !latteView.visibility.isHidden) {
+                    slideInOutRealFloating();
                 }
             }
         }
+
+        function slideInOutRealFloating() {
+            if (root.hideThickScreenGap) {
+                slidingInRealFloating.stop();
+                slidingOutRealFloating.start();
+            } else {
+                slidingOutRealFloating.stop();
+                slidingInRealFloating.start();
+            }
+        }
     }
+
 
 }
