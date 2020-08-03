@@ -40,6 +40,7 @@
 // KDE
 #include <KActivities/Consumer>
 #include <KActivities/Controller>
+#include <KWindowSystem>
 
 namespace Latte {
 namespace Layouts {
@@ -829,7 +830,17 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
         layoutForFreeActivities = m_manager->corona()->universalSettings()->lastNonAssignedLayoutName();
     }
 
+    //! discover layouts that are needed based on running activities
     for (const auto &activity : runningActivities()) {
+        if (KWindowSystem::isPlatformWayland() && (m_activitiesController->currentActivity() != activity)){
+            //! Wayland Protection: Plasma wayland does not support yet Activities but on the other hand that
+            //! does not mean that Central layouts can not be accompanied by their relevant shared layout.
+            //! The optimal behavior is that only ONE central layout and ONE shared layout can be loaded each time.
+            //! If the user changes in an activity that needs a different central layout then in that case
+            //! the new central layout is loaded and the old one is unloaded.
+            continue;
+        }
+
         if (m_assignedLayouts.contains(activity)) {
             if (!layoutsToLoad.contains(m_assignedLayouts[activity])) {
                 layoutsToLoad.append(m_assignedLayouts[activity]);
@@ -839,6 +850,7 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
         }
     }
 
+    //! discover layouts that must be unloaded because of running activities changes
     for (const auto layout : m_centralLayouts) {
         QString tempLayoutName;
 
@@ -872,7 +884,7 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
     }
 
     //! Add Layout for free activities
-    if (layoutForFreeActivitiesIsNeeded {
+    if (layoutForFreeActivitiesIsNeeded) {
         if (!centralLayout(layoutForFreeActivities) && !sharedLayout(layoutForFreeActivities)) {
             //! CENTRAL Layout for FreeActivities is not loaded and at the same time
             //! that layout is not already configured as SHARED for other CENTRAL layouts

@@ -79,10 +79,6 @@ void TabLayouts::initUi()
     m_inMemoryButtons->addButton(m_ui->multipleToolBtn, MemoryUsage::MultipleLayouts);
     m_inMemoryButtons->setExclusive(true);
 
-    if (KWindowSystem::isPlatformWayland()) {
-        m_inMemoryButtons->button(MemoryUsage::MultipleLayouts)->setEnabled(false);
-    }
-
     bool inMultiple{m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts};
 
     if (inMultiple) {

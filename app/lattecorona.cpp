@@ -254,14 +254,10 @@ void Corona::load()
             loadLayoutName = m_layoutNameOnStartUp;
         }
 
-        if (m_userSetMemoryUsage != -1 && !KWindowSystem::isPlatformWayland()) {
+        if (m_userSetMemoryUsage != -1) {
             MemoryUsage::LayoutsMemory usage = static_cast<MemoryUsage::LayoutsMemory>(m_userSetMemoryUsage);
 
             m_universalSettings->setLayoutsMemoryUsage(usage);
-        }
-
-        if (KWindowSystem::isPlatformWayland()) {
-            m_universalSettings->setLayoutsMemoryUsage(MemoryUsage::SingleLayout);
         }
 
         m_layoutsManager->loadLayoutOnStartup(loadLayoutName);
