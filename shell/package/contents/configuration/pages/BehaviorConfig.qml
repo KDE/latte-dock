@@ -212,7 +212,7 @@ PlasmaComponents.Page {
                     readonly property int edge: PlasmaCore.Types.BottomEdge
 
                     onPressedChanged: {
-                        if (pressed && viewConfig.isReady) {
+                        if (pressed && viewConfig.isReady && plasmoid.location !== edge) {
                             latteView.positioner.hideDockDuringLocationChange(edge);
                         }
                     }
@@ -230,7 +230,7 @@ PlasmaComponents.Page {
                     readonly property int edge: PlasmaCore.Types.LeftEdge
 
                     onPressedChanged: {
-                        if (pressed && viewConfig.isReady) {
+                        if (pressed && viewConfig.isReady && plasmoid.location !== edge) {
                             latteView.positioner.hideDockDuringLocationChange(edge);
                         }
                     }
@@ -248,7 +248,7 @@ PlasmaComponents.Page {
                     readonly property int edge: PlasmaCore.Types.TopEdge
 
                     onPressedChanged: {
-                        if (pressed && viewConfig.isReady) {
+                        if (pressed && viewConfig.isReady && plasmoid.location !== edge) {
                             latteView.positioner.hideDockDuringLocationChange(edge);
                         }
                     }
@@ -266,7 +266,7 @@ PlasmaComponents.Page {
                     readonly property int edge: PlasmaCore.Types.RightEdge
 
                     onPressedChanged: {
-                        if (pressed && viewConfig.isReady) {
+                        if (pressed && viewConfig.isReady && plasmoid.location !== edge) {
                             latteView.positioner.hideDockDuringLocationChange(edge);
                         }
                     }
