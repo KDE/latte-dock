@@ -44,7 +44,7 @@ FocusScope {
     height: appliedHeight
 
     readonly property bool basicLevel: !advancedLevel
-    readonly property bool advancedLevel: viewConfig.inAdvancedMode
+    readonly property bool advancedLevel: universalSettings.inAdvancedModeForEditSettings
 
     readonly property bool inConfigureAppletsMode: plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive
 
@@ -80,7 +80,7 @@ FocusScope {
     //! width can be between 200px - maxWidth
     //! height can be between 400px - maxHeight
     property int appliedWidth: Math.min(maxWidth, Math.max(200, chosenWidth))
-    property int appliedHeight: viewConfig.inAdvancedMode ? maxHeight : Math.min(maxHeight, Math.max(400, chosenHeight))
+    property int appliedHeight: universalSettings.inAdvancedModeForEditSettings ? maxHeight : Math.min(maxHeight, Math.max(400, chosenHeight))
 
     Layout.minimumWidth: width
     Layout.minimumHeight: height
@@ -361,11 +361,11 @@ FocusScope {
 
                     LatteComponents.Switch {
                         id: advancedSwitch
-                        checked: viewConfig.inAdvancedMode && viewConfig.isReady
+                        checked: universalSettings.inAdvancedModeForEditSettings && viewConfig.isReady
 
                         onCheckedChanged: {
                             if (viewConfig.isReady) {
-                                viewConfig.inAdvancedMode = checked;
+                                universalSettings.inAdvancedModeForEditSettings = checked;
                             }
                         }
                     }

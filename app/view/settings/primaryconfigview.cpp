@@ -67,9 +67,6 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
     connect(this, &QQuickView::heightChanged, this, &PrimaryConfigView::updateEffects);
 
     connect(this, &PrimaryConfigView::availableScreenGeometryChanged, this, &PrimaryConfigView::syncGeometry);
-    connect(this, &PrimaryConfigView::inAdvancedModeChanged, this, &PrimaryConfigView::saveConfig);
-    connect(this, &PrimaryConfigView::inAdvancedModeChanged, this, &PrimaryConfigView::updateShowInlineProperties);
-    connect(this, &PrimaryConfigView::inAdvancedModeChanged, this, &PrimaryConfigView::syncGeometry);
 
     connect(this, &QQuickView::statusChanged, [&](QQuickView::Status status) {
         if (status == QQuickView::Ready) {
@@ -86,6 +83,11 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
                 hideConfigWindow();
             }
         });
+
+        connect(m_corona->universalSettings(), &Latte::UniversalSettings::inAdvancedModeForEditSettingsChanged,
+                this, &PrimaryConfigView::updateShowInlineProperties);
+        connect(m_corona->universalSettings(), &Latte::UniversalSettings::inAdvancedModeForEditSettingsChanged,
+                this, &PrimaryConfigView::syncGeometry);
     }
 
     m_availableScreemGeometryTimer.setSingleShot(true);
@@ -274,13 +276,11 @@ void PrimaryConfigView::initParentView(Latte::View *view)
         updateAvailableScreenGeometry();
     });
 
-    viewconnections << connect(this, &PrimaryConfigView::inAdvancedModeChanged, m_latteView, &Latte::View::inSettingsAdvancedModeChanged);
+    viewconnections << connect(m_corona->universalSettings(), &Latte::UniversalSettings::inAdvancedModeForEditSettingsChanged, m_latteView, &Latte::View::inSettingsAdvancedModeChanged);
     viewconnections << connect(m_latteView->containment(), &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);   
 
     m_originalByPassWM = m_latteView->byPassWM();
     m_originalMode = m_latteView->visibility()->mode();
-
-    loadConfig();
 
     updateEnabledBorders();
     updateAvailableScreenGeometry();
@@ -359,7 +359,7 @@ void PrimaryConfigView::syncGeometry()
 
     switch (m_latteView->formFactor()) {
     case Plasma::Types::Horizontal: {
-        if (m_inAdvancedMode) {
+        if (inAdvancedMode()) {
             if (qApp->isLeftToRight()) {
                 xPos = availGeometry.x() + availGeometry.width() - size.width();
             } else {
@@ -565,7 +565,7 @@ void PrimaryConfigView::updateShowInlineProperties()
     bool showSecWindow{false};
     bool advancedApprovedSecWindow{false};
 
-    if (m_inAdvancedMode && m_latteView->formFactor() != Plasma::Types::Vertical) {
+    if (inAdvancedMode() && m_latteView->formFactor() != Plasma::Types::Vertical) {
         showSecWindow = true;
         advancedApprovedSecWindow = true;
     }
@@ -594,17 +594,7 @@ void PrimaryConfigView::updateShowInlineProperties()
 
 bool PrimaryConfigView::inAdvancedMode() const
 {
-    return m_inAdvancedMode;
-}
-
-void PrimaryConfigView::setInAdvancedMode(bool advanced)
-{
-    if (m_inAdvancedMode == advanced) {
-        return;
-    }
-
-    m_inAdvancedMode = advanced;
-    emit inAdvancedModeChanged();
+    return m_corona->universalSettings()->inAdvancedModeForEditSettings();
 }
 
 //!BEGIN borders
@@ -682,29 +672,6 @@ void PrimaryConfigView::updateEffects()
         KWindowEffects::enableBlurBehind(winId(), false);
     }
 }
-
-//!BEGIN configuration
-void PrimaryConfigView::loadConfig()
-{
-    if (!m_latteView || !m_latteView->containment()) {
-        return;
-    }
-    auto config = m_latteView->containment()->config();
-    int complexity = config.readEntry("settingsComplexity", 0);
-    setInAdvancedMode(complexity>0);
-}
-
-void PrimaryConfigView::saveConfig()
-{
-    if (!m_latteView || !m_latteView->containment()) {
-        return;
-    }
-
-    auto config = m_latteView->containment()->config();
-    int complexity = m_inAdvancedMode ? 1 : 0;
-    config.writeEntry("settingsComplexity", complexity);
-}
-//!END configuration
 
 }
 }

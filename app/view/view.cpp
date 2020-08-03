@@ -826,7 +826,7 @@ void View::setIsPreferredForShortcuts(bool preferred)
 
 bool View::inSettingsAdvancedMode() const
 {
-    return m_primaryConfigView && m_primaryConfigView->inAdvancedMode();
+    return m_primaryConfigView && m_corona->universalSettings()->inAdvancedModeForEditSettings();
 }
 
 bool View::isTouchingBottomViewAndIsBusy() const

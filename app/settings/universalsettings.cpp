@@ -54,6 +54,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::badges3DStyleChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::inAdvancedModeForEditSettingsChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
@@ -113,6 +114,21 @@ void UniversalSettings::load()
 
     //! this is needed to inform globalshortcuts to update its modifiers tracking
     emit metaPressAndHoldEnabledChanged();
+}
+
+bool UniversalSettings::inAdvancedModeForEditSettings() const
+{
+    return m_inAdvancedModeForEditSettings;
+}
+
+void UniversalSettings::setInAdvancedModeForEditSettings(const bool &inAdvanced)
+{
+    if (m_inAdvancedModeForEditSettings == inAdvanced) {
+        return;
+    }
+
+    m_inAdvancedModeForEditSettings = inAdvanced;
+    emit inAdvancedModeForEditSettingsChanged();
 }
 
 bool UniversalSettings::showInfoWindow() const
@@ -482,6 +498,7 @@ void UniversalSettings::loadConfig()
     m_badges3DStyle = m_universalGroup.readEntry("badges3DStyle", false);
     m_canDisableBorders = m_universalGroup.readEntry("canDisableBorders", false);
     m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
+    m_inAdvancedModeForEditSettings = m_universalGroup.readEntry("inAdvancedModeForEditSettings", false);
     m_lastNonAssignedLayoutName = m_universalGroup.readEntry("lastNonAssignedLayout", QString());
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_metaPressAndHoldEnabled = m_universalGroup.readEntry("metaPressAndHoldEnabled", true);
@@ -499,6 +516,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("badges3DStyle", m_badges3DStyle);
     m_universalGroup.writeEntry("canDisableBorders", m_canDisableBorders);
     m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
+    m_universalGroup.writeEntry("inAdvancedModeForEditSettings", m_inAdvancedModeForEditSettings);
     m_universalGroup.writeEntry("lastNonAssignedLayout", m_lastNonAssignedLayoutName);
     m_universalGroup.writeEntry("launchers", m_launchers);
     m_universalGroup.writeEntry("metaPressAndHoldEnabled", m_metaPressAndHoldEnabled);

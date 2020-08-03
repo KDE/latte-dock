@@ -74,7 +74,6 @@ class PrimaryConfigView : public SubConfigView
     Q_OBJECT
     //! used when the secondary config window can not be shown
     Q_PROPERTY(bool showInlineProperties READ showInlineProperties NOTIFY showInlinePropertiesChanged)
-    Q_PROPERTY(bool inAdvancedMode READ inAdvancedMode WRITE setInAdvancedMode NOTIFY inAdvancedModeChanged)
     Q_PROPERTY(bool isReady READ isReady NOTIFY isReadyChanged)
 
     Q_PROPERTY(QRect availableScreenGeometry READ availableScreenGeometry NOTIFY availableScreenGeometryChanged)
@@ -90,9 +89,6 @@ public:
 
     PrimaryConfigView(Latte::View *view);
     ~PrimaryConfigView() override;
-
-    bool inAdvancedMode() const;
-    void setInAdvancedMode(bool advanced);
 
     bool hasFocus() const;
 
@@ -121,7 +117,6 @@ public slots:
 
 signals:
     void availableScreenGeometryChanged();
-    void inAdvancedModeChanged();
     void indicatorUiManagerChanged();
     void isReadyChanged();
     void raiseDocksTemporaryChanged();
@@ -150,18 +145,17 @@ private slots:
 
     void setShowInlineProperties(bool show);
 
-    void loadConfig();
-    void saveConfig();
 
 private:
     void setIsReady(bool ready);
     void instantUpdateAvailableScreenGeometry();
 
+    bool inAdvancedMode() const;
+
 private:
     bool m_blockFocusLost{false};
     bool m_blockFocusLostOnStartup{true};
     bool m_originalByPassWM{false};
-    bool m_inAdvancedMode{false};
     bool m_inReverse{false};    //! it is used by the borders
     bool m_isReady{false};
     bool m_showInlineProperties{false};

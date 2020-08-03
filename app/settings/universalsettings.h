@@ -56,6 +56,7 @@ class UniversalSettings : public QObject
     Q_OBJECT
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
     Q_PROPERTY(bool badges3DStyle READ badges3DStyle WRITE setBadges3DStyle NOTIFY badges3DStyleChanged)
+    Q_PROPERTY(bool inAdvancedModeForEditSettings READ inAdvancedModeForEditSettings WRITE setInAdvancedModeForEditSettings NOTIFY inAdvancedModeForEditSettingsChanged)
     Q_PROPERTY(bool colorsScriptIsPresent READ colorsScriptIsPresent NOTIFY colorsScriptIsPresentChanged)
     Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)
 
@@ -83,6 +84,9 @@ public:
     void setCanDisableBorders(bool enable);
 
     bool colorsScriptIsPresent() const;
+
+    bool inAdvancedModeForEditSettings() const;
+    void setInAdvancedModeForEditSettings(const bool &inAdvanced);
 
     bool kwin_metaForwardedToLatte() const;
     void kwin_forwardMetaToLatte(bool forward);
@@ -134,6 +138,7 @@ signals:
     void colorsScriptIsPresentChanged();
     void currentLayoutNameChanged();
     void downloadWindowSizeChanged();
+    void inAdvancedModeForEditSettingsChanged();
     void lastNonAssignedLayoutNameChanged();
     void layoutsColumnWidthsChanged();
     void layoutsWindowSizeChanged();
@@ -169,6 +174,7 @@ private:
     bool m_badges3DStyle{false};
     bool m_canDisableBorders{false};
     bool m_colorsScriptIsPresent{false};
+    bool m_inAdvancedModeForEditSettings{false};
     bool m_metaPressAndHoldEnabled{true};
     bool m_showInfoWindow{true};
 
