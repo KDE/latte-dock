@@ -823,7 +823,7 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
     QStringList layoutsToUnload;
     QStringList layoutsToLoad;
 
-    bool allRunningActivitiesWillBeReserved{true};
+    bool layoutForFreeActivitiesIsNeeded{false};
 
     if (layoutForFreeActivities.isEmpty() || m_assignedLayouts.values().contains(layoutForFreeActivities)) {
         layoutForFreeActivities = m_manager->corona()->universalSettings()->lastNonAssignedLayoutName();
@@ -835,7 +835,7 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
                 layoutsToLoad.append(m_assignedLayouts[activity]);
             }
         } else {
-            allRunningActivitiesWillBeReserved = false;
+            layoutForFreeActivitiesIsNeeded = true;
         }
     }
 
@@ -844,7 +844,7 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
 
         if (!layoutsToLoad.contains(layout->name()) && layout->name() != layoutForFreeActivities) {
             tempLayoutName = layout->name();
-        } else if (layout->activities().isEmpty() && allRunningActivitiesWillBeReserved) {
+        } else if (layout->activities().isEmpty() && !layoutForFreeActivitiesIsNeeded) {
             //! in such case the layout for free_activities must be unloaded
             tempLayoutName = layout->name();
         }
@@ -872,7 +872,7 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
     }
 
     //! Add Layout for free activities
-    if (!allRunningActivitiesWillBeReserved) {
+    if (layoutForFreeActivitiesIsNeeded {
         if (!centralLayout(layoutForFreeActivities) && !sharedLayout(layoutForFreeActivities)) {
             //! CENTRAL Layout for FreeActivities is not loaded and at the same time
             //! that layout is not already configured as SHARED for other CENTRAL layouts
