@@ -61,11 +61,11 @@
     </entry>
     <entry name="floatingInternalGapIsForced" type="Int">
       <default>1</default>
-      <label>floating gaps belong to views for any user interaction such as applets triggering and parabolic effect, "1" stands for Partially Checked (Auto)</label>
+      <label>floating internal gap is forced and provided to applets and any other view specific user interaction. "1" stands for Partially Checked (Auto)</label>
     </entry>
-    <entry name="hideScreenGapForMaximized" type="Bool">
+    <entry name="hideFloatingGapForMaximized" type="Bool">
         <default>false</default>
-        <label>floating views hide their screen gap for maximized windows</label>
+        <label>floating gap is disabled when there are maximized windows</label>
     </entry>
     <entry name="proportionIconSize" type="Double">
       <default>-1</default>

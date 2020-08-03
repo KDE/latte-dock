@@ -350,7 +350,7 @@ Item{
                     || root.disablePanelShadowMaximized
                     || root.windowColors !== LatteContainment.Types.NoneWindowColors))
                || (root.screenEdgeMarginsEnabled                             /*Dynamic Screen Edge Margin*/
-                   && plasmoid.configuration.hideScreenGapForMaximized)
+                   && plasmoid.configuration.hideFloatingGapForMaximized)
     }
 
     Connections{

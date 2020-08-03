@@ -215,7 +215,7 @@ Item {
                                                                && plasmaBackgroundForPopups)*/
 
     property bool hideThickScreenGap: screenEdgeMarginEnabled
-                                      && plasmoid.configuration.hideScreenGapForMaximized
+                                      && plasmoid.configuration.hideFloatingGapForMaximized
                                       && latteView && latteView.windowsTracker
                                       && latteView.windowsTracker.currentScreen.existsWindowMaximized
 

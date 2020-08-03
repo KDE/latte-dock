@@ -831,14 +831,13 @@ PlasmaComponents.Page {
                     }
 
                     LatteComponents.CheckBox {
-                        id: hideScreenGapForMaximizedChk
                         Layout.maximumWidth: dialog.optionsWidth
-                        text: i18n("Hide screen gap for maximized windows")
-                        checked: plasmoid.configuration.hideScreenGapForMaximized
-                        tooltip: i18n("Panels in floating mode disable their screen gap for maximized windows")
+                        text: i18n("Hide floating gap for maximized windows")
+                        checked: plasmoid.configuration.hideFloatingGapForMaximized
+                        tooltip: i18n("Floating gap is disabled when there are maximized windows")
 
                         onClicked: {
-                            plasmoid.configuration.hideScreenGapForMaximized = checked;
+                            plasmoid.configuration.hideFloatingGapForMaximized = checked;
                         }
                     }
                 }
