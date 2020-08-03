@@ -741,20 +741,10 @@ PlasmaComponents.Page {
 
                 ExclusiveGroup {
                     id: themeColorsGroup
-                    onCurrentChanged: {
-                        if (current.checked) {
-                            plasmoid.configuration.themeColors = current.colors;
-                        }
-                    }
                 }
 
                 ExclusiveGroup {
                     id: windowColorsGroup
-                    onCurrentChanged: {
-                        if (current.checked) {
-                            plasmoid.configuration.windowColors = current.colors;
-                        }
-                    }
                 }
 
                 LatteComponents.SubHeader {
@@ -768,11 +758,17 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Plasma")
                     checked: parent.themeColors === colors
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: themeColorsGroup
                     tooltip: i18n("Plasma theme color palette is going to be used")
 
                     readonly property int colors: LatteContainment.Types.PlasmaThemeColors
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            plasmoid.configuration.themeColors = colors;
+                        }
+                    }
                 }
 
                 PlasmaComponents.Button {
@@ -780,11 +776,17 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Reverse")
                     checked: parent.themeColors === colors
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: themeColorsGroup
                     tooltip: i18n("Reverse color palette from plasma theme is going to be used")
 
                     readonly property int colors: LatteContainment.Types.ReverseThemeColors
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            plasmoid.configuration.themeColors = colors;
+                        }
+                    }
                 }
 
                 PlasmaComponents.Button {
@@ -792,11 +794,17 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Smart")
                     checked: parent.themeColors === colors
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: themeColorsGroup
                     tooltip: i18n("Smart color palette is going to provide best contrast after taking into account the environment such as the underlying background")
 
                     readonly property int colors: LatteContainment.Types.SmartThemeColors
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            plasmoid.configuration.themeColors = colors;
+                        }
+                    }
                 }
 
                 LatteComponents.SubHeader {
@@ -809,11 +817,17 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("None")
                     checked: parent.windowColors === colors
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: windowColorsGroup
                     tooltip: i18n("Colors are not going to be based on any window")
 
                     readonly property int colors: LatteContainment.Types.NoneWindowColors
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            plasmoid.configuration.windowColors = colors;
+                        }
+                    }
                 }
 
                 PlasmaComponents.Button {
@@ -821,13 +835,19 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Active")
                     checked: parent.windowColors === colors
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: windowColorsGroup
                     tooltip: universalSettings.colorsScriptIsPresent ?
                                  i18n("Colors are going to be based on the active window") :
                                  i18n("Colors are going to be based on the active window.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
 
                     readonly property int colors: LatteContainment.Types.ActiveWindowColors
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            plasmoid.configuration.windowColors = colors;
+                        }
+                    }
 
                     PlasmaCore.IconItem {
                         anchors.right: parent.right
@@ -846,13 +866,19 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: Layout.minimumWidth
                     text: i18n("Touching")
                     checked: parent.windowColors === colors
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: windowColorsGroup
                     tooltip: universalSettings.colorsScriptIsPresent ?
                                  i18n("Colors are going to be based on windows that are touching the view") :
                                  i18n("Colors are going to be based on windows that are touching the view.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
 
                     readonly property int colors: LatteContainment.Types.TouchingWindowColors
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            plasmoid.configuration.windowColors = colors;
+                        }
+                    }
 
                     PlasmaCore.IconItem {
                         anchors.right: parent.right

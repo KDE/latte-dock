@@ -197,15 +197,6 @@ PlasmaComponents.Page {
 
                 ExclusiveGroup {
                     id: locationGroup
-                    property bool inStartup: true
-
-                    onCurrentChanged: {
-                        if (current.checked && viewConfig.isReady && !inStartup) {
-                            latteView.positioner.hideDockDuringLocationChange(current.edge);
-                        }
-
-                        inStartup = false;
-                    }
                 }
 
                 PlasmaComponents.Button {
@@ -215,10 +206,16 @@ PlasmaComponents.Page {
                     text: i18nc("bottom location", "Bottom")
                     iconSource: "arrow-down"
                     checked: plasmoid.location === edge
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: locationGroup
 
                     readonly property int edge: PlasmaCore.Types.BottomEdge
+
+                    onPressedChanged: {
+                        if (pressed && viewConfig.isReady) {
+                            latteView.positioner.hideDockDuringLocationChange(edge);
+                        }
+                    }
                 }
                 PlasmaComponents.Button {
                     id: leftEdgeBtn
@@ -227,10 +224,16 @@ PlasmaComponents.Page {
                     text: i18nc("left location", "Left")
                     iconSource: "arrow-left"
                     checked: plasmoid.location === edge
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: locationGroup
 
                     readonly property int edge: PlasmaCore.Types.LeftEdge
+
+                    onPressedChanged: {
+                        if (pressed && viewConfig.isReady) {
+                            latteView.positioner.hideDockDuringLocationChange(edge);
+                        }
+                    }
                 }
                 PlasmaComponents.Button {
                     id: topEdgeBtn
@@ -239,10 +242,16 @@ PlasmaComponents.Page {
                     text: i18nc("top location", "Top")
                     iconSource: "arrow-up"
                     checked: plasmoid.location === edge
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: locationGroup
 
                     readonly property int edge: PlasmaCore.Types.TopEdge
+
+                    onPressedChanged: {
+                        if (pressed && viewConfig.isReady) {
+                            latteView.positioner.hideDockDuringLocationChange(edge);
+                        }
+                    }
                 }
                 PlasmaComponents.Button {
                     id: rightEdgeBtn
@@ -251,10 +260,16 @@ PlasmaComponents.Page {
                     text: i18nc("right location", "Right")
                     iconSource: "arrow-right"
                     checked: plasmoid.location === edge
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: locationGroup
 
                     readonly property int edge: PlasmaCore.Types.RightEdge
+
+                    onPressedChanged: {
+                        if (pressed && viewConfig.isReady) {
+                            latteView.positioner.hideDockDuringLocationChange(edge);
+                        }
+                    }
                 }
             }
         }
@@ -282,10 +297,6 @@ PlasmaComponents.Page {
 
                 ExclusiveGroup {
                     id: alignmentGroup
-                    onCurrentChanged: {
-                        if (current.checked)
-                            plasmoid.configuration.alignment = current.alignment
-                    }
                 }
 
                 PlasmaComponents.Button {
@@ -294,10 +305,16 @@ PlasmaComponents.Page {
                     text: panelIsVertical ? i18nc("top alignment", "Top") : i18nc("left alignment", "Left")
                     iconSource: panelIsVertical ? "format-align-vertical-top" : "format-justify-left"
                     checked: parent.configAlignment === alignment
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: alignmentGroup
 
                     property int alignment: panelIsVertical ? LatteCore.Types.Top : LatteCore.Types.Left
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            plasmoid.configuration.alignment = alignment
+                        }
+                    }
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
@@ -305,10 +322,16 @@ PlasmaComponents.Page {
                     text: i18nc("center alignment", "Center")
                     iconSource: panelIsVertical ? "format-align-vertical-center" : "format-justify-center"
                     checked: parent.configAlignment === alignment
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: alignmentGroup
 
                     property int alignment: LatteCore.Types.Center
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            plasmoid.configuration.alignment = alignment
+                        }
+                    }
                 }
                 PlasmaComponents.Button {
                     Layout.minimumWidth: parent.buttonSize
@@ -316,10 +339,16 @@ PlasmaComponents.Page {
                     text: panelIsVertical ? i18nc("bottom alignment", "Bottom") : i18nc("right alignment", "Right")
                     iconSource: panelIsVertical ? "format-align-vertical-bottom" : "format-justify-right"
                     checked: parent.configAlignment === alignment
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: alignmentGroup
 
                     property int alignment: panelIsVertical ? LatteCore.Types.Bottom : LatteCore.Types.Right
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            plasmoid.configuration.alignment = alignment
+                        }
+                    }
                 }
 
                 PlasmaComponents.Button {
@@ -328,10 +357,16 @@ PlasmaComponents.Page {
                     text: i18nc("justify alignment", "Justify")
                     iconSource: "format-justify-fill"
                     checked: parent.configAlignment === alignment
-                    checkable: true
+                    checkable: false
                     exclusiveGroup: alignmentGroup
 
                     property int alignment: LatteCore.Types.Justify
+
+                    onPressedChanged: {
+                        if (pressed) {
+                            plasmoid.configuration.alignment = alignment
+                        }
+                    }
                 }
             }
         }

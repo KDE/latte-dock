@@ -48,11 +48,6 @@ ColumnLayout {
 
         ExclusiveGroup {
             id: activeIndicatorTypeGroup
-            onCurrentChanged: {
-                if (current.checked) {
-                    indicator.configuration.activeStyle = current.indicatorType;
-                }
-            }
         }
 
         PlasmaComponents.Button {
@@ -60,11 +55,17 @@ ColumnLayout {
             Layout.maximumWidth: Layout.minimumWidth
             text: i18nc("line indicator","Line")
             checked: parent.indicatorType === indicatorType
-            checkable: true
+            checkable: false
             exclusiveGroup: activeIndicatorTypeGroup
             tooltip: i18n("Show a line indicator for active items")
 
             readonly property int indicatorType: 0 /*Line*/
+
+            onPressedChanged: {
+                if (pressed) {
+                    indicator.configuration.activeStyle = indicatorType;
+                }
+            }
         }
 
         PlasmaComponents.Button {
@@ -72,11 +73,17 @@ ColumnLayout {
             Layout.maximumWidth: Layout.minimumWidth
             text: i18nc("dot indicator", "Dot")
             checked: parent.indicatorType === indicatorType
-            checkable: true
+            checkable: false
             exclusiveGroup: activeIndicatorTypeGroup
             tooltip: i18n("Show a dot indicator for active items")
 
             readonly property int indicatorType: 1 /*Dot*/
+
+            onPressedChanged: {
+                if (pressed) {
+                    indicator.configuration.activeStyle = indicatorType;
+                }
+            }
         }
     }
 
@@ -108,10 +115,6 @@ ColumnLayout {
 
         ExclusiveGroup {
             id: glowGroup
-            onCurrentChanged: {
-                if (current.checked)
-                    indicator.configuration.glowApplyTo = current.option
-            }
         }
 
         PlasmaComponents.Button {
@@ -119,11 +122,17 @@ ColumnLayout {
             Layout.maximumWidth: Layout.minimumWidth
             text: i18nc("glow only to active task/applet indicators","On Active")
             checked: parent.option === option
-            checkable: true
+            checkable: false
             exclusiveGroup:  glowGroup
             tooltip: i18n("Add glow only to active task/applet indicator")
 
             readonly property int option: 1 /*OnActive*/
+
+            onPressedChanged: {
+                if (pressed) {
+                    indicator.configuration.glowApplyTo = option;
+                }
+            }
         }
 
         PlasmaComponents.Button {
@@ -131,11 +140,17 @@ ColumnLayout {
             Layout.maximumWidth: Layout.minimumWidth
             text: i18nc("glow to all task/applet indicators","All")
             checked: parent.option === option
-            checkable: true
+            checkable: false
             exclusiveGroup: glowGroup
             tooltip: i18n("Add glow to all task/applet indicators")
 
             readonly property int option: 2 /*All*/
+
+            onPressedChanged: {
+                if (pressed) {
+                    indicator.configuration.glowApplyTo = option;
+                }
+            }
         }
     }
 

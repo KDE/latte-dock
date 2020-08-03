@@ -379,11 +379,6 @@ PlasmaComponents.Page {
 
                     ExclusiveGroup {
                         id: launchersGroup
-                        onCurrentChanged: {
-                            if (current.checked) {
-                                tasks.configuration.launchersGroup = current.group;
-                            }
-                        }
                     }
 
                     PlasmaComponents.Button {
@@ -391,11 +386,17 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18nc("unique launchers group","Unique")
                         checked: parent.group === group
-                        checkable: true
+                        checkable: false
                         exclusiveGroup: launchersGroup
                         tooltip: i18n("Use a unique set of launchers for this view which is independent from any other view")
 
                         readonly property int group: LatteCore.Types.UniqueLaunchers
+
+                        onPressedChanged: {
+                            if (pressed) {
+                                tasks.configuration.launchersGroup = group;
+                            }
+                        }
                     }
 
                     PlasmaComponents.Button {
@@ -404,13 +405,19 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18nc("layout launchers group","Layout")
                         checked: parent.group === group
-                        checkable: true
+                        checkable: false
                         exclusiveGroup: launchersGroup
                         tooltip: i18n("Use the current layout set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views in the <b>same layout</b>")
                         //! it is shown only when the user has activated that option manually from the text layout file
                         visible: tasks.configuration.launchersGroup === group
 
                         readonly property int group: LatteCore.Types.LayoutLaunchers
+
+                        onPressedChanged: {
+                            if (pressed) {
+                                tasks.configuration.launchersGroup = group;
+                            }
+                        }
                     }
 
                     PlasmaComponents.Button {
@@ -418,11 +425,17 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18nc("global launchers group","Global")
                         checked: parent.group === group
-                        checkable: true
+                        checkable: false
                         exclusiveGroup: launchersGroup
                         tooltip: i18n("Use the global set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views and between <b>different layouts</b>")
 
                         readonly property int group: LatteCore.Types.GlobalLaunchers
+
+                        onPressedChanged: {
+                            if (pressed) {
+                                tasks.configuration.launchersGroup = group;
+                            }
+                        }
                     }
                 }
             }

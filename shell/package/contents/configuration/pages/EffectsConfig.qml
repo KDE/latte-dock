@@ -184,24 +184,6 @@ PlasmaComponents.Page {
 
                     ExclusiveGroup {
                         id: shadowColorGroup
-
-                        property bool inStartup: true
-
-                        onCurrentChanged: {
-                            if (inStartup) {
-                                return;
-                            }
-
-                            if (current === defaultShadowBtn) {
-                                plasmoid.configuration.shadowColorType = LatteContainment.Types.DefaultColorShadow;
-                            } else if (current === themeShadowBtn) {
-                                plasmoid.configuration.shadowColorType = LatteContainment.Types.ThemeColorShadow;
-                            } else if (current === userShadowBtn) {
-                                plasmoid.configuration.shadowColorType = LatteContainment.Types.UserColorShadow;
-                            }
-                        }
-
-                        Component.onCompleted: inStartup = false;
                     }
 
                     PlasmaComponents.Button {
@@ -209,10 +191,18 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
 
                         text: i18nc("default shadow", "Default")
-                        checked: plasmoid.configuration.shadowColorType === LatteContainment.Types.DefaultColorShadow
-                        checkable: true
+                        checked: plasmoid.configuration.shadowColorType === type
+                        checkable: false
                         exclusiveGroup: shadowColorGroup
                         tooltip: i18n("Default shadow for applets")
+
+                        readonly property int type: LatteContainment.Types.DefaultColorShadow
+
+                        onPressedChanged: {
+                            if (pressed) {
+                                plasmoid.configuration.shadowColorType = type;
+                            }
+                        }
                     }
 
                     PlasmaComponents.Button {
@@ -220,10 +210,18 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
 
                         text: i18nc("theme shadow", "Theme")
-                        checked: plasmoid.configuration.shadowColorType === LatteContainment.Types.ThemeColorShadow
-                        checkable: true
+                        checked: plasmoid.configuration.shadowColorType === type
+                        checkable: false
                         exclusiveGroup: shadowColorGroup
                         tooltip: i18n("Shadow from theme color palette")
+
+                        readonly property int type: LatteContainment.Types.ThemeColorShadow
+
+                        onPressedChanged: {
+                            if (pressed) {
+                                plasmoid.configuration.shadowColorType = type;
+                            }
+                        }
                     }
 
                     //overlayed button
@@ -233,10 +231,18 @@ PlasmaComponents.Page {
                         height: parent.height
                         text: " "
 
-                        checkable: true
-                        checked: plasmoid.configuration.shadowColorType === LatteContainment.Types.UserColorShadow
+                        checkable: false
+                        checked: plasmoid.configuration.shadowColorType === type
                         tooltip: i18n("Use set shadow color")
                         exclusiveGroup: shadowColorGroup
+
+                        readonly property int type: LatteContainment.Types.UserColorShadow
+
+                        onPressedChanged: {
+                            if (pressed) {
+                                plasmoid.configuration.shadowColorType = type;
+                            }
+                        }
 
                         Rectangle{
                             anchors.fill: parent
@@ -343,38 +349,52 @@ PlasmaComponents.Page {
 
                         ExclusiveGroup {
                             id: animationsGroup
-                            onCurrentChanged: {
-                                if (current.checked)
-                                    plasmoid.configuration.durationTime = current.duration
-                            }
                         }
 
                         PlasmaComponents.Button {
                             Layout.fillWidth: true
                             text: i18n("x1")
                             checked: parent.duration === duration
-                            checkable: true
+                            checkable: false
                             exclusiveGroup: animationsGroup
 
                             readonly property int duration: 3
+
+                            onPressedChanged: {
+                                if (pressed) {
+                                    plasmoid.configuration.durationTime = duration;
+                                }
+                            }
                         }
                         PlasmaComponents.Button {
                             Layout.fillWidth: true
                             text: i18n("x2")
                             checked: parent.duration === duration
-                            checkable: true
+                            checkable: false
                             exclusiveGroup: animationsGroup
 
                             readonly property int duration: 2
+
+                            onPressedChanged: {
+                                if (pressed) {
+                                    plasmoid.configuration.durationTime = duration;
+                                }
+                            }
                         }
                         PlasmaComponents.Button {
                             Layout.fillWidth: true
                             text: i18n("x3")
                             checked: parent.duration === duration
-                            checkable: true
+                            checkable: false
                             exclusiveGroup: animationsGroup
 
                             readonly property int duration: 1
+
+                            onPressedChanged: {
+                                if (pressed) {
+                                    plasmoid.configuration.durationTime = duration;
+                                }
+                            }
                         }
                     }
                 }
