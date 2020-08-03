@@ -165,6 +165,7 @@ Corona::~Corona()
 
     //! BEGIN: Give the time to slide-out views when closing
     m_layoutsManager->synchronizer()->hideAllViews();
+    m_viewSettingsFactory->deleteLater();
 
     //! Don't delay the destruction under wayland in any case
     //! because it creates a crash with kwin effects
@@ -190,12 +191,10 @@ Corona::~Corona()
     qDebug() << "Latte Corona - unload: containments ...";
 
     m_layoutsManager->unload();
-
     m_plasmaGeometries->deleteLater();
     m_wm->deleteLater();
     m_dialogShadows->deleteLater();
     m_globalShortcuts->deleteLater();
-    m_viewSettingsFactory->deleteLater();
     m_layoutsManager->deleteLater();
     m_screenPool->deleteLater();
     m_universalSettings->deleteLater();
