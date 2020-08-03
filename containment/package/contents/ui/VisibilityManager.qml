@@ -429,6 +429,15 @@ Item{
             return;
         }
 
+        if (!latteView.visibility.isHidden && latteView.positioner.inSlideAnimation) {
+            // Do not update when Positioner mid-slide animation takes place, for example:
+            // 1. Latte panel is hiding its floating gap for maximized window
+            // 2. the user clicks on an applet popup.
+            // 3. Applet popups showing/hiding are triggering hidingIsBlockedChanged() signals.
+            // 4. hidingIsBlockedChanged() signals create mustBeShown events when visibility::hidingIsBlocked() is not enabled.
+            return;
+        }
+
         //! Normal Dodge/AutoHide case
         if (!slidingAnimationAutoHiddenIn.running && !inRelocationHiding && !inForceHiding){
             slidingAnimationAutoHiddenIn.init();
