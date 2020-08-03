@@ -854,23 +854,6 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
         }
     }
 
-    //! Unload no needed Layouts
-    for (const auto &layoutName : layoutsToUnload) {
-        CentralLayout *layout = centralLayout(layoutName);
-        int posLayout = centralLayoutPos(layoutName);
-
-        if (posLayout >= 0) {
-            qDebug() << "REMOVING LAYOUT ::::: " << layoutName;
-            m_centralLayouts.removeAt(posLayout);
-
-            layout->syncToLayoutFile(true);
-            layout->unloadContainments();
-            layout->unloadLatteViews();
-            m_manager->clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
-            delete layout;
-        }
-    }
-
     //! Add needed Layouts based on Activities
     for (const auto &layoutName : layoutsToLoad) {
         if (!centralLayout(layoutName)) {
@@ -900,6 +883,23 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
                 addLayout(newLayout);
                 newLayout->importToCorona();
             }
+        }
+    }
+
+    //! Unload no needed Layouts
+    for (const auto &layoutName : layoutsToUnload) {
+        CentralLayout *layout = centralLayout(layoutName);
+        int posLayout = centralLayoutPos(layoutName);
+
+        if (posLayout >= 0) {
+            qDebug() << "REMOVING LAYOUT ::::: " << layoutName;
+            m_centralLayouts.removeAt(posLayout);
+
+            layout->syncToLayoutFile(true);
+            layout->unloadContainments();
+            layout->unloadLatteViews();
+            m_manager->clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
+            delete layout;
         }
     }
 
