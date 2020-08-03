@@ -46,7 +46,7 @@ Loader {
             return 0;
         }
 
-        if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
+        if (screenEdgeMarginEnabled && root.floatingInternalGapIsForced) {
             return root.isHorizontal ? root.width : root.height;
         }
 

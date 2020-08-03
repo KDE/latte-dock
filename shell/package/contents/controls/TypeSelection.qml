@@ -98,7 +98,7 @@ Grid {
                 plasmoid.configuration.plasmaBackgroundForPopups = false;
 
                 //! Floating
-                plasmoid.configuration.fittsLawIsRequested = true;
+                plasmoid.configuration.floatingInternalGapIsForced = Qt.PartiallyChecked;
             }
         }
     }
@@ -143,7 +143,7 @@ Grid {
                 plasmoid.configuration.plasmaBackgroundForPopups = true;
 
                 //! Floating
-                plasmoid.configuration.fittsLawIsRequested = false;
+                plasmoid.configuration.floatingInternalGapIsForced = Qt.PartiallyChecked;
             }
         }
     }

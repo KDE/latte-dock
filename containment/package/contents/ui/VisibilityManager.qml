@@ -44,7 +44,7 @@ Item{
 
     property bool maskIsFloating: !root.behaveAsPlasmaPanel
                                   && screenEdgeMarginEnabled
-                                  && !plasmoid.configuration.fittsLawIsRequested
+                                  && !root.floatingInternalGapIsForced
                                   && !inSlidingIn
                                   && !inSlidingOut
 

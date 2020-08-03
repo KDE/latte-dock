@@ -819,14 +819,14 @@ PlasmaComponents.Page {
 
                 LatteComponents.CheckBoxesColumn {
                     LatteComponents.CheckBox {
-                        id: fittsLawChk
                         Layout.maximumWidth: dialog.optionsWidth
-                        text: i18n("Always use screen gap for user interaction")
-                        checked: plasmoid.configuration.fittsLawIsRequested
-                        tooltip: i18n("Panels in floating mode use the screen gap for user interaction")
+                        text: i18n("Always use floating gap for user interaction")
+                        checkedState: plasmoid.configuration.floatingInternalGapIsForced
+                        partiallyCheckedEnabled: true
+                        tooltip: i18n("Floating gap is always used from applets and any relevant user interaction when \nthat option is enabled. Default option is auto selecting that behavior.")
 
                         onClicked: {
-                            plasmoid.configuration.fittsLawIsRequested = checked;
+                            plasmoid.configuration.floatingInternalGapIsForced = checkedState;
                         }
                     }
 

@@ -98,8 +98,18 @@ Item {
             return LatteCore.Types.DockView;
         }
 
-        if (screenEdgeMarginEnabled && plasmoid.configuration.fittsLawIsRequested) {
-            //! dont use when floating views are requesting Fitt's Law
+        if (screenEdgeMarginEnabled && root.floatingInternalGapIsForced) {
+            //! dont use when floating views are requesting internal floating gap which is in client side
+            return LatteCore.Types.DockView;
+        }
+
+        return viewTypeInQuestion;
+    }
+
+    property int viewTypeInQuestion: {
+        //! viewType as chosen before considering other optios such as floating internal gap enforcement.
+        //! It helps with binding loops
+        if (!latteView || !latteView.visibility) {
             return LatteCore.Types.DockView;
         }
 
@@ -143,6 +153,18 @@ Item {
                                     && (latteView.windowsTracker.currentScreen.activeWindowTouching
                                         || latteView.windowsTracker.currentScreen.activeWindowTouchingEdge
                                         || hasExpandedApplet)
+
+    property bool floatingInternalGapIsForced: {
+        if (plasmoid.configuration.floatingInternalGapIsForced === Qt.UnChecked) {
+            return false;
+        } else if (plasmoid.configuration.floatingInternalGapIsForced === Qt.Checked) {
+            return true;
+        }  else if (plasmoid.configuration.floatingInternalGapIsForced === Qt.PartiallyChecked /*Auto*/) {
+            return viewTypeInQuestion === LatteCore.Types.PanelView ? false : true;
+        }
+
+        return true;
+    }
 
     property bool forceSolidPanel: (latteView && latteView.visibility
                                     && LatteCore.WindowSystem.compositingActive

@@ -59,9 +59,9 @@
       <default>false</default>
       <label>this is a percentage value</label>
     </entry>
-    <entry name="fittsLawIsRequested" type="Bool">
-      <default>true</default>
-      <label>floating views require Fitts Law to be applied</label>
+    <entry name="floatingInternalGapIsForced" type="Int">
+      <default>1</default>
+      <label>floating gaps belong to views for any user interaction such as applets triggering and parabolic effect, "1" stands for Partially Checked (Auto)</label>
     </entry>
     <entry name="hideScreenGapForMaximized" type="Bool">
         <default>false</default>
