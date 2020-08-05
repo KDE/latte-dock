@@ -153,9 +153,16 @@ Item {
                                           || (index === layouter.endLayout.lastVisibleIndex))
 
     readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.requires.parabolicEffectLocked
-    readonly property bool originalAppletBehavior: (appletItem.parabolic.factor.zoom === 1 && !lockZoom /*hacky flag to keep Latte behavior*/)
-                                                   || (appletItem.parabolic.factor.zoom>1 && !parabolicEffectIsSupported)
-                                                   || (appletItem.parabolic.factor.zoom>1 && parabolicEffectIsSupported && lockZoom)
+
+    //! This property is an effort in order to group behaviors into one property. This property is responsible to enable/disable
+    //! Applets OnTop MouseArea which is used for ParabolicEffect and ThinTooltips. For Latte panels things
+    //! are pretty straight, the original plasma behavior is replicated so parabolic effect and thin tooltips are disabled.
+    //! For Latte docks things are a bit more complicated. Applets that can not support parabolic effect inside docks
+    //! are presenting their original plasma behavior and also applets that even though can be zoomed user has
+    //! chosed to lock its parabolic effect.
+    readonly property bool originalAppletBehavior: root.behaveAsPlasmaPanel
+                                                   || (root.behaveAsDockWithMask && !parabolicEffectIsSupported)
+                                                   || (root.behaveAsDockWithMask && parabolicEffectIsSupported && lockZoom)
 
     readonly property bool isSquare: communicator.overlayLatteIconIsActive
     readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported

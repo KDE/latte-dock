@@ -432,7 +432,13 @@ Item {
     property bool enableShadows: plasmoid.configuration.appletShadowsEnabled
     property bool dockIsHidden: latteView && latteView.visibility ? latteView.visibility.isHidden : true
 
-    property bool titleTooltips: plasmoid.configuration.titleTooltips
+    property bool titleTooltips: {
+        if (behaveAsPlasmaPanel) {
+            return false;
+        }
+
+        return plasmoid.configuration.titleTooltips;
+    }
 
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 

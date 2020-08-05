@@ -794,7 +794,7 @@ PlasmaComponents.Page {
                         text: i18n("Thin title tooltips on hovering")
                         tooltip: i18n("Show narrow tooltips produced by Latte for items.\nThese tooltips are not drawn when applets zoom effect is disabled");
                         checked: plasmoid.configuration.titleTooltips
-                        //enabled: plasmoid.configuration.zoomLevel > 0
+                        enabled: latteView.type === LatteCore.Types.DockView
 
                         onClicked: {
                             plasmoid.configuration.titleTooltips = !plasmoid.configuration.titleTooltips;
@@ -821,6 +821,7 @@ PlasmaComponents.Page {
                         checked: plasmoid.configuration.autoSizeEnabled
                         tooltip: i18n("Items decrease their size when exceed maximum length and increase it when they can fit in")
                         visible: dialog.advancedLevel
+                        enabled: latteView.type === LatteCore.Types.DockView
 
                         onClicked: {
                             plasmoid.configuration.autoSizeEnabled = !plasmoid.configuration.autoSizeEnabled

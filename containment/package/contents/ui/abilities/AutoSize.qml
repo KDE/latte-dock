@@ -29,12 +29,14 @@ Item {
 
     // when there are only plasma style task managers OR any applets that fill width or height
     // the automatic icon size algorithm should better be disabled
-    readonly property bool isActive: plasmoid.configuration.autoSizeEnabled
+    readonly property bool isActive: root.behaveAsDockWithMask
+                                     && plasmoid.configuration.autoSizeEnabled
                                      && !root.containsOnlyPlasmaTasks
                                      && layouter.fillApplets<=0
                                      && latteView 
                                      && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand
                                      && latteView.visibility.mode !== LatteCore.Types.SidebarAutoHide
+
     property int iconSize: -1 //it is not set, this is the default
 
     readonly property bool inCalculatedIconSize: ((metrics.iconSize === sizer.iconSize) || (metrics.iconSize === metrics.maxIconSize))
@@ -63,13 +65,15 @@ Item {
         }
     }
 
-    onIsActiveChanged: clearHistory();
+    onIsActiveChanged: {
+        clearHistory();
+        updateIconSize();
+    }
 
     Connections {
         target: root
 
         onContainsOnlyPlasmaTasksChanged: sizer.updateIconSize();
-        onEditModeChanged: sizer.updateIconSize();
         onMaxLengthChanged: {
             if (root.editMode) {
                 sizer.updateIconSize();
@@ -141,11 +145,14 @@ Item {
 
 
     function updateIconSize() {
+        if (!isActive && iconSize !== -1) {
+            // restore original icon size
+            iconSize = -1;
+        }
 
-        if ( !doubleCallAutomaticUpdateIconSize.running && !visibility.inRelocationHiding
-                && ((visibility.normalState || root.editMode)
-                    && (sizer.isActive || (!sizer.isActive && metrics.iconSize!==metrics.maxIconSize)))
-                && (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === sizer.iconSize) ) {
+        if ( !doubleCallAutomaticUpdateIconSize.running && !visibility.inRelocationHiding /*block too many calls and dont apply during relocatinon hiding*/
+                && (visibility.normalState && sizer.isActive) /*in normal and auto size active state*/
+                && (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === sizer.iconSize) /*not during animations*/) {
 
             //!doubler timer
             if (!doubleCallAutomaticUpdateIconSize.secondTimeCallApplied) {
