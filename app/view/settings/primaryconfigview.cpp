@@ -302,6 +302,9 @@ void PrimaryConfigView::initParentView(Latte::View *view)
 
 void PrimaryConfigView::instantUpdateAvailableScreenGeometry()
 {
+    if (!m_latteView || !m_latteView->positioner()) {
+        return;
+    }
 
     int currentScrId = m_latteView->positioner()->currentScreenId();
 

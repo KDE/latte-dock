@@ -47,21 +47,24 @@ PlasmaComponents.Page {
 
         //! BEGIN: Inline Dock/Panel Type, it is used only when the secondary window
         //! overlaps the main dock config window
-        ColumnLayout {
+        Loader {
             Layout.fillWidth: true
-            spacing: units.smallSpacing
-            Layout.topMargin: units.smallSpacing
+            active: dialog.advancedLevel && viewConfig.showInlineProperties && viewConfig.isReady
+            visible: active
 
-            visible: dialog.advancedLevel && viewConfig.showInlineProperties
+            sourceComponent: ColumnLayout {
+                Layout.fillWidth: true
+                Layout.topMargin: units.smallSpacing
+                spacing: units.smallSpacing
 
-            LatteComponents.Header {
-                text: i18n("Type")
-            }
+                LatteComponents.Header {
+                    text: i18n("Type")
+                }
 
-
-            LatteExtraControls.TypeSelection{
-                id: viewTypeSelection
-                horizontal: true
+                LatteExtraControls.TypeSelection{
+                    id: viewTypeSelection
+                    horizontal: true
+                }
             }
         }
         //! END: Inline Dock/Panel Type
