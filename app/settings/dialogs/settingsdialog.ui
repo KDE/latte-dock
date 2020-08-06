@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>988</width>
     <height>750</height>
    </rect>
   </property>
@@ -504,7 +504,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>965</width>
+            <width>953</width>
             <height>375</height>
            </rect>
           </property>
@@ -522,10 +522,16 @@
                <item>
                 <widget class="QToolButton" name="lowSensitivityBtn">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>150</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="toolTip">
                   <string>Low sensitivity for parabolic effect (low cpu usage and performance)</string>
@@ -541,10 +547,16 @@
                <item>
                 <widget class="QToolButton" name="mediumSensitivityBtn">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>150</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="toolTip">
                   <string>Medium sensitivity for parabolic effect (normal cpu usage and performance)</string>
@@ -560,10 +572,16 @@
                <item>
                 <widget class="QToolButton" name="highSensitivityBtn">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>150</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="toolTip">
                   <string>High sensitivity for parabolic effect (high cpu usage and performance)</string>
