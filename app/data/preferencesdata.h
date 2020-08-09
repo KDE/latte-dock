@@ -18,14 +18,13 @@
  *
  */
 
-#ifndef SETTINGSDATAPREFERENCES_H
-#define SETTINGSDATAPREFERENCES_H
+#ifndef PREFERENCESDATA_H
+#define PREFERENCESDATA_H
 
 // local
 #include "../apptypes.h"
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 class Preferences
@@ -66,7 +65,6 @@ public:
     bool operator!=(const Preferences &rhs) const;
 };
 
-}
 }
 }
 

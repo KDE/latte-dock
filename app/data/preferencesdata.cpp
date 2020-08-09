@@ -21,7 +21,6 @@
 #include "preferencesdata.h"
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 const bool Preferences::BADGE3DSTYLE;
@@ -139,6 +138,5 @@ void Preferences::setToDefaults()
 }
 
 
-}
 }
 }
