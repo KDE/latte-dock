@@ -181,7 +181,7 @@ private:
 
     QString m_iconsPath;
 
-    Data::ActivitiesMap m_activitiesMap;
+    Latte::Data::ActivitiesMap m_activitiesMap;
     QHash<QString, KActivities::Info *> m_activitiesInfo;
 
     //! original data
@@ -190,7 +190,7 @@ private:
 
     //! current data
     bool m_inMultipleMode{false};
-    Data::LayoutsTable m_layoutsTable;
+    Settings::Data::LayoutsTable m_layoutsTable;
 
     Latte::Corona *m_corona{nullptr};
 };

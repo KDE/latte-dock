@@ -62,12 +62,12 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
     bool isLayoutActive = index.data(Model::Layouts::ISACTIVEROLE).toBool();
 
     QStringList allActivities = index.data(Model::Layouts::ALLACTIVITIESSORTEDROLE).toStringList();
-    Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Data::ActivitiesMap>();
+    Latte::Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Latte::Data::ActivitiesMap>();
 
     QStringList assignedActivities = index.data(Qt::UserRole).toStringList();
 
     for (int i = 0; i < allActivities.count(); ++i) {
-        Data::Activity activitydata = allActivitiesData[allActivities[i]];
+        Latte::Data::Activity activitydata = allActivitiesData[allActivities[i]];
 
         if (!activitydata.isValid()) {
             continue;
@@ -168,7 +168,7 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
 
 void Activities::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Data::ActivitiesMap>();
+    Latte::Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Latte::Data::ActivitiesMap>();
 
     updateButton(editor, allActivitiesData);
 }
@@ -223,11 +223,11 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     if (!isSharedCapable) {
         painter->save();
 
-        QList<Data::Activity> assignedActivities;
+        QList<Latte::Data::Activity> assignedActivities;
         QStringList assignedIds = index.model()->data(index, Qt::UserRole).toStringList();
         QStringList assignedOriginalIds = index.model()->data(index, Model::Layouts::ORIGINALASSIGNEDACTIVITIESROLE).toStringList();
 
-        Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Data::ActivitiesMap>();
+        Latte::Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Latte::Data::ActivitiesMap>();
 
         for (int i=0; i<assignedIds.count(); ++i) {
             assignedActivities << allActivitiesData[assignedIds[i]];
@@ -328,7 +328,7 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     }
 }
 
-QString Activities::joinedActivities(const QList<Data::Activity> &activities, const QStringList &originalIds, bool isActive, bool formatText) const
+QString Activities::joinedActivities(const QList<Latte::Data::Activity> &activities, const QStringList &originalIds, bool isActive, bool formatText) const
 {
     QString finalText;
 
@@ -364,14 +364,14 @@ QString Activities::joinedActivities(const QList<Data::Activity> &activities, co
     return finalText;
 }
 
-void Activities::updateButton(QWidget *editor, const Data::ActivitiesMap &allActivitiesData) const
+void Activities::updateButton(QWidget *editor, const Latte::Data::ActivitiesMap &allActivitiesData) const
 {
     if (!editor) {
         return;
     }
 
     QPushButton *button = static_cast<QPushButton *>(editor);
-    QList<Data::Activity> assignedActivities;
+    QList<Latte::Data::Activity> assignedActivities;
 
     foreach (QAction *action, button->menu()->actions()) {
         if (action->isChecked()) {

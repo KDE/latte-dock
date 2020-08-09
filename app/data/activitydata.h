@@ -30,7 +30,6 @@
 #include <KActivities/Info>
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 class Activity
@@ -61,9 +60,8 @@ typedef QHash<const QString, Activity> ActivitiesMap;
 
 }
 }
-}
 
-Q_DECLARE_METATYPE(Latte::Settings::Data::Activity)
-Q_DECLARE_METATYPE(Latte::Settings::Data::ActivitiesMap)
+Q_DECLARE_METATYPE(Latte::Data::Activity)
+Q_DECLARE_METATYPE(Latte::Data::ActivitiesMap)
 
 #endif

@@ -49,9 +49,9 @@ public:
     virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
 private:
-    void updateButton(QWidget *editor, const Data::ActivitiesMap &allActivitiesData) const;
+    void updateButton(QWidget *editor, const Latte::Data::ActivitiesMap &allActivitiesData) const;
 
-    QString joinedActivities(const QList<Data::Activity> &activities, const QStringList &originalIds, bool isActive = false, bool formatText = true) const;
+    QString joinedActivities(const QList<Latte::Data::Activity> &activities, const QStringList &originalIds, bool isActive = false, bool formatText = true) const;
 };
 
 }

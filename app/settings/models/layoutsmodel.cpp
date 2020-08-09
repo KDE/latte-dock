@@ -1090,7 +1090,7 @@ QList<Data::Layout> Layouts::alteredLayouts() const
 //! Activities code
 void Layouts::initActivities()
 {
-    Data::Activity freeActivities;
+    Latte::Data::Activity freeActivities;
     freeActivities.id = Data::Layout::FREEACTIVITIESID;
     freeActivities.name = QString("[ " + i18n("All Free Activities...") + " ]");
     freeActivities.icon = "favorites";
@@ -1130,7 +1130,7 @@ void Layouts::on_activityAdded(const QString &id)
 {
     m_activitiesInfo[id] = new KActivities::Info(id, this);
 
-    Data::Activity activity;
+    Latte::Data::Activity activity;
     activity.id = m_activitiesInfo[id]->id();
     activity.name = m_activitiesInfo[id]->name();
     activity.icon = m_activitiesInfo[id]->icon();
@@ -1174,7 +1174,7 @@ void Layouts::on_activityChanged(const QString &id)
 
 void Layouts::on_runningActivitiesChanged(const QStringList &runningIds)
 {
-    Data::ActivitiesMap::iterator i;
+    Latte::Data::ActivitiesMap::iterator i;
 
     for (i = m_activitiesMap.begin(); i != m_activitiesMap.end(); ++i){
         if (runningIds.contains(i.key())) {

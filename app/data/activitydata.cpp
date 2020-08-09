@@ -21,7 +21,6 @@
 #include "activitydata.h"
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 Activity::Activity()
@@ -78,6 +77,5 @@ bool Activity::isRunning() const
     return ((state == KActivities::Info::Running) || (state == KActivities::Info::Starting));
 }
 
-}
 }
 }
