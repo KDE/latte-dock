@@ -21,10 +21,10 @@
 
 // local
 #include "persistentmenu.h"
-#include "../data/activitydata.h"
-#include "../data/layoutdata.h"
 #include "../models/layoutsmodel.h"
 #include "../tools/settingstools.h"
+#include "../../data/activitydata.h"
+#include "../../data/layoutdata.h"
 
 // Qt
 #include <QApplication>

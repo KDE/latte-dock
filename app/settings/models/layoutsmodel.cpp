@@ -21,7 +21,7 @@
 #include "layoutsmodel.h"
 
 // local
-#include "../data/layoutdata.h"
+#include "../../data/layoutdata.h"
 #include "../../layouts/manager.h"
 #include "../../layouts/synchronizer.h"
 #include "../../settings/universalsettings.h"

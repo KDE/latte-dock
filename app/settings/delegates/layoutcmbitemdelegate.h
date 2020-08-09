@@ -21,7 +21,7 @@
 #define LAYOUTCMBITEMDELEGATE_H
 
 // local
-#include "../data/layouticondata.h"
+#include "../../data/layouticondata.h"
 
 // Qt
 #include <QStyledItemDelegate>

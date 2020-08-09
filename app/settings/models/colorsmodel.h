@@ -22,8 +22,8 @@
 #define COLROSMODEL_H
 
 // local
-#include "../data/colordata.h"
 #include "../../lattecorona.h"
+#include "../../data/colordata.h"
 
 // Qt
 #include <QAbstractTableModel>

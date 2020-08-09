@@ -22,7 +22,7 @@
 #define SETTINGSDATAPREFERENCES_H
 
 // local
-#include "../../apptypes.h"
+#include "../apptypes.h"
 
 namespace Latte {
 namespace Settings {

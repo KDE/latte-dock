@@ -23,13 +23,13 @@
 // local
 #include "ui_detailsdialog.h"
 #include "../controllers/layoutscontroller.h"
-#include "../data/layoutstable.h"
 #include "../delegates/colorcmbitemdelegate.h"
 #include "../delegates/layoutcmbitemdelegate.h"
 #include "../dialogs/detailsdialog.h"
 #include "../models/colorsmodel.h"
 #include "../models/layoutsmodel.h"
 #include "../widgets/patternwidget.h"
+#include "../../data/layoutstable.h"
 #include "../../layout/abstractlayout.h"
 
 // Qt

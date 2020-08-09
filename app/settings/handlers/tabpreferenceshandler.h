@@ -23,7 +23,7 @@
 
 //! local
 #include "generichandler.h"
-#include "../data/preferencesdata.h"
+#include "../../data/preferencesdata.h"
 
 //! Qt
 #include <QAction>

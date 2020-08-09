@@ -24,10 +24,10 @@
 // local
 #include "ui_settingsdialog.h"
 #include "../universalsettings.h"
-#include "../data/layoutdata.h"
 #include "../tools/settingstools.h"
 #include "../../lattecorona.h"
 #include "../../screenpool.h"
+#include "../../data/layoutdata.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/importer.h"
 #include "../../layouts/manager.h"

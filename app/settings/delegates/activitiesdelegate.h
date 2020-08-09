@@ -21,7 +21,7 @@
 #define ACTIVITIESDELEGATE_H
 
 // local
-#include "../data/activitydata.h"
+#include "../../data/activitydata.h"
 
 // Qt
 #include <QStyledItemDelegate>

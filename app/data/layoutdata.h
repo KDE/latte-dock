@@ -22,7 +22,7 @@
 #define SETTINGSDATALAYOUT_H
 
 // local
-#include "../../layout/abstractlayout.h"
+#include "../layout/abstractlayout.h"
 
 //Qt
 #include <QMetaType>

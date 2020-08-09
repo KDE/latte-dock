@@ -21,8 +21,8 @@
 #define SHAREDDELEGATE_H
 
 // local
-#include "../data/layoutstable.h"
 #include "../controllers/layoutscontroller.h"
+#include "../../data/layoutstable.h"
 
 // Qt
 #include <QStyledItemDelegate>

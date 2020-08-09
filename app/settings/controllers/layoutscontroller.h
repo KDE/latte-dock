@@ -23,11 +23,11 @@
 
 // local
 #include <coretypes.h>
-#include "../data/layoutdata.h"
-#include "../data/layoutstable.h"
 #include "../views/layoutsheaderview.h"
 #include "../models/layoutsmodel.h"
 #include "../../lattecorona.h"
+#include "../../data/layoutdata.h"
+#include "../../data/layoutstable.h"
 
 // Qt
 #include <QAbstractItemModel>

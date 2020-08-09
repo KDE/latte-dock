@@ -20,7 +20,6 @@
 
 #include "layoutdata.h"
 
-
 namespace Latte {
 namespace Settings {
 namespace Data {

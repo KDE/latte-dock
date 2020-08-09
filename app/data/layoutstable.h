@@ -23,7 +23,7 @@
 
 // local
 #include "layoutdata.h"
-#include "../../layouts/synchronizer.h"
+#include "../layouts/synchronizer.h"
 
 // Qt
 #include <QList>

@@ -8,6 +8,7 @@ set(lattedock-app_SRCS
     coretypes.h
 )
 
+add_subdirectory(data)
 add_subdirectory(declarativeimports)
 add_subdirectory(indicator)
 add_subdirectory(layout)
@@ -16,7 +17,6 @@ add_subdirectory(package)
 add_subdirectory(plasma/extended)
 add_subdirectory(settings)
 add_subdirectory(settings/controllers)
-add_subdirectory(settings/data)
 add_subdirectory(settings/delegates)
 add_subdirectory(settings/dialogs)
 add_subdirectory(settings/handlers)

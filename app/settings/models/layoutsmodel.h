@@ -22,11 +22,11 @@
 #define SETTINGSLAYOUTSMODEL_H
 
 // local
-#include "../data/activitydata.h"
-#include "../data/layoutdata.h"
-#include "../data/layouticondata.h"
-#include "../data/layoutstable.h"
 #include "../../lattecorona.h"
+#include "../../data/activitydata.h"
+#include "../../data/layoutdata.h"
+#include "../../data/layouticondata.h"
+#include "../../data/layoutstable.h"
 
 // Qt
 #include <QAbstractTableModel>

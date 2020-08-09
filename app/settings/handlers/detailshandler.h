@@ -23,7 +23,7 @@
 
 // local
 #include "generichandler.h"
-#include "../data/layoutdata.h"
+#include "../../data/layoutdata.h"
 #include "../../layout/abstractlayout.h"
 
 // Qt

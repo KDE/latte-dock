@@ -21,9 +21,9 @@
 
 // local
 #include "persistentmenu.h"
-#include "../data/layoutdata.h"
 #include "../models/layoutsmodel.h"
 #include "../tools/settingstools.h"
+#include "../../data/layoutdata.h"
 
 // Qt
 #include <QAction>
