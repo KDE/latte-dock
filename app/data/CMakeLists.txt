@@ -1,8 +1,8 @@
 set(lattedock-app_SRCS
     ${lattedock-app_SRCS}
     ${CMAKE_CURRENT_SOURCE_DIR}/activitydata.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/colordata.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/layoutdata.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/layoutcolordata.cpp    
     ${CMAKE_CURRENT_SOURCE_DIR}/layouticondata.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/layoutstable.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/preferencesdata.cpp

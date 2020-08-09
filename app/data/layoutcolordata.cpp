@@ -18,7 +18,7 @@
  *
  */
 
-#include "colordata.h"
+#include "layoutcolordata.h"
 
 namespace Latte {
 namespace Data {

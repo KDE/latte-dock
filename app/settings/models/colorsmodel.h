@@ -23,7 +23,7 @@
 
 // local
 #include "../../lattecorona.h"
-#include "../../data/colordata.h"
+#include "../../data/layoutcolordata.h"
 
 // Qt
 #include <QAbstractTableModel>
