@@ -18,15 +18,14 @@
  *
  */
 
-#ifndef SETTINGSUNIQUEIDINFO_H
-#define SETTINGSUNIQUEIDINFO_H
+#ifndef UNIQUEIDINFODATA_H
+#define UNIQUEIDINFODATA_H
 
 //! Qt
 #include <QMetaType>
 #include <QString>
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 class UniqueIdInfo
@@ -51,8 +50,7 @@ public:
 
 }
 }
-}
 
-Q_DECLARE_METATYPE(Latte::Settings::Data::UniqueIdInfo)
+Q_DECLARE_METATYPE(Latte::Data::UniqueIdInfo)
 
 #endif

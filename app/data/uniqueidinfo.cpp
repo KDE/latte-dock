@@ -21,7 +21,6 @@
 #include "uniqueidinfo.h"
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 UniqueIdInfo::UniqueIdInfo()
@@ -77,6 +76,5 @@ bool UniqueIdInfo::operator!=(const UniqueIdInfo &rhs) const
     return !(*this == rhs);
 }
 
-}
 }
 }
