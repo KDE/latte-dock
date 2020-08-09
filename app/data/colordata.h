@@ -18,23 +18,22 @@
  *
  */
 
-#ifndef SETTINGSCOLORDATA_H
-#define SETTINGSCOLORDATA_H
+#ifndef LAYOUTCOLORDATA_H
+#define LAYOUTCOLORDATA_H
 
 //Qt
 #include <QMetaType>
 #include <QString>
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
-class Color
+class LayoutColor
 {
 public:
-    Color();
-    Color(Color &&o);
-    Color(const Color &o);
+    LayoutColor();
+    LayoutColor(LayoutColor &&o);
+    LayoutColor(const LayoutColor &o);
 
     //! Color data
     QString id;
@@ -43,18 +42,17 @@ public:
     QString textColor;
 
     //! Operators
-    Color &operator=(const Color &rhs);
-    Color &operator=(Color &&rhs);
-    bool operator==(const Color &rhs) const;
-    bool operator!=(const Color &rhs) const;
+    LayoutColor &operator=(const LayoutColor &rhs);
+    LayoutColor &operator=(LayoutColor &&rhs);
+    bool operator==(const LayoutColor &rhs) const;
+    bool operator!=(const LayoutColor &rhs) const;
 
     void setData(const QString &newid, const QString &newname, const QString &newpath, const QString &newtextcolor);
 };
 
 }
 }
-}
 
-Q_DECLARE_METATYPE(Latte::Settings::Data::Color)
+Q_DECLARE_METATYPE(Latte::Data::LayoutColor)
 
 #endif

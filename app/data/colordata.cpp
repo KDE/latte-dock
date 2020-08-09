@@ -21,14 +21,13 @@
 #include "colordata.h"
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
-Color::Color()
+LayoutColor::LayoutColor()
 {
 }
 
-Color::Color(Color &&o)
+LayoutColor::LayoutColor(LayoutColor &&o)
     : id(o.id),
       name(o.name),
       path(o.path),
@@ -36,7 +35,7 @@ Color::Color(Color &&o)
 {
 }
 
-Color::Color(const Color &o)
+LayoutColor::LayoutColor(const LayoutColor &o)
     : id(o.id),
       name(o.name),
       path(o.path),
@@ -44,7 +43,7 @@ Color::Color(const Color &o)
 {
 }
 
-Color &Color::operator=(const Color &rhs)
+LayoutColor &LayoutColor::operator=(const LayoutColor &rhs)
 {
     id = rhs.id;
     name = rhs.name;
@@ -54,7 +53,7 @@ Color &Color::operator=(const Color &rhs)
     return (*this);
 }
 
-Color &Color::operator=(Color &&rhs)
+LayoutColor &LayoutColor::operator=(LayoutColor &&rhs)
 {
     id = rhs.id;
     name = rhs.name;
@@ -64,7 +63,7 @@ Color &Color::operator=(Color &&rhs)
     return (*this);
 }
 
-bool Color::operator==(const Color &rhs) const
+bool LayoutColor::operator==(const LayoutColor &rhs) const
 {
     return (id == rhs.id)
             && (name == rhs.name)
@@ -72,12 +71,12 @@ bool Color::operator==(const Color &rhs) const
             && (textColor == rhs.textColor);
 }
 
-bool Color::operator!=(const Color &rhs) const
+bool LayoutColor::operator!=(const LayoutColor &rhs) const
 {
     return !(*this == rhs);
 }
 
-void Color::setData(const QString &newid, const QString &newname, const QString &newpath, const QString &newtextcolor)
+void LayoutColor::setData(const QString &newid, const QString &newname, const QString &newpath, const QString &newtextcolor)
 {
     id = newid;
     name = newname;
@@ -85,6 +84,5 @@ void Color::setData(const QString &newid, const QString &newname, const QString 
     textColor = newtextcolor;
 }
 
-}
 }
 }

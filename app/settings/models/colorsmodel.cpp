@@ -67,7 +67,7 @@ QString Colors::colorPath(const QString &color)
 
 void Colors::add(const QString &newid, const QString &newname, const QString &newpath, const QString &newtextcolor)
 {
-    Data::Color color;
+    Latte::Data::LayoutColor color;
     color.setData(newid, newname, newpath, newtextcolor);
     m_colorsTable << color;
 }

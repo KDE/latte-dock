@@ -67,7 +67,7 @@ private:
 private:
     QString m_colorsPath;
 
-    QList<Data::Color> m_colorsTable;
+    QList<Latte::Data::LayoutColor> m_colorsTable;
 
     Latte::Corona *m_corona{nullptr};
 };

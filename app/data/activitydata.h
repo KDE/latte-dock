@@ -18,8 +18,8 @@
  *
  */
 
-#ifndef SETTINGSDATAACTIVITY_H
-#define SETTINGSDATAACTIVITY_H
+#ifndef ACTIVITYDATA_H
+#define ACTIVITYDATA_H
 
 //! Qt
 #include <QMetaType>
