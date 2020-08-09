@@ -18,14 +18,13 @@
  *
  */
 
-#ifndef SETTINGSLAYOUTICONDATA_H
-#define SETTINGSLAYOUTICONDATA_H
+#ifndef LAYOUTICONDATA_H
+#define LAYOUTICONDATA_H
 
 #include <QMetaType>
 #include <QString>
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 class LayoutIcon
@@ -50,8 +49,7 @@ public:
 
 }
 }
-}
 
-Q_DECLARE_METATYPE(Latte::Settings::Data::LayoutIcon)
+Q_DECLARE_METATYPE(Latte::Data::LayoutIcon)
 
 #endif

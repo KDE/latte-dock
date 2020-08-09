@@ -170,8 +170,8 @@ bool Layouts::hasSelectedLayout() const
 
 bool Layouts::selectedLayoutIsCurrentActive() const
 {
-    Settings::Data::Layout selectedLayoutCurrent = selectedLayoutCurrentData();
-    Settings::Data::Layout selectedLayoutOriginal = selectedLayoutOriginalData();
+    Latte::Data::Layout selectedLayoutCurrent = selectedLayoutCurrentData();
+    Latte::Data::Layout selectedLayoutOriginal = selectedLayoutOriginalData();
     selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
 
     return (selectedLayoutCurrent.isActive && (selectedLayoutOriginal.name == m_handler->corona()->layoutsManager()->currentLayoutName()));
@@ -193,7 +193,7 @@ QString Layouts::iconsPath() const
     return m_iconsPath;
 }
 
-const Data::Layout Layouts::selectedLayoutCurrentData() const
+const Latte::Data::Layout Layouts::selectedLayoutCurrentData() const
 {
     int selectedRow = m_view->currentIndex().row();
     if (selectedRow >= 0) {
@@ -201,11 +201,11 @@ const Data::Layout Layouts::selectedLayoutCurrentData() const
 
         return m_model->currentData(selectedId);
     } else {
-        return Data::Layout();
+        return Latte::Data::Layout();
     }
 }
 
-const Data::Layout Layouts::selectedLayoutOriginalData() const
+const Latte::Data::Layout Layouts::selectedLayoutOriginalData() const
 {
     int selectedRow = m_view->currentIndex().row();
     QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
@@ -298,7 +298,7 @@ void Layouts::removeSelected()
         return;
     }
 
-    Data::Layout selectedOriginal = selectedLayoutOriginalData();
+    Latte::Data::Layout selectedOriginal = selectedLayoutOriginalData();
 
     if (m_handler->corona()->layoutsManager()->synchronizer()->layout(selectedOriginal.name)) {
         return;
@@ -308,7 +308,7 @@ void Layouts::removeSelected()
     row = qMin(row, m_proxyModel->rowCount() - 1);
     m_view->selectRow(row);
 
-    Data::Layout selected = selectedLayoutCurrentData();
+    Latte::Data::Layout selected = selectedLayoutCurrentData();
     m_model->removeLayout(selected.id);
 }
 
@@ -318,7 +318,7 @@ void Layouts::toggleLockedForSelected()
         return;
     }
 
-    Data::Layout selected = selectedLayoutCurrentData();
+    Latte::Data::Layout selected = selectedLayoutCurrentData();
 
     m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::NAMECOLUMN), !selected.isLocked, Settings::Model::Layouts::ISLOCKEDROLE);
 }
@@ -331,7 +331,7 @@ void Layouts::toggleSharedForSelected()
 
     int row = m_view->currentIndex().row();
 
-    Data::Layout selected = selectedLayoutCurrentData();
+    Latte::Data::Layout selected = selectedLayoutCurrentData();
 
     if (selected.isShared()) {
         m_proxyModel->setData(m_proxyModel->index(row, Model::Layouts::SHAREDCOLUMN), QStringList(), Qt::UserRole);
@@ -340,8 +340,8 @@ void Layouts::toggleSharedForSelected()
         QStringList availableShareIds = m_model->availableShareIdsFor(selected.id);
 
         for (const auto &id : availableShareIds) {
-            Data::Layout iLayoutCurrent = m_model->currentData(id);
-            Data::Layout iLayoutOriginal = m_model->originalData(id);
+            Latte::Data::Layout iLayoutCurrent = m_model->currentData(id);
+            Latte::Data::Layout iLayoutOriginal = m_model->originalData(id);
             iLayoutOriginal = iLayoutOriginal.isEmpty() ? iLayoutCurrent : iLayoutOriginal;
 
             if (m_handler->corona()->layoutsManager()->synchronizer()->layout(iLayoutOriginal.name)) {
@@ -363,7 +363,7 @@ void Layouts::selectRow(const QString &id)
     m_view->selectRow(rowForId(id));
 }
 
-void Layouts::setLayoutProperties(const Data::Layout &layout)
+void Layouts::setLayoutProperties(const Latte::Data::Layout &layout)
 {
     m_model->setLayoutProperties(layout);
 }
@@ -397,10 +397,10 @@ void Layouts::loadLayouts()
         m_handler->corona()->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
     }
 
-    Settings::Data::LayoutsTable layoutsBuffer;
+    Latte::Data::LayoutsTable layoutsBuffer;
 
     for (const auto layout : m_handler->corona()->layoutsManager()->layouts()) {
-        Settings::Data::Layout original;
+        Latte::Data::Layout original;
         original.id = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
 
         CentralLayout *central = new CentralLayout(this, original.id);
@@ -508,7 +508,7 @@ void Layouts::loadLayouts()
     }
 }
 
-const Data::Layout Layouts::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory)
+const Latte::Data::Layout Layouts::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory)
 {
     if (layoutName.isEmpty()) {
         layoutName = CentralLayout::layoutName(file);
@@ -516,7 +516,7 @@ const Data::Layout Layouts::addLayoutForFile(QString file, QString layoutName, b
 
     layoutName = uniqueLayoutName(layoutName);
 
-    Data::Layout copied;
+    Latte::Data::Layout copied;
 
     if (newTempDirectory) {
         copied.id = uniqueTempDirectory() + "/" + layoutName + ".layout.latte";
@@ -564,8 +564,8 @@ void Layouts::copySelectedLayout()
         return;
     }
 
-    Settings::Data::Layout selectedLayoutCurrent = selectedLayoutCurrentData();
-    Settings::Data::Layout selectedLayoutOriginal = selectedLayoutOriginalData();
+    Latte::Data::Layout selectedLayoutCurrent = selectedLayoutCurrentData();
+    Latte::Data::Layout selectedLayoutOriginal = selectedLayoutOriginalData();
     selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
 
 
@@ -577,7 +577,7 @@ void Layouts::copySelectedLayout()
         }
     }
 
-    Settings::Data::Layout copied = selectedLayoutCurrent;
+    Latte::Data::Layout copied = selectedLayoutCurrent;
 
     copied.name = uniqueLayoutName(selectedLayoutCurrent.name);
     copied.id = uniqueTempDirectory() + "/" + copied.name + ".layout.latte";;
@@ -628,14 +628,14 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
             QStringList importedlayouts;
 
             if (m_handler->corona()->layoutsManager()->importer()->importOldLayout(applets, name, false, tempDir.absolutePath())) {
-                Settings::Data::Layout imported = addLayoutForFile(tempDir.absolutePath() + "/" + name + ".layout.latte", name);
+                Latte::Data::Layout imported = addLayoutForFile(tempDir.absolutePath() + "/" + name + ".layout.latte", name);
                 importedlayouts << imported.name;
             }
 
             QString alternativeName = name + "-" + i18nc("layout", "Alternative");
 
             if (m_handler->corona()->layoutsManager()->importer()->importOldLayout(applets, alternativeName, false, tempDir.absolutePath())) {
-                Settings::Data::Layout imported = addLayoutForFile(tempDir.absolutePath() + "/" + alternativeName + ".layout.latte", alternativeName, false);
+                Latte::Data::Layout imported = addLayoutForFile(tempDir.absolutePath() + "/" + alternativeName + ".layout.latte", alternativeName, false);
                 importedlayouts << imported.name;
             }
 
@@ -684,9 +684,9 @@ void Layouts::save()
 
     QHash<QString, Latte::Layout::GenericLayout *> activeLayoutsToRename;
 
-    Settings::Data::LayoutsTable originalLayouts = m_model->originalLayoutsData();
-    Settings::Data::LayoutsTable currentLayouts = m_model->currentLayoutsData();
-    Settings::Data::LayoutsTable removedLayouts = originalLayouts.subtracted(currentLayouts);
+    Latte::Data::LayoutsTable originalLayouts = m_model->originalLayoutsData();
+    Latte::Data::LayoutsTable currentLayouts = m_model->currentLayoutsData();
+    Latte::Data::LayoutsTable removedLayouts = originalLayouts.subtracted(currentLayouts);
 
     //! remove layouts that have been removed from the user
     for (int i=0; i<removedLayouts.rowCount(); ++i) {
@@ -700,18 +700,18 @@ void Layouts::save()
 
     QList<Data::UniqueIdInfo> alteredIdsInfo;
 
-    QList<Data::Layout> alteredLayouts = m_model->alteredLayouts();
+    QList<Latte::Data::Layout> alteredLayouts = m_model->alteredLayouts();
 
     for (int i = 0; i < alteredLayouts.count(); ++i) {
-        Data::Layout iLayoutCurrentData = alteredLayouts[i];
-        Data::Layout iLayoutOriginalData = m_model->originalData(iLayoutCurrentData.id);
+        Latte::Data::Layout iLayoutCurrentData = alteredLayouts[i];
+        Latte::Data::Layout iLayoutOriginalData = m_model->originalData(iLayoutCurrentData.id);
         iLayoutOriginalData = iLayoutOriginalData.isEmpty() ? iLayoutCurrentData : iLayoutOriginalData;
 
         QStringList cleanedActivities;
 
         //!update only activities that are valid
         for (const auto &activity : iLayoutCurrentData.activities) {
-            if (knownActivities.contains(activity) && activity != Settings::Data::Layout::FREEACTIVITIESID) {
+            if (knownActivities.contains(activity) && activity != Latte::Data::Layout::FREEACTIVITIESID) {
                 cleanedActivities.append(activity);
             }
         }
@@ -788,7 +788,7 @@ void Layouts::save()
 
         //! updating the #SETTINGSID in the model for the layout that was renamed
         for (int j = 0; j < m_model->rowCount(); ++j) {
-            Data::Layout jLayout = m_model->at(j);
+            Latte::Data::Layout jLayout = m_model->at(j);
 
             if (jLayout.id == idInfo.oldId) {
                 m_model->setData(m_model->index(j, Model::Layouts::IDCOLUMN), newFile, Qt::UserRole);
@@ -806,8 +806,8 @@ void Layouts::save()
 
     //! lock layouts in the end when the user has chosen it
     for (int i = 0; i < alteredLayouts.count(); ++i) {
-        Data::Layout layoutCurrentData = alteredLayouts[i];
-        Data::Layout layoutOriginalData = m_model->originalData(layoutCurrentData.id);
+        Latte::Data::Layout layoutCurrentData = alteredLayouts[i];
+        Latte::Data::Layout layoutOriginalData = m_model->originalData(layoutCurrentData.id);
         layoutOriginalData = layoutOriginalData.isEmpty() ? layoutCurrentData : layoutOriginalData;
 
         Latte::Layout::GenericLayout *layoutPtr = m_handler->corona()->layoutsManager()->synchronizer()->layout(layoutOriginalData.name);
@@ -861,8 +861,8 @@ void Layouts::syncActiveShares()
         return;
     }
 
-    Settings::Data::LayoutsTable currentLayoutsData = m_model->currentLayoutsData();
-    Settings::Data::LayoutsTable originalLayoutsData = m_model->originalLayoutsData();
+    Latte::Data::LayoutsTable currentLayoutsData = m_model->currentLayoutsData();
+    Latte::Data::LayoutsTable originalLayoutsData = m_model->originalLayoutsData();
 
     Latte::Layouts::SharesMap  currentSharesNamesMap = currentLayoutsData.sharesMap();
     QStringList originalSharesIds = originalLayoutsData.allSharesIds();
@@ -914,7 +914,7 @@ void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &tria
     int tRow = rowForId(trialId);
 
     int originalRow = m_model->rowForId(provenId);
-    Data::Layout provenLayout = m_model->at(originalRow);
+    Latte::Data::Layout provenLayout = m_model->at(originalRow);
 
     m_handler->showInlineMessage(i18nc("settings: layout name used","Layout <b>%0</b> is already used, please provide a different name...").arg(provenLayout.name),
                                  KMessageWidget::Error);

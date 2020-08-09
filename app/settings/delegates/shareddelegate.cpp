@@ -58,7 +58,7 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
     bool inMultiple = index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
     QString layoutId = index.data(Model::Layouts::IDROLE).toString();
-    Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
+    Latte::Data::LayoutsTable allLayouts = qvariant_cast<Latte::Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
     QStringList assignedShares = index.data(Qt::UserRole).toStringList();
 
     QPushButton *button = new QPushButton(parent);
@@ -118,7 +118,7 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
 
 void Shared::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
+    Latte::Data::LayoutsTable allLayouts = qvariant_cast<Latte::Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
     updateButtonText(editor, index);
 }
 
@@ -155,11 +155,11 @@ void Shared::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &o
 void Shared::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     bool sharedInEdit = index.data(Model::Layouts::SHAREDTOINEDITROLE).toBool();
-    Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
+    Latte::Data::LayoutsTable allLayouts = qvariant_cast<Latte::Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
     QStringList assignedIds = index.data(Qt::UserRole).toStringList();    
     QStringList originalIds = index.data(Model::Layouts::ORIGINALSHARESROLE).toStringList();
 
-    Data::LayoutsTable assignedLayouts;
+    Latte::Data::LayoutsTable assignedLayouts;
 
     for (const auto &id : assignedIds) {
         if (allLayouts.containsId(id)) {
@@ -290,10 +290,10 @@ void Shared::updateButtonText(QWidget *editor, const QModelIndex &index) const
         return;
     }
 
-    Data::LayoutsTable allLayouts = qvariant_cast<Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
+    Latte::Data::LayoutsTable allLayouts = qvariant_cast<Latte::Data::LayoutsTable>(index.data(Model::Layouts::ALLLAYOUTSROLE));
 
     QPushButton *button = static_cast<QPushButton *>(editor);
-    Data::LayoutsTable assignedLayouts;
+    Latte::Data::LayoutsTable assignedLayouts;
 
     foreach (QAction *action, button->menu()->actions()) {
         if (action->isChecked()) {
@@ -307,7 +307,7 @@ void Shared::updateButtonText(QWidget *editor, const QModelIndex &index) const
     button->setText(joined(assignedLayouts, QStringList(), false));
 }
 
-QString Shared::joined(const Data::LayoutsTable &layouts, const QStringList &originalIds, bool formatText) const
+QString Shared::joined(const Latte::Data::LayoutsTable &layouts, const QStringList &originalIds, bool formatText) const
 {
     QString finalText;
 

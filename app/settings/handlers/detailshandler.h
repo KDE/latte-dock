@@ -73,7 +73,7 @@ public:
     void resetDefaults() override;
     void save() override;
 
-    Data::Layout currentData() const;
+    Latte::Data::Layout currentData() const;
 
 signals:
     void currentLayoutChanged();
@@ -104,7 +104,7 @@ private:
 
     void setBackgroundStyle(const Latte::Layout::BackgroundStyle &style);
 
-    void loadLayout(const Data::Layout &data);
+    void loadLayout(const Latte::Data::Layout &data);
 
 private:
     Dialog::DetailsDialog *m_parentDialog{nullptr};
@@ -117,8 +117,8 @@ private:
 
     QButtonGroup *m_backButtonsGroup;
 
-    Data::Layout o_data;
-    Data::Layout c_data;
+    Latte::Data::Layout o_data;
+    Latte::Data::Layout c_data;
 };
 
 }

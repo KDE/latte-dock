@@ -104,9 +104,9 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-    const Data::Layout &at(const int &row);
-    const Data::Layout &currentData(const QString &id);
-    const Data::Layout originalData(const QString &id);
+    const Latte::Data::Layout &at(const int &row);
+    const Latte::Data::Layout &currentData(const QString &id);
+    const Latte::Data::Layout originalData(const QString &id);
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
@@ -119,9 +119,9 @@ public:
     //! all original data will become also current
     void resetData();
 
-    void appendLayout(const Data::Layout &layout);
+    void appendLayout(const Latte::Data::Layout &layout);
     void removeLayout(const QString &id);
-    void setLayoutProperties(const Data::Layout &layout);
+    void setLayoutProperties(const Latte::Data::Layout &layout);
 
     QString layoutNameForFreeActivities() const;
     void setCurrentLayoutForFreeActivities(const QString &id);
@@ -132,11 +132,11 @@ public:
     bool shareIsAvailable(const QString id) const;
     QStringList availableShareIdsFor(const QString id) const;
 
-    QList<Data::Layout> alteredLayouts() const;
+    QList<Latte::Data::Layout> alteredLayouts() const;
 
-    const Data::LayoutsTable &currentLayoutsData();
-    const Data::LayoutsTable &originalLayoutsData();
-    void setOriginalData(Data::LayoutsTable &data, const bool &inmultiple);
+    const Latte::Data::LayoutsTable &currentLayoutsData();
+    const Latte::Data::LayoutsTable &originalLayoutsData();
+    void setOriginalData(Latte::Data::LayoutsTable &data, const bool &inmultiple);
 
 signals:
     void inMultipleModeChanged();
@@ -169,9 +169,9 @@ private:
 
     QStringList assignedActivitiesFromShared(const int &row) const;
 
-    QList<Data::LayoutIcon> icons(const int &row) const;
-    QList<Data::LayoutIcon> iconsForCentralLayout(const int &row) const;
-    QList<Data::LayoutIcon> iconsForSharedLayout(const int &row) const;
+    QList<Latte::Data::LayoutIcon> icons(const int &row) const;
+    QList<Latte::Data::LayoutIcon> iconsForCentralLayout(const int &row) const;
+    QList<Latte::Data::LayoutIcon> iconsForSharedLayout(const int &row) const;
 
 private:
     //! break MVC only when a SharedTo editor is created
@@ -186,11 +186,11 @@ private:
 
     //! original data
     bool o_inMultipleMode{false};
-    Settings::Data::LayoutsTable o_layoutsTable;
+    Latte::Data::LayoutsTable o_layoutsTable;
 
     //! current data
     bool m_inMultipleMode{false};
-    Settings::Data::LayoutsTable m_layoutsTable;
+    Latte::Data::LayoutsTable m_layoutsTable;
 
     Latte::Corona *m_corona{nullptr};
 };

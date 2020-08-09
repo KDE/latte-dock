@@ -21,7 +21,6 @@
 #include "layoutdata.h"
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 Layout::Layout()
@@ -157,7 +156,6 @@ bool Layout::isGlobalTemplate() const
     return isTemplate && id.startsWith("/usr");
 }
 
-}
 }
 }
 

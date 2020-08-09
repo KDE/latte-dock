@@ -30,7 +30,6 @@
 #include <QStringList>
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 class Layout
@@ -77,8 +76,7 @@ public:
 
 }
 }
-}
 
-Q_DECLARE_METATYPE(Latte::Settings::Data::Layout)
+Q_DECLARE_METATYPE(Latte::Data::Layout)
 
 #endif

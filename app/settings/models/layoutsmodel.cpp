@@ -127,7 +127,7 @@ void Layouts::clear()
     }
 }
 
-void Layouts::appendLayout(const Settings::Data::Layout &layout)
+void Layouts::appendLayout(const Latte::Data::Layout &layout)
 {    
     beginInsertRows(QModelIndex(), m_layoutsTable.rowCount(), m_layoutsTable.rowCount());
     m_layoutsTable << layout;
@@ -163,7 +163,7 @@ void Layouts::removeLayout(const QString &id)
     }
 }
 
-void Layouts::setLayoutProperties(const Data::Layout &layout)
+void Layouts::setLayoutProperties(const Latte::Data::Layout &layout)
 {
     if (m_layoutsTable.containsId(layout.id) && m_layoutsTable[layout.id] != layout) {
         m_layoutsTable[layout.id] = layout;
@@ -187,7 +187,7 @@ bool Layouts::removeRows(int row, int count, const QModelIndex &parent)
         bool freeActivitiesLayoutIsRemoved{false};
 
         for(int i=firstRow; i<=lastRow; ++i) {
-            if (m_layoutsTable[i].activities.contains(Data::Layout::FREEACTIVITIESID)) {
+            if (m_layoutsTable[i].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
                 //! we need to reassign it properly
                 freeActivitiesLayoutIsRemoved = true;
                 break;
@@ -213,7 +213,7 @@ bool Layouts::removeRows(int row, int count, const QModelIndex &parent)
 QString Layouts::layoutNameForFreeActivities() const
 {
     for(int i=0; i<rowCount(); ++i) {
-        if (m_layoutsTable[i].activities.contains(Data::Layout::FREEACTIVITIESID)) {
+        if (m_layoutsTable[i].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
             return m_layoutsTable[i].name;
         }
     }
@@ -371,9 +371,9 @@ void Layouts::setIconsPath(QString iconsPath)
     m_iconsPath = iconsPath;
 }
 
-QList<Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) const
+QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) const
 {
-    QList<Data::LayoutIcon> icons;
+    QList<Latte::Data::LayoutIcon> icons;
 
     QStringList activitiesIds = m_layoutsTable[row].activities;
 
@@ -382,11 +382,11 @@ QList<Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) const
     for(int i=0; i<activitiesIds.count(); ++i) {
         QString id = activitiesIds[i];
         if (m_activitiesMap.contains(id)) {
-            Data::LayoutIcon icon;
+            Latte::Data::LayoutIcon icon;
 
             icon.isBackgroundFile = false;
 
-            if (id == Data::Layout::FREEACTIVITIESID) {
+            if (id == Latte::Data::Layout::FREEACTIVITIESID) {
                 icon.isFreeActivities = true;
                 freeActivitiesPos = i;
             } else {
@@ -399,7 +399,7 @@ QList<Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) const
     }
 
     if (freeActivitiesPos >= 0) {
-        Data::LayoutIcon freeActsData = icons.takeAt(freeActivitiesPos);
+        Latte::Data::LayoutIcon freeActsData = icons.takeAt(freeActivitiesPos);
         icons.clear();
         icons << freeActsData;
         return icons;
@@ -409,7 +409,7 @@ QList<Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) const
         //! if there is specific icon set from the user for this layout
         //! we draw only that icon
         icons.clear();
-        Data::LayoutIcon icon;
+        Latte::Data::LayoutIcon icon;
         icon.name = m_layoutsTable[row].icon;
         icon.isFreeActivities = false;
         icon.isBackgroundFile = false;
@@ -428,7 +428,7 @@ QList<Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) const
         }
 
         if (QFileInfo(colorPath).exists()) {
-            Data::LayoutIcon icon;
+            Latte::Data::LayoutIcon icon;
             icon.isBackgroundFile = true;
             icon.isFreeActivities = false;
             icon.name = colorPath;
@@ -439,15 +439,15 @@ QList<Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) const
     return icons;
 }
 
-QList<Data::LayoutIcon> Layouts::iconsForSharedLayout(const int &row) const
+QList<Latte::Data::LayoutIcon> Layouts::iconsForSharedLayout(const int &row) const
 {
     //! SHARED layout case
-    QList<Data::LayoutIcon> icons;
+    QList<Latte::Data::LayoutIcon> icons;
 
     if (!m_layoutsTable[row].icon.isEmpty()) {
         //! if there is specific icon set from the user for this layout
         //! we draw only that icon
-        Data::LayoutIcon icon;
+        Latte::Data::LayoutIcon icon;
         icon.name = m_layoutsTable[row].icon;
         icon.isFreeActivities = false;
         icon.isBackgroundFile = false;
@@ -475,14 +475,14 @@ QList<Data::LayoutIcon> Layouts::iconsForSharedLayout(const int &row) const
 
     if (freeActivitiesPos >= 0) {
         //! Put FreeActivities icon on top of the rest icons
-        Data::LayoutIcon freeActsData = icons.takeAt(freeActivitiesPos);
+        Latte::Data::LayoutIcon freeActsData = icons.takeAt(freeActivitiesPos);
         icons << freeActsData;
     }
 
     return icons;
 }
 
-QList<Data::LayoutIcon> Layouts::icons(const int &row) const
+QList<Latte::Data::LayoutIcon> Layouts::icons(const int &row) const
 {
     if (!m_layoutsTable[row].isShared()) {
         return iconsForCentralLayout(row);
@@ -531,7 +531,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     }
 
     //! original data
-    Data::Layout original;
+    Latte::Data::Layout original;
 
     if (!isNewLayout) {
         original = o_layoutsTable[m_layoutsTable[row].id];
@@ -553,7 +553,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return assignedActivitiesFromShared(row);
     } else if (role == ALLACTIVITIESSORTEDROLE) {
         QStringList activities;
-        activities << QString(Data::Layout::FREEACTIVITIESID);
+        activities << QString(Latte::Data::Layout::FREEACTIVITIESID);
         activities << m_corona->layoutsManager()->synchronizer()->activities();
         return activities;
     } else if (role == ALLACTIVITIESDATAROLE) {
@@ -571,9 +571,9 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     } else if (role == LAYOUTHASCHANGESROLE) {
         return (isNewLayout ? true : (original != m_layoutsTable[row]));
     } else if (role == BACKGROUNDUSERROLE) {
-        QList<Data::LayoutIcon> iconsList = icons(row);
+        QList<Latte::Data::LayoutIcon> iconsList = icons(row);
         QVariant iconsVariant;
-        iconsVariant.setValue<QList<Data::LayoutIcon>>(iconsList);
+        iconsVariant.setValue<QList<Latte::Data::LayoutIcon>>(iconsList);
         return iconsVariant;
     }
 
@@ -593,9 +593,9 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         if (role == Qt::DisplayRole) {
             return m_layoutsTable[row].background;
         } else if (role == Qt::UserRole) {
-            QList<Data::LayoutIcon> iconsList = icons(row);
+            QList<Latte::Data::LayoutIcon> iconsList = icons(row);
             QVariant iconsVariant;
-            iconsVariant.setValue<QList<Data::LayoutIcon>>(iconsList);
+            iconsVariant.setValue<QList<Latte::Data::LayoutIcon>>(iconsList);
             return iconsVariant;
         }
         break;
@@ -651,7 +651,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
             if ((m_inMultipleMode && m_layoutsTable[row].isShared())) {
                 return sortingPriority(MEDIUMPRIORITY, row) + m_layoutsTable[row].shares.count();
             } else if (m_layoutsTable[row].activities.count() > 0) {
-                if (m_layoutsTable[row].activities.contains(Data::Layout::FREEACTIVITIESID)) {
+                if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
                     return sortingPriority(HIGHESTPRIORITY, row);
                 } else {
                     return sortingPriority(HIGHPRIORITY, row) + m_layoutsTable[row].activities.count();
@@ -676,7 +676,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
                 return HIGHESTPRIORITY + m_layoutsTable[row].shares.count();
             }
 
-            if (m_layoutsTable[row].activities.contains(Data::Layout::FREEACTIVITIESID)) {
+            if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
                 //! high activity priority
                 return HIGHPRIORITY;
             }
@@ -725,7 +725,7 @@ void Layouts::assignFreeActivitiesLayoutAt(const QString &layoutName)
     }
 
     int row = m_layoutsTable.indexOf(reqId);
-    setActivities(row, QStringList(Data::Layout::FREEACTIVITIESID));
+    setActivities(row, QStringList(Latte::Data::Layout::FREEACTIVITIESID));
     setShares(row, QStringList());
 }
 
@@ -740,7 +740,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
     int row = m_layoutsTable.indexOf(activeCurrentId);
 
     if (row>=0 && !(m_inMultipleMode && m_layoutsTable[row].isShared()) && m_layoutsTable[row].activities.isEmpty()) {
-        m_layoutsTable[row].activities << Data::Layout::FREEACTIVITIESID;
+        m_layoutsTable[row].activities << Latte::Data::Layout::FREEACTIVITIESID;
         emit dataChanged(index(row,BACKGROUNDCOLUMN), index(row,ACTIVITYCOLUMN), roles);
         return;
     }
@@ -748,7 +748,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
     //! Active layouts with no activities have mid priority
     for(int i=0; i<rowCount(); ++i) {
         if (m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty() && !(m_inMultipleMode && m_layoutsTable[i].isShared())) {
-            m_layoutsTable[i].activities << Data::Layout::FREEACTIVITIESID;
+            m_layoutsTable[i].activities << Latte::Data::Layout::FREEACTIVITIESID;
             emit dataChanged(index(i,BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
             return;
         }
@@ -757,7 +757,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
     //! Inactive layouts with no activities have lowest priority
     for(int i=0; i<rowCount(); ++i) {
         if (!m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty() && !(m_inMultipleMode && m_layoutsTable[i].isShared())) {
-            m_layoutsTable[i].activities << Data::Layout::FREEACTIVITIESID;
+            m_layoutsTable[i].activities << Latte::Data::Layout::FREEACTIVITIESID;
             emit dataChanged(index(i,BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
             return;
         }
@@ -777,8 +777,8 @@ void Layouts::setActivities(const int &row, const QStringList &activities)
 
     bool freeActivitiesLayoutIsMissing{false};
 
-    if (m_layoutsTable[row].activities.contains(Data::Layout::FREEACTIVITIESID)
-            && !activities.contains(Data::Layout::FREEACTIVITIESID)) {
+    if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)
+            && !activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
         //! we need to reassign it properly
         freeActivitiesLayoutIsMissing = true;
     }
@@ -881,7 +881,7 @@ void Layouts::setShares(const int &row, const QStringList &shares)
         }
     }
 
-    if (m_layoutsTable[row].activities.contains(Data::Layout::FREEACTIVITIESID)
+    if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)
             && m_inMultipleMode
             && m_layoutsTable[row].isShared()) {
         //! we need to remove the free_activities flag in such case
@@ -1021,37 +1021,37 @@ int Layouts::rowForId(const QString &id) const
     return m_layoutsTable.indexOf(id);
 }
 
-const Data::Layout &Layouts::at(const int &row)
+const Latte::Data::Layout &Layouts::at(const int &row)
 {
     return m_layoutsTable[row];
 }
 
-const Data::Layout &Layouts::currentData(const QString &id)
+const Latte::Data::Layout &Layouts::currentData(const QString &id)
 {
     return m_layoutsTable[id];
 }
 
 
-const Data::Layout Layouts::originalData(const QString &id)
+const Latte::Data::Layout Layouts::originalData(const QString &id)
 {
     if (o_layoutsTable.containsId(id)){
         return o_layoutsTable[id];
     }
 
-    return Data::Layout();
+    return Latte::Data::Layout();
 }
 
-const Data::LayoutsTable &Layouts::originalLayoutsData()
+const Latte::Data::LayoutsTable &Layouts::originalLayoutsData()
 {
     return o_layoutsTable;
 }
 
-const Data::LayoutsTable &Layouts::currentLayoutsData()
+const Latte::Data::LayoutsTable &Layouts::currentLayoutsData()
 {
     return m_layoutsTable;
 }
 
-void Layouts::setOriginalData(Data::LayoutsTable &data, const bool &inmultiple)
+void Layouts::setOriginalData(Latte::Data::LayoutsTable &data, const bool &inmultiple)
 {
     clear();
 
@@ -1071,9 +1071,9 @@ void Layouts::setOriginalData(Data::LayoutsTable &data, const bool &inmultiple)
     emit rowsInserted();
 }
 
-QList<Data::Layout> Layouts::alteredLayouts() const
+QList<Latte::Data::Layout> Layouts::alteredLayouts() const
 {
-    QList<Data::Layout> layouts;
+    QList<Latte::Data::Layout> layouts;
 
     for(int i=0; i<rowCount(); ++i) {
         QString currentId = m_layoutsTable[i].id;
@@ -1091,11 +1091,11 @@ QList<Data::Layout> Layouts::alteredLayouts() const
 void Layouts::initActivities()
 {
     Latte::Data::Activity freeActivities;
-    freeActivities.id = Data::Layout::FREEACTIVITIESID;
+    freeActivities.id = Latte::Data::Layout::FREEACTIVITIESID;
     freeActivities.name = QString("[ " + i18n("All Free Activities...") + " ]");
     freeActivities.icon = "favorites";
     freeActivities.state = KActivities::Info::Stopped;
-    m_activitiesMap[Data::Layout::FREEACTIVITIESID] = freeActivities;
+    m_activitiesMap[Latte::Data::Layout::FREEACTIVITIESID] = freeActivities;
 
     QStringList activities = m_corona->layoutsManager()->synchronizer()->activities();;
 

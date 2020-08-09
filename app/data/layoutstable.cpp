@@ -23,7 +23,6 @@
 #include <QDebug>
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 LayoutsTable::LayoutsTable()
@@ -289,6 +288,5 @@ void LayoutsTable::setLayoutForFreeActivities(const QString &id)
     }
 }
 
-}
 }
 }

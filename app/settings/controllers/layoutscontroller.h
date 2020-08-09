@@ -71,11 +71,11 @@ public:
 
     bool hasSelectedLayout() const;
     bool selectedLayoutIsCurrentActive() const;
-    const Data::Layout selectedLayoutCurrentData() const;
-    const Data::Layout selectedLayoutOriginalData() const;
+    const Latte::Data::Layout selectedLayoutCurrentData() const;
+    const Latte::Data::Layout selectedLayoutOriginalData() const;
 
     void selectRow(const QString &id);
-    void setLayoutProperties(const Data::Layout &layout);
+    void setLayoutProperties(const Latte::Data::Layout &layout);
 
     //! actions
     void reset();
@@ -92,7 +92,7 @@ public:
     void setOriginalLayoutForFreeActivities(const QString &id);
 
     void copySelectedLayout();
-    const Data::Layout addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true);
+    const Latte::Data::Layout addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true);
 
     //! import layouts from Latte versions <= v0.7.x
     bool importLayoutsFromV1ConfigFile(QString file);

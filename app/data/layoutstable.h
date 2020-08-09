@@ -18,8 +18,8 @@
  *
  */
 
-#ifndef SETTINGSDATALAYOUTSTABLE_H
-#define SETTINGSDATALAYOUTSTABLE_H
+#ifndef LAYOUTSTABLEDATA_H
+#define LAYOUTSTABLEDATA_H
 
 // local
 #include "layoutdata.h"
@@ -29,7 +29,6 @@
 #include <QList>
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 class LayoutsTable
@@ -79,8 +78,7 @@ protected:
 
 }
 }
-}
 
-Q_DECLARE_METATYPE(Latte::Settings::Data::LayoutsTable)
+Q_DECLARE_METATYPE(Latte::Data::LayoutsTable)
 
 #endif

@@ -141,7 +141,7 @@ void DetailsHandler::reload()
     loadLayout(c_data);
 }
 
-void DetailsHandler::loadLayout(const Data::Layout &data)
+void DetailsHandler::loadLayout(const Latte::Data::Layout &data)
 {
     if (data.icon.isEmpty()) {
         m_ui->iconBtn->setIcon(QIcon::fromTheme("add"));
@@ -194,7 +194,7 @@ void DetailsHandler::loadLayout(const Data::Layout &data)
     updateWindowTitle();
 }
 
-Data::Layout DetailsHandler::currentData() const
+Latte::Data::Layout DetailsHandler::currentData() const
 {
     return c_data;
 }

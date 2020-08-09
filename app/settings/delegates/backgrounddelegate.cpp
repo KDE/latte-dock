@@ -51,7 +51,7 @@ void BackgroundDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     //! draw underlying background
     QStyledItemDelegate::paint(painter, myOptions, index.model()->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
-    QList<Data::LayoutIcon> icons = index.data(Qt::UserRole).value<QList<Data::LayoutIcon>>();
+    QList<Latte::Data::LayoutIcon> icons = index.data(Qt::UserRole).value<QList<Latte::Data::LayoutIcon>>();
 
     if (icons.count() > 0) {
         int localMargin = MARGIN-1;// icons[0].isBackgroundFile && icons.count() == 1 ? qMin(option.rect.height()/4,MARGIN+5) : MARGIN-1;
@@ -77,7 +77,7 @@ void BackgroundDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     }
 }
 
-void BackgroundDelegate::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Data::LayoutIcon &icon) const
+void BackgroundDelegate::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Latte::Data::LayoutIcon &icon) const
 {
     bool active = Latte::isActive(option);
     bool selected = Latte::isSelected(option);

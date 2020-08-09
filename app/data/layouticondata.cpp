@@ -22,7 +22,6 @@
 
 
 namespace Latte {
-namespace Settings {
 namespace Data {
 
 LayoutIcon::LayoutIcon()
@@ -78,7 +77,6 @@ bool LayoutIcon::operator!=(const LayoutIcon &rhs) const
     return !(*this == rhs);
 }
 
-}
 }
 }
 

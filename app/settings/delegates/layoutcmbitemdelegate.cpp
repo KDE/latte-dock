@@ -51,7 +51,7 @@ void LayoutCmbItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
     //! draw underlying background
     QStyledItemDelegate::paint(painter, myOptions, index.model()->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
-    QList<Data::LayoutIcon> icons = index.data(Model::Layouts::BACKGROUNDUSERROLE).value<QList<Data::LayoutIcon>>();
+    QList<Latte::Data::LayoutIcon> icons = index.data(Model::Layouts::BACKGROUNDUSERROLE).value<QList<Latte::Data::LayoutIcon>>();
 
     int iconsLength = (2 * option.rect.height() + 3 * 1);
 
@@ -83,7 +83,7 @@ void LayoutCmbItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
     QStyledItemDelegate::paint(painter, myOptions, index);
 }
 
-void LayoutCmbItemDelegate::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Data::LayoutIcon &icon) const
+void LayoutCmbItemDelegate::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Latte::Data::LayoutIcon &icon) const
 {
     bool active = Latte::isActive(option);
     bool selected = Latte::isSelected(option);
