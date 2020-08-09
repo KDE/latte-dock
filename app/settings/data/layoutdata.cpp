@@ -39,6 +39,7 @@ Layout::Layout(Layout &&o)
       isActive(o.isActive),
       isLocked(o.isLocked),
       isShownInMenu(o.isShownInMenu),
+      isTemplate(o.isTemplate),
       hasDisabledBorders(o.hasDisabledBorders),
       activities(o.activities),
       shares(o.shares),
@@ -56,6 +57,7 @@ Layout::Layout(const Layout &o)
       isActive(o.isActive),
       isLocked(o.isLocked),
       isShownInMenu(o.isShownInMenu),
+      isTemplate(o.isTemplate),
       hasDisabledBorders(o.hasDisabledBorders),
       activities(o.activities),
       shares(o.shares),
@@ -74,6 +76,7 @@ Layout &Layout::operator=(Layout &&rhs)
     isActive = rhs.isActive;
     isLocked = rhs.isLocked;
     isShownInMenu = rhs.isShownInMenu;
+    isTemplate = rhs.isTemplate;
     hasDisabledBorders = rhs.hasDisabledBorders;
     activities = rhs.activities;
     shares = rhs.shares;
@@ -93,6 +96,7 @@ Layout &Layout::operator=(const Layout &rhs)
     isActive = rhs.isActive;
     isLocked = rhs.isLocked;
     isShownInMenu = rhs.isShownInMenu;
+    isTemplate = rhs.isTemplate;
     hasDisabledBorders = rhs.hasDisabledBorders;
     activities = rhs.activities;
     shares = rhs.shares;
@@ -112,6 +116,7 @@ bool Layout::operator==(const Layout &rhs) const
             //&& (isActive == rhs.isActive) /*Disabled but this is not a data but a layout state*/
             && (isLocked == rhs.isLocked)
             && (isShownInMenu == rhs.isShownInMenu)
+            && (isTemplate == rhs.isTemplate)
             && (hasDisabledBorders == rhs.hasDisabledBorders)
             && (activities == rhs.activities)
             && (shares == rhs.shares)
@@ -146,6 +151,11 @@ bool Layout::isNull() const
 bool Layout::isShared() const
 {
     return !shares.isEmpty();
+}
+
+bool Layout::isGlobalTemplate() const
+{
+    return isTemplate && id.startsWith("/usr");
 }
 
 }

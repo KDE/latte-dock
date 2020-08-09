@@ -52,6 +52,7 @@ public:
     bool isActive{false};
     bool isLocked{false};
     bool isShownInMenu{false};
+    bool isTemplate{false};
     bool hasDisabledBorders{false};
     QStringList activities;
     QStringList shares;
@@ -64,6 +65,8 @@ public:
     bool isTemporary() const;
     bool isNull() const;
     bool isEmpty() const;
+    bool isGlobalTemplate() const;
+
 
     //! Operators
     Layout &operator=(const Layout &rhs);
