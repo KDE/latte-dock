@@ -111,6 +111,8 @@ private slots:
 private:
     bool isHoveringLayoutsTable(const QPoint &pos);
 
+    void initLayoutTemplatesSubMenu();
+
 private:
     Settings::Dialog::SettingsDialog *m_parentDialog{nullptr};
     Ui::SettingsDialog *m_ui{nullptr};
@@ -124,6 +126,8 @@ private:
 
     //! Layout menu actions
     QMenu *m_layoutMenu{nullptr};
+    QMenu *m_layoutTemplatesSubMenu{nullptr};
+
     QAction *m_switchLayoutAction{nullptr};
     QAction *m_pauseLayoutAction{nullptr};
     QAction *m_newLayoutAction{nullptr};

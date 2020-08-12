@@ -134,30 +134,12 @@ void TabLayouts::initLayoutMenu()
     m_newLayoutAction->setToolTip(i18n("New layout"));
     m_newLayoutAction->setIcon(QIcon::fromTheme("add"));
     m_newLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
-
-    /*Add Layout Templates for New Action*/
-    QMenu *layoutTemplatesSubMenu = new QMenu(m_layoutMenu);
     connectActionWithButton(m_ui->newButton, m_newLayoutAction);
     connect(m_newLayoutAction, &QAction::triggered, m_ui->newButton, &QPushButton::showMenu);
 
-    Data::LayoutsTable templates = m_corona->templatesManager()->systemLayoutTemplates();
-
-    for (int i=0; i<templates.rowCount(); ++i) {
-        if (i==2) {
-            layoutTemplatesSubMenu->addSeparator();
-        }
-
-        QAction *newlayout = layoutTemplatesSubMenu->addAction(templates[i].name);
-        QString templatename = templates[i].name;
-
-        connect(newlayout, &QAction::triggered, this, [&, templatename]() {
-            newLayout(templatename);
-        });
-    }
-
-    m_newLayoutAction->setMenu(layoutTemplatesSubMenu);
-    m_ui->newButton->setMenu(layoutTemplatesSubMenu);
-    layoutTemplatesSubMenu->setMinimumWidth(m_ui->newButton->width() * 2);
+    initLayoutTemplatesSubMenu();
+    m_newLayoutAction->setMenu(m_layoutTemplatesSubMenu);
+    m_ui->newButton->setMenu(m_layoutTemplatesSubMenu);
 
     m_copyLayoutAction = m_layoutMenu->addAction(i18nc("copy layout", "&Copy"));
     m_copyLayoutAction->setToolTip(i18n("Copy selected layout"));
@@ -220,6 +202,32 @@ void TabLayouts::initLayoutMenu()
     m_downloadLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_D));
     connectActionWithButton(m_ui->downloadButton, m_downloadLayoutAction);
     connect(m_downloadLayoutAction, &QAction::triggered, this, &TabLayouts::on_download_layout);
+}
+
+void TabLayouts::initLayoutTemplatesSubMenu()
+{
+    if (!m_layoutTemplatesSubMenu) {
+        m_layoutTemplatesSubMenu = new QMenu(m_layoutMenu);
+        m_layoutTemplatesSubMenu->setMinimumWidth(m_ui->newButton->width() * 2);
+    } else {
+        m_layoutTemplatesSubMenu->clear();
+    }
+
+    /*Add Layout Templates for New Action*/
+    Data::LayoutsTable templates = m_corona->templatesManager()->systemLayoutTemplates();
+
+    for (int i=0; i<templates.rowCount(); ++i) {
+        if (i==2) {
+            m_layoutTemplatesSubMenu->addSeparator();
+        }
+
+        QAction *newlayout = m_layoutTemplatesSubMenu->addAction(templates[i].name);
+        QString templatename = templates[i].name;
+
+        connect(newlayout, &QAction::triggered, this, [&, templatename]() {
+            newLayout(templatename);
+        });
+    }
 }
 
 Latte::Corona *TabLayouts::corona() const
@@ -708,8 +716,8 @@ void TabLayouts::on_layoutFilesDropped(const QStringList &paths)
 void TabLayouts::on_rawLayoutDropped(const QString &rawLayout)
 {
     Latte::Data::Layout importedlayout = m_layoutsController->addLayoutByText(rawLayout);
-        showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedlayout.name),
-                KMessageWidget::Information);
+    showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedlayout.name),
+                      KMessageWidget::Information);
 }
 
 bool TabLayouts::isCurrentTab() const
