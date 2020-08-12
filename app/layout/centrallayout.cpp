@@ -251,6 +251,24 @@ Latte::View *CentralLayout::lastConfigViewFor()
     }
 }
 
+Data::Layout CentralLayout::data() const
+{
+    Data::Layout cdata;
+
+    cdata.name = name();
+    cdata.icon = icon();
+    cdata.backgroundStyle = backgroundStyle();
+    cdata.color = color();
+    cdata.background = customBackground();
+    cdata.textColor = customTextColor();
+    cdata.isLocked = !isWritable();
+    cdata.isShownInMenu = showInMenu();
+    cdata.hasDisabledBorders = disableBordersForMaximizedWindows();
+    cdata.activities = activities();
+
+    return cdata;
+}
+
 void CentralLayout::loadConfig()
 {
     m_disableBordersForMaximizedWindows = m_layoutGroup.readEntry("disableBordersForMaximizedWindows", false);

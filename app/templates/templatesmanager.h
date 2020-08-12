@@ -23,6 +23,7 @@
 // local
 #include "../lattecorona.h"
 #include "../data/layoutdata.h"
+#include "../data/layoutstable.h"
 
 // Qt
 #include <QObject>
@@ -53,7 +54,8 @@ private:
 
 private:
     Latte::Corona *m_corona;
-    QList<Data::Layout> m_layoutTemplates;
+
+    Data::LayoutsTable m_layoutTemplates;
 
 };
 

@@ -23,6 +23,7 @@
 
 // local
 #include "genericlayout.h"
+#include "../data/layoutdata.h"
 
 // Qt
 #include <QObject>
@@ -83,6 +84,7 @@ public:
     int viewsCount() const override;
 
     Layout::Type type() const override;
+    Data::Layout data() const;
 
     void setLastConfigViewFor(Latte::View *view) override;
     Latte::View *lastConfigViewFor() override;

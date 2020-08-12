@@ -19,6 +19,9 @@
 
 #include "templatesmanager.h"
 
+// local
+#include "../layout/centrallayout.h"
+
 // Qt
 #include <QDir>
 
@@ -46,7 +49,20 @@ void Manager::init()
     QStringList systemLayoutTemplates = systemTemplatesDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
 
     for (int i=0; i<systemLayoutTemplates.count(); ++i) {
-        qDebug() << "System layout template : " << systemLayoutTemplates[i];
+        QString systemTemplatePath = systemTemplatesDir.path() + "/" + systemLayoutTemplates[i];
+        if (!m_layoutTemplates.containsId(systemTemplatePath)) {
+            CentralLayout layouttemplate(this, systemTemplatePath);
+
+            Data::Layout tdata = layouttemplate.data();
+            tdata.isTemplate = true;
+
+            if (tdata.name == DEFAULTLAYOUTTEMPLATENAME || tdata.name == EMPTYLAYOUTTEMPLATENAME) {
+                QByteArray templateNameChars = tdata.name.toUtf8();
+                tdata.name = i18n(templateNameChars);
+            }
+
+            m_layoutTemplates << tdata;
+        }
     }
 }
 
