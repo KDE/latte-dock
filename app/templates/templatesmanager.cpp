@@ -76,6 +76,26 @@ Data::Layout Manager::layoutTemplateForName(const QString &layoutName)
     return Data::Layout();
 }
 
+Data::LayoutsTable Manager::systemLayoutTemplates()
+{
+    Data::LayoutsTable templates;
+
+    QString id = m_layoutTemplates.idForName(i18n(DEFAULTLAYOUTTEMPLATENAME));
+    templates << m_layoutTemplates[id];
+    id = m_layoutTemplates.idForName(i18n(EMPTYLAYOUTTEMPLATENAME));
+    templates << m_layoutTemplates[id];
+
+    for (int i=0; i<m_layoutTemplates.rowCount(); ++i) {
+        if ( m_layoutTemplates[i].name != i18n(DEFAULTLAYOUTTEMPLATENAME)
+             && m_layoutTemplates[i].name != i18n(EMPTYLAYOUTTEMPLATENAME)
+             && m_layoutTemplates[i].name != MULTIPLELAYOUTSTEMPLATENAME) {
+            templates << m_layoutTemplates[i];
+        }
+    }
+
+    return templates;
+}
+
 //! it is used just in order to provide translations for the presets
 void Manager::exposeTranslatedTemplateNames()
 {

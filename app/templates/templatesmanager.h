@@ -37,6 +37,7 @@ namespace Templates {
 
 const char DEFAULTLAYOUTTEMPLATENAME[] = "Default";
 const char EMPTYLAYOUTTEMPLATENAME[] = "Empty";
+const char MULTIPLELAYOUTSTEMPLATENAME[] = "multiple-layouts_hidden";
 
 class Manager : public QObject
 {
@@ -50,6 +51,8 @@ public:
     void init();
 
     Data::Layout layoutTemplateForName(const QString &layoutName);
+
+    Data::LayoutsTable systemLayoutTemplates();
 
 private:
     void exposeTranslatedTemplateNames();

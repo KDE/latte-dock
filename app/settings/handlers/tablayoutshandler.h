@@ -90,7 +90,6 @@ private slots:
     void loadConfig();
     void saveConfig();
 
-    void on_new_layout();
     void on_copy_layout();
     void on_download_layout();
     void on_pause_layout();
@@ -106,6 +105,8 @@ private slots:
     void on_layoutFilesDropped(const QStringList &paths);
     void on_rawLayoutDropped(const QString &rawLayout);
     void updatePerLayoutButtonsState();
+
+    void newLayout(const QString &templateName);
 
 private:
     bool isHoveringLayoutsTable(const QPoint &pos);

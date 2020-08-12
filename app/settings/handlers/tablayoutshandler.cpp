@@ -134,8 +134,30 @@ void TabLayouts::initLayoutMenu()
     m_newLayoutAction->setToolTip(i18n("New layout"));
     m_newLayoutAction->setIcon(QIcon::fromTheme("add"));
     m_newLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
+
+    /*Add Layout Templates for New Action*/
+    QMenu *layoutTemplatesSubMenu = new QMenu(m_layoutMenu);
     connectActionWithButton(m_ui->newButton, m_newLayoutAction);
-    connect(m_newLayoutAction, &QAction::triggered, this, &TabLayouts::on_new_layout);
+    connect(m_newLayoutAction, &QAction::triggered, m_ui->newButton, &QPushButton::showMenu);
+
+    Data::LayoutsTable templates = m_corona->templatesManager()->systemLayoutTemplates();
+
+    for (int i=0; i<templates.rowCount(); ++i) {
+        if (i==2) {
+            layoutTemplatesSubMenu->addSeparator();
+        }
+
+        QAction *newlayout = layoutTemplatesSubMenu->addAction(templates[i].name);
+        QString templatename = templates[i].name;
+
+        connect(newlayout, &QAction::triggered, this, [&, templatename]() {
+            newLayout(templatename);
+        });
+    }
+
+    m_newLayoutAction->setMenu(layoutTemplatesSubMenu);
+    m_ui->newButton->setMenu(layoutTemplatesSubMenu);
+    layoutTemplatesSubMenu->setMinimumWidth(m_ui->newButton->width() * 2);
 
     m_copyLayoutAction = m_layoutMenu->addAction(i18nc("copy layout", "&Copy"));
     m_copyLayoutAction->setToolTip(i18n("Copy selected layout"));
@@ -372,7 +394,7 @@ void TabLayouts::updatePerLayoutButtonsState()
     setTwinProperty(m_detailsAction, TWINENABLED, true);
 }
 
-void TabLayouts::on_new_layout()
+void TabLayouts::newLayout(const QString &templateName)
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -381,7 +403,7 @@ void TabLayouts::on_new_layout()
     }
 
     //! retrieve Default layout template
-    Data::Layout tdata = m_corona->templatesManager()->layoutTemplateForName(i18n(Latte::Templates::DEFAULTLAYOUTTEMPLATENAME));
+    Data::Layout tdata = m_corona->templatesManager()->layoutTemplateForName(templateName);
 
     if (!tdata.isNull()) {
         Data::Layout newlayout = m_layoutsController->addLayoutForFile(tdata.id, tdata.name, true);
