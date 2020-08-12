@@ -64,7 +64,7 @@ public:
     bool isTemporary() const;
     bool isNull() const;
     bool isEmpty() const;
-    bool isGlobalTemplate() const;
+    bool isSystemTemplate() const;
 
 
     //! Operators

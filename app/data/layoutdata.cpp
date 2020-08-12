@@ -151,9 +151,9 @@ bool Layout::isShared() const
     return !shares.isEmpty();
 }
 
-bool Layout::isGlobalTemplate() const
+bool Layout::isSystemTemplate() const
 {
-    return isTemplate && id.startsWith("/usr");
+    return isTemplate && !id.startsWith("/tmp") && !id.startsWith("/home");
 }
 
 }
