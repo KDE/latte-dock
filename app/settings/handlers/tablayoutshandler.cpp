@@ -33,6 +33,7 @@
 #include "../../layout/centrallayout.h"
 #include "../../layouts/importer.h"
 #include "../../layouts/manager.h"
+#include "../../templates/templatesmanager.h"
 
 //! Qt
 #include <QFileDialog>
@@ -379,16 +380,13 @@ void TabLayouts::on_new_layout()
         return;
     }
 
-    //! find Default preset path
-    for (const auto &preset : m_corona->layoutsManager()->presetsPaths()) {
-        QString presetName = CentralLayout::layoutName(preset);
+    //! retrieve Default layout template
+    Data::Layout tdata = m_corona->templatesManager()->layoutTemplateForName(i18n(Latte::Templates::DEFAULTLAYOUTTEMPLATENAME));
 
-        if (presetName == "Default") {
-            Latte::Data::Layout newlayout = m_layoutsController->addLayoutForFile(preset, presetName, true);
-            showInlineMessage(i18nc("settings:layout added successfully","Layout <b>%0</b> added successfully...").arg(newlayout.name),
-                              KMessageWidget::Information);
-            break;
-        }
+    if (!tdata.isNull()) {
+        Data::Layout newlayout = m_layoutsController->addLayoutForFile(tdata.id, tdata.name, true);
+        showInlineMessage(i18nc("settings:layout added successfully","Layout <b>%0</b> added successfully...").arg(newlayout.name),
+                          KMessageWidget::Information);
     }
 }
 

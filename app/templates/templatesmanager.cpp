@@ -66,6 +66,16 @@ void Manager::init()
     }
 }
 
+Data::Layout Manager::layoutTemplateForName(const QString &layoutName)
+{
+    if (m_layoutTemplates.containsName(layoutName)) {
+        QString layoutid = m_layoutTemplates.idForName(layoutName);
+        return m_layoutTemplates[layoutid];
+    }
+
+    return Data::Layout();
+}
+
 //! it is used just in order to provide translations for the presets
 void Manager::exposeTranslatedTemplateNames()
 {

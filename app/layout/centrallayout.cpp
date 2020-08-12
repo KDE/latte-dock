@@ -255,6 +255,7 @@ Data::Layout CentralLayout::data() const
 {
     Data::Layout cdata;
 
+    cdata.id = file();
     cdata.name = name();
     cdata.icon = icon();
     cdata.backgroundStyle = backgroundStyle();

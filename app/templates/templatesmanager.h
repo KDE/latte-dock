@@ -49,6 +49,8 @@ public:
     Latte::Corona *corona();
     void init();
 
+    Data::Layout layoutTemplateForName(const QString &layoutName);
+
 private:
     void exposeTranslatedTemplateNames();
 
