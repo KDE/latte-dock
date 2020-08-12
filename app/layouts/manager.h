@@ -93,7 +93,6 @@ public:
 
     QStringList layouts() const;
     QStringList menuLayouts() const;
-    QStringList presetsPaths() const;
     QStringList storedSharedLayouts() const;
 
     MemoryUsage::LayoutsMemory memoryUsage() const;
@@ -136,17 +135,12 @@ private:
     void cleanupOnStartup(QString path); //!remove deprecated or oldstyle config options
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
 
-    //! it is used just in order to provide translations for the presets
-    void ghostForTranslatedPresets();
-
     void importPreset(int presetNo, bool newInstanceIfPresent = false);
     void loadLatteLayout(QString layoutPath);
 
     void setMenuLayouts(QStringList layouts);
 
 private:
-    QStringList m_presetsPaths;
-
     QPointer<Latte::Settings::Dialog::SettingsDialog> m_latteSettingsDialog;
 
     Latte::Corona *m_corona{nullptr};

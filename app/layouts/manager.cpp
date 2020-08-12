@@ -79,8 +79,6 @@ Manager::~Manager()
 
 void Manager::load()
 {
-    m_presetsPaths.clear();
-
     QDir layoutsDir(QDir::homePath() + "/.config/latte");
     bool firstRun = !layoutsDir.exists();
 
@@ -116,11 +114,6 @@ void Manager::load()
     }
 
     qDebug() << "Latte is loading  its layouts...";
-
-    m_presetsPaths.append(m_corona->kPackage().filePath("preset1"));
-    m_presetsPaths.append(m_corona->kPackage().filePath("preset2"));
-    m_presetsPaths.append(m_corona->kPackage().filePath("preset3"));
-    m_presetsPaths.append(m_corona->kPackage().filePath("preset4"));
 
     m_synchronizer->loadLayouts();
 }
@@ -168,11 +161,6 @@ QStringList Manager::menuLayouts() const
 void Manager::setMenuLayouts(QStringList layouts)
 {
     m_synchronizer->setMenuLayouts(layouts);
-}
-
-QStringList Manager::presetsPaths() const
-{
-    return m_presetsPaths;
 }
 
 MemoryUsage::LayoutsMemory Manager::memoryUsage() const
@@ -427,15 +415,6 @@ void Manager::showInfoWindow(QString info, int duration, QStringList activities)
             infoView->deleteLater();
         });
     }
-}
-
-//! it is used just in order to provide translations for the presets
-void Manager::ghostForTranslatedPresets()
-{
-    QString preset1 = i18n("Default");
-    QString preset2 = i18n("Plasma");
-    QString preset3 = i18n("Unity");
-    QString preset4 = i18n("Extended");
 }
 
 }
