@@ -93,6 +93,7 @@ public:
 
     void copySelectedLayout();
     const Latte::Data::Layout addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true);
+    const Latte::Data::Layout addLayoutByText(QString rawLayoutText);
 
     //! import layouts from Latte versions <= v0.7.x
     bool importLayoutsFromV1ConfigFile(QString file);

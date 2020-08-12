@@ -21,6 +21,7 @@
 
 //! Qt
 #include <QDebug>
+#include <QMimeData>
 
 //! KDE
 #include <KLocalizedString>
@@ -70,12 +71,19 @@ void LayoutsTableView::paintEvent(QPaintEvent *event)
     QTableView::paintEvent(event);
 }
 
-void LayoutsTableView::dragEntered()
+void LayoutsTableView::dragEntered(QDragEnterEvent *event)
 {
     m_overlayDropMessage->move(MARGIN, MARGIN);
     m_overlayDropMessage->resize(width() - 2*MARGIN, height() - 2*MARGIN);
 
     m_overlayDropMessage->raise();
+    if (event->mimeData()->hasUrls()) {
+        m_overlayDropMessage->setText(i18n("Drop layout files here..."));
+    } else if(event->mimeData()->hasText()) {
+        m_overlayDropMessage->setText(i18n("Drop raw layout text here..."));
+    } else {
+        m_overlayDropMessage->setText(i18n("Unsupported data!"));
+    }
     m_overlayDropMessage->setVisible(true);
 }
 

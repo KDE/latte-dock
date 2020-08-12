@@ -46,6 +46,7 @@
 #include <QItemSelection>
 #include <QStringList>
 #include <QTemporaryDir>
+#include <QTemporaryFile>
 
 // KDE
 #include <KArchive/KTar>
@@ -554,6 +555,29 @@ const Latte::Data::Layout Layouts::addLayoutForFile(QString file, QString layout
     m_view->selectRow(rowForId(copied.id));
 
     return copied;
+}
+
+const Latte::Data::Layout Layouts::addLayoutByText(QString rawLayoutText)
+{
+    QTemporaryFile tempFile;
+    tempFile.open();
+    QTextStream stream(&tempFile);
+    stream << rawLayoutText;
+    stream.flush();
+    tempFile.close();
+
+    Latte::Data::Layout newLayout = addLayoutForFile(tempFile.fileName(),i18n("Dropped Raw Layout"));
+
+    int selectedRow = m_view->currentIndex().row();
+    QModelIndex tIndex = m_proxyModel->index(selectedRow, Model::Layouts::NAMECOLUMN);
+    m_view->edit(tIndex);
+    
+    /**Window has to be activated explicitely since the window where the drag
+     * started would otherwise be the active window. By activating the window
+       the user can immediately change the name by simply typing.*/ 
+    m_handler->dialog()->activateWindow();
+    
+    return newLayout;
 }
 
 void Layouts::copySelectedLayout()

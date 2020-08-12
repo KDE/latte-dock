@@ -24,6 +24,7 @@
 #include <QLabel>
 #include <QPaintEvent>
 #include <QTableView>
+#include <QDragEnterEvent>
 
 namespace Latte {
 namespace Settings {
@@ -35,7 +36,7 @@ class LayoutsTableView : public QTableView
 public:
     LayoutsTableView(QWidget *parent = nullptr);
 
-    void dragEntered();
+    void dragEntered(QDragEnterEvent *event);
     void dragLeft();
 
 protected:

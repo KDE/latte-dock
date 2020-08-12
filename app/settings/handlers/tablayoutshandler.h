@@ -104,6 +104,7 @@ private slots:
 
     void on_currentPageChanged(int page);
     void on_layoutFilesDropped(const QStringList &paths);
+    void on_rawLayoutDropped(const QString &rawLayout);
     void updatePerLayoutButtonsState();
 
 private:

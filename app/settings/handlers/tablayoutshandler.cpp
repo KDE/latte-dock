@@ -685,6 +685,13 @@ void TabLayouts::on_layoutFilesDropped(const QStringList &paths)
     }
 }
 
+void TabLayouts::on_rawLayoutDropped(const QString &rawLayout)
+{
+    Latte::Data::Layout importedlayout = m_layoutsController->addLayoutByText(rawLayout);
+        showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedlayout.name),
+                KMessageWidget::Information);
+}
+
 bool TabLayouts::isCurrentTab() const
 {
     return (m_layoutMenu->isEnabled() && (m_parentDialog->currentPage() == Dialog::LayoutPage));
@@ -721,7 +728,7 @@ void TabLayouts::on_dragEnterEvent(QDragEnterEvent *event)
     }
 
     event->acceptProposedAction();
-    m_ui->layoutsView->dragEntered();
+    m_ui->layoutsView->dragEntered(event);
 }
 
 void TabLayouts::on_dragLeaveEvent(QDragLeaveEvent *event)
@@ -738,7 +745,6 @@ void TabLayouts::on_dragMoveEvent(QDragMoveEvent *event)
     }
 
     event->acceptProposedAction();
-    m_ui->layoutsView->dragEntered();
 }
 
 void TabLayouts::on_dropEvent(QDropEvent *event)
@@ -766,6 +772,15 @@ void TabLayouts::on_dropEvent(QDropEvent *event)
             on_layoutFilesDropped(paths);
         }
 
+        m_ui->layoutsView->dragLeft();
+    } else if (event->mimeData()->hasText()){
+        if(!event->mimeData()->text().isEmpty()){
+            on_rawLayoutDropped(event->mimeData()->text());
+        } else if(!event->mimeData()->data("text/plain").isEmpty()) {
+            on_rawLayoutDropped(event->mimeData()->data("text/plain"));
+        } else {
+            qDebug() << "Data from drag could not be retrieved!";
+        }
         m_ui->layoutsView->dragLeft();
     }
 }
