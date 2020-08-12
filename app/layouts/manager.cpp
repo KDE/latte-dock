@@ -27,6 +27,7 @@
 #include "launcherssignals.h"
 #include "../infoview.h"
 #include "../screenpool.h"
+#include "../data/layoutdata.h"
 #include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"
 #include "../settings/dialogs/settingsdialog.h"
@@ -292,7 +293,7 @@ void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsId
     }
 }
 
-QString Manager::newLayout(QString layoutName, QString preset)
+QString Manager::newLayout(QString layoutName, QString layoutTemplate)
 {
     QDir layoutDir(QDir::homePath() + "/.config/latte");
     QStringList filter;
@@ -308,11 +309,12 @@ QString Manager::newLayout(QString layoutName, QString preset)
 
     QString newLayoutPath = layoutDir.absolutePath() + "/" + layoutName + ".layout.latte";
 
-    qDebug() << "adding layout : " << layoutName << " based on preset:" << preset;
+    qDebug() << "adding layout : " << layoutName << " based on layout template:" << layoutTemplate;
 
-    if (preset == i18n("Default") && !QFile(newLayoutPath).exists()) {
+    if (layoutTemplate == i18n(Templates::DEFAULTLAYOUTTEMPLATENAME) && !QFile(newLayoutPath).exists()) {
         qDebug() << "adding layout : succeed";
-        QFile(m_corona->kPackage().filePath("preset1")).copy(newLayoutPath);
+        Data::Layout dlayout = m_corona->templatesManager()->layoutTemplateForName(i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
+        QFile(dlayout.id).copy(newLayoutPath);
     }
 
     return newLayoutPath;
