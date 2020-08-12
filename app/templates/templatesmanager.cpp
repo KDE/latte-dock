@@ -69,8 +69,8 @@ void Manager::init()
 //! it is used just in order to provide translations for the presets
 void Manager::exposeTranslatedTemplateNames()
 {
-    i18n(DEFAULTLAYOUTTEMPLATENAME);
-    i18n(EMPTYLAYOUTTEMPLATENAME);
+    i18nc("default layout template name", "Default");
+    i18n("empty layout template name", "Empty");
 }
 
 }

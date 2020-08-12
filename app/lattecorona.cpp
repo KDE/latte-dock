@@ -247,11 +247,11 @@ void Corona::load()
             }
 
             if (!m_layoutsManager->synchronizer()->layoutExists(loadLayoutName)) {
-                loadLayoutName = m_layoutsManager->defaultLayoutName();
+                loadLayoutName = i18n(Templates::DEFAULTLAYOUTTEMPLATENAME);
                 m_layoutsManager->importDefaultLayout(false);
             }
         } else if (m_defaultLayoutOnStartup) {
-            loadLayoutName = m_layoutsManager->importer()->uniqueLayoutName(m_layoutsManager->defaultLayoutName());
+            loadLayoutName = m_layoutsManager->importer()->uniqueLayoutName(i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
             m_layoutsManager->importDefaultLayout(true);
         } else {
             loadLayoutName = m_layoutNameOnStartUp;

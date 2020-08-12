@@ -90,7 +90,6 @@ public:
     void unload();
 
     QString currentLayoutName() const;
-    QString defaultLayoutName() const;
 
     QStringList layouts() const;
     QStringList menuLayouts() const;

@@ -155,17 +155,6 @@ QString Manager::currentLayoutName() const
     return m_synchronizer->currentLayoutName();
 }
 
-QString Manager::defaultLayoutName() const
-{
-    QByteArray presetNameOrig = QString("preset" + QString::number(1)).toUtf8();
-    QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
-    QString presetName = CentralLayout::layoutName(presetPath);
-    QByteArray presetNameChars = presetName.toUtf8();
-    presetName = i18n(presetNameChars);
-
-    return presetName;
-}
-
 QStringList Manager::layouts() const
 {
     return m_synchronizer->layouts();

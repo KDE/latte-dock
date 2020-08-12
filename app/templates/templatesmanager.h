@@ -35,8 +35,8 @@ class Corona;
 namespace Latte {
 namespace Templates {
 
-#define DEFAULTLAYOUTTEMPLATENAME "Default"
-#define EMPTYLAYOUTTEMPLATENAME "Empty"
+const char DEFAULTLAYOUTTEMPLATENAME[] = "Default";
+const char EMPTYLAYOUTTEMPLATENAME[] = "Empty";
 
 class Manager : public QObject
 {
