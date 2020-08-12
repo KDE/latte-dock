@@ -44,6 +44,7 @@
 #include "plasma/extended/theme.h"
 #include "settings/universalsettings.h"
 #include "settings/dialogs/settingsdialog.h"
+#include "templates/templatesmanager.h"
 #include "view/view.h"
 #include "view/settings/viewsettingsfactory.h"
 #include "view/windowstracker/windowstracker.h"
@@ -106,6 +107,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_plasmaScreenPool(new PlasmaExtended::ScreenPool(this)),
       m_themeExtended(new PlasmaExtended::Theme(KSharedConfig::openConfig(), this)),
       m_viewSettingsFactory(new ViewSettingsFactory(this)),
+      m_templatesManager(new Templates::Manager(this)),
       m_layoutsManager(new Layouts::Manager(this)),
       m_plasmaGeometries(new PlasmaExtended::ScreenGeometries(this)),
       m_dialogShadows(new PanelShadows(this, QStringLiteral("dialogs/background")))
@@ -223,6 +225,7 @@ void Corona::load()
 
         disconnect(m_activitiesConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
 
+        m_templatesManager->init();
         m_layoutsManager->load();
 
         connect(this, &Corona::availableScreenRectChangedFrom, this, &Plasma::Corona::availableScreenRectChanged);
@@ -454,6 +457,11 @@ Indicator::Factory *Corona::indicatorFactory() const
 Layouts::Manager *Corona::layoutsManager() const
 {
     return m_layoutsManager;
+}
+
+Templates::Manager *Corona::templatesManager() const
+{
+    return m_templatesManager;
 }
 
 PlasmaExtended::ScreenPool *Corona::plasmaScreenPool() const

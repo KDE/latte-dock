@@ -60,6 +60,8 @@ void Package::initPackage(KPackage::Package *package)
     package->addFileDefinition("layout3", QStringLiteral("layouts/Unity.latterc"), i18n("unity layout file"));
     package->addFileDefinition("layout4", QStringLiteral("layouts/Extended.latterc"), i18n("extended layout file"));
 
+    package->addFileDefinition("templates", QStringLiteral("templates"), i18n("system templates directory"));
+
     package->addFileDefinition("preset1", QStringLiteral("presets/Default.layout.latte"), i18n("default preset file"));
     package->addFileDefinition("preset2", QStringLiteral("presets/Plasma.layout.latte"), i18n("plasma preset file"));
     package->addFileDefinition("preset3", QStringLiteral("presets/Unity.layout.latte"), i18n("unity preset file"));

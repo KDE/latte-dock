@@ -84,6 +84,9 @@ class ScreenGeometries;
 class ScreenPool;
 class Theme;
 }
+namespace Templates {
+class Manager;
+}
 namespace WindowSystem{
 class AbstractWindowInterface;
 }
@@ -138,6 +141,7 @@ public:
     UniversalSettings *universalSettings() const;
     ViewSettingsFactory *viewSettingsFactory() const;
     Layouts::Manager *layoutsManager() const;   
+    Templates::Manager *templatesManager() const;
 
     Indicator::Factory *indicatorFactory() const;
 
@@ -238,6 +242,7 @@ private:
 
     Indicator::Factory *m_indicatorFactory{nullptr};
     Layouts::Manager *m_layoutsManager{nullptr};
+    Templates::Manager *m_templatesManager{nullptr};
 
     PlasmaExtended::ScreenGeometries *m_plasmaGeometries{nullptr};
     PlasmaExtended::ScreenPool *m_plasmaScreenPool{nullptr};
