@@ -99,12 +99,23 @@ Data::LayoutsTable Manager::systemLayoutTemplates()
 
 QString Manager::newLayout(QString layoutName, QString layoutTemplate)
 {
-    layoutName = Layouts::Importer::uniqueLayoutName(layoutName);
+    if (!m_layoutTemplates.containsName(layoutTemplate)) {
+        return QString();
+    }
+
+    if (layoutName.isEmpty()) {
+        layoutName = Layouts::Importer::uniqueLayoutName(layoutTemplate);
+    } else {
+        layoutName = Layouts::Importer::uniqueLayoutName(layoutName);
+    }
+
     QString newLayoutPath = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
 
     Data::Layout dlayout = layoutTemplateForName(layoutTemplate);
     QFile(dlayout.id).copy(newLayoutPath);
     qDebug() << "adding layout : " << layoutName << " based on layout template:" << layoutTemplate;
+
+    emit newLayoutAdded(newLayoutPath);
 
     return newLayoutPath;
 }

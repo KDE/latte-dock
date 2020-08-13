@@ -28,6 +28,7 @@
 #include "screenpool.h"
 #include "declarativeimports/interfaces.h"
 #include "indicator/factory.h"
+#include "layout/abstractlayout.h"
 #include "layout/centrallayout.h"
 #include "layout/genericlayout.h"
 #include "layout/sharedlayout.h"
@@ -247,12 +248,19 @@ void Corona::load()
             }
 
             if (!m_layoutsManager->synchronizer()->layoutExists(loadLayoutName)) {
-                loadLayoutName = i18n(Templates::DEFAULTLAYOUTTEMPLATENAME);
-                m_layoutsManager->importDefaultLayout(false);
+                //! If chosen layout does not exist, force Default layout loading
+                QString defaultLayoutTemplateName = i18n(Templates::DEFAULTLAYOUTTEMPLATENAME);
+                loadLayoutName = defaultLayoutTemplateName;
+
+                if (!m_layoutsManager->synchronizer()->layoutExists(defaultLayoutTemplateName)) {
+                    //! If Default layout does not exist at all, create it
+                    m_templatesManager->newLayout("", defaultLayoutTemplateName);
+                }
             }
         } else if (m_defaultLayoutOnStartup) {
-            loadLayoutName = m_layoutsManager->importer()->uniqueLayoutName(i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
-            m_layoutsManager->importDefaultLayout(true);
+            //! force loading a NEW default layout even though a default layout may already exists
+            QString newDefaultLayoutPath = m_templatesManager->newLayout("", i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
+            loadLayoutName = Layout::AbstractLayout::layoutName(newDefaultLayoutPath);
         } else {
             loadLayoutName = m_layoutNameOnStartUp;
         }

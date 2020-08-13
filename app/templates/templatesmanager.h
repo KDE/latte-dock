@@ -57,8 +57,11 @@ public:
 
     Data::LayoutsTable systemLayoutTemplates();
 
-    //! creates a new layout with layoutName based on specific layout template and returns the new layout absolute path
+    //! creates a new layout with layoutName based on specific layout template and returns the new layout path
     QString newLayout(QString layoutName, QString layoutTemplate = i18n(DEFAULTLAYOUTTEMPLATENAME));
+
+signals:
+    void newLayoutAdded(const QString &path);
 
 private:
     void exposeTranslatedTemplateNames();

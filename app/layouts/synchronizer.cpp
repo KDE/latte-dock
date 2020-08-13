@@ -68,6 +68,10 @@ Synchronizer::Synchronizer(QObject *parent)
             syncMultipleLayoutsToActivities();
         }
     });
+
+    //! Templates tracking
+
+    connect(m_manager->corona()->templatesManager(), &Templates::Manager::newLayoutAdded, this, &Synchronizer::onLayoutAdded);
 }
 
 Synchronizer::~Synchronizer()
@@ -551,7 +555,6 @@ void Synchronizer::unloadSharedLayout(SharedLayout *layout)
     }
 }
 
-
 void Synchronizer::loadLayouts()
 {
     m_layouts.clear();
@@ -570,26 +573,8 @@ void Synchronizer::loadLayouts()
             continue;
         }
 
-        CentralLayout centralLayout(this, layoutDir.absolutePath() + "/" + layout);
-
-        QStringList validActivityIds = validActivities(centralLayout.activities());
-        centralLayout.setActivities(validActivityIds);
-
-        for (const auto &activity : validActivityIds) {
-            m_assignedLayouts[activity] = centralLayout.name();
-        }
-
-        m_layouts.append(centralLayout.name());
-
-        if (centralLayout.showInMenu()) {
-            m_menuLayouts.append(centralLayout.name());
-        }
-
-        QString sharedName = centralLayout.sharedLayoutName();
-
-        if (!sharedName.isEmpty() && !m_sharedLayoutIds.contains(sharedName)) {
-            m_sharedLayoutIds << sharedName;
-        }
+        QString layoutpath = layoutDir.absolutePath() + "/" + layout;
+        onLayoutAdded(layoutpath);
     }
 
     //! Shared Layouts should not be used for Activities->Layouts assignments or published lists
@@ -599,6 +584,29 @@ void Synchronizer::loadLayouts()
     emit menuLayoutsChanged();
 }
 
+void Synchronizer::onLayoutAdded(const QString &layout)
+{
+    CentralLayout centralLayout(this, layout);
+
+    QStringList validActivityIds = validActivities(centralLayout.activities());
+    centralLayout.setActivities(validActivityIds);
+
+    for (const auto &activity : validActivityIds) {
+        m_assignedLayouts[activity] = centralLayout.name();
+    }
+
+    m_layouts.append(centralLayout.name());
+
+    if (centralLayout.showInMenu()) {
+        m_menuLayouts.append(centralLayout.name());
+    }
+
+    QString sharedName = centralLayout.sharedLayoutName();
+
+    if (!sharedName.isEmpty() && !m_sharedLayoutIds.contains(sharedName)) {
+        m_sharedLayoutIds << sharedName;
+    }
+}
 
 void Synchronizer::unloadLayouts()
 {

@@ -132,6 +132,8 @@ private slots:
 
     void currentActivityChanged(const QString &id);
 
+    void onLayoutAdded(const QString &layoutpath);
+
 private:
     void clearSharedLayoutsFromCentralLists();
 

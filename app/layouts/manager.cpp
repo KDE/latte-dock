@@ -294,15 +294,6 @@ void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsId
     }
 }
 
-void Manager::importDefaultLayout(bool newInstanceIfPresent)
-{
-    importPreset(1, newInstanceIfPresent);
-
-    if (newInstanceIfPresent) {
-        m_synchronizer->loadLayouts();
-    }
-}
-
 void Manager::importPresets(bool includeDefault)
 {
     int start = 1;

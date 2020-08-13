@@ -103,7 +103,6 @@ public:
     LaunchersSignals *launchersSignals() const;
     Synchronizer *synchronizer() const;
 
-    void importDefaultLayout(bool newInstanceIfPresent = false);
     void importPresets(bool includeDefault = false);
 
 public slots:
