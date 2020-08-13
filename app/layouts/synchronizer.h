@@ -149,6 +149,7 @@ private:
 
 private:
     bool m_multipleModeInitialized{false};
+    bool m_isLoaded{false};
 
     QString m_currentLayoutNameInMultiEnvironment;
     QString m_shouldSwitchToLayout;

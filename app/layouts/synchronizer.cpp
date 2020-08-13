@@ -68,10 +68,6 @@ Synchronizer::Synchronizer(QObject *parent)
             syncMultipleLayoutsToActivities();
         }
     });
-
-    //! Templates tracking
-
-    connect(m_manager->corona()->templatesManager(), &Templates::Manager::newLayoutAdded, this, &Synchronizer::onLayoutAdded);
 }
 
 Synchronizer::~Synchronizer()
@@ -582,6 +578,11 @@ void Synchronizer::loadLayouts()
 
     emit layoutsChanged();
     emit menuLayoutsChanged();
+
+    if (!m_isLoaded) {
+        m_isLoaded = true;
+        connect(m_manager->corona()->templatesManager(), &Latte::Templates::Manager::newLayoutAdded, this, &Synchronizer::onLayoutAdded);
+    }
 }
 
 void Synchronizer::onLayoutAdded(const QString &layout)
@@ -605,6 +606,11 @@ void Synchronizer::onLayoutAdded(const QString &layout)
 
     if (!sharedName.isEmpty() && !m_sharedLayoutIds.contains(sharedName)) {
         m_sharedLayoutIds << sharedName;
+    }
+
+    if (m_isLoaded) {
+        emit layoutsChanged();
+        emit menuLayoutsChanged();
     }
 }
 

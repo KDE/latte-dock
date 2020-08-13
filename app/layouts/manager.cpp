@@ -301,7 +301,6 @@ void Manager::importPresets(bool includeDefault)
     if (!includeDefault) {
         start = 2;
     }
-
     for (int i = start; i <= 4; ++i) {
         importPreset(i, false);
     }
