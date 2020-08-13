@@ -32,6 +32,7 @@
 #include "../layout/centrallayout.h"
 #include "../settings/dialogs/settingsdialog.h"
 #include "../settings/universalsettings.h"
+#include "../templates/templatesmanager.h"
 
 // Qt
 #include <QDir>
@@ -95,7 +96,7 @@ void Manager::load()
             QDir(QDir::homePath() + "/.config").mkdir("latte");
         }
 
-        newLayout(i18n("My Layout"));
+        m_corona->templatesManager()->newLayout(i18n("My Layout"), i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
         importPresets(false);
     } else if (configVer < 2 && !firstRun) {
         m_corona->universalSettings()->setVersion(2);
@@ -291,33 +292,6 @@ void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsId
         KConfigGroup containment = containments.group(conId);
         containment.deleteGroup();
     }
-}
-
-QString Manager::newLayout(QString layoutName, QString layoutTemplate)
-{
-    QDir layoutDir(QDir::homePath() + "/.config/latte");
-    QStringList filter;
-    filter.append(QString(layoutName + "*.layout.latte"));
-    QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
-
-    //! if the newLayout already exists provide a newName that doesn't
-    if (files.count() >= 1) {
-        int newCounter = files.count() + 1;
-
-        layoutName = layoutName + "-" + QString::number(newCounter);
-    }
-
-    QString newLayoutPath = layoutDir.absolutePath() + "/" + layoutName + ".layout.latte";
-
-    qDebug() << "adding layout : " << layoutName << " based on layout template:" << layoutTemplate;
-
-    if (layoutTemplate == i18n(Templates::DEFAULTLAYOUTTEMPLATENAME) && !QFile(newLayoutPath).exists()) {
-        qDebug() << "adding layout : succeed";
-        Data::Layout dlayout = m_corona->templatesManager()->layoutTemplateForName(i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
-        QFile(dlayout.id).copy(newLayoutPath);
-    }
-
-    return newLayoutPath;
 }
 
 void Manager::importDefaultLayout(bool newInstanceIfPresent)

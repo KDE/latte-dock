@@ -28,6 +28,7 @@
 #include "../layout/genericlayout.h"
 #include "../layout/sharedlayout.h"
 #include "../settings/universalsettings.h"
+#include "../templates/templatesmanager.h"
 #include "../view/view.h"
 
 // Qt
@@ -675,8 +676,8 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
 
     QString lPath = layoutPath(layoutName);
 
-    if (lPath.isEmpty() && layoutName == i18n("Alternative")) {
-        lPath = m_manager->newLayout(i18n("Alternative"), i18n("Default"));
+    if (lPath.isEmpty() && layoutName == i18nc("alternative layout", "Alternative")) {
+        lPath = m_manager->corona()->templatesManager()->newLayout(i18nc("alternative layout", "Alternative"), i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
     }
 
     if (!lPath.isEmpty()) {

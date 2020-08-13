@@ -28,6 +28,9 @@
 // Qt
 #include <QObject>
 
+// KDE
+#include <KLocalizedString>
+
 namespace Latte {
 class Corona;
 }
@@ -53,6 +56,9 @@ public:
     Data::Layout layoutTemplateForName(const QString &layoutName);
 
     Data::LayoutsTable systemLayoutTemplates();
+
+    //! creates a new layout with layoutName based on specific layout template and returns the new layout absolute path
+    QString newLayout(QString layoutName, QString layoutTemplate = i18n(DEFAULTLAYOUTTEMPLATENAME));
 
 private:
     void exposeTranslatedTemplateNames();

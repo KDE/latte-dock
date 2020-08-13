@@ -25,7 +25,6 @@
 #include "launcherssignals.h"
 #include "synchronizer.h"
 #include "../apptypes.h"
-#include "../templates/templatesmanager.h"
 #include "../settings/dialogs/settingsdialog.h"
 
 // Qt
@@ -115,9 +114,6 @@ public slots:
 
     //! switch to specified layout, default previousMemoryUsage means that it didn't change
     Q_INVOKABLE bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);
-
-    //! creates a new layout with layoutName based on specific layout template
-    Q_INVOKABLE QString newLayout(QString layoutName, QString layoutTemplate = i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
 
     Q_INVOKABLE QStringList centralLayoutsNames();
     Q_INVOKABLE QStringList sharedLayoutsNames();

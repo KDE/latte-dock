@@ -21,6 +21,7 @@
 
 // local
 #include "../layout/centrallayout.h"
+#include "../layouts/importer.h"
 
 // Qt
 #include <QDir>
@@ -95,6 +96,19 @@ Data::LayoutsTable Manager::systemLayoutTemplates()
 
     return templates;
 }
+
+QString Manager::newLayout(QString layoutName, QString layoutTemplate)
+{
+    layoutName = Layouts::Importer::uniqueLayoutName(layoutName);
+    QString newLayoutPath = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
+
+    Data::Layout dlayout = layoutTemplateForName(layoutTemplate);
+    QFile(dlayout.id).copy(newLayoutPath);
+    qDebug() << "adding layout : " << layoutName << " based on layout template:" << layoutTemplate;
+
+    return newLayoutPath;
+}
+
 
 //! it is used just in order to provide translations for the presets
 void Manager::exposeTranslatedTemplateNames()
