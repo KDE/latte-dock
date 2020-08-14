@@ -222,6 +222,7 @@ void TabLayouts::initLayoutTemplatesSubMenu()
         }
 
         QAction *newlayout = m_layoutTemplatesSubMenu->addAction(templates[i].name);
+        newlayout->setIcon(QIcon::fromTheme("document-new"));
         QString templatename = templates[i].name;
 
         connect(newlayout, &QAction::triggered, this, [&, templatename]() {
