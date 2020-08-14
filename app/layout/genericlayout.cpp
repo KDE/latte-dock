@@ -1674,6 +1674,7 @@ void GenericLayout::unlock()
 
 void GenericLayout::syncToLayoutFile(bool removeLayoutId)
 {
+    syncSettings();
     m_storage->syncToLayoutFile(removeLayoutId);
 }
 

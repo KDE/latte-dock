@@ -492,6 +492,11 @@ void UniversalSettings::setScreenScales(QString screenName, float widthScale, fl
     emit screenScalesChanged();
 }
 
+void UniversalSettings::syncSettings()
+{
+    m_universalGroup.sync();
+}
+
 void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);

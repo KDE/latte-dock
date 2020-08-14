@@ -131,6 +131,8 @@ public slots:
     Q_INVOKABLE float screenHeightScale(QString screenName) const;
     Q_INVOKABLE void setScreenScales(QString screenName, float widthScale, float heightScale);
 
+    void syncSettings();
+
 signals:
     void autostartChanged();
     void badges3DStyleChanged();

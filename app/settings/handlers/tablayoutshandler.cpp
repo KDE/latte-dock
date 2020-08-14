@@ -577,6 +577,7 @@ void TabLayouts::on_export_layout()
 
     //! Update ALL active original layouts before exporting,
     m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
+    m_corona->universalSettings()->syncSettings();
 
     QFileDialog *exportFileDialog = new QFileDialog(m_parentDialog, i18n("Export Layout"), QDir::homePath(), QStringLiteral("layout.latte"));
 

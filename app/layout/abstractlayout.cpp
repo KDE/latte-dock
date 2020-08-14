@@ -349,6 +349,13 @@ QString AbstractLayout::layoutName(const QString &fileName)
     return layoutName;
 }
 
+void AbstractLayout::syncSettings()
+{
+    if (QFile(file()).exists()) {
+        m_layoutGroup.sync();
+    }
+}
+
 void AbstractLayout::loadConfig()
 {
     m_version = m_layoutGroup.readEntry("version", 2);

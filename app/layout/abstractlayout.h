@@ -117,6 +117,8 @@ public:
 
     virtual Type type() const;
 
+    void syncSettings();
+
 // STATIC
     static QString defaultCustomTextColor();
     static QString defaultCustomBackground();
