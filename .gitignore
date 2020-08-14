@@ -2,6 +2,7 @@
 .*
 !.arcconfig
 !.gitignore
+
 # Ignore hidden files
 .directory
 
@@ -35,5 +36,7 @@ build/
 # KDevelop Project files
 *.kdev4
 .kdev4/
+
+!*.layout.latte
 
 build-kdev/
