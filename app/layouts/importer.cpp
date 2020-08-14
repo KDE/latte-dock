@@ -609,7 +609,7 @@ QString Importer::uniqueLayoutName(QString name)
 
 QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
 {
-    QString linkedFilePath = QDir::homePath() + "/.config/latte/" + Layout::AbstractLayout::MultipleLayoutsName + ".layout.latte";
+    QString linkedFilePath = QDir::homePath() + "/.config/latte/" + Layout::MULTIPLELAYOUTSHIDDENNAME + ".layout.latte";
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(linkedFilePath);
     KConfigGroup linkedContainments = KConfigGroup(filePtr, "Containments");
 
@@ -629,7 +629,7 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
     QStringList updatedLayouts;
 
     for(const auto &layoutName : linkedLayoutContainmentGroups.uniqueKeys()) {
-        if (layoutName != Layout::AbstractLayout::MultipleLayoutsName && layoutExists(layoutName)) {
+        if (layoutName != Layout::MULTIPLELAYOUTSHIDDENNAME && layoutExists(layoutName)) {
             updatedLayouts << layoutName;
             KSharedConfigPtr layoutFilePtr = KSharedConfig::openConfig(layoutFilePath(layoutName));
             KConfigGroup origLayoutContainments = KConfigGroup(layoutFilePtr, "Containments");

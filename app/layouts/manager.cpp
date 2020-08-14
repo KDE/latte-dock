@@ -111,7 +111,7 @@ void Manager::load()
     }
 
     //! Check if the multiple-layouts hidden file is present, add it if it isnt
-    if (!QFile(QDir::homePath() + "/.config/latte/" + Layout::AbstractLayout::MultipleLayoutsName + ".layout.latte").exists()) {
+    if (!QFile(QDir::homePath() + "/.config/latte/" + Layout::MULTIPLELAYOUTSHIDDENNAME + ".layout.latte").exists()) {
         importPreset(MultipleLayoutsPresetId, false);
     }
 

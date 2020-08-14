@@ -30,8 +30,6 @@
 namespace Latte {
 namespace Layout {
 
-const QString AbstractLayout::MultipleLayoutsName = ".multiple-layouts_hidden";
-
 AbstractLayout::AbstractLayout(QObject *parent, QString layoutFile, QString assignedName)
     : QObject(parent)
 {

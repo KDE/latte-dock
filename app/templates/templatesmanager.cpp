@@ -20,6 +20,7 @@
 #include "templatesmanager.h"
 
 // local
+#include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"
 #include "../layouts/importer.h"
 
@@ -89,7 +90,7 @@ Data::LayoutsTable Manager::systemLayoutTemplates()
     for (int i=0; i<m_layoutTemplates.rowCount(); ++i) {
         if ( m_layoutTemplates[i].name != i18n(DEFAULTLAYOUTTEMPLATENAME)
              && m_layoutTemplates[i].name != i18n(EMPTYLAYOUTTEMPLATENAME)
-             && m_layoutTemplates[i].name != MULTIPLELAYOUTSTEMPLATENAME) {
+             && m_layoutTemplates[i].name != Layout::MULTIPLELAYOUTSHIDDENNAME) {
             templates << m_layoutTemplates[i];
         }
     }

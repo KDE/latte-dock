@@ -564,7 +564,7 @@ void Synchronizer::loadLayouts()
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
 
     for (const auto &layout : files) {
-        if (layout.contains(Layout::AbstractLayout::MultipleLayoutsName)) {
+        if (layout.contains(Layout::MULTIPLELAYOUTSHIDDENNAME)) {
             //! IMPORTANT: DON'T ADD MultipleLayouts hidden file in layouts list
             continue;
         }
@@ -697,7 +697,7 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
     if (!lPath.isEmpty()) {
         if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
             //  emit currentLayoutIsSwitching(currentLayoutName());
-        } else if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && layoutName != Layout::AbstractLayout::MultipleLayoutsName) {
+        } else if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && layoutName != Layout::MULTIPLELAYOUTSHIDDENNAME) {
             CentralLayout toLayout(this, lPath);
 
             QStringList toActivities = toLayout.activities();
@@ -736,11 +736,11 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
                 unloadLayouts();
 
                 if (initializingMultipleLayouts) {
-                    fixedLayoutName = QString(Layout::AbstractLayout::MultipleLayoutsName);
+                    fixedLayoutName = QString(Layout::MULTIPLELAYOUTSHIDDENNAME);
                     fixedLPath = layoutPath(fixedLayoutName);
                 }
 
-                if (fixedLayoutName != Layout::AbstractLayout::MultipleLayoutsName) {
+                if (fixedLayoutName != Layout::MULTIPLELAYOUTSHIDDENNAME) {
                     CentralLayout *newLayout = new CentralLayout(this, fixedLPath, fixedLayoutName);
                     addLayout(newLayout);
                 }

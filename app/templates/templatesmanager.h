@@ -40,7 +40,6 @@ namespace Templates {
 
 const char DEFAULTLAYOUTTEMPLATENAME[] = "Default";
 const char EMPTYLAYOUTTEMPLATENAME[] = "Empty";
-const char MULTIPLELAYOUTSTEMPLATENAME[] = "multiple-layouts_hidden";
 
 class Manager : public QObject
 {

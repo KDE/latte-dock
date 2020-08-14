@@ -58,6 +58,8 @@ Q_ENUM_NS(BackgroundStyle);
 namespace Latte {
 namespace Layout {
 
+const char MULTIPLELAYOUTSHIDDENNAME[] = ".multiple-layouts_hidden";
+
 class AbstractLayout : public QObject
 {
     Q_OBJECT
@@ -75,8 +77,6 @@ class AbstractLayout : public QObject
 public:
     AbstractLayout(QObject *parent, QString layoutFile, QString assignedName = QString());
     ~AbstractLayout() override;
-
-    static const QString MultipleLayoutsName;
 
     int version() const;
     void setVersion(int ver);
