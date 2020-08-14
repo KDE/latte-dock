@@ -112,7 +112,7 @@ void Manager::load()
 
     //! Check if the multiple-layouts hidden file is present, add it if it isnt
     if (!QFile(Layouts::Importer::layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME)).exists()) {
-        importPreset(MultipleLayoutsPresetId, false);
+        m_corona->templatesManager()->newLayout("", Layout::MULTIPLELAYOUTSHIDDENNAME);
     }
 
     qDebug() << "Latte is loading  its layouts...";
