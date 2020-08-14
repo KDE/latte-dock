@@ -265,7 +265,7 @@ QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName, Q
         return QString();
     }
 
-    QDir layoutDir(exportDirectory.isNull() ? QDir::homePath() + "/.config/latte" : exportDirectory);
+    QDir layoutDir(exportDirectory.isNull() ? layoutUserDir() : exportDirectory);
 
     if (!layoutDir.exists() && exportDirectory.isNull()) {
         QDir(QDir::homePath() + "/.config").mkdir("latte");
@@ -400,10 +400,8 @@ bool Importer::exportFullConfiguration(QString file)
     archive.addLocalFile(QString(QDir::homePath() + "/.config/lattedockrc"), QStringLiteral("lattedockrc"));
 
     for(const auto &layoutName : availableLayouts()) {
-        archive.addLocalFile(layoutFilePath(layoutName), QString("latte/" + layoutName + ".layout.latte"));
+        archive.addLocalFile(layoutUserFilePath(layoutName), QString("latte/" + layoutName + ".layout.latte"));
     }
-
-    //archive.addLocalDirectory(QString(QDir::homePath() + "/.config/latte"), QStringLiteral("latte"));
 
     archive.close();
 
@@ -511,8 +509,7 @@ bool Importer::importHelper(QString fileName)
         return false;
     }
 
-    QString latteDirPath(QDir::homePath() + "/.config/latte");
-    QDir latteDir(latteDirPath);
+    QDir latteDir(layoutUserDir());
 
     if (latteDir.exists()) {
         latteDir.removeRecursively();
@@ -534,7 +531,7 @@ QString Importer::importLayoutHelper(QString fileName)
     QString newLayoutName = Layout::AbstractLayout::layoutName(fileName);
     newLayoutName = uniqueLayoutName(newLayoutName);
 
-    QString newPath = QDir::homePath() + "/.config/latte/" + newLayoutName + ".layout.latte";
+    QString newPath = layoutUserFilePath(newLayoutName);
     QFile(fileName).copy(newPath);
 
     QFileInfo newFileInfo(newPath);
@@ -549,7 +546,7 @@ QString Importer::importLayoutHelper(QString fileName)
 
 QStringList Importer::availableLayouts()
 {
-    QDir layoutDir(QDir::homePath() + "/.config/latte");
+    QDir layoutDir(layoutUserDir());
     QStringList filter;
     filter.append(QString("*.layout.latte"));
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
@@ -578,13 +575,18 @@ QString Importer::nameOfConfigFile(const QString &fileName)
 
 bool Importer::layoutExists(QString layoutName)
 {
-    return QFile::exists(layoutFilePath(layoutName));
+    return QFile::exists(layoutUserFilePath(layoutName));
 }
 
 
-QString Importer::layoutFilePath(QString layoutName)
+QString Importer::layoutUserDir()
 {
-    return QString(QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte");
+    return QString(QDir::homePath() + "/.config/latte");
+}
+
+QString Importer::layoutUserFilePath(QString layoutName)
+{
+    return QString(layoutUserDir() + "/" + layoutName + ".layout.latte");
 }
 
 QString Importer::uniqueLayoutName(QString name)
@@ -609,7 +611,7 @@ QString Importer::uniqueLayoutName(QString name)
 
 QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
 {
-    QString linkedFilePath = QDir::homePath() + "/.config/latte/" + Layout::MULTIPLELAYOUTSHIDDENNAME + ".layout.latte";
+    QString linkedFilePath = layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME);
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(linkedFilePath);
     KConfigGroup linkedContainments = KConfigGroup(filePtr, "Containments");
 
@@ -631,7 +633,7 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
     for(const auto &layoutName : linkedLayoutContainmentGroups.uniqueKeys()) {
         if (layoutName != Layout::MULTIPLELAYOUTSHIDDENNAME && layoutExists(layoutName)) {
             updatedLayouts << layoutName;
-            KSharedConfigPtr layoutFilePtr = KSharedConfig::openConfig(layoutFilePath(layoutName));
+            KSharedConfigPtr layoutFilePtr = KSharedConfig::openConfig(layoutUserFilePath(layoutName));
             KConfigGroup origLayoutContainments = KConfigGroup(layoutFilePtr, "Containments");
 
             //Clear old containments

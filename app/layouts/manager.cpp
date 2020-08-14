@@ -81,7 +81,7 @@ Manager::~Manager()
 
 void Manager::load()
 {
-    QDir layoutsDir(QDir::homePath() + "/.config/latte");
+    QDir layoutsDir(Layouts::Importer::layoutUserDir());
     bool firstRun = !layoutsDir.exists();
 
     int configVer = m_corona->universalSettings()->version();
@@ -111,7 +111,7 @@ void Manager::load()
     }
 
     //! Check if the multiple-layouts hidden file is present, add it if it isnt
-    if (!QFile(QDir::homePath() + "/.config/latte/" + Layout::MULTIPLELAYOUTSHIDDENNAME + ".layout.latte").exists()) {
+    if (!QFile(Layouts::Importer::layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME)).exists()) {
         importPreset(MultipleLayoutsPresetId, false);
     }
 
@@ -326,9 +326,9 @@ void Manager::importPreset(int presetNo, bool newInstanceIfPresent)
     QString newLayoutFile = "";
 
     if (newInstanceIfPresent) {
-        newLayoutFile = QDir::homePath() + "/.config/latte/" + m_importer->uniqueLayoutName(presetName) + ".layout.latte";
+        newLayoutFile = Layouts::Importer::layoutUserFilePath(m_importer->uniqueLayoutName(presetName));
     } else {
-        newLayoutFile = QDir::homePath() + "/.config/latte/" + presetName + ".layout.latte";
+        newLayoutFile = Layouts::Importer::layoutUserFilePath(presetName);
     }
 
     if (!QFile(newLayoutFile).exists()) {

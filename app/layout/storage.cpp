@@ -716,7 +716,7 @@ bool Storage::layoutIsBroken(QStringList &errors) const
             qDebug() << "   --- storaged file : " << m_layout->file();
         } else {
             if (m_layout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-                qDebug() << "   --- in multiple layouts hidden file : " << Layouts::Importer::layoutFilePath(MULTIPLELAYOUTSHIDDENNAME);
+                qDebug() << "   --- in multiple layouts hidden file : " << Layouts::Importer::layoutUserFilePath(MULTIPLELAYOUTSHIDDENNAME);
             } else {
                 qDebug() << "   --- in active layout file : " << m_layout->file();
             }

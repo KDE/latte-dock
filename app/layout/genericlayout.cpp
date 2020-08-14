@@ -764,8 +764,8 @@ void GenericLayout::renameLayout(QString newName)
         return;
     }
 
-    if (m_layoutFile != Layouts::Importer::layoutFilePath(newName)) {
-        setFile(Layouts::Importer::layoutFilePath(newName));
+    if (m_layoutFile != Layouts::Importer::layoutUserFilePath(newName)) {
+        setFile(Layouts::Importer::layoutUserFilePath(newName));
     }
 
     setName(newName);

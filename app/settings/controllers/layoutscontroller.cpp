@@ -402,7 +402,7 @@ void Layouts::loadLayouts()
 
     for (const auto layout : m_handler->corona()->layoutsManager()->layouts()) {
         Latte::Data::Layout original;
-        original.id = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
+        original.id = Latte::Layouts::Importer::layoutUserFilePath(layout);
 
         CentralLayout *central = new CentralLayout(this, original.id);
 
@@ -804,7 +804,7 @@ void Layouts::save()
     for (int i = 0; i < alteredIdsInfo.count(); ++i) {
         Data::UniqueIdInfo idInfo = alteredIdsInfo[i];
 
-        QString newFile = QDir::homePath() + "/.config/latte/" + idInfo.newName + ".layout.latte";
+        QString newFile = Latte::Layouts::Importer::layoutUserFilePath(idInfo.newName);
         QFile(idInfo.newId).rename(newFile);
 
         CentralLayout *nLayout = new CentralLayout(this, newFile);

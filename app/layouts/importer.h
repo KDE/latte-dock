@@ -91,8 +91,11 @@ public:
     //! if the function didn't succeed return an empty string
     static QString importLayoutHelper(QString fileName);
 
-    //! return the file path of a layout either existing or not
-    static QString layoutFilePath(QString layoutName);
+    //! returns the file path of a layout either existing or not
+    static QString layoutUserFilePath(QString layoutName);
+    //! returns the layouts user directory
+    static QString layoutUserDir();
+
     static QString nameOfConfigFile(const QString &fileName);
     static QString uniqueLayoutName(QString name);
 

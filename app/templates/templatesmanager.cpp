@@ -110,7 +110,7 @@ QString Manager::newLayout(QString layoutName, QString layoutTemplate)
         layoutName = Layouts::Importer::uniqueLayoutName(layoutName);
     }
 
-    QString newLayoutPath = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
+    QString newLayoutPath = Layouts::Importer::layoutUserFilePath(layoutName);
 
     Data::Layout dlayout = layoutTemplateForName(layoutTemplate);
     QFile(dlayout.id).copy(newLayoutPath);

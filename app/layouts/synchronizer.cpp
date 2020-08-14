@@ -133,7 +133,7 @@ bool Synchronizer::registerAtSharedLayout(CentralLayout *central, QString id)
     }
 
     //! If SharedLayout was not found, we must create it
-    SharedLayout *top = new SharedLayout(central, this, Importer::layoutFilePath(id));
+    SharedLayout *top = new SharedLayout(central, this, Importer::layoutUserFilePath(id));
     m_sharedLayouts.append(top);
     top->importToCorona();
 
@@ -184,7 +184,7 @@ void Synchronizer::setCurrentLayoutNameInMultiEnvironment(const QString &name)
 
 QString Synchronizer::layoutPath(QString layoutName)
 {
-    QString path = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
+    QString path = Layouts::Importer::layoutUserFilePath(layoutName);
 
     if (!QFile(path).exists()) {
         path = "";
@@ -558,7 +558,7 @@ void Synchronizer::loadLayouts()
     m_assignedLayouts.clear();
     m_sharedLayoutIds.clear();
 
-    QDir layoutDir(QDir::homePath() + "/.config/latte");
+    QDir layoutDir(Layouts::Importer::layoutUserDir());
     QStringList filter;
     filter.append(QString("*.layout.latte"));
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
@@ -760,7 +760,7 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
                     //! a Layout that is assigned to specific activities but this
                     //! layout isnt loaded (this means neither of its activities are running)
                     //! is such case we just activate these Activities
-                    CentralLayout layout(this, Importer::layoutFilePath(layoutName));
+                    CentralLayout layout(this, Importer::layoutUserFilePath(layoutName));
 
                     int i = 0;
                     bool lastUsedActivityFound{false};
@@ -951,7 +951,7 @@ void Synchronizer::syncActiveShares(SharesMap &sharesMap, QStringList &deprecate
         CentralLayout *central = centralLayout(share);
         if (!central) {
             //! Central Layout is not loaded
-            CentralLayout centralInStorage(this, Importer::layoutFilePath(share));
+            CentralLayout centralInStorage(this, Importer::layoutUserFilePath(share));
             centralInStorage.setSharedLayoutName(QString());
         }
     }
@@ -992,7 +992,7 @@ void Synchronizer::syncActiveShares(SharesMap &sharesMap, QStringList &deprecate
                 }
             } else {
                 //! Central Layout is not loaded
-                CentralLayout centralInStorage(this, Importer::layoutFilePath(centralName));
+                CentralLayout centralInStorage(this, Importer::layoutUserFilePath(centralName));
                 centralInStorage.setSharedLayoutName(i.key());
             }
         }
