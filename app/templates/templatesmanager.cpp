@@ -136,7 +136,7 @@ void Manager::importSystemLayouts()
 }
 
 
-//! it is used just in order to provide translations for the presets
+//! it is used in order to provide translations for system templates
 void Manager::exposeTranslatedTemplateNames()
 {
     i18nc("default layout template name", "Default");
