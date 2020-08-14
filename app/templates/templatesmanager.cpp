@@ -48,7 +48,7 @@ void Manager::init()
     QDir systemTemplatesDir(m_corona->kPackage().filePath("templates"));
     QStringList filter;
     filter.append(QString("*.layout.latte"));
-    QStringList systemLayoutTemplates = systemTemplatesDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
+    QStringList systemLayoutTemplates = systemTemplatesDir.entryList(filter, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
 
     for (int i=0; i<systemLayoutTemplates.count(); ++i) {
         QString systemTemplatePath = systemTemplatesDir.path() + "/" + systemLayoutTemplates[i];
