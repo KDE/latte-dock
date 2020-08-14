@@ -20,6 +20,9 @@
 
 #include "layoutdata.h"
 
+// Qt
+#include <QDir>
+
 namespace Latte {
 namespace Data {
 
@@ -153,7 +156,7 @@ bool Layout::isShared() const
 
 bool Layout::isSystemTemplate() const
 {
-    return isTemplate && !id.startsWith("/tmp") && !id.startsWith("/home");
+    return isTemplate && !id.startsWith(QDir::tempPath()) && !id.startsWith(QDir::homePath());
 }
 
 }

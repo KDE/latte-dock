@@ -59,6 +59,8 @@ public:
     //! creates a new layout with layoutName based on specific layout template and returns the new layout path
     QString newLayout(QString layoutName, QString layoutTemplate = i18n(DEFAULTLAYOUTTEMPLATENAME));
 
+    void importSystemLayouts();
+
 signals:
     void newLayoutAdded(const QString &path);
 

@@ -46,8 +46,6 @@
 namespace Latte {
 namespace Layouts {
 
-const int MultipleLayoutsPresetId = 10;
-
 Manager::Manager(QObject *parent)
     : QObject(parent),
       m_importer(new Importer(this)),
@@ -97,14 +95,14 @@ void Manager::load()
         }
 
         m_corona->templatesManager()->newLayout(i18n("My Layout"), i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
-        importPresets(false);
+        m_corona->templatesManager()->importSystemLayouts();
     } else if (configVer < 2 && !firstRun) {
         m_corona->universalSettings()->setVersion(2);
 
         bool isOlderVersion = m_importer->updateOldConfiguration();
         if (isOlderVersion) {
             qDebug() << "Latte is updating its older configuration...";
-            importPresets(false);
+            m_corona->templatesManager()->importSystemLayouts();
         } else {
             m_corona->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
         }
@@ -291,53 +289,6 @@ void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsId
         qDebug() << "unloads ::: " << conId;
         KConfigGroup containment = containments.group(conId);
         containment.deleteGroup();
-    }
-}
-
-void Manager::importPresets(bool includeDefault)
-{
-    int start = 1;
-
-    if (!includeDefault) {
-        start = 2;
-    }
-    for (int i = start; i <= 4; ++i) {
-        importPreset(i, false);
-    }
-}
-
-void Manager::importPreset(int presetNo, bool newInstanceIfPresent)
-{
-    QDir configDir(QDir::homePath() + "/.config");
-
-    if (!QDir(configDir.absolutePath() + "/latte").exists()) {
-        configDir.mkdir("latte");
-    }
-
-    QByteArray presetNameOrig = QString("preset" + QString::number(presetNo)).toUtf8();
-    QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
-    QString presetName = Layout::AbstractLayout::layoutName(presetPath);
-    QByteArray presetNameChars = presetName.toUtf8();
-    presetName = i18n(presetNameChars);
-
-    //! hide the multiple layouts layout file from user
-    presetName = (presetNo == MultipleLayoutsPresetId) ? "." + presetName : presetName;
-
-    QString newLayoutFile = "";
-
-    if (newInstanceIfPresent) {
-        newLayoutFile = Layouts::Importer::layoutUserFilePath(m_importer->uniqueLayoutName(presetName));
-    } else {
-        newLayoutFile = Layouts::Importer::layoutUserFilePath(presetName);
-    }
-
-    if (!QFile(newLayoutFile).exists()) {
-        QFile(presetPath).copy(newLayoutFile);
-        QFileInfo newFileInfo(newLayoutFile);
-
-        if (newFileInfo.exists() && !newFileInfo.isWritable()) {
-            QFile(newLayoutFile).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
-        }
     }
 }
 

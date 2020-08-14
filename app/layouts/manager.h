@@ -103,8 +103,6 @@ public:
     LaunchersSignals *launchersSignals() const;
     Synchronizer *synchronizer() const;
 
-    void importPresets(bool includeDefault = false);
-
 public slots:
     void showAboutDialog();
 
@@ -131,7 +129,6 @@ private:
     void cleanupOnStartup(QString path); //!remove deprecated or oldstyle config options
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
 
-    void importPreset(int presetNo, bool newInstanceIfPresent = false);
     void loadLatteLayout(QString layoutPath);
 
     void setMenuLayouts(QStringList layouts);

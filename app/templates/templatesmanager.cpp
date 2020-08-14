@@ -121,6 +121,20 @@ QString Manager::newLayout(QString layoutName, QString layoutTemplate)
     return newLayoutPath;
 }
 
+void Manager::importSystemLayouts()
+{
+    for (int i=0; i<m_layoutTemplates.rowCount(); ++i) {
+        if (m_layoutTemplates[i].isSystemTemplate()) {
+            QString userLayoutPath = Layouts::Importer::layoutUserFilePath(m_layoutTemplates[i].name);
+
+            if (!QFile(userLayoutPath).exists()) {
+                QFile(m_layoutTemplates[i].id).copy(userLayoutPath);
+                qDebug() << "adding layout : " << userLayoutPath << " based on layout template:" << m_layoutTemplates[i].name;
+            }
+        }
+    }
+}
+
 
 //! it is used just in order to provide translations for the presets
 void Manager::exposeTranslatedTemplateNames()
