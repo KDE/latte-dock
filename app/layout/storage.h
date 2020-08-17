@@ -40,14 +40,9 @@ public:
     Storage(GenericLayout *parent);
     ~Storage() override;
 
-    bool isWritable() const;
-    bool isLatteContainment(Plasma::Containment *containment) const;
-    bool isLatteContainment(const KConfigGroup &group) const;
     bool layoutIsBroken(QStringList &errors) const;
 
     void importToCorona();
-    void lock(); //! make it only read-only
-    void unlock(); //! make it writable which it should be the default
 
     void copyView(Plasma::Containment *containment);
     void syncToLayoutFile(bool removeLayoutId);

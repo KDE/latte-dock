@@ -25,7 +25,9 @@
 #include "../screenpool.h"
 #include "../layouts/manager.h"
 #include "../layouts/importer.h"
+#include "../layouts/storage.h"
 #include "../view/view.h"
+
 // Qt
 #include <QDir>
 #include <QFile>
@@ -51,54 +53,6 @@ Storage::Storage(GenericLayout *parent)
 
 Storage::~Storage()
 {
-}
-
-bool Storage::isWritable() const
-{
-    QFileInfo layoutFileInfo(m_layout->file());
-
-    if (layoutFileInfo.exists() && !layoutFileInfo.isWritable()) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-bool Storage::isLatteContainment(Plasma::Containment *containment) const
-{
-    if (!containment) {
-        return false;
-    }
-
-    if (containment->pluginMetaData().pluginId() == "org.kde.latte.containment") {
-        return true;
-    }
-
-    return false;
-}
-
-bool Storage::isLatteContainment(const KConfigGroup &group) const
-{
-    QString pluginId = group.readEntry("plugin", "");
-    return pluginId == "org.kde.latte.containment";
-}
-
-void Storage::lock()
-{
-    QFileInfo layoutFileInfo(m_layout->file());
-
-    if (layoutFileInfo.exists() && layoutFileInfo.isWritable()) {
-        QFile(m_layout->file()).setPermissions(QFileDevice::ReadUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
-    }
-}
-
-void Storage::unlock()
-{
-    QFileInfo layoutFileInfo(m_layout->file());
-
-    if (layoutFileInfo.exists() && !layoutFileInfo.isWritable()) {
-        QFile(m_layout->file()).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
-    }
 }
 
 void Storage::setStorageTmpDir(const QString &tmpDir)
@@ -155,7 +109,7 @@ void Storage::importToCorona()
 
 void Storage::syncToLayoutFile(bool removeLayoutId)
 {
-    if (!m_layout->corona() || !isWritable()) {
+    if (!m_layout->corona() || !Layouts::Storage::self()->isWritable(m_layout)) {
         return;
     }
 
@@ -341,7 +295,7 @@ QList<Plasma::Containment *> Storage::importLayoutFile(QString file)
     //QList<Plasma::Containment *> systrays;
 
     for (const auto containment : newContainments) {
-        if (isLatteContainment(containment)) {
+        if (Layouts::Storage::self()->isLatteContainment(containment)) {
             qDebug() << "new latte containment id: " << containment->id();
             importedDocks << containment;
         }
@@ -361,7 +315,7 @@ void Storage::systraysInformation(QHash<int, QList<int>> &systrays, QList<int> &
 
     //! assigned systrays
     for (const auto &cId : containmentGroups.groupList()) {
-        if (isLatteContainment(containmentGroups.group(cId))) {
+        if (Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId))) {
             auto applets = containmentGroups.group(cId).group("Applets");
 
             for (const auto &applet : applets.groupList()) {
@@ -378,7 +332,7 @@ void Storage::systraysInformation(QHash<int, QList<int>> &systrays, QList<int> &
 
     //! orphan systrays
     for (const auto &cId : containmentGroups.groupList()) {
-        if (!isLatteContainment(containmentGroups.group(cId)) && !assignedSystrays.contains(cId.toInt())) {
+        if (!Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId)) && !assignedSystrays.contains(cId.toInt())) {
             orphanSystrays << cId.toInt();
         }
     }
@@ -392,7 +346,7 @@ QList<ViewData> Storage::viewsData(const QHash<int, QList<int>> &systrays)
     KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
 
     for (const auto &cId : containmentGroups.groupList()) {
-        if (isLatteContainment(containmentGroups.group(cId))) {
+        if (Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId))) {
             ViewData vData;
             int id = cId.toInt();
 
@@ -430,7 +384,7 @@ QList<int> Storage::viewsScreens()
     KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
 
     for (const auto &cId : containmentGroups.groupList()) {
-        if (isLatteContainment(containmentGroups.group(cId))) {
+        if (Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId))) {
             int screenId = containmentGroups.group(cId).readEntry("lastScreen", -1);
 
             if (screenId != -1 && !screens.contains(screenId)) {

@@ -27,6 +27,7 @@
 #include "../screenpool.h"
 #include "../layouts/importer.h"
 #include "../layouts/manager.h"
+#include "../layouts/storage.h"
 #include "../layouts/synchronizer.h"
 #include "../shortcuts/shortcutstracker.h"
 #include "../view/view.h"
@@ -797,8 +798,9 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
 
     qDebug() << "step 1...";
 
-    if (!m_storage->isLatteContainment(containment))
+    if (!Layouts::Storage::self()->isLatteContainment(containment)) {
         return;
+    }
 
     qDebug() << "step 2...";
 
@@ -1164,7 +1166,7 @@ bool GenericLayout::explicitDockOccupyEdge(int screen, Plasma::Types::Location l
     }
 
     for (const auto containment : m_containments) {
-        if (m_storage->isLatteContainment(containment)) {
+        if (Layouts::Storage::self()->isLatteContainment(containment)) {
             bool onPrimary = containment->config().readEntry("onPrimary", true);
             int id = containment->lastScreen();
             Plasma::Types::Location contLocation = containment->location();
@@ -1185,7 +1187,7 @@ bool GenericLayout::primaryDockOccupyEdge(Plasma::Types::Location location) cons
     }
 
     for (const auto containment : m_containments) {
-        if (m_storage->isLatteContainment(containment)) {
+        if (Layouts::Storage::self()->isLatteContainment(containment)) {
             bool onPrimary{false};
 
             if (m_latteViews.contains(containment)) {
@@ -1238,7 +1240,7 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
 
     //! first step: primary docks must be placed in primary screen free edges
     for (const auto containment : m_containments) {
-        if (m_storage->isLatteContainment(containment)) {
+        if (Layouts::Storage::self()->isLatteContainment(containment)) {
             int screenId = 0;
 
             //! valid screen id
@@ -1274,7 +1276,7 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
 
     //! second step: explicit docks must be placed in their screens if the screen edge is free
     for (const auto containment : m_containments) {
-        if (m_storage->isLatteContainment(containment)) {
+        if (Layouts::Storage::self()->isLatteContainment(containment)) {
             int screenId = 0;
 
             //! valid screen id
@@ -1392,7 +1394,7 @@ QList<int> GenericLayout::containmentSystrays(Plasma::Containment *containment) 
 {
     QList<int> trays;
 
-    if (m_storage->isLatteContainment(containment)) {
+    if (Layouts::Storage::self()->isLatteContainment(containment)) {
         auto applets = containment->config().group("Applets");
 
         for (const auto &applet : applets.groupList()) {
@@ -1469,7 +1471,7 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
 
         //! orphan systrays
         for (const auto containment : m_containments) {
-            if (!m_storage->isLatteContainment(containment) && !assignedSystrays.contains(containment->id())) {
+            if (!Layouts::Storage::self()->isLatteContainment(containment) && !assignedSystrays.contains(containment->id())) {
                 orphanSystrays << containment->id();
             }
         }
@@ -1501,7 +1503,7 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
     if (isActive()) {
         //! collect viewData results
         for (const auto containment : m_containments) {
-            if (m_storage->isLatteContainment(containment)) {
+            if (Layouts::Storage::self()->isLatteContainment(containment)) {
                 ViewData vData;
                 vData.id = containment->id();
                 vData.active = latteViewExists(containment);
@@ -1628,7 +1630,7 @@ QList<int> GenericLayout::viewsScreens()
 
     if (isActive()) {
         for (const auto containment : m_containments) {
-            if (m_storage->isLatteContainment(containment)) {
+            if (Layouts::Storage::self()->isLatteContainment(containment)) {
                 int screenId = -1;
 
                 //! valid screen id
@@ -1659,17 +1661,17 @@ QList<int> GenericLayout::viewsScreens()
 
 bool GenericLayout::isWritable() const
 {
-    return m_storage->isWritable();
+    return Layouts::Storage::self()->isWritable(this);
 }
 
 void GenericLayout::lock()
 {
-    m_storage->lock();
+    Layouts::Storage::self()->lock(this);
 }
 
 void GenericLayout::unlock()
 {
-    m_storage->unlock();
+    Layouts::Storage::self()->unlock(this);
 }
 
 void GenericLayout::syncToLayoutFile(bool removeLayoutId)
