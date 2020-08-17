@@ -18,49 +18,34 @@
  *
  */
 
-#include "appletdata.h"
+#ifndef GENERICDATA_H
+#define GENERICDATA_H
+
+//! Qt
+#include <QString>
 
 namespace Latte {
 namespace Data {
 
-Applet::Applet()
-    : Generic()
+class Generic
 {
-}
+public:
+    Generic();
+    Generic(Generic &&o);
+    Generic(const Generic &o);
 
-Applet::Applet(Applet &&o)
-    : Generic(o),
-      description(o.description),
-      icon(o.icon)
-{
-}
+    //! Layout data
+    QString id;
+    QString name;
 
-Applet::Applet(const Applet &o)
-    : Generic(o),
-      description(o.description),
-      icon(o.icon)
-{
-}
-
-Applet &Applet::operator=(const Applet &rhs)
-{
-    id = rhs.id;
-    name = rhs.name;
-    description = rhs.description;
-    icon = rhs.icon;
-
-    return (*this);
-}
-
-Applet &Applet::operator=(Applet &&rhs)
-{
-    id = rhs.id;
-    name = rhs.name;
-    description = rhs.description;
-    icon = rhs.icon;
-
-    return (*this);
-}
+    //! Operators
+    Generic &operator=(const Generic &rhs);
+    Generic &operator=(Generic &&rhs);
+    bool operator==(const Generic &rhs) const;
+    bool operator!=(const Generic &rhs) const;
+};
 
 }
 }
+
+#endif

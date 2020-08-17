@@ -21,6 +21,9 @@
 #ifndef APPLETDATA_H
 #define APPLETDATA_H
 
+//! local
+#include "genericdata.h"
+
 //! Qt
 #include <QMetaType>
 #include <QString>
@@ -28,7 +31,7 @@
 namespace Latte {
 namespace Data {
 
-class Applet
+class Applet : public Generic
 {
 public:
     Applet();

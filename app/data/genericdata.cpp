@@ -18,48 +18,52 @@
  *
  */
 
-#include "appletdata.h"
+#include "genericdata.h"
 
 namespace Latte {
 namespace Data {
 
-Applet::Applet()
-    : Generic()
+Generic::Generic()
 {
 }
 
-Applet::Applet(Applet &&o)
-    : Generic(o),
-      description(o.description),
-      icon(o.icon)
+Generic::Generic(Generic &&o)
+    : id(o.id),
+      name(o.name)
 {
 }
 
-Applet::Applet(const Applet &o)
-    : Generic(o),
-      description(o.description),
-      icon(o.icon)
+Generic::Generic(const Generic &o)
+    : id(o.id),
+      name(o.name)
 {
 }
 
-Applet &Applet::operator=(const Applet &rhs)
+Generic &Generic::operator=(const Generic &rhs)
 {
     id = rhs.id;
     name = rhs.name;
-    description = rhs.description;
-    icon = rhs.icon;
 
     return (*this);
 }
 
-Applet &Applet::operator=(Applet &&rhs)
+Generic &Generic::operator=(Generic &&rhs)
 {
     id = rhs.id;
     name = rhs.name;
-    description = rhs.description;
-    icon = rhs.icon;
 
     return (*this);
+}
+
+bool Generic::operator==(const Generic &rhs) const
+{
+    return (id == rhs.id)
+            && (name == rhs.name);
+}
+
+bool Generic::operator!=(const Generic &rhs) const
+{
+    return !(*this == rhs);
 }
 
 }
