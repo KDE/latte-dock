@@ -25,7 +25,6 @@
 #include "../controllers/layoutscontroller.h"
 #include "../handlers/detailshandler.h"
 
-
 namespace Latte {
 namespace Settings {
 namespace Dialog {
@@ -94,7 +93,7 @@ void DetailsDialog::accept()
 void DetailsDialog::on_ok()
 {
     qDebug() << Q_FUNC_INFO;
-    m_layoutsController->setLayoutProperties(m_handler->currentData());
+    m_handler->save();
     close();
 }
 

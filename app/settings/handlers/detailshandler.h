@@ -106,6 +106,8 @@ private:
 
     void loadLayout(const Latte::Data::Layout &data);
 
+    int saveChanges();
+
 private:
     Dialog::DetailsDialog *m_parentDialog{nullptr};
     Ui::DetailsDialog *m_ui{nullptr};

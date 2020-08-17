@@ -93,12 +93,13 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
 
+    void reject() override;
+
 private slots:
     void on_import_fullconfiguration();
     void on_export_fullconfiguration();
 
     void accept() override;
-    void reject() override;
 
     void apply();
     void reset();
@@ -122,9 +123,7 @@ private:
     void save();
     void setCurrentFreeActivitiesLayout(const int &row);
 
-    int saveChangesConfirmation();
     bool saveChanges();
-
     QSize storedWindowSize() const;
 
 private:

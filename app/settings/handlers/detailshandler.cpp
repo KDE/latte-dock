@@ -36,6 +36,7 @@
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QIcon>
+#include <QMessageBox>
 
 // KDE
 #include <KIconDialog>
@@ -224,6 +225,7 @@ void DetailsHandler::resetDefaults()
 
 void DetailsHandler::save()
 {
+    m_parentDialog->layoutsController()->setLayoutProperties(currentData());
 }
 
 void DetailsHandler::on_clearIcon()
@@ -245,11 +247,30 @@ void DetailsHandler::on_currentColorIndexChanged(int row)
 
 void DetailsHandler::on_currentLayoutIndexChanged(int row)
 {
-    QString layoutId = m_layoutsProxyModel->data(m_layoutsProxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
-    m_parentDialog->layoutsController()->selectRow(layoutId);
-    reload();
+    bool switchtonewlayout{true};
 
-    emit currentLayoutChanged();
+    if (dataAreChanged()) {
+        int result = saveChanges();
+
+        if (result == QMessageBox::Apply) {
+            save();
+        } else if (result == QMessageBox::Discard) {
+            //do nothing
+        } else if (result == QMessageBox::Cancel) {
+            switchtonewlayout = false;
+        }
+    }
+
+    if (switchtonewlayout) {
+        QString layoutId = m_layoutsProxyModel->data(m_layoutsProxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
+        m_parentDialog->layoutsController()->selectRow(layoutId);
+        reload();
+
+        emit currentLayoutChanged();
+    } else {
+        //! reset combobox index
+        m_ui->layoutsCmb->setCurrentText(c_data.name);
+    }
 }
 
 void DetailsHandler::setBackground(const QString &background)
@@ -370,6 +391,18 @@ void DetailsHandler::selectTextColor()
 void DetailsHandler::updateWindowTitle()
 {
     m_parentDialog->setWindowTitle(m_ui->layoutsCmb->currentText());
+}
+
+int DetailsHandler::saveChanges()
+{
+    if (dataAreChanged()) {
+        QString layoutName = c_data.name;
+        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed. Do you want to apply the changes or discard them?").arg(layoutName);
+
+        return m_parentDialog->saveChangesConfirmation(saveChangesText);
+    }
+
+    return QMessageBox::Cancel;
 }
 
 }

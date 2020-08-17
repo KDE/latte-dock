@@ -21,9 +21,13 @@
 #include "genericdialog.h"
 
 // Qt
+#include <QFileDialog>
 #include <QKeyEvent>
+#include <QMessageBox>
 #include <QVBoxLayout>
 
+// KDE
+#include <KLocalizedString>
 
 static const int ERRORINTERVAL = 4000;
 static const int INFORMATIONINTERVAL = 3000;
@@ -91,6 +95,25 @@ void GenericDialog::clearCurrentMessageActions()
         m_messageWidget->removeAction(action);
         action->deleteLater();
     }
+}
+
+int GenericDialog::saveChangesConfirmation(const QString &text)
+{
+    auto msg = new QMessageBox(this);
+    msg->setIcon(QMessageBox::Warning);
+    msg->setWindowTitle(i18n("Apply Settings"));
+
+    if (text.isEmpty()) {
+        msg->setText(i18n("The settings have changed. Do you want to apply the changes or discard them?"));
+    } else {
+        msg->setText(text);
+    }
+
+    msg->setStandardButtons(QMessageBox::Apply | QMessageBox::Discard | QMessageBox::Cancel);
+    msg->setDefaultButton(QMessageBox::Apply);
+
+    connect(msg, &QFileDialog::finished, msg, &QFileDialog::deleteLater);
+    return msg->exec();
 }
 
 void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent, QList<QAction *> actions)

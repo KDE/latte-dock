@@ -469,25 +469,15 @@ void SettingsDialog::updateApplyButtonsState()
     }
 }
 
-int SettingsDialog::saveChangesConfirmation()
-{
-    auto msg = new QMessageBox(this);
-    msg->setIcon(QMessageBox::Warning);
-    msg->setWindowTitle(i18n("Apply Settings"));
-    QString tabName = m_ui->tabWidget->tabBar()->tabText(m_acceptedPage).remove("&");
-    msg->setText(i18n("The settings of <b>%0</b> tab have changed. Do you want to apply the changes or discard them?").arg(tabName));
-    msg->setStandardButtons(QMessageBox::Apply | QMessageBox::Discard | QMessageBox::Cancel);
-    msg->setDefaultButton(QMessageBox::Apply);
-
-    connect(msg, &QFileDialog::finished, msg, &QFileDialog::deleteLater);
-    return msg->exec();
-}
-
 bool SettingsDialog::saveChanges()
 {
     if ((m_acceptedPage == LayoutPage && m_tabLayoutsHandler->dataAreChanged())
         || (m_acceptedPage == PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
-        int result = saveChangesConfirmation();
+
+        QString tabName = m_ui->tabWidget->tabBar()->tabText(m_acceptedPage).remove("&");
+        QString saveChangesText = i18n("The settings of <b>%0</b> tab have changed. Do you want to apply the changes or discard them?").arg(tabName);
+
+        int result = saveChangesConfirmation(saveChangesText);
 
         if (result == QMessageBox::Apply) {
             save();

@@ -61,9 +61,10 @@ public:
     Ui::DetailsDialog *ui() const;
     Controller::Layouts *layoutsController() const;
 
-private slots:
+protected:
     void accept() override;
 
+private slots:
     void on_ok();
     void on_cancel();
     void on_reset();
