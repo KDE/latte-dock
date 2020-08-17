@@ -22,6 +22,7 @@
 #define SETTINGSDATALAYOUT_H
 
 // local
+#include "genericdata.h"
 #include "../layout/abstractlayout.h"
 
 //Qt
@@ -32,7 +33,7 @@
 namespace Latte {
 namespace Data {
 
-class Layout
+class Layout : public Generic
 {
 public:
     static constexpr const char* FREEACTIVITIESID = "{0000-0000}";
@@ -42,8 +43,6 @@ public:
     Layout(const Layout &o);
 
     //! Layout data
-    QString id;
-    QString name;
     QString icon;
     QString color;
     QString background;

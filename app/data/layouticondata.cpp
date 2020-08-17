@@ -25,22 +25,21 @@ namespace Latte {
 namespace Data {
 
 LayoutIcon::LayoutIcon()
+    : Generic()
 {
 }
 
 LayoutIcon::LayoutIcon(LayoutIcon &&o)
-    : id(o.id),
+    : Generic(o),
       isFreeActivities(o.isFreeActivities),
-      isBackgroundFile(o.isBackgroundFile),
-      name(o.name)
+      isBackgroundFile(o.isBackgroundFile)
 {
 }
 
 LayoutIcon::LayoutIcon(const LayoutIcon &o)
-    : id(o.id),
+    : Generic(o),
       isFreeActivities(o.isFreeActivities),
-      isBackgroundFile(o.isBackgroundFile),
-      name(o.name)
+      isBackgroundFile(o.isBackgroundFile)
 {
 }
 

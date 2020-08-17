@@ -21,6 +21,9 @@
 #ifndef LAYOUTCOLORDATA_H
 #define LAYOUTCOLORDATA_H
 
+//local
+#include "genericdata.h"
+
 //Qt
 #include <QMetaType>
 #include <QString>
@@ -28,7 +31,7 @@
 namespace Latte {
 namespace Data {
 
-class LayoutColor
+class LayoutColor : public Generic
 {
 public:
     LayoutColor();
@@ -36,8 +39,6 @@ public:
     LayoutColor(const LayoutColor &o);
 
     //! Color data
-    QString id;
-    QString name;
     QString path;
     QString textColor;
 

@@ -21,13 +21,17 @@
 #ifndef LAYOUTICONDATA_H
 #define LAYOUTICONDATA_H
 
+//! local
+#include "genericdata.h"
+
+//! Qt
 #include <QMetaType>
 #include <QString>
 
 namespace Latte {
 namespace Data {
 
-class LayoutIcon
+class LayoutIcon : public Generic
 {
 public:
     LayoutIcon();

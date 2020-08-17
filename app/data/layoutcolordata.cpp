@@ -24,20 +24,19 @@ namespace Latte {
 namespace Data {
 
 LayoutColor::LayoutColor()
+    : Generic()
 {
 }
 
 LayoutColor::LayoutColor(LayoutColor &&o)
-    : id(o.id),
-      name(o.name),
+    : Generic(o),
       path(o.path),
       textColor(o.textColor)
 {
 }
 
 LayoutColor::LayoutColor(const LayoutColor &o)
-    : id(o.id),
-      name(o.name),
+    : Generic(o),
       path(o.path),
       textColor(o.textColor)
 {
@@ -65,7 +64,7 @@ LayoutColor &LayoutColor::operator=(LayoutColor &&rhs)
 
 bool LayoutColor::operator==(const LayoutColor &rhs) const
 {
-    return (id == rhs.id)
+    return  (id == rhs.id)
             && (name == rhs.name)
             && (path == rhs.path)
             && (textColor == rhs.textColor);

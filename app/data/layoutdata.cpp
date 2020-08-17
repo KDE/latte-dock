@@ -27,12 +27,12 @@ namespace Latte {
 namespace Data {
 
 Layout::Layout()
+    : Generic()
 {
 }
 
 Layout::Layout(Layout &&o)
-    : id(o.id),
-      name(o.name),
+    : Generic(o),
       icon(o.icon),
       color(o.color),
       background(o.background),
@@ -49,8 +49,7 @@ Layout::Layout(Layout &&o)
 }
 
 Layout::Layout(const Layout &o)
-    : id(o.id),
-      name(o.name),
+    : Generic(o),
       icon(o.icon),
       color(o.color),
       background(o.background),

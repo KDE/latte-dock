@@ -24,12 +24,12 @@ namespace Latte {
 namespace Data {
 
 Activity::Activity()
+    : Generic()
 {
 }
 
 Activity::Activity(Activity &&o)
-    : id(o.id),
-      name(o.name),
+    : Generic(o),
       icon(o.icon),
       isCurrent(o.isCurrent),
       state(o.state)
@@ -37,8 +37,7 @@ Activity::Activity(Activity &&o)
 }
 
 Activity::Activity(const Activity &o)
-    : id(o.id),
-      name(o.name),
+    : Generic(o),
       icon(o.icon),
       isCurrent(o.isCurrent),
       state(o.state)

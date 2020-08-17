@@ -21,6 +21,9 @@
 #ifndef ACTIVITYDATA_H
 #define ACTIVITYDATA_H
 
+//! local
+#include "genericdata.h"
+
 //! Qt
 #include <QMetaType>
 #include <QIcon>
@@ -32,7 +35,7 @@
 namespace Latte {
 namespace Data {
 
-class Activity
+class Activity : public Generic
 {
 public:
     Activity();
@@ -40,10 +43,8 @@ public:
     Activity(const Activity &o);
 
     //! Layout data
-    QString id;
-    QString name;
-    QString icon;
     bool isCurrent;
+    QString icon;
     KActivities::Info::State state;
 
     bool isValid() const;
