@@ -60,36 +60,6 @@ void Storage::setStorageTmpDir(const QString &tmpDir)
     m_storageTmpDir = tmpDir;
 }
 
-void Storage::syncToLayoutFile(bool removeLayoutId)
-{
-    if (!m_layout->corona() || !Layouts::Storage::self()->isWritable(m_layout)) {
-        return;
-    }
-
-    KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_layout->file());
-
-    KConfigGroup oldContainments = KConfigGroup(filePtr, "Containments");
-    oldContainments.deleteGroup();
-
-    qDebug() << " LAYOUT :: " << m_layout->name() << " is syncing its original file.";
-
-    for (const auto containment : *m_layout->containments()) {
-        if (removeLayoutId) {
-            containment->config().writeEntry("layoutId", "");
-        }
-
-        KConfigGroup newGroup = oldContainments.group(QString::number(containment->id()));
-        containment->config().copyTo(&newGroup);
-
-        if (!removeLayoutId) {
-            newGroup.writeEntry("layoutId", "");
-            newGroup.sync();
-        }
-    }
-
-    oldContainments.sync();
-}
-
 void Storage::copyView(Plasma::Containment *containment)
 {
     if (!containment || !m_layout->corona())

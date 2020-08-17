@@ -1053,7 +1053,7 @@ void GenericLayout::assignToLayout(Latte::View *latteView, QList<Plasma::Contain
 
     //! sync the original layout file for integrity
     if (m_corona && m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-        m_storage->syncToLayoutFile(false);
+        Layouts::Storage::self()->syncToLayoutFile(this, false);
     }
 }
 
@@ -1091,7 +1091,7 @@ QList<Plasma::Containment *> GenericLayout::unassignFromLayout(Latte::View *latt
 
     //! sync the original layout file for integrity
     if (m_corona && m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-        m_storage->syncToLayoutFile(false);
+        Layouts::Storage::self()->syncToLayoutFile(this, false);
     }
 
     return containments;
@@ -1677,7 +1677,7 @@ void GenericLayout::unlock()
 void GenericLayout::syncToLayoutFile(bool removeLayoutId)
 {
     syncSettings();
-    m_storage->syncToLayoutFile(removeLayoutId);
+    Layouts::Storage::self()->syncToLayoutFile(this, removeLayoutId);
 }
 
 void GenericLayout::copyView(Plasma::Containment *containment)

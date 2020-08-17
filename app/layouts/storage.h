@@ -54,6 +54,7 @@ public:
     void unlock(const Layout::GenericLayout *layout); //! make it writable which it should be the default
 
     void importToCorona(const Layout::GenericLayout *layout);
+    void syncToLayoutFile(const Layout::GenericLayout *layout, bool removeLayoutId);
 
     /// STATIC
     //! Check if an applet config group is valid or belongs to removed applet

@@ -356,6 +356,36 @@ QString Storage::newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout,
     return tempFile;
 }
 
+void Storage::syncToLayoutFile(const Layout::GenericLayout *layout, bool removeLayoutId)
+{
+    if (!layout->corona() || !isWritable(layout)) {
+        return;
+    }
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(layout->file());
+
+    KConfigGroup oldContainments = KConfigGroup(filePtr, "Containments");
+    oldContainments.deleteGroup();
+
+    qDebug() << " LAYOUT :: " << layout->name() << " is syncing its original file.";
+
+    for (const auto containment : *layout->containments()) {
+        if (removeLayoutId) {
+            containment->config().writeEntry("layoutId", "");
+        }
+
+        KConfigGroup newGroup = oldContainments.group(QString::number(containment->id()));
+        containment->config().copyTo(&newGroup);
+
+        if (!removeLayoutId) {
+            newGroup.writeEntry("layoutId", "");
+            newGroup.sync();
+        }
+    }
+
+    oldContainments.sync();
+}
+
 QList<Plasma::Containment *> Storage::importLayoutFile(const Layout::GenericLayout *layout, QString file)
 {
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);

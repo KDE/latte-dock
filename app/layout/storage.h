@@ -41,7 +41,6 @@ public:
     ~Storage() override;
 
     void copyView(Plasma::Containment *containment);
-    void syncToLayoutFile(bool removeLayoutId);
 
     void setStorageTmpDir(const QString &tmpDir);
 
