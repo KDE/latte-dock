@@ -288,18 +288,11 @@ QString AbstractLayout::customTextColor() const
 
 void AbstractLayout::setCustomTextColor(const QString &customColor)
 {
-    QString cuColor = customColor;
-
-    //! remove # if someone is trying to set it this way
-    if (cuColor.startsWith("#")) {
-        cuColor.remove(0, 1);
-    }
-
-    if (m_customTextColor == cuColor) {
+    if (m_customTextColor == customColor) {
         return;
     }
 
-    m_customTextColor = cuColor;
+    m_customTextColor = customColor;
     emit customTextColorChanged();
 }
 
