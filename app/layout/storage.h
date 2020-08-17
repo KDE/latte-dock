@@ -40,8 +40,6 @@ public:
     Storage(GenericLayout *parent);
     ~Storage() override;
 
-    bool layoutIsBroken(QStringList &errors) const;
-
     void copyView(Plasma::Containment *containment);
     void syncToLayoutFile(bool removeLayoutId);
 

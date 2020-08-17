@@ -612,7 +612,7 @@ QList<ViewData> GenericLayout::sortedViewsData(const QList<ViewData> &viewsData)
 }
 
 
-const QList<Plasma::Containment *> *GenericLayout::containments()
+const QList<Plasma::Containment *> *GenericLayout::containments() const
 {
     return &m_containments;
 }
@@ -1603,7 +1603,7 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
     report += "<br/><hr>";
 
     QStringList errorsList;
-    bool broken = m_storage->layoutIsBroken(errorsList);
+    bool broken = Layouts::Storage::self()->isBroken(this, errorsList);
 
     if (!broken && unknownScreens.count() == 0) {
         report += "<font color='green'>" + i18n("No errors were identified for this layout...") + "</font><br/>";
@@ -1691,10 +1691,10 @@ void GenericLayout::importToCorona()
     Layouts::Storage::self()->importToCorona(this);
 }
 
-bool GenericLayout::layoutIsBroken() const
+bool GenericLayout::isBroken() const
 {
     QStringList errors;
-    return m_storage->layoutIsBroken(errors);
+    return Layouts::Storage::self()->isBroken(this, errors);
 }
 
 }

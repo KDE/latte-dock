@@ -88,7 +88,7 @@ public:
     bool isActive() const; //! is loaded and running
     virtual bool isCurrent() const;
     bool isWritable() const;
-    bool layoutIsBroken() const;
+    bool isBroken() const;
 
     bool isSubContainment(Plasma::Applet *applet) const;
     Plasma::Containment *subContainmentOf(Plasma::Applet *applet) const;
@@ -104,7 +104,7 @@ public:
     QStringList unloadedContainmentsIds();
 
     virtual Types::ViewType latteViewType(uint containmentId) const;
-    const QList<Plasma::Containment *> *containments();
+    const QList<Plasma::Containment *> *containments() const;
 
     Latte::View *highestPriorityView();
     Latte::View *viewForContainment(Plasma::Containment *containment);

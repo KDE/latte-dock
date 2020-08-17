@@ -48,6 +48,7 @@ public:
     bool isWritable(const Layout::GenericLayout *layout) const;
     bool isLatteContainment(Plasma::Containment *containment) const;
     bool isLatteContainment(const KConfigGroup &group) const;
+    bool isBroken(const Layout::GenericLayout *layout, QStringList &errors) const;
 
     void lock(const Layout::GenericLayout *layout); //! make it only read-only
     void unlock(const Layout::GenericLayout *layout); //! make it writable which it should be the default

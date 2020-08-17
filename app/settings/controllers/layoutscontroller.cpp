@@ -434,7 +434,7 @@ void Layouts::loadLayouts()
 
         Latte::Layout::GenericLayout *generic = m_handler->corona()->layoutsManager()->synchronizer()->layout(central->name());
 
-        if ((generic && generic->layoutIsBroken()) || (!generic && central->layoutIsBroken())) {
+        if ((generic && generic->isBroken()) || (!generic && central->isBroken())) {
             brokenLayouts.append(central->name());
         }
     }

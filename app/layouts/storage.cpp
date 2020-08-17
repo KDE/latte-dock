@@ -20,8 +20,10 @@
 #include "storage.h"
 
 // local
+#include "importer.h"
 #include "manager.h"
 #include "../lattecorona.h"
+#include "../layout/abstractlayout.h"
 #include "../layout/storage.h"
 
 // Qt
@@ -375,5 +377,133 @@ QList<Plasma::Containment *> Storage::importLayoutFile(const Layout::GenericLayo
     return importedDocks;
 }
 
+bool Storage::isBroken(const Layout::GenericLayout *layout, QStringList &errors) const
+{
+    if (layout->file().isEmpty() || !QFile(layout->file()).exists()) {
+        return false;
+    }
+
+    QStringList ids;
+    QStringList conts;
+    QStringList applets;
+
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(layout->file());
+
+    if (!layout->corona()) {
+        KConfigGroup containmentsEntries = KConfigGroup(lFile, "Containments");
+        ids << containmentsEntries.groupList();
+        conts << ids;
+
+        for (const auto &cId : containmentsEntries.groupList()) {
+            auto appletsEntries = containmentsEntries.group(cId).group("Applets");
+
+            QStringList validAppletIds;
+            bool updated{false};
+
+            for (const auto &appletId : appletsEntries.groupList()) {
+                KConfigGroup appletGroup = appletsEntries.group(appletId);
+
+                if (Layouts::Storage::appletGroupIsValid(appletGroup)) {
+                    validAppletIds << appletId;
+                } else {
+                    updated = true;
+                    //! heal layout file by removing applet config records that are not used any more
+                    qDebug() << "Layout: " << layout->name() << " removing deprecated applet : " << appletId;
+                    appletsEntries.deleteGroup(appletId);
+                }
+            }
+
+            if (updated) {
+                appletsEntries.sync();
+            }
+
+            ids << validAppletIds;
+            applets << validAppletIds;
+        }
+    } else {
+        for (const auto containment : *layout->containments()) {
+            ids << QString::number(containment->id());
+            conts << QString::number(containment->id());
+
+            for (const auto applet : containment->applets()) {
+                ids << QString::number(applet->id());
+                applets << QString::number(applet->id());
+            }
+        }
+    }
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    QSet<QString> idsSet = QSet<QString>::fromList(ids);
+#else
+    QSet<QString> idsSet(ids.begin(), ids.end());
+#endif
+    /* a different way to count duplicates
+    QMap<QString, int> countOfStrings;
+
+    for (int i = 0; i < ids.count(); i++) {
+        countOfStrings[ids[i]]++;
+    }*/
+
+    if (idsSet.count() != ids.count()) {
+        qDebug() << "   ----   ERROR - BROKEN LAYOUT :: " << layout->name() << " ----";
+
+        if (!layout->corona()) {
+            qDebug() << "   --- storaged file : " << layout->file();
+        } else {
+            if (layout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+                qDebug() << "   --- in multiple layouts hidden file : " << Layouts::Importer::layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME);
+            } else {
+                qDebug() << "   --- in active layout file : " << layout->file();
+            }
+        }
+
+        qDebug() << "Containments :: " << conts;
+        qDebug() << "Applets :: " << applets;
+
+        for (const QString &c : conts) {
+            if (applets.contains(c)) {
+                QString errorStr = i18n("Same applet and containment id found ::: ") + c;
+                qDebug() << "Error: " << errorStr;
+                errors << errorStr;
+            }
+        }
+
+        for (int i = 0; i < ids.count(); ++i) {
+            for (int j = i + 1; j < ids.count(); ++j) {
+                if (ids[i] == ids[j]) {
+                    QString errorStr = i18n("Different applets with same id ::: ") + ids[i];
+                    qDebug() << "Error: " << errorStr;
+                    errors << errorStr;
+                }
+            }
+        }
+
+        qDebug() << "  -- - -- - -- - -- - - -- - - - - -- - - - - ";
+
+        if (!layout->corona()) {
+            KConfigGroup containmentsEntries = KConfigGroup(lFile, "Containments");
+
+            for (const auto &cId : containmentsEntries.groupList()) {
+                auto appletsEntries = containmentsEntries.group(cId).group("Applets");
+
+                qDebug() << " CONTAINMENT : " << cId << " APPLETS : " << appletsEntries.groupList();
+            }
+        } else {
+            for (const auto containment : *layout->containments()) {
+                QStringList appletsIds;
+
+                for (const auto applet : containment->applets()) {
+                    appletsIds << QString::number(applet->id());
+                }
+
+                qDebug() << " CONTAINMENT : " << containment->id() << " APPLETS : " << appletsIds.join(",");
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
 }
 }
