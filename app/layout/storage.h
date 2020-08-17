@@ -49,10 +49,6 @@ public:
 
     void setStorageTmpDir(const QString &tmpDir);
 
-    /// STATIC
-    //! Check if an applet config group is valid or belongs to removed applet
-    static bool appletGroupIsValid(KConfigGroup appletGroup);
-
     //! Functions used from Layout Reports
     //! [containment id, list<systrays ids>], list<systrays ids>, list[systrays ids]
     void systraysInformation(QHash<int, QList<int>> &systrays, QList<int> &assignedSystrays, QList<int> &orphanSystrays);

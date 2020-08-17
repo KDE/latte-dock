@@ -99,7 +99,7 @@ public:
 
     Type type() const override;
 
-    Latte::Corona *corona();
+    Latte::Corona *corona() const;
 
     QStringList unloadedContainmentsIds();
 

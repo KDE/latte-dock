@@ -52,8 +52,21 @@ public:
     void lock(Layout::GenericLayout *layout) const; //! make it only read-only
     void unlock(Layout::GenericLayout *layout) const; //! make it writable which it should be the default
 
+    /// STATIC
+    //! Check if an applet config group is valid or belongs to removed applet
+    static bool appletGroupIsValid(const KConfigGroup &appletGroup);
+
 private:
     Storage();
+
+    //! STORAGE !////
+    QString availableId(QStringList all, QStringList assigned, int base);
+    //! provides a new file path based the provided file. The new file
+    //! has updated ids for containments and applets based on the corona
+    //! loaded ones
+    QString newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout, QString file);
+    //! imports a layout file and returns the containments for the docks
+    QList<Plasma::Containment *> importLayoutFile(const Layout::GenericLayout *layout, QString file);
 
 private:
     QTemporaryDir m_storageTmpDir;

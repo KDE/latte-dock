@@ -368,7 +368,7 @@ QStringList GenericLayout::unloadedContainmentsIds()
     return m_unloadedContainmentsIds;
 }
 
-Latte::Corona *GenericLayout::corona()
+Latte::Corona *GenericLayout::corona() const
 {
     return m_corona;
 }

@@ -25,6 +25,7 @@
 #include <coretypes.h>
 #include "plasma/quick/configview.h"
 #include "layout/storage.h"
+#include "layouts/storage.h"
 #include "view/panelshadows_p.h"
 
 // Qt
@@ -258,6 +259,7 @@ private:
     friend class Layout::Storage;
     friend class Layouts::LaunchersSignals;
     friend class Layouts::Manager;
+    friend class Layouts::Storage;
 };
 
 }

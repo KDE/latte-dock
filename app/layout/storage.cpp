@@ -587,15 +587,6 @@ QString Storage::newUniqueIdsLayoutFromFile(QString file)
     return tempFile;
 }
 
-bool Storage::appletGroupIsValid(KConfigGroup appletGroup)
-{
-    return !( appletGroup.keyList().count() == 0
-              && appletGroup.groupList().count() == 1
-              && appletGroup.groupList().at(0) == "Configuration"
-              && appletGroup.group("Configuration").keyList().count() == 1
-              && appletGroup.group("Configuration").hasKey("PreloadWeight") );
-}
-
 bool Storage::layoutIsBroken(QStringList &errors) const
 {
     if (m_layout->file().isEmpty() || !QFile(m_layout->file()).exists()) {
@@ -622,7 +613,7 @@ bool Storage::layoutIsBroken(QStringList &errors) const
             for (const auto &appletId : appletsEntries.groupList()) {
                 KConfigGroup appletGroup = appletsEntries.group(appletId);
 
-                if (appletGroupIsValid(appletGroup)) {
+                if (Layouts::Storage::appletGroupIsValid(appletGroup)) {
                     validAppletIds << appletId;
                 } else {
                     updated = true;
