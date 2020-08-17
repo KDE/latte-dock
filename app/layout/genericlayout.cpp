@@ -406,7 +406,7 @@ void GenericLayout::setLastConfigViewFor(Latte::View *view)
     emit lastConfigViewForChanged(view);
 }
 
-Latte::View *GenericLayout::viewForContainment(Plasma::Containment *containment)
+Latte::View *GenericLayout::viewForContainment(Plasma::Containment *containment) const
 {
     if (m_containments.contains(containment) && m_latteViews.contains(containment)) {
         return m_latteViews[containment];
@@ -1682,7 +1682,20 @@ void GenericLayout::syncToLayoutFile(bool removeLayoutId)
 
 void GenericLayout::copyView(Plasma::Containment *containment)
 {
-    m_storage->copyView(containment);
+    //! Don't create LatteView when the containment is created because we must update its screen settings first
+    setBlockAutomaticLatteViewCreation(true);
+
+    Layouts::ViewDelayedCreationData result = Layouts::Storage::self()->copyView(this, containment);
+    if (result.containment) {
+        addView(result.containment, result.forceOnPrimary, result.explicitScreen);
+
+        if (result.reactToScreenChange) {
+            result.containment->reactToScreenChange();
+        }
+    }
+    //m_storage->copyView(containment);
+
+    setBlockAutomaticLatteViewCreation(false);
     emit viewEdgeChanged();
 }
 

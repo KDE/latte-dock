@@ -40,8 +40,6 @@ public:
     Storage(GenericLayout *parent);
     ~Storage() override;
 
-    void copyView(Plasma::Containment *containment);
-
     void setStorageTmpDir(const QString &tmpDir);
 
     //! Functions used from Layout Reports
@@ -51,16 +49,6 @@ public:
     QList<int> viewsScreens();
     //! list<ViewData>
     QList<ViewData> viewsData(const QHash<int, QList<int>> &systrays);
-
-private:
-    //! STORAGE !////
-    QString availableId(QStringList all, QStringList assigned, int base);
-    //! provides a new file path based the provided file. The new file
-    //! has updated ids for containments and applets based on the corona
-    //! loaded ones
-    QString newUniqueIdsLayoutFromFile(QString file);
-    //! imports a layout file and returns the containments for the docks
-    QList<Plasma::Containment *> importLayoutFile(QString file);
 
 private:
     GenericLayout *m_layout;

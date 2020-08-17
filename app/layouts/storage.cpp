@@ -23,8 +23,10 @@
 #include "importer.h"
 #include "manager.h"
 #include "../lattecorona.h"
+#include "../screenpool.h"
 #include "../layout/abstractlayout.h"
 #include "../layout/storage.h"
+#include "../view/view.h"
 
 // Qt
 #include <QDebug>
@@ -405,6 +407,156 @@ QList<Plasma::Containment *> Storage::importLayoutFile(const Layout::GenericLayo
     }
 
     return importedDocks;
+}
+
+ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, Plasma::Containment *containment)
+{
+    if (!containment || !layout->corona()) {
+        return ViewDelayedCreationData();
+    }
+
+    qDebug() << "copying containment layout";
+    //! Setting mutable for create a containment
+    layout->corona()->setImmutability(Plasma::Types::Mutable);
+
+    QString temp1File = m_storageTmpDir.path() +  "/" + layout->name() + ".copy.view";
+
+    //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
+    QFile copyFile(temp1File);
+
+    if (copyFile.exists())
+        copyFile.remove();
+
+    KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1File);
+    KConfigGroup copied_conts = KConfigGroup(newFile, "Containments");
+    KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
+
+    containment->config().copyTo(&copied_c1);
+
+    //!investigate if there multiple systray(s) in the containment to copy also
+
+    //! systrayId, systrayAppletId
+    QHash<uint, QString> systraysInfo;
+    auto applets = containment->config().group("Applets");
+
+    for (const auto &applet : applets.groupList()) {
+        KConfigGroup appletSettings = applets.group(applet).group("Configuration");
+
+        int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
+
+        if (tSysId != -1) {
+            systraysInfo[tSysId] = applet;
+            qDebug() << "systray with id "<< tSysId << " was found in the containment... ::: " << tSysId;
+        }
+    }
+
+    if (systraysInfo.count() > 0) {
+        for(const auto systrayId : systraysInfo.keys()) {
+            Plasma::Containment *systray{nullptr};
+
+            for (const auto containment : layout->corona()->containments()) {
+                if (containment->id() == systrayId) {
+                    systray = containment;
+                    break;
+                }
+            }
+
+            if (systray) {
+                KConfigGroup copied_systray = KConfigGroup(&copied_conts, QString::number(systray->id()));
+                systray->config().copyTo(&copied_systray);
+            }
+        }
+    }
+    //! end of systray specific code
+
+    //! update ids to unique ones
+    QString temp2File = newUniqueIdsLayoutFromFile(layout, temp1File);
+
+    //! Finally import the configuration
+    QList<Plasma::Containment *> importedDocks = importLayoutFile(layout, temp2File);
+
+    Plasma::Containment *newContainment{nullptr};
+
+    if (importedDocks.size() == 1) {
+        newContainment = importedDocks[0];
+    }
+
+    if (!newContainment || !newContainment->kPackage().isValid()) {
+        qWarning() << "the requested containment plugin can not be located or loaded";
+        return ViewDelayedCreationData();
+    }
+
+    auto config = newContainment->config();
+
+    //in multi-screen environment the copied dock is moved to alternative screens first
+    const auto screens = qGuiApp->screens();
+    auto dock =  layout->viewForContainment(containment);
+
+    bool setOnExplicitScreen = false;
+
+    int dockScrId = -1;
+    int copyScrId = -1;
+
+    if (dock) {
+        dockScrId = dock->positioner()->currentScreenId();
+        qDebug() << "COPY DOCK SCREEN ::: " << dockScrId;
+
+        if (dockScrId != -1 && screens.count() > 1) {
+            for (const auto scr : screens) {
+                copyScrId = layout->corona()->screenPool()->id(scr->name());
+
+                //the screen must exist and not be the same with the original dock
+                if (copyScrId > -1 && copyScrId != dockScrId) {
+                    QList<Plasma::Types::Location> fEdges = layout->freeEdges(copyScrId);
+
+                    if (fEdges.contains((Plasma::Types::Location)containment->location())) {
+                        ///set this containment to an explicit screen
+                        config.writeEntry("onPrimary", false);
+                        config.writeEntry("lastScreen", copyScrId);
+                        newContainment->setLocation(containment->location());
+
+                        qDebug() << "COPY DOCK SCREEN NEW SCREEN ::: " << copyScrId;
+
+                        setOnExplicitScreen = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    if (!setOnExplicitScreen) {
+        QList<Plasma::Types::Location> edges = layout->freeEdges(newContainment->screen());
+
+        if (edges.count() > 0) {
+            newContainment->setLocation(edges.at(0));
+        } else {
+            newContainment->setLocation(Plasma::Types::BottomEdge);
+        }
+
+        config.writeEntry("onPrimary", true);
+        config.writeEntry("lastScreen", dockScrId);
+    }
+
+    newContainment->config().sync();
+
+    ViewDelayedCreationData result;
+
+    if (setOnExplicitScreen && copyScrId > -1) {
+        qDebug() << "Copy Dock in explicit screen ::: " << copyScrId;
+        result.containment = newContainment;
+        result.forceOnPrimary = false;
+        result.explicitScreen = copyScrId;
+        result.reactToScreenChange = true;
+    } else {
+        qDebug() << "Copy Dock in current screen...";
+        result.containment = newContainment;
+        result.forceOnPrimary = false;
+        result.explicitScreen = dockScrId;
+        result.reactToScreenChange = false;
+    }
+
+    return result;
 }
 
 bool Storage::isBroken(const Layout::GenericLayout *layout, QStringList &errors) const
