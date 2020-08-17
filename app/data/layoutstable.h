@@ -67,7 +67,7 @@ public:
 
     void clear();
     void remove(const int &row);
-    void removeLayout(const QString &id);
+    void remove(const QString &id);
     void setLayoutForFreeActivities(const QString &id);
 
 protected:

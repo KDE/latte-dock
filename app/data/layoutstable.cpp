@@ -257,7 +257,7 @@ void LayoutsTable::clear()
     m_layouts.clear();
 }
 
-void LayoutsTable::removeLayout(const QString &id)
+void LayoutsTable::remove(const QString &id)
 {
     const int pos = indexOf(id);
 
