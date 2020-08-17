@@ -41,6 +41,9 @@ DetailsDialog::DetailsDialog(SettingsDialog *parent, Controller::Layouts *contro
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::DetailsHandler(this);
 
+    connect(m_handler, &Handler::DetailsHandler::currentLayoutChanged, this, &DetailsDialog::updateApplyButtonsState);
+    connect(m_handler, &Handler::DetailsHandler::dataChanged, this, &DetailsDialog::updateApplyButtonsState);
+
     connect(m_ui->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked,
             this, &DetailsDialog::on_ok);
 
@@ -49,6 +52,8 @@ DetailsDialog::DetailsDialog(SettingsDialog *parent, Controller::Layouts *contro
 
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked,
             this, &DetailsDialog::on_reset);
+
+    updateApplyButtonsState();
 }
 
 DetailsDialog::~DetailsDialog()
@@ -68,6 +73,17 @@ Ui::DetailsDialog *DetailsDialog::ui() const
 Latte::Corona *DetailsDialog::corona() const
 {
     return m_parentDlg->corona();
+}
+
+void DetailsDialog::updateApplyButtonsState()
+{
+    if (m_handler->dataAreChanged()) {
+        m_ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+        m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(true);
+    } else {
+        m_ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(false);
+    }
 }
 
 void DetailsDialog::accept()

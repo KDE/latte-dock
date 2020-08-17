@@ -68,6 +68,8 @@ private slots:
     void on_cancel();
     void on_reset();
 
+    void updateApplyButtonsState();
+
 private:
     SettingsDialog *m_parentDlg{nullptr};
     Ui::DetailsDialog *m_ui;
