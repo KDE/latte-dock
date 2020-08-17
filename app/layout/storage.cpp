@@ -60,53 +60,6 @@ void Storage::setStorageTmpDir(const QString &tmpDir)
     m_storageTmpDir = tmpDir;
 }
 
-void Storage::importToCorona()
-{
-    if (!m_layout->corona()) {
-        return;
-    }
-
-    //! Setting mutable for create a containment
-    m_layout->corona()->setImmutability(Plasma::Types::Mutable);
-
-    QString temp1FilePath = m_storageTmpDir +  "/" + m_layout->name() + ".multiple.views";
-    //! we need to copy first the layout file because the kde cache
-    //! may not have yet been updated (KSharedConfigPtr)
-    //! this way we make sure at the latest changes stored in the layout file
-    //! will be also available when changing to Multiple Layouts
-    QString tempLayoutFilePath = m_storageTmpDir +  "/" + m_layout->name() + ".multiple.tmplayout";
-
-    //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
-    QFile tempLayoutFile(tempLayoutFilePath);
-    QFile copyFile(temp1FilePath);
-    QFile layoutOriginalFile(m_layout->file());
-
-    if (tempLayoutFile.exists()) {
-        tempLayoutFile.remove();
-    }
-
-    if (copyFile.exists())
-        copyFile.remove();
-
-    layoutOriginalFile.copy(tempLayoutFilePath);
-
-    KSharedConfigPtr filePtr = KSharedConfig::openConfig(tempLayoutFilePath);
-    KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1FilePath);
-    KConfigGroup copyGroup = KConfigGroup(newFile, "Containments");
-    KConfigGroup current_containments = KConfigGroup(filePtr, "Containments");
-
-    current_containments.copyTo(&copyGroup);
-
-    copyGroup.sync();
-
-    //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(temp1FilePath);
-
-
-    //! Finally import the configuration
-    importLayoutFile(temp2File);
-}
-
 void Storage::syncToLayoutFile(bool removeLayoutId)
 {
     if (!m_layout->corona() || !Layouts::Storage::self()->isWritable(m_layout)) {

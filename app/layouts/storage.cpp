@@ -87,7 +87,7 @@ bool Storage::isLatteContainment(const KConfigGroup &group) const
     return pluginId == "org.kde.latte.containment";
 }
 
-void Storage::lock(Layout::GenericLayout *layout) const
+void Storage::lock(const Layout::GenericLayout *layout)
 {
     QFileInfo layoutFileInfo(layout->file());
 
@@ -96,7 +96,7 @@ void Storage::lock(Layout::GenericLayout *layout) const
     }
 }
 
-void Storage::unlock(Layout::GenericLayout *layout) const
+void Storage::unlock(const Layout::GenericLayout *layout)
 {
     QFileInfo layoutFileInfo(layout->file());
 
@@ -104,6 +104,55 @@ void Storage::unlock(Layout::GenericLayout *layout) const
         QFile(layout->file()).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
     }
 }
+
+
+void Storage::importToCorona(const Layout::GenericLayout *layout)
+{
+    if (!layout->corona()) {
+        return;
+    }
+
+    //! Setting mutable for create a containment
+    layout->corona()->setImmutability(Plasma::Types::Mutable);
+
+    QString temp1FilePath = m_storageTmpDir.path() +  "/" + layout->name() + ".multiple.views";
+    //! we need to copy first the layout file because the kde cache
+    //! may not have yet been updated (KSharedConfigPtr)
+    //! this way we make sure at the latest changes stored in the layout file
+    //! will be also available when changing to Multiple Layouts
+    QString tempLayoutFilePath = m_storageTmpDir.path() +  "/" + layout->name() + ".multiple.tmplayout";
+
+    //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
+    QFile tempLayoutFile(tempLayoutFilePath);
+    QFile copyFile(temp1FilePath);
+    QFile layoutOriginalFile(layout->file());
+
+    if (tempLayoutFile.exists()) {
+        tempLayoutFile.remove();
+    }
+
+    if (copyFile.exists())
+        copyFile.remove();
+
+    layoutOriginalFile.copy(tempLayoutFilePath);
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(tempLayoutFilePath);
+    KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1FilePath);
+    KConfigGroup copyGroup = KConfigGroup(newFile, "Containments");
+    KConfigGroup current_containments = KConfigGroup(filePtr, "Containments");
+
+    current_containments.copyTo(&copyGroup);
+
+    copyGroup.sync();
+
+    //! update ids to unique ones
+    QString temp2File = newUniqueIdsLayoutFromFile(layout, temp1FilePath);
+
+
+    //! Finally import the configuration
+    importLayoutFile(layout, temp2File);
+}
+
 
 QString Storage::availableId(QStringList all, QStringList assigned, int base)
 {

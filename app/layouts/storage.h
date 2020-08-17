@@ -49,8 +49,10 @@ public:
     bool isLatteContainment(Plasma::Containment *containment) const;
     bool isLatteContainment(const KConfigGroup &group) const;
 
-    void lock(Layout::GenericLayout *layout) const; //! make it only read-only
-    void unlock(Layout::GenericLayout *layout) const; //! make it writable which it should be the default
+    void lock(const Layout::GenericLayout *layout); //! make it only read-only
+    void unlock(const Layout::GenericLayout *layout); //! make it writable which it should be the default
+
+    void importToCorona(const Layout::GenericLayout *layout);
 
     /// STATIC
     //! Check if an applet config group is valid or belongs to removed applet

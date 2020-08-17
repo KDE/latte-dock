@@ -1688,7 +1688,7 @@ void GenericLayout::copyView(Plasma::Containment *containment)
 
 void GenericLayout::importToCorona()
 {
-    m_storage->importToCorona();
+    Layouts::Storage::self()->importToCorona(this);
 }
 
 bool GenericLayout::layoutIsBroken() const

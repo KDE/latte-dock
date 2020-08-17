@@ -42,8 +42,6 @@ public:
 
     bool layoutIsBroken(QStringList &errors) const;
 
-    void importToCorona();
-
     void copyView(Plasma::Containment *containment);
     void syncToLayoutFile(bool removeLayoutId);
 
