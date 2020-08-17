@@ -39,10 +39,8 @@ public:
     LayoutIcon(const LayoutIcon &o);
 
     //! Layout data
-    QString id;
     bool isFreeActivities{false};
     bool isBackgroundFile{true};
-    QString name;
 
     //! Operators
     LayoutIcon &operator=(const LayoutIcon &rhs);
