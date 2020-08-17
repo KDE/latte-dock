@@ -22,6 +22,7 @@
 #define LAYOUTSTABLEDATA_H
 
 // local
+#include "generictable.h"
 #include "layoutdata.h"
 #include "../layouts/synchronizer.h"
 
@@ -31,7 +32,7 @@
 namespace Latte {
 namespace Data {
 
-class LayoutsTable
+class LayoutsTable : public GenericTable<Layout>
 {
 
 public:
@@ -42,38 +43,13 @@ public:
     //! Operators
     LayoutsTable &operator=(const LayoutsTable &rhs);
     LayoutsTable &operator=(LayoutsTable &&rhs);
-    LayoutsTable &operator<<(const Layout &rhs);
-    bool operator==(const LayoutsTable &rhs) const;
-    bool operator!=(const LayoutsTable &rhs) const;
-    Layout &operator[](const QString &id);
-    const Layout operator[](const QString &id) const;
-    Layout &operator[](const uint &index);
-    const Layout operator[](const uint &index) const;
-
     LayoutsTable subtracted(const LayoutsTable &rhs) const;
 
     QStringList allSharesIds() const;
     QStringList allSharesNames() const;
     Latte::Layouts::SharesMap sharesMap() const;
 
-    bool containsId(const QString &id) const;
-    bool containsName(const QString &name) const;
-    bool rowExists(const int &row) const;
-
-    int indexOf(const QString &id) const;
-    int rowCount() const;
-
-    QString idForName(const QString &name) const;
-
-    void clear();
-    void remove(const int &row);
-    void remove(const QString &id);
     void setLayoutForFreeActivities(const QString &id);
-
-protected:
-    //! #id, layout_record
-    QList<Layout> m_layouts;
-
 };
 
 }

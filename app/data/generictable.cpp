@@ -19,6 +19,7 @@
  */
 
 #include "generictable.h"
+#include "layoutdata.h"
 
 #include <QDebug>
 
@@ -141,24 +142,6 @@ const T GenericTable<T>::operator[](const uint &index) const
 }
 
 template <class T>
-GenericTable<T> GenericTable<T>::subtracted(const GenericTable<T> &rhs) const
-{
-    GenericTable<T> subtract;
-
-    if ((*this) == rhs) {
-        return subtract;
-    }
-
-    for(int i=0; i<m_list.count(); ++i) {
-        if (!rhs.containsId(m_list[i].id)) {
-            subtract << m_list[i];
-        }
-    }
-
-    return subtract;
-}
-
-template <class T>
 bool GenericTable<T>::containsId(const QString &id) const
 {
     for(int i=0; i<m_list.count(); ++i) {
@@ -241,6 +224,11 @@ void GenericTable<T>::remove(const int &row)
         m_list.removeAt(row);
     }
 }
+
+//! Make linker happy and provide which table instances will be used.
+//! The alternative would be to move functions definitions in the header file
+//! but that would drop readability
+template class GenericTable<Layout>;
 
 }
 }

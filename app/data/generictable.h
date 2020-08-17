@@ -50,8 +50,6 @@ public:
     T &operator[](const uint &index);
     const T operator[](const uint &index) const;
 
-    GenericTable<T> subtracted(const GenericTable<T> &rhs) const;
-
     bool containsId(const QString &id) const;
     bool containsName(const QString &name) const;
     bool rowExists(const int &row) const;
