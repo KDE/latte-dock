@@ -25,7 +25,6 @@
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../layout/abstractlayout.h"
-#include "../layout/storage.h"
 #include "../view/view.h"
 
 // Qt
@@ -151,7 +150,6 @@ void Storage::importToCorona(const Layout::GenericLayout *layout)
 
     //! update ids to unique ones
     QString temp2File = newUniqueIdsLayoutFromFile(layout, temp1FilePath);
-
 
     //! Finally import the configuration
     importLayoutFile(layout, temp2File);
@@ -687,5 +685,99 @@ bool Storage::isBroken(const Layout::GenericLayout *layout, QStringList &errors)
 
     return false;
 }
+
+//! Data For Reports
+void Storage::systraysInformation(const QString &file, QHash<int, QList<int>> &systrays, QList<int> &assignedSystrays, QList<int> &orphanSystrays)
+{
+    systrays.clear();
+    assignedSystrays.clear();
+    orphanSystrays.clear();
+
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(file);
+    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+
+    //! assigned systrays
+    for (const auto &cId : containmentGroups.groupList()) {
+        if (Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId))) {
+            auto applets = containmentGroups.group(cId).group("Applets");
+
+            for (const auto &applet : applets.groupList()) {
+                KConfigGroup appletSettings = applets.group(applet).group("Configuration");
+                int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
+
+                if (tSysId != -1) {
+                    assignedSystrays << tSysId;
+                    systrays[cId.toInt()].append(tSysId);
+                }
+            }
+        }
+    }
+
+    //! orphan systrays
+    for (const auto &cId : containmentGroups.groupList()) {
+        if (!Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId)) && !assignedSystrays.contains(cId.toInt())) {
+            orphanSystrays << cId.toInt();
+        }
+    }
+}
+
+QList<Layout::ViewData> Storage::viewsData(const QString &file, const QHash<int, QList<int>> &systrays)
+{
+    QList<Layout::ViewData> viewsData;
+
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(file);
+    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+
+    for (const auto &cId : containmentGroups.groupList()) {
+        if (Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId))) {
+            Layout::ViewData vData;
+            int id = cId.toInt();
+
+            //! id
+            vData.id = id;
+
+            //! active
+            vData.active = false;
+
+            //! onPrimary
+            vData.onPrimary = containmentGroups.group(cId).readEntry("onPrimary", true);
+
+            //! Screen
+            vData.screenId = containmentGroups.group(cId).readEntry("lastScreen", -1);
+
+            //! location
+            vData.location = containmentGroups.group(cId).readEntry("location", (int)Plasma::Types::BottomEdge);
+
+            //! systrays
+            vData.systrays = systrays[id];
+
+            viewsData << vData;
+        }
+    }
+
+    return viewsData;
+}
+
+QList<int> Storage::viewsScreens(const QString &file)
+{
+    QList<int> screens;
+
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(file);
+
+    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+
+    for (const auto &cId : containmentGroups.groupList()) {
+        if (Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId))) {
+            int screenId = containmentGroups.group(cId).readEntry("lastScreen", -1);
+
+            if (screenId != -1 && !screens.contains(screenId)) {
+                screens << screenId;
+            }
+        }
+    }
+
+    return screens;
+}
+
 }
 }

@@ -24,7 +24,6 @@
 // local
 #include <coretypes.h>
 #include "plasma/quick/configview.h"
-#include "layout/storage.h"
 #include "layouts/storage.h"
 #include "view/panelshadows_p.h"
 
@@ -74,7 +73,6 @@ class Factory;
 }
 namespace Layout{
 class GenericLayout;
-class Storage;
 }
 namespace Layouts{
 class LaunchersSignals;
@@ -256,7 +254,6 @@ private:
     KWayland::Client::PlasmaShell *m_waylandCorona{nullptr};
 
     friend class GlobalShortcuts;
-    friend class Layout::Storage;
     friend class Layouts::LaunchersSignals;
     friend class Layouts::Manager;
     friend class Layouts::Storage;

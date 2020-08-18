@@ -21,7 +21,6 @@
 
 // local
 #include "abstractlayout.h"
-#include "storage.h"
 #include "../apptypes.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
@@ -49,8 +48,7 @@ namespace Latte {
 namespace Layout {
 
 GenericLayout::GenericLayout(QObject *parent, QString layoutFile, QString assignedName)
-    : AbstractLayout (parent, layoutFile, assignedName),
-      m_storage(new Storage(this))
+    : AbstractLayout (parent, layoutFile, assignedName)
 {
 }
 
@@ -969,7 +967,6 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
     }
 
     m_corona = corona;
-    m_storage->setStorageTmpDir(m_corona->layoutsManager()->importer()->storageTmpDir());
 
     for (const auto containment : m_corona->containments()) {
         if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
@@ -1476,7 +1473,7 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
             }
         }
     } else {
-        m_storage->systraysInformation(systrays, assignedSystrays, orphanSystrays);
+        Layouts::Storage::self()->systraysInformation(file(), systrays, assignedSystrays, orphanSystrays);
     }
 
     report += "<tr>";
@@ -1533,7 +1530,7 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
             }
         }
     } else {
-        viewsData = m_storage->viewsData(systrays);
+        viewsData = Layouts::Storage::self()->viewsData(file(), systrays);
     }
 
     //! sort views data
@@ -1652,7 +1649,7 @@ QList<int> GenericLayout::viewsScreens()
 
         return screens;
     } else {
-        return m_storage->viewsScreens();
+        return Layouts::Storage::self()->viewsScreens(file());
     }
 }
 
@@ -1693,7 +1690,6 @@ void GenericLayout::copyView(Plasma::Containment *containment)
             result.containment->reactToScreenChange();
         }
     }
-    //m_storage->copyView(containment);
 
     setBlockAutomaticLatteViewCreation(false);
     emit viewEdgeChanged();

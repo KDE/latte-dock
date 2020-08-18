@@ -32,6 +32,7 @@
 namespace Latte {
 namespace Layout {
 class GenericLayout;
+struct ViewData;
 }
 }
 
@@ -68,6 +69,14 @@ public:
     /// STATIC
     //! Check if an applet config group is valid or belongs to removed applet
     static bool appletGroupIsValid(const KConfigGroup &appletGroup);
+
+    //! Functions used from Layout Reports
+    //! [containment id, list<systrays ids>], list<systrays ids>, list[systrays ids]
+    void systraysInformation(const QString &file, QHash<int, QList<int>> &systrays, QList<int> &assignedSystrays, QList<int> &orphanSystrays);
+    //! list<screens ids>
+    QList<int> viewsScreens(const QString &file);
+    //! list<ViewData>
+    QList<Layout::ViewData> viewsData(const QString &file, const QHash<int, QList<int>> &systrays);
 
 private:
     Storage();

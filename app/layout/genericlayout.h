@@ -47,12 +47,6 @@ class View;
 
 namespace Latte {
 namespace Layout {
-class Storage;
-}
-}
-
-namespace Latte {
-namespace Layout {
 
 struct ViewData
 {
@@ -213,12 +207,9 @@ private:
 
     QStringList m_unloadedContainmentsIds;
 
-    QPointer<Storage> m_storage;
-
     //! try to avoid crashes from recreating the same views all the time
     QList<const Plasma::Containment *> m_viewsToRecreate;
 
-    friend class Storage;
     friend class Latte::View;
 };
 
