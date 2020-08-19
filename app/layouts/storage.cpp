@@ -99,6 +99,60 @@ void Storage::lock(const Layout::GenericLayout *layout)
     }
 }
 
+bool Storage::isSubContainment(const Layout::GenericLayout *layout, const Plasma::Applet *applet) const
+{
+    if (!layout || !applet) {
+        return false;
+    }
+
+    for (const auto containment : *layout->containments()) {
+        Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
+        if (parentApplet && parentApplet == applet) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Storage::isSubContainment(const KConfigGroup &appletGroup) const
+{
+    return subContainmentId(appletGroup) > 0;
+}
+
+int Storage::subContainmentId(const KConfigGroup &appletGroup) const
+{
+    int subId{-1};
+
+    if (appletGroup.hasGroup("Configuration")) {
+        KConfigGroup appletConfigGroup = appletGroup.group("Configuration");
+
+        if (appletConfigGroup.hasKey("SystrayContainmentId")) {
+            subId = appletConfigGroup.readEntry("SystrayContainmentId", -1);
+        }
+    }
+
+    return subId;
+}
+
+Plasma::Containment *Storage::subContainmentOf(const Layout::GenericLayout *layout, const Plasma::Applet *applet)
+{
+    if (!layout || !applet) {
+        return nullptr;
+    }
+
+    if (isSubContainment(layout, applet)) {
+        for (const auto containment : *layout->containments()) {
+            Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
+            if (parentApplet && parentApplet == applet) {
+                return containment;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
 void Storage::unlock(const Layout::GenericLayout *layout)
 {
     QFileInfo layoutFileInfo(layout->file());

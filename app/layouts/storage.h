@@ -27,6 +27,7 @@
 #include <KConfigGroup>
 
 // Plasma
+#include <Plasma/Applet>
 #include <Plasma/Containment>
 
 namespace Latte {
@@ -58,6 +59,9 @@ public:
     bool isLatteContainment(Plasma::Containment *containment) const;
     bool isLatteContainment(const KConfigGroup &group) const;
     bool isBroken(const Layout::GenericLayout *layout, QStringList &errors) const;
+    bool isSubContainment(const Layout::GenericLayout *layout, const Plasma::Applet *applet) const;
+
+    Plasma::Containment *subContainmentOf(const Layout::GenericLayout *layout, const Plasma::Applet *applet);
 
     void lock(const Layout::GenericLayout *layout); //! make it only read-only
     void unlock(const Layout::GenericLayout *layout); //! make it writable which it should be the default
@@ -65,6 +69,7 @@ public:
     void importToCorona(const Layout::GenericLayout *layout);
     void syncToLayoutFile(const Layout::GenericLayout *layout, bool removeLayoutId);
     ViewDelayedCreationData copyView(const Layout::GenericLayout *layout, Plasma::Containment *containment);
+
 
     /// STATIC
     //! Check if an applet config group is valid or belongs to removed applet
@@ -80,6 +85,9 @@ public:
 
 private:
     Storage();
+
+    bool isSubContainment(const KConfigGroup &appletGroup) const;
+    int subContainmentId(const KConfigGroup &appletGroup) const;
 
     //! STORAGE !////
     QString availableId(QStringList all, QStringList assigned, int base);
