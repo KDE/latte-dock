@@ -40,6 +40,12 @@ struct ViewData;
 namespace Latte {
 namespace Layouts {
 
+struct SubContaimentIdentityData
+{
+    QString cfgGroup;
+    QString cfgProperty;
+};
+
 struct ViewDelayedCreationData
 {
     Plasma::Containment *containment{nullptr};
@@ -101,6 +107,7 @@ private:
 private:
     QTemporaryDir m_storageTmpDir;
 
+    QList<SubContaimentIdentityData> m_subIdentities;
 };
 
 }

@@ -48,6 +48,16 @@ namespace Layouts {
 Storage::Storage()
 {
     qDebug() << " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LAYOUTS::STORAGE, TEMP DIR ::: " << m_storageTmpDir.path();
+
+    SubContaimentIdentityData data;
+
+    //! Systray
+    data.cfgGroup = "Configuration"; data.cfgGroup = "SystrayContainmentId";
+    m_subIdentities << data;
+
+    //! Group applet
+    data.cfgGroup = "Configuration"; data.cfgGroup = "ContainmentId";
+    m_subIdentities << data;
 }
 
 Storage::~Storage()
@@ -90,15 +100,6 @@ bool Storage::isLatteContainment(const KConfigGroup &group) const
     return pluginId == "org.kde.latte.containment";
 }
 
-void Storage::lock(const Layout::GenericLayout *layout)
-{
-    QFileInfo layoutFileInfo(layout->file());
-
-    if (layoutFileInfo.exists() && layoutFileInfo.isWritable()) {
-        QFile(layout->file()).setPermissions(QFileDevice::ReadUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
-    }
-}
-
 bool Storage::isSubContainment(const Layout::GenericLayout *layout, const Plasma::Applet *applet) const
 {
     if (!layout || !applet) {
@@ -124,11 +125,23 @@ int Storage::subContainmentId(const KConfigGroup &appletGroup) const
 {
     int subId{-1};
 
-    if (appletGroup.hasGroup("Configuration")) {
-        KConfigGroup appletConfigGroup = appletGroup.group("Configuration");
+    //! cycle through subcontainments identities
+    for (auto subidentity : m_subIdentities) {
+        KConfigGroup appletConfigGroup = appletGroup;
 
-        if (appletConfigGroup.hasKey("SystrayContainmentId")) {
-            subId = appletConfigGroup.readEntry("SystrayContainmentId", -1);
+        if (!subidentity.cfgGroup.isEmpty()) {
+            //! if identity provides specific configuration group
+            if (appletGroup.hasGroup(subidentity.cfgGroup)) {
+                appletConfigGroup = appletGroup.group(subidentity.cfgGroup);
+            }
+        }
+
+        if (!subidentity.cfgProperty.isEmpty()) {
+            //! if identity provides specific property for configuration group
+            if (appletConfigGroup.hasKey(subidentity.cfgProperty)) {
+                subId = appletConfigGroup.readEntry(subidentity.cfgProperty, -1);
+                return subId;
+            }
         }
     }
 
@@ -151,6 +164,15 @@ Plasma::Containment *Storage::subContainmentOf(const Layout::GenericLayout *layo
     }
 
     return nullptr;
+}
+
+void Storage::lock(const Layout::GenericLayout *layout)
+{
+    QFileInfo layoutFileInfo(layout->file());
+
+    if (layoutFileInfo.exists() && layoutFileInfo.isWritable()) {
+        QFile(layout->file()).setPermissions(QFileDevice::ReadUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+    }
 }
 
 void Storage::unlock(const Layout::GenericLayout *layout)
