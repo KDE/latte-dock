@@ -72,6 +72,13 @@ GenericTable<T> &GenericTable<T>::operator<<(const T &rhs)
 }
 
 template <class T>
+GenericTable<T> &GenericTable<T>::insert(const int &pos, const T &rhs)
+{
+    m_list.insert(pos, rhs);
+    return (*this);
+}
+
+template <class T>
 bool GenericTable<T>::operator==(const GenericTable<T> &rhs) const
 {
     if (m_list.count() == 0 && rhs.m_list.count() == 0) {
@@ -187,6 +194,22 @@ template <class T>
 int GenericTable<T>::rowCount() const
 {
     return m_list.count();
+}
+
+template <class T>
+int GenericTable<T>::sortedPosForName(const QString &name) const
+{
+    int pos{0};
+
+    for(int i=0; i<m_list.count(); ++i) {
+        if (QString::compare(m_list[i].name, name, Qt::CaseInsensitive) <= 0) {
+            pos++;
+        } else {
+            break;
+        }
+    }
+
+    return pos;
 }
 
 template <class T>

@@ -43,6 +43,7 @@ public:
     GenericTable<T> &operator=(const GenericTable<T> &rhs);
     GenericTable<T> &operator=(GenericTable<T> &&rhs);
     GenericTable<T> &operator<<(const T &rhs);
+    GenericTable<T> &insert(const int &pos, const T &rhs);
     bool operator==(const GenericTable<T> &rhs) const;
     bool operator!=(const GenericTable<T> &rhs) const;
     T &operator[](const QString &id);
@@ -56,6 +57,7 @@ public:
 
     int indexOf(const QString &id) const;
     int rowCount() const;
+    int sortedPosForName(const QString &name) const;
 
     QString idForName(const QString &name) const;
 

@@ -576,6 +576,9 @@ void Synchronizer::loadLayouts()
     //! Shared Layouts should not be used for Activities->Layouts assignments or published lists
     clearSharedLayoutsFromCentralLists();
 
+    m_layouts.sort(Qt::CaseInsensitive);
+    m_menuLayouts.sort(Qt::CaseInsensitive);
+
     emit layoutsChanged();
     emit menuLayoutsChanged();
 
@@ -609,6 +612,9 @@ void Synchronizer::onLayoutAdded(const QString &layout)
     }
 
     if (m_isLoaded) {
+        m_layouts.sort(Qt::CaseInsensitive);
+        m_menuLayouts.sort(Qt::CaseInsensitive);
+
         emit layoutsChanged();
         emit menuLayoutsChanged();
     }

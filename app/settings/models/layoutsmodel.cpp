@@ -128,9 +128,11 @@ void Layouts::clear()
 }
 
 void Layouts::appendLayout(const Latte::Data::Layout &layout)
-{    
-    beginInsertRows(QModelIndex(), m_layoutsTable.rowCount(), m_layoutsTable.rowCount());
-    m_layoutsTable << layout;
+{
+    int newRow = m_layoutsTable.sortedPosForName(layout.name);
+
+    beginInsertRows(QModelIndex(), newRow, newRow);
+    m_layoutsTable.insert(newRow, layout);
     endInsertRows();
 
     emit rowsInserted();
