@@ -82,21 +82,21 @@ void GenericLayout::unloadContainments()
 
     m_unloadedContainmentsIds.clear();
 
-    QList<Plasma::Containment *> systrays;
+    QList<Plasma::Containment *> subcontainments;
 
-    //!identify systrays and unload them first
+    //!identify subcontainments and unload them first
     for (const auto containment : m_containments) {
         if (Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent())) {
-            systrays.append(containment);
+            subcontainments.append(containment);
         }
     }
 
-    while (!systrays.isEmpty()) {
-        Plasma::Containment *systray = systrays.at(0);
-        m_unloadedContainmentsIds << QString::number(systray->id());
-        systrays.removeFirst();
-        m_containments.removeAll(systray);
-        delete systray;
+    while (!subcontainments.isEmpty()) {
+        Plasma::Containment *sub = subcontainments.at(0);
+        m_unloadedContainmentsIds << QString::number(sub->id());
+        subcontainments.removeFirst();
+        m_containments.removeAll(sub);
+        delete sub;
     }
 
     while (!m_containments.isEmpty()) {
@@ -682,14 +682,14 @@ void GenericLayout::addContainment(Plasma::Containment *containment)
 
 void GenericLayout::appletCreated(Plasma::Applet *applet)
 {
-    //! In Multiple Layout the orphaned systrays must be assigned to layouts
+    //! In Multiple Layout the orphaned subcontainments must be assigned to layouts
     //! when the user adds them
-    KConfigGroup appletSettings = applet->containment()->config().group("Applets").group(QString::number(applet->id())).group("Configuration");
+    KConfigGroup appletSettings = applet->containment()->config().group("Applets").group(QString::number(applet->id()));
 
-    int systrayId = appletSettings.readEntry("SystrayContainmentId", -1);
+    int subId = Layouts::Storage::self()->subContainmentId(appletSettings);
 
-    if (systrayId != -1) {
-        uint sId = (uint)systrayId;
+    if (subId >= 0) {
+        uint sId = (uint)subId;
 
         for (const auto containment : m_corona->containments()) {
             if (containment->id() == sId) {
@@ -1035,7 +1035,7 @@ void GenericLayout::assignToLayout(Latte::View *latteView, QList<Plasma::Contain
             containment->config().writeEntry("layoutId", name());
 
             if (latteView->containment() != containment) {
-                //! assign signals only to systrays
+                //! assign signals only to subcontainments
                 //! the View::setLayout() is responsible for the View::Containment signals
                 connect(containment, &QObject::destroyed, this, &GenericLayout::containmentDestroyed);
                 connect(containment, &Plasma::Applet::destroyedChanged, this, &GenericLayout::destroyedChanged);
@@ -1067,10 +1067,10 @@ QList<Plasma::Containment *> GenericLayout::unassignFromLayout(Latte::View *latt
     for (const auto containment : m_containments) {
         Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
 
-        //! add systrays from that latteView
+        //! add subcontainments from that latteView
         if (parentApplet && parentApplet->containment() && parentApplet->containment() == latteView->containment()) {
             containments << containment;
-            //! unassign signals only to systrays
+            //! unassign signals only to subcontainments
             //! the View::setLayout() is responsible for the View::Containment signals
             disconnect(containment, &QObject::destroyed, this, &GenericLayout::containmentDestroyed);
             disconnect(containment, &Plasma::Applet::destroyedChanged, this, &GenericLayout::destroyedChanged);
@@ -1387,24 +1387,23 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
     qDebug() << "end of, syncLatteViewsToScreens ....";
 }
 
-QList<int> GenericLayout::containmentSystrays(Plasma::Containment *containment) const
+QList<int> GenericLayout::subContainmentsOf(Plasma::Containment *containment) const
 {
-    QList<int> trays;
+    QList<int> subs;
 
     if (Layouts::Storage::self()->isLatteContainment(containment)) {
         auto applets = containment->config().group("Applets");
 
         for (const auto &applet : applets.groupList()) {
-            KConfigGroup appletSettings = applets.group(applet).group("Configuration");
-            int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
+            int tSubId = Layouts::Storage::self()->subContainmentId(applets.group(applet));
 
-            if (tSysId != -1) {
-                trays << tSysId;
+            if (tSubId >= 0) {
+                subs << tSubId;
             }
         }
     }
 
-    return trays;
+    return subs;
 }
 
 
@@ -1451,37 +1450,37 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
     }
     report += "</tr>";
 
-    //! latte containment ids, systrays
-    QHash<int, QList<int>> systrays;
-    QList<int> assignedSystrays;
-    QList<int> orphanSystrays;
+    //! latte containment ids, subcontainments
+    QHash<int, QList<int>> subContainments;
+    QList<int> assignedSubContainments;
+    QList<int> orphanSubContainments;
 
     if (isActive()) {
-        //! organize systrays
+        //! organize subcontainments
         for (const auto containment : m_containments) {
-            QList<int> trays = containmentSystrays(containment);
-            if (trays.count() > 0) {
-                systrays[containment->id()] = trays;
-                assignedSystrays << trays;
+            QList<int> subs = subContainmentsOf(containment);
+            if (subs.count() > 0) {
+                subContainments[containment->id()] = subs;
+                assignedSubContainments << subs;
             }
         }
 
-        //! orphan systrays
+        //! orphan subcontainments
         for (const auto containment : m_containments) {
-            if (!Layouts::Storage::self()->isLatteContainment(containment) && !assignedSystrays.contains(containment->id())) {
-                orphanSystrays << containment->id();
+            if (!Layouts::Storage::self()->isLatteContainment(containment) && !assignedSubContainments.contains(containment->id())) {
+                orphanSubContainments << containment->id();
             }
         }
     } else {
-        Layouts::Storage::self()->systraysInformation(file(), systrays, assignedSystrays, orphanSystrays);
+        Layouts::Storage::self()->subContainmentsInfo(file(), subContainments, assignedSubContainments, orphanSubContainments);
     }
 
     report += "<tr>";
-    report += "<td><b>" + i18n("Orphan Systrays:") +"</b></td>";
-    if (orphanSystrays.count() == 0) {
+    report += "<td><b>" + i18n("Orphan SubContainments:") +"</b></td>";
+    if (orphanSubContainments.count() == 0) {
         report += "<td><b> -- </b></td>";
     } else {
-        report += "<td><b><font color='red'>" + idsLineStr(orphanSystrays) +"</font></b></td>";
+        report += "<td><b><font color='red'>" + idsLineStr(orphanSubContainments) +"</font></b></td>";
     }
     report += "</tr>";
     report += "</table>";
@@ -1491,7 +1490,7 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
             "<td align='center'><b>" + i18n("Screen") + "</b></td>" +
             "<td align='center'><b>" + i18nc("screen edge","Edge") + "</b></td>" +
             "<td align='center'><b>" + i18nc("active dock/panel","Active") + "</b></td>" +
-            "<td align='center'><b>" + i18n("Systrays") + "</b></td>";
+            "<td align='center'><b>" + i18n("SubContainments") + "</b></td>";
 
     report += "<tr><td colspan='5'><hr></td></tr>";
 
@@ -1524,13 +1523,13 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
 
                 vData.onPrimary = onPrimary;
                 vData.screenId = screenId;
-                vData.systrays = containmentSystrays(containment);
+                vData.subContainments = subContainmentsOf(containment);
 
                 viewsData << vData;
             }
         }
     } else {
-        viewsData = Layouts::Storage::self()->viewsData(file(), systrays);
+        viewsData = Layouts::Storage::self()->viewsData(file(), subContainments);
     }
 
     //! sort views data
@@ -1582,15 +1581,15 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
         }
         report += "<td align='center'>" + activeStr + "</td>" ;
 
-        //! systrays
-        QString systraysStr = " -- ";
-        if (viewsData[i].systrays.count() > 0) {
-            systraysStr = idsLineStr(viewsData[i].systrays);
+        //! subcontainments
+        QString subContainmentsStr = " -- ";
+        if (viewsData[i].subContainments.count() > 0) {
+            subContainmentsStr = idsLineStr(viewsData[i].subContainments);
         }
         if(viewsData[i].active) {
-            systraysStr = "<b>" + systraysStr + "</b>";
+            subContainmentsStr = "<b>" + subContainmentsStr + "</b>";
         }
-        report += "<td align='center'>" + systraysStr + "</td>";
+        report += "<td align='center'>" + subContainmentsStr + "</td>";
 
         report += "</tr>";
     }

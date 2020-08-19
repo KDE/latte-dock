@@ -52,12 +52,9 @@ Storage::Storage()
     SubContaimentIdentityData data;
 
     //! Systray
-    data.cfgGroup = "Configuration"; data.cfgGroup = "SystrayContainmentId";
-    m_subIdentities << data;
-
+    m_subIdentities << SubContaimentIdentityData{.cfgGroup="Configuration", .cfgProperty="SystrayContainmentId"};
     //! Group applet
-    data.cfgGroup = "Configuration"; data.cfgGroup = "ContainmentId";
-    m_subIdentities << data;
+    m_subIdentities << SubContaimentIdentityData{.cfgGroup="Configuration", .cfgProperty="ContainmentId"};
 }
 
 Storage::~Storage()
@@ -118,20 +115,23 @@ bool Storage::isSubContainment(const Layout::GenericLayout *layout, const Plasma
 
 bool Storage::isSubContainment(const KConfigGroup &appletGroup) const
 {
-    return subContainmentId(appletGroup) > 0;
+    return isValid(subContainmentId(appletGroup));
+}
+
+bool Storage::isValid(const int &id)
+{
+    return id >= IDBASE;
 }
 
 int Storage::subContainmentId(const KConfigGroup &appletGroup) const
 {
-    int subId{-1};
-
     //! cycle through subcontainments identities
     for (auto subidentity : m_subIdentities) {
         KConfigGroup appletConfigGroup = appletGroup;
 
         if (!subidentity.cfgGroup.isEmpty()) {
             //! if identity provides specific configuration group
-            if (appletGroup.hasGroup(subidentity.cfgGroup)) {
+            if (appletConfigGroup.hasGroup(subidentity.cfgGroup)) {
                 appletConfigGroup = appletGroup.group(subidentity.cfgGroup);
             }
         }
@@ -139,13 +139,41 @@ int Storage::subContainmentId(const KConfigGroup &appletGroup) const
         if (!subidentity.cfgProperty.isEmpty()) {
             //! if identity provides specific property for configuration group
             if (appletConfigGroup.hasKey(subidentity.cfgProperty)) {
-                subId = appletConfigGroup.readEntry(subidentity.cfgProperty, -1);
-                return subId;
+                return appletConfigGroup.readEntry(subidentity.cfgProperty, IDNULL);
             }
         }
     }
 
-    return subId;
+    return IDNULL;
+}
+
+int Storage::subIdentityIndex(const KConfigGroup &appletGroup) const
+{
+    if (!isSubContainment(appletGroup)) {
+        return IDNULL;
+    }
+
+    //! cycle through subcontainments identities
+    for (int i=0; i<m_subIdentities.count(); ++i) {
+        KConfigGroup appletConfigGroup = appletGroup;
+
+        if (!m_subIdentities[i].cfgGroup.isEmpty()) {
+            //! if identity provides specific configuration group
+            if (appletConfigGroup.hasGroup(m_subIdentities[i].cfgGroup)) {
+                appletConfigGroup = appletGroup.group(m_subIdentities[i].cfgGroup);
+            }
+        }
+
+        if (!m_subIdentities[i].cfgProperty.isEmpty()) {
+            //! if identity provides specific property for configuration group
+            if (appletConfigGroup.hasKey(m_subIdentities[i].cfgProperty)) {
+                int subId = appletConfigGroup.readEntry(m_subIdentities[i].cfgProperty, IDNULL);
+                return isValid(subId) ? i : IDNULL;
+            }
+        }
+    }
+
+    return IDNULL;
 }
 
 Plasma::Containment *Storage::subContainmentOf(const Layout::GenericLayout *layout, const Plasma::Applet *applet)
@@ -281,11 +309,11 @@ QString Storage::newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout,
 
     QStringList toInvestigateContainmentIds;
     QStringList toInvestigateAppletIds;
-    QStringList toInvestigateSystrayContIds;
+    QStringList toInvestigateSubContIds;
 
-    //! first is the systray containment id
-    QHash<QString, QString> systrayParentContainmentIds;
-    QHash<QString, QString> systrayAppletIds;
+    //! first is the subcontainment id
+    QHash<QString, QString> subParentContainmentIds;
+    QHash<QString, QString> subAppletIds;
 
     //qDebug() << "Ids:" << allIds;
 
@@ -304,19 +332,17 @@ QString Storage::newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout,
         auto appletsEntries = investigate_conts.group(cId).group("Applets");
         toInvestigateAppletIds << appletsEntries.groupList();
 
-        //! investigate for systrays
+        //! investigate for subcontainments
         for (const auto &appletId : appletsEntries.groupList()) {
-            KConfigGroup appletSettings = appletsEntries.group(appletId).group("Configuration");
+            int subId = subContainmentId(appletsEntries.group(appletId));
 
-            int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
-
-            //! It is a systray !!!
-            if (tSysId != -1) {
-                QString tSysIdStr = QString::number(tSysId);
-                toInvestigateSystrayContIds << tSysIdStr;
-                systrayParentContainmentIds[tSysIdStr] = cId;
-                systrayAppletIds[tSysIdStr] = appletId;
-                qDebug() << "systray was found in the containment...";
+            //! It is a subcontainment !!!
+            if (isValid(subId)) {
+                QString tSubIdStr = QString::number(subId);
+                toInvestigateSubContIds << tSubIdStr;
+                subParentContainmentIds[tSubIdStr] = cId;
+                subAppletIds[tSubIdStr] = appletId;
+                qDebug() << "subcontainment was found in the containment...";
             }
         }
     }
@@ -397,11 +423,23 @@ QString Storage::newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout,
         }
     }
 
-    //! must update also the systray id in its applet
-    for (const auto &systrayId : toInvestigateSystrayContIds) {
-        KConfigGroup systrayParentContainment = investigate_conts.group(systrayParentContainmentIds[systrayId]);
-        systrayParentContainment.group("Applets").group(systrayAppletIds[systrayId]).group("Configuration").writeEntry("SystrayContainmentId", assigned[systrayId]);
-        systrayParentContainment.sync();
+    //! must update also the sub id in its applet
+    for (const auto &subId : toInvestigateSubContIds) {
+        KConfigGroup subParentContainment = investigate_conts.group(subParentContainmentIds[subId]);
+        KConfigGroup subAppletConfig = subParentContainment.group("Applets").group(subAppletIds[subId]);
+
+        int entityIndex = subIdentityIndex(subAppletConfig);
+
+        if (entityIndex >= 0) {
+            if (!m_subIdentities[entityIndex].cfgGroup.isEmpty()) {
+                subAppletConfig = subAppletConfig.group(m_subIdentities[entityIndex].cfgGroup);
+            }
+
+            if (!m_subIdentities[entityIndex].cfgProperty.isEmpty()) {
+                subAppletConfig.writeEntry(m_subIdentities[entityIndex].cfgProperty, assigned[subId]);
+                subParentContainment.sync();
+            }
+        }
     }
 
     investigate_conts.sync();
@@ -467,11 +505,9 @@ QList<Plasma::Containment *> Storage::importLayoutFile(const Layout::GenericLayo
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
     auto newContainments = layout->corona()->importLayout(KConfigGroup(filePtr, ""));
 
-    ///Find latte and systray containments
     qDebug() << " imported containments ::: " << newContainments.length();
 
     QList<Plasma::Containment *> importedDocks;
-    //QList<Plasma::Containment *> systrays;
 
     for (const auto containment : newContainments) {
         if (isLatteContainment(containment)) {
@@ -507,41 +543,40 @@ ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, P
 
     containment->config().copyTo(&copied_c1);
 
-    //!investigate if there multiple systray(s) in the containment to copy also
+    //!investigate if there are subcontainments in the containment to copy also
 
-    //! systrayId, systrayAppletId
-    QHash<uint, QString> systraysInfo;
+    //! subId, subAppletId
+    QHash<uint, QString> subInfo;
     auto applets = containment->config().group("Applets");
 
     for (const auto &applet : applets.groupList()) {
-        KConfigGroup appletSettings = applets.group(applet).group("Configuration");
+        int tSubId = subContainmentId(applets.group(applet));
 
-        int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
-
-        if (tSysId != -1) {
-            systraysInfo[tSysId] = applet;
-            qDebug() << "systray with id "<< tSysId << " was found in the containment... ::: " << tSysId;
+        //! It is a subcontainment !!!
+        if (isValid(tSubId)) {
+            subInfo[tSubId] = applet;
+            qDebug() << "subcontainment with id "<< tSubId << " was found in the containment... ::: " << containment->id();
         }
     }
 
-    if (systraysInfo.count() > 0) {
-        for(const auto systrayId : systraysInfo.keys()) {
-            Plasma::Containment *systray{nullptr};
+    if (subInfo.count() > 0) {
+        for(const auto subId : subInfo.keys()) {
+            Plasma::Containment *subcontainment{nullptr};
 
             for (const auto containment : layout->corona()->containments()) {
-                if (containment->id() == systrayId) {
-                    systray = containment;
+                if (containment->id() == subId) {
+                    subcontainment = containment;
                     break;
                 }
             }
 
-            if (systray) {
-                KConfigGroup copied_systray = KConfigGroup(&copied_conts, QString::number(systray->id()));
-                systray->config().copyTo(&copied_systray);
+            if (subcontainment) {
+                KConfigGroup copied_sub = KConfigGroup(&copied_conts, QString::number(subcontainment->id()));
+                subcontainment->config().copyTo(&copied_sub);
             }
         }
     }
-    //! end of systray specific code
+    //! end of subcontainments specific code
 
     //! update ids to unique ones
     QString temp2File = newUniqueIdsLayoutFromFile(layout, temp1File);
@@ -568,19 +603,19 @@ ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, P
 
     bool setOnExplicitScreen = false;
 
-    int dockScrId = -1;
-    int copyScrId = -1;
+    int dockScrId = IDNULL;
+    int copyScrId = IDNULL;
 
     if (dock) {
         dockScrId = dock->positioner()->currentScreenId();
         qDebug() << "COPY DOCK SCREEN ::: " << dockScrId;
 
-        if (dockScrId != -1 && screens.count() > 1) {
+        if (isValid(dockScrId) && screens.count() > 1) {
             for (const auto scr : screens) {
                 copyScrId = layout->corona()->screenPool()->id(scr->name());
 
                 //the screen must exist and not be the same with the original dock
-                if (copyScrId > -1 && copyScrId != dockScrId) {
+                if (isValid(copyScrId) && copyScrId != dockScrId) {
                     QList<Plasma::Types::Location> fEdges = layout->freeEdges(copyScrId);
 
                     if (fEdges.contains((Plasma::Types::Location)containment->location())) {
@@ -616,7 +651,7 @@ ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, P
 
     ViewDelayedCreationData result;
 
-    if (setOnExplicitScreen && copyScrId > -1) {
+    if (setOnExplicitScreen && isValid(copyScrId)) {
         qDebug() << "Copy Dock in explicit screen ::: " << copyScrId;
         result.containment = newContainment;
         result.forceOnPrimary = false;
@@ -763,41 +798,41 @@ bool Storage::isBroken(const Layout::GenericLayout *layout, QStringList &errors)
 }
 
 //! Data For Reports
-void Storage::systraysInformation(const QString &file, QHash<int, QList<int>> &systrays, QList<int> &assignedSystrays, QList<int> &orphanSystrays)
+void Storage::subContainmentsInfo(const QString &file, QHash<int, QList<int>> &subContainments, QList<int> &assignedSubContainments, QList<int> &orphanSubContainments)
 {
-    systrays.clear();
-    assignedSystrays.clear();
-    orphanSystrays.clear();
+    subContainments.clear();
+    assignedSubContainments.clear();
+    orphanSubContainments.clear();
 
     KSharedConfigPtr lFile = KSharedConfig::openConfig(file);
     KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
 
-    //! assigned systrays
+    //! assigned subcontainments
     for (const auto &cId : containmentGroups.groupList()) {
         if (Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId))) {
             auto applets = containmentGroups.group(cId).group("Applets");
 
             for (const auto &applet : applets.groupList()) {
                 KConfigGroup appletSettings = applets.group(applet).group("Configuration");
-                int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
+                int tSubId = appletSettings.readEntry("SystrayContainmentId", IDNULL);
 
-                if (tSysId != -1) {
-                    assignedSystrays << tSysId;
-                    systrays[cId.toInt()].append(tSysId);
+                if (isValid(tSubId)) {
+                    assignedSubContainments << tSubId;
+                    subContainments[cId.toInt()].append(tSubId);
                 }
             }
         }
     }
 
-    //! orphan systrays
+    //! orphan subcontainments
     for (const auto &cId : containmentGroups.groupList()) {
-        if (!Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId)) && !assignedSystrays.contains(cId.toInt())) {
-            orphanSystrays << cId.toInt();
+        if (!Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId)) && !assignedSubContainments.contains(cId.toInt())) {
+            orphanSubContainments << cId.toInt();
         }
     }
 }
 
-QList<Layout::ViewData> Storage::viewsData(const QString &file, const QHash<int, QList<int>> &systrays)
+QList<Layout::ViewData> Storage::viewsData(const QString &file, const QHash<int, QList<int>> &subContainments)
 {
     QList<Layout::ViewData> viewsData;
 
@@ -819,13 +854,13 @@ QList<Layout::ViewData> Storage::viewsData(const QString &file, const QHash<int,
             vData.onPrimary = containmentGroups.group(cId).readEntry("onPrimary", true);
 
             //! Screen
-            vData.screenId = containmentGroups.group(cId).readEntry("lastScreen", -1);
+            vData.screenId = containmentGroups.group(cId).readEntry("lastScreen", IDNULL);
 
             //! location
             vData.location = containmentGroups.group(cId).readEntry("location", (int)Plasma::Types::BottomEdge);
 
-            //! systrays
-            vData.systrays = systrays[id];
+            //! subcontainments
+            vData.subContainments = subContainments[id];
 
             viewsData << vData;
         }
@@ -844,9 +879,9 @@ QList<int> Storage::viewsScreens(const QString &file)
 
     for (const auto &cId : containmentGroups.groupList()) {
         if (Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId))) {
-            int screenId = containmentGroups.group(cId).readEntry("lastScreen", -1);
+            int screenId = containmentGroups.group(cId).readEntry("lastScreen", IDNULL);
 
-            if (screenId != -1 && !screens.contains(screenId)) {
+            if (isValid(screenId) && !screens.contains(screenId)) {
                 screens << screenId;
             }
         }

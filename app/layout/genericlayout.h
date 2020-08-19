@@ -55,7 +55,7 @@ struct ViewData
     bool onPrimary; //on primary
     int screenId; //explicit screen id
     int location; //edge location
-    QList<int> systrays;
+    QList<int> subContainments;
 };
 
 //! This is  views map in the following structure:
@@ -131,7 +131,7 @@ public:
     virtual QList<Plasma::Types::Location> freeEdges(QScreen *scr) const;
     virtual QList<Plasma::Types::Location> freeEdges(int screen) const;
 
-    //! Bind this latteView and its relevant containments(including systrays)
+    //! Bind this latteView and its relevant containments(including subcontainments)
     //! to this layout. It is used for moving a Latte::View from layout to layout)
     void assignToLayout(Latte::View *latteView, QList<Plasma::Containment *> containments);
     //! Unassign that latteView from this layout (this is used for moving a latteView
@@ -196,7 +196,7 @@ private:
 
     bool mapContainsId(const ViewsMap *map, uint viewId) const;
 
-    QList<int> containmentSystrays(Plasma::Containment *containment) const;
+    QList<int> subContainmentsOf(Plasma::Containment *containment) const;
 
     QList<ViewData> sortedViewsData(const QList<ViewData> &viewsData);
 

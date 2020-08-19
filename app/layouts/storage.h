@@ -40,6 +40,9 @@ struct ViewData;
 namespace Latte {
 namespace Layouts {
 
+#define IDBASE 0
+#define IDNULL -1
+
 struct SubContaimentIdentityData
 {
     QString cfgGroup;
@@ -67,6 +70,8 @@ public:
     bool isBroken(const Layout::GenericLayout *layout, QStringList &errors) const;
     bool isSubContainment(const Layout::GenericLayout *layout, const Plasma::Applet *applet) const;
 
+    int subContainmentId(const KConfigGroup &appletGroup) const;
+
     Plasma::Containment *subContainmentOf(const Layout::GenericLayout *layout, const Plasma::Applet *applet);
 
     void lock(const Layout::GenericLayout *layout); //! make it only read-only
@@ -80,20 +85,21 @@ public:
     /// STATIC
     //! Check if an applet config group is valid or belongs to removed applet
     static bool appletGroupIsValid(const KConfigGroup &appletGroup);
+    static bool isValid(const int &id);
 
     //! Functions used from Layout Reports
-    //! [containment id, list<systrays ids>], list<systrays ids>, list[systrays ids]
-    void systraysInformation(const QString &file, QHash<int, QList<int>> &systrays, QList<int> &assignedSystrays, QList<int> &orphanSystrays);
+    //! [containment id, list<subcontainment ids>], list<subcontainment ids>, list[subcontainment ids]
+    void subContainmentsInfo(const QString &file, QHash<int, QList<int>> &subContainments, QList<int> &assignedSubContainments, QList<int> &orphanSubContainments);
     //! list<screens ids>
     QList<int> viewsScreens(const QString &file);
     //! list<ViewData>
-    QList<Layout::ViewData> viewsData(const QString &file, const QHash<int, QList<int>> &systrays);
+    QList<Layout::ViewData> viewsData(const QString &file, const QHash<int, QList<int>> &subContainments);
 
 private:
     Storage();
 
     bool isSubContainment(const KConfigGroup &appletGroup) const;
-    int subContainmentId(const KConfigGroup &appletGroup) const;
+    int subIdentityIndex(const KConfigGroup &appletGroup) const;
 
     //! STORAGE !////
     QString availableId(QStringList all, QStringList assigned, int base);
