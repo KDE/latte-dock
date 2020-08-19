@@ -23,6 +23,7 @@
 #include "view.h"
 #include "../lattecorona.h"
 #include "../layout/genericlayout.h"
+#include "../layouts/storage.h"
 #include "../settings/universalsettings.h"
 
 // Qt
@@ -418,7 +419,7 @@ bool ContainmentInterface::appletIsExpandable(const int id)
 
     for (const auto applet : m_view->containment()->applets()) {
         if (applet && applet->id() == (uint)id) {
-            if (m_view->layout() && m_view->layout()->isSubContainment(applet)) {
+            if (Layouts::Storage::self()->isSubContainment(m_view->layout(), applet)) {
                 return true;
             }
 
@@ -549,7 +550,7 @@ void ContainmentInterface::toggleAppletExpanded(const int id)
     }
 
     for (const auto applet : m_view->containment()->applets()) {
-        if (applet->id() == (uint)id && !m_view->layout()->isSubContainment(applet)/*block for sub-containments*/) {
+        if (applet->id() == (uint)id && !Layouts::Storage::self()->isSubContainment(m_view->layout(), applet)/*block for sub-containments*/) {
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {
@@ -580,9 +581,9 @@ void ContainmentInterface::on_appletAdded(Plasma::Applet *applet)
         return;
     }
 
-    if (m_view->layout() && m_view->layout()->isSubContainment(applet)) {
+    if (Layouts::Storage::self()->isSubContainment(m_view->layout(), applet)) {
         //! internal containment case
-        Plasma::Containment *subContainment = m_view->layout()->subContainmentOf(applet);
+        Plasma::Containment *subContainment = Layouts::Storage::self()->subContainmentOf(m_view->layout(), applet);
         PlasmaQuick::AppletQuickItem *contAi = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
         if (contAi && !m_appletsExpandedConnections.contains(contAi)) {

@@ -23,6 +23,7 @@
 #include "view.h"
 #include "visibilitymanager.h"
 #include "../lattecorona.h"
+#include "../layouts/storage.h"
 
 // Qt
 #include <QMouseEvent>
@@ -129,7 +130,7 @@ QPoint ContextMenu::popUpTopLeft(Plasma::Applet *applet, const QRect popUpRect)
 
     if ((itemLength > menuLength)
             || (applet == m_latteView->containment())
-            || (m_latteView && m_latteView->layout() && m_latteView->layout()->isSubContainment(applet)) ) {
+            || (m_latteView && Layouts::Storage::self()->isSubContainment(m_latteView->layout(), applet)) ) {
         return popUpRelevantToGlobalPoint(globalItemRect, popUpRect);
     } else {
         return popUpRelevantToParent(globalItemRect, popUpRect);
@@ -279,8 +280,8 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
             if (ai && ai->isVisible() && appletContainsMouse) {
                 applet = ai->applet();
 
-                if (m_latteView && m_latteView->layout() && m_latteView->layout()->isSubContainment(applet)) {
-                    Plasma::Containment *subContainment = m_latteView->layout()->subContainmentOf(applet);
+                if (m_latteView && Layouts::Storage::self()->isSubContainment(m_latteView->layout(), applet)) {
+                    Plasma::Containment *subContainment = Layouts::Storage::self()->subContainmentOf(m_latteView->layout(), applet);
 
                     if (subContainment) {
                         Plasma::Applet *internalApplet{nullptr};

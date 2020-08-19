@@ -84,9 +84,6 @@ public:
     bool isWritable() const;
     bool isBroken() const;
 
-    bool isSubContainment(Plasma::Applet *applet) const;
-    Plasma::Containment *subContainmentOf(Plasma::Applet *applet) const;
-
     virtual int viewsCount(int screen) const;
     virtual int viewsCount(QScreen *screen) const;
     virtual int viewsCount() const;

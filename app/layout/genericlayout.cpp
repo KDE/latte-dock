@@ -175,22 +175,6 @@ bool GenericLayout::isCurrent() const
     return name() == m_corona->layoutsManager()->currentLayoutName();
 }
 
-bool GenericLayout::isSubContainment(Plasma::Applet *applet) const
-{
-    if (!applet) {
-        return false;
-    }
-
-    for (const auto containment : m_containments) {
-        Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
-        if (parentApplet && parentApplet == applet) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 QString GenericLayout::background() const
 {
     QString colorsPath = m_corona->kPackage().path() + "../../shells/org.kde.latte.shell/contents/images/canvas/";
@@ -214,24 +198,6 @@ QString GenericLayout::textColor() const
     }
 
     return AbstractLayout::textColor();
-}
-
-Plasma::Containment *GenericLayout::subContainmentOf(Plasma::Applet *applet) const
-{
-    if (!applet) {
-        return nullptr;
-    }
-
-    if (isSubContainment(applet)) {
-        for (const auto containment : m_containments) {
-            Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
-            if (parentApplet && parentApplet == applet) {
-                return containment;
-            }
-        }
-    }
-
-    return nullptr;
 }
 
 int GenericLayout::viewsCount(int screen) const
