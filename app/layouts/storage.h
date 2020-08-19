@@ -40,9 +40,6 @@ struct ViewData;
 namespace Latte {
 namespace Layouts {
 
-#define IDBASE 0
-#define IDNULL -1
-
 struct SubContaimentIdentityData
 {
     QString cfgGroup;
@@ -63,6 +60,9 @@ class Storage
 public:
     static Storage *self();
     ~Storage();
+
+    static const int IDNULL;
+    static const int IDBASE;
 
     bool isWritable(const Layout::GenericLayout *layout) const;
     bool isLatteContainment(Plasma::Containment *containment) const;

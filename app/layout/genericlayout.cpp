@@ -654,7 +654,7 @@ void GenericLayout::appletCreated(Plasma::Applet *applet)
 
     int subId = Layouts::Storage::self()->subContainmentId(appletSettings);
 
-    if (subId >= 0) {
+    if (Layouts::Storage::isValid(subId)) {
         uint sId = (uint)subId;
 
         for (const auto containment : m_corona->containments()) {
@@ -780,13 +780,13 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     bool onPrimary = containment->config().readEntry("onPrimary", true);
     int id = containment->screen();
 
-    if (id == -1 && explicitScreen == -1) {
+    if (!Layouts::Storage::isValid(id) && !Layouts::Storage::isValid(explicitScreen)) {
         id = containment->lastScreen();
     }
 
     if (onPrimary) {
         id = m_corona->screenPool()->primaryScreenId();
-    } else if (explicitScreen > -1) {
+    } else if (Layouts::Storage::isValid(explicitScreen)) {
         id = explicitScreen;
     }
 
@@ -802,7 +802,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
         return;
     }
 
-    if (id >= 0 && !onPrimary && !forceOnPrimary) {
+    if (Layouts::Storage::isValid(id) && !onPrimary && !forceOnPrimary) {
         qDebug() << "Add view - connector : " << connector;
         bool found{false};
 
@@ -829,13 +829,13 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
         }
     }
 
-    if (id >= 0 && onPrimary) {
+    if (Layouts::Storage::isValid(id) && onPrimary) {
         qDebug() << "add dock - connector : " << connector;
 
         for (const Plasma::Containment *testContainment : m_latteViews.keys()) {
             int testScreenId = testContainment->screen();
 
-            if (testScreenId == -1) {
+            if (!Layouts::Storage::isValid(testScreenId)) {
                 testScreenId = testContainment->lastScreen();
             }
 
@@ -1204,7 +1204,7 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
     //! first step: primary docks must be placed in primary screen free edges
     for (const auto containment : m_containments) {
         if (Layouts::Storage::self()->isLatteContainment(containment)) {
-            int screenId = 0;
+            int screenId{Layouts::Storage::IDNULL};
 
             //! valid screen id
             if (latteViewExists(containment)) {
@@ -1212,7 +1212,7 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
             } else {
                 screenId = containment->screen();
 
-                if (screenId == -1) {
+                if (!Layouts::Storage::isValid(screenId)) {
                     screenId = containment->lastScreen();
                 }
             }
@@ -1240,7 +1240,7 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
     //! second step: explicit docks must be placed in their screens if the screen edge is free
     for (const auto containment : m_containments) {
         if (Layouts::Storage::self()->isLatteContainment(containment)) {
-            int screenId = 0;
+            int screenId{Layouts::Storage::IDNULL};
 
             //! valid screen id
             if (latteViewExists(containment)) {
@@ -1248,7 +1248,7 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
             } else {
                 screenId = containment->screen();
 
-                if (screenId == -1) {
+                if (!Layouts::Storage::isValid(screenId)) {
                     screenId = containment->lastScreen();
                 }
             }
@@ -1312,7 +1312,7 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
     for (const auto containment : m_containments) {
         int screenId = containment->screen();
 
-        if (screenId == -1) {
+        if (!Layouts::Storage::isValid(screenId)) {
             screenId = containment->lastScreen();
         }
 
@@ -1363,7 +1363,7 @@ QList<int> GenericLayout::subContainmentsOf(Plasma::Containment *containment) co
         for (const auto &applet : applets.groupList()) {
             int tSubId = Layouts::Storage::self()->subContainmentId(applets.group(applet));
 
-            if (tSubId >= 0) {
+            if (Layouts::Storage::isValid(tSubId)) {
                 subs << tSubId;
             }
         }
@@ -1472,7 +1472,7 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
                 vData.location = containment->location();
 
                 //! onPrimary / Screen Id
-                int screenId = -1;
+                int screenId{Layouts::Storage::IDNULL};
                 bool onPrimary = true;
 
                 if (latteViewExists(containment)) {
@@ -1482,7 +1482,7 @@ QString GenericLayout::reportHtml(const ScreenPool *screenPool)
                     screenId = containment->screen();
                     onPrimary = containment->config().readEntry("onPrimary", true);
 
-                    if (screenId == -1) {
+                    if (!Layouts::Storage::isValid(screenId)) {
                         screenId = containment->lastScreen();
                     }
                 }
@@ -1593,7 +1593,7 @@ QList<int> GenericLayout::viewsScreens()
     if (isActive()) {
         for (const auto containment : m_containments) {
             if (Layouts::Storage::self()->isLatteContainment(containment)) {
-                int screenId = -1;
+                int screenId{Layouts::Storage::IDNULL};
 
                 //! valid screen id
                 if (latteViewExists(containment)) {
@@ -1601,12 +1601,12 @@ QList<int> GenericLayout::viewsScreens()
                 } else {
                     screenId = containment->screen();
 
-                    if (screenId == -1) {
+                    if (!Layouts::Storage::isValid(screenId)) {
                         screenId = containment->lastScreen();
                     }
                 }
 
-                if (screenId!=-1 &&!screens.contains(screenId)) {
+                if (Layouts::Storage::isValid(screenId) && !screens.contains(screenId)) {
                     screens << screenId;
                 }
             }

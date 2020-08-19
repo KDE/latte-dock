@@ -45,6 +45,9 @@
 namespace Latte {
 namespace Layouts {
 
+const int Storage::IDNULL = -1;
+const int Storage::IDBASE = 0;
+
 Storage::Storage()
 {
     qDebug() << " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LAYOUTS::STORAGE, TEMP DIR ::: " << m_storageTmpDir.path();
