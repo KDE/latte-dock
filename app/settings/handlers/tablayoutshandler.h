@@ -95,7 +95,8 @@ private slots:
     void pauseLayout();
     void switchLayout();
     void importLayout();
-    void exportLayout();
+    void exportLayoutForBackup();
+    void exportLayoutAsTemplate();
     void lockLayout();
     void removeLayout();
     void shareLayout();
@@ -112,6 +113,7 @@ private:
     bool isHoveringLayoutsTable(const QPoint &pos);
 
     void initLayoutTemplatesSubMenu();
+    void initExportLayoutSubMenu();
 
 private:
     Settings::Dialog::SettingsDialog *m_parentDialog{nullptr};
@@ -127,6 +129,7 @@ private:
     //! Layout menu actions
     QMenu *m_layoutMenu{nullptr};
     QMenu *m_layoutTemplatesSubMenu{nullptr};
+    QMenu *m_layoutExportSubMenu{nullptr};
 
     QAction *m_switchLayoutAction{nullptr};
     QAction *m_pauseLayoutAction{nullptr};

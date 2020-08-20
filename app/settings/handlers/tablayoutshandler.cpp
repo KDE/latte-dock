@@ -189,12 +189,15 @@ void TabLayouts::initLayoutMenu()
     connectActionWithButton(m_ui->importButton, m_importLayoutAction);
     connect(m_importLayoutAction, &QAction::triggered, this, &TabLayouts::importLayout);
 
-    m_exportLayoutAction = m_layoutMenu->addAction(i18nc("export layout", "&Export..."));
+    m_exportLayoutAction = m_layoutMenu->addAction(i18nc("export layout", "&Export"));
     m_exportLayoutAction->setToolTip(i18n("Export selected layout at your system"));
     m_exportLayoutAction->setIcon(QIcon::fromTheme("document-export"));
-    m_exportLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_E));
     connectActionWithButton(m_ui->exportButton, m_exportLayoutAction);
-    connect(m_exportLayoutAction, &QAction::triggered, this, &TabLayouts::exportLayout);
+    connect(m_exportLayoutAction, &QAction::triggered, m_ui->exportButton, &QPushButton::showMenu);
+
+    initExportLayoutSubMenu();
+    m_exportLayoutAction->setMenu(m_layoutExportSubMenu);
+    m_ui->exportButton->setMenu(m_layoutExportSubMenu);
 
     m_downloadLayoutAction = m_layoutMenu->addAction(i18nc("download layout", "&Download..."));
     m_downloadLayoutAction->setToolTip(i18n("Download community layouts from KDE Store"));
@@ -202,6 +205,26 @@ void TabLayouts::initLayoutMenu()
     m_downloadLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_D));
     connectActionWithButton(m_ui->downloadButton, m_downloadLayoutAction);
     connect(m_downloadLayoutAction, &QAction::triggered, this, &TabLayouts::downloadLayout);
+}
+
+void TabLayouts::initExportLayoutSubMenu()
+{
+    if (!m_layoutExportSubMenu) {
+        m_layoutExportSubMenu = new QMenu(m_layoutMenu);
+        m_layoutExportSubMenu->setMinimumWidth(m_ui->exportButton->width() * 2);
+    } else {
+        m_layoutExportSubMenu->clear();
+    }
+
+    QAction *exportForBackup = m_layoutExportSubMenu->addAction(i18nc("export layout for backup","&Export For Backup..."));
+    exportForBackup->setIcon(QIcon::fromTheme("document-export"));
+    exportForBackup->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_E));
+    connect(exportForBackup, &QAction::triggered, this, &TabLayouts::exportLayoutForBackup);
+
+    QAction *exportAsTemplate = m_layoutExportSubMenu->addAction(i18nc("export layout as layout template","Export As &Template..."));
+    exportAsTemplate->setIcon(QIcon::fromTheme("document-export"));
+    exportAsTemplate->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_T));
+    connect(exportAsTemplate, &QAction::triggered, this, &TabLayouts::exportLayoutAsTemplate);
 }
 
 void TabLayouts::initLayoutTemplatesSubMenu()
@@ -562,7 +585,20 @@ void TabLayouts::importLayout()
     importFileDialog->open();
 }
 
-void TabLayouts::exportLayout()
+void TabLayouts::exportLayoutAsTemplate()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (!isCurrentTab() || !m_exportLayoutAction->isEnabled()) {
+        return;
+    }
+
+    if (!m_layoutsController->hasSelectedLayout()) {
+        return;
+    }
+}
+
+void TabLayouts::exportLayoutForBackup()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -580,7 +616,7 @@ void TabLayouts::exportLayout()
     m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
     m_corona->universalSettings()->syncSettings();
 
-    QFileDialog *exportFileDialog = new QFileDialog(m_parentDialog, i18n("Export Layout"), QDir::homePath(), QStringLiteral("layout.latte"));
+    QFileDialog *exportFileDialog = new QFileDialog(m_parentDialog, i18n("Export Layout For Backup"), QDir::homePath(), QStringLiteral("layout.latte"));
 
     exportFileDialog->setLabelText(QFileDialog::Accept, i18nc("export layout","Export"));
     exportFileDialog->setFileMode(QFileDialog::AnyFile);
