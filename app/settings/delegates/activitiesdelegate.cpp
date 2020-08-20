@@ -149,6 +149,7 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
 
     QDialogButtonBox *menuDialogButtons = new QDialogButtonBox(menu);
     menuDialogButtons->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    menuDialogButtons->setContentsMargins(3, 0, 3, 3);
 
     QWidgetAction* menuDialogButtonsWidgetAction = new QWidgetAction(menu);
     menuDialogButtonsWidgetAction->setDefaultWidget(menuDialogButtons);
