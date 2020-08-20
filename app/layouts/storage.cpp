@@ -35,7 +35,10 @@
 
 // KDE
 #include <KConfigGroup>
+#include <KPluginMetaData>
 #include <KSharedConfig>
+#include <KPackage/Package>
+#include <KPackage/PackageLoader>
 
 // Plasma
 #include <Plasma>
@@ -799,6 +802,152 @@ bool Storage::isBroken(const Layout::GenericLayout *layout, QStringList &errors)
 
     return false;
 }
+
+//! AppletsData Information
+Data::Applet Storage::metadata(const QString &pluginId)
+{
+    Data::Applet data;
+    data.id = pluginId;
+
+    KPackage::Package pkg = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/Applet"));
+    pkg.setDefaultPackageRoot(QStringLiteral("plasma/plasmoids"));
+    pkg.setPath(pluginId);
+
+    if (pkg.isValid()) {
+        data.name = pkg.metadata().name();
+        data.description = pkg.metadata().description();
+        data.icon = pkg.metadata().iconName();
+    }
+
+    return data;
+}
+
+Data::AppletsTable Storage::plugins(const Layout::GenericLayout *layout, const int containmentid)
+{
+    Data::AppletsTable knownapplets;
+    Data::AppletsTable unknownapplets;
+
+    if (!layout) {
+        return knownapplets;
+    }
+
+    //! empty means all containments are valid
+    QList<int> validcontainmentids;
+
+    if (isValid(containmentid)) {
+        validcontainmentids << containmentid;
+
+        //! searching for specific containment and subcontainments and ignore all other containments
+        for(auto containment : *layout->containments()) {
+            if (containment->id() != containmentid) {
+                //! ignore irrelevant containments
+                continue;
+            }
+
+            for (auto applet : containment->applets()) {
+                if (isSubContainment(layout, applet)) {
+                    validcontainmentids << subContainmentId(applet->config());
+                }
+            }
+        }
+    }
+
+    //! cycle through valid contaiments in order to retrieve their metadata
+    for(auto containment : *layout->containments()) {
+        if (validcontainmentids.count()>0 && !validcontainmentids.contains(containment->id())) {
+            //! searching only for valid containments
+            continue;
+        }
+
+        for (auto applet : containment->applets()) {
+            if (!isSubContainment(layout, applet)) {
+                QString pluginId = applet->pluginMetaData().pluginId();
+                if (!knownapplets.containsId(pluginId) && !unknownapplets.containsId(pluginId)) {
+                    Data::Applet appletdata = metadata(pluginId);
+
+                    if (appletdata.isValid()) {
+                        knownapplets.insertBasedOnName(appletdata);
+                    } else {
+                        unknownapplets.insertBasedOnId(appletdata);
+                    }
+                }
+            }
+        }
+    }
+
+    knownapplets << unknownapplets;
+
+    return knownapplets;
+}
+
+Data::AppletsTable Storage::plugins(const QString &layoutfile, const int containmentid)
+{
+    Data::AppletsTable knownapplets;
+    Data::AppletsTable unknownapplets;
+
+    if (layoutfile.isEmpty()) {
+        return knownapplets;
+    }
+
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(layoutfile);
+    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+
+    //! empty means all containments are valid
+    QList<int> validcontainmentids;
+
+    if (isValid(containmentid)) {
+        validcontainmentids << containmentid;
+
+        //! searching for specific containment and subcontainments and ignore all other containments
+        for (const auto &cId : containmentGroups.groupList()) {
+            if (cId.toInt() != containmentid) {
+                //! ignore irrelevant containments
+                continue;
+            }
+
+            auto appletGroups = containmentGroups.group(cId).group("Applets");
+
+            for (const auto &appletId : appletGroups.groupList()) {
+                KConfigGroup appletCfg = appletGroups.group(appletId);
+                if (isSubContainment(appletCfg)) {
+                    validcontainmentids << subContainmentId(appletCfg);
+                }
+            }
+        }
+    }
+
+    //! cycle through valid contaiments in order to retrieve their metadata
+    for (const auto &cId : containmentGroups.groupList()) {
+        if (validcontainmentids.count()>0 && !validcontainmentids.contains(cId.toInt())) {
+            //! searching only for valid containments
+            continue;
+        }
+
+        auto appletGroups = containmentGroups.group(cId).group("Applets");
+
+        for (const auto &appletId : appletGroups.groupList()) {
+            KConfigGroup appletCfg = appletGroups.group(appletId);
+            if (!isSubContainment(appletCfg)) {
+                QString pluginId = appletCfg.readEntry("plugin", "");
+
+                if (!knownapplets.containsId(pluginId) && !unknownapplets.containsId(pluginId)) {
+                    Data::Applet appletdata = metadata(pluginId);
+
+                    if (appletdata.isValid()) {
+                        knownapplets.insertBasedOnName(appletdata);
+                    } else {
+                        unknownapplets.insertBasedOnId(appletdata);
+                    }
+                }
+            }
+        }
+    }
+
+    knownapplets << unknownapplets;
+
+    return knownapplets;
+}
+
 
 //! Data For Reports
 void Storage::subContainmentsInfo(const QString &file, QHash<int, QList<int>> &subContainments, QList<int> &assignedSubContainments, QList<int> &orphanSubContainments)

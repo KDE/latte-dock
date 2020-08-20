@@ -46,9 +46,11 @@ public:
     //! Operators
     Applet &operator=(const Applet &rhs);
     Applet &operator=(Applet &&rhs);
+
+    bool isValid() const;
 };
 
-typedef GenericTable<Applet> AppletTable;
+typedef GenericTable<Applet> AppletsTable;
 
 }
 }

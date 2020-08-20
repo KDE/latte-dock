@@ -20,6 +20,9 @@
 #ifndef LAYOUTSSTORAGE_H
 #define LAYOUTSSTORAGE_H
 
+// local
+#include "../data/appletdata.h"
+
 // Qt
 #include <QTemporaryDir>
 
@@ -86,6 +89,12 @@ public:
     //! Check if an applet config group is valid or belongs to removed applet
     static bool appletGroupIsValid(const KConfigGroup &appletGroup);
     static bool isValid(const int &id);
+
+
+    //! AppletsData Information
+    Data::Applet metadata(const QString &pluginId);
+    Data::AppletsTable plugins(const Layout::GenericLayout *layout, const int containmentid = IDNULL);
+    Data::AppletsTable plugins(const QString &layoutfile, const int containmentid = IDNULL);
 
     //! Functions used from Layout Reports
     //! [containment id, list<subcontainment ids>], list<subcontainment ids>, list[subcontainment ids]
