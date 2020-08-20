@@ -96,8 +96,8 @@ protected:
     void reject() override;
 
 private slots:
-    void on_import_fullconfiguration();
-    void on_export_fullconfiguration();
+    void importFullConfiguration();
+    void exportFullConfiguration();
 
     void accept() override;
 
@@ -112,7 +112,7 @@ private slots:
     void loadConfig();
     void saveConfig();
 
-    void on_currentTabChanged(int index);
+    void onCurrentTabChanged(int index);
 
 private:
     void initGlobalMenu();

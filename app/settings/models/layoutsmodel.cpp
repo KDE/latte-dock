@@ -1105,13 +1105,13 @@ void Layouts::initActivities()
         KActivities::Info info(id);
 
         if (info.state() != KActivities::Info::Invalid) {
-            on_activityAdded(id);
+            onActivityAdded(id);
         }
     }
 
-    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::activityAdded, this, &Layouts::on_activityAdded);
-    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::activityRemoved, this, &Layouts::on_activityRemoved);
-    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, &Layouts::on_runningActivitiesChanged);
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::activityAdded, this, &Layouts::onActivityAdded);
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::activityRemoved, this, &Layouts::onActivityRemoved);
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, &Layouts::onRunningActivitiesChanged);
 
     activitiesStatesChanged();
 }
@@ -1128,7 +1128,7 @@ void Layouts::activitiesStatesChanged()
     emit dataChanged(index(0, ACTIVITYCOLUMN), index(rowCount()-1, ACTIVITYCOLUMN), roles);
 }
 
-void Layouts::on_activityAdded(const QString &id)
+void Layouts::onActivityAdded(const QString &id)
 {
     m_activitiesInfo[id] = new KActivities::Info(id, this);
 
@@ -1141,15 +1141,15 @@ void Layouts::on_activityAdded(const QString &id)
     m_activitiesMap[id] = activity;
 
     connect(m_activitiesInfo[id], &KActivities::Info::nameChanged, [this, id]() {
-        on_activityChanged(id);
+        onActivityChanged(id);
     });
 
     connect(m_activitiesInfo[id], &KActivities::Info::iconChanged, [this, id]() {
-        on_activityChanged(id);
+        onActivityChanged(id);
     });
 }
 
-void Layouts::on_activityRemoved(const QString &id)
+void Layouts::onActivityRemoved(const QString &id)
 {
     if (m_activitiesMap.contains(id)) {
         m_activitiesMap.remove(id);
@@ -1163,7 +1163,7 @@ void Layouts::on_activityRemoved(const QString &id)
     activitiesStatesChanged();
 }
 
-void Layouts::on_activityChanged(const QString &id)
+void Layouts::onActivityChanged(const QString &id)
 {
     if (m_activitiesMap.contains(id) && m_activitiesInfo.contains(id)) {
         m_activitiesMap[id].name = m_activitiesInfo[id]->name();
@@ -1174,7 +1174,7 @@ void Layouts::on_activityChanged(const QString &id)
     }
 }
 
-void Layouts::on_runningActivitiesChanged(const QStringList &runningIds)
+void Layouts::onRunningActivitiesChanged(const QStringList &runningIds)
 {
     Latte::Data::ActivitiesMap::iterator i;
 

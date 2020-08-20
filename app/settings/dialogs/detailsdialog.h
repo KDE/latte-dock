@@ -65,9 +65,9 @@ protected:
     void accept() override;
 
 private slots:
-    void on_ok();
-    void on_cancel();
-    void on_reset();
+    void onOk();
+    void onCancel();
+    void onReset();
 
     void updateApplyButtonsState();
 

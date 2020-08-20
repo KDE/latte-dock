@@ -92,7 +92,7 @@ QWidget *Shared::createEditor(QWidget *parent, const QStyleOptionViewItem &optio
 
     updateButtonText(button, index);
 
-    m_controller->on_sharedToInEditChanged(layoutId, true);
+    m_controller->onSharedToInEditChanged(layoutId, true);
 
     //! Ok, Apply Buttons behavior
     menu->addSeparator();
@@ -129,7 +129,7 @@ void Shared::setModelData(QWidget *editor, QAbstractItemModel *model, const QMod
     QString layoutId = index.data(Model::Layouts::IDROLE).toString();
 
     if (button->property(OKPRESSED).isNull() || !button->property(OKPRESSED).toBool()) {
-        m_controller->on_sharedToInEditChanged(layoutId, false);
+        m_controller->onSharedToInEditChanged(layoutId, false);
         return;
     }
 
@@ -142,7 +142,7 @@ void Shared::setModelData(QWidget *editor, QAbstractItemModel *model, const QMod
 
     model->setData(index, assignedLayouts, Qt::UserRole);
 
-    m_controller->on_sharedToInEditChanged(layoutId, false);
+    m_controller->onSharedToInEditChanged(layoutId, false);
 }
 
 void Shared::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const

@@ -58,7 +58,7 @@ ContainmentInterface::ContainmentInterface(Latte::View *parent)
     connect(m_view, &View::containmentChanged
             , this, [&]() {
         if (m_view->containment()) {
-            connect(m_view->containment(), &Plasma::Containment::appletAdded, this, &ContainmentInterface::on_appletAdded);
+            connect(m_view->containment(), &Plasma::Containment::appletAdded, this, &ContainmentInterface::onAppletAdded);
 
             m_appletsExpandedConnectionsTimer.start();
         }
@@ -503,7 +503,7 @@ QAbstractListModel *ContainmentInterface::plasmaTasksModel() const
     return m_plasmaTasksModel;
 }
 
-void ContainmentInterface::on_appletExpandedChanged()
+void ContainmentInterface::onAppletExpandedChanged()
 {
     PlasmaQuick::AppletQuickItem *appletItem = static_cast<PlasmaQuick::AppletQuickItem *>(QObject::sender());
 
@@ -571,11 +571,11 @@ void ContainmentInterface::updateAppletsTracking()
     }
 
     for (const auto applet : m_view->containment()->applets()) {
-        on_appletAdded(applet);
+        onAppletAdded(applet);
     }
 }
 
-void ContainmentInterface::on_appletAdded(Plasma::Applet *applet)
+void ContainmentInterface::onAppletAdded(Plasma::Applet *applet)
 {
     if (!m_view->containment() || !applet) {
         return;
@@ -587,7 +587,7 @@ void ContainmentInterface::on_appletAdded(Plasma::Applet *applet)
         PlasmaQuick::AppletQuickItem *contAi = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
         if (contAi && !m_appletsExpandedConnections.contains(contAi)) {
-            m_appletsExpandedConnections[contAi] = connect(contAi, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::on_appletExpandedChanged);
+            m_appletsExpandedConnections[contAi] = connect(contAi, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::onAppletExpandedChanged);
 
             connect(contAi, &QObject::destroyed, this, [&, contAi](){
                 m_appletsExpandedConnections.remove(contAi);
@@ -599,7 +599,7 @@ void ContainmentInterface::on_appletAdded(Plasma::Applet *applet)
             PlasmaQuick::AppletQuickItem *ai = internalApplet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai && !m_appletsExpandedConnections.contains(ai) ){
-                m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::on_appletExpandedChanged);
+                m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::onAppletExpandedChanged);
 
                 connect(ai, &QObject::destroyed, this, [&, ai](){
                     m_appletsExpandedConnections.remove(ai);
@@ -624,7 +624,7 @@ void ContainmentInterface::on_appletAdded(Plasma::Applet *applet)
             //! populate plasma tasks applet
             m_plasmaTasksModel->addTask(ai);
         } else if (!m_appletsExpandedConnections.contains(ai)) {
-            m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::on_appletExpandedChanged);
+            m_appletsExpandedConnections[ai] = connect(ai, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::onAppletExpandedChanged);
 
             connect(ai, &QObject::destroyed, this, [&, ai](){
                 m_appletsExpandedConnections.remove(ai);

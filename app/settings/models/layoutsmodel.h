@@ -147,10 +147,10 @@ private slots:
     void updateActiveStates();
 
     void activitiesStatesChanged();
-    void on_activityAdded(const QString &id);
-    void on_activityRemoved(const QString &id);
-    void on_activityChanged(const QString &id);
-    void on_runningActivitiesChanged(const QStringList &runningIds);
+    void onActivityAdded(const QString &id);
+    void onActivityRemoved(const QString &id);
+    void onActivityChanged(const QString &id);
+    void onRunningActivitiesChanged(const QStringList &runningIds);
 
 private:
     void initActivities();

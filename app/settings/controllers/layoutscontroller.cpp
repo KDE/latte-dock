@@ -76,7 +76,7 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
     connect(m_model, &Model::Layouts::rowsInserted, this, &Layouts::dataChanged);
     connect(m_model, &Model::Layouts::rowsRemoved, this, &Layouts::dataChanged);
 
-    connect(m_model, &Model::Layouts::nameDuplicated, this, &Layouts::on_nameDuplicatedFrom);
+    connect(m_model, &Model::Layouts::nameDuplicated, this, &Layouts::onNameDuplicatedFrom);
 
     connect(m_headerView, &QObject::destroyed, this, [&]() {
         m_viewSortColumn = m_headerView->sortIndicatorSection();
@@ -680,7 +680,7 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
     return false;
 }
 
-void Layouts::on_sharedToInEditChanged(const QString &id, const bool &inEdit)
+void Layouts::onSharedToInEditChanged(const QString &id, const bool &inEdit)
 {
     int row = m_model->rowForId(id);
 
@@ -931,7 +931,7 @@ void Layouts::storeColumnWidths()
     }
 }
 
-void Layouts::on_nameDuplicatedFrom(const QString &provenId, const QString &trialId)
+void Layouts::onNameDuplicatedFrom(const QString &provenId, const QString &trialId)
 {
     //! duplicated layout name
     int pRow = rowForId(provenId);

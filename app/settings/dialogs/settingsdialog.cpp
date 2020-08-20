@@ -90,7 +90,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     m_ui->buttonBox->button(QDialogButtonBox::Reset)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
 
     //! SIGNALS
-    connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::on_currentTabChanged);
+    connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::onCurrentTabChanged);
 
     connect(m_tabLayoutsHandler, &Settings::Handler::TabLayouts::dataChanged, this, &SettingsDialog::updateApplyButtonsState);
 
@@ -143,13 +143,13 @@ void SettingsDialog::initFileMenu()
     m_importFullAction->setIcon(QIcon::fromTheme("document-import"));
     m_importFullAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_I));
     m_importFullAction->setToolTip(i18n("Import your full configuration from previous backup"));
-    connect(m_importFullAction, &QAction::triggered, this, &SettingsDialog::on_import_fullconfiguration);
+    connect(m_importFullAction, &QAction::triggered, this, &SettingsDialog::importFullConfiguration);
 
     m_exportFullAction = m_fileMenu->addAction(i18n("Export Configuration..."));
     m_exportFullAction->setIcon(QIcon::fromTheme("document-export"));
     m_exportFullAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_E));
     m_exportFullAction->setToolTip(i18n("Export your full configuration to create backup"));
-    connect(m_exportFullAction, &QAction::triggered, this, &SettingsDialog::on_export_fullconfiguration);
+    connect(m_exportFullAction, &QAction::triggered, this, &SettingsDialog::exportFullConfiguration);
 
     m_fileMenu->addSeparator();
 
@@ -261,7 +261,7 @@ void SettingsDialog::setCurrentPage(int page)
     m_ui->tabWidget->setCurrentIndex(page);
 }
 
-void SettingsDialog::on_import_fullconfiguration()
+void SettingsDialog::importFullConfiguration()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -314,7 +314,7 @@ void SettingsDialog::on_import_fullconfiguration()
             });
 
             connect(takeBackupBtn, &QPushButton::clicked, this, [&](bool check) {
-                on_export_fullconfiguration();
+                exportFullConfiguration();
             });
 
             msg->open();
@@ -324,7 +324,7 @@ void SettingsDialog::on_import_fullconfiguration()
     importFileDialog->open();
 }
 
-void SettingsDialog::on_export_fullconfiguration()
+void SettingsDialog::exportFullConfiguration()
 {
     //! Update ALL active original layouts before exporting,
     m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
@@ -491,7 +491,7 @@ bool SettingsDialog::saveChanges()
     return true;
 }
 
-void SettingsDialog::on_currentTabChanged(int index)
+void SettingsDialog::onCurrentTabChanged(int index)
 {
     //! Before switching into a new tab the user must confirm first if the data should be saved or not
 
@@ -568,7 +568,7 @@ void SettingsDialog::showScreensInformation()
 void SettingsDialog::dragEnterEvent(QDragEnterEvent *event)
 {
     if (currentPage() == LayoutPage){
-        m_tabLayoutsHandler->on_dragEnterEvent(event);
+        m_tabLayoutsHandler->onDragEnterEvent(event);
     } else {
         QDialog::dragEnterEvent(event);
     }
@@ -577,7 +577,7 @@ void SettingsDialog::dragEnterEvent(QDragEnterEvent *event)
 void SettingsDialog::dragLeaveEvent(QDragLeaveEvent *event)
 {
     if (currentPage() == LayoutPage){
-        m_tabLayoutsHandler->on_dragLeaveEvent(event);
+        m_tabLayoutsHandler->onDragLeaveEvent(event);
     } else {
         QDialog::dragLeaveEvent(event);
     }
@@ -586,7 +586,7 @@ void SettingsDialog::dragLeaveEvent(QDragLeaveEvent *event)
 void SettingsDialog::dragMoveEvent(QDragMoveEvent *event)
 {
     if (currentPage() == LayoutPage){
-        m_tabLayoutsHandler->on_dragMoveEvent(event);
+        m_tabLayoutsHandler->onDragMoveEvent(event);
     } else {
         QDialog::dragMoveEvent(event);
     }
@@ -595,7 +595,7 @@ void SettingsDialog::dragMoveEvent(QDragMoveEvent *event)
 void SettingsDialog::dropEvent(QDropEvent *event)
 {
     if (currentPage() == LayoutPage){
-        m_tabLayoutsHandler->on_dropEvent(event);
+        m_tabLayoutsHandler->onDropEvent(event);
     } else {
         QDialog::dropEvent(event);
     }

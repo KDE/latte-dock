@@ -79,15 +79,14 @@ signals:
     void currentLayoutChanged();
 
 private slots:
-    void on_currentLayoutIndexChanged(int row);
-    void on_currentColorIndexChanged(int row);
-    void on_clearIcon();
-    void on_clearPattern();
+    void onCurrentLayoutIndexChanged(int row);
+    void onCurrentColorIndexChanged(int row);
 
+    void clearIcon();
+    void clearPattern();
     void selectBackground();
     void selectIcon();
     void selectTextColor();
-
     void updateWindowTitle();
 
 private:

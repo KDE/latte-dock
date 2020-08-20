@@ -103,7 +103,7 @@ signals:
 
 public slots:
     //! needed for Delegate::Shared
-    void on_sharedToInEditChanged(const QString &row, const bool &inEdit);
+    void onSharedToInEditChanged(const QString &row, const bool &inEdit);
 
 private slots:
     void loadConfig();
@@ -111,7 +111,7 @@ private slots:
     void storeColumnWidths();
     void updateLastColumnWidth();
 
-    void on_nameDuplicatedFrom(const QString &provenId,  const QString &trialId);
+    void onNameDuplicatedFrom(const QString &provenId,  const QString &trialId);
 
 private:
     void initView();

@@ -67,7 +67,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     m_corona = qobject_cast<Latte::Corona *>(view->corona());
     m_wm = m_corona->wm();
 
-    connect(this, &VisibilityManager::hidingIsBlockedChanged, this, &VisibilityManager::on_hidingIsBlockedChanged);
+    connect(this, &VisibilityManager::hidingIsBlockedChanged, this, &VisibilityManager::onHidingIsBlockedChanged);
 
     connect(this, &VisibilityManager::slideOutFinished, this, &VisibilityManager::updateHiddenState);
     connect(this, &VisibilityManager::slideInFinished, this, &VisibilityManager::updateHiddenState);
@@ -98,7 +98,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         });
 
         //! Frame Extents
-        connect(m_latteView, &Latte::View::headThicknessGapChanged, this, &VisibilityManager::on_publishFrameExtents);
+        connect(m_latteView, &Latte::View::headThicknessGapChanged, this, &VisibilityManager::onHeadThicknessChanged);
         connect(m_latteView, &Latte::View::locationChanged, this, [&]() {
             if (!m_latteView->behaveAsPlasmaPanel()) {
                 //! Resend frame extents because their geometry has changed
@@ -522,7 +522,7 @@ void VisibilityManager::removeBlockHidingEvent(const QString &type)
     }
 }
 
-void VisibilityManager::on_hidingIsBlockedChanged()
+void VisibilityManager::onHidingIsBlockedChanged()
 {
     if (hidingIsBlocked()) {
         m_timerHide.stop();
@@ -532,7 +532,7 @@ void VisibilityManager::on_hidingIsBlockedChanged()
     }
 }
 
-void VisibilityManager::on_publishFrameExtents()
+void VisibilityManager::onHeadThicknessChanged()
 {
     if (!m_timerPublishFrameExtents.isActive()) {
         m_timerPublishFrameExtents.start();

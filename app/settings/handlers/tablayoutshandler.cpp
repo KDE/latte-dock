@@ -102,7 +102,7 @@ void TabLayouts::initUi()
         }
     });
 
-    connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &TabLayouts::on_currentPageChanged);
+    connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &TabLayouts::onCurrentPageChanged);
 
     updatePerLayoutButtonsState();
 }
@@ -119,14 +119,14 @@ void TabLayouts::initLayoutMenu()
     m_switchLayoutAction->setIcon(QIcon::fromTheme("user-identity"));
     m_switchLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Tab));
     connectActionWithButton(m_ui->switchButton, m_switchLayoutAction);
-    connect(m_switchLayoutAction, &QAction::triggered, this, &TabLayouts::on_switch_layout);
+    connect(m_switchLayoutAction, &QAction::triggered, this, &TabLayouts::switchLayout);
 
     m_pauseLayoutAction = m_layoutMenu->addAction(i18nc("pause layout", "&Pause"));
     m_pauseLayoutAction->setToolTip(i18n("Switch to selected layout"));
     m_pauseLayoutAction->setIcon(QIcon::fromTheme("media-playback-pause"));
     m_pauseLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_P));
     connectActionWithButton(m_ui->pauseButton, m_pauseLayoutAction);
-    connect(m_pauseLayoutAction, &QAction::triggered, this, &TabLayouts::on_pause_layout);
+    connect(m_pauseLayoutAction, &QAction::triggered, this, &TabLayouts::pauseLayout);
 
     m_layoutMenu->addSeparator();
 
@@ -146,14 +146,14 @@ void TabLayouts::initLayoutMenu()
     m_copyLayoutAction->setIcon(QIcon::fromTheme("edit-copy"));
     m_copyLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
     connectActionWithButton(m_ui->copyButton, m_copyLayoutAction);
-    connect(m_copyLayoutAction, &QAction::triggered, this, &TabLayouts::on_copy_layout);
+    connect(m_copyLayoutAction, &QAction::triggered, this, &TabLayouts::copyLayout);
 
     m_removeLayoutAction = m_layoutMenu->addAction(i18nc("remove layout", "Remove"));
     m_removeLayoutAction->setToolTip(i18n("Remove selected layout"));
     m_removeLayoutAction->setIcon(QIcon::fromTheme("delete"));
     m_removeLayoutAction->setShortcut(QKeySequence(Qt::Key_Delete));
     connectActionWithButton(m_ui->removeButton, m_removeLayoutAction);
-    connect(m_removeLayoutAction, &QAction::triggered, this, &TabLayouts::on_remove_layout);
+    connect(m_removeLayoutAction, &QAction::triggered, this, &TabLayouts::removeLayout);
 
     m_layoutMenu->addSeparator();
 
@@ -163,7 +163,7 @@ void TabLayouts::initLayoutMenu()
     m_lockedLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
     m_lockedLayoutAction->setCheckable(true);
     connectActionWithButton(m_ui->lockedButton, m_lockedLayoutAction);
-    connect(m_lockedLayoutAction, &QAction::triggered, this, &TabLayouts::on_locked_layout);
+    connect(m_lockedLayoutAction, &QAction::triggered, this, &TabLayouts::lockLayout);
 
     m_sharedLayoutAction = m_layoutMenu->addAction(i18nc("shared layout", "Sha&red"));
     m_sharedLayoutAction->setToolTip(i18n("Share selected layout with other central layouts"));
@@ -171,14 +171,14 @@ void TabLayouts::initLayoutMenu()
     m_sharedLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
     m_sharedLayoutAction->setCheckable(true);
     connectActionWithButton(m_ui->sharedButton, m_sharedLayoutAction);
-    connect(m_sharedLayoutAction, &QAction::triggered, this, &TabLayouts::on_shared_layout);
+    connect(m_sharedLayoutAction, &QAction::triggered, this, &TabLayouts::shareLayout);
 
     m_detailsAction = m_layoutMenu->addAction(i18nc("layout details", "De&tails..."));
     m_detailsAction->setToolTip(i18n("Show selected layout details"));
     m_detailsAction->setIcon(QIcon::fromTheme("view-list-details"));
     m_detailsAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
     connectActionWithButton(m_ui->detailsButton, m_detailsAction);
-    connect(m_detailsAction, &QAction::triggered, this, &TabLayouts::on_details_action);
+    connect(m_detailsAction, &QAction::triggered, this, &TabLayouts::detailsLayout);
 
     m_layoutMenu->addSeparator();
 
@@ -187,21 +187,21 @@ void TabLayouts::initLayoutMenu()
     m_importLayoutAction->setIcon(QIcon::fromTheme("document-import"));
     m_importLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_I));
     connectActionWithButton(m_ui->importButton, m_importLayoutAction);
-    connect(m_importLayoutAction, &QAction::triggered, this, &TabLayouts::on_import_layout);
+    connect(m_importLayoutAction, &QAction::triggered, this, &TabLayouts::importLayout);
 
     m_exportLayoutAction = m_layoutMenu->addAction(i18nc("export layout", "&Export..."));
     m_exportLayoutAction->setToolTip(i18n("Export selected layout at your system"));
     m_exportLayoutAction->setIcon(QIcon::fromTheme("document-export"));
     m_exportLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_E));
     connectActionWithButton(m_ui->exportButton, m_exportLayoutAction);
-    connect(m_exportLayoutAction, &QAction::triggered, this, &TabLayouts::on_export_layout);
+    connect(m_exportLayoutAction, &QAction::triggered, this, &TabLayouts::exportLayout);
 
     m_downloadLayoutAction = m_layoutMenu->addAction(i18nc("download layout", "&Download..."));
     m_downloadLayoutAction->setToolTip(i18n("Download community layouts from KDE Store"));
     m_downloadLayoutAction->setIcon(QIcon::fromTheme("get-hot-new-stuff"));
     m_downloadLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_D));
     connectActionWithButton(m_ui->downloadButton, m_downloadLayoutAction);
-    connect(m_downloadLayoutAction, &QAction::triggered, this, &TabLayouts::on_download_layout);
+    connect(m_downloadLayoutAction, &QAction::triggered, this, &TabLayouts::downloadLayout);
 }
 
 void TabLayouts::initLayoutTemplatesSubMenu()
@@ -271,7 +271,7 @@ void TabLayouts::save()
     m_layoutsController->save();
 }
 
-void TabLayouts::on_switch_layout()
+void TabLayouts::switchLayout()
 {
     if (!isCurrentTab() || !m_switchLayoutAction->isEnabled()) {
         return;
@@ -318,7 +318,7 @@ void TabLayouts::on_switch_layout()
     updatePerLayoutButtonsState();
 }
 
-void TabLayouts::on_pause_layout()
+void TabLayouts::pauseLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -421,7 +421,7 @@ void TabLayouts::newLayout(const QString &templateName)
     }
 }
 
-void TabLayouts::on_copy_layout()
+void TabLayouts::copyLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -432,7 +432,7 @@ void TabLayouts::on_copy_layout()
     m_layoutsController->copySelectedLayout();
 }
 
-void TabLayouts::on_download_layout()
+void TabLayouts::downloadLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -462,7 +462,7 @@ void TabLayouts::on_download_layout()
     m_parentDialog->setDownloadWindowSize(dialog.size());
 }
 
-void TabLayouts::on_remove_layout()
+void TabLayouts::removeLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -493,7 +493,7 @@ void TabLayouts::on_remove_layout()
     m_layoutsController->removeSelected();
 }
 
-void TabLayouts::on_locked_layout()
+void TabLayouts::lockLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -506,7 +506,7 @@ void TabLayouts::on_locked_layout()
     updatePerLayoutButtonsState();
 }
 
-void TabLayouts::on_shared_layout()
+void TabLayouts::shareLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -519,7 +519,7 @@ void TabLayouts::on_shared_layout()
     updatePerLayoutButtonsState();
 }
 
-void TabLayouts::on_import_layout()
+void TabLayouts::importLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -562,7 +562,7 @@ void TabLayouts::on_import_layout()
     importFileDialog->open();
 }
 
-void TabLayouts::on_export_layout()
+void TabLayouts::exportLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -674,7 +674,7 @@ void TabLayouts::on_export_layout()
     exportFileDialog->selectFile(selectedLayout.name);
 }
 
-void TabLayouts::on_details_action()
+void TabLayouts::detailsLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -695,7 +695,7 @@ void TabLayouts::on_details_action()
     detailsDlg->deleteLater();
 }
 
-void TabLayouts::on_layoutFilesDropped(const QStringList &paths)
+void TabLayouts::onLayoutFilesDropped(const QStringList &paths)
 {
     QStringList layoutNames;
 
@@ -715,7 +715,7 @@ void TabLayouts::on_layoutFilesDropped(const QStringList &paths)
     }
 }
 
-void TabLayouts::on_rawLayoutDropped(const QString &rawLayout)
+void TabLayouts::onRawLayoutDropped(const QString &rawLayout)
 {
     Latte::Data::Layout importedlayout = m_layoutsController->addLayoutByText(rawLayout);
     showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedlayout.name),
@@ -737,7 +737,7 @@ bool TabLayouts::isHoveringLayoutsTable(const QPoint &pos)
 }
 
 
-void TabLayouts::on_currentPageChanged(int page)
+void TabLayouts::onCurrentPageChanged(int page)
 {
     Dialog::ConfigurationPage cPage= static_cast<Dialog::ConfigurationPage>(page);
 
@@ -751,7 +751,7 @@ void TabLayouts::on_currentPageChanged(int page)
     }
 }
 
-void TabLayouts::on_dragEnterEvent(QDragEnterEvent *event)
+void TabLayouts::onDragEnterEvent(QDragEnterEvent *event)
 {
     if (!isHoveringLayoutsTable(event->pos())) {
         return;
@@ -761,12 +761,12 @@ void TabLayouts::on_dragEnterEvent(QDragEnterEvent *event)
     m_ui->layoutsView->dragEntered(event);
 }
 
-void TabLayouts::on_dragLeaveEvent(QDragLeaveEvent *event)
+void TabLayouts::onDragLeaveEvent(QDragLeaveEvent *event)
 {
     m_ui->layoutsView->dragLeft();
 }
 
-void TabLayouts::on_dragMoveEvent(QDragMoveEvent *event)
+void TabLayouts::onDragMoveEvent(QDragMoveEvent *event)
 {
     if (!isHoveringLayoutsTable(event->pos())) {
         event->ignore();
@@ -777,7 +777,7 @@ void TabLayouts::on_dragMoveEvent(QDragMoveEvent *event)
     event->acceptProposedAction();
 }
 
-void TabLayouts::on_dropEvent(QDropEvent *event)
+void TabLayouts::onDropEvent(QDropEvent *event)
 {
     if (!isHoveringLayoutsTable(event->pos())) {
         event->ignore();
@@ -799,15 +799,15 @@ void TabLayouts::on_dropEvent(QDropEvent *event)
         }
 
         if (paths.count() > 0) {
-            on_layoutFilesDropped(paths);
+            onLayoutFilesDropped(paths);
         }
 
         m_ui->layoutsView->dragLeft();
     } else if (event->mimeData()->hasText()){
         if(!event->mimeData()->text().isEmpty()){
-            on_rawLayoutDropped(event->mimeData()->text());
+            onRawLayoutDropped(event->mimeData()->text());
         } else if(!event->mimeData()->data("text/plain").isEmpty()) {
-            on_rawLayoutDropped(event->mimeData()->data("text/plain"));
+            onRawLayoutDropped(event->mimeData()->data("text/plain"));
         } else {
             qDebug() << "Data from drag could not be retrieved!";
         }

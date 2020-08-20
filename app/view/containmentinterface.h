@@ -109,8 +109,8 @@ private slots:
     void identifyMethods();
 
     void updateAppletsTracking();
-    void on_appletAdded(Plasma::Applet *applet);
-    void on_appletExpandedChanged();
+    void onAppletAdded(Plasma::Applet *applet);
+    void onAppletExpandedChanged();
     void onLatteTasksCountChanged();
     void onPlasmaTasksCountChanged();
 

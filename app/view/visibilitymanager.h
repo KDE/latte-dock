@@ -150,9 +150,9 @@ private slots:
 
     void setIsBelowLayer(bool below);
 
-    void on_hidingIsBlockedChanged();
+    void onHeadThicknessChanged();
+    void onHidingIsBlockedChanged();
 
-    void on_publishFrameExtents(); //! delayed
     void publishFrameExtents(bool forceUpdate = false); //! direct
 
     //! Floating Gap Helper window creation/removal

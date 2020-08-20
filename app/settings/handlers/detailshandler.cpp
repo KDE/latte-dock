@@ -92,9 +92,9 @@ void DetailsHandler::init()
 
     connect(m_ui->backgroundBtn, &QPushButton::pressed, this, &DetailsHandler::selectBackground);
     connect(m_ui->iconBtn, &QPushButton::pressed, this, &DetailsHandler::selectIcon);
-    connect(m_ui->iconClearBtn, &QPushButton::pressed, this, &DetailsHandler::on_clearIcon);
+    connect(m_ui->iconClearBtn, &QPushButton::pressed, this, &DetailsHandler::clearIcon);
     connect(m_ui->textColorBtn, &QPushButton::pressed, this, &DetailsHandler::selectTextColor);
-    connect(m_ui->patternClearBtn, &QPushButton::pressed, this, &DetailsHandler::on_clearPattern);
+    connect(m_ui->patternClearBtn, &QPushButton::pressed, this, &DetailsHandler::clearPattern);
 
 
     //! Options
@@ -111,10 +111,10 @@ void DetailsHandler::init()
     reload();
 
     //! connect layout combobox after the selected layout has been loaded
-    connect(m_ui->layoutsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::on_currentLayoutIndexChanged);
+    connect(m_ui->layoutsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::onCurrentLayoutIndexChanged);
 
     //! connect colors combobox after the selected layout has been loaded
-    connect(m_ui->colorsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::on_currentColorIndexChanged);
+    connect(m_ui->colorsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::onCurrentColorIndexChanged);
 
 
     //! pattern widgets
@@ -228,24 +228,24 @@ void DetailsHandler::save()
     m_parentDialog->layoutsController()->setLayoutProperties(currentData());
 }
 
-void DetailsHandler::on_clearIcon()
+void DetailsHandler::clearIcon()
 {
     setIcon("");
 }
 
-void DetailsHandler::on_clearPattern()
+void DetailsHandler::clearPattern()
 {
     setBackground("");
     setTextColor("");
 }
 
-void DetailsHandler::on_currentColorIndexChanged(int row)
+void DetailsHandler::onCurrentColorIndexChanged(int row)
 {
     QString selectedColor = m_ui->colorsCmb->itemData(row, Model::Colors::IDROLE).toString();
     setColor(selectedColor);
 }
 
-void DetailsHandler::on_currentLayoutIndexChanged(int row)
+void DetailsHandler::onCurrentLayoutIndexChanged(int row)
 {
     bool switchtonewlayout{true};
 

@@ -78,10 +78,10 @@ public:
     Ui::SettingsDialog *ui() const;
 
 public slots:
-    void on_dragEnterEvent(QDragEnterEvent *event);
-    void on_dragLeaveEvent(QDragLeaveEvent *event);
-    void on_dragMoveEvent(QDragMoveEvent *event);
-    void on_dropEvent(QDropEvent *event);
+    void onDragEnterEvent(QDragEnterEvent *event);
+    void onDragLeaveEvent(QDragLeaveEvent *event);
+    void onDragMoveEvent(QDragMoveEvent *event);
+    void onDropEvent(QDropEvent *event);
 
 private slots:
     void initUi();
@@ -90,20 +90,20 @@ private slots:
     void loadConfig();
     void saveConfig();
 
-    void on_copy_layout();
-    void on_download_layout();
-    void on_pause_layout();
-    void on_switch_layout();
-    void on_import_layout();
-    void on_export_layout();
-    void on_locked_layout();
-    void on_remove_layout();
-    void on_shared_layout();
-    void on_details_action();
+    void copyLayout();
+    void downloadLayout();
+    void pauseLayout();
+    void switchLayout();
+    void importLayout();
+    void exportLayout();
+    void lockLayout();
+    void removeLayout();
+    void shareLayout();
+    void detailsLayout();
 
-    void on_currentPageChanged(int page);
-    void on_layoutFilesDropped(const QStringList &paths);
-    void on_rawLayoutDropped(const QString &rawLayout);
+    void onCurrentPageChanged(int page);
+    void onLayoutFilesDropped(const QStringList &paths);
+    void onRawLayoutDropped(const QString &rawLayout);
     void updatePerLayoutButtonsState();
 
     void newLayout(const QString &templateName);

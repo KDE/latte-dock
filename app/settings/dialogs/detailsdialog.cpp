@@ -44,13 +44,13 @@ DetailsDialog::DetailsDialog(SettingsDialog *parent, Controller::Layouts *contro
     connect(m_handler, &Handler::DetailsHandler::dataChanged, this, &DetailsDialog::updateApplyButtonsState);
 
     connect(m_ui->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked,
-            this, &DetailsDialog::on_ok);
+            this, &DetailsDialog::onOk);
 
     connect(m_ui->buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked,
-            this, &DetailsDialog::on_cancel);
+            this, &DetailsDialog::onCancel);
 
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked,
-            this, &DetailsDialog::on_reset);
+            this, &DetailsDialog::onReset);
 
     updateApplyButtonsState();
 }
@@ -90,20 +90,20 @@ void DetailsDialog::accept()
     qDebug() << Q_FUNC_INFO;
 }
 
-void DetailsDialog::on_ok()
+void DetailsDialog::onOk()
 {
     qDebug() << Q_FUNC_INFO;
     m_handler->save();
     close();
 }
 
-void DetailsDialog::on_cancel()
+void DetailsDialog::onCancel()
 {
     qDebug() << Q_FUNC_INFO;
     close();
 }
 
-void DetailsDialog::on_reset()
+void DetailsDialog::onReset()
 {
     qDebug() << Q_FUNC_INFO;
     m_handler->reset();
