@@ -19,6 +19,7 @@
  */
 
 #include "generictable.h"
+#include "appletdata.h"
 #include "layoutdata.h"
 
 #include <QDebug>
@@ -72,10 +73,29 @@ GenericTable<T> &GenericTable<T>::operator<<(const T &rhs)
 }
 
 template <class T>
+GenericTable<T> &GenericTable<T>::operator<<(const GenericTable<T> &rhs)
+{
+    m_list << rhs.m_list;
+    return (*this);
+}
+
+template <class T>
 GenericTable<T> &GenericTable<T>::insert(const int &pos, const T &rhs)
 {
     m_list.insert(pos, rhs);
     return (*this);
+}
+
+template <class T>
+GenericTable<T> &GenericTable<T>::insertBasedOnName(const T &rhs)
+{
+    return insert(sortedPosForName(rhs.name), rhs);
+}
+
+template <class T>
+GenericTable<T> &GenericTable<T>::insertBasedOnId(const T &rhs)
+{
+    return insert(sortedPosForId(rhs.id), rhs);
 }
 
 template <class T>
@@ -197,6 +217,22 @@ int GenericTable<T>::rowCount() const
 }
 
 template <class T>
+int GenericTable<T>::sortedPosForId(const QString &id) const
+{
+    int pos{0};
+
+    for(int i=0; i<m_list.count(); ++i) {
+        if (QString::compare(m_list[i].id, id, Qt::CaseInsensitive) <= 0) {
+            pos++;
+        } else {
+            break;
+        }
+    }
+
+    return pos;
+}
+
+template <class T>
 int GenericTable<T>::sortedPosForName(const QString &name) const
 {
     int pos{0};
@@ -251,7 +287,8 @@ void GenericTable<T>::remove(const int &row)
 //! Make linker happy and provide which table instances will be used.
 //! The alternative would be to move functions definitions in the header file
 //! but that would drop readability
-template class GenericTable<Layout>;
+template class GenericTable<Data::Applet>;
+template class GenericTable<Data::Layout>;
 
 }
 }

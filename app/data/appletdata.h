@@ -23,6 +23,7 @@
 
 //! local
 #include "genericdata.h"
+#include "generictable.h"
 
 //! Qt
 #include <QMetaType>
@@ -39,8 +40,6 @@ public:
     Applet(const Applet &o);
 
     //! Layout data
-    QString id;
-    QString name;
     QString description;
     QString icon;
 
@@ -48,6 +47,8 @@ public:
     Applet &operator=(const Applet &rhs);
     Applet &operator=(Applet &&rhs);
 };
+
+typedef GenericTable<Applet> AppletTable;
 
 }
 }
