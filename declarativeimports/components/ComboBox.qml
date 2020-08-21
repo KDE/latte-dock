@@ -24,6 +24,7 @@ import QtQuick.Controls 2.2 as Controls
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kirigami 2.2 as Kirigami
 import "private" as Private
 
@@ -57,6 +58,7 @@ T.ComboBox {
     property string iconRole
     property string iconToolTipRole
     property string iconOnlyWhenHoveredRole
+    property string toolTipRole
 
     signal iconClicked(int index);
 
@@ -67,11 +69,29 @@ T.ComboBox {
         icon: control.iconRole.length>0 ? (Array.isArray(control.model) ? modelData[control.iconRole] : model[control.iconRole]) : ''
         iconToolTip: control.iconToolTipRole.length>0 ? (Array.isArray(control.model) ? modelData[control.iconToolTipRole] : model[control.iconToolTipRole]) : ''
         iconOnlyWhenHovered: control.iconOnlyWhenHoveredRole.length>0 ? (Array.isArray(control.model) ? modelData[control.iconOnlyWhenHoveredRole] : model[control.iconOnlyWhenHoveredRole]) : ''
+        toolTip: control.toolTipRole.length>0 ? (Array.isArray(control.model) ? modelData[control.toolTipRole] : model[control.toolTipRole]) : ''
 
         highlighted: mouseArea.pressed ? listView.currentIndex == index : control.currentIndex == index
         blankSpaceForEmptyIcons: control.blankSpaceForEmptyIcons
         textHorizontalAlignment: popUpTextHorizontalAlignment
         property bool separatorVisible: false
+
+        PlasmaComponents.Button {
+            id: tooltipBtn
+            anchors.fill: parent
+            opacity: 0
+            tooltip: parent.toolTip
+            visible: tooltip !== ''
+
+            onPressedChanged: {
+                if (!pressed) {
+                    control.currentIndex = index;
+                    control.down = false;
+                    control.pressed = false;
+                    control.popup.visible = false;
+                }
+            }
+        }
     }
 
     indicator: PlasmaCore.SvgItem {
@@ -115,23 +135,8 @@ T.ComboBox {
             }
             control.activated(control.currentIndex);
         }
-        onPressed: {
-            indexUnderMouse = -1;
-            listView.currentIndex = control.highlightedIndex
-            control.down = true;
-            control.pressed = true;
-            control.popup.visible = !control.popup.visible;
-        }
-        onReleased: {
-            if (!containsMouse) {
-                control.down = false;
-                control.pressed = false;
-                control.popup.visible = false;
-            }
-            if (indexUnderMouse > -1) {
-                control.currentIndex = indexUnderMouse;
-            }
-        }
+        onPressed: onGenericPressed()
+        onReleased: onGenericReleased()
         onCanceled: {
             control.down = false;
             control.pressed = false;
@@ -150,6 +155,52 @@ T.ComboBox {
                 control.pressed = false;
             }
         }
+
+        function onGenericPressed() {
+            indexUnderMouse = -1;
+            listView.currentIndex = control.highlightedIndex;
+            control.down = true;
+            control.pressed = true;
+            control.popup.visible = !control.popup.visible;
+        }
+
+        function onGenericReleased() {
+            if (!containsMouse && !hiddenTooltipButton.hovered) {
+                control.down = false;
+                control.pressed = false;
+                control.popup.visible = false;
+            }
+            if (indexUnderMouse > -1) {
+                control.currentIndex = indexUnderMouse;
+            }
+        }
+
+        PlasmaComponents.Button {
+            id: hiddenTooltipButton
+            anchors.fill: parent
+            opacity: 0
+            visible: control && control.currentIndex>=0 && control.toolTipRole.length>0
+            tooltip: {
+                if (!visible) {
+                    return "";
+                }
+
+                if (Array.isArray(control.model)) {
+                    return control.model[control.currentIndex][control.toolTipRole];
+                } else {
+                    return control.model.get(control.currentIndex)[control.toolTipRole];
+                }
+            }
+
+            onPressedChanged: {
+                if (pressed) {
+                    mouseArea.onGenericPressed();
+                } else {
+                    mouseArea.onGenericReleased();
+                }
+            }
+        }
+
         RowLayout {
             anchors.fill: parent
             spacing: 0
@@ -166,12 +217,15 @@ T.ComboBox {
 
                 colorGroup: PlasmaCore.Theme.ButtonColorGroup
                 source: {
-                    if (control && control.currentIndex>=0 &&
-                            control.iconRole && control.iconRole === "icon"
-                            && control.model && control.model.get(control.currentIndex)
-                            && control.model.get(control.currentIndex)) {
+                    if (control
+                            && control.currentIndex>=0
+                            && control.iconRole.length>0) {
 
-                        return control.model.get(control.currentIndex).icon;
+                        if (Array.isArray(control.model)) {
+                            return control.model[control.currentIndex][control.iconRole];
+                        } else {
+                            return control.model.get(control.currentIndex)[control.iconRole];
+                        }
                     }
 
                     return "";

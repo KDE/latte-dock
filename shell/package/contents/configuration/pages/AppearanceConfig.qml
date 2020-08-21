@@ -249,8 +249,8 @@ PlasmaComponents.Page {
                 spacing: 0
 
                 readonly property int labelsMaxWidth: Math.max(maxLengthLbl.implicitWidth,
-                                                                     minLengthLbl.implicitWidth,
-                                                                     offsetLbl.implicitWidth)
+                                                               minLengthLbl.implicitWidth,
+                                                               offsetLbl.implicitWidth)
 
                 RowLayout {
                     Layout.minimumWidth: dialog.optionsWidth
@@ -726,170 +726,67 @@ PlasmaComponents.Page {
             }
 
             GridLayout {
+                id: colorsGridLayout
                 Layout.minimumWidth: dialog.optionsWidth
                 Layout.maximumWidth: Layout.minimumWidth
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-                columnSpacing: 2
+                Layout.topMargin: units.smallSpacing
+                columnSpacing: units.smallSpacing
                 rowSpacing: units.smallSpacing
-                columns: 3
+                columns: 2
 
-                property int themeColors: plasmoid.configuration.themeColors
-                property int windowColors: plasmoid.configuration.windowColors
+                readonly property bool colorsScriptIsPresent: false //universalSettings.colorsScriptIsPresent
 
-                readonly property int buttonSize: (dialog.optionsWidth - (columnSpacing*2)) / 3
-
-                ExclusiveGroup {
-                    id: themeColorsGroup
-                }
-
-                ExclusiveGroup {
-                    id: windowColorsGroup
-                }
-
-                LatteComponents.SubHeader {
-                    Layout.columnSpan: 3
-                    isFirstSubCategory: true
+                PlasmaComponents.Label {
                     text: i18n("Theme")
                 }
 
-                PlasmaComponents.Button {
-                    Layout.minimumWidth: parent.buttonSize
-                    Layout.maximumWidth: Layout.minimumWidth
-                    text: i18n("Plasma")
-                    checked: parent.themeColors === colors
-                    checkable: false
-                    exclusiveGroup: themeColorsGroup
-                    tooltip: i18n("Plasma theme color palette is going to be used")
+                LatteComponents.ComboBox {
+                    Layout.fillWidth: true
+                    model: [i18nc("plasma theme colors", "Plasma"),
+                        i18nc("reverse plasma theme colors", "Reverse"),
+                        i18nc("smart theme colors", "Smart")]
 
-                    readonly property int colors: LatteContainment.Types.PlasmaThemeColors
-
-                    onPressedChanged: {
-                        if (pressed) {
-                            plasmoid.configuration.themeColors = colors;
-                        }
-                    }
+                    currentIndex: plasmoid.configuration.themeColors
+                    onCurrentIndexChanged: plasmoid.configuration.themeColors = currentIndex
                 }
 
-                PlasmaComponents.Button {
-                    Layout.minimumWidth: parent.buttonSize
-                    Layout.maximumWidth: Layout.minimumWidth
-                    text: i18n("Reverse")
-                    checked: parent.themeColors === colors
-                    checkable: false
-                    exclusiveGroup: themeColorsGroup
-                    tooltip: i18n("Reverse color palette from plasma theme is going to be used")
-
-                    readonly property int colors: LatteContainment.Types.ReverseThemeColors
-
-                    onPressedChanged: {
-                        if (pressed) {
-                            plasmoid.configuration.themeColors = colors;
-                        }
-                    }
-                }
-
-                PlasmaComponents.Button {
-                    Layout.minimumWidth: parent.buttonSize
-                    Layout.maximumWidth: Layout.minimumWidth
-                    text: i18n("Smart")
-                    checked: parent.themeColors === colors
-                    checkable: false
-                    exclusiveGroup: themeColorsGroup
-                    tooltip: i18n("Smart color palette is going to provide best contrast after taking into account the environment such as the underlying background")
-
-                    readonly property int colors: LatteContainment.Types.SmartThemeColors
-
-                    onPressedChanged: {
-                        if (pressed) {
-                            plasmoid.configuration.themeColors = colors;
-                        }
-                    }
-                }
-
-                LatteComponents.SubHeader {
-                    Layout.columnSpan: 3
+                PlasmaComponents.Label {
                     text: i18n("From Window")
                 }
 
-                PlasmaComponents.Button {
-                    Layout.minimumWidth: parent.buttonSize
-                    Layout.maximumWidth: Layout.minimumWidth
-                    text: i18n("None")
-                    checked: parent.windowColors === colors
-                    checkable: false
-                    exclusiveGroup: windowColorsGroup
-                    tooltip: i18n("Colors are not going to be based on any window")
-
-                    readonly property int colors: LatteContainment.Types.NoneWindowColors
-
-                    onPressedChanged: {
-                        if (pressed) {
-                            plasmoid.configuration.windowColors = colors;
+                LatteComponents.ComboBox {
+                    Layout.fillWidth: true
+                    model: [
+                        {
+                            name:i18n("Disabled"),
+                            icon: "",
+                            toolTip: "Colors are not going to take into account any windows"
+                        },{
+                            name:i18n("Current Active Window"),
+                            icon: !colorsGridLayout.colorsScriptIsPresent ? "state-warning" : "",
+                            toolTip: colorsGridLayout.colorsScriptIsPresent ?
+                                             i18n("Colors are going to be based on the active window") :
+                                             i18n("Colors are going to be based on the active window.\nWarning: You need to install Colors KWin Script from KDE Store")
+                        },{
+                            name: i18n("Any Touching Window"),
+                            icon: !colorsGridLayout.colorsScriptIsPresent ? "state-warning" : "",
+                            toolTip: colorsGridLayout.colorsScriptIsPresent ?
+                                             i18n("Colors are going to be based on windows that are touching the view") :
+                                             i18n("Colors are going to be based on windows that are touching the view.\nWarning: You need to install Colors KWin Script from KDE Store")
                         }
-                    }
-                }
+                    ]
 
-                PlasmaComponents.Button {
-                    Layout.minimumWidth: parent.buttonSize
-                    Layout.maximumWidth: Layout.minimumWidth
-                    text: i18n("Active")
-                    checked: parent.windowColors === colors
-                    checkable: false
-                    exclusiveGroup: windowColorsGroup
-                    tooltip: universalSettings.colorsScriptIsPresent ?
-                                 i18n("Colors are going to be based on the active window") :
-                                 i18n("Colors are going to be based on the active window.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
 
-                    readonly property int colors: LatteContainment.Types.ActiveWindowColors
+                    textRole: "name"
+                    iconRole: "icon"
+                    toolTipRole: "toolTip"
+                    blankSpaceForEmptyIcons: !colorsGridLayout.colorsScriptIsPresent
+                    popUpAlignRight: Qt.application.layoutDirection !== Qt.RightToLeft
 
-                    onPressedChanged: {
-                        if (pressed) {
-                            plasmoid.configuration.windowColors = colors;
-                        }
-                    }
-
-                    PlasmaCore.IconItem {
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        width: height
-                        height: parent.height
-                        source: "state-warning"
-
-                        visible: !universalSettings.colorsScriptIsPresent
-                    }
-                }
-
-                PlasmaComponents.Button {
-                    Layout.minimumWidth: parent.buttonSize
-                    Layout.maximumWidth: Layout.minimumWidth
-                    text: i18n("Touching")
-                    checked: parent.windowColors === colors
-                    checkable: false
-                    exclusiveGroup: windowColorsGroup
-                    tooltip: universalSettings.colorsScriptIsPresent ?
-                                 i18n("Colors are going to be based on windows that are touching the view") :
-                                 i18n("Colors are going to be based on windows that are touching the view.\nNotice: For optimal experience you are advised to install Colors KWin Script from KDE Store")
-
-                    readonly property int colors: LatteContainment.Types.TouchingWindowColors
-
-                    onPressedChanged: {
-                        if (pressed) {
-                            plasmoid.configuration.windowColors = colors;
-                        }
-                    }
-
-                    PlasmaCore.IconItem {
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        width: height
-                        height: parent.height
-                        source: "state-warning"
-
-                        visible: !universalSettings.colorsScriptIsPresent
-                    }
+                    currentIndex: plasmoid.configuration.windowColors
+                    onCurrentIndexChanged: plasmoid.configuration.windowColors = currentIndex
                 }
             }
         }

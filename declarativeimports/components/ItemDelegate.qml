@@ -44,6 +44,7 @@ T.CheckDelegate {
     property string icon
     property string iconToolTip
     property bool iconOnlyWhenHovered
+    property string toolTip
 
     property int textHorizontalAlignment: Text.AlignLeft
 
