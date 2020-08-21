@@ -42,9 +42,9 @@ BackgroundProperties{
     height: root.isVertical ? totals.visualLength : 16
 
     opacity: root.useThemePanel ? 1 : 0
-    currentOpacity: overlayedBackground.opacity>0 ? overlayedBackground.opacity : solidBackground.opacity
+    currentOpacity: overlayedBackground.backgroundOpacity>0 ? overlayedBackground.backgroundOpacity : solidBackground.opacity
 
-    isShown: (solidBackground.opacity > 0) || (overlayedBackground.opacity > 0)
+    isShown: (solidBackground.opacity > 0) || (overlayedBackground.backgroundOpacity > 0)
 
     hasAllBorders: solidBackground.enabledBorders === PlasmaCore.FrameSvg.AllBorders
     hasLeftBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.LeftBorder) > 0)
@@ -52,10 +52,10 @@ BackgroundProperties{
     hasTopBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.TopBorder) > 0)
     hasBottomBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.BottomBorder) > 0)
 
-    shadows.left: hasLeftBorder ? shadowsSvgItem.margins.left : 0
-    shadows.right: hasRightBorder ? shadowsSvgItem.margins.right : 0
-    shadows.top: hasTopBorder ? shadowsSvgItem.margins.top : 0
-    shadows.bottom: hasBottomBorder ? shadowsSvgItem.margins.bottom : 0
+    shadows.left: hasLeftBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.left) : 0
+    shadows.right: hasRightBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.right) : 0
+    shadows.top: hasTopBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.top) : 0
+    shadows.bottom: hasBottomBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.bottom) : 0
 
     //! it can accept negative values in DockMode
     screenEdgeMargin: root.screenEdgeMarginEnabled ? metrics.margin.screenEdge - shadows.tailThickness : -shadows.tailThickness
@@ -159,12 +159,15 @@ BackgroundProperties{
 
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
-    readonly property bool kirigamiLibraryIsFound: LatteCore.Environment.frameworksVersion >= LatteCore.Environment.makeVersion(5,69,0)
-    readonly property bool customShadowIsEnabled: kirigamiLibraryIsFound && plasmoid.configuration.backgroundShadowSize >= 0
+    readonly property bool customShadowIsEnabled: LatteCore.WindowSystem.compositingActive
+                                                  && kirigamiLibraryIsFound
+                                                  && panelShadowsActive
+                                                  && plasmoid.configuration.backgroundShadowSize > 0
     readonly property bool customRadiusIsEnabled: kirigamiLibraryIsFound && plasmoid.configuration.backgroundRadius >= 0
     readonly property int customRadius: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
-                                            plasmoid.configuration.backgroundRadius * (solidBackground.height/2) :
-                                            plasmoid.configuration.backgroundRadius * (solidBackground.width/2)
+                                            (plasmoid.configuration.backgroundRadius/100) * (solidBackground.height/2) :
+                                            (plasmoid.configuration.backgroundRadius/100) * (solidBackground.width/2)
+    readonly property int customShadow: plasmoid.configuration.backgroundShadowSize
 
     property QtObject themeExtendedBackground: null
 
@@ -285,10 +288,10 @@ BackgroundProperties{
         //!          the compositor to provide blurriness and from Mask calculations to provide the View Local Geometry
         PlasmaCore.FrameSvgItem{
             id: solidBackground
-            anchors.leftMargin: LatteCore.WindowSystem.compositingActive ? shadowsSvgItem.margins.left : 0
-            anchors.rightMargin: LatteCore.WindowSystem.compositingActive ? shadowsSvgItem.margins.right : 0
-            anchors.topMargin: LatteCore.WindowSystem.compositingActive ? shadowsSvgItem.margins.top : 0
-            anchors.bottomMargin: LatteCore.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom : 0
+            anchors.leftMargin: LatteCore.WindowSystem.compositingActive ? shadows.left : 0
+            anchors.rightMargin: LatteCore.WindowSystem.compositingActive ? shadows.right : 0
+            anchors.topMargin: LatteCore.WindowSystem.compositingActive ? shadows.top : 0
+            anchors.bottomMargin: LatteCore.WindowSystem.compositingActive ? shadows.bottom : 0
             anchors.fill:parent
 
             opacity: normalizedOpacity
@@ -299,7 +302,7 @@ BackgroundProperties{
             //! must be normalized to plasma theme maximum opacity
             readonly property real normalizedOpacity: Math.min(1, appliedOpacity / themeMaxOpacity)
 
-            readonly property real appliedOpacity: overlayedBackground.opacity > 0 && !paintInstantly ? 0 : overlayedBackground.midOpacity
+            readonly property real appliedOpacity: overlayedBackground.backgroundOpacity > 0 && !paintInstantly ? 0 : overlayedBackground.midOpacity
             readonly property real themeMaxOpacity: themeExtendedBackground ? themeExtendedBackground.maxOpacity : 1
 
             //! When switching from overlaied background to regular one this must be done
@@ -459,7 +462,7 @@ BackgroundProperties{
                                                    && (solidBackground.opacity === 0 || !solidBackground.paintInstantly)
             readonly property bool coloredView: colorizerManager.mustBeShown && colorizerManager.applyTheme !== theme
 
-            opacity: {
+            backgroundOpacity: {
                 if (busyBackground && !forceSolidness) {
                     return plasmoid.configuration.panelTransparency / 100;
                 }
@@ -472,8 +475,21 @@ BackgroundProperties{
             }
 
             backgroundColor: colorizerManager.backgroundColor
-            borderWidth: 1
-            borderColor: backgroundColor
+            borderColor: backgroundColor /*disabled in favor of Layer 5*/
+            borderWidth: 1 /*disabled in favor of Layer 5*/
+            shadowSize: {
+                if (!customShadowIsEnabled) {
+                    return 0;
+                }
+
+                //! WORKAROUND: Kirigami.ShadowedRectangle does not respect the specified shadowed size
+                //! when the shadow size is bigger than background thickness. In such case the ShadowedRectangle
+                //! produced shadowed is much bigger than the specified one
+                var minaxis = Math.min(solidBackground.height, solidBackground.width)
+
+                return customShadow > minaxis ? minaxis : customShadow;
+            }
+
             roundness: {
                 if (customRadiusIsEnabled) {
                     return customRadius;
@@ -494,12 +510,12 @@ BackgroundProperties{
 
             readonly property bool forceSolidness: root.forceSolidPanel || !LatteCore.WindowSystem.compositingActive
 
-            Behavior on opacity{
+            Behavior on backgroundOpacity{
                 enabled: LatteCore.WindowSystem.compositingActive
                 NumberAnimation { duration: barLine.animationTime }
             }
 
-            Behavior on opacity{
+            Behavior on backgroundOpacity{
                 enabled: !LatteCore.WindowSystem.compositingActive
                 NumberAnimation { duration: 0 }
             }

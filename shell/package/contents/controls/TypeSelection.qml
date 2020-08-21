@@ -144,6 +144,10 @@ Grid {
 
                 //! Floating
                 plasmoid.configuration.floatingInternalGapIsForced = Qt.PartiallyChecked;
+
+                //! Custom Background that overrides Plasma Theme metrics
+                plasmoid.configuration.backgroundRadius = -1;
+                plasmoid.configuration.backgroundShadowSize = -1;
             }
         }
     }

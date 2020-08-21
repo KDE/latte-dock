@@ -70,7 +70,8 @@ Item {
     property bool debugModeWindow: Qt.application.arguments.indexOf("--with-window")>=0
     property bool debugModeOverloadedIcons: Qt.application.arguments.indexOf("--overloaded-icons")>=0
 
-    readonly property int version: LatteCore.Environment.makeVersion(0,9,4)
+    readonly property int version: LatteCore.Environment.makeVersion(0,9,75)
+    readonly property bool kirigamiLibraryIsFound: LatteCore.Environment.frameworksVersion >= LatteCore.Environment.makeVersion(5,69,0)
 
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
@@ -113,7 +114,7 @@ Item {
             return LatteCore.Types.DockView;
         }
 
-        if (background.customRadiusIsEnabled || background.customShadowIsEnabled) {
+        if (background.customShadowIsEnabled || background.customRadiusIsEnabled) {
             return LatteCore.Types.DockView;
         }
 

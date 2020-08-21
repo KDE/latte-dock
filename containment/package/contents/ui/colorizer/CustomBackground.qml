@@ -24,12 +24,14 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item{
     id: main
-    clip: true
+    clip: !kirigamiRect.active
 
     property int roundness: 0
-    property color backgroundColor
+    property color backgroundColor: "black"
+    property real backgroundOpacity: 1.0
     property color borderColor: "transparent"
     property int borderWidth: 0
+    property int shadowSize: 0
 
     property bool topBorder: false
     property bool leftBorder: false
@@ -104,10 +106,22 @@ Item{
         }
     }
 
+    Loader {
+        id: kirigamiRect
+        anchors.fill: painter
+        active: root.kirigamiLibraryIsFound && main.shadowSize>0
+        sourceComponent: KirigamiShadowedRectangle {
+            radius: painter.radius
+            color: "transparent"
+            shadow.size: main.shadowSize
+        }
+    }
+
     Rectangle{
         id: painter
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
+        opacity: backgroundOpacity
 
         width: {
             if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
@@ -151,7 +165,7 @@ Item{
         }
 
         radius: drawWithoutRoundness ? 0 : roundness
-        color: parent.backgroundColor
+        color: main.backgroundColor
         border.width: main.borderWidth
         border.color: main.borderColor
 
