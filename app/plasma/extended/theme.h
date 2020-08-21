@@ -98,7 +98,7 @@ public:
     WindowSystem::SchemeColors *lightTheme() const;
     WindowSystem::SchemeColors *darkTheme() const;
 
-    const CornerRegions &cornersMask(const int &size);
+    const CornerRegions &cornersMask(const int &radius);
 
     void load();
 

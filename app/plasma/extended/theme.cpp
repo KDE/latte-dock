@@ -31,6 +31,7 @@
 // Qt
 #include <QDebug>
 #include <QDir>
+#include <QPainter>
 #include <QProcess>
 
 // KDE
@@ -414,13 +415,74 @@ void Theme::loadThemeLightness()
     }
 }
 
-const CornerRegions &Theme::cornersMask(const int &size)
+const CornerRegions &Theme::cornersMask(const int &radius)
 {
-    if (m_cornerRegions.contains(size)) {
-        return m_cornerRegions[size];
+    if (m_cornerRegions.contains(radius)) {
+        return m_cornerRegions[radius];
     }
 
-    return m_cornerRegions[size];
+    qDebug() << radius;
+    CornerRegions corners;
+
+    int axis = (2 * radius) + 2;
+    QImage cornerimage(axis, axis, QImage::Format_ARGB32);
+    QPainter painter(&cornerimage);
+    //!does not provide valid masks
+    //painter.setRenderHints(QPainter::Antialiasing);
+
+    QPen pen(Qt::black);
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(1);
+    painter.setPen(pen);
+
+    QRect rectArea(0,0,axis,axis);
+    painter.fillRect(rectArea, Qt::white);
+    painter.drawRoundedRect(rectArea, axis, axis);
+
+    QRegion topleft;
+    for(int y=0; y<radius; ++y) {
+        QRgb *line = (QRgb *)cornerimage.scanLine(y);
+
+        QString bits;
+        int width{0};
+        for(int x=0; x<radius; ++x) {
+            QRgb point = line[x];
+
+            if (QColor(point) == Qt::black) {
+                bits = bits + "1 ";
+                width = qMax(0, x);
+                break;
+            } else {
+                bits = bits + "0 ";
+            }
+        }
+
+        if (width>0) {
+            topleft += QRect(0, y, width, 1);
+        }
+
+        qDebug()<< "  " << bits;
+    }
+    corners.topLeft = topleft;
+
+    QTransform transform;
+    transform.rotate(90);
+    corners.topRight = transform.map(corners.topLeft);
+    corners.topRight.translate(corners.topLeft.boundingRect().width(), 0);
+
+    corners.bottomRight = transform.map(corners.topRight);
+    corners.bottomRight.translate(corners.topLeft.boundingRect().width(), 0);
+
+    corners.bottomLeft = transform.map(corners.bottomRight);
+    corners.bottomLeft.translate(corners.topLeft.boundingRect().width(), 0);
+
+    //qDebug() << " reg top;: " << corners.topLeft;
+    //qDebug() << " reg topr: " << corners.topRight;
+    //qDebug() << " reg bottomr: " << corners.bottomRight;
+    //qDebug() << " reg bottoml: " << corners.bottomLeft;
+
+    m_cornerRegions[radius] = corners;
+    return m_cornerRegions[radius];
 }
 
 void Theme::loadConfig()

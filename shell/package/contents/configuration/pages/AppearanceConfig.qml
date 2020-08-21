@@ -968,6 +968,7 @@ PlasmaComponents.Page {
                 RowLayout {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
+                    enabled: LatteCore.WindowSystem.compositingActive
                     visible: dialog.kirigamiLibraryIsFound
 
                     PlasmaComponents.Label {

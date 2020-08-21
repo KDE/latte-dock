@@ -149,6 +149,7 @@ private slots:
 private:
     bool backgroundRadiusIsEnabled() const;
     qreal currentMidValue(const qreal &max, const qreal &factor, const qreal &min) const;
+    QRegion customMask(const QRect &rect);
     QRegion maskCombinedRegion();
 
 private:
@@ -159,6 +160,11 @@ private:
     bool m_drawEffects{false};
     bool m_forceTopBorder{false};
     bool m_forceBottomBorder{false};
+
+    bool m_hasTopLeftCorner{false};
+    bool m_hasTopRightCorner{false};
+    bool m_hasBottomLeftCorner{false};
+    bool m_hasBottomRightCorner{false};
 
     int m_editShadow{0};
     int m_innerShadow{0};

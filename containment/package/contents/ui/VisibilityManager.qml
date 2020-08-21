@@ -283,6 +283,20 @@ Item{
 
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null
+        property: "backgroundRadius"
+        when: latteView && latteView.effects
+        value: background.customRadius
+    }
+
+    Binding{
+        target: latteView && latteView.effects ? latteView.effects : null
+        property: "backgroundRadiusEnabled"
+        when: latteView && latteView.effects
+        value: background.customRadiusIsEnabled
+    }
+
+    Binding{
+        target: latteView && latteView.effects ? latteView.effects : null
         property: "backgroundOpacity"
         when: latteView && latteView.effects
         value: background.currentOpacity
