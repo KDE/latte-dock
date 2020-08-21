@@ -20,6 +20,9 @@
 #ifndef EFFECTS_H
 #define EFFECTS_H
 
+// local
+#include "../plasma/extended/theme.h"
+
 // Qt
 #include <QObject>
 #include <QPointer>
@@ -50,6 +53,8 @@ class Effects: public QObject
     Q_PROPERTY(int innerShadow READ innerShadow WRITE setInnerShadow NOTIFY innerShadowChanged)
 
     Q_PROPERTY(bool backgroundAllCorners READ backgroundAllCorners WRITE setBackgroundAllCorners NOTIFY backgroundAllCornersChanged)
+    Q_PROPERTY(bool backgroundRadiusEnabled READ backgroundRadiusEnabled WRITE setBackgroundRadiusEnabled NOTIFY backgroundRadiusEnabledChanged)
+    Q_PROPERTY(int backgroundRadius READ backgroundRadius WRITE setBackgroundRadius NOTIFY backgroundRadiusChanged)
     Q_PROPERTY(float backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
 
     Q_PROPERTY(QRect mask READ mask WRITE setMask NOTIFY maskChanged)
@@ -68,6 +73,9 @@ public:
     bool backgroundAllCorners() const;
     void setBackgroundAllCorners(bool allcorners);
 
+    bool backgroundRadiusEnabled() const;
+    void setBackgroundRadiusEnabled(bool enabled);
+
     bool drawShadows() const;
     void setDrawShadows(bool draw);
 
@@ -82,6 +90,9 @@ public:
 
     int innerShadow() const;
     void setInnerShadow(int shadow);
+
+    int backgroundRadius();
+    void setBackgroundRadius(const int &radius);
 
     float backgroundOpacity() const;
     void setBackgroundOpacity(float opacity);
@@ -113,7 +124,10 @@ public slots:
 signals:
     void animationsBlockedChanged();
     void backgroundAllCornersChanged();
+    void backgroundCornersMaskChanged();
     void backgroundOpacityChanged();
+    void backgroundRadiusEnabledChanged();
+    void backgroundRadiusChanged();
     void drawShadowsChanged();
     void drawEffectsChanged();
     void editShadowChanged();
@@ -130,14 +144,17 @@ private slots:
     void init();
 
     void updateBackgroundContrastValues();
+    void updateBackgroundCorners();
 
 private:
+    bool backgroundRadiusIsEnabled() const;
     qreal currentMidValue(const qreal &max, const qreal &factor, const qreal &min) const;
     QRegion maskCombinedRegion();
 
 private:
     bool m_animationsBlocked{false};
     bool m_backgroundAllCorners{false};
+    bool m_backgroundRadiusEnabled{false};
     bool m_drawShadows{true};
     bool m_drawEffects{false};
     bool m_forceTopBorder{false};
@@ -146,6 +163,7 @@ private:
     int m_editShadow{0};
     int m_innerShadow{0};
 
+    int m_backgroundRadius{-1};
     float m_backgroundOpacity{1.0};
 
     qreal m_backEffectContrast{1};
@@ -158,6 +176,8 @@ private:
 
     QPointer<Latte::View> m_view;
     QPointer<Latte::Corona> m_corona;
+
+    PlasmaExtended::CornerRegions m_cornersMaskRegion;
 
     Plasma::Theme m_theme;
     //only for the mask on disabled compositing, not to actually paint

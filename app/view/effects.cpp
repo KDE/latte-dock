@@ -57,6 +57,7 @@ void Effects::init()
     connect(this, &Effects::drawEffectsChanged, this, &Effects::updateEffects);
     connect(this, &Effects::enabledBordersChanged, this, &Effects::updateEffects);
     connect(this, &Effects::rectChanged, this, &Effects::updateEffects);
+    connect(this, &Effects::backgroundRadiusChanged, this, &Effects::updateBackgroundCorners);
 
     connect(this, &Effects::subtractedMaskRegionsChanged, this, &Effects::updateMask);
     connect(this, &Effects::unitedMaskRegionsChanged, this, &Effects::updateMask);
@@ -125,6 +126,21 @@ void Effects::setBackgroundAllCorners(bool allcorners)
     emit backgroundAllCornersChanged();
 }
 
+bool Effects::backgroundRadiusEnabled() const
+{
+    return m_backgroundRadiusEnabled;
+}
+
+void Effects::setBackgroundRadiusEnabled(bool enabled)
+{
+    if (m_backgroundRadiusEnabled == enabled) {
+        return;
+    }
+
+    m_backgroundRadiusEnabled = enabled;
+    emit backgroundRadiusEnabledChanged();
+}
+
 bool Effects::drawShadows() const
 {
     return m_drawShadows;
@@ -175,6 +191,21 @@ void Effects::setForceTopBorder(bool draw)
 
     m_forceTopBorder = draw;
     updateEnabledBorders();
+}
+
+int Effects::backgroundRadius()
+{
+    return m_backgroundRadius;
+}
+
+void Effects::setBackgroundRadius(const int &radius)
+{
+    if (m_backgroundRadius == radius) {
+        return;
+    }
+
+    m_backgroundRadius = radius;
+    emit backgroundRadiusChanged();
 }
 
 float Effects::backgroundOpacity() const
@@ -341,6 +372,17 @@ QRegion Effects::maskCombinedRegion()
     }
 
     return region;
+}
+
+void Effects::updateBackgroundCorners()
+{
+    if (m_backgroundRadius<=0) {
+        return;
+    }
+
+    PlasmaExtended::CornerRegions corners = m_corona->themeExtended()->cornersMask(m_backgroundRadius);
+
+    m_cornersMaskRegion = corners;
 }
 
 void Effects::updateMask()

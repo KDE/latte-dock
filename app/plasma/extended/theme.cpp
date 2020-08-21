@@ -414,6 +414,15 @@ void Theme::loadThemeLightness()
     }
 }
 
+const CornerRegions &Theme::cornersMask(const int &size)
+{
+    if (m_cornerRegions.contains(size)) {
+        return m_cornerRegions[size];
+    }
+
+    return m_cornerRegions[size];
+}
+
 void Theme::loadConfig()
 {
     setOutlineWidth(m_themeGroup.readEntry("outlineWidth", 1));

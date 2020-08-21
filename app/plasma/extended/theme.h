@@ -26,6 +26,7 @@
 
 // Qt
 #include <QObject>
+#include <QHash>
 #include <QTemporaryDir>
 
 // KDE
@@ -51,6 +52,13 @@ class PanelBackground;
 
 namespace Latte {
 namespace PlasmaExtended {
+
+struct CornerRegions {
+    QRegion topLeft;
+    QRegion topRight;
+    QRegion bottomLeft;
+    QRegion bottomRight;
+};
 
 class Theme: public QObject
 {
@@ -89,6 +97,8 @@ public:
     WindowSystem::SchemeColors *defaultTheme() const;
     WindowSystem::SchemeColors *lightTheme() const;
     WindowSystem::SchemeColors *darkTheme() const;
+
+    const CornerRegions &cornersMask(const int &size);
 
     void load();
 
@@ -130,6 +140,8 @@ private:
     QString m_defaultSchemePath;
     QString m_originalSchemePath;
     QString m_reversedSchemePath;
+
+    QHash<int, CornerRegions> m_cornerRegions;
 
     std::array<QMetaObject::Connection, 2> m_kdeConnections;
 
