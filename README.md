@@ -41,6 +41,7 @@ Minimum requirements:
  KF5GuiAddons >= 5.38.0
  KF5DBusAddons >= 5.38.0
  KF5Declarative >= 5.38.0
+ KF5Kirigami2 >= 5.38.0
  KF5Wayland >= 5.38.0
  KF5Package >= 5.38.0
  KF5XmlGui >= 5.38.0
