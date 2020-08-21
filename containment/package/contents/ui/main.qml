@@ -113,6 +113,10 @@ Item {
             return LatteCore.Types.DockView;
         }
 
+        if (background.customRadiusIsEnabled || background.customShadowIsEnabled) {
+            return LatteCore.Types.DockView;
+        }
+
         var staticLayout = (plasmoid.configuration.minLength === plasmoid.configuration.maxLength);
 
         if ((plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout)

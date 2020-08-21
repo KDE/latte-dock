@@ -1026,6 +1026,90 @@ PlasmaComponents.Page {
                     }
                 }
 
+                RowLayout {
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
+                    visible: dialog.kirigamiLibraryIsFound
+
+                    PlasmaComponents.Label {
+                        text: i18n("Radius")
+                        horizontalAlignment: Text.AlignLeft
+                        enabled: radiusSlider.enabled
+                    }
+
+                    LatteComponents.Slider {
+                        id: radiusSlider
+                        Layout.fillWidth: true
+                        enabled: showBackground.checked
+
+                        value: plasmoid.configuration.backgroundRadius
+                        from: -1
+                        to: 100
+                        stepSize: 1
+                        wheelEnabled: false
+
+                        function updateBackgroundRadius() {
+                            if (!pressed) {
+                                plasmoid.configuration.backgroundRadius = value
+                            }
+                        }
+
+                        onPressedChanged: updateBackgroundRadius();
+                        Component.onCompleted: valueChanged.connect(updateBackgroundRadius);
+                        Component.onDestruction: valueChanged.disconnect(updateBackgroundRadius);
+                    }
+
+                    PlasmaComponents.Label {
+                        enabled: radiusSlider.enabled
+                        text: radiusSlider.value >= 0 ? i18nc("number in percentage, e.g. 85 %","%0 %").arg(radiusSlider.value) : "---"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    }
+                }
+
+                RowLayout {
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
+                    visible: dialog.kirigamiLibraryIsFound
+
+                    PlasmaComponents.Label {
+                        text: i18n("Shadow")
+                        horizontalAlignment: Text.AlignLeft
+                        enabled: shadowSlider.enabled
+                    }
+
+                    LatteComponents.Slider {
+                        id: shadowSlider
+                        Layout.fillWidth: true
+                        enabled: showBackground.checked && panelShadows.checked
+
+                        value: plasmoid.configuration.backgroundShadowSize
+                        from: -1
+                        to: 50
+                        stepSize: 1
+                        wheelEnabled: false
+
+                        function updateBackgroundShadowSize() {
+                            if (!pressed) {
+                                plasmoid.configuration.backgroundShadowSize = value
+                            }
+                        }
+
+                        onPressedChanged: updateBackgroundShadowSize();
+                        Component.onCompleted: valueChanged.connect(updateBackgroundShadowSize);
+                        Component.onDestruction: valueChanged.disconnect(updateBackgroundShadowSize);
+                    }
+
+                    PlasmaComponents.Label {
+                        enabled: shadowSlider.enabled
+                        text: shadowSlider.value >= 0 ? i18nc("number in pixels, e.g. 12 px.", "%0 px.").arg(shadowSlider.value) : "---"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    }
+                }
+
                 LatteComponents.SubHeader {
                     visible: dialog.advancedLevel
                     isFirstSubCategory: true

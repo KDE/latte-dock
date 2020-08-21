@@ -107,6 +107,14 @@
     <entry name="backgroundAllCorners" type="Bool">
       <default>false</default>
     </entry>
+    <entry name="backgroundRadius" type="Int">
+      <default>-1</default>
+      <label>override plasma theme background svg provided radius; -1 stands for default plasma theme behavior, and value represents percentage</label>
+    </entry>
+    <entry name="backgroundShadowSize" type="Int">
+      <default>-1</default>
+      <label>override plasma theme background shadow; -1 stands for default plasma theme behavior and value represents pixels</label>
+    </entry>
     <entry name="blurEnabled" type="Bool">
       <default>true</default>
     </entry>

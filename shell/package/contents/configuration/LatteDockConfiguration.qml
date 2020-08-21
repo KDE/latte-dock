@@ -48,6 +48,8 @@ FocusScope {
 
     readonly property bool inConfigureAppletsMode: plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive
 
+    readonly property bool kirigamiLibraryIsFound: LatteCore.Environment.frameworksVersion >= LatteCore.Environment.makeVersion(5,69,0)
+
     //! max size based on screen resolution
     //!    TODO: if we can access availableScreenGeometry.height this can be improved, currently
     //!    we use 100px. or 50px. in order to give space for othe views to be shown and to have also

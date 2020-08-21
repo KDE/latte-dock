@@ -159,6 +159,13 @@ BackgroundProperties{
 
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
+    readonly property bool kirigamiLibraryIsFound: LatteCore.Environment.frameworksVersion >= LatteCore.Environment.makeVersion(5,69,0)
+    readonly property bool customShadowIsEnabled: kirigamiLibraryIsFound && plasmoid.configuration.backgroundShadowSize >= 0
+    readonly property bool customRadiusIsEnabled: kirigamiLibraryIsFound && plasmoid.configuration.backgroundRadius >= 0
+    readonly property int customRadius: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
+                                            plasmoid.configuration.backgroundRadius * (solidBackground.height/2) :
+                                            plasmoid.configuration.backgroundRadius * (solidBackground.width/2)
+
     property QtObject themeExtendedBackground: null
 
     Behavior on opacity{
@@ -222,7 +229,9 @@ BackgroundProperties{
         readonly property bool hideShadow: root.behaveAsPlasmaPanel
                                            || !LatteCore.WindowSystem.compositingActive
                                            || !root.panelShadowsActive
-                                           || !themeHasShadow
+                                           || (!themeHasShadow && !customShadowIsEnabled)
+                                           || customShadowIsEnabled
+                                           || customRadiusIsEnabled
 
         Behavior on opacity {
             enabled: LatteCore.WindowSystem.compositingActive
@@ -455,7 +464,7 @@ BackgroundProperties{
                     return plasmoid.configuration.panelTransparency / 100;
                 }
 
-                if (coloredView) {
+                if (coloredView || customRadiusIsEnabled || customShadowIsEnabled) {
                     return midOpacity;
                 }
 
@@ -465,7 +474,13 @@ BackgroundProperties{
             backgroundColor: colorizerManager.backgroundColor
             borderWidth: 1
             borderColor: backgroundColor
-            roundness: themeExtendedBackground ? themeExtendedBackground.roundness : 0
+            roundness: {
+                if (customRadiusIsEnabled) {
+                    return customRadius;
+                }
+
+                return themeExtendedBackground ? themeExtendedBackground.roundness : 0
+            }
 
             property real midOpacity: {
                 if (forceSolidness) {
