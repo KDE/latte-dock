@@ -502,7 +502,9 @@ Item {
     Binding{
         target: root
         property: "hideLengthScreenGaps"
-        when: latteView && latteView.positioner && latteView.visibility && (latteView.positioner.slideOffset === 0)
+        when: latteView && latteView.positioner && latteView.visibility
+              && ((root.behaveAsPlasmaPanel && latteView.positioner.slideOffset === 0)
+                  || root.behaveAsDockWithMask)
         value: (hideThickScreenGap
                 && (latteView.visibility.mode === LatteCore.Types.AlwaysVisible
                     || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow)

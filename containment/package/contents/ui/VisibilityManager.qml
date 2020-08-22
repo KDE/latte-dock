@@ -74,8 +74,7 @@ Item{
 
     property int finalScreenEdgeMargin: {
         //! is used for window geometry calculations
-        if (!screenEdgeMarginEnabled
-                || (hideThickScreenGap && metrics.margin.screenEdge === 0)) {
+        if (!screenEdgeMarginEnabled || hideThickScreenGap) {
             /*window geometry is updated after the local screen margin animation was zeroed*/
             return 0;
         }
