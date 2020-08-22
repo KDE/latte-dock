@@ -46,14 +46,18 @@ QtObject{
     }
 
     readonly property int headThickness: {
-        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-            return right;
-        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-            return left;
-        } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-            return bottom;
+        if (!backgroundShadowsInRegularStateEnabled) {
+            return 0;
         }
 
-        return top;
+        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+            return fixedRight;
+        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+            return fixedLeft;
+        } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+            return fixedBottom;
+        }
+
+        return fixedTop;
     }
 }

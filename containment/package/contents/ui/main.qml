@@ -303,6 +303,10 @@ Item {
     property int panelEdgeSpacing: Math.max(background.lengthMargins, 1.5*appShadowSize)
     property int panelTransparency: plasmoid.configuration.panelTransparency //user set
 
+    property bool backgroundShadowsInRegularStateEnabled: LatteCore.WindowSystem.compositingActive
+                                                          && userShowPanelBackground
+                                                          && plasmoid.configuration.panelShadows
+
     property bool panelShadowsActive: {
         if (!userShowPanelBackground) {
             return false;

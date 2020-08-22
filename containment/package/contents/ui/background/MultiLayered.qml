@@ -57,10 +57,10 @@ BackgroundProperties{
     shadows.top: hasTopBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.top) : 0
     shadows.bottom: hasBottomBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.bottom) : 0
 
-    shadows.fixedLeft: customShadowIsEnabled ? customShadow : shadowsSvgItem.fixedMargins.left
-    shadows.fixedRight: customShadowIsEnabled ? customShadow : shadowsSvgItem.fixedMargins.right
-    shadows.fixedTop: customShadowIsEnabled ? customShadow : shadowsSvgItem.fixedMargins.top
-    shadows.fixedBottom: customShadowIsEnabled ? customShadow : shadowsSvgItem.fixedMargins.bottom
+    shadows.fixedLeft: (customDefShadowIsEnabled || customUserShadowIsEnabled) ? customShadow : shadowsSvgItem.fixedMargins.left
+    shadows.fixedRight: (customDefShadowIsEnabled || customUserShadowIsEnabled) ? customShadow : shadowsSvgItem.fixedMargins.right
+    shadows.fixedTop: (customDefShadowIsEnabled || customUserShadowIsEnabled) ? customShadow : shadowsSvgItem.fixedMargins.top
+    shadows.fixedBottom: (customDefShadowIsEnabled || customUserShadowIsEnabled) ? customShadow : shadowsSvgItem.fixedMargins.bottom
 
     //! it can accept negative values in DockMode
     screenEdgeMargin: root.screenEdgeMarginEnabled ? metrics.margin.screenEdge - shadows.tailThickness : -shadows.tailThickness
@@ -165,12 +165,14 @@ BackgroundProperties{
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
     //! CustomShadowedRectangle  properties
-    readonly property bool customShadowedRectangleIsEnabled: customRadiusIsEnabled || customShadowIsEnabled
+    readonly property bool customShadowedRectangleIsEnabled: customRadiusIsEnabled || (customDefShadowIsEnabled || customUserShadowIsEnabled)
 
     readonly property bool customShadowIsSupported: LatteCore.WindowSystem.compositingActive
                                                     && kirigamiLibraryIsFound
-                                                    && panelShadowsActive
-    readonly property bool customShadowIsEnabled: customDefShadowIsEnabled || customUserShadowIsEnabled
+
+    //!current shadow state but do not change other values of normal mode, for example if a Dock hides its screen edge thickness
+    //!shouldnt change the fact that customShadowedRectangle is still used
+    readonly property bool customShadowIsEnabled: (customDefShadowIsEnabled || customUserShadowIsEnabled) && panelShadowsActive
     readonly property bool customDefShadowIsEnabled: customShadowIsSupported && !customUserShadowIsEnabled && customRadiusIsEnabled
     readonly property bool customUserShadowIsEnabled: customShadowIsSupported && plasmoid.configuration.backgroundShadowSize >= 0
 
