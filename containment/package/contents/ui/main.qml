@@ -114,7 +114,7 @@ Item {
             return LatteCore.Types.DockView;
         }
 
-        if (background.customShadowIsEnabled || background.customRadiusIsEnabled) {
+        if (background.customShadowedRectangleIsEnabled) {
             return LatteCore.Types.DockView;
         }
 

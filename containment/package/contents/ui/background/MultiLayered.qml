@@ -166,7 +166,7 @@ BackgroundProperties{
                                                     && kirigamiLibraryIsFound
                                                     && panelShadowsActive
     readonly property bool customShadowIsEnabled: customDefShadowIsEnabled || customUserShadowIsEnabled
-    readonly property bool customDefShadowIsEnabled: customShadowIsSupported && !customUserShadowIsEnabled
+    readonly property bool customDefShadowIsEnabled: customShadowIsSupported && !customUserShadowIsEnabled && customRadiusIsEnabled
     readonly property bool customUserShadowIsEnabled: customShadowIsSupported && plasmoid.configuration.backgroundShadowSize >= 0
 
     readonly property bool customRadiusIsEnabled: kirigamiLibraryIsFound && plasmoid.configuration.backgroundRadius >= 0
