@@ -736,7 +736,7 @@ PlasmaComponents.Page {
                 rowSpacing: units.smallSpacing
                 columns: 2
 
-                readonly property bool colorsScriptIsPresent: false //universalSettings.colorsScriptIsPresent
+                readonly property bool colorsScriptIsPresent: universalSettings.colorsScriptIsPresent
 
                 PlasmaComponents.Label {
                     text: i18n("Theme")
