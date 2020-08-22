@@ -44,10 +44,13 @@ class PanelBackground: public QObject
     Q_PROPERTY(int paddingLeft READ paddingLeft NOTIFY paddingsChanged)
     Q_PROPERTY(int paddingBottom READ paddingBottom NOTIFY paddingsChanged)
     Q_PROPERTY(int paddingRight READ paddingRight NOTIFY paddingsChanged)
+    Q_PROPERTY(int shadowSize READ shadowSize NOTIFY shadowSizeChanged)
 
     Q_PROPERTY(int roundness READ roundness NOTIFY roundnessChanged)
 
     Q_PROPERTY(float maxOpacity READ maxOpacity NOTIFY maxOpacityChanged)
+
+    Q_PROPERTY(QColor shadowColor READ shadowColor NOTIFY shadowColorChanged)
 
 public:
     PanelBackground(Plasma::Types::Location edge, Theme *parent);
@@ -57,10 +60,13 @@ public:
     int paddingLeft() const;
     int paddingBottom() const;
     int paddingRight() const;
+    int shadowSize() const;
 
     int roundness() const;
 
     float maxOpacity() const;
+
+    QColor shadowColor() const;
 
 public slots:
     void update();
@@ -68,6 +74,8 @@ public slots:
 signals:
     void paddingsChanged();
     void roundnessChanged();
+    void shadowColorChanged();
+    void shadowSizeChanged();
     void maxOpacityChanged();
 
 private:
@@ -79,6 +87,7 @@ private:
     void updateMaxOpacity(Plasma::Svg *svg);
     void updatePaddings(Plasma::Svg *svg);
     void updateRoundness(Plasma::Svg *svg);
+    void updateShadow(Plasma::Svg *svg);
 
     void updateRoundnessFromMask(Plasma::Svg *svg);
     void updateRoundnessFromShadows(Plasma::Svg *svg);
@@ -90,9 +99,12 @@ private:
     int m_paddingBottom{0};
     int m_paddingRight{0};
 
+    int m_shadowSize{0};
     int m_roundness{0};
 
     float m_maxOpacity{1.0};
+
+    QColor m_shadowColor;
 
     Plasma::Types::Location m_location{Plasma::Types::BottomEdge};
 

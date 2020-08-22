@@ -80,9 +80,19 @@ int PanelBackground::roundness() const
     return m_roundness;
 }
 
+int PanelBackground::shadowSize() const
+{
+    return m_shadowSize;
+}
+
 float PanelBackground::maxOpacity() const
 {
     return m_maxOpacity;
+}
+
+QColor PanelBackground::shadowColor() const
+{
+    return m_shadowColor;
 }
 
 QString PanelBackground::prefixed(const QString &id)
@@ -531,6 +541,103 @@ void PanelBackground::updateRoundnessFallback(Plasma::Svg *svg)
     emit roundnessChanged();
 }
 
+void PanelBackground::updateShadow(Plasma::Svg *svg)
+{
+    if (!svg) {
+        return;
+    }
+
+    if (!m_parentTheme->hasShadow()) {
+        m_shadowSize = 0;
+        m_shadowColor = Qt::black;
+        return;
+    }
+
+    bool horizontal = (m_location == Plasma::Types::BottomEdge || m_location == Plasma::Types::TopEdge);
+
+    QString borderId{"shadow-top"};
+
+    if  (m_location == Plasma::Types::TopEdge) {
+        borderId = "shadow-bottom";
+    } else if (m_location == Plasma::Types::LeftEdge) {
+        borderId = "shadow-right";
+    } else if (m_location == Plasma::Types::RightEdge) {
+        borderId = "shadow-left";
+    }
+
+    QImage border = svg->image(svg->elementSize(borderId), borderId);
+
+    //! find shadow size through, plasma theme
+    int themeshadowsize{0};
+
+    if  (m_location == Plasma::Types::TopEdge) {
+        themeshadowsize = svg->elementSize(element(svg, "shadow-hint-bottom-margin")).height();
+    } else if (m_location == Plasma::Types::LeftEdge) {
+        themeshadowsize = svg->elementSize(element(svg, "shadow-hint-right-margin")).width();
+    } else if (m_location == Plasma::Types::RightEdge) {
+        themeshadowsize = svg->elementSize(element(svg, "shadow-hint-left-margin")).width();
+    } else {
+        themeshadowsize = svg->elementSize(element(svg, "shadow-hint-top-margin")).height();
+    }
+
+    //! find shadow size through heuristics, elementsize provided through svg may not be valid because it could contain
+    //! many fully transparent pixels in its edges
+    int discoveredshadowsize{0};
+    int firstPixel{-1};
+    int lastPixel{-1};
+
+    if (horizontal) {
+        for(int y = 0; y<border.height(); ++y) {
+            QRgb *line = (QRgb *)border.scanLine(y);
+            QRgb pixel = line[0];
+
+            if (qAlpha(pixel) > 0) {
+                if (firstPixel < 0) {
+                    firstPixel = y;
+                    lastPixel = y;
+                } else {
+                    lastPixel = y;
+                }
+            }
+        }
+    } else {
+        QRgb *line = (QRgb *)border.scanLine(0);
+        for(int x = 0; x<border.width(); ++x) {
+            QRgb pixel = line[x];
+
+            if (qAlpha(pixel) > 0) {
+                if (firstPixel < 0) {
+                    firstPixel = x;
+                    lastPixel = x;
+                } else {
+                    lastPixel = x;
+                }
+            }
+        }
+    }
+
+    discoveredshadowsize = (firstPixel>=0 ? qMax(0, lastPixel - firstPixel + 1) : 0);
+
+    m_shadowSize = qMax(themeshadowsize, discoveredshadowsize);
+
+    //! find maximum shadow color applied
+    int maxopacity{0};
+
+    for (int r=0; r<border.height(); ++r) {
+        QRgb *line = (QRgb *)border.scanLine(r);
+
+        for(int c = 0; c<border.width(); ++c) {
+            QRgb pixel = line[c];
+
+            if (qAlpha(pixel) > maxopacity) {
+                maxopacity = qAlpha(pixel);
+                m_shadowColor = QColor(pixel);
+                m_shadowColor.setAlpha(qMin(255, maxopacity));
+            }
+        }
+    }
+}
+
 
 void PanelBackground::updateRoundness(Plasma::Svg *svg)
 {
@@ -559,11 +666,13 @@ void PanelBackground::update()
     updateMaxOpacity(backSvg);
     updatePaddings(backSvg);
     updateRoundness(backSvg);
+    updateShadow(backSvg);
 
     qDebug() << " PLASMA THEME EXTENDED :: " << m_location << " | roundness:" << m_roundness << " center_max_opacity:" << m_maxOpacity;
     qDebug() << " PLASMA THEME EXTENDED :: " << m_location
              << " | padtop:" << m_paddingTop << " padleft:" << m_paddingLeft
              << " padbottom:" << m_paddingBottom << " padright:" << m_paddingRight;
+    qDebug() << " PLASMA THEME EXTENDED :: " << m_location << " | shadowsize:" << m_shadowSize << " shadowcolor:" << m_shadowColor;
 
     backSvg->deleteLater();
 }

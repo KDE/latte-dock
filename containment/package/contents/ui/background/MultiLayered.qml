@@ -52,10 +52,10 @@ BackgroundProperties{
     hasTopBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.TopBorder) > 0)
     hasBottomBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.BottomBorder) > 0)
 
-    shadows.left: hasLeftBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.left) : 0
-    shadows.right: hasRightBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.right) : 0
-    shadows.top: hasTopBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.top) : 0
-    shadows.bottom: hasBottomBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.bottom) : 0
+    shadows.left: hasLeftBorder ? (customShadowedRectangleIsEnabled ? customShadow : shadowsSvgItem.margins.left) : 0
+    shadows.right: hasRightBorder ? (customShadowedRectangleIsEnabled ? customShadow : shadowsSvgItem.margins.right) : 0
+    shadows.top: hasTopBorder ? (customShadowedRectangleIsEnabled ? customShadow : shadowsSvgItem.margins.top) : 0
+    shadows.bottom: hasBottomBorder ? (customShadowedRectangleIsEnabled ? customShadow : shadowsSvgItem.margins.bottom) : 0
 
     //! it can accept negative values in DockMode
     screenEdgeMargin: root.screenEdgeMarginEnabled ? metrics.margin.screenEdge - shadows.tailThickness : -shadows.tailThickness
@@ -159,15 +159,34 @@ BackgroundProperties{
 
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
+    //! CustomShadowedRectangle  properties
+    readonly property bool customShadowedRectangleIsEnabled: customRadiusIsEnabled || customShadowIsEnabled
+
     readonly property bool customShadowIsEnabled: LatteCore.WindowSystem.compositingActive
                                                   && kirigamiLibraryIsFound
                                                   && panelShadowsActive
                                                   && plasmoid.configuration.backgroundShadowSize > 0
+
     readonly property bool customRadiusIsEnabled: kirigamiLibraryIsFound && plasmoid.configuration.backgroundRadius >= 0
-    readonly property int customRadius: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
+
+    readonly property int customRadius: {
+        if (customShadowIsEnabled && !customRadiusIsEnabled && themeExtendedBackground) {
+            return themeExtendedBackground.roundness;
+        }
+
+        return plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
                                             (plasmoid.configuration.backgroundRadius/100) * (solidBackground.height/2) :
                                             (plasmoid.configuration.backgroundRadius/100) * (solidBackground.width/2)
-    readonly property int customShadow: plasmoid.configuration.backgroundShadowSize
+    }
+    readonly property int customShadow: {
+        if (customRadiusIsEnabled && !customShadowIsEnabled && themeExtendedBackground) {
+            return themeExtendedBackground.shadowSize;
+        }
+
+        return plasmoid.configuration.backgroundShadowSize;
+    }
+
+    readonly property color customShadowColor: themeExtendedBackground ? themeExtendedBackground.shadowColor : "black"
 
     property QtObject themeExtendedBackground: null
 
@@ -232,9 +251,8 @@ BackgroundProperties{
         readonly property bool hideShadow: root.behaveAsPlasmaPanel
                                            || !LatteCore.WindowSystem.compositingActive
                                            || !root.panelShadowsActive
-                                           || (!themeHasShadow && !customShadowIsEnabled)
-                                           || customShadowIsEnabled
-                                           || customRadiusIsEnabled
+                                           || !themeHasShadow
+                                           || customShadowedRectangleIsEnabled
 
         Behavior on opacity {
             enabled: LatteCore.WindowSystem.compositingActive
@@ -467,7 +485,7 @@ BackgroundProperties{
                     return plasmoid.configuration.panelTransparency / 100;
                 }
 
-                if (coloredView || customRadiusIsEnabled || customShadowIsEnabled) {
+                if (coloredView || customShadowedRectangleIsEnabled) {
                     return midOpacity;
                 }
 
@@ -477,8 +495,9 @@ BackgroundProperties{
             backgroundColor: colorizerManager.backgroundColor
             borderColor: backgroundColor /*disabled in favor of Layer 5*/
             borderWidth: 1 /*disabled in favor of Layer 5*/
+            shadowColor: customShadowColor
             shadowSize: {
-                if (!customShadowIsEnabled) {
+                if (!customShadowedRectangleIsEnabled) {
                     return 0;
                 }
 
@@ -486,7 +505,6 @@ BackgroundProperties{
                 //! when the shadow size is bigger than background thickness. In such case the ShadowedRectangle
                 //! produced shadowed is much bigger than the specified one
                 var minaxis = Math.min(solidBackground.height, solidBackground.width)
-
                 return customShadow > minaxis ? minaxis : customShadow;
             }
 
