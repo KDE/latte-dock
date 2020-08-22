@@ -28,6 +28,11 @@ QtObject{
     property int top: 0
     property int bottom: 0
 
+    property int fixedLeft: 0
+    property int fixedRight: 0
+    property int fixedTop: 0
+    property int fixedBottom: 0
+
     readonly property int tailThickness: {
         if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
             return left;

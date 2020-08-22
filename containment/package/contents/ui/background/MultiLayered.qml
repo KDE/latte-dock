@@ -57,6 +57,11 @@ BackgroundProperties{
     shadows.top: hasTopBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.top) : 0
     shadows.bottom: hasBottomBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.bottom) : 0
 
+    shadows.fixedLeft: customShadowIsEnabled ? customShadow : shadowsSvgItem.fixedMargins.left
+    shadows.fixedRight: customShadowIsEnabled ? customShadow : shadowsSvgItem.fixedMargins.right
+    shadows.fixedTop: customShadowIsEnabled ? customShadow : shadowsSvgItem.fixedMargins.top
+    shadows.fixedBottom: customShadowIsEnabled ? customShadow : shadowsSvgItem.fixedMargins.bottom
+
     //! it can accept negative values in DockMode
     screenEdgeMargin: root.screenEdgeMarginEnabled ? metrics.margin.screenEdge - shadows.tailThickness : -shadows.tailThickness
 
@@ -232,8 +237,8 @@ BackgroundProperties{
         width: root.isVertical ?  background.thickness + totals.shadowsThickness : totals.visualLength
         height: root.isVertical ? totals.visualLength : background.thickness + totals.shadowsThickness
 
-        imagePath: hideShadow ? "" : "widgets/panel-background"
-        prefix: hideShadow ? "" : "shadow"
+        imagePath: "widgets/panel-background"
+        prefix: "shadow"
 
         visible: (opacity == 0) ? false : true
 
@@ -245,7 +250,7 @@ BackgroundProperties{
                 return 1;
         }
 
-        enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: latteView && latteView.effects && !hideShadow ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
         //! set true by default in order to avoid crash on startup because imagePath is set to ""
         readonly property bool themeHasShadow: themeExtended ? themeExtended.hasShadow : true
