@@ -958,7 +958,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         enabled: radiusSlider.enabled
-                        text: radiusSlider.value >= 0 ? i18nc("number in percentage, e.g. 85 %","%0 %").arg(radiusSlider.value) : "---"
+                        text: radiusSlider.value >= 0 ? i18nc("number in percentage, e.g. 85 %","%0 %").arg(radiusSlider.value) : i18nc("Default word abbreviation", "Def.")
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -1001,7 +1001,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         enabled: shadowSlider.enabled
-                        text: shadowSlider.value >= 0 ? i18nc("number in pixels, e.g. 12 px.", "%0 px.").arg(shadowSlider.value) : "---"
+                        text: shadowSlider.value >= 0 ? i18nc("number in pixels, e.g. 12 px.", "%0 px.").arg(shadowSlider.value ) : i18nc("Default word abbreviation", "Def.")
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
