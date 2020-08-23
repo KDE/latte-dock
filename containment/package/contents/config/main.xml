@@ -332,6 +332,9 @@
     <entry name="infoBadgeProminentColorEnabled" type="Bool">
       <default>false</default>
     </entry>
+    <entry name="badgesCompactStyle" type="Bool">
+      <default>false</default>
+    </entry>
 
     <entry name="animationLauncherBouncing" type="Bool">
         <default>true</default>

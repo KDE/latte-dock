@@ -80,10 +80,10 @@
       <label>When "true" Preview window behaves as popup</label>
     </entry>
 
-<!-- MERGED FROM CONTAINMENT -->
-<!-- _______________________ -->
-<!-- BE CAREFUL: Until these values are removed from CONTAINMENT totally and their UPGRADE procedures also, -->
-<!-- their default values should be updated both <here> and at their containment configuration file counterpart -->
+    <!-- MERGED FROM CONTAINMENT -->
+    <!-- _______________________ -->
+    <!-- BE CAREFUL: Until these values are removed from CONTAINMENT totally and their UPGRADE procedures also, -->
+    <!-- their default values should be updated both <here> and at their containment configuration file counterpart -->
 
     <entry name="launchersGroup" type="Enum">
       <choices>
@@ -131,6 +131,9 @@
       <default>true</default>
     </entry>
     <entry name="infoBadgeProminentColorEnabled" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="badgesCompactStyle" type="Bool">
       <default>false</default>
     </entry>
 

@@ -116,6 +116,17 @@ PlasmaComponents.Page {
                         tasks.configuration.audioBadgeActionsEnabled = checked
                     }
                 }
+
+                LatteComponents.CheckBox {
+                    Layout.maximumWidth: dialog.optionsWidth
+                    text: i18n("Use compact badges")
+                    checked: tasks.configuration.badgesCompactStyle
+                    tooltip: i18n("Hide badge borders, and notifications count from the notification badge")
+
+                    onClicked: {
+                        tasks.configuration.badgesCompactStyle = checked
+                    }
+                }
             }
         }
         //! END: Badges

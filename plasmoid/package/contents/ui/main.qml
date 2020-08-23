@@ -172,6 +172,7 @@ Item {
     property bool showAudioBadge: plasmoid.configuration.showAudioBadge
     property bool infoBadgeProminentColorEnabled: plasmoid.configuration.infoBadgeProminentColorEnabled
     property bool audioBadgeActionsEnabled: plasmoid.configuration.audioBadgeActionsEnabled
+    property bool badgesCompactStyle: plasmoid.configuration.badgesCompactStyle
     property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen
     property bool showOnlyCurrentDesktop: plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: plasmoid.configuration.showOnlyCurrentActivity

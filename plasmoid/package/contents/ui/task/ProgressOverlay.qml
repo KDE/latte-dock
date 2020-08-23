@@ -100,6 +100,7 @@ Item {
             }
 
             style3d: root.badges3DStyle
+            styleCompact: root.badgesCompactStyle
             textWithBackgroundColor: false
 
             proportion: {

@@ -55,7 +55,8 @@ Item {
 
         LatteComponents.BadgeText {
             anchors.centerIn: parent
-            width: 0.8 * parent.width
+            // To make the icon clearer on the small panel size, we need to enlarge it slightly when the compact badges option enabled.
+            width: 0.8 * parent.width * (root.badgesCompactStyle ? 1.1 : 1)
             height: width
             minimumWidth: width
             maximumWidth: width
@@ -70,11 +71,13 @@ Item {
             radiusPerCentage: 100
 
             style3d: root.badges3DStyle
+            styleCompact: root.badgesCompactStyle
 
             LatteCore.IconItem{
                 id: audioStreamIcon
                 anchors.centerIn: parent
-                width: 0.9*parent.width
+                // To make the icon clearer on the small panel size, we need to enlarge it slightly when the compact badges option enabled.
+                width: 0.9*parent.width * (root.badgesCompactStyle ? 1.05 : 1)
                 height: width
                 colorGroup: PlasmaCore.Theme.ButtonColorGroup
                 usesPlasmaTheme: true

@@ -28,6 +28,7 @@ Rectangle {
     property double previousProportion: 0
 
     property bool style3d: true
+    property bool styleCompact: false
 
     property int numberValue
     property string textValue
@@ -49,13 +50,13 @@ Rectangle {
     property double partSize: height / 2
     property double pi2: Math.PI * 2
 
-    width: Math.max(minimumWidth, valueText.width + 4*units.smallSpacing)
+    width: Math.max(minimumWidth, styleCompact ? 0 : valueText.width + 4*units.smallSpacing)
 
     color: theme.backgroundColor
     radius: (radiusPerCentage / 100) * (height / 2)
     border.width: 0 //Math.max(1,width/64)
 
-    property int borderWidth: 1
+    property int borderWidth: styleCompact ? 0 : 1
     property real borderOpacity: 1
     property color borderColor: theme.textColor
     property color textColor: theme.textColor
@@ -140,6 +141,8 @@ Rectangle {
         elide: Text.ElideRight
 
         text: {
+            if (styleCompact) return "";
+
             if (showNumber) {
                 if (numberValue > 9999) {
                     return i18nc("Over 9999 new messages, overlay, keep short", "9,999+");
@@ -157,7 +160,7 @@ Rectangle {
         font.pixelSize: 0.62 * parent.height
         font.bold: true
         color: textWithBackgroundColor ? parent.color : parent.textColor
-        visible: showNumber || showText
+        visible: (showNumber || showText) && !styleCompact
     }
 
     Rectangle{
