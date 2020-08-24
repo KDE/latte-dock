@@ -926,7 +926,7 @@ PlasmaComponents.Page {
                 RowLayout {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
-                    visible: dialog.kirigamiLibraryIsFound
+                    visible: dialog.advancedLevel && dialog.kirigamiLibraryIsFound
 
                     PlasmaComponents.Label {
                         text: i18n("Radius")
@@ -969,7 +969,7 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
                     enabled: LatteCore.WindowSystem.compositingActive
-                    visible: dialog.kirigamiLibraryIsFound
+                    visible: dialog.advancedLevel && dialog.kirigamiLibraryIsFound
 
                     PlasmaComponents.Label {
                         text: i18n("Shadow")
