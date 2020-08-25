@@ -76,7 +76,6 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     bool inMultiple = index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
     bool isLocked = index.data(Model::Layouts::ISLOCKEDROLE).toBool();
-    bool isShared = inMultiple && index.data(Model::Layouts::ISSHAREDROLE).toBool();
     bool isActive = index.data(Model::Layouts::ISACTIVEROLE).toBool();
 
     bool isNewLayout = index.data(Model::Layouts::ISNEWLAYOUTROLE).toBool();
@@ -86,8 +85,6 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     bool isChanged = (isNewLayout || hasChanges);
 
-    bool showTwoIcons = isLocked && isShared;
-
     QStyleOptionViewItem adjustedOption = option;
 
     //! Remove the focus dotted lines
@@ -96,7 +93,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    if (isLocked || isShared) {
+    if (isLocked) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
 
 
@@ -110,7 +107,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         QFontMetrics fm(option.font);
         int textWidth = fm.boundingRect(name).width();
         int thick = option.rect.height();
-        int length = showTwoIcons ? (2 * thick + 2) : thick;
+        int length = thick;
 
         int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? length : 0;
         int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? 0 : length;
@@ -137,24 +134,15 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         QStyledItemDelegate::paint(painter, myOptionS, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
         QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
-        //! Lock Icon
-        QIcon firstIcon = isLocked && !showTwoIcons ? QIcon::fromTheme("object-locked") : QIcon::fromTheme("document-share");
-
         QIcon::Mode mode = ((active && (selected || focused)) ? QIcon::Selected : QIcon::Normal);
 
-        if (qApp->layoutDirection() == Qt::RightToLeft) {
-            painter->drawPixmap(QRect(option.rect.x(), option.rect.y(), thick, thick), firstIcon.pixmap(thick, thick, mode));
+        if (isLocked) {
+            QIcon lockIcon = QIcon::fromTheme("object-locked");
 
-            if (showTwoIcons) {
-                QIcon secondIcon = QIcon::fromTheme("object-locked");
-                painter->drawPixmap(QRect(option.rect.x() + thick + 2, option.rect.y(), thick, thick), secondIcon.pixmap(thick, thick, mode));
-            }
-        } else {
-            painter->drawPixmap(QRect(option.rect.x() + option.rect.width() - endWidth, option.rect.y(), thick, thick), firstIcon.pixmap(thick, thick, mode));
-
-            if (showTwoIcons) {
-                QIcon secondIcon = QIcon::fromTheme("object-locked");
-                painter->drawPixmap(QRect(option.rect.x() + option.rect.width() - thick, option.rect.y(), thick, thick), secondIcon.pixmap(thick, thick, mode));
+            if (qApp->layoutDirection() == Qt::RightToLeft) {
+                painter->drawPixmap(QRect(option.rect.x(), option.rect.y(), thick, thick), lockIcon.pixmap(thick, thick, mode));
+            } else {
+                painter->drawPixmap(QRect(option.rect.x() + option.rect.width() - endWidth, option.rect.y(), thick, thick), lockIcon.pixmap(thick, thick, mode));
             }
         }
 

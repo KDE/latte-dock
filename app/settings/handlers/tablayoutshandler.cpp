@@ -165,14 +165,6 @@ void TabLayouts::initLayoutMenu()
     connectActionWithButton(m_ui->lockedButton, m_lockedLayoutAction);
     connect(m_lockedLayoutAction, &QAction::triggered, this, &TabLayouts::lockLayout);
 
-    m_sharedLayoutAction = m_layoutMenu->addAction(i18nc("shared layout", "Sha&red"));
-    m_sharedLayoutAction->setToolTip(i18n("Share selected layout with other central layouts"));
-    m_sharedLayoutAction->setIcon(QIcon::fromTheme("document-share"));
-    m_sharedLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
-    m_sharedLayoutAction->setCheckable(true);
-    connectActionWithButton(m_ui->sharedButton, m_sharedLayoutAction);
-    connect(m_sharedLayoutAction, &QAction::triggered, this, &TabLayouts::shareLayout);
-
     m_detailsAction = m_layoutMenu->addAction(i18nc("layout details", "De&tails..."));
     m_detailsAction->setToolTip(i18n("Show selected layout details"));
     m_detailsAction->setIcon(QIcon::fromTheme("view-list-details"));
@@ -311,10 +303,9 @@ void TabLayouts::switchLayout()
     }
 
     if (!m_layoutsController->selectedLayoutIsCurrentActive()) {
-        bool appliedShared = m_layoutsController->inMultipleMode() && selectedLayoutCurrent.isShared();
         bool freeActivitiesLayoutUpdated{false};
 
-        if (!appliedShared && selectedLayoutCurrent.activities.isEmpty()) {
+        if (selectedLayoutCurrent.activities.isEmpty()) {
             m_layoutsController->setOriginalLayoutForFreeActivities(selectedLayoutOriginal.id);
             freeActivitiesLayoutUpdated = true;
         }
@@ -362,13 +353,6 @@ void TabLayouts::updatePerLayoutButtonsState()
 {
     //! UI Elements that need to be enabled/disabled
 
-    //! Shared Button - visible
-    if (m_layoutsController->inMultipleMode()) {
-        setTwinProperty(m_sharedLayoutAction, TWINVISIBLE, true);
-    } else {
-        setTwinProperty(m_sharedLayoutAction, TWINVISIBLE, false);
-    }
-
     //! Pause Button - visible
     if (!m_layoutsController->inMultipleMode()) {
         //! Single Layout mode
@@ -384,8 +368,7 @@ void TabLayouts::updatePerLayoutButtonsState()
     Latte::Data::Layout selectedLayout = m_layoutsController->selectedLayoutCurrentData();
 
     //! Switch Button
-    if ((m_layoutsController->inMultipleMode() && selectedLayout.isShared())
-            || m_layoutsController->selectedLayoutIsCurrentActive()) {
+    if (m_layoutsController->selectedLayoutIsCurrentActive()) {
         setTwinProperty(m_switchLayoutAction, TWINENABLED, false);
     } else {
         setTwinProperty(m_switchLayoutAction, TWINENABLED, true);
@@ -394,8 +377,7 @@ void TabLayouts::updatePerLayoutButtonsState()
     //! Pause Button - enabled
     if (m_layoutsController->inMultipleMode()) {
         if (selectedLayout.isActive
-                && !selectedLayout.isForFreeActivities()
-                && !selectedLayout.isShared()) {
+                && !selectedLayout.isForFreeActivities()) {
             setTwinProperty(m_pauseLayoutAction, TWINENABLED, true);
         } else {
             setTwinProperty(m_pauseLayoutAction, TWINENABLED, false);
@@ -414,13 +396,6 @@ void TabLayouts::updatePerLayoutButtonsState()
         setTwinProperty(m_lockedLayoutAction, TWINCHECKED, true);
     } else {
         setTwinProperty(m_lockedLayoutAction, TWINCHECKED, false);
-    }
-
-    //! Layout Shared Button
-    if (selectedLayout.isShared()) {
-        setTwinProperty(m_sharedLayoutAction, TWINCHECKED, true);
-    } else {
-        setTwinProperty(m_sharedLayoutAction, TWINCHECKED, false);
     }
 
     setTwinProperty(m_detailsAction, TWINENABLED, true);
@@ -525,19 +500,6 @@ void TabLayouts::lockLayout()
     }
 
     m_layoutsController->toggleLockedForSelected();
-
-    updatePerLayoutButtonsState();
-}
-
-void TabLayouts::shareLayout()
-{
-    qDebug() << Q_FUNC_INFO;
-
-    if (!isCurrentTab() || !m_sharedLayoutAction->isEnabled()) {
-        return;
-    }
-
-    m_layoutsController->toggleSharedForSelected();
 
     updatePerLayoutButtonsState();
 }

@@ -22,7 +22,6 @@
 
 // local
 #include <coretypes.h>
-#include "sharedlayout.h"
 #include "../apptypes.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
@@ -52,21 +51,10 @@ CentralLayout::~CentralLayout()
 {
 }
 
-void CentralLayout::unloadContainments()
-{
-    Layout::GenericLayout::unloadContainments();
-
-    if (m_sharedLayout) {
-        disconnectSharedConnections();
-        m_sharedLayout->removeCentralLayout(this);
-    }
-}
-
 void CentralLayout::init()
 {
     connect(this, &CentralLayout::activitiesChanged, this, &CentralLayout::saveConfig);
     connect(this, &CentralLayout::disableBordersForMaximizedWindowsChanged, this, &CentralLayout::saveConfig);
-    connect(this, &CentralLayout::sharedLayoutNameChanged, this, &CentralLayout::saveConfig);
     connect(this, &CentralLayout::showInMenuChanged, this, &CentralLayout::saveConfig);
 }
 
@@ -90,13 +78,6 @@ void CentralLayout::initToCorona(Latte::Corona *corona)
                     kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
                 }
             });
-        }
-
-        //! Request the SharedLayout in case there is one and Latte is functioning in MultipleLayouts mode
-        if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts && !m_sharedLayoutName.isEmpty()) {
-            if (m_corona->layoutsManager()->synchronizer()->registerAtSharedLayout(this, m_sharedLayoutName)) {
-                setSharedLayout(m_corona->layoutsManager()->synchronizer()->sharedLayout(m_sharedLayoutName));
-            }
         }
     }
 }
@@ -182,85 +163,6 @@ void CentralLayout::setActivities(QStringList activities)
     emit activitiesChanged();
 }
 
-QString CentralLayout::sharedLayoutName() const
-{
-    return m_sharedLayoutName;
-}
-
-void CentralLayout::setSharedLayoutName(QString name)
-{
-    if (m_sharedLayoutName == name || (!Layouts::Importer::layoutExists(name) && !name.isEmpty())) {
-        return;
-    }
-
-    m_sharedLayoutName = name;
-    emit sharedLayoutNameChanged();
-}
-
-SharedLayout *CentralLayout::sharedLayout() const
-{
-    return m_sharedLayout;
-}
-
-void CentralLayout::setSharedLayout(SharedLayout *layout)
-{
-    if (m_sharedLayout == layout) {
-        return;
-    }
-
-    disconnectSharedConnections();
-
-    m_sharedLayout = layout;
-
-    if (layout) {
-        setSharedLayoutName(m_sharedLayout->name());
-
-        //! attach new signals
-        m_sharedConnections << connect(m_sharedLayout, &Layout::GenericLayout::viewsCountChanged, this, &Layout::GenericLayout::viewsCountChanged);
-        m_sharedConnections << connect(m_sharedLayout, &Layout::AbstractLayout::nameChanged, this, [this]() {
-            setSharedLayoutName(m_sharedLayout->name());
-        });
-        m_sharedConnections << connect(m_sharedLayout, &Layout::GenericLayout::viewEdgeChanged, this, [this]() {
-            syncLatteViewsToScreens();
-        });
-
-        m_sharedConnections << connect(m_sharedLayout, &GenericLayout::lastConfigViewForChanged, this, &GenericLayout::lastConfigViewForChanged);
-    } else {
-        setSharedLayoutName(QString());
-    }
-
-    syncLatteViewsToScreens();
-    emit viewsCountChanged();
-}
-
-void CentralLayout::disconnectSharedConnections()
-{
-    //! drop old signals
-    for (const auto &sc : m_sharedConnections) {
-        QObject::disconnect(sc);
-    }
-
-    m_sharedConnections.clear();
-}
-
-void CentralLayout::setLastConfigViewFor(Latte::View *view)
-{
-    if (m_sharedLayout) {
-        m_sharedLayout->setLastConfigViewFor(view);
-    } else {
-        GenericLayout::setLastConfigViewFor(view);
-    }
-}
-
-Latte::View *CentralLayout::lastConfigViewFor()
-{
-    if (m_sharedLayout) {
-        return m_sharedLayout->lastConfigViewFor();
-    } else {
-        return GenericLayout::lastConfigViewFor();
-    }
-}
-
 Data::Layout CentralLayout::data() const
 {
     Data::Layout cdata;
@@ -286,12 +188,6 @@ void CentralLayout::loadConfig()
     m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);     
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
 
-    QString sharedLayoutName = m_layoutGroup.readEntry("sharedLayout", QString());
-
-    if (Layouts::Importer::layoutExists(sharedLayoutName)) {
-        m_sharedLayoutName = sharedLayoutName;
-    }
-
     emit activitiesChanged();
 }
 
@@ -300,23 +196,10 @@ void CentralLayout::saveConfig()
     qDebug() << "CENTRAL layout is saving... for layout:" << m_layoutName;
     m_layoutGroup.writeEntry("showInMenu", m_showInMenu);
     m_layoutGroup.writeEntry("disableBordersForMaximizedWindows", m_disableBordersForMaximizedWindows);
-    m_layoutGroup.writeEntry("sharedLayout", m_sharedLayoutName);
     m_layoutGroup.writeEntry("activities", m_activities);
 }
 
 //! OVERRIDES
-
-void CentralLayout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen, Layout::ViewsMap *occupied)
-{
-    if (m_sharedLayout) {
-        //! consider already occupied edges from SharedLayout
-        Layout::ViewsMap ocMap = m_sharedLayout->validViewsMap();
-        qDebug() << " HIGH PRIORITY ALREADY OCCUPIED EDGES :: " << ocMap;
-        Layout::GenericLayout::addView(containment, forceOnPrimary, explicitScreen, &ocMap);
-    } else {
-        Layout::GenericLayout::addView(containment, forceOnPrimary, explicitScreen, occupied);
-    }
-}
 
 const QStringList CentralLayout::appliedActivities()
 {
@@ -331,149 +214,6 @@ const QStringList CentralLayout::appliedActivities()
     }
 }
 
-QList<Latte::View *> CentralLayout::latteViews()
-{
-    if (m_sharedLayout) {
-        QList<Latte::View *> views = Layout::GenericLayout::latteViews();
-        views << m_sharedLayout->latteViews();
-
-        return views;
-    }
-
-    return Layout::GenericLayout::latteViews();
-}
-
-int CentralLayout::viewsCount(int screen) const
-{
-    if (!m_corona) {
-        return 0;
-    }
-
-    int views = Layout::GenericLayout::viewsCount(screen);
-
-    if (m_sharedLayout) {
-        QScreen *scr = m_corona->screenPool()->screenForId(screen);
-
-        for (const auto view : m_sharedLayout->latteViews()) {
-            if (view && view->screen() == scr && !view->containment()->destroyed()) {
-                ++views;
-            }
-        }
-    }
-
-    return views;
-}
-
-int CentralLayout::viewsCount(QScreen *screen) const
-{
-    if (!m_corona) {
-        return 0;
-    }
-
-    int views = Layout::GenericLayout::viewsCount(screen);
-
-    if (m_sharedLayout) {
-        for (const auto view : m_sharedLayout->latteViews()) {
-            if (view && view->screen() == screen && !view->containment()->destroyed()) {
-                ++views;
-            }
-        }
-    }
-
-    return views;
-}
-
-int CentralLayout::viewsCount() const
-{
-    if (!m_corona) {
-        return 0;
-    }
-
-    int views = Layout::GenericLayout::viewsCount();
-
-    if (m_sharedLayout) {
-        for (const auto view : m_sharedLayout->latteViews()) {
-            if (view && view->containment() && !view->containment()->destroyed()) {
-                ++views;
-            }
-        }
-    }
-
-    return views;
-}
-
-QList<Plasma::Types::Location> CentralLayout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
-{
-    using Plasma::Types;
-    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                Types::TopEdge, Types::RightEdge};
-
-    if (!m_corona) {
-        return edges;
-    }
-
-    edges = Layout::GenericLayout::availableEdgesForView(scr, forView);
-
-    if (m_sharedLayout) {
-        for (const auto view : m_sharedLayout->latteViews()) {
-            //! make sure that availabe edges takes into account only views that should be excluded,
-            //! this is why the forView should not be excluded
-            if (view && view != forView && view->positioner()->currentScreenName() == scr->name()) {
-                edges.removeOne(view->location());
-            }
-        }
-    }
-
-    return edges;
-}
-
-QList<Plasma::Types::Location> CentralLayout::freeEdges(QScreen *scr) const
-{
-    using Plasma::Types;
-    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                Types::TopEdge, Types::RightEdge};
-
-    if (!m_corona) {
-        return edges;
-    }
-
-    edges = Layout::GenericLayout::freeEdges(scr);
-
-    if (m_sharedLayout) {
-        for (const auto view : m_sharedLayout->latteViews()) {
-            if (view && view->positioner()->currentScreenName() == scr->name()) {
-                edges.removeOne(view->location());
-            }
-        }
-    }
-
-    return edges;
-}
-
-QList<Plasma::Types::Location> CentralLayout::freeEdges(int screen) const
-{
-    using Plasma::Types;
-    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                Types::TopEdge, Types::RightEdge};
-
-    if (!m_corona) {
-        return edges;
-    }
-
-    edges = Layout::GenericLayout::freeEdges(screen);
-    QScreen *scr = m_corona->screenPool()->screenForId(screen);
-
-    if (m_sharedLayout) {
-        for (const auto view : m_sharedLayout->latteViews()) {
-            if (view && scr && view->positioner()->currentScreenName() == scr->name()) {
-                edges.removeOne(view->location());
-            }
-        }
-    }
-
-    return edges;
-}
-
 Types::ViewType CentralLayout::latteViewType(uint containmentId) const
 {
     for (const auto view : m_latteViews) {
@@ -482,39 +222,7 @@ Types::ViewType CentralLayout::latteViewType(uint containmentId) const
         }
     }
 
-    if (m_sharedLayout) {
-        return m_sharedLayout->latteViewType(containmentId);
-    }
-
     return Types::DockView;
-}
-
-QList<Latte::View *> CentralLayout::sortedLatteViews(QList<Latte::View *> views)
-{
-    QList<Latte::View *> vws = latteViews();
-
-    return Layout::GenericLayout::sortedLatteViews(vws);
-}
-
-QList<Latte::View *> CentralLayout::viewsWithPlasmaShortcuts()
-{
-    QList<Latte::View *> combined = Layout::GenericLayout::viewsWithPlasmaShortcuts();
-
-    if (m_sharedLayout) {
-        combined << m_sharedLayout->viewsWithPlasmaShortcuts();
-    }
-
-    return combined;
-}
-
-void CentralLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
-{
-    if (m_sharedLayout) {
-        Layout::ViewsMap map = m_sharedLayout->validViewsMap();
-        Layout::GenericLayout::syncLatteViewsToScreens(&map);
-    } else {
-        Layout::GenericLayout::syncLatteViewsToScreens();
-    }
 }
 
 }

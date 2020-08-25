@@ -72,59 +72,6 @@ LayoutsTable LayoutsTable::subtracted(const LayoutsTable &rhs) const
     return subtract;
 }
 
-QStringList LayoutsTable::allSharesIds() const
-{
-    QStringList sharesIds;
-
-    for(int i=0; i<m_list.count(); ++i) {
-        if (m_list[i].isShared()) {
-            for(int j=0; j<m_list[i].shares.count(); ++j) {
-                sharesIds << m_list[i].shares[j];
-            }
-        }
-    }
-
-    return sharesIds;
-}
-
-QStringList LayoutsTable::allSharesNames() const
-{
-    QStringList sharesNames;
-
-    for(int i=0; i<m_list.count(); ++i) {
-        if (m_list[i].isShared()) {
-            for(int j=0; j<m_list[i].shares.count(); ++j) {
-                QString shareId = m_list[i].shares[j];
-                int sid = indexOf(shareId);
-                sharesNames << m_list[sid].name;
-            }
-        }
-    }
-
-    return sharesNames;
-}
-
-Latte::Layouts::SharesMap LayoutsTable::sharesMap() const
-{
-    Latte::Layouts::SharesMap map;
-
-    for(int i=0; i<m_list.count(); ++i) {
-        if (m_list[i].isShared()) {
-            QStringList sharesNames;
-
-            for(int j=0; j<m_list[i].shares.count(); ++j) {
-                QString shareId = m_list[i].shares[j];
-                int sid = indexOf(shareId);
-                sharesNames << m_list[sid].name;
-            }
-
-            map[m_list[i].name] = sharesNames;
-        }
-    }
-
-    return map;
-}
-
 void LayoutsTable::setLayoutForFreeActivities(const QString &id)
 {
     int row = indexOf(id);

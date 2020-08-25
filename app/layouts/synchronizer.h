@@ -28,7 +28,6 @@
 
 namespace Latte {
 class CentralLayout;
-class SharedLayout;
 class View;
 namespace Layout{
 class GenericLayout;
@@ -49,10 +48,9 @@ class Controller;
 namespace Latte {
 namespace Layouts {
 
-//! This is a Shares map in the following structure:
-//! SHARED LAYOUT NAME -> CENTRAL LAYOUT NAMES acting as SHARES
-typedef QHash<const QString, QStringList> SharesMap;
-
+//! This is a Layouts map in the following structure:
+//! ACTIVITY ID -> Layout Names for that activity
+typedef QHash<const QString, QStringList> AssignedLayoutsHash;
 
 //! Layouts::Synchronizer is a very IMPORTANT class which is responsible
 //! for all ACTIVE layouts, meaning layouts that have been loaded
@@ -78,12 +76,9 @@ public:
     void syncActiveLayoutsToOriginalFiles();
     void syncLatteViewsToScreens();
     void syncMultipleLayoutsToActivities(QString layoutForFreeActivities = QString());
-    void syncActiveShares(SharesMap &sharesMap, QStringList &deprecatedShares);
 
     bool latteViewExists(Latte::View *view) const;
     bool layoutExists(QString layoutName) const;
-    bool mapHasRecord(const QString &record, SharesMap &map);
-    bool registerAtSharedLayout(CentralLayout *central, QString id);
     //! switch to specified layout, default previousMemoryUsage means that it didn't change
     bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);
 
@@ -100,8 +95,6 @@ public:
     QStringList layouts() const;
     QStringList menuLayouts() const;
     void setMenuLayouts(QStringList layouts);
-    QStringList sharedLayoutsNames();
-    QStringList storedSharedLayouts() const;
 
     QStringList activities();
     QStringList runningActivities();
@@ -111,7 +104,6 @@ public:
 
     CentralLayout *currentLayout() const;
     CentralLayout *centralLayout(QString id) const;
-    SharedLayout *sharedLayout(QString id) const;
     Layout::GenericLayout *layout(QString id) const;
 
     KActivities::Controller *activitiesController() const;
@@ -135,11 +127,8 @@ private slots:
     void onLayoutAdded(const QString &layoutpath);
 
 private:
-    void clearSharedLayoutsFromCentralLists();
-
     void addLayout(CentralLayout *layout);
     void unloadCentralLayout(CentralLayout *layout);
-    void unloadSharedLayout(SharedLayout *layout);
 
     bool layoutIsAssigned(QString layoutName);
 
@@ -156,14 +145,12 @@ private:
 
     QStringList m_layouts;
     QStringList m_menuLayouts;
-    QStringList m_sharedLayoutIds;
 
     QHash<const QString, QString> m_assignedLayouts;
 
     QTimer m_dynamicSwitchTimer;
 
     QList<CentralLayout *> m_centralLayouts;
-    QList<SharedLayout *> m_sharedLayouts;
 
     Layouts::Manager *m_manager;
     KActivities::Controller *m_activitiesController;

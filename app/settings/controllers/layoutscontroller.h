@@ -83,7 +83,6 @@ public:
     void loadLayouts();
     void removeSelected();
     void toggleLockedForSelected();
-    void toggleSharedForSelected();
 
     QString iconsPath() const;
     QString colorPath(const QString color) const;
@@ -101,10 +100,6 @@ public:
 signals:
     void dataChanged();
 
-public slots:
-    //! needed for Delegate::Shared
-    void onSharedToInEditChanged(const QString &row, const bool &inEdit);
-
 private slots:
     void loadConfig();
     void saveConfig();
@@ -115,7 +110,6 @@ private slots:
 
 private:
     void initView();
-    void syncActiveShares();
 
     int rowForId(QString id) const;
     int rowForName(QString layoutName) const;

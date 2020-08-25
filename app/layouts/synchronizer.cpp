@@ -26,7 +26,6 @@
 #include "../lattecorona.h"
 #include "../layout/centrallayout.h"
 #include "../layout/genericlayout.h"
-#include "../layout/sharedlayout.h"
 #include "../settings/universalsettings.h"
 #include "../templates/templatesmanager.h"
 #include "../view/view.h"
@@ -104,51 +103,12 @@ bool Synchronizer::layoutIsAssigned(QString layoutName)
     return m_assignedLayouts.values().contains(layoutName);
 }
 
-bool Synchronizer::mapHasRecord(const QString &record, SharesMap &map)
-{
-    for (SharesMap::iterator i=map.begin(); i!=map.end(); ++i) {
-        if (i.value().contains(record)) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool Synchronizer::registerAtSharedLayout(CentralLayout *central, QString id)
-{
-    if (m_manager->memoryUsage() == MemoryUsage::SingleLayout || centralLayout(id)) {
-        //! if memory is functioning to SINGLE mode OR shared layout has already
-        //! been loaded as CentralLayout
-        return false;
-    }
-
-    for (int i = 0; i < m_sharedLayouts.size(); ++i) {
-        SharedLayout *layout = m_sharedLayouts.at(i);
-
-        if (layout->name() == id) {
-            layout->addCentralLayout(central);
-            return true;
-        }
-    }
-
-    //! If SharedLayout was not found, we must create it
-    SharedLayout *top = new SharedLayout(central, this, Importer::layoutUserFilePath(id));
-    m_sharedLayouts.append(top);
-    top->importToCorona();
-
-    connect(top, &SharedLayout::layoutDestroyed, this, &Synchronizer::unloadSharedLayout);
-
-    return true;
-}
-
 int Synchronizer::centralLayoutPos(QString id) const
 {
     for (int i = 0; i < m_centralLayouts.size(); ++i) {
         CentralLayout *layout = m_centralLayouts.at(i);
 
         if (layout->name() == id) {
-
             return i;
         }
     }
@@ -279,23 +239,6 @@ QString Synchronizer::shouldSwitchToLayout(QString activityId)
     return QString();
 }
 
-QStringList Synchronizer::sharedLayoutsNames()
-{
-    QStringList names;
-
-    for (int i = 0; i < m_sharedLayouts.size(); ++i) {
-        SharedLayout *layout = m_sharedLayouts.at(i);
-        names << layout->name();
-    }
-
-    return names;
-}
-
-QStringList Synchronizer::storedSharedLayouts() const
-{
-    return m_sharedLayoutIds;
-}
-
 QStringList Synchronizer::validActivities(QStringList currentList)
 {
     QStringList validIds;
@@ -348,37 +291,12 @@ Layout::GenericLayout *Synchronizer::layout(QString id) const
 {
     Layout::GenericLayout *l = centralLayout(id);
 
-    if (!l) {
-        l = sharedLayout(id);
-    }
-
     return l;
-}
-
-SharedLayout *Synchronizer::sharedLayout(QString id) const
-{
-    for (int i = 0; i < m_sharedLayouts.size(); ++i) {
-        SharedLayout *layout = m_sharedLayouts.at(i);
-
-        if (layout->name() == id) {
-            return layout;
-        }
-    }
-
-    return nullptr;
 }
 
 Latte::View *Synchronizer::viewForContainment(Plasma::Containment *containment)
 {
     for (auto layout : m_centralLayouts) {
-        Latte::View *view = layout->viewForContainment(containment);
-
-        if (view) {
-            return view;
-        }
-    }
-
-    for (auto layout : m_sharedLayouts) {
         Latte::View *view = layout->viewForContainment(containment);
 
         if (view) {
@@ -394,31 +312,6 @@ void Synchronizer::addLayout(CentralLayout *layout)
     if (!m_centralLayouts.contains(layout)) {
         m_centralLayouts.append(layout);
         layout->initToCorona(m_manager->corona());
-    }
-}
-
-void Synchronizer::clearSharedLayoutsFromCentralLists()
-{
-    QStringList unassign;
-
-    for(const QString &name : m_sharedLayoutIds) {
-        //! remove from ContextMenu
-        m_menuLayouts.removeAll(name);
-
-        //! remove from layouts assigned to activities
-        QHashIterator<const QString, QString> i(m_assignedLayouts);
-
-        while (i.hasNext()) {
-            i.next();
-
-            if (i.value() == name) {
-                unassign << i.key();
-            }
-        }
-    }
-
-    for(const QString &activity : unassign) {
-        m_assignedLayouts.remove(activity);
     }
 }
 
@@ -495,19 +388,11 @@ void Synchronizer::syncActiveLayoutsToOriginalFiles()
         for (const auto layout : m_centralLayouts) {
             layout->syncToLayoutFile();
         }
-
-        for (const auto layout : m_sharedLayouts) {
-            layout->syncToLayoutFile();
-        }
     }
 }
 
 void Synchronizer::syncLatteViewsToScreens()
 {
-    for (const auto layout : m_sharedLayouts) {
-        layout->syncLatteViewsToScreens();
-    }
-
     for (const auto layout : m_centralLayouts) {
         layout->syncLatteViewsToScreens();
     }
@@ -535,28 +420,11 @@ void Synchronizer::unloadCentralLayout(CentralLayout *layout)
     }
 }
 
-void Synchronizer::unloadSharedLayout(SharedLayout *layout)
-{
-    if (m_sharedLayouts.contains(layout)) {
-        emit currentLayoutIsSwitching(layout->name());
-        disconnect(layout, &SharedLayout::layoutDestroyed, this, &Synchronizer::unloadSharedLayout);
-        int pos = m_sharedLayouts.indexOf(layout);
-        SharedLayout *shared = m_sharedLayouts.takeAt(pos);
-        shared->syncToLayoutFile(true);
-        shared->unloadLatteViews();
-        shared->unloadContainments();
-        m_manager->clearUnloadedContainmentsFromLinkedFile(shared->unloadedContainmentsIds(), true);
-
-        delete layout;
-    }
-}
-
 void Synchronizer::loadLayouts()
 {
     m_layouts.clear();
     m_menuLayouts.clear();
     m_assignedLayouts.clear();
-    m_sharedLayoutIds.clear();
 
     QDir layoutDir(Layouts::Importer::layoutUserDir());
     QStringList filter;
@@ -572,9 +440,6 @@ void Synchronizer::loadLayouts()
         QString layoutpath = layoutDir.absolutePath() + "/" + layout;
         onLayoutAdded(layoutpath);
     }
-
-    //! Shared Layouts should not be used for Activities->Layouts assignments or published lists
-    clearSharedLayoutsFromCentralLists();
 
     m_layouts.sort(Qt::CaseInsensitive);
     m_menuLayouts.sort(Qt::CaseInsensitive);
@@ -603,12 +468,6 @@ void Synchronizer::onLayoutAdded(const QString &layout)
 
     if (centralLayout.showInMenu()) {
         m_menuLayouts.append(centralLayout.name());
-    }
-
-    QString sharedName = centralLayout.sharedLayoutName();
-
-    if (!sharedName.isEmpty() && !m_sharedLayoutIds.contains(sharedName)) {
-        m_sharedLayoutIds << sharedName;
     }
 
     if (m_isLoaded) {
@@ -686,10 +545,6 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
     //! nice animation that hides these docks/panels
     if (previousMemoryUsage != -1) {
         for (const auto layout : m_centralLayouts) {
-            emit currentLayoutIsSwitching(layout->name());
-        }
-
-        for (const auto layout : m_sharedLayouts) {
             emit currentLayoutIsSwitching(layout->name());
         }
     }
@@ -854,11 +709,8 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
     //! discover layouts that are needed based on running activities
     for (const auto &activity : runningActivities()) {
         if (KWindowSystem::isPlatformWayland() && (m_activitiesController->currentActivity() != activity)){
-            //! Wayland Protection: Plasma wayland does not support yet Activities but on the other hand that
-            //! does not mean that Central layouts can not be accompanied by their relevant shared layout.
-            //! The optimal behavior is that only ONE central layout and ONE shared layout can be loaded each time.
-            //! If the user changes in an activity that needs a different central layout then in that case
-            //! the new central layout is loaded and the old one is unloaded.
+            //! Wayland Protection: Plasma wayland does not support yet Activities for windows
+            //! but we can load the layouts that belong OnAllActivities + (ForFreeActivities OR SpecificActivity)
             continue;
         }
 
@@ -906,9 +758,8 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
 
     //! Add Layout for free activities
     if (layoutForFreeActivitiesIsNeeded) {
-        if (!centralLayout(layoutForFreeActivities) && !sharedLayout(layoutForFreeActivities)) {
-            //! CENTRAL Layout for FreeActivities is not loaded and at the same time
-            //! that layout is not already configured as SHARED for other CENTRAL layouts
+        if (!centralLayout(layoutForFreeActivities)) {
+            //! CENTRAL Layout for FreeActivities is not loaded
             CentralLayout *newLayout = new CentralLayout(this, layoutPath(layoutForFreeActivities), layoutForFreeActivities);
 
             if (newLayout) {
@@ -938,91 +789,6 @@ void Synchronizer::syncMultipleLayoutsToActivities(QString layoutForFreeActiviti
 
     updateCurrentLayoutNameInMultiEnvironment();
     emit centralLayoutsChanged();
-}
-
-void Synchronizer::syncActiveShares(SharesMap &sharesMap, QStringList &deprecatedShares)
-{
-    if (m_manager->memoryUsage() != MemoryUsage::MultipleLayouts) {
-        return;
-    }
-
-    qDebug() << " CURRENT SHARES MAP :: " << sharesMap;
-    qDebug() << " DEPRECATED SHARES :: " << deprecatedShares;
-
-    QHash<CentralLayout *, SharedLayout *> unassign;
-
-    //! CENTRAL (inactive) layouts that must update their SharedLayoutName because they
-    //! were unassigned from a Shared Layout
-    for (const auto &share : deprecatedShares) {
-        CentralLayout *central = centralLayout(share);
-        if (!central) {
-            //! Central Layout is not loaded
-            CentralLayout centralInStorage(this, Importer::layoutUserFilePath(share));
-            centralInStorage.setSharedLayoutName(QString());
-        }
-    }
-
-    //! CENTRAL (active) layouts that will become SHARED must be unloaded first
-    for (SharesMap::iterator i=sharesMap.begin(); i!=sharesMap.end(); ++i) {
-        CentralLayout *central = centralLayout(i.key());
-        if (central) {
-            unloadCentralLayout(central);
-        }
-    }
-
-    //! CENTRAL (active) layouts that update their (active) SHARED layouts
-    //! AND load SHARED layouts that are NOT ACTIVE
-    for (SharesMap::iterator i=sharesMap.begin(); i!=sharesMap.end(); ++i) {
-        SharedLayout *shared = sharedLayout(i.key());
-        qDebug() << " SHARED :: " << i.key();
-        for (const auto &centralName : i.value()) {
-            CentralLayout *central = centralLayout(centralName);
-            qDebug() << " CENTRAL NAME :: " << centralName;
-            if (central) {
-                //! Assign this Central Layout at a different Shared Layout
-                SharedLayout *oldShared = central->sharedLayout();
-
-                if (!shared) {
-                    //Shared not loaded and it must be loaded before proceed
-                    registerAtSharedLayout(central, i.key());
-                    shared = sharedLayout(i.key());
-                }
-
-                if (shared != oldShared) {
-                    shared->addCentralLayout(central);
-                    central->setSharedLayout(shared);
-                    if (oldShared) {
-                        //! CENTRAL layout that changed from one ACTIVESHARED layout to another
-                        unassign[central] = oldShared;
-                    }
-                }
-            } else {
-                //! Central Layout is not loaded
-                CentralLayout centralInStorage(this, Importer::layoutUserFilePath(centralName));
-                centralInStorage.setSharedLayoutName(i.key());
-            }
-        }
-    }
-
-    //! CENTRAL Layouts that wont have any SHARED Layout any more
-    for (const auto &centralName : centralLayoutsNames()) {
-        if (!mapHasRecord(centralName, sharesMap)) {
-            CentralLayout *central = centralLayout(centralName);
-            if (central && central->sharedLayout()) {
-                central->sharedLayout()->removeCentralLayout(central);
-                central->setSharedLayoutName(QString());
-                central->setSharedLayout(nullptr);
-            }
-        }
-    }
-
-    //! Unassing from Shared Layouts Central ones that are not assigned any more
-    //! IMPORTANT: This must be done after all the ASSIGNMENTS in order to avoid
-    //! to unload a SharedLayout that it should not
-    for (QHash<CentralLayout *, SharedLayout *>::iterator i=unassign.begin(); i!=unassign.end(); ++i) {
-        qDebug() << " REMOVING CENTRAL :: " << i.key()->name() << " FROM :: " << i.value()->name();
-        i.value()->removeCentralLayout(i.key());
-    }
 }
 
 }

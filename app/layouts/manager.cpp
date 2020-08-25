@@ -178,16 +178,6 @@ QStringList Manager::centralLayoutsNames()
     return m_synchronizer->centralLayoutsNames();
 }
 
-QStringList Manager::sharedLayoutsNames()
-{
-    return m_synchronizer->sharedLayoutsNames();
-}
-
-QStringList Manager::storedSharedLayouts() const
-{
-    return m_synchronizer->storedSharedLayouts();
-}
-
 CentralLayout *Manager::currentLayout() const
 {
     return m_synchronizer->currentLayout();

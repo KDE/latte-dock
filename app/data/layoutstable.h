@@ -45,10 +45,6 @@ public:
     LayoutsTable &operator=(LayoutsTable &&rhs);
     LayoutsTable subtracted(const LayoutsTable &rhs) const;
 
-    QStringList allSharesIds() const;
-    QStringList allSharesNames() const;
-    Latte::Layouts::SharesMap sharesMap() const;
-
     void setLayoutForFreeActivities(const QString &id);
 };
 

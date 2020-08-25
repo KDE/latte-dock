@@ -93,7 +93,6 @@ public:
 
     QStringList layouts() const;
     QStringList menuLayouts() const;
-    QStringList storedSharedLayouts() const;
 
     MemoryUsage::LayoutsMemory memoryUsage() const;
     void setMemoryUsage(MemoryUsage::LayoutsMemory memoryUsage);
@@ -113,7 +112,6 @@ public slots:
     Q_INVOKABLE bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);
 
     Q_INVOKABLE QStringList centralLayoutsNames();
-    Q_INVOKABLE QStringList sharedLayoutsNames();
 
 signals:
     void centralLayoutsChanged();

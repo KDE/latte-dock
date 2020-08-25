@@ -27,7 +27,6 @@
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../layout/centrallayout.h"
-#include "../layout/sharedlayout.h"
 #include "../layouts/manager.h"
 #include "../settings/universalsettings.h"
 #include "../wm/abstractwindowinterface.h"
@@ -1026,10 +1025,10 @@ void Positioner::hideDockDuringMovingToLayout(QString layoutName)
     auto layout = m_view->layout();
 
     auto central = qobject_cast<CentralLayout *>(layout);
-    auto shared = qobject_cast<SharedLayout *>(layout);
 
-    bool inVisibleWorkarea = ((central && central->sharedLayout() && central->sharedLayout()->name() == layoutName)
-            || (shared && shared->contains(layoutName) && m_corona->layoutsManager()->currentLayoutName() == layoutName));
+    //! Needs to be updated; when the next layout is in the same Visible Workarea
+    //! with the old one changing layouts should be instant
+    bool inVisibleWorkarea{true};
 
     if (inVisibleWorkarea) {
         m_view->moveToLayout(layoutName);

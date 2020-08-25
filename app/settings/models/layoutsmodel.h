@@ -51,8 +51,7 @@ public:
         NAMECOLUMN,
         MENUCOLUMN,
         BORDERSCOLUMN,
-        ACTIVITYCOLUMN,
-        SHAREDCOLUMN
+        ACTIVITYCOLUMN
     };
 
     enum LayoutUserRoles
@@ -60,22 +59,18 @@ public:
         IDROLE = Qt::UserRole + 1,
         ISACTIVEROLE,
         ISLOCKEDROLE,
-        ISSHAREDROLE,
         INMULTIPLELAYOUTSROLE,
         BACKGROUNDUSERROLE,
         ASSIGNEDACTIVITIESROLE,
-        ASSIGNEDACTIVITIESFROMSHAREDROLE,
         ALLACTIVITIESSORTEDROLE,
         ALLACTIVITIESDATAROLE,
         ALLLAYOUTSROLE,
-        SHAREDTOINEDITROLE,
         SORTINGROLE,
         ISNEWLAYOUTROLE,
         LAYOUTHASCHANGESROLE,
         ORIGINALISSHOWNINMENUROLE,
         ORIGINALHASBORDERSROLE,
         ORIGINALASSIGNEDACTIVITIESROLE,
-        ORIGINALSHARESROLE
     };
 
     enum SortingPriority
@@ -129,9 +124,6 @@ public:
 
     void setIconsPath(QString iconsPath);
 
-    bool shareIsAvailable(const QString id) const;
-    QStringList availableShareIdsFor(const QString id) const;
-
     QList<Latte::Data::Layout> alteredLayouts() const;
 
     const Latte::Data::LayoutsTable &currentLayoutsData();
@@ -160,25 +152,16 @@ private:
 
     void setActivities(const int &row, const QStringList &activities);
     void setId(const int &row, const QString &newId);
-    void setShares(const int &row, const QStringList &shares);
 
     QString sortingPriority(const SortingPriority &priority, const int &row) const;
     QString sortableText(const int &priority, const int &row) const;
 
     QStringList cleanStrings(const QStringList &original, const QStringList &occupied);
 
-    QStringList assignedActivitiesFromShared(const int &row) const;
-
     QList<Latte::Data::LayoutIcon> icons(const int &row) const;
     QList<Latte::Data::LayoutIcon> iconsForCentralLayout(const int &row) const;
-    QList<Latte::Data::LayoutIcon> iconsForSharedLayout(const int &row) const;
 
 private:
-    //! break MVC only when a SharedTo editor is created
-    //! because we want to move the dot indicator in the Activities delegate
-    //! when that happens
-    int m_sharedToInEditRow;
-
     QString m_iconsPath;
 
     Latte::Data::ActivitiesMap m_activitiesMap;

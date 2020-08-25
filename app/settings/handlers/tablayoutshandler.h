@@ -99,7 +99,6 @@ private slots:
     void exportLayoutAsTemplate();
     void lockLayout();
     void removeLayout();
-    void shareLayout();
     void detailsLayout();
 
     void onCurrentPageChanged(int page);
@@ -137,7 +136,6 @@ private:
     QAction *m_copyLayoutAction{nullptr};
     QAction *m_removeLayoutAction{nullptr};
     QAction *m_lockedLayoutAction{nullptr};
-    QAction *m_sharedLayoutAction{nullptr};
     QAction *m_importLayoutAction{nullptr};
     QAction *m_exportLayoutAction{nullptr};
     QAction *m_downloadLayoutAction{nullptr};

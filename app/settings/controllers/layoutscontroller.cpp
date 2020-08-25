@@ -28,13 +28,11 @@
 #include "../delegates/backgrounddelegate.h"
 #include "../delegates/checkboxdelegate.h"
 #include "../delegates/layoutnamedelegate.h"
-#include "../delegates/shareddelegate.h"
 #include "../handlers/tablayoutshandler.h"
 #include "../tools/settingstools.h"
 #include "../../data/uniqueidinfo.h"
 #include "../../layout/genericlayout.h"
 #include "../../layout/centrallayout.h"
-#include "../../layout/sharedlayout.h"
 #include "../../layouts/importer.h"
 #include "../../layouts/manager.h"
 #include "../../layouts/synchronizer.h"
@@ -152,7 +150,6 @@ void Layouts::initView()
     m_view->setItemDelegateForColumn(Model::Layouts::MENUCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     m_view->setItemDelegateForColumn(Model::Layouts::BORDERSCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     m_view->setItemDelegateForColumn(Model::Layouts::ACTIVITYCOLUMN, new Settings::Layout::Delegate::Activities(this));
-    m_view->setItemDelegateForColumn(Model::Layouts::SHAREDCOLUMN, new Settings::Layout::Delegate::Shared(this));
 
     connect(m_view, &QObject::destroyed, this, &Controller::Layouts::storeColumnWidths);
 }
@@ -227,14 +224,10 @@ void Layouts::setInMultipleMode(bool inMultiple)
 void Layouts::updateLastColumnWidth()
 {
     if (m_model->inMultipleMode()) {
-        m_view->setColumnHidden(Model::Layouts::SHAREDCOLUMN, false);
-
         //! column widths
         if (m_viewColumnWidths.count()>=5) {
             m_view->setColumnWidth(Model::Layouts::ACTIVITYCOLUMN, m_viewColumnWidths[4].toInt());
         }
-    } else {
-        m_view->setColumnHidden(Model::Layouts::SHAREDCOLUMN, true);
     }
 }
 
@@ -324,41 +317,6 @@ void Layouts::toggleLockedForSelected()
     m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::NAMECOLUMN), !selected.isLocked, Settings::Model::Layouts::ISLOCKEDROLE);
 }
 
-void Layouts::toggleSharedForSelected()
-{  
-    if (!hasSelectedLayout()) {
-        return;
-    }
-
-    int row = m_view->currentIndex().row();
-
-    Latte::Data::Layout selected = selectedLayoutCurrentData();
-
-    if (selected.isShared()) {
-        m_proxyModel->setData(m_proxyModel->index(row, Model::Layouts::SHAREDCOLUMN), QStringList(), Qt::UserRole);
-    } else {
-        QStringList assignedIds;
-        QStringList availableShareIds = m_model->availableShareIdsFor(selected.id);
-
-        for (const auto &id : availableShareIds) {
-            Latte::Data::Layout iLayoutCurrent = m_model->currentData(id);
-            Latte::Data::Layout iLayoutOriginal = m_model->originalData(id);
-            iLayoutOriginal = iLayoutOriginal.isEmpty() ? iLayoutCurrent : iLayoutOriginal;
-
-            if (m_handler->corona()->layoutsManager()->synchronizer()->layout(iLayoutOriginal.name)) {
-                assignedIds << id;
-                m_proxyModel->setData(m_proxyModel->index(row, Model::Layouts::SHAREDCOLUMN), assignedIds, Qt::UserRole);
-                break;
-            }
-        }
-
-        if (assignedIds.isEmpty() && availableShareIds.count()>0) {
-            assignedIds << availableShareIds[0];
-            m_proxyModel->setData(m_proxyModel->index(row, Model::Layouts::SHAREDCOLUMN), assignedIds, Qt::UserRole);
-        }
-    }
-}
-
 void Layouts::selectRow(const QString &id)
 {    
     m_view->selectRow(rowForId(id));
@@ -385,11 +343,6 @@ void Layouts::loadLayouts()
     m_model->clear();
     bool inMultiple{m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts};
     setInMultipleMode(inMultiple);
-
-    //! The shares map needs to be constructed for start/scratch.
-    //! We start feeding information with layout_names and during the process
-    //! we update them to valid layout_ids
-    Latte::Layouts::SharesMap sharesMap;
 
     int i = 0;
     QStringList brokenLayouts;
@@ -420,12 +373,6 @@ void Layouts::loadLayouts()
 
         m_layouts[original.id] = central;
 
-        //! create initial SHARES maps
-        QString shared = central->sharedLayoutName();
-        if (!shared.isEmpty()) {
-            sharesMap[shared].append(original.id);
-        }
-
         layoutsBuffer << original;
 
         qDebug() << "counter:" << i << " total:" << m_model->rowCount();
@@ -437,33 +384,6 @@ void Layouts::loadLayouts()
         if ((generic && generic->isBroken()) || (!generic && central->isBroken())) {
             brokenLayouts.append(central->name());
         }
-    }
-
-    //! update SHARES map keys in order to use the #settingsid(s)
-    QStringList tempSharedNames;
-
-    //! remove these records after updating
-    for (QHash<const QString, QStringList>::iterator i=sharesMap.begin(); i!=sharesMap.end(); ++i) {
-        tempSharedNames << i.key();
-    }
-
-    //! update keys
-    for (QHash<const QString, QStringList>::iterator i=sharesMap.begin(); i!=sharesMap.end(); ++i) {
-        QString shareid = layoutsBuffer.idForName(i.key());
-        if (!shareid.isEmpty()) {
-            sharesMap[shareid] = i.value();
-        }
-    }
-
-    //! remove deprecated keys
-    for (const auto &key : tempSharedNames) {
-        sharesMap.remove(key);
-    }
-
-    qDebug() << "SHARES MAP ::: " << sharesMap;
-
-    for (QHash<const QString, QStringList>::iterator i=sharesMap.begin(); i!=sharesMap.end(); ++i) {
-        layoutsBuffer[i.key()].shares = i.value();
     }
 
     //! Send original loaded data to model
@@ -608,7 +528,6 @@ void Layouts::copySelectedLayout()
     copied.isActive = false;
     copied.isLocked = false;
     copied.activities = QStringList();
-    copied.shares = QStringList();
 
     QFile(selectedLayoutCurrent.id).copy(copied.id);
     QFileInfo newFileInfo(copied.id);
@@ -619,7 +538,6 @@ void Layouts::copySelectedLayout()
 
     CentralLayout *settings = new CentralLayout(this, copied.id);
     settings->clearLastUsedActivity();
-    settings->setSharedLayoutName("");
     settings->setActivities(QStringList());
 
     m_layouts[copied.id] = settings;
@@ -678,15 +596,6 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
     }
 
     return false;
-}
-
-void Layouts::onSharedToInEditChanged(const QString &id, const bool &inEdit)
-{
-    int row = m_model->rowForId(id);
-
-    if (row >= 0) {
-        m_model->setData(m_model->index(row, Model::Layouts::SHAREDCOLUMN), inEdit, Model::Layouts::SHAREDTOINEDITROLE);
-    }
 }
 
 void Layouts::reset()
@@ -845,9 +754,6 @@ void Layouts::save()
         }
     }
 
-    //! update SharedLayouts that are Active
-    syncActiveShares();
-
     //! reload layouts in layoutsmanager
     m_handler->corona()->layoutsManager()->synchronizer()->loadLayouts();
 
@@ -877,38 +783,6 @@ void Layouts::save()
     m_model->applyData();
 
     emit dataChanged();
-}
-
-void Layouts::syncActiveShares()
-{
-    if (m_handler->corona()->layoutsManager()->memoryUsage() != MemoryUsage::MultipleLayouts) {
-        return;
-    }
-
-    Latte::Data::LayoutsTable currentLayoutsData = m_model->currentLayoutsData();
-    Latte::Data::LayoutsTable originalLayoutsData = m_model->originalLayoutsData();
-
-    Latte::Layouts::SharesMap  currentSharesNamesMap = currentLayoutsData.sharesMap();
-    QStringList originalSharesIds = originalLayoutsData.allSharesIds();
-    QStringList currentSharesIds = currentLayoutsData.allSharesIds();
-
-    QStringList deprecatedSharesIds = Latte::subtracted(originalSharesIds, currentSharesIds);
-    QStringList deprecatedSharesNames;
-
-    for(int i=0; i<deprecatedSharesIds.count(); ++i) {
-        QString shareId = deprecatedSharesIds[i];
-
-        if (currentLayoutsData.containsId(shareId)) {
-            deprecatedSharesNames << currentLayoutsData[shareId].name;
-        } else if (originalLayoutsData.containsId(shareId)) {
-            deprecatedSharesNames << originalLayoutsData[shareId].name;
-        }
-    }
-
-    qDebug() << " CURRENT SHARES NAMES MAP  :: " << currentSharesNamesMap;
-    qDebug() << " DEPRECATED SHARES ::";
-
-    m_handler->corona()->layoutsManager()->synchronizer()->syncActiveShares(currentSharesNamesMap, deprecatedSharesNames);
 }
 
 void Layouts::storeColumnWidths()

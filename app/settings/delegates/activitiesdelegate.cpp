@@ -203,12 +203,6 @@ bool Activities::editorEvent(QEvent *event, QAbstractItemModel *model, const QSt
     Q_ASSERT(event);
     Q_ASSERT(model);
 
-    bool isSharedCapable = index.data(Model::Layouts::ISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
-
-    if (isSharedCapable) {
-        return false;
-    }
-
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
@@ -219,114 +213,55 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
 
     bool isLayoutActive = index.data(Model::Layouts::ISACTIVEROLE).toBool();
-    bool isSharedCapable = index.data(Model::Layouts::ISSHAREDROLE).toBool() && index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
 
-    if (!isSharedCapable) {
-        painter->save();
+    painter->save();
 
-        QList<Latte::Data::Activity> assignedActivities;
-        QStringList assignedIds = index.model()->data(index, Qt::UserRole).toStringList();
-        QStringList assignedOriginalIds = index.model()->data(index, Model::Layouts::ORIGINALASSIGNEDACTIVITIESROLE).toStringList();
+    QList<Latte::Data::Activity> assignedActivities;
+    QStringList assignedIds = index.model()->data(index, Qt::UserRole).toStringList();
+    QStringList assignedOriginalIds = index.model()->data(index, Model::Layouts::ORIGINALASSIGNEDACTIVITIESROLE).toStringList();
 
-        Latte::Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Latte::Data::ActivitiesMap>();
+    Latte::Data::ActivitiesMap allActivitiesData = index.data(Model::Layouts::ALLACTIVITIESDATAROLE).value<Latte::Data::ActivitiesMap>();
 
-        for (int i=0; i<assignedIds.count(); ++i) {
-            assignedActivities << allActivitiesData[assignedIds[i]];
-        }
-
-        if (assignedActivities.count() > 0) {
-            myOptions.text = joinedActivities(assignedActivities, assignedOriginalIds, isLayoutActive);
-
-            QTextDocument doc;
-            QString css;
-            QString activitiesText = myOptions.text;
-
-            QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
-            QBrush nBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
-
-            css = QString("body { color : %1; }").arg(nBrush.color().name());
-
-            doc.setDefaultStyleSheet(css);
-            doc.setHtml("<body>" + myOptions.text + "</body>");
-
-            myOptions.text = "";
-            myOptions.widget->style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
-
-            //we need an offset to be in the same vertical center of TextEdit
-            int offsetY = ((myOptions.rect.height() - doc.size().height()) / 2);
-
-            if ((qApp->layoutDirection() == Qt::RightToLeft) && !activitiesText.isEmpty()) {
-                int textWidth = doc.size().width();
-
-                painter->translate(qMax(myOptions.rect.left(), myOptions.rect.right() - textWidth), myOptions.rect.top() + offsetY + 1);
-            } else {
-                painter->translate(myOptions.rect.left(), myOptions.rect.top() + offsetY + 1);
-            }
-
-            QRect clip(0, 0, myOptions.rect.width(), myOptions.rect.height());
-            doc.drawContents(painter, clip);
-        } else {
-            QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
-        }
-
-        painter->restore();
-    } else {
-        bool sharedInEdit = index.data(Model::Layouts::SHAREDTOINEDITROLE).toBool();
-
-        // Disabled
-        bool isSelected{Latte::isSelected(option)};
-        QPalette::ColorRole backColorRole = isSelected ? QPalette::Highlight : QPalette::Base;
-        QPalette::ColorRole textColorRole = isSelected ? QPalette::HighlightedText : QPalette::Text;
-
-        //! draw background
-        //! HIDDENTEXTCOLUMN is just needed to draw empty background rectangles properly based on states
-        QStyledItemDelegate::paint(painter, option, index.model()->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
-
-        // text
-        QPen pen(Qt::DotLine);
-        QColor textColor = option.palette.brush(Latte::colorGroup(option), textColorRole).color();
-
-        pen.setWidth(2); pen.setColor(textColor);
-        int y = option.rect.y()+option.rect.height()/2;
-
-        int space = option.rect.height() / 2;
-
-        painter->setPen(pen);
-
-        if (sharedInEdit) {
-            //! shareto cell is in edit mode so circle indicator is moved inside
-            //! the activities cell
-            if (qApp->layoutDirection() == Qt::LeftToRight) {
-                painter->drawLine(option.rect.x(), y, option.rect.x()+option.rect.width() - space, y);
-
-                int xm = option.rect.x() + option.rect.width() - space;
-                int thick = option.rect.height() / 2;
-                int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
-
-                pen.setStyle(Qt::SolidLine);
-                painter->setPen(pen);
-                painter->setBrush(textColor);
-
-                //! draw ending cirlce
-                painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
-            } else {
-                painter->drawLine(option.rect.x() + space, y, option.rect.x() + option.rect.width(), y);
-
-                int xm = option.rect.x() + space;
-                int thick = option.rect.height() / 2;
-                int ym = option.rect.y() + ((option.rect.height() - thick) / 2);
-
-                pen.setStyle(Qt::SolidLine);
-                painter->setPen(pen);
-                painter->setBrush(textColor);
-
-                //! draw ending cirlce
-                painter->drawEllipse(QPoint(xm, ym + thick/2), thick/4, thick/4);
-            }
-        } else {
-                painter->drawLine(option.rect.x(), y, option.rect.x()+option.rect.width(), y);
-        }
+    for (int i=0; i<assignedIds.count(); ++i) {
+        assignedActivities << allActivitiesData[assignedIds[i]];
     }
+
+    if (assignedActivities.count() > 0) {
+        myOptions.text = joinedActivities(assignedActivities, assignedOriginalIds, isLayoutActive);
+
+        QTextDocument doc;
+        QString css;
+        QString activitiesText = myOptions.text;
+
+        QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
+        QBrush nBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
+
+        css = QString("body { color : %1; }").arg(nBrush.color().name());
+
+        doc.setDefaultStyleSheet(css);
+        doc.setHtml("<body>" + myOptions.text + "</body>");
+
+        myOptions.text = "";
+        myOptions.widget->style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
+
+        //we need an offset to be in the same vertical center of TextEdit
+        int offsetY = ((myOptions.rect.height() - doc.size().height()) / 2);
+
+        if ((qApp->layoutDirection() == Qt::RightToLeft) && !activitiesText.isEmpty()) {
+            int textWidth = doc.size().width();
+
+            painter->translate(qMax(myOptions.rect.left(), myOptions.rect.right() - textWidth), myOptions.rect.top() + offsetY + 1);
+        } else {
+            painter->translate(myOptions.rect.left(), myOptions.rect.top() + offsetY + 1);
+        }
+
+        QRect clip(0, 0, myOptions.rect.width(), myOptions.rect.height());
+        doc.drawContents(painter, clip);
+    } else {
+        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
+    }
+
+    painter->restore();
 }
 
 QString Activities::joinedActivities(const QList<Latte::Data::Activity> &activities, const QStringList &originalIds, bool isActive, bool formatText) const

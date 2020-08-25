@@ -53,10 +53,9 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
         QVector<int> roles;
         roles << Qt::DisplayRole;
         roles << Qt::UserRole;
-        roles << ISSHAREDROLE;
         roles << INMULTIPLELAYOUTSROLE;
 
-        emit dataChanged(index(0, NAMECOLUMN), index(rowCount()-1, SHAREDCOLUMN), roles);
+        emit dataChanged(index(0, NAMECOLUMN), index(rowCount()-1, ACTIVITYCOLUMN), roles);
     });
 
     connect(this, &Layouts::inMultipleModeChanged, this, &Layouts::updateActiveStates);
@@ -115,7 +114,7 @@ int Layouts::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
 
-    return SHAREDCOLUMN+1;
+    return ACTIVITYCOLUMN+1;
 }
 
 void Layouts::clear()
@@ -147,7 +146,7 @@ void Layouts::applyData()
     o_inMultipleMode = m_inMultipleMode;
     o_layoutsTable = m_layoutsTable;
 
-    emit dataChanged(index(0, BACKGROUNDCOLUMN), index(rowCount()-1,SHAREDCOLUMN), roles);
+    emit dataChanged(index(0, BACKGROUNDCOLUMN), index(rowCount()-1, ACTIVITYCOLUMN), roles);
 }
 
 void Layouts::resetData()
@@ -174,7 +173,7 @@ void Layouts::setLayoutProperties(const Latte::Data::Layout &layout)
         QVector<int> roles;
         roles << Qt::DisplayRole;
         roles << Qt::UserRole;
-        emit dataChanged(index(dataRow, IDCOLUMN), index(dataRow, SHAREDCOLUMN), roles);
+        emit dataChanged(index(dataRow, IDCOLUMN), index(dataRow, ACTIVITYCOLUMN), roles);
     }
 }
 
@@ -248,28 +247,6 @@ void Layouts::setOriginalLayoutForFreeActivities(const QString &id)
     }
 }
 
-QStringList Layouts::assignedActivitiesFromShared(const int &row) const
-{
-    QStringList assigns;
-
-    if (!m_layoutsTable.rowExists(row)) {
-        return assigns;
-    }
-
-    if (m_layoutsTable[row].isShared()) {
-        for (int i=0; i<m_layoutsTable[row].shares.count(); ++i) {
-            QString shareId = m_layoutsTable[row].shares[i];
-            int shareRow = rowForId(shareId);
-
-            if (shareRow>=0 && !m_layoutsTable[shareRow].activities.isEmpty()) {
-                assigns << m_layoutsTable[shareRow].activities;
-            }
-        }
-    }
-
-    return assigns;
-}
-
 QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation != Qt::Horizontal) {
@@ -332,15 +309,6 @@ QVariant Layouts::headerData(int section, Qt::Orientation orientation, int role)
             return QVariant::fromValue(Qt::AlignLeft | Qt::AlignVCenter);
         }*/
         break;
-    case SHAREDCOLUMN:
-        if (role == Qt::DisplayRole) {
-            return QString(i18nc("column for shared layout to show which layouts is assigned to", "Shared To"));
-        } else if (role == Qt::DecorationRole) {
-            return QIcon::fromTheme("document-share");
-        }/* else if (role == Qt::TextAlignmentRole ){
-            return QVariant::fromValue(Qt::AlignLeft | Qt::AlignVCenter);
-        }*/
-        break;
     default:
         break;
     };
@@ -360,8 +328,7 @@ Qt::ItemFlags Layouts::flags(const QModelIndex &index) const
     }
 
     if (column == ACTIVITYCOLUMN
-            || column == NAMECOLUMN
-            || column == SHAREDCOLUMN) {
+            || column == NAMECOLUMN) {
         flags |= Qt::ItemIsEditable;
     }
 
@@ -441,56 +408,9 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
     return icons;
 }
 
-QList<Latte::Data::LayoutIcon> Layouts::iconsForSharedLayout(const int &row) const
-{
-    //! SHARED layout case
-    QList<Latte::Data::LayoutIcon> icons;
-
-    if (!m_layoutsTable[row].icon.isEmpty()) {
-        //! if there is specific icon set from the user for this layout
-        //! we draw only that icon
-        Latte::Data::LayoutIcon icon;
-        icon.name = m_layoutsTable[row].icon;
-        icon.isFreeActivities = false;
-        icon.isBackgroundFile = false;
-        icons << icon;
-        return icons;
-    }
-
-    for (int i=0; i<m_layoutsTable[row].shares.count(); ++i) {
-        QString shareId = m_layoutsTable[row].shares[i];
-        int shareRow = rowForId(shareId);
-
-        if (shareRow>=0) {
-            icons << iconsForCentralLayout(shareRow);
-        }
-    }
-
-    int freeActivitiesPos = -1;
-
-    for (int i=0; i<icons.count(); ++i) {
-        if (icons[i].isFreeActivities) {
-            freeActivitiesPos = i;
-            break;
-        }
-    }
-
-    if (freeActivitiesPos >= 0) {
-        //! Put FreeActivities icon on top of the rest icons
-        Latte::Data::LayoutIcon freeActsData = icons.takeAt(freeActivitiesPos);
-        icons << freeActsData;
-    }
-
-    return icons;
-}
-
 QList<Latte::Data::LayoutIcon> Layouts::icons(const int &row) const
 {
-    if (!m_layoutsTable[row].isShared()) {
-        return iconsForCentralLayout(row);
-    } else {
-        return iconsForSharedLayout(row);
-    }
+    return iconsForCentralLayout(row);
 }
 
 QString Layouts::sortableText(const int &priority, const int &row) const
@@ -545,14 +465,10 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return m_layoutsTable[row].isActive;
     } else if (role == ISLOCKEDROLE) {
         return m_layoutsTable[row].isLocked;
-    } else if (role == ISSHAREDROLE) {
-        return m_layoutsTable[row].isShared();
     } else if (role == INMULTIPLELAYOUTSROLE) {
         return inMultipleMode();
     } else if (role == ASSIGNEDACTIVITIESROLE) {
         return m_layoutsTable[row].activities;
-    } else if (role == ASSIGNEDACTIVITIESFROMSHAREDROLE) {
-        return assignedActivitiesFromShared(row);
     } else if (role == ALLACTIVITIESSORTEDROLE) {
         QStringList activities;
         activities << QString(Latte::Data::Layout::FREEACTIVITIESID);
@@ -566,8 +482,6 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         QVariant layouts;
         layouts.setValue(m_layoutsTable);
         return layouts;
-    } else if (role == SHAREDTOINEDITROLE) {
-        return (m_sharedToInEditRow == row);
     } else if (role == ISNEWLAYOUTROLE) {
         return isNewLayout;
     } else if (role == LAYOUTHASCHANGESROLE) {
@@ -612,9 +526,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case MENUCOLUMN:
         if (role == SORTINGROLE) {
-            if ((m_inMultipleMode && m_layoutsTable[row].isShared())) {
-                return sortingPriority(MEDIUMPRIORITY, row);
-            } else if (m_layoutsTable[row].isShownInMenu) {
+            if (m_layoutsTable[row].isShownInMenu) {
                 return sortingPriority(HIGHESTPRIORITY, row);
             }
 
@@ -631,9 +543,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case BORDERSCOLUMN:
         if (role == SORTINGROLE) {
-            if ((m_inMultipleMode && m_layoutsTable[row].isShared())) {
-                return sortingPriority(MEDIUMPRIORITY, row);
-            } else if (m_layoutsTable[row].hasDisabledBorders) {
+            if (m_layoutsTable[row].hasDisabledBorders) {
                 return sortingPriority(HIGHESTPRIORITY, row);
             }
 
@@ -650,9 +560,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case ACTIVITYCOLUMN:
         if (role == SORTINGROLE) {
-            if ((m_inMultipleMode && m_layoutsTable[row].isShared())) {
-                return sortingPriority(MEDIUMPRIORITY, row) + m_layoutsTable[row].shares.count();
-            } else if (m_layoutsTable[row].activities.count() > 0) {
+            if (m_layoutsTable[row].activities.count() > 0) {
                 if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
                     return sortingPriority(HIGHESTPRIORITY, row);
                 } else {
@@ -669,29 +577,6 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
 
         if (role == Qt::UserRole) {
             return m_layoutsTable[row].activities;
-        }
-        break;
-    case SHAREDCOLUMN:
-        if (role == SORTINGROLE) {
-            if (m_layoutsTable[row].shares.count() > 0) {
-                //! highest priority based on number of shares
-                return HIGHESTPRIORITY + m_layoutsTable[row].shares.count();
-            }
-
-            if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
-                //! high activity priority
-                return HIGHPRIORITY;
-            }
-
-            return NORMALPRIORITY;
-        }
-
-        if (role == ORIGINALSHARESROLE) {
-            return isNewLayout ? QStringList() : original.shares;
-        }
-
-        if (role == Qt::UserRole) {
-            return m_layoutsTable[row].shares;
         }
         break;
     default:
@@ -728,7 +613,6 @@ void Layouts::assignFreeActivitiesLayoutAt(const QString &layoutName)
 
     int row = m_layoutsTable.indexOf(reqId);
     setActivities(row, QStringList(Latte::Data::Layout::FREEACTIVITIESID));
-    setShares(row, QStringList());
 }
 
 void Layouts::autoAssignFreeActivitiesLayout()
@@ -741,7 +625,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
     QString activeCurrentId = o_layoutsTable.idForName(m_corona->layoutsManager()->currentLayoutName());
     int row = m_layoutsTable.indexOf(activeCurrentId);
 
-    if (row>=0 && !(m_inMultipleMode && m_layoutsTable[row].isShared()) && m_layoutsTable[row].activities.isEmpty()) {
+    if (row>=0 && m_layoutsTable[row].activities.isEmpty()) {
         m_layoutsTable[row].activities << Latte::Data::Layout::FREEACTIVITIESID;
         emit dataChanged(index(row,BACKGROUNDCOLUMN), index(row,ACTIVITYCOLUMN), roles);
         return;
@@ -749,7 +633,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
 
     //! Active layouts with no activities have mid priority
     for(int i=0; i<rowCount(); ++i) {
-        if (m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty() && !(m_inMultipleMode && m_layoutsTable[i].isShared())) {
+        if (m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty()) {
             m_layoutsTable[i].activities << Latte::Data::Layout::FREEACTIVITIESID;
             emit dataChanged(index(i,BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
             return;
@@ -758,7 +642,7 @@ void Layouts::autoAssignFreeActivitiesLayout()
 
     //! Inactive layouts with no activities have lowest priority
     for(int i=0; i<rowCount(); ++i) {
-        if (!m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty() && !(m_inMultipleMode && m_layoutsTable[i].isShared())) {
+        if (!m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty()) {
             m_layoutsTable[i].activities << Latte::Data::Layout::FREEACTIVITIESID;
             emit dataChanged(index(i,BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
             return;
@@ -817,78 +701,6 @@ void Layouts::setId(const int &row, const QString &newId)
     QString oldId = m_layoutsTable[row].id;
     m_layoutsTable[row].id = newId;
     emit dataChanged(index(row, NAMECOLUMN), index(row,NAMECOLUMN), roles);
-
-    for(int i=0; i<rowCount(); ++i) {
-        if (i == row) {
-            continue;
-        }
-
-        int pos = m_layoutsTable[i].shares.indexOf(oldId);
-
-        if (pos >= 0) {
-            m_layoutsTable[i].shares[pos] = newId;
-            emit dataChanged(index(i, NAMECOLUMN), index(i, NAMECOLUMN), roles);
-        }
-    }
-}
-
-bool Layouts::shareIsAvailable(const QString id) const
-{
-    for(int i=0; i<rowCount(); ++i) {
-        if (m_layoutsTable[i].isShared() && m_layoutsTable[i].shares.contains(id)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-QStringList Layouts::availableShareIdsFor(const QString id) const
-{
-    QStringList shares;
-
-    for(int i=0; i<rowCount(); ++i) {
-        if (m_layoutsTable[i].id == id || m_layoutsTable[i].isShared() || !shareIsAvailable(m_layoutsTable[i].id)) {
-            continue;
-        }
-
-        shares << m_layoutsTable[i].id;
-    }
-
-    return shares;
-}
-
-void Layouts::setShares(const int &row, const QStringList &shares)
-{
-    if (!m_layoutsTable.rowExists(row) || m_layoutsTable[row].shares == shares) {
-        return;
-    }
-
-    QVector<int> roles;
-    roles << Qt::DisplayRole;
-    roles << Qt::UserRole;
-
-    m_layoutsTable[row].shares = shares;
-    emit dataChanged(index(row,IDCOLUMN), index(row,SHAREDCOLUMN), roles);
-
-    for(int i=0; i<rowCount(); ++i) {
-        if (i == row) {
-            continue;
-        }
-
-        auto cleaned = cleanStrings(m_layoutsTable[i].shares, shares);
-        if (cleaned != m_layoutsTable[i].shares) {
-            m_layoutsTable[i].shares = cleaned;
-            emit dataChanged(index(i,IDCOLUMN), index(i,SHAREDCOLUMN), roles);
-        }
-    }
-
-    if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)
-            && m_inMultipleMode
-            && m_layoutsTable[row].isShared()) {
-        //! we need to remove the free_activities flag in such case
-        setActivities(row, QStringList());
-    }
 }
 
 bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -896,7 +708,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
     const int row = index.row();
     const int column = index.column();
 
-    if (!m_layoutsTable.rowExists(row) || column<0 || column > SHAREDCOLUMN) {
+    if (!m_layoutsTable.rowExists(row) || column<0 || column > ACTIVITYCOLUMN) {
         return false;
     }
 
@@ -906,7 +718,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
     //! common roles for all row cells
     if (role == ISLOCKEDROLE) {
         m_layoutsTable[row].isLocked = value.toBool();
-        emit dataChanged(this->index(row,0), this->index(row,SHAREDCOLUMN), roles);
+        emit dataChanged(this->index(row,0), this->index(row, ACTIVITYCOLUMN), roles);
         return true;
     }
 
@@ -974,22 +786,6 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
             return true;
         }
         break;
-    case SHAREDCOLUMN:
-        if (role == Qt::UserRole) {
-            setShares(row, value.toStringList());
-            emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
-            return true;
-        } else if (role == SHAREDTOINEDITROLE) {
-            bool inEdit = value.toBool();
-            m_sharedToInEditRow = inEdit ? row : -1;
-            roles << Qt::DisplayRole;
-            roles << Qt::UserRole;
-            roles << SHAREDTOINEDITROLE;
-            emit dataChanged(this->index(row, ACTIVITYCOLUMN), this->index(row, SHAREDCOLUMN),  roles);
-            emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
-            return true;
-        }
-        break;
     };
 
     return false;
@@ -1013,7 +809,7 @@ void Layouts::updateActiveStates()
         if (m_layoutsTable[i].isActive != iActive) {
             m_layoutsTable[i].isActive = iActive;
 
-            emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,SHAREDCOLUMN), roles);
+            emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
         }
     }
 }

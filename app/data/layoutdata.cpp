@@ -43,7 +43,6 @@ Layout::Layout(Layout &&o)
       isTemplate(o.isTemplate),
       hasDisabledBorders(o.hasDisabledBorders),
       activities(o.activities),
-      shares(o.shares),
       backgroundStyle(o.backgroundStyle)
 {
 }
@@ -60,7 +59,6 @@ Layout::Layout(const Layout &o)
       isTemplate(o.isTemplate),
       hasDisabledBorders(o.hasDisabledBorders),
       activities(o.activities),
-      shares(o.shares),
       backgroundStyle(o.backgroundStyle)
 {
 }
@@ -79,7 +77,6 @@ Layout &Layout::operator=(Layout &&rhs)
     isTemplate = rhs.isTemplate;
     hasDisabledBorders = rhs.hasDisabledBorders;
     activities = rhs.activities;
-    shares = rhs.shares;
     backgroundStyle = rhs.backgroundStyle;
 
     return (*this);
@@ -99,7 +96,6 @@ Layout &Layout::operator=(const Layout &rhs)
     isTemplate = rhs.isTemplate;
     hasDisabledBorders = rhs.hasDisabledBorders;
     activities = rhs.activities;
-    shares = rhs.shares;
     backgroundStyle = rhs.backgroundStyle;
 
     return (*this);
@@ -119,7 +115,6 @@ bool Layout::operator==(const Layout &rhs) const
             && (isTemplate == rhs.isTemplate)
             && (hasDisabledBorders == rhs.hasDisabledBorders)
             && (activities == rhs.activities)
-            && (shares == rhs.shares)
             && (backgroundStyle == rhs.backgroundStyle);
 }
 
@@ -151,11 +146,6 @@ bool Layout::isEmpty() const
 bool Layout::isNull() const
 {
     return (id.isEmpty() && name.isEmpty());
-}
-
-bool Layout::isShared() const
-{
-    return !shares.isEmpty();
 }
 
 bool Layout::isSystemTemplate() const

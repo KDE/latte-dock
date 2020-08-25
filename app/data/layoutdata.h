@@ -54,12 +54,10 @@ public:
     bool isTemplate{false};
     bool hasDisabledBorders{false};
     QStringList activities;
-    QStringList shares;
 
     Latte::Layout::BackgroundStyle backgroundStyle{Latte::Layout::ColorBackgroundStyle};
 
     //! Functionality
-    bool isShared() const;
     bool isOnAllActivities() const;
     bool isForFreeActivities() const;
     bool isTemporary() const;

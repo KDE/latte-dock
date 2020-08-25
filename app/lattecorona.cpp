@@ -31,7 +31,6 @@
 #include "layout/abstractlayout.h"
 #include "layout/centrallayout.h"
 #include "layout/genericlayout.h"
-#include "layout/sharedlayout.h"
 #include "layouts/importer.h"
 #include "layouts/manager.h"
 #include "layouts/synchronizer.h"
@@ -516,16 +515,6 @@ CentralLayout *Corona::centralLayout(QString name) const
         result = m_layoutsManager->currentLayout();
     } else {
         CentralLayout *tempCentral = m_layoutsManager->synchronizer()->centralLayout(name);
-
-        if (!tempCentral) {
-            //! Identify best active layout to be used for metrics calculations.
-            //! Active layouts are always take into account their shared layouts for their metrics
-            SharedLayout *sharedLayout = m_layoutsManager->synchronizer()->sharedLayout(name);
-
-            if (sharedLayout) {
-                tempCentral = sharedLayout->currentCentralLayout();
-            }
-        }
 
         if (tempCentral) {
             result = tempCentral;

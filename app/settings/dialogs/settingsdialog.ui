@@ -29,7 +29,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="layoutsTab">
       <attribute name="title">
@@ -280,20 +280,6 @@
                 </property>
                 <property name="icon">
                  <iconset theme="object-locked">
-                  <normaloff>.</normaloff>.</iconset>
-                </property>
-                <property name="checkable">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="sharedButton">
-                <property name="text">
-                 <string notr="true">Shared</string>
-                </property>
-                <property name="icon">
-                 <iconset theme="document-share">
                   <normaloff>.</normaloff>.</iconset>
                 </property>
                 <property name="checkable">
