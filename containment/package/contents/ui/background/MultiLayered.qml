@@ -242,21 +242,11 @@ BackgroundProperties{
         id: shadowsSvgItem
         width: root.isVertical ?  background.thickness + totals.shadowsThickness : totals.visualLength
         height: root.isVertical ? totals.visualLength : background.thickness + totals.shadowsThickness
-
+        enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
         imagePath: "widgets/panel-background"
         prefix: "shadow"
-
+        opacity: hideShadow || !root.useThemePanel || (root.forceTransparentPanel && !root.forcePanelForBusyBackground) ? 0 : 1
         visible: (opacity == 0) ? false : true
-
-        opacity: {
-            if ((root.forceTransparentPanel && !root.forcePanelForBusyBackground)
-                    || !root.useThemePanel)
-                return 0;
-            else
-                return 1;
-        }
-
-        enabledBorders: latteView && latteView.effects && !hideShadow ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
         //! set true by default in order to avoid crash on startup because imagePath is set to ""
         readonly property bool themeHasShadow: themeExtended ? themeExtended.hasShadow : true
@@ -287,304 +277,305 @@ BackgroundProperties{
             enabled: !LatteCore.WindowSystem.compositingActive
             NumberAnimation { duration: 0 }
         }
+    }
 
-        //! Layer 2: Provide visual solidness. Plasma themes by design may provide a panel-background svg that is not
-        //!          solid. That means that user can not gain full solidness in such cases. This layer is responsible
-        //!          to solve the previous mentioned plasma theme limitation.
-        Colorizer.CustomBackground {
-            id: backgroundLowestRectangle
-            anchors.fill: solidBackground
-            opacity: normalizedOpacity
-            backgroundColor: colorizerManager.backgroundColor
-            roundness: overlayedBackground.roundness
-            visible: LatteCore.WindowSystem.compositingActive && solidBackground.exceedsThemeOpacityLimits
+    //! Layer 2: Provide visual solidness. Plasma themes by design may provide a panel-background svg that is not
+    //!          solid. That means that user can not gain full solidness in such cases. This layer is responsible
+    //!          to solve the previous mentioned plasma theme limitation.
+    Colorizer.CustomBackground {
+        id: backgroundLowestRectangle
+        anchors.fill: solidBackground
+        opacity: normalizedOpacity
+        backgroundColor: colorizerManager.backgroundColor
+        roundness: overlayedBackground.roundness
+        visible: LatteCore.WindowSystem.compositingActive && solidBackground.exceedsThemeOpacityLimits
 
-            readonly property real normalizedOpacity: visible ?  Math.min(1, (appliedOpacity - solidBackground.themeMaxOpacity)/(1-solidBackground.themeMaxOpacity)) : 0
-            readonly property real appliedOpacity: visible ? solidBackground.appliedOpacity : 0
+        readonly property real normalizedOpacity: visible ?  Math.min(1, (appliedOpacity - solidBackground.themeMaxOpacity)/(1-solidBackground.themeMaxOpacity)) : 0
+        readonly property real appliedOpacity: visible ? solidBackground.appliedOpacity : 0
 
-            Behavior on opacity{
-                enabled: LatteCore.WindowSystem.compositingActive
-                NumberAnimation { duration: barLine.animationTime }
-            }
+        Behavior on opacity{
+            enabled: LatteCore.WindowSystem.compositingActive
+            NumberAnimation { duration: barLine.animationTime }
+        }
 
-            Behavior on opacity{
-                enabled: !LatteCore.WindowSystem.compositingActive
-                NumberAnimation { duration: 0 }
+        Behavior on opacity{
+            enabled: !LatteCore.WindowSystem.compositingActive
+            NumberAnimation { duration: 0 }
+        }
+    }
+
+    //! Layer 3: Original Plasma Theme "panel-background" svg. It is used for calculations and also to draw
+    //!          the original background when to special settings and options exist from the user. It is also
+    //!          doing one very important job which is to calculate the Effects Rectangle which is used from
+    //!          the compositor to provide blurriness and from Mask calculations to provide the View Local Geometry
+    PlasmaCore.FrameSvgItem{
+        id: solidBackground
+        anchors.leftMargin: LatteCore.WindowSystem.compositingActive ? shadows.left : 0
+        anchors.rightMargin: LatteCore.WindowSystem.compositingActive ? shadows.right : 0
+        anchors.topMargin: LatteCore.WindowSystem.compositingActive ? shadows.top : 0
+        anchors.bottomMargin: LatteCore.WindowSystem.compositingActive ? shadows.bottom : 0
+        anchors.fill: shadowsSvgItem
+
+        opacity: normalizedOpacity
+
+        readonly property bool exceedsThemeOpacityLimits: appliedOpacity > themeMaxOpacity
+        readonly property bool forceSolidness: root.forceSolidPanel || !LatteCore.WindowSystem.compositingActive
+
+        //! must be normalized to plasma theme maximum opacity
+        readonly property real normalizedOpacity: Math.min(1, appliedOpacity / themeMaxOpacity)
+
+        readonly property real appliedOpacity: overlayedBackground.backgroundOpacity > 0 && !paintInstantly ? 0 : overlayedBackground.midOpacity
+        readonly property real themeMaxOpacity: themeExtendedBackground ? themeExtendedBackground.maxOpacity : 1
+
+        //! When switching from overlaied background to regular one this must be done
+        //! instantly otherwise the transition is not smooth
+        readonly property bool paintInstantly: (root.hasExpandedApplet && root.plasmaBackgroundForPopups)
+                                               || root.plasmaStyleBusyForTouchingBusyVerticalView
+
+        property rect efGeometry: Qt.rect(-1,-1,0,0)
+
+        imagePath: "widgets/panel-background"
+
+        property int paddingsWidth: margins.left+margins.right
+        property int paddingsHeight: margins.top + margins.bottom
+
+        onWidthChanged: updateEffectsArea();
+        onHeightChanged: updateEffectsArea();
+        onImagePathChanged: solidBackground.adjustPrefix();
+
+
+        Component.onCompleted: {
+            root.updateEffectsArea.connect(updateEffectsArea);
+            adjustPrefix();
+        }
+
+        Component.onDestruction: {
+            root.updateEffectsArea.disconnect(updateEffectsArea);
+        }
+
+        //! Fix for FrameSvgItem QML version not updating its margins after a theme change
+        //! with this hack we enforce such update. I could use the repaintNeeded signal but
+        //! it is called more often than the themeChanged one.
+        Connections {
+            target: themeExtended
+            onThemeChanged: {
+                solidBackground.adjustPrefix();
+                plasmoid.configuration.panelShadows = !plasmoid.configuration.panelShadows;
+                plasmoid.configuration.panelShadows = !plasmoid.configuration.panelShadows;
+                updateEffectsArea();
             }
         }
 
-        //! Layer 3: Original Plasma Theme "panel-background" svg. It is used for calculations and also to draw
-        //!          the original background when to special settings and options exist from the user. It is also
-        //!          doing one very important job which is to calculate the Effects Rectangle which is used from
-        //!          the compositor to provide blurriness and from Mask calculations to provide the View Local Geometry
-        PlasmaCore.FrameSvgItem{
-            id: solidBackground
-            anchors.leftMargin: LatteCore.WindowSystem.compositingActive ? shadows.left : 0
-            anchors.rightMargin: LatteCore.WindowSystem.compositingActive ? shadows.right : 0
-            anchors.topMargin: LatteCore.WindowSystem.compositingActive ? shadows.top : 0
-            anchors.bottomMargin: LatteCore.WindowSystem.compositingActive ? shadows.bottom : 0
-            anchors.fill:parent
-
-            opacity: normalizedOpacity
-
-            readonly property bool exceedsThemeOpacityLimits: appliedOpacity > themeMaxOpacity
-            readonly property bool forceSolidness: root.forceSolidPanel || !LatteCore.WindowSystem.compositingActive
-
-            //! must be normalized to plasma theme maximum opacity
-            readonly property real normalizedOpacity: Math.min(1, appliedOpacity / themeMaxOpacity)
-
-            readonly property real appliedOpacity: overlayedBackground.backgroundOpacity > 0 && !paintInstantly ? 0 : overlayedBackground.midOpacity
-            readonly property real themeMaxOpacity: themeExtendedBackground ? themeExtendedBackground.maxOpacity : 1
-
-            //! When switching from overlaied background to regular one this must be done
-            //! instantly otherwise the transition is not smooth
-            readonly property bool paintInstantly: (root.hasExpandedApplet && root.plasmaBackgroundForPopups)
-                                                   || root.plasmaStyleBusyForTouchingBusyVerticalView
-
-            property rect efGeometry: Qt.rect(-1,-1,0,0)
-
-            imagePath: "widgets/panel-background"
-
-            property int paddingsWidth: margins.left+margins.right
-            property int paddingsHeight: margins.top + margins.bottom
-
-            onWidthChanged: updateEffectsArea();
-            onHeightChanged: updateEffectsArea();
-            onImagePathChanged: solidBackground.adjustPrefix();
+        Connections {
+            target: latteView ? latteView.visibility : null
+            onIsHiddenChanged: solidBackground.updateEffectsArea();
+        }
 
 
-            Component.onCompleted: {
-                root.updateEffectsArea.connect(updateEffectsArea);
-                adjustPrefix();
+        Connections{
+            target: plasmoid
+            onLocationChanged: solidBackground.adjustPrefix();
+        }
+
+        function updateEffectsArea() {
+            if (!updateEffectsAreaTimer.running) {
+                invUpdateEffectsArea();
+                updateEffectsAreaTimer.start();
             }
+        }
 
-            Component.onDestruction: {
-                root.updateEffectsArea.disconnect(updateEffectsArea);
-            }
+        function invUpdateEffectsArea(){
+            if (!latteView)
+                return;
 
-            //! Fix for FrameSvgItem QML version not updating its margins after a theme change
-            //! with this hack we enforce such update. I could use the repaintNeeded signal but
-            //! it is called more often than the themeChanged one.
-            Connections {
-                target: themeExtended
-                onThemeChanged: {
-                    solidBackground.adjustPrefix();
-                    plasmoid.configuration.panelShadows = !plasmoid.configuration.panelShadows;
-                    plasmoid.configuration.panelShadows = !plasmoid.configuration.panelShadows;
-                    updateEffectsArea();
-                }
-            }
+            if (!LatteCore.WindowSystem.compositingActive) {
+                //! NOCOMPOSITING mode is a special case and Effects Area is also used for
+                //! different calculations for View::mask()
+                var rootGeometry = mapToItem(root, 0, 0);
+                efGeometry.x = rootGeometry.x;
+                efGeometry.y = rootGeometry.y;
+                efGeometry.width = width;
+                efGeometry.height = height;
+            } else {
+                if (latteView.visibility.isHidden) {
+                    //! valid hide mask
+                    efGeometry.x = -1;
+                    efGeometry.y = -1;
+                    efGeometry.width = 1;
+                    efGeometry.height = 1;
+                } else {
+                    if (!root.behaveAsPlasmaPanel) {
+                        var rootGeometry = mapToItem(root, 0, 0);
+                        efGeometry.x = rootGeometry.x;
+                        efGeometry.y = rootGeometry.y;
+                    } else {
+                        efGeometry.x = 0;
+                        efGeometry.y = 0;
+                    }
 
-            Connections {
-                target: latteView ? latteView.visibility : null
-                onIsHiddenChanged: solidBackground.updateEffectsArea();
-            }
-
-
-            Connections{
-                target: plasmoid
-                onLocationChanged: solidBackground.adjustPrefix();
-            }
-
-            function updateEffectsArea() {
-                if (!updateEffectsAreaTimer.running) {
-                    invUpdateEffectsArea();
-                    updateEffectsAreaTimer.start();
-                }
-            }
-
-            function invUpdateEffectsArea(){
-                if (!latteView)
-                    return;
-
-                if (!LatteCore.WindowSystem.compositingActive) {
-                    //! NOCOMPOSITING mode is a special case and Effects Area is also used for
-                    //! different calculations for View::mask()
-                    var rootGeometry = mapToItem(root, 0, 0);
-                    efGeometry.x = rootGeometry.x;
-                    efGeometry.y = rootGeometry.y;
                     efGeometry.width = width;
                     efGeometry.height = height;
-                } else {
-                    if (latteView.visibility.isHidden) {
-                        //! valid hide mask
-                        efGeometry.x = -1;
-                        efGeometry.y = -1;
-                        efGeometry.width = 1;
-                        efGeometry.height = 1;
-                    } else {
-                        if (!root.behaveAsPlasmaPanel) {
-                            var rootGeometry = mapToItem(root, 0, 0);
-                            efGeometry.x = rootGeometry.x;
-                            efGeometry.y = rootGeometry.y;
-                        } else {
-                            efGeometry.x = 0;
-                            efGeometry.y = 0;
-                        }
-
-                        efGeometry.width = width;
-                        efGeometry.height = height;
-                    }
                 }
-
-                latteView.effects.rect = efGeometry;
-
-                //! needed both for NOCOMPOSITING environments AND
-                //! View::localGeometry calculations
-                visibilityManager.updateMaskArea();
             }
 
-            Timer {
-                id: updateEffectsAreaTimer
-                interval: 16 //! 60Hz or 60calls/sec
-                onTriggered: solidBackground.invUpdateEffectsArea();
-            }
+            latteView.effects.rect = efGeometry;
 
-            onRepaintNeeded: {
-                if (root.behaveAsPlasmaPanel)
-                    adjustPrefix();
-            }
-
-            enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
-
-            Behavior on opacity{
-                enabled: LatteCore.WindowSystem.compositingActive && !solidBackground.paintInstantly
-                NumberAnimation { duration: barLine.animationTime }
-            }
-
-            Behavior on opacity{
-                enabled: !LatteCore.WindowSystem.compositingActive
-                NumberAnimation { duration: 0 }
-            }
-
-            function adjustPrefix() {
-                if (!plasmoid) {
-                    return "";
-                }
-                var pre;
-                switch (plasmoid.location) {
-                case PlasmaCore.Types.LeftEdge:
-                    pre = "west";
-                    break;
-                case PlasmaCore.Types.TopEdge:
-                    pre = "north";
-                    break;
-                case PlasmaCore.Types.RightEdge:
-                    pre = "east";
-                    break;
-                case PlasmaCore.Types.BottomEdge:
-                    pre = "south";
-                    break;
-                default:
-                    prefix = "";
-                }
-
-                prefix = [pre, ""];
-            }
+            //! needed both for NOCOMPOSITING environments AND
+            //! View::localGeometry calculations
+            visibilityManager.updateMaskArea();
         }
 
-        //! Layer 4: Plasma theme design does not provide a way to colorize the background. This layer
-        //!          solves this by providing a custom background layer that respects the Colorizer palette
-        Colorizer.CustomBackground {
-            id: overlayedBackground
-            anchors.fill: solidBackground
+        Timer {
+            id: updateEffectsAreaTimer
+            interval: 16 //! 60Hz or 60calls/sec
+            onTriggered: solidBackground.invUpdateEffectsArea();
+        }
 
-            readonly property bool busyBackground: root.forcePanelForBusyBackground
-                                                   && (solidBackground.opacity === 0 || !solidBackground.paintInstantly)
-            readonly property bool coloredView: colorizerManager.mustBeShown && colorizerManager.applyTheme !== theme
+        onRepaintNeeded: {
+            if (root.behaveAsPlasmaPanel)
+                adjustPrefix();
+        }
 
-            backgroundOpacity: {
-                if (busyBackground && !forceSolidness) {
-                    return plasmoid.configuration.panelTransparency / 100;
-                }
+        enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
-                if (coloredView || customShadowedRectangleIsEnabled) {
-                    return midOpacity;
-                }
+        Behavior on opacity{
+            enabled: LatteCore.WindowSystem.compositingActive && !solidBackground.paintInstantly
+            NumberAnimation { duration: barLine.animationTime }
+        }
 
+        Behavior on opacity{
+            enabled: !LatteCore.WindowSystem.compositingActive
+            NumberAnimation { duration: 0 }
+        }
+
+        function adjustPrefix() {
+            if (!plasmoid) {
+                return "";
+            }
+            var pre;
+            switch (plasmoid.location) {
+            case PlasmaCore.Types.LeftEdge:
+                pre = "west";
+                break;
+            case PlasmaCore.Types.TopEdge:
+                pre = "north";
+                break;
+            case PlasmaCore.Types.RightEdge:
+                pre = "east";
+                break;
+            case PlasmaCore.Types.BottomEdge:
+                pre = "south";
+                break;
+            default:
+                prefix = "";
+            }
+
+            prefix = [pre, ""];
+        }
+    }
+
+    //! Layer 4: Plasma theme design does not provide a way to colorize the background. This layer
+    //!          solves this by providing a custom background layer that respects the Colorizer palette
+    Colorizer.CustomBackground {
+        id: overlayedBackground
+        anchors.fill: solidBackground
+
+        readonly property bool busyBackground: root.forcePanelForBusyBackground
+                                               && (solidBackground.opacity === 0 || !solidBackground.paintInstantly)
+        readonly property bool coloredView: colorizerManager.mustBeShown && colorizerManager.applyTheme !== theme
+
+        backgroundOpacity: {
+            if (busyBackground && !forceSolidness) {
+                return plasmoid.configuration.panelTransparency / 100;
+            }
+
+            if (coloredView || customShadowedRectangleIsEnabled) {
+                return midOpacity;
+            }
+
+            return 0;
+        }
+
+        backgroundColor: colorizerManager.backgroundColor
+        borderColor: backgroundColor /*disabled in favor of Layer 5*/
+        borderWidth: 1 /*disabled in favor of Layer 5*/
+        shadowColor: customShadowColor
+        shadowSize: {
+            if (!customShadowIsEnabled) {
                 return 0;
             }
 
-            backgroundColor: colorizerManager.backgroundColor
-            borderColor: backgroundColor /*disabled in favor of Layer 5*/
-            borderWidth: 1 /*disabled in favor of Layer 5*/
-            shadowColor: customShadowColor
-            shadowSize: {
-                if (!customShadowIsEnabled) {
-                    return 0;
-                }
+            //! WORKAROUND: Kirigami.ShadowedRectangle does not respect the specified shadowed size
+            //! when the shadow size is bigger than background thickness. In such case the ShadowedRectangle
+            //! produced shadowed is much bigger than the specified one
+            var minaxis = Math.min(solidBackground.height, solidBackground.width)
+            return customShadow > minaxis ? minaxis : customShadow;
+        }
 
-                //! WORKAROUND: Kirigami.ShadowedRectangle does not respect the specified shadowed size
-                //! when the shadow size is bigger than background thickness. In such case the ShadowedRectangle
-                //! produced shadowed is much bigger than the specified one
-                var minaxis = Math.min(solidBackground.height, solidBackground.width)
-                return customShadow > minaxis ? minaxis : customShadow;
+        roundness: {
+            if (customRadiusIsEnabled) {
+                return customRadius;
             }
 
-            roundness: {
-                if (customRadiusIsEnabled) {
-                    return customRadius;
-                }
+            return themeExtendedBackground ? themeExtendedBackground.roundness : 0
+        }
 
-                return themeExtendedBackground ? themeExtendedBackground.roundness : 0
-            }
-
-            property real midOpacity: {
-                if (forceSolidness) {
-                    return 1;
-                } else if (!root.userShowPanelBackground || root.forcePanelForBusyBackground || root.forceTransparentPanel) {
-                    return 0;
-                } else {
-                    return plasmoid.configuration.panelTransparency / 100;
-                }
-            }
-
-            readonly property bool forceSolidness: root.forceSolidPanel || !LatteCore.WindowSystem.compositingActive
-
-            Behavior on backgroundOpacity{
-                enabled: LatteCore.WindowSystem.compositingActive
-                NumberAnimation { duration: barLine.animationTime }
-            }
-
-            Behavior on backgroundOpacity{
-                enabled: !LatteCore.WindowSystem.compositingActive
-                NumberAnimation { duration: 0 }
-            }
-
-            Behavior on backgroundColor{
-                enabled: LatteCore.WindowSystem.compositingActive
-                ColorAnimation { duration: barLine.animationTime }
-            }
-
-            Behavior on backgroundColor{
-                enabled: !LatteCore.WindowSystem.compositingActive
-                ColorAnimation { duration: 0 }
+        property real midOpacity: {
+            if (forceSolidness) {
+                return 1;
+            } else if (!root.userShowPanelBackground || root.forcePanelForBusyBackground || root.forceTransparentPanel) {
+                return 0;
+            } else {
+                return plasmoid.configuration.panelTransparency / 100;
             }
         }
 
-        //! Layer 5: Plasma theme design does not provide a way to draw background outline on demand. This layer
-        //!          solves this by providing a custom background layer that only draws an outline on top of all
-        //!          previous layers
-        Loader{
-            anchors.fill: solidBackground
-            active: root.panelOutline && !(root.hasExpandedApplet && root.plasmaBackgroundForPopups)
-            sourceComponent: Colorizer.CustomBackground{
-                backgroundColor: "transparent"
-                borderColor: colorizerManager.outlineColor
-                borderWidth: themeExtended ? themeExtended.outlineWidth : 1
-                roundness: overlayedBackground.roundness
-            }
+        readonly property bool forceSolidness: root.forceSolidPanel || !LatteCore.WindowSystem.compositingActive
+
+        Behavior on backgroundOpacity{
+            enabled: LatteCore.WindowSystem.compositingActive
+            NumberAnimation { duration: barLine.animationTime }
         }
 
-        //! CustomBackground debugger
-        /*Colorizer.CustomBackground {
-            anchors.fill: solidBackground
-            backgroundColor: "transparent"
-            borderWidth: 1
-            borderColor: "red"
-            roundness: overlayedBackground.roundness
-        }*/
+        Behavior on backgroundOpacity{
+            enabled: !LatteCore.WindowSystem.compositingActive
+            NumberAnimation { duration: 0 }
+        }
+
+        Behavior on backgroundColor{
+            enabled: LatteCore.WindowSystem.compositingActive
+            ColorAnimation { duration: barLine.animationTime }
+        }
+
+        Behavior on backgroundColor{
+            enabled: !LatteCore.WindowSystem.compositingActive
+            ColorAnimation { duration: 0 }
+        }
     }
+
+    //! Layer 5: Plasma theme design does not provide a way to draw background outline on demand. This layer
+    //!          solves this by providing a custom background layer that only draws an outline on top of all
+    //!          previous layers
+    Loader{
+        anchors.fill: solidBackground
+        active: root.panelOutline && !(root.hasExpandedApplet && root.plasmaBackgroundForPopups)
+        sourceComponent: Colorizer.CustomBackground{
+            backgroundColor: "transparent"
+            borderColor: colorizerManager.outlineColor
+            borderWidth: themeExtended ? themeExtended.outlineWidth : 1
+            roundness: overlayedBackground.roundness
+        }
+    }
+
+    //! CustomBackground debugger
+    /*Colorizer.CustomBackground {
+        anchors.fill: solidBackground
+        backgroundColor: "transparent"
+        borderWidth: 1
+        borderColor: "red"
+        roundness: overlayedBackground.roundness
+    }*/
+
 
     //BEGIN states
     //user set Panel Positions
