@@ -227,13 +227,12 @@ void Synchronizer::setMenuLayouts(QStringList layouts)
     emit menuLayoutsChanged();
 }
 
-CentralLayout *Synchronizer::centralLayout(QString id) const
+CentralLayout *Synchronizer::centralLayout(QString layoutname) const
 {
     for (int i = 0; i < m_centralLayouts.size(); ++i) {
         CentralLayout *layout = m_centralLayouts.at(i);
 
-        if (layout->name() == id) {
-
+        if (layout->name() == layoutname) {
             return layout;
         }
     }
@@ -244,11 +243,29 @@ CentralLayout *Synchronizer::centralLayout(QString id) const
 QList<CentralLayout *> Synchronizer::currentLayouts() const
 {
     QList<CentralLayout *> layouts;
+
     if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
         layouts << m_centralLayouts.at(0);
     } else {
         for (auto layout : m_centralLayouts) {
             if (layout->isOnAllActivities() || layout->appliedActivities().contains(m_manager->corona()->activitiesConsumer()->currentActivity())) {
+                layouts << layout;
+            }
+        }
+    }
+
+    return layouts;
+}
+
+QList<CentralLayout *> Synchronizer::centralLayoutsForActivity(const QString activityid) const
+{
+    QList<CentralLayout *> layouts;
+
+    if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
+        layouts << m_centralLayouts.at(0);
+    } else {
+        for (auto layout : m_centralLayouts) {
+            if (layout->isOnAllActivities() || layout->appliedActivities().contains(activityid)) {
                 layouts << layout;
             }
         }
@@ -286,9 +303,20 @@ QList<Latte::View *> Synchronizer::sortedCurrentViews() const
     return Layout::GenericLayout::sortedLatteViews(views);
 }
 
-Layout::GenericLayout *Synchronizer::layout(QString id) const
+QList<Latte::View *> Synchronizer::viewsBasedOnActivityId(const QString &id) const
 {
-    Layout::GenericLayout *l = centralLayout(id);
+    QList<Latte::View *> views;
+
+    for(auto layout : centralLayoutsForActivity(id)) {
+        views << layout->latteViews();
+    }
+
+    return views;
+}
+
+Layout::GenericLayout *Synchronizer::layout(QString layoutname) const
+{
+    Layout::GenericLayout *l = centralLayout(layoutname);
 
     return l;
 }

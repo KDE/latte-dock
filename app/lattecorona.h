@@ -117,14 +117,14 @@ public:
     //! arguments mean that all choices are accepted in calculations. ignoreExternalPanels means that
     //! external panels should be not considered in the calculations
     QRect availableScreenRectWithCriteria(int id,
-                                          QString layoutName = QString(),
+                                          QString activityid = QString(),
                                           QList<Types::Visibility> ignoreModes = QList<Types::Visibility>(),
                                           QList<Plasma::Types::Location> ignoreEdges = QList<Plasma::Types::Location>(),
                                           bool ignoreExternalPanels = true,
                                           bool desktopUse = false) const;
 
     QRegion availableScreenRegionWithCriteria(int id,
-                                              QString layoutName = QString(),
+                                              QString activityid = QString(),
                                               QList<Types::Visibility> ignoreModes = QList<Types::Visibility>(),
                                               QList<Plasma::Types::Location> ignoreEdges = QList<Plasma::Types::Location>(),
                                               bool ignoreExternalPanels = true,

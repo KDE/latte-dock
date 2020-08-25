@@ -390,13 +390,17 @@ void View::disconnectSensitiveSignals()
 
 void View::availableScreenRectChangedFromSlot(View *origin)
 {
-    if (m_inDelete || origin == this)
+    if (m_inDelete || origin == this || !origin) {
         return;
-
-    if (formFactor() == Plasma::Types::Vertical) {
-        m_positioner->syncGeometry();
     }
 
+    if (formFactor() == Plasma::Types::Vertical
+            && origin->layout()
+            && m_layout
+            && origin->layout()->lastUsedActivity() == m_layout->lastUsedActivity()) {
+        //! must be in same activity
+        m_positioner->syncGeometry();
+    }
 }
 
 void View::setupWaylandIntegration()

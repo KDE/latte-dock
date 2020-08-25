@@ -536,7 +536,6 @@ FocusScope {
                 comboBoxMinimumPopUpWidth: actionsModel.count > 1 ? dialog.width / 2 : 150
 
                 property var centralLayoutsNames: []
-                property var sharedLayoutsNames: []
 
                 Component.onCompleted: {
                     comboBox.model = actionsModel;
@@ -555,7 +554,7 @@ FocusScope {
                         if (index==0) {
                             latteView.copyView();
                         } else if (index>=1) {
-                            var layouts = actionsComboBtn.sharedLayoutsNames.concat(actionsComboBtn.centralLayoutsNames);
+                            var layouts = actionsComboBtn.centralLayoutsNames;
 
                             latteView.positioner.hideDockDuringMovingToLayout(layouts[index-1]);
                         }
@@ -601,23 +600,6 @@ FocusScope {
                     updateCopyText();
 
                     var tempCentralLayouts = layoutsManager.centralLayoutsNames();
-                    var tempSharedLayouts = layoutsManager.sharedLayoutsNames();
-
-                    if (tempSharedLayouts.length > 0) {
-                        var curIndex = tempSharedLayouts.indexOf(latteView.layout.name);
-                        if (curIndex >=0) {
-                            tempSharedLayouts.splice(curIndex,1);
-                        }
-
-                        sharedLayoutsNames = tempSharedLayouts;
-                        var icon = "document-share";
-
-                        for(var i=0; i<sharedLayoutsNames.length; ++i) {
-                            var layout = {actionId: 'move:', enabled: true, name: i18n("Move to: %0").arg(sharedLayoutsNames[i]), icon: icon};
-                            actionsModel.append(layout);
-                        }
-                    }
-
 
                     if (tempCentralLayouts.length > 0) {
                         var curIndex = tempCentralLayouts.indexOf(latteView.layout.name);

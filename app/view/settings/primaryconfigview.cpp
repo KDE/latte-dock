@@ -315,7 +315,9 @@ void PrimaryConfigView::instantUpdateAvailableScreenGeometry()
         ignoreModes.removeAll(Latte::Types::SidebarAutoHide);
     }
 
-    m_availableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, m_latteView->layout()->name(), ignoreModes, {}, false, true);
+    QString activityid = m_latteView->layout()->lastUsedActivity();
+
+    m_availableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, activityid, ignoreModes, {}, false, true);
 
     emit availableScreenGeometryChanged();
 }

@@ -105,9 +105,12 @@ public:
     QList<Latte::View *> currentViews() const;
     QList<Latte::View *> currentViewsWithPlasmaShortcuts() const;
     QList<Latte::View *> sortedCurrentViews() const;
+    QList<Latte::View *> viewsBasedOnActivityId(const QString &id) const;
 
-    CentralLayout *centralLayout(QString id) const;
-    Layout::GenericLayout *layout(QString id) const;
+    CentralLayout *centralLayout(QString layoutname) const;
+    Layout::GenericLayout *layout(QString layoutname) const;
+
+    QList<CentralLayout *> centralLayoutsForActivity(const QString activityid) const;
 
     KActivities::Controller *activitiesController() const;
 

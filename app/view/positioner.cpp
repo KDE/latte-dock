@@ -519,7 +519,8 @@ void Positioner::immediateSyncGeometry()
                 }
             }
 
-            freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, layoutName, ignoreModes, ignoreEdges);
+            QString activityid = m_view->layout() ? m_view->layout()->lastUsedActivity() : QString();
+            freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, activityid, ignoreModes, ignoreEdges);
 
             maximumRect = maximumNormalGeometry();
             QRegion availableRegion = freeRegion.intersected(maximumRect);
