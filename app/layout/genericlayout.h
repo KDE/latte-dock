@@ -180,6 +180,7 @@ private slots:
     void appletCreated(Plasma::Applet *applet);
     void destroyedChanged(bool destroyed);
     void containmentDestroyed(QObject *cont);
+    void onLastConfigViewChangedFrom(Latte::View *view);
 
 private:
     //! It can be used in order for LatteViews to not be created automatically when

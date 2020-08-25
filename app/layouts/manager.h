@@ -123,6 +123,9 @@ signals:
 
     void currentLayoutIsSwitching(QString layoutName);
 
+    //! used from ConfigView(s) in order to be informed which is one should be shown
+    void lastConfigViewChangedFrom(Latte::View *view);
+
 private:
     void cleanupOnStartup(QString path); //!remove deprecated or oldstyle config options
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);

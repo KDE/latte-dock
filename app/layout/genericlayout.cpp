@@ -367,7 +367,17 @@ void GenericLayout::setLastConfigViewFor(Latte::View *view)
     }
 
     m_lastConfigViewFor = view;
-    emit lastConfigViewForChanged(view);
+
+    if (view) {
+        emit lastConfigViewForChanged(view);
+    }
+}
+
+void GenericLayout::onLastConfigViewChangedFrom(Latte::View *view)
+{
+    if (!m_latteViews.values().contains(view)) {
+        setLastConfigViewFor(nullptr);
+    }
 }
 
 Latte::View *GenericLayout::viewForContainment(uint id) const
@@ -971,6 +981,9 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
             this, &GenericLayout::updateLastUsedActivity);
 
     connect(m_corona, &Plasma::Corona::containmentAdded, this, &GenericLayout::addContainment);
+
+    connect(this, &GenericLayout::lastConfigViewForChanged, m_corona->layoutsManager(), &Layouts::Manager::lastConfigViewChangedFrom);
+    connect(m_corona->layoutsManager(), &Layouts::Manager::lastConfigViewChangedFrom, this, &GenericLayout::onLastConfigViewChangedFrom);
 
     //!connect signals after adding the containment
     connect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
