@@ -229,8 +229,6 @@ Item {
     readonly property real screenGeometryHeightRatio: screenGeometry.height / screenGeometry.width
     readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
-    readonly property bool viewLayoutIsCurrent: latteView && viewLayout && latteView.layoutsManager
-                                                && viewLayout.name === latteView.layoutsManager.currentLayoutName
     readonly property string viewLayoutName: viewLayout ? viewLayout.name : ""
     readonly property QtObject viewLayout : latteView && latteView.viewLayout ? latteView.viewLayout : null
 
