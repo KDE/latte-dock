@@ -72,6 +72,9 @@ public:
     Layout::Type type() const override;
     Data::Layout data() const;
 
+public:
+    Q_INVOKABLE bool isCurrent() override;
+
 signals:
     void activitiesChanged();
     void disableBordersForMaximizedWindowsChanged();

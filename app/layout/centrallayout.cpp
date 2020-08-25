@@ -132,6 +132,14 @@ void CentralLayout::setShowInMenu(bool show)
     emit showInMenuChanged();
 }
 
+bool CentralLayout::isCurrent()
+{
+   QStringList appliedactivities = appliedActivities();
+
+    return (appliedactivities.contains(Data::Layout::ALLACTIVITIESID)
+            || appliedactivities.contains(m_corona->activitiesConsumer()->currentActivity()));
+}
+
 bool CentralLayout::isOnAllActivities() const
 {
     return (m_activities.count() == 1 && m_activities[0] == Data::Layout::ALLACTIVITIESID);

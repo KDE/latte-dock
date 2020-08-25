@@ -257,7 +257,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
             updateStrutsBasedOnLayoutsAndActivities();
         });
 
-        m_connections[base+1] = connect(m_corona->layoutsManager(),  &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
+        m_connections[base+1] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
             if (m_corona && m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities(true);
             }

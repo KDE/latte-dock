@@ -80,7 +80,7 @@ public:
     bool initToCorona(Latte::Corona *corona);
 
     bool isActive() const; //! is loaded and running
-    virtual bool isCurrent() const;
+    virtual bool isCurrent();
     bool isWritable() const;
     bool isBroken() const;
 

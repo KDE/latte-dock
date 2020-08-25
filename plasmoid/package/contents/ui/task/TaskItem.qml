@@ -1256,7 +1256,7 @@ MouseArea{
     function slotPublishGeometries() {
         //! this way we make sure that layouts that are in different activities that the current layout
         //! don't publish their geometries
-        if ( canPublishGeometries && (!latteView || root.viewLayoutIsCurrent)) {
+        if ( canPublishGeometries && (!latteView || (latteView && root.viewLayout && root.viewLayout.isCurrent()))) {
             var globalChoords = backend.globalRect(wrapper.visualIconItem);
             var limits = backend.globalRect(scrollableList);
 

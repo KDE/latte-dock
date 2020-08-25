@@ -166,7 +166,7 @@ bool GenericLayout::isActive() const
     }
 }
 
-bool GenericLayout::isCurrent() const
+bool GenericLayout::isCurrent()
 {
     if (!m_corona) {
         return false;

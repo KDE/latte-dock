@@ -316,13 +316,6 @@ Item {
         }
     }
 
-
-    Connections{
-        target: latteView && latteView.layoutsManager ? latteView.layoutsManager : null
-
-        onCurrentLayoutNameChanged: root.publishTasksGeometries();
-    }
-
     Binding {
         target: plasmoid
         property: "status"
@@ -640,6 +633,7 @@ Item {
         interval: 150
         onTriggered: {
             root.inActivityChange = false;
+            root.publishTasksGeometries();
             activityInfo.previousActivity = activityInfo.currentActivity;
 
             if (latteView && latteView.debugModeTimers) {
