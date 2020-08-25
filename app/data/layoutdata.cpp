@@ -128,6 +128,11 @@ bool Layout::operator!=(const Layout &rhs) const
     return !(*this == rhs);
 }
 
+bool Layout::isOnAllActivities() const
+{
+    return ((activities.count() == 1) && (activities[0] == ALLACTIVITIESID));
+}
+
 bool Layout::isForFreeActivities() const
 {
     return ((activities.count() == 1) && (activities[0] == FREEACTIVITIESID));

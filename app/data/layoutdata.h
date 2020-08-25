@@ -36,7 +36,8 @@ namespace Data {
 class Layout : public Generic
 {
 public:
-    static constexpr const char* FREEACTIVITIESID = "{0000-0000}";
+    static constexpr const char* ALLACTIVITIESID = "{0}";
+    static constexpr const char* FREEACTIVITIESID = "{free-activities}";
 
     Layout();
     Layout(Layout &&o);
@@ -59,6 +60,7 @@ public:
 
     //! Functionality
     bool isShared() const;
+    bool isOnAllActivities() const;
     bool isForFreeActivities() const;
     bool isTemporary() const;
     bool isNull() const;

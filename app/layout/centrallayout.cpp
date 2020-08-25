@@ -151,6 +151,16 @@ void CentralLayout::setShowInMenu(bool show)
     emit showInMenuChanged();
 }
 
+bool CentralLayout::isOnAllActivities() const
+{
+    return (m_activities.count() == 1 && m_activities[0] == Data::Layout::ALLACTIVITIESID);
+}
+
+bool CentralLayout::isForFreeActivities() const
+{
+    return (m_activities.count() == 1 && m_activities[0] == Data::Layout::FREEACTIVITIESID);
+}
+
 Layout::Type CentralLayout::type() const
 {
     return Layout::Type::Central;

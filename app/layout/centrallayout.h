@@ -62,6 +62,9 @@ public:
     bool showInMenu() const;
     void setShowInMenu(bool show);
 
+    bool isForFreeActivities() const;
+    bool isOnAllActivities() const;
+
     QString sharedLayoutName() const;
     void setSharedLayoutName(QString name);
 
