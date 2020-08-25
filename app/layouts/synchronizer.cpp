@@ -590,6 +590,8 @@ void Synchronizer::syncMultipleLayoutsToActivities()
         defaultForcedLayout = layoutsToLoad[0];
     }
 
+    QStringList newlyActivatedLayouts;
+
     //! Add needed Layouts based on Activities settings
     for (const auto &layoutName : layoutsToLoad) {
         if (!centralLayout(layoutName)) {
@@ -604,10 +606,16 @@ void Synchronizer::syncMultipleLayoutsToActivities()
                     newLayout->setActivities(QStringList(Data::Layout::ALLACTIVITIESID));
                 }
 
-                if (m_manager->corona()->universalSettings()->showInfoWindow()) {
-                    m_manager->showInfoWindow(i18n("Activating layout: <b>%0</b> ...").arg(newLayout->name()), 5000, newLayout->appliedActivities());
-                }
+                newlyActivatedLayouts << newLayout->name();
             }
+        }
+    }
+
+    if (m_manager->corona()->universalSettings()->showInfoWindow()) {
+        if (newlyActivatedLayouts.count() == 1) {
+            m_manager->showInfoWindow(i18n("Activating layout: <b>%0</b> ...").arg(newlyActivatedLayouts[0]), 4000, QStringList(Data::Layout::ALLACTIVITIESID));
+        } else if (newlyActivatedLayouts.count() > 1) {
+            m_manager->showInfoWindow(i18n("Activating layouts: <b>%0</b> ...").arg(newlyActivatedLayouts.join(", ")), 4000, QStringList(Data::Layout::ALLACTIVITIESID));
         }
     }
 
