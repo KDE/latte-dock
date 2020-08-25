@@ -507,14 +507,8 @@ CentralLayout *Corona::centralLayout(QString name) const
 {
     CentralLayout *result{nullptr};
 
-    if (name.isEmpty()) {
-        result = m_layoutsManager->currentLayout();
-    } else {
-        CentralLayout *tempCentral = m_layoutsManager->synchronizer()->centralLayout(name);
-
-        if (tempCentral) {
-            result = tempCentral;
-        }
+    if (!name.isEmpty()) {
+        result = m_layoutsManager->synchronizer()->centralLayout(name);
     }
 
     return result;
@@ -524,14 +518,8 @@ Layout::GenericLayout *Corona::layout(QString name) const
 {
     Layout::GenericLayout *result{nullptr};
 
-    if (name.isEmpty()) {
-        result = m_layoutsManager->currentLayout();
-    } else {
+    if (!name.isEmpty()) {
         result = m_layoutsManager->synchronizer()->layout(name);
-
-        if (!result) {
-            result = m_layoutsManager->currentLayout();
-        }
     }
 
     return result;
@@ -543,14 +531,14 @@ QRegion Corona::availableScreenRegion(int id) const
 }
 
 QRegion Corona::availableScreenRegionWithCriteria(int id,
-                                                  QString forLayout,
+                                                  QString layoutName,
                                                   QList<Types::Visibility> ignoreModes,
                                                   QList<Plasma::Types::Location> ignoreEdges,
                                                   bool ignoreExternalPanels,
                                                   bool desktopUse) const
 {
     const QScreen *screen = m_screenPool->screenForId(id);
-    CentralLayout *layout = centralLayout(forLayout);
+    bool inCurrentLayouts{layoutName.isEmpty()};
 
     if (!screen) {
         return {};
@@ -558,7 +546,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
 
     QRegion available = ignoreExternalPanels ? screen->geometry() : screen->availableGeometry();
 
-    if (!layout) {
+    if (!centralLayout(layoutName) && !inCurrentLayouts) {
         return available;
     }
 
@@ -572,7 +560,14 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
     }
 
     bool allEdges = ignoreEdges.isEmpty();
-    QList<Latte::View *> views = layout->latteViews();
+    QList<Latte::View *> views;
+
+    if (inCurrentLayouts) {
+        views = m_layoutsManager->synchronizer()->currentViews();
+    } else {
+        CentralLayout *central = centralLayout(layoutName);
+        views = central->latteViews();
+    }
 
     for (const auto *view : views) {
         if (view && view->containment() && view->screen() == screen
@@ -730,14 +725,14 @@ QRect Corona::availableScreenRect(int id) const
 }
 
 QRect Corona::availableScreenRectWithCriteria(int id,
-                                              QString forLayout,
+                                              QString layoutName,
                                               QList<Types::Visibility> ignoreModes,
                                               QList<Plasma::Types::Location> ignoreEdges,
                                               bool ignoreExternalPanels,
                                               bool desktopUse) const
 {
     const QScreen *screen = m_screenPool->screenForId(id);
-    CentralLayout *layout = centralLayout(forLayout);
+    bool inCurrentLayouts{layoutName.isEmpty()};
 
     if (!screen) {
         return {};
@@ -745,7 +740,7 @@ QRect Corona::availableScreenRectWithCriteria(int id,
 
     QRect available = ignoreExternalPanels ? screen->geometry() : screen->availableGeometry();
 
-    if (!layout) {
+    if (!centralLayout(layoutName) && !inCurrentLayouts) {
         return available;
     }
 
@@ -759,7 +754,14 @@ QRect Corona::availableScreenRectWithCriteria(int id,
     }
 
     bool allEdges = ignoreEdges.isEmpty();
-    QList<Latte::View *> views = layout->latteViews();
+    QList<Latte::View *> views;
+
+    if (inCurrentLayouts) {
+        views = m_layoutsManager->synchronizer()->currentViews();
+    } else {
+        CentralLayout *central = centralLayout(layoutName);
+        views = central->latteViews();
+    }
 
     for (const auto *view : views) {
         if (view && view->containment() && view->screen() == screen
@@ -1194,11 +1196,10 @@ QStringList Corona::contextMenuData()
 {
     QStringList data;
     Types::ViewType viewType{Types::DockView};
+    auto view = m_layoutsManager->synchronizer()->viewForContainment(m_contextMenuViewId);
 
-    Latte::CentralLayout *currentLayout = m_layoutsManager->currentLayout();
-
-    if (currentLayout) {
-        viewType = currentLayout->latteViewType(m_contextMenuViewId);
+    if (view) {
+        viewType = view->type();
     }
 
     data << QString::number((int)m_layoutsManager->memoryUsage());
@@ -1234,10 +1235,16 @@ void Corona::setBroadcastedBackgroundsEnabled(QString activity, QString screenNa
 
 void Corona::toggleHiddenState(QString layoutName, QString screenName, int screenEdge)
 {
-    Layout::GenericLayout *gLayout = layout(layoutName);
+    if (layoutName.isEmpty()) {
+        for(auto layout : m_layoutsManager->currentLayouts()) {
+            layout->toggleHiddenState(screenName, (Plasma::Types::Location)screenEdge);
+        }
+    } else {
+        Layout::GenericLayout *gLayout = layout(layoutName);
 
-    if (gLayout) {
-        gLayout->toggleHiddenState(screenName, (Plasma::Types::Location)screenEdge);
+        if (gLayout) {
+            gLayout->toggleHiddenState(screenName, (Plasma::Types::Location)screenEdge);
+        }
     }
 }
 

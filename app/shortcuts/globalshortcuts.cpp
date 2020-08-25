@@ -244,12 +244,7 @@ void GlobalShortcuts::activateLauncherMenu()
         return;
     }
 
-    QList<Latte::View *> sortedViews;
-    CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
-
-    if (currentLayout) {
-        sortedViews = currentLayout->sortedLatteViews();
-    }
+    QList<Latte::View *> sortedViews = m_corona->layoutsManager()->synchronizer()->sortedCurrentViews();
 
     Latte::View *highestPriorityView = highestApplicationLauncherView(sortedViews);
 
@@ -356,12 +351,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
-    QList<Latte::View *> sortedViews;
-    CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
-
-    if (currentLayout) {
-        sortedViews = currentLayout->sortedLatteViews();
-    }
+    QList<Latte::View *> sortedViews = m_corona->layoutsManager()->synchronizer()->sortedCurrentViews();
 
     Latte::View *highest{nullptr};
 
@@ -386,12 +376,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 //! update badge for specific view item
 void GlobalShortcuts::updateViewItemBadge(QString identifier, QString value)
 {
-    CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
-    QList<Latte::View *> views;
-
-    if (currentLayout) {
-        views = currentLayout->latteViews();
-    }
+    QList<Latte::View *> views = m_corona->layoutsManager()->synchronizer()->currentViews();
 
     // update badges in all Latte Tasks plasmoids
     for (const auto &view : views) {
@@ -407,12 +392,7 @@ void GlobalShortcuts::showViews()
         m_lastInvokedAction = m_singleMetaAction;
     }
 
-    QList<Latte::View *> sortedViews;
-    CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
-
-    if (currentLayout) {
-        sortedViews = currentLayout->sortedLatteViews();
-    }
+    QList<Latte::View *> sortedViews = m_corona->layoutsManager()->synchronizer()->sortedCurrentViews();
 
     Latte::View *viewWithTasks{nullptr};
     Latte::View *viewWithMeta{nullptr};
@@ -469,11 +449,7 @@ void GlobalShortcuts::showViews()
     }
 
     //! show all the rest views that contain plasma shortcuts
-    QList<Latte::View *> viewsWithShortcuts;
-
-    if (currentLayout) {
-        viewsWithShortcuts = currentLayout->viewsWithPlasmaShortcuts();
-    }
+    QList<Latte::View *> viewsWithShortcuts = m_corona->layoutsManager()->synchronizer()->currentViewsWithPlasmaShortcuts();
 
     if (viewsWithShortcuts.count() > 0) {
         viewFound = true;
@@ -514,12 +490,7 @@ bool GlobalShortcuts::viewsToHideAreValid()
 
 void GlobalShortcuts::showSettings()
 {
-    QList<Latte::View *> sortedViews;
-    CentralLayout *currentLayout = m_corona->layoutsManager()->currentLayout();
-
-    if (currentLayout) {
-        sortedViews = currentLayout->sortedLatteViews();
-    }
+    QList<Latte::View *> sortedViews = m_corona->layoutsManager()->synchronizer()->sortedCurrentViews();
 
     //! find which is the next view to show its settings
     if (sortedViews.count() > 0) {
@@ -527,8 +498,14 @@ void GlobalShortcuts::showSettings()
 
         //! find last view that showed its config view
         for (int i = 0; i < sortedViews.size(); ++i) {
-            if (sortedViews[i] == currentLayout->lastConfigViewFor()) {
-                openSettings = i;
+            for (auto currentLayout : m_corona->layoutsManager()->currentLayouts()) {
+                if (sortedViews[i] == currentLayout->lastConfigViewFor()) {
+                    openSettings = i;
+                    break;
+                }
+            }
+
+            if (openSettings >= 0) {
                 break;
             }
         }

@@ -178,9 +178,9 @@ QStringList Manager::centralLayoutsNames()
     return m_synchronizer->centralLayoutsNames();
 }
 
-CentralLayout *Manager::currentLayout() const
+QList<CentralLayout *> Manager::currentLayouts() const
 {
-    return m_synchronizer->currentLayout();
+    return m_synchronizer->currentLayouts();
 }
 
 bool Manager::switchToLayout(QString layoutName, int previousMemoryUsage)

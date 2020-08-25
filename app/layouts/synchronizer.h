@@ -99,8 +99,13 @@ public:
     QStringList freeActivities(); //! These are activities that haven't been assigned to specific layout
 
     Latte::View *viewForContainment(Plasma::Containment *containment);
+    Latte::View *viewForContainment(uint id);
 
-    CentralLayout *currentLayout() const;
+    QList<CentralLayout *> currentLayouts() const;
+    QList<Latte::View *> currentViews() const;
+    QList<Latte::View *> currentViewsWithPlasmaShortcuts() const;
+    QList<Latte::View *> sortedCurrentViews() const;
+
     CentralLayout *centralLayout(QString id) const;
     Layout::GenericLayout *layout(QString id) const;
 

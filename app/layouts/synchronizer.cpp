@@ -241,25 +241,49 @@ CentralLayout *Synchronizer::centralLayout(QString id) const
     return nullptr;
 }
 
-CentralLayout *Synchronizer::currentLayout() const
+QList<CentralLayout *> Synchronizer::currentLayouts() const
 {
+    QList<CentralLayout *> layouts;
     if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
-        return m_centralLayouts.at(0);
+        layouts << m_centralLayouts.at(0);
     } else {
         for (auto layout : m_centralLayouts) {
-            if (layout->activities().contains(m_manager->corona()->activitiesConsumer()->currentActivity())) {
-                return layout;
-            }
-        }
-
-        for (auto layout : m_centralLayouts) {
-            if (layout->activities().isEmpty()) {
-                return layout;
+            if (layout->isOnAllActivities() || layout->appliedActivities().contains(m_manager->corona()->activitiesConsumer()->currentActivity())) {
+                layouts << layout;
             }
         }
     }
 
-    return nullptr;
+    return layouts;
+}
+
+QList<Latte::View *> Synchronizer::currentViews() const
+{
+    QList<Latte::View *> views;
+
+    for(auto layout : currentLayouts()) {
+        views << layout->latteViews();
+    }
+
+    return views;
+}
+
+QList<Latte::View *> Synchronizer::currentViewsWithPlasmaShortcuts() const
+{
+    QList<Latte::View *> views;
+
+    for(auto layout : currentLayouts()) {
+        views << layout->viewsWithPlasmaShortcuts();
+    }
+
+    return views;
+}
+
+QList<Latte::View *> Synchronizer::sortedCurrentViews() const
+{
+    QList<Latte::View *> views = currentViews();
+
+    return Layout::GenericLayout::sortedLatteViews(views);
 }
 
 Layout::GenericLayout *Synchronizer::layout(QString id) const
@@ -267,6 +291,19 @@ Layout::GenericLayout *Synchronizer::layout(QString id) const
     Layout::GenericLayout *l = centralLayout(id);
 
     return l;
+}
+
+Latte::View *Synchronizer::viewForContainment(uint id)
+{
+    for (auto layout : m_centralLayouts) {
+        Latte::View *view = layout->viewForContainment(id);
+
+        if (view) {
+            return view;
+        }
+    }
+
+    return nullptr;
 }
 
 Latte::View *Synchronizer::viewForContainment(Plasma::Containment *containment)

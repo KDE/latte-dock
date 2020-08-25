@@ -98,7 +98,7 @@ public:
     void setMemoryUsage(MemoryUsage::LayoutsMemory memoryUsage);
 
     //! returns the current and central layout based on activities and user preferences
-    CentralLayout *currentLayout() const;
+    QList<CentralLayout *>currentLayouts() const;
     LaunchersSignals *launchersSignals() const;
     Synchronizer *synchronizer() const;
 

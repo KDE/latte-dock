@@ -370,6 +370,17 @@ void GenericLayout::setLastConfigViewFor(Latte::View *view)
     emit lastConfigViewForChanged(view);
 }
 
+Latte::View *GenericLayout::viewForContainment(uint id) const
+{
+    for(auto view : m_latteViews) {
+        if (view && view->containment()->id() == id) {
+            return view;
+        }
+    }
+
+    return nullptr;
+}
+
 Latte::View *GenericLayout::viewForContainment(Plasma::Containment *containment) const
 {
     if (m_containments.contains(containment) && m_latteViews.contains(containment)) {
@@ -384,9 +395,14 @@ QList<Latte::View *> GenericLayout::latteViews()
     return m_latteViews.values();
 }
 
+QList<Latte::View *> GenericLayout::sortedLatteViews()
+{
+    return sortedLatteViews(latteViews());
+}
+
 QList<Latte::View *> GenericLayout::sortedLatteViews(QList<Latte::View *> views)
 {
-    QList<Latte::View *> sortedViews = views.isEmpty() ? latteViews() : views;
+    QList<Latte::View *> sortedViews = views;
 
     qDebug() << " -------- ";
 

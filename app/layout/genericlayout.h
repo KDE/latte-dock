@@ -98,8 +98,14 @@ public:
     const QList<Plasma::Containment *> *containments() const;
 
     Latte::View *highestPriorityView();
+    Latte::View *viewForContainment(uint id) const;
     Latte::View *viewForContainment(Plasma::Containment *containment) const;
-    virtual QList<Latte::View *> sortedLatteViews(QList<Latte::View *> views = QList<Latte::View *>());
+
+    static bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
+    static bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
+    static QList<Latte::View *> sortedLatteViews(QList<Latte::View *> views);
+
+    QList<Latte::View *> sortedLatteViews();
     virtual QList<Latte::View *> viewsWithPlasmaShortcuts();
     virtual QList<Latte::View *> latteViews();
     ViewsMap validViewsMap(ViewsMap *occupiedMap = nullptr);
@@ -183,9 +189,6 @@ private:
 
     bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const;
     bool primaryDockOccupyEdge(Plasma::Types::Location location) const;
-
-    bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
-    bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
 
     bool viewDataAtLowerEdgePriority(const ViewData &test, const ViewData &base) const;
     bool viewDataAtLowerScreenPriority(const ViewData &test, const ViewData &base) const;
