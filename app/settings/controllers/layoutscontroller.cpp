@@ -773,7 +773,7 @@ void Layouts::save()
             m_handler->corona()->layoutsManager()->switchToLayout(m_model->layoutNameForFreeActivities(), previousMemoryUsage);
         } else {
             if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-                m_handler->corona()->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities(m_model->layoutNameForFreeActivities());
+                m_handler->corona()->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities();
             } else {
                 m_handler->corona()->layoutsManager()->switchToLayout(m_model->layoutNameForFreeActivities());
             }

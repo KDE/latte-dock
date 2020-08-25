@@ -50,7 +50,7 @@ namespace Layouts {
 
 //! This is a Layouts map in the following structure:
 //! ACTIVITY ID -> Layout Names for that activity
-typedef QHash<const QString, QStringList> AssignedLayoutsHash;
+typedef QHash<QString, QStringList> AssignedLayoutsHash;
 
 //! Layouts::Synchronizer is a very IMPORTANT class which is responsible
 //! for all ACTIVE layouts, meaning layouts that have been loaded
@@ -75,7 +75,7 @@ public:
     void pauseLayout(QString layoutName);
     void syncActiveLayoutsToOriginalFiles();
     void syncLatteViewsToScreens();
-    void syncMultipleLayoutsToActivities(QString layoutForFreeActivities = QString());
+    void syncMultipleLayoutsToActivities();
 
     bool latteViewExists(Latte::View *view) const;
     bool layoutExists(QString layoutName) const;
@@ -88,8 +88,6 @@ public:
 
     QString currentLayoutNameInMultiEnvironment() const;
     void setCurrentLayoutNameInMultiEnvironment(const QString &name);
-
-    QString shouldSwitchToLayout(QString activityId);
 
     QStringList centralLayoutsNames();
     QStringList layouts() const;
@@ -118,8 +116,6 @@ signals:
     void currentLayoutIsSwitching(QString layoutName);
 
 private slots:
-    void confirmDynamicSwitch();
-    void updateDynamicSwitchInterval();
     void updateCurrentLayoutNameInMultiEnvironment();
 
     void currentActivityChanged(const QString &id);
@@ -130,25 +126,20 @@ private:
     void addLayout(CentralLayout *layout);
     void unloadCentralLayout(CentralLayout *layout);
 
-    bool layoutIsAssigned(QString layoutName);
+    bool isAssigned(QString layoutName) const;
 
     QString layoutPath(QString layoutName);
-
-    QStringList validActivities(QStringList currentList);
 
 private:
     bool m_multipleModeInitialized{false};
     bool m_isLoaded{false};
 
     QString m_currentLayoutNameInMultiEnvironment;
-    QString m_shouldSwitchToLayout;
 
     QStringList m_layouts;
     QStringList m_menuLayouts;
 
-    QHash<const QString, QString> m_assignedLayouts;
-
-    QTimer m_dynamicSwitchTimer;
+    AssignedLayoutsHash m_assignedLayouts;
 
     QList<CentralLayout *> m_centralLayouts;
 

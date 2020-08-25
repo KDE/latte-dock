@@ -207,7 +207,9 @@ const QStringList CentralLayout::appliedActivities()
         return {};
     }
 
-    if (m_activities.isEmpty()) {
+    if (isOnAllActivities() || m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout ) {
+        return QStringList(Data::Layout::ALLACTIVITIESID);
+    } else if (isForFreeActivities()) {
         return m_corona->layoutsManager()->synchronizer()->freeActivities();
     } else {
         return m_activities;

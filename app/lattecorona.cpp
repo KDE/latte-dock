@@ -230,48 +230,44 @@ void Corona::load()
 
         connect(this, &Corona::availableScreenRectChangedFrom, this, &Plasma::Corona::availableScreenRectChanged);
         connect(this, &Corona::availableScreenRegionChangedFrom, this, &Plasma::Corona::availableScreenRegionChanged);
-
         connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Corona::primaryOutputChanged, Qt::UniqueConnection);
-
         connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &Corona::screenCountChanged);
-
-        QString assignedLayout = m_layoutsManager->synchronizer()->shouldSwitchToLayout(m_activitiesConsumer->currentActivity());
 
         QString loadLayoutName = "";
 
+        if (m_userSetMemoryUsage != -1) {
+            MemoryUsage::LayoutsMemory usage = static_cast<MemoryUsage::LayoutsMemory>(m_userSetMemoryUsage);
+            m_universalSettings->setLayoutsMemoryUsage(usage);
+        }
+
         if (!m_defaultLayoutOnStartup && m_layoutNameOnStartUp.isEmpty()) {
-            if (!assignedLayout.isEmpty() && assignedLayout != m_universalSettings->currentLayoutName()) {
-                loadLayoutName = assignedLayout;
+            if (m_universalSettings->layoutsMemoryUsage() == MemoryUsage::MultipleLayouts) {
+                loadLayoutName = "";
             } else {
                 loadLayoutName = m_universalSettings->currentLayoutName();
-            }
 
-            if (!m_layoutsManager->synchronizer()->layoutExists(loadLayoutName)) {
-                //! If chosen layout does not exist, force Default layout loading
-                QString defaultLayoutTemplateName = i18n(Templates::DEFAULTLAYOUTTEMPLATENAME);
-                loadLayoutName = defaultLayoutTemplateName;
+                if (!m_layoutsManager->synchronizer()->layoutExists(loadLayoutName)) {
+                    //! If chosen layout does not exist, force Default layout loading
+                    QString defaultLayoutTemplateName = i18n(Templates::DEFAULTLAYOUTTEMPLATENAME);
+                    loadLayoutName = defaultLayoutTemplateName;
 
-                if (!m_layoutsManager->synchronizer()->layoutExists(defaultLayoutTemplateName)) {
-                    //! If Default layout does not exist at all, create it
-                    m_templatesManager->newLayout("", defaultLayoutTemplateName);
+                    if (!m_layoutsManager->synchronizer()->layoutExists(defaultLayoutTemplateName)) {
+                        //! If Default layout does not exist at all, create it
+                        m_templatesManager->newLayout("", defaultLayoutTemplateName);
+                    }
                 }
             }
         } else if (m_defaultLayoutOnStartup) {
             //! force loading a NEW default layout even though a default layout may already exists
             QString newDefaultLayoutPath = m_templatesManager->newLayout("", i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
             loadLayoutName = Layout::AbstractLayout::layoutName(newDefaultLayoutPath);
+            m_universalSettings->setLayoutsMemoryUsage(MemoryUsage::SingleLayout);
         } else {
             loadLayoutName = m_layoutNameOnStartUp;
-        }
-
-        if (m_userSetMemoryUsage != -1) {
-            MemoryUsage::LayoutsMemory usage = static_cast<MemoryUsage::LayoutsMemory>(m_userSetMemoryUsage);
-
-            m_universalSettings->setLayoutsMemoryUsage(usage);
+            m_universalSettings->setLayoutsMemoryUsage(MemoryUsage::SingleLayout);
         }
 
         m_layoutsManager->loadLayoutOnStartup(loadLayoutName);
-
 
         //! load screens signals such screenGeometryChanged in order to support
         //! plasmoid.screenGeometry properly

@@ -30,6 +30,7 @@
 #include "settings/viewsettingsfactory.h"
 #include "../apptypes.h"
 #include "../lattecorona.h"
+#include "../data/layoutdata.h"
 #include "../declarativeimports/interfaces.h"
 #include "../indicator/factory.h"
 #include "../layout/genericlayout.h"
@@ -1017,7 +1018,7 @@ void View::setFontPixelSize(int size)
 
 bool View::isOnAllActivities() const
 {
-    return m_activities.isEmpty() || m_activities[0] == "0";
+    return m_activities.isEmpty() || m_activities[0] == Data::Layout::ALLACTIVITIESID;
 }
 
 bool View::isOnActivity(const QString &activity) const
