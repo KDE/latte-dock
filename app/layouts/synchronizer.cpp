@@ -52,9 +52,14 @@ Synchronizer::Synchronizer(QObject *parent)
 {
     m_manager = qobject_cast<Manager *>(parent);
 
+    //! KWin update Disabled Borders
+    connect(this, &Synchronizer::centralLayoutsChanged, this, &Synchronizer::updateKWinDisabledBorders);
+    connect(m_manager->corona()->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, &Synchronizer::updateKWinDisabledBorders);
+
+
     //! KActivities tracking
     connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged,
-            this, &Synchronizer::currentActivityChanged);
+            this, &Synchronizer::onCurrentActivityChanged);
 
     connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
             this, [&]() {
@@ -182,7 +187,7 @@ QStringList Synchronizer::centralLayoutsNames()
     QStringList names;
 
     if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
-        names << currentLayoutName();
+        names << m_centralLayouts.at(0)->name();
     } else {
         for (int i = 0; i < m_centralLayouts.size(); ++i) {
             CentralLayout *layout = m_centralLayouts.at(i);
@@ -355,10 +360,11 @@ void Synchronizer::addLayout(CentralLayout *layout)
     }
 }
 
-void Synchronizer::currentActivityChanged(const QString &id)
+void Synchronizer::onCurrentActivityChanged(const QString &id)
 {
     if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
         updateCurrentLayoutNameInMultiEnvironment();
+        updateKWinDisabledBorders();
     }
 }
 
@@ -614,6 +620,7 @@ void Synchronizer::syncMultipleLayoutsToActivities()
 
     QStringList layoutsToUnload;
     QStringList layoutsToLoad;
+    QStringList currents = centralLayoutsNames();
 
     //! discover OnAllActivities layouts
     if (m_assignedLayouts.contains(Data::Layout::ALLACTIVITIESID)) {
@@ -701,8 +708,38 @@ void Synchronizer::syncMultipleLayoutsToActivities()
         }
     }
 
+    qSort(currents);
+    qSort(layoutsToLoad);
+
     updateCurrentLayoutNameInMultiEnvironment();
-    emit centralLayoutsChanged();
+
+    if (currents != layoutsToLoad) {
+        emit centralLayoutsChanged();
+    }
+}
+
+void Synchronizer::updateKWinDisabledBorders()
+{
+    if (!m_manager->corona()->universalSettings()->canDisableBorders()) {
+        m_manager->corona()->universalSettings()->kwin_setDisabledMaximizedBorders(false);
+    } else {
+        if (m_manager->corona()->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
+            m_manager->corona()->universalSettings()->kwin_setDisabledMaximizedBorders(m_centralLayouts.at(0)->disableBordersForMaximizedWindows());
+        } else if (m_manager->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+            QList<CentralLayout *> centrals = centralLayoutsForActivity(m_manager->corona()->activitiesConsumer()->currentActivity());
+
+            for (int i = 0; i < centrals.size(); ++i) {
+                CentralLayout *layout = centrals.at(i);
+
+                if (layout->disableBordersForMaximizedWindows()) {
+                    m_manager->corona()->universalSettings()->kwin_setDisabledMaximizedBorders(true);
+                    return;
+                }
+            }
+
+            m_manager->corona()->universalSettings()->kwin_setDisabledMaximizedBorders(false);
+        }
+    }
 }
 
 }

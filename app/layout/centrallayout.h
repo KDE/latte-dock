@@ -88,9 +88,6 @@ private:
     void init();
     void importLocalLayout(QString file);
 
-    bool kwin_disabledMaximizedBorders() const;
-    void kwin_setDisabledMaximizedBorders(bool disable);
-
 private:
     bool m_disableBordersForMaximizedWindows{false};
     bool m_showInMenu{false};

@@ -114,6 +114,9 @@ public:
 
     KActivities::Controller *activitiesController() const;
 
+public slots:
+    void updateKWinDisabledBorders();
+
 signals:
     void centralLayoutsChanged();
     void currentLayoutNameChanged();
@@ -126,7 +129,7 @@ signals:
 private slots:
     void updateCurrentLayoutNameInMultiEnvironment();
 
-    void currentActivityChanged(const QString &id);
+    void onCurrentActivityChanged(const QString &id);
 
     void onLayoutAdded(const QString &layoutpath);
 

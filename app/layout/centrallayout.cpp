@@ -61,24 +61,8 @@ void CentralLayout::init()
 void CentralLayout::initToCorona(Latte::Corona *corona)
 {
     if (GenericLayout::initToCorona(corona)) {
-        connect(m_corona->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, [&]() {
-            if (m_corona->universalSettings()->canDisableBorders()) {
-                kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
-            } else {
-                kwin_setDisabledMaximizedBorders(false);
-            }
-        });
-
-        if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout && m_corona->universalSettings()->canDisableBorders()) {
-            kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
-        } else if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-            connect(m_corona->layoutsManager(), &Layouts::Manager::currentLayoutNameChanged, this, [&]() {
-                if (m_corona->universalSettings()->canDisableBorders()
-                    && m_corona->layoutsManager()->currentLayoutName() == name()) {
-                    kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
-                }
-            });
-        }
+        connect(this, &CentralLayout::disableBordersForMaximizedWindowsChanged,
+                m_corona->layoutsManager()->synchronizer(), &Layouts::Synchronizer::updateKWinDisabledBorders);
     }
 }
 
@@ -94,27 +78,8 @@ void CentralLayout::setDisableBordersForMaximizedWindows(bool disable)
     }
 
     m_disableBordersForMaximizedWindows = disable;
-    kwin_setDisabledMaximizedBorders(disable);
 
     emit disableBordersForMaximizedWindowsChanged();
-}
-
-bool CentralLayout::kwin_disabledMaximizedBorders() const
-{
-    if (!m_corona) {
-        return false;
-    }
-
-    return m_corona->universalSettings()->kwin_borderlessMaximizedWindowsEnabled();
-}
-
-void CentralLayout::kwin_setDisabledMaximizedBorders(bool disable)
-{
-    if (!m_corona) {
-        return;
-    }
-
-    m_corona->universalSettings()->kwin_setDisabledMaximizedBorders(disable);
 }
 
 bool CentralLayout::showInMenu() const
@@ -215,7 +180,7 @@ const QStringList CentralLayout::appliedActivities()
         return {};
     }
 
-    if (isOnAllActivities() || m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout ) {
+    if (isOnAllActivities() || m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
         return QStringList(Data::Layout::ALLACTIVITIESID);
     } else if (isForFreeActivities()) {
         return m_corona->layoutsManager()->synchronizer()->freeActivities();

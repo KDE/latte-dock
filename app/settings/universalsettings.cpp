@@ -386,6 +386,7 @@ void UniversalSettings::kwin_setDisabledMaximizedBorders(bool disable)
 
     if (iface.isValid()) {
         iface.call("reconfigure");
+        m_kwinBorderlessMaximizedWindows = disable;
     }
 }
 
