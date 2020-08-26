@@ -123,8 +123,10 @@ Item{
     property bool animationSent: false
     property bool shouldCheckHalfs: (plasmoid.configuration.alignment === LatteCore.Types.Justify) && (_mainLayout.children>1)
 
-    property int contentsWidth: _startLayout.width + _mainLayout.width + _endLayout.width
-    property int contentsHeight: _startLayout.height + _mainLayout.height + _endLayout.height
+    property int contentsWidth: root.isHorizontal ? _startLayout.width + _mainLayout.width + _endLayout.width :
+                                                    Math.max(_startLayout.width, _mainLayout.width ,_endLayout.width)
+    property int contentsHeight: root.isVertical ? _startLayout.height + _mainLayout.height + _endLayout.height :
+                                                   Math.max(_startLayout.height, _mainLayout.height, _endLayout.height)
 
 
     readonly property int backgroundShadowTailLength: {

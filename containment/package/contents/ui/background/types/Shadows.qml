@@ -46,7 +46,7 @@ QtObject{
     }
 
     readonly property int headThickness: {
-        if (!backgroundShadowsInRegularStateEnabled) {
+        if (!backgroundShadowsInRegularStateEnabled || root.behaveAsPlasmaPanel) {
             return 0;
         }
 
