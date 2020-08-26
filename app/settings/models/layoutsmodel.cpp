@@ -471,6 +471,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return m_layoutsTable[row].activities;
     } else if (role == ALLACTIVITIESSORTEDROLE) {
         QStringList activities;
+        activities << QString(Latte::Data::Layout::ALLACTIVITIESID);
         activities << QString(Latte::Data::Layout::FREEACTIVITIESID);
         activities << m_corona->layoutsManager()->synchronizer()->activities();
         return activities;
@@ -561,10 +562,12 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     case ACTIVITYCOLUMN:
         if (role == SORTINGROLE) {
             if (m_layoutsTable[row].activities.count() > 0) {
-                if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
+                if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::ALLACTIVITIESID)) {
                     return sortingPriority(HIGHESTPRIORITY, row);
+                } else if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
+                        return sortingPriority(HIGHPRIORITY, row);
                 } else {
-                    return sortingPriority(HIGHPRIORITY, row) + m_layoutsTable[row].activities.count();
+                    return sortingPriority(MEDIUMPRIORITY, row) + m_layoutsTable[row].activities.count();
                 }
             }
 
@@ -661,32 +664,8 @@ void Layouts::setActivities(const int &row, const QStringList &activities)
     roles << Qt::UserRole;
     roles << ASSIGNEDACTIVITIESROLE;
 
-    bool freeActivitiesLayoutIsMissing{false};
-
-    if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)
-            && !activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
-        //! we need to reassign it properly
-        freeActivitiesLayoutIsMissing = true;
-    }
-
     m_layoutsTable[row].activities = activities;
     emit dataChanged(index(row, BACKGROUNDCOLUMN), index(row,ACTIVITYCOLUMN), roles);
-
-    for(int i=0; i<rowCount(); ++i) {
-        if (i == row) {
-            continue;
-        }
-
-        auto cleaned = cleanStrings(m_layoutsTable[i].activities, activities);
-        if (cleaned != m_layoutsTable[i].activities) {
-            m_layoutsTable[i].activities = cleaned;
-            emit dataChanged(index(i,ACTIVITYCOLUMN), index(i,ACTIVITYCOLUMN), roles);
-        }
-    }
-
-    if (freeActivitiesLayoutIsMissing) {
-        autoAssignFreeActivitiesLayout();
-    }
 }
 
 void Layouts::setId(const int &row, const QString &newId)
@@ -888,9 +867,16 @@ QList<Latte::Data::Layout> Layouts::alteredLayouts() const
 //! Activities code
 void Layouts::initActivities()
 {
+    Latte::Data::Activity allActivities;
+    allActivities.id = Latte::Data::Layout::ALLACTIVITIESID;
+    allActivities.name = QString("[ " + i18n("All Activities") + " ]");
+    allActivities.icon = "favorites";
+    allActivities.state = KActivities::Info::Stopped;
+    m_activitiesMap[Latte::Data::Layout::ALLACTIVITIESID] = allActivities;
+
     Latte::Data::Activity freeActivities;
     freeActivities.id = Latte::Data::Layout::FREEACTIVITIESID;
-    freeActivities.name = QString("[ " + i18n("All Free Activities...") + " ]");
+    freeActivities.name = QString("[ " + i18n("Free Activities") + " ]");
     freeActivities.icon = "favorites";
     freeActivities.state = KActivities::Info::Stopped;
     m_activitiesMap[Latte::Data::Layout::FREEACTIVITIESID] = freeActivities;

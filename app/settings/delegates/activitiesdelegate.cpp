@@ -39,6 +39,9 @@
 #include <QWidget>
 #include <QWidgetAction>
 
+// KDE
+#include <KLocalizedString>
+
 #define OKPRESSED "OKPRESSED"
 
 namespace Latte {
@@ -66,6 +69,8 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
 
     QStringList assignedActivities = index.data(Qt::UserRole).toStringList();
 
+    QList<int> originalChecked;
+
     for (int i = 0; i < allActivities.count(); ++i) {
         Latte::Data::Activity activitydata = allActivitiesData[allActivities[i]];
 
@@ -75,13 +80,17 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
 
         bool ischecked = assignedActivities.contains(activitydata.id);
 
+        if (ischecked) {
+            originalChecked << i;
+        }
+
         QAction *action = new QAction(activitydata.name);
         action->setData(activitydata.id);
         action->setIcon(QIcon::fromTheme(activitydata.icon));
         action->setCheckable(true);
         action->setChecked(ischecked);
 
-        if (activitydata.id == Data::Layout::FREEACTIVITIESID) {
+        if (activitydata.id == Data::Layout::FREEACTIVITIESID || activitydata.id == Data::Layout::ALLACTIVITIESID) {
             if (isLayoutActive) {
                 QFont font = action->font();
                 font.setBold(true);
@@ -97,7 +106,7 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
                     menu->setMasterIndex(i);
                 } else {
                     if (menu->masterIndex() == i) {
-                        action->setChecked(true);
+                        menu->setMasterIndex(-1);
                     }
                 }
 
@@ -135,7 +144,7 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
         } else {
             foreach (QAction *action, button->menu()->actions()) {
                 QString actId = action->data().toString();
-                if (actId == Data::Layout::FREEACTIVITIESID) {
+                if (actId == Data::Layout::FREEACTIVITIESID || actId == Data::Layout::ALLACTIVITIESID) {
                     action->setChecked(false);
                 }
             }
@@ -148,7 +157,7 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
     menu->addSeparator();
 
     QDialogButtonBox *menuDialogButtons = new QDialogButtonBox(menu);
-    menuDialogButtons->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    menuDialogButtons->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Reset);
     menuDialogButtons->setContentsMargins(3, 0, 3, 3);
 
     QWidgetAction* menuDialogButtonsWidgetAction = new QWidgetAction(menu);
@@ -162,6 +171,17 @@ QWidget *Activities::createEditor(QWidget *parent, const QStyleOptionViewItem &o
     });
 
     connect(menuDialogButtons->button(QDialogButtonBox::Cancel), &QPushButton::clicked,  menu, &QMenu::hide);
+
+    connect(menuDialogButtons->button(QDialogButtonBox::Reset), &QPushButton::clicked,  [this, menu, originalChecked]() {
+        for (int i=0; i<menu->actions().count(); ++i) {
+            if (!originalChecked.contains(i)) {
+                menu->actions().at(i)->setChecked(false);
+            } else {
+                menu->actions().at(i)->setChecked(true);
+            }
+        }
+    });
+
     connect(menu, &QMenu::aboutToHide, button, &QWidget::clearFocus);
 
     return button;
@@ -274,7 +294,7 @@ QString Activities::joinedActivities(const QList<Latte::Data::Activity> &activit
         bool bold{false};
         bool italic = (!originalIds.contains(activities[i].id));
 
-        if (activities[i].id == Data::Layout::FREEACTIVITIESID) {
+        if (activities[i].id == Data::Layout::FREEACTIVITIESID || activities[i].id == Data::Layout::ALLACTIVITIESID) {
             bold = isActive;
         } else {
             bold = activities[i].isRunning();

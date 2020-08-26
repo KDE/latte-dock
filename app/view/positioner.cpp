@@ -145,6 +145,12 @@ void Positioner::init()
         }
     });
 
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
+        if (m_view->formFactor() == Plasma::Types::Vertical && m_view->layout() && m_view->layout()->isCurrent()) {
+            syncGeometry();
+        }
+    });
+
     connect(this, &Positioner::slideOffsetChanged, this, [&]() {
         updatePosition(m_lastAvailableScreenRect);
     });
@@ -932,6 +938,10 @@ void Positioner::initSignalingForLocationChangeSliding()
                 m_view->showSettingsWindow();
                 emit edgeChanged();
             });
+        } else {
+            if (m_view->formFactor() == Plasma::Types::Vertical) {
+                syncGeometry();
+            }
         }
     });
 

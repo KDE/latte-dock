@@ -1005,13 +1005,11 @@ void GenericLayout::updateLastUsedActivity()
     }
 
     QString currentId = m_corona->activitiesConsumer()->currentActivity();
-
     QStringList appliedActivitiesIds = appliedActivities();
 
-    if (m_lastUsedActivity != currentId
-            && appliedActivitiesIds.contains(currentId)) {
+    if (appliedActivitiesIds.contains(Data::Layout::ALLACTIVITIESID)
+            || (m_lastUsedActivity != currentId && appliedActivitiesIds.contains(currentId))) {
         m_lastUsedActivity = currentId;
-
         emit lastUsedActivityChanged();
     }
 }

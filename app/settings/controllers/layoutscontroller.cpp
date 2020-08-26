@@ -640,15 +640,6 @@ void Layouts::save()
         Latte::Data::Layout iLayoutOriginalData = m_model->originalData(iLayoutCurrentData.id);
         iLayoutOriginalData = iLayoutOriginalData.isEmpty() ? iLayoutCurrentData : iLayoutOriginalData;
 
-        QStringList cleanedActivities;
-
-        //!update only activities that are valid
-        for (const auto &activity : iLayoutCurrentData.activities) {
-            if (knownActivities.contains(activity) && activity != Latte::Data::Layout::FREEACTIVITIESID) {
-                cleanedActivities.append(activity);
-            }
-        }
-
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
         //! update the generic parts of the layouts
         bool isOriginalLayout = m_model->originalLayoutsData().containsId(iLayoutCurrentData.id);
@@ -675,7 +666,7 @@ void Layouts::save()
 
         central->setShowInMenu(iLayoutCurrentData.isShownInMenu);
         central->setDisableBordersForMaximizedWindows(iLayoutCurrentData.hasDisabledBorders);
-        central->setActivities(cleanedActivities);
+        central->setActivities(iLayoutCurrentData.activities);
 
         //! If the layout name changed OR the layout path is a temporary one
         if ((iLayoutCurrentData.name != iLayoutOriginalData.name) || iLayoutCurrentData.isTemporary()) {
@@ -757,7 +748,7 @@ void Layouts::save()
     //! reload layouts in layoutsmanager
     m_handler->corona()->layoutsManager()->synchronizer()->loadLayouts();
 
-    if (!m_model->layoutNameForFreeActivities().isEmpty()) {
+    if (!m_model->layoutNameForFreeActivities().isEmpty() || inMultipleMode()) {
         //! make sure that there is a layout for free activities
         //! send to layout manager in which layout to switch
         MemoryUsage::LayoutsMemory inMemoryOption = Latte::MemoryUsage::SingleLayout;
