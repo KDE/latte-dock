@@ -134,8 +134,8 @@ private:
     QAction *m_pauseLayoutAction{nullptr};
     QAction *m_newLayoutAction{nullptr};
     QAction *m_copyLayoutAction{nullptr};
+    QAction *m_readOnlyLayoutAction{nullptr};
     QAction *m_removeLayoutAction{nullptr};
-    QAction *m_lockedLayoutAction{nullptr};
     QAction *m_importLayoutAction{nullptr};
     QAction *m_exportLayoutAction{nullptr};
     QAction *m_downloadLayoutAction{nullptr};

@@ -157,13 +157,13 @@ void TabLayouts::initLayoutMenu()
 
     m_layoutMenu->addSeparator();
 
-    m_lockedLayoutAction = m_layoutMenu->addAction(i18nc("locked layout", "&Locked"));
-    m_lockedLayoutAction->setToolTip(i18n("Lock/Unlock selected layout and make it read-only"));
-    m_lockedLayoutAction->setIcon(QIcon::fromTheme("object-locked"));
-    m_lockedLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
-    m_lockedLayoutAction->setCheckable(true);
-    connectActionWithButton(m_ui->lockedButton, m_lockedLayoutAction);
-    connect(m_lockedLayoutAction, &QAction::triggered, this, &TabLayouts::lockLayout);
+    m_readOnlyLayoutAction = m_layoutMenu->addAction(i18nc("read only layout", "&Read Only"));
+    m_readOnlyLayoutAction->setToolTip(i18n("Make selected layout read-only"));
+    m_readOnlyLayoutAction->setIcon(QIcon::fromTheme("object-locked"));
+    m_readOnlyLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+    m_readOnlyLayoutAction->setCheckable(true);
+    connectActionWithButton(m_ui->readOnlyButton, m_readOnlyLayoutAction);
+    connect(m_readOnlyLayoutAction, &QAction::triggered, this, &TabLayouts::lockLayout);
 
     m_detailsAction = m_layoutMenu->addAction(i18nc("layout details", "De&tails..."));
     m_detailsAction->setToolTip(i18n("Show selected layout details"));
@@ -391,11 +391,11 @@ void TabLayouts::updatePerLayoutButtonsState()
         m_ui->removeButton->setEnabled(true);
     }*/
 
-    //! Layout Locked Button
+    //! Layout Read-Only Button
     if (selectedLayout.isLocked) {
-        setTwinProperty(m_lockedLayoutAction, TWINCHECKED, true);
+        setTwinProperty(m_readOnlyLayoutAction, TWINCHECKED, true);
     } else {
-        setTwinProperty(m_lockedLayoutAction, TWINCHECKED, false);
+        setTwinProperty(m_readOnlyLayoutAction, TWINCHECKED, false);
     }
 
     setTwinProperty(m_detailsAction, TWINENABLED, true);
@@ -495,7 +495,7 @@ void TabLayouts::lockLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (!isCurrentTab() || !m_lockedLayoutAction->isEnabled()) {
+    if (!isCurrentTab() || !m_readOnlyLayoutAction->isEnabled()) {
         return;
     }
 

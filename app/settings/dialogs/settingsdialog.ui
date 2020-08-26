@@ -154,7 +154,7 @@
               <item>
                <widget class="QPushButton" name="switchButton">
                 <property name="text">
-                 <string notr="true">Switch</string>
+                 <string>Switch</string>
                 </property>
                 <property name="icon">
                  <iconset theme="user-identity">
@@ -168,7 +168,7 @@
               <item>
                <widget class="QPushButton" name="pauseButton">
                 <property name="text">
-                 <string notr="true">Pause</string>
+                 <string>Pause</string>
                 </property>
                 <property name="icon">
                  <iconset theme="media-playback-pause">
@@ -224,7 +224,7 @@
               <item>
                <widget class="QPushButton" name="newButton">
                 <property name="text">
-                 <string notr="true">New</string>
+                 <string>New</string>
                 </property>
                 <property name="icon">
                  <iconset theme="add">
@@ -235,7 +235,7 @@
               <item>
                <widget class="QPushButton" name="copyButton">
                 <property name="text">
-                 <string notr="true">Copy</string>
+                 <string>Copy</string>
                 </property>
                 <property name="icon">
                  <iconset theme="edit-copy">
@@ -249,7 +249,7 @@
               <item>
                <widget class="QPushButton" name="removeButton">
                 <property name="text">
-                 <string notr="true">Remove</string>
+                 <string>Remove</string>
                 </property>
                 <property name="icon">
                  <iconset theme="delete">
@@ -274,9 +274,9 @@
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="lockedButton">
+               <widget class="QPushButton" name="readOnlyButton">
                 <property name="text">
-                 <string notr="true">Locked</string>
+                 <string>Read Only</string>
                 </property>
                 <property name="icon">
                  <iconset theme="object-locked">
@@ -393,7 +393,7 @@
               <item>
                <widget class="QPushButton" name="importButton">
                 <property name="text">
-                 <string notr="true">Import...</string>
+                 <string>Import...</string>
                 </property>
                 <property name="icon">
                  <iconset theme="document-import">
@@ -407,7 +407,7 @@
               <item>
                <widget class="QPushButton" name="exportButton">
                 <property name="text">
-                 <string notr="true">Export...</string>
+                 <string>Export...</string>
                 </property>
                 <property name="icon">
                  <iconset theme="document-export">
@@ -424,7 +424,7 @@
               <item>
                <widget class="QPushButton" name="downloadButton">
                 <property name="text">
-                 <string notr="true">Download...</string>
+                 <string>Download...</string>
                 </property>
                 <property name="icon">
                  <iconset theme="get-hot-new-stuff">
