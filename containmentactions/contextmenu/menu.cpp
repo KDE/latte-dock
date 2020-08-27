@@ -203,14 +203,14 @@ void Menu::populateLayouts()
     if (m_data.size() > LAYOUTSPOS + 1) {
         //when there are more than 1 layouts present
         LayoutsMemoryUsage memoryUsage = static_cast<LayoutsMemoryUsage>((m_data[0]).toInt());
-        QString currentName = m_data[1];
+        QStringList currentNames = m_data[1].split(";;");
 
         for (int i = LAYOUTSPOS; i < m_data.size(); ++i) {
             bool isActive = m_data[i].startsWith("0") ? false : true;
 
             QString layout = m_data[i].right(m_data[i].length() - 2);
 
-            QString currentText = (memoryUsage == MultipleLayouts && layout == currentName) ?
+            QString currentText = (memoryUsage == MultipleLayouts && currentNames.contains(layout)) ?
                                   (" " + i18nc("current layout", "(Current)")) : "";
             QString layoutName = layout + currentText;
 

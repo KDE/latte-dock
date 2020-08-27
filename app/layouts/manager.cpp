@@ -56,10 +56,8 @@ Manager::Manager(QObject *parent)
     m_synchronizer = new Synchronizer(this);
 
     if (m_corona) {
-        connect(m_corona->universalSettings(), &UniversalSettings::currentLayoutNameChanged, this, &Manager::currentLayoutNameChanged);
 
         connect(m_synchronizer, &Synchronizer::centralLayoutsChanged, this, &Manager::centralLayoutsChanged);
-        connect(m_synchronizer, &Synchronizer::currentLayoutNameChanged, this, &Manager::currentLayoutNameChanged);
         connect(m_synchronizer, &Synchronizer::currentLayoutIsSwitching, this, &Manager::currentLayoutIsSwitching);
         connect(m_synchronizer, &Synchronizer::layoutsChanged, this, &Manager::layoutsChanged);
         connect(m_synchronizer, &Synchronizer::menuLayoutsChanged, this, &Manager::menuLayoutsChanged);
@@ -143,11 +141,6 @@ Synchronizer *Manager::synchronizer() const
     return m_synchronizer;
 }
 
-QString Manager::currentLayoutName() const
-{
-    return m_synchronizer->currentLayoutName();
-}
-
 QStringList Manager::layouts() const
 {
     return m_synchronizer->layouts();
@@ -176,6 +169,11 @@ void Manager::setMemoryUsage(MemoryUsage::LayoutsMemory memoryUsage)
 QStringList Manager::centralLayoutsNames()
 {
     return m_synchronizer->centralLayoutsNames();
+}
+
+QStringList Manager::currentLayoutsNames() const
+{
+    return m_synchronizer->currentLayoutsNames();
 }
 
 QList<CentralLayout *> Manager::currentLayouts() const

@@ -70,8 +70,6 @@ class Manager : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString currentLayoutName READ currentLayoutName NOTIFY currentLayoutNameChanged)
-
     Q_PROPERTY(QStringList layouts READ layouts NOTIFY layoutsChanged)
     Q_PROPERTY(QStringList menuLayouts READ menuLayouts NOTIFY menuLayoutsChanged)
 
@@ -89,10 +87,9 @@ public:
     void showInfoWindow(QString info, int duration, QStringList activities = {"0"});
     void unload();
 
-    QString currentLayoutName() const;
-
     QStringList layouts() const;
     QStringList menuLayouts() const;
+    QStringList currentLayoutsNames() const;
 
     MemoryUsage::LayoutsMemory memoryUsage() const;
     void setMemoryUsage(MemoryUsage::LayoutsMemory memoryUsage);
@@ -116,7 +113,6 @@ public slots:
 signals:
     void centralLayoutsChanged();
     void currentLayoutChanged();
-    void currentLayoutNameChanged();
     void launchersSignalsChanged();
     void layoutsChanged();
     void menuLayoutsChanged();

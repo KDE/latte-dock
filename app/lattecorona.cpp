@@ -1082,7 +1082,7 @@ void Corona::addViewForLayout(QString layoutName)
 
 void Corona::loadDefaultLayout()
 {
-    addViewForLayout(m_layoutsManager->currentLayoutName());
+  //  addViewForLayout(m_layoutsManager->currentLayoutsNames());
 }
 
 QStringList Corona::containmentsIds()
@@ -1203,7 +1203,7 @@ QStringList Corona::contextMenuData()
     }
 
     data << QString::number((int)m_layoutsManager->memoryUsage());
-    data << m_layoutsManager->currentLayoutName();
+    data << m_layoutsManager->synchronizer()->currentLayoutsNames().join(";;");
     data << QString::number((int)viewType);
 
     for(const auto &layoutName : m_layoutsManager->menuLayouts()) {

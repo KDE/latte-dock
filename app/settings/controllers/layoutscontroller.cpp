@@ -414,7 +414,10 @@ void Layouts::loadLayouts()
     m_model->setOriginalData(layoutsBuffer, inMultiple);
     m_model->setOriginalLayoutForFreeActivities(layoutsBuffer.idForName(m_handler->corona()->universalSettings()->lastNonAssignedLayoutName()));
 
-    m_view->selectRow(rowForName(m_handler->corona()->layoutsManager()->currentLayoutName()));
+    QStringList currentLayoutNames = m_handler->corona()->layoutsManager()->currentLayoutsNames();
+    if (currentLayoutNames.count() > 0) {
+        m_view->selectRow(rowForName(currentLayoutNames[0]));
+    }
 
     applyColumnWidths();
 
@@ -609,7 +612,10 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
 void Layouts::reset()
 {
     m_model->resetData();
-    m_view->selectRow(rowForName(m_handler->corona()->layoutsManager()->currentLayoutName()));
+    QStringList currentLayoutNames = m_handler->corona()->layoutsManager()->currentLayoutsNames();
+    if (currentLayoutNames.count() > 0) {
+        m_view->selectRow(rowForName(currentLayoutNames[0]));
+    }
 }
 
 void Layouts::save()
@@ -687,10 +693,6 @@ void Layouts::save()
             QString tempFile = layoutTempDir.path() + "/" + QString(generic->name() + ".layout.latte");
             qDebug() << "new temp file ::: " << tempFile;
 
-            if ((m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) && (generic->name() == m_handler->corona()->layoutsManager()->currentLayoutName())) {
-                switchToLayout = iLayoutCurrentData.name;
-            }
-
             generic = m_layouts.take(iLayoutCurrentData.id);
             delete generic;
 
@@ -756,26 +758,25 @@ void Layouts::save()
     //! reload layouts in layoutsmanager
     m_handler->corona()->layoutsManager()->synchronizer()->loadLayouts();
 
-    if (!m_model->layoutNameForFreeActivities().isEmpty() || inMultipleMode()) {
-        //! make sure that there is a layout for free activities
-        //! send to layout manager in which layout to switch
-        MemoryUsage::LayoutsMemory inMemoryOption = Latte::MemoryUsage::SingleLayout;
 
-        if (inMultipleMode()) {
-            inMemoryOption = Latte::MemoryUsage::MultipleLayouts;
-        }
+    //! make sure that there is a layout for free activities
+    //! send to layout manager in which layout to switch
+    MemoryUsage::LayoutsMemory inMemoryOption = inMultipleMode() ? Latte::MemoryUsage::MultipleLayouts : Latte::MemoryUsage::SingleLayout;
 
-        if (m_handler->corona()->layoutsManager()->memoryUsage() != inMemoryOption) {
-            MemoryUsage::LayoutsMemory previousMemoryUsage = m_handler->corona()->layoutsManager()->memoryUsage();
-            m_handler->corona()->layoutsManager()->setMemoryUsage(inMemoryOption);
+    if (m_handler->corona()->layoutsManager()->memoryUsage() != inMemoryOption) {
+        MemoryUsage::LayoutsMemory previousMemoryUsage = m_handler->corona()->layoutsManager()->memoryUsage();
+        m_handler->corona()->layoutsManager()->setMemoryUsage(inMemoryOption);
 
-            m_handler->corona()->layoutsManager()->switchToLayout(m_model->layoutNameForFreeActivities(), previousMemoryUsage);
+        if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
+            m_handler->corona()->layoutsManager()->switchToLayout(m_handler->corona()->universalSettings()->currentLayoutName(), previousMemoryUsage);
         } else {
-            if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-                m_handler->corona()->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities();
-            } else {
-                m_handler->corona()->layoutsManager()->switchToLayout(m_model->layoutNameForFreeActivities());
-            }
+            m_handler->corona()->layoutsManager()->switchToLayout("", previousMemoryUsage);
+        }
+    } else {
+        if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+            m_handler->corona()->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities();
+        } else {
+            m_handler->corona()->layoutsManager()->switchToLayout(m_handler->corona()->universalSettings()->currentLayoutName());
         }
     }
 

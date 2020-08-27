@@ -84,12 +84,8 @@ public:
 
     int centralLayoutPos(QString id) const;
 
-    QString currentLayoutName() const;
-
-    QString currentLayoutNameInMultiEnvironment() const;
-    void setCurrentLayoutNameInMultiEnvironment(const QString &name);
-
     QStringList centralLayoutsNames();
+    QStringList currentLayoutsNames() const;
     QStringList layouts() const;
     QStringList menuLayouts() const;
     void setMenuLayouts(QStringList layouts);
@@ -120,7 +116,6 @@ public slots:
 
 signals:
     void centralLayoutsChanged();
-    void currentLayoutNameChanged();
     void layoutsChanged();
     void menuLayoutsChanged();
     void runningActicitiesChanged();
@@ -128,10 +123,7 @@ signals:
     void currentLayoutIsSwitching(QString layoutName);
 
 private slots:
-    void updateCurrentLayoutNameInMultiEnvironment();
-
     void onCurrentActivityChanged(const QString &id);
-
     void onLayoutAdded(const QString &layoutpath);
 
 private:
@@ -145,8 +137,6 @@ private:
 private:
     bool m_multipleModeInitialized{false};
     bool m_isLoaded{false};
-
-    QString m_currentLayoutNameInMultiEnvironment;
 
     QStringList m_layouts;
     QStringList m_menuLayouts;

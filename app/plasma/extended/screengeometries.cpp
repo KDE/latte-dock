@@ -75,7 +75,7 @@ void ScreenGeometries::init()
         connect(m_corona, &Latte::Corona::availableScreenRectChangedFrom, this, &ScreenGeometries::availableScreenGeometryChangedFrom);
         connect(m_corona, &Latte::Corona::availableScreenRegionChangedFrom, this, &ScreenGeometries::availableScreenGeometryChangedFrom);
 
-        connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::currentLayoutNameChanged, this, [&]() {
+        connect(m_corona->layoutsManager()->synchronizer(), &Latte::Layouts::Synchronizer::centralLayoutsChanged, this, [&]() {
             m_publishTimer.start();
         });
 

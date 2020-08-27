@@ -172,7 +172,7 @@ bool GenericLayout::isCurrent()
         return false;
     }
 
-    return name() == m_corona->layoutsManager()->currentLayoutName();
+    return m_corona->layoutsManager()->currentLayoutsNames().contains(name());
 }
 
 QString GenericLayout::background() const
