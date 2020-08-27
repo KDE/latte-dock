@@ -1035,11 +1035,16 @@ void Positioner::hideDockDuringMovingToLayout(QString layoutName)
 
     auto layout = m_view->layout();
 
-    auto central = qobject_cast<CentralLayout *>(layout);
+    auto origin = qobject_cast<CentralLayout *>(layout);
+    auto destination = m_corona->layoutsManager()->synchronizer()->centralLayout(layoutName);
+
+    if (!origin || !destination) {
+        return;
+    }
 
     //! Needs to be updated; when the next layout is in the same Visible Workarea
     //! with the old one changing layouts should be instant
-    bool inVisibleWorkarea{true};
+    bool inVisibleWorkarea{origin->lastUsedActivity() == destination->lastUsedActivity()};
 
     if (inVisibleWorkarea) {
         m_view->moveToLayout(layoutName);
