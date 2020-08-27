@@ -61,11 +61,6 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
     connect(this, &Layouts::inMultipleModeChanged, this, &Layouts::updateActiveStates);
     connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::currentLayoutNameChanged, this, &Layouts::updateActiveStates);
     connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::centralLayoutsChanged, this, &Layouts::updateActiveStates);
-
-    connect(m_corona->universalSettings(), &Latte::UniversalSettings::lastNonAssignedLayoutNameChanged, this, [&]() {
-        //FREE ACTIVITES LAYOUT changed and our model must be updated...
-        assignFreeActivitiesLayoutAt(m_corona->universalSettings()->lastNonAssignedLayoutName());
-    });
 }
 
 Layouts::~Layouts()
@@ -200,10 +195,6 @@ bool Layouts::removeRows(int row, int count, const QModelIndex &parent)
             m_layoutsTable.remove(firstRow);
         }
         endRemoveRows();
-
-        if (freeActivitiesLayoutIsRemoved) {
-            autoAssignFreeActivitiesLayout();
-        }
 
         return true;
     }
@@ -486,7 +477,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     } else if (role == ISNEWLAYOUTROLE) {
         return isNewLayout;
     } else if (role == LAYOUTHASCHANGESROLE) {
-        return (isNewLayout ? true : (original != m_layoutsTable[row]));
+        return isNewLayout ? true : (original != m_layoutsTable[row]);
     } else if (role == BACKGROUNDUSERROLE) {
         QList<Latte::Data::LayoutIcon> iconsList = icons(row);
         QVariant iconsVariant;
@@ -518,7 +509,11 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case NAMECOLUMN:
         if (role == SORTINGROLE) {
-            return m_layoutsTable[row].name;
+            if (m_layoutsTable[row].isActive) {
+                return sortingPriority(HIGHESTPRIORITY, row);
+            }
+
+            return sortingPriority(NORMALPRIORITY, row);
         }
 
         if ((role == Qt::DisplayRole) || (role == Qt::UserRole)) {
@@ -600,57 +595,6 @@ QStringList Layouts::cleanStrings(const QStringList &original, const QStringList
     }
 
     return result;
-}
-
-
-void Layouts::assignFreeActivitiesLayoutAt(const QString &layoutName)
-{
-    QString reqId = o_layoutsTable.idForName(layoutName);
-
-    if (reqId.isEmpty()) {
-        reqId = m_layoutsTable.idForName(layoutName);
-        if (reqId.isEmpty()) {
-            return;
-        }
-    }
-
-    int row = m_layoutsTable.indexOf(reqId);
-    setActivities(row, QStringList(Latte::Data::Layout::FREEACTIVITIESID));
-}
-
-void Layouts::autoAssignFreeActivitiesLayout()
-{
-    QVector<int> roles;
-    roles << Qt::DisplayRole;
-    roles << Qt::UserRole;
-
-    //! ActiveCurrent with no activities has highest priority
-    QString activeCurrentId = o_layoutsTable.idForName(m_corona->layoutsManager()->currentLayoutName());
-    int row = m_layoutsTable.indexOf(activeCurrentId);
-
-    if (row>=0 && m_layoutsTable[row].activities.isEmpty()) {
-        m_layoutsTable[row].activities << Latte::Data::Layout::FREEACTIVITIESID;
-        emit dataChanged(index(row,BACKGROUNDCOLUMN), index(row,ACTIVITYCOLUMN), roles);
-        return;
-    }
-
-    //! Active layouts with no activities have mid priority
-    for(int i=0; i<rowCount(); ++i) {
-        if (m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty()) {
-            m_layoutsTable[i].activities << Latte::Data::Layout::FREEACTIVITIESID;
-            emit dataChanged(index(i,BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
-            return;
-        }
-    }
-
-    //! Inactive layouts with no activities have lowest priority
-    for(int i=0; i<rowCount(); ++i) {
-        if (!m_layoutsTable[i].isActive && m_layoutsTable[i].activities.isEmpty()) {
-            m_layoutsTable[i].activities << Latte::Data::Layout::FREEACTIVITIESID;
-            emit dataChanged(index(i,BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
-            return;
-        }
-    }
 }
 
 void Layouts::setActivities(const int &row, const QStringList &activities)

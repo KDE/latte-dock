@@ -27,6 +27,7 @@
 #include "../dialogs/detailsdialog.h"
 #include "../dialogs/settingsdialog.h"
 #include "../controllers/layoutscontroller.h"
+#include "../models/layoutsmodel.h"
 #include "../views/layoutstableview.h"
 #include "../../apptypes.h"
 #include "../../lattecorona.h"
@@ -99,6 +100,12 @@ void TabLayouts::initUi()
 
         if (checked) {
             m_layoutsController->setInMultipleMode(id == MemoryUsage::MultipleLayouts);
+
+            if (id == MemoryUsage::MultipleLayouts) {
+                m_layoutsController->sortByColumn(Model::Layouts::ACTIVITYCOLUMN, Qt::AscendingOrder);
+            } else {
+                m_layoutsController->sortByColumn(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
+            }
         }
     });
 
@@ -308,32 +315,7 @@ void TabLayouts::switchLayout()
         return;
     }
 
-    if (!m_layoutsController->selectedLayoutIsCurrentActive()) {
-        bool freeActivitiesLayoutUpdated{false};
-
-        if (selectedLayoutCurrent.activities.isEmpty()) {
-            m_layoutsController->setOriginalLayoutForFreeActivities(selectedLayoutOriginal.id);
-            freeActivitiesLayoutUpdated = true;
-        }
-
-        if (m_layoutsController->inMultipleMode()) {
-            m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name);
-        } else {
-            if (freeActivitiesLayoutUpdated) {
-                m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name);
-            } else {
-                CentralLayout singleLayout(this, selectedLayoutCurrent.id);
-
-                QString switchToActivity = selectedLayoutCurrent.isForFreeActivities() ? singleLayout.lastUsedActivity() : selectedLayoutCurrent.activities[0];
-
-                if (!m_corona->activitiesConsumer()->runningActivities().contains(switchToActivity)) {
-                    m_corona->layoutsManager()->synchronizer()->activitiesController()->startActivity(switchToActivity);
-                }
-
-                m_corona->layoutsManager()->synchronizer()->activitiesController()->setCurrentActivity(switchToActivity);
-            }
-        }
-    }
+    m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name);
 
     updatePerLayoutButtonsState();
 }

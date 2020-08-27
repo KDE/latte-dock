@@ -441,6 +441,11 @@ void Layouts::loadLayouts()
     }
 }
 
+void Layouts::sortByColumn(int column, Qt::SortOrder order)
+{
+    m_view->sortByColumn(column, order);
+}
+
 const Latte::Data::Layout Layouts::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory)
 {
     if (layoutName.isEmpty()) {

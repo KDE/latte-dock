@@ -68,6 +68,7 @@ public:
 
     bool inMultipleMode() const;
     void setInMultipleMode(bool inMultiple);
+    void sortByColumn(int column, Qt::SortOrder order);
 
     bool hasSelectedLayout() const;
     bool selectedLayoutIsCurrentActive() const;
