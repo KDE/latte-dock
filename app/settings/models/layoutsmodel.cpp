@@ -358,7 +358,7 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
             }
         }
     } else {
-        if (m_layoutsTable[row].isActive) {
+        if (o_layoutsTable.containsId(m_layoutsTable[row].id) && o_layoutsTable[m_layoutsTable[row].id].name == m_corona->universalSettings()->currentLayoutName()) {
             Latte::Data::LayoutIcon icon;
             icon.name = m_activitiesMap[Latte::Data::Layout::ALLACTIVITIESID].icon;
             icon.isBackgroundFile = false;
@@ -426,7 +426,7 @@ QString Layouts::sortingPriority(const SortingPriority &priority, const int &row
 {
     int iPriority = (int)priority;
 
-    iPriority = (m_layoutsTable[row].isActive ? iPriority - 1000 : iPriority);
+    iPriority = (m_layoutsTable[row].isActive && inMultipleMode() ? iPriority - 1000 : iPriority);
 
     return sortableText(iPriority, row);
 }

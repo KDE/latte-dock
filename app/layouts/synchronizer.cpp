@@ -498,10 +498,6 @@ void Synchronizer::unloadLayouts()
 
 bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
 {
-    if (m_centralLayouts.size() > 0 && previousMemoryUsage == -1) {
-        return false;
-    }
-
     qDebug() << " >>>>> SWITCHING >> " << layoutName << " __ " << previousMemoryUsage;
 
     //! First Check If that Layout is already present and in that case
@@ -535,7 +531,7 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
     QString lPath = layoutPath(layoutName);
 
     if ((m_manager->memoryUsage() == MemoryUsage::SingleLayout && !lPath.isEmpty()) || m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
-        if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
+        if (m_manager->memoryUsage() == MemoryUsage::SingleLayout && m_centralLayouts.size()>0) {
             emit currentLayoutIsSwitching(m_centralLayouts[0]->name());
         } else if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && layoutName != Layout::MULTIPLELAYOUTSHIDDENNAME) {
             //! do nothing
