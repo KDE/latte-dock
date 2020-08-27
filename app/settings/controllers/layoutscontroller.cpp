@@ -68,7 +68,8 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
     loadConfig();
     m_proxyModel->setSourceModel(m_model);
 
-    connect(m_model, &Model::Layouts::inMultipleModeChanged, this, &Layouts::updateLastColumnWidth);
+    connect(m_model, &Model::Layouts::inMultipleModeChanged, this, &Layouts::applyColumnWidths);
+    connect(m_handler->corona()->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, &Layouts::applyColumnWidths);
 
     connect(m_model, &QAbstractItemModel::dataChanged, this, &Layouts::dataChanged);
     connect(m_model, &Model::Layouts::rowsInserted, this, &Layouts::dataChanged);
@@ -120,7 +121,6 @@ void Layouts::initView()
 {
     m_view->setModel(m_proxyModel);
     m_view->setHorizontalHeader(m_headerView);
-    m_view->horizontalHeader()->setStretchLastSection(true);
     m_view->verticalHeader()->setVisible(false);
     m_view->setSortingEnabled(true);
 
@@ -221,12 +221,45 @@ void Layouts::setInMultipleMode(bool inMultiple)
     m_model->setInMultipleMode(inMultiple);
 }
 
-void Layouts::updateLastColumnWidth()
+void Layouts::applyColumnWidths()
 {
     if (m_model->inMultipleMode()) {
-        //! column widths
-        if (m_viewColumnWidths.count()>=5) {
-            m_view->setColumnWidth(Model::Layouts::ACTIVITYCOLUMN, m_viewColumnWidths[4].toInt());
+        m_view->horizontalHeader()->setSectionResizeMode(Model::Layouts::ACTIVITYCOLUMN, QHeaderView::Stretch);
+        m_view->horizontalHeader()->setSectionResizeMode(Model::Layouts::NAMECOLUMN, QHeaderView::Interactive);
+    } else {
+        m_view->horizontalHeader()->setSectionResizeMode(Model::Layouts::NAMECOLUMN, QHeaderView::Stretch);
+        m_view->horizontalHeader()->setSectionResizeMode(Model::Layouts::ACTIVITYCOLUMN, QHeaderView::Interactive);
+    }
+
+    //! this line should be commented for debugging layouts window functionality
+    m_view->setColumnHidden(Model::Layouts::IDCOLUMN, true);
+    m_view->setColumnHidden(Model::Layouts::HIDDENTEXTCOLUMN, true);
+
+    int maxColumns = Model::Layouts::ACTIVITYCOLUMN - Model::Layouts::BACKGROUNDCOLUMN; //4 - multiple
+
+    if (m_handler->corona()->universalSettings()->canDisableBorders()) {
+        m_view->setColumnHidden(Model::Layouts::BORDERSCOLUMN, false);
+    } else {
+        m_view->setColumnHidden(Model::Layouts::BORDERSCOLUMN, true);
+    }
+
+    if (m_model->inMultipleMode()) {
+        m_view->setColumnHidden(Model::Layouts::ACTIVITYCOLUMN, false);
+    } else {
+        m_view->setColumnHidden(Model::Layouts::ACTIVITYCOLUMN, true);
+    }
+
+    if (!m_viewColumnWidths.isEmpty()) {
+        for (int i=0; i<qMin(m_viewColumnWidths.count(), maxColumns); ++i) {
+            int currentColumn = Model::Layouts::BACKGROUNDCOLUMN+i;
+
+            if ((currentColumn == Model::Layouts::BORDERSCOLUMN && !m_handler->corona()->universalSettings()->canDisableBorders())
+                    || (currentColumn == Model::Layouts::NAMECOLUMN && !m_model->inMultipleMode())
+                    || (currentColumn == Model::Layouts::ACTIVITYCOLUMN && !m_model->inMultipleMode())) {
+                continue;
+            }
+
+            m_view->setColumnWidth(currentColumn, m_viewColumnWidths[i].toInt());
         }
     }
 }
@@ -392,28 +425,7 @@ void Layouts::loadLayouts()
 
     m_view->selectRow(rowForName(m_handler->corona()->layoutsManager()->currentLayoutName()));
 
-    //! this line should be commented for debugging layouts window functionality
-    m_view->setColumnHidden(Model::Layouts::IDCOLUMN, true);
-    m_view->setColumnHidden(Model::Layouts::HIDDENTEXTCOLUMN, true);
-
-    if (m_handler->corona()->universalSettings()->canDisableBorders()) {
-        m_view->setColumnHidden(Model::Layouts::BORDERSCOLUMN, false);
-    } else {
-        m_view->setColumnHidden(Model::Layouts::BORDERSCOLUMN, true);
-    }
-
-    m_view->resizeColumnsToContents();
-
-
-    if (!m_viewColumnWidths.isEmpty()) {
-        int lastColumn = inMultiple ? 5 : 4;
-
-        for (int i=0; i<qMin(m_viewColumnWidths.count(),lastColumn); ++i) {
-            m_view->setColumnWidth(Model::Layouts::BACKGROUNDCOLUMN+i, m_viewColumnWidths[i].toInt());
-        }
-    }
-
-    updateLastColumnWidth();
+    applyColumnWidths();
 
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
@@ -494,7 +506,7 @@ const Latte::Data::Layout Layouts::addLayoutByText(QString rawLayoutText)
     
     /**Window has to be activated explicitely since the window where the drag
      * started would otherwise be the active window. By activating the window
-       the user can immediately change the name by simply typing.*/ 
+       the user can immediately change the name by simply typing.*/
     m_handler->dialog()->activateWindow();
     
     return newLayout;
@@ -662,7 +674,7 @@ void Layouts::save()
 
         //! update only the Central-specific layout parts
         CentralLayout *centralActive = isOriginalLayout ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(iLayoutOriginalData.name) : nullptr;
-        CentralLayout *central = centralActive ? centralActive : m_layouts[iLayoutCurrentData.id];       
+        CentralLayout *central = centralActive ? centralActive : m_layouts[iLayoutCurrentData.id];
 
         central->setShowInMenu(iLayoutCurrentData.isShownInMenu);
         central->setDisableBordersForMaximizedWindows(iLayoutCurrentData.hasDisabledBorders);
@@ -778,21 +790,16 @@ void Layouts::save()
 
 void Layouts::storeColumnWidths()
 {
-    //! save column widths
-    m_viewColumnWidths.clear();
+    m_viewColumnWidths[0] = QString::number(m_view->columnWidth(Model::Layouts::BACKGROUNDCOLUMN));
 
-    m_viewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::BACKGROUNDCOLUMN));
-    m_viewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::NAMECOLUMN));
-    m_viewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::MENUCOLUMN));
-    m_viewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::BORDERSCOLUMN));
+    if (m_model->inMultipleMode()) {
+        m_viewColumnWidths[1] = QString::number(m_view->columnWidth(Model::Layouts::NAMECOLUMN));
+    }
 
-    if (inMultipleMode()) {
-        m_viewColumnWidths << QString::number(m_view->columnWidth(Model::Layouts::ACTIVITYCOLUMN));
-    } else {
-        //! In Single Mode, keed recorded value for ACTIVITYCOLUMN
-        if (m_viewColumnWidths.count()>=5) {
-            m_viewColumnWidths << m_viewColumnWidths[4];
-        }
+    m_viewColumnWidths[2] = QString::number(m_view->columnWidth(Model::Layouts::MENUCOLUMN));
+
+    if (m_handler->corona()->universalSettings()->canDisableBorders()) {
+        m_viewColumnWidths[3] = QString::number(m_view->columnWidth(Model::Layouts::BORDERSCOLUMN));
     }
 }
 

@@ -344,43 +344,44 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
 {
     QList<Latte::Data::LayoutIcon> icons;
 
-    QStringList activitiesIds = m_layoutsTable[row].activities;
-
-    int freeActivitiesPos = -1;
-
-    for(int i=0; i<activitiesIds.count(); ++i) {
-        QString id = activitiesIds[i];
-        if (m_activitiesMap.contains(id)) {
+    if (inMultipleMode()) {
+        if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::ALLACTIVITIESID)) {
             Latte::Data::LayoutIcon icon;
-
+            icon.name = m_activitiesMap[Latte::Data::Layout::ALLACTIVITIESID].icon;
             icon.isBackgroundFile = false;
+            icons << icon;
+        } else if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
+            Latte::Data::LayoutIcon icon;
+            icon.name = m_activitiesMap[Latte::Data::Layout::FREEACTIVITIESID].icon;
+            icon.isBackgroundFile = false;
+            icons << icon;
+        } else {
+            QStringList activitiesIds = m_layoutsTable[row].activities;
 
-            if (id == Latte::Data::Layout::FREEACTIVITIESID) {
-                icon.isFreeActivities = true;
-                freeActivitiesPos = i;
-            } else {
-                icon.isFreeActivities = false;
+            for(int i=0; i<activitiesIds.count(); ++i) {
+                QString id = activitiesIds[i];
+                if (m_activitiesMap.contains(id)) {
+                    Latte::Data::LayoutIcon icon;
+                    icon.name = m_activitiesMap[id].icon;
+                    icon.isBackgroundFile = false;
+                    icons << icon;
+                }
             }
-
-            icon.name = m_activitiesMap[id].icon;
+        }
+    } else {
+        if (m_layoutsTable[row].isActive) {
+            Latte::Data::LayoutIcon icon;
+            icon.name = m_activitiesMap[Latte::Data::Layout::ALLACTIVITIESID].icon;
+            icon.isBackgroundFile = false;
             icons << icon;
         }
     }
 
-    if (freeActivitiesPos >= 0) {
-        Latte::Data::LayoutIcon freeActsData = icons.takeAt(freeActivitiesPos);
-        icons.clear();
-        icons << freeActsData;
-        return icons;
-    }
-
-    if (!m_layoutsTable[row].icon.isEmpty() && freeActivitiesPos<0) {
-        //! if there is specific icon set from the user for this layout
-        //! we draw only that icon
+    if (!m_layoutsTable[row].icon.isEmpty()) {
+        //! if there is specific icon set from the user for this layout we draw only that icon
         icons.clear();
         Latte::Data::LayoutIcon icon;
         icon.name = m_layoutsTable[row].icon;
-        icon.isFreeActivities = false;
         icon.isBackgroundFile = false;
         icons << icon;
         return icons;
@@ -399,7 +400,6 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
         if (QFileInfo(colorPath).exists()) {
             Latte::Data::LayoutIcon icon;
             icon.isBackgroundFile = true;
-            icon.isFreeActivities = false;
             icon.name = colorPath;
             icons << icon;
         }
@@ -565,7 +565,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
                 if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::ALLACTIVITIESID)) {
                     return sortingPriority(HIGHESTPRIORITY, row);
                 } else if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
-                        return sortingPriority(HIGHPRIORITY, row);
+                    return sortingPriority(HIGHPRIORITY, row);
                 } else {
                     return sortingPriority(MEDIUMPRIORITY, row) + m_layoutsTable[row].activities.count();
                 }

@@ -274,6 +274,12 @@ bool TabLayouts::inDefaultValues() const
 void TabLayouts::reset()
 {
     m_layoutsController->reset();
+
+    if (m_layoutsController->inMultipleMode()) {
+        m_ui->multipleToolBtn->setChecked(true);
+    } else {
+        m_ui->singleToolBtn->setChecked(true);
+    }
 }
 
 void TabLayouts::resetDefaults()

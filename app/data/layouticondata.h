@@ -39,7 +39,6 @@ public:
     LayoutIcon(const LayoutIcon &o);
 
     //! Layout data
-    bool isFreeActivities{false};
     bool isBackgroundFile{true};
 
     //! Operators

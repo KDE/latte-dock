@@ -31,14 +31,12 @@ LayoutIcon::LayoutIcon()
 
 LayoutIcon::LayoutIcon(LayoutIcon &&o)
     : Generic(o),
-      isFreeActivities(o.isFreeActivities),
       isBackgroundFile(o.isBackgroundFile)
 {
 }
 
 LayoutIcon::LayoutIcon(const LayoutIcon &o)
     : Generic(o),
-      isFreeActivities(o.isFreeActivities),
       isBackgroundFile(o.isBackgroundFile)
 {
 }
@@ -46,7 +44,6 @@ LayoutIcon::LayoutIcon(const LayoutIcon &o)
 LayoutIcon &LayoutIcon::operator=(LayoutIcon &&rhs)
 {
     id = rhs.id;
-    isFreeActivities = rhs.isFreeActivities;
     isBackgroundFile = rhs.isBackgroundFile;
     name = rhs.name;
 
@@ -56,7 +53,6 @@ LayoutIcon &LayoutIcon::operator=(LayoutIcon &&rhs)
 LayoutIcon &LayoutIcon::operator=(const LayoutIcon &rhs)
 {
     id = rhs.id;
-    isFreeActivities = rhs.isFreeActivities;
     isBackgroundFile = rhs.isBackgroundFile;
     name = rhs.name;
 
@@ -67,7 +63,6 @@ bool LayoutIcon::operator==(const LayoutIcon &rhs) const
 {
     return (id == rhs.id)
             && (name == rhs.name)
-            && (isFreeActivities == rhs.isFreeActivities)
             && (isBackgroundFile == rhs.isBackgroundFile);
 }
 

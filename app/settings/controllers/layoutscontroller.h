@@ -104,7 +104,7 @@ private slots:
     void loadConfig();
     void saveConfig();
     void storeColumnWidths();
-    void updateLastColumnWidth();
+    void applyColumnWidths();
 
     void onNameDuplicatedFrom(const QString &provenId,  const QString &trialId);
 
