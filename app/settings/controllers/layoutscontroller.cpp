@@ -166,15 +166,6 @@ bool Layouts::hasSelectedLayout() const
     return (selectedRow >= 0);
 }
 
-bool Layouts::selectedLayoutIsCurrentActive() const
-{
-    Latte::Data::Layout selectedLayoutCurrent = selectedLayoutCurrentData();
-    Latte::Data::Layout selectedLayoutOriginal = selectedLayoutOriginalData();
-    selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
-
-    return (selectedLayoutCurrent.isActive && (selectedLayoutOriginal.name == m_handler->corona()->layoutsManager()->currentLayoutName()));
-}
-
 QString Layouts::colorPath(const QString color) const
 {
     QString path = m_iconsPath + color + "print.jpg";

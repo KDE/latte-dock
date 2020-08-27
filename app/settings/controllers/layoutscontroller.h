@@ -71,7 +71,6 @@ public:
     void sortByColumn(int column, Qt::SortOrder order);
 
     bool hasSelectedLayout() const;
-    bool selectedLayoutIsCurrentActive() const;
     const Latte::Data::Layout selectedLayoutCurrentData() const;
     const Latte::Data::Layout selectedLayoutOriginalData() const;
 

@@ -183,7 +183,7 @@ const QStringList CentralLayout::appliedActivities()
     if (isOnAllActivities() || m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
         return QStringList(Data::Layout::ALLACTIVITIESID);
     } else if (isForFreeActivities()) {
-        return m_corona->layoutsManager()->synchronizer()->freeActivities();
+        return m_corona->layoutsManager()->synchronizer()->freeRunningActivities();
     } else {
         return m_activities;
     }

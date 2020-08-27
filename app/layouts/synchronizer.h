@@ -95,8 +95,9 @@ public:
     void setMenuLayouts(QStringList layouts);
 
     QStringList activities();
+    QStringList freeActivities();
     QStringList runningActivities();
-    QStringList freeActivities(); //! These are activities that haven't been assigned to specific layout
+    QStringList freeRunningActivities(); //! These are activities that haven't been assigned to specific layout
 
     Latte::View *viewForContainment(Plasma::Containment *containment);
     Latte::View *viewForContainment(uint id);

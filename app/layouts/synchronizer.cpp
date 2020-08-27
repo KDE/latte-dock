@@ -164,12 +164,23 @@ QStringList Synchronizer::activities()
     return m_manager->corona()->activitiesConsumer()->activities();
 }
 
+QStringList Synchronizer::freeActivities()
+{
+    QStringList frees = activities();
+
+    for(auto assigned : m_assignedLayouts.keys()) {
+        frees.removeAll(assigned);
+    }
+
+    return frees;
+}
+
 QStringList Synchronizer::runningActivities()
 {
     return m_manager->corona()->activitiesConsumer()->runningActivities();
 }
 
-QStringList Synchronizer::freeActivities()
+QStringList Synchronizer::freeRunningActivities()
 {
     QStringList fActivities;
 
