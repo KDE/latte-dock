@@ -140,7 +140,7 @@ void Manager::importSystemLayouts()
 void Manager::exposeTranslatedTemplateNames()
 {
     i18nc("default layout template name", "Default");
-    i18n("empty layout template name", "Empty");
+    i18nc("empty layout template name", "Empty");
 }
 
 }
