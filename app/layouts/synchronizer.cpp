@@ -502,21 +502,25 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
 
     //! First Check If that Layout is already present and in that case
     //! we can just switch to the proper Activity
-    if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && previousMemoryUsage == -1) {
-        CentralLayout *layout = centralLayout(layoutName);
 
-        if (layout) {
-            QStringList appliedActivities = layout->appliedActivities();
-            QString nextActivity = !layout->lastUsedActivity().isEmpty() ? layout->lastUsedActivity() : appliedActivities[0];
+    if (previousMemoryUsage == -1) {
+        if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
+            CentralLayout *layout = centralLayout(layoutName);
 
-            //! it means we are at a foreign activity
-            if (!appliedActivities.contains(m_manager->corona()->activitiesConsumer()->currentActivity())) {
-                m_activitiesController->setCurrentActivity(nextActivity);
-                return true;
+            if (layout) {
+                QStringList appliedActivities = layout->appliedActivities();
+                QString nextActivity = !layout->lastUsedActivity().isEmpty() ? layout->lastUsedActivity() : appliedActivities[0];
+
+                if (!appliedActivities.contains(m_manager->corona()->activitiesConsumer()->currentActivity())) {
+                    //! it means we are at a foreign activity and we can switch to correct one
+                    m_activitiesController->setCurrentActivity(nextActivity);
+                    return true;
+                }
             }
+        } else if (m_manager->memoryUsage() == MemoryUsage::SingleLayout && m_centralLayouts.size()>0 && m_centralLayouts[0]->name() == layoutName) {
+            //! already loaded
+            return false;
         }
-    } else if (m_manager->memoryUsage() == MemoryUsage::SingleLayout && m_centralLayouts.size()>0 && m_centralLayouts[0]->name() == layoutName) {
-        return false;
     }
 
     //! When going from memory usage to different memory usage we first
@@ -574,7 +578,7 @@ bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
                 syncMultipleLayoutsToActivities();
             } else {
                 //! single layout
-                m_manager->corona()->universalSettings()->setCurrentLayoutName(layoutName);
+                m_manager->corona()->universalSettings()->setSingleModeLayoutName(layoutName);
             }
         });
     } else {
@@ -629,7 +633,8 @@ void Synchronizer::syncMultipleLayoutsToActivities()
     if (layoutsToLoad.isEmpty()) {
         //! If no layout is found then force loading Default Layout
         QString layoutPath = m_manager->corona()->templatesManager()->newLayout("", i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
-        layoutsToLoad << Layout::AbstractLayout::layoutName(layoutPath);
+        layoutsToLoad << Layout::AbstractLayout::layoutName(layoutPath);        
+        m_manager->setOnAllActivities(layoutsToLoad[0]);
         defaultForcedLayout = layoutsToLoad[0];
     }
 
@@ -644,10 +649,6 @@ void Synchronizer::syncMultipleLayoutsToActivities()
                 qDebug() << "ACTIVATING LAYOUT ::::: " << layoutName;
                 addLayout(newLayout);
                 newLayout->importToCorona();
-
-                if (!defaultForcedLayout.isEmpty() && newLayout->name() == defaultForcedLayout) {
-                    newLayout->setActivities(QStringList(Data::Layout::ALLACTIVITIESID));
-                }
 
                 newlyActivatedLayouts << newLayout->name();
             }

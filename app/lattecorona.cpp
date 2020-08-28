@@ -244,7 +244,7 @@ void Corona::load()
             if (m_universalSettings->layoutsMemoryUsage() == MemoryUsage::MultipleLayouts) {
                 loadLayoutName = "";
             } else {
-                loadLayoutName = m_universalSettings->currentLayoutName();
+                loadLayoutName = m_universalSettings->singleModeLayoutName();
 
                 if (!m_layoutsManager->synchronizer()->layoutExists(loadLayoutName)) {
                     //! If chosen layout does not exist, force Default layout loading
@@ -253,7 +253,8 @@ void Corona::load()
 
                     if (!m_layoutsManager->synchronizer()->layoutExists(defaultLayoutTemplateName)) {
                         //! If Default layout does not exist at all, create it
-                        m_templatesManager->newLayout("", defaultLayoutTemplateName);
+                        QString path = m_templatesManager->newLayout("", defaultLayoutTemplateName);
+                        m_layoutsManager->setOnAllActivities(Layout::AbstractLayout::layoutName(path));
                     }
                 }
             }

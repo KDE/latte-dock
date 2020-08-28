@@ -358,7 +358,7 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
             }
         }
     } else {
-        if (o_layoutsTable.containsId(m_layoutsTable[row].id) && o_layoutsTable[m_layoutsTable[row].id].name == m_corona->universalSettings()->currentLayoutName()) {
+        if (o_layoutsTable.containsId(m_layoutsTable[row].id) && o_layoutsTable[m_layoutsTable[row].id].name == m_corona->universalSettings()->singleModeLayoutName()) {
             Latte::Data::LayoutIcon icon;
             icon.name = m_activitiesMap[Latte::Data::Layout::ALLACTIVITIESID].icon;
             icon.isBackgroundFile = false;
@@ -510,7 +510,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
             if ((inMultipleMode() && m_layoutsTable[row].isActive)
                     || (!inMultipleMode()
                         && !original.name.isEmpty()
-                        && original.name == m_corona->universalSettings()->currentLayoutName())) {
+                        && original.name == m_corona->universalSettings()->singleModeLayoutName())) {
                 return sortingPriority(HIGHESTPRIORITY, row);
             }
 

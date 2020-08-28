@@ -60,7 +60,7 @@ class UniversalSettings : public QObject
     Q_PROPERTY(bool colorsScriptIsPresent READ colorsScriptIsPresent NOTIFY colorsScriptIsPresentChanged)
     Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)
 
-    Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
+    Q_PROPERTY(QString singleModeLayoutName READ singleModeLayoutName WRITE setSingleModeLayoutName NOTIFY singleModeLayoutNameChanged)
 
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
 
@@ -106,11 +106,8 @@ public:
     int screenTrackerInterval() const;
     void setScreenTrackerInterval(int duration);
 
-    QString currentLayoutName() const;
-    void setCurrentLayoutName(QString layoutName);
-
-    QString lastNonAssignedLayoutName() const;
-    void setLastNonAssignedLayoutName(QString layoutName);
+    QString singleModeLayoutName() const;
+    void setSingleModeLayoutName(QString layoutName);
 
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
@@ -138,10 +135,8 @@ signals:
     void badges3DStyleChanged();
     void canDisableBordersChanged();
     void colorsScriptIsPresentChanged();
-    void currentLayoutNameChanged();
     void downloadWindowSizeChanged();
     void inAdvancedModeForEditSettingsChanged();
-    void lastNonAssignedLayoutNameChanged();
     void layoutsColumnWidthsChanged();
     void layoutsWindowSizeChanged();
     void launchersChanged();
@@ -152,6 +147,7 @@ signals:
     void screenScalesChanged();
     void screenTrackerIntervalChanged();
     void showInfoWindowChanged();
+    void singleModeLayoutNameChanged();
     void versionChanged();
 
 private slots:
@@ -189,8 +185,7 @@ private:
 
     int m_screenTrackerInterval{2500};
 
-    QString m_currentLayoutName;
-    QString m_lastNonAssignedLayoutName;
+    QString m_singleModeLayoutName;
 
     QStringList m_launchers;
 

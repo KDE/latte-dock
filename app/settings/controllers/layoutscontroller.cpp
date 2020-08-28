@@ -252,6 +252,8 @@ void Layouts::applyColumnWidths()
 
             m_view->setColumnWidth(currentColumn, m_viewColumnWidths[i].toInt());
         }
+    } else {
+        m_view->resizeColumnsToContents();
     }
 }
 
@@ -412,7 +414,6 @@ void Layouts::loadLayouts()
 
     //! Send original loaded data to model
     m_model->setOriginalData(layoutsBuffer, inMultiple);
-    m_model->setOriginalLayoutForFreeActivities(layoutsBuffer.idForName(m_handler->corona()->universalSettings()->lastNonAssignedLayoutName()));
 
     QStringList currentLayoutNames = m_handler->corona()->layoutsManager()->currentLayoutsNames();
     if (currentLayoutNames.count() > 0) {
@@ -768,7 +769,7 @@ void Layouts::save()
         m_handler->corona()->layoutsManager()->setMemoryUsage(inMemoryOption);
 
         if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
-            m_handler->corona()->layoutsManager()->switchToLayout(m_handler->corona()->universalSettings()->currentLayoutName(), previousMemoryUsage);
+            m_handler->corona()->layoutsManager()->switchToLayout(m_handler->corona()->universalSettings()->singleModeLayoutName(), previousMemoryUsage);
         } else {
             m_handler->corona()->layoutsManager()->switchToLayout("", previousMemoryUsage);
         }
@@ -776,7 +777,7 @@ void Layouts::save()
         if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
             m_handler->corona()->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities();
         } else {
-            m_handler->corona()->layoutsManager()->switchToLayout(m_handler->corona()->universalSettings()->currentLayoutName());
+            m_handler->corona()->layoutsManager()->switchToLayout(m_handler->corona()->universalSettings()->singleModeLayoutName());
         }
     }
 
@@ -786,7 +787,11 @@ void Layouts::save()
 }
 
 void Layouts::storeColumnWidths()
-{
+{   
+    if (m_viewColumnWidths.isEmpty()) {
+        m_viewColumnWidths << "" << "" << "" << "";
+    }
+
     m_viewColumnWidths[0] = QString::number(m_view->columnWidth(Model::Layouts::BACKGROUNDCOLUMN));
 
     if (m_model->inMultipleMode()) {

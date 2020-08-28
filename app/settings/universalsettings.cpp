@@ -52,16 +52,15 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     m_corona = qobject_cast<Latte::Corona *>(parent);
 
     connect(this, &UniversalSettings::badges3DStyleChanged, this, &UniversalSettings::saveConfig);
-    connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);
-    connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);  
     connect(this, &UniversalSettings::inAdvancedModeForEditSettingsChanged, this, &UniversalSettings::saveConfig);
-    connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::metaPressAndHoldEnabledChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::sensitivityChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::screenTrackerIntervalChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::singleModeLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
 
     connect(this, &UniversalSettings::screenScalesChanged, this, &UniversalSettings::saveScalesConfig);
@@ -178,34 +177,19 @@ void UniversalSettings::setScreenTrackerInterval(int duration)
     emit screenTrackerIntervalChanged();
 }
 
-QString UniversalSettings::currentLayoutName() const
+QString UniversalSettings::singleModeLayoutName() const
 {
-    return m_currentLayoutName;
+    return m_singleModeLayoutName;
 }
 
-void UniversalSettings::setCurrentLayoutName(QString layoutName)
+void UniversalSettings::setSingleModeLayoutName(QString layoutName)
 {
-    if (m_currentLayoutName == layoutName) {
+    if (m_singleModeLayoutName == layoutName) {
         return;
     }
 
-    m_currentLayoutName = layoutName;
-    emit currentLayoutNameChanged();
-}
-
-QString UniversalSettings::lastNonAssignedLayoutName() const
-{
-    return m_lastNonAssignedLayoutName;
-}
-
-void UniversalSettings::setLastNonAssignedLayoutName(QString layoutName)
-{
-    if (m_lastNonAssignedLayoutName == layoutName) {
-        return;
-    }
-
-    m_lastNonAssignedLayoutName = layoutName;
-    emit lastNonAssignedLayoutNameChanged();
+    m_singleModeLayoutName = layoutName;
+    emit singleModeLayoutNameChanged();
 }
 
 QStringList UniversalSettings::launchers() const
@@ -503,13 +487,12 @@ void UniversalSettings::loadConfig()
     m_version = m_universalGroup.readEntry("version", 1);
     m_badges3DStyle = m_universalGroup.readEntry("badges3DStyle", false);
     m_canDisableBorders = m_universalGroup.readEntry("canDisableBorders", false);
-    m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
     m_inAdvancedModeForEditSettings = m_universalGroup.readEntry("inAdvancedModeForEditSettings", false);
-    m_lastNonAssignedLayoutName = m_universalGroup.readEntry("lastNonAssignedLayout", QString());
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_metaPressAndHoldEnabled = m_universalGroup.readEntry("metaPressAndHoldEnabled", true);
     m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
+    m_singleModeLayoutName = m_universalGroup.readEntry("singleModeLayoutName", QString());
     m_memoryUsage = static_cast<MemoryUsage::LayoutsMemory>(m_universalGroup.readEntry("memoryUsage", (int)MemoryUsage::SingleLayout));
     m_sensitivity = static_cast<Settings::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Settings::HighMouseSensitivity));
 
@@ -521,13 +504,12 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("version", m_version);
     m_universalGroup.writeEntry("badges3DStyle", m_badges3DStyle);
     m_universalGroup.writeEntry("canDisableBorders", m_canDisableBorders);
-    m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
     m_universalGroup.writeEntry("inAdvancedModeForEditSettings", m_inAdvancedModeForEditSettings);
-    m_universalGroup.writeEntry("lastNonAssignedLayout", m_lastNonAssignedLayoutName);
     m_universalGroup.writeEntry("launchers", m_launchers);
     m_universalGroup.writeEntry("metaPressAndHoldEnabled", m_metaPressAndHoldEnabled);
     m_universalGroup.writeEntry("screenTrackerInterval", m_screenTrackerInterval);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
+    m_universalGroup.writeEntry("singleModeLayoutName", m_singleModeLayoutName);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
     m_universalGroup.writeEntry("mouseSensitivity", (int)m_sensitivity);
 }

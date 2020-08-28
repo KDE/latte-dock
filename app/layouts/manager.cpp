@@ -85,14 +85,16 @@ void Manager::load()
 
     if (firstRun) {
         m_corona->universalSettings()->setVersion(2);
-        m_corona->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
+        m_corona->universalSettings()->setSingleModeLayoutName(i18n("My Layout"));
 
         //startup create what is necessary....
         if (!layoutsDir.exists()) {
             QDir(QDir::homePath() + "/.config").mkdir("latte");
         }
 
-        m_corona->templatesManager()->newLayout(i18n("My Layout"), i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
+        QString defpath = m_corona->templatesManager()->newLayout(i18n("My Layout"), i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));
+        setOnAllActivities(Layout::AbstractLayout::layoutName(defpath));
+
         m_corona->templatesManager()->importSystemLayouts();
     } else if (configVer < 2 && !firstRun) {
         m_corona->universalSettings()->setVersion(2);
@@ -102,7 +104,7 @@ void Manager::load()
             qDebug() << "Latte is updating its older configuration...";
             m_corona->templatesManager()->importSystemLayouts();
         } else {
-            m_corona->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
+            m_corona->universalSettings()->setSingleModeLayoutName(i18n("My Layout"));
         }
     }
 
@@ -218,6 +220,18 @@ void Manager::loadLatteLayout(QString layoutPath)
         cleanupOnStartup(layoutPath);
         qDebug() << "LOADING CORONA LAYOUT:" << layoutPath;
         m_corona->loadLayout(layoutPath);
+    }
+}
+
+void Manager::setOnAllActivities(QString layoutName)
+{
+    CentralLayout *central = m_synchronizer->centralLayout(layoutName);
+
+    if (central) {
+        central->setActivities(QStringList(Data::Layout::ALLACTIVITIESID));
+    } else if (m_importer->layoutExists(layoutName)) {
+        CentralLayout storage(this, m_importer->layoutUserFilePath(layoutName));
+        storage.setActivities(QStringList(Data::Layout::ALLACTIVITIESID));
     }
 }
 
