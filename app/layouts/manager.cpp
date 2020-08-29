@@ -59,8 +59,6 @@ Manager::Manager(QObject *parent)
 
         connect(m_synchronizer, &Synchronizer::centralLayoutsChanged, this, &Manager::centralLayoutsChanged);
         connect(m_synchronizer, &Synchronizer::currentLayoutIsSwitching, this, &Manager::currentLayoutIsSwitching);
-        connect(m_synchronizer, &Synchronizer::layoutsChanged, this, &Manager::layoutsChanged);
-        connect(m_synchronizer, &Synchronizer::menuLayoutsChanged, this, &Manager::menuLayoutsChanged);
     }
 }
 
@@ -75,7 +73,7 @@ Manager::~Manager()
     m_synchronizer->deleteLater();
 }
 
-void Manager::load()
+void Manager::init()
 {
     QDir layoutsDir(Layouts::Importer::layoutUserDir());
     bool firstRun = !layoutsDir.exists();
@@ -115,7 +113,7 @@ void Manager::load()
 
     qDebug() << "Latte is loading  its layouts...";
 
-    m_synchronizer->loadLayouts();
+    m_synchronizer->initLayouts();
 }
 
 void Manager::unload()
@@ -141,21 +139,6 @@ LaunchersSignals *Manager::launchersSignals() const
 Synchronizer *Manager::synchronizer() const
 {
     return m_synchronizer;
-}
-
-QStringList Manager::layouts() const
-{
-    return m_synchronizer->layouts();
-}
-
-QStringList Manager::menuLayouts() const
-{
-    return m_synchronizer->menuLayouts();
-}
-
-void Manager::setMenuLayouts(QStringList layouts)
-{
-    m_synchronizer->setMenuLayouts(layouts);
 }
 
 MemoryUsage::LayoutsMemory Manager::memoryUsage() const

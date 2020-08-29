@@ -226,7 +226,7 @@ void Corona::load()
         disconnect(m_activitiesConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
 
         m_templatesManager->init();
-        m_layoutsManager->load();
+        m_layoutsManager->init();
 
         connect(this, &Corona::availableScreenRectChangedFrom, this, &Plasma::Corona::availableScreenRectChanged);
         connect(this, &Corona::availableScreenRegionChangedFrom, this, &Plasma::Corona::availableScreenRegionChanged);
@@ -1160,13 +1160,12 @@ void Corona::switchToLayout(QString layout)
         if (QFileInfo(layoutPath).exists()) {
             qDebug() << " Layout is going to be imported and loaded from file :: " << layoutPath;
 
-            QString importedLayout = m_layoutsManager->importer()->importLayoutHelper(layoutPath);
+            QString importedLayout = m_layoutsManager->importer()->importLayout(layoutPath);
 
             if (importedLayout.isEmpty()) {
                 qDebug() << i18n("The layout cannot be imported from file :: ") << layoutPath;
             } else {
-                m_layoutsManager->synchronizer()->loadLayouts();
-                m_layoutsManager->switchToLayout(importedLayout);
+               m_layoutsManager->switchToLayout(importedLayout);
             }
         } else {
             qDebug() << " Layout from missing file can not be imported and loaded :: " << layoutPath;
@@ -1207,7 +1206,7 @@ QStringList Corona::contextMenuData()
     data << m_layoutsManager->synchronizer()->currentLayoutsNames().join(";;");
     data << QString::number((int)viewType);
 
-    for(const auto &layoutName : m_layoutsManager->menuLayouts()) {
+    for(const auto &layoutName : m_layoutsManager->synchronizer()->menuLayouts()) {
         if (m_layoutsManager->synchronizer()->centralLayout(layoutName)) {
             data << QString("1," + layoutName);
         } else {

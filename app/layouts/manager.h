@@ -69,10 +69,6 @@ namespace Layouts {
 class Manager : public QObject
 {
     Q_OBJECT
-
-    Q_PROPERTY(QStringList layouts READ layouts NOTIFY layoutsChanged)
-    Q_PROPERTY(QStringList menuLayouts READ menuLayouts NOTIFY menuLayoutsChanged)
-
     Q_PROPERTY(LaunchersSignals *launchersSignals READ launchersSignals NOTIFY launchersSignalsChanged)
 
 public:
@@ -82,14 +78,12 @@ public:
     Latte::Corona *corona();
     Importer *importer();
 
-    void load();
+    void init();
     void loadLayoutOnStartup(QString layoutName);
     void setOnAllActivities(QString layoutName);
     void showInfoWindow(QString info, int duration, QStringList activities = {"0"});
     void unload();
 
-    QStringList layouts() const;
-    QStringList menuLayouts() const;
     QStringList currentLayoutsNames() const;
 
     MemoryUsage::LayoutsMemory memoryUsage() const;
@@ -113,10 +107,7 @@ public slots:
 
 signals:
     void centralLayoutsChanged();
-    void currentLayoutChanged();
     void launchersSignalsChanged();
-    void layoutsChanged();
-    void menuLayoutsChanged();
 
     void currentLayoutIsSwitching(QString layoutName);
 

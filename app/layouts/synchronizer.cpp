@@ -94,7 +94,7 @@ bool Synchronizer::latteViewExists(Latte::View *view) const
 
 bool Synchronizer::layoutExists(QString layoutName) const
 {
-    return m_layouts.contains(layoutName);
+    return m_layouts.containsName(layoutName);
 }
 
 
@@ -198,30 +198,46 @@ QStringList Synchronizer::currentLayoutsNames() const
 
 QStringList Synchronizer::layouts() const
 {
-    return m_layouts;
+    return m_layouts.names();
 }
 
 QStringList Synchronizer::menuLayouts() const
 {
-    QStringList fixedMenuLayouts = m_menuLayouts;
+    QStringList menulayouts;
 
-    for (const auto layout : m_centralLayouts) {
-        if (!fixedMenuLayouts.contains(layout->name())) {
-            fixedMenuLayouts.prepend(layout->name());
+    for (int i=0; i<m_layouts.rowCount(); ++i) {
+        if (!m_layouts[i].isShownInMenu) {
+            continue;
+        }
+
+        if (m_manager->memoryUsage() == MemoryUsage::SingleLayout
+                || (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && !m_layouts[i].activities.isEmpty())) {
+            menulayouts << m_layouts[i].name;
         }
     }
 
-    return fixedMenuLayouts;
+    for (const auto layout : m_centralLayouts) {
+        if (!menulayouts.contains(layout->name())) {
+            menulayouts.prepend(layout->name());
+        }
+    }
+
+    return menulayouts;
 }
 
-void Synchronizer::setMenuLayouts(QStringList layouts)
+Data::LayoutsTable Synchronizer::layoutsTable() const
 {
-    if (m_menuLayouts == layouts) {
+    return m_layouts;
+}
+
+void Synchronizer::setLayoutsTable(const Data::LayoutsTable &table)
+{
+    if (m_layouts == table) {
         return;
     }
 
-    m_menuLayouts = layouts;
-    emit menuLayoutsChanged();
+    m_layouts = table;
+    emit layoutsChanged();
 }
 
 CentralLayout *Synchronizer::centralLayout(QString layoutname) const
@@ -425,10 +441,9 @@ void Synchronizer::unloadCentralLayout(CentralLayout *layout)
     }
 }
 
-void Synchronizer::loadLayouts()
+void Synchronizer::initLayouts()
 {
     m_layouts.clear();
-    m_menuLayouts.clear();
     m_assignedLayouts.clear();
 
     QDir layoutDir(Layouts::Importer::layoutUserDir());
@@ -446,15 +461,12 @@ void Synchronizer::loadLayouts()
         onLayoutAdded(layoutpath);
     }
 
-    m_layouts.sort(Qt::CaseInsensitive);
-    m_menuLayouts.sort(Qt::CaseInsensitive);
-
     emit layoutsChanged();
-    emit menuLayoutsChanged();
 
     if (!m_isLoaded) {
         m_isLoaded = true;
         connect(m_manager->corona()->templatesManager(), &Latte::Templates::Manager::newLayoutAdded, this, &Synchronizer::onLayoutAdded);
+        connect(m_manager->importer(), &Latte::Layouts::Importer::newLayoutAdded, this, &Synchronizer::onLayoutAdded);
     }
 }
 
@@ -470,18 +482,10 @@ void Synchronizer::onLayoutAdded(const QString &layout)
         }
     }
 
-    m_layouts.append(centralLayout.name());
-
-    if (centralLayout.showInMenu()) {
-        m_menuLayouts.append(centralLayout.name());
-    }
+    m_layouts.insertBasedOnName(centralLayout.data());
 
     if (m_isLoaded) {
-        m_layouts.sort(Qt::CaseInsensitive);
-        m_menuLayouts.sort(Qt::CaseInsensitive);
-
         emit layoutsChanged();
-        emit menuLayoutsChanged();
     }
 }
 

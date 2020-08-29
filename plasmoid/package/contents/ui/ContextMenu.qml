@@ -922,7 +922,7 @@ PlasmaComponents.ContextMenu {
 
         action: latteView ?  containmentActions[1] : plasmoid.action("configure")
         enabled: visible
-        visible: latteView && latteView.layoutsManager.menuLayouts.length>1
+        visible: latteView && containmentActions[1].visible
     }
 
     PlasmaComponents.MenuItem {

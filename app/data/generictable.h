@@ -66,6 +66,8 @@ public:
 
     QString idForName(const QString &name) const;
 
+    QStringList names() const;
+
     void clear();
     void remove(const int &row);
     void remove(const QString &id);

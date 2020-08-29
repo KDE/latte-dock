@@ -24,7 +24,6 @@
 // local
 #include "generictable.h"
 #include "layoutdata.h"
-#include "../layouts/synchronizer.h"
 
 // Qt
 #include <QList>

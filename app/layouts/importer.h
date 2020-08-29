@@ -72,6 +72,10 @@ public:
     bool exportFullConfiguration(QString file);
 
     QString storageTmpDir() const;
+    //! imports the specific layout and return the new layout name.
+    //! if the function didn't succeed returns an empty string
+    QString importLayout(QString fileName);
+
 
     static Importer::LatteFileVersion fileVersion(QString file);
 
@@ -88,7 +92,7 @@ public:
     //! check if this layout exists already in the latte directory
     static bool layoutExists(QString layoutName);
     //! imports the specific layout and return the new layout name.
-    //! if the function didn't succeed return an empty string
+    //! if the function didn't succeed returns an empty string
     static QString importLayoutHelper(QString fileName);
 
     //! returns the file path of a layout either existing or not
@@ -105,6 +109,9 @@ public:
     //! startup and if such state occurs, it basically means that the app didn't
     //! close correctly, e.g. there was a crash.
     static QStringList checkRepairMultipleLayoutsLinkedFile();
+
+signals:
+    void newLayoutAdded(const QString &path);
 
 private:
     //! checks if this old layout can be imported. If it can it returns

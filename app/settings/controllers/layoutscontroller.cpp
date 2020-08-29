@@ -379,7 +379,7 @@ void Layouts::loadLayouts()
 
     Latte::Data::LayoutsTable layoutsBuffer;
 
-    for (const auto layout : m_handler->corona()->layoutsManager()->layouts()) {
+    for (const auto layout : m_handler->corona()->layoutsManager()->synchronizer()->layouts()) {
         Latte::Data::Layout original;
         original.id = Latte::Layouts::Importer::layoutUserFilePath(layout);
 
@@ -756,8 +756,8 @@ void Layouts::save()
         }
     }
 
-    //! reload layouts in layoutsmanager
-    m_handler->corona()->layoutsManager()->synchronizer()->loadLayouts();
+    //! send new layouts data in layoutsmanager
+    m_handler->corona()->layoutsManager()->synchronizer()->setLayoutsTable(currentLayouts);
 
 
     //! make sure that there is a layout for free activities

@@ -520,6 +520,17 @@ bool Importer::importHelper(QString fileName)
     return true;
 }
 
+QString Importer::importLayout(QString fileName)
+{
+    QString newLayoutName = importLayoutHelper(fileName);
+
+    if (!newLayoutName.isEmpty()) {
+        emit newLayoutAdded(layoutUserFilePath(newLayoutName));
+    }
+
+    return newLayoutName;
+}
+
 QString Importer::importLayoutHelper(QString fileName)
 {
     LatteFileVersion version = fileVersion(fileName);
@@ -538,10 +549,9 @@ QString Importer::importLayoutHelper(QString fileName)
 
     if (newFileInfo.exists() && !newFileInfo.isWritable()) {
         QFile(newPath).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
-    }
+    }    
 
     return newLayoutName;
-
 }
 
 QStringList Importer::availableLayouts()

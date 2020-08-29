@@ -20,6 +20,10 @@
 #ifndef LAYOUTSSYNCHRONIZER_H
 #define LAYOUTSSYNCHRONIZER_H
 
+// local
+#include "../data/layoutdata.h"
+#include "../data/layoutstable.h"
+
 // Qt
 #include <QObject>
 #include <QHash>
@@ -68,7 +72,6 @@ public:
     Synchronizer(QObject *parent);
     ~Synchronizer() override;
 
-    void loadLayouts();
     void unloadLayouts();
 
     void hideAllViews();
@@ -88,7 +91,6 @@ public:
     QStringList currentLayoutsNames() const;
     QStringList layouts() const;
     QStringList menuLayouts() const;
-    void setMenuLayouts(QStringList layouts);
 
     QStringList activities();
     QStringList freeActivities();
@@ -111,13 +113,16 @@ public:
 
     KActivities::Controller *activitiesController() const;
 
+    Data::LayoutsTable layoutsTable() const;
+    void setLayoutsTable(const Data::LayoutsTable &table);
+
 public slots:
+    void initLayouts();
     void updateKWinDisabledBorders();
 
 signals:
     void centralLayoutsChanged();
     void layoutsChanged();
-    void menuLayoutsChanged();
     void runningActicitiesChanged();
 
     void currentLayoutIsSwitching(QString layoutName);
@@ -138,12 +143,9 @@ private:
     bool m_multipleModeInitialized{false};
     bool m_isLoaded{false};
 
-    QStringList m_layouts;
-    QStringList m_menuLayouts;
-
-    AssignedLayoutsHash m_assignedLayouts;
-
+    Data::LayoutsTable m_layouts;
     QList<CentralLayout *> m_centralLayouts;
+    AssignedLayoutsHash m_assignedLayouts;
 
     Layouts::Manager *m_manager;
     KActivities::Controller *m_activitiesController;
