@@ -369,15 +369,11 @@ void Layouts::initLayouts()
     bool inMultiple{m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts};
     setInMultipleMode(inMultiple);
 
-    int i = 0;
-    QStringList brokenLayouts;
-
-    if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-        m_handler->corona()->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
-    }
-
     m_handler->corona()->layoutsManager()->synchronizer()->updateLayoutsTable();
     Latte::Data::LayoutsTable layouts = m_handler->corona()->layoutsManager()->synchronizer()->layoutsTable();
+
+
+    QStringList brokenLayouts;
 
     for (int i=0; i<layouts.rowCount(); ++i) {
         if (layouts[i].isBroken) {
