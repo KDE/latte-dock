@@ -114,6 +114,7 @@ public:
     //! all original data will become also current
     void resetData();
 
+    void appendOriginalLayout(const Latte::Data::Layout &layout);
     void appendLayout(const Latte::Data::Layout &layout);
     void removeLayout(const QString &id);
     void setLayoutProperties(const Latte::Data::Layout &layout);

@@ -120,6 +120,8 @@ public slots:
     void initLayouts();
     void updateKWinDisabledBorders();
 
+    void updateLayoutsTable();
+
 signals:
     void centralLayoutsChanged();
     void layoutsChanged();
@@ -127,9 +129,13 @@ signals:
 
     void currentLayoutIsSwitching(QString layoutName);
 
+    void newLayoutAdded(const Data::Layout &layout);
+
 private slots:
     void onCurrentActivityChanged(const QString &id);
     void onLayoutAdded(const QString &layoutpath);
+
+    void reloadAssignedLayouts();
 
 private:
     void addLayout(CentralLayout *layout);

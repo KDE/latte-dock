@@ -31,11 +31,11 @@
 #include "../handlers/tablayoutshandler.h"
 #include "../tools/settingstools.h"
 #include "../../data/uniqueidinfo.h"
-#include "../../layout/genericlayout.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/importer.h"
 #include "../../layouts/manager.h"
 #include "../../layouts/synchronizer.h"
+#include "../../templates/templatesmanager.h"
 
 // Qt
 #include <QDir>
@@ -71,6 +71,8 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
     connect(m_model, &Model::Layouts::inMultipleModeChanged, this, &Layouts::applyColumnWidths);
     connect(m_handler->corona()->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, &Layouts::applyColumnWidths);
 
+    connect(m_handler->corona()->layoutsManager()->synchronizer(), &Latte::Layouts::Synchronizer::newLayoutAdded, this, &Layouts::onLayoutAddedExternally);
+
     connect(m_model, &QAbstractItemModel::dataChanged, this, &Layouts::dataChanged);
     connect(m_model, &Model::Layouts::rowsInserted, this, &Layouts::dataChanged);
     connect(m_model, &Model::Layouts::rowsRemoved, this, &Layouts::dataChanged);
@@ -83,15 +85,12 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
     });
 
     initView();
-    loadLayouts();
+    initLayouts();
 }
 
 Layouts::~Layouts()
 {
     saveConfig();
-
-    //! remove
-    qDeleteAll(m_layouts);
 
     for (const auto &tempDir : m_tempDirectories) {
         QDir tDir(tempDir);
@@ -364,7 +363,7 @@ void Layouts::setOriginalLayoutForFreeActivities(const QString &id)
     emit dataChanged();
 }
 
-void Layouts::loadLayouts()
+void Layouts::initLayouts()
 {
     m_model->clear();
     bool inMultiple{m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts};
@@ -377,43 +376,17 @@ void Layouts::loadLayouts()
         m_handler->corona()->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
     }
 
-    Latte::Data::LayoutsTable layoutsBuffer;
+    m_handler->corona()->layoutsManager()->synchronizer()->updateLayoutsTable();
+    Latte::Data::LayoutsTable layouts = m_handler->corona()->layoutsManager()->synchronizer()->layoutsTable();
 
-    for (const auto layout : m_handler->corona()->layoutsManager()->synchronizer()->layouts()) {
-        Latte::Data::Layout original;
-        original.id = Latte::Layouts::Importer::layoutUserFilePath(layout);
-
-        CentralLayout *central = new CentralLayout(this, original.id);
-
-        original.name = central->name();
-        original.icon = central->icon();
-        original.backgroundStyle = central->backgroundStyle();
-        original.color = central->color();
-        original.background = central->customBackground();
-        original.textColor = central->customTextColor();
-        original.isActive = (m_handler->corona()->layoutsManager()->synchronizer()->layout(original.name) != nullptr);
-        original.isLocked = !central->isWritable();
-        original.isShownInMenu = central->showInMenu();
-        original.hasDisabledBorders = central->disableBordersForMaximizedWindows();
-        original.activities = central->activities();
-
-        m_layouts[original.id] = central;
-
-        layoutsBuffer << original;
-
-        qDebug() << "counter:" << i << " total:" << m_model->rowCount();
-
-        i++;
-
-        Latte::Layout::GenericLayout *generic = m_handler->corona()->layoutsManager()->synchronizer()->layout(central->name());
-
-        if ((generic && generic->isBroken()) || (!generic && central->isBroken())) {
-            brokenLayouts.append(central->name());
+    for (int i=0; i<layouts.rowCount(); ++i) {
+        if (layouts[i].isBroken) {
+            brokenLayouts.append(layouts[i].name);
         }
     }
 
     //! Send original loaded data to model
-    m_model->setOriginalData(layoutsBuffer, inMultiple);
+    m_model->setOriginalData(layouts, inMultiple);
 
     QStringList currentLayoutNames = m_handler->corona()->layoutsManager()->currentLayoutsNames();
     if (currentLayoutNames.count() > 0) {
@@ -434,6 +407,12 @@ void Layouts::loadLayouts()
                                          true);
         }
     }
+}
+
+void Layouts::onLayoutAddedExternally(const Data::Layout &layout)
+{
+    m_model->appendOriginalLayout(layout);
+    m_model->appendLayout(layout);
 }
 
 void Layouts::sortByColumn(int column, Qt::SortOrder order)
@@ -464,13 +443,7 @@ const Latte::Data::Layout Layouts::addLayoutForFile(QString file, QString layout
         QFile(copied.id).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
     }
 
-    if (m_layouts.contains(copied.id)) {
-        CentralLayout *oldSettings = m_layouts.take(copied.id);
-        delete oldSettings;
-    }
-
     CentralLayout *settings = new CentralLayout(this, copied.id);
-    m_layouts[copied.id] = settings;
 
     copied.name = uniqueLayoutName(layoutName);
     copied.icon = settings->icon();
@@ -527,9 +500,9 @@ void Layouts::copySelectedLayout()
 
     //! Update original layout before copying if this layout is active
     if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-        Latte::Layout::GenericLayout *generic = m_handler->corona()->layoutsManager()->synchronizer()->layout(selectedLayoutOriginal.name);
-        if (generic) {
-            generic->syncToLayoutFile();
+        Latte::CentralLayout *central = m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(selectedLayoutOriginal.name);
+        if (central) {
+            central->syncToLayoutFile();
         }
     }
 
@@ -552,7 +525,6 @@ void Layouts::copySelectedLayout()
     settings->clearLastUsedActivity();
     settings->setActivities(QStringList());
 
-    m_layouts[copied.id] = settings;
     m_model->appendLayout(copied);
 
     m_view->selectRow(rowForId(copied.id));
@@ -630,7 +602,7 @@ void Layouts::save()
 
     QString switchToLayout;
 
-    QHash<QString, Latte::Layout::GenericLayout *> activeLayoutsToRename;
+    QHash<QString, Latte::CentralLayout *> activeLayoutsToRename;
 
     Latte::Data::LayoutsTable originalLayouts = m_model->originalLayoutsData();
     Latte::Data::LayoutsTable currentLayouts = m_model->currentLayoutsData();
@@ -639,11 +611,6 @@ void Layouts::save()
     //! remove layouts that have been removed from the user
     for (int i=0; i<removedLayouts.rowCount(); ++i) {
         QFile(removedLayouts[i].id).remove();
-
-        if (m_layouts.contains(removedLayouts[i].id)) {
-            CentralLayout *removedLayout = m_layouts.take(removedLayouts[i].id);
-            delete removedLayout;
-        }
     }
 
     QList<Data::UniqueIdInfo> alteredIdsInfo;
@@ -658,27 +625,24 @@ void Layouts::save()
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
         //! update the generic parts of the layouts
         bool isOriginalLayout = m_model->originalLayoutsData().containsId(iLayoutCurrentData.id);
-        Latte::Layout::GenericLayout *genericActive= isOriginalLayout ? m_handler->corona()->layoutsManager()->synchronizer()->layout(iLayoutOriginalData.name) : nullptr;
-        Latte::Layout::GenericLayout *generic = genericActive ? genericActive : m_layouts[iLayoutCurrentData.id];
+        Latte::CentralLayout *centralActive= isOriginalLayout ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(iLayoutOriginalData.name) : nullptr;
+        Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, iLayoutCurrentData.id);
 
         //! unlock read-only layout
-        if (!generic->isWritable()) {
-            generic->unlock();
+        if (!central->isWritable()) {
+            central->unlock();
         }
 
         //! Icon
-        generic->setIcon(iLayoutCurrentData.icon);
+        central->setIcon(iLayoutCurrentData.icon);
 
         //! Backgrounds
-        generic->setBackgroundStyle(iLayoutCurrentData.backgroundStyle);
-        generic->setColor(iLayoutCurrentData.color);
-        generic->setCustomBackground(iLayoutCurrentData.background);
-        generic->setCustomTextColor(iLayoutCurrentData.textColor);
+        central->setBackgroundStyle(iLayoutCurrentData.backgroundStyle);
+        central->setColor(iLayoutCurrentData.color);
+        central->setCustomBackground(iLayoutCurrentData.background);
+        central->setCustomTextColor(iLayoutCurrentData.textColor);
 
-        //! update only the Central-specific layout parts
-        CentralLayout *centralActive = isOriginalLayout ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(iLayoutOriginalData.name) : nullptr;
-        CentralLayout *central = centralActive ? centralActive : m_layouts[iLayoutCurrentData.id];
-
+        //! Extra Properties
         central->setShowInMenu(iLayoutCurrentData.isShownInMenu);
         central->setDisableBordersForMaximizedWindows(iLayoutCurrentData.hasDisabledBorders);
         central->setActivities(iLayoutCurrentData.activities);
@@ -686,16 +650,13 @@ void Layouts::save()
         //! If the layout name changed OR the layout path is a temporary one
         if ((iLayoutCurrentData.name != iLayoutOriginalData.name) || iLayoutCurrentData.isTemporary()) {
             //! If the layout is Active in MultipleLayouts
-            if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts && generic->isActive()) {
-                qDebug() << " Active Layout Should Be Renamed From : " << generic->name() << " TO :: " << iLayoutCurrentData.name;
-                activeLayoutsToRename[iLayoutCurrentData.name] = generic;
+            if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts && central->isActive()) {
+                qDebug() << " Active Layout Should Be Renamed From : " << central->name() << " TO :: " << iLayoutCurrentData.name;
+                activeLayoutsToRename[iLayoutCurrentData.name] = central;
             }
 
-            QString tempFile = layoutTempDir.path() + "/" + QString(generic->name() + ".layout.latte");
+            QString tempFile = layoutTempDir.path() + "/" + QString(central->name() + ".layout.latte");
             qDebug() << "new temp file ::: " << tempFile;
-
-            generic = m_layouts.take(iLayoutCurrentData.id);
-            delete generic;
 
             QFile(iLayoutCurrentData.id).rename(tempFile);
 
@@ -718,8 +679,6 @@ void Layouts::save()
         QString newFile = Latte::Layouts::Importer::layoutUserFilePath(idInfo.newName);
         QFile(idInfo.newId).rename(newFile);
 
-        CentralLayout *nLayout = new CentralLayout(this, newFile);
-        m_layouts[newFile] = nLayout;
 
         //! updating the #SETTINGSID in the model for the layout that was renamed
         for (int j = 0; j < m_model->rowCount(); ++j) {
@@ -733,7 +692,7 @@ void Layouts::save()
 
     if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
         for (const auto &newLayoutName : activeLayoutsToRename.keys()) {
-            Latte::Layout::GenericLayout *layoutPtr = activeLayoutsToRename[newLayoutName];
+            Latte::CentralLayout *layoutPtr = activeLayoutsToRename[newLayoutName];
             qDebug() << " Active Layout of Type: " << layoutPtr->type() << " Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
             layoutPtr->renameLayout(newLayoutName);
         }
@@ -745,10 +704,10 @@ void Layouts::save()
         Latte::Data::Layout layoutOriginalData = m_model->originalData(layoutCurrentData.id);
         layoutOriginalData = layoutOriginalData.isEmpty() ? layoutCurrentData : layoutOriginalData;
 
-        Latte::Layout::GenericLayout *layoutPtr = m_handler->corona()->layoutsManager()->synchronizer()->layout(layoutOriginalData.name);
+        Latte::CentralLayout *layoutPtr = m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(layoutOriginalData.name);
 
-        if (!layoutPtr && m_layouts.contains(layoutCurrentData.id)) {
-            layoutPtr = m_layouts[layoutCurrentData.id];
+        if (!layoutPtr) {
+            layoutPtr = new Latte::CentralLayout(this, layoutCurrentData.id);
         }
 
         if (layoutCurrentData.isLocked && layoutPtr && layoutPtr->isWritable()) {

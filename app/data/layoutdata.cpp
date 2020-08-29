@@ -38,6 +38,7 @@ Layout::Layout(Layout &&o)
       background(o.background),
       textColor(o.textColor),
       isActive(o.isActive),
+      isBroken(o.isBroken),
       isLocked(o.isLocked),
       isShownInMenu(o.isShownInMenu),
       isTemplate(o.isTemplate),
@@ -54,6 +55,7 @@ Layout::Layout(const Layout &o)
       background(o.background),
       textColor(o.textColor),
       isActive(o.isActive),
+      isBroken(o.isBroken),
       isLocked(o.isLocked),
       isShownInMenu(o.isShownInMenu),
       isTemplate(o.isTemplate),
@@ -72,6 +74,7 @@ Layout &Layout::operator=(Layout &&rhs)
     background = rhs.background;
     textColor = rhs.textColor;
     isActive = rhs.isActive;
+    isBroken = rhs.isBroken;
     isLocked = rhs.isLocked;
     isShownInMenu = rhs.isShownInMenu;
     isTemplate = rhs.isTemplate;
@@ -91,6 +94,7 @@ Layout &Layout::operator=(const Layout &rhs)
     background = rhs.background;
     textColor = rhs.textColor;
     isActive = rhs.isActive;
+    isBroken = rhs.isBroken;
     isLocked = rhs.isLocked;
     isShownInMenu = rhs.isShownInMenu;
     isTemplate = rhs.isTemplate;
@@ -109,6 +113,7 @@ bool Layout::operator==(const Layout &rhs) const
             && (color == rhs.color)
             && (background == rhs.background)
             && (textColor == rhs.textColor)
+            && (isBroken == rhs.isBroken)
             //&& (isActive == rhs.isActive) /*Disabled but this is not a data but a layout state*/
             && (isLocked == rhs.isLocked)
             && (isShownInMenu == rhs.isShownInMenu)

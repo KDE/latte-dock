@@ -52,6 +52,8 @@ Synchronizer::Synchronizer(QObject *parent)
 {
     m_manager = qobject_cast<Manager *>(parent);
 
+    connect(this, &Synchronizer::layoutsChanged, this, &Synchronizer::reloadAssignedLayouts);
+
     //! KWin update Disabled Borders
     connect(this, &Synchronizer::centralLayoutsChanged, this, &Synchronizer::updateKWinDisabledBorders);
     connect(m_manager->corona()->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, &Synchronizer::updateKWinDisabledBorders);
@@ -238,6 +240,24 @@ void Synchronizer::setLayoutsTable(const Data::LayoutsTable &table)
 
     m_layouts = table;
     emit layoutsChanged();
+}
+
+void Synchronizer::updateLayoutsTable()
+{
+    for (int i = 0; i < m_centralLayouts.size(); ++i) {
+        CentralLayout *layout = m_centralLayouts.at(i);
+
+        if (m_layouts.containsId(layout->file())) {
+            m_layouts[layout->file()] = layout->data();
+        }
+    }
+
+    for (int i = 0; i < m_layouts.rowCount(); ++i) {
+        if (m_layouts[i].isBroken && !m_layouts[i].isActive) {
+            CentralLayout central(this, m_layouts[i].id);
+            m_layouts[i].isBroken = central.isBroken();
+        }
+    }
 }
 
 CentralLayout *Synchronizer::centralLayout(QString layoutname) const
@@ -444,7 +464,6 @@ void Synchronizer::unloadCentralLayout(CentralLayout *layout)
 void Synchronizer::initLayouts()
 {
     m_layouts.clear();
-    m_assignedLayouts.clear();
 
     QDir layoutDir(Layouts::Importer::layoutUserDir());
     QStringList filter;
@@ -473,19 +492,25 @@ void Synchronizer::initLayouts()
 void Synchronizer::onLayoutAdded(const QString &layout)
 {
     CentralLayout centralLayout(this, layout);
-
-    for (const auto &activity : centralLayout.activities()) {
-        if (m_assignedLayouts.contains(activity)) {
-            m_assignedLayouts[activity] << centralLayout.name();
-        } else {
-            m_assignedLayouts[activity] = QStringList(centralLayout.name());
-        }
-    }
-
     m_layouts.insertBasedOnName(centralLayout.data());
 
     if (m_isLoaded) {
         emit layoutsChanged();
+    }
+}
+
+void Synchronizer::reloadAssignedLayouts()
+{
+    m_assignedLayouts.clear();
+
+    for (int i=0; i< m_layouts.rowCount(); ++i) {
+        for (const auto &activity : m_layouts[i].activities) {
+            if (m_assignedLayouts.contains(activity)) {
+                m_assignedLayouts[activity] << m_layouts[i].name;
+            } else {
+                m_assignedLayouts[activity] = QStringList(m_layouts[i].name);
+            }
+        }
     }
 }
 
@@ -653,6 +678,10 @@ void Synchronizer::syncMultipleLayoutsToActivities()
                 qDebug() << "ACTIVATING LAYOUT ::::: " << layoutName;
                 addLayout(newLayout);
                 newLayout->importToCorona();
+
+                if (!defaultForcedLayout.isEmpty() && defaultForcedLayout == layoutName) {
+                    emit newLayoutAdded(newLayout->data());
+                }
 
                 newlyActivatedLayouts << newLayout->name();
             }

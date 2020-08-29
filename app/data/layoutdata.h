@@ -50,6 +50,7 @@ public:
     QString background;
     QString textColor;
     bool isActive{false};
+    bool isBroken{false};
     bool isLocked{false};
     bool isShownInMenu{false};
     bool isTemplate{false};

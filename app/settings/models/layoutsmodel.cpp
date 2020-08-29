@@ -130,6 +130,12 @@ void Layouts::appendLayout(const Latte::Data::Layout &layout)
     emit rowsInserted();
 }
 
+void Layouts::appendOriginalLayout(const Latte::Data::Layout &layout)
+{
+    int newRow = o_layoutsTable.sortedPosForName(layout.name);
+    o_layoutsTable.insert(newRow, layout);
+}
+
 void Layouts::applyData()
 {   
     QVector<int> roles;

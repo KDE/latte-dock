@@ -80,7 +80,6 @@ public:
     //! actions
     void reset();
     void save();
-    void loadLayouts();
     void removeSelected();
     void toggleLockedForSelected();
 
@@ -101,12 +100,14 @@ signals:
     void dataChanged();
 
 private slots:
+    void initLayouts();
     void loadConfig();
     void saveConfig();
     void storeColumnWidths();
     void applyColumnWidths();
 
     void onNameDuplicatedFrom(const QString &provenId,  const QString &trialId);
+    void onLayoutAddedExternally(const Data::Layout &layout);
 
 private:
     void initView();
@@ -135,7 +136,6 @@ private:
     //! current data
     Model::Layouts *m_model{nullptr};
     QSortFilterProxyModel *m_proxyModel{nullptr};
-    QHash<const QString, Latte::CentralLayout *> m_layouts;
 
     //! temp data
     QStringList m_tempDirectories;
