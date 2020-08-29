@@ -23,6 +23,7 @@
 
 //! local
 #include "genericdata.h"
+#include "generictable.h"
 
 //! Qt
 #include <QMetaType>
@@ -43,7 +44,7 @@ public:
     Activity(const Activity &o);
 
     //! Layout data
-    bool isCurrent;
+    bool isCurrent{false};
     QString icon;
     KActivities::Info::State state;
 
@@ -57,12 +58,12 @@ public:
 
 //! This is an Activities map in the following structure:
 //! #activityId -> activite_information
-typedef QHash<const QString, Activity> ActivitiesMap;
+typedef GenericTable<Data::Activity> ActivitiesTable;
 
 }
 }
 
 Q_DECLARE_METATYPE(Latte::Data::Activity)
-Q_DECLARE_METATYPE(Latte::Data::ActivitiesMap)
+Q_DECLARE_METATYPE(Latte::Data::ActivitiesTable)
 
 #endif

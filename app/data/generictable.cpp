@@ -19,6 +19,7 @@
  */
 
 #include "generictable.h"
+#include "activitydata.h"
 #include "appletdata.h"
 #include "layoutdata.h"
 
@@ -287,6 +288,7 @@ void GenericTable<T>::remove(const int &row)
 //! Make linker happy and provide which table instances will be used.
 //! The alternative would be to move functions definitions in the header file
 //! but that would drop readability
+template class GenericTable<Data::Activity>;
 template class GenericTable<Data::Applet>;
 template class GenericTable<Data::Layout>;
 

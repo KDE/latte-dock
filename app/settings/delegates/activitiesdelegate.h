@@ -24,6 +24,7 @@
 #include "../../data/activitydata.h"
 
 // Qt
+#include <QMenu>
 #include <QStyledItemDelegate>
 
 class QModelIndex;
@@ -49,7 +50,8 @@ public:
     virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
 private:
-    void updateButton(QWidget *editor, const Latte::Data::ActivitiesMap &allActivitiesData) const;
+    void updateCurrentActivityAction(QMenu *menu) const;
+    void updateButton(QWidget *editor, const Latte::Data::ActivitiesTable &allActivitiesTable) const;
 
     QString joinedActivities(const QList<Latte::Data::Activity> &activities, const QStringList &originalIds, bool isActive = false, bool formatText = true) const;
 };

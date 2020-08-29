@@ -161,7 +161,7 @@ private:
 private:
     QString m_iconsPath;
 
-    Latte::Data::ActivitiesMap m_activitiesMap;
+    Latte::Data::ActivitiesTable m_activitiesTable;
     QHash<QString, KActivities::Info *> m_activitiesInfo;
 
     //! original data

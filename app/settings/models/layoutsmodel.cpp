@@ -336,12 +336,12 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
     if (inMultipleMode()) {
         if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::ALLACTIVITIESID)) {
             Latte::Data::LayoutIcon icon;
-            icon.name = m_activitiesMap[Latte::Data::Layout::ALLACTIVITIESID].icon;
+            icon.name = m_activitiesTable[Latte::Data::Layout::ALLACTIVITIESID].icon;
             icon.isBackgroundFile = false;
             icons << icon;
         } else if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
             Latte::Data::LayoutIcon icon;
-            icon.name = m_activitiesMap[Latte::Data::Layout::FREEACTIVITIESID].icon;
+            icon.name = m_activitiesTable[Latte::Data::Layout::FREEACTIVITIESID].icon;
             icon.isBackgroundFile = false;
             icons << icon;
         } else {
@@ -349,9 +349,9 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
 
             for(int i=0; i<activitiesIds.count(); ++i) {
                 QString id = activitiesIds[i];
-                if (m_activitiesMap.contains(id)) {
+                if (m_activitiesTable.containsId(id)) {
                     Latte::Data::LayoutIcon icon;
-                    icon.name = m_activitiesMap[id].icon;
+                    icon.name = m_activitiesTable[id].icon;
                     icon.isBackgroundFile = false;
                     icons << icon;
                 }
@@ -360,7 +360,7 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
     } else {
         if (o_layoutsTable.containsId(m_layoutsTable[row].id) && o_layoutsTable[m_layoutsTable[row].id].name == m_corona->universalSettings()->singleModeLayoutName()) {
             Latte::Data::LayoutIcon icon;
-            icon.name = m_activitiesMap[Latte::Data::Layout::ALLACTIVITIESID].icon;
+            icon.name = m_activitiesTable[Latte::Data::Layout::ALLACTIVITIESID].icon;
             icon.isBackgroundFile = false;
             icons << icon;
         }
@@ -462,11 +462,12 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         QStringList activities;
         activities << QString(Latte::Data::Layout::ALLACTIVITIESID);
         activities << QString(Latte::Data::Layout::FREEACTIVITIESID);
+        activities << QString(Latte::Data::Layout::CURRENTACTIVITYID);
         activities << m_corona->layoutsManager()->synchronizer()->activities();
         return activities;
     } else if (role == ALLACTIVITIESDATAROLE) {
         QVariant activitiesData;
-        activitiesData.setValue(m_activitiesMap);
+        activitiesData.setValue(m_activitiesTable);
         return activitiesData;
     } else if (role == ALLLAYOUTSROLE) {
         QVariant layouts;
@@ -816,14 +817,21 @@ void Layouts::initActivities()
     allActivities.name = QString("[ " + i18n("All Activities") + " ]");
     allActivities.icon = "favorites";
     allActivities.state = KActivities::Info::Stopped;
-    m_activitiesMap[Latte::Data::Layout::ALLACTIVITIESID] = allActivities;
+    m_activitiesTable << allActivities;
 
     Latte::Data::Activity freeActivities;
     freeActivities.id = Latte::Data::Layout::FREEACTIVITIESID;
     freeActivities.name = QString("[ " + i18n("Free Activities") + " ]");
     freeActivities.icon = "favorites";
     freeActivities.state = KActivities::Info::Stopped;
-    m_activitiesMap[Latte::Data::Layout::FREEACTIVITIESID] = freeActivities;
+    m_activitiesTable << freeActivities;
+
+    Latte::Data::Activity currentActivity;
+    currentActivity.id = Latte::Data::Layout::CURRENTACTIVITYID;
+    currentActivity.name = QString("[ " + i18n("Current Activity") + " ]");
+    currentActivity.icon = "favorites";
+    currentActivity.state = KActivities::Info::Stopped;
+    m_activitiesTable << currentActivity;
 
     QStringList activities = m_corona->layoutsManager()->synchronizer()->activities();;
 
@@ -863,8 +871,13 @@ void Layouts::onActivityAdded(const QString &id)
     activity.name = m_activitiesInfo[id]->name();
     activity.icon = m_activitiesInfo[id]->icon();
     activity.state = m_activitiesInfo[id]->state();
+    activity.isCurrent = m_activitiesInfo[id]->isCurrent();
 
-    m_activitiesMap[id] = activity;
+    if (!m_activitiesTable.containsId(id)) {
+        m_activitiesTable << activity;
+    } else {
+        m_activitiesTable[id] = activity;
+    }
 
     connect(m_activitiesInfo[id], &KActivities::Info::nameChanged, [this, id]() {
         onActivityChanged(id);
@@ -873,12 +886,16 @@ void Layouts::onActivityAdded(const QString &id)
     connect(m_activitiesInfo[id], &KActivities::Info::iconChanged, [this, id]() {
         onActivityChanged(id);
     });
+
+    connect(m_activitiesInfo[id], &KActivities::Info::isCurrentChanged, [this, id]() {
+        onActivityChanged(id);
+    });
 }
 
 void Layouts::onActivityRemoved(const QString &id)
 {
-    if (m_activitiesMap.contains(id)) {
-        m_activitiesMap.remove(id);
+    if (m_activitiesTable.containsId(id)) {
+        m_activitiesTable.remove(id);
     }
 
     if (m_activitiesInfo.contains(id)) {
@@ -891,10 +908,11 @@ void Layouts::onActivityRemoved(const QString &id)
 
 void Layouts::onActivityChanged(const QString &id)
 {
-    if (m_activitiesMap.contains(id) && m_activitiesInfo.contains(id)) {
-        m_activitiesMap[id].name = m_activitiesInfo[id]->name();
-        m_activitiesMap[id].icon = m_activitiesInfo[id]->icon();
-        m_activitiesMap[id].state = m_activitiesInfo[id]->state();
+    if (m_activitiesTable.containsId(id) && m_activitiesInfo.contains(id)) {
+        m_activitiesTable[id].name = m_activitiesInfo[id]->name();
+        m_activitiesTable[id].icon = m_activitiesInfo[id]->icon();
+        m_activitiesTable[id].state = m_activitiesInfo[id]->state();
+        m_activitiesTable[id].isCurrent = m_activitiesInfo[id]->isCurrent();
 
         activitiesStatesChanged();
     }
@@ -902,17 +920,15 @@ void Layouts::onActivityChanged(const QString &id)
 
 void Layouts::onRunningActivitiesChanged(const QStringList &runningIds)
 {
-    Latte::Data::ActivitiesMap::iterator i;
-
-    for (i = m_activitiesMap.begin(); i != m_activitiesMap.end(); ++i){
-        if (runningIds.contains(i.key())) {
-            m_activitiesMap[i.key()].state = KActivities::Info::Running;
-        } else {
-            m_activitiesMap[i.key()].state = KActivities::Info::Stopped;
-        }
+    for (int i = 0; i < m_activitiesTable.rowCount(); ++i) {
+       if (runningIds.contains(m_activitiesTable[i].id)) {
+           m_activitiesTable[i].state = KActivities::Info::Running;
+       } else {
+           m_activitiesTable[i].state = KActivities::Info::Stopped;
+       }
     }
 
-    activitiesStatesChanged();
+    emit activitiesStatesChanged();
 }
 
 }

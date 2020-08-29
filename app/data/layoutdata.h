@@ -38,6 +38,7 @@ class Layout : public Generic
 public:
     static constexpr const char* ALLACTIVITIESID = "{0}";
     static constexpr const char* FREEACTIVITIESID = "{free-activities}";
+    static constexpr const char* CURRENTACTIVITYID = "{current-activity}";
 
     Layout();
     Layout(Layout &&o);
