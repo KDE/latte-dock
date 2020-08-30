@@ -309,16 +309,20 @@ void TabLayouts::switchLayout()
     Latte::Data::Layout selectedLayoutOriginal = m_layoutsController->selectedLayoutOriginalData();
     selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
 
-    if (m_layoutsController->dataAreChanged()) {
+    if (m_layoutsController->layoutsAreChanged()) {
         showInlineMessage(i18nc("settings:not permitted switching layout","You need to <b>apply</b> your changes first to switch layout..."),
                           KMessageWidget::Warning);
         return;
     }
 
     if (!m_layoutsController->inMultipleMode()) {
-        m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name);
+        m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name, MemoryUsage::SingleLayout);
+        m_layoutsController->setOriginalInMultipleMode(false);
     } else {
-        CentralLayout singleLayout(this, selectedLayoutCurrent.id);
+        m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name, MemoryUsage::MultipleLayouts);
+        m_layoutsController->setOriginalInMultipleMode(true);
+
+        /*CentralLayout singleLayout(this, selectedLayoutCurrent.id);
 
         QString switchToActivity;
 
@@ -354,7 +358,7 @@ void TabLayouts::switchLayout()
             }
 
             m_corona->layoutsManager()->synchronizer()->activitiesController()->setCurrentActivity(switchToActivity);
-        }
+        }*/
     }
 
     updatePerLayoutButtonsState();

@@ -65,6 +65,8 @@ public:
     QTableView *view() const;
 
     bool dataAreChanged() const;
+    bool layoutsAreChanged() const;
+    bool modeIsChanged() const;
 
     bool inMultipleMode() const;
     void setInMultipleMode(bool inMultiple);
@@ -88,6 +90,8 @@ public:
 
     QString layoutNameForFreeActivities() const;
     void setOriginalLayoutForFreeActivities(const QString &id);
+
+    void setOriginalInMultipleMode(const bool &inmultiple);
 
     void copySelectedLayout();
     const Latte::Data::Layout addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true);

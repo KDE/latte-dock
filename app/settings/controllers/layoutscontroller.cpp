@@ -158,6 +158,21 @@ bool Layouts::dataAreChanged() const
     return m_model->dataAreChanged();
 }
 
+bool Layouts::layoutsAreChanged() const
+{
+    return m_model->layoutsAreChanged();
+}
+
+bool Layouts::modeIsChanged() const
+{
+    return m_model-modeIsChanged();
+}
+
+void Layouts::setOriginalInMultipleMode(const bool &inmultiple)
+{
+    m_model->setOriginalInMultipleMode(inmultiple);
+}
+
 bool Layouts::hasSelectedLayout() const
 {
     int selectedRow = m_view->currentIndex().row();
@@ -382,7 +397,8 @@ void Layouts::initLayouts()
     }
 
     //! Send original loaded data to model
-    m_model->setOriginalData(layouts, inMultiple);
+    m_model->setOriginalInMultipleMode(inMultiple);
+    m_model->setOriginalData(layouts);
 
     QStringList currentLayoutNames = m_handler->corona()->layoutsManager()->currentLayoutsNames();
     if (currentLayoutNames.count() > 0) {

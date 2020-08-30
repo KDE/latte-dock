@@ -73,7 +73,17 @@ bool Layouts::containsCurrentName(const QString &name) const
 
 bool Layouts::dataAreChanged() const
 {
-    return ((o_inMultipleMode != m_inMultipleMode) || (o_layoutsTable != m_layoutsTable));
+    return modeIsChanged() || layoutsAreChanged();
+}
+
+bool Layouts::modeIsChanged() const
+{
+    return o_inMultipleMode != m_inMultipleMode;
+}
+
+bool Layouts::layoutsAreChanged() const
+{
+    return o_layoutsTable != m_layoutsTable;
 }
 
 bool Layouts::inMultipleMode() const
@@ -151,7 +161,8 @@ void Layouts::applyData()
 void Layouts::resetData()
 {
     clear();
-    setOriginalData(o_layoutsTable, o_inMultipleMode);
+    setOriginalInMultipleMode(o_inMultipleMode);
+    setOriginalData(o_layoutsTable);
 }
 
 void Layouts::removeLayout(const QString &id)
@@ -779,22 +790,26 @@ const Latte::Data::LayoutsTable &Layouts::currentLayoutsData()
     return m_layoutsTable;
 }
 
-void Layouts::setOriginalData(Latte::Data::LayoutsTable &data, const bool &inmultiple)
+void Layouts::setOriginalInMultipleMode(const bool &inmultiple)
+{
+    setInMultipleMode(inmultiple);
+
+    if (o_inMultipleMode == inmultiple) {
+        return;
+    }
+
+    o_inMultipleMode = inmultiple;
+    emit inMultipleModeChanged();
+}
+
+void Layouts::setOriginalData(Latte::Data::LayoutsTable &data)
 {
     clear();
 
     beginInsertRows(QModelIndex(), 0, data.rowCount() - 1);
-    o_inMultipleMode = inmultiple;
     o_layoutsTable = data;
-
     m_layoutsTable = data;
-
-    for(int i=0; i<m_layoutsTable.rowCount(); ++i) {
-        m_layoutsTable[i].isActive = m_corona->layoutsManager()->synchronizer()->layout(originalData(m_layoutsTable[i].id).name);
-    }
     endInsertRows();
-
-    setInMultipleMode(inmultiple);
 
     emit rowsInserted();
 }

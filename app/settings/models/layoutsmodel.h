@@ -87,6 +87,8 @@ public:
     bool containsCurrentName(const QString &name) const;
 
     bool dataAreChanged() const;
+    bool layoutsAreChanged() const;
+    bool modeIsChanged() const;
 
     bool inMultipleMode() const;
     void setInMultipleMode(bool inMultiple);
@@ -129,7 +131,9 @@ public:
 
     const Latte::Data::LayoutsTable &currentLayoutsData();
     const Latte::Data::LayoutsTable &originalLayoutsData();
-    void setOriginalData(Latte::Data::LayoutsTable &data, const bool &inmultiple);
+
+    void setOriginalInMultipleMode(const bool &inmultiple);
+    void setOriginalData(Latte::Data::LayoutsTable &data);
 
 signals:
     void inMultipleModeChanged();
