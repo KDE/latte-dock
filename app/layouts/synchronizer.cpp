@@ -643,6 +643,9 @@ bool Synchronizer::switchToLayoutInMultipleModeBasedOnActivities(const QString &
 
     QString switchToActivity;
 
+    //! try to not remove activityids that belong to different machines that are not currently present
+    QStringList validlayoutactivities = validActivities(layoutdata.activities);
+
     if (layoutdata.isOnAllActivities()) {
         //! no reason to switch in any activity;
     } else if (layoutdata.isForFreeActivities()) {
@@ -662,16 +665,16 @@ bool Synchronizer::switchToLayoutInMultipleModeBasedOnActivities(const QString &
                 switchToActivity = freepausedactivities[0];
             }
         }
-    } else if (!layoutdata.activities.isEmpty())  {
+    } else if (!validlayoutactivities.isEmpty())  {
         //! set on-explicit activities
         QStringList allactivities = activities();
 
-        if (layoutdata.activities.contains(layoutdata.lastUsedActivity)) {
+        if (validlayoutactivities.contains(layoutdata.lastUsedActivity)) {
             switchToActivity = layoutdata.lastUsedActivity;
         } else {
-            switchToActivity = layoutdata.activities[0];
+            switchToActivity = validlayoutactivities[0];
         }
-    } else if (layoutdata.activities.isEmpty() && m_layouts.containsName(layoutName)) {
+    } else if (validlayoutactivities.isEmpty() && m_layouts.containsName(layoutName)) {
         //! no-activities are set
         //! has not been set in any activities but nonetheless it is requested probably by the user
         //! requested layout is assigned explicitly in current activity and any remaining explicit layouts
@@ -681,7 +684,7 @@ bool Synchronizer::switchToLayoutInMultipleModeBasedOnActivities(const QString &
 
         QStringList layoutIdsChanged;
 
-        m_layouts[layoutid].activities = QStringList(currentactivityid);
+        m_layouts[layoutid].activities.append(currentactivityid);
         m_manager->setOnActivities(layoutName, m_layouts[layoutid].activities);
         emit layoutActivitiesChanged(m_layouts[layoutid]);
 

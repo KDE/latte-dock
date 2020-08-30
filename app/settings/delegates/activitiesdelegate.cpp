@@ -269,10 +269,21 @@ void Activities::setModelData(QWidget *editor, QAbstractItemModel *model, const 
 
     foreach (QAction *action, button->menu()->actions()) {
         QString activityid = action->data().toString();
+
         if (activityid == Data::Layout::CURRENTACTIVITYID) {
             continue;
         }
 
+        if (activityid == Data::Layout::ALLACTIVITIESID && action->isChecked()) {
+            assignedActivities = QStringList(Data::Layout::ALLACTIVITIESID);
+            break;
+        } else if (activityid == Data::Layout::FREEACTIVITIESID && action->isChecked()) {
+            assignedActivities = QStringList(Data::Layout::FREEACTIVITIESID);
+            break;
+        }
+
+        //! try to not remove activityids that belong to different machines that are not
+        //! currently present
         if (!action->isChecked()) {
             assignedActivities.removeAll(activityid);
         } else if (action->isChecked() && !assignedActivities.contains(activityid)) {
