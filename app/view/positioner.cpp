@@ -274,9 +274,11 @@ QString Positioner::currentScreenName() const
 
 void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)
 {
-    if (!m_view || !m_view->layout() || m_view->layout()->name() != layoutName) {
+    if (!m_view || !m_view->layout() || m_view->layout()->name() != layoutName || !m_view->isVisible()) {
         return;
     }
+
+    m_inLayoutUnloading = true;
 
     auto slideLocation = WindowSystem::AbstractWindowInterface::Slide::None;
 
@@ -959,6 +961,11 @@ void Positioner::initSignalingForLocationChangeSliding()
             m_view->moveToLayout(m_moveToLayout);
         }
     });
+}
+
+bool Positioner::inLayoutUnloading()
+{
+    return m_inLayoutUnloading;
 }
 
 bool Positioner::inLocationAnimation()

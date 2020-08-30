@@ -141,6 +141,7 @@ private slots:
 private:
     void addLayout(CentralLayout *layout);
     void unloadCentralLayout(CentralLayout *layout);
+    void unloadLayouts(const QStringList &layoutNames);
 
     bool initSingleMode(QString layoutName);
     bool initMultipleMode(QString layoutName);

@@ -1181,7 +1181,7 @@ void View::setLayout(Layout::GenericLayout *layout)
             m_visibleHackTimer2.setSingleShot(true);
 
             connectionsLayout << connect(this, &QWindow::visibleChanged, this, [&]() {
-                if (m_layout && !inDelete() & !isVisible()) {
+                if (m_layout && !inDelete() && !isVisible() && !m_positioner->inLayoutUnloading()) {
                     m_visibleHackTimer1.start();
                     m_visibleHackTimer2.start();
                 }

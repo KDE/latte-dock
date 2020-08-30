@@ -69,6 +69,7 @@ public:
     int slideOffset() const;
     void setSlideOffset(int offset);
 
+    bool inLayoutUnloading();
     bool inLocationAnimation();
 
     bool inSlideAnimation() const;
@@ -156,6 +157,7 @@ private:
 
 private:
     bool m_inDelete{false};
+    bool m_inLayoutUnloading{false};
     bool m_inLocationAnimation{false};
     bool m_inSlideAnimation{false};
 
