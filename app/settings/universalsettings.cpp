@@ -21,6 +21,8 @@
 #include "universalsettings.h"
 
 // local
+#include "../data/layoutdata.h"
+#include "../layout/centrallayout.h"
 #include "../layouts/importer.h"
 #include "../layouts/manager.h"
 
@@ -482,6 +484,32 @@ void UniversalSettings::syncSettings()
     m_universalGroup.sync();
 }
 
+void UniversalSettings::upgrade_v010()
+{
+    if (m_singleModeLayoutName.isEmpty()) {
+        //!Upgrading path for v0.9 to v0.10
+        QString lastNonAssigned = m_universalGroup.readEntry("lastNonAssignedLayout", QString());
+        QString currentLayout = m_universalGroup.readEntry("currentLayout", QString());
+
+        if (!lastNonAssigned.isEmpty()) {
+            m_singleModeLayoutName = lastNonAssigned;
+        } else if (!currentLayout.isEmpty()) {
+            m_singleModeLayoutName = currentLayout;
+        }
+
+        if (!m_singleModeLayoutName.isEmpty() && Layouts::Importer::layoutExists(m_singleModeLayoutName)) {
+            //! it is executed only after the upgrade path
+            m_universalGroup.writeEntry("singleModeLayoutName", m_singleModeLayoutName);
+            CentralLayout storage(this, Layouts::Importer::layoutUserFilePath(m_singleModeLayoutName));
+            if (m_singleModeLayoutName == lastNonAssigned) {
+                storage.setActivities(QStringList(Data::Layout::FREEACTIVITIESID));
+            } else if (storage.activities().isEmpty()) {
+                storage.setActivities(QStringList(Data::Layout::ALLACTIVITIESID));
+            }
+        }
+    }
+}
+
 void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
@@ -497,6 +525,10 @@ void UniversalSettings::loadConfig()
     m_sensitivity = static_cast<Settings::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Settings::HighMouseSensitivity));
 
     loadScalesConfig();
+
+    if (m_singleModeLayoutName.isEmpty()) {
+        upgrade_v010();
+    }
 }
 
 void UniversalSettings::saveConfig()

@@ -160,6 +160,7 @@ private slots:
     void updateColorsScriptIsPresent();
     void trackedFileChanged(const QString &file);
 
+    void upgrade_v010();
 private:
     void cleanupSettings();
 
