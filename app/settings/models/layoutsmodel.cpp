@@ -144,6 +144,8 @@ void Layouts::appendOriginalLayout(const Latte::Data::Layout &layout)
 {
     int newRow = o_layoutsTable.sortedPosForName(layout.name);
     o_layoutsTable.insert(newRow, layout);
+
+    appendLayout(layout);
 }
 
 void Layouts::applyData()
@@ -614,6 +616,16 @@ QStringList Layouts::cleanStrings(const QStringList &original, const QStringList
     }
 
     return result;
+}
+
+void Layouts::setOriginalActivitiesForLayout(const Latte::Data::Layout &layout)
+{
+    if (o_layoutsTable.containsId(layout.id) && m_layoutsTable.containsId(layout.id)) {
+        o_layoutsTable[layout.id].activities = layout.activities;
+
+        int mrow = rowForId(layout.id);
+        setActivities(mrow, layout.activities);
+    }
 }
 
 void Layouts::setActivities(const int &row, const QStringList &activities)

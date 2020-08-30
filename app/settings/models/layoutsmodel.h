@@ -135,6 +135,8 @@ public:
     void setOriginalInMultipleMode(const bool &inmultiple);
     void setOriginalData(Latte::Data::LayoutsTable &data);
 
+    void setOriginalActivitiesForLayout(const Latte::Data::Layout &layout);
+
 signals:
     void inMultipleModeChanged();
     void nameDuplicated(const QString &provenId, const QString &trialId);

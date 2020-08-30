@@ -76,7 +76,6 @@ public:
     Q_INVOKABLE bool isCurrent() override;
 
 signals:
-    void activitiesChanged();
     void disableBordersForMaximizedWindowsChanged();
     void showInMenuChanged();
 

@@ -131,6 +131,7 @@ signals:
     void currentLayoutIsSwitching(QString layoutName);
 
     void newLayoutAdded(const Data::Layout &layout);
+    void layoutActivitiesChanged(const Data::Layout &layout);
 
 private slots:
     void onCurrentActivityChanged(const QString &id);
@@ -148,6 +149,7 @@ private:
 
     bool switchToLayoutInMultipleMode(QString layoutName);
     bool switchToLayoutInSingleMode(QString layoutName);
+    bool switchToLayoutInMultipleModeBasedOnActivities(const QString &layoutName);
 
     bool isAssigned(QString layoutName) const;
     bool memoryInitialized() const;

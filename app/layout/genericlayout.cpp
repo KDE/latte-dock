@@ -121,6 +121,7 @@ void GenericLayout::unloadLatteViews()
     //!disconnect signals in order to avoid crashes when the layout is unloading
     disconnect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
     disconnect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
+    disconnect(this, &GenericLayout::activitiesChanged, this, &GenericLayout::updateLastUsedActivity);
     disconnect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, &GenericLayout::updateLastUsedActivity);
 
     for (const auto view : m_latteViews) {
@@ -977,8 +978,8 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
     updateLastUsedActivity();
 
     //! signals
-    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged,
-            this, &GenericLayout::updateLastUsedActivity);
+    connect(this, &GenericLayout::activitiesChanged, this, &GenericLayout::updateLastUsedActivity);
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, &GenericLayout::updateLastUsedActivity);
 
     connect(m_corona, &Plasma::Corona::containmentAdded, this, &GenericLayout::addContainment);
 
@@ -998,10 +999,6 @@ void GenericLayout::updateLastUsedActivity()
 {
     if (!m_corona) {
         return;
-    }
-
-    if (!m_lastUsedActivity.isEmpty() && !m_corona->layoutsManager()->synchronizer()->activities().contains(m_lastUsedActivity)) {
-        clearLastUsedActivity();
     }
 
     QString currentId = m_corona->activitiesConsumer()->currentActivity();

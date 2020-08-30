@@ -81,6 +81,7 @@ public:
     void init();
     void loadLayoutOnStartup(QString layoutName);
     void setOnAllActivities(QString layoutName);
+    void setOnActivities(QString layoutName, QStringList activities);
     void showInfoWindow(QString info, int duration, QStringList activities = {"0"});
     void unload();
 

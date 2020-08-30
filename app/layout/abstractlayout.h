@@ -84,7 +84,7 @@ public:
     bool preferredForShortcutsTouched() const;
     void setPreferredForShortcutsTouched(bool touched);
 
-    QString lastUsedActivity();
+    QString lastUsedActivity() const;
     void clearLastUsedActivity(); //!e.g. when we export a layout
 
     QString name() const;

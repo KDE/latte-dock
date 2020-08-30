@@ -49,6 +49,7 @@ public:
     QString color;
     QString background;
     QString textColor;
+    QString lastUsedActivity;
     bool isActive{false};
     bool isBroken{false};
     bool isLocked{false};

@@ -72,6 +72,7 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
     connect(m_handler->corona()->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, &Layouts::applyColumnWidths);
 
     connect(m_handler->corona()->layoutsManager()->synchronizer(), &Latte::Layouts::Synchronizer::newLayoutAdded, this, &Layouts::onLayoutAddedExternally);
+    connect(m_handler->corona()->layoutsManager()->synchronizer(), &Latte::Layouts::Synchronizer::layoutActivitiesChanged, this, &Layouts::onLayoutActivitiesChangedExternally);
 
     connect(m_model, &QAbstractItemModel::dataChanged, this, &Layouts::dataChanged);
     connect(m_model, &Model::Layouts::rowsInserted, this, &Layouts::dataChanged);
@@ -421,10 +422,14 @@ void Layouts::initLayouts()
     }
 }
 
+void Layouts::onLayoutActivitiesChangedExternally(const Data::Layout &layout)
+{
+    m_model->setOriginalActivitiesForLayout(layout);
+}
+
 void Layouts::onLayoutAddedExternally(const Data::Layout &layout)
 {
     m_model->appendOriginalLayout(layout);
-    m_model->appendLayout(layout);
 }
 
 void Layouts::sortByColumn(int column, Qt::SortOrder order)

@@ -214,10 +214,7 @@ QStringList Synchronizer::menuLayouts() const
             continue;
         }
 
-        if (m_manager->memoryUsage() == MemoryUsage::SingleLayout
-                || (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && !m_layouts[i].activities.isEmpty())) {
-            menulayouts << m_layouts[i].name;
-        }
+        menulayouts << m_layouts[i].name;
     }
 
     for (const auto layout : m_centralLayouts) {
@@ -607,6 +604,112 @@ bool Synchronizer::switchToLayoutInSingleMode(QString layoutName)
     return initSingleMode(layoutName);
 }
 
+bool Synchronizer::switchToLayoutInMultipleModeBasedOnActivities(const QString &layoutName)
+{
+    Data::Layout layoutdata;
+    CentralLayout *central = centralLayout(layoutName);
+
+    if (central) {
+        layoutdata = central->data();
+    } else if (m_layouts.containsName(layoutName)) {
+        QString layoutid = m_layouts.idForName(layoutName);
+        CentralLayout storagedlayout(this, layoutid);
+        layoutdata = storagedlayout.data();
+
+        m_layouts[layoutid] = layoutdata;
+    }
+
+    if (layoutdata.isEmpty()) {
+        return false;
+    }
+
+    QString switchToActivity;
+
+    if (layoutdata.isOnAllActivities()) {
+        //! no reason to switch in any activity;
+    } else if (layoutdata.isForFreeActivities()) {
+        //! free-activities case
+        QStringList freerunningactivities = freeRunningActivities();
+
+        if (freerunningactivities.count() > 0) {
+            if (freerunningactivities.contains(layoutdata.lastUsedActivity)) {
+                switchToActivity = layoutdata.lastUsedActivity;
+            } else {
+                switchToActivity = freerunningactivities[0];
+            }
+        } else {
+            QStringList freepausedactivities = freeActivities();
+
+            if (freepausedactivities.count() > 0) {
+                switchToActivity = freepausedactivities[0];
+            }
+        }
+    } else if (!layoutdata.activities.isEmpty())  {
+        //! set on-explicit activities
+        QStringList allactivities = activities();
+
+        if (layoutdata.activities.contains(layoutdata.lastUsedActivity)) {
+            switchToActivity = layoutdata.lastUsedActivity;
+        } else {
+            switchToActivity = layoutdata.activities[0];
+        }
+    } else if (layoutdata.activities.isEmpty() && m_layouts.containsName(layoutName)) {
+        //! no-activities are set
+        //! has not been set in any activities but nonetheless it is requested probably by the user
+        //! requested layout is assigned explicitly in current activity and any remaining explicit layouts
+        //! are removing current activity from their activities list
+        QString layoutid = m_layouts.idForName(layoutName);
+        QString currentactivityid = m_activitiesController->currentActivity();
+
+        QStringList layoutIdsChanged;
+
+        m_layouts[layoutid].activities = QStringList(currentactivityid);
+        m_manager->setOnActivities(layoutName, m_layouts[layoutid].activities);
+        emit layoutActivitiesChanged(m_layouts[layoutid]);
+
+        layoutIdsChanged << layoutid;
+
+        if (m_assignedLayouts.contains(currentactivityid)) {
+            //! remove any other explicit set layouts for the current activity
+            QStringList explicits = m_assignedLayouts[currentactivityid];
+
+            for(auto explicitlayoutname : explicits) {
+                QString explicitlayoutid = m_layouts.idForName(explicitlayoutname);
+
+                m_layouts[explicitlayoutid].activities.removeAll(currentactivityid);
+                m_manager->setOnActivities(explicitlayoutname, m_layouts[explicitlayoutid].activities);
+                emit layoutActivitiesChanged(m_layouts[explicitlayoutid]);
+            }
+        }
+
+        QStringList freelayoutnames;
+        if (m_assignedLayouts.contains(Data::Layout::FREEACTIVITIESID)) {
+            freelayoutnames = m_assignedLayouts[Data::Layout::FREEACTIVITIESID];
+        }
+
+        reloadAssignedLayouts();
+
+        for(auto freelayoutname : freelayoutnames) {
+            //! inform free activities layouts that their activities probably changed
+            CentralLayout *central = centralLayout(freelayoutname);
+
+            if (central) {
+                emit central->activitiesChanged();
+            }
+        }
+    }
+
+    if (!switchToActivity.isEmpty()) {
+        if (!m_manager->corona()->activitiesConsumer()->runningActivities().contains(switchToActivity)) {
+            m_activitiesController->startActivity(switchToActivity);
+        }
+
+        m_activitiesController->setCurrentActivity(switchToActivity);
+    }
+
+    return true;
+}
+
 bool Synchronizer::switchToLayoutInMultipleMode(QString layoutName)
 {
     if (!memoryInitialized() || m_manager->memoryUsage() != MemoryUsage::MultipleLayouts) {
@@ -625,6 +728,10 @@ bool Synchronizer::switchToLayoutInMultipleMode(QString layoutName)
             return true;
         }
     } else {
+        if (!layoutName.isEmpty()) {
+            switchToLayoutInMultipleModeBasedOnActivities(layoutName);
+        }
+
         syncMultipleLayoutsToActivities();
     }
 
@@ -636,13 +743,13 @@ bool Synchronizer::switchToLayout(QString layoutName, MemoryUsage::LayoutsMemory
 {
     qDebug() << " >>>>> SWITCHING >> " << layoutName << " __ from memory: " << m_manager->memoryUsage() << " to memory: " << newMemoryUsage;
 
+    if (newMemoryUsage == MemoryUsage::Current) {
+        newMemoryUsage = m_manager->memoryUsage();
+    }
+
     if (!memoryInitialized() || newMemoryUsage != m_manager->memoryUsage()) {
         //! Initiate Layouts memory properly
-        if (newMemoryUsage != MemoryUsage::Current) {
-            m_manager->setMemoryUsage(newMemoryUsage);
-        } else {
-            newMemoryUsage = m_manager->memoryUsage();
-        }
+        m_manager->setMemoryUsage(newMemoryUsage);
 
         return (newMemoryUsage == MemoryUsage::SingleLayout ? initSingleMode(layoutName) : initMultipleMode(layoutName));
     }

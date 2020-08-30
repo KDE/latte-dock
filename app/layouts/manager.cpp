@@ -218,6 +218,18 @@ void Manager::setOnAllActivities(QString layoutName)
     }
 }
 
+void Manager::setOnActivities(QString layoutName, QStringList activities)
+{
+    CentralLayout *central = m_synchronizer->centralLayout(layoutName);
+
+    if (central) {
+        central->setActivities(activities);
+    } else if (m_importer->layoutExists(layoutName)) {
+        CentralLayout storage(this, m_importer->layoutUserFilePath(layoutName));
+        storage.setActivities(activities);
+    }
+}
+
 void Manager::cleanupOnStartup(QString path)
 {
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(path);

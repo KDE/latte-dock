@@ -53,7 +53,7 @@ CentralLayout::~CentralLayout()
 
 void CentralLayout::init()
 {
-    connect(this, &CentralLayout::activitiesChanged, this, &CentralLayout::saveConfig);
+    connect(this, &GenericLayout::activitiesChanged, this, &CentralLayout::saveConfig);
     connect(this, &CentralLayout::disableBordersForMaximizedWindowsChanged, this, &CentralLayout::saveConfig);
     connect(this, &CentralLayout::showInMenuChanged, this, &CentralLayout::saveConfig);
 }
@@ -153,6 +153,7 @@ Data::Layout CentralLayout::data() const
     cdata.isShownInMenu = showInMenu();
     cdata.hasDisabledBorders = disableBordersForMaximizedWindows();
     cdata.activities = activities();
+    cdata.lastUsedActivity = lastUsedActivity();
 
     return cdata;
 }

@@ -225,7 +225,7 @@ void AbstractLayout::setIcon(const QString &icon)
     emit iconChanged();
 }
 
-QString AbstractLayout::lastUsedActivity()
+QString AbstractLayout::lastUsedActivity() const
 {
     return m_lastUsedActivity;
 }

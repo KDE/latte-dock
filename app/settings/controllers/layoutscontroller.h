@@ -112,6 +112,7 @@ private slots:
 
     void onNameDuplicatedFrom(const QString &provenId,  const QString &trialId);
     void onLayoutAddedExternally(const Data::Layout &layout);
+    void onLayoutActivitiesChangedExternally(const Data::Layout &layout);
 
 private:
     void initView();

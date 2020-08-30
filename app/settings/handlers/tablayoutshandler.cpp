@@ -321,44 +321,6 @@ void TabLayouts::switchLayout()
     } else {
         m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name, MemoryUsage::MultipleLayouts);
         m_layoutsController->setOriginalInMultipleMode(true);
-
-        /*CentralLayout singleLayout(this, selectedLayoutCurrent.id);
-
-        QString switchToActivity;
-
-        if (selectedLayoutCurrent.isForFreeActivities()) {
-            QStringList freerunningactivities = m_corona->layoutsManager()->synchronizer()->freeRunningActivities();
-
-            if (freerunningactivities.count() > 0) {
-                if (freerunningactivities.contains(singleLayout.lastUsedActivity())) {
-                    switchToActivity = singleLayout.lastUsedActivity();
-                } else {
-                    switchToActivity = freerunningactivities[0];
-                }
-            } else {
-                QStringList freepausedactivities = m_corona->layoutsManager()->synchronizer()->freeActivities();
-
-                if (freepausedactivities.count() > 0) {
-                    switchToActivity = freepausedactivities[0];
-                }
-            }
-        } else if (!selectedLayoutCurrent.activities.isEmpty())  {
-            QStringList activities = m_corona->layoutsManager()->synchronizer()->activities();
-
-            if (selectedLayoutCurrent.activities.contains(singleLayout.lastUsedActivity())) {
-                switchToActivity = singleLayout.lastUsedActivity();
-            } else {
-                switchToActivity = selectedLayoutCurrent.activities[0];
-            }
-        }
-
-        if (!switchToActivity.isEmpty()) {
-            if (!m_corona->activitiesConsumer()->runningActivities().contains(switchToActivity)) {
-                m_corona->layoutsManager()->synchronizer()->activitiesController()->startActivity(switchToActivity);
-            }
-
-            m_corona->layoutsManager()->synchronizer()->activitiesController()->setCurrentActivity(switchToActivity);
-        }*/
     }
 
     updatePerLayoutButtonsState();
@@ -400,11 +362,12 @@ void TabLayouts::updatePerLayoutButtonsState()
     Latte::Data::Layout selectedLayout = m_layoutsController->selectedLayoutCurrentData();
 
     //! Switch Button
-    if (m_layoutsController->inMultipleMode() && selectedLayout.activities.isEmpty()) {
+    setTwinProperty(m_switchLayoutAction, TWINENABLED, true);
+    /*if (m_layoutsController->inMultipleMode()) {
         setTwinProperty(m_switchLayoutAction, TWINENABLED, false);
     } else {
         setTwinProperty(m_switchLayoutAction, TWINENABLED, true);
-    }
+    }*/
 
     //! Pause Button - enabled
     if (m_layoutsController->inMultipleMode()) {
