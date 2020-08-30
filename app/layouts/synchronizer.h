@@ -21,6 +21,7 @@
 #define LAYOUTSSYNCHRONIZER_H
 
 // local
+#include "../apptypes.h"
 #include "../data/layoutdata.h"
 #include "../data/layoutstable.h"
 
@@ -83,7 +84,7 @@ public:
     bool latteViewExists(Latte::View *view) const;
     bool layoutExists(QString layoutName) const;
     //! switch to specified layout, default previousMemoryUsage means that it didn't change
-    bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);
+    bool switchToLayout(QString layoutName,  MemoryUsage::LayoutsMemory newMemoryUsage = MemoryUsage::Current);
 
     int centralLayoutPos(QString id) const;
 
@@ -141,7 +142,14 @@ private:
     void addLayout(CentralLayout *layout);
     void unloadCentralLayout(CentralLayout *layout);
 
+    bool initSingleMode(QString layoutName);
+    bool initMultipleMode(QString layoutName);
+
+    bool switchToLayoutInMultipleMode(QString layoutName);
+    bool switchToLayoutInSingleMode(QString layoutName);
+
     bool isAssigned(QString layoutName) const;
+    bool memoryInitialized() const;
 
     QString layoutPath(QString layoutName);
 

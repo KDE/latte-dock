@@ -47,6 +47,7 @@ namespace MemoryUsage {
 
 enum LayoutsMemory
 {
+    Current = -1, /*current layouts memory usage*/
     SingleLayout = 0,  /* a single Layout is loaded in each time */
     MultipleLayouts  /* multiple layouts are loaded on runtime,based on Activities and one central layout for the rest unassigned Activities */
 };

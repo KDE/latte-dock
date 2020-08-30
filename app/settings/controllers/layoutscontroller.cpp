@@ -714,26 +714,14 @@ void Layouts::save()
     //! send new layouts data in layoutsmanager
     m_handler->corona()->layoutsManager()->synchronizer()->setLayoutsTable(currentLayouts);
 
-
     //! make sure that there is a layout for free activities
     //! send to layout manager in which layout to switch
     MemoryUsage::LayoutsMemory inMemoryOption = inMultipleMode() ? Latte::MemoryUsage::MultipleLayouts : Latte::MemoryUsage::SingleLayout;
 
-    if (m_handler->corona()->layoutsManager()->memoryUsage() != inMemoryOption) {
-        MemoryUsage::LayoutsMemory previousMemoryUsage = m_handler->corona()->layoutsManager()->memoryUsage();
-        m_handler->corona()->layoutsManager()->setMemoryUsage(inMemoryOption);
-
-        if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
-            m_handler->corona()->layoutsManager()->switchToLayout(m_handler->corona()->universalSettings()->singleModeLayoutName(), previousMemoryUsage);
-        } else {
-            m_handler->corona()->layoutsManager()->switchToLayout("", previousMemoryUsage);
-        }
-    } else {
-        if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-            m_handler->corona()->layoutsManager()->synchronizer()->syncMultipleLayoutsToActivities();
-        } else {
-            m_handler->corona()->layoutsManager()->switchToLayout(m_handler->corona()->universalSettings()->singleModeLayoutName());
-        }
+    if (inMemoryOption == MemoryUsage::SingleLayout) {
+        m_handler->corona()->layoutsManager()->switchToLayout(m_handler->corona()->universalSettings()->singleModeLayoutName(), MemoryUsage::SingleLayout);
+    }  else {
+        m_handler->corona()->layoutsManager()->switchToLayout("", MemoryUsage::MultipleLayouts);
     }
 
     m_model->applyData();

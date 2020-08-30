@@ -89,6 +89,9 @@ public:
     MemoryUsage::LayoutsMemory memoryUsage() const;
     void setMemoryUsage(MemoryUsage::LayoutsMemory memoryUsage);
 
+    //! switch to specified layout, default previousMemoryUsage means that it didn't change
+    bool switchToLayout(QString layoutName,  MemoryUsage::LayoutsMemory newMemoryUsage = MemoryUsage::Current);
+
     //! returns the current and central layout based on activities and user preferences
     QList<CentralLayout *>currentLayouts() const;
     LaunchersSignals *launchersSignals() const;
@@ -99,10 +102,6 @@ public slots:
 
     void hideLatteSettingsDialog();
     Q_INVOKABLE void showLatteSettingsDialog(int firstPage = Settings::Dialog::LayoutPage, bool toggleCurrentPage = false);
-
-    //! switch to specified layout, default previousMemoryUsage means that it didn't change
-    Q_INVOKABLE bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);
-
     Q_INVOKABLE QStringList centralLayoutsNames();
 
 signals:

@@ -525,96 +525,131 @@ void Synchronizer::unloadLayouts()
     m_multipleModeInitialized = false;
 }
 
-bool Synchronizer::switchToLayout(QString layoutName, int previousMemoryUsage)
+bool Synchronizer::memoryInitialized() const
 {
-    qDebug() << " >>>>> SWITCHING >> " << layoutName << " __ " << previousMemoryUsage;
+    return ((m_manager->memoryUsage() == MemoryUsage::SingleLayout && m_centralLayouts.size()>0)
+            || (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && m_multipleModeInitialized));
+}
 
-    //! First Check If that Layout is already present and in that case
-    //! we can just switch to the proper Activity
+bool Synchronizer::initSingleMode(QString layoutName)
+{
+    QString layoutpath = layoutName.isEmpty() ? layoutPath(m_manager->corona()->universalSettings()->singleModeLayoutName()) : layoutPath(layoutName);
 
-    if (previousMemoryUsage == -1) {
-        if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
-            CentralLayout *layout = centralLayout(layoutName);
-
-            if (layout) {
-                QStringList appliedActivities = layout->appliedActivities();
-                QString nextActivity = !layout->lastUsedActivity().isEmpty() ? layout->lastUsedActivity() : appliedActivities[0];
-
-                if (!appliedActivities.contains(m_manager->corona()->activitiesConsumer()->currentActivity())) {
-                    //! it means we are at a foreign activity and we can switch to correct one
-                    m_activitiesController->setCurrentActivity(nextActivity);
-                    return true;
-                }
-            }
-        } else if (m_manager->memoryUsage() == MemoryUsage::SingleLayout && m_centralLayouts.size()>0 && m_centralLayouts[0]->name() == layoutName) {
-            //! already loaded
-            return false;
-        }
-    }
-
-    //! When going from memory usage to different memory usage we first
-    //! send the layouts that will be changed. This signal creates the
-    //! nice animation that hides these docks/panels
-    if (previousMemoryUsage != -1) {
-        for (const auto layout : m_centralLayouts) {
-            emit currentLayoutIsSwitching(layout->name());
-        }
-    }
-
-    QString lPath = layoutPath(layoutName);
-
-    if ((m_manager->memoryUsage() == MemoryUsage::SingleLayout && !lPath.isEmpty()) || m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
-        if (m_manager->memoryUsage() == MemoryUsage::SingleLayout && m_centralLayouts.size()>0) {
-            emit currentLayoutIsSwitching(m_centralLayouts[0]->name());
-        } else if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts && layoutName != Layout::MULTIPLELAYOUTSHIDDENNAME) {
-            //! do nothing
-        }
-
-        //! this code must be called asynchronously because it is called
-        //! also from qml (Tasks plasmoid). This change fixes a very important
-        //! crash when switching sessions through the Tasks plasmoid Context menu
-        //! Latte was unstable and was crashing very often during changing
-        //! sessions.
-        QTimer::singleShot(350, [this, layoutName, lPath, previousMemoryUsage]() {
-            qDebug() << layoutName << " - " << lPath;
-            QString fixedLPath = lPath;
-            QString fixedLayoutName = layoutName;
-
-            bool initializingMultipleLayouts{(m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) && !m_multipleModeInitialized};
-
-            if (m_manager->memoryUsage() == MemoryUsage::SingleLayout || initializingMultipleLayouts || previousMemoryUsage == MemoryUsage::MultipleLayouts) {
-                unloadLayouts();
-
-                //! load the main layout/corona file
-                if (initializingMultipleLayouts) {
-                    fixedLayoutName = QString(Layout::MULTIPLELAYOUTSHIDDENNAME);
-                    fixedLPath = layoutPath(fixedLayoutName);
-                } else if (fixedLayoutName != Layout::MULTIPLELAYOUTSHIDDENNAME) {
-                    CentralLayout *newLayout = new CentralLayout(this, fixedLPath, fixedLayoutName);
-                    addLayout(newLayout);
-                }
-
-                m_manager->loadLatteLayout(fixedLPath);
-
-                if (initializingMultipleLayouts) {
-                    m_multipleModeInitialized = true;
-                }
-
-                emit centralLayoutsChanged();
-            }
-
-            if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
-                syncMultipleLayoutsToActivities();
-            } else {
-                //! single layout
-                m_manager->corona()->universalSettings()->setSingleModeLayoutName(layoutName);
-            }
-        });
-    } else {
+    if (layoutpath.isEmpty()) {
         qDebug() << "Layout : " << layoutName << " was not found...";
+        return false;
+    }
+
+    if (m_centralLayouts.size() > 0) {
+        emit currentLayoutIsSwitching(m_centralLayouts[0]->name());
+    }
+
+    //! this code must be called asynchronously because it can create crashes otherwise.
+    //! Tasks plasmoid case that triggers layouts switching through its context menu
+    QTimer::singleShot(350, [this, layoutName, layoutpath]() {
+        qDebug() << " ... initializing layout in single mode : " << layoutName << " - " << layoutpath;
+        unloadLayouts();
+
+        //! load the main layout/corona file
+        CentralLayout *newLayout = new CentralLayout(this, layoutpath, layoutName);
+        addLayout(newLayout);
+
+        m_manager->loadLatteLayout(layoutpath);
+
+        emit centralLayoutsChanged();
+
+        m_manager->corona()->universalSettings()->setSingleModeLayoutName(layoutName);
+    });
+
+    return true;
+}
+
+bool Synchronizer::initMultipleMode(QString layoutName)
+{
+    if (m_multipleModeInitialized) {
+        return false;
+    }
+
+    for (const auto layout : m_centralLayouts) {
+        emit currentLayoutIsSwitching(layout->name());
+    }
+
+    //! this code must be called asynchronously because it can create crashes otherwise.
+    //! Tasks plasmoid case that triggers layouts switching through its context menu
+    QTimer::singleShot(350, [this, layoutName]() {
+        qDebug() << " ... initializing layout in multiple mode : " << layoutName ;
+        unloadLayouts();
+
+        m_manager->loadLatteLayout(layoutPath(QString(Layout::MULTIPLELAYOUTSHIDDENNAME)));
+
+        m_multipleModeInitialized = true;
+
+        emit centralLayoutsChanged();
+
+        syncMultipleLayoutsToActivities();
+    });
+
+    return true;
+}
+
+bool Synchronizer::switchToLayoutInSingleMode(QString layoutName)
+{
+    if (!memoryInitialized() || m_manager->memoryUsage() != MemoryUsage::SingleLayout) {
+        return false;
+    }
+
+    if (m_centralLayouts.size()>0 && m_centralLayouts[0]->name() == layoutName) {
+        return true;
+    }
+
+    return initSingleMode(layoutName);
+}
+
+bool Synchronizer::switchToLayoutInMultipleMode(QString layoutName)
+{
+    if (!memoryInitialized() || m_manager->memoryUsage() != MemoryUsage::MultipleLayouts) {
+        return false;
+    }
+
+    CentralLayout *layout = centralLayout(layoutName);
+
+    if (layout) {
+        QStringList appliedActivities = layout->appliedActivities();
+        QString nextActivity = !layout->lastUsedActivity().isEmpty() ? layout->lastUsedActivity() : appliedActivities[0];
+
+        if (!appliedActivities.contains(m_manager->corona()->activitiesConsumer()->currentActivity())) {
+            //! it means we are at a foreign activity and we can switch to correct one
+            m_activitiesController->setCurrentActivity(nextActivity);
+            return true;
+        }
+    } else {
+        syncMultipleLayoutsToActivities();
     }
 
     return true;
+}
+
+
+bool Synchronizer::switchToLayout(QString layoutName, MemoryUsage::LayoutsMemory newMemoryUsage)
+{
+    qDebug() << " >>>>> SWITCHING >> " << layoutName << " __ from memory: " << m_manager->memoryUsage() << " to memory: " << newMemoryUsage;
+
+    if (!memoryInitialized() || newMemoryUsage != m_manager->memoryUsage()) {
+        //! Initiate Layouts memory properly
+        if (newMemoryUsage != MemoryUsage::Current) {
+            m_manager->setMemoryUsage(newMemoryUsage);
+        } else {
+            newMemoryUsage = m_manager->memoryUsage();
+        }
+
+        return (newMemoryUsage == MemoryUsage::SingleLayout ? initSingleMode(layoutName) : initMultipleMode(layoutName));
+    }
+
+    if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
+        return switchToLayoutInSingleMode(layoutName);
+    } else {
+        return switchToLayoutInMultipleMode(layoutName);
+    }
 }
 
 void Synchronizer::syncMultipleLayoutsToActivities()

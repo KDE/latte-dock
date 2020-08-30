@@ -166,9 +166,9 @@ QList<CentralLayout *> Manager::currentLayouts() const
     return m_synchronizer->currentLayouts();
 }
 
-bool Manager::switchToLayout(QString layoutName, int previousMemoryUsage)
+bool Manager::switchToLayout(QString layoutName,  MemoryUsage::LayoutsMemory newMemoryUsage)
 {
-    return m_synchronizer->switchToLayout(layoutName, previousMemoryUsage);
+    return m_synchronizer->switchToLayout(layoutName, newMemoryUsage);
 }
 
 void Manager::loadLayoutOnStartup(QString layoutName)
@@ -275,6 +275,8 @@ void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsId
         KConfigGroup containment = containments.group(conId);
         containment.deleteGroup();
     }
+
+    containments.sync();
 }
 
 void Manager::showLatteSettingsDialog(int firstPage, bool toggleCurrentPage)
