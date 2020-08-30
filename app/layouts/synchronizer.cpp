@@ -794,7 +794,7 @@ void Synchronizer::syncMultipleLayoutsToActivities()
     }
 
     //! discover ForFreeActivities layouts
-    if (m_assignedLayouts.contains(Data::Layout::FREEACTIVITIESID)) {
+    if (m_assignedLayouts.contains(Data::Layout::FREEACTIVITIESID) && freeRunningActivities().count()>0) {
         layoutNamesToLoad << m_assignedLayouts[Data::Layout::FREEACTIVITIESID];
     }
 
