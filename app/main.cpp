@@ -99,6 +99,7 @@ int main(int argc, char **argv)
 
     QCommandLineParser parser;
     parser.addHelpOption();
+    parser.addVersionOption();
     parser.addOptions({
                           {{"r", "replace"}, i18nc("command line", "Replace the current Latte instance.")}
                           , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
