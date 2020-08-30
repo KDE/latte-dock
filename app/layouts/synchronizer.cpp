@@ -585,6 +585,10 @@ bool Synchronizer::initMultipleMode(QString layoutName)
 
         emit centralLayoutsChanged();
 
+        if (!layoutName.isEmpty()) {
+            switchToLayoutInMultipleModeBasedOnActivities(layoutName);
+        }
+
         syncMultipleLayoutsToActivities();
     });
 
