@@ -264,10 +264,18 @@ void Activities::setModelData(QWidget *editor, QAbstractItemModel *model, const 
         return;
     }
 
-    QStringList assignedActivities;
+    //! keep activities that are present in other computers
+    QStringList assignedActivities = index.data(Qt::UserRole).toStringList();
+
     foreach (QAction *action, button->menu()->actions()) {
         QString activityid = action->data().toString();
-        if (action->isChecked() && activityid != Data::Layout::CURRENTACTIVITYID) {
+        if (activityid == Data::Layout::CURRENTACTIVITYID) {
+            continue;
+        }
+
+        if (!action->isChecked()) {
+            assignedActivities.removeAll(activityid);
+        } else if (action->isChecked() && !assignedActivities.contains(activityid)) {
             assignedActivities << activityid;
         }
     }

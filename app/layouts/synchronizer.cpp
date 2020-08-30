@@ -171,6 +171,20 @@ QStringList Synchronizer::freeRunningActivities()
     return fActivities;
 }
 
+QStringList Synchronizer::validActivities(const QStringList &layoutActivities)
+{
+    QStringList valids;
+    QStringList allactivities = activities();
+
+    for(auto activity : layoutActivities) {
+        if (allactivities.contains(activity)) {
+            valids << activity;
+        }
+    }
+
+    return valids;
+}
+
 QStringList Synchronizer::centralLayoutsNames()
 {
     QStringList names;
@@ -490,8 +504,8 @@ void Synchronizer::initLayouts()
 
 void Synchronizer::onLayoutAdded(const QString &layout)
 {
-    CentralLayout centralLayout(this, layout);
-    m_layouts.insertBasedOnName(centralLayout.data());
+    CentralLayout centrallayout(this, layout);
+    m_layouts.insertBasedOnName(centrallayout.data());
 
     if (m_isLoaded) {
         emit layoutsChanged();

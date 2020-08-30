@@ -97,6 +97,7 @@ public:
     QStringList freeActivities();
     QStringList runningActivities();
     QStringList freeRunningActivities(); //! These are activities that haven't been assigned to specific layout
+    QStringList validActivities(const QStringList &layoutActivities);
 
     Latte::View *viewForContainment(Plasma::Containment *containment);
     Latte::View *viewForContainment(uint id);

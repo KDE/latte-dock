@@ -188,7 +188,7 @@ const QStringList CentralLayout::appliedActivities()
     } else if (isForFreeActivities()) {
         return m_corona->layoutsManager()->synchronizer()->freeRunningActivities();
     } else {
-        return m_activities;
+        return m_corona->layoutsManager()->synchronizer()->validActivities(m_activities);
     }
 }
 
