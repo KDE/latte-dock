@@ -636,9 +636,9 @@ FocusScope {
             PlasmaComponents.Button {
                 id: removeView
                 Layout.fillWidth: true
+                enabled: dialog.advancedLevel
                 text: i18n("Remove")
                 iconSource: "delete"
-                enabled: latteView.layout.viewsCount > 1
                 opacity: enabled ? 1 : 0
                 tooltip: i18n("Remove current dock")
 
