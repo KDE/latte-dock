@@ -62,6 +62,9 @@ Synchronizer::Synchronizer(QObject *parent)
 
 
     //! KActivities tracking
+    connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::activityRemoved,
+            this, &Synchronizer::onActivityRemoved);
+
     connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged,
             this, &Synchronizer::onCurrentActivityChanged);
 
@@ -401,7 +404,42 @@ void Synchronizer::addLayout(CentralLayout *layout)
     }
 }
 
-void Synchronizer::onCurrentActivityChanged(const QString &id)
+void Synchronizer::onActivityRemoved(const QString &activityid)
+{
+    if (!m_assignedLayouts.contains(activityid)) {
+        return;
+    }
+
+    //! remove any other explicit set layouts for the current activity
+    QStringList explicits = m_assignedLayouts[activityid];
+
+    for(auto explicitlayoutname : explicits) {
+        QString explicitlayoutid = m_layouts.idForName(explicitlayoutname);
+
+        m_layouts[explicitlayoutid].activities.removeAll(activityid);
+        m_manager->setOnActivities(explicitlayoutname, m_layouts[explicitlayoutid].activities);
+        emit layoutActivitiesChanged(m_layouts[explicitlayoutid]);
+    }
+
+    QStringList freelayoutnames;
+
+    if (m_assignedLayouts.contains(Data::Layout::FREEACTIVITIESID)) {
+        freelayoutnames = m_assignedLayouts[Data::Layout::FREEACTIVITIESID];
+    }
+
+    reloadAssignedLayouts();
+
+    for(auto freelayoutname : freelayoutnames) {
+        //! inform free activities layouts that their activities probably changed
+        CentralLayout *central = centralLayout(freelayoutname);
+
+        if (central) {
+            emit central->activitiesChanged();
+        }
+    }
+}
+
+void Synchronizer::onCurrentActivityChanged(const QString &activityid)
 {
     if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
         updateKWinDisabledBorders();

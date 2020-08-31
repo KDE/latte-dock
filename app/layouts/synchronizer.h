@@ -135,7 +135,8 @@ signals:
     void layoutActivitiesChanged(const Data::Layout &layout);
 
 private slots:
-    void onCurrentActivityChanged(const QString &id);
+    void onActivityRemoved(const QString &activityid);
+    void onCurrentActivityChanged(const QString &activityid);
     void onLayoutAdded(const QString &layoutpath);
 
     void reloadAssignedLayouts();
