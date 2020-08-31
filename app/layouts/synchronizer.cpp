@@ -455,17 +455,23 @@ void Synchronizer::hideAllViews()
 
 void Synchronizer::pauseLayout(QString layoutName)
 {
-    if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
+    if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {        
         CentralLayout *layout = centralLayout(layoutName);
 
-        if (layout && !layout->activities().isEmpty()) {
+        if (layout->isOnAllActivities()) {
+            return;
+        }
+
+        QStringList appliedactivities = layout->appliedActivities();
+
+        if (layout && !appliedactivities.isEmpty()) {
             int i = 0;
 
-            for (const auto &activityId : layout->activities()) {
+            for (const auto &activityid : appliedactivities) {
                 //! Stopping the activities must be done asynchronous because otherwise
                 //! the activity manager cant close multiple activities
-                QTimer::singleShot(i * 1000, [this, activityId]() {
-                    m_activitiesController->stopActivity(activityId);
+                QTimer::singleShot(i * 1000, [this, activityid]() {
+                    m_activitiesController->stopActivity(activityid);
                 });
 
                 i = i + 1;
