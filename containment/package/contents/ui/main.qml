@@ -199,7 +199,6 @@ Item {
 
     property bool normalBusyForTouchingBusyVerticalView: (latteView && latteView.windowsTracker /*is touching a vertical view that is in busy state and the user prefers isBusy transparency*/
                                                           && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
-                                                          && root.themeColors === LatteContainment.Types.SmartThemeColors
                                                           && plasmoid.configuration.backgroundOnlyOnMaximized
                                                           /*&& !plasmoid.configuration.solidBackgroundForMaximized
                                                           && !plasmaBackgroundForPopups*/)

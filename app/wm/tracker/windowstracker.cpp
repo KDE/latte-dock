@@ -727,49 +727,58 @@ bool Windows::isTouchingView(Latte::View *view, const WindowSystem::WindowInfoWr
     return (winfo.isValid() && intersects(view, winfo));
 }
 
+bool Windows::isTouchingViewEdge(Latte::View *view, const QRect &windowgeometry)
+{
+    if (!view) {
+        return false;
+    }
+
+    bool inViewThicknessEdge{false};
+    bool inViewLengthBoundaries{false};
+
+    QRect screenGeometry = view->screenGeometry();
+
+    bool inCurrentScreen{screenGeometry.contains(windowgeometry.topLeft()) || screenGeometry.contains(windowgeometry.bottomRight())};
+
+    if (inCurrentScreen) {
+        if (view->location() == Plasma::Types::TopEdge) {
+            inViewThicknessEdge = (windowgeometry.y() == view->absoluteGeometry().bottom() + 1);
+        } else if (view->location() == Plasma::Types::BottomEdge) {
+            inViewThicknessEdge = (windowgeometry.bottom() == view->absoluteGeometry().top() - 1);
+        } else if (view->location() == Plasma::Types::LeftEdge) {
+            inViewThicknessEdge = (windowgeometry.x() == view->absoluteGeometry().right() + 1);
+        } else if (view->location() == Plasma::Types::RightEdge) {
+            inViewThicknessEdge = (windowgeometry.right() == view->absoluteGeometry().left() - 1);
+        }
+
+        if (view->formFactor() == Plasma::Types::Horizontal) {
+            int yCenter = view->absoluteGeometry().center().y();
+
+            QPoint leftChecker(windowgeometry.left(), yCenter);
+            QPoint rightChecker(windowgeometry.right(), yCenter);
+
+            bool fulloverlap = (windowgeometry.left()<=view->absoluteGeometry().left()) && (windowgeometry.right()>=view->absoluteGeometry().right());
+
+            inViewLengthBoundaries = fulloverlap || view->absoluteGeometry().contains(leftChecker) || view->absoluteGeometry().contains(rightChecker);
+        } else if (view->formFactor() == Plasma::Types::Vertical) {
+            int xCenter = view->absoluteGeometry().center().x();
+
+            QPoint topChecker(xCenter, windowgeometry.top());
+            QPoint bottomChecker(xCenter, windowgeometry.bottom());
+
+            bool fulloverlap = (windowgeometry.top()<=view->absoluteGeometry().top()) && (windowgeometry.bottom()>=view->absoluteGeometry().bottom());
+
+            inViewLengthBoundaries = fulloverlap || view->absoluteGeometry().contains(topChecker) || view->absoluteGeometry().contains(bottomChecker);
+        }
+    }
+
+    return (inViewThicknessEdge && inViewLengthBoundaries);
+}
+
 bool Windows::isTouchingViewEdge(Latte::View *view, const WindowInfoWrap &winfo)
 {
     if (winfo.isValid() &&  !winfo.isMinimized()) {
-        bool inViewThicknessEdge{false};
-        bool inViewLengthBoundaries{false};
-
-        QRect screenGeometry = view->screenGeometry();
-
-        bool inCurrentScreen{screenGeometry.contains(winfo.geometry().topLeft()) || screenGeometry.contains(winfo.geometry().bottomRight())};
-
-        if (inCurrentScreen) {
-            if (view->location() == Plasma::Types::TopEdge) {
-                inViewThicknessEdge = (winfo.geometry().y() == view->absoluteGeometry().bottom() + 1);
-            } else if (view->location() == Plasma::Types::BottomEdge) {
-                inViewThicknessEdge = (winfo.geometry().bottom() == view->absoluteGeometry().top() - 1);
-            } else if (view->location() == Plasma::Types::LeftEdge) {
-                inViewThicknessEdge = (winfo.geometry().x() == view->absoluteGeometry().right() + 1);
-            } else if (view->location() == Plasma::Types::RightEdge) {
-                inViewThicknessEdge = (winfo.geometry().right() == view->absoluteGeometry().left() - 1);
-            }
-
-            if (view->formFactor() == Plasma::Types::Horizontal) {
-                int yCenter = view->absoluteGeometry().center().y();
-
-                QPoint leftChecker(winfo.geometry().left(), yCenter);
-                QPoint rightChecker(winfo.geometry().right(), yCenter);
-
-                bool fulloverlap = (winfo.geometry().left()<=view->absoluteGeometry().left()) && (winfo.geometry().right()>=view->absoluteGeometry().right());
-
-                inViewLengthBoundaries = fulloverlap || view->absoluteGeometry().contains(leftChecker) || view->absoluteGeometry().contains(rightChecker);
-            } else if (view->formFactor() == Plasma::Types::Vertical) {
-                int xCenter = view->absoluteGeometry().center().x();
-
-                QPoint topChecker(xCenter, winfo.geometry().top());
-                QPoint bottomChecker(xCenter, winfo.geometry().bottom());
-
-                bool fulloverlap = (winfo.geometry().top()<=view->absoluteGeometry().top()) && (winfo.geometry().bottom()>=view->absoluteGeometry().bottom());
-
-                inViewLengthBoundaries = fulloverlap || view->absoluteGeometry().contains(topChecker) || view->absoluteGeometry().contains(bottomChecker);
-            }
-        }
-
-        return (inViewThicknessEdge && inViewLengthBoundaries);
+        return isTouchingViewEdge(view, winfo.geometry());
     }
 
     return false;
@@ -839,8 +848,10 @@ void Windows::updateExtraViewHints()
                 bool sameScreen = (verView->positioner()->currentScreenId() == horView->positioner()->currentScreenId());
 
                 if (verView->formFactor() == Plasma::Types::Vertical && sameScreen) {
-                    bool topTouch = verView->isTouchingTopViewAndIsBusy() && horView->location() == Plasma::Types::TopEdge;
-                    bool bottomTouch = verView->isTouchingBottomViewAndIsBusy() && horView->location() == Plasma::Types::BottomEdge;
+                    bool hasEdgeTouch = isTouchingViewEdge(horView, verView->absoluteGeometry());
+
+                    bool topTouch = horView->location() == Plasma::Types::TopEdge && verView->isTouchingTopViewAndIsBusy() && hasEdgeTouch;
+                    bool bottomTouch = horView->location() == Plasma::Types::BottomEdge && verView->isTouchingBottomViewAndIsBusy() && hasEdgeTouch;
 
                     if (topTouch || bottomTouch) {
                         touchingBusyVerticalView = true;

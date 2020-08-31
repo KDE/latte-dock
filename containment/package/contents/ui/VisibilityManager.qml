@@ -237,9 +237,10 @@ Item{
             }
 
             var isTouchingTopScreenEdge = (latteView.y === latteView.screenGeometry.y);
-            var hasTopBorder = ((latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.TopBorder)) > 0);
+            var isStickedOnTopBorder = (plasmoid.configuration.alignment === LatteCore.Types.Justify && plasmoid.configuration.maxLength===100)
+                    || (plasmoid.configuration.alignment === LatteCore.Types.Top && plasmoid.configuration.offset===0);
 
-            return root.isVertical && !latteView.visibility.isHidden && !isTouchingTopScreenEdge && !hasTopBorder && background.isShown;
+            return root.isVertical && !latteView.visibility.isHidden && !isTouchingTopScreenEdge && isStickedOnTopBorder && background.isShown;
         }
     }
 
@@ -256,9 +257,10 @@ Item{
             var screenBottom = latteView.screenGeometry.y + latteView.screenGeometry.height;
             var isTouchingBottomScreenEdge = (latteBottom === screenBottom);
 
-            var hasBottomBorder = ((latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.BottomBorder)) > 0);
+            var isStickedOnBottomBorder = (plasmoid.configuration.alignment === LatteCore.Types.Justify && plasmoid.configuration.maxLength===100)
+                    || (plasmoid.configuration.alignment === LatteCore.Types.Bottom && plasmoid.configuration.offset===0);
 
-            return root.isVertical && !latteView.visibility.isHidden && !isTouchingBottomScreenEdge && !hasBottomBorder && background.isShown;
+            return root.isVertical && !latteView.visibility.isHidden && !isTouchingBottomScreenEdge && isStickedOnBottomBorder && background.isShown;
         }
     }
 

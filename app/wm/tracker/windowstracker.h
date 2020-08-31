@@ -170,6 +170,7 @@ private:
     bool isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &winfo);
     bool isTouchingView(Latte::View *view, const WindowSystem::WindowInfoWrap &winfo);
     bool isTouchingViewEdge(Latte::View *view, const WindowInfoWrap &winfo);
+    bool isTouchingViewEdge(Latte::View *view, const QRect &windowgeometry);
 
 private:
     //! a timer in order to not overload the views extra hints checking because it is not
