@@ -94,6 +94,7 @@ void TabLayouts::initUi()
     connect(m_layoutsController, &Settings::Controller::Layouts::dataChanged, this, &Generic::dataChanged);
 
     connect(this, &Settings::Handler::TabLayouts::dataChanged, this, &TabLayouts::updatePerLayoutButtonsState);
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, &TabLayouts::updatePerLayoutButtonsState);
 
     connect(m_inMemoryButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
             [ = ](int id, bool checked) {
@@ -371,7 +372,7 @@ void TabLayouts::updatePerLayoutButtonsState()
 
     //! Pause Button - enabled
     if (m_layoutsController->inMultipleMode()) {
-        if (selectedLayout.isActive && !selectedLayout.isForFreeActivities()) {
+        if (selectedLayout.isActive && !selectedLayout.isForFreeActivities() && m_corona->layoutsManager()->synchronizer()->runningActivities().count()>1) {
             setTwinProperty(m_pauseLayoutAction, TWINENABLED, true);
         } else {
             setTwinProperty(m_pauseLayoutAction, TWINENABLED, false);
