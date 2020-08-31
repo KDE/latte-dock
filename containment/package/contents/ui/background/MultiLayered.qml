@@ -52,10 +52,10 @@ BackgroundProperties{
     hasTopBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.TopBorder) > 0)
     hasBottomBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.BottomBorder) > 0)
 
-    shadows.left: hasLeftBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.left) : 0
-    shadows.right: hasRightBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.right) : 0
-    shadows.top: hasTopBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.top) : 0
-    shadows.bottom: hasBottomBorder ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.bottom) : 0
+    shadows.left: hasLeftBorder && root.behaveAsDockWithMask ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.left) : 0
+    shadows.right: hasRightBorder && root.behaveAsDockWithMask ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.right) : 0
+    shadows.top: hasTopBorder && root.behaveAsDockWithMask ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.top) : 0
+    shadows.bottom: hasBottomBorder && root.behaveAsDockWithMask ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.bottom) : 0
 
     shadows.fixedLeft: (customDefShadowIsEnabled || customUserShadowIsEnabled) ? customShadow : shadowsSvgItem.fixedMargins.left
     shadows.fixedRight: (customDefShadowIsEnabled || customUserShadowIsEnabled) ? customShadow : shadowsSvgItem.fixedMargins.right
@@ -153,6 +153,10 @@ BackgroundProperties{
     }
 
     totals.visualThickness: {
+        if (root.behaveAsPlasmaPanel) {
+            return root.isVertical ? root.width : root.height;
+        }
+
         var itemMargins = root.shrinkThickMargins ? 0 : metrics.totals.thicknessEdges;
         var maximumItem = metrics.iconSize + itemMargins;
 
@@ -164,7 +168,13 @@ BackgroundProperties{
         return Math.max(totals.minThickness, totals.minThickness + (percentage*maximumItem));
     }
 
-    totals.visualLength: Math.max(background.length + totals.shadowsLength, totals.paddingsLength + totals.shadowsLength)
+    totals.visualLength: {
+        if (root.behaveAsPlasmaPanel) {
+            return root.isVertical ? root.height : root.width;
+        }
+
+        return Math.max(background.length + totals.shadowsLength, totals.paddingsLength + totals.shadowsLength)
+    }
 
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
@@ -330,7 +340,6 @@ BackgroundProperties{
         //! When switching from overlaied background to regular one this must be done
         //! instantly otherwise the transition is not smooth
         readonly property bool paintInstantly: (root.hasExpandedApplet && root.plasmaBackgroundForPopups)
-                                               || root.plasmaStyleBusyForTouchingBusyVerticalView
 
         property rect efGeometry: Qt.rect(-1,-1,0,0)
 
@@ -497,8 +506,6 @@ BackgroundProperties{
         }
 
         backgroundColor: colorizerManager.backgroundColor
-        borderColor: backgroundColor /*disabled in favor of Layer 5*/
-        borderWidth: 1 /*disabled in favor of Layer 5*/
         shadowColor: customShadowColor
         shadowSize: {
             if (!customShadowIsEnabled) {

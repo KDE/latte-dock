@@ -204,7 +204,7 @@ Item{
                         return 0;
                     }
                     anchors.verticalCenterOffset: {
-                        if (allBorders || (noOfBorders>=2 && bothHorizontals)) {
+                        if (allBorders || (noOfBorders>=2 && bothHorizontals) || (noOfBorders==2 && !bothVerticals && borderWidth===0)) {
                             return 0;
                         }
 
@@ -233,7 +233,7 @@ Item{
                         return 0;
                     }
                     anchors.horizontalCenterOffset: {
-                        if (allBorders || (noOfBorders>=2 && bothVerticals)) {
+                        if (allBorders || (noOfBorders>=2 && bothVerticals) || (noOfBorders==2 && !bothHorizontals && borderWidth===0)) {
                             return 0;
                         }
 

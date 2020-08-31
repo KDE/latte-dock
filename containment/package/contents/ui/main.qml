@@ -180,8 +180,6 @@ Item {
                                           && (latteView.windowsTracker.currentScreen.existsWindowTouching
                                               || latteView.windowsTracker.currentScreen.existsWindowTouchingEdge))
                                         || (hasExpandedApplet && plasmaBackgroundForPopups) ))
-                                   || solidBusyForTouchingBusyVerticalView
-                                   || plasmaStyleBusyForTouchingBusyVerticalView
                                    || !LatteCore.WindowSystem.compositingActive
 
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
