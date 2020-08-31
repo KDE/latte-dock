@@ -425,6 +425,8 @@ void PrimaryConfigView::syncGeometry()
 
 void PrimaryConfigView::showEvent(QShowEvent *ev)
 {
+    updateAvailableScreenGeometry();
+
     if (m_shellSurface) {
         //! under wayland it needs to be set again after its hiding
         m_shellSurface->setPosition(m_geometryWhenVisible.topLeft());

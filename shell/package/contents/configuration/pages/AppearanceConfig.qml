@@ -277,7 +277,7 @@ PlasmaComponents.Page {
                         readonly property int localMinValue: 1
 
                         function updateMaxLength() {
-                            if (!pressed) {
+                            if (!pressed && viewConfig.isReady) {
                                 plasmoid.configuration.maxLength = Math.max(value, plasmoid.configuration.minLength, localMinValue);
                                 var newTotal = Math.abs(plasmoid.configuration.offset) + value;
 
@@ -387,7 +387,7 @@ PlasmaComponents.Page {
                         wheelEnabled: false
 
                         function updateMinLength() {
-                            if (!pressed) {
+                            if (!pressed  && viewConfig.isReady) {
                                 plasmoid.configuration.minLength = value; //Math.min(value, plasmoid.configuration.maxLength);
 
                                 if (plasmoid.configuration.minLength > maxLengthSlider.value) {
@@ -463,22 +463,15 @@ PlasmaComponents.Page {
                     LatteComponents.Slider {
                         id: offsetSlider
                         Layout.fillWidth: true
-
                         stepSize: 1
                         wheelEnabled: false
 
                         readonly property int screenLengthMaxFactor: (100 - plasmoid.configuration.maxLength) / 2
 
-                        //! Bindings are needed because from/to/value(s) are updated when PrimaryConfigView updates
-                        //! its ParentView property. During that change these values must be recalculated only when
-                        //! their final/new View properties are available; otherwise when changing from Center alignments
-                        //! to Left or Right might alter the true Offset of the newly shown View
-                        Binding {
-                            target: offsetSlider
-                            property: "value"
-                            when: viewConfig.isReady
-                            value: plasmoid.configuration.offset
-                        }
+                        //! these properties are used in order to not update view_offset incorrectly when the primary config view
+                        //! is changing between different views
+                        property bool userInputIsValid: false
+                        readonly property real offsetValue: plasmoid.configuration.offset
 
                         Binding {
                             target: offsetSlider
@@ -497,32 +490,49 @@ PlasmaComponents.Page {
                         }
 
                         function updateOffset() {
-                            if (!pressed) {
-                                plasmoid.configuration.offset = value;
-                                var newTotal = Math.abs(value) + plasmoid.configuration.maxLength;
+                            if (!pressed && viewConfig.isReady) {
+                                if (userInputIsValid) {
+                                    plasmoid.configuration.offset = value;
+                                } else {
+                                    value = offsetValue;
+                                }
+
+                                plasmoid.configuration.offset = offsetValue;
+                                var newTotal = Math.abs(offsetValue) + plasmoid.configuration.maxLength;
 
                                 //centered and justify alignments based on offset and get out of the screen in some cases
                                 var centeredCheck = ((plasmoid.configuration.alignment === LatteCore.Types.Center)
                                                      || (plasmoid.configuration.alignment === LatteCore.Types.Justify))
-                                        && ((Math.abs(value) + plasmoid.configuration.maxLength/2) > 50);
+                                        && ((Math.abs(offsetValue) + plasmoid.configuration.maxLength/2) > 50);
                                 if (newTotal > 100 || centeredCheck) {
                                     plasmoid.configuration.maxLength = ((plasmoid.configuration.alignment === LatteCore.Types.Center)
                                                                         || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ?
-                                                2*(50 - Math.abs(value)) :100 - Math.abs(value);
+                                                2*(50 - Math.abs(offsetValue)) :100 - Math.abs(offsetValue);
                                 }
                             }
                         }
 
                         onPressedChanged: {
+                            if (pressed) {
+                                userInputIsValid = true;
+                            } else {
+                                updateOffset();
+                                userInputIsValid = false;
+                            }
+                        }
+
+                        Component.onCompleted: {                            
+                            offsetValueChanged.connect(updateOffset);
+                            fromChanged.connect(updateOffset);
+                            toChanged.connect(updateOffset);
+
                             updateOffset();
                         }
 
-                        Component.onCompleted: {
-                            valueChanged.connect(updateOffset);
-                        }
-
                         Component.onDestruction: {
-                            valueChanged.disconnect(updateOffset);
+                            offsetValueChanged.disconnect(updateOffset);
+                            fromChanged.disconnect(updateOffset);
+                            toChanged.disconnect(updateOffset);
                         }
                     }
 
