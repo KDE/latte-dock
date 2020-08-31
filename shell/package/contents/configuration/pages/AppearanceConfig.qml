@@ -471,43 +471,49 @@ PlasmaComponents.Page {
                         //! these properties are used in order to not update view_offset incorrectly when the primary config view
                         //! is changing between different views
                         property bool userInputIsValid: false
-                        readonly property real offsetValue: plasmoid.configuration.offset
+                        readonly property bool sliderIsReady: viewConfig.isReady && (from===fromValue) && (to===toValue)
+
+                        readonly property int fromValue: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
+                                                          || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? -offsetSlider.screenLengthMaxFactor :  0
+
+                        readonly property int toValue: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
+                                                        || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? offsetSlider.screenLengthMaxFactor :  2*offsetSlider.screenLengthMaxFactor
+
+                        property real offsetValue: plasmoid.configuration.offset
 
                         Binding {
                             target: offsetSlider
                             property: "from"
                             when: viewConfig.isReady
-                            value: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
-                                    || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? -offsetSlider.screenLengthMaxFactor :  0
+                            value: offsetSlider.fromValue
                         }
 
                         Binding {
                             target: offsetSlider
                             property: "to"
                             when: viewConfig.isReady
-                            value: ((plasmoid.configuration.alignment === LatteCore.Types.Center)
-                                    || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ? offsetSlider.screenLengthMaxFactor :  2*offsetSlider.screenLengthMaxFactor
+                            value: offsetSlider.toValue
                         }
 
                         function updateOffset() {
-                            if (!pressed && viewConfig.isReady) {
+                            if (!pressed && sliderIsReady) {
                                 if (userInputIsValid) {
                                     plasmoid.configuration.offset = value;
                                 } else {
-                                    value = offsetValue;
-                                }
+                                    value = Math.min(Math.max(from, plasmoid.configuration.offset), to);
+                                    plasmoid.configuration.offset = value;
+                                }                                
 
-                                plasmoid.configuration.offset = offsetValue;
-                                var newTotal = Math.abs(offsetValue) + plasmoid.configuration.maxLength;
+                                var newTotal = Math.abs(value) + plasmoid.configuration.maxLength;
 
                                 //centered and justify alignments based on offset and get out of the screen in some cases
                                 var centeredCheck = ((plasmoid.configuration.alignment === LatteCore.Types.Center)
                                                      || (plasmoid.configuration.alignment === LatteCore.Types.Justify))
-                                        && ((Math.abs(offsetValue) + plasmoid.configuration.maxLength/2) > 50);
+                                        && ((Math.abs(value) + plasmoid.configuration.maxLength/2) > 50);
                                 if (newTotal > 100 || centeredCheck) {
                                     plasmoid.configuration.maxLength = ((plasmoid.configuration.alignment === LatteCore.Types.Center)
                                                                         || (plasmoid.configuration.alignment === LatteCore.Types.Justify)) ?
-                                                2*(50 - Math.abs(offsetValue)) :100 - Math.abs(offsetValue);
+                                                2*(50 - Math.abs(value)) :100 - Math.abs(value);
                                 }
                             }
                         }
@@ -521,10 +527,11 @@ PlasmaComponents.Page {
                             }
                         }
 
-                        Component.onCompleted: {                            
+                        Component.onCompleted: {
                             offsetValueChanged.connect(updateOffset);
                             fromChanged.connect(updateOffset);
                             toChanged.connect(updateOffset);
+                            sliderIsReadyChanged.connect(updateOffset);
 
                             updateOffset();
                         }
@@ -533,6 +540,7 @@ PlasmaComponents.Page {
                             offsetValueChanged.disconnect(updateOffset);
                             fromChanged.disconnect(updateOffset);
                             toChanged.disconnect(updateOffset);
+                            sliderIsReadyChanged.disconnect(updateOffset);
                         }
                     }
 
