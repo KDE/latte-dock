@@ -157,6 +157,11 @@ Column {
             visible: isWin && !hideCloseButtons
             iconSource: "window-close"
             onClicked: {
+                if (!isGroup) {
+                    //! force windowsPreviewDlg hiding when the last instance is closed
+                    windowsPreviewDlg.visible = false;
+                }
+
                 backend.cancelHighlightWindows();
                 tasksModel.requestClose(submodelIndex);
             }
