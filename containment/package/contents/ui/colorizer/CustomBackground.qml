@@ -113,14 +113,9 @@ Item{
         id: kirigamiRect
         anchors.fill: painter
         active: root.kirigamiLibraryIsFound && main.shadowSize>0
-        sourceComponent: KirigamiShadowedRectangle {
-            radius: painter.radius
-            color: "transparent"
-            shadow.size: main.shadowSize
-            //! WORKAROUND, plasma theme shadow color compared to KirigamiShadowedRectangle drawn shadow has an alpha difference. This way
-            //! we make sure that when the user uses the same shadow size with plasma theme original one we draw the same shadow compared visually
-            shadow.color: Qt.rgba(main.shadowColor.r, main.shadowColor.g, main.shadowColor.b, Math.min(1, 0.336 + main.shadowColor.a))
-        }
+        //! this "source" approach is needed in order for KF5<=5.68 to load Latte correctly with no
+        //! qml breakage because Kirigami2.ShadowedRectangle is not present
+        source: root.kirigamiLibraryIsFound ? "KirigamiShadowedRectangle.qml" : "NormalRectangle.qml"
     }
 
     Rectangle{
