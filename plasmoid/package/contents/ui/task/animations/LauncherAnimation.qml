@@ -93,7 +93,7 @@ Item{
         wrapper.tempScaleHeight = wrapper.mScale;
     }
 
-    function bounceLauncher(){
+    function startLauncherAnimation(){
         if(taskItem.animations.launcherBouncingEnabled){
             taskItem.animationStarted();
             init();
@@ -107,12 +107,12 @@ Item{
 
 
     Component.onCompleted: {
-        wrapper.runLauncherAnimation.connect(bounceLauncher);
+        wrapper.runLauncherAnimation.connect(startLauncherAnimation);
     }
 
     Component.onDestruction: {
         clearAnimationsSignals();
-        wrapper.runLauncherAnimation.disconnect(bounceLauncher);
+        wrapper.runLauncherAnimation.disconnect(startLauncherAnimation);
     }
 }
 /////////////////// end of launcher animation
