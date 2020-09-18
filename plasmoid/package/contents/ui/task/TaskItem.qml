@@ -1139,7 +1139,6 @@ MouseArea{
 
 
     function launcherAction(){
-        // if ((lastButtonClicked == Qt.LeftButton)||(lastButtonClicked == Qt.MidButton)){
         if (LatteCore.WindowSystem.compositingActive) {
             inBouncingAnimation = true;
             tasksExtendedManager.addWaitingLauncher(taskItem.launcherUrl);
