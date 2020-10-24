@@ -21,6 +21,7 @@
 import QtQuick 2.0
 
 import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.core 0.2 as LatteCore
 
@@ -31,11 +32,12 @@ SequentialAnimation {
     PropertyAction { target: taskItem; property: "inAddRemoveAnimation"; value: true }
     PropertyAction { target: taskItem; property: "inRemoveStage"; value: true }
 
-    //Animation Add/Remove (1) - when is window with no launcher, animations enabled
+    //Animation Add/Remove (1) - when is window with no launcher in current activity, animations enabled
     //Animation Add/Remove (4) - the user removes a launcher, animation enabled
-    property bool animation1: ((((tasksModel.launcherPosition(taskItem.launcherUrl) === -1)
-                                 && (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) === -1) )
-                                || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl))
+    property bool animation1: ( (tasksModel.launcherPosition(taskItem.launcherUrl) === -1 /*no-launcher*/
+                                 && tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) === -1)
+                               || ((!tasksModel.launcherInCurrentActivity(taskItem.launcherUrl)/*no-launcher-in-current-activity*/
+                                    && !tasksModel.launcherInCurrentActivity(taskItem.launcherUrlWithIcon)))
                                && !taskItem.isStartup && LatteCore.WindowSystem.compositingActive)
 
     property bool animation4: ((taskItem.launcherUrl===root.launcherForRemoval
@@ -53,14 +55,15 @@ SequentialAnimation {
         script:{
             //! When a window is removed and afterwards its launcher must be shown immediately!
             if (!enabledAnimation && taskItem.isWindow && !taskItem.isSeparator
-                    && tasksModel.launcherPosition(taskItem.launcherUrl) !== -1
+                    && (tasksModel.launcherInCurrentActivity(taskItem.launcherUrl)
+                        || tasksModel.launcherInCurrentActivity(taskItem.launcherUrlWithIcon))
                     && !tasksExtendedManager.immediateLauncherExists(taskItem.launcherUrl)){
-                tasksExtendedManager.addImmediateLauncher(taskItem.launcherUrl);
+                 tasksExtendedManager.addImmediateLauncher(taskItem.launcherUrl);
             }
 
             //trying to fix the ListView nasty behavior
             //during the removal the anchoring for ListView children changes a lot
-            var previousTask = icList.childAtIndex(taskItem.lastValidIndex-1);
+            var previousTask = icList.childAtIndex(0/*(taskItem.lastValidIndex-1*/);
 
             if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation){
                 //! When removing a task and there are surrounding separators then the hidden spacers
@@ -68,17 +71,33 @@ SequentialAnimation {
                 //! the removal animation a small margin must applied
                 var spacer = taskItem.headItemIsSeparator ? -(2+taskItem.metrics.totals.lengthEdge) : ( taskItem.headItemIsSeparator ? (2+taskItem.metrics.totals.lengthEdge)/2 : 0);
 
+                var taskInListPos = mapToItem(icList, 0, 0);
+                taskItem.parent = icList;
+
                 if (root.vertical) {
-                    taskItem.anchors.top = previousTask.bottom;
-                    taskItem.anchors.topMargin = spacer;
+                    taskItem.anchors.top = icList.top;
+                    taskItem.anchors.topMargin = taskInListPos.y + spacer;
+
+                    if (root.location===PlasmaCore.Types.LeftEdge) {
+                        taskItem.anchors.left = icList.left;
+                    } else {
+                        taskItem.anchors.right = icList.right;
+                    }
                 } else {
-                    taskItem.anchors.left = previousTask.right;
-                    taskItem.anchors.leftMargin = spacer;
+                    taskItem.anchors.left = icList.left;
+                    taskItem.anchors.leftMargin = taskInListPos.x + spacer;
+
+                    if (root.location===PlasmaCore.Types.TopEdge) {
+                        taskItem.anchors.top = icList.top;
+                    } else {
+                        taskItem.anchors.bottom = icList.bottom;
+                    }
                 }
             }
 
-            // console.log("1." + taskItem.launcherUrl + " - " + taskRealRemovalAnimation.enabledAnimation);
-            // console.log("2." + root.launcherForRemoval + " - " + taskItem.isLauncher);
+            //console.log("1." + taskItem.launcherUrl + " - " + tasksModel.launcherInCurrentActivity(taskItem.launcherUrl) + "__" +
+            //            animation1 + ":" + animation4 + "=>" + taskRealRemovalAnimation.enabledAnimation);
+            //console.log("2." + root.launcherForRemoval + " - " + taskItem.isLauncher);
 
             taskItem.animations.needLength.addEvent(needLengthEvent);
 
