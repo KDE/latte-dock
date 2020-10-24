@@ -70,7 +70,7 @@ SequentialAnimation {
             //! the removal animation a small margin must applied
             var spacer = taskItem.headItemIsSeparator ? -(2+taskItem.metrics.totals.lengthEdge) : ( taskItem.headItemIsSeparator ? (2+taskItem.metrics.totals.lengthEdge)/2 : 0);
 
-            if (!taskItem.inBouncingAnimation) {
+            if (!taskItem.inBouncingAnimation && !animation4) {
                 //! real slide-out case
                 var taskInListPos = mapToItem(icList, 0, 0);
                 taskItem.parent = icList;
