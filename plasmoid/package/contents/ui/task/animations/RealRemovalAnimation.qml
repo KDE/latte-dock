@@ -58,12 +58,12 @@ SequentialAnimation {
                     && (tasksModel.launcherInCurrentActivity(taskItem.launcherUrl)
                         || tasksModel.launcherInCurrentActivity(taskItem.launcherUrlWithIcon))
                     && !tasksExtendedManager.immediateLauncherExists(taskItem.launcherUrl)){
-                 tasksExtendedManager.addImmediateLauncher(taskItem.launcherUrl);
+                tasksExtendedManager.addImmediateLauncher(taskItem.launcherUrl);
             }
 
             //trying to fix the ListView nasty behavior
             //during the removal the anchoring for ListView children changes a lot
-            var previousTask = icList.childAtIndex(0/*(taskItem.lastValidIndex-1*/);
+            var previousTask = icList.childAtIndex(taskItem.lastValidIndex-1);
 
             if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation){
                 //! When removing a task and there are surrounding separators then the hidden spacers
@@ -71,26 +71,38 @@ SequentialAnimation {
                 //! the removal animation a small margin must applied
                 var spacer = taskItem.headItemIsSeparator ? -(2+taskItem.metrics.totals.lengthEdge) : ( taskItem.headItemIsSeparator ? (2+taskItem.metrics.totals.lengthEdge)/2 : 0);
 
-                var taskInListPos = mapToItem(icList, 0, 0);
-                taskItem.parent = icList;
+                if (!taskItem.inBouncingAnimation) {
+                    //! real slide-out case
+                    var taskInListPos = mapToItem(icList, 0, 0);
+                    taskItem.parent = icList;
 
-                if (root.vertical) {
-                    taskItem.anchors.top = icList.top;
-                    taskItem.anchors.topMargin = taskInListPos.y + spacer;
+                    if (root.vertical) {
+                        taskItem.anchors.top = icList.top;
+                        taskItem.anchors.topMargin = taskInListPos.y + spacer;
 
-                    if (root.location===PlasmaCore.Types.LeftEdge) {
-                        taskItem.anchors.left = icList.left;
+                        if (root.location===PlasmaCore.Types.LeftEdge) {
+                            taskItem.anchors.left = icList.left;
+                        } else {
+                            taskItem.anchors.right = icList.right;
+                        }
                     } else {
-                        taskItem.anchors.right = icList.right;
+                        taskItem.anchors.left = icList.left;
+                        taskItem.anchors.leftMargin = taskInListPos.x + spacer;
+
+                        if (root.location===PlasmaCore.Types.TopEdge) {
+                            taskItem.anchors.top = icList.top;
+                        } else {
+                            taskItem.anchors.bottom = icList.bottom;
+                        }
                     }
                 } else {
-                    taskItem.anchors.left = icList.left;
-                    taskItem.anchors.leftMargin = taskInListPos.x + spacer;
-
-                    if (root.location===PlasmaCore.Types.TopEdge) {
-                        taskItem.anchors.top = icList.top;
+                    // bouncing case
+                    if (root.vertical) {
+                        taskItem.anchors.top = previousTask.bottom;
+                        taskItem.anchors.topMargin = spacer;
                     } else {
-                        taskItem.anchors.bottom = icList.bottom;
+                        taskItem.anchors.left = previousTask.right;
+                        taskItem.anchors.leftMargin = spacer;
                     }
                 }
             }
