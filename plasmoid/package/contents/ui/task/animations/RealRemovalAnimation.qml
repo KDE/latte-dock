@@ -65,45 +65,43 @@ SequentialAnimation {
             //during the removal the anchoring for ListView children changes a lot
             var previousTask = icList.childAtIndex(taskItem.lastValidIndex-1);
 
-            if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation){
-                //! When removing a task and there are surrounding separators then the hidden spacers
-                //! are updated immediately for the neighbour tasks. In such case in order to not break
-                //! the removal animation a small margin must applied
-                var spacer = taskItem.headItemIsSeparator ? -(2+taskItem.metrics.totals.lengthEdge) : ( taskItem.headItemIsSeparator ? (2+taskItem.metrics.totals.lengthEdge)/2 : 0);
+            //! When removing a task and there are surrounding separators then the hidden spacers
+            //! are updated immediately for the neighbour tasks. In such case in order to not break
+            //! the removal animation a small margin must applied
+            var spacer = taskItem.headItemIsSeparator ? -(2+taskItem.metrics.totals.lengthEdge) : ( taskItem.headItemIsSeparator ? (2+taskItem.metrics.totals.lengthEdge)/2 : 0);
 
-                if (!taskItem.inBouncingAnimation) {
-                    //! real slide-out case
-                    var taskInListPos = mapToItem(icList, 0, 0);
-                    taskItem.parent = icList;
+            if (!taskItem.inBouncingAnimation) {
+                //! real slide-out case
+                var taskInListPos = mapToItem(icList, 0, 0);
+                taskItem.parent = icList;
 
-                    if (root.vertical) {
-                        taskItem.anchors.top = icList.top;
-                        taskItem.anchors.topMargin = taskInListPos.y + spacer;
+                if (root.vertical) {
+                    taskItem.anchors.top = icList.top;
+                    taskItem.anchors.topMargin = taskInListPos.y + spacer;
 
-                        if (root.location===PlasmaCore.Types.LeftEdge) {
-                            taskItem.anchors.left = icList.left;
-                        } else {
-                            taskItem.anchors.right = icList.right;
-                        }
-                    } else {
+                    if (root.location===PlasmaCore.Types.LeftEdge) {
                         taskItem.anchors.left = icList.left;
-                        taskItem.anchors.leftMargin = taskInListPos.x + spacer;
-
-                        if (root.location===PlasmaCore.Types.TopEdge) {
-                            taskItem.anchors.top = icList.top;
-                        } else {
-                            taskItem.anchors.bottom = icList.bottom;
-                        }
+                    } else {
+                        taskItem.anchors.right = icList.right;
                     }
                 } else {
-                    // bouncing case
-                    if (root.vertical) {
-                        taskItem.anchors.top = previousTask.bottom;
-                        taskItem.anchors.topMargin = spacer;
+                    taskItem.anchors.left = icList.left;
+                    taskItem.anchors.leftMargin = taskInListPos.x + spacer;
+
+                    if (root.location===PlasmaCore.Types.TopEdge) {
+                        taskItem.anchors.top = icList.top;
                     } else {
-                        taskItem.anchors.left = previousTask.right;
-                        taskItem.anchors.leftMargin = spacer;
+                        taskItem.anchors.bottom = icList.bottom;
                     }
+                }
+            } else if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation ) {
+                // bouncing case
+                if (root.vertical) {
+                    taskItem.anchors.top = previousTask.bottom;
+                    taskItem.anchors.topMargin = spacer;
+                } else {
+                    taskItem.anchors.left = previousTask.right;
+                    taskItem.anchors.leftMargin = spacer;
                 }
             }
 
