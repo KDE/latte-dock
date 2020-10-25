@@ -310,7 +310,7 @@ QList<CentralLayout *> Synchronizer::centralLayoutsForActivity(const QString act
 {
     QList<CentralLayout *> layouts;
 
-    if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
+    if (m_manager->memoryUsage() == MemoryUsage::SingleLayout && m_centralLayouts.count() >= 1) {
         layouts << m_centralLayouts.at(0);
     } else {
         for (auto layout : m_centralLayouts) {
@@ -357,7 +357,9 @@ QList<Latte::View *> Synchronizer::viewsBasedOnActivityId(const QString &id) con
     QList<Latte::View *> views;
 
     for(auto layout : centralLayoutsForActivity(id)) {
-        views << layout->latteViews();
+        if (m_centralLayouts.contains(layout)) {
+            views << layout->latteViews();
+        }
     }
 
     return views;
@@ -501,7 +503,7 @@ void Synchronizer::unloadCentralLayout(CentralLayout *layout)
     int pos = m_centralLayouts.indexOf(layout);
 
     if (pos>=0) {
-        CentralLayout *central = m_centralLayouts.takeAt(0);
+        CentralLayout *central = m_centralLayouts.takeAt(pos);
 
         if (m_multipleModeInitialized) {
             central->syncToLayoutFile(true);
