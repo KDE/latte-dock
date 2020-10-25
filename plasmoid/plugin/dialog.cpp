@@ -47,7 +47,8 @@ bool Dialog::event(QEvent *e)
 {
     if (e->type() == QEvent::Enter) {
         setContainsMouse(true);
-    } else if (e->type() == QEvent::Leave) {
+    } else if (e->type() == QEvent::Leave
+               || e->type() == QEvent::Hide) {
         setContainsMouse(false);
     }
 
