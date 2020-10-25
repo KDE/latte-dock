@@ -642,24 +642,15 @@ void VisibilityManager::updateGhostWindowState()
 
 void VisibilityManager::hide()
 {
-    if (KWindowSystem::isPlatformX11()) {
-        m_lastMask = m_latteView->mask();
-        m_latteView->setMask(QRect(-1, -1, 1, 1));
-    } else {
-        //! wayland case
-        m_latteView->hide();
-    }
+
+    m_lastMask = m_latteView->mask();
+    m_latteView->setMask(QRect(-1, -1, 1, 1));
 }
 
 void VisibilityManager::show()
 {
-    if (KWindowSystem::isPlatformX11()) {
-        if (m_latteView->mask() == QRect(-1, -1 , 1, 1)) {
-            m_latteView->setMask(m_lastMask);
-        }
-    } else {
-        //! wayland case
-        m_latteView->show();
+    if (m_latteView->mask() == QRect(-1, -1 , 1, 1)) {
+        m_latteView->setMask(m_lastMask);
     }
 }
 
