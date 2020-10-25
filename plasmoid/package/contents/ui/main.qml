@@ -61,8 +61,9 @@ Item {
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft && !root.vertical
     LayoutMirroring.childrenInherit: true
 
-    property bool plasma515: latteView ? latteView.plasma515 : LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
-    property bool plasma518: latteView ? latteView.plasma518 : LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
+    property bool plasma515: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
+    property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
+    property bool plasma520: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,20,0)
 
     property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool inConfigureAppletsMode: latteView ? latteView.inConfigureAppletsMode : true

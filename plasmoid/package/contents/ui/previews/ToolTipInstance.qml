@@ -187,7 +187,7 @@ Column {
 
             readonly property bool isMinimized: isGroup ? instance.isMinimized : mainToolTip.isMinimizedParent
             // TODO: this causes XCB error message when being visible the first time
-            property int winId: isWin && windows[flatIndex] !== undefined ? windows[flatIndex] : 0
+            readonly property var winId: isWin && windows[flatIndex] !== undefined ? windows[flatIndex] : 0
 
             // There's no PlasmaComponents3 version
             PlasmaComponents.Highlight {
@@ -197,22 +197,12 @@ Column {
             }
 
             Loader{
-                id:previewThumbX11Loader
+                id:previewThumbLoader
                 anchors.fill: parent
                 anchors.margins: 2
-                active: !LatteCore.WindowSystem.isPlatformWayland
+                active: LatteCore.WindowSystem.isPlatformX11 || (root.plasma520 && LatteCore.WindowSystem.isPlatformWayland)
                 visible: !albumArtImage.visible && !thumbnailSourceItem.isMinimized
-
-                sourceComponent: PlasmaCore.WindowThumbnail {
-                    winId: thumbnailSourceItem.winId
-
-                    onWinIdChanged: {
-                        //! WORKAROUND, in order for toolTipDelegate to re-instantiate the previews model when
-                        //! previews are changing from single instance preview to another single instance
-                        visible = false;
-                        visible = true;
-                    }
-                }
+                source: root.plasma520 && LatteCore.WindowSystem.isPlatformWayland ? "PipeWireThumbnail.qml" : "PlasmaCoreThumbnail.qml"
             }
 
             ToolTipWindowMouseArea {
@@ -262,7 +252,7 @@ Column {
                 animated: false
                 usesPlasmaTheme: false
                 visible: (thumbnailSourceItem.isMinimized && !albumArtImage.visible) //X11 case
-                         || (!previewThumbX11Loader.active && !albumArtImage.visible) //Wayland case
+                         || (!previewThumbLoader.active && !albumArtImage.visible) //Wayland case
             }
         }
 
