@@ -326,6 +326,7 @@ BackgroundProperties{
         anchors.bottomMargin: LatteCore.WindowSystem.compositingActive ? shadows.bottom : 0
         anchors.fill: shadowsSvgItem
 
+        imagePath: "widgets/panel-background"
         opacity: normalizedOpacity
 
         readonly property bool exceedsThemeOpacityLimits: appliedOpacity > themeMaxOpacity
@@ -339,11 +340,9 @@ BackgroundProperties{
 
         //! When switching from overlaied background to regular one this must be done
         //! instantly otherwise the transition is not smooth
-        readonly property bool paintInstantly: (root.hasExpandedApplet && root.plasmaBackgroundForPopups)
+        readonly property bool paintInstantly: (root.hasExpandedApplet && root.plasmaBackgroundForPopups && !customRadiusIsEnabled)
 
         property rect efGeometry: Qt.rect(-1,-1,0,0)
-
-        imagePath: "widgets/panel-background"
 
         property int paddingsWidth: margins.left+margins.right
         property int paddingsHeight: margins.top + margins.bottom
