@@ -140,7 +140,7 @@ PlasmaComponents.Page {
                         value: plasmoid.configuration.proportionIconSize
                         from: 1.0
                         to: (latteView.visibility.mode === LatteCore.Types.SidebarOnDemand || latteView.visibility.mode === LatteCore.Types.SidebarAutoHide)  ? 25 : 12
-                        stepSize: 0.5
+                        stepSize: 0.1
                         wheelEnabled: false
 
                         function updateProportionIconSize() {

@@ -40,7 +40,7 @@ ContainerAbility.Metrics {
         if ((plasmoid.configuration.proportionIconSize===-1) || !latteView)
             return -1;
 
-        return Math.max(16,Math.round(latteView.screenGeometry.height * plasmoid.configuration.proportionIconSize/100/8)*8);
+        return Math.max(16,Math.round(latteView.screenGeometry.height * plasmoid.configuration.proportionIconSize/100));
     }
 
     readonly property bool autosizeEnabled: autosize !== undefined && autosize.isActive
