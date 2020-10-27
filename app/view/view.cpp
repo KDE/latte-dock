@@ -178,8 +178,6 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
             emit inEditModeChanged();
         });
 
-        void userConfiguringChanged(bool configuring);
-
         if (m_corona->viewSettingsFactory()->hasOrphanSettings()
                 && m_corona->viewSettingsFactory()->hasVisibleSettings()
                 && m_corona->viewSettingsFactory()->lastContainment() == containment()) {
