@@ -428,7 +428,11 @@ void Effects::updateMask()
 {
     if (KWindowSystem::compositingActive()) {
         if (m_view->behaveAsPlasmaPanel()) {
-            m_view->setMask(QRect());
+            if (!m_view->visibility()->isHidden()) {
+                m_view->setMask(QRect());
+            } else {
+                m_view->setMask(VisibilityManager::ISHIDDENMASK);
+            }
         } else {
             m_view->setMask(maskCombinedRegion());
         }

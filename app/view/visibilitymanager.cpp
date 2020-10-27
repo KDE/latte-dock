@@ -57,6 +57,7 @@ namespace Latte {
 namespace ViewPart {
 
 //! BEGIN: VisiblityManager implementation
+const QRect VisibilityManager::ISHIDDENMASK = QRect(-1, -1, 1, 1);
 
 VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     : QObject(view)
@@ -642,14 +643,13 @@ void VisibilityManager::updateGhostWindowState()
 
 void VisibilityManager::hide()
 {
-
     m_lastMask = m_latteView->mask();
-    m_latteView->setMask(QRect(-1, -1, 1, 1));
+    m_latteView->setMask(ISHIDDENMASK);
 }
 
 void VisibilityManager::show()
 {
-    if (m_latteView->mask() == QRect(-1, -1 , 1, 1)) {
+    if (m_latteView->mask() == ISHIDDENMASK) {
         m_latteView->setMask(m_lastMask);
     }
 }

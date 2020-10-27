@@ -70,6 +70,8 @@ class VisibilityManager : public QObject
     Q_PROPERTY(int timerHide READ timerHide WRITE setTimerHide NOTIFY timerHideChanged)
 
 public:
+    static const QRect ISHIDDENMASK;
+
     explicit VisibilityManager(PlasmaQuick::ContainmentView *view);
     virtual ~VisibilityManager();
 
