@@ -827,7 +827,6 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     if ( !(prop1 & NET::WMState)
          && !(prop1 & NET::WMGeometry)
          && !(prop1 & NET::ActiveWindow)
-         && !(prop1 & NET::WMDesktop)
          && !(prop1 & (NET::WMName | NET::WMVisibleName)
               && !(prop2 & NET::WM2TransientFor)
               && !(prop2 & NET::WM2Activities)) ) {
