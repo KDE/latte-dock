@@ -506,17 +506,7 @@ BackgroundProperties{
 
         backgroundColor: colorizerManager.backgroundColor
         shadowColor: customShadowColor
-        shadowSize: {
-            if (!customShadowIsEnabled) {
-                return 0;
-            }
-
-            //! WORKAROUND: Kirigami.ShadowedRectangle does not respect the specified shadowed size
-            //! when the shadow size is bigger than background thickness. In such case the ShadowedRectangle
-            //! produced shadowed is much bigger than the specified one
-            var minaxis = Math.min(solidBackground.height, solidBackground.width)
-            return customShadow > minaxis ? minaxis : customShadow;
-        }
+        shadowSize: customShadowIsEnabled ? customShadow : 0
 
         roundness: {
             if (customRadiusIsEnabled) {
