@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Plasma
+Name[az]=Plasma
 Name[ca]=Plasma
 Name[ca@valencia]=Plasma
 Name[cs]=Plasma
@@ -31,6 +32,7 @@ Name[x-test]=xxPlasmaxx
 Name[zh_CN]=Plasma
 Name[zh_TW]=Plasma
 Comment=Latte Plasma style indicator
+Comment[az]=Latte Plasma üslubu indikatoru
 Comment[ca]=Indicador a l'estil Plasma per al Latte
 Comment[ca@valencia]=Indicador a l'estil Plasma per al Latte
 Comment[cs]=Ukazatel Latte ve stylu Plasma

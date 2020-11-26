@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Latte
+Name[az]=Latte
 Name[ca]=Latte
 Name[ca@valencia]=Latte
 Name[cs]=Latte
@@ -32,6 +33,7 @@ Name[x-test]=xxLattexx
 Name[zh_CN]=Latte
 Name[zh_TW]=Latte
 Comment=Containment provided for the Latte Dock
+Comment[az]=Latte Dok paneli üçün təmin edilən qoruma
 Comment[ca]=Intèrpret d'ordres proporcionat per l'acoblador Latte
 Comment[ca@valencia]=Intèrpret d'ordres proporcionat per l'acoblador Latte
 Comment[da]=Beholder til Latte-dokken

@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Latte Shell
+Name[az]=Latte Üzlüyü
 Name[ca]=Intèrpret d'ordres del Latte
 Name[ca@valencia]=Intèrpret d'ordres del Latte
 Name[cs]=Shell Latte
@@ -31,6 +32,7 @@ Name[x-test]=xxLatte Shellxx
 Name[zh_CN]=Latte Shell
 Name[zh_TW]=Latte Shell
 Comment=Shell provided for the Latte Dock
+Comment[az]=Latte Dok paneli üçün nəzərdə tutulan üzlük
 Comment[ca]=Intèrpret d'ordres proporcionat per l'acoblador Latte
 Comment[ca@valencia]=Intèrpret d'ordres proporcionat per l'acoblador Latte
 Comment[da]=Skal til Latte-dokken
@@ -61,6 +63,7 @@ Comment[zh_CN]=用于 Latte 停靠栏的 Shell
 Comment[zh_TW]=由 Latte Dock 提供的 Shell
 
 Keywords=shell
+Keywords[az]=üzlük
 Keywords[ca]=intèrpret d'ordres
 Keywords[ca@valencia]=intèrpret d'ordres
 Keywords[cs]=shell

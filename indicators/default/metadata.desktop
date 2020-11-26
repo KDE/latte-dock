@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Latte
+Name[az]=Latte
 Name[ca]=Latte
 Name[ca@valencia]=Latte
 Name[cs]=Latte
@@ -31,6 +32,7 @@ Name[x-test]=xxLattexx
 Name[zh_CN]=Latte
 Name[zh_TW]=Latte
 Comment=Latte default indicator
+Comment[az]=Latte standart indikatoru
 Comment[ca]=Indicador predeterminat del Latte
 Comment[ca@valencia]=Indicador predeterminat del Latte
 Comment[cs]=Výchozí ukazatel Latte

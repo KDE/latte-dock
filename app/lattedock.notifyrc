@@ -1,6 +1,7 @@
 [Global]
 Name=Latte Dock
 Name[ar]=رصيف لاتيه
+Name[az]=Latte Dok Paneli
 Name[ca]=Acoblador Latte
 Name[ca@valencia]=Acoblador Latte
 Name[cs]=Dok Latte
@@ -33,6 +34,7 @@ Name[zh_CN]=Latte 停靠栏
 Name[zh_TW]=Latte Dock
 Comment=Latte Dock
 Comment[ar]=رصيف لاتيه
+Comment[az]=Latte Dok Paneli
 Comment[ca]=Acoblador Latte
 Comment[ca@valencia]=Acoblador Latte
 Comment[cs]=Dok Latte
@@ -67,6 +69,7 @@ IconName=latte-dock
 
 [Event/import-done]
 Name=Imported successfully
+Name[az]=Müvəffəqiyyətlə İdxal Olundu
 Name[ca]=S'ha importat amb èxit
 Name[ca@valencia]=S'ha importat amb èxit
 Name[cs]=Importováno úspěšně
@@ -100,6 +103,7 @@ Action=Popup
 
 [Event/import-fail]
 Name=Failed to import
+Name[az]=İdxal baş tutmadı
 Name[ca]=Ha fallat en importar
 Name[ca@valencia]=Ha fallat en importar
 Name[cs]=Nepodařilo se importovat
@@ -133,6 +137,7 @@ Action=Popup
 
 [Event/export-done]
 Name=Exported successfully
+Name[az]=Müvəffəqiyyətlə ixrac olundu
 Name[ca]=S'ha exportat amb èxit
 Name[ca@valencia]=S'ha exportat amb èxit
 Name[cs]=Exportováno úspěšně
@@ -166,6 +171,7 @@ Action=Popup
 
 [Event/export-fail]
 Name=Failed to export
+Name[az]=İxrac baş tutmadı
 Name[ca]=Ha fallat en exportar
 Name[ca@valencia]=Ha fallat en exportar
 Name[cs]=Export selhal
@@ -199,6 +205,7 @@ Action=Popup
 
 [Event/remove-done]
 Name=Removed successfully
+Name[az]=Müvəffəqiyyətlə silindi
 Name[ca]=S'ha eliminat amb èxit
 Name[ca@valencia]=S'ha eliminat amb èxit
 Name[cs]=Úspěšně odstraněno
@@ -232,6 +239,7 @@ Action=Popup
 
 [Event/remove-fail]
 Name=Failed to remove
+Name[az]=Silinmə alınmadı
 Name[ca]=Ha fallat en eliminar
 Name[ca@valencia]=Ha fallat en eliminar
 Name[cs]=Selhalo odstranění 
@@ -266,6 +274,7 @@ Action=Popup
 
 [Event/switch-layout]
 Name=Switch to layout
+Name[az]=Maketi Keçmək
 Name[ca]=Commuta a la disposició
 Name[ca@valencia]=Commuta a la disposició
 Name[cs]=Přepnout na rozložení

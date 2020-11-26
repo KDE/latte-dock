@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Latte Tasks
+Name[az]=Latte Tapşırıqları
 Name[ca]=Tasques del Latte
 Name[ca@valencia]=Tasques del Latte
 Name[cs]=Úlohy Latte
@@ -29,6 +30,7 @@ Name[x-test]=xxLatte Tasksxx
 Name[zh_CN]=Latte 任务管理器
 Name[zh_TW]=Latte 工作
 Comment=Tasks plasmoid from Latte Dock
+Comment[az]=Latte Dok'dan Tapşırılar plasmoid'i
 Comment[ca]=Plasmoide de tasques de l'acoblador Latte
 Comment[ca@valencia]=Plasmoide de tasques de l'acoblador Latte
 Comment[cs]=Plasmoid úloh z doku Latte

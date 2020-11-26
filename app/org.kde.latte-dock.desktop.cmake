@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Latte
+Name[az]=Latte
 Name[ca]=Latte
 Name[ca@valencia]=Latte
 Name[cs]=Latte
@@ -31,6 +32,7 @@ Name[x-test]=xxLattexx
 Name[zh_CN]=Latte
 Name[zh_TW]=Latte
 Comment=Dock for the masses
+Comment[az]=Hər kəs üçün Dok panel
 Comment[ca]=Acoblador per a les masses
 Comment[ca@valencia]=Acoblador per a les masses
 Comment[cs]=Dok pro masy
@@ -62,6 +64,7 @@ Comment[x-test]=xxDock for the massesxx
 Comment[zh_CN]=给大众使用的停靠栏
 Comment[zh_TW]=給大眾使用的 Dock
 GenericName=Dock
+GenericName[az]=Dok
 GenericName[ca]=Acobla
 GenericName[ca@valencia]=Acobla
 GenericName[cs]=Dok
