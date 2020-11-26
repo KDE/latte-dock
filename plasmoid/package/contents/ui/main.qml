@@ -108,13 +108,6 @@ Item {
     property int internalHeightMargins: !root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthPaddings
 
     property real textColorBrightness: ColorizerTools.colorBrightness(themeTextColor)
-    property color minimizedDotColor: {
-        if (latteView) {
-            return latteView.minimizedDotColor;
-        }
-
-        return textColorBrightness > 127.5 ? Qt.darker(themeTextColor, 1.7) : Qt.lighter(themeBackgroundColor, 7)
-    }
 
     property color themeTextColor: theme.textColor
     property color themeBackgroundColor: theme.backgroundColor

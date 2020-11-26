@@ -433,8 +433,6 @@ Item {
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
     property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
-
-    readonly property color minimizedDotColor: colorizerManager.minimizedDotColor
     ///END properties from latteApplet
 
 

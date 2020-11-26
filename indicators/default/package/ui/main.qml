@@ -50,6 +50,7 @@ LatteComponents.IndicatorItem{
 
         return isActiveColor;
     }
+
     property color notActiveColor: indicator.isMinimized ? minimizedColor : isActiveColor
 
     //! Common Options

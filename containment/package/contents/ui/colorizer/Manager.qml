@@ -41,7 +41,6 @@ Loader{
 
     readonly property real themeTextColorBrightness: ColorizerTools.colorBrightness(textColor)
     readonly property real backgroundColorBrightness: ColorizerTools.colorBrightness(backgroundColor)
-    readonly property color minimizedDotColor: themeTextColorBrightness > 127.5 ? Qt.darker(textColor, 1.7) : Qt.lighter(textColor, 8)
 
     readonly property color focusGlowColor: Qt.hsva(buttonFocusColor.h, buttonFocusColor.s, 1.0, 1.0)
 
