@@ -72,8 +72,6 @@ Item{
         }
     }
 
-    property int maxScreenEdgeMargin: root.behaveAsDockWithMask ? Math.max(0, plasmoid.configuration.screenEdgeMargin) : 0
-
     property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
     property int thicknessMid: metrics.mask.screenEdge + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.totals.thickness+extraZoomThickMask) //needed in some animations
     property int thicknessNormal: metrics.mask.screenEdge + Math.max(metrics.totals.thickness + extraNormalThickMask, background.thickness + background.shadows.headThickness)
@@ -86,7 +84,7 @@ Item{
                                                thicknessNormalOriginalValue : background.thickness + background.shadows.headThickness*/
 
     property int thicknessNormalOriginalValue: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraNormalThickMask
-    property int thicknessZoomOriginal: maxScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraZoomThickMask,
+    property int thicknessZoomOriginal: metrics.mask.maxScreenEdge + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraZoomThickMask,
                                                                          background.thickness + background.shadows.headThickness)
 
     //! when Latte behaves as Plasma panel

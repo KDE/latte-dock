@@ -21,4 +21,5 @@ import QtQuick 2.0
 
 Item {
     property int screenEdge: 0
+    property int maxScreenEdge: 0
 }
