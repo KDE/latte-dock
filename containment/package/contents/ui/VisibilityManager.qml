@@ -75,7 +75,6 @@ Item{
 
     property int thicknessNormal: metrics.mask.screenEdge + Math.max(metrics.totals.thickness + metrics.extraThicknessForNormal, background.thickness + background.shadows.headThickness)
 
-    property int thicknessZoom: metrics.mask.screenEdge + ((metrics.totals.thickness+metrics.extraThicknessForZoomed) * parabolic.factor.maxZoom) + 2
     property int thicknessNormalOriginal: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
 
     property int thicknessNormalOriginalValue: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + metrics.extraThicknessForNormal
@@ -507,7 +506,7 @@ Item{
                 tempThickness = thicknessNormal;
 
                 if (animations.needThickness.count > 0) {
-                    tempThickness = LatteCore.WindowSystem.compositingActive ? thicknessZoom : thicknessNormal;
+                    tempThickness = LatteCore.WindowSystem.compositingActive ? metrics.mask.thickness.zoomed : thicknessNormal;
                 }
 
                 if (maskIsFloating) {

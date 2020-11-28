@@ -1213,7 +1213,7 @@ Item {
                 when: latteView && !latteView.maskManager.inRelocationHiding
                 value: {
                     if (latteView) {
-                        return animations.hasThicknessAnimation ? latteView.maskManager.thicknessZoom : latteView.maskManager.thicknessNormal;
+                        return animations.hasThicknessAnimation ? metrics.mask.thickness.zoomed : latteView.maskManager.thicknessNormal;
                     }
 
                     return metrics.totals.thickness * parabolic.factor.zoom;
