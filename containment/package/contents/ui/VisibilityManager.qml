@@ -72,7 +72,6 @@ Item{
         }
     }
 
-    property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
     property int thicknessMid: metrics.mask.screenEdge + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.totals.thickness+metrics.extraThicknessForZoomed) //needed in some animations
     property int thicknessNormal: metrics.mask.screenEdge + Math.max(metrics.totals.thickness + metrics.extraThicknessForNormal, background.thickness + background.shadows.headThickness)
 
@@ -517,7 +516,7 @@ Item{
                 }
 
                 if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                    tempThickness = thicknessAutoHidden;
+                    tempThickness = metrics.mask.thickness.hidden;
                 }
 
                 //configure x,y based on plasmoid position and root.panelAlignment(Alignment)
@@ -603,14 +602,14 @@ Item{
                     tempThickness = thicknessNormal;
 
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                        tempThickness = thicknessAutoHidden;
+                        tempThickness = metrics.mask.thickness.hidden;
                     } else if (animations.needThickness.count > 0) {
                         tempThickness = thicknessZoomOriginal;
                     }
                 } else{
                     //use all thickness space
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                        tempThickness = LatteCore.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
+                        tempThickness = LatteCore.WindowSystem.compositingActive ? metrics.mask.thickness.hidden : thicknessNormalOriginal;
                     } else {
                         tempThickness = !maskIsFloating ? thicknessZoomOriginal : thicknessZoomOriginal - maskFloatedGap;
                     }
@@ -661,7 +660,7 @@ Item{
             } else {
                 if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
                     localX = latteView.effects.rect.x;
-                    localY = root.height - thicknessAutoHidden;
+                    localY = root.height - metrics.mask.thickness.hidden;
                 } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                     localX = latteView.effects.rect.x;
                     localY = 0;
@@ -669,16 +668,16 @@ Item{
                     localX = 0;
                     localY = latteView.effects.rect.y;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    localX = root.width - thicknessAutoHidden;
+                    localX = root.width - metrics.mask.thickness.hidden;
                     localY = latteView.effects.rect.y;
                 }
             }
 
             if (root.isHorizontal) {
-                tempThickness = overridesHidden ? thicknessAutoHidden : latteView.effects.rect.height;
+                tempThickness = overridesHidden ? metrics.mask.thickness.hidden : latteView.effects.rect.height;
                 tempLength = latteView.effects.rect.width;
             } else {
-                tempThickness = overridesHidden ? thicknessAutoHidden : latteView.effects.rect.width;
+                tempThickness = overridesHidden ? metrics.mask.thickness.hidden : latteView.effects.rect.width;
                 tempLength = latteView.effects.rect.height;
             }
         }
