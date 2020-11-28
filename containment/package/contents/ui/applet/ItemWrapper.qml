@@ -60,7 +60,7 @@ Item{
             return 0;
         }
 
-        return scaledThickness + appletItem.metrics.margin.screenEdge;
+        return communicator.parabolicEffectIsSupported ? appletPreferredThickness : scaledThickness + appletItem.metrics.margin.screenEdge;
     }
 
     opacity: appletColorizer.mustBeShown && graphicsSystem.isAccelerated ? 0 : 1
