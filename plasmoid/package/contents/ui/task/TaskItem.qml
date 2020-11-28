@@ -406,8 +406,8 @@ MouseArea{
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
 
-        width: root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+taskItem.metrics.totals.lengthEdges: 1)
-        height: !root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.editMode) ? LatteCore.Environment.separatorLength+taskItem.metrics.totals.lengthEdges: 1)
+        width: root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.inEditMode) ? LatteCore.Environment.separatorLength+taskItem.metrics.totals.lengthEdges: 1)
+        height: !root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.inEditMode) ? LatteCore.Environment.separatorLength+taskItem.metrics.totals.lengthEdges: 1)
 
         property bool forceHiddenState: false
 
@@ -435,7 +435,7 @@ MouseArea{
             }
 
             onDisableAllWindowsFunctionalityChanged: {
-                if (!root.editMode) {
+                if (!root.inEditMode) {
                     return;
                 }
 
@@ -443,7 +443,7 @@ MouseArea{
             }
 
             onShowWindowsOnlyFromLaunchersChanged: {
-                if (!root.editMode) {
+                if (!root.inEditMode) {
                     return;
                 }
 
@@ -1205,7 +1205,7 @@ MouseArea{
     }
 
     function showContextMenu(args) {
-        if (isSeparator && !root.editMode)
+        if (isSeparator && !root.inEditMode)
             return;
 
         if (!root.contextMenu) {

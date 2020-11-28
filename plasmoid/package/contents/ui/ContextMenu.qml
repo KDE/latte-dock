@@ -748,7 +748,7 @@ PlasmaComponents.ContextMenu {
         text: i18n("&Pin Launcher")
         icon: "window-pin"
 
-        visible: visualParent && (!visualParent.isSeparator || (visualParent.isSeparator && root.editMode))
+        visible: visualParent && (!visualParent.isSeparator || (visualParent.isSeparator && root.inEditMode))
         // && get(atm.IsLauncher) !== true
                  && get(atm.IsStartup) !== true
                  && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
@@ -866,12 +866,12 @@ PlasmaComponents.ContextMenu {
 
     /*PlasmaComponents.MenuItem {
         separator: true
-        visible: root.editMode
+        visible: root.inEditMode
     }*/
 
     PlasmaComponents.MenuItem {
         id: addInternalSeparatorItem
-        visible: root.editMode
+        visible: root.inEditMode
 
         icon: "add"
         text: i18n("Add Separator")
@@ -885,7 +885,7 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: removeInternalSeparatorItem
-        visible: root.editMode && visualParent.isSeparator
+        visible: root.inEditMode && visualParent.isSeparator
 
         icon: "remove"
         text: i18n("Remove Separator")
@@ -914,7 +914,7 @@ PlasmaComponents.ContextMenu {
 
     /* PlasmaComponents.MenuItem {
         separator: true
-        visible: root.editMode
+        visible: root.inEditMode
     }*/
 
     PlasmaComponents.MenuItem {
@@ -945,7 +945,7 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: alternativesMenuItem
-        visible: root.editMode && !visualParent.isSeparator
+        visible: root.inEditMode && !visualParent.isSeparator
         text: plasmoid.action("alternatives").text
         icon: plasmoid.action("alternatives").icon
 
@@ -1010,7 +1010,7 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: removePlasmoid
-        visible: (latteView && latteView.editMode) || (!latteView && !plasmoid.immutable /*normal plasmoid in the desktop*/)
+        visible: (root.latteInEditMode) || (!root.latteBridge && !plasmoid.immutable /*normal plasmoid in the desktop*/)
 
         text: plasmoid.action("remove").text
         icon: plasmoid.action("remove").icon

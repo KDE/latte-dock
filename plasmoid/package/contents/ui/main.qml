@@ -65,7 +65,6 @@ Item {
     property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
     property bool plasma520: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,20,0)
 
-    property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool inConfigureAppletsMode: latteView ? latteView.inConfigureAppletsMode : true
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: plasmoid.configuration.hideAllTasks
@@ -154,7 +153,7 @@ Item {
     property bool dockIsHidden: latteView ? latteView.dockIsHidden : false
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool highlightWindows: hoverAction === LatteTasks.Types.HighlightWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
-    property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : parabolic.factor.zoom && !root.editMode
+    property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : parabolic.factor.zoom > 1 && !root.inEditMode
 
     property bool scrollingEnabled: plasmoid.configuration.scrollTasksEnabled
     property bool autoScrollTasksEnabled: scrollingEnabled && plasmoid.configuration.autoScrollTasksEnabled
