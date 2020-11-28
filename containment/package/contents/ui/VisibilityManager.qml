@@ -76,8 +76,6 @@ Item{
     property int thicknessNormal: metrics.mask.screenEdge + Math.max(metrics.totals.thickness + metrics.extraThicknessForNormal, background.thickness + background.shadows.headThickness)
 
     property int thicknessZoom: metrics.mask.screenEdge + ((metrics.totals.thickness+metrics.extraThicknessForZoomed) * parabolic.factor.maxZoom) + 2
-    //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: metrics.mask.screenEdge + Math.max(thicknessNormalOriginal,metrics.extraThicknessForNormal + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
     property int thicknessNormalOriginal: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
 
     property int thicknessNormalOriginalValue: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + metrics.extraThicknessForNormal
