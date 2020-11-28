@@ -91,9 +91,9 @@ Item{
     property int thicknessAsPanel: metrics.totals.thickness
 
     //! is used to increase the mask thickness
-    readonly property int marginBetweenContentsAndRuler: 10
+    readonly property int marginBetweenContentsAndEditRuler: 10
     property int extraNormalThickMask: Math.max(metrics.mask.thickness.extraFromIndicators, metrics.mask.thickness.extraFromShadows)
-    property int extraZoomThickMask: marginBetweenContentsAndRuler + Math.max(metrics.mask.thickness.extraFromIndicators, metrics.mask.thickness.extraFromShadows)
+    property int extraZoomThickMask: marginBetweenContentsAndEditRuler + Math.max(metrics.mask.thickness.extraFromIndicators, metrics.mask.thickness.extraFromShadows)
 
     property Item applets: null
 

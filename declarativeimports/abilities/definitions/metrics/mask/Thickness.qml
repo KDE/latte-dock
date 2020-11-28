@@ -32,4 +32,7 @@ Item {
     property int maxNormalWithExtras: 48
     property int maxMediumWithExtras: 48
     property int maxZoomedWithExtras: 48
+
+    property int extrasForNormal: 0
+    property int extrasForZoomed: 0
 }
