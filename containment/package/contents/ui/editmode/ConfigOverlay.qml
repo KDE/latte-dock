@@ -327,8 +327,6 @@ MouseArea {
                 handle.y = transformChoords.y;
                 handle.width = currentApplet.width;
                 handle.height = currentApplet.height;
-
-                repositionHandler.restart();
             }
         }
 
