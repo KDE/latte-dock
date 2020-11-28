@@ -119,6 +119,8 @@ ContainerAbility.Metrics {
 
                 return 0;
             }
+
+            readonly property int extraFromIndicators: indicators.info.extraMaskThickness
         }
     }
 
