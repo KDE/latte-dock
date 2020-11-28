@@ -72,15 +72,13 @@ Item{
         }
     }
 
-    property int thicknessMid: metrics.mask.screenEdge + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.totals.thickness+metrics.extraThicknessForZoomed) //needed in some animations
+
     property int thicknessNormal: metrics.mask.screenEdge + Math.max(metrics.totals.thickness + metrics.extraThicknessForNormal, background.thickness + background.shadows.headThickness)
 
     property int thicknessZoom: metrics.mask.screenEdge + ((metrics.totals.thickness+metrics.extraThicknessForZoomed) * parabolic.factor.maxZoom) + 2
     property int thicknessNormalOriginal: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
 
     property int thicknessNormalOriginalValue: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + metrics.extraThicknessForNormal
-    property int thicknessZoomOriginal: metrics.mask.maxScreenEdge + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + metrics.extraThicknessForZoomed,
-                                                                         background.thickness + background.shadows.headThickness)
 
     //! when Latte behaves as Plasma panel
     property int thicknessAsPanel: metrics.totals.thickness
@@ -93,7 +91,7 @@ Item{
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
         when: latteView && !inRelocationHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding
-        value: root.behaveAsPlasmaPanel ? thicknessAsPanel : thicknessZoomOriginal
+        value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.thickness.maxZoomed
     }
 
     property bool validIconSize: (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === autosize.iconSize)
@@ -122,7 +120,7 @@ Item{
                 return 0;
             }
 
-            return thicknessZoomOriginal - thicknessNormalOriginalValue + metrics.extraThicknessForNormal;
+            return metrics.mask.thickness.maxZoomed - thicknessNormalOriginalValue + metrics.extraThicknessForNormal;
         }
     }
 
@@ -368,6 +366,11 @@ Item{
         }
     }
 
+    Connections {
+        target: metrics.mask.thickness
+        onMaxZoomedChanged: updateMaskArea()
+    }
+
     Connections{
         target: themeExtended ? themeExtended : null
         onThemeChanged: latteView.effects.forceMaskRedraw();
@@ -381,8 +384,6 @@ Item{
             layouter.updateSizeForAppletsInFill();
         }
     }
-
-    onThicknessZoomOriginalChanged: updateMaskArea();
 
     function slotContainsMouseChanged() {
         if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand) {
@@ -602,14 +603,14 @@ Item{
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                         tempThickness = metrics.mask.thickness.hidden;
                     } else if (animations.needThickness.count > 0) {
-                        tempThickness = thicknessZoomOriginal;
+                        tempThickness = metrics.mask.thickness.maxZoomed;
                     }
                 } else{
                     //use all thickness space
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                         tempThickness = LatteCore.WindowSystem.compositingActive ? metrics.mask.thickness.hidden : thicknessNormalOriginal;
                     } else {
-                        tempThickness = !maskIsFloating ? thicknessZoomOriginal : thicknessZoomOriginal - maskFloatedGap;
+                        tempThickness = !maskIsFloating ? metrics.mask.thickness.maxZoomed : metrics.mask.thickness.maxZoomed - maskFloatedGap;
                     }
                 }
 

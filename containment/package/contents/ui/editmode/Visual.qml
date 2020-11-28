@@ -43,7 +43,7 @@ Item{
 
     property int speed: LatteCore.WindowSystem.compositingActive ? animations.speedFactor.normal*3.6*animations.duration.large : 10
     property int thickness: visibilityManager.thicknessEditMode + root.editShadow
-    property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow //- visibilityManager.thicknessEditMode
+    property int rootThickness: metrics.mask.thickness.maxZoomed + root.editShadow //- visibilityManager.thicknessEditMode
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - metrics.maxIconSize/4 : root.width)://root.maxLength) :
                                                  (root.behaveAsPlasmaPanel ? root.height - metrics.maxIconSize/4 : root.height)
 
