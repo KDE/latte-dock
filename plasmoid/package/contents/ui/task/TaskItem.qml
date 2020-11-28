@@ -55,7 +55,7 @@ MouseArea{
             if (root.vertical) {
                 return taskItem.metrics.totals.thickness + taskItem.metrics.margin.screenEdge;
             } else {
-                if (root.dragSource || !root.parabolicEffectEnabled) {
+                if (root.dragSource || !taskItem.parabolic.isEnabled) {
                     return LatteCore.Environment.separatorLength+2*taskItem.metrics.margin.length;
                 }
             }
@@ -82,7 +82,7 @@ MouseArea{
             if (!root.vertical) {
                 return taskItem.metrics.totals.thickness + taskItem.metrics.margin.screenEdge;
             } else {
-                if (root.dragSource || !root.parabolicEffectEnabled) {
+                if (root.dragSource || !taskItem.parabolic.isEnabled) {
                     return LatteCore.Environment.separatorLength+2*taskItem.metrics.margin.length;
                 }
             }

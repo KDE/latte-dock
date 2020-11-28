@@ -80,7 +80,7 @@ Item{
     //   USE CASE: it can be used from applets that want to be adjusted based
     //       on the parabolic Effect or not
     // @since: 0.9
-    readonly property bool parabolicEffectEnabled: root.parabolicEffectEnabled && !appletItem.originalAppletBehavior
+    readonly property bool parabolicEffectEnabled: appletItem.parabolic.isEnabled && !appletItem.originalAppletBehavior
 
     // NAME: iconSize
     //   USAGE: read-only

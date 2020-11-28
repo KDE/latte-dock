@@ -22,8 +22,10 @@ import QtQuick 2.0
 import "./paraboliceffect" as ParabolicEffectTypes
 
 Item {
-    property ParabolicEffectTypes.Factor factor: ParabolicEffectTypes.Factor{}
+    property bool isEnabled: true
     property bool restoreZoomIsBlocked: false
+
+    property ParabolicEffectTypes.Factor factor: ParabolicEffectTypes.Factor{}
 
     readonly property ParabolicEffectTypes.PrivateProperties _privates: ParabolicEffectTypes.PrivateProperties {}
 

@@ -34,7 +34,7 @@ Item{
 
     property bool neighbourSeparator: rightSpacer ? appletItem.headAppletIsSeparator : appletItem.tailAppletIsSeparator
 
-    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && root.parabolicEffectEnabled
+    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && appletItem.parabolic.isEnabled
                                  && !appletItem.latteApplet ? ((LatteCore.Environment.separatorLength/2)+appletItem.metrics.margin.length) : subtrackedMargins
 
     property real nHiddenSize: {

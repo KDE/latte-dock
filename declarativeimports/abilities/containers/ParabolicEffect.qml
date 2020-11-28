@@ -30,6 +30,7 @@ AbilityDefinition.ParabolicEffect {
     //! This needs to be rethought and rechecked in order for public api to provide
     //! functionality that functionality must already exist in the definition
     readonly property Item publicApi: Item {
+        readonly property alias isEnabled: apis.isEnabled
         readonly property alias directRenderingEnabled: apis.directRenderingEnabled
         readonly property alias factor: apis.factor
         readonly property alias lastIndex: apis.lastIndex

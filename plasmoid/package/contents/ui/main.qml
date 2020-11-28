@@ -152,7 +152,6 @@ Item {
     property bool dockIsHidden: latteView ? latteView.dockIsHidden : false
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool highlightWindows: hoverAction === LatteTasks.Types.HighlightWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
-    property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : parabolic.factor.zoom > 1 && !root.inEditMode
 
     property bool scrollingEnabled: plasmoid.configuration.scrollTasksEnabled
     property bool autoScrollTasksEnabled: scrollingEnabled && plasmoid.configuration.autoScrollTasksEnabled
@@ -949,6 +948,7 @@ Item {
     Ability.ParabolicEffect {
         id: _parabolic
         bridge: latteBridge
+        local.isEnabled: factor.zoom > 1
         local.restoreZoomIsBlocked: root.contextMenu || windowsPreviewDlg.containsMouse
     }
 

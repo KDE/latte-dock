@@ -26,6 +26,7 @@ AbilityDefinition.ParabolicEffect {
     property Item bridge: null
     readonly property bool isActive: bridge !== null
 
+    isEnabled: ref.parabolic.isEnabled
     factor: ref.parabolic.factor
     restoreZoomIsBlocked: bridge ? (bridge.parabolic.host.restoreZoomIsBlocked || local.restoreZoomIsBlocked) : local.restoreZoomIsBlocked
 

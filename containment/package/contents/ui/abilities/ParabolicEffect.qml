@@ -27,6 +27,7 @@ import org.kde.latte.core 0.2 as LatteCore
 import "./privates" as Ability
 
 Ability.ParabolicEffectPrivate {
+    isEnabled: factor.zoom>1 && !root.inConfigureAppletsMode
     factor.zoom: LatteCore.WindowSystem.compositingActive && animations.active ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
     factor.maxZoom: Math.max(factor.zoom, animations.requirements.zoomFactor)
     restoreZoomIsBlocked: (view && view.contextMenuIsShown)

@@ -220,7 +220,6 @@ Item {
                                                            true : false
 
     readonly property bool inConfigureAppletsMode: root.editMode && plasmoid.configuration.inConfigureAppletsMode
-    readonly property bool parabolicEffectEnabled: parabolic.factor.zoom>1 && !inConfigureAppletsMode
 
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut)
     property bool closeActiveWindowEnabled: plasmoid.configuration.closeActiveWindowEnabled

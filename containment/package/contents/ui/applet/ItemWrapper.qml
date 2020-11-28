@@ -40,7 +40,7 @@ Item{
             return 0;
         }
 
-        if (isSeparator && root.parabolicEffectEnabled) {
+        if (isSeparator && appletItem.parabolic.isEnabled) {
             return -1;
         }
 
