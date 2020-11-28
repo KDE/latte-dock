@@ -31,6 +31,7 @@ ContainerAbility.Metrics {
     property Item autosize: null
     property Item background: null
     property Item indicators: null
+    property Item parabolic: null
 
     //! private properties to avoid too many not needed animation calculations
     readonly property int _iconSize: autosizeEnabled && autosize.iconSize > 0 ? Math.min(autosize.iconSize, maxIconSize) : maxIconSize

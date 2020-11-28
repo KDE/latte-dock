@@ -1498,6 +1498,7 @@ Item {
         autosize: _autosize
         background: _background
         indicators: indicatorsManager
+        parabolic: _parabolic
     }
 
     Ability.ParabolicEffect {

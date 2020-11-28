@@ -20,6 +20,8 @@
 import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
+import org.kde.latte.core 0.2 as LatteCore
+
 import "./privates" as Ability
 
 Ability.MetricsPrivate {
@@ -47,9 +49,19 @@ Ability.MetricsPrivate {
     //! window geometry is updated after the local screen margin animation was zeroed*/
     mask.screenEdge: (!root.screenEdgeMarginEnabled || root.hideThickScreenGap) ? 0 : plasmoid.configuration.screenEdgeMargin
 
+    mask.thickness.hidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
+    mask.thickness.normal: mask.screenEdge + Math.max(totals.thickness + extraThicknessForNormal, background.thickness + background.shadows.headThickness)
+    mask.thickness.medium: mask.screenEdge + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(totals.thickness+extraThicknessForZoomed)
+    mask.thickness.zoomed: mask.screenEdge + ((totals.thickness+extraThicknessForZoomed) * parabolic.factor.maxZoom) + 2
+    mask.thickness.maxNormal: mask.screenEdge + maxIconSize + (margin.maxThickness * 2) + extraThicknessForNormal
+    mask.thickness.maxMedium: mask.screenEdge + Math.max(mask.thickness.maxNormalForItems, extraThicknessForNormal + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(maxIconSize+margin.maxThickness))
+    mask.thickness.maxZoomed: mask.maxScreenEdge + Math.max( ((maxIconSize+(margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraThicknessForZoomed,
+                                                                    background.thickness + background.shadows.headThickness)
+
+    mask.thickness.maxNormalForItems: mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2)
+    mask.thickness.maxZoomedForItems: mask.maxScreenEdge + (metrics.maxIconSize + (metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom
+
     //! Padding
     padding.length: fraction.lengthPadding * iconSize
     padding.lengthApplet: fraction.lengthAppletPadding * iconSize
-
-
 }

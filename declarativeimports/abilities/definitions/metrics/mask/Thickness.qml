@@ -20,7 +20,7 @@
 import QtQuick 2.0
 
 Item {
-    property int autoHidden: 1
+    property int hidden: 1
     property int normal: 48
     property int medium: 48
     property int zoomed: 48
