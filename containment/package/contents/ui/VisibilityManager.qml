@@ -77,8 +77,6 @@ Item{
 
     property int thicknessNormalOriginal: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
 
-    property int thicknessNormalOriginalValue: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + metrics.extraThicknessForNormal
-
     //! when Latte behaves as Plasma panel
     property int thicknessAsPanel: metrics.totals.thickness
 
@@ -107,7 +105,7 @@ Item{
         target: latteView
         property:"normalHighestThickness"
         when: latteView && inPublishingState
-        value: thicknessNormalOriginalValue
+        value: metrics.mask.thickness.maxNormal
     }
 
     Binding {
@@ -119,7 +117,7 @@ Item{
                 return 0;
             }
 
-            return metrics.mask.thickness.maxZoomed - thicknessNormalOriginalValue + metrics.extraThicknessForNormal;
+            return metrics.mask.thickness.maxZoomed - metrics.mask.thickness.maxNormal + metrics.extraThicknessForNormal;
         }
     }
 

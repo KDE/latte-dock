@@ -67,7 +67,7 @@ MouseArea {
     property int appletX
     property int appletY
 
-    readonly property int thickness: visibilityManager.thicknessNormalOriginalValue - metrics.extraThicknessForNormal
+    readonly property int thickness: metrics.mask.thickness.maxNormal - metrics.extraThicknessForNormal
     readonly property int spacerHandleSize: units.smallSpacing
 
     onHeightChanged: tooltip.visible = false;
