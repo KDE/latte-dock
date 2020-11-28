@@ -30,6 +30,7 @@ AbilityDefinition.Metrics {
         readonly property alias backgroundThickness: apis.backgroundThickness
 
         readonly property alias margin: apis.margin
+        readonly property alias mask: apis.mask
         readonly property alias padding: apis.padding
         readonly property alias totals: apis.totals
     }

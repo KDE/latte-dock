@@ -72,30 +72,20 @@ Item{
         }
     }
 
-    property int finalScreenEdgeMargin: {
-        //! is used for window geometry calculations
-        if (!screenEdgeMarginEnabled || hideThickScreenGap) {
-            /*window geometry is updated after the local screen margin animation was zeroed*/
-            return 0;
-        }
-
-        return plasmoid.configuration.screenEdgeMargin;
-    }
-
     property int maxScreenEdgeMargin: root.behaveAsDockWithMask ? Math.max(0, plasmoid.configuration.screenEdgeMargin) : 0
 
     property int thicknessAutoHidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
-    property int thicknessMid: finalScreenEdgeMargin + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.totals.thickness+extraZoomThickMask) //needed in some animations
-    property int thicknessNormal: finalScreenEdgeMargin + Math.max(metrics.totals.thickness + extraNormalThickMask, background.thickness + background.shadows.headThickness)
+    property int thicknessMid: metrics.mask.screenEdge + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.totals.thickness+extraZoomThickMask) //needed in some animations
+    property int thicknessNormal: metrics.mask.screenEdge + Math.max(metrics.totals.thickness + extraNormalThickMask, background.thickness + background.shadows.headThickness)
 
-    property int thicknessZoom: finalScreenEdgeMargin + ((metrics.totals.thickness+extraZoomThickMask) * parabolic.factor.maxZoom) + 2
+    property int thicknessZoom: metrics.mask.screenEdge + ((metrics.totals.thickness+extraZoomThickMask) * parabolic.factor.maxZoom) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: finalScreenEdgeMargin + Math.max(thicknessNormalOriginal,extraNormalThickMask + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
-    property int thicknessNormalOriginal: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
+    property int thicknessMidOriginal: metrics.mask.screenEdge + Math.max(thicknessNormalOriginal,extraNormalThickMask + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(metrics.maxIconSize+metrics.margin.maxThickness)) //needed in some animations
+    property int thicknessNormalOriginal: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
     /*property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
                                                thicknessNormalOriginalValue : background.thickness + background.shadows.headThickness*/
 
-    property int thicknessNormalOriginalValue: finalScreenEdgeMargin + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraNormalThickMask
+    property int thicknessNormalOriginalValue: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) + extraNormalThickMask
     property int thicknessZoomOriginal: maxScreenEdgeMargin + Math.max( ((metrics.maxIconSize+(metrics.margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraZoomThickMask,
                                                                          background.thickness + background.shadows.headThickness)
 
@@ -769,7 +759,7 @@ Item{
             //before updating the localDockGeometry
             if (!latteView.behaveAsPlasmaPanel) {
                 var cleanThickness = metrics.totals.thickness;
-                var edgeMargin = finalScreenEdgeMargin;
+                var edgeMargin = metrics.mask.screenEdge;
 
                 if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                     localGeometry.x = latteView.effects.rect.x; // from effects area
@@ -823,7 +813,7 @@ Item{
             if (!LatteCore.WindowSystem.compositingActive || animated || latteView.behaveAsPlasmaPanel) {
                 latteView.effects.inputMask = Qt.rect(0, 0, -1, -1);
             } else {
-                var inputThickness = finalScreenEdgeMargin + metrics.totals.thickness;
+                var inputThickness = metrics.mask.screenEdge + metrics.totals.thickness;
                 var inputGeometry = Qt.rect(0, 0, root.width, root.height);
 
                 if (plasmoid.location === PlasmaCore.Types.TopEdge) {

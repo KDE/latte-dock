@@ -1,5 +1,5 @@
 /*
-*  Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2020 Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -19,16 +19,6 @@
 
 import QtQuick 2.0
 
-import "./metrics" as MetricsTypes
-
 Item {
-    property int iconSize: 48
-    property int maxIconSize: 48
-    property int backgroundThickness: 16
-
-    property MetricsTypes.Margin margin: MetricsTypes.Margin{}
-    property MetricsTypes.Padding padding: MetricsTypes.Padding{}
-    property MetricsTypes.Totals totals: MetricsTypes.Totals{}
-
-    property MetricsTypes.Mask mask: MetricsTypes.Mask{}
+    property int screenEdge: 0
 }

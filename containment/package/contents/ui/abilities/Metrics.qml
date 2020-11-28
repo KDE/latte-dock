@@ -41,6 +41,12 @@ Ability.MetricsPrivate {
                        || root.hideThickScreenGap ?
                            0 : plasmoid.configuration.screenEdgeMargin
 
+    //! used for window geometry calculations
+    //! window geometry is updated after the local screen margin animation was zeroed*/
+    mask.screenEdge: (!root.screenEdgeMarginEnabled || root.hideThickScreenGap) ? 0 : plasmoid.configuration.screenEdgeMargin
+
     padding.length: fraction.lengthPadding * iconSize
     padding.lengthApplet: fraction.lengthAppletPadding * iconSize
+
+
 }
