@@ -68,12 +68,9 @@ Item{
             root.isHorizontal ? root.height + edgeMargin - 1 : root.width + edgeMargin - 1;
         } else {
             var topOrLeftEdge = ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge));
-            return (topOrLeftEdge ? -thicknessNormal : thicknessNormal);
+            return (topOrLeftEdge ? -metrics.mask.thickness.normal : metrics.mask.thickness.normal);
         }
     }
-
-
-    property int thicknessNormal: metrics.mask.screenEdge + Math.max(metrics.totals.thickness + metrics.extraThicknessForNormal, background.thickness + background.shadows.headThickness)
 
     //! when Latte behaves as Plasma panel
     property int thicknessAsPanel: metrics.totals.thickness
@@ -499,10 +496,10 @@ Item{
                 //console.log("entered normal state...");
                 //count panel length
                 tempLength = background.totals.visualLength;
-                tempThickness = thicknessNormal;
+                tempThickness = metrics.mask.thickness.normal;
 
                 if (animations.needThickness.count > 0) {
-                    tempThickness = LatteCore.WindowSystem.compositingActive ? metrics.mask.thickness.zoomed : thicknessNormal;
+                    tempThickness = LatteCore.WindowSystem.compositingActive ? metrics.mask.thickness.zoomed : metrics.mask.thickness.normal;
                 }
 
                 if (maskIsFloating) {
@@ -593,7 +590,7 @@ Item{
                 if(onlyLengthAnimation) {
                     //this is used to fix a bug with shadow showing when the animation of edit mode
                     //is triggered
-                    tempThickness = thicknessNormal;
+                    tempThickness = metrics.mask.thickness.normal;
 
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                         tempThickness = metrics.mask.thickness.hidden;

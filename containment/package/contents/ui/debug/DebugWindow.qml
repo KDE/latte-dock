@@ -588,7 +588,7 @@ Window{
             }
 
             Text{
-                text: visibilityManager.thicknessNormal
+                text: metrics.mask.thickness.normal
             }
 
             Text{
