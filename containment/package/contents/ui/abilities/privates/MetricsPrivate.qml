@@ -20,6 +20,7 @@
 import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.abilities.containers 0.1 as ContainerAbility
 
 import "./metrics" as MetricsPrivateTypes
@@ -90,6 +91,33 @@ ContainerAbility.Metrics {
             NumberAnimation {
                 duration: 0.8 * animations.duration.proposed
                 easing.type: Easing.OutCubic
+            }
+        }
+    }
+
+    mask {
+        thickness {
+            readonly property int extraFromShadows: {
+                if (LatteCore.WindowSystem.isPlatformWayland) {
+                    return 0;
+                }
+
+                //! 45% of max shadow size in px.
+                var shadowMaxNeededMargin = 0.45 * root.appShadowSizeOriginal;
+                var shadowOpacity = (plasmoid.configuration.shadowOpacity) / 100;
+                //! +40% of shadow opacity in percentage
+                shadowOpacity = shadowOpacity + shadowOpacity*0.4;
+
+                //! This way we are trying to calculate how many pixels are needed in order for the shadow
+                //! to be drawn correctly without being cut of from View::mask() under X11
+                shadowMaxNeededMargin = (shadowMaxNeededMargin * shadowOpacity);
+
+                //! give some more space when items shadows are enabled and extremely big
+                if (root.enableShadows && metrics.margin.maxThickness < shadowMaxNeededMargin) {
+                    return shadowMaxNeededMargin - metrics.margin.maxThickness;
+                }
+
+                return 0;
             }
         }
     }

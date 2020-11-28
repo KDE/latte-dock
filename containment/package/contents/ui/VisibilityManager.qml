@@ -92,32 +92,11 @@ Item{
 
     //! is used to increase the mask thickness
     readonly property int marginBetweenContentsAndRuler: 10
-    property int extraNormalThickMask: Math.max(indicatorsExtraThickMask, shadowsExtraThickMask)
-    property int extraZoomThickMask: marginBetweenContentsAndRuler + Math.max(indicatorsExtraThickMask, shadowsExtraThickMask)
+    property int extraNormalThickMask: Math.max(indicatorsExtraThickMask, metrics.mask.thickness.extraFromShadows)
+    property int extraZoomThickMask: marginBetweenContentsAndRuler + Math.max(indicatorsExtraThickMask, metrics.mask.thickness.extraFromShadows)
     //! this is set from indicators when they need extra thickness mask size
     readonly property int indicatorsExtraThickMask: indicators.info.extraMaskThickness
-    property int shadowsExtraThickMask: {
-        if (LatteCore.WindowSystem.isPlatformWayland) {
-            return 0;
-        }
 
-        //! 45% of max shadow size in px.
-        var shadowMaxNeededMargin = 0.45 * root.appShadowSizeOriginal;
-        var shadowOpacity = (plasmoid.configuration.shadowOpacity) / 100;
-        //! +40% of shadow opacity in percentage
-        shadowOpacity = shadowOpacity + shadowOpacity*0.4;
-
-        //! This way we are trying to calculate how many pixels are needed in order for the shadow
-        //! to be drawn correctly without being cut of from View::mask() under X11
-        shadowMaxNeededMargin = (shadowMaxNeededMargin * shadowOpacity);
-
-        //! give some more space when items shadows are enabled and extremely big
-        if (root.enableShadows && metrics.margin.maxThickness < shadowMaxNeededMargin) {
-            return shadowMaxNeededMargin - metrics.margin.maxThickness;
-        }
-
-        return 0;
-    }
 
     property Item applets: null
 

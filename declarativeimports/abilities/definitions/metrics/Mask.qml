@@ -19,7 +19,11 @@
 
 import QtQuick 2.0
 
+import "./mask" as MaskTypes
+
 Item {
     property int screenEdge: 0
     property int maxScreenEdge: 0
+
+    property MaskTypes.Thickness thickness: MaskTypes.Thickness{}
 }
