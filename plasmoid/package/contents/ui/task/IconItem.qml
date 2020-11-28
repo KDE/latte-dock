@@ -650,7 +650,7 @@ Item{
 
         State{
             name: "isDragged"
-            when: ( (taskItem.isDragged) && (!root.inConfigureAppletsMode) )
+            when: taskItem.isDragged
         }
     ]
 

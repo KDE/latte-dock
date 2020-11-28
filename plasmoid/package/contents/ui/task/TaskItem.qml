@@ -588,7 +588,7 @@ MouseArea{
     }
 
     onIsDraggedChanged: {
-        if(isDragged && (!root.inConfigureAppletsMode)){
+        if (isDragged){
             root.dragSource = taskItem;
             dragHelper.startDrag(taskItem, model.MimeType, model.MimeData,
                                  model.LauncherUrlWithoutIcon, model.decoration);

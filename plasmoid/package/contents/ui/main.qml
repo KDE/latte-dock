@@ -65,7 +65,6 @@ Item {
     property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
     property bool plasma520: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,20,0)
 
-    property bool inConfigureAppletsMode: latteView ? latteView.inConfigureAppletsMode : true
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: plasmoid.configuration.hideAllTasks
     property bool dropNewLauncher: false
