@@ -58,6 +58,39 @@ ContainerAbility.Metrics {
     //! based on background / plasma theme minimum thickness requirements; behaveAsPlasmaPanel and floating is a good scenario for this
     readonly property int marginMinThickness: Math.max(0, (background.totals.minThickness - _maxIconSize) / 2)
 
+
+    //! Thickness Private Calculations
+
+    readonly property int marginBetweenContentsAndEditRuler: 10
+    readonly property int extraThicknessForNormal: Math.max(extraThicknessFromIndicators, extraThicknessFromShadows)
+    readonly property int extraThicknessForZoomed: marginBetweenContentsAndEditRuler + extraThicknessForNormal
+
+    readonly property int extraThicknessFromShadows: {
+        if (LatteCore.WindowSystem.isPlatformWayland) {
+            return 0;
+        }
+
+        //! 45% of max shadow size in px.
+        var shadowMaxNeededMargin = 0.45 * root.appShadowSizeOriginal;
+        var shadowOpacity = (plasmoid.configuration.shadowOpacity) / 100;
+        //! +40% of shadow opacity in percentage
+        shadowOpacity = shadowOpacity + shadowOpacity*0.4;
+
+        //! This way we are trying to calculate how many pixels are needed in order for the shadow
+        //! to be drawn correctly without being cut of from View::mask() under X11
+        shadowMaxNeededMargin = (shadowMaxNeededMargin * shadowOpacity);
+
+        //! give some more space when items shadows are enabled and extremely big
+        if (root.enableShadows && metrics.margin.maxThickness < shadowMaxNeededMargin) {
+            return shadowMaxNeededMargin - metrics.margin.maxThickness;
+        }
+
+        return 0;
+    }
+
+    readonly property int extraThicknessFromIndicators: indicators.info.extraMaskThickness
+
+
     //! BEHAVIORS
     Behavior on iconSize {
         NumberAnimation {
@@ -92,35 +125,6 @@ ContainerAbility.Metrics {
                 duration: 0.8 * animations.duration.proposed
                 easing.type: Easing.OutCubic
             }
-        }
-    }
-
-    mask {
-        thickness {
-            readonly property int extraFromShadows: {
-                if (LatteCore.WindowSystem.isPlatformWayland) {
-                    return 0;
-                }
-
-                //! 45% of max shadow size in px.
-                var shadowMaxNeededMargin = 0.45 * root.appShadowSizeOriginal;
-                var shadowOpacity = (plasmoid.configuration.shadowOpacity) / 100;
-                //! +40% of shadow opacity in percentage
-                shadowOpacity = shadowOpacity + shadowOpacity*0.4;
-
-                //! This way we are trying to calculate how many pixels are needed in order for the shadow
-                //! to be drawn correctly without being cut of from View::mask() under X11
-                shadowMaxNeededMargin = (shadowMaxNeededMargin * shadowOpacity);
-
-                //! give some more space when items shadows are enabled and extremely big
-                if (root.enableShadows && metrics.margin.maxThickness < shadowMaxNeededMargin) {
-                    return shadowMaxNeededMargin - metrics.margin.maxThickness;
-                }
-
-                return 0;
-            }
-
-            readonly property int extraFromIndicators: indicators.info.extraMaskThickness
         }
     }
 
