@@ -28,7 +28,7 @@ import org.kde.latte.core 0.2 as LatteCore
 
 Window{
     width: mainGrid.width + 10
-    height: Math.min(mainGrid.height+10, Screen.height - visibilityManager.thicknessNormalOriginal)
+    height: Math.min(mainGrid.height+10, Screen.height - metrics.mask.thickness.maxNormalForItems)
     visible: true
     title: "#debugwindow#"
 

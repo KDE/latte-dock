@@ -75,8 +75,6 @@ Item{
 
     property int thicknessNormal: metrics.mask.screenEdge + Math.max(metrics.totals.thickness + metrics.extraThicknessForNormal, background.thickness + background.shadows.headThickness)
 
-    property int thicknessNormalOriginal: metrics.mask.screenEdge + metrics.maxIconSize + (metrics.margin.maxThickness * 2) //this way we always have the same thickness published at all states
-
     //! when Latte behaves as Plasma panel
     property int thicknessAsPanel: metrics.totals.thickness
 
@@ -98,7 +96,7 @@ Item{
         target: latteView
         property:"normalThickness"
         when: latteView && inPublishingState
-        value: root.behaveAsPlasmaPanel ? thicknessAsPanel : thicknessNormalOriginal
+        value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.thickness.maxNormalForItems
     }
 
     Binding{
@@ -605,7 +603,7 @@ Item{
                 } else{
                     //use all thickness space
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                        tempThickness = LatteCore.WindowSystem.compositingActive ? metrics.mask.thickness.hidden : thicknessNormalOriginal;
+                        tempThickness = LatteCore.WindowSystem.compositingActive ? metrics.mask.thickness.hidden : metrics.mask.thickness.maxNormalForItems;
                     } else {
                         tempThickness = !maskIsFloating ? metrics.mask.thickness.maxZoomed : metrics.mask.thickness.maxZoomed - maskFloatedGap;
                     }
