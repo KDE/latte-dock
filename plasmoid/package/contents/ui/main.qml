@@ -934,6 +934,11 @@ Item {
         bridge: latteBridge
     }
 
+    AppletAbility.Debug {
+        id: _debug
+        bridge: latteBridge
+    }
+
     Ability.Indexer {
         id: _indexer
         bridge: latteBridge
@@ -1255,6 +1260,7 @@ Item {
                     orientation: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Qt.Vertical : Qt.Horizontal
                     delegate: Task.TaskItem{
                         animations: _animations
+                        debug: _debug
                         indexer: _indexer
                         launchers: _launchers
                         metrics: _metrics

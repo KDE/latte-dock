@@ -40,7 +40,7 @@ import "editmode" as EditMode
 import "indicators" as Indicators
 import "layouts" as Layouts
 import "./background" as Background
-import "./debug" as Debug
+import "./debugger" as Debugger
 import "../code/LayoutManager.js" as LayoutManager
 
 Item {
@@ -381,8 +381,9 @@ Item {
     property Item latteApplet
 
     readonly property alias animations: _animations
-    readonly property alias background: _background
     readonly property alias autosize: _autosize
+    readonly property alias background: _background
+    readonly property alias debug: _debug
     readonly property alias indexer: _indexer
     readonly property alias indicatorsManager: indicators
     readonly property alias layouter: _layouter
@@ -1256,6 +1257,7 @@ Item {
         id: appletContainerComponent
         Applet.AppletItem{
             animations: _animations
+            debug: _debug
             indexer: _indexer
             layouter: _layouter
             metrics: _metrics
@@ -1296,7 +1298,7 @@ Item {
 
     Loader{
         active: root.debugModeWindow
-        sourceComponent: Debug.DebugWindow{}
+        sourceComponent: Debugger.DebugWindow{}
     }
 
     Item {
@@ -1477,6 +1479,10 @@ Item {
         layouter: _layouter
         metrics: _metrics
         visibility: visibilityManager
+    }
+
+    Ability.Debug {
+        id: _debug
     }
 
     Ability.Indexer {

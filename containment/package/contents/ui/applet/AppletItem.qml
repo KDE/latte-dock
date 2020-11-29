@@ -289,6 +289,7 @@ Item {
     readonly property alias wrapper: _wrapper
 
     property Item animations: null
+    property Item debug: null
     property Item indexer: null
     property Item layouter: null
     property Item metrics: null
