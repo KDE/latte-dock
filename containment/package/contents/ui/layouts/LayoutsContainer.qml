@@ -423,7 +423,7 @@ Item{
     Loader{
         anchors.top: startLayout.top
         anchors.horizontalCenter: startLayout.horizontalCenter
-        active: root.debugModeLayouter
+        active: debug.layouterEnabled
 
         readonly property Item debugLayout: layouter.startLayout
 
@@ -443,7 +443,7 @@ Item{
     Loader{
         anchors.top: endLayout.top
         anchors.horizontalCenter: endLayout.horizontalCenter
-        active: root.debugModeLayouter
+        active: debug.layouterEnabled
 
         readonly property Item debugLayout: layouter.endLayout
 
@@ -463,7 +463,7 @@ Item{
     Loader{
         anchors.top: mainLayout.top
         anchors.horizontalCenter: mainLayout.horizontalCenter
-        active: root.debugModeLayouter
+        active: debug.layouterEnabled
         z:70
 
         readonly property Item debugLayout: layouter.mainLayout
@@ -484,7 +484,7 @@ Item{
     Loader{
         anchors.top: mainLayout.top
         anchors.left: parent.left
-        active: root.debugModeLayouter
+        active: debug.layouterEnabled
 
         readonly property Item debugLayout: layoutsContainer
 

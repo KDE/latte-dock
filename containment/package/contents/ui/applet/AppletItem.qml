@@ -1098,7 +1098,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
 
-        active: root.debugModeLayouter
+        active: appletItem.debug.layouterEnabled
         sourceComponent: Debug.Tag{
             label.text: (root.isHorizontal ? appletItem.width : appletItem.height) + labeltext
             label.color: appletItem.isAutoFillApplet ? "green" : "white"

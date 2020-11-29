@@ -63,7 +63,6 @@ Item {
     ////BEGIN properties
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
     property bool debugModeInputMask:  Qt.application.arguments.indexOf("--input")>=0
-    property bool debugModeLayouter: Qt.application.arguments.indexOf("--layouter")>=0
     property bool debugModeLocalGeometry: Qt.application.arguments.indexOf("--localgeometry")>=0
     property bool debugModeSpacers: Qt.application.arguments.indexOf("--spacers")>=0
 
