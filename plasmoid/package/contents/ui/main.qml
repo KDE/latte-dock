@@ -1126,16 +1126,16 @@ Item {
             anchors.horizontalCenter: !root.vertical ? scrollableList.horizontalCenter : undefined
             anchors.verticalCenter: root.vertical ? scrollableList.verticalCenter : undefined
 
-            width: root.vertical ? maxSize : icList.width
-            height: root.vertical ? icList.height : maxSize
+            width: root.vertical ? maxThickness : icList.width
+            height: root.vertical ? icList.height : maxThickness
 
             target: icList
 
             visible: root.dragAreaEnabled
 
-            property int maxSize: (parabolic.local.lastIndex>=0 || windowPreviewIsShown || animations.hasThicknessAnimation) ?
-                                      (parabolic.factor.maxZoom * metrics.totals.thickness) + metrics.margin.screenEdge :
-                                      metrics.totals.thickness + metrics.margin.screenEdge
+            property int maxThickness: (parabolic.local.lastIndex>=0 || windowPreviewIsShown || animations.hasThicknessAnimation) ?
+                                           (parabolic.factor.maxZoom * metrics.totals.thickness) + metrics.margin.screenEdge :
+                                           metrics.totals.thickness + metrics.margin.screenEdge
 
             function onlyLaunchersInList(list){
                 return list.every(function (item) {
@@ -1244,8 +1244,8 @@ Item {
                     anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
                     anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-                    width: !root.vertical ? contentWidth : mouseHandler.maxSize
-                    height: root.vertical ? contentHeight : mouseHandler.maxSize
+                    width: !root.vertical ? contentWidth : mouseHandler.maxThickness
+                    height: root.vertical ? contentHeight : mouseHandler.maxThickness
                     boundsBehavior: Flickable.StopAtBounds
                     orientation: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Qt.Vertical : Qt.Horizontal
                     delegate: Task.TaskItem{
