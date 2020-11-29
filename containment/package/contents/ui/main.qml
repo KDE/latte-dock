@@ -67,8 +67,6 @@ Item {
     property bool debugModeLocalGeometry: Qt.application.arguments.indexOf("--localgeometry")>=0
     property bool debugModeSpacers: Qt.application.arguments.indexOf("--spacers")>=0
     property bool debugModeTimers: Qt.application.arguments.indexOf("--timers")>=0
-    property bool debugModeWindow: Qt.application.arguments.indexOf("--with-window")>=0
-    property bool debugModeOverloadedIcons: Qt.application.arguments.indexOf("--overloaded-icons")>=0
 
     readonly property int version: LatteCore.Environment.makeVersion(0,9,75)
     readonly property bool kirigamiLibraryIsFound: LatteCore.Environment.frameworksVersion >= LatteCore.Environment.makeVersion(5,69,0)
@@ -1297,7 +1295,7 @@ Item {
     }
 
     Loader{
-        active: root.debugModeWindow
+        active: debug.windowEnabled
         sourceComponent: Debugger.DebugWindow{}
     }
 

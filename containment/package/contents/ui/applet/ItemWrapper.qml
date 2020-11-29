@@ -409,7 +409,7 @@ Item{
 
                 Loader{
                     anchors.centerIn: parent
-                    active: root.debugModeOverloadedIcons
+                    active: appletItem.debug.overloadedIconsEnabled
                     sourceComponent: Rectangle{
                         width: 30
                         height: 30
