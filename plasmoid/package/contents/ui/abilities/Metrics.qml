@@ -25,12 +25,15 @@ import org.kde.latte.abilities.applets 0.1 as AppletAbility
 
 AppletAbility.Metrics {
     //! Public Local Properties
+
     local.iconSize: {
         if (inPlasmaDesktop) {
             return maxIconSizeInPlasma;
+        } else if (inPlasmaPanel) {
+            return Math.max(16, panelThickness - 2*margin.thickness);
         }
 
-        return panelThickness - 2*margin.thickness;
+        return maxIconSizeInPlasma;
     }
 
     local.backgroundThickness: totals.thickness
