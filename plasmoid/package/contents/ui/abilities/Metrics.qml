@@ -25,14 +25,30 @@ import org.kde.latte.abilities.applets 0.1 as AppletAbility
 
 AppletAbility.Metrics {
     //! Public Local Properties
-    local.iconSize: Math.max(plasmoid.configuration.iconSize, 16)
+    local.iconSize: {
+        if (inPlasmaDesktop) {
+            return maxIconSizeInPlasma;
+        }
+
+        return panelThickness - 2*margin.thickness;
+    }
+
     local.backgroundThickness: totals.thickness
 
     local.margin.length: 0.1 * iconSize
-    local.margin.thickness: 0.16 * iconSize
+    local.margin.thickness: {
+        if (inPlasmaDesktop) {
+            return 0.16 * iconSize;
+        }
+
+        return Math.max(2, (panelThickness - maxIconSizeInPlasma) / 2);
+    }
     local.margin.screenEdge: 0
     local.padding.length: 0.04 * iconSize
 
     local.mask.thickness.normalForItems: totals.thickness
     local.mask.thickness.zoomedForItems: parabolic.factor.maxZoom * totals.thickness
+
+    readonly property int maxIconSizeInPlasma: Math.max(plasmoid.configuration.iconSize, 16)
+    readonly property int panelThickness: (root.vertical ? root.width : root.height)
 }

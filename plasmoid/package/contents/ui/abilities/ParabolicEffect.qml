@@ -26,8 +26,10 @@ import org.kde.latte.abilities.applets 0.1 as AppletAbility
 
 AppletAbility.ParabolicEffect {
     id: parabolic
-    local.factor.zoom: ( 1 + (plasmoid.configuration.zoomLevel / 20) )
-    local.factor.maxZoom: Math.max(local.factor.zoom, 1.6)
+
+    isEnabled: !root.inPlasma || root.inPlasmaDesktop
+    local.factor.zoom: isEnabled ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
+    local.factor.maxZoom: isEnabled ? Math.max(local.factor.zoom, 1.6) : 1
 
     readonly property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
 

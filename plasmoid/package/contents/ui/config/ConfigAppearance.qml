@@ -66,7 +66,7 @@ Item {
                 RowLayout{
 
                     Label {
-                        text: i18n("Icon size: ")
+                        text: i18n("Maximum icon size: ")
                     }
 
                     ComboBox {

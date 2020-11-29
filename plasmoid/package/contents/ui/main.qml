@@ -232,7 +232,12 @@ Item {
     //BEGIN Latte Dock Communicator
     property QtObject latteBridge: null
 
-    readonly property bool inPlasmaPanel: latteBridge === null
+    readonly property bool inPlasma: latteBridge === null
+    readonly property bool inPlasmaDesktop: inPlasma && !inPlasmaPanel
+    readonly property bool inPlasmaPanel: inPlasma && (plasmoid.location === PlasmaCore.Types.LeftEdge
+                                                       || plasmoid.location === PlasmaCore.Types.RightEdge
+                                                       || plasmoid.location === PlasmaCore.Types.BottomEdge
+                                                       || plasmoid.location === PlasmaCore.Types.TopEdge)
     readonly property bool enforceLattePalette: latteBridge && latteBridge.applyPalette && latteBridge.palette
     readonly property bool latteInEditMode: latteBridge && latteBridge.inEditMode
     //END  Latte Dock Communicator
