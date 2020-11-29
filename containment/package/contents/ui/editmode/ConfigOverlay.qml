@@ -150,7 +150,7 @@ MouseArea {
                 }
             }
 
-        } else {           
+        } else {
             var item = hoveredItem(mouse.x, mouse.y);
 
             if (root.dragOverlay && item && item !== lastSpacer) {
@@ -323,10 +323,18 @@ MouseArea {
             if(currentApplet){
                 var transformChoords = configurationArea.mapFromItem(currentApplet, 0, 0)
 
-                handle.x = transformChoords.x;
-                handle.y = transformChoords.y;
-                handle.width = currentApplet.width;
-                handle.height = currentApplet.height;
+                if (handle.x !== transformChoords.x
+                        || handle.y !== transformChoords.y
+                        || handle.width !== currentApplet.width
+                        || handle.height !== currentApplet.height) {
+
+                    handle.x = transformChoords.x;
+                    handle.y = transformChoords.y;
+                    handle.width = currentApplet.width;
+                    handle.height = currentApplet.height;
+
+                    repositionHandler.restart();
+                }
             }
         }
 
