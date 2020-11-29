@@ -311,7 +311,7 @@ MouseArea{
 
     Loader{
         anchors.fill: parent
-        active: latteView && latteView.debugMode
+        active: taskItem.debug.graphicsEnabled
 
         sourceComponent: Rectangle{
             anchors.fill: parent

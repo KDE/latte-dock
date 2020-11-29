@@ -310,7 +310,7 @@ MouseArea {
 
         Loader {
             anchors.fill: parent
-            active: root.debugMode
+            active: root.debug.graphicsEnabled
             sourceComponent: Rectangle {
                 color: "transparent"
                 border.width:1

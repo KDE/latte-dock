@@ -590,7 +590,7 @@ Item{
 
     Loader{
         anchors.fill: parent
-        active: root.debugMode
+        active: appletItem.debug.graphicsEnabled
 
         sourceComponent: Rectangle{
             anchors.fill: parent

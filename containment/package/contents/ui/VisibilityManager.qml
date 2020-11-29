@@ -815,7 +815,7 @@ Item{
 
     Loader{
         anchors.fill: parent
-        active: root.debugMode
+        active: debug.graphicsEnabled
 
         sourceComponent: Item{
             anchors.fill:parent
