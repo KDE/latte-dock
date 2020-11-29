@@ -34,8 +34,6 @@ Item{
 
     property QtObject window
 
-    property bool debugManager: Qt.application.arguments.indexOf("--mask") >= 0
-
     property bool blockUpdateMask: false
     property bool inForceHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool normalState : false  // this is being set from updateMaskArea
@@ -457,7 +455,7 @@ Item{
         latteView.visibility.hide();
         latteView.visibility.isHidden = true;
 
-        if (visibilityManager.debugManager) {
+        if (debug.maskEnabled) {
             console.log("hiding animation ended...");
         }
 
@@ -478,7 +476,7 @@ Item{
 
 
         // debug maskArea criteria
-        if (debugManager) {
+        if (debug.maskEnabled) {
             console.log(animations.needBothAxis.count + ", " + animations.needLength.count + ", " +
                         animations.needThickness.count + ", " + latteView.visibility.isHidden);
 
@@ -887,7 +885,7 @@ Item{
         }
 
         onStarted: {
-            if (manager.debugManager) {
+            if (debug.maskEnabled) {
                 console.log("hiding animation started...");
             }
         }
@@ -937,7 +935,7 @@ Item{
         onStarted: {
             latteView.visibility.show();
 
-            if (manager.debugManager) {
+            if (debug.maskEnabled) {
                 console.log("showing animation started...");
             }
         }
@@ -953,7 +951,7 @@ Item{
             manager.inRelocationHiding = false;
             autosize.updateIconSize();
 
-            if (manager.debugManager) {
+            if (debug.maskEnabled) {
                 console.log("showing animation ended...");
             }
 

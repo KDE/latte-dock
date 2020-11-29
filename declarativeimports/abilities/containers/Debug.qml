@@ -29,6 +29,7 @@ AbilityDefinition.Debug {
         readonly property alias inputMaskEnabled: apis.inputMaskEnabled
         readonly property alias layouterEnabled: apis.layouterEnabled
         readonly property alias localGeometryEnabled: apis.localGeometryEnabled
+        readonly property alias maskEnabled: apis.maskEnabled
         readonly property alias spacersEnabled: apis.spacersEnabled
         readonly property alias timersEnabled: apis.timersEnabled
         readonly property alias windowEnabled: apis.windowEnabled

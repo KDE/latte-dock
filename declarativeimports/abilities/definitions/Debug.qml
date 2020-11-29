@@ -24,8 +24,9 @@ Item {
     property bool inputMaskEnabled: false
     property bool layouterEnabled: false
     property bool localGeometryEnabled: false
+    property bool maskEnabled: false
+    property bool overloadedIconsEnabled: false
     property bool spacersEnabled: false
     property bool timersEnabled: false
     property bool windowEnabled: false
-    property bool overloadedIconsEnabled: false
 }

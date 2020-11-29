@@ -28,10 +28,11 @@ AbilityDefinition.Debug {
     inputMaskEnabled: ref.debug.inputMaskEnabled
     layouterEnabled: ref.debug.layouterEnabled
     localGeometryEnabled: ref.debug.localGeometryEnabled
+    maskEnabled: ref.debug.maskEnabled
+    overloadedIconsEnabled: ref.debug.overloadedIconsEnabled
     spacersEnabled: ref.debug.spacersEnabled
     timersEnabled: ref.debug.timersEnabled
     windowEnabled: ref.debug.windowEnabled
-    overloadedIconsEnabled: ref.debug.overloadedIconsEnabled
 
     readonly property AbilityDefinition.Debug local: AbilityDefinition.Debug {}
 

@@ -28,8 +28,9 @@ ContainerAbility.Debug {
     inputMaskEnabled: Qt.application.arguments.indexOf("--input")>=0
     layouterEnabled: Qt.application.arguments.indexOf("--layouter")>=0
     localGeometryEnabled: Qt.application.arguments.indexOf("--localgeometry")>=0
+    maskEnabled: Qt.application.arguments.indexOf("--mask") >= 0
+    overloadedIconsEnabled: Qt.application.arguments.indexOf("--overloaded-icons")>=0
     spacersEnabled: Qt.application.arguments.indexOf("--spacers")>=0
     timersEnabled: Qt.application.arguments.indexOf("--timers")>=0
     windowEnabled: Qt.application.arguments.indexOf("--with-window")>=0
-    overloadedIconsEnabled: Qt.application.arguments.indexOf("--overloaded-icons")>=0
 }
