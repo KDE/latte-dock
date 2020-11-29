@@ -524,7 +524,7 @@ Item{
 
             visibilityManager.updateMaskArea();
 
-            if (root.debugModeTimers) {
+            if (debug.timersEnabled) {
                 console.log("LayoutsContainer timer: delayUpdateMaskArea called...");
             }
         }

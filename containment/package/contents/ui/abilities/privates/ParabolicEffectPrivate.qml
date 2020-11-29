@@ -31,6 +31,7 @@ ContainerAbility.ParabolicEffect {
 
     property Item animations: null
     property Item applets: null
+    property Item debug: null
     property QtObject view: null
 
     readonly property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
@@ -146,7 +147,7 @@ ContainerAbility.ParabolicEffect {
 
             parabolic.sglClearZoom();
 
-            if (root.debugModeTimers) {
+            if (debug.timersEnabled) {
                 console.log("containment timer: RestoreZoomTimer called...");
             }
         }

@@ -118,7 +118,7 @@ Item{
             AppletIdentifier.reconsiderAppletIconItem();
             mainCommunicator.inStartup = false;
 
-            if (root.debugModeTimers) {
+            if (appletItem.debug.timersEnabled) {
                 console.log("containment timer: appletItem fakeInitTimer called...");
             }
         }

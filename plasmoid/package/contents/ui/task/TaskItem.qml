@@ -559,7 +559,7 @@ MouseArea{
         onTriggered: {
             slotPublishGeometries();
 
-            if (latteView && latteView.debugModeTimers) {
+            if (taskItem.debug.timersEnabled) {
                 console.log("plasmoid timer: publishGeometryTimer called...");
             }
         }
@@ -1593,7 +1593,7 @@ MouseArea{
                 taskItem.isDragged = true;
             }
 
-            if (latteView && latteView.debugModeTimers) {
+            if (taskItem.debug.timersEnabled) {
                 console.log("plasmoid timer: resistanerTimer called...");
             }
         }
@@ -1612,7 +1612,7 @@ MouseArea{
                 taskItem.lastValidIndex = taskItem.itemIndex;
             }
 
-            if (latteView && latteView.debugModeTimers) {
+            if (taskItem.debug.timersEnabled) {
                 console.log("plasmoid timer: lastValidTimer called...");
             }
         }

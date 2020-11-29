@@ -125,6 +125,7 @@ Item {
 
     property Item tasksExtendedManager: _tasksExtendedManager
     readonly property alias animations: _animations
+    readonly property alias debug: _debug
     readonly property alias indexer: _indexer
     readonly property alias launchers: _launchers
     readonly property alias metrics: _metrics
@@ -617,7 +618,7 @@ Item {
         onTriggered: {
             tasksModel.requestClose(delayWindowRemovalTimer.modelIndex)
 
-            if (latteView && latteView.debugModeTimers) {
+            if (debug.timersEnabled) {
                 console.log("plasmoid timer: delayWindowRemovalTimer called...");
             }
         }
@@ -631,7 +632,7 @@ Item {
             root.publishTasksGeometries();
             activityInfo.previousActivity = activityInfo.currentActivity;
 
-            if (latteView && latteView.debugModeTimers) {
+            if (debug.timersEnabled) {
                 console.log("plasmoid timer: activityChangeDelayer called...");
             }
         }
@@ -998,7 +999,7 @@ Item {
                 tasksModel.anyTaskDemandsAttentionInValidTime = false;
                 destroy();
 
-                if (latteView && latteView.debugModeTimers) {
+                if (debug.timersEnabled) {
                     console.log("plasmoid timer: attentionTimer called...");
                 }
             }
@@ -1442,7 +1443,7 @@ Item {
         onTriggered: {
             root.publishTasksGeometries();
 
-            if (latteView && latteView.debugModeTimers) {
+            if (debug.timersEnabled) {
                 console.log("plasmoid timer: iconGeometryTimer called...");
             }
         }

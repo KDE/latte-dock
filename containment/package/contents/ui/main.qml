@@ -66,7 +66,6 @@ Item {
     property bool debugModeLayouter: Qt.application.arguments.indexOf("--layouter")>=0
     property bool debugModeLocalGeometry: Qt.application.arguments.indexOf("--localgeometry")>=0
     property bool debugModeSpacers: Qt.application.arguments.indexOf("--spacers")>=0
-    property bool debugModeTimers: Qt.application.arguments.indexOf("--timers")>=0
 
     readonly property int version: LatteCore.Environment.makeVersion(0,9,75)
     readonly property bool kirigamiLibraryIsFound: LatteCore.Environment.frameworksVersion >= LatteCore.Environment.makeVersion(5,69,0)
@@ -1215,7 +1214,7 @@ Item {
                 titleTooltipCheckerToNotShowTimer.start();
             }
 
-            if (root.debugModeTimers) {
+            if (debug.timersEnabled) {
                 console.log("containment timer: showTitleTooltipTimer called...");
             }
         }
@@ -1229,7 +1228,7 @@ Item {
                 titleTooltipDialog.visible = false;
             }
 
-            if (root.debugModeTimers) {
+            if (debug.timersEnabled) {
                 console.log("containment timer: hideTitleTooltipTimer called...");
             }
 
@@ -1508,6 +1507,7 @@ Item {
         id: _parabolic
         animations: _animations
         applets: layoutsContainer.applets
+        debug: _debug
         view: latteView
     }
 
