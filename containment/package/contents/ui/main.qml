@@ -62,8 +62,6 @@ Item {
 
     ////BEGIN properties
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
-    property bool debugModeInputMask:  Qt.application.arguments.indexOf("--input")>=0
-    property bool debugModeLocalGeometry: Qt.application.arguments.indexOf("--localgeometry")>=0
     property bool debugModeSpacers: Qt.application.arguments.indexOf("--spacers")>=0
 
     readonly property int version: LatteCore.Environment.makeVersion(0,9,75)
@@ -1555,7 +1553,7 @@ Item {
 
     Loader{
         anchors.fill: parent
-        active: root.debugModeLocalGeometry
+        active: debug.localGeometryEnabled
         sourceComponent: Rectangle{
             x: latteView.localGeometry.x
             y: latteView.localGeometry.y
@@ -1572,7 +1570,7 @@ Item {
 
     Loader{
         anchors.fill: parent
-        active: latteView && latteView.effects && root.debugModeInputMask
+        active: latteView && latteView.effects && debug.inputMaskEnabled
         sourceComponent: Rectangle{
             x: latteView.effects.inputMask.x
             y: latteView.effects.inputMask.y
