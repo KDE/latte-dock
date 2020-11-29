@@ -92,7 +92,7 @@ Item{
     }
 
     Loader{
-        active: latteView && latteView.debugModeSpacers
+        active: taskItem.debug.spacersEnabled
 
         sourceComponent: Rectangle{
             width: !root.vertical ? hiddenSpacer.width : 1

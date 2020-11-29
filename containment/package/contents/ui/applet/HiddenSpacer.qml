@@ -89,7 +89,7 @@ Item{
     }
 
     Loader{
-        active: root.debugModeSpacers
+        active: appletItem.debug.spacersEnabled
 
         sourceComponent: Rectangle{
             width: !root.isVertical ? hiddenSpacer.width : 1
