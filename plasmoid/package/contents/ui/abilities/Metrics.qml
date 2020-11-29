@@ -32,4 +32,7 @@ AppletAbility.Metrics {
     local.margin.thickness: 0.16 * iconSize
     local.margin.screenEdge: 0
     local.padding.length: 0.04 * iconSize
+
+    local.mask.thickness.normalForItems: totals.thickness
+    local.mask.thickness.zoomedForItems: parabolic.factor.maxZoom * totals.thickness
 }
