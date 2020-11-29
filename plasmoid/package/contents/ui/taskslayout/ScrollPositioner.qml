@@ -26,10 +26,7 @@ Rectangle {
     id: listViewBase
     x: {
         if (!root.vertical) {
-            if (plasmoid.location===PlasmaCore.Types.Floating) {
-                //! Center position Tasks when are located in the Desktop
-                return root.width < icList.width ? (root.width/2) : icList.width/2;
-            } else if (root.alignment === LatteCore.Types.Center) {
+            if (root.alignment === LatteCore.Types.Center) {
                 return icList.width / 2;
             } else if (root.alignment === LatteCore.Types.Left){
                 return 0;

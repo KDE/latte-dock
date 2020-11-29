@@ -232,6 +232,7 @@ Item {
     //BEGIN Latte Dock Communicator
     property QtObject latteBridge: null
 
+    readonly property bool inPlasmaPanel: latteBridge === null
     readonly property bool enforceLattePalette: latteBridge && latteBridge.applyPalette && latteBridge.palette
     readonly property bool latteInEditMode: latteBridge && latteBridge.inEditMode
     //END  Latte Dock Communicator
@@ -359,7 +360,7 @@ Item {
                 return latteView.panelAlignment;
             }
 
-            return LatteCore.Types.Center;
+            return !root.vertical ? LatteCore.Types.Left : LatteCore.Types.Top;
         }
     }
 
