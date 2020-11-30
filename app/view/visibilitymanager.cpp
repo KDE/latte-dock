@@ -643,14 +643,22 @@ void VisibilityManager::updateGhostWindowState()
 
 void VisibilityManager::hide()
 {
-    m_lastMask = m_latteView->mask();
-    m_latteView->setMask(ISHIDDENMASK);
+    if (!m_latteView->effects()) {
+        return;
+    }
+
+    m_lastMask = m_latteView->effects()->mask();
+    m_latteView->effects()->setMask(ISHIDDENMASK);
 }
 
 void VisibilityManager::show()
 {
-    if (m_latteView->mask() == ISHIDDENMASK) {
-        m_latteView->setMask(m_lastMask);
+    if (!m_latteView->effects()) {
+        return;
+    }
+
+    if (m_latteView->effects()->mask() == ISHIDDENMASK) {
+        m_latteView->effects()->setMask(m_lastMask);
     }
 }
 
