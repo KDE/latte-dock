@@ -29,7 +29,7 @@ import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.containment 0.1 as LatteContainment
 
 import "./abilities" as AbilitiesTypes
-import "../debug" as Debug
+import "../debugger" as Debugger
 
 Item{
     id: layoutsContainer
@@ -427,7 +427,7 @@ Item{
 
         readonly property Item debugLayout: layouter.startLayout
 
-        sourceComponent: Debug.Tag{
+        sourceComponent: Debugger.Tag{
             background.color: "white"
             label.text: tagText
             label.color: "black"
@@ -447,7 +447,7 @@ Item{
 
         readonly property Item debugLayout: layouter.endLayout
 
-        sourceComponent: Debug.Tag{
+        sourceComponent: Debugger.Tag{
             background.color: "white"
             label.text: tagText
             label.color: "black"
@@ -468,7 +468,7 @@ Item{
 
         readonly property Item debugLayout: layouter.mainLayout
 
-        sourceComponent: Debug.Tag{
+        sourceComponent: Debugger.Tag{
             background.color: "white"
             label.text: tagText
             label.color: "black"
@@ -488,7 +488,7 @@ Item{
 
         readonly property Item debugLayout: layoutsContainer
 
-        sourceComponent: Debug.Tag{
+        sourceComponent: Debugger.Tag{
             background.color: "blue"
             label.text: tagText
             label.color: "yellow"

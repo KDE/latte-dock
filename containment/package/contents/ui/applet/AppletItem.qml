@@ -33,7 +33,7 @@ import org.kde.latte.components 1.0 as LatteComponents
 import "colorizer" as Colorizer
 import "communicator" as Communicator
 import "indicator" as Indicator
-import "../debug" as Debug
+import "../debugger" as Debugger
 
 Item {
     id: appletItem
@@ -1099,7 +1099,7 @@ Item {
         anchors.left: parent.left
 
         active: appletItem.debug.layouterEnabled
-        sourceComponent: Debug.Tag{
+        sourceComponent: Debugger.Tag{
             label.text: (root.isHorizontal ? appletItem.width : appletItem.height) + labeltext
             label.color: appletItem.isAutoFillApplet ? "green" : "white"
 
