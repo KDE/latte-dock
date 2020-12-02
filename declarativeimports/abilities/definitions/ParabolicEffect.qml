@@ -25,9 +25,15 @@ Item {
     property bool isEnabled: true
     property bool restoreZoomIsBlocked: false
 
-    property ParabolicEffectTypes.Factor factor: ParabolicEffectTypes.Factor{}
+    property ParabolicEffectTypes.Factor factor: ParabolicEffectTypes.Factor{
+        zoom: 1.6
+        maxZoom: 1.6
+    }
 
-    readonly property ParabolicEffectTypes.PrivateProperties _privates: ParabolicEffectTypes.PrivateProperties {}
+    readonly property ParabolicEffectTypes.PrivateProperties _privates: ParabolicEffectTypes.PrivateProperties {
+        directRenderingEnabled: false
+        lastIndex: -1
+    }
 
     signal sglClearZoom();
     signal sglUpdateLowerItemScale(int delegateIndex, real newScale, real step);
