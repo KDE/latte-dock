@@ -26,9 +26,48 @@ Item {
     property int maxIconSize: 48
     property int backgroundThickness: 16
 
-    property MetricsTypes.Margin margin: MetricsTypes.Margin{}
-    property MetricsTypes.Padding padding: MetricsTypes.Padding{}
-    property MetricsTypes.Totals totals: MetricsTypes.Totals{}
+    property MetricsTypes.Margin margin: MetricsTypes.Margin{
+        thickness: 4
+        maxThickness: 4
+        length: 4
+        screenEdge: 0
+    }
 
-    property MetricsTypes.Mask mask: MetricsTypes.Mask{}
+    property MetricsTypes.Padding padding: MetricsTypes.Padding{
+        length: 4
+        lengthApplet: 4
+    }
+
+    property MetricsTypes.Totals totals: MetricsTypes.Totals{
+        //readonly property int length;
+        //readonly property int lengthEdge;
+        //readonly property int lengthEdges;
+        //readonly property int lengthPaddings;
+        //readonly property int thickness;
+        //readonly property int thicknessEdges;
+    }
+
+    property MetricsTypes.Mask mask: MetricsTypes.Mask{
+        screenEdge: 0
+        maxScreenEdge: 0
+
+        thickness {
+            hidden: 1
+            normal: 48
+            medium: 48
+            zoomed: 48
+
+            maxNormal: 48
+            maxMedium: 48
+            maxZoomed: 48
+
+            normalForItems: 48
+            mediumForItems: 48
+            zoomedForItems: 48
+
+            maxNormalForItems: 48
+            maxMediumForItems: 48
+            maxZoomedForItems: 48
+        }
+    }
 }
