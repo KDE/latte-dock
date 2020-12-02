@@ -24,6 +24,8 @@ import "./animations" as AnimationsTypes
 Item {
     property bool active: false
     readonly property bool hasThicknessAnimation: (needBothAxis.count>0) || (needThickness.count>0)
+    //! mouse sensitivity in pixels for parabolic effect hover animation
+    property int hoverPixelSensitivity: 1
 
     //! animations properties
     property AnimationsTypes.Duration duration: AnimationsTypes.Duration {
@@ -43,10 +45,25 @@ Item {
     }
 
     //! animations tracking
-    property AnimationsTypes.Tracker needBothAxis: AnimationsTypes.Tracker{}
-    property AnimationsTypes.Tracker needLength: AnimationsTypes.Tracker{}
-    property AnimationsTypes.Tracker needThickness: AnimationsTypes.Tracker{}
+    property AnimationsTypes.Tracker needBothAxis: AnimationsTypes.Tracker{
+        count: 0
+        events: []
 
-    //! animations related to parabolic effect
-    property int hoverPixelSensitivity: 1
+        //function addEvent(event);
+        //function removeEvent(event);
+    }
+    property AnimationsTypes.Tracker needLength: AnimationsTypes.Tracker{
+        count: 0
+        events: []
+
+        //function addEvent(event);
+        //function removeEvent(event);
+    }
+    property AnimationsTypes.Tracker needThickness: AnimationsTypes.Tracker{
+        count: 0
+        events: []
+
+        //function addEvent(event);
+        //function removeEvent(event);
+    }
 }
