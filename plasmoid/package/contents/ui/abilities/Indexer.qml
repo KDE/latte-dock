@@ -32,12 +32,12 @@ ClientAbility.Indexer {
     readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
 
     property int visibleItemsCount: 0
-    property int allItemsCount: 0 /*is needed to be set from consumer developer in order to avoid binding loops warnings*/
+    property int itemsCount: 0 /*is needed to be set from consumer developer in order to avoid binding loops warnings*/
 
     property int firstVisibleItemIndex: -1
     property int lastVisibleItemIndex: -1
 
-    readonly property bool isReady: layout.children.length >= allItemsCount
+    readonly property bool isReady: layout && layout.children.length >= itemsCount
     readonly property int maxIndex: 99999
 
     Binding {

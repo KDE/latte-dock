@@ -26,6 +26,7 @@ import org.kde.latte.abilities.client 0.1 as ClientAbility
 
 ClientAbility.ParabolicEffect {
     id: parabolic
+    property int itemsCount: 0
 
     isEnabled: !root.inPlasma || root.inPlasmaDesktop
     local.factor.zoom: isEnabled ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
@@ -89,7 +90,7 @@ ClientAbility.ParabolicEffect {
 
     function hostRequestUpdateLowerItemScale(newScale, step){
         //! function called from host
-        sglUpdateLowerItemScale(root.tasksCount-1, newScale, step);
+        sglUpdateLowerItemScale(itemsCount-1, newScale, step);
     }
 
     function hostRequestUpdateHigherItemScale(newScale, step){
@@ -111,9 +112,9 @@ ClientAbility.ParabolicEffect {
     function sltTrackHigherItemScale(delegateIndex, newScale, step) {
         //! send update signal to host
         if (latteBridge) {
-            if (delegateIndex >= root.tasksCount) {
+            if (delegateIndex >= itemsCount) {
                 latteBridge.parabolic.clientRequestUpdateHigherItemScale(newScale, step);
-            } else if (newScale === 1 && delegateIndex<root.tasksCount) {
+            } else if (newScale === 1 && delegateIndex<itemsCount) {
                 latteBridge.parabolic.clientRequestUpdateHigherItemScale(1, 0);
             }
         }

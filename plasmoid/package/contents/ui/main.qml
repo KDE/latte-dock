@@ -944,8 +944,7 @@ Item {
         id: _indexer
         bridge: latteBridge
         layout: icList.contentItem
-
-        allItemsCount: tasksModel.count
+        itemsCount: tasksModel.count
     }
 
     Ability.Launchers {
@@ -960,6 +959,7 @@ Item {
     Ability.ParabolicEffect {
         id: _parabolic
         bridge: latteBridge
+        itemsCount: tasksModel.count
         local.isEnabled: factor.zoom > 1
         local.restoreZoomIsBlocked: root.contextMenu || windowsPreviewDlg.containsMouse
     }
