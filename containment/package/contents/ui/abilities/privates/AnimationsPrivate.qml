@@ -20,9 +20,9 @@
 import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte.abilities.containers 0.1 as ContainerAbility
+import org.kde.latte.abilities.hosts 0.1 as AbilityHost
 
-ContainerAbility.Animations {
+AbilityHost.Animations {
     id: animationsPrivate
     property Item layouts: null
     property Item metrics: null

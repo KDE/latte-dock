@@ -20,10 +20,10 @@
 import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte.abilities.containers 0.1 as ContainerAbility
 import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
+import org.kde.latte.abilities.hosts 0.1 as AbilityHost
 
-ContainerAbility.Debug {
+AbilityHost.Debug {
     graphicsEnabled: Qt.application.arguments.indexOf("--graphics")>=0
     inputMaskEnabled: Qt.application.arguments.indexOf("--input")>=0
     layouterEnabled: Qt.application.arguments.indexOf("--layouter")>=0

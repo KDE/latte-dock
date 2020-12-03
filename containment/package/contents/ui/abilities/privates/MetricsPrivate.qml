@@ -21,11 +21,11 @@ import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
-import org.kde.latte.abilities.containers 0.1 as ContainerAbility
+import org.kde.latte.abilities.hosts 0.1 as AbilityHost
 
 import "./metrics" as MetricsPrivateTypes
 
-ContainerAbility.Metrics {
+AbilityHost.Metrics {
     id: mets
     property Item animations: null
     property Item autosize: null

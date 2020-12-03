@@ -1,4 +1,4 @@
-module org.kde.latte.abilities.containers
+module org.kde.latte.abilities.hosts
 
 Animations 0.1 Animations.qml
 Debug 0.1 Debug.qml

@@ -32,7 +32,7 @@ BridgeItem {
 
   /*Be Careful, needs to be considered how to not create
     endless recursion because each one calls the other.
-    If applet in inside a container and as such is using
+    If client in inside a container and as such is using
     a parabolic host then the parabolic host clearZoom signal
     should be called when needed.
 
