@@ -19,7 +19,7 @@
 
 import QtQuick 2.0
 
-import org.kde.latte.abilities.definitions 0.1 as AbilityDefinition
+import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 
 AbilityDefinition.Metrics {
     property Item bridge: null
