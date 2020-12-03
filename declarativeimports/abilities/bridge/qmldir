@@ -1,4 +1,4 @@
-module org.kde.latte.abilities.applets
+module org.kde.latte.abilities.bridge
 
 Animations 0.1 Animations.qml
 Indexer 0.1 Indexer.qml

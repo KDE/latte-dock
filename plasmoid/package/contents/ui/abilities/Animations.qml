@@ -22,9 +22,9 @@ import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
-import org.kde.latte.abilities.applets 0.1 as AppletAbility
+import org.kde.latte.abilities.client 0.1 as ClientAbility
 
-AppletAbility.Animations {
+ClientAbility.Animations {
     //! Public Local Properties
     local {
         active: speedFactor.current !== 0

@@ -21,9 +21,9 @@ import QtQuick 2.7
 
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte.abilities.applets 0.1 as AppletAbility
+import org.kde.latte.abilities.client 0.1 as ClientAbility
 
-AppletAbility.Metrics {
+ClientAbility.Metrics {
     //! Public Local Properties
 
     local.iconSize: {

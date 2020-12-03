@@ -22,9 +22,9 @@ import QtQuick 2.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-import org.kde.latte.abilities.applets 0.1 as AppletAbility
+import org.kde.latte.abilities.client 0.1 as ClientAbility
 
-AppletAbility.Indexer {
+ClientAbility.Indexer {
     id: _indexer
     property Item layout: null   
 
