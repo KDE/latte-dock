@@ -24,7 +24,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.core 0.2 as LatteCore
 
-import org.kde.latte.abilities.hosts 0.1 as AbilityHost
+import org.kde.latte.abilities.host 0.1 as AbilityHost
 
 AbilityHost.ParabolicEffect {
     id: parabolic
