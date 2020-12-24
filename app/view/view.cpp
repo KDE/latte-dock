@@ -1337,6 +1337,8 @@ void View::setInterfacesGraphicObj(Latte::Interfaces *ifaces)
 
 bool View::event(QEvent *e)
 {   
+    QEvent *adjustedevent = e;
+
     if (!m_inDelete) {
         emit eventTriggered(e);
 
@@ -1355,12 +1357,13 @@ bool View::event(QEvent *e)
 
             if (auto de = static_cast<QDragEnterEvent *>(e)) {
                 //! adjust event by taking into account paddings
-                if (m_padding && !m_padding->isEmpty() && !containmentContainsPosition(de->pos())) {
+                if (m_padding
+                        && !m_padding->isEmpty()
+                        && !containmentContainsPosition(de->pos())) {
                     auto de2 = new QDragEnterEvent(positionAdjustedForContainment(de->pos()).toPoint(),
                                                    de->possibleActions(), de->mimeData(), de->mouseButtons(), de->keyboardModifiers());
 
-                    QCoreApplication::postEvent(this, de2);
-                    return true;
+                    adjustedevent = de2;
                 }
             }
             break;
@@ -1372,12 +1375,13 @@ bool View::event(QEvent *e)
         case QEvent::DragMove:
             if (auto de = static_cast<QDragMoveEvent *>(e)) {
                 //! adjust event by taking into account paddings
-                if (m_padding && !m_padding->isEmpty() && !containmentContainsPosition(de->pos())) {
+                if (m_padding
+                        && !m_padding->isEmpty()
+                        && !containmentContainsPosition(de->pos())) {
                     auto de2 = new QDragMoveEvent(positionAdjustedForContainment(de->pos()).toPoint(),
                                                   de->possibleActions(), de->mimeData(), de->mouseButtons(), de->keyboardModifiers());
 
-                    QCoreApplication::postEvent(this, de2);
-                    return true;
+                    adjustedevent = de2;
                 }
             }
             break;
@@ -1387,12 +1391,13 @@ bool View::event(QEvent *e)
 
             if (auto de = static_cast<QDropEvent *>(e)) {
                 //! adjust event by taking into account paddings
-                if (m_padding && !m_padding->isEmpty() && !containmentContainsPosition(de->pos())) {
+                if (m_padding
+                        && !m_padding->isEmpty()
+                        && !containmentContainsPosition(de->pos())) {
                     auto de2 = new QDropEvent(positionAdjustedForContainment(de->pos()).toPoint(),
                                               de->possibleActions(), de->mimeData(), de->mouseButtons(), de->keyboardModifiers());
 
-                    QCoreApplication::postEvent(this, de2);
-                    return true;
+                    adjustedevent = de2;
                 }
             }
 
@@ -1402,7 +1407,8 @@ bool View::event(QEvent *e)
             if (auto me = dynamic_cast<QMouseEvent *>(e)) {
 
                 //! adjust event by taking into account paddings
-                if (m_padding && !m_padding->isEmpty()
+                if (m_padding
+                        && !m_padding->isEmpty()
                         && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
                         && !containmentContainsPosition(me->windowPos())) {
                     auto me2 = new QMouseEvent(me->type(),
@@ -1411,8 +1417,8 @@ bool View::event(QEvent *e)
                                                positionAdjustedForContainment(me->windowPos()) + position(),
                                                me->button(), me->buttons(), me->modifiers());
 
-                    QCoreApplication::postEvent(this, me2);
-                    return true;
+                    qDebug() << "adjusted sinked move...";
+                    adjustedevent = me2;
                 }
             }
             break;
@@ -1422,17 +1428,18 @@ bool View::event(QEvent *e)
                 emit mousePressed(me->pos(), me->button());
 
                 //! adjust event by taking into account paddings
-                if (m_padding && !m_padding->isEmpty()
+                if (m_padding
+                        && !m_padding->isEmpty()
                         && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
                         && !containmentContainsPosition(me->windowPos())) {
+                    qDebug() << "adjusted sinked pressed...";
                     auto me2 = new QMouseEvent(me->type(),
                                                positionAdjustedForContainment(me->windowPos()),
                                                positionAdjustedForContainment(me->windowPos()),
                                                positionAdjustedForContainment(me->windowPos()) + position(),
                                                me->button(), me->buttons(), me->modifiers());
 
-                    QCoreApplication::postEvent(this, me2);
-                    return true;
+                    adjustedevent = me2;
                 }
             }
             break;
@@ -1442,7 +1449,8 @@ bool View::event(QEvent *e)
                 emit mouseReleased(me->pos(), me->button());
 
                 //! adjust event by taking into account paddings
-                if (m_padding && !m_padding->isEmpty()
+                if (m_padding
+                        && !m_padding->isEmpty()
                         && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
                         && !containmentContainsPosition(me->windowPos())) {
                     auto me2 = new QMouseEvent(me->type(),
@@ -1451,8 +1459,7 @@ bool View::event(QEvent *e)
                                                positionAdjustedForContainment(me->windowPos()) + position(),
                                                me->button(), me->buttons(), me->modifiers());
 
-                    QCoreApplication::postEvent(this, me2);
-                    return true;
+                    adjustedevent = me2;
                 }
             }
             break;
@@ -1501,14 +1508,15 @@ bool View::event(QEvent *e)
                 emit wheelScrolled(pos, we->angleDelta(), we->buttons());
 
                 //! adjust event by taking into account paddings
-                if (m_padding && !m_padding->isEmpty() && !containmentContainsPosition(pos)) {
+                if (m_padding
+                        && !m_padding->isEmpty()
+                        && !containmentContainsPosition(pos)) {
                     auto we2 = new QWheelEvent(positionAdjustedForContainment(pos),
                                                positionAdjustedForContainment(pos) + position(),
                                                we->pixelDelta(), we->angleDelta(), we->angleDelta().y(),
                                                we->orientation(), we->buttons(), we->modifiers(), we->phase());
 
-                    QCoreApplication::postEvent(this, we2);
-                    return true;
+                    adjustedevent = we2;
                 }
             }
             break;
@@ -1517,7 +1525,7 @@ bool View::event(QEvent *e)
         }
     }
 
-    return ContainmentView::event(e);
+    return ContainmentView::event(adjustedevent);
 }
 
 bool View::containmentContainsPosition(const QPointF &point) const
@@ -1526,16 +1534,8 @@ bool View::containmentContainsPosition(const QPointF &point) const
         return false;
     }
 
-    QQuickItem *containmentItem = containment()->property("_plasma_graphicObject").value<QQuickItem *>();
-
-    if (!containmentItem) {
-        return false;
-    }
-
-    return QRectF(
-                containmentItem->mapToScene(QPoint(m_padding->left(),m_padding->top())),
-                QSizeF(containmentItem->width()-m_padding->left()-m_padding->right(),
-                       containmentItem->height()-m_padding->top()-m_padding->bottom())).contains(point);
+    QRectF local= m_localGeometry - m_padding->margins();
+    return local.contains(point);
 }
 
 QPointF View::positionAdjustedForContainment(const QPointF &point) const
@@ -1544,16 +1544,9 @@ QPointF View::positionAdjustedForContainment(const QPointF &point) const
         return point;
     }
 
-    QQuickItem *containmentItem = containment()->property("_plasma_graphicObject").value<QQuickItem *>();
-
-    if (!containmentItem) {
-        return point;
-    }
-
-    QRectF containmentRect(containmentItem->mapToScene(QPoint(0,0)), QSizeF(containmentItem->width(), containmentItem->height()));
-
-    return QPointF(qBound(containmentRect.left() + m_padding->left(), point.x(), containmentRect.right() - m_padding->right()),
-                   qBound(containmentRect.top() + m_padding->top(), point.y(), containmentRect.bottom() - m_padding->bottom()));
+    QRectF local = m_localGeometry - m_padding->margins();
+    return QPointF(qBound(local.left(), point.x(), local.right()),
+                   qBound(local.top(), point.y(), local.bottom()));
 }
 
 

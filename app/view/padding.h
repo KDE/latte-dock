@@ -21,6 +21,7 @@
 #define PADDING_H
 
 // Qt
+#include <QMargins>
 #include <QObject>
 
 
@@ -53,6 +54,8 @@ public:
 
     int right() const;
     void setRight(int rightpad);
+
+    QMargins margins() const;
 
 signals:
     void paddingsChanged();

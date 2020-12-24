@@ -98,7 +98,10 @@ Item{
     property int marginsThickness:  appletItem.metrics.totals.thicknessEdges
     property int marginsLength: 0   //Fitt's Law, through Binding to avoid Binding loops
 
-    property int localLengthMargins: isSeparator || !communicator.requires.lengthMarginsEnabled || isInternalViewSplitter ? 0 : appletItem.lengthAppletFullMargins
+    property int localLengthMargins: isSeparator
+                                     || !communicator.requires.lengthMarginsEnabled
+                                     || isInternalViewSplitter
+                                        ? 0 : appletItem.lengthAppletFullMargins
     property int edgeLengthMargins: edgeLengthMarginsDisabled ? 0 : appletItem.lengthAppletPadding * 2
 
     property real scaledLength: zoomScaleLength * (layoutLength + marginsLength)
@@ -174,7 +177,7 @@ Item{
         }
     }
 
-    onAppletMinimumLengthChanged: {        
+    onAppletMinimumLengthChanged: {
         if(zoomScale === 1) {
             appletItem.updateParabolicEffectIsSupported();
         }

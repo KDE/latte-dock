@@ -220,28 +220,32 @@ Item{
         target: latteView.padding
         property: "top"
         when: latteView
-        value: plasmoid.location === PlasmaCore.Types.TopEdge ? metrics.margin.screenEdge : 0
+        value: plasmoid.formFactor === PlasmaCore.Types.Vertical && !parabolic.isEnabled ?
+                   background.paddings.top + Math.abs(metrics.padding.length) : 0
     }
 
     Binding{
         target: latteView.padding
         property: "bottom"
         when: latteView
-        value: plasmoid.location === PlasmaCore.Types.BottomEdge ? metrics.margin.screenEdge : 0
+        value: plasmoid.formFactor === PlasmaCore.Types.Vertical && !parabolic.isEnabled ?
+                   background.paddings.bottom + Math.abs(metrics.padding.length) : 0
     }
 
     Binding{
         target: latteView.padding
         property: "left"
         when: latteView
-        value: plasmoid.location === PlasmaCore.Types.LeftEdge ? metrics.margin.screenEdge : 0
+        value: plasmoid.formFactor === PlasmaCore.Types.Horizontal && !parabolic.isEnabled ?
+                   background.paddings.left + Math.abs(metrics.padding.length) : 0
     }
 
     Binding{
         target: latteView.padding
         property: "right"
         when: latteView
-        value: plasmoid.location === PlasmaCore.Types.RightEdge ? metrics.margin.screenEdge : 0
+        value: plasmoid.formFactor === PlasmaCore.Types.Horizontal && !parabolic.isEnabled ?
+                   background.paddings.right + Math.abs(metrics.padding.length) : 0
     }
 
     //! View::Effects bindings

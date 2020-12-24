@@ -96,5 +96,10 @@ void Padding::setRight(int rightpad)
     emit paddingsChanged();
 }
 
+QMargins Padding::margins() const
+{
+    return QMargins(m_left, m_top, m_right, m_bottom);
+}
+
 }
 }
