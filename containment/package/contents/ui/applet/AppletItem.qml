@@ -657,10 +657,6 @@ Item {
                 var local = appletItem.mapFromItem(root, pos.x, pos.y);
 
                 appletItem.mousePressed(local.x, local.y, button);
-
-                if (button === Qt.LeftButton) {
-                    appletItem.activateAppletForNeutralAreas(local);
-                }
             }
         }
 
