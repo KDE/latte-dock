@@ -25,6 +25,7 @@
 #include <coretypes.h>
 #include "containmentinterface.h"
 #include "effects.h"
+#include "padding.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
 #include "indicator/indicator.h"
@@ -121,6 +122,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Latte::ViewPart::ContainmentInterface *extendedInterface READ extendedInterface NOTIFY extendedInterfaceChanged)
     Q_PROPERTY(Latte::ViewPart::Indicator *indicator READ indicator NOTIFY indicatorChanged)
+    Q_PROPERTY(Latte::ViewPart::Padding *padding READ padding NOTIFY paddingChanged)
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(Latte::ViewPart::VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(Latte::ViewPart::WindowsTracker *windowsTracker READ windowsTracker NOTIFY windowsTrackerChanged)
@@ -235,6 +237,7 @@ public:
     ViewPart::ContextMenu *contextMenu() const;
     ViewPart::ContainmentInterface *extendedInterface() const;
     ViewPart::Indicator *indicator() const;
+    ViewPart::Padding *padding() const;
     ViewPart::Positioner *positioner() const;
     ViewPart::VisibilityManager *visibility() const;
     ViewPart::WindowsTracker *windowsTracker() const;
@@ -319,6 +322,7 @@ signals:
     void normalHighestThicknessChanged();
     void offsetChanged();
     void onPrimaryChanged();
+    void paddingChanged();
     void positionerChanged();
     void screenEdgeMarginChanged();
     void screenEdgeMarginEnabledChanged();
@@ -428,6 +432,7 @@ private:
     QPointer<ViewPart::Effects> m_effects;
     QPointer<ViewPart::Indicator> m_indicator;
     QPointer<ViewPart::ContainmentInterface> m_interface;
+    QPointer<ViewPart::Padding> m_padding;
     QPointer<ViewPart::Positioner> m_positioner;
     QPointer<ViewPart::VisibilityManager> m_visibility;
     QPointer<ViewPart::WindowsTracker> m_windowsTracker;

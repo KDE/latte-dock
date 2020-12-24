@@ -75,7 +75,8 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(new ViewPart::ContextMenu(this)),
       m_effects(new ViewPart::Effects(this)),
-      m_interface(new ViewPart::ContainmentInterface(this))
+      m_interface(new ViewPart::ContainmentInterface(this)),
+      m_padding(new ViewPart::Padding(this))
 {      
     //! needs to be created after Effects because it catches some of its signals
     //! and avoid a crash from View::winId() at the same time
@@ -1285,6 +1286,11 @@ ViewPart::ContextMenu *View::contextMenu() const
 ViewPart::ContainmentInterface *View::extendedInterface() const
 {
     return m_interface;
+}
+
+ViewPart::Padding *View::padding() const
+{
+    return m_padding;
 }
 
 ViewPart::Positioner *View::positioner() const

@@ -3,6 +3,7 @@ set(lattedock-app_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/containmentinterface.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/contextmenu.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/effects.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/padding.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/panelshadows.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/positioner.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/tasksmodel.cpp
