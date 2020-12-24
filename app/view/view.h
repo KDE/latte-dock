@@ -374,6 +374,9 @@ private:
 
     void setContainsDrag(bool contains);
 
+    bool containmentContainsPosition(const QPointF &point) const;
+    QPointF positionAdjustedForContainment(const QPointF &point) const;
+
 private:
     Plasma::Containment *containmentById(uint id);
 

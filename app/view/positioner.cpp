@@ -988,6 +988,11 @@ void Positioner::setInSlideAnimation(bool active)
     emit inSlideAnimationChanged();
 }
 
+bool Positioner::isCursorInsideView() const
+{
+    return m_view->geometry().contains(QCursor::pos(m_screenToFollow));
+}
+
 bool Positioner::isStickedOnTopEdge() const
 {
     return m_isStickedOnTopEdge;

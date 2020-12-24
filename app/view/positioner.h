@@ -75,6 +75,8 @@ public:
     bool inSlideAnimation() const;
     void setInSlideAnimation(bool active);
 
+    bool isCursorInsideView() const;
+
     bool isStickedOnTopEdge() const;
     void setIsStickedOnTopEdge(bool sticked);
 

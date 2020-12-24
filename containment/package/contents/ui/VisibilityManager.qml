@@ -214,6 +214,36 @@ Item{
         value: colorizerManager
     }
 
+
+    //! View Paddings
+    Binding{
+        target: latteView.padding
+        property: "top"
+        when: latteView
+        value: plasmoid.location === PlasmaCore.Types.TopEdge ? metrics.margin.screenEdge : 0
+    }
+
+    Binding{
+        target: latteView.padding
+        property: "bottom"
+        when: latteView
+        value: plasmoid.location === PlasmaCore.Types.BottomEdge ? metrics.margin.screenEdge : 0
+    }
+
+    Binding{
+        target: latteView.padding
+        property: "left"
+        when: latteView
+        value: plasmoid.location === PlasmaCore.Types.LeftEdge ? metrics.margin.screenEdge : 0
+    }
+
+    Binding{
+        target: latteView.padding
+        property: "right"
+        when: latteView
+        value: plasmoid.location === PlasmaCore.Types.RightEdge ? metrics.margin.screenEdge : 0
+    }
+
     //! View::Effects bindings
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null

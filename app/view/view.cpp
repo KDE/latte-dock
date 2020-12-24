@@ -43,6 +43,9 @@
 
 // Qt
 #include <QAction>
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
 #include <QMouseEvent>
 #include <QQmlContext>
 #include <QQmlEngine>
@@ -356,9 +359,9 @@ void View::init(Plasma::Containment *plasma_containment)
 void View::reloadSource()
 {
     if (m_layout && containment()) {
-       // if (settingsWindowIsShown()) {
-       //     m_configView->deleteLater();
-       // }
+        // if (settingsWindowIsShown()) {
+        //     m_configView->deleteLater();
+        // }
 
         engine()->clearComponentCache();
         m_layout->recreateView(containment(), settingsWindowIsShown());
@@ -513,7 +516,7 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
     if (c && containment() && c->isContainment() && c->id() == containment()->id()) {
         m_primaryConfigView = m_corona->viewSettingsFactory()->primaryConfigView(this);
         applyActivitiesToWindows();
-    } else {       
+    } else {
         m_appletConfigView = new PlasmaQuick::ConfigView(applet);
         m_appletConfigView.data()->init();
         m_appletConfigView->show();
@@ -1349,26 +1352,111 @@ bool View::event(QEvent *e)
 
         case QEvent::DragEnter:
             setContainsDrag(true);
+
+            if (auto de = static_cast<QDragEnterEvent *>(e)) {
+                //! adjust event by taking into account paddings
+                if (m_padding && !m_padding->isEmpty() && !containmentContainsPosition(de->pos())) {
+                    auto de2 = new QDragEnterEvent(positionAdjustedForContainment(de->pos()).toPoint(),
+                                                   de->possibleActions(), de->mimeData(), de->mouseButtons(), de->keyboardModifiers());
+
+                    QCoreApplication::postEvent(this, de2);
+                    return true;
+                }
+            }
             break;
 
         case QEvent::DragLeave:
-        case QEvent::Drop:
             setContainsDrag(false);
             break;
 
+        case QEvent::DragMove:
+            if (auto de = static_cast<QDragMoveEvent *>(e)) {
+                //! adjust event by taking into account paddings
+                if (m_padding && !m_padding->isEmpty() && !containmentContainsPosition(de->pos())) {
+                    auto de2 = new QDragMoveEvent(positionAdjustedForContainment(de->pos()).toPoint(),
+                                                  de->possibleActions(), de->mimeData(), de->mouseButtons(), de->keyboardModifiers());
+
+                    QCoreApplication::postEvent(this, de2);
+                    return true;
+                }
+            }
+            break;
+
+        case QEvent::Drop:
+            setContainsDrag(false);
+
+            if (auto de = static_cast<QDropEvent *>(e)) {
+                //! adjust event by taking into account paddings
+                if (m_padding && !m_padding->isEmpty() && !containmentContainsPosition(de->pos())) {
+                    auto de2 = new QDropEvent(positionAdjustedForContainment(de->pos()).toPoint(),
+                                              de->possibleActions(), de->mimeData(), de->mouseButtons(), de->keyboardModifiers());
+
+                    QCoreApplication::postEvent(this, de2);
+                    return true;
+                }
+            }
+
+            break;
+
+        case QEvent::MouseMove:
+            if (auto me = dynamic_cast<QMouseEvent *>(e)) {
+
+                //! adjust event by taking into account paddings
+                if (m_padding && !m_padding->isEmpty()
+                        && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
+                        && !containmentContainsPosition(me->windowPos())) {
+                    auto me2 = new QMouseEvent(me->type(),
+                                               positionAdjustedForContainment(me->windowPos()),
+                                               positionAdjustedForContainment(me->windowPos()),
+                                               positionAdjustedForContainment(me->windowPos()) + position(),
+                                               me->button(), me->buttons(), me->modifiers());
+
+                    QCoreApplication::postEvent(this, me2);
+                    return true;
+                }
+            }
+            break;
+
         case QEvent::MouseButtonPress:
-            if (auto mouseEvent = dynamic_cast<QMouseEvent *>(e)) {
-                emit mousePressed(mouseEvent->pos(), mouseEvent->button());
+            if (auto me = dynamic_cast<QMouseEvent *>(e)) {
+                emit mousePressed(me->pos(), me->button());
+
+                //! adjust event by taking into account paddings
+                if (m_padding && !m_padding->isEmpty()
+                        && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
+                        && !containmentContainsPosition(me->windowPos())) {
+                    auto me2 = new QMouseEvent(me->type(),
+                                               positionAdjustedForContainment(me->windowPos()),
+                                               positionAdjustedForContainment(me->windowPos()),
+                                               positionAdjustedForContainment(me->windowPos()) + position(),
+                                               me->button(), me->buttons(), me->modifiers());
+
+                    QCoreApplication::postEvent(this, me2);
+                    return true;
+                }
             }
             break;
+
         case QEvent::MouseButtonRelease:
-            if (auto mouseEvent = dynamic_cast<QMouseEvent *>(e)) {
-                emit mouseReleased(mouseEvent->pos(), mouseEvent->button());
+            if (auto me = dynamic_cast<QMouseEvent *>(e)) {
+                emit mouseReleased(me->pos(), me->button());
+
+                //! adjust event by taking into account paddings
+                if (m_padding && !m_padding->isEmpty()
+                        && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
+                        && !containmentContainsPosition(me->windowPos())) {
+                    auto me2 = new QMouseEvent(me->type(),
+                                               positionAdjustedForContainment(me->windowPos()),
+                                               positionAdjustedForContainment(me->windowPos()),
+                                               positionAdjustedForContainment(me->windowPos()) + position(),
+                                               me->button(), me->buttons(), me->modifiers());
+
+                    QCoreApplication::postEvent(this, me2);
+                    return true;
+                }
             }
             break;
-            /* case QEvent::DragMove:
-            qDebug() << "DRAG MOVING>>>>>>";
-            break;*/
+
         case QEvent::PlatformSurface:
             if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
                 switch (pe->surfaceEventType()) {
@@ -1404,13 +1492,24 @@ bool View::event(QEvent *e)
             break;
 
         case QEvent::Wheel:
-            if (auto wheelEvent = dynamic_cast<QWheelEvent *>(e)) {
+            if (auto we = dynamic_cast<QWheelEvent *>(e)) {
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-                QPoint position = QPoint(wheelEvent->x(), wheelEvent->y());
+                QPoint pos = QPoint(we->x(), we->y());
 #else
-                QPoint position = wheelEvent->position().toPoint();
+                QPoint pos = we->position().toPoint();
 #endif
-                emit wheelScrolled(position, wheelEvent->angleDelta(), wheelEvent->buttons());
+                emit wheelScrolled(pos, we->angleDelta(), we->buttons());
+
+                //! adjust event by taking into account paddings
+                if (m_padding && !m_padding->isEmpty() && !containmentContainsPosition(pos)) {
+                    auto we2 = new QWheelEvent(positionAdjustedForContainment(pos),
+                                               positionAdjustedForContainment(pos) + position(),
+                                               we->pixelDelta(), we->angleDelta(), we->angleDelta().y(),
+                                               we->orientation(), we->buttons(), we->modifiers(), we->phase());
+
+                    QCoreApplication::postEvent(this, we2);
+                    return true;
+                }
             }
             break;
         default:
@@ -1420,6 +1519,43 @@ bool View::event(QEvent *e)
 
     return ContainmentView::event(e);
 }
+
+bool View::containmentContainsPosition(const QPointF &point) const
+{
+    if (!m_padding) {
+        return false;
+    }
+
+    QQuickItem *containmentItem = containment()->property("_plasma_graphicObject").value<QQuickItem *>();
+
+    if (!containmentItem) {
+        return false;
+    }
+
+    return QRectF(
+                containmentItem->mapToScene(QPoint(m_padding->left(),m_padding->top())),
+                QSizeF(containmentItem->width()-m_padding->left()-m_padding->right(),
+                       containmentItem->height()-m_padding->top()-m_padding->bottom())).contains(point);
+}
+
+QPointF View::positionAdjustedForContainment(const QPointF &point) const
+{
+    if (!m_padding) {
+        return point;
+    }
+
+    QQuickItem *containmentItem = containment()->property("_plasma_graphicObject").value<QQuickItem *>();
+
+    if (!containmentItem) {
+        return point;
+    }
+
+    QRectF containmentRect(containmentItem->mapToScene(QPoint(0,0)), QSizeF(containmentItem->width(), containmentItem->height()));
+
+    return QPointF(qBound(containmentRect.left() + m_padding->left(), point.x(), containmentRect.right() - m_padding->right()),
+                   qBound(containmentRect.top() + m_padding->top(), point.y(), containmentRect.bottom() - m_padding->bottom()));
+}
+
 
 void View::releaseConfigView()
 {
