@@ -502,15 +502,14 @@ Item {
                 return;
             }
 
-            var maxSize = appletItem.metrics.iconSize + lengthAppletFullMargins;
-            var maxForMinimumSize = appletItem.metrics.iconSize + lengthAppletFullMargins;
+            var maxSize = 1.5 * appletItem.metrics.iconSize;
+            var maxForMinimumSize = 1.5 * appletItem.metrics.iconSize;
 
             if ( isSystray
                     || appletItem.isAutoFillApplet
                     || (((applet && root.isHorizontal && (applet.width > maxSize || applet.Layout.minimumWidth > maxForMinimumSize))
                          || (applet && root.isVertical && (applet.height > maxSize || applet.Layout.minimumHeight > maxForMinimumSize)))
-                        && !appletItem.isSpacer
-                        && !communicator.canShowOverlaiedLatteIcon) ) {
+                        && !appletItem.isSpacer) ) {
                 appletItem.parabolicEffectIsSupported = false;
             } else {
                 appletItem.parabolicEffectIsSupported = true;
