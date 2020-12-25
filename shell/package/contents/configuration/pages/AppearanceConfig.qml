@@ -90,7 +90,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
                         value: plasmoid.configuration.iconSize
                         from: 16
-                        to: (latteView.visibility.mode === LatteCore.Types.SidebarOnDemand || latteView.visibility.mode === LatteCore.Types.SidebarAutoHide)  ? 512 : 256
+                        to: 512
                         stepSize: dialog.advancedLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 1 : 8
                         wheelEnabled: false
 
