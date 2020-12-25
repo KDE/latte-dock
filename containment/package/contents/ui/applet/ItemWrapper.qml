@@ -360,6 +360,18 @@ Item{
             }
         }
 
+        Loader{
+            anchors.fill: parent
+            active: appletItem.debug.graphicsEnabled
+            sourceComponent: Rectangle{
+                width: 30
+                height: 30
+                color: "transparent"
+                border.width: 1
+                border.color: "yellow"
+            }
+        }
+
         ///Secret MouseArea to be used by the folder widget
         Loader{
             anchors.fill: parent
