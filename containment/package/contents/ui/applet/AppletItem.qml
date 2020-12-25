@@ -152,7 +152,12 @@ Item {
                                           || (index === layouter.mainLayout.lastVisibleIndex)
                                           || (index === layouter.endLayout.lastVisibleIndex))
 
-    readonly property bool acceptMouseEvents: applet && !isLattePlasmoid && !originalAppletBehavior && !appletItem.isSeparator && !communicator.requires.parabolicEffectLocked
+    readonly property bool acceptMouseEvents: applet
+                                              && !isLattePlasmoid
+                                              && !originalAppletBehavior
+                                              && parabolicEffectIsSupported
+                                              && !appletItem.isSeparator
+                                              && !communicator.requires.parabolicEffectLocked
 
     //! This property is an effort in order to group behaviors into one property. This property is responsible to enable/disable
     //! Applets OnTop MouseArea which is used for ParabolicEffect and ThinTooltips. For Latte panels things
@@ -161,6 +166,7 @@ Item {
     //! are presenting their original plasma behavior and also applets that even though can be zoomed user has
     //! chosed to lock its parabolic effect.
     readonly property bool originalAppletBehavior: root.behaveAsPlasmaPanel
+                                                   || !parabolicEffectIsSupported
                                                    || (root.behaveAsDockWithMask && !parabolicEffectIsSupported)
                                                    || (root.behaveAsDockWithMask && parabolicEffectIsSupported && lockZoom)
 
@@ -995,7 +1001,7 @@ Item {
         anchors.fill: parent
         enabled: visible
         hoverEnabled: latteApplet ? false : true
-        propagateComposedEvents: true
+        propagateComposedEvents: visible
 
         //! a way must be found in order for this be enabled
         //! only to support springloading for plasma 5.10
