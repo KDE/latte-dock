@@ -1417,7 +1417,6 @@ bool View::event(QEvent *e)
                                                positionAdjustedForContainment(me->windowPos()) + position(),
                                                me->button(), me->buttons(), me->modifiers());
 
-                    qDebug() << "adjusted sinked move...";
                     adjustedevent = me2;
                 }
             }
@@ -1432,15 +1431,15 @@ bool View::event(QEvent *e)
                         && !m_padding->isEmpty()
                         && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
                         && !containmentContainsPosition(me->windowPos())) {
-                    qDebug() << "adjusted sinked pressed...";
+
                     auto me2 = new QMouseEvent(me->type(),
                                                positionAdjustedForContainment(me->windowPos()),
                                                positionAdjustedForContainment(me->windowPos()),
                                                positionAdjustedForContainment(me->windowPos()) + position(),
                                                me->button(), me->buttons(), me->modifiers());
 
-                    qDebug() << me->windowPos() << " => " << me2->windowPos() << " | " << m_padding->margins();
-
+                    qDebug() << "Sinked Event:: adjusted event pressed...";
+                    qDebug() << "Sinked Event:: pressed metrics :: " << me->windowPos() << " => " << me2->windowPos() << " | " << m_padding->margins();
                     adjustedevent = me2;
                 }
             }
