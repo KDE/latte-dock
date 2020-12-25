@@ -41,21 +41,32 @@ Item{
 
     readonly property color appliedTextColor: checked ? checkedTextColor : textColor
     readonly property color appliedBackgroundColor: checked ? checkedBackgroundColor : backgroundColor
+    readonly property color appliedBorderColor: checked ? checkedBorderColor : borderColor
 
     readonly property color textColor: containsMouse ? latteView.colorizer.buttonTextColor : settingsRoot.textColor
-    readonly property color backgroundColor: containsMouse ? hoveredBackground : normalBackground// "transparent"
+    readonly property color backgroundColor: containsMouse ? hoveredBackground :  normalBackground
+    readonly property color borderColor: containsMouse ? hoveredBorder : normalBorder// "transparent"
+
     readonly property color checkedTextColor: latteView.colorizer.buttonTextColor
     readonly property color checkedBackgroundColor: latteView.colorizer.buttonFocusColor
+    readonly property color checkedBorderColor: hoveredBorder //"transparent" //checkedTextColor
 
     readonly property color normalBackground: Qt.rgba(latteView.colorizer.buttonHoverColor.r,
                                                       latteView.colorizer.buttonHoverColor.g,
                                                       latteView.colorizer.buttonHoverColor.b,
-                                                      0.3)
+                                                      0.04)
 
     readonly property color hoveredBackground: Qt.rgba(latteView.colorizer.buttonHoverColor.r,
                                                        latteView.colorizer.buttonHoverColor.g,
                                                        latteView.colorizer.buttonHoverColor.b,
                                                        0.7)
+
+    readonly property color normalBorder: Qt.rgba(settingsRoot.textColor.r,
+                                                  settingsRoot.textColor.g,
+                                                  settingsRoot.textColor.b,
+                                                  0.7)
+
+    readonly property color hoveredBorder: "#222222"
 
     property Component icon
 
@@ -70,8 +81,8 @@ Item{
             height: buttonRow.height + 2 * margin
             radius: 2
             color: appliedBackgroundColor
-            //   border.width: 1
-            //   border.color: checked ? appliedBackgroundColor : appliedTextColor
+            border.width: 1
+            border.color: appliedBorderColor
 
             readonly property int margin: units.smallSpacing
 
