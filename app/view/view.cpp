@@ -306,12 +306,15 @@ void View::init(Plasma::Containment *plasma_containment)
 
     connect(m_effects, &ViewPart::Effects::innerShadowChanged, this, [&]() {
         emit availableScreenRectChangedFrom(this);
-    });
+    });        
     connect(m_positioner, &ViewPart::Positioner::onHideWindowsForSlidingOut, this, &View::hideWindowsForSlidingOut);
     connect(m_positioner, &ViewPart::Positioner::screenGeometryChanged, this, &View::screenGeometryChanged);
     connect(m_positioner, &ViewPart::Positioner::windowSizeChanged, this, [&]() {
         emit availableScreenRectChangedFrom(this);
     });
+
+    connect(this, &View::localGeometryChanged, this, &View::updateSinkedEventsGeometry);
+    connect(m_padding, &ViewPart::Padding::paddingsChanged, this, &View::updateSinkedEventsGeometry);
 
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
 
@@ -1529,25 +1532,34 @@ bool View::event(QEvent *e)
     return ContainmentView::event(adjustedevent);
 }
 
-bool View::containmentContainsPosition(const QPointF &point) const
+void View::updateSinkedEventsGeometry()
 {
-    if (!m_padding) {
-        return false;
+    QRectF sinked = m_localGeometry;
+
+    if (m_padding && !m_padding->isEmpty()) {
+        sinked -= m_padding->margins();
     }
 
-    QRectF local= m_localGeometry - m_padding->margins();
-    return local.contains(point);
+    if (location() == Plasma::Types::TopEdge || location() == Plasma::Types::BottomEdge) {
+        /*remove the bottom pixel that is needed from dodge and touching edge algorithms*/
+        sinked -= QMargins(0,0,0,1);
+    } else if (location() == Plasma::Types::RightEdge || location() == Plasma::Types::LeftEdge) {
+        /*remove the right pixel that is needed from dodge and touching edge algorithms*/
+        sinked -= QMargins(0,0,1,0);
+    }
+
+    m_sinkedEventsGeometry = sinked;
+}
+
+bool View::containmentContainsPosition(const QPointF &point) const
+{
+    return m_sinkedEventsGeometry.contains(point);
 }
 
 QPointF View::positionAdjustedForContainment(const QPointF &point) const
 {
-    if (!m_padding) {
-        return point;
-    }
-
-    QRectF local = m_localGeometry - m_padding->margins();
-    return QPointF(qBound(local.left(), point.x(), local.right()),
-                   qBound(local.top(), point.y(), local.bottom()));
+    return QPointF(qBound(m_sinkedEventsGeometry.left(), point.x(), m_sinkedEventsGeometry.right()),
+                   qBound(m_sinkedEventsGeometry.top(), point.y(), m_sinkedEventsGeometry.bottom()));
 }
 
 

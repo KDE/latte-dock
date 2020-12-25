@@ -797,7 +797,7 @@ Item{
                     localGeometry.width = latteView.effects.rect.width; // from effects area
 
                     localGeometry.y = edgeMargin;
-                    localGeometry.height = cleanThickness ;
+                    localGeometry.height = cleanThickness;
                 } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
                     localGeometry.x = latteView.effects.rect.x; // from effects area
                     localGeometry.width = latteView.effects.rect.width; // from effects area

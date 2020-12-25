@@ -357,6 +357,8 @@ private slots:
     void addTransientWindow(QWindow *window);
     void removeTransientWindow(const bool &visible);
 
+    void updateSinkedEventsGeometry();
+
     //! workaround in order for top panels to be always on top
     void topViewAlwaysOnTop();
     void verticalUnityViewHasFocus();
@@ -407,6 +409,7 @@ private:
 
     QRect m_localGeometry;
     QRect m_absoluteGeometry;
+    QRectF m_sinkedEventsGeometry;
 
     QStringList m_activities;
 
