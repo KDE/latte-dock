@@ -60,7 +60,7 @@ Item{
     property bool inScreenEdgeInternalWindowSliding: root.behaveAsDockWithMask && hideThickScreenGap
 
     readonly property bool inSliding: inSlidingIn || inSlidingOut || inRelocationHiding || inScreenEdgeInternalWindowSliding || inLocationAnimation
-    readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && animations.needBothAxis.count>0) && !inSlidingIn
+    readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && (animations.needBothAxis.count>0 || animations.needLength.count>0)) && !inSlidingIn
 
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
 
