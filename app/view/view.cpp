@@ -1414,10 +1414,12 @@ bool View::event(QEvent *e)
                         && !m_padding->isEmpty()
                         && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
                         && !containmentContainsPosition(me->windowPos())) {
+
+                    auto positionadjusted = positionAdjustedForContainment(me->windowPos());
                     auto me2 = new QMouseEvent(me->type(),
-                                               positionAdjustedForContainment(me->windowPos()),
-                                               positionAdjustedForContainment(me->windowPos()),
-                                               positionAdjustedForContainment(me->windowPos()) + position(),
+                                               positionadjusted,
+                                               positionadjusted,
+                                               positionadjusted + position(),
                                                me->button(), me->buttons(), me->modifiers());
 
                     adjustedevent = me2;
@@ -1435,10 +1437,11 @@ bool View::event(QEvent *e)
                         && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
                         && !containmentContainsPosition(me->windowPos())) {
 
+                    auto positionadjusted = positionAdjustedForContainment(me->windowPos());
                     auto me2 = new QMouseEvent(me->type(),
-                                               positionAdjustedForContainment(me->windowPos()),
-                                               positionAdjustedForContainment(me->windowPos()),
-                                               positionAdjustedForContainment(me->windowPos()) + position(),
+                                               positionadjusted,
+                                               positionadjusted,
+                                               positionadjusted + position(),
                                                me->button(), me->buttons(), me->modifiers());
 
                     qDebug() << "Sinked Event:: adjusted event pressed...";
@@ -1457,10 +1460,12 @@ bool View::event(QEvent *e)
                         && !m_padding->isEmpty()
                         && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
                         && !containmentContainsPosition(me->windowPos())) {
+
+                    auto positionadjusted = positionAdjustedForContainment(me->windowPos());
                     auto me2 = new QMouseEvent(me->type(),
-                                               positionAdjustedForContainment(me->windowPos()),
-                                               positionAdjustedForContainment(me->windowPos()),
-                                               positionAdjustedForContainment(me->windowPos()) + position(),
+                                               positionadjusted,
+                                               positionadjusted,
+                                               positionadjusted + position(),
                                                me->button(), me->buttons(), me->modifiers());
 
                     adjustedevent = me2;
@@ -1515,8 +1520,10 @@ bool View::event(QEvent *e)
                 if (m_padding
                         && !m_padding->isEmpty()
                         && !containmentContainsPosition(pos)) {
-                    auto we2 = new QWheelEvent(positionAdjustedForContainment(pos),
-                                               positionAdjustedForContainment(pos) + position(),
+
+                    auto positionadjusted = positionAdjustedForContainment(pos);
+                    auto we2 = new QWheelEvent(positionadjusted,
+                                               positionadjusted + position(),
                                                we->pixelDelta(), we->angleDelta(), we->angleDelta().y(),
                                                we->orientation(), we->buttons(), we->modifiers(), we->phase());
 
