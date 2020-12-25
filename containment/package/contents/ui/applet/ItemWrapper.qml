@@ -318,14 +318,7 @@ Item{
         property int _length:0 // through Binding to avoid binding loops
         property int _thickness:0 // through Binding to avoid binding loops
 
-        readonly property int appliedEdgeMargin: {
-            if (appletItem.isInternalViewSplitter) {
-                return appletItem.metrics.margin.screenEdge + appletItem.metrics.margin.thickness;
-            }
-
-            return appletItem.screenEdgeMarginSupported ? 0 : appletItem.metrics.margin.screenEdge;
-        }
-
+        readonly property int appliedEdgeMargin: appletItem.screenEdgeMarginSupported ? 0 : appletItem.metrics.margin.screenEdge
         readonly property int tailThicknessMargin: appliedEdgeMargin + (wrapper.zoomScaleThickness * metrics.margin.thickness)
 
         Binding {
