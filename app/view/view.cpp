@@ -1439,6 +1439,8 @@ bool View::event(QEvent *e)
                                                positionAdjustedForContainment(me->windowPos()) + position(),
                                                me->button(), me->buttons(), me->modifiers());
 
+                    qDebug() << me->windowPos() << " => " << me2->windowPos() << " | " << m_padding->margins();
+
                     adjustedevent = me2;
                 }
             }

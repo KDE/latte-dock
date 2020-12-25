@@ -51,11 +51,16 @@ Item{
     property int animationSpeed: LatteCore.WindowSystem.compositingActive ?
                                      (root.editMode ? 400 : animations.speedFactor.normal * 1.62 * animations.duration.large) : 0
 
+
+
     property bool inLocationAnimation: latteView && latteView.positioner && latteView.positioner.inLocationAnimation
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
     property bool inRelocationHiding: false
     property bool inScreenEdgeInternalWindowSliding: root.behaveAsDockWithMask && hideThickScreenGap
+
+    readonly property bool inSliding: inSlidingIn || inSlidingOut || inRelocationHiding || inScreenEdgeInternalWindowSliding || inLocationAnimation
+    readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && animations.needBothAxis.count>0) && !inSlidingIn
 
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
 
@@ -220,32 +225,68 @@ Item{
         target: latteView.padding
         property: "top"
         when: latteView
-        value: plasmoid.formFactor === PlasmaCore.Types.Vertical && !parabolic.isEnabled ?
-                   background.paddings.top + Math.abs(metrics.padding.length) : 0
+        value: {
+            if (!isSinkedEventEnabled)  {
+                return 0;
+            }
+
+            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                return background.paddings.top + Math.abs(metrics.padding.length);
+            }
+
+            return metrics.margin.thickness;
+        }
     }
 
     Binding{
         target: latteView.padding
         property: "bottom"
         when: latteView
-        value: plasmoid.formFactor === PlasmaCore.Types.Vertical && !parabolic.isEnabled ?
-                   background.paddings.bottom + Math.abs(metrics.padding.length) : 0
+        value:{
+            if (!isSinkedEventEnabled)  {
+                return 0;
+            }
+
+            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                return background.paddings.bottom + Math.abs(metrics.padding.length);
+            }
+
+            return metrics.margin.thickness;
+        }
     }
 
     Binding{
         target: latteView.padding
         property: "left"
         when: latteView
-        value: plasmoid.formFactor === PlasmaCore.Types.Horizontal && !parabolic.isEnabled ?
-                   background.paddings.left + Math.abs(metrics.padding.length) : 0
+        value: {
+            if (!isSinkedEventEnabled)  {
+                return 0;
+            }
+
+            if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
+                return background.paddings.left + Math.abs(metrics.padding.length);
+            }
+
+            return metrics.margin.thickness;
+        }
     }
 
     Binding{
         target: latteView.padding
         property: "right"
         when: latteView
-        value: plasmoid.formFactor === PlasmaCore.Types.Horizontal && !parabolic.isEnabled ?
-                   background.paddings.right + Math.abs(metrics.padding.length) : 0
+        value: {
+            if (!isSinkedEventEnabled)  {
+                return 0;
+            }
+
+            if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
+                return background.paddings.right + Math.abs(metrics.padding.length);
+            }
+
+            return metrics.margin.thickness;
+        }
     }
 
     //! View::Effects bindings

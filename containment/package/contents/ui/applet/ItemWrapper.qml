@@ -221,7 +221,8 @@ Item{
                 return !root.inConfigureAppletsMode ? 0 : appletItem.metrics.iconSize;
             }
 
-            if (communicator.parabolicEffectIsSupported && !communicator.inStartup/*avoid binding loops on startup*/) {
+            // avoid binding loops on startup
+            if (communicator.parabolicEffectIsSupported && !communicator.inStartup) {
                 return appletPreferredThickness;
             }
 
@@ -325,6 +326,8 @@ Item{
             return appletItem.screenEdgeMarginSupported ? 0 : appletItem.metrics.margin.screenEdge;
         }
 
+        readonly property int tailThicknessMargin: appliedEdgeMargin + (wrapper.zoomScaleThickness * metrics.margin.thickness)
+
         Binding {
             target: _wrapperContainer
             property: "_thickness"
@@ -334,7 +337,7 @@ Item{
                     return wrapper.layoutThickness;
                 }
 
-                var wrapperContainerThickness = wrapper.zoomScaleThickness * (appletItem.metrics.totals.thickness);
+                var wrapperContainerThickness = wrapper.zoomScaleThickness * (metrics.iconSize/* appletItem.metrics.totals.thickness*/);
                 return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + appletItem.metrics.margin.screenEdge : wrapperContainerThickness;
             }
         }
@@ -348,9 +351,10 @@ Item{
                     return wrapper.length;
                 }
 
+                /*
                 if (appletItem.isInternalViewSplitter) {
                     return wrapper.layoutLength;
-                }
+                }*/
 
                 return wrapper.zoomScaleLength * wrapper.layoutLength;
             }
@@ -436,7 +440,7 @@ Item{
                 }
                 PropertyChanges{
                     target: _wrapperContainer;
-                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: _wrapperContainer.appliedEdgeMargin;
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: _wrapperContainer.tailThicknessMargin
                     anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                 }
             },
@@ -451,7 +455,7 @@ Item{
                 }
                 PropertyChanges{
                     target: _wrapperContainer;
-                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: _wrapperContainer.appliedEdgeMargin;    anchors.bottomMargin: 0;
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: _wrapperContainer.tailThicknessMargin;    anchors.bottomMargin: 0;
                     anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                 }
             },
@@ -466,7 +470,7 @@ Item{
                 }
                 PropertyChanges{
                     target: _wrapperContainer;
-                    anchors.leftMargin: _wrapperContainer.appliedEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                    anchors.leftMargin: _wrapperContainer.tailThicknessMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                     anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                 }
             },
@@ -481,7 +485,7 @@ Item{
                 }
                 PropertyChanges{
                     target: _wrapperContainer;
-                    anchors.leftMargin: 0;    anchors.rightMargin: _wrapperContainer.appliedEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                    anchors.leftMargin: 0;    anchors.rightMargin: _wrapperContainer.tailThicknessMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                     anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                 }
             }
