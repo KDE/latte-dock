@@ -231,7 +231,7 @@ Item{
             }
 
             if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                return background.paddings.top + Math.abs(metrics.padding.length);
+                return background.paddings.top + root.firstAppletMarginLength + 1;
             }
 
             return metrics.margin.thickness;
@@ -248,7 +248,7 @@ Item{
             }
 
             if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                return background.paddings.bottom + Math.abs(metrics.padding.length);
+                return background.paddings.bottom + root.lastAppletMarginLength + 1;
             }
 
             return metrics.margin.thickness;
@@ -265,7 +265,7 @@ Item{
             }
 
             if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                return background.paddings.left + Math.abs(metrics.padding.length);
+                return background.paddings.left + root.firstAppletMarginLength + 1;
             }
 
             return metrics.margin.thickness;
@@ -282,7 +282,7 @@ Item{
             }
 
             if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                return background.paddings.right + Math.abs(metrics.padding.length);
+                return background.paddings.right + root.lastAppletMarginLength + 1;
             }
 
             return metrics.margin.thickness;

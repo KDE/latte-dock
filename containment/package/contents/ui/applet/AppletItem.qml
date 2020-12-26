@@ -619,6 +619,34 @@ Item {
         value: lengthAppletPadding + metrics.margin.length;
     }
 
+    Binding {
+        target: root
+        property: "firstAppletMarginLength"
+        when: (root.panelAlignment === LatteCore.Types.Justify && appletItem.firstChildOfStartLayout)
+              || (root.panelAlignment !== LatteCore.Types.Justify && appletItem.firstChildOfMainLayout)
+        value: {
+            if (appletItem.communicator.indexerIsSupported) {
+                return 0;
+            }
+
+            return appletItem.lengthAppletFullMargin;
+        }
+    }
+
+    Binding {
+        target: root
+        property: "lastAppletMarginLength"
+        when: (root.panelAlignment === LatteCore.Types.Justify && appletItem.lastChildOfEndLayout)
+              || (root.panelAlignment !== LatteCore.Types.Justify && appletItem.lastChildOfMainLayout)
+        value: {
+            if (appletItem.communicator.indexerIsSupported) {
+                return 0;
+            }
+
+            return appletItem.lengthAppletFullMargin;
+        }
+    }
+
     //! Connections
     Connections{
         target: appletItem.shortcuts
