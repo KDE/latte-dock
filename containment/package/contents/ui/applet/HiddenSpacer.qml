@@ -34,8 +34,7 @@ Item{
 
     property bool neighbourSeparator: rightSpacer ? appletItem.headAppletIsSeparator : appletItem.tailAppletIsSeparator
 
-    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && appletItem.parabolic.isEnabled
-                                 && !appletItem.latteApplet ? ((LatteCore.Environment.separatorLength/2)+appletItem.metrics.margin.length) : subtrackedMargins
+    property int separatorSpace: neighbourSeparator && appletItem.parabolic.isEnabled ? LatteCore.WindowSystem.separatorLength / 2 : 0
 
     property real nHiddenSize: {
         if (isSeparator || !communicator.requires.lengthMarginsEnabled) {
@@ -46,24 +45,6 @@ Item{
     }
 
     property bool rightSpacer: false
-
-    readonly property bool atEdgeForcingFittsLaw: !isSeparator && !parabolicEffectMarginsEnabled && atScreenEdge
-    readonly property int subtrackedMargins: {
-        if (atEdgeForcingFittsLaw && !appletItem.isAutoFillApplet) {
-            var inJustifyStart = (root.inFullJustify && firstChildOfStartLayout && rightSpacer);
-            var inJustifyEnd = (root.inFullJustify && lastChildOfEndLayout && !rightSpacer);
-
-            var singleApplet = firstChildOfMainLayout && lastChildOfMainLayout;
-            var inSideStart = ((root.panelAlignment === LatteCore.Types.Left || root.panelAlignment === LatteCore.Types.Top) && firstChildOfMainLayout && rightSpacer);
-            var inSideEnd = ((root.panelAlignment === LatteCore.Types.Right || root.panelAlignment === LatteCore.Types.Bottom) && lastChildOfMainLayout && !rightSpacer);
-
-            if (inJustifyStart || inJustifyEnd || inSideStart || inSideEnd) {
-                return (wrapper.edgeLengthMarginsDisabled ? appletItem.metrics.margin.length + appletItem.lengthAppletPadding : appletItem.metrics.margin.length);
-            }
-        }
-
-        return 0;
-    }
 
     property real nScale: 0
 

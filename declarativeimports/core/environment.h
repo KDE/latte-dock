@@ -42,7 +42,7 @@ class Environment final: public QObject
     Q_PROPERTY(uint plasmaDesktopVersion READ plasmaDesktopVersion NOTIFY plasmaDesktopVersionChanged)
 
 public:
-    static const int SeparatorLength = 6;
+    static const int SeparatorLength = 5;
 
     explicit Environment(QObject *parent = nullptr);
 
