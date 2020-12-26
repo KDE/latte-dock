@@ -341,13 +341,8 @@ Item{
             when: !visibilityManager.inRelocationHiding
             value: {
                 if (appletItem.isAutoFillApplet && (appletItem.maxAutoFillLength>-1)){
-                    return wrapper.length;
+                    return wrapper.length - appletItem.lengthAppletFullMargins;
                 }
-
-                /*
-                if (appletItem.isInternalViewSplitter) {
-                    return wrapper.layoutLength;
-                }*/
 
                 return wrapper.zoomScaleLength * wrapper.layoutLength;
             }
