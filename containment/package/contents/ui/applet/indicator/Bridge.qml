@@ -25,11 +25,15 @@ Item{
 
     property bool appletIsValid: true
 
-    readonly property bool active: appletIsValid &&
-                                   ((indicators.isEnabled
-                                     && appletItem.communicator.requires.activeIndicatorEnabled
-                                     && indicators.info.enabledForApplets)
-                                    || (!indicators.info.enabledForApplets && appletItem.communicator.overlayLatteIconIsActive))
+    readonly property bool active: appletIsValid
+                                   && !appletItem.isSeparator
+                                   && !appletItem.isHidden
+                                   && !communicator.indexerIsSupported
+                                   && ((indicators.isEnabled
+                                        && (appletItem.communicator.requires.activeIndicatorEnabled
+                                            || (!appletItem.communicator.requires.activeIndicatorEnabled && appletItem.debug.graphicsEnabled /*debug paddings*/))
+                                        && indicators.info.enabledForApplets)
+                                       || (!indicators.info.enabledForApplets && appletItem.communicator.overlayLatteIconIsActive))
 
     /* Indicators Properties in order use them*/
     readonly property bool isTask: false

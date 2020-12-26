@@ -534,6 +534,17 @@ MouseArea{
                         value: backLevelOptions.requested.iconOffsetY
                     }
                 }
+
+                Loader{
+                    anchors.fill: parent
+                    active: taskItem.debug.graphicsEnabled
+                    sourceComponent: Rectangle{
+                        color: "transparent"
+                        border.width: 1
+                        border.color: "purple"
+                        opacity: 0.4
+                    }
+                }
             }
 
             Wrapper{id: wrapper}

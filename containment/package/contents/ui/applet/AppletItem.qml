@@ -797,6 +797,17 @@ Item {
                         value: backLevelOptions.requested.iconOffsetY
                     }
                 }
+
+                Loader{
+                    anchors.fill: parent
+                    active: appletItem.debug.graphicsEnabled && parent.active
+                    sourceComponent: Rectangle{
+                        color: "transparent"
+                        border.width: 1
+                        border.color: "purple"
+                        opacity: 0.4
+                    }
+                }
             }
 
             ItemWrapper{

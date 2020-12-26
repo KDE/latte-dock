@@ -32,6 +32,7 @@ Loader {
     anchors.verticalCenter: root.isVertical ? parent.verticalCenter : undefined
 
     active: level.bridge && level.bridge.active && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
+
     sourceComponent: {
         if (!indicators.info.enabledForApplets && appletItem.communicator.overlayLatteIconIsActive) {
             return indicators.plasmaStyleComponent;
