@@ -70,8 +70,6 @@ Item{
 
     property bool editMode: root.inConfigureAppletsMode
 
-    property bool edgeLengthMarginsDisabled: (isSeparator || !communicator.requires.lengthMarginsEnabled || !parabolicEffectIsSupported) && !isSquare
-
     property int appletWidth: applet ?  applet.width : -1
     property int appletHeight: applet ?  applet.height : -1
 
@@ -102,7 +100,6 @@ Item{
                                      || !communicator.requires.lengthMarginsEnabled
                                      || isInternalViewSplitter
                                         ? 0 : appletItem.lengthAppletFullMargins
-    property int edgeLengthMargins: edgeLengthMarginsDisabled ? 0 : appletItem.lengthAppletPadding * 2
 
     property real scaledLength: zoomScaleLength * (layoutLength + marginsLength)
     property real scaledThickness: zoomScaleThickness * (layoutThickness + marginsThickness)
@@ -300,7 +297,7 @@ Item{
         target: wrapper
         property: "marginsLength"
         when: latteView && (!root.inStartup || visibilityManager.inRelocationHiding)
-        value: atScreenEdge && !parabolicEffectMarginsEnabled ? edgeLengthMargins : localLengthMargins
+        value: localLengthMargins
     }
 
     function updateAutoFillLength() {
