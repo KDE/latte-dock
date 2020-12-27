@@ -35,6 +35,8 @@ Item {
         lastIndex: -1
     }
 
+    property Item currentParabolicItem: null
+
     signal sglClearZoom();
     signal sglUpdateLowerItemScale(int delegateIndex, real newScale, real step);
     signal sglUpdateHigherItemScale(int delegateIndex, real newScale, real step);

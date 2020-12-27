@@ -88,6 +88,14 @@ ClientAbility.ParabolicEffect {
         }
     }
 
+    function setCurrentParabolicItem(item) {
+        if (bridge) {
+            bridge.parabolic.host.setCurrentParabolicItem(item);
+        } else {
+            local._privates.currentParabolicItem = item;
+        }
+    }
+
     function hostRequestUpdateLowerItemScale(newScale, step){
         //! function called from host
         sglUpdateLowerItemScale(itemsCount-1, newScale, step);

@@ -1245,6 +1245,7 @@ Item {
             debug: _debug
             indexer: _indexer
             layouter: _layouter
+            layouts: layoutsContainer
             metrics: _metrics
             parabolic: _parabolic
             shortcuts: _shortcuts

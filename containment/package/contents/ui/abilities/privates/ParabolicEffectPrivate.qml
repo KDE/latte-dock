@@ -89,6 +89,10 @@ AbilityHost.ParabolicEffect {
         _privates.directRenderingEnabled = value;
     }
 
+    function setCurrentParabolicItem(item) {
+        parabolic.view.currentParabolicItem = item;
+    }
+
     function applyParabolicEffect(index, currentMousePosition, center) {
         if (parabolic._privates.lastIndex === -1) {
             setDirectRenderingEnabled(false);

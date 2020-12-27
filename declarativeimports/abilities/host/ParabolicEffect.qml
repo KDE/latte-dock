@@ -35,6 +35,7 @@ AbilityDefinition.ParabolicEffect {
         readonly property alias factor: apis.factor
         readonly property alias lastIndex: apis.lastIndex
         readonly property alias restoreZoomIsBlocked: apis.restoreZoomIsBlocked
+        readonly property alias currentParabolicItem: apis.currentParabolicItem
 
         signal sglClearZoom();
 

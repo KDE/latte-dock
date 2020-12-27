@@ -29,6 +29,7 @@ AbilityDefinition.ParabolicEffect {
     isEnabled: ref.parabolic.isEnabled
     factor: ref.parabolic.factor
     restoreZoomIsBlocked: bridge ? (bridge.parabolic.host.restoreZoomIsBlocked || local.restoreZoomIsBlocked) : local.restoreZoomIsBlocked
+    currentParabolicItem: ref.parabolic.currentParabolicItem
 
     //! private properties can not go to definition because can not be made readonly in there
     //! special care must be taken in order to be redefined in local properties

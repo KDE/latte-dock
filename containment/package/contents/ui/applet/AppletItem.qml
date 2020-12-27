@@ -48,10 +48,6 @@ Item {
     signal mousePressed(int x, int y, int button);
     signal mouseReleased(int x, int y, int button);
 
-    signal parabolicEntered(int mouseX, int mouseY);
-    signal parabolicMove(int mouseX, int mouseY);
-    signal parabolicExited();
-
     property bool animationsEnabled: true
     property bool parabolicEffectIsSupported: true
     property bool canShowAppletNumberBadge: !isSeparator && !isHidden && !isLattePlasmoid
@@ -297,17 +293,19 @@ Item {
 
     readonly property alias communicator: _communicator
     readonly property alias wrapper: _wrapper
+    readonly property alias restoreAnimation: _restoreAnimation
 
     property Item animations: null
     property Item debug: null
     property Item indexer: null
     property Item layouter: null
+    property Item layouts: null
     property Item metrics: null
     property Item parabolic: null
     property Item shortcuts: null
     property Item userRequests: null
 
-    property bool containsMouse: (latteView && latteView.currentParabolicItem === appletItem) || (isLattePlasmoid && latteApplet.containsMouse)
+    property bool containsMouse: parabolicArea.containsMouse || (isLattePlasmoid && latteApplet.containsMouse)
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
 
 
@@ -729,12 +727,6 @@ Item {
                 }
             }
         }
-
-        onCurrentParabolicItemChanged: {
-            if (latteView && latteView.currentParabolicItem !== appletItem) {
-                appletItem.parabolicExited();
-            }
-        }
     }
 
     Connections {
@@ -941,6 +933,11 @@ Item {
         height: width
     }
 
+    ParabolicArea {
+        id: parabolicArea
+        anchors.fill: parent
+    }
+
     Loader {
         id: addingAreaLoader
         width: root.isHorizontal ? parent.width : parent.width - appletItem.metrics.margin.screenEdge
@@ -1027,95 +1024,6 @@ Item {
         ]
     }
 
-    MouseArea {
-        id: parabolicMouseArea
-        anchors.fill: parent
-        enabled: visible
-        hoverEnabled: true
-        visible: parabolicEffectIsSupported && latteView && latteView.currentParabolicItem !== appletItem
-
-        onEntered: {
-            appletItem.parabolicEntered(mouseX, mouseY);
-            if (latteView) {
-                latteView.currentParabolicItem = appletItem;
-            }
-        }
-    }
-
-    onParabolicEntered: {
-        appletItem.parabolic.stopRestoreZoomTimer();
-
-        if (restoreAnimation.running) {
-            restoreAnimation.stop();
-        }
-
-        if (!(isSeparator || isSpacer)) {
-            root.showTooltipLabel(appletItem, applet.title);
-        }
-
-        if (originalAppletBehavior || communicator.requires.parabolicEffectLocked || !parabolicEffectIsSupported) {
-            return;
-        }
-
-        if (root.isHalfShown || (root.latteApplet
-                                 && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
-            return;
-        }
-
-        if (root.isHorizontal){
-            layoutsContainer.currentSpot = mouseX;
-            wrapper.calculateParabolicScales(mouseX);
-        }
-        else{
-            layoutsContainer.currentSpot = mouseY;
-            wrapper.calculateParabolicScales(mouseY);
-        }
-    }
-
-    onParabolicMove: {
-        if (root.isHalfShown || (root.latteApplet
-                                 && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
-            return;
-        }
-
-        var rapidMovement = appletItem.parabolic.lastIndex>=0 && Math.abs(appletItem.parabolic.lastIndex-index)>1;
-
-        if (rapidMovement) {
-            parabolic.setDirectRenderingEnabled(true);
-        }
-
-        if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === appletItem.parabolic.factor.zoom) && !parabolic.directRenderingEnabled) || parabolic.directRenderingEnabled) {
-            if (root.isHorizontal){
-                var step = Math.abs(layoutsContainer.currentSpot-mouseX);
-                if (step >= appletItem.animations.hoverPixelSensitivity){
-                    layoutsContainer.currentSpot = mouseX;
-
-                    wrapper.calculateParabolicScales(mouseX);
-                }
-            }
-            else{
-                var step = Math.abs(layoutsContainer.currentSpot-mouseY);
-                if (step >= appletItem.animations.hoverPixelSensitivity){
-                    layoutsContainer.currentSpot = mouseY;
-
-                    wrapper.calculateParabolicScales(mouseY);
-                }
-            }
-        }
-    }
-
-    onParabolicExited: {
-        if (communicator.appletIconItemIsShown()) {
-            communicator.setAppletIconItemActive(false);
-        }
-
-        root.hideTooltipLabel();
-
-      /*  if (appletItem.parabolic.factor.zoom>1){
-            appletItem.parabolic.startRestoreZoomTimer();
-        } */
-    }
-
     //! Debug Elements
     Loader{
         anchors.bottom: parent.bottom
@@ -1191,7 +1099,7 @@ Item {
     //BEGIN animations
     ///////Restore Zoom Animation/////
     ParallelAnimation{
-        id: restoreAnimation
+        id: _restoreAnimation
 
         PropertyAnimation {
             target: wrapper
