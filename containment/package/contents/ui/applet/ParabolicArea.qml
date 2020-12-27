@@ -22,8 +22,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item {
     id: _parabolicArea
-    signal parabolicEntered(int mouseX, int mouseY);
-    signal parabolicMove(int mouseX, int mouseY);
+    signal parabolicEntered(real mouseX, real mouseY);
+    signal parabolicMove(real mouseX, real mouseY);
     signal parabolicExited();
 
     readonly property bool containsMouse: appletItem.parabolic.currentParabolicItem === _parabolicArea
@@ -80,8 +80,7 @@ Item {
         if (root.isHorizontal){
             appletItem.layouts.currentSpot = mouseX;
             calculateParabolicScales(mouseX);
-        }
-        else{
+        } else{
             appletItem.layouts.currentSpot = mouseY;
             calculateParabolicScales(mouseY);
         }

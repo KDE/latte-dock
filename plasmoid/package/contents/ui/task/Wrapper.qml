@@ -94,8 +94,6 @@ Item{
     property real visualScaledHeight: (taskItem.metrics.iconSize + root.internalHeightMargins) * mScale
     /// end of Scalers///////
 
-    //  property int index: taskItem.Positioner.index
-    //property real center: (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
     property real center: !root.vertical ?
                              (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2 :
                              (height + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2

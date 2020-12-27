@@ -1432,8 +1432,8 @@ bool View::event(QEvent *e)
                         QMetaObject::invokeMethod(m_currentParabolicItem,
                                                   "parabolicMove",
                                                   Qt::DirectConnection,
-                                                  Q_ARG(int, internal.x()),
-                                                  Q_ARG(int, internal.y()));
+                                                  Q_ARG(qreal, internal.x()),
+                                                  Q_ARG(qreal, internal.y()));
                     } else {
                         //! clearing parabolic item
                         setCurrentParabolicItem(nullptr);

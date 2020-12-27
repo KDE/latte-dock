@@ -22,15 +22,13 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item {
     id: _parabolicArea
-    signal parabolicEntered(int mouseX, int mouseY);
-    signal parabolicMove(int mouseX, int mouseY);
+    signal parabolicEntered(real mouseX, real mouseY);
+    signal parabolicMove(real mouseX, real mouseY);
     signal parabolicExited();
 
     readonly property bool containsMouse: taskItem.parabolic.currentParabolicItem === _parabolicArea
 
-    property real center:root.isHorizontal ?
-                             (wrapper.width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2 :
-                             (wrapper.height + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
+    readonly property real center: wrapper.center
 
     MouseArea {
         id: parabolicMouseArea
@@ -91,6 +89,8 @@ Item {
         if (root.autoScrollTasksEnabled) {
             scrollableList.autoScrollFor(taskItem, false);
         }
+
+        //! do not send any parabolic mouse movement. At this point mouseX/Y are not valid
     }
 
     onParabolicMove: {

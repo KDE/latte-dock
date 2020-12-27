@@ -433,9 +433,9 @@ MouseArea{
             onDockIsShownCompletelyChanged: {
                 if (dockIsShownCompletely && taskItem.containsMouse) {
                     if (root.vertical) {
-                        taskItem.mousePosChanged(taskItem.mouseY);
+                   //     taskItem.mousePosChanged(taskItem.mouseY);
                     } else {
-                        taskItem.mousePosChanged(taskItem.mouseX);
+                   //     taskItem.mousePosChanged(taskItem.mouseX);
                     }
                 }
             }
