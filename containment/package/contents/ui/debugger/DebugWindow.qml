@@ -175,13 +175,13 @@ Window{
             }
 
             Text{
-                text: "Absolute Geometry"+space
+                text: "Input "+space
             }
 
             Text{
                 text: {
-                    if (latteView && latteView.absoluteGeometry) {
-                        return latteView.absoluteGeometry.x + ", " + latteView.absoluteGeometry.y + "  " + latteView.absoluteGeometry.width + "x" + latteView.absoluteGeometry.height;
+                    if (latteView && latteView.effects && latteView.effects.inputMask) {
+                        return latteView.effects.inputMask.x +", "+ latteView.effects.inputMask.y+"  "+latteView.effects.inputMask.width+"x"+latteView.effects.inputMask.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -201,6 +201,21 @@ Window{
                     }
                 }
             }
+
+            Text{
+                text: "Absolute Geometry"+space
+            }
+
+            Text{
+                text: {
+                    if (latteView && latteView.absoluteGeometry) {
+                        return latteView.absoluteGeometry.x + ", " + latteView.absoluteGeometry.y + "  " + latteView.absoluteGeometry.width + "x" + latteView.absoluteGeometry.height;
+                    } else {
+                        return "_,_ _x_";
+                    }
+                }
+            }
+
 
             Text{
                 text: "Draw Effects"+space

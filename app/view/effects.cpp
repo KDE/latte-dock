@@ -305,7 +305,6 @@ void Effects::setInputMask(QRect area)
     }
 
     m_inputMask = area;
-
     m_corona->wm()->setInputMask(m_view, area);
 
     emit inputMaskChanged();
@@ -427,14 +426,21 @@ void Effects::updateBackgroundCorners()
 void Effects::updateMask()
 {
     if (KWindowSystem::compositingActive()) {
-        if (m_view->behaveAsPlasmaPanel()) {
-            if (!m_view->visibility()->isHidden()) {
-                m_view->setMask(QRect());
-            } else {
-                m_view->setMask(VisibilityManager::ISHIDDENMASK);
+        if (KWindowSystem::isPlatformX11()) {
+            if (m_view->mask() != VisibilityManager::ISHIDDENMASK ) {
+                m_view->setMask(QRect(0, 0, m_view->width(), m_view->height()));
             }
         } else {
-            m_view->setMask(maskCombinedRegion());
+            //! this needs investigation under Wayland how to work correctly
+            if (m_view->behaveAsPlasmaPanel()) {
+                if (!m_view->visibility()->isHidden()) {
+                    m_view->setMask(QRect());
+                } else {
+                    m_view->setMask(VisibilityManager::ISHIDDENMASK);
+                }
+            } else {
+                m_view->setMask(maskCombinedRegion());
+            }
         }
     } else {
         QRegion fixedMask;

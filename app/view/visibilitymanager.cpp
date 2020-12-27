@@ -647,7 +647,7 @@ void VisibilityManager::hide()
         return;
     }
 
-    m_lastMask = m_latteView->effects()->mask();
+  //  m_lastMask = m_latteView->effects()->mask();
     m_latteView->effects()->setMask(ISHIDDENMASK);
 }
 
@@ -657,8 +657,8 @@ void VisibilityManager::show()
         return;
     }
 
-    if (m_latteView->effects()->mask() == ISHIDDENMASK) {
-        m_latteView->effects()->setMask(m_lastMask);
+    if (m_latteView->mask() == ISHIDDENMASK) {
+        m_latteView->effects()->setMask(QRect(0, 0, m_latteView->width(), m_latteView->height()));
     }
 }
 

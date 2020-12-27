@@ -320,10 +320,10 @@ BackgroundProperties{
     //!          the compositor to provide blurriness and from Mask calculations to provide the View Local Geometry
     PlasmaCore.FrameSvgItem{
         id: solidBackground
-        anchors.leftMargin: LatteCore.WindowSystem.compositingActive ? shadows.left : 0
-        anchors.rightMargin: LatteCore.WindowSystem.compositingActive ? shadows.right : 0
-        anchors.topMargin: LatteCore.WindowSystem.compositingActive ? shadows.top : 0
-        anchors.bottomMargin: LatteCore.WindowSystem.compositingActive ? shadows.bottom : 0
+        anchors.leftMargin: shadows.left
+        anchors.rightMargin: shadows.right
+        anchors.topMargin: shadows.top
+        anchors.bottomMargin: shadows.bottom
         anchors.fill: shadowsSvgItem
 
         imagePath: "widgets/panel-background"

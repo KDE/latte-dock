@@ -1557,8 +1557,9 @@ Item {
         sourceComponent: Rectangle{
             x: latteView.localGeometry.x
             y: latteView.localGeometry.y
-            width: latteView.localGeometry.width
-            height: latteView.localGeometry.height
+            //! when view is resized there is a chance that geometry is faulty stacked in old values
+            width: Math.min(latteView.localGeometry.width, root.width) //! fixes updating
+            height: Math.min(latteView.localGeometry.height, root.height) //! fixes updating
 
             color: "blue"
             border.width: 2
@@ -1574,14 +1575,15 @@ Item {
         sourceComponent: Rectangle{
             x: latteView.effects.inputMask.x
             y: latteView.effects.inputMask.y
-            width: latteView.effects.inputMask.width
-            height: latteView.effects.inputMask.height
+            //! when view is resized there is a chance that geometry is faulty stacked in old values
+            width: Math.min(latteView.effects.inputMask.width, root.width) //! fixes updating
+            height: Math.min(latteView.effects.inputMask.height, root.height) //! fixes updating
 
             color: "purple"
-            border.width: 2
-            border.color: "purple"
+            border.width: 1
+            border.color: "black"
 
-            opacity: 0.35
+            opacity: 0.20
         }
     }
 }

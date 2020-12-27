@@ -60,7 +60,10 @@ Item{
     property bool inScreenEdgeInternalWindowSliding: root.behaveAsDockWithMask && hideThickScreenGap
 
     readonly property bool inSliding: inSlidingIn || inSlidingOut || inRelocationHiding || inScreenEdgeInternalWindowSliding || inLocationAnimation
-    readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && (animations.needBothAxis.count>0 || animations.needLength.count>0)) && !inSlidingIn
+    readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && (animations.needBothAxis.count>0 || animations.needLength.count>0))
+                                                 && !inSlidingIn
+                                                 && !inSlidingOut
+                                                 && !latteView.visibility.isHidden
 
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
 
@@ -561,222 +564,13 @@ Item{
             }
         }
 
-        var tempLength = root.isHorizontal ? width : height;
-        var tempThickness = root.isHorizontal ? height : width;
-
-        if (LatteCore.WindowSystem.compositingActive) {
-            if (normalState) {
-                //console.log("entered normal state...");
-                //count panel length
-                tempLength = background.totals.visualLength;
-                tempThickness = metrics.mask.thickness.normal;
-
-                if (animations.needThickness.count > 0) {
-                    tempThickness = LatteCore.WindowSystem.compositingActive ? metrics.mask.thickness.zoomed : metrics.mask.thickness.normal;
-                }
-
-                if (maskIsFloating) {
-                    tempThickness = tempThickness - maskFloatedGap;
-                }
-
-                if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                    tempThickness = metrics.mask.thickness.hidden;
-                }
-
-                //configure x,y based on plasmoid position and root.panelAlignment(Alignment)
-                if ((plasmoid.location === PlasmaCore.Types.BottomEdge) || (plasmoid.location === PlasmaCore.Types.TopEdge)) {
-                    if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                        if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
-                            localY = latteView.height + tempThickness;
-                        } else if (maskIsFloating && !latteView.visibility.isHidden) {
-                            localY = latteView.height - tempThickness - maskFloatedGap;
-                        } else {
-                            localY = latteView.height - tempThickness;
-                        }
-                    } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                        if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
-                            localY = -tempThickness;
-                        } else if (maskIsFloating && !latteView.visibility.isHidden) {
-                            localY = maskFloatedGap;
-                        } else {
-                            localY = 0;
-                        }
-                    }
-
-                    if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
-                        localX = (latteView.width/2) - tempLength/2 + background.offset;
-                    } else if (root.panelAlignment === LatteCore.Types.Left) {
-                        localX = background.offset;
-                    } else if (root.panelAlignment === LatteCore.Types.Center) {
-                        localX = (latteView.width/2) - tempLength/2 + background.offset;
-                    } else if (root.panelAlignment === LatteCore.Types.Right) {
-                        localX = latteView.width - tempLength - background.offset;
-                    }
-                } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
-                    if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                        if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
-                            localX = -tempThickness;
-                        } else if (maskIsFloating && !latteView.visibility.isHidden) {
-                            localX = maskFloatedGap;
-                        } else {
-                            localX = 0;
-                        }
-                    } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        if (latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges) {
-                            localX = latteView.width + tempThickness;
-                        } else if (maskIsFloating && !latteView.visibility.isHidden) {
-                            localX = latteView.width - tempThickness - maskFloatedGap;
-                        } else {
-                            localX = latteView.width - tempThickness;
-                        }
-                    }
-
-                    if (plasmoid.configuration.alignment === LatteCore.Types.Justify) {
-                        localY = (latteView.height/2) - tempLength/2 + background.offset;
-                    } else if (root.panelAlignment === LatteCore.Types.Top) {
-                        localY = background.offset;
-                    } else if (root.panelAlignment === LatteCore.Types.Center) {
-                        localY = (latteView.height/2) - tempLength/2 + background.offset;
-                    } else if (root.panelAlignment === LatteCore.Types.Bottom) {
-                        localY = latteView.height - tempLength - background.offset;
-                    }
-                }
-
-                if (latteView.visibility.isHidden && latteView && latteView.visibility.mode === LatteCore.Types.SidebarOnDemand) {
-                    //!hide completely
-                    localX = -1;
-                    localY = -1;
-                    tempThickness = 1;
-                    tempLength = 1;
-                }
-            } else {
-                // !inNormalState
-
-                if(root.isHorizontal)
-                    tempLength = Screen.width; //screenGeometry.width;
-                else
-                    tempLength = Screen.height; //screenGeometry.height;
-
-                //grow only on length and not thickness
-                var onlyLengthAnimation = (animations.needLength.count>0 && animations.needBothAxis.count === 0);
-
-                if(onlyLengthAnimation) {
-                    //this is used to fix a bug with shadow showing when the animation of edit mode
-                    //is triggered
-                    tempThickness = metrics.mask.thickness.normal;
-
-                    if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                        tempThickness = metrics.mask.thickness.hidden;
-                    } else if (animations.needThickness.count > 0) {
-                        tempThickness = metrics.mask.thickness.maxZoomed;
-                    }
-                } else{
-                    //use all thickness space
-                    if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                        tempThickness = LatteCore.WindowSystem.compositingActive ? metrics.mask.thickness.hidden : metrics.mask.thickness.maxNormalForItems;
-                    } else {
-                        tempThickness = !maskIsFloating ? metrics.mask.thickness.maxZoomed : metrics.mask.thickness.maxZoomed - maskFloatedGap;
-                    }
-                }
-
-                //configure the x,y position based on thickness
-                if(plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    localX = !maskIsFloating ? latteView.width - tempThickness : latteView.width - tempThickness - maskFloatedGap;
-
-                    if (localX < 0) {
-                        tempThickness = tempThickness + localX;
-                        localX = 0;
-                    }
-                } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    localY = !maskIsFloating ? latteView.height - tempThickness : latteView.height - tempThickness - maskFloatedGap;
-
-                    if (localY < 0) {
-                        tempThickness = tempThickness + localY;
-                        localY = 0;
-                    }
-                } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                    localY = !maskIsFloating ? 0 : maskFloatedGap;
-                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    localX = !maskIsFloating ? 0 : maskFloatedGap;
-                }
-            }
-        } // end of compositing calculations
-
-        var maskArea = latteView.effects.mask;
-
-        if (LatteCore.WindowSystem.compositingActive) {
-            var maskLength = maskArea.width; //in Horizontal
-            if (root.isVertical) {
-                maskLength = maskArea.height;
-            }
-
-            var maskThickness = maskArea.height; //in Horizontal
-            if (root.isVertical) {
-                maskThickness = maskArea.width;
+        if (!LatteCore.WindowSystem.compositingActive) {
+            if (!latteView.visibility.isHidden) {
+                latteView.effects.mask = latteView.effects.rect;
             }
         } else {
-            //! no compositing case
-            var overridesHidden = latteView.visibility.isHidden && !latteView.visibility.supportsKWinEdges;
-
-            if (!overridesHidden) {
-                localX = latteView.effects.rect.x;
-                localY = latteView.effects.rect.y;
-            } else {
-                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    localX = latteView.effects.rect.x;
-                    localY = root.height - metrics.mask.thickness.hidden;
-                } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                    localX = latteView.effects.rect.x;
-                    localY = 0;
-                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    localX = 0;
-                    localY = latteView.effects.rect.y;
-                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    localX = root.width - metrics.mask.thickness.hidden;
-                    localY = latteView.effects.rect.y;
-                }
-            }
-
-            if (root.isHorizontal) {
-                tempThickness = overridesHidden ? metrics.mask.thickness.hidden : latteView.effects.rect.height;
-                tempLength = latteView.effects.rect.width;
-            } else {
-                tempThickness = overridesHidden ? metrics.mask.thickness.hidden : latteView.effects.rect.width;
-                tempLength = latteView.effects.rect.height;
-            }
+            latteView.effects.mask = Qt.rect(0, 0, root.width, root.height);
         }
-
-
-
-        //  console.log("Not updating mask...");
-        if( maskArea.x !== localX || maskArea.y !== localY
-                || maskLength !== tempLength || maskThickness !== tempThickness) {
-
-            // console.log("Updating mask...");
-            var newMaskArea = Qt.rect(-1,-1,0,0);
-            newMaskArea.x = localX;
-            newMaskArea.y = localY;
-
-            if (isHorizontal) {
-                newMaskArea.width = tempLength;
-                newMaskArea.height = tempThickness;
-            } else {
-                newMaskArea.width = tempThickness;
-                newMaskArea.height = tempLength;
-            }
-
-            if (!LatteCore.WindowSystem.compositingActive) {
-                latteView.effects.mask = newMaskArea;
-            } else {
-                if (latteView.behaveAsPlasmaPanel) {
-                    latteView.effects.mask = Qt.rect(0,0,root.width,root.height);
-                } else {
-                    latteView.effects.mask = newMaskArea;
-                }
-            }
-        }
-
-        var validIconSize = (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === autosize.iconSize);
 
         //console.log("reached updating geometry ::: "+dock.maskArea);
 
@@ -831,20 +625,16 @@ Item{
             latteView.localGeometry = localGeometry;
         }
 
-
         //! Input Mask
         if (LatteCore.WindowSystem.isPlatformX11) {
             //! This is not needed under wayland environment, mask() can be used instead
 
-            var animated = ( animations.needBothAxis.count>0
-                            || animations.needLength.count>0
-                            || animations.needThickness.count>0
-                            || latteView.visibility.isHidden);
+            var animated = (animations.needBothAxis.count>0);
 
             if (!LatteCore.WindowSystem.compositingActive || animated || latteView.behaveAsPlasmaPanel) {
                 latteView.effects.inputMask = Qt.rect(0, 0, -1, -1);
             } else {
-                var inputThickness = metrics.mask.screenEdge + metrics.totals.thickness;
+                var inputThickness = latteView.visibility.isHidden ? metrics.mask.thickness.hidden : metrics.mask.screenEdge + metrics.totals.thickness;
                 var inputGeometry = Qt.rect(0, 0, root.width, root.height);
 
                 if (plasmoid.location === PlasmaCore.Types.TopEdge) {
