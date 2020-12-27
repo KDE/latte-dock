@@ -432,6 +432,8 @@ private:
     int m_releaseGrab_x;
     int m_releaseGrab_y;
 
+    QTimer m_parabolicItemNullifier;
+
     Layout::GenericLayout *m_layout{nullptr};
 
     QQuickItem *m_colorizer{nullptr};

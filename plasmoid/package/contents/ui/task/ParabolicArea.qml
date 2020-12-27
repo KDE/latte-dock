@@ -40,6 +40,25 @@ Item {
         onEntered: {
             _parabolicArea.parabolicEntered(mouseX, mouseY);
             taskItem.parabolic.setCurrentParabolicItem(_parabolicArea);
+
+            //! adjust mouseX/Y because the original are not to be trusted
+        /*    if (root.isHorizontal) {
+                if (mouseX < center) {
+                    icList.currentSpot = 1;
+                    calculateParabolicScales(icList.currentSpot);
+                } else {
+                    icList.currentSpot = center * 2 - 1;
+                    calculateParabolicScales(icList.currentSpot);
+                }
+            } else {
+                if (mouseY < center) {
+                    icList.currentSpot = 1;
+                    calculateParabolicScales(icList.currentSpot);
+                } else {
+                    icList.currentSpot = center * 2 - 1;
+                    calculateParabolicScales(icList.currentSpot);
+                }
+            }*/
         }
     }
 

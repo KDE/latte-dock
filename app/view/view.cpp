@@ -112,6 +112,12 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
 
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::updateTransientWindowsTracking);
 
+    m_parabolicItemNullifier.setInterval(100);
+    m_parabolicItemNullifier.setSingleShot(true);
+    connect(&m_parabolicItemNullifier, &QTimer::timeout, this, [&]() {
+        setCurrentParabolicItem(nullptr);
+    });
+
     connect(this, &View::containmentChanged
             , this, [ &, byPassWM]() {
         qDebug() << "dock view c++ containment changed 1...";
@@ -318,6 +324,8 @@ void View::init(Plasma::Containment *plasma_containment)
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
 
     connect(m_interface, &ViewPart::ContainmentInterface::hasExpandedAppletChanged, this, &View::verticalUnityViewHasFocus);
+
+    connect(this, &View::currentParabolicItemChanged, &m_parabolicItemNullifier, &QTimer::stop);
 
     //! View sends this signal in order to avoid crashes from ViewPart::Indicator when the view is recreated
     connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::indicatorChanged, this, [&](const QString &indicatorId) {
@@ -1428,6 +1436,7 @@ bool View::event(QEvent *e)
                     QPointF internal = m_currentParabolicItem->mapFromScene(me->windowPos());
 
                     if (m_currentParabolicItem->contains(internal)) {
+                        m_parabolicItemNullifier.stop();
                         //! sending move event to parabolic item    
                         QMetaObject::invokeMethod(m_currentParabolicItem,
                                                   "parabolicMove",
@@ -1436,7 +1445,7 @@ bool View::event(QEvent *e)
                                                   Q_ARG(qreal, internal.y()));
                     } else {
                         //! clearing parabolic item
-                        setCurrentParabolicItem(nullptr);
+                        m_parabolicItemNullifier.start();
                     }
                 }
 
@@ -1571,7 +1580,11 @@ bool View::event(QEvent *e)
 }
 
 void View::updateSinkedEventsGeometry()
-{
+{    
+    if (m_inDelete || !m_padding) {
+        return;
+    }
+
     QRectF sinked = m_localGeometry;
 
     if (m_padding && !m_padding->isEmpty()) {
