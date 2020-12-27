@@ -33,6 +33,7 @@ import "../debugger" as Debugger
 
 Item{
     id: layoutsContainer
+    visible: !(latteView && latteView.visibility.isHidden)
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
 
