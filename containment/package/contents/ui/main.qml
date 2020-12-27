@@ -71,16 +71,7 @@ Item {
                                              && (latteView.extendedInterface.plasmaTasksModel.count === 0)
 
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
-    property bool behaveAsPlasmaPanel: {
-        if (!LatteCore.WindowSystem.compositingActive) {
-            //! In NOCOMPOSITING mode VIEWS are ALWAYS using mask techniques because
-            //! this is what works much better. In the future that might change.
-            return false;
-        }
-
-        return viewType === LatteCore.Types.PanelView;
-    }
-
+    readonly property bool behaveAsPlasmaPanel: viewType === LatteCore.Types.PanelView
     readonly property bool behaveAsDockWithMask: !behaveAsPlasmaPanel
 
     readonly property bool viewIsAvailable: latteView && latteView.visibility && latteView.effects

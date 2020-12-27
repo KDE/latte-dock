@@ -564,17 +564,10 @@ Item{
             }
         }
 
-        if (!LatteCore.WindowSystem.compositingActive) {
-            if (!latteView.visibility.isHidden) {
-                latteView.effects.mask = latteView.effects.rect;
-            }
-        } else {
-            latteView.effects.mask = Qt.rect(0, 0, root.width, root.height);
-        }
-
         //console.log("reached updating geometry ::: "+dock.maskArea);
 
-        if(inPublishingState && !latteView.visibility.isHidden && normalState) {
+
+        if (inPublishingState && !latteView.visibility.isHidden && normalState) {
             //! Important: Local Geometry must not be updated when view ISHIDDEN
             //! because it breaks Dodge(s) modes in such case
 

@@ -643,22 +643,15 @@ void VisibilityManager::updateGhostWindowState()
 
 void VisibilityManager::hide()
 {
-    if (!m_latteView->effects()) {
-        return;
+    if (KWindowSystem::isPlatformX11()) {
+        m_latteView->setVisible(false);
     }
-
-  //  m_lastMask = m_latteView->effects()->mask();
-    m_latteView->effects()->setMask(ISHIDDENMASK);
 }
 
 void VisibilityManager::show()
 {
-    if (!m_latteView->effects()) {
-        return;
-    }
-
-    if (m_latteView->mask() == ISHIDDENMASK) {
-        m_latteView->effects()->setMask(QRect(0, 0, m_latteView->width(), m_latteView->height()));
+    if (KWindowSystem::isPlatformX11()) {
+        m_latteView->setVisible(true);
     }
 }
 
@@ -784,7 +777,15 @@ void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activi
 void VisibilityManager::startTimerHide(const int &msec)
 {
     if (msec == 0) {
-        m_timerHide.start(m_timerHideInterval);
+        int secs = m_timerHideInterval;
+
+        if (!KWindowSystem::compositingActive()) {
+            //! this is needed in order to give view time to show and
+            //! for floating case to give time to user to reach the view with its mouse
+            secs = qMax(m_timerHideInterval, m_latteView->screenEdgeMargin() > 0 ? 700 : 200);
+        }
+
+        m_timerHide.start(secs);
     } else {
         m_timerHide.start(msec);
     }

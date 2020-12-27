@@ -60,10 +60,21 @@ void Effects::init()
     connect(this, &Effects::enabledBordersChanged, this, &Effects::updateEffects);
     connect(this, &Effects::rectChanged, this, &Effects::updateEffects);
 
+
     connect(this, &Effects::backgroundCornersMaskChanged, this, &Effects::updateMask);
     connect(this, &Effects::backgroundRadiusEnabledChanged, this, &Effects::updateMask);
     connect(this, &Effects::subtractedMaskRegionsChanged, this, &Effects::updateMask);
     connect(this, &Effects::unitedMaskRegionsChanged, this, &Effects::updateMask);
+    connect(m_view, &Latte::View::typeChanged, this, &Effects::updateMask);
+    connect(m_view, &QQuickWindow::widthChanged, this, &Effects::updateMask);
+    connect(m_view, &QQuickWindow::heightChanged, this, &Effects::updateMask);
+    connect(KWindowSystem::self(), &KWindowSystem::compositingChanged, this, &Effects::updateMask);
+
+    connect(this, &Effects::rectChanged, this, [&]() {
+        if (!KWindowSystem::compositingActive() && !m_view->behaveAsPlasmaPanel()) {
+            setMask(m_rect);
+        }
+    });
 
     connect(this, &Effects::backgroundRadiusChanged, this, &Effects::updateBackgroundCorners);
 
@@ -305,7 +316,13 @@ void Effects::setInputMask(QRect area)
     }
 
     m_inputMask = area;
-    m_corona->wm()->setInputMask(m_view, area);
+
+    if (KWindowSystem::isPlatformX11()) {
+        m_corona->wm()->setInputMask(m_view, area);
+    } else {
+        //under wayland mask() is providing the Input Area
+        m_view->setMask(area);
+    }
 
     emit inputMaskChanged();
 }
@@ -427,10 +444,12 @@ void Effects::updateMask()
 {
     if (KWindowSystem::compositingActive()) {
         if (KWindowSystem::isPlatformX11()) {
-            if (m_view->mask() != VisibilityManager::ISHIDDENMASK ) {
-                m_view->setMask(QRect(0, 0, m_view->width(), m_view->height()));
-            }
+            m_view->setMask(QRect(0, 0, m_view->width(), m_view->height()));
         } else {
+            // do nothing
+        }
+
+        /* else {
             //! this needs investigation under Wayland how to work correctly
             if (m_view->behaveAsPlasmaPanel()) {
                 if (!m_view->visibility()->isHidden()) {
@@ -441,13 +460,15 @@ void Effects::updateMask()
             } else {
                 m_view->setMask(maskCombinedRegion());
             }
-        }
+        }*/
     } else {
         QRegion fixedMask;
 
+        QRect maskRect = m_view->behaveAsPlasmaPanel() ? QRect(0,0, m_view->width(), m_view->height()) : m_mask;
+
         if (m_backgroundRadiusEnabled) {
             //! CustomBackground way
-                fixedMask = customMask(QRect(0,0,m_mask.width(), m_mask.height()));
+            fixedMask = customMask(QRect(0,0,maskRect.width(), maskRect.height()));
         } else {
             //! Plasma::Theme way
             //! this is used when compositing is disabled and provides
@@ -468,15 +489,15 @@ void Effects::updateMask()
             }
 
             m_background->setEnabledBorders(m_enabledBorders);
-            m_background->resizeFrame(m_mask.size());
+            m_background->resizeFrame(maskRect.size());
             fixedMask = m_background->mask();
         }
 
-        fixedMask.translate(m_mask.x(), m_mask.y());
+        fixedMask.translate(maskRect.x(), maskRect.y());
 
         //! fix for KF5.32 that return empty QRegion's for the mask
         if (fixedMask.isEmpty()) {
-            fixedMask = QRegion(m_mask);
+            fixedMask = QRegion(maskRect);
         }
 
         m_view->setMask(fixedMask);
