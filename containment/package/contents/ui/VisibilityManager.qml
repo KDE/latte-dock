@@ -619,53 +619,49 @@ Item{
         }
 
         //! Input Mask
-        if (LatteCore.WindowSystem.isPlatformX11) {
-            //! This is not needed under wayland environment, mask() can be used instead
+        var animated = (animations.needBothAxis.count>0);
 
-            var animated = (animations.needBothAxis.count>0);
+        if (!LatteCore.WindowSystem.compositingActive || animated || latteView.behaveAsPlasmaPanel) {
+            latteView.effects.inputMask = Qt.rect(0, 0, -1, -1);
+        } else {
+            var inputThickness = latteView.visibility.isHidden ? metrics.mask.thickness.hidden : metrics.mask.screenEdge + metrics.totals.thickness;
+            var inputGeometry = Qt.rect(0, 0, root.width, root.height);
 
-            if (!LatteCore.WindowSystem.compositingActive || animated || latteView.behaveAsPlasmaPanel) {
-                latteView.effects.inputMask = Qt.rect(0, 0, -1, -1);
-            } else {
-                var inputThickness = latteView.visibility.isHidden ? metrics.mask.thickness.hidden : metrics.mask.screenEdge + metrics.totals.thickness;
-                var inputGeometry = Qt.rect(0, 0, root.width, root.height);
+            if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                inputGeometry.x = latteView.effects.rect.x; // from effects area
+                inputGeometry.y = 0;
 
-                if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                    inputGeometry.x = latteView.effects.rect.x; // from effects area
-                    inputGeometry.y = 0;
+                inputGeometry.width = latteView.effects.rect.width; // from effects area
+                inputGeometry.height = inputThickness ;
+            } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                inputGeometry.x = latteView.effects.rect.x; // from effects area
+                inputGeometry.y = root.height - inputThickness;
 
-                    inputGeometry.width = latteView.effects.rect.width; // from effects area
-                    inputGeometry.height = inputThickness ;
-                } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    inputGeometry.x = latteView.effects.rect.x; // from effects area
-                    inputGeometry.y = root.height - inputThickness;
+                inputGeometry.width = latteView.effects.rect.width; // from effects area
+                inputGeometry.height = inputThickness;
+            } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                inputGeometry.x = 0;
+                inputGeometry.y = latteView.effects.rect.y; // from effects area
 
-                    inputGeometry.width = latteView.effects.rect.width; // from effects area
-                    inputGeometry.height = inputThickness;
-                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    inputGeometry.x = 0;
-                    inputGeometry.y = latteView.effects.rect.y; // from effects area
+                inputGeometry.width = inputThickness;
+                inputGeometry.height = latteView.effects.rect.height; // from effects area
+            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                inputGeometry.x = root.width - inputThickness;
+                inputGeometry.y = latteView.effects.rect.y; // from effects area
 
-                    inputGeometry.width = inputThickness;
-                    inputGeometry.height = latteView.effects.rect.height; // from effects area
-                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    inputGeometry.x = root.width - inputThickness;
-                    inputGeometry.y = latteView.effects.rect.y; // from effects area
-
-                    inputGeometry.width = inputThickness;
-                    inputGeometry.height = latteView.effects.rect.height; // from effects area
-                }
-
-                //set the boundaries for latteView local geometry
-                //qBound = qMax(min, qMin(value, max)).
-
-                inputGeometry.x = Math.max(0, Math.min(inputGeometry.x, latteView.width));
-                inputGeometry.y = Math.max(0, Math.min(inputGeometry.y, latteView.height));
-                inputGeometry.width = Math.min(inputGeometry.width, latteView.width);
-                inputGeometry.height = Math.min(inputGeometry.height, latteView.height);
-
-                latteView.effects.inputMask = inputGeometry;
+                inputGeometry.width = inputThickness;
+                inputGeometry.height = latteView.effects.rect.height; // from effects area
             }
+
+            //set the boundaries for latteView local geometry
+            //qBound = qMax(min, qMin(value, max)).
+
+            inputGeometry.x = Math.max(0, Math.min(inputGeometry.x, latteView.width));
+            inputGeometry.y = Math.max(0, Math.min(inputGeometry.y, latteView.height));
+            inputGeometry.width = Math.min(inputGeometry.width, latteView.width);
+            inputGeometry.height = Math.min(inputGeometry.height, latteView.height);
+
+            latteView.effects.inputMask = inputGeometry;
         }
     }
 
