@@ -1273,6 +1273,21 @@ void View::setColorizer(QQuickItem *colorizer)
     emit colorizerChanged();
 }
 
+QQuickItem *View::currentParabolicItem() const
+{
+    return m_currentParabolicItem;
+}
+
+void View::setCurrentParabolicItem(QQuickItem *item)
+{
+    if (m_currentParabolicItem == item) {
+        return;
+    }
+
+    m_currentParabolicItem = item;
+    emit currentParabolicItemChanged();
+}
+
 ViewPart::Effects *View::effects() const
 {
     return m_effects;
@@ -1352,6 +1367,7 @@ bool View::event(QEvent *e)
         case QEvent::Leave:
             m_containsMouse = false;
             setContainsDrag(false);
+            setCurrentParabolicItem(nullptr);
             break;
 
         case QEvent::DragEnter:
@@ -1407,6 +1423,23 @@ bool View::event(QEvent *e)
 
         case QEvent::MouseMove:
             if (auto me = dynamic_cast<QMouseEvent *>(e)) {
+
+                if (m_currentParabolicItem) {
+                    QRectF grect = m_currentParabolicItem->mapRectToScene(QRectF(0, 0, m_currentParabolicItem->width(), m_currentParabolicItem->height()));
+
+                    if (grect.contains(me->windowPos())) {
+                        //! sending move event to parabolic item
+                        QPointF internal = m_currentParabolicItem->mapFromScene(me->windowPos());
+                        QMetaObject::invokeMethod(m_currentParabolicItem,
+                                                  "parabolicMove",
+                                                  Qt::DirectConnection,
+                                                  Q_ARG(int, internal.x()),
+                                                  Q_ARG(int, internal.y()));
+                    } else {
+                        //! clearing parabolic item
+                        setCurrentParabolicItem(nullptr);
+                    }
+                }
 
                 //! adjust event by taking into account paddings
                 if (m_padding

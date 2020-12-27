@@ -46,9 +46,9 @@ Item{
 
     readonly property bool isActive: appletIsValid ? appletItem.isActive : false
     readonly property bool isGroup: false
-    readonly property bool isHovered: appletIsValid ? appletMouseArea.containsMouse : false
+    readonly property bool isHovered: appletIsValid ? appletItem.containsMouse : false
     readonly property bool isMinimized: false
-    readonly property bool isPressed: appletIsValid ? appletMouseArea.pressed : false
+    readonly property bool isPressed: false //appletIsValid ? appletMouseArea.pressed : false
     readonly property bool inAttention: false
     readonly property bool inRemoving: false
 

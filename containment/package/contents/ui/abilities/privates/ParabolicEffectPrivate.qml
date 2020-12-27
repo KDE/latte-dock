@@ -65,6 +65,12 @@ AbilityHost.ParabolicEffect {
                 parabolic.startRestoreZoomTimer();
             }
         }
+
+        onCurrentParabolicItemChanged: {
+            if (!parabolic.view.currentParabolicItem) {
+                parabolic.startRestoreZoomTimer();
+            }
+        }
     }
 
     function startRestoreZoomTimer(){
@@ -141,8 +147,8 @@ AbilityHost.ParabolicEffect {
         interval: 90
 
         onTriggered: {
-            if (parabolic.restoreZoomIsBlocked) {
-                return
+            if (parabolic.restoreZoomIsBlocked || parabolic.view.currentParabolicItem) {
+                return;
             }
 
             parabolic.sglClearZoom();

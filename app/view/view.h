@@ -117,6 +117,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(float offset READ offset WRITE setOffset NOTIFY offsetChanged)
 
     Q_PROPERTY(QQuickItem *colorizer READ colorizer WRITE setColorizer NOTIFY colorizerChanged)
+    Q_PROPERTY(QQuickItem *currentParabolicItem READ currentParabolicItem WRITE setCurrentParabolicItem NOTIFY currentParabolicItemChanged)
 
     Q_PROPERTY(Latte::Layout::GenericLayout *layout READ layout WRITE setLayout NOTIFY layoutChanged)
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
@@ -231,6 +232,9 @@ public:
     QQuickItem *colorizer() const;
     void setColorizer(QQuickItem *colorizer);
 
+    QQuickItem *currentParabolicItem() const;
+    void setCurrentParabolicItem(QQuickItem *item);
+
     QQuickView *configView();
 
     ViewPart::Effects *effects() const;   
@@ -298,6 +302,7 @@ signals:
     void configWindowGeometryChanged(); // is called from config windows
     void containsDragChanged();
     void contextMenuIsShownChanged();
+    void currentParabolicItemChanged();
     void dockLocationChanged();
     void editThicknessChanged();
     void effectsChanged();
@@ -430,6 +435,7 @@ private:
     Layout::GenericLayout *m_layout{nullptr};
 
     QQuickItem *m_colorizer{nullptr};
+    QQuickItem *m_currentParabolicItem{nullptr};
 
     QPointer<PlasmaQuick::ConfigView> m_appletConfigView;
     QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;

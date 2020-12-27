@@ -48,6 +48,10 @@ Item {
     signal mousePressed(int x, int y, int button);
     signal mouseReleased(int x, int y, int button);
 
+    signal parabolicEntered(int mouseX, int mouseY);
+    signal parabolicMove(int mouseX, int mouseY);
+    signal parabolicExited();
+
     property bool animationsEnabled: true
     property bool parabolicEffectIsSupported: true
     property bool canShowAppletNumberBadge: !isSeparator && !isHidden && !isLattePlasmoid
@@ -303,7 +307,7 @@ Item {
     property Item shortcuts: null
     property Item userRequests: null
 
-    property bool containsMouse: appletMouseArea.containsMouse || (isLattePlasmoid && latteApplet.containsMouse)
+    property bool containsMouse: (latteView && latteView.currentParabolicItem === appletItem) || (isLattePlasmoid && latteApplet.containsMouse)
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
 
 
@@ -725,6 +729,12 @@ Item {
                 }
             }
         }
+
+        onCurrentParabolicItemChanged: {
+            if (latteView && latteView.currentParabolicItem !== appletItem) {
+                appletItem.parabolicExited();
+            }
+        }
     }
 
     Connections {
@@ -769,23 +779,6 @@ Item {
         border.width: 1
     }*/
 
-
-    /* DEPRECATED in favor of VIEW::MouseSignalsTracking
-    MouseArea{
-        id: appletMouseAreaBottom
-        anchors.fill: parent
-        propagateComposedEvents: true
-        visible: (!appletMouseArea.visible || !appletMouseArea.enabled) && !root.editMode && !originalAppletBehavior
-
-        onPressed: {
-            appletItem.activateAppletForNeutralAreas(mouse);
-            mouse.accepted = false;
-        }
-
-        onReleased: {
-            mouse.accepted = false;
-        }
-    }*/
 
     //! Main Applet Shown Area
     Flow{
@@ -1034,108 +1027,93 @@ Item {
         ]
     }
 
-    MouseArea{
-        id: appletMouseArea
-
+    MouseArea {
+        id: parabolicMouseArea
         anchors.fill: parent
         enabled: visible
-        hoverEnabled: latteApplet ? false : true
-        propagateComposedEvents: visible
-
-        //! a way must be found in order for this be enabled
-        //! only to support springloading for plasma 5.10
-        //! also on this is based the tooltips behavior by enabling it
-        //! plasma tooltips are disabled
-        visible: acceptMouseEvents
-
-        property bool blockWheel: false
+        hoverEnabled: true
+        visible: parabolicEffectIsSupported && latteView && latteView.currentParabolicItem !== appletItem
 
         onEntered: {
-            appletItem.parabolic.stopRestoreZoomTimer();
-
-            if (restoreAnimation.running) {
-                restoreAnimation.stop();
+            appletItem.parabolicEntered(mouseX, mouseY);
+            if (latteView) {
+                latteView.currentParabolicItem = appletItem;
             }
+        }
+    }
 
-            if (!(isSeparator || isSpacer)) {
-                root.showTooltipLabel(appletItem, applet.title);
-            }
+    onParabolicEntered: {
+        appletItem.parabolic.stopRestoreZoomTimer();
 
-            if (originalAppletBehavior || communicator.requires.parabolicEffectLocked || !parabolicEffectIsSupported) {
-                return;
-            }
+        if (restoreAnimation.running) {
+            restoreAnimation.stop();
+        }
 
-            if (root.isHalfShown || (root.latteApplet
-                                     && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
-                return;
-            }
+        if (!(isSeparator || isSpacer)) {
+            root.showTooltipLabel(appletItem, applet.title);
+        }
 
+        if (originalAppletBehavior || communicator.requires.parabolicEffectLocked || !parabolicEffectIsSupported) {
+            return;
+        }
+
+        if (root.isHalfShown || (root.latteApplet
+                                 && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
+            return;
+        }
+
+        if (root.isHorizontal){
+            layoutsContainer.currentSpot = mouseX;
+            wrapper.calculateParabolicScales(mouseX);
+        }
+        else{
+            layoutsContainer.currentSpot = mouseY;
+            wrapper.calculateParabolicScales(mouseY);
+        }
+    }
+
+    onParabolicMove: {
+        if (root.isHalfShown || (root.latteApplet
+                                 && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
+            return;
+        }
+
+        var rapidMovement = appletItem.parabolic.lastIndex>=0 && Math.abs(appletItem.parabolic.lastIndex-index)>1;
+
+        if (rapidMovement) {
+            parabolic.setDirectRenderingEnabled(true);
+        }
+
+        if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === appletItem.parabolic.factor.zoom) && !parabolic.directRenderingEnabled) || parabolic.directRenderingEnabled) {
             if (root.isHorizontal){
-                layoutsContainer.currentSpot = mouseX;
-                wrapper.calculateParabolicScales(mouseX);
+                var step = Math.abs(layoutsContainer.currentSpot-mouseX);
+                if (step >= appletItem.animations.hoverPixelSensitivity){
+                    layoutsContainer.currentSpot = mouseX;
+
+                    wrapper.calculateParabolicScales(mouseX);
+                }
             }
             else{
-                layoutsContainer.currentSpot = mouseY;
-                wrapper.calculateParabolicScales(mouseY);
-            }
-        }
+                var step = Math.abs(layoutsContainer.currentSpot-mouseY);
+                if (step >= appletItem.animations.hoverPixelSensitivity){
+                    layoutsContainer.currentSpot = mouseY;
 
-        onExited:{
-            if (communicator.appletIconItemIsShown()) {
-                communicator.setAppletIconItemActive(false);
-            }
-
-            root.hideTooltipLabel();
-
-            if (appletItem.parabolic.factor.zoom>1){
-                appletItem.parabolic.startRestoreZoomTimer();
-            }
-        }
-
-        onPositionChanged: {
-            if (originalAppletBehavior || !parabolicEffectIsSupported) {
-                mouse.accepted = false;
-                return;
-            }
-
-            if (root.isHalfShown || (root.latteApplet
-                                     && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
-                return;
-            }
-
-            var rapidMovement = appletItem.parabolic.lastIndex>=0 && Math.abs(appletItem.parabolic.lastIndex-index)>1;
-
-            if (rapidMovement) {
-                parabolic.setDirectRenderingEnabled(true);
-            }
-
-            if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === appletItem.parabolic.factor.zoom) && !parabolic.directRenderingEnabled) || parabolic.directRenderingEnabled) {
-                if (root.isHorizontal){
-                    var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
-                    if (step >= appletItem.animations.hoverPixelSensitivity){
-                        layoutsContainer.currentSpot = mouse.x;
-
-                        wrapper.calculateParabolicScales(mouse.x);
-                    }
-                }
-                else{
-                    var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
-                    if (step >= appletItem.animations.hoverPixelSensitivity){
-                        layoutsContainer.currentSpot = mouse.y;
-
-                        wrapper.calculateParabolicScales(mouse.y);
-                    }
+                    wrapper.calculateParabolicScales(mouseY);
                 }
             }
+        }
+    }
 
-            mouse.accepted = false;
+    onParabolicExited: {
+        if (communicator.appletIconItemIsShown()) {
+            communicator.setAppletIconItemActive(false);
         }
 
-        //! these are needed in order for these events to be really forwarded underneath
-        //! otherwise there were applets that did not receive them e.g. lock/logout applet
-        //! when parabolic effect was used
-        onPressed: mouse.accepted = false;
-        onReleased: mouse.accepted = false;
+        root.hideTooltipLabel();
+
+      /*  if (appletItem.parabolic.factor.zoom>1){
+            appletItem.parabolic.startRestoreZoomTimer();
+        } */
     }
 
     //! Debug Elements
