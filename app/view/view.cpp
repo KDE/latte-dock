@@ -1425,11 +1425,10 @@ bool View::event(QEvent *e)
             if (auto me = dynamic_cast<QMouseEvent *>(e)) {
 
                 if (m_currentParabolicItem) {
-                    QRectF grect = m_currentParabolicItem->mapRectToScene(QRectF(0, 0, m_currentParabolicItem->width(), m_currentParabolicItem->height()));
+                    QPointF internal = m_currentParabolicItem->mapFromScene(me->windowPos());
 
-                    if (grect.contains(me->windowPos())) {
-                        //! sending move event to parabolic item
-                        QPointF internal = m_currentParabolicItem->mapFromScene(me->windowPos());
+                    if (m_currentParabolicItem->contains(internal)) {
+                        //! sending move event to parabolic item    
                         QMetaObject::invokeMethod(m_currentParabolicItem,
                                                   "parabolicMove",
                                                   Qt::DirectConnection,
