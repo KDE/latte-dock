@@ -37,7 +37,9 @@ Item {
         anchors.fill: parent
         enabled: visible
         hoverEnabled: true
-        visible: appletItem.parabolicEffectIsSupported && appletItem.parabolic.currentParabolicItem !== _parabolicArea
+        visible: appletItem.parabolicEffectIsSupported
+                 && !communicator.indexerIsSupported
+                 && appletItem.parabolic.currentParabolicItem !== _parabolicArea
 
         onEntered: {
             _parabolicArea.parabolicEntered(mouseX, mouseY);
@@ -86,7 +88,6 @@ Item {
     }
 
     onParabolicMove: {
-        console.log(mouseX + " __ " + mouseY);
         if (root.isHalfShown || (root.latteApplet
                                  && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
             return;

@@ -179,9 +179,14 @@ MouseArea{
     property string launcherUrlWithIcon: ""
     property string launcherName: ""
 
-    property Item tooltipVisualParent: wrapper.titleTooltipVisualParent
-    property Item previewsVisualParent: wrapper.previewsTooltipVisualParent
-    property Item wrapperAlias: wrapper
+    readonly property alias hoveredTimer: _hoveredTimer
+    readonly property alias tooltipVisualParent: _wrapper.titleTooltipVisualParent
+    readonly property alias previewsVisualParent: _wrapper.previewsTooltipVisualParent
+    readonly property alias wrapper: _wrapper
+
+
+    readonly property alias showWindowAnimation: _showWindowAnimation
+    readonly property alias restoreAnimation: _restoreAnimation
 
     //abilities
     property Item animations: null
@@ -547,7 +552,7 @@ MouseArea{
                 }
             }
 
-            Wrapper{id: wrapper}
+            Wrapper{id: _wrapper}
 
             Indicator.Loader{
                 id: indicatorFrontLayer
@@ -561,6 +566,11 @@ MouseArea{
         // a hidden spacer on the right for the last item to add stability
         HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
     }// Flow with hidden spacers inside
+
+    ParabolicArea {
+        id: parabolicArea
+        anchors.fill: parent
+    }
 
     Timer {
         id: publishGeometryTimer
@@ -634,114 +644,8 @@ MouseArea{
 
 
     ///////////////// Mouse Area Events ///////////////////
-    onEntered: {
-        taskItem.parabolic.stopRestoreZoomTimer();
-
-        restoreAnimation.stop();
-
-        if ((taskItem.parabolic.local.lastIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
-            windowsPreviewDlg.hide(1);
-        }
-
-        if (root.latteView && (!root.showPreviews && root.titleTooltips) || (root.showPreviews && root.titleTooltips && isLauncher)){
-            showTitleTooltip();
-        }
-
-        //! show previews if enabled
-        if(isAbleToShowPreview && !showPreviewsIsBlockedFromReleaseEvent && !isLauncher
-                && (((root.showPreviews || (windowsPreviewDlg.visible && !isLauncher))
-                     && windowsPreviewDlg.activeItem !== taskItem)
-                    || root.highlightWindows)){
-
-            if (!root.disableAllWindowsFunctionality) {
-                //! don't delay showing preview in normal states,
-                //! that is when the dock wasn't hidden
-                if (!hoveredTimer.running && !windowsPreviewDlg.visible) {
-                    //! first task with no previews shown can trigger the delay
-                    hoveredTimer.start();
-                } else {
-                    //! when the previews are already shown, update them immediately
-                    showPreviewWindow();
-                }
-            }
-        }
-
-        showPreviewsIsBlockedFromReleaseEvent = false;
-
-        if (root.autoScrollTasksEnabled) {
-            scrollableList.autoScrollFor(taskItem, false);
-        }
-
-        if (root.latteView && root.latteView.isHalfShown) {
-            return;
-        }
-    }
 
     // IMPORTANT: This must be improved ! even for small milliseconds  it reduces performance
-    onExited: {
-        scalesUpdatedOnce = false;
-        isAbleToShowPreview = true;
-
-        if (root.latteView && (!root.showPreviews || (root.showPreviews && isLauncher))){
-            root.latteView.hideTooltipLabel();
-        }
-
-        if (root.showPreviews) {
-            root.hidePreview(17.5);
-        }
-
-        if (taskItem.parabolic.factor.zoom>1){
-            taskItem.parabolic.startRestoreZoomTimer();
-        }
-    }
-
-    //! mouseX-Y values are delayed to be updated onEntered events and at the same time
-    //! onPositionChanged signal may be delayed. we can fix this by don't delay at all
-    //! when mouseX-Y is updated based on the plasmoid formFactor
-    function mousePosChanged(mousePos) {
-        if (mousePos<0 ||
-                (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
-            return;
-
-        if (root.latteView && root.latteView.isHalfShown) {
-            return;
-        }
-
-        if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
-            var rapidMovement = taskItem.parabolic.local.lastIndex>=0 && Math.abs(taskItem.parabolic.local.lastIndex-itemIndex)>1;
-
-            if (rapidMovement) {
-                taskItem.parabolic.setDirectRenderingEnabled(true);
-            }
-
-            if( ((wrapper.mScale == 1 || wrapper.mScale === taskItem.parabolic.factor.zoom) && !taskItem.parabolic.directRenderingEnabled)
-                    || taskItem.parabolic.directRenderingEnabled || !scalesUpdatedOnce) {
-                if(root.dragSource == null){
-                    var step = Math.abs(icList.currentSpot-mousePos);
-                    if (step >= taskItem.animations.hoverPixelSensitivity){
-                        icList.currentSpot = mousePos;
-
-                        wrapper.calculateParabolicScales(mousePos);
-                    }
-                }
-            }
-        }
-    }
-
-    onMouseXChanged: {
-        if (!root.vertical) {
-            mousePosChanged(mouseX);
-        }
-    }
-
-    onMouseYChanged: {
-        if (root.vertical) {
-            mousePosChanged(mouseY);
-        }
-    }
-
-
-
     onPositionChanged: {
         if ((inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
@@ -1564,14 +1468,13 @@ MouseArea{
 
     /////Animations
 
-    TaskAnimations.ShowWindowAnimation{ id: showWindowAnimation }
-
-    TaskAnimations.RestoreAnimation{ id: restoreAnimation }
+    TaskAnimations.ShowWindowAnimation{ id: _showWindowAnimation }
+    TaskAnimations.RestoreAnimation{ id: _restoreAnimation }
 
     //A Timer to check how much time the task is hovered in order to check if we must
     //show window previews
     Timer {
-        id: hoveredTimer
+        id: _hoveredTimer
         interval: Math.max(150,plasmoid.configuration.previewsDelay)
         repeat: false
 

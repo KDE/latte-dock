@@ -62,7 +62,7 @@ Item {
 
     readonly property int currentIconSize: taskIsValid ? taskItem.metrics.iconSize : metrics.iconSize
     readonly property int maxIconSize: taskIsValid ? taskItem.metrics.maxIconSize : metrics.iconSize
-    readonly property real scaleFactor: taskIsValid ? taskItem.wrapperAlias.mScale : 1
+    readonly property real scaleFactor: taskIsValid ? taskItem.wrapper.mScale : 1
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
@@ -79,8 +79,8 @@ Item {
     readonly property QtObject palette: enforceLattePalette ? latteBridge.palette.applyTheme : theme
 
     //!icon colors
-    property color iconBackgroundColor: taskIsValid ? taskItem.wrapperAlias.backgroundColor : "black"
-    property color iconGlowColor: taskIsValid ? taskItem.wrapperAlias.glowColor : "white"
+    property color iconBackgroundColor: taskIsValid ? taskItem.wrapper.backgroundColor : "black"
+    property color iconGlowColor: taskIsValid ? taskItem.wrapper.glowColor : "white"
 
     //! grouped options
     readonly property Item shared: indicators ? indicators : emptyOptions

@@ -156,101 +156,6 @@ Item{
         height: wrapper.regulatorHeight
     }
 
-    function calculateParabolicScales( currentMousePosition ){
-        if (taskItem.parabolic.factor.zoom===1 || parabolic.restoreZoomIsBlocked) {
-            return;
-        }
-
-        if (root.dragSource === null) {
-            //use the new parabolic ability in order to handle all parabolic effect messages
-            var scales = taskItem.parabolic.applyParabolicEffect(index, currentMousePosition, center);
-
-            //Left hiddenSpacer for first task
-            if(((index === taskItem.indexer.firstVisibleItemIndex)&&(root.tasksCount>0)) && !root.disableLeftSpacer
-                    && !inMimicParabolicAnimation && !inFastRestoreAnimation && !inAttentionAnimation){
-                hiddenSpacerLeft.nScale = scales.leftScale - 1;
-            }
-
-            //Right hiddenSpacer for last task
-            if(((index === taskItem.indexer.lastVisibleItemIndex )&&(root.tasksCount>0)) && !root.disableRightSpacer
-                    && !inMimicParabolicAnimation && !inFastRestoreAnimation && !inAttentionAnimation){
-                hiddenSpacerRight.nScale =  scales.rightScale - 1;
-            }
-
-            if (!taskItem.inAttentionAnimation) {
-                mScale = taskItem.parabolic.factor.zoom;
-            } else {
-                var subSpacerScale = (taskItem.parabolic.factor.zoom-1)/2;
-
-                hiddenSpacerLeft.nScale = subSpacerScale;
-                hiddenSpacerRight.nScale = subSpacerScale;
-            }
-
-            taskItem.scalesUpdatedOnce = false;
-        }
-    } //nScale
-
-    function updateScale(nIndex, nScale, step){
-        if (!taskItem.containsMouse && (index === nIndex)
-                && (taskItem.hoverEnabled || inMimicParabolicAnimation)&&(tasksExtendedManager.waitingLaunchersLength()===0)){
-            if (taskItem.inAttentionAnimation) {
-                var subSpacerScale = (nScale-1)/2;
-
-                hiddenSpacerLeft.nScale = subSpacerScale;
-                hiddenSpacerRight.nScale = subSpacerScale;
-            } else if (!inBlockingAnimation || taskItem.inMimicParabolicAnimation) {
-                var newScale = 1;
-
-                if(nScale >= 0) {
-                    newScale = nScale + step;
-                } else {
-                    newScale = mScale + step;
-                }
-
-                if (inMimicParabolicAnimation && mimicParabolicScale === -1) {
-                    mimicParabolicScale = newScale;
-                }
-
-                mScale = newScale;
-            }
-        }
-    }
-
-    function sltUpdateLowerItemScale(delegateIndex, newScale, step) {
-        if (delegateIndex === index) {
-            if (!taskItem.isSeparator && !taskItem.isHidden) {
-                //! when accepted
-                updateScale(delegateIndex, newScale, step);
-
-                if (newScale > 1) { // clear lower items
-                    taskItem.parabolic.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
-                }
-            } else {
-                taskItem.parabolic.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
-            }
-        } else if ((newScale === 1) && (index < delegateIndex)) {
-            updateScale(index, 1, 0);
-        }
-    }
-
-    function sltUpdateHigherItemScale(delegateIndex, newScale, step) {
-        if (delegateIndex === index) {
-            if (!taskItem.isSeparator && !taskItem.isHidden) {
-                //! when accepted
-                updateScale(delegateIndex, newScale, step);
-
-                if (newScale > 1) { // clear lower items
-                    taskItem.parabolic.sglUpdateHigherItemScale(delegateIndex+1, 1, 0); // clear higher items
-                }
-            } else {
-                taskItem.parabolic.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
-            }
-        } else if ((newScale === 1) && (index > delegateIndex)) {
-            updateScale(index, 1, 0);
-        }
-    }
-
-
     function sendEndOfNeedBothAxisAnimation(){
         if (taskItem.isZoomed) {
             taskItem.isZoomed = false;
@@ -289,13 +194,5 @@ Item{
         if (!LatteCore.WindowSystem.compositingActive) {
             opacity = 1;
         }
-
-        taskItem.parabolic.sglUpdateLowerItemScale.connect(sltUpdateLowerItemScale);
-        taskItem.parabolic.sglUpdateHigherItemScale.connect(sltUpdateHigherItemScale);
-    }
-
-    Component.onDestruction: {
-        taskItem.parabolic.sglUpdateLowerItemScale.disconnect(sltUpdateLowerItemScale);
-        taskItem.parabolic.sglUpdateHigherItemScale.disconnect(sltUpdateHigherItemScale);
     }
 }// Main task area // id:wrapper
