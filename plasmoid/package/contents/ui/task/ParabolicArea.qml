@@ -26,7 +26,10 @@ Item {
     signal parabolicMove(real mouseX, real mouseY);
     signal parabolicExited();
 
-    readonly property bool containsMouse: taskItem.parabolic.currentParabolicItem === _parabolicArea
+    property int lastMouseX: 0
+    property int lastMouseY: 0
+
+    readonly property bool containsMouse: (taskItem.parabolic.currentParabolicItem === _parabolicArea) || parabolicMouseArea.containsMouse
 
     readonly property real center: wrapper.center
 
@@ -38,27 +41,8 @@ Item {
         visible: taskItem.parabolic.currentParabolicItem !== _parabolicArea
 
         onEntered: {
-            _parabolicArea.parabolicEntered(mouseX, mouseY);
             taskItem.parabolic.setCurrentParabolicItem(_parabolicArea);
-
-            //! adjust mouseX/Y because the original are not to be trusted
-        /*    if (root.isHorizontal) {
-                if (mouseX < center) {
-                    icList.currentSpot = 1;
-                    calculateParabolicScales(icList.currentSpot);
-                } else {
-                    icList.currentSpot = center * 2 - 1;
-                    calculateParabolicScales(icList.currentSpot);
-                }
-            } else {
-                if (mouseY < center) {
-                    icList.currentSpot = 1;
-                    calculateParabolicScales(icList.currentSpot);
-                } else {
-                    icList.currentSpot = center * 2 - 1;
-                    calculateParabolicScales(icList.currentSpot);
-                }
-            }*/
+            _parabolicArea.parabolicEntered(mouseX, mouseY);
         }
     }
 
@@ -72,7 +56,24 @@ Item {
         }
     }
 
+    Connections{
+        target: root
+
+        //! During dock sliding-in because the parabolic effect isnt trigerred
+        //! immediately but we wait first the dock to go to its final normal
+        //! place we might miss the activation of the parabolic effect.
+        //! By catching that signal we are trying to solve this.
+        onDockIsShownCompletelyChanged: {
+            if (dockIsShownCompletely && _parabolicArea.containsMouse) {
+                _parabolicArea.parabolicMove(lastMouseX, lastMouseY);
+            }
+        }
+    }
+
     onParabolicEntered: {
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
+
         taskItem.parabolic.stopRestoreZoomTimer();
         restoreAnimation.stop();
 
@@ -96,7 +97,7 @@ Item {
                 if (!hoveredTimer.running && !windowsPreviewDlg.visible) {
                     //! first task with no previews shown can trigger the delay
                     hoveredTimer.start();
-                } else {
+                } else if (windowsPreviewDlg.visible) {
                     //! when the previews are already shown, update them immediately
                     taskItem.showPreviewWindow();
                 }
@@ -109,11 +110,17 @@ Item {
             scrollableList.autoScrollFor(taskItem, false);
         }
 
-        //! do not send any parabolic mouse movement. At this point mouseX/Y are not valid
+        //! do not send any parabolic mouse movement. At this point mouseX/Y are NOT valid/accurate
+        var current = root.isHorizontal ? mouseX : mouseY;
+        console.log(" current spot ENTER : " + current);
     }
 
     onParabolicMove: {
-        var mousePos = root.vertical ? mouseY : mouseX;
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
+
+        var mousePos = root.isHorizontal ? mouseX : mouseY;
+        console.log(" current move : " + mousePos);
 
         if (mousePos<0 || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;

@@ -1444,6 +1444,7 @@ bool View::event(QEvent *e)
                                                   Q_ARG(qreal, internal.x()),
                                                   Q_ARG(qreal, internal.y()));
                     } else {
+                        m_lastOrphanParabolicMove = me->windowPos();
                         //! clearing parabolic item
                         m_parabolicItemNullifier.start();
                     }

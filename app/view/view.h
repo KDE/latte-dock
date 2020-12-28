@@ -437,6 +437,8 @@ private:
     Layout::GenericLayout *m_layout{nullptr};
 
     QQuickItem *m_colorizer{nullptr};
+
+    QPointF m_lastOrphanParabolicMove;
     QQuickItem *m_currentParabolicItem{nullptr};
 
     QPointer<PlasmaQuick::ConfigView> m_appletConfigView;

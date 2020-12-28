@@ -77,6 +77,7 @@ Item {
     property bool taskInAnimation: noTasksInAnimation > 0 ? true : false
     property bool transparentPanel: plasmoid.configuration.transparentPanel
     property bool vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical ? true : false
+    property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? true : false
 
     property int clearWidth
     property int clearHeight

@@ -426,20 +426,6 @@ MouseArea{
         Connections{
             target: root
 
-            //! During dock sliding-in because the parabolic effect isnt trigerred
-            //! immediately but we wait first the dock to go to its final normal
-            //! place we might miss the activation of the parabolic effect.
-            //! By catching that signal we are trying to solve this.
-            onDockIsShownCompletelyChanged: {
-                if (dockIsShownCompletely && taskItem.containsMouse) {
-                    if (root.vertical) {
-                   //     taskItem.mousePosChanged(taskItem.mouseY);
-                    } else {
-                   //     taskItem.mousePosChanged(taskItem.mouseX);
-                    }
-                }
-            }
-
             onDisableAllWindowsFunctionalityChanged: {
                 if (!root.inEditMode) {
                     return;
