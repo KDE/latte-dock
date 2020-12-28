@@ -33,7 +33,11 @@ import "../debugger" as Debugger
 
 Item{
     id: layoutsContainer
-    visible: !(latteView && latteView.visibility.isHidden)
+    //! WorkAround: Do not use "visible" because when it becomes "false" the contained applets can hide/show their elements.
+    //! That approach can create a conflict with Latte Tasks that after showing the view they reshow windows
+    //! that were already shown before hiding.
+    //! visible: !(latteView && latteView.visibility.isHidden)
+    opacity: !(latteView && latteView.visibility.isHidden) ? 1 : 0
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
 
