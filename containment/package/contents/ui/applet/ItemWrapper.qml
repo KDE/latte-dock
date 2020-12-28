@@ -232,8 +232,7 @@ Item{
                 return !root.inConfigureAppletsMode ? 0 : Math.min(appletItem.metrics.iconSize, root.maxJustifySplitterSize);
             } else if (applet && ( appletMaximumLength < appletItem.metrics.iconSize
                                   || appletPreferredLength > appletItem.metrics.iconSize
-                                  || appletItem.originalAppletBehavior)
-                       && !communicator.overlayLatteIconIsActive) {
+                                  || appletItem.originalAppletBehavior)) {
 
                 //this way improves performance, probably because during animation the preferred sizes update a lot
                 if (appletMaximumLength>0 && appletMaximumLength < appletItem.metrics.iconSize){
@@ -264,14 +263,13 @@ Item{
             if (appletItem.isInternalViewSplitter){
                 return false;
             } else {
-                if(applet && (appletMinimumLength > appletItem.metrics.iconSize) && !appletItem.parabolicEffectIsSupported && !communicator.overlayLatteIconIsActive){
+                if(applet && (appletMinimumLength > appletItem.metrics.iconSize) && !appletItem.parabolicEffectIsSupported){
                     return (wrapper.zoomScale === 1);
                 } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
                 else if(applet
                         && ( appletMaximumLength < appletItem.metrics.iconSize
                             || appletPreferredLength > appletItem.metrics.iconSize
-                            || appletItem.originalAppletBehavior)
-                        && !communicator.overlayLatteIconIsActive) {
+                            || appletItem.originalAppletBehavior)) {
 
                     //this way improves performance, probably because during animation the preferred sizes update a lot
                     if (appletMaximumLength>0 && appletMaximumLength < appletItem.metrics.iconSize){
@@ -353,18 +351,6 @@ Item{
             }
         }
 
-        ///Secret MouseArea to be used by the folder widget
-        Loader{
-            anchors.fill: parent
-            active: communicator.overlayLatteIconIsActive
-                    && applet.pluginName === "org.kde.plasma.folder"
-                    && !appletItem.acceptMouseEvents
-
-            sourceComponent: MouseArea{
-                onClicked: latteView.extendedInterface.toggleAppletExpanded(applet.id);
-            }
-        }
-
         Item{
             id: _containerForOverlayIcon
             anchors.fill: parent
@@ -373,7 +359,7 @@ Item{
         Loader{
             id: _overlayIconLoader
             anchors.fill: parent
-            active: communicator.overlayLatteIconIsActive
+            active: communicator.appletMainIconIsFound
 
             property color backgroundColor: "black"
             property color glowColor: "white"
@@ -381,17 +367,19 @@ Item{
             sourceComponent: LatteCore.IconItem{
                 id: overlayIconItem
                 anchors.fill: parent
+
                 source: {
-                    if (communicator.appletIconItemIsShown())
+                    if (communicator.appletIconItem && communicator.appletIconItem.visible) {
                         return communicator.appletIconItem.source;
-                    else if (communicator.appletImageItemIsShown())
+                    } else if (communicator.appletImageItem && communicator.appletImageItem.visible) {
                         return communicator.appletImageItem.source;
+                    }
 
                     return "";
                 }
 
                 providesColors: indicators.info.needsIconColors && source != ""
-                usesPlasmaTheme: communicator.appletIconItemIsShown() ? communicator.appletIconItem.usesPlasmaTheme : false
+                usesPlasmaTheme: communicator.appletIconItem && communicator.appletIconItem.visible ? communicator.appletIconItem.usesPlasmaTheme : false
 
                 Binding{
                     target: _overlayIconLoader
@@ -541,7 +529,7 @@ Item{
             color: root.appShadowColor //"#ff080808"
             fast: true
             samples: 2 * radius
-            source: communicator.overlayLatteIconIsActive ? _wrapperContainer : appletItem.applet
+            source: appletItem.applet
             radius: shadowSize
             verticalOffset: root.forceTransparentPanel || root.forcePanelForBusyBackground ? 0 : 2
 

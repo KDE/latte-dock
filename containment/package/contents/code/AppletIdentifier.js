@@ -31,7 +31,7 @@ function typeOf(obj, className){
 }
 
 function reconsiderAppletIconItem(){
-    if (communicator.appletIconItem || !applet)
+    if (communicator.appletIconItem || !applet || communicator.indexerIsSupported)
         return;
 
     //! searching to find for that applet the first IconItem
@@ -44,7 +44,7 @@ function reconsiderAppletIconItem(){
         identifyKicker();
     } else if (applet.pluginName === "org.kde.plasma.simplemenu") {
         identifySimpleMenu();
-    } else if (applet.pluginName === "org.kde.plasma.userswitcher"&& !root.behaveAsPlasmaPanel && !container.originalAppletBehavior) {
+    } else if (applet.pluginName === "org.kde.plasma.userswitcher") {
         identifyUserSwitcher();
     } else if (applet.pluginName === "org.kde.comexpertise.plasma.kdeconnect.sms") {
         identifyKdeConnectSms();
@@ -56,7 +56,7 @@ function reconsiderAppletIconItem(){
 }
 
 function checkAndUpdateAppletRootItem() {
-    if (appletDiscoveredRootItem) {
+    if (appletDiscoveredRootItem || communicator.indexerIsSupported) {
         return;
     }
 

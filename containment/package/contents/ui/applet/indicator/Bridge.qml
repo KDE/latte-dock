@@ -32,8 +32,7 @@ Item{
                                    && ((indicators.isEnabled
                                         && (appletItem.communicator.requires.activeIndicatorEnabled
                                             || (!appletItem.communicator.requires.activeIndicatorEnabled && appletItem.debug.graphicsEnabled /*debug paddings*/))
-                                        && indicators.info.enabledForApplets)
-                                       || (!indicators.info.enabledForApplets && appletItem.communicator.overlayLatteIconIsActive))
+                                        && indicators.info.enabledForApplets))
 
     /* Indicators Properties in order use them*/
     readonly property bool isTask: false

@@ -170,7 +170,7 @@ Item {
                                                    || (root.behaveAsDockWithMask && !parabolicEffectIsSupported)
                                                    || (root.behaveAsDockWithMask && parabolicEffectIsSupported && lockZoom)
 
-    readonly property bool isSquare: communicator.overlayLatteIconIsActive
+    readonly property bool isSquare: parabolicEffectIsSupported
     readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported
 
     property int animationTime: appletItem.animations.speedFactor.normal * (1.2*appletItem.animations.duration.small)
@@ -747,21 +747,6 @@ Item {
     //! It is used for any communication needed with the underlying applet
     Communicator.Engine{
         id: _communicator
-
-        //set up the overlayed appletItems and properties for when a overlaiedIconItem must be presented to the user
-        //because the plasma widgets specific implementation breaks the Latte experience
-        onOverlayLatteIconIsActiveChanged:{
-            if (!overlayLatteIconIsActive && applet.opacity===0) {
-                applet.opacity = 1;
-            } else if (overlayLatteIconIsActive && applet.opacity>0) {
-                applet.opacity = 0;
-
-                if (applet.pluginName === "org.kde.plasma.folder") {
-                    applet.parent =  wrapper.containerForOverlayIcon;
-                    applet.anchors.fill = wrapper.containerForOverlayIcon;
-                }
-            }
-        }
     }
 
     /*  Rectangle{

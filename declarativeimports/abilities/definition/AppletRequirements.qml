@@ -22,7 +22,6 @@ import QtQuick 2.0
 Item{
     property bool activeIndicatorEnabled: true
     property bool latteSideColoringEnabled: true
-    property bool latteIconOverlayEnabled: true
     property bool lengthMarginsEnabled: true
     property bool parabolicEffectLocked: false
     property bool screenEdgeMarginSupported: false
@@ -41,13 +40,6 @@ Item{
     //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
     //       to look consistent with the underlying desktop background OR the applet
     //       is not using monochromatic icons but rather colorful ones.
-    //   SINCE: 0.9
-
-    //   NAME: latteIconOverlayEnabled
-    //   EXPLANATION: when is FALSE, Latte is not overlaying any icons above
-    //       the applet or alters the applet visual in any sense.
-    //       That means that the applet is responsible to provide a coherent
-    //       parabolic effect experience.
     //   SINCE: 0.9
 
     //   NAME: lengthMarginsEnabled

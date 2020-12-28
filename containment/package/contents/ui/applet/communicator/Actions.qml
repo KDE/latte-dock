@@ -25,8 +25,6 @@ Item{
     function setProperty(appletId, parameter, value) {
         if (parameter === "latteSideColoringEnabled") {
             mainCommunicator.requires.latteSideColoringEnabled = value;
-        } else if (parameter === "latteIconOverlayEnabled") {
-            mainCommunicator.requires.latteIconOverlayEnabled = value;
         } else if (parameter === "activeIndicatorEnabled") {
             mainCommunicator.requires.activeIndicatorEnabled = value;
         } else if (parameter === "lengthMarginsEnabled") {
@@ -43,8 +41,6 @@ Item{
     function getProperty(appletId, parameter) {
         if (parameter === "latteSideColoringEnabled") {
             return mainCommunicator.requires.latteSideColoringEnabled;
-        } else if (parameter === "latteIconOverlayEnabled") {
-            return mainCommunicator.requires.latteIconOverlayEnabled;
         } else if (parameter === "activeIndicatorEnabled") {
             return mainCommunicator.requires.activeIndicatorEnabled;
         } else if (parameter === "lengthMarginsEnabled") {

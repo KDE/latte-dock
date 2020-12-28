@@ -108,10 +108,6 @@ Item {
     }
 
     onParabolicExited: {
-        if (communicator.appletIconItemIsShown()) {
-            communicator.setAppletIconItemActive(false);
-        }
-
         root.hideTooltipLabel();
     }
 

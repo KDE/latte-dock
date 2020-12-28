@@ -980,7 +980,6 @@ Item {
         bridge: latteBridge
 
         activeIndicatorEnabled: false
-        latteIconOverlayEnabled: false
         lengthMarginsEnabled: false
         latteSideColoringEnabled: false
         screenEdgeMarginSupported: true

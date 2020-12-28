@@ -39,9 +39,8 @@ Item{
     //             -------------------------------------
 
     //! BEGIN OF PROPERTIES
-    //this is used for folderView and icon widgets to fake their visual icons
-    readonly property bool canShowOverlaiedLatteIcon: appletIconItem && appletIconItem.visible
-    readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon && requires.latteIconOverlayEnabled
+    //this is used for applets to identify their main icon shown in order to identify its main colors
+    readonly property bool appletMainIconIsFound: (appletIconItem !== null) || (appletImageItem !== null)
 
     property bool inStartup: true
 
@@ -49,8 +48,8 @@ Item{
     property Item appletDiscoveredRootItem: null
     property Item appletDefaultRootItem: applet && applet.children && applet.children.length>0 ? applet.children[0] : null
 
-    property Item appletIconItem; //first applet's IconItem to be used by Latte
-    property Item appletImageItem; //first applet's ImageItem to be used by Latte
+    property Item appletIconItem: null //first applet's IconItem to be used by Latte
+    property Item appletImageItem: null //first applet's ImageItem to be used by Latte
     //! END OF PROPERTIES
 
     //! BEGIN OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS   
@@ -66,24 +65,18 @@ Item{
     readonly property Item bridge: bridgeLoader.active ? bridgeLoader.item : null
     //! END OF ABILITIES SUPPORT
 
-    //! BEGIN OF FUNCTIONS
-    function appletIconItemIsShown() {
-        return appletIconItem && appletIconItem.visible;
+    onAppletIconItemChanged: {
+        if (appletIconItem !== null) {
+            communicator.appletIconItem.roundToIconSize = false;
+        }
     }
 
-    function appletImageItemIsShown() {
-        return appletImageItem && appletImageItem.visible;
-    }
+    //! BEGIN OF FUNCTIONS
 
     function reconsiderAppletIconItem() {
         AppletIdentifier.reconsiderAppletIconItem();
     }
 
-    function setAppletIconItemActive(isActive) {
-        if (appletIconItem) {
-            appletIconItem.active = isActive;
-        }
-    }
     //! END OF FUNCTIONS
 
     //! BEGIN OF CONNECTIONS

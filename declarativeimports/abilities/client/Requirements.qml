@@ -31,7 +31,6 @@ AbilityDefinition.AppletRequirements {
         if (isActive) {
             bridge.applet.activeIndicatorEnabled = requirements.activeIndicatorEnabled;
             bridge.applet.latteSideColoringEnabled = requirements.latteSideColoringEnabled;
-            bridge.applet.latteIconOverlayEnabled = requirements.latteIconOverlayEnabled;
             bridge.applet.lengthMarginsEnabled = requirements.lengthMarginsEnabled;
             bridge.applet.parabolicEffectLocked = requirements.parabolicEffectLocked;
             bridge.applet.screenEdgeMarginSupported = requirements.screenEdgeMarginSupported;
@@ -48,12 +47,6 @@ AbilityDefinition.AppletRequirements {
     onLatteSideColoringEnabledChanged: {
         if (isActive) {
             bridge.applet.latteSideColoringEnabled = requirements.latteSideColoringEnabled;
-        }
-    }
-
-    onLatteIconOverlayEnabledChanged: {
-        if (bridge) {
-            bridge.applet.latteIconOverlayEnabled = requirements.latteIconOverlayEnabled;
         }
     }
 

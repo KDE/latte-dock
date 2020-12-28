@@ -33,13 +33,7 @@ Loader {
 
     active: level.bridge && level.bridge.active && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
 
-    sourceComponent: {
-        if (!indicators.info.enabledForApplets && appletItem.communicator.overlayLatteIconIsActive) {
-            return indicators.plasmaStyleComponent;
-        }
-
-        return indicators.indicatorComponent;
-    }
+    sourceComponent: indicators.indicatorComponent
 
     width: {
         if (root.isHorizontal) {
