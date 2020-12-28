@@ -305,7 +305,7 @@ Item {
     property Item shortcuts: null
     property Item userRequests: null
 
-    property bool containsMouse: parabolicArea.containsMouse || (isLattePlasmoid && latteApplet.containsMouse)
+    property bool containsMouse: (parabolicAreaLoader.active && parabolicAreaLoader.item.containsMouse) || (isLattePlasmoid && latteApplet.containsMouse)
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
 
 
@@ -918,9 +918,12 @@ Item {
         height: width
     }
 
-    ParabolicArea {
-        id: parabolicArea
+    Loader {
+        id: parabolicAreaLoader
         anchors.fill: parent
+        active: parabolicEffectIsSupported && appletItem.parabolic.isEnabled && !lockZoom
+
+        sourceComponent: ParabolicArea{}
     }
 
     Loader {

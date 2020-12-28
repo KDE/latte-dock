@@ -42,7 +42,8 @@ Item {
 
         onEntered: {
             taskItem.parabolic.setCurrentParabolicItem(_parabolicArea);
-         //   _parabolicArea.parabolicEntered(mouseX, mouseY);
+            // mouseX/Y can not be trusted at this point
+            //_parabolicArea.parabolicEntered(mouseX, mouseY);
         }
     }
 
@@ -67,40 +68,7 @@ Item {
         taskItem.parabolic.stopRestoreZoomTimer();
         restoreAnimation.stop();
 
-        if ((taskItem.parabolic.local.lastIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
-            windowsPreviewDlg.hide(1);
-        }
-
-        if (root.latteView && (!root.showPreviews && root.titleTooltips) || (root.showPreviews && root.titleTooltips && isLauncher)){
-            taskItem.showTitleTooltip();
-        }
-
-        //! show previews if enabled
-        if(isAbleToShowPreview && !showPreviewsIsBlockedFromReleaseEvent && !isLauncher
-                && (((root.showPreviews || (windowsPreviewDlg.visible && !isLauncher))
-                     && windowsPreviewDlg.activeItem !== taskItem)
-                    || root.highlightWindows)){
-
-            if (!root.disableAllWindowsFunctionality) {
-                //! don't delay showing preview in normal states,
-                //! that is when the dock wasn't hidden
-                if (!hoveredTimer.running && !windowsPreviewDlg.visible) {
-                    //! first task with no previews shown can trigger the delay
-                    hoveredTimer.start();
-                } else if (windowsPreviewDlg.visible) {
-                    //! when the previews are already shown, update them immediately
-                    taskItem.showPreviewWindow();
-                }
-            }
-        }
-
-        taskItem.showPreviewsIsBlockedFromReleaseEvent = false;
-
-        if (root.autoScrollTasksEnabled) {
-            scrollableList.autoScrollFor(taskItem, false);
-        }
-
-        //! do not send any parabolic mouse movement. At this point mouseX/Y are NOT valid/accurate
+        //! mouseX/Y can NOW be trusted because ParabolicEnterd event is triggered from View::Parabolic class
         var current = root.isHorizontal ? mouseX : mouseY;
         icList.currentSpot = current;
         calculateParabolicScales(current);
@@ -142,15 +110,6 @@ Item {
 
     onParabolicExited: {
         taskItem.scalesUpdatedOnce = false;
-        taskItem.isAbleToShowPreview = true;
-
-        if (root.latteView && (!root.showPreviews || (root.showPreviews && isLauncher))){
-            root.latteView.hideTooltipLabel();
-        }
-
-        if (root.showPreviews) {
-            root.hidePreview(17.5);
-        }
     }
 
     function calculateParabolicScales( currentMousePosition ){

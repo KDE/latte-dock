@@ -26,7 +26,7 @@ Item {
     signal parabolicMove(real mouseX, real mouseY);
     signal parabolicExited();
 
-    readonly property bool containsMouse: appletItem.parabolic.currentParabolicItem === _parabolicArea
+    readonly property bool containsMouse: (appletItem.parabolic.currentParabolicItem === _parabolicArea) || parabolicMouseArea.containsMouse
 
     property real center:root.isHorizontal ?
                              (wrapper.width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2 :

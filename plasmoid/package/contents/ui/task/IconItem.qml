@@ -778,9 +778,10 @@ Item{
 
             onRunningChanged: {
                 if(!running){
-                    var halfZoom = 1 + ((taskItem.parabolic.factor.zoom - 1) / 2);
-
-                    wrapper.calculateParabolicScales(taskItem.metrics.totals.thickness/2);
+                    if (parabolicAreaLoader.active) {
+                        var halfZoom = 1 + ((taskItem.parabolic.factor.zoom - 1) / 2);
+                        parabolicAreaLoader.item.calculateParabolicScales(taskItem.metrics.totals.thickness/2);
+                    }
 
                     taskItem.animationEnded();
                     //   root.animations--;

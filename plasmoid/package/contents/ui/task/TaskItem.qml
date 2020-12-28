@@ -553,9 +553,12 @@ MouseArea{
         HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
     }// Flow with hidden spacers inside
 
-    ParabolicArea {
-        id: parabolicArea
+    Loader {
+        id: parabolicAreaLoader
         anchors.fill: parent
+        active: taskItem.parabolic.isEnabled
+
+        sourceComponent: ParabolicArea{}
     }
 
     Timer {
@@ -630,6 +633,53 @@ MouseArea{
 
 
     ///////////////// Mouse Area Events ///////////////////
+
+    onEntered: {
+        if ((taskItem.parabolic.local.lastIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
+            windowsPreviewDlg.hide(1);
+        }
+
+        if (root.latteView && (!root.showPreviews && root.titleTooltips) || (root.showPreviews && root.titleTooltips && isLauncher)){
+            taskItem.showTitleTooltip();
+        }
+
+        //! show previews if enabled
+        if(isAbleToShowPreview && !showPreviewsIsBlockedFromReleaseEvent && !isLauncher
+                && (((root.showPreviews || (windowsPreviewDlg.visible && !isLauncher))
+                     && windowsPreviewDlg.activeItem !== taskItem)
+                    || root.highlightWindows)){
+
+            if (!root.disableAllWindowsFunctionality) {
+                //! don't delay showing preview in normal states,
+                //! that is when the dock wasn't hidden
+                if (!hoveredTimer.running && !windowsPreviewDlg.visible) {
+                    //! first task with no previews shown can trigger the delay
+                    hoveredTimer.start();
+                } else if (windowsPreviewDlg.visible) {
+                    //! when the previews are already shown, update them immediately
+                    taskItem.showPreviewWindow();
+                }
+            }
+        }
+
+        taskItem.showPreviewsIsBlockedFromReleaseEvent = false;
+
+        if (root.autoScrollTasksEnabled) {
+            scrollableList.autoScrollFor(taskItem, false);
+        }
+    }
+
+    onExited: {
+        taskItem.isAbleToShowPreview = true;
+
+        if (root.latteView && (!root.showPreviews || (root.showPreviews && isLauncher))){
+            root.latteView.hideTooltipLabel();
+        }
+
+        if (root.showPreviews) {
+            root.hidePreview(17.5);
+        }
+    }
 
     // IMPORTANT: This must be improved ! even for small milliseconds  it reduces performance
     onPositionChanged: {
@@ -1143,7 +1193,9 @@ MouseArea{
                 mimicParabolicScale = taskItem.parabolic.factor.zoom;
             }
 
-            wrapper.calculateParabolicScales(icList.currentSpot);
+            if (parabolicAreaLoader.active) {
+                parabolicAreaLoader.item.calculateParabolicScales(icList.currentSpot);
+            }
         }
     }
 
