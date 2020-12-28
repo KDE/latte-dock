@@ -33,5 +33,5 @@ Ability.ParabolicEffectPrivate {
     restoreZoomIsBlocked: (view && view.contextMenuIsShown)
                           || (applets.parabolic.restoreZoomIsBlocked)
 
-    currentParabolicItem: view ? view.currentParabolicItem : null
+    currentParabolicItem: view ? view.parabolic.currentItem : null
 }

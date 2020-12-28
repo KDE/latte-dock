@@ -65,9 +65,13 @@ AbilityHost.ParabolicEffect {
                 parabolic.startRestoreZoomTimer();
             }
         }
+    }
 
-        onCurrentParabolicItemChanged: {
-            if (!parabolic.view.currentParabolicItem) {
+    Connections {
+        target: view ? view.parabolic : null
+        ignoreUnknownSignals : true
+        onCurrentItemChanged: {
+            if (!view.parabolic.currentItem) {
                 parabolic.startRestoreZoomTimer();
             }
         }
@@ -90,7 +94,7 @@ AbilityHost.ParabolicEffect {
     }
 
     function setCurrentParabolicItem(item) {
-        parabolic.view.currentParabolicItem = item;
+        view.parabolic.currentItem = item;
     }
 
     function applyParabolicEffect(index, currentMousePosition, center) {

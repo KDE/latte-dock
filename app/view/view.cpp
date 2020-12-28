@@ -79,7 +79,8 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
       m_contextMenu(new ViewPart::ContextMenu(this)),
       m_effects(new ViewPart::Effects(this)),
       m_interface(new ViewPart::ContainmentInterface(this)),
-      m_padding(new ViewPart::Padding(this))
+      m_padding(new ViewPart::Padding(this)),
+      m_parabolic(new ViewPart::Parabolic(this))
 {      
     //! needs to be created after Effects because it catches some of its signals
     //! and avoid a crash from View::winId() at the same time
@@ -111,12 +112,6 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     connect(&m_releaseGrabTimer, &QTimer::timeout, this, &View::releaseGrab);
 
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::updateTransientWindowsTracking);
-
-    m_parabolicItemNullifier.setInterval(100);
-    m_parabolicItemNullifier.setSingleShot(true);
-    connect(&m_parabolicItemNullifier, &QTimer::timeout, this, [&]() {
-        setCurrentParabolicItem(nullptr);
-    });
 
     connect(this, &View::containmentChanged
             , this, [ &, byPassWM]() {
@@ -324,8 +319,6 @@ void View::init(Plasma::Containment *plasma_containment)
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
 
     connect(m_interface, &ViewPart::ContainmentInterface::hasExpandedAppletChanged, this, &View::verticalUnityViewHasFocus);
-
-    connect(this, &View::currentParabolicItemChanged, this, &View::onCurrentParabolicItemChanged);
 
     //! View sends this signal in order to avoid crashes from ViewPart::Indicator when the view is recreated
     connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::indicatorChanged, this, [&](const QString &indicatorId) {
@@ -1281,25 +1274,6 @@ void View::setColorizer(QQuickItem *colorizer)
     emit colorizerChanged();
 }
 
-QQuickItem *View::currentParabolicItem() const
-{
-    return m_currentParabolicItem;
-}
-
-void View::setCurrentParabolicItem(QQuickItem *item)
-{
-    if (m_currentParabolicItem == item) {
-        return;
-    }
-
-    if (item && m_currentParabolicItem) {
-        QMetaObject::invokeMethod(item, "parabolicExited", Qt::QueuedConnection);
-    }
-
-    m_currentParabolicItem = item;
-    emit currentParabolicItemChanged();
-}
-
 ViewPart::Effects *View::effects() const
 {
     return m_effects;
@@ -1323,6 +1297,11 @@ ViewPart::ContainmentInterface *View::extendedInterface() const
 ViewPart::Padding *View::padding() const
 {
     return m_padding;
+}
+
+ViewPart::Parabolic *View::parabolic() const
+{
+    return m_parabolic;
 }
 
 ViewPart::Positioner *View::positioner() const
@@ -1379,7 +1358,6 @@ bool View::event(QEvent *e)
         case QEvent::Leave:
             m_containsMouse = false;
             setContainsDrag(false);
-            setCurrentParabolicItem(nullptr);
             break;
 
         case QEvent::DragEnter:
@@ -1435,27 +1413,6 @@ bool View::event(QEvent *e)
 
         case QEvent::MouseMove:
             if (auto me = dynamic_cast<QMouseEvent *>(e)) {
-
-                if (m_currentParabolicItem) {
-                    QPointF internal = m_currentParabolicItem->mapFromScene(me->windowPos());
-
-                    if (m_currentParabolicItem->contains(internal)) {
-                        m_parabolicItemNullifier.stop();
-                        //! sending move event to parabolic item    
-                        QMetaObject::invokeMethod(m_currentParabolicItem,
-                                                  "parabolicMove",
-                                                  Qt::QueuedConnection,
-                                                  Q_ARG(qreal, internal.x()),
-                                                  Q_ARG(qreal, internal.y()));
-                    } else {
-                        m_lastOrphanParabolicMove = me->windowPos();
-                        //! clearing parabolic item
-                        m_parabolicItemNullifier.start();
-                    }
-                } else {
-                    m_lastOrphanParabolicMove = me->windowPos();
-                }
-
                 //! adjust event by taking into account paddings
                 if (m_padding
                         && !m_padding->isEmpty()
@@ -1584,24 +1541,6 @@ bool View::event(QEvent *e)
     }
 
     return ContainmentView::event(adjustedevent);
-}
-
-void View::onCurrentParabolicItemChanged()
-{
-    m_parabolicItemNullifier.stop();
-
-    if (m_currentParabolicItem != nullptr) {
-        QPointF internal = m_currentParabolicItem->mapFromScene(m_lastOrphanParabolicMove);
-
-        if (m_currentParabolicItem->contains(internal)) {
-            //! sending enter event to parabolic item
-            QMetaObject::invokeMethod(m_currentParabolicItem,
-                                      "parabolicEntered",
-                                      Qt::QueuedConnection,
-                                      Q_ARG(qreal, internal.x()),
-                                      Q_ARG(qreal, internal.y()));
-        }
-    }
 }
 
 void View::updateSinkedEventsGeometry()

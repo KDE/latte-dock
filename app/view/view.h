@@ -26,6 +26,7 @@
 #include "containmentinterface.h"
 #include "effects.h"
 #include "padding.h"
+#include "parabolic.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
 #include "indicator/indicator.h"
@@ -117,13 +118,13 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(float offset READ offset WRITE setOffset NOTIFY offsetChanged)
 
     Q_PROPERTY(QQuickItem *colorizer READ colorizer WRITE setColorizer NOTIFY colorizerChanged)
-    Q_PROPERTY(QQuickItem *currentParabolicItem READ currentParabolicItem WRITE setCurrentParabolicItem NOTIFY currentParabolicItemChanged)
 
     Q_PROPERTY(Latte::Layout::GenericLayout *layout READ layout WRITE setLayout NOTIFY layoutChanged)
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Latte::ViewPart::ContainmentInterface *extendedInterface READ extendedInterface NOTIFY extendedInterfaceChanged)
     Q_PROPERTY(Latte::ViewPart::Indicator *indicator READ indicator NOTIFY indicatorChanged)
     Q_PROPERTY(Latte::ViewPart::Padding *padding READ padding NOTIFY paddingChanged)
+    Q_PROPERTY(Latte::ViewPart::Parabolic *parabolic READ parabolic NOTIFY parabolicChanged)
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(Latte::ViewPart::VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(Latte::ViewPart::WindowsTracker *windowsTracker READ windowsTracker NOTIFY windowsTrackerChanged)
@@ -232,9 +233,6 @@ public:
     QQuickItem *colorizer() const;
     void setColorizer(QQuickItem *colorizer);
 
-    QQuickItem *currentParabolicItem() const;
-    void setCurrentParabolicItem(QQuickItem *item);
-
     QQuickView *configView();
 
     ViewPart::Effects *effects() const;   
@@ -242,6 +240,7 @@ public:
     ViewPart::ContainmentInterface *extendedInterface() const;
     ViewPart::Indicator *indicator() const;
     ViewPart::Padding *padding() const;
+    ViewPart::Parabolic *parabolic() const;
     ViewPart::Positioner *positioner() const;
     ViewPart::VisibilityManager *visibility() const;
     ViewPart::WindowsTracker *windowsTracker() const;
@@ -302,7 +301,6 @@ signals:
     void configWindowGeometryChanged(); // is called from config windows
     void containsDragChanged();
     void contextMenuIsShownChanged();
-    void currentParabolicItemChanged();
     void dockLocationChanged();
     void editThicknessChanged();
     void effectsChanged();
@@ -328,6 +326,7 @@ signals:
     void offsetChanged();
     void onPrimaryChanged();
     void paddingChanged();
+    void parabolicChanged();
     void positionerChanged();
     void screenEdgeMarginChanged();
     void screenEdgeMarginEnabledChanged();
@@ -361,8 +360,6 @@ private slots:
 
     void addTransientWindow(QWindow *window);
     void removeTransientWindow(const bool &visible);
-
-    void onCurrentParabolicItemChanged();
 
     void updateSinkedEventsGeometry();
 
@@ -434,14 +431,9 @@ private:
     int m_releaseGrab_x;
     int m_releaseGrab_y;
 
-    QTimer m_parabolicItemNullifier;
-
     Layout::GenericLayout *m_layout{nullptr};
 
     QQuickItem *m_colorizer{nullptr};
-
-    QPointF m_lastOrphanParabolicMove;
-    QQuickItem *m_currentParabolicItem{nullptr};
 
     QPointer<PlasmaQuick::ConfigView> m_appletConfigView;
     QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;
@@ -451,6 +443,7 @@ private:
     QPointer<ViewPart::Indicator> m_indicator;
     QPointer<ViewPart::ContainmentInterface> m_interface;
     QPointer<ViewPart::Padding> m_padding;
+    QPointer<ViewPart::Parabolic> m_parabolic;
     QPointer<ViewPart::Positioner> m_positioner;
     QPointer<ViewPart::VisibilityManager> m_visibility;
     QPointer<ViewPart::WindowsTracker> m_windowsTracker;
