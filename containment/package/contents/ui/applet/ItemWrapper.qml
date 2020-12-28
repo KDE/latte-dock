@@ -537,25 +537,6 @@ Item{
         }
     }
 
-    BrightnessContrast{
-        id:hoveredImage
-        anchors.fill: _wrapperContainer
-        source: _wrapperContainer
-
-        enabled: opacity != 0 ? true : false
-        opacity: appletItem.containsMouse && isActive ? 1 : 0
-        brightness: 0.25
-        contrast: 0.15
-        visible: !indicators.info.providesHoveredAnimation
-
-        readonly property bool isActive: appletItem.isSquare && !originalAppletBehavior && !indicators.info.providesHoveredAnimation
-
-        Behavior on opacity {
-            enabled: hoveredImage.isActive
-            NumberAnimation { duration: appletItem.animations.speedFactor.current*appletItem.animations.duration.large }
-        }
-    }
-
     BrightnessContrast {
         id: _clickedEffect
         anchors.fill: _wrapperContainer
