@@ -48,16 +48,6 @@ Item {
         }
     }
 
-    Connections {
-        target: appletItem.parabolic
-
-        onCurrentParabolicItemChanged: {
-            if (appletItem.parabolic.currentParabolicItem !== _parabolicArea) {
-                _parabolicArea.parabolicExited();
-            }
-        }
-    }
-
     onParabolicEntered: {
         appletItem.parabolic.stopRestoreZoomTimer();
 

@@ -1292,6 +1292,10 @@ void View::setCurrentParabolicItem(QQuickItem *item)
         return;
     }
 
+    if (item && m_currentParabolicItem) {
+        QMetaObject::invokeMethod(item, "parabolicExited", Qt::QueuedConnection);
+    }
+
     m_currentParabolicItem = item;
     emit currentParabolicItemChanged();
 }
@@ -1440,7 +1444,7 @@ bool View::event(QEvent *e)
                         //! sending move event to parabolic item    
                         QMetaObject::invokeMethod(m_currentParabolicItem,
                                                   "parabolicMove",
-                                                  Qt::DirectConnection,
+                                                  Qt::QueuedConnection,
                                                   Q_ARG(qreal, internal.x()),
                                                   Q_ARG(qreal, internal.y()));
                     } else {
@@ -1587,14 +1591,13 @@ void View::onCurrentParabolicItemChanged()
     m_parabolicItemNullifier.stop();
 
     if (m_currentParabolicItem != nullptr) {
-        //! send the ParabolicEnter because the
         QPointF internal = m_currentParabolicItem->mapFromScene(m_lastOrphanParabolicMove);
 
         if (m_currentParabolicItem->contains(internal)) {
             //! sending enter event to parabolic item
             QMetaObject::invokeMethod(m_currentParabolicItem,
                                       "parabolicEntered",
-                                      Qt::DirectConnection,
+                                      Qt::QueuedConnection,
                                       Q_ARG(qreal, internal.x()),
                                       Q_ARG(qreal, internal.y()));
         }

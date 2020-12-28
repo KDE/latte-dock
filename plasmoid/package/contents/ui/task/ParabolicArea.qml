@@ -46,16 +46,6 @@ Item {
         }
     }
 
-    Connections {
-        target: taskItem.parabolic
-
-        onCurrentParabolicItemChanged: {
-            if (taskItem.parabolic.currentParabolicItem !== _parabolicArea) {
-                _parabolicArea.parabolicExited();
-            }
-        }
-    }
-
     Connections{
         target: root
 
@@ -112,7 +102,8 @@ Item {
 
         //! do not send any parabolic mouse movement. At this point mouseX/Y are NOT valid/accurate
         var current = root.isHorizontal ? mouseX : mouseY;
-        console.log(" current spot ENTER : " + current);
+        icList.currentSpot = current;
+        calculateParabolicScales(current);
     }
 
     onParabolicMove: {
@@ -120,7 +111,6 @@ Item {
         lastMouseY = mouseY;
 
         var mousePos = root.isHorizontal ? mouseX : mouseY;
-        console.log(" current move : " + mousePos);
 
         if (mousePos<0 || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
