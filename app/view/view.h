@@ -362,6 +362,8 @@ private slots:
     void addTransientWindow(QWindow *window);
     void removeTransientWindow(const bool &visible);
 
+    void onCurrentParabolicItemChanged();
+
     void updateSinkedEventsGeometry();
 
     //! workaround in order for top panels to be always on top

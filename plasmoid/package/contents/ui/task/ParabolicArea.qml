@@ -42,7 +42,7 @@ Item {
 
         onEntered: {
             taskItem.parabolic.setCurrentParabolicItem(_parabolicArea);
-            _parabolicArea.parabolicEntered(mouseX, mouseY);
+         //   _parabolicArea.parabolicEntered(mouseX, mouseY);
         }
     }
 

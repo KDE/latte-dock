@@ -325,7 +325,7 @@ void View::init(Plasma::Containment *plasma_containment)
 
     connect(m_interface, &ViewPart::ContainmentInterface::hasExpandedAppletChanged, this, &View::verticalUnityViewHasFocus);
 
-    connect(this, &View::currentParabolicItemChanged, &m_parabolicItemNullifier, &QTimer::stop);
+    connect(this, &View::currentParabolicItemChanged, this, &View::onCurrentParabolicItemChanged);
 
     //! View sends this signal in order to avoid crashes from ViewPart::Indicator when the view is recreated
     connect(m_corona->indicatorFactory(), &Latte::Indicator::Factory::indicatorChanged, this, [&](const QString &indicatorId) {
@@ -1448,6 +1448,8 @@ bool View::event(QEvent *e)
                         //! clearing parabolic item
                         m_parabolicItemNullifier.start();
                     }
+                } else {
+                    m_lastOrphanParabolicMove = me->windowPos();
                 }
 
                 //! adjust event by taking into account paddings
@@ -1578,6 +1580,25 @@ bool View::event(QEvent *e)
     }
 
     return ContainmentView::event(adjustedevent);
+}
+
+void View::onCurrentParabolicItemChanged()
+{
+    m_parabolicItemNullifier.stop();
+
+    if (m_currentParabolicItem != nullptr) {
+        //! send the ParabolicEnter because the
+        QPointF internal = m_currentParabolicItem->mapFromScene(m_lastOrphanParabolicMove);
+
+        if (m_currentParabolicItem->contains(internal)) {
+            //! sending enter event to parabolic item
+            QMetaObject::invokeMethod(m_currentParabolicItem,
+                                      "parabolicEntered",
+                                      Qt::DirectConnection,
+                                      Q_ARG(qreal, internal.x()),
+                                      Q_ARG(qreal, internal.y()));
+        }
+    }
 }
 
 void View::updateSinkedEventsGeometry()

@@ -42,8 +42,9 @@ Item {
                  && appletItem.parabolic.currentParabolicItem !== _parabolicArea
 
         onEntered: {
-            _parabolicArea.parabolicEntered(mouseX, mouseY);
             appletItem.parabolic.setCurrentParabolicItem(_parabolicArea);
+            //! mouseX/Y can be trusted in that case in comparison to tasks that the relevant ParabolicAreaMouseArea does not
+            _parabolicArea.parabolicEntered(mouseX, mouseY);
         }
     }
 
