@@ -169,6 +169,11 @@ int main(int argc, char **argv)
     filterDebugInputMask.setDescription(QStringLiteral("Show visual window indicators for calculated input mask."));
     filterDebugInputMask.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(filterDebugInputMask);
+
+    QCommandLineOption filterDebugEventSinkMask(QStringList() << QStringLiteral("events-sink"));
+    filterDebugEventSinkMask.setDescription(QStringLiteral("Show visual indicators for areas of EventsSink."));
+    filterDebugEventSinkMask.setFlags(QCommandLineOption::HiddenFromHelp);
+    parser.addOption(filterDebugEventSinkMask);
     //! END: Hidden options
 
     parser.process(app);

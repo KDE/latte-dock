@@ -17,17 +17,26 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
+import QtQuick 2.7
 
-Item {
-    property bool eventsSinkEnabled: false
-    property bool graphicsEnabled: false
-    property bool inputMaskEnabled: false
-    property bool layouterEnabled: false
-    property bool localGeometryEnabled: false
-    property bool maskEnabled: false
-    property bool overloadedIconsEnabled: false
-    property bool spacersEnabled: false
-    property bool timersEnabled: false
-    property bool windowEnabled: false
+MouseArea {
+    id: __destinationArea
+    enabled: visible
+    hoverEnabled: true
+    visible: root.latteView && root.latteView.sink.originItem !== __destinationArea
+
+    onEntered: {
+        root.latteView.sink.setSink(__destinationArea, destination)
+    }
+
+    Loader{
+        anchors.fill: parent
+        active: appletItem.debug.eventsSinkEnabled && active
+
+        sourceComponent: Rectangle {
+            anchors.fill: parent
+            color: "red"
+            opacity: 0.2
+        }
+    }
 }

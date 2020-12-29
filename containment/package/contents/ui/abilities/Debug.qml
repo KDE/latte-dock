@@ -24,6 +24,7 @@ import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 import org.kde.latte.abilities.host 0.1 as AbilityHost
 
 AbilityHost.Debug {
+    eventsSinkEnabled: Qt.application.arguments.indexOf("--events-sink")>=0
     graphicsEnabled: Qt.application.arguments.indexOf("--graphics")>=0
     inputMaskEnabled: Qt.application.arguments.indexOf("--input")>=0
     layouterEnabled: Qt.application.arguments.indexOf("--layouter")>=0

@@ -24,6 +24,7 @@ import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 AbilityDefinition.Debug {
     property Item bridge: null
 
+    eventsSinkEnabled: ref.debug.eventsSinkEnabled
     graphicsEnabled: ref.debug.graphicsEnabled
     inputMaskEnabled: ref.debug.inputMaskEnabled
     layouterEnabled: ref.debug.layouterEnabled

@@ -473,6 +473,22 @@ Item{
         ]
     }
 
+    //! EventsSink
+
+    Loader {
+        id: eventsSinkLoader
+        anchors.fill: _wrapperContainer
+        active: (appletItem.lockZoom || !appletItem.parabolic.isEnabled || !appletItem.parabolicEffectIsSupported)
+                && !communicator.parabolicEffectIsSupported
+                && !isSeparator
+                && !isSpacer
+
+        sourceComponent: EventsSink {
+            destination: _wrapperContainer
+        }
+    }
+
+    //! InternalViewSplitter
     Loader{
         anchors.fill: _wrapperContainer
         active: appletItem.isInternalViewSplitter && root.inConfigureAppletsMode
