@@ -53,6 +53,9 @@ Item {
         }
     }
 
+    //! EventsSinkOriginArea gain "1px." margin from destination in order to not create
+    //! endless loops between different EventsSinkOriginArea(s)
+
     EventsSinkOriginArea {
         id: topArea
         anchors.bottom: parent.top

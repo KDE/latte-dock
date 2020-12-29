@@ -478,10 +478,9 @@ Item{
     Loader {
         id: eventsSinkLoader
         anchors.fill: _wrapperContainer
-        active: (appletItem.lockZoom || !appletItem.parabolic.isEnabled || !appletItem.parabolicEffectIsSupported)
-                && !communicator.parabolicEffectIsSupported
-                && !isSeparator
-                && !isSpacer
+        active: !communicator.parabolicEffectIsSupported && !isSeparator && !isSpacer
+        //! The following can be added in case EventsSink creates slaginess with parabolic effect
+        //!(appletItem.lockZoom || !appletItem.parabolic.isEnabled || !appletItem.parabolicEffectIsSupported)
 
         sourceComponent: EventsSink {
             destination: _wrapperContainer
