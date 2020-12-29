@@ -65,8 +65,8 @@ private:
 private:
     QPointer<Latte::View> m_view;
 
-    QQuickItem *m_originItem{nullptr};
-    QQuickItem *m_destinationItem{nullptr};
+    QPointer<QQuickItem> m_originItem;
+    QPointer<QQuickItem> m_destinationItem;
 };
 
 }

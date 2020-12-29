@@ -57,9 +57,9 @@ private slots:
 
 private:
     QPointer<Latte::View> m_view;
+    QPointer<QQuickItem> m_currentParabolicItem;
 
     QPointF m_lastOrphanParabolicMove;
-    QQuickItem *m_currentParabolicItem{nullptr};
 
     QTimer m_parabolicItemNullifier;
 };
