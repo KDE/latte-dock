@@ -79,7 +79,6 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
       m_contextMenu(new ViewPart::ContextMenu(this)),
       m_effects(new ViewPart::Effects(this)),
       m_interface(new ViewPart::ContainmentInterface(this)),
-      m_padding(new ViewPart::Padding(this)),
       m_parabolic(new ViewPart::Parabolic(this)),
       m_sink(new ViewPart::EventsSink(this))
 {      
@@ -1290,11 +1289,6 @@ ViewPart::ContextMenu *View::contextMenu() const
 ViewPart::ContainmentInterface *View::extendedInterface() const
 {
     return m_interface;
-}
-
-ViewPart::Padding *View::padding() const
-{
-    return m_padding;
 }
 
 ViewPart::Parabolic *View::parabolic() const

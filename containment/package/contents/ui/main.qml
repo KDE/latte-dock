@@ -351,9 +351,6 @@ Item {
     property int widthMargins: root.isVertical ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
     property int heightMargins: root.isHorizontal ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
 
-    property int firstAppletMarginLength: 0 /*is set by applets*/
-    property int lastAppletMarginLength: 0 /*is set by applets*/
-
     property int panelAlignment: plasmoid.configuration.alignment
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"

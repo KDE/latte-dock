@@ -25,7 +25,6 @@
 #include <coretypes.h>
 #include "containmentinterface.h"
 #include "effects.h"
-#include "padding.h"
 #include "parabolic.h"
 #include "positioner.h"
 #include "eventssink.h"
@@ -124,7 +123,6 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Latte::ViewPart::ContainmentInterface *extendedInterface READ extendedInterface NOTIFY extendedInterfaceChanged)
     Q_PROPERTY(Latte::ViewPart::Indicator *indicator READ indicator NOTIFY indicatorChanged)
-    Q_PROPERTY(Latte::ViewPart::Padding *padding READ padding NOTIFY paddingChanged)
     Q_PROPERTY(Latte::ViewPart::Parabolic *parabolic READ parabolic NOTIFY parabolicChanged)
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(Latte::ViewPart::EventsSink *sink READ sink NOTIFY sinkChanged)
@@ -241,7 +239,6 @@ public:
     ViewPart::ContextMenu *contextMenu() const;
     ViewPart::ContainmentInterface *extendedInterface() const;
     ViewPart::Indicator *indicator() const;
-    ViewPart::Padding *padding() const;
     ViewPart::Parabolic *parabolic() const;
     ViewPart::Positioner *positioner() const;
     ViewPart::EventsSink *sink() const;
@@ -328,7 +325,6 @@ signals:
     void normalHighestThicknessChanged();
     void offsetChanged();
     void onPrimaryChanged();
-    void paddingChanged();
     void parabolicChanged();
     void positionerChanged();
     void screenEdgeMarginChanged();
@@ -440,7 +436,6 @@ private:
     QPointer<ViewPart::Effects> m_effects;
     QPointer<ViewPart::Indicator> m_indicator;
     QPointer<ViewPart::ContainmentInterface> m_interface;
-    QPointer<ViewPart::Padding> m_padding;
     QPointer<ViewPart::Parabolic> m_parabolic;
     QPointer<ViewPart::Positioner> m_positioner;
     QPointer<ViewPart::EventsSink> m_sink;
