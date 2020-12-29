@@ -24,6 +24,7 @@
 #include <QEvent>
 #include <QObject>
 #include <QQuickItem>
+#include <QPointer>
 #include <QPointF>
 #include <QTimer>
 
