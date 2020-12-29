@@ -80,7 +80,8 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
       m_effects(new ViewPart::Effects(this)),
       m_interface(new ViewPart::ContainmentInterface(this)),
       m_padding(new ViewPart::Padding(this)),
-      m_parabolic(new ViewPart::Parabolic(this))
+      m_parabolic(new ViewPart::Parabolic(this)),
+      m_sink(new ViewPart::EventsSink(this))
 {      
     //! needs to be created after Effects because it catches some of its signals
     //! and avoid a crash from View::winId() at the same time
@@ -312,9 +313,6 @@ void View::init(Plasma::Containment *plasma_containment)
     connect(m_positioner, &ViewPart::Positioner::windowSizeChanged, this, [&]() {
         emit availableScreenRectChangedFrom(this);
     });
-
-    connect(this, &View::localGeometryChanged, this, &View::updateSinkedEventsGeometry);
-    connect(m_padding, &ViewPart::Padding::paddingsChanged, this, &View::updateSinkedEventsGeometry);
 
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
 
@@ -1309,6 +1307,11 @@ ViewPart::Positioner *View::positioner() const
     return m_positioner;
 }
 
+ViewPart::EventsSink *View::sink() const
+{
+    return m_sink;
+}
+
 ViewPart::VisibilityManager *View::visibility() const
 {
     return m_visibility;
@@ -1345,10 +1348,12 @@ void View::setInterfacesGraphicObj(Latte::Interfaces *ifaces)
 
 bool View::event(QEvent *e)
 {   
-    QEvent *adjustedevent = e;
+    QEvent *sunkevent = e;
 
     if (!m_inDelete) {
         emit eventTriggered(e);
+
+        bool sinkableevent{false};
 
         switch (e->type()) {
         case QEvent::Enter:
@@ -1358,22 +1363,12 @@ bool View::event(QEvent *e)
         case QEvent::Leave:
             m_containsMouse = false;
             setContainsDrag(false);
+            sinkableevent = true;
             break;
 
         case QEvent::DragEnter:
             setContainsDrag(true);
-
-            if (auto de = static_cast<QDragEnterEvent *>(e)) {
-                //! adjust event by taking into account paddings
-                if (m_padding
-                        && !m_padding->isEmpty()
-                        && !containmentContainsPosition(de->pos())) {
-                    auto de2 = new QDragEnterEvent(positionAdjustedForContainment(de->pos()).toPoint(),
-                                                   de->possibleActions(), de->mimeData(), de->mouseButtons(), de->keyboardModifiers());
-
-                    adjustedevent = de2;
-                }
-            }
+            sinkableevent = true;
             break;
 
         case QEvent::DragLeave:
@@ -1381,99 +1376,29 @@ bool View::event(QEvent *e)
             break;
 
         case QEvent::DragMove:
-            if (auto de = static_cast<QDragMoveEvent *>(e)) {
-                //! adjust event by taking into account paddings
-                if (m_padding
-                        && !m_padding->isEmpty()
-                        && !containmentContainsPosition(de->pos())) {
-                    auto de2 = new QDragMoveEvent(positionAdjustedForContainment(de->pos()).toPoint(),
-                                                  de->possibleActions(), de->mimeData(), de->mouseButtons(), de->keyboardModifiers());
-
-                    adjustedevent = de2;
-                }
-            }
+            sinkableevent = true;
             break;
 
         case QEvent::Drop:
             setContainsDrag(false);
-
-            if (auto de = static_cast<QDropEvent *>(e)) {
-                //! adjust event by taking into account paddings
-                if (m_padding
-                        && !m_padding->isEmpty()
-                        && !containmentContainsPosition(de->pos())) {
-                    auto de2 = new QDropEvent(positionAdjustedForContainment(de->pos()).toPoint(),
-                                              de->possibleActions(), de->mimeData(), de->mouseButtons(), de->keyboardModifiers());
-
-                    adjustedevent = de2;
-                }
-            }
-
+            sinkableevent = true;
             break;
 
         case QEvent::MouseMove:
-            if (auto me = dynamic_cast<QMouseEvent *>(e)) {
-                //! adjust event by taking into account paddings
-                if (m_padding
-                        && !m_padding->isEmpty()
-                        && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
-                        && !containmentContainsPosition(me->windowPos())) {
-
-                    auto positionadjusted = positionAdjustedForContainment(me->windowPos());
-                    auto me2 = new QMouseEvent(me->type(),
-                                               positionadjusted,
-                                               positionadjusted,
-                                               positionadjusted + position(),
-                                               me->button(), me->buttons(), me->modifiers());
-
-                    adjustedevent = me2;
-                }
-            }
+            sinkableevent = true;
             break;
 
         case QEvent::MouseButtonPress:
             if (auto me = dynamic_cast<QMouseEvent *>(e)) {
                 emit mousePressed(me->pos(), me->button());
-
-                //! adjust event by taking into account paddings
-                if (m_padding
-                        && !m_padding->isEmpty()
-                        && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
-                        && !containmentContainsPosition(me->windowPos())) {
-
-                    auto positionadjusted = positionAdjustedForContainment(me->windowPos());
-                    auto me2 = new QMouseEvent(me->type(),
-                                               positionadjusted,
-                                               positionadjusted,
-                                               positionadjusted + position(),
-                                               me->button(), me->buttons(), me->modifiers());
-
-                    qDebug() << "Sinked Event:: adjusted event pressed...";
-                    qDebug() << "Sinked Event:: pressed metrics :: " << me->windowPos() << " => " << me2->windowPos() << " | " << m_padding->margins();
-                    adjustedevent = me2;
-                }
+                sinkableevent = true;
             }
             break;
 
         case QEvent::MouseButtonRelease:
             if (auto me = dynamic_cast<QMouseEvent *>(e)) {
                 emit mouseReleased(me->pos(), me->button());
-
-                //! adjust event by taking into account paddings
-                if (m_padding
-                        && !m_padding->isEmpty()
-                        && m_positioner && m_positioner->isCursorInsideView() /*dont break drags when cursor is outside*/
-                        && !containmentContainsPosition(me->windowPos())) {
-
-                    auto positionadjusted = positionAdjustedForContainment(me->windowPos());
-                    auto me2 = new QMouseEvent(me->type(),
-                                               positionadjusted,
-                                               positionadjusted,
-                                               positionadjusted + position(),
-                                               me->button(), me->buttons(), me->modifiers());
-
-                    adjustedevent = me2;
-                }
+                sinkableevent = true;
             }
             break;
 
@@ -1520,63 +1445,20 @@ bool View::event(QEvent *e)
 #endif
                 emit wheelScrolled(pos, we->angleDelta(), we->buttons());
 
-                //! adjust event by taking into account paddings
-                if (m_padding
-                        && !m_padding->isEmpty()
-                        && !containmentContainsPosition(pos)) {
-
-                    auto positionadjusted = positionAdjustedForContainment(pos);
-                    auto we2 = new QWheelEvent(positionadjusted,
-                                               positionadjusted + position(),
-                                               we->pixelDelta(), we->angleDelta(), we->angleDelta().y(),
-                                               we->orientation(), we->buttons(), we->modifiers(), we->phase());
-
-                    adjustedevent = we2;
-                }
+                sinkableevent = true;
             }
             break;
         default:
             break;
         }
+
+        if (sinkableevent && m_sink->isActive()) {
+            sunkevent = m_sink->onEvent(e);
+        }
     }
 
-    return ContainmentView::event(adjustedevent);
+    return ContainmentView::event(sunkevent);
 }
-
-void View::updateSinkedEventsGeometry()
-{    
-    if (m_inDelete || !m_padding) {
-        return;
-    }
-
-    QRectF sinked = m_localGeometry;
-
-    if (m_padding && !m_padding->isEmpty()) {
-        sinked -= m_padding->margins();
-    }
-
-    if (location() == Plasma::Types::TopEdge || location() == Plasma::Types::BottomEdge) {
-        /*remove the bottom pixel that is needed from dodge and touching edge algorithms*/
-        sinked -= QMargins(0,0,0,1);
-    } else if (location() == Plasma::Types::RightEdge || location() == Plasma::Types::LeftEdge) {
-        /*remove the right pixel that is needed from dodge and touching edge algorithms*/
-        sinked -= QMargins(0,0,1,0);
-    }
-
-    m_sinkedEventsGeometry = sinked;
-}
-
-bool View::containmentContainsPosition(const QPointF &point) const
-{
-    return m_sinkedEventsGeometry.contains(point);
-}
-
-QPointF View::positionAdjustedForContainment(const QPointF &point) const
-{
-    return QPointF(qBound(m_sinkedEventsGeometry.left(), point.x(), m_sinkedEventsGeometry.right()),
-                   qBound(m_sinkedEventsGeometry.top(), point.y(), m_sinkedEventsGeometry.bottom()));
-}
-
 
 void View::releaseConfigView()
 {

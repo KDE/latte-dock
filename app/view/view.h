@@ -28,6 +28,7 @@
 #include "padding.h"
 #include "parabolic.h"
 #include "positioner.h"
+#include "eventssink.h"
 #include "visibilitymanager.h"
 #include "indicator/indicator.h"
 #include "settings/primaryconfigview.h"
@@ -126,6 +127,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(Latte::ViewPart::Padding *padding READ padding NOTIFY paddingChanged)
     Q_PROPERTY(Latte::ViewPart::Parabolic *parabolic READ parabolic NOTIFY parabolicChanged)
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
+    Q_PROPERTY(Latte::ViewPart::EventsSink *sink READ sink NOTIFY sinkChanged)
     Q_PROPERTY(Latte::ViewPart::VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(Latte::ViewPart::WindowsTracker *windowsTracker READ windowsTracker NOTIFY windowsTrackerChanged)
 
@@ -242,6 +244,7 @@ public:
     ViewPart::Padding *padding() const;
     ViewPart::Parabolic *parabolic() const;
     ViewPart::Positioner *positioner() const;
+    ViewPart::EventsSink *sink() const;
     ViewPart::VisibilityManager *visibility() const;
     ViewPart::WindowsTracker *windowsTracker() const;
 
@@ -331,6 +334,7 @@ signals:
     void screenEdgeMarginChanged();
     void screenEdgeMarginEnabledChanged();
     void screenGeometryChanged();
+    void sinkChanged();
     void typeChanged();
     void visibilityChanged();
     void windowsTrackerChanged();
@@ -361,8 +365,6 @@ private slots:
     void addTransientWindow(QWindow *window);
     void removeTransientWindow(const bool &visible);
 
-    void updateSinkedEventsGeometry();
-
     //! workaround in order for top panels to be always on top
     void topViewAlwaysOnTop();
     void verticalUnityViewHasFocus();
@@ -379,9 +381,6 @@ private:
     void updateAppletContainsMethod();
 
     void setContainsDrag(bool contains);
-
-    bool containmentContainsPosition(const QPointF &point) const;
-    QPointF positionAdjustedForContainment(const QPointF &point) const;
 
 private:
     Plasma::Containment *containmentById(uint id);
@@ -413,7 +412,6 @@ private:
 
     QRect m_localGeometry;
     QRect m_absoluteGeometry;
-    QRectF m_sinkedEventsGeometry;
 
     QStringList m_activities;
 
@@ -445,6 +443,7 @@ private:
     QPointer<ViewPart::Padding> m_padding;
     QPointer<ViewPart::Parabolic> m_parabolic;
     QPointer<ViewPart::Positioner> m_positioner;
+    QPointer<ViewPart::EventsSink> m_sink;
     QPointer<ViewPart::VisibilityManager> m_visibility;
     QPointer<ViewPart::WindowsTracker> m_windowsTracker;
 
