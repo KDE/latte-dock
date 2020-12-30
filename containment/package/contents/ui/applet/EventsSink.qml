@@ -58,7 +58,6 @@ Item {
         id: topArea
         anchors.bottom: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
-        visible: width>0 && height>0
 
         width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? destination.width + 2 * lengthPadding : destination.width
         height: {
@@ -76,7 +75,6 @@ Item {
         id: bottomArea
         anchors.top: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        visible: width>0 && height>0
 
         width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? destination.width + 2 * lengthPadding : parent.width
         height: {
@@ -94,7 +92,6 @@ Item {
         id: leftArea
         anchors.right: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        visible: width>0 && height>0
 
         height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.height : destination.height + 2 * lengthPadding
         width: {
@@ -112,7 +109,6 @@ Item {
         id: rightArea
         anchors.left: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        visible: width>0 && height>0
 
         height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.height : destination.height + 2 * lengthPadding
         width: {
