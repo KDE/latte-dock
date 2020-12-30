@@ -664,11 +664,6 @@ Item {
                 var local = appletItem.mapFromItem(root, pos.x, pos.y);
 
                 appletItem.mousePressed(local.x, local.y, button);
-
-                if (button === Qt.LeftButton && parabolic.isEnabled && animations.needBothAxis.count>0) {
-                    /*Hack, until the sinked events plasma approach works propertly with parabolic effect*/
-                    appletItem.activateAppletForNeutralAreas(local);
-                }
             }
         }
 
