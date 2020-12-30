@@ -240,7 +240,7 @@ QEvent *EventsSink::onEvent(QEvent *e)
 
 QPointF EventsSink::positionAdjustedForDestination(const QPointF &point) const
 {
-    QRectF destinationRectToScene = m_destinationItem->mapRectToScene(QRectF(0, 0, m_destinationItem->width(), m_destinationItem->height()));
+    QRectF destinationRectToScene = m_destinationItem->mapRectToScene(QRectF(0, 0, m_destinationItem->width() - 1, m_destinationItem->height() - 1));
 
     return QPointF(qBound(destinationRectToScene.left(), point.x(), destinationRectToScene.right()),
                    qBound(destinationRectToScene.top(), point.y(), destinationRectToScene.bottom()));

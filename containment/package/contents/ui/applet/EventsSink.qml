@@ -53,13 +53,10 @@ Item {
         }
     }
 
-    //! EventsSinkOriginArea gain "1px." margin from destination in order to not create
-    //! endless loops between different EventsSinkOriginArea(s)
 
     EventsSinkOriginArea {
         id: topArea
         anchors.bottom: parent.top
-        anchors.bottomMargin: 1
         anchors.horizontalCenter: parent.horizontalCenter
 
         width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? destination.width + 2 * lengthPadding : destination.width
@@ -77,7 +74,6 @@ Item {
     EventsSinkOriginArea {
         id: bottomArea
         anchors.top: parent.bottom
-        anchors.topMargin: 1
         anchors.horizontalCenter: parent.horizontalCenter
 
         width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? destination.width + 2 * lengthPadding : parent.width
@@ -95,7 +91,6 @@ Item {
     EventsSinkOriginArea {
         id: leftArea
         anchors.right: parent.left
-        anchors.rightMargin: 1
         anchors.verticalCenter: parent.verticalCenter
 
         height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.height : destination.height + 2 * lengthPadding
@@ -113,7 +108,6 @@ Item {
     EventsSinkOriginArea {
         id: rightArea
         anchors.left: parent.right
-        anchors.leftMargin: 1
         anchors.verticalCenter: parent.verticalCenter
 
         height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.height : destination.height + 2 * lengthPadding
