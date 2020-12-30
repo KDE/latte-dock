@@ -53,6 +53,8 @@ Item {
     property bool canShowAppletNumberBadge: !isSeparator && !isHidden && !isLattePlasmoid
                                             && !isSpacer && !isInternalViewSplitter
 
+    readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
+
     //! Fill Applet(s)
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
     property bool isAutoFillApplet: {
@@ -249,11 +251,6 @@ Item {
         if (root.isVertical) {
             return metrics.totals.thicknessEdges;
         }
-
-        /*TODO, Fitt's case: is temporary until the atScreenEdge applets are aligned properly to the corner and the wrapper
-          is taking all the space needed in order to fill right. For atScreenEdge appplets that should be: applet size + lengthAppletPadding + lengthAppletExtMargin.
-          The indicator should follow also the applet alignment in this in order to feel right
-          */
         return 2 * lengthAppletPadding;
     }
 
@@ -262,10 +259,6 @@ Item {
             return root.metrics.totals.thicknessEdges;
         }
 
-        /*TODO,Fitt's case: is temporary until the atScreenEdge applets are aligned properly to the corner and the wrapper
-          is taking all the space needed in order to fill right. For atScreenEdge appplets that should be: applet size + lengthAppletPadding + lengthAppletExtMargin.
-          The indicator should follow also the applet alignment in this in order to feel right
-          */
         return 2 * lengthAppletPadding;
     }
 

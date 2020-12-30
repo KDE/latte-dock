@@ -93,7 +93,7 @@ Item{
 
     property int iconSize: appletItem.metrics.iconSize
 
-    property int marginsThickness:  appletItem.metrics.totals.thicknessEdges
+    property int marginsThickness: appletItem.canFillThickness ? 0 : appletItem.metrics.totals.thicknessEdges
     property int marginsLength: 0   //Fitt's Law, through Binding to avoid Binding loops
 
     property int localLengthMargins: isSeparator
