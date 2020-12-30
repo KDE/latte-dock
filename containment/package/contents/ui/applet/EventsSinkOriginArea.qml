@@ -23,7 +23,7 @@ MouseArea {
     id: __destinationArea
     enabled: visible
     hoverEnabled: true
-    visible: root.latteView && root.latteView.sink.originItem !== __destinationArea
+    visible: root.latteView && root.latteView.sink.originItem !== __destinationArea && width>0 && height>0
 
     onEntered: {
         root.latteView.sink.setSink(__destinationArea, destination)
