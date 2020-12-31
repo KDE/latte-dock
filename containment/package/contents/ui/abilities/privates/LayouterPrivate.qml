@@ -83,64 +83,62 @@ Item {
         for(var i=0; i<layout.children.length; ++i) {
             var curApplet = layout.children[i];
 
-            if (curApplet.isAutoFillApplet) {
-                if (curApplet && curApplet.applet && curApplet.applet.Layout) {
-                    var minSize = root.isVertical ? curApplet.applet.Layout.minimumHeight : curApplet.applet.Layout.minimumWidth;
-                    var prefSize = root.isVertical ? curApplet.applet.Layout.preferredHeight : curApplet.applet.Layout.preferredWidth;
-                    var maxSize = root.isVertical ? curApplet.applet.Layout.maximumHeight : curApplet.applet.Layout.maximumWidth;
+            if (curApplet && curApplet.isAutoFillApplet && ((curApplet.applet && curApplet.applet.Layout) || curApplet.isInternalViewSplitter)) {
+                var minSize = curApplet.appletMinimumLength;
+                var prefSize = curApplet.appletPreferredLength;
+                var maxSize = curApplet.appletMaximumLength;
 
-                    // console.log( " s3_0 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
+                console.log( "org.kde.latte s3_0 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
 
-                    minSize = minSize>=0 && minSize!==Infinity ? minSize : -1;
-                    prefSize = minSize>=0 && prefSize!==Infinity ? prefSize : -1;
-                    maxSize = maxSize>=0 && maxSize!== Infinity ? maxSize : -1;
+                minSize = minSize>=0 && minSize!==Infinity ? minSize : -1;
+                prefSize = minSize>=0 && prefSize!==Infinity ? prefSize : -1;
+                maxSize = maxSize>=0 && maxSize!== Infinity ? maxSize : -1;
 
-                    var appliedSize = -1;
+                var appliedSize = -1;
 
-                    //! check if the applet does not provide any valid metrics and for that case
-                    //! the system must decide what space to be given after the applets that provide
-                    //! nice metrics are assigned their sizes
-                    var systemDecide = ((minSize<0) && (prefSize<0) && (maxSize<0));
+                //! check if the applet does not provide any valid metrics and for that case
+                //! the system must decide what space to be given after the applets that provide
+                //! nice metrics are assigned their sizes
+                var systemDecide = ((minSize<0) && (prefSize<0) && (maxSize<0));
 
-                    if (!systemDecide) {
-                        if (noOfApplets>1) {
-                            appliedSize = appletPreferredLength(minSize, prefSize, maxSize);
+                if (!systemDecide) {
+                    if (noOfApplets>1) {
+                        appliedSize = appletPreferredLength(minSize, prefSize, maxSize);
 
-                            // console.log( " s3_1 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") -> " + appliedSize);
-                        } else if (noOfApplets===1) {
-                            //! at this step if only one applet has remained for which the max size is not null,
-                            //! then for this applet we make sure the maximum size does not exceed the available space
-                            //! in order for the applet to not be drawn outside the boundaries
-                            appliedSize = appletPreferredLength(minSize, prefSize, Math.min(maxSize, sizePerApplet));
+                        // console.log( " s3_1 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") -> " + appliedSize);
+                    } else if (noOfApplets===1) {
+                        //! at this step if only one applet has remained for which the max size is not null,
+                        //! then for this applet we make sure the maximum size does not exceed the available space
+                        //! in order for the applet to not be drawn outside the boundaries
+                        appliedSize = appletPreferredLength(minSize, prefSize, Math.min(maxSize, sizePerApplet));
 
-                            // console.log( " s3_2 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") -> " + appliedSize);
-                        }
-
-                        //! appliedSize is valid and is also lower than the availableSpace, if it is not lower then
-                        //! for this applet the needed space will be provided as a second pass in a fair way
-                        //! between all remained applets that did not gain a valid fill space
-                        if (appliedSize>=0 && appliedSize<=sizePerApplet) {
-                            var properSize = Math.min(appliedSize, availableSpace);
-                            var thickness = root.isVertical ? root.width : root.height;
-                            var adjustedSize = curApplet.isHidden ? 0 : Math.max(thickness, properSize);
-
-                            if (inMaxAutoFillCalculations) {
-                                curApplet.maxAutoFillLength = adjustedSize;
-                            } else {
-                                curApplet.minAutoFillLength = adjustedSize;
-                            }
-
-                            curApplet.inFillCalculations = false;
-                            availableSpace = Math.max(0, availableSpace - curApplet.maxAutoFillLength);
-                            noOfApplets = noOfApplets - 1;
-                            sizePerApplet = noOfApplets > 1 ? Math.floor(availableSpace / noOfApplets) : availableSpace;
-
-                            // console.log( " s3_3 " + curApplet.applet.pluginName + " assigned: " + curApplet.maxAutoFillLength);
-                        }
+                        // console.log( " s3_2 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") -> " + appliedSize);
                     }
 
-                    // console.log("s3_r " +curApplet.applet.pluginName + " : " + availableSpace + " _ " + sizePerApplet + " _ " + noOfApplets + "\n");
+                    //! appliedSize is valid and is also lower than the availableSpace, if it is not lower then
+                    //! for this applet the needed space will be provided as a second pass in a fair way
+                    //! between all remained applets that did not gain a valid fill space
+                    if (appliedSize>=0 && appliedSize<=sizePerApplet) {
+                        var properSize = Math.min(appliedSize, availableSpace);
+                        var thickness = root.isVertical ? root.width : root.height;
+                        var adjustedSize = curApplet.isHidden ? 0 : Math.max(thickness, properSize);
+
+                        if (inMaxAutoFillCalculations) {
+                            curApplet.maxAutoFillLength = adjustedSize;
+                        } else {
+                            curApplet.minAutoFillLength = adjustedSize;
+                        }
+
+                        curApplet.inFillCalculations = false;
+                        availableSpace = Math.max(0, availableSpace - curApplet.maxAutoFillLength);
+                        noOfApplets = noOfApplets - 1;
+                        sizePerApplet = noOfApplets > 1 ? Math.floor(availableSpace / noOfApplets) : availableSpace;
+
+                        // console.log( " s3_3 " + curApplet.applet.pluginName + " assigned: " + curApplet.maxAutoFillLength);
+                    }
                 }
+
+                // console.log("s3_r " +curApplet.applet.pluginName + " : " + availableSpace + " _ " + sizePerApplet + " _ " + noOfApplets + "\n");
             }
         }
 
@@ -169,10 +167,10 @@ Item {
                     //! the most demanding applet is the one that has maximum size set to Infinity
                     //! AND is not Neutral, meaning that it provided some valid metrics
                     //! AND at the same time gained from step one the biggest space
-                    if (curApplet && curApplet.isAutoFillApplet && curApplet.applet && curApplet.applet.Layout) {
-                        var minSize = root.isVertical ? curApplet.applet.Layout.minimumHeight : curApplet.applet.Layout.minimumWidth;
-                        var prefSize = root.isVertical ? curApplet.applet.Layout.preferredHeight : curApplet.applet.Layout.preferredWidth;
-                        var maxSize = root.isVertical ? curApplet.applet.Layout.maximumHeight : curApplet.applet.Layout.maximumWidth;
+                    if (curApplet && curApplet.isAutoFillApplet && ((curApplet.applet && curApplet.applet.Layout) || curApplet.isInternalViewSplitter)) {
+                        var minSize = curApplet.appletMinimumLength;
+                        var prefSize = curApplet.appletPreferredLength;
+                        var maxSize = curApplet.appletMaximumLength;
 
                         var isNeutral = (minSize<=0 && prefSize<=0);
 

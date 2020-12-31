@@ -185,6 +185,11 @@ Item {
     property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * metrics.iconSize) - metrics.totals.lengthEdges)
     property int status: applet ? applet.status : -1
 
+    //! some metrics
+    readonly property int appletMinimumLength: _wrapper.appletMinimumLength
+    readonly property int appletPreferredLength: _wrapper.appletPreferredLength
+    readonly property int appletMaximumLength: _wrapper.appletMaximumLength
+
     //! separators tracking
     readonly property bool tailAppletIsSeparator: {
         if (isSeparator || index<0) {
