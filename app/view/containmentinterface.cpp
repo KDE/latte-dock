@@ -635,6 +635,51 @@ void ContainmentInterface::onAppletAdded(Plasma::Applet *applet)
 
 }
 
+void ContainmentInterface::moveAppletsInJustifyAlignment(QQuickItem *start, QQuickItem *main, QQuickItem *end)
+{
+    if (!start || !main || !end) {
+        return;
+    }
+
+    QList<QQuickItem *> appletlist;
+
+    appletlist << start->childItems();
+    appletlist << main->childItems();
+    appletlist << end->childItems();
+
+    bool firstSplitterFound{false};
+    bool secondSplitterFound{false};
+    int splitter1{-1};
+    int splitter2{-1};
+
+    for(int i=0; i<appletlist.count(); ++i) {
+        bool issplitter = appletlist[i]->property("isInternalViewSplitter").toBool();
+
+        if (!firstSplitterFound) {
+            appletlist[i]->setParentItem(start);
+            if (issplitter) {
+                firstSplitterFound = true;
+                splitter1 = i;
+            }
+        } else if (firstSplitterFound && !secondSplitterFound) {
+            if (issplitter) {
+                secondSplitterFound = true;
+                splitter2 = i;
+            } else {
+                appletlist[i]->setParentItem(main);
+            }
+        } else if (firstSplitterFound && secondSplitterFound) {
+            appletlist[i]->setParentItem(end);
+        }
+    }
+
+    if (splitter1>0) {
+        appletlist[splitter1]->stackAfter(appletlist[splitter1 - 1]);
+    }
+    if (splitter2>0 && splitter2<appletlist.count()-1) {
+        appletlist[splitter2]->stackBefore(appletlist[splitter2 + 1]);
+    }
+}
 
 }
 }

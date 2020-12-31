@@ -514,7 +514,7 @@ Item {
 
         if (root.editMode){
             if (panelAlignment===LatteCore.Types.Justify) {
-                addInternalViewSplitters();
+                addInternalViewSplittersInMainLayout();
                 splitMainLayoutToLayouts();
             } else {
                 joinLayoutsToMainLayout();
@@ -762,25 +762,37 @@ Item {
         updateIndexes();
     }
 
-    function addInternalViewSplitters(){
+    function addInternalViewSplittersInMainLayout(){
         if (internalViewSplittersCount() === 0) {
-            addInternalViewSplitter(plasmoid.configuration.splitterPosition);
-            addInternalViewSplitter(plasmoid.configuration.splitterPosition2);
+            addInternalViewSplitterInMain(plasmoid.configuration.splitterPosition);
+            addInternalViewSplitterInMain(plasmoid.configuration.splitterPosition2);
         }
     }
 
-    function addInternalViewSplitter(pos){
+    function addInternalViewSplitterInStart(pos){
+        addInternalViewSplitterInLayout(layoutsContainer.startLayout, pos);
+    }
+
+    function addInternalViewSplitterInMain(pos){
+        addInternalViewSplitterInLayout(layoutsContainer.mainLayout, pos);
+    }
+
+    function addInternalViewSplitterInEnd(pos){
+        addInternalViewSplitterInLayout(layoutsContainer.endLayout, pos);
+    }
+
+    function addInternalViewSplitterInLayout(area, pos){
         var splittersCount = internalViewSplittersCount();
         if(splittersCount<2){
-            var container = appletContainerComponent.createObject(root);
+            var splitter = appletContainerComponent.createObject(root);
 
-            container.internalSplitterId = splittersCount+1;
-            container.visible = true;
+            splitter.internalSplitterId = splittersCount+1;
+            splitter.visible = true;
 
             if(pos>=0 ){
-                LayoutManager.insertAtIndex(layoutsContainer.mainLayout, container, pos);
+                LayoutManager.insertAtIndex(area, splitter, pos);
             } else {
-                LayoutManager.insertAtIndex(layoutsContainer.mainLayout, container, Math.floor(layouter.mainLayout.count / 2));
+                LayoutManager.insertAtIndex(area, splitter, Math.floor(area.count / 2));
             }
         }
     }
@@ -967,52 +979,12 @@ Item {
         if (plasmoid.configuration.alignment !== 10) {
             return;
         }
-        layouter.appletsInParentChange = true;
 
-        var splitter = -1;
-        var startChildrenLength = layoutsContainer.startLayout.children.length;
-
-        //! Check if there is a splitter inside start layout after the user was dragging its applets
-        for (var i=0; i<startChildrenLength; ++i) {
-            var item = layoutsContainer.startLayout.children[i];
-            if(item.isInternalViewSplitter) {
-                splitter = i;
-                break;
-            }
+        if (latteView) {
+            latteView.extendedInterface.moveAppletsInJustifyAlignment(layoutsContainer.startLayout,
+                                                                      layoutsContainer.mainLayout,
+                                                                      layoutsContainer.endLayout);
         }
-
-        //! If a splitter was found inside the startlayout move the head applets after splitter as tail
-        //! applets of mainlayout
-        if (splitter>=0) {
-            for (var i=startChildrenLength-1; i>=splitter; --i){
-                var item = layoutsContainer.startLayout.children[i];
-                LayoutManager.insertAtIndex(layoutsContainer.mainLayout, item, 0);
-            }
-        }
-
-        var splitter2 = -1;
-        var endChildrenLength = layoutsContainer.endLayout.children.length;
-
-        //! Check if there is a splitter inside endlayout after the user was dragging its applets
-        for (var i=0; i<endChildrenLength; ++i) {
-            var item = layoutsContainer.endLayout.children[i];
-            if(item.isInternalViewSplitter) {
-                splitter2 = i;
-                break;
-            }
-        }
-
-        //! If a splitter was found inside the endlayout move the tail applets until splitter as head
-        //! applets of mainlayout
-        if (splitter2>=0) {
-            for (var i=0; i<=splitter2; ++i){
-                var item = layoutsContainer.endLayout.children[0];
-                item.parent = layoutsContainer.mainLayout;
-            }
-        }
-
-        //! Validate applets positioning and move applets out of splitters to start/endlayouts accordingly
-        splitMainLayoutToLayouts();
 
         layouter.appletsInParentChange = false;
     }
@@ -1039,19 +1011,19 @@ Item {
             // console.log("update layouts 1:"+splitter + " - "+splitter2);
 
             if (splitter > 0) {
-                for (var i=0; i<splitter; ++i){
+                for (var i=0; i<=splitter; ++i){
                     var item = layoutsContainer.mainLayout.children[0];
                     item.parent = layoutsContainer.startLayout;
                 }
             }
 
             if (splitter2 > 0) {
-                splitter2 = splitter2 - splitter;
+                splitter2 = splitter2 - splitter - 1;
                 // console.log("update layouts 2:"+splitter + " - "+splitter2);
 
                 totalChildren = layoutsContainer.mainLayout.children.length;
 
-                for (var i=totalChildren-1; i>=splitter2+1; --i){
+                for (var i=totalChildren-1; i>=splitter2; --i){
                     var item = layoutsContainer.mainLayout.children[i];
                     LayoutManager.insertAtIndex(layoutsContainer.endLayout, item, 0);
                 }

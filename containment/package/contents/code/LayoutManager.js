@@ -82,7 +82,7 @@ function restore() {
             // console.log("UNDEFINEDSPLITTER 1 ::: " + missingApplets);
             // console.log("VALID    SPLITTER 1 ::: " + validSplitter1);
 
-            root.addInternalViewSplitter(validSplitter1);
+            root.addInternalViewSplitterInMain(validSplitter1);
         }
 
         if(plasmoid.configuration.splitterPosition2 !== -1){
@@ -101,7 +101,7 @@ function restore() {
             // console.log("UNDEFINEDSPLITTER 2 ::: " + missingApplets2);
             // console.log("VALID    SPLITTER 2 ::: " + validSplitter2);
 
-            root.addInternalViewSplitter(validSplitter2);
+            root.addInternalViewSplitterInMain(validSplitter2);
         }
     }
 
