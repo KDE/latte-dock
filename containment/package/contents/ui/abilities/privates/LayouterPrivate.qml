@@ -30,6 +30,8 @@ Item {
     property Item indexer: null
 
     readonly property int fillApplets: startLayout.fillApplets + mainLayout.fillApplets + endLayout.fillApplets
+    readonly property int shownApplets: startLayout.shownApplets + mainLayout.shownApplets + endLayout.shownApplets
+    readonly property int sizeWithNoFillApplets: startLayout.sizeWithNoFillApplets + mainLayout.sizeWithNoFillApplets + endLayout.sizeWithNoFillApplets
 
     readonly property int maxLength: root.panelAlignment === LatteCore.Types.Justify ? contentsMaxLength : Math.min(root.minLength, contentsMaxLength)
 
@@ -46,6 +48,10 @@ Item {
     readonly property Item endLayout: LayouterElements.AppletsContainer {
         grid: layouts.endLayout
     }
+
+    onFillAppletsChanged: layouter.updateSizeForAppletsInFill();
+    onShownAppletsChanged: layouter.updateSizeForAppletsInFill();
+    onSizeWithNoFillAppletsChanged: layouter.updateSizeForAppletsInFill();
 
     //!         FILLWIDTH/FILLHEIGHT COMPUTATIONS
     //! Computations in order to calculate correctly the sizes for applets
@@ -83,45 +89,47 @@ Item {
         for(var i=0; i<layout.children.length; ++i) {
             var curApplet = layout.children[i];
 
-            if (curApplet && curApplet.isAutoFillApplet && ((curApplet.applet && curApplet.applet.Layout) || curApplet.isInternalViewSplitter)) {
+            if (curApplet && curApplet.isAutoFillApplet && !curApplet.isHidden
+                    && ((curApplet.applet && curApplet.applet.Layout) || curApplet.isInternalViewSplitter)) {
                 var minSize = curApplet.appletMinimumLength;
                 var prefSize = curApplet.appletPreferredLength;
                 var maxSize = curApplet.appletMaximumLength;
 
-                //console.log( "s3_0 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
+                // console.log( "org.kde.latte s3_0 " + curApplet.pluginName + " : "+ curApplet.index +" (" +minSize+","+prefSize+","+maxSize+") ");
 
                 minSize = minSize>=0 && minSize!==Infinity ? minSize : -1;
                 prefSize = minSize>=0 && prefSize!==Infinity ? prefSize : -1;
                 maxSize = maxSize>=0 && maxSize!== Infinity ? maxSize : -1;
 
                 var appliedSize = -1;
-
                 //! check if the applet does not provide any valid metrics and for that case
                 //! the system must decide what space to be given after the applets that provide
                 //! nice metrics are assigned their sizes
-                var systemDecide = ((minSize<0) && (prefSize<0) && (maxSize<0));
+                //var systemDecide = ((minSize<0) && (prefSize<0) && (maxSize<0));
+
+                var staticsize = (minSize>=0 && (maxSize === minSize) && (maxSize !== Infinity));
+                var systemDecide = (prefSize<0 && !staticsize);
 
                 if (!systemDecide) {
                     if (noOfApplets>1) {
                         appliedSize = appletPreferredLength(minSize, prefSize, maxSize);
 
-                        // console.log( " s3_1 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") -> " + appliedSize);
+                        // console.log( "org.kde.latte s3_1 " + curApplet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") -> " + appliedSize);
                     } else if (noOfApplets===1) {
                         //! at this step if only one applet has remained for which the max size is not null,
                         //! then for this applet we make sure the maximum size does not exceed the available space
                         //! in order for the applet to not be drawn outside the boundaries
                         appliedSize = appletPreferredLength(minSize, prefSize, Math.min(maxSize, sizePerApplet));
 
-                        // console.log( " s3_2 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") -> " + appliedSize);
+                        // console.log( "org.kde.latte s3_2 " + curApplet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") -> " + appliedSize);
                     }
 
                     //! appliedSize is valid and is also lower than the availableSpace, if it is not lower then
                     //! for this applet the needed space will be provided as a second pass in a fair way
                     //! between all remained applets that did not gain a valid fill space
                     if (appliedSize>=0 && appliedSize<=sizePerApplet) {
-                        var properSize = Math.min(appliedSize, availableSpace);
-                        var thickness = root.isVertical ? root.width : root.height;
-                        var adjustedSize = curApplet.isHidden ? 0 : Math.max(thickness, properSize);
+                        var properSize = Math.min(appliedSize, availableSpace);                       
+                        var adjustedSize = curApplet.isHidden ? 0 : properSize;
 
                         if (inMaxAutoFillCalculations) {
                             curApplet.maxAutoFillLength = adjustedSize;
@@ -134,11 +142,11 @@ Item {
                         noOfApplets = noOfApplets - 1;
                         sizePerApplet = noOfApplets > 1 ? Math.floor(availableSpace / noOfApplets) : availableSpace;
 
-                        // console.log( " s3_3 " + curApplet.applet.pluginName + " assigned: " + curApplet.maxAutoFillLength);
+                        // console.log( "org.kde.latte s3_3 " + curApplet.pluginName + " assigned: " + curApplet.maxAutoFillLength);
                     }
                 }
 
-                // console.log("s3_r " +curApplet.applet.pluginName + " : " + availableSpace + " _ " + sizePerApplet + " _ " + noOfApplets + "\n");
+                // console.log("org.kde.latte s3_r " +curApplet.pluginName + " : " + availableSpace + " _ " + sizePerApplet + " _ " + noOfApplets + "\n");
             }
         }
 
@@ -167,14 +175,15 @@ Item {
                     //! the most demanding applet is the one that has maximum size set to Infinity
                     //! AND is not Neutral, meaning that it provided some valid metrics
                     //! AND at the same time gained from step one the biggest space
-                    if (curApplet && curApplet.isAutoFillApplet && ((curApplet.applet && curApplet.applet.Layout) || curApplet.isInternalViewSplitter)) {
+                    if (curApplet && curApplet.isAutoFillApplet && !curApplet.isHidden
+                            && ((curApplet.applet && curApplet.applet.Layout) || curApplet.isInternalViewSplitter)) {
                         var minSize = curApplet.appletMinimumLength;
                         var prefSize = curApplet.appletPreferredLength;
                         var maxSize = curApplet.appletMaximumLength;
 
                         var isNeutral = (minSize<=0 && prefSize<=0);
 
-                        // console.log( " s4_0 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
+                        // console.log( " s4_0 " + curApplet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
 
                         if (!isNeutral && maxSize===Infinity
                                 && ((inMaxAutoFillCalculations && curApplet.maxAutoFillLength>mostDemandingAppletSize)
@@ -203,7 +212,7 @@ Item {
                     //! between all neutralApplets
                     var adjustedAppletSize = (sizePerApplet / neutralAppletsNo);
                     for (var j=0; j<neutralApplets.length; ++j) {
-                        // console.log("s4_2.0  "+ neutralApplets[j].applet.pluginName + " _ " + neutralApplets[j].maxAutoFillLength + " _ " + adjustedAppletSize);
+                        // console.log("s4_2.0  "+ neutralApplets[j].pluginName + " _ " + neutralApplets[j].maxAutoFillLength + " _ " + adjustedAppletSize);
 
                         if (inMaxAutoFillCalculations) {
                             neutralApplets[j].maxAutoFillLength = neutralApplets[j].maxAutoFillLength + adjustedAppletSize;
@@ -211,21 +220,21 @@ Item {
                             neutralApplets[j].minAutoFillLength = neutralApplets[j].minAutoFillLength + adjustedAppletSize;
                         }
 
-                        // console.log("s4_2  "+ neutralApplets[j].applet.pluginName + " assigned: "  + sizePerApplet + "\n");
+                        // console.log("s4_2  "+ neutralApplets[j].pluginName + " assigned: "  + sizePerApplet + "\n");
                     }
                 }
             } else {
                 for(var i=0; i<layout.children.length; ++i) {
                     var curApplet = layout.children[i];
 
-                    if (curApplet && curApplet.isAutoFillApplet && curApplet.inFillCalculations) {
+                    if (curApplet && curApplet.isAutoFillApplet && !curApplet.isHidden && curApplet.inFillCalculations) {
                         if (inMaxAutoFillCalculations) {
-                            curApplet.maxAutoFillLength = sizePerApplet;
+                            curApplet.maxAutoFillLength = Math.max(curApplet.appletMinimumLength,sizePerApplet);
                         } else {
-                            curApplet.minAutoFillLength = sizePerApplet;
+                            curApplet.minAutoFillLength = Math.max(curApplet.appletMinimumLength,sizePerApplet);
                         }
 
-                        // console.log("s4_3  "+ curApplet.applet.pluginName + " assigned: "  + sizePerApplet + "\n");
+                        // console.log("s4_3  "+ curApplet.pluginName + " assigned: "  + sizePerApplet + "\n");
                         curApplet.inFillCalculations = false;
                     }
                 }
@@ -399,8 +408,8 @@ Item {
 
     function _updateSizeForAppletsInFill() {
         if (inNormalFillCalculationsState) {
-            // console.log("-------------");
-            // console.log("s1...");
+            // console.log(" org.kde.latte -------------");
+            // console.log(" org.kde.latte s1...");
             var noA = startLayout.fillApplets + mainLayout.fillApplets + endLayout.fillApplets;
 
             if (noA === 0) {

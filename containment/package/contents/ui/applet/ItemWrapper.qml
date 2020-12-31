@@ -96,25 +96,24 @@ Item{
 
         return root.isHorizontal ? appletMinimumWidth : appletMinimumHeight
     }
-    readonly property int appletMinimumThickness: root.isHorizontal ? appletMinimumHeight : appletMinimumWidth
+
     readonly property int appletPreferredLength: {
         if (isInternalViewSplitter) {
-            /*var isDragged = (root.dragOverlay
-                             && root.dragOverlay.currentApplet
-                             && root.dragOverlay.pressed);*/
             return appletItem.isFillSplitter ? Infinity : -1;
         }
         return root.isHorizontal ? appletPreferredWidth : appletPreferredHeight;
     }
 
-    readonly property int appletPreferredThickness: root.isHorizontal ? appletPreferredHeight : appletPreferredWidth
     readonly property int appletMaximumLength: {
         if (isInternalViewSplitter) {
-            return Infinity;
+            return isFillSplitter ? (root.isHorizontal ? root.width : root.height) : appletMinimumLength;
         }
 
         root.isHorizontal ? appletMaximumWidth : appletMaximumHeight;
     }
+
+    readonly property int appletMinimumThickness: root.isHorizontal ? appletMinimumHeight : appletMinimumWidth
+    readonly property int appletPreferredThickness: root.isHorizontal ? appletPreferredHeight : appletPreferredWidth
     readonly property int appletMaximumThickness: root.isHorizontal ? appletMaximumHeight : appletMaximumWidth
 
     property int iconSize: appletItem.metrics.iconSize
@@ -217,6 +216,7 @@ Item{
     onAppletPreferredLengthChanged: {
         updateAutoFillLength();
     }
+
     onAppletMaximumLengthChanged: {
         updateAutoFillLength();
     }
@@ -397,6 +397,7 @@ Item{
             sourceComponent: LatteCore.IconItem{
                 id: overlayIconItem
                 anchors.fill: parent
+                visible: false
 
                 source: {
                     if (communicator.appletIconItem && communicator.appletIconItem.visible) {

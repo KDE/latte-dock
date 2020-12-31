@@ -75,13 +75,18 @@ Item {
     property int maxAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
     property int minAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
 
-    readonly property int isFillSplitter:(parent === layoutsContainer.startLayout
-                                          && appletItem.layouter.startLayout.fillApplets === 1
-                                          && (appletItem.layouter.mainLayout.shownApplets>=1
-                                              || appletItem.layouter.endLayout.fillApplet ===0))
-                                         || (parent === layoutsContainer.endLayout
-                                             && appletItem.layouter.endLayout.fillApplets === 1
-                                             && (appletItem.layouter.mainLayout.shownApplets>=1))
+    readonly property int isFillSplitter: isInternalViewSplitter
+                                          && ((parent === layoutsContainer.startLayout
+                                               && appletItem.layouter.startLayout.fillApplets === 1
+                                               && (appletItem.layouter.mainLayout.shownApplets>=1 /*main layout has applet in it*/
+                                                   || (appletItem.layouter.mainLayout.shownApplets===0 /*main layout is empty*/
+                                                       && appletItem.layouter.endLayout.fillApplets === 1)))
+                                              || (parent === layoutsContainer.endLayout
+                                                  && appletItem.layouter.endLayout.fillApplets === 1
+                                                  && (appletItem.layouter.mainLayout.shownApplets>=1 /*main layout has applet in it*/
+                                                      || (appletItem.layouter.mainLayout.shownApplets===0 /*main layout is empty*/
+                                                          && appletItem.layouter.startLayout.fillApplets === 1))))
+
 
     readonly property bool inConfigureAppletsDragging: root.dragOverlay
                                                        && root.dragOverlay.currentApplet
@@ -282,6 +287,8 @@ Item {
 
         return 2 * lengthAppletPadding;
     }
+
+    readonly property string pluginName: isInternalViewSplitter ? "org.kde.latte.splitter" : (applet ? applet.pluginName : "")
 
     //! are set by the indicator
     property int iconOffsetX: 0

@@ -89,7 +89,7 @@ Item {
         value: {
             var no = 0;
             for (var i=0; i<grid.children.length; ++i){
-                if (grid.children[i] && grid.children[i].isAutoFillApplet) {
+                if (grid.children[i] && grid.children[i].isAutoFillApplet && !grid.children[i].isHidden) {
                     //console.log("fill :::: " + children[i].applet.pluginName);
                     no++;
                 }
@@ -166,8 +166,4 @@ Item {
             root.updateIndexes();
         }
     }
-
-    onFillAppletsChanged: layouter.updateSizeForAppletsInFill();
-    onShownAppletsChanged: layouter.updateSizeForAppletsInFill();
-    onSizeWithNoFillAppletsChanged: layouter.updateSizeForAppletsInFill();
 }
