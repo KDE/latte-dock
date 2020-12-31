@@ -118,9 +118,11 @@ MouseArea {
 
     onPositionChanged: {
         if (pressed) {
-            var padding = units.gridUnit * 3;
+            //! is this really needed ????
+            /*var padding = units.gridUnit * 3;
             if (currentApplet && (mouse.x < -padding || mouse.y < -padding ||
                                   mouse.x > width + padding || mouse.y > height + padding)) {
+
                 var newCont = plasmoid.containmentAt(mouse.x, mouse.y);
 
                 if (newCont && newCont != plasmoid) {
@@ -129,7 +131,7 @@ MouseArea {
                     root.dragOverlay.currentApplet = null;
                     return;
                 }
-            }
+            }*/
 
             if(currentApplet){
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
@@ -234,8 +236,8 @@ MouseArea {
         handle.height = currentApplet.height;
         root.layoutManagerInsertBefore(currentApplet, placeHolder);
         currentApplet.parent = root;
-        currentApplet.x = lastX-appletX;
-        currentApplet.y = lastY-appletY;
+        currentApplet.x = root.isHorizontal ? lastX - currentApplet.width/2 : lastX-appletX;
+        currentApplet.y = root.isVertical ? lastY - currentApplet.height/2 : lastY-appletY;
         currentApplet.z = 900;
     }
 
@@ -292,6 +294,21 @@ MouseArea {
             currentApplet.latteStyleApplet.decreaseLength();
     }
 
+    Connections {
+        target: currentApplet
+        onWidthChanged: {
+            if (configurationArea.pressed && root.isHorizontal) {
+                currentApplet.x = configurationArea.lastX - currentApplet.width/2;
+            }
+        }
+
+        onHeightChanged: {
+            if (configurationArea.pressed && root.isVertical) {
+                currentApplet.y = configurationArea.lastY - currentApplet.height/2;
+            }
+        }
+    }
+
     Item {
         id: placeHolder
         visible: configurationArea.pressed
@@ -299,6 +316,20 @@ MouseArea {
         Layout.fillHeight: currentApplet ? currentApplet.Layout.fillHeight : false
 
         readonly property bool isPlaceHolder: true
+    }
+
+    Binding {
+        target: placeHolder
+        property: "width"
+        when: currentApplet
+        value: currentApplet ? currentApplet.width : 0
+    }
+
+    Binding {
+        target: placeHolder
+        property: "width"
+        when: currentApplet
+        value: currentApplet ? currentApplet.height : 0
     }
 
     //Because of the animations for the applets the handler can not catch up to

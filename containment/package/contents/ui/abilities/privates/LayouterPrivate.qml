@@ -88,7 +88,7 @@ Item {
                 var prefSize = curApplet.appletPreferredLength;
                 var maxSize = curApplet.appletMaximumLength;
 
-                console.log( "org.kde.latte s3_0 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
+                //console.log( "s3_0 " + curApplet.applet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
 
                 minSize = minSize>=0 && minSize!==Infinity ? minSize : -1;
                 prefSize = minSize>=0 && prefSize!==Infinity ? prefSize : -1;

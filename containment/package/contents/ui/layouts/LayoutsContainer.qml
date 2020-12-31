@@ -281,10 +281,6 @@ Item{
         z:10 //be on top of start and end layouts
         beginIndex: 100
         offset: {
-            if (inJustifyCenterOffset!==0) {
-                return inJustifyCenterOffset;
-            }
-
             if (!centered) {
                 //! it is used for Top/Bottom/Left/Right alignments when they show both background length shadows
                 return background.offset + backgroundTailLength;
@@ -299,7 +295,6 @@ Item{
         //! do not update during dragging/moving applets inConfigureAppletsMode
         readonly property bool offsetUpdateIsBlocked: ((root.dragOverlay && root.dragOverlay.pressed) || layouter.appletsInParentChange)
         property bool isCoveredFromBothSideLayouts: false
-        property int inJustifyCenterOffset: 0
 
         alignment: {
             if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -366,39 +361,6 @@ Item{
 
                 //! start and end layouts length exceed the maximum length
                 return (startLayout.length + endLayout.length) > (root.maxLength);
-            }
-        }
-
-        Binding{
-            target: _mainLayout
-            property:"inJustifyCenterOffset"
-            when: !_mainLayout.offsetUpdateIsBlocked && layouter.inNormalFillCalculationsState
-            value: {
-                if (root.panelAlignment !== LatteCore.Types.Justify) {
-                    return 0;
-                }
-
-                var layoutMaxLength = root.maxLength / 2;
-                var sideLayoutMaxLength = layoutMaxLength - mainLayout.length/2;
-
-                if (_mainLayout.isCoveredFromBothSideLayouts && root.inConfigureAppletsMode) {
-                    return sideLayoutMaxLength;
-                }
-
-                if (startLayout.length > sideLayoutMaxLength) {
-                    return (startLayout.length - sideLayoutMaxLength);
-                } else if (endLayout.length > sideLayoutMaxLength) {
-                    return -(endLayout.length - sideLayoutMaxLength);
-                }
-
-                return 0;
-            }
-        }
-
-        Behavior on inJustifyCenterOffset {
-            NumberAnimation {
-                duration: 0.8 * animations.duration.proposed
-                easing.type: Easing.OutCubic
             }
         }
     }
@@ -481,7 +443,7 @@ Item{
             readonly property int layoutLength: root.isHorizontal ? debugLayout.grid.width : debugLayout.grid.height
 
             readonly property string tagText: {
-                return "normal:" + debugLayout.shownApplets + " / fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength + " / off:" + _mainLayout.inJustifyCenterOffset;
+                return "normal:" + debugLayout.shownApplets + " / fill:" + debugLayout.fillApplets + " / reg_len:" + debugLayout.sizeWithNoFillApplets + " / tot_len:"+layoutLength;
             }
         }
     }

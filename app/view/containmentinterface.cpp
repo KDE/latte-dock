@@ -674,12 +674,30 @@ void ContainmentInterface::moveAppletsInJustifyAlignment(QQuickItem *start, QQui
         }
     }
 
-    for(int i=0; i<appletlist.count()-2; ++i) {
+    for(int i=0; i<appletlist.count()-1; ++i) {
         QQuickItem *before = appletlist[i];
         QQuickItem *after = appletlist[i+1];
 
         if (before->parentItem() == after->parentItem()) {
             before->stackBefore(after);
+        }
+    }
+
+    //! Confirm Last item of End Layout
+    if (end->childItems().count() > 0) {
+        QQuickItem *lastItem = end->childItems()[end->childItems().count()-1];
+
+        int correctpos{-1};
+
+        for(int i=0; i<appletlist.count()-1; ++i) {
+            if (lastItem == appletlist[i]) {
+                correctpos = i;
+                break;
+            }
+        }
+
+        if (correctpos>=0) {
+            lastItem->stackBefore(appletlist[correctpos+1]);
         }
     }
 }

@@ -36,8 +36,12 @@ Item{
     height: root.isHorizontal ? thickness : length
 
     readonly property int length: {
-        if (appletItem.isInternalViewSplitter && !root.inConfigureAppletsMode) {
-            return 0;
+        if (appletItem.isInternalViewSplitter) {
+            if (!root.inConfigureAppletsMode) {
+                return 0;
+            } else if (appletItem.inConfigureAppletsDragging){
+                return appletMinimumLength + (lengthAppletPadding + metrics.margin.length)*2 ;
+            }
         }
 
         if (isSeparator && appletItem.parabolic.isEnabled) {
@@ -84,11 +88,33 @@ Item{
 
     readonly property int appletLength: root.isHorizontal ? appletWidth : appletHeight
     readonly property int appletThickness: root.isHorizontal ? appletHeight : appletWidth
-    readonly property int appletMinimumLength : root.isHorizontal ? appletMinimumWidth : appletMinimumHeight
+
+    readonly property int appletMinimumLength : {
+        if (isInternalViewSplitter) {
+            return Math.min(root.maxJustifySplitterSize, appletItem.metrics.iconSize);
+        }
+
+        return root.isHorizontal ? appletMinimumWidth : appletMinimumHeight
+    }
     readonly property int appletMinimumThickness: root.isHorizontal ? appletMinimumHeight : appletMinimumWidth
-    readonly property int appletPreferredLength: root.isHorizontal ? appletPreferredWidth : appletPreferredHeight
+    readonly property int appletPreferredLength: {
+        if (isInternalViewSplitter) {
+            /*var isDragged = (root.dragOverlay
+                             && root.dragOverlay.currentApplet
+                             && root.dragOverlay.pressed);*/
+            return appletItem.isFillSplitter ? Infinity : -1;
+        }
+        return root.isHorizontal ? appletPreferredWidth : appletPreferredHeight;
+    }
+
     readonly property int appletPreferredThickness: root.isHorizontal ? appletPreferredHeight : appletPreferredWidth
-    readonly property int appletMaximumLength: root.isHorizontal ? appletMaximumWidth : appletMaximumHeight
+    readonly property int appletMaximumLength: {
+        if (isInternalViewSplitter) {
+            return Infinity;
+        }
+
+        root.isHorizontal ? appletMaximumWidth : appletMaximumHeight;
+    }
     readonly property int appletMaximumThickness: root.isHorizontal ? appletMaximumHeight : appletMaximumWidth
 
     property int iconSize: appletItem.metrics.iconSize
@@ -232,9 +258,7 @@ Item{
         property: "layoutLength"
         when: latteView && !appletItem.isAutoFillApplet && (wrapper.zoomScale === 1)
         value: {
-            if (appletItem.isInternalViewSplitter){
-                return !root.inConfigureAppletsMode ? 0 : Math.min(appletItem.metrics.iconSize, root.maxJustifySplitterSize);
-            } else if (applet && ( appletMaximumLength < appletItem.metrics.iconSize
+            if (applet && ( appletMaximumLength < appletItem.metrics.iconSize
                                   || appletPreferredLength > appletItem.metrics.iconSize
                                   || appletItem.originalAppletBehavior)) {
 
@@ -498,10 +522,12 @@ Item{
         anchors.fill: _wrapperContainer
         active: appletItem.isInternalViewSplitter && root.inConfigureAppletsMode
 
-        sourceComponent: Item {
+        sourceComponent: Rectangle {
             anchors.fill: parent
+            color: "purple"
+            opacity: 0.4
 
-            PlasmaCore.SvgItem{
+            /*PlasmaCore.SvgItem{
                 id:splitterImage
                 anchors.centerIn: parent
                 width: Math.min(root.maxJustifySplitterSize, appletItem.metrics.iconSize)
@@ -521,7 +547,7 @@ Item{
 
                     verticalOffset: 2
                 }
-            }
+            }*/
         }
     }
 

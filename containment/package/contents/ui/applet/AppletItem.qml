@@ -58,6 +58,10 @@ Item {
     //! Fill Applet(s)
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
     property bool isAutoFillApplet: {
+        if (isInternalViewSplitter) {
+            return true;
+        }
+
         if (!applet || !applet.Layout)
             return false;
 
@@ -70,6 +74,18 @@ Item {
     }
     property int maxAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
     property int minAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
+
+    readonly property int isFillSplitter:(parent === layoutsContainer.startLayout
+                                          && appletItem.layouter.startLayout.fillApplets === 1
+                                          && (appletItem.layouter.mainLayout.shownApplets>=1
+                                              || appletItem.layouter.endLayout.fillApplet ===0))
+                                         || (parent === layoutsContainer.endLayout
+                                             && appletItem.layouter.endLayout.fillApplets === 1
+                                             && (appletItem.layouter.mainLayout.shownApplets>=1))
+
+    readonly property bool inConfigureAppletsDragging: root.dragOverlay
+                                                       && root.dragOverlay.currentApplet
+                                                       && root.dragOverlay.pressed
 
     property bool userBlocksColorizing: false
     property bool appletBlocksColorizing: !communicator.requires.latteSideColoringEnabled
@@ -276,8 +292,6 @@ Item {
 
     property real computeHeight: root.isVertical ? hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height :
                                                    wrapper.height
-
-    property string title: isInternalViewSplitter ? "Now Dock Splitter" : ""
 
     property Item applet: null
     property Item latteApplet: applet && (applet.pluginName === root.plasmoidName) ?
