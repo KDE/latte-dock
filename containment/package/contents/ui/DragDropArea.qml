@@ -219,7 +219,7 @@ DragDrop.DropArea {
         dndSpacer.opacity = 0;
 
         if (dragInfo.isPlasmoid && root.panelAlignment === LatteCore.Types.Justify) {
-            root.layoutManagerMoveAppletsBasedOnJustifyAlignment();
+            root.moveAppletsBasedOnJustifyAlignment();
         }
     }
 }

@@ -112,7 +112,7 @@ function restore() {
     inRestore = false;
 
     if (plasmoid.configuration.alignment === 10/*Justify*/) {
-        root.splitMainLayoutToLayouts();
+        root.moveAppletsBasedOnJustifyAlignment();
         root.updateIndexes();
     }
 }

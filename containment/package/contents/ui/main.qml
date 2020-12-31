@@ -515,7 +515,7 @@ Item {
         if (root.editMode){
             if (panelAlignment===LatteCore.Types.Justify) {
                 addInternalViewSplittersInMainLayout();
-                splitMainLayoutToLayouts();
+                moveAppletsBasedOnJustifyAlignment();
             } else {
                 joinLayoutsToMainLayout();
                 root.destroyInternalViewSplitters();
@@ -975,10 +975,8 @@ Item {
         }
     }
 
-    function layoutManagerMoveAppletsBasedOnJustifyAlignment() {
-        if (plasmoid.configuration.alignment !== 10) {
-            return;
-        }
+    function moveAppletsBasedOnJustifyAlignment() {
+        layouter.appletsInParentChange = true;
 
         if (latteView) {
             latteView.extendedInterface.moveAppletsInJustifyAlignment(layoutsContainer.startLayout,
@@ -987,50 +985,6 @@ Item {
         }
 
         layouter.appletsInParentChange = false;
-    }
-
-    function splitMainLayoutToLayouts() {
-        if (internalViewSplittersCount() === 2) {
-            layouter.appletsInParentChange = true;
-
-            console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
-            var splitter = -1;
-            var splitter2 = -1;
-
-            var totalChildren = layoutsContainer.mainLayout.children.length;
-            for (var i=0; i<totalChildren; ++i) {
-                var item = layoutsContainer.mainLayout.children[i];
-
-                if(item.isInternalViewSplitter && splitter === -1) {
-                    splitter = i;
-                } else if (item.isInternalViewSplitter && splitter>=0 && splitter2 === -1) {
-                    splitter2 = i;
-                }
-            }
-
-            // console.log("update layouts 1:"+splitter + " - "+splitter2);
-
-            if (splitter > 0) {
-                for (var i=0; i<=splitter; ++i){
-                    var item = layoutsContainer.mainLayout.children[0];
-                    item.parent = layoutsContainer.startLayout;
-                }
-            }
-
-            if (splitter2 > 0) {
-                splitter2 = splitter2 - splitter - 1;
-                // console.log("update layouts 2:"+splitter + " - "+splitter2);
-
-                totalChildren = layoutsContainer.mainLayout.children.length;
-
-                for (var i=totalChildren-1; i>=splitter2; --i){
-                    var item = layoutsContainer.mainLayout.children[i];
-                    LayoutManager.insertAtIndex(layoutsContainer.endLayout, item, 0);
-                }
-            }
-
-            layouter.appletsInParentChange = false;
-        }
     }
 
     function joinLayoutsToMainLayout() {

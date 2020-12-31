@@ -665,6 +665,7 @@ void ContainmentInterface::moveAppletsInJustifyAlignment(QQuickItem *start, QQui
             if (issplitter) {
                 secondSplitterFound = true;
                 splitter2 = i;
+                appletlist[i]->setParentItem(end);
             } else {
                 appletlist[i]->setParentItem(main);
             }
@@ -673,11 +674,13 @@ void ContainmentInterface::moveAppletsInJustifyAlignment(QQuickItem *start, QQui
         }
     }
 
-    if (splitter1>0) {
-        appletlist[splitter1]->stackAfter(appletlist[splitter1 - 1]);
-    }
-    if (splitter2>0 && splitter2<appletlist.count()-1) {
-        appletlist[splitter2]->stackBefore(appletlist[splitter2 + 1]);
+    for(int i=0; i<appletlist.count()-2; ++i) {
+        QQuickItem *before = appletlist[i];
+        QQuickItem *after = appletlist[i+1];
+
+        if (before->parentItem() == after->parentItem()) {
+            before->stackBefore(after);
+        }
     }
 }
 
