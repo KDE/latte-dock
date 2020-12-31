@@ -768,6 +768,14 @@ Item {
                 }
             }
 
+            //! InConfigureApplets visual paddings
+            Loader {
+                anchors.fill: _wrapper
+                active: root.inConfigureAppletsMode
+                sourceComponent: PaddingsInConfigureApplets{}
+            }
+
+
             ItemWrapper{
                 id: _wrapper
 

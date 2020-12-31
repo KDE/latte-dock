@@ -111,6 +111,9 @@ Item{
 
     property real zoomScale: 1
 
+    readonly property alias headThicknessMargin: _wrapperContainer.headThicknessMargin
+    readonly property alias tailThicknessMargin: _wrapperContainer.tailThicknessMargin
+
     property int index: appletItem.index
 
     property Item wrapperContainer: _wrapperContainer
@@ -300,6 +303,7 @@ Item{
         }
     }
 
+    //! Applet Main Container
     Item{
         id:_wrapperContainer
         width: root.isHorizontal ? _length : _thickness
@@ -310,7 +314,8 @@ Item{
         property int _thickness:0 // through Binding to avoid binding loops
 
         readonly property int appliedEdgeMargin: appletItem.screenEdgeMarginSupported ? 0 : appletItem.metrics.margin.screenEdge
-        readonly property int tailThicknessMargin: appliedEdgeMargin + (wrapper.zoomScaleThickness * metrics.margin.thickness)
+        readonly property int tailThicknessMargin: appletItem.screenEdgeMarginSupported ? 0 : appliedEdgeMargin + (wrapper.zoomScaleThickness * metrics.margin.thickness)
+        readonly property int headThicknessMargin: appletItem.canFillThickness || appletItem.screenEdgeMarginSupported ? 0 : appletItem.metrics.margin.thickness
 
         Binding {
             target: _wrapperContainer
