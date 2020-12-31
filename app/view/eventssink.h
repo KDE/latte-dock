@@ -23,6 +23,7 @@
 // Qt
 #include <QEvent>
 #include <QObject>
+#include <QPointer>
 #include <QQuickItem>
 
 namespace Latte {
