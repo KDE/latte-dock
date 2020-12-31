@@ -754,6 +754,13 @@ Item {
                 id: indicatorBridge
             }
 
+            //! InConfigureApplets visual paddings
+            Loader {
+                anchors.fill: _wrapper
+                active: root.inConfigureAppletsMode && appletItem.parabolic.factor.zoom===1
+                sourceComponent: PaddingsInConfigureApplets{}
+            }
+
             //! Indicator Back Layer
             Indicator.Loader{
                 id: indicatorBackLayer
@@ -787,12 +794,7 @@ Item {
                 }
             }
 
-            //! InConfigureApplets visual paddings
-            Loader {
-                anchors.fill: _wrapper
-                active: root.inConfigureAppletsMode
-                sourceComponent: PaddingsInConfigureApplets{}
-            }
+
 
 
             ItemWrapper{
