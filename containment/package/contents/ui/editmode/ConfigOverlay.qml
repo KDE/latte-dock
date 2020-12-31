@@ -20,13 +20,14 @@
 
 import QtQuick 2.7
 import QtQuick.Layouts 1.0
+import QtGraphicalEffects 1.0
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
-import QtGraphicalEffects 1.0
+import org.kde.latte.core 0.2 as LatteCore
 
 MouseArea {
     id: configurationArea
@@ -76,8 +77,14 @@ MouseArea {
 
     function hoveredItem(x, y) {
         //! main layout
-        var relevantLayout = mapFromItem(layoutsContainer.mainLayout,0,0);
-        var item = layoutsContainer.mainLayout.childAt(x-relevantLayout.x, y-relevantLayout.y);
+        var relevantLayout;
+        var item;
+
+        if (!item) {
+            // main layout
+            relevantLayout = mapFromItem(layoutsContainer.mainLayout, 0, 0);
+            item = layoutsContainer.mainLayout.childAt(x-relevantLayout.x, y-relevantLayout.y);
+        }
 
         if (!item) {
             // start layout
@@ -86,6 +93,7 @@ MouseArea {
         }
 
         if (!item) {
+            // end layout
             relevantLayout = mapFromItem(layoutsContainer.endLayout,0,0);
             item = layoutsContainer.endLayout.childAt(x-relevantLayout.x, y-relevantLayout.y);
         }
@@ -136,11 +144,20 @@ MouseArea {
             lastX = mouse.x;
             lastY = mouse.y;
 
-            var item =  hoveredItem(mouse.x, mouse.y);
+            var mousesink = {x: mouse.x, y: mouse.y};
+
+            //! ignore thicknes moving at all cases
+            if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
+                mousesink.y = 0;
+            } else {
+                mousesink.x = 0;
+            }
+
+            var item =  hoveredItem(mousesink.x, mousesink.y);
 
             if (item && item !== placeHolder) {
                 placeHolder.parent = configurationArea;
-                var posInItem = mapToItem(item, mouse.x, mouse.y);
+                var posInItem = mapToItem(item, mousesink.x, mousesink.y);
 
                 if ((plasmoid.formFactor === PlasmaCore.Types.Vertical && posInItem.y < item.height/2) ||
                         (plasmoid.formFactor !== PlasmaCore.Types.Vertical && posInItem.x < item.width/2)) {
@@ -223,6 +240,10 @@ MouseArea {
     }
 
     onReleased: {
+        if (!handle.visible) {
+            tooltip.visible = false;
+        }
+
         if (!root.dragOverlay.currentApplet) {
             return;
         }
@@ -249,7 +270,11 @@ MouseArea {
         //     handle.width = currentApplet.width;
         //    handle.height = currentApplet.height;
         root.layoutManagerSave();
-        root.moveAppletsBasedOnJustifyAlignment();
+
+        if (root.panelAlignment === LatteCore.Types.Justify) {
+            root.moveAppletsBasedOnJustifyAlignment();
+        }
+
         root.layouter.appletsInParentChange = false;
         layouter.updateSizeForAppletsInFill();
     }
@@ -269,7 +294,7 @@ MouseArea {
 
     Item {
         id: placeHolder
-        visible: configurationArea.containsMouse
+        visible: configurationArea.pressed
         Layout.fillWidth: currentApplet ? currentApplet.Layout.fillWidth : false
         Layout.fillHeight: currentApplet ? currentApplet.Layout.fillHeight : false
 
