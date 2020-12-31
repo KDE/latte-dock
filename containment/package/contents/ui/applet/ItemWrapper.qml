@@ -113,6 +113,7 @@ Item{
 
     readonly property alias headThicknessMargin: _wrapperContainer.headThicknessMargin
     readonly property alias tailThicknessMargin: _wrapperContainer.tailThicknessMargin
+    readonly property alias appletScreenMargin: _wrapperContainer.appliedEdgeMargin
 
     property int index: appletItem.index
 

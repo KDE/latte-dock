@@ -22,33 +22,58 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 
 Item {
-
-    readonly property int thickness: wrapper.marginsThickness / 2
+    readonly property int thickness: wrapper.headThicknessMargin
     readonly property int length: root.isHorizontal ? wrapper.width : wrapper.height
 
     Rectangle {
-        id: headPadding
-        width: root.isHorizontal ? length : wrapper.headThicknessMargin
-        height: root.isHorizontal ? wrapper.headThicknessMargin : length
+        id: tailPadding
+        anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? wrapper.appletScreenMargin : 0
+        anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? wrapper.appletScreenMargin : 0
+        anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? wrapper.appletScreenMargin : 0
+        anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? wrapper.appletScreenMargin : 0
+
+        width: root.isHorizontal ? length : thickness
+        height: root.isHorizontal ? thickness : length
+
         color: colorizerManager.highlightColor
 
         states:[
             State{
-                name: "horizontal"
-                when: root.isHorizontal
+                name: "bottom"
+                when: plasmoid.location === PlasmaCore.Types.BottomEdge
 
                 AnchorChanges{
-                    target: headPadding
+                    target: tailPadding
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                }
+            },
+            State{
+                name: "top"
+                when: plasmoid.location === PlasmaCore.Types.TopEdge
+
+                AnchorChanges{
+                    target: tailPadding
                     anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
                     anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
                 }
             },
             State{
-                name: "vertical"
-                when: root.isVertical
+                name: "left"
+                when: plasmoid.location === PlasmaCore.Types.LeftEdge
 
                 AnchorChanges{
-                    target: headPadding
+                    target: tailPadding
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+                }
+            },
+            State{
+                name: "right"
+                when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                AnchorChanges{
+                    target: tailPadding
                     anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
                     anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
                 }
@@ -57,28 +82,49 @@ Item {
     }
 
     Rectangle {
-        id: tailPadding
-        width: root.isHorizontal ? length : wrapper.tailThicknessMargin
-        height: root.isHorizontal ? wrapper.tailThicknessMargin : length
+        id: headPadding
+
+        width: root.isHorizontal ? length : thickness
+        height: root.isHorizontal ? thickness : length
         color: colorizerManager.highlightColor
 
         states:[
             State{
-                name: "horizontal"
-                when: root.isHorizontal
+                name: "bottom"
+                when: plasmoid.location === PlasmaCore.Types.BottomEdge
 
                 AnchorChanges{
-                    target: tailPadding
+                    target: headPadding
                     anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
-                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
-                }                
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+                }
             },
             State{
-                name: "vertical"
-                when: root.isVertical
+                name: "top"
+                when: plasmoid.location === PlasmaCore.Types.TopEdge
 
                 AnchorChanges{
-                    target: tailPadding
+                    target: headPadding
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                }
+            },
+            State{
+                name: "left"
+                when: plasmoid.location === PlasmaCore.Types.LeftEdge
+
+                AnchorChanges{
+                    target: headPadding
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                }
+            },
+            State{
+                name: "right"
+                when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                AnchorChanges{
+                    target: headPadding
                     anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
                     anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
                 }
