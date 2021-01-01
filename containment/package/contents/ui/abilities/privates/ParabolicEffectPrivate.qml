@@ -36,6 +36,8 @@ AbilityHost.ParabolicEffect {
 
     readonly property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
 
+    property int lastParabolicItemIndex: -1
+
     Connections {
         target: parabolic
         onSglClearZoom: parabolic._privates.lastIndex = -1;
@@ -95,6 +97,18 @@ AbilityHost.ParabolicEffect {
 
     function setCurrentParabolicItem(item) {
         view.parabolic.currentItem = item;
+    }
+
+    function setCurrentParabolicItemIndex(index) {
+        if (!directRenderingEnabled
+                && lastParabolicItemIndex > -1
+                && index > -1
+                && Math.abs(lastParabolicItemIndex-index) >=2 ) {
+            //! rapid movement
+            setDirectRenderingEnabled(true);
+        }
+
+        lastParabolicItemIndex = index;
     }
 
     function applyParabolicEffect(index, currentMousePosition, center) {
@@ -159,6 +173,7 @@ AbilityHost.ParabolicEffect {
                 return;
             }
 
+            parabolic.lastParabolicItemIndex = -1;
             parabolic.sglClearZoom();
 
             if (debug.timersEnabled) {

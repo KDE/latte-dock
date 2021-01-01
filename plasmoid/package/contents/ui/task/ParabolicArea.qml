@@ -42,6 +42,10 @@ Item {
 
         onEntered: {
             taskItem.parabolic.setCurrentParabolicItem(_parabolicArea);
+
+            var vIndex = taskItem.shortcuts.shortcutIndex(taskItem.itemIndex);
+            taskItem.parabolic.setCurrentParabolicItemIndex(vIndex);
+
             // mouseX/Y can not be trusted at this point
             //_parabolicArea.parabolicEntered(mouseX, mouseY);
         }
@@ -88,12 +92,6 @@ Item {
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && taskItem.hoverEnabled){
-            var rapidMovement = taskItem.parabolic.local.lastIndex>=0 && Math.abs(taskItem.parabolic.local.lastIndex-itemIndex)>1;
-
-            if (rapidMovement) {
-                taskItem.parabolic.setDirectRenderingEnabled(true);
-            }
-
             if( ((wrapper.mScale === 1 || wrapper.mScale === taskItem.parabolic.factor.zoom) && !taskItem.parabolic.directRenderingEnabled)
                     || taskItem.parabolic.directRenderingEnabled || !taskItem.scalesUpdatedOnce) {
                 if(root.dragSource == null){

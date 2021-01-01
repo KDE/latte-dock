@@ -43,6 +43,10 @@ Item {
 
         onEntered: {
             appletItem.parabolic.setCurrentParabolicItem(_parabolicArea);
+
+            var vIndex = appletItem.indexer.visibleIndex(index);
+            appletItem.parabolic.setCurrentParabolicItemIndex(vIndex);
+
             //! mouseX/Y can be trusted in that case in comparison to tasks that the relevant ParabolicAreaMouseArea does not
             _parabolicArea.parabolicEntered(mouseX, mouseY);
         }
@@ -81,12 +85,6 @@ Item {
         if (root.isHalfShown || (root.latteApplet
                                  && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
             return;
-        }
-
-        var rapidMovement = appletItem.parabolic.lastIndex>=0 && Math.abs(appletItem.parabolic.lastIndex-index)>1;
-
-        if (rapidMovement) {
-            parabolic.setDirectRenderingEnabled(true);
         }
 
         if( ((wrapper.zoomScale === 1 || wrapper.zoomScale === appletItem.parabolic.factor.zoom) && !parabolic.directRenderingEnabled) || parabolic.directRenderingEnabled) {

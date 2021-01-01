@@ -128,6 +128,12 @@ ClientAbility.ParabolicEffect {
         }
     }
 
+    function setCurrentParabolicItemIndex(index) {
+        if (bridge) {
+            bridge.parabolic.host.setCurrentParabolicItemIndex(index);
+        }
+    }
+
 
     function applyParabolicEffect(index, currentMousePosition, center) {
         if (parabolic.local._privates.lastIndex === -1) {
