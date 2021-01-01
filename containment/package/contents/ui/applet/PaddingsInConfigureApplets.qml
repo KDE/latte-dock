@@ -35,7 +35,7 @@ Item {
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
 
-        color: colorizerManager.highlightColor
+        color: theme.highlightColor // colorizerManager.highlightColor
 
         states:[
             State{
@@ -86,7 +86,7 @@ Item {
 
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
-        color: colorizerManager.highlightColor
+        color: theme.highlightColor // colorizerManager.highlightColor
 
         states:[
             State{

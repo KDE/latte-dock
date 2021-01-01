@@ -17,6 +17,7 @@ Label 1.0 Label.qml
 ScrollArea 1.0 ScrollArea.qml
 Slider 1.0 Slider.qml
 SpinBox 1.0 SpinBox.qml
+SpriteRectangle 1.0 SpriteRectangle.qml
 SubHeader 1.0 SubHeader.qml
 Switch 1.0 Switch.qml
 TextField 1.0 TextField.qml

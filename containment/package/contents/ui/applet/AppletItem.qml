@@ -764,7 +764,7 @@ Item {
             //! InConfigureApplets visual paddings
             Loader {
                 anchors.fill: _wrapper
-                active: root.inConfigureAppletsMode && appletItem.parabolic.factor.zoom===1
+                active: root.inConfigureAppletsMode && appletItem.parabolic.factor.zoom===1 && !isInternalViewSplitter
                 sourceComponent: PaddingsInConfigureApplets{}
             }
 

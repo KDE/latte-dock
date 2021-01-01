@@ -27,6 +27,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte.core 0.2 as LatteCore
+import org.kde.latte.components 1.0 as LatteComponents
 
 import "../../code/MathTools.js" as MathTools
 
@@ -49,11 +50,15 @@ Item{
         }
 
         if (appletItem.isAutoFillApplet) {
+            //! dont miss 1pixel gap when the two internal splitters are met inConfigure and Justify mode
+            //! a good example is a big vertical right sidebar to observe that gap
             if (appletItem.layouter.maxMetricsInHigherPriority) {
-                return appletItem.maxAutoFillLength;
+                return isInternalViewSplitter ? appletItem.maxAutoFillLength + 1 : appletItem.maxAutoFillLength;
             }
 
-            return Math.max(appletItem.minAutoFillLength,Math.min(appletPreferredLength,appletItem.maxAutoFillLength));
+            var result = Math.max(appletItem.minAutoFillLength,Math.min(appletPreferredLength,appletItem.maxAutoFillLength));
+
+            return isInternalViewSplitter? result + 1 : result;
         }
 
         return root.inConfigureAppletsMode ? Math.max(Math.min(appletItem.metrics.iconSize, root.minAppletLengthInConfigure), scaledLength) : scaledLength;
@@ -520,35 +525,13 @@ Item{
 
     //! InternalViewSplitter
     Loader{
-        anchors.fill: _wrapperContainer
+        anchors.fill: parent //_wrapperContainer
         active: appletItem.isInternalViewSplitter && root.inConfigureAppletsMode
 
-        sourceComponent: Rectangle {
-            anchors.fill: parent
-            color: "purple"
-            opacity: 0.4
-
-            /*PlasmaCore.SvgItem{
-                id:splitterImage
-                anchors.centerIn: parent
-                width: Math.min(root.maxJustifySplitterSize, appletItem.metrics.iconSize)
-                height: width
-                rotation: root.isVertical ? 90 : 0
-
-                svg: PlasmaCore.Svg{
-                    imagePath: root.universalSettings.splitterIconPath()
-                }
-
-                layer.enabled: graphicsSystem.isAccelerated
-                layer.effect: DropShadow {
-                    radius: root.appShadowSize
-                    fast: true
-                    samples: 2 * radius
-                    color: root.appShadowColor
-
-                    verticalOffset: 2
-                }
-            }*/
+        sourceComponent: LatteComponents.SpriteRectangle {
+            isHorizontal: root.isHorizontal
+            color: theme.highlightColor //colorizerManager.highlightColor // "purple"
+            spriteSize: 6
         }
     }
 
