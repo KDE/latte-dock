@@ -55,6 +55,8 @@ Item {
 
     readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
 
+    readonly property color highlightColor: theme.buttonFocusColor
+
     //! Fill Applet(s)
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
     property bool isAutoFillApplet: {

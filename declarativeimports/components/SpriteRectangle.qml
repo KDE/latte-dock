@@ -46,6 +46,8 @@ Canvas {
     readonly property int c3: isHorizontal ? width : height
     readonly property int d3: c2 + currentSprite
 
+    onColorChanged: requestPaint()
+    onSpriteSizeChanged: requestPaint()
     onWidthChanged: requestPaint()
     onHeightChanged: requestPaint()
 

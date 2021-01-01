@@ -535,7 +535,7 @@ Item{
 
         sourceComponent: LatteComponents.SpriteRectangle {
             isHorizontal: root.isHorizontal
-            color: theme.highlightColor //colorizerManager.highlightColor // "purple"
+            color: appletItem.highlightColor
             spriteSize: 6
         }
     }
