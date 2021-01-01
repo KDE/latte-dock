@@ -526,6 +526,11 @@ Item{
     //! InternalViewSplitter
     Loader{
         anchors.fill: parent //_wrapperContainer
+        anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? wrapper.appletScreenMargin : 0
+        anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? wrapper.appletScreenMargin : 0
+        anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? wrapper.appletScreenMargin : 0
+        anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? wrapper.appletScreenMargin : 0
+
         active: appletItem.isInternalViewSplitter && root.inConfigureAppletsMode
 
         sourceComponent: LatteComponents.SpriteRectangle {
