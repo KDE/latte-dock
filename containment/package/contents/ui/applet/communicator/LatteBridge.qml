@@ -98,6 +98,30 @@ Item{
     // @since: 0.10
     readonly property int screenEdgeMargin: appletItem.metrics.margin.screenEdge
 
+    // NAME: thicknessPadding
+    //   USAGE: read-only
+    //   EXPLANATION: The thickness padding around applet in pixels
+    //   USE CASE: it can be used from applets that want to be informed what is the thickness padding
+    //       currently applied
+    // @since: 0.10
+    readonly property int thicknessPadding: appletItem.metrics.margin.thickness
+
+    // NAME: lengthMargin
+    //   USAGE: read-only
+    //   EXPLANATION: The length margin around applet in pixels
+    //   USE CASE: it can be used from applets that want to be informed what is the length margin
+    //       currently applied
+    // @since: 0.10
+    readonly property int lengthMargin: appletItem.metrics.margin.length
+
+    // NAME: lengthPadding
+    //   USAGE: read-only
+    //   EXPLANATION: The length padding around applet in pixels
+    //   USE CASE: it can be used from applets that want to be informed what is the length padding
+    //       currently applied
+    // @since: 0.10
+    readonly property int lengthPadding: appletItem.lengthAppletPadding
+
     // NAME: maxZoomFactor
     //   USAGE: read-only
     //   EXPLANATION: The maximum zoom factor currently used

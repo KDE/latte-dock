@@ -356,7 +356,7 @@ Item{
                     return wrapper.layoutThickness;
                 }
 
-                var wrapperContainerThickness = wrapper.zoomScaleThickness * (metrics.iconSize/* appletItem.metrics.totals.thickness*/);
+                var wrapperContainerThickness =  appletItem.screenEdgeMarginSupported ? appletItem.metrics.totals.thickness : wrapper.zoomScaleThickness * metrics.iconSize;
                 return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + appletItem.metrics.margin.screenEdge : wrapperContainerThickness;
             }
         }
