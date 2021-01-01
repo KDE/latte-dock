@@ -48,10 +48,22 @@ ClientAbility.ParabolicEffect {
         target: parabolic
         onSglClearZoom: parabolic.local._privates.lastIndex = -1;
         onRestoreZoomIsBlockedChanged: {
-            if (!parabolic.restoreZoomIsBlocked) {
-                parabolic.startRestoreZoomTimer();
-            } else {
-                parabolic.stopRestoreZoomTimer();
+            if (!(bridge || bridge.host)) {
+                if (!parabolic.restoreZoomIsBlocked) {
+                    parabolic.startRestoreZoomTimer();
+                } else {
+                    parabolic.stopRestoreZoomTimer();
+                }
+            }
+        }
+
+        onCurrentParabolicItemChanged: {
+            if (!(bridge || bridge.host)) {
+                if (!currentParabolicItem) {
+                    parabolic.startRestoreZoomTimer();
+                } else {
+                    parabolic.stopRestoreZoomTimer();
+                }
             }
         }
     }
@@ -202,7 +214,7 @@ ClientAbility.ParabolicEffect {
     //! IMPORTANT ::: This timer should be used only when the Latte plasmoid is not inside a Latte dock
     Timer{
         id: restoreZoomTimer
-        interval: 90
+        interval: 50
 
         onTriggered: {
             if(parabolic.bridge) {

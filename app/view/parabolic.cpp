@@ -58,8 +58,8 @@ void Parabolic::setCurrentParabolicItem(QQuickItem *item)
         return;
     }
 
-    if (item && m_currentParabolicItem) {
-        QMetaObject::invokeMethod(item, "parabolicExited", Qt::QueuedConnection);
+    if (m_currentParabolicItem) {
+        QMetaObject::invokeMethod(m_currentParabolicItem, "parabolicExited", Qt::QueuedConnection);
     }
 
     m_currentParabolicItem = item;

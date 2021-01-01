@@ -511,11 +511,9 @@ Item {
             //! triggered together.
             if (containsMouse) {
                 hidePreviewWinTimer.stop();
-                parabolic.stopRestoreZoomTimer();
                 parabolic.setDirectRenderingEnabled(false);
             } else {
                 hide(7.3);
-                parabolic.startRestoreZoomTimer();
             }
         }
 

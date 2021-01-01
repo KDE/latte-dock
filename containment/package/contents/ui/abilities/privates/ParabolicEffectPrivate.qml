@@ -47,6 +47,15 @@ AbilityHost.ParabolicEffect {
             } else {
                 parabolic.stopRestoreZoomTimer();
             }
+
+        }
+
+        onCurrentParabolicItemChanged: {
+            if (!currentParabolicItem) {
+                parabolic.startRestoreZoomTimer();
+            } else {
+                parabolic.stopRestoreZoomTimer();
+            }
         }
     }
 
@@ -69,16 +78,6 @@ AbilityHost.ParabolicEffect {
         }
     }
 
-    Connections {
-        target: view ? view.parabolic : null
-        ignoreUnknownSignals : true
-        onCurrentItemChanged: {
-            if (!view.parabolic.currentItem) {
-                parabolic.startRestoreZoomTimer();
-            }
-        }
-    }
-
     function startRestoreZoomTimer(){
         if (restoreZoomIsBlocked) {
             return;
@@ -88,7 +87,9 @@ AbilityHost.ParabolicEffect {
     }
 
     function stopRestoreZoomTimer(){
-        restoreZoomTimer.stop();
+        if (restoreZoomTimer.running) {
+            restoreZoomTimer.stop();
+        }
     }
 
     function setDirectRenderingEnabled(value) {
@@ -166,10 +167,10 @@ AbilityHost.ParabolicEffect {
     //! Timer to check if the mouse is still outside the latteView in order to restore applets scales to 1.0
     Timer{
         id: restoreZoomTimer
-        interval: 90
+        interval: 50
 
         onTriggered: {
-            if (parabolic.restoreZoomIsBlocked || parabolic.view.currentParabolicItem) {
+            if (parabolic.restoreZoomIsBlocked || currentParabolicItem) {
                 return;
             }
 

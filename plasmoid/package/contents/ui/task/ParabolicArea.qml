@@ -69,7 +69,6 @@ Item {
         lastMouseX = mouseX;
         lastMouseY = mouseY;
 
-        taskItem.parabolic.stopRestoreZoomTimer();
         restoreAnimation.stop();
 
         //! mouseX/Y can NOW be trusted because ParabolicEnterd event is triggered from View::Parabolic class

@@ -53,8 +53,6 @@ Item {
     }
 
     onParabolicEntered: {
-        appletItem.parabolic.stopRestoreZoomTimer();
-
         if (restoreAnimation.running) {
             restoreAnimation.stop();
         }
