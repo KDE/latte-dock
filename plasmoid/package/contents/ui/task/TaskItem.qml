@@ -555,10 +555,54 @@ MouseArea{
 
     Loader {
         id: parabolicAreaLoader
-        anchors.fill: parent
         active: taskItem.parabolic.isEnabled
+        width: root.isHorizontal ? taskItem.width : taskItem.metrics.mask.thickness.zoomedForItems
+        height: root.isHorizontal ? taskItem.metrics.mask.thickness.zoomedForItems : taskItem.height
 
         sourceComponent: ParabolicArea{}
+
+        states:[
+            State{
+                name: "top"
+                when: plasmoid.location === PlasmaCore.Types.TopEdge
+
+                AnchorChanges{
+                    target: parabolicAreaLoader
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+                }
+            },
+            State{
+                name: "left"
+                when: plasmoid.location === PlasmaCore.Types.LeftEdge
+
+                AnchorChanges{
+                    target: parabolicAreaLoader
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+                }
+            },
+            State{
+                name: "right"
+                when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                AnchorChanges{
+                    target: parabolicAreaLoader
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                }
+            },
+            State{
+                name: "bottom"
+                when: plasmoid.location === PlasmaCore.Types.BottomEdge
+
+                AnchorChanges{
+                    target: parabolicAreaLoader
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                }
+            }
+        ]
     }
 
     Timer {

@@ -43,7 +43,7 @@ Item {
     height: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeHeight
 
     //any applets that exceed their limits should not take events from their surrounding applets
-    clip: !isSeparator
+    clip: !isSeparator && !parabolicAreaLoader.active
 
     signal mousePressed(int x, int y, int button);
     signal mouseReleased(int x, int y, int button);
@@ -918,10 +918,55 @@ Item {
 
     Loader {
         id: parabolicAreaLoader
-        anchors.fill: parent
+        width: root.isHorizontal ? appletItem.width : appletItem.metrics.mask.thickness.zoomedForItems
+        height: root.isHorizontal ? appletItem.metrics.mask.thickness.zoomedForItems : appletItem.height
+
         active: parabolicEffectIsSupported && appletItem.parabolic.isEnabled && !lockZoom
 
         sourceComponent: ParabolicArea{}
+
+        states:[
+            State{
+                name: "top"
+                when: plasmoid.location === PlasmaCore.Types.TopEdge
+
+                AnchorChanges{
+                    target: parabolicAreaLoader
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+                }
+            },
+            State{
+                name: "left"
+                when: plasmoid.location === PlasmaCore.Types.LeftEdge
+
+                AnchorChanges{
+                    target: parabolicAreaLoader
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+                }
+            },
+            State{
+                name: "right"
+                when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                AnchorChanges{
+                    target: parabolicAreaLoader
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                }
+            },
+            State{
+                name: "bottom"
+                when: plasmoid.location === PlasmaCore.Types.BottomEdge
+
+                AnchorChanges{
+                    target: parabolicAreaLoader
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                }
+            }
+        ]
     }
 
     Loader {
