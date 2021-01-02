@@ -376,7 +376,7 @@ Item{
 
         Loader{
             anchors.fill: parent
-            active: appletItem.debug.graphicsEnabled
+            active: appletItem.debug.graphicsEnabled && !isInternalViewSplitter
             sourceComponent: Rectangle{
                 width: 30
                 height: 30
@@ -433,7 +433,7 @@ Item{
 
                 Loader{
                     anchors.centerIn: parent
-                    active: appletItem.debug.overloadedIconsEnabled
+                    active: appletItem.debug.overloadedIconsEnabled && !isInternalViewSplitter
                     sourceComponent: Rectangle{
                         width: 30
                         height: 30
