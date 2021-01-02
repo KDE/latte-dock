@@ -64,16 +64,22 @@ Item {
             return isFillSplitter;
         }
 
+        return isRequestingFill;
+    }
+
+    property bool isRequestingFill: {
         if (!applet || !applet.Layout)
             return false;
 
         if (((root.isHorizontal && applet.Layout.fillWidth===true)
              || (root.isVertical && applet.Layout.fillHeight===true))
-                && (applet.status !== PlasmaCore.Types.HiddenStatus))
+                && (!isHidden)) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
+
     property int maxAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
     property int minAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
 

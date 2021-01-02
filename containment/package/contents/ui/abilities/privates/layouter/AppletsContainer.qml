@@ -107,7 +107,7 @@ Item {
         value: {
             var no = 0;
             for (var i=0; i<grid.children.length; ++i){
-                if (grid.children[i] && grid.children[i].isAutoFillApplet && grid.children[i].applet && !grid.children[i].isHidden) {
+                if (grid.children[i] && grid.children[i].isRequestingFill && grid.children[i].applet && !grid.children[i].isHidden) {
                     //console.log("fill :::: " + children[i].applet.pluginName);
                     no++;
                 }
