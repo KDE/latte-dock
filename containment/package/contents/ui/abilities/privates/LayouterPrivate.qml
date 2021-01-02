@@ -90,6 +90,7 @@ Item {
             var curApplet = layout.children[i];
 
             // console.log( "org.kde.latte s3_-1 " + curApplet.pluginName + " : "+ curApplet.index +" (" +curApplet.isAutoFillApplet+","+!curApplet.isHidden +") ");
+            // console.log( "org.kde.latte s3_-1 " + curApplet.pluginName + " : "+ availableSpace + " _ " + sizePerApplet + " _ " + noOfApplets);
 
             if (curApplet && curApplet.isAutoFillApplet && !curApplet.isHidden
                     && (curApplet.applet || curApplet.isInternalViewSplitter)) {
@@ -185,7 +186,7 @@ Item {
 
                         var isNeutral = (minSize<=0 && prefSize<=0);
 
-                        // console.log( " s4_0 " + curApplet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
+                        // console.log( " org.kde.latte s4_0 " + curApplet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
 
                         if (!isNeutral && maxSize===Infinity
                                 && ((inMaxAutoFillCalculations && curApplet.maxAutoFillLength>mostDemandingAppletSize)
@@ -208,13 +209,13 @@ Item {
                         mostDemandingApplet.minAutoFillLength = mostDemandingApplet.minAutoFillLength + sizePerApplet;
                     }
 
-                    // console.log("s4_1  "+ mostDemandingApplet.applet.pluginName + " assigned: "  + mostDemandingApplet.maxAutoFillLength + "\n");
+                    // console.log(" org.kde.latte s4_1  "+ mostDemandingApplet.applet.pluginName + " assigned: "  + mostDemandingApplet.maxAutoFillLength + "\n");
                 } else if (neutralAppletsNo>0) {
                     //! if no demanding applets was found then the available space is splitted equally
                     //! between all neutralApplets
                     var adjustedAppletSize = (sizePerApplet / neutralAppletsNo);
                     for (var j=0; j<neutralApplets.length; ++j) {
-                        // console.log("s4_2.0  "+ neutralApplets[j].pluginName + " _ " + neutralApplets[j].maxAutoFillLength + " _ " + adjustedAppletSize);
+                        // console.log(" org.kde.latte s4_2.0  "+ neutralApplets[j].pluginName + " _ " + neutralApplets[j].maxAutoFillLength + " _ " + adjustedAppletSize);
 
                         if (inMaxAutoFillCalculations) {
                             neutralApplets[j].maxAutoFillLength = neutralApplets[j].maxAutoFillLength + adjustedAppletSize;
@@ -222,7 +223,7 @@ Item {
                             neutralApplets[j].minAutoFillLength = neutralApplets[j].minAutoFillLength + adjustedAppletSize;
                         }
 
-                        // console.log("s4_2  "+ neutralApplets[j].pluginName + " assigned: "  + sizePerApplet + "\n");
+                        // console.log(" org.kde.latte s4_2.1  "+ neutralApplets[j].pluginName + " assigned: "  + sizePerApplet + "\n");
                     }
                 }
             } else {
@@ -236,7 +237,7 @@ Item {
                             curApplet.minAutoFillLength = Math.max(curApplet.appletMinimumLength,sizePerApplet);
                         }
 
-                        // console.log("s4_3  "+ curApplet.pluginName + " assigned: "  + sizePerApplet + "\n");
+                        // console.log(" org.kde.latte s4_3  "+ curApplet.pluginName + " assigned: "  + sizePerApplet + "\n");
                         curApplet.inFillCalculations = false;
                     }
                 }

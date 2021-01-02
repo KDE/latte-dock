@@ -32,6 +32,7 @@ Item {
     //it is used in calculations for fillWidth,fillHeight applets
     property int shownApplets: 0
     property int fillApplets: 0
+    property int fillRealApplets: 0 //with no internal separators counted
 
     //it is used in calculations for fillWidth,fillHeight applets
     property int sizeWithNoFillApplets: 0
@@ -90,6 +91,23 @@ Item {
             var no = 0;
             for (var i=0; i<grid.children.length; ++i){
                 if (grid.children[i] && grid.children[i].isAutoFillApplet && !grid.children[i].isHidden) {
+                    //console.log("fill :::: " + children[i].applet.pluginName);
+                    no++;
+                }
+            }
+
+            return no;
+        }
+    }
+
+    Binding{
+        target: appletsContainer
+        property:"fillRealApplets"
+        when: appletsContainer && grid && !updateIsBlocked
+        value: {
+            var no = 0;
+            for (var i=0; i<grid.children.length; ++i){
+                if (grid.children[i] && grid.children[i].isAutoFillApplet && grid.children[i].applet && !grid.children[i].isHidden) {
                     //console.log("fill :::: " + children[i].applet.pluginName);
                     no++;
                 }

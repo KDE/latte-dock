@@ -61,7 +61,7 @@ Item {
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
     property bool isAutoFillApplet: {
         if (isInternalViewSplitter) {
-            return true;
+            return isFillSplitter;
         }
 
         if (!applet || !applet.Layout)
@@ -79,15 +79,15 @@ Item {
 
     readonly property int isFillSplitter: isInternalViewSplitter
                                           && ((parent === layoutsContainer.startLayout
-                                               && appletItem.layouter.startLayout.fillApplets === 1
+                                               && appletItem.layouter.startLayout.fillRealApplets === 0
                                                && (appletItem.layouter.mainLayout.shownApplets>=1 /*main layout has applet in it*/
                                                    || (appletItem.layouter.mainLayout.shownApplets===0 /*main layout is empty*/
-                                                       && appletItem.layouter.endLayout.fillApplets === 1)))
+                                                       && appletItem.layouter.endLayout.fillRealApplets === 0)))
                                               || (parent === layoutsContainer.endLayout
-                                                  && appletItem.layouter.endLayout.fillApplets === 1
+                                                  && appletItem.layouter.endLayout.fillRealApplets === 0
                                                   && (appletItem.layouter.mainLayout.shownApplets>=1 /*main layout has applet in it*/
                                                       || (appletItem.layouter.mainLayout.shownApplets===0 /*main layout is empty*/
-                                                          && appletItem.layouter.startLayout.fillApplets === 1))))
+                                                          && appletItem.layouter.startLayout.fillRealApplets === 0))))
 
 
     readonly property bool inConfigureAppletsDragging: root.dragOverlay
@@ -1067,7 +1067,7 @@ Item {
 
             readonly property string labeltext: {
                 if (appletItem.isAutoFillApplet) {
-                    return " / max_fill:"+appletItem.maxAutoFillLength + " / min_fill:"+appletItem.minAutoFillLength;
+                    return " || max_fill:"+appletItem.maxAutoFillLength + " / min_fill:"+appletItem.minAutoFillLength;
                 }
 
                 return "";
