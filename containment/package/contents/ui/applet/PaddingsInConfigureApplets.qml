@@ -64,7 +64,7 @@ Item {
 
                 AnchorChanges{
                     target: tailPadding
-                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
                     anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
                 }
             },
@@ -115,7 +115,7 @@ Item {
 
                 AnchorChanges{
                     target: headPadding
-                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
                     anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
                 }
             },
