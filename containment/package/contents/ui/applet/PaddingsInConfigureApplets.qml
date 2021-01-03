@@ -22,20 +22,22 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 
 Item {
-    readonly property int thickness: wrapper.headThicknessMargin
+    readonly property int thickness: appletItem.canFillThickness || appletItem.screenEdgeMarginSupported ? 1 : appletItem.metrics.margin.thickness
     readonly property int length: root.isHorizontal ? wrapper.width : wrapper.height
+
+    property color color: "blue"
 
     Rectangle {
         id: tailPadding
-        anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? wrapper.appletScreenMargin : 0
-        anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? wrapper.appletScreenMargin : 0
-        anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? wrapper.appletScreenMargin : 0
-        anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? wrapper.appletScreenMargin : 0
+        anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? appletItem.metrics.margin.screenEdge : 0
+        anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? appletItem.metrics.margin.screenEdge : 0
+        anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? appletItem.metrics.margin.screenEdge : 0
+        anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? appletItem.metrics.margin.screenEdge : 0
 
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
 
-        color: appletItem.highlightColor
+        color: parent.color
 
         states:[
             State{
@@ -86,7 +88,7 @@ Item {
 
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
-        color: appletItem.highlightColor
+        color: parent.color
 
         states:[
             State{

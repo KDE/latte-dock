@@ -40,8 +40,8 @@ Item{
         if (appletItem.isInternalViewSplitter) {
             if (!root.inConfigureAppletsMode) {
                 return 0;
-            } else if (appletItem.inConfigureAppletsDragging){
-                return appletMinimumLength + (lengthAppletPadding + metrics.margin.length)*2 ;
+            } else if (appletItem.inConfigureAppletsDragging || !appletItem.isFillSplitter){
+                return appletMinimumLength; // /* /*(lengthAppletPadding + metrics.margin.length)*2*/
             }
         }
 
@@ -96,7 +96,7 @@ Item{
 
     readonly property int appletMinimumLength : {
         if (isInternalViewSplitter) {
-            return Math.min(root.maxJustifySplitterSize, appletItem.metrics.iconSize);
+            return root.maxJustifySplitterSize;
         }
 
         return root.isHorizontal ? appletMinimumWidth : appletMinimumHeight
@@ -104,7 +104,7 @@ Item{
 
     readonly property int appletPreferredLength: {
         if (isInternalViewSplitter) {
-            return appletItem.isFillSplitter ? Infinity : -1;
+            return appletItem.isFillSplitter ? Infinity : appletMinimumLength;
         }
         return root.isHorizontal ? appletPreferredWidth : appletPreferredHeight;
     }
@@ -536,7 +536,17 @@ Item{
         sourceComponent: LatteComponents.SpriteRectangle {
             isHorizontal: root.isHorizontal
             color: appletItem.highlightColor
-            spriteSize: 6
+            spriteSize: 8
+            spriteMargin: 4
+            spritePosition: {
+                if (root.isHorizontal) {
+                    return appletItem.parent === appletItem.layouts.startLayout ?
+                                PlasmaCore.Types.RightPositioned : PlasmaCore.Types.LeftPositioned;
+                } else {
+                    return appletItem.parent === appletItem.layouts.startLayout ?
+                                PlasmaCore.Types.BottomPositioned : PlasmaCore.Types.TopPositioned;
+                }
+            }
         }
     }
 

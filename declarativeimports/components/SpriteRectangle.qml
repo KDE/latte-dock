@@ -19,17 +19,31 @@
 
 import QtQuick 2.7
 
+import org.kde.plasma.core 2.0 as PlasmaCore
+
 Canvas {
     property color color: "lightblue"
     property bool isHorizontal: true
+    property int spriteMargin: 1
+    property int spritePosition: PlasmaCore.Types.CenterPositioned
     property int spriteSize: 5
 
     readonly property int length: isHorizontal ? width : height
     readonly property int currentSprite: Math.min(spriteSize, maxSpriteSize)
 
-    readonly property int maxSpriteSize: length/7
+    readonly property int maxSpriteSize: (length - 2*spriteMargin)/7
 
-    readonly property int centeredrectstart: isHorizontal ? (width - 7*currentSprite) / 2 : (height - 7*currentSprite)/2
+    readonly property int centeredrectstart: {
+        if (spritePosition === PlasmaCore.Types.LeftPositioned
+                || spritePosition === PlasmaCore.Types.TopPositioned) {
+            return spriteMargin;
+        } else if (spritePosition === PlasmaCore.Types.RightPositioned
+                   || spritePosition === PlasmaCore.Types.BottomPositioned) {
+            return isHorizontal ? (width - (7*currentSprite) - spriteMargin) : (height - (7*currentSprite) - spriteMargin)
+        }
+
+        return isHorizontal ? (width - 7*currentSprite) / 2 : (height - 7*currentSprite)/2
+    }
 
     readonly property int a1: 0
     readonly property int b1: centeredrectstart + 4*currentSprite
@@ -47,6 +61,8 @@ Canvas {
     readonly property int d3: c2 + currentSprite
 
     onColorChanged: requestPaint()
+    onSpriteMarginChanged: requestPaint()
+    onSpritePositionChanged: requestPaint()
     onSpriteSizeChanged: requestPaint()
     onWidthChanged: requestPaint()
     onHeightChanged: requestPaint()
