@@ -32,7 +32,10 @@ Parabolic::Parabolic(Latte::View *parent)
     : QObject(parent),
       m_view(parent)
 {
-    m_parabolicItemNullifier.setInterval(100);
+    //! Parabolic Item Nullifier does not need any big interval in order to avoid
+    //! nullifing currentParabolicItem too fast and as such send a false signal
+    //! that NO parabolic item is hovered currently
+    m_parabolicItemNullifier.setInterval(1);
     m_parabolicItemNullifier.setSingleShot(true);
     connect(&m_parabolicItemNullifier, &QTimer::timeout, this, [&]() {
         setCurrentParabolicItem(nullptr);
@@ -109,7 +112,7 @@ void Parabolic::onCurrentParabolicItemChanged()
 {
     m_parabolicItemNullifier.stop();
 
-    if (m_currentParabolicItem != nullptr) {
+    if (m_currentParabolicItem) {
         QPointF internal = m_currentParabolicItem->mapFromScene(m_lastOrphanParabolicMove);
 
         if (m_currentParabolicItem->contains(internal)) {
