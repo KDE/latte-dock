@@ -23,9 +23,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.core 0.2 as LatteCore
 
-import "./abilities" as Abilities
-
-Abilities.AbilityGrid {
+Grid {
     id: appletsContainer
 
     columns: root.isVertical ? 1 : 0

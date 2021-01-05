@@ -28,7 +28,6 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.containment 0.1 as LatteContainment
 
-import "./abilities" as AbilitiesTypes
 import "../debugger" as Debugger
 
 Item{
@@ -46,12 +45,6 @@ Item{
     readonly property alias startLayout : _startLayout
     readonly property alias mainLayout: _mainLayout
     readonly property alias endLayout: _endLayout
-
-    readonly property AbilitiesTypes.AbilityLayouts applets: AbilitiesTypes.AbilityLayouts{
-        startLayout: _startLayout
-        mainLayout: _mainLayout
-        endLayout: _endLayout
-    }
 
     signal contentsLengthChanged();
 
