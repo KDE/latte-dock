@@ -30,12 +30,13 @@ AbilityHost.ParabolicEffect {
     id: parabolic
 
     property Item animations: null
-    property Item applets: null
     property Item debug: null
+    property Item layouts: null
     property QtObject view: null
 
     readonly property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
 
+    property bool restoreZoomIsBlockedFromApplet: false
     property int lastParabolicItemIndex: -1
 
     Connections {
@@ -75,6 +76,40 @@ AbilityHost.ParabolicEffect {
             if (!parabolic.view.contextMenuIsShown && !restoreZoomTimer.running) {
                 parabolic.startRestoreZoomTimer();
             }
+        }
+    }
+
+    //! do not update during dragging/moving applets inConfigureAppletsMode
+    readonly property bool isBindingUpdateEnabled: !(root.dragOverlay && root.dragOverlay.pressed)
+
+    Binding{
+        target: parabolic
+        property: "restoreZoomIsBlockedFromApplet"
+        when: isBindingUpdateEnabled
+        value: {
+            var grid;
+
+            for (var l=0; l<=2; ++l) {
+                if (l===0) {
+                    grid = layouts.startLayout;
+                } else if (l===1) {
+                    grid = layouts.mainLayout;
+                } else if (l===2) {
+                    grid = layouts.endLayout;
+                }
+
+                for (var i=0; i<grid.children.length; ++i){
+                    var appletItem = grid.children[i];
+                    if (appletItem
+                            && appletItem.communicator
+                            && appletItem.communicator.parabolicEffectIsSupported
+                            && appletItem.communicator.bridge.parabolic.client.local.restoreZoomIsBlocked) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 

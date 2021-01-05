@@ -1418,8 +1418,8 @@ Item {
     Ability.ParabolicEffect {
         id: _parabolic
         animations: _animations
-        applets: layoutsContainer.applets
         debug: _debug
+        layouts: layoutsContainer
         view: latteView
     }
 

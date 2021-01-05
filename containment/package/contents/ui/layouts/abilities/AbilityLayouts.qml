@@ -20,10 +20,6 @@
 import QtQuick 2.7
 
 AbilityLayoutsPrivate {
-    parabolic.restoreZoomIsBlocked: startLayout.ability.parabolic.restoreZoomIsBlocked
-                                    || mainLayout.ability.parabolic.restoreZoomIsBlocked
-                                    || endLayout.ability.parabolic.restoreZoomIsBlocked
-
     require.windowsTrackingCount: startLayout.ability.require.windowsTrackingCount +
                                   mainLayout.ability.require.windowsTrackingCount +
                                   endLayout.ability.require.windowsTrackingCount

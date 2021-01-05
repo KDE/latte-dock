@@ -20,6 +20,5 @@
 import QtQuick 2.7
 
 Item {
-    property bool restoreZoomIsBlocked: false
     property int lastIndex: -1
 }

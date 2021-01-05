@@ -28,25 +28,6 @@ AbilityGridPrivate {
     readonly property bool updateIsBlocked: root.dragOverlay && root.dragOverlay.pressed
 
     Binding{
-        target: ability.parabolic
-        property: "restoreZoomIsBlocked"
-        when: !updateIsBlocked
-        value: {
-            for (var i=0; i<grid.children.length; ++i){
-                var appletItem = grid.children[i];
-                if (appletItem
-                        && appletItem.communicator
-                        && appletItem.communicator.parabolicEffectIsSupported
-                        && appletItem.communicator.bridge.parabolic.client.local.restoreZoomIsBlocked) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }
-
-    Binding{
         target: ability.require
         property: "windowsTrackingCount"
         when: !updateIsBlocked
