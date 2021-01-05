@@ -25,7 +25,6 @@ AbilityDefinition.ParabolicEffect {
     id: apis
 
     readonly property bool directRenderingEnabled: _privates.directRenderingEnabled
-    readonly property int lastIndex: _privates.lastIndex
 
     //! This needs to be rethought and rechecked in order for public api to provide
     //! functionality that functionality must already exist in the definition
@@ -33,7 +32,6 @@ AbilityDefinition.ParabolicEffect {
         readonly property alias isEnabled: apis.isEnabled
         readonly property alias directRenderingEnabled: apis.directRenderingEnabled
         readonly property alias factor: apis.factor
-        readonly property alias lastIndex: apis.lastIndex
         readonly property alias restoreZoomIsBlocked: apis.restoreZoomIsBlocked
         readonly property alias currentParabolicItem: apis.currentParabolicItem
 

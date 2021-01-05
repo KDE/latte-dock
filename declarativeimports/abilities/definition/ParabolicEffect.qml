@@ -32,7 +32,6 @@ Item {
 
     readonly property ParabolicEffectTypes.PrivateProperties _privates: ParabolicEffectTypes.PrivateProperties {
         directRenderingEnabled: false
-        lastIndex: -1
     }
 
     property Item currentParabolicItem: null

@@ -21,5 +21,4 @@ import QtQuick 2.7
 
 Item {
     property bool directRenderingEnabled: false
-    property int lastIndex: -1
 }

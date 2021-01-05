@@ -81,8 +81,10 @@ Item{
     //! when Latte behaves as Plasma panel
     property int thicknessAsPanel: metrics.totals.thickness
 
+    readonly property bool appletIsDragged: root.dragOverlay && root.dragOverlay.pressed
+    property int appletsTrackingWindowsCount: 0
 
-    property Item applets: null
+    property Item layouts: null
 
     Binding{
         target: latteView
@@ -311,7 +313,7 @@ Item{
                 && !(latteView.visibility.mode === LatteCore.Types.AlwaysVisible /* Visibility */
                      || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow
                      || latteView.visibility.mode === LatteCore.Types.AutoHide))
-               || applets.require.windowsTrackingCount > 0                   /*Applets Need Windows Tracking */
+               || appletsTrackingWindowsCount > 0                            /*Applets Need Windows Tracking */
                || root.dragActiveWindowEnabled                               /*Dragging Active Window(Empty Areas)*/
                || ((root.backgroundOnlyOnMaximized                           /*Dynamic Background */
                     || plasmoid.configuration.solidBackgroundForMaximized
@@ -319,6 +321,38 @@ Item{
                     || root.windowColors !== LatteContainment.Types.NoneWindowColors))
                || (root.screenEdgeMarginsEnabled                             /*Dynamic Screen Edge Margin*/
                    && plasmoid.configuration.hideFloatingGapForMaximized)
+    }
+
+    //! Local Bindings
+    Binding{
+        target: manager
+        property: "appletsTrackingWindowsCount"
+        when: !appletIsDragged
+        value: {
+            var cnts = 0;
+            var grid;
+
+            for (var l=0; l<=2; ++l) {
+                if (l===0) {
+                    grid = layouts.startLayout;
+                } else if (l===1) {
+                    grid = layouts.mainLayout;
+                } else if (l===2) {
+                    grid = layouts.endLayout;
+                }
+
+                for (var i=0; i<grid.children.length; ++i){
+                    var appletItem = grid.children[i];
+                    if (appletItem
+                            && appletItem.communicator
+                            && appletItem.communicator.requires.windowsTrackingEnabled) {
+                        cnts = cnts + 1;
+                    }
+                }
+            }
+
+            return cnts;
+        }
     }
 
     Connections{

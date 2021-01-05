@@ -821,7 +821,7 @@ Window{
             }
 
             Text{
-                text: layoutsContainer.applets.require.windowsTrackingCount
+                text: visibilityManager.appletsTrackingWindowsCount
             }
 
             Text{

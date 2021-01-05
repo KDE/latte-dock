@@ -1242,7 +1242,7 @@ Item {
 
     VisibilityManager{
         id: visibilityManager
-        applets: layoutsContainer.applets
+        layouts: layoutsContainer
     }
 
     DragDropArea {
