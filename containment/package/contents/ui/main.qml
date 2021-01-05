@@ -946,10 +946,6 @@ Item {
         return false;
     }
 
-    function mouseInHoverableArea() {
-        return (latteView.visibility.containsMouse && !rootMouseArea.containsMouse && mouseInCanBeHoveredApplet());
-    }
-
     function hideTooltipLabel(debug){
         titleTooltipDialog.hide(debug);
     }
@@ -1198,12 +1194,6 @@ Item {
 
 
     ///////////////BEGIN UI elements
-
-    //it is used to check if the mouse is outside the layoutsContainer borders,
-    //so in that case the onLeave event behavior should be trigerred
-    RootMouseArea{
-        id: rootMouseArea
-    }
 
     Loader{
         active: debug.windowEnabled
