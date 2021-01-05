@@ -959,6 +959,7 @@ Item {
         id: _parabolic
         bridge: latteBridge
         itemsCount: tasksModel.count
+        layout: icList.contentItem
         local.isEnabled: factor.zoom > 1
         local.restoreZoomIsBlocked: root.contextMenu || windowsPreviewDlg.containsMouse
     }
@@ -1143,7 +1144,7 @@ Item {
 
             visible: root.dragAreaEnabled
 
-            property int maxThickness: (parabolic.local.lastIndex>=0 || windowPreviewIsShown || animations.hasThicknessAnimation) ?
+            property int maxThickness: (parabolic.isHovered || windowPreviewIsShown || animations.hasThicknessAnimation) ?
                                            metrics.mask.thickness.zoomedForItems : metrics.mask.thickness.normalForItems
 
             function onlyLaunchersInList(list){

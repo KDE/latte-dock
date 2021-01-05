@@ -33,6 +33,15 @@ ClientAbility.ParabolicEffect {
     local.factor.maxZoom: isEnabled ? Math.max(local.factor.zoom, 1.6) : 1
 
     readonly property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
+    readonly property bool isHovered: {
+        if (bridge && bridge.parabolic.host.currentParabolicItem) {
+            return bridge.parabolic.host.currentParabolicItem.parent.parent.parent === layout;
+        }
+
+        return false;
+    }
+
+    property Item layout: null
 
     Component.onCompleted: {
         parabolic.sglUpdateLowerItemScale.connect(sltTrackLowerItemScale);
@@ -46,7 +55,6 @@ ClientAbility.ParabolicEffect {
 
     Connections {
         target: parabolic
-        onSglClearZoom: parabolic.local._privates.lastIndex = -1;
         onRestoreZoomIsBlockedChanged: {
             if (!(bridge || bridge.host)) {
                 if (!parabolic.restoreZoomIsBlocked) {
@@ -146,15 +154,7 @@ ClientAbility.ParabolicEffect {
         }
     }
 
-
     function applyParabolicEffect(index, currentMousePosition, center) {
-        if (parabolic.local._privates.lastIndex === -1) {
-            setDirectRenderingEnabled(false);
-        }
-
-        //! last item requested calculations
-        parabolic.local._privates.lastIndex = index;
-
         var rDistance = Math.abs(currentMousePosition  - center);
 
         //check if the mouse goes right or down according to the center
@@ -221,6 +221,7 @@ ClientAbility.ParabolicEffect {
                 console.log("Plasmoid, restoreZoomTimer was called, even though it shouldn't...");
             }
 
+            setDirectRenderingEnabled(false);
             parabolic.invkClearZoom();
         }
     }

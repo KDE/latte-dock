@@ -20,5 +20,5 @@
 import QtQuick 2.7
 
 Item {
-    property int lastIndex: -1
+
 }

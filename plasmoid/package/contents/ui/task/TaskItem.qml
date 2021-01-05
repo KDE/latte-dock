@@ -679,7 +679,7 @@ MouseArea{
     ///////////////// Mouse Area Events ///////////////////
 
     onEntered: {
-        if ((taskItem.parabolic.local.lastIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
+        if (isLauncher && windowsPreviewDlg.visible) {
             windowsPreviewDlg.hide(1);
         }
 

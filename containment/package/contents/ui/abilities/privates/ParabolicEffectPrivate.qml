@@ -41,7 +41,6 @@ AbilityHost.ParabolicEffect {
 
     Connections {
         target: parabolic
-        onSglClearZoom: parabolic._privates.lastIndex = -1;
         onRestoreZoomIsBlockedChanged: {
             if (!parabolic.restoreZoomIsBlocked) {
                 parabolic.startRestoreZoomTimer();
@@ -148,13 +147,6 @@ AbilityHost.ParabolicEffect {
     }
 
     function applyParabolicEffect(index, currentMousePosition, center) {
-        if (parabolic._privates.lastIndex === -1) {
-            setDirectRenderingEnabled(false);
-        }
-
-        //! last item requested calculations
-        parabolic._privates.lastIndex = index;
-
         var rDistance = Math.abs(currentMousePosition  - center);
 
         //check if the mouse goes right or down according to the center
@@ -210,6 +202,7 @@ AbilityHost.ParabolicEffect {
             }
 
             parabolic.lastParabolicItemIndex = -1;
+            parabolic.setDirectRenderingEnabled(false);
             parabolic.sglClearZoom();
 
             if (debug.timersEnabled) {
