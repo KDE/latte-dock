@@ -153,8 +153,6 @@ public:
     bool onPrimary() const;
     void setOnPrimary(bool flag);
 
-    int currentThickness() const;
-
     bool behaveAsPlasmaPanel() const;
     void setBehaveAsPlasmaPanel(bool behavior);
 

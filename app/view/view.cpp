@@ -716,15 +716,6 @@ bool View::contextMenuIsShown() const
     return m_contextMenu->menu();
 }
 
-int View::currentThickness() const
-{
-    if (formFactor() == Plasma::Types::Vertical) {
-        return m_effects->mask().isNull() ? width() : m_effects->mask().width() - m_effects->innerShadow();
-    } else {
-        return m_effects->mask().isNull() ? height() : m_effects->mask().height() - m_effects->innerShadow();
-    }
-}
-
 int View::normalThickness() const
 {
     return m_normalThickness;

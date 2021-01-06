@@ -605,7 +605,7 @@ QRect Positioner::maximumNormalGeometry()
     int xPos = 0;
     int yPos = m_view->screen()->geometry().y();;
     int maxHeight = m_view->screen()->geometry().height();
-    int maxWidth = m_view->normalThickness();
+    int maxWidth = m_view->maxNormalThickness();
     QRect maxGeometry;
     maxGeometry.setRect(0, 0, maxWidth, maxHeight);
 

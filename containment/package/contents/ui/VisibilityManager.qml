@@ -101,7 +101,7 @@ Item{
         target: latteView
         property:"normalThickness"
         when: latteView && inPublishingState
-        value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.screenEdge + metrics.mask.maxNormalForItemsWithoutScreenEdge
+        value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.screenEdge + metrics.mask.thickness.maxNormalForItemsWithoutScreenEdge
     }
 
     Binding{
