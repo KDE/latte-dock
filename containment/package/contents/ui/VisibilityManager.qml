@@ -106,7 +106,7 @@ Item{
 
     Binding{
         target: latteView
-        property:"normalHighestThickness"
+        property:"maxNormalThickness"
         when: latteView && inPublishingState
         value: metrics.mask.thickness.maxNormal
     }

@@ -264,7 +264,7 @@ void PrimaryConfigView::initParentView(Latte::View *view)
         updateAvailableScreenGeometry();
     });
 
-    viewconnections << connect(m_latteView, &Latte::View::normalHighestThicknessChanged, this, [this]() {
+    viewconnections << connect(m_latteView, &Latte::View::maxNormalThicknessChanged, this, [this]() {
         updateAvailableScreenGeometry();
     });
 

@@ -278,7 +278,7 @@ void View::init(Plasma::Containment *plasma_containment)
     connect(this, &QQuickWindow::heightChanged, this, &View::updateAbsoluteGeometry);
 
     connect(this, &View::fontPixelSizeChanged, this, &View::editThicknessChanged);
-    connect(this, &View::normalHighestThicknessChanged, this, &View::editThicknessChanged);
+    connect(this, &View::maxNormalThicknessChanged, this, &View::editThicknessChanged);
 
     connect(this, &View::activitiesChanged, this, &View::applyActivitiesToWindows);
 
@@ -740,19 +740,19 @@ void View::setNormalThickness(int thickness)
     emit normalThicknessChanged();
 }
 
-int View::normalHighestThickness() const
+int View::maxNormalThickness() const
 {
-    return m_normalHighestThickness;
+    return m_maxNormalThickness;
 }
 
-void View::setNormalHighestThickness(int thickness)
+void View::setMaxNormalThickness(int thickness)
 {
-    if (m_normalHighestThickness == thickness) {
+    if (m_maxNormalThickness == thickness) {
         return;
     }
 
-    m_normalHighestThickness = thickness;
-    emit normalHighestThicknessChanged();
+    m_maxNormalThickness = thickness;
+    emit maxNormalThicknessChanged();
 }
 
 int View::headThicknessGap() const
@@ -910,7 +910,7 @@ int View::editThickness() const
     int ruler_height{m_fontPixelSize};
     int header_height{m_fontPixelSize + 2*smallspacing};
 
-    return m_normalHighestThickness + ruler_height + header_height + 6*smallspacing;
+    return m_maxNormalThickness + ruler_height + header_height + 6*smallspacing;
 }
 
 int View::maxThickness() const

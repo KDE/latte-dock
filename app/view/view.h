@@ -110,7 +110,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int editThickness READ editThickness NOTIFY editThicknessChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
-    Q_PROPERTY(int normalHighestThickness READ normalHighestThickness WRITE setNormalHighestThickness NOTIFY normalHighestThicknessChanged)
+    Q_PROPERTY(int maxNormalThickness READ maxNormalThickness WRITE setMaxNormalThickness NOTIFY maxNormalThicknessChanged)
     Q_PROPERTY(int headThicknessGap READ headThicknessGap WRITE setHeadThicknessGap NOTIFY headThicknessGapChanged)
     Q_PROPERTY(int screenEdgeMargin READ screenEdgeMargin WRITE setScreenEdgeMargin NOTIFY screenEdgeMarginChanged)
 
@@ -195,8 +195,8 @@ public:
     int normalThickness() const;
     void setNormalThickness(int thickness);
 
-    int normalHighestThickness() const;
-    void setNormalHighestThickness(int thickness);
+    int maxNormalThickness() const;
+    void setMaxNormalThickness(int thickness);
 
     int headThicknessGap() const;
     void setHeadThicknessGap(int thickness);
@@ -322,7 +322,7 @@ signals:
     void maxLengthChanged();
     void maxThicknessChanged();
     void normalThicknessChanged();
-    void normalHighestThicknessChanged();
+    void maxNormalThicknessChanged();
     void offsetChanged();
     void onPrimaryChanged();
     void parabolicChanged();
@@ -397,7 +397,7 @@ private:
     int m_fontPixelSize{ -1};
     int m_maxThickness{24};
     int m_normalThickness{24};
-    int m_normalHighestThickness{24};
+    int m_maxNormalThickness{24};
     int m_headThicknessGap{0};
     int m_screenEdgeMargin{-1};
     float m_maxLength{1};

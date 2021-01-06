@@ -55,7 +55,7 @@ FocusScope {
     //!    we use 100px. or 50px. in order to give space for othe views to be shown and to have also
     //!    some space around the settings window
     property int maxHeight: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
-                                viewConfig.availableScreenGeometry.height - (latteView.editThickness - latteView.normalHighestThickness) - units.largeSpacing :
+                                viewConfig.availableScreenGeometry.height - latteView.editThickness - units.largeSpacing :
                                 viewConfig.availableScreenGeometry.height - 2 * units.largeSpacing
 
     property int maxWidth: 0.6 * latteView.screenGeometry.width
