@@ -541,7 +541,7 @@ void VisibilityManager::onHeadThicknessChanged()
 }
 
 void VisibilityManager::publishFrameExtents(bool forceUpdate)
-{
+{   
     if (m_frameExtentsHeadThicknessGap != m_latteView->headThicknessGap()
             || m_frameExtentsLocation != m_latteView->location()
             || forceUpdate) {

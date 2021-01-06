@@ -68,6 +68,9 @@ Item {
             maxNormalForItems: 48
             maxMediumForItems: 48
             maxZoomedForItems: 48
+
+            maxNormalForItemsWithoutScreenEdge: 48
+            maxZoomedForItemsWithoutScreenEdge: 48
         }
     }
 }

@@ -36,4 +36,7 @@ Item {
     property int maxNormalForItems: 48
     property int maxMediumForItems: 48
     property int maxZoomedForItems: 48
+
+    property int maxNormalForItemsWithoutScreenEdge: 48
+    property int maxZoomedForItemsWithoutScreenEdge: 48
 }

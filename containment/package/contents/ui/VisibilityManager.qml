@@ -101,7 +101,7 @@ Item{
         target: latteView
         property:"normalThickness"
         when: latteView && inPublishingState
-        value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.thickness.maxNormalForItems
+        value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.screenEdge + metrics.mask.maxNormalForItemsWithoutScreenEdge
     }
 
     Binding{
@@ -120,7 +120,7 @@ Item{
                 return 0;
             }
 
-            return metrics.mask.thickness.maxZoomed - metrics.mask.thickness.maxNormal + metrics.extraThicknessForNormal;
+            return metrics.mask.thickness.maxZoomed - metrics.mask.thickness.maxNormalForItems;
         }
     }
 

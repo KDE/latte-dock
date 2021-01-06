@@ -53,15 +53,19 @@ Ability.MetricsPrivate {
     mask.thickness.normal: mask.screenEdge + Math.max(totals.thickness + extraThicknessForNormal, background.thickness + background.shadows.headThickness)
     mask.thickness.medium: mask.screenEdge + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(totals.thickness+extraThicknessForZoomed)
     mask.thickness.zoomed: mask.screenEdge + ((totals.thickness+extraThicknessForZoomed) * parabolic.factor.maxZoom) + 2
-    mask.thickness.maxNormal: mask.screenEdge + maxIconSize + (margin.maxThickness * 2) + extraThicknessForNormal
-    mask.thickness.maxMedium: mask.screenEdge + Math.max(mask.thickness.maxNormalForItems, extraThicknessForNormal + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(maxIconSize+margin.maxThickness))
+    mask.thickness.maxNormal: mask.maxScreenEdge + maxIconSize + (margin.maxThickness * 2) + extraThicknessForNormal
+    mask.thickness.maxMedium: mask.maxScreenEdge + Math.max(mask.thickness.maxNormalForItems, extraThicknessForNormal + (1 + (0.65 * (parabolic.factor.maxZoom-1)))*(maxIconSize+margin.maxThickness))
     mask.thickness.maxZoomed: mask.maxScreenEdge + Math.max( ((maxIconSize+(margin.maxThickness * 2)) * parabolic.factor.maxZoom) + extraThicknessForZoomed,
                                                                     background.thickness + background.shadows.headThickness)
 
     mask.thickness.normalForItems: margin.screenEdge + totals.thickness
     mask.thickness.zoomedForItems: margin.screenEdge + (parabolic.factor.maxZoom * totals.thickness)
-    mask.thickness.maxNormalForItems: mask.screenEdge + maxIconSize + (margin.maxThickness * 2)
-    mask.thickness.maxZoomedForItems: mask.maxScreenEdge + (maxIconSize + (margin.maxThickness * 2)) * parabolic.factor.maxZoom
+
+    mask.thickness.maxNormalForItemsWithoutScreenEdge: maxIconSize + (margin.maxThickness * 2)
+    mask.thickness.maxZoomedForItemsWithoutScreenEdge: (maxIconSize + (margin.maxThickness * 2)) * parabolic.factor.maxZoom
+
+    mask.thickness.maxNormalForItems: mask.maxScreenEdge + mask.thickness.maxNormalForItemsWithoutScreenEdge
+    mask.thickness.maxZoomedForItems: mask.maxScreenEdge + mask.thickness.maxZoomedForItemsWithoutScreenEdge
 
     //! Padding
     padding.length: fraction.lengthPadding * iconSize
