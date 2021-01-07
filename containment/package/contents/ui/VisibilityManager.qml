@@ -313,10 +313,10 @@ Item{
             var isCapableToHideScreenGap = root.screenEdgeMarginEnabled && plasmoid.configuration.hideFloatingGapForMaximized
 
             if (root.behaveAsPlasmaPanel) {
-                return isCapableToHideScreenGap ? thicknessAsPanel : metrics.mask.screenEdge + thicknessAsPanel;
+                return isCapableToHideScreenGap ? thicknessAsPanel : (2*metrics.mask.screenEdge) + thicknessAsPanel;
             }
 
-            var edgeThickness = isCapableToHideScreenGap ? 0 : metrics.mask.screenEdge;
+            var edgeThickness = isCapableToHideScreenGap ? 0 : metrics.mask.screenEdge * 2;
             return edgeThickness + metrics.mask.thickness.maxNormalForItemsWithoutScreenEdge;
         }
     }
