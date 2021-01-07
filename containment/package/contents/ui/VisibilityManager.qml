@@ -304,6 +304,23 @@ Item{
         value: plasmoid.configuration.isStickedOnBottomEdge
     }
 
+    //! View::VisibilityManager
+    Binding{
+        target: latteView && latteView.visibility ? latteView.visibility : null
+        property: "strutsThickness"
+        when: latteView && latteView.visibility
+        value: {
+            var isCapableToHideScreenGap = root.screenEdgeMarginEnabled && plasmoid.configuration.hideFloatingGapForMaximized
+
+            if (root.behaveAsPlasmaPanel) {
+                return isCapableToHideScreenGap ? thicknessAsPanel : metrics.mask.screenEdge + thicknessAsPanel;
+            }
+
+            var edgeThickness = isCapableToHideScreenGap ? 0 : metrics.mask.screenEdge;
+            return edgeThickness + metrics.mask.thickness.maxNormalForItemsWithoutScreenEdge;
+        }
+    }
+
     //! View::WindowsTracker bindings
     Binding{
         target: latteView && latteView.windowsTracker ? latteView.windowsTracker : null

@@ -178,6 +178,22 @@ VisibilityManager::~VisibilityManager()
     }
 }
 
+//! Struts
+int VisibilityManager::strutsThickness() const
+{
+    return m_strutsThickness;
+}
+
+void VisibilityManager::setStrutsThickness(int thickness)
+{
+    if (m_strutsThickness == thickness) {
+        return;
+    }
+
+    m_strutsThickness = thickness;
+    emit strutsThicknessChanged();
+}
+
 Types::Visibility VisibilityManager::mode() const
 {
     return m_mode;
@@ -254,7 +270,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
             updateStrutsBasedOnLayoutsAndActivities();
         }
 
-        m_connections[base] = connect(m_latteView, &Latte::View::normalThicknessChanged, this, [&]() {
+        m_connections[base] = connect(this, &VisibilityManager::strutsThicknessChanged, this, [&]() {
             updateStrutsBasedOnLayoutsAndActivities();
         });
 
@@ -392,29 +408,26 @@ QRect VisibilityManager::acceptableStruts()
 {
     QRect calcs;
 
-    int screenEdgeMargin = (m_latteView->behaveAsPlasmaPanel() && m_latteView->screenEdgeMarginEnabled()) ? m_latteView->screenEdgeMargin() : 0;
-    int shownThickness = m_latteView->normalThickness() + screenEdgeMargin;
-
     switch (m_latteView->location()) {
     case Plasma::Types::TopEdge: {
-        calcs = QRect(m_latteView->x(), m_latteView->screenGeometry().top(), m_latteView->width(), shownThickness);
+        calcs = QRect(m_latteView->x(), m_latteView->screenGeometry().top(), m_latteView->width(), m_strutsThickness);
         break;
     }
 
     case Plasma::Types::BottomEdge: {
-        int y = m_latteView->screenGeometry().bottom() - shownThickness + 1 /* +1, is needed in order to not leave a gap at screen_edge*/;
-        calcs = QRect(m_latteView->x(), y, m_latteView->width(), shownThickness);
+        int y = m_latteView->screenGeometry().bottom() - m_strutsThickness + 1 /* +1, is needed in order to not leave a gap at screen_edge*/;
+        calcs = QRect(m_latteView->x(), y, m_latteView->width(), m_strutsThickness);
         break;
     }
 
     case Plasma::Types::LeftEdge: {
-        calcs = QRect(m_latteView->screenGeometry().left(), m_latteView->y(), shownThickness, m_latteView->height());
+        calcs = QRect(m_latteView->screenGeometry().left(), m_latteView->y(), m_strutsThickness, m_latteView->height());
         break;
     }
 
     case Plasma::Types::RightEdge: {
-        int x = m_latteView->screenGeometry().right() - shownThickness + 1 /* +1, is needed in order to not leave a gap at screen_edge*/;
-        calcs = QRect(x, m_latteView->y(), shownThickness, m_latteView->height());
+        int x = m_latteView->screenGeometry().right() - m_strutsThickness + 1 /* +1, is needed in order to not leave a gap at screen_edge*/;
+        calcs = QRect(x, m_latteView->y(), m_strutsThickness, m_latteView->height());
         break;
     }
     }

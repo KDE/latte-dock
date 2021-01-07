@@ -69,6 +69,9 @@ class VisibilityManager : public QObject
     Q_PROPERTY(int timerShow READ timerShow WRITE setTimerShow NOTIFY timerShowChanged)
     Q_PROPERTY(int timerHide READ timerHide WRITE setTimerHide NOTIFY timerHideChanged)
 
+    //! Struts
+    Q_PROPERTY(int strutsThickness READ strutsThickness WRITE setStrutsThickness NOTIFY strutsThicknessChanged)
+
 public:
     static const QRect ISHIDDENMASK;
 
@@ -109,6 +112,10 @@ public:
 
     bool supportsKWinEdges() const;
 
+    //! Struts
+    int strutsThickness() const;
+    void setStrutsThickness(int thickness);
+
     //! Used mostly to show / hide Sidebars
     void toggleHiddenState();
 
@@ -139,6 +146,7 @@ signals:
     void isHiddenChanged();
     void hidingIsBlockedChanged();
     void containsMouseChanged();
+    void strutsThicknessChanged();
     void timerShowChanged();
     void timerHideChanged();
 
@@ -220,6 +228,8 @@ private:
     int m_frameExtentsHeadThicknessGap{0};
     int m_timerHideInterval{700};
     Plasma::Types::Location m_frameExtentsLocation{Plasma::Types::BottomEdge};
+
+    int m_strutsThickness{0};
 
     QStringList m_blockHidingEvents;
 
