@@ -901,7 +901,9 @@ int View::editThickness() const
     int ruler_height{m_fontPixelSize};
     int header_height{m_fontPixelSize + 2*smallspacing};
 
-    return m_maxNormalThickness + ruler_height + header_height + 6*smallspacing;
+    int edgeThickness = behaveAsPlasmaPanel() && screenEdgeMarginEnabled() ? m_screenEdgeMargin : 0;
+
+    return edgeThickness + m_maxNormalThickness + ruler_height + header_height + 6*smallspacing;
 }
 
 int View::maxThickness() const
