@@ -603,35 +603,37 @@ Item{
         var animated = (animations.needBothAxis.count>0);
 
         if (!LatteCore.WindowSystem.compositingActive || animated || latteView.behaveAsPlasmaPanel) {
+            //! clear input mask
             latteView.effects.inputMask = Qt.rect(0, 0, -1, -1);
         } else {
             var inputThickness = latteView.visibility.isHidden ? metrics.mask.thickness.hidden : metrics.mask.screenEdge + metrics.totals.thickness;
             var inputGeometry = Qt.rect(0, 0, root.width, root.height);
 
+            //!use view.localGeometry for length properties
             if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                inputGeometry.x = latteView.effects.rect.x; // from effects area
+                inputGeometry.x = latteView.localGeometry.x;
                 inputGeometry.y = 0;
 
-                inputGeometry.width = latteView.effects.rect.width; // from effects area
+                inputGeometry.width = latteView.localGeometry.width;
                 inputGeometry.height = inputThickness ;
             } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                inputGeometry.x = latteView.effects.rect.x; // from effects area
+                inputGeometry.x = latteView.localGeometry.x;
                 inputGeometry.y = root.height - inputThickness;
 
-                inputGeometry.width = latteView.effects.rect.width; // from effects area
+                inputGeometry.width = latteView.localGeometry.width;
                 inputGeometry.height = inputThickness;
             } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
                 inputGeometry.x = 0;
-                inputGeometry.y = latteView.effects.rect.y; // from effects area
+                inputGeometry.y = latteView.localGeometry.y;
 
                 inputGeometry.width = inputThickness;
-                inputGeometry.height = latteView.effects.rect.height; // from effects area
+                inputGeometry.height = latteView.effects.rect.height;
             } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
                 inputGeometry.x = root.width - inputThickness;
-                inputGeometry.y = latteView.effects.rect.y; // from effects area
+                inputGeometry.y = latteView.localGeometry.y;
 
                 inputGeometry.width = inputThickness;
-                inputGeometry.height = latteView.effects.rect.height; // from effects area
+                inputGeometry.height = latteView.localGeometry.height;
             }
 
             //set the boundaries for latteView local geometry
