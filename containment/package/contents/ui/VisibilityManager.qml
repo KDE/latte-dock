@@ -49,7 +49,7 @@ Item{
     property int maskFloatedGap: maskIsFloating ? Math.max(0, metrics.margin.screenEdge - background.shadows.headThickness) : 0
 
     property int animationSpeed: LatteCore.WindowSystem.compositingActive ?
-                                     (root.editMode ? 400 : animations.speedFactor.normal * 1.62 * animations.duration.large) : 0
+                                     (root.editMode ? 400 : animations.speedFactor.current * 1.62 * animations.duration.large) : 0
 
 
 
