@@ -1044,7 +1044,7 @@ Item {
 
             function urlsDroppedOnArea(urls){
                 // If all dropped URLs point to application desktop files, we'll add a launcher for each of them.
-                if (onlyLaunchersDroppedInList(urls)) {
+                if (onlyLaunchersInDroppedList(urls)) {
                     urls.forEach(function (item) {
                         addLauncher(item);
                     });
