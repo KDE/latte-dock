@@ -39,7 +39,7 @@ Item {
     readonly property LaunchersPart.Syncer syncer: LaunchersPart.Syncer{}
     readonly property LaunchersPart.Validator validator: LaunchersPart.Validator{}
 
-    readonly property string NULLACTIVITYID: "00000000-0000-0000-0000-000000000000"
+    readonly property string _NULLACTIVITYID_: "00000000-0000-0000-0000-000000000000"
 
     function inUniqueGroup() {
         return group === LatteCore.Types.UniqueLaunchers;
@@ -144,7 +144,7 @@ Item {
     function inCurrentActivity(launcherUrl) {
         var activities = _launchers.tasksModel.launcherActivities(launcherUrl);
 
-        if (activities.length === 0 || activities.indexOf(NULLACTIVITYID) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1) {
+        if (activities.length === 0 || activities.indexOf(_NULLACTIVITYID_) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1) {
             return true;
         }
 
@@ -153,7 +153,7 @@ Item {
 
     function isOnAllActivities(launcherUrl) {
         var activities = _launchers.tasksModel.launcherActivities(url);
-        return (activities.indexOf(NULLACTIVITYID) >= 0)
+        return (activities.indexOf(_NULLACTIVITYID_) >= 0)
     }
 
     function childAtLayoutIndex(position) {
