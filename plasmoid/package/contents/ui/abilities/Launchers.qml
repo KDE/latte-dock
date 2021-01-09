@@ -195,7 +195,9 @@ Item {
                 } else {
                     plasmoid.configuration.launchers59 = _launchers.tasksModel.launcherList;
                 }
-            } else {
+            } else if (!latteView) {
+                // This way we make sure that a delayed viewLayout initialization does not store irrelevant launchers from different
+                // group to UNIQUE launchers group
                 plasmoid.configuration.launchers59 = _launchers.tasksModel.launcherList;
             }
         }
