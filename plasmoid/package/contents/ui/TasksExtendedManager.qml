@@ -49,14 +49,19 @@ Item {
     property variant launchersToBeMoved: []
 
     //! Launchers that are added from user actions. They can be used in order
-    //! to be provide adding animations
+    //! to provide addition animations properly
     property variant launchersToBeAdded: []
+
+    //! Launchers that are added from user actions. They can be used in order
+    //! to provide removal animations properly
+    property variant launchersToBeRemoved: []
 
     //! Tasks that change state (launcher,startup,window) and
     //! at the next state must look the same concerning the parabolic effect:
     //! (id, mScale)
     property variant frozenTasks: []
 
+    property int launchersToBeRemovedCount: 0 //is used to update instantly relevant bindings
 
     signal waitingLauncherRemoved(string launch);
 
@@ -144,6 +149,41 @@ Item {
 
     function printToBeAddedLaunchers() {
         console.log("TO BE ADDED LAUNCHERS ::: " + launchersToBeAdded);
+    }
+
+    //! LAUNCHERSTOBEREMOVED
+    function addToBeRemovedLauncher(launcher){
+        arraysGarbageCollectorTimer.restart();
+
+        if (isLauncherToBeRemoved(launcher)) {
+            return;
+        }
+
+        launchersToBeRemoved.push(launcher);
+        launchersToBeRemovedCount++;
+    }
+
+    function removeToBeRemovedLauncher(launcher){
+        if (!isLauncherToBeRemoved(launcher)) {
+            return;
+        }
+
+        for(var i=0; i<launchersToBeRemoved.length; ++i){
+            if (launchersToBeRemoved[i] === launcher) {
+                launchersToBeRemoved.splice(i,1);
+                launchersToBeRemovedCount--;
+                return;
+            }
+        }
+    }
+
+    function isLauncherToBeRemoved(launcher) {
+        return launchersToBeRemoved.indexOf(launcher)>=0;
+    }
+
+
+    function printToBeRemovedLaunchers() {
+        console.log("TO BE REMOVED LAUNCHERS ::: " + launchersToBeRemoved);
     }
 
     //! IMMEDIATELAUNCHERS
@@ -338,12 +378,14 @@ Item {
             tasksExtManager.printImmediateLaunchers();
             tasksExtManager.printToBeAddedLaunchers();
             tasksExtManager.printToBeMovedLaunchers();
+            tasksExtManager.printToBeRemovedLaunchers();
             tasksExtManager.printWaitingLaunchers();
             tasksExtManager.printFrozenTasks();
 
             immediateLaunchers.splice(0, immediateLaunchers.length);
             launchersToBeAdded.splice(0, launchersToBeAdded.length);
             launchersToBeMoved.splice(0, launchersToBeMoved.length);
+            launchersToBeRemoved.splice(0, launchersToBeRemoved.length);
             waitingLaunchers.splice(0, waitingLaunchers.length);
             frozenTasks.splice(0, frozenTasks.length);
         }

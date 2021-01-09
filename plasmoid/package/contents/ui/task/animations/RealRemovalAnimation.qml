@@ -38,16 +38,20 @@ SequentialAnimation {
                                  && tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) === -1)
                                || ((!taskItem.launchers.inCurrentActivity(taskItem.launcherUrl)/*no-launcher-in-current-activity*/
                                     && !taskItem.launchers.inCurrentActivity(taskItem.launcherUrlWithIcon)))
-                               && !taskItem.isStartup && LatteCore.WindowSystem.compositingActive)
+                               && !taskItem.isStartup
+                               && LatteCore.WindowSystem.compositingActive)
 
-    property bool animation4: ((taskItem.launcherUrl===root.launcherForRemoval
-                                || taskItem.launcherUrlWithIcon===root.launcherForRemoval )
-                               && !taskItem.isStartup && LatteCore.WindowSystem.compositingActive)
+    property bool animation4: (tasksExtendedManager.launchersToBeRemovedCount /*update trigger*/
+                               && (tasksExtendedManager.isLauncherToBeRemoved(taskItem.launcherUrl)
+                                 || tasksExtendedManager.isLauncherToBeRemoved(taskItem.launcherUrlWithIcon))
+                               && !taskItem.isStartup
+                               && LatteCore.WindowSystem.compositingActive)
 
-    property bool enabledAnimation: (animation1 || animation4) && (taskItem.animations.newWindowSlidingEnabled)
+    property bool enabledAnimation: (animation1 || animation4)
+                                    && (taskItem.animations.newWindowSlidingEnabled)
                                     && !taskItem.inBouncingAnimation
                                     && !taskItem.isSeparator
-                                    && taskItem.visible;
+                                    && taskItem.visible
 
     readonly property string needLengthEvent: taskRealRemovalAnimation + "_realremoval"
 
@@ -107,7 +111,7 @@ SequentialAnimation {
 
             //console.log("1." + taskItem.launcherUrl + " - " + taskItem.launchers.inCurrentActivity(taskItem.launcherUrl) + "__" +
             //            animation1 + ":" + animation4 + "=>" + taskRealRemovalAnimation.enabledAnimation);
-            //console.log("2." + root.launcherForRemoval + " - " + taskItem.isLauncher);
+            //console.log("2." + taskItem.isLauncher);
 
             taskItem.animations.needLength.addEvent(needLengthEvent);
 
@@ -138,7 +142,7 @@ SequentialAnimation {
         target: wrapper
         property: "mScale"
         to: 1
-        duration:  taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
+        duration: taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
         easing.type: Easing.InQuad
     }
 
@@ -161,7 +165,7 @@ SequentialAnimation {
             target: wrapper
             property: (icList.orientation === Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
             to: 0
-            duration:  taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
+            duration: taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
             easing.type: Easing.InQuad
         }
     }
@@ -171,7 +175,7 @@ SequentialAnimation {
         target: wrapper
         property: (icList.orientation === Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
         to: 0
-        duration:  taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
+        duration: taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
         easing.type: Easing.InQuad
     }
 
@@ -185,8 +189,9 @@ SequentialAnimation {
 
             taskItem.animations.needLength.removeEvent(needLengthEvent);
 
-            if(taskItem.launcherUrl===root.launcherForRemoval && taskItem.isLauncher)
-                root.launcherForRemoval="";
+            if(tasksExtendedManager.isLauncherToBeRemoved(taskItem.launcherUrl) && taskItem.isLauncher) {
+                tasksExtendedManager.removeToBeRemovedLauncher(taskItem.launcherUrl);
+            }
 
             if (windowsPreviewDlg.visible && windowsPreviewDlg.mainItem.parentTask === taskItem
                     && isWindow && !isGroupParent){

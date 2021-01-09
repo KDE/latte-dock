@@ -39,6 +39,8 @@ Item {
     readonly property LaunchersPart.Syncer syncer: LaunchersPart.Syncer{}
     readonly property LaunchersPart.Validator validator: LaunchersPart.Validator{}
 
+    readonly property string NULLACTIVITYID: "00000000-0000-0000-0000-000000000000"
+
     function inUniqueGroup() {
         return group === LatteCore.Types.UniqueLaunchers;
     }
@@ -102,7 +104,7 @@ Item {
                                                                      launchers.group,
                                                                      launcherUrl);
         } else {
-            root.launcherForRemoval = launcherUrl;
+            tasksExtendedManager.addToBeRemovedLauncher(launcherUrl);
             _launchers.tasksModel.requestRemoveLauncher(launcherUrl);
             _launchers.launcherChanged(launcherUrl);
         }
@@ -116,7 +118,7 @@ Item {
                                                                             activityId);
         } else {
             if (activityId !== activityInfo.currentActivity && isOnAllActivities(launcherUrl)) {
-                root.launcherForRemoval = url;
+                tasksExtendedManager.addToBeRemovedLauncher(launcherUrl);
             }
 
             _launchers.tasksModel.requestAddLauncherToActivity(launcherUrl, activityId);
@@ -132,7 +134,7 @@ Item {
                                                                                  activityId);
         } else {
             if (activityId === activityInfo.currentActivity) {
-                root.launcherForRemoval = launcherUrl;
+                tasksExtendedManager.addToBeRemovedLauncher(launcherUrl);
             }
             _launchers.tasksModel.requestRemoveLauncherFromActivity(launcherUrl, activityId);
             _launchers.launcherChanged(launcherUrl);
@@ -142,9 +144,7 @@ Item {
     function inCurrentActivity(launcherUrl) {
         var activities = _launchers.tasksModel.launcherActivities(launcherUrl);
 
-        var NULL_UUID = "00000000-0000-0000-0000-000000000000";
-
-        if (activities.length === 0 || activities.indexOf(NULL_UUID) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1) {
+        if (activities.length === 0 || activities.indexOf(NULLACTIVITYID) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1) {
             return true;
         }
 
@@ -153,8 +153,7 @@ Item {
 
     function isOnAllActivities(launcherUrl) {
         var activities = _launchers.tasksModel.launcherActivities(url);
-        var NULL_UUID = "00000000-0000-0000-0000-000000000000";
-        return (activities.indexOf(NULL_UUID) >= 0)
+        return (activities.indexOf(NULLACTIVITYID) >= 0)
     }
 
     function childAtLayoutIndex(position) {

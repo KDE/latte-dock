@@ -140,9 +140,6 @@ Item {
                                                          || !latteView.dragInfo.isPlasmoid)
                                                       : true
 
-    //! it is used to play the animation correct when the user removes a launcher
-    property string launcherForRemoval: ""
-
     //BEGIN Latte Dock properties
     property bool badges3DStyle: latteView ? latteView.badges3DStyle : true
     property bool dockIsShownCompletely: latteView ? latteView.dockIsShownCompletely : true
@@ -1443,7 +1440,7 @@ Item {
 
     function extSignalRemoveLauncher(group, launcher) {
         if (group === launchers.group) {
-            root.launcherForRemoval = launcher;
+            tasksExtendedManager.addToBeRemovedLauncher(launcher);
             tasksModel.requestRemoveLauncher(launcher);
             launchers.launcherChanged(launcher);
             tasksModel.syncLaunchers();
@@ -1455,7 +1452,7 @@ Item {
             var launcherActivities = tasksModel.launcherActivities(launcher);
 
             if (activity !== tasksModel.activity && (launcherActivities[0] === "00000000-0000-0000-0000-000000000000")) {
-                root.launcherForRemoval = launcher;
+                tasksExtendedManager.addToBeRemovedLauncher(launcher);
             }
 
             tasksModel.requestAddLauncherToActivity(launcher, activity);
@@ -1467,7 +1464,7 @@ Item {
     function extSignalRemoveLauncherFromActivity(group, launcher, activity) {
         if (group === launchers.group) {
             if (activity === tasksModel.activity) {
-                root.launcherForRemoval = launcher;
+                tasksExtendedManager.addToBeRemovedLauncher(launcher);
             }
 
             tasksModel.requestRemoveLauncherFromActivity(launcher, activity);
@@ -1560,7 +1557,7 @@ Item {
         tasksExtendedManager.addToBeAddedLauncher(filename);
 
         tasksModel.requestAddLauncher(url);
-        launchers.launcherChanged(launcher);
+        launchers.launcherChanged(url);
         tasksModel.syncLaunchers();
     }
 
