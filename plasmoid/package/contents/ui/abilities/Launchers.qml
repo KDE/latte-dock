@@ -27,12 +27,25 @@ import "launchers" as LaunchersPart
 
 Item {
     id: _launchers
+    property int group: LatteCore.Types.UniqueLaunchers
     property Item layout: null
     property QtObject tasksModel: null
 
     readonly property LaunchersPart.Actions actions: LaunchersPart.Actions{}
     readonly property LaunchersPart.Syncer syncer: LaunchersPart.Syncer{}
     readonly property LaunchersPart.Validator validator: LaunchersPart.Validator{}
+
+    function inUniqueGroup() {
+        return group === LatteCore.Types.UniqueLaunchers;
+    }
+
+    function inLayoutGroup() {
+        return group === LatteCore.Types.LayoutLaunchers;
+    }
+
+    function inGlobalGroup() {
+        return group === LatteCore.Types.GlobalLaunchers;
+    }
 
     function isSeparator(launcher){
         return (launcher.indexOf("latte-separator")!==-1 && launcher.indexOf(".desktop")!==1);
@@ -62,6 +75,10 @@ Item {
         } else {
             return "";
         }
+    }
+
+    function hasLauncher(url) {
+        return _launchers.tasksModel.launcherPosition(url) != -1;
     }
 
     function inCurrentActivity(url) {
@@ -132,12 +149,11 @@ Item {
         if (viewLayout) {
             if (latteView && latteView.layoutsManager
                     && latteView.viewLayout && latteView.universalSettings
-                    && (root.launchersGroup === LatteCore.Types.LayoutLaunchers
-                        || root.launchersGroup === LatteCore.Types.GlobalLaunchers)) {
+                    && !_launchers.inUniqueGroup()) {
 
-                if (root.launchersGroup === LatteCore.Types.LayoutLaunchers) {
+                if (_launchers.inLayoutGroup()) {
                     launchersList = latteView.viewLayout.launchers;
-                } else if (root.launchersGroup === LatteCore.Types.GlobalLaunchers) {
+                } else if (_launchers.inGlobalGroup()) {
                     launchersList = latteView.universalSettings.launchers;
                 }
             }
@@ -174,27 +190,42 @@ Item {
 
     //! Connections
 
+    onGroupChanged:{
+        if(latteView) {
+            _launchers.tasksModel.updateLaunchersList();
+        }
+    }
+
+    Connections {
+        target: root
+        onLatteViewChanged: {
+            if (root.latteView) {
+                if (!_launchers.inUniqueGroup()) {
+                    _launchers.tasksModel.updateLaunchersList();
+                }
+            }
+        }
+    }
+
     Connections {
         target: _launchers.tasksModel
-
         onLauncherListChanged: {
             if (viewLayout) {
                 if (latteView && latteView.layoutsManager
                         && latteView.viewLayout && latteView.universalSettings
-                        && (root.launchersGroup === LatteCore.Types.LayoutLaunchers
-                            || root.launchersGroup === LatteCore.Types.GlobalLaunchers)) {
+                        && !_launchers.inUniqueGroup()) {
 
-                    if (root.launchersGroup === LatteCore.Types.LayoutLaunchers) {
+                    if (_launchers.inLayoutGroup()) {
                         latteView.viewLayout.launchers = _launchers.tasksModel.launcherList;
-                    } else if (root.launchersGroup === LatteCore.Types.GlobalLaunchers) {
+                    } else if (_launchers.inGlobalGroup()) {
                         latteView.universalSettings.launchers = _launchers.tasksModel.launcherList;
                     }
 
                     if (inDraggingPhase) {
-                        if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
+                        if (latteView && !_launchers.inUniqueGroup()) {
                             latteView.layoutsManager.launchersSignals.validateLaunchersOrder(root.viewLayoutName,
                                                                                              plasmoid.id,
-                                                                                             root.launchersGroup,
+                                                                                             _launchers.group,
                                                                                              _launchers.currentShownLauncherList());
                         }
                     }

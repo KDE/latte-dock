@@ -175,8 +175,6 @@ Item {
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
-    property int launchersGroup: plasmoid.configuration.launchersGroup
-
     property int leftClickAction: plasmoid.configuration.leftClickAction
     property int middleClickAction: plasmoid.configuration.middleClickAction
     property int hoverAction: plasmoid.configuration.hoverAction
@@ -272,19 +270,8 @@ Item {
         if (latteView) {
             plasmoid.action("configure").visible = false;
             plasmoid.configuration.isInLatteDock = true;
-
-            if (root.launchersGroup === LatteCore.Types.LayoutLaunchers
-                    || root.launchersGroup === LatteCore.Types.GlobalLaunchers) {
-                tasksModel.updateLaunchersList();
-            }
         } else {
             plasmoid.configuration.isInLatteDock = false;
-        }
-    }
-
-    onLaunchersGroupChanged:{
-        if(latteView) {
-            tasksModel.updateLaunchersList();
         }
     }
 
@@ -617,13 +604,11 @@ Item {
         property bool anyTaskDemandsAttentionInValidTime: false
 
         function updateLaunchersList(){
-            if (latteView
-                    && (root.launchersGroup === LatteCore.Types.LayoutLaunchers
-                        || root.launchersGroup === LatteCore.Types.GlobalLaunchers)) {
-                if (root.launchersGroup === LatteCore.Types.LayoutLaunchers) {
+            if (latteView && !launchers.inUniqueGroup()) {
+                if (launchers.inLayoutGroup()) {
                     console.log("Tasks: Applying LAYOUT Launchers List...");
                     tasksModel.launcherList = latteView.viewLayout.launchers;
-                } else if (root.launchersGroup === LatteCore.Types.GlobalLaunchers) {
+                } else if (launchers.inGlobalGroup()) {
                     console.log("Tasks: Applying GLOBAL Launchers List...");
                     tasksModel.launcherList = latteView.universalSettings.launchers;
                 }
@@ -661,13 +646,10 @@ Item {
             //var loadedLaunchers = ActivitiesTools.restoreLaunchers();
             ActivitiesTools.importLaunchersToNewArchitecture();
 
-            if (viewLayout && latteView.universalSettings
-                    && (root.launchersGroup === LatteCore.Types.LayoutLaunchers
-                        || root.launchersGroup === LatteCore.Types.GlobalLaunchers)) {
-
-                if (root.launchersGroup === LatteCore.Types.LayoutLaunchers) {
+            if (viewLayout && latteView.universalSettings && !launchers.inUniqueGroup()) {
+                if (launchers.inLayoutGroup()) {
                     launcherList = latteView.viewLayout.launchers;
-                } else if (root.launchersGroup === LatteCore.Types.GlobalLaunchers) {
+                } else if (launchers.inGlobalGroup()) {
                     launcherList = latteView.universalSettings.launchers;
                 }
             } else {
@@ -852,6 +834,7 @@ Item {
 
     Ability.Launchers {
         id: _launchers
+        group: plasmoid.configuration.launchersGroup
         layout: icList.contentItem
         tasksModel: tasksModel
     }
@@ -1053,7 +1036,7 @@ Item {
             property int maxThickness: (parabolic.isHovered || windowPreviewIsShown || animations.hasThicknessAnimation) ?
                                            metrics.mask.thickness.zoomedForItems : metrics.mask.thickness.normalForItems
 
-            function onlyLaunchersInList(list){
+            function onlyLaunchersInDroppedList(list){
                 return list.every(function (item) {
                     return backend.isApplication(item)
                 });
@@ -1061,7 +1044,7 @@ Item {
 
             function urlsDroppedOnArea(urls){
                 // If all dropped URLs point to application desktop files, we'll add a launcher for each of them.
-                if (onlyLaunchersInList(urls)) {
+                if (onlyLaunchersDroppedInList(urls)) {
                     urls.forEach(function (item) {
                         addLauncher(item);
                     });
@@ -1082,9 +1065,10 @@ Item {
 
             onUrlsDropped: {
                 //! inform synced docks for new dropped launchers
-                if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
+                if (latteView && !launchers.inUniqueGroup() && onlyLaunchersInDroppedList(urls)) {
                     latteView.layoutsManager.launchersSignals.urlsDropped(root.viewLayoutName,
-                                                                          root.launchersGroup, urls);
+                                                                          launchers.group,
+                                                                          urls);
                     return;
                 }
 
@@ -1392,9 +1376,10 @@ Item {
         if (separatorName !== "") {
             tasksExtendedManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
-            if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
+            if (latteView && !launchers.inUniqueGroup()) {
                 latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
-                                                                      root.launchersGroup, separatorName);
+                                                                      launchers.group,
+                                                                      separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
             }
@@ -1449,7 +1434,7 @@ Item {
 
     //! BEGIN ::: external launchers signals in order to update the tasks model
     function extSignalAddLauncher(group, launcher) {
-        if (group === root.launchersGroup) {
+        if (group === launchers.group) {
             tasksModel.requestAddLauncher(launcher);
             launchersUpdatedFor(launcher);
             tasksModel.syncLaunchers();
@@ -1457,7 +1442,7 @@ Item {
     }
 
     function extSignalRemoveLauncher(group, launcher) {
-        if (group === root.launchersGroup) {
+        if (group === launchers.group) {
             root.launcherForRemoval = launcher;
             tasksModel.requestRemoveLauncher(launcher);
             launchersUpdatedFor(launcher);
@@ -1466,7 +1451,7 @@ Item {
     }
 
     function extSignalAddLauncherToActivity(group, launcher, activity) {
-        if (group === root.launchersGroup) {
+        if (group === launchers.group) {
             var launcherActivities = tasksModel.launcherActivities(launcher);
 
             if (activity !== tasksModel.activity && (launcherActivities[0] === "00000000-0000-0000-0000-000000000000")) {
@@ -1480,7 +1465,7 @@ Item {
     }
 
     function extSignalRemoveLauncherFromActivity(group, launcher, activity) {
-        if (group === root.launchersGroup) {
+        if (group === launchers.group) {
             if (activity === tasksModel.activity) {
                 root.launcherForRemoval = launcher;
             }
@@ -1492,20 +1477,20 @@ Item {
     }
 
     function extSignalUrlsDropped(group, urls) {
-        if (group === root.launchersGroup) {
+        if (group === launchers.group) {
             mouseHandler.urlsDroppedOnArea(urls);
         }
     }
 
     function extSignalMoveTask(group, from, to) {
-        if (group === root.launchersGroup && !root.dragSource) {
+        if (group === launchers.group && !root.dragSource) {
             tasksModel.move(from, to);
             tasksModel.syncLaunchers();
         }
     }
 
     function extSignalValidateLaunchersOrder(group, orderedLaunchers) {
-        if (group === root.launchersGroup && !root.dragSource) {
+        if (group === launchers.group && !root.dragSource) {
             launchers.validateOrder(orderedLaunchers);
         }
     }
@@ -1521,8 +1506,8 @@ Item {
         if (separatorName !== "") {
             tasksExtendedManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
-            if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
-                latteView.layoutsManager.launchersSignals.addLauncher(root.launchersGroup, separatorName);
+            if (latteView && !launchers.inUniqueGroup()) {
+                latteView.layoutsManager.launchersSignals.addLauncher(launchers.group, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
             }
@@ -1560,10 +1545,6 @@ Item {
         }
 
         return false;
-    }
-
-    function hasLauncher(url) {
-        return tasksModel.launcherPosition(url) != -1;
     }
 
     function addLauncher(url) {
