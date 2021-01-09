@@ -124,7 +124,7 @@ SequentialAnimation{
 
         //Animation Add/Remove (2) - when is window with no launcher, animations enabled
         //Animation Add/Remove (3) - when is launcher with no window, animations enabled
-        var animation2 = ((!hasShownLauncher || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl))
+        var animation2 = ((!hasShownLauncher || !taskItem.launchers.inCurrentActivity(taskItem.launcherUrl))
                           && taskItem.isWindow
                           && LatteCore.WindowSystem.compositingActive);
 
@@ -140,7 +140,7 @@ SequentialAnimation{
 
 
         //startup without launcher, animation should be blocked
-        var launcherExists = !(!hasShownLauncher || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl));
+        var launcherExists = !(!hasShownLauncher || !taskItem.launchers.inCurrentActivity(taskItem.launcherUrl));
 
         //var hideStartup =  launcherExists && taskItem.isStartup; //! fix #976
         var hideWindow =  (root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) && !launcherExists && taskItem.isWindow;

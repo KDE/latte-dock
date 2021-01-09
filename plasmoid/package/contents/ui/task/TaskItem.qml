@@ -1383,7 +1383,7 @@ MouseArea{
     function updateVisibilityBasedOnLaunchers(){
         var launcherExists = !(((tasksModel.launcherPosition(taskItem.launcherUrl) == -1)
                                 && (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) == -1) )
-                               || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl));
+                               || !taskItem.launchers.inCurrentActivity(taskItem.launcherUrl));
 
         if (root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) {
             var hideWindow =  !launcherExists && (taskItem.isWindow || root.disableAllWindowsFunctionality);
@@ -1516,7 +1516,7 @@ MouseArea{
                                 || (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) !== -1) );
 
         //startup without launcher
-        var hideStartup =  ((!hasShownLauncher || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl))
+        var hideStartup =  ((!hasShownLauncher || !taskItem.launchers.inCurrentActivity(taskItem.launcherUrl))
                             && taskItem.isStartup);
 
         if (!LatteCore.WindowSystem.compositingActive) {

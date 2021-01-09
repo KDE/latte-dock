@@ -36,8 +36,8 @@ SequentialAnimation {
     //Animation Add/Remove (4) - the user removes a launcher, animation enabled
     property bool animation1: ( (tasksModel.launcherPosition(taskItem.launcherUrl) === -1 /*no-launcher*/
                                  && tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) === -1)
-                               || ((!tasksModel.launcherInCurrentActivity(taskItem.launcherUrl)/*no-launcher-in-current-activity*/
-                                    && !tasksModel.launcherInCurrentActivity(taskItem.launcherUrlWithIcon)))
+                               || ((!taskItem.launchers.inCurrentActivity(taskItem.launcherUrl)/*no-launcher-in-current-activity*/
+                                    && !taskItem.launchers.inCurrentActivity(taskItem.launcherUrlWithIcon)))
                                && !taskItem.isStartup && LatteCore.WindowSystem.compositingActive)
 
     property bool animation4: ((taskItem.launcherUrl===root.launcherForRemoval
@@ -55,8 +55,8 @@ SequentialAnimation {
         script:{
             //! When a window is removed and afterwards its launcher must be shown immediately!
             if (!enabledAnimation && taskItem.isWindow && !taskItem.isSeparator
-                    && (tasksModel.launcherInCurrentActivity(taskItem.launcherUrl)
-                        || tasksModel.launcherInCurrentActivity(taskItem.launcherUrlWithIcon))
+                    && (taskItem.launchers.inCurrentActivity(taskItem.launcherUrl)
+                        || taskItem.launchers.inCurrentActivity(taskItem.launcherUrlWithIcon))
                     && !tasksExtendedManager.immediateLauncherExists(taskItem.launcherUrl)){
                 tasksExtendedManager.addImmediateLauncher(taskItem.launcherUrl);
             }
@@ -105,7 +105,7 @@ SequentialAnimation {
                 }
             }
 
-            //console.log("1." + taskItem.launcherUrl + " - " + tasksModel.launcherInCurrentActivity(taskItem.launcherUrl) + "__" +
+            //console.log("1." + taskItem.launcherUrl + " - " + taskItem.launchers.inCurrentActivity(taskItem.launcherUrl) + "__" +
             //            animation1 + ":" + animation4 + "=>" + taskRealRemovalAnimation.enabledAnimation);
             //console.log("2." + root.launcherForRemoval + " - " + taskItem.isLauncher);
 

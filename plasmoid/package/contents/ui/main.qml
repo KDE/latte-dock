@@ -406,61 +406,6 @@ Item {
         return createLaunchers;
     }
 
-    function currentLauncherList() {
-        var launch = [];
-        var launchersList = [];
-
-        if (viewLayout) {
-            if (latteView && latteView.layoutsManager
-                    && latteView.viewLayout && latteView.universalSettings
-                    && (root.launchersGroup === LatteCore.Types.LayoutLaunchers
-                        || root.launchersGroup === LatteCore.Types.GlobalLaunchers)) {
-
-                if (root.launchersGroup === LatteCore.Types.LayoutLaunchers) {
-                    launchersList = latteView.viewLayout.launchers;
-                } else if (root.launchersGroup === LatteCore.Types.GlobalLaunchers) {
-                    launchersList = latteView.universalSettings.launchers;
-                }
-            }
-        } else {
-            launchersList = plasmoid.configuration.launchers59;
-        }
-
-
-        for(var i=0; i<launchersList.length; ++i){
-            var launcherRecord = launchersList[i];
-
-            if (launcherRecord.indexOf("[") === -1) {
-                //global launcher
-                launch.push(launcherRecord);
-            } else {
-                //launcher assigned to activities
-                var end = launcherRecord.indexOf("\n");
-                var explicitLauncher = launcherRecord.substring(end+1,launcherRecord.length);
-                if (explicitLauncher !== "" && launcherRecord.indexOf(activityInfo.currentActivity) > -1) {
-                    launch.push(explicitLauncher);
-                }
-            }
-        }
-
-        return launch;
-    }
-
-    function currentListViewLauncherList() {
-        var launch = [];
-
-        var tasks = icList.contentItem.children;
-        for(var i=0; i<tasks.length; ++i){
-            var task = icList.childAtIndex(i);
-
-            if (task!==undefined && task.launcherUrl!=="" && tasksModel.launcherInCurrentActivity(task.launcherUrl)) {
-                launch.push(task.launcherUrl);
-            }
-        }
-
-        return launch;
-    }
-
     function forcePreviewsHiding(debug) {
         // console.log(" org.kde.latte   Tasks: Force hide previews event called: "+debug);
         windowsPreviewDlg.activeItem = null;
@@ -688,49 +633,8 @@ Item {
             }
         }
 
-        function launcherInCurrentActivity(url) {
-            var activities = tasksModel.launcherActivities(url);
-
-            var NULL_UUID = "00000000-0000-0000-0000-000000000000";
-
-            if (activities.length === 0 || activities.indexOf(NULL_UUID) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1) {
-                return true;
-            }
-
-            return false;
-        }
-
         onActivityChanged: {
             ActivitiesTools.currentActivity = String(activity);
-        }
-
-        onLauncherListChanged: {
-            if (viewLayout) {
-                if (latteView && latteView.layoutsManager
-                        && latteView.viewLayout && latteView.universalSettings
-                        && (root.launchersGroup === LatteCore.Types.LayoutLaunchers
-                            || root.launchersGroup === LatteCore.Types.GlobalLaunchers)) {
-
-                    if (root.launchersGroup === LatteCore.Types.LayoutLaunchers) {
-                        latteView.viewLayout.launchers = launcherList;
-                    } else if (root.launchersGroup === LatteCore.Types.GlobalLaunchers) {
-                        latteView.universalSettings.launchers = launcherList;
-                    }
-
-                    if (inDraggingPhase) {
-                        if (latteView && root.launchersGroup >= LatteCore.Types.LayoutLaunchers) {
-                            latteView.layoutsManager.launchersSignals.validateLaunchersOrder(root.viewLayoutName,
-                                                                                             plasmoid.id,
-                                                                                             root.launchersGroup,
-                                                                                             currentLauncherList());
-                        }
-                    }
-                } else {
-                    plasmoid.configuration.launchers59 = launcherList;
-                }
-            } else {
-                plasmoid.configuration.launchers59 = launcherList;
-            }
         }
 
         onGroupingAppIdBlacklistChanged: {
@@ -948,6 +852,8 @@ Item {
 
     Ability.Launchers {
         id: _launchers
+        layout: icList.contentItem
+        tasksModel: tasksModel
     }
 
     Ability.Metrics {
@@ -1324,20 +1230,6 @@ Item {
 
                         return undefined;
                     }
-
-                    function launcherModelIndex(url) {
-                        var tasks = icList.contentItem.children;
-
-                        for(var i=0; i<tasks.length; ++i){
-                            var task = tasks[i];
-
-                            if (task && (task.launcherUrl===url)) {
-                                return task.itemIndex;
-                            }
-                        }
-
-                        return -1;
-                    }
                 }
             } // ScrollPositioner
         } // ScrollableList
@@ -1491,133 +1383,6 @@ Item {
         }
     }
 
-    Timer{
-        id:launchersOrderValidatorTimer
-        interval: 400
-
-        property var launchers: []
-
-        function launchersAreInSync() {
-            return arraysAreEqual(currentListViewLauncherList(), launchers);
-        }
-
-        function launcherValidPos(url) {
-            for (var i=0; i<launchers.length; ++i) {
-                if (launchers[i] === url) {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        function arraysAreEqual(list1, list2) {
-            if (list1.length !== list2.length) {
-                console.log("  arrays have different size...")
-                return false;
-            }
-
-            for (var i=0; i<list1.length; ++i) {
-                if (list1[i] !== list2[i]) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        //! true if upward is the best way to iterate through current
-        //! in order to make it equal with goal
-        function upwardIsBetter(current, goal)
-        {
-            var tCurrent = current.slice();
-
-            if (!arraysAreEqual(tCurrent, goal)) {
-                for (var i=0; i<tCurrent.length; ++i) {
-                    if (tCurrent[i] !== goal[i]) {
-                        var val = tCurrent[i];
-                        tCurrent.splice(i, 1);
-                        tCurrent.splice(goal.indexOf(val), 0, val);
-
-                        if (arraysAreEqual(tCurrent, goal)){
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-
-        onTriggered: {
-            if (launchersAreInSync()) {
-                stop();
-                console.log("launchers synced at:" + launchers);
-                launchers.length = 0;
-                tasksModel.syncLaunchers();
-            } else {
-                var currentLaunchers = currentListViewLauncherList();
-
-                if (upwardIsBetter(currentLaunchers, launchers)) {
-                    console.log("UPWARD....");
-                    for (var i=0; i<currentLaunchers.length; ++i) {
-                        if (currentLaunchers[i] !== launchers[i]) {
-                            var p = launcherValidPos(currentLaunchers[i]);
-                            if (p === -1) {
-                                console.log("No pos found for :"+currentLaunchers[i] + " at: "+launchers);
-                                restart();
-                                return;
-                            }
-                            var launcherModelIndex = icList.launcherModelIndex(currentLaunchers[i]);
-
-                            if (launcherModelIndex === -1) {
-                                console.log(" launcher was not found in model, syncing stopped...");
-                                stop();
-                                return;
-                            }
-
-                            console.log(" moving:" +launcherModelIndex + " _ " + p );
-                            tasksModel.move(launcherModelIndex, p);
-                            restart();
-                            return;
-                        }
-                    }
-                } else {
-                    console.log("DOWNWARD....");
-                    for (var i=currentLaunchers.length-1; i>=0; --i) {
-                        if (currentLaunchers[i] !== launchers[i]) {
-                            var p = launcherValidPos(currentLaunchers[i]);
-                            if (p === -1) {
-                                console.log("No pos found for :"+currentLaunchers[i] + " at: "+launchers);
-                                restart();
-                                return;
-                            }
-                            var launcherModelIndex = icList.launcherModelIndex(currentLaunchers[i]);
-
-                            if (launcherModelIndex === -1) {
-                                console.log(" launcher was not found in model, syncing stopped...");
-                                stop();
-                                return;
-                            }
-
-                            console.log(" moving:" +launcherModelIndex + " _ " + p );
-                            tasksModel.move(launcherModelIndex, p);
-                            restart();
-                            return;
-                        }
-                    }
-                }
-
-                console.log("why we reached ??? ");
-                console.log("CURRENT ::: " + currentLaunchers);
-                console.log("VALID   ::: " + launchers);
-            }
-        }
-    }
-
     /////////
 
     //// functions
@@ -1739,11 +1504,9 @@ Item {
         }
     }
 
-    function extSignalValidateLaunchersOrder(group, launchers) {
+    function extSignalValidateLaunchersOrder(group, orderedLaunchers) {
         if (group === root.launchersGroup && !root.dragSource) {
-            launchersOrderValidatorTimer.stop();
-            launchersOrderValidatorTimer.launchers = launchers;
-            launchersOrderValidatorTimer.start();
+            launchers.validateOrder(orderedLaunchers);
         }
     }
 
