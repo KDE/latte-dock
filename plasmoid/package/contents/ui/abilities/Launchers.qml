@@ -27,8 +27,12 @@ import "launchers" as LaunchersPart
 
 Item {
     id: _launchers
+    signal launcherChanged(string launcherUrl);
+
     property int group: LatteCore.Types.UniqueLaunchers
+    property Item bridge: null
     property Item layout: null
+
     property QtObject tasksModel: null
 
     readonly property LaunchersPart.Actions actions: LaunchersPart.Actions{}
@@ -81,8 +85,62 @@ Item {
         return _launchers.tasksModel.launcherPosition(url) != -1;
     }
 
-    function inCurrentActivity(url) {
-        var activities = _launchers.tasksModel.launcherActivities(url);
+    function addLauncher(launcherUrl) {
+        if (latteView && !inUniqueGroup()) {
+            latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
+                                                                  launchers.group,
+                                                                  launcherUrl);
+        } else {
+            _launchers.tasksModel.requestAddLauncher(launcherUrl);
+            _launchers.launcherChanged(launcherUrl);
+        }
+    }
+
+    function removeLauncher(launcherUrl) {
+        if (latteView && !inUniqueGroup()) {
+            latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
+                                                                     launchers.group,
+                                                                     launcherUrl);
+        } else {
+            root.launcherForRemoval = launcherUrl;
+            _launchers.tasksModel.requestRemoveLauncher(launcherUrl);
+            _launchers.launcherChanged(launcherUrl);
+        }
+    }
+
+    function addLauncherToActivity(launcherUrl, activityId) {
+        if (latteView && !inUniqueGroup()) {
+            latteView.layoutsManager.launchersSignals.addLauncherToActivity(root.viewLayoutName,
+                                                                            launchers.group,
+                                                                            launcherUrl,
+                                                                            activityId);
+        } else {
+            if (activityId !== activityInfo.currentActivity && isOnAllActivities(launcherUrl)) {
+                root.launcherForRemoval = url;
+            }
+
+            _launchers.tasksModel.requestAddLauncherToActivity(launcherUrl, activityId);
+            _launchers.launcherChanged(launcherUrl);
+        }
+    }
+
+    function removeLauncherFromActivity(launcherUrl, activityId) {
+        if (latteView && !inUniqueGroup()) {
+            latteView.layoutsManager.launchersSignals.removeLauncherFromActivity(root.viewLayoutName,
+                                                                                 launchers.group,
+                                                                                 launcherUrl,
+                                                                                 activityId);
+        } else {
+            if (activityId === activityInfo.currentActivity) {
+                root.launcherForRemoval = launcherUrl;
+            }
+            _launchers.tasksModel.requestRemoveLauncherFromActivity(launcherUrl, activityId);
+            _launchers.launcherChanged(launcherUrl);
+        }
+    }
+
+    function inCurrentActivity(launcherUrl) {
+        var activities = _launchers.tasksModel.launcherActivities(launcherUrl);
 
         var NULL_UUID = "00000000-0000-0000-0000-000000000000";
 
@@ -91,6 +149,12 @@ Item {
         }
 
         return false;
+    }
+
+    function isOnAllActivities(launcherUrl) {
+        var activities = _launchers.tasksModel.launcherActivities(url);
+        var NULL_UUID = "00000000-0000-0000-0000-000000000000";
+        return (activities.indexOf(NULL_UUID) >= 0)
     }
 
     function childAtLayoutIndex(position) {

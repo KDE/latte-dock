@@ -1374,7 +1374,7 @@ MouseArea{
         }
     }
 
-    function slotLaunchersChangedFor(launcher) {
+    function onLauncherChanged(launcher) {
         if ((root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) && launcher === launcherUrl) {
             updateVisibilityBasedOnLaunchers()
         }
@@ -1508,8 +1508,8 @@ MouseArea{
         root.publishTasksGeometries.connect(slotPublishGeometries);
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);
         root.mimicEnterForParabolic.connect(slotMimicEnterForParabolic);
-        root.launchersUpdatedFor.connect(slotLaunchersChangedFor);
 
+        launchers.launcherChanged.connect(onLauncherChanged);
         parabolic.sglClearZoom.connect(sltClearZoom);
 
         var hasShownLauncher = ((tasksModel.launcherPosition(taskItem.launcherUrl) !== -1)
@@ -1539,8 +1539,8 @@ MouseArea{
         root.publishTasksGeometries.disconnect(slotPublishGeometries);
         root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
         root.mimicEnterForParabolic.disconnect(slotMimicEnterForParabolic);
-        root.launchersUpdatedFor.disconnect(slotLaunchersChangedFor);
 
+        launchers.launcherChanged.disconnect(onLauncherChanged);
         parabolic.sglClearZoom.disconnect(sltClearZoom);
 
         tasksExtendedManager.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);

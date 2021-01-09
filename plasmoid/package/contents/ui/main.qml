@@ -247,7 +247,6 @@ Item {
 
     signal draggingFinished();
     signal hiddenTasksUpdated();
-    signal launchersUpdatedFor(string launcher);
     signal presentWindows(variant winIds);
     signal requestLayout;
     signal signalPreviewsShown();
@@ -834,6 +833,7 @@ Item {
 
     Ability.Launchers {
         id: _launchers
+        bridge: latteBridge
         group: plasmoid.configuration.launchersGroup
         layout: icList.contentItem
         tasksModel: tasksModel
@@ -1436,7 +1436,7 @@ Item {
     function extSignalAddLauncher(group, launcher) {
         if (group === launchers.group) {
             tasksModel.requestAddLauncher(launcher);
-            launchersUpdatedFor(launcher);
+            launchers.launcherChanged(launcher);
             tasksModel.syncLaunchers();
         }
     }
@@ -1445,7 +1445,7 @@ Item {
         if (group === launchers.group) {
             root.launcherForRemoval = launcher;
             tasksModel.requestRemoveLauncher(launcher);
-            launchersUpdatedFor(launcher);
+            launchers.launcherChanged(launcher);
             tasksModel.syncLaunchers();
         }
     }
@@ -1459,7 +1459,7 @@ Item {
             }
 
             tasksModel.requestAddLauncherToActivity(launcher, activity);
-            launchersUpdatedFor(launcher);
+            launchers.launcherChanged(launcher);
             tasksModel.syncLaunchers();
         }
     }
@@ -1471,7 +1471,7 @@ Item {
             }
 
             tasksModel.requestRemoveLauncherFromActivity(launcher, activity);
-            launchersUpdatedFor(launcher);
+            launchers.launcherChanged(launcher);
             tasksModel.syncLaunchers();
         }
     }
@@ -1560,7 +1560,7 @@ Item {
         tasksExtendedManager.addToBeAddedLauncher(filename);
 
         tasksModel.requestAddLauncher(url);
-        launchersUpdatedFor(url);
+        launchers.launcherChanged(launcher);
         tasksModel.syncLaunchers();
     }
 

@@ -678,7 +678,7 @@ PlasmaComponents.ContextMenu {
             }
 
             PlasmaComponents.MenuItem {
-                visible: (plasmoid.configuration.groupingStrategy != 0) && menu.visualParent.m.IsWindow === true
+                visible: (plasmoid.configuration.groupingStrategy !== 0) && menu.visualParent.m.IsWindow === true
 
                 checkable: true
                 checked: menu.visualParent && menu.visualParent.m.IsGroupable === true
@@ -717,29 +717,10 @@ PlasmaComponents.ContextMenu {
         icon: "window-pin"
 
         onClicked: {
-            if (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) != -1) {
-                var launcher = get(atm.LauncherUrl);
-
-                if (latteView && !launchers.inUniqueGroup()) {
-                    latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
-                                                                             launchers.group,
-                                                                             launcher);
-                } else {
-                    root.launcherForRemoval = launcher;
-                    tasksModel.requestRemoveLauncher(launcher);
-                    root.launchersUpdatedFor(launcher);
-                }
-
+            if (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) !== -1) {
+                launchers.removeLauncher(get(atm.LauncherUrl));
             } else {
-                var launcher = get(atm.LauncherUrl);
-                if (latteView && !launchers.inUniqueGroup()) {
-                    latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
-                                                                          launchers.group,
-                                                                          launcher);
-                } else {
-                    tasksModel.requestAddLauncher(launcher);
-                    root.launchersUpdatedFor(launcher);
-                }
+                launchers.addLauncher(get(atm.LauncherUrl))
             }
         }
     }
@@ -782,32 +763,9 @@ PlasmaComponents.ContextMenu {
                     result.clicked.connect(
                                 function() {
                                     if (result.checked) {
-                                        if (latteView && !launchers.inUniqueGroup()) {
-                                            latteView.layoutsManager.launchersSignals.addLauncherToActivity(root.viewLayoutName,
-                                                                                                            launchers.group,
-                                                                                                            url,
-                                                                                                            id);
-                                        } else {
-                                            if (id !== tasksModel.activity && (activities[0] === "00000000-0000-0000-0000-000000000000")) {
-                                                root.launcherForRemoval = url;
-                                            }
-
-                                            tasksModel.requestAddLauncherToActivity(url, id);
-                                            root.launchersUpdatedFor(url);
-                                        }
+                                        launchers.addLauncherToActivity(url,id);
                                     } else {
-                                        if (latteView && !launchers.inUniqueGroup()) {
-                                            latteView.layoutsManager.launchersSignals.removeLauncherFromActivity(root.viewLayoutName,
-                                                                                                                 launchers.group,
-                                                                                                                 url,
-                                                                                                                 id);
-                                        } else {
-                                            if (id === tasksModel.activity) {
-                                                root.launcherForRemoval = url;
-                                            }
-                                            tasksModel.requestRemoveLauncherFromActivity(url, id);
-                                            root.launchersUpdatedFor(url);
-                                        }
+                                        launchers.removeLauncherFromActivity(url, id);
                                     }
                                 }
                                 );
@@ -855,17 +813,7 @@ PlasmaComponents.ContextMenu {
         icon: "window-unpin"
 
         onClicked: {
-            var launcher = get(atm.LauncherUrlWithoutIcon);
-
-            if (latteView && !launchers.inUniqueGroup()) {
-                latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
-                                                                         launchers.group,
-                                                                         launcher);
-            } else {
-                root.launcherForRemoval = launcher
-                tasksModel.requestRemoveLauncher(launcher);
-                root.launchersUpdatedFor(launcher);
-            }
+            launchers.removeLauncher(get(atm.LauncherUrlWithoutIcon));
         }
     }
 
@@ -899,17 +847,7 @@ PlasmaComponents.ContextMenu {
         enabled: (root.indexer.separators.length > 0) && visualParent && visualParent.isSeparator
 
         onClicked: {
-            var launcher = get(atm.LauncherUrlWithoutIcon);
-
-            if (latteView && !launchers.inUniqueGroup()) {
-                latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
-                                                                         launchers.group,
-                                                                         launcher);
-            } else {
-                root.launcherForRemoval = launcher;
-                tasksModel.requestRemoveLauncher(launcher);
-                root.launchersUpdatedFor(launcher);
-            }
+            launchers.removeLauncher(get(atm.LauncherUrlWithoutIcon));
         }
     }
 
