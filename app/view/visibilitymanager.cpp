@@ -383,11 +383,11 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
 void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate)
 {
-    bool multipleLayoutsAndCurrent = (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts
+    bool inMultipleLayoutsAndCurrent = (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts
                                       && m_latteView->layout() && !m_latteView->positioner()->inLocationAnimation()
                                       && m_latteView->layout()->isCurrent());
 
-    if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout || multipleLayoutsAndCurrent) {
+    if (m_strutsThickness>0 && (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout || inMultipleLayoutsAndCurrent)) {
         QRect computedStruts = acceptableStruts();
         if (m_publishedStruts != computedStruts || forceUpdate) {
             //! Force update is needed when very important events happen in DE and there is a chance
