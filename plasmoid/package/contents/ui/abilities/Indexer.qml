@@ -31,13 +31,15 @@ ClientAbility.Indexer {
     readonly property bool tailAppletIsSeparator: isActive ? bridge.indexer.tailAppletIsSeparator : false
     readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
 
+    property bool updateIsBlocked: false
+
     property int visibleItemsCount: 0
     property int itemsCount: 0 /*is needed to be set from consumer developer in order to avoid binding loops warnings*/
 
     property int firstVisibleItemIndex: -1
     property int lastVisibleItemIndex: -1
 
-    readonly property bool isReady: layout && layout.children.length >= itemsCount
+    readonly property bool isReady: (layout && layout.children.length >= itemsCount) && !updateIsBlocked
     readonly property int maxIndex: 99999
 
     Binding {
@@ -101,6 +103,24 @@ ClientAbility.Indexer {
         }
     }
 
+    Binding {
+        target: _indexer
+        property: "separators"
+        when: isReady
+        value: {
+            var seps = [];
+
+            for (var i=0; i<layout.children.length; ++i){
+                var item = layout.children[i];
+                if (item && item.isSeparator && item.itemIndex>=0) {
+                    seps.push(item.itemIndex);
+                }
+            }
+
+            return seps;
+        }
+    }
+
     readonly property bool firstTailItemIsSeparator: {
         if (visibleItemsCount === layout.children.length) {
             return false;
@@ -129,19 +149,6 @@ ClientAbility.Indexer {
         }
 
         return false;
-    }
-
-    separators: {
-        var seps = [];
-
-        for (var i=0; i<layout.children.length; ++i){
-            var item = layout.children[i];
-            if (item && item.isSeparator && item.itemIndex>=0) {
-                seps.push(item.itemIndex);
-            }
-        }
-
-        return seps;
     }
 
     hidden: {

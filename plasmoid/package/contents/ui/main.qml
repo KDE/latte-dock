@@ -826,6 +826,7 @@ Item {
         bridge: latteBridge
         layout: icList.contentItem
         itemsCount: tasksModel.count
+        updateIsBlocked: root.inDraggingPhase
     }
 
     Ability.Launchers {
