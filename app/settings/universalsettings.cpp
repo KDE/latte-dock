@@ -544,6 +544,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("singleModeLayoutName", m_singleModeLayoutName);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
     m_universalGroup.writeEntry("mouseSensitivity", (int)m_sensitivity);
+    syncSettings();
 }
 
 void UniversalSettings::cleanupSettings()

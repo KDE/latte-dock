@@ -51,7 +51,7 @@ AbstractLayout::AbstractLayout(QObject *parent, QString layoutFile, QString assi
 }
 
 AbstractLayout::~AbstractLayout()
-{
+{   
 }
 
 void AbstractLayout::init()
@@ -391,6 +391,7 @@ void AbstractLayout::saveConfig()
     m_layoutGroup.writeEntry("icon", m_icon);
     m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
     m_layoutGroup.writeEntry("preferredForShortcutsTouched", m_preferredForShortcutsTouched);
+    m_layoutGroup.sync();
 }
 
 }

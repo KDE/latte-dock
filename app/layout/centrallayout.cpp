@@ -173,6 +173,7 @@ void CentralLayout::saveConfig()
     m_layoutGroup.writeEntry("showInMenu", m_showInMenu);
     m_layoutGroup.writeEntry("disableBordersForMaximizedWindows", m_disableBordersForMaximizedWindows);
     m_layoutGroup.writeEntry("activities", m_activities);
+    m_layoutGroup.sync();
 }
 
 //! OVERRIDES
