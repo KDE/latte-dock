@@ -68,7 +68,7 @@ Loader {
     property Item level
 
     Connections {
-        target: taskItem
+        target: taskItem.mouseArea
         enabled: indicators ? indicators.info.needsMouseEventCoordinates : false
         onPressed: {
             var fixedPos = indicatorLoader.mapFromItem(taskItem, mouse.x, mouse.y);
