@@ -34,6 +34,8 @@ MouseArea {
 
     property bool pressed: false
 
+    readonly property alias hoveredTimer: _hoveredTimer
+
     onEntered: {
         if (isLauncher && windowsPreviewDlg.visible) {
             windowsPreviewDlg.hide(1);
@@ -135,7 +137,7 @@ MouseArea {
             pressY = mouse.y;
 
             if(!modAccepted){
-                resistanerTimer.start();
+                _resistanerTimer.start();
             }
         }
         else if (mouse.button == Qt.RightButton && !modAccepted){
@@ -151,7 +153,7 @@ MouseArea {
 
     onReleased: {
         //console.log("Released Task Delegate...");
-        resistanerTimer.stop();
+        _resistanerTimer.stop();
 
         if(pressed && (!inBlockingAnimation || inAttentionAnimation) && !isSeparator){
 
@@ -314,6 +316,48 @@ MouseArea {
                 }
 
                 // hidePreviewWindow();
+            }
+        }
+    }
+
+    //A Timer to check how much time the task is hovered in order to check if we must
+    //show window previews
+    Timer {
+        id: _hoveredTimer
+        interval: Math.max(150,plasmoid.configuration.previewsDelay)
+        repeat: false
+
+        onTriggered: {
+            if (root.disableAllWindowsFunctionality || !isAbleToShowPreview) {
+                return;
+            }
+
+            if (taskItem.containsMouse) {
+                if (root.showPreviews || (windowsPreviewDlg.visible && !isLauncher)) {
+                    taskItem.showPreviewWindow();
+                }
+
+                if (taskItem.isWindow && root.highlightWindows) {
+                    root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , taskItem.containsMouse);
+                }
+            }
+        }
+    }
+
+    //A Timer to help in resist a bit to dragging, the user must try
+    //to press a little first before dragging Started
+    Timer {
+        id: _resistanerTimer
+        interval: taskItem.resistanceDelay
+        repeat: false
+
+        onTriggered: {
+            if (!taskItem.inBlockingAnimation){
+                taskItem.isDragged = true;
+            }
+
+            if (taskItem.debug.timersEnabled) {
+                console.log("plasmoid timer: resistanerTimer called...");
             }
         }
     }

@@ -178,7 +178,7 @@ Item {
     property string launcherUrlWithIcon: ""
     property string launcherName: ""
 
-    readonly property alias hoveredTimer: _hoveredTimer
+    readonly property alias hoveredTimer: taskMouseArea.hoveredTimer
     readonly property alias mouseArea: taskMouseArea
     readonly property alias tooltipVisualParent: _wrapper.titleTooltipVisualParent
     readonly property alias previewsVisualParent: _wrapper.previewsTooltipVisualParent
@@ -1275,48 +1275,6 @@ Item {
 
     TaskAnimations.ShowWindowAnimation{ id: _showWindowAnimation }
     TaskAnimations.RestoreAnimation{ id: _restoreAnimation }
-
-    //A Timer to check how much time the task is hovered in order to check if we must
-    //show window previews
-    Timer {
-        id: _hoveredTimer
-        interval: Math.max(150,plasmoid.configuration.previewsDelay)
-        repeat: false
-
-        onTriggered: {
-            if (root.disableAllWindowsFunctionality || !isAbleToShowPreview) {
-                return;
-            }
-
-            if (taskItem.containsMouse) {
-                if (root.showPreviews || (windowsPreviewDlg.visible && !isLauncher)) {
-                    showPreviewWindow();
-                }
-
-                if (taskItem.isWindow && root.highlightWindows) {
-                    root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , taskItem.containsMouse);
-                }
-            }
-        }
-    }
-
-    //A Timer to help in resist a bit to dragging, the user must try
-    //to press a little first before dragging Started
-    Timer {
-        id: resistanerTimer
-        interval: taskItem.resistanceDelay
-        repeat: false
-
-        onTriggered: {
-            if (!taskItem.inBlockingAnimation){
-                taskItem.isDragged = true;
-            }
-
-            if (taskItem.debug.timersEnabled) {
-                console.log("plasmoid timer: resistanerTimer called...");
-            }
-        }
-    }
 
     // when changing activities and desktops the index of the tasks
     // is updated immediately to -1, this timer protects this indexing
