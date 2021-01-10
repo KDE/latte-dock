@@ -1510,6 +1510,7 @@ MouseArea{
         root.mimicEnterForParabolic.connect(slotMimicEnterForParabolic);
 
         launchers.launcherChanged.connect(onLauncherChanged);
+        launchers.launcherRemoved.connect(onLauncherChanged);
         parabolic.sglClearZoom.connect(sltClearZoom);
 
         var hasShownLauncher = ((tasksModel.launcherPosition(taskItem.launcherUrl) !== -1)
@@ -1541,6 +1542,7 @@ MouseArea{
         root.mimicEnterForParabolic.disconnect(slotMimicEnterForParabolic);
 
         launchers.launcherChanged.disconnect(onLauncherChanged);
+        launchers.launcherRemoved.disconnect(onLauncherChanged);
         parabolic.sglClearZoom.disconnect(sltClearZoom);
 
         tasksExtendedManager.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);

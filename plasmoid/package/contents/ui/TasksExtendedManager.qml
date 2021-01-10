@@ -341,6 +341,15 @@ Item {
         console.log("TO BE MOVED LAUNCHERS ::: " + tbmLaunchers);
     }
 
+    //! Connections
+    Connections {
+        target: launchers
+        onLauncherInRemoving: {
+            addToBeRemovedLauncher(launcherUrl);
+        }
+    }
+
+
     //!Trying to avoid a binding loop in TaskItem for modelLauncherUrl
     Timer {
         id: launchersToBeMovedTimer

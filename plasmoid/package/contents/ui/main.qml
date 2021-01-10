@@ -1440,7 +1440,7 @@ Item {
 
     function extSignalRemoveLauncher(group, launcher) {
         if (group === launchers.group) {
-            tasksExtendedManager.addToBeRemovedLauncher(launcher);
+            launchers.launcherInRemoving(launcher)
             tasksModel.requestRemoveLauncher(launcher);
             launchers.launcherChanged(launcher);
             tasksModel.syncLaunchers();
@@ -1449,10 +1449,8 @@ Item {
 
     function extSignalAddLauncherToActivity(group, launcher, activity) {
         if (group === launchers.group) {
-            var launcherActivities = tasksModel.launcherActivities(launcher);
-
-            if (activity !== tasksModel.activity && (launcherActivities[0] === "00000000-0000-0000-0000-000000000000")) {
-                tasksExtendedManager.addToBeRemovedLauncher(launcher);
+            if (activity !== activityInfo.currentActivity && _launchers.isOnAllActivities(launcher)) {
+                launchers.launcherInRemoving(launcher);
             }
 
             tasksModel.requestAddLauncherToActivity(launcher, activity);
@@ -1463,8 +1461,8 @@ Item {
 
     function extSignalRemoveLauncherFromActivity(group, launcher, activity) {
         if (group === launchers.group) {
-            if (activity === tasksModel.activity) {
-                tasksExtendedManager.addToBeRemovedLauncher(launcher);
+            if ( activity === activityInfo.currentActivity) {
+                launchers.launcherInRemoving(launcher)
             }
 
             tasksModel.requestRemoveLauncherFromActivity(launcher, activity);

@@ -28,6 +28,8 @@ import "launchers" as LaunchersPart
 Item {
     id: _launchers
     signal launcherChanged(string launcherUrl);
+    signal launcherRemoved(string launcherUrl);
+    signal launcherInRemoving(string launcherUrl);
 
     property int group: LatteCore.Types.UniqueLaunchers
     property Item bridge: null
@@ -104,9 +106,9 @@ Item {
                                                                      launchers.group,
                                                                      launcherUrl);
         } else {
-            tasksExtendedManager.addToBeRemovedLauncher(launcherUrl);
+            _launchers.launcherInRemoving(launcherUrl);
             _launchers.tasksModel.requestRemoveLauncher(launcherUrl);
-            _launchers.launcherChanged(launcherUrl);
+            _launchers.launcherRemoved(launcherUrl);
         }
     }
 
@@ -118,7 +120,7 @@ Item {
                                                                             activityId);
         } else {
             if (activityId !== activityInfo.currentActivity && isOnAllActivities(launcherUrl)) {
-                tasksExtendedManager.addToBeRemovedLauncher(launcherUrl);
+                _launchers.launcherInRemoving(launcherUrl);
             }
 
             _launchers.tasksModel.requestAddLauncherToActivity(launcherUrl, activityId);
@@ -134,7 +136,7 @@ Item {
                                                                                  activityId);
         } else {
             if (activityId === activityInfo.currentActivity) {
-                tasksExtendedManager.addToBeRemovedLauncher(launcherUrl);
+                _launchers.launcherInRemoving(launcherUrl);
             }
             _launchers.tasksModel.requestRemoveLauncherFromActivity(launcherUrl, activityId);
             _launchers.launcherChanged(launcherUrl);
@@ -152,7 +154,7 @@ Item {
     }
 
     function isOnAllActivities(launcherUrl) {
-        var activities = _launchers.tasksModel.launcherActivities(url);
+        var activities = _launchers.tasksModel.launcherActivities(launcherUrl);
         return (activities.indexOf(_NULLACTIVITYID_) >= 0)
     }
 
