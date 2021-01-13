@@ -835,6 +835,8 @@ Item {
         group: plasmoid.configuration.launchersGroup
         layout: icList.contentItem
         tasksModel: tasksModel
+        syncer.isBlocked: inDraggingPhase
+        syncer.layoutName: viewLayoutName
     }
 
     Ability.Metrics {
@@ -1040,14 +1042,15 @@ Item {
                 });
             }
 
-            function urlsDroppedOnArea(urls){
-                // If all dropped URLs point to application desktop files, we'll add a launcher for each of them.
+            onUrlsDropped: {
+                //! inform synced docks for new dropped launchers
                 if (onlyLaunchersInDroppedList(urls)) {
-                    urls.forEach(function (item) {
-                        addLauncher(item);
-                    });
+                    launchers.addDroppedLaunchers(urls);
                     return;
                 }
+
+                //! if the list does not contain only launchers then just open the corresponding
+                //! urls with the relevant app
 
                 if (!hoveredItem) {
                     return;
@@ -1059,20 +1062,6 @@ Item {
                 // Otherwise we'll just start a new instance of the application with the URLs as argument,
                 // as you probably don't expect some of your files to open in the app and others to spawn launchers.
                 tasksModel.requestOpenUrls(hoveredItem.modelIndex(), urlsList);
-            }
-
-            onUrlsDropped: {
-                //! inform synced docks for new dropped launchers
-                if (latteView && !launchers.inUniqueGroup() && onlyLaunchersInDroppedList(urls)) {
-                    latteView.layoutsManager.launchersSignals.urlsDropped(root.viewLayoutName,
-                                                                          launchers.group,
-                                                                          urls);
-                    return;
-                }
-
-                //! if the list does not contain only launchers then just open the corresponding
-                //! urls with the relevant app
-                urlsDroppedOnArea(urls);
             }
         }
 
@@ -1368,22 +1357,6 @@ Item {
     /////////
 
     //// functions
-    function addInternalSeparatorAtPos(pos) {
-        var separatorName = launchers.freeAvailableSeparatorName();
-
-        if (separatorName !== "") {
-            tasksExtendedManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
-
-            if (latteView && !launchers.inUniqueGroup()) {
-                latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
-                                                                      launchers.group,
-                                                                      separatorName);
-            } else {
-                tasksModel.requestAddLauncher(separatorName);
-            }
-        }
-    }
-
     function activateTaskAtIndex(index) {
         // This is called with Meta+number shortcuts by plasmashell when Tasks are in a plasma panel.
         shortcuts.sglActivateEntryAtIndex(index);
@@ -1430,86 +1403,6 @@ Item {
         return plasmoid.configuration.launchers59;
     }
 
-    //! BEGIN ::: external launchers signals in order to update the tasks model
-    function extSignalAddLauncher(group, launcher) {
-        if (group === launchers.group) {
-            tasksModel.requestAddLauncher(launcher);
-            launchers.launcherChanged(launcher);
-            tasksModel.syncLaunchers();
-        }
-    }
-
-    function extSignalRemoveLauncher(group, launcher) {
-        if (group === launchers.group) {
-            launchers.launcherInRemoving(launcher)
-            tasksModel.requestRemoveLauncher(launcher);
-            launchers.launcherChanged(launcher);
-            tasksModel.syncLaunchers();
-        }
-    }
-
-    function extSignalAddLauncherToActivity(group, launcher, activity) {
-        if (group === launchers.group) {
-            if (activity !== activityInfo.currentActivity && _launchers.isOnAllActivities(launcher)) {
-                launchers.launcherInRemoving(launcher);
-            }
-
-            tasksModel.requestAddLauncherToActivity(launcher, activity);
-            launchers.launcherChanged(launcher);
-            tasksModel.syncLaunchers();
-        }
-    }
-
-    function extSignalRemoveLauncherFromActivity(group, launcher, activity) {
-        if (group === launchers.group) {
-            if ( activity === activityInfo.currentActivity) {
-                launchers.launcherInRemoving(launcher)
-            }
-
-            tasksModel.requestRemoveLauncherFromActivity(launcher, activity);
-            launchers.launcherChanged(launcher);
-            tasksModel.syncLaunchers();
-        }
-    }
-
-    function extSignalUrlsDropped(group, urls) {
-        if (group === launchers.group) {
-            mouseHandler.urlsDroppedOnArea(urls);
-        }
-    }
-
-    function extSignalMoveTask(group, from, to) {
-        if (group === launchers.group && !root.dragSource) {
-            tasksModel.move(from, to);
-            tasksModel.syncLaunchers();
-        }
-    }
-
-    function extSignalValidateLaunchersOrder(group, orderedLaunchers) {
-        if (group === launchers.group && !root.dragSource) {
-            launchers.validateOrder(orderedLaunchers);
-        }
-    }
-
-    //! END ::: external launchers signals in order to update the tasks model
-
-
-    //! it is used to add the fake desktop file which represents
-    //! the separator (fake launcher)
-    function addSeparator(pos){
-        var separatorName = launchers.freeAvailableSeparatorName();
-
-        if (separatorName !== "") {
-            tasksExtendedManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
-
-            if (latteView && !launchers.inUniqueGroup()) {
-                latteView.layoutsManager.launchersSignals.addLauncher(launchers.group, separatorName);
-            } else {
-                tasksModel.requestAddLauncher(separatorName);
-            }
-        }
-    }
-
     function previewContainsMouse() {
         return windowsPreviewDlg.containsMouse;
     }
@@ -1541,23 +1434,6 @@ Item {
         }
 
         return false;
-    }
-
-    function addLauncher(url) {
-        //workaround to protect in case the launcher contains the iconData
-        var pos = url.indexOf("?iconData=");
-
-        if (pos>0) {
-            url = url.substring( 0, url.indexOf("?iconData=" ) );
-        }
-
-        var path = url;
-        var filename = path.split("/").pop();
-        tasksExtendedManager.addToBeAddedLauncher(filename);
-
-        tasksModel.requestAddLauncher(url);
-        launchers.launcherChanged(url);
-        tasksModel.syncLaunchers();
     }
 
     function resetDragSource() {

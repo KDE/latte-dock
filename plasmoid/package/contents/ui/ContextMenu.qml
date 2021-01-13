@@ -833,8 +833,7 @@ PlasmaComponents.ContextMenu {
 
         onClicked: {
             var pos=visualParent.itemIndex;
-
-            root.addInternalSeparatorAtPos(pos);
+            launchers.addInternalSeparatorAtPos(pos);
         }
     }
 

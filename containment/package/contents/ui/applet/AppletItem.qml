@@ -325,6 +325,7 @@ Item {
     property Item animations: null
     property Item debug: null
     property Item indexer: null
+    property Item launchers: null
     property Item layouter: null
     property Item layouts: null
     property Item metrics: null

@@ -1163,6 +1163,7 @@ Item {
             animations: _animations
             debug: _debug
             indexer: _indexer
+            launchers: _launchers
             layouter: _layouter
             layouts: layoutsContainer
             metrics: _metrics
@@ -1387,6 +1388,11 @@ Item {
     Ability.Indexer {
         id: _indexer
         layouts: layoutsContainer
+    }
+
+    Ability.Launchers {
+        id: _launchers
+        layoutName: viewLayout ?  viewLayout.name : ""
     }
 
     Ability.Layouter {

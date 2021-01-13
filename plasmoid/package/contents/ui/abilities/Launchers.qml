@@ -29,12 +29,15 @@ Item {
     id: _launchers
     signal launcherChanged(string launcherUrl);
     signal launcherRemoved(string launcherUrl);
+
+    //! triggered just before action happens. They are used mostly for animation purposes
+    signal launcherInAdding(string launcherUrl);
     signal launcherInRemoving(string launcherUrl);
+    signal launcherInMoving(string launcherUrl, int pos);
 
     property int group: LatteCore.Types.UniqueLaunchers
     property Item bridge: null
     property Item layout: null
-
     property QtObject tasksModel: null
 
     readonly property LaunchersPart.Actions actions: LaunchersPart.Actions{}
@@ -90,21 +93,57 @@ Item {
     }
 
     function addLauncher(launcherUrl) {
-        if (latteView && !inUniqueGroup()) {
-            latteView.layoutsManager.launchersSignals.addLauncher(root.viewLayoutName,
-                                                                  launchers.group,
-                                                                  launcherUrl);
+        if (bridge && !inUniqueGroup()) {
+            bridge.launchers.addSyncedLauncher(launchers.group,
+                                               launcherUrl);
         } else {
             _launchers.tasksModel.requestAddLauncher(launcherUrl);
             _launchers.launcherChanged(launcherUrl);
         }
     }
 
+    function addDroppedLauncher(launcherUrl) {
+        //workaround to protect in case the launcher contains the iconData
+        var pos = launcherUrl.indexOf("?iconData=");
+
+        if (pos>0) {
+            launcherUrl = launcherUrl.substring( 0, launcherUrl.indexOf("?iconData=" ) );
+        }
+
+        var path = launcherUrl;
+        var filename = path.split("/").pop();
+        _launchers.launcherInAdding(filename);
+
+        tasksModel.requestAddLauncher(launcherUrl);
+        launchers.launcherChanged(launcherUrl);
+        tasksModel.syncLaunchers();
+    }
+
+    function addDroppedLaunchers(urls) {
+        //! inform synced docks for new dropped launchers
+        if (bridge && !launchers.inUniqueGroup()) {
+            bridge.launchers.addDroppedLaunchers(launchers.group,
+                                                 urls);
+        } else {
+            urls.forEach(function (item) {
+                addDroppedLauncher(item);
+            });
+        }
+    }
+
+    function addInternalSeparatorAtPos(pos) {
+        var separatorName = freeAvailableSeparatorName();
+
+        if (separatorName !== "") {
+            _launchers.launcherInMoving(separatorName, Math.max(0,pos));
+            addLauncher(separatorName);
+        }
+    }
+
     function removeLauncher(launcherUrl) {
-        if (latteView && !inUniqueGroup()) {
-            latteView.layoutsManager.launchersSignals.removeLauncher(root.viewLayoutName,
-                                                                     launchers.group,
-                                                                     launcherUrl);
+        if (bridge && !inUniqueGroup()) {
+            bridge.launchers.removeSyncedLauncher(launchers.group,
+                                                  launcherUrl);
         } else {
             _launchers.launcherInRemoving(launcherUrl);
             _launchers.tasksModel.requestRemoveLauncher(launcherUrl);
@@ -113,11 +152,10 @@ Item {
     }
 
     function addLauncherToActivity(launcherUrl, activityId) {
-        if (latteView && !inUniqueGroup()) {
-            latteView.layoutsManager.launchersSignals.addLauncherToActivity(root.viewLayoutName,
-                                                                            launchers.group,
-                                                                            launcherUrl,
-                                                                            activityId);
+        if (bridge && !inUniqueGroup()) {
+            bridge.launchers.addSyncedLauncherToActivity(launchers.group,
+                                                         launcherUrl,
+                                                         activityId);
         } else {
             if (activityId !== activityInfo.currentActivity && isOnAllActivities(launcherUrl)) {
                 _launchers.launcherInRemoving(launcherUrl);
@@ -129,11 +167,10 @@ Item {
     }
 
     function removeLauncherFromActivity(launcherUrl, activityId) {
-        if (latteView && !inUniqueGroup()) {
-            latteView.layoutsManager.launchersSignals.removeLauncherFromActivity(root.viewLayoutName,
-                                                                                 launchers.group,
-                                                                                 launcherUrl,
-                                                                                 activityId);
+        if (bridge && !inUniqueGroup()) {
+            bridge.launchers.removeSyncedLauncherFromActivity(launchers.group,
+                                                              launcherUrl,
+                                                              activityId);
         } else {
             if (activityId === activityInfo.currentActivity) {
                 _launchers.launcherInRemoving(launcherUrl);
@@ -141,6 +178,12 @@ Item {
             _launchers.tasksModel.requestRemoveLauncherFromActivity(launcherUrl, activityId);
             _launchers.launcherChanged(launcherUrl);
         }
+    }
+
+    function validateLaunchersOrder(orderedLaunchers) {
+        validator.stop();
+        validator.launchers = orderedLaunchers;
+        validator.start();
     }
 
     function inCurrentActivity(launcherUrl) {
@@ -246,15 +289,7 @@ Item {
         return launch;
     }
 
-
-    function validateOrder(orderedLaunchers) {
-        validator.stop();
-        validator.launchers = orderedLaunchers;
-        validator.start();
-    }
-
     //! Connections
-
     onGroupChanged:{
         if(latteView) {
             _launchers.tasksModel.updateLaunchersList();
@@ -287,11 +322,10 @@ Item {
                     }
 
                     if (inDraggingPhase) {
-                        if (latteView && !_launchers.inUniqueGroup()) {
-                            latteView.layoutsManager.launchersSignals.validateLaunchersOrder(root.viewLayoutName,
-                                                                                             plasmoid.id,
-                                                                                             _launchers.group,
-                                                                                             _launchers.currentShownLauncherList());
+                        if (_launchers.bridge && !_launchers.inUniqueGroup()) {
+                            _launchers.bridge.launchers.validateSyncedLaunchersOrder(_launchers.syncer.clientId,
+                                                                                     _launchers.group,
+                                                                                     _launchers.currentShownLauncherList());
                         }
                     }
                 } else {

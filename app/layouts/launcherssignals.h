@@ -22,7 +22,9 @@
 #define LAUNCHERSSIGNALS_H
 
 // Qt
+#include <QList>
 #include <QObject>
+#include <QQuickItem>
 
 namespace Plasma {
 class Applet;
@@ -52,20 +54,26 @@ public:
     ~LaunchersSignals() override;
 
 public slots:
+    Q_INVOKABLE void addAbilityClient(QQuickItem *client);
+    Q_INVOKABLE void removeAbilityClient(QQuickItem *client);
+
     Q_INVOKABLE void addLauncher(QString layoutName, int launcherGroup, QString launcher);
     Q_INVOKABLE void removeLauncher(QString layoutName, int launcherGroup, QString launcher);
     Q_INVOKABLE void addLauncherToActivity(QString layoutName, int launcherGroup, QString launcher, QString activity);
     Q_INVOKABLE void removeLauncherFromActivity(QString layoutName, int launcherGroup, QString launcher, QString activity);
     Q_INVOKABLE void urlsDropped(QString layoutName, int launcherGroup, QStringList urls);
-    //!Deprecated because it could create crashes, validateLaunchersOrder provides a better approach
-    Q_INVOKABLE void moveTask(QString layoutName, uint senderId, int launcherGroup, int from, int to);
     Q_INVOKABLE void validateLaunchersOrder(QString layoutName, uint senderId, int launcherGroup, QStringList launchers);
 
 private:
-    QList<Plasma::Applet *> lattePlasmoids(QString layoutName);
+    QList<QQuickItem *> clients(QString layoutName = QString());
+
+private slots:
+    void removeClientObject(QObject *obj);
 
 private:
     Layouts::Manager *m_manager{nullptr};
+
+    QList<QQuickItem *> m_clients;
 };
 
 }

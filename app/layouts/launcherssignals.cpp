@@ -48,30 +48,52 @@ LaunchersSignals::~LaunchersSignals()
 {
 }
 
-QList<Plasma::Applet *> LaunchersSignals::lattePlasmoids(QString layoutName)
+void LaunchersSignals::addAbilityClient(QQuickItem *client)
 {
-    QList<Plasma::Applet *> applets;
-
-    CentralLayout *layout = m_manager->synchronizer()->centralLayout(layoutName);
-    QList<Plasma::Containment *> containments;
-
-    if (layoutName.isEmpty()) {
-        containments = m_manager->corona()->containments();
-    } else if (layout) {
-        containments = *(layout->containments());
+    if (m_clients.contains(client)) {
+        return;
     }
 
-    for(const auto containment : containments) {
-        for(auto *applet : containment->applets()) {
-            KPluginMetaData meta = applet->kPackage().metadata();
+    m_clients << client;
 
-            if (meta.pluginId() == "org.kde.latte.plasmoid") {
-                applets.append(applet);
+    connect(client, &QObject::destroyed, this, &LaunchersSignals::removeClientObject);
+}
+
+void LaunchersSignals::removeAbilityClient(QQuickItem *client)
+{
+    if (!m_clients.contains(client)) {
+        return;
+    }
+
+    disconnect(client, &QObject::destroyed, this, &LaunchersSignals::removeClientObject);
+    m_clients.removeAll(client);
+}
+
+void LaunchersSignals::removeClientObject(QObject *obj)
+{
+    QQuickItem *item = qobject_cast<QQuickItem *>(obj);
+
+    if (item) {
+        removeAbilityClient(item);
+    }
+}
+
+QList<QQuickItem *> LaunchersSignals::clients(QString layoutName)
+{
+    QList<QQuickItem *> items;
+
+    if (!layoutName.isEmpty()) {
+        for(const auto client: m_clients) {
+            QString cLayoutName = client->property("layoutName").toString();
+            if (cLayoutName == layoutName) {
+                items << client;
             }
         }
+    } else {
+        items = m_clients;
     }
 
-    return applets;
+    return items;
 }
 
 void LaunchersSignals::addLauncher(QString layoutName, int launcherGroup, QString launcher)
@@ -84,26 +106,17 @@ void LaunchersSignals::addLauncher(QString layoutName, int launcherGroup, QStrin
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    for(const auto applet : lattePlasmoids(lName)) {
-        if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-            const auto &childItems = appletInterface->childItems();
+    for(const auto client : clients(lName)) {
+        if (auto *metaObject = client->metaObject()) {
+            int methodIndex = metaObject->indexOfMethod("addSyncedLauncher(QVariant,QVariant)");
 
-            if (childItems.isEmpty()) {
+            if (methodIndex == -1) {
+                qDebug() << "Launchers Syncer Ability: addSyncedLauncher(QVariant,QVariant) was NOT found...";
                 continue;
             }
 
-            for (QQuickItem *item : childItems) {
-                if (auto *metaObject = item->metaObject()) {
-                    int methodIndex = metaObject->indexOfMethod("extSignalAddLauncher(QVariant,QVariant)");
-
-                    if (methodIndex == -1) {
-                        continue;
-                    }
-
-                    QMetaMethod method = metaObject->method(methodIndex);
-                    method.invoke(item, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launcher));
-                }
-            }
+            QMetaMethod method = metaObject->method(methodIndex);
+            method.invoke(client, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launcher));
         }
     }
 }
@@ -118,26 +131,17 @@ void LaunchersSignals::removeLauncher(QString layoutName, int launcherGroup, QSt
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    for(const auto applet : lattePlasmoids(lName)) {
-        if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-            const auto &childItems = appletInterface->childItems();
+    for(const auto client : clients(lName)) {
+        if (auto *metaObject = client->metaObject()) {
+            int methodIndex = metaObject->indexOfMethod("removeSyncedLauncher(QVariant,QVariant)");
 
-            if (childItems.isEmpty()) {
+            if (methodIndex == -1) {
+                qDebug() << "Launchers Syncer Ability: removeSyncedLauncher(QVariant,QVariant) was NOT found...";
                 continue;
             }
 
-            for (QQuickItem *item : childItems) {
-                if (auto *metaObject = item->metaObject()) {
-                    int methodIndex = metaObject->indexOfMethod("extSignalRemoveLauncher(QVariant,QVariant)");
-
-                    if (methodIndex == -1) {
-                        continue;
-                    }
-
-                    QMetaMethod method = metaObject->method(methodIndex);
-                    method.invoke(item, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launcher));
-                }
-            }
+            QMetaMethod method = metaObject->method(methodIndex);
+            method.invoke(client, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launcher));
         }
     }
 }
@@ -152,26 +156,17 @@ void LaunchersSignals::addLauncherToActivity(QString layoutName, int launcherGro
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    for(const auto applet : lattePlasmoids(lName)) {
-        if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-            const auto &childItems = appletInterface->childItems();
+    for(const auto client : clients(lName)) {
+        if (auto *metaObject = client->metaObject()) {
+            int methodIndex = metaObject->indexOfMethod("addSyncedLauncherToActivity(QVariant,QVariant,QVariant)");
 
-            if (childItems.isEmpty()) {
+            if (methodIndex == -1) {
+                qDebug() << "Launchers Syncer Ability: addSyncedLauncherToActivity(QVariant,QVariant,QVariant) was NOT found...";
                 continue;
             }
 
-            for (QQuickItem *item : childItems) {
-                if (auto *metaObject = item->metaObject()) {
-                    int methodIndex = metaObject->indexOfMethod("extSignalAddLauncherToActivity(QVariant,QVariant,QVariant)");
-
-                    if (methodIndex == -1) {
-                        continue;
-                    }
-
-                    QMetaMethod method = metaObject->method(methodIndex);
-                    method.invoke(item, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launcher), Q_ARG(QVariant, activity));
-                }
-            }
+            QMetaMethod method = metaObject->method(methodIndex);
+            method.invoke(client, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launcher), Q_ARG(QVariant, activity));
         }
     }
 }
@@ -186,26 +181,17 @@ void LaunchersSignals::removeLauncherFromActivity(QString layoutName, int launch
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    for(const auto applet : lattePlasmoids(lName)) {
-        if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-            const auto &childItems = appletInterface->childItems();
+    for(const auto client : clients(lName)) {
+        if (auto *metaObject = client->metaObject()) {
+            int methodIndex = metaObject->indexOfMethod("removeSyncedLauncherFromActivity(QVariant,QVariant,QVariant)");
 
-            if (childItems.isEmpty()) {
+            if (methodIndex == -1) {
+                qDebug() << "Launchers Syncer Ability: removeSyncedLauncherFromActivity(QVariant,QVariant,QVariant) was NOT found...";
                 continue;
             }
 
-            for (QQuickItem *item : childItems) {
-                if (auto *metaObject = item->metaObject()) {
-                    int methodIndex = metaObject->indexOfMethod("extSignalRemoveLauncherFromActivity(QVariant,QVariant,QVariant)");
-
-                    if (methodIndex == -1) {
-                        continue;
-                    }
-
-                    QMetaMethod method = metaObject->method(methodIndex);
-                    method.invoke(item, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launcher), Q_ARG(QVariant, activity));
-                }
-            }
+            QMetaMethod method = metaObject->method(methodIndex);
+            method.invoke(client, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launcher), Q_ARG(QVariant, activity));
         }
     }
 }
@@ -220,62 +206,17 @@ void LaunchersSignals::urlsDropped(QString layoutName, int launcherGroup, QStrin
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    for(const auto applet : lattePlasmoids(lName)) {
-        if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-            const auto &childItems = appletInterface->childItems();
+    for(const auto client : clients(lName)) {
+        if (auto *metaObject = client->metaObject()) {
+            int methodIndex = metaObject->indexOfMethod("dropSyncedUrls(QVariant,QVariant)");
 
-            if (childItems.isEmpty()) {
+            if (methodIndex == -1) {
+                qDebug() << "Launchers Syncer Ability: dropSyncedUrls(QVariant,QVariant) was NOT found...";
                 continue;
             }
 
-            for (QQuickItem *item : childItems) {
-                if (auto *metaObject = item->metaObject()) {
-                    int methodIndex = metaObject->indexOfMethod("extSignalUrlsDropped(QVariant,QVariant)");
-
-                    if (methodIndex == -1) {
-                        continue;
-                    }
-
-                    QMetaMethod method = metaObject->method(methodIndex);
-                    method.invoke(item, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, urls));
-                }
-            }
-        }
-    }
-}
-
-void LaunchersSignals::moveTask(QString layoutName, uint senderId, int launcherGroup, int from, int to)
-{
-    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
-
-    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
-        return;
-    }
-
-    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
-
-    for(const auto applet : lattePlasmoids(lName)) {
-        if (applet->id() != senderId) {
-            if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-                const auto &childItems = appletInterface->childItems();
-
-                if (childItems.isEmpty()) {
-                    continue;
-                }
-
-                for (QQuickItem *item : childItems) {
-                    if (auto *metaObject = item->metaObject()) {
-                        int methodIndex = metaObject->indexOfMethod("extSignalMoveTask(QVariant,QVariant,QVariant)");
-
-                        if (methodIndex == -1) {
-                            continue;
-                        }
-
-                        QMetaMethod method = metaObject->method(methodIndex);
-                        method.invoke(item, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, from), Q_ARG(QVariant, to));
-                    }
-                }
-            }
+            QMetaMethod method = metaObject->method(methodIndex);
+            method.invoke(client, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, urls));
         }
     }
 }
@@ -290,27 +231,20 @@ void LaunchersSignals::validateLaunchersOrder(QString layoutName, uint senderId,
 
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
-    for(const auto applet : lattePlasmoids(lName)) {
-        if (applet->id() != senderId) {
-            if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-                const auto &childItems = appletInterface->childItems();
+    for(const auto client : clients(lName)) {
+        uint clientId = client->property("clientId").toUInt();
 
-                if (childItems.isEmpty()) {
+        if (clientId != senderId) {
+            if (auto *metaObject = client->metaObject()) {
+                int methodIndex = metaObject->indexOfMethod("validateSyncedLaunchersOrder(QVariant,QVariant)");
+
+                if (methodIndex == -1) {
+                    qDebug() << "Launchers Syncer Ability: validateSyncedLaunchersOrder(QVariant,QVariant) was NOT found...";
                     continue;
                 }
 
-                for (QQuickItem *item : childItems) {
-                    if (auto *metaObject = item->metaObject()) {
-                        int methodIndex = metaObject->indexOfMethod("extSignalValidateLaunchersOrder(QVariant,QVariant)");
-
-                        if (methodIndex == -1) {
-                            continue;
-                        }
-
-                        QMetaMethod method = metaObject->method(methodIndex);
-                        method.invoke(item, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launchers));
-                    }
-                }
+                QMetaMethod method = metaObject->method(methodIndex);
+                method.invoke(client, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launchers));
             }
         }
     }
