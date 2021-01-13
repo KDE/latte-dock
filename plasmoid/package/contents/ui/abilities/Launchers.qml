@@ -180,10 +180,16 @@ Item {
         }
     }
 
-    function validateLaunchersOrder(orderedLaunchers) {
-        validator.stop();
-        validator.launchers = orderedLaunchers;
-        validator.start();
+    function validateSyncedLaunchersOrder() {
+        if (bridge && !_launchers.inUniqueGroup()) {
+            bridge.launchers.validateSyncedLaunchersOrder(syncer.clientId,
+                                                          group,
+                                                          currentShownLauncherList());
+        } else {
+            /*validator.stop();
+            validator.launchers = orderedLaunchers;
+            validator.start();*/
+        }
     }
 
     function inCurrentActivity(launcherUrl) {
@@ -322,11 +328,7 @@ Item {
                     }
 
                     if (inDraggingPhase) {
-                        if (_launchers.bridge && !_launchers.inUniqueGroup()) {
-                            _launchers.bridge.launchers.validateSyncedLaunchersOrder(_launchers.syncer.clientId,
-                                                                                     _launchers.group,
-                                                                                     _launchers.currentShownLauncherList());
-                        }
+                        _launchers.validateSyncedLaunchersOrder();
                     }
                 } else {
                     plasmoid.configuration.launchers59 = _launchers.tasksModel.launcherList;

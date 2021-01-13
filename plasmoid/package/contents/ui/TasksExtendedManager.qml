@@ -371,7 +371,10 @@ Item {
     Timer {
         id: delayedLaynchersSyncTimer
         interval: 450
-        onTriggered: tasksModel.syncLaunchers();
+        onTriggered: {
+            tasksModel.syncLaunchers();
+            _launchers.validateSyncedLaunchersOrder();
+        }
     }
 
 

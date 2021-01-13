@@ -113,7 +113,9 @@ Item {
 
     function validateSyncedLaunchersOrder(group, orderedLaunchers) {
         if (group === _launchers.group && !isBlocked) {
-            _launchers.validateLaunchersOrder(orderedLaunchers);
+            validator.stop();
+            validator.launchers = orderedLaunchers;
+            validator.start();
         }
     }
 
