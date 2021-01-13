@@ -354,11 +354,6 @@ Item {
         }
     }
 
-    /////
-
-    function launchersDropped(urls){
-        mouseHandler.urlsDropped(urls);
-    }
 
     ///UPDATE
     function launcherExists(url) {
@@ -377,17 +372,6 @@ Item {
         return false;
     }
 
-    function launchersDrop(event) {
-        var createLaunchers = false;
-
-        if (event.mimeData.hasUrls) {
-            createLaunchers = event.mimeData.urls.every(function (item) {
-                return backend.isApplication(item)
-            });
-        }
-
-        return createLaunchers;
-    }
 
     function forcePreviewsHiding(debug) {
         // console.log(" org.kde.latte   Tasks: Force hide previews event called: "+debug);
