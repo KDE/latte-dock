@@ -40,8 +40,8 @@ Item{
         if (appletItem.isInternalViewSplitter) {
             if (!root.inConfigureAppletsMode) {
                 return 0;
-            } else if (appletItem.inConfigureAppletsDragging || !appletItem.isFillSplitter){
-                return appletMinimumLength; // /* /*(lengthAppletPadding + metrics.margin.length)*2*/
+            } else {
+                return appletItem.inConfigureAppletsDragging ? appletMinimumLength : internalSplitterComputedLength;
             }
         }
 
@@ -104,14 +104,14 @@ Item{
 
     readonly property int appletPreferredLength: {
         if (isInternalViewSplitter) {
-            return appletItem.isFillSplitter ? Infinity : appletMinimumLength;
+            return appletMinimumLength;
         }
         return root.isHorizontal ? appletPreferredWidth : appletPreferredHeight;
     }
 
     readonly property int appletMaximumLength: {
         if (isInternalViewSplitter) {
-            return isFillSplitter ? (root.isHorizontal ? root.width : root.height) : appletMinimumLength;
+            return Infinity;
         }
 
         root.isHorizontal ? appletMaximumWidth : appletMaximumHeight;
@@ -151,6 +151,31 @@ Item{
     property Item clickedEffect: _clickedEffect
     property Item containerForOverlayIcon: _containerForOverlayIcon
     property Item overlayIconLoader: _overlayIconLoader
+
+    readonly property int internalSplitterComputedLength: {
+        if (!appletItem.isInternalViewSplitter) {
+            return 0;
+        }
+
+        var parentLayoutLength = 0;
+        var parentTwinLayoutLength = 0;
+
+        if (appletItem.parent === layoutsContainer.startLayout) {
+            parentLayoutLength = appletItem.layouter.startLayout.lengthWithoutSplitters;
+            parentTwinLayoutLength = appletItem.layouter.endLayout.lengthWithoutSplitters;
+        } else if (appletItem.parent === layoutsContainer.endLayout) {
+            parentLayoutLength = appletItem.layouter.endLayout.lengthWithoutSplitters;
+            parentTwinLayoutLength = appletItem.layouter.startLayout.lengthWithoutSplitters;
+        } else {
+            return 0;
+        }
+
+        var parentLayoutCenter = (appletItem.layouter.maxLength - layoutsContainer.mainLayout.length)/2;
+        var twinLayoutExceededCenter = Math.max(0, (parentTwinLayoutLength + root.maxJustifySplitterSize) - parentLayoutCenter);
+        var availableLength = Math.max(0, parentLayoutCenter - twinLayoutExceededCenter);
+
+        return Math.max(root.maxJustifySplitterSize, availableLength - parentLayoutLength);
+    }
 
     Behavior on opacity {
         NumberAnimation {

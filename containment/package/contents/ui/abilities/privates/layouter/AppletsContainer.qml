@@ -34,8 +34,11 @@ Item {
     property int fillApplets: 0
     property int fillRealApplets: 0 //with no internal separators counted
 
+    property int lengthWithoutSplitters: 0 //with no internal separators length
+
     //it is used in calculations for fillWidth,fillHeight applets
     property int sizeWithNoFillApplets: 0
+
 
     readonly property int maxIndex: 99999
     property int firstVisibleIndex: -1
@@ -53,6 +56,29 @@ Item {
             for (var i=0; i<grid.children.length; ++i){
                 if (grid.children[i]
                         && !grid.children[i].isAutoFillApplet
+                        && !grid.children[i].isHidden) {
+
+                    if (grid.children[i].isInternalViewSplitter) {
+                        space += root.maxJustifySplitterSize;
+                    } else {
+                        space = root.isHorizontal ? space + grid.children[i].width : space + grid.children[i].height;
+                    }
+                }
+            }
+
+            return space;
+        }
+    }
+
+    Binding{
+        target: appletsContainer
+        property:"lengthWithoutSplitters"
+        when: appletsContainer && grid && !updateIsBlocked && inNormalFillCalculationsState
+        value: {
+            var space = 0;
+            for (var i=0; i<grid.children.length; ++i){
+                if (grid.children[i]
+                        && !grid.children[i].isInternalViewSplitter
                         && !grid.children[i].isHidden) {
                     space = root.isHorizontal ? space + grid.children[i].width : space + grid.children[i].height;
                 }

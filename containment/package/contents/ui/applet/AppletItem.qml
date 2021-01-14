@@ -59,13 +59,7 @@ Item {
 
     //! Fill Applet(s)
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
-    property bool isAutoFillApplet: {
-        if (isInternalViewSplitter) {
-            return isFillSplitter;
-        }
-
-        return isRequestingFill;
-    }
+    property bool isAutoFillApplet:  isRequestingFill
 
     property bool isRequestingFill: {
         if (!applet || !applet.Layout)
@@ -82,19 +76,6 @@ Item {
 
     property int maxAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
     property int minAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
-
-    readonly property int isFillSplitter: isInternalViewSplitter
-                                          && ((parent === layoutsContainer.startLayout
-                                               && appletItem.layouter.startLayout.fillRealApplets === 0
-                                               && (appletItem.layouter.mainLayout.shownApplets>=1 /*main layout has applet in it*/
-                                                   || (appletItem.layouter.mainLayout.shownApplets===0 /*main layout is empty*/
-                                                       && appletItem.layouter.endLayout.fillRealApplets === 0)))
-                                              || (parent === layoutsContainer.endLayout
-                                                  && appletItem.layouter.endLayout.fillRealApplets === 0
-                                                  && (appletItem.layouter.mainLayout.shownApplets>=1 /*main layout has applet in it*/
-                                                      || (appletItem.layouter.mainLayout.shownApplets===0 /*main layout is empty*/
-                                                          && appletItem.layouter.startLayout.fillRealApplets === 0))))
-
 
     readonly property bool inConfigureAppletsDragging: root.dragOverlay
                                                        && root.dragOverlay.currentApplet
