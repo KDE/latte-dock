@@ -136,6 +136,9 @@ Item {
     readonly property bool isHidden: !visible || isForcedHidden
     property bool isForcedHidden: false
     property bool isLauncher: (IsLauncher === true) ? true : false
+    property bool hasShownLauncher:  (launchers.inCurrentActivity(taskItem.launcherUrl)
+                                     || launchers.inCurrentActivity(taskItem.launcherUrlWithIcon))
+                                     && !root.inActivityChange /*update trigger when changing current activity*/
     property bool isMinimized: (IsMinimized === true) ? true : false
     property bool isSeparator: false
     property bool isStartup: (IsStartup === true) ? true : false
@@ -1233,9 +1236,6 @@ Item {
         launchers.launcherChanged.connect(onLauncherChanged);
         launchers.launcherRemoved.connect(onLauncherChanged);
         parabolic.sglClearZoom.connect(sltClearZoom);
-
-        var hasShownLauncher = ((tasksModel.launcherPosition(taskItem.launcherUrl) !== -1)
-                                || (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) !== -1) );
 
         //startup without launcher
         var hideStartup =  ((!hasShownLauncher || !taskItem.launchers.inCurrentActivity(taskItem.launcherUrl))

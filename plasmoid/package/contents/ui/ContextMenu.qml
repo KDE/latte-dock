@@ -827,6 +827,7 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: addInternalSeparatorItem       
         enabled: !visualParent.tailItemIsSeparator || !visualParent.headItemIsSeparator
+        visible: visualParent.hasShownLauncher
         icon: "add"
         text: !visualParent.tailItemIsSeparator ? i18n("Add Tail Separator") : i18n("Add Head Separator")
 

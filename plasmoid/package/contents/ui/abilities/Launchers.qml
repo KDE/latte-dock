@@ -203,7 +203,7 @@ Item {
     function inCurrentActivity(launcherUrl) {
         var activities = _launchers.tasksModel.launcherActivities(launcherUrl);
 
-        if (activities.length === 0 || activities.indexOf(_NULLACTIVITYID_) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1) {
+        if (activities.indexOf(_NULLACTIVITYID_) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1) {
             return true;
         }
 
