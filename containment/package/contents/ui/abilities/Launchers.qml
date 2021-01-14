@@ -26,49 +26,49 @@ Item {
     property string layoutName: ""
 
     function addAbilityClient(client) {
-        layoutsManager.launchersSignals.addAbilityClient(client);
+        layoutsManager.syncedLaunchers.addAbilityClient(client);
     }
 
     function removeAbilityClient(client) {
-        layoutsManager.launchersSignals.removeAbilityClient(client);
+        layoutsManager.syncedLaunchers.removeAbilityClient(client);
     }
 
     function addSyncedLauncher(group, launcherUrl) {
-        layoutsManager.launchersSignals.addLauncher(layoutName,
-                                                    group,
-                                                    launcherUrl);
+        layoutsManager.syncedLaunchers.addLauncher(layoutName,
+                                                   group,
+                                                   launcherUrl);
     }
 
     function removeSyncedLauncher(group, launcherUrl) {
-        layoutsManager.launchersSignals.removeLauncher(layoutName,
-                                                       group,
-                                                       launcherUrl);
+        layoutsManager.syncedLaunchers.removeLauncher(layoutName,
+                                                      group,
+                                                      launcherUrl);
     }
 
     function addSyncedLauncherToActivity(group, launcherUrl, activityId) {
-        layoutsManager.launchersSignals.addLauncherToActivity(layoutName,
-                                                              group,
-                                                              launcherUrl,
-                                                              activityId);
+        layoutsManager.syncedLaunchers.addLauncherToActivity(layoutName,
+                                                             group,
+                                                             launcherUrl,
+                                                             activityId);
     }
 
     function removeSyncedLauncherFromActivity(group, launcherUrl, activityId) {
-        layoutsManager.launchersSignals.removeLauncherFromActivity(layoutName,
-                                                                   group,
-                                                                   launcherUrl,
-                                                                   activityId);
+        layoutsManager.syncedLaunchers.removeLauncherFromActivity(layoutName,
+                                                                  group,
+                                                                  launcherUrl,
+                                                                  activityId);
     }
 
     function addDroppedLaunchers(group, urls) {
-        layoutsManager.launchersSignals.urlsDropped(layoutName,
-                                                    group,
-                                                    urls);
+        layoutsManager.syncedLaunchers.urlsDropped(layoutName,
+                                                   group,
+                                                   urls);
     }
 
     function validateSyncedLaunchersOrder(senderId, group, orderedlaunchers) {
-        layoutsManager.launchersSignals.validateLaunchersOrder(layoutName,
-                                                               senderId,
-                                                               group,
-                                                               orderedlaunchers);
+        layoutsManager.syncedLaunchers.validateLaunchersOrder(layoutName,
+                                                              senderId,
+                                                              group,
+                                                              orderedlaunchers);
     }
 }

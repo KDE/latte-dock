@@ -24,7 +24,7 @@
 
 // local
 #include "importer.h"
-#include "launcherssignals.h"
+#include "syncedlaunchers.h"
 #include "../infoview.h"
 #include "../screenpool.h"
 #include "../data/layoutdata.h"
@@ -49,7 +49,7 @@ namespace Layouts {
 Manager::Manager(QObject *parent)
     : QObject(parent),
       m_importer(new Importer(this)),
-      m_launchersSignals(new LaunchersSignals(this))
+      m_syncedLaunchers(new SyncedLaunchers(this))
 {
     m_corona = qobject_cast<Latte::Corona *>(parent);
     //! needs to be created AFTER corona assignment
@@ -65,7 +65,7 @@ Manager::Manager(QObject *parent)
 Manager::~Manager()
 {
     m_importer->deleteLater();
-    m_launchersSignals->deleteLater();
+    m_syncedLaunchers->deleteLater();
 
     //! no needed because Latte:Corona is calling it at better place
     // unload();
@@ -131,9 +131,9 @@ Importer *Manager::importer()
     return m_importer;
 }
 
-LaunchersSignals *Manager::launchersSignals() const
+SyncedLaunchers *Manager::syncedLaunchers() const
 {
-    return m_launchersSignals;
+    return m_syncedLaunchers;
 }
 
 Synchronizer *Manager::synchronizer() const

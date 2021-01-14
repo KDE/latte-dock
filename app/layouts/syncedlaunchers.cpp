@@ -1,6 +1,5 @@
 /*
-*  Copyright 2017  Smith AR <audoban@openmailbox.org>
-*                  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2021  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -18,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "launcherssignals.h"
+#include "syncedlaunchers.h"
 
 // local
 #include <coretypes.h>
@@ -38,17 +37,17 @@
 namespace Latte {
 namespace Layouts {
 
-LaunchersSignals::LaunchersSignals(QObject *parent)
+SyncedLaunchers::SyncedLaunchers(QObject *parent)
     : QObject(parent)
 {
     m_manager = qobject_cast<Layouts::Manager *>(parent);
 }
 
-LaunchersSignals::~LaunchersSignals()
+SyncedLaunchers::~SyncedLaunchers()
 {
 }
 
-void LaunchersSignals::addAbilityClient(QQuickItem *client)
+void SyncedLaunchers::addAbilityClient(QQuickItem *client)
 {
     if (m_clients.contains(client)) {
         return;
@@ -56,20 +55,20 @@ void LaunchersSignals::addAbilityClient(QQuickItem *client)
 
     m_clients << client;
 
-    connect(client, &QObject::destroyed, this, &LaunchersSignals::removeClientObject);
+    connect(client, &QObject::destroyed, this, &SyncedLaunchers::removeClientObject);
 }
 
-void LaunchersSignals::removeAbilityClient(QQuickItem *client)
+void SyncedLaunchers::removeAbilityClient(QQuickItem *client)
 {
     if (!m_clients.contains(client)) {
         return;
     }
 
-    disconnect(client, &QObject::destroyed, this, &LaunchersSignals::removeClientObject);
+    disconnect(client, &QObject::destroyed, this, &SyncedLaunchers::removeClientObject);
     m_clients.removeAll(client);
 }
 
-void LaunchersSignals::removeClientObject(QObject *obj)
+void SyncedLaunchers::removeClientObject(QObject *obj)
 {
     QQuickItem *item = qobject_cast<QQuickItem *>(obj);
 
@@ -78,7 +77,7 @@ void LaunchersSignals::removeClientObject(QObject *obj)
     }
 }
 
-QList<QQuickItem *> LaunchersSignals::clients(QString layoutName)
+QList<QQuickItem *> SyncedLaunchers::clients(QString layoutName)
 {
     QList<QQuickItem *> items;
 
@@ -96,7 +95,7 @@ QList<QQuickItem *> LaunchersSignals::clients(QString layoutName)
     return items;
 }
 
-void LaunchersSignals::addLauncher(QString layoutName, int launcherGroup, QString launcher)
+void SyncedLaunchers::addLauncher(QString layoutName, int launcherGroup, QString launcher)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
@@ -121,7 +120,7 @@ void LaunchersSignals::addLauncher(QString layoutName, int launcherGroup, QStrin
     }
 }
 
-void LaunchersSignals::removeLauncher(QString layoutName, int launcherGroup, QString launcher)
+void SyncedLaunchers::removeLauncher(QString layoutName, int launcherGroup, QString launcher)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
@@ -146,7 +145,7 @@ void LaunchersSignals::removeLauncher(QString layoutName, int launcherGroup, QSt
     }
 }
 
-void LaunchersSignals::addLauncherToActivity(QString layoutName, int launcherGroup, QString launcher, QString activity)
+void SyncedLaunchers::addLauncherToActivity(QString layoutName, int launcherGroup, QString launcher, QString activity)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
@@ -171,7 +170,7 @@ void LaunchersSignals::addLauncherToActivity(QString layoutName, int launcherGro
     }
 }
 
-void LaunchersSignals::removeLauncherFromActivity(QString layoutName, int launcherGroup, QString launcher, QString activity)
+void SyncedLaunchers::removeLauncherFromActivity(QString layoutName, int launcherGroup, QString launcher, QString activity)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
@@ -196,7 +195,7 @@ void LaunchersSignals::removeLauncherFromActivity(QString layoutName, int launch
     }
 }
 
-void LaunchersSignals::urlsDropped(QString layoutName, int launcherGroup, QStringList urls)
+void SyncedLaunchers::urlsDropped(QString layoutName, int launcherGroup, QStringList urls)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
@@ -221,7 +220,7 @@ void LaunchersSignals::urlsDropped(QString layoutName, int launcherGroup, QStrin
     }
 }
 
-void LaunchersSignals::validateLaunchersOrder(QString layoutName, uint senderId, int launcherGroup, QStringList launchers)
+void SyncedLaunchers::validateLaunchersOrder(QString layoutName, uint senderId, int launcherGroup, QStringList launchers)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 

@@ -22,7 +22,7 @@
 #define LAYOUTSMANAGER_H
 
 // local
-#include "launcherssignals.h"
+#include "syncedlaunchers.h"
 #include "synchronizer.h"
 #include "../apptypes.h"
 #include "../settings/dialogs/settingsdialog.h"
@@ -45,7 +45,7 @@ class Corona;
 class CentralLayout;
 namespace Layouts {
 class Importer;
-class LaunchersSignals;
+class SyncedLaunchers;
 class Synchronizer;
 }
 }
@@ -69,7 +69,7 @@ namespace Layouts {
 class Manager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(LaunchersSignals *launchersSignals READ launchersSignals NOTIFY launchersSignalsChanged)
+    Q_PROPERTY(SyncedLaunchers *syncedLaunchers READ syncedLaunchers NOTIFY syncedLaunchersChanged)
 
 public:
     Manager(QObject *parent = nullptr);
@@ -95,7 +95,7 @@ public:
 
     //! returns the current and central layout based on activities and user preferences
     QList<CentralLayout *>currentLayouts() const;
-    LaunchersSignals *launchersSignals() const;
+    SyncedLaunchers *syncedLaunchers() const;
     Synchronizer *synchronizer() const;
 
 public slots:
@@ -107,7 +107,7 @@ public slots:
 
 signals:
     void centralLayoutsChanged();
-    void launchersSignalsChanged();
+    void syncedLaunchersChanged();
 
     void currentLayoutIsSwitching(QString layoutName);
 
@@ -127,7 +127,7 @@ private:
 
     Latte::Corona *m_corona{nullptr};
     Importer *m_importer{nullptr};
-    LaunchersSignals *m_launchersSignals{nullptr};
+    SyncedLaunchers *m_syncedLaunchers{nullptr};
     Synchronizer *m_synchronizer{nullptr};
 
     friend class Latte::Settings::Dialog::SettingsDialog;

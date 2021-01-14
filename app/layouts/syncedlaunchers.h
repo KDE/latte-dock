@@ -1,6 +1,5 @@
 /*
-*  Copyright 2017  Smith AR <audoban@openmailbox.org>
-*                  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2021  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -18,8 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef LAUNCHERSSIGNALS_H
-#define LAUNCHERSSIGNALS_H
+#ifndef SYNCEDLAUNCHERS_H
+#define SYNCEDLAUNCHERS_H
 
 // Qt
 #include <QList>
@@ -45,13 +44,13 @@ namespace Layouts {
 //! crashes that occur by setting the launcherList of the tasksModel so
 //! often. The plasma devs of libtaskmanager have designed the launchers
 //! model to be initialized only once during startup
-class LaunchersSignals : public QObject
+class SyncedLaunchers : public QObject
 {
     Q_OBJECT
 
 public:
-    LaunchersSignals(QObject *parent);
-    ~LaunchersSignals() override;
+    SyncedLaunchers(QObject *parent);
+    ~SyncedLaunchers() override;
 
 public slots:
     Q_INVOKABLE void addAbilityClient(QQuickItem *client);

@@ -34,7 +34,6 @@
 #include "layouts/importer.h"
 #include "layouts/manager.h"
 #include "layouts/synchronizer.h"
-#include "layouts/launcherssignals.h"
 #include "shortcuts/globalshortcuts.h"
 #include "package/lattepackage.h"
 #include "plasma/extended/backgroundcache.h"
