@@ -825,28 +825,35 @@ PlasmaComponents.ContextMenu {
     }*/
 
     PlasmaComponents.MenuItem {
-        id: addInternalSeparatorItem
-        visible: root.inEditMode
-
+        id: addInternalSeparatorItem       
+        enabled: !visualParent.tailItemIsSeparator || !visualParent.headItemIsSeparator
         icon: "add"
-        text: i18n("Add Separator")
+        text: !visualParent.tailItemIsSeparator ? i18n("Add Tail Separator") : i18n("Add Head Separator")
 
         onClicked: {
             var pos=visualParent.itemIndex;
-            launchers.addInternalSeparatorAtPos(pos);
+
+            if (!visualParent.tailItemIsSeparator) {
+                launchers.addInternalSeparatorAtPos(pos);
+            } else {
+                launchers.addInternalSeparatorAtPos(pos+1);
+            }
         }
     }
 
     PlasmaComponents.MenuItem {
         id: removeInternalSeparatorItem
-        visible: root.inEditMode && visualParent.isSeparator
+        visible: visualParent && (visualParent.tailItemIsSeparator || visualParent.headItemIsSeparator)
 
         icon: "remove"
-        text: i18n("Remove Separator")
-        enabled: (root.indexer.separators.length > 0) && visualParent && visualParent.isSeparator
+        text: visualParent.tailItemIsSeparator ? i18n("Remove Tail Separator") : i18n("Remove Head Separator")
 
         onClicked: {
-            launchers.removeLauncher(get(atm.LauncherUrlWithoutIcon));
+            if (visualParent.tailItemIsSeparator) {
+                launchers.removeInternalSeparatorAtPos(visualParent.itemIndex - 1);
+            } else if (visualParent.headItemIsSeparator) {
+                launchers.removeInternalSeparatorAtPos(visualParent.itemIndex + 1);
+            }
         }
     }
 

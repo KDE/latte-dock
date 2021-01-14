@@ -140,6 +140,14 @@ Item {
         }
     }
 
+    function removeInternalSeparatorAtPos(pos) {
+        var item = childAtLayoutIndex(pos);
+
+        if (item.isSeparator) {
+            removeLauncher(item.launcherUrl);
+        }
+    }
+
     function removeLauncher(launcherUrl) {
         if (bridge && !inUniqueGroup()) {
             bridge.launchers.removeSyncedLauncher(launchers.group,
