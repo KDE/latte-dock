@@ -27,11 +27,12 @@ Item {
 
     readonly property int headThickness: appletItem.metrics.margin.thickness
     readonly property int tailThickness: destination ? destination.tailThicknessMargin : headThickness
+    readonly property int thickness: headThickness + tailThickness + (root.isHorizontal ? destination.height : destination.width)
     readonly property int lengthPadding: {
         if ( (root.panelAlignment === LatteCore.Types.Justify && appletItem.firstChildOfStartLayout)
-            || (root.panelAlignment === LatteCore.Types.Justify && appletItem.lastChildOfEndLayout)
-            || (root.panelAlignment !== LatteCore.Types.Justify && appletItem.firstChildOfMainLayout)
-            || (root.panelAlignment !== LatteCore.Types.Justify && appletItem.lastChildOfMainLayout)) {
+                || (root.panelAlignment === LatteCore.Types.Justify && appletItem.lastChildOfEndLayout)
+                || (root.panelAlignment !== LatteCore.Types.Justify && appletItem.firstChildOfMainLayout)
+                || (root.panelAlignment !== LatteCore.Types.Justify && appletItem.lastChildOfMainLayout)) {
             //! Fitts Law on corners
             return appletItem.lengthAppletFullMargin;
         }
@@ -40,6 +41,7 @@ Item {
     }
 
     readonly property bool active: parent ? parent.active : false
+
 
     Loader{
         anchors.fill: parent
@@ -53,72 +55,159 @@ Item {
         }
     }
 
+    Item {
+        id: originParentItem
+        anchors.fill: parent
 
-    EventsSinkOriginArea {
-        id: topArea
-        anchors.bottom: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
+        //! NOTICE: Do not add any more child items. These child items are used from SinkedEvents handler in order
+        //! to identify the areas from which mouse events should be sunk into the destination item
 
-        width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? destination.width + 2 * lengthPadding : destination.width
-        height: {
-            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                return lengthPadding;
-            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                return tailThickness;
-            } else {
-                return headThickness;
+        EventsSinkOriginArea {
+            id: topArea
+            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? destination.width + 2 * lengthPadding : thickness
+            height: {
+                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                    return lengthPadding;
+                } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                    return tailThickness;
+                } else {
+                    return headThickness;
+                }
             }
+
+            states:[
+                State{
+                    name: "horizontal"
+                    when: plasmoid.formFactor === PlasmaCore.Types.Horizontal
+
+                    AnchorChanges{
+                        target: topArea;
+                        anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                        anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.top;
+                    }
+                },
+                State{
+                    name: "vertical"
+                    when: plasmoid.formFactor === PlasmaCore.Types.Vertical
+
+                    AnchorChanges{
+                        target: topArea;
+                        anchors.horizontalCenter: undefined; anchors.verticalCenter: undefined;
+                        anchors.right: undefined; anchors.left: leftArea.left; anchors.top: leftArea.top; anchors.bottom: undefined;
+                    }
+                }
+            ]
         }
-    }
 
-    EventsSinkOriginArea {
-        id: bottomArea
-        anchors.top: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? destination.width + 2 * lengthPadding : parent.width
-        height: {
-            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                return lengthPadding;
-            } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                return tailThickness;
-            } else {
-                return headThickness;
+        EventsSinkOriginArea {
+            id: bottomArea
+            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? destination.width + 2 * lengthPadding : thickness
+            height: {
+                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                    return lengthPadding;
+                } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                    return tailThickness;
+                } else {
+                    return headThickness;
+                }
             }
+
+            states:[
+                State{
+                    name: "horizontal"
+                    when: plasmoid.formFactor === PlasmaCore.Types.Horizontal
+
+                    AnchorChanges{
+                        target: bottomArea;
+                        anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                        anchors.right: undefined; anchors.left: undefined; anchors.top: parent.bottom; anchors.bottom: undefined;
+                    }
+                },
+                State{
+                    name: "vertical"
+                    when: plasmoid.formFactor === PlasmaCore.Types.Vertical
+
+                    AnchorChanges{
+                        target: bottomArea;
+                        anchors.horizontalCenter: undefined; anchors.verticalCenter: undefined;
+                        anchors.right: undefined; anchors.left: leftArea.left; anchors.top: undefined; anchors.bottom: leftArea.bottom;
+                    }
+                }
+            ]
         }
-    }
 
-    EventsSinkOriginArea {
-        id: leftArea
-        anchors.right: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-
-        height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.height : destination.height + 2 * lengthPadding
-        width: {
-            if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                return lengthPadding;
-            } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                return tailThickness;
-            } else {
-                return headThickness;
+        EventsSinkOriginArea {
+            id: leftArea
+            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? thickness : destination.height + 2 * lengthPadding
+            width: {
+                if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
+                    return lengthPadding;
+                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                    return tailThickness;
+                } else {
+                    return headThickness;
+                }
             }
+
+            states:[
+                State{
+                    name: "horizontal"
+                    when: plasmoid.formFactor === PlasmaCore.Types.Horizontal
+
+                    AnchorChanges{
+                        target: leftArea;
+                        anchors.horizontalCenter: undefined; anchors.verticalCenter: undefined;
+                        anchors.right: undefined; anchors.left: bottomArea.left; anchors.top: undefined; anchors.bottom: bottomArea.bottom;
+                    }
+                },
+                State{
+                    name: "vertical"
+                    when: plasmoid.formFactor === PlasmaCore.Types.Vertical
+
+                    AnchorChanges{
+                        target: leftArea;
+                        anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                        anchors.right: parent.left; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                    }
+                }
+            ]
         }
-    }
 
-    EventsSinkOriginArea {
-        id: rightArea
-        anchors.left: parent.right
-        anchors.verticalCenter: parent.verticalCenter
-
-        height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.height : destination.height + 2 * lengthPadding
-        width: {
-            if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                return lengthPadding;
-            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                return tailThickness;
-            } else {
-                return headThickness;
+        EventsSinkOriginArea {
+            id: rightArea
+            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? thickness : destination.height + 2 * lengthPadding
+            width: {
+                if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
+                    return lengthPadding;
+                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                    return tailThickness;
+                } else {
+                    return headThickness;
+                }
             }
+
+            states:[
+                State{
+                    name: "horizontal"
+                    when: plasmoid.formFactor === PlasmaCore.Types.Horizontal
+
+                    AnchorChanges{
+                        target: rightArea;
+                        anchors.horizontalCenter: undefined; anchors.verticalCenter: undefined;
+                        anchors.right: bottomArea.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: bottomArea.bottom;
+                    }
+                },
+                State{
+                    name: "vertical"
+                    when: plasmoid.formFactor === PlasmaCore.Types.Vertical
+
+                    AnchorChanges{
+                        target: rightArea;
+                        anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                        anchors.right: undefined; anchors.left: parent.right; anchors.top: undefined; anchors.bottom: undefined;
+                    }
+                }
+            ]
         }
     }
 }
