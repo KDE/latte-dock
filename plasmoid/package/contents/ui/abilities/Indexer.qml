@@ -26,7 +26,7 @@ import org.kde.latte.abilities.client 0.1 as ClientAbility
 
 ClientAbility.Indexer {
     id: _indexer
-    property Item layout: null   
+    property Item layout: null
 
     property bool updateIsBlocked: false
     property int itemsCount: 0 /*is needed to be set from consumer developer in order to avoid binding loops warnings*/

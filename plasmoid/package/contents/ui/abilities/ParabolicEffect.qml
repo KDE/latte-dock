@@ -26,7 +26,7 @@ import org.kde.latte.abilities.client 0.1 as ClientAbility
 
 ClientAbility.ParabolicEffect {
     id: parabolic
-    property int itemsCount: 0
+    property int itemsCount: 0 /*is needed to be set from consumer developer in order to avoid binding loops warnings*/
 
     isEnabled: !root.inPlasma || root.inPlasmaDesktop
     local.factor.zoom: isEnabled ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1

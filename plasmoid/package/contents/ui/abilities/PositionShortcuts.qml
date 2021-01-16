@@ -26,6 +26,7 @@ import org.kde.latte.abilities.client 0.1 as ClientAbility
 
 ClientAbility.PositionShortcuts {
     id: shortcuts
+    property Item indexer: null
 
     function shortcutIndex(entryIndex) {
         if (!bridge || bridge.shortcuts.host.unifiedGlobalShortcuts) {

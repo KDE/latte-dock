@@ -80,6 +80,7 @@ Item {
     Ability.PositionShortcuts {
         id: _shortcuts
         bridge: _abilityContainer.bridge
+        indexer: _indexer
     }
 
     ClientAbility.Requirements{
