@@ -44,6 +44,8 @@ WidgetExplorerView::WidgetExplorerView(Latte::View *view)
     : SubConfigView(view, QString("#widgetexplorerview#"), true)
 {
     setResizeMode(QQuickView::SizeRootObjectToView);
+    //!set flags early in order for wayland to initialize properly
+    setFlags(wFlags());
 
     connect(this, &QQuickView::widthChanged, this, &WidgetExplorerView::updateEffects);
     connect(this, &QQuickView::heightChanged, this, &WidgetExplorerView::updateEffects);

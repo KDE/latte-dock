@@ -530,8 +530,7 @@ void View::showWidgetExplorer(const QPointF &point)
     auto widgetExplorerView = m_corona->viewSettingsFactory()->widgetExplorerView(this);
 
     if (!widgetExplorerView->isVisible()) {
-       // widgetExplorerView->syncSlideEffect();
-        widgetExplorerView->showAfter(400);
+        widgetExplorerView->showAfter(250);
     }
 }
 
