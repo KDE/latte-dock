@@ -910,8 +910,9 @@ Item {
         id: parabolicAreaLoader
         width: root.isHorizontal ? appletItem.width : appletItem.metrics.mask.thickness.zoomedForItems
         height: root.isHorizontal ? appletItem.metrics.mask.thickness.zoomedForItems : appletItem.height
-
-        active: parabolicEffectIsSupported && appletItem.parabolic.isEnabled && !lockZoom
+        //! must be enabled even for applets that are hidden in order to forward
+        //! parabolic effect messages properly to surrounding plasma applets
+        active: appletItem.parabolic.isEnabled && (!lockZoom || isHidden)
 
         sourceComponent: ParabolicArea{}
 
