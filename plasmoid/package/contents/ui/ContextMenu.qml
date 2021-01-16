@@ -718,9 +718,9 @@ PlasmaComponents.ContextMenu {
 
         onClicked: {
             if (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) !== -1) {
-                launchers.removeLauncher(get(atm.LauncherUrl));
+                appletAbilities.launchers.removeLauncher(get(atm.LauncherUrl));
             } else {
-                launchers.addLauncher(get(atm.LauncherUrl))
+                appletAbilities.launchers.addLauncher(get(atm.LauncherUrl))
             }
         }
     }
@@ -763,9 +763,9 @@ PlasmaComponents.ContextMenu {
                     result.clicked.connect(
                                 function() {
                                     if (result.checked) {
-                                        launchers.addLauncherToActivity(url,id);
+                                        appletAbilities.launchers.addLauncherToActivity(url,id);
                                     } else {
-                                        launchers.removeLauncherFromActivity(url, id);
+                                        appletAbilities.launchers.removeLauncherFromActivity(url, id);
                                     }
                                 }
                                 );
@@ -813,7 +813,7 @@ PlasmaComponents.ContextMenu {
         icon: "window-unpin"
 
         onClicked: {
-            launchers.removeLauncher(get(atm.LauncherUrlWithoutIcon));
+            appletAbilities.launchers.removeLauncher(get(atm.LauncherUrlWithoutIcon));
         }
     }
 
@@ -835,9 +835,9 @@ PlasmaComponents.ContextMenu {
             var pos=visualParent.itemIndex;
 
             if (!visualParent.tailItemIsSeparator) {
-                launchers.addInternalSeparatorAtPos(pos);
+                appletAbilities.launchers.addInternalSeparatorAtPos(pos);
             } else {
-                launchers.addInternalSeparatorAtPos(pos+1);
+                appletAbilities.launchers.addInternalSeparatorAtPos(pos+1);
             }
         }
     }
@@ -851,9 +851,9 @@ PlasmaComponents.ContextMenu {
 
         onClicked: {
             if (visualParent.tailItemIsSeparator) {
-                launchers.removeInternalSeparatorAtPos(visualParent.itemIndex - 1);
+                appletAbilities.launchers.removeInternalSeparatorAtPos(visualParent.itemIndex - 1);
             } else if (visualParent.headItemIsSeparator) {
-                launchers.removeInternalSeparatorAtPos(visualParent.itemIndex + 1);
+                appletAbilities.launchers.removeInternalSeparatorAtPos(visualParent.itemIndex + 1);
             }
         }
     }
@@ -947,7 +947,7 @@ PlasmaComponents.ContextMenu {
         icon: "window-close"
 
         onClicked: {
-            if (parabolic.factor.zoom>1) {
+            if (appletAbilities.parabolic.factor.zoom>1) {
                 delayWindowRemovalTimer.modelIndex = menu.modelIndex;
                 delayWindowRemovalTimer.start();
             } else {

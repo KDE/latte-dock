@@ -107,7 +107,8 @@ LatteComponents.IndicatorItem{
 
                 size: root.size
                 glow3D: glow3D
-                animation: Math.max(1.65*3*animations.duration.large,indicator.durationTime*3*animations.duration.large)
+                animation: Math.max(1.65 * 3 * appletAbilities.animations.duration.large,
+                                    3 * indicator.durationTime * appletAbilities.animations.duration.large)
                 location: plasmoid.location
                 glowOpacity: root.glowOpacity
                 contrastColor: indicator.shadowColor
@@ -128,7 +129,7 @@ LatteComponents.IndicatorItem{
                 property int stateWidth: indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width
                 property int stateHeight: indicator.isGroup ? root.height - secondPoint.height : root.width - spacer.height
 
-                property int animationTime: indicator.durationTime* (0.7*animations.duration.large)
+                property int animationTime: indicator.durationTime* (0.7 * appletAbilities.animations.duration.large)
 
                 property bool isActive: indicator.hasActive || indicator.isActive
 
@@ -222,7 +223,8 @@ LatteComponents.IndicatorItem{
 
                 size: root.size
                 glow3D: glow3D
-                animation: Math.max(1.65*3*animations.duration.large,indicator.durationTime*3*animations.duration.large)
+                animation: Math.max(1.65 * 3 * appletAbilities.animations.duration.large,
+                                    3 * indicator.durationTime * appletAbilities.animations.duration.large)
                 location: plasmoid.location
                 glowOpacity: root.glowOpacity
                 contrastColor: indicator.shadowColor

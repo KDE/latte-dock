@@ -28,22 +28,28 @@ ClientAbility.Indexer {
     id: _indexer
     property Item layout: null   
 
-    readonly property bool tailAppletIsSeparator: isActive ? bridge.indexer.tailAppletIsSeparator : false
-    readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
-
     property bool updateIsBlocked: false
-
-    property int visibleItemsCount: 0
     property int itemsCount: 0 /*is needed to be set from consumer developer in order to avoid binding loops warnings*/
 
-    property int firstVisibleItemIndex: -1
-    property int lastVisibleItemIndex: -1
+    readonly property bool tailAppletIsSeparator: isActive ? bridge.indexer.tailAppletIsSeparator : false
+    readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
 
     readonly property bool isReady: (layout && layout.children.length >= itemsCount) && !updateIsBlocked
     readonly property int maxIndex: 99999
 
+    readonly property alias visibleItemsCount: _privates.visibleItemsCount
+    readonly property alias firstVisibleItemIndex: _privates.firstVisibleItemIndex
+    readonly property alias lastVisibleItemIndex: _privates.lastVisibleItemIndex
+
+    QtObject {
+        id: _privates
+        property int firstVisibleItemIndex: -1
+        property int lastVisibleItemIndex: -1
+        property int visibleItemsCount: 0
+    }
+
     Binding {
-        target: _indexer
+        target: _privates
         property: "firstVisibleItemIndex"
         when: isReady
         value: {
@@ -63,7 +69,7 @@ ClientAbility.Indexer {
     }
 
     Binding {
-        target: _indexer
+        target: _privates
         property: "lastVisibleItemIndex"
         when: isReady
         value: {
@@ -86,7 +92,7 @@ ClientAbility.Indexer {
     }
 
     Binding {
-        target: _indexer
+        target: _privates
         property: "visibleItemsCount"
         value: {
             var count = 0;

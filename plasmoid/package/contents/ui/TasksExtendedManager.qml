@@ -343,7 +343,7 @@ Item {
 
     //! Connections
     Connections {
-        target: launchers
+        target: appletAbilities.launchers
         onLauncherInRemoving: tasksExtManager.addToBeRemovedLauncher(launcherUrl);
         onLauncherInAdding: tasksExtManager.addToBeAddedLauncher(launcherUrl);
         onLauncherInMoving: tasksExtManager.addLauncherToBeMoved(launcherUrl, pos);

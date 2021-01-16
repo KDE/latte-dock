@@ -56,10 +56,10 @@ Flickable{
 
     readonly property int scrollFirstPos: 0
     readonly property int scrollLastPos: contentsExtraSpace
-    readonly property int scrollStep: metrics.totals.length * 3.5
+    readonly property int scrollStep: appletAbilities.metrics.totals.length * 3.5
     readonly property int currentPos: !root.vertical ? contentX : contentY
 
-    readonly property int autoScrollTriggerLength: metrics.iconSize + metrics.totals.lengthEdge
+    readonly property int autoScrollTriggerLength: appletAbilities.metrics.iconSize + appletAbilities.metrics.totals.lengthEdge
 
     readonly property int alignment: {
         if (root.location === PlasmaCore.Types.LeftEdge) {
@@ -140,18 +140,18 @@ Flickable{
 
         if (!root.vertical) {
             if (cP.x < 0) {
-                distance = Math.abs(cP.x - metrics.iconSize);
+                distance = Math.abs(cP.x - appletAbilities.metrics.iconSize);
                 decreasePosWithStep(distance);
             } else if ((cP.x+task.width) > scrollableList.width) {
-                distance = Math.abs(cP.x - scrollableList.width + task.width + metrics.iconSize);
+                distance = Math.abs(cP.x - scrollableList.width + task.width + appletAbilities.metrics.iconSize);
                 increasePosWithStep(distance);
             }
         } else {
             if (cP.y < 0) {
-                distance = Math.abs(cP.y - metrics.iconSize);
+                distance = Math.abs(cP.y - appletAbilities.metrics.iconSize);
                 decreasePosWithStep(distance);
             } else if ((cP.y+task.height) > scrollableList.height) {
-                distance = Math.abs(cP.y - scrollableList.height + task.height + metrics.iconSize);
+                distance = Math.abs(cP.y - scrollableList.height + task.height + appletAbilities.metrics.iconSize);
                 increasePosWithStep(distance);
             }
         }
@@ -176,7 +176,7 @@ Flickable{
 
         var cP = task.mapToItem(scrollableList, 0, 0);
 
-        var localStep = horizontalAnimation.running || verticalAnimation.running ? 3.5 * metrics.totals.length : metrics.totals.length;
+        var localStep = horizontalAnimation.running || verticalAnimation.running ? 3.5 * appletAbilities.metrics.totals.length : appletAbilities.metrics.totals.length;
 
         if (!root.vertical) {
             if (currentPos !== scrollFirstPos && cP.x < autoScrollTriggerLength) {
@@ -213,7 +213,7 @@ Flickable{
     Behavior on contentX {
         NumberAnimation {
             id: horizontalAnimation
-            duration: animations.speedFactor.current*4.1*animations.duration.large
+            duration: appletAbilities.animations.speedFactor.current*4.1*appletAbilities.animations.duration.large
             easing.type: Easing.OutQuad
         }
     }
@@ -221,7 +221,7 @@ Flickable{
     Behavior on contentY {
         NumberAnimation {
             id: verticalAnimation
-            duration: animations.speedFactor.current*4.1*animations.duration.large
+            duration: appletAbilities.animations.speedFactor.current*4.1*appletAbilities.animations.duration.large
             easing.type: Easing.OutQuad
         }
     }

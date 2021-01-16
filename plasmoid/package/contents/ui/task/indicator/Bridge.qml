@@ -66,8 +66,8 @@ Item {
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
-    readonly property bool animationsEnabled: taskIsValid ? taskItem.animations.active : animations.active
-    readonly property real durationTime: taskIsValid ? taskItem.animations.speedFactor.current : animations.speedFactor.current
+    readonly property bool animationsEnabled: taskIsValid ? taskItem.animations.active : appletAbilities.animations.active
+    readonly property real durationTime: taskIsValid ? taskItem.animations.speedFactor.current : appletAbilities.animations.speedFactor.current
 
     readonly property bool progressVisible: wrapper.progressVisible /*since 0.9.2*/
     readonly property real progress: wrapper.progress /*since 0.9.2*/

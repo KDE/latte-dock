@@ -100,11 +100,11 @@ Item {
     property int tasksStarting: 0
 
     ///Don't use Math.floor it adds one pixel in animations and creates glitches
-    property int widthMargins: root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
-    property int heightMargins: !root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
+    property int widthMargins: root.vertical ? appletAbilities.metrics.totals.thicknessEdges : appletAbilities.metrics.totals.lengthEdges
+    property int heightMargins: !root.vertical ? appletAbilities.metrics.totals.thicknessEdges : appletAbilities.metrics.totals.lengthEdges
 
-    property int internalWidthMargins: root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthPaddings
-    property int internalHeightMargins: !root.vertical ? metrics.totals.thicknessEdges : metrics.totals.lengthPaddings
+    property int internalWidthMargins: root.vertical ? appletAbilities.metrics.totals.thicknessEdges : appletAbilities.metrics.totals.lengthPaddings
+    property int internalHeightMargins: !root.vertical ? appletAbilities.metrics.totals.thicknessEdges : appletAbilities.metrics.totals.lengthPaddings
 
     property real textColorBrightness: ColorizerTools.colorBrightness(themeTextColor)
 
@@ -125,13 +125,7 @@ Item {
     property Item dragSource: null
 
     property Item tasksExtendedManager: _tasksExtendedManager
-    readonly property alias animations: _animations
-    readonly property alias debug: _debug
-    readonly property alias indexer: _indexer
-    readonly property alias launchers: _launchers
-    readonly property alias metrics: _metrics
-    readonly property alias parabolic: _parabolic
-    readonly property alias shortcuts: _shortcuts
+    readonly property alias appletAbilities: _appletAbilities
 
     readonly property alias containsDrag: mouseHandler.containsDrag
     readonly property bool dragAreaEnabled: latteView ? (root.dragSource !== null
@@ -208,7 +202,7 @@ Item {
 
     readonly property real currentPanelOpacity: latteView ? latteView.currentPanelTransparency / 100 : 1
 
-    property int appShadowSize: latteView ? latteView.appShadowSize : Math.ceil(0.12*metrics.iconSize)
+    property int appShadowSize: latteView ? latteView.appShadowSize : Math.ceil(0.12*appletAbilities.metrics.iconSize)
     property string appShadowColor: latteView ? latteView.appShadowColor : "#ff080808"
     property string appShadowColorSolid: latteView ? latteView.appShadowColorSolid : "#ff080808"
 
@@ -423,7 +417,7 @@ Item {
             //! triggered together.
             if (containsMouse) {
                 hidePreviewWinTimer.stop();
-                parabolic.setDirectRenderingEnabled(false);
+                appletAbilities.parabolic.setDirectRenderingEnabled(false);
             } else {
                 hide(7.3);
             }
@@ -522,14 +516,14 @@ Item {
     Timer{
         id: delayWindowRemovalTimer
         //this is the animation time needed in order for tasks to restore their zoom first
-        interval: 7 * (animations.speedFactor.current * animations.duration.small)
+        interval: 7 * (appletAbilities.animations.speedFactor.current * appletAbilities.animations.duration.small)
 
         property var modelIndex
 
         onTriggered: {
             tasksModel.requestClose(delayWindowRemovalTimer.modelIndex)
 
-            if (debug.timersEnabled) {
+            if (appletAbilities.debug.timersEnabled) {
                 console.log("plasmoid timer: delayWindowRemovalTimer called...");
             }
         }
@@ -543,7 +537,7 @@ Item {
             root.publishTasksGeometries();
             activityInfo.previousActivity = activityInfo.currentActivity;
 
-            if (debug.timersEnabled) {
+            if (appletAbilities.debug.timersEnabled) {
                 console.log("plasmoid timer: activityChangeDelayer called...");
             }
         }
@@ -584,11 +578,11 @@ Item {
         property bool anyTaskDemandsAttentionInValidTime: false
 
         function updateLaunchersList(){
-            if (latteView && !launchers.inUniqueGroup()) {
-                if (launchers.inLayoutGroup()) {
+            if (latteView && !appletAbilities.launchers.inUniqueGroup()) {
+                if (appletAbilities.launchers.inLayoutGroup()) {
                     console.log("Tasks: Applying LAYOUT Launchers List...");
                     tasksModel.launcherList = latteView.viewLayout.launchers;
-                } else if (launchers.inGlobalGroup()) {
+                } else if (appletAbilities.launchers.inGlobalGroup()) {
                     console.log("Tasks: Applying GLOBAL Launchers List...");
                     tasksModel.launcherList = latteView.universalSettings.launchers;
                 }
@@ -626,10 +620,10 @@ Item {
             //var loadedLaunchers = ActivitiesTools.restoreLaunchers();
             ActivitiesTools.importLaunchersToNewArchitecture();
 
-            if (viewLayout && latteView.universalSettings && !launchers.inUniqueGroup()) {
-                if (launchers.inLayoutGroup()) {
+            if (viewLayout && latteView.universalSettings && !appletAbilities.launchers.inUniqueGroup()) {
+                if (appletAbilities.launchers.inLayoutGroup()) {
                     launcherList = latteView.viewLayout.launchers;
-                } else if (launchers.inGlobalGroup()) {
+                } else if (appletAbilities.launchers.inGlobalGroup()) {
                     launcherList = latteView.universalSettings.launchers;
                 }
             } else {
@@ -795,71 +789,38 @@ Item {
         id: _tasksExtendedManager
     }
 
-    Ability.Animations {
-        id: _animations
+    AppletAbilities {
+        id: _appletAbilities
         bridge: latteBridge
-    }
-
-    ClientAbility.Debug {
-        id: _debug
-        bridge: latteBridge
-    }
-
-    Ability.Indexer {
-        id: _indexer
-        bridge: latteBridge
-        layout: icList.contentItem
-        itemsCount: tasksModel.count
-        updateIsBlocked: root.inDraggingPhase
-    }
-
-    Ability.Launchers {
-        id: _launchers
-        bridge: latteBridge
-        group: plasmoid.configuration.launchersGroup
         layout: icList.contentItem
         tasksModel: tasksModel
-        syncer.isBlocked: inDraggingPhase
-        syncer.layoutName: viewLayoutName
-    }
 
-    Ability.Metrics {
-        id: _metrics
-        bridge: latteBridge
-    }
+        indexer.itemsCount: tasksModel.count
+        indexer.updateIsBlocked: root.inDraggingPhase
 
-    Ability.ParabolicEffect {
-        id: _parabolic
-        bridge: latteBridge
-        itemsCount: tasksModel.count
-        layout: icList.contentItem
-        local.isEnabled: factor.zoom > 1
-        local.restoreZoomIsBlocked: root.contextMenu || windowsPreviewDlg.containsMouse
-    }
+        launchers.group: plasmoid.configuration.launchersGroup
+        launchers.syncer.isBlocked: inDraggingPhase
+        launchers.syncer.layoutName: viewLayoutName
 
-    Ability.PositionShortcuts {
-        id: _shortcuts
-        bridge: latteBridge
-        isStealingGlobalPositionShortcuts: plasmoid.configuration.isPreferredForPositionShortcuts
+        parabolic.itemsCount: tasksModel.count
+        parabolic.local.isEnabled: parabolic.factor.zoom > 1
+        parabolic.local.restoreZoomIsBlocked: root.contextMenu || windowsPreviewDlg.containsMouse
 
-        onDisabledIsStealingGlobalPositionShortcuts: {
-            plasmoid.configuration.isPreferredForPositionShortcuts = false;
+        shortcuts.isStealingGlobalPositionShortcuts: plasmoid.configuration.isPreferredForPositionShortcuts
+
+        requires.activeIndicatorEnabled: false
+        requires.lengthMarginsEnabled: false
+        requires.latteSideColoringEnabled: false
+        requires.screenEdgeMarginSupported: true
+
+        Connections {
+            target: _appletAbilities.shortcuts
+
+            onDisabledIsStealingGlobalPositionShortcuts: {
+                plasmoid.configuration.isPreferredForPositionShortcuts = false;
+            }
         }
-    }
 
-    ClientAbility.Requirements{
-        id: _requires
-        bridge: latteBridge
-
-        activeIndicatorEnabled: false
-        lengthMarginsEnabled: false
-        latteSideColoringEnabled: false
-        screenEdgeMarginSupported: true
-    }
-
-    Ability.UserRequests {
-        id: _userRequests
-        bridge: latteBridge
     }
 
     Component{
@@ -871,7 +832,7 @@ Item {
                 tasksModel.anyTaskDemandsAttentionInValidTime = false;
                 destroy();
 
-                if (debug.timersEnabled) {
+                if (appletAbilities.debug.timersEnabled) {
                     console.log("plasmoid timer: attentionTimer called...");
                 }
             }
@@ -896,15 +857,15 @@ Item {
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-        width: root.vertical ? 1 : 2 * metrics.iconSize
-        height: root.vertical ? 2 * metrics.iconSize : 1
+        width: root.vertical ? 1 : 2 * appletAbilities.metrics.iconSize
+        height: root.vertical ? 2 * appletAbilities.metrics.iconSize : 1
         color: "red"
         x: (root.location === PlasmaCore.Types.LeftEdge) ? neededSpace : parent.width - neededSpace
         y: (root.location === PlasmaCore.Types.TopEdge) ? neededSpace : parent.height - neededSpace
 
         visible: plasmoid.configuration.zoomHelper
 
-        property int neededSpace: parabolic.factor.zoom*metrics.totals.length
+        property int neededSpace: appletAbilities.parabolic.factor.zoom*appletAbilities.metrics.totals.length
     }
 
     Item{
@@ -920,11 +881,11 @@ Item {
         width: ( icList.orientation === Qt.Horizontal ) ? icList.width + spacing : smallSize
         height: ( icList.orientation === Qt.Vertical ) ? icList.height + spacing : smallSize
 
-        property int spacing: latteBridge ? 0 : metrics.iconSize / 2
-        property int smallSize: Math.max(0.10 * metrics.iconSize, 16)
+        property int spacing: latteBridge ? 0 : appletAbilities.metrics.iconSize / 2
+        property int smallSize: Math.max(0.10 * appletAbilities.metrics.iconSize, 16)
 
         Behavior on opacity{
-            NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
+            NumberAnimation { duration: appletAbilities.animations.speedFactor.current * appletAbilities.animations.duration.large }
         }
 
         /// plasmoid's default panel
@@ -941,7 +902,7 @@ Item {
             verticalTileMode: BorderImage.Stretch
 
             Behavior on opacity{
-                NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
+                NumberAnimation { duration: appletAbilities.animations.speedFactor.current * appletAbilities.animations.duration.large }
             }
         }
 
@@ -987,7 +948,7 @@ Item {
                                         plasmoid.configuration.panelSize + belower.width
 
             Behavior on opacity{
-                NumberAnimation { duration: animations.speedFactor.current*animations.duration.large }
+                NumberAnimation { duration: appletAbilities.animations.speedFactor.current * appletAbilities.animations.duration.large }
             }
 
 
@@ -1017,8 +978,8 @@ Item {
 
             visible: root.dragAreaEnabled
 
-            property int maxThickness: (parabolic.isHovered || windowPreviewIsShown || animations.hasThicknessAnimation) ?
-                                           metrics.mask.thickness.zoomedForItems : metrics.mask.thickness.normalForItems
+            property int maxThickness: (appletAbilities.parabolic.isHovered || windowPreviewIsShown || appletAbilities.animations.hasThicknessAnimation) ?
+                                           appletAbilities.metrics.mask.thickness.zoomedForItems : appletAbilities.metrics.mask.thickness.normalForItems
 
             function onlyLaunchersInDroppedList(list){
                 return list.every(function (item) {
@@ -1029,7 +990,7 @@ Item {
             onUrlsDropped: {
                 //! inform synced docks for new dropped launchers
                 if (onlyLaunchersInDroppedList(urls)) {
-                    launchers.addDroppedLaunchers(urls);
+                    appletAbilities.launchers.addDroppedLaunchers(urls);
                     return;
                 }
 
@@ -1082,10 +1043,10 @@ Item {
                 when: latteView && !latteView.maskManager.inRelocationHiding
                 value: {
                     if (latteView) {
-                        return animations.hasThicknessAnimation ? metrics.mask.thickness.zoomed : metrics.mask.thickness.normal;
+                        return appletAbilities.animations.hasThicknessAnimation ? appletAbilities.metrics.mask.thickness.zoomed : appletAbilities.metrics.mask.thickness.normal;
                     }
 
-                    return metrics.totals.thickness * parabolic.factor.zoom;
+                    return appletAbilities.metrics.totals.thickness * appletAbilities.parabolic.factor.zoom;
                 }
             }
 
@@ -1120,14 +1081,14 @@ Item {
                     boundsBehavior: Flickable.StopAtBounds
                     orientation: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Qt.Vertical : Qt.Horizontal
                     delegate: Task.TaskItem{
-                        animations: _animations
-                        debug: _debug
-                        indexer: _indexer
-                        launchers: _launchers
-                        metrics: _metrics
-                        parabolic: _parabolic
-                        requires: _requires
-                        shortcuts: _shortcuts
+                        animations: appletAbilities.animations
+                        debug: appletAbilities.debug
+                        indexer: appletAbilities.indexer
+                        launchers: appletAbilities.launchers
+                        metrics: appletAbilities.metrics
+                        parabolic: appletAbilities.parabolic
+                        requires: appletAbilities.requires
+                        shortcuts: appletAbilities.shortcuts
                     }
 
                     property int currentSpot : -1000
@@ -1142,7 +1103,7 @@ Item {
 
                     //more of a trouble
                     moveDisplaced: Transition {
-                        NumberAnimation { properties: "x,y"; duration: animations.speedFactor.current*animations.duration.large; easing.type: Easing.Linear }
+                        NumberAnimation { properties: "x,y"; duration: appletAbilities.animations.speedFactor.current * appletAbilities.animations.duration.large; easing.type: Easing.Linear }
                     }
 
                     ///this transition can not be used with dragging !!!! I breaks
@@ -1200,13 +1161,13 @@ Item {
 
         LatteComponents.AddingArea {
             id: newDroppedLauncherVisual
-            width: root.vertical ? metrics.totals.thickness : scrollableList.width
-            height: root.vertical ? scrollableList.height : metrics.totals.thickness
+            width: root.vertical ? appletAbilities.metrics.totals.thickness : scrollableList.width
+            height: root.vertical ? scrollableList.height : appletAbilities.metrics.totals.thickness
 
             visible: backgroundOpacity > 0
-            radius: metrics.iconSize/10
+            radius: appletAbilities.metrics.iconSize/10
             backgroundOpacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 0.75 : 0
-            duration: animations.speedFactor.current
+            duration: appletAbilities.animations.speedFactor.current
 
             title: i18n("Tasks Area")
 
@@ -1224,7 +1185,7 @@ Item {
 
                     PropertyChanges {
                         target: newDroppedLauncherVisual
-                        anchors{ topMargin:0; bottomMargin:0; leftMargin:metrics.margin.screenEdge; rightMargin:0;}
+                        anchors{ topMargin:0; bottomMargin:0; leftMargin: appletAbilities.metrics.margin.screenEdge; rightMargin:0;}
                     }
                 },
                 State {
@@ -1239,7 +1200,7 @@ Item {
 
                     PropertyChanges {
                         target: newDroppedLauncherVisual
-                        anchors{ topMargin:0; bottomMargin:0; leftMargin:0; rightMargin:metrics.margin.screenEdge;}
+                        anchors{ topMargin:0; bottomMargin:0; leftMargin:0; rightMargin: appletAbilities.metrics.margin.screenEdge;}
                     }
                 },
                 State {
@@ -1254,7 +1215,7 @@ Item {
 
                     PropertyChanges {
                         target: newDroppedLauncherVisual
-                        anchors{ topMargin:metrics.margin.screenEdge; bottomMargin:0; leftMargin:0; rightMargin:0;}
+                        anchors{ topMargin: appletAbilities.metrics.margin.screenEdge; bottomMargin:0; leftMargin:0; rightMargin:0;}
                     }
                 },
                 State {
@@ -1271,7 +1232,7 @@ Item {
 
                     PropertyChanges {
                         target: newDroppedLauncherVisual
-                        anchors{ topMargin:0; bottomMargin:metrics.margin.screenEdge; leftMargin:0; rightMargin:0;}
+                        anchors{ topMargin:0; bottomMargin: appletAbilities.metrics.margin.screenEdge; leftMargin:0; rightMargin:0;}
                     }
                 }
             ]
@@ -1289,7 +1250,7 @@ Item {
         onTriggered: {
             root.publishTasksGeometries();
 
-            if (debug.timersEnabled) {
+            if (appletAbilities.debug.timersEnabled) {
                 console.log("plasmoid timer: iconGeometryTimer called...");
             }
         }
@@ -1343,12 +1304,12 @@ Item {
     //// functions
     function activateTaskAtIndex(index) {
         // This is called with Meta+number shortcuts by plasmashell when Tasks are in a plasma panel.
-        shortcuts.sglActivateEntryAtIndex(index);
+        appletAbilities.shortcuts.sglActivateEntryAtIndex(index);
     }
 
     function newInstanceForTaskAtIndex(index) {
         // This is called with Meta+Alt+number shortcuts by plasmashell when Tasks are in a plasma panel.
-        shortcuts.sglNewInstanceForEntryAtIndex(index);
+        appletAbilities.shortcuts.sglNewInstanceForEntryAtIndex(index);
     }
 
     function getBadger(identifier) {

@@ -26,8 +26,8 @@ Item {
     id: shadowsContainer
     opacity: 0.4
 
-    readonly property int gradientLength: metrics.iconSize / 3
-    readonly property int thickness: metrics.backgroundThickness
+    readonly property int gradientLength: appletAbilities.metrics.iconSize / 3
+    readonly property int thickness: appletAbilities.metrics.backgroundThickness
     readonly property color appliedColor: root.appShadowColorSolid
 
     property Item flickable
@@ -81,7 +81,7 @@ Item {
             }
             PropertyChanges {
                 target: shadowsContainer
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: 0;    anchors.bottomMargin: metrics.margin.screenEdge;
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: 0;    anchors.bottomMargin: appletAbilities.metrics.margin.screenEdge;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -106,7 +106,7 @@ Item {
             }
             PropertyChanges {
                 target: shadowsContainer
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: metrics.margin.screenEdge;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin: appletAbilities.metrics.margin.screenEdge;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -131,7 +131,7 @@ Item {
             }
             PropertyChanges {
                 target: shadowsContainer
-                anchors.leftMargin: metrics.margin.screenEdge;    anchors.rightMargin:0;     anchors.topMargin: 0;    anchors.bottomMargin:0;
+                anchors.leftMargin: appletAbilities.metrics.margin.screenEdge;    anchors.rightMargin:0;     anchors.topMargin: 0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -156,7 +156,7 @@ Item {
             }
             PropertyChanges {
                 target: shadowsContainer
-                anchors.leftMargin: 0;    anchors.rightMargin: metrics.margin.screenEdge;     anchors.topMargin: 0;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin: appletAbilities.metrics.margin.screenEdge;     anchors.topMargin: 0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         }

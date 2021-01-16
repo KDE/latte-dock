@@ -210,9 +210,9 @@ Item {
             if (droppingSeparator) {
                 droppingSeparator = false;
                 if (hoveredItem && hoveredItem.itemIndex >=0){
-                    launchers.addInternalSeparatorAtPos(hoveredItem.itemIndex);
+                    appletAbilities.launchers.addInternalSeparatorAtPos(hoveredItem.itemIndex);
                 } else {
-                    launchers.addInternalSeparatorAtPos(0);
+                    appletAbilities.launchers.addInternalSeparatorAtPos(0);
                 }
                 return;
             }
