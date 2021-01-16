@@ -273,7 +273,7 @@ void SubConfigView::setupWaylandIntegration()
             return;
         }
 
-        qDebug() << "wayland primary settings surface was created...";
+        qDebug() << "wayland " << title() <<  " surface was created...";
 
         m_shellSurface = interface->createSurface(s, this);
 
@@ -316,7 +316,7 @@ bool SubConfigView::event(QEvent *e)
                 if (m_shellSurface) {
                     delete m_shellSurface;
                     m_shellSurface = nullptr;
-                    qDebug() << "WAYLAND config window surface was deleted...";
+                    qDebug() << "WAYLAND " << title() <<  " window surface was deleted...";
                 }
 
                 break;

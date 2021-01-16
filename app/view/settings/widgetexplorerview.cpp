@@ -228,12 +228,16 @@ void WidgetExplorerView::hideConfigWindow()
         return;
     }
 
-    if (m_shellSurface) {
-        //!NOTE: Avoid crash in wayland environment with qt5.9
-        close();
-    } else {
-        hide();
-    }
+    QTimer::singleShot(100, [this]() {
+        //! avoid crashes under wayland because some mouse events are sended after the surface is destroyed
+
+        if (m_shellSurface) {
+            //!NOTE: Avoid crash in wayland environment with qt5.9
+            close();
+        } else {
+            hide();
+        }
+    });
 }
 
 void WidgetExplorerView::syncSlideEffect()
