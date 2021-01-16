@@ -279,6 +279,7 @@ public slots:
 
 protected slots:
     void showConfigurationInterface(Plasma::Applet *applet) override;
+    void showWidgetExplorer(const QPointF &point);
 
 protected:
     bool event(QEvent *ev) override;

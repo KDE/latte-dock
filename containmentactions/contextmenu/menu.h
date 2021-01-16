@@ -43,8 +43,9 @@ public:
 private Q_SLOTS:
     void makeActions();
     void populateLayouts();
-    void requestConfiguration();
     void quitApplication();
+    void requestConfiguration();
+    void requestWidgetExplorer();
     void switchToLayout(QAction *action);
 
 

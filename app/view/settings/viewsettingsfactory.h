@@ -34,6 +34,7 @@ class View;
 
 namespace ViewPart {
 class PrimaryConfigView;
+class WidgetExplorerView;
 }
 
 }
@@ -55,9 +56,11 @@ public:
 
     Plasma::Containment *lastContainment();
     ViewPart::PrimaryConfigView *primaryConfigView(Latte::View *view);
+    ViewPart::WidgetExplorerView *widgetExplorerView(Latte::View *view);
 
 private:
     QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;
+    QPointer<ViewPart::WidgetExplorerView> m_widgetExplorerView;
     QPointer<Plasma::Containment> m_lastContainment;
 
 };

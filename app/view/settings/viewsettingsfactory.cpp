@@ -20,6 +20,7 @@
 #include "viewsettingsfactory.h"
 
 #include "primaryconfigview.h"
+#include "widgetexplorerview.h"
 #include "../view.h"
 
 // Plasma
@@ -79,6 +80,17 @@ ViewPart::PrimaryConfigView *ViewSettingsFactory::primaryConfigView(Latte::View 
     }
 
     return m_primaryConfigView;
+}
+
+ViewPart::WidgetExplorerView *ViewSettingsFactory::widgetExplorerView(Latte::View *view)
+{
+    if (!m_widgetExplorerView) {
+        m_widgetExplorerView = new ViewPart::WidgetExplorerView(view);
+    } else {
+        m_widgetExplorerView->setParentView(view);
+    }
+
+    return m_widgetExplorerView;
 }
 
 

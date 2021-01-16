@@ -88,14 +88,15 @@ void Menu::makeActions()
     });
 
     m_addWidgetsAction = new QAction(QIcon::fromTheme("list-add"), i18n("&Add Widgets..."), this);
-    m_addWidgetsAction->setStatusTip(i18n("Show Plasma Widget Explorer"));
-    connect(m_addWidgetsAction, &QAction::triggered, [ = ]() {
+    m_addWidgetsAction->setStatusTip(i18n("Show Widget Explorer"));
+    connect(m_addWidgetsAction, &QAction::triggered, this, &Menu::requestWidgetExplorer);
+    /*connect(m_addWidgetsAction, &QAction::triggered, [ = ]() {
         QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
 
         if (iface.isValid()) {
             iface.call("toggleWidgetExplorer");
         }
-    });
+    });*/
 
     m_configureAction = new QAction(QIcon::fromTheme("document-edit"), i18nc("view settings window", "View &Settings..."), this);
     connect(m_configureAction, &QAction::triggered, this, &Menu::requestConfiguration);
@@ -137,6 +138,12 @@ void Menu::requestConfiguration()
     }
 }
 
+void Menu::requestWidgetExplorer()
+{
+    if (this->containment()) {
+        emit this->containment()->showAddWidgetsInterface(QPointF());
+    }
+}
 
 QList<QAction *> Menu::contextualActions()
 {

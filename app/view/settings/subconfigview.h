@@ -78,7 +78,7 @@ signals:
     void enabledBordersChanged();
 
 protected:
-    void syncSlideEffect();
+    virtual void syncSlideEffect();
 
     virtual void init();
     virtual void initParentView(Latte::View *view);
@@ -87,7 +87,7 @@ protected:
     void showEvent(QShowEvent *ev) override;
     bool event(QEvent *e) override;
 
-    Qt::WindowFlags wFlags() const;
+    virtual Qt::WindowFlags wFlags() const;
 
 protected:
     bool m_isNormalWindow{true};

@@ -28,6 +28,7 @@
 #include "settings/primaryconfigview.h"
 #include "settings/secondaryconfigview.h"
 #include "settings/viewsettingsfactory.h"
+#include "settings/widgetexplorerview.h"
 #include "../apptypes.h"
 #include "../lattecorona.h"
 #include "../data/layoutdata.h"
@@ -178,6 +179,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         }
 
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
+        connect(this->containment(), &Plasma::Containment::showAddWidgetsInterface, this, &View::showWidgetExplorer);
         connect(this->containment(), &Plasma::Containment::userConfiguringChanged, this, [&]() {
             emit inEditModeChanged();
         });
@@ -520,6 +522,16 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
         m_appletConfigView = new PlasmaQuick::ConfigView(applet);
         m_appletConfigView.data()->init();
         m_appletConfigView->show();
+    }
+}
+
+void View::showWidgetExplorer(const QPointF &point)
+{
+    auto widgetExplorerView = m_corona->viewSettingsFactory()->widgetExplorerView(this);
+
+    if (!widgetExplorerView->isVisible()) {
+       // widgetExplorerView->syncSlideEffect();
+        widgetExplorerView->showAfter(400);
     }
 }
 

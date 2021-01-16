@@ -45,6 +45,7 @@ void Package::initPackage(KPackage::Package *package)
     package->setPath("org.kde.latte.shell");
     package->addFileDefinition("defaults", QStringLiteral("defaults"), i18n("Latte Dock defaults"));
     package->addFileDefinition("lattedockui", QStringLiteral("views/Panel.qml"), i18n("Latte Dock panel"));
+    package->addFileDefinition("widgetexplorerui", QStringLiteral("views/WidgetExplorer.qml"), i18n("Widget Explorer"));
     //Configuration
     package->addFileDefinition("lattedockconfigurationui", QStringLiteral("configuration/LatteDockConfiguration.qml"), i18n("Dock configuration UI"));
     package->addFileDefinition("lattedocksecondaryconfigurationui", QStringLiteral("configuration/LatteDockSecondaryConfiguration.qml"), i18n("Dock secondary configuration UI"));
