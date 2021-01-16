@@ -95,7 +95,7 @@ Item{
 
     function startLauncherAnimation(){
         if(taskItem.abilities.animations.launcherBouncingEnabled){
-            taskItem.abilities.animationstarted();
+            taskItem.animationStarted();
             init();
             taskItem.launcherAction();
             launcherAnimationLoader.item.start();
