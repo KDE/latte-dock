@@ -356,7 +356,7 @@ MouseArea {
                 taskItem.isDragged = true;
             }
 
-            if (taskItem.debug.timersEnabled) {
+            if (taskItem.abilities.debug.timersEnabled) {
                 console.log("plasmoid timer: resistanerTimer called...");
             }
         }

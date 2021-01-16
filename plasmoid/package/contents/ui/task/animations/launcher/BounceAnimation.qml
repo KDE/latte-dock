@@ -36,7 +36,7 @@ SequentialAnimation{
         PropertyAnimation {
             target: wrapper
             property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-            to: taskItem.containsMouse ? 1+2*(taskItem.parabolic.factor.maxZoom-1) : 1 + (1.5 * (taskItem.parabolic.factor.maxZoom-1))
+            to: taskItem.containsMouse ? 1+2*(taskItem.abilities.parabolic.factor.maxZoom-1) : 1 + (1.5 * (taskItem.abilities.parabolic.factor.maxZoom-1))
             duration: launcherAnimation.speed
             easing.type: Easing.OutQuad
         }
@@ -63,7 +63,7 @@ SequentialAnimation{
             target: wrapper
             property: (icList.orientation === Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
             to: 1
-            duration: taskItem.animations.speedFactor.current*launcherAnimation.speed
+            duration: taskItem.abilities.animations.speedFactor.current*launcherAnimation.speed
             easing.type: Easing.OutBounce
         }
 
@@ -71,7 +71,7 @@ SequentialAnimation{
             target: wrapper
             property: "mScale"
             to: 1
-            duration: taskItem.animations.speedFactor.current*launcherAnimation.speed
+            duration: taskItem.abilities.animations.speedFactor.current*launcherAnimation.speed
             easing.type: Easing.OutQuad
         }
     }

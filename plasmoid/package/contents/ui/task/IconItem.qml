@@ -118,12 +118,12 @@ Item{
 
     TitleTooltipParent{
         id: titleTooltipParent
-        thickness: taskItem.parabolic.factor.zoom * taskItem.metrics.totals.thickness
+        thickness: taskItem.abilities.parabolic.factor.zoom * taskItem.abilities.metrics.totals.thickness
     }
 
     TitleTooltipParent{
         id: previewsTooltipParent
-        thickness: (taskItem.parabolic.factor.zoom * taskItem.metrics.totals.thickness)
+        thickness: (taskItem.abilities.parabolic.factor.zoom * taskItem.abilities.metrics.totals.thickness)
     }
 
     //!
@@ -159,7 +159,7 @@ Item{
             height: width
 
             source: decoration
-            smooth: taskItem.parabolic.factor.zoom === 1 ? true : false
+            smooth: taskItem.abilities.parabolic.factor.zoom === 1 ? true : false
             providesColors: indicators ? indicators.info.needsIconColors : false
 
             opacity: root.enableShadows
@@ -184,12 +184,12 @@ Item{
                 }
             }
 
-            property int zoomedSize: taskItem.parabolic.factor.zoom * taskItem.metrics.iconSize
+            property int zoomedSize: taskItem.abilities.parabolic.factor.zoom * taskItem.abilities.metrics.iconSize
 
-            property real basicScalingWidth : wrapper.inTempScaling ? (taskItem.metrics.iconSize * wrapper.scaleWidth) :
-                                                                      taskItem.metrics.iconSize * wrapper.mScale
-            property real basicScalingHeight : wrapper.inTempScaling ? (taskItem.metrics.iconSize * wrapper.scaleHeight) :
-                                                                       taskItem.metrics.iconSize * wrapper.mScale
+            property real basicScalingWidth : wrapper.inTempScaling ? (taskItem.abilities.metrics.iconSize * wrapper.scaleWidth) :
+                                                                      taskItem.abilities.metrics.iconSize * wrapper.mScale
+            property real basicScalingHeight : wrapper.inTempScaling ? (taskItem.abilities.metrics.iconSize * wrapper.scaleHeight) :
+                                                                       taskItem.abilities.metrics.iconSize * wrapper.mScale
 
             property real newTempSize: {
                 if (wrapper.opacity === 1 ) {
@@ -253,7 +253,7 @@ Item{
                     to: "*"
                     enabled: !fastRestoreAnimation.running && !taskItem.inMimicParabolicAnimation
 
-                    AnchorAnimation { duration: 1.5 * taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
+                    AnchorAnimation { duration: 1.5 * taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
                 }
             ]
         } //IconImageBuffer
@@ -295,7 +295,7 @@ Item{
             property bool showAudio: (root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator) && !shortcutBadge.active
 
             Behavior on activateProgress {
-                NumberAnimation { duration: 2 * taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
+                NumberAnimation { duration: 2 * taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
             }
 
             sourceComponent: Item{
@@ -563,7 +563,7 @@ Item{
             contrast: 0.1
 
             Behavior on opacity {
-                NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
+                NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
             }
         }
 
@@ -598,8 +598,8 @@ Item{
         height: !root.vertical ? thickness : length
         anchors.centerIn: parent
 
-        readonly property int length: taskItem.metrics.totals.length
-        readonly property int thickness: taskItem.metrics.totals.thickness
+        readonly property int length: taskItem.abilities.metrics.totals.length
+        readonly property int thickness: taskItem.abilities.metrics.totals.thickness
 
         readonly property real applyOpacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
                                              && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 0.7 : 0
@@ -662,14 +662,14 @@ Item{
         Transition{
             id: isDraggedTransition
             to: "isDragged"
-            property int speed: taskItem.animations.speedFactor.current * taskItem.animations.duration.large
+            property int speed: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large
 
             SequentialAnimation{
                 ScriptAction{
                     script: {
-                        taskItem.animations.needThickness.addEvent(draggingNeedThicknessEvent);
+                        taskItem.abilities.animations.needThickness.addEvent(draggingNeedThicknessEvent);
                         taskItem.inBlockingAnimation = true;
-                        taskItem.parabolic.setDirectRenderingEnabled(false);
+                        taskItem.abilities.parabolic.setDirectRenderingEnabled(false);
                     }
                 }
 
@@ -677,7 +677,7 @@ Item{
                     target: wrapper
                     property: "mScale"
                     to: 1
-                    duration: taskItem.parabolic.factor.zoom === 1 ? 0 : (isDraggedTransition.speed*1.2)
+                    duration: taskItem.abilities.parabolic.factor.zoom === 1 ? 0 : (isDraggedTransition.speed*1.2)
                     easing.type: Easing.OutQuad
                 }
 
@@ -709,16 +709,16 @@ Item{
 
                 ScriptAction{
                     script: {
-                        taskItem.animations.needThickness.removeEvent(draggingNeedThicknessEvent);
+                        taskItem.abilities.animations.needThickness.removeEvent(draggingNeedThicknessEvent);
                     }
                 }
             }
 
             onRunningChanged: {
                 if(running){
-                    taskItem.animationStarted();
+                    taskItem.abilities.animationstarted();
                 } else {
-                    taskItem.animations.needThickness.removeEvent(draggingNeedThicknessEvent);
+                    taskItem.abilities.animations.needThickness.removeEvent(draggingNeedThicknessEvent);
                 }
             }
         },
@@ -726,12 +726,12 @@ Item{
             id: defaultTransition
             from: "isDragged"
             to: "*"
-            property int speed: taskItem.animations.speedFactor.current * taskItem.animations.duration.large
+            property int speed: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large
 
             SequentialAnimation{
                 ScriptAction{
                     script: {
-                        taskItem.parabolic.setDirectRenderingEnabled(false);
+                        taskItem.abilities.parabolic.setDirectRenderingEnabled(false);
                     }
                 }
 
@@ -779,8 +779,8 @@ Item{
             onRunningChanged: {
                 if(!running){
                     if (parabolicAreaLoader.active) {
-                        var halfZoom = 1 + ((taskItem.parabolic.factor.zoom - 1) / 2);
-                        parabolicAreaLoader.item.calculateParabolicScales(taskItem.metrics.totals.thickness/2);
+                        var halfZoom = 1 + ((taskItem.abilities.parabolic.factor.zoom - 1) / 2);
+                        parabolicAreaLoader.item.calculateParabolicScales(taskItem.abilities.metrics.totals.thickness/2);
                     }
 
                     taskItem.animationEnded();

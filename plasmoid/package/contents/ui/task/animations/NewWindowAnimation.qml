@@ -28,7 +28,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 Item{
     id:newWindowAnimation
 
-    property int speed: 1.2 * taskItem.animations.speedFactor.normal * taskItem.animations.duration.large
+    property int speed: 1.2 * taskItem.abilities.animations.speedFactor.normal * taskItem.abilities.animations.duration.large
     property bool isDemandingAttention: taskItem.inAttention
     property bool containsMouse: taskItem.containsMouse
 
@@ -43,7 +43,7 @@ Item{
         target: newWindowAnimationLoader.item
 
         onStopped: {
-            taskItem.animations.needThickness.removeEvent(needThicknessEvent);
+            taskItem.abilities.animations.needThickness.removeEvent(needThicknessEvent);
             newWindowAnimation.clear();
         }
     }
@@ -81,12 +81,12 @@ Item{
             taskItem.inAttentionAnimation = true;
         }
 
-        taskItem.animations.needThickness.addEvent(needThicknessEvent);
+        taskItem.abilities.animations.needThickness.addEvent(needThicknessEvent);
     }
 
     function startNewWindowAnimation(){
-        if (!root.dockIsHidden && ((taskItem.animations.windowInAttentionEnabled && isDemandingAttention)
-                                   || taskItem.animations.windowAddedInGroupEnabled)){
+        if (!root.dockIsHidden && ((taskItem.abilities.animations.windowInAttentionEnabled && isDemandingAttention)
+                                   || taskItem.abilities.animations.windowAddedInGroupEnabled)){
             newWindowAnimation.init();
             newWindowAnimationLoader.item.start();
         }
@@ -98,6 +98,6 @@ Item{
 
     Component.onDestruction: {
         taskItem.groupWindowAdded.disconnect(startNewWindowAnimation);
-        taskItem.animations.needThickness.removeEvent(needThicknessEvent);
+        taskItem.abilities.animations.needThickness.removeEvent(needThicknessEvent);
     }
 }

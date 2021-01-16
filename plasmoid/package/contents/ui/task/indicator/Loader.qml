@@ -45,7 +45,7 @@ Loader {
             return visualLockedWidth;
         }
 
-        return !root.vertical ? taskItem.wrapper.width - 2*taskItem.wrapper.mScale*taskItem.metrics.margin.length: taskItem.wrapper.width;
+        return !root.vertical ? taskItem.wrapper.width - 2*taskItem.wrapper.mScale*taskItem.abilities.metrics.margin.length: taskItem.wrapper.width;
     }
 
     height: {
@@ -53,15 +53,15 @@ Loader {
             return visualLockedHeight;
         }
 
-        return root.vertical ? taskItem.wrapper.height - 2*taskItem.wrapper.mScale*taskItem.metrics.margin.length : taskItem.wrapper.height;
+        return root.vertical ? taskItem.wrapper.height - 2*taskItem.wrapper.mScale*taskItem.abilities.metrics.margin.length : taskItem.wrapper.height;
     }
 
     readonly property bool locked: inAttentionAnimation || inNewWindowAnimation || inBouncingAnimation
 
-    property real visualLockedWidth: root.vertical ? taskItem.metrics.margin.screenEdge + taskItem.metrics.iconSize + root.internalWidthMargins :
-                                                     taskItem.metrics.iconSize + root.internalWidthMargins
-    property real visualLockedHeight: !root.vertical ? taskItem.metrics.margin.screenEdge + taskItem.metrics.iconSize + root.internalHeightMargins :
-                                                       taskItem.metrics.iconSize + root.internalHeightMargins
+    property real visualLockedWidth: root.vertical ? taskItem.abilities.metrics.margin.screenEdge + taskItem.abilities.metrics.iconSize + root.internalWidthMargins :
+                                                     taskItem.abilities.metrics.iconSize + root.internalWidthMargins
+    property real visualLockedHeight: !root.vertical ? taskItem.abilities.metrics.margin.screenEdge + taskItem.abilities.metrics.iconSize + root.internalHeightMargins :
+                                                       taskItem.abilities.metrics.iconSize + root.internalHeightMargins
 
     //! Connections !//
 

@@ -36,13 +36,13 @@ Item{
             if (!root.vertical)
                 return 0;
             else
-                return (taskItem.metrics.iconSize + root.widthMargins + taskItem.metrics.margin.screenEdge);
+                return (taskItem.abilities.metrics.iconSize + root.widthMargins + taskItem.abilities.metrics.margin.screenEdge);
         }
 
-        if (taskItem.isStartup && taskItem.animations.speedFactor.current !==0 ) {
-            return root.vertical ? cleanScalingWidth + taskItem.metrics.margin.screenEdge : cleanScalingWidth;
+        if (taskItem.isStartup && taskItem.abilities.animations.speedFactor.current !==0 ) {
+            return root.vertical ? cleanScalingWidth + taskItem.abilities.metrics.margin.screenEdge : cleanScalingWidth;
         } else {
-            return root.vertical ? showDelegateWidth + taskItem.metrics.margin.screenEdge : showDelegateWidth;
+            return root.vertical ? showDelegateWidth + taskItem.abilities.metrics.margin.screenEdge : showDelegateWidth;
         }
     }
 
@@ -54,18 +54,18 @@ Item{
             if (root.vertical)
                 return 0;
             else
-                return (taskItem.metrics.iconSize + root.heightMargins + taskItem.metrics.margin.screenEdge);
+                return (taskItem.abilities.metrics.iconSize + root.heightMargins + taskItem.abilities.metrics.margin.screenEdge);
         }
 
-        if (taskItem.isStartup && taskItem.animations.speedFactor.current !==0){
-            return !root.vertical ? cleanScalingHeight + taskItem.metrics.margin.screenEdge : cleanScalingHeight;
+        if (taskItem.isStartup && taskItem.abilities.animations.speedFactor.current !==0){
+            return !root.vertical ? cleanScalingHeight + taskItem.abilities.metrics.margin.screenEdge : cleanScalingHeight;
         } else {
-            return !root.vertical ? showDelegateHeight + taskItem.metrics.margin.screenEdge : showDelegateHeight;
+            return !root.vertical ? showDelegateHeight + taskItem.abilities.metrics.margin.screenEdge : showDelegateHeight;
         }
     }
 
-    property int maxThickness: !root.vertical ? taskItem.parabolic.factor.zoom*(taskItem.metrics.iconSize+root.heightMargins)
-                                              : taskItem.parabolic.factor.zoom*(taskItem.metrics.iconSize+root.widthMargins)
+    property int maxThickness: !root.vertical ? taskItem.abilities.parabolic.factor.zoom*(taskItem.abilities.metrics.iconSize+root.heightMargins)
+                                              : taskItem.abilities.parabolic.factor.zoom*(taskItem.abilities.metrics.iconSize+root.widthMargins)
 
     property real showDelegateWidth: basicScalingWidth
     property real showDelegateHeight: basicScalingHeight
@@ -81,17 +81,17 @@ Item{
     property real scaleWidth: (inTempScaling == true) ? tempScaleWidth : mScale
     property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : mScale
 
-    property real cleanScalingWidth: (taskItem.metrics.iconSize + root.widthMargins) * mScale
-    property real cleanScalingHeight: (taskItem.metrics.iconSize + root.heightMargins) * mScale
+    property real cleanScalingWidth: (taskItem.abilities.metrics.iconSize + root.widthMargins) * mScale
+    property real cleanScalingHeight: (taskItem.abilities.metrics.iconSize + root.heightMargins) * mScale
 
-    property real basicScalingWidth : (inTempScaling == true) ? ((taskItem.metrics.iconSize + root.widthMargins) * scaleWidth) : cleanScalingWidth
-    property real basicScalingHeight : (inTempScaling == true) ? ((taskItem.metrics.iconSize + root.heightMargins) * scaleHeight) : cleanScalingHeight
+    property real basicScalingWidth : (inTempScaling == true) ? ((taskItem.abilities.metrics.iconSize + root.widthMargins) * scaleWidth) : cleanScalingWidth
+    property real basicScalingHeight : (inTempScaling == true) ? ((taskItem.abilities.metrics.iconSize + root.heightMargins) * scaleHeight) : cleanScalingHeight
 
     property real regulatorWidth: taskItem.isSeparator ? width : basicScalingWidth;
     property real regulatorHeight: taskItem.isSeparator ? height : basicScalingHeight;
 
-    property real visualScaledWidth: (taskItem.metrics.iconSize + root.internalWidthMargins) * mScale
-    property real visualScaledHeight: (taskItem.metrics.iconSize + root.internalHeightMargins) * mScale
+    property real visualScaledWidth: (taskItem.abilities.metrics.iconSize + root.internalWidthMargins) * mScale
+    property real visualScaledHeight: (taskItem.abilities.metrics.iconSize + root.internalHeightMargins) * mScale
     /// end of Scalers///////
 
     property real center: !root.vertical ?
@@ -120,7 +120,7 @@ Item{
 
     Behavior on mScale {
         id: animatedBehavior
-        enabled: !taskItem.parabolic.directRenderingEnabled || inMimicParabolicAnimation || restoreAnimation.running
+        enabled: !taskItem.abilities.parabolic.directRenderingEnabled || inMimicParabolicAnimation || restoreAnimation.running
         NumberAnimation{
             duration: 3 * taskItem.animationTime
             easing.type: Easing.OutCubic
@@ -142,10 +142,10 @@ Item{
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-        anchors.bottomMargin: (root.location === PlasmaCore.Types.BottomEdge) ? taskItem.metrics.margin.screenEdge : 0
-        anchors.topMargin: (root.location === PlasmaCore.Types.TopEdge) ? taskItem.metrics.margin.screenEdge : 0
-        anchors.leftMargin: (root.location === PlasmaCore.Types.LeftEdge) ? taskItem.metrics.margin.screenEdge : 0
-        anchors.rightMargin: (root.location === PlasmaCore.Types.RightEdge) ? taskItem.metrics.margin.screenEdge : 0
+        anchors.bottomMargin: (root.location === PlasmaCore.Types.BottomEdge) ? taskItem.abilities.metrics.margin.screenEdge : 0
+        anchors.topMargin: (root.location === PlasmaCore.Types.TopEdge) ? taskItem.abilities.metrics.margin.screenEdge : 0
+        anchors.leftMargin: (root.location === PlasmaCore.Types.LeftEdge) ? taskItem.abilities.metrics.margin.screenEdge : 0
+        anchors.rightMargin: (root.location === PlasmaCore.Types.RightEdge) ? taskItem.abilities.metrics.margin.screenEdge : 0
 
         anchors.horizontalCenterOffset: taskItem.iconOffsetX
         anchors.verticalCenterOffset: taskItem.iconOffsetY
@@ -157,13 +157,13 @@ Item{
     function sendEndOfNeedBothAxisAnimation(){
         if (taskItem.isZoomed) {
             taskItem.isZoomed = false;
-            taskItem.animations.needBothAxis.removeEvent(bothAxisZoomEvent);
+            taskItem.abilities.animations.needBothAxis.removeEvent(bothAxisZoomEvent);
         }
     }
 
     onMScaleChanged: {
-        if ((mScale === taskItem.parabolic.factor.zoom) && !taskItem.parabolic.directRenderingEnabled) {
-            taskItem.parabolic.setDirectRenderingEnabled(true);
+        if ((mScale === taskItem.abilities.parabolic.factor.zoom) && !taskItem.abilities.parabolic.directRenderingEnabled) {
+            taskItem.abilities.parabolic.setDirectRenderingEnabled(true);
         }
 
         if (inMimicParabolicAnimation){
@@ -173,7 +173,7 @@ Item{
                 inBlockingAnimation = false;
                 mimicParabolicScale = -1;
             } else {
-                var tempScale = (taskItem.parabolic.factor.zoom - mScale) / 2;
+                var tempScale = (taskItem.abilities.parabolic.factor.zoom - mScale) / 2;
 
                 hiddenSpacerLeft.nScale = tempScale;
                 hiddenSpacerRight.nScale = tempScale;
@@ -182,7 +182,7 @@ Item{
 
         if ((mScale > 1) && !taskItem.isZoomed) {
             taskItem.isZoomed = true;
-            taskItem.animations.needBothAxis.addEvent(bothAxisZoomEvent);
+            taskItem.abilities.animations.needBothAxis.addEvent(bothAxisZoomEvent);
         } else if ((mScale == 1) && taskItem.isZoomed) {
             sendEndOfNeedBothAxisAnimation();
         }

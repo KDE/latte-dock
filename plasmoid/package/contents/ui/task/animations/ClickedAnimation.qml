@@ -27,8 +27,8 @@ SequentialAnimation{
     id: clickedAnimation
 
     property bool pressed: taskItem.pressed
-    property int speed: taskItem.animations.speedFactor.current * taskItem.animations.duration.large
-    property real maxMScale: Math.max(1,taskItem.parabolic.factor.zoom - (taskItem.parabolic.factor.zoom - 1) / 2)
+    property int speed: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large
+    property real maxMScale: Math.max(1,taskItem.abilities.parabolic.factor.zoom - (taskItem.abilities.parabolic.factor.zoom - 1) / 2)
 
     ParallelAnimation{
         PropertyAnimation {
@@ -41,7 +41,7 @@ SequentialAnimation{
        /* PropertyAnimation {
             target: wrapper
             property: "mScale"
-            to: root.taskInAnimation ? 1 : Math.max(clickedAnimation.maxMScale, wrapper.mScale - (taskItem.parabolic.factor.zoom - 1) / 2)
+            to: root.taskInAnimation ? 1 : Math.max(clickedAnimation.maxMScale, wrapper.mScale - (taskItem.abilities.parabolic.factor.zoom - 1) / 2)
             duration: clickedAnimation.speed
             easing.type: Easing.OutQuad
         }*/
@@ -58,7 +58,7 @@ SequentialAnimation{
       /*  PropertyAnimation {
             target: wrapper
             property: "mScale"
-            to: root.taskInAnimation ? 1 : taskItem.parabolic.factor.zoom
+            to: root.taskInAnimation ? 1 : taskItem.abilities.parabolic.factor.zoom
             duration: clickedAnimation.speed
             easing.type: Easing.OutQuad
         }*/
@@ -68,7 +68,7 @@ SequentialAnimation{
     onPressedChanged: {
         if(!running && pressed && !indicators.info.providesClickedAnimation &&
                 ((taskItem.lastButtonClicked == Qt.LeftButton)||(taskItem.lastButtonClicked == Qt.MidButton)) ){
-            //taskItem.animationStarted();
+            //taskItem.abilities.animationstarted();
             start();
         }
     }
@@ -77,7 +77,7 @@ SequentialAnimation{
         if( !taskItem.isDragged){
             //taskItem.animationEnded();
             if(!root.latteView)
-                checkListHovered.startDuration(6 * taskItem.animations.duration.large);
+                checkListHovered.startDuration(6 * taskItem.abilities.animations.duration.large);
         }
     }
 }

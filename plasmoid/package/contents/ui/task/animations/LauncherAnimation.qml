@@ -27,7 +27,7 @@ import org.kde.plasma.plasmoid 2.0
 Item{
     id:launcherAnimation
     property bool launchedAlready: false
-    property int speed: 0.9 * taskItem.animations.speedFactor.current * taskItem.animations.duration.large
+    property int speed: 0.9 * taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large
 
     readonly property string needThicknessEvent: launcherAnimation + "_launcher"
 
@@ -45,7 +45,7 @@ Item{
                 tasksExtendedManager.removeWaitingLauncher(taskItem.launcherUrl);
             }
 
-            taskItem.parabolic.setDirectRenderingEnabled(false);
+            taskItem.abilities.parabolic.setDirectRenderingEnabled(false);
             clearAnimationsSignals();
 
             taskItem.setBlockingAnimation(false);
@@ -59,7 +59,7 @@ Item{
         }
 
         if ( launchedAlready ) {
-            taskItem.animations.needThickness.removeEvent(needThicknessEvent);
+            taskItem.abilities.animations.needThickness.removeEvent(needThicknessEvent);
         }
 
         launchedAlready = false;
@@ -69,9 +69,9 @@ Item{
         //console.log ("Nooo 1 : "+root.noTasksInAnimation);
         if(!launchedAlready) {
             launchedAlready = true;
-            taskItem.animations.needThickness.addEvent(needThicknessEvent);
+            taskItem.abilities.animations.needThickness.addEvent(needThicknessEvent);
 
-            taskItem.parabolic.setDirectRenderingEnabled(false);
+            taskItem.abilities.parabolic.setDirectRenderingEnabled(false);
 
             root.noTasksInAnimation++;
             taskItem.inBouncingAnimation = true;
@@ -94,8 +94,8 @@ Item{
     }
 
     function startLauncherAnimation(){
-        if(taskItem.animations.launcherBouncingEnabled){
-            taskItem.animationStarted();
+        if(taskItem.abilities.animations.launcherBouncingEnabled){
+            taskItem.abilities.animationstarted();
             init();
             taskItem.launcherAction();
             launcherAnimationLoader.item.start();

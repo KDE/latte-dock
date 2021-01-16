@@ -41,7 +41,7 @@ Item{
     }
 
     function removeTask(){
-        if(!taskIcon.toBeDestroyed && taskItem.animations.windowRemovedFromGroupEnabled){
+        if(!taskIcon.toBeDestroyed && taskItem.abilities.animations.windowRemovedFromGroupEnabled){
             removingAnimation.init();
         }
     }
@@ -67,10 +67,10 @@ Item{
 
             LatteCore.IconItem{
                 id: tempRemoveIcon
-                anchors.rightMargin: root.location === PlasmaCore.Types.LeftEdge ? taskItem.metrics.margin.thickness : 0
-                anchors.leftMargin: root.location === PlasmaCore.Types.RightEdge ? taskItem.metrics.margin.thickness : 0
-                anchors.topMargin: root.location === PlasmaCore.Types.BottomEdge ? taskItem.metrics.margin.thickness : 0
-                anchors.bottomMargin: root.location === PlasmaCore.Types.TopEdge ? taskItem.metrics.margin.thickness : 0
+                anchors.rightMargin: root.location === PlasmaCore.Types.LeftEdge ? taskItem.abilities.metrics.margin.thickness : 0
+                anchors.leftMargin: root.location === PlasmaCore.Types.RightEdge ? taskItem.abilities.metrics.margin.thickness : 0
+                anchors.topMargin: root.location === PlasmaCore.Types.BottomEdge ? taskItem.abilities.metrics.margin.thickness : 0
+                anchors.bottomMargin: root.location === PlasmaCore.Types.TopEdge ? taskItem.abilities.metrics.margin.thickness : 0
 
                 anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
                 anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
@@ -114,7 +114,7 @@ Item{
             ParallelAnimation{
                 id: componentRemoveAnimation
 
-                property int speed: 2 * taskItem.animations.speedFactor.normal * taskItem.animations.duration.large
+                property int speed: 2 * taskItem.abilities.animations.speedFactor.normal * taskItem.abilities.animations.duration.large
                 property Item removingItem: parent
                 property int toPoint: 0
 
@@ -149,10 +149,10 @@ Item{
 
                 if( (root.location === PlasmaCore.Types.BottomEdge) ||
                         (root.location === PlasmaCore.Types.RightEdge) ){
-                    componentRemoveAnimation.toPoint = tempPoint + taskItem.metrics.iconSize;
+                    componentRemoveAnimation.toPoint = tempPoint + taskItem.abilities.metrics.iconSize;
                 }
                 else{
-                    componentRemoveAnimation.toPoint = tempPoint - taskItem.metrics.iconSize;
+                    componentRemoveAnimation.toPoint = tempPoint - taskItem.abilities.metrics.iconSize;
                 }
 
                 visible = true;

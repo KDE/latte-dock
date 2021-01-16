@@ -52,10 +52,10 @@ Item {
 
         if (isSeparator) {
             if (root.vertical) {
-                return taskItem.metrics.totals.thickness + taskItem.metrics.margin.screenEdge;
+                return taskItem.abilities.metrics.totals.thickness + taskItem.abilities.metrics.margin.screenEdge;
             } else {
-                if (root.dragSource || !taskItem.parabolic.isEnabled) {
-                    return LatteCore.Environment.separatorLength+2*taskItem.metrics.margin.length;
+                if (root.dragSource || !taskItem.abilities.parabolic.isEnabled) {
+                    return LatteCore.Environment.separatorLength+2*taskItem.abilities.metrics.margin.length;
                 }
             }
 
@@ -79,10 +79,10 @@ Item {
 
         if (isSeparator) {
             if (!root.vertical) {
-                return taskItem.metrics.totals.thickness + taskItem.metrics.margin.screenEdge;
+                return taskItem.abilities.metrics.totals.thickness + taskItem.abilities.metrics.margin.screenEdge;
             } else {
-                if (root.dragSource || !taskItem.parabolic.isEnabled) {
-                    return LatteCore.Environment.separatorLength+2*taskItem.metrics.margin.length;
+                if (root.dragSource || !taskItem.abilities.parabolic.isEnabled) {
+                    return LatteCore.Environment.separatorLength+2*taskItem.abilities.metrics.margin.length;
                 }
             }
 
@@ -136,8 +136,8 @@ Item {
     readonly property bool isHidden: !visible || isForcedHidden
     property bool isForcedHidden: false
     property bool isLauncher: (IsLauncher === true) ? true : false
-    property bool hasShownLauncher:  (launchers.inCurrentActivity(taskItem.launcherUrl)
-                                     || launchers.inCurrentActivity(taskItem.launcherUrlWithIcon))
+    property bool hasShownLauncher:  (taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrl)
+                                     || taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrlWithIcon))
                                      && !root.inActivityChange /*update trigger when changing current activity*/
     property bool isMinimized: (IsMinimized === true) ? true : false
     property bool isSeparator: false
@@ -145,15 +145,15 @@ Item {
     property bool isWindow: (IsWindow === true) ? true : false
     property bool isZoomed: false
 
-    property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=taskItem.metrics.iconSize && height>=taskItem.metrics.iconSize
+    property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=taskItem.abilities.metrics.iconSize && height>=taskItem.abilities.metrics.iconSize
                                         && !taskItem.delayingRemove
-                                        && (wrapper.mScale===1 || wrapper.mScale===taskItem.parabolic.factor.zoom) //don't publish during zoom animation
+                                        && (wrapper.mScale===1 || wrapper.mScale===taskItem.abilities.parabolic.factor.zoom) //don't publish during zoom animation
 
     property bool hoveredFromDragging: (mouseHandler.hoveredItem === taskItem) || (mouseHandler.ignoredItem === taskItem)
 
     property bool wheelIsBlocked: false
 
-    property int animationTime: (taskItem.animations.active ? taskItem.animations.speedFactor.current : 2) * (1.2 *taskItem.animations.duration.small)
+    property int animationTime: (taskItem.abilities.animations.active ? taskItem.abilities.animations.speedFactor.current : 2) * (1.2 *taskItem.abilities.animations.duration.small)
     property int badgeIndicator: 0 //it is used from external apps
     property int itemIndex: index
     property int lastValidIndex: -1 //used for the removal animation
@@ -161,7 +161,7 @@ Item {
     property int pressX: -1
     property int pressY: -1
     property int resistanceDelay: 450
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*taskItem.metrics.iconSize) - taskItem.metrics.totals.lengthEdges)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*taskItem.abilities.metrics.iconSize) - taskItem.abilities.metrics.totals.lengthEdges)
     property int windowsCount: subWindows.windowsCount
     property int windowsMinimizedCount: subWindows.windowsMinimized
 
@@ -193,14 +193,7 @@ Item {
     readonly property alias restoreAnimation: _restoreAnimation
 
     //abilities
-    property Item animations: null
-    property Item debug: null
-    property Item indexer: null
-    property Item launchers: null
-    property Item metrics: null
-    property Item parabolic: null
-    property Item requires: null
-    property Item shortcuts: null   
+    property Item abilities: null
 
     onModelLauncherUrlChanged: {
         if (modelLauncherUrl !== ""){
@@ -219,7 +212,7 @@ Item {
             }
         }
 
-        if (launchers.isSeparator(modelLauncherUrl)){
+        if (taskItem.abilities.launchers.isSeparator(modelLauncherUrl)){
             isSeparator = true;
         } else {
             isSeparator = false;
@@ -246,14 +239,14 @@ Item {
 
         var tail = index - 1;
 
-        while(tail>=0 && taskItem.indexer.hidden.indexOf(tail)>=0) {
+        while(tail>=0 && taskItem.abilities.indexer.hidden.indexOf(tail)>=0) {
             tail = tail - 1;
         }
 
-        var hasTailItemSeparator = taskItem.indexer.separators.indexOf(tail)>=0;
+        var hasTailItemSeparator = taskItem.abilities.indexer.separators.indexOf(tail)>=0;
 
-        if (!hasTailItemSeparator && itemIndex === taskItem.indexer.firstVisibleItemIndex){
-            return taskItem.indexer.tailAppletIsSeparator;
+        if (!hasTailItemSeparator && itemIndex === taskItem.abilities.indexer.firstVisibleItemIndex){
+            return taskItem.abilities.indexer.tailAppletIsSeparator;
         }
 
         return hasTailItemSeparator;
@@ -266,14 +259,14 @@ Item {
 
         var head = index + 1;
 
-        while(head>=0 && taskItem.indexer.hidden.indexOf(head)>=0) {
+        while(head>=0 && taskItem.abilities.indexer.hidden.indexOf(head)>=0) {
             head = head + 1;
         }
 
-        var hasHeadItemSeparator = taskItem.indexer.separators.indexOf(head)>=0;
+        var hasHeadItemSeparator = taskItem.abilities.indexer.separators.indexOf(head)>=0;
 
-        if (!hasHeadItemSeparator && itemIndex === taskItem.indexer.lastVisibleItemIndex){
-            return taskItem.indexer.headAppletIsSeparator;
+        if (!hasHeadItemSeparator && itemIndex === taskItem.abilities.indexer.lastVisibleItemIndex){
+            return taskItem.abilities.indexer.headAppletIsSeparator;
         }
 
         return hasHeadItemSeparator;
@@ -315,12 +308,12 @@ Item {
 
     Behavior on opacity {
         // NumberAnimation { duration: (IsStartup || (IsLauncher) ) ? 0 : 400 }
-        NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
+        NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
     }
 
     Loader{
         anchors.fill: parent
-        active: taskItem.debug.graphicsEnabled
+        active: taskItem.abilities.debug.graphicsEnabled
 
         sourceComponent: Rectangle{
             anchors.fill: parent
@@ -379,7 +372,7 @@ Item {
         property real opacityN: isSeparator && root.contextMenu && root.contextMenu.visualParent === taskItem ? 1 : 0
 
         Behavior on opacityN {
-            NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
+            NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
         }
 
         sourceComponent: Rectangle{
@@ -416,15 +409,15 @@ Item {
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: taskItem.isSeparator
 
-        width: root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.inEditMode) ? LatteCore.Environment.separatorLength+taskItem.metrics.totals.lengthEdges: 1)
-        height: !root.vertical ? taskItem.metrics.iconSize : ((root.dragSource || root.inEditMode) ? LatteCore.Environment.separatorLength+taskItem.metrics.totals.lengthEdges: 1)
+        width: root.vertical ? taskItem.abilities.metrics.iconSize : ((root.dragSource || root.inEditMode) ? LatteCore.Environment.separatorLength+taskItem.abilities.metrics.totals.lengthEdges: 1)
+        height: !root.vertical ? taskItem.abilities.metrics.iconSize : ((root.dragSource || root.inEditMode) ? LatteCore.Environment.separatorLength+taskItem.abilities.metrics.totals.lengthEdges: 1)
 
         property bool forceHiddenState: false
 
-        readonly property int margin: taskItem.metrics.margin.screenEdge + metrics.margin.thickness
+        readonly property int margin: taskItem.abilities.metrics.margin.screenEdge + taskItem.abilities.metrics.margin.thickness
 
         Behavior on opacity {
-            NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
+            NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
         }
 
         Connections{
@@ -456,8 +449,8 @@ Item {
         Rectangle {
             anchors.centerIn: parent
 
-            width: root.vertical ? taskItem.metrics.iconSize - 4  : 1
-            height: !root.vertical ? taskItem.metrics.iconSize - 4 : 1
+            width: root.vertical ? taskItem.abilities.metrics.iconSize - 4  : 1
+            height: !root.vertical ? taskItem.abilities.metrics.iconSize - 4 : 1
             color: enforceLattePalette ? latteBridge.palette.textColor : theme.textColor
         }
 
@@ -472,7 +465,7 @@ Item {
         opacity: separatorItem.forceHiddenState ? 0 : 0.4
 
         Behavior on opacity {
-            NumberAnimation { duration: taskItem.animations.speedFactor.current * taskItem.animations.duration.large }
+            NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
         }
 
         sourceComponent: DropShadow{
@@ -532,7 +525,7 @@ Item {
 
                 Loader{
                     anchors.fill: parent
-                    active: taskItem.debug.graphicsEnabled
+                    active: taskItem.abilities.debug.graphicsEnabled
                     sourceComponent: Rectangle{
                         color: "transparent"
                         border.width: 1
@@ -559,9 +552,9 @@ Item {
 
     Loader {
         id: parabolicAreaLoader
-        active: taskItem.parabolic.isEnabled
-        width: root.isHorizontal ? taskItem.width : taskItem.metrics.mask.thickness.zoomedForItems
-        height: root.isHorizontal ? taskItem.metrics.mask.thickness.zoomedForItems : taskItem.height
+        active: taskItem.abilities.parabolic.isEnabled
+        width: root.isHorizontal ? taskItem.width : taskItem.abilities.metrics.mask.thickness.zoomedForItems
+        height: root.isHorizontal ? taskItem.abilities.metrics.mask.thickness.zoomedForItems : taskItem.height
         z:10000
         sourceComponent: ParabolicArea{}
 
@@ -617,7 +610,7 @@ Item {
         onTriggered: {
             slotPublishGeometries();
 
-            if (taskItem.debug.timersEnabled) {
+            if (taskItem.abilities.debug.timersEnabled) {
                 console.log("plasmoid timer: publishGeometryTimer called...");
             }
         }
@@ -958,7 +951,7 @@ Item {
     function slotMimicEnterForParabolic(){
         if (containsMouse) {
             if (inMimicParabolicAnimation) {
-                mimicParabolicScale = taskItem.parabolic.factor.zoom;
+                mimicParabolicScale = taskItem.abilities.parabolic.factor.zoom;
             }
 
             if (parabolicAreaLoader.active) {
@@ -985,7 +978,7 @@ Item {
             var adjX = Math.min(limits.x+limits.width, Math.max(limits.x, globalChoords.x));
             var adjY = Math.min(limits.y+limits.height, Math.max(limits.y, globalChoords.y));
 
-            var length = taskItem.metrics.iconSize * wrapper.mScale;
+            var length = taskItem.abilities.metrics.iconSize * wrapper.mScale;
             var thickness = length;
 
             //! Magic Lamp effect doesn't like coordinates outside the screen and
@@ -1107,7 +1100,7 @@ Item {
     function updateVisibilityBasedOnLaunchers(){
         var launcherExists = !(((tasksModel.launcherPosition(taskItem.launcherUrl) == -1)
                                 && (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) == -1) )
-                               || !taskItem.launchers.inCurrentActivity(taskItem.launcherUrl));
+                               || !taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrl));
 
         if (root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) {
             var hideWindow =  !launcherExists && (taskItem.isWindow || root.disableAllWindowsFunctionality);
@@ -1179,13 +1172,13 @@ Item {
     }
 
     Connections {
-        target: shortcuts
+        target: taskItem.abilities.shortcuts
         onSglActivateEntryAtIndex: {
-            if (!taskItem.shortcuts.isEnabled) {
+            if (!taskItem.abilities.shortcuts.isEnabled) {
                 return;
             }
 
-            var shortcutIndex = taskItem.shortcuts.shortcutIndex(taskItem.itemIndex);
+            var shortcutIndex = taskItem.abilities.shortcuts.shortcutIndex(taskItem.itemIndex);
 
             if (shortcutIndex === entryIndex) {
                 if (taskItem.isGroupParent) {
@@ -1197,11 +1190,11 @@ Item {
         }
 
         onSglNewInstanceForEntryAtIndex: {
-            if (!taskItem.shortcuts.isEnabled) {
+            if (!taskItem.abilities.shortcuts.isEnabled) {
                 return;
             }
 
-            var shortcutIndex = taskItem.shortcuts.shortcutIndex(taskItem.itemIndex);
+            var shortcutIndex = taskItem.abilities.shortcuts.shortcutIndex(taskItem.itemIndex);
 
             if (shortcutIndex === entryIndex) {
                 tasksModel.requestNewInstance(taskItem.modelIndex());
@@ -1233,12 +1226,12 @@ Item {
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);
         root.mimicEnterForParabolic.connect(slotMimicEnterForParabolic);
 
-        launchers.launcherChanged.connect(onLauncherChanged);
-        launchers.launcherRemoved.connect(onLauncherChanged);
-        parabolic.sglClearZoom.connect(sltClearZoom);
+        taskItem.abilities.launchers.launcherChanged.connect(onLauncherChanged);
+        taskItem.abilities.launchers.launcherRemoved.connect(onLauncherChanged);
+        taskItem.abilities.parabolic.sglClearZoom.connect(sltClearZoom);
 
         //startup without launcher
-        var hideStartup =  ((!hasShownLauncher || !taskItem.launchers.inCurrentActivity(taskItem.launcherUrl))
+        var hideStartup =  ((!hasShownLauncher || !taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrl))
                             && taskItem.isStartup);
 
         if (!LatteCore.WindowSystem.compositingActive) {
@@ -1262,9 +1255,9 @@ Item {
         root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
         root.mimicEnterForParabolic.disconnect(slotMimicEnterForParabolic);
 
-        launchers.launcherChanged.disconnect(onLauncherChanged);
-        launchers.launcherRemoved.disconnect(onLauncherChanged);
-        parabolic.sglClearZoom.disconnect(sltClearZoom);
+        taskItem.abilities.launchers.launcherChanged.disconnect(onLauncherChanged);
+        taskItem.abilities.launchers.launcherRemoved.disconnect(onLauncherChanged);
+        taskItem.abilities.parabolic.sglClearZoom.disconnect(sltClearZoom);
 
         tasksExtendedManager.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);
 
@@ -1289,7 +1282,7 @@ Item {
                 taskItem.lastValidIndex = taskItem.itemIndex;
             }
 
-            if (taskItem.debug.timersEnabled) {
+            if (taskItem.abilities.debug.timersEnabled) {
                 console.log("plasmoid timer: lastValidTimer called...");
             }
         }

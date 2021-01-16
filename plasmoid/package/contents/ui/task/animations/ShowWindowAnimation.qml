@@ -27,7 +27,7 @@ import org.kde.latte.core 0.2 as LatteCore
 ///item's added Animation
 SequentialAnimation{
     id:showWindowAnimation
-    property int speed: taskItem.animations.newWindowSlidingEnabled ? (1.2 * taskItem.animations.speedFactor.normal * taskItem.animations.duration.large) : 0
+    property int speed: taskItem.abilities.animations.newWindowSlidingEnabled ? (1.2 * taskItem.abilities.animations.speedFactor.normal * taskItem.abilities.animations.duration.large) : 0
     property bool animationSent: false
 
     readonly property string needLengthEvent: showWindowAnimation + "_showwindow"
@@ -38,7 +38,7 @@ SequentialAnimation{
         property: "opacity"
         to: 0
         //it is not depend to durationTime when animations are active
-        duration: taskItem.animations.newWindowSlidingEnabled ? 750 : 0
+        duration: taskItem.abilities.animations.newWindowSlidingEnabled ? 750 : 0
         easing.type: Easing.InQuad
     }
     //end of ghost animation
@@ -47,7 +47,7 @@ SequentialAnimation{
         script:{
             if (!showWindowAnimation.animationSent) {
                 showWindowAnimation.animationSent = true;
-                taskItem.animations.needLength.addEvent(needLengthEvent);
+                taskItem.abilities.animations.needLength.addEvent(needLengthEvent);
             }
         }
     }
@@ -97,7 +97,7 @@ SequentialAnimation{
         taskItem.inAnimation = false;
 
         if (showWindowAnimation.animationSent) {
-            taskItem.animations.needLength.removeEvent(needLengthEvent);
+            taskItem.abilities.animations.needLength.removeEvent(needLengthEvent);
             showWindowAnimation.animationSent = false;
         }
     }
@@ -124,7 +124,7 @@ SequentialAnimation{
 
         //Animation Add/Remove (2) - when is window with no launcher, animations enabled
         //Animation Add/Remove (3) - when is launcher with no window, animations enabled
-        var animation2 = ((!hasShownLauncher || !taskItem.launchers.inCurrentActivity(taskItem.launcherUrl))
+        var animation2 = ((!hasShownLauncher || !taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrl))
                           && taskItem.isWindow
                           && LatteCore.WindowSystem.compositingActive);
 
@@ -140,7 +140,7 @@ SequentialAnimation{
 
 
         //startup without launcher, animation should be blocked
-        var launcherExists = !(!hasShownLauncher || !taskItem.launchers.inCurrentActivity(taskItem.launcherUrl));
+        var launcherExists = !(!hasShownLauncher || !taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrl));
 
         //var hideStartup =  launcherExists && taskItem.isStartup; //! fix #976
         var hideWindow =  (root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) && !launcherExists && taskItem.isWindow;
@@ -167,7 +167,7 @@ SequentialAnimation{
             wrapper.opacity = 1;
             taskItem.inAnimation = false;
         } else if (( animation2 || animation3 || animation6 || isForcedHidden)
-                   && (taskItem.animations.speedFactor.current !== 0) && !launcherIsAlreadyShown){
+                   && (taskItem.abilities.animations.speedFactor.current !== 0) && !launcherIsAlreadyShown){
             isForcedHidden = false;
             taskItem.visible = true;
             wrapper.tempScaleWidth = 0;
@@ -200,7 +200,7 @@ SequentialAnimation{
         if (animationSent){
             //console.log("SAFETY REMOVAL 2: animation removing ended");
             animationSent = false;
-            taskItem.animations.needLength.removeEvent(needLengthEvent);
+            taskItem.abilities.animations.needLength.removeEvent(needLengthEvent);
         }
     }
 }

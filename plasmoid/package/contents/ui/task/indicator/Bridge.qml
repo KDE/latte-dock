@@ -60,19 +60,19 @@ Item {
     readonly property int windowsCount: taskIsValid && !root.disableAllWindowsFunctionality ? taskItem.windowsCount : 0
     readonly property int windowsMinimizedCount: taskIsValid && !root.disableAllWindowsFunctionality ? taskItem.windowsMinimizedCount : 0
 
-    readonly property int currentIconSize: taskIsValid ? taskItem.metrics.iconSize : metrics.iconSize
-    readonly property int maxIconSize: taskIsValid ? taskItem.metrics.maxIconSize : metrics.iconSize
+    readonly property int currentIconSize: taskIsValid ? taskItem.abilities.metrics.iconSize : metrics.iconSize
+    readonly property int maxIconSize: taskIsValid ? taskItem.abilities.metrics.maxIconSize : metrics.iconSize
     readonly property real scaleFactor: taskIsValid ? taskItem.wrapper.mScale : 1
     readonly property real panelOpacity: root.currentPanelOpacity
     readonly property color shadowColor: root.appShadowColorSolid
 
-    readonly property bool animationsEnabled: taskIsValid ? taskItem.animations.active : appletAbilities.animations.active
-    readonly property real durationTime: taskIsValid ? taskItem.animations.speedFactor.current : appletAbilities.animations.speedFactor.current
+    readonly property bool animationsEnabled: taskIsValid ? taskItem.abilities.animations.active : appletAbilities.animations.active
+    readonly property real durationTime: taskIsValid ? taskItem.abilities.animations.speedFactor.current : appletAbilities.animations.speedFactor.current
 
     readonly property bool progressVisible: wrapper.progressVisible /*since 0.9.2*/
     readonly property real progress: wrapper.progress /*since 0.9.2*/
 
-    readonly property int screenEdgeMargin: taskIsValid ? taskItem.metrics.margin.screenEdge : metrics.margin.screenEdge /*since 0.10*/
+    readonly property int screenEdgeMargin: taskIsValid ? taskItem.abilities.metrics.margin.screenEdge : metrics.margin.screenEdge /*since 0.10*/
 
     readonly property variant svgs: indicators ? indicators.svgs : []
 

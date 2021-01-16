@@ -1081,14 +1081,7 @@ Item {
                     boundsBehavior: Flickable.StopAtBounds
                     orientation: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Qt.Vertical : Qt.Horizontal
                     delegate: Task.TaskItem{
-                        animations: appletAbilities.animations
-                        debug: appletAbilities.debug
-                        indexer: appletAbilities.indexer
-                        launchers: appletAbilities.launchers
-                        metrics: appletAbilities.metrics
-                        parabolic: appletAbilities.parabolic
-                        requires: appletAbilities.requires
-                        shortcuts: appletAbilities.shortcuts
+                        abilities: appletAbilities
                     }
 
                     property int currentSpot : -1000

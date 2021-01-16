@@ -28,7 +28,7 @@ Item{
     width: root.vertical ? wrapper.width : nHiddenSize
     height: root.vertical ? nHiddenSize : wrapper.height
 
-    visible: (rightSpacer ? index === taskItem.indexer.lastVisibleItemIndex : index === taskItem.indexer.firstVisibleItemIndex)
+    visible: (rightSpacer ? index === taskItem.abilities.indexer.lastVisibleItemIndex : index === taskItem.abilities.indexer.firstVisibleItemIndex)
              || (separatorSpace > 0) || taskItem.inAttentionAnimation
              || taskItem.inFastRestoreAnimation || taskItem.inMimicParabolicAnimation
 
@@ -45,8 +45,8 @@ Item{
     //and it is used later on Behaviors in order to not break
     //the activity change animations from removal/additions of tasks
     //! && !root.inActivityChange (deprecated) in order to check if it is fixed
-    property int separatorSpace: neighbourSeparator && !isSeparator && taskItem.parabolic.isEnabled
-                                 && !(taskItem.indexer.separators.length>0 && root.dragSource) ?
+    property int separatorSpace: neighbourSeparator && !isSeparator && taskItem.abilities.parabolic.isEnabled
+                                 && !(taskItem.abilities.indexer.separators.length>0 && root.dragSource) ?
                                      (LatteCore.Environment.separatorLength/2) : 0
 
     property bool rightSpacer: false
@@ -63,7 +63,7 @@ Item{
             } else if (!inAttentionAnimation && !inMimicParabolicAnimation && !inFastRestoreAnimation) {
                 return (nScale > 0) ? (taskItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
             } else {
-                return (nScale > 0) ? (taskItem.metrics.iconSize * nScale) + separatorSpace : separatorSpace;
+                return (nScale > 0) ? (taskItem.abilities.metrics.iconSize * nScale) + separatorSpace : separatorSpace;
             }
         }
     }
@@ -81,7 +81,7 @@ Item{
         id: animatedBehavior
         enabled: (taskItem.inFastRestoreAnimation || showWindowAnimation.running || restoreAnimation.running
                   || root.inActivityChange || taskItem.inRemoveStage)
-                 || (taskItem.containsMouse && inAttentionAnimation && wrapper.mScale!==taskItem.parabolic.factor.zoom)
+                 || (taskItem.containsMouse && inAttentionAnimation && wrapper.mScale!==taskItem.abilities.parabolic.factor.zoom)
         NumberAnimation{ duration: 3 * taskItem.animationTime }
     }
 
@@ -92,7 +92,7 @@ Item{
     }
 
     Loader{
-        active: taskItem.debug.spacersEnabled
+        active: taskItem.abilities.debug.spacersEnabled
 
         sourceComponent: Rectangle{
             width: !root.vertical ? hiddenSpacer.width : 1

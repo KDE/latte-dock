@@ -28,7 +28,7 @@ SequentialAnimation{
         PropertyAnimation {
             target: wrapper
             property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-            to: 1 + (thickPercentage * 2 * (taskItem.animations.requirements.zoomFactor-1))
+            to: 1 + (thickPercentage * 2 * (taskItem.abilities.animations.requirements.zoomFactor-1))
             duration: newWindowAnimation.speed
             easing.type: Easing.OutQuad
 
