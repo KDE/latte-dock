@@ -373,7 +373,7 @@ Item {
         // keeps track of the applets the user wants to uninstall
         property var applets: []
 
-        interval: 60000 // one minute
+        interval: 200
         onTriggered: {
             for (var i = 0, length = applets.length; i < length; ++i) {
                 widgetExplorer.uninstall(applets[i])

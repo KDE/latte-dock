@@ -190,7 +190,7 @@ Item {
                     }
 
                     onClicked: {
-                        var pending = installTimer.applets
+                        var pending = pendingUninstallTimer.applets
                         if (delegate.pendingUninstall) {
                             var index = pending.indexOf(pluginName)
                             if (index > -1) {
