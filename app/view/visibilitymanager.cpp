@@ -218,6 +218,9 @@ void VisibilityManager::setViewOnFrontLayer()
 {
     m_wm->setViewExtraFlags(m_latteView, true);
     setIsBelowLayer(false);
+    if (KWindowSystem::isPlatformX11()) {
+        m_latteView->raise();
+    }
 }
 
 void VisibilityManager::setMode(Latte::Types::Visibility mode)
