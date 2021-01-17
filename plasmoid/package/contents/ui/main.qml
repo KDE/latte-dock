@@ -796,7 +796,7 @@ Item {
         tasksModel: tasksModel
 
         indexer.itemsCount: tasksModel.count
-        indexer.updateIsBlocked: root.inDraggingPhase
+        indexer.updateIsBlocked: root.inDraggingPhase || root.inActivityChange
 
         launchers.group: plasmoid.configuration.launchersGroup
         launchers.syncer.isBlocked: inDraggingPhase

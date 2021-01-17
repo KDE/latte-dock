@@ -34,7 +34,7 @@ ClientAbility.Indexer {
     readonly property bool tailAppletIsSeparator: isActive ? bridge.indexer.tailAppletIsSeparator : false
     readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
 
-    readonly property bool isReady: (layout && layout.children.length >= itemsCount) && !updateIsBlocked
+    readonly property bool isReady: (layout && layout.children.length === itemsCount) && !updateIsBlocked
     readonly property int maxIndex: 99999
 
     readonly property alias visibleItemsCount: _privates.visibleItemsCount
