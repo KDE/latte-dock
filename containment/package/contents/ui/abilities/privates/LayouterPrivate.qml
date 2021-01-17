@@ -391,7 +391,7 @@ Item {
         if (remainedSpace) {
             if (startLayout.fillApplets > 0) {
                 startNo = 0;
-            } else if (lendLayout.fillApplets > 0) {
+            } else if (endLayout.fillApplets > 0) {
                 endNo = 0;
             } else if (mainLayout.fillApplets > 0) {
                 mainNo = 0;
