@@ -41,7 +41,8 @@ Item{
             if (!root.inConfigureAppletsMode) {
                 return 0;
             } else {
-                return appletItem.inConfigureAppletsDragging ? appletMinimumLength : internalSplitterComputedLength;
+                return appletItem.inConfigureAppletsDragging && (root.dragOverlay.currentApplet === appletItem || !root.dragOverlay.currentApplet.isInternalViewSplitter)?
+                            appletMinimumLength : internalSplitterComputedLength;
             }
         }
 
