@@ -62,11 +62,15 @@
     <entry name="floatingInternalGapIsForced" type="Int">
       <default>1</default>
       <label>floating internal gap is forced and provided to applets and any other view specific user interaction. "1" stands for Partially Checked (Auto)</label>
-    </entry>
+    </entry>   
     <entry name="hideFloatingGapForMaximized" type="Bool">
         <default>false</default>
         <label>floating gap is disabled when there are maximized windows</label>
     </entry>
+    <entry name="floatingGapIsMirroredForMaximized" type="Bool">
+      <default>false</default>
+      <label>floating gap is mirrored for maximized windows in AlwaysVisible visibility mode</label>
+    </entry>    
     <entry name="proportionIconSize" type="Double">
       <default>-1</default>
       <label>this is a percentage value, -1 means disabled</label>

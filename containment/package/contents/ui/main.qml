@@ -189,6 +189,12 @@ Item {
 
     property bool hideLengthScreenGaps: false /*set through binding*/
 
+    property bool mirrorScreenGap: screenEdgeMarginEnabled
+                                   && plasmoid.configuration.floatingGapIsMirroredForMaximized
+                                   && !plasmoid.configuration.hideFloatingGapForMaximized
+                                   && latteView.visibility.mode === LatteCore.Types.AlwaysVisible
+
+
 
     property int themeColors: plasmoid.configuration.themeColors
     property int windowColors: plasmoid.configuration.windowColors

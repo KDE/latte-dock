@@ -883,6 +883,18 @@ PlasmaComponents.Page {
                             plasmoid.configuration.hideFloatingGapForMaximized = checked;
                         }
                     }
+
+                    LatteComponents.CheckBox {
+                        Layout.maximumWidth: dialog.optionsWidth
+                        enabled: !plasmoid.configuration.hideFloatingGapForMaximized
+                        text: i18n("Mirror floating gap for maximized windows")
+                        checked: plasmoid.configuration.floatingGapIsMirroredForMaximized
+                        tooltip: i18n("Floating gap is mirrored when there are maximized windows in Always Visible mode")
+
+                        onClicked: {
+                            plasmoid.configuration.floatingGapIsMirroredForMaximized = checked;
+                        }
+                    }
                 }
             }
         }

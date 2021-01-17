@@ -316,7 +316,9 @@ Item{
                 return isCapableToHideScreenGap ? thicknessAsPanel : (2*metrics.mask.screenEdge) + thicknessAsPanel;
             }
 
-            var edgeThickness = isCapableToHideScreenGap ? 0 : metrics.mask.screenEdge * 2;
+            var mirrorGapFactor = root.mirrorScreenGap ? 2 : 1;
+
+            var edgeThickness = isCapableToHideScreenGap ? 0 : metrics.mask.screenEdge * mirrorGapFactor;
             return edgeThickness + metrics.mask.thickness.maxNormalForItemsWithoutScreenEdge;
         }
     }
