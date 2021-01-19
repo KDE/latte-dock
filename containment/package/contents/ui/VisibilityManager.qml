@@ -29,13 +29,11 @@ import org.kde.latte.private.containment 0.1 as LatteContainment
 
 Item{
     id: manager
-
     anchors.fill: parent
 
     property QtObject window
 
     property bool blockUpdateMask: false
-    property bool inForceHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
 
@@ -49,14 +47,14 @@ Item{
                                      (root.editMode ? 400 : animations.speedFactor.current * 1.62 * animations.duration.large) : 0
 
 
-
+    property bool inForcedHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool inLocationAnimation: latteView && latteView.positioner && latteView.positioner.inLocationAnimation
+    property bool inScreenEdgeInternalWindowSliding: root.behaveAsDockWithMask && hideThickScreenGap
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
     property bool inRelocationHiding: false
-    property bool inScreenEdgeInternalWindowSliding: root.behaveAsDockWithMask && hideThickScreenGap
-
     readonly property bool inSliding: inSlidingIn || inSlidingOut || inRelocationHiding || inScreenEdgeInternalWindowSliding || inLocationAnimation
+
     readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && (animations.needBothAxis.count>0 || animations.needLength.count>0))
                                                  && !inSlidingIn
                                                  && !inSlidingOut
@@ -87,12 +85,12 @@ Item{
         target: latteView
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
-        when: latteView && !inRelocationHiding && !inForceHiding && !(inScreenEdgeInternalWindowSliding && !inStartup)
+        when: latteView && !inRelocationHiding && !inForcedHiding && !(inScreenEdgeInternalWindowSliding && !inStartup)
         value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.thickness.maxZoomed
     }
 
     property bool validIconSize: (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === autosize.iconSize)
-    property bool inPublishingState: validIconSize && !inSlidingIn && !inSlidingOut && !inRelocationHiding && !inForceHiding
+    property bool inPublishingState: validIconSize && !inSlidingIn && !inSlidingOut && !inRelocationHiding && !inForcedHiding
 
     Binding{
         target: latteView
@@ -111,7 +109,7 @@ Item{
     Binding {
         target: latteView
         property: "headThicknessGap"
-        when: latteView && !inRelocationHiding && !inForceHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
+        when: latteView && !inRelocationHiding && !inForcedHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
         value: {
             if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView || latteView.byPassWM) {
                 return 0;
@@ -262,14 +260,14 @@ Item{
         value: LatteCore.WindowSystem.compositingActive
                && (((root.blurEnabled && root.useThemePanel)
                     || (root.blurEnabled && root.forceSolidPanel && LatteCore.WindowSystem.compositingActive))
-                   && (!root.inStartup || inForceHiding || inRelocationHiding))
+                   && (!root.inStartup || inForcedHiding || inRelocationHiding))
     }
 
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null
         property: "drawShadows"
         when: latteView && latteView.effects
-        value: root.drawShadowsExternal && (!root.inStartup || inForceHiding || inRelocationHiding) && !(latteView && latteView.visibility.isHidden)
+        value: root.drawShadowsExternal && (!root.inStartup || inForcedHiding || inRelocationHiding) && !(latteView && latteView.visibility.isHidden)
     }
 
     Binding{
@@ -437,7 +435,7 @@ Item{
         if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand) {
             updateMaskArea();
 
-            if (slidingAnimationAutoHiddenOut.running && !inRelocationHiding && !inForceHiding) {
+            if (slidingAnimationAutoHiddenOut.running && !inRelocationHiding && !inForcedHiding) {
                 slotMustBeShown();
             }
         }
@@ -460,7 +458,7 @@ Item{
         }
 
         //! Normal Dodge/AutoHide case
-        if (!slidingAnimationAutoHiddenIn.running && !inRelocationHiding && !inForceHiding){
+        if (!slidingAnimationAutoHiddenIn.running && !inRelocationHiding && !inForcedHiding){
             slidingAnimationAutoHiddenIn.init();
         }
     }
@@ -485,7 +483,7 @@ Item{
         if((!slidingAnimationAutoHiddenOut.running
             && !latteView.visibility.blockHiding
             && (!latteView.visibility.containsMouse || latteView.visibility.mode === LatteCore.Types.SidebarOnDemand))
-                || inForceHiding) {
+                || inForcedHiding) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
