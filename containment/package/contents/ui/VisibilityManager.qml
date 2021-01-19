@@ -56,7 +56,7 @@ Item{
     readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && (animations.needBothAxis.count>0 || animations.needLength.count>0))
                                                  && !inSlidingIn
                                                  && !inSlidingOut
-                                                 && !latteView.visibility.isHidden
+                                                 && !root.dockIsHidden
 
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
 
@@ -108,7 +108,7 @@ Item{
         property: "headThicknessGap"
         when: latteView && updateIsEnabled && !inClientSideScreenEdgeSliding
         value: {
-            if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView || latteView.byPassWM) {
+            if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView || (latteView && latteView.byPassWM)) {
                 return 0;
             }
 
