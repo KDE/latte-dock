@@ -486,6 +486,10 @@ Item {
             border.color: "blue"
         } */
 
+    TaskMouseArea {
+        id: taskMouseArea
+    }
+
     Flow{
         id: taskFlow
         width: parent.width
@@ -672,12 +676,6 @@ Item {
 
     ////// End of Values Changes /////
 
-
-    ///////////////// Mouse Area Events ///////////////////
-
-    TaskMouseArea {
-        id: taskMouseArea
-    }
 
     //! A timer is needed in order to handle also touchpads that probably
     //! send too many signals very fast. This way the signals per sec are limited.
