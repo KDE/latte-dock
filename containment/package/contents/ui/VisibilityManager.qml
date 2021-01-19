@@ -53,7 +53,6 @@ Item{
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
     property bool inRelocationHiding: false
-    readonly property bool inSliding: inSlidingIn || inSlidingOut || inRelocationHiding || inClientSideScreenEdgeSliding || inRelocationAnimation
 
     readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && (animations.needBothAxis.count>0 || animations.needLength.count>0))
                                                  && !inSlidingIn
