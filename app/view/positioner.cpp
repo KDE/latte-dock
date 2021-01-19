@@ -115,12 +115,12 @@ void Positioner::init()
     //! connections
     connect(this, &Positioner::screenGeometryChanged, this, &Positioner::syncGeometry);
 
-    connect(this, &Positioner::hideDockDuringLocationChangeStarted, this, &Positioner::updateInLocationAnimation);
-    connect(this, &Positioner::hideDockDuringScreenChangeStarted, this, &Positioner::updateInLocationAnimation);
-    connect(this, &Positioner::hideDockDuringMovingToLayoutStarted, this, &Positioner::updateInLocationAnimation);
-    connect(this, &Positioner::showDockAfterLocationChangeFinished, this, &Positioner::updateInLocationAnimation);
-    connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::updateInLocationAnimation);
-    connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::updateInLocationAnimation);
+    connect(this, &Positioner::hideDockDuringLocationChangeStarted, this, &Positioner::updateInRelocationAnimation);
+    connect(this, &Positioner::hideDockDuringScreenChangeStarted, this, &Positioner::updateInRelocationAnimation);
+    connect(this, &Positioner::hideDockDuringMovingToLayoutStarted, this, &Positioner::updateInRelocationAnimation);
+    connect(this, &Positioner::showDockAfterLocationChangeFinished, this, &Positioner::updateInRelocationAnimation);
+    connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::updateInRelocationAnimation);
+    connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::updateInRelocationAnimation);
 
     connect(this, &Positioner::showDockAfterLocationChangeFinished, this, &Positioner::syncLatteViews);
     connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::syncLatteViews);
@@ -968,7 +968,7 @@ bool Positioner::inLayoutUnloading()
     return m_inLayoutUnloading;
 }
 
-bool Positioner::inLocationAnimation()
+bool Positioner::inRelocationAnimation()
 {
     return ((m_goToLocation != Plasma::Types::Floating) || (m_moveToLayout != "") || m_goToScreen);
 }
@@ -1023,16 +1023,16 @@ void Positioner::setIsStickedOnBottomEdge(bool sticked)
     emit isStickedOnBottomEdgeChanged();
 }
 
-void Positioner::updateInLocationAnimation()
+void Positioner::updateInRelocationAnimation()
 {
-    bool inLocationAnimation = ((m_goToLocation != Plasma::Types::Floating) || (m_moveToLayout != "") || m_goToScreen);
+    bool inRelocationAnimation = ((m_goToLocation != Plasma::Types::Floating) || (m_moveToLayout != "") || m_goToScreen);
 
-    if (m_inLocationAnimation == inLocationAnimation) {
+    if (m_inRelocationAnimation == inRelocationAnimation) {
         return;
     }
 
-    m_inLocationAnimation = inLocationAnimation;
-    emit inLocationAnimationChanged();
+    m_inRelocationAnimation = inRelocationAnimation;
+    emit inRelocationAnimationChanged();
 }
 
 void Positioner::hideDockDuringLocationChange(int goToLocation)

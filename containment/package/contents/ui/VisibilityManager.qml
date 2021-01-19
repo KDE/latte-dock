@@ -48,12 +48,12 @@ Item{
 
 
     property bool inForcedHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
-    property bool inLocationAnimation: latteView && latteView.positioner && latteView.positioner.inLocationAnimation
+    property bool inRelocationAnimation: latteView && latteView.positioner && latteView.positioner.inRelocationAnimation
     property bool inScreenEdgeInternalWindowSliding: root.behaveAsDockWithMask && hideThickScreenGap
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
     property bool inRelocationHiding: false
-    readonly property bool inSliding: inSlidingIn || inSlidingOut || inRelocationHiding || inScreenEdgeInternalWindowSliding || inLocationAnimation
+    readonly property bool inSliding: inSlidingIn || inSlidingOut || inRelocationHiding || inScreenEdgeInternalWindowSliding || inRelocationAnimation
 
     readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && (animations.needBothAxis.count>0 || animations.needLength.count>0))
                                                  && !inSlidingIn
@@ -738,7 +738,7 @@ Item{
         }
 
         function init() {
-            if (manager.inLocationAnimation || !latteView.visibility.blockHiding) {
+            if (manager.inRelocationAnimation || !latteView.visibility.blockHiding) {
                 start();
             }
         }

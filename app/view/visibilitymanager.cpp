@@ -387,7 +387,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate)
 {
     bool inMultipleLayoutsAndCurrent = (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts
-                                      && m_latteView->layout() && !m_latteView->positioner()->inLocationAnimation()
+                                      && m_latteView->layout() && !m_latteView->positioner()->inRelocationAnimation()
                                       && m_latteView->layout()->isCurrent());
 
     if (m_strutsThickness>0 && (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout || inMultipleLayoutsAndCurrent)) {
@@ -640,7 +640,7 @@ void VisibilityManager::updateGhostWindowState()
     if (supportsKWinEdges()) {
         bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout ||
                                 (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts
-                                 && m_latteView->layout() && !m_latteView->positioner()->inLocationAnimation()
+                                 && m_latteView->layout() && !m_latteView->positioner()->inRelocationAnimation()
                                  && m_latteView->layout()->isCurrent()));
 
         if (inCurrentLayout) {
@@ -1062,7 +1062,7 @@ void VisibilityManager::createEdgeGhostWindow()
                                             this, [&]() {
             bool inCurrentLayout = (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout ||
                                     (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts
-                                     && m_latteView->layout() && !m_latteView->positioner()->inLocationAnimation()
+                                     && m_latteView->layout() && !m_latteView->positioner()->inRelocationAnimation()
                                      && m_latteView->layout()->isCurrent()));
 
             if (m_edgeGhostWindow) {

@@ -51,7 +51,7 @@ Item{
     Binding {
         target: layoutsContainer
         property: "x"
-        when: !visibilityManager.inLocationAnimation
+        when: !visibilityManager.inRelocationAnimation
         value: {
             if (root.behaveAsPlasmaPanel) {
                 return 0;
@@ -84,7 +84,7 @@ Item{
     Binding{
         target: layoutsContainer
         property: "y"
-        when: !visibilityManager.inLocationAnimation
+        when: !visibilityManager.inRelocationAnimation
         value: {
             if (root.behaveAsPlasmaPanel) {
                 return 0;

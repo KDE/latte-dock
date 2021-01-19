@@ -48,7 +48,7 @@ class Positioner: public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool inLocationAnimation READ inLocationAnimation NOTIFY inLocationAnimationChanged)
+    Q_PROPERTY(bool inRelocationAnimation READ inRelocationAnimation NOTIFY inRelocationAnimationChanged)
     Q_PROPERTY(bool inSlideAnimation READ inSlideAnimation WRITE setInSlideAnimation NOTIFY inSlideAnimationChanged)
 
     Q_PROPERTY(bool isStickedOnTopEdge READ isStickedOnTopEdge WRITE setIsStickedOnTopEdge NOTIFY isStickedOnTopEdgeChanged)
@@ -70,7 +70,7 @@ public:
     void setSlideOffset(int offset);
 
     bool inLayoutUnloading();
-    bool inLocationAnimation();
+    bool inRelocationAnimation();
 
     bool inSlideAnimation() const;
     void setInSlideAnimation(bool active);
@@ -128,7 +128,7 @@ signals:
     void showDockAfterMovingToLayoutFinished();
 
     void onHideWindowsForSlidingOut();
-    void inLocationAnimationChanged();
+    void inRelocationAnimationChanged();
     void inSlideAnimationChanged();
     void isStickedOnTopEdgeChanged();
     void isStickedOnBottomEdgeChanged();
@@ -138,7 +138,7 @@ private slots:
     void onCurrentLayoutIsSwitching(const QString &layoutName);
 
     void validateDockGeometry();
-    void updateInLocationAnimation();
+    void updateInRelocationAnimation();
     void syncLatteViews();
     void updateContainmentScreen();
 
@@ -160,7 +160,7 @@ private:
 private:
     bool m_inDelete{false};
     bool m_inLayoutUnloading{false};
-    bool m_inLocationAnimation{false};
+    bool m_inRelocationAnimation{false};
     bool m_inSlideAnimation{false};
 
     bool m_isStickedOnTopEdge{false};
