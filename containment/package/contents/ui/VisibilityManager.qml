@@ -44,16 +44,16 @@ Item{
     property int animationSpeed: LatteCore.WindowSystem.compositingActive ?
                                      (root.editMode ? 400 : animations.speedFactor.current * 1.62 * animations.duration.large) : 0
 
-
+    property bool inClientSideScreenEdgeSliding: root.behaveAsDockWithMask && hideThickScreenGap
     property bool inForcedHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool inNormalState: ((animations.needBothAxis.count === 0) && (animations.needLength.count === 0))
                                  || (latteView && latteView.visibility.isHidden && !latteView.visibility.containsMouse && animations.needThickness.count === 0)
     property bool inRelocationAnimation: latteView && latteView.positioner && latteView.positioner.inRelocationAnimation
-    property bool inScreenEdgeInternalWindowSliding: root.behaveAsDockWithMask && hideThickScreenGap
+
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
     property bool inRelocationHiding: false
-    readonly property bool inSliding: inSlidingIn || inSlidingOut || inRelocationHiding || inScreenEdgeInternalWindowSliding || inRelocationAnimation
+    readonly property bool inSliding: inSlidingIn || inSlidingOut || inRelocationHiding || inClientSideScreenEdgeSliding || inRelocationAnimation
 
     readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && (animations.needBothAxis.count>0 || animations.needLength.count>0))
                                                  && !inSlidingIn
@@ -85,7 +85,7 @@ Item{
         target: latteView
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
-        when: latteView && !inRelocationHiding && !inForcedHiding && !(inScreenEdgeInternalWindowSliding && !inStartup)
+        when: latteView && !inRelocationHiding && !inForcedHiding && !(inClientSideScreenEdgeSliding && !inStartup)
         value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.thickness.maxZoomed
     }
 
@@ -109,7 +109,7 @@ Item{
     Binding {
         target: latteView
         property: "headThicknessGap"
-        when: latteView && !inRelocationHiding && !inForcedHiding && !inScreenEdgeInternalWindowSliding && inPublishingState
+        when: latteView && !inRelocationHiding && !inForcedHiding && !inClientSideScreenEdgeSliding && inPublishingState
         value: {
             if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView || latteView.byPassWM) {
                 return 0;
