@@ -103,7 +103,7 @@ Item {
         var staticLayout = (plasmoid.configuration.minLength === plasmoid.configuration.maxLength);
 
         if ((plasmoid.configuration.alignment === LatteCore.Types.Justify || staticLayout)
-                && visibilityManager.panelIsBiggerFromIconSize
+                && background.isGreaterThanItemThickness
                 && (parabolic.factor.maxZoom === 1.0)) {
             return LatteCore.Types.PanelView;
         }

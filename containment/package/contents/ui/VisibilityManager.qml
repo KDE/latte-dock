@@ -38,7 +38,6 @@ Item{
     property bool inForceHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
-    property bool panelIsBiggerFromIconSize: root.useThemePanel && (background.totals.visualThickness >= (metrics.iconSize + metrics.margin.thickness))
 
     property bool inClientSideFloating: !root.behaveAsPlasmaPanel
                                         && screenEdgeMarginEnabled

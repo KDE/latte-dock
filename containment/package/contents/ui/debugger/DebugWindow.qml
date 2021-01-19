@@ -611,7 +611,7 @@ Window{
             }
 
             Text{
-                text: visibilityManager.panelIsBiggerFromIconSize
+                text: background.isGreaterThanItemThickness
             }
 
             Text{
