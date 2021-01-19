@@ -45,7 +45,6 @@ Item{
                                      (root.editMode ? 400 : animations.speedFactor.current * 1.62 * animations.duration.large) : 0
 
     property bool inClientSideScreenEdgeSliding: root.behaveAsDockWithMask && hideThickScreenGap
-    property bool inForcedHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool inNormalState: ((animations.needBothAxis.count === 0) && (animations.needLength.count === 0))
                                  || (latteView && latteView.visibility.isHidden && !latteView.visibility.containsMouse && animations.needThickness.count === 0)
     property bool inRelocationAnimation: latteView && latteView.positioner && latteView.positioner.inRelocationAnimation
@@ -80,13 +79,13 @@ Item{
 
     property Item layouts: null
 
-    property bool updateIsEnabled: autosize.inCalculatedIconSize && !inSlidingIn && !inSlidingOut && !inRelocationHiding && !inForcedHiding
+    property bool updateIsEnabled: autosize.inCalculatedIconSize && !inSlidingIn && !inSlidingOut && !inRelocationHiding
 
     Binding{
         target: latteView
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
-        when: latteView && !inRelocationHiding && !inForcedHiding && !(inClientSideScreenEdgeSliding && !inStartup)
+        when: latteView && !inRelocationHiding && !inClientSideScreenEdgeSliding && !inStartup
         value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.thickness.maxZoomed
     }
 
@@ -107,7 +106,7 @@ Item{
     Binding {
         target: latteView
         property: "headThicknessGap"
-        when: latteView && updateIsEnabled && !inForcedHiding && !inClientSideScreenEdgeSliding
+        when: latteView && updateIsEnabled && !inClientSideScreenEdgeSliding
         value: {
             if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView || latteView.byPassWM) {
                 return 0;
@@ -258,14 +257,14 @@ Item{
         value: LatteCore.WindowSystem.compositingActive
                && (((root.blurEnabled && root.useThemePanel)
                     || (root.blurEnabled && root.forceSolidPanel && LatteCore.WindowSystem.compositingActive))
-                   && (!root.inStartup || inForcedHiding || inRelocationHiding))
+                   && (!root.inStartup || inRelocationHiding))
     }
 
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null
         property: "drawShadows"
         when: latteView && latteView.effects
-        value: root.drawShadowsExternal && (!root.inStartup || inForcedHiding || inRelocationHiding) && !(latteView && latteView.visibility.isHidden)
+        value: root.drawShadowsExternal && (!root.inStartup || inRelocationHiding) && !(latteView && latteView.visibility.isHidden)
     }
 
     Binding{
@@ -426,7 +425,7 @@ Item{
         if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand) {
             updateMaskArea();
 
-            if (slidingAnimationAutoHiddenOut.running && !inRelocationHiding && !inForcedHiding) {
+            if (slidingAnimationAutoHiddenOut.running && !inRelocationHiding) {
                 slotMustBeShown();
             }
         }
@@ -449,7 +448,7 @@ Item{
         }
 
         //! Normal Dodge/AutoHide case
-        if (!slidingAnimationAutoHiddenIn.running && !inRelocationHiding && !inForcedHiding){
+        if (!slidingAnimationAutoHiddenIn.running && !inRelocationHiding){
             slidingAnimationAutoHiddenIn.init();
         }
     }
@@ -471,10 +470,9 @@ Item{
         }
 
         //! Normal Dodge/AutoHide case
-        if((!slidingAnimationAutoHiddenOut.running
-            && !latteView.visibility.blockHiding
-            && (!latteView.visibility.containsMouse || latteView.visibility.mode === LatteCore.Types.SidebarOnDemand))
-                || inForcedHiding) {
+        if (!slidingAnimationAutoHiddenOut.running
+                && !latteView.visibility.blockHiding
+                && (!latteView.visibility.containsMouse || latteView.visibility.mode === LatteCore.Types.SidebarOnDemand)) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
