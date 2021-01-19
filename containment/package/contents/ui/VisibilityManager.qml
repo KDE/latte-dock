@@ -80,6 +80,8 @@ Item{
 
     property Item layouts: null
 
+    property bool updateIsEnabled: autosize.inCalculatedIconSize && !inSlidingIn && !inSlidingOut && !inRelocationHiding && !inForcedHiding
+
     Binding{
         target: latteView
         property:"maxThickness"
@@ -88,27 +90,24 @@ Item{
         value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.thickness.maxZoomed
     }
 
-    property bool validIconSize: (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === autosize.iconSize)
-    property bool inPublishingState: validIconSize && !inSlidingIn && !inSlidingOut && !inRelocationHiding && !inForcedHiding
-
     Binding{
         target: latteView
         property:"normalThickness"
-        when: latteView && inPublishingState
+        when: latteView && updateIsEnabled
         value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.screenEdge + metrics.mask.thickness.maxNormalForItemsWithoutScreenEdge
     }
 
     Binding{
         target: latteView
         property:"maxNormalThickness"
-        when: latteView && inPublishingState
+        when: latteView && updateIsEnabled
         value: metrics.mask.thickness.maxNormal
     }
 
     Binding {
         target: latteView
         property: "headThicknessGap"
-        when: latteView && !inRelocationHiding && !inForcedHiding && !inClientSideScreenEdgeSliding && inPublishingState
+        when: latteView && updateIsEnabled && !inForcedHiding && !inClientSideScreenEdgeSliding
         value: {
             if (root.behaveAsPlasmaPanel || root.viewType === LatteCore.Types.PanelView || latteView.byPassWM) {
                 return 0;
@@ -528,7 +527,7 @@ Item{
         //console.log("reached updating geometry ::: "+dock.maskArea);
 
 
-        if (inPublishingState && !latteView.visibility.isHidden && inNormalState) {
+        if (updateIsEnabled && !latteView.visibility.isHidden && inNormalState) {
             //! Important: Local Geometry must not be updated when view ISHIDDEN
             //! because it breaks Dodge(s) modes in such case
 
