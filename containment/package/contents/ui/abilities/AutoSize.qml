@@ -33,7 +33,7 @@ Item {
                                      && plasmoid.configuration.autoSizeEnabled
                                      && !root.containsOnlyPlasmaTasks
                                      && layouter.fillApplets<=0
-                                     && latteView 
+                                     && latteView
                                      && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand
                                      && latteView.visibility.mode !== LatteCore.Types.SidebarAutoHide
 
@@ -106,6 +106,15 @@ Item {
         }
     }
 
+    Connections {
+        target: visibilityManager
+        onInNormalStateChanged: {
+            if (visibilityManager.inNormalState) {
+                sizer.updateIconSize();
+            }
+        }
+    }
+
     //! Prediction History Functions
     function clearHistory() {
         history.length = 0;
@@ -114,7 +123,7 @@ Item {
     function addPrediction(currentLength, prediction) {
         history.unshift({current: currentLength, predicted: prediction});
 
-       /* console.log(" -- PREDICTION ARRAY -- ");
+        /* console.log(" -- PREDICTION ARRAY -- ");
         for(var i=0; i<history.length; ++i) {
             console.log( i + ". " + history[i].current + " : " + history[i].predicted);
         }*/
@@ -151,7 +160,7 @@ Item {
         }
 
         if ( !doubleCallAutomaticUpdateIconSize.running && !visibility.inRelocationHiding /*block too many calls and dont apply during relocatinon hiding*/
-                && (visibility.normalState && sizer.isActive) /*in normal and auto size active state*/
+                && (visibility.inNormalState && sizer.isActive) /*in normal and auto size active state*/
                 && (metrics.iconSize===metrics.maxIconSize || metrics.iconSize === sizer.iconSize) /*not during animations*/) {
 
             //!doubler timer

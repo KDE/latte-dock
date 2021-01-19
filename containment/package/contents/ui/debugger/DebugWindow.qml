@@ -669,7 +669,7 @@ Window{
             }
 
             Text{
-                text: visibilityManager.normalState
+                text: visibilityManager.inNormalState
             }
 
             Text{

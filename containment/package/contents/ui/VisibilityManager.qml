@@ -34,8 +34,6 @@ Item{
     property QtObject window
 
     property bool blockUpdateMask: false
-    property bool normalState : false  // this is being set from updateMaskArea
-    property bool previousNormalState : false // this is only for debugging purposes
 
     property bool inClientSideFloating: !root.behaveAsPlasmaPanel
                                         && screenEdgeMarginEnabled
@@ -48,6 +46,8 @@ Item{
 
 
     property bool inForcedHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
+    property bool inNormalState: ((animations.needBothAxis.count === 0) && (animations.needLength.count === 0))
+                                 || (latteView && latteView.visibility.isHidden && !latteView.visibility.containsMouse && animations.needThickness.count === 0)
     property bool inRelocationAnimation: latteView && latteView.positioner && latteView.positioner.inRelocationAnimation
     property bool inScreenEdgeInternalWindowSliding: root.behaveAsDockWithMask && hideThickScreenGap
     property bool inSlidingIn: false //necessary because of its init structure
@@ -424,13 +424,6 @@ Item{
 
     onInClientSideFloatingChanged: updateMaskArea();
 
-    onNormalStateChanged: {
-        if (normalState) {
-            autosize.updateIconSize();
-            layouter.updateSizeForAppletsInFill();
-        }
-    }
-
     function slotContainsMouseChanged() {
         if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand) {
             updateMaskArea();
@@ -527,25 +520,16 @@ Item{
         var localX = 0;
         var localY = 0;
 
-        normalState = ((animations.needBothAxis.count === 0) && (animations.needLength.count === 0))
-                || (latteView && latteView.visibility.isHidden && !latteView.visibility.containsMouse && animations.needThickness.count === 0);
-
-
         // debug maskArea criteria
         if (debug.maskEnabled) {
             console.log(animations.needBothAxis.count + ", " + animations.needLength.count + ", " +
                         animations.needThickness.count + ", " + latteView.visibility.isHidden);
-
-            if (previousNormalState !== normalState) {
-                console.log("normal state changed to:" + normalState);
-                previousNormalState = normalState;
-            }
         }
 
         //console.log("reached updating geometry ::: "+dock.maskArea);
 
 
-        if (inPublishingState && !latteView.visibility.isHidden && normalState) {
+        if (inPublishingState && !latteView.visibility.isHidden && inNormalState) {
             //! Important: Local Geometry must not be updated when view ISHIDDEN
             //! because it breaks Dodge(s) modes in such case
 

@@ -67,6 +67,15 @@ Ability.LayouterPrivate {
         onFormFactorChanged: _layouter.updateSizeForAppletsInFill();
     }
 
+    Connections {
+        target: visibilityManager
+        onInNormalStateChanged: {
+            if (visibilityManager.inNormalState) {
+                _layouter.updateSizeForAppletsInFill();
+            }
+        }
+    }
+
     //! This timer is needed in order to reduce the calls to heavy cpu function
     //! updateSizeForAppletsInFill()
     Timer{
