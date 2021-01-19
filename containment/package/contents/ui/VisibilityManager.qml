@@ -40,13 +40,11 @@ Item{
     property bool previousNormalState : false // this is only for debugging purposes
     property bool panelIsBiggerFromIconSize: root.useThemePanel && (background.totals.visualThickness >= (metrics.iconSize + metrics.margin.thickness))
 
-    property bool maskIsFloating: !root.behaveAsPlasmaPanel
-                                  && screenEdgeMarginEnabled
-                                  && !root.floatingInternalGapIsForced
-                                  && !inSlidingIn
-                                  && !inSlidingOut
-
-    property int maskFloatedGap: maskIsFloating ? Math.max(0, metrics.margin.screenEdge - background.shadows.headThickness) : 0
+    property bool inClientSideFloating: !root.behaveAsPlasmaPanel
+                                        && screenEdgeMarginEnabled
+                                        && !root.floatingInternalGapIsForced
+                                        && !inSlidingIn
+                                        && !inSlidingOut
 
     property int animationSpeed: LatteCore.WindowSystem.compositingActive ?
                                      (root.editMode ? 400 : animations.speedFactor.current * 1.62 * animations.duration.large) : 0
@@ -427,7 +425,7 @@ Item{
         onThemeChanged: latteView.effects.forceMaskRedraw();
     }
 
-    onMaskIsFloatingChanged: updateMaskArea();
+    onInClientSideFloatingChanged: updateMaskArea();
 
     onNormalStateChanged: {
         if (normalState) {
