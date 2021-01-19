@@ -35,11 +35,11 @@ Item{
 
     property bool blockUpdateMask: false
 
-    property bool inClientSideFloating: !root.behaveAsPlasmaPanel
-                                        && screenEdgeMarginEnabled
-                                        && !root.floatingInternalGapIsForced
-                                        && !inSlidingIn
-                                        && !inSlidingOut
+    property bool isFloatingInClientSide: !root.behaveAsPlasmaPanel
+                                          && screenEdgeMarginEnabled
+                                          && !root.floatingInternalGapIsForced
+                                          && !inSlidingIn
+                                          && !inSlidingOut
 
     property int animationSpeed: LatteCore.WindowSystem.compositingActive ?
                                      (root.editMode ? 400 : animations.speedFactor.current * 1.62 * animations.duration.large) : 0
@@ -422,7 +422,7 @@ Item{
         onThemeChanged: latteView.effects.forceMaskRedraw();
     }
 
-    onInClientSideFloatingChanged: updateMaskArea();
+    onIsFloatingInClientSideChanged: updateMaskArea();
 
     function slotContainsMouseChanged() {
         if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand) {
