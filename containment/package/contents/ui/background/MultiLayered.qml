@@ -153,10 +153,6 @@ BackgroundProperties{
     }
 
     totals.visualThickness: {
-        if (root.behaveAsPlasmaPanel) {
-            return root.isVertical ? root.width : root.height;
-        }
-
         var itemMargins = root.shrinkThickMargins ? 0 : metrics.totals.thicknessEdges;
         var maximumItem = metrics.iconSize + itemMargins;
 
