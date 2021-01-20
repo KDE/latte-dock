@@ -33,8 +33,6 @@ Item{
 
     property QtObject window
 
-    property bool blockUpdateMask: false
-
     property bool isFloatingInClientSide: !root.behaveAsPlasmaPanel
                                           && screenEdgeMarginEnabled
                                           && !root.floatingInternalGapIsForced
@@ -412,6 +410,15 @@ Item{
         onMaxZoomedChanged: updateMaskArea()
     }
 
+    Connections {
+        target: root.myView
+        onInRelocationAnimationChanged: {
+            if (!root.myView.inRelocationAnimation) {
+                manager.updateMaskArea();
+            }
+        }
+    }
+
     Connections{
         target: themeExtended ? themeExtended : null
         onThemeChanged: latteView.effects.forceMaskRedraw();
@@ -478,7 +485,6 @@ Item{
     //! functions used for sliding out/in during location/screen changes
     function slotHideDockDuringLocationChange() {
         inRelocationHiding = true;
-        blockUpdateMask = true;
 
         if(!slidingAnimationAutoHiddenOut.running) {
             slidingAnimationAutoHiddenOut.init();
@@ -490,7 +496,6 @@ Item{
     }
 
     function sendHideDockDuringLocationChangeFinished(){
-        blockUpdateMask = false;
         latteView.positioner.hideDockDuringLocationChangeFinished();
     }
 
@@ -507,7 +512,7 @@ Item{
 
     ///test maskArea
     function updateMaskArea() {
-        if (!latteView || !root.viewIsAvailable || blockUpdateMask) {
+        if (!latteView || !root.viewIsAvailable) {
             return;
         }
 
