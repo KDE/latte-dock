@@ -209,7 +209,6 @@ Item {
 
     readonly property bool inConfigureAppletsMode: root.editMode && plasmoid.configuration.inConfigureAppletsMode
 
-    property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut)
     property bool closeActiveWindowEnabled: plasmoid.configuration.closeActiveWindowEnabled
     property bool dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled
     property bool immutable: plasmoid.immutable

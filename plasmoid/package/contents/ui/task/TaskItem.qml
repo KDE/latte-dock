@@ -1201,15 +1201,18 @@ Item {
     }
 
     Connections {
-        target: latteView
-        onDockIsHiddenChanged: {
-            if (dockIsHidden) {
+        target: taskItem.abilities.myView
+        onIsShownFullyChanged: {
+            if (taskItem.abilities.myView.isShownFully) {
                 taskItem.slotPublishGeometries();
             }
         }
+    }
 
-        onDockIsShownCompletelyChanged: {
-            if (dockIsShownCompletely) {
+    Connections {
+        target: latteView
+        onDockIsHiddenChanged: {
+            if (dockIsHidden) {
                 taskItem.slotPublishGeometries();
             }
         }

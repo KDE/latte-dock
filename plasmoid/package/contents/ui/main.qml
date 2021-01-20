@@ -134,7 +134,6 @@ Item {
 
     //BEGIN Latte Dock properties
     property bool badges3DStyle: latteView ? latteView.badges3DStyle : true
-    property bool dockIsShownCompletely: latteView ? latteView.dockIsShownCompletely : true
     property bool enableShadows: latteView ? latteView.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
 
