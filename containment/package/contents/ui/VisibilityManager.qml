@@ -419,9 +419,21 @@ Item{
         }
     }
 
+    Connections {
+        target: latteView ? latteView.effects : null
+        onRectChanged: manager.updateMaskArea()
+    }
+
     Connections{
         target: themeExtended ? themeExtended : null
         onThemeChanged: latteView.effects.forceMaskRedraw();
+    }
+
+    Connections {
+        target: LatteCore.WindowSystem
+        onCompositingActiveChanged: {
+            manager.updateMaskArea();
+        }
     }
 
     onIsFloatingInClientSideChanged: updateMaskArea();

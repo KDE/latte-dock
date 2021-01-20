@@ -684,8 +684,6 @@ Item {
     Plasmoid.onImmutableChanged: {
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
-
-        visibilityManager.updateMaskArea();
     }
     //////////////END OF CONNECTIONS
 
@@ -1022,19 +1020,6 @@ Item {
         }
     }
     //END functions
-
-
-    ////BEGIN interfaces
-
-    Connections {
-        target: LatteCore.WindowSystem
-
-        onCompositingActiveChanged: {
-            visibilityManager.updateMaskArea();
-        }
-    }
-
-    ////END interfaces
 
     /////BEGIN: Title Tooltip///////////
     PlasmaCore.Dialog{

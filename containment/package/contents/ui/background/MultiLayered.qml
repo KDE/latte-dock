@@ -426,10 +426,6 @@ BackgroundProperties{
             }
 
             latteView.effects.rect = efGeometry;
-
-            //! needed both for NOCOMPOSITING environments AND
-            //! View::localGeometry calculations
-            visibilityManager.updateMaskArea();
         }
 
         Timer {
