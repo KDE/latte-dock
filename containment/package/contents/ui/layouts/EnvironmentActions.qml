@@ -38,7 +38,7 @@ Loader {
 
     property int alignment: LatteCore.Types.BottomEdgeCenterAlign
 
-    readonly property bool useAllLayouts: root.panelAlignment === LatteCore.Types.Justify
+    readonly property bool useAllLayouts: root.myView.alignment === LatteCore.Types.Justify
 
     readonly property int localThickness: active ? metrics.totals.thickness + metrics.margin.screenEdge : 0
     readonly property int length: {

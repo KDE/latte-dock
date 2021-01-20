@@ -33,7 +33,7 @@ Grid {
     rowSpacing: 0
 
     opacity: {
-        if (root.inConfigureAppletsMode && root.panelAlignment===LatteCore.Types.Justify && layoutsContainer.mainLayout.isCoveredFromSideLayouts){
+        if (root.inConfigureAppletsMode && root.myView.alignment===LatteCore.Types.Justify && layoutsContainer.mainLayout.isCoveredFromSideLayouts){
             if (dragOverlay && (!dragOverlay.currentHoveredLayout || dragOverlay.currentHoveredLayout === appletsContainer)) {
                 return 1;
             } else {

@@ -218,7 +218,7 @@ DragDrop.DropArea {
         root.addLaunchersMessage = false;
         dndSpacer.opacity = 0;
 
-        if (dragInfo.isPlasmoid && root.panelAlignment === LatteCore.Types.Justify) {
+        if (dragInfo.isPlasmoid && root.myView.alignment === LatteCore.Types.Justify) {
             root.moveAppletsBasedOnJustifyAlignment();
         }
     }

@@ -273,7 +273,7 @@ MouseArea {
         //    handle.height = currentApplet.height;
         root.layoutManagerSave();
 
-        if (root.panelAlignment === LatteCore.Types.Justify) {
+        if (root.myView.alignment === LatteCore.Types.Justify) {
             root.moveAppletsBasedOnJustifyAlignment();
         }
 

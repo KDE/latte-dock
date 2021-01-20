@@ -169,7 +169,7 @@ Item{
         target: latteView
         property: "alignment"
         when: latteView
-        value: root.panelAlignment
+        value: myView.alignment
     }
 
     Binding{
@@ -225,7 +225,7 @@ Item{
                && (!root.screenEdgeMarginEnabled /*no-floating*/
                    || (root.screenEdgeMarginEnabled /*floating with justify alignment and 100% maxlength*/
                        && plasmoid.configuration.maxLength===100
-                       && root.panelAlignment===LatteCore.Types.Justify
+                       && myView.alignment===LatteCore.Types.Justify
                        && !root.hideLengthScreenGaps))
     }
 

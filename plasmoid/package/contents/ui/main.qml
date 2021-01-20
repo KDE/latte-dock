@@ -322,12 +322,12 @@ Item {
         target: root
         property: "alignment"
         value: {
-            if (latteView) {
-                if (latteView.panelAlignment === -1) {
+            if (appletAbilities.myView.isReady) {
+                if (appletAbilities.myView.alignment === LatteCore.Types.None) {
                     return;
                 }
 
-                if (latteView.panelAlignment === LatteCore.Types.Justify) {
+                if (appletAbilities.myView.alignment === LatteCore.Types.Justify) {
                     if (latteView.latteAppletPos>=0 && latteView.latteAppletPos<100) {
                         return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? LatteCore.Types.Left : LatteCore.Types.Top;
                     } else if (latteView.latteAppletPos>=100 && latteView.latteAppletPos<200) {
@@ -339,7 +339,7 @@ Item {
                     return LatteCore.Types.Center;
                 }
 
-                return latteView.panelAlignment;
+                return appletAbilities.myView.alignment;
             }
 
             return !root.vertical ? LatteCore.Types.Left : LatteCore.Types.Top;

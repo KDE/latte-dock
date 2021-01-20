@@ -29,10 +29,10 @@ Item {
     readonly property int tailThickness: destination ? destination.tailThicknessMargin : headThickness
     readonly property int thickness: headThickness + tailThickness + (root.isHorizontal ? destination.height : destination.width)
     readonly property int lengthPadding: {
-        if ( (root.panelAlignment === LatteCore.Types.Justify && appletItem.firstChildOfStartLayout)
-                || (root.panelAlignment === LatteCore.Types.Justify && appletItem.lastChildOfEndLayout)
-                || (root.panelAlignment !== LatteCore.Types.Justify && appletItem.firstChildOfMainLayout)
-                || (root.panelAlignment !== LatteCore.Types.Justify && appletItem.lastChildOfMainLayout)) {
+        if ( (root.myView.alignment === LatteCore.Types.Justify && appletItem.firstChildOfStartLayout)
+                || (root.myView.alignment === LatteCore.Types.Justify && appletItem.lastChildOfEndLayout)
+                || (root.myView.alignment !== LatteCore.Types.Justify && appletItem.firstChildOfMainLayout)
+                || (root.myView.alignment !== LatteCore.Types.Justify && appletItem.lastChildOfMainLayout)) {
             //! Fitts Law on corners
             return appletItem.lengthAppletFullMargin;
         }

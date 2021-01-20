@@ -246,7 +246,7 @@ Item {
     property real maxLengthPerCentage: hideLengthScreenGaps ? 100 : plasmoid.configuration.maxLength
 
     property int minLength: {
-        if (root.panelAlignment === LatteCore.Types.Justify) {
+        if (myView.alignment === LatteCore.Types.Justify) {
             return maxLength;
         }
 
@@ -356,8 +356,6 @@ Item {
 
     property int widthMargins: root.isVertical ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
     property int heightMargins: root.isHorizontal ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
-
-    property int panelAlignment: plasmoid.configuration.alignment
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
@@ -514,23 +512,26 @@ Item {
 
     //! It is used only when the user chooses different alignment types
     //! and not during startup
-    onPanelAlignmentChanged: {
-        if (!root.editMode) {
-            return;
-        }
-
-        if (root.editMode){
-            if (panelAlignment===LatteCore.Types.Justify) {
-                addInternalViewSplittersInMainLayout();
-                moveAppletsBasedOnJustifyAlignment();
-            } else {
-                joinLayoutsToMainLayout();
-                root.destroyInternalViewSplitters();
+    Connections {
+        target: myView
+        onAlignmentChanged: {
+            if (!root.editMode) {
+                return;
             }
-        }
 
-        LayoutManager.save();
-        updateIndexes();
+            if (root.editMode){
+                if (root.myView.alignment===LatteCore.Types.Justify) {
+                    root.addInternalViewSplittersInMainLayout();
+                    root.moveAppletsBasedOnJustifyAlignment();
+                } else {
+                    root.joinLayoutsToMainLayout();
+                    root.destroyInternalViewSplitters();
+                }
+            }
+
+            LayoutManager.save();
+            root.updateIndexes();
+        }
     }
 
     onLatteViewChanged: {

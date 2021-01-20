@@ -33,7 +33,7 @@ Item {
     readonly property int shownApplets: startLayout.shownApplets + mainLayout.shownApplets + endLayout.shownApplets
     readonly property int sizeWithNoFillApplets: startLayout.sizeWithNoFillApplets + mainLayout.sizeWithNoFillApplets + endLayout.sizeWithNoFillApplets
 
-    readonly property int maxLength: root.panelAlignment === LatteCore.Types.Justify ? contentsMaxLength : Math.min(root.minLength, contentsMaxLength)
+    readonly property int maxLength: root.myView.alignment === LatteCore.Types.Justify ? contentsMaxLength : Math.min(root.minLength, contentsMaxLength)
 
     readonly property int contentsMaxLength: root.maxLength - background.totals.paddingsLength
 
@@ -249,7 +249,7 @@ Item {
     //! it is used when the Centered (Main)Layout is used only or when the Main(Layout)
     //! is empty in Justify mode
     function initializationPhase(availableSpace, sizePerApplet, noOfApplets, inMaxAutoFillCalculations){
-        if (root.panelAlignment === LatteCore.Types.Justify) {
+        if (root.myView.alignment === LatteCore.Types.Justify) {
             initLayoutForFillsCalculations(startLayout.grid);
             initLayoutForFillsCalculations(endLayout.grid);
         }
@@ -264,7 +264,7 @@ Item {
 
         // console.log( " i1 : " + availableSpace + " _ " + sizePerApplet + " _ " + noOfApplets );
 
-        if (root.panelAlignment === LatteCore.Types.Justify) {
+        if (root.myView.alignment === LatteCore.Types.Justify) {
             res = computeStep1ForLayout(startLayout.grid, availableSpace, sizePerApplet, noOfApplets, inMaxAutoFillCalculations);
             availableSpace = res[0]; sizePerApplet = res[1]; noOfApplets = res[2];
             // console.log( " i2 : " + availableSpace + " _ " + sizePerApplet + " _ " + noOfApplets );
@@ -422,7 +422,7 @@ Item {
 
             var use_maximum_length = true;
 
-            if (mainLayout.shownApplets === 0 || root.panelAlignment !== LatteCore.Types.Justify) {
+            if (mainLayout.shownApplets === 0 || root.myView.alignment !== LatteCore.Types.Justify) {
                 updateFillAppletsWithOneStep(use_maximum_length);
                 updateFillAppletsWithOneStep(!use_maximum_length);
             } else {
