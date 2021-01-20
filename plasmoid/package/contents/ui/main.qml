@@ -34,8 +34,6 @@ import org.kde.activities 0.1 as Activities
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
-import org.kde.latte.abilities.client 0.1 as ClientAbility
-
 import org.kde.latte.private.tasks 0.1 as LatteTasks
 
 import "abilities" as Ability

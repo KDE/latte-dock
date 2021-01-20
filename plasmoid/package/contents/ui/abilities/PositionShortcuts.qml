@@ -22,9 +22,9 @@ import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-import org.kde.latte.abilities.client 0.1 as ClientAbility
+import org.kde.latte.abilities.client 0.1 as AbilityClient
 
-ClientAbility.PositionShortcuts {
+AbilityClient.PositionShortcuts {
     id: shortcuts
     property Item indexer: null
 

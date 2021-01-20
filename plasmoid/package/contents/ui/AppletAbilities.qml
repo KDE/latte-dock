@@ -22,7 +22,7 @@ import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
-import org.kde.latte.abilities.client 0.1 as ClientAbility
+import org.kde.latte.abilities.client 0.1 as AbilityClient
 
 import "abilities" as Ability
 
@@ -49,7 +49,7 @@ Item {
         bridge: _abilityContainer.bridge
     }
 
-    ClientAbility.Debug {
+    AbilityClient.Debug {
         id: _debug
         bridge: _abilityContainer.bridge
     }
@@ -72,7 +72,7 @@ Item {
         bridge: _abilityContainer.bridge
     }
 
-    ClientAbility.MyView {
+    AbilityClient.MyView {
         id: _myView
         bridge: _abilityContainer.bridge
     }
@@ -89,7 +89,7 @@ Item {
         indexer: _indexer
     }
 
-    ClientAbility.Requirements{
+    AbilityClient.Requirements{
         id: _requires
         bridge: _abilityContainer.bridge
     }
