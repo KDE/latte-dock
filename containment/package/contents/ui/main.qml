@@ -217,7 +217,7 @@ Item {
     property bool inSlidingOut: visibilityManager ? visibilityManager.inSlidingOut : false
     property bool inStartup: true
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
-    property bool isReady: !(dockIsHidden || inSlidingIn || inSlidingOut)
+    property bool isReady: myView.isShownFully
     property bool isVertical: !isHorizontal
 
     property bool mouseWheelActions: plasmoid.configuration.mouseWheelActions
@@ -405,7 +405,6 @@ Item {
     //shadows for applets, it should be removed as the appleitems don't need it any more
     property bool badges3DStyle: universalSettings ? universalSettings.badges3DStyle : true
     property bool enableShadows: plasmoid.configuration.appletShadowsEnabled
-    property bool dockIsHidden: latteView && latteView.visibility ? latteView.visibility.isHidden : true
 
     property bool titleTooltips: {
         if (behaveAsPlasmaPanel) {

@@ -233,7 +233,7 @@ MouseArea {
                 || wheelIsBlocked
                 || !wheelActionsEnabled
                 || inBouncingAnimation
-                || (latteView && (latteView.dockIsHidden || latteView.inSlidingIn || latteView.inSlidingOut))){
+                || !taskItem.abilities.myView.isShownFully){
 
             return;
         }

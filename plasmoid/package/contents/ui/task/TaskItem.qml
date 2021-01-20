@@ -1011,7 +1011,7 @@ Item {
             globalChoords.x = adjX;
             globalChoords.y = adjY;
 
-            if (latteView && latteView.dockIsHidden) {
+            if (taskItem.abilities.myView.isHidden) {
                 if (root.location === PlasmaCore.Types.BottomEdge) {
                     globalChoords.y = root.screenGeometry.y+root.screenGeometry.height-1;
                     globalChoords.height = 1;
@@ -1202,22 +1202,18 @@ Item {
 
     Connections {
         target: taskItem.abilities.myView
+        onIsHiddenChanged: {
+            if (taskItem.abilities.myView.isHidden) {
+                taskItem.slotPublishGeometries();
+            }
+        }
+
         onIsShownFullyChanged: {
             if (taskItem.abilities.myView.isShownFully) {
                 taskItem.slotPublishGeometries();
             }
         }
     }
-
-    Connections {
-        target: latteView
-        onDockIsHiddenChanged: {
-            if (dockIsHidden) {
-                taskItem.slotPublishGeometries();
-            }
-        }
-    }
-
 
     ///// End of Helper functions ////
 

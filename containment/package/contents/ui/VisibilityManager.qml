@@ -54,9 +54,7 @@ Item{
     property bool inRelocationHiding: false
 
     readonly property bool isSinkedEventEnabled: !(parabolic.isEnabled && (animations.needBothAxis.count>0 || animations.needLength.count>0))
-                                                 && !inSlidingIn
-                                                 && !inSlidingOut
-                                                 && !root.dockIsHidden
+                                                 && myView.isShownFully
 
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
 

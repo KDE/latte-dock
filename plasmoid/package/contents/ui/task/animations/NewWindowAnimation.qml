@@ -85,8 +85,9 @@ Item{
     }
 
     function startNewWindowAnimation(){
-        if (!root.dockIsHidden && ((taskItem.abilities.animations.windowInAttentionEnabled && isDemandingAttention)
-                                   || taskItem.abilities.animations.windowAddedInGroupEnabled)){
+        if (!taskItem.abilities.myView.isHidden
+                && ((taskItem.abilities.animations.windowInAttentionEnabled && isDemandingAttention)
+                    || taskItem.abilities.animations.windowAddedInGroupEnabled)){
             newWindowAnimation.init();
             newWindowAnimationLoader.item.start();
         }

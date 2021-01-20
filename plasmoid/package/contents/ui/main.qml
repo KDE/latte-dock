@@ -139,7 +139,6 @@ Item {
 
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
-    property bool dockIsHidden: latteView ? latteView.dockIsHidden : false
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool highlightWindows: hoverAction === LatteTasks.Types.HighlightWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
 
@@ -278,10 +277,10 @@ Item {
     }
 
 
-    Connections{
-        target: latteView
-        onDockIsHiddenChanged:{
-            if (latteView.dockIsHidden) {
+    Connections {
+        target: appletAbilities.myView
+        onIsHiddenChanged: {
+            if (appletAbilities.myView.isHidden) {
                 windowsPreviewDlg.hide("3.3");
             }
         }

@@ -112,7 +112,7 @@ DragDrop.DropArea {
         dragInfo.onlyLaunchers = latteApplet ? latteApplet.launchersDrop(event) : false;
         dragInfo.computationsAreValid = true;
 
-        if (dragInfo.isTask || plasmoid.immutable || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
+        if (dragInfo.isTask || plasmoid.immutable || !root.myView.isShownFully) {
             event.ignore();
             return;
         }
@@ -204,7 +204,7 @@ DragDrop.DropArea {
     onDrop: {
         animations.needLength.removeEvent(dragArea);
 
-        if (root.ignoreRegularFilesDragging && dragInfo.isTask || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
+        if ((root.ignoreRegularFilesDragging && dragInfo.isTask) || !root.myView.isShownFully) {
             return;
         }
 
