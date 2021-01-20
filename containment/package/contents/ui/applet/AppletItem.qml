@@ -310,6 +310,7 @@ Item {
     property Item layouter: null
     property Item layouts: null
     property Item metrics: null
+    property Item myView: null
     property Item parabolic: null
     property Item shortcuts: null
     property Item userRequests: null

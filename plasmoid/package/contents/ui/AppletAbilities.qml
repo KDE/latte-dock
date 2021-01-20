@@ -38,6 +38,7 @@ Item {
     readonly property alias indexer: _indexer
     readonly property alias launchers: _launchers
     readonly property alias metrics: _metrics
+    readonly property alias myView: _myView
     readonly property alias parabolic: _parabolic
     readonly property alias shortcuts: _shortcuts
     readonly property alias requires: _requires
@@ -68,6 +69,11 @@ Item {
 
     Ability.Metrics {
         id: _metrics
+        bridge: _abilityContainer.bridge
+    }
+
+    ClientAbility.MyView {
+        id: _myView
         bridge: _abilityContainer.bridge
     }
 

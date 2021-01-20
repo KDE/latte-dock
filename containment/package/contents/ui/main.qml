@@ -376,6 +376,7 @@ Item {
     readonly property alias indicatorsManager: indicators
     readonly property alias layouter: _layouter
     readonly property alias metrics: _metrics
+    readonly property alias myView: _myView
     readonly property alias parabolic: _parabolic
     readonly property alias userRequests: _userRequests
 
@@ -1173,6 +1174,7 @@ Item {
             layouter: _layouter
             layouts: layoutsContainer
             metrics: _metrics
+            myView: _myView
             parabolic: _parabolic
             shortcuts: _shortcuts
             userRequests: _userRequests
@@ -1415,6 +1417,10 @@ Item {
         background: _background
         indicators: indicatorsManager
         parabolic: _parabolic
+    }
+
+    Ability.MyView {
+        id: _myView
     }
 
     Ability.ParabolicEffect {
