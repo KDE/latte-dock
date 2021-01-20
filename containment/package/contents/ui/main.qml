@@ -217,7 +217,6 @@ Item {
     property bool inSlidingOut: visibilityManager ? visibilityManager.inSlidingOut : false
     property bool inStartup: true
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
-    property bool isReady: myView.isShownFully
     property bool isVertical: !isHorizontal
 
     property bool mouseWheelActions: plasmoid.configuration.mouseWheelActions
@@ -583,9 +582,12 @@ Item {
         }
     }
 
-    onIsReadyChanged: {
-        if (isReady && !titleTooltipDialog.visible && titleTooltipDialog.activeItemHovered){
-            titleTooltipDialog.show(titleTooltipDialog.activeItem, titleTooltipDialog.activeItemText);
+    Connections {
+        target: myView
+        onIsShownFullyChanged: {
+            if (root.myView.isShownFully && !titleTooltipDialog.visible && titleTooltipDialog.activeItemHovered) {
+                titleTooltipDialog.show(titleTooltipDialog.activeItem, titleTooltipDialog.activeItemText);
+            }
         }
     }
 
@@ -1096,7 +1098,7 @@ Item {
                 activeItemText = text;
             }
 
-            if (isReady) {
+            if (root.myView.isShownFully) {
                 showTitleTooltipTimer.start();
             }
 
