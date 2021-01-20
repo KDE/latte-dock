@@ -761,8 +761,8 @@ Item {
         }
 
         if(windowsPreviewDlg.activeItem !== taskItem){
-            if (!root.latteView
-                    || (root.latteView && !root.latteView.isHalfShown && !root.latteView.inSlidingIn && !root.latteView.inSlidingOut)) {
+            if (!taskItem.abilities.myView.isReady
+                    || (taskItem.abilities.myView.isReady && taskItem.abilities.myView.isShownFully)) {
                 if (root.latteView && root.titleTooltips) {
                     root.latteView.hideTooltipLabel();
                 }

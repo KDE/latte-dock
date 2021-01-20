@@ -30,6 +30,8 @@ AbilityHost.MyView {
     inNormalState: ((animations.needBothAxis.count === 0) && (animations.needLength.count === 0))
                                  || (latteView && latteView.visibility.isHidden && !latteView.visibility.containsMouse && animations.needThickness.count === 0)
     isHidden: isReady && latteView.visibility.isHidden
+    isShownPartially:  isReady && (inSlidingIn || inSlidingOut)
+    isShownFully: isReady && !isHidden && !inSlidingIn && !inSlidingOut
 
     inSlidingIn: visibilityManager.inSlidingIn
     inSlidingOut: visibilityManager.inSlidingOut

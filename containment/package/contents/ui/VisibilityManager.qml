@@ -659,12 +659,6 @@ Item{
     SequentialAnimation{
         id: slidingAnimationAutoHiddenOut
 
-        ScriptAction{
-            script: {
-                root.isHalfShown = true;
-            }
-        }
-
         PropertyAnimation {
             target: !root.behaveAsPlasmaPanel ? layoutsContainer : latteView.positioner
             property: !root.behaveAsPlasmaPanel ? (root.isVertical ? "x" : "y") : "slideOffset"
@@ -741,7 +735,6 @@ Item{
 
         ScriptAction{
             script: {
-                root.isHalfShown = false;
                 root.inStartup = false;
             }
         }

@@ -217,7 +217,6 @@ Item {
     property bool inSlidingIn: visibilityManager ? visibilityManager.inSlidingIn : false
     property bool inSlidingOut: visibilityManager ? visibilityManager.inSlidingOut : false
     property bool inStartup: true
-    property bool isHalfShown: false //is used to disable the zoom hovering effect at sliding in-out the dock
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
     property bool isReady: !(dockIsHidden || inSlidingIn || inSlidingOut)
     property bool isVertical: !isHorizontal

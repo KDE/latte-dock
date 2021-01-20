@@ -65,8 +65,8 @@ Item {
             return;
         }
 
-        if (root.isHalfShown || (root.latteApplet
-                                 && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
+        if (!appletItem.myView.isShownFully || (root.latteApplet
+                                                && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
             return;
         }
 
@@ -80,8 +80,8 @@ Item {
     }
 
     onParabolicMove: {
-        if (root.isHalfShown || (root.latteApplet
-                                 && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
+        if (!appletItem.myView.isShownFully || (root.latteApplet
+                                                && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
             return;
         }
 

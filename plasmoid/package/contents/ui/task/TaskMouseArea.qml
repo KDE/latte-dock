@@ -88,7 +88,7 @@ MouseArea {
         if ((inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
 
-        if (root.latteView && root.latteView.isHalfShown) {
+        if (taskItem.abilities.myView.isReady && !taskItem.abilities.myView.isShownFully) {
             return;
         }
 

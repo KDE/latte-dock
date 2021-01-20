@@ -86,7 +86,7 @@ Item {
         if (mousePos<0 || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
 
-        if (root.latteView && root.latteView.isHalfShown) {
+        if (taskItem.abilities.myView.isReady && !taskItem.abilities.myView.isShownFully) {
             return;
         }
 
