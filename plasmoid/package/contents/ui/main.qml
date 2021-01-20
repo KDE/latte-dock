@@ -252,14 +252,6 @@ Item {
                 border.color: "red"
                 color: "white"
             } */
-    onLatteViewChanged: {
-        if (latteView) {
-            plasmoid.action("configure").visible = false;
-            plasmoid.configuration.isInLatteDock = true;
-        } else {
-            plasmoid.configuration.isInLatteDock = false;
-        }
-    }
 
     Connections {
         target: plasmoid
@@ -282,6 +274,15 @@ Item {
         onIsHiddenChanged: {
             if (appletAbilities.myView.isHidden) {
                 windowsPreviewDlg.hide("3.3");
+            }
+        }
+
+        onIsReadyChanged: {
+            if (appletAbilities.myView.isReady) {
+                plasmoid.action("configure").visible = false;
+                plasmoid.configuration.isInLatteDock = true;
+            } else {
+                plasmoid.configuration.isInLatteDock = false;
             }
         }
     }
@@ -312,7 +313,7 @@ Item {
 
     Loader {
         id: indicatorsStandaloneLoader
-        active: !latteView && !plasmoid.configuration.isInLatteDock
+        active: !appletAbilities.myView.isReady && !plasmoid.configuration.isInLatteDock
         source: "indicators/Manager.qml"
     }
 
@@ -425,7 +426,7 @@ Item {
                 return;
             }
 
-            if (latteView && signalSent) {
+            if (appletAbilities.myView.isReady && signalSent) {
                 //it is used to unblock dock hiding
                 signalSent = false;
             }
@@ -457,7 +458,7 @@ Item {
                 activeItem = taskItem;
                 toolTipDelegate.parentTask = taskItem;
 
-                if (latteView && !signalSent) {
+                if (appletAbilities.myView.isReady && !signalSent) {
                     //it is used to block dock hiding
                     signalSent = true;
                 }
@@ -1036,9 +1037,9 @@ Item {
             Binding {
                 target: scrollableList
                 property: "thickness"
-                when: latteView && !latteView.maskManager.inRelocationHiding
+                when: !appletAbilities.myView.inRelocationHiding
                 value: {
-                    if (latteView) {
+                    if (appletAbilities.myView.isReady) {
                         return appletAbilities.animations.hasThicknessAnimation ? appletAbilities.metrics.mask.thickness.zoomed : appletAbilities.metrics.mask.thickness.normal;
                     }
 
@@ -1049,7 +1050,7 @@ Item {
             Binding {
                 target: scrollableList
                 property: "length"
-                when: latteView && !latteView.maskManager.inRelocationHiding
+                when: !appletAbilities.myView.inRelocationHiding
                 value: {
                     if (root.vertical) {
                         return Math.min(root.height, icList.height)

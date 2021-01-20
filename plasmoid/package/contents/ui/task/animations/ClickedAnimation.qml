@@ -72,12 +72,4 @@ SequentialAnimation{
             start();
         }
     }
-
-    onStopped: {
-        if( !taskItem.isDragged){
-            //taskItem.animationEnded();
-            if(!root.latteView)
-                checkListHovered.startDuration(6 * taskItem.abilities.animations.duration.large);
-        }
-    }
 }
