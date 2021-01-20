@@ -60,7 +60,7 @@ Item{
             if ( latteView && root.isHorizontal && root.myView.alignment === LatteCore.Types.Justify ){
                 return ((latteView.width/2) - (root.maxLength/2) + background.offset);
             } else {
-                if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
+                if ((root.myView.inSlidingIn || root.myView.inSlidingOut) && root.isVertical){
                     return;
                 }
 
@@ -93,7 +93,7 @@ Item{
             if ( latteView && root.isVertical && root.myView.alignment === LatteCore.Types.Justify ) {
                 return ((latteView.height/2) - (root.maxLength/2) + background.offset);
             } else {
-                if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
+                if ((root.myView.inSlidingIn || root.myView.inSlidingOut) && root.isHorizontal){
                     return;
                 }
 

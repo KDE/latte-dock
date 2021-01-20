@@ -686,8 +686,7 @@ Item {
         }
 
         onWheelScrolled: {
-            if (!appletItem.applet || !root.mouseWheelActions || viewSignalsConnector.blockWheel
-                    || (root.latteViewIsHidden || root.inSlidingIn || root.inSlidingOut)) {
+            if (!appletItem.applet || !root.mouseWheelActions || viewSignalsConnector.blockWheel || !appletItem.myView.isShownFully) {
                 return;
             }
 
