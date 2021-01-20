@@ -426,6 +426,18 @@ Item{
 
     onIsFloatingInClientSideChanged: updateMaskArea();
 
+    onInNormalStateChanged: {
+        if (inNormalState) {
+            updateMaskArea();
+        }
+    }
+
+    onUpdateIsEnabledChanged: {
+        if (updateIsEnabled) {
+            updateMaskArea();
+        }
+    }
+
     function slotContainsMouseChanged() {
         if(latteView.visibility.containsMouse && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand) {
             updateMaskArea();
@@ -512,7 +524,7 @@ Item{
 
     ///test maskArea
     function updateMaskArea() {
-        if (!latteView || !root.viewIsAvailable) {
+        if (!latteView || !root.viewIsAvailable || !updateIsEnabled || !inNormalState) {
             return;
         }
 
@@ -528,7 +540,7 @@ Item{
         //console.log("reached updating geometry ::: "+dock.maskArea);
 
 
-        if (updateIsEnabled && !latteView.visibility.isHidden && inNormalState) {
+        if (!latteView.visibility.isHidden) {
             //! Important: Local Geometry must not be updated when view ISHIDDEN
             //! because it breaks Dodge(s) modes in such case
 
