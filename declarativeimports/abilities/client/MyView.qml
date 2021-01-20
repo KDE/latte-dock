@@ -27,7 +27,10 @@ AbilityDefinition.MyView {
     isReady: ref.myView.isReady
 
     inNormalState: ref.myView.inNormalState
-    inHiddenState: ref.myView.inHiddenState
+
+    isHidden: ref.myView.isHidden
+    isShownPartially: ref.myView.isShownPartially
+    isShownFully: ref.myView.isShownFully
 
     inSlidingIn: ref.myView.inSlidingIn
     inSlidingOut: ref.myView.inSlidingOut

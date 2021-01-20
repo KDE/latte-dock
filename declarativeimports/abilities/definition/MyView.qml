@@ -23,8 +23,12 @@ import org.kde.latte.core 0.2 as LatteCore
 
 Item {
     property bool isReady: false
+
     property bool inNormalState: true
-    property bool inHiddenState: true
+
+    property bool isHidden: false
+    property bool isShownPartially: false
+    property bool isShownFully: true
 
     property bool inSlidingIn: false
     property bool inSlidingOut: false
