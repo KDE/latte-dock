@@ -28,8 +28,6 @@ Item {
     property bool isBlocked: false
     readonly property bool isActive: bridge !== null && group !== LatteCore.Types.UniqueLaunchers
     readonly property int clientId: plasmoid.id
-    property string layoutName: ""
-
 
     //! Connections
     Component.onCompleted: {

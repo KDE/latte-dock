@@ -207,7 +207,6 @@ Item {
     readonly property real screenGeometryHeightRatio: screenGeometry.height / screenGeometry.width
     readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
-    readonly property string viewLayoutName: viewLayout ? viewLayout.name : ""
     readonly property QtObject viewLayout : latteView && latteView.viewLayout ? latteView.viewLayout : null
 
     property Item latteView: null
@@ -764,7 +763,6 @@ Item {
 
         launchers.group: plasmoid.configuration.launchersGroup
         launchers.syncer.isBlocked: inDraggingPhase
-        launchers.syncer.layoutName: viewLayoutName
 
         parabolic.itemsCount: tasksModel.count
         parabolic.local.isEnabled: parabolic.factor.zoom > 1
