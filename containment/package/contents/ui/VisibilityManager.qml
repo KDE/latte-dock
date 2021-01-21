@@ -299,12 +299,11 @@ Item{
         when: latteView && latteView.visibility
         value: {
             var isCapableToHideScreenGap = root.screenEdgeMarginEnabled && plasmoid.configuration.hideFloatingGapForMaximized
+            var mirrorGapFactor = root.mirrorScreenGap ? 2 : 1;
 
             if (root.behaveAsPlasmaPanel) {
-                return isCapableToHideScreenGap ? thicknessAsPanel : (2*metrics.mask.screenEdge) + thicknessAsPanel;
+                return isCapableToHideScreenGap ? thicknessAsPanel : (mirrorGapFactor*metrics.mask.screenEdge) + thicknessAsPanel;
             }
-
-            var mirrorGapFactor = root.mirrorScreenGap ? 2 : 1;
 
             var edgeThickness = isCapableToHideScreenGap ? 0 : metrics.mask.screenEdge * mirrorGapFactor;
             return edgeThickness + metrics.mask.thickness.maxNormalForItemsWithoutScreenEdge;
