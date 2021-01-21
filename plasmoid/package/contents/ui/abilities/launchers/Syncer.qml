@@ -55,7 +55,7 @@ Item {
     Connections {
         target: isActive ? bridge.launchers : null
         onIsReadyChanged: {
-            if (isReady && _syncer.isActive) {
+            if (bridge.launchers.isReady && _syncer.isActive) {
                 bridge.launchers.addAbilityClient(_syncer);
             }
         }

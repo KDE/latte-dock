@@ -35,6 +35,8 @@ Item {
     signal launcherInRemoving(string launcherUrl);
     signal launcherInMoving(string launcherUrl, int pos);
 
+    property bool __isLoadedDuringViewStartup: false
+
     property int group: LatteCore.Types.UniqueLaunchers
     property Item bridge: null
     property Item layout: null
@@ -267,15 +269,12 @@ Item {
         var launch = [];
         var launchersList = [];
 
-        if (viewLayout) {
-            if (latteView && latteView.layoutsManager
-                    && latteView.viewLayout && latteView.universalSettings
-                    && !_launchers.inUniqueGroup()) {
-
+        if (bridge && bridge.launchers.isReady) {
+            if (!_launchers.inUniqueGroup()) {
                 if (_launchers.inLayoutGroup()) {
-                    launchersList = latteView.viewLayout.launchers;
+                    launchersList = bridge.launchers.layoutLaunchers;
                 } else if (_launchers.inGlobalGroup()) {
-                    launchersList = latteView.universalSettings.launchers;
+                    launchersList = bridge.launchers.universalLaunchers;
                 }
             }
         } else {
@@ -302,20 +301,47 @@ Item {
         return launch;
     }
 
+    function importLauncherListInModel() {
+        if (bridge && bridge.launchers.isReady && !inUniqueGroup()) {
+            if (inLayoutGroup()) {
+                console.log("Tasks: Applying LAYOUT Launchers List...");
+                tasksModel.launcherList = bridge.launchers.layoutLaunchers;
+            } else if (inGlobalGroup()) {
+                console.log("Tasks: Applying GLOBAL Launchers List...");
+                tasksModel.launcherList = bridge.launchers.universalLaunchers;
+            }
+        } else {
+            console.log("Tasks: Applying UNIQUE Launchers List...");
+            tasksModel.launcherList = plasmoid.configuration.launchers59;
+        }
+    }
+
+
     //! Connections
+
     onGroupChanged:{
-        if(latteView) {
-            _launchers.tasksModel.updateLaunchersList();
+        if(appletAbilities.myView.isReady) {
+            _launchers.importLauncherListInModel();
         }
     }
 
     Connections {
-        target: root
-        onLatteViewChanged: {
-            if (root.latteView) {
+        target: appletAbilities.myView
+        onIsReadyChanged: {
+            if(appletAbilities.myView.isReady) {
                 if (!_launchers.inUniqueGroup()) {
-                    _launchers.tasksModel.updateLaunchersList();
+                    _launchers.importLauncherListInModel();
                 }
+            }
+        }
+    }
+
+    Connections {
+        target: bridge ? bridge.launchers : null
+        onIsReadyChanged: {
+            if (bridge && bridge.launchers.isReady && !_launchers.__isLoadedDuringViewStartup) {
+                _launchers.__isLoadedDuringViewStartup = true;
+                _launchers.importLauncherListInModel();
             }
         }
     }
@@ -323,15 +349,12 @@ Item {
     Connections {
         target: _launchers.tasksModel
         onLauncherListChanged: {
-            if (viewLayout) {
-                if (latteView && latteView.layoutsManager
-                        && latteView.viewLayout && latteView.universalSettings
-                        && !_launchers.inUniqueGroup()) {
-
+            if (bridge && bridge.launchers.isReady) {
+                if (!_launchers.inUniqueGroup()) {
                     if (_launchers.inLayoutGroup()) {
-                        latteView.viewLayout.launchers = _launchers.tasksModel.launcherList;
+                        bridge.launchers.setLayoutLaunchers(_launchers.tasksModel.launcherList);
                     } else if (_launchers.inGlobalGroup()) {
-                        latteView.universalSettings.launchers = _launchers.tasksModel.launcherList;
+                        bridge.launchers.setUniversalLaunchers(_launchers.tasksModel.launcherList);
                     }
 
                     if (inDraggingPhase) {
@@ -340,8 +363,8 @@ Item {
                 } else {
                     plasmoid.configuration.launchers59 = _launchers.tasksModel.launcherList;
                 }
-            } else if (!latteView) {
-                // This way we make sure that a delayed viewLayout initialization does not store irrelevant launchers from different
+            } else if (!appletAbilities.myView.isReady) {
+                // This way we make sure that a delayed view.layout initialization does not store irrelevant launchers from different
                 // group to UNIQUE launchers group
                 plasmoid.configuration.launchers59 = _launchers.tasksModel.launcherList;
             }

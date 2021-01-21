@@ -716,7 +716,7 @@ Item{
 
             onRunningChanged: {
                 if(running){
-                    taskItem.abilities.animationstarted();
+                    taskItem.animationStarted();
                 } else {
                     taskItem.abilities.animations.needThickness.removeEvent(draggingNeedThicknessEvent);
                 }

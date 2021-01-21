@@ -21,7 +21,7 @@ import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
 Item {
-    readonly property bool isReady: root.layoutsManager !== null
+    readonly property bool isReady: latteView && latteView.layout && universalSettings && root.layoutsManager !== null
     readonly property bool isCapableOfLayoutLaunchers: latteView && latteView.layout
     readonly property bool isCapableOfUniversalLaunchers: latteView && universalSettings
 

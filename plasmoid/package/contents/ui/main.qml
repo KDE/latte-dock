@@ -543,15 +543,6 @@ Item {
     /////Window Previews/////////
 
 
-    property bool loadLaunchersFirstTime: false;
-
-    onViewLayoutChanged: {
-        if (viewLayout && !loadLaunchersFirstTime) {
-            tasksModel.updateLaunchersList();
-            loadLaunchersFirstTime = true;
-        }
-    }
-
     TaskManager.TasksModel {
         id: tasksModel
 
@@ -574,21 +565,6 @@ Item {
 
         property bool anyTaskDemandsAttentionInValidTime: false
 
-        function updateLaunchersList(){
-            if (latteView && !appletAbilities.launchers.inUniqueGroup()) {
-                if (appletAbilities.launchers.inLayoutGroup()) {
-                    console.log("Tasks: Applying LAYOUT Launchers List...");
-                    tasksModel.launcherList = latteView.viewLayout.launchers;
-                } else if (appletAbilities.launchers.inGlobalGroup()) {
-                    console.log("Tasks: Applying GLOBAL Launchers List...");
-                    tasksModel.launcherList = latteView.universalSettings.launchers;
-                }
-            } else {
-                console.log("Tasks: Applying UNIQUE Launchers List...");
-                tasksModel.launcherList = plasmoid.configuration.launchers59;
-            }
-        }
-
         onActivityChanged: {
             ActivitiesTools.currentActivity = String(activity);
         }
@@ -608,7 +584,6 @@ Item {
             }
         }
 
-
         Component.onCompleted: {
             ActivitiesTools.launchersOnActivities = root.launchersOnActivities
             ActivitiesTools.currentActivity = String(activityInfo.currentActivity);
@@ -617,15 +592,7 @@ Item {
             //var loadedLaunchers = ActivitiesTools.restoreLaunchers();
             ActivitiesTools.importLaunchersToNewArchitecture();
 
-            if (viewLayout && latteView.universalSettings && !appletAbilities.launchers.inUniqueGroup()) {
-                if (appletAbilities.launchers.inLayoutGroup()) {
-                    launcherList = latteView.viewLayout.launchers;
-                } else if (appletAbilities.launchers.inGlobalGroup()) {
-                    launcherList = latteView.universalSettings.launchers;
-                }
-            } else {
-                launcherList = plasmoid.configuration.launchers59;
-            }
+            appletAbilities.launchers.importLauncherListInModel();
 
             groupingAppIdBlacklist = plasmoid.configuration.groupingAppIdBlacklist;
             groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
