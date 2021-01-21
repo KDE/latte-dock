@@ -968,7 +968,7 @@ Item {
     function slotPublishGeometries() {
         //! this way we make sure that layouts that are in different activities that the current layout
         //! don't publish their geometries
-        if ( canPublishGeometries && (!latteView || (latteView && root.viewLayout && root.viewLayout.isCurrent()))) {
+        if ( canPublishGeometries && (!taskItem.abilities.myView.isReady || (taskItem.abilities.myView.isReady && taskItem.abilities.myView.inCurrentLayout()))) {
             var globalChoords = backend.globalRect(wrapper.visualIconItem);
             var limits = backend.globalRect(scrollableList);
 

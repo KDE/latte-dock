@@ -21,7 +21,7 @@ import QtQuick 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 
-Item {
+Item {    
     property bool isReady: false
 
     property bool inNormalState: true
@@ -38,5 +38,9 @@ Item {
     property int alignment: LatteCore.Types.Center
     property int visibilityMode: LatteCore.Types.None
 
+    property string lastUsedActivity: ""
+
     property var containmentActions: []
+
+    //function inCurrentLayout();
 }

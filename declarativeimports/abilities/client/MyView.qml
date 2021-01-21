@@ -40,6 +40,8 @@ AbilityDefinition.MyView {
     alignment: ref.myView.alignment
     visibilityMode: ref.myView.visibilityMode
 
+    lastUsedActivity: ref.myView.lastUsedActivity
+
     containmentActions: ref.myView.containmentActions
 
     readonly property AbilityDefinition.MyView local: AbilityDefinition.MyView {}
@@ -47,5 +49,13 @@ AbilityDefinition.MyView {
     Item {
         id: ref
         readonly property Item myView: bridge ? bridge.myView : local
+    }
+
+    function inCurrentLayout() {
+        if (bridge && bridge.myView.isReady) {
+            return bridge.myView.inCurrentLayout();
+        } else {
+            return true;
+        }
     }
 }

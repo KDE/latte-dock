@@ -25,23 +25,27 @@ import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.abilities.host 0.1 as AbilityHost
 
 AbilityHost.MyView {
+    view: latteView
+
     isReady: latteView
 
     inNormalState: ((animations.needBothAxis.count === 0) && (animations.needLength.count === 0))
-                                 || (latteView && latteView.visibility.isHidden && !latteView.visibility.containsMouse && animations.needThickness.count === 0)
-    isHidden: isReady && latteView.visibility.isHidden
+                                 || (view && view.visibility.isHidden && !view.visibility.containsMouse && animations.needThickness.count === 0)
+    isHidden: isReady && view.visibility.isHidden
     isShownPartially:  isReady && (inSlidingIn || inSlidingOut)
     isShownFully: isReady && !isHidden && !inSlidingIn && !inSlidingOut
 
     inSlidingIn: visibilityManager.inSlidingIn
     inSlidingOut: visibilityManager.inSlidingOut
-    inRelocationAnimation: latteView && latteView.positioner && latteView.positioner.inRelocationAnimation
+    inRelocationAnimation: view && view.positioner && view.positioner.inRelocationAnimation
     inRelocationHiding: visibilityManager.inRelocationHiding
 
     alignment: plasmoid.configuration.alignment
-    visibilityMode: latteView ? latteView.visibility.mode : LatteCore.Types.None
+    visibilityMode: view ? view.visibility.mode : LatteCore.Types.None
 
-    containmentActions: isReady ? latteView.containmentActions() : []
+    lastUsedActivity: view && view.layout ? view.layout.lastUsedActivity : ""
+
+    containmentActions: isReady ? view.containmentActions() : []
 }
 
 

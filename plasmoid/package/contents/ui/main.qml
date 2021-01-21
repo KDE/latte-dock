@@ -207,8 +207,6 @@ Item {
     readonly property real screenGeometryHeightRatio: screenGeometry.height / screenGeometry.width
     readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
-    readonly property QtObject viewLayout : latteView && latteView.viewLayout ? latteView.viewLayout : null
-
     property Item latteView: null
     readonly property Item indicators: latteView ? latteView.indicatorsManager : indicatorsStandaloneLoader.item
     //END Latte Dock Panel properties
@@ -549,7 +547,7 @@ Item {
         screenGeometry: root.screenGeometry
         // comment in order to support LTS Plasma 5.8
         // screen: plasmoid.screen
-        activity: viewLayout ? viewLayout.lastUsedActivity : activityInfo.currentActivity
+        activity: appletAbilities.myView.isReady ? appletAbilities.myView.lastUsedActivity : activityInfo.currentActivity
 
         filterByVirtualDesktop: root.showOnlyCurrentDesktop
         filterByScreen: root.showOnlyCurrentScreen

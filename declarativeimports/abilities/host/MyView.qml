@@ -24,6 +24,12 @@ import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 AbilityDefinition.MyView {
     id: apis
 
+    property QtObject view: null
+
+    function inCurrentLayout() {
+        return view && view.layout && view.layout.isCurrent();
+    }
+
     readonly property Item publicApi: Item {
         readonly property alias isReady: apis.isReady
 
@@ -42,5 +48,9 @@ AbilityDefinition.MyView {
         readonly property alias visibilityMode: apis.visibilityMode
 
         readonly property alias containmentActions: apis.containmentActions
+
+        function inCurrentLayout() {
+            return apis.inCurrentLayout();
+        }
     }
 }

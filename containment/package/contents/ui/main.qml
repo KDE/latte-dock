@@ -382,7 +382,6 @@ Item {
     readonly property alias themeExtended: _interfaces.themeExtended
     readonly property alias universalSettings: _interfaces.universalSettings
 
-    readonly property QtObject viewLayout: latteView && latteView.layout ? latteView.layout : null
     readonly property QtObject selectedWindowsTracker: {
         if (latteView && latteView.windowsTracker) {
             switch(plasmoid.configuration.activeWindowFilter) {
@@ -1379,7 +1378,7 @@ Item {
 
     Ability.Launchers {
         id: _launchers
-        layoutName: viewLayout ?  viewLayout.name : ""
+        layoutName: latteView && latteView.layout ? latteView.layout.name : ""
     }
 
     Ability.Layouter {

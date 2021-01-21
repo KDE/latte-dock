@@ -199,7 +199,7 @@ Loader{
     }
 
     sourceComponent: LatteApp.BackgroundTracker {
-        activity: viewLayout ? viewLayout.lastUsedActivity : ""
+        activity: root.myView.isReady ? root.myView.lastUsedActivity : ""
         location: plasmoid.location
         screenName: latteView && latteView.positioner ? latteView.positioner.currentScreenName : ""
     }
