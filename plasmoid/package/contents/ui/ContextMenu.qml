@@ -43,7 +43,7 @@ PlasmaComponents.ContextMenu {
     property var modelIndex
     readonly property var atm: TaskManager.AbstractTasksModel
 
-    readonly property var containmentActions: latteView ? latteView.containmentActions() : []
+    readonly property var containmentActions: appletAbilities.myView.isReady ? appletAbilities.myView.containmentActions : []
 
     placement: {
         if (root.location === PlasmaCore.Types.LeftEdge) {
@@ -873,22 +873,22 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: layoutsMenuItem
 
-        action: latteView ?  containmentActions[1] : plasmoid.action("configure")
+        action: appletAbilities.myView.isReady ?  containmentActions[1] : plasmoid.action("configure")
         enabled: visible
-        visible: latteView && containmentActions[1].visible
+        visible: appletAbilities.myView.isReady && containmentActions[1].visible
     }
 
     PlasmaComponents.MenuItem {
         id: preferenceMenuItem
 
-        action: latteView ?  containmentActions[2] : plasmoid.action("configure")
-        visible: latteView
+        action: appletAbilities.myView.isReady ?  containmentActions[2] : plasmoid.action("configure")
+        visible: appletAbilities.myView.isReady
     }
 
     PlasmaComponents.MenuItem {
         id: quitApplicationItem
-        action: latteView ? containmentActions[3] : plasmoid.action("configure")
-        visible:  latteView
+        action: appletAbilities.myView.isReady ? containmentActions[3] : plasmoid.action("configure")
+        visible: appletAbilities.myView.isReady
     }
 
     PlasmaComponents.MenuItem {
@@ -908,20 +908,20 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: addWidgets
 
-        action: latteView ? containmentActions[5] : plasmoid.action("configure");
-        visible:  latteView
+        action: appletAbilities.myView.isReady ? containmentActions[5] : plasmoid.action("configure");
+        visible:  appletAbilities.myView.isReady
     }
 
     PlasmaComponents.MenuItem {
         id: configureItem
 
-        action: latteView ? containmentActions[6] : plasmoid.action("configure")
+        action: appletAbilities.myView.isReady ? containmentActions[6] : plasmoid.action("configure")
     }
 
     //! BEGIN: Plasmoid actions when it isnt inside a Latte dock
     PlasmaComponents.MenuItem {
         id: configurePlasmoid
-        visible: !latteView && !plasmoid.immutable
+        visible: !appletAbilities.myView.isReady && !plasmoid.immutable
 
         text: plasmoid.action("configure").text
         icon: plasmoid.action("configure").icon

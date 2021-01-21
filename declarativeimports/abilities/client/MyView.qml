@@ -40,6 +40,8 @@ AbilityDefinition.MyView {
     alignment: ref.myView.alignment
     visibilityMode: ref.myView.visibilityMode
 
+    containmentActions: ref.myView.containmentActions
+
     readonly property AbilityDefinition.MyView local: AbilityDefinition.MyView {}
 
     Item {

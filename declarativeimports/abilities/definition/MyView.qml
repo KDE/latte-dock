@@ -37,4 +37,6 @@ Item {
 
     property int alignment: LatteCore.Types.Center
     property int visibilityMode: LatteCore.Types.None
+
+    property var containmentActions: []
 }

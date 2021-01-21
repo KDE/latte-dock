@@ -40,5 +40,7 @@ AbilityDefinition.MyView {
 
         readonly property alias alignment: apis.alignment
         readonly property alias visibilityMode: apis.visibilityMode
+
+        readonly property alias containmentActions: apis.containmentActions
     }
 }

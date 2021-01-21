@@ -40,6 +40,8 @@ AbilityHost.MyView {
 
     alignment: plasmoid.configuration.alignment
     visibilityMode: latteView ? latteView.visibility.mode : LatteCore.Types.None
+
+    containmentActions: isReady ? latteView.containmentActions() : []
 }
 
 
