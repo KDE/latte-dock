@@ -22,8 +22,13 @@ import org.kde.plasma.plasmoid 2.0
 
 Item {
     readonly property bool isReady: root.layoutsManager !== null
+    readonly property bool isCapableOfLayoutLaunchers: latteView && latteView.layout
+    readonly property bool isCapableOfUniversalLaunchers: latteView && universalSettings
 
     property string layoutName: ""
+
+    readonly property var layoutLaunchers: latteView && latteView.layout ? latteView.layout.launchers : []
+    readonly property var universalLaunchers: latteView && universalSettings ? universalSettings.launchers : []
 
     function addAbilityClient(client) {
         layoutsManager.syncedLaunchers.addAbilityClient(client);
@@ -70,5 +75,17 @@ Item {
                                                               senderId,
                                                               group,
                                                               orderedlaunchers);
+    }
+
+    function setLayoutLaunchers(launchers) {
+        if (isCapableOfLayoutLaunchers) {
+            latteView.layout.launchers = launchers;
+        }
+    }
+
+    function setUniversalLaunchers(launchers) {
+        if (isCapableOfUniversalLaunchers) {
+            universalSettings.launchers = launchers;
+        }
     }
 }

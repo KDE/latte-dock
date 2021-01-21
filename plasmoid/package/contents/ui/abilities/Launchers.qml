@@ -40,7 +40,6 @@ Item {
     property Item layout: null
     property QtObject tasksModel: null
 
-    readonly property LaunchersPart.Actions actions: LaunchersPart.Actions{}
     readonly property LaunchersPart.Syncer syncer: LaunchersPart.Syncer{}
     readonly property LaunchersPart.Validator validator: LaunchersPart.Validator{}
 
