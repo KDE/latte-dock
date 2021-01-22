@@ -30,6 +30,7 @@
 #include <QPointer>
 #include <QQuickItem>
 #include <QTimer>
+#include <QUrl>
 
 namespace Plasma {
 class Applet;
@@ -96,6 +97,8 @@ public slots:
 
     Q_INVOKABLE bool appletIsExpandable(const int id);
     Q_INVOKABLE bool appletIsExpanded(const int id);
+
+    Q_INVOKABLE bool isApplication(const QUrl &url) const;
 
 signals:
     void expandedAppletStateChanged();

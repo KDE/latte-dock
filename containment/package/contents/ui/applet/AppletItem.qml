@@ -339,9 +339,9 @@ Item {
 
         var draggingAppletInConfigure = root.dragOverlay && root.dragOverlay.currentApplet;
         var isCurrentAppletInDragging = draggingAppletInConfigure && (root.dragOverlay.currentApplet === appletItem);
-        var dropApplet = root.dragInfo.entered && foreDropArea.visible
+        var dropApplet = root.dragInfo.entered && root.dragInfo.isPlasmoid
 
-        if (isCurrentAppletInDragging || !draggingAppletInConfigure && !dropApplet) {
+        if ((isCurrentAppletInDragging || !draggingAppletInConfigure) && !dropApplet) {
             return;
         }
 
@@ -376,9 +376,9 @@ Item {
 
         var draggingAppletInConfigure = root.dragOverlay && root.dragOverlay.currentApplet;
         var isCurrentAppletInDragging = draggingAppletInConfigure && (root.dragOverlay.currentApplet === appletItem);
-        var dropApplet = root.dragInfo.entered && foreDropArea.visible
+        var dropApplet = root.dragInfo.entered && root.dragInfo.isPlasmoid
 
-        if (isCurrentAppletInDragging || !draggingAppletInConfigure && !dropApplet) {
+        if ((isCurrentAppletInDragging || !draggingAppletInConfigure) && !dropApplet) {
             return;
         }
         if (!root.isVertical) {

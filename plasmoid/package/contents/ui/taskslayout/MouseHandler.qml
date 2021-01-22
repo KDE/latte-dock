@@ -39,7 +39,11 @@ Item {
     property bool containsDrag: false
 
     property alias hoveredItem: dropHandler.hoveredItem
-    property alias onlyLaunchers: dropHandler.onlyLaunchers
+
+    readonly property alias isMovingTask: dropHandler.inMovingTask
+    readonly property alias isDroppingFiles: dropHandler.inDroppingFiles
+    readonly property alias isDroppingOnlyLaunchers: dropHandler.inDroppingOnlyLaunchers
+    readonly property alias isDroppingSeparator: dropHandler.inDroppingSeparator
 
     Timer {
         id: ignoreItemTimer
@@ -64,15 +68,17 @@ Item {
 
     DropArea {
         id: dropHandler
-
         anchors.fill: parent
+        preventStealing: true
 
-        preventStealing: true;
+        property bool inDroppingOnlyLaunchers: false
+        property bool inDroppingSeparator: false
+        property bool inMovingTask: false
+        property bool inDroppingFiles: false
+
+        readonly property bool eventIsAccepted: inMovingTask || inDroppingSeparator || inDroppingOnlyLaunchers || inDroppingFiles
 
         property int droppedPosition: -1;
-        property bool onlyLaunchers: false;
-        property bool droppingSeparator: false;
-
         property Item hoveredItem
 
         function isDroppingSeparator(event) {
@@ -82,49 +88,64 @@ Item {
             return ((event.mimeData.formats.indexOf("text/x-plasmoidservicename") === 0) && isSeparator);
         }
 
+        function isDroppingOnlyLaunchers(event) {
+            if (event.mimeData.hasUrls || (event.mimeData.formats.indexOf("text/x-plasmoidservicename") !== 0)) {
+                var onlyLaunchers = event.mimeData.urls.every(function (item) {
+                    return backend.isApplication(item)
+                });
+
+                return onlyLaunchers;
+            }
+
+            return false;
+        }
+
+        function isMovingTask(event) {
+            return event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0;
+        }
+
+        function clearDroppingFlags() {
+            inDroppingFiles = false;
+            inDroppingOnlyLaunchers = false;
+            inDroppingSeparator = false;
+            inMovingTask = false;
+        }
+
         onHoveredItemChanged: {
             if (hoveredItem && windowsPreviewDlg.activeItem && hoveredItem !== windowsPreviewDlg.activeItem ) {
                 windowsPreviewDlg.hide(6.7);
             }
         }
 
-        onDragEnter:{
-            dArea.containsDrag = true;
+        onDragEnter:{          
+            inDroppingOnlyLaunchers = isDroppingOnlyLaunchers(event);
+            inDroppingSeparator = isDroppingSeparator(event);
+            inDroppingFiles = event.mimeData.hasUrls && !inDroppingOnlyLaunchers;
+            inMovingTask = isMovingTask(event);
 
-            if(root.dragSource == null){
-                onlyLaunchers = false;
-                droppingSeparator = false;
-                root.dropNewLauncher = false;
-                var createLaunchers = false;
+            /*console.log(" tasks moving task :: " + inMovingTask);
+            console.log(" tasks only launchers :: " + inDroppingOnlyLaunchers);
+            console.log(" tasks separator :: " + inDroppingSeparator);
+            console.log(" tasks only files :: " + inDroppingFiles);
+            console.log(" tasks event accepted :: " + eventIsAccepted);*/
 
-                if (event.mimeData.hasUrls || (event.mimeData.formats.indexOf("text/x-plasmoidservicename") !== 0)) {
-                    root.dropNewLauncher = true;
-
-                    if (event.mimeData.hasUrls){
-                        createLaunchers = event.mimeData.urls.every(function (item) {
-                            return backend.isApplication(item)
-                        });
-                    }
-                } else if (isDroppingSeparator(event)) {
-                    droppingSeparator = true;
-                    root.dropNewLauncher = true;
-                    return;
-                } else {
-                    return;
-                    //event.ignore();
-                }
-
-                if (createLaunchers) {
-                    onlyLaunchers = true;
-                }
+            if (!eventIsAccepted) {
+                clearDroppingFlags();
+                event.ignore();
+                return;
             }
+
+            dArea.containsDrag = true;
         }
 
         onDragMove: {
+            if (!eventIsAccepted) {
+                clearDroppingFlags();
+                event.ignore();
+                return;
+            }
+
             dArea.containsDrag = true;
-            /* if(root.dragSource == null){
-                root.dropNewLauncher = true;
-            } */
 
             if (target.animating) {
                 return;
@@ -176,10 +197,8 @@ Item {
                 }
             } else if (!root.dragSource && above && hoveredItem != above) {
                 hoveredItem = above;
-                //root.dropNewLauncher = true;
                 activationTimer.restart();
             } else if (!above) {
-                //root.dropNewLauncher = true;
                 hoveredItem = null;
                 activationTimer.stop();
             }
@@ -192,34 +211,32 @@ Item {
         onDragLeave: {
             dArea.containsDrag = false;
             hoveredItem = null;
-            root.dropNewLauncher = false;
-            onlyLaunchers = false;
+            clearDroppingFlags();
+
             activationTimer.stop();
         }
 
         onDrop: {
-            // Reject internal drops.
-            dArea.containsDrag = false;
-            root.dropNewLauncher = false;
-            onlyLaunchers = false;
-
-            if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0) {
+            if (!eventIsAccepted) {
+                clearDroppingFlags();
+                event.ignore();
                 return;
             }
 
-            if (droppingSeparator) {
-                droppingSeparator = false;
+            // Reject internal drops.
+            dArea.containsDrag = false;
+
+            if (inDroppingSeparator) {
                 if (hoveredItem && hoveredItem.itemIndex >=0){
                     appletAbilities.launchers.addInternalSeparatorAtPos(hoveredItem.itemIndex);
                 } else {
                     appletAbilities.launchers.addInternalSeparatorAtPos(0);
                 }
-                return;
-            }
-
-            if (event.mimeData.hasUrls) {
+            } else if (inDroppingOnlyLaunchers || inDroppingFiles) {
                 parent.urlsDropped(event.mimeData.urls);
             }
+
+            clearDroppingFlags();
         }
 
         Timer {
@@ -229,7 +246,7 @@ Item {
             repeat: false
 
             onTriggered: {
-                if (dropHandler.onlyLaunchers || !root.dropNewLauncher || dropHandler.droppingSeparator) {
+                if (dropHandler.inDroppingOnlyLaunchers || dropHandler.inDroppingSeparator) {
                     return;
                 }
 

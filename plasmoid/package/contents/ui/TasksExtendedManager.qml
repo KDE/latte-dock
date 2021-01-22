@@ -373,7 +373,7 @@ Item {
         interval: 450
         onTriggered: {
             tasksModel.syncLaunchers();
-            _launchers.validateSyncedLaunchersOrder();
+            appletAbilities.launchers.validateSyncedLaunchersOrder();
         }
     }
 

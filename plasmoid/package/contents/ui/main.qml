@@ -65,7 +65,6 @@ Item {
 
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: plasmoid.configuration.hideAllTasks
-    property bool dropNewLauncher: false
     property bool inActivityChange: false
     property bool inDraggingPhase: false
     property bool initializationStep: false //true
@@ -126,11 +125,6 @@ Item {
     readonly property alias appletAbilities: _appletAbilities
 
     readonly property alias containsDrag: mouseHandler.containsDrag
-    readonly property bool dragAreaEnabled: latteView ? (root.dragSource !== null
-                                                         || latteView.dragInfo.isSeparator
-                                                         || latteView.dragInfo.isTask
-                                                         || !latteView.dragInfo.isPlasmoid)
-                                                      : true
 
     //BEGIN Latte Dock properties
     property bool badges3DStyle: latteView ? latteView.badges3DStyle : true
@@ -936,7 +930,7 @@ Item {
 
             target: icList
 
-            visible: root.dragAreaEnabled
+            visible: !root.dragSource
 
             property int maxThickness: (appletAbilities.parabolic.isHovered || windowPreviewIsShown || appletAbilities.animations.hasThicknessAnimation) ?
                                            appletAbilities.metrics.mask.thickness.zoomedForItems : appletAbilities.metrics.mask.thickness.normalForItems
@@ -1119,7 +1113,7 @@ Item {
 
             visible: backgroundOpacity > 0
             radius: appletAbilities.metrics.iconSize/10
-            backgroundOpacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 0.75 : 0
+            backgroundOpacity: mouseHandler.isDroppingOnlyLaunchers ? 0.75 : 0
             duration: appletAbilities.animations.speedFactor.current
 
             title: i18n("Tasks Area")

@@ -113,20 +113,13 @@ Item {
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && (!forceTransparentPanel || forcePanelForBusyBackground)
 
-    readonly property bool ignoreRegularFilesDragging: !root.editMode
-                                                       && (dragInfo.computationsAreValid || foreDropArea.dragInfo.computationsAreValid)
-                                                       && !root.dragInfo.isPlasmoid
-                                                       && !root.dragInfo.onlyLaunchers
     readonly property Item dragInfo: Item {
-        property bool entered: backDropArea.dragInfo.entered || foreDropArea.dragInfo.entered
-        property bool isTask: backDropArea.dragInfo.isTask || foreDropArea.dragInfo.isTask
-        property bool isPlasmoid: backDropArea.dragInfo.isPlasmoid || foreDropArea.dragInfo.isPlasmoid
-        property bool isSeparator: backDropArea.dragInfo.isSeparator || foreDropArea.dragInfo.isSeparator
-        property bool isLatteTasks: backDropArea.dragInfo.isLatteTasks || foreDropArea.dragInfo.isLatteTasks
-        property bool onlyLaunchers: backDropArea.dragInfo.onlyLaunchers || foreDropArea.dragInfo.onlyLaunchers
-
-        //  onIsPlasmoidChanged: console.log("isPlasmoid :: " + backDropArea.dragInfo.isPlasmoid + " _ " + foreDropArea.dragInfo.isPlasmoid );
-        //  onEnteredChanged: console.log("entered :: " + backDropArea.dragInfo.entered + " _ " + foreDropArea.dragInfo.entered );
+        property bool entered: backDropArea.dragInfo.entered
+        property bool isTask: backDropArea.dragInfo.isTask
+        property bool isPlasmoid: backDropArea.dragInfo.isPlasmoid
+        property bool isSeparator: backDropArea.dragInfo.isSeparator
+        property bool isLatteTasks: backDropArea.dragInfo.isLatteTasks
+        property bool onlyLaunchers: backDropArea.dragInfo.onlyLaunchers
     }
 
     property bool containsOnlyPlasmaTasks: latteView ? latteView.extendedInterface.hasPlasmaTasks && !latteView.extendedInterface.hasLatteTasks : false
@@ -1225,9 +1218,6 @@ Item {
     DragDropArea {
         id: backDropArea
         anchors.fill: parent
-        readonly property bool higherPriority: latteView && latteView.containsDrag
-                                               && ((root.dragInfo.isPlasmoid && root.dragInfo.isSeparator)
-                                                   || (foreDropArea.dragInfo.computationsAreValid && !root.dragInfo.isPlasmoid && !root.dragInfo.onlyLaunchers))
 
         Item{
             anchors.fill: layoutsContainer
@@ -1239,19 +1229,6 @@ Item {
 
         Layouts.LayoutsContainer {
             id: layoutsContainer
-        }
-
-        DragDropArea {
-            id: foreDropArea
-            anchors.fill: parent
-            visible: !backDropArea.higherPriority
-            isForeground: true
-
-            /* Rectangle {
-                anchors.fill: parent
-                color: "blue"
-                opacity: 0.5
-            }*/
         }
     }
 

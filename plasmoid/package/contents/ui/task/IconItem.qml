@@ -601,8 +601,9 @@ Item{
         readonly property int length: taskItem.abilities.metrics.totals.length
         readonly property int thickness: taskItem.abilities.metrics.totals.thickness
 
-        readonly property real applyOpacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
-                                             && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 0.7 : 0
+        readonly property real applyOpacity: (mouseHandler.isDroppingSeparator || mouseHandler.isDroppingFiles)
+                                             && (root.dragSource === null)
+                                             && (mouseHandler.hoveredItem === taskItem) ? 0.7 : 0
 
         sourceComponent: LatteComponents.AddItem {
             anchors.fill: parent

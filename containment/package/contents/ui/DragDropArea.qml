@@ -27,8 +27,6 @@ import org.kde.latte.core 0.2 as LatteCore
 DragDrop.DropArea {
     id: dragArea
 
-    property bool isForeground: false
-
     readonly property Item dragInfo: Item {
         readonly property bool entered: latteView && latteView.containsDrag
         property bool isTask: false
@@ -64,10 +62,26 @@ DragDrop.DropArea {
         clearInfoTimer.restart();
     }
 
+    function isDroppingOnlyLaunchers(event) {
+        if (!latteView) {
+            return
+        }
+
+        if (event.mimeData.hasUrls || (event.mimeData.formats.indexOf("text/x-plasmoidservicename") !== 0)) {
+            var onlyLaunchers = event.mimeData.urls.every(function (item) {
+                return latteView.extendedInterface.isApplication(item);
+            });
+
+            return onlyLaunchers;
+        }
+
+        return false;
+    }
+
     //! Give the time when an applet is dropped to be positioned properly
     Timer {
         id: clearInfoTimer
-        interval: 100 //dragArea.isForeground ? 100 : 500
+        interval: 100
 
         onTriggered: {
             dragArea.dragInfo.computationsAreValid = false;
@@ -109,11 +123,12 @@ DragDrop.DropArea {
         dragInfo.isPlasmoid = isPlasmoid;
         dragInfo.isSeparator = isSeparator;
         dragInfo.isLatteTasks = isLatteTasks;
-        dragInfo.onlyLaunchers = latteApplet ? latteApplet.launchersDrop(event) : false;
+        dragInfo.onlyLaunchers = isDroppingOnlyLaunchers(event);
         dragInfo.computationsAreValid = true;
 
         if (dragInfo.isTask || plasmoid.immutable || !root.myView.isShownFully) {
             event.ignore();
+            clearInfo();
             return;
         }
 
@@ -140,11 +155,8 @@ DragDrop.DropArea {
             }
         }
 
-        if (!root.ignoreRegularFilesDragging && !dragResistaner.running) {
-            if (!isForeground) {
-                dragResistaner.start();
-            }
-
+        if (!dragResistaner.running) {
+            dragResistaner.start();
             root.layoutManager().insertAtCoordinates2(dndSpacer, event.x, event.y)
             dndSpacer.opacity = 1;
         }
@@ -175,11 +187,8 @@ DragDrop.DropArea {
             }
         }
 
-        if (!root.ignoreRegularFilesDragging && !dragResistaner.running) {
-            if (!isForeground) {
-                dragResistaner.start();
-            }
-
+        if (!dragResistaner.running) {
+            dragResistaner.start();
             root.layoutManager().insertAtCoordinates2(dndSpacer, event.x, event.y)
             dndSpacer.opacity = 1;
         }
@@ -187,24 +196,20 @@ DragDrop.DropArea {
 
     Timer {
         id: dragResistaner
-        interval: 1000
+        interval: 450
     }
 
     onDragLeave: {
         animations.needLength.removeEvent(dragArea);
-
         root.addLaunchersMessage = false;
-
-        if (!isForeground) {
-            dndSpacer.opacity = 0;
-            dndSpacer.parent = root;
-        }
+        dndSpacer.opacity = 0;
+        dndSpacer.parent = root;
     }
 
     onDrop: {
         animations.needLength.removeEvent(dragArea);
 
-        if ((root.ignoreRegularFilesDragging && dragInfo.isTask) || !root.myView.isShownFully) {
+        if (dragInfo.isTask || !root.myView.isShownFully) {
             return;
         }
 

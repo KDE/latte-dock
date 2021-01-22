@@ -35,6 +35,7 @@
 #include <PlasmaQuick/AppletQuickItem>
 
 // KDE
+#include <KDesktopFile>
 #include <KLocalizedString>
 #include <KPluginMetaData>
 
@@ -161,6 +162,22 @@ bool ContainmentInterface::isCapableToShowShortcutBadges()
     }
 
     return m_showShortcutsMethod.isValid();
+}
+
+bool ContainmentInterface::isApplication(const QUrl &url) const
+{
+    if (!url.isValid() || !url.isLocalFile()) {
+        return false;
+    }
+
+    const QString &localPath = url.toLocalFile();
+
+    if (!KDesktopFile::isDesktopFile(localPath)) {
+        return false;
+    }
+
+    KDesktopFile desktopFile(localPath);
+    return desktopFile.hasApplicationType();
 }
 
 int ContainmentInterface::applicationLauncherId() const
