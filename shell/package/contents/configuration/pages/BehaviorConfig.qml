@@ -835,7 +835,7 @@ PlasmaComponents.Page {
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
                        // Layout.maximumHeight: mouseWheelChk.height
-                        text: i18n("➊ Activate based on position global shortcuts")
+                        text: i18n("Activate based on position global shortcuts")
                         checked: latteView.isPreferredForShortcuts || (!latteView.layout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
                         tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
 

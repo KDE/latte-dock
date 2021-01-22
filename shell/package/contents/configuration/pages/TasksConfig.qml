@@ -185,7 +185,7 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     id: unifyGlobalShortcutsChk
                     Layout.maximumWidth: dialog.optionsWidth
-                    text: i18n("➊ Based on position shortcuts apply only on current tasks")
+                    text: i18n("Based on position shortcuts apply only on current tasks")
                     // checked: tasks.configuration.isPreferredForPositionShortcuts //! Disabled because it was not updated between multiple Tasks
                     tooltip: i18n("Based on position global shortcuts are enabled only for current tasks and not for other applets")
                     visible: dialog.advancedLevel
