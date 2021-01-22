@@ -544,7 +544,8 @@ FocusScope {
 
                     Pages.TasksConfig {
                         id: tasksPage
-                        readonly property int pageIndex:3+index
+                        readonly property int pageIndex: tabBar.visibleStaticPages+index
+
                         Component.onCompleted: {
                             pagesStackView.push(tasksPage);
                             pagesStackView.pop(tasksPage);
