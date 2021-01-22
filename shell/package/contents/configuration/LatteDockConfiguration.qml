@@ -383,11 +383,13 @@ FocusScope {
             Layout.fillWidth: true
             Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2)
 
+            readonly property int visibleStaticPages: dialog.advancedLevel ? 3 : 2
+
             PlasmaComponents.TabButton {
                 id: behaviorTabBtn
                 text: i18n("Behavior")
-                onPressedChanged: {
-                    if (pressed && pagesStackView.currentItem !== behaviorPage) {
+                onCheckedChanged: {
+                    if (checked && pagesStackView.currentItem !== behaviorPage) {
                         pagesStackView.forwardSliding = true;
                         pagesStackView.replace(pagesStackView.currentItem, behaviorPage);
                     }
@@ -396,8 +398,8 @@ FocusScope {
             PlasmaComponents.TabButton {
                 id: appearanceTabBtn
                 text: i18n("Appearance")
-                onPressedChanged: {
-                    if (pressed && pagesStackView.currentItem !== appearancePage) {
+                onCheckedChanged: {
+                    if (checked && pagesStackView.currentItem !== appearancePage) {
                         pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > 1);
                         pagesStackView.replace(pagesStackView.currentItem, appearancePage);
                     }
@@ -408,8 +410,8 @@ FocusScope {
                 text: i18n("Effects")
                 visible: dialog.advancedLevel
 
-                onPressedChanged: {
-                    if (pressed && pagesStackView.currentItem !== effectsPage) {
+                onCheckedChanged: {
+                    if (checked && pagesStackView.currentItem !== effectsPage) {
                         pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > 2);
                         pagesStackView.replace(pagesStackView.currentItem, effectsPage);
                     }
@@ -422,10 +424,9 @@ FocusScope {
 
                 PlasmaComponents.TabButton {
                     text: index >= 1 ? i18nc("tasks header and index","Tasks <%0>").arg(index+1) : i18n("Tasks")
-
-                    onPressedChanged: {
-                        if (pressed && pagesStackView.currentItem !== tasksRepeater.itemAt(index)) {
-                            pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > (3+index));
+                    onCheckedChanged: {
+                        if (checked && pagesStackView.currentItem !== tasksRepeater.itemAt(index)) {
+                            pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > (tabBar.visibleStaticPages + index));
                             pagesStackView.replace(pagesStackView.currentItem, tasksRepeater.itemAt(index));
                         }
                     }
