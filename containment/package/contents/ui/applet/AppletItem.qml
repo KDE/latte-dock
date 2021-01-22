@@ -335,6 +335,8 @@ Item {
         if (movingForResize) {
             movingForResize = false;
             return;
+        } else if (inDraggingOverAppletOrOutOfContainment) {
+            return;
         }
 
         var draggingAppletInConfigure = root.dragOverlay && root.dragOverlay.currentApplet;
@@ -371,6 +373,8 @@ Item {
 
         if (movingForResize) {
             movingForResize = false;
+            return;
+        } else if (inDraggingOverAppletOrOutOfContainment) {
             return;
         }
 

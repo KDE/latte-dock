@@ -113,6 +113,8 @@ Item {
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && (!forceTransparentPanel || forcePanelForBusyBackground)
 
+    readonly property bool inDraggingOverAppletOrOutOfContainment: latteView && latteView.containsDrag && !backDropArea.containsDrag
+
     readonly property Item dragInfo: Item {
         property bool entered: backDropArea.dragInfo.entered
         property bool isTask: backDropArea.dragInfo.isTask

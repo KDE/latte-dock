@@ -27,6 +27,8 @@ import org.kde.latte.core 0.2 as LatteCore
 DragDrop.DropArea {
     id: dragArea
 
+    property bool containsDrag: false
+
     readonly property Item dragInfo: Item {
         readonly property bool entered: latteView && latteView.containsDrag
         property bool isTask: false
@@ -98,6 +100,7 @@ DragDrop.DropArea {
     }
 
     onDragEnter: {
+        containsDrag = true;
         clearInfoTimer.stop();
         var isTask = event !== undefined
                 && event.mimeData !== undefined
@@ -160,6 +163,7 @@ DragDrop.DropArea {
     }
 
     onDragMove: {
+        containsDrag = true;
         clearInfoTimer.stop();
         if (dragInfo.isTask) {
             return;
@@ -189,6 +193,7 @@ DragDrop.DropArea {
     }
 
     onDragLeave: {
+        containsDrag = false;
         animations.needLength.removeEvent(dragArea);
         root.addLaunchersMessage = false;
         dndSpacer.opacity = 0;
@@ -196,6 +201,7 @@ DragDrop.DropArea {
     }
 
     onDrop: {
+        containsDrag = false;
         animations.needLength.removeEvent(dragArea);
 
         if (dragInfo.isTask || !root.myView.isShownFully) {
