@@ -108,6 +108,8 @@ signals:
     void latteTasksModelChanged();
     void plasmaTasksModelChanged();
 
+    void appletRequestedVisualIndicator(const int &plasmoidId);
+
 private slots:
     void identifyShortcutsHost();
     void identifyMethods();

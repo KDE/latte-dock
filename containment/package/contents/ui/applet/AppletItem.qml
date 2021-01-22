@@ -721,7 +721,10 @@ Item {
                 appletItem.isExpanded = false;
             }
         }
+
+
     }
+
     ///END connections
 
     //! It is used for any communication needed with the underlying applet

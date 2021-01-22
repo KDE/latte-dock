@@ -32,10 +32,19 @@ import org.kde.latte.components 1.0 as LatteComponents
 import org.kde.latte.private.tasks 0.1 as LatteTasks
 
 PlasmaComponents.Page {
+    id: _tabsPage
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
 
     property bool disableAllWindowsFunctionality: tasks.configuration.hideAllTasks
+
+    readonly property bool isCurrentPage: (tabGroup.currentTab === _tabsPage)
+
+    onIsCurrentPageChanged: {
+        if (isCurrentPage && latteView.extendedInterface.latteTasksModel.count>1) {
+            latteView.extendedInterface.appletRequestedVisualIndicator(tasks.id);
+        }
+    }
 
     ColumnLayout {
         id: content
