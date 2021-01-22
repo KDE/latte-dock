@@ -20,7 +20,13 @@
 import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 
-Item {
+import "./privates" as Ability
+
+Ability.LaunchersPrivate {
+    //! do not update during dragging/moving applets inConfigureAppletsMode
+    updateIsBlocked: (root.dragOverlay && root.dragOverlay.pressed)
+                     || layouter.appletsInParentChange
+
     readonly property bool isReady: latteView && latteView.layout && universalSettings && root.layoutsManager !== null
     readonly property bool isCapableOfLayoutLaunchers: latteView && latteView.layout
     readonly property bool isCapableOfUniversalLaunchers: latteView && universalSettings
@@ -75,6 +81,24 @@ Item {
                                                               senderId,
                                                               group,
                                                               orderedlaunchers);
+    }
+
+    function addDroppedLaunchersInStealingApplet(launchers) {
+        if (hasStealingApplet) {
+            appletStealingDroppedLaunchers.addDroppedLaunchers(launchers);
+        }
+    }
+
+    function showAddLaunchersMessageInStealingApplet() {
+        if (hasStealingApplet) {
+            appletStealingDroppedLaunchers.isShowingAddLaunchersMessage = true;
+        }
+    }
+
+    function hideAddLaunchersMessageInStealingApplet() {
+        if (hasStealingApplet) {
+            appletStealingDroppedLaunchers.isShowingAddLaunchersMessage = false;
+        }
     }
 
     function setLayoutLaunchers(launchers) {

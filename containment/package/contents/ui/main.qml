@@ -64,12 +64,6 @@ Item {
     readonly property int version: LatteCore.Environment.makeVersion(0,9,75)
     readonly property bool kirigamiLibraryIsFound: LatteCore.Environment.frameworksVersion >= LatteCore.Environment.makeVersion(5,69,0)
 
-    property bool addLaunchersMessage: false
-    property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
-                                             && latteView
-                                             && (latteView.extendedInterface.latteTasksModel.count === 1)
-                                             && (latteView.extendedInterface.plasmaTasksModel.count === 0)
-
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     readonly property bool behaveAsPlasmaPanel: viewType === LatteCore.Types.PanelView
     readonly property bool behaveAsDockWithMask: !behaveAsPlasmaPanel
@@ -363,6 +357,7 @@ Item {
     readonly property alias indexer: _indexer
     readonly property alias indicatorsManager: indicators
     readonly property alias layouter: _layouter
+    readonly property alias launchers: _launchers
     readonly property alias metrics: _metrics
     readonly property alias myView: _myView
     readonly property alias parabolic: _parabolic
@@ -1357,6 +1352,7 @@ Item {
 
     Ability.Launchers {
         id: _launchers
+        layouts: layoutsContainer
         layoutName: latteView && latteView.layout ? latteView.layout.name : ""
     }
 

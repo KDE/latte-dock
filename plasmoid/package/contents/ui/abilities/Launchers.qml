@@ -27,6 +27,8 @@ import "launchers" as LaunchersPart
 
 Item {
     id: _launchers
+    readonly property bool isActive: bridge !== null
+
     signal launcherChanged(string launcherUrl);
     signal launcherRemoved(string launcherUrl);
 
@@ -34,6 +36,11 @@ Item {
     signal launcherInAdding(string launcherUrl);
     signal launcherInRemoving(string launcherUrl);
     signal launcherInMoving(string launcherUrl, int pos);
+
+    signal disabledIsStealingDroppedLaunchers();
+
+    property bool isStealingDroppedLaunchers: false
+    property bool isShowingAddLaunchersMessage: false
 
     property bool __isLoadedDuringViewStartup: false
 
@@ -95,8 +102,8 @@ Item {
 
     function addLauncher(launcherUrl) {
         if (bridge && !inUniqueGroup()) {
-            bridge.launchers.addSyncedLauncher(launchers.group,
-                                               launcherUrl);
+            bridge.launchers.host.addSyncedLauncher(launchers.group,
+                                                    launcherUrl);
         } else {
             _launchers.tasksModel.requestAddLauncher(launcherUrl);
             _launchers.launcherChanged(launcherUrl);
@@ -123,8 +130,8 @@ Item {
     function addDroppedLaunchers(urls) {
         //! inform synced docks for new dropped launchers
         if (bridge && !launchers.inUniqueGroup()) {
-            bridge.launchers.addDroppedLaunchers(launchers.group,
-                                                 urls);
+            bridge.launchers.host.addDroppedLaunchers(launchers.group,
+                                                      urls);
         } else {
             urls.forEach(function (item) {
                 addDroppedLauncher(item);
@@ -151,8 +158,8 @@ Item {
 
     function removeLauncher(launcherUrl) {
         if (bridge && !inUniqueGroup()) {
-            bridge.launchers.removeSyncedLauncher(launchers.group,
-                                                  launcherUrl);
+            bridge.launchers.host.removeSyncedLauncher(launchers.group,
+                                                       launcherUrl);
         } else {
             _launchers.launcherInRemoving(launcherUrl);
             _launchers.tasksModel.requestRemoveLauncher(launcherUrl);
@@ -162,9 +169,9 @@ Item {
 
     function addLauncherToActivity(launcherUrl, activityId) {
         if (bridge && !inUniqueGroup()) {
-            bridge.launchers.addSyncedLauncherToActivity(launchers.group,
-                                                         launcherUrl,
-                                                         activityId);
+            bridge.launchers.host.addSyncedLauncherToActivity(launchers.group,
+                                                              launcherUrl,
+                                                              activityId);
         } else {
             if (activityId !== activityInfo.currentActivity && isOnAllActivities(launcherUrl)) {
                 _launchers.launcherInRemoving(launcherUrl);
@@ -177,9 +184,9 @@ Item {
 
     function removeLauncherFromActivity(launcherUrl, activityId) {
         if (bridge && !inUniqueGroup()) {
-            bridge.launchers.removeSyncedLauncherFromActivity(launchers.group,
-                                                              launcherUrl,
-                                                              activityId);
+            bridge.launchers.host.removeSyncedLauncherFromActivity(launchers.group,
+                                                                   launcherUrl,
+                                                                   activityId);
         } else {
             if (activityId === activityInfo.currentActivity) {
                 _launchers.launcherInRemoving(launcherUrl);
@@ -191,9 +198,9 @@ Item {
 
     function validateSyncedLaunchersOrder() {
         if (bridge && !_launchers.inUniqueGroup()) {
-            bridge.launchers.validateSyncedLaunchersOrder(syncer.clientId,
-                                                          group,
-                                                          currentShownLauncherList());
+            bridge.launchers.host.validateSyncedLaunchersOrder(syncer.clientId,
+                                                               group,
+                                                               currentShownLauncherList());
         } else {
             /*validator.stop();
             validator.launchers = orderedLaunchers;
@@ -269,12 +276,12 @@ Item {
         var launch = [];
         var launchersList = [];
 
-        if (bridge && bridge.launchers.isReady) {
+        if (bridge && bridge.launchers.host.isReady) {
             if (!_launchers.inUniqueGroup()) {
                 if (_launchers.inLayoutGroup()) {
-                    launchersList = bridge.launchers.layoutLaunchers;
+                    launchersList = bridge.launchers.host.layoutLaunchers;
                 } else if (_launchers.inGlobalGroup()) {
-                    launchersList = bridge.launchers.universalLaunchers;
+                    launchersList = bridge.launchers.host.universalLaunchers;
                 }
             }
         } else {
@@ -302,13 +309,13 @@ Item {
     }
 
     function importLauncherListInModel() {
-        if (bridge && bridge.launchers.isReady && !inUniqueGroup()) {
+        if (bridge && bridge.launchers.host.isReady && !inUniqueGroup()) {
             if (inLayoutGroup()) {
                 console.log("Tasks: Applying LAYOUT Launchers List...");
-                tasksModel.launcherList = bridge.launchers.layoutLaunchers;
+                tasksModel.launcherList = bridge.launchers.host.layoutLaunchers;
             } else if (inGlobalGroup()) {
                 console.log("Tasks: Applying GLOBAL Launchers List...");
-                tasksModel.launcherList = bridge.launchers.universalLaunchers;
+                tasksModel.launcherList = bridge.launchers.host.universalLaunchers;
             }
         } else {
             console.log("Tasks: Applying UNIQUE Launchers List...");
@@ -318,6 +325,23 @@ Item {
 
 
     //! Connections
+    Component.onCompleted: {
+        if (isActive) {
+            bridge.launchers.client = _launchers;
+        }
+    }
+
+    Component.onDestruction: {
+        if (isActive) {
+            bridge.launchers.client = null;
+        }
+    }
+
+    onIsActiveChanged: {
+        if (isActive) {
+            bridge.launchers.client = _launchers;
+        }
+    }
 
     onGroupChanged:{
         if(appletAbilities.myView.isReady) {
@@ -337,9 +361,9 @@ Item {
     }
 
     Connections {
-        target: bridge ? bridge.launchers : null
+        target: bridge ? bridge.launchers.host : null
         onIsReadyChanged: {
-            if (bridge && bridge.launchers.isReady && !_launchers.__isLoadedDuringViewStartup) {
+            if (bridge && bridge.launchers.host.isReady && !_launchers.__isLoadedDuringViewStartup) {
                 _launchers.__isLoadedDuringViewStartup = true;
                 _launchers.importLauncherListInModel();
             }
@@ -349,12 +373,12 @@ Item {
     Connections {
         target: _launchers.tasksModel
         onLauncherListChanged: {
-            if (bridge && bridge.launchers.isReady) {
+            if (bridge && bridge.launchers.host.isReady) {
                 if (!_launchers.inUniqueGroup()) {
                     if (_launchers.inLayoutGroup()) {
-                        bridge.launchers.setLayoutLaunchers(_launchers.tasksModel.launcherList);
+                        bridge.launchers.host.setLayoutLaunchers(_launchers.tasksModel.launcherList);
                     } else if (_launchers.inGlobalGroup()) {
-                        bridge.launchers.setUniversalLaunchers(_launchers.tasksModel.launcherList);
+                        bridge.launchers.host.setUniversalLaunchers(_launchers.tasksModel.launcherList);
                     }
 
                     if (inDraggingPhase) {

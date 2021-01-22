@@ -142,7 +142,6 @@ Item{
     readonly property Item actions: Actions{}
     readonly property Item applet: mainCommunicator.requires
     readonly property Item debug: appletItem.debug.publicApi
-    readonly property Item launchers: appletItem.launchers
     readonly property Item metrics: appletItem.metrics.publicApi
     readonly property Item myView: appletItem.myView
     readonly property Item userRequests: appletItem.userRequests
@@ -157,6 +156,11 @@ Item{
         appletIndex: index
         headAppletIsSeparator: appletItem.headAppletIsSeparator
         tailAppletIsSeparator: appletItem.tailAppletIsSeparator
+    }
+
+    readonly property AbilityBridge.Launchers launchers: AbilityBridge.Launchers {
+        host: appletItem.launchers
+        appletIndex: index
     }
 
     readonly property AbilityBridge.ParabolicEffect parabolic: AbilityBridge.ParabolicEffect {

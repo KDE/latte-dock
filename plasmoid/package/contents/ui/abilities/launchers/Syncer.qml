@@ -26,35 +26,35 @@ import org.kde.latte.core 0.2 as LatteCore
 Item {
     id:_syncer
     property bool isBlocked: false
-    readonly property bool isActive: bridge !== null && group !== LatteCore.Types.UniqueLaunchers
+    readonly property bool isActive: bridge !== null && bridge.launchers.host !==null && group !== LatteCore.Types.UniqueLaunchers
     readonly property int clientId: plasmoid.id
 
     //! Connections
     Component.onCompleted: {
         if (isActive) {
-            bridge.launchers.addAbilityClient(_syncer);
+            bridge.launchers.host.addAbilityClient(_syncer);
         }
     }
 
     Component.onDestruction: {
         if (bridge) {
-            bridge.launchers.removeAbilityClient(_syncer);
+            bridge.launchers.host.removeAbilityClient(_syncer);
         }
     }
 
     onIsActiveChanged: {
         if (isActive) {
-            bridge.launchers.addAbilityClient(_syncer);
+            bridge.launchers.host.addAbilityClient(_syncer);
         } else if (bridge) {
-            bridge.launchers.removeAbilityClient(_syncer);
+            bridge.launchers.host.removeAbilityClient(_syncer);
         }
     }
 
     Connections {
-        target: isActive ? bridge.launchers : null
+        target: isActive ? bridge.launchers.host : null
         onIsReadyChanged: {
-            if (bridge.launchers.isReady && _syncer.isActive) {
-                bridge.launchers.addAbilityClient(_syncer);
+            if (bridge.launchers.host.isReady && _syncer.isActive) {
+                bridge.launchers.host.addAbilityClient(_syncer);
             }
         }
     }

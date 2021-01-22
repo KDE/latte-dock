@@ -135,14 +135,15 @@ PlasmaComponents.Page {
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
-                    text: i18n("Add launchers only in the Tasks Area")
-                    checked: plasmoid.configuration.addLaunchersInTaskManager
-                    tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
-                    enabled: latteView.extendedInterface.latteTasksModel.count === 1
-                             && latteView.extendedInterface.plasmaTasksModel.count === 0
+                    text: i18n("Launchers are added only in current tasks applet")
+                    tooltip: i18n("Launchers are added only in current tasks applet and not as regular applets or in any other applet")
+
+                    readonly property bool isPreferredForLaunchers: tasks.configuration.isPreferredForDroppedLaunchers
+
+                    onIsPreferredForLaunchersChanged: checked = isPreferredForLaunchers;
 
                     onClicked: {
-                        plasmoid.configuration.addLaunchersInTaskManager = checked;
+                        tasks.configuration.isPreferredForDroppedLaunchers = !tasks.configuration.isPreferredForDroppedLaunchers;
                     }
                 }
 
@@ -175,9 +176,9 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     id: unifyGlobalShortcutsChk
                     Layout.maximumWidth: dialog.optionsWidth
-                    text: i18n("➊ Based on position shortcuts apply only on tasks")
+                    text: i18n("➊ Based on position shortcuts apply only on current tasks")
                     // checked: tasks.configuration.isPreferredForPositionShortcuts //! Disabled because it was not updated between multiple Tasks
-                    tooltip: i18n("Based on position global shortcuts are enabled only for tasks and not for applets")
+                    tooltip: i18n("Based on position global shortcuts are enabled only for current tasks and not for other applets")
                     visible: dialog.advancedLevel
                     enabled: latteView.isPreferredForShortcuts || (!latteView.layout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
 

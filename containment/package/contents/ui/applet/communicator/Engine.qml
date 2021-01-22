@@ -59,6 +59,7 @@ Item{
     //! BEGIN OF ABILITIES SUPPORT
     readonly property bool animationsAreSupported: bridge && bridge.animations.client
     readonly property bool indexerIsSupported: bridge && bridge.indexer.client
+    readonly property bool launchersAreSupported: bridge && bridge.launchers.client
     readonly property bool parabolicEffectIsSupported: bridge && bridge.parabolic.client
     readonly property bool positionShortcutsAreSupported: bridge && bridge.shortcuts.client
 

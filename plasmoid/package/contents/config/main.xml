@@ -37,6 +37,9 @@
     <entry name="isPreferredForPositionShortcuts" type="Bool">
       <default>false</default>
     </entry>
+    <entry name="isPreferredForDroppedLaunchers" type="Bool">
+      <default>true</default>
+    </entry>
     <entry name="zoomLevel" type="Int">
       <default>14</default>
     </entry>

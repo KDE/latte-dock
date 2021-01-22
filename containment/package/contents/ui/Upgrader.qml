@@ -90,6 +90,7 @@ Item{
                         tasks.configuration.modifierClickAction = plasmoid.configuration.modifierClickAction;
                         tasks.configuration.modifier = plasmoid.configuration.modifier;
                         tasks.configuration.modifierClick = plasmoid.configuration.modifierClick;
+                        tasks.configuration.isDroppedLauncherAddedOnlyInCurrentTasks = plasmoid.configuration.addLaunchersInTaskManager;
                         console.log("Migrating Tasks Applet for v0.10 succeeded ...");
 
                         plasmoid.configuration.tasksUpgraded = true;

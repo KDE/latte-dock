@@ -139,23 +139,11 @@ DragDrop.DropArea {
         //! may not be triggered #408926
         animations.needLength.addEvent(dragArea);
 
-        if (latteApplet && (dragInfo.onlyLaunchers || dragInfo.isSeparator || !dragInfo.isPlasmoid)) {
-            if (dragInfo.onlyLaunchers) {
-                var hoversLatteTasks = root.latteAppletContainer.containsPos(event);
-                root.addLaunchersMessage = root.addLaunchersInTaskManager || (!root.addLaunchersInTaskManager && hoversLatteTasks);
-
-                if (root.addLaunchersInTaskManager || hoversLatteTasks) {
-                    dndSpacer.opacity = 0;
-                    dndSpacer.parent = root;
-                    return;
-                }
-            } else {
-                if ((dragInfo.isSeparator || !dragInfo.isPlasmoid) && root.latteAppletContainer.containsPos(event)) {
-                    dndSpacer.opacity = 0;
-                    dndSpacer.parent = root;
-                    return;
-                }
-            }
+        if (root.launchers.hasStealingApplet && dragInfo.onlyLaunchers) {
+            root.launchers.showAddLaunchersMessageInStealingApplet();
+            dndSpacer.opacity = 0;
+            dndSpacer.parent = root;
+            return;
         }
 
         root.layoutManager().insertAtCoordinates2(dndSpacer, event.x, event.y)
@@ -169,23 +157,11 @@ DragDrop.DropArea {
             return;
         }
 
-        if (latteApplet && (dragInfo.onlyLaunchers || dragInfo.isSeparator || !dragInfo.isPlasmoid)) {
-            if (dragInfo.onlyLaunchers) {
-                var hoversLatteTasks = root.latteAppletContainer.containsPos(event);
-                root.addLaunchersMessage = root.addLaunchersInTaskManager || (!root.addLaunchersInTaskManager && hoversLatteTasks);
-
-                if (root.addLaunchersInTaskManager || hoversLatteTasks) {
-                    dndSpacer.opacity = 0;
-                    dndSpacer.parent = root;
-                    return;
-                }
-            } else {
-                if ((dragInfo.isSeparator || !dragInfo.isPlasmoid) && root.latteAppletContainer.containsPos(event)) {
-                    dndSpacer.opacity = 0;
-                    dndSpacer.parent = root;
-                    return;
-                }
-            }
+        if (root.launchers.hasStealingApplet && dragInfo.onlyLaunchers) {
+            root.launchers.showAddLaunchersMessageInStealingApplet();
+            dndSpacer.opacity = 0;
+            dndSpacer.parent = root;
+            return;
         }
 
         root.layoutManager().insertAtCoordinates2(dndSpacer, event.x, event.y)
@@ -195,7 +171,11 @@ DragDrop.DropArea {
     onDragLeave: {
         containsDrag = false;
         animations.needLength.removeEvent(dragArea);
-        root.addLaunchersMessage = false;
+
+        if (root.launchers.hasStealingApplet) {
+            root.launchers.hideAddLaunchersMessageInStealingApplet();
+        }
+
         dndSpacer.opacity = 0;
         dndSpacer.parent = root;
     }
@@ -204,18 +184,21 @@ DragDrop.DropArea {
         containsDrag = false;
         animations.needLength.removeEvent(dragArea);
 
+        if (root.launchers.hasStealingApplet) {
+            root.launchers.hideAddLaunchersMessageInStealingApplet();
+        }
+
         if (dragInfo.isTask || !root.myView.isShownFully) {
             return;
         }
 
-        if (latteApplet && dragInfo.onlyLaunchers && (root.addLaunchersInTaskManager || root.latteAppletContainer.containsPos(event))) {
-            latteApplet.launchersDropped(event.mimeData.urls);
+        if (root.launchers.hasStealingApplet && dragInfo.onlyLaunchers) {
+            root.launchers.addDroppedLaunchersInStealingApplet(event.mimeData.urls);
         } else {
             plasmoid.processMimeData(event.mimeData, event.x, event.y);
             event.accept(event.proposedAction);
         }
 
-        root.addLaunchersMessage = false;
         dndSpacer.opacity = 0;
 
         if (dragInfo.isPlasmoid && root.myView.alignment === LatteCore.Types.Justify) {

@@ -754,6 +754,7 @@ Item {
         indexer.updateIsBlocked: root.inDraggingPhase || root.inActivityChange
 
         launchers.group: plasmoid.configuration.launchersGroup
+        launchers.isStealingDroppedLaunchers: plasmoid.configuration.isPreferredForDroppedLaunchers
         launchers.syncer.isBlocked: inDraggingPhase
 
         parabolic.itemsCount: tasksModel.count
@@ -767,14 +768,20 @@ Item {
         requires.latteSideColoringEnabled: false
         requires.screenEdgeMarginSupported: true
 
+        //! Connections
         Connections {
             target: _appletAbilities.shortcuts
-
             onDisabledIsStealingGlobalPositionShortcuts: {
                 plasmoid.configuration.isPreferredForPositionShortcuts = false;
             }
         }
 
+        Connections {
+            target: _appletAbilities.launchers
+            onDisabledIsStealingDroppedLaunchers: {
+                plasmoid.configuration.isPreferredForDroppedLaunchers = false;
+            }
+        }
     }
 
     Component{
@@ -1113,7 +1120,7 @@ Item {
 
             visible: backgroundOpacity > 0
             radius: appletAbilities.metrics.iconSize/10
-            backgroundOpacity: mouseHandler.isDroppingOnlyLaunchers ? 0.75 : 0
+            backgroundOpacity: mouseHandler.isDroppingOnlyLaunchers || appletAbilities.launchers.isShowingAddLaunchersMessage ? 0.75 : 0
             duration: appletAbilities.animations.speedFactor.current
 
             title: i18n("Tasks Area")
