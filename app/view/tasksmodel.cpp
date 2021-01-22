@@ -23,6 +23,7 @@
 #include <QDebug>
 
 // Plasma
+#include <Plasma/Applet>
 #include <PlasmaQuick/AppletQuickItem>
 
 namespace Latte {
@@ -78,22 +79,66 @@ void TasksModel::addTask(PlasmaQuick::AppletQuickItem *plasmoid)
         removeTask(plasmoid);
     });
 
+    connect(plasmoid->applet(), &Plasma::Applet::destroyedChanged, this, [&, plasmoid](const bool &destroyed){
+        if (destroyed) {
+            moveIntoWaitingTasks(plasmoid);
+        } else {
+            restoreFromWaitingTasks(plasmoid);
+        }
+    });
+
     emit countChanged();
+}
+
+void TasksModel::moveIntoWaitingTasks(PlasmaQuick::AppletQuickItem *plasmoid)
+{
+    if (plasmoid && !m_tasks.contains(plasmoid)) {
+        return;
+    }
+
+    int tind = m_tasks.indexOf(plasmoid);
+
+    if (tind >= 0) {
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        m_tasksWaiting << m_tasks.takeAt(tind);
+        endInsertRows();
+        emit countChanged();
+    }
+}
+
+void TasksModel::restoreFromWaitingTasks(PlasmaQuick::AppletQuickItem *plasmoid)
+{
+    if (plasmoid && !m_tasksWaiting.contains(plasmoid)) {
+        return;
+    }
+
+    int tind = m_tasksWaiting.indexOf(plasmoid);
+
+    if (tind >= 0) {
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        m_tasks << m_tasksWaiting.takeAt(tind);
+        endInsertRows();
+        emit countChanged();
+    }
 }
 
 void TasksModel::removeTask(PlasmaQuick::AppletQuickItem *plasmoid)
 {
-    if (!plasmoid || (plasmoid && !m_tasks.contains(plasmoid))) {
+    if (!plasmoid || (plasmoid && !m_tasks.contains(plasmoid) && !m_tasksWaiting.contains(plasmoid))) {
         return;
     }
 
-    int iex = m_tasks.indexOf(plasmoid);
+    if (m_tasks.contains(plasmoid)) {
+        int iex = m_tasks.indexOf(plasmoid);
 
-    beginRemoveRows(QModelIndex(), iex, iex);
-    m_tasks.removeAll(plasmoid);
-    endRemoveRows();
+        beginRemoveRows(QModelIndex(), iex, iex);
+        m_tasks.removeAll(plasmoid);
+        endRemoveRows();
 
-    emit countChanged();
+        emit countChanged();
+    } else if (m_tasksWaiting.contains(plasmoid)) {
+        m_tasksWaiting.removeAll(plasmoid);
+    }
 }
 
 }

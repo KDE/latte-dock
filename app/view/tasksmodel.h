@@ -49,8 +49,13 @@ public:
 signals:
    void countChanged();
 
+private slots:
+   void moveIntoWaitingTasks(PlasmaQuick::AppletQuickItem *plasmoid);
+   void restoreFromWaitingTasks(PlasmaQuick::AppletQuickItem *plasmoid);
+
 private:
     QList<PlasmaQuick::AppletQuickItem *> m_tasks;
+    QList<PlasmaQuick::AppletQuickItem *> m_tasksWaiting;
 };
 
 }

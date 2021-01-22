@@ -27,7 +27,7 @@ AbilityDefinition.PositionShortcuts {
     readonly property bool isActive: bridge !== null
 
     property bool isStealingGlobalPositionShortcuts: false
-    readonly property bool showPositionShortcutBadges: ref.shortcuts.showPositionShortcutBadges
+    readonly property bool showPositionShortcutBadges: bridge && bridge.shortcuts.host ? bridge.shortcuts.host.showPositionShortcutBadges : false
 
     readonly property bool isEnabled: {
         if (bridge) {
@@ -39,11 +39,6 @@ AbilityDefinition.PositionShortcuts {
     }
 
     signal disabledIsStealingGlobalPositionShortcuts();
-
-    Item {
-        id: ref
-        readonly property Item shortcuts: bridge ? bridge.shortcuts.host : local
-    }
 
     onIsActiveChanged: {
         if (isActive) {
