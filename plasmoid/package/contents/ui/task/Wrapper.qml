@@ -188,6 +188,17 @@ Item{
         }
     }
 
+    Connections {
+        target: taskItem
+        onVisibleChanged: {
+            if (!taskItem.visible) {
+                //! is mostly used when the user destroys tasks applet from the context menu and both
+                //! axis animations should be released in that case
+                wrapper.sendEndOfNeedBothAxisAnimation();
+            }
+        }
+    }
+
     Component.onCompleted: {
         if (!LatteCore.WindowSystem.compositingActive) {
             opacity = 1;
