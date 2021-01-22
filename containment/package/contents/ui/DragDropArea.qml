@@ -155,11 +155,8 @@ DragDrop.DropArea {
             }
         }
 
-        if (!dragResistaner.running) {
-            dragResistaner.start();
-            root.layoutManager().insertAtCoordinates2(dndSpacer, event.x, event.y)
-            dndSpacer.opacity = 1;
-        }
+        root.layoutManager().insertAtCoordinates2(dndSpacer, event.x, event.y)
+        dndSpacer.opacity = 1;
     }
 
     onDragMove: {
@@ -187,16 +184,8 @@ DragDrop.DropArea {
             }
         }
 
-        if (!dragResistaner.running) {
-            dragResistaner.start();
-            root.layoutManager().insertAtCoordinates2(dndSpacer, event.x, event.y)
-            dndSpacer.opacity = 1;
-        }
-    }
-
-    Timer {
-        id: dragResistaner
-        interval: 450
+        root.layoutManager().insertAtCoordinates2(dndSpacer, event.x, event.y)
+        dndSpacer.opacity = 1;
     }
 
     onDragLeave: {
