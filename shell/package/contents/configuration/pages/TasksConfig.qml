@@ -38,7 +38,7 @@ PlasmaComponents.Page {
 
     property bool disableAllWindowsFunctionality: tasks.configuration.hideAllTasks
 
-    readonly property bool isCurrentPage: (tabGroup.currentTab === _tabsPage)
+    readonly property bool isCurrentPage: (dialog.currentPage === _tabsPage)
 
     onIsCurrentPageChanged: {
         if (isCurrentPage && latteView.extendedInterface.latteTasksModel.count>1) {

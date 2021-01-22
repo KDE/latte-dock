@@ -99,9 +99,9 @@ void TasksModel::moveIntoWaitingTasks(PlasmaQuick::AppletQuickItem *plasmoid)
     int tind = m_tasks.indexOf(plasmoid);
 
     if (tind >= 0) {
-        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        beginRemoveRows(QModelIndex(), tind, tind);
         m_tasksWaiting << m_tasks.takeAt(tind);
-        endInsertRows();
+        endRemoveRows();
         emit countChanged();
     }
 }

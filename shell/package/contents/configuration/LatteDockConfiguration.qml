@@ -20,6 +20,7 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.12 as QtQuickControls212
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
@@ -96,6 +97,8 @@ FocusScope {
 
     property color bC: theme.backgroundColor
     property color transparentBackgroundColor: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
+
+    readonly property Item currentPage: pagesStackView.currentItem
 
     onAdvancedLevelChanged: {
         //! switch to appearancePage when effectsPage becomes hidden because
@@ -383,18 +386,34 @@ FocusScope {
             PlasmaComponents.TabButton {
                 id: behaviorTabBtn
                 text: i18n("Behavior")
-                tab: behaviorPage
+                onPressedChanged: {
+                    if (pressed && pagesStackView.currentItem !== behaviorPage) {
+                        pagesStackView.forwardSliding = true;
+                        pagesStackView.replace(pagesStackView.currentItem, behaviorPage);
+                    }
+                }
             }
             PlasmaComponents.TabButton {
                 id: appearanceTabBtn
                 text: i18n("Appearance")
-                tab: appearancePage
+                onPressedChanged: {
+                    if (pressed && pagesStackView.currentItem !== appearancePage) {
+                        pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > 1);
+                        pagesStackView.replace(pagesStackView.currentItem, appearancePage);
+                    }
+                }
             }
             PlasmaComponents.TabButton {
                 id: effectsTabBtn
                 text: i18n("Effects")
-                tab: effectsPage
                 visible: dialog.advancedLevel
+
+                onPressedChanged: {
+                    if (pressed && pagesStackView.currentItem !== effectsPage) {
+                        pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > 2);
+                        pagesStackView.replace(pagesStackView.currentItem, effectsPage);
+                    }
+                }
             }
 
             Repeater {
@@ -403,7 +422,13 @@ FocusScope {
 
                 PlasmaComponents.TabButton {
                     text: index >= 1 ? i18nc("tasks header and index","Tasks <%0>").arg(index+1) : i18n("Tasks")
-                    tab: tasksRepeater.itemAt(index)
+
+                    onPressedChanged: {
+                        if (pressed && pagesStackView.currentItem !== tasksRepeater.itemAt(index)) {
+                            pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > (3+index));
+                            pagesStackView.replace(pagesStackView.currentItem, tasksRepeater.itemAt(index));
+                        }
+                    }
                 }
             }
         }
@@ -435,75 +460,94 @@ FocusScope {
 
                 flickableItem.flickableDirection: Flickable.VerticalFlick
 
-                PlasmaComponents.TabGroup {
-                    id: tabGroup
+                QtQuickControls212.StackView {
+                    id: pagesStackView
+                    width: currentItem.Layout.maximumWidth
+                    height: currentItem.Layout.maximumHeight
 
-                    width: currentTab.Layout.maximumWidth
-                    height: currentTab.Layout.maximumHeight
+                    property bool forwardSliding: true
 
-                    Pages.BehaviorConfig {
-                        id: behaviorPage
+                    replaceEnter: Transition {
+                        ParallelAnimation {
+                            PropertyAnimation {
+                                property: "x"
+                                from: pagesStackView.forwardSliding ? -pagesBackground.width : pagesBackground.width
+                                to: 0
+                                duration: 350
+                            }
+
+                            PropertyAnimation {
+                                property: "opacity"
+                                from: 0
+                                to: 1
+                                duration: 350
+                            }
+                        }
                     }
 
-                    Pages.AppearanceConfig {
-                        id: appearancePage
+                    replaceExit: Transition {
+                        ParallelAnimation {
+                            PropertyAnimation {
+                                property: "x"
+                                from: 0
+                                to: pagesStackView.forwardSliding ? pagesBackground.width : -pagesBackground.width
+                                duration: 350
+                            }
+
+                            PropertyAnimation {
+                                property: "opacity"
+                                from: 1
+                                to: 0
+                                duration: 350
+                            }
+                        }
                     }
 
-                    Pages.EffectsConfig {
-                        id: effectsPage
-                    }
-                }
-            }
-
-            Repeater {
-                id: tasksRepeater
-                //! needs to be out of TabGroup otherwise the Repeater is consider as TabGroup direct children
-                //! and thus only the first Tasks tab is shown
-                model: latteView.extendedInterface.latteTasksModel
-
-                //! Reparent TasksPages when all of them are loaded
-                //! this way we avoid warnings from ::stackAfter
-                //! After startup any new TasksPages can be added directly
-                property bool isReady: false
-                property int pages: 0
-
-                Pages.TasksConfig {
-                    id: tasksPage
                     Component.onCompleted: {
-                        if (tasksRepeater.isReady) {
-                            parent = tabGroup;
-                        } else {
-                            tasksRepeater.pages = tasksRepeater.pages + 1;
-                        }
-                    }
-                }
+                        push(behaviorPage);
+                        push(appearancePage);
+                        push(effectsPage);
 
-                onModelChanged: {
-                    if (latteView.extendedInterface.latteTasksModel.count === 0) {
-                        isReady = true;
-                        tasksRepeater.pages = 0;
-                    }
-                }
-                onPagesChanged: {
-                    if (pages === latteView.extendedInterface.latteTasksModel.count && pages > 0) {
-                        //! Reparent TasksPages when all of them are loaded
-                        //! this way we avoid warnings from ::stackAfter
-                        for(var i=0; i<pages; ++i) {
-                            itemAt(i).parent = tabGroup;
-                        }
+                        pop(effectsPage);
+                        pop(appearancePage);
+                        pop(behaviorPage);
 
-                        isReady = true;
+                        push(behaviorPage);
                     }
                 }
             }
 
-            //! initialize Tasks Repeater
-            Connections {
-                target: viewConfig
-                onIsReadyChanged:{
-                    if (!viewConfig.isReady) {
-                        tasksRepeater.isReady = false;
-                        tasksRepeater.pages = 0;
+            Item {
+                id:hiddenPages
+                anchors.fill: parent
+                visible: false
+
+                Pages.BehaviorConfig {
+                    id: behaviorPage
+                    readonly property int pageIndex:0
+                }
+
+                Pages.AppearanceConfig {
+                    id: appearancePage
+                    readonly property int pageIndex:1
+                }
+
+                Pages.EffectsConfig {
+                    id: effectsPage
+                    readonly property int pageIndex:2
+                }
+
+                Repeater {
+                    id: tasksRepeater
+                    model: latteView.extendedInterface.latteTasksModel
+
+                    Pages.TasksConfig {
+                        id: tasksPage
+                        readonly property int pageIndex:3+index
+                        Component.onCompleted: {
+                            pagesStackView.push(tasksPage);
+                            pagesStackView.pop(tasksPage);
+                        }
                     }
                 }
             }
