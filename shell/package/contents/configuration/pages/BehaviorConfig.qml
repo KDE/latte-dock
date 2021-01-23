@@ -656,10 +656,6 @@ PlasmaComponents.Page {
                                                               leftBtnLbl.implicitWidth,
                                                               midBtnLbl.implicitWidth)
 
-                LatteComponents.SubHeader {
-                    text: i18n("Active Window")
-                }
-
                 ColumnLayout {
                     RowLayout {
                         Layout.topMargin: units.smallSpacing
@@ -668,14 +664,14 @@ PlasmaComponents.Page {
                             id: trackActiveLbl
                             Layout.minimumWidth: actionsPropertiesColumn.maxLabelWidth
                             Layout.maximumWidth: actionsPropertiesColumn.maxLabelWidth
-                            text: i18n("Track From")
+                            text: i18nc("track active window","Track")
                         }
 
                         LatteComponents.ComboBox {
                             id: activeWindowFilterCmb
                             Layout.fillWidth: true
-                            model: [i18nc("track from current screen", "Current Screen"),
-                                i18nc("track from all screens", "All Screens")]
+                            model: [i18nc("track from current screen", "Active Window From Current Screen"),
+                                i18nc("track from all screens", "Active Window From All Screens")]
 
                             currentIndex: plasmoid.configuration.activeWindowFilter
 
@@ -693,11 +689,12 @@ PlasmaComponents.Page {
                     }
                 }
 
-                LatteComponents.SubHeader {
+                /*LatteComponents.SubHeader {
                     text: i18n("Empty Area")
-                }
+                }*/
 
                 ColumnLayout {
+                    Layout.topMargin: units.smallSpacing
                     RowLayout {
                         PlasmaComponents.Label {
                             id: leftBtnLbl
@@ -711,7 +708,7 @@ PlasmaComponents.Page {
                             text: i18n("Drag Active Window")
                             checked: plasmoid.configuration.dragActiveWindowEnabled
                             checkable: true
-                            tooltip: i18n("The user can use left mouse button to drag and maximized/restore last active window")
+                            tooltip: i18n("The user can use left mouse button to drag and maximized/restore last active window from empty areas")
                             iconName: "transform-move"
 
                             onClicked: {
@@ -733,7 +730,7 @@ PlasmaComponents.Page {
                             text: i18n("Close Active Window")
                             checked: plasmoid.configuration.closeActiveWindowEnabled
                             checkable: true
-                            tooltip: i18n("The user can use middle mouse button to close last active window")
+                            tooltip: i18n("The user can use middle mouse button to close last active window from empty areas")
                             iconName: "window-close"
 
                             onClicked: {
@@ -755,10 +752,10 @@ PlasmaComponents.Page {
                         LatteComponents.ComboBox {
                             id: scrollAction
                             Layout.fillWidth: true
-                            model: [i18nc("none scroll actions", "None Action"),
+                            model: [i18nc("none scroll actions", "No Action"),
                                 i18n("Cycle Through Desktops"),
                                 i18n("Cycle Through Activities"),
-                                i18n("Cycle Through Tasks"),
+                                i18n("Cycle Through Tasks From"),
                                 i18n("Cycle And Minimize Tasks")
                             ]
 
