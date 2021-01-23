@@ -69,11 +69,6 @@ PlasmaComponents.Page {
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 0
 
-                LatteComponents.SubHeader {
-                    text: i18nc("items effects", "Size")
-                    isFirstSubCategory: true
-                }
-
                 RowLayout {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
@@ -81,7 +76,7 @@ PlasmaComponents.Page {
                     enabled: proportionSizeSlider.value === 1
 
                     PlasmaComponents.Label {
-                        text: i18nc("absolute size","Absolute")
+                        text: i18nc("absolute size","Absolute size")
                         horizontalAlignment: Text.AlignLeft
                     }
 
@@ -129,7 +124,7 @@ PlasmaComponents.Page {
                     visible: dialog.advancedLevel || plasmoid.configuration.proportionIconSize>0
 
                     PlasmaComponents.Label {
-                        text: i18nc("relative size", "Relative")
+                        text: i18nc("relative size", "Relative size")
                         horizontalAlignment: Text.AlignLeft
                         enabled: proportionSizeSlider.value !== proportionSizeSlider.from
                     }
@@ -174,11 +169,6 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                         enabled: proportionSizeSlider.value !== proportionSizeSlider.from
                     }
-                }
-
-                LatteComponents.SubHeader {
-                    text: i18nc("items effects", "Effects")
-                    //isFirstSubCategory: true
                 }
 
                 RowLayout {
@@ -259,7 +249,6 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         id: maxLengthLbl
-                        Layout.minimumWidth: lengthColumn.labelsMaxWidth
                         text: i18n("Maximum")
                         horizontalAlignment: Text.AlignLeft
                     }
@@ -371,7 +360,6 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         id: minLengthLbl
-                        Layout.minimumWidth: lengthColumn.labelsMaxWidth
                         text: i18n("Minimum")
                         horizontalAlignment: Text.AlignLeft
                     }
@@ -455,7 +443,6 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         id: offsetLbl
-                        Layout.minimumWidth: lengthColumn.labelsMaxWidth
                         text: i18n("Offset")
                         horizontalAlignment: Text.AlignLeft
                     }
@@ -635,7 +622,7 @@ PlasmaComponents.Page {
                     }
                 }
 
-                LatteComponents.HeaderSwitch {
+               /* LatteComponents.HeaderSwitch {
                     id: shrinkThickMargins
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
@@ -651,7 +638,7 @@ PlasmaComponents.Page {
                     onPressed: {
                         plasmoid.configuration.shrinkThickMargins = !plasmoid.configuration.shrinkThickMargins;
                     }
-                }
+                }*/
 
                 RowLayout {
                     Layout.minimumWidth: dialog.optionsWidth
@@ -660,7 +647,7 @@ PlasmaComponents.Page {
                     enabled: !plasmoid.configuration.shrinkThickMargins
 
                     PlasmaComponents.Label {
-                        text: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? i18n("Height") : i18n("Width")
+                        text: i18n("Thickness")
                         horizontalAlignment: Text.AlignLeft
                     }
 
@@ -699,7 +686,7 @@ PlasmaComponents.Page {
                     enabled: !plasmoid.configuration.shrinkThickMargins
 
                     PlasmaComponents.Label {
-                        text: i18n("Screen")
+                        text: i18n("Screen edge")
                         horizontalAlignment: Text.AlignLeft
                     }
 
@@ -1026,18 +1013,14 @@ PlasmaComponents.Page {
                     }
                 }
 
-                LatteComponents.SubHeader {
-                    visible: dialog.advancedLevel
-                    isFirstSubCategory: true
-                    text: i18n("Options")
-                }
-
                 RowLayout {
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: dialog.optionsWidth
+                    Layout.maximumWidth: Layout.minimumWidth
+                    Layout.topMargin: units.smallSpacing
                     spacing: 2
                     visible: dialog.advancedLevel
 
-                    readonly property int buttonSize: (dialog.optionsWidth - (spacing * (children.length-1))) / children.length
+                    readonly property int buttonSize: (dialog.optionsWidth - (2 * spacing)) / children.length
 
                     PlasmaComponents.Button {
                         id: panelBlur
@@ -1070,7 +1053,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Button {
-                        id: solidBackground
+                        id: solidBackground                     
                         Layout.minimumWidth: parent.buttonSize
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("Outline")
