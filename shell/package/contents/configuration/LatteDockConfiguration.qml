@@ -131,81 +131,8 @@ FocusScope {
         onEnabledBordersChanged: viewConfig.updateEffects()
         Component.onCompleted: viewConfig.updateEffects()
 
-        Rectangle {
-            width: 25
-            height: width
-            anchors.horizontalCenter: parent.right
-            anchors.verticalCenter: parent.top
-            rotation: 45
-            color: resizeWindowMouseArea.isActive ? theme.buttonFocusColor : theme.textColor
-            opacity: resizeWindowMouseArea.isActive ? 1 : 0.2
-
-            MouseArea {
-                id: resizeWindowMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-
-                readonly property bool isActive: containsMouse || pressed
-
-                property bool initialized: false
-                property int initGlobalX: 0
-                property int initGlobalY: 0
-                property int initWidth: 100
-                property int initHeight: 100
-                property real initScaleWidth: 1
-                property real initScaleHeight: 1
-
-                onPressed: {
-                    if (pressed) {
-                        var scenePos = mapToGlobal(mouse.x, mouse.y);
-                        initGlobalX = viewConfig.x + scenePos.x;
-                        initGlobalY = viewConfig.y + mouse.y;
-                        initWidth = dialog.width;
-                        initHeight = dialog.height;
-                        initScaleWidth = userScaleWidth;
-                        initScaleHeight = userScaleHeight;
-                        initialized = true;
-                    }
-                }
-
-                onPositionChanged: {
-                    if (pressed && initialized) {
-                        var scenePos = mapToGlobal(mouse.x, mouse.y);
-                        var curGlobalX = viewConfig.x + scenePos.x;
-                        var curGlobalY = viewConfig.y + mouse.y;
-
-                        var differX = curGlobalX - initGlobalX;
-                        var percentX = differX / initWidth;
-                        var newScaleWidth = Math.max(0.35, initScaleWidth + (percentX*initScaleWidth)).toFixed(3);
-
-                        var newScaleHeight = userScaleHeight;
-
-                        if (!dialog.advancedLevel) {
-                            var differY = initGlobalY - curGlobalY;
-                            var percentY = differY / initHeight;
-                            newScaleHeight = Math.max(0.5, initScaleHeight + (percentY*initScaleHeight)).toFixed(3);
-                        }
-
-                        universalSettings.setScreenScales(latteView.positioner.currentScreenName, newScaleWidth, newScaleHeight);
-                        userScaleWidth = newScaleWidth;
-                        userScaleHeight = newScaleHeight;
-                        viewConfig.syncGeometry();
-                    } else if (!pressed) {
-                        initialized = false;
-                    }
-                }
-
-                onReleased: {
-                    initialized = false;
-                }
-
-                onDoubleClicked: {
-                    userScaleWidth = 1;
-                    userScaleHeight = 1;
-                    universalSettings.setScreenScales(latteView.positioner.currentScreenName, 1, 1);
-                    viewConfig.syncGeometry();
-                }
-            }
+        LatteExtraControls.DragCorner {
+            id: dragCorner
         }
     }
 
@@ -215,7 +142,7 @@ FocusScope {
         text: dialog.advancedLevel ?
                   i18nc("view settings width scale","Width %0%").arg(userScaleWidth * 100) :
                   i18nc("view settings width scale","Width %0% / Height %1%").arg(userScaleWidth * 100).arg(userScaleHeight * 100)
-        visible: resizeWindowMouseArea.isActive
+        visible: dragCorner.isActive
     }
 
     ColumnLayout {
@@ -573,7 +500,7 @@ FocusScope {
         RowLayout {
             id: actionButtons
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
             spacing: units.largeSpacing
 
