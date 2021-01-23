@@ -522,6 +522,13 @@ FocusScope {
 
                         push(behaviorPage);
                     }
+
+                    onCurrentItemChanged: {
+                        if (!currentItem) {
+                            pagesStackView.forwardSliding = true;
+                            push(behaviorPage);
+                        }
+                    }
                 }
             }
 
@@ -554,7 +561,7 @@ FocusScope {
                         readonly property int pageIndex: tabBar.visibleStaticPages+index
 
                         Component.onCompleted: {
-                            pagesStackView.push(tasksPage);
+                            pagesStackView.replace(pagesStackView.currentItem, tasksPage);
                             pagesStackView.forwardSliding = true;
                             pagesStackView.replace(tasksPage, behaviorPage);
                         }
