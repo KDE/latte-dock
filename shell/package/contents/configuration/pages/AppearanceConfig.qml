@@ -178,7 +178,7 @@ PlasmaComponents.Page {
                     enabled: LatteCore.WindowSystem.compositingActive && plasmoid.configuration.animationsEnabled
 
                     PlasmaComponents.Label {
-                        text: i18n("Zoom On Hover")
+                        text: i18n("Zoom on hover")
                         horizontalAlignment: Text.AlignLeft
                     }
 
