@@ -119,6 +119,8 @@ class View : public PlasmaQuick::ContainmentView
 
     Q_PROPERTY(QQuickItem *colorizer READ colorizer WRITE setColorizer NOTIFY colorizerChanged)
 
+    Q_PROPERTY(QVariantList containmentActions READ containmentActions NOTIFY containmentActionsChanged)
+
     Q_PROPERTY(Latte::Layout::GenericLayout *layout READ layout WRITE setLayout NOTIFY layoutChanged)
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Latte::ViewPart::ContainmentInterface *extendedInterface READ extendedInterface NOTIFY extendedInterfaceChanged)
@@ -231,6 +233,8 @@ public:
     QQuickItem *colorizer() const;
     void setColorizer(QQuickItem *colorizer);
 
+    QVariantList containmentActions() const;
+
     QQuickView *configView();
 
     ViewPart::Effects *effects() const;   
@@ -267,8 +271,6 @@ public slots:
     Q_INVOKABLE void copyView();
     Q_INVOKABLE void removeView();
 
-    Q_INVOKABLE QVariantList containmentActions();
-
     Q_INVOKABLE void moveToLayout(QString layoutName);
 
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
@@ -298,6 +300,7 @@ signals:
     void byPassWMChanged();
     void colorizerChanged();
     void configWindowGeometryChanged(); // is called from config windows
+    void containmentActionsChanged();
     void containsDragChanged();
     void contextMenuIsShownChanged();
     void dockLocationChanged();

@@ -192,6 +192,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
             m_primaryConfigView->setParentView(this, true);
         }
 
+        emit containmentActionsChanged();
     }, Qt::DirectConnection);
 
     m_corona = qobject_cast<Latte::Corona *>(this->corona());
@@ -1489,7 +1490,7 @@ void View::releaseGrab()
     QCoreApplication::instance()->sendEvent(this, &e);
 }
 
-QVariantList View::containmentActions()
+QVariantList View::containmentActions() const
 {
     QVariantList actions;
 

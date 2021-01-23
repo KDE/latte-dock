@@ -45,7 +45,7 @@ AbilityHost.MyView {
 
     lastUsedActivity: view && view.layout ? view.layout.lastUsedActivity : ""
 
-    containmentActions: isReady ? view.containmentActions() : []
+    containmentActions: isReady ? view.containmentActions : []
 }
 
 
