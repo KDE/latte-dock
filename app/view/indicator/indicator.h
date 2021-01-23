@@ -101,6 +101,8 @@ public:
 
     bool pluginIsReady();
 
+    int index(const QString &type);
+
     QString type() const;
     void setType(QString type);
 

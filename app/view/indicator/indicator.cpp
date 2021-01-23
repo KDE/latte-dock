@@ -151,6 +151,21 @@ void Indicator::setPluginIsReady(bool ready)
     emit pluginIsReadyChanged();
 }
 
+int Indicator::index(const QString &type)
+{
+    if (type == "org.kde.latte.default") {
+        return 0;
+    } else if (type == "org.kde.latte.plasma") {
+        return 1;
+    } else if (type == "org.kde.latte.plasmatabstyle") {
+        return 2;
+    } else if (customPluginIds().contains(type)){
+        return 3 + customPluginIds().indexOf(type);
+    }
+
+    return -1;
+}
+
 QString Indicator::type() const
 {
     return m_type;

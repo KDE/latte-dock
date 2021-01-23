@@ -22,10 +22,12 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Dialogs 1.2
+import QtQuick.Controls 2.12 as QtQuickControls212
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
@@ -35,468 +37,471 @@ import "../../controls" as LatteExtraControls
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
-    Layout.maximumHeight: content.height + units.smallSpacing * 2
+    Layout.maximumHeight: content.height + units.smallSpacing
 
     ColumnLayout {
         id: content
-
         width: (dialog.appliedWidth - units.smallSpacing * 2) - Layout.leftMargin * 2
-        spacing: dialog.subGroupSpacing
         anchors.horizontalCenter: parent.horizontalCenter
         Layout.leftMargin: units.smallSpacing * 2
 
-        //! BEGIN: Shadows
         ColumnLayout {
+            id: contentStatic
             Layout.fillWidth: true
-            Layout.topMargin: units.smallSpacing
+            spacing: dialog.subGroupSpacing
 
-            spacing: units.smallSpacing
-
-            LatteComponents.HeaderSwitch {
-                id: showAppletShadow
+            //! BEGIN: Shadows
+            ColumnLayout {
                 Layout.fillWidth: true
-                Layout.minimumHeight: implicitHeight
                 Layout.topMargin: units.smallSpacing
 
-                checked: plasmoid.configuration.appletShadowsEnabled
-                text: i18n("Shadows")
-                tooltip: i18n("Enable/disable applet shadows")
+                spacing: units.smallSpacing
 
-                onPressed: plasmoid.configuration.appletShadowsEnabled = !plasmoid.configuration.appletShadowsEnabled;
-            }
-
-            ColumnLayout {
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: 0
-
-                RowLayout{
-                    enabled: showAppletShadow.checked
-
-                    PlasmaComponents.Label {
-                        enabled: showAppletShadow.checked
-                        text: i18n("Size")
-                        horizontalAlignment: Text.AlignLeft
-                    }
-
-                    LatteComponents.Slider {
-                        id: shadowSizeSlider
-                        Layout.fillWidth: true
-                        enabled: showAppletShadow.checked
-
-                        value: plasmoid.configuration.shadowSize
-                        from: 0
-                        to: 100
-                        stepSize: 5
-                        wheelEnabled: false
-
-                        function updateShadowSize() {
-                            if (!pressed)
-                                plasmoid.configuration.shadowSize = value;
-                        }
-
-                        onPressedChanged: {
-                            updateShadowSize();
-                        }
-
-                        Component.onCompleted: {
-                            valueChanged.connect(updateShadowSize);
-                        }
-
-                        Component.onDestruction: {
-                            valueChanged.disconnect(updateShadowSize);
-                        }
-                    }
-
-                    PlasmaComponents.Label {
-                        enabled: showAppletShadow.checked
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(shadowSizeSlider.value)
-                        horizontalAlignment: Text.AlignRight
-                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                    }
-                }
-
-
-                RowLayout{
-                    enabled: showAppletShadow.checked
-
-                    PlasmaComponents.Label {
-                        enabled: showAppletShadow.checked
-                        text: i18n("Opacity")
-                        horizontalAlignment: Text.AlignLeft
-                    }
-
-                    LatteComponents.Slider {
-                        id: shadowOpacitySlider
-                        Layout.fillWidth: true
-
-                        value: plasmoid.configuration.shadowOpacity
-                        from: 0
-                        to: 100
-                        stepSize: 5
-                        wheelEnabled: false
-
-                        function updateShadowOpacity() {
-                            if (!pressed)
-                                plasmoid.configuration.shadowOpacity = value;
-                        }
-
-                        onPressedChanged: {
-                            updateShadowOpacity();
-                        }
-
-                        Component.onCompleted: {
-                            valueChanged.connect(updateShadowOpacity);
-                        }
-
-                        Component.onDestruction: {
-                            valueChanged.disconnect(updateShadowOpacity);
-                        }
-                    }
-
-                    PlasmaComponents.Label {
-                        enabled: showAppletShadow.checked
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(shadowOpacitySlider.value)
-                        horizontalAlignment: Text.AlignRight
-                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                    }
-                }
-
-                LatteComponents.SubHeader {
-                    isFirstSubCategory: true
-                    text: i18n("Color")
-                }
-
-                RowLayout {
-                    id: shadowColorRow
+                LatteComponents.HeaderSwitch {
+                    id: showAppletShadow
                     Layout.fillWidth: true
-                    spacing: 2
-                    enabled: showAppletShadow.checked
+                    Layout.minimumHeight: implicitHeight
+                    Layout.topMargin: units.smallSpacing
 
-                    readonly property string defaultShadow: "080808"
-                    readonly property string themeShadow: {
-                        var strC = String(theme.textColor);
+                    checked: plasmoid.configuration.appletShadowsEnabled
+                    text: i18n("Shadows")
+                    tooltip: i18n("Enable/disable applet shadows")
 
-                        return strC.indexOf("#") === 0 ? strC.substr(1) : strC;
-                    }
+                    onPressed: plasmoid.configuration.appletShadowsEnabled = !plasmoid.configuration.appletShadowsEnabled;
+                }
 
-                    ExclusiveGroup {
-                        id: shadowColorGroup
-                    }
+                ColumnLayout {
+                    Layout.leftMargin: units.smallSpacing * 2
+                    Layout.rightMargin: units.smallSpacing * 2
+                    spacing: 0
 
-                    PlasmaComponents.Button {
-                        id: defaultShadowBtn
-                        Layout.fillWidth: true
+                    RowLayout{
+                        enabled: showAppletShadow.checked
 
-                        text: i18nc("default shadow", "Default")
-                        checked: plasmoid.configuration.shadowColorType === type
-                        checkable: false
-                        exclusiveGroup: shadowColorGroup
-                        tooltip: i18n("Default shadow for applets")
-
-                        readonly property int type: LatteContainment.Types.DefaultColorShadow
-
-                        onPressedChanged: {
-                            if (pressed) {
-                                plasmoid.configuration.shadowColorType = type;
-                            }
+                        PlasmaComponents.Label {
+                            enabled: showAppletShadow.checked
+                            text: i18n("Size")
+                            horizontalAlignment: Text.AlignLeft
                         }
-                    }
 
-                    PlasmaComponents.Button {
-                        id: themeShadowBtn
-                        Layout.fillWidth: true
+                        LatteComponents.Slider {
+                            id: shadowSizeSlider
+                            Layout.fillWidth: true
+                            enabled: showAppletShadow.checked
 
-                        text: i18nc("theme shadow", "Theme")
-                        checked: plasmoid.configuration.shadowColorType === type
-                        checkable: false
-                        exclusiveGroup: shadowColorGroup
-                        tooltip: i18n("Shadow from theme color palette")
+                            value: plasmoid.configuration.shadowSize
+                            from: 0
+                            to: 100
+                            stepSize: 5
+                            wheelEnabled: false
 
-                        readonly property int type: LatteContainment.Types.ThemeColorShadow
-
-                        onPressedChanged: {
-                            if (pressed) {
-                                plasmoid.configuration.shadowColorType = type;
+                            function updateShadowSize() {
+                                if (!pressed)
+                                    plasmoid.configuration.shadowSize = value;
                             }
-                        }
-                    }
 
-                    //overlayed button
-                    PlasmaComponents.Button {
-                        id: userShadowBtn
-                        Layout.fillWidth: true
-                        height: parent.height
-                        text: " "
+                            onPressedChanged: {
+                                updateShadowSize();
+                            }
 
-                        checkable: false
-                        checked: plasmoid.configuration.shadowColorType === type
-                        tooltip: i18n("Use set shadow color")
-                        exclusiveGroup: shadowColorGroup
+                            Component.onCompleted: {
+                                valueChanged.connect(updateShadowSize);
+                            }
 
-                        readonly property int type: LatteContainment.Types.UserColorShadow
-
-                        onPressedChanged: {
-                            if (pressed) {
-                                plasmoid.configuration.shadowColorType = type;
+                            Component.onDestruction: {
+                                valueChanged.disconnect(updateShadowSize);
                             }
                         }
 
-                        Rectangle{
-                            anchors.fill: parent
-                            anchors.margins: 1.5*units.smallSpacing
+                        PlasmaComponents.Label {
+                            enabled: showAppletShadow.checked
+                            text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(shadowSizeSlider.value)
+                            horizontalAlignment: Text.AlignRight
+                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                        }
+                    }
 
-                            color: "#" + plasmoid.configuration.shadowColor;
 
-                            opacity: shadowColorRow.enabled ? 1 : 0.6
+                    RowLayout{
+                        enabled: showAppletShadow.checked
+
+                        PlasmaComponents.Label {
+                            enabled: showAppletShadow.checked
+                            text: i18n("Opacity")
+                            horizontalAlignment: Text.AlignLeft
+                        }
+
+                        LatteComponents.Slider {
+                            id: shadowOpacitySlider
+                            Layout.fillWidth: true
+
+                            value: plasmoid.configuration.shadowOpacity
+                            from: 0
+                            to: 100
+                            stepSize: 5
+                            wheelEnabled: false
+
+                            function updateShadowOpacity() {
+                                if (!pressed)
+                                    plasmoid.configuration.shadowOpacity = value;
+                            }
+
+                            onPressedChanged: {
+                                updateShadowOpacity();
+                            }
+
+                            Component.onCompleted: {
+                                valueChanged.connect(updateShadowOpacity);
+                            }
+
+                            Component.onDestruction: {
+                                valueChanged.disconnect(updateShadowOpacity);
+                            }
+                        }
+
+                        PlasmaComponents.Label {
+                            enabled: showAppletShadow.checked
+                            text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(shadowOpacitySlider.value)
+                            horizontalAlignment: Text.AlignRight
+                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                        }
+                    }
+
+                    LatteComponents.SubHeader {
+                        isFirstSubCategory: true
+                        text: i18n("Color")
+                    }
+
+                    RowLayout {
+                        id: shadowColorRow
+                        Layout.fillWidth: true
+                        spacing: 2
+                        enabled: showAppletShadow.checked
+
+                        readonly property string defaultShadow: "080808"
+                        readonly property string themeShadow: {
+                            var strC = String(theme.textColor);
+
+                            return strC.indexOf("#") === 0 ? strC.substr(1) : strC;
+                        }
+
+                        ExclusiveGroup {
+                            id: shadowColorGroup
+                        }
+
+                        PlasmaComponents.Button {
+                            id: defaultShadowBtn
+                            Layout.fillWidth: true
+
+                            text: i18nc("default shadow", "Default")
+                            checked: plasmoid.configuration.shadowColorType === type
+                            checkable: false
+                            exclusiveGroup: shadowColorGroup
+                            tooltip: i18n("Default shadow for applets")
+
+                            readonly property int type: LatteContainment.Types.DefaultColorShadow
+
+                            onPressedChanged: {
+                                if (pressed) {
+                                    plasmoid.configuration.shadowColorType = type;
+                                }
+                            }
+                        }
+
+                        PlasmaComponents.Button {
+                            id: themeShadowBtn
+                            Layout.fillWidth: true
+
+                            text: i18nc("theme shadow", "Theme")
+                            checked: plasmoid.configuration.shadowColorType === type
+                            checkable: false
+                            exclusiveGroup: shadowColorGroup
+                            tooltip: i18n("Shadow from theme color palette")
+
+                            readonly property int type: LatteContainment.Types.ThemeColorShadow
+
+                            onPressedChanged: {
+                                if (pressed) {
+                                    plasmoid.configuration.shadowColorType = type;
+                                }
+                            }
+                        }
+
+                        //overlayed button
+                        PlasmaComponents.Button {
+                            id: userShadowBtn
+                            Layout.fillWidth: true
+                            height: parent.height
+                            text: " "
+
+                            checkable: false
+                            checked: plasmoid.configuration.shadowColorType === type
+                            tooltip: i18n("Use set shadow color")
+                            exclusiveGroup: shadowColorGroup
+
+                            readonly property int type: LatteContainment.Types.UserColorShadow
+
+                            onPressedChanged: {
+                                if (pressed) {
+                                    plasmoid.configuration.shadowColorType = type;
+                                }
+                            }
 
                             Rectangle{
                                 anchors.fill: parent
-                                color: "transparent"
-                                border.width: 1
-                                border.color: theme.textColor
-                                opacity: parent.opacity - 0.4
-                            }
+                                anchors.margins: 1.5*units.smallSpacing
 
-                            MouseArea{
-                                anchors.fill: parent
-                                onClicked: {
-                                    shadowColorGroup.current = userShadowBtn;
-                                    viewConfig.setSticker(true);
-                                    colorDialogLoader.showDialog = true;
+                                color: "#" + plasmoid.configuration.shadowColor;
+
+                                opacity: shadowColorRow.enabled ? 1 : 0.6
+
+                                Rectangle{
+                                    anchors.fill: parent
+                                    color: "transparent"
+                                    border.width: 1
+                                    border.color: theme.textColor
+                                    opacity: parent.opacity - 0.4
                                 }
-                            }
-                        }
 
-                        Loader{
-                            id:colorDialogLoader
-                            property bool showDialog: false
-                            active: showDialog
-
-                            sourceComponent: ColorDialog {
-                                title: i18n("Please choose shadow color")
-                                showAlphaChannel: false
-
-                                onAccepted: {
-                                    //console.log("You chose: " + String(color));
-                                    var strC = String(color);
-                                    if (strC.indexOf("#") === 0) {
-                                        plasmoid.configuration.shadowColor = strC.substr(1);
+                                MouseArea{
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        shadowColorGroup.current = userShadowBtn;
+                                        viewConfig.setSticker(true);
+                                        colorDialogLoader.showDialog = true;
                                     }
+                                }
+                            }
 
-                                    colorDialogLoader.showDialog = false;
-                                    viewConfig.setSticker(false);
-                                }
-                                onRejected: {
-                                    colorDialogLoader.showDialog = false;
-                                    viewConfig.setSticker(false);
-                                }
-                                Component.onCompleted: {
-                                    color = String("#" + plasmoid.configuration.shadowColor);
-                                    visible = true;
+                            Loader{
+                                id:colorDialogLoader
+                                property bool showDialog: false
+                                active: showDialog
+
+                                sourceComponent: ColorDialog {
+                                    title: i18n("Please choose shadow color")
+                                    showAlphaChannel: false
+
+                                    onAccepted: {
+                                        //console.log("You chose: " + String(color));
+                                        var strC = String(color);
+                                        if (strC.indexOf("#") === 0) {
+                                            plasmoid.configuration.shadowColor = strC.substr(1);
+                                        }
+
+                                        colorDialogLoader.showDialog = false;
+                                        viewConfig.setSticker(false);
+                                    }
+                                    onRejected: {
+                                        colorDialogLoader.showDialog = false;
+                                        viewConfig.setSticker(false);
+                                    }
+                                    Component.onCompleted: {
+                                        color = String("#" + plasmoid.configuration.shadowColor);
+                                        visible = true;
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-        //! END: Shadows
+            //! END: Shadows
 
-        //! BEGIN: Animations
-        ColumnLayout {
-            Layout.fillWidth: true
-            Layout.topMargin: units.smallSpacing
-            spacing: units.smallSpacing
-
-            LatteComponents.HeaderSwitch {
-                id: animationsHeader
-                Layout.fillWidth: true
-                Layout.minimumHeight: implicitHeight
-                Layout.topMargin: units.smallSpacing
-
-                checked: plasmoid.configuration.animationsEnabled
-                text: i18n("Animations")
-                tooltip: i18n("Enable/disable all animations")
-
-                onPressed: {
-                    plasmoid.configuration.animationsEnabled = !plasmoid.configuration.animationsEnabled;
-                }
-            }
-
+            //! BEGIN: Animations
             ColumnLayout {
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: 0
-                enabled: plasmoid.configuration.animationsEnabled
+                Layout.fillWidth: true
+                Layout.topMargin: units.smallSpacing
+                spacing: units.smallSpacing
 
-                LatteComponents.SubHeader {
-                    isFirstSubCategory: true
-                    text: i18n("Speed")
+                LatteComponents.HeaderSwitch {
+                    id: animationsHeader
+                    Layout.fillWidth: true
+                    Layout.minimumHeight: implicitHeight
+                    Layout.topMargin: units.smallSpacing
+
+                    checked: plasmoid.configuration.animationsEnabled
+                    text: i18n("Animations")
+                    tooltip: i18n("Enable/disable all animations")
+
+                    onPressed: {
+                        plasmoid.configuration.animationsEnabled = !plasmoid.configuration.animationsEnabled;
+                    }
                 }
 
                 ColumnLayout {
-                    Layout.fillWidth: true
+                    Layout.leftMargin: units.smallSpacing * 2
+                    Layout.rightMargin: units.smallSpacing * 2
                     spacing: 0
+                    enabled: plasmoid.configuration.animationsEnabled
 
-                    RowLayout {
+                    LatteComponents.SubHeader {
+                        isFirstSubCategory: true
+                        text: i18n("Speed")
+                    }
+
+                    ColumnLayout {
                         Layout.fillWidth: true
-                        spacing: 2
+                        spacing: 0
 
-                        property int duration: plasmoid.configuration.durationTime
-
-                        ExclusiveGroup {
-                            id: animationsGroup
-                        }
-
-                        PlasmaComponents.Button {
+                        RowLayout {
                             Layout.fillWidth: true
-                            text: i18n("x1")
-                            checked: parent.duration === duration
-                            checkable: false
-                            exclusiveGroup: animationsGroup
+                            spacing: 2
 
-                            readonly property int duration: 3
+                            property int duration: plasmoid.configuration.durationTime
 
-                            onPressedChanged: {
-                                if (pressed) {
-                                    plasmoid.configuration.durationTime = duration;
+                            ExclusiveGroup {
+                                id: animationsGroup
+                            }
+
+                            PlasmaComponents.Button {
+                                Layout.fillWidth: true
+                                text: i18n("x1")
+                                checked: parent.duration === duration
+                                checkable: false
+                                exclusiveGroup: animationsGroup
+
+                                readonly property int duration: 3
+
+                                onPressedChanged: {
+                                    if (pressed) {
+                                        plasmoid.configuration.durationTime = duration;
+                                    }
                                 }
                             }
-                        }
-                        PlasmaComponents.Button {
-                            Layout.fillWidth: true
-                            text: i18n("x2")
-                            checked: parent.duration === duration
-                            checkable: false
-                            exclusiveGroup: animationsGroup
+                            PlasmaComponents.Button {
+                                Layout.fillWidth: true
+                                text: i18n("x2")
+                                checked: parent.duration === duration
+                                checkable: false
+                                exclusiveGroup: animationsGroup
 
-                            readonly property int duration: 2
+                                readonly property int duration: 2
 
-                            onPressedChanged: {
-                                if (pressed) {
-                                    plasmoid.configuration.durationTime = duration;
+                                onPressedChanged: {
+                                    if (pressed) {
+                                        plasmoid.configuration.durationTime = duration;
+                                    }
                                 }
                             }
-                        }
-                        PlasmaComponents.Button {
-                            Layout.fillWidth: true
-                            text: i18n("x3")
-                            checked: parent.duration === duration
-                            checkable: false
-                            exclusiveGroup: animationsGroup
+                            PlasmaComponents.Button {
+                                Layout.fillWidth: true
+                                text: i18n("x3")
+                                checked: parent.duration === duration
+                                checkable: false
+                                exclusiveGroup: animationsGroup
 
-                            readonly property int duration: 1
+                                readonly property int duration: 1
 
-                            onPressedChanged: {
-                                if (pressed) {
-                                    plasmoid.configuration.durationTime = duration;
+                                onPressedChanged: {
+                                    if (pressed) {
+                                        plasmoid.configuration.durationTime = duration;
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-        //! END: Animations
+            //! END: Animations
 
-        //! BEGIN: Active Indicator General Settings
-        ColumnLayout{
-            spacing: units.smallSpacing
-
-            LatteComponents.HeaderSwitch {
-                id: indicatorsSwitch
-                Layout.fillWidth: true
-                Layout.minimumHeight: implicitHeight
-
-                checked: latteView.indicator.enabled
-                text: i18n("Indicators")
-                tooltip: i18n("Enable/disable indicators")
-
-                onPressed: {
-                    latteView.indicator.enabled = !latteView.indicator.enabled;
-                }
-            }
-
-            ColumnLayout {
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
+            //! BEGIN: Active Indicator General Settings
+            ColumnLayout{
                 spacing: units.smallSpacing
-                enabled: indicatorsSwitch.checked
 
-             /*   LatteComponents.SubHeader {
+                LatteComponents.HeaderSwitch {
+                    id: indicatorsSwitch
+                    Layout.fillWidth: true
+                    Layout.minimumHeight: implicitHeight
+
+                    checked: latteView.indicator.enabled
+                    text: i18n("Indicators")
+                    tooltip: i18n("Enable/disable indicators")
+
+                    onPressed: {
+                        latteView.indicator.enabled = !latteView.indicator.enabled;
+                    }
+                }
+
+                ColumnLayout {
+                    Layout.leftMargin: units.smallSpacing * 2
+                    Layout.rightMargin: units.smallSpacing * 2
+                    spacing: units.smallSpacing
+                    enabled: indicatorsSwitch.checked
+
+                    /*   LatteComponents.SubHeader {
                     text: i18n("Style")
                 }*/
 
-                Item {
-                    Layout.fillWidth: true
-                    Layout.minimumHeight: tabBar.height
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.minimumHeight: tabBar.height
 
-                    PlasmaComponents.TabBar {
-                        id: tabBar
-                        width: parent.width
+                        PlasmaComponents.TabBar {
+                            id: tabBar
+                            width: parent.width
 
-                        property string type: latteView.indicator.type
+                            property string type: latteView.indicator.type
 
-                        PlasmaComponents.TabButton {
-                            id: latteBtn
-                            text: i18nc("latte indicator style", "Latte")
-                            readonly property string type: "org.kde.latte.default"
+                            PlasmaComponents.TabButton {
+                                id: latteBtn
+                                text: i18nc("latte indicator style", "Latte")
+                                readonly property string type: "org.kde.latte.default"
 
-                            onCheckedChanged: {
-                                if (checked) {
-                                    latteView.indicator.type = type;
+                                onCheckedChanged: {
+                                    if (checked) {
+                                        latteView.indicator.type = type;
+                                    }
+                                }
+                            }
+                            PlasmaComponents.TabButton {
+                                id: plasmaBtn
+                                text: i18nc("plasma indicator style", "Plasma")
+                                readonly property string type: "org.kde.latte.plasma"
+
+                                onCheckedChanged: {
+                                    if (checked) {
+                                        latteView.indicator.type = type;
+                                    }
+                                }
+                            }
+
+                            PlasmaComponents.TabButton {
+                                id: customBtn
+
+                                onCheckedChanged: {
+                                    if (checked) {
+                                        customIndicator.onButtonIsPressed();
+                                    }
+                                }
+
+                                LatteExtraControls.CustomIndicatorButton {
+                                    id: customIndicator
+                                    anchors.fill: parent
+                                    implicitWidth: latteBtn.implicitWidth
+                                    implicitHeight: latteBtn.implicitHeight
+
+                                    checked: parent.checked
+                                    comboBoxMinimumPopUpWidth: 1.5 * customIndicator.width
                                 }
                             }
                         }
-                        PlasmaComponents.TabButton {
-                            id: plasmaBtn
-                            text: i18nc("plasma indicator style", "Plasma")
-                            readonly property string type: "org.kde.latte.plasma"
 
-                            onCheckedChanged: {
-                                if (checked) {
-                                    latteView.indicator.type = type;
-                                }
-                            }
-                        }
-
-                        PlasmaComponents.TabButton {
-                            id: customBtn
-
-                            onCheckedChanged: {
-                                if (checked) {
-                                    customIndicator.onButtonIsPressed();
-                                }
-                            }
-
-                            LatteExtraControls.CustomIndicatorButton {
-                                id: customIndicator
-                                anchors.fill: parent
-                                implicitWidth: latteBtn.implicitWidth
-                                implicitHeight: latteBtn.implicitHeight
-
-                                checked: parent.checked
-                                comboBoxMinimumPopUpWidth: 1.5 * customIndicator.width
-                            }
+                        Rectangle {
+                            anchors.bottom: tabBar.bottom
+                            anchors.left: tabBar.left
+                            anchors.leftMargin: 2
+                            width: tabBar.width - 2*2
+                            height: 2
+                            color: theme.textColor
+                            opacity: 0.25
                         }
                     }
 
-                    Rectangle {
-                        anchors.bottom: tabBar.bottom
-                        anchors.left: tabBar.left
-                        anchors.leftMargin: 2
-                        width: tabBar.width - 2*2
-                        height: 2
-                        color: theme.textColor
-                        opacity: 0.25
-                    }
-                }
-
-                //! BEGIN: Indicator specific sub-options
-                ColumnLayout {
+                    //! BEGIN: Indicator specific sub-options
+                    /*     ColumnLayout {
                     id: indicatorSpecificOptions
                     Layout.fillWidth: true
                     Layout.topMargin: units.smallSpacing * 2
@@ -526,10 +531,185 @@ PlasmaComponents.Page {
                             }
                         }
                     }
+                }*/
+                    //! END: Indicator specific sub-options
                 }
-                //! END: Indicator specific sub-options
             }
-        }
-        //! END: Active Indicator General Settings        
-    }
+            //! END: Active Indicator General Settings
+        } //Static properties column
+
+        ColumnLayout {
+            id: contentDynamic
+            Layout.fillWidth: true
+            height: pagesBackground.height - contentStatic.height - 3*units.smallSpacing
+            spacing: dialog.subGroupSpacing
+
+            Rectangle {
+                id: indicatorsBackground
+                Layout.fillWidth: true
+                Layout.minimumHeight: parent.height
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                color: "transparent"
+
+                PlasmaExtras.ScrollArea {
+                    id: scrollArea
+                    anchors.fill: parent
+                    verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
+                    horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+                    flickableItem.flickableDirection: Flickable.VerticalFlick
+
+                    QtQuickControls212.StackView {
+                        id: indicatorsStackView
+                        width: Math.max(currentItem.Layout.maximumWidth, currentItem.width)
+                        height: Math.max(currentItem.Layout.maximumHeight, currentItem.height)
+                        enabled: latteView.indicator.enabled
+
+                        property bool forwardSliding: true
+
+                        readonly property int optionsWidth: dialog.optionsWidth
+                        readonly property bool deprecatedOptionsAreHidden: true // @since 0.10.0
+
+                        replaceEnter: Transition {
+                            ParallelAnimation {
+                                PropertyAnimation {
+                                    property: "x"
+                                    from: indicatorsStackView.forwardSliding ? -indicatorsBackground.width : indicatorsBackground.width
+                                    to: 0
+                                    duration: 350
+                                }
+
+                                PropertyAnimation {
+                                    property: "opacity"
+                                    from: 0
+                                    to: 1
+                                    duration: 350
+                                }
+                            }
+                        }
+
+                        replaceExit: Transition {
+                            ParallelAnimation {
+                                PropertyAnimation {
+                                    property: "x"
+                                    from: 0
+                                    to: indicatorsStackView.forwardSliding ? indicatorsBackground.width : -indicatorsBackground.width
+                                    duration: 350
+                                }
+
+                                PropertyAnimation {
+                                    property: "opacity"
+                                    from: 1
+                                    to: 0
+                                    duration: 350
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Item {
+                    id: hiddenIndicatorPage
+                    anchors.fill: parent
+                    visible: false
+
+                    readonly property int optionsWidth: dialog.optionsWidth
+                    readonly property bool deprecatedOptionsAreHidden: true // @since 0.10.0
+
+                    readonly property Item nextPage: indicatorsStackView.currentItem === page1 ? page2 : page1
+                    readonly property Item previousPage: nextPage === page1 ? page2 : page1
+
+                    function showNextIndicator() {
+                        console.log("show next indicator in qml called, children:: " + children.length);
+                        if (children.length===1) {
+                            var nextIndicator = children[0];
+
+                            if (nextIndicator && (!indicatorsStackView.currentItem || !indicatorsStackView.currentItem.isCurrent)) {
+                                //!empty nextPage by moving its pages into hiddenPages
+                                var childrenCount = nextPage.children.length;
+                                for (var i=0; i<childrenCount; ++i) {
+                                    var previousIndicator = nextPage.children[0];
+                                    previousIndicator.visible = false;
+                                    previousIndicator.parent = hiddenPages;
+                                }
+
+                                nextIndicator.parent = nextPage;
+                                nextIndicator.visible = true;
+                                nextPage.type = latteView.indicator.type;
+
+                                var currentIndex = -1;
+
+                                if (indicatorsStackView.currentItem) {
+                                    currentIndex = viewConfig.indicatorUiManager.index(indicatorsStackView.currentItem.type);
+                                }
+
+                                var nextIndex = viewConfig.indicatorUiManager.index(latteView.indicator.type);
+
+                                indicatorsStackView.forwardSliding = (nextIndex<currentIndex);
+                                indicatorsStackView.replace(indicatorsStackView.currentItem, nextPage);
+                            }
+                        }
+                    }
+
+                    Component.onCompleted: {
+                        viewConfig.indicatorUiManager.setParentItem(hiddenIndicatorPage);
+                        viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
+                    }
+
+                    Connections {
+                        target: latteView.indicator
+                        onPluginChanged: viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
+                    }
+
+                    Connections {
+                        target: viewConfig
+                        onIsReadyChanged: {
+                            if (viewConfig.isReady) {
+                                viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
+                            }
+                        }
+                    }
+                }
+
+                Item {
+                    id: hidden
+                    visible: false
+                    ColumnLayout {
+                        id: page1
+                        width: indicatorsBackground.width
+                        height: childrenRect.height
+                        readonly property bool isCurrent: latteView.indicator.type === type
+                        readonly property bool deprecatedOptionsAreHidden: true // @since 0.10.0
+                        readonly property int optionsWidth: dialog.optionsWidth
+
+                        property string type: ""
+                    }
+
+                    ColumnLayout {
+                        id: page2
+                        width: indicatorsBackground.width
+                        height: childrenRect.height
+                        readonly property bool isCurrent: latteView.indicator.type === type
+                        readonly property bool deprecatedOptionsAreHidden: true // @since 0.10.0
+                        readonly property int optionsWidth: dialog.optionsWidth
+
+                        property string type: ""
+                    }
+
+                    ColumnLayout {
+                        id: hiddenPages
+                        width: indicatorsBackground.width
+                        height: childrenRect.height
+                        readonly property bool isCurrent: latteView.indicator.type === type
+                        readonly property bool deprecatedOptionsAreHidden: true // @since 0.10.0
+                        readonly property int optionsWidth: dialog.optionsWidth
+
+                        property string type: ""
+                    }
+                }
+            }
+        }//! END of Dynamic content
+    } //! END of ALL content
+
 }

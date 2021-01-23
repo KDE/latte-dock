@@ -147,12 +147,32 @@ void Factory::reload(const QString &indicatorPath)
                         && (metadata.pluginId() != "org.kde.latte.plasma")
                         && (metadata.pluginId() != "org.kde.latte.plasmatabstyle")) {
 
+                    //! find correct alphabetical position
+                    int newPos = -1;
+
                     if (!m_customPluginIds.contains(metadata.pluginId())) {
-                        m_customPluginIds << metadata.pluginId();
+                        for (int i=0; i<m_customPluginNames.count(); ++i) {
+                            if (QString::compare(metadata.name(), m_customPluginNames[i], Qt::CaseInsensitive)<=0) {
+                                newPos = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!m_customPluginIds.contains(metadata.pluginId())) {
+                        if (newPos == -1) {
+                            m_customPluginIds << metadata.pluginId();
+                        } else {
+                            m_customPluginIds.insert(newPos, metadata.pluginId());
+                        }
                     }
 
                     if (!m_customPluginNames.contains(metadata.name())) {
-                        m_customPluginNames << metadata.name();
+                        if (newPos == -1) {
+                            m_customPluginNames << metadata.name();
+                        } else {
+                            m_customPluginNames.insert(newPos, metadata.name());
+                        }
                     }
                 }
 

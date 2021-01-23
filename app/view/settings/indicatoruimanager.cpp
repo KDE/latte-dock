@@ -22,6 +22,7 @@
 // local
 #include "primaryconfigview.h"
 #include "../view.h"
+#include "../indicator/indicator.h"
 #include "../../lattecorona.h"
 #include "../../indicator/factory.h"
 
@@ -70,7 +71,6 @@ int IndicatorUiManager::index(const QString &type)
     return -1;
 }
 
-
 void IndicatorUiManager::setParentItem(QQuickItem *parentItem)
 {
     m_parentItem = parentItem;
@@ -89,13 +89,32 @@ void IndicatorUiManager::hideAllUi()
     }
 }
 
+void IndicatorUiManager::showNextIndicator()
+{
+    if (!m_parentItem) {
+        return;
+    }
+
+    if (auto *metaObject = m_parentItem->metaObject()) {
+        int methodIndex = metaObject->indexOfMethod("showNextIndicator()");
+
+        if (methodIndex == -1) {
+            qDebug() << "indicator parent page function showNextIndicator() was not found...";
+            return;
+        }
+
+        QMetaMethod method = metaObject->method(methodIndex);
+        method.invoke(m_parentItem);
+    }
+}
+
 void IndicatorUiManager::ui(const QString &type, Latte::View *view)
 {
     if (!m_parentItem) {
         return;
     }
 
-    hideAllUi();
+    //  hideAllUi();
 
     int typeIndex = index(type);
 
@@ -106,7 +125,9 @@ void IndicatorUiManager::ui(const QString &type, Latte::View *view)
         //! config ui has already been created and can be provided again
         QQuickItem *qmlItem = qobject_cast<QQuickItem*>(m_uidata[typeIndex].ui->rootObject());
         if (qmlItem) {
-            qmlItem->setVisible(true);
+            qmlItem->setParentItem(m_parentItem);
+            showNextIndicator();
+            //qmlItem->setVisible(true);
         }
         return;
     }
@@ -133,12 +154,29 @@ void IndicatorUiManager::ui(const QString &type, Latte::View *view)
             uidata.ui->rootContext()->setContextProperty(QStringLiteral("indicator"), view->indicator());
             uidata.ui->completeInitialization();
 
+            int newTypeIndex = view->indicator()->index(type);
+            int newPos = -1;
+
+            for (int i=0; i<m_uidata.count(); ++i) {
+                int oldTypeIndex = view->indicator()->index(m_uidata[i].type);
+
+                if (oldTypeIndex > newTypeIndex) {
+                    newPos = i;
+                    break;
+                }
+            }
+
+            if (newPos == -1) {
+                m_uidata << uidata;
+            } else {
+                m_uidata.insert(newPos, uidata);
+            }
+
             QQuickItem *qmlItem = qobject_cast<QQuickItem*>(uidata.ui->rootObject());
             if (qmlItem) {
                 qmlItem->setParentItem(m_parentItem);
+                showNextIndicator();
             }
-
-            m_uidata << uidata;
         }
     }
 }

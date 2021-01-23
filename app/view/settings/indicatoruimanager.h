@@ -49,6 +49,7 @@ struct IndicatorUiData
 {
     QString type;
     QString pluginPath;
+    QString name;
     QPointer<Latte::View> view;
     QPointer<KDeclarative::QmlObjectSharedEngine> ui;
 };
@@ -68,11 +69,12 @@ public slots:
     Q_INVOKABLE void setParentItem(QQuickItem *parentItem);
     Q_INVOKABLE void ui(const QString &type, Latte::View *view);
 
+    Q_INVOKABLE int index(const QString &type);
 private:
     bool contains(const QString &type);
-    int index(const QString &type);
 
     void hideAllUi();
+    void showNextIndicator();
 
 private:
     QQuickItem *m_parentItem{nullptr};
