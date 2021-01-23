@@ -157,6 +157,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
+                        id: shadowOpacityLbl
                         enabled: showAppletShadow.checked
                         text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(shadowOpacitySlider.value)
                         horizontalAlignment: Text.AlignRight
@@ -165,14 +166,10 @@ PlasmaComponents.Page {
                     }
                 }
 
-                LatteComponents.SubHeader {
-                    isFirstSubCategory: true
-                    text: i18n("Color")
-                }
-
                 RowLayout {
                     id: shadowColorRow
                     Layout.fillWidth: true
+                    Layout.topMargin: units.smallSpacing
                     spacing: 2
                     enabled: showAppletShadow.checked
 
@@ -191,7 +188,7 @@ PlasmaComponents.Page {
                         id: defaultShadowBtn
                         Layout.fillWidth: true
 
-                        text: i18nc("default shadow", "Default")
+                        text: i18nc("default shadow", "Default Color")
                         checked: plasmoid.configuration.shadowColorType === type
                         checkable: false
                         exclusiveGroup: shadowColorGroup
@@ -210,7 +207,7 @@ PlasmaComponents.Page {
                         id: themeShadowBtn
                         Layout.fillWidth: true
 
-                        text: i18nc("theme shadow", "Theme")
+                        text: i18nc("theme shadow", "Theme Color")
                         checked: plasmoid.configuration.shadowColorType === type
                         checkable: false
                         exclusiveGroup: shadowColorGroup
@@ -229,6 +226,7 @@ PlasmaComponents.Page {
                     PlasmaComponents.Button {
                         id: userShadowBtn
                         Layout.fillWidth: true
+                        Layout.minimumWidth: shadowOpacityLbl.width
                         height: parent.height
                         text: " "
 
@@ -332,11 +330,6 @@ PlasmaComponents.Page {
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 0
                 enabled: plasmoid.configuration.animationsEnabled
-
-                LatteComponents.SubHeader {
-                    isFirstSubCategory: true
-                    text: i18n("Speed")
-                }
 
                 ColumnLayout {
                     Layout.fillWidth: true
