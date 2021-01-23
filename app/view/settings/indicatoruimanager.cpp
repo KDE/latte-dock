@@ -114,8 +114,6 @@ void IndicatorUiManager::ui(const QString &type, Latte::View *view)
         return;
     }
 
-    //  hideAllUi();
-
     int typeIndex = index(type);
 
     if (typeIndex > -1 && m_uidata[typeIndex].ui) {
@@ -127,7 +125,6 @@ void IndicatorUiManager::ui(const QString &type, Latte::View *view)
         if (qmlItem) {
             qmlItem->setParentItem(m_parentItem);
             showNextIndicator();
-            //qmlItem->setVisible(true);
         }
         return;
     }

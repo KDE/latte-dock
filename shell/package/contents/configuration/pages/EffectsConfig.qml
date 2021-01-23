@@ -476,6 +476,27 @@ PlasmaComponents.Page {
                                 comboBoxMinimumPopUpWidth: 1.5 * customIndicator.width
                             }
                         }
+
+                        function selectTab(type) {
+                            if (type === latteBtn.type) {
+                                tabBar.currentTab = latteBtn;
+                            } else if (type === plasmaBtn.type) {
+                                tabBar.currentTab = plasmaBtn;
+                            } else if (type === customIndicator.type) {
+                                tabBar.currentTab = customBtn;
+                            }
+                        }
+
+                        Connections {
+                            target: indicatorsStackView
+                            onCurrentItemChanged: {
+                                if (!indicatorsStackView.currentItem || !viewConfig.isReady) {
+                                    return;
+                                }
+
+                                tabBar.selectTab(indicatorsStackView.currentItem.type);
+                            }
+                        }
                     }
 
                     Rectangle {
@@ -557,52 +578,93 @@ PlasmaComponents.Page {
             readonly property Item nextPage: indicatorsStackView.currentItem === page1 ? page2 : page1
             readonly property Item previousPage: nextPage === page1 ? page2 : page1
 
+            //! it is used during first window creation in order to avoid clearing custom indicators from its views
+            //! when the window is created the current view indicator type is stored and restored after
+            //! the tabBar of indicators has completed its creation/initialization
+            property string typeDuringCreation: ""
+
             function showNextIndicator() {
-                if (children.length===1) {
-                    var nextIndicator = children[0];
+                var nextIndicator;
 
-                    if (nextIndicator && (!indicatorsStackView.currentItem || !indicatorsStackView.currentItem.isCurrent)) {
-                        //!empty nextPage by moving its pages into hiddenPages
-                        var childrenCount = nextPage.children.length;
-                        for (var i=0; i<childrenCount; ++i) {
-                            var previousIndicator = nextPage.children[0];
-                            previousIndicator.visible = false;
-                            previousIndicator.parent = hiddenPages;
-                        }
+                //var pageShown = indicatorsStackView.currentItem ? 1 : 0;
+                //var total = page1.children.length + page2.children.length + hiddenPages.children.length + pageShown;
+                //console.log(" >>>>>>>>>>>>>>>>> ALL PAGES :: " + total);
 
-                        nextIndicator.parent = nextPage;
-                        nextIndicator.visible = true;
-                        indicatorsStackView.Layout.minimumHeight = nextIndicator.height;
-                        nextPage.type = latteView.indicator.type;
+                if (children.length > 0) {
+                    nextIndicator = children[0];
+                }
 
-                        var currentIndex = -1;
+                if (nextIndicator && (!indicatorsStackView.currentItem || !indicatorsStackView.currentItem.isCurrent)) {
+                    //!empty nextPage by moving its pages into hiddenPages
+                    var childrenCount = nextPage.children.length;
+                    for (var i=0; i<childrenCount; ++i) {
+                        var previousIndicator = nextPage.children[0];
+                        previousIndicator.visible = false;
+                        previousIndicator.parent = hiddenPages;
+                    }
 
-                        if (indicatorsStackView.currentItem) {
-                            currentIndex = viewConfig.indicatorUiManager.index(indicatorsStackView.currentItem.type);
-                        }
+                    nextIndicator.parent = nextPage;
+                    nextIndicator.visible = true;
+                    indicatorsStackView.Layout.minimumHeight = nextIndicator.height;
+                    nextPage.type = latteView.indicator.type;
 
-                        var nextIndex = viewConfig.indicatorUiManager.index(latteView.indicator.type);
+                    var currentIndex = -1;
 
-                        indicatorsStackView.forwardSliding = (nextIndex<currentIndex);
-                        indicatorsStackView.replace(indicatorsStackView.currentItem, nextPage);
+                    if (indicatorsStackView.currentItem) {
+                        currentIndex = viewConfig.indicatorUiManager.index(indicatorsStackView.currentItem.type);
+                    }
+
+                    var nextIndex = viewConfig.indicatorUiManager.index(latteView.indicator.type);
+
+                    indicatorsStackView.forwardSliding = (nextIndex<currentIndex);
+                    indicatorsStackView.replace(indicatorsStackView.currentItem, nextPage);
+                }
+
+                if (children.length>0) {
+                    //!empty all remaining pages by moving them into hiddenPages
+                    var tempcount = children.length;
+                    for (var i=0; i<tempcount; ++i) {
+                        var tempIndicator = children[0];
+                        tempIndicator.visible = false;
+                        tempIndicator.parent = hiddenPages;
                     }
                 }
             }
 
             Component.onCompleted: {
                 viewConfig.indicatorUiManager.setParentItem(hiddenIndicatorPage);
+                tabBar.selectTab(latteView.indicator.type);
+
+                if (latteView.indicator.type !== latteBtn.type) {
+                    typeDuringCreation = latteView.indicator.type;
+                }
+
                 viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
             }
 
             Connections {
                 target: latteView.indicator
-                onPluginChanged: viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
+                onPluginChanged: {
+                    if (viewConfig.isReady) {
+                        if (hiddenIndicatorPage.typeDuringCreation === "") {
+                            tabBar.selectTab(latteView.indicator.type);
+                            viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
+                        } else {
+                            //! restore the first assigned indicator after first window creation. This way we avoid
+                            //! unsetting custom indicators from views during first settings window creation.
+                            latteView.indicator.type = hiddenIndicatorPage.typeDuringCreation;
+                            tabBar.selectTab(latteView.indicator.type);
+                            hiddenIndicatorPage.typeDuringCreation = "";
+                        }
+                    }
+                }
             }
 
             Connections {
                 target: viewConfig
                 onIsReadyChanged: {
                     if (viewConfig.isReady) {
+                        tabBar.selectTab(latteView.indicator.type);
                         viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
                     }
                 }
@@ -615,7 +677,7 @@ PlasmaComponents.Page {
             ColumnLayout {
                 id: page1
                 width: indicatorsStackView.width
-                readonly property bool isCurrent: latteView.indicator.type === type
+                readonly property bool isCurrent: latteView.indicator.type === type && viewConfig.isReady/*update flag*/
                 readonly property bool deprecatedOptionsAreHidden: true // @since 0.10.0
                 readonly property int optionsWidth: dialog.optionsWidth
 
@@ -625,7 +687,7 @@ PlasmaComponents.Page {
             ColumnLayout {
                 id: page2
                 width: indicatorsStackView.width
-                readonly property bool isCurrent: latteView.indicator.type === type
+                readonly property bool isCurrent: latteView.indicator.type === type && viewConfig.isReady/*update flag*/
                 readonly property bool deprecatedOptionsAreHidden: true // @since 0.10.0
                 readonly property int optionsWidth: dialog.optionsWidth
 
@@ -635,7 +697,7 @@ PlasmaComponents.Page {
             ColumnLayout {
                 id: hiddenPages
                 width: indicatorsStackView.width
-                readonly property bool isCurrent: latteView.indicator.type === type
+                readonly property bool isCurrent: latteView.indicator.type === type && viewConfig.isReady/*update flag*/
                 readonly property bool deprecatedOptionsAreHidden: true // @since 0.10.0
                 readonly property int optionsWidth: dialog.optionsWidth
 
