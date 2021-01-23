@@ -757,7 +757,7 @@ PlasmaComponents.Page {
                             model: [i18nc("none scroll actions", "No Action"),
                                 i18n("Cycle Through Desktops"),
                                 i18n("Cycle Through Activities"),
-                                i18n("Cycle Through Tasks From"),
+                                i18n("Cycle Through Tasks"),
                                 i18n("Cycle And Minimize Tasks")
                             ]
 
