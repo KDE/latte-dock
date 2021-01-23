@@ -75,7 +75,7 @@ FocusScope {
     property real userScaleWidth: 1
     property real userScaleHeight: 1
 
-    readonly property real heightLevel: (dialog.advancedLevel ? 100 : 1)
+    readonly property real heightLevel: (dialog.advancedLevel ? 100 : 1) //in order to use all available space
 
     onHeightChanged: viewConfig.syncGeometry();
 
@@ -130,73 +130,81 @@ FocusScope {
 
         onEnabledBordersChanged: viewConfig.updateEffects()
         Component.onCompleted: viewConfig.updateEffects()
-    }
 
-    MouseArea{
-        id: backgroundMouseArea
-        anchors.fill: parent
-        hoverEnabled: true
+        Rectangle {
+            width: 25
+            height: width
+            anchors.horizontalCenter: parent.right
+            anchors.verticalCenter: parent.top
+            rotation: 45
+            color: resizeWindowMouseArea.isActive ? theme.buttonFocusColor : theme.textColor
+            opacity: resizeWindowMouseArea.isActive ? 1 : 0.2
 
-        property bool blockWheel: false
-        property bool updatingWidthScale: false
-        property bool updatingHeightScale: false
-        property bool wheelTriggeredOnce: false
-        property real scaleStep: 0.04
+            MouseArea {
+                id: resizeWindowMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
 
-        onWheel: {
-            var metaModifier = (wheel.modifiers & Qt.MetaModifier);
-            var ctrlModifier = (wheel.modifiers & Qt.ControlModifier);
+                readonly property bool isActive: containsMouse || pressed
 
-            if (blockWheel || !(metaModifier || ctrlModifier)){
-                return;
-            }
+                property bool initialized: false
+                property int initGlobalX: 0
+                property int initGlobalY: 0
+                property int initWidth: 100
+                property int initHeight: 100
+                property real initScaleWidth: 1
+                property real initScaleHeight: 1
 
-            updatingWidthScale = metaModifier || (dialog.advancedLevel && ctrlModifier);
-            updatingHeightScale = dialog.basicLevel && ctrlModifier;
-
-            blockWheel = true;
-            wheelTriggeredOnce = true;
-            scrollDelayer.start();
-
-            var angle = wheel.angleDelta.y / 8;
-
-            //positive direction
-            if (angle > 12) {
-                var scales;
-                if (updatingWidthScale) {
-                    userScaleWidth = userScaleWidth + scaleStep;
+                onPressed: {
+                    if (pressed) {
+                        var scenePos = mapToGlobal(mouse.x, mouse.y);
+                        initGlobalX = viewConfig.x + scenePos.x;
+                        initGlobalY = viewConfig.y + mouse.y;
+                        initWidth = dialog.width;
+                        initHeight = dialog.height;
+                        initScaleWidth = userScaleWidth;
+                        initScaleHeight = userScaleHeight;
+                        initialized = true;
+                    }
                 }
 
-                if (updatingHeightScale) {
-                    userScaleHeight = userScaleHeight + scaleStep;
+                onPositionChanged: {
+                    if (pressed && initialized) {
+                        var scenePos = mapToGlobal(mouse.x, mouse.y);
+                        var curGlobalX = viewConfig.x + scenePos.x;
+                        var curGlobalY = viewConfig.y + mouse.y;
+
+                        var differX = curGlobalX - initGlobalX;
+                        var percentX = differX / initWidth;
+                        var newScaleWidth = Math.max(0.35, initScaleWidth + (percentX*initScaleWidth)).toFixed(3);
+
+                        var newScaleHeight = userScaleHeight;
+
+                        if (!dialog.advancedLevel) {
+                            var differY = initGlobalY - curGlobalY;
+                            var percentY = differY / initHeight;
+                            newScaleHeight = Math.max(0.5, initScaleHeight + (percentY*initScaleHeight)).toFixed(3);
+                        }
+
+                        universalSettings.setScreenScales(latteView.positioner.currentScreenName, newScaleWidth, newScaleHeight);
+                        userScaleWidth = newScaleWidth;
+                        userScaleHeight = newScaleHeight;
+                        viewConfig.syncGeometry();
+                    } else if (!pressed) {
+                        initialized = false;
+                    }
                 }
 
-                universalSettings.setScreenScales(latteView.positioner.currentScreenName, userScaleWidth, userScaleHeight);
-                viewConfig.syncGeometry();
-                //negative direction
-            } else if (angle < -12) {
-                if (updatingWidthScale) {
-                    userScaleWidth = userScaleWidth - scaleStep;
+                onReleased: {
+                    initialized = false;
                 }
 
-                if (updatingHeightScale) {
-                    userScaleHeight = userScaleHeight - scaleStep;
+                onDoubleClicked: {
+                    userScaleWidth = 1;
+                    userScaleHeight = 1;
+                    universalSettings.setScreenScales(latteView.positioner.currentScreenName, 1, 1);
+                    viewConfig.syncGeometry();
                 }
-                universalSettings.setScreenScales(latteView.positioner.currentScreenName, userScaleWidth, userScaleHeight);
-                viewConfig.syncGeometry();
-            }
-        }
-    }
-
-    PlasmaComponents.Button {
-        id: backgroundMouseAreaTooltip
-        anchors.fill: parent
-        opacity: 0
-        //tooltip: i18n("You can use Ctrl/Meta + Scroll Wheel to alter the window size")
-
-        onHoveredChanged: {
-            if (!hovered) {
-                backgroundMouseArea.wheelTriggeredOnce = false;
             }
         }
     }
@@ -204,20 +212,10 @@ FocusScope {
     PlasmaComponents.Label{
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
-        text: backgroundMouseArea.updatingWidthScale ?
-                  i18nc("view settings width scale","Width scale at %0%").arg(userScaleWidth * 100) :
-                  i18nc("view settings height scale","Height scale at %0%").arg(userScaleHeight * 100)
-        visible: backgroundMouseAreaTooltip.hovered && backgroundMouseArea.wheelTriggeredOnce
-    }
-
-    //! A timer is needed in order to handle also touchpads that probably
-    //! send too many signals very fast. This way the signals per sec are limited.
-    //! The user needs to have a steady normal scroll in order to not
-    //! notice a annoying delay
-    Timer{
-        id: scrollDelayer
-        interval: 75
-        onTriggered: backgroundMouseArea.blockWheel = false;
+        text: dialog.advancedLevel ?
+                  i18nc("view settings width scale","Width %0%").arg(userScaleWidth * 100) :
+                  i18nc("view settings width scale","Width %0% / Height %1%").arg(userScaleWidth * 100).arg(userScaleHeight * 100)
+        visible: resizeWindowMouseArea.isActive
     }
 
     ColumnLayout {
@@ -289,8 +287,8 @@ FocusScope {
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     Layout.bottomMargin: units.smallSpacing * 1.5
                     //!avoid editMode box shadow
-                    Layout.topMargin: units.smallSpacing * 2
-                    Layout.rightMargin: units.smallSpacing
+                    Layout.topMargin: units.smallSpacing * 3
+                    Layout.rightMargin: units.smallSpacing * 2
 
                     icon.name: "window-pin"
                     checkable: true

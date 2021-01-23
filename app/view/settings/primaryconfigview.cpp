@@ -63,6 +63,9 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
     : SubConfigView(view, QString("#primaryconfigview#")),
       m_indicatorUiManager(new Config::IndicatorUiManager(this))
 {
+    connect(this, &QQuickWindow::xChanged, this, &PrimaryConfigView::xChanged);
+    connect(this, &QQuickWindow::yChanged, this, &PrimaryConfigView::yChanged);
+
     connect(this, &QQuickView::widthChanged, this, &PrimaryConfigView::updateEffects);
     connect(this, &QQuickView::heightChanged, this, &PrimaryConfigView::updateEffects);
 

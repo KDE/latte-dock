@@ -76,6 +76,9 @@ class PrimaryConfigView : public SubConfigView
     Q_PROPERTY(bool showInlineProperties READ showInlineProperties NOTIFY showInlinePropertiesChanged)
     Q_PROPERTY(bool isReady READ isReady NOTIFY isReadyChanged)
 
+    Q_PROPERTY(int x READ x NOTIFY xChanged)
+    Q_PROPERTY(int y READ y NOTIFY yChanged)
+
     Q_PROPERTY(QRect availableScreenGeometry READ availableScreenGeometry NOTIFY availableScreenGeometryChanged)
 
     Q_PROPERTY(Latte::ViewPart::Config::IndicatorUiManager *indicatorUiManager READ indicatorUiManager NOTIFY indicatorUiManagerChanged)
@@ -122,6 +125,8 @@ signals:
     void raiseDocksTemporaryChanged();
     void showInlinePropertiesChanged();
     void showSignal();
+    void xChanged();
+    void yChanged();
 
 protected:
     void showEvent(QShowEvent *ev) override;
