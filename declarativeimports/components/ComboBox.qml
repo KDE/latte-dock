@@ -50,6 +50,7 @@ T.ComboBox {
     property bool blankSpaceForEmptyIcons: false
     property bool forcePressed: false
     property bool popUpAlignRight: true
+    property bool buttonIsTransparent: false
     property int minimumPopUpWidth: 150
     property int popUpRelativeX: 0
     property int popUpTextHorizontalAlignment: Text.AlignLeft
@@ -99,7 +100,7 @@ T.ComboBox {
         implicitHeight: implicitWidth
         anchors {
             right: parent.right
-            rightMargin: surfaceNormal.margins.right
+            rightMargin: control.buttonIsTransparent ? 0 : surfaceNormal.margins.right
             verticalCenter: parent.verticalCenter
         }
         svg: PlasmaCore.Svg {
@@ -323,13 +324,22 @@ T.ComboBox {
         id: surfaceNormal
         //retrocompatibility with old controls
         implicitWidth: units.gridUnit * 6
-        anchors.fill: parent
+        width: parent.width
+        height: parent.height
+
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.rightMargin: control.buttonIsTransparent ? -margins.right : 0
         readonly property bool editable: control.hasOwnProperty("editable") && control.editable
         imagePath: editable ? "widgets/lineedit" : "widgets/button"
         prefix: editable
                 ? "base"
                 : (control.pressed || control.forcePressed ? "pressed" : "normal")
+
+        opacity: control.buttonIsTransparent && prefix !== "pressed" && textFieldPrivate.state !== "hover" && !control.popup.visible ? 0 : 1
+
         Private.TextFieldFocus {
+            id: textFieldPrivate
             visible: parent.editable
             z: -1
             state: control.activeFocus ? "focus" : (control.hovered ? "hover" : "hidden")

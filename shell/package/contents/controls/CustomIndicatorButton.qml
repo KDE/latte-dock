@@ -32,6 +32,9 @@ LatteComponents.ComboBoxButton{
     buttonToolTip:  custom.type === "download:" ? i18n("Download indicator styles from the internet") :
                                                   i18n("Use %0 style for your indicators").arg(buttonText)
 
+    buttonIsTransparent: true
+    comboBoxButtonIsTransparent: true
+
     comboBoxTextRole: "name"
     comboBoxIconRole: "icon"
     comboBoxIconToolTipRole: "iconToolTip"
@@ -66,18 +69,11 @@ LatteComponents.ComboBoxButton{
                 custom.updateButtonInformation();
             }
         }
-    }
+    }  
 
     Connections{
         target: custom.button
-
-        onClicked: {
-            if (custom.type === "download:") {
-                latteView.indicator.downloadIndicator();
-            } else {
-                latteView.indicator.type = custom.type;
-            }
-        }
+        onClicked: onButtonIsPressed();
     }
 
     Connections{
@@ -116,6 +112,14 @@ LatteComponents.ComboBoxButton{
             if (visible) {
                 custom.selectChosenType();
             }
+        }
+    }
+
+    function onButtonIsPressed() {
+        if (custom.type === "download:") {
+            latteView.indicator.downloadIndicator();
+        } else {
+            latteView.indicator.type = custom.type;
         }
     }
 

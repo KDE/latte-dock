@@ -37,10 +37,11 @@ Rectangle {
     property bool checked: false
     property bool checkable: false
 
-    readonly property Item comboBox: mainComboBox
-    readonly property Item button: mainButton
+    readonly property alias comboBox: mainComboBox
+    readonly property alias button: mainButton
 
     property bool buttonEnabled: true
+    property bool buttonIsTransparent: false
     property string buttonText:""
     property string buttonIconSource:""
     property string buttonToolTip: ""
@@ -49,6 +50,7 @@ Rectangle {
     property bool comboBoxBlankSpaceForEmptyIcons: false
     property bool comboBoxForcePressed: false
     property bool comboBoxPopUpAlignRight: true
+    property bool comboBoxButtonIsTransparent: false
     property int comboBoxMinimumPopUpWidth: 150
     property int comboBoxPopupTextHorizontalAlignment: Text.AlignLeft
     property string comboBoxEnabledRole: ""
@@ -76,6 +78,7 @@ Rectangle {
         LayoutMirroring.enabled: false
         enabled: buttonEnabled
         checked: root.checked
+        visible: buttonIsTransparent ? 0 : 1
 
         /*workaround in order to replicate the proper Buttons Exclusive Group Behavior*/
         checkable: root.checkable && !parent.exclusiveGroup
@@ -106,6 +109,7 @@ Rectangle {
         textRole: comboBoxTextRole
         iconToolTipRole: comboBoxIconToolTipRole
         iconOnlyWhenHoveredRole: comboBoxIconOnlyWhenHoveredRole
+        buttonIsTransparent: comboBoxButtonIsTransparent
 
         blankSpaceForEmptyIcons: comboBoxBlankSpaceForEmptyIcons
         forcePressed: comboBoxForcePressed
@@ -128,7 +132,7 @@ Rectangle {
         height: parent.height
         text: buttonText
         font: mainButton.font
-        color: theme.buttonTextColor
+        color: buttonIsTransparent ? theme.textColor : theme.buttonTextColor
         visible: root.checkable
 
         elide: Text.ElideRight

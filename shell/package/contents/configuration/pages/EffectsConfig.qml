@@ -426,64 +426,72 @@ PlasmaComponents.Page {
                 spacing: units.smallSpacing
                 enabled: indicatorsSwitch.checked
 
-                LatteComponents.SubHeader {
+             /*   LatteComponents.SubHeader {
                     text: i18n("Style")
-                }
+                }*/
 
-                RowLayout {
+                Item {
                     Layout.fillWidth: true
-                    spacing: 2
+                    Layout.minimumHeight: tabBar.height
 
-                    property string type: latteView.indicator.type
+                    PlasmaComponents.TabBar {
+                        id: tabBar
+                        width: parent.width
 
-                    ExclusiveGroup {
-                        id: indicatorStyleGroup
-                    }
+                        property string type: latteView.indicator.type
 
-                    PlasmaComponents.Button {
-                        id: latteBtn
-                        Layout.fillWidth: true
-                        text: i18nc("latte indicator style", "Latte")
-                        checked: parent.type === type
-                        checkable: false
-                        exclusiveGroup:  indicatorStyleGroup
-                        tooltip: i18n("Use Latte style for your indicators")
+                        PlasmaComponents.TabButton {
+                            id: latteBtn
+                            text: i18nc("latte indicator style", "Latte")
+                            readonly property string type: "org.kde.latte.default"
 
-                        readonly property string type: "org.kde.latte.default"
+                            onCheckedChanged: {
+                                if (checked) {
+                                    latteView.indicator.type = type;
+                                }
+                            }
+                        }
+                        PlasmaComponents.TabButton {
+                            id: plasmaBtn
+                            text: i18nc("plasma indicator style", "Plasma")
+                            readonly property string type: "org.kde.latte.plasma"
 
-                        onPressedChanged: {
-                            if (pressed) {
-                                latteView.indicator.type = type;
+                            onCheckedChanged: {
+                                if (checked) {
+                                    latteView.indicator.type = type;
+                                }
+                            }
+                        }
+
+                        PlasmaComponents.TabButton {
+                            id: customBtn
+
+                            onCheckedChanged: {
+                                if (checked) {
+                                    customIndicator.onButtonIsPressed();
+                                }
+                            }
+
+                            LatteExtraControls.CustomIndicatorButton {
+                                id: customIndicator
+                                anchors.fill: parent
+                                implicitWidth: latteBtn.implicitWidth
+                                implicitHeight: latteBtn.implicitHeight
+
+                                checked: parent.checked
+                                comboBoxMinimumPopUpWidth: 1.5 * customIndicator.width
                             }
                         }
                     }
 
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-                        text: i18nc("plasma indicator style", "Plasma")
-                        checked: parent.type === type
-                        checkable: false
-                        exclusiveGroup:  indicatorStyleGroup
-                        tooltip: i18n("Use Plasma style for your indicators")
-
-                        readonly property string type: "org.kde.latte.plasma"
-
-                        onPressedChanged: {
-                            if (pressed) {
-                                latteView.indicator.type = type;
-                            }
-                        }
-                    }
-
-                    LatteExtraControls.CustomIndicatorButton {
-                        id: customIndicator
-                        Layout.fillWidth: true
-                        implicitWidth: latteBtn.implicitWidth
-                        implicitHeight: latteBtn.implicitHeight
-
-                        checked: parent.type === type
-                        exclusiveGroup:  indicatorStyleGroup
-                        comboBoxMinimumPopUpWidth: 1.5 * customIndicator.width
+                    Rectangle {
+                        anchors.bottom: tabBar.bottom
+                        anchors.left: tabBar.left
+                        anchors.leftMargin: 2
+                        width: tabBar.width - 2*2
+                        height: 2
+                        color: theme.textColor
+                        opacity: 0.25
                     }
                 }
 
