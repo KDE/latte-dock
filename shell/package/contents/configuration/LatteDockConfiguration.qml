@@ -103,10 +103,9 @@ FocusScope {
     onAdvancedLevelChanged: {
         //! switch to appearancePage when effectsPage becomes hidden because
         //! advancedLevel was disabled by the user
-       /* if (!advancedLevel && tabGroup.currentTab === effectsPage) {
-            tabGroup.currentTab = appearancePage;
+        if (!advancedLevel && tabBar.currentTab === effectsTabBtn) {
             tabBar.currentTab = appearanceTabBtn;
-        }*/
+        }
     }
 
     Component.onCompleted: {
@@ -394,7 +393,17 @@ FocusScope {
                         pagesStackView.replace(pagesStackView.currentItem, behaviorPage);
                     }
                 }
+
+                Connections {
+                    target: viewConfig
+                    onIsReadyChanged: {
+                        if (viewConfig.isReady) {
+                            tabBar.currentTab = behaviorTabBtn;
+                        }
+                    }
+                }
             }
+
             PlasmaComponents.TabButton {
                 id: appearanceTabBtn
                 text: i18n("Appearance")
@@ -548,7 +557,8 @@ FocusScope {
 
                         Component.onCompleted: {
                             pagesStackView.push(tasksPage);
-                            pagesStackView.pop(tasksPage);
+                            pagesStackView.forwardSliding = true;
+                            pagesStackView.replace(tasksPage, behaviorPage);
                         }
                     }
                 }

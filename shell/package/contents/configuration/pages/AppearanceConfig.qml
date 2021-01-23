@@ -1027,10 +1027,13 @@ PlasmaComponents.Page {
                         Layout.minimumWidth: parent.buttonSize
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("Blur")
-                        checked: plasmoid.configuration.blurEnabled
                         checkable: true
                         enabled: showBackground.checked && LatteCore.WindowSystem.compositingActive
                         tooltip: i18n("Background is blurred underneath")
+
+                        readonly property int blurEnabled: plasmoid.configuration.blurEnabled
+
+                        onBlurEnabledChanged: checked = blurEnabled;
 
                         onClicked: {
                             plasmoid.configuration.blurEnabled  = checked
@@ -1042,10 +1045,13 @@ PlasmaComponents.Page {
                         Layout.minimumWidth: parent.buttonSize
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("Shadows")
-                        checked: plasmoid.configuration.panelShadows
                         checkable: true
                         enabled: showBackground.checked && LatteCore.WindowSystem.compositingActive && themeExtended.hasShadow
                         tooltip: i18n("Background shows its shadows")
+
+                        readonly property int panelShadows: plasmoid.configuration.panelShadows
+
+                        onPanelShadowsChanged: checked = panelShadows
 
                         onClicked: {
                             plasmoid.configuration.panelShadows  = checked
@@ -1057,10 +1063,13 @@ PlasmaComponents.Page {
                         Layout.minimumWidth: parent.buttonSize
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("Outline")
-                        checked: plasmoid.configuration.panelOutline
                         checkable: true
                         enabled: showBackground.checked
                         tooltip: i18n("Background draws a line for its borders. You can set the line size from Latte Preferences")
+
+                        readonly property int panelOutline: plasmoid.configuration.panelOutline
+
+                        onPanelOutlineChanged: checked = panelOutline
 
                         onClicked: {
                             plasmoid.configuration.panelOutline = !plasmoid.configuration.panelOutline;
@@ -1072,7 +1081,6 @@ PlasmaComponents.Page {
                         Layout.minimumWidth: parent.buttonSize
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("All Corners")
-                        checked: plasmoid.configuration.backgroundAllCorners
                         checkable: true
                         enabled: showBackground.checked
                                  && ((plasmoid.configuration.screenEdgeMargin===-1) /*no-floating*/
@@ -1080,6 +1088,10 @@ PlasmaComponents.Page {
                                          && plasmoid.configuration.alignment ===LatteCore.Types.Justify
                                          && plasmoid.configuration.maxLength===100))
                         tooltip: i18n("Background draws all corners at all cases.")
+
+                        readonly property int backgroundAllCorners: plasmoid.configuration.backgroundAllCorners
+
+                        onBackgroundAllCornersChanged: checked = backgroundAllCorners
 
                         onClicked: {
                             plasmoid.configuration.backgroundAllCorners = !plasmoid.configuration.backgroundAllCorners;
