@@ -689,10 +689,6 @@ PlasmaComponents.Page {
                     }
                 }
 
-                /*LatteComponents.SubHeader {
-                    text: i18n("Empty Area")
-                }*/
-
                 ColumnLayout {
                     Layout.topMargin: units.smallSpacing
                     RowLayout {
@@ -706,13 +702,16 @@ PlasmaComponents.Page {
                         PlasmaComponents.Button {
                             Layout.fillWidth: true
                             text: i18n("Drag Active Window")
-                            checked: plasmoid.configuration.dragActiveWindowEnabled
                             checkable: true
                             tooltip: i18n("The user can use left mouse button to drag and maximized/restore last active window from empty areas")
                             iconName: "transform-move"
 
+                            readonly property int dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled
+
+                            onDragActiveWindowEnabledChanged: checked = dragActiveWindowEnabled
+
                             onClicked: {
-                                plasmoid.configuration.dragActiveWindowEnabled = !plasmoid.configuration.dragActiveWindowEnabled;
+                                plasmoid.configuration.dragActiveWindowEnabled = checked;
                             }
                         }
                     }
@@ -728,13 +727,16 @@ PlasmaComponents.Page {
                         PlasmaComponents.Button {
                             Layout.fillWidth: true
                             text: i18n("Close Active Window")
-                            checked: plasmoid.configuration.closeActiveWindowEnabled
                             checkable: true
                             tooltip: i18n("The user can use middle mouse button to close last active window from empty areas")
                             iconName: "window-close"
 
+                            readonly property int closeActiveWindowEnabled: plasmoid.configuration.closeActiveWindowEnabled
+
+                            onCloseActiveWindowEnabledChanged: checked = closeActiveWindowEnabled;
+
                             onClicked: {
-                                plasmoid.configuration.closeActiveWindowEnabled = !plasmoid.configuration.closeActiveWindowEnabled;
+                                plasmoid.configuration.closeActiveWindowEnabled = checked;
                             }
                         }
                     }

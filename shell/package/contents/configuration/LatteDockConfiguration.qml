@@ -103,10 +103,10 @@ FocusScope {
     onAdvancedLevelChanged: {
         //! switch to appearancePage when effectsPage becomes hidden because
         //! advancedLevel was disabled by the user
-        if (!advancedLevel && tabGroup.currentTab === effectsPage) {
+       /* if (!advancedLevel && tabGroup.currentTab === effectsPage) {
             tabGroup.currentTab = appearancePage;
             tabBar.currentTab = appearanceTabBtn;
-        }
+        }*/
     }
 
     Component.onCompleted: {

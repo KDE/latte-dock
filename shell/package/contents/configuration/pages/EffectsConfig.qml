@@ -508,11 +508,6 @@ PlasmaComponents.Page {
                     readonly property int optionsWidth: dialog.optionsWidth
                     readonly property bool deprecatedOptionsAreHidden: true // @since 0.10.0
 
-                    Connections{
-                        target: indicatorsStackView/currentItem
-                        onHeightChanged: console.log(indicatorsStackView.currentItem.height)
-                    }
-
                     replaceEnter: Transition {
                         ParallelAnimation {
                             PropertyAnimation {
