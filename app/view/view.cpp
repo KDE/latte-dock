@@ -1492,6 +1492,11 @@ void View::releaseGrab()
 QVariantList View::containmentActions()
 {
     QVariantList actions;
+
+    if (!containment()) {
+        return actions;
+    }
+
     /*if (containment()->corona()->immutability() != Plasma::Types::Mutable) {
         return actions;
     }*/
