@@ -372,11 +372,6 @@ PlasmaComponents.Page {
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 0
 
-                LatteComponents.SubHeader {
-                    isFirstSubCategory: true
-                    text: i18nc("launchers group", "Group");
-                }
-
                 RowLayout {
                     Layout.fillWidth: true
 
@@ -394,7 +389,7 @@ PlasmaComponents.Page {
                     PlasmaComponents.Button {
                         Layout.minimumWidth: parent.buttonSize
                         Layout.maximumWidth: Layout.minimumWidth
-                        text: i18nc("unique launchers group","Unique")
+                        text: i18nc("unique launchers group","Unique Group")
                         checked: parent.group === group
                         checkable: false
                         exclusiveGroup: launchersGroup
@@ -413,7 +408,7 @@ PlasmaComponents.Page {
                         id: layoutGroupButton
                         Layout.minimumWidth: parent.buttonSize
                         Layout.maximumWidth: Layout.minimumWidth
-                        text: i18nc("layout launchers group","Layout")
+                        text: i18nc("layout launchers group","Layout Group")
                         checked: parent.group === group
                         checkable: false
                         exclusiveGroup: launchersGroup
@@ -433,7 +428,7 @@ PlasmaComponents.Page {
                     PlasmaComponents.Button {
                         Layout.minimumWidth: parent.buttonSize
                         Layout.maximumWidth: Layout.minimumWidth
-                        text: i18nc("global launchers group","Global")
+                        text: i18nc("global launchers group","Global Group")
                         checked: parent.group === group
                         checkable: false
                         exclusiveGroup: launchersGroup
