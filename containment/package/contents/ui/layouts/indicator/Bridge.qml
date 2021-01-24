@@ -28,7 +28,7 @@ Item{
     /* Indicators Properties in order use them*/
     readonly property bool isTask: false
     readonly property bool isApplet: false
-    readonly property bool isEmptySpace: true /*since 0.9.3*/
+    readonly property bool  /*since 0.9.3*/
 
     readonly property bool isLauncher: false
     readonly property bool isStartup: false

@@ -27,6 +27,8 @@ Item {
     property bool isBackground: true
     property bool isForeground: false
 
+    property bool isDrawn: false
+
     readonly property Item requested: Item{
         property int iconOffsetX: 0
         property int iconOffsetY: 0

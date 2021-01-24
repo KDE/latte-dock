@@ -355,7 +355,7 @@ Item {
     readonly property alias background: _background
     readonly property alias debug: _debug
     readonly property alias indexer: _indexer
-    readonly property alias indicatorsManager: indicators
+    readonly property alias indicators: _indicators
     readonly property alias layouter: _layouter
     readonly property alias launchers: _launchers
     readonly property alias metrics: _metrics
@@ -1149,10 +1149,6 @@ Item {
         }
     }
 
-    Indicators.Manager{
-        id: indicators
-    }
-
     Item {
         id: graphicsSystem
         readonly property bool isAccelerated: (GraphicsInfo.api !== GraphicsInfo.Software)
@@ -1350,6 +1346,10 @@ Item {
         layouts: layoutsContainer
     }
 
+    Indicators.Manager{
+        id: _indicators
+    }
+
     Ability.Launchers {
         id: _launchers
         layouts: layoutsContainer
@@ -1368,7 +1368,7 @@ Item {
         animations: _animations
         autosize: _autosize
         background: _background
-        indicators: indicatorsManager
+        indicators: _indicators
         parabolic: _parabolic
     }
 

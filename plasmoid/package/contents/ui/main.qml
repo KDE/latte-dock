@@ -202,7 +202,7 @@ Item {
     readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
     property Item latteView: null
-    readonly property Item indicators: latteView ? latteView.indicatorsManager : indicatorsStandaloneLoader.item
+    readonly property Item indicators: latteView ? latteView.indicators : indicatorsStandaloneLoader.item
     //END Latte Dock Panel properties
 
     readonly property bool inEditMode: latteInEditMode || plasmoid.userConfiguring

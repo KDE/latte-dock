@@ -19,81 +19,29 @@
 
 import QtQuick 2.7
 
-Item{
+import org.kde.latte.abilities.items 0.1 as AbilityItem
+
+AbilityItem.IndicatorObject{
     id: indicatorBridge
-    anchors.fill: parent
+    animations: appletItem.animations
+    metrics: appletItem.metrics
+    indicatorsHost: indicators
 
-    property bool appletIsValid: true
+    isApplet: true
 
-    readonly property bool active: appletIsValid
-                                   && !appletItem.isSeparator
-                                   && !appletItem.isHidden
-                                   && !communicator.indexerIsSupported
-                                   && ((indicators.isEnabled
-                                        && (appletItem.communicator.requires.activeIndicatorEnabled
-                                            || (!appletItem.communicator.requires.activeIndicatorEnabled && appletItem.debug.graphicsEnabled /*debug paddings*/))
-                                        && indicators.info.enabledForApplets))
+    isActive: appletItem.isActive
+    isHovered: appletItem.containsMouse
+    isSquare: appletItem.isSquare
 
-    /* Indicators Properties in order use them*/
-    readonly property bool isTask: false
-    readonly property bool isApplet: true
-    readonly property bool isEmptySpace: false /*since 0.9.3*/
+    hasActive: isActive
 
-    readonly property bool isLauncher: false
-    readonly property bool isStartup: false
-    readonly property bool isWindow: false
+    scaleFactor: appletItem.wrapper.zoomScale
+    panelOpacity: root.background.currentOpacity
+    shadowColor: root.appShadowColorSolid
 
-    readonly property bool isActive: appletIsValid ? appletItem.isActive : false
-    readonly property bool isGroup: false
-    readonly property bool isHovered: appletIsValid ? appletItem.containsMouse : false
-    readonly property bool isMinimized: false
-    readonly property bool isPressed: false //appletIsValid ? appletMouseArea.pressed : false
-    readonly property bool inAttention: false
-    readonly property bool inRemoving: false
-
-    readonly property bool isSquare: appletIsValid ? appletItem.isSquare : true
-
-    readonly property bool hasActive: isActive
-    readonly property bool hasMinimized: false
-    readonly property bool hasShown: false
-    readonly property int windowsCount: 0
-    readonly property int windowsMinimizedCount: 0
-
-    readonly property int currentIconSize: appletIsValid ? appletItem.metrics.iconSize : metrics.iconSize
-    readonly property int maxIconSize: appletIsValid ? appletItem.metrics.maxIconSize : metrics.maxIconSize
-    readonly property real scaleFactor: appletIsValid ? appletItem.wrapper.zoomScale : 1
-    readonly property real panelOpacity: root.background.currentOpacity
-    readonly property color shadowColor: root.appShadowColorSolid
-
-    readonly property bool animationsEnabled: appletIsValid ? appletItem.animations.active : animations.active
-    readonly property real durationTime: appletIsValid ? appletItem.animations.speedFactor.current : animations.speedFactor.current
-
-    readonly property bool progressVisible: false /*since 0.9.2*/
-    readonly property real progress: 0 /*since 0.9.2*/
-
-    readonly property int screenEdgeMargin: appletIsValid ? appletItem.metrics.margin.screenEdge : metrics.margin.screenEdge /*since 0.10*/
-
-    readonly property QtObject palette: colorizerManager.applyTheme
+    palette: colorizerManager.applyTheme
 
     //!icon colors
-    property color iconBackgroundColor: {
-        if (appletIsValid) {
-            return isSquare ? appletItem.wrapper.overlayIconLoader.backgroundColor : colorizerManager.buttonFocusColor;
-        }
-
-        return "black";
-    }
-
-    property color iconGlowColor:{
-        if (appletIsValid) {
-            return isSquare ? appletItem.wrapper.overlayIconLoader.glowColor : colorizerManager.focusGlowColor;
-        }
-
-        return "white";
-    }
-
-    //! grouped options
-    readonly property Item shared: indicators
-    readonly property QtObject configuration: indicators.configuration
-    readonly property QtObject resources: indicators.resources
+    iconBackgroundColor: isSquare ? appletItem.wrapper.overlayIconLoader.backgroundColor : colorizerManager.buttonFocusColor
+    iconGlowColor: isSquare ? appletItem.wrapper.overlayIconLoader.glowColor : colorizerManager.focusGlowColor
 }

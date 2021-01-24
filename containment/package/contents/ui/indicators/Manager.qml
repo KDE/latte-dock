@@ -22,7 +22,7 @@ import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-import "../applet/indicator" as AppletIndicator
+import org.kde.latte.abilities.items 0.1 as AbilityItem
 
 Item{
     id: managerIndicator
@@ -30,7 +30,10 @@ Item{
     readonly property QtObject configuration: latteView && latteView.indicator ? latteView.indicator.configuration : null
     readonly property QtObject resources: latteView && latteView.indicator ? latteView.indicator.resources : null
 
-    readonly property bool isEnabled: latteView && latteView.indicator ? (latteView.indicator.enabled && latteView.indicator.pluginIsReady) : false
+    readonly property bool isEnabled: latteView && latteView.indicator ? (latteView.indicator.enabled
+                                                                          && latteView.indicator.pluginIsReady
+                                                                          && latteView.indicator.configuration)
+                                                                       : false
     readonly property real padding: Math.max(info.minLengthPadding, info.lengthPadding)
     readonly property string type: latteView && latteView.indicator ? latteView.indicator.type : "org.kde.latte.default"  
 
@@ -101,24 +104,31 @@ Item{
         readonly property variant svgPaths: infoLoaded && metricsLoader.item.hasOwnProperty("svgImagePaths") ?
                                                 metricsLoader.item.svgImagePaths : []
 
-        onSvgPathsChanged: latteView.indicator.resources.setSvgImagePaths(svgPaths);
+        onSvgPathsChanged: {
+            if (managerIndicator.isEnabled) {
+                latteView.indicator.resources.setSvgImagePaths(svgPaths);
+            }
+        }
+
+        Connections {
+            target: managerIndicator
+            onIsEnabledChanged: {
+                if (managerIndicator.isEnabled) {
+                    latteView.indicator.resources.setSvgImagePaths(managerIndicator.info.svgPaths);
+                }
+            }
+        }
     }
 
 
     //! Metrics and values provided from an invisible indicator
-    Loader{
+    AbilityItem.IndicatorLevel{
         id: metricsLoader
         opacity: 0
-        active: managerIndicator.isEnabled
-
-        readonly property Item level: AppletIndicator.LevelOptions {
-            isBackground: true
-            bridge: AppletIndicator.Bridge{
-                appletIsValid: false
-            }
-        }
-
-        sourceComponent: managerIndicator.indicatorComponent
+        indicatorsHost: managerIndicator
+        level.isDrawn: true
+        level.isBackground: true
+        level.bridge: AbilityItem.IndicatorObject{}
     }
 
     //! Bindings in order to inform View::Indicator

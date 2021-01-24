@@ -26,9 +26,9 @@ import org.kde.latte.core 0.2 as LatteCore
 
 import org.kde.latte.private.containment 0.1 as LatteContainment
 
+import org.kde.latte.abilities.items 0.1 as AbilityItem
+
 import "loaders" as Loaders
-import "indicator" as Indicator
-import "../applet/indicator" as AppletIndicator
 
 Loader {
     id: environmentLoader
@@ -212,18 +212,34 @@ Loader {
             onTriggered: mainArea.wheelIsBlocked = false;
         }
 
-        //! Background Indicator
-        Indicator.Bridge{
-            id: indicatorBridge
-        }
-
-        //! Indicator Back Layer
-        Indicator.Loader{
+        //! Background Indicator       
+        AbilityItem.IndicatorLevel{
             id: indicatorBackLayer
-            level: AppletIndicator.LevelOptions {
-                id: backLevelOptions
-                isBackground: true
-                bridge: indicatorBridge
+            anchors.fill: parent
+            indicatorsHost: root.indicators
+
+            level.isDrawn: true
+            level.isBackground: true
+            level.bridge: AbilityItem.IndicatorObject{
+                animations: root.animations
+                metrics: root.metrics
+                indicatorsHost: root.indicators
+
+                isEmptySpace: true
+                isPressed: mainArea.pressed
+                panelOpacity: root.background.currentOpacity
+                shadowColor: root.appShadowColorSolid
+                palette: colorizerManager.applyTheme
+
+                iconBackgroundColor: "brown"
+                iconGlowColor: "pink"
+            }
+
+            Connections {
+                target: mainArea
+                enabled: root.indicators.info.needsMouseEventCoordinates
+                onPressed: indicatorBackLayer.level.mousePressed(mouse.x, mouse.y, mouse.button);
+                onReleased: indicatorBackLayer.level.mouseReleased(mouse.x, mouse.y, mouse.button);
             }
         }
     }

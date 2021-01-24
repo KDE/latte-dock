@@ -48,7 +48,7 @@ AbilityItem.IndicatorLevel {
     height: {
         if (root.isVertical) {
             if (appletItem.parabolicEffectIsSupported) {
-               return appletItem.wrapper.zoomScale * visualLockedHeight;
+                return appletItem.wrapper.zoomScale * visualLockedHeight;
             }
 
             return appletWrapper.height + appletItem.internalHeightMargins;
@@ -56,6 +56,14 @@ AbilityItem.IndicatorLevel {
             return appletItem.wrapper.height;
         }
     }
+
+    level.isDrawn: !appletItem.isSeparator
+                   && !appletItem.isHidden
+                   && !communicator.indexerIsSupported
+                   && (indicatorsHost.isEnabled
+                       && (appletItem.communicator.requires.activeIndicatorEnabled
+                           || (!appletItem.communicator.requires.activeIndicatorEnabled && appletItem.debug.graphicsEnabled /*debug paddings*/))
+                       && indicatorsHost.info.enabledForApplets)
 
     readonly property bool locked: appletItem.lockZoom || appletItem.parabolic.factor.zoom === 1
 
