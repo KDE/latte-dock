@@ -591,7 +591,7 @@ PlasmaComponents.Page {
                         }
 
                         LatteComponents.TextField {
-                            Layout.preferredWidth: width
+                            Layout.preferredWidth: implicitWidth
                             text: latteView.visibility.timerShow
 
                             onValueChanged: {
@@ -622,7 +622,7 @@ PlasmaComponents.Page {
                         }
 
                         LatteComponents.TextField{
-                            Layout.preferredWidth: width
+                            Layout.preferredWidth: implicitWidth
                             text: latteView.visibility.timerHide
                             maxValue: 5000
 

@@ -40,7 +40,7 @@ PlasmaComponents.TextField {
     placeholderText: i18n("none")
     horizontalAlignment: Text.AlignLeft
 
-    width: internalContent.width + theme.mSize(theme.defaultFont).width * 3.5
+    readonly property int implicitWidth: internalContent.width + theme.mSize(theme.defaultFont).width * 3.5
 
     readonly property int value: text === "" ? minValue : parseInt(text)
     property int step: 100
