@@ -30,9 +30,10 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
+import org.kde.latte.abilities.items 0.1 as AbilityItem
+
 import "colorizer" as Colorizer
 import "communicator" as Communicator
-import "indicator" as Indicator
 import "../debugger" as Debugger
 
 Item {
@@ -754,8 +755,29 @@ Item {
             width: wrapper.width
             height: wrapper.height
 
-            Indicator.Bridge{
-                id: indicatorBridge
+            AbilityItem.IndicatorObject {
+                id: appletIndicatorObj
+                animations: appletItem.animations
+                metrics: appletItem.metrics
+                indicatorsHost: indicators
+
+                isApplet: true
+
+                isActive: appletItem.isActive
+                isHovered: appletItem.containsMouse
+                isSquare: appletItem.isSquare
+
+                hasActive: isActive
+
+                scaleFactor: appletItem.wrapper.zoomScale
+                panelOpacity: root.background.currentOpacity
+                shadowColor: root.appShadowColorSolid
+
+                palette: colorizerManager.applyTheme
+
+                //!icon colors
+                iconBackgroundColor: isSquare ? appletItem.wrapper.overlayIconLoader.backgroundColor : colorizerManager.buttonFocusColor
+                iconGlowColor: isSquare ? appletItem.wrapper.overlayIconLoader.glowColor : colorizerManager.focusGlowColor
             }
 
             //! InConfigureApplets visual paddings
@@ -768,12 +790,12 @@ Item {
             }
 
             //! Indicator Back Layer
-            Indicator.IndicatorLevel{
+            IndicatorLevel{
                 id: indicatorBackLayer
                 visualParent: appletItem
                 indicatorsHost: indicators
                 level.isBackground: true
-                level.bridge: indicatorBridge
+                level.bridge: appletIndicatorObj
 
                 Loader{
                     anchors.fill: parent
@@ -817,12 +839,12 @@ Item {
             }
 
             //! Indicator Front Layer
-            Indicator.IndicatorLevel{
+            IndicatorLevel{
                 id: indicatorFrontLayer
                 visualParent: appletItem
                 indicatorsHost: indicators
                 level.isForeground: true
-                level.bridge: indicatorBridge
+                level.bridge: appletIndicatorObj
             }
 
             //! Applet Shortcut Visual Badge

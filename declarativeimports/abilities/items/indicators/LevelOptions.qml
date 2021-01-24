@@ -34,7 +34,7 @@ Item {
         property int iconOffsetY: 0
     }
 
-    property Item bridge
+    property Item bridge: null
 
     onIsBackgroundChanged: {
         isForeground = !isBackground;
