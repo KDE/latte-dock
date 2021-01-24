@@ -21,7 +21,9 @@ import QtQuick 2.7
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-Loader {
+import org.kde.latte.abilities.items 0.1 as AbilityItem
+
+AbilityItem.IndicatorLevel {
     id: indicatorLoader
     anchors.bottom: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
     anchors.top: (plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
@@ -30,10 +32,6 @@ Loader {
 
     anchors.horizontalCenter: root.isHorizontal ? parent.horizontalCenter : undefined
     anchors.verticalCenter: root.isVertical ? parent.verticalCenter : undefined
-
-    active: level.bridge && level.bridge.active && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
-
-    sourceComponent: indicators.indicatorComponent
 
     width: {
         if (root.isHorizontal) {
@@ -65,22 +63,4 @@ Loader {
     //! and as such always look centered even when applet are aligned to length screen edge
     property real visualLockedWidth: Math.min(appletItem.metrics.iconSize, appletWrapper.width) + appletItem.internalWidthMargins
     property real visualLockedHeight: Math.min(appletItem.metrics.iconSize, appletWrapper.height) + appletItem.internalHeightMargins
-
-    //! Communications !//
-
-    property Item level
-
-    Connections {
-        target: appletItem
-        enabled: indicators.info.needsMouseEventCoordinates
-        onMousePressed: {
-            var fixedPos = indicatorLoader.mapFromItem(appletItem, x, y);
-            level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
-        }
-
-        onMouseReleased: {
-            var fixedPos = indicatorLoader.mapFromItem(appletItem, x, y);
-            level.mouseReleased(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
-        }
-    }
 }

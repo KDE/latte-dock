@@ -280,8 +280,8 @@ Item {
     readonly property string pluginName: isInternalViewSplitter ? "org.kde.latte.splitter" : (applet ? applet.pluginName : "")
 
     //! are set by the indicator
-    property int iconOffsetX: 0
-    property int iconOffsetY: 0
+    readonly property int iconOffsetX: indicatorBackLayer.level.requested.iconOffsetX
+    readonly property int iconOffsetY: indicatorBackLayer.level.requested.iconOffsetY
 
     property real computeWidth: root.isVertical ? wrapper.width :
                                                   hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width
@@ -768,25 +768,12 @@ Item {
             }
 
             //! Indicator Back Layer
-            Indicator.Loader{
+            Indicator.IndicatorLevel{
                 id: indicatorBackLayer
-                level: Indicator.LevelOptions {
-                    id: backLevelOptions
-                    isBackground: true
-                    bridge: indicatorBridge
-
-                    Binding {
-                        target: appletItem
-                        property: "iconOffsetX"
-                        value: backLevelOptions.requested.iconOffsetX
-                    }
-
-                    Binding {
-                        target: appletItem
-                        property: "iconOffsetY"
-                        value: backLevelOptions.requested.iconOffsetY
-                    }
-                }
+                visualParent: appletItem
+                indicatorsHost: indicators
+                level.isBackground: true
+                level.bridge: indicatorBridge
 
                 Loader{
                     anchors.fill: parent
@@ -799,9 +786,6 @@ Item {
                     }
                 }
             }
-
-
-
 
             ItemWrapper{
                 id: _wrapper
@@ -833,12 +817,12 @@ Item {
             }
 
             //! Indicator Front Layer
-            Indicator.Loader{
+            Indicator.IndicatorLevel{
                 id: indicatorFrontLayer
-                level: Indicator.LevelOptions {
-                    isForeground: true
-                    bridge: indicatorBridge
-                }
+                visualParent: appletItem
+                indicatorsHost: indicators
+                level.isForeground: true
+                level.bridge: indicatorBridge
             }
 
             //! Applet Shortcut Visual Badge

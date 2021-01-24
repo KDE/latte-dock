@@ -1,0 +1,4 @@
+module org.kde.latte.abilities.items
+
+IndicatorLevel 0.1 IndicatorLevel.qml
+IndicatorObject 0.1 IndicatorObject.qml
