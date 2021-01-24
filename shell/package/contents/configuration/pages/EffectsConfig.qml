@@ -565,6 +565,7 @@ PlasmaComponents.Page {
 
     //! Manager / Handler of loading/showing/hiding indicator config uis
     LatteExtraControls.IndicatorConfigUiManager {
+        id: indicatorUiManager
         visible: false
         stackView: indicatorsStackView
     }

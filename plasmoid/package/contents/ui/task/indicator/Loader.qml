@@ -32,7 +32,7 @@ Loader {
     anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
     anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-    active: level.bridge && level.bridge.active && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
+    active: level.bridge && level.bridge.active && indicators.isEnabled && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
     sourceComponent: {
         if (!indicators) {
             return;

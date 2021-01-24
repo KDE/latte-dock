@@ -212,15 +212,15 @@ Loader {
             onTriggered: mainArea.wheelIsBlocked = false;
         }
 
-        //! Background Indicator       
-        AbilityItem.IndicatorLevel{
+        //! Background Indicator
+        AbilityItem.IndicatorLevel {
             id: indicatorBackLayer
             anchors.fill: parent
             indicatorsHost: root.indicators
 
             level.isDrawn: true
             level.isBackground: true
-            level.bridge: AbilityItem.IndicatorObject{
+            level.indicator: AbilityItem.IndicatorObject{
                 animations: root.animations
                 metrics: root.metrics
                 indicatorsHost: root.indicators

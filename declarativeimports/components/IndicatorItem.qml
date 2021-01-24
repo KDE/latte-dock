@@ -21,7 +21,19 @@ import QtQuick 2.7
 
 Item {
     readonly property Item level: parent && parent.hasOwnProperty("level") ? parent.level : null
-    readonly property Item indicator: parent && parent.hasOwnProperty("level") ? parent.level.bridge : null
+    readonly property Item indicator: {
+        if (!level) {
+            return null;
+        }
+
+        if (level.hasOwnProperty("bridge")) {
+            return level.bridge;
+        } else if (level.hasOwnProperty("indicator")) {
+            return level.indicator.publicApi;
+        }
+
+        return null;
+    }
 
     //! indicator is using main colors from icon e.g. unity style
     property bool needsIconColors: false

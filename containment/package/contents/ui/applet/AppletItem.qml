@@ -795,7 +795,7 @@ Item {
                 visualParent: appletItem
                 indicatorsHost: indicators
                 level.isBackground: true
-                level.bridge: appletIndicatorObj
+                level.indicator: appletIndicatorObj
 
                 Loader{
                     anchors.fill: parent
@@ -844,7 +844,7 @@ Item {
                 visualParent: appletItem
                 indicatorsHost: indicators
                 level.isForeground: true
-                level.bridge: appletIndicatorObj
+                level.indicator: appletIndicatorObj
             }
 
             //! Applet Shortcut Visual Badge

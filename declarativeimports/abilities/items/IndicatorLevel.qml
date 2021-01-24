@@ -25,7 +25,7 @@ import "./indicators" as IndicatorItem
 
 Loader {
     id: indicatorLevelLoader
-    active: level.isDrawn && indicatorsHost.isReady && (level.isBackground || (level.isForeground && indicatorsHost.info.providesFrontLayer))
+    active: level.isDrawn && indicatorsHost.isEnabled && (level.isBackground || (level.isForeground && indicatorsHost.info.providesFrontLayer))
     sourceComponent: indicatorsHost.indicatorComponent
 
     property Item visualParent: null

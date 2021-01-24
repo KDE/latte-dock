@@ -27,8 +27,8 @@ import org.kde.latte.abilities.items 0.1 as AbilityItem
 Item{
     id: managerIndicator
 
-    readonly property QtObject configuration: latteView && latteView.indicator ? latteView.indicator.configuration : null
-    readonly property QtObject resources: latteView && latteView.indicator ? latteView.indicator.resources : null
+    readonly property QtObject configuration: latteView && latteView.indicator && latteView.indicator.configuration ? latteView.indicator.configuration : null
+    readonly property QtObject resources: latteView && latteView.indicator && latteView.indicator.resources ? latteView.indicator.resources : null
 
     readonly property bool isEnabled: latteView && latteView.indicator ? (latteView.indicator.enabled
                                                                           && latteView.indicator.pluginIsReady
@@ -128,7 +128,7 @@ Item{
         indicatorsHost: managerIndicator
         level.isDrawn: true
         level.isBackground: true
-        level.bridge: AbilityItem.IndicatorObject{}
+        level.indicator: AbilityItem.IndicatorObject{}
     }
 
     //! Bindings in order to inform View::Indicator

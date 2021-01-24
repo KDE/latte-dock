@@ -343,6 +343,8 @@ void Indicator::updateScheme()
     if (prevConfiguration) {
         prevConfiguration->deleteLater();
     }
+
+    emit configurationChanged();
 }
 
 void Indicator::loadConfig()

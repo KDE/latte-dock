@@ -23,9 +23,15 @@ import QtQuick.Layouts 1.3
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item {
+    id: uiManager
     visible: false
 
     property Item stackView: null
+
+    //! it is used during first window creation in order to avoid clearing custom indicators from its views
+    //! when the window is created the current view indicator type is stored and restored after
+    //! the tabBar of indicators has completed its creation/initialization
+    property string typeDuringCreation: ""
 
     Item {
         id: hiddenIndicatorPage
@@ -36,11 +42,6 @@ Item {
 
         readonly property Item nextPage: stackView.currentItem === page1 ? page2 : page1
         readonly property Item previousPage: nextPage === page1 ? page2 : page1
-
-        //! it is used during first window creation in order to avoid clearing custom indicators from its views
-        //! when the window is created the current view indicator type is stored and restored after
-        //! the tabBar of indicators has completed its creation/initialization
-        property string typeDuringCreation: ""
 
         function showNextIndicator() {
             var nextIndicator;
@@ -95,7 +96,7 @@ Item {
             tabBar.selectTab(latteView.indicator.type);
 
             if (latteView.indicator.type !== latteBtn.type) {
-                typeDuringCreation = latteView.indicator.type;
+                uiManager.typeDuringCreation = latteView.indicator.type;
             }
 
             viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
@@ -105,15 +106,15 @@ Item {
             target: latteView.indicator
             onPluginChanged: {
                 if (viewConfig.isReady) {
-                    if (hiddenIndicatorPage.typeDuringCreation === "") {
+                    if (uiManager.typeDuringCreation === "") {
                         tabBar.selectTab(latteView.indicator.type);
                         viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
                     } else {
                         //! restore the first assigned indicator after first window creation. This way we avoid
                         //! unsetting custom indicators from views during first settings window creation.
-                        latteView.indicator.type = hiddenIndicatorPage.typeDuringCreation;
+                        latteView.indicator.type = uiManager.typeDuringCreation;
                         tabBar.selectTab(latteView.indicator.type);
-                        hiddenIndicatorPage.typeDuringCreation = "";
+                        uiManager.typeDuringCreation = "";
                     }
                 }
             }

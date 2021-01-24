@@ -69,7 +69,7 @@ class Indicator: public QObject
     /**
      * Configuration object: each config key will be a writable property of this object. property bindings work.
      */
-    Q_PROPERTY(QObject *configuration READ configuration NOTIFY pluginChanged)
+    Q_PROPERTY(QObject *configuration READ configuration NOTIFY configurationChanged)
 
     Q_PROPERTY(QQmlComponent *component READ component NOTIFY pluginChanged)
     Q_PROPERTY(QQmlComponent *plasmaComponent READ plasmaComponent NOTIFY plasmaComponentChanged)
@@ -129,6 +129,7 @@ signals:
     void customPluginsChanged();
     void enabledChanged();
     void enabledForAppletsChanged();
+    void configurationChanged();
     void customPluginChanged();
     void infoChanged();
     void latteTasksArePresentChanged();
