@@ -792,7 +792,6 @@ Item {
             //! Indicator Back Layer
             IndicatorLevel{
                 id: indicatorBackLayer
-                visualParent: appletItem
                 indicatorsHost: indicators
                 level.isBackground: true
                 level.indicator: appletIndicatorObj
@@ -841,7 +840,6 @@ Item {
             //! Indicator Front Layer
             IndicatorLevel{
                 id: indicatorFrontLayer
-                visualParent: appletItem
                 indicatorsHost: indicators
                 level.isForeground: true
                 level.indicator: appletIndicatorObj

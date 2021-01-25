@@ -25,6 +25,7 @@ AbilityDefinition.Debug {
     id: apis
 
     readonly property Item publicApi: Item {
+        readonly property alias eventsSinkEnabled: apis.eventsSinkEnabled
         readonly property alias graphicsEnabled: apis.graphicsEnabled
         readonly property alias inputMaskEnabled: apis.inputMaskEnabled
         readonly property alias layouterEnabled: apis.layouterEnabled

@@ -31,8 +31,9 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.tasks 0.1 as LatteTasks
 
+import org.kde.latte.abilities.items 0.1 as AbilityItem
+
 import "animations" as TaskAnimations
-import "indicator" as Indicator
 
 Item {
     id: taskItem
@@ -137,7 +138,7 @@ Item {
     property bool isForcedHidden: false
     property bool isLauncher: (IsLauncher === true) ? true : false
     property bool hasShownLauncher:  (taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrl)
-                                     || taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrlWithIcon))
+                                      || taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrlWithIcon))
                                      && !root.inActivityChange /*update trigger when changing current activity*/
     property bool isMinimized: (IsMinimized === true) ? true : false
     property bool isSeparator: false
@@ -166,8 +167,8 @@ Item {
     property int windowsMinimizedCount: subWindows.windowsMinimized
 
     //! are set by the indicator
-    property int iconOffsetX: 0
-    property int iconOffsetY: 0
+    readonly property int iconOffsetX: indicatorBackLayer.level.requested.iconOffsetX
+    readonly property int iconOffsetY: indicatorBackLayer.level.requested.iconOffsetY
 
     property string activity: tasksModel.activity
 
@@ -503,29 +504,57 @@ Item {
             width: wrapper.width
             height: wrapper.height
 
-            Indicator.Bridge{
-                id: indicatorBridge
+            AbilityItem.IndicatorObject {
+                id: taskIndicatorObj
+                animations: taskItem.abilities.animations
+                metrics: taskItem.abilities.metrics
+                indicatorsHost: root.indicators
+
+                isTask: true
+                isLauncher: taskItem.isLauncher || root.disableAllWindowsFunctionality
+                isStartup: !root.disableAllWindowsFunctionality && taskItem.isStartup
+                isWindow: !root.disableAllWindowsFunctionality && taskItem.isWindow
+
+                isActive: !root.disableAllWindowsFunctionality && (taskItem.hasActive
+                                                                   || (root.showPreviews
+                                                                       && (taskItem.isWindow || taskItem.isGroupParent)
+                                                                       && windowsPreviewDlg.activeItem
+                                                                       && (windowsPreviewDlg.activeItem === taskItem)) )
+
+                isGroup: !root.disableAllWindowsFunctionality && taskItem.isGroupParent
+                isHovered: taskItem.containsMouse
+                isMinimized: !root.disableAllWindowsFunctionality && taskItem.isMinimized
+                isPressed: taskItem.pressed
+                inAttention: !root.disableAllWindowsFunctionality && taskItem.inAttention
+                inRemoving: taskItem.inRemoveStage
+
+                isSquare: true
+
+                hasActive: !root.disableAllWindowsFunctionality && taskItem.hasActive
+                hasMinimized: !root.disableAllWindowsFunctionality && taskItem.hasMinimized
+                hasShown: !root.disableAllWindowsFunctionality && taskItem.hasShown
+                windowsCount: !root.disableAllWindowsFunctionality ? taskItem.windowsCount : 0
+                windowsMinimizedCount: !root.disableAllWindowsFunctionality ? taskItem.windowsMinimizedCount : 0
+
+                scaleFactor: taskItem.wrapper.mScale
+                panelOpacity: root.currentPanelOpacity
+                shadowColor: root.appShadowColorSolid
+
+                progressVisible: wrapper.progressVisible /*since 0.9.2*/
+                progress: wrapper.progress /*since 0.9.2*/
+
+                palette: root.enforceLattePalette ? latteBridge.palette.applyTheme : theme
+
+                iconBackgroundColor: taskItem.wrapper.backgroundColor
+                iconGlowColor: taskItem.wrapper.glowColor
             }
 
-            Indicator.Loader{
+            //! Indicator Back Layer
+            IndicatorLevel{
                 id: indicatorBackLayer
-                level: Indicator.LevelOptions {
-                    id: backLevelOptions
-                    isBackground: true
-                    bridge: indicatorBridge
-
-                    Binding {
-                        target: taskItem
-                        property: "iconOffsetX"
-                        value: backLevelOptions.requested.iconOffsetX
-                    }
-
-                    Binding {
-                        target: taskItem
-                        property: "iconOffsetY"
-                        value: backLevelOptions.requested.iconOffsetY
-                    }
-                }
+                indicatorsHost: root.indicators
+                level.isBackground: true
+                level.indicator: taskIndicatorObj
 
                 Loader{
                     anchors.fill: parent
@@ -541,12 +570,12 @@ Item {
 
             Wrapper{id: _wrapper}
 
-            Indicator.Loader{
+            //! Indicator Front Layer
+            IndicatorLevel{
                 id: indicatorFrontLayer
-                level: Indicator.LevelOptions {
-                    isForeground: true
-                    bridge: indicatorBridge
-                }
+                indicatorsHost: root.indicators
+                level.isForeground: true
+                level.indicator: taskIndicatorObj
             }
         }
 

@@ -57,8 +57,8 @@ Item{
     property real panelOpacity: 1.0
     property color shadowColor: "black"
 
-    property bool animationsEnabled: _indicator.animations ? indicator.animations.active : true
-    property real durationTime: _indicator.animations ? indicator.animations.speedFactor.current : 2
+    property bool animationsEnabled: _indicator.animations ? _indicator.animations.active : true
+    property real durationTime: _indicator.animations ? _indicator.animations.speedFactor.current : 2
 
     property bool progressVisible: false /*since 0.9.2*/
     property real progress: 0 /*since 0.9.2*/

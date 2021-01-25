@@ -24,7 +24,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte.abilities.items 0.1 as AbilityItem
 
 AbilityItem.IndicatorLevel {
-    id: indicatorLoader
+    id: indicatorLevel
     anchors.bottom: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
     anchors.top: (plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
     anchors.left: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
@@ -71,4 +71,18 @@ AbilityItem.IndicatorLevel {
     //! and as such always look centered even when applet are aligned to length screen edge
     property real visualLockedWidth: Math.min(appletItem.metrics.iconSize, appletWrapper.width) + appletItem.internalWidthMargins
     property real visualLockedHeight: Math.min(appletItem.metrics.iconSize, appletWrapper.height) + appletItem.internalHeightMargins
+
+    Connections {
+        target: appletItem
+        enabled: indicatorsHost.isEnabled && indicatorsHost.info.needsMouseEventCoordinates
+        onMousePressed: {
+            var fixedPos = indicatorLevel.mapFromItem(appletItem, x, y);
+            indicatorLevel.level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
+        }
+
+        onMouseReleased: {
+            var fixedPos = indicatorLevel.mapFromItem(appletItem, x, y);
+            indicatorLevel.level.mouseReleased(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
+        }
+    }
 }

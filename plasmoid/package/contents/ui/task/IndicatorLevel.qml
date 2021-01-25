@@ -1,5 +1,5 @@
 /*
-*  Copyright 2019  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2021  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -22,8 +22,10 @@ import QtQuick 2.7
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-Loader {
-    id: indicatorLoader
+import org.kde.latte.abilities.items 0.1 as AbilityItem
+
+AbilityItem.IndicatorLevel {
+    id: indicatorLevel
     anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
     anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
     anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
@@ -31,14 +33,6 @@ Loader {
 
     anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
     anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-
-    active: level.bridge && level.bridge.active && indicators.isEnabled && (level.isBackground || (level.isForeground && indicators.info.providesFrontLayer))
-    sourceComponent: {
-        if (!indicators) {
-            return;
-        }
-        return indicators.indicatorComponent;
-    }
 
     width: {
         if (locked) {
@@ -56,6 +50,8 @@ Loader {
         return root.vertical ? taskItem.wrapper.height - 2*taskItem.wrapper.mScale*taskItem.abilities.metrics.margin.length : taskItem.wrapper.height;
     }
 
+    level.isDrawn: !taskItem.isSeparator && !taskItem.isHidden && indicatorsHost.isEnabled
+
     readonly property bool locked: inAttentionAnimation || inNewWindowAnimation || inBouncingAnimation
 
     property real visualLockedWidth: root.vertical ? taskItem.abilities.metrics.margin.screenEdge + taskItem.abilities.metrics.iconSize + root.internalWidthMargins :
@@ -63,19 +59,15 @@ Loader {
     property real visualLockedHeight: !root.vertical ? taskItem.abilities.metrics.margin.screenEdge + taskItem.abilities.metrics.iconSize + root.internalHeightMargins :
                                                        taskItem.abilities.metrics.iconSize + root.internalHeightMargins
 
-    //! Connections !//
-
-    property Item level
-
     Connections {
         target: taskItem.mouseArea
-        enabled: indicators ? indicators.info.needsMouseEventCoordinates : false
+        enabled: indicatorsHost ? indicatorsHost.info.needsMouseEventCoordinates : false
         onPressed: {
-            var fixedPos = indicatorLoader.mapFromItem(taskItem, mouse.x, mouse.y);
+            var fixedPos = indicatorLevel.mapFromItem(taskItem, mouse.x, mouse.y);
             level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), mouse.button);
         }
         onReleased: {
-            var fixedPos = indicatorLoader.mapFromItem(taskItem, mouse.x, mouse.y);
+            var fixedPos = indicatorLevel.mapFromItem(taskItem, mouse.x, mouse.y);
             level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), mouse.button);
         }
     }

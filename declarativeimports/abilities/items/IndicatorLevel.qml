@@ -26,25 +26,10 @@ import "./indicators" as IndicatorItem
 Loader {
     id: indicatorLevelLoader
     active: level.isDrawn && indicatorsHost.isEnabled && (level.isBackground || (level.isForeground && indicatorsHost.info.providesFrontLayer))
-    sourceComponent: indicatorsHost.indicatorComponent
+    sourceComponent: indicatorsHost ? indicatorsHost.indicatorComponent : null
 
-    property Item visualParent: null
     property Item indicatorsHost: null
 
     readonly property IndicatorItem.LevelOptions level: IndicatorItem.LevelOptions{}
-
-    Connections {
-        target: visualParent
-        enabled: visualParent && indicatorsHost.info.needsMouseEventCoordinates
-        onMousePressed: {
-            var fixedPos = indicatorLevelLoader.mapFromItem(appletItem, x, y);
-            level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
-        }
-
-        onMouseReleased: {
-            var fixedPos = indicatorLevelLoader.mapFromItem(appletItem, x, y);
-            level.mouseReleased(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
-        }
-    }
 }
 
