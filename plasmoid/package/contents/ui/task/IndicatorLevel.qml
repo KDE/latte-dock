@@ -50,7 +50,7 @@ AbilityItem.IndicatorLevel {
         return root.vertical ? taskItem.wrapper.height - 2*taskItem.wrapper.mScale*taskItem.abilities.metrics.margin.length : taskItem.wrapper.height;
     }
 
-    level.isDrawn: !taskItem.isSeparator && !taskItem.isHidden && indicatorsHost.isEnabled
+    level.isDrawn: indicatorsHost && indicatorsHost.isEnabled && !taskItem.isSeparator && !taskItem.isHidden
 
     readonly property bool locked: inAttentionAnimation || inNewWindowAnimation || inBouncingAnimation
 

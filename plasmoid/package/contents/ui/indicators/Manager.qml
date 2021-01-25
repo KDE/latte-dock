@@ -24,7 +24,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import "options" as IndicatorOptions
 import "styles" as IndicatorStyles
-import "../task/indicator" as TaskIndicator
+
+import org.kde.latte.abilities.items 0.1 as AbilityItem
 
 Item{
     id: managerIndicator
@@ -50,8 +51,9 @@ Item{
         readonly property real minLengthPadding:0
     }
 
-    IndicatorOptions.Latte {
-        id : explicitOptions
+    AbilityItem.IndicatorObject {
+        id: explicitOptions
+        isTask: true
     }
 
     //! Indicators Components
