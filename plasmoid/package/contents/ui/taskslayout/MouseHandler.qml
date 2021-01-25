@@ -118,10 +118,10 @@ Item {
         }
 
         onDragEnter:{          
-            inDroppingOnlyLaunchers = isDroppingOnlyLaunchers(event);
-            inDroppingSeparator = isDroppingSeparator(event);
-            inDroppingFiles = event.mimeData.hasUrls && !inDroppingOnlyLaunchers;
             inMovingTask = isMovingTask(event);
+            inDroppingOnlyLaunchers = !inMovingTask && isDroppingOnlyLaunchers(event);
+            inDroppingSeparator = !inMovingTask && isDroppingSeparator(event);
+            inDroppingFiles = !inDroppingOnlyLaunchers && event.mimeData.hasUrls;
 
             /*console.log(" tasks moving task :: " + inMovingTask);
             console.log(" tasks only launchers :: " + inDroppingOnlyLaunchers);

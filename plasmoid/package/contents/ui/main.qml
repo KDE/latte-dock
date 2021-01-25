@@ -937,8 +937,6 @@ Item {
 
             target: icList
 
-            visible: !root.dragSource
-
             property int maxThickness: (appletAbilities.parabolic.isHovered || windowPreviewIsShown || appletAbilities.animations.hasThicknessAnimation) ?
                                            appletAbilities.metrics.mask.thickness.zoomedForItems : appletAbilities.metrics.mask.thickness.normalForItems
 
