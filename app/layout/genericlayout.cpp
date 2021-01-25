@@ -980,6 +980,7 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
     //! signals
     connect(this, &GenericLayout::activitiesChanged, this, &GenericLayout::updateLastUsedActivity);
     connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, &GenericLayout::updateLastUsedActivity);
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, &GenericLayout::updateLastUsedActivity);
 
     connect(m_corona, &Plasma::Corona::containmentAdded, this, &GenericLayout::addContainment);
 
