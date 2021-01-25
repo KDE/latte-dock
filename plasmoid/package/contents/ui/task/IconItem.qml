@@ -160,7 +160,7 @@ Item{
 
             source: decoration
             smooth: taskItem.abilities.parabolic.factor.zoom === 1 ? true : false
-            providesColors: indicators ? indicators.info.needsIconColors : false
+            providesColors: root.indicators ? root.indicators.info.needsIconColors : false
 
             opacity: root.enableShadows
                      && taskWithShadow.active

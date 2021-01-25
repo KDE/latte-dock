@@ -18,6 +18,7 @@
 */
 
 import QtQuick 2.7
+import org.kde.plasma.plasmoid 2.0
 
 Item{
     id: _indicator
@@ -117,7 +118,7 @@ Item{
 
         readonly property alias screenEdgeMargin: _indicator.screenEdgeMargin
 
-        readonly property alias palette: _indicator.palette
+        readonly property QtObject palette: _indicator.palette ? _indicator.palette : theme
 
         //!icon colors
         readonly property alias iconBackgroundColor: _indicator.iconBackgroundColor

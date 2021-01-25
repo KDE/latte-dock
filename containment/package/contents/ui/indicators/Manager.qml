@@ -128,7 +128,11 @@ Item{
         indicatorsHost: managerIndicator
         level.isDrawn: true
         level.isBackground: true
-        level.indicator: AbilityItem.IndicatorObject{}
+        level.indicator: AbilityItem.IndicatorObject{
+            animations: root.animations
+            metrics: root.metrics
+            indicatorsHost: managerIndicator
+        }
     }
 
     //! Bindings in order to inform View::Indicator
