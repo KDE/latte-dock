@@ -301,11 +301,20 @@ Item{
             var isCapableToHideScreenGap = root.screenEdgeMarginEnabled && plasmoid.configuration.hideFloatingGapForMaximized
             var mirrorGapFactor = root.mirrorScreenGap ? 2 : 1;
 
+            //! Hide Thickness Screen Gap scenario provides two different struts thicknesses.
+            //! [1] The first struts thickness is when there is no maximized window and is such case
+            //!     the view is behaving as in normal AlwaysVisible visibility mode. This is very useful
+            //!     when users tile windows. [bug #432122]
+            //! [2] The second struts thickness is when there is a maximized window present and in such case
+            //!     the view is hiding all of its screen edges. It is used mostly when the view is wanted
+            //!     to act as a window titlebar.
+            var thicknessForIsCapableToHideScreenGap = (root.hideThickScreenGap ? 0 : mirrorGapFactor * metrics.mask.screenEdge);
+
             if (root.behaveAsPlasmaPanel) {
-                return isCapableToHideScreenGap ? thicknessAsPanel : (mirrorGapFactor*metrics.mask.screenEdge) + thicknessAsPanel;
+                return isCapableToHideScreenGap ? (thicknessAsPanel + thicknessForIsCapableToHideScreenGap) : (mirrorGapFactor*metrics.mask.screenEdge) + thicknessAsPanel;
             }
 
-            var edgeThickness = isCapableToHideScreenGap ? 0 : metrics.mask.screenEdge * mirrorGapFactor;
+            var edgeThickness = isCapableToHideScreenGap ? thicknessForIsCapableToHideScreenGap : metrics.mask.screenEdge * mirrorGapFactor;
             return edgeThickness + metrics.mask.thickness.maxNormalForItemsWithoutScreenEdge;
         }
     }

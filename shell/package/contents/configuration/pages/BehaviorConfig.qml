@@ -885,13 +885,13 @@ PlasmaComponents.Page {
 
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
-                        enabled: !plasmoid.configuration.hideFloatingGapForMaximized
-                        text: i18n("Mirror floating gap for maximized windows")
-                        checked: plasmoid.configuration.floatingGapIsMirroredForMaximized
-                        tooltip: i18n("Floating gap is mirrored when there are maximized windows in Always Visible mode")
+                        enabled: latteView.visibility.mode === LatteCore.Types.AlwaysVisible
+                        text: i18n("Mirror floating gap when it is shown")
+                        checked: plasmoid.configuration.floatingGapIsMirrored
+                        tooltip: i18n("Floating gap is mirrored when it is shown in Always Visible mode")
 
                         onClicked: {
-                            plasmoid.configuration.floatingGapIsMirroredForMaximized = checked;
+                            plasmoid.configuration.floatingGapIsMirrored = checked;
                         }
                     }
                 }

@@ -179,8 +179,7 @@ Item {
     property bool hideLengthScreenGaps: false /*set through binding*/
 
     property bool mirrorScreenGap: screenEdgeMarginEnabled
-                                   && plasmoid.configuration.floatingGapIsMirroredForMaximized
-                                   && !plasmoid.configuration.hideFloatingGapForMaximized
+                                   && plasmoid.configuration.floatingGapIsMirrored
                                    && latteView.visibility.mode === LatteCore.Types.AlwaysVisible
 
 
