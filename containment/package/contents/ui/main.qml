@@ -37,7 +37,6 @@ import "abilities" as Ability
 import "applet" as Applet
 import "colorizer" as Colorizer
 import "editmode" as EditMode
-import "indicators" as Indicators
 import "layouts" as Layouts
 import "./background" as Background
 import "./debugger" as Debugger
@@ -1137,6 +1136,7 @@ Item {
             animations: _animations
             debug: _debug
             indexer: _indexer
+            indicators: _indicators
             launchers: _launchers
             layouter: _layouter
             layouts: layoutsContainer
@@ -1345,8 +1345,9 @@ Item {
         layouts: layoutsContainer
     }
 
-    Indicators.Manager{
+    Ability.Indicators{
         id: _indicators
+        view: latteView
     }
 
     Ability.Launchers {

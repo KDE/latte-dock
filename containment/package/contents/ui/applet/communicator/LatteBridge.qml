@@ -142,6 +142,7 @@ Item{
     readonly property Item actions: Actions{}
     readonly property Item applet: mainCommunicator.requires
     readonly property Item debug: appletItem.debug.publicApi
+    readonly property Item indicators: appletItem.indicators.publicApi
     readonly property Item metrics: appletItem.metrics.publicApi
     readonly property Item myView: appletItem.myView
     readonly property Item userRequests: appletItem.userRequests

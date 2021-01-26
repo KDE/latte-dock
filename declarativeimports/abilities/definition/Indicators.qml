@@ -22,16 +22,15 @@ import QtQuick 2.7
 import "./indicators" as IndicatorTypes
 
 Item{
-    property QtObject configuration: null
-    property QtObject resources: null
-
     property bool isEnabled: false
 
     readonly property real padding: Math.max(info.minLengthPadding, info.lengthPadding)
 
     property string type: "org.kde.latte.default"
 
-    property Component plasmaStyleComponent
+    property QtObject configuration: null
+    property QtObject resources: null   
+
     property Component indicatorComponent
 
     property IndicatorTypes.IndicatorInfo info: IndicatorTypes.IndicatorInfo{

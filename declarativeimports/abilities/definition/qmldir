@@ -4,6 +4,7 @@ Animations 0.1 Animations.qml
 AppletRequirements 0.1 AppletRequirements.qml
 Debug 0.1 Debug.qml
 Indexer 0.1 Indexer.qml
+Indicators 0.1 Indicators.qml
 Metrics 0.1 Metrics.qml
 MyView 0.1 MyView.qml
 ParabolicEffect 0.1 ParabolicEffect.qml

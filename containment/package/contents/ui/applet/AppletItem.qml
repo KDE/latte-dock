@@ -307,6 +307,7 @@ Item {
     property Item animations: null
     property Item debug: null
     property Item indexer: null
+    property Item indicators: null
     property Item launchers: null
     property Item layouter: null
     property Item layouts: null
@@ -759,7 +760,7 @@ Item {
                 id: appletIndicatorObj
                 animations: appletItem.animations
                 metrics: appletItem.metrics
-                host: root.indicators
+                host: appletItem.indicators
 
                 isApplet: true
 
