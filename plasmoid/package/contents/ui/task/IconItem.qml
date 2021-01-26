@@ -160,7 +160,7 @@ Item{
 
             source: decoration
             smooth: taskItem.abilities.parabolic.factor.zoom === 1 ? true : false
-            providesColors: root.indicators ? root.indicators.info.needsIconColors : false
+            providesColors: taskItem.abilities.indicators.info.needsIconColors
 
             opacity: root.enableShadows
                      && taskWithShadow.active
@@ -558,7 +558,7 @@ Item{
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
             visible: !isSeparator
 
-            opacity: taskItem.containsMouse && !clickedAnimation.running && !indicators.info.providesHoveredAnimation ? 1 : 0
+            opacity: taskItem.containsMouse && !clickedAnimation.running && !taskItem.abilities.indicators.info.providesHoveredAnimation ? 1 : 0
             brightness: 0.30
             contrast: 0.1
 

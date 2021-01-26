@@ -202,7 +202,6 @@ Item {
     readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
     property Item latteView: null
-    readonly property Item indicators: latteView ? latteView.indicators : indicatorsStandaloneLoader.item
     //END Latte Dock Panel properties
 
     readonly property bool inEditMode: latteInEditMode || plasmoid.userConfiguring
@@ -300,12 +299,6 @@ Item {
         id: graphicsSystem
         readonly property bool isAccelerated: (GraphicsInfo.api !== GraphicsInfo.Software)
                                               && (GraphicsInfo.api !== GraphicsInfo.Unknown)
-    }
-
-    Loader {
-        id: indicatorsStandaloneLoader
-        active: !appletAbilities.myView.isReady && !plasmoid.configuration.isInLatteDock
-        source: "indicators/Manager.qml"
     }
 
     Binding {

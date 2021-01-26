@@ -508,7 +508,7 @@ Item {
                 id: taskIndicatorObj
                 animations: taskItem.abilities.animations
                 metrics: taskItem.abilities.metrics
-                host: root.indicators
+                host: taskItem.abilities.indicators
 
                 isTask: true
                 isLauncher: taskItem.isLauncher || root.disableAllWindowsFunctionality

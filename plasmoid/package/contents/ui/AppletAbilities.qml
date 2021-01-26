@@ -37,6 +37,7 @@ Item {
     readonly property alias debug: _debug
     readonly property alias indexer: _indexer
     readonly property alias launchers: _launchers
+    readonly property alias indicators: _indicators
     readonly property alias metrics: _metrics
     readonly property alias myView: _myView
     readonly property alias parabolic: _parabolic
@@ -58,6 +59,11 @@ Item {
         id: _indexer
         bridge: _abilityContainer.bridge
         layout: _abilityContainer.layout
+    }
+
+    AbilityClient.Indicators {
+        id: _indicators
+        bridge: _abilityContainer.bridge
     }
 
     Ability.Launchers {

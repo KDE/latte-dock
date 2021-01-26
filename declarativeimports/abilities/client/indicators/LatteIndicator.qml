@@ -25,14 +25,20 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
 LatteComponents.IndicatorItem{
     id: root
+    extraMaskThickness: reversedEnabled && glowEnabled ? 1.7 * (factor * indicator.maxIconSize) : 0
+
+    enabledForApplets: indicator && indicator.configuration ? indicator.configuration.enabledForApplets : true
+    lengthPadding: indicator && indicator.configuration ? indicator.configuration.lengthPadding : 0.08
 
     readonly property real factor: 0.08
-    readonly property int size: indicator ? factor * indicator.currentIconSize : factor * 64
-    readonly property int extraMaskThickness: reversedEnabled && glowEnabled ? 1.7 * (factor * indicator.maxIconSize) : 0
+    readonly property int size: factor * indicator.currentIconSize
+
+    readonly property int screenEdgeMargin: plasmoid.location === PlasmaCore.Types.Floating || reversedEnabled ? 0 : indicator.screenEdgeMargin
 
     property real textColorBrightness: colorBrightness(theme.textColor)
 
@@ -44,24 +50,21 @@ LatteComponents.IndicatorItem{
 
         return isActiveColor;
     }
-    property color notActiveColor: indicator && indicator.isMinimized ? minimizedColor : isActiveColor
+
+    property color notActiveColor: indicator.isMinimized ? minimizedColor : isActiveColor
 
     //! Common Options
-    readonly property bool reversedEnabled: indicator && indicator.general ? indicator.general.reversed : false
+    readonly property bool reversedEnabled: indicator.configuration.reversed
 
     //! Configuration Options
-    readonly property bool configurationEnabled: (indicator!==null)
-                                                 && (indicator.configuration !== null)
-                                                 && (indicator.configuration.glow3D !== undefined)
-
-    readonly property bool extraDotOnActive: configurationEnabled ? indicator.configuration.extraDotOnActive : true
-    readonly property bool minimizedTaskColoredDifferently: configurationEnabled ? indicator.configuration.minimizedTaskColoredDifferently : false
-    readonly property int activeStyle: configurationEnabled ? indicator.configuration.activeStyle : 0 /*Line*/
+    readonly property bool extraDotOnActive: indicator.configuration.extraDotOnActive
+    readonly property bool minimizedTaskColoredDifferently: indicator.configuration.minimizedTaskColoredDifferently
+    readonly property int activeStyle: indicator.configuration.activeStyle
     //!glow options
-    readonly property bool glowEnabled: configurationEnabled ? indicator.configuration.glowEnabled : true
-    readonly property bool glow3D: configurationEnabled ? indicator.configuration.glow3D : false
-    readonly property int glowApplyTo: configurationEnabled ? indicator.configuration.glowApplyTo : 2 /*All*/
-    readonly property real glowOpacity: configurationEnabled ? indicator.configuration.glowOpacity : 0.35
+    readonly property bool glowEnabled: indicator.configuration.glowEnabled
+    readonly property bool glow3D: indicator.configuration.glow3D
+    readonly property int glowApplyTo: indicator.configuration.glowApplyTo
+    readonly property real glowOpacity: indicator.configuration.glowOpacity
 
     /*Rectangle{
         anchors.fill: parent
@@ -94,6 +97,10 @@ LatteComponents.IndicatorItem{
             LatteComponents.GlowPoint{
                 id:firstPoint
                 opacity: {
+                    if (indicator.isEmptySpace) {
+                        return 0;
+                    }
+
                     if (indicator.isTask) {
                         return indicator.isLauncher || (indicator.inRemoving && !activeAndReverseAnimation.running) ? 0 : 1
                     }
@@ -107,8 +114,7 @@ LatteComponents.IndicatorItem{
 
                 size: root.size
                 glow3D: glow3D
-                animation: Math.max(1.65 * 3 * appletAbilities.animations.duration.large,
-                                    3 * indicator.durationTime * appletAbilities.animations.duration.large)
+                animation: Math.max(1.65*3*LatteCore.Environment.longDuration,indicator.durationTime*3*LatteCore.Environment.longDuration)
                 location: plasmoid.location
                 glowOpacity: root.glowOpacity
                 contrastColor: indicator.shadowColor
@@ -127,9 +133,9 @@ LatteComponents.IndicatorItem{
                 showBorder: glowEnabled && glow3D
 
                 property int stateWidth: indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width
-                property int stateHeight: indicator.isGroup ? root.height - secondPoint.height : root.width - spacer.height
+                property int stateHeight: indicator.isGroup ? root.height - secondPoint.height : root.height - spacer.height
 
-                property int animationTime: indicator.durationTime* (0.7 * appletAbilities.animations.duration.large)
+                property int animationTime: indicator.durationTime* (0.7*LatteCore.Environment.longDuration)
 
                 property bool isActive: indicator.hasActive || indicator.isActive
 
@@ -223,8 +229,7 @@ LatteComponents.IndicatorItem{
 
                 size: root.size
                 glow3D: glow3D
-                animation: Math.max(1.65 * 3 * appletAbilities.animations.duration.large,
-                                    3 * indicator.durationTime * appletAbilities.animations.duration.large)
+                animation: Math.max(1.65*3*LatteCore.Environment.longDuration,indicator.durationTime*3*LatteCore.Environment.longDuration)
                 location: plasmoid.location
                 glowOpacity: root.glowOpacity
                 contrastColor: indicator.shadowColor
@@ -255,6 +260,11 @@ LatteComponents.IndicatorItem{
                     anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
                         top:undefined; bottom:undefined; left:parent.left; right:undefined;}
                 }
+                PropertyChanges{
+                    target: mainIndicatorElement
+                    anchors.leftMargin: root.screenEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
             },
             State {
                 name: "bottom"
@@ -267,6 +277,11 @@ LatteComponents.IndicatorItem{
                     anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
                         top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
                 }
+                PropertyChanges{
+                    target: mainIndicatorElement
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.screenEdgeMargin;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
             },
             State {
                 name: "top"
@@ -278,6 +293,11 @@ LatteComponents.IndicatorItem{
                     anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
                         top:parent.top; bottom:undefined; left:undefined; right:undefined;}
                 }
+                PropertyChanges{
+                    target: mainIndicatorElement
+                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.screenEdgeMargin;    anchors.bottomMargin:0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+                }
             },
             State {
                 name: "right"
@@ -288,6 +308,11 @@ LatteComponents.IndicatorItem{
                     target: mainIndicatorElement
                     anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
                         top:undefined; bottom:undefined; left:undefined; right:parent.right;}
+                }
+                PropertyChanges{
+                    target: mainIndicatorElement
+                    anchors.leftMargin: 0;    anchors.rightMargin: root.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                 }
             }
         ]
