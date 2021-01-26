@@ -216,14 +216,13 @@ Loader {
         AbilityItem.IndicatorLevel {
             id: indicatorBackLayer
             anchors.fill: parent
-            indicatorsHost: root.indicators
 
             level.isDrawn: true
             level.isBackground: true
             level.indicator: AbilityItem.IndicatorObject{
                 animations: root.animations
                 metrics: root.metrics
-                indicatorsHost: root.indicators
+                host: root.indicators
 
                 isEmptySpace: true
                 isPressed: mainArea.pressed

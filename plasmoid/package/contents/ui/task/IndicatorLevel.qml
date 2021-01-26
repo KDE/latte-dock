@@ -50,7 +50,7 @@ AbilityItem.IndicatorLevel {
         return root.vertical ? taskItem.wrapper.height - 2*taskItem.wrapper.mScale*taskItem.abilities.metrics.margin.length : taskItem.wrapper.height;
     }
 
-    level.isDrawn: indicatorsHost && indicatorsHost.isEnabled && !taskItem.isSeparator && !taskItem.isHidden
+    level.isDrawn: level.indicator && level.indicator.host && level.indicator.host.isEnabled && !taskItem.isSeparator && !taskItem.isHidden
 
     readonly property bool locked: inAttentionAnimation || inNewWindowAnimation || inBouncingAnimation
 
@@ -61,7 +61,7 @@ AbilityItem.IndicatorLevel {
 
     Connections {
         target: taskItem.mouseArea
-        enabled: indicatorsHost ? indicatorsHost.info.needsMouseEventCoordinates : false
+        enabled: indicatorLevel.level.indicator.host ? indicatorLevel.level.indicator.host.info.needsMouseEventCoordinates : false
         onPressed: {
             var fixedPos = indicatorLevel.mapFromItem(taskItem, mouse.x, mouse.y);
             level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), mouse.button);

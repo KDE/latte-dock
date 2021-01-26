@@ -26,14 +26,12 @@ import "./indicators" as IndicatorItem
 Loader {
     id: indicatorLevelLoader
     active: level.isDrawn
-            && indicatorsHost.isEnabled
             && level.indicator
+            && level.indicator.host.isEnabled
             && level.indicator.configuration
-            && (level.isBackground || (level.isForeground && indicatorsHost.info.providesFrontLayer))
+            && (level.isBackground || (level.isForeground && level.indicator.host.info.providesFrontLayer))
 
-    sourceComponent: indicatorsHost ? indicatorsHost.indicatorComponent : null
-
-    property Item indicatorsHost: null
+    sourceComponent: level.indicator.host ? level.indicator.host.indicatorComponent : null
 
     readonly property IndicatorItem.LevelOptions level: IndicatorItem.LevelOptions{}
 }

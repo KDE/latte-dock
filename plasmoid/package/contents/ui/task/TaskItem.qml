@@ -508,7 +508,7 @@ Item {
                 id: taskIndicatorObj
                 animations: taskItem.abilities.animations
                 metrics: taskItem.abilities.metrics
-                indicatorsHost: root.indicators
+                host: root.indicators
 
                 isTask: true
                 isLauncher: taskItem.isLauncher || root.disableAllWindowsFunctionality
@@ -552,7 +552,6 @@ Item {
             //! Indicator Back Layer
             IndicatorLevel{
                 id: indicatorBackLayer
-                indicatorsHost: root.indicators
                 level.isBackground: true
                 level.indicator: taskIndicatorObj
 
@@ -573,7 +572,6 @@ Item {
             //! Indicator Front Layer
             IndicatorLevel{
                 id: indicatorFrontLayer
-                indicatorsHost: root.indicators
                 level.isForeground: true
                 level.indicator: taskIndicatorObj
             }

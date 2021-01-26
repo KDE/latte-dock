@@ -759,7 +759,7 @@ Item {
                 id: appletIndicatorObj
                 animations: appletItem.animations
                 metrics: appletItem.metrics
-                indicatorsHost: indicators
+                host: root.indicators
 
                 isApplet: true
 
@@ -792,7 +792,6 @@ Item {
             //! Indicator Back Layer
             IndicatorLevel{
                 id: indicatorBackLayer
-                indicatorsHost: indicators
                 level.isBackground: true
                 level.indicator: appletIndicatorObj
 
@@ -840,7 +839,6 @@ Item {
             //! Indicator Front Layer
             IndicatorLevel{
                 id: indicatorFrontLayer
-                indicatorsHost: indicators
                 level.isForeground: true
                 level.indicator: appletIndicatorObj
             }

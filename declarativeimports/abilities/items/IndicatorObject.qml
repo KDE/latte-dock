@@ -25,7 +25,7 @@ Item{
     //! abilities
     property Item metrics: null
     property Item animations: null
-    property Item indicatorsHost: null
+    property Item host: null
 
     //! options
     property bool isTask: false
@@ -73,7 +73,7 @@ Item{
     property color iconGlowColor: "white"
 
     //! grouped options
-    property Item shared: indicatorsHost
+    property Item shared: host
     property QtObject configuration: shared ? shared.configuration : null
     property QtObject resources: shared ?  shared.resources : null
 

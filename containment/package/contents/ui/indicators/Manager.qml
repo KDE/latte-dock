@@ -125,13 +125,12 @@ Item{
     AbilityItem.IndicatorLevel{
         id: metricsLoader
         opacity: 0
-        indicatorsHost: managerIndicator
         level.isDrawn: true
         level.isBackground: true
         level.indicator: AbilityItem.IndicatorObject{
             animations: root.animations
             metrics: root.metrics
-            indicatorsHost: managerIndicator
+            host: managerIndicator
         }
     }
 

@@ -60,10 +60,10 @@ AbilityItem.IndicatorLevel {
     level.isDrawn: !appletItem.isSeparator
                    && !appletItem.isHidden
                    && !communicator.indexerIsSupported
-                   && (indicatorsHost.isEnabled
+                   && (level.indicator.host.isEnabled
                        && (appletItem.communicator.requires.activeIndicatorEnabled
                            || (!appletItem.communicator.requires.activeIndicatorEnabled && appletItem.debug.graphicsEnabled /*debug paddings*/))
-                       && indicatorsHost.info.enabledForApplets)
+                       && level.indicator.host.info.enabledForApplets)
 
     readonly property bool locked: appletItem.lockZoom || appletItem.parabolic.factor.zoom === 1
 
@@ -74,7 +74,7 @@ AbilityItem.IndicatorLevel {
 
     Connections {
         target: appletItem
-        enabled: indicatorsHost.isEnabled && indicatorsHost.info.needsMouseEventCoordinates
+        enabled: indicatorLevel.level.indicator.host.isEnabled && indicatorLevel.level.indicator.host.info.needsMouseEventCoordinates
         onMousePressed: {
             var fixedPos = indicatorLevel.mapFromItem(appletItem, x, y);
             indicatorLevel.level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
