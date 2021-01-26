@@ -66,8 +66,8 @@ AbilityClient.ParabolicEffect {
         }
 
         onCurrentParabolicItemChanged: {
-            if (!(bridge || bridge.host)) {
-                if (!currentParabolicItem) {
+            if (!parabolic.bridge || !parabolic.bridge.host) {
+                if (!parabolic.currentParabolicItem) {
                     parabolic.startRestoreZoomTimer();
                 } else {
                     parabolic.stopRestoreZoomTimer();
@@ -112,7 +112,7 @@ AbilityClient.ParabolicEffect {
         if (bridge) {
             bridge.parabolic.host.setCurrentParabolicItem(item);
         } else {
-            local._privates.currentParabolicItem = item;
+            local.currentParabolicItem = item;
         }
     }
 
