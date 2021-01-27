@@ -106,7 +106,7 @@ Ability.IndicatorsPrivate {
     AbilityItem.IndicatorLevel{
         id: indicatorLevel
         opacity: 0
-        level.isDrawn: true
+        level.isDrawn: root.indicators.isEnabled
         level.isBackground: true
         level.indicator: AbilityItem.IndicatorObject{
             animations: root.animations

@@ -60,9 +60,9 @@ AbilityItem.IndicatorLevel {
     level.isDrawn: !appletItem.isSeparator
                    && !appletItem.isHidden
                    && !communicator.indexerIsSupported
-                   && (level.indicator.host.isEnabled
-                       && (appletItem.communicator.requires.activeIndicatorEnabled
-                           || (!appletItem.communicator.requires.activeIndicatorEnabled && appletItem.debug.graphicsEnabled /*debug paddings*/))
+                   && level.indicator.host.isEnabled
+                   && (appletItem.communicator.requires.activeIndicatorEnabled
+                       || (!appletItem.communicator.requires.activeIndicatorEnabled && appletItem.debug.graphicsEnabled /*debug paddings*/)
                        && level.indicator.host.info.enabledForApplets)
 
     readonly property bool locked: appletItem.lockZoom || appletItem.parabolic.factor.zoom === 1

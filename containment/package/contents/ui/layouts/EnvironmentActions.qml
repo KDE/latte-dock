@@ -217,7 +217,7 @@ Loader {
             id: indicatorBackLayer
             anchors.fill: parent
 
-            level.isDrawn: true
+            level.isDrawn: root.indicators.isEnabled
             level.isBackground: true
             level.indicator: AbilityItem.IndicatorObject{
                 animations: root.animations
