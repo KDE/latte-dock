@@ -263,8 +263,6 @@ Item {
             if (appletAbilities.myView.isReady) {
                 plasmoid.action("configure").visible = false;
                 plasmoid.configuration.isInLatteDock = true;
-            } else {
-                plasmoid.configuration.isInLatteDock = false;
             }
         }
     }
@@ -737,6 +735,8 @@ Item {
 
         indexer.itemsCount: tasksModel.count
         indexer.updateIsBlocked: root.inDraggingPhase || root.inActivityChange
+
+        indicators.local.isEnabled: !plasmoid.configuration.isInLatteDock
 
         launchers.group: plasmoid.configuration.launchersGroup
         launchers.isStealingDroppedLaunchers: plasmoid.configuration.isPreferredForDroppedLaunchers
