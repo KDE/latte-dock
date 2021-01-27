@@ -128,7 +128,6 @@ Item {
 
     //BEGIN Latte Dock properties
     property bool badges3DStyle: latteView ? latteView.badges3DStyle : true
-    property bool enableShadows: latteView ? latteView.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
 
     property bool disableLeftSpacer: false
@@ -191,10 +190,6 @@ Item {
     property int alignment
 
     readonly property real currentPanelOpacity: latteView ? latteView.currentPanelTransparency / 100 : 1
-
-    property int appShadowSize: latteView ? latteView.appShadowSize : Math.ceil(0.12*appletAbilities.metrics.iconSize)
-    property string appShadowColor: latteView ? latteView.appShadowColor : "#ff080808"
-    property string appShadowColorSolid: latteView ? latteView.appShadowColorSolid : "#ff080808"
 
     property alias tasksCount: tasksModel.count
 
@@ -749,6 +744,9 @@ Item {
         launchers.group: plasmoid.configuration.launchersGroup
         launchers.isStealingDroppedLaunchers: plasmoid.configuration.isPreferredForDroppedLaunchers
         launchers.syncer.isBlocked: inDraggingPhase
+
+        myView.local.itemShadow.isEnabled: plasmoid.configuration.showShadows
+        myView.local.itemShadow.size: Math.ceil(0.12*appletAbilities.metrics.iconSize)
 
         parabolic.itemsCount: tasksModel.count
         parabolic.local.isEnabled: parabolic.factor.zoom > 1

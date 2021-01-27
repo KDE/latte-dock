@@ -250,7 +250,7 @@ Item {
     property int scrollAction: plasmoid.configuration.scrollAction
 
     property bool panelOutline: plasmoid.configuration.panelOutline
-    property int panelEdgeSpacing: Math.max(background.lengthMargins, 1.5*appShadowSize)
+    property int panelEdgeSpacing: Math.max(background.lengthMargins, 1.5*myView.itemShadow.size)
     property int panelTransparency: plasmoid.configuration.panelTransparency //user set
 
     property bool backgroundShadowsInRegularStateEnabled: LatteCore.WindowSystem.compositingActive
@@ -292,25 +292,6 @@ Item {
 
         return false;
     }
-
-    property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
-    property int appShadowSize: enableShadows ? (0.5*metrics.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
-    property int appShadowSizeOriginal: enableShadows ? (0.5*metrics.maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
-
-    property string appChosenShadowColor: {
-        if (plasmoid.configuration.shadowColorType === LatteContainment.Types.ThemeColorShadow) {
-            var strC = String(theme.textColor);
-            return strC.indexOf("#") === 0 ? strC.substr(1) : strC;
-        } else if (plasmoid.configuration.shadowColorType === LatteContainment.Types.UserColorShadow) {
-            return plasmoid.configuration.shadowColor;
-        }
-
-        // default shadow color
-        return "080808";
-    }
-
-    property string appShadowColor: "#" + decimalToHex(appShadowOpacity) + appChosenShadowColor
-    property string appShadowColorSolid: "#" + appChosenShadowColor
 
     property int offset: {
         if (behaveAsPlasmaPanel) {
@@ -388,7 +369,6 @@ Item {
     ///BEGIN properties provided to Latte Plasmoid
     //shadows for applets, it should be removed as the appleitems don't need it any more
     property bool badges3DStyle: universalSettings ? universalSettings.badges3DStyle : true
-    property bool enableShadows: plasmoid.configuration.appletShadowsEnabled
 
     property bool titleTooltips: {
         if (behaveAsPlasmaPanel) {
@@ -838,17 +818,6 @@ Item {
         if (!expands) {
             lastSpacer.parent = layoutsContainer.mainLayout
         }
-    }
-
-    function decimalToHex(d, padding) {
-        var hex = Number(d).toString(16);
-        padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
-
-        while (hex.length < padding) {
-            hex = "0" + hex;
-        }
-
-        return hex;
     }
 
     function internalViewSplittersCount(){

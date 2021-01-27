@@ -584,7 +584,7 @@ Item{
         active: appletItem.applet
                 && graphicsSystem.isAccelerated
                 && !appletColorizer.mustBeShown
-                && (root.enableShadows && applet.pluginName !== root.plasmoidName)
+                && (appletItem.myView.itemShadow.isEnabled && !appletItem.communicator.indexerIsSupported)
 
         onActiveChanged: {
             if (active && !isSeparator && graphicsSystem.isAccelerated) {
@@ -598,14 +598,14 @@ Item{
 
         sourceComponent: DropShadow{
             anchors.fill: parent
-            color: root.appShadowColor //"#ff080808"
+            color: appletItem.myView.itemShadow.shadowColor
             fast: true
             samples: 2 * radius
             source: appletItem.applet
             radius: shadowSize
             verticalOffset: root.forceTransparentPanel || root.forcePanelForBusyBackground ? 0 : 2
 
-            property int shadowSize : root.appShadowSize
+            property int shadowSize : appletItem.myView.itemShadow.size
         }
     }
 

@@ -22,9 +22,9 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 
-import org.kde.latte.abilities.host 0.1 as AbilityHost
+import "./privates" as Ability
 
-AbilityHost.MyView {
+Ability.MyViewPrivate {
     view: latteView
 
     isReady: latteView
@@ -45,7 +45,14 @@ AbilityHost.MyView {
 
     lastUsedActivity: view && view.layout ? view.layout.lastUsedActivity : ""
 
+    screenGeometry: view ? view.screenGeometry : plasmoid.screenGeometry
+
     containmentActions: isReady ? view.containmentActions : []
+
+    itemShadow.isEnabled: plasmoid.configuration.appletShadowsEnabled
+    itemShadow.size: itemShadow.isEnabled ? (0.5*metrics.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
+    itemShadow.shadowColor: "#" + myView.decimalToHex(appShadowOpacity) + myView.itemShadowOpacity
+    itemShadow.shadowSolidColor: "#" + myView.itemShadowCurrentColor
 }
 
 

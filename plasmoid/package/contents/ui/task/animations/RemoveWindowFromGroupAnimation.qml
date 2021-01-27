@@ -81,7 +81,7 @@ Item{
 
                 width: iconImageBuffer.width
                 height: width
-                visible: root.enableShadows ? false : true
+                visible: taskItem.abilities.myView.itemShadow.isEnabled ? false : true
 
                 source: iconImageBuffer.lastValidSourceName
             }
@@ -89,7 +89,7 @@ Item{
             Loader{
                 id: tempTaskShadow
                 anchors.fill: tempRemoveIcon
-                active: root.enableShadows && graphicsSystem.isAccelerated
+                active: taskItem.abilities.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
 
                 sourceComponent: DropShadow{
                     anchors.fill: parent

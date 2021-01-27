@@ -47,7 +47,11 @@ AbilityDefinition.MyView {
         readonly property alias alignment: apis.alignment
         readonly property alias visibilityMode: apis.visibilityMode
 
+        readonly property alias screenGeometry: apis.screenGeometry
+
         readonly property alias containmentActions: apis.containmentActions
+
+        readonly property alias itemShadow: apis.itemShadow
 
         function inCurrentLayout() {
             return apis.inCurrentLayout();

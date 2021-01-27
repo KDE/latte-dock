@@ -772,7 +772,7 @@ Item {
 
                 scaleFactor: appletItem.wrapper.zoomScale
                 panelOpacity: root.background.currentOpacity
-                shadowColor: root.appShadowColorSolid
+                shadowColor: appletItem.myView.itemShadow.shadowSolidColor
 
                 palette: colorizerManager.applyTheme
 

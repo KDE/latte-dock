@@ -42,7 +42,11 @@ AbilityDefinition.MyView {
 
     lastUsedActivity: ref.myView.lastUsedActivity
 
+    screenGeometry: ref.myView.screenGeometry
+
     containmentActions: ref.myView.containmentActions
+
+    itemShadow: ref.myView.itemShadow
 
     readonly property AbilityDefinition.MyView local: AbilityDefinition.MyView {}
 

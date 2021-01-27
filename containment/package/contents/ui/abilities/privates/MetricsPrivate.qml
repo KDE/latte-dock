@@ -72,7 +72,7 @@ AbilityHost.Metrics {
         }
 
         //! 45% of max shadow size in px.
-        var shadowMaxNeededMargin = 0.45 * root.appShadowSizeOriginal;
+        var shadowMaxNeededMargin = 0.45 * root.myView.itemShadow.maxSize;
         var shadowOpacity = (plasmoid.configuration.shadowOpacity) / 100;
         //! +40% of shadow opacity in percentage
         shadowOpacity = shadowOpacity + shadowOpacity*0.4;
@@ -82,7 +82,7 @@ AbilityHost.Metrics {
         shadowMaxNeededMargin = (shadowMaxNeededMargin * shadowOpacity);
 
         //! give some more space when items shadows are enabled and extremely big
-        if (root.enableShadows && metrics.margin.maxThickness < shadowMaxNeededMargin) {
+        if (root.myView.itemShadow.isEnabled && metrics.margin.maxThickness < shadowMaxNeededMargin) {
             return shadowMaxNeededMargin - metrics.margin.maxThickness;
         }
 

@@ -51,14 +51,14 @@ Loader{
     sourceComponent: Item{
         Loader{
             anchors.fill: taskNumber
-            active: root.enableShadows && graphicsSystem.isAccelerated
+            active: taskItem.abilities.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
 
             sourceComponent: DropShadow{
-                color: root.appShadowColor
+                color: taskItem.abilities.myView.itemShadow.shadowColor
                 fast: true
                 samples: 2 * radius
                 source: taskNumber
-                radius: root.appShadowSize/2
+                radius: taskItem.abilities.myView.itemShadow.size/2
                 verticalOffset: 2
             }
         }

@@ -418,10 +418,10 @@ MouseArea {
                 opacity: 0.9
                 layer.enabled: graphicsSystem.isAccelerated
                 layer.effect: DropShadow {
-                    radius: root.appShadowSize
+                    radius: root.myView.itemShadow.size
                     fast: true
                     samples: 2 * radius
-                    color: root.appShadowColor
+                    color: root.myView.itemShadow.shadowColor
 
                     verticalOffset: 2
                 }

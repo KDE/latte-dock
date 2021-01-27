@@ -462,7 +462,7 @@ Item {
     Loader{
         id: separatorShadow
         anchors.fill: separatorItem
-        active: root.enableShadows && isSeparator && graphicsSystem.isAccelerated
+        active: taskItem.abilities.myView.itemShadow.isEnabled && isSeparator && graphicsSystem.isAccelerated
         opacity: separatorItem.forceHiddenState ? 0 : 0.4
 
         Behavior on opacity {
@@ -471,11 +471,11 @@ Item {
 
         sourceComponent: DropShadow{
             anchors.fill: parent
-            color: root.appShadowColor
+            color: taskItem.abilities.myView.itemShadow.shadowColor
             fast: true
             samples: 2 * radius
             source: separatorItem
-            radius: root.appShadowSize
+            radius: taskItem.abilities.myView.itemShadow.size
             verticalOffset: 2
         }
     }
@@ -538,7 +538,7 @@ Item {
 
                 scaleFactor: taskItem.wrapper.mScale
                 panelOpacity: root.currentPanelOpacity
-                shadowColor: root.appShadowColorSolid
+                shadowColor: taskItem.abilities.myView.itemShadow.shadowColorSolid
 
                 progressVisible: wrapper.progressVisible /*since 0.9.2*/
                 progress: wrapper.progress /*since 0.9.2*/

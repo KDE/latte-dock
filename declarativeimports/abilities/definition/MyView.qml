@@ -21,6 +21,8 @@ import QtQuick 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 
+import "./myview" as MyViewTypes
+
 Item {    
     property bool isReady: false
 
@@ -40,7 +42,16 @@ Item {
 
     property string lastUsedActivity: ""
 
+    property rect screenGeometry: Qt.rect(0, 0, 1600, 1080)
+
     property var containmentActions: []
+
+    property MyViewTypes.ItemShadow itemShadow: MyViewTypes.ItemShadow {
+        isEnabled: true
+        size: 6
+        shadowColor: "#ff080808"
+        shadowSolidColor: "#ff080808"
+    }
 
     //function inCurrentLayout();
 }

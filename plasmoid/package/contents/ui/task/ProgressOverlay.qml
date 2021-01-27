@@ -63,7 +63,7 @@ Item {
                 if (showsAudioBadge) {
                     return height;
                 } else if ( index === taskItem.abilities.indexer.firstVisibleItemIndex && !taskItem.containsMouse) {
-                    return (wrapper.mScale * (taskItem.abilities.metrics.iconSize - (root.enableShadows ? shadowSize/2 : 0)));
+                    return (wrapper.mScale * (taskItem.abilities.metrics.iconSize - (taskItem.abilities.myView.itemShadow.isEnabled ? shadowSize/2 : 0)));
                 } else {
                     return 999999;
                 }

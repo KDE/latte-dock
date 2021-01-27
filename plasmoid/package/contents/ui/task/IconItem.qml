@@ -60,7 +60,7 @@ Item{
     // property int shadowInterval: firstDrawed ? firstDrawedInterval : 250
     property int shadowInterval: firstDrawed ? 1000 : 250
 
-    property int shadowSize : root.appShadowSize
+    property int shadowSize : taskItem.abilities.myView.itemShadow.size
 
     readonly property bool smartLauncherEnabled: ((taskItem.isStartup === false) && (root.showInfoBadge || root.showProgressBadge))
     readonly property variant iconDecoration: decoration
@@ -162,7 +162,7 @@ Item{
             smooth: taskItem.abilities.parabolic.factor.zoom === 1 ? true : false
             providesColors: taskItem.abilities.indicators.info.needsIconColors
 
-            opacity: root.enableShadows
+            opacity: taskItem.abilities.myView.itemShadow.isEnabled
                      && taskWithShadow.active
                      && graphicsSystem.isAccelerated ? 0 : 1
             visible: !taskItem.isSeparator && (!badgesLoader.active || !graphicsSystem.isAccelerated)
@@ -262,15 +262,15 @@ Item{
         Loader{
             id: taskWithShadow
             anchors.fill: iconImageBuffer
-            active: root.enableShadows && !taskItem.isSeparator && graphicsSystem.isAccelerated
+            active: taskItem.abilities.myView.itemShadow.isEnabled && !taskItem.isSeparator && graphicsSystem.isAccelerated
 
             sourceComponent: DropShadow{
                 anchors.fill: parent
-                color: root.appShadowColor
+                color: taskItem.abilities.myView.itemShadow.shadowColor
                 fast: true
                 samples: 2 * radius
                 source: badgesLoader.active ? badgesLoader.item : iconImageBuffer
-                radius: root.appShadowSize
+                radius: taskItem.abilities.myView.itemShadow.size
                 verticalOffset: 2
             }
         }
@@ -458,13 +458,13 @@ Item{
                     opacity: badgesLoader.activateProgress
                     visible: badgesLoader.showInfo || badgesLoader.showProgress
 
-                    layer.enabled: root.enableShadows && graphicsSystem.isAccelerated
+                    layer.enabled: taskItem.abilities.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
                     layer.effect: DropShadow {
-                        color: root.appShadowColor
+                        color: taskItem.abilities.myView.itemShadow.shadowColor
                         fast: true
                         samples: 2 * radius
                         source: infoBadge
-                        radius: root.appShadowSize
+                        radius: taskItem.abilities.myView.itemShadow.size
                         verticalOffset: 2
                     }
                 }
@@ -475,13 +475,13 @@ Item{
                     opacity: badgesLoader.activateProgress
                     visible: badgesLoader.showAudio
 
-                    layer.enabled: root.enableShadows && graphicsSystem.isAccelerated
+                    layer.enabled: taskItem.abilities.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
                     layer.effect: DropShadow {
-                        color: root.appShadowColor
+                        color: taskItem.abilities.myView.itemShadow.shadowColor
                         fast: true
                         samples: 2 * radius
                         source: audioStreamBadge
-                        radius: root.appShadowSize
+                        radius: taskItem.abilities.myView.itemShadow.size
                         verticalOffset: 2
                     }
                 }

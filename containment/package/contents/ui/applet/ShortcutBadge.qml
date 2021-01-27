@@ -80,14 +80,14 @@ Loader{
     sourceComponent: Item{
         Loader{
             anchors.fill: appletNumber
-            active: root.enableShadows && graphicsSystem.isAccelerated
+            active: appletItem.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
 
             sourceComponent: DropShadow{
-                color: root.appShadowColor
+                color: appletItem.myView.itemShadow.shadowColor
                 fast: true
                 samples: 2 * radius
                 source: appletNumber
-                radius: root.appShadowSize/2
+                radius: appletItem.myView.itemShadow.size/2
                 verticalOffset: 2
             }
         }

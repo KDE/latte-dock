@@ -40,14 +40,14 @@ Item {
 
         sourceComponent: DropShadow{
             anchors.fill: parent
-            color: root.appShadowColor
+            color: appletItem.myView.itemShadow.shadowColor
             fast: true
             samples: 2 * radius
             source: colorizer
             radius: shadowSize
             verticalOffset: forcedShadow ? 0 : 2
 
-            readonly property int shadowSize : root.appShadowSize
+            readonly property int shadowSize : appletItem.myView.itemShadow.size
 
             readonly property bool forcedShadow: root.forceTransparentPanel && plasmoid.configuration.appletShadowsEnabled
                                                  && applet && applet.pluginName !== root.plasmoidName ? true : false
