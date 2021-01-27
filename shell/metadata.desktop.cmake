@@ -25,6 +25,7 @@ Name[pl]=Powłoka Latte
 Name[pt]=Consola do Latte
 Name[pt_BR]=Latte Shell
 Name[ru]=Оболочка Latte
+Name[sk]=Latte Shell
 Name[sl]=Shell Latte
 Name[sv]=Latte skal
 Name[uk]=Оболонка Латте
