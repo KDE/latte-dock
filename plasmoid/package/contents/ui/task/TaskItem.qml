@@ -538,7 +538,7 @@ Item {
 
                 scaleFactor: taskItem.wrapper.mScale
                 panelOpacity: root.currentPanelOpacity
-                shadowColor: taskItem.abilities.myView.itemShadow.shadowColorSolid
+                shadowColor: taskItem.abilities.myView.itemShadow.shadowSolidColor
 
                 progressVisible: wrapper.progressVisible /*since 0.9.2*/
                 progress: wrapper.progress /*since 0.9.2*/
@@ -1040,16 +1040,16 @@ Item {
 
             if (taskItem.abilities.myView.isHidden) {
                 if (root.location === PlasmaCore.Types.BottomEdge) {
-                    globalChoords.y = root.screenGeometry.y+root.screenGeometry.height-1;
+                    globalChoords.y = taskItem.abilities.myView.screenGeometry.y + taskItem.abilities.myView.screenGeometry.height-1;
                     globalChoords.height = 1;
                 } else if (root.location === PlasmaCore.Types.TopEdge) {
-                    globalChoords.y = root.screenGeometry.y+1;
+                    globalChoords.y = taskItem.abilities.myView.screenGeometry.y+1;
                     globalChoords.height = 1;
                 } else if (root.location === PlasmaCore.Types.LeftEdge) {
-                    globalChoords.x = root.screenGeometry.x+1;
+                    globalChoords.x = taskItem.abilities.myView.screenGeometry.x+1;
                     globalChoords.width = 1;
                 } else if (root.location === PlasmaCore.Types.RightEdge) {
-                    globalChoords.x = root.screenGeometry.x+root.screenGeometry.width - 1;
+                    globalChoords.x = taskItem.abilities.myView.screenGeometry.x + taskItem.abilities.myView.screenGeometry.width - 1;
                     globalChoords.width = 1;
                 }
             }

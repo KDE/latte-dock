@@ -169,7 +169,7 @@ Flickable{
         var block = !root.autoScrollTasksEnabled && !duringDragging;
 
         if (block || !contentsExceed || root.tasksCount < 3
-                || (task.itemIndex===task.abilities.indexer.lastVisibleItemIndex && appletAbilities.parabolic.factor.zoom>1)) {
+                || (task.itemIndex === appletAbilities.indexer.lastVisibleItemIndex && appletAbilities.parabolic.factor.zoom>1)) {
             //last task with parabolic effect breaks the autoscolling behavior
             return;
         }

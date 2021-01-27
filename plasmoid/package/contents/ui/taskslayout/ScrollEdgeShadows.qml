@@ -28,7 +28,7 @@ Item {
 
     readonly property int gradientLength: appletAbilities.metrics.iconSize / 3
     readonly property int thickness: appletAbilities.metrics.backgroundThickness
-    readonly property color appliedColor: root.abilities.myView.itemShadow.shadowSolidColor
+    readonly property color appliedColor: appletAbilities.myView.itemShadow.shadowSolidColor
 
     property Item flickable
 

@@ -379,8 +379,6 @@ Item {
     }
 
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
-
-    property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
     ///END properties from latteApplet
 
 

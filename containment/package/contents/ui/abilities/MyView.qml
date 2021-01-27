@@ -51,7 +51,7 @@ Ability.MyViewPrivate {
 
     itemShadow.isEnabled: plasmoid.configuration.appletShadowsEnabled
     itemShadow.size: itemShadow.isEnabled ? (0.5*metrics.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
-    itemShadow.shadowColor: "#" + myView.decimalToHex(appShadowOpacity) + myView.itemShadowOpacity
+    itemShadow.shadowColor: "#" + myView.decimalToHex(itemShadowOpacity) + myView.itemShadowOpacity
     itemShadow.shadowSolidColor: "#" + myView.itemShadowCurrentColor
 }
 

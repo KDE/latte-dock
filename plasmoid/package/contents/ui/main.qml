@@ -193,9 +193,6 @@ Item {
 
     property alias tasksCount: tasksModel.count
 
-    readonly property real screenGeometryHeightRatio: screenGeometry.height / screenGeometry.width
-    readonly property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
-
     property Item latteView: null
     //END Latte Dock Panel properties
 
@@ -526,7 +523,7 @@ Item {
         id: tasksModel
 
         virtualDesktop: virtualDesktopInfo.currentDesktop
-        screenGeometry: root.screenGeometry
+        screenGeometry: appletAbilities.myView.screenGeometry
         // comment in order to support LTS Plasma 5.8
         // screen: plasmoid.screen
         activity: appletAbilities.myView.isReady ? appletAbilities.myView.lastUsedActivity : activityInfo.currentActivity
