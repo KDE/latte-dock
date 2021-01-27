@@ -537,7 +537,7 @@ Item {
                 windowsMinimizedCount: !root.disableAllWindowsFunctionality ? taskItem.windowsMinimizedCount : 0
 
                 scaleFactor: taskItem.wrapper.mScale
-                panelOpacity: root.currentPanelOpacity
+                panelOpacity: taskItem.abilities.myView.backgroundOpacity
                 shadowColor: taskItem.abilities.myView.itemShadow.shadowSolidColor
 
                 progressVisible: wrapper.progressVisible /*since 0.9.2*/

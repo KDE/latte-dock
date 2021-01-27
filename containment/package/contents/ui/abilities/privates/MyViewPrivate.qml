@@ -30,6 +30,8 @@ AbilityHost.MyView {
     readonly property int itemShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
     readonly property int itemShadowMaxSize: itemShadow.isEnabled ? (0.5*metrics.maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
 
+    readonly property real backgroundStoredOpacity: plasmoid.configuration.panelTransparency / 100
+
     readonly property string itemShadowCurrentColor: {
         if (plasmoid.configuration.shadowColorType === LatteContainment.Types.ThemeColorShadow) {
             var strC = String(theme.textColor);

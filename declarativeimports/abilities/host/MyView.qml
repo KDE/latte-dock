@@ -47,6 +47,8 @@ AbilityDefinition.MyView {
         readonly property alias alignment: apis.alignment
         readonly property alias visibilityMode: apis.visibilityMode
 
+        readonly property alias backgroundOpacity: apis.backgroundOpacity
+
         readonly property alias screenGeometry: apis.screenGeometry
 
         readonly property alias containmentActions: apis.containmentActions

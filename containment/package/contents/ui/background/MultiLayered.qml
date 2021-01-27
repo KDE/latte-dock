@@ -489,7 +489,7 @@ BackgroundProperties{
 
         backgroundOpacity: {
             if (busyBackground && !forceSolidness) {
-                return plasmoid.configuration.panelTransparency / 100;
+                return root.myView.backgroundStoredOpacity;
             }
 
             if (coloredView || customShadowedRectangleIsEnabled) {
@@ -517,7 +517,7 @@ BackgroundProperties{
             } else if (!root.userShowPanelBackground || root.forcePanelForBusyBackground || root.forceTransparentPanel) {
                 return 0;
             } else {
-                return plasmoid.configuration.panelTransparency / 100;
+                return root.myView.backgroundStoredOpacity;
             }
         }
 

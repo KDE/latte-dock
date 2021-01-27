@@ -118,10 +118,10 @@ Loader{
                     var themeContrastedTextColor = currentBackgroundBrightness > 127.5 ? themeExtended.lightTheme : themeExtended.darkTheme;
                     var themeContrastedBackground = currentBackgroundBrightness > 127.5 ? themeExtended.darkTheme : themeExtended.lightTheme;
 
-                    if (root.panelTransparency < 35) {
+                    if (root.myView.backgroundStoredOpacity < 0.35) {
                         //! textColor should be better to provide the needed contrast
                         return themeContrastedTextColor;
-                    } else if (root.panelTransparency >= 35 && root.panelTransparency <= 70) {
+                    } else if (root.myView.backgroundStoredOpacity >= 0.35 && root.myView.backgroundStoredOpacity <= 0.70) {
                         //! provide a dark case scenario at all cases
                         return themeExtended.darkTheme;
                     } else {
@@ -142,7 +142,7 @@ Loader{
         if (latteView && latteView.layout
                 && root.inConfigureAppletsMode
                 && LatteCore.WindowSystem.compositingActive
-                && root.panelTransparency<40
+                && root.myView.backgroundStoredOpacity<0.40
                 && (root.themeColors === LatteContainment.Types.SmartThemeColors)) {
             return latteView.layout.textColor;
         }

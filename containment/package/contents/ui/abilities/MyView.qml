@@ -43,6 +43,8 @@ Ability.MyViewPrivate {
     alignment: plasmoid.configuration.alignment
     visibilityMode: view ? view.visibility.mode : LatteCore.Types.None
 
+    backgroundOpacity: background.currentOpacity
+
     lastUsedActivity: view && view.layout ? view.layout.lastUsedActivity : ""
 
     screenGeometry: view ? view.screenGeometry : plasmoid.screenGeometry

@@ -251,7 +251,6 @@ Item {
 
     property bool panelOutline: plasmoid.configuration.panelOutline
     property int panelEdgeSpacing: Math.max(background.lengthMargins, 1.5*myView.itemShadow.size)
-    property int panelTransparency: plasmoid.configuration.panelTransparency //user set
 
     property bool backgroundShadowsInRegularStateEnabled: LatteCore.WindowSystem.compositingActive
                                                           && userShowPanelBackground
@@ -275,7 +274,7 @@ Item {
 
         var transparencyCheck = (blurEnabled || (!blurEnabled && background.currentOpacity>20));
 
-        //! Draw shadows for isBusy state only when current panelTransparency is greater than 10%
+        //! Draw shadows for isBusy state only when current background opacity is greater than 10%
         if (plasmoid.configuration.panelShadows && root.forcePanelForBusyBackground && transparencyCheck) {
             return true;
         }

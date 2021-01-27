@@ -189,8 +189,6 @@ Item {
     //updated from Binding
     property int alignment
 
-    readonly property real currentPanelOpacity: latteView ? latteView.currentPanelTransparency / 100 : 1
-
     property alias tasksCount: tasksModel.count
 
     property Item latteView: null

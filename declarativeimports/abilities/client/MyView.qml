@@ -40,6 +40,8 @@ AbilityDefinition.MyView {
     alignment: ref.myView.alignment
     visibilityMode: ref.myView.visibilityMode
 
+    backgroundOpacity: ref.myView.backgroundOpacity
+
     lastUsedActivity: ref.myView.lastUsedActivity
 
     screenGeometry: ref.myView.screenGeometry

@@ -40,6 +40,8 @@ Item {
     property int alignment: LatteCore.Types.Center
     property int visibilityMode: LatteCore.Types.None
 
+    property real backgroundOpacity: 1.0
+
     property string lastUsedActivity: ""
 
     property rect screenGeometry: Qt.rect(0, 0, 1600, 1080)

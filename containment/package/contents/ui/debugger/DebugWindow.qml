@@ -554,11 +554,11 @@ Window{
             }
 
             Text{
-                text: "Background Transparency"+space
+                text: "Background Opacity"+space
             }
 
             Text{
-                text: root.panelTransparency + "%"
+                text: (root.myView.backgroundOpacity * 100) + "%"
             }
 
             Text{
