@@ -142,7 +142,7 @@ Item{
 
     readonly property Item actions: Actions{}
     readonly property Item applet: mainCommunicator.requires
-    readonly property alias containment: _containment
+    readonly property alias containment: _containment.publicApi
     readonly property Item debug: appletItem.debug.publicApi
     readonly property Item indicators: appletItem.indicators.publicApi
     readonly property Item metrics: appletItem.metrics.publicApi
@@ -189,6 +189,9 @@ Item{
         id: _containment
         appletIndex: index
         myView: appletItem.myView
+
+        isFirstAppletInContainment: appletItem.firstAppletInContainer
+        isLastAppletInContainment: appletItem.lastAppletInContainer
     }
 
     //! Initialize

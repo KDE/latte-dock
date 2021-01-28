@@ -25,7 +25,10 @@ import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 AbilityDefinition.Containment {
     property Item bridge: null
 
-    alignment: ref.containment.alignment
+    isFirstAppletInContainment: ref.containment.isFirstAppletInContainment
+    isLastAppletInContainment: ref.containment.isLastAppletInContainment
+
+    alignment: ref.containment.alignment    
 
     readonly property AbilityDefinition.Containment local: AbilityDefinition.Containment {}
 

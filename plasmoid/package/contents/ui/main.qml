@@ -131,8 +131,6 @@ Item {
     //BEGIN Latte Dock properties
     property bool forceHidePanel: false
 
-    property bool disableLeftSpacer: false
-    property bool disableRightSpacer: false
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool highlightWindows: hoverAction === LatteTasks.Types.HighlightWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
 

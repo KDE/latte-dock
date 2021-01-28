@@ -119,13 +119,13 @@ Item {
             var scales = taskItem.abilities.parabolic.applyParabolicEffect(index, currentMousePosition, center);
 
             //Left hiddenSpacer for first task
-            if(((index === taskItem.abilities.indexer.firstVisibleItemIndex)&&(root.tasksCount>0)) && !root.disableLeftSpacer
+            if(((index === taskItem.abilities.indexer.firstVisibleItemIndex)&&(root.tasksCount>0)) && taskItem.abilities.containment.isFirstAppletInContainment
                     && !inMimicParabolicAnimation && !inFastRestoreAnimation && !inAttentionAnimation){
                 hiddenSpacerLeft.nScale = scales.leftScale - 1;
             }
 
             //Right hiddenSpacer for last task
-            if(((index === taskItem.abilities.indexer.lastVisibleItemIndex )&&(root.tasksCount>0)) && !root.disableRightSpacer
+            if(((index === taskItem.abilities.indexer.lastVisibleItemIndex )&&(root.tasksCount>0)) && taskItem.abilities.containment.isLastAppletInContainment
                     && !inMimicParabolicAnimation && !inFastRestoreAnimation && !inAttentionAnimation){
                 hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }

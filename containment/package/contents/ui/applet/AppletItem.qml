@@ -159,6 +159,7 @@ Item {
                                           ((index === layouter.startLayout.firstVisibleIndex)
                                            || (index === layouter.mainLayout.firstVisibleIndex)
                                            || (index === layouter.endLayout.firstVisibleIndex))
+
     //applet is in ending edge
     property bool lastAppletInContainer: (index >=0) &&
                                          ((index === layouter.startLayout.lastVisibleIndex)
@@ -480,25 +481,7 @@ Item {
                 break;
             }
         }
-
-        if(appletItem.latteApplet){
-            if(index===layoutsContainer.startLayout.beginIndex || index===layoutsContainer.mainLayout.beginIndex || index===layoutsContainer.endLayout.beginIndex)
-                latteApplet.disableLeftSpacer = false;
-            else
-                latteApplet.disableLeftSpacer = true;
-
-            if( index === layoutsContainer.startLayout.beginIndex + appletItem.layouter.startLayout.count - 1
-                    || index===layoutsContainer.mainLayout.beginIndex + appletItem.layouter.mainLayout.count - 1
-                    || index === layoutsContainer.endLayout.beginIndex + appletItem.layouter.endLayout.count - 1)
-                latteApplet.disableRightSpacer = false;
-            else
-                latteApplet.disableRightSpacer = true;
-        }
     }
-
-    //this functions gets the signal from the plasmoid, it can be used for signal items
-    //outside the LatteApplet Plasmoid
-    //property int debCounter: 0;
 
     function sltClearZoom(){
         if (communicator.parabolicEffectIsSupported) {

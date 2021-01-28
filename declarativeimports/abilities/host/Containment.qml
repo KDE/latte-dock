@@ -51,8 +51,10 @@ AbilityDefinition.Containment {
         return myView.alignment;
     }
 
-
     readonly property Item publicApi: Item {
+        readonly property alias isFirstAppletInContainment: apis.isFirstAppletInContainment
+        readonly property alias isLastAppletInContainment: apis.isLastAppletInContainment
+
         readonly property alias alignment: apis.alignment
     }
 }
