@@ -49,8 +49,8 @@ Item {
     Layout.fillWidth: scrollingEnabled && !root.vertical
     Layout.fillHeight: scrollingEnabled && root.vertical
 
-    Layout.minimumWidth: -1
-    Layout.minimumHeight: -1
+    Layout.minimumWidth: inPlasma && root.isHorizontal ? minimumLength : -1
+    Layout.minimumHeight: inPlasma && !root.isHorizontal ? minimumLength : -1
     Layout.preferredWidth: tasksWidth
     Layout.preferredHeight: tasksHeight
     Layout.maximumWidth: -1
@@ -102,6 +102,8 @@ Item {
 
     property int internalWidthMargins: root.vertical ? appletAbilities.metrics.totals.thicknessEdges : appletAbilities.metrics.totals.lengthPaddings
     property int internalHeightMargins: !root.vertical ? appletAbilities.metrics.totals.thicknessEdges : appletAbilities.metrics.totals.lengthPaddings
+
+    readonly property int minimumLength: inPlasma ? (root.isHorizontal ? tasksWidth : tasksHeight) : -1;
 
     property real textColorBrightness: ColorizerTools.colorBrightness(themeTextColor)
 
@@ -210,7 +212,7 @@ Item {
     //END  Latte Dock Communicator
 
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
-    Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
+    Plasmoid.backgroundHints: inPlasmaDesktop ? PlasmaCore.Types.StandardBackground : PlasmaCore.Types.NoBackground
 
     signal draggingFinished();
     signal hiddenTasksUpdated();
@@ -313,7 +315,7 @@ Item {
                 return appletAbilities.myView.alignment;
             }
 
-            return !root.vertical ? LatteCore.Types.Left : LatteCore.Types.Top;
+            return LatteCore.Types.Center;
         }
     }
 

@@ -26,10 +26,10 @@
       <default></default>
     </entry>
     <entry name="showBarLine" type="Bool">
-      <default>true</default>
+      <default>false</default>
     </entry>
     <entry name="showShadows" type="Bool">
-      <default>true</default>
+      <default>false</default>
     </entry>
     <entry name="showGlow" type="Bool">
       <default>true</default>
