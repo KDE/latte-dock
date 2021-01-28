@@ -37,6 +37,8 @@ AbilityDefinition.MyView {
     inRelocationAnimation: ref.myView.inRelocationAnimation
     inRelocationHiding: ref.myView.inRelocationHiding
 
+    badgesIn3DStyle: ref.myView.badgesIn3DStyle
+
     alignment: ref.myView.alignment
     visibilityMode: ref.myView.visibilityMode
 
