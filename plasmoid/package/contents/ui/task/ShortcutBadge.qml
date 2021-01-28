@@ -30,7 +30,8 @@ Loader{
     visible: badgeString !== ""
 
     property int fixedIndex:-1
-    property string badgeString: (shorcutBadge.fixedIndex>=1 && shorcutBadge.fixedIndex<20 && taskItem.abilities.shortcuts.badges.length===19) ?
+    readonly property int maxFixedIndex: taskItem.abilities.shortcuts.badges.length
+    property string badgeString: (shorcutBadge.fixedIndex>=1 && shorcutBadge.fixedIndex<=maxFixedIndex) ?
                                      taskItem.abilities.shortcuts.badges[shorcutBadge.fixedIndex-1] : ""
 
     onActiveChanged: updateShorcutIndex();

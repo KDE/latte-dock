@@ -29,12 +29,11 @@ AbilityClient.Indexer {
     property Item layout: null
 
     property bool updateIsBlocked: false
-    property int itemsCount: 0 /*is needed to be set from consumer developer in order to avoid binding loops warnings*/
 
     readonly property bool tailAppletIsSeparator: isActive ? bridge.indexer.tailAppletIsSeparator : false
     readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
 
-    readonly property bool isReady: (layout && layout.children.length === itemsCount) && !updateIsBlocked
+    readonly property bool isReady: !updateIsBlocked
     readonly property int maxIndex: 99999
 
     readonly property alias visibleItemsCount: _privates.visibleItemsCount

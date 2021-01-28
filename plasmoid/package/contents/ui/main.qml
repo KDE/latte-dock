@@ -702,7 +702,6 @@ Item {
         layout: icList.contentItem
         tasksModel: tasksModel
 
-        indexer.itemsCount: tasksModel.count
         indexer.updateIsBlocked: root.inDraggingPhase || root.inActivityChange
 
         indicators.local.isEnabled: !plasmoid.configuration.isInLatteDock
