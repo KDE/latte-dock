@@ -372,7 +372,6 @@ Item {
         return plasmoid.configuration.titleTooltips;
     }
 
-    property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
     ///END properties from latteApplet
 
 

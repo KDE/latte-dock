@@ -657,14 +657,6 @@ Window{
             }
 
             Text{
-                text: "Task Hovered"+space
-            }
-
-            Text{
-                text: "--"//root.latteAppletHoveredIndex
-            }
-
-            Text{
                 text: "In Normal State"+space
             }
 

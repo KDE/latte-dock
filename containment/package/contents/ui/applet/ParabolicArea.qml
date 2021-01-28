@@ -61,12 +61,11 @@ Item {
             root.showTooltipLabel(appletItem, applet.title);
         }
 
-        if (appletItem.originalAppletBehavior || communicator.requires.parabolicEffectLocked || !parabolicEffectIsSupported) {
-            return;
-        }
-
-        if (!appletItem.myView.isShownFully || (root.latteApplet
-                                                && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
+        if (!appletItem.myView.isShownFully
+                || appletItem.originalAppletBehavior
+                || !appletItem.parabolicEffectIsSupported
+                || communicator.requires.parabolicEffectLocked
+                || communicator.indexerIsSupported) {
             return;
         }
 
@@ -80,8 +79,11 @@ Item {
     }
 
     onParabolicMove: {
-        if (!appletItem.myView.isShownFully || (root.latteApplet
-                                                && (root.latteApplet.noTasksInAnimation>0 || root.latteApplet.contextMenu))) {
+        if (!appletItem.myView.isShownFully
+                || appletItem.originalAppletBehavior
+                || !appletItem.parabolicEffectIsSupported
+                || communicator.requires.parabolicEffectLocked
+                || communicator.indexerIsSupported) {
             return;
         }
 
@@ -131,14 +133,12 @@ Item {
 
     function updateScale(nIndex, nScale, step){
         if(appletItem && !appletItem.containsMouse && (appletItem.index === nIndex)){
-            if ( ((parabolicEffectIsSupported && !appletItem.originalAppletBehavior) || appletItem.latteApplet)
+            if ( (parabolicEffectIsSupported && !appletItem.originalAppletBehavior && !appletItem.communicator.indexerIsSupported)
                     && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)){
-                if(!appletItem.latteApplet){
-                    if(nScale >= 0) {
-                        wrapper.zoomScale = nScale + step;
-                    } else {
-                        wrapper.zoomScale = wrapper.zoomScale + step;
-                    }
+                if(nScale >= 0) {
+                    wrapper.zoomScale = nScale + step;
+                } else {
+                    wrapper.zoomScale = wrapper.zoomScale + step;
                 }
             }
         }
