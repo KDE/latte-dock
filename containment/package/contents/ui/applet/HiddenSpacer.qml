@@ -30,11 +30,11 @@ Item{
     height: root.isHorizontal ? wrapper.height : nHiddenSize
 
     ///check also if this is the first/last plasmoid in anylayout
-    visible: (rightSpacer ? appletItem.lastAppletInContainer : appletItem.firstAppletInContainer) || separatorSpace>0
+    visible: (isRightSpacer ? appletItem.lastAppletInContainer : appletItem.firstAppletInContainer) || separatorSpace>0
 
-    property bool neighbourSeparator: rightSpacer ? appletItem.headAppletIsSeparator : appletItem.tailAppletIsSeparator
+    property bool hasNeighbourSeparator: isRightSpacer ? appletItem.headAppletIsSeparator : appletItem.tailAppletIsSeparator
 
-    property int separatorSpace: neighbourSeparator && appletItem.parabolic.isEnabled ? LatteCore.WindowSystem.separatorLength / 2 : 0
+    property int separatorSpace: hasNeighbourSeparator && appletItem.parabolic.isEnabled ? LatteCore.Environment.separatorLength / 2 : 0
 
     property real nHiddenSize: {
         if (isSeparator || !communicator.requires.lengthMarginsEnabled) {
@@ -44,7 +44,7 @@ Item{
         return (nScale > 0) ? (appletItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace
     }
 
-    property bool rightSpacer: false
+    property bool isRightSpacer: false
 
     property real nScale: 0
 

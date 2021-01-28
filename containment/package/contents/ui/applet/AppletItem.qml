@@ -317,7 +317,7 @@ Item {
     property Item shortcuts: null
     property Item userRequests: null
 
-    property bool containsMouse: (parabolicAreaLoader.active && parabolicAreaLoader.item.containsMouse) || (isLattePlasmoid && latteApplet.containsMouse)
+    property bool containsMouse: parabolicAreaLoader.active && parabolicAreaLoader.item.containsMouse
     property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
 
 
@@ -903,7 +903,7 @@ Item {
         }
 
         // a hidden spacer on the right for the last item to add stability
-        HiddenSpacer{id: hiddenSpacerRight; rightSpacer: true}
+        HiddenSpacer{id: hiddenSpacerRight; isRightSpacer: true}
     }// Flow with hidden spacers inside
 
     //Busy Indicator
