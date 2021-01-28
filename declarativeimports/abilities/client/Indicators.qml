@@ -39,7 +39,7 @@ AbilityDefinition.Indicators {
     }
 
     readonly property AbilityDefinition.Indicators local: AbilityDefinition.Indicators {
-        isEnabled: true
+        isEnabled: false
         type: "org.kde.latte.default"
 
         info.needsIconColors: false
@@ -55,7 +55,7 @@ AbilityDefinition.Indicators {
         configuration: localLatteConfiguration
         resources: null
 
-        indicatorComponent: latteLocalIndicator
+        indicatorComponent: isEnabled ? latteLocalIndicator : null
 
         //! Local Latte Indicator Configuration
         LocalIndicator.LatteConfiguration{
