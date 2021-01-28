@@ -895,7 +895,7 @@ Item {
             target: icList
 
             property int maxThickness: (appletAbilities.parabolic.isHovered || windowPreviewIsShown || appletAbilities.animations.hasThicknessAnimation) ?
-                                           appletAbilities.metrics.mask.thickness.zoomedForItems : appletAbilities.metrics.mask.thickness.normalForItems
+                                           appletAbilities.metrics.mask.thickness.maxZoomedForItems : appletAbilities.metrics.mask.thickness.maxNormalForItems
 
             function onlyLaunchersInDroppedList(list){
                 return list.every(function (item) {

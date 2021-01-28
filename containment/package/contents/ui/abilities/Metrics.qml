@@ -59,7 +59,7 @@ Ability.MetricsPrivate {
                                                                     background.thickness + background.shadows.headThickness)
 
     mask.thickness.normalForItems: margin.screenEdge + totals.thickness
-    mask.thickness.zoomedForItems: margin.screenEdge + (parabolic.factor.maxZoom * totals.thickness)
+    mask.thickness.zoomedForItems: margin.screenEdge + (parabolic.factor.zoom * totals.thickness)
 
     mask.thickness.maxNormalForItemsWithoutScreenEdge: maxIconSize + (margin.maxThickness * 2)
     mask.thickness.maxZoomedForItemsWithoutScreenEdge: (maxIconSize + (margin.maxThickness * 2)) * parabolic.factor.maxZoom

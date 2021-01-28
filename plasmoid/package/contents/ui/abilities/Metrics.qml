@@ -49,8 +49,11 @@ AbilityClient.Metrics {
     local.margin.screenEdge: 0
     local.padding.length: 0.04 * iconSize
 
-    local.mask.thickness.normalForItems: totals.thickness
-    local.mask.thickness.zoomedForItems: parabolic.factor.maxZoom * totals.thickness
+    local.mask.thickness.normalForItems: local.totals.thickness
+    local.mask.thickness.zoomedForItems: parabolic.factor.zoom * local.totals.thickness
+
+    local.mask.thickness.maxNormalForItems: local.mask.thickness.normalForItems
+    local.mask.thickness.maxZoomedForItems: local.mask.thickness.zoomedForItems
 
     readonly property int maxIconSizeInPlasma: Math.max(plasmoid.configuration.iconSize, 16)
     readonly property int panelThickness: (root.vertical ? root.width : root.height)
