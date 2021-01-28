@@ -364,11 +364,6 @@ Item {
     }
 
     // TO BE DELETED, if not needed: property int counter:0;
-
-    ///BEGIN properties provided to Latte Plasmoid
-    //shadows for applets, it should be removed as the appleitems don't need it any more
-    property bool badges3DStyle: universalSettings ? universalSettings.badges3DStyle : true
-
     property bool titleTooltips: {
         if (behaveAsPlasmaPanel) {
             return false;

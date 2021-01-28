@@ -129,7 +129,6 @@ Item {
     readonly property alias containsDrag: mouseHandler.containsDrag
 
     //BEGIN Latte Dock properties
-    property bool badges3DStyle: latteView ? latteView.badges3DStyle : true
     property bool forceHidePanel: false
 
     property bool disableLeftSpacer: false

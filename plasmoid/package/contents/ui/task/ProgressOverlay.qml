@@ -99,7 +99,7 @@ Item {
                 return theme.buttonFocusColor;
             }
 
-            style3d: root.badges3DStyle
+            style3d: taskItem.abilities.myView.badgesIn3DStyle
             textWithBackgroundColor: false
 
             proportion: {

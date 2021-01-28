@@ -75,7 +75,7 @@ Loader{
             minimumWidth: 0.4 * (wrapper.mScale * taskItem.abilities.metrics.iconSize)
             height: Math.max(24, 0.4 * (wrapper.mScale * taskItem.abilities.metrics.iconSize))
 
-            style3d: root.badges3DStyle
+            style3d: taskItem.abilities.myView.badgesIn3DStyle
             textValue: shorcutBadge.badgeString
             borderColor: root.lightTextColor
 

@@ -44,6 +44,8 @@ AbilityDefinition.MyView {
         readonly property alias inRelocationAnimation: apis.inRelocationAnimation
         readonly property alias inRelocationHiding: apis.inRelocationHiding
 
+        readonly property alias badgesIn3DStyle: apis.badgesIn3DStyle
+
         readonly property alias alignment: apis.alignment
         readonly property alias visibilityMode: apis.visibilityMode
 

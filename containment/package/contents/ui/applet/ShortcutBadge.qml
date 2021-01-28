@@ -112,7 +112,7 @@ Loader{
             showText: true
             textValue: appletNumberLoader.badgeString
 
-            style3d: root.badges3DStyle
+            style3d: appletItem.myView.badgesIn3DStyle
         }
     }
 }

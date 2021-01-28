@@ -69,7 +69,7 @@ Item {
             proportion: 0
             radiusPerCentage: 100
 
-            style3d: root.badges3DStyle
+            style3d: taskItem.abilities.myView.badgesIn3DStyle
 
             LatteCore.IconItem{
                 id: audioStreamIcon
