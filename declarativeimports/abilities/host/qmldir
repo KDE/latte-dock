@@ -1,6 +1,7 @@
 module org.kde.latte.abilities.host
 
 Animations 0.1 Animations.qml
+Containment 0.1 Containment.qml
 Debug 0.1 Debug.qml
 Indicators 0.1 Indicators.qml
 Metrics 0.1 Metrics.qml

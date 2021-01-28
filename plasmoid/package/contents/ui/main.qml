@@ -188,8 +188,7 @@ Item {
     property real tasksHeight:  mouseHandler.height
     property real tasksWidth: mouseHandler.width
 
-    //updated from Binding
-    property int alignment
+    readonly property int alignment: appletAbilities.containment.alignment
 
     property alias tasksCount: tasksModel.count
 
@@ -290,35 +289,6 @@ Item {
         readonly property bool isAccelerated: (GraphicsInfo.api !== GraphicsInfo.Software)
                                               && (GraphicsInfo.api !== GraphicsInfo.Unknown)
     }
-
-    Binding {
-        target: root
-        property: "alignment"
-        value: {
-            if (appletAbilities.myView.isReady) {
-                if (appletAbilities.myView.alignment === LatteCore.Types.None) {
-                    return;
-                }
-
-                if (appletAbilities.myView.alignment === LatteCore.Types.Justify) {
-                    if (latteView.latteAppletPos>=0 && latteView.latteAppletPos<100) {
-                        return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? LatteCore.Types.Left : LatteCore.Types.Top;
-                    } else if (latteView.latteAppletPos>=100 && latteView.latteAppletPos<200) {
-                        return LatteCore.Types.Center;
-                    } else if (latteView.latteAppletPos>=200) {
-                        return plasmoid.formFactor === PlasmaCore.Types.Horizontal ? LatteCore.Types.Right : LatteCore.Types.Bottom;
-                    }
-
-                    return LatteCore.Types.Center;
-                }
-
-                return appletAbilities.myView.alignment;
-            }
-
-            return LatteCore.Types.Center;
-        }
-    }
-
 
     ///UPDATE
     function launcherExists(url) {

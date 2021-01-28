@@ -33,10 +33,11 @@ Item {
     property Item layout: null
     property QtObject tasksModel: null
 
+    //! basic
     readonly property alias animations: _animations
+    readonly property alias containment: _containment
     readonly property alias debug: _debug
     readonly property alias indexer: _indexer
-    readonly property alias launchers: _launchers
     readonly property alias indicators: _indicators
     readonly property alias metrics: _metrics
     readonly property alias myView: _myView
@@ -45,8 +46,16 @@ Item {
     readonly property alias requires: _requires
     readonly property alias userRequests: _userRequests
 
+    //! optional
+    readonly property alias launchers: _launchers
+
     Ability.Animations {
         id: _animations
+        bridge: _abilityContainer.bridge
+    }
+
+    AbilityClient.Containment {
+        id: _containment
         bridge: _abilityContainer.bridge
     }
 

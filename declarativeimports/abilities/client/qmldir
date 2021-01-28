@@ -1,6 +1,7 @@
 module org.kde.latte.abilities.client
 
 Animations 0.1 Animations.qml
+Containment 0.1 Containment.qml
 Debug 0.1 Debug.qml
 Indexer 0.1 Indexer.qml
 Indicators 0.1 Indicators.qml

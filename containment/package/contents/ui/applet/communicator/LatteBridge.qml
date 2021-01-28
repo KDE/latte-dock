@@ -19,6 +19,7 @@
 
 import QtQuick 2.7
 
+import org.kde.latte.abilities.host 0.1 as AbilityHost
 import org.kde.latte.abilities.bridge 0.1 as AbilityBridge
 
 Item{
@@ -141,6 +142,7 @@ Item{
 
     readonly property Item actions: Actions{}
     readonly property Item applet: mainCommunicator.requires
+    readonly property alias containment: _containment
     readonly property Item debug: appletItem.debug.publicApi
     readonly property Item indicators: appletItem.indicators.publicApi
     readonly property Item metrics: appletItem.metrics.publicApi
@@ -181,6 +183,12 @@ Item{
                 settings.broadcasted(action, value);
             }
         }
+    }
+
+    AbilityHost.Containment {
+        id: _containment
+        appletIndex: index
+        myView: appletItem.myView
     }
 
     //! Initialize
