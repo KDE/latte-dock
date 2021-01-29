@@ -22,6 +22,7 @@ import QtQuick 2.7
 import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 
 AbilityDefinition.ThinTooltip {
+    id: thinTooltip
     property Item bridge: null
 
     showIsBlocked: local.showIsBlocked
@@ -29,6 +30,7 @@ AbilityDefinition.ThinTooltip {
     currentVisualParent: ref.thinTooltip.currentVisualParent
     currentText: ref.thinTooltip.currentText
 
+    readonly property bool isActive: bridge !== null
     readonly property AbilityDefinition.ThinTooltip local: AbilityDefinition.ThinTooltip {}
 
     Item {
@@ -38,7 +40,7 @@ AbilityDefinition.ThinTooltip {
 
     function show(visualParent, text) {
         if (bridge) {
-            bridge.thinTooltip.show(visualParent, text);
+            bridge.thinTooltip.host.show(visualParent, text);
         } else {
             local.show(visualParent, text);
         }
@@ -46,9 +48,27 @@ AbilityDefinition.ThinTooltip {
 
     function hide(visualParent) {
         if (bridge) {
-            bridge.thinTooltip.hide(visualParent);
+            bridge.thinTooltip.host.hide(visualParent);
         } else {
             local.hide(visualParent);
+        }
+    }
+
+    onIsActiveChanged: {
+        if (isActive) {
+            bridge.thinTooltip.client = thinTooltip;
+        }
+    }
+
+    Component.onCompleted: {
+        if (isActive) {
+            bridge.thinTooltip.client = thinTooltip;
+        }
+    }
+
+    Component.onDestruction: {
+        if (isActive) {
+            bridge.thinTooltip.client = null;
         }
     }
 }

@@ -62,6 +62,7 @@ Item{
     readonly property bool launchersAreSupported: bridge && bridge.launchers.client
     readonly property bool parabolicEffectIsSupported: bridge && bridge.parabolic.client
     readonly property bool positionShortcutsAreSupported: bridge && bridge.shortcuts.client
+    readonly property bool thinTooltipIsSupported: bridge && bridge.thinTooltip.client
 
     readonly property Item bridge: bridgeLoader.active ? bridgeLoader.item : null
     //! END OF ABILITIES SUPPORT

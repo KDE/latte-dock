@@ -44,6 +44,7 @@ Item {
     readonly property alias parabolic: _parabolic
     readonly property alias shortcuts: _shortcuts
     readonly property alias requires: _requires
+    readonly property alias thinTooltip: _thinTooltip
     readonly property alias userRequests: _userRequests
 
     //! optional
@@ -102,6 +103,11 @@ Item {
         id: _shortcuts
         bridge: _abilityContainer.bridge
         indexer: _indexer
+    }
+
+    AbilityClient.ThinTooltip {
+        id: _thinTooltip
+        bridge: _abilityContainer.bridge
     }
 
     AbilityClient.Requirements{

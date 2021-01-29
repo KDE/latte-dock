@@ -339,6 +339,7 @@ Item {
     readonly property alias metrics: _metrics
     readonly property alias myView: _myView
     readonly property alias parabolic: _parabolic
+    readonly property alias thinTooltip: _thinTooltip
     readonly property alias userRequests: _userRequests
 
     readonly property alias maskManager: visibilityManager
@@ -1104,6 +1105,7 @@ Item {
             myView: _myView
             parabolic: _parabolic
             shortcuts: _shortcuts
+            thinTooltip: _thinTooltip
             userRequests: _userRequests
         }
     }
@@ -1347,6 +1349,13 @@ Item {
     Ability.PositionShortcuts {
         id: _shortcuts
         layouts: layoutsContainer
+    }
+
+    Ability.ThinTooltip {
+        id: _thinTooltip
+        debug: _debug
+        layouts: layoutsContainer
+        view: latteView
     }
 
     Ability.UserRequests {

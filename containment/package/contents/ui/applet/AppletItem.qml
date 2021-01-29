@@ -316,6 +316,7 @@ Item {
     property Item myView: null
     property Item parabolic: null
     property Item shortcuts: null
+    property Item thinTooltip: null
     property Item userRequests: null
 
     property bool containsMouse: parabolicAreaLoader.active && parabolicAreaLoader.item.containsMouse

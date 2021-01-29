@@ -171,6 +171,11 @@ Item{
         appletIndex: index
     }
 
+    readonly property AbilityBridge.ThinTooltip thinTooltip: AbilityBridge.ThinTooltip {
+        host: appletItem.thinTooltip.publicApi
+        appletIndex: index
+    }
+
     readonly property AbilityBridge.PositionShortcuts shortcuts: AbilityBridge.PositionShortcuts {
         host: appletItem.shortcuts
         appletIndex: index
