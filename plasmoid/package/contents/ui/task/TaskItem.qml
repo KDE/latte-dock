@@ -790,34 +790,15 @@ Item {
         if(windowsPreviewDlg.activeItem !== taskItem){
             if (!taskItem.abilities.myView.isReady
                     || (taskItem.abilities.myView.isReady && taskItem.abilities.myView.isShownFully)) {
-                if (root.latteView && root.titleTooltips) {
-                    root.latteView.hideTooltipLabel();
-                }
-
                 taskItem.preparePreviewWindow(false);
                 windowsPreviewDlg.show(taskItem);
             }
         }
     }
 
-    function showTitleTooltip() {
-        if (root.latteView && root.titleTooltips){
-            var displayText = isWindow ? model.display : model.AppName;
-            var maxCharacters = 80;
-
-            var fixedDisplayText = displayText.length>maxCharacters ? displayText.substring(0,maxCharacters-1) + "..." : displayText;
-
-            root.latteView.showTooltipLabel(taskItem, fixedDisplayText);
-        }
-    }
-
     function hidePreviewWindow() {
         if(windowsPreviewDlg.activeItem === taskItem){
             windowsPreviewDlg.hide("14.1");
-
-            if (root.latteView && root.titleTooltips && containsMouse) {
-                showTitleTooltip();
-            }
         }
     }
 

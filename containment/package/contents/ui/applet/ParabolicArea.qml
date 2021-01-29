@@ -58,7 +58,7 @@ Item {
         }
 
         if (!(isSeparator || isSpacer)) {
-            root.showTooltipLabel(appletItem, applet.title);
+            appletItem.thinTooltip.show(appletItem.tooltipVisualParent, applet.title);
         }
 
         if (!appletItem.myView.isShownFully
@@ -106,7 +106,7 @@ Item {
     }
 
     onParabolicExited: {
-        root.hideTooltipLabel();
+        appletItem.thinTooltip.hide(appletItem.tooltipVisualParent);
     }
 
     function calculateParabolicScales(currentMousePosition){

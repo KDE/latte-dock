@@ -722,6 +722,7 @@ Item {
         requires.latteSideColoringEnabled: false
         requires.screenEdgeMarginSupported: true
 
+        thinTooltip.local.showIsBlocked: root.contextMenu || root.windowPreviewIsShown
         //! Connections
         Connections {
             target: _appletAbilities.shortcuts

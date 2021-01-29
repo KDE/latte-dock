@@ -91,10 +91,6 @@ PlasmaComponents.ContextMenu {
         } else {
             windowsPreviewDlg.hide("9.4");
         }
-
-        if (root.latteView){
-            root.latteView.hideTooltipLabel();            
-        }
     }
 
     function newMenuItem(parent) {

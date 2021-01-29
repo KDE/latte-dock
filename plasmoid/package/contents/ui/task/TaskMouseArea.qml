@@ -41,8 +41,8 @@ MouseArea {
             windowsPreviewDlg.hide(1);
         }
 
-        if (root.latteView && (!root.showPreviews && root.titleTooltips) || (root.showPreviews && root.titleTooltips && isLauncher)){
-            taskItem.showTitleTooltip();
+        if (!root.showPreviews || (root.showPreviews && isLauncher)){
+            taskItem.abilities.thinTooltip.show(taskItem.tooltipVisualParent, taskItem.isWindow ? model.display : model.AppName );
         }
 
         //! show previews if enabled
@@ -74,9 +74,7 @@ MouseArea {
     onExited: {
         taskItem.isAbleToShowPreview = true;
 
-        if (root.latteView && (!root.showPreviews || (root.showPreviews && isLauncher))){
-            root.latteView.hideTooltipLabel();
-        }
+        taskItem.abilities.thinTooltip.hide(taskItem.tooltipVisualParent);
 
         if (root.showPreviews) {
             root.hidePreview(17.5);

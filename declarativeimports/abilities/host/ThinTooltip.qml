@@ -33,6 +33,8 @@ AbilityDefinition.ThinTooltip {
 
     readonly property int maxCharacters: 80
 
+    property Item lastHidingVisualParent: null
+
     //! Public API
     readonly property Item publicApi: Item {
         readonly property alias currentText: _thinTooltip.currentText
@@ -51,6 +53,7 @@ AbilityDefinition.ThinTooltip {
 
     onShowIsBlockedChanged: {
         if (!showIsBlocked && !_tooltipDialog.visible && _thinTooltip.currentVisualParent) {
+            _hideTimer.stop();
             _tooltipDialog.visible = true;
         } else if (showIsBlocked && _tooltipDialog.visible) {
             _tooltipDialog.visible = false;
@@ -58,7 +61,12 @@ AbilityDefinition.ThinTooltip {
     }
 
     function show(visualParent, text) {
+        if (!showIsBlocked) {
+            _hideTimer.stop();
+        }
+
         _thinTooltip.currentVisualParent = visualParent;
+        _tooltipDialog.visualParent = visualParent;
 
         var fixedDisplayText = text.length>maxCharacters ? displayText.substring(0,maxCharacters-1) + "..." : text;
         _thinTooltip.currentText = fixedDisplayText;
@@ -70,10 +78,9 @@ AbilityDefinition.ThinTooltip {
 
     function hide(visualParent) {
         if (_thinTooltip.currentVisualParent === visualParent) {
+            _thinTooltip.lastHidingVisualParent = visualParent;
             _showTimer.stop();
-            _tooltipDialog.visible = false;
-            _thinTooltip.currentVisualParent = null;
-            _thinTooltip.currentText = "";
+            _hideTimer.start();
         }
     }
 
@@ -88,6 +95,24 @@ AbilityDefinition.ThinTooltip {
 
             if (debug && debug.timersEnabled) {
                 console.log("ThinTooltip host timer: show() called...");
+            }
+        }
+    }
+
+    //! Hide Delayer Timer
+    Timer {
+        id: _hideTimer
+        interval: 100
+        onTriggered: {
+            if (_thinTooltip.lastHidingVisualParent === _thinTooltip.currentVisualParent) {
+                _tooltipDialog.visible = false;
+                _thinTooltip.lastHidingVisualParent = null;
+                _thinTooltip.currentVisualParent = null;
+                _thinTooltip.currentText = "";
+            }
+
+            if (debug && debug.timersEnabled) {
+                console.log("ThinTooltip host timer: hide() called...");
             }
         }
     }

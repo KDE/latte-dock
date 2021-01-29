@@ -894,11 +894,11 @@ Item {
     }
 
     function hideTooltipLabel(debug){
-        titleTooltipDialog.hide(debug);
+       // titleTooltipDialog.hide(debug);
     }
 
     function showTooltipLabel(taskItem, text){
-        titleTooltipDialog.show(taskItem, text);
+       // titleTooltipDialog.show(taskItem, text);
     }
 
     function sizeIsFromAutomaticMode(size){
