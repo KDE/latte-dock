@@ -45,7 +45,6 @@ function activateTask(index, model, modifiers, task) {
     } else if (task.isGroupParent) {
         task.activateNextTask();
        // if (backend.canPresentWindows()) {
-            //task.toolTipAreaItem.hideToolTip();
         //    backend.presentWindows(model.LegacyWinIdList);
        // }
         /*} else if (groupDialog.visible) {

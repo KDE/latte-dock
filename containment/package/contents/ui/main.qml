@@ -364,18 +364,6 @@ Item {
         return null;
     }
 
-    // TO BE DELETED, if not needed: property int counter:0;
-    property bool titleTooltips: {
-        if (behaveAsPlasmaPanel) {
-            return false;
-        }
-
-        return plasmoid.configuration.titleTooltips;
-    }
-
-    ///END properties from latteApplet
-
-
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
 
     //// BEGIN properties in functions
@@ -536,15 +524,6 @@ Item {
     onToolBoxChanged: {
         if (toolBox) {
             toolBox.visible = false;
-        }
-    }
-
-    Connections {
-        target: myView
-        onIsShownFullyChanged: {
-            if (root.myView.isShownFully && !titleTooltipDialog.visible && titleTooltipDialog.activeItemHovered) {
-                titleTooltipDialog.show(titleTooltipDialog.activeItem, titleTooltipDialog.activeItemText);
-            }
         }
     }
 
@@ -893,14 +872,6 @@ Item {
         return false;
     }
 
-    function hideTooltipLabel(debug){
-       // titleTooltipDialog.hide(debug);
-    }
-
-    function showTooltipLabel(taskItem, text){
-       // titleTooltipDialog.show(taskItem, text);
-    }
-
     function sizeIsFromAutomaticMode(size){
 
         for(var i=iconsArray.length-1; i>=0; --i){
@@ -964,131 +935,6 @@ Item {
         }
     }
     //END functions
-
-    /////BEGIN: Title Tooltip///////////
-    PlasmaCore.Dialog{
-        id: titleTooltipDialog
-
-        type: PlasmaCore.Dialog.Tooltip
-        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
-
-        location: plasmoid.location
-        mainItem: RowLayout{
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            PlasmaComponents.Label{
-                id:titleLbl
-                Layout.leftMargin: 4
-                Layout.rightMargin: 4
-                Layout.topMargin: 2
-                Layout.bottomMargin: 2
-                text: titleTooltipDialog.title
-            }
-        }
-
-        visible: false
-
-        property string title: ""
-
-        property bool activeItemHovered: false
-        property Item activeItem: null
-        property Item activeItemTooltipParent: null
-        property string activeItemText: ""
-
-
-        Component.onCompleted: {
-            parabolic.sglClearZoom.connect(titleTooltipDialog.hide);
-        }
-
-        Component.onDestruction: {
-            parabolic.sglClearZoom.disconnect(titleTooltipDialog.hide);
-        }
-
-        function hide(debug){
-            if (!root.titleTooltips)
-                return;
-
-            activeItemHovered = false;
-            hideTitleTooltipTimer.start();
-        }
-
-        function show(taskItem, text){
-            if (!root.titleTooltips || (latteApplet && latteApplet.contextMenu)){
-                return;
-            }
-
-            activeItemHovered = true;
-
-            if (activeItem !== taskItem) {
-                activeItem = taskItem;
-                activeItemTooltipParent = taskItem.tooltipVisualParent;
-                activeItemText = text;
-            }
-
-            if (root.myView.isShownFully) {
-                showTitleTooltipTimer.start();
-            }
-
-        }
-
-        function update() {
-            activeItemHovered = true
-            title = activeItemText;
-            visualParent = activeItemTooltipParent;
-            if (latteApplet && latteApplet.windowPreviewIsShown) {
-                latteApplet.hidePreview();
-            }
-
-            visible = true;
-        }
-    }
-
-    Timer {
-        id: showTitleTooltipTimer
-        interval: 100
-        onTriggered: {
-            if (latteView && latteView.visibility && latteView.visibility.containsMouse) {
-                titleTooltipDialog.update();
-            }
-
-            if (titleTooltipDialog.visible) {
-                titleTooltipCheckerToNotShowTimer.start();
-            }
-
-            if (debug.timersEnabled) {
-                console.log("containment timer: showTitleTooltipTimer called...");
-            }
-        }
-    }
-
-    Timer {
-        id: hideTitleTooltipTimer
-        interval: 200
-        onTriggered: {
-            if (!titleTooltipDialog.activeItemHovered) {
-                titleTooltipDialog.visible = false;
-            }
-
-            if (debug.timersEnabled) {
-                console.log("containment timer: hideTitleTooltipTimer called...");
-            }
-
-        }
-    }
-
-    //! Timer to fix #811, rare cases that both a window preview and context menu are
-    //! shown
-    Timer {
-        id: titleTooltipCheckerToNotShowTimer
-        interval: 250
-
-        onTriggered: {
-            if (titleTooltipDialog.visible && latteApplet && (latteApplet.contextMenu || latteApplet.windowPreviewIsShown)) {
-                titleTooltipDialog.visible = false;
-            }
-        }
-    }
-    /////END: Title Tooltip///////////
 
     ///////////////BEGIN components
     Component {

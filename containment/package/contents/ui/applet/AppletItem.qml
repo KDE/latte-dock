@@ -560,12 +560,6 @@ Item {
         }
     }
 
-    onIsExpandedChanged: {
-        if (isExpanded) {
-            root.hideTooltipLabel();
-        }
-    }
-
     onIsSystrayChanged: {
         updateParabolicEffectIsSupported();
     }

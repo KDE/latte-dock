@@ -49,6 +49,10 @@ AbilityHost.ThinTooltip {
 
                 for (var i=0; i<grid.children.length; ++i){
                     var appletItem = grid.children[i];
+                    if (appletItem.isExpanded) {
+                        return true;
+                    }
+
                     if (appletItem
                             && appletItem.communicator
                             && appletItem.communicator.thinTooltipIsSupported

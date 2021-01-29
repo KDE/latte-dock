@@ -151,7 +151,6 @@ Item {
     property bool showWindowActions: plasmoid.configuration.showWindowActions && !disableAllWindowsFunctionality
     property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers && !disableAllWindowsFunctionality
 
-    property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
     property int leftClickAction: plasmoid.configuration.leftClickAction
