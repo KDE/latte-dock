@@ -569,7 +569,6 @@ Item {
             root.latteApplet = appletItem.latteApplet;
             root.latteAppletContainer = appletItem;
             root.latteAppletPos = index;
-            appletItem.latteApplet.latteView = root;
             appletItem.latteApplet.forceHidePanel = true;
 
             appletItem.latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
