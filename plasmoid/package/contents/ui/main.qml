@@ -188,7 +188,6 @@ Item {
 
     property alias tasksCount: tasksModel.count
 
-    property Item latteView: null
     //END Latte Dock Panel properties
 
     readonly property bool inEditMode: latteInEditMode || plasmoid.userConfiguring
