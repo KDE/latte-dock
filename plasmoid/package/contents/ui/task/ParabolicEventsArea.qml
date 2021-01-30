@@ -156,7 +156,7 @@ Item {
         if (!parabolicItem.isUpdatingOnlySpacers) {
             abilityItem.parabolicItem.zoom = abilityItem.abilities.parabolic.factor.zoom;
         } else {
-            var subSpacerScale = (taskItem.abilities.parabolic.factor.zoom-1)/2;
+            var subSpacerScale = (abilityItem.abilities.parabolic.factor.zoom-1)/2;
 
             hiddenSpacerLeft.nScale = subSpacerScale;
             hiddenSpacerRight.nScale = subSpacerScale;

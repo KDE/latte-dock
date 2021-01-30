@@ -21,85 +21,54 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+
 import org.kde.latte.core 0.2 as LatteCore
 
 Item{
     id: parabolicItem
     opacity: 0
-    width: {
-        if (!taskItem.visible)
-            return 0;
+    width: abilityItem.isHorizontal ? length : thickness
+    height: abilityItem.isHorizontal ? thickness : length
 
-        if (taskItem.isSeparator){
-            if (!root.vertical)
-                return 0;
-            else
-                return (taskItem.abilities.metrics.iconSize + root.widthMargins + taskItem.abilities.metrics.margin.screenEdge);
-        }
+    readonly property int length: (!abilityItem.visible || abilityItem.isSeparator) ? 0 : basicScalingLength
 
-        if (taskItem.isStartup && taskItem.abilities.animations.speedFactor.current !==0 ) {
-            return root.vertical ? cleanScalingWidth + taskItem.abilities.metrics.margin.screenEdge : cleanScalingWidth;
-        } else {
-            return root.vertical ? showDelegateWidth + taskItem.abilities.metrics.margin.screenEdge : showDelegateWidth;
-        }
-    }
-
-    height: {
-        if (!taskItem.visible)
-            return 0;
-
-        if (taskItem.isSeparator){
-            if (root.vertical)
-                return 0;
-            else
-                return (taskItem.abilities.metrics.iconSize + root.heightMargins + taskItem.abilities.metrics.margin.screenEdge);
-        }
-
-        if (taskItem.isStartup && taskItem.abilities.animations.speedFactor.current !==0){
-            return !root.vertical ? cleanScalingHeight + taskItem.abilities.metrics.margin.screenEdge : cleanScalingHeight;
-        } else {
-            return !root.vertical ? showDelegateHeight + taskItem.abilities.metrics.margin.screenEdge : showDelegateHeight;
-        }
-    }
+    readonly property int thickness: (!abilityItem.visible ? 0 : (abilityItem.isSeparator ?
+                                                                      abilityItem.abilities.metrics.mask.thickness.normalForItems :
+                                                                      basicScalingThickness + abilityItem.abilities.metrics.margin.screenEdge))
 
     property bool isParabolicEventBlocked: false
     property bool isUpdatingOnlySpacers: false
     property bool isZoomed: false
 
-    property int maxThickness: !root.vertical ? taskItem.abilities.parabolic.factor.zoom*(taskItem.abilities.metrics.iconSize+root.heightMargins)
-                                              : taskItem.abilities.parabolic.factor.zoom*(taskItem.abilities.metrics.iconSize+root.widthMargins)
-
-    property real showDelegateWidth: basicScalingWidth
-    property real showDelegateHeight: basicScalingHeight
-
     //scales which are used mainly for activating InLauncher
     ////Scalers///////
-    property bool inTempScaling: ((tempScaleWidth !== 1) || (tempScaleHeight !== 1) )
+    property bool inTempScaling: ((tempScaleLength !== 1.0) || (tempScaleThickness !== 1.0) )
 
     property real zoom: 1.0
     property real tempScaleWidth: 1.0
     property real tempScaleHeight: 1.0
+    property real tempScaleLength: abilityItem.isHorizontal ? tempScaleWidth : tempScaleHeight
+    property real tempScaleThickness: abilityItem.isHorizontal ? tempScaleHeight : tempScaleWidth
 
-    property real scaleWidth: (inTempScaling == true) ? tempScaleWidth : zoom
-    property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : zoom
+    property real scaleLength: inTempScaling ? tempScaleLength : zoom
+    property real scaleThickness: inTempScaling ? tempScaleThickness : zoom
 
-    property real cleanScalingWidth: (taskItem.abilities.metrics.iconSize + root.widthMargins) * zoom
-    property real cleanScalingHeight: (taskItem.abilities.metrics.iconSize + root.heightMargins) * zoom
+    property real cleanScalingLength: abilityItem.abilities.metrics.totals.length * zoom
+    property real cleanScalingThickness: abilityItem.abilities.metrics.totals.thickness * zoom
 
-    property real basicScalingWidth : (inTempScaling == true) ? ((taskItem.abilities.metrics.iconSize + root.widthMargins) * scaleWidth) : cleanScalingWidth
-    property real basicScalingHeight : (inTempScaling == true) ? ((taskItem.abilities.metrics.iconSize + root.heightMargins) * scaleHeight) : cleanScalingHeight
+    property real basicScalingLength: inTempScaling ? abilityItem.abilities.metrics.totals.length * scaleLength : cleanScalingLength
+    property real basicScalingThickness: inTempScaling ? abilityItem.abilities.metrics.totals.thickness * scaleThickness : cleanScalingThickness
 
-    property real regulatorWidth: taskItem.isSeparator ? width : basicScalingWidth;
-    property real regulatorHeight: taskItem.isSeparator ? height : basicScalingHeight;
+    property real regulatorLength: abilityItem.isSeparator ? (abilityItem.isHorizontal ? width : height) : basicScalingLength
+    property real regulatorThickness: abilityItem.isSeparator ? (abilityItem.isHorizontal ? height : width) : basicScalingThickness
 
-    property real visualScaledWidth: (taskItem.abilities.metrics.iconSize + root.internalWidthMargins) * zoom
-    property real visualScaledHeight: (taskItem.abilities.metrics.iconSize + root.internalHeightMargins) * zoom
+    property real visualScaledLength: (abilityItem.abilities.metrics.iconSize + abilityItem.abilities.metrics.totals.lengthPaddings) * zoom
+    property real visualScaledThickness: abilityItem.abilities.metrics.totals.thickness * zoom
     /// end of Scalers///////
 
-    property real center: !root.vertical ?
-                             (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2 :
-                             (height + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
+    property real center: ((abilityItem.isHorizontal ? width : height) + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
 
     readonly property alias contentItemContainer: _contentItemContainer
     readonly property alias titleTooltipVisualParent: _titleTooltipVisualParent
@@ -114,9 +83,9 @@ Item{
 
     Behavior on zoom {
         id: animatedBehavior
-        enabled: !taskItem.abilities.parabolic.directRenderingEnabled || restoreAnimation.running
+        enabled: !abilityItem.abilities.parabolic.directRenderingEnabled || restoreAnimation.running
         NumberAnimation{
-            duration: 3 * taskItem.animationTime
+            duration: 3 * abilityItem.animationTime
             easing.type: Easing.OutCubic
         }
     }
@@ -127,38 +96,35 @@ Item{
     }
 
     Item{
-        anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
-        anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
-        anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
-        anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
+        anchors.bottom: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+        anchors.top: (plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+        anchors.left: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+        anchors.right: (plasmoid.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
-        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
+        anchors.horizontalCenter: abilityItem.isHorizontal ? parent.horizontalCenter : undefined
+        anchors.verticalCenter: abilityItem.isHorizontal ? undefined : parent.verticalCenter
 
-        anchors.bottomMargin: (root.location === PlasmaCore.Types.BottomEdge) ? taskItem.abilities.metrics.margin.screenEdge : 0
-        anchors.topMargin: (root.location === PlasmaCore.Types.TopEdge) ? taskItem.abilities.metrics.margin.screenEdge : 0
-        anchors.leftMargin: (root.location === PlasmaCore.Types.LeftEdge) ? taskItem.abilities.metrics.margin.screenEdge : 0
-        anchors.rightMargin: (root.location === PlasmaCore.Types.RightEdge) ? taskItem.abilities.metrics.margin.screenEdge : 0
+        anchors.bottomMargin: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
+        anchors.topMargin: (plasmoid.location === PlasmaCore.Types.TopEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
+        anchors.leftMargin: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
+        anchors.rightMargin: (plasmoid.location === PlasmaCore.Types.RightEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
 
-        anchors.horizontalCenterOffset: taskItem.iconOffsetX
-        anchors.verticalCenterOffset: taskItem.iconOffsetY
+        anchors.horizontalCenterOffset: abilityItem.iconOffsetX
+        anchors.verticalCenterOffset: abilityItem.iconOffsetY
 
-        width: parabolicItem.regulatorWidth
-        height: parabolicItem.regulatorHeight
+        width: abilityItem.isHorizontal ? parabolicItem.regulatorLength : parabolicItem.regulatorThickness
+        height: abilityItem.isHorizontal ? parabolicItem.regulatorThickness : parabolicItem.regulatorLength
 
         TitleTooltipParent{
             id: _titleTooltipVisualParent
-            thickness: taskItem.abilities.parabolic.factor.zoom * taskItem.abilities.metrics.totals.thickness
+            thickness: abilityItem.abilities.parabolic.factor.zoom * abilityItem.abilities.metrics.totals.thickness
         }
 
         //fix bug #478, when changing form factor sometimes the tasks are not positioned
         //correctly, in such case we make a fast reinitialization for the sizes
         Connections {
             target: plasmoid
-
             onFormFactorChanged:{
-                taskItem.inAddRemoveAnimation = false;
-
                 parabolicItem.zoom = 1.01;
                 parabolicItem.tempScaleWidth = 1.01;
                 parabolicItem.tempScaleHeight = 1.01;
@@ -175,18 +141,15 @@ Item{
             width: newTempSize
             height: width
 
-            property int zoomedSize: taskItem.abilities.parabolic.factor.zoom * taskItem.abilities.metrics.iconSize
-
-            property real basicScalingWidth : parabolicItem.inTempScaling ? (taskItem.abilities.metrics.iconSize * parabolicItem.scaleWidth) :
-                                                                      taskItem.abilities.metrics.iconSize * parabolicItem.zoom
-            property real basicScalingHeight : parabolicItem.inTempScaling ? (taskItem.abilities.metrics.iconSize * parabolicItem.scaleHeight) :
-                                                                       taskItem.abilities.metrics.iconSize * parabolicItem.zoom
+            property int zoomedSize: abilityItem.abilities.parabolic.factor.zoom * abilityItem.abilities.metrics.iconSize
+            property real basicScalingLength: abilityItem.abilities.metrics.iconSize * (parabolicItem.inTempScaling ? parabolicItem.scaleLength : parabolicItem.zoom)
+            property real basicScalingThickness: abilityItem.abilities.metrics.iconSize * (parabolicItem.inTempScaling ? parabolicItem.scaleThickness : parabolicItem.zoom)
 
             property real newTempSize: {
                 if (parabolicItem.opacity === 1 ) {
-                    return Math.min(basicScalingWidth, basicScalingHeight);
+                    return Math.min(basicScalingLength, basicScalingThickness);
                 } else {
-                    return Math.max(basicScalingWidth, basicScalingHeight);
+                    return Math.max(basicScalingLength, basicScalingThickness);
                 }
             }
 
@@ -216,27 +179,27 @@ Item{
     function sendEndOfNeedBothAxisAnimation(){
         if (isZoomed) {
             isZoomed = false;
-            taskItem.abilities.animations.needBothAxis.removeEvent(bothAxisZoomEvent);
+            abilityItem.abilities.animations.needBothAxis.removeEvent(bothAxisZoomEvent);
         }
     }
 
     onZoomChanged: {
-        if ((zoom === taskItem.abilities.parabolic.factor.zoom) && !taskItem.abilities.parabolic.directRenderingEnabled) {
-            taskItem.abilities.parabolic.setDirectRenderingEnabled(true);
+        if ((zoom === abilityItem.abilities.parabolic.factor.zoom) && !abilityItem.abilities.parabolic.directRenderingEnabled) {
+            abilityItem.abilities.parabolic.setDirectRenderingEnabled(true);
         }
 
         if ((zoom > 1) && !isZoomed) {
             isZoomed = true;
-            taskItem.abilities.animations.needBothAxis.addEvent(bothAxisZoomEvent);
+            abilityItem.abilities.animations.needBothAxis.addEvent(bothAxisZoomEvent);
         } else if ((zoom == 1) && isZoomed) {
             sendEndOfNeedBothAxisAnimation();
         }
     }
 
     Connections {
-        target: taskItem
+        target: abilityItem
         onVisibleChanged: {
-            if (!taskItem.visible) {
+            if (!abilityItem.visible) {
                 //! is mostly used when the user destroys tasks applet from the context menu and both
                 //! axis animations should be released in that case
                 parabolicItem.sendEndOfNeedBothAxisAnimation();

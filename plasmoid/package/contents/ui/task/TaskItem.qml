@@ -814,6 +814,15 @@ AbilityBasicItem {
         onStreamsChanged: taskItem.updateAudioStreams()
     }
 
+    //fix bug #478, when changing form factor sometimes the tasks are not positioned
+    //correctly, in such case we make a fast reinitialization for the sizes
+    Connections {
+        target: plasmoid
+        onFormFactorChanged:{
+            taskItem.inAddRemoveAnimation = false;
+        }
+    }
+
     Connections {
         target: root
         //trying to fix #440, showing the audio icon indicator to irrelevant tasks
