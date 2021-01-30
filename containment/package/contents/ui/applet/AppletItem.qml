@@ -870,7 +870,10 @@ Item {
         height: root.isHorizontal ? appletItem.metrics.mask.thickness.zoomedForItems : appletItem.height
         //! must be enabled even for applets that are hidden in order to forward
         //! parabolic effect messages properly to surrounding plasma applets
-        active: appletItem.parabolic.isEnabled && (!lockZoom || isHidden)
+        active: isParabolicEnabled || isThinTooltipEnabled
+
+        readonly property bool isParabolicEnabled: appletItem.parabolic.isEnabled && !(lockZoom || isHidden)
+        readonly property bool isThinTooltipEnabled: appletItem.thinTooltip.isEnabled &&  !isHidden
 
         sourceComponent: ParabolicArea{}
 
