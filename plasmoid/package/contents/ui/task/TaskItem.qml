@@ -35,74 +35,16 @@ import org.kde.latte.abilities.items 0.1 as AbilityItem
 
 import "animations" as TaskAnimations
 
-Item {
+AbilityBasicItem {
     id: taskItem
-
-    visible: false //true//(isStartup && animations.speedFactor.current !== 0) ? false : true
-
-    anchors.bottom: (parent && root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
-    anchors.top: (parent && root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
-    anchors.left: (parent && root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
-    anchors.right: (parent && root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
-
+    visible: false
     objectName: "TaskItem"
 
-    width: {
-        if (!visible)
-            return 0;
-
-        if (isSeparator) {
-            if (root.vertical) {
-                return taskItem.abilities.metrics.totals.thickness + taskItem.abilities.metrics.margin.screenEdge;
-            } else {
-                if (root.dragSource || !taskItem.abilities.parabolic.isEnabled) {
-                    return LatteCore.Environment.separatorLength+2*taskItem.abilities.metrics.margin.length;
-                }
-            }
-
-            return 0;
-        }
-
-        if (root.vertical) {
-            return taskItem.parabolicItem.width;
-        } else {
-            return hiddenSpacerLeft.width+taskItem.parabolicItem.width+hiddenSpacerRight.width;
-        }
-    }
-
-    /*onWidthChanged: {
-        console.log("T: " + itemIndex + " - " + launcherUrl + " - " + width + " _ "+ hiddenSpacerLeft.width + " _ " + taskItem.parabolicItem.width + " _ " + hiddenSpacerRight.width);
-    }*/
-
-    height: {
-        if (!visible)
-            return 0;
-
-        if (isSeparator) {
-            if (!root.vertical) {
-                return taskItem.abilities.metrics.totals.thickness + taskItem.abilities.metrics.margin.screenEdge;
-            } else {
-                if (root.dragSource || !taskItem.abilities.parabolic.isEnabled) {
-                    return LatteCore.Environment.separatorLength+2*taskItem.abilities.metrics.margin.length;
-                }
-            }
-
-            return 0;
-        }
-
-        if (root.vertical) {
-            return hiddenSpacerLeft.height + taskItem.parabolicItem.height + hiddenSpacerRight.height;
-        } else {
-            return taskItem.parabolicItem.height;
-        }
-    }
+    isSeparatorInRealLength: isSeparator && root.dragSource
 
     property alias hoverEnabled: taskMouseArea.hoverEnabled
     property alias containsMouse: taskMouseArea.containsMouse
     property alias pressed: taskMouseArea.pressed
-
-    // hoverEnabled: false
-    //opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
 
     property bool delayingRemove: ListView.delayRemove
     property bool scalesUpdatedOnce: false
@@ -140,7 +82,6 @@ Item {
                                       || taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrlWithIcon))
                                      && !root.inActivityChange /*update trigger when changing current activity*/
     property bool isMinimized: (IsMinimized === true) ? true : false
-    property bool isSeparator: false
     property bool isStartup: (IsStartup === true) ? true : false
     property bool isWindow: (IsWindow === true) ? true : false
 
@@ -164,10 +105,6 @@ Item {
     property int windowsCount: subWindows.windowsCount
     property int windowsMinimizedCount: subWindows.windowsMinimized
 
-    //! are set by the indicator
-    readonly property int iconOffsetX: indicatorBackLayer.level.requested.iconOffsetX
-    readonly property int iconOffsetY: indicatorBackLayer.level.requested.iconOffsetY
-
     property string activity: tasksModel.activity
 
     readonly property var m: model
@@ -182,16 +119,50 @@ Item {
 
     readonly property alias hoveredTimer: taskMouseArea.hoveredTimer
     readonly property alias mouseArea: taskMouseArea
-    readonly property alias tooltipVisualParent: taskItem.parabolicItem.titleTooltipVisualParent
-    readonly property alias previewsVisualParent: taskItem.parabolicItem.titleTooltipVisualParent
     readonly property alias subWindows: subWindows
-    readonly property alias parabolicItem: _parabolicItem
 
     readonly property alias showWindowAnimation: _showWindowAnimation
     readonly property alias restoreAnimation: _restoreAnimation
 
-    //abilities
-    property Item abilities: null
+    //! Indicator Properties
+    indicator.isTask: true
+    indicator.isLauncher: taskItem.isLauncher || root.disableAllWindowsFunctionality
+    indicator.isStartup: !root.disableAllWindowsFunctionality && taskItem.isStartup
+    indicator.isWindow: !root.disableAllWindowsFunctionality && taskItem.isWindow
+
+    indicator.isActive: !root.disableAllWindowsFunctionality && (taskItem.hasActive
+                                                       || (root.showPreviews
+                                                           && (taskItem.isWindow || taskItem.isGroupParent)
+                                                           && windowsPreviewDlg.activeItem
+                                                           && (windowsPreviewDlg.activeItem === taskItem)) )
+
+    indicator.isGroup: !root.disableAllWindowsFunctionality && taskItem.isGroupParent
+    indicator.isHovered: taskItem.containsMouse
+    indicator.isMinimized: !root.disableAllWindowsFunctionality && taskItem.isMinimized
+    indicator.isPressed: taskItem.pressed
+    indicator.inAttention: !root.disableAllWindowsFunctionality && taskItem.inAttention
+    indicator.inRemoving: taskItem.inRemoveStage
+
+    indicator.isSquare: true
+
+    indicator.hasActive: !root.disableAllWindowsFunctionality && taskItem.hasActive
+    indicator.hasMinimized: !root.disableAllWindowsFunctionality && taskItem.hasMinimized
+    indicator.hasShown: !root.disableAllWindowsFunctionality && taskItem.hasShown
+    indicator.windowsCount: !root.disableAllWindowsFunctionality ? taskItem.windowsCount : 0
+    indicator.windowsMinimizedCount: !root.disableAllWindowsFunctionality ? taskItem.windowsMinimizedCount : 0
+
+    indicator.scaleFactor: taskItem.parabolicItem.zoom
+    indicator.panelOpacity: taskItem.abilities.myView.backgroundOpacity
+    indicator.shadowColor: taskItem.abilities.myView.itemShadow.shadowSolidColor
+
+    indicator.progressVisible: taskIcon.progressVisible /*since 0.9.2*/
+    indicator.progress: taskIcon.progress /*since 0.9.2*/
+
+    indicator.palette: root.enforceLattePalette ? latteBridge.palette.applyTheme : theme
+
+    indicator.iconBackgroundColor: taskIcon.backgroundColor
+    indicator.iconGlowColor: taskIcon.glowColor
+    //! Indicator Properties
 
     onModelLauncherUrlChanged: {
         if (modelLauncherUrl !== ""){
@@ -229,47 +200,6 @@ Item {
         }
     }
 
-    //! separators flags
-    readonly property bool tailItemIsSeparator: {
-        if (isSeparator || itemIndex < 0 ) {
-            return false;
-        }
-
-        var tail = index - 1;
-
-        while(tail>=0 && taskItem.abilities.indexer.hidden.indexOf(tail)>=0) {
-            tail = tail - 1;
-        }
-
-        var hasTailItemSeparator = taskItem.abilities.indexer.separators.indexOf(tail)>=0;
-
-        if (!hasTailItemSeparator && itemIndex === taskItem.abilities.indexer.firstVisibleItemIndex){
-            return taskItem.abilities.indexer.tailAppletIsSeparator;
-        }
-
-        return hasTailItemSeparator;
-    }
-
-    readonly property bool headItemIsSeparator: {
-        if (isSeparator || itemIndex < 0 ) {
-            return false;
-        }
-
-        var head = index + 1;
-
-        while(head>=0 && taskItem.abilities.indexer.hidden.indexOf(head)>=0) {
-            head = head + 1;
-        }
-
-        var hasHeadItemSeparator = taskItem.abilities.indexer.separators.indexOf(head)>=0;
-
-        if (!hasHeadItemSeparator && itemIndex === taskItem.abilities.indexer.lastVisibleItemIndex){
-            return taskItem.abilities.indexer.headAppletIsSeparator;
-        }
-
-        return hasHeadItemSeparator;
-    }
-
     ////// Audio streams //////
     property Item audioStreamOverlay
     property var audioStreams: []
@@ -297,16 +227,9 @@ Item {
     }
 
     //! Content Item
-    property Item contentItem: TaskIcon{
+    contentItem: TaskIcon{
         id:taskIcon
     }
-
-    onContentItemChanged: {
-        if (contentItem) {
-            contentItem.parent = taskItem.parabolicItem.contentItemContainer;
-        }
-    }
-
     //////
 
     property QtObject contextMenu: null
@@ -315,24 +238,6 @@ Item {
     signal groupWindowAdded();
     signal groupWindowRemoved();
     signal launcherAnimationRequested();
-
-    Behavior on opacity {
-        // NumberAnimation { duration: (IsStartup || (IsLauncher) ) ? 0 : 400 }
-        NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
-    }
-
-    Loader{
-        anchors.fill: parent
-        active: taskItem.abilities.debug.graphicsEnabled
-
-        sourceComponent: Rectangle{
-            anchors.fill: parent
-            color: "transparent"
-            border.color:  "blue"
-            border.width: 1
-        }
-    }
-
 
     SubWindows{
         id: subWindows
@@ -371,275 +276,8 @@ Item {
         }
     }
 
-    Loader {
-        id: isSeparatorRectangle
-        active: (opacityN>0)
-
-        width: taskItem.width
-        height: taskItem.height
-        anchors.centerIn: separatorItem
-
-        property real opacityN: isSeparator && root.contextMenu && root.contextMenu.visualParent === taskItem ? 1 : 0
-
-        Behavior on opacityN {
-            NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
-        }
-
-        sourceComponent: Rectangle{
-            anchors.fill: parent
-            opacity: isSeparatorRectangle.opacityN
-            radius: 3
-
-            property color tempColor: theme.highlightColor
-            color: tempColor
-            border.width: 1
-            border.color: theme.highlightColor
-
-            onTempColorChanged: tempColor.a = 0.35;
-
-        }
-    }
-
-    Item{
-        id:separatorItem
-
-        anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
-        anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
-        anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
-        anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
-
-        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-
-        anchors.bottomMargin: (root.location === PlasmaCore.Types.BottomEdge) ? margin : 0
-        anchors.topMargin: (root.location === PlasmaCore.Types.TopEdge) ? margin : 0
-        anchors.leftMargin: (root.location === PlasmaCore.Types.LeftEdge) ? margin : 0
-        anchors.rightMargin: (root.location === PlasmaCore.Types.RightEdge) ? margin : 0
-
-        opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
-        visible: taskItem.isSeparator
-
-        width: root.vertical ? taskItem.abilities.metrics.iconSize : ((root.dragSource || root.inEditMode) ? LatteCore.Environment.separatorLength+taskItem.abilities.metrics.totals.lengthEdges: 1)
-        height: !root.vertical ? taskItem.abilities.metrics.iconSize : ((root.dragSource || root.inEditMode) ? LatteCore.Environment.separatorLength+taskItem.abilities.metrics.totals.lengthEdges: 1)
-
-        property bool forceHiddenState: false
-
-        readonly property int margin: taskItem.abilities.metrics.margin.screenEdge + taskItem.abilities.metrics.margin.thickness
-
-        Behavior on opacity {
-            NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
-        }
-
-        Connections{
-            target: root
-
-            onDisableAllWindowsFunctionalityChanged: {
-                if (!root.inEditMode) {
-                    return;
-                }
-
-                taskItem.updateVisibilityBasedOnLaunchers();
-            }
-
-            onShowWindowsOnlyFromLaunchersChanged: {
-                if (!root.inEditMode) {
-                    return;
-                }
-
-                taskItem.updateVisibilityBasedOnLaunchers();
-            }
-
-            onInActivityChangeChanged: {
-                if ((root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) && !root.inActivityChange) {
-                    taskItem.updateVisibilityBasedOnLaunchers();
-                }
-            }
-        }
-
-        Rectangle {
-            anchors.centerIn: parent
-
-            width: root.vertical ? taskItem.abilities.metrics.iconSize - 4  : 1
-            height: !root.vertical ? taskItem.abilities.metrics.iconSize - 4 : 1
-            color: enforceLattePalette ? latteBridge.palette.textColor : theme.textColor
-        }
-
-
-    }
-
-    ///Shadow in tasks
-    Loader{
-        id: separatorShadow
-        anchors.fill: separatorItem
-        active: taskItem.abilities.myView.itemShadow.isEnabled && isSeparator && graphicsSystem.isAccelerated
-        opacity: separatorItem.forceHiddenState ? 0 : 0.4
-
-        Behavior on opacity {
-            NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
-        }
-
-        sourceComponent: DropShadow{
-            anchors.fill: parent
-            color: taskItem.abilities.myView.itemShadow.shadowColor
-            fast: true
-            samples: 2 * radius
-            source: separatorItem
-            radius: taskItem.abilities.myView.itemShadow.size
-            verticalOffset: 2
-        }
-    }
-
-    /* Rectangle{
-            anchors.fill: parent
-            color: "transparent"
-            border.width: 1
-            border.color: "blue"
-        } */
-
     TaskMouseArea {
         id: taskMouseArea
-    }
-
-    Flow{
-        id: taskFlow
-        width: parent.width
-        height: parent.height
-
-        // a hidden spacer for the first element to add stability
-        // IMPORTANT: hidden spacers must be tested on vertical !!!
-        HiddenSpacer{ id:hiddenSpacerLeft;}
-
-        Item{
-            width: taskItem.parabolicItem.width
-            height: taskItem.parabolicItem.height
-
-            AbilityItem.IndicatorObject {
-                id: taskIndicatorObj
-                animations: taskItem.abilities.animations
-                metrics: taskItem.abilities.metrics
-                host: taskItem.abilities.indicators
-
-                isTask: true
-                isLauncher: taskItem.isLauncher || root.disableAllWindowsFunctionality
-                isStartup: !root.disableAllWindowsFunctionality && taskItem.isStartup
-                isWindow: !root.disableAllWindowsFunctionality && taskItem.isWindow
-
-                isActive: !root.disableAllWindowsFunctionality && (taskItem.hasActive
-                                                                   || (root.showPreviews
-                                                                       && (taskItem.isWindow || taskItem.isGroupParent)
-                                                                       && windowsPreviewDlg.activeItem
-                                                                       && (windowsPreviewDlg.activeItem === taskItem)) )
-
-                isGroup: !root.disableAllWindowsFunctionality && taskItem.isGroupParent
-                isHovered: taskItem.containsMouse
-                isMinimized: !root.disableAllWindowsFunctionality && taskItem.isMinimized
-                isPressed: taskItem.pressed
-                inAttention: !root.disableAllWindowsFunctionality && taskItem.inAttention
-                inRemoving: taskItem.inRemoveStage
-
-                isSquare: true
-
-                hasActive: !root.disableAllWindowsFunctionality && taskItem.hasActive
-                hasMinimized: !root.disableAllWindowsFunctionality && taskItem.hasMinimized
-                hasShown: !root.disableAllWindowsFunctionality && taskItem.hasShown
-                windowsCount: !root.disableAllWindowsFunctionality ? taskItem.windowsCount : 0
-                windowsMinimizedCount: !root.disableAllWindowsFunctionality ? taskItem.windowsMinimizedCount : 0
-
-                scaleFactor: taskItem.parabolicItem.zoom
-                panelOpacity: taskItem.abilities.myView.backgroundOpacity
-                shadowColor: taskItem.abilities.myView.itemShadow.shadowSolidColor
-
-                progressVisible: taskIcon.progressVisible /*since 0.9.2*/
-                progress: taskIcon.progress /*since 0.9.2*/
-
-                palette: root.enforceLattePalette ? latteBridge.palette.applyTheme : theme
-
-                iconBackgroundColor: taskIcon.backgroundColor
-                iconGlowColor: taskIcon.glowColor
-            }
-
-            //! Indicator Back Layer
-            IndicatorLevel{
-                id: indicatorBackLayer
-                level.isBackground: true
-                level.indicator: taskIndicatorObj
-
-                Loader{
-                    anchors.fill: parent
-                    active: taskItem.abilities.debug.graphicsEnabled
-                    sourceComponent: Rectangle{
-                        color: "transparent"
-                        border.width: 1
-                        border.color: "purple"
-                        opacity: 0.4
-                    }
-                }
-            }
-
-            ParabolicItem{id: _parabolicItem}
-
-            //! Indicator Front Layer
-            IndicatorLevel{
-                id: indicatorFrontLayer
-                level.isForeground: true
-                level.indicator: taskIndicatorObj
-            }
-        }
-
-        // a hidden spacer on the right for the last item to add stability
-        HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
-    }// Flow with hidden spacers inside
-
-    Loader {
-        id: parabolicEventsAreaLoader
-        active: taskItem.abilities.parabolic.isEnabled
-        width: root.isHorizontal ? taskItem.width : taskItem.abilities.metrics.mask.thickness.zoomedForItems
-        height: root.isHorizontal ? taskItem.abilities.metrics.mask.thickness.zoomedForItems : taskItem.height
-        z:10000
-        sourceComponent: ParabolicEventsArea{}
-
-        states:[
-            State{
-                name: "top"
-                when: plasmoid.location === PlasmaCore.Types.TopEdge
-
-                AnchorChanges{
-                    target: parabolicEventsAreaLoader
-                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
-                    anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
-                }
-            },
-            State{
-                name: "left"
-                when: plasmoid.location === PlasmaCore.Types.LeftEdge
-
-                AnchorChanges{
-                    target: parabolicEventsAreaLoader
-                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
-                    anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
-                }
-            },
-            State{
-                name: "right"
-                when: plasmoid.location === PlasmaCore.Types.RightEdge
-
-                AnchorChanges{
-                    target: parabolicEventsAreaLoader
-                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
-                    anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
-                }
-            },
-            State{
-                name: "bottom"
-                when: plasmoid.location === PlasmaCore.Types.BottomEdge
-
-                AnchorChanges{
-                    target: parabolicEventsAreaLoader
-                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
-                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
-                }
-            }
-        ]
     }
 
     Timer {
@@ -812,7 +450,7 @@ Item {
     }
 
     function preparePreviewWindow(hideClose){
-        windowsPreviewDlg.visualParent = previewsVisualParent;
+        windowsPreviewDlg.visualParent = tooltipVisualParent;
         toolTipDelegate.parentTask = taskItem;
         toolTipDelegate.rootIndex = tasksModel.makeModelIndex(itemIndex, -1);
 
@@ -1175,6 +813,28 @@ Item {
         //after dragging an existent task with audio
         onDragSourceChanged: taskItem.updateAudioStreams()
         onShowAudioBadgeChanged: taskItem.updateAudioStreams()
+
+        onDisableAllWindowsFunctionalityChanged: {
+            if (!root.inEditMode) {
+                return;
+            }
+
+            taskItem.updateVisibilityBasedOnLaunchers();
+        }
+
+        onShowWindowsOnlyFromLaunchersChanged: {
+            if (!root.inEditMode) {
+                return;
+            }
+
+            taskItem.updateVisibilityBasedOnLaunchers();
+        }
+
+        onInActivityChangeChanged: {
+            if ((root.showWindowsOnlyFromLaunchers || root.disableAllWindowsFunctionality) && !root.inActivityChange) {
+                taskItem.updateVisibilityBasedOnLaunchers();
+            }
+        }
     }
 
     Connections {
@@ -1235,10 +895,6 @@ Item {
     ///// End of Helper functions ////
 
     Component.onCompleted: {
-        if (contentItem) {
-            contentItem.parent = taskItem.parabolicItem.contentItemContainer;
-        }
-
         root.draggingFinished.connect(handlerDraggingFinished);
         root.publishTasksGeometries.connect(slotPublishGeometries);
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);

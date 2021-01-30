@@ -29,8 +29,10 @@ Item{
     height: root.vertical ? nHiddenSize : taskItem.parabolicItem.height
 
     visible: (rightSpacer ? index === taskItem.abilities.indexer.lastVisibleItemIndex : index === taskItem.abilities.indexer.firstVisibleItemIndex)
-             || (separatorSpace > 0) || taskItem.inAttentionAnimation
-             || taskItem.inFastRestoreAnimation || taskItem.inMimicParabolicAnimation
+             || (separatorSpace > 0)
+             || taskItem.inAttentionAnimation
+             || taskItem.inFastRestoreAnimation
+             || taskItem.inMimicParabolicAnimation
 
     property bool neighbourSeparator: rightSpacer ? taskItem.headItemIsSeparator : taskItem.tailItemIsSeparator
     //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
