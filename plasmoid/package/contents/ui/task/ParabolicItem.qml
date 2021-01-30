@@ -44,16 +44,14 @@ Item{
 
     //scales which are used mainly for activating InLauncher
     ////Scalers///////
-    property bool inTempScaling: ((tempScaleLength !== 1.0) || (tempScaleThickness !== 1.0) )
+    property bool inTempScaling: ((zoomLength !== 1.0) || (zoomThickness !== 1.0) )
 
     property real zoom: 1.0
-    property real tempScaleWidth: 1.0
-    property real tempScaleHeight: 1.0
-    property real tempScaleLength: abilityItem.isHorizontal ? tempScaleWidth : tempScaleHeight
-    property real tempScaleThickness: abilityItem.isHorizontal ? tempScaleHeight : tempScaleWidth
+    property real zoomLength: 1.0
+    property real zoomThickness: 1.0
 
-    property real scaleLength: inTempScaling ? tempScaleLength : zoom
-    property real scaleThickness: inTempScaling ? tempScaleThickness : zoom
+    property real scaleLength: inTempScaling ? zoomLength : zoom
+    property real scaleThickness: inTempScaling ? zoomThickness : zoom
 
     property real cleanScalingLength: abilityItem.abilities.metrics.totals.length * zoom
     property real cleanScalingThickness: abilityItem.abilities.metrics.totals.thickness * zoom
@@ -126,12 +124,12 @@ Item{
             target: plasmoid
             onFormFactorChanged:{
                 parabolicItem.zoom = 1.01;
-                parabolicItem.tempScaleWidth = 1.01;
-                parabolicItem.tempScaleHeight = 1.01;
+                parabolicItem.zoomLength = 1.01;
+                parabolicItem.zoomThickness = 1.01;
 
                 parabolicItem.zoom = 1;
-                parabolicItem.tempScaleWidth = 1;
-                parabolicItem.tempScaleHeight = 1;
+                parabolicItem.zoomLength = 1;
+                parabolicItem.zoomThickness = 1;
             }
         }
 

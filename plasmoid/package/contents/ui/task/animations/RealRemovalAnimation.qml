@@ -163,7 +163,7 @@ SequentialAnimation {
 
         PropertyAnimation {
             target: taskItem.parabolicItem
-            property: (icList.orientation === Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
+            property: "zoomThickness"
             to: 0
             duration: taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
             easing.type: Easing.InQuad
@@ -173,7 +173,7 @@ SequentialAnimation {
     //smooth move into place the surrounding tasks
     PropertyAnimation {
         target: taskItem.parabolicItem
-        property: (icList.orientation === Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
+        property: "zoomLength"
         to: 0
         duration: taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
         easing.type: Easing.InQuad

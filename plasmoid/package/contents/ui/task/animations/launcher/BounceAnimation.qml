@@ -35,7 +35,7 @@ SequentialAnimation{
     ParallelAnimation{
         PropertyAnimation {
             target: taskItem.parabolicItem
-            property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
+            property: "zoomThickness"
             to: taskItem.containsMouse ? 1+2*(taskItem.abilities.parabolic.factor.maxZoom-1) : 1 + (1.5 * (taskItem.abilities.parabolic.factor.maxZoom-1))
             duration: launcherAnimation.speed
             easing.type: Easing.OutQuad
@@ -43,7 +43,7 @@ SequentialAnimation{
 
         PropertyAnimation {
             target: taskItem.parabolicItem
-            property: (icList.orientation == Qt.Horizontal) ? "tempScaleWidth" : "tempScaleHeight"
+            property: "zoomLength"
             to: 1
             duration: launcherAnimation.speed
             easing.type: Easing.OutQuad
@@ -52,7 +52,7 @@ SequentialAnimation{
 
     PropertyAnimation {
         target: taskItem.parabolicItem
-        property: (icList.orientation === Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
+        property: "zoomThickness"
         to: 1
         duration: 4*launcherAnimation.speed
         easing.type: Easing.OutBounce
@@ -61,7 +61,7 @@ SequentialAnimation{
     ParallelAnimation{
         PropertyAnimation {
             target: taskItem.parabolicItem
-            property: (icList.orientation === Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
+            property: "zoomLength"
             to: 1
             duration: taskItem.abilities.animations.speedFactor.current*launcherAnimation.speed
             easing.type: Easing.OutBounce

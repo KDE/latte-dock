@@ -90,8 +90,8 @@ Item{
             }
         }
 
-        taskItem.parabolicItem.tempScaleWidth = taskItem.parabolicItem.zoom;
-        taskItem.parabolicItem.tempScaleHeight = taskItem.parabolicItem.zoom;
+        taskItem.parabolicItem.zoomLength = taskItem.parabolicItem.zoom;
+        taskItem.parabolicItem.zoomThickness = taskItem.parabolicItem.zoom;
     }
 
     function startLauncherAnimation(){

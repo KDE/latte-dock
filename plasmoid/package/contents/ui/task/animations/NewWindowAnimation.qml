@@ -53,8 +53,8 @@ Item{
         newWindowAnimationLoader.item.loops = 1;
         newWindowAnimationLoader.item.stop();
 
-        taskItem.parabolicItem.tempScaleWidth = 1;
-        taskItem.parabolicItem.tempScaleHeight = 1;
+        taskItem.parabolicItem.zoomLength = 1.0;
+        taskItem.parabolicItem.zoomThickness = 1.0;
 
         taskItem.setBlockingAnimation(false);
         taskItem.inAttentionAnimation = false;
@@ -83,8 +83,8 @@ Item{
         taskItem.setBlockingAnimation(true);
         taskItem.inNewWindowAnimation = true;
 
-        taskItem.parabolicItem.tempScaleWidth = taskItem.parabolicItem.zoom;
-        taskItem.parabolicItem.tempScaleHeight = taskItem.parabolicItem.zoom;
+        taskItem.parabolicItem.zoomLength = taskItem.parabolicItem.zoom;
+        taskItem.parabolicItem.zoomThickness = taskItem.parabolicItem.zoom;
 
         if(!isDemandingAttention)
             newWindowAnimationLoader.item.loops = 1;

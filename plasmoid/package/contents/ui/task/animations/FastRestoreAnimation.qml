@@ -46,7 +46,7 @@ SequentialAnimation{
 
         PropertyAnimation {
             target: taskItem.parabolicItem
-            property: "tempScaleWidth"
+            property: "zoomLength"
             to: 1
             duration: fastRestoreAnimation.speed
             easing.type: Easing.InCubic
@@ -54,7 +54,7 @@ SequentialAnimation{
 
         PropertyAnimation {
             target: taskItem.parabolicItem
-            property: "tempScaleHeight"
+            property: "zoomThickness"
             to: 1
             duration: fastRestoreAnimation.speed
             easing.type: Easing.InCubic
