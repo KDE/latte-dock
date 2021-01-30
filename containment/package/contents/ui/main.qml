@@ -880,12 +880,6 @@ Item {
         return false;
     }
 
-    function slotPreviewsShown(){
-        if (latteView) {
-            latteView.extendedInterface.deactivateApplets();
-        }
-    }
-
     function moveAppletsBasedOnJustifyAlignment() {
         layouter.appletsInParentChange = true;
 
