@@ -98,13 +98,7 @@ Item{
                              (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2 :
                              (height + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
 
-    property color backgroundColor: taskIconItem.backgroundColor
-    property color glowColor: taskIconItem.glowColor
-
-    property bool progressVisible: taskIconItem.progressVisible
-    property real progress: taskIconItem.progress
-
-    property Item visualIconItem: taskIconItem.visualIconItem
+    property Item contentItemContainer: taskIconItem.contentItemContainer
     property Item titleTooltipVisualParent: taskIconItem.titleTooltipVisualParent
     property Item previewsTooltipVisualParent: taskIconItem.previewsTootipVisualParent
 

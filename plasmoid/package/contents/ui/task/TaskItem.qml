@@ -104,7 +104,6 @@ Item {
     // hoverEnabled: false
     //opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
 
-    property bool buffersAreReady: false
     property bool delayingRemove: ListView.delayRemove
     property bool scalesUpdatedOnce: false
     //states that exist in windows in a Group of windows
@@ -297,6 +296,17 @@ Item {
         }
 
         return maxVolume;
+    }
+
+    //! Content Item
+    property Item contentItem: TaskIcon{
+        id:taskIcon
+    }
+
+    onContentItemChanged: {
+        if (contentItem) {
+            contentItem.parent = wrapper.contentItemContainer;
+        }
     }
 
     //////
@@ -540,13 +550,13 @@ Item {
                 panelOpacity: taskItem.abilities.myView.backgroundOpacity
                 shadowColor: taskItem.abilities.myView.itemShadow.shadowSolidColor
 
-                progressVisible: wrapper.progressVisible /*since 0.9.2*/
-                progress: wrapper.progress /*since 0.9.2*/
+                progressVisible: taskIcon.progressVisible /*since 0.9.2*/
+                progress: taskIcon.progress /*since 0.9.2*/
 
                 palette: root.enforceLattePalette ? latteBridge.palette.applyTheme : theme
 
-                iconBackgroundColor: taskItem.wrapper.backgroundColor
-                iconGlowColor: taskItem.wrapper.glowColor
+                iconBackgroundColor: taskIcon.backgroundColor
+                iconGlowColor: taskIcon.glowColor
             }
 
             //! Indicator Back Layer
@@ -977,7 +987,7 @@ Item {
         //! this way we make sure that layouts that are in different activities that the current layout
         //! don't publish their geometries
         if ( canPublishGeometries && (!taskItem.abilities.myView.isReady || (taskItem.abilities.myView.isReady && taskItem.abilities.myView.inCurrentLayout()))) {
-            var globalChoords = backend.globalRect(wrapper.visualIconItem);
+            var globalChoords = backend.globalRect(wrapper.contentItemContainer);
             var limits = backend.globalRect(scrollableList);
 
             //! Limit the published geometries boundaries at scrolling area boundaries
@@ -1226,6 +1236,10 @@ Item {
     ///// End of Helper functions ////
 
     Component.onCompleted: {
+        if (contentItem) {
+            contentItem.parent = wrapper.contentItemContainer;
+        }
+
         root.draggingFinished.connect(handlerDraggingFinished);
         root.publishTasksGeometries.connect(slotPublishGeometries);
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);

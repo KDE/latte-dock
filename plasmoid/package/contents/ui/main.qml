@@ -80,7 +80,6 @@ Item {
     property int clearHeight
 
     property int newDroppedPosition: -1
-    property int noInitCreatedBuffers: 0
     property int noTasksInAnimation: 0
     property int themePanelSize: plasmoid.configuration.panelSize
 

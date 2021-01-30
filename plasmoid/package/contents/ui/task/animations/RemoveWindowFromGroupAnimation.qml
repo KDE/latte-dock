@@ -41,7 +41,7 @@ Item{
     }
 
     function removeTask(){
-        if(!taskIcon.toBeDestroyed && taskItem.abilities.animations.windowRemovedFromGroupEnabled){
+        if(!taskIconContainer.toBeDestroyed && taskItem.abilities.animations.windowRemovedFromGroupEnabled){
             removingAnimation.init();
         }
     }
@@ -79,11 +79,11 @@ Item{
                 anchors.top: root.location === PlasmaCore.Types.BottomEdge ? parent.top : undefined;
                 anchors.bottom: root.location === PlasmaCore.Types.TopEdge ? parent.bottom : undefined;
 
-                width: iconImageBuffer.width
+                width: taskIconItem.width
                 height: width
                 visible: taskItem.abilities.myView.itemShadow.isEnabled ? false : true
 
-                source: iconImageBuffer.lastValidSourceName
+                source: taskIconItem.lastValidSourceName
             }
 
             Loader{
@@ -97,7 +97,7 @@ Item{
                     fast: true
                     samples: 2 * radius
                     source: tempRemoveIcon
-                    radius: taskIcon.shadowSize
+                    radius: taskItem.abilities.myView.itemShadow.size
                     verticalOffset: 2
                 }
             }
