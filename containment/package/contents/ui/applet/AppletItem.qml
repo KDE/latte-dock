@@ -50,8 +50,9 @@ Item {
     signal mouseReleased(int x, int y, int button);
 
     property bool animationsEnabled: true
+    property bool indexerIsSupported: communicator.indexerIsSupported
     property bool parabolicEffectIsSupported: true
-    property bool canShowAppletNumberBadge: !isSeparator && !isHidden && !isLattePlasmoid
+    property bool canShowAppletNumberBadge: !indexerIsSupported && !isSeparator && !isHidden
                                             && !isSpacer && !isInternalViewSplitter
 
     readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
@@ -97,7 +98,6 @@ Item {
     property bool isHidden: !root.inConfigureAppletsMode
                             && ((applet && applet.status === PlasmaCore.Types.HiddenStatus ) || isInternalViewSplitter)
     property bool isInternalViewSplitter: (internalSplitterId > 0)
-    property bool isLattePlasmoid: latteApplet !== null
     property bool isZoomed: false
     property bool isSeparator: applet && (applet.pluginName === "audoban.applet.separator"
                                           || applet.pluginName === "org.kde.latte.separator")
@@ -167,7 +167,7 @@ Item {
                                           || (index === layouter.endLayout.lastVisibleIndex))
 
     readonly property bool acceptMouseEvents: applet
-                                              && !isLattePlasmoid
+                                              && !indexerIsSupported
                                               && !originalAppletBehavior
                                               && parabolicEffectIsSupported
                                               && !appletItem.isSeparator
@@ -292,8 +292,6 @@ Item {
                                                    wrapper.height
 
     property Item applet: null
-    property Item latteApplet: applet && (applet.pluginName === root.plasmoidName) ?
-                                   (applet.children[0] ? applet.children[0] : null) : null
     property Item latteStyleApplet: applet && ((applet.pluginName === "org.kde.latte.spacer") || (applet.pluginName === "org.kde.latte.separator")) ?
                                         (applet.children[0] ? applet.children[0] : null) : null
 
@@ -505,7 +503,7 @@ Item {
                 return;
             }
 
-            if (appletItem.isLattePlasmoid) {
+            if (appletItem.communicator.indexerIsSupported) {
                 appletItem.parabolicEffectIsSupported = true;
                 return;
             }
@@ -560,14 +558,6 @@ Item {
         updateParabolicEffectIsSupported();
     }
 
-    onLatteAppletChanged: {
-        if(appletItem.latteApplet){
-            root.latteApplet = appletItem.latteApplet;
-
-            appletItem.latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
-        }
-    }
-
     onIsAutoFillAppletChanged: updateParabolicEffectIsSupported();
 
     Component.onCompleted: {
@@ -585,10 +575,6 @@ Item {
         root.destroyInternalViewSplitters.disconnect(slotDestroyInternalViewSplitters);
 
         parabolic.sglClearZoom.disconnect(sltClearZoom);
-
-        if (appletItem.latteApplet) {
-            appletItem.latteApplet.signalPreviewsShown.disconnect(slotPreviewsShown);
-        }
     }
 
     //! Bindings
@@ -633,7 +619,7 @@ Item {
     Connections {
         id: viewSignalsConnector
         target: root.latteView ? root.latteView : null
-        enabled: !appletItem.isLattePlasmoid && !appletItem.isSeparator && !appletItem.isSpacer && !appletItem.isHidden
+        enabled: !appletItem.indexerIsSupported && !appletItem.isSeparator && !appletItem.isSpacer && !appletItem.isHidden
 
         property bool pressed: false
         property bool blockWheel: false
@@ -677,7 +663,7 @@ Item {
 
     Connections {
         target: root.latteView ? root.latteView.extendedInterface : null
-        enabled: !appletItem.isLattePlasmoid && !appletItem.isSeparator && !appletItem.isSpacer && !appletItem.isHidden
+        enabled: !appletItem.indexerIsSupported && !appletItem.isSeparator && !appletItem.isSpacer && !appletItem.isHidden
 
         onExpandedAppletStateChanged: {
             if (latteView.extendedInterface.hasExpandedApplet && appletItem.applet) {
@@ -687,8 +673,6 @@ Item {
                 appletItem.isExpanded = false;
             }
         }
-
-
     }
 
     ///END connections

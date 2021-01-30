@@ -324,7 +324,6 @@ Item {
 
     property Item dragOverlay: _dragOverlay
     property Item toolBox
-    property Item latteApplet
 
     readonly property alias animations: _animations
     readonly property alias autosize: _autosize

@@ -311,7 +311,7 @@ Item{
     Binding {
         target: wrapper
         property: "disableLengthScale"
-        when: latteView && !(appletItem.isAutoFillApplet || appletItem.isLattePlasmoid)
+        when: latteView && !(appletItem.isAutoFillApplet || appletItem.indexerIsSupported)
         value: {
             var blockParabolicEffectInLength = false;
 
