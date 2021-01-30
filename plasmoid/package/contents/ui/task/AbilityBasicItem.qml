@@ -20,9 +20,9 @@
 import QtQuick 2.7
 import QtGraphicalEffects 1.0
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 
@@ -85,15 +85,20 @@ Item{
 
     property bool isHiddenSpacerAnimated: true
     property bool isHiddenSpacerVisible: false
+    property bool isParabolicEventBlocked: false
+    property bool isHidden: false
     property bool isSeparator: false
     property bool isSeparatorInRealLength: false
 
     property bool containsMouse: false
 
+    property string thinTooltipText: ""
 
     property Item abilities: null
     property Item contentItem: null
 
+    readonly property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
+    readonly property bool isVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     readonly property bool parabolicAreaContainsMouse: parabolicEventsAreaLoader.active && parabolicEventsAreaLoader.item.containsMouse
 
     readonly property int animationTime: (abilityItem.abilities.animations.active ? abilityItem.abilities.animations.speedFactor.current : 2) * (1.2 * abilityItem.abilities.animations.duration.small)
@@ -289,11 +294,14 @@ Item{
 
     Loader {
         id: parabolicEventsAreaLoader
-        active: abilityItem.abilities.parabolic.isEnabled
+        active: isParabolicEnabled || isThinTooltipEnabled
         width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? abilityItem.width : abilityItem.abilities.metrics.mask.thickness.zoomedForItems
         height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? abilityItem.abilities.metrics.mask.thickness.zoomedForItems : abilityItem.height
-        z:10000
+        z:10000       
         sourceComponent: ParabolicEventsArea{}
+
+        readonly property bool isParabolicEnabled: abilityItem.abilities.parabolic.isEnabled
+        readonly property bool isThinTooltipEnabled: abilityItem.abilities.thinTooltip.isEnabled && abilityItem.thinTooltipText !== ""
 
         states:[
             State{

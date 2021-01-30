@@ -28,23 +28,28 @@ Item {
 
     property int lastMouseX: 0
     property int lastMouseY: 0
+    property int lastParabolicPos: 0
 
-    readonly property bool containsMouse: (taskItem.abilities.parabolic.currentParabolicItem === _parabolicArea) || parabolicMouseArea.containsMouse
+    readonly property bool containsMouse: (abilityItem.abilities.parabolic.currentParabolicItem === _parabolicArea) || parabolicMouseArea.containsMouse
 
-    readonly property real center: taskItem.parabolicItem.center
+    readonly property bool isParabolicEnabled: parabolicEventsAreaLoader.isParabolicEnabled
+    readonly property bool isThinTooltipEnabled: parabolicEventsAreaLoader.isThinTooltipEnabled
+    readonly property real center: abilityItem.parabolicItem.center
 
     MouseArea {
         id: parabolicMouseArea
         anchors.fill: parent
         enabled: visible
         hoverEnabled: true
-        visible: taskItem.abilities.parabolic.currentParabolicItem !== _parabolicArea
+        visible: abilityItem.abilities.parabolic.currentParabolicItem !== _parabolicArea
 
         onEntered: {
-            taskItem.abilities.parabolic.setCurrentParabolicItem(_parabolicArea);
+            abilityItem.abilities.parabolic.setCurrentParabolicItem(_parabolicArea);
 
-            var vIndex = taskItem.abilities.shortcuts.shortcutIndex(taskItem.itemIndex);
-            taskItem.abilities.parabolic.setCurrentParabolicItemIndex(vIndex);
+            if (isParabolicEnabled) {
+                var vIndex = abilityItem.abilities.shortcuts.shortcutIndex(abilityItem.itemIndex);
+                abilityItem.abilities.parabolic.setCurrentParabolicItemIndex(vIndex);
+            }
 
             // mouseX/Y can not be trusted at this point
             //_parabolicArea.parabolicEntered(mouseX, mouseY);
@@ -52,14 +57,14 @@ Item {
     }
 
     Connections{
-        target: taskItem.abilities.myView
+        target: abilityItem.abilities.myView
 
         //! During dock sliding-in because the parabolic effect isnt trigerred
         //! immediately but we wait first the dock to go to its final normal
         //! place we might miss the activation of the parabolic effect.
         //! By catching that signal we are trying to solve this.
         onIsShownFullyChanged: {
-            if (taskItem.abilities.myView.isShownFully && _parabolicArea.containsMouse) {
+            if (abilityItem.abilities.myView.isShownFully && _parabolicArea.containsMouse) {
                 _parabolicArea.parabolicMove(lastMouseX, lastMouseY);
             }
         }
@@ -71,115 +76,115 @@ Item {
 
         restoreAnimation.stop();
 
-        //! mouseX/Y can NOW be trusted because ParabolicEnterd event is triggered from View::Parabolic class
-        var current = root.isHorizontal ? mouseX : mouseY;
-        icList.currentSpot = current;
-        calculateParabolicScales(current);
+        if (isParabolicEnabled) {
+            //! mouseX/Y can NOW be trusted because ParabolicEnterd event is triggered from View::Parabolic class
+            var current = abilityItem.isHorizontal ? mouseX : mouseY;
+            lastParabolicPos = current;
+            calculateParabolicScales(current);
+        }
     }
 
     onParabolicMove: {
         lastMouseX = mouseX;
         lastMouseY = mouseY;
 
-        var mousePos = root.isHorizontal ? mouseX : mouseY;
+        if (isParabolicEnabled) {
 
-        if (mousePos<0 || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
-            return;
+            var mousePos = abilityItem.isHorizontal ? mouseX : mouseY;
 
-        if (taskItem.abilities.myView.isReady && !taskItem.abilities.myView.isShownFully) {
-            return;
-        }
+            if (mousePos<0 || abilityItem.isParabolicEventBlocked) {
+                return;
+            }
 
-        if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && taskItem.hoverEnabled){
-            if( ((taskItem.parabolicItem.zoom === 1 || taskItem.parabolicItem.zoom === taskItem.abilities.parabolic.factor.zoom) && !taskItem.abilities.parabolic.directRenderingEnabled)
-                    || taskItem.abilities.parabolic.directRenderingEnabled || !taskItem.scalesUpdatedOnce) {
-                if(root.dragSource == null){
-                    var step = Math.abs(icList.currentSpot-mousePos);
-                    if (step >= taskItem.abilities.animations.hoverPixelSensitivity){
-                        icList.currentSpot = mousePos;
+            if (abilityItem.abilities.myView.isReady && !abilityItem.abilities.myView.isShownFully) {
+                return;
+            }
 
-                        calculateParabolicScales(mousePos);
-                    }
+            if( ((abilityItem.parabolicItem.zoom === 1 || abilityItem.parabolicItem.zoom === abilityItem.abilities.parabolic.factor.zoom)
+                 && !abilityItem.abilities.parabolic.directRenderingEnabled)
+                    || abilityItem.abilities.parabolic.directRenderingEnabled) {
+
+                var step = Math.abs(lastParabolicPos-mousePos);
+                if (step >= abilityItem.abilities.animations.hoverPixelSensitivity){
+                    lastParabolicPos = mousePos;
+                    calculateParabolicScales(mousePos);
                 }
             }
         }
     }
 
     onParabolicExited: {
-        taskItem.scalesUpdatedOnce = false;
+        lastParabolicPos = 0;
     }
 
     function calculateParabolicScales( currentMousePosition ){
-        if (taskItem.abilities.parabolic.factor.zoom===1 || taskItem.abilities.parabolic.restoreZoomIsBlocked) {
+        if (abilityItem.abilities.parabolic.factor.zoom===1 || abilityItem.abilities.parabolic.restoreZoomIsBlocked || isParabolicEventBlocked) {
             return;
         }
 
-        if (root.dragSource === null) {
-            //use the new parabolic ability in order to handle all parabolic effect messages
-            var scales = taskItem.abilities.parabolic.applyParabolicEffect(index, currentMousePosition, center);
+        //use the new parabolic ability in order to handle all parabolic effect messages
+        var scales = abilityItem.abilities.parabolic.applyParabolicEffect(index, currentMousePosition, center);
 
-            //Left hiddenSpacer for first task
-            if(((index === taskItem.abilities.indexer.firstVisibleItemIndex)&&(root.tasksCount>0)) && taskItem.abilities.containment.isFirstAppletInContainment
-                    && !inMimicParabolicAnimation && !inFastRestoreAnimation && !inAttentionAnimation){
-                hiddenSpacerLeft.nScale = scales.leftScale - 1;
-            }
-
-            //Right hiddenSpacer for last task
-            if(((index === taskItem.abilities.indexer.lastVisibleItemIndex )&&(root.tasksCount>0)) && taskItem.abilities.containment.isLastAppletInContainment
-                    && !inMimicParabolicAnimation && !inFastRestoreAnimation && !inAttentionAnimation){
-                hiddenSpacerRight.nScale =  scales.rightScale - 1;
-            }
-
-            if (!taskItem.inAttentionAnimation) {
-                taskItem.parabolicItem.zoom = taskItem.abilities.parabolic.factor.zoom;
-            } else {
-                var subSpacerScale = (taskItem.abilities.parabolic.factor.zoom-1)/2;
-
-                hiddenSpacerLeft.nScale = subSpacerScale;
-                hiddenSpacerRight.nScale = subSpacerScale;
-            }
-
-            taskItem.scalesUpdatedOnce = false;
+        //Left hiddenSpacer for first task
+        if((index === abilityItem.abilities.indexer.firstVisibleItemIndex) && abilityItem.abilities.containment.isFirstAppletInContainment) {
+            hiddenSpacerLeft.nScale = scales.leftScale - 1;
         }
-    } //nScale
+
+        //Right hiddenSpacer for last task
+        if((index === abilityItem.abilities.indexer.lastVisibleItemIndex) && abilityItem.abilities.containment.isLastAppletInContainment) {
+            hiddenSpacerRight.nScale =  scales.rightScale - 1;
+        }
+
+        abilityItem.parabolicItem.zoom = abilityItem.abilities.parabolic.factor.zoom;
+
+        /*if (!taskItem.inAttentionAnimation) {
+
+        } else {
+            var subSpacerScale = (taskItem.abilities.parabolic.factor.zoom-1)/2;
+
+            hiddenSpacerLeft.nScale = subSpacerScale;
+            hiddenSpacerRight.nScale = subSpacerScale;
+        }*/
+    } //zoom
 
     function updateScale(nIndex, nScale, step){
-        if (!_parabolicArea.containsMouse && (index === nIndex)
-                && (taskItem.hoverEnabled || inMimicParabolicAnimation)&&(tasksExtendedManager.waitingLaunchersLength()===0)){
-            if (taskItem.inAttentionAnimation) {
+        if (!_parabolicArea.containsMouse && (index === nIndex) && !isParabolicEventBlocked){
+            /*if (taskItem.inAttentionAnimation) {
                 var subSpacerScale = (nScale-1)/2;
 
                 hiddenSpacerLeft.nScale = subSpacerScale;
                 hiddenSpacerRight.nScale = subSpacerScale;
             } else if (!inBlockingAnimation || taskItem.inMimicParabolicAnimation) {
-                var newScale = 1;
 
-                if(nScale >= 0) {
-                    newScale = nScale + step;
-                } else {
-                    newScale = taskItem.parabolicItem.zoom + step;
-                }
+            }*/
 
-                if (inMimicParabolicAnimation && mimicParabolicScale === -1) {
-                    mimicParabolicScale = newScale;
-                }
+            var newScale = 1;
 
-                taskItem.parabolicItem.zoom = newScale;
+            if(nScale >= 0) {
+                newScale = nScale + step;
+            } else {
+                newScale = abilityItem.parabolicItem.zoom + step;
             }
+
+            /*if (inMimicParabolicAnimation && mimicParabolicScale === -1) {
+               mimicParabolicScale = newScale;
+           }*/
+
+            abilityItem.parabolicItem.zoom = newScale;
         }
     }
 
     function sltUpdateLowerItemScale(delegateIndex, newScale, step) {
         if (delegateIndex === index) {
-            if (!taskItem.isSeparator && !taskItem.isHidden) {
+            if (!abilityItem.isSeparator && !abilityItem.isHidden) {
                 //! when accepted
                 updateScale(delegateIndex, newScale, step);
 
                 if (newScale > 1) { // clear lower items
-                    taskItem.abilities.parabolic.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
+                    abilityItem.abilities.parabolic.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
                 }
             } else {
-                taskItem.abilities.parabolic.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
+                abilityItem.abilities.parabolic.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
             }
         } else if ((newScale === 1) && (index < delegateIndex)) {
             updateScale(index, 1, 0);
@@ -188,15 +193,15 @@ Item {
 
     function sltUpdateHigherItemScale(delegateIndex, newScale, step) {
         if (delegateIndex === index) {
-            if (!taskItem.isSeparator && !taskItem.isHidden) {
+            if (!abilityItem.isSeparator && !abilityItem.isHidden) {
                 //! when accepted
                 updateScale(delegateIndex, newScale, step);
 
                 if (newScale > 1) { // clear lower items
-                    taskItem.abilities.parabolic.sglUpdateHigherItemScale(delegateIndex+1, 1, 0); // clear higher items
+                    abilityItem.abilities.parabolic.sglUpdateHigherItemScale(delegateIndex+1, 1, 0); // clear higher items
                 }
             } else {
-                taskItem.abilities.parabolic.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
+                abilityItem.abilities.parabolic.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
             }
         } else if ((newScale === 1) && (index > delegateIndex)) {
             updateScale(index, 1, 0);
@@ -204,12 +209,12 @@ Item {
     }
 
     Component.onCompleted: {
-        taskItem.abilities.parabolic.sglUpdateLowerItemScale.connect(sltUpdateLowerItemScale);
-        taskItem.abilities.parabolic.sglUpdateHigherItemScale.connect(sltUpdateHigherItemScale);
+        abilityItem.abilities.parabolic.sglUpdateLowerItemScale.connect(sltUpdateLowerItemScale);
+        abilityItem.abilities.parabolic.sglUpdateHigherItemScale.connect(sltUpdateHigherItemScale);
     }
 
     Component.onDestruction: {
-        taskItem.abilities.parabolic.sglUpdateLowerItemScale.disconnect(sltUpdateLowerItemScale);
-        taskItem.abilities.parabolic.sglUpdateHigherItemScale.disconnect(sltUpdateHigherItemScale);
+        abilityItem.abilities.parabolic.sglUpdateLowerItemScale.disconnect(sltUpdateLowerItemScale);
+        abilityItem.abilities.parabolic.sglUpdateHigherItemScale.disconnect(sltUpdateHigherItemScale);
     }
 }

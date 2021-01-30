@@ -40,6 +40,7 @@ AbilityBasicItem {
     visible: false
     objectName: "TaskItem"
 
+    isHidden: !visible || isForcedHidden
     isHiddenSpacerVisible: taskItem.inAttentionAnimation
                            || taskItem.inFastRestoreAnimation
                            || taskItem.inMimicParabolicAnimation
@@ -49,6 +50,12 @@ AbilityBasicItem {
                             || root.inActivityChange
                             || taskItem.inRemoveStage
                             || (taskItem.containsMouse && inAttentionAnimation && taskItem.parabolicItem.zoom!==taskItem.abilities.parabolic.factor.zoom)
+    isParabolicEventBlocked: root.dragSource
+                             || !hoverEnabled
+                             || inAnimation
+                             || !hoverEnabled
+                             || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation))
+
     isSeparatorInRealLength: isSeparator && root.dragSource
 
     containsMouse: taskMouseArea.containsMouse || parabolicAreaContainsMouse
@@ -57,7 +64,6 @@ AbilityBasicItem {
     property alias pressed: taskMouseArea.pressed
 
     property bool delayingRemove: ListView.delayRemove
-    property bool scalesUpdatedOnce: false
     //states that exist in windows in a Group of windows
     property bool hasActive: isActive
     property bool hasMinimized: (IsGroupParent === true) ? subWindows.hasMinimized : isMinimized
@@ -85,7 +91,6 @@ AbilityBasicItem {
     property bool isDragged: false
     property bool isGroupable: (IsGroupable === true) ? true : false
     property bool isGroupParent: (IsGroupParent === true) ? true : false
-    readonly property bool isHidden: !visible || isForcedHidden
     property bool isForcedHidden: false
     property bool isLauncher: (IsLauncher === true) ? true : false
     property bool hasShownLauncher:  (taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrl)
