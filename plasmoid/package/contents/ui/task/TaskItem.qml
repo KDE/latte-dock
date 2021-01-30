@@ -311,9 +311,10 @@ Item {
 
     property QtObject contextMenu: null
 
+    signal checkWindowsStates();
     signal groupWindowAdded();
     signal groupWindowRemoved();
-    signal checkWindowsStates();
+    signal launcherAnimationRequested();
 
     Behavior on opacity {
         // NumberAnimation { duration: (IsStartup || (IsLauncher) ) ? 0 : 400 }
@@ -756,7 +757,7 @@ Item {
     function activateTask() {
         if( taskItem.isLauncher || root.disableAllWindowsFunctionality){
             if (LatteCore.WindowSystem.compositingActive) {
-                taskItem.parabolicItem.runLauncherAnimation();
+                taskItem.launcherAnimationRequested();
             } else {
                 launcherAction();
             }

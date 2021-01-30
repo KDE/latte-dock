@@ -264,7 +264,7 @@ MouseArea {
                 scrollableList.decreasePos();
             } else {
                 if (isLauncher || root.disableAllWindowsFunctionality) {
-                    taskItem.parabolicItem.runLauncherAnimation();
+                    taskItem.launcherAnimationRequested();
                 } else if (isGroupParent) {
                     subWindows.activateNextTask();
                 } else {

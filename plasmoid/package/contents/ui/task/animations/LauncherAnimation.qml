@@ -107,12 +107,12 @@ Item{
 
 
     Component.onCompleted: {
-        taskItem.parabolicItem.runLauncherAnimation.connect(startLauncherAnimation);
+        taskItem.launcherAnimationRequested.connect(startLauncherAnimation);
     }
 
     Component.onDestruction: {
         clearAnimationsSignals();
-        taskItem.parabolicItem.runLauncherAnimation.disconnect(startLauncherAnimation);
+        taskItem.launcherAnimationRequested.disconnect(startLauncherAnimation);
     }
 }
 /////////////////// end of launcher animation

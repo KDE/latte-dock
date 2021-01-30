@@ -102,8 +102,6 @@ Item{
     readonly property alias contentItemContainer: _contentItemContainer
     readonly property alias titleTooltipVisualParent: _titleTooltipVisualParent
 
-    signal runLauncherAnimation();
-
     readonly property string bothAxisZoomEvent: parabolicItem + "_zoom"
      /* Rectangle{
             anchors.fill: parent
