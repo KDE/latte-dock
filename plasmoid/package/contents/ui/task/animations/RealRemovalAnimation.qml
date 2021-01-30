@@ -115,9 +115,9 @@ SequentialAnimation {
 
             taskItem.abilities.animations.needLength.addEvent(needLengthEvent);
 
-            if (taskItem.parabolicItem.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation
+            if (taskItem.parabolicItem.zoom > 1 && !taskRealRemovalAnimation.enabledAnimation
                     && !taskItem.inBouncingAnimation && LatteCore.WindowSystem.compositingActive) {
-                tasksExtendedManager.setFrozenTask(taskItem.launcherUrl, taskItem.parabolicItem.mScale);
+                tasksExtendedManager.setFrozenTask(taskItem.launcherUrl, taskItem.parabolicItem.zoom);
             }
         }
     }
@@ -140,7 +140,7 @@ SequentialAnimation {
 
     PropertyAnimation {
         target: taskItem.parabolicItem
-        property: "mScale"
+        property: "zoom"
         to: 1
         duration: taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
         easing.type: Easing.InQuad

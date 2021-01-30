@@ -564,7 +564,7 @@ Item {
 
                 PropertyAnimation {
                     target: taskItem.parabolicItem
-                    property: "mScale"
+                    property: "zoom"
                     to: 1
                     duration: taskItem.abilities.parabolic.factor.zoom === 1 ? 0 : (isDraggedTransition.speed*1.2)
                     easing.type: Easing.OutQuad
@@ -649,14 +649,6 @@ Item {
                         easing.type: Easing.OutQuad
                     }
                 }
-
-                /*  PropertyAnimation {
-                    target: taskItem.parabolicItem
-                    property: "mScale"
-                    to: 1;
-                    duration: isDraggedTransition.speed
-                    easing.type: Easing.OutQuad
-                }*/
 
                 ScriptAction{
                     script: {

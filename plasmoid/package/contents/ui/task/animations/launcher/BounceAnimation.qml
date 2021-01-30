@@ -69,7 +69,7 @@ SequentialAnimation{
 
         PropertyAnimation {
             target: taskItem.parabolicItem
-            property: "mScale"
+            property: "zoom"
             to: 1
             duration: taskItem.abilities.animations.speedFactor.current*launcherAnimation.speed
             easing.type: Easing.OutQuad

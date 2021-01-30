@@ -28,7 +28,7 @@ SequentialAnimation{
 
     PropertyAnimation {
         target: taskItem.parabolicItem
-        property: "mScale"
+        property: "zoom"
         to: 1
         duration: 3 * taskItem.animationTime
         easing.type: Easing.InCubic

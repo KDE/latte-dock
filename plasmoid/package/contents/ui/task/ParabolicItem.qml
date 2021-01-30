@@ -75,15 +75,15 @@ Item{
     ////Scalers///////
     property bool inTempScaling: ((tempScaleWidth !== 1) || (tempScaleHeight !== 1) )
 
-    property real mScale: 1
-    property real tempScaleWidth: 1
-    property real tempScaleHeight: 1
+    property real zoom: 1.0
+    property real tempScaleWidth: 1.0
+    property real tempScaleHeight: 1.0
 
-    property real scaleWidth: (inTempScaling == true) ? tempScaleWidth : mScale
-    property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : mScale
+    property real scaleWidth: (inTempScaling == true) ? tempScaleWidth : zoom
+    property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : zoom
 
-    property real cleanScalingWidth: (taskItem.abilities.metrics.iconSize + root.widthMargins) * mScale
-    property real cleanScalingHeight: (taskItem.abilities.metrics.iconSize + root.heightMargins) * mScale
+    property real cleanScalingWidth: (taskItem.abilities.metrics.iconSize + root.widthMargins) * zoom
+    property real cleanScalingHeight: (taskItem.abilities.metrics.iconSize + root.heightMargins) * zoom
 
     property real basicScalingWidth : (inTempScaling == true) ? ((taskItem.abilities.metrics.iconSize + root.widthMargins) * scaleWidth) : cleanScalingWidth
     property real basicScalingHeight : (inTempScaling == true) ? ((taskItem.abilities.metrics.iconSize + root.heightMargins) * scaleHeight) : cleanScalingHeight
@@ -91,8 +91,8 @@ Item{
     property real regulatorWidth: taskItem.isSeparator ? width : basicScalingWidth;
     property real regulatorHeight: taskItem.isSeparator ? height : basicScalingHeight;
 
-    property real visualScaledWidth: (taskItem.abilities.metrics.iconSize + root.internalWidthMargins) * mScale
-    property real visualScaledHeight: (taskItem.abilities.metrics.iconSize + root.internalHeightMargins) * mScale
+    property real visualScaledWidth: (taskItem.abilities.metrics.iconSize + root.internalWidthMargins) * zoom
+    property real visualScaledHeight: (taskItem.abilities.metrics.iconSize + root.internalHeightMargins) * zoom
     /// end of Scalers///////
 
     property real center: !root.vertical ?
@@ -110,7 +110,7 @@ Item{
             color: "transparent"
         }*/
 
-    Behavior on mScale {
+    Behavior on zoom {
         id: animatedBehavior
         enabled: !taskItem.abilities.parabolic.directRenderingEnabled || inMimicParabolicAnimation || restoreAnimation.running
         NumberAnimation{
@@ -119,7 +119,7 @@ Item{
         }
     }
 
-    Behavior on mScale {
+    Behavior on zoom {
         enabled: !animatedBehavior.enabled
         NumberAnimation { duration: 0 }
     }
@@ -157,11 +157,11 @@ Item{
             onFormFactorChanged:{
                 taskItem.inAddRemoveAnimation = false;
 
-                parabolicItem.mScale = 1.01;
+                parabolicItem.zoom = 1.01;
                 parabolicItem.tempScaleWidth = 1.01;
                 parabolicItem.tempScaleHeight = 1.01;
 
-                parabolicItem.mScale = 1;
+                parabolicItem.zoom = 1;
                 parabolicItem.tempScaleWidth = 1;
                 parabolicItem.tempScaleHeight = 1;
             }
@@ -176,9 +176,9 @@ Item{
             property int zoomedSize: taskItem.abilities.parabolic.factor.zoom * taskItem.abilities.metrics.iconSize
 
             property real basicScalingWidth : parabolicItem.inTempScaling ? (taskItem.abilities.metrics.iconSize * parabolicItem.scaleWidth) :
-                                                                      taskItem.abilities.metrics.iconSize * parabolicItem.mScale
+                                                                      taskItem.abilities.metrics.iconSize * parabolicItem.zoom
             property real basicScalingHeight : parabolicItem.inTempScaling ? (taskItem.abilities.metrics.iconSize * parabolicItem.scaleHeight) :
-                                                                       taskItem.abilities.metrics.iconSize * parabolicItem.mScale
+                                                                       taskItem.abilities.metrics.iconSize * parabolicItem.zoom
 
             property real newTempSize: {
                 if (parabolicItem.opacity === 1 ) {
@@ -218,29 +218,29 @@ Item{
         }
     }
 
-    onMScaleChanged: {
-        if ((mScale === taskItem.abilities.parabolic.factor.zoom) && !taskItem.abilities.parabolic.directRenderingEnabled) {
+    onZoomChanged: {
+        if ((zoom === taskItem.abilities.parabolic.factor.zoom) && !taskItem.abilities.parabolic.directRenderingEnabled) {
             taskItem.abilities.parabolic.setDirectRenderingEnabled(true);
         }
 
         if (inMimicParabolicAnimation){
-            if (mScale >= mimicParabolicScale) {
+            if (zoom >= mimicParabolicScale) {
                 inMimicParabolicAnimation = false;
                 inAnimation = false;
                 inBlockingAnimation = false;
                 mimicParabolicScale = -1;
             } else {
-                var tempScale = (taskItem.abilities.parabolic.factor.zoom - mScale) / 2;
+                var tempScale = (taskItem.abilities.parabolic.factor.zoom - zoom) / 2;
 
                 hiddenSpacerLeft.nScale = tempScale;
                 hiddenSpacerRight.nScale = tempScale;
             }
         }
 
-        if ((mScale > 1) && !isZoomed) {
+        if ((zoom > 1) && !isZoomed) {
             isZoomed = true;
             taskItem.abilities.animations.needBothAxis.addEvent(bothAxisZoomEvent);
-        } else if ((mScale == 1) && isZoomed) {
+        } else if ((zoom == 1) && isZoomed) {
             sendEndOfNeedBothAxisAnimation();
         }
     }

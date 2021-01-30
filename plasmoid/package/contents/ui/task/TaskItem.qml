@@ -146,7 +146,7 @@ Item {
 
     property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=taskItem.abilities.metrics.iconSize && height>=taskItem.abilities.metrics.iconSize
                                         && !taskItem.delayingRemove
-                                        && (taskItem.parabolicItem.mScale===1 || taskItem.parabolicItem.mScale===taskItem.abilities.parabolic.factor.zoom) //don't publish during zoom animation
+                                        && (taskItem.parabolicItem.zoom===1 || taskItem.parabolicItem.zoom===taskItem.abilities.parabolic.factor.zoom) //don't publish during zoom animation
 
     property bool hoveredFromDragging: (mouseHandler.hoveredItem === taskItem) || (mouseHandler.ignoredItem === taskItem)
 
@@ -545,7 +545,7 @@ Item {
                 windowsCount: !root.disableAllWindowsFunctionality ? taskItem.windowsCount : 0
                 windowsMinimizedCount: !root.disableAllWindowsFunctionality ? taskItem.windowsMinimizedCount : 0
 
-                scaleFactor: taskItem.parabolicItem.mScale
+                scaleFactor: taskItem.parabolicItem.zoom
                 panelOpacity: taskItem.abilities.myView.backgroundOpacity
                 shadowColor: taskItem.abilities.myView.itemShadow.shadowSolidColor
 
@@ -993,7 +993,7 @@ Item {
             var adjX = Math.min(limits.x+limits.width, Math.max(limits.x, globalChoords.x));
             var adjY = Math.min(limits.y+limits.height, Math.max(limits.y, globalChoords.y));
 
-            var length = taskItem.abilities.metrics.iconSize * taskItem.parabolicItem.mScale;
+            var length = taskItem.abilities.metrics.iconSize * taskItem.parabolicItem.zoom;
             var thickness = length;
 
             //! Magic Lamp effect doesn't like coordinates outside the screen and
@@ -1050,7 +1050,7 @@ Item {
 
     function slotWaitingLauncherRemoved(launch) {
         if ((isWindow || isStartup || isLauncher) && !visible && launch === launcherUrl) {
-            taskItem.parabolicItem.mScale = 1;
+            taskItem.parabolicItem.zoom = 1;
             visible = true;
         }
     }

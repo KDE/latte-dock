@@ -163,7 +163,7 @@ SequentialAnimation{
             taskItem.visible = true;
             taskItem.parabolicItem.tempScaleWidth = 1;
             taskItem.parabolicItem.tempScaleHeight = 1;
-            taskItem.parabolicItem.mScale = 1;
+            taskItem.parabolicItem.zoom = 1;
             taskItem.parabolicItem.opacity = 1;
             taskItem.inAnimation = false;
         } else if (( animation2 || animation3 || animation6 || isForcedHidden)
@@ -177,8 +177,8 @@ SequentialAnimation{
             isForcedHidden = false;
             var frozenTask = tasksExtendedManager.getFrozenTask(taskItem.launcherUrl);
 
-            if (frozenTask && frozenTask.mScale>1) {
-                taskItem.parabolicItem.mScale = frozenTask.mScale;
+            if (frozenTask && frozenTask.zoom>1) {
+                taskItem.parabolicItem.zoom = frozenTask.zoom;
                 tasksExtendedManager.removeFrozenTask(taskItem.launcherUrl);
             } else {
                 taskItem.parabolicItem.tempScaleWidth = 1;

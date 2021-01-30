@@ -25,10 +25,8 @@ import org.kde.plasma.plasmoid 2.0
 ///////Activate animation/////
 SequentialAnimation{
     id: clickedAnimation
-
     property bool pressed: taskItem.pressed
     property int speed: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large
-    property real maxMScale: Math.max(1,taskItem.abilities.parabolic.factor.zoom - (taskItem.abilities.parabolic.factor.zoom - 1) / 2)
 
     PropertyAnimation {
         target: brightnessTaskEffect
@@ -48,8 +46,7 @@ SequentialAnimation{
 
     onPressedChanged: {
         if(!running && pressed && !taskItem.abilities.indicators.info.providesClickedAnimation &&
-                ((taskItem.lastButtonClicked == Qt.LeftButton)||(taskItem.lastButtonClicked == Qt.MidButton)) ){
-            //taskItem.abilities.animationstarted();
+                ((taskItem.lastButtonClicked == Qt.LeftButton)||(taskItem.lastButtonClicked === Qt.MidButton)) ){
             start();
         }
     }

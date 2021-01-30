@@ -91,7 +91,7 @@ Item {
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && taskItem.hoverEnabled){
-            if( ((taskItem.parabolicItem.mScale === 1 || taskItem.parabolicItem.mScale === taskItem.abilities.parabolic.factor.zoom) && !taskItem.abilities.parabolic.directRenderingEnabled)
+            if( ((taskItem.parabolicItem.zoom === 1 || taskItem.parabolicItem.zoom === taskItem.abilities.parabolic.factor.zoom) && !taskItem.abilities.parabolic.directRenderingEnabled)
                     || taskItem.abilities.parabolic.directRenderingEnabled || !taskItem.scalesUpdatedOnce) {
                 if(root.dragSource == null){
                     var step = Math.abs(icList.currentSpot-mousePos);
@@ -131,7 +131,7 @@ Item {
             }
 
             if (!taskItem.inAttentionAnimation) {
-                taskItem.parabolicItem.mScale = taskItem.abilities.parabolic.factor.zoom;
+                taskItem.parabolicItem.zoom = taskItem.abilities.parabolic.factor.zoom;
             } else {
                 var subSpacerScale = (taskItem.abilities.parabolic.factor.zoom-1)/2;
 
@@ -157,14 +157,14 @@ Item {
                 if(nScale >= 0) {
                     newScale = nScale + step;
                 } else {
-                    newScale = taskItem.parabolicItem.mScale + step;
+                    newScale = taskItem.parabolicItem.zoom + step;
                 }
 
                 if (inMimicParabolicAnimation && mimicParabolicScale === -1) {
                     mimicParabolicScale = newScale;
                 }
 
-                taskItem.parabolicItem.mScale = newScale;
+                taskItem.parabolicItem.zoom = newScale;
             }
         }
     }

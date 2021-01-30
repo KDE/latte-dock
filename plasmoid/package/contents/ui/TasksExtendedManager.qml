@@ -58,7 +58,7 @@ Item {
 
     //! Tasks that change state (launcher,startup,window) and
     //! at the next state must look the same concerning the parabolic effect:
-    //! (id, mScale)
+    //! (id, zoom)
     property variant frozenTasks: []
 
     property int launchersToBeRemovedCount: 0 //is used to update instantly relevant bindings
@@ -251,9 +251,9 @@ Item {
         var frozenTask = getFrozenTask(identifier);
 
         if (frozenTask) {
-            frozenTask.mScale = scale;
+            frozenTask.zoom = scale;
         } else {
-            frozenTasks.push({id: identifier, mScale: scale});
+            frozenTasks.push({id: identifier, zoom: scale});
         }
     }
 
@@ -261,7 +261,7 @@ Item {
         var fzTasks= "";
 
         for(var i=0; i<frozenTasks.length; ++i) {
-            fzTasks = frozenTasks[i].id + "," + frozenTasks[i].mScale + "__";
+            fzTasks = frozenTasks[i].id + "," + frozenTasks[i].zoom + "__";
         }
 
         console.log("FROZEN TASKS ::: " + fzTasks);

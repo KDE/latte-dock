@@ -71,8 +71,8 @@ Item{
         taskItem.setBlockingAnimation(true);
         taskItem.inNewWindowAnimation = true;
 
-        taskItem.parabolicItem.tempScaleWidth = taskItem.parabolicItem.mScale;
-        taskItem.parabolicItem.tempScaleHeight = taskItem.parabolicItem.mScale;
+        taskItem.parabolicItem.tempScaleWidth = taskItem.parabolicItem.zoom;
+        taskItem.parabolicItem.tempScaleHeight = taskItem.parabolicItem.zoom;
 
         if(!isDemandingAttention)
             newWindowAnimationLoader.item.loops = 1;
