@@ -44,20 +44,20 @@ Item{
 
     //scales which are used mainly for activating InLauncher
     ////Scalers///////
-    property bool inTempScaling: ((zoomLength !== 1.0) || (zoomThickness !== 1.0) )
+    property bool hasZoomPerAxis: ((zoomLength !== 1.0) || (zoomThickness !== 1.0) )
 
     property real zoom: 1.0
     property real zoomLength: 1.0
     property real zoomThickness: 1.0
 
-    property real scaleLength: inTempScaling ? zoomLength : zoom
-    property real scaleThickness: inTempScaling ? zoomThickness : zoom
+    property real scaleLength: hasZoomPerAxis ? zoomLength : zoom
+    property real scaleThickness: hasZoomPerAxis ? zoomThickness : zoom
 
     property real cleanScalingLength: abilityItem.abilities.metrics.totals.length * zoom
     property real cleanScalingThickness: abilityItem.abilities.metrics.totals.thickness * zoom
 
-    property real basicScalingLength: inTempScaling ? abilityItem.abilities.metrics.totals.length * scaleLength : cleanScalingLength
-    property real basicScalingThickness: inTempScaling ? abilityItem.abilities.metrics.totals.thickness * scaleThickness : cleanScalingThickness
+    property real basicScalingLength: hasZoomPerAxis ? abilityItem.abilities.metrics.totals.length * scaleLength : cleanScalingLength
+    property real basicScalingThickness: hasZoomPerAxis ? abilityItem.abilities.metrics.totals.thickness * scaleThickness : cleanScalingThickness
 
     property real regulatorLength: abilityItem.isSeparator ? (abilityItem.isHorizontal ? width : height) : basicScalingLength
     property real regulatorThickness: abilityItem.isSeparator ? (abilityItem.isHorizontal ? height : width) : basicScalingThickness
@@ -140,8 +140,8 @@ Item{
             height: width
 
             property int zoomedSize: abilityItem.abilities.parabolic.factor.zoom * abilityItem.abilities.metrics.iconSize
-            property real basicScalingLength: abilityItem.abilities.metrics.iconSize * (parabolicItem.inTempScaling ? parabolicItem.scaleLength : parabolicItem.zoom)
-            property real basicScalingThickness: abilityItem.abilities.metrics.iconSize * (parabolicItem.inTempScaling ? parabolicItem.scaleThickness : parabolicItem.zoom)
+            property real basicScalingLength: abilityItem.abilities.metrics.iconSize * (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleLength : parabolicItem.zoom)
+            property real basicScalingThickness: abilityItem.abilities.metrics.iconSize * (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleThickness : parabolicItem.zoom)
 
             property real newTempSize: {
                 if (parabolicItem.opacity === 1 ) {
