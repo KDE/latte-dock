@@ -63,6 +63,7 @@ Item{
         }
     }
 
+    property bool isParabolicEventBlocked: false
     property bool isUpdatingOnlySpacers: false
     property bool isZoomed: false
 

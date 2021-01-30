@@ -57,9 +57,9 @@ Item {
     }
 
     Connections {
-        target: abilityItem
+        target: parabolicItem
         onIsParabolicEventBlockedChanged: {
-            if (!abilityItem.isParabolicEventBlocked && _parabolicArea.containsMouse) {
+            if (!parabolicItem.isParabolicEventBlocked && _parabolicArea.containsMouse) {
                 _parabolicArea.parabolicEntered(lastMouseX, lastMouseY);
             }
         }
@@ -104,7 +104,7 @@ Item {
         if (isParabolicEnabled) {
             var mousePos = abilityItem.isHorizontal ? mouseX : mouseY;
 
-            if (mousePos<0 || abilityItem.isParabolicEventBlocked) {
+            if (mousePos<0 || parabolicItem.isParabolicEventBlocked) {
                 return;
             }
 
@@ -134,7 +134,9 @@ Item {
     }
 
     function calculateParabolicScales( currentMousePosition ){
-        if (abilityItem.abilities.parabolic.factor.zoom===1 || abilityItem.abilities.parabolic.restoreZoomIsBlocked || isParabolicEventBlocked) {
+        if (abilityItem.abilities.parabolic.factor.zoom===1
+                || abilityItem.abilities.parabolic.restoreZoomIsBlocked
+                || parabolicItem.isParabolicEventBlocked) {
             return;
         }
 
@@ -162,7 +164,7 @@ Item {
     } //zoom
 
     function updateScale(nIndex, nScale, step){
-        if (!_parabolicArea.containsMouse && (index === nIndex) && !isParabolicEventBlocked){
+        if (!_parabolicArea.containsMouse && (index === nIndex) && !parabolicItem.isParabolicEventBlocked){
             if (parabolicItem.isUpdatingOnlySpacers) {
                 var subSpacerScale = (nScale-1)/2;
 

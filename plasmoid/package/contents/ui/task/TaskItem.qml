@@ -49,11 +49,7 @@ AbilityBasicItem {
                             || root.inActivityChange
                             || taskItem.inRemoveStage
                             || (taskItem.containsMouse && inAttentionAnimation && taskItem.parabolicItem.zoom!==taskItem.abilities.parabolic.factor.zoom)
-    isParabolicEventBlocked: root.dragSource
-                             || !hoverEnabled
-                             || inAnimation
-                             || !hoverEnabled
-                             || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation))
+
 
     isSeparatorInRealLength: isSeparator && root.dragSource
 
@@ -66,6 +62,10 @@ AbilityBasicItem {
         return isWindow ? model.display : model.AppName;
     }
 
+    parabolicItem.isParabolicEventBlocked: root.dragSource
+                                           || !hoverEnabled
+                                           || inAnimation
+                                           || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation))
     parabolicItem.isUpdatingOnlySpacers: inAttentionAnimation || inBouncingAnimation
 
     property alias hoverEnabled: taskMouseArea.hoverEnabled

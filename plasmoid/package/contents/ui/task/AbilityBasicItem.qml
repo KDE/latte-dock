@@ -85,7 +85,6 @@ Item{
 
     property bool isHiddenSpacerAnimated: true
     property bool isHiddenSpacerVisible: false
-    property bool isParabolicEventBlocked: false
     property bool isHidden: false
     property bool isSeparator: false
     property bool isSeparatorInRealLength: false
