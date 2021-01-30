@@ -28,6 +28,8 @@ import org.kde.latte.core 0.2 as LatteCore
 
 import org.kde.latte.abilities.items 0.1 as AbilityItems
 
+import "./abilitybasicitem" as AbilityBasicItemParts
+
 Item{
     id: abilityItem
     anchors.bottom: (parent && plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
@@ -238,9 +240,7 @@ Item{
         width: parent.width
         height: parent.height
 
-        // a hidden spacer for the first element to add stability
-        // IMPORTANT: hidden spacers must be tested on vertical !!!
-        HiddenSpacer{ id:hiddenSpacerLeft}
+        AbilityBasicItemParts.HiddenSpacer{ id:hiddenSpacerLeft}
 
         Item{
             width: _parabolicItem.width
@@ -284,8 +284,7 @@ Item{
             }
         }
 
-        // a hidden spacer on the right for the last item to add stability
-        HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
+        AbilityBasicItemParts.HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
     }// Flow with hidden spacers inside
 
     Loader {
