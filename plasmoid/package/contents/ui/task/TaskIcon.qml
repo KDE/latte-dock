@@ -667,13 +667,7 @@ Item {
 
             onRunningChanged: {
                 if(!running){
-                    if (parabolicAreaLoader.active) {
-                        var halfZoom = 1 + ((taskItem.abilities.parabolic.factor.zoom - 1) / 2);
-                        parabolicAreaLoader.item.calculateParabolicScales(taskItem.abilities.metrics.totals.thickness/2);
-                    }
-
                     taskItem.animationEnded();
-                    //   root.animations--;
                 }
             }
         }

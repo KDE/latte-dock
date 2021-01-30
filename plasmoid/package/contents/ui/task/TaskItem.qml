@@ -591,12 +591,12 @@ Item {
     }// Flow with hidden spacers inside
 
     Loader {
-        id: parabolicAreaLoader
+        id: parabolicEventsAreaLoader
         active: taskItem.abilities.parabolic.isEnabled
         width: root.isHorizontal ? taskItem.width : taskItem.abilities.metrics.mask.thickness.zoomedForItems
         height: root.isHorizontal ? taskItem.abilities.metrics.mask.thickness.zoomedForItems : taskItem.height
         z:10000
-        sourceComponent: ParabolicArea{}
+        sourceComponent: ParabolicEventsArea{}
 
         states:[
             State{
@@ -604,7 +604,7 @@ Item {
                 when: plasmoid.location === PlasmaCore.Types.TopEdge
 
                 AnchorChanges{
-                    target: parabolicAreaLoader
+                    target: parabolicEventsAreaLoader
                     anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
                     anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
                 }
@@ -614,7 +614,7 @@ Item {
                 when: plasmoid.location === PlasmaCore.Types.LeftEdge
 
                 AnchorChanges{
-                    target: parabolicAreaLoader
+                    target: parabolicEventsAreaLoader
                     anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
                     anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
                 }
@@ -624,7 +624,7 @@ Item {
                 when: plasmoid.location === PlasmaCore.Types.RightEdge
 
                 AnchorChanges{
-                    target: parabolicAreaLoader
+                    target: parabolicEventsAreaLoader
                     anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
                     anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
                 }
@@ -634,7 +634,7 @@ Item {
                 when: plasmoid.location === PlasmaCore.Types.BottomEdge
 
                 AnchorChanges{
-                    target: parabolicAreaLoader
+                    target: parabolicEventsAreaLoader
                     anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
                     anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
                 }
@@ -969,8 +969,8 @@ Item {
                 mimicParabolicScale = taskItem.abilities.parabolic.factor.zoom;
             }
 
-            if (parabolicAreaLoader.active) {
-                parabolicAreaLoader.item.calculateParabolicScales(icList.currentSpot);
+            if (parabolicEventsAreaLoader.active) {
+                parabolicEventsAreaLoader.item.calculateParabolicScales(icList.currentSpot);
             }
         }
     }
