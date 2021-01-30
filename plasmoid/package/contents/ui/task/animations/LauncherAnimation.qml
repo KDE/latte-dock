@@ -68,6 +68,7 @@ Item{
     function init(){
         //console.log ("Nooo 1 : "+root.noTasksInAnimation);
         if(!launchedAlready) {
+            taskItem.abilities.parabolic.invkClearZoom();
             launchedAlready = true;
             taskItem.abilities.animations.needThickness.addEvent(needThicknessEvent);
 
