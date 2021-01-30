@@ -40,10 +40,20 @@ AbilityBasicItem {
     visible: false
     objectName: "TaskItem"
 
+    isHiddenSpacerVisible: taskItem.inAttentionAnimation
+                           || taskItem.inFastRestoreAnimation
+                           || taskItem.inMimicParabolicAnimation
+    isHiddenSpacerAnimated: taskItem.inFastRestoreAnimation
+                            || showWindowAnimation.running
+                            || restoreAnimation.running
+                            || root.inActivityChange
+                            || taskItem.inRemoveStage
+                            || (taskItem.containsMouse && inAttentionAnimation && taskItem.parabolicItem.zoom!==taskItem.abilities.parabolic.factor.zoom)
     isSeparatorInRealLength: isSeparator && root.dragSource
 
+    containsMouse: taskMouseArea.containsMouse || parabolicAreaContainsMouse
+
     property alias hoverEnabled: taskMouseArea.hoverEnabled
-    property alias containsMouse: taskMouseArea.containsMouse
     property alias pressed: taskMouseArea.pressed
 
     property bool delayingRemove: ListView.delayRemove
@@ -93,7 +103,6 @@ AbilityBasicItem {
 
     property bool wheelIsBlocked: false
 
-    property int animationTime: (taskItem.abilities.animations.active ? taskItem.abilities.animations.speedFactor.current : 2) * (1.2 *taskItem.abilities.animations.duration.small)
     property int badgeIndicator: 0 //it is used from external apps
     property int itemIndex: index
     property int lastValidIndex: -1 //used for the removal animation
@@ -101,7 +110,6 @@ AbilityBasicItem {
     property int pressX: -1
     property int pressY: -1
     property int resistanceDelay: 450
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*taskItem.abilities.metrics.iconSize) - taskItem.abilities.metrics.totals.lengthEdges)
     property int windowsCount: subWindows.windowsCount
     property int windowsMinimizedCount: subWindows.windowsMinimized
 
@@ -131,10 +139,10 @@ AbilityBasicItem {
     indicator.isWindow: !root.disableAllWindowsFunctionality && taskItem.isWindow
 
     indicator.isActive: !root.disableAllWindowsFunctionality && (taskItem.hasActive
-                                                       || (root.showPreviews
-                                                           && (taskItem.isWindow || taskItem.isGroupParent)
-                                                           && windowsPreviewDlg.activeItem
-                                                           && (windowsPreviewDlg.activeItem === taskItem)) )
+                                                                 || (root.showPreviews
+                                                                     && (taskItem.isWindow || taskItem.isGroupParent)
+                                                                     && windowsPreviewDlg.activeItem
+                                                                     && (windowsPreviewDlg.activeItem === taskItem)) )
 
     indicator.isGroup: !root.disableAllWindowsFunctionality && taskItem.isGroupParent
     indicator.isHovered: taskItem.containsMouse

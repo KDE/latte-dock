@@ -51,7 +51,7 @@ Item{
             return 0;
         }
 
-        if (root.vertical) {
+        if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
             return _parabolicItem.width;
         } else {
             return hiddenSpacerLeft.width + _parabolicItem.width + hiddenSpacerRight.width;
@@ -63,7 +63,7 @@ Item{
             return 0;
 
         if (isSeparator) {
-            if (!root.vertical) {
+            if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
                 return abilityItem.abilities.metrics.totals.thickness + abilityItem.abilities.metrics.margin.screenEdge;
             } else {
                 if (isSeparatorInRealLength || !abilityItem.abilities.parabolic.isEnabled) {
@@ -74,19 +74,27 @@ Item{
             return 0;
         }
 
-        if (root.vertical) {
+        if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
             return hiddenSpacerLeft.height + abilityItem.parabolicItem.height + hiddenSpacerRight.height;
         } else {
             return _parabolicItem.height;
         }
     }
 
+    property bool isHiddenSpacerAnimated: true
+    property bool isHiddenSpacerVisible: false
     property bool isSeparator: false
     property bool isSeparatorInRealLength: false
+
+    property bool containsMouse: false
+
 
     property Item abilities: null
     property Item contentItem: null
 
+    readonly property bool parabolicAreaContainsMouse: parabolicEventsAreaLoader.active && parabolicEventsAreaLoader.item.containsMouse
+
+    readonly property int animationTime: (abilityItem.abilities.animations.active ? abilityItem.abilities.animations.speedFactor.current : 2) * (1.2 * abilityItem.abilities.animations.duration.small)
     readonly property int iconOffsetX: indicatorBackLayer.level.requested.iconOffsetX
     readonly property int iconOffsetY: indicatorBackLayer.level.requested.iconOffsetY
 

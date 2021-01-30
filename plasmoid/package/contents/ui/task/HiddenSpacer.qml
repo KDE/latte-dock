@@ -20,41 +20,33 @@
 
 import QtQuick 2.0
 
+import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte.core 0.2 as LatteCore
 
 Item{
     id: hiddenSpacer
-    //we add one missing pixel from calculations
-    width: root.vertical ? taskItem.parabolicItem.width : nHiddenSize
-    height: root.vertical ? nHiddenSize : taskItem.parabolicItem.height
+    width: plasmoid.formFactor === PlasmaCore.Types.Vertical ? abilityItem.parabolicItem.width : nHiddenSize
+    height: plasmoid.formFactor === PlasmaCore.Types.Vertical ? nHiddenSize : abilityItem.parabolicItem.height
 
-    visible: (rightSpacer ? index === taskItem.abilities.indexer.lastVisibleItemIndex : index === taskItem.abilities.indexer.firstVisibleItemIndex)
+    visible: (rightSpacer ? index === abilityItem.abilities.indexer.lastVisibleItemIndex : index === abilityItem.abilities.indexer.firstVisibleItemIndex)
              || (separatorSpace > 0)
-             || taskItem.inAttentionAnimation
-             || taskItem.inFastRestoreAnimation
-             || taskItem.inMimicParabolicAnimation
+             || abilityItem.isHiddenSpacerVisible
 
-    property bool neighbourSeparator: rightSpacer ? taskItem.headItemIsSeparator : taskItem.tailItemIsSeparator
+    property bool neighbourSeparator: rightSpacer ? abilityItem.headItemIsSeparator : abilityItem.tailItemIsSeparator
     //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
     //when the task is removed
     property int indexUsed: index === -1 ? lastValidIndex : index
 
-    //fix #846,empty tasks after activity changes
-    //in some cases after activity changes some tasks
-    //are shown empty because some ghost tasks are created.
-    //This was tracked down to hidden TaskItems spacers.
-    //the flag !root.inActivityChange protects from this
-    //and it is used later on Behaviors in order to not break
-    //the activity change animations from removal/additions of tasks
-    //! && !root.inActivityChange (deprecated) in order to check if it is fixed
-    property int separatorSpace: neighbourSeparator && !isSeparator && taskItem.abilities.parabolic.isEnabled
-                                 && !(taskItem.abilities.indexer.separators.length>0 && root.dragSource) ?
+    property int separatorSpace: neighbourSeparator && !abilityItem.isSeparator && abilityItem.abilities.parabolic.isEnabled
+                                 && !(abilityItem.abilities.indexer.separators.length>0 && abilityItem.isSeparatorInRealLength) ?
                                      (LatteCore.Environment.separatorLength/2) : 0
 
     property bool rightSpacer: false
 
     property real nScale: 0
     property real nHiddenSize: 0
+
+    readonly property int maxSize: Math.max(0,Math.ceil(0.55*abilityItem.abilities.metrics.iconSize) - abilityItem.abilities.metrics.totals.lengthEdges)
 
     Binding{
         target: hiddenSpacer
@@ -63,17 +55,17 @@ Item{
             if (isForcedHidden) {
                 return 0;
             } else if (!inAttentionAnimation && !inMimicParabolicAnimation && !inFastRestoreAnimation) {
-                return (nScale > 0) ? (taskItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
+                return (nScale > 0) ? (maxSize * nScale) + separatorSpace : separatorSpace;
             } else {
-                return (nScale > 0) ? (taskItem.abilities.metrics.iconSize * nScale) + separatorSpace : separatorSpace;
+                return (nScale > 0) ? (abilityItem.abilities.metrics.iconSize * nScale) + separatorSpace : separatorSpace;
             }
         }
     }
 
     Connections{
-        target: taskItem
+        target: abilityItem
         onContainsMouseChanged: {
-            if (!taskItem.containsMouse && !inAttentionAnimation && !inFastRestoreAnimation && !inMimicParabolicAnimation) {
+            if (!abilityItem.containsMouse && !isHiddenSpacerVisible) {
                 hiddenSpacer.nScale = 0;
             }
         }
@@ -81,10 +73,8 @@ Item{
 
     Behavior on nHiddenSize {
         id: animatedBehavior
-        enabled: (taskItem.inFastRestoreAnimation || showWindowAnimation.running || restoreAnimation.running
-                  || root.inActivityChange || taskItem.inRemoveStage)
-                 || (taskItem.containsMouse && inAttentionAnimation && taskItem.parabolicItem.zoom!==taskItem.abilities.parabolic.factor.zoom)
-        NumberAnimation{ duration: 3 * taskItem.animationTime }
+        enabled: abilityItem.isHiddenSpacerAnimated
+        NumberAnimation{ duration: 3 * abilityItem.animationTime }
     }
 
     Behavior on nHiddenSize {
@@ -94,13 +84,13 @@ Item{
     }
 
     Loader{
-        active: taskItem.abilities.debug.spacersEnabled
+        active: abilityItem.abilities.debug.spacersEnabled
 
         sourceComponent: Rectangle{
-            width: !root.vertical ? hiddenSpacer.width : 1
-            height: !root.vertical ? 1 : hiddenSpacer.height
-            x: root.vertical ? hiddenSpacer.width/2 : 0
-            y: !root.vertical ? hiddenSpacer.height/2 : 0
+            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? hiddenSpacer.width : 1
+            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? 1 : hiddenSpacer.height
+            x: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? 0 : hiddenSpacer.width/2
+            y: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? hiddenSpacer.height/2 : 0
 
             border.width: 1
             border.color: "red"
