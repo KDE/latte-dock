@@ -32,6 +32,9 @@ import "./abilitybasicitem" as AbilityBasicItemParts
 
 Item{
     id: abilityItem
+    signal mousePressed(int x, int y, int button);
+    signal mouseReleased(int x, int y, int button);
+
     anchors.bottom: (parent && plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
     anchors.top: (parent && plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
     anchors.left: (parent && plasmoid.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined

@@ -36,6 +36,12 @@ MouseArea {
 
     readonly property alias hoveredTimer: _hoveredTimer
 
+    Connections {
+        target: taskMouseArea
+        onPressed: taskItem.mousePressed(mouse.x, mouse.y, mouse.button)
+        onReleased: taskItem.mouseReleased(mouse.x, mouse.y, mouse.button)
+    }
+
     onEntered: {
         if (isLauncher && windowsPreviewDlg.visible) {
             windowsPreviewDlg.hide(1);

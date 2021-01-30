@@ -60,15 +60,15 @@ AbilityItem.IndicatorLevel {
                                                        taskItem.abilities.metrics.iconSize + root.internalHeightMargins
 
     Connections {
-        target: taskItem.mouseArea
+        target: abilityItem
         enabled: indicatorLevel.level.indicator.host ? indicatorLevel.level.indicator.host.info.needsMouseEventCoordinates : false
-        onPressed: {
-            var fixedPos = indicatorLevel.mapFromItem(taskItem, mouse.x, mouse.y);
-            level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), mouse.button);
+        onMousePressed: {
+            var fixedPos = indicatorLevel.mapFromItem(abilityItem, x, y);
+            level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
         }
-        onReleased: {
-            var fixedPos = indicatorLevel.mapFromItem(taskItem, mouse.x, mouse.y);
-            level.mousePressed(Math.round(fixedPos.x), Math.round(fixedPos.y), mouse.button);
+        onMouseReleased: {
+            var fixedPos = indicatorLevel.mapFromItem(abilityItem, x, y);
+            level.mouseReleased(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
         }
     }
 }
