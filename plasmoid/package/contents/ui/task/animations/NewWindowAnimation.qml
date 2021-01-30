@@ -32,6 +32,7 @@ Item{
     property bool isDemandingAttention: taskItem.inAttention
     property bool containsMouse: taskItem.containsMouse
 
+    readonly property bool running: newWindowAnimationLoader.active ? newWindowAnimationLoader.item.running : false
     readonly property string needThicknessEvent: newWindowAnimation + "_newwindow"
 
     Loader {
@@ -59,6 +60,18 @@ Item{
         taskItem.setBlockingAnimation(false);
         taskItem.inAttentionAnimation = false;
         taskItem.inNewWindowAnimation = false;
+    }
+
+    function pause() {
+        if (running) {
+            newWindowAnimationLoader.item.pause();
+        }
+    }
+
+    function stop() {
+        if (running) {
+            newWindowAnimationLoader.item.stop();
+        }
     }
 
     onIsDemandingAttentionChanged: {
