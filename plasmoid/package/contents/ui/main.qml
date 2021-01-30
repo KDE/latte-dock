@@ -127,9 +127,7 @@ Item {
 
     readonly property alias containsDrag: mouseHandler.containsDrag
 
-    //BEGIN Latte Dock properties
-    property bool forceHidePanel: false
-
+    //BEGIN properties
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool highlightWindows: hoverAction === LatteTasks.Types.HighlightWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
 
@@ -220,13 +218,6 @@ Item {
     signal publishTasksGeometries();
     signal windowsHovered(variant winIds, bool hovered)
 
-    //onAnimationsChanged: console.log(animations);
-    /* Rectangle{
-                anchors.fill: parent
-                border.width: 1
-                border.color: "red"
-                color: "white"
-            } */
 
     Connections {
         target: plasmoid
@@ -807,7 +798,7 @@ Item {
             source: "../images/panel-west.png"
             border { left:8; right:8; top:8; bottom:8 }
 
-            opacity: (plasmoid.configuration.showBarLine && !plasmoid.configuration.useThemePanel && !root.forceHidePanel) ? 1 : 0
+            opacity: (plasmoid.configuration.showBarLine && !plasmoid.configuration.useThemePanel && inPlasma) ? 1 : 0
 
             visible: (opacity == 0) ? false : true
 
@@ -852,7 +843,7 @@ Item {
             imagePath: "translucent/widgets/panel-background"
             prefix:"shadow"
 
-            opacity: (plasmoid.configuration.showBarLine && plasmoid.configuration.useThemePanel && !root.forceHidePanel) ? 1 : 0
+            opacity: (plasmoid.configuration.showBarLine && plasmoid.configuration.useThemePanel && inPlasma) ? 1 : 0
             visible: (opacity == 0) ? false : true
 
             property int panelSize: ((root.location === PlasmaCore.Types.BottomEdge) ||

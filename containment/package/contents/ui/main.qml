@@ -223,7 +223,6 @@ Item {
     readonly property int minAppletLengthInConfigure: 16
     readonly property int maxJustifySplitterSize: 64
 
-    property int latteAppletPos: -1
     property real minLengthPerCentage: plasmoid.configuration.minLength
     property real maxLengthPerCentage: hideLengthScreenGaps ? 100 : plasmoid.configuration.maxLength
 
@@ -325,7 +324,6 @@ Item {
 
     property Item dragOverlay: _dragOverlay
     property Item toolBox
-    property Item latteAppletContainer
     property Item latteApplet
 
     readonly property alias animations: _animations

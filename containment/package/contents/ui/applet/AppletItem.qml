@@ -551,10 +551,6 @@ Item {
     }
 
     onIndexChanged: {
-        if (appletItem.latteApplet) {
-            root.latteAppletPos = index;
-        }
-
         if (index>-1) {
             previousIndex = index;
         }
@@ -567,9 +563,6 @@ Item {
     onLatteAppletChanged: {
         if(appletItem.latteApplet){
             root.latteApplet = appletItem.latteApplet;
-            root.latteAppletContainer = appletItem;
-            root.latteAppletPos = index;
-            appletItem.latteApplet.forceHidePanel = true;
 
             appletItem.latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
         }
@@ -587,12 +580,6 @@ Item {
 
     Component.onDestruction: {
         appletItem.animations.needBothAxis.removeEvent(appletItem);
-
-        if(root.latteAppletPos>=0 && root.latteAppletPos === index){
-            root.latteApplet = null;
-            root.latteAppletContainer = null;
-            root.latteAppletPos = -1;
-        }
 
         root.updateIndexes.disconnect(checkIndex);
         root.destroyInternalViewSplitters.disconnect(slotDestroyInternalViewSplitters);
