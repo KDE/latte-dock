@@ -82,6 +82,10 @@ Item {
             lastParabolicPos = current;
             calculateParabolicScales(current);
         }
+
+        if (isThinTooltipEnabled) {
+            abilityItem.abilities.thinTooltip.show(abilityItem.tooltipVisualParent, abilityItem.thinTooltipText);
+        }
     }
 
     onParabolicMove: {
@@ -89,7 +93,6 @@ Item {
         lastMouseY = mouseY;
 
         if (isParabolicEnabled) {
-
             var mousePos = abilityItem.isHorizontal ? mouseX : mouseY;
 
             if (mousePos<0 || abilityItem.isParabolicEventBlocked) {
@@ -115,6 +118,10 @@ Item {
 
     onParabolicExited: {
         lastParabolicPos = 0;
+
+        if (isThinTooltipEnabled) {
+            abilityItem.abilities.thinTooltip.hide(abilityItem.tooltipVisualParent);
+        }
     }
 
     function calculateParabolicScales( currentMousePosition ){

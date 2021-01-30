@@ -41,10 +41,6 @@ MouseArea {
             windowsPreviewDlg.hide(1);
         }
 
-        if (!root.showPreviews || (root.showPreviews && isLauncher)){
-            taskItem.abilities.thinTooltip.show(taskItem.tooltipVisualParent, taskItem.isWindow ? model.display : model.AppName );
-        }
-
         //! show previews if enabled
         if(isAbleToShowPreview && !showPreviewsIsBlockedFromReleaseEvent && !isLauncher
                 && (((root.showPreviews || (windowsPreviewDlg.visible && !isLauncher))
@@ -73,8 +69,6 @@ MouseArea {
 
     onExited: {
         taskItem.isAbleToShowPreview = true;
-
-        taskItem.abilities.thinTooltip.hide(taskItem.tooltipVisualParent);
 
         if (root.showPreviews) {
             root.hidePreview(17.5);

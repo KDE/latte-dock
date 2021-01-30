@@ -25,8 +25,8 @@ AbilityDefinition.ThinTooltip {
     id: thinTooltip
     property Item bridge: null
 
+    isEnabled: ref.thinTooltip.isEnabled
     showIsBlocked: local.showIsBlocked
-
     currentVisualParent: ref.thinTooltip.currentVisualParent
     currentText: ref.thinTooltip.currentText
 
@@ -35,7 +35,7 @@ AbilityDefinition.ThinTooltip {
 
     Item {
         id: ref
-        readonly property Item thinTooltip: bridge ? bridge.thinTooltip : local
+        readonly property Item thinTooltip: bridge ? bridge.thinTooltip.host : local
     }
 
     function show(visualParent, text) {

@@ -59,6 +59,13 @@ AbilityBasicItem {
     isSeparatorInRealLength: isSeparator && root.dragSource
 
     containsMouse: taskMouseArea.containsMouse || parabolicAreaContainsMouse
+    thinTooltipText: {
+        if (root.showPreviews && !isLauncher) {
+            return "";
+        }
+
+        return isWindow ? model.display : model.AppName;
+    }
 
     property alias hoverEnabled: taskMouseArea.hoverEnabled
     property alias pressed: taskMouseArea.pressed

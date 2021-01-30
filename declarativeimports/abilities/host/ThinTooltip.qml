@@ -37,6 +37,7 @@ AbilityDefinition.ThinTooltip {
 
     //! Public API
     readonly property Item publicApi: Item {
+        readonly property alias isEnabled: _thinTooltip.isEnabled
         readonly property alias currentText: _thinTooltip.currentText
         readonly property alias currentVisualParent: _thinTooltip.currentVisualParent
 
