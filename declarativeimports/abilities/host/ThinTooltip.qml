@@ -61,6 +61,13 @@ AbilityDefinition.ThinTooltip {
     }
 
     function show(visualParent, text) {
+        if (!isEnabled) {
+            _hideTimer.stop();
+            _showTimer.stop();
+            _tooltipDialog.visible = false;
+            return;
+        }
+
         if (!showIsBlocked) {
             _hideTimer.stop();
         }
@@ -71,7 +78,7 @@ AbilityDefinition.ThinTooltip {
         var fixedDisplayText = text.length>maxCharacters ? text.substring(0,maxCharacters-1) + "..." : text;
         _thinTooltip.currentText = fixedDisplayText;
 
-        if (!_tooltipDialog.visible && isEnabled && !showIsBlocked) {
+        if (!_tooltipDialog.visible && !showIsBlocked) {
             _showTimer.start();
         }
     }
