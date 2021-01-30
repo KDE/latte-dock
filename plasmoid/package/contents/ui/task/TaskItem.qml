@@ -184,10 +184,9 @@ Item {
     readonly property alias hoveredTimer: taskMouseArea.hoveredTimer
     readonly property alias mouseArea: taskMouseArea
     readonly property alias tooltipVisualParent: _wrapper.titleTooltipVisualParent
-    readonly property alias previewsVisualParent: _wrapper.previewsTooltipVisualParent
+    readonly property alias previewsVisualParent: _wrapper.titleTooltipVisualParent
     readonly property alias subWindows: subWindows
     readonly property alias wrapper: _wrapper
-
 
     readonly property alias showWindowAnimation: _showWindowAnimation
     readonly property alias restoreAnimation: _restoreAnimation

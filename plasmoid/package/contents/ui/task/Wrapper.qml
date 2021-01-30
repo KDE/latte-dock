@@ -19,14 +19,13 @@
 */
 
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-
 import org.kde.latte.core 0.2 as LatteCore
 
 Item{
     id: wrapper
-
     opacity: 0
     width: {
         if (!taskItem.visible)
@@ -98,9 +97,8 @@ Item{
                              (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2 :
                              (height + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
 
-    property Item contentItemContainer: taskIconItem.contentItemContainer
-    property Item titleTooltipVisualParent: taskIconItem.titleTooltipVisualParent
-    property Item previewsTooltipVisualParent: taskIconItem.previewsTootipVisualParent
+    readonly property alias contentItemContainer: _contentItemContainer
+    readonly property alias titleTooltipVisualParent: _titleTooltipVisualParent
 
     signal runLauncherAnimation();
 
@@ -126,8 +124,7 @@ Item{
         NumberAnimation { duration: 0 }
     }
 
-    IconItem{
-        id: taskIconItem
+    Item{
         anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
         anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
         anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
@@ -146,6 +143,72 @@ Item{
 
         width: wrapper.regulatorWidth
         height: wrapper.regulatorHeight
+
+        TitleTooltipParent{
+            id: _titleTooltipVisualParent
+            thickness: taskItem.abilities.parabolic.factor.zoom * taskItem.abilities.metrics.totals.thickness
+        }
+
+        //fix bug #478, when changing form factor sometimes the tasks are not positioned
+        //correctly, in such case we make a fast reinitialization for the sizes
+        Connections {
+            target: plasmoid
+
+            onFormFactorChanged:{
+                taskItem.inAddRemoveAnimation = false;
+
+                wrapper.mScale = 1.01;
+                wrapper.tempScaleWidth = 1.01;
+                wrapper.tempScaleHeight = 1.01;
+
+                wrapper.mScale = 1;
+                wrapper.tempScaleWidth = 1;
+                wrapper.tempScaleHeight = 1;
+            }
+        }
+
+        Item {
+            id: _contentItemContainer
+            anchors.centerIn: parent
+            width: newTempSize
+            height: width
+
+            property int zoomedSize: taskItem.abilities.parabolic.factor.zoom * taskItem.abilities.metrics.iconSize
+
+            property real basicScalingWidth : wrapper.inTempScaling ? (taskItem.abilities.metrics.iconSize * wrapper.scaleWidth) :
+                                                                      taskItem.abilities.metrics.iconSize * wrapper.mScale
+            property real basicScalingHeight : wrapper.inTempScaling ? (taskItem.abilities.metrics.iconSize * wrapper.scaleHeight) :
+                                                                       taskItem.abilities.metrics.iconSize * wrapper.mScale
+
+            property real newTempSize: {
+                if (wrapper.opacity === 1 ) {
+                    return Math.min(basicScalingWidth, basicScalingHeight);
+                } else {
+                    return Math.max(basicScalingWidth, basicScalingHeight);
+                }
+            }
+
+            readonly property Item contentItem: children.length > 0 ? children[0] : null
+
+
+            //! Latte Side Painting-style if the user chose it
+            Loader{
+                anchors.fill: _contentItemContainer
+                active: plasmoid.configuration.forceMonochromaticIcons
+
+                sourceComponent: ColorOverlay {
+                    anchors.fill: parent
+                    color: latteBridge ? latteBridge.palette.textColor : "transparent"
+                    source: _contentItemContainer.contentItem
+                }
+            }
+            //! Latte Side Painting-style if the user chose it
+        } //_contentItemContainer
+
+        ShortcutBadge{
+            id: shortcutBadge
+            anchors.fill: _contentItemContainer
+        }
     }
 
     function sendEndOfNeedBothAxisAnimation(){

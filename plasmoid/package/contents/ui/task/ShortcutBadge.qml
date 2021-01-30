@@ -24,7 +24,6 @@ import org.kde.latte.components 1.0 as LatteComponents
 
 Loader{
     id: shorcutBadge
-    anchors.fill: iconImageBuffer
     active: taskItem.abilities.shortcuts.showPositionShortcutBadges && !taskItem.isSeparator && !taskItem.isHidden && taskItem.abilities.shortcuts.isEnabled
     asynchronous: true
     visible: badgeString !== ""
