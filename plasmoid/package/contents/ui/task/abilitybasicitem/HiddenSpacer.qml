@@ -54,7 +54,7 @@ Item{
         value: {
             if (isForcedHidden) {
                 return 0;
-            } else if (!inAttentionAnimation && !inMimicParabolicAnimation && !inFastRestoreAnimation) {
+            } else if (!inAttentionAnimation && !inFastRestoreAnimation) {
                 return (nScale > 0) ? (maxSize * nScale) + separatorSpace : separatorSpace;
             } else {
                 return (nScale > 0) ? (abilityItem.abilities.metrics.iconSize * nScale) + separatorSpace : separatorSpace;

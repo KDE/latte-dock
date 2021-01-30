@@ -62,20 +62,9 @@ SequentialAnimation{
     }
 
     onStopped: {
-        /*if (!taskItem.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
-            taskItem.inMimicParabolicAnimation = false;
-        } else {
-            taskItem.inMimicParabolicAnimation = true;
-        }*/
-
         newWindowAnimation.stop();
 
-        //if (!taskItem.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
         taskItem.inBlockingAnimation = false;
-        //}
-
-        root.mimicEnterForParabolic();
-
         taskItem.inFastRestoreAnimation = false;
         // console.log("Fast Restore Animation ended...");
     }

@@ -113,7 +113,7 @@ Item{
 
     Behavior on zoom {
         id: animatedBehavior
-        enabled: !taskItem.abilities.parabolic.directRenderingEnabled || inMimicParabolicAnimation || restoreAnimation.running
+        enabled: !taskItem.abilities.parabolic.directRenderingEnabled || restoreAnimation.running
         NumberAnimation{
             duration: 3 * taskItem.animationTime
             easing.type: Easing.OutCubic
@@ -222,20 +222,6 @@ Item{
     onZoomChanged: {
         if ((zoom === taskItem.abilities.parabolic.factor.zoom) && !taskItem.abilities.parabolic.directRenderingEnabled) {
             taskItem.abilities.parabolic.setDirectRenderingEnabled(true);
-        }
-
-        if (inMimicParabolicAnimation){
-            if (zoom >= mimicParabolicScale) {
-                inMimicParabolicAnimation = false;
-                inAnimation = false;
-                inBlockingAnimation = false;
-                mimicParabolicScale = -1;
-            } else {
-                var tempScale = (taskItem.abilities.parabolic.factor.zoom - zoom) / 2;
-
-                hiddenSpacerLeft.nScale = tempScale;
-                hiddenSpacerRight.nScale = tempScale;
-            }
         }
 
         if ((zoom > 1) && !isZoomed) {

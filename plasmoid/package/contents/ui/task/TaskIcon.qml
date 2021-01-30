@@ -129,7 +129,7 @@ Item {
             Transition{
                 from: "animating"
                 to: "*"
-                enabled: !fastRestoreAnimation.running && !taskItem.inMimicParabolicAnimation
+                enabled: !fastRestoreAnimation.running
 
                 AnchorAnimation { duration: 1.5 * taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
             }

@@ -163,15 +163,6 @@ Item {
 
     function updateScale(nIndex, nScale, step){
         if (!_parabolicArea.containsMouse && (index === nIndex) && !isParabolicEventBlocked){
-            /*if (taskItem.inAttentionAnimation) {
-                var subSpacerScale = (nScale-1)/2;
-
-                hiddenSpacerLeft.nScale = subSpacerScale;
-                hiddenSpacerRight.nScale = subSpacerScale;
-            } else if (!inBlockingAnimation || taskItem.inMimicParabolicAnimation) {
-
-            }*/
-
             if (parabolicItem.isUpdatingOnlySpacers) {
                 var subSpacerScale = (nScale-1)/2;
 
@@ -185,10 +176,6 @@ Item {
                 } else {
                     newScale = abilityItem.parabolicItem.zoom + step;
                 }
-
-                /*if (inMimicParabolicAnimation && mimicParabolicScale === -1) {
-                   mimicParabolicScale = newScale;
-               }*/
 
                 abilityItem.parabolicItem.zoom = newScale;
             }

@@ -43,7 +43,6 @@ AbilityBasicItem {
     isHidden: !visible || isForcedHidden
     isHiddenSpacerVisible: taskItem.inAttentionAnimation
                            || taskItem.inFastRestoreAnimation
-                           || taskItem.inMimicParabolicAnimation
     isHiddenSpacerAnimated: taskItem.inFastRestoreAnimation
                             || showWindowAnimation.running
                             || restoreAnimation.running
@@ -54,7 +53,7 @@ AbilityBasicItem {
                              || !hoverEnabled
                              || inAnimation
                              || !hoverEnabled
-                             || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation))
+                             || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation))
 
     isSeparatorInRealLength: isSeparator && root.dragSource
 
@@ -85,9 +84,7 @@ AbilityBasicItem {
     property bool inBlockingAnimation: false
     property bool inBouncingAnimation: false
     property bool inFastRestoreAnimation: false
-    property bool inMimicParabolicAnimation: false
     property bool inNewWindowAnimation: false
-    property real mimicParabolicScale: -1
     property bool inPopup: false
     property bool inRemoveStage: false
 
@@ -623,18 +620,6 @@ AbilityBasicItem {
         inBlockingAnimation = value;
     }
 
-    function slotMimicEnterForParabolic(){
-        if (containsMouse) {
-            if (inMimicParabolicAnimation) {
-                mimicParabolicScale = taskItem.abilities.parabolic.factor.zoom;
-            }
-
-            if (parabolicEventsAreaLoader.active) {
-                parabolicEventsAreaLoader.item.calculateParabolicScales(icList.currentSpot);
-            }
-        }
-    }
-
     function slotShowPreviewForTasks(group) {
         if (group === taskItem && !windowsPreviewDlg.visible) {
             preparePreviewWindow(true);
@@ -920,7 +905,6 @@ AbilityBasicItem {
         root.draggingFinished.connect(handlerDraggingFinished);
         root.publishTasksGeometries.connect(slotPublishGeometries);
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);
-        root.mimicEnterForParabolic.connect(slotMimicEnterForParabolic);
 
         taskItem.abilities.launchers.launcherChanged.connect(onLauncherChanged);
         taskItem.abilities.launchers.launcherRemoved.connect(onLauncherChanged);
@@ -949,7 +933,6 @@ AbilityBasicItem {
         root.draggingFinished.disconnect(handlerDraggingFinished);
         root.publishTasksGeometries.disconnect(slotPublishGeometries);
         root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
-        root.mimicEnterForParabolic.disconnect(slotMimicEnterForParabolic);
 
         taskItem.abilities.launchers.launcherChanged.disconnect(onLauncherChanged);
         taskItem.abilities.launchers.launcherRemoved.disconnect(onLauncherChanged);

@@ -77,9 +77,6 @@ MouseArea {
 
     // IMPORTANT: This must be improved ! even for small milliseconds  it reduces performance
     onPositionChanged: {
-        if ((inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
-            return;
-
         if (taskItem.abilities.myView.isReady && !taskItem.abilities.myView.isShownFully) {
             return;
         }

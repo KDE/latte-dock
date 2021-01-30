@@ -213,7 +213,6 @@ Item {
     signal showPreviewForTasks(QtObject group);
     //trigger updating scaling of neighbour delegates of zoomed delegate
     signal updateScale(int delegateIndex, real newScale, real step)
-    signal mimicEnterForParabolic();
     signal publishTasksGeometries();
     signal windowsHovered(variant winIds, bool hovered)
 
