@@ -56,6 +56,15 @@ Item {
         }
     }
 
+    Connections {
+        target: abilityItem
+        onIsParabolicEventBlockedChanged: {
+            if (!abilityItem.isParabolicEventBlocked && _parabolicArea.containsMouse) {
+                _parabolicArea.parabolicEntered(lastMouseX, lastMouseY);
+            }
+        }
+    }
+
     Connections{
         target: abilityItem.abilities.myView
 
