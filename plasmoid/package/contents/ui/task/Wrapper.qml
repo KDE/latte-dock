@@ -63,6 +63,8 @@ Item{
         }
     }
 
+    property bool isZoomed: false
+
     property int maxThickness: !root.vertical ? taskItem.abilities.parabolic.factor.zoom*(taskItem.abilities.metrics.iconSize+root.heightMargins)
                                               : taskItem.abilities.parabolic.factor.zoom*(taskItem.abilities.metrics.iconSize+root.widthMargins)
 
@@ -212,8 +214,8 @@ Item{
     }
 
     function sendEndOfNeedBothAxisAnimation(){
-        if (taskItem.isZoomed) {
-            taskItem.isZoomed = false;
+        if (isZoomed) {
+            isZoomed = false;
             taskItem.abilities.animations.needBothAxis.removeEvent(bothAxisZoomEvent);
         }
     }
@@ -237,10 +239,10 @@ Item{
             }
         }
 
-        if ((mScale > 1) && !taskItem.isZoomed) {
-            taskItem.isZoomed = true;
+        if ((mScale > 1) && !isZoomed) {
+            isZoomed = true;
             taskItem.abilities.animations.needBothAxis.addEvent(bothAxisZoomEvent);
-        } else if ((mScale == 1) && taskItem.isZoomed) {
+        } else if ((mScale == 1) && isZoomed) {
             sendEndOfNeedBothAxisAnimation();
         }
     }

@@ -143,7 +143,6 @@ Item {
     property bool isSeparator: false
     property bool isStartup: (IsStartup === true) ? true : false
     property bool isWindow: (IsWindow === true) ? true : false
-    property bool isZoomed: false
 
     property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=taskItem.abilities.metrics.iconSize && height>=taskItem.abilities.metrics.iconSize
                                         && !taskItem.delayingRemove
