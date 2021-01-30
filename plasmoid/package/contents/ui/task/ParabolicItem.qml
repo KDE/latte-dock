@@ -63,6 +63,7 @@ Item{
         }
     }
 
+    property bool isUpdatingOnlySpacers: false
     property bool isZoomed: false
 
     property int maxThickness: !root.vertical ? taskItem.abilities.parabolic.factor.zoom*(taskItem.abilities.metrics.iconSize+root.heightMargins)

@@ -151,16 +151,14 @@ Item {
             hiddenSpacerRight.nScale =  scales.rightScale - 1;
         }
 
-        abilityItem.parabolicItem.zoom = abilityItem.abilities.parabolic.factor.zoom;
-
-        /*if (!taskItem.inAttentionAnimation) {
-
+        if (!parabolicItem.isUpdatingOnlySpacers) {
+            abilityItem.parabolicItem.zoom = abilityItem.abilities.parabolic.factor.zoom;
         } else {
             var subSpacerScale = (taskItem.abilities.parabolic.factor.zoom-1)/2;
 
             hiddenSpacerLeft.nScale = subSpacerScale;
             hiddenSpacerRight.nScale = subSpacerScale;
-        }*/
+        }
     } //zoom
 
     function updateScale(nIndex, nScale, step){
@@ -174,19 +172,26 @@ Item {
 
             }*/
 
-            var newScale = 1;
+            if (parabolicItem.isUpdatingOnlySpacers) {
+                var subSpacerScale = (nScale-1)/2;
 
-            if(nScale >= 0) {
-                newScale = nScale + step;
+                hiddenSpacerLeft.nScale = subSpacerScale;
+                hiddenSpacerRight.nScale = subSpacerScale;
             } else {
-                newScale = abilityItem.parabolicItem.zoom + step;
+                var newScale = 1;
+
+                if(nScale >= 0) {
+                    newScale = nScale + step;
+                } else {
+                    newScale = abilityItem.parabolicItem.zoom + step;
+                }
+
+                /*if (inMimicParabolicAnimation && mimicParabolicScale === -1) {
+                   mimicParabolicScale = newScale;
+               }*/
+
+                abilityItem.parabolicItem.zoom = newScale;
             }
-
-            /*if (inMimicParabolicAnimation && mimicParabolicScale === -1) {
-               mimicParabolicScale = newScale;
-           }*/
-
-            abilityItem.parabolicItem.zoom = newScale;
         }
     }
 

@@ -67,6 +67,8 @@ AbilityBasicItem {
         return isWindow ? model.display : model.AppName;
     }
 
+    parabolicItem.isUpdatingOnlySpacers: inAttentionAnimation || inBouncingAnimation
+
     property alias hoverEnabled: taskMouseArea.hoverEnabled
     property alias pressed: taskMouseArea.pressed
 

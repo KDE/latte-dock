@@ -52,7 +52,6 @@ Item{
     function clear(){
         newWindowAnimationLoader.item.loops = 1;
         newWindowAnimationLoader.item.stop();
-        //  iconImageBuffer.anchors.centerIn = iconImageBuffer.parent;
 
         taskItem.parabolicItem.tempScaleWidth = 1;
         taskItem.parabolicItem.tempScaleHeight = 1;
@@ -70,7 +69,7 @@ Item{
 
     function stop() {
         if (running) {
-            newWindowAnimationLoader.item.stop();
+            clear();
         }
     }
 
