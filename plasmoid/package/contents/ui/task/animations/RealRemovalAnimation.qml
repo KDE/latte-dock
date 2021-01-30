@@ -115,9 +115,9 @@ SequentialAnimation {
 
             taskItem.abilities.animations.needLength.addEvent(needLengthEvent);
 
-            if (wrapper.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation
+            if (taskItem.parabolicItem.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation
                     && !taskItem.inBouncingAnimation && LatteCore.WindowSystem.compositingActive) {
-                tasksExtendedManager.setFrozenTask(taskItem.launcherUrl, wrapper.mScale);
+                tasksExtendedManager.setFrozenTask(taskItem.launcherUrl, taskItem.parabolicItem.mScale);
             }
         }
     }
@@ -125,7 +125,7 @@ SequentialAnimation {
     //Ghost animation that acts as a delayer in case there is a bouncing animation
     //taking place
     PropertyAnimation {
-        target: wrapper
+        target: taskItem.parabolicItem
         property: "opacity"
         to: 1
 
@@ -139,14 +139,14 @@ SequentialAnimation {
     //end of ghost animation
 
     PropertyAnimation {
-        target: wrapper
+        target: taskItem.parabolicItem
         property: "mScale"
         to: 1
         duration: taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
         easing.type: Easing.InQuad
     }
 
-    //PropertyAction { target: wrapper; property: "opacity"; value: isWindow ? 0 : 1 }
+    //PropertyAction { target: taskItem.parabolicItem; property: "opacity"; value: isWindow ? 0 : 1 }
     //animation mainly for launchers removal and startups
     ParallelAnimation{
         id: removalAnimation
@@ -154,7 +154,7 @@ SequentialAnimation {
         // property int speed: (IsStartup && !taskItem.visible)? 0 : 400
         //property int speed: 400
         NumberAnimation {
-            target: wrapper;
+            target: taskItem.parabolicItem;
             property: "opacity";
             to: 0;
             duration: taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
@@ -162,7 +162,7 @@ SequentialAnimation {
         }
 
         PropertyAnimation {
-            target: wrapper
+            target: taskItem.parabolicItem
             property: (icList.orientation === Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
             to: 0
             duration: taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
@@ -172,7 +172,7 @@ SequentialAnimation {
 
     //smooth move into place the surrounding tasks
     PropertyAnimation {
-        target: wrapper
+        target: taskItem.parabolicItem
         property: (icList.orientation === Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
         to: 0
         duration: taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0

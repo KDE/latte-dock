@@ -25,8 +25,8 @@ import org.kde.latte.core 0.2 as LatteCore
 Item{
     id: hiddenSpacer
     //we add one missing pixel from calculations
-    width: root.vertical ? wrapper.width : nHiddenSize
-    height: root.vertical ? nHiddenSize : wrapper.height
+    width: root.vertical ? taskItem.parabolicItem.width : nHiddenSize
+    height: root.vertical ? nHiddenSize : taskItem.parabolicItem.height
 
     visible: (rightSpacer ? index === taskItem.abilities.indexer.lastVisibleItemIndex : index === taskItem.abilities.indexer.firstVisibleItemIndex)
              || (separatorSpace > 0) || taskItem.inAttentionAnimation
@@ -81,7 +81,7 @@ Item{
         id: animatedBehavior
         enabled: (taskItem.inFastRestoreAnimation || showWindowAnimation.running || restoreAnimation.running
                   || root.inActivityChange || taskItem.inRemoveStage)
-                 || (taskItem.containsMouse && inAttentionAnimation && wrapper.mScale!==taskItem.abilities.parabolic.factor.zoom)
+                 || (taskItem.containsMouse && inAttentionAnimation && taskItem.parabolicItem.mScale!==taskItem.abilities.parabolic.factor.zoom)
         NumberAnimation{ duration: 3 * taskItem.animationTime }
     }
 

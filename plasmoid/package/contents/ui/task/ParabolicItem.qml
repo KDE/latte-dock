@@ -25,7 +25,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte.core 0.2 as LatteCore
 
 Item{
-    id: wrapper
+    id: parabolicItem
     opacity: 0
     width: {
         if (!taskItem.visible)
@@ -104,7 +104,7 @@ Item{
 
     signal runLauncherAnimation();
 
-    readonly property string bothAxisZoomEvent: wrapper + "_zoom"
+    readonly property string bothAxisZoomEvent: parabolicItem + "_zoom"
      /* Rectangle{
             anchors.fill: parent
             border.width: 1
@@ -143,8 +143,8 @@ Item{
         anchors.horizontalCenterOffset: taskItem.iconOffsetX
         anchors.verticalCenterOffset: taskItem.iconOffsetY
 
-        width: wrapper.regulatorWidth
-        height: wrapper.regulatorHeight
+        width: parabolicItem.regulatorWidth
+        height: parabolicItem.regulatorHeight
 
         TitleTooltipParent{
             id: _titleTooltipVisualParent
@@ -159,13 +159,13 @@ Item{
             onFormFactorChanged:{
                 taskItem.inAddRemoveAnimation = false;
 
-                wrapper.mScale = 1.01;
-                wrapper.tempScaleWidth = 1.01;
-                wrapper.tempScaleHeight = 1.01;
+                parabolicItem.mScale = 1.01;
+                parabolicItem.tempScaleWidth = 1.01;
+                parabolicItem.tempScaleHeight = 1.01;
 
-                wrapper.mScale = 1;
-                wrapper.tempScaleWidth = 1;
-                wrapper.tempScaleHeight = 1;
+                parabolicItem.mScale = 1;
+                parabolicItem.tempScaleWidth = 1;
+                parabolicItem.tempScaleHeight = 1;
             }
         }
 
@@ -177,13 +177,13 @@ Item{
 
             property int zoomedSize: taskItem.abilities.parabolic.factor.zoom * taskItem.abilities.metrics.iconSize
 
-            property real basicScalingWidth : wrapper.inTempScaling ? (taskItem.abilities.metrics.iconSize * wrapper.scaleWidth) :
-                                                                      taskItem.abilities.metrics.iconSize * wrapper.mScale
-            property real basicScalingHeight : wrapper.inTempScaling ? (taskItem.abilities.metrics.iconSize * wrapper.scaleHeight) :
-                                                                       taskItem.abilities.metrics.iconSize * wrapper.mScale
+            property real basicScalingWidth : parabolicItem.inTempScaling ? (taskItem.abilities.metrics.iconSize * parabolicItem.scaleWidth) :
+                                                                      taskItem.abilities.metrics.iconSize * parabolicItem.mScale
+            property real basicScalingHeight : parabolicItem.inTempScaling ? (taskItem.abilities.metrics.iconSize * parabolicItem.scaleHeight) :
+                                                                       taskItem.abilities.metrics.iconSize * parabolicItem.mScale
 
             property real newTempSize: {
-                if (wrapper.opacity === 1 ) {
+                if (parabolicItem.opacity === 1 ) {
                     return Math.min(basicScalingWidth, basicScalingHeight);
                 } else {
                     return Math.max(basicScalingWidth, basicScalingHeight);
@@ -253,7 +253,7 @@ Item{
             if (!taskItem.visible) {
                 //! is mostly used when the user destroys tasks applet from the context menu and both
                 //! axis animations should be released in that case
-                wrapper.sendEndOfNeedBothAxisAnimation();
+                parabolicItem.sendEndOfNeedBothAxisAnimation();
             }
         }
     }
@@ -263,4 +263,4 @@ Item{
             opacity = 1;
         }
     }
-}// Main task area // id:wrapper
+}//parabolicItem

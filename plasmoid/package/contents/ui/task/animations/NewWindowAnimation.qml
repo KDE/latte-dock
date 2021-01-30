@@ -53,8 +53,8 @@ Item{
         newWindowAnimationLoader.item.stop();
         //  iconImageBuffer.anchors.centerIn = iconImageBuffer.parent;
 
-        wrapper.tempScaleWidth = 1;
-        wrapper.tempScaleHeight = 1;
+        taskItem.parabolicItem.tempScaleWidth = 1;
+        taskItem.parabolicItem.tempScaleHeight = 1;
 
         taskItem.setBlockingAnimation(false);
         taskItem.inAttentionAnimation = false;
@@ -71,8 +71,8 @@ Item{
         taskItem.setBlockingAnimation(true);
         taskItem.inNewWindowAnimation = true;
 
-        wrapper.tempScaleWidth = wrapper.mScale;
-        wrapper.tempScaleHeight = wrapper.mScale;
+        taskItem.parabolicItem.tempScaleWidth = taskItem.parabolicItem.mScale;
+        taskItem.parabolicItem.tempScaleHeight = taskItem.parabolicItem.mScale;
 
         if(!isDemandingAttention)
             newWindowAnimationLoader.item.loops = 1;

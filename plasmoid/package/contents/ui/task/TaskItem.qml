@@ -64,14 +64,14 @@ Item {
         }
 
         if (root.vertical) {
-            return wrapper.width;
+            return taskItem.parabolicItem.width;
         } else {
-            return hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width;
+            return hiddenSpacerLeft.width+taskItem.parabolicItem.width+hiddenSpacerRight.width;
         }
     }
 
     /*onWidthChanged: {
-        console.log("T: " + itemIndex + " - " + launcherUrl + " - " + width + " _ "+ hiddenSpacerLeft.width + " _ " + wrapper.width + " _ " + hiddenSpacerRight.width);
+        console.log("T: " + itemIndex + " - " + launcherUrl + " - " + width + " _ "+ hiddenSpacerLeft.width + " _ " + taskItem.parabolicItem.width + " _ " + hiddenSpacerRight.width);
     }*/
 
     height: {
@@ -91,9 +91,9 @@ Item {
         }
 
         if (root.vertical) {
-            return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;
+            return hiddenSpacerLeft.height + taskItem.parabolicItem.height + hiddenSpacerRight.height;
         } else {
-            return wrapper.height;
+            return taskItem.parabolicItem.height;
         }
     }
 
@@ -146,7 +146,7 @@ Item {
 
     property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=taskItem.abilities.metrics.iconSize && height>=taskItem.abilities.metrics.iconSize
                                         && !taskItem.delayingRemove
-                                        && (wrapper.mScale===1 || wrapper.mScale===taskItem.abilities.parabolic.factor.zoom) //don't publish during zoom animation
+                                        && (taskItem.parabolicItem.mScale===1 || taskItem.parabolicItem.mScale===taskItem.abilities.parabolic.factor.zoom) //don't publish during zoom animation
 
     property bool hoveredFromDragging: (mouseHandler.hoveredItem === taskItem) || (mouseHandler.ignoredItem === taskItem)
 
@@ -182,10 +182,10 @@ Item {
 
     readonly property alias hoveredTimer: taskMouseArea.hoveredTimer
     readonly property alias mouseArea: taskMouseArea
-    readonly property alias tooltipVisualParent: _wrapper.titleTooltipVisualParent
-    readonly property alias previewsVisualParent: _wrapper.titleTooltipVisualParent
+    readonly property alias tooltipVisualParent: taskItem.parabolicItem.titleTooltipVisualParent
+    readonly property alias previewsVisualParent: taskItem.parabolicItem.titleTooltipVisualParent
     readonly property alias subWindows: subWindows
-    readonly property alias wrapper: _wrapper
+    readonly property alias parabolicItem: _parabolicItem
 
     readonly property alias showWindowAnimation: _showWindowAnimation
     readonly property alias restoreAnimation: _restoreAnimation
@@ -303,7 +303,7 @@ Item {
 
     onContentItemChanged: {
         if (contentItem) {
-            contentItem.parent = wrapper.contentItemContainer;
+            contentItem.parent = taskItem.parabolicItem.contentItemContainer;
         }
     }
 
@@ -509,8 +509,8 @@ Item {
         HiddenSpacer{ id:hiddenSpacerLeft;}
 
         Item{
-            width: wrapper.width
-            height: wrapper.height
+            width: taskItem.parabolicItem.width
+            height: taskItem.parabolicItem.height
 
             AbilityItem.IndicatorObject {
                 id: taskIndicatorObj
@@ -544,7 +544,7 @@ Item {
                 windowsCount: !root.disableAllWindowsFunctionality ? taskItem.windowsCount : 0
                 windowsMinimizedCount: !root.disableAllWindowsFunctionality ? taskItem.windowsMinimizedCount : 0
 
-                scaleFactor: taskItem.wrapper.mScale
+                scaleFactor: taskItem.parabolicItem.mScale
                 panelOpacity: taskItem.abilities.myView.backgroundOpacity
                 shadowColor: taskItem.abilities.myView.itemShadow.shadowSolidColor
 
@@ -575,7 +575,7 @@ Item {
                 }
             }
 
-            Wrapper{id: _wrapper}
+            ParabolicItem{id: _parabolicItem}
 
             //! Indicator Front Layer
             IndicatorLevel{
@@ -756,7 +756,7 @@ Item {
     function activateTask() {
         if( taskItem.isLauncher || root.disableAllWindowsFunctionality){
             if (LatteCore.WindowSystem.compositingActive) {
-                wrapper.runLauncherAnimation();
+                taskItem.parabolicItem.runLauncherAnimation();
             } else {
                 launcherAction();
             }
@@ -985,14 +985,14 @@ Item {
         //! this way we make sure that layouts that are in different activities that the current layout
         //! don't publish their geometries
         if ( canPublishGeometries && (!taskItem.abilities.myView.isReady || (taskItem.abilities.myView.isReady && taskItem.abilities.myView.inCurrentLayout()))) {
-            var globalChoords = backend.globalRect(wrapper.contentItemContainer);
+            var globalChoords = backend.globalRect(taskItem.parabolicItem.contentItemContainer);
             var limits = backend.globalRect(scrollableList);
 
             //! Limit the published geometries boundaries at scrolling area boundaries
             var adjX = Math.min(limits.x+limits.width, Math.max(limits.x, globalChoords.x));
             var adjY = Math.min(limits.y+limits.height, Math.max(limits.y, globalChoords.y));
 
-            var length = taskItem.abilities.metrics.iconSize * wrapper.mScale;
+            var length = taskItem.abilities.metrics.iconSize * taskItem.parabolicItem.mScale;
             var thickness = length;
 
             //! Magic Lamp effect doesn't like coordinates outside the screen and
@@ -1049,7 +1049,7 @@ Item {
 
     function slotWaitingLauncherRemoved(launch) {
         if ((isWindow || isStartup || isLauncher) && !visible && launch === launcherUrl) {
-            wrapper.mScale = 1;
+            taskItem.parabolicItem.mScale = 1;
             visible = true;
         }
     }
@@ -1235,7 +1235,7 @@ Item {
 
     Component.onCompleted: {
         if (contentItem) {
-            contentItem.parent = wrapper.contentItemContainer;
+            contentItem.parent = taskItem.parabolicItem.contentItemContainer;
         }
 
         root.draggingFinished.connect(handlerDraggingFinished);
@@ -1278,7 +1278,7 @@ Item {
 
         tasksExtendedManager.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);
 
-        wrapper.sendEndOfNeedBothAxisAnimation();
+        taskItem.parabolicItem.sendEndOfNeedBothAxisAnimation();
     }
 
     /////Animations

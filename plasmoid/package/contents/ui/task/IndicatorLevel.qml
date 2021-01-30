@@ -39,7 +39,7 @@ AbilityItem.IndicatorLevel {
             return visualLockedWidth;
         }
 
-        return !root.vertical ? taskItem.wrapper.width - 2*taskItem.wrapper.mScale*taskItem.abilities.metrics.margin.length: taskItem.wrapper.width;
+        return !root.vertical ? taskItem.parabolicItem.width - 2*taskItem.parabolicItem.mScale*taskItem.abilities.metrics.margin.length: taskItem.parabolicItem.width;
     }
 
     height: {
@@ -47,7 +47,7 @@ AbilityItem.IndicatorLevel {
             return visualLockedHeight;
         }
 
-        return root.vertical ? taskItem.wrapper.height - 2*taskItem.wrapper.mScale*taskItem.abilities.metrics.margin.length : taskItem.wrapper.height;
+        return root.vertical ? taskItem.parabolicItem.height - 2*taskItem.parabolicItem.mScale*taskItem.abilities.metrics.margin.length : taskItem.parabolicItem.height;
     }
 
     level.isDrawn: level.indicator && level.indicator.host && level.indicator.host.isEnabled && !taskItem.isSeparator && !taskItem.isHidden

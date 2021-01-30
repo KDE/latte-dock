@@ -64,7 +64,7 @@ Item {
                     return height;
                 } else if ( index === taskItem.abilities.indexer.firstVisibleItemIndex && !taskItem.containsMouse) {
                     var shadowSize = (taskItem.abilities.myView.itemShadow.isEnabled ? taskItem.abilities.myView.itemShadow.size/2 : 0);
-                    return (wrapper.mScale * (taskItem.abilities.metrics.iconSize - shadowSize));
+                    return (taskItem.parabolicItem.mScale * (taskItem.abilities.metrics.iconSize - shadowSize));
                 } else {
                     return 999999;
                 }

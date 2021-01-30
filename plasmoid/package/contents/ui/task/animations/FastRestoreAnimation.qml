@@ -37,7 +37,7 @@ SequentialAnimation{
 
     ParallelAnimation {
         PropertyAnimation {
-            target: wrapper
+            target: taskItem.parabolicItem
             property: "mScale"
             to: 1
             duration: fastRestoreAnimation.speed
@@ -45,7 +45,7 @@ SequentialAnimation{
         }
 
         PropertyAnimation {
-            target: wrapper
+            target: taskItem.parabolicItem
             property: "tempScaleWidth"
             to: 1
             duration: fastRestoreAnimation.speed
@@ -53,7 +53,7 @@ SequentialAnimation{
         }
 
         PropertyAnimation {
-            target: wrapper
+            target: taskItem.parabolicItem
             property: "tempScaleHeight"
             to: 1
             duration: fastRestoreAnimation.speed

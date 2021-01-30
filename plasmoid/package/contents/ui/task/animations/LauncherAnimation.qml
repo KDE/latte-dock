@@ -89,8 +89,8 @@ Item{
             }
         }
 
-        wrapper.tempScaleWidth = wrapper.mScale;
-        wrapper.tempScaleHeight = wrapper.mScale;
+        taskItem.parabolicItem.tempScaleWidth = taskItem.parabolicItem.mScale;
+        taskItem.parabolicItem.tempScaleHeight = taskItem.parabolicItem.mScale;
     }
 
     function startLauncherAnimation(){
@@ -107,12 +107,12 @@ Item{
 
 
     Component.onCompleted: {
-        wrapper.runLauncherAnimation.connect(startLauncherAnimation);
+        taskItem.parabolicItem.runLauncherAnimation.connect(startLauncherAnimation);
     }
 
     Component.onDestruction: {
         clearAnimationsSignals();
-        wrapper.runLauncherAnimation.disconnect(startLauncherAnimation);
+        taskItem.parabolicItem.runLauncherAnimation.disconnect(startLauncherAnimation);
     }
 }
 /////////////////// end of launcher animation

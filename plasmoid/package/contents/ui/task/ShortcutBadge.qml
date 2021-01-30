@@ -72,8 +72,8 @@ Loader{
             anchors.left: centerInParent? undefined : parent.left
             anchors.top: centerInParent? undefined : parent.top
             anchors.centerIn: centerInParent? parent : undefined
-            minimumWidth: 0.4 * (wrapper.mScale * taskItem.abilities.metrics.iconSize)
-            height: Math.max(24, 0.4 * (wrapper.mScale * taskItem.abilities.metrics.iconSize))
+            minimumWidth: 0.4 * (taskItem.parabolicItem.mScale * taskItem.abilities.metrics.iconSize)
+            height: Math.max(24, 0.4 * (taskItem.parabolicItem.mScale * taskItem.abilities.metrics.iconSize))
 
             style3d: taskItem.abilities.myView.badgesIn3DStyle
             textValue: shorcutBadge.badgeString

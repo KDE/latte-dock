@@ -34,7 +34,7 @@ SequentialAnimation{
 
     //Ghost animation that acts as a delayer, in order to fix #342
     PropertyAnimation {
-        target: wrapper
+        target: taskItem.parabolicItem
         property: "opacity"
         to: 0
         //it is not depend to durationTime when animations are active
@@ -53,7 +53,7 @@ SequentialAnimation{
     }
 
     PropertyAnimation {
-        target: wrapper
+        target: taskItem.parabolicItem
         property: (icList.orientation == Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
         to: 1
         duration: showWindowAnimation.speed
@@ -63,7 +63,7 @@ SequentialAnimation{
     ParallelAnimation{
 
         PropertyAnimation {
-            target: wrapper
+            target: taskItem.parabolicItem
             property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
             to: 1
             duration: showWindowAnimation.speed
@@ -72,7 +72,7 @@ SequentialAnimation{
 
 
         PropertyAnimation {
-            target: wrapper
+            target: taskItem.parabolicItem
             property: "opacity"
             from: 0
             to: 1
@@ -153,41 +153,41 @@ SequentialAnimation{
         if (hideWindow) {
             isForcedHidden = true;
             taskItem.visible = false;
-            wrapper.tempScaleWidth = 0;
-            wrapper.tempScaleHeight = 0;
-            wrapper.opacity = 0;
+            taskItem.parabolicItem.tempScaleWidth = 0;
+            taskItem.parabolicItem.tempScaleHeight = 0;
+            taskItem.parabolicItem.opacity = 0;
             taskItem.inAnimation = false;
         } else if (!LatteCore.WindowSystem.compositingActive || root.inDraggingPhase
                    || taskItem.isSeparator) {
             isForcedHidden = false;
             taskItem.visible = true;
-            wrapper.tempScaleWidth = 1;
-            wrapper.tempScaleHeight = 1;
-            wrapper.mScale = 1;
-            wrapper.opacity = 1;
+            taskItem.parabolicItem.tempScaleWidth = 1;
+            taskItem.parabolicItem.tempScaleHeight = 1;
+            taskItem.parabolicItem.mScale = 1;
+            taskItem.parabolicItem.opacity = 1;
             taskItem.inAnimation = false;
         } else if (( animation2 || animation3 || animation6 || isForcedHidden)
                    && (taskItem.abilities.animations.speedFactor.current !== 0) && !launcherIsAlreadyShown){
             isForcedHidden = false;
             taskItem.visible = true;
-            wrapper.tempScaleWidth = 0;
-            wrapper.tempScaleHeight = 0;
+            taskItem.parabolicItem.tempScaleWidth = 0;
+            taskItem.parabolicItem.tempScaleHeight = 0;
             start();
         } else {
             isForcedHidden = false;
             var frozenTask = tasksExtendedManager.getFrozenTask(taskItem.launcherUrl);
 
             if (frozenTask && frozenTask.mScale>1) {
-                wrapper.mScale = frozenTask.mScale;
+                taskItem.parabolicItem.mScale = frozenTask.mScale;
                 tasksExtendedManager.removeFrozenTask(taskItem.launcherUrl);
             } else {
-                wrapper.tempScaleWidth = 1;
-                wrapper.tempScaleHeight = 1;
+                taskItem.parabolicItem.tempScaleWidth = 1;
+                taskItem.parabolicItem.tempScaleHeight = 1;
             }
 
             //! by enabling it we break the bouncing animation
             //taskItem.visible = true;
-            wrapper.opacity = 1;
+            taskItem.parabolicItem.opacity = 1;
             taskItem.inAnimation = false;
         }
     }

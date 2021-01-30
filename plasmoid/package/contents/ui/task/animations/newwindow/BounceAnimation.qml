@@ -26,7 +26,7 @@ SequentialAnimation{
 
     ParallelAnimation{
         PropertyAnimation {
-            target: wrapper
+            target: taskItem.parabolicItem
             property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
             to: 1 + (thickPercentage * 2 * (taskItem.abilities.animations.requirements.zoomFactor-1))
             duration: newWindowAnimation.speed
@@ -36,7 +36,7 @@ SequentialAnimation{
         }
 
         PropertyAnimation {
-            target: wrapper
+            target: taskItem.parabolicItem
             property: (icList.orientation == Qt.Horizontal) ? "tempScaleWidth" : "tempScaleHeight"
             to: 1
             duration: newWindowAnimation.speed
@@ -45,7 +45,7 @@ SequentialAnimation{
     }
 
     PropertyAnimation {
-        target: wrapper
+        target: taskItem.parabolicItem
         property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
         to: 1
         duration: 4.4*newWindowAnimation.speed

@@ -31,7 +31,7 @@ Item {
 
     readonly property bool containsMouse: (taskItem.abilities.parabolic.currentParabolicItem === _parabolicArea) || parabolicMouseArea.containsMouse
 
-    readonly property real center: wrapper.center
+    readonly property real center: taskItem.parabolicItem.center
 
     MouseArea {
         id: parabolicMouseArea
@@ -91,7 +91,7 @@ Item {
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && taskItem.hoverEnabled){
-            if( ((wrapper.mScale === 1 || wrapper.mScale === taskItem.abilities.parabolic.factor.zoom) && !taskItem.abilities.parabolic.directRenderingEnabled)
+            if( ((taskItem.parabolicItem.mScale === 1 || taskItem.parabolicItem.mScale === taskItem.abilities.parabolic.factor.zoom) && !taskItem.abilities.parabolic.directRenderingEnabled)
                     || taskItem.abilities.parabolic.directRenderingEnabled || !taskItem.scalesUpdatedOnce) {
                 if(root.dragSource == null){
                     var step = Math.abs(icList.currentSpot-mousePos);
@@ -131,7 +131,7 @@ Item {
             }
 
             if (!taskItem.inAttentionAnimation) {
-                wrapper.mScale = taskItem.abilities.parabolic.factor.zoom;
+                taskItem.parabolicItem.mScale = taskItem.abilities.parabolic.factor.zoom;
             } else {
                 var subSpacerScale = (taskItem.abilities.parabolic.factor.zoom-1)/2;
 
@@ -157,14 +157,14 @@ Item {
                 if(nScale >= 0) {
                     newScale = nScale + step;
                 } else {
-                    newScale = wrapper.mScale + step;
+                    newScale = taskItem.parabolicItem.mScale + step;
                 }
 
                 if (inMimicParabolicAnimation && mimicParabolicScale === -1) {
                     mimicParabolicScale = newScale;
                 }
 
-                wrapper.mScale = newScale;
+                taskItem.parabolicItem.mScale = newScale;
             }
         }
     }

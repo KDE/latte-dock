@@ -30,40 +30,21 @@ SequentialAnimation{
     property int speed: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large
     property real maxMScale: Math.max(1,taskItem.abilities.parabolic.factor.zoom - (taskItem.abilities.parabolic.factor.zoom - 1) / 2)
 
-    ParallelAnimation{
-        PropertyAnimation {
-            target: brightnessTaskEffect
-            property: "brightness"
-            to: -0.5
-            duration: clickedAnimation.speed
-            easing.type: Easing.OutQuad
-        }
-       /* PropertyAnimation {
-            target: wrapper
-            property: "mScale"
-            to: root.taskInAnimation ? 1 : Math.max(clickedAnimation.maxMScale, wrapper.mScale - (taskItem.abilities.parabolic.factor.zoom - 1) / 2)
-            duration: clickedAnimation.speed
-            easing.type: Easing.OutQuad
-        }*/
+    PropertyAnimation {
+        target: brightnessTaskEffect
+        property: "brightness"
+        to: -0.5
+        duration: clickedAnimation.speed
+        easing.type: Easing.OutQuad
     }
 
-    ParallelAnimation{
-        PropertyAnimation {
-            target: brightnessTaskEffect
-            property: "brightness"
-            to: 0
-            duration: clickedAnimation.speed
-            easing.type: Easing.OutQuad
-        }
-      /*  PropertyAnimation {
-            target: wrapper
-            property: "mScale"
-            to: root.taskInAnimation ? 1 : taskItem.abilities.parabolic.factor.zoom
-            duration: clickedAnimation.speed
-            easing.type: Easing.OutQuad
-        }*/
+    PropertyAnimation {
+        target: brightnessTaskEffect
+        property: "brightness"
+        to: 0
+        duration: clickedAnimation.speed
+        easing.type: Easing.OutQuad
     }
-
 
     onPressedChanged: {
         if(!running && pressed && !taskItem.abilities.indicators.info.providesClickedAnimation &&

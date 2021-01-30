@@ -26,27 +26,11 @@ import org.kde.plasma.plasmoid 2.0
 SequentialAnimation{
     id: restoreAnimation
 
-    ParallelAnimation{
-        PropertyAnimation {
-            target: wrapper
-            property: "mScale"
-            to: 1
-            duration: 3 * taskItem.animationTime
-            easing.type: Easing.InCubic
-        }
+    PropertyAnimation {
+        target: taskItem.parabolicItem
+        property: "mScale"
+        to: 1
+        duration: 3 * taskItem.animationTime
+        easing.type: Easing.InCubic
     }
-
-    //! debug code based on third task
-    /*ScriptAction{
-        script: {
-            if (index===2) {
-                console.log("restore script ended correctly...");
-            }
-        }
-    }
-
-    onStarted: {
-        if (index === 2)
-            console.log("restore animation started...");
-    } */
 }
