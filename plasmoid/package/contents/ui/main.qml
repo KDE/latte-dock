@@ -198,7 +198,6 @@ Item {
                                                        || plasmoid.location === PlasmaCore.Types.RightEdge
                                                        || plasmoid.location === PlasmaCore.Types.BottomEdge
                                                        || plasmoid.location === PlasmaCore.Types.TopEdge)
-    readonly property bool enforceLattePalette: latteBridge && latteBridge.applyPalette && latteBridge.palette
     readonly property bool latteInEditMode: latteBridge && latteBridge.inEditMode
     //END  Latte Dock Communicator
 

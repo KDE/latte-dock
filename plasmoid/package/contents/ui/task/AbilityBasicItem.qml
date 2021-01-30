@@ -215,7 +215,7 @@ Item{
             anchors.centerIn: parent
             width: plasmoid.formFactor === PlasmaCore.Types.Vertical ? abilityItem.abilities.metrics.iconSize - 4  : 1
             height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? abilityItem.abilities.metrics.iconSize - 4 : 1
-            color: enforceLattePalette ? latteBridge.palette.textColor : theme.textColor
+            color: abilityItem.abilities.myView.palette.textColor
         }
     }
 

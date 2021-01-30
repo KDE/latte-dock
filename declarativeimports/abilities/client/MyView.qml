@@ -19,6 +19,7 @@
 
 import QtQuick 2.0
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 
 AbilityDefinition.MyView {
@@ -51,6 +52,8 @@ AbilityDefinition.MyView {
     containmentActions: ref.myView.containmentActions
 
     itemShadow: ref.myView.itemShadow
+
+    palette: bridge && bridge.applyPalette ? bridge.palette : theme
 
     readonly property AbilityDefinition.MyView local: AbilityDefinition.MyView {}
 

@@ -57,6 +57,8 @@ AbilityDefinition.MyView {
 
         readonly property alias itemShadow: apis.itemShadow
 
+        readonly property alias palette: apis.palette
+
         function inCurrentLayout() {
             return apis.inCurrentLayout();
         }

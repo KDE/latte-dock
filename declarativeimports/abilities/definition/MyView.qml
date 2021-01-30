@@ -19,6 +19,8 @@
 
 import QtQuick 2.0
 
+import org.kde.plasma.plasmoid 2.0
+
 import org.kde.latte.core 0.2 as LatteCore
 
 import "./myview" as MyViewTypes
@@ -49,6 +51,8 @@ Item {
     property rect screenGeometry: Qt.rect(0, 0, 1600, 1080)
 
     property var containmentActions: []
+
+    property QtObject palette: theme
 
     property MyViewTypes.ItemShadow itemShadow: MyViewTypes.ItemShadow {
         isEnabled: true
