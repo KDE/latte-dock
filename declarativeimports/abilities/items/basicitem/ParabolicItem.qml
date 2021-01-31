@@ -157,7 +157,7 @@ Item{
             //! Latte Side Painting-style if the user chose it
             Loader{
                 anchors.fill: _contentItemContainer
-                active: plasmoid.configuration.forceMonochromaticIcons
+                active: abilityItem.isMonochromaticForcedContentItem
 
                 sourceComponent: ColorOverlay {
                     anchors.fill: parent

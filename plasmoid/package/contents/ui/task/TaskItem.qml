@@ -41,8 +41,8 @@ AbilityItem.BasicItem {
     objectName: "TaskItem"
 
     isHidden: !visible || isForcedHidden
-    isHiddenSpacerVisible: taskItem.inAttentionAnimation
-                           || taskItem.inFastRestoreAnimation
+
+    isHiddenSpacerForcedShow: taskItem.inAttentionAnimation || taskItem.inFastRestoreAnimation
     isHiddenSpacerAnimated: taskItem.inFastRestoreAnimation
                             || showWindowAnimation.running
                             || restoreAnimation.running
@@ -50,6 +50,7 @@ AbilityItem.BasicItem {
                             || taskItem.inRemoveStage
                             || (taskItem.containsMouse && inAttentionAnimation && taskItem.parabolicItem.zoom!==taskItem.abilities.parabolic.factor.zoom)
 
+    isMonochromaticForcedContentItem: plasmoid.configuration.forceMonochromaticIcons
 
     isSeparatorInRealLength: isSeparator && root.dragSource
 

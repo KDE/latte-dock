@@ -20,6 +20,8 @@
 import QtQuick 2.7
 
 import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
+
 import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 
 AbilityDefinition.ParabolicEffect {

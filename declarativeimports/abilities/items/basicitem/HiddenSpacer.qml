@@ -30,7 +30,7 @@ Item{
 
     visible: (rightSpacer ? index === abilityItem.abilities.indexer.lastVisibleItemIndex : index === abilityItem.abilities.indexer.firstVisibleItemIndex)
              || (separatorSpace > 0)
-             || abilityItem.isHiddenSpacerVisible
+             || abilityItem.isHiddenSpacerForcedShow
 
     property bool neighbourSeparator: rightSpacer ? abilityItem.headItemIsSeparator : abilityItem.tailItemIsSeparator
     //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
@@ -52,9 +52,9 @@ Item{
         target: hiddenSpacer
         property: "nHiddenSize"
         value: {
-            if (isForcedHidden) {
+            if (abilityItem.isHidden) {
                 return 0;
-            } else if (!inAttentionAnimation && !inFastRestoreAnimation) {
+            } else if (!abilityItem.parabolicItem.isUpdatingOnlySpacers) {
                 return (nScale > 0) ? (maxSize * nScale) + separatorSpace : separatorSpace;
             } else {
                 return (nScale > 0) ? (abilityItem.abilities.metrics.iconSize * nScale) + separatorSpace : separatorSpace;
@@ -65,7 +65,7 @@ Item{
     Connections{
         target: abilityItem
         onContainsMouseChanged: {
-            if (!abilityItem.containsMouse && !isHiddenSpacerVisible) {
+            if (!abilityItem.containsMouse && !abilityItem.isHiddenSpacerForcedShow) {
                 hiddenSpacer.nScale = 0;
             }
         }

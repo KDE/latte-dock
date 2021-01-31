@@ -88,8 +88,11 @@ Item{
         }
     }
 
+    property bool isMonochromaticForcedContentItem: false
+
     property bool isHiddenSpacerAnimated: true
-    property bool isHiddenSpacerVisible: false
+    property bool isHiddenSpacerForcedShow: false
+
     property bool isHidden: false
     property bool isSeparator: false
     property bool isSeparatorInRealLength: false
