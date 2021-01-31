@@ -19,6 +19,7 @@
 
 import QtQuick 2.7
 
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 
 AbilityDefinition.Animations {
@@ -44,7 +45,14 @@ AbilityDefinition.Animations {
     //! requirements
     requirements: local.requirements
 
-    readonly property AbilityDefinition.Animations local: AbilityDefinition.Animations{}
+    readonly property AbilityDefinition.Animations local: AbilityDefinition.Animations{
+        active: local.speedFactor.current !== 0
+        hoverPixelSensitivity: 1
+        speedFactor.normal: active ? speedFactor.current : 1.0
+
+        duration.small: LatteCore.Environment.shortDuration
+        duration.large: LatteCore.Environment.longDuration
+    }
 
     Item {
         id: ref

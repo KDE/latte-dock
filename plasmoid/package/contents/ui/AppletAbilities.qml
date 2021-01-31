@@ -50,7 +50,7 @@ Item {
     //! optional
     readonly property alias launchers: _launchers
 
-    Ability.Animations {
+    AbilityClient.Animations {
         id: _animations
         bridge: _abilityContainer.bridge
     }

@@ -127,6 +127,15 @@ Item {
 
     readonly property alias containsDrag: mouseHandler.containsDrag
 
+    //! Animations
+    readonly property bool launcherBouncingEnabled: appletAbilities.animations.active && plasmoid.configuration.animationLauncherBouncing
+    readonly property bool newWindowSlidingEnabled: appletAbilities.animations.active && plasmoid.configuration.animationNewWindowSliding
+    readonly property bool windowInAttentionEnabled: appletAbilities.animations.active && plasmoid.configuration.animationWindowInAttention
+    readonly property bool windowAddedInGroupEnabled: appletAbilities.animations.active && plasmoid.configuration.animationWindowAddedInGroup
+    readonly property bool windowRemovedFromGroupEnabled: appletAbilities.animations.active && plasmoid.configuration.animationWindowRemovedFromGroup
+
+    readonly property bool hasHighThicknessAnimation: launcherBouncingEnabled || windowInAttentionEnabled || windowAddedInGroupEnabled
+
     //BEGIN properties
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool highlightWindows: hoverAction === LatteTasks.Types.HighlightWindows || hoverAction === LatteTasks.Types.PreviewAndHighlightWindows
@@ -685,6 +694,9 @@ Item {
         bridge: latteBridge
         layout: icList.contentItem
         tasksModel: tasksModel
+
+        animations.local.speedFactor.current: plasmoid.configuration.durationTime
+        animations.local.requirements.zoomFactor: hasHighThicknessAnimation && LatteCore.WindowSystem.compositingActive ? 1.65 : 1.0
 
         indexer.updateIsBlocked: root.inDraggingPhase || root.inActivityChange
 

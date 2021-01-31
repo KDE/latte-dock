@@ -48,7 +48,7 @@ SequentialAnimation {
                                && LatteCore.WindowSystem.compositingActive)
 
     property bool enabledAnimation: (animation1 || animation4)
-                                    && (taskItem.abilities.animations.newWindowSlidingEnabled)
+                                    && root.newWindowSlidingEnabled
                                     && !taskItem.inBouncingAnimation
                                     && !taskItem.isSeparator
                                     && taskItem.visible

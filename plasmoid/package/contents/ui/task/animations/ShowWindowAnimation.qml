@@ -27,7 +27,7 @@ import org.kde.latte.core 0.2 as LatteCore
 ///item's added Animation
 SequentialAnimation{
     id:showWindowAnimation
-    property int speed: taskItem.abilities.animations.newWindowSlidingEnabled ? (1.2 * taskItem.abilities.animations.speedFactor.normal * taskItem.abilities.animations.duration.large) : 0
+    property int speed: root.newWindowSlidingEnabled ? (1.2 * taskItem.abilities.animations.speedFactor.normal * taskItem.abilities.animations.duration.large) : 0
     property bool animationSent: false
 
     readonly property string needLengthEvent: showWindowAnimation + "_showwindow"
@@ -38,7 +38,7 @@ SequentialAnimation{
         property: "opacity"
         to: 0
         //it is not depend to durationTime when animations are active
-        duration: taskItem.abilities.animations.newWindowSlidingEnabled ? 750 : 0
+        duration: root.newWindowSlidingEnabled ? 750 : 0
         easing.type: Easing.InQuad
     }
     //end of ghost animation
