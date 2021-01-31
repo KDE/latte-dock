@@ -265,7 +265,7 @@ Item{
             }
 
             //! Indicator Back Layer
-            IndicatorLevel{
+            BasicItemParts.IndicatorLevel{
                 id: indicatorBackLayer
                 level.isBackground: true
                 level.indicator: abilityIndicatorObj
@@ -282,10 +282,10 @@ Item{
                 }
             }
 
-            ParabolicItem{id: _parabolicItem}
+            BasicItemParts.ParabolicItem{id: _parabolicItem}
 
             //! Indicator Front Layer
-            IndicatorLevel{
+            BasicItemParts.IndicatorLevel{
                 id: indicatorFrontLayer
                 level.isForeground: true
                 level.indicator: abilityIndicatorObj
@@ -301,7 +301,7 @@ Item{
         width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? abilityItem.width : abilityItem.abilities.metrics.mask.thickness.zoomedForItems
         height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? abilityItem.abilities.metrics.mask.thickness.zoomedForItems : abilityItem.height
         z:10000       
-        sourceComponent: ParabolicEventsArea{}
+        sourceComponent: BasicItemParts.ParabolicEventsArea{}
 
         readonly property bool isParabolicEnabled: abilityItem.abilities.parabolic.isEnabled
         readonly property bool isThinTooltipEnabled: abilityItem.abilities.thinTooltip.isEnabled && abilityItem.thinTooltipText !== ""
