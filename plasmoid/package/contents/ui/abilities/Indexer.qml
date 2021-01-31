@@ -178,8 +178,8 @@ AbilityClient.Indexer {
         }
 
         var vindex = -1;
-        if (latteBridge) {
-            vindex = latteBridge.indexer.host.visibleIndex(latteBridge.indexer.appletIndex);
+        if (bridge) {
+            vindex = bridge.indexer.host.visibleIndex(bridge.indexer.appletIndex);
         }
 
         for (var i=0; i<layout.children.length; ++i){
