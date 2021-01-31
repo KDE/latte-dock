@@ -33,6 +33,7 @@ AbilityDefinition.Indexer {
     readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
     readonly property bool isReady: !updateIsBlocked
     readonly property int maxIndex: 99999
+    readonly property alias itemsCount: _privates.itemsCount
     readonly property alias visibleItemsCount: _privates.visibleItemsCount
     readonly property alias firstVisibleItemIndex: _privates.firstVisibleItemIndex
     readonly property alias lastVisibleItemIndex: _privates.lastVisibleItemIndex
@@ -41,6 +42,7 @@ AbilityDefinition.Indexer {
         id: _privates
         property int firstVisibleItemIndex: -1
         property int lastVisibleItemIndex: -1
+        property int itemsCount: 0
         property int visibleItemsCount: 0
     }
 
@@ -158,6 +160,22 @@ AbilityDefinition.Indexer {
                 if (item && item.itemIndex>=0
                         && hidden.indexOf(item.itemIndex)<0
                         && separators.indexOf(item.itemIndex)<0) {
+                    count = count + 1;
+                }
+            }
+
+            return count;
+        }
+    }
+
+    Binding {
+        target: _privates
+        property: "itemsCount"
+        value: {
+            var count = 0;
+            for(var i=0; i<layout.children.length; ++i) {
+                var item = layout.children[i];
+                if (item && item.itemIndex>=0) {
                     count = count + 1;
                 }
             }

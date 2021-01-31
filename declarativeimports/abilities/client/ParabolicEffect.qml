@@ -25,6 +25,7 @@ import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 AbilityDefinition.ParabolicEffect {
     id: parabolic
     property Item bridge: null
+    property Item indexer: null
     property Item layout: null
 
     isEnabled: ref.parabolic.isEnabled
@@ -44,8 +45,6 @@ AbilityDefinition.ParabolicEffect {
 
         return false;
     }
-
-    readonly property int itemsCount: layout ? layout.children.length : 0
 
     readonly property AbilityDefinition.ParabolicEffect local: AbilityDefinition.ParabolicEffect {
         id: _localref
@@ -146,7 +145,7 @@ AbilityDefinition.ParabolicEffect {
 
     function hostRequestUpdateLowerItemScale(newScale, step){
         //! function called from host
-        sglUpdateLowerItemScale(itemsCount-1, newScale, step);
+        sglUpdateLowerItemScale(indexer.itemsCount-1, newScale, step);
     }
 
     function hostRequestUpdateHigherItemScale(newScale, step){
@@ -156,22 +155,22 @@ AbilityDefinition.ParabolicEffect {
 
     function sltTrackLowerItemScale(delegateIndex, newScale, step){
         //! send update signal to host
-        if (latteBridge) {
+        if (bridge) {
             if (delegateIndex === -1) {
-                latteBridge.parabolic.clientRequestUpdateLowerItemScale(newScale, step);
+                bridge.parabolic.clientRequestUpdateLowerItemScale(newScale, step);
             } else if (newScale === 1 && delegateIndex>=0) {
-                latteBridge.parabolic.clientRequestUpdateLowerItemScale(1, 0);
+                bridge.parabolic.clientRequestUpdateLowerItemScale(1, 0);
             }
         }
     }
 
     function sltTrackHigherItemScale(delegateIndex, newScale, step) {
         //! send update signal to host
-        if (latteBridge) {
-            if (delegateIndex >= itemsCount) {
-                latteBridge.parabolic.clientRequestUpdateHigherItemScale(newScale, step);
-            } else if (newScale === 1 && delegateIndex<itemsCount) {
-                latteBridge.parabolic.clientRequestUpdateHigherItemScale(1, 0);
+        if (bridge) {
+            if (delegateIndex >= indexer.itemsCount) {
+                bridge.parabolic.clientRequestUpdateHigherItemScale(newScale, step);
+            } else if (newScale === 1 && delegateIndex<indexer.itemsCount) {
+                bridge.parabolic.clientRequestUpdateHigherItemScale(1, 0);
             }
         }
     }
