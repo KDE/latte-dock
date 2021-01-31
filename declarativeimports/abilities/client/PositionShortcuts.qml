@@ -1,5 +1,5 @@
 /*
-*  Copyright 2020 Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2021 Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -19,12 +19,17 @@
 
 import QtQuick 2.0
 
-PositionShortcutsFunc {
+import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
+
+AbilityDefinition.PositionShortcuts {
     id: shortcuts
+    property Item bridge: null
+    property Item indexer: null
+
     property bool isStealingGlobalPositionShortcuts: false
 
+    readonly property bool isActive: bridge !== null
     readonly property bool showPositionShortcutBadges: bridge && bridge.shortcuts.host ? bridge.shortcuts.host.showPositionShortcutBadges : false
-
     readonly property bool isEnabled: {
         if (bridge) {
             return bridge.shortcuts.host.unifiedGlobalShortcuts
@@ -52,6 +57,17 @@ PositionShortcutsFunc {
         if (isActive) {
             bridge.shortcuts.client = null;
         }
+    }
+
+    function shortcutIndex(entryIndex) {
+        if (!bridge || bridge.shortcuts.host.unifiedGlobalShortcuts) {
+            return indexer.visibleIndex(entryIndex);
+        }
+
+        var base = bridge.indexer.host.visibleIndex(bridge.shortcuts.appletIndex);
+
+        //!visible indexes start counting from 1
+        return (indexer.visibleIndex(entryIndex) - base + 1);
     }
 }
 
