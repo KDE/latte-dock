@@ -32,11 +32,11 @@ Item{
     width: abilityItem.isHorizontal ? length : thickness
     height: abilityItem.isHorizontal ? thickness : length
 
-    readonly property int length: (!abilityItem.visible || abilityItem.isSeparator) ? 0 : basicScalingLength
+    readonly property real length: (!abilityItem.visible || abilityItem.isSeparator) ? 0 : basicScalingLength
 
-    readonly property int thickness: (!abilityItem.visible ? 0 : (abilityItem.isSeparator ?
-                                                                      abilityItem.abilities.metrics.mask.thickness.normalForItems :
-                                                                      basicScalingThickness + abilityItem.abilities.metrics.margin.screenEdge))
+    readonly property real thickness: (!abilityItem.visible ? 0 : (abilityItem.isSeparator ?
+                                                                       abilityItem.abilities.metrics.mask.thickness.normalForItems :
+                                                                       basicScalingThickness + abilityItem.abilities.metrics.margin.screenEdge))
 
     property bool isParabolicEventBlocked: false
     property bool isUpdatingOnlySpacers: false
@@ -72,7 +72,7 @@ Item{
     readonly property alias titleTooltipVisualParent: _titleTooltipVisualParent
 
     readonly property string bothAxisZoomEvent: parabolicItem + "_zoom"
-     /* Rectangle{
+    /* Rectangle{
             anchors.fill: parent
             border.width: 1
             border.color: "green"
