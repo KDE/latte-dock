@@ -115,7 +115,6 @@ BasicItem {
     property bool wheelIsBlocked: false
 
     property int badgeIndicator: 0 //it is used from external apps
-    property int itemIndex: index
     property int lastValidIndex: -1 //used for the removal animation
     property int lastButtonClicked: -1;
     property int pressX: -1

@@ -103,6 +103,7 @@ Item{
     readonly property bool isVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     readonly property bool parabolicAreaContainsMouse: parabolicEventsAreaLoader.active && parabolicEventsAreaLoader.item.containsMouse
 
+    readonly property int itemIndex: index
     readonly property int animationTime: (abilityItem.abilities.animations.active ? abilityItem.abilities.animations.speedFactor.current : 2) * (1.2 * abilityItem.abilities.animations.duration.small)
     readonly property int iconOffsetX: indicatorBackLayer.level.requested.iconOffsetX
     readonly property int iconOffsetY: indicatorBackLayer.level.requested.iconOffsetY

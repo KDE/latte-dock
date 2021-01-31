@@ -20,45 +20,59 @@
 import QtQuick 2.7
 import QtGraphicalEffects 1.0
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.latte.components 1.0 as LatteComponents
 
 Loader{
     id: shorcutBadge
-    active: taskItem.abilities.shortcuts.showPositionShortcutBadges && !taskItem.isSeparator && !taskItem.isHidden && taskItem.abilities.shortcuts.isEnabled
+    active: abilityItem.abilities.shortcuts.showPositionShortcutBadges && !abilityItem.isSeparator && !abilityItem.isHidden && abilityItem.abilities.shortcuts.isEnabled
     asynchronous: true
     visible: badgeString !== ""
 
     property int fixedIndex:-1
-    readonly property int maxFixedIndex: taskItem.abilities.shortcuts.badges.length
-    property string badgeString: (shorcutBadge.fixedIndex>=1 && shorcutBadge.fixedIndex<=maxFixedIndex) ?
-                                     taskItem.abilities.shortcuts.badges[shorcutBadge.fixedIndex-1] : ""
+
+    readonly property int maxFixedIndex: abilityItem.abilities.shortcuts.badges.length
+    readonly property real textColorBrightness: colorBrightness(theme.textColor)
+    readonly property string badgeString: (shorcutBadge.fixedIndex>=1 && shorcutBadge.fixedIndex<=maxFixedIndex) ?
+                                              abilityItem.abilities.shortcuts.badges[shorcutBadge.fixedIndex-1] : ""
+    readonly property color lightTextColor: textColorBrightness > 127.5 ? theme.textColor : theme.backgroundColor
 
     onActiveChanged: updateShorcutIndex();
 
     Connections {
-        target: taskItem
+        target: abilityItem
         onItemIndexChanged: shortcutBadge.updateShorcutIndex();
     }
 
     function updateShorcutIndex() {
-        if (shorcutBadge.active && taskItem.abilities.shortcuts.showPositionShortcutBadges) {
-            fixedIndex = taskItem.abilities.shortcuts.shortcutIndex(taskItem.itemIndex);
+        if (shorcutBadge.active && abilityItem.abilities.shortcuts.showPositionShortcutBadges) {
+            fixedIndex = abilityItem.abilities.shortcuts.shortcutIndex(abilityItem.itemIndex);
         } else {
             fixedIndex = -1;
         }
     }
 
+    function colorBrightness(color) {
+        return colorBrightnessFromRGB(color.r * 255, color.g * 255, color.b * 255);
+    }
+
+    // formula for brightness according to:
+    // https://www.w3.org/TR/AERT/#color-contrast
+    function colorBrightnessFromRGB(r, g, b) {
+        return (r * 299 + g * 587 + b * 114) / 1000
+    }
+
     sourceComponent: Item{
         Loader{
             anchors.fill: taskNumber
-            active: taskItem.abilities.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
+            active: abilityItem.abilities.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
 
             sourceComponent: DropShadow{
-                color: taskItem.abilities.myView.itemShadow.shadowColor
+                color: abilityItem.abilities.myView.itemShadow.shadowColor
                 fast: true
                 samples: 2 * radius
                 source: taskNumber
-                radius: taskItem.abilities.myView.itemShadow.size/2
+                radius: abilityItem.abilities.myView.itemShadow.size/2
                 verticalOffset: 2
             }
         }
@@ -67,17 +81,17 @@ Loader{
             id: taskNumber
             // when iconSize < 48, height is always = 24, height / iconSize > 50%
             // we prefer center aligned badges to top-left aligned ones
-            property bool centerInParent: taskItem.abilities.metrics.iconSize < 48
+            property bool centerInParent: abilityItem.abilities.metrics.iconSize < 48
 
             anchors.left: centerInParent? undefined : parent.left
             anchors.top: centerInParent? undefined : parent.top
             anchors.centerIn: centerInParent? parent : undefined
-            minimumWidth: 0.4 * (taskItem.parabolicItem.zoom * taskItem.abilities.metrics.iconSize)
-            height: Math.max(24, 0.4 * (taskItem.parabolicItem.zoom * taskItem.abilities.metrics.iconSize))
+            minimumWidth: 0.4 * (abilityItem.parabolicItem.zoom * abilityItem.abilities.metrics.iconSize)
+            height: Math.max(24, 0.4 * (abilityItem.parabolicItem.zoom * abilityItem.abilities.metrics.iconSize))
 
-            style3d: taskItem.abilities.myView.badgesIn3DStyle
+            style3d: abilityItem.abilities.myView.badgesIn3DStyle
             textValue: shorcutBadge.badgeString
-            borderColor: root.lightTextColor
+            borderColor: shortcutBadge.lightTextColor
 
             showNumber: false
             showText: true
