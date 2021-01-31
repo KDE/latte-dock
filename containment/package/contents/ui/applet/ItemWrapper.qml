@@ -129,6 +129,7 @@ Item{
 
     property int localLengthMargins: isSeparator
                                      || !communicator.requires.lengthMarginsEnabled
+                                     || communicator.indexerIsSupported
                                      || isInternalViewSplitter
                                         ? 0 : appletItem.lengthAppletFullMargins
 
