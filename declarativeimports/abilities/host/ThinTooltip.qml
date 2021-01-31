@@ -62,17 +62,14 @@ AbilityDefinition.ThinTooltip {
     }
 
     function show(visualParent, text) {
-        if (!isEnabled) {
+        if (!isEnabled || showIsBlocked) {
             _hideTimer.stop();
             _showTimer.stop();
             _tooltipDialog.visible = false;
             return;
         }
 
-        if (!showIsBlocked) {
-            _hideTimer.stop();
-        }
-
+        _hideTimer.stop();
         _thinTooltip.currentVisualParent = visualParent;
         _tooltipDialog.visualParent = visualParent;
 

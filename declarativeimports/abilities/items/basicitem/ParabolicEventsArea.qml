@@ -46,6 +46,10 @@ Item {
         onEntered: {
             abilityItem.abilities.parabolic.setCurrentParabolicItem(_parabolicArea);
 
+            if (isThinTooltipEnabled) {
+                abilityItem.abilities.thinTooltip.show(abilityItem.tooltipVisualParent, abilityItem.thinTooltipText);
+            }
+
             if (isParabolicEnabled) {
                 var vIndex = abilityItem.abilities.shortcuts.shortcutIndex(abilityItem.itemIndex);
                 abilityItem.abilities.parabolic.setCurrentParabolicItemIndex(vIndex);
@@ -85,15 +89,15 @@ Item {
 
         restoreAnimation.stop();
 
+        if (isThinTooltipEnabled) {
+            abilityItem.abilities.thinTooltip.show(abilityItem.tooltipVisualParent, abilityItem.thinTooltipText);
+        }
+
         if (isParabolicEnabled) {
             //! mouseX/Y can NOW be trusted because ParabolicEnterd event is triggered from View::Parabolic class
             var current = abilityItem.isHorizontal ? mouseX : mouseY;
             lastParabolicPos = current;
             calculateParabolicScales(current);
-        }
-
-        if (isThinTooltipEnabled) {
-            abilityItem.abilities.thinTooltip.show(abilityItem.tooltipVisualParent, abilityItem.thinTooltipText);
         }
     }
 

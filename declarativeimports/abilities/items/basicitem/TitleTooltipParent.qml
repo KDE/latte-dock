@@ -30,9 +30,6 @@ Item{
 
     property int size: 1
     property int thickness: 64
-    //border.width: 1
-    //border.color: "green"
-    //color: "transparent"
 
     states:[
         State{
