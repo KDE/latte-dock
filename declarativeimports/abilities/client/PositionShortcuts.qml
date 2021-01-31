@@ -19,14 +19,10 @@
 
 import QtQuick 2.0
 
-import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
-
-AbilityDefinition.PositionShortcuts {
+PositionShortcutsFunc {
     id: shortcuts
-    property Item bridge: null
-    readonly property bool isActive: bridge !== null
-
     property bool isStealingGlobalPositionShortcuts: false
+
     readonly property bool showPositionShortcutBadges: bridge && bridge.shortcuts.host ? bridge.shortcuts.host.showPositionShortcutBadges : false
 
     readonly property bool isEnabled: {

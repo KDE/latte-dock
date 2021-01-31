@@ -19,14 +19,14 @@
 
 import QtQuick 2.7
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 
-import org.kde.latte.abilities.client 0.1 as AbilityClient
-
-AbilityClient.PositionShortcuts {
+AbilityDefinition.PositionShortcuts {
     id: shortcuts
+    property Item bridge: null
     property Item indexer: null
+
+    readonly property bool isActive: bridge !== null
 
     function shortcutIndex(entryIndex) {
         if (!bridge || bridge.shortcuts.host.unifiedGlobalShortcuts) {

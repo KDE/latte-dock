@@ -99,7 +99,7 @@ Item {
         layout: _abilityContainer.layout
     }
 
-    Ability.PositionShortcuts {
+    AbilityClient.PositionShortcuts {
         id: _shortcuts
         bridge: _abilityContainer.bridge
         indexer: _indexer
