@@ -34,6 +34,8 @@ Item{
     id: abilityItem
     signal mousePressed(int x, int y, int button);
     signal mouseReleased(int x, int y, int button);
+    signal shortcutRequestedActivate();
+    signal shortcutRequestedNewInstance();
 
     anchors.bottom: (parent && plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
     anchors.top: (parent && plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
@@ -121,6 +123,33 @@ Item{
     onContentItemChanged: {
         if (contentItem) {
             contentItem.parent = _parabolicItem.contentItemContainer;
+        }
+    }
+
+    Connections {
+        target: abilityItem.abilities.shortcuts
+        onSglActivateEntryAtIndex: {
+            if (!abilityItem.abilities.shortcuts.isEnabled) {
+                return;
+            }
+
+            var shortcutIndex = abilityItem.abilities.shortcuts.shortcutIndex(abilityItem.itemIndex);
+
+            if (shortcutIndex === entryIndex) {
+                abilityItem.shortcutRequestedActivate();
+            }
+        }
+
+        onSglNewInstanceForEntryAtIndex: {
+            if (!abilityItem.abilities.shortcuts.isEnabled) {
+                return;
+            }
+
+            var shortcutIndex = abilityItem.abilities.shortcuts.shortcutIndex(taskItem.itemIndex);
+
+            if (shortcutIndex === entryIndex) {
+                abilityItem.shortcutRequestedNewInstance();
+            }
         }
     }
 

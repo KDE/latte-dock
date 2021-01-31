@@ -366,7 +366,19 @@ AbilityItem.BasicItem {
 
     onLauncherUrlChanged: updateBadge();
 
-    ////// End of Values Changes /////
+    onShortcutRequestedActivate: {
+        if (taskItem.isGroupParent) {
+            taskItem.activateNextTask();
+        } else {
+            taskItem.activateTask();
+        }
+    }
+
+    onShortcutRequestedNewInstance: {
+        tasksModel.requestNewInstance(taskItem.modelIndex());
+    }
+
+    ////// End of Values Changes and Signals /////
 
 
     //! A timer is needed in order to handle also touchpads that probably
@@ -857,37 +869,6 @@ AbilityItem.BasicItem {
         onAnimationsFinishedChanged: {
             if (scrollableList.animationsFinished) {
                 taskItem.slotPublishGeometries();
-            }
-        }
-    }
-
-    Connections {
-        target: taskItem.abilities.shortcuts
-        onSglActivateEntryAtIndex: {
-            if (!taskItem.abilities.shortcuts.isEnabled) {
-                return;
-            }
-
-            var shortcutIndex = taskItem.abilities.shortcuts.shortcutIndex(taskItem.itemIndex);
-
-            if (shortcutIndex === entryIndex) {
-                if (taskItem.isGroupParent) {
-                    taskItem.activateNextTask();
-                } else {
-                    taskItem.activateTask();
-                }
-            }
-        }
-
-        onSglNewInstanceForEntryAtIndex: {
-            if (!taskItem.abilities.shortcuts.isEnabled) {
-                return;
-            }
-
-            var shortcutIndex = taskItem.abilities.shortcuts.shortcutIndex(taskItem.itemIndex);
-
-            if (shortcutIndex === entryIndex) {
-                tasksModel.requestNewInstance(taskItem.modelIndex());
             }
         }
     }
