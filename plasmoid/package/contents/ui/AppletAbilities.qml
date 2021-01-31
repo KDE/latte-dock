@@ -26,99 +26,17 @@ import org.kde.latte.abilities.client 0.1 as AbilityClient
 
 import "abilities" as Ability
 
-Item {
+AbilityClient.AppletAbilities {
     id: _abilityContainer
-
-    property Item bridge: null
-    property Item layout: null
     property QtObject tasksModel: null
 
-    //! basic
-    readonly property alias animations: _animations
-    readonly property alias containment: _containment
-    readonly property alias debug: _debug
-    readonly property alias indexer: _indexer
-    readonly property alias indicators: _indicators
-    readonly property alias metrics: _metrics
-    readonly property alias myView: _myView
-    readonly property alias parabolic: _parabolic
-    readonly property alias shortcuts: _shortcuts
-    readonly property alias requires: _requires
-    readonly property alias thinTooltip: _thinTooltip
-    readonly property alias userRequests: _userRequests
-
-    //! optional
     readonly property alias launchers: _launchers
-
-    AbilityClient.Animations {
-        id: _animations
-        bridge: _abilityContainer.bridge
-    }
-
-    AbilityClient.Containment {
-        id: _containment
-        bridge: _abilityContainer.bridge
-    }
-
-    AbilityClient.Debug {
-        id: _debug
-        bridge: _abilityContainer.bridge
-    }
-
-    AbilityClient.Indexer {
-        id: _indexer
-        bridge: _abilityContainer.bridge
-        layout: _abilityContainer.layout
-    }
-
-    AbilityClient.Indicators {
-        id: _indicators
-        bridge: _abilityContainer.bridge
-    }
 
     Ability.Launchers {
         id: _launchers
         bridge: _abilityContainer.bridge
         layout: _abilityContainer.layout
         tasksModel: _abilityContainer.tasksModel
-    }
-
-    AbilityClient.Metrics {
-        id: _metrics
-        bridge: _abilityContainer.bridge
-        parabolic: _parabolic
-    }
-
-    AbilityClient.MyView {
-        id: _myView
-        bridge: _abilityContainer.bridge
-    }
-
-    AbilityClient.ParabolicEffect {
-        id: _parabolic
-        bridge: _abilityContainer.bridge
-        layout: _abilityContainer.layout
-    }
-
-    AbilityClient.PositionShortcuts {
-        id: _shortcuts
-        bridge: _abilityContainer.bridge
-        indexer: _indexer
-    }
-
-    AbilityClient.ThinTooltip {
-        id: _thinTooltip
-        bridge: _abilityContainer.bridge
-    }
-
-    AbilityClient.Requirements{
-        id: _requires
-        bridge: _abilityContainer.bridge
-    }
-
-    AbilityClient.UserRequests {
-        id: _userRequests
-        bridge: _abilityContainer.bridge
     }
 
     //! local properties
