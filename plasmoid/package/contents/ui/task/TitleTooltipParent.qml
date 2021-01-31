@@ -20,12 +20,13 @@
 
 import QtQuick 2.0
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item{
     id: visual
-    width: root.vertical ?  thickness : size
-    height: root.vertical ? size : thickness
+    width: abilityItem.isVertical ?  thickness : size
+    height: abilityItem.isVertical ? size : thickness
 
     property int size: 1
     property int thickness: 64
@@ -36,7 +37,7 @@ Item{
     states:[
         State{
             name: "bottom"
-            when: root.location === PlasmaCore.Types.BottomEdge
+            when: plasmoid.location === PlasmaCore.Types.BottomEdge
 
             AnchorChanges{
                 target: visual;
@@ -47,7 +48,7 @@ Item{
         },
         State{
             name: "top"
-            when: root.location === PlasmaCore.Types.TopEdge
+            when: plasmoid.location === PlasmaCore.Types.TopEdge
 
             AnchorChanges{
                 target:visual;
@@ -58,7 +59,7 @@ Item{
         },
         State{
             name: "left"
-            when: root.location === PlasmaCore.Types.LeftEdge
+            when: plasmoid.location === PlasmaCore.Types.LeftEdge
 
             AnchorChanges{
                 target: visual;
@@ -69,7 +70,7 @@ Item{
         },
         State{
             name: "right"
-            when: root.location === PlasmaCore.Types.RightEdge
+            when: plasmoid.location === PlasmaCore.Types.RightEdge
 
             AnchorChanges{
                 target: visual;
