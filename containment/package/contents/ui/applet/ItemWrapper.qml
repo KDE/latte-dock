@@ -36,7 +36,7 @@ Item{
     width: root.isHorizontal ? length : thickness
     height: root.isHorizontal ? thickness : length
 
-    readonly property int length: {
+    readonly property real length: {
         if (appletItem.isInternalViewSplitter) {
             if (!root.inConfigureAppletsMode) {
                 return 0;
@@ -65,7 +65,7 @@ Item{
         return root.inConfigureAppletsMode ? Math.max(Math.min(appletItem.metrics.iconSize, root.minAppletLengthInConfigure), scaledLength) : scaledLength;
     }
 
-    readonly property int thickness: {
+    readonly property real thickness: {
         if (appletItem.isInternalViewSplitter && !root.inConfigureAppletsMode) {
             return 0;
         }
@@ -80,20 +80,20 @@ Item{
 
     property bool editMode: root.inConfigureAppletsMode
 
-    property int appletWidth: applet ?  applet.width : -1
-    property int appletHeight: applet ?  applet.height : -1
+    property real appletWidth: applet ?  applet.width : -1
+    property real appletHeight: applet ?  applet.height : -1
 
-    property int appletMinimumWidth: applet && applet.Layout ?  applet.Layout.minimumWidth : -1
-    property int appletMinimumHeight: applet && applet.Layout ? applet.Layout.minimumHeight : -1
+    property real appletMinimumWidth: applet && applet.Layout ?  applet.Layout.minimumWidth : -1
+    property real appletMinimumHeight: applet && applet.Layout ? applet.Layout.minimumHeight : -1
 
-    property int appletPreferredWidth: applet && applet.Layout ?  applet.Layout.preferredWidth : -1
+    property real appletPreferredWidth: applet && applet.Layout ?  applet.Layout.preferredWidth : -1
     property int appletPreferredHeight: applet && applet.Layout ?  applet.Layout.preferredHeight : -1
 
-    property int appletMaximumWidth: applet && applet.Layout ?  applet.Layout.maximumWidth : -1
-    property int appletMaximumHeight: applet && applet.Layout ?  applet.Layout.maximumHeight : -1
+    property real appletMaximumWidth: applet && applet.Layout ?  applet.Layout.maximumWidth : -1
+    property real appletMaximumHeight: applet && applet.Layout ?  applet.Layout.maximumHeight : -1
 
-    readonly property int appletLength: root.isHorizontal ? appletWidth : appletHeight
-    readonly property int appletThickness: root.isHorizontal ? appletHeight : appletWidth
+    readonly property real appletLength: root.isHorizontal ? appletWidth : appletHeight
+    readonly property real appletThickness: root.isHorizontal ? appletHeight : appletWidth
 
     readonly property int appletMinimumLength : {
         if (isInternalViewSplitter) {
@@ -103,14 +103,14 @@ Item{
         return root.isHorizontal ? appletMinimumWidth : appletMinimumHeight
     }
 
-    readonly property int appletPreferredLength: {
+    readonly property real appletPreferredLength: {
         if (isInternalViewSplitter) {
             return appletMinimumLength;
         }
         return root.isHorizontal ? appletPreferredWidth : appletPreferredHeight;
     }
 
-    readonly property int appletMaximumLength: {
+    readonly property real appletMaximumLength: {
         if (isInternalViewSplitter) {
             return Infinity;
         }
@@ -118,9 +118,9 @@ Item{
         root.isHorizontal ? appletMaximumWidth : appletMaximumHeight;
     }
 
-    readonly property int appletMinimumThickness: root.isHorizontal ? appletMinimumHeight : appletMinimumWidth
-    readonly property int appletPreferredThickness: root.isHorizontal ? appletPreferredHeight : appletPreferredWidth
-    readonly property int appletMaximumThickness: root.isHorizontal ? appletMaximumHeight : appletMaximumWidth
+    readonly property real appletMinimumThickness: root.isHorizontal ? appletMinimumHeight : appletMinimumWidth
+    readonly property real appletPreferredThickness: root.isHorizontal ? appletPreferredHeight : appletPreferredWidth
+    readonly property real appletMaximumThickness: root.isHorizontal ? appletMaximumHeight : appletMaximumWidth
 
     property int iconSize: appletItem.metrics.iconSize
 
@@ -137,8 +137,8 @@ Item{
     property real zoomScaleLength: disableLengthScale ? 1 : zoomScale
     property real zoomScaleThickness: disableThicknessScale ? 1 : zoomScale
 
-    property int layoutLength: 0
-    property int layoutThickness: 0
+    property real layoutLength: 0
+    property real layoutThickness: 0
 
     property real zoomScale: 1
 
