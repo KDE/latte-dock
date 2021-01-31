@@ -94,7 +94,7 @@ Item {
         bridge: _abilityContainer.bridge
     }
 
-    Ability.ParabolicEffect {
+    AbilityClient.ParabolicEffect {
         id: _parabolic
         bridge: _abilityContainer.bridge
         layout: _abilityContainer.layout
