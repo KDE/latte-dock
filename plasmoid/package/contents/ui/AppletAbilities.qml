@@ -115,8 +115,23 @@ Item {
         bridge: _abilityContainer.bridge
     }
 
-    Ability.UserRequests {
+    AbilityClient.UserRequests {
         id: _userRequests
         bridge: _abilityContainer.bridge
+    }
+
+    Connections {
+        target: _userRequests
+        onSglViewType: {
+            if (viewType === LatteCore.Types.DockView) {
+                plasmoid.configuration.animationLauncherBouncing = true;
+                plasmoid.configuration.animationWindowInAttention = true;
+                plasmoid.configuration.animationWindowAddedInGroup = true;
+            } else if (viewType === LatteCore.Types.PanelView) {
+                plasmoid.configuration.animationLauncherBouncing = false;
+                plasmoid.configuration.animationWindowInAttention = false;
+                plasmoid.configuration.animationWindowAddedInGroup = false;
+            }
+        }
     }
 }
