@@ -511,8 +511,7 @@ void VisibilityManager::addBlockHidingEvent(const QString &type)
     if (m_blockHidingEvents.contains(type) || type.isEmpty()) {
         return;
     }
-
-    //qDebug() << "  {{ ++++ adding block hiding event :: " << type;
+    //qDebug() << " org.kde.late {{ ++++ adding block hiding event :: " << type;
 
     bool prevHidingIsBlocked = hidingIsBlocked();
 
@@ -528,7 +527,7 @@ void VisibilityManager::removeBlockHidingEvent(const QString &type)
     if (!m_blockHidingEvents.contains(type) || type.isEmpty()) {
         return;
     }
-    //qDebug() << "  {{ ---- remove block hiding event :: " << type;
+    //qDebug() << " org.kde.latte {{ ---- remove block hiding event :: " << type;
 
     bool prevHidingIsBlocked = hidingIsBlocked();
 

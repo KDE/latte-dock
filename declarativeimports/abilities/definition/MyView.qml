@@ -34,6 +34,8 @@ Item {
     property bool isShownPartially: false
     property bool isShownFully: true
 
+    property bool isHidingBlocked: false
+
     property bool inSlidingIn: false
     property bool inSlidingOut: false
     property bool inRelocationAnimation: false

@@ -713,6 +713,7 @@ Item {
         metrics.local.margin.thickness: inPlasmaDesktop ? 0.16 * metrics.iconSize : Math.max(2, (panelThickness - maxIconSizeInPlasma) / 2)
         metrics.local.padding.length: 0.04 * metrics.iconSize
 
+        myView.local.isHidingBlocked: root.contextMenu || root.windowPreviewIsShown
         myView.local.itemShadow.isEnabled: plasmoid.configuration.showShadows
         myView.local.itemShadow.size: Math.ceil(0.12*appletAbilities.metrics.iconSize)
 

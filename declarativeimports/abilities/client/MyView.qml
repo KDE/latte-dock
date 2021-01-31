@@ -23,7 +23,9 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 
 AbilityDefinition.MyView {
+    id: _myView
     property Item bridge: null
+    readonly property bool isBridgeActive: bridge !== null
 
     isReady: ref.myView.isReady
 
@@ -32,6 +34,7 @@ AbilityDefinition.MyView {
     isHidden: ref.myView.isHidden
     isShownPartially: ref.myView.isShownPartially
     isShownFully: ref.myView.isShownFully
+    isHidingBlocked: ref.myView.isHidingBlocked
 
     inSlidingIn: ref.myView.inSlidingIn
     inSlidingOut: ref.myView.inSlidingOut
@@ -59,7 +62,26 @@ AbilityDefinition.MyView {
 
     Item {
         id: ref
-        readonly property Item myView: bridge ? bridge.myView : local
+        readonly property Item myView: bridge ? bridge.myView.host : local
+    }
+
+    //! Bridge - Client assignment
+    onIsBridgeActiveChanged: {
+        if (isBridgeActive) {
+            bridge.myView.client = _myView;
+        }
+    }
+
+    Component.onCompleted: {
+        if (isBridgeActive) {
+            bridge.myView.client = _myView;
+        }
+    }
+
+    Component.onDestruction: {
+        if (isBridgeActive) {
+            bridge.myView.client = null;
+        }
     }
 
     function inCurrentLayout() {

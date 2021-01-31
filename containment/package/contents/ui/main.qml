@@ -1173,6 +1173,7 @@ Item {
 
     Ability.MyView {
         id: _myView
+        layouts: layoutsContainer
     }
 
     Ability.ParabolicEffect {

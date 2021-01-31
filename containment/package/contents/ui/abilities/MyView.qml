@@ -35,6 +35,8 @@ Ability.MyViewPrivate {
     isShownPartially:  isReady && (inSlidingIn || inSlidingOut)
     isShownFully: isReady && !isHidden && !inSlidingIn && !inSlidingOut
 
+    isHidingBlocked: isHidingBlockedFromApplet || (view && view.contextMenuIsShown)
+
     inSlidingIn: visibilityManager.inSlidingIn
     inSlidingOut: visibilityManager.inSlidingOut
     inRelocationAnimation: view && view.positioner && view.positioner.inRelocationAnimation

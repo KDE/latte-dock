@@ -146,7 +146,6 @@ Item{
     readonly property Item debug: appletItem.debug.publicApi
     readonly property Item indicators: appletItem.indicators.publicApi
     readonly property Item metrics: appletItem.metrics.publicApi
-    readonly property Item myView: appletItem.myView
     readonly property Item userRequests: appletItem.userRequests
 
     readonly property AbilityBridge.Animations animations: AbilityBridge.Animations {
@@ -163,6 +162,11 @@ Item{
 
     readonly property AbilityBridge.Launchers launchers: AbilityBridge.Launchers {
         host: appletItem.launchers
+        appletIndex: index
+    }
+
+    readonly property AbilityBridge.MyView myView: AbilityBridge.MyView {
+        host: appletItem.myView.publicApi
         appletIndex: index
     }
 
