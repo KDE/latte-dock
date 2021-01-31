@@ -23,6 +23,7 @@ import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 
 AbilityDefinition.Metrics {
     property Item bridge: null
+    property Item parabolic: null
 
     iconSize: ref.metrics.iconSize
     maxIconSize: ref.metrics.maxIconSize
@@ -33,7 +34,13 @@ AbilityDefinition.Metrics {
     padding: ref.metrics.padding
     totals: ref.metrics.totals
 
-    readonly property AbilityDefinition.Metrics local: AbilityDefinition.Metrics {}
+    readonly property AbilityDefinition.Metrics local: AbilityDefinition.Metrics {
+        mask.thickness.normalForItems: local.totals.thickness
+        mask.thickness.zoomedForItems: parabolic.factor.zoom * local.totals.thickness
+
+        mask.thickness.maxNormalForItems: local.mask.thickness.normalForItems
+        mask.thickness.maxZoomedForItems: local.mask.thickness.zoomedForItems
+    }
 
     Item {
         id: ref

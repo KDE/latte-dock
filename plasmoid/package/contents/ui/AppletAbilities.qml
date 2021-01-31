@@ -83,9 +83,10 @@ Item {
         tasksModel: _abilityContainer.tasksModel
     }
 
-    Ability.Metrics {
+    AbilityClient.Metrics {
         id: _metrics
         bridge: _abilityContainer.bridge
+        parabolic: _parabolic
     }
 
     AbilityClient.MyView {
@@ -120,8 +121,27 @@ Item {
         bridge: _abilityContainer.bridge
     }
 
+    //! local properties
+    readonly property int maxIconSizeInPlasma: Math.max(plasmoid.configuration.iconSize, 16)
+    readonly property int panelThickness: (root.vertical ? root.width : root.height)
+
+    //! Connections
     Connections {
-        target: _userRequests
+        target: _abilityContainer.shortcuts
+        onDisabledIsStealingGlobalPositionShortcuts: {
+            plasmoid.configuration.isPreferredForPositionShortcuts = false;
+        }
+    }
+
+    Connections {
+        target: _abilityContainer.launchers
+        onDisabledIsStealingDroppedLaunchers: {
+            plasmoid.configuration.isPreferredForDroppedLaunchers = false;
+        }
+    }
+
+    Connections {
+        target: _abilityContainer.userRequests
         onSglViewType: {
             if (viewType === LatteCore.Types.DockView) {
                 plasmoid.configuration.animationLauncherBouncing = true;

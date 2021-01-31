@@ -706,6 +706,12 @@ Item {
         launchers.isStealingDroppedLaunchers: plasmoid.configuration.isPreferredForDroppedLaunchers
         launchers.syncer.isBlocked: inDraggingPhase
 
+        metrics.local.iconSize: inPlasmaDesktop ? maxIconSizeInPlasma : (inPlasmaPanel ? Math.max(16, panelThickness - 2*metrics.margin.thickness) : maxIconSizeInPlasma)
+        metrics.local.backgroundThickness: metrics.totals.thickness
+        metrics.local.margin.length: 0.1 * metrics.iconSize
+        metrics.local.margin.thickness: inPlasmaDesktop ? 0.16 * metrics.iconSize : Math.max(2, (panelThickness - maxIconSizeInPlasma) / 2)
+        metrics.local.padding.length: 0.04 * metrics.iconSize
+
         myView.local.itemShadow.isEnabled: plasmoid.configuration.showShadows
         myView.local.itemShadow.size: Math.ceil(0.12*appletAbilities.metrics.iconSize)
 
@@ -721,20 +727,6 @@ Item {
         requires.screenEdgeMarginSupported: true
 
         thinTooltip.local.showIsBlocked: root.contextMenu || root.windowPreviewIsShown
-        //! Connections
-        Connections {
-            target: _appletAbilities.shortcuts
-            onDisabledIsStealingGlobalPositionShortcuts: {
-                plasmoid.configuration.isPreferredForPositionShortcuts = false;
-            }
-        }
-
-        Connections {
-            target: _appletAbilities.launchers
-            onDisabledIsStealingDroppedLaunchers: {
-                plasmoid.configuration.isPreferredForDroppedLaunchers = false;
-            }
-        }
     }
 
     Component{
