@@ -185,7 +185,7 @@ Item {
                                                    || (root.behaveAsDockWithMask && parabolicEffectIsSupported && lockZoom)
 
     readonly property bool isSquare: parabolicEffectIsSupported
-    readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported
+    readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported || communicator.indexerIsSupported
 
     property int animationTime: appletItem.animations.speedFactor.normal * (1.2*appletItem.animations.duration.small)
     property int index: -1

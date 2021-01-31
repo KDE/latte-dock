@@ -28,7 +28,6 @@ import org.kde.latte.core 0.2 as LatteCore
 
 Item{
     id: parabolicItem
-    opacity: 0
     width: abilityItem.isHorizontal ? length : thickness
     height: abilityItem.isHorizontal ? thickness : length
 
@@ -153,6 +152,20 @@ Item{
 
             readonly property Item contentItem: children.length > 0 ? children[0] : null
 
+            Component.onCompleted: {
+                if (abilityItem.contentItem && abilityItem.contentItem.parent !== _contentItemContainer) {
+                    abilityItem.contentItem.parent = _contentItemContainer;
+                }
+            }
+
+            Connections {
+                target: abilityItem
+                onContentItemChanged: {
+                    if (abilityItem.contentItem && abilityItem.contentItem.parent !== _contentItemContainer) {
+                        abilityItem.contentItem.parent = _contentItemContainer;
+                    }
+                }
+            }
 
             //! Latte Side Painting-style if the user chose it
             Loader{

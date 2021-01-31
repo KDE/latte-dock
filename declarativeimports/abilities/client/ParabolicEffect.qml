@@ -126,10 +126,6 @@ AbilityDefinition.ParabolicEffect {
     }
 
     function setDirectRenderingEnabled(value) {
-        if (tasksExtendedManager.waitingLaunchersLength() > 0) {
-            return;
-        }
-
         if (bridge) {
             bridge.parabolic.host.setDirectRenderingEnabled(value);
         } else {

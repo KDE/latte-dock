@@ -73,7 +73,7 @@ Item{
 
     Behavior on nHiddenSize {
         id: animatedBehavior
-        enabled: abilityItem.isHiddenSpacerAnimated
+        enabled: abilityItem.isHiddenSpacerAnimated || restoreAnimation.running
         NumberAnimation{ duration: 3 * abilityItem.animationTime }
     }
 
@@ -87,10 +87,10 @@ Item{
         active: abilityItem.abilities.debug.spacersEnabled
 
         sourceComponent: Rectangle{
-            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? hiddenSpacer.width : 1
-            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? 1 : hiddenSpacer.height
-            x: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? 0 : hiddenSpacer.width/2
-            y: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? hiddenSpacer.height/2 : 0
+            width: abilityItem.isHorizontal ? hiddenSpacer.width : 1
+            height: abilityItem.isHorizontal ? 1 : hiddenSpacer.height
+            x: abilityItem.isHorizontal ? 0 : hiddenSpacer.width/2
+            y: abilityItem.isHorizontal ? hiddenSpacer.height/2 : 0
 
             border.width: 1
             border.color: "red"

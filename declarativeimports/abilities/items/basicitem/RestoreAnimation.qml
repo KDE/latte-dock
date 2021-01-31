@@ -27,10 +27,10 @@ SequentialAnimation{
     id: restoreAnimation
 
     PropertyAnimation {
-        target: taskItem.parabolicItem
+        target: abilityItem.parabolicItem
         property: "zoom"
         to: 1
-        duration: 3 * taskItem.animationTime
+        duration: 3 * abilityItem.animationTime
         easing.type: Easing.InCubic
     }
 }

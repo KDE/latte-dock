@@ -17,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
+import QtQuick 2.8
 import QtGraphicalEffects 1.0
 
 import org.kde.plasma.plasmoid 2.0
@@ -70,7 +70,7 @@ Item{
             return 0;
 
         if (isSeparator) {
-            if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
+            if (abilityItem.isHorizontal) {
                 return abilityItem.abilities.metrics.totals.thickness + abilityItem.abilities.metrics.margin.screenEdge;
             } else {
                 if (isSeparatorInRealLength || !abilityItem.abilities.parabolic.isEnabled) {
@@ -104,7 +104,7 @@ Item{
     property Item abilities: null
     property Item contentItem: null
 
-    readonly property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
+    readonly property bool isHorizontal: !isVertical
     readonly property bool isVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     readonly property bool parabolicAreaContainsMouse: parabolicEventsAreaLoader.active && parabolicEventsAreaLoader.item.containsMouse
 
@@ -115,18 +115,15 @@ Item{
 
     readonly property alias indicator: abilityIndicatorObj
     readonly property alias parabolicItem: _parabolicItem
+    readonly property alias restoreAnimation: _restoreAnimation
     readonly property alias tooltipVisualParent: _parabolicItem.titleTooltipVisualParent
 
     Component.onCompleted: {
-        if (contentItem) {
-            contentItem.parent = _parabolicItem.contentItemContainer;
-        }
+        abilityItem.abilities.parabolic.sglClearZoom.connect(slotClearZoom);
     }
 
-    onContentItemChanged: {
-        if (contentItem) {
-            contentItem.parent = _parabolicItem.contentItemContainer;
-        }
+    Component.onDestruction: {
+        abilityItem.abilities.parabolic.sglClearZoom.disconnect(slotClearZoom);
     }
 
     Connections {
@@ -201,6 +198,12 @@ Item{
         NumberAnimation { duration: abilityItem.abilities.animations.speedFactor.current * abilityItem.abilities.animations.duration.large }
     }
 
+    Item {
+        id: graphicsSystem
+        readonly property bool isAccelerated: (GraphicsInfo.api !== GraphicsInfo.Software)
+                                              && (GraphicsInfo.api !== GraphicsInfo.Unknown)
+    }
+
     Loader{
         anchors.fill: parent
         active: abilityItem.abilities.debug.graphicsEnabled
@@ -220,8 +223,8 @@ Item{
         anchors.left: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
         anchors.right: (plasmoid.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
-        anchors.horizontalCenter: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.horizontalCenter : undefined
-        anchors.verticalCenter: plasmoid.formFactor === PlasmaCore.Types.Vertical ? parent.verticalCenter : undefined
+        anchors.horizontalCenter: abilityItem.isHorizontal ? parent.horizontalCenter : undefined
+        anchors.verticalCenter: abilityItem.isHorizontal ? undefined : parent.verticalCenter
 
         anchors.bottomMargin: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? margin : 0
         anchors.topMargin: (plasmoid.location === PlasmaCore.Types.TopEdge) ? margin : 0
@@ -231,10 +234,10 @@ Item{
         opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
         visible: abilityItem.isSeparator
 
-        width: plasmoid.formFactor === PlasmaCore.Types.Vertical ?
+        width: abilityItem.isVertical ?
                    abilityItem.abilities.metrics.iconSize :
                    (isSeparatorInRealLength ? LatteCore.Environment.separatorLength+abilityItem.abilities.metrics.totals.lengthEdges: 1)
-        height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
+        height: abilityItem.isHorizontal ?
                     abilityItem.abilities.metrics.iconSize :
                     (isSeparatorInRealLength  ? LatteCore.Environment.separatorLength+abilityItem.abilities.metrics.totals.lengthEdges: 1)
 
@@ -248,8 +251,8 @@ Item{
 
         Rectangle {
             anchors.centerIn: parent
-            width: plasmoid.formFactor === PlasmaCore.Types.Vertical ? abilityItem.abilities.metrics.iconSize - 4  : 1
-            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? abilityItem.abilities.metrics.iconSize - 4 : 1
+            width: abilityItem.isVertical ? abilityItem.abilities.metrics.iconSize - 4  : 1
+            height: abilityItem.isHorizontal ? abilityItem.abilities.metrics.iconSize - 4 : 1
             color: abilityItem.abilities.myView.palette.textColor
         }
     }
@@ -330,8 +333,8 @@ Item{
     Loader {
         id: parabolicEventsAreaLoader
         active: isParabolicEnabled || isThinTooltipEnabled
-        width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? abilityItem.width : abilityItem.abilities.metrics.mask.thickness.zoomedForItems
-        height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? abilityItem.abilities.metrics.mask.thickness.zoomedForItems : abilityItem.height
+        width: abilityItem.isHorizontal ? abilityItem.width : abilityItem.abilities.metrics.mask.thickness.zoomedForItems
+        height: abilityItem.isHorizontal ? abilityItem.abilities.metrics.mask.thickness.zoomedForItems : abilityItem.height
         z:10000       
         sourceComponent: BasicItemParts.ParabolicEventsArea{}
 
@@ -380,5 +383,11 @@ Item{
                 }
             }
         ]
+    }
+
+    BasicItemParts.RestoreAnimation{id: _restoreAnimation}
+
+    function slotClearZoom(){
+        restoreAnimation.start();
     }
 }

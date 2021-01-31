@@ -45,7 +45,6 @@ AbilityItem.BasicItem {
     isHiddenSpacerForcedShow: taskItem.inAttentionAnimation || taskItem.inFastRestoreAnimation
     isHiddenSpacerAnimated: taskItem.inFastRestoreAnimation
                             || showWindowAnimation.running
-                            || restoreAnimation.running
                             || root.inActivityChange
                             || taskItem.inRemoveStage
                             || (taskItem.containsMouse && inAttentionAnimation && taskItem.parabolicItem.zoom!==taskItem.abilities.parabolic.factor.zoom)
@@ -141,7 +140,6 @@ AbilityItem.BasicItem {
     readonly property alias subWindows: subWindows
 
     readonly property alias showWindowAnimation: _showWindowAnimation
-    readonly property alias restoreAnimation: _restoreAnimation
 
     //! Indicator Properties
     indicator.isTask: true
@@ -405,10 +403,6 @@ AbilityItem.BasicItem {
     function animationEnded(){
         //   console.log("Animation ended: " + index);
         inAnimation = false;
-    }
-
-    function sltClearZoom(){
-        restoreAnimation.start();
     }
 
     function handlerDraggingFinished(){
@@ -892,13 +886,14 @@ AbilityItem.BasicItem {
     ///// End of Helper functions ////
 
     Component.onCompleted: {
+        parabolicItem.opacity = 0;
+
         root.draggingFinished.connect(handlerDraggingFinished);
         root.publishTasksGeometries.connect(slotPublishGeometries);
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);
 
         taskItem.abilities.launchers.launcherChanged.connect(onLauncherChanged);
         taskItem.abilities.launchers.launcherRemoved.connect(onLauncherChanged);
-        taskItem.abilities.parabolic.sglClearZoom.connect(sltClearZoom);
 
         //startup without launcher
         var hideStartup =  ((!hasShownLauncher || !taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrl))
@@ -926,7 +921,6 @@ AbilityItem.BasicItem {
 
         taskItem.abilities.launchers.launcherChanged.disconnect(onLauncherChanged);
         taskItem.abilities.launchers.launcherRemoved.disconnect(onLauncherChanged);
-        taskItem.abilities.parabolic.sglClearZoom.disconnect(sltClearZoom);
 
         tasksExtendedManager.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);
 
@@ -934,9 +928,7 @@ AbilityItem.BasicItem {
     }
 
     /////Animations
-
     TaskAnimations.ShowWindowAnimation{ id: _showWindowAnimation }
-    TaskAnimations.RestoreAnimation{ id: _restoreAnimation }
 
     // when changing activities and desktops the index of the tasks
     // is updated immediately to -1, this timer protects this indexing
