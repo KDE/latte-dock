@@ -28,7 +28,7 @@ import org.kde.latte.core 0.2 as LatteCore
 
 import org.kde.latte.abilities.items 0.1 as AbilityItems
 
-import "./abilitybasicitem" as AbilityBasicItemParts
+import "./basicitem" as BasicItemParts
 
 Item{
     id: abilityItem
@@ -247,7 +247,7 @@ Item{
         width: parent.width
         height: parent.height
 
-        AbilityBasicItemParts.HiddenSpacer{ id:hiddenSpacerLeft}
+        BasicItemParts.HiddenSpacer{ id:hiddenSpacerLeft}
 
         Item{
             width: _parabolicItem.width
@@ -291,7 +291,7 @@ Item{
             }
         }
 
-        AbilityBasicItemParts.HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
+        BasicItemParts.HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
     }// Flow with hidden spacers inside
 
     Loader {

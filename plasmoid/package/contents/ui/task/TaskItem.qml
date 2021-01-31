@@ -35,7 +35,7 @@ import org.kde.latte.abilities.items 0.1 as AbilityItem
 
 import "animations" as TaskAnimations
 
-AbilityBasicItem {
+BasicItem {
     id: taskItem
     visible: false
     objectName: "TaskItem"
