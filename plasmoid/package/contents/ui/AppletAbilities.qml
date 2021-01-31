@@ -65,7 +65,7 @@ Item {
         bridge: _abilityContainer.bridge
     }
 
-    Ability.Indexer {
+    AbilityClient.Indexer {
         id: _indexer
         bridge: _abilityContainer.bridge
         layout: _abilityContainer.layout
