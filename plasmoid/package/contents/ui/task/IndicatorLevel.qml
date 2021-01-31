@@ -26,38 +26,21 @@ import org.kde.latte.abilities.items 0.1 as AbilityItem
 
 AbilityItem.IndicatorLevel {
     id: indicatorLevel
-    anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
-    anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
-    anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
-    anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
+    anchors.bottom: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+    anchors.top: (plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+    anchors.left: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+    anchors.right: (plasmoid.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
-    anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-    anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
+    anchors.horizontalCenter: abilityItem.isHorizontal ? parent.horizontalCenter : undefined
+    anchors.verticalCenter: abilityItem.isHorizontal ? undefined : parent.verticalCenter
 
-    width: {
-        if (locked) {
-            return visualLockedWidth;
-        }
+    width: abilityItem.isHorizontal ? length : thickness
+    height: abilityItem.isHorizontal ? thickness : length
 
-        return !root.vertical ? taskItem.parabolicItem.width - 2*taskItem.parabolicItem.zoom*taskItem.abilities.metrics.margin.length: taskItem.parabolicItem.width;
-    }
+    level.isDrawn: level.indicator && level.indicator.host && level.indicator.host.isEnabled && !abilityItem.isSeparator && !abilityItem.isHidden
 
-    height: {
-        if (locked) {
-            return visualLockedHeight;
-        }
-
-        return root.vertical ? taskItem.parabolicItem.height - 2*taskItem.parabolicItem.zoom*taskItem.abilities.metrics.margin.length : taskItem.parabolicItem.height;
-    }
-
-    level.isDrawn: level.indicator && level.indicator.host && level.indicator.host.isEnabled && !taskItem.isSeparator && !taskItem.isHidden
-
-    readonly property bool locked: inAttentionAnimation || inNewWindowAnimation || inBouncingAnimation
-
-    property real visualLockedWidth: root.vertical ? taskItem.abilities.metrics.margin.screenEdge + taskItem.abilities.metrics.iconSize + root.internalWidthMargins :
-                                                     taskItem.abilities.metrics.iconSize + root.internalWidthMargins
-    property real visualLockedHeight: !root.vertical ? taskItem.abilities.metrics.margin.screenEdge + taskItem.abilities.metrics.iconSize + root.internalHeightMargins :
-                                                       taskItem.abilities.metrics.iconSize + root.internalHeightMargins
+    readonly property real length: abilityItem.parabolicItem.length - 2*abilityItem.parabolicItem.zoom*abilityItem.abilities.metrics.margin.length
+    readonly property real thickness: abilityItem.parabolicItem.thickness
 
     Connections {
         target: abilityItem
