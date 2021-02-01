@@ -40,6 +40,26 @@ Item {
     readonly property int thickness: _animations.hasThicknessAnimation ? _metrics.mask.thickness.zoomedForItems :
                                                                          _metrics.mask.thickness.normalForItems
 
+    readonly property real layoutWidth: {
+        if (isLayoutListViewContainer) {
+            return plasmoid.formFactor !== PlasmaCore.Types.Vertical ? layout.parent.width : thickness;
+        } else if (isLayoutGridContainer) {
+            return plasmoid.formFactor !== PlasmaCore.Types.Vertical ? layout.width : thickness
+        }
+
+        return 0;
+    }
+
+    readonly property real layoutHeight: {
+        if (isLayoutListViewContainer) {
+            return plasmoid.formFactor === PlasmaCore.Types.Vertical ? layout.parent.height : thickness;
+        } else if (isLayoutGridContainer) {
+            return plasmoid.formFactor !== PlasmaCore.Types.Vertical ? layout.height : thickness
+        }
+
+        return 0;
+    }
+
     //! basic
     readonly property alias animations: _animations
     readonly property alias containment: _containment
