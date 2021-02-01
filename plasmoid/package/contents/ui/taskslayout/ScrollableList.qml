@@ -29,7 +29,7 @@ Flickable{
     flickableDirection: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Flickable.HorizontalFlick : Flickable.VerticalFlick
     interactive: false
 
-    property int offset: 0
+    property real offset: 0
 
     readonly property bool animationsFinished: !horizontalAnimation.running && !verticalAnimation.running
     readonly property bool centered: root.alignment === LatteCore.Types.Center
@@ -54,12 +54,12 @@ Flickable{
         return 0;
     }
 
-    readonly property int scrollFirstPos: 0
-    readonly property int scrollLastPos: contentsExtraSpace
-    readonly property int scrollStep: appletAbilities.metrics.totals.length * 3.5
-    readonly property int currentPos: !root.vertical ? contentX : contentY
+    readonly property real scrollFirstPos: 0
+    readonly property real scrollLastPos: contentsExtraSpace
+    readonly property real scrollStep: appletAbilities.metrics.totals.length * 3.5
+    readonly property real currentPos: !root.vertical ? contentX : contentY
 
-    readonly property int autoScrollTriggerLength: appletAbilities.metrics.iconSize + appletAbilities.metrics.totals.lengthEdge
+    readonly property real autoScrollTriggerLength: appletAbilities.metrics.iconSize + appletAbilities.metrics.totals.lengthEdge
 
     readonly property int alignment: {
         if (root.location === PlasmaCore.Types.LeftEdge) {

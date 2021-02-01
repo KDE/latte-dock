@@ -27,11 +27,13 @@ Rectangle {
     x: {
         if (!root.vertical) {
             if (root.alignment === LatteCore.Types.Center) {
-                return icList.width / 2;
+                //! this way we get a perfectly centered offset value
+                return (icList.width-1) / 2;
             } else if (root.alignment === LatteCore.Types.Left){
                 return 0;
             } else if (root.alignment === LatteCore.Types.Right){
-                return icList.width;
+                //! this way we get a perfectly right aligned offset value
+                return (icList.width-1);
             }
         }
 
@@ -41,11 +43,13 @@ Rectangle {
     y: {
         if (root.vertical) {
             if (root.alignment === LatteCore.Types.Center) {
-                return icList.height / 2;
+                //! this way we get a perfectly centered offset value
+                return (icList.height-1) / 2;
             } else if (root.alignment === LatteCore.Types.Top){
                 return 0;
             } else if (root.alignment === LatteCore.Types.Bottom){
-                return icList.height;
+                //! this way we get a perfectly bottom aligned offset value
+                return (icList.height-1);
             }
         }
 
