@@ -89,7 +89,7 @@ Item {
     property bool lockZoom: false
 
     property bool isActive: (isExpanded
-                             && applet.pluginName !== root.plasmoidName
+                             && !appletItem.communicator.indexerIsSupported
                              && applet.pluginName !== "org.kde.activeWindowControl"
                              && applet.pluginName !== "org.kde.plasma.appmenu")
 
@@ -295,7 +295,7 @@ Item {
     property Item latteStyleApplet: applet && ((applet.pluginName === "org.kde.latte.spacer") || (applet.pluginName === "org.kde.latte.separator")) ?
                                         (applet.children[0] ? applet.children[0] : null) : null
 
-    property Item appletWrapper: applet && (applet.pluginName === root.plasmoidName )? wrapper : wrapper.wrapperContainer
+    property Item appletWrapper: wrapper.wrapperContainer
 
     property Item tooltipVisualParent: titleTooltipParent
 

@@ -504,8 +504,10 @@ MouseArea {
             if (visualParent && currentApplet
                     && (currentApplet.applet || currentApplet.isSeparator || currentApplet.isInternalViewSplitter)) {
 
-                configureButton.visible = !currentApplet.isInternalViewSplitter && (currentApplet.applet.pluginName !== root.plasmoidName)
-                        && currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
+                configureButton.visible = !currentApplet.isInternalViewSplitter
+                        && (currentApplet.applet.pluginName !== "org.kde.latte.plasmoid")
+                        && currentApplet.applet.action("configure")
+                        && currentApplet.applet.action("configure").enabled;
                 closeButton.visible = !currentApplet.isInternalViewSplitter && currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled;
                 lockButton.visible = !currentApplet.isInternalViewSplitter
                         && !currentApplet.communicator.indexerIsSupported

@@ -318,8 +318,6 @@ Item {
     property int widthMargins: root.isVertical ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
     property int heightMargins: root.isHorizontal ? metrics.totals.thicknessEdges : metrics.totals.lengthEdges
 
-    readonly property string plasmoidName: "org.kde.latte.plasmoid"
-
     property var iconsArray: [16, 22, 32, 48, 64, 96, 128, 256]
 
     property Item dragOverlay: _dragOverlay

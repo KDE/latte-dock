@@ -49,8 +49,9 @@ Item {
 
             readonly property int shadowSize : appletItem.myView.itemShadow.size
 
-            readonly property bool forcedShadow: root.forceTransparentPanel && plasmoid.configuration.appletShadowsEnabled
-                                                 && applet && applet.pluginName !== root.plasmoidName ? true : false
+            readonly property bool forcedShadow: root.forceTransparentPanel
+                                                 && plasmoid.configuration.appletShadowsEnabled
+                                                 && !appletItem.communicator.indexerIsSupported ? true : false
         }
     }
 }
