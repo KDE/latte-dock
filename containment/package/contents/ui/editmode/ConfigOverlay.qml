@@ -508,7 +508,7 @@ MouseArea {
                         && currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
                 closeButton.visible = !currentApplet.isInternalViewSplitter && currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled;
                 lockButton.visible = !currentApplet.isInternalViewSplitter
-                        && (currentApplet.applet.pluginName !== root.plasmoidName)
+                        && !currentApplet.communicator.indexerIsSupported
                         && !currentApplet.isSeparator;
 
                 colorizingButton.visible = root.colorizerEnabled && !currentApplet.appletBlocksColorizing && !currentApplet.isInternalViewSplitter;
