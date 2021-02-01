@@ -122,8 +122,11 @@ Item {
 
 
     Loader {
+        id: anchorsLoader
         active: isLayoutListViewContainer || isLayoutRowColumnContainer || isLayoutGridContainer
         source: "./appletabilities/ContainerAnchorBindings.qml"
+
+        readonly property Item anchoredItem: isLayoutListViewContainer ? layout.parent : layout
     }
 
     Loader {

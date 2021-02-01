@@ -391,4 +391,54 @@ Item{
     function slotClearZoom(){
         restoreAnimation.start();
     }
+
+    //BEGIN states
+    states: [
+        State {
+            name: "grid"
+            when: abilityItem.parent && abilities.isLayoutGridContainer
+
+            AnchorChanges {
+                target: abilityItem
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:undefined;}
+            }
+        },
+        State {
+            name: "left"
+            when: abilityItem.parent && !abilities.isLayoutGridContainer && (abilities.location === PlasmaCore.Types.LeftEdge)
+
+            AnchorChanges {
+                target: abilityItem
+                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;}
+            }
+        },
+        State {
+            name: "right"
+            when: abilityItem.parent && !abilities.isLayoutGridContainer && (abilities.location === PlasmaCore.Types.RightEdge)
+
+            AnchorChanges {
+                target: abilityItem
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;}
+            }
+        },
+        State {
+            name: "bottom"
+            when: abilityItem.parent && !abilities.isLayoutGridContainer && (abilities.location === PlasmaCore.Types.BottomEdge)
+
+            AnchorChanges {
+                target: abilityItem
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
+            }
+        },
+        State {
+            name: "top"
+            when: abilityItem.parent && !abilities.isLayoutGridContainer && (abilities.location === PlasmaCore.Types.TopEdge)
+
+            AnchorChanges {
+                target: abilityItem
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined;}
+            }
+        }
+    ]
+    //END states
 }

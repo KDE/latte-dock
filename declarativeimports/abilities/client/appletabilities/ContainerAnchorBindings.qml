@@ -33,7 +33,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.BottomEdge && _abilityContainer.alignment===LatteCore.Types.Center)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
         },
@@ -42,7 +42,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.BottomEdge && _abilityContainer.alignment===LatteCore.Types.Left)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
@@ -51,7 +51,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.BottomEdge && _abilityContainer.alignment===LatteCore.Types.Right)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
@@ -61,7 +61,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.TopEdge && _abilityContainer.alignment===LatteCore.Types.Center)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
         },
@@ -70,7 +70,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.TopEdge && _abilityContainer.alignment===LatteCore.Types.Left)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
@@ -79,7 +79,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.TopEdge && _abilityContainer.alignment===LatteCore.Types.Right)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
@@ -89,7 +89,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.LeftEdge && _abilityContainer.alignment===LatteCore.Types.Center)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
         },
@@ -98,7 +98,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.LeftEdge && _abilityContainer.alignment===LatteCore.Types.Top)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
@@ -107,7 +107,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.LeftEdge && _abilityContainer.alignment===LatteCore.Types.Bottom)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
@@ -117,7 +117,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.RightEdge && _abilityContainer.alignment===LatteCore.Types.Center)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
         },
@@ -126,7 +126,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.RightEdge && _abilityContainer.alignment===LatteCore.Types.Top)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
@@ -135,7 +135,7 @@ Item {
             when: (_abilityContainer.location===PlasmaCore.Types.RightEdge && _abilityContainer.alignment===LatteCore.Types.Bottom)
 
             AnchorChanges {
-                target: layout.parent
+                target: anchorsLoader.anchoredItem
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         }
