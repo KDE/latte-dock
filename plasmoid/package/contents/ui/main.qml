@@ -975,18 +975,6 @@ Item {
 
                 ListView {
                     id:icList
-                    anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
-                    anchors.top: (root.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
-                    anchors.left: (root.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
-                    anchors.right: (root.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
-
-                    anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-                    anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-
-                    width: !root.vertical ? contentWidth : mouseHandler.maxThickness
-                    height: root.vertical ? contentHeight : mouseHandler.maxThickness
-                    boundsBehavior: Flickable.StopAtBounds
-                    orientation: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Qt.Vertical : Qt.Horizontal
                     delegate: Task.TaskItem{
                         abilities: appletAbilities
                     }
@@ -1332,10 +1320,6 @@ Item {
                 target: barLine
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
-            AnchorChanges {
-                target: icList
-                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
         },
         State {
             name: "bottomLeft"
@@ -1345,10 +1329,6 @@ Item {
                 target: barLine
                 anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
-            AnchorChanges {
-                target: icList
-                anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
         },
         State {
             name: "bottomRight"
@@ -1356,10 +1336,6 @@ Item {
 
             AnchorChanges {
                 target: barLine
-                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
-                target: icList
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
@@ -1372,10 +1348,6 @@ Item {
                 target: barLine
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
-            AnchorChanges {
-                target: icList
-                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
         },
         State {
             name: "topLeft"
@@ -1385,10 +1357,6 @@ Item {
                 target: barLine
                 anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
-            AnchorChanges {
-                target: icList
-                anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
         },
         State {
             name: "topRight"
@@ -1396,10 +1364,6 @@ Item {
 
             AnchorChanges {
                 target: barLine
-                anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
-                target: icList
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
@@ -1412,10 +1376,6 @@ Item {
                 target: barLine
                 anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
-            AnchorChanges {
-                target: icList
-                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
         },
         State {
             name: "leftTop"
@@ -1425,10 +1385,6 @@ Item {
                 target: barLine
                 anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
-            AnchorChanges {
-                target: icList
-                anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
         },
         State {
             name: "leftBottom"
@@ -1436,10 +1392,6 @@ Item {
 
             AnchorChanges {
                 target: barLine
-                anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
-                target: icList
                 anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
@@ -1452,10 +1404,6 @@ Item {
                 target: barLine
                 anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
-            AnchorChanges {
-                target: icList
-                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
         },
         State {
             name: "rightTop"
@@ -1465,10 +1413,6 @@ Item {
                 target: barLine
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
-            AnchorChanges {
-                target: icList
-                anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-            }
         },
         State {
             name: "rightBottom"
@@ -1476,10 +1420,6 @@ Item {
 
             AnchorChanges {
                 target: barLine
-                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
-                target: icList
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         }

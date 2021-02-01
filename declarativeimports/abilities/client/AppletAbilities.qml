@@ -19,12 +19,27 @@
 
 import QtQuick 2.7
 
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
+
 import org.kde.latte.abilities.client 0.1 as AbilityClient
 
 Item {
     id: _abilityContainer
     property Item bridge: null
     property Item layout: null
+
+    readonly property bool isLayoutListViewContainer: layout && layout.parent && layout.parent instanceof ListView
+    readonly property bool isLayoutRowColumnContainer: layout && ((layout instanceof Row) || (layout instanceof Column))
+    readonly property bool isLayoutGridContainer: layout && layout instanceof Grid
+
+    readonly property bool inDesktop: plasmoid.location === PlasmaCore.Types.Floating
+                                      || plasmoid.location === PlasmaCore.Types.Desktop
+
+    readonly property int alignment: _containment.alignment
+    readonly property int location: inDesktop ? PlasmaCore.Types.BottomEdge : plasmoid.location
+    readonly property int thickness: _animations.hasThicknessAnimation ? _metrics.mask.thickness.zoomedForItems :
+                                                                         _metrics.mask.thickness.normalForItems
 
     //! basic
     readonly property alias animations: _animations
@@ -103,5 +118,16 @@ Item {
     AbilityClient.UserRequests {
         id: _userRequests
         bridge: _abilityContainer.bridge
+    }
+
+
+    Loader {
+        active: isLayoutListViewContainer || isLayoutRowColumnContainer || isLayoutGridContainer
+        source: "./appletabilities/ContainerAnchorBindings.qml"
+    }
+
+    Loader {
+        active: isLayoutListViewContainer
+        source: "./appletabilities/ContainerListViewBindings.qml"
     }
 }
