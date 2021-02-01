@@ -84,7 +84,7 @@ Item {
                                                        && root.dragOverlay.pressed
 
     property bool userBlocksColorizing: false
-    property bool appletBlocksColorizing: !communicator.requires.latteSideColoringEnabled
+    property bool appletBlocksColorizing: !communicator.requires.latteSideColoringEnabled || communicator.indexerIsSupported
     property bool appletBlocksParabolicEffect: communicator.requires.parabolicEffectLocked
     property bool lockZoom: false
 
