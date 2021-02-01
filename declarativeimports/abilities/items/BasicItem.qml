@@ -282,6 +282,7 @@ Item{
     Flow{
         width: parent.width
         height: parent.height
+        z:10
 
         BasicItemParts.HiddenSpacer{ id:hiddenSpacerLeft}
 
