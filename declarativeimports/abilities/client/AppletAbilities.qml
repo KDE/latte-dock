@@ -30,7 +30,6 @@ Item {
     property Item layout: null
 
     readonly property bool isLayoutListViewContainer: layout && layout.parent && layout.parent instanceof ListView
-    readonly property bool isLayoutRowColumnContainer: layout && ((layout instanceof Row) || (layout instanceof Column))
     readonly property bool isLayoutGridContainer: layout && layout instanceof Grid
 
     readonly property bool inDesktop: plasmoid.location === PlasmaCore.Types.Floating
@@ -123,7 +122,7 @@ Item {
 
     Loader {
         id: anchorsLoader
-        active: isLayoutListViewContainer || isLayoutRowColumnContainer || isLayoutGridContainer
+        active: isLayoutListViewContainer || isLayoutGridContainer
         source: "./appletabilities/ContainerAnchorBindings.qml"
 
         readonly property Item anchoredItem: isLayoutListViewContainer ? layout.parent : layout
@@ -132,5 +131,10 @@ Item {
     Loader {
         active: isLayoutListViewContainer
         source: "./appletabilities/ContainerListViewBindings.qml"
+    }
+
+    Loader {
+        active: isLayoutGridContainer
+        source: "./appletabilities/ContainerGridBindings.qml"
     }
 }
