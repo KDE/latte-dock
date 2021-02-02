@@ -117,9 +117,7 @@ bool TrackedGeneralInfo::isTrackingCurrentActivity() const
 
 void TrackedGeneralInfo::updateTrackingCurrentActivity()
 {
-    m_isTrackingCurrentActivity = ( m_activities.isEmpty()
-                                    || m_activities[0] == "0"
-            || m_activities.contains(m_wm->currentActivity()));
+    m_isTrackingCurrentActivity = ( m_activities.isEmpty() || m_activities[0] == "{0}" || m_activities.contains(m_wm->currentActivity()));
 }
 
 
