@@ -100,6 +100,10 @@ FocusScope {
 
     readonly property Item currentPage: pagesStackView.currentItem
 
+    readonly property Item behaviorPage: behaviorLoader.item
+    readonly property Item appearancePage: appearanceLoader.item
+    readonly property Item effectsPage: effectsLoader.item
+
     onAdvancedLevelChanged: {
         //! switch to appearancePage when effectsPage becomes hidden because
         //! advancedLevel was disabled by the user
@@ -452,24 +456,38 @@ FocusScope {
                 anchors.fill: parent
                 visible: false
 
-                Pages.BehaviorConfig {
-                    id: behaviorPage
-                    readonly property int pageIndex:0
+                Loader {
+                    id: behaviorLoader
+                    anchors.fill: parent
+                    active: plasmoid && plasmoid.configuration && latteView
+                    sourceComponent: Pages.BehaviorConfig {
+                        readonly property int pageIndex:0
+                    }
                 }
 
-                Pages.AppearanceConfig {
-                    id: appearancePage
-                    readonly property int pageIndex:1
+                Loader {
+                    id: appearanceLoader
+                    anchors.fill: parent
+                    active: plasmoid && plasmoid.configuration && latteView
+                    sourceComponent: Pages.AppearanceConfig {
+                        id: appearancePage
+                        readonly property int pageIndex:1
+                    }
                 }
 
-                Pages.EffectsConfig {
-                    id: effectsPage
-                    readonly property int pageIndex:2
+                Loader {
+                    id: effectsLoader
+                    anchors.fill: parent
+                    active: plasmoid && plasmoid.configuration && latteView
+                    sourceComponent: Pages.EffectsConfig {
+                        id: effectsPage
+                        readonly property int pageIndex:2
+                    }
                 }
 
                 Repeater {
                     id: tasksRepeater
-                    model: latteView.extendedInterface.latteTasksModel
+                    model: plasmoid && plasmoid.configuration && latteView ? latteView.extendedInterface.latteTasksModel : 0
 
                     Pages.TasksConfig {
                         id: tasksPage
