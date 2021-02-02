@@ -32,13 +32,18 @@ import org.kde.latte.components 1.0 as LatteComponents
 import org.kde.latte.private.tasks 0.1 as LatteTasks
 
 PlasmaComponents.Page {
-    id: _tabsPage
+    id: _tasksPage
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
 
     property bool disableAllWindowsFunctionality: tasks.configuration.hideAllTasks
 
-    readonly property bool isCurrentPage: (dialog.currentPage === _tabsPage)
+    readonly property bool isCurrentPage: (dialog.currentPage === _tasksPage)
+
+    Component.onCompleted: {
+        pagesStackView.push(_tasksPage);
+        pagesStackView.pop(_tasksPage);
+    }
 
     onIsCurrentPageChanged: {
         if (isCurrentPage && latteView.extendedInterface.latteTasksModel.count>1) {

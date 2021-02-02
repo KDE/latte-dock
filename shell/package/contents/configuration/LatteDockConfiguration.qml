@@ -438,18 +438,6 @@ FocusScope {
                         }
                     }
 
-                    Component.onCompleted: {
-                        push(behaviorPage);
-                        push(appearancePage);
-                        push(effectsPage);
-
-                        pop(effectsPage);
-                        pop(appearancePage);
-                        pop(behaviorPage);
-
-                        push(behaviorPage);
-                    }
-
                     onCurrentItemChanged: {
                         if (!currentItem) {
                             pagesStackView.forwardSliding = true;
@@ -486,12 +474,6 @@ FocusScope {
                     Pages.TasksConfig {
                         id: tasksPage
                         readonly property int pageIndex: tabBar.visibleStaticPages+index
-
-                        Component.onCompleted: {
-                            pagesStackView.replace(pagesStackView.currentItem, tasksPage);
-                            pagesStackView.forwardSliding = true;
-                            pagesStackView.replace(tasksPage, behaviorPage);
-                        }
                     }
                 }
             }

@@ -36,8 +36,14 @@ import org.kde.latte.private.containment 0.1 as LatteContainment
 import "../../controls" as LatteExtraControls
 
 PlasmaComponents.Page {
+    id: page
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing
+
+    Component.onCompleted: {
+        pagesStackView.push(page);
+        pagesStackView.pop(page);
+    }
 
     ColumnLayout {
         id: content
