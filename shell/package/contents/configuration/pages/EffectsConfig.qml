@@ -37,13 +37,8 @@ import "../../controls" as LatteExtraControls
 
 PlasmaComponents.Page {
     id: page
-    Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
-    Layout.maximumHeight: content.height + units.smallSpacing
-
-    Component.onCompleted: {
-        pagesStackView.push(page);
-        pagesStackView.pop(page);
-    }
+    width: content.width + content.Layout.leftMargin * 2
+    height: content.height + units.smallSpacing
 
     ColumnLayout {
         id: content

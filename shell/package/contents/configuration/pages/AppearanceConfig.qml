@@ -34,12 +34,8 @@ import org.kde.latte.private.containment 0.1 as LatteContainment
 
 PlasmaComponents.Page {
     id: page
-    Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
-    Layout.maximumHeight: content.height + units.smallSpacing * 2
-
-    Component.onCompleted: {
-        pagesStackView.push(page);
-    }
+    width: content.width + content.Layout.leftMargin * 2
+    height: content.height + units.smallSpacing * 2
 
     Timer {
         id: syncGeometry

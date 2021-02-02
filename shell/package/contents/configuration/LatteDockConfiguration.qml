@@ -401,8 +401,8 @@ FocusScope {
 
                 QtQuickControls212.StackView {
                     id: pagesStackView
-                    width: currentItem.Layout.maximumWidth
-                    height: currentItem.Layout.maximumHeight
+                    width: currentItem.width
+                    height: currentItem.height
 
                     property bool forwardSliding: true
 
@@ -442,8 +442,8 @@ FocusScope {
                         }
                     }
 
-                    onCurrentItemChanged: {
-                        if (!currentItem) {
+                    onDepthChanged:  {
+                        if (depth === 0) {
                             pagesStackView.forwardSliding = true;
                             push(behaviorPage);
                         }
@@ -461,26 +461,26 @@ FocusScope {
                     anchors.fill: parent
                     active: plasmoid && plasmoid.configuration && latteView
                     sourceComponent: Pages.BehaviorConfig {
+                        id: _behaviorPage
                         readonly property int pageIndex:0
+                        Component.onCompleted: {
+                            pagesStackView.push(_behaviorPage);
+                        }
                     }
                 }
 
                 Loader {
                     id: appearanceLoader
-                    anchors.fill: parent
                     active: plasmoid && plasmoid.configuration && latteView
                     sourceComponent: Pages.AppearanceConfig {
-                        id: appearancePage
                         readonly property int pageIndex:1
                     }
                 }
 
                 Loader {
                     id: effectsLoader
-                    anchors.fill: parent
                     active: plasmoid && plasmoid.configuration && latteView
                     sourceComponent: Pages.EffectsConfig {
-                        id: effectsPage
                         readonly property int pageIndex:2
                     }
                 }
@@ -490,7 +490,6 @@ FocusScope {
                     model: plasmoid && plasmoid.configuration && latteView ? latteView.extendedInterface.latteTasksModel : 0
 
                     Pages.TasksConfig {
-                        id: tasksPage
                         readonly property int pageIndex: tabBar.visibleStaticPages+index
                     }
                 }
