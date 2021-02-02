@@ -35,38 +35,41 @@ import org.kde.latte.core 0.2 as LatteCore
 
 import "../controls" as LatteExtraControls
 
-FocusScope {
-    id: dialog
+Loader {
+    active: plasmoid && plasmoid.configuration && latteView
 
-    width: typeSettings.width + units.smallSpacing * 4
-    height: typeSettings.height + units.smallSpacing * 4
-    Layout.minimumWidth: width
-    Layout.minimumHeight: height
-    LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
-    LayoutMirroring.childrenInherit: true
+    sourceComponent: FocusScope {
+        id: dialog
 
-    property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
+        width: typeSettings.width + units.smallSpacing * 4
+        height: typeSettings.height + units.smallSpacing * 4
+        Layout.minimumWidth: width
+        Layout.minimumHeight: height
+        LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+        LayoutMirroring.childrenInherit: true
 
-    PlasmaCore.FrameSvgItem{
-        id: backgroundFrameSvgItem
-        anchors.fill: parent
-        imagePath: "dialogs/background"
-        enabledBorders: viewConfig.enabledBorders
+        property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
 
-        onEnabledBordersChanged: viewConfig.updateEffects()
-        Component.onCompleted: viewConfig.updateEffects()
-    }
+        PlasmaCore.FrameSvgItem{
+            id: backgroundFrameSvgItem
+            anchors.fill: parent
+            imagePath: "dialogs/background"
+            enabledBorders: viewConfig.enabledBorders
 
+            onEnabledBordersChanged: viewConfig.updateEffects()
+            Component.onCompleted: viewConfig.updateEffects()
+        }
 
-    LatteExtraControls.TypeSelection{
-        id: typeSettings
-        anchors.centerIn: parent
+        LatteExtraControls.TypeSelection{
+            id: typeSettings
+            anchors.centerIn: parent
 
-        Component.onCompleted: forceActiveFocus();
+            Component.onCompleted: forceActiveFocus();
 
-        Keys.onPressed: {
-            if (event.key === Qt.Key_Escape) {
-                primaryConfigView.hideConfigWindow();
+            Keys.onPressed: {
+                if (event.key === Qt.Key_Escape) {
+                    primaryConfigView.hideConfigWindow();
+                }
             }
         }
     }

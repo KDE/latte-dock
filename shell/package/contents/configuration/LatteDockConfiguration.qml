@@ -39,608 +39,612 @@ import org.kde.latte.components 1.0 as LatteComponents
 import "pages" as Pages
 import "../controls" as LatteExtraControls
 
-FocusScope {
-    id: dialog
-    width: appliedWidth
-    height: appliedHeight
+Loader {
+    active: plasmoid && plasmoid.configuration && latteView
 
-    readonly property bool basicLevel: !advancedLevel
-    readonly property bool advancedLevel: universalSettings.inAdvancedModeForEditSettings
+    sourceComponent: FocusScope {
+        id: dialog
+        width: appliedWidth
+        height: appliedHeight
 
-    readonly property bool inConfigureAppletsMode: plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive
+        readonly property bool basicLevel: !advancedLevel
+        readonly property bool advancedLevel: universalSettings.inAdvancedModeForEditSettings
 
-    readonly property bool kirigamiLibraryIsFound: LatteCore.Environment.frameworksVersion >= LatteCore.Environment.makeVersion(5,69,0)
+        readonly property bool inConfigureAppletsMode: plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive
 
-    //! max size based on screen resolution
-    //!    TODO: if we can access availableScreenGeometry.height this can be improved, currently
-    //!    we use 100px. or 50px. in order to give space for othe views to be shown and to have also
-    //!    some space around the settings window
-    property int maxHeight: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
-                                viewConfig.availableScreenGeometry.height - (latteView.editThickness - latteView.maxNormalThickness) - units.largeSpacing :
-                                viewConfig.availableScreenGeometry.height - 2 * units.largeSpacing
+        readonly property bool kirigamiLibraryIsFound: LatteCore.Environment.frameworksVersion >= LatteCore.Environment.makeVersion(5,69,0)
 
-    property int maxWidth: 0.6 * latteView.screenGeometry.width
+        //! max size based on screen resolution
+        //!    TODO: if we can access availableScreenGeometry.height this can be improved, currently
+        //!    we use 100px. or 50px. in order to give space for othe views to be shown and to have also
+        //!    some space around the settings window
+        property int maxHeight: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
+                                    viewConfig.availableScreenGeometry.height - (latteView.editThickness - latteView.maxNormalThickness) - units.largeSpacing :
+                                    viewConfig.availableScreenGeometry.height - 2 * units.largeSpacing
 
-    //! propose size based on font size
-    property int proposedWidth: 0.82 * proposedHeight + units.smallSpacing * 2
-    property int proposedHeight: 36 * theme.mSize(theme.defaultFont).height
+        property int maxWidth: 0.6 * latteView.screenGeometry.width
 
-    //! chosen size to be applied, if the user has set or not a different scale for the settings window
-    property int chosenWidth: userScaleWidth !== 1 ? userScaleWidth * proposedWidth : proposedWidth
-    property int chosenHeight: userScaleHeight !== 1 ? userScaleHeight * heightLevel * proposedHeight : heightLevel * proposedHeight
+        //! propose size based on font size
+        property int proposedWidth: 0.82 * proposedHeight + units.smallSpacing * 2
+        property int proposedHeight: 36 * theme.mSize(theme.defaultFont).height
 
-    readonly property int optionsWidth: appliedWidth - units.smallSpacing * 10
+        //! chosen size to be applied, if the user has set or not a different scale for the settings window
+        property int chosenWidth: userScaleWidth !== 1 ? userScaleWidth * proposedWidth : proposedWidth
+        property int chosenHeight: userScaleHeight !== 1 ? userScaleHeight * heightLevel * proposedHeight : heightLevel * proposedHeight
 
-    //! user set scales based on its preference, e.g. 96% of the proposed size
-    property real userScaleWidth: 1
-    property real userScaleHeight: 1
+        readonly property int optionsWidth: appliedWidth - units.smallSpacing * 10
 
-    readonly property real heightLevel: (dialog.advancedLevel ? 100 : 1) //in order to use all available space
+        //! user set scales based on its preference, e.g. 96% of the proposed size
+        property real userScaleWidth: 1
+        property real userScaleHeight: 1
 
-    onHeightChanged: viewConfig.syncGeometry();
+        readonly property real heightLevel: (dialog.advancedLevel ? 100 : 1) //in order to use all available space
 
-    //! applied size in order to not be out of boundaries
-    //! width can be between 200px - maxWidth
-    //! height can be between 400px - maxHeight
-    property int appliedWidth: Math.min(maxWidth, Math.max(200, chosenWidth))
-    property int appliedHeight: universalSettings.inAdvancedModeForEditSettings ? maxHeight : Math.min(maxHeight, Math.max(400, chosenHeight))
+        onHeightChanged: viewConfig.syncGeometry();
 
-    Layout.minimumWidth: width
-    Layout.minimumHeight: height
-    LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
-    LayoutMirroring.childrenInherit: true
-
-    readonly property bool viewIsPanel: latteView.type === LatteCore.Types.PanelView
-
-    property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
-    property int subGroupSpacing: units.largeSpacing + units.smallSpacing * 1.5
-
-    property color bC: theme.backgroundColor
-    property color transparentBackgroundColor: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
-
-    readonly property Item currentPage: pagesStackView.currentItem
-
-    readonly property Item behaviorPage: behaviorLoader.item
-    readonly property Item appearancePage: appearanceLoader.item
-    readonly property Item effectsPage: effectsLoader.item
-
-    onAdvancedLevelChanged: {
-        //! switch to appearancePage when effectsPage becomes hidden because
-        //! advancedLevel was disabled by the user
-        if (!advancedLevel && tabBar.currentTab === effectsTabBtn) {
-            tabBar.currentTab = appearanceTabBtn;
-        }
-    }
-
-    Component.onCompleted: {
-        updateScales();
-    }
-
-    Connections {
-        target: latteView.positioner
-        onCurrentScreenNameChanged: dialog.updateScales();
-    }
-
-    function updateScales() {
-        userScaleWidth = universalSettings.screenWidthScale(latteView.positioner.currentScreenName);
-        userScaleHeight = universalSettings.screenHeightScale(latteView.positioner.currentScreenName);
-    }
-
-    PlasmaCore.FrameSvgItem{
-        id: backgroundFrameSvgItem
-        anchors.fill: parent
-        imagePath: "dialogs/background"
-        enabledBorders: viewConfig.enabledBorders
-
-        onEnabledBordersChanged: viewConfig.updateEffects()
-        Component.onCompleted: viewConfig.updateEffects()
-
-        LatteExtraControls.DragCorner {
-            id: dragCorner
-        }
-    }
-
-    PlasmaComponents.Label{
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: dialog.advancedLevel ?
-                  i18nc("view settings width scale","Width %0%").arg(userScaleWidth * 100) :
-                  i18nc("view settings width scale","Width %0% / Height %1%").arg(userScaleWidth * 100).arg(userScaleHeight * 100)
-        visible: dragCorner.isActive
-    }
-
-    ColumnLayout {
-        id: content
+        //! applied size in order to not be out of boundaries
+        //! width can be between 200px - maxWidth
+        //! height can be between 400px - maxHeight
+        property int appliedWidth: Math.min(maxWidth, Math.max(200, chosenWidth))
+        property int appliedHeight: universalSettings.inAdvancedModeForEditSettings ? maxHeight : Math.min(maxHeight, Math.max(400, chosenHeight))
 
         Layout.minimumWidth: width
-        Layout.minimumHeight: calculatedHeight
-        Layout.preferredWidth: width
-        Layout.preferredHeight: calculatedHeight
-        width: (dialog.appliedWidth - units.smallSpacing * 2)
+        Layout.minimumHeight: height
+        LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+        LayoutMirroring.childrenInherit: true
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        spacing: units.smallSpacing
+        readonly property bool viewIsPanel: latteView.type === LatteCore.Types.PanelView
 
-        property int calculatedHeight: header.height + headerSpacer.height+ tabBar.height + pagesBackground.height + actionButtons.height + spacing * 3
+        property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
+        property int subGroupSpacing: units.largeSpacing + units.smallSpacing * 1.5
 
-        Keys.onPressed: {
-            if (event.key === Qt.Key_Escape) {
-                viewConfig.hideConfigWindow();
+        property color bC: theme.backgroundColor
+        property color transparentBackgroundColor: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
+
+        readonly property Item currentPage: pagesStackView.currentItem
+
+        readonly property Item behaviorPage: behaviorLoader.item
+        readonly property Item appearancePage: appearanceLoader.item
+        readonly property Item effectsPage: effectsLoader.item
+
+        onAdvancedLevelChanged: {
+            //! switch to appearancePage when effectsPage becomes hidden because
+            //! advancedLevel was disabled by the user
+            if (!advancedLevel && tabBar.currentTab === effectsTabBtn) {
+                tabBar.currentTab = appearanceTabBtn;
             }
         }
 
-        Component.onCompleted: forceActiveFocus();
+        Component.onCompleted: {
+            updateScales();
+        }
 
-        RowLayout {
-            id: header
-            Layout.fillWidth: true
+        Connections {
+            target: latteView.positioner
+            onCurrentScreenNameChanged: dialog.updateScales();
+        }
 
-            spacing: 0
+        function updateScales() {
+            userScaleWidth = universalSettings.screenWidthScale(latteView.positioner.currentScreenName);
+            userScaleHeight = universalSettings.screenHeightScale(latteView.positioner.currentScreenName);
+        }
 
-            Item {
-                id: trademark
-                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                Layout.fillWidth: false
-                Layout.topMargin: units.smallSpacing
-                Layout.preferredWidth: width
-                Layout.preferredHeight: height
+        PlasmaCore.FrameSvgItem{
+            id: backgroundFrameSvgItem
+            anchors.fill: parent
+            imagePath: "dialogs/background"
+            enabledBorders: viewConfig.enabledBorders
 
-                width: latteTrademark.width + units.smallSpacing
-                height: trademarkHeight
+            onEnabledBordersChanged: viewConfig.updateEffects()
+            Component.onCompleted: viewConfig.updateEffects()
 
-                readonly property int trademarkHeight: 48
+            LatteExtraControls.DragCorner {
+                id: dragCorner
+            }
+        }
 
-                PlasmaCore.SvgItem{
-                    id: latteTrademark
-                    width: Qt.application.layoutDirection !== Qt.RightToLeft ? Math.ceil(1.70 * height) : height
-                    height: trademark.height
+        PlasmaComponents.Label{
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: dialog.advancedLevel ?
+                      i18nc("view settings width scale","Width %0%").arg(userScaleWidth * 100) :
+                      i18nc("view settings width scale","Width %0% / Height %1%").arg(userScaleWidth * 100).arg(userScaleHeight * 100)
+            visible: dragCorner.isActive
+        }
 
-                    svg: PlasmaCore.Svg{
-                        imagePath: Qt.application.layoutDirection !== Qt.RightToLeft ? universalSettings.trademarkPath() : universalSettings.trademarkIconPath()
-                    }
+        ColumnLayout {
+            id: content
+
+            Layout.minimumWidth: width
+            Layout.minimumHeight: calculatedHeight
+            Layout.preferredWidth: width
+            Layout.preferredHeight: calculatedHeight
+            width: (dialog.appliedWidth - units.smallSpacing * 2)
+
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            spacing: units.smallSpacing
+
+            property int calculatedHeight: header.height + headerSpacer.height+ tabBar.height + pagesBackground.height + actionButtons.height + spacing * 3
+
+            Keys.onPressed: {
+                if (event.key === Qt.Key_Escape) {
+                    viewConfig.hideConfigWindow();
                 }
             }
 
-            Item{
-                id: headerSpacer
-                Layout.minimumHeight: advancedSettings.height + 2*units.smallSpacing
-            }
+            Component.onCompleted: forceActiveFocus();
 
-            ColumnLayout {
-                PlasmaComponents3.ToolButton {
-                    id: pinButton
+            RowLayout {
+                id: header
+                Layout.fillWidth: true
 
+                spacing: 0
+
+                Item {
+                    id: trademark
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                     Layout.fillWidth: false
-                    Layout.fillHeight: false
+                    Layout.topMargin: units.smallSpacing
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
-                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                    Layout.bottomMargin: units.smallSpacing * 1.5
-                    //!avoid editMode box shadow
-                    Layout.topMargin: units.smallSpacing * 3
-                    Layout.rightMargin: units.smallSpacing * 2
 
-                    icon.name: "window-pin"
-                    checkable: true
+                    width: latteTrademark.width + units.smallSpacing
+                    height: trademarkHeight
 
-                    width: 7 * units.smallSpacing
-                    height: width
+                    readonly property int trademarkHeight: 48
 
-                    property bool inStartup: true
+                    PlasmaCore.SvgItem{
+                        id: latteTrademark
+                        width: Qt.application.layoutDirection !== Qt.RightToLeft ? Math.ceil(1.70 * height) : height
+                        height: trademark.height
 
-                    onClicked: {
-                        plasmoid.configuration.configurationSticker = checked
-                        viewConfig.setSticker(checked)
-                    }
-
-                    Component.onCompleted: {
-                        checked = plasmoid.configuration.configurationSticker
-                        viewConfig.setSticker(plasmoid.configuration.configurationSticker)
+                        svg: PlasmaCore.Svg{
+                            imagePath: Qt.application.layoutDirection !== Qt.RightToLeft ? universalSettings.trademarkPath() : universalSettings.trademarkIconPath()
+                        }
                     }
                 }
 
-                RowLayout {
-                    id: advancedSettings
-                    Layout.fillWidth: true
-                    Layout.rightMargin: units.smallSpacing * 2
-                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                Item{
+                    id: headerSpacer
+                    Layout.minimumHeight: advancedSettings.height + 2*units.smallSpacing
+                }
 
-                    PlasmaComponents.Label {
+                ColumnLayout {
+                    PlasmaComponents3.ToolButton {
+                        id: pinButton
+
+                        Layout.fillWidth: false
+                        Layout.fillHeight: false
+                        Layout.preferredWidth: width
+                        Layout.preferredHeight: height
+                        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                        Layout.bottomMargin: units.smallSpacing * 1.5
+                        //!avoid editMode box shadow
+                        Layout.topMargin: units.smallSpacing * 3
+                        Layout.rightMargin: units.smallSpacing * 2
+
+                        icon.name: "window-pin"
+                        checkable: true
+
+                        width: 7 * units.smallSpacing
+                        height: width
+
+                        property bool inStartup: true
+
+                        onClicked: {
+                            plasmoid.configuration.configurationSticker = checked
+                            viewConfig.setSticker(checked)
+                        }
+
+                        Component.onCompleted: {
+                            checked = plasmoid.configuration.configurationSticker
+                            viewConfig.setSticker(plasmoid.configuration.configurationSticker)
+                        }
+                    }
+
+                    RowLayout {
+                        id: advancedSettings
                         Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignRight
-                    }
+                        Layout.rightMargin: units.smallSpacing * 2
+                        Layout.alignment: Qt.AlignRight | Qt.AlignTop
 
-                    PlasmaComponents.Label {
-                        id: advancedLbl
-                        Layout.alignment: Qt.AlignRight
-                        //  opacity: dialog.basicLevel ? basicOpacity : 1
+                        PlasmaComponents.Label {
+                            Layout.fillWidth: true
+                            Layout.alignment: Qt.AlignRight
+                        }
 
-                        //! TODO: the term here is not accurate because the expert settings mode
-                        //! is used currently. In the future this term will be rethought if
-                        //! it must remain or be changed
-                        text: i18nc("advanced settings", "Advanced")
+                        PlasmaComponents.Label {
+                            id: advancedLbl
+                            Layout.alignment: Qt.AlignRight
+                            //  opacity: dialog.basicLevel ? basicOpacity : 1
 
-                        readonly property real textColorBrightness: colorBrightness(theme.textColor)
-                        readonly property real basicOpacity: textColorBrightness > 127 ? 0.7 : 0.3
+                            //! TODO: the term here is not accurate because the expert settings mode
+                            //! is used currently. In the future this term will be rethought if
+                            //! it must remain or be changed
+                            text: i18nc("advanced settings", "Advanced")
 
-                        color: {
-                            if (dialog.basicLevel) {
-                                return textColorBrightness > 127 ? Qt.darker(theme.textColor, 1.4) : Qt.lighter(theme.textColor, 2.8);
+                            readonly property real textColorBrightness: colorBrightness(theme.textColor)
+                            readonly property real basicOpacity: textColorBrightness > 127 ? 0.7 : 0.3
+
+                            color: {
+                                if (dialog.basicLevel) {
+                                    return textColorBrightness > 127 ? Qt.darker(theme.textColor, 1.4) : Qt.lighter(theme.textColor, 2.8);
+                                }
+
+                                return theme.textColor;
                             }
 
-                            return theme.textColor;
+                            function colorBrightness(color) {
+                                return colorBrightnessFromRGB(color.r * 255, color.g * 255, color.b * 255);
+                            }
+
+                            // formula for brightness according to:
+                            // https://www.w3.org/TR/AERT/#color-contrast
+                            function colorBrightnessFromRGB(r, g, b) {
+                                return (r * 299 + g * 587 + b * 114) / 1000
+                            }
+
+                            MouseArea {
+                                id: advancedMouseArea
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                onClicked: {
+                                    advancedSwitch.checked = !advancedSwitch.checked;
+                                }
+                            }
                         }
 
-                        function colorBrightness(color) {
-                            return colorBrightnessFromRGB(color.r * 255, color.g * 255, color.b * 255);
-                        }
+                        LatteComponents.Switch {
+                            id: advancedSwitch
+                            checked: universalSettings.inAdvancedModeForEditSettings && viewConfig.isReady
 
-                        // formula for brightness according to:
-                        // https://www.w3.org/TR/AERT/#color-contrast
-                        function colorBrightnessFromRGB(r, g, b) {
-                            return (r * 299 + g * 587 + b * 114) / 1000
-                        }
-
-                        MouseArea {
-                            id: advancedMouseArea
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onClicked: {
-                                advancedSwitch.checked = !advancedSwitch.checked;
+                            onCheckedChanged: {
+                                if (viewConfig.isReady) {
+                                    universalSettings.inAdvancedModeForEditSettings = checked;
+                                }
                             }
                         }
                     }
-
-                    LatteComponents.Switch {
-                        id: advancedSwitch
-                        checked: universalSettings.inAdvancedModeForEditSettings && viewConfig.isReady
-
-                        onCheckedChanged: {
-                            if (viewConfig.isReady) {
-                                universalSettings.inAdvancedModeForEditSettings = checked;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        PlasmaComponents.TabBar {
-            id: tabBar
-            Layout.fillWidth: true
-            Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2)
-
-            readonly property int visibleStaticPages: dialog.advancedLevel ? 3 : 2
-
-            PlasmaComponents.TabButton {
-                id: behaviorTabBtn
-                text: i18n("Behavior")
-                onCheckedChanged: {
-                    if (checked && pagesStackView.currentItem !== behaviorPage) {
-                        pagesStackView.forwardSliding = true;
-                        pagesStackView.replace(pagesStackView.currentItem, behaviorPage);
-                    }
-                }
-
-                Connections {
-                    target: viewConfig
-                    onIsReadyChanged: {
-                        if (viewConfig.isReady) {
-                            tabBar.currentTab = behaviorTabBtn;
-                        }
-                    }
                 }
             }
 
-            PlasmaComponents.TabButton {
-                id: appearanceTabBtn
-                text: i18n("Appearance")
-                onCheckedChanged: {
-                    if (checked && pagesStackView.currentItem !== appearancePage) {
-                        pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > 1);
-                        pagesStackView.replace(pagesStackView.currentItem, appearancePage);
-                    }
-                }
-            }
-            PlasmaComponents.TabButton {
-                id: effectsTabBtn
-                text: i18n("Effects")
-                visible: dialog.advancedLevel
+            PlasmaComponents.TabBar {
+                id: tabBar
+                Layout.fillWidth: true
+                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2)
 
-                onCheckedChanged: {
-                    if (checked && pagesStackView.currentItem !== effectsPage) {
-                        pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > 2);
-                        pagesStackView.replace(pagesStackView.currentItem, effectsPage);
-                    }
-                }
-            }
-
-            Repeater {
-                id: tasksTabButtonRepeater
-                model: latteView.extendedInterface.latteTasksModel
+                readonly property int visibleStaticPages: dialog.advancedLevel ? 3 : 2
 
                 PlasmaComponents.TabButton {
-                    text: index >= 1 ? i18nc("tasks header and index","Tasks <%0>").arg(index+1) : i18n("Tasks")
+                    id: behaviorTabBtn
+                    text: i18n("Behavior")
                     onCheckedChanged: {
-                        if (checked && pagesStackView.currentItem !== tasksRepeater.itemAt(index)) {
-                            pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > (tabBar.visibleStaticPages + index));
-                            pagesStackView.replace(pagesStackView.currentItem, tasksRepeater.itemAt(index));
-                        }
-                    }
-                }
-            }
-        }
-
-        Rectangle {
-            id: pagesBackground
-            Layout.fillWidth: true
-            Layout.fillHeight: false
-            Layout.minimumWidth: dialog.appliedWidth - units.smallSpacing * 4
-            Layout.minimumHeight: height
-            Layout.maximumHeight: height
-
-            width: dialog.appliedWidth - units.smallSpacing * 3
-            height: availableFreeHeight + units.smallSpacing * 4
-
-            color: transparentBackgroundColor
-            border.width: 1
-            border.color: theme.backgroundColor
-
-            //fix the height binding loop when showing the configuration window
-            property int availableFreeHeight: dialog.appliedHeight - header.height - headerSpacer.height - tabBar.height - actionButtons.height - 2 * units.smallSpacing
-
-            PlasmaExtras.ScrollArea {
-                id: scrollArea
-
-                anchors.fill: parent
-                verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
-                horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-                flickableItem.flickableDirection: Flickable.VerticalFlick
-
-                QtQuickControls212.StackView {
-                    id: pagesStackView
-                    width: currentItem.width
-                    height: currentItem.height
-
-                    property bool forwardSliding: true
-
-                    replaceEnter: Transition {
-                        ParallelAnimation {
-                            PropertyAnimation {
-                                property: "x"
-                                from: pagesStackView.forwardSliding ? -pagesBackground.width : pagesBackground.width
-                                to: 0
-                                duration: 350
-                            }
-
-                            PropertyAnimation {
-                                property: "opacity"
-                                from: 0
-                                to: 1
-                                duration: 350
-                            }
-                        }
-                    }
-
-                    replaceExit: Transition {
-                        ParallelAnimation {
-                            PropertyAnimation {
-                                property: "x"
-                                from: 0
-                                to: pagesStackView.forwardSliding ? pagesBackground.width : -pagesBackground.width
-                                duration: 350
-                            }
-
-                            PropertyAnimation {
-                                property: "opacity"
-                                from: 1
-                                to: 0
-                                duration: 350
-                            }
-                        }
-                    }
-
-                    onDepthChanged:  {
-                        if (depth === 0) {
+                        if (checked && pagesStackView.currentItem !== behaviorPage) {
                             pagesStackView.forwardSliding = true;
-                            push(behaviorPage);
+                            pagesStackView.replace(pagesStackView.currentItem, behaviorPage);
                         }
                     }
-                }
-            }
 
-            Item {
-                id:hiddenPages
-                anchors.fill: parent
-                visible: false
-
-                Loader {
-                    id: behaviorLoader
-                    anchors.fill: parent
-                    active: plasmoid && plasmoid.configuration && latteView
-                    sourceComponent: Pages.BehaviorConfig {
-                        id: _behaviorPage
-                        readonly property int pageIndex:0
-                        Component.onCompleted: {
-                            pagesStackView.push(_behaviorPage);
+                    Connections {
+                        target: viewConfig
+                        onIsReadyChanged: {
+                            if (viewConfig.isReady) {
+                                tabBar.currentTab = behaviorTabBtn;
+                            }
                         }
                     }
                 }
 
-                Loader {
-                    id: appearanceLoader
-                    active: plasmoid && plasmoid.configuration && latteView
-                    sourceComponent: Pages.AppearanceConfig {
-                        readonly property int pageIndex:1
+                PlasmaComponents.TabButton {
+                    id: appearanceTabBtn
+                    text: i18n("Appearance")
+                    onCheckedChanged: {
+                        if (checked && pagesStackView.currentItem !== appearancePage) {
+                            pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > 1);
+                            pagesStackView.replace(pagesStackView.currentItem, appearancePage);
+                        }
                     }
                 }
+                PlasmaComponents.TabButton {
+                    id: effectsTabBtn
+                    text: i18n("Effects")
+                    visible: dialog.advancedLevel
 
-                Loader {
-                    id: effectsLoader
-                    active: plasmoid && plasmoid.configuration && latteView
-                    sourceComponent: Pages.EffectsConfig {
-                        readonly property int pageIndex:2
+                    onCheckedChanged: {
+                        if (checked && pagesStackView.currentItem !== effectsPage) {
+                            pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > 2);
+                            pagesStackView.replace(pagesStackView.currentItem, effectsPage);
+                        }
                     }
                 }
 
                 Repeater {
-                    id: tasksRepeater
-                    model: plasmoid && plasmoid.configuration && latteView ? latteView.extendedInterface.latteTasksModel : 0
+                    id: tasksTabButtonRepeater
+                    model: latteView.extendedInterface.latteTasksModel
 
-                    Pages.TasksConfig {
-                        readonly property int pageIndex: tabBar.visibleStaticPages+index
+                    PlasmaComponents.TabButton {
+                        text: index >= 1 ? i18nc("tasks header and index","Tasks <%0>").arg(index+1) : i18n("Tasks")
+                        onCheckedChanged: {
+                            if (checked && pagesStackView.currentItem !== tasksRepeater.itemAt(index)) {
+                                pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > (tabBar.visibleStaticPages + index));
+                                pagesStackView.replace(pagesStackView.currentItem, tasksRepeater.itemAt(index));
+                            }
+                        }
                     }
                 }
             }
-        }
 
-        RowLayout {
-            id: actionButtons
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            spacing: units.largeSpacing
-
-            LatteComponents.ComboBoxButton {
-                id: actionsComboBtn
+            Rectangle {
+                id: pagesBackground
                 Layout.fillWidth: true
-                implicitWidth: removeView.implicitWidth
-                implicitHeight: removeView.implicitHeight
+                Layout.fillHeight: false
+                Layout.minimumWidth: dialog.appliedWidth - units.smallSpacing * 4
+                Layout.minimumHeight: height
+                Layout.maximumHeight: height
 
-                buttonEnabled: true
-                buttonText: i18n("New Dock")
-                buttonIconSource: "list-add"
-                buttonToolTip: i18n("Add a new dock")
+                width: dialog.appliedWidth - units.smallSpacing * 3
+                height: availableFreeHeight + units.smallSpacing * 4
 
-                comboBoxEnabled: true
-                comboBoxBlankSpaceForEmptyIcons: true
-                comboBoxPopUpAlignRight: Qt.application.layoutDirection === Qt.RightToLeft
-                comboBoxEnabledRole: "enabled"
-                comboBoxTextRole: "name"
-                comboBoxIconRole: "icon"
-                comboBoxMinimumPopUpWidth: actionsModel.count > 1 ? dialog.width / 2 : 150
+                color: transparentBackgroundColor
+                border.width: 1
+                border.color: theme.backgroundColor
 
-                property var centralLayoutsNames: []
+                //fix the height binding loop when showing the configuration window
+                property int availableFreeHeight: dialog.appliedHeight - header.height - headerSpacer.height - tabBar.height - actionButtons.height - 2 * units.smallSpacing
 
-                Component.onCompleted: {
-                    comboBox.model = actionsModel;
+                PlasmaExtras.ScrollArea {
+                    id: scrollArea
+
+                    anchors.fill: parent
+                    verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
+                    horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+                    flickableItem.flickableDirection: Flickable.VerticalFlick
+
+                    QtQuickControls212.StackView {
+                        id: pagesStackView
+                        width: currentItem.width
+                        height: currentItem.height
+
+                        property bool forwardSliding: true
+
+                        replaceEnter: Transition {
+                            ParallelAnimation {
+                                PropertyAnimation {
+                                    property: "x"
+                                    from: pagesStackView.forwardSliding ? -pagesBackground.width : pagesBackground.width
+                                    to: 0
+                                    duration: 350
+                                }
+
+                                PropertyAnimation {
+                                    property: "opacity"
+                                    from: 0
+                                    to: 1
+                                    duration: 350
+                                }
+                            }
+                        }
+
+                        replaceExit: Transition {
+                            ParallelAnimation {
+                                PropertyAnimation {
+                                    property: "x"
+                                    from: 0
+                                    to: pagesStackView.forwardSliding ? pagesBackground.width : -pagesBackground.width
+                                    duration: 350
+                                }
+
+                                PropertyAnimation {
+                                    property: "opacity"
+                                    from: 1
+                                    to: 0
+                                    duration: 350
+                                }
+                            }
+                        }
+
+                        onDepthChanged:  {
+                            if (depth === 0) {
+                                pagesStackView.forwardSliding = true;
+                                push(behaviorPage);
+                            }
+                        }
+                    }
                 }
 
-                ListModel {
-                    id: actionsModel
+                Item {
+                    id:hiddenPages
+                    anchors.fill: parent
+                    visible: false
+
+                    Loader {
+                        id: behaviorLoader
+                        anchors.fill: parent
+                        active: plasmoid && plasmoid.configuration && latteView
+                        sourceComponent: Pages.BehaviorConfig {
+                            id: _behaviorPage
+                            readonly property int pageIndex:0
+                            Component.onCompleted: {
+                                pagesStackView.push(_behaviorPage);
+                            }
+                        }
+                    }
+
+                    Loader {
+                        id: appearanceLoader
+                        active: plasmoid && plasmoid.configuration && latteView
+                        sourceComponent: Pages.AppearanceConfig {
+                            readonly property int pageIndex:1
+                        }
+                    }
+
+                    Loader {
+                        id: effectsLoader
+                        active: plasmoid && plasmoid.configuration && latteView
+                        sourceComponent: Pages.EffectsConfig {
+                            readonly property int pageIndex:2
+                        }
+                    }
+
+                    Repeater {
+                        id: tasksRepeater
+                        model: plasmoid && plasmoid.configuration && latteView ? latteView.extendedInterface.latteTasksModel : 0
+
+                        Pages.TasksConfig {
+                            readonly property int pageIndex: tabBar.visibleStaticPages+index
+                        }
+                    }
                 }
+            }
 
-                Connections{
-                    target: actionsComboBtn.comboBox
+            RowLayout {
+                id: actionButtons
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-                    Component.onCompleted:actionsComboBtn.updateModel();
+                spacing: units.largeSpacing
 
-                    onActivated: {
-                        if (index==0) {
-                            latteView.copyView();
-                        } else if (index>=1) {
-                            var layouts = actionsComboBtn.centralLayoutsNames;
+                LatteComponents.ComboBoxButton {
+                    id: actionsComboBtn
+                    Layout.fillWidth: true
+                    implicitWidth: removeView.implicitWidth
+                    implicitHeight: removeView.implicitHeight
 
-                            latteView.positioner.hideDockDuringMovingToLayout(layouts[index-1]);
+                    buttonEnabled: true
+                    buttonText: i18n("New Dock")
+                    buttonIconSource: "list-add"
+                    buttonToolTip: i18n("Add a new dock")
+
+                    comboBoxEnabled: true
+                    comboBoxBlankSpaceForEmptyIcons: true
+                    comboBoxPopUpAlignRight: Qt.application.layoutDirection === Qt.RightToLeft
+                    comboBoxEnabledRole: "enabled"
+                    comboBoxTextRole: "name"
+                    comboBoxIconRole: "icon"
+                    comboBoxMinimumPopUpWidth: actionsModel.count > 1 ? dialog.width / 2 : 150
+
+                    property var centralLayoutsNames: []
+
+                    Component.onCompleted: {
+                        comboBox.model = actionsModel;
+                    }
+
+                    ListModel {
+                        id: actionsModel
+                    }
+
+                    Connections{
+                        target: actionsComboBtn.comboBox
+
+                        Component.onCompleted:actionsComboBtn.updateModel();
+
+                        onActivated: {
+                            if (index==0) {
+                                latteView.copyView();
+                            } else if (index>=1) {
+                                var layouts = actionsComboBtn.centralLayoutsNames;
+
+                                latteView.positioner.hideDockDuringMovingToLayout(layouts[index-1]);
+                            }
+
+                            actionsComboBtn.comboBox.currentIndex = -1;
+                        }
+
+                        onEnabledChanged: {
+                            if (enabled) {
+                                actionsComboBtn.updateModel();
+                            } else {
+                                actionsComboBtn.emptyModel();
+                            }
+                        }
+                    }
+
+                    Connections{
+                        target: actionsComboBtn.button
+                        onClicked: latteView.layout.addNewView();
+                    }
+
+                    Connections{
+                        target: latteView
+                        onTypeChanged: actionsComboBtn.updateCopyText()
+                        onLayoutChanged: actionsComboBtn.updateModel();
+                    }
+
+                    Connections{
+                        target: viewConfig
+                        onIsReadyChanged: {
+                            if (viewConfig.isReady) {
+                                actionsComboBtn.updateModel();
+                            }
+                        }
+                    }
+
+                    function updateModel() {
+                        actionsModel.clear();
+
+                        var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
+                        actionsModel.append(copy);
+
+                        updateCopyText();
+
+                        var tempCentralLayouts = layoutsManager.centralLayoutsNames();
+
+                        if (tempCentralLayouts.length > 0) {
+                            var curIndex = tempCentralLayouts.indexOf(latteView.layout.name);
+                            if (curIndex >=0) {
+                                tempCentralLayouts.splice(curIndex,1);
+                            }
+
+                            centralLayoutsNames = tempCentralLayouts;
+                            var iconArrow = Qt.application.layoutDirection === Qt.RightToLeft ? 'arrow-left' : 'arrow-right';
+
+                            for(var i=0; i<centralLayoutsNames.length; ++i) {
+                                var layout = {actionId: 'move:', enabled: true, name: i18n("Move to: %0").arg(centralLayoutsNames[i]), icon: iconArrow};
+                                actionsModel.append(layout);
+                            }
                         }
 
                         actionsComboBtn.comboBox.currentIndex = -1;
                     }
 
-                    onEnabledChanged: {
-                        if (enabled) {
-                            actionsComboBtn.updateModel();
-                        } else {
-                            actionsComboBtn.emptyModel();
-                        }
+                    function emptyModel() {
+                        actionsModel.clear();
+                        var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
+                        actionsModel.append(copy);
+                        updateCopyText();
+                        actionsComboBtn.comboBox.currentIndex = -1;
+                    }
+
+                    function updateCopyText() {
+                        var copyText = latteView.type === LatteCore.Types.DockView ? i18n("Copy Dock") : i18n("Copy Panel")
+                        actionsModel.get(0).name = copyText;
                     }
                 }
 
-                Connections{
-                    target: actionsComboBtn.button
-                    onClicked: latteView.layout.addNewView();
+                PlasmaComponents.Button {
+                    id: removeView
+                    Layout.fillWidth: true
+                    enabled: dialog.advancedLevel
+                    text: i18n("Remove")
+                    iconSource: "delete"
+                    opacity: enabled ? 1 : 0
+                    tooltip: i18n("Remove current dock")
+
+                    onClicked: latteView.removeView()
                 }
 
-                Connections{
-                    target: latteView
-                    onTypeChanged: actionsComboBtn.updateCopyText()
-                    onLayoutChanged: actionsComboBtn.updateModel();
+                PlasmaComponents.Button {
+                    id: closeButton
+                    Layout.fillWidth: true
+
+                    text: i18n("Close")
+                    iconSource: "dialog-close"
+                    tooltip: i18n("Close settings window")
+
+                    onClicked: viewConfig.hideConfigWindow();
                 }
-
-                Connections{
-                    target: viewConfig
-                    onIsReadyChanged: {
-                        if (viewConfig.isReady) {
-                            actionsComboBtn.updateModel();
-                        }
-                    }
-                }
-
-                function updateModel() {
-                    actionsModel.clear();
-
-                    var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
-                    actionsModel.append(copy);
-
-                    updateCopyText();
-
-                    var tempCentralLayouts = layoutsManager.centralLayoutsNames();
-
-                    if (tempCentralLayouts.length > 0) {
-                        var curIndex = tempCentralLayouts.indexOf(latteView.layout.name);
-                        if (curIndex >=0) {
-                            tempCentralLayouts.splice(curIndex,1);
-                        }
-
-                        centralLayoutsNames = tempCentralLayouts;
-                        var iconArrow = Qt.application.layoutDirection === Qt.RightToLeft ? 'arrow-left' : 'arrow-right';
-
-                        for(var i=0; i<centralLayoutsNames.length; ++i) {
-                            var layout = {actionId: 'move:', enabled: true, name: i18n("Move to: %0").arg(centralLayoutsNames[i]), icon: iconArrow};
-                            actionsModel.append(layout);
-                        }
-                    }
-
-                    actionsComboBtn.comboBox.currentIndex = -1;
-                }
-
-                function emptyModel() {
-                    actionsModel.clear();
-                    var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
-                    actionsModel.append(copy);
-                    updateCopyText();
-                    actionsComboBtn.comboBox.currentIndex = -1;
-                }
-
-                function updateCopyText() {
-                    var copyText = latteView.type === LatteCore.Types.DockView ? i18n("Copy Dock") : i18n("Copy Panel")
-                    actionsModel.get(0).name = copyText;
-                }
-            }
-
-            PlasmaComponents.Button {
-                id: removeView
-                Layout.fillWidth: true
-                enabled: dialog.advancedLevel
-                text: i18n("Remove")
-                iconSource: "delete"
-                opacity: enabled ? 1 : 0
-                tooltip: i18n("Remove current dock")
-
-                onClicked: latteView.removeView()
-            }
-
-            PlasmaComponents.Button {
-                id: closeButton
-                Layout.fillWidth: true
-
-                text: i18n("Close")
-                iconSource: "dialog-close"
-                tooltip: i18n("Close settings window")
-
-                onClicked: viewConfig.hideConfigWindow();
             }
         }
     }
