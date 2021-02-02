@@ -851,7 +851,7 @@ PlasmaComponents.Page {
             LatteComponents.SubHeader {
                 id: floatingSubCategory
                 text: i18n("Floating")
-                enabled: !plasmoid.configuration.shrinkThickMargins && (plasmoid.configuration.screenEdgeMargin >= 0)
+                enabled: plasmoid.configuration.screenEdgeMargin >= 0
             }
 
             LatteComponents.CheckBoxesColumn {

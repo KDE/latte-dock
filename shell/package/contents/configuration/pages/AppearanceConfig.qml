@@ -623,29 +623,10 @@ PlasmaComponents.Page {
                     }
                 }
 
-               /* LatteComponents.HeaderSwitch {
-                    id: shrinkThickMargins
-                    Layout.minimumWidth: dialog.optionsWidth
-                    Layout.maximumWidth: Layout.minimumWidth
-                    Layout.minimumHeight: implicitHeight
-                    Layout.bottomMargin: units.smallSpacing
-
-                    checked: !plasmoid.configuration.shrinkThickMargins
-                    level: 2
-                    text: i18n("Thickness")
-                    tooltip: i18n("Enable/disable thickness margins")
-                    isFirstSubCategory: true
-
-                    onPressed: {
-                        plasmoid.configuration.shrinkThickMargins = !plasmoid.configuration.shrinkThickMargins;
-                    }
-                }*/
-
                 RowLayout {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
-                    enabled: !plasmoid.configuration.shrinkThickMargins
 
                     PlasmaComponents.Label {
                         text: i18n("Thickness")
@@ -684,7 +665,6 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: dialog.optionsWidth
                     Layout.maximumWidth: Layout.minimumWidth
                     spacing: units.smallSpacing
-                    enabled: !plasmoid.configuration.shrinkThickMargins
 
                     PlasmaComponents.Label {
                         text: i18n("Screen edge")

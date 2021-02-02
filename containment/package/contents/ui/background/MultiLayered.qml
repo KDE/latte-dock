@@ -153,7 +153,7 @@ BackgroundProperties{
     }
 
     totals.visualThickness: {
-        var itemMargins = root.shrinkThickMargins ? 0 : metrics.totals.thicknessEdges;
+        var itemMargins = metrics.totals.thicknessEdges
         var maximumItem = metrics.iconSize + itemMargins;
 
         if (totals.minThickness < maximumItem) {

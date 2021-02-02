@@ -48,9 +48,7 @@ AbilityHost.Metrics {
     readonly property bool autosizeEnabled: autosize !== undefined && autosize.isActive
 
     readonly property MetricsPrivateTypes.Fraction fraction: MetricsPrivateTypes.Fraction{
-        thicknessMargin: root.shrinkThickMargins ? indicators.info.minThicknessPadding :
-                                                   Math.max(indicators.info.minThicknessPadding, plasmoid.configuration.thickMargin / 100)
-
+        thicknessMargin: Math.max(indicators.info.minThicknessPadding, plasmoid.configuration.thickMargin / 100)
         lengthMargin: plasmoid.configuration.lengthExtMargin / 100
         lengthPadding: indicators.isEnabled ? indicators.padding : 0
         lengthAppletPadding: indicators.infoLoaded ? indicators.info.appletLengthPadding : -1
