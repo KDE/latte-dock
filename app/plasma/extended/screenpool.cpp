@@ -19,6 +19,9 @@
 
 #include "screenpool.h"
 
+// local
+#include "../../tools/commontools.h"
+
 // Qt
 #include <QDebug>
 #include <QDir>
@@ -43,7 +46,7 @@ ScreenPool::ScreenPool(QObject *parent)
 
     load();
 
-    QString plasmaSettingsFile = QDir::homePath() + "/.config/" + PLASMARC;
+    QString plasmaSettingsFile = Latte::configPath() + "/" + PLASMARC;
 
     KDirWatch::self()->addFile(plasmaSettingsFile);
 

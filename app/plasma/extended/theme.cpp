@@ -377,7 +377,7 @@ void Theme::loadThemePaths()
     } else {
         //! when plasma theme uses the kde colors
         //! we track when kde color scheme is changing
-        QString kdeSettingsFile = QDir::homePath() + "/.config/kdeglobals";
+        QString kdeSettingsFile = Latte::configPath() + "/kdeglobals";
 
         KDirWatch::self()->addFile(kdeSettingsFile);
 

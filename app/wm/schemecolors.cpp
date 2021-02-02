@@ -22,6 +22,7 @@
 
 // local
 #include "../layouts/importer.h"
+#include "../tools/commontools.h"
 
 // Qt
 #include <QDebug>
@@ -158,7 +159,7 @@ QString SchemeColors::possibleSchemeFile(QString scheme)
     QString tempScheme = scheme;
 
     if (scheme == "kdeglobals") {
-        QString settingsFile = QDir::homePath() + "/.config/kdeglobals";
+        QString settingsFile = Latte::configPath() + "/kdeglobals";
 
         if (QFileInfo(settingsFile).exists()) {
             KSharedConfigPtr filePtr = KSharedConfig::openConfig(settingsFile);

@@ -25,6 +25,7 @@
 #include "../layout/centrallayout.h"
 #include "../layouts/importer.h"
 #include "../layouts/manager.h"
+#include "../tools/commontools.h"
 
 // Qt
 #include <QDebug>
@@ -40,7 +41,7 @@
 #define KWINMETAFORWARDTOPLASMASTRING "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu"
 
 #define KWINCOLORSSCRIPT "kwin/scripts/lattewindowcolors"
-#define KWINRC "/.config/kwinrc"
+#define KWINRC "kwinrc"
 
 #define KWINRCTRACKERINTERVAL 2500
 
@@ -101,7 +102,7 @@ void UniversalSettings::load()
     }
 
     //! Track KWin rc options
-    const QString kwinrcFilePath = QDir::homePath() + KWINRC;
+    const QString kwinrcFilePath = Latte::configPath() + "/" + KWINRC;
     KDirWatch::self()->addFile(kwinrcFilePath);
     recoverKWinOptions();
 
@@ -212,14 +213,14 @@ void UniversalSettings::setLaunchers(QStringList launcherList)
 
 bool UniversalSettings::autostart() const
 {
-    QFile autostartFile(QDir::homePath() + "/.config/autostart/org.kde.latte-dock.desktop");
+    QFile autostartFile(Latte::configPath() + "/autostart/org.kde.latte-dock.desktop");
     return autostartFile.exists();
 }
 
 void UniversalSettings::setAutostart(bool state)
 {
     //! remove old autostart file
-    QFile oldAutostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
+    QFile oldAutostartFile(Latte::configPath() + "/autostart/latte-dock.desktop");
 
     if (oldAutostartFile.exists()) {
         oldAutostartFile.remove();
@@ -227,7 +228,7 @@ void UniversalSettings::setAutostart(bool state)
 
     //! end of removal of old autostart file
 
-    QFile autostartFile(QDir::homePath() + "/.config/autostart/org.kde.latte-dock.desktop");
+    QFile autostartFile(Latte::configPath() + "/autostart/org.kde.latte-dock.desktop");
     QFile metaFile(Layouts::Importer::standardPath("applications/org.kde.latte-dock.desktop", false));
 
     if (!state && autostartFile.exists()) {
@@ -241,9 +242,9 @@ void UniversalSettings::setAutostart(bool state)
         emit autostartChanged();
     } else if (state && metaFile.exists()) {
         //! check if autostart folder exists and create otherwise
-        QDir autostartDir(QDir::homePath() + "/.config/autostart");
+        QDir autostartDir(Latte::configPath() + "/autostart");
         if (!autostartDir.exists()) {
-            QDir configDir(QDir::homePath() + "/.config");
+            QDir configDir(Latte::configPath());
             configDir.mkdir("autostart");
         }
 

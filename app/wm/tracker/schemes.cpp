@@ -22,6 +22,7 @@
 // local
 #include "../abstractwindowinterface.h"
 #include "../../lattecorona.h"
+#include "../../tools/commontools.h"
 
 // Qt
 #include <QDir>
@@ -65,7 +66,7 @@ void Schemes::init()
     });
 
     //! track for changing default scheme
-    QString kdeSettingsFile = QDir::homePath() + "/.config/kdeglobals";
+    QString kdeSettingsFile = Latte::configPath() + "/kdeglobals";
 
     KDirWatch::self()->addFile(kdeSettingsFile);
 

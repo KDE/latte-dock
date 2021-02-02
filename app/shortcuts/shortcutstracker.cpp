@@ -19,6 +19,7 @@
 
 // local
 #include "shortcutstracker.h"
+#include "../tools/commontools.h"
 
 // Qt
 #include <QAction>
@@ -56,7 +57,7 @@ void ShortcutsTracker::initGlobalShortcutsWatcher()
         m_badgesForActivate << QString();
     }
 
-    const QString globalShortcutsFilePath = QDir::homePath() + "/.config/" + GLOBALSHORTCUTSCONFIG;
+    const QString globalShortcutsFilePath = Latte::configPath() + "/" + GLOBALSHORTCUTSCONFIG;
     m_shortcutsConfigPtr = KSharedConfig::openConfig(globalShortcutsFilePath);
 
     KDirWatch::self()->addFile(globalShortcutsFilePath);

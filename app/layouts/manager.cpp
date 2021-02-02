@@ -33,6 +33,7 @@
 #include "../settings/dialogs/settingsdialog.h"
 #include "../settings/universalsettings.h"
 #include "../templates/templatesmanager.h"
+#include "../tools/commontools.h"
 
 // Qt
 #include <QDir>
@@ -87,7 +88,7 @@ void Manager::init()
 
         //startup create what is necessary....
         if (!layoutsDir.exists()) {
-            QDir(QDir::homePath() + "/.config").mkdir("latte");
+            QDir(Latte::configPath()).mkdir("latte");
         }
 
         QString defpath = m_corona->templatesManager()->newLayout(i18n("My Layout"), i18n(Templates::DEFAULTLAYOUTTEMPLATENAME));

@@ -37,6 +37,8 @@ float colorLumina(float r, float g, float b);
 //! returns the standard path found that contains the subPath
 //! local paths have higher priority by default
 QString standardPath(QString subPath, bool localFirst = true);
+
+QString configPath();
 }
 
 #endif

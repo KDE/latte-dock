@@ -21,6 +21,7 @@
 #include "commontools.h"
 
 // Qt
+#include <QDir>
 #include <QFileInfo>
 #include <QStandardPaths>
 #include <QtMath>
@@ -100,5 +101,17 @@ QString standardPath(QString subPath, bool localfirst)
 
     return "";
 }
+
+QString configPath()
+{
+    QStringList configPaths = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
+
+    if (configPaths.count() == 0) {
+        return QDir::homePath() + "/.config";
+    }
+
+    return configPaths[0];
+}
+
 
 }
