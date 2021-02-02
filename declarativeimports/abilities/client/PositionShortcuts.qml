@@ -26,10 +26,13 @@ AbilityDefinition.PositionShortcuts {
     property Item bridge: null
     property Item indexer: null
 
+    badges: ref.shortcuts.badges
+    showPositionShortcutBadges: ref.shortcuts.showPositionShortcutBadges
+
     property bool isStealingGlobalPositionShortcuts: false
 
     readonly property bool isActive: bridge !== null
-    readonly property bool showPositionShortcutBadges: bridge && bridge.shortcuts.host ? bridge.shortcuts.host.showPositionShortcutBadges : false
+
     readonly property bool isEnabled: {
         if (bridge) {
             return bridge.shortcuts.host.unifiedGlobalShortcuts
@@ -39,7 +42,16 @@ AbilityDefinition.PositionShortcuts {
         return true;
     }
 
+    onBadgesChanged: console.log("org/kde/latte :: " + badges);
+
     signal disabledIsStealingGlobalPositionShortcuts();
+
+    readonly property AbilityDefinition.PositionShortcuts local: AbilityDefinition.PositionShortcuts {}
+
+    Item {
+        id: ref
+        readonly property Item shortcuts: bridge ? bridge.shortcuts.host : local
+    }
 
     onIsActiveChanged: {
         if (isActive) {
