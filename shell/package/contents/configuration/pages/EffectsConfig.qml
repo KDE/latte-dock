@@ -475,6 +475,12 @@ PlasmaComponents.Page {
 
                                 checked: parent.checked
                                 comboBoxMinimumPopUpWidth: 1.5 * customIndicator.width
+
+                                onTypeChanged: {
+                                    if (tabBar.type === type) {
+                                        tabBar.selectTab(type);
+                                    }
+                                }
                             }
                         }
 
