@@ -103,10 +103,6 @@ Loader {
 
         readonly property Item currentPage: pagesStackView.currentItem
 
-        readonly property Item behaviorPage: behaviorLoader.item
-        readonly property Item appearancePage: appearanceLoader.item
-        readonly property Item effectsPage: effectsLoader.item
-
         onAdvancedLevelChanged: {
             //! switch to appearancePage when effectsPage becomes hidden because
             //! advancedLevel was disabled by the user
@@ -459,33 +455,23 @@ Loader {
                     anchors.fill: parent
                     visible: false
 
-                    Loader {
-                        id: behaviorLoader
-                        anchors.fill: parent
-                        active: plasmoid && plasmoid.configuration && latteView
-                        sourceComponent: Pages.BehaviorConfig {
-                            id: _behaviorPage
-                            readonly property int pageIndex:0
-                            Component.onCompleted: {
-                                pagesStackView.push(_behaviorPage);
-                            }
+                    Pages.BehaviorConfig {
+                        id: behaviorPage
+                        readonly property int pageIndex:0
+
+                        Component.onCompleted: {
+                            pagesStackView.push(behaviorPage);
                         }
                     }
 
-                    Loader {
-                        id: appearanceLoader
-                        active: plasmoid && plasmoid.configuration && latteView
-                        sourceComponent: Pages.AppearanceConfig {
-                            readonly property int pageIndex:1
-                        }
+                    Pages.AppearanceConfig {
+                        id: appearancePage
+                        readonly property int pageIndex:1
                     }
 
-                    Loader {
-                        id: effectsLoader
-                        active: plasmoid && plasmoid.configuration && latteView
-                        sourceComponent: Pages.EffectsConfig {
-                            readonly property int pageIndex:2
-                        }
+                    Pages.EffectsConfig {
+                        id: effectsPage
+                        readonly property int pageIndex:2
                     }
 
                     Repeater {
