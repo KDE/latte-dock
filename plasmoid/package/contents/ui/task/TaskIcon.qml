@@ -35,8 +35,8 @@ Item {
     anchors.fill: parent
     property bool toBeDestroyed: false
 
-    readonly property color backgroundColor: taskIconItem.backgroundColor
-    readonly property color glowColor: taskIconItem.glowColor
+    readonly property color backgroundColor: iconColorsLoader.active ? iconColorsLoader.item.backgroundColor : theme.backgroundColor
+    readonly property color glowColor: iconColorsLoader.active ? iconColorsLoader.item.glowColor : theme.textColor
 
     readonly property bool smartLauncherEnabled: ((taskItem.isStartup === false) && (root.showInfoBadge || root.showProgressBadge))
     readonly property bool progressVisible: smartLauncherItem && smartLauncherItem.progressVisible
@@ -60,32 +60,28 @@ Item {
         onTempColorChanged: tempColor.a = 0.35;
     }
 
-    LatteCore.IconItem {
+    //! Provide icon background and glow colors
+    Loader {
+        id: iconColorsLoader
+        active: taskItem.abilities.indicators.info.needsIconColors
+        visible: false
+
+        sourceComponent: LatteCore.IconItem{
+            width:64
+            height:64
+            source: taskIconItem.source
+            providesColors: true
+        }
+    }
+
+    PlasmaCore.IconItem {
         id: taskIconItem
         anchors.fill: parent
-
+        roundToIconSize: false
         source: decoration
-        smooth: taskItem.abilities.parabolic.factor.zoom === 1 ? true : false
-        providesColors: taskItem.abilities.indicators.info.needsIconColors
+        smooth: false
 
         visible: !badgesLoader.active
-
-        onValidChanged: {
-            if (!valid && (source === decoration || source === "unknown")) {
-                source = "application-x-executable";
-            }
-        }
-
-        //! try to show the correct icon when a window is removed... libtaskmanager when a window is removed
-        //! sends an unknown pixmap as icon
-        Connections {
-            target: taskItem
-            onInRemoveStageChanged: {
-                if (taskItem.inRemoveStage && taskIconItem.lastValidSourceName !== "") {
-                    taskIconItem.source = taskIconItem.lastValidSourceName;
-                }
-            }
-        }
 
         ///states for launcher animation
         states: [
