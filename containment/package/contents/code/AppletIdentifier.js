@@ -42,6 +42,8 @@ function reconsiderAppletIconItem(){
         identifyKickOff();
     } else if (applet.pluginName === "org.kde.plasma.kicker") {
         identifyKicker();
+    } else if (applet.pluginName === "org.kde.plasma.notes") {
+        identifyNotes();
     } else if (applet.pluginName === "org.kde.plasma.simplemenu") {
         identifySimpleMenu();
     } else if (applet.pluginName === "org.kde.plasma.userswitcher") {
@@ -152,6 +154,54 @@ function identifyKickOff() {
     }
 }
 
+function findIconItem(currentChildren, steps) {
+    var nextitems = currentChildren;
+    var stepsFollowed = 0;
+
+    for (var i=0; i<steps.length; ++i) {
+        for (var j=0; j<nextitems.length; ++j) {
+            var item = nextitems[j];
+            if (typeOf(item, steps[i])) {
+                stepsFollowed++;
+                nextitems = item.children;
+            }
+        }
+
+        if (stepsFollowed === steps.length) {
+            break;
+        }
+    }
+
+    if (stepsFollowed === steps.length) {
+        for (var k=0; k<nextitems.length; ++k) {
+            var lastItem = nextitems[k];
+            if (typeOf(lastItem, "IconItem")) {
+                return lastItem;
+            }
+        }
+    }
+
+    return null;
+}
+
+function identifyNotes() {
+    var level0 = applet.parent.children;
+    var stepsInCompactRepresentation = ["QQuickMouseArea"];
+
+    for(var i=0; i<level0.length; ++i){
+        var level1 = level0[i].children;
+        for(var j=0; j<level1.length; ++j){
+            if (typeOf(level1[j], "CompactApplet")) {
+
+                var icon = findIconItem(level1[j].compactRepresentation.children, stepsInCompactRepresentation)
+                if (icon) {
+                    communicator.appletIconItem = icon;
+                    return;
+                }
+            }
+        }
+    }
+}
 
 function identifyUserSwitcher() {
     if (applet.pluginName !== "org.kde.plasma.userswitcher")
