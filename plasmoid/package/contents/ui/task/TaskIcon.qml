@@ -78,11 +78,8 @@ Item {
         id: taskIconItem
         anchors.fill: parent
         roundToIconSize: false
+        smooth: false
         source: decoration
-        //! trying to avoid pixelated icons because of hovering animation triggered from PlasmaCore.IconItem
-        smooth: taskItem.parabolicItem.zoom > 1 && taskItem.parabolicItem.zoom < taskItem.abilities.parabolic.zoom
-        //active: (taskItem.containsMouse && !taskItem.abilities.indicators.info.providesHoveredAnimation)
-
         visible: !badgesLoader.active
 
         ///states for launcher animation
