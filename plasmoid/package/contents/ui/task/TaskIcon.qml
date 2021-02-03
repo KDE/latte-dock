@@ -25,6 +25,8 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
+import org.kde.kirigami 2.0 as Kirigami
+
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
@@ -74,13 +76,13 @@ Item {
         }
     }
 
-    PlasmaCore.IconItem {
+    Kirigami.Icon {
         id: taskIconItem
         anchors.fill: parent
-        roundToIconSize: false
+        //roundToIconSize: false
         //! Trying to provide crisp icons for regular and zoomed size and smooth appearance in-between
         //! bug:432477
-        smooth: size !== taskItem.abilities.metrics.iconSize && size !== (taskItem.abilities.metrics.iconSize*taskItem.abilities.parabolic.zoom)
+        //smooth: size !== taskItem.abilities.metrics.iconSize && size !== (taskItem.abilities.metrics.iconSize*taskItem.abilities.parabolic.zoom)
         source: decoration
         visible: !badgesLoader.active
 
@@ -160,13 +162,13 @@ Item {
                 enabled: false
                 anchors.fill: parent
                 property var source: ShaderEffectSource {
-                    sourceItem: PlasmaCore.IconItem{
-                        width: taskIconContainer.width
-                        height: taskIconContainer.height
+                    sourceItem: Kirigami.Icon{
+                        width: taskIconItem.width
+                        height: taskIconItem.height
                         smooth: taskIconItem.smooth
                         source: taskIconItem.source
-                        roundToIconSize: taskIconItem.roundToIconSize
-                        active: taskIconItem.roundToIconSize
+                        //roundToIconSize: taskIconItem.roundToIconSize
+                        active: taskIconItem.active
 
                         Loader{
                             anchors.fill: parent
@@ -390,7 +392,6 @@ Item {
         lightness:0
     }
 
-    // Rely on PlasmaCore.IconItem hovering animation for now
     BrightnessContrast{
         id:hoveredImage
         anchors.fill: parent
