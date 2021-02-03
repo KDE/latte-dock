@@ -81,7 +81,7 @@ Item {
         source: decoration
         //! trying to avoid pixelated icons because of hovering animation triggered from PlasmaCore.IconItem
         smooth: taskItem.parabolicItem.zoom > 1 && taskItem.parabolicItem.zoom < taskItem.abilities.parabolic.zoom
-        active: (taskItem.containsMouse && !taskItem.abilities.indicators.info.providesHoveredAnimation)
+        //active: (taskItem.containsMouse && !taskItem.abilities.indicators.info.providesHoveredAnimation)
 
         visible: !badgesLoader.active
 
@@ -380,14 +380,6 @@ Item {
     Colorize{
         id: stateColorizer
         anchors.fill: parent
-
-        //! HACK TO AVOID PIXELIZATION
-        //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
-        //! the icon appears pixelated. It is even most notable when parabolic.factor.zoom === 1
-        //! I don't know why enabling cached=true helps, but it does.
-        //! In Question?
-        //cached: true
-
         source: badgesLoader.active ? badgesLoader : taskIconItem
 
         opacity:0
@@ -397,7 +389,7 @@ Item {
         lightness:0
     }
 
-    /* Rely on PlasmaCore.IconItem hovering animation for now
+    // Rely on PlasmaCore.IconItem hovering animation for now
     BrightnessContrast{
         id:hoveredImage
         anchors.fill: parent
@@ -418,7 +410,7 @@ Item {
         Behavior on opacity {
             NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
         }
-    }*/
+    }
 
     BrightnessContrast {
         id: brightnessTaskEffect
