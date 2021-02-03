@@ -84,16 +84,17 @@ PlasmaComponents.Page {
                     LatteComponents.Slider {
                         id: appletsSizeSlider
                         Layout.fillWidth: true
-                        value: plasmoid.configuration.iconSize
+                        //!round to nearest odd number
+                        value: 2 * Math.round(plasmoid.configuration.iconSize / 2)
                         from: 16
                         to: 512
-                        stepSize: dialog.advancedLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 1 : 8
+                        stepSize: dialog.advancedLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 2 : 8
                         wheelEnabled: false
 
                         function updateIconSize() {
                             if (!pressed) {
-                                plasmoid.configuration.iconSize = value
-                                syncGeometry.restart()
+                                plasmoid.configuration.iconSize = value;
+                                syncGeometry.restart();
                             }
                         }
 

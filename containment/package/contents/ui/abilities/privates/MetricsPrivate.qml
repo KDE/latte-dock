@@ -35,14 +35,22 @@ AbilityHost.Metrics {
 
     //! private properties to avoid too many not needed animation calculations
     readonly property int _iconSize: autosizeEnabled && autosize.iconSize > 0 ? Math.min(autosize.iconSize, maxIconSize) : maxIconSize
-    readonly property int _maxIconSize: portionIconSize!==-1 ? portionIconSize : plasmoid.configuration.iconSize
+    readonly property int _maxIconSize: {
+        //! round to nearest odd number
+        var storedIconSize = 2 * Math.round(plasmoid.configuration.iconSize / 2)
+
+        return portionIconSize!==-1 ? portionIconSize : storedIconSize;
+    }
 
     //! Private Properties
     readonly property int portionIconSize: { //icon size based on screen height
         if ((plasmoid.configuration.proportionIconSize===-1) || !latteView)
             return -1;
 
-        return Math.max(16,Math.round(latteView.screenGeometry.height * plasmoid.configuration.proportionIconSize/100));
+        var basedOnScreenHeight = Math.max(16,Math.round(latteView.screenGeometry.height * plasmoid.configuration.proportionIconSize/100))
+
+        //! round to nearest odd number
+        return 2 * Math.round(basedOnScreenHeight/2);
     }
 
     readonly property bool autosizeEnabled: autosize !== undefined && autosize.isActive

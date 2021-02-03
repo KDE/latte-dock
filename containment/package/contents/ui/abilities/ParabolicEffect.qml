@@ -31,7 +31,8 @@ Ability.ParabolicEffectPrivate {
     factor.zoom: {
         var storedZoom = LatteCore.WindowSystem.compositingActive && animations.active ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1;
         var maxSize = storedZoom * metrics.iconSize;
-        maxSize = Math.round(maxSize);
+        //! round to nearest odd number
+        maxSize = 2 * Math.round(Math.round(maxSize) / 2);
 
         //! this way we make sure that the iconSize at the maximum of its parabolic effect is an integer
         return (maxSize/metrics.iconSize);
