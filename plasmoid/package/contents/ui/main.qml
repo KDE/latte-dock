@@ -886,7 +886,8 @@ Item {
             target: icList
 
             property int maxThickness: (appletAbilities.parabolic.isHovered || windowPreviewIsShown || appletAbilities.animations.hasThicknessAnimation) ?
-                                           appletAbilities.metrics.mask.thickness.zoomedForItems : appletAbilities.metrics.mask.thickness.normalForItems
+                                           appletAbilities.metrics.mask.thickness.maxZoomedForItems : // dont clip bouncing tasks when zoom=1
+                                           appletAbilities.metrics.mask.thickness.normalForItems
 
             function onlyLaunchersInDroppedList(list){
                 return list.every(function (item) {

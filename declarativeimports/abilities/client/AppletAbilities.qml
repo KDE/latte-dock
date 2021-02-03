@@ -37,7 +37,7 @@ Item {
 
     readonly property int alignment: _containment.alignment
     readonly property int location: inDesktop ? PlasmaCore.Types.BottomEdge : plasmoid.location
-    readonly property int thickness: _animations.hasThicknessAnimation ? _metrics.mask.thickness.zoomedForItems :
+    readonly property int thickness: _animations.hasThicknessAnimation ? _metrics.mask.thickness.maxZoomedForItems : // dont clip bouncing tasks when zoom=1
                                                                          _metrics.mask.thickness.normalForItems
 
     readonly property real layoutWidth: {
