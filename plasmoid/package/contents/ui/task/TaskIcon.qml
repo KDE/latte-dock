@@ -79,7 +79,9 @@ Item {
         anchors.fill: parent
         roundToIconSize: false
         source: decoration
-        smooth: false
+        //! trying to avoid pixelated icons because of hovering animation triggered from PlasmaCore.IconItem
+        smooth: taskItem.parabolicItem.zoom > 1 && taskItem.parabolicItem.zoom < taskItem.abilities.parabolic.zoom
+        active: (taskItem.containsMouse && !taskItem.abilities.indicators.info.providesHoveredAnimation)
 
         visible: !badgesLoader.active
 
@@ -157,10 +159,13 @@ Item {
                 enabled: false
                 anchors.fill: parent
                 property var source: ShaderEffectSource {
-                    sourceItem: LatteCore.IconItem{
+                    sourceItem: PlasmaCore.IconItem{
                         width: taskIconContainer.width
                         height: taskIconContainer.height
+                        smooth: taskIconItem.smooth
                         source: taskIconItem.source
+                        roundToIconSize: taskIconItem.roundToIconSize
+                        active: taskIconItem.roundToIconSize
 
                         Loader{
                             anchors.fill: parent
@@ -392,6 +397,7 @@ Item {
         lightness:0
     }
 
+    /* Rely on PlasmaCore.IconItem hovering animation for now
     BrightnessContrast{
         id:hoveredImage
         anchors.fill: parent
@@ -412,7 +418,7 @@ Item {
         Behavior on opacity {
             NumberAnimation { duration: taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
         }
-    }
+    }*/
 
     BrightnessContrast {
         id: brightnessTaskEffect
