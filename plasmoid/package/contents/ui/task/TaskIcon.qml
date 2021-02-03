@@ -80,9 +80,6 @@ Item {
         id: taskIconItem
         anchors.fill: parent
         //roundToIconSize: false
-        //! Trying to provide crisp icons for regular and zoomed size and smooth appearance in-between
-        //! bug:432477
-        //smooth: size !== taskItem.abilities.metrics.iconSize && size !== (taskItem.abilities.metrics.iconSize*taskItem.abilities.parabolic.zoom)
         source: decoration
         visible: !badgesLoader.active
 

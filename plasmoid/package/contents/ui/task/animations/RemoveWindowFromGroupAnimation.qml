@@ -24,6 +24,8 @@ import QtGraphicalEffects 1.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import org.kde.kirigami 2.0 as Kirigami
+
 import org.kde.latte.core 0.2 as LatteCore
 
 /////Removing a Window from a group////
@@ -62,30 +64,9 @@ Item{
             id: removeTask
             width: taskIcon.width
             height: taskIcon.height
-
             visible: false
 
-            LatteCore.IconItem{
-                id: tempRemoveIcon
-                anchors.rightMargin: root.location === PlasmaCore.Types.LeftEdge ? taskItem.abilities.metrics.margin.thickness : 0
-                anchors.leftMargin: root.location === PlasmaCore.Types.RightEdge ? taskItem.abilities.metrics.margin.thickness : 0
-                anchors.topMargin: root.location === PlasmaCore.Types.BottomEdge ? taskItem.abilities.metrics.margin.thickness : 0
-                anchors.bottomMargin: root.location === PlasmaCore.Types.TopEdge ? taskItem.abilities.metrics.margin.thickness : 0
-
-                anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
-                anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
-                anchors.right: root.location === PlasmaCore.Types.LeftEdge ? parent.right : undefined;
-                anchors.left: root.location === PlasmaCore.Types.RightEdge ? parent.left : undefined;
-                anchors.top: root.location === PlasmaCore.Types.BottomEdge ? parent.top : undefined;
-                anchors.bottom: root.location === PlasmaCore.Types.TopEdge ? parent.bottom : undefined;
-
-                width: taskIconItem.width
-                height: width
-                visible: taskItem.abilities.myView.itemShadow.isEnabled ? false : true
-
-                source: taskIconItem.lastValidSourceName
-            }
-
+            //! Shadow
             Loader{
                 id: tempTaskShadow
                 anchors.fill: tempRemoveIcon
@@ -101,6 +82,28 @@ Item{
                     verticalOffset: 2
                 }
             }
+
+            Kirigami.Icon{
+                id: tempRemoveIcon
+                anchors.rightMargin: root.location === PlasmaCore.Types.LeftEdge ? taskItem.abilities.metrics.margin.thickness : 0
+                anchors.leftMargin: root.location === PlasmaCore.Types.RightEdge ? taskItem.abilities.metrics.margin.thickness : 0
+                anchors.topMargin: root.location === PlasmaCore.Types.BottomEdge ? taskItem.abilities.metrics.margin.thickness : 0
+                anchors.bottomMargin: root.location === PlasmaCore.Types.TopEdge ? taskItem.abilities.metrics.margin.thickness : 0
+
+                anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
+                anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
+                anchors.right: root.location === PlasmaCore.Types.LeftEdge ? parent.right : undefined;
+                anchors.left: root.location === PlasmaCore.Types.RightEdge ? parent.left : undefined;
+                anchors.top: root.location === PlasmaCore.Types.BottomEdge ? parent.top : undefined;
+                anchors.bottom: root.location === PlasmaCore.Types.TopEdge ? parent.bottom : undefined;
+
+                width: taskIconItem.width
+                height: width
+
+                source: taskIconItem.source
+            }
+
+
 
             Colorize{
                 source: tempRemoveIcon
