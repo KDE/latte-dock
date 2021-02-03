@@ -151,7 +151,6 @@ Item{
 
     property Item wrapperContainer: _wrapperContainer
     property Item clickedEffect: _clickedEffect
-    property Item containerForOverlayIcon: _containerForOverlayIcon
     property Item overlayIconLoader: _overlayIconLoader
 
     readonly property int internalSplitterComputedLength: {
@@ -360,12 +359,32 @@ Item{
         }
     }
 
+    ///Shadow in applets
+    Loader{
+        id: appletShadow
+        anchors.fill: _wrapperContainer
+
+        active: appletItem.applet
+                && graphicsSystem.isAccelerated
+                && !appletColorizer.mustBeShown
+                && (appletItem.myView.itemShadow.isEnabled && !appletItem.communicator.indexerIsSupported)
+
+        sourceComponent: DropShadow{
+            anchors.fill: parent
+            color: appletItem.myView.itemShadow.shadowColor
+            fast: true
+            samples: 2 * radius
+            source: _wrapperContainer
+            radius: appletItem.myView.itemShadow.size
+            verticalOffset: root.forceTransparentPanel || root.forcePanelForBusyBackground ? 0 : 2
+        }
+    }
+
     //! Applet Main Container
     Item{
         id:_wrapperContainer
         width: root.isHorizontal ? _length : _thickness
         height: root.isHorizontal ? _thickness : _length
-        opacity: appletShadow.active ? 0 : 1
 
         property int _length:0 // through Binding to avoid binding loops
         property int _thickness:0 // through Binding to avoid binding loops
@@ -413,18 +432,21 @@ Item{
             }
         }
 
-        Item{
-            id: _containerForOverlayIcon
-            anchors.fill: parent
-        }
-
         Loader{
             id: _overlayIconLoader
             anchors.fill: parent
-            active: communicator.appletMainIconIsFound
+            active: communicator.appletMainIconIsFound && indicators.info.needsIconColors
 
-            property color backgroundColor: "black"
-            property color glowColor: "white"
+            property color backgroundColor: "transparent"
+            property color glowColor: "transparent"
+
+            readonly property bool isIconItemVisible: communicator.appletIconItem && communicator.appletIconItem.visible
+
+            onIsIconItemVisibleChanged: {
+                if (isIconItemVisible) {
+                    communicator.appletIconItem.roundToIconSize = false;
+                }
+            }
 
             sourceComponent: LatteCore.IconItem{
                 id: overlayIconItem
@@ -432,16 +454,16 @@ Item{
                 visible: false
 
                 source: {
-                    if (communicator.appletIconItem && communicator.appletIconItem.visible) {
+                    if (communicator.appletIconItem) {
                         return communicator.appletIconItem.source;
-                    } else if (communicator.appletImageItem && communicator.appletImageItem.visible) {
+                    } else if (communicator.appletImageItem) {
                         return communicator.appletImageItem.source;
                     }
 
                     return "";
                 }
 
-                providesColors: indicators.info.needsIconColors && source != ""
+                providesColors: source != ""
                 usesPlasmaTheme: communicator.appletIconItem && communicator.appletIconItem.visible ? communicator.appletIconItem.usesPlasmaTheme : false
 
                 Binding{
@@ -574,39 +596,6 @@ Item{
                                 PlasmaCore.Types.BottomPositioned : PlasmaCore.Types.TopPositioned;
                 }
             }
-        }
-    }
-
-    ///Shadow in applets
-    Loader{
-        id: appletShadow
-        anchors.fill: appletItem.appletWrapper
-
-        active: appletItem.applet
-                && graphicsSystem.isAccelerated
-                && !appletColorizer.mustBeShown
-                && (appletItem.myView.itemShadow.isEnabled && !appletItem.communicator.indexerIsSupported)
-
-        onActiveChanged: {
-            if (active && !isSeparator && graphicsSystem.isAccelerated) {
-                wrapperContainer.opacity = 0;
-            } else {
-                wrapperContainer.opacity = 1;
-            }
-        }
-
-        opacity: isSeparator ? 0.4 : 1
-
-        sourceComponent: DropShadow{
-            anchors.fill: parent
-            color: appletItem.myView.itemShadow.shadowColor
-            fast: true
-            samples: 2 * radius
-            source: appletItem.applet
-            radius: shadowSize
-            verticalOffset: root.forceTransparentPanel || root.forcePanelForBusyBackground ? 0 : 2
-
-            property int shadowSize : appletItem.myView.itemShadow.size
         }
     }
 

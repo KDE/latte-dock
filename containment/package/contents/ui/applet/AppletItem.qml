@@ -725,8 +725,8 @@ Item {
                 palette: colorizerManager.applyTheme
 
                 //!icon colors
-                iconBackgroundColor: isSquare ? appletItem.wrapper.overlayIconLoader.backgroundColor : colorizerManager.buttonFocusColor
-                iconGlowColor: isSquare ? appletItem.wrapper.overlayIconLoader.glowColor : colorizerManager.focusGlowColor
+                iconBackgroundColor: appletItem.wrapper.overlayIconLoader.backgroundColor
+                iconGlowColor: appletItem.wrapper.overlayIconLoader.glowColor
             }
 
             //! InConfigureApplets visual paddings
