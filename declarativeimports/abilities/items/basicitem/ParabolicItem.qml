@@ -132,11 +132,29 @@ Item{
             }
         }
 
+        //! Shadows
+        Loader{
+            anchors.fill: _contentItemContainer
+            active: abilityItem.abilities.myView.itemShadow.isEnabled && !abilityItem.isSeparator && graphicsSystem.isAccelerated
+
+            sourceComponent: DropShadow{
+                anchors.fill: parent
+                color: abilityItem.abilities.myView.itemShadow.shadowColor
+                fast: true
+                samples: 2 * radius
+                source: _contentItemContainer
+                radius: abilityItem.abilities.myView.itemShadow.size
+                verticalOffset: 2
+            }
+        }
+
+        //! Main contented item
         Item {
             id: _contentItemContainer
             anchors.centerIn: parent
             width: newTempSize
             height: width
+            visible: !abilityItem.isSeparator
 
             property int zoomedSize: abilityItem.abilities.parabolic.factor.zoom * abilityItem.abilities.metrics.iconSize
             property real basicScalingLength: abilityItem.abilities.metrics.iconSize * (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleLength : parabolicItem.zoom)

@@ -45,8 +45,8 @@ Item {
 
     Rectangle{
         id: draggedRectangle
-        width: taskItem.isSeparator ? parent.width + 1 : taskIconItem.width+1
-        height: taskItem.isSeparator ? parent.height + 1 : taskIconItem.height+1
+        width: parent.width + 2
+        height: parent.height + 2
         anchors.centerIn: taskIconContainer
         opacity: 0
         radius: 3
@@ -68,10 +68,7 @@ Item {
         smooth: taskItem.abilities.parabolic.factor.zoom === 1 ? true : false
         providesColors: taskItem.abilities.indicators.info.needsIconColors
 
-        opacity: taskItem.abilities.myView.itemShadow.isEnabled
-                 && taskWithShadow.active
-                 && graphicsSystem.isAccelerated ? 0 : 1
-        visible: !taskItem.isSeparator && (!badgesLoader.active || !graphicsSystem.isAccelerated)
+        visible: !badgesLoader.active
 
         onValidChanged: {
             if (!valid && (source === decoration || source === "unknown")) {
@@ -136,24 +133,6 @@ Item {
         ]
     }
 
-    //! Shadows
-    Loader{
-        id: taskWithShadow
-        anchors.fill: taskIconContainer
-        active: taskItem.abilities.myView.itemShadow.isEnabled && !taskItem.isSeparator && graphicsSystem.isAccelerated
-
-        sourceComponent: DropShadow{
-            anchors.fill: parent
-            color: taskItem.abilities.myView.itemShadow.shadowColor
-            fast: true
-            samples: 2 * radius
-            source: badgesLoader.active ? badgesLoader.item : taskIconItem
-            radius: taskItem.abilities.myView.itemShadow.size
-            verticalOffset: 2
-        }
-    }
-    //! Shadows
-
     //! Combined Loader for Progress and Audio badges masks
     Loader{
         id: badgesLoader
@@ -164,13 +143,13 @@ Item {
 
         property real activateProgress: showInfo || showProgress || showAudio ? 1 : 0
 
-        property bool showInfo: (root.showInfoBadge && taskIcon.smartLauncherItem && !taskItem.isSeparator
+        property bool showInfo: (root.showInfoBadge && taskIcon.smartLauncherItem
                                  && (taskIcon.smartLauncherItem.countVisible || taskItem.badgeIndicator > 0) && !taskIcon.smartLauncherItem.progressVisible)
 
-        property bool showProgress: root.showProgressBadge && taskIcon.smartLauncherItem && !taskItem.isSeparator
+        property bool showProgress: root.showProgressBadge && taskIcon.smartLauncherItem
                                     && taskIcon.smartLauncherItem.progressVisible
 
-        property bool showAudio: (root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator)
+        property bool showAudio: (root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio)
 
         Behavior on activateProgress {
             NumberAnimation { duration: 2 * taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
@@ -408,11 +387,10 @@ Item {
         //! HACK TO AVOID PIXELIZATION
         //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
         //! the icon appears pixelated. It is even most notable when parabolic.factor.zoom === 1
-        //! I don't know enabling cached=true helps, but it does.
+        //! I don't know why enabling cached=true helps, but it does.
         cached: true
 
         source: badgesLoader.active ? badgesLoader : taskIconItem
-        visible: !isSeparator
 
         opacity:0
 
@@ -434,7 +412,6 @@ Item {
         cached: true
 
         source: badgesLoader.active ? badgesLoader : taskIconItem
-        visible: !isSeparator
 
         opacity: taskItem.containsMouse && !clickedAnimation.running && !taskItem.abilities.indicators.info.providesHoveredAnimation ? 1 : 0
         brightness: 0.30
@@ -459,7 +436,7 @@ Item {
 
         source: badgesLoader.active ? badgesLoader : taskIconItem
 
-        visible: clickedAnimation.running && !isSeparator
+        visible: clickedAnimation.running
     }
     //! Effects
 
