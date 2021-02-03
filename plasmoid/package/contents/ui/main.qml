@@ -227,6 +227,10 @@ Item {
     signal windowsHovered(variant winIds, bool hovered)
 
 
+    onScrollingEnabledChanged: {
+        updateListViewParent();
+    }
+
     Connections {
         target: plasmoid
         onLocationChanged: {
@@ -284,6 +288,14 @@ Item {
     }
 
     ///UPDATE
+    function updateListViewParent() {
+        if (scrollingEnabled) {
+            icList.parent = listViewBase;
+        } else {
+            icList.parent = barLine;
+        }
+    }
+
     function launcherExists(url) {
         return (ActivitiesTools.getIndex(url, tasksModel.launcherList)>=0);
     }
@@ -1050,13 +1062,14 @@ Item {
 
         LatteComponents.AddingArea {
             id: newDroppedLauncherVisual
-            width: root.vertical ? appletAbilities.metrics.totals.thickness : scrollableList.width
-            height: root.vertical ? scrollableList.height : appletAbilities.metrics.totals.thickness
+            width: root.vertical ? appletAbilities.metrics.totals.thickness : scrollableList.length
+            height: root.vertical ? scrollableList.length : appletAbilities.metrics.totals.thickness
 
             visible: backgroundOpacity > 0
             radius: appletAbilities.metrics.iconSize/10
             backgroundOpacity: mouseHandler.isDroppingOnlyLaunchers || appletAbilities.launchers.isShowingAddLaunchersMessage ? 0.75 : 0
             duration: appletAbilities.animations.speedFactor.current
+            z: 99
 
             title: i18n("Tasks Area")
 
@@ -1300,6 +1313,7 @@ Item {
         root.presentWindows.connect(backend.presentWindows);
         root.windowsHovered.connect(backend.windowsHovered);
         dragHelper.dropped.connect(resetDragSource);
+        updateListViewParent();
     }
 
     Component.onDestruction: {
