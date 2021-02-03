@@ -351,10 +351,7 @@ Item {
     //! moved out of badgeVisualsLoader in order to avoid crashes
     //! when the latte view is removed
     Loader {
-        width: taskIconContainer.width
-        height: taskIconContainer.height
-        anchors.centerIn: taskIconContainer
-
+        anchors.fill: parent
         active: badgeVisualsLoader.active && graphicsSystem.isAccelerated
         sourceComponent: Colorize{
             source: badgeVisualsLoader.item
@@ -363,7 +360,8 @@ Item {
             //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
             //! the icon appears pixelated. It is even most notable when parabolic.factor.zoom === 1
             //! I don't know enabling cached=true helps, but it does.
-            cached: true
+            //! In Question?
+            //cached: true
 
             opacity: stateColorizer.opacity
             hue: stateColorizer.hue
@@ -376,15 +374,14 @@ Item {
     //! Effects
     Colorize{
         id: stateColorizer
-        anchors.centerIn: taskIconContainer
-        width: taskIconContainer.width
-        height: taskIconContainer.height
+        anchors.fill: parent
 
         //! HACK TO AVOID PIXELIZATION
         //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
         //! the icon appears pixelated. It is even most notable when parabolic.factor.zoom === 1
         //! I don't know why enabling cached=true helps, but it does.
-        cached: true
+        //! In Question?
+        //cached: true
 
         source: badgesLoader.active ? badgesLoader : taskIconItem
 
@@ -397,15 +394,14 @@ Item {
 
     BrightnessContrast{
         id:hoveredImage
-        anchors.centerIn: taskIconContainer
-        width: taskIconContainer.width
-        height: taskIconContainer.height
+        anchors.fill: parent
 
         //! HACK TO AVOID PIXELIZATION
         //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
         //! the icon appears pixelated. It is even most notable when parabolic.factor.zoom === 1
         //! I don't know enabling cached=true helps, but it does.
-        cached: true
+        //! In Question?
+        //cached: true
 
         source: badgesLoader.active ? badgesLoader : taskIconItem
 
@@ -420,15 +416,14 @@ Item {
 
     BrightnessContrast {
         id: brightnessTaskEffect
-        anchors.centerIn: taskIconContainer
-        width: taskIconContainer.width
-        height: taskIconContainer.height
+        anchors.fill: parent
 
         //! HACK TO AVOID PIXELIZATION
         //! WORKAROUND: When Effects are enabled e.g. BrightnessContrast, Colorize etc.
         //! the icon appears pixelated. It is even most notable when parabolic.factor.zoom === 1
         //! I don't know enabling cached=true helps, but it does.
-        cached: true
+        //! In Question?
+        //cached: true
 
         source: badgesLoader.active ? badgesLoader : taskIconItem
 
