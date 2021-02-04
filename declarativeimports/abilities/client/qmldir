@@ -4,6 +4,7 @@ Animations 0.1 Animations.qml
 AppletAbilities 0.1 AppletAbilities.qml
 Containment 0.1 Containment.qml
 Debug 0.1 Debug.qml
+Environment 0.1 Environment.qml
 Indexer 0.1 Indexer.qml
 Indicators 0.1 Indicators.qml
 Metrics 0.1 Metrics.qml
