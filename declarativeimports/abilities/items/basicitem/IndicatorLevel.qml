@@ -26,10 +26,10 @@ import org.kde.latte.abilities.items 0.1 as AbilityItem
 
 AbilityItem.IndicatorLevel {
     id: indicatorLevel
-    anchors.bottom: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
-    anchors.top: (plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
-    anchors.left: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
-    anchors.right: (plasmoid.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
+    anchors.bottom: (abilityItem.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+    anchors.top: (abilityItem.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+    anchors.left: (abilityItem.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+    anchors.right: (abilityItem.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
     anchors.horizontalCenter: abilityItem.isHorizontal ? parent.horizontalCenter : undefined
     anchors.verticalCenter: abilityItem.isHorizontal ? undefined : parent.verticalCenter

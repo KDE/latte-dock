@@ -93,18 +93,18 @@ Item{
     }
 
     Item{
-        anchors.bottom: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
-        anchors.top: (plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
-        anchors.left: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
-        anchors.right: (plasmoid.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
+        anchors.bottom: (abilityItem.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+        anchors.top: (abilityItem.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+        anchors.left: (abilityItem.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+        anchors.right: (abilityItem.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
         anchors.horizontalCenter: abilityItem.isHorizontal ? parent.horizontalCenter : undefined
         anchors.verticalCenter: abilityItem.isHorizontal ? undefined : parent.verticalCenter
 
-        anchors.bottomMargin: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
-        anchors.topMargin: (plasmoid.location === PlasmaCore.Types.TopEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
-        anchors.leftMargin: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
-        anchors.rightMargin: (plasmoid.location === PlasmaCore.Types.RightEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
+        anchors.bottomMargin: (abilityItem.location === PlasmaCore.Types.BottomEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
+        anchors.topMargin: (abilityItem.location === PlasmaCore.Types.TopEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
+        anchors.leftMargin: (abilityItem.location === PlasmaCore.Types.LeftEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
+        anchors.rightMargin: (abilityItem.location === PlasmaCore.Types.RightEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
 
         anchors.horizontalCenterOffset: abilityItem.iconOffsetX
         anchors.verticalCenterOffset: abilityItem.iconOffsetY

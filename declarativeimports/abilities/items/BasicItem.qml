@@ -37,10 +37,10 @@ Item{
     signal shortcutRequestedActivate();
     signal shortcutRequestedNewInstance();
 
-    anchors.bottom: (parent && plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
-    anchors.top: (parent && plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
-    anchors.left: (parent && plasmoid.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
-    anchors.right: (parent && plasmoid.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
+    anchors.bottom: (parent && abilityItem.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+    anchors.top: (parent && abilityItem.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+    anchors.left: (parent && abilityItem.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+    anchors.right: (parent && abilityItem.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
 
     width: {
         if (!visible)
@@ -111,10 +111,10 @@ Item{
     readonly property bool parabolicAreaContainsMouse: parabolicEventsAreaLoader.active && parabolicEventsAreaLoader.item.containsMouse
 
     readonly property int location: {
-        if (plasmoid.location === PlasmaCore.Types.LeftEdge
-                || plasmoid.location === PlasmaCore.Types.RightEdge
-                || plasmoid.location === PlasmaCore.Types.TopEdge) {
-            return plasmoid.location;
+        if (abilityItem.location === PlasmaCore.Types.LeftEdge
+                || abilityItem.location === PlasmaCore.Types.RightEdge
+                || abilityItem.location === PlasmaCore.Types.TopEdge) {
+            return abilityItem.location;
         }
 
         return PlasmaCore.Types.BottomEdge;
@@ -290,7 +290,7 @@ Item{
         states:[
             State{
                 name: "top"
-                when: plasmoid.location === PlasmaCore.Types.TopEdge
+                when: abilityItem.location === PlasmaCore.Types.TopEdge
 
                 AnchorChanges{
                     target: parabolicEventsAreaLoader
@@ -300,7 +300,7 @@ Item{
             },
             State{
                 name: "left"
-                when: plasmoid.location === PlasmaCore.Types.LeftEdge
+                when: abilityItem.location === PlasmaCore.Types.LeftEdge
 
                 AnchorChanges{
                     target: parabolicEventsAreaLoader
@@ -310,7 +310,7 @@ Item{
             },
             State{
                 name: "right"
-                when: plasmoid.location === PlasmaCore.Types.RightEdge
+                when: abilityItem.location === PlasmaCore.Types.RightEdge
 
                 AnchorChanges{
                     target: parabolicEventsAreaLoader
@@ -320,7 +320,7 @@ Item{
             },
             State{
                 name: "bottom"
-                when: plasmoid.location === PlasmaCore.Types.BottomEdge
+                when: abilityItem.location === PlasmaCore.Types.BottomEdge
 
                 AnchorChanges{
                     target: parabolicEventsAreaLoader

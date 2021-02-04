@@ -34,7 +34,7 @@ Item{
     states:[
         State{
             name: "bottom"
-            when: plasmoid.location === PlasmaCore.Types.BottomEdge
+            when: abilityItem.location === PlasmaCore.Types.BottomEdge
 
             AnchorChanges{
                 target: visual;
@@ -45,7 +45,7 @@ Item{
         },
         State{
             name: "top"
-            when: plasmoid.location === PlasmaCore.Types.TopEdge
+            when: abilityItem.location === PlasmaCore.Types.TopEdge
 
             AnchorChanges{
                 target:visual;
@@ -56,7 +56,7 @@ Item{
         },
         State{
             name: "left"
-            when: plasmoid.location === PlasmaCore.Types.LeftEdge
+            when: abilityItem.location === PlasmaCore.Types.LeftEdge
 
             AnchorChanges{
                 target: visual;
@@ -67,7 +67,7 @@ Item{
         },
         State{
             name: "right"
-            when: plasmoid.location === PlasmaCore.Types.RightEdge
+            when: abilityItem.location === PlasmaCore.Types.RightEdge
 
             AnchorChanges{
                 target: visual;
