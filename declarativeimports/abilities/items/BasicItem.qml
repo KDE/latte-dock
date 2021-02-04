@@ -47,7 +47,7 @@ Item{
             return 0;
 
         if (isSeparator) {
-            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+            if (abilityItem.isVertical) {
                 return abilityItem.abilities.metrics.totals.thickness + abilityItem.abilities.metrics.margin.screenEdge;
             } else {
                 if (isSeparatorInRealLength || !abilityItem.abilities.parabolic.isEnabled) {
@@ -96,6 +96,8 @@ Item{
     property bool isHidden: false
     property bool isSeparator: false
     property bool isSeparatorInRealLength: false
+    property bool isSeparatorHidden: false
+    readonly property bool isSeparatorVisible: isSeparator && !isSeparatorHidden && !tailItemIsSeparator
 
     property bool containsMouse: false
 
@@ -107,6 +109,16 @@ Item{
     readonly property bool isHorizontal: !isVertical
     readonly property bool isVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     readonly property bool parabolicAreaContainsMouse: parabolicEventsAreaLoader.active && parabolicEventsAreaLoader.item.containsMouse
+
+    readonly property int location: {
+        if (plasmoid.location === PlasmaCore.Types.LeftEdge
+                || plasmoid.location === PlasmaCore.Types.RightEdge
+                || plasmoid.location === PlasmaCore.Types.TopEdge) {
+            return plasmoid.location;
+        }
+
+        return PlasmaCore.Types.BottomEdge;
+    }
 
     readonly property int itemIndex: index
     readonly property int animationTime: (abilityItem.abilities.animations.active ? abilityItem.abilities.animations.speedFactor.current : 2) * (1.2 * abilityItem.abilities.animations.duration.small)
@@ -210,70 +222,7 @@ Item{
         }
     }
 
-    Item{
-        id:separatorItem
-        anchors.bottom: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
-        anchors.top: (plasmoid.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
-        anchors.left: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
-        anchors.right: (plasmoid.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
-
-        anchors.horizontalCenter: abilityItem.isHorizontal ? parent.horizontalCenter : undefined
-        anchors.verticalCenter: abilityItem.isHorizontal ? undefined : parent.verticalCenter
-
-        anchors.bottomMargin: (plasmoid.location === PlasmaCore.Types.BottomEdge) ? margin : 0
-        anchors.topMargin: (plasmoid.location === PlasmaCore.Types.TopEdge) ? margin : 0
-        anchors.leftMargin: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? margin : 0
-        anchors.rightMargin: (plasmoid.location === PlasmaCore.Types.RightEdge) ? margin : 0
-
-        opacity: (separatorShadow.active) || forceHiddenState ? 0 : 0.4
-        visible: abilityItem.isSeparator
-
-        width: abilityItem.isVertical ?
-                   abilityItem.abilities.metrics.iconSize :
-                   (isSeparatorInRealLength ? LatteCore.Environment.separatorLength+abilityItem.abilities.metrics.totals.lengthEdges: 1)
-        height: abilityItem.isHorizontal ?
-                    abilityItem.abilities.metrics.iconSize :
-                    (isSeparatorInRealLength  ? LatteCore.Environment.separatorLength+abilityItem.abilities.metrics.totals.lengthEdges: 1)
-
-        property bool forceHiddenState: false
-
-        readonly property int margin: abilityItem.abilities.metrics.margin.screenEdge + abilityItem.abilities.metrics.margin.thickness
-
-        Behavior on opacity {
-            NumberAnimation { duration: abilityItem.abilities.animations.speedFactor.current * abilityItem.abilities.animations.duration.large }
-        }
-
-        Rectangle {
-            anchors.centerIn: parent
-            width: abilityItem.isVertical ? abilityItem.abilities.metrics.iconSize - 4  : 1
-            height: abilityItem.isHorizontal ? abilityItem.abilities.metrics.iconSize - 4 : 1
-            color: abilityItem.abilities.myView.palette.textColor
-        }
-    }
-
-    ///Shadow in separator
-    Loader{
-        id: separatorShadow
-        anchors.fill: separatorItem
-        active: abilityItem.abilities.myView.itemShadow.isEnabled
-                && isSeparator
-                && abilityItem.abilities.environment.isGraphicsSystemAccelerated
-        opacity: separatorItem.forceHiddenState ? 0 : 0.4
-
-        Behavior on opacity {
-            NumberAnimation { duration: abilityItem.abilities.animations.speedFactor.current * abilityItem.abilities.animations.duration.large }
-        }
-
-        sourceComponent: DropShadow{
-            anchors.fill: parent
-            color: abilityItem.abilities.myView.itemShadow.shadowColor
-            fast: true
-            samples: 2 * radius
-            source: separatorItem
-            radius: abilityItem.abilities.myView.itemShadow.size
-            verticalOffset: 2
-        }
-    }
+    BasicItemParts.SeparatorItem {}
 
     Flow{
         width: parent.width
