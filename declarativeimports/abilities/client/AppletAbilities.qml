@@ -64,6 +64,7 @@ Item {
     readonly property alias animations: _animations
     readonly property alias containment: _containment
     readonly property alias debug: _debug
+    readonly property alias environment: _environment
     readonly property alias indexer: _indexer
     readonly property alias indicators: _indicators
     readonly property alias metrics: _metrics
@@ -86,6 +87,11 @@ Item {
 
     AbilityClient.Debug {
         id: _debug
+        bridge: _abilityContainer.bridge
+    }
+
+    AbilityClient.Environment {
+        id: _environment
         bridge: _abilityContainer.bridge
     }
 

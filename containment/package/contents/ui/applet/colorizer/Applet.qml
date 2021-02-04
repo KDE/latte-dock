@@ -36,7 +36,9 @@ Item {
         id: colorizedAppletShadow
         anchors.fill: colorizer
 
-        active: graphicsSystem.isAccelerated && plasmoid.configuration.appletShadowsEnabled && (appletColorizer.opacity>0)
+        active: appletItem.environment.isGraphicsSystemAccelerated
+                && plasmoid.configuration.appletShadowsEnabled
+                && (appletColorizer.opacity>0)
 
         sourceComponent: DropShadow{
             anchors.fill: parent

@@ -143,6 +143,7 @@ Item{
     readonly property Item actions: Actions{}
     readonly property Item applet: mainCommunicator.requires
     readonly property alias containment: _containment.publicApi
+    readonly property Item environment: appletItem.environment.publicApi
     readonly property Item debug: appletItem.debug.publicApi
     readonly property Item indicators: appletItem.indicators.publicApi
     readonly property Item metrics: appletItem.metrics.publicApi

@@ -198,12 +198,6 @@ Item{
         NumberAnimation { duration: abilityItem.abilities.animations.speedFactor.current * abilityItem.abilities.animations.duration.large }
     }
 
-    Item {
-        id: graphicsSystem
-        readonly property bool isAccelerated: (GraphicsInfo.api !== GraphicsInfo.Software)
-                                              && (GraphicsInfo.api !== GraphicsInfo.Unknown)
-    }
-
     Loader{
         anchors.fill: parent
         active: abilityItem.abilities.debug.graphicsEnabled
@@ -261,7 +255,9 @@ Item{
     Loader{
         id: separatorShadow
         anchors.fill: separatorItem
-        active: abilityItem.abilities.myView.itemShadow.isEnabled && isSeparator && graphicsSystem.isAccelerated
+        active: abilityItem.abilities.myView.itemShadow.isEnabled
+                && isSeparator
+                && abilityItem.abilities.environment.isGraphicsSystemAccelerated
         opacity: separatorItem.forceHiddenState ? 0 : 0.4
 
         Behavior on opacity {

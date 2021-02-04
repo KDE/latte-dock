@@ -280,13 +280,6 @@ Item {
         id: colorScopePalette
     }
 
-    //!
-    Item {
-        id: graphicsSystem
-        readonly property bool isAccelerated: (GraphicsInfo.api !== GraphicsInfo.Software)
-                                              && (GraphicsInfo.api !== GraphicsInfo.Unknown)
-    }
-
     ///UPDATE
     function updateListViewParent() {
         if (scrollingEnabled) {

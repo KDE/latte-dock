@@ -70,7 +70,8 @@ Item{
             Loader{
                 id: tempTaskShadow
                 anchors.fill: tempRemoveIcon
-                active: taskItem.abilities.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
+                active: taskItem.abilities.myView.itemShadow.isEnabled
+                        && taskItem.abilities.environment.isGraphicsSystemAccelerated
 
                 sourceComponent: DropShadow{
                     anchors.fill: parent

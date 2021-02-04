@@ -135,7 +135,9 @@ Item{
         //! Shadows
         Loader{
             anchors.fill: _contentItemContainer
-            active: abilityItem.abilities.myView.itemShadow.isEnabled && !abilityItem.isSeparator && graphicsSystem.isAccelerated
+            active: abilityItem.abilities.myView.itemShadow.isEnabled
+                    && !abilityItem.isSeparator
+                    && abilityItem.abilities.environment.isGraphicsSystemAccelerated
 
             sourceComponent: DropShadow{
                 anchors.fill: parent

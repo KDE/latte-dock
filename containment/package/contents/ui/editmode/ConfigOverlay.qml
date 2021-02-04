@@ -408,7 +408,7 @@ MouseArea {
                 height: width
                 anchors.centerIn: parent
                 opacity: 0.9
-                layer.enabled: graphicsSystem.isAccelerated
+                layer.enabled: root.environment.isGraphicsSystemAccelerated
                 layer.effect: DropShadow {
                     radius: root.myView.itemShadow.size
                     fast: true

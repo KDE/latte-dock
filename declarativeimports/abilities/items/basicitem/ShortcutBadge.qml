@@ -65,7 +65,8 @@ Loader{
     sourceComponent: Item{
         Loader{
             anchors.fill: taskNumber
-            active: abilityItem.abilities.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
+            active: abilityItem.abilities.myView.itemShadow.isEnabled
+                    && abilityItem.abilities.environment.isGraphicsSystemAccelerated
 
             sourceComponent: DropShadow{
                 color: abilityItem.abilities.myView.itemShadow.shadowColor

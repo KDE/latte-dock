@@ -28,6 +28,8 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.plasma.plasmoid 2.0
 
+import org.kde.latte.abilities.host 0.1 as AbilityHost
+
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 import org.kde.latte.private.app 0.1 as LatteApp
@@ -326,6 +328,7 @@ Item {
     readonly property alias autosize: _autosize
     readonly property alias background: _background
     readonly property alias debug: _debug
+    readonly property alias environment: _environment
     readonly property alias indexer: _indexer
     readonly property alias indicators: _indicators
     readonly property alias layouter: _layouter
@@ -930,6 +933,7 @@ Item {
         Applet.AppletItem{
             animations: _animations
             debug: _debug
+            environment: _environment
             indexer: _indexer
             indicators: _indicators
             launchers: _launchers
@@ -942,12 +946,6 @@ Item {
             thinTooltip: _thinTooltip
             userRequests: _userRequests
         }
-    }
-
-    Item {
-        id: graphicsSystem
-        readonly property bool isAccelerated: (GraphicsInfo.api !== GraphicsInfo.Software)
-                                              && (GraphicsInfo.api !== GraphicsInfo.Unknown)
     }
 
     Upgrader {
@@ -1134,6 +1132,10 @@ Item {
 
     Ability.Debug {
         id: _debug
+    }
+
+    AbilityHost.Environment{
+        id: _environment
     }
 
     Ability.Indexer {

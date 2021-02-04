@@ -73,7 +73,7 @@ Item{
         return communicator.parabolicEffectIsSupported ? appletPreferredThickness : scaledThickness + appletItem.metrics.margin.screenEdge;
     }
 
-    opacity: appletColorizer.mustBeShown && graphicsSystem.isAccelerated ? 0 : 1
+    opacity: appletColorizer.mustBeShown && appletItem.environment.isGraphicsSystemAccelerated ? 0 : 1
 
     property bool disableLengthScale: false
     property bool disableThicknessScale: false
@@ -365,7 +365,7 @@ Item{
         anchors.fill: _wrapperContainer
 
         active: appletItem.applet
-                && graphicsSystem.isAccelerated
+                && appletItem.environment.isGraphicsSystemAccelerated
                 && !appletColorizer.mustBeShown
                 && (appletItem.myView.itemShadow.isEnabled && !appletItem.communicator.indexerIsSupported)
 

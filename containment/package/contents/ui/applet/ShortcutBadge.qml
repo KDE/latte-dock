@@ -80,7 +80,8 @@ Loader{
     sourceComponent: Item{
         Loader{
             anchors.fill: appletNumber
-            active: appletItem.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
+            active: appletItem.myView.itemShadow.isEnabled
+                    && appletItem.environment.isGraphicsSystemAccelerated
 
             sourceComponent: DropShadow{
                 color: appletItem.myView.itemShadow.shadowColor

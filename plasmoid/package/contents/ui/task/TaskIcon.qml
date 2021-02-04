@@ -135,7 +135,7 @@ Item {
     Loader{
         id: badgesLoader
         anchors.fill: taskIconContainer
-        active: (activateProgress > 0) && graphicsSystem.isAccelerated
+        active: (activateProgress > 0) && taskItem.abilities.environment.isGraphicsSystemAccelerated
         asynchronous: true
         opacity: stateColorizer.opacity > 0 ? 0 : 1
 
@@ -316,7 +316,8 @@ Item {
                 opacity: badgesLoader.activateProgress
                 visible: badgesLoader.showInfo || badgesLoader.showProgress
 
-                layer.enabled: taskItem.abilities.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
+                layer.enabled: taskItem.abilities.myView.itemShadow.isEnabled
+                               && taskItem.abilities.environment.isGraphicsSystemAccelerated
                 layer.effect: DropShadow {
                     color: taskItem.abilities.myView.itemShadow.shadowColor
                     fast: true
@@ -333,7 +334,8 @@ Item {
                 opacity: badgesLoader.activateProgress
                 visible: badgesLoader.showAudio
 
-                layer.enabled: taskItem.abilities.myView.itemShadow.isEnabled && graphicsSystem.isAccelerated
+                layer.enabled: taskItem.abilities.myView.itemShadow.isEnabled
+                               && taskItem.abilities.environment.isGraphicsSystemAccelerated
                 layer.effect: DropShadow {
                     color: taskItem.abilities.myView.itemShadow.shadowColor
                     fast: true
@@ -357,7 +359,8 @@ Item {
     //! when the latte view is removed
     Loader {
         anchors.fill: parent
-        active: badgeVisualsLoader.active && graphicsSystem.isAccelerated
+        active: badgeVisualsLoader.active
+                && taskItem.abilities.environment.isGraphicsSystemAccelerated
         sourceComponent: Colorize{
             source: badgeVisualsLoader.item
 
