@@ -302,6 +302,7 @@ void GenericTable<T>::remove(const int &row)
 //! but that would drop readability
 template class GenericTable<Data::Activity>;
 template class GenericTable<Data::Applet>;
+template class GenericTable<Data::Generic>;
 template class GenericTable<Data::Layout>;
 
 }

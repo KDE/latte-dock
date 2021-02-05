@@ -24,6 +24,8 @@
 #include "../lattecorona.h"
 #include "../data/layoutdata.h"
 #include "../data/layoutstable.h"
+#include "../data/genericdata.h"
+#include "../data/generictable.h"
 
 // Qt
 #include <QObject>
@@ -55,6 +57,7 @@ public:
     Data::Layout layoutTemplateForName(const QString &layoutName);
 
     Data::LayoutsTable systemLayoutTemplates();
+    Data::GenericTable<Data::Generic> viewTemplates();
 
     //! creates a new layout with layoutName based on specific layout template and returns the new layout path
     QString newLayout(QString layoutName, QString layoutTemplate = i18n(DEFAULTLAYOUTTEMPLATENAME));
@@ -71,6 +74,7 @@ private:
     Latte::Corona *m_corona;
 
     Data::LayoutsTable m_layoutTemplates;
+    Data::GenericTable<Data::Generic> m_viewTemplates;
 
 };
 

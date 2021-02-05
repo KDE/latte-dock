@@ -66,6 +66,21 @@ void Manager::init()
             m_layoutTemplates << tdata;
         }
     }
+
+    filter.clear();
+    filter.append(QString("*.view.latte"));
+    QStringList systemViewTemplates = systemTemplatesDir.entryList(filter, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+
+    for (int i=0; i<systemViewTemplates.count(); ++i) {
+        QString systemViewTemplatePath = systemTemplatesDir.path() + "/" + systemViewTemplates[i];
+        if (!m_viewTemplates.containsId(systemViewTemplatePath)) {
+            Data::Generic vdata;
+            vdata.id = systemViewTemplatePath;
+            vdata.name = QFileInfo(systemViewTemplatePath).baseName();
+
+            m_viewTemplates << vdata;
+        }
+    }
 }
 
 Data::Layout Manager::layoutTemplateForName(const QString &layoutName)
@@ -96,6 +111,11 @@ Data::LayoutsTable Manager::systemLayoutTemplates()
     }
 
     return templates;
+}
+
+Data::GenericTable<Data::Generic> Manager::viewTemplates()
+{
+    return m_viewTemplates;
 }
 
 QString Manager::newLayout(QString layoutName, QString layoutTemplate)
