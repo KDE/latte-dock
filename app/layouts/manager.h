@@ -104,6 +104,8 @@ public slots:
     void hideLatteSettingsDialog();
     Q_INVOKABLE void showLatteSettingsDialog(int firstPage = Settings::Dialog::LayoutPage, bool toggleCurrentPage = false);
     Q_INVOKABLE QStringList centralLayoutsNames();
+    Q_INVOKABLE QStringList viewTemplateNames() const;
+    Q_INVOKABLE QStringList viewTemplateIds() const;
 
 signals:
     void centralLayoutsChanged();

@@ -527,11 +527,14 @@ Loader {
                         Component.onCompleted:actionsComboBtn.updateModel();
 
                         onActivated: {
-                            if (index==0) {
-                                latteView.copyView();
-                            } else if (index>=1) {
-                                var layouts = actionsComboBtn.centralLayoutsNames;
+                            var item = actionsModel.get(index);
 
+                            if (item.actionId === "new:") {
+
+                            } else  if (item.actionId === "copy:") {
+                                latteView.copyView();
+                            } else if (item.actionId === "move:") {
+                                var layouts = actionsComboBtn.centralLayoutsNames;
                                 latteView.positioner.hideDockDuringMovingToLayout(layouts[index-1]);
                             }
 
@@ -570,11 +573,6 @@ Loader {
                     function updateModel() {
                         actionsModel.clear();
 
-                        var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
-                        actionsModel.append(copy);
-
-                        updateCopyText();
-
                         var tempCentralLayouts = layoutsManager.centralLayoutsNames();
 
                         if (tempCentralLayouts.length > 0) {
@@ -587,9 +585,36 @@ Loader {
                             var iconArrow = Qt.application.layoutDirection === Qt.RightToLeft ? 'arrow-left' : 'arrow-right';
 
                             for(var i=0; i<centralLayoutsNames.length; ++i) {
-                                var layout = {actionId: 'move:', enabled: true, name: i18n("Move to: %0").arg(centralLayoutsNames[i]), icon: iconArrow};
+                                var layout = {
+                                    actionId: 'move:',
+                                    enabled: true,
+                                    name: i18n("Move to %0").arg(centralLayoutsNames[i]),
+                                    icon: iconArrow
+                                };
                                 actionsModel.append(layout);
                             }
+                        }
+
+                        var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
+                        actionsModel.append(copy);
+                        updateCopyText(actionsModel.count-1);
+
+                        var viewTemplateIds = layoutsManager.viewTemplateIds();
+
+                        if (viewTemplateIds.length > 1) {
+                            var viewTemplateNames = layoutsManager.viewTemplateNames();
+
+                            for(var i=1; i<viewTemplateIds.length; ++i) {
+                                var viewtemplate = {
+                                    actionId: 'new:',
+                                    enabled: true,
+                                    templateId: viewTemplateIds[i],
+                                    name: i18n("New %0").arg(viewTemplateNames[i]),
+                                    icon: 'list-add'
+                                };
+                                actionsModel.append(viewtemplate);
+                            }
+
                         }
 
                         actionsComboBtn.comboBox.currentIndex = -1;
@@ -603,9 +628,9 @@ Loader {
                         actionsComboBtn.comboBox.currentIndex = -1;
                     }
 
-                    function updateCopyText() {
+                    function updateCopyText(copyIndex) {
                         var copyText = latteView.type === LatteCore.Types.DockView ? i18n("Copy Dock") : i18n("Copy Panel")
-                        actionsModel.get(0).name = copyText;
+                        actionsModel.get(copyIndex).name = copyText;
                     }
                 }
 

@@ -28,6 +28,7 @@
 #include "../infoview.h"
 #include "../screenpool.h"
 #include "../data/layoutdata.h"
+#include "../data/generictable.h"
 #include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"
 #include "../settings/dialogs/settingsdialog.h"
@@ -160,6 +161,32 @@ QStringList Manager::centralLayoutsNames()
 QStringList Manager::currentLayoutsNames() const
 {
     return m_synchronizer->currentLayoutsNames();
+}
+
+QStringList Manager::viewTemplateNames() const
+{
+    Latte::Data::GenericTable<Data::Generic> viewtemplates = m_corona->templatesManager()->viewTemplates();
+
+    QStringList names;
+
+    for(int i=0; i<viewtemplates.rowCount(); ++i) {
+        names << viewtemplates[i].name;
+    }
+
+    return names;
+}
+
+QStringList Manager::viewTemplateIds() const
+{
+    Latte::Data::GenericTable<Data::Generic> viewtemplates = m_corona->templatesManager()->viewTemplates();
+
+    QStringList ids;
+
+    for(int i=0; i<viewtemplates.rowCount(); ++i) {
+        ids << viewtemplates[i].id;
+    }
+
+    return ids;
 }
 
 QList<CentralLayout *> Manager::currentLayouts() const
