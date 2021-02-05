@@ -111,10 +111,10 @@ Item{
     readonly property bool parabolicAreaContainsMouse: parabolicEventsAreaLoader.active && parabolicEventsAreaLoader.item.containsMouse
 
     readonly property int location: {
-        if (abilityItem.location === PlasmaCore.Types.LeftEdge
-                || abilityItem.location === PlasmaCore.Types.RightEdge
-                || abilityItem.location === PlasmaCore.Types.TopEdge) {
-            return abilityItem.location;
+        if (plasmoid.location === PlasmaCore.Types.LeftEdge
+                || plasmoid.location === PlasmaCore.Types.RightEdge
+                || plasmoid.location === PlasmaCore.Types.TopEdge) {
+            return plasmoid.location;
         }
 
         return PlasmaCore.Types.BottomEdge;
