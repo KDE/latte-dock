@@ -442,7 +442,6 @@ void TabLayouts::downloadLayout()
     if (!dialog.changedEntries().isEmpty() && !dialog.installedEntries().isEmpty()) {
         for (const auto &entry : dialog.installedEntries()) {
             for (const auto &entryFile : entry.installedFiles()) {
-                qDebug() << "org.kde.latte :::  installing :: " << entryFile;
                 Latte::Layouts::Importer::LatteFileVersion version = Latte::Layouts::Importer::fileVersion(entryFile);
 
                 if (version == Latte::Layouts::Importer::LayoutVersion2) {
