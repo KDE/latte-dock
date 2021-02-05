@@ -163,7 +163,6 @@ public:
 
 public slots:
     void aboutApplication();
-    void addViewForLayout(QString layoutName);
     void activateLauncherMenu();
     void loadDefaultLayout() override;
     void setBackgroundFromBroadcast(QString activity, QString screenName, QString filename);

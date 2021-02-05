@@ -530,7 +530,7 @@ Loader {
                             var item = actionsModel.get(index);
 
                             if (item.actionId === "new:") {
-
+                                latteView.layout.newView(item.templateId);
                             } else  if (item.actionId === "copy:") {
                                 latteView.copyView();
                             } else if (item.actionId === "move:") {
@@ -552,7 +552,7 @@ Loader {
 
                     Connections{
                         target: actionsComboBtn.button
-                        onClicked: latteView.layout.addNewView();
+                        onClicked: latteView.layout.newView(layoutsManager.viewTemplateIds()[0])
                     }
 
                     Connections{

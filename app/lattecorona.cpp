@@ -907,6 +907,11 @@ void Corona::aboutApplication()
     aboutDialog->show();
 }
 
+void Corona::loadDefaultLayout()
+{
+  //disabled
+}
+
 int Corona::screenForContainment(const Plasma::Containment *containment) const
 {
     //FIXME: indexOf is not a proper way to support multi-screen
@@ -1028,61 +1033,6 @@ void Corona::alternativesVisibilityChanged(bool visible)
             obj->deleteLater();
         }
     }
-}
-
-void Corona::addViewForLayout(QString layoutName)
-{
-    qDebug() << "loading default layout";
-    //! Setting mutable for create a containment
-    setImmutability(Plasma::Types::Mutable);
-    QVariantList args;
-    auto defaultContainment = createContainmentDelayed("org.kde.latte.containment", args);
-    defaultContainment->setContainmentType(Plasma::Types::PanelContainment);
-    defaultContainment->init();
-
-    if (!defaultContainment || !defaultContainment->kPackage().isValid()) {
-        qWarning() << "the requested containment plugin can not be located or loaded";
-        return;
-    }
-
-    auto config = defaultContainment->config();
-    defaultContainment->restore(config);
-
-    using Plasma::Types;
-    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                Types::TopEdge, Types::RightEdge};
-
-    Layout::GenericLayout *currentLayout = m_layoutsManager->synchronizer()->layout(layoutName);
-
-    if (currentLayout) {
-        edges = currentLayout->freeEdges(defaultContainment->screen());
-    }
-
-    if ((edges.count() > 0)) {
-        defaultContainment->setLocation(edges.at(0));
-    } else {
-        defaultContainment->setLocation(Plasma::Types::BottomEdge);
-    }
-
-    if (m_layoutsManager->memoryUsage() == MemoryUsage::MultipleLayouts) {
-        config.writeEntry("layoutId", layoutName);
-    }
-
-    defaultContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
-
-    defaultContainment->save(config);
-    requestConfigSync();
-
-    defaultContainment->flushPendingConstraintsEvents();
-    emit containmentAdded(defaultContainment);
-    emit containmentCreated(defaultContainment);
-
-    defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
-}
-
-void Corona::loadDefaultLayout()
-{
-  //  addViewForLayout(m_layoutsManager->currentLayoutsNames());
 }
 
 QStringList Corona::containmentsIds()

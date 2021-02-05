@@ -146,7 +146,7 @@ public:
     QList<int> viewsScreens();
 
 public slots:
-    Q_INVOKABLE void addNewView();
+    Q_INVOKABLE void newView(const QString &templateFile);
     Q_INVOKABLE int viewsWithTasks() const;
     virtual Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;  //change <Plasma::Types::Location> to <int> types
 

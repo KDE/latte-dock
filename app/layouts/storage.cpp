@@ -544,19 +544,23 @@ ViewDelayedCreationData Storage::newView(const Layout::GenericLayout *destinatio
     Plasma::Containment *newContainment = (importedViews.size() == 1 ? importedViews[0] : nullptr);
 
     if (!newContainment || !newContainment->kPackage().isValid()) {
-        qWarning() << "the requested containment plugin can not be located or loaded";
+        qWarning() << "the requested containment plugin can not be located or loaded from:" << templateFile;
         return ViewDelayedCreationData();
     }
 
     auto config = newContainment->config();
     int primaryScrId = destination->corona()->screenPool()->primaryScreenId();
 
-    QList<Plasma::Types::Location> edges = destination->freeEdges(newContainment->screen());
+    QList<Plasma::Types::Location> edges = destination->freeEdges(primaryScrId);
+    qDebug() << "org.kde.latte current template edge : " << newContainment->location() << " free edges :: " << edges;
 
-    if (edges.count() > 0) {
-        newContainment->setLocation(edges.at(0));
-    } else {
-        newContainment->setLocation(Plasma::Types::BottomEdge);
+    //! if selected template screen edge is not free
+    if (!edges.contains(newContainment->location())) {
+        if (edges.count() > 0) {
+            newContainment->setLocation(edges.at(0));
+        } else {
+            newContainment->setLocation(Plasma::Types::BottomEdge);
+        }
     }
 
     config.writeEntry("onPrimary", true);
