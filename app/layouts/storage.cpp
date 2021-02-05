@@ -525,6 +525,55 @@ QList<Plasma::Containment *> Storage::importLayoutFile(const Layout::GenericLayo
     return importedDocks;
 }
 
+ViewDelayedCreationData Storage::newView(const Layout::GenericLayout *destination, const QString &templateFile)
+{
+    if (!destination || !destination->corona()) {
+        return ViewDelayedCreationData();
+    }
+
+    qDebug() << "new view for layout";
+    //! Setting mutable for create a containment
+    destination->corona()->setImmutability(Plasma::Types::Mutable);
+
+    //! update ids to unique ones
+    QString temp2File = newUniqueIdsLayoutFromFile(destination, templateFile);
+
+    //! Finally import the configuration
+    QList<Plasma::Containment *> importedViews = importLayoutFile(destination, temp2File);
+
+    Plasma::Containment *newContainment = (importedViews.size() == 1 ? importedViews[0] : nullptr);
+
+    if (!newContainment || !newContainment->kPackage().isValid()) {
+        qWarning() << "the requested containment plugin can not be located or loaded";
+        return ViewDelayedCreationData();
+    }
+
+    auto config = newContainment->config();
+    int primaryScrId = destination->corona()->screenPool()->primaryScreenId();
+
+    QList<Plasma::Types::Location> edges = destination->freeEdges(newContainment->screen());
+
+    if (edges.count() > 0) {
+        newContainment->setLocation(edges.at(0));
+    } else {
+        newContainment->setLocation(Plasma::Types::BottomEdge);
+    }
+
+    config.writeEntry("onPrimary", true);
+    config.writeEntry("lastScreen", primaryScrId);
+
+    newContainment->config().sync();
+
+    ViewDelayedCreationData result;
+
+    result.containment = newContainment;
+    result.forceOnPrimary = false;
+    result.explicitScreen = primaryScrId;
+    result.reactToScreenChange = false;
+
+    return result;
+}
+
 ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, Plasma::Containment *containment)
 {
     if (!containment || !layout->corona()) {
@@ -540,8 +589,9 @@ ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, P
     //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
     QFile copyFile(temp1File);
 
-    if (copyFile.exists())
+    if (copyFile.exists()) {
         copyFile.remove();
+    }
 
     KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1File);
     KConfigGroup copied_conts = KConfigGroup(newFile, "Containments");
