@@ -525,7 +525,18 @@ void ContainmentInterface::onAppletExpandedChanged()
     PlasmaQuick::AppletQuickItem *appletItem = static_cast<PlasmaQuick::AppletQuickItem *>(QObject::sender());
 
     if (appletItem) {
+        bool added{false};
+
         if (appletItem->isExpanded()) {
+            if (appletItem->switchWidth()>0 && appletItem->switchHeight()>0) {
+                added = ((appletItem->width()<=appletItem->switchWidth())
+                         && (appletItem->height()<=appletItem->switchHeight()));
+            } else {
+                added = true;
+            }
+        }
+
+        if (added) {
             addExpandedApplet(appletItem);
         } else {
             removeExpandedApplet(appletItem);
