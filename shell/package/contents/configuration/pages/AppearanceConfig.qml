@@ -1082,13 +1082,13 @@ PlasmaComponents.Page {
                         id: solidForMaximizedChk
                         Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Prefer opaque background when touching any window")
-                        checked: plasmoid.configuration.solidBackgroundForMaximized
                         tooltip: i18n("Background removes its transparency setting when a window is touching")
                         enabled: showBackground.checked
                         visible: dialog.advancedLevel
+                        value: plasmoid.configuration.solidBackgroundForMaximized
 
                         onClicked: {
-                            plasmoid.configuration.solidBackgroundForMaximized = checked;
+                            plasmoid.configuration.solidBackgroundForMaximized = !plasmoid.configuration.solidBackgroundForMaximized;
                         }
                     }
 
@@ -1096,13 +1096,13 @@ PlasmaComponents.Page {
                         id: onlyOnMaximizedChk
                         Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Hide background when not needed")
-                        checked: plasmoid.configuration.backgroundOnlyOnMaximized
                         tooltip: i18n("Background becomes hidden except when a window is touching or the desktop background is busy")
                         enabled: showBackground.checked
                         visible: dialog.advancedLevel
+                        value: plasmoid.configuration.backgroundOnlyOnMaximized
 
                         onClicked: {
-                            plasmoid.configuration.backgroundOnlyOnMaximized = checked;
+                            plasmoid.configuration.backgroundOnlyOnMaximized = !plasmoid.configuration.backgroundOnlyOnMaximized;
                         }
                     }
 
@@ -1110,13 +1110,13 @@ PlasmaComponents.Page {
                         id: hideShadowsOnMaximizedChk
                         Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Hide background shadow for maximized windows")
-                        checked: plasmoid.configuration.disablePanelShadowForMaximized
                         tooltip: i18n("Background shadows become hidden when an active maximized window is touching the view")
                         enabled: showBackground.checked
                         visible: dialog.advancedLevel
+                        value: plasmoid.configuration.disablePanelShadowForMaximized
 
                         onClicked: {
-                            plasmoid.configuration.disablePanelShadowForMaximized = checked;
+                            plasmoid.configuration.disablePanelShadowForMaximized = !plasmoid.configuration.disablePanelShadowForMaximized;
                         }
                     }
                 }
@@ -1131,13 +1131,13 @@ PlasmaComponents.Page {
                     id: solidForPopupsChk
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Prefer Plasma background and colors for expanded applets")
-                    checked: plasmoid.configuration.plasmaBackgroundForPopups
                     tooltip: i18n("Background becomes opaque in plasma style when applets are expanded")
                     enabled: showBackground.checked
                     visible: dialog.advancedLevel
+                    value: plasmoid.configuration.plasmaBackgroundForPopups
 
                     onClicked: {
-                        plasmoid.configuration.plasmaBackgroundForPopups = checked;
+                        plasmoid.configuration.plasmaBackgroundForPopups = !plasmoid.configuration.plasmaBackgroundForPopups;
                     }
                 }
             }

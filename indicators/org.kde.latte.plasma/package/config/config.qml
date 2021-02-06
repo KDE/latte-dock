@@ -83,7 +83,7 @@ ColumnLayout {
         LatteComponents.CheckBox {
             Layout.maximumWidth: dialog.optionsWidth
             text: i18n("Reverse indicator style")
-            checked: indicator.configuration.reversed
+            value: indicator.configuration.reversed
 
             onClicked: {
                 indicator.configuration.reversed = !indicator.configuration.reversed;
@@ -93,7 +93,7 @@ ColumnLayout {
         LatteComponents.CheckBox {
             Layout.maximumWidth: dialog.optionsWidth
             text: i18n("Growing circle animation when clicked")
-            checked: indicator.configuration.clickedAnimationEnabled
+            value: indicator.configuration.clickedAnimationEnabled
 
             onClicked: {
                 indicator.configuration.clickedAnimationEnabled = !indicator.configuration.clickedAnimationEnabled;
@@ -103,8 +103,8 @@ ColumnLayout {
         LatteComponents.CheckBox {
             Layout.maximumWidth: dialog.optionsWidth
             text: i18n("Show indicators for applets")
-            checked: indicator.configuration.enabledForApplets
             tooltip: i18n("Indicators are shown for applets")
+            value: indicator.configuration.enabledForApplets
 
             onClicked: {
                 indicator.configuration.enabledForApplets = !indicator.configuration.enabledForApplets;

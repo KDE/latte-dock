@@ -796,10 +796,10 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Thin title tooltips on hovering")
                         tooltip: i18n("Show narrow tooltips produced by Latte for items.\nThese tooltips are not drawn when applets zoom effect is disabled");
-                        checked: plasmoid.configuration.titleTooltips
+                        value: plasmoid.configuration.titleTooltips
 
                         onClicked: {
-                            plasmoid.configuration.titleTooltips = checked;
+                            plasmoid.configuration.titleTooltips = !plasmoid.configuration.titleTooltips;
                         }
                     }
 
@@ -807,12 +807,12 @@ PlasmaComponents.Page {
                         id: mouseWheelChk
                         Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Expand popup through mouse wheel")
-                        checked: plasmoid.configuration.mouseWheelActions
                         tooltip: i18n("Show or Hide applet popup through mouse wheel action")
+                        value: plasmoid.configuration.mouseWheelActions
                         visible: dialog.advancedLevel
 
                         onClicked: {
-                            plasmoid.configuration.mouseWheelActions = checked;
+                            plasmoid.configuration.mouseWheelActions = !plasmoid.configuration.mouseWheelActions;
                         }
                     }
 
@@ -820,12 +820,12 @@ PlasmaComponents.Page {
                         id: autoSizeChk
                         Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Adjust size automatically when needed")
-                        checked: plasmoid.configuration.autoSizeEnabled
                         tooltip: i18n("Items decrease their size when exceed maximum length and increase it when they can fit in")
+                        value: plasmoid.configuration.autoSizeEnabled
                         visible: dialog.advancedLevel
 
                         onClicked: {
-                            plasmoid.configuration.autoSizeEnabled = checked
+                            plasmoid.configuration.autoSizeEnabled = !plasmoid.configuration.autoSizeEnabled;
                         }
                     }
 
@@ -833,8 +833,8 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: dialog.optionsWidth
                        // Layout.maximumHeight: mouseWheelChk.height
                         text: i18n("Activate based on position global shortcuts")
-                        checked: latteView.isPreferredForShortcuts || (!latteView.layout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
                         tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
+                        value: latteView.isPreferredForShortcuts || (!latteView.layout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
 
                         onClicked: {
                             latteView.isPreferredForShortcuts = checked;
@@ -861,9 +861,9 @@ PlasmaComponents.Page {
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Always use floating gap for user interaction")
-                        checkedState: plasmoid.configuration.floatingInternalGapIsForced
-                        partiallyCheckedEnabled: true
                         tooltip: i18n("Floating gap is always used from applets and any relevant user interaction when \nthat option is enabled. Default option is auto selecting that behavior.")
+                        partiallyCheckedEnabled: true
+                        value: plasmoid.configuration.floatingInternalGapIsForced
 
                         onClicked: {
                             plasmoid.configuration.floatingInternalGapIsForced = checkedState;
@@ -873,11 +873,11 @@ PlasmaComponents.Page {
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Hide floating gap for maximized windows")
-                        checked: plasmoid.configuration.hideFloatingGapForMaximized
                         tooltip: i18n("Floating gap is disabled when there are maximized windows")
+                        value: plasmoid.configuration.hideFloatingGapForMaximized
 
                         onClicked: {
-                            plasmoid.configuration.hideFloatingGapForMaximized = checked;
+                            plasmoid.configuration.hideFloatingGapForMaximized = !plasmoid.configuration.hideFloatingGapForMaximized;
                         }
                     }
 
@@ -885,11 +885,11 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: dialog.optionsWidth
                         enabled: latteView.visibility.mode === LatteCore.Types.AlwaysVisible
                         text: i18n("Mirror floating gap when it is shown")
-                        checked: plasmoid.configuration.floatingGapIsMirrored
                         tooltip: i18n("Floating gap is mirrored when it is shown in Always Visible mode")
+                        value: plasmoid.configuration.floatingGapIsMirrored
 
                         onClicked: {
-                            plasmoid.configuration.floatingGapIsMirrored = checked;
+                            plasmoid.configuration.floatingGapIsMirrored = !plasmoid.configuration.floatingGapIsMirrored;
                         }
                     }
                 }
@@ -918,47 +918,46 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Activate KWin edge after hiding")
-                    checked: latteView.visibility.enableKWinEdges
                     tooltip: i18n("After the view becomes hidden, KWin is informed to track user feedback. For example an edge visual hint is shown whenever the mouse approaches the hidden view")
                     enabled: !dialog.viewIsPanel
                              && !latteView.byPassWM
                              && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand
                              && latteView.visibility.mode !== LatteCore.Types.SidebarAutoHide
+                    value: latteView.visibility.enableKWinEdges
 
                     onClicked: {
-                        latteView.visibility.enableKWinEdges = checked;
+                        latteView.visibility.enableKWinEdges = !latteView.visibility.enableKWinEdges;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Can be above fullscreen windows")
-                    checked: latteView.byPassWM
-
                     tooltip: i18n("BypassWindowManagerHint flag for the window. The view will be above all windows even those set as 'Always On Top'")
+                    value: latteView.byPassWM
 
                     onCheckedChanged: {
-                        latteView.byPassWM = checked;
+                        latteView.byPassWM = !latteView.byPassWM;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Raise on desktop change")
-                    checked: latteView.visibility.raiseOnDesktop
+                    value: latteView.visibility.raiseOnDesktop
 
                     onClicked: {
-                        latteView.visibility.raiseOnDesktop = checked
+                        latteView.visibility.raiseOnDesktop = !latteView.visibility.raiseOnDesktop;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Raise on activity change")
-                    checked: latteView.visibility.raiseOnActivity
+                    value: latteView.visibility.raiseOnActivity
 
                     onClicked: {
-                        latteView.visibility.raiseOnActivity = checked
+                        latteView.visibility.raiseOnActivity = !latteView.visibility.raiseOnActivity;
                     }
                 }
             }

@@ -72,42 +72,42 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Notifications from tasks")
-                    checked: tasks.configuration.showInfoBadge
                     tooltip: i18n("Show unread messages or notifications from tasks")
+                    value: tasks.configuration.showInfoBadge
 
                     onClicked: {
-                        tasks.configuration.showInfoBadge = checked
+                        tasks.configuration.showInfoBadge = !tasks.configuration.showInfoBadge;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Progress information for tasks")
-                    checked: tasks.configuration.showProgressBadge
                     tooltip: i18n("Show a progress animation for tasks e.g. when copying files with Dolphin")
+                    value: tasks.configuration.showProgressBadge
 
                     onClicked: {
-                        tasks.configuration.showProgressBadge = checked
+                        tasks.configuration.showProgressBadge = tasks.configuration.showProgressBadge;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Audio playing from tasks")
-                    checked: tasks.configuration.showAudioBadge
                     tooltip: i18n("Show audio playing from tasks")
+                    value: tasks.configuration.showAudioBadge
 
                     onClicked: {
-                        tasks.configuration.showAudioBadge = checked
+                        tasks.configuration.showAudioBadge = !tasks.configuration.showAudioBadge;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Prominent color for notification badge")
-                    checked: tasks.configuration.infoBadgeProminentColorEnabled
                     enabled: tasks.configuration.showInfoBadge
                     tooltip: i18n("Notification badge uses a more prominent background which is usually red")
+                    value: tasks.configuration.infoBadgeProminentColorEnabled
 
                     onClicked: {
                         tasks.configuration.infoBadgeProminentColorEnabled = !tasks.configuration.infoBadgeProminentColorEnabled;
@@ -117,12 +117,12 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Change volume when scrolling audio badge")
-                    checked: tasks.configuration.audioBadgeActionsEnabled
                     enabled: tasks.configuration.showAudioBadge
                     tooltip: i18n("The user is able to mute/unmute with click or change the volume with mouse wheel")
+                    value: tasks.configuration.audioBadgeActionsEnabled
 
                     onClicked: {
-                        tasks.configuration.audioBadgeActionsEnabled = checked
+                        tasks.configuration.audioBadgeActionsEnabled = !tasks.configuration.audioBadgeActionsEnabled;
                     }
                 }
             }
@@ -146,10 +146,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Launchers are added only in current tasks applet")
                     tooltip: i18n("Launchers are added only in current tasks applet and not as regular applets or in any other applet")
-
-                    readonly property bool isPreferredForLaunchers: tasks.configuration.isPreferredForDroppedLaunchers
-
-                    onIsPreferredForLaunchersChanged: checked = isPreferredForLaunchers;
+                    value:tasks.configuration.isPreferredForDroppedLaunchers
 
                     onClicked: {
                         tasks.configuration.isPreferredForDroppedLaunchers = !tasks.configuration.isPreferredForDroppedLaunchers;
@@ -160,12 +157,12 @@ PlasmaComponents.Page {
                     id: windowActionsChk
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Window actions in the context menu")
-                    checked: tasks.configuration.showWindowActions
                     visible: dialog.advancedLevel
                     enabled: !disableAllWindowsFunctionality
+                    value: tasks.configuration.showWindowActions
 
                     onClicked: {
-                        tasks.configuration.showWindowActions = checked
+                        tasks.configuration.showWindowActions = !tasks.configuration.showWindowActions;
                     }
                 }
 
@@ -173,12 +170,12 @@ PlasmaComponents.Page {
                     id: previewPopupChk
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Preview window behaves as popup")
-                    checked: tasks.configuration.previewWindowAsPopup
                     visible: dialog.advancedLevel
                     enabled: !disableAllWindowsFunctionality
+                    value: tasks.configuration.previewWindowAsPopup
 
                     onClicked: {
-                        tasks.configuration.previewWindowAsPopup = checked;
+                        tasks.configuration.previewWindowAsPopup = !tasks.configuration.previewWindowAsPopup;
                     }
                 }
 
@@ -190,10 +187,7 @@ PlasmaComponents.Page {
                     tooltip: i18n("Based on position global shortcuts are enabled only for current tasks and not for other applets")
                     visible: dialog.advancedLevel
                     enabled: latteView.isPreferredForShortcuts || (!latteView.layout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
-
-                    readonly property bool isPreferredForShotcuts: tasks.configuration.isPreferredForPositionShortcuts
-
-                    onIsPreferredForShotcutsChanged: checked = isPreferredForShotcuts;
+                    value: tasks.configuration.isPreferredForPositionShortcuts
 
                     onClicked: {
                         tasks.configuration.isPreferredForPositionShortcuts = !tasks.configuration.isPreferredForPositionShortcuts;
@@ -219,70 +213,70 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current screen")
-                    checked: tasks.configuration.showOnlyCurrentScreen
                     enabled: !disableAllWindowsFunctionality
+                    value: tasks.configuration.showOnlyCurrentScreen
 
                     onClicked: {
-                        tasks.configuration.showOnlyCurrentScreen = checked
+                        tasks.configuration.showOnlyCurrentScreen = !tasks.configuration.showOnlyCurrentScreen;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current desktop")
-                    checked: tasks.configuration.showOnlyCurrentDesktop
                     enabled: !disableAllWindowsFunctionality
+                    value: tasks.configuration.showOnlyCurrentDesktop
 
                     onClicked: {
-                        tasks.configuration.showOnlyCurrentDesktop = checked
+                        tasks.configuration.showOnlyCurrentDesktop = !tasks.configuration.showOnlyCurrentDesktop;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from the current activity")
-                    checked: tasks.configuration.showOnlyCurrentActivity
                     enabled: !disableAllWindowsFunctionality
+                    value: tasks.configuration.showOnlyCurrentActivity
 
                     onClicked: {
-                        tasks.configuration.showOnlyCurrentActivity = checked
+                        tasks.configuration.showOnlyCurrentActivity = !tasks.configuration.showOnlyCurrentActivity;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only tasks from launchers")
-                    checked: tasks.configuration.showWindowsOnlyFromLaunchers
                     visible: dialog.advancedLevel
                     enabled: !disableAllWindowsFunctionality
+                    value: tasks.configuration.showWindowsOnlyFromLaunchers
 
                     onClicked: {
-                        tasks.configuration.showWindowsOnlyFromLaunchers = checked
+                        tasks.configuration.showWindowsOnlyFromLaunchers = !tasks.configuration.showWindowsOnlyFromLaunchers;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only launchers and hide all tasks")
-                    checked: tasks.configuration.hideAllTasks
                     tooltip: i18n("Tasks become hidden and only launchers are shown")
                     visible: dialog.advancedLevel
+                    value: tasks.configuration.hideAllTasks
 
                     onClicked: {
-                        tasks.configuration.hideAllTasks = checked
+                        tasks.configuration.hideAllTasks = !tasks.configuration.hideAllTasks;
                     }
                 }
 
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Show only grouped tasks for same application")
-                    checked: tasks.configuration.groupTasksByDefault
                     tooltip: i18n("By default group tasks of the same application")
                     visible: dialog.advancedLevel
                     enabled: !disableAllWindowsFunctionality
+                    value: tasks.configuration.groupTasksByDefault
 
                     onClicked: {
-                        tasks.configuration.groupTasksByDefault = checked
+                        tasks.configuration.groupTasksByDefault = !tasks.configuration.groupTasksByDefault;
                     }
                 }
             }
@@ -307,7 +301,7 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Bounce launchers when triggered")
-                    checked: tasks.configuration.animationLauncherBouncing
+                    value: tasks.configuration.animationLauncherBouncing
 
                     onClicked: {
                         tasks.configuration.animationLauncherBouncing = !tasks.configuration.animationLauncherBouncing;
@@ -317,7 +311,7 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Bounce tasks that need attention")
-                    checked: tasks.configuration.animationWindowInAttention
+                    value: tasks.configuration.animationWindowInAttention
 
                     onClicked: {
                         tasks.configuration.animationWindowInAttention = !tasks.configuration.animationWindowInAttention;
@@ -327,7 +321,7 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Slide in and out single windows")
-                    checked: tasks.configuration.animationNewWindowSliding
+                    value: tasks.configuration.animationNewWindowSliding
 
                     onClicked: {
                         tasks.configuration.animationNewWindowSliding = !tasks.configuration.animationNewWindowSliding;
@@ -337,7 +331,7 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Grouped tasks bounce their new windows")
-                    checked: tasks.configuration.animationWindowAddedInGroup
+                    value: tasks.configuration.animationWindowAddedInGroup
 
                     onClicked: {
                         tasks.configuration.animationWindowAddedInGroup = !tasks.configuration.animationWindowAddedInGroup;
@@ -347,7 +341,7 @@ PlasmaComponents.Page {
                 LatteComponents.CheckBox {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Grouped tasks slide out their closed windows")
-                    checked: tasks.configuration.animationWindowRemovedFromGroup
+                    value: tasks.configuration.animationWindowRemovedFromGroup
 
                     onClicked: {
                         tasks.configuration.animationWindowRemovedFromGroup = !tasks.configuration.animationWindowRemovedFromGroup;
