@@ -315,17 +315,6 @@ Item {
 
                 opacity: badgesLoader.activateProgress
                 visible: badgesLoader.showInfo || badgesLoader.showProgress
-
-                layer.enabled: taskItem.abilities.myView.itemShadow.isEnabled
-                               && taskItem.abilities.environment.isGraphicsSystemAccelerated
-                layer.effect: DropShadow {
-                    color: taskItem.abilities.myView.itemShadow.shadowColor
-                    fast: true
-                    samples: 2 * radius
-                    source: infoBadge
-                    radius: taskItem.abilities.myView.itemShadow.size
-                    verticalOffset: 2
-                }
             }
 
             AudioStream{
@@ -333,17 +322,6 @@ Item {
                 anchors.fill: parent
                 opacity: badgesLoader.activateProgress
                 visible: badgesLoader.showAudio
-
-                layer.enabled: taskItem.abilities.myView.itemShadow.isEnabled
-                               && taskItem.abilities.environment.isGraphicsSystemAccelerated
-                layer.effect: DropShadow {
-                    color: taskItem.abilities.myView.itemShadow.shadowColor
-                    fast: true
-                    samples: 2 * radius
-                    source: audioStreamBadge
-                    radius: taskItem.abilities.myView.itemShadow.size
-                    verticalOffset: 2
-                }
             }
 
             Binding {
