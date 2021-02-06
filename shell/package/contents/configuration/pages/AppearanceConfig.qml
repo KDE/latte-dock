@@ -797,7 +797,7 @@ PlasmaComponents.Page {
                 tooltip: i18n("Enable/disable background")
 
                 onPressed: {
-                    plasmoid.configuration.useThemePanel = !plasmoid.configuration.useThemePanel;
+                    plasmoid.configuration.useThemePanel = checked;
                 }
             }
 
@@ -877,11 +877,6 @@ PlasmaComponents.Page {
                         to: 100
                         stepSize: 1
                         wheelEnabled: false
-
-                        /*property bool blockOpacityAdjustment: (plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
-                                                          || (solidBackground.checked
-                                                              && !plasmoid.configuration.solidBackgroundForMaximized
-                                                              && !plasmoid.configuration.backgroundOnlyOnMaximized)*/
 
                         function updatePanelTransparency() {
                             if (!pressed)
@@ -1046,15 +1041,12 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("Outline")
                         checkable: true
+                        checked: plasmoid.configuration.panelOutline
                         enabled: showBackground.checked
                         tooltip: i18n("Background draws a line for its borders. You can set the line size from Latte Preferences")
 
-                        readonly property int panelOutline: plasmoid.configuration.panelOutline
-
-                        onPanelOutlineChanged: checked = panelOutline
-
                         onClicked: {
-                            plasmoid.configuration.panelOutline = !plasmoid.configuration.panelOutline;
+                            plasmoid.configuration.panelOutline = checked;
                         }
                     }
 
@@ -1064,6 +1056,7 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("All Corners")
                         checkable: true
+                        checked: plasmoid.configuration.backgroundAllCorners
                         enabled: showBackground.checked
                                  && ((plasmoid.configuration.screenEdgeMargin===-1) /*no-floating*/
                                      || (plasmoid.configuration.screenEdgeMargin > -1 /*floating with justify alignment and 100% maxlength*/
@@ -1071,12 +1064,8 @@ PlasmaComponents.Page {
                                          && plasmoid.configuration.maxLength===100))
                         tooltip: i18n("Background draws all corners at all cases.")
 
-                        readonly property int backgroundAllCorners: plasmoid.configuration.backgroundAllCorners
-
-                        onBackgroundAllCornersChanged: checked = backgroundAllCorners
-
                         onClicked: {
-                            plasmoid.configuration.backgroundAllCorners = !plasmoid.configuration.backgroundAllCorners;
+                            plasmoid.configuration.backgroundAllCorners = checked;
                         }
                     }
                 }
