@@ -359,6 +359,62 @@ Item{
         }
     }
 
+    //! Applet Highlight when requested
+    Loader {
+        id: visualIndicator
+        anchors.fill: parent
+        active: showVisualIndicatorRequested
+
+        property bool showVisualIndicatorRequested: false
+
+        Connections {
+            target: root.latteView ? root.latteView.extendedInterface : null
+            onAppletRequestedVisualIndicator: {
+                if (plasmoidId === appletItem.applet.id) {
+                    visualIndicator.showVisualIndicatorRequested = true;
+                }
+            }
+        }
+
+        sourceComponent: PlasmaComponents.Highlight {
+            id: visualIndicatorRectangle
+            opacity: 0
+
+            Component.onCompleted: showVisualIndicatorAnimation.running = true;
+
+            SequentialAnimation{
+                id: showVisualIndicatorAnimation
+                alwaysRunToEnd: true
+
+                PropertyAnimation {
+                    target: visualIndicatorRectangle
+                    property: "opacity"
+                    to: 1
+                    duration: 3*appletItem.animations.duration.large
+                    easing.type: Easing.OutQuad
+                }
+
+                PauseAnimation {
+                    duration: 1500
+                }
+
+                PropertyAnimation {
+                    target: visualIndicatorRectangle
+                    property: "opacity"
+                    to: 0
+                    duration: 3*appletItem.animations.duration.large
+                    easing.type: Easing.OutQuad
+                }
+
+                ScriptAction {
+                    script: {
+                        visualIndicator.showVisualIndicatorRequested = false;
+                    }
+                }
+            }
+        }
+    }
+
     ///Shadow in applets
     Loader{
         id: appletShadow
@@ -559,7 +615,6 @@ Item{
     }
 
     //! EventsSink
-
     Loader {
         id: eventsSinkLoader
         anchors.fill: _wrapperContainer
@@ -606,75 +661,6 @@ Item{
 
         visible: clickedAnimation.running && !indicators.info.providesClickedAnimation
     }
-
-    Loader {
-        id: visualIndicator
-        anchors.fill: parent
-        active: showVisualIndicatorRequested
-
-        property bool showVisualIndicatorRequested: false
-
-        Connections {
-            target: root.latteView ? root.latteView.extendedInterface : null
-            onAppletRequestedVisualIndicator: {
-                if (plasmoidId === appletItem.applet.id) {
-                    visualIndicator.showVisualIndicatorRequested = true;
-                }
-            }
-        }
-
-        sourceComponent: Rectangle {
-            id: visualIndicatorRectangle
-            color: theme.highlightColor
-            opacity: 0
-            radius: 4
-
-            Component.onCompleted: showVisualIndicatorAnimation.running = true;
-
-            SequentialAnimation{
-                id: showVisualIndicatorAnimation
-                alwaysRunToEnd: true
-
-                PropertyAnimation {
-                    target: visualIndicatorRectangle
-                    property: "opacity"
-                    to: 0.6
-                    duration: 3*appletItem.animations.duration.large
-                    easing.type: Easing.OutQuad
-                }
-
-                PauseAnimation {
-                    duration: 1500
-                }
-
-                PropertyAnimation {
-                    target: visualIndicatorRectangle
-                    property: "opacity"
-                    to: 0
-                    duration: 3*appletItem.animations.duration.large
-                    easing.type: Easing.OutQuad
-                }
-
-                ScriptAction {
-                    script: {
-                        visualIndicator.showVisualIndicatorRequested = false;
-                    }
-                }
-            }
-        }
-    }
-
-    /*   onHeightChanged: {
-        if ((index == 1)|| (index==3)){
-            console.log("H: "+index+" ("+zoomScale+"). "+currentLayout.children[1].height+" - "+currentLayout.children[3].height+" - "+(currentLayout.children[1].height+currentLayout.children[3].height));
-        }
-    }
-
-    onZoomScaleChanged:{
-        if ((index == 1)|| (index==3)){
-            console.log(index+" ("+zoomScale+"). "+currentLayout.children[1].height+" - "+currentLayout.children[3].height+" - "+(currentLayout.children[1].height+currentLayout.children[3].height));
-        }
-    }*/
 
     Loader{
         anchors.fill: parent
