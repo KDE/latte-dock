@@ -874,7 +874,7 @@ Item {
         active: isParabolicEnabled || isThinTooltipEnabled
 
         readonly property bool isParabolicEnabled: appletItem.parabolic.isEnabled && !(lockZoom || isHidden)
-        readonly property bool isThinTooltipEnabled: appletItem.thinTooltip.isEnabled &&  !isHidden
+        readonly property bool isThinTooltipEnabled: appletItem.thinTooltip.isEnabled && !isHidden
 
         sourceComponent: ParabolicArea{}
 
