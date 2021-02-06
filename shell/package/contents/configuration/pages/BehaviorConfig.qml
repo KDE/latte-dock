@@ -797,9 +797,10 @@ PlasmaComponents.Page {
                         text: i18n("Thin title tooltips on hovering")
                         tooltip: i18n("Show narrow tooltips produced by Latte for items.\nThese tooltips are not drawn when applets zoom effect is disabled");
                         checked: plasmoid.configuration.titleTooltips
+                        enabled: latteView.type === LatteCore.Types.DockView
 
                         onClicked: {
-                            plasmoid.configuration.titleTooltips = checked;
+                            plasmoid.configuration.titleTooltips = !plasmoid.configuration.titleTooltips;
                         }
                     }
 
@@ -812,7 +813,7 @@ PlasmaComponents.Page {
                         visible: dialog.advancedLevel
 
                         onClicked: {
-                            plasmoid.configuration.mouseWheelActions = checked;
+                            plasmoid.configuration.mouseWheelActions = !plasmoid.configuration.mouseWheelActions;
                         }
                     }
 
@@ -826,7 +827,7 @@ PlasmaComponents.Page {
                         enabled: latteView.type === LatteCore.Types.DockView
 
                         onClicked: {
-                            plasmoid.configuration.autoSizeEnabled = checked;
+                            plasmoid.configuration.autoSizeEnabled = !plasmoid.configuration.autoSizeEnabled
                         }
                     }
 

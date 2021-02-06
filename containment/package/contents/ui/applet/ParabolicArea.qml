@@ -40,14 +40,12 @@ Item {
         anchors.fill: parent
         enabled: visible
         hoverEnabled: true
-        visible: appletItem.parabolic.currentParabolicItem !== _parabolicArea
+        visible: appletItem.parabolicEffectIsSupported
+                 && !communicator.indexerIsSupported
+                 && appletItem.parabolic.currentParabolicItem !== _parabolicArea
 
         onEntered: {
             appletItem.parabolic.setCurrentParabolicItem(_parabolicArea);
-
-            if (isThinTooltipEnabled && !(isSeparator || isSpacer)) {
-                appletItem.thinTooltip.show(appletItem.tooltipVisualParent, applet.title);
-            }
 
             if (isParabolicEnabled) {
                 var vIndex = appletItem.indexer.visibleIndex(index);
