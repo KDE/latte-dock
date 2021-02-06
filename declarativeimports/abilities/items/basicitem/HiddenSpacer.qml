@@ -33,15 +33,11 @@ Item{
              || abilityItem.isHiddenSpacerForcedShow
 
     property bool neighbourSeparator: rightSpacer ? abilityItem.headItemIsSeparator : abilityItem.tailItemIsSeparator
-    //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
-    //when the task is removed
-    property int indexUsed: index === -1 ? lastValidIndex : index
+    property bool rightSpacer: false
 
     property int separatorSpace: neighbourSeparator && !abilityItem.isSeparator && abilityItem.abilities.parabolic.isEnabled
                                  && !(abilityItem.abilities.indexer.separators.length>0 && abilityItem.isSeparatorInRealLength) ?
                                      (LatteCore.Environment.separatorLength/2) : 0
-
-    property bool rightSpacer: false
 
     property real nScale: 0
     property real nHiddenSize: 0
