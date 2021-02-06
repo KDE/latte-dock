@@ -42,8 +42,6 @@ AbilityDefinition.PositionShortcuts {
         return true;
     }
 
-    onBadgesChanged: console.log("org/kde/latte :: " + badges);
-
     signal disabledIsStealingGlobalPositionShortcuts();
 
     readonly property AbilityDefinition.PositionShortcuts local: AbilityDefinition.PositionShortcuts {}
