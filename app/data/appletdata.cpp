@@ -30,6 +30,7 @@ Applet::Applet()
 
 Applet::Applet(Applet &&o)
     : Generic(o),
+      isSelected(o.isSelected),
       description(o.description),
       icon(o.icon)
 {
@@ -37,6 +38,7 @@ Applet::Applet(Applet &&o)
 
 Applet::Applet(const Applet &o)
     : Generic(o),
+      isSelected(o.isSelected),
       description(o.description),
       icon(o.icon)
 {
@@ -47,6 +49,7 @@ Applet &Applet::operator=(const Applet &rhs)
     id = rhs.id;
     name = rhs.name;
     description = rhs.description;
+    isSelected = rhs.isSelected;
     icon = rhs.icon;
 
     return (*this);
@@ -57,6 +60,7 @@ Applet &Applet::operator=(Applet &&rhs)
     id = rhs.id;
     name = rhs.name;
     description = rhs.description;
+    isSelected = rhs.isSelected;
     icon = rhs.icon;
 
     return (*this);

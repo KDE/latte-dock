@@ -40,6 +40,7 @@ public:
     Applet(const Applet &o);
 
     //! Layout data
+    bool isSelected;
     QString description;
     QString icon;
 
