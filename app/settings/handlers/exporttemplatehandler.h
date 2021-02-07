@@ -27,6 +27,7 @@
 
 // Qt
 #include <QButtonGroup>
+#include <QList>
 #include <QSortFilterProxyModel>
 
 namespace Ui {
@@ -79,12 +80,16 @@ public:
 
 private:
     void init();
+    void initDefaults();
+
     void loadLayoutApplets(const QString &layoutName, const QString &layoutId);
     void loadViewApplets(Latte::View *view);
 
 private:
     Dialog::ExportTemplateDialog *m_parentDialog{nullptr};
     Ui::ExportTemplateDialog *m_ui{nullptr};
+
+    QList<QString> m_appletsWithNoPersonalData;
 
     //! current data
     Model::Applets *m_appletsModel{nullptr};

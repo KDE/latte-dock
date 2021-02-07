@@ -46,6 +46,14 @@ ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *paren
       m_ui(m_parentDialog->ui()),
       m_appletsModel(new Model::Applets(this))
 {
+    m_appletsWithNoPersonalData = {
+        "org.kde.latte.separator",
+        "org.kde.latte.plasmoid",
+        "org.kde.latte.windowtitle",
+        "org.kde.latte.windowbuttons",
+        "org.kde.latte.windowappmenu"
+    };
+
     init();
 }
 
@@ -79,13 +87,21 @@ void ExportTemplateHandler::init()
     m_appletsProxyModel->sort(Model::Applets::NAMECOLUMN, Qt::AscendingOrder);
 
     m_ui->appletsTable->setModel(m_appletsProxyModel);
+}
 
-
+void ExportTemplateHandler::initDefaults()
+{
+    for(int i=0; i<c_data.rowCount(); ++i) {
+        c_data[i].isSelected = m_appletsWithNoPersonalData.contains(c_data[i].id);
+    }
 }
 
 void ExportTemplateHandler::loadLayoutApplets(const QString &layoutName, const QString &layoutId)
 {
     c_data = Latte::Layouts::Storage::self()->plugins(layoutId);
+
+    initDefaults();
+
     o_data = c_data;
 
     m_appletsModel->setData(c_data);
