@@ -41,10 +41,16 @@ public:
     enum AppletsRoles
     {
         IDROLE = Qt::UserRole + 1,
-        SELECTEDROLE,
-        ICONROLE,
         NAMEROLE,
+        ICONROLE,
+        SELECTEDROLE,
+        SORTINGROLE,
         DESCRIPTIONROLE
+    };
+
+    enum Columns
+    {
+        NAMECOLUMN = 0
     };
 
     explicit Applets(QObject *parent, Latte::Corona *corona);
@@ -57,6 +63,11 @@ public:
     int row(const QString &id);
 
     QVariant data(const QModelIndex &index, int role) const override;
+
+    void setData(const Latte::Data::AppletsTable &applets);
+
+private:
+    void clear();
 
 private:
     Latte::Data::AppletsTable m_appletsTable;

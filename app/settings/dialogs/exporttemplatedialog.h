@@ -35,6 +35,18 @@ class ExportTemplateDialog;
 
 namespace Latte {
 namespace Settings {
+namespace Controller {
+class Layouts;
+}
+namespace Handler {
+class ExportTemplateHandler;
+}
+}
+}
+
+
+namespace Latte {
+namespace Settings {
 namespace Dialog {
 
 class ExportTemplateDialog : public GenericDialog
@@ -42,12 +54,13 @@ class ExportTemplateDialog : public GenericDialog
     Q_OBJECT
 
 public:
-    ExportTemplateDialog(SettingsDialog *parent);
+    ExportTemplateDialog(SettingsDialog *parent, Controller::Layouts *controller);
     ~ExportTemplateDialog();
 
     Latte::Corona *corona() const;
 
     Ui::ExportTemplateDialog *ui() const;
+    Controller::Layouts *layoutsController() const;
 
 protected:
     void accept() override;
@@ -58,6 +71,9 @@ private slots:
 private:
     SettingsDialog *m_parentDlg{nullptr};
     Ui::ExportTemplateDialog *m_ui;
+    Controller::Layouts *m_layoutsController{nullptr};
+
+    Handler::ExportTemplateHandler *m_handler;
 };
 
 }

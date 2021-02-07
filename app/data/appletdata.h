@@ -48,6 +48,7 @@ public:
     Applet &operator=(const Applet &rhs);
     Applet &operator=(Applet &&rhs);
 
+    bool isInstalled() const;
     bool isValid() const;
 };
 

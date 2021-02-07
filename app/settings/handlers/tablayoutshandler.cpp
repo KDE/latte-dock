@@ -26,6 +26,7 @@
 #include "../universalsettings.h"
 #include "../dialogs/detailsdialog.h"
 #include "../dialogs/settingsdialog.h"
+#include "../dialogs/exporttemplatedialog.h"
 #include "../controllers/layoutscontroller.h"
 #include "../models/layoutsmodel.h"
 #include "../views/layoutstableview.h"
@@ -555,6 +556,13 @@ void TabLayouts::exportLayoutAsTemplate()
     if (!m_layoutsController->hasSelectedLayout()) {
         return;
     }
+
+    //! Update ALL active original layouts before exporting,
+    m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
+    m_corona->universalSettings()->syncSettings();
+
+    Dialog::ExportTemplateDialog *exportDlg = new Dialog::ExportTemplateDialog(m_parentDialog, m_layoutsController);
+    exportDlg->exec();
 }
 
 void TabLayouts::exportLayoutForBackup()

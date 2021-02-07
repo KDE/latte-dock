@@ -70,6 +70,26 @@ int Applets::row(const QString &id)
     return -1;
 }
 
+void Applets::clear()
+{
+    if (m_appletsTable.rowCount() > 0) {
+        beginRemoveRows(QModelIndex(), 0, m_appletsTable.rowCount() - 1);
+        m_appletsTable.clear();
+        endRemoveRows();
+    }
+}
+
+void Applets::setData(const Latte::Data::AppletsTable &applets)
+{
+    clear();
+
+    if (applets.rowCount() > 0) {
+        beginInsertRows(QModelIndex(), 0, applets.rowCount()-1);
+        m_appletsTable = applets;
+        endInsertRows();
+    }
+}
+
 QVariant Applets::data(const QModelIndex &index, int role) const
 {
     const int row = index.row();
@@ -89,6 +109,8 @@ QVariant Applets::data(const QModelIndex &index, int role) const
         return m_appletsTable[row].icon;
     } else if (role == DESCRIPTIONROLE) {
         return m_appletsTable[row].description;
+    } else if (role == SORTINGROLE) {
+        return m_appletsTable[row].isInstalled() ? QString(1000 + m_appletsTable[row].name) : m_appletsTable[row].name;
     }
 
     return QVariant{};

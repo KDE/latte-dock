@@ -66,6 +66,11 @@ Applet &Applet::operator=(Applet &&rhs)
     return (*this);
 }
 
+bool Applet::isInstalled() const
+{
+    return isValid() && id != name;
+}
+
 bool Applet::isValid() const
 {
     return !id.isEmpty() && !name.isEmpty();
