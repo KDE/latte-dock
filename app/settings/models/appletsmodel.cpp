@@ -90,6 +90,18 @@ void Applets::setData(const Latte::Data::AppletsTable &applets)
     }
 }
 
+Qt::ItemFlags Applets::flags(const QModelIndex &index) const
+{
+    const int column = index.column();
+    const int row = index.row();
+
+    auto flags = QAbstractTableModel::flags(index);
+
+    flags |= Qt::ItemIsUserCheckable;
+
+    return flags;
+}
+
 QVariant Applets::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation != Qt::Horizontal) {
@@ -115,6 +127,28 @@ QVariant Applets::headerData(int section, Qt::Orientation orientation, int role)
     return QAbstractTableModel::headerData(section, orientation, role);
 }
 
+bool Applets::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    const int row = index.row();
+    const int column = index.column();
+
+    if (!m_appletsTable.rowExists(row) || column<0 || column > NAMECOLUMN) {
+        return false;
+    }
+
+    //! specific roles to each independent cell
+    switch (column) {
+    case NAMECOLUMN:
+        if (role == Qt::CheckStateRole) {
+            m_appletsTable[row].isSelected = (value.toInt() > 0 ? true : false);
+            return true;
+        }
+        break;
+    };
+
+    return false;
+}
+
 QVariant Applets::data(const QModelIndex &index, int role) const
 {
     const int row = index.row();
@@ -126,6 +160,10 @@ QVariant Applets::data(const QModelIndex &index, int role) const
 
     if (role == NAMEROLE || role == Qt::DisplayRole) {
         return m_appletsTable[row].name;
+    } else if (role == Qt::CheckStateRole) {
+        return (m_appletsTable[row].isSelected ? Qt::Checked : Qt::Unchecked);
+    } else if (role== Qt::DecorationRole) {
+        return QIcon::fromTheme(m_appletsTable[row].icon);
     } else if (role == IDROLE) {
             return m_appletsTable[row].id;
     } else if (role == SELECTEDROLE) {
@@ -135,7 +173,7 @@ QVariant Applets::data(const QModelIndex &index, int role) const
     } else if (role == DESCRIPTIONROLE) {
         return m_appletsTable[row].description;
     } else if (role == SORTINGROLE) {
-        return m_appletsTable[row].isInstalled() ? QString(1000 + m_appletsTable[row].name) : m_appletsTable[row].name;
+        return m_appletsTable[row].isInstalled() ? QString::number(1000) + m_appletsTable[row].name : QString::number(0000) + m_appletsTable[row].name;
     }
 
     return QVariant{};

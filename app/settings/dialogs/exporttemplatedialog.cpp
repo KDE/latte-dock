@@ -39,9 +39,6 @@ ExportTemplateDialog::ExportTemplateDialog(SettingsDialog *parent, Controller::L
     m_ui->setupUi(this);
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ExportTemplateHandler(this);
-
-    m_ui->appletsTable->horizontalHeader()->setStretchLastSection(true);
-    m_ui->appletsTable->verticalHeader()->setVisible(false);
 }
 
 ExportTemplateDialog::~ExportTemplateDialog()

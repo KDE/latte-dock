@@ -50,6 +50,9 @@ ExportTemplateHandler::~ExportTemplateHandler()
 
 void ExportTemplateHandler::init()
 {
+    m_ui->appletsTable->horizontalHeader()->setStretchLastSection(true);
+    m_ui->appletsTable->verticalHeader()->setVisible(false);
+
     //! Layouts
     m_appletsProxyModel = new QSortFilterProxyModel(this);
     m_appletsProxyModel->setSourceModel(m_appletsModel);
