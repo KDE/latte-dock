@@ -32,7 +32,7 @@ Item {
 
     property bool isHidden: false
     property bool isShownPartially: false
-    property bool isShownFully: true
+    property bool isShownFully: false
 
     property bool isHidingBlocked: false
 

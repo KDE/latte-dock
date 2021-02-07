@@ -96,11 +96,10 @@ Item{
         if (!taskItem.abilities.myView.isHidden
                 && ((root.windowInAttentionEnabled && isDemandingAttention)
                     || root.windowAddedInGroupEnabled)){
-            newWindowAnimation.init();
-
-            if (!newWindowAnimation.active) {
+            if (newWindowAnimationLoader.status !== Loader.Ready) {
                 inDelayedStartup = true;
             } else {
+                newWindowAnimation.init();
                 newWindowAnimationLoader.item.start();
             }
         }

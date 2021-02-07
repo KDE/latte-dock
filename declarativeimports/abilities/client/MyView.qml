@@ -58,7 +58,9 @@ AbilityDefinition.MyView {
 
     palette: bridge && bridge.applyPalette ? bridge.palette : theme
 
-    readonly property AbilityDefinition.MyView local: AbilityDefinition.MyView {}
+    readonly property AbilityDefinition.MyView local: AbilityDefinition.MyView {
+        isShownFully: true
+    }
 
     Item {
         id: ref

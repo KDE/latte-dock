@@ -64,6 +64,7 @@ AbilityItem.BasicItem {
 
     parabolicItem.isParabolicEventBlocked: root.dragSource
                                            || !hoverEnabled
+                                           || !taskItem.abilities.myView.isShownFully
                                            || inAnimation
                                            || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation))
     parabolicItem.isUpdatingOnlySpacers: inAttentionAnimation || inBouncingAnimation
@@ -77,6 +78,7 @@ AbilityItem.BasicItem {
     property bool hasMinimized: (IsGroupParent === true) ? subWindows.hasMinimized : isMinimized
     property bool hasShown: (IsGroupParent === true) ? subWindows.hasShown : !isMinimized && isWindow
     property bool inAttention: isDemandingAttention && plasmoid.status === PlasmaCore.Types.NeedsAttentionStatus ? true : false
+
     /*animations flags*/
     property bool inAnimation: true
     property bool inAddRemoveAnimation: true

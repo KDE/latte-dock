@@ -28,6 +28,7 @@ SequentialAnimation{
     Component.onCompleted: {
         if (newWindowAnimation.inDelayedStartup) {
             newWindowAnimation.inDelayedStartup = false;
+            newWindowAnimation.init();
             start();
         }
     }
