@@ -26,10 +26,15 @@
 #include "../dialogs/exporttemplatedialog.h"
 #include "../models/appletsmodel.h"
 #include "../../data/appletdata.h"
+#include "../../layout/genericlayout.h"
 #include "../../layouts/storage.h"
+#include "../../view/view.h"
 
 //! KDE
 #include <KLocalizedString>
+
+//! Plasma
+#include <Plasma/Containment>
 
 namespace Latte {
 namespace Settings {
@@ -39,7 +44,19 @@ ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *paren
     : Generic(parentDialog),
       m_parentDialog(parentDialog),
       m_ui(m_parentDialog->ui()),
-      m_appletsModel(new Model::Applets(this, parentDialog->corona()))
+      m_appletsModel(new Model::Applets(this))
+{
+    init();
+}
+
+ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, const QString &layoutName, const QString &layoutId)
+    : ExportTemplateHandler(parentDialog)
+{
+    loadLayoutApplets(layoutName, layoutId);
+}
+
+ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, Latte::View *view)
+    : ExportTemplateHandler(parentDialog)
 {
     init();
 }
@@ -47,6 +64,7 @@ ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *paren
 ExportTemplateHandler::~ExportTemplateHandler()
 {
 }
+
 
 void ExportTemplateHandler::init()
 {
@@ -62,19 +80,25 @@ void ExportTemplateHandler::init()
 
     m_ui->appletsTable->setModel(m_appletsProxyModel);
 
-    loadCurrentLayoutApplets();
+
 }
 
-void ExportTemplateHandler::loadCurrentLayoutApplets()
+void ExportTemplateHandler::loadLayoutApplets(const QString &layoutName, const QString &layoutId)
 {
-    Data::Layout o_layout = m_parentDialog->layoutsController()->selectedLayoutOriginalData();
-    Data::Layout c_layout = m_parentDialog->layoutsController()->selectedLayoutCurrentData();
-
-    c_data = Latte::Layouts::Storage::self()->plugins(o_layout.id);
+    c_data = Latte::Layouts::Storage::self()->plugins(layoutId);
     o_data = c_data;
 
     m_appletsModel->setData(c_data);
-    m_parentDialog->setWindowTitle(i18n("Export Template from %0").arg(c_layout.name));
+    m_parentDialog->setWindowTitle(i18n("Export Layout Template"));
+}
+
+void ExportTemplateHandler::loadViewApplets(Latte::View *view)
+{
+    c_data = Latte::Layouts::Storage::self()->plugins(view->layout(), view->containment()->id());
+    o_data = c_data;
+
+    m_appletsModel->setData(c_data);
+    m_parentDialog->setWindowTitle(i18n("Export View Template"));
 }
 
 bool ExportTemplateHandler::dataAreChanged() const

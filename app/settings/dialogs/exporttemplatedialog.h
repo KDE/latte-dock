@@ -28,12 +28,14 @@
 // Qt
 #include <QDialog>
 #include <QObject>
+#include <QWindow>
 
 namespace Ui {
 class ExportTemplateDialog;
 }
 
 namespace Latte {
+class View;
 namespace Settings {
 namespace Controller {
 class Layouts;
@@ -54,13 +56,11 @@ class ExportTemplateDialog : public GenericDialog
     Q_OBJECT
 
 public:
-    ExportTemplateDialog(SettingsDialog *parent, Controller::Layouts *controller);
+    ExportTemplateDialog(QWidget *parent, const QString &layoutName, const QString &layoutId);
+    ExportTemplateDialog(Latte::View *view);
     ~ExportTemplateDialog();
 
-    Latte::Corona *corona() const;
-
     Ui::ExportTemplateDialog *ui() const;
-    Controller::Layouts *layoutsController() const;
 
 protected:
     void accept() override;
@@ -69,7 +69,9 @@ private slots:
     void onCancel();
 
 private:
-    SettingsDialog *m_parentDlg{nullptr};
+    bool m_isExportingLayout{false};
+    bool m_isExportingView{false};
+
     Ui::ExportTemplateDialog *m_ui;
     Controller::Layouts *m_layoutsController{nullptr};
 

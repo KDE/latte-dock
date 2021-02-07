@@ -22,7 +22,6 @@
 #define APPLETSMODEL_H
 
 // local
-#include "../../lattecorona.h"
 #include "../../data/appletdata.h"
 
 // Qt
@@ -53,7 +52,7 @@ public:
         NAMECOLUMN = 0
     };
 
-    explicit Applets(QObject *parent, Latte::Corona *corona);
+    explicit Applets(QObject *parent);
     ~Applets();
 
     int rowCount() const;
@@ -75,7 +74,6 @@ private:
 private:
     Latte::Data::AppletsTable m_appletsTable;
 
-    Latte::Corona *m_corona{nullptr};
 };
 
 }

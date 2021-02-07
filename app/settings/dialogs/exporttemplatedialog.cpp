@@ -24,21 +24,34 @@
 #include "ui_exporttemplatedialog.h"
 #include "../controllers/layoutscontroller.h"
 #include "../handlers/exporttemplatehandler.h"
+#include "../../view/view.h"
 
 namespace Latte {
 namespace Settings {
 namespace Dialog {
 
-ExportTemplateDialog::ExportTemplateDialog(SettingsDialog *parent, Controller::Layouts *controller)
+ExportTemplateDialog::ExportTemplateDialog(QWidget *parent, const QString &layoutName, const QString &layoutId)
     : GenericDialog(parent),
-      m_parentDlg(parent),
-      m_ui(new Ui::ExportTemplateDialog),
-      m_layoutsController(controller)
+      m_ui(new Ui::ExportTemplateDialog)
 {
+    setAttribute(Qt::WA_DeleteOnClose, true);
+
     //! first we need to setup the ui
     m_ui->setupUi(this);
     //! we must create handlers after creating/adjusting the ui
-    m_handler = new Handler::ExportTemplateHandler(this);
+    m_handler = new Handler::ExportTemplateHandler(this, layoutName, layoutId);
+}
+
+ExportTemplateDialog::ExportTemplateDialog(Latte::View *view)
+    : GenericDialog(nullptr),
+      m_ui(new Ui::ExportTemplateDialog)
+{
+    setAttribute(Qt::WA_DeleteOnClose, true);
+
+    //! first we need to setup the ui
+    m_ui->setupUi(this);
+    //! we must create handlers after creating/adjusting the ui
+    m_handler = new Handler::ExportTemplateHandler(this, view);
 }
 
 ExportTemplateDialog::~ExportTemplateDialog()
@@ -48,16 +61,6 @@ ExportTemplateDialog::~ExportTemplateDialog()
 Ui::ExportTemplateDialog *ExportTemplateDialog::ui() const
 {
     return m_ui;
-}
-
-Latte::Corona *ExportTemplateDialog::corona() const
-{
-    return m_parentDlg->corona();
-}
-
-Controller::Layouts *ExportTemplateDialog::layoutsController() const
-{
-    return m_layoutsController;
 }
 
 void ExportTemplateDialog::accept()

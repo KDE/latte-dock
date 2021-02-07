@@ -23,6 +23,10 @@
 // local
 #include "../../layout/abstractlayout.h"
 
+// Qt
+#include <QFont>
+#include <QIcon>
+
 // KDE
 #include <KLocalizedString>
 
@@ -30,9 +34,8 @@ namespace Latte {
 namespace Settings {
 namespace Model {
 
-Applets::Applets(QObject *parent, Latte::Corona *corona)
-    : QAbstractTableModel(parent),
-      m_corona(corona)
+Applets::Applets(QObject *parent)
+    : QAbstractTableModel(parent)
 {
 }
 

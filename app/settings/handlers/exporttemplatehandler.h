@@ -34,6 +34,7 @@ class ExportTemplateDialog;
 }
 
 namespace Latte{
+class View;
 namespace Settings{
 namespace Dialog{
 class ExportTemplateDialog;
@@ -63,6 +64,8 @@ class ExportTemplateHandler : public Generic
     Q_OBJECT
 public:
     ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog);
+    ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, const QString &layoutName, const QString &layoutId);
+    ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, Latte::View *view);
     ~ExportTemplateHandler();
 
     bool dataAreChanged() const override;
@@ -76,7 +79,8 @@ public:
 
 private:
     void init();
-    void loadCurrentLayoutApplets();
+    void loadLayoutApplets(const QString &layoutName, const QString &layoutId);
+    void loadViewApplets(Latte::View *view);
 
 private:
     Dialog::ExportTemplateDialog *m_parentDialog{nullptr};

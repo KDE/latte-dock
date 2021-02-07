@@ -561,7 +561,10 @@ void TabLayouts::exportLayoutAsTemplate()
     m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
     m_corona->universalSettings()->syncSettings();
 
-    Dialog::ExportTemplateDialog *exportDlg = new Dialog::ExportTemplateDialog(m_parentDialog, m_layoutsController);
+    Data::Layout o_layout = m_layoutsController->selectedLayoutOriginalData();
+    Data::Layout c_layout = m_layoutsController->selectedLayoutCurrentData();
+
+    Dialog::ExportTemplateDialog *exportDlg = new Dialog::ExportTemplateDialog(m_parentDialog, c_layout.name, o_layout.id);
     exportDlg->exec();
 }
 
