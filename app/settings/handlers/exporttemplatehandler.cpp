@@ -28,6 +28,9 @@
 #include "../../data/appletdata.h"
 #include "../../layouts/storage.h"
 
+//! KDE
+#include <KLocalizedString>
+
 namespace Latte {
 namespace Settings {
 namespace Handler {
@@ -62,10 +65,13 @@ void ExportTemplateHandler::init()
 void ExportTemplateHandler::loadCurrentLayoutApplets()
 {
     Data::Layout o_layout = m_parentDialog->layoutsController()->selectedLayoutOriginalData();
+    Data::Layout c_layout = m_parentDialog->layoutsController()->selectedLayoutCurrentData();
+
     c_data = Latte::Layouts::Storage::self()->plugins(o_layout.id);
     o_data = c_data;
 
     m_appletsModel->setData(c_data);
+    m_parentDialog->setWindowTitle(i18n("Export Template from %0").arg(c_layout.name));
 }
 
 bool ExportTemplateHandler::dataAreChanged() const

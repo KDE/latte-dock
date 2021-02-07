@@ -63,6 +63,7 @@ public:
     int row(const QString &id);
 
     QVariant data(const QModelIndex &index, int role) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     void setData(const Latte::Data::AppletsTable &applets);
 

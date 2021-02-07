@@ -56,7 +56,7 @@ int Applets::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
 
-    return DESCRIPTIONROLE+1;
+    return 1;
 }
 
 int Applets::row(const QString &id)
@@ -88,6 +88,31 @@ void Applets::setData(const Latte::Data::AppletsTable &applets)
         m_appletsTable = applets;
         endInsertRows();
     }
+}
+
+QVariant Applets::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (orientation != Qt::Horizontal) {
+        return QAbstractTableModel::headerData(section, orientation, role);
+    }
+
+    if (role == Qt::FontRole) {
+        QFont font = qvariant_cast<QFont>(QAbstractTableModel::headerData(section, orientation, role));
+        font.setBold(true);
+        return font;
+    }
+
+    switch(section) {
+    case NAMECOLUMN:
+        if (role == Qt::DisplayRole) {
+            return QString(i18nc("column for current applets", "Current Applets"));
+        }
+        break;
+    default:
+        break;
+    };
+
+    return QAbstractTableModel::headerData(section, orientation, role);
 }
 
 QVariant Applets::data(const QModelIndex &index, int role) const
