@@ -38,6 +38,9 @@ ExportTemplateDialog::ExportTemplateDialog(QWidget *parent, const QString &layou
 
     //! first we need to setup the ui
     m_ui->setupUi(this);
+    initExtractButton(i18n("Export your selected layout as template"));
+    initButtons();
+
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ExportTemplateHandler(this, layoutName, layoutId);
 }
@@ -50,6 +53,9 @@ ExportTemplateDialog::ExportTemplateDialog(Latte::View *view)
 
     //! first we need to setup the ui
     m_ui->setupUi(this);
+    initExtractButton(i18n("Export your selected view as template"));
+    initButtons();
+
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ExportTemplateHandler(this, view);
 }
@@ -63,12 +69,39 @@ Ui::ExportTemplateDialog *ExportTemplateDialog::ui() const
     return m_ui;
 }
 
+void ExportTemplateDialog::initButtons()
+{
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked,
+            this, &ExportTemplateDialog::onCancel);
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked,
+            this, &ExportTemplateDialog::onCancel);
+}
+
+void ExportTemplateDialog::initExtractButton(const QString &tooltip)
+{
+    QPushButton *extractBtn = new QPushButton(this);
+    extractBtn->setText(i18nc("export template", "Export"));
+    extractBtn->setIcon(QIcon::fromTheme("document-export"));
+    extractBtn->setToolTip(tooltip);
+
+    m_ui->buttonBox->addButton(extractBtn, QDialogButtonBox::AcceptRole);
+
+    connect(extractBtn, &QPushButton::clicked, this, &ExportTemplateDialog::onCancel);
+}
+
 void ExportTemplateDialog::accept()
 {
     qDebug() << Q_FUNC_INFO;
+    //close();
 }
 
 void ExportTemplateDialog::onCancel()
+{
+    qDebug() << Q_FUNC_INFO;
+    close();
+}
+
+void ExportTemplateDialog::onReset()
 {
     qDebug() << Q_FUNC_INFO;
     close();
