@@ -79,7 +79,7 @@ void ExportTemplateHandler::init()
     m_ui->appletsTable->horizontalHeader()->setStretchLastSection(true);
     m_ui->appletsTable->verticalHeader()->setVisible(false);
 
-    //! Layouts
+    //! Applets Model
     m_appletsProxyModel = new QSortFilterProxyModel(this);
     m_appletsProxyModel->setSourceModel(m_appletsModel);
     m_appletsProxyModel->setSortRole(Model::Applets::SORTINGROLE);
@@ -87,6 +87,10 @@ void ExportTemplateHandler::init()
     m_appletsProxyModel->sort(Model::Applets::NAMECOLUMN, Qt::AscendingOrder);
 
     m_ui->appletsTable->setModel(m_appletsProxyModel);
+
+    //! Reset
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked,
+            this, &ExportTemplateHandler::onReset);
 }
 
 void ExportTemplateHandler::initDefaults()
@@ -115,6 +119,12 @@ void ExportTemplateHandler::loadViewApplets(Latte::View *view)
 
     m_appletsModel->setData(c_data);
     m_parentDialog->setWindowTitle(i18n("Export View Template"));
+}
+
+void ExportTemplateHandler::onReset()
+{
+    m_appletsModel->setSelected(o_data);
+    c_data = o_data;
 }
 
 bool ExportTemplateHandler::dataAreChanged() const

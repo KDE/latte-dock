@@ -93,6 +93,21 @@ void Applets::setData(const Latte::Data::AppletsTable &applets)
     }
 }
 
+void Applets::setSelected(const Latte::Data::AppletsTable &applets)
+{
+    for(int i=0; i<applets.rowCount(); ++i) {
+        int pos = m_appletsTable.indexOf(applets[i].id);
+
+        if (pos>=0 && applets[i].isSelected != m_appletsTable[pos].isSelected) {
+            QVector<int> roles;
+            roles << Qt::CheckStateRole;
+
+            m_appletsTable[pos].isSelected = applets[i].isSelected;
+            emit dataChanged(index(pos, NAMECOLUMN), index(pos, NAMECOLUMN), roles);
+        }
+    }
+}
+
 Qt::ItemFlags Applets::flags(const QModelIndex &index) const
 {
     const int column = index.column();

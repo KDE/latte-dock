@@ -73,8 +73,6 @@ void ExportTemplateDialog::initButtons()
 {
     connect(m_ui->buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked,
             this, &ExportTemplateDialog::onCancel);
-    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked,
-            this, &ExportTemplateDialog::onCancel);
 }
 
 void ExportTemplateDialog::initExtractButton(const QString &tooltip)

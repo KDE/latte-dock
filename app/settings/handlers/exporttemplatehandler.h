@@ -85,6 +85,9 @@ private:
     void loadLayoutApplets(const QString &layoutName, const QString &layoutId);
     void loadViewApplets(Latte::View *view);
 
+private slots:
+    void onReset();
+
 private:
     Dialog::ExportTemplateDialog *m_parentDialog{nullptr};
     Ui::ExportTemplateDialog *m_ui{nullptr};

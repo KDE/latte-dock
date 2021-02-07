@@ -67,6 +67,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const override;
 
     void setData(const Latte::Data::AppletsTable &applets);
+    void setSelected(const Latte::Data::AppletsTable &applets);
 
 private:
     void clear();
