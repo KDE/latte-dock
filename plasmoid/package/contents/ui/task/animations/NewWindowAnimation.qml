@@ -32,6 +32,8 @@ Item{
     property bool isDemandingAttention: taskItem.inAttention
     property bool containsMouse: taskItem.containsMouse
 
+    property bool inDelayedStartup: false
+
     readonly property bool running: newWindowAnimationLoader.active ? newWindowAnimationLoader.item.running : false
     readonly property string needThicknessEvent: newWindowAnimation + "_newwindow"
 
@@ -50,7 +52,6 @@ Item{
     }
 
     function clear(){
-        newWindowAnimationLoader.item.loops = 1;
         newWindowAnimationLoader.item.stop();
 
         taskItem.parabolicItem.zoomLength = 1.0;
@@ -86,12 +87,7 @@ Item{
         taskItem.parabolicItem.zoomLength = taskItem.parabolicItem.zoom;
         taskItem.parabolicItem.zoomThickness = taskItem.parabolicItem.zoom;
 
-        if(!isDemandingAttention)
-            newWindowAnimationLoader.item.loops = 1;
-        else {
-            newWindowAnimationLoader.item.loops = 20;
-            taskItem.inAttentionAnimation = true;
-        }
+        taskItem.inAttentionAnimation = isDemandingAttention;
 
         taskItem.abilities.animations.needThickness.addEvent(needThicknessEvent);
     }
@@ -101,7 +97,12 @@ Item{
                 && ((root.windowInAttentionEnabled && isDemandingAttention)
                     || root.windowAddedInGroupEnabled)){
             newWindowAnimation.init();
-            newWindowAnimationLoader.item.start();
+
+            if (!newWindowAnimation.active) {
+                inDelayedStartup = true;
+            } else {
+                newWindowAnimationLoader.item.start();
+            }
         }
     }
 

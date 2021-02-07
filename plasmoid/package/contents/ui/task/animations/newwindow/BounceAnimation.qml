@@ -23,6 +23,14 @@ import org.kde.plasma.plasmoid 2.0
 
 SequentialAnimation{
     alwaysRunToEnd: true
+    loops: newWindowAnimation.isDemandingAttention ? 20 : 1
+
+    Component.onCompleted: {
+        if (newWindowAnimation.inDelayedStartup) {
+            newWindowAnimation.inDelayedStartup = false;
+            start();
+        }
+    }
 
     ParallelAnimation{
         PropertyAnimation {
