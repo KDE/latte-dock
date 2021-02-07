@@ -99,7 +99,9 @@ Loader {
         property int subGroupSpacing: units.largeSpacing + units.smallSpacing * 1.5
 
         property color bC: theme.backgroundColor
+        property color tC: theme.textColor
         property color transparentBackgroundColor: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
+        property color borderColor: Qt.rgba(tC.r, tC.g, tC.b, 0.12)
 
         readonly property Item currentPage: pagesStackView.currentItem
 
@@ -371,7 +373,7 @@ Loader {
                 }
             }
 
-            Rectangle {
+            Item {
                 id: pagesBackground
                 Layout.fillWidth: true
                 Layout.fillHeight: false
@@ -382,12 +384,23 @@ Loader {
                 width: dialog.appliedWidth - units.smallSpacing * 3
                 height: availableFreeHeight + units.smallSpacing * 4
 
-                color: transparentBackgroundColor
-                border.width: 1
-                border.color: theme.backgroundColor
-
                 //fix the height binding loop when showing the configuration window
                 property int availableFreeHeight: dialog.appliedHeight - header.height - headerSpacer.height - tabBar.height - actionButtons.height - 2 * units.smallSpacing
+
+                // Header
+                Rectangle {
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.topMargin: -units.smallSpacing + 2
+                    anchors.leftMargin: -2*units.smallSpacing
+                    anchors.rightMargin: -2*units.smallSpacing
+
+                    height: parent.height // dialog.height - (header.height + tabBar.height + units.smallSpacing * 1.5) + 2
+                    color: theme.backgroundColor
+                    border.width: 1
+                    border.color: dialog.borderColor
+                }
 
                 PlasmaExtras.ScrollArea {
                     id: scrollArea
@@ -658,5 +671,19 @@ Loader {
                 }
             }
         }
+
+        /*PlasmaExtras.PlasmoidHeading {
+            id: plasmoidFooter
+            location: PlasmaExtras.PlasmoidHeading.Location.Footer
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            height: actionButtons.height + units.smallSpacing * 2.5
+            // So that it doesn't appear over the content view, which results in
+            // the footer controls being inaccessible
+            z: -9999
+        }*/
     }
 }
