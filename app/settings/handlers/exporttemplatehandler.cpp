@@ -46,14 +46,6 @@ ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *paren
       m_ui(m_parentDialog->ui()),
       m_appletsModel(new Model::Applets(this))
 {
-    m_appletsWithNoPersonalData = {
-        "org.kde.latte.separator",
-        "org.kde.latte.plasmoid",
-        "org.kde.latte.windowtitle",
-        "org.kde.latte.windowbuttons",
-        "org.kde.latte.windowappmenu"
-    };
-
     init();
 }
 
@@ -88,65 +80,61 @@ void ExportTemplateHandler::init()
 
     m_ui->appletsTable->setModel(m_appletsProxyModel);
 
-    //! Reset
-    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked,
-            this, &ExportTemplateHandler::onReset);
-}
-
-void ExportTemplateHandler::initDefaults()
-{
-    for(int i=0; i<c_data.rowCount(); ++i) {
-        c_data[i].isSelected = m_appletsWithNoPersonalData.contains(c_data[i].id);
-    }
+    //! Buttons
+    connect(m_ui->deselectAllBtn, &QPushButton::clicked, this, &ExportTemplateHandler::onDeselectAll);
+    connect(m_ui->selectAllBtn, &QPushButton::clicked, this, &ExportTemplateHandler::onSelectAll);
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &ExportTemplateHandler::onReset);
 }
 
 void ExportTemplateHandler::loadLayoutApplets(const QString &layoutName, const QString &layoutId)
 {
-    c_data = Latte::Layouts::Storage::self()->plugins(layoutId);
-
-    initDefaults();
-
-    o_data = c_data;
-
+    Data::AppletsTable c_data = Latte::Layouts::Storage::self()->plugins(layoutId);
     m_appletsModel->setData(c_data);
     m_parentDialog->setWindowTitle(i18n("Export Layout Template"));
 }
 
 void ExportTemplateHandler::loadViewApplets(Latte::View *view)
 {
-    c_data = Latte::Layouts::Storage::self()->plugins(view->layout(), view->containment()->id());
-    o_data = c_data;
-
+    Data::AppletsTable c_data = Latte::Layouts::Storage::self()->plugins(view->layout(), view->containment()->id());
     m_appletsModel->setData(c_data);
     m_parentDialog->setWindowTitle(i18n("Export View Template"));
 }
 
 void ExportTemplateHandler::onReset()
 {
-    m_appletsModel->setSelected(o_data);
-    c_data = o_data;
+    m_appletsModel->reset();
+}
+
+void ExportTemplateHandler::onSelectAll()
+{
+    m_appletsModel->selectAll();
+
+}
+
+void ExportTemplateHandler::onDeselectAll()
+{
+    m_appletsModel->deselectAll();
 }
 
 bool ExportTemplateHandler::dataAreChanged() const
 {
-    return o_data != c_data;
+    return m_appletsModel->dataAreChanged();
 }
 
 bool ExportTemplateHandler::inDefaultValues() const
 {
-    //nothing special
-    return true;
+    return !dataAreChanged();
 }
 
 
 void ExportTemplateHandler::reset()
 {
-    c_data = o_data;
+    m_appletsModel->reset();
 }
 
 void ExportTemplateHandler::resetDefaults()
 {
-    //do nothing
+    reset();
 }
 
 void ExportTemplateHandler::save()

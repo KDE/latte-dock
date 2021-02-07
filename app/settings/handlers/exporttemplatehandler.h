@@ -27,7 +27,6 @@
 
 // Qt
 #include <QButtonGroup>
-#include <QList>
 #include <QSortFilterProxyModel>
 
 namespace Ui {
@@ -87,19 +86,16 @@ private:
 
 private slots:
     void onReset();
+    void onSelectAll();
+    void onDeselectAll();
 
 private:
     Dialog::ExportTemplateDialog *m_parentDialog{nullptr};
     Ui::ExportTemplateDialog *m_ui{nullptr};
 
-    QList<QString> m_appletsWithNoPersonalData;
-
     //! current data
     Model::Applets *m_appletsModel{nullptr};
     QSortFilterProxyModel *m_appletsProxyModel{nullptr};
-
-    Latte::Data::AppletsTable o_data;
-    Latte::Data::AppletsTable c_data;
 };
 
 }

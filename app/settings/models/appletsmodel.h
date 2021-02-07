@@ -27,6 +27,7 @@
 // Qt
 #include <QAbstractTableModel>
 #include <QModelIndex>
+#include <QList>
 
 namespace Latte {
 namespace Settings {
@@ -55,6 +56,8 @@ public:
     explicit Applets(QObject *parent);
     ~Applets();
 
+    bool dataAreChanged() const;
+
     int rowCount() const;
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
@@ -69,12 +72,20 @@ public:
     void setData(const Latte::Data::AppletsTable &applets);
     void setSelected(const Latte::Data::AppletsTable &applets);
 
+    void deselectAll();
+    void reset();
+    void selectAll();
+
 private:
+    void initDefaults();
+
     void clear();
 
 private:
-    Latte::Data::AppletsTable m_appletsTable;
+    Latte::Data::AppletsTable o_applets;
+    Latte::Data::AppletsTable c_applets;
 
+    QList<QString> m_appletsWithNoPersonalData;
 };
 
 }
