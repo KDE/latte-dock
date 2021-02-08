@@ -53,7 +53,7 @@ AbilityDefinition.ThinTooltip {
     //! Private Implementation
 
     onShowIsBlockedChanged: {       
-        if (!showIsBlocked && !_tooltipDialog.visible && _thinTooltip.currentVisualParent) {
+        if (isEnabled && !showIsBlocked && !_tooltipDialog.visible && _thinTooltip.currentVisualParent) {
             _hideTimer.stop();
             _tooltipDialog.visible = true;
         } else if (showIsBlocked && _tooltipDialog.visible) {
