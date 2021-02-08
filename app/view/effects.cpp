@@ -65,9 +65,9 @@ void Effects::init()
     connect(this, &Effects::backgroundRadiusEnabledChanged, this, &Effects::updateMask);
     connect(this, &Effects::subtractedMaskRegionsChanged, this, &Effects::updateMask);
     connect(this, &Effects::unitedMaskRegionsChanged, this, &Effects::updateMask);
-    connect(m_view, &Latte::View::typeChanged, this, &Effects::updateMask);
     connect(m_view, &QQuickWindow::widthChanged, this, &Effects::updateMask);
     connect(m_view, &QQuickWindow::heightChanged, this, &Effects::updateMask);
+    connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateMask);
     connect(KWindowSystem::self(), &KWindowSystem::compositingChanged, this, &Effects::updateMask);
 
     connect(this, &Effects::rectChanged, this, [&]() {
@@ -444,23 +444,15 @@ void Effects::updateMask()
 {
     if (KWindowSystem::compositingActive()) {
         if (KWindowSystem::isPlatformX11()) {
-            m_view->setMask(QRect(0, 0, m_view->width(), m_view->height()));
-        } else {
-            // do nothing
-        }
-
-        /* else {
-            //! this needs investigation under Wayland how to work correctly
             if (m_view->behaveAsPlasmaPanel()) {
-                if (!m_view->visibility()->isHidden()) {
-                    m_view->setMask(QRect());
-                } else {
-                    m_view->setMask(VisibilityManager::ISHIDDENMASK);
-                }
+                // set as NULL in order for plasma framrworks to identify NULL Mask properly
+                m_view->setMask(QRect(-1, -1, 0, 0));
             } else {
-                m_view->setMask(maskCombinedRegion());
+                m_view->setMask(QRect(0, 0, m_view->width(), m_view->height()));
             }
-        }*/
+        } else {
+            // under wayland do nothing
+        }
     } else {
         QRegion fixedMask;
 
