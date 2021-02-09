@@ -70,6 +70,8 @@ ExportTemplateHandler::~ExportTemplateHandler()
 void ExportTemplateHandler::init()
 {
     m_ui->appletsTable->horizontalHeader()->setStretchLastSection(true);
+    m_ui->appletsTable->horizontalHeader()->setSectionsClickable(false);
+
     m_ui->appletsTable->verticalHeader()->setVisible(false);
 
     m_ui->appletsTable->setItemDelegateForColumn(Model::Applets::NAMECOLUMN, new Settings::Applets::Delegate::NormalCheckBox(this));
