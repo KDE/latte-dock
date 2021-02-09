@@ -65,7 +65,7 @@ Item{
     property real visualScaledThickness: abilityItem.abilities.metrics.totals.thickness * zoom
     /// end of Scalers///////
 
-    property real center: ((abilityItem.isHorizontal ? width : height) + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
+    property real center: (abilityItem.isHorizontal ? abilityItem.width : abilityItem.height) / 2
 
     readonly property alias contentItemContainer: _contentItemContainer
     readonly property alias titleTooltipVisualParent: _titleTooltipVisualParent

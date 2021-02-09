@@ -31,9 +31,7 @@ Item {
     readonly property bool isParabolicEnabled: parabolicAreaLoader.isParabolicEnabled
     readonly property bool isThinTooltipEnabled: parabolicAreaLoader.isThinTooltipEnabled
 
-    property real center:root.isHorizontal ?
-                             (wrapper.width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2 :
-                             (wrapper.height + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
+    property real center: (root.isHorizontal ? appletItem.width : appletItem.height) / 2
 
     MouseArea {
         id: parabolicMouseArea
