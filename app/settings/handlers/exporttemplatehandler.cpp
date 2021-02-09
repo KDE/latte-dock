@@ -23,6 +23,7 @@
 // local
 #include "ui_exporttemplatedialog.h"
 #include "../controllers/layoutscontroller.h"
+#include "../delegates/normalcheckboxdelegate.h"
 #include "../dialogs/exporttemplatedialog.h"
 #include "../models/appletsmodel.h"
 #include "../../data/appletdata.h"
@@ -70,6 +71,8 @@ void ExportTemplateHandler::init()
 {
     m_ui->appletsTable->horizontalHeader()->setStretchLastSection(true);
     m_ui->appletsTable->verticalHeader()->setVisible(false);
+
+    m_ui->appletsTable->setItemDelegateForColumn(Model::Applets::NAMECOLUMN, new Settings::Applets::Delegate::NormalCheckBox(this));
 
     //! Applets Model
     m_appletsProxyModel = new QSortFilterProxyModel(this);
