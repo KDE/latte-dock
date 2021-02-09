@@ -27,7 +27,7 @@
 #include "../layout/centrallayout.h"
 #include "../layouts/manager.h"
 #include "../layouts/synchronizer.h"
-#include "../settings/dialogs/settingsdialog.h"
+#include "../settings/settingsdialog/settingsdialog.h"
 #include "../settings/universalsettings.h"
 #include "../view/containmentinterface.h"
 #include "../view/view.h"

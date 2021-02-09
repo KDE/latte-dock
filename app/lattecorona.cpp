@@ -42,7 +42,6 @@
 #include "plasma/extended/screenpool.h"
 #include "plasma/extended/theme.h"
 #include "settings/universalsettings.h"
-#include "settings/dialogs/settingsdialog.h"
 #include "templates/templatesmanager.h"
 #include "view/view.h"
 #include "view/settings/viewsettingsfactory.h"

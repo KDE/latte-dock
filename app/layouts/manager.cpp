@@ -31,7 +31,6 @@
 #include "../data/generictable.h"
 #include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"
-#include "../settings/dialogs/settingsdialog.h"
 #include "../settings/universalsettings.h"
 #include "../templates/templatesmanager.h"
 #include "../tools/commontools.h"

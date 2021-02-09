@@ -25,7 +25,7 @@
 #include "syncedlaunchers.h"
 #include "synchronizer.h"
 #include "../apptypes.h"
-#include "../settings/dialogs/settingsdialog.h"
+#include "../settings/settingsdialog/settingsdialog.h"
 
 // Qt
 #include <QAction>
