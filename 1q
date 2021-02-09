@@ -1,0 +1,11 @@
+improve CheckBox behavior in AppletsTable
+# Παρακαλώ εισάγετε το μήνυμα υποβολής για τις αλλαγές σας. Οι γραμμές που αρχίζουν
+# με '#' αγνοούνται, και με κενό μήνυμα εγκαταλείπετε την υποβολή.
+#
+# Στον κλάδο fix
+# Αλλαγές προς υποβολή:
+#	τροποποίηση:     app/settings/delegates/CMakeLists.txt
+#	νέο αρχείο:      app/settings/delegates/normalcheckboxdelegate.cpp
+#	νέο αρχείο:      app/settings/delegates/normalcheckboxdelegate.h
+#	τροποποίηση:     app/settings/handlers/exporttemplatehandler.cpp
+#

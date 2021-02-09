@@ -73,7 +73,7 @@ bool Applet::isInstalled() const
 
 bool Applet::isValid() const
 {
-    return !id.isEmpty() && !name.isEmpty();
+    return !id.isEmpty();
 }
 
 }

@@ -987,9 +987,9 @@ Data::AppletsTable Storage::plugins(const QString &layoutfile, const int contain
                 if (!knownapplets.containsId(pluginId) && !unknownapplets.containsId(pluginId)) {
                     Data::Applet appletdata = metadata(pluginId);
 
-                    if (appletdata.isValid()) {
+                    if (appletdata.isInstalled()) {
                         knownapplets.insertBasedOnName(appletdata);
-                    } else {
+                    } else if (appletdata.isValid()) {
                         unknownapplets.insertBasedOnId(appletdata);
                     }
                 }

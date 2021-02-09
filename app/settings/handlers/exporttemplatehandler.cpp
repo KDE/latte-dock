@@ -79,7 +79,7 @@ void ExportTemplateHandler::init()
     m_appletsProxyModel->setSourceModel(m_appletsModel);
     m_appletsProxyModel->setSortRole(Model::Applets::SORTINGROLE);
     m_appletsProxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
-    m_appletsProxyModel->sort(Model::Applets::NAMECOLUMN, Qt::AscendingOrder);
+  //  m_appletsProxyModel->sort(Model::Applets::NAMECOLUMN, Qt::AscendingOrder);
 
     m_ui->appletsTable->setModel(m_appletsProxyModel);
 
