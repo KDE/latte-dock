@@ -397,9 +397,9 @@ private:
     bool m_isTouchingTopViewAndIsBusy{false};
 
     int m_fontPixelSize{ -1};
-    int m_maxThickness{128};
-    int m_normalThickness{128};
-    int m_maxNormalThickness{128};
+    int m_maxThickness{256};
+    int m_normalThickness{256};
+    int m_maxNormalThickness{256};
     int m_headThicknessGap{0};
     int m_screenEdgeMargin{-1};
     float m_maxLength{1};
