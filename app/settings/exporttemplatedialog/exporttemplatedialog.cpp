@@ -34,28 +34,19 @@ ExportTemplateDialog::ExportTemplateDialog(QWidget *parent, const QString &layou
     : GenericDialog(parent),
       m_ui(new Ui::ExportTemplateDialog)
 {
-    setAttribute(Qt::WA_DeleteOnClose, true);
-
-    //! first we need to setup the ui
-    m_ui->setupUi(this);
+    init();
     initExtractButton(i18n("Export your selected layout as template"));
-    initButtons();
-
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ExportTemplateHandler(this, layoutName, layoutId);
+    connect(m_handler, &Handler::ExportTemplateHandler::dataChanged, this, &ExportTemplateDialog::onDataChanged);
 }
 
 ExportTemplateDialog::ExportTemplateDialog(Latte::View *view)
     : GenericDialog(nullptr),
       m_ui(new Ui::ExportTemplateDialog)
 {
-    setAttribute(Qt::WA_DeleteOnClose, true);
-
-    //! first we need to setup the ui
-    m_ui->setupUi(this);
+    init();
     initExtractButton(i18n("Export your selected view as template"));
-    initButtons();
-
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ExportTemplateHandler(this, view);
 }
@@ -69,8 +60,17 @@ Ui::ExportTemplateDialog *ExportTemplateDialog::ui() const
     return m_ui;
 }
 
+void ExportTemplateDialog::init()
+{
+    setAttribute(Qt::WA_DeleteOnClose, true);
+    //! first we need to setup the ui
+    m_ui->setupUi(this);
+    initButtons();
+}
+
 void ExportTemplateDialog::initButtons()
 {
+    m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(false);
     connect(m_ui->buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked,
             this, &ExportTemplateDialog::onCancel);
 }
@@ -85,6 +85,11 @@ void ExportTemplateDialog::initExtractButton(const QString &tooltip)
     m_ui->buttonBox->addButton(extractBtn, QDialogButtonBox::AcceptRole);
 
     connect(extractBtn, &QPushButton::clicked, this, &ExportTemplateDialog::onCancel);
+}
+
+void ExportTemplateDialog::onDataChanged()
+{
+    m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(!m_handler->inDefaultValues());
 }
 
 void ExportTemplateDialog::accept()

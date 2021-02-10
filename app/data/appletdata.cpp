@@ -66,6 +66,20 @@ Applet &Applet::operator=(Applet &&rhs)
     return (*this);
 }
 
+bool Applet::operator==(const Applet &rhs) const
+{
+    return (id == rhs.id)
+            && (name == rhs.name)
+            && (description == rhs.description)
+            && (icon == rhs.icon)
+            && (isSelected == rhs.isSelected);
+}
+
+bool  Applet::operator!=(const Applet &rhs) const
+{
+    return !(*this == rhs);
+}
+
 bool Applet::isInstalled() const
 {
     return isValid() && id != name;

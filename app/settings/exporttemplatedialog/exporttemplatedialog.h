@@ -67,10 +67,14 @@ protected:
 
 private slots:
     void onCancel();
+    void onDataChanged();
     void onReset();
 
     void initButtons();
     void initExtractButton(const QString &tooltip);
+
+private:
+    void init();
 
 private:
     bool m_isExportingLayout{false};

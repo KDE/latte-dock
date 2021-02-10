@@ -86,6 +86,11 @@ int Applets::row(const QString &id)
     return -1;
 }
 
+bool Applets::inDefaultValues() const
+{
+    return c_applets == o_applets;
+}
+
 void Applets::initDefaults()
 {
     for(int i=0; i<c_applets.rowCount(); ++i) {
@@ -99,6 +104,8 @@ void Applets::clear()
         beginRemoveRows(QModelIndex(), 0, c_applets.rowCount() - 1);
         c_applets.clear();
         endRemoveRows();
+
+        emit appletsDataChanged();
     }
 }
 
@@ -108,7 +115,9 @@ void Applets::reset()
 
     QVector<int> roles;
     roles << Qt::CheckStateRole;
+
     emit dataChanged(index(0, NAMECOLUMN), index(c_applets.rowCount()-1, NAMECOLUMN), roles);
+    emit appletsDataChanged();
 }
 
 void Applets::setData(const Latte::Data::AppletsTable &applets)
@@ -121,6 +130,8 @@ void Applets::setData(const Latte::Data::AppletsTable &applets)
         initDefaults();
         o_applets = c_applets;
         endInsertRows();
+
+        emit appletsDataChanged();
     }
 }
 
@@ -129,11 +140,18 @@ void Applets::selectAll()
     QVector<int> roles;
     roles << Qt::CheckStateRole;
 
+    bool changed{false};
+
     for(int i=0; i<c_applets.rowCount(); ++i) {
         if (!c_applets[i].isSelected) {
             c_applets[i].isSelected = true;
             emit dataChanged(index(i, NAMECOLUMN), index(i, NAMECOLUMN), roles);
+            changed = true;
         }
+    }
+
+    if (changed) {
+        emit appletsDataChanged();
     }
 }
 
@@ -142,16 +160,25 @@ void Applets::deselectAll()
     QVector<int> roles;
     roles << Qt::CheckStateRole;
 
+    bool changed{false};
+
     for(int i=0; i<c_applets.rowCount(); ++i) {
         if (c_applets[i].isSelected) {
             c_applets[i].isSelected = false;
             emit dataChanged(index(i, NAMECOLUMN), index(i, NAMECOLUMN), roles);
+            changed = true;
         }
+    }
+
+    if (changed) {
+        emit appletsDataChanged();
     }
 }
 
 void Applets::setSelected(const Latte::Data::AppletsTable &applets)
 {
+    bool changed{false};
+
     for(int i=0; i<applets.rowCount(); ++i) {
         int pos = c_applets.indexOf(applets[i].id);
 
@@ -161,7 +188,12 @@ void Applets::setSelected(const Latte::Data::AppletsTable &applets)
 
             c_applets[pos].isSelected = applets[i].isSelected;
             emit dataChanged(index(pos, NAMECOLUMN), index(pos, NAMECOLUMN), roles);
+            changed = true;
         }
+    }
+
+    if (changed) {
+        emit appletsDataChanged();
     }
 }
 
@@ -216,6 +248,7 @@ bool Applets::setData(const QModelIndex &index, const QVariant &value, int role)
     case NAMECOLUMN:
         if (role == Qt::CheckStateRole) {
             c_applets[row].isSelected = (value.toInt() > 0 ? true : false);
+            emit appletsDataChanged();
             return true;
         }
         break;

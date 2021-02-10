@@ -44,12 +44,14 @@ public:
     QString description;
     QString icon;
 
+    bool isInstalled() const;
+    bool isValid() const;
+
     //! Operators
     Applet &operator=(const Applet &rhs);
     Applet &operator=(Applet &&rhs);
-
-    bool isInstalled() const;
-    bool isValid() const;
+    bool operator==(const Applet &rhs) const;
+    bool operator!=(const Applet &rhs) const;
 };
 
 typedef GenericTable<Applet> AppletsTable;

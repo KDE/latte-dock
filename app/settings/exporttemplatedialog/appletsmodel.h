@@ -57,6 +57,7 @@ public:
     ~Applets();
 
     bool hasChangedData() const;
+    bool inDefaultValues() const;
 
     int rowCount() const;
     int rowCount(const QModelIndex &parent) const override;
@@ -75,6 +76,9 @@ public:
     void deselectAll();
     void reset();
     void selectAll();
+
+signals:
+    void appletsDataChanged();
 
 private:
     void initDefaults();

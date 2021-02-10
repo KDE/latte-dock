@@ -59,16 +59,14 @@ ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *paren
 ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, Latte::View *view)
     : ExportTemplateHandler(parentDialog)
 {
-    init();
 }
 
 ExportTemplateHandler::~ExportTemplateHandler()
 {
 }
 
-
 void ExportTemplateHandler::init()
-{
+{   
     m_ui->appletsTable->horizontalHeader()->setStretchLastSection(true);
     m_ui->appletsTable->horizontalHeader()->setSectionsClickable(false);
 
@@ -77,6 +75,7 @@ void ExportTemplateHandler::init()
     m_ui->appletsTable->setItemDelegateForColumn(Model::Applets::NAMECOLUMN, new Settings::Applets::Delegate::NormalCheckBox(this));
 
     //! Applets Model
+    connect(m_appletsModel, &Settings::Model::Applets::appletsDataChanged, this, &ExportTemplateHandler::dataChanged);
     m_appletsProxyModel = new QSortFilterProxyModel(this);
     m_appletsProxyModel->setSourceModel(m_appletsModel);
     m_appletsProxyModel->setSortRole(Model::Applets::SORTINGROLE);
@@ -128,9 +127,8 @@ bool ExportTemplateHandler::hasChangedData() const
 
 bool ExportTemplateHandler::inDefaultValues() const
 {
-    return !hasChangedData();
+    return m_appletsModel->inDefaultValues();
 }
-
 
 void ExportTemplateHandler::reset()
 {
