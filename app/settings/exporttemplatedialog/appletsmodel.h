@@ -56,7 +56,7 @@ public:
     explicit Applets(QObject *parent);
     ~Applets();
 
-    bool dataAreChanged() const;
+    bool hasChangedData() const;
 
     int rowCount() const;
     int rowCount(const QModelIndex &parent) const override;

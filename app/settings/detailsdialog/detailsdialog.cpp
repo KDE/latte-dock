@@ -76,7 +76,7 @@ Latte::Corona *DetailsDialog::corona() const
 
 void DetailsDialog::updateApplyButtonsState()
 {
-    if (m_handler->dataAreChanged()) {
+    if (m_handler->hasChangedData()) {
         m_ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
         m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(true);
     } else {

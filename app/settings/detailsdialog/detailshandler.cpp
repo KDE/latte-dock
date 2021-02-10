@@ -200,7 +200,7 @@ Latte::Data::Layout DetailsHandler::currentData() const
     return c_data;
 }
 
-bool DetailsHandler::dataAreChanged() const
+bool DetailsHandler::hasChangedData() const
 {
     return o_data != c_data;
 }
@@ -249,7 +249,7 @@ void DetailsHandler::onCurrentLayoutIndexChanged(int row)
 {
     bool switchtonewlayout{true};
 
-    if (dataAreChanged()) {
+    if (hasChangedData()) {
         int result = saveChanges();
 
         if (result == QMessageBox::Apply) {
@@ -395,7 +395,7 @@ void DetailsHandler::updateWindowTitle()
 
 int DetailsHandler::saveChanges()
 {
-    if (dataAreChanged()) {
+    if (hasChangedData()) {
         QString layoutName = c_data.name;
         QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed. Do you want to apply the changes or discard them?").arg(layoutName);
 

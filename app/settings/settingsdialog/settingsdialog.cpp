@@ -441,8 +441,8 @@ void SettingsDialog::updateApplyButtonsState()
 
     //! Ok, Apply Buttons
 
-    if ((currentPage() == LayoutPage && m_tabLayoutsHandler->dataAreChanged())
-            ||(currentPage() == PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
+    if ((currentPage() == LayoutPage && m_tabLayoutsHandler->hasChangedData())
+            ||(currentPage() == PreferencesPage && m_tabPreferencesHandler->hasChangedData())) {
         changed = true;
     }
 
@@ -471,8 +471,8 @@ void SettingsDialog::updateApplyButtonsState()
 
 bool SettingsDialog::saveChanges()
 {
-    if ((m_acceptedPage == LayoutPage && m_tabLayoutsHandler->dataAreChanged())
-        || (m_acceptedPage == PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
+    if ((m_acceptedPage == LayoutPage && m_tabLayoutsHandler->hasChangedData())
+        || (m_acceptedPage == PreferencesPage && m_tabPreferencesHandler->hasChangedData())) {
 
         QString tabName = m_ui->tabWidget->tabBar()->tabText(m_acceptedPage).remove("&");
         QString saveChangesText = i18n("The settings of <b>%0</b> tab have changed. Do you want to apply the changes or discard them?").arg(tabName);
@@ -495,8 +495,8 @@ void SettingsDialog::onCurrentTabChanged(int index)
 {
     //! Before switching into a new tab the user must confirm first if the data should be saved or not
 
-    if ((m_acceptedPage == LayoutPage && m_tabLayoutsHandler->dataAreChanged())
-        || (m_acceptedPage == PreferencesPage && m_tabPreferencesHandler->dataAreChanged())) {
+    if ((m_acceptedPage == LayoutPage && m_tabLayoutsHandler->hasChangedData())
+        || (m_acceptedPage == PreferencesPage && m_tabPreferencesHandler->hasChangedData())) {
 
         if (index != m_acceptedPage) {
             m_nextPage = index;

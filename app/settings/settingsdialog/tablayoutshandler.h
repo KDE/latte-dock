@@ -65,7 +65,7 @@ public:
     TabLayouts(Dialog::SettingsDialog *parent);
     ~TabLayouts();
 
-    bool dataAreChanged() const override;
+    bool hasChangedData() const override;
     bool inDefaultValues() const override;
     bool isCurrentTab() const;
 

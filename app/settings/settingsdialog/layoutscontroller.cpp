@@ -154,9 +154,9 @@ void Layouts::initView()
     connect(m_view, &QObject::destroyed, this, &Controller::Layouts::storeColumnWidths);
 }
 
-bool Layouts::dataAreChanged() const
+bool Layouts::hasChangedData() const
 {
-    return m_model->dataAreChanged();
+    return m_model->hasChangedData();
 }
 
 bool Layouts::layoutsAreChanged() const

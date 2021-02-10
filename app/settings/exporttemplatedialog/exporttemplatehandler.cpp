@@ -121,14 +121,14 @@ void ExportTemplateHandler::onDeselectAll()
     m_appletsModel->deselectAll();
 }
 
-bool ExportTemplateHandler::dataAreChanged() const
+bool ExportTemplateHandler::hasChangedData() const
 {
-    return m_appletsModel->dataAreChanged();
+    return m_appletsModel->hasChangedData();
 }
 
 bool ExportTemplateHandler::inDefaultValues() const
 {
-    return !dataAreChanged();
+    return !hasChangedData();
 }
 
 

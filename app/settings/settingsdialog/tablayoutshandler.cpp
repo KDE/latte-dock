@@ -270,9 +270,9 @@ Ui::SettingsDialog *TabLayouts::ui() const
     return m_ui;
 }
 
-bool TabLayouts::dataAreChanged() const
+bool TabLayouts::hasChangedData() const
 {
-    return m_layoutsController->dataAreChanged();
+    return m_layoutsController->hasChangedData();
 }
 
 bool TabLayouts::inDefaultValues() const

@@ -57,7 +57,7 @@ public:
     Generic(Dialog::GenericDialog *parent);
     Generic(Dialog::GenericDialog *parentDialog, QObject *parent);
 
-    virtual bool dataAreChanged() const = 0;
+    virtual bool hasChangedData() const = 0;
     virtual bool inDefaultValues() const = 0;
 
     virtual void reset() = 0;

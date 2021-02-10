@@ -68,7 +68,7 @@ public:
     ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, Latte::View *view);
     ~ExportTemplateHandler();
 
-    bool dataAreChanged() const override;
+    bool hasChangedData() const override;
     bool inDefaultValues() const override;
 
     void reset() override;

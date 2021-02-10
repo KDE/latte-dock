@@ -51,7 +51,7 @@ Applets::~Applets()
 {
 }
 
-bool Applets::dataAreChanged() const
+bool Applets::hasChangedData() const
 {
     return c_applets != o_applets;
 }

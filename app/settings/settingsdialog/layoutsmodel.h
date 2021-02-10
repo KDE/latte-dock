@@ -86,7 +86,7 @@ public:
 
     bool containsCurrentName(const QString &name) const;
 
-    bool dataAreChanged() const;
+    bool hasChangedData() const;
     bool layoutsAreChanged() const;
     bool modeIsChanged() const;
 

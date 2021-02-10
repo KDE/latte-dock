@@ -149,7 +149,7 @@ void TabPreferences::updateUi()
     emit dataChanged();
 }
 
-bool TabPreferences::dataAreChanged() const
+bool TabPreferences::hasChangedData() const
 {
     return o_preferences != m_preferences;
 }

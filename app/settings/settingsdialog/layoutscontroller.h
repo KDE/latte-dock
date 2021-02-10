@@ -64,7 +64,7 @@ public:
     QAbstractItemModel *baseModel() const;
     QTableView *view() const;
 
-    bool dataAreChanged() const;
+    bool hasChangedData() const;
     bool layoutsAreChanged() const;
     bool modeIsChanged() const;
 

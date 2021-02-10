@@ -71,7 +71,7 @@ bool Layouts::containsCurrentName(const QString &name) const
     return m_layoutsTable.containsName(name);
 }
 
-bool Layouts::dataAreChanged() const
+bool Layouts::hasChangedData() const
 {
     return modeIsChanged() || layoutsAreChanged();
 }

@@ -58,7 +58,7 @@ class TabPreferences : public Generic
 public:
     TabPreferences(Latte::Settings::Dialog::SettingsDialog *parent);
 
-    bool dataAreChanged() const override;
+    bool hasChangedData() const override;
     bool inDefaultValues() const override;
 
     void reset() override;
