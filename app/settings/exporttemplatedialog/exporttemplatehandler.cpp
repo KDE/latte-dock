@@ -31,10 +31,13 @@
 #include "../../layouts/storage.h"
 #include "../../view/view.h"
 
-//! KDE
+// Qt
+#include <QFileDialog>
+
+// KDE
 #include <KLocalizedString>
 
-//! Plasma
+// Plasma
 #include <Plasma/Containment>
 
 namespace Latte {
@@ -88,6 +91,8 @@ void ExportTemplateHandler::init()
     connect(m_ui->deselectAllBtn, &QPushButton::clicked, this, &ExportTemplateHandler::onDeselectAll);
     connect(m_ui->selectAllBtn, &QPushButton::clicked, this, &ExportTemplateHandler::onSelectAll);
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &ExportTemplateHandler::onReset);
+
+    connect(m_ui->chooseBtn, &QPushButton::clicked, this, &ExportTemplateHandler::chooseFileDialog);
 }
 
 void ExportTemplateHandler::loadLayoutApplets(const QString &layoutName, const QString &layoutId)
@@ -102,6 +107,33 @@ void ExportTemplateHandler::loadViewApplets(Latte::View *view)
     Data::AppletsTable c_data = Latte::Layouts::Storage::self()->plugins(view->layout(), view->containment()->id());
     m_appletsModel->setData(c_data);
     m_parentDialog->setWindowTitle(i18n("Export View Template"));
+}
+
+void ExportTemplateHandler::chooseFileDialog()
+{
+    QFileDialog *chooseFileDlg = new QFileDialog(m_parentDialog, i18n("Choose Layout Template file"), QDir::homePath(), QStringLiteral("layout.latte"));
+
+    chooseFileDlg->setLabelText(QFileDialog::Accept, i18nc("choose layout file","Choose"));
+    chooseFileDlg->setFileMode(QFileDialog::AnyFile);
+    chooseFileDlg->setAcceptMode(QFileDialog::AcceptSave);
+    chooseFileDlg->setDefaultSuffix("layout.latte");
+
+    QStringList filters;
+    QString filter1(i18nc("layout template", "Latte Dock Layout Template file v0.2") + "(*.layout.latte)");
+
+    filters << filter1;
+
+    chooseFileDlg->setNameFilters(filters);
+
+    connect(chooseFileDlg, &QFileDialog::finished, chooseFileDlg, &QFileDialog::deleteLater);
+
+    connect(chooseFileDlg, &QFileDialog::fileSelected, this, [&](const QString &file) {
+        qDebug() << "selected: " << file;
+
+    });
+
+    chooseFileDlg->open();
+    //chooseFileDlg->selectFile(selectedLayout.name);
 }
 
 void ExportTemplateHandler::onReset()

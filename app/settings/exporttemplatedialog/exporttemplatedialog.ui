@@ -95,7 +95,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string notr="true">&lt;b&gt;Location:&lt;/b&gt; ~/.config/latte/layouts/.....</string>
+            <string notr="true">&lt;b&gt;File:&lt;/b&gt; ~/.config/latte/layouts/.....</string>
            </property>
           </widget>
          </item>

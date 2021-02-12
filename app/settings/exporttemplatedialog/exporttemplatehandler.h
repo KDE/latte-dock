@@ -89,6 +89,8 @@ private slots:
     void onSelectAll();
     void onDeselectAll();
 
+    void chooseFileDialog();
+
 private:
     Dialog::ExportTemplateDialog *m_parentDialog{nullptr};
     Ui::ExportTemplateDialog *m_ui{nullptr};
