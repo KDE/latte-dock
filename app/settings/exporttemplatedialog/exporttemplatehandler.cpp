@@ -102,6 +102,7 @@ void ExportTemplateHandler::init()
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &ExportTemplateHandler::reset);
 
     connect(m_ui->chooseBtn, &QPushButton::clicked, this, &ExportTemplateHandler::chooseFileDialog);
+    connect(m_parentDialog->exportButton(), &QPushButton::clicked, this, &ExportTemplateHandler::onExport);
 
     //! Labels
     connect(this, &ExportTemplateHandler::filepathChanged, this, &ExportTemplateHandler::onFilepathChanged);
@@ -119,6 +120,7 @@ void ExportTemplateHandler::setFilepath(const QString &filepath)
 
 void ExportTemplateHandler::loadLayoutApplets(const QString &layoutName, const QString &layoutId)
 {
+    m_originLayoutFilePath = layoutId;
     Data::AppletsTable c_data = Latte::Layouts::Storage::self()->plugins(layoutId);
     m_appletsModel->setData(c_data);
     m_parentDialog->setWindowTitle(i18n("Export Layout Template"));
@@ -175,6 +177,13 @@ void ExportTemplateHandler::chooseFileDialog()
 
     chooseFileDlg->open();
     chooseFileDlg->selectFile(currentFile.baseName());
+}
+
+void ExportTemplateHandler::onExport()
+{
+    if (!m_originLayoutFilePath.isEmpty()) {
+        bool result = Latte::Layouts::Storage::self()->exportTemplate(m_originLayoutFilePath, c_filepath, m_appletsModel->selectedApplets());
+    }
 }
 
 void ExportTemplateHandler::onFilepathChanged()

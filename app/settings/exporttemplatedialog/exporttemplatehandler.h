@@ -91,6 +91,7 @@ private:
     void setFilepath(const QString &filepath);
 
 private slots:
+    void onExport();
     void onFilepathChanged();
     void onSelectAll();
     void onDeselectAll();
@@ -100,6 +101,8 @@ private slots:
 private:
     QString c_filepath;
     QString o_filepath;
+
+    QString  m_originLayoutFilePath;
 
     Dialog::ExportTemplateDialog *m_parentDialog{nullptr};
     Ui::ExportTemplateDialog *m_ui{nullptr};

@@ -86,14 +86,17 @@ void ExportTemplateDialog::initButtons()
 
 void ExportTemplateDialog::initExtractButton(const QString &tooltip)
 {
-    QPushButton *extractBtn = new QPushButton(this);
-    extractBtn->setText(i18nc("export template", "Export"));
-    extractBtn->setIcon(QIcon::fromTheme("document-export"));
-    extractBtn->setToolTip(tooltip);
+    m_exportButton = new QPushButton(this);
+    m_exportButton->setText(i18nc("export template", "Export"));
+    m_exportButton->setIcon(QIcon::fromTheme("document-export"));
+    m_exportButton->setToolTip(tooltip);
 
-    m_ui->buttonBox->addButton(extractBtn, QDialogButtonBox::AcceptRole);
+    m_ui->buttonBox->addButton(m_exportButton, QDialogButtonBox::AcceptRole);
+}
 
-    connect(extractBtn, &QPushButton::clicked, this, &ExportTemplateDialog::onCancel);
+QPushButton *ExportTemplateDialog::exportButton() const
+{
+    return m_exportButton;
 }
 
 void ExportTemplateDialog::onDataChanged()

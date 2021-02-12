@@ -73,6 +73,8 @@ public:
     void setData(const Latte::Data::AppletsTable &applets);
     void setSelected(const Latte::Data::AppletsTable &applets);
 
+    Latte::Data::AppletsTable selectedApplets();
+
     void deselectAll();
     void reset();
     void selectAll();

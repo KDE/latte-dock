@@ -578,6 +578,39 @@ ViewDelayedCreationData Storage::newView(const Layout::GenericLayout *destinatio
     return result;
 }
 
+bool Storage::exportTemplate(const QString &originFile, const QString &destinationFile,const Data::AppletsTable &approvedApplets)
+{
+    if (originFile.isEmpty() || !QFile(originFile).exists() || destinationFile.isEmpty()) {
+        return false;
+    }
+
+    if (QFile(destinationFile).exists()) {
+        QFile::remove(destinationFile);
+    }
+
+    QFile(originFile).copy(destinationFile);
+
+    KSharedConfigPtr destFilePtr = KSharedConfig::openConfig(destinationFile);
+    KConfigGroup containments = KConfigGroup(destFilePtr, "Containments");
+
+    for (const auto &cId : containments.groupList()) {
+        auto applets = containments.group(cId).group("Applets");
+        for (const auto &aId: applets.groupList()) {
+            QString pluginId = applets.group(aId).readEntry("plugin", "");
+
+            if (!approvedApplets.containsId(pluginId)) {
+                for (const auto &configId: applets.group(aId).groupList()) {
+                    applets.group(aId).group(configId).deleteGroup();
+                }
+            }
+        }
+    }
+
+    containments.sync();
+
+    return true;
+}
+
 ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, Plasma::Containment *containment)
 {
     if (!containment || !layout->corona()) {

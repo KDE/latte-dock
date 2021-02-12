@@ -197,6 +197,18 @@ void Applets::setSelected(const Latte::Data::AppletsTable &applets)
     }
 }
 
+Latte::Data::AppletsTable Applets::selectedApplets()
+{
+    Data::AppletsTable selected;
+
+    for(int i=0; i<c_applets.rowCount(); ++i) {
+        if (c_applets[i].isSelected) {
+            selected << c_applets[i];
+        }
+    }
+    return selected;
+}
+
 Qt::ItemFlags Applets::flags(const QModelIndex &index) const
 {
     const int column = index.column();

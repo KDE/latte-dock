@@ -28,6 +28,7 @@
 // Qt
 #include <QDialog>
 #include <QObject>
+#include <QPushButton>
 #include <QWindow>
 
 namespace Ui {
@@ -63,6 +64,8 @@ public:
     Ui::ExportTemplateDialog *ui() const;
     Latte::Corona *corona() const;
 
+    QPushButton *exportButton() const;
+
 protected:
     void accept() override;
 
@@ -80,6 +83,8 @@ private:
 private:
     bool m_isExportingLayout{false};
     bool m_isExportingView{false};
+
+    QPushButton *m_exportButton{nullptr};
 
     Latte::Corona *m_corona{nullptr};
 
