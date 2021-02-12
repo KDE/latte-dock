@@ -69,10 +69,6 @@ public:
     bool inDefaultValues() const override;
     bool isCurrentTab() const;
 
-    void reset() override;
-    void resetDefaults() override;
-    void save() override;
-
     Latte::Corona *corona() const;
     Dialog::SettingsDialog *dialog() const;
     Ui::SettingsDialog *ui() const;
@@ -82,6 +78,10 @@ public slots:
     void onDragLeaveEvent(QDragLeaveEvent *event);
     void onDragMoveEvent(QDragMoveEvent *event);
     void onDropEvent(QDropEvent *event);
+
+    void reset() override;
+    void resetDefaults() override;
+    void save() override;
 
 private slots:
     void initUi();

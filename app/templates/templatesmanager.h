@@ -54,6 +54,9 @@ public:
     Latte::Corona *corona();
     void init();
 
+    bool layoutTemplateExists(const QString &templateName) const;
+    bool viewTemplateExists(const QString &templateName) const;
+
     Data::Layout layoutTemplateForName(const QString &layoutName);
 
     Data::LayoutsTable systemLayoutTemplates();
@@ -62,6 +65,8 @@ public:
     //! creates a new layout with layoutName based on specific layout template and returns the new layout path
     QString newLayout(QString layoutName, QString layoutTemplate = i18n(DEFAULTLAYOUTTEMPLATENAME));
 
+    QString proposedTemplateAbsolutePath(QString templateFilename);
+
     void importSystemLayouts();
 
 signals:
@@ -69,6 +74,9 @@ signals:
 
 private:
     void exposeTranslatedTemplateNames();
+
+    QString uniqueLayoutTemplateName(QString name) const;
+    QString uniqueViewTemplateName(QString name) const;
 
 private:
     Latte::Corona *m_corona;

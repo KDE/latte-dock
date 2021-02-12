@@ -26,13 +26,17 @@
 #include "appletsmodel.h"
 #include "delegates/normalcheckboxdelegate.h"
 #include "../settingsdialog/layoutscontroller.h"
+#include "../../lattecorona.h"
 #include "../../data/appletdata.h"
 #include "../../layout/genericlayout.h"
 #include "../../layouts/storage.h"
+#include "../../templates/templatesmanager.h"
 #include "../../view/view.h"
 
 // Qt
+#include <QDir>
 #include <QFileDialog>
+#include <QFileInfo>
 
 // KDE
 #include <KLocalizedString>
@@ -57,6 +61,8 @@ ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *paren
     : ExportTemplateHandler(parentDialog)
 {
     loadLayoutApplets(layoutName, layoutId);
+    o_filepath = parentDialog->corona()->templatesManager()->proposedTemplateAbsolutePath(layoutName + ".layout.latte");
+    setFilepath(o_filepath);
 }
 
 ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, Latte::View *view)
@@ -69,7 +75,7 @@ ExportTemplateHandler::~ExportTemplateHandler()
 }
 
 void ExportTemplateHandler::init()
-{   
+{
     m_ui->appletsTable->horizontalHeader()->setStretchLastSection(true);
     m_ui->appletsTable->horizontalHeader()->setSectionsClickable(false);
 
@@ -77,8 +83,11 @@ void ExportTemplateHandler::init()
 
     m_ui->appletsTable->setItemDelegateForColumn(Model::Applets::NAMECOLUMN, new Settings::Applets::Delegate::NormalCheckBox(this));
 
-    //! Applets Model
+    //! Data Changed
+    connect(this, &ExportTemplateHandler::filepathChanged, this, &ExportTemplateHandler::dataChanged);
     connect(m_appletsModel, &Settings::Model::Applets::appletsDataChanged, this, &ExportTemplateHandler::dataChanged);
+
+    //! Applets Model
     m_appletsProxyModel = new QSortFilterProxyModel(this);
     m_appletsProxyModel->setSourceModel(m_appletsModel);
     m_appletsProxyModel->setSortRole(Model::Applets::SORTINGROLE);
@@ -90,9 +99,22 @@ void ExportTemplateHandler::init()
     //! Buttons
     connect(m_ui->deselectAllBtn, &QPushButton::clicked, this, &ExportTemplateHandler::onDeselectAll);
     connect(m_ui->selectAllBtn, &QPushButton::clicked, this, &ExportTemplateHandler::onSelectAll);
-    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &ExportTemplateHandler::onReset);
+    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &ExportTemplateHandler::reset);
 
     connect(m_ui->chooseBtn, &QPushButton::clicked, this, &ExportTemplateHandler::chooseFileDialog);
+
+    //! Labels
+    connect(this, &ExportTemplateHandler::filepathChanged, this, &ExportTemplateHandler::onFilepathChanged);
+}
+
+void ExportTemplateHandler::setFilepath(const QString &filepath)
+{
+    if (c_filepath == filepath) {
+        return;
+    }
+
+    c_filepath = filepath;
+    emit filepathChanged();
 }
 
 void ExportTemplateHandler::loadLayoutApplets(const QString &layoutName, const QString &layoutId)
@@ -111,34 +133,56 @@ void ExportTemplateHandler::loadViewApplets(Latte::View *view)
 
 void ExportTemplateHandler::chooseFileDialog()
 {
-    QFileDialog *chooseFileDlg = new QFileDialog(m_parentDialog, i18n("Choose Layout Template file"), QDir::homePath(), QStringLiteral("layout.latte"));
+    QFileInfo currentFile(c_filepath);
+    bool inLayoutState = c_filepath.endsWith("layout.latte");
 
-    chooseFileDlg->setLabelText(QFileDialog::Accept, i18nc("choose layout file","Choose"));
+    QFileDialog *chooseFileDlg = new QFileDialog(m_parentDialog,
+                                                 inLayoutState ? i18n("Choose Layout Template file") : i18n("Choose View Template file"),
+                                                 currentFile.absoluteFilePath(),
+                                                 inLayoutState ? QStringLiteral(".layout.latte") : QStringLiteral(".view.latte"));
+
+    chooseFileDlg->setLabelText(QFileDialog::Accept, i18nc("choose file","Choose"));
     chooseFileDlg->setFileMode(QFileDialog::AnyFile);
     chooseFileDlg->setAcceptMode(QFileDialog::AcceptSave);
-    chooseFileDlg->setDefaultSuffix("layout.latte");
+    if (inLayoutState) {
+        chooseFileDlg->setDefaultSuffix("layout.latte");
+    } else {
+        chooseFileDlg->setDefaultSuffix("view.latte");
+    }
 
     QStringList filters;
-    QString filter1(i18nc("layout template", "Latte Dock Layout Template file v0.2") + "(*.layout.latte)");
 
-    filters << filter1;
+    if (inLayoutState) {
+        filters << QString(i18nc("layout template", "Latte Dock Layout Template file v0.2") + "(*.layout.latte)");
+    } else {
+        filters << QString(i18nc("view template", "Latte Dock View Template file v0.2") + "(*.view.latte)");
+    }
 
     chooseFileDlg->setNameFilters(filters);
 
     connect(chooseFileDlg, &QFileDialog::finished, chooseFileDlg, &QFileDialog::deleteLater);
-
-    connect(chooseFileDlg, &QFileDialog::fileSelected, this, [&](const QString &file) {
-        qDebug() << "selected: " << file;
-
+    connect(chooseFileDlg, &QFileDialog::fileSelected, this, [&, inLayoutState](const QString &file) {
+        if (inLayoutState) {
+            if (!file.endsWith(".layout.latte")) {
+                QString selected = file;
+                selected = selected.replace(QDir::homePath(), "~");
+                showInlineMessage(i18n("<i>%0</i> does not end with <i>.layout.latte</i> extension. Selected file <b>rejected</b>.").arg(selected), KMessageWidget::Error, true);
+            } else {
+                setFilepath(file);
+            }
+        }
     });
 
     chooseFileDlg->open();
-    //chooseFileDlg->selectFile(selectedLayout.name);
+    chooseFileDlg->selectFile(currentFile.baseName());
 }
 
-void ExportTemplateHandler::onReset()
+void ExportTemplateHandler::onFilepathChanged()
 {
-    m_appletsModel->reset();
+    QString filepath = c_filepath;
+
+    filepath = filepath.replace(QDir::homePath(), "~");
+    m_ui->fileLbl->setText(filepath);
 }
 
 void ExportTemplateHandler::onSelectAll()
@@ -154,17 +198,21 @@ void ExportTemplateHandler::onDeselectAll()
 
 bool ExportTemplateHandler::hasChangedData() const
 {
-    return m_appletsModel->hasChangedData();
+    return (c_filepath != o_filepath) || m_appletsModel->hasChangedData();
 }
 
 bool ExportTemplateHandler::inDefaultValues() const
 {
-    return m_appletsModel->inDefaultValues();
+    return (c_filepath == o_filepath) && m_appletsModel->inDefaultValues();
 }
 
 void ExportTemplateHandler::reset()
 {
-    m_appletsModel->reset();
+    setFilepath(o_filepath);
+
+    if (m_appletsModel->hasChangedData()) {
+        m_appletsModel->reset();
+    }
 }
 
 void ExportTemplateHandler::resetDefaults()

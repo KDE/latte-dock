@@ -30,10 +30,12 @@ namespace Latte {
 namespace Settings {
 namespace Dialog {
 
-ExportTemplateDialog::ExportTemplateDialog(QWidget *parent, const QString &layoutName, const QString &layoutId)
+ExportTemplateDialog::ExportTemplateDialog(SettingsDialog *parent, const QString &layoutName, const QString &layoutId)
     : GenericDialog(parent),
       m_ui(new Ui::ExportTemplateDialog)
 {
+    m_corona = parent->corona();
+
     init();
     initExtractButton(i18n("Export your selected layout as template"));
     //! we must create handlers after creating/adjusting the ui
@@ -45,6 +47,8 @@ ExportTemplateDialog::ExportTemplateDialog(Latte::View *view)
     : GenericDialog(nullptr),
       m_ui(new Ui::ExportTemplateDialog)
 {
+    m_corona = qobject_cast<Latte::Corona *>(view->corona());
+
     init();
     initExtractButton(i18n("Export your selected view as template"));
     //! we must create handlers after creating/adjusting the ui
@@ -53,6 +57,11 @@ ExportTemplateDialog::ExportTemplateDialog(Latte::View *view)
 
 ExportTemplateDialog::~ExportTemplateDialog()
 {
+}
+
+Latte::Corona *ExportTemplateDialog::corona() const
+{
+    return m_corona;
 }
 
 Ui::ExportTemplateDialog *ExportTemplateDialog::ui() const

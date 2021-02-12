@@ -87,7 +87,20 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QLabel" name="locationLbl">
+          <widget class="QLabel" name="fileTabLbl">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>File:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="fileLbl">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -95,7 +108,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string notr="true">&lt;b&gt;File:&lt;/b&gt; ~/.config/latte/layouts/.....</string>
+            <string notr="true">~/.config/latte/layouts/.....</string>
            </property>
           </widget>
          </item>

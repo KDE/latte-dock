@@ -56,11 +56,12 @@ class ExportTemplateDialog : public GenericDialog
     Q_OBJECT
 
 public:
-    ExportTemplateDialog(QWidget *parent, const QString &layoutName, const QString &layoutId);
+    ExportTemplateDialog(SettingsDialog *parent, const QString &layoutName, const QString &layoutId);
     ExportTemplateDialog(Latte::View *view);
     ~ExportTemplateDialog();
 
     Ui::ExportTemplateDialog *ui() const;
+    Latte::Corona *corona() const;
 
 protected:
     void accept() override;
@@ -79,6 +80,8 @@ private:
 private:
     bool m_isExportingLayout{false};
     bool m_isExportingView{false};
+
+    Latte::Corona *m_corona{nullptr};
 
     Ui::ExportTemplateDialog *m_ui;
     Controller::Layouts *m_layoutsController{nullptr};

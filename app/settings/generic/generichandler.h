@@ -60,11 +60,12 @@ public:
     virtual bool hasChangedData() const = 0;
     virtual bool inDefaultValues() const = 0;
 
+    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent = false, QList<QAction *> actions = QList<QAction *>());
+
+public slots:
     virtual void reset() = 0;
     virtual void resetDefaults() = 0;
     virtual void save() = 0;
-
-    void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent = false, QList<QAction *> actions = QList<QAction *>());
 
 signals:
     void dataChanged();

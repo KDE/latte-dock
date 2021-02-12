@@ -23,6 +23,7 @@
 #include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"
 #include "../layouts/importer.h"
+#include "../tools/commontools.h"
 
 // Qt
 #include <QDir>
@@ -44,7 +45,7 @@ Manager::~Manager()
 }
 
 void Manager::init()
-{
+{      
     QDir systemTemplatesDir(m_corona->kPackage().filePath("templates"));
     QStringList filter;
     filter.append(QString("*.layout.latte"));
@@ -80,6 +81,12 @@ void Manager::init()
 
             m_viewTemplates << vdata;
         }
+    }
+
+    //! Local Templates
+    QDir localTemplatesDir(Latte::configPath() + "/latte/templates");
+    if (!localTemplatesDir.exists()) {
+        QDir(Latte::configPath() + "/latte").mkdir("templates");
     }
 }
 
@@ -153,6 +160,72 @@ void Manager::importSystemLayouts()
             }
         }
     }
+}
+
+QString Manager::proposedTemplateAbsolutePath(QString templateFilename)
+{
+    QString tempfilename = templateFilename;
+
+    if (tempfilename.endsWith(".layout.latte")) {
+        QString clearedname = QFileInfo(tempfilename).baseName();
+        tempfilename = uniqueLayoutTemplateName(clearedname) + ".layout.latte";
+    } else if (tempfilename.endsWith(".view.latte")) {
+        QString clearedname = QFileInfo(tempfilename).baseName();
+        tempfilename = uniqueViewTemplateName(clearedname) + ".view.latte";
+    }
+
+    return QString(Latte::configPath() + "/latte/templates/" + tempfilename);
+}
+
+
+bool Manager::layoutTemplateExists(const QString &templateName) const
+{
+    return m_layoutTemplates.containsName(templateName);
+}
+
+bool Manager::viewTemplateExists(const QString &templateName) const
+{
+    return m_viewTemplates.containsName(templateName);
+}
+
+QString Manager::uniqueLayoutTemplateName(QString name) const
+{
+    int pos_ = name.lastIndexOf(QRegExp(QString(" - [0-9]+")));
+
+    if (layoutTemplateExists(name) && pos_ > 0) {
+        name = name.left(pos_);
+    }
+
+    int i = 2;
+
+    QString namePart = name;
+
+    while (layoutTemplateExists(name)) {
+        name = namePart + " - " + QString::number(i);
+        i++;
+    }
+
+    return name;
+}
+
+QString Manager::uniqueViewTemplateName(QString name) const
+{
+    int pos_ = name.lastIndexOf(QRegExp(QString(" - [0-9]+")));
+
+    if (viewTemplateExists(name) && pos_ > 0) {
+        name = name.left(pos_);
+    }
+
+    int i = 2;
+
+    QString namePart = name;
+
+    while (viewTemplateExists(name)) {
+        name = namePart + " - " + QString::number(i);
+        i++;
+    }
+
+    return name;
 }
 
 

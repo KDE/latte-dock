@@ -69,11 +69,12 @@ public:
     bool hasChangedData() const override;
     bool inDefaultValues() const override;
 
+    Latte::Data::Layout currentData() const;
+
+public slots:
     void reset() override;
     void resetDefaults() override;
     void save() override;
-
-    Latte::Data::Layout currentData() const;
 
 signals:
     void currentLayoutChanged();

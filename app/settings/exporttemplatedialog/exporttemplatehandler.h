@@ -71,11 +71,15 @@ public:
     bool hasChangedData() const override;
     bool inDefaultValues() const override;
 
+    Latte::Data::AppletsTable currentData() const;
+
+public slots:
     void reset() override;
     void resetDefaults() override;
     void save() override;
 
-    Latte::Data::AppletsTable currentData() const;
+signals:
+    void filepathChanged();
 
 private:
     void init();
@@ -84,14 +88,19 @@ private:
     void loadLayoutApplets(const QString &layoutName, const QString &layoutId);
     void loadViewApplets(Latte::View *view);
 
+    void setFilepath(const QString &filepath);
+
 private slots:
-    void onReset();
+    void onFilepathChanged();
     void onSelectAll();
     void onDeselectAll();
 
     void chooseFileDialog();
 
 private:
+    QString c_filepath;
+    QString o_filepath;
+
     Dialog::ExportTemplateDialog *m_parentDialog{nullptr};
     Ui::ExportTemplateDialog *m_ui{nullptr};
 
