@@ -73,6 +73,9 @@ signals:
     void newLayoutAdded(const QString &path);
 
 private:
+    void initLayoutTemplates(const QString &path);
+    void initViewTemplates(const QString &path);
+
     void exposeTranslatedTemplateNames();
 
     QString uniqueLayoutTemplateName(QString name) const;

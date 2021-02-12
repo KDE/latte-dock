@@ -45,16 +45,31 @@ Manager::~Manager()
 }
 
 void Manager::init()
-{      
-    QDir systemTemplatesDir(m_corona->kPackage().filePath("templates"));
+{
+    //! Local Templates
+    QDir localTemplatesDir(Latte::configPath() + "/latte/templates");
+    if (!localTemplatesDir.exists()) {
+        QDir(Latte::configPath() + "/latte").mkdir("templates");
+    }
+
+    initLayoutTemplates(m_corona->kPackage().filePath("templates"));
+    initLayoutTemplates(Latte::configPath() + "/latte/templates");
+
+    initViewTemplates(m_corona->kPackage().filePath("templates"));
+    initViewTemplates(Latte::configPath() + "/latte/templates");
+}
+
+void Manager::initLayoutTemplates(const QString &path)
+{
+    QDir templatesDir(path);
     QStringList filter;
     filter.append(QString("*.layout.latte"));
-    QStringList systemLayoutTemplates = systemTemplatesDir.entryList(filter, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    QStringList templates = templatesDir.entryList(filter, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
 
-    for (int i=0; i<systemLayoutTemplates.count(); ++i) {
-        QString systemTemplatePath = systemTemplatesDir.path() + "/" + systemLayoutTemplates[i];
-        if (!m_layoutTemplates.containsId(systemTemplatePath)) {
-            CentralLayout layouttemplate(this, systemTemplatePath);
+    for (int i=0; i<templates.count(); ++i) {
+        QString templatePath = templatesDir.path() + "/" + templates[i];
+        if (!m_layoutTemplates.containsId(templatePath)) {
+            CentralLayout layouttemplate(this, templatePath);
 
             Data::Layout tdata = layouttemplate.data();
             tdata.isTemplate = true;
@@ -67,26 +82,24 @@ void Manager::init()
             m_layoutTemplates << tdata;
         }
     }
+}
 
-    filter.clear();
+void Manager::initViewTemplates(const QString &path)
+{
+    QDir templatesDir(path);
+    QStringList filter;
     filter.append(QString("*.view.latte"));
-    QStringList systemViewTemplates = systemTemplatesDir.entryList(filter, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    QStringList templates = templatesDir.entryList(filter, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
 
-    for (int i=0; i<systemViewTemplates.count(); ++i) {
-        QString systemViewTemplatePath = systemTemplatesDir.path() + "/" + systemViewTemplates[i];
-        if (!m_viewTemplates.containsId(systemViewTemplatePath)) {
+    for (int i=0; i<templates.count(); ++i) {
+        QString templatePath = templatesDir.path() + "/" + templates[i];
+        if (!m_viewTemplates.containsId(templatePath)) {
             Data::Generic vdata;
-            vdata.id = systemViewTemplatePath;
-            vdata.name = QFileInfo(systemViewTemplatePath).baseName();
+            vdata.id = templatePath;
+            vdata.name = QFileInfo(templatePath).baseName();
 
             m_viewTemplates << vdata;
         }
-    }
-
-    //! Local Templates
-    QDir localTemplatesDir(Latte::configPath() + "/latte/templates");
-    if (!localTemplatesDir.exists()) {
-        QDir(Latte::configPath() + "/latte").mkdir("templates");
     }
 }
 
