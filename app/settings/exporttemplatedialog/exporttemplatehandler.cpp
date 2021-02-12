@@ -34,12 +34,15 @@
 #include "../../view/view.h"
 
 // Qt
+#include <QAction>
 #include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QList>
 
 // KDE
 #include <KLocalizedString>
+#include <KIO/OpenFileManagerWindowJob>
 
 // Plasma
 #include <Plasma/Containment>
@@ -181,8 +184,38 @@ void ExportTemplateHandler::chooseFileDialog()
 
 void ExportTemplateHandler::onExport()
 {
+    auto showExportTemplateError = [this](const QString &templateName) {
+        showInlineMessage(i18nc("settings:template export fail","Template <b>%0</b> export <b>failed</b>...").arg(templateName),
+                          KMessageWidget::Error,
+                          true);
+    };
+
     if (!m_originLayoutFilePath.isEmpty()) {
-        bool result = Latte::Layouts::Storage::self()->exportTemplate(m_originLayoutFilePath, c_filepath, m_appletsModel->selectedApplets());
+        bool result = m_parentDialog->corona()->templatesManager()->exportTemplate(m_originLayoutFilePath,
+                                                                                   c_filepath,
+                                                                                   m_appletsModel->selectedApplets());
+
+        if (result) {
+            QAction *openUrlAction = new QAction(i18n("Open Location..."), this);
+            openUrlAction->setData(c_filepath);
+            QList<QAction *> actions;
+            actions << openUrlAction;
+
+            connect(openUrlAction, &QAction::triggered, this, [&, openUrlAction]() {
+                QString file = openUrlAction->data().toString();
+
+                if (!file.isEmpty()) {
+                    KIO::highlightInFileManager({file});
+                }
+            });
+
+            showInlineMessage(i18nc("settings:template export success","Template <b>%0</b> export succeeded...").arg(QFileInfo(c_filepath).baseName()),
+                              KMessageWidget::Information,
+                              false,
+                              actions);
+        } else {
+            showExportTemplateError(QFileInfo(c_filepath).baseName());
+        }
     }
 }
 

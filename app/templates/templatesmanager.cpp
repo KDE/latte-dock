@@ -23,6 +23,7 @@
 #include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"
 #include "../layouts/importer.h"
+#include "../layouts/storage.h"
 #include "../tools/commontools.h"
 
 // Qt
@@ -46,6 +47,9 @@ Manager::~Manager()
 
 void Manager::init()
 {
+    m_layoutTemplates.clear();
+    m_viewTemplates.clear();
+
     //! Local Templates
     QDir localTemplatesDir(Latte::configPath() + "/latte/templates");
     if (!localTemplatesDir.exists()) {
@@ -159,6 +163,17 @@ QString Manager::newLayout(QString layoutName, QString layoutTemplate)
     emit newLayoutAdded(newLayoutPath);
 
     return newLayoutPath;
+}
+
+bool Manager::exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets)
+{
+    bool result = Latte::Layouts::Storage::self()->exportTemplate(originFile, destinationFile, approvedApplets);
+
+    if (result) {
+        init();
+    }
+
+    return result;
 }
 
 void Manager::importSystemLayouts()

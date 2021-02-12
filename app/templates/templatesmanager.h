@@ -22,6 +22,7 @@
 
 // local
 #include "../lattecorona.h"
+#include "../data/appletdata.h"
 #include "../data/layoutdata.h"
 #include "../data/layoutstable.h"
 #include "../data/genericdata.h"
@@ -56,6 +57,8 @@ public:
 
     bool layoutTemplateExists(const QString &templateName) const;
     bool viewTemplateExists(const QString &templateName) const;
+
+    bool exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
 
     Data::Layout layoutTemplateForName(const QString &layoutName);
 
