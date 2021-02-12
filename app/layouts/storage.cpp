@@ -598,7 +598,8 @@ bool Storage::exportTemplate(const QString &originFile, const QString &destinati
         for (const auto &aId: applets.groupList()) {
             QString pluginId = applets.group(aId).readEntry("plugin", "");
 
-            if (!approvedApplets.containsId(pluginId)) {
+            if (!approvedApplets.containsId(pluginId) && !isSubContainment(applets.group(aId))) {
+                //!remove all configuration for that applet
                 for (const auto &configId: applets.group(aId).groupList()) {
                     applets.group(aId).group(configId).deleteGroup();
                 }
