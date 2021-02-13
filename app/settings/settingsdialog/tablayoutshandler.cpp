@@ -150,6 +150,8 @@ void TabLayouts::initLayoutMenu()
     m_newLayoutAction->setMenu(m_layoutTemplatesSubMenu);
     m_ui->newButton->setMenu(m_layoutTemplatesSubMenu);
 
+    connect(m_corona->templatesManager(), &Latte::Templates::Manager::templatesChanged, this, &TabLayouts::initLayoutTemplatesSubMenu);
+
     m_copyLayoutAction = m_layoutMenu->addAction(i18nc("copy layout", "&Copy"));
     m_copyLayoutAction->setToolTip(i18n("Copy selected layout"));
     m_copyLayoutAction->setIcon(QIcon::fromTheme("edit-copy"));

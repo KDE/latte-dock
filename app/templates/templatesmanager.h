@@ -74,6 +74,10 @@ public:
 
 signals:
     void newLayoutAdded(const QString &path);
+    void templatesChanged();
+
+private slots:
+    void onCustomTemplateDeleted(const QString &file);
 
 private:
     void initLayoutTemplates(const QString &path);

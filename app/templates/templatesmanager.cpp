@@ -30,6 +30,7 @@
 #include <QDir>
 
 // KDE
+#include <KDirWatch>
 #include <KLocalizedString>
 
 namespace Latte {
@@ -39,6 +40,8 @@ Manager::Manager(Latte::Corona *corona)
     : QObject(corona),
       m_corona(corona)
 {
+    KDirWatch::self()->addDir(Latte::configPath() + "/latte/templates", KDirWatch::WatchFiles);
+    connect(KDirWatch::self(), &KDirWatch::deleted, this, &Manager::onCustomTemplateDeleted);
 }
 
 Manager::~Manager()
@@ -61,6 +64,8 @@ void Manager::init()
 
     initViewTemplates(m_corona->kPackage().filePath("templates"));
     initViewTemplates(Latte::configPath() + "/latte/templates");
+
+    emit templatesChanged();
 }
 
 void Manager::initLayoutTemplates(const QString &path)
@@ -174,6 +179,14 @@ bool Manager::exportTemplate(const QString &originFile, const QString &destinati
     }
 
     return result;
+}
+
+void Manager::onCustomTemplateDeleted(const QString &file)
+{
+    qDebug() << " file removed ::: " << file;
+    if (file.startsWith(Latte::configPath() + "/latte/templates")) {
+        init();
+    }
 }
 
 void Manager::importSystemLayouts()
