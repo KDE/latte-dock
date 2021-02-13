@@ -45,6 +45,7 @@ Manager::Manager(Latte::Corona *corona)
     KDirWatch::self()->addDir(Latte::configPath() + "/latte/templates", KDirWatch::WatchFiles);
     connect(KDirWatch::self(), &KDirWatch::created, this, &Manager::onCustomTemplatesCountChanged);
     connect(KDirWatch::self(), &KDirWatch::deleted, this, &Manager::onCustomTemplatesCountChanged);
+    connect(KDirWatch::self(), &KDirWatch::dirty, this, &Manager::onCustomTemplatesCountChanged);
 }
 
 Manager::~Manager()
@@ -109,6 +110,7 @@ void Manager::initViewTemplates(const QString &path)
 
     for (int i=0; i<templates.count(); ++i) {
         QString templatePath = templatesDir.path() + "/" + templates[i];
+
         if (!m_viewTemplates.containsId(templatePath)) {
             Data::Generic vdata;
             vdata.id = templatePath;
