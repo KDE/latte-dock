@@ -56,6 +56,7 @@ ExportTemplateDialog::ExportTemplateDialog(Latte::View *view)
     initExportButton(i18n("Export your selected view as template"));
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ExportTemplateHandler(this, view);
+    connect(m_handler, &Handler::ExportTemplateHandler::dataChanged, this, &ExportTemplateDialog::onDataChanged);
 }
 
 ExportTemplateDialog::~ExportTemplateDialog()
