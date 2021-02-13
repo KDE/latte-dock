@@ -24,6 +24,9 @@
 #include "ui_exporttemplatedialog.h"
 #include "exporttemplatehandler.h"
 #include "../settingsdialog/layoutscontroller.h"
+#include "../../layouts/manager.h"
+#include "../../layouts/synchronizer.h"
+#include "../../settings/universalsettings.h"
 #include "../../view/view.h"
 
 namespace Latte {
@@ -75,6 +78,10 @@ void ExportTemplateDialog::init()
     //! first we need to setup the ui
     m_ui->setupUi(this);
     initButtons();
+
+    //! Update ALL active original layouts before exporting,
+    m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
+    m_corona->universalSettings()->syncSettings();
 }
 
 void ExportTemplateDialog::initButtons()

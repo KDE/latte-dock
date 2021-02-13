@@ -559,10 +559,6 @@ void TabLayouts::exportLayoutAsTemplate()
         return;
     }
 
-    //! Update ALL active original layouts before exporting,
-    m_corona->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
-    m_corona->universalSettings()->syncSettings();
-
     Data::Layout o_layout = m_layoutsController->selectedLayoutOriginalData();
     Data::Layout c_layout = m_layoutsController->selectedLayoutCurrentData();
 
