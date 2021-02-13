@@ -23,6 +23,7 @@
 #include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"
 #include "../layouts/importer.h"
+#include "../layouts/manager.h"
 #include "../layouts/storage.h"
 #include "../tools/commontools.h"
 #include "../view/view.h"
@@ -52,6 +53,8 @@ Manager::~Manager()
 
 void Manager::init()
 {
+    connect(this, &Manager::viewTemplatesChanged, m_corona->layoutsManager(), &Latte::Layouts::Manager::viewTemplatesChanged);
+
     initLayoutTemplates();
     initViewTemplates();
 }

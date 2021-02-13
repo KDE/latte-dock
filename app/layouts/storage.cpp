@@ -678,6 +678,8 @@ bool Storage::exportTemplate(const Layout::GenericLayout *layout, Plasma::Contai
         }
     }
 
+    copied_conts.sync();
+
     return true;
 }
 

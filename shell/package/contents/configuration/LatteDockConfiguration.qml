@@ -542,13 +542,13 @@ Loader {
                         onActivated: {
                             var item = actionsModel.get(index);
 
-                            if (item.actionId === "new:") {
+                            if (item && item.actionId === "new:") {
                                 latteView.layout.newView(item.templateId);
-                            } else  if (item.actionId === "export:") {
+                            } else  if (item && item.actionId === "export:") {
                                 latteView.exportTemplate();
-                            } else  if (item.actionId === "copy:") {
+                            } else  if (item && item.actionId === "copy:") {
                                 latteView.copyView();
-                            } else if (item.actionId === "move:") {
+                            } else if (item && item.actionId === "move:") {
                                 var layouts = actionsComboBtn.centralLayoutsNames;
                                 latteView.positioner.hideDockDuringMovingToLayout(layouts[index-1]);
                             }
@@ -583,6 +583,11 @@ Loader {
                                 actionsComboBtn.updateModel();
                             }
                         }
+                    }
+
+                    Connections {
+                        target: layoutsManager
+                        onViewTemplatesChanged: actionsComboBtn.updateModel();
                     }
 
                     function updateModel() {
@@ -622,7 +627,8 @@ Loader {
                         if (viewTemplateIds.length > 1) {
                             var viewTemplateNames = layoutsManager.viewTemplateNames();
 
-                            for(var i=1; i<viewTemplateIds.length; ++i) {
+                            for(var i=viewTemplateIds.length-1; i>=1; --i) {
+                                //! add view templates on reverse
                                 var viewtemplate = {
                                     actionId: 'new:',
                                     enabled: true,

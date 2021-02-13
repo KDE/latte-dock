@@ -110,6 +110,7 @@ public slots:
 signals:
     void centralLayoutsChanged();
     void syncedLaunchersChanged();
+    void viewTemplatesChanged();
 
     void currentLayoutIsSwitching(QString layoutName);
 

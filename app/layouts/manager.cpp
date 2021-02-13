@@ -57,7 +57,6 @@ Manager::Manager(QObject *parent)
     m_synchronizer = new Synchronizer(this);
 
     if (m_corona) {
-
         connect(m_synchronizer, &Synchronizer::centralLayoutsChanged, this, &Manager::centralLayoutsChanged);
         connect(m_synchronizer, &Synchronizer::currentLayoutIsSwitching, this, &Manager::currentLayoutIsSwitching);
     }
