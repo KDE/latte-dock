@@ -570,7 +570,7 @@ Loader {
 
                     Connections{
                         target: latteView
-                        onTypeChanged: actionsComboBtn.updateCopyText()
+                        onTypeChanged: actionsComboBtn.updateCopyText();
                         onLayoutChanged: actionsComboBtn.updateModel();
                     }
 
@@ -608,9 +608,12 @@ Loader {
                             }
                         }
 
+                        var exporttemplate = {actionId: 'export:', enabled: true, name: i18n("Export as Template"), icon: 'document-export'};
+                        actionsModel.append(exporttemplate);
+
                         var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
                         actionsModel.append(copy);
-                        updateCopyText(actionsModel.count-1);
+                        updateCopyText();
 
                         var viewTemplateIds = layoutsManager.viewTemplateIds();
 
@@ -635,15 +638,18 @@ Loader {
 
                     function emptyModel() {
                         actionsModel.clear();
-                        var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
-                        actionsModel.append(copy);
-                        updateCopyText();
                         actionsComboBtn.comboBox.currentIndex = -1;
                     }
 
-                    function updateCopyText(copyIndex) {
-                        var copyText = latteView.type === LatteCore.Types.DockView ? i18n("Copy Dock") : i18n("Copy Panel")
-                        actionsModel.get(copyIndex).name = copyText;
+                    function updateCopyText() {
+                        for (var i=0; i<actionsModel.count; ++i) {
+                            var item = actionsModel.get(i);
+                            if (item.actionId === "copy:") {
+                                var copyText = latteView.type === LatteCore.Types.DockView ? i18n("Copy Dock") : i18n("Copy Panel")
+                                item.name = copyText;
+                                break;
+                            }
+                        }
                     }
                 }
 
