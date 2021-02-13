@@ -904,7 +904,13 @@ Data::Applet Storage::metadata(const QString &pluginId)
     if (pkg.isValid()) {
         data.name = pkg.metadata().name();
         data.description = pkg.metadata().description();
-        data.icon = pkg.metadata().iconName();
+
+        QString iconName = pkg.metadata().iconName();
+        if (!iconName.startsWith("/") && iconName.contains("/")) {
+            data.icon = QFileInfo(pkg.metadata().fileName()).absolutePath() + "/" + iconName;
+        } else {
+            data.icon = iconName;
+        }
     }
 
     return data;
