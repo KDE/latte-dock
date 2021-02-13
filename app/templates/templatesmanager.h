@@ -74,12 +74,16 @@ public:
 
 signals:
     void newLayoutAdded(const QString &path);
-    void templatesChanged();
+    void layoutTemplatesChanged();
+    void viewTemplatesChanged();
 
 private slots:
-    void onCustomTemplateDeleted(const QString &file);
+    void onCustomTemplatesCountChanged(const QString &file);
 
 private:
+    void initLayoutTemplates();
+    void initViewTemplates();
+
     void initLayoutTemplates(const QString &path);
     void initViewTemplates(const QString &path);
 

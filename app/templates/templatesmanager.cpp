@@ -41,7 +41,8 @@ Manager::Manager(Latte::Corona *corona)
       m_corona(corona)
 {
     KDirWatch::self()->addDir(Latte::configPath() + "/latte/templates", KDirWatch::WatchFiles);
-    connect(KDirWatch::self(), &KDirWatch::deleted, this, &Manager::onCustomTemplateDeleted);
+    connect(KDirWatch::self(), &KDirWatch::created, this, &Manager::onCustomTemplatesCountChanged);
+    connect(KDirWatch::self(), &KDirWatch::deleted, this, &Manager::onCustomTemplatesCountChanged);
 }
 
 Manager::~Manager()
@@ -50,22 +51,30 @@ Manager::~Manager()
 
 void Manager::init()
 {
-    m_layoutTemplates.clear();
-    m_viewTemplates.clear();
-
     //! Local Templates
     QDir localTemplatesDir(Latte::configPath() + "/latte/templates");
     if (!localTemplatesDir.exists()) {
         QDir(Latte::configPath() + "/latte").mkdir("templates");
     }
 
+    initLayoutTemplates();
+    initViewTemplates();
+}
+
+void Manager::initLayoutTemplates()
+{
+    m_layoutTemplates.clear();
     initLayoutTemplates(m_corona->kPackage().filePath("templates"));
     initLayoutTemplates(Latte::configPath() + "/latte/templates");
+    emit layoutTemplatesChanged();
+}
 
+void Manager::initViewTemplates()
+{
+    m_viewTemplates.clear();
     initViewTemplates(m_corona->kPackage().filePath("templates"));
     initViewTemplates(Latte::configPath() + "/latte/templates");
-
-    emit templatesChanged();
+    emit viewTemplatesChanged();
 }
 
 void Manager::initLayoutTemplates(const QString &path)
@@ -172,20 +181,17 @@ QString Manager::newLayout(QString layoutName, QString layoutTemplate)
 
 bool Manager::exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets)
 {
-    bool result = Latte::Layouts::Storage::self()->exportTemplate(originFile, destinationFile, approvedApplets);
-
-    if (result) {
-        init();
-    }
-
-    return result;
+    return Latte::Layouts::Storage::self()->exportTemplate(originFile, destinationFile, approvedApplets);
 }
 
-void Manager::onCustomTemplateDeleted(const QString &file)
+void Manager::onCustomTemplatesCountChanged(const QString &file)
 {
-    qDebug() << " file removed ::: " << file;
     if (file.startsWith(Latte::configPath() + "/latte/templates")) {
-        init();
+        if (file.endsWith(".layout.latte")) {
+            initLayoutTemplates();
+        } else if (file.endsWith(".view.latte")) {
+            initViewTemplates();
+        }
     }
 }
 
