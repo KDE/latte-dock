@@ -86,6 +86,7 @@ public:
     ViewDelayedCreationData newView(const Layout::GenericLayout *destination, const QString &templateFile);
 
     bool exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
+    bool exportTemplate(const Layout::GenericLayout *layout, Plasma::Containment *containment, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
 
     /// STATIC
     //! Check if an applet config group is valid or belongs to removed applet

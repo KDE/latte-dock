@@ -544,6 +544,8 @@ Loader {
 
                             if (item.actionId === "new:") {
                                 latteView.layout.newView(item.templateId);
+                            } else  if (item.actionId === "export:") {
+                                latteView.exportTemplate();
                             } else  if (item.actionId === "copy:") {
                                 latteView.copyView();
                             } else if (item.actionId === "move:") {

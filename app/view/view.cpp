@@ -39,6 +39,7 @@
 #include "../plasma/extended/theme.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
+#include "../settings/exporttemplatedialog/exporttemplatedialog.h"
 #include "../shortcuts/globalshortcuts.h"
 #include "../shortcuts/shortcutstracker.h"
 
@@ -451,6 +452,12 @@ void View::reconsiderScreen()
 void View::copyView()
 {
     m_layout->copyView(containment());
+}
+
+void View::exportTemplate()
+{
+    Latte::Settings::Dialog::ExportTemplateDialog *exportDlg = new Latte::Settings::Dialog::ExportTemplateDialog(this);
+    exportDlg->show();
 }
 
 void View::removeView()

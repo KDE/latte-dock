@@ -75,7 +75,7 @@ private slots:
     void onReset();
 
     void initButtons();
-    void initExtractButton(const QString &tooltip);
+    void initExportButton(const QString &tooltip);
 
 private:
     void init();

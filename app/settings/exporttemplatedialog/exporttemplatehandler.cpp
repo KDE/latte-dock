@@ -21,6 +21,7 @@
 #include "exporttemplatehandler.h"
 
 // local
+#include <coretypes.h>
 #include "ui_exporttemplatedialog.h"
 #include "exporttemplatedialog.h"
 #include "appletsmodel.h"
@@ -71,6 +72,10 @@ ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *paren
 ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, Latte::View *view)
     : ExportTemplateHandler(parentDialog)
 {
+    QString name = (view->type() == Latte::Types::PanelView ? i18n("Panel") : i18n("Dock"));
+    loadViewApplets(view);
+    o_filepath = parentDialog->corona()->templatesManager()->proposedTemplateAbsolutePath(name + ".view.latte");
+    setFilepath(o_filepath);
 }
 
 ExportTemplateHandler::~ExportTemplateHandler()
@@ -95,7 +100,7 @@ void ExportTemplateHandler::init()
     m_appletsProxyModel->setSourceModel(m_appletsModel);
     m_appletsProxyModel->setSortRole(Model::Applets::SORTINGROLE);
     m_appletsProxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
-  //  m_appletsProxyModel->sort(Model::Applets::NAMECOLUMN, Qt::AscendingOrder);
+    //  m_appletsProxyModel->sort(Model::Applets::NAMECOLUMN, Qt::AscendingOrder);
 
     m_ui->appletsTable->setModel(m_appletsProxyModel);
 
@@ -131,6 +136,7 @@ void ExportTemplateHandler::loadLayoutApplets(const QString &layoutName, const Q
 
 void ExportTemplateHandler::loadViewApplets(Latte::View *view)
 {
+    m_originView = view;
     Data::AppletsTable c_data = Latte::Layouts::Storage::self()->plugins(view->layout(), view->containment()->id());
     m_appletsModel->setData(c_data);
     m_parentDialog->setWindowTitle(i18n("Export View Template"));
@@ -175,6 +181,14 @@ void ExportTemplateHandler::chooseFileDialog()
             } else {
                 setFilepath(file);
             }
+        } else {
+            if (!file.endsWith(".view.latte")) {
+                QString selected = file;
+                selected = selected.replace(QDir::homePath(), "~");
+                showInlineMessage(i18n("<i>%0</i> does not end with <i>.view.latte</i> extension. Selected file <b>rejected</b>.").arg(selected), KMessageWidget::Error, true);
+            } else {
+                setFilepath(file);
+            }
         }
     });
 
@@ -190,32 +204,38 @@ void ExportTemplateHandler::onExport()
                           true);
     };
 
+    bool result{false};
+
     if (!m_originLayoutFilePath.isEmpty()) {
-        bool result = m_parentDialog->corona()->templatesManager()->exportTemplate(m_originLayoutFilePath,
-                                                                                   c_filepath,
-                                                                                   m_appletsModel->selectedApplets());
+        result = m_parentDialog->corona()->templatesManager()->exportTemplate(m_originLayoutFilePath,
+                                                                              c_filepath,
+                                                                              m_appletsModel->selectedApplets());
+    } else if (m_originView){
+        result = m_parentDialog->corona()->templatesManager()->exportTemplate(m_originView,
+                                                                              c_filepath,
+                                                                              m_appletsModel->selectedApplets());
+    }
 
-        if (result) {
-            QAction *openUrlAction = new QAction(i18n("Open Location..."), this);
-            openUrlAction->setData(c_filepath);
-            QList<QAction *> actions;
-            actions << openUrlAction;
+    if (result) {
+        QAction *openUrlAction = new QAction(i18n("Open Location..."), this);
+        openUrlAction->setData(c_filepath);
+        QList<QAction *> actions;
+        actions << openUrlAction;
 
-            connect(openUrlAction, &QAction::triggered, this, [&, openUrlAction]() {
-                QString file = openUrlAction->data().toString();
+        connect(openUrlAction, &QAction::triggered, this, [&, openUrlAction]() {
+            QString file = openUrlAction->data().toString();
 
-                if (!file.isEmpty()) {
-                    KIO::highlightInFileManager({file});
-                }
-            });
+            if (!file.isEmpty()) {
+                KIO::highlightInFileManager({file});
+            }
+        });
 
-            showInlineMessage(i18nc("settings:template export success","Template <b>%0</b> export succeeded...").arg(QFileInfo(c_filepath).baseName()),
-                              KMessageWidget::Information,
-                              false,
-                              actions);
-        } else {
-            showExportTemplateError(QFileInfo(c_filepath).baseName());
-        }
+        showInlineMessage(i18nc("settings:template export success","Template <b>%0</b> export succeeded...").arg(QFileInfo(c_filepath).baseName()),
+                          KMessageWidget::Information,
+                          false,
+                          actions);
+    } else {
+        showExportTemplateError(QFileInfo(c_filepath).baseName());
     }
 }
 

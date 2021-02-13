@@ -612,6 +612,75 @@ bool Storage::exportTemplate(const QString &originFile, const QString &destinati
     return true;
 }
 
+bool Storage::exportTemplate(const Layout::GenericLayout *layout, Plasma::Containment *containment, const QString &destinationFile, const Data::AppletsTable &approvedApplets)
+{
+    if (!layout || !containment || destinationFile.isEmpty()) {
+        return false;
+    }
+
+    if (QFile(destinationFile).exists()) {
+        QFile::remove(destinationFile);
+    }
+
+    KSharedConfigPtr destFilePtr = KSharedConfig::openConfig(destinationFile);
+    KConfigGroup copied_conts = KConfigGroup(destFilePtr, "Containments");
+    KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
+
+    containment->config().copyTo(&copied_c1);
+
+    //!investigate if there are subcontainments in the containment to copy also
+
+    //! subId, subAppletId
+    QHash<uint, QString> subInfo;
+    auto applets = containment->config().group("Applets");
+
+    for (const auto &applet : applets.groupList()) {
+        int tSubId = subContainmentId(applets.group(applet));
+
+        //! It is a subcontainment !!!
+        if (isValid(tSubId)) {
+            subInfo[tSubId] = applet;
+            qDebug() << "subcontainment with id "<< tSubId << " was found in the containment... ::: " << containment->id();
+        }
+    }
+
+    if (subInfo.count() > 0) {
+        for(const auto subId : subInfo.keys()) {
+            Plasma::Containment *subcontainment{nullptr};
+
+            for (const auto containment : layout->corona()->containments()) {
+                if (containment->id() == subId) {
+                    subcontainment = containment;
+                    break;
+                }
+            }
+
+            if (subcontainment) {
+                KConfigGroup copied_sub = KConfigGroup(&copied_conts, QString::number(subcontainment->id()));
+                subcontainment->config().copyTo(&copied_sub);
+            }
+        }
+    }
+    //! end of subcontainments specific code
+
+    //! clear applets that are not approved
+    for (const auto &cId : copied_conts.groupList()) {
+        auto applets = copied_conts.group(cId).group("Applets");
+        for (const auto &aId: applets.groupList()) {
+            QString pluginId = applets.group(aId).readEntry("plugin", "");
+
+            if (!approvedApplets.containsId(pluginId) && !isSubContainment(applets.group(aId))) {
+                //!remove all configuration for that applet
+                for (const auto &configId: applets.group(aId).groupList()) {
+                    applets.group(aId).group(configId).deleteGroup();
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
 ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, Plasma::Containment *containment)
 {
     if (!containment || !layout->corona()) {

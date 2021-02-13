@@ -40,7 +40,7 @@ ExportTemplateDialog::ExportTemplateDialog(SettingsDialog *parent, const QString
     m_corona = parent->corona();
 
     init();
-    initExtractButton(i18n("Export your selected layout as template"));
+    initExportButton(i18n("Export your selected layout as template"));
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ExportTemplateHandler(this, layoutName, layoutId);
     connect(m_handler, &Handler::ExportTemplateHandler::dataChanged, this, &ExportTemplateDialog::onDataChanged);
@@ -53,7 +53,7 @@ ExportTemplateDialog::ExportTemplateDialog(Latte::View *view)
     m_corona = qobject_cast<Latte::Corona *>(view->corona());
 
     init();
-    initExtractButton(i18n("Export your selected view as template"));
+    initExportButton(i18n("Export your selected view as template"));
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ExportTemplateHandler(this, view);
 }
@@ -91,7 +91,7 @@ void ExportTemplateDialog::initButtons()
             this, &ExportTemplateDialog::onCancel);
 }
 
-void ExportTemplateDialog::initExtractButton(const QString &tooltip)
+void ExportTemplateDialog::initExportButton(const QString &tooltip)
 {
     m_exportButton = new QPushButton(this);
     m_exportButton->setText(i18nc("export template", "Export"));

@@ -25,6 +25,7 @@
 #include "../layouts/importer.h"
 #include "../layouts/storage.h"
 #include "../tools/commontools.h"
+#include "../view/view.h"
 
 // Qt
 #include <QDir>
@@ -176,6 +177,11 @@ QString Manager::newLayout(QString layoutName, QString layoutTemplate)
 bool Manager::exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets)
 {
     return Latte::Layouts::Storage::self()->exportTemplate(originFile, destinationFile, approvedApplets);
+}
+
+bool Manager::exportTemplate(const Latte::View *view, const QString &destinationFile, const Data::AppletsTable &approvedApplets)
+{
+    return Latte::Layouts::Storage::self()->exportTemplate(view->layout(), view->containment(), destinationFile, approvedApplets);
 }
 
 void Manager::onCustomTemplatesCountChanged(const QString &file)

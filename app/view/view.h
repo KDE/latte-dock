@@ -269,6 +269,7 @@ public:
 
 public slots:
     Q_INVOKABLE void copyView();
+    Q_INVOKABLE void exportTemplate();
     Q_INVOKABLE void removeView();
 
     Q_INVOKABLE void moveToLayout(QString layoutName);

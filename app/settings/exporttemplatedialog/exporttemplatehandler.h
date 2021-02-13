@@ -103,6 +103,7 @@ private:
     QString o_filepath;
 
     QString  m_originLayoutFilePath;
+    Latte::View *m_originView{nullptr};
 
     Dialog::ExportTemplateDialog *m_parentDialog{nullptr};
     Ui::ExportTemplateDialog *m_ui{nullptr};

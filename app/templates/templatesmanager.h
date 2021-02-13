@@ -36,6 +36,7 @@
 
 namespace Latte {
 class Corona;
+class View;
 }
 
 namespace Latte {
@@ -59,6 +60,7 @@ public:
     bool viewTemplateExists(const QString &templateName) const;
 
     bool exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
+    bool exportTemplate(const Latte::View *view, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
 
     Data::Layout layoutTemplateForName(const QString &layoutName);
 
