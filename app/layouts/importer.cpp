@@ -404,6 +404,26 @@ bool Importer::exportFullConfiguration(QString file)
         archive.addLocalFile(layoutUserFilePath(layoutName), QString("latte/" + layoutName + ".layout.latte"));
     }
 
+    //! custom templates
+    QDir templatesDir(Latte::configPath() + "/latte/templates");
+    QStringList filters;
+    filters.append(QString("*.layout.latte"));
+    QStringList templates = templatesDir.entryList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+
+    for (int i=0; i<templates.count(); ++i) {
+        QString templatePath = templatesDir.path() + "/" + templates[i];
+        archive.addLocalFile(templatePath, QString("latte/templates/" + templates[i]));
+    }
+
+    filters.clear();
+    filters.append(QString("*.view.latte"));
+    templates = templatesDir.entryList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+
+    for (int i=0; i<templates.count(); ++i) {
+        QString templatePath = templatesDir.path() + "/" + templates[i];
+        archive.addLocalFile(templatePath, QString("latte/templates/" + templates[i]));
+    }
+
     archive.close();
 
     return true;

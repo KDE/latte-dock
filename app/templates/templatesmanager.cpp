@@ -51,12 +51,6 @@ Manager::~Manager()
 
 void Manager::init()
 {
-    //! Local Templates
-    QDir localTemplatesDir(Latte::configPath() + "/latte/templates");
-    if (!localTemplatesDir.exists()) {
-        QDir(Latte::configPath() + "/latte").mkdir("templates");
-    }
-
     initLayoutTemplates();
     initViewTemplates();
 }

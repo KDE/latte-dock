@@ -107,6 +107,13 @@ void Manager::init()
         }
     }
 
+    //! Custom Templates path creation
+    QDir localTemplatesDir(Latte::configPath() + "/latte/templates");
+
+    if (!localTemplatesDir.exists()) {
+        QDir(Latte::configPath() + "/latte").mkdir("templates");
+    }
+
     //! Check if the multiple-layouts hidden file is present, add it if it isnt
     if (!QFile(Layouts::Importer::layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME)).exists()) {
         m_corona->templatesManager()->newLayout("", Layout::MULTIPLELAYOUTSHIDDENNAME);
