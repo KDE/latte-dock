@@ -59,6 +59,7 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
     });
 
     connect(m_corona->layoutsManager(), &Latte::Layouts::Manager::centralLayoutsChanged, this, &Layouts::updateActiveStates);
+    connect(m_corona->universalSettings(), &Latte::UniversalSettings::singleModeLayoutNameChanged, this, &Layouts::updateActiveStates);
 }
 
 Layouts::~Layouts()
@@ -578,7 +579,8 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case NAMECOLUMN:
         if (role == SORTINGROLE) {
-            if (m_layoutsTable[row].isActive) {
+            if ((m_inMultipleMode && m_layoutsTable[row].isActive)
+                || (!m_inMultipleMode && m_corona->universalSettings()->singleModeLayoutName() == m_layoutsTable[row].name)) {
                 return sortingPriority(HIGHESTPRIORITY, row);
             }
 
@@ -808,7 +810,7 @@ void Layouts::updateActiveStates()
             iActive = true;
         }
 
-        if (m_layoutsTable[i].isActive != iActive) {
+        if (m_layoutsTable[i].isActive != iActive || (!m_inMultipleMode && m_corona->universalSettings()->singleModeLayoutName() == m_layoutsTable[i].name)) {
             m_layoutsTable[i].isActive = iActive;
             emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
         }
