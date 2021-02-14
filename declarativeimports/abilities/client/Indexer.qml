@@ -116,8 +116,8 @@ AbilityDefinition.Indexer {
             for(var i=0; i<layout.children.length; ++i) {
                 var item = layout.children[i];
                 if (item && item.itemIndex>=0
-                        && hidden.indexOf(item.itemIndex)<0
                         && separators.indexOf(item.itemIndex)<0
+                        && hidden.indexOf(item.itemIndex)<0
                         && item.itemIndex < ind) {
                     ind = item.itemIndex;
                 }
@@ -137,8 +137,8 @@ AbilityDefinition.Indexer {
             for(var i=0; i<layout.children.length; ++i) {
                 var item = layout.children[i];
                 if (item && item.itemIndex>=0
-                        && hidden.indexOf(item.itemIndex)<0
                         && separators.indexOf(item.itemIndex)<0
+                        && hidden.indexOf(item.itemIndex)<0
                         && item.itemIndex > ind) {
 
                     //console.log("org.kde.latte SETTING UP ::: " + item.itemIndex + " / " + layout.children.length);
@@ -158,8 +158,8 @@ AbilityDefinition.Indexer {
             for(var i=0; i<layout.children.length; ++i) {
                 var item = layout.children[i];
                 if (item && item.itemIndex>=0
-                        && hidden.indexOf(item.itemIndex)<0
-                        && separators.indexOf(item.itemIndex)<0) {
+                        && separators.indexOf(item.itemIndex)<0
+                        && hidden.indexOf(item.itemIndex)<0) {
                     count = count + 1;
                 }
             }

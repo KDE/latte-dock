@@ -40,7 +40,7 @@ AbilityItem.BasicItem {
     visible: false
     objectName: "TaskItem"
 
-    isHidden: !visible || isForcedHidden || isSeparatorHidden
+    isHidden: !visible || isForcedHidden
 
     isHiddenSpacerForcedShow: taskItem.inAttentionAnimation || taskItem.inFastRestoreAnimation
     isHiddenSpacerAnimated: taskItem.inFastRestoreAnimation
