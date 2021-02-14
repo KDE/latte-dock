@@ -166,13 +166,12 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pauseButton">
+               <widget class="QPushButton" name="activitiesButton">
                 <property name="text">
-                 <string>Pause</string>
+                 <string>Activities...</string>
                 </property>
                 <property name="icon">
-                 <iconset theme="media-playback-pause">
-                  <normaloff>.</normaloff>.</iconset>
+                 <iconset theme="activities"/>
                 </property>
                </widget>
               </item>
@@ -272,6 +271,16 @@
                  </size>
                 </property>
                </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="enabledButton">
+                <property name="text">
+                 <string>Enabled</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="edit-link"/>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QPushButton" name="readOnlyButton">

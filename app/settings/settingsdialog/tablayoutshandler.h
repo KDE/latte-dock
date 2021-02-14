@@ -92,13 +92,14 @@ private slots:
 
     void copyLayout();
     void downloadLayout();
-    void pauseLayout();
     void switchLayout();
+    void showActivitiesManager();
     void importLayout();
     void exportLayoutForBackup();
     void exportLayoutAsTemplate();
     void lockLayout();
     void removeLayout();
+    void toggleEnabledLayout();
     void detailsLayout();
 
     void onCurrentPageChanged(int page);
@@ -131,9 +132,10 @@ private:
     QMenu *m_layoutExportSubMenu{nullptr};
 
     QAction *m_switchLayoutAction{nullptr};
-    QAction *m_pauseLayoutAction{nullptr};
+    QAction *m_activitiesManagerAction{nullptr};
     QAction *m_newLayoutAction{nullptr};
     QAction *m_copyLayoutAction{nullptr};
+    QAction *m_enabledLayoutAction{nullptr};
     QAction *m_readOnlyLayoutAction{nullptr};
     QAction *m_removeLayoutAction{nullptr};
     QAction *m_importLayoutAction{nullptr};

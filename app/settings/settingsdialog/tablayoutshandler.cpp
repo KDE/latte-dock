@@ -130,12 +130,12 @@ void TabLayouts::initLayoutMenu()
     connectActionWithButton(m_ui->switchButton, m_switchLayoutAction);
     connect(m_switchLayoutAction, &QAction::triggered, this, &TabLayouts::switchLayout);
 
-    m_pauseLayoutAction = m_layoutMenu->addAction(i18nc("pause layout", "&Pause"));
-    m_pauseLayoutAction->setToolTip(i18n("Switch to selected layout"));
-    m_pauseLayoutAction->setIcon(QIcon::fromTheme("media-playback-pause"));
-    m_pauseLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_P));
-    connectActionWithButton(m_ui->pauseButton, m_pauseLayoutAction);
-    connect(m_pauseLayoutAction, &QAction::triggered, this, &TabLayouts::pauseLayout);
+    m_activitiesManagerAction = m_layoutMenu->addAction(i18n("&Activities"));
+    m_activitiesManagerAction->setToolTip(i18n("Show Plasma Activities manager"));
+    m_activitiesManagerAction->setIcon(QIcon::fromTheme("activities"));
+    m_activitiesManagerAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_A));
+    connectActionWithButton(m_ui->activitiesButton, m_activitiesManagerAction);
+    connect(m_activitiesManagerAction, &QAction::triggered, this, &TabLayouts::showActivitiesManager);
 
     m_layoutMenu->addSeparator();
 
@@ -168,6 +168,14 @@ void TabLayouts::initLayoutMenu()
 
     m_layoutMenu->addSeparator();
 
+    m_enabledLayoutAction = m_layoutMenu->addAction(i18n("Ena&bled"));
+    m_enabledLayoutAction->setToolTip(i18n("Assign in activities in order to be activated through Plasma Activities"));
+    m_enabledLayoutAction->setIcon(QIcon::fromTheme("edit-link"));
+    m_enabledLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
+    m_enabledLayoutAction->setCheckable(true);
+    connectActionWithButton(m_ui->enabledButton, m_enabledLayoutAction);
+    connect(m_enabledLayoutAction, &QAction::triggered, this, &TabLayouts::toggleEnabledLayout);
+
     m_readOnlyLayoutAction = m_layoutMenu->addAction(i18nc("read only layout", "&Read Only"));
     m_readOnlyLayoutAction->setToolTip(i18n("Make selected layout read-only"));
     m_readOnlyLayoutAction->setIcon(QIcon::fromTheme("object-locked"));
@@ -192,9 +200,10 @@ void TabLayouts::initLayoutMenu()
     connectActionWithButton(m_ui->importButton, m_importLayoutAction);
     connect(m_importLayoutAction, &QAction::triggered, this, &TabLayouts::importLayout);
 
-    m_exportLayoutAction = m_layoutMenu->addAction(i18nc("export layout", "&Export"));
+    m_exportLayoutAction = m_layoutMenu->addAction(i18nc("export layout", "Exp&ort"));
     m_exportLayoutAction->setToolTip(i18n("Export selected layout at your system"));
     m_exportLayoutAction->setIcon(QIcon::fromTheme("document-export"));
+    m_exportLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
     connectActionWithButton(m_ui->exportButton, m_exportLayoutAction);
     connect(m_exportLayoutAction, &QAction::triggered, m_ui->exportButton, &QPushButton::showMenu);
 
@@ -330,36 +339,25 @@ void TabLayouts::switchLayout()
     updatePerLayoutButtonsState();
 }
 
-void TabLayouts::pauseLayout()
+void TabLayouts::showActivitiesManager()
 {
-    qDebug() << Q_FUNC_INFO;
 
-    if (!isCurrentTab() || !m_pauseLayoutAction->isEnabled()) {
-        return;
-    }
+}
 
-    setTwinProperty(m_pauseLayoutAction, TWINENABLED, false);
+void TabLayouts::toggleEnabledLayout()
+{
 
-    Latte::Data::Layout selectedLayoutCurrent = m_layoutsController->selectedLayoutCurrentData();
-    Latte::Data::Layout selectedLayoutOriginal = m_layoutsController->selectedLayoutOriginalData();
-    selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
-
-    m_corona->layoutsManager()->synchronizer()->pauseLayout(selectedLayoutOriginal.name);
 }
 
 void TabLayouts::updatePerLayoutButtonsState()
 {
-    //! UI Elements that need to be enabled/disabled
-
-    //! Pause Button - visible
-    if (!m_layoutsController->inMultipleMode()) {
-        //! Single Layout mode
-        setTwinProperty(m_pauseLayoutAction, TWINVISIBLE, false);
-    } else {
-        setTwinProperty(m_pauseLayoutAction, TWINVISIBLE, true);
-    }
+    //! UI Elements that need to be shown/hidden
+    setTwinProperty(m_switchLayoutAction, TWINVISIBLE, !m_layoutsController->inMultipleMode());
+    setTwinProperty(m_activitiesManagerAction, TWINVISIBLE, m_layoutsController->inMultipleMode());
+    setTwinProperty(m_enabledLayoutAction, TWINVISIBLE, m_layoutsController->inMultipleMode());
 
     if (!m_layoutsController->hasSelectedLayout()) {
+        setTwinProperty(m_enabledLayoutAction, TWINENABLED, false);
         return;
     }
 
@@ -367,37 +365,15 @@ void TabLayouts::updatePerLayoutButtonsState()
 
     //! Switch Button
     setTwinProperty(m_switchLayoutAction, TWINENABLED, true);
-    /*if (m_layoutsController->inMultipleMode()) {
-        setTwinProperty(m_switchLayoutAction, TWINENABLED, false);
-    } else {
-        setTwinProperty(m_switchLayoutAction, TWINENABLED, true);
-    }*/
 
-    //! Pause Button - enabled
-    if (m_layoutsController->inMultipleMode()) {
-        if (selectedLayout.isActive
-                && !selectedLayout.isOnAllActivities()
-                && m_corona->layoutsManager()->synchronizer()->runningActivities().count()>1) {
-            setTwinProperty(m_pauseLayoutAction, TWINENABLED, true);
-        } else {
-            setTwinProperty(m_pauseLayoutAction, TWINENABLED, false);
-        }
-    }
-
-    //! Remove Layout Button
-    /* if (selectedLayout.isActive || selectedLayout.isLocked) {
-        m_ui->removeButton->setEnabled(false);
-    } else {
-        m_ui->removeButton->setEnabled(true);
-    }*/
+    //! Enabled Button
+    setTwinProperty(m_enabledLayoutAction, TWINENABLED, true);
+    setTwinProperty(m_enabledLayoutAction, TWINCHECKED, !selectedLayout.activities.isEmpty());
 
     //! Layout Read-Only Button
-    if (selectedLayout.isLocked) {
-        setTwinProperty(m_readOnlyLayoutAction, TWINCHECKED, true);
-    } else {
-        setTwinProperty(m_readOnlyLayoutAction, TWINCHECKED, false);
-    }
+    setTwinProperty(m_readOnlyLayoutAction, TWINCHECKED, selectedLayout.isLocked);
 
+    //! Details Button
     setTwinProperty(m_detailsAction, TWINENABLED, true);
 }
 
