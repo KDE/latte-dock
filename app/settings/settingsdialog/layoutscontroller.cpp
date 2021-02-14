@@ -696,7 +696,7 @@ void Layouts::save()
         //! If the layout name changed OR the layout path is a temporary one
         if ((iLayoutCurrentData.name != iLayoutOriginalData.name) || iLayoutCurrentData.isTemporary()) {
             //! If the layout is Active in MultipleLayouts
-            if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts && central->isActive()) {
+            if (central->isActive()) {
                 qDebug() << " Active Layout Should Be Renamed From : " << central->name() << " TO :: " << iLayoutCurrentData.name;
                 activeLayoutsToRename[iLayoutCurrentData.name] = central;
             }
@@ -769,7 +769,15 @@ void Layouts::save()
     MemoryUsage::LayoutsMemory inMemoryOption = inMultipleMode() ? Latte::MemoryUsage::MultipleLayouts : Latte::MemoryUsage::SingleLayout;
 
     if (inMemoryOption == MemoryUsage::SingleLayout) {
-        m_handler->corona()->layoutsManager()->switchToLayout(m_handler->corona()->universalSettings()->singleModeLayoutName(), MemoryUsage::SingleLayout);
+        bool inrenamingsingleactivelayout = (activeLayoutsToRename.count() > 0);
+        QString currentSingleLayoutName = m_handler->corona()->universalSettings()->singleModeLayoutName();
+        QString nextSingleLayoutName = inrenamingsingleactivelayout ? activeLayoutsToRename.keys()[0] : currentSingleLayoutName;
+
+        if (inrenamingsingleactivelayout && !currentLayouts.containsName(currentSingleLayoutName)) {
+            m_handler->corona()->layoutsManager()->synchronizer()->setIsSingleLayoutInDeprecatedRenaming(true);
+        }
+
+        m_handler->corona()->layoutsManager()->switchToLayout(nextSingleLayoutName, MemoryUsage::SingleLayout);
     }  else {
         m_handler->corona()->layoutsManager()->switchToLayout("", MemoryUsage::MultipleLayouts);
     }

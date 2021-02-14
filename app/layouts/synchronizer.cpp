@@ -243,6 +243,11 @@ QStringList Synchronizer::menuLayouts() const
     return menulayouts;
 }
 
+void Synchronizer::setIsSingleLayoutInDeprecatedRenaming(const bool &enabled)
+{
+    m_isSingleLayoutInDeprecatedRenaming = enabled;
+}
+
 Data::LayoutsTable Synchronizer::layoutsTable() const
 {
     return m_layouts;
@@ -616,6 +621,17 @@ bool Synchronizer::initSingleMode(QString layoutName)
         m_manager->loadLatteLayout(layoutpath);
 
         emit centralLayoutsChanged();
+
+        if (m_isSingleLayoutInDeprecatedRenaming) {
+            QString deprecatedlayoutpath = layoutPath(m_manager->corona()->universalSettings()->singleModeLayoutName());
+
+            if (!deprecatedlayoutpath.isEmpty()) {
+                qDebug() << "Removing Deprecated single layout after renaming:: " << m_manager->corona()->universalSettings()->singleModeLayoutName();
+                QFile(deprecatedlayoutpath).remove();
+            }
+
+            m_isSingleLayoutInDeprecatedRenaming = false;
+        }
 
         m_manager->corona()->universalSettings()->setSingleModeLayoutName(layoutName);
     });

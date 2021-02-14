@@ -81,6 +81,9 @@ public:
     void syncLatteViewsToScreens();
     void syncMultipleLayoutsToActivities();
 
+    //! In that case single layout file must be removed after loading the new layout
+    void setIsSingleLayoutInDeprecatedRenaming(const bool &enabled);
+
     bool latteViewExists(Latte::View *view) const;
     bool layoutExists(QString layoutName) const;
     //! switch to specified layout, default previousMemoryUsage means that it didn't change
@@ -161,6 +164,7 @@ private:
 private:
     bool m_multipleModeInitialized{false};
     bool m_isLoaded{false};
+    bool m_isSingleLayoutInDeprecatedRenaming{false};
 
     Data::LayoutsTable m_layouts;
     QList<CentralLayout *> m_centralLayouts;
