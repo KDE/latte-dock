@@ -38,6 +38,7 @@
 #include "../../templates/templatesmanager.h"
 
 //! Qt
+#include <QDBusInterface>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QMimeData>
@@ -135,7 +136,7 @@ void TabLayouts::initLayoutMenu()
     m_activitiesManagerAction->setIcon(QIcon::fromTheme("activities"));
     m_activitiesManagerAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_A));
     connectActionWithButton(m_ui->activitiesButton, m_activitiesManagerAction);
-    connect(m_activitiesManagerAction, &QAction::triggered, this, &TabLayouts::showActivitiesManager);
+    connect(m_activitiesManagerAction, &QAction::triggered, this, &TabLayouts::toggleActivitiesManager);
 
     m_layoutMenu->addSeparator();
 
@@ -339,9 +340,13 @@ void TabLayouts::switchLayout()
     updatePerLayoutButtonsState();
 }
 
-void TabLayouts::showActivitiesManager()
+void TabLayouts::toggleActivitiesManager()
 {
+    QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
 
+    if (iface.isValid()) {
+        iface.call("toggleActivityManager");
+    }
 }
 
 void TabLayouts::toggleEnabledLayout()

@@ -93,12 +93,12 @@ private slots:
     void copyLayout();
     void downloadLayout();
     void switchLayout();
-    void showActivitiesManager();
     void importLayout();
     void exportLayoutForBackup();
     void exportLayoutAsTemplate();
     void lockLayout();
     void removeLayout();
+    void toggleActivitiesManager();
     void toggleEnabledLayout();
     void detailsLayout();
 
