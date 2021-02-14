@@ -351,7 +351,15 @@ void TabLayouts::toggleActivitiesManager()
 
 void TabLayouts::toggleEnabledLayout()
 {
+    qDebug() << Q_FUNC_INFO;
 
+    if (!isCurrentTab() || !m_layoutsController->inMultipleMode()) {
+        return;
+    }
+
+    m_layoutsController->toggleEnabledForSelected();
+
+    updatePerLayoutButtonsState();
 }
 
 void TabLayouts::updatePerLayoutButtonsState()

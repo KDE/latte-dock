@@ -83,6 +83,7 @@ public:
     void reset();
     void save();
     void removeSelected();
+    void toggleEnabledForSelected();
     void toggleLockedForSelected();
 
     QString iconsPath() const;

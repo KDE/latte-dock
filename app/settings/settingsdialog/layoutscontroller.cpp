@@ -347,6 +347,35 @@ void Layouts::removeSelected()
     m_model->removeLayout(selected.id);
 }
 
+void Layouts::toggleEnabledForSelected()
+{
+    if (!hasSelectedLayout()) {
+        return;
+    }
+
+    Latte::Data::Layout selected = selectedLayoutCurrentData();
+
+    if (!selected.activities.isEmpty()) {
+        m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::ACTIVITYCOLUMN), QStringList(), Qt::UserRole);
+    } else {
+        QStringList activities;
+
+        bool layoutsenabledonlyinspecificactivities = m_model->hasEnabledLayout()
+                && !m_model->hasEnabledLayoutInAllActitivities()
+                && !m_model->hasEnabledLayoutInFreeActivities();
+
+        if (m_model->hasEnabledLayoutInCurrentActivity() || layoutsenabledonlyinspecificactivities) {
+            activities << m_model->currentActivityId();
+        } else if (m_model->hasEnabledLayoutInFreeActivities()) {
+            activities << Data::Layout::FREEACTIVITIESID;
+        } else {
+            activities << Data::Layout::ALLACTIVITIESID;
+        }
+
+        m_proxyModel->setData(m_proxyModel->index(m_view->currentIndex().row(), Model::Layouts::ACTIVITYCOLUMN), activities, Qt::UserRole);
+    }
+}
+
 void Layouts::toggleLockedForSelected()
 {
     if (!hasSelectedLayout()) {

@@ -93,9 +93,16 @@ public:
     bool inMultipleMode() const;
     void setInMultipleMode(bool inMultiple);
 
+    bool hasEnabledLayout() const;
+    bool hasEnabledLayoutInAllActitivities() const;
+    bool hasEnabledLayoutInFreeActivities() const;
+    bool hasEnabledLayoutInCurrentActivity() const;
+
     int rowCount() const;
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
+
+    QString currentActivityId() const;
 
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;

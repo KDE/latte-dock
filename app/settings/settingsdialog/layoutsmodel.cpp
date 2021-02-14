@@ -101,6 +101,52 @@ void Layouts::setInMultipleMode(bool inMultiple)
     emit inMultipleModeChanged();
 }
 
+bool Layouts::hasEnabledLayout() const
+{
+    for (int i=0; i<m_layoutsTable.rowCount(); ++i) {
+        if (m_layoutsTable[i].activities.count() > 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Layouts::hasEnabledLayoutInAllActitivities() const
+{
+    for (int i=0; i<m_layoutsTable.rowCount(); ++i) {
+        if (m_layoutsTable[i].activities.contains(Data::Layout::ALLACTIVITIESID)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Layouts::hasEnabledLayoutInFreeActivities() const
+{
+    for (int i=0; i<m_layoutsTable.rowCount(); ++i) {
+        if (m_layoutsTable[i].activities.contains(Data::Layout::FREEACTIVITIESID)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Layouts::hasEnabledLayoutInCurrentActivity() const
+{
+    QString curActivityId = currentActivityId();
+
+    for (int i=0; i<m_layoutsTable.rowCount(); ++i) {
+        if (m_layoutsTable[i].activities.contains(curActivityId)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 int Layouts::rowCount() const
 {
     return m_layoutsTable.rowCount();
@@ -118,6 +164,11 @@ int Layouts::columnCount(const QModelIndex &parent) const
     Q_UNUSED(parent);
 
     return ACTIVITYCOLUMN+1;
+}
+
+QString Layouts::currentActivityId() const
+{
+    return m_corona->activitiesConsumer()->currentActivity();
 }
 
 void Layouts::clear()
@@ -734,7 +785,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
         }
         break;
     case ACTIVITYCOLUMN:
-        if (role == Qt::UserRole) {
+        if (role == Qt::UserRole)  {
             setActivities(row, value.toStringList());
             emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
             return true;
