@@ -62,10 +62,10 @@
               </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Only one layout can be present in memory at all cases</string>
+              <string>Only one layout is applied at all times for all activities</string>
              </property>
              <property name="text">
-              <string comment="single layout">Single Layout</string>
+              <string comment="single layout">Single layout at all times</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -75,10 +75,10 @@
            <item>
             <widget class="QToolButton" name="multipleToolBtn">
              <property name="toolTip">
-              <string>Multiple layouts can be present and active in memory at the same time</string>
+              <string>Multiple layouts can be present and active in memory at the same time for different activities</string>
              </property>
              <property name="text">
-              <string comment="multiple layouts">Multiple Layouts</string>
+              <string comment="multiple layouts">Multiple layouts based on activities</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -171,7 +171,8 @@
                  <string>Activities...</string>
                 </property>
                 <property name="icon">
-                 <iconset theme="activities"/>
+                 <iconset theme="activities">
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
               </item>
@@ -278,7 +279,8 @@
                  <string>Enabled</string>
                 </property>
                 <property name="icon">
-                 <iconset theme="edit-link"/>
+                 <iconset theme="edit-link">
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
               </item>
