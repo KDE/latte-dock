@@ -64,6 +64,10 @@ PlasmaComponents.ContextMenu {
 
     property int activitiesCount: 0
 
+    readonly property string tailSeparatorText: plasmoid.formFactor === PlasmaCore.Types.Vertical ? i18n("Top Separator") :
+                                                                                                    (!root.LayoutMirroring.enabled ? i18n("Left Separator") : i18n("Right Separator"))
+    readonly property string headSeparatorText: plasmoid.formFactor === PlasmaCore.Types.Vertical ? i18n("Bottom Separator") :
+                                                                                                    (!root.LayoutMirroring.enabled ? i18n("Right Separator") : i18n("Left Separator"))
 
     onStatusChanged: {
         if (visualParent && get(atm.LauncherUrlWithoutIcon) != null && status == PlasmaComponents.DialogStatus.Open) {
@@ -825,7 +829,7 @@ PlasmaComponents.ContextMenu {
         enabled: !visualParent.tailItemIsSeparator || !visualParent.headItemIsSeparator
         visible: visualParent.hasShownLauncher
         icon: "add"
-        text: !visualParent.tailItemIsSeparator ? i18n("Add Tail Separator") : i18n("Add Head Separator")
+        text: !visualParent.tailItemIsSeparator ? i18nc("add separator","Add %0").arg(tailSeparatorText) : i18nc("add separator","Add %0").arg(headSeparatorText)
 
         onClicked: {
             var pos=visualParent.itemIndex;
@@ -839,17 +843,29 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        id: removeInternalSeparatorItem
-        visible: visualParent && (visualParent.tailItemIsSeparator || visualParent.headItemIsSeparator)
+        id: removeFollowingInternalSeparatorItem
+        visible: visualParent && visualParent.headItemIsSeparator
 
         icon: "remove"
-        text: visualParent.tailItemIsSeparator ? i18n("Remove Tail Separator") : i18n("Remove Head Separator")
+        text: i18nc("remove separator", "Remove %0").arg(headSeparatorText)
+
+        onClicked: {
+            if (visualParent.headItemIsSeparator) {
+                appletAbilities.launchers.removeInternalSeparatorAtPos(visualParent.itemIndex + 1);
+            }
+        }
+    }
+
+    PlasmaComponents.MenuItem {
+        id: removeTailInternalSeparatorItem
+        visible: visualParent && visualParent.tailItemIsSeparator
+
+        icon: "remove"
+        text: i18nc("remove separator", "Remove %0").arg(tailSeparatorText)
 
         onClicked: {
             if (visualParent.tailItemIsSeparator) {
                 appletAbilities.launchers.removeInternalSeparatorAtPos(visualParent.itemIndex - 1);
-            } else if (visualParent.headItemIsSeparator) {
-                appletAbilities.launchers.removeInternalSeparatorAtPos(visualParent.itemIndex + 1);
             }
         }
     }
