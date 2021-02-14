@@ -40,7 +40,7 @@ AbilityItem.BasicItem {
     visible: false
     objectName: "TaskItem"
 
-    isHidden: !visible || isForcedHidden
+    isHidden: !visible || isForcedHidden || isSeparatorHidden
 
     isHiddenSpacerForcedShow: taskItem.inAttentionAnimation || taskItem.inFastRestoreAnimation
     isHiddenSpacerAnimated: taskItem.inFastRestoreAnimation
@@ -51,6 +51,7 @@ AbilityItem.BasicItem {
 
     isMonochromaticForcedContentItem: plasmoid.configuration.forceMonochromaticIcons
 
+    isSeparatorHidden: isSeparator && (itemIndex > taskItem.abilities.indexer.lastVisibleItemIndex)
     isSeparatorInRealLength: isSeparator && root.dragSource
 
     containsMouse: taskMouseArea.containsMouse || parabolicAreaContainsMouse
