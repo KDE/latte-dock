@@ -873,7 +873,8 @@ Item {
         //! parabolic effect messages properly to surrounding plasma applets
         active: isParabolicEnabled || isThinTooltipEnabled
 
-        readonly property bool isParabolicEnabled: appletItem.parabolic.isEnabled && !(lockZoom || isHidden)
+        //! in hidden state applets must pass on parabolic messages to neighbours
+        readonly property bool isParabolicEnabled: (appletItem.parabolic.isEnabled && !lockZoom) || isHidden
         readonly property bool isThinTooltipEnabled: appletItem.thinTooltip.isEnabled &&  !isHidden
 
         sourceComponent: ParabolicArea{}
