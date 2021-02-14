@@ -324,18 +324,12 @@ void TabLayouts::switchLayout()
     selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
 
     if (m_layoutsController->layoutsAreChanged()) {
-        showInlineMessage(i18nc("settings:not permitted switching layout","You need to <b>apply</b> your changes first to switch layout..."),
+        showInlineMessage(i18nc("settings:not permitted switching layout","You need to <b>apply</b> your changes first to switch layout afterwards..."),
                           KMessageWidget::Warning);
         return;
     }
 
-    if (!m_layoutsController->inMultipleMode()) {
-        m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name, MemoryUsage::SingleLayout);
-        m_layoutsController->setOriginalInMultipleMode(false);
-    } else {
-        m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name, MemoryUsage::MultipleLayouts);
-        m_layoutsController->setOriginalInMultipleMode(true);
-    }
+    m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name, MemoryUsage::SingleLayout);
 
     updatePerLayoutButtonsState();
 }

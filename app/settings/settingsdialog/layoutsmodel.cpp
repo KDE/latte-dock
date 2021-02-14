@@ -578,10 +578,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case NAMECOLUMN:
         if (role == SORTINGROLE) {
-            if ((inMultipleMode() && m_layoutsTable[row].isActive)
-                    || (!inMultipleMode()
-                        && !original.name.isEmpty()
-                        && original.name == m_corona->universalSettings()->singleModeLayoutName())) {
+            if (m_layoutsTable[row].isActive) {
                 return sortingPriority(HIGHESTPRIORITY, row);
             }
 
@@ -802,6 +799,7 @@ void Layouts::updateActiveStates()
     roles << Qt::DisplayRole;
     roles << Qt::UserRole;
     roles << ISACTIVEROLE;
+    roles << SORTINGROLE;
 
     for(int i=0; i<rowCount(); ++i) {
         bool iActive{false};
@@ -812,7 +810,6 @@ void Layouts::updateActiveStates()
 
         if (m_layoutsTable[i].isActive != iActive) {
             m_layoutsTable[i].isActive = iActive;
-
             emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
         }
     }
