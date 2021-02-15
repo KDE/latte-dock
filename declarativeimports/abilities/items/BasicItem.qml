@@ -186,6 +186,26 @@ Item{
         return hasTailItemSeparator;
     }
 
+    readonly property bool tailItemIsVisibleSeparator: {
+        if (isSeparator || index < 0 || !tailItemIsSeparator ) {
+            return false;
+        }
+
+        var tail = index - 1;
+
+        while(tail>=0 && abilityItem.abilities.indexer.hidden.indexOf(tail)>=0) {
+            tail = tail - 1;
+        }
+
+        var hasTailItemSeparator = abilityItem.abilities.indexer.separators.indexOf(tail)>=0 && abilityItem.abilities.indexer.hidden.indexOf(tail)<0;
+
+        if (!hasTailItemSeparator && itemIndex === abilityItem.abilities.indexer.firstVisibleItemIndex){
+            return abilityItem.abilities.indexer.tailAppletIsSeparator;
+        }
+
+        return hasTailItemSeparator;
+    }
+
     readonly property bool headItemIsSeparator: {
         if (isSeparator || index < 0 ) {
             return false;
@@ -205,6 +225,28 @@ Item{
 
         return hasHeadItemSeparator;
     }
+
+    readonly property bool headItemIsVisibleSeparator: {
+        if (isSeparator || index < 0 || !headItemIsSeparator) {
+            return false;
+        }
+
+        var head = index + 1;
+
+        while(head>=0 && abilityItem.abilities.indexer.hidden.indexOf(head)>=0) {
+            head = head + 1;
+        }
+
+        var hasHeadItemSeparator = abilityItem.abilities.indexer.separators.indexOf(head)>=0 && abilityItem.abilities.indexer.hidden.indexOf(head)<0;
+
+        if (!hasHeadItemSeparator && itemIndex === abilityItem.abilities.indexer.lastVisibleItemIndex){
+            return abilityItem.abilities.indexer.headAppletIsSeparator;
+        }
+
+        return hasHeadItemSeparator;
+    }
+
+
 
     Behavior on opacity {
         NumberAnimation { duration: abilityItem.abilities.animations.speedFactor.current * abilityItem.abilities.animations.duration.large }

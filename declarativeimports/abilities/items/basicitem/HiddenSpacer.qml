@@ -32,7 +32,7 @@ Item{
              || (separatorSpace > 0)
              || abilityItem.isHiddenSpacerForcedShow
 
-    property bool neighbourSeparator: rightSpacer ? abilityItem.headItemIsSeparator : abilityItem.tailItemIsSeparator
+    property bool neighbourSeparator: rightSpacer ? abilityItem.headItemIsVisibleSeparator : abilityItem.tailItemIsVisibleSeparator
     property bool rightSpacer: false
 
     property int separatorSpace: neighbourSeparator && !abilityItem.isSeparator && abilityItem.abilities.parabolic.isEnabled

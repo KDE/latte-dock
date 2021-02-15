@@ -51,7 +51,7 @@ AbilityItem.BasicItem {
 
     isMonochromaticForcedContentItem: plasmoid.configuration.forceMonochromaticIcons
 
-    isSeparatorHidden: isSeparator && (itemIndex > taskItem.abilities.indexer.lastVisibleItemIndex)
+    isSeparatorHidden: isSeparator && (lastValidIndex > taskItem.abilities.indexer.lastVisibleItemIndex)
     isSeparatorInRealLength: isSeparator && root.dragSource
 
     containsMouse: taskMouseArea.containsMouse || parabolicAreaContainsMouse

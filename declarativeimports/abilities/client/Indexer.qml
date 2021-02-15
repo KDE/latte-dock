@@ -33,6 +33,8 @@ AbilityDefinition.Indexer {
     readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
     readonly property bool isReady: !updateIsBlocked
     readonly property int maxIndex: 99999
+    readonly property alias firstTailItemIsSeparator: _privates.firstTailItemIsSeparator
+    readonly property alias lastHeadItemIsSeparator: _privates.lastHeadItemIsSeparator
     readonly property alias itemsCount: _privates.itemsCount
     readonly property alias visibleItemsCount: _privates.visibleItemsCount
     readonly property alias firstVisibleItemIndex: _privates.firstVisibleItemIndex
@@ -40,53 +42,12 @@ AbilityDefinition.Indexer {
 
     QtObject {
         id: _privates
+        property bool firstTailItemIsSeparator: false
+        property bool lastHeadItemIsSeparator: false
         property int firstVisibleItemIndex: -1
         property int lastVisibleItemIndex: -1
         property int itemsCount: 0
         property int visibleItemsCount: 0
-    }
-
-    hidden: {
-        var hdns = [];
-
-        for (var i=0; i<layout.children.length; ++i){
-            var item = layout.children[i];
-            if (item && item.isHidden && item.itemIndex>=0) {
-                hdns.push(item.itemIndex);
-            }
-        }
-
-        return hdns;
-    }
-
-    readonly property bool firstTailItemIsSeparator: {
-        if (visibleItemsCount === layout.children.length) {
-            return false;
-        }
-
-        for(var i=0; i<firstVisibleItemIndex; ++i) {
-            if (separators.indexOf(i)>=0) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    readonly property bool lastHeadItemIsSeparator: {
-        if (visibleItemsCount === layout.children.length) {
-            return false;
-        }
-
-        var len = layout.children.length;
-
-        for(var i=len-1; i>lastVisibleItemIndex; --i) {
-            if (separators.indexOf(i)>=0) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     onIsActiveChanged: {
@@ -104,6 +65,46 @@ AbilityDefinition.Indexer {
     Component.onDestruction: {
         if (isActive) {
             bridge.indexer.client = null;
+        }
+    }
+
+    Binding {
+        target: _privates
+        property: "firstTailItemIsSeparator"
+        when: isReady
+        value: {
+            if (_indexer.visibleItemsCount === _indexer.layout.children.length) {
+                return false;
+            }
+
+            for(var i=0; i<_indexer.firstVisibleItemIndex; ++i) {
+                if (_indexer.separators.indexOf(i)>=0 && _indexer.hidden.indexOf(i)<0) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    Binding {
+        target: _privates
+        property: "lastHeadItemIsSeparator"
+        when: isReady
+        value: {
+            if (_indexer.visibleItemsCount === _indexer.layout.children.length) {
+                return false;
+            }
+
+            var len = _indexer.layout.children.length;
+
+            for(var i=len-1; i>_indexer.lastVisibleItemIndex; --i) {
+                if (_indexer.separators.indexOf(i)>=0 && _indexer.hidden.indexOf(i)<0) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -140,8 +141,7 @@ AbilityDefinition.Indexer {
                         && separators.indexOf(item.itemIndex)<0
                         && hidden.indexOf(item.itemIndex)<0
                         && item.itemIndex > ind) {
-
-                    //console.log("org.kde.latte SETTING UP ::: " + item.itemIndex + " / " + layout.children.length);
+                     //console.log("org/kde/latte SETTING UP ::: " + item.itemIndex + " / " + layout.children.length);
                     ind = item.itemIndex;
                 }
             }
@@ -181,6 +181,24 @@ AbilityDefinition.Indexer {
             }
 
             return count;
+        }
+    }
+
+    Binding {
+        target: _indexer
+        property: "hidden"
+        when: isReady
+        value: {
+            var hdns = [];
+
+            for (var i=0; i<layout.children.length; ++i){
+                var item = layout.children[i];
+                if (item && (item.isHidden || item.isSeparatorHidden) && item.itemIndex>=0) {
+                    hdns.push(item.itemIndex);
+                }
+            }
+
+            return hdns;
         }
     }
 
