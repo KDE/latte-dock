@@ -173,7 +173,9 @@ Item{
 
         var tail = index - 1;
 
-        while(tail>=0 && abilityItem.abilities.indexer.hidden.indexOf(tail)>=0) {
+        while(tail>=0
+              && abilityItem.abilities.indexer.hidden.indexOf(tail)>=0 /*ignore hidden items but not hidden separators*/
+              && abilityItem.abilities.separators.indexOf(head)>0) {
             tail = tail - 1;
         }
 
@@ -213,7 +215,9 @@ Item{
 
         var head = index + 1;
 
-        while(head>=0 && abilityItem.abilities.indexer.hidden.indexOf(head)>=0) {
+        while(head>=0
+              && abilityItem.abilities.indexer.hidden.indexOf(head)>=0 /*ignore hidden items but not hidden separators*/
+              && abilityItem.abilities.separators.indexOf(head)>0) {
             head = head + 1;
         }
 
