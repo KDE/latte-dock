@@ -578,6 +578,14 @@ ViewDelayedCreationData Storage::newView(const Layout::GenericLayout *destinatio
     return result;
 }
 
+void Storage::clearExportedLayoutSettings(KConfigGroup &layoutSettingsGroup)
+{
+    layoutSettingsGroup.writeEntry("preferredForShortcutsTouched", false);
+    layoutSettingsGroup.writeEntry("lastUsedActivity", QString());
+    layoutSettingsGroup.writeEntry("activities", QStringList());
+    layoutSettingsGroup.sync();
+}
+
 bool Storage::exportTemplate(const QString &originFile, const QString &destinationFile,const Data::AppletsTable &approvedApplets)
 {
     if (originFile.isEmpty() || !QFile(originFile).exists() || destinationFile.isEmpty()) {
@@ -607,6 +615,8 @@ bool Storage::exportTemplate(const QString &originFile, const QString &destinati
         }
     }
 
+    KConfigGroup layoutSettingsGrp(destFilePtr, "LayoutSettings");
+    clearExportedLayoutSettings(layoutSettingsGrp);
     containments.sync();
 
     return true;
@@ -678,6 +688,8 @@ bool Storage::exportTemplate(const Layout::GenericLayout *layout, Plasma::Contai
         }
     }
 
+    KConfigGroup layoutSettingsGrp(destFilePtr, "LayoutSettings");
+    clearExportedLayoutSettings(layoutSettingsGrp);
     copied_conts.sync();
 
     return true;

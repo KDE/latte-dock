@@ -110,6 +110,8 @@ public:
 private:
     Storage();
 
+    void clearExportedLayoutSettings(KConfigGroup &layoutSettingsGroup);
+
     bool isSubContainment(const KConfigGroup &appletGroup) const;
     int subIdentityIndex(const KConfigGroup &appletGroup) const;
 
