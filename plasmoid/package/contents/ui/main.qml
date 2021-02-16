@@ -704,7 +704,7 @@ Item {
         animations.local.speedFactor.current: plasmoid.configuration.durationTime
         animations.local.requirements.zoomFactor: hasHighThicknessAnimation && LatteCore.WindowSystem.compositingActive ? 1.65 : 1.0
 
-        indexer.updateIsBlocked: root.inDraggingPhase || root.inActivityChange
+        indexer.updateIsBlocked: root.inDraggingPhase || root.inActivityChange || tasksExtendedManager.launchersInPausedStateCount>0
 
         indicators.local.isEnabled: !plasmoid.configuration.isInLatteDock
 

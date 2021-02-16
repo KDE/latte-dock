@@ -61,6 +61,10 @@ Item {
     //! (id, zoom)
     property variant frozenTasks: []
 
+    readonly property int launchersInPausedStateCount: launchersToBeMovedCount + launchersToBeAddedCount + launchersToBeRemovedCount
+
+    property int launchersToBeMovedCount: 0 //is used to update instantly relevant bindings
+    property int launchersToBeAddedCount: 0 //is used to update instantly relevant bindings
     property int launchersToBeRemovedCount: 0 //is used to update instantly relevant bindings
 
     signal waitingLauncherRemoved(string launch);
@@ -125,12 +129,14 @@ Item {
         }
 
         launchersToBeAdded.push(launcher);
+        launchersToBeAddedCount++;
     }
 
     function removeToBeAddedLauncher(launcher){
         for(var i=0; i<launchersToBeAdded.length; ++i){
             if (equals(launchersToBeAdded[i], launcher)) {
                 launchersToBeAdded.splice(i,1);
+                launchersToBeAddedCount--;
                 return;
             }
         }
@@ -275,6 +281,7 @@ Item {
 
         if (!isLauncherToBeMoved(launcherUrl)) {
             launchersToBeMoved.push({launcher: launcherUrl, pos: Math.max(0,toPos)});
+            launchersToBeMovedCount++;
         }
     }
 
@@ -374,6 +381,8 @@ Item {
         onTriggered: {
             tasksModel.syncLaunchers();
             appletAbilities.launchers.validateSyncedLaunchersOrder();
+            //! In case there are multiple launchers in moving state
+            launchersToBeMovedCount = 0;
         }
     }
 
@@ -400,6 +409,11 @@ Item {
             launchersToBeRemoved.splice(0, launchersToBeRemoved.length);
             waitingLaunchers.splice(0, waitingLaunchers.length);
             frozenTasks.splice(0, frozenTasks.length);
+
+            //! clear up launchers counters
+            tasksExtManager.launchersToBeMovedCount = 0;
+            tasksExtManager.launchersToBeAddedCount = 0;
+            tasksExtManager.launchersToBeRemovedCount = 0;
         }
     }
 }
