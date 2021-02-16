@@ -97,7 +97,7 @@ Item {
     }
 
     function hasLauncher(url) {
-        return _launchers.tasksModel.launcherPosition(url) != -1;
+        return _launchers.tasksModel.launcherPosition(url) >= 0;
     }
 
     function addLauncher(launcherUrl) {
@@ -209,6 +209,10 @@ Item {
     }
 
     function inCurrentActivity(launcherUrl) {
+        if (!hasLauncher(launcherUrl)) {
+            return false;
+        }
+
         var activities = _launchers.tasksModel.launcherActivities(launcherUrl);
 
         if (activities.length ===0
