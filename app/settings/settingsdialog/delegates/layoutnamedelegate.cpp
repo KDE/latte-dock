@@ -39,6 +39,9 @@ namespace Settings {
 namespace Layout {
 namespace Delegate {
 
+const int INDICATORCHANGESLENGTH = 6;
+const int INDICATORCHANGESMARGIN = 2;
+
 LayoutName::LayoutName(QObject *parent)
     : QStyledItemDelegate(parent)
 {
@@ -72,6 +75,43 @@ void LayoutName::setModelData(QWidget *editor, QAbstractItemModel *model, const 
     }
 }
 
+void LayoutName::drawHasChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    //! draw changes circle indicator
+    int csize{INDICATORCHANGESLENGTH};
+
+    //! Draw indicator background
+    QStandardItemModel *model = (QStandardItemModel *) index.model();
+    if (qApp->layoutDirection() == Qt::RightToLeft) {
+        QStyleOptionViewItem indicatorOption = option;
+        indicatorOption.rect = QRect(option.rect.x(), option.rect.y(), csize + INDICATORCHANGESMARGIN, option.rect.height());
+        QStyledItemDelegate::paint(painter, indicatorOption, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
+    } else {
+        QStyleOptionViewItem indicatorOption = option;
+        indicatorOption.rect = QRect(option.rect.x() + option.rect.width() - csize - INDICATORCHANGESMARGIN, option.rect.y(), csize + INDICATORCHANGESMARGIN, option.rect.height());
+        QStyledItemDelegate::paint(painter, indicatorOption, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
+    }
+
+    bool isNewLayout = index.data(Model::Layouts::ISNEWLAYOUTROLE).toBool();
+    bool hasChanges = index.data(Model::Layouts::LAYOUTHASCHANGESROLE).toBool();
+    bool isChanged = (isNewLayout || hasChanges);
+
+    if (isChanged) {
+        QRect changesRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + INDICATORCHANGESMARGIN, option.rect.y() + option.rect.height()/2 - csize/2, csize, csize) :
+                                                                           QRect(option.rect.x() + option.rect.width() - csize - INDICATORCHANGESMARGIN, option.rect.y() + option.rect.height()/2 - csize/2, csize, csize);
+
+        QColor plasmaOrange(246, 116, 0); //orangish color used from plasma systemsettings #f67400
+        QBrush backBrush(plasmaOrange);
+        QPen pen; pen.setWidth(1);
+        pen.setColor(plasmaOrange);
+
+        painter->setBrush(backBrush);
+        painter->setPen(pen);
+        painter->drawEllipse(changesRect);
+    }
+}
+
+
 void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     bool inMultiple = index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
@@ -94,9 +134,14 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
+    int indicatorLength = INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN;
+    QRect optionRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + indicatorLength, option.rect.y(), option.rect.width() - indicatorLength, option.rect.height()) :
+                                                                      QRect(option.rect.x(), option.rect.y(), option.rect.width() - indicatorLength, option.rect.height());
+
+    adjustedOption.rect = optionRect;
+
     if (isLocked) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
-
 
         bool active = Latte::isActive(option);
         bool enabled = Latte::isEnabled(option);
@@ -107,14 +152,14 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         //! font metrics
         QFontMetrics fm(option.font);
         int textWidth = fm.boundingRect(name).width();
-        int thick = option.rect.height();
+        int thick = optionRect.height();
         int length = thick;
 
         int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? length : 0;
         int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? 0 : length;
 
-        QRect destinationS(option.rect.x(), option.rect.y(), startWidth, thick);
-        QRect destinationE(option.rect.x() + option.rect.width() - endWidth, option.rect.y(), endWidth, thick);
+        QRect destinationS(optionRect.x(), optionRect.y(), startWidth, thick);
+        QRect destinationE(optionRect.x() + optionRect.width() - endWidth, optionRect.y(), endWidth, thick);
 
         QStyleOptionViewItem myOptionS = adjustedOption;
         QStyleOptionViewItem myOptionE = adjustedOption;
@@ -125,8 +170,8 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
         myOptionS.rect = destinationS;
         myOptionE.rect = destinationE;
-        myOptionMain.rect.moveLeft(option.rect.x() + startWidth);
-        myOptionMain.rect.setWidth(option.rect.width() - startWidth - endWidth);
+        myOptionMain.rect.moveLeft(optionRect.x() + startWidth);
+        myOptionMain.rect.setWidth(optionRect.width() - startWidth - endWidth);
 
         QStyledItemDelegate::paint(painter, myOptionMain, index);
 
@@ -141,15 +186,25 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
             QIcon lockIcon = QIcon::fromTheme("object-locked");
 
             if (qApp->layoutDirection() == Qt::RightToLeft) {
-                painter->drawPixmap(QRect(option.rect.x(), option.rect.y(), thick, thick), lockIcon.pixmap(thick, thick, mode));
+                painter->drawPixmap(QRect(optionRect.x(), optionRect.y(), thick, thick), lockIcon.pixmap(thick, thick, mode));
             } else {
-                painter->drawPixmap(QRect(option.rect.x() + option.rect.width() - endWidth, option.rect.y(), thick, thick), lockIcon.pixmap(thick, thick, mode));
+                painter->drawPixmap(QRect(optionRect.x() + optionRect.width() - endWidth, optionRect.y(), thick, thick), lockIcon.pixmap(thick, thick, mode));
             }
         }
 
+        //! in order to paint also the background
+        QStyleOptionViewItem indicatorOption = adjustedOption;
+        indicatorOption.rect = option.rect;
+        drawHasChangesIndicator(painter, indicatorOption, index);
         return;
     }
 
+    //! in order to paint also the background
+    QStyleOptionViewItem indicatorOption = adjustedOption;
+    indicatorOption.rect = option.rect;
+    drawHasChangesIndicator(painter, indicatorOption, index);
+
+    //! Draw valid text area
     adjustedOption.font.setBold(isActive);
     adjustedOption.font.setItalic(isChanged);
 
