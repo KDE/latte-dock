@@ -131,7 +131,7 @@ Data::Layout Manager::layoutTemplateForName(const QString &layoutName)
     return Data::Layout();
 }
 
-Data::LayoutsTable Manager::systemLayoutTemplates()
+Data::LayoutsTable Manager::layoutTemplates()
 {
     Data::LayoutsTable templates;
 

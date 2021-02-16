@@ -65,7 +65,7 @@ public:
 
     Data::Layout layoutTemplateForName(const QString &layoutName);
 
-    Data::LayoutsTable systemLayoutTemplates();
+    Data::LayoutsTable layoutTemplates();
     Data::GenericTable<Data::Generic> viewTemplates();
 
     //! creates a new layout with layoutName based on specific layout template and returns the new layout path

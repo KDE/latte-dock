@@ -36,6 +36,7 @@
 #include "../../layouts/importer.h"
 #include "../../layouts/manager.h"
 #include "../../templates/templatesmanager.h"
+#include "../../tools/commontools.h"
 
 //! Qt
 #include <QDBusInterface>
@@ -250,11 +251,14 @@ void TabLayouts::initLayoutTemplatesSubMenu()
     }
 
     /*Add Layout Templates for New Action*/
-    Data::LayoutsTable templates = m_corona->templatesManager()->systemLayoutTemplates();
+    Data::LayoutsTable templates = m_corona->templatesManager()->layoutTemplates();
+
+    bool customtemplateseparatoradded{false};
 
     for (int i=0; i<templates.rowCount(); ++i) {
-        if (i==2) {
+        if (!customtemplateseparatoradded && !templates[i].isSystemTemplate()) {
             m_layoutTemplatesSubMenu->addSeparator();
+            customtemplateseparatoradded = true;
         }
 
         QAction *newlayout = m_layoutTemplatesSubMenu->addAction(templates[i].name);
@@ -263,6 +267,16 @@ void TabLayouts::initLayoutTemplatesSubMenu()
 
         connect(newlayout, &QAction::triggered, this, [&, templatename]() {
             newLayout(templatename);
+        });
+    }
+
+    if (templates.rowCount() > 0) {
+        QAction *openTemplatesDirectory = m_layoutTemplatesSubMenu->addAction(i18n("Templates..."));
+        openTemplatesDirectory->setToolTip(i18n("Open templates directory"));
+        openTemplatesDirectory->setIcon(QIcon::fromTheme("edit"));
+
+        connect(openTemplatesDirectory, &QAction::triggered, this, [&]() {
+            KIO::highlightInFileManager({QString(Latte::configPath() + "/latte/templates/Dock.layout.latte")});
         });
     }
 }
