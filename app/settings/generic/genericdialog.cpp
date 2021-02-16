@@ -143,6 +143,8 @@ void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::
         clearCurrentMessageActions();
     }
 
+    m_messageWidget->setCloseButtonVisible(!isPersistent || actions.count()==0);
+
     m_currentMessageActions = actions;
 
     for (int i=0; i<actions.count(); ++i) {
@@ -171,6 +173,13 @@ void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::
     if (hideInterval > 0) {
         m_hideInlineMessageTimer.setInterval(hideInterval);
         m_hideInlineMessageTimer.start();
+    }
+}
+
+void GenericDialog::hideInlineMessage()
+{
+    if (m_messageWidget) {
+        m_messageWidget->animatedHide();
     }
 }
 

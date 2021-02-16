@@ -44,6 +44,8 @@ public:
     ~GenericDialog();
 
     void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent = false, QList<QAction *> actions = QList<QAction *>());
+    void hideInlineMessage();
+
     int saveChangesConfirmation(const QString &text);
 
 protected:

@@ -74,7 +74,7 @@ public:
     QString proposedTemplateAbsolutePath(QString templateFilename);
 
     void importSystemLayouts();
-    void installCustomTemplate(const QString &templateFilePath);
+    void installCustomLayoutTemplate(const QString &templateFilePath);
 
 signals:
     void newLayoutAdded(const QString &path);

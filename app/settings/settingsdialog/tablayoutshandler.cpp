@@ -413,6 +413,39 @@ void TabLayouts::copyLayout()
     m_layoutsController->copySelectedLayout();
 }
 
+void TabLayouts::installLayoutTemplate(Latte::Data::Layout importedLayout, QString templateFilePath, ImportedLayoutOrigin origin)
+{
+    QString layoutName = QFileInfo(templateFilePath).baseName();
+
+    QString informationText = origin == ImportedLayoutOrigin::DOWNLOADED ? i18nc("settings:layout downloaded successfully","Layout <b>%0</b> downloaded successfully...").arg(importedLayout.name) :
+                                                                           i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedLayout.name);
+
+    informationText += "<br/>";
+
+    if (m_corona->templatesManager()->hasCustomLayoutTemplate(layoutName)) {
+        informationText += i18nc("settings:layout import template", "Would you like to update your <b>%0</b> layout template?").arg(layoutName);
+    } else {
+        informationText += i18nc("settings:layout import template", "Would you like to add <b>%0</b> in your layout templates?").arg(layoutName);
+    }
+
+    QAction *yesAction = new QAction(i18n("Yes"), this);
+    QAction *noAction = new QAction(i18n("No"), this);
+    QList<QAction *> actions;
+    actions << yesAction;
+    actions << noAction;
+
+    connect(noAction, &QAction::triggered, this, &Generic::hideInlineMessage);
+    connect(yesAction, &QAction::triggered, this, [&, templateFilePath]() {
+        m_corona->templatesManager()->installCustomLayoutTemplate(templateFilePath);
+        hideInlineMessage();
+    });
+
+    showInlineMessage(informationText,
+                      KMessageWidget::Information,
+                      true,
+                      actions);
+}
+
 void TabLayouts::downloadLayout()
 {
     qDebug() << Q_FUNC_INFO;
@@ -432,8 +465,7 @@ void TabLayouts::downloadLayout()
 
                 if (version == Latte::Layouts::Importer::LayoutVersion2) {
                     Latte::Data::Layout downloaded = m_layoutsController->addLayoutForFile(entryFile);
-                    showInlineMessage(i18nc("settings:layout downloaded successfully","Layout <b>%0</b> downloaded successfully...").arg(downloaded.name),
-                                      KMessageWidget::Information);
+                    installLayoutTemplate(downloaded, entryFile, DOWNLOADED);
                     break;
                 }
             }
@@ -516,8 +548,7 @@ void TabLayouts::importLayout()
 
         if (version == Latte::Layouts::Importer::LayoutVersion2) {
             Latte::Data::Layout importedlayout = m_layoutsController->addLayoutForFile(file);
-            showInlineMessage(i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedlayout.name),
-                              KMessageWidget::Information);
+            installLayoutTemplate(importedlayout, file, LOCALLY);
         } else if (version == Latte::Layouts::Importer::ConfigVersion1) {
             if (!m_layoutsController->importLayoutsFromV1ConfigFile(file)) {
                 showInlineMessage(i18nc("settings:deprecated layouts import failed","Import layouts from deprecated version <b>failed</b>..."),

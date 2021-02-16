@@ -250,7 +250,7 @@ bool Manager::hasViewTemplate(const QString &templateName) const
     return m_viewTemplates.containsName(templateName);
 }
 
-void Manager::installCustomTemplate(const QString &templateFilePath)
+void Manager::installCustomLayoutTemplate(const QString &templateFilePath)
 {
     if (!templateFilePath.endsWith(".layout.latte")) {
         return;

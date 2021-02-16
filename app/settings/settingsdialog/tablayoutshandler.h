@@ -23,6 +23,7 @@
 
 //! local
 #include "../generic/generichandler.h"
+#include "../../data/layoutdata.h"
 
 //! Qt
 #include <QAction>
@@ -64,6 +65,12 @@ class TabLayouts : public Generic
 public:
     TabLayouts(Dialog::SettingsDialog *parent);
     ~TabLayouts();
+
+    enum ImportedLayoutOrigin
+    {
+        LOCALLY = 0,
+        DOWNLOADED
+    };
 
     bool hasChangedData() const override;
     bool inDefaultValues() const override;
@@ -114,6 +121,8 @@ private:
 
     void initLayoutTemplatesSubMenu();
     void initExportLayoutSubMenu();
+
+    void installLayoutTemplate(Latte::Data::Layout importedLayout, QString templateFilePath, ImportedLayoutOrigin origin);
 
 private:
     Settings::Dialog::SettingsDialog *m_parentDialog{nullptr};

@@ -67,6 +67,8 @@ public slots:
     virtual void resetDefaults() = 0;
     virtual void save() = 0;
 
+    void hideInlineMessage();
+
 signals:
     void dataChanged();
 
