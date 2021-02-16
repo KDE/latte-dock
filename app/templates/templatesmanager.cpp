@@ -229,22 +229,49 @@ QString Manager::proposedTemplateAbsolutePath(QString templateFilename)
     return QString(Latte::configPath() + "/latte/templates/" + tempfilename);
 }
 
+bool Manager::hasCustomLayoutTemplate(const QString &templateName) const
+{
+    for (int i=0; i<m_layoutTemplates.rowCount(); ++i) {
+        if (m_layoutTemplates[i].name == templateName && !m_layoutTemplates[i].isSystemTemplate()) {
+            return true;
+        }
+    }
 
-bool Manager::layoutTemplateExists(const QString &templateName) const
+    return false;
+}
+
+bool Manager::hasLayoutTemplate(const QString &templateName) const
 {
     return m_layoutTemplates.containsName(templateName);
 }
 
-bool Manager::viewTemplateExists(const QString &templateName) const
+bool Manager::hasViewTemplate(const QString &templateName) const
 {
     return m_viewTemplates.containsName(templateName);
+}
+
+void Manager::installCustomTemplate(const QString &templateFilePath)
+{
+    if (!templateFilePath.endsWith(".layout.latte")) {
+        return;
+    }
+
+    QString layoutName = QFileInfo(templateFilePath).baseName();
+
+    QString destinationFilePath = Latte::configPath() + "/latte/templates/" + layoutName + ".layout.latte";
+
+    if (hasCustomLayoutTemplate(layoutName)) {
+        QFile(destinationFilePath).remove();
+    }
+
+    QFile(templateFilePath).copy(destinationFilePath);
 }
 
 QString Manager::uniqueLayoutTemplateName(QString name) const
 {
     int pos_ = name.lastIndexOf(QRegExp(QString(" - [0-9]+")));
 
-    if (layoutTemplateExists(name) && pos_ > 0) {
+    if (hasLayoutTemplate(name) && pos_ > 0) {
         name = name.left(pos_);
     }
 
@@ -252,7 +279,7 @@ QString Manager::uniqueLayoutTemplateName(QString name) const
 
     QString namePart = name;
 
-    while (layoutTemplateExists(name)) {
+    while (hasLayoutTemplate(name)) {
         name = namePart + " - " + QString::number(i);
         i++;
     }
@@ -264,7 +291,7 @@ QString Manager::uniqueViewTemplateName(QString name) const
 {
     int pos_ = name.lastIndexOf(QRegExp(QString(" - [0-9]+")));
 
-    if (viewTemplateExists(name) && pos_ > 0) {
+    if (hasViewTemplate(name) && pos_ > 0) {
         name = name.left(pos_);
     }
 
@@ -272,7 +299,7 @@ QString Manager::uniqueViewTemplateName(QString name) const
 
     QString namePart = name;
 
-    while (viewTemplateExists(name)) {
+    while (hasViewTemplate(name)) {
         name = namePart + " - " + QString::number(i);
         i++;
     }

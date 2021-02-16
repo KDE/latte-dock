@@ -56,8 +56,9 @@ public:
     Latte::Corona *corona();
     void init();
 
-    bool layoutTemplateExists(const QString &templateName) const;
-    bool viewTemplateExists(const QString &templateName) const;
+    bool hasCustomLayoutTemplate(const QString &templateName) const;
+    bool hasLayoutTemplate(const QString &templateName) const;
+    bool hasViewTemplate(const QString &templateName) const;
 
     bool exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
     bool exportTemplate(const Latte::View *view, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
@@ -73,6 +74,7 @@ public:
     QString proposedTemplateAbsolutePath(QString templateFilename);
 
     void importSystemLayouts();
+    void installCustomTemplate(const QString &templateFilePath);
 
 signals:
     void newLayoutAdded(const QString &path);
