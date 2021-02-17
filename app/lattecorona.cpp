@@ -827,8 +827,7 @@ void Corona::addOutput(QScreen *screen)
     int id = m_screenPool->id(screen->name());
 
     if (id == -1) {
-        int newId = m_screenPool->firstAvailableId();
-        m_screenPool->insertScreenMapping(newId, screen->name());
+        m_screenPool->insertScreenMapping(screen->name());
     }
 
     connect(screen, &QScreen::geometryChanged, this, [ = ]() {

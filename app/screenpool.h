@@ -50,14 +50,12 @@ public:
     bool isScreenActive(int screenId) const;
     int primaryScreenId() const;
 
-    void insertScreenMapping(int screenId, const QString &connector);
+    void insertScreenMapping(const QString &connector);
     void reload(QString path);
 
     int id(const QString &connector) const;
 
     QString connector(int id) const;
-
-    int firstAvailableId() const;
 
     QString reportHtml(const QList<int> &assignedScreens) const;
 
@@ -68,6 +66,11 @@ signals:
 
 protected:
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) Q_DECL_OVERRIDE;
+
+    int firstAvailableId() const;
+
+private slots:
+    void updateScreenGeometry(const int &screenId, const QRect &screenGeometry);
 
 private:
     void save();

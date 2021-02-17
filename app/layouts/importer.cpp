@@ -370,7 +370,9 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
     }
 
     //! the old configuration contains also screen values, these must be updated also
-    KSharedConfigPtr oldScreensConfig = KSharedConfig::openConfig(screensPath);
+   /*
+    * do not use any deprecated screen ids
+    * KSharedConfigPtr oldScreensConfig = KSharedConfig::openConfig(screensPath);
     KConfigGroup m_screensGroup = KConfigGroup(oldScreensConfig, "ScreenConnectors");
 
     //restore the known ids to connector mappings
@@ -381,7 +383,7 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
         if (id >= 10 && !m_manager->corona()->screenPool()->hasScreenId(id)) {
             m_manager->corona()->screenPool()->insertScreenMapping(id, connector);
         }
-    }
+    }*/
 
     return true;
 }

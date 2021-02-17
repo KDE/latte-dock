@@ -33,10 +33,10 @@
 
 // X11
 #if HAVE_X11
-    #include <QtX11Extras/QX11Info>
-    #include <xcb/xcb.h>
-    #include <xcb/randr.h>
-    #include <xcb/xcb_event.h>
+#include <QtX11Extras/QX11Info>
+#include <xcb/xcb.h>
+#include <xcb/randr.h>
+#include <xcb/xcb_event.h>
 #endif
 
 namespace Latte {
@@ -67,14 +67,13 @@ void ScreenPool::load()
     //restore the known ids to connector mappings
     for (const QString &key : m_configGroup.keyList()) {
         QString serialized = m_configGroup.readEntry(key, QString());
-        //qDebug() << "connector :" << connector << " - " << key;
 
         Data::Screen screenRecord(key, serialized);
         //qDebug() << "org.kde.latte ::: " << screenRecord.id << ":" << screenRecord.serialize();
 
         if (!key.isEmpty() && !serialized.isEmpty() && !m_screensTable.containsId(key)) {
             m_screensTable << screenRecord;
-            qDebug() << "Known Screen - " << screenRecord.id << " : " << screenRecord.name << " : " << screenRecord.geometry;
+            qDebug() << "org.kde.latte :: Known Screen - " << screenRecord.id << " : " << screenRecord.name << " : " << screenRecord.geometry;
         }
     }
 
@@ -85,7 +84,9 @@ void ScreenPool::load()
     // is performed, driving to the creation of a new containment
     for (QScreen *screen : qGuiApp->screens()) {
         if (!m_screensTable.containsName(screen->name())) {
-            insertScreenMapping(firstAvailableId(), screen->name());
+            insertScreenMapping(screen->name());
+        } else {
+            updateScreenGeometry(id(screen->name()), screen->geometry());
         }
     }
 }
@@ -95,12 +96,24 @@ ScreenPool::~ScreenPool()
     m_configGroup.sync();
 }
 
+void ScreenPool::updateScreenGeometry(const int &screenId, const QRect &screenGeometry)
+{
+    QString scrIdStr = QString::number(screenId);
+
+    if (!m_screensTable.containsId(scrIdStr) || m_screensTable[scrIdStr].geometry == screenGeometry) {
+        return;
+    }
+
+    m_screensTable[scrIdStr].geometry = screenGeometry;
+    save();
+}
+
 
 QString ScreenPool::reportHtml(const QList<int> &assignedScreens) const
 {
     QString report;
 
-   /* report += "<table cellspacing='8'>";
+    /* report += "<table cellspacing='8'>";
     report += "<tr><td align='center'><b>" + i18nc("screen id","ID") + "</b></td>" +
             "<td align='center'><b>" + i18nc("screen name", "Name") + "</b></td>" +
             "<td align='center'><b>" + i18nc("screen type", "Type") + "</b></td>" +
@@ -183,51 +196,39 @@ void ScreenPool::save()
 
     for (int i=0; i<m_screensTable.rowCount(); ++i) {
         Data::Screen screenRecord = m_screensTable[i];
+        qDebug() << " org.kde.latte: writing screen :: " << screenRecord.id << " :: " << screenRecord.serialize();
         m_configGroup.writeEntry(screenRecord.id, screenRecord.serialize());
     }
 
-    //write to disck every 30 seconds at most
-    m_configSaveTimer.start(30000);
+    //write to disck every 10 seconds at most
+    m_configSaveTimer.start(10000);
 }
 
-void ScreenPool::insertScreenMapping(int screenId, const QString &connector)
+void ScreenPool::insertScreenMapping(const QString &connector)
 {
-    //Q_ASSERT(!m_connectorForId.contains(id) || m_connectorForId.value(id) == connector);
-    //Q_ASSERT(!m_idForConnector.contains(connector) || m_idForConnector.value(connector) == id);
-
     //the ":" check fixes the strange plasma/qt issues when changing layouts
     //there are case that the QScreen instead of the correct screen name
     //returns "0:0", this check prevents from breaking the screens database
     //from garbage ids
-    if (connector.startsWith(":")) {
+    if (m_screensTable.containsName(connector) || connector.startsWith(":")) {
         return;
     }
 
     qDebug() << "add connector..." << connector;
 
-    if (screenId == 0) {
-        m_lastPrimaryConnector = connector;
-    } else {
-        Data::Screen screenRecord;
-        screenRecord.id = screenId;
-        screenRecord.name = connector;
+    Data::Screen screenRecord;
+    screenRecord.id = firstAvailableId();
+    screenRecord.name = connector;
 
-        //! update screen geometry
-        for (const auto scr : qGuiApp->screens()) {
-            if (scr->name() == connector) {
-                screenRecord.geometry = scr->geometry();
-                break;
-            }
-        }
-
-        //! add/update
-        if (m_screensTable.containsId(screenId)) {
-            m_screensTable[screenId] = screenRecord;
-        } else {
-            m_screensTable << screenRecord;
+    //! update screen geometry
+    for (const auto scr : qGuiApp->screens()) {
+        if (scr->name() == connector) {
+            screenRecord.geometry = scr->geometry();
+            break;
         }
     }
 
+    m_screensTable << screenRecord;
     save();
 }
 
@@ -239,8 +240,8 @@ int ScreenPool::id(const QString &connector) const
 
 QString ScreenPool::connector(int id) const
 {   
-    int ind = m_screensTable.indexOf(id);
-    return (ind>=0 ? m_screensTable[ind].name : QString());
+    QString idStr = QString::number(id);
+    return (m_screensTable.containsId(idStr) ? m_screensTable[idStr].name : QString());
 }
 
 int ScreenPool::firstAvailableId() const
@@ -249,7 +250,7 @@ int ScreenPool::firstAvailableId() const
     int availableId = 10;
 
     for (int row=0; row<m_screensTable.rowCount(); ++row) {
-        if (!m_screensTable.containsId(availableId)) {
+        if (!m_screensTable.containsId(QString::number(availableId))) {
             return availableId;
         }
 
@@ -261,7 +262,7 @@ int ScreenPool::firstAvailableId() const
 
 bool ScreenPool::hasScreenId(int screenId) const
 {
-    return ((screenId!=-1) && m_screensTable.containsId(screenId));
+    return ((screenId>=0) && m_screensTable.containsId(QString::number(screenId)));
 }
 
 bool ScreenPool::isScreenActive(int screenId) const
@@ -320,7 +321,7 @@ bool ScreenPool::nativeEventFilter(const QByteArray &eventType, void *message, l
         if (qGuiApp->primaryScreen()->name() != m_lastPrimaryConnector) {
             //new screen?
             if (id(qGuiApp->primaryScreen()->name()) < 0) {
-                insertScreenMapping(firstAvailableId(), qGuiApp->primaryScreen()->name());
+                insertScreenMapping(qGuiApp->primaryScreen()->name());
             }
 
             m_lastPrimaryConnector = qGuiApp->primaryScreen()->name();
