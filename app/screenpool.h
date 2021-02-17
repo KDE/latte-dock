@@ -50,9 +50,6 @@ public:
     bool screenExists(int id) const;
     int primaryScreenId() const;
 
-    QString primaryConnector() const;
-    void setPrimaryConnector(const QString &primary);
-
     void insertScreenMapping(int id, const QString &connector);
     void reload(QString path);
 
@@ -80,7 +77,8 @@ private:
     Latte::Data::ScreensTable m_screensTable;
 
     KConfigGroup m_configGroup;
-    QString m_primaryConnector;
+    //! used to workaround a bug under X11 when primary screen changes and no screenChanged signal is emitted
+    QString m_lastPrimaryConnector;
     //order is important
     QMap<int, QString> m_connectorForId;
     QHash<QString, int> m_idForConnector;

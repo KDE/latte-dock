@@ -55,19 +55,14 @@ ScreenPool::ScreenPool(KSharedConfig::Ptr config, QObject *parent)
 
 void ScreenPool::load()
 {
-    m_primaryConnector = QString();
+    m_lastPrimaryConnector = QString();
     m_connectorForId.clear();
     m_idForConnector.clear();
 
     QScreen *primary = qGuiApp->primaryScreen();
 
     if (primary) {
-        m_primaryConnector = primary->name();
-
-        if (!m_primaryConnector.isEmpty()) {
-            //m_connectorForId[0] = m_primaryConnector;
-            //m_idForConnector[m_primaryConnector] = 0;
-        }
+        m_lastPrimaryConnector = primary->name();
     }
 
     //restore the known ids to connector mappings
@@ -119,7 +114,7 @@ QString ScreenPool::reportHtml(const QList<int> &assignedScreens) const
     for(const QString &connector : m_connectorForId) {
         int scrId = id(connector);
         bool hasViews = assignedScreens.contains(scrId);
-        bool primary = m_primaryConnector == connector;
+        bool primary = m_lastPrimaryConnector == connector;
         bool secondary = !primary && screenExists(scrId);
 
         report += "<tr>";
@@ -178,42 +173,11 @@ void ScreenPool::reload(QString path)
         m_configGroup = KConfigGroup(newFile, QStringLiteral("ScreenConnectors"));
         load();
     }
-
-
-
 }
 
 int ScreenPool::primaryScreenId() const
 {
     return id(qGuiApp->primaryScreen()->name());
-}
-
-QString ScreenPool::primaryConnector() const
-{
-    return m_primaryConnector;
-}
-
-void ScreenPool::setPrimaryConnector(const QString &primary)
-{
-    //the ":" check fixes the strange plasma/qt issues when changing layouts
-    //there are case that the QScreen instead of the correct screen name
-    //returns "0:0", this check prevents from breaking the screens database
-    //from garbage ids
-    if ((m_primaryConnector == primary) || primary.startsWith(":")) {
-        return;
-    }
-
-    Q_ASSERT(m_idForConnector.contains(primary));
-
-    /* int oldIdForPrimary = m_idForConnector.value(primary);
-
-     m_idForConnector[primary] = 0;
-     m_connectorForId[0] = primary;
-     m_idForConnector[m_primaryConnector] = oldIdForPrimary;
-     m_connectorForId[oldIdForPrimary] = m_primaryConnector;
-     m_primaryConnector = primary;
-    */
-    save();
 }
 
 void ScreenPool::save()
@@ -243,7 +207,7 @@ void ScreenPool::insertScreenMapping(int id, const QString &connector)
     qDebug() << "add connector..." << connector;
 
     if (id == 0) {
-        m_primaryConnector = connector;
+        m_lastPrimaryConnector = connector;
     } else {
         m_connectorForId[id] = connector;
         m_idForConnector[connector] = id;
@@ -352,15 +316,13 @@ bool ScreenPool::nativeEventFilter(const QByteArray &eventType, void *message, l
     const xcb_query_extension_reply_t *reply = xcb_get_extension_data(QX11Info::connection(), &xcb_randr_id);
 
     if (responseType == reply->first_event + XCB_RANDR_SCREEN_CHANGE_NOTIFY) {
-        if (qGuiApp->primaryScreen()->name() != primaryConnector()) {
+        if (qGuiApp->primaryScreen()->name() != m_lastPrimaryConnector) {
             //new screen?
             if (id(qGuiApp->primaryScreen()->name()) < 0) {
                 insertScreenMapping(firstAvailableId(), qGuiApp->primaryScreen()->name());
             }
 
-            //switch the primary screen in the pool
-            setPrimaryConnector(qGuiApp->primaryScreen()->name());
-
+            m_lastPrimaryConnector = qGuiApp->primaryScreen()->name();
             emit primaryPoolChanged();
         }
     }
