@@ -18,11 +18,14 @@
  *
  */
 
+// local
 #include "generictable.h"
 #include "activitydata.h"
 #include "appletdata.h"
 #include "layoutdata.h"
+#include "screendata.h"
 
+// Qt
 #include <QDebug>
 
 namespace Latte {
@@ -304,6 +307,7 @@ template class GenericTable<Data::Activity>;
 template class GenericTable<Data::Applet>;
 template class GenericTable<Data::Generic>;
 template class GenericTable<Data::Layout>;
+template class GenericTable<Data::Screen>;
 
 }
 }

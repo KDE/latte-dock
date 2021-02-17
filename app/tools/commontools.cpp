@@ -24,6 +24,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QStandardPaths>
+#include <QStringList>
 #include <QtMath>
 
 namespace Latte {
@@ -72,6 +73,24 @@ float colorLumina(float r, float g, float b)
     float luminosity = 0.2126 * rS + 0.7152 * gS + 0.0722 * bS;
 
     return luminosity;
+}
+
+QString rectToString(const QRect &rect)
+{
+    QString result;
+    result += QString(QString::number(rect.x()) + ","  + QString::number(rect.y()));
+    result += " ";
+    result += QString(QString::number(rect.width()) + "x" + QString::number(rect.height()));
+
+    return result;
+}
+
+QRect stringToRect(const QString &str)
+{
+    QStringList parts = str.split(" ");
+    QStringList pos = parts[0].split(",");
+    QStringList size = parts[1].split("x");
+    return QRect(pos[0].toInt(), pos[1].toInt(), size[0].toInt(), size[1].toInt());
 }
 
 QString standardPath(QString subPath, bool localfirst)

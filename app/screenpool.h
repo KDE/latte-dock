@@ -20,6 +20,9 @@
 #ifndef SCREENPOOL_H
 #define SCREENPOOL_H
 
+// local
+#include "data/screendata.h"
+
 // Qt
 #include <QObject>
 #include <QHash>
@@ -74,6 +77,7 @@ protected:
 
 private:
     void save();
+    Latte::Data::ScreensTable m_screensTable;
 
     KConfigGroup m_configGroup;
     QString m_primaryConnector;
