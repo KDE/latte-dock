@@ -115,7 +115,7 @@ QString ScreenPool::reportHtml(const QList<int> &assignedScreens) const
         int scrId = id(connector);
         bool hasViews = assignedScreens.contains(scrId);
         bool primary = m_lastPrimaryConnector == connector;
-        bool secondary = !primary && screenExists(scrId);
+        bool secondary = !primary && isScreenActive(scrId);
 
         report += "<tr>";
 
@@ -257,15 +257,15 @@ QList <int> ScreenPool::knownIds() const
     return m_connectorForId.keys();
 }
 
-bool ScreenPool::hasId(int id) const
+bool ScreenPool::hasScreenId(int screenId) const
 {
-    return ((id!=-1) &&  knownIds().contains(id));
+    return ((screenId!=-1) && knownIds().contains(screenId));
 }
 
-bool ScreenPool::screenExists(int id) const
+bool ScreenPool::isScreenActive(int screenId) const
 {
-    if (id != -1 && knownIds().contains(id)) {
-        QString scrName = connector(id);
+    if (hasScreenId(screenId)) {
+        QString scrName = connector(screenId);
 
         for (const auto scr : qGuiApp->screens()) {
             if (scr->name() == scrName) {

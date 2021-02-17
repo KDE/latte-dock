@@ -46,8 +46,8 @@ public:
     void load();
     ~ScreenPool() override;
 
-    bool hasId(int id) const;
-    bool screenExists(int id) const;
+    bool hasScreenId(int screenId) const;
+    bool isScreenActive(int screenId) const;
     int primaryScreenId() const;
 
     void insertScreenMapping(int id, const QString &connector);
@@ -79,6 +79,7 @@ private:
     KConfigGroup m_configGroup;
     //! used to workaround a bug under X11 when primary screen changes and no screenChanged signal is emitted
     QString m_lastPrimaryConnector;
+
     //order is important
     QMap<int, QString> m_connectorForId;
     QHash<QString, int> m_idForConnector;

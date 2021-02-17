@@ -122,7 +122,7 @@ void ScreenGeometries::updateGeometries()
 
         qDebug() << " PLASMA SCREEN GEOMETRIES, SCREEN :: " << scrId << " - " << scrName;
 
-        if (m_corona->screenPool()->hasId(scrId)) {
+        if (m_corona->screenPool()->hasScreenId(scrId)) {
             QRect availableRect = m_corona->availableScreenRectWithCriteria(scrId,
                                                                             QString(),
                                                                             m_ignoreModes,

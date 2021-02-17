@@ -488,7 +488,7 @@ QRect Corona::screenGeometry(int id) const
 
     QString screenName;
 
-    if (m_screenPool->hasId(id)) {
+    if (m_screenPool->hasScreenId(id)) {
         screenName = m_screenPool->connector(id);
     }
 
