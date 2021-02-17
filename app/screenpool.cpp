@@ -51,6 +51,14 @@ ScreenPool::ScreenPool(KSharedConfig::Ptr config, QObject *parent)
     connect(&m_configSaveTimer, &QTimer::timeout, this, [this]() {
         m_configGroup.sync();
     });
+
+    connect(qGuiApp, &QGuiApplication::screenAdded, this, &ScreenPool::onScreenAdded, Qt::UniqueConnection);
+    connect(qGuiApp, &QGuiApplication::screenRemoved, this, &ScreenPool::onScreenRemoved, Qt::UniqueConnection);
+}
+
+ScreenPool::~ScreenPool()
+{
+    m_configGroup.sync();
 }
 
 void ScreenPool::load()
@@ -83,17 +91,39 @@ void ScreenPool::load()
     // at startup, if it' asked before corona::addOutput()
     // is performed, driving to the creation of a new containment
     for (QScreen *screen : qGuiApp->screens()) {
+        onScreenRemoved(screen);
+
         if (!m_screensTable.containsName(screen->name())) {
             insertScreenMapping(screen->name());
         } else {
-            updateScreenGeometry(id(screen->name()), screen->geometry());
+            updateScreenGeometry(screen);
         }
+
+        onScreenAdded(screen);
     }
 }
 
-ScreenPool::~ScreenPool()
+void ScreenPool::onScreenAdded(const QScreen *screen)
 {
-    m_configGroup.sync();
+    connect(screen, &QScreen::geometryChanged, this, [&, screen]() {
+        updateScreenGeometry(screen);
+    });
+}
+
+void ScreenPool::onScreenRemoved(const QScreen *screen)
+{
+    disconnect(screen, &QScreen::geometryChanged, this, nullptr);
+}
+
+void ScreenPool::updateScreenGeometry(const QScreen *screen)
+{
+    if (!screen) {
+        return;
+    }
+
+    if (m_screensTable.containsName(screen->name())) {
+        updateScreenGeometry(id(screen->name()), screen->geometry());
+    }
 }
 
 void ScreenPool::updateScreenGeometry(const int &screenId, const QRect &screenGeometry)
@@ -196,7 +226,6 @@ void ScreenPool::save()
 
     for (int i=0; i<m_screensTable.rowCount(); ++i) {
         Data::Screen screenRecord = m_screensTable[i];
-        qDebug() << " org.kde.latte: writing screen :: " << screenRecord.id << " :: " << screenRecord.serialize();
         m_configGroup.writeEntry(screenRecord.id, screenRecord.serialize());
     }
 

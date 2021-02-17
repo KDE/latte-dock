@@ -70,19 +70,20 @@ protected:
     int firstAvailableId() const;
 
 private slots:
-    void updateScreenGeometry(const int &screenId, const QRect &screenGeometry);
+    void updateScreenGeometry(const QScreen *screen);
+    void onScreenAdded(const QScreen *screen);
+    void onScreenRemoved(const QScreen *screen);
 
 private:
     void save();
+    void updateScreenGeometry(const int &screenId, const QRect &screenGeometry);
+
+private:
     Latte::Data::ScreensTable m_screensTable;
 
     KConfigGroup m_configGroup;
     //! used to workaround a bug under X11 when primary screen changes and no screenChanged signal is emitted
     QString m_lastPrimaryConnector;
-
-    //order is important
-  //  QMap<int, QString> m_connectorForId;
-   // QHash<QString, int> m_idForConnector;
 
     QTimer m_configSaveTimer;
 };
