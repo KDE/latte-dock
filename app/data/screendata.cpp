@@ -26,7 +26,9 @@ namespace Latte {
 namespace Data {
 
 Screen::Screen()
-    : Generic()
+    : Generic(),
+      hasExplicitViews(false),
+      geometry(QRect(0, 0, 1920, 1080))
 {
 }
 
@@ -45,6 +47,7 @@ Screen::Screen(const Screen &o)
 }
 
 Screen::Screen(const QString &screenId, const QString &serialized)
+    : Screen()
 {
     init(screenId, serialized);
 }
@@ -88,7 +91,10 @@ void Screen::init(const QString &screenId, const QString &serialized)
 
     id = screenId;
     name = parts[0];
-    geometry = parts.count() > 1 ? Latte::stringToRect(parts[1]) : QRect(0, 0, 1920, 1080);
+
+    if (parts.count() > 1) {
+        geometry = Latte::stringToRect(parts[1]);
+    }
 }
 
 QString Screen::serialize() const

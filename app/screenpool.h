@@ -50,7 +50,7 @@ public:
     bool isScreenActive(int screenId) const;
     int primaryScreenId() const;
 
-    void insertScreenMapping(int id, const QString &connector);
+    void insertScreenMapping(int screenId, const QString &connector);
     void reload(QString path);
 
     int id(const QString &connector) const;
@@ -60,9 +60,6 @@ public:
     int firstAvailableId() const;
 
     QString reportHtml(const QList<int> &assignedScreens) const;
-
-    //all ids that are known, included screens not enabled at the moment
-    QList <int> knownIds() const;
 
     QScreen *screenForId(int id);
 
@@ -81,8 +78,8 @@ private:
     QString m_lastPrimaryConnector;
 
     //order is important
-    QMap<int, QString> m_connectorForId;
-    QHash<QString, int> m_idForConnector;
+  //  QMap<int, QString> m_connectorForId;
+   // QHash<QString, int> m_idForConnector;
 
     QTimer m_configSaveTimer;
 };

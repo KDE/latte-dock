@@ -55,10 +55,12 @@ public:
     T &operator[](const uint &index);
     const T operator[](const uint &index) const;
 
+    bool containsId(const int &id) const;
     bool containsId(const QString &id) const;
     bool containsName(const QString &name) const;
     bool rowExists(const int &row) const;
 
+    int indexOf(const int &id) const;
     int indexOf(const QString &id) const;
     int rowCount() const;
     int sortedPosForName(const QString &name) const;

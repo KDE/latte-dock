@@ -36,7 +36,7 @@ namespace Data {
 class Screen : public Generic
 {
 public:
-    static constexpr const char* SERIALIZESPLITTER = "##";
+    static constexpr const char* SERIALIZESPLITTER = ":::";
 
     Screen();
     Screen(Screen &&o);

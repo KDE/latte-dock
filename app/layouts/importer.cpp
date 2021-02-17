@@ -378,7 +378,7 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
         QString connector = m_screensGroup.readEntry(key, QString());
         int id = key.toInt();
 
-        if (id >= 10 && !m_manager->corona()->screenPool()->knownIds().contains(id)) {
+        if (id >= 10 && !m_manager->corona()->screenPool()->hasScreenId(id)) {
             m_manager->corona()->screenPool()->insertScreenMapping(id, connector);
         }
     }

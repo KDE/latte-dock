@@ -173,6 +173,12 @@ const T GenericTable<T>::operator[](const uint &index) const
 }
 
 template <class T>
+bool GenericTable<T>::containsId(const int &id) const
+{
+    return containsId(QString::number(id));
+}
+
+template <class T>
 bool GenericTable<T>::containsId(const QString &id) const
 {
     for(int i=0; i<m_list.count(); ++i) {
@@ -200,6 +206,12 @@ template <class T>
 bool GenericTable<T>::rowExists(const int &row) const
 {
     return (m_list.count()>=0 && row>=0 && row<rowCount());
+}
+
+template <class T>
+int GenericTable<T>::indexOf(const int &id) const
+{
+    return indexOf(QString::number(id));
 }
 
 template <class T>
