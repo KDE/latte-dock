@@ -152,6 +152,7 @@ Column {
         }
         // close button
         PlasmaComponents.ToolButton {
+            //! It creates issues with Valgrind and needs to be completely removed in that case
             id: closeButton
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             visible: isWin && !hideCloseButtons
@@ -357,6 +358,7 @@ Column {
                     }
 
                    PlasmaComponents.ToolButton {
+                       //! It creates issues with Valgrind and needs to be completely removed in that case
                        id: canGoBackButton
                        enabled: canGoBack
                        iconSource: LayoutMirroring.enabled ? "media-skip-forward" : "media-skip-backward"
@@ -364,6 +366,7 @@ Column {
                    }
 
                    PlasmaComponents.ToolButton {
+                       //! It creates issues with Valgrind and needs to be completely removed in that case
                        id: playingButton
                        enabled: playing ? canPause : canPlay
                        iconSource: playing ? "media-playback-pause" : "media-playback-start"
@@ -377,6 +380,7 @@ Column {
                    }
 
                    PlasmaComponents.ToolButton {
+                       //! It creates issues with Valgrind and needs to be completely removed in that case
                        id: canGoNextButton
                        enabled: canGoNext
                        iconSource: LayoutMirroring.enabled ? "media-skip-backward" : "media-skip-forward"

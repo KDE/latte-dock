@@ -36,15 +36,15 @@ import org.kde.taskmanager 0.1 as TaskManager
 
 PlasmaExtras.ScrollArea {
     id: mainToolTip
-    property Item parentTask
-    property var rootIndex
+    property Item parentTask: null
+    property var rootIndex: []
 
     property string appName
     property int pidParent
     property bool isGroup
     property bool hideCloseButtons
 
-    property var windows
+    property var windows: []
     readonly property bool isWin: windows !== undefined
 
     property variant icon

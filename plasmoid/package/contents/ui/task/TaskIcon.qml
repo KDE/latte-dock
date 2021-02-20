@@ -66,6 +66,7 @@ Item {
         id: smartLauncherLoader
         active: taskIconContainer.smartLauncherEnabled
         sourceComponent: TaskManagerApplet.SmartLauncherItem {
+            //! It creates issues with Valgrind and needs to be completely removed in that case
             launcherUrl: taskItem.launcherUrlWithIcon
         }
     }
