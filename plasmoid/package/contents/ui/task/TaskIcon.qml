@@ -43,7 +43,7 @@ Item {
     readonly property bool smartLauncherEnabled: ((taskItem.isStartup === false) && (root.showInfoBadge || root.showProgressBadge))
     readonly property bool progressVisible: smartLauncherItem && smartLauncherItem.progressVisible
     readonly property real progress: smartLauncherItem && smartLauncherItem.progress ? smartLauncherItem.progress : 0
-    property QtObject smartLauncherItem: null
+    readonly property QtObject smartLauncherItem: smartLauncherLoader.active ? smartLauncherLoader.item : null
 
     Rectangle{
         id: draggedRectangle
@@ -60,6 +60,14 @@ Item {
         border.color: theme.highlightColor
 
         onTempColorChanged: tempColor.a = 0.35;
+    }
+
+    Loader {
+        id: smartLauncherLoader
+        active: taskIconContainer.smartLauncherEnabled
+        sourceComponent: TaskManagerApplet.SmartLauncherItem {
+            launcherUrl: taskItem.launcherUrlWithIcon
+        }
     }
 
     //! Provide icon background and glow colors
@@ -449,21 +457,6 @@ Item {
             removingAnimation.removingItem.destroy();
     }
 
-    onSmartLauncherEnabledChanged: {
-        if (smartLauncherEnabled && !smartLauncherItem) {
-            var smartLauncher = Qt.createQmlObject(
-                        " import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet; TaskManagerApplet.SmartLauncherItem { }",
-                        taskIcon);
-
-            smartLauncher.launcherUrl = Qt.binding(function() { return taskItem.launcherUrlWithIcon; });
-
-            smartLauncherItem = smartLauncher;
-        } else if (!smartLauncherEnabled && smartLauncherItem) {
-            smartLauncherItem.destroy();
-            smartLauncherItem = null;
-        }
-    }
-
     Connections{
         target: taskItem
 
@@ -610,5 +603,4 @@ Item {
             }
         }
     ]
-
 }
