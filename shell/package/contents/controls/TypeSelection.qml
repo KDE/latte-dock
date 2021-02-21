@@ -98,7 +98,7 @@ Grid {
                 plasmoid.configuration.plasmaBackgroundForPopups = false;
 
                 //! Floating
-                plasmoid.configuration.floatingInternalGapIsForced = Qt.PartiallyChecked;
+                plasmoid.configuration.floatingInternalGapIsForced = true;
             }
         }
     }
@@ -143,7 +143,7 @@ Grid {
                 plasmoid.configuration.plasmaBackgroundForPopups = true;
 
                 //! Floating
-                plasmoid.configuration.floatingInternalGapIsForced = Qt.PartiallyChecked;
+                plasmoid.configuration.floatingInternalGapIsForced = false;
 
                 //! Custom Background that overrides Plasma Theme metrics
                 plasmoid.configuration.backgroundRadius = -1;

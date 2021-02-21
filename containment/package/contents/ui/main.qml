@@ -131,17 +131,7 @@ Item {
                                         || latteView.windowsTracker.currentScreen.activeWindowTouchingEdge
                                         || hasExpandedApplet)
 
-    property bool floatingInternalGapIsForced: {
-        if (plasmoid.configuration.floatingInternalGapIsForced === Qt.UnChecked) {
-            return false;
-        } else if (plasmoid.configuration.floatingInternalGapIsForced === Qt.Checked) {
-            return true;
-        }  else if (plasmoid.configuration.floatingInternalGapIsForced === Qt.PartiallyChecked /*Auto*/) {
-            return viewTypeInQuestion === LatteCore.Types.PanelView ? false : true;
-        }
-
-        return true;
-    }
+    property bool floatingInternalGapIsForced: plasmoid.configuration.floatingInternalGapIsForced
 
     property bool forceSolidPanel: (latteView && latteView.visibility
                                     && LatteCore.WindowSystem.compositingActive

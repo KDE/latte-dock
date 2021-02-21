@@ -861,12 +861,11 @@ PlasmaComponents.Page {
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
                         text: i18n("Always use floating gap for user interaction")
-                        tooltip: i18n("Floating gap is always used from applets and any relevant user interaction when \nthat option is enabled. Default option is auto selecting that behavior.")
-                        partiallyCheckedEnabled: true
+                        tooltip: i18n("Floating gap is always used for applets and window interaction")
                         value: plasmoid.configuration.floatingInternalGapIsForced
 
                         onClicked: {
-                            plasmoid.configuration.floatingInternalGapIsForced = checkedState;
+                            plasmoid.configuration.floatingInternalGapIsForced = !plasmoid.configuration.floatingInternalGapIsForced;
                         }
                     }
 
