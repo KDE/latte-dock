@@ -94,8 +94,6 @@ Item {
         return PlasmaCore.Types.BottomEdge;
     }
 
-    property int tasksStarting: 0
-
     ///Don't use Math.floor it adds one pixel in animations and creates glitches
     property int widthMargins: root.vertical ? appletAbilities.metrics.totals.thicknessEdges : appletAbilities.metrics.totals.lengthEdges
     property int heightMargins: !root.vertical ? appletAbilities.metrics.totals.thicknessEdges : appletAbilities.metrics.totals.lengthEdges
@@ -539,9 +537,6 @@ Item {
             groupingAppIdBlacklist = plasmoid.configuration.groupingAppIdBlacklist;
             groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
 
-            icList.model = tasksModel;
-            tasksStarting = count;
-
             ///Plasma 5.9 enforce grouping at all cases
             if (LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,9,0)) {
                 groupingWindowTasksThreshold = -1;
@@ -981,6 +976,7 @@ Item {
 
                 ListView {
                     id:icList
+                    model: tasksModel
                     delegate: Task.TaskItem{
                         abilities: appletAbilities
                     }
