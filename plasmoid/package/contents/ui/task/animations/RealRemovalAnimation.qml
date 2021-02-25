@@ -75,7 +75,12 @@ SequentialAnimation {
             var spacer = taskItem.headItemIsSeparator ? -(2+taskItem.abilities.metrics.totals.lengthEdge) : ( taskItem.headItemIsSeparator ? (2+taskItem.abilities.metrics.totals.lengthEdge)/2 : 0);
 
             if (!taskItem.inBouncingAnimation && !animation4) {
-                //! real slide-out case
+                //! Is this really needed ??
+                //! That hidden reanchoring was creating issue :#433359
+                //! this needs to be reinvestigated - reapproached in case the following
+                //! commented lines are really needed
+
+            /*    //! real slide-out case
                 var taskInListPos = mapToItem(icList, 0, 0);
                 taskItem.parent = icList;
 
@@ -97,7 +102,7 @@ SequentialAnimation {
                     } else {
                         taskItem.anchors.bottom = icList.bottom;
                     }
-                }
+                }*/
             } else if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation ) {
                 // bouncing case
                 if (root.vertical) {
@@ -110,7 +115,7 @@ SequentialAnimation {
             }
 
             //console.log("1." + taskItem.launcherUrl + " - " + taskItem.abilities.launchers.inCurrentActivity(taskItem.launcherUrl) + "__" +
-            //            animation1 + ":" + animation4 + "=>" + taskRealRemovalAnimation.enabledAnimation);
+            //            animation1 + ":" + animation4 + "=>" + taskRealRemovalAnimation.enabledAnimation + "  index:" + taskItem.lastValidIndex);
             //console.log("2." + taskItem.isLauncher);
 
             taskItem.abilities.animations.needLength.addEvent(needLengthEvent);
