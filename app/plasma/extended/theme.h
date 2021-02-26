@@ -69,6 +69,11 @@ class Theme: public QObject
 
     Q_PROPERTY(int outlineWidth READ outlineWidth NOTIFY outlineWidthChanged)
 
+    Q_PROPERTY(int separatorAreaMarginTop READ separatorAreaMarginTop NOTIFY separatorAreaMarginsChanged)
+    Q_PROPERTY(int separatorAreaMarginLeft READ separatorAreaMarginLeft NOTIFY separatorAreaMarginsChanged)
+    Q_PROPERTY(int separatorAreaMarginBottom READ separatorAreaMarginBottom NOTIFY separatorAreaMarginsChanged)
+    Q_PROPERTY(int separatorAreaMarginRight READ separatorAreaMarginRight NOTIFY separatorAreaMarginsChanged)
+
     Q_PROPERTY(Latte::PlasmaExtended::PanelBackground *backgroundTopEdge READ backgroundTopEdge NOTIFY backgroundsChanged)
     Q_PROPERTY(Latte::PlasmaExtended::PanelBackground *backgroundLeftEdge READ backgroundLeftEdge NOTIFY backgroundsChanged)
     Q_PROPERTY(Latte::PlasmaExtended::PanelBackground *backgroundBottomEdge READ backgroundBottomEdge NOTIFY backgroundsChanged)
@@ -89,6 +94,11 @@ public:
     int outlineWidth() const;
     void setOutlineWidth(int width);
 
+    int separatorAreaMarginTop() const;
+    int separatorAreaMarginLeft() const;
+    int separatorAreaMarginBottom() const;
+    int separatorAreaMarginRight() const;
+
     PanelBackground *backgroundTopEdge() const;
     PanelBackground *backgroundLeftEdge() const;
     PanelBackground *backgroundBottomEdge() const;
@@ -107,6 +117,7 @@ signals:
     void compositingChanged();
     void hasShadowChanged();
     void outlineWidthChanged();
+    void separatorAreaMarginsChanged();
     void themeChanged();
 
 private slots:
@@ -125,6 +136,7 @@ private:
     void updateDefaultSchemeValues();
     void updateReversedScheme();
     void updateReversedSchemeValues();
+    void updateSeperatorAreaMarginsValues();
 
     void qmlRegisterTypes();
 
@@ -134,6 +146,11 @@ private:
     bool m_compositing{true};
 
     int m_outlineWidth{1};
+
+    int m_separatorAreaMarginTop{0};
+    int m_separatorAreaMarginLeft{0};
+    int m_separatorAreaMarginBottom{0};
+    int m_separatorAreaMarginRight{0};
 
     QString m_themePath;
     QString m_themeWidgetsPath;
