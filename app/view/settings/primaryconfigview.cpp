@@ -321,7 +321,6 @@ void PrimaryConfigView::instantUpdateAvailableScreenGeometry()
     QString activityid = m_latteView->layout()->lastUsedActivity();
 
     m_availableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, activityid, ignoreModes, {}, false, true);
-
     emit availableScreenGeometryChanged();
 }
 
@@ -407,7 +406,9 @@ void PrimaryConfigView::syncGeometry()
 
     auto geometry = QRect(position.x(), position.y(), size.width(), size.height());
 
-    if (m_geometryWhenVisible == geometry) {
+    QRect winGeometry(x(), y(), width(), height());
+
+    if (m_geometryWhenVisible == geometry && winGeometry == geometry) {
         return;
     }
 
