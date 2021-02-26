@@ -56,7 +56,7 @@ Item {
                                             && !isSpacer && !isInternalViewSplitter
 
     readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
-    readonly property bool isMarginAreaSeparator: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator);
+    readonly property bool isMarginsAreaSeparator: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator);
 
     readonly property color highlightColor: theme.buttonFocusColor
 
@@ -101,7 +101,8 @@ Item {
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
     property bool isSeparator: applet && (applet.pluginName === "audoban.applet.separator"
-                                          || applet.pluginName === "org.kde.latte.separator")
+                                          || applet.pluginName === "org.kde.latte.separator"
+                                          || isMarginsAreaSeparator)
     property bool isSpacer: applet && (applet.pluginName === "org.kde.latte.spacer")
     property bool isSystray: applet && (applet.pluginName === "org.kde.plasma.systemtray" || applet.pluginName === "org.nomad.systemtray" )
 

@@ -30,6 +30,8 @@ AbilityDefinition.Indexer {
     property var clients: []
     property var clientsBridges: []
 
+    property var marginsAreaSeparators: []
+
     Binding{
         target: indxr
         property: "separators"
@@ -97,6 +99,37 @@ AbilityDefinition.Indexer {
             }
 
             return hdn;
+        }
+    }
+
+    Binding{
+        target: indxr
+        property: "marginsAreaSeparators"
+        when: !updateIsBlocked
+        value: {
+            var seps = [];
+            var grid;
+
+            for (var l=0; l<=2; ++l) {
+                if (l===0) {
+                    grid = layouts.startLayout;
+                } else if (l===1) {
+                    grid = layouts.mainLayout;
+                } else if (l===2) {
+                    grid = layouts.endLayout;
+                }
+
+                for (var i=0; i<grid.children.length; ++i){
+                    var appletItem = grid.children[i];
+                    if (appletItem
+                            && appletItem.isMarginsAreaSeparator
+                            && appletItem.index>=0) {
+                        seps.push(appletItem.index);
+                    }
+                }
+            }
+
+            return seps;
         }
     }
 
