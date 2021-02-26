@@ -22,7 +22,15 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 
 Item {
-    readonly property int thickness: appletItem.canFillThickness || appletItem.screenEdgeMarginSupported ? 1 : appletItem.metrics.margin.thickness
+    readonly property int thickness: {
+        if (appletItem.canFillThickness || appletItem.screenEdgeMarginSupported) {
+            return 1;
+        } else if (appletItem.inMarginsArea) {
+            return appletItem.metrics.margin.thickness + appletItem.metrics.marginsAreaThickness;
+        }
+
+        return appletItem.metrics.margin.thickness;
+    }
     readonly property int length: root.isHorizontal ? wrapper.width : wrapper.height
 
     property color color: "blue"

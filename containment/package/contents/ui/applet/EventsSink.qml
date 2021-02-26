@@ -25,8 +25,8 @@ import org.kde.latte.core 0.2 as LatteCore
 Item {
     property Item destination: null
 
-    readonly property int headThickness: appletItem.metrics.margin.thickness
-    readonly property int tailThickness: destination ? destination.tailThicknessMargin : headThickness
+    readonly property int headThickness: destination ? destination.headThicknessMargin : appletItem.metrics.margin.thickness
+    readonly property int tailThickness: destination ? destination.tailThicknessMargin : appletItem.metrics.margin.thickness
     readonly property int thickness: headThickness + tailThickness + (root.isHorizontal ? destination.height : destination.width)
     readonly property int lengthPadding: {
         if ( (root.myView.alignment === LatteCore.Types.Justify && appletItem.firstChildOfStartLayout)

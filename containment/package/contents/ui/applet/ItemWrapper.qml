@@ -62,7 +62,7 @@ Item{
             return isInternalViewSplitter? result + 1 : result;
         }
 
-        return root.inConfigureAppletsMode ? Math.max(Math.min(appletItem.metrics.iconSize, root.minAppletLengthInConfigure), scaledLength) : scaledLength;
+        return root.inConfigureAppletsMode ? Math.max(Math.min(proposedItemSize, root.minAppletLengthInConfigure), scaledLength) : scaledLength;
     }
 
     readonly property real thickness: {
@@ -91,6 +91,10 @@ Item{
 
     property real appletMaximumWidth: applet && applet.Layout ?  applet.Layout.maximumWidth : -1
     property real appletMaximumHeight: applet && applet.Layout ?  applet.Layout.maximumHeight : -1
+
+    readonly property int proposedItemSize: appletItem.inMarginsArea && !appletItem.canFillThickness ?
+                                                Math.max(16,appletItem.metrics.iconSize - 2*appletItem.metrics.marginsAreaThickness) :
+                                                appletItem.metrics.iconSize
 
     readonly property real appletLength: root.isHorizontal ? appletWidth : appletHeight
     readonly property real appletThickness: root.isHorizontal ? appletHeight : appletWidth
@@ -282,7 +286,7 @@ Item{
         when: latteView && (wrapper.zoomScale === 1 || communicator.parabolicEffectIsSupported)
         value: {
             if (appletItem.isInternalViewSplitter){
-                return !root.inConfigureAppletsMode ? 0 : appletItem.metrics.iconSize;
+                return !root.inConfigureAppletsMode ? 0 : proposedItemSize;
             }
 
             // avoid binding loops on startup
@@ -290,7 +294,7 @@ Item{
                 return appletPreferredThickness;
             }
 
-            return appletItem.metrics.iconSize;
+            return proposedItemSize;
         }
     }
 
@@ -299,22 +303,22 @@ Item{
         property: "layoutLength"
         when: latteView && !appletItem.isAutoFillApplet && (wrapper.zoomScale === 1)
         value: {
-            if (applet && ( appletMaximumLength < appletItem.metrics.iconSize
-                                  || appletPreferredLength > appletItem.metrics.iconSize
+            if (applet && ( appletMaximumLength < proposedItemSize
+                                  || appletPreferredLength > proposedItemSize
                                   || appletItem.originalAppletBehavior)) {
 
                 //this way improves performance, probably because during animation the preferred sizes update a lot
-                if (appletMaximumLength>0 && appletMaximumLength < appletItem.metrics.iconSize){
+                if (appletMaximumLength>0 && appletMaximumLength < proposedItemSize){
                     return appletMaximumLength;
-                } else if (appletMinimumLength > appletItem.metrics.iconSize){
+                } else if (appletMinimumLength > proposedItemSize){
                     return appletMinimumLength;
-                } else if ((appletPreferredLength > appletItem.metrics.iconSize)
+                } else if ((appletPreferredLength > proposedItemSize)
                            || (appletItem.originalAppletBehavior && appletPreferredLength > 0)){
                     return appletPreferredLength;
                 }
             }
 
-            return appletItem.metrics.iconSize;
+            return proposedItemSize;
         }
     }
 
@@ -332,20 +336,20 @@ Item{
             if (appletItem.isInternalViewSplitter){
                 return false;
             } else {
-                if(applet && (appletMinimumLength > appletItem.metrics.iconSize) && !appletItem.parabolicEffectIsSupported){
+                if(applet && (appletMinimumLength > proposedItemSize) && !appletItem.parabolicEffectIsSupported){
                     return (wrapper.zoomScale === 1);
                 } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
                 else if(applet
-                        && ( appletMaximumLength < appletItem.metrics.iconSize
-                            || appletPreferredLength > appletItem.metrics.iconSize
+                        && ( appletMaximumLength < proposedItemSize
+                            || appletPreferredLength > proposedItemSize
                             || appletItem.originalAppletBehavior)) {
 
                     //this way improves performance, probably because during animation the preferred sizes update a lot
-                    if (appletMaximumLength>0 && appletMaximumLength < appletItem.metrics.iconSize){
+                    if (appletMaximumLength>0 && appletMaximumLength < proposedItemSize){
                         return false;
-                    } else if (appletMinimumLength > appletItem.metrics.iconSize){
+                    } else if (appletMinimumLength > proposedItemSize){
                         return (wrapper.zoomScale === 1);
-                    } else if ((appletPreferredLength > appletItem.metrics.iconSize)
+                    } else if ((appletPreferredLength > proposedItemSize)
                                || (appletItem.originalAppletBehavior && appletPreferredLength > 0 )){
                         return (wrapper.zoomScale === 1);
                     }
@@ -485,7 +489,7 @@ Item{
                     return wrapper.layoutThickness;
                 }
 
-                var wrapperContainerThickness =  appletItem.screenEdgeMarginSupported ? appletItem.metrics.totals.thickness : wrapper.zoomScaleThickness * appletItem.metrics.iconSize;
+                var wrapperContainerThickness =  appletItem.screenEdgeMarginSupported ? appletItem.metrics.totals.thickness : wrapper.zoomScaleThickness * proposedItemSize;
                 return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + appletItem.metrics.margin.screenEdge : wrapperContainerThickness;
             }
         }
