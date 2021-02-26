@@ -91,7 +91,7 @@ void Theme::load()
 {
     loadThemePaths();
     updateBackgrounds();
-    updateSeperatorAreaMarginsValues();
+    updateMarginsAreaValues();
 }
 
 Theme::~Theme()
@@ -132,24 +132,24 @@ void Theme::setOutlineWidth(int width)
     emit outlineWidthChanged();
 }
 
-int Theme::separatorAreaMarginTop() const
+int Theme::marginsAreaTop() const
 {
-    return m_separatorAreaMarginTop;
+    return m_marginsAreaTop;
 }
 
-int Theme::separatorAreaMarginLeft() const
+int Theme::marginsAreaLeft() const
 {
-    return m_separatorAreaMarginLeft;
+    return m_marginsAreaLeft;
 }
 
-int Theme::separatorAreaMarginBottom() const
+int Theme::marginsAreaBottom() const
 {
-    return m_separatorAreaMarginBottom;
+    return m_marginsAreaBottom;
 }
 
-int Theme::separatorAreaMarginRight() const
+int Theme::marginsAreaRight() const
 {
-    return m_separatorAreaMarginRight;
+    return m_marginsAreaRight;
 }
 
 
@@ -507,12 +507,12 @@ const CornerRegions &Theme::cornersMask(const int &radius)
     return m_cornerRegions[radius];
 }
 
-void Theme::updateSeperatorAreaMarginsValues()
+void Theme::updateMarginsAreaValues()
 {
-    m_separatorAreaMarginTop = 0;
-    m_separatorAreaMarginLeft = 0;
-    m_separatorAreaMarginBottom = 0;
-    m_separatorAreaMarginRight = 0;
+    m_marginsAreaTop = 0;
+    m_marginsAreaLeft = 0;
+    m_marginsAreaBottom = 0;
+    m_marginsAreaRight = 0;
 
     Plasma::Svg *svg = new Plasma::Svg(this);
     svg->setImagePath(QStringLiteral("widgets/panel-background"));
@@ -530,19 +530,19 @@ void Theme::updateSeperatorAreaMarginsValues()
         int thickBottomMargin = svg->hasElement("thick-hint-bottom-margin") ? svg->elementSize("thick-hint-bottom-margin").height() : 0;
         int thickRightMargin = svg->hasElement("thick-hint-right-margin") ? svg->elementSize("thick-hint-right-margin").width() : 0;
 
-        m_separatorAreaMarginTop = qMax(0, thickTopMargin - topMargin);
-        m_separatorAreaMarginLeft = qMax(0, thickLeftMargin - leftMargin);
-        m_separatorAreaMarginBottom = qMax(0, thickBottomMargin - bottomMargin);
-        m_separatorAreaMarginRight = qMax(0, thickRightMargin - rightMargin);
+        m_marginsAreaTop = qMax(0, thickTopMargin - topMargin);
+        m_marginsAreaLeft = qMax(0, thickLeftMargin - leftMargin);
+        m_marginsAreaBottom = qMax(0, thickBottomMargin - bottomMargin);
+        m_marginsAreaRight = qMax(0, thickRightMargin - rightMargin);
     }
 
-    qDebug() << "PLASMA THEME SEPARATOR AREA MARGINS ::" <<
-                m_separatorAreaMarginTop << m_separatorAreaMarginLeft <<
-                m_separatorAreaMarginBottom << m_separatorAreaMarginRight;
+    qDebug() << "PLASMA THEME MARGINS AREA ::" <<
+                m_marginsAreaTop << m_marginsAreaLeft <<
+                m_marginsAreaBottom << m_marginsAreaRight;
 
     svg->deleteLater();
 
-    emit separatorAreaMarginsChanged();
+    emit marginsAreaChanged();
 }
 
 void Theme::loadConfig()

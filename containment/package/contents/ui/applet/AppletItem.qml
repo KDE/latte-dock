@@ -56,6 +56,7 @@ Item {
                                             && !isSpacer && !isInternalViewSplitter
 
     readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
+    readonly property bool isMarginAreaSeparator: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator);
 
     readonly property color highlightColor: theme.buttonFocusColor
 

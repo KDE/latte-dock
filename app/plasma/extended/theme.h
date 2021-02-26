@@ -69,10 +69,10 @@ class Theme: public QObject
 
     Q_PROPERTY(int outlineWidth READ outlineWidth NOTIFY outlineWidthChanged)
 
-    Q_PROPERTY(int separatorAreaMarginTop READ separatorAreaMarginTop NOTIFY separatorAreaMarginsChanged)
-    Q_PROPERTY(int separatorAreaMarginLeft READ separatorAreaMarginLeft NOTIFY separatorAreaMarginsChanged)
-    Q_PROPERTY(int separatorAreaMarginBottom READ separatorAreaMarginBottom NOTIFY separatorAreaMarginsChanged)
-    Q_PROPERTY(int separatorAreaMarginRight READ separatorAreaMarginRight NOTIFY separatorAreaMarginsChanged)
+    Q_PROPERTY(int marginsAreaTop READ marginsAreaTop NOTIFY marginsAreaChanged)
+    Q_PROPERTY(int marginsAreaLeft READ marginsAreaLeft NOTIFY marginsAreaChanged)
+    Q_PROPERTY(int marginsAreaBottom READ marginsAreaBottom NOTIFY marginsAreaChanged)
+    Q_PROPERTY(int marginsAreaRight READ marginsAreaRight NOTIFY marginsAreaChanged)
 
     Q_PROPERTY(Latte::PlasmaExtended::PanelBackground *backgroundTopEdge READ backgroundTopEdge NOTIFY backgroundsChanged)
     Q_PROPERTY(Latte::PlasmaExtended::PanelBackground *backgroundLeftEdge READ backgroundLeftEdge NOTIFY backgroundsChanged)
@@ -94,10 +94,10 @@ public:
     int outlineWidth() const;
     void setOutlineWidth(int width);
 
-    int separatorAreaMarginTop() const;
-    int separatorAreaMarginLeft() const;
-    int separatorAreaMarginBottom() const;
-    int separatorAreaMarginRight() const;
+    int marginsAreaTop() const;
+    int marginsAreaLeft() const;
+    int marginsAreaBottom() const;
+    int marginsAreaRight() const;
 
     PanelBackground *backgroundTopEdge() const;
     PanelBackground *backgroundLeftEdge() const;
@@ -117,7 +117,7 @@ signals:
     void compositingChanged();
     void hasShadowChanged();
     void outlineWidthChanged();
-    void separatorAreaMarginsChanged();
+    void marginsAreaChanged();
     void themeChanged();
 
 private slots:
@@ -134,9 +134,9 @@ private:
     void updateHasShadow();
     void updateDefaultScheme();
     void updateDefaultSchemeValues();
+    void updateMarginsAreaValues();
     void updateReversedScheme();
     void updateReversedSchemeValues();
-    void updateSeperatorAreaMarginsValues();
 
     void qmlRegisterTypes();
 
@@ -147,10 +147,10 @@ private:
 
     int m_outlineWidth{1};
 
-    int m_separatorAreaMarginTop{0};
-    int m_separatorAreaMarginLeft{0};
-    int m_separatorAreaMarginBottom{0};
-    int m_separatorAreaMarginRight{0};
+    int m_marginsAreaTop{0};
+    int m_marginsAreaLeft{0};
+    int m_marginsAreaBottom{0};
+    int m_marginsAreaRight{0};
 
     QString m_themePath;
     QString m_themeWidgetsPath;
