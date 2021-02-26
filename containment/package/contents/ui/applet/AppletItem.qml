@@ -257,6 +257,24 @@ Item {
         return (indexer.separators.indexOf(head)>=0);
     }
 
+    readonly property bool inMarginsArea: {
+        if (isMarginsAreaSeparator || appletItem.indexer.marginsAreaSeparators.length === 0) {
+            return false;
+        }
+
+        var tailMarginsAreaSeparatorsCount = 0;
+
+        for(var i=0; i<appletItem.indexer.marginsAreaSeparators.length; ++i) {
+            if (appletItem.indexer.marginsAreaSeparators[i] < index) {
+                tailMarginsAreaSeparatorsCount++;
+            }
+        }
+
+        //! even number of margins area separators before this applet means that this applet
+        //! is inside margins area
+        return (tailMarginsAreaSeparatorsCount % 2 === 1);
+    }
+
     //! local margins
     readonly property bool parabolicEffectMarginsEnabled: appletItem.parabolic.factor.zoom>1 && !originalAppletBehavior && !communicator.parabolicEffectIsSupported
 
