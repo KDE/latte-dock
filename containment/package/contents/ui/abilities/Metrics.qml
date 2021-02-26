@@ -18,7 +18,9 @@
 */
 
 import QtQuick 2.7
+
 import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.core 0.2 as LatteCore
 
@@ -70,4 +72,22 @@ Ability.MetricsPrivate {
     //! Padding
     padding.length: fraction.lengthPadding * iconSize
     padding.lengthApplet: fraction.lengthAppletPadding * iconSize
+
+    //! Margins Area
+
+    readonly property int marginsAreaThickness: {
+        if (!themeExtended) {
+            return 0;
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+            return themeExtended.marginsAreaBottom;
+        } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+            return themeExtended.marginsAreaRight;
+        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+            return themeExtended.marginsAreaLeft;
+        }
+
+        return themeExtended.marginsAreaTop;
+    }
 }

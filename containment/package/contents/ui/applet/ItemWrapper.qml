@@ -124,7 +124,16 @@ Item{
 
     property int iconSize: appletItem.metrics.iconSize
 
-    property int marginsThickness: appletItem.canFillThickness ? 0 : appletItem.metrics.totals.thicknessEdges
+    property int marginsThickness: {
+        if (appletItem.canFillThickness) {
+            return 0;
+        } else if (appletItem.inMarginsArea) {
+            return appletItem.metrics.totals.thicknessEdges + (appletItem.metrics.marginsAreaThickness * 2);
+        }
+
+        return appletItem.metrics.totals.thicknessEdges;
+    }
+
     property int marginsLength: 0   //Fitt's Law, through Binding to avoid Binding loops
 
     property int localLengthMargins: isSeparator
@@ -135,6 +144,7 @@ Item{
 
     property real scaledLength: zoomScaleLength * (layoutLength + marginsLength)
     property real scaledThickness: zoomScaleThickness * (layoutThickness + marginsThickness)
+
     property real zoomScaleLength: disableLengthScale ? 1 : zoomScale
     property real zoomScaleThickness: disableThicknessScale ? 1 : zoomScale
 
@@ -446,8 +456,25 @@ Item{
         property int _thickness:0 // through Binding to avoid binding loops
 
         readonly property int appliedEdgeMargin: appletItem.screenEdgeMarginSupported ? 0 : appletItem.metrics.margin.screenEdge
-        readonly property int tailThicknessMargin: appletItem.screenEdgeMarginSupported ? 0 : appliedEdgeMargin + (wrapper.zoomScaleThickness * metrics.margin.thickness)
-        readonly property int headThicknessMargin: appletItem.canFillThickness || appletItem.screenEdgeMarginSupported ? 0 : appletItem.metrics.margin.thickness
+        readonly property int tailThicknessMargin: {
+            if (appletItem.screenEdgeMarginSupported) {
+                return 0;
+            } else if (appletItem.inMarginsArea) {
+                return appliedEdgeMargin + (wrapper.zoomScaleThickness * (appletItem.metrics.margin.thickness + appletItem.metrics.marginsAreaThickness));
+            }
+
+            return appliedEdgeMargin + (wrapper.zoomScaleThickness * appletItem.metrics.margin.thickness);
+        }
+
+        readonly property int headThicknessMargin: {
+            if (appletItem.canFillThickness || appletItem.screenEdgeMarginSupported) {
+                return 0;
+            } else if (appletItem.inMarginsArea) {
+                return appletItem.metrics.margin.thickness + appletItem.metrics.marginsAreaThickness;
+            }
+
+            return appletItem.metrics.margin.thickness
+        }
 
         Binding {
             target: _wrapperContainer
@@ -458,7 +485,7 @@ Item{
                     return wrapper.layoutThickness;
                 }
 
-                var wrapperContainerThickness =  appletItem.screenEdgeMarginSupported ? appletItem.metrics.totals.thickness : wrapper.zoomScaleThickness * metrics.iconSize;
+                var wrapperContainerThickness =  appletItem.screenEdgeMarginSupported ? appletItem.metrics.totals.thickness : wrapper.zoomScaleThickness * appletItem.metrics.iconSize;
                 return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + appletItem.metrics.margin.screenEdge : wrapperContainerThickness;
             }
         }
