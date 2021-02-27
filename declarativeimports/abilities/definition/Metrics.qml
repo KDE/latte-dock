@@ -22,6 +22,7 @@ import QtQuick 2.0
 import "./metrics" as MetricsTypes
 
 Item {
+    id: _metrics
     property int iconSize: 48
     property int maxIconSize: 48
     property int backgroundThickness: 16
@@ -33,18 +34,25 @@ Item {
         screenEdge: 0
     }
 
+    property MetricsTypes.MarginsArea marginsArea: MetricsTypes.MarginsArea{
+        property int marginThickness: 4
+        //readonly property int iconSize: _metrics.iconSize - thicknessEdges
+        //readonly property int thicknessEdges: 2*marginThickness
+    }
+
     property MetricsTypes.Padding padding: MetricsTypes.Padding{
         length: 0
         lengthApplet: 0
     }
 
     property MetricsTypes.Totals totals: MetricsTypes.Totals{
-        //readonly property int length;
-        //readonly property int lengthEdge;
-        //readonly property int lengthEdges;
-        //readonly property int lengthPaddings;
-        //readonly property int thickness;
-        //readonly property int thicknessEdges;
+        //readonly property int length: iconSize + lengthEdges
+        //readonly property int lengthEdge: margin.length + padding.length
+        //readonly property int lengthEdges: 2 * lengthEdge
+        //readonly property int lengthPaddings: 2 * padding.length
+        //readonly property int marginsAreaThicknessEdges: 2 * margin.marginsAreaThickness
+        //readonly property int thickness: iconSize + thicknessEdges
+        //readonly property int thicknessEdges: 2 * margin.thickness
     }
 
     property MetricsTypes.Mask mask: MetricsTypes.Mask{
