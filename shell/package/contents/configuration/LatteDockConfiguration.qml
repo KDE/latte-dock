@@ -59,10 +59,16 @@ Loader {
         //!    we use 100px. or 50px. in order to give space for othe views to be shown and to have also
         //!    some space around the settings window
         property int maxHeight: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
-                                    viewConfig.availableScreenGeometry.height - (latteView.editThickness - latteView.maxNormalThickness) - units.largeSpacing :
+                                    viewConfig.availableScreenGeometry.height - canvasHeadThickness - units.largeSpacing :
                                     viewConfig.availableScreenGeometry.height - 2 * units.largeSpacing
 
         property int maxWidth: 0.6 * latteView.screenGeometry.width
+
+        property int canvasThickness: plasmoid.formFactor === PlasmaCore.Types.Vertical ? latteView.positioner.canvasGeometry.width : latteView.positioner.canvasGeometry.height
+        property int canvasHeadThickness: {
+            var edgeMargin = latteView.behaveAsPlasmaPanel && latteView.screenEdgeMarginEnabled ? latteView.screenEdgeMargin : 0;
+            return Math.max(0,canvasThickness - latteView.maxNormalThickness - Math.max(0,edgeMargin))
+        }
 
         //! propose size based on font size
         property int proposedWidth: 0.82 * proposedHeight + units.smallSpacing * 2

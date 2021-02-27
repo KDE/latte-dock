@@ -55,6 +55,9 @@ class Positioner: public QObject
     Q_PROPERTY(bool isStickedOnBottomEdge READ isStickedOnBottomEdge WRITE setIsStickedOnBottomEdge NOTIFY isStickedOnBottomEdgeChanged)
 
     Q_PROPERTY(int currentScreenId READ currentScreenId NOTIFY currentScreenChanged)
+
+    Q_PROPERTY(QRect canvasGeometry READ canvasGeometry NOTIFY canvasGeometryChanged)
+
     //! animating window slide
     Q_PROPERTY(int slideOffset READ slideOffset WRITE setSlideOffset NOTIFY slideOffsetChanged)
     Q_PROPERTY(QString currentScreenName READ currentScreenName NOTIFY currentScreenChanged)
