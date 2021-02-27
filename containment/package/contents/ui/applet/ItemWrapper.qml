@@ -129,9 +129,7 @@ Item{
     property int iconSize: appletItem.metrics.iconSize
 
     property int marginsThickness: {
-        if (appletItem.canFillThickness) {
-            return 0;
-        } else if (appletItem.inMarginsArea) {
+        if (appletItem.inMarginsArea) {
             return appletItem.metrics.marginsArea.thicknessEdges;
         }
 
