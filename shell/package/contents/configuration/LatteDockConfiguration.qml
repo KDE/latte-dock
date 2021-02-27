@@ -513,7 +513,7 @@ Loader {
 
                     buttonEnabled: true
                     buttonIsTriggeringMenu: true
-                    buttonText: i18n("New")
+                    buttonText: i18n("New...")
                     buttonIconSource: "list-add"
                     buttonToolTip: i18n("Add new docks and panels from various templates")
 
