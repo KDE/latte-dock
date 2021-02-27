@@ -59,6 +59,7 @@ AbilityItem.IndicatorLevel {
 
     level.isDrawn: !appletItem.isSeparator
                    && !appletItem.isHidden
+                   && !(appletItem.isAutoFillApplet && !communicator.indexerIsSupported) //! simple Plasma AutoFill applets
                    && !communicator.indexerIsSupported
                    && level.indicator.host.isEnabled
                    && (appletItem.communicator.requires.activeIndicatorEnabled

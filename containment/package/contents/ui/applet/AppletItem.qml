@@ -188,6 +188,7 @@ Item {
                                                    || (root.behaveAsDockWithMask && !parabolicEffectIsSupported)
                                                    || (root.behaveAsDockWithMask && parabolicEffectIsSupported && lockZoom)
 
+    readonly property bool isIndicatorDrawn: indicatorBackLayer.level.isDrawn
     readonly property bool isSquare: parabolicEffectIsSupported
     readonly property bool screenEdgeMarginSupported: communicator.requires.screenEdgeMarginSupported || communicator.indexerIsSupported
 
@@ -280,8 +281,13 @@ Item {
     //! local margins
     readonly property bool parabolicEffectMarginsEnabled: appletItem.parabolic.factor.zoom>1 && !originalAppletBehavior && !communicator.parabolicEffectIsSupported
 
-    property int lengthAppletPadding: metrics.fraction.lengthAppletPadding === -1 || parabolicEffectMarginsEnabled ?
-                                          metrics.padding.length : metrics.padding.lengthApplet
+    property int lengthAppletPadding:{
+        if (!isIndicatorDrawn) {
+            return 0;
+        }
+
+        return metrics.fraction.lengthAppletPadding === -1 || parabolicEffectMarginsEnabled ? metrics.padding.length : metrics.padding.lengthApplet;
+    }
 
     property int lengthAppletFullMargin: 0
     property int lengthAppletFullMargins: 2 * lengthAppletFullMargin
