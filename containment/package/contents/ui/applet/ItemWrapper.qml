@@ -46,7 +46,7 @@ Item{
             }
         }
 
-        if ((isSeparator || appletItem.isMarginsAreaSeparator) && appletItem.parabolic.isEnabled) {
+        if ((isSeparator || isMarginsAreaSeparator) && appletItem.parabolic.isEnabled) {
             return -1;
         }
 
@@ -58,7 +58,6 @@ Item{
             }
 
             var result = Math.max(appletItem.minAutoFillLength,Math.min(appletPreferredLength,appletItem.maxAutoFillLength));
-
             return isInternalViewSplitter? result + 1 : result;
         }
 

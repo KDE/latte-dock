@@ -57,7 +57,7 @@ Item {
 
     readonly property bool canFillScreenEdge: communicator.requires.screenEdgeMarginSupported || communicator.indexerIsSupported
     readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
-    readonly property bool isMarginsAreaSeparator: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator);
+    readonly property bool isMarginsAreaSeparator: applet && applet.pluginName === "org.kde.plasma.marginsseparator"
 
     readonly property color highlightColor: theme.buttonFocusColor
 
@@ -66,16 +66,16 @@ Item {
     property bool isAutoFillApplet:  isRequestingFill
 
     property bool isRequestingFill: {
-        if (!applet || !applet.Layout)
-            return false;
-
-        if (((root.isHorizontal && applet.Layout.fillWidth===true)
-             || (root.isVertical && applet.Layout.fillHeight===true))
-                && (!isHidden)) {
-            return true;
-        } else {
+        if (!applet || !applet.Layout) {
             return false;
         }
+
+        if ((root.isHorizontal && applet.Layout.fillWidth===true)
+             || (root.isVertical && applet.Layout.fillHeight===true)) {
+            return !isHidden;
+        }
+
+        return false;
     }
 
     property int maxAutoFillLength: -1 //it is used in calculations for fillWidth,fillHeight applets
