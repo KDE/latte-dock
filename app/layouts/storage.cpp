@@ -582,7 +582,6 @@ void Storage::clearExportedLayoutSettings(KConfigGroup &layoutSettingsGroup)
 {
     layoutSettingsGroup.writeEntry("preferredForShortcutsTouched", false);
     layoutSettingsGroup.writeEntry("lastUsedActivity", QString());
-    layoutSettingsGroup.writeEntry("layoutId", QString());
     layoutSettingsGroup.writeEntry("activities", QStringList());
     layoutSettingsGroup.sync();
 }
@@ -602,19 +601,41 @@ bool Storage::exportTemplate(const QString &originFile, const QString &destinati
     KSharedConfigPtr destFilePtr = KSharedConfig::openConfig(destinationFile);
     KConfigGroup containments = KConfigGroup(destFilePtr, "Containments");
 
+    QStringList rejectedSubContainments;
+
+    //! clear applets that are not approved
     for (const auto &cId : containments.groupList()) {
+        //! clear properties
+        containments.group(cId).writeEntry("layoutId", QString());
+        if (isLatteContainment(containments.group(cId))) {
+            containments.group(cId).writeEntry("isPreferredForShortcuts", false);
+        }
+
+        //! clear applets
         auto applets = containments.group(cId).group("Applets");
         for (const auto &aId: applets.groupList()) {
             QString pluginId = applets.group(aId).readEntry("plugin", "");
 
-            if (!approvedApplets.containsId(pluginId) && !isSubContainment(applets.group(aId))) {
-                //!remove all configuration for that applet
-                for (const auto &configId: applets.group(aId).groupList()) {
-                    applets.group(aId).group(configId).deleteGroup();
+            if (!approvedApplets.containsId(pluginId)) {
+                if (!isSubContainment(applets.group(aId))) {
+                    //!remove all configuration for that applet
+                    for (const auto &configId: applets.group(aId).groupList()) {
+                        applets.group(aId).group(configId).deleteGroup();
+                    }
+                } else {
+                    //! register which subcontaiments should return to default properties
+                    rejectedSubContainments << QString::number(subContainmentId(applets.group(aId)));
                 }
             }
         }
     }
+
+    //! clear rejected SubContainments
+    for (const auto &cId : containments.groupList()) {
+        if (rejectedSubContainments.contains(cId)) {
+            containments.group(cId).group("General").deleteGroup();
+        }
+    };
 
     KConfigGroup layoutSettingsGrp(destFilePtr, "LayoutSettings");
     clearExportedLayoutSettings(layoutSettingsGrp);
@@ -674,20 +695,41 @@ bool Storage::exportTemplate(const Layout::GenericLayout *layout, Plasma::Contai
     }
     //! end of subcontainments specific code
 
+    QStringList rejectedSubContainments;
+
     //! clear applets that are not approved
     for (const auto &cId : copied_conts.groupList()) {
+        //! clear properties
+        copied_conts.group(cId).writeEntry("layoutId", QString());
+        if (isLatteContainment(copied_conts.group(cId))) {
+            copied_conts.group(cId).writeEntry("isPreferredForShortcuts", false);
+        }
+
+        //! clear applets
         auto applets = copied_conts.group(cId).group("Applets");
         for (const auto &aId: applets.groupList()) {
             QString pluginId = applets.group(aId).readEntry("plugin", "");
 
-            if (!approvedApplets.containsId(pluginId) && !isSubContainment(applets.group(aId))) {
-                //!remove all configuration for that applet
-                for (const auto &configId: applets.group(aId).groupList()) {
-                    applets.group(aId).group(configId).deleteGroup();
+            if (!approvedApplets.containsId(pluginId)) {
+                if (!isSubContainment(applets.group(aId))) {
+                    //!remove all configuration for that applet
+                    for (const auto &configId: applets.group(aId).groupList()) {
+                        applets.group(aId).group(configId).deleteGroup();
+                    }
+                } else {
+                    //! register which subcontaiments should return to default properties
+                    rejectedSubContainments << QString::number(subContainmentId(applets.group(aId)));
                 }
             }
         }
     }
+
+    //! clear rejected SubContainments
+    for (const auto &cId : copied_conts.groupList()) {
+        if (rejectedSubContainments.contains(cId)) {
+            copied_conts.group(cId).group("General").deleteGroup();
+        }
+    };
 
     KConfigGroup layoutSettingsGrp(destFilePtr, "LayoutSettings");
     clearExportedLayoutSettings(layoutSettingsGrp);
@@ -1038,16 +1080,14 @@ Data::AppletsTable Storage::plugins(const Layout::GenericLayout *layout, const i
         }
 
         for (auto applet : containment->applets()) {
-            if (!isSubContainment(layout, applet)) {
-                QString pluginId = applet->pluginMetaData().pluginId();
-                if (!knownapplets.containsId(pluginId) && !unknownapplets.containsId(pluginId)) {
-                    Data::Applet appletdata = metadata(pluginId);
+            QString pluginId = applet->pluginMetaData().pluginId();
+            if (!knownapplets.containsId(pluginId) && !unknownapplets.containsId(pluginId)) {
+                Data::Applet appletdata = metadata(pluginId);
 
-                    if (appletdata.isValid()) {
-                        knownapplets.insertBasedOnName(appletdata);
-                    } else {
-                        unknownapplets.insertBasedOnId(appletdata);
-                    }
+                if (appletdata.isValid()) {
+                    knownapplets.insertBasedOnName(appletdata);
+                } else {
+                    unknownapplets.insertBasedOnId(appletdata);
                 }
             }
         }
@@ -1105,17 +1145,15 @@ Data::AppletsTable Storage::plugins(const QString &layoutfile, const int contain
 
         for (const auto &appletId : appletGroups.groupList()) {
             KConfigGroup appletCfg = appletGroups.group(appletId);
-            if (!isSubContainment(appletCfg)) {
-                QString pluginId = appletCfg.readEntry("plugin", "");
+            QString pluginId = appletCfg.readEntry("plugin", "");
 
-                if (!knownapplets.containsId(pluginId) && !unknownapplets.containsId(pluginId)) {
-                    Data::Applet appletdata = metadata(pluginId);
+            if (!knownapplets.containsId(pluginId) && !unknownapplets.containsId(pluginId)) {
+                Data::Applet appletdata = metadata(pluginId);
 
-                    if (appletdata.isInstalled()) {
-                        knownapplets.insertBasedOnName(appletdata);
-                    } else if (appletdata.isValid()) {
-                        unknownapplets.insertBasedOnId(appletdata);
-                    }
+                if (appletdata.isInstalled()) {
+                    knownapplets.insertBasedOnName(appletdata);
+                } else if (appletdata.isValid()) {
+                    unknownapplets.insertBasedOnId(appletdata);
                 }
             }
         }
