@@ -459,10 +459,12 @@ Item{
         property int _length:0 // through Binding to avoid binding loops
         property int _thickness:0 // through Binding to avoid binding loops
 
-        readonly property int appliedEdgeMargin: appletItem.screenEdgeMarginSupported ? 0 : appletItem.metrics.margin.screenEdge
+        readonly property int appliedEdgeMargin: appletItem.canFillScreenEdge ? 0 : appletItem.metrics.margin.screenEdge
         readonly property int tailThicknessMargin: {
-            if (appletItem.screenEdgeMarginSupported) {
+            if (appletItem.canFillScreenEdge) {
                 return 0;
+            } else if (appletItem.canFillThickness) {
+                return appliedEdgeMargin;
             } else if (appletItem.inMarginsArea) {
                 return appliedEdgeMargin + (wrapper.zoomScaleThickness * appletItem.metrics.marginsArea.marginThickness);
             }
@@ -471,7 +473,7 @@ Item{
         }
 
         readonly property int headThicknessMargin: {
-            if (appletItem.canFillThickness || appletItem.screenEdgeMarginSupported) {
+            if (appletItem.canFillThickness || appletItem.canFillScreenEdge) {
                 return 0;
             } else if (appletItem.inMarginsArea) {
                 return appletItem.metrics.marginsArea.marginThickness;
@@ -489,8 +491,9 @@ Item{
                     return wrapper.layoutThickness;
                 }
 
-                var wrapperContainerThickness =  appletItem.screenEdgeMarginSupported ? appletItem.metrics.totals.thickness : wrapper.zoomScaleThickness * proposedItemSize;
-                return appletItem.screenEdgeMarginSupported ? wrapperContainerThickness + appletItem.metrics.margin.screenEdge : wrapperContainerThickness;
+                var canfillthickness = (appletItem.canFillScreenEdge || appletItem.canFillThickness);
+                var wrapperContainerThickness =  canfillthickness ? appletItem.metrics.totals.thickness : wrapper.zoomScaleThickness * proposedItemSize;
+                return appletItem.canFillScreenEdge ? wrapperContainerThickness + appletItem.metrics.margin.screenEdge : wrapperContainerThickness;
             }
         }
 

@@ -55,6 +55,7 @@ Item {
     property bool canShowAppletNumberBadge: !indexerIsSupported && !isSeparator && !isHidden
                                             && !isSpacer && !isInternalViewSplitter
 
+    readonly property bool canFillScreenEdge: communicator.requires.screenEdgeMarginSupported || communicator.indexerIsSupported
     readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
     readonly property bool isMarginsAreaSeparator: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator);
 
