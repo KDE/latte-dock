@@ -23,7 +23,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item {
     readonly property int thickness: {
-        if ((appletItem.canFillThickness && !appletItem.isMarginsAreaSeparator) || appletItem.canFillScreenEdge) {
+        if ((appletItem.canFillThickness && !appletItem.isMarginsAreaSeparator && !communicator.indexerIsSupported)
+                || (appletItem.canFillScreenEdge && !communicator.indexerIsSupported) ) {
             return 1;
         } else if (appletItem.inMarginsArea || appletItem.isMarginsAreaSeparator) {
             return appletItem.metrics.marginsArea.marginThickness;

@@ -290,7 +290,7 @@ Item{
 
             // avoid binding loops on startup
             if (communicator.parabolicEffectIsSupported && !communicator.inStartup) {
-                return appletPreferredThickness;
+                return Math.min(appletPreferredThickness, appletItem.metrics.totals.thickness);
             }
 
             return proposedItemThickness;
