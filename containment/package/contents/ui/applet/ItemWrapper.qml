@@ -93,7 +93,7 @@ Item{
     property real appletMaximumHeight: applet && applet.Layout ?  applet.Layout.maximumHeight : -1
 
     readonly property int proposedItemSize: appletItem.inMarginsArea && !appletItem.canFillThickness ?
-                                                Math.max(16,appletItem.metrics.iconSize - 2*appletItem.metrics.marginsAreaThickness) :
+                                                Math.max(16,appletItem.metrics.marginsArea.iconSize) :
                                                 appletItem.metrics.iconSize
 
     readonly property real appletLength: root.isHorizontal ? appletWidth : appletHeight
@@ -132,7 +132,7 @@ Item{
         if (appletItem.canFillThickness) {
             return 0;
         } else if (appletItem.inMarginsArea) {
-            return appletItem.metrics.totals.thicknessEdges + (appletItem.metrics.marginsAreaThickness * 2);
+            return appletItem.metrics.marginsArea.thicknessEdges;
         }
 
         return appletItem.metrics.totals.thicknessEdges;
@@ -464,7 +464,7 @@ Item{
             if (appletItem.screenEdgeMarginSupported) {
                 return 0;
             } else if (appletItem.inMarginsArea) {
-                return appliedEdgeMargin + (wrapper.zoomScaleThickness * (appletItem.metrics.margin.thickness + appletItem.metrics.marginsAreaThickness));
+                return appliedEdgeMargin + (wrapper.zoomScaleThickness * appletItem.metrics.marginsArea.marginThickness);
             }
 
             return appliedEdgeMargin + (wrapper.zoomScaleThickness * appletItem.metrics.margin.thickness);
@@ -474,7 +474,7 @@ Item{
             if (appletItem.canFillThickness || appletItem.screenEdgeMarginSupported) {
                 return 0;
             } else if (appletItem.inMarginsArea) {
-                return appletItem.metrics.margin.thickness + appletItem.metrics.marginsAreaThickness;
+                return appletItem.metrics.marginsArea.marginThickness;
             }
 
             return appletItem.metrics.margin.thickness

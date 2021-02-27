@@ -26,7 +26,7 @@ Item {
         if (appletItem.canFillThickness || appletItem.screenEdgeMarginSupported) {
             return 1;
         } else if (appletItem.inMarginsArea) {
-            return appletItem.metrics.margin.thickness + appletItem.metrics.marginsAreaThickness;
+            return appletItem.metrics.marginsArea.marginThickness;
         }
 
         return appletItem.metrics.margin.thickness;

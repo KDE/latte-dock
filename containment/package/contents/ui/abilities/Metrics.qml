@@ -27,6 +27,7 @@ import org.kde.latte.core 0.2 as LatteCore
 import "./privates" as Ability
 
 Ability.MetricsPrivate {
+    id: metrics
     //! Signals
     signal iconSizeAnimationEnded();
 
@@ -46,9 +47,26 @@ Ability.MetricsPrivate {
                        || root.hideThickScreenGap ?
                            0 : plasmoid.configuration.screenEdgeMargin
 
+    //! MarginsAra
+    marginsArea.marginThickness: {
+        if (!themeExtended) {
+            return metrics.margin.thickness;
+        }
+
+        if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+            return themeExtended.marginsAreaBottom + metrics.margin.thickness;
+        } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+            return themeExtended.marginsAreaRight + metrics.margin.thickness;
+        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+            return themeExtended.marginsAreaLeft + metrics.margin.thickness;
+        }
+
+        return themeExtended.marginsAreaTop + metrics.margin.thickness;
+    }
+
     //! Mask
     mask.maxScreenEdge : root.behaveAsDockWithMask ? Math.max(0, plasmoid.configuration.screenEdgeMargin) : 0
-    //! window geometry is updated after the local screen margin animation was zeroed*/
+      // window geometry is updated after the local screen margin animation was zeroed*/
     mask.screenEdge: (!root.screenEdgeMarginEnabled || root.hideThickScreenGap) ? 0 : plasmoid.configuration.screenEdgeMargin
 
     mask.thickness.hidden: LatteCore.WindowSystem.compositingActive ?  2 : 1
@@ -72,22 +90,4 @@ Ability.MetricsPrivate {
     //! Padding
     padding.length: fraction.lengthPadding * iconSize
     padding.lengthApplet: fraction.lengthAppletPadding * iconSize
-
-    //! Margins Area
-
-    readonly property int marginsAreaThickness: {
-        if (!themeExtended) {
-            return 0;
-        }
-
-        if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-            return themeExtended.marginsAreaBottom;
-        } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-            return themeExtended.marginsAreaRight;
-        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-            return themeExtended.marginsAreaLeft;
-        }
-
-        return themeExtended.marginsAreaTop;
-    }
 }

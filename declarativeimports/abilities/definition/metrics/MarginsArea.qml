@@ -20,7 +20,7 @@
 import QtQuick 2.0
 
 Item {
-    property int marginThickness: 4
-    readonly property int iconSize: _metrics.iconSize - thicknessEdges
+    property int marginThickness: 8
+    readonly property int iconSize: _metrics.totals.thickness - thicknessEdges
     readonly property int thicknessEdges: 2*marginThickness
 }

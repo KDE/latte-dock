@@ -35,8 +35,8 @@ Item {
     }
 
     property MetricsTypes.MarginsArea marginsArea: MetricsTypes.MarginsArea{
-        property int marginThickness: 4
-        //readonly property int iconSize: _metrics.iconSize - thicknessEdges
+        marginThickness: 8 //margin.thickness + 4
+        //readonly property int iconSize: _metrics.totals.thickness - thicknessEdges
         //readonly property int thicknessEdges: 2*marginThickness
     }
 

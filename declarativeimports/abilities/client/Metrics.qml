@@ -30,6 +30,7 @@ AbilityDefinition.Metrics {
     backgroundThickness: ref.metrics.backgroundThickness
 
     margin: ref.metrics.margin
+    marginsArea: ref.metrics.marginsArea
     mask: ref.metrics.mask
     padding: ref.metrics.padding
     totals: ref.metrics.totals
