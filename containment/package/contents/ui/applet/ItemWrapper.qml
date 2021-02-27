@@ -528,12 +528,14 @@ Item{
             property color backgroundColor: "transparent"
             property color glowColor: "transparent"
 
-            readonly property bool isIconItemVisible: communicator.appletIconItem && communicator.appletIconItem.visible
+            readonly property bool roundToIconSizeDisabled: communicator.appletIconItem && appletItem.parabolic.isEnabled
 
-            onIsIconItemVisibleChanged: {
-                if (isIconItemVisible) {
-                    communicator.appletIconItem.roundToIconSize = false;
+            onRoundToIconSizeDisabledChanged: {
+                if (!communicator.appletIconItem) {
+                    return;
                 }
+
+                communicator.appletIconItem.roundToIconSize = !roundToIconSizeDisabled;
             }
 
             sourceComponent: LatteCore.IconItem{

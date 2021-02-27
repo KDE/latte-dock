@@ -68,12 +68,6 @@ Item{
     readonly property Item bridge: bridgeLoader.active ? bridgeLoader.item : null
     //! END OF ABILITIES SUPPORT
 
-    onAppletIconItemChanged: {
-        if (appletIconItem !== null) {
-            communicator.appletIconItem.roundToIconSize = false;
-        }
-    }
-
     //! BEGIN OF FUNCTIONS
 
     function reconsiderAppletIconItem() {
