@@ -512,9 +512,10 @@ Loader {
                     implicitHeight: removeView.implicitHeight
 
                     buttonEnabled: true
-                    buttonText: i18n("New Dock")
+                    buttonIsTriggeringMenu: true
+                    buttonText: i18n("New")
                     buttonIconSource: "list-add"
-                    buttonToolTip: i18n("Add a new dock")
+                    buttonToolTip: i18n("Add new docks and panels from various templates")
 
                     comboBoxEnabled: true
                     comboBoxBlankSpaceForEmptyIcons: true
@@ -563,11 +564,6 @@ Loader {
                                 actionsComboBtn.emptyModel();
                             }
                         }
-                    }
-
-                    Connections{
-                        target: actionsComboBtn.button
-                        onClicked: latteView.layout.newView(layoutsManager.viewTemplateIds()[0])
                     }
 
                     Connections{

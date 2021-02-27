@@ -42,6 +42,7 @@ Rectangle {
 
     property bool buttonEnabled: true
     property bool buttonIsTransparent: false
+    property bool buttonIsTriggeringMenu: false
     property string buttonText:""
     property string buttonIconSource:""
     property string buttonToolTip: ""
@@ -77,7 +78,7 @@ Rectangle {
         anchors.right: Qt.application.layoutDirection === Qt.RightToLeft ? parent.right : undefined
         LayoutMirroring.enabled: false
         enabled: buttonEnabled
-        checked: root.checked
+        checked: root.checked || (buttonIsTriggeringMenu && mainComboBox.popup.visible)
         visible: buttonIsTransparent ? 0 : 1
 
         /*workaround in order to replicate the proper Buttons Exclusive Group Behavior*/
@@ -91,6 +92,25 @@ Rectangle {
         text: root.checkable ?  " " : buttonText
         iconSource: buttonIconSource
         tooltip: buttonToolTip
+
+        onClicked: {
+            if (buttonIsTriggeringMenu) {
+                //! hiding combobox is triggered by default behavior
+                mainComboBox.popup.visible = !mainComboBox.popup.visible;
+                mainComboBox.down = mainComboBox.popup.visible;
+                mainComboBox.pressed = mainComboBox.popup.visible;
+            }
+        }
+
+        //! WORKAROUND in order to miss one Clicked event from parent button,
+        //! when combobox menu is shown and the user clicks the button in order to hide
+        //! menu, this is enough in order to be dismissed. Without the workaround
+        //! the menu is reshown because the Clicked event is triggered after
+        //! the menu became hidden
+        MouseArea {
+            anchors.fill: parent
+            visible: parent.enabled && buttonIsTriggeringMenu && mainComboBox.popup.visible
+        }
     }
 
     //overlayed combobox
