@@ -160,7 +160,11 @@ Item{
 
             property int zoomedSize: abilityItem.abilities.parabolic.factor.zoom * abilityItem.abilities.metrics.iconSize
             property real basicScalingLength: abilityItem.abilities.metrics.iconSize * (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleLength : parabolicItem.zoom)
-            property real basicScalingThickness: abilityItem.abilities.metrics.iconSize * (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleThickness : parabolicItem.zoom)
+            property real basicScalingThickness: proposedItemThickness * (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleThickness : parabolicItem.zoom)
+
+            readonly property int proposedItemThickness: abilityItem.abilities.indexer.inMarginsArea ?
+                                                             Math.max(16, abilityItem.abilities.metrics.marginsArea.iconSize) :
+                                                             abilityItem.abilities.metrics.iconSize
 
             property real newTempSize: {
                 if (parabolicItem.opacity === 1 ) {

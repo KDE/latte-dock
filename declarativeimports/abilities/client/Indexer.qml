@@ -29,6 +29,7 @@ AbilityDefinition.Indexer {
     property bool updateIsBlocked: false
 
     readonly property bool isActive: bridge !== null
+    readonly property bool inMarginsArea: isActive ? bridge.indexer.inMarginsArea : false
     readonly property bool tailAppletIsSeparator: isActive ? bridge.indexer.tailAppletIsSeparator : false
     readonly property bool headAppletIsSeparator: isActive ? bridge.indexer.headAppletIsSeparator : false
     readonly property bool isReady: !updateIsBlocked
