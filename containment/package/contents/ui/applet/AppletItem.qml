@@ -102,8 +102,7 @@ Item {
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
     property bool isSeparator: applet && (applet.pluginName === "audoban.applet.separator"
-                                          || applet.pluginName === "org.kde.latte.separator"
-                                          || isMarginsAreaSeparator)
+                                          || applet.pluginName === "org.kde.latte.separator")
     property bool isSpacer: applet && (applet.pluginName === "org.kde.latte.spacer")
     property bool isSystray: applet && (applet.pluginName === "org.kde.plasma.systemtray" || applet.pluginName === "org.nomad.systemtray" )
 
@@ -892,11 +891,12 @@ Item {
         height: root.isHorizontal ? appletItem.metrics.mask.thickness.zoomedForItems : appletItem.height
         //! must be enabled even for applets that are hidden in order to forward
         //! parabolic effect messages properly to surrounding plasma applets
-        active: isParabolicEnabled || isThinTooltipEnabled
+        active: isParabolicEnabled || isThinTooltipEnabled || hasParabolicMessagesEnabled
 
         //! in hidden state applets must pass on parabolic messages to neighbours
-        readonly property bool isParabolicEnabled: (appletItem.parabolic.isEnabled && !lockZoom) || isHidden
-        readonly property bool isThinTooltipEnabled: appletItem.thinTooltip.isEnabled &&  !isHidden
+        readonly property bool isParabolicEnabled: appletItem.parabolic.isEnabled && !lockZoom
+        readonly property bool isThinTooltipEnabled: appletItem.thinTooltip.isEnabled && !isHidden
+        readonly property bool hasParabolicMessagesEnabled: appletItem.parabolic.isEnabled && (!lockZoom || isSeparator || isMarginsAreaSeparator || isHidden)
 
         sourceComponent: ParabolicArea{}
 

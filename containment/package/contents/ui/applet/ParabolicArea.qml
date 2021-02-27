@@ -28,8 +28,9 @@ Item {
 
     readonly property bool containsMouse: (appletItem.parabolic.currentParabolicItem === _parabolicArea) || parabolicMouseArea.containsMouse
 
+    readonly property bool hasParabolicMessagesEnabled: parabolicAreaLoader.hasParabolicMessagesEnabled
     readonly property bool isParabolicEnabled: parabolicAreaLoader.isParabolicEnabled
-    readonly property bool isThinTooltipEnabled: parabolicAreaLoader.isThinTooltipEnabled
+    readonly property bool isThinTooltipEnabled: parabolicAreaLoader.isThinTooltipEnabled    
 
     property real center: (root.isHorizontal ? appletItem.width : appletItem.height) / 2
 
@@ -56,7 +57,7 @@ Item {
     }
 
     onParabolicEntered: {
-        if (isThinTooltipEnabled && !(isSeparator || isSpacer)) {
+        if (isThinTooltipEnabled && !(isSeparator || isSpacer || isMarginsAreaSeparator)) {
             appletItem.thinTooltip.show(appletItem.tooltipVisualParent, applet.title);
         }
 
@@ -160,7 +161,7 @@ Item {
                 return;
             }
 
-            if (!appletItem.isSeparator && !appletItem.isHidden) {
+            if (!appletItem.isSeparator && !appletItem.isMarginsAreaSeparator && !appletItem.isHidden) {
                 //! when accepted
                 updateScale(delegateIndex, newScale, step);
 
@@ -187,7 +188,7 @@ Item {
                 return;
             }
 
-            if (!appletItem.isSeparator && !appletItem.isHidden) {
+            if (!appletItem.isSeparator && !appletItem.isMarginsAreaSeparator && !appletItem.isHidden) {
                 //! when accepted
                 updateScale(delegateIndex, newScale, step);
 

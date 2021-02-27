@@ -46,7 +46,7 @@ Item{
             }
         }
 
-        if (isSeparator && appletItem.parabolic.isEnabled) {
+        if ((isSeparator || appletItem.isMarginsAreaSeparator) && appletItem.parabolic.isEnabled) {
             return -1;
         }
 
@@ -139,6 +139,7 @@ Item{
     property int marginsLength: 0   //Fitt's Law, through Binding to avoid Binding loops
 
     property int localLengthMargins: isSeparator
+                                     || appletItem.isMarginsAreaSeparator
                                      || !communicator.requires.lengthMarginsEnabled
                                      || communicator.indexerIsSupported
                                      || isInternalViewSplitter
