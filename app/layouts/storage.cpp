@@ -582,6 +582,7 @@ void Storage::clearExportedLayoutSettings(KConfigGroup &layoutSettingsGroup)
 {
     layoutSettingsGroup.writeEntry("preferredForShortcutsTouched", false);
     layoutSettingsGroup.writeEntry("lastUsedActivity", QString());
+    layoutSettingsGroup.writeEntry("layoutId", QString());
     layoutSettingsGroup.writeEntry("activities", QStringList());
     layoutSettingsGroup.sync();
 }
