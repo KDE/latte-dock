@@ -623,22 +623,18 @@ Loader {
                         updateCopyText();
 
                         var viewTemplateIds = layoutsManager.viewTemplateIds();
+                        var viewTemplateNames = layoutsManager.viewTemplateNames();
 
-                        if (viewTemplateIds.length > 1) {
-                            var viewTemplateNames = layoutsManager.viewTemplateNames();
-
-                            for(var i=viewTemplateIds.length-1; i>=1; --i) {
-                                //! add view templates on reverse
-                                var viewtemplate = {
-                                    actionId: 'new:',
-                                    enabled: true,
-                                    templateId: viewTemplateIds[i],
-                                    name: i18n("New %0").arg(viewTemplateNames[i]),
-                                    icon: 'list-add'
-                                };
-                                actionsModel.append(viewtemplate);
-                            }
-
+                        for(var i=viewTemplateIds.length-1; i>=0; --i) {
+                            //! add view templates on reverse
+                            var viewtemplate = {
+                                actionId: 'new:',
+                                enabled: true,
+                                templateId: viewTemplateIds[i],
+                                name: i18n("New %0").arg(viewTemplateNames[i]),
+                                icon: 'list-add'
+                            };
+                            actionsModel.append(viewtemplate);
                         }
 
                         actionsComboBtn.comboBox.currentIndex = -1;
