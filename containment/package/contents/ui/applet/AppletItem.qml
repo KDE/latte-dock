@@ -56,8 +56,10 @@ Item {
                                             && !isSpacer && !isInternalViewSplitter
 
     readonly property bool canFillScreenEdge: communicator.requires.screenEdgeMarginSupported || communicator.indexerIsSupported
-    readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints") && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
-    readonly property bool isMarginsAreaSeparator: applet && applet.pluginName === "org.kde.plasma.marginsseparator"
+    readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints")
+                                             && ((applet.constraintHints & PlasmaCore.Types.CanFillArea) === PlasmaCore.Types.CanFillArea);
+    readonly property bool isMarginsAreaSeparator: applet && applet.hasOwnProperty("constraintHints")
+                                                   && ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) === PlasmaCore.Types.MarginAreasSeparator);
 
     readonly property color highlightColor: theme.buttonFocusColor
 
