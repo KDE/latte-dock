@@ -535,8 +535,17 @@ ViewDelayedCreationData Storage::newView(const Layout::GenericLayout *destinatio
     //! Setting mutable for create a containment
     destination->corona()->setImmutability(Plasma::Types::Mutable);
 
+    //! copy view template path in temp file
+    QString templateTmpAbsolutePath = m_storageTmpDir.path() + "/" + QFileInfo(templateFile).fileName() + ".newids";
+
+    if (QFile(templateTmpAbsolutePath).exists()) {
+        QFile(templateTmpAbsolutePath).remove();
+    }
+
+    QFile(templateFile).copy(templateTmpAbsolutePath);
+
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(destination, templateFile);
+    QString temp2File = newUniqueIdsLayoutFromFile(destination, templateTmpAbsolutePath);
 
     //! Finally import the configuration
     QList<Plasma::Containment *> importedViews = importLayoutFile(destination, temp2File);
