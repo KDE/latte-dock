@@ -157,6 +157,7 @@ Item{
     readonly property AbilityBridge.Indexer indexer: AbilityBridge.Indexer {
         host: appletItem.indexer
         appletIndex: index
+        inMarginsArea: appletItem.inMarginsArea
         headAppletIsSeparator: appletItem.headAppletIsSeparator
         tailAppletIsSeparator: appletItem.tailAppletIsSeparator
     }

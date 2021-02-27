@@ -22,6 +22,7 @@ import QtQuick 2.0
 BridgeItem {
     id: indexerBridge
 
+    property bool inMarginsArea: false
     property bool tailAppletIsSeparator: false
     property bool headAppletIsSeparator: false
 }
