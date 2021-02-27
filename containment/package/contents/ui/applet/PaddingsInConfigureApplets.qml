@@ -18,10 +18,13 @@
 */
 
 import QtQuick 2.7
+
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-
 Item {
+    id: paddingsVisual
+
     readonly property int thickness: {
         if ((appletItem.canFillThickness && !appletItem.isMarginsAreaSeparator && !communicator.indexerIsSupported)
                 || (appletItem.canFillScreenEdge && !communicator.indexerIsSupported) ) {
@@ -136,6 +139,66 @@ Item {
 
                 AnchorChanges{
                     target: headPadding
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+                }
+            }
+        ]
+    }
+
+    Loader {
+        id: marginsAreaSeparatorVisual
+        active: appletItem.isMarginsAreaSeparator && root.inConfigureAppletsMode
+        sourceComponent: Item {
+            width: plasmoid.formFactor === PlasmaCore.Types.Vertical ? appletItem.metrics.totals.thickness : paddingsVisual.length
+            height: plasmoid.formFactor === PlasmaCore.Types.Vertical ? paddingsVisual.length : appletItem.metrics.totals.thickness
+
+            Rectangle {
+                anchors.centerIn: parent
+                width: Math.max(0.6 * paddingsVisual.length, 4)
+                height: width
+                radius: 2
+                color: paddingsVisual.color
+            }
+        }
+
+        states:[
+            State{
+                name: "bottom"
+                when: plasmoid.location === PlasmaCore.Types.BottomEdge
+
+                AnchorChanges{
+                    target: marginsAreaSeparatorVisual
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+                }
+            },
+            State{
+                name: "top"
+                when: plasmoid.location === PlasmaCore.Types.TopEdge
+
+                AnchorChanges{
+                    target: marginsAreaSeparatorVisual
+                    anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                }
+            },
+            State{
+                name: "left"
+                when: plasmoid.location === PlasmaCore.Types.LeftEdge
+
+                AnchorChanges{
+                    target: marginsAreaSeparatorVisual
+                    anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                }
+            },
+            State{
+                name: "right"
+                when: plasmoid.location === PlasmaCore.Types.RightEdge
+
+                AnchorChanges{
+                    target: marginsAreaSeparatorVisual
                     anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
                     anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
                 }
