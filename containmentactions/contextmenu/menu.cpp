@@ -197,13 +197,6 @@ QList<QAction *> Menu::contextualActions()
         m_data = replyData.value();
     }
 
-    if (m_data.size() > LAYOUTSPOS + 1) {
-        m_layoutsAction->setEnabled(true);
-        m_layoutsAction->setVisible(true);
-    } else {
-        m_layoutsAction->setVisible(false);
-    }
-
     ViewType viewType{DockView};
 
     if (m_data.size() >= LAYOUTSPOS + 1) {
@@ -267,18 +260,20 @@ void Menu::populateLayouts()
 
             QString layout = m_data[i].right(m_data[i].length() - 2);
 
-            QString currentText = (memoryUsage == MultipleLayouts && currentNames.contains(layout)) ?
-                                  (" " + i18nc("current layout", "(Current)")) : "";
-            QString layoutName = layout + currentText;
+            // QString currentText = (memoryUsage == MultipleLayouts && currentNames.contains(layout)) ?
+            //                       (" " + i18nc("current layout", "(Current)")) : "";
+            QString layoutName = layout;// + currentText;
 
             QAction *layoutAction = m_switchLayoutsMenu->addAction(layoutName);
 
-            layoutAction->setCheckable(true);
+            if (memoryUsage == LayoutsMemoryUsage::SingleLayout) {
+                layoutAction->setCheckable(true);
 
-            if (isActive) {
-                layoutAction->setChecked(true);
-            } else {
-                layoutAction->setChecked(false);
+                if (isActive) {
+                    layoutAction->setChecked(true);
+                } else {
+                    layoutAction->setChecked(false);
+                }
             }
 
             layoutAction->setData(layout);

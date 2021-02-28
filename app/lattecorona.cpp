@@ -1156,7 +1156,7 @@ QStringList Corona::contextMenuData()
     for(const auto &layoutName : m_layoutsManager->synchronizer()->menuLayouts()) {
         if (m_layoutsManager->synchronizer()->centralLayout(layoutName)) {
             data << QString("1," + layoutName);
-        } else {
+        } else if (m_layoutsManager->memoryUsage() == Latte::MemoryUsage::SingleLayout) {
             data << QString("0," + layoutName);
         }
     }
