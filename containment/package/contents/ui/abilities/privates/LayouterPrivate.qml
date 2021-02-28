@@ -348,7 +348,8 @@ Item {
 
         if (startLayout.fillApplets > 0) {
             if (mainLayout.fillApplets > 0) {
-                //! adjust final fill applet size in mainlayouts final length
+                //! finally adjust ALL startLayout fill applets size in mainlayouts final length
+                noStart = startLayout.fillApplets;
                 sizePerAppletStart = ((max_length/2) - (mainLayout.grid.length/2) - startLayout.sizeWithNoFillApplets) / noStart;
             }
 
@@ -357,13 +358,13 @@ Item {
 
         if (endLayout.fillApplets > 0) {
             if (mainLayout.fillApplets > 0) {
-                //! adjust final fill applet size in mainlayouts final length
+                //! finally adjust ALL endLayout fill applets size in mainlayouts final length
+                noEnd = endLayout.fillApplets;
                 sizePerAppletEnd = ((max_length/2) - (mainLayout.grid.length/2) - endLayout.sizeWithNoFillApplets) / noEnd;
             }
 
             computeStep2ForLayout(endLayout.grid, sizePerAppletEnd, noEnd, inMaxAutoFillCalculations);
         }
-
     }
 
     function updateFillAppletsWithOneStep(inMaxAutoFillCalculations) {
