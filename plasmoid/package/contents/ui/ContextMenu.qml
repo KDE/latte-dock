@@ -925,6 +925,12 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
+        id: exportItem
+        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("export view") : plasmoid.action("configure")
+        visible:  appletAbilities.myView.isReady && action.visible
+    }
+
+    PlasmaComponents.MenuItem {
         id: configureItem
         action: appletAbilities.myView.isReady ? appletAbilities.myView.action("edit view") : plasmoid.action("configure")
         visible:  appletAbilities.myView.isReady && action.visible

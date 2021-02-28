@@ -43,6 +43,7 @@ const char QUITLATTENAME[] = "quit latte";
 const char ADDWIDGETSNAME[] = "add latte widgets";
 const char DUPLICATEVIEWNAME[] = "duplicate view";
 const char EDITVIEWNAME[] = "edit view";
+const char EXPORTVIEWTEMPLATENAME[] = "export view";
 const char REMOVEVIEWNAME[] = "remove view";
 
 enum ViewType
@@ -144,7 +145,7 @@ void Menu::makeActions()
     });
 
     //! Duplicate Action
-    m_duplicateAction = new QAction(QIcon::fromTheme("edit-copy"), "Duplicate Dock", this);
+    m_duplicateAction = new QAction(QIcon::fromTheme("edit-copy"), "Duplicate Dock as Template", this);
     m_duplicateAction->setVisible(containment()->isUserConfiguring());
     connect(m_duplicateAction, &QAction::triggered, [=](){
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
@@ -154,6 +155,18 @@ void Menu::makeActions()
         }
     });
     this->containment()->actions()->addAction(DUPLICATEVIEWNAME, m_duplicateAction);
+
+    //! Duplicate Action
+    m_exportViewAction = new QAction(QIcon::fromTheme("document-export"), "Export as Template...", this);
+    m_exportViewAction->setVisible(containment()->isUserConfiguring());
+    connect(m_exportViewAction, &QAction::triggered, [=](){
+        QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
+
+        if (iface.isValid()) {
+            iface.call("exportViewTemplate", containment()->id());
+        }
+    });
+    this->containment()->actions()->addAction(EXPORTVIEWTEMPLATENAME, m_exportViewAction);
 
     //! Remove Action
     m_removeAction = new QAction(QIcon::fromTheme("delete"), "Remove Dock", this);
@@ -198,6 +211,7 @@ QList<QAction *> Menu::contextualActions()
     actions << m_separator2;
     actions << m_addWidgetsAction;
     actions << m_duplicateAction;
+    actions << m_exportViewAction;
     actions << m_configureAction;
     actions << m_removeAction;
 
@@ -217,11 +231,14 @@ QList<QAction *> Menu::contextualActions()
         viewType = static_cast<ViewType>((m_data[2]).toInt());
     }
 
-    const QString configureActionText = (viewType == DockView) ? i18nc("dock settings window", "&Edit Dock...") : i18nc("panel settings window", "&Edit Panel...");
+    const QString configureActionText = (viewType == DockView) ? i18n("&Edit Dock...") : i18n("&Edit Panel...");
     m_configureAction->setText(configureActionText);
 
     const QString duplicateActionText = (viewType == DockView) ? i18n("&Duplicate Dock") : i18n("&Duplicate Panel");
     m_duplicateAction->setText(duplicateActionText);
+
+    const QString exportTemplateText = (viewType == DockView) ? i18n("E&xport Dock as Template") : i18n("E&xport Panel as Template");
+    m_exportViewAction->setText(exportTemplateText);
 
     const QString removeActionText = (viewType == DockView) ? i18n("&Remove Dock") : i18n("&Remove Panel");
     m_removeAction->setText(removeActionText);
@@ -237,6 +254,8 @@ QAction *Menu::action(const QString &name)
         return m_duplicateAction;
     } else if (name == EDITVIEWNAME) {
         return m_configureAction;
+    } else if (name == EXPORTVIEWTEMPLATENAME) {
+        return m_exportViewAction;
     } else if (name == LAYOUTSNAME) {
         return m_layoutsAction;
     } else if (name == PREFERENCESNAME) {
@@ -258,11 +277,13 @@ void Menu::onUserConfiguringChanged(const bool &configuring)
 
     m_configureAction->setVisible(!configuring);
     m_duplicateAction->setVisible(configuring);
+    m_exportViewAction->setVisible(configuring);
     m_removeAction->setVisible(configuring);
 
     // because sometimes they are disabled unexpectedly, we should reenable them
     m_configureAction->setEnabled(true);
     m_duplicateAction->setEnabled(true);
+    m_exportViewAction->setEnabled(true);
     m_removeAction->setEnabled(true);
 }
 

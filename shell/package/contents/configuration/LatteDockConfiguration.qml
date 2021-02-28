@@ -551,10 +551,6 @@ Loader {
 
                             if (item && item.actionId === "new:") {
                                 latteView.layout.newView(item.templateId);
-                            } else  if (item && item.actionId === "export:") {
-                                latteView.exportTemplate();
-                            } else  if (item && item.actionId === "copy:") {
-                                latteView.copyView();
                             } else if (item && item.actionId === "move:") {
                                 var layouts = actionsComboBtn.centralLayoutsNames;
                                 latteView.positioner.hideDockDuringMovingToLayout(layouts[index-1]);
@@ -574,7 +570,6 @@ Loader {
 
                     Connections{
                         target: latteView
-                        onTypeChanged: actionsComboBtn.updateCopyText();
                         onLayoutChanged: actionsComboBtn.updateModel();
                     }
 
@@ -617,13 +612,6 @@ Loader {
                             }
                         }
 
-                        var exporttemplate = {actionId: 'export:', enabled: true, name: i18n("Export as Template"), icon: 'document-export'};
-                        actionsModel.append(exporttemplate);
-
-                        var copy = {actionId: 'copy:', enabled: true, name: '', icon: 'edit-copy'};
-                        actionsModel.append(copy);
-                        updateCopyText();
-
                         var viewTemplateIds = layoutsManager.viewTemplateIds();
                         var viewTemplateNames = layoutsManager.viewTemplateNames();
 
@@ -645,17 +633,6 @@ Loader {
                     function emptyModel() {
                         actionsModel.clear();
                         actionsComboBtn.comboBox.currentIndex = -1;
-                    }
-
-                    function updateCopyText() {
-                        for (var i=0; i<actionsModel.count; ++i) {
-                            var item = actionsModel.get(i);
-                            if (item.actionId === "copy:") {
-                                var copyText = latteView.type === LatteCore.Types.DockView ? i18n("Copy Dock") : i18n("Copy Panel")
-                                item.name = copyText;
-                                break;
-                            }
-                        }
                     }
                 }
 

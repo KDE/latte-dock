@@ -15,6 +15,9 @@
     <method name="switchToLayout">
         <arg name="layout" type="s" direction="in"/>
     </method>
+    <method name="exportViewTemplate">
+        <arg name="containmentId" type="u" direction="in"/>
+    </method>
     <method name="duplicateView">
         <arg name="containmentId" type="u" direction="in"/>
     </method>

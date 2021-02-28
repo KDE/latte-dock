@@ -1174,6 +1174,14 @@ void Corona::duplicateView(const uint &containmentId)
     }
 }
 
+void Corona::exportViewTemplate(const uint &containmentId)
+{
+    auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);
+    if (view) {
+        view->exportTemplate();
+    }
+}
+
 void Corona::removeView(const uint &containmentId)
 {
     auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);
