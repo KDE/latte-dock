@@ -188,7 +188,7 @@ Item {
 
                         // console.log( " org.kde.latte s4_0 " + curApplet.pluginName + " : (" +minSize+","+prefSize+","+maxSize+") ");
 
-                        if (!isNeutral && maxSize===Infinity
+                        if (!isNeutral
                                 && ((inMaxAutoFillCalculations && curApplet.maxAutoFillLength>mostDemandingAppletSize)
                                     || (!inMaxAutoFillCalculations && curApplet.minAutoFillLength>mostDemandingAppletSize) )) {
                             mostDemandingApplet = curApplet;
@@ -209,7 +209,11 @@ Item {
                         mostDemandingApplet.minAutoFillLength = mostDemandingApplet.minAutoFillLength + sizePerApplet;
                     }
 
-                    // console.log(" org.kde.latte s4_1  "+ mostDemandingApplet.applet.pluginName + " assigned: "  + mostDemandingApplet.maxAutoFillLength + "\n");
+                    /*if (inMaxAutoFillCalculations) {
+                        console.log(" org.kde.latte s4_1  "+ mostDemandingApplet.applet.pluginName + " assigned max : "  + mostDemandingApplet.maxAutoFillLength + "\n");
+                    } else {
+                        console.log(" org.kde.latte s4_1  "+ mostDemandingApplet.applet.pluginName + " assigned min: "  + mostDemandingApplet.minAutoFillLength + "\n");
+                    }*/
                 } else if (neutralAppletsNo>0) {
                     //! if no demanding applets was found then the available space is splitted equally
                     //! between all neutralApplets
