@@ -29,30 +29,17 @@ Flickable{
     flickableDirection: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Flickable.HorizontalFlick : Flickable.VerticalFlick
     interactive: false
 
+    property int thickness:0 // through Binding to avoid binding loops
+    property int length:0 // through Binding to avoid binding loops
+
     property real offset: 0
 
     readonly property bool animationsFinished: !horizontalAnimation.running && !verticalAnimation.running
     readonly property bool centered: root.alignment === LatteCore.Types.Center
     readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
 
-    readonly property bool contentsExceed:  {
-        if (root.scrollingEnabled) {
-            return (!root.vertical ? Math.floor(contentWidth) > width : Math.floor(contentHeight) > height);
-        }
-
-        return false;
-    }
-    readonly property int contentsExtraSpace: {
-        if (contentsExceed) {
-            if (!root.vertical) {
-                return contentWidth - width;
-            } else {
-                return contentHeight - height;
-            }
-        }
-
-        return 0;
-    }
+    readonly property bool contentsExceed: root.scrollingEnabled ? root.tasksLength > flickableContainer.length : false
+    readonly property int contentsExtraSpace: contentsExceed ? root.tasksLength - flickableContainer.length : 0
 
     readonly property real scrollFirstPos: 0
     readonly property real scrollLastPos: contentsExtraSpace

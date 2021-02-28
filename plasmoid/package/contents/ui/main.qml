@@ -188,6 +188,7 @@ Item {
     //! This way moving from Tasks to Applets and vice versa is pretty stable when hovering with parabolic effect.
     property real tasksHeight:  mouseHandler.height
     property real tasksWidth: mouseHandler.width
+    property real tasksLength: root.vertical ? mouseHandler.height : mouseHandler.width
 
     readonly property int alignment: appletAbilities.containment.alignment
 
@@ -932,9 +933,6 @@ Item {
             contentWidth: icList.width
             contentHeight: icList.height
 
-            property int thickness:0 // through Binding to avoid binding loops
-            property int length:0 // through Binding to avoid binding loops
-
             //onCurrentPosChanged: console.log("CP :: "+ currentPos + " icW:"+icList.width + " rw: "+root.width + " w:" +width);
 
             layer.enabled: contentsExceed && root.scrollingEnabled
@@ -962,13 +960,7 @@ Item {
                 target: scrollableList
                 property: "length"
                 when: !appletAbilities.myView.inRelocationHiding
-                value: {
-                    if (root.vertical) {
-                        return Math.min(root.height, icList.height)
-                    }
-
-                    return Math.min(root.width, icList.width);
-                }
+                value: root.vertical ? Math.min(root.height, root.tasksLength) : Math.min(root.width, root.tasksLength)
             }
 
             TasksLayout.ScrollPositioner {

@@ -502,7 +502,7 @@ Item{
             when: !visibilityManager.inRelocationHiding
             value: {
                 if (appletItem.isAutoFillApplet && (appletItem.maxAutoFillLength>-1)){
-                    return wrapper.length - appletItem.lengthAppletFullMargins;
+                    return wrapper.length;
                 }
 
                 return wrapper.zoomScaleLength * wrapper.layoutLength;
