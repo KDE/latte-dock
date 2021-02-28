@@ -250,8 +250,10 @@ void Layouts::applyColumnWidths()
     }
 
     if (m_model->inMultipleMode()) {
+        m_view->setColumnHidden(Model::Layouts::MENUCOLUMN, true);
         m_view->setColumnHidden(Model::Layouts::ACTIVITYCOLUMN, false);
     } else {
+        m_view->setColumnHidden(Model::Layouts::MENUCOLUMN, false);
         m_view->setColumnHidden(Model::Layouts::ACTIVITYCOLUMN, true);
     }
 
