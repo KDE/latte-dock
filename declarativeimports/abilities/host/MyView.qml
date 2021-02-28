@@ -30,6 +30,10 @@ AbilityDefinition.MyView {
         return view && view.layout && view.layout.isCurrent();
     }
 
+    function action(name) {
+        return view ? view.action(name) : null;
+    }
+
     readonly property Item publicApi: Item {
         readonly property alias isReady: apis.isReady
 
@@ -61,6 +65,10 @@ AbilityDefinition.MyView {
         readonly property alias itemShadow: apis.itemShadow
 
         readonly property alias palette: apis.palette
+
+        function action(name) {
+            return apis.action(name);
+        }
 
         function inCurrentLayout() {
             return apis.inCurrentLayout();

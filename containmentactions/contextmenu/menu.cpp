@@ -37,6 +37,12 @@
 #include <Plasma/ServiceJob>
 
 const int LAYOUTSPOS = 3;
+const char LAYOUTSNAME[] = "layouts";
+const char PREFERENCESNAME[] = "preferences";
+const char QUITLATTENAME[] = "quit latte";
+const char ADDWIDGETSNAME[] = "add latte widgets";
+const char EDITVIEWNAME[] = "edit view";
+const char REMOVEVIEWNAME[] = "remove view";
 
 enum ViewType
 {
@@ -93,6 +99,8 @@ void Menu::makeActions()
     m_addWidgetsAction = new QAction(QIcon::fromTheme("list-add"), i18n("&Add Widgets..."), this);
     m_addWidgetsAction->setStatusTip(i18n("Show Widget Explorer"));
     connect(m_addWidgetsAction, &QAction::triggered, this, &Menu::requestWidgetExplorer);
+    this->containment()->actions()->addAction(ADDWIDGETSNAME, m_addWidgetsAction);
+
     /*connect(m_addWidgetsAction, &QAction::triggered, [ = ]() {
         QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
 
@@ -104,11 +112,13 @@ void Menu::makeActions()
     //! Edit Dock/Panel...
     m_configureAction = new QAction(QIcon::fromTheme("document-edit"), "Edit Dock...", this);
     connect(m_configureAction, &QAction::triggered, this, &Menu::requestConfiguration);
+    this->containment()->actions()->addAction(EDITVIEWNAME, m_configureAction);
 
 
     //! Quit Application
     m_quitApplication = new QAction(QIcon::fromTheme("application-exit"), i18nc("quit application", "Quit &Latte"));
     connect(m_quitApplication, &QAction::triggered, this, &Menu::quitApplication);
+    this->containment()->actions()->addAction(QUITLATTENAME, m_quitApplication);
 
     //! Layouts submenu
     m_switchLayoutsMenu = new QMenu;
@@ -116,12 +126,14 @@ void Menu::makeActions()
     m_layoutsAction->setText(i18n("&Layouts"));
     m_layoutsAction->setIcon(QIcon::fromTheme("user-identity"));
     m_layoutsAction->setStatusTip(i18n("Switch to another layout"));
+    this->containment()->actions()->addAction(LAYOUTSNAME, m_layoutsAction);
 
     connect(m_switchLayoutsMenu, &QMenu::aboutToShow, this, &Menu::populateLayouts);
     connect(m_switchLayoutsMenu, &QMenu::triggered, this, &Menu::switchToLayout);
 
     //! Configure Latte
     m_preferenceAction = new QAction(QIcon::fromTheme("configure"), i18nc("global settings window", "&Configure Latte..."), this);
+    this->containment()->actions()->addAction(PREFERENCESNAME, m_preferenceAction);
     connect(m_preferenceAction, &QAction::triggered, [=](){
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
@@ -140,11 +152,11 @@ void Menu::makeActions()
             iface.call("removeView", containment()->id());
         }
     });
+    this->containment()->actions()->addAction(REMOVEVIEWNAME, m_removeAction);
 
     //! Signals
     connect(this->containment(), &Plasma::Containment::userConfiguringChanged, this, &Menu::onUserConfiguringChanged);
 }
-
 
 void Menu::requestConfiguration()
 {
@@ -209,15 +221,17 @@ QList<QAction *> Menu::contextualActions()
 
 QAction *Menu::action(const QString &name)
 {
-    if (name == "add widgets") {
+    if (name == ADDWIDGETSNAME) {
         return m_addWidgetsAction;
-    } else if (name == "configure") {
+    } else if (name == EDITVIEWNAME) {
         return m_configureAction;
-    } else if (name == "layouts") {
+    } else if (name == LAYOUTSNAME) {
         return m_layoutsAction;
-    } else if (name == "quit application") {
+    } else if (name == PREFERENCESNAME) {
+        return m_preferenceAction;
+    } else if (name == QUITLATTENAME) {
         return m_quitApplication;
-    } else if (name == "remove") {
+    } else if (name == REMOVEVIEWNAME) {
         return m_removeAction;
     }
 

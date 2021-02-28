@@ -87,10 +87,10 @@ AbilityDefinition.MyView {
     }
 
     function inCurrentLayout() {
-        if (bridge && bridge.myView.isReady) {
-            return bridge.myView.inCurrentLayout();
-        } else {
-            return true;
-        }
+        return bridge && ref.myView.isReady ? ref.myView.inCurrentLayout() : true;
+    }
+
+    function action(name) {
+        return bridge && ref.myView.isReady ? ref.myView.action(name) : null;
     }
 }

@@ -43,8 +43,6 @@ PlasmaComponents.ContextMenu {
     property var modelIndex
     readonly property var atm: TaskManager.AbstractTasksModel
 
-    readonly property var containmentActions: appletAbilities.myView.isReady ? appletAbilities.myView.containmentActions : []
-
     placement: {
         if (root.location === PlasmaCore.Types.LeftEdge) {
             return PlasmaCore.Types.RightPosedTopAlignedPopup;
@@ -884,22 +882,19 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: layoutsMenuItem
-
-        action: appletAbilities.myView.isReady ?  containmentActions[1] : plasmoid.action("configure")
+        action: appletAbilities.myView.isReady ?  appletAbilities.myView.action("layouts") : plasmoid.action("configure")
         enabled: visible
-        visible: appletAbilities.myView.isReady && containmentActions[1].visible
     }
 
     PlasmaComponents.MenuItem {
         id: preferenceMenuItem
-
-        action: appletAbilities.myView.isReady ?  containmentActions[2] : plasmoid.action("configure")
+        action: appletAbilities.myView.isReady ?  appletAbilities.myView.action("preferences") : plasmoid.action("configure")
         visible: appletAbilities.myView.isReady
     }
 
     PlasmaComponents.MenuItem {
         id: quitApplicationItem
-        action: appletAbilities.myView.isReady ? containmentActions[3] : plasmoid.action("configure")
+        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("quit latte") : plasmoid.action("configure")
         visible: appletAbilities.myView.isReady
     }
 
@@ -919,18 +914,18 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: addWidgets
-        action: appletAbilities.myView.isReady ? containmentActions[5] : plasmoid.action("configure");
+        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("add latte widgets") : plasmoid.action("configure");
         visible:  appletAbilities.myView.isReady
     }
 
     PlasmaComponents.MenuItem {
         id: configureItem
-        action: appletAbilities.myView.isReady ? containmentActions[6] : plasmoid.action("configure")
+        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("edit view") : plasmoid.action("configure")
     }
 
     PlasmaComponents.MenuItem {
         id: removeItem
-        action: appletAbilities.myView.isReady ? containmentActions[7] : plasmoid.action("remove")
+        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("remove view") : plasmoid.action("remove")
     }
 
     //! BEGIN: Plasmoid actions when it isnt inside a Latte dock

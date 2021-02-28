@@ -279,6 +279,7 @@ public slots:
     void updateAbsoluteGeometry(bool bypassChecks = false);
 
     Q_INVOKABLE bool isHighestPriorityView();
+    Q_INVOKABLE QAction *action(const QString &name);
 
 protected slots:
     void showConfigurationInterface(Plasma::Applet *applet) override;
