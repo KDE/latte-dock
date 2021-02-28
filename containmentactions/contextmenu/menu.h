@@ -60,6 +60,7 @@ private:
 
     QAction *m_addWidgetsAction{nullptr};
     QAction *m_configureAction{nullptr};
+    QAction *m_duplicateAction{nullptr};
     QAction *m_printAction{nullptr};
     QAction *m_layoutsAction{nullptr};
     QAction *m_preferenceAction{nullptr};

@@ -915,17 +915,25 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: addWidgets
         action: appletAbilities.myView.isReady ? appletAbilities.myView.action("add latte widgets") : plasmoid.action("configure");
-        visible:  appletAbilities.myView.isReady
+        visible:  appletAbilities.myView.isReady && action.visible
+    }
+
+    PlasmaComponents.MenuItem {
+        id: duplicateItem
+        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("duplicate view") : plasmoid.action("configure")
+        visible:  appletAbilities.myView.isReady && action.visible
     }
 
     PlasmaComponents.MenuItem {
         id: configureItem
         action: appletAbilities.myView.isReady ? appletAbilities.myView.action("edit view") : plasmoid.action("configure")
+        visible:  appletAbilities.myView.isReady && action.visible
     }
 
     PlasmaComponents.MenuItem {
         id: removeItem
         action: appletAbilities.myView.isReady ? appletAbilities.myView.action("remove view") : plasmoid.action("remove")
+        visible:  appletAbilities.myView.isReady && action.visible
     }
 
     //! BEGIN: Plasmoid actions when it isnt inside a Latte dock

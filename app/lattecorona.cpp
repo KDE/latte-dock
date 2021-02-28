@@ -1166,6 +1166,14 @@ QStringList Corona::contextMenuData()
     return data;
 }
 
+void Corona::duplicateView(const uint &containmentId)
+{
+    auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);
+    if (view) {
+        view->duplicateView();
+    }
+}
+
 void Corona::removeView(const uint &containmentId)
 {
     auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);

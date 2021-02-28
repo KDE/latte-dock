@@ -449,9 +449,9 @@ void View::reconsiderScreen()
     m_positioner->reconsiderScreen();
 }
 
-void View::copyView()
+void View::duplicateView()
 {
-    m_layout->copyView(containment());
+    m_layout->duplicateView(containment());
 }
 
 void View::exportTemplate()

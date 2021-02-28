@@ -165,6 +165,7 @@ public slots:
     void aboutApplication();
     void activateLauncherMenu();
     void loadDefaultLayout() override;
+    void duplicateView(const uint &containmentId);
     void removeView(const uint &containmentId);
     void setBackgroundFromBroadcast(QString activity, QString screenName, QString filename);
     void setBroadcastedBackgroundsEnabled(QString activity, QString screenName, bool enabled);

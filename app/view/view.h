@@ -268,7 +268,7 @@ public:
     void releaseConfigView();
 
 public slots:
-    Q_INVOKABLE void copyView();
+    Q_INVOKABLE void duplicateView();
     Q_INVOKABLE void exportTemplate();
     Q_INVOKABLE void removeView();
 

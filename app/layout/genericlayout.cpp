@@ -1657,7 +1657,7 @@ void GenericLayout::syncToLayoutFile(bool removeLayoutId)
     Layouts::Storage::self()->syncToLayoutFile(this, removeLayoutId);
 }
 
-void GenericLayout::copyView(Plasma::Containment *containment)
+void GenericLayout::duplicateView(Plasma::Containment *containment)
 {
     //! Don't create LatteView when the containment is created because we must update its screen settings first
     setBlockAutomaticLatteViewCreation(true);

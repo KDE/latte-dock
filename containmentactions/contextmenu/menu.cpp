@@ -41,6 +41,7 @@ const char LAYOUTSNAME[] = "layouts";
 const char PREFERENCESNAME[] = "preferences";
 const char QUITLATTENAME[] = "quit latte";
 const char ADDWIDGETSNAME[] = "add latte widgets";
+const char DUPLICATEVIEWNAME[] = "duplicate view";
 const char EDITVIEWNAME[] = "edit view";
 const char REMOVEVIEWNAME[] = "remove view";
 
@@ -142,6 +143,18 @@ void Menu::makeActions()
         }
     });
 
+    //! Duplicate Action
+    m_duplicateAction = new QAction(QIcon::fromTheme("edit-copy"), "Duplicate Dock", this);
+    m_duplicateAction->setVisible(containment()->isUserConfiguring());
+    connect(m_duplicateAction, &QAction::triggered, [=](){
+        QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
+
+        if (iface.isValid()) {
+            iface.call("duplicateView", containment()->id());
+        }
+    });
+    this->containment()->actions()->addAction(DUPLICATEVIEWNAME, m_duplicateAction);
+
     //! Remove Action
     m_removeAction = new QAction(QIcon::fromTheme("delete"), "Remove Dock", this);
     m_removeAction->setVisible(containment()->isUserConfiguring());
@@ -184,6 +197,7 @@ QList<QAction *> Menu::contextualActions()
 
     actions << m_separator2;
     actions << m_addWidgetsAction;
+    actions << m_duplicateAction;
     actions << m_configureAction;
     actions << m_removeAction;
 
@@ -206,6 +220,9 @@ QList<QAction *> Menu::contextualActions()
     const QString configureActionText = (viewType == DockView) ? i18nc("dock settings window", "&Edit Dock...") : i18nc("panel settings window", "&Edit Panel...");
     m_configureAction->setText(configureActionText);
 
+    const QString duplicateActionText = (viewType == DockView) ? i18n("&Duplicate Dock") : i18n("&Duplicate Panel");
+    m_duplicateAction->setText(duplicateActionText);
+
     const QString removeActionText = (viewType == DockView) ? i18n("&Remove Dock") : i18n("&Remove Panel");
     m_removeAction->setText(removeActionText);
 
@@ -216,6 +233,8 @@ QAction *Menu::action(const QString &name)
 {
     if (name == ADDWIDGETSNAME) {
         return m_addWidgetsAction;
+    } else if (name == DUPLICATEVIEWNAME) {
+        return m_duplicateAction;
     } else if (name == EDITVIEWNAME) {
         return m_configureAction;
     } else if (name == LAYOUTSNAME) {
@@ -238,10 +257,12 @@ void Menu::onUserConfiguringChanged(const bool &configuring)
     }
 
     m_configureAction->setVisible(!configuring);
+    m_duplicateAction->setVisible(configuring);
     m_removeAction->setVisible(configuring);
 
     // because sometimes they are disabled unexpectedly, we should reenable them
     m_configureAction->setEnabled(true);
+    m_duplicateAction->setEnabled(true);
     m_removeAction->setEnabled(true);
 }
 
