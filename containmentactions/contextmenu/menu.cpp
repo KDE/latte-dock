@@ -250,21 +250,36 @@ void Menu::populateLayouts()
 {
     m_switchLayoutsMenu->clear();
 
-    if (m_data.size() > LAYOUTSPOS + 1) {
-        //when there are more than 1 layouts present
+    if (m_data.size() >= LAYOUTSPOS + 1) {
         LayoutsMemoryUsage memoryUsage = static_cast<LayoutsMemoryUsage>((m_data[0]).toInt());
         QStringList currentNames = m_data[1].split(";;");
+
+        bool hasActiveNoCurrentLayout{false};
+
+        if (memoryUsage == LayoutsMemoryUsage::MultipleLayouts) {
+            for (int i = LAYOUTSPOS; i < m_data.size(); ++i) {
+                QString layout = m_data[i].right(m_data[i].length() - 2);
+                if (!currentNames.contains(layout)) {
+                    hasActiveNoCurrentLayout = true;
+                    break;
+                }
+            }
+        }
 
         for (int i = LAYOUTSPOS; i < m_data.size(); ++i) {
             bool isActive = m_data[i].startsWith("0") ? false : true;
 
             QString layout = m_data[i].right(m_data[i].length() - 2);
+            QString layoutText = layout;
 
-            // QString currentText = (memoryUsage == MultipleLayouts && currentNames.contains(layout)) ?
-            //                       (" " + i18nc("current layout", "(Current)")) : "";
-            QString layoutName = layout;// + currentText;
+            bool isCurrent = ((memoryUsage == SingleLayout && isActive)
+                              || (memoryUsage == MultipleLayouts && currentNames.contains(layout)));
 
-            QAction *layoutAction = m_switchLayoutsMenu->addAction(layoutName);
+            if (isCurrent && hasActiveNoCurrentLayout) {
+                layoutText += QString(" " + i18nc("current layout", "[Current]"));
+            }
+
+            QAction *layoutAction = m_switchLayoutsMenu->addAction(layoutText);
 
             if (memoryUsage == LayoutsMemoryUsage::SingleLayout) {
                 layoutAction->setCheckable(true);
@@ -278,18 +293,18 @@ void Menu::populateLayouts()
 
             layoutAction->setData(layout);
 
-            if (isActive) {
+            if (isCurrent) {
                 QFont font = layoutAction->font();
                 font.setBold(true);
                 layoutAction->setFont(font);
             }
         }
+
         m_switchLayoutsMenu->addSeparator();
-
-        QAction *editLayoutsAction = m_switchLayoutsMenu->addAction(i18n("Manage &Layouts..."));
-        editLayoutsAction->setData(QStringLiteral(" _show_latte_settings_dialog_"));
-
     }
+
+    QAction *editLayoutsAction = m_switchLayoutsMenu->addAction(i18n("Manage &Layouts..."));
+    editLayoutsAction->setData(QStringLiteral(" _show_latte_settings_dialog_"));
 }
 
 void Menu::switchToLayout(QAction *action)
