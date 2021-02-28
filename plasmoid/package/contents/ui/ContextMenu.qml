@@ -881,6 +881,12 @@ PlasmaComponents.ContextMenu {
     }*/
 
     PlasmaComponents.MenuItem {
+        text: "Latte"
+        section: true
+        visible: appletAbilities.myView.isReady
+    }
+
+    PlasmaComponents.MenuItem {
         id: layoutsMenuItem
         action: appletAbilities.myView.isReady ?  appletAbilities.myView.action("layouts") : plasmoid.action("configure")
         enabled: visible
@@ -956,6 +962,22 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         separator: true
+        visible: removePlasmoid.visible
+    }
+
+    PlasmaComponents.MenuItem {
+        id: removePlasmoid
+        visible: (root.latteInEditMode) || (!root.latteBridge && !plasmoid.immutable /*normal plasmoid in the desktop*/)
+
+        text: plasmoid.action("remove").text
+        icon: plasmoid.action("remove").icon
+
+        onClicked: plasmoid.action("remove").trigger();
+    }
+
+    PlasmaComponents.MenuItem {
+        section: true
+        text: i18n("Window")
         visible: closeWindowItem.visible
     }
 
@@ -978,20 +1000,5 @@ PlasmaComponents.ContextMenu {
                 tasksModel.requestClose(menu.modelIndex);
             }
         }
-    }
-
-    PlasmaComponents.MenuItem {
-        separator: true
-        visible: removePlasmoid.visible
-    }
-
-    PlasmaComponents.MenuItem {
-        id: removePlasmoid
-        visible: (root.latteInEditMode) || (!root.latteBridge && !plasmoid.immutable /*normal plasmoid in the desktop*/)
-
-        text: plasmoid.action("remove").text
-        icon: plasmoid.action("remove").icon
-
-        onClicked: plasmoid.action("remove").trigger();
     }
 }
