@@ -1050,6 +1050,7 @@ Item {
             radius: appletAbilities.metrics.iconSize/10
             backgroundOpacity: mouseHandler.isDroppingOnlyLaunchers || appletAbilities.launchers.isShowingAddLaunchersMessage ? 0.75 : 0
             duration: appletAbilities.animations.speedFactor.current
+            iconSize: appletAbilities.metrics.iconSize
             z: 99
 
             title: i18n("Tasks Area")

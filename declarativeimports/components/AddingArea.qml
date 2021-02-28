@@ -33,6 +33,8 @@ Rectangle{
 
     property bool drawAddCross: true
 
+    property int iconSize: 64
+
     readonly property color outlineColorBase: theme.backgroundColor
     readonly property real outlineColorBaseBrightness: ColorizerTools.colorBrightness(outlineColorBase)
     readonly property color outlineColor: {
@@ -157,7 +159,8 @@ Rectangle{
         width: thickness
         height: thickness
 
-        readonly property int thickness: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? (parent.height - freeSpace):(parent.width - freeSpace)
+        readonly property int thickness: Math.min(addingArea.iconSize,
+                                                  plasmoid.formFactor === PlasmaCore.Types.Horizontal ? (parent.height - freeSpace):(parent.width - freeSpace))
 
         readonly property int freeSpace: Math.max(16, (heading.implicitHeight + units.smallSpacing*2))
     }

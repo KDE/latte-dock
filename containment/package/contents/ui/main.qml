@@ -1033,8 +1033,10 @@ Item {
 
         LatteComponents.AddItem{
             id: dndSpacerAddItem
-            width: root.isHorizontal ? parent.width : parent.width - metrics.margin.screenEdge
-            height: root.isHorizontal ? parent.height - metrics.margin.screenEdge: parent.height
+            width: metrics.iconSize
+            height: metrics.iconSize
+
+            property int thickMargin: metrics.margin.screenEdge + metrics.margin.thickness
 
             states:[
                 State{
@@ -1048,7 +1050,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: metrics.margin.screenEdge;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: thickMargin;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -1063,7 +1065,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: metrics.margin.screenEdge;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: thickMargin;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -1078,7 +1080,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: metrics.margin.screenEdge;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: thickMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },

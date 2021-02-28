@@ -33,7 +33,7 @@ Item{
         height: width
         anchors.centerIn: parent
 
-        radius: Math.max(width,height)/2
+        radius: 0.05 * Math.max(width,height)
 
         color: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, backgroundOpacity)
         border.width: 1
