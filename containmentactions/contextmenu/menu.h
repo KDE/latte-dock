@@ -42,6 +42,7 @@ public:
     QAction *action(const QString &name);
 private Q_SLOTS:
     void makeActions();
+    void onUserConfiguringChanged(const bool &configuring);
     void populateLayouts();
     void quitApplication();
     void requestConfiguration();
@@ -62,6 +63,7 @@ private:
     QAction *m_printAction{nullptr};
     QAction *m_layoutsAction{nullptr};
     QAction *m_preferenceAction{nullptr};
+    QAction *m_removeAction{nullptr};
     QAction *m_quitApplication{nullptr};
 
     QMenu *m_switchLayoutsMenu{nullptr};

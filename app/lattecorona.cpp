@@ -1166,6 +1166,14 @@ QStringList Corona::contextMenuData()
     return data;
 }
 
+void Corona::removeView(const uint &containmentId)
+{
+    auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);
+    if (view) {
+        view->removeView();
+    }
+}
+
 void Corona::setBackgroundFromBroadcast(QString activity, QString screenName, QString filename)
 {
     if (filename.startsWith("file://")) {

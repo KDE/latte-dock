@@ -165,6 +165,7 @@ public slots:
     void aboutApplication();
     void activateLauncherMenu();
     void loadDefaultLayout() override;
+    void removeView(const uint &containmentId);
     void setBackgroundFromBroadcast(QString activity, QString screenName, QString filename);
     void setBroadcastedBackgroundsEnabled(QString activity, QString screenName, bool enabled);
     void showAlternativesForApplet(Plasma::Applet *applet);

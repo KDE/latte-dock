@@ -462,7 +462,7 @@ void View::exportTemplate()
 
 void View::removeView()
 {
-    if (m_layout && m_layout->viewsCount() > 1) {
+    if (m_layout) {
         m_inDelete = true;
 
         QAction *removeAct = this->containment()->actions()->action(QStringLiteral("remove"));

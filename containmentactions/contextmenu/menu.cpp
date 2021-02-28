@@ -72,6 +72,7 @@ Menu::~Menu()
     m_switchLayoutsMenu->deleteLater();
     m_layoutsAction->deleteLater();
     m_preferenceAction->deleteLater();
+    m_removeAction->deleteLater();
     m_quitApplication->deleteLater();
 }
 
@@ -82,11 +83,13 @@ void Menu::makeActions()
     m_separator2 = new QAction(this);
     m_separator2->setSeparator(true);
 
+    //! Print Message...
     m_printAction = new QAction(QIcon::fromTheme("edit"), "Print Message...", this);
     connect(m_printAction, &QAction::triggered, [ = ]() {
         qDebug() << "Action Trigerred !!!";
     });
 
+    //! Add Widgets...
     m_addWidgetsAction = new QAction(QIcon::fromTheme("list-add"), i18n("&Add Widgets..."), this);
     m_addWidgetsAction->setStatusTip(i18n("Show Widget Explorer"));
     connect(m_addWidgetsAction, &QAction::triggered, this, &Menu::requestWidgetExplorer);
@@ -98,19 +101,16 @@ void Menu::makeActions()
         }
     });*/
 
-    m_configureAction = new QAction(QIcon::fromTheme("document-edit"), i18nc("view settings window", "View &Settings..."), this);
+    //! Edit Dock/Panel...
+    m_configureAction = new QAction(QIcon::fromTheme("document-edit"), "Edit Dock...", this);
     connect(m_configureAction, &QAction::triggered, this, &Menu::requestConfiguration);
 
-    connect(this->containment(), &Plasma::Containment::userConfiguringChanged, this, [&](bool configuring){
-        m_configureAction->setVisible(!configuring);
-        // because sometimes it's disabled unexpectedly
-        // we should enable it
-        m_configureAction->setEnabled(true);
-    });
 
+    //! Quit Application
     m_quitApplication = new QAction(QIcon::fromTheme("application-exit"), i18nc("quit application", "Quit &Latte"));
     connect(m_quitApplication, &QAction::triggered, this, &Menu::quitApplication);
 
+    //! Layouts submenu
     m_switchLayoutsMenu = new QMenu;
     m_layoutsAction = m_switchLayoutsMenu->menuAction();
     m_layoutsAction->setText(i18n("&Layouts"));
@@ -120,6 +120,7 @@ void Menu::makeActions()
     connect(m_switchLayoutsMenu, &QMenu::aboutToShow, this, &Menu::populateLayouts);
     connect(m_switchLayoutsMenu, &QMenu::triggered, this, &Menu::switchToLayout);
 
+    //! Configure Latte
     m_preferenceAction = new QAction(QIcon::fromTheme("configure"), i18nc("global settings window", "&Configure Latte..."), this);
     connect(m_preferenceAction, &QAction::triggered, [=](){
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
@@ -128,6 +129,20 @@ void Menu::makeActions()
             iface.call("showSettingsWindow", (int)PreferencesPage);
         }
     });
+
+    //! Remove Action
+    m_removeAction = new QAction(QIcon::fromTheme("delete"), "Remove Dock", this);
+    m_removeAction->setVisible(containment()->isUserConfiguring());
+    connect(m_removeAction, &QAction::triggered, [=](){
+        QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
+
+        if (iface.isValid()) {
+            iface.call("removeView", containment()->id());
+        }
+    });
+
+    //! Signals
+    connect(this->containment(), &Plasma::Containment::userConfiguringChanged, this, &Menu::onUserConfiguringChanged);
 }
 
 
@@ -157,7 +172,8 @@ QList<QAction *> Menu::contextualActions()
 
     actions << m_separator2;
     actions << m_addWidgetsAction;
-    actions << m_configureAction;    
+    actions << m_configureAction;
+    actions << m_removeAction;
 
     m_data.clear();
     QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
@@ -185,6 +201,9 @@ QList<QAction *> Menu::contextualActions()
     const QString configureActionText = (viewType == DockView) ? i18nc("dock settings window", "&Edit Dock...") : i18nc("panel settings window", "&Edit Panel...");
     m_configureAction->setText(configureActionText);
 
+    const QString removeActionText = (viewType == DockView) ? i18n("&Remove Dock") : i18n("&Remove Panel");
+    m_removeAction->setText(removeActionText);
+
     return actions;
 }
 
@@ -198,10 +217,27 @@ QAction *Menu::action(const QString &name)
         return m_layoutsAction;
     } else if (name == "quit application") {
         return m_quitApplication;
+    } else if (name == "remove") {
+        return m_removeAction;
     }
 
     return nullptr;
 }
+
+void Menu::onUserConfiguringChanged(const bool &configuring)
+{
+    if (!m_configureAction || !m_removeAction) {
+        return;
+    }
+
+    m_configureAction->setVisible(!configuring);
+    m_removeAction->setVisible(configuring);
+
+    // because sometimes they are disabled unexpectedly, we should reenable them
+    m_configureAction->setEnabled(true);
+    m_removeAction->setEnabled(true);
+}
+
 
 void Menu::populateLayouts()
 {
