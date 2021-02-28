@@ -271,7 +271,7 @@ void Menu::populateLayouts()
                                   (" " + i18nc("current layout", "(Current)")) : "";
             QString layoutName = layout + currentText;
 
-            QAction *layoutAction = new QAction(layoutName, m_switchLayoutsMenu);
+            QAction *layoutAction = m_switchLayoutsMenu->addAction(layoutName);
 
             layoutAction->setCheckable(true);
 
@@ -288,15 +288,12 @@ void Menu::populateLayouts()
                 font.setBold(true);
                 layoutAction->setFont(font);
             }
-
-            m_switchLayoutsMenu->addAction(layoutAction);
         }
-
         m_switchLayoutsMenu->addSeparator();
 
-        QAction *editLayoutsAction = new QAction(i18n("Manage &Layouts..."), m_switchLayoutsMenu);
+        QAction *editLayoutsAction = m_switchLayoutsMenu->addAction(i18n("Manage &Layouts..."));
         editLayoutsAction->setData(QStringLiteral(" _show_latte_settings_dialog_"));
-        m_switchLayoutsMenu->addAction(editLayoutsAction);
+
     }
 }
 
