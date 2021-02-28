@@ -869,6 +869,16 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
+        id: alternativesMenuItem
+        visible: (appletAbilities.myView.isReady && appletAbilities.myView.inEditMode)
+                 || (!appletAbilities.myView.isReady && plasmoid.userConfiguring /*normal plasmoid in the desktop*/)
+        text: plasmoid.action("alternatives").text
+        icon: plasmoid.action("alternatives").icon
+
+        onClicked: plasmoid.action("alternatives").trigger();
+    }
+
+    PlasmaComponents.MenuItem {
         //text: i18n("Configure")
         //section: true
         separator: true
@@ -907,15 +917,6 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         separator: true
         visible: preferenceMenuItem.visible
-    }
-
-    PlasmaComponents.MenuItem {
-        id: alternativesMenuItem
-        visible: root.inEditMode && !visualParent.isSeparator
-        text: plasmoid.action("alternatives").text
-        icon: plasmoid.action("alternatives").icon
-
-        onClicked: plasmoid.action("alternatives").trigger();
     }
 
     PlasmaComponents.MenuItem {
@@ -967,7 +968,8 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: removePlasmoid
-        visible: (root.latteInEditMode) || (!root.latteBridge && !plasmoid.immutable /*normal plasmoid in the desktop*/)
+        visible: (appletAbilities.myView.isReady && appletAbilities.myView.inEditMode)
+                 || (!root.latteBridge && !plasmoid.immutable /*normal plasmoid in the desktop*/)
 
         text: plasmoid.action("remove").text
         icon: plasmoid.action("remove").icon

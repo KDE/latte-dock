@@ -44,6 +44,9 @@ AbilityDefinition.MyView {
         readonly property alias isShownFully: apis.isShownFully
         readonly property alias isHidingBlocked: apis.isHidingBlocked
 
+        readonly property alias inEditMode: apis.inEditMode
+        readonly property alias inConfigureAppletsMode: apis.inConfigureAppletsMode
+
         readonly property alias inSlidingIn: apis.inSlidingIn
         readonly property alias inSlidingOut: apis.inSlidingOut
         readonly property alias inRelocationAnimation: apis.inRelocationAnimation

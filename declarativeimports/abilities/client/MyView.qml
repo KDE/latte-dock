@@ -36,6 +36,9 @@ AbilityDefinition.MyView {
     isShownFully: ref.myView.isShownFully
     isHidingBlocked: ref.myView.isHidingBlocked
 
+    inEditMode: ref.myView.inEditMode
+    inConfigureAppletsMode: ref.myView.inConfigureAppletsMode
+
     inSlidingIn: ref.myView.inSlidingIn
     inSlidingOut: ref.myView.inSlidingOut
     inRelocationAnimation: ref.myView.inRelocationAnimation
@@ -60,6 +63,8 @@ AbilityDefinition.MyView {
 
     readonly property AbilityDefinition.MyView local: AbilityDefinition.MyView {
         isShownFully: true
+        inEditMode: plasmoid.userConfiguring
+        inConfigureAppletsMode: plasmoid.userConfiguring
     }
 
     Item {

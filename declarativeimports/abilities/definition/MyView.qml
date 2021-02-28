@@ -36,6 +36,9 @@ Item {
 
     property bool isHidingBlocked: false
 
+    property bool inEditMode: false
+    property bool inConfigureAppletsMode: false
+
     property bool inSlidingIn: false
     property bool inSlidingOut: false
     property bool inRelocationAnimation: false

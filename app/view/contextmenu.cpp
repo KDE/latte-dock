@@ -453,6 +453,8 @@ void ContextMenu::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, Q
         return;
     }
 
+    desktopMenu->addSection(applet->pluginMetaData().name());
+
     for (QAction *action : applet->contextualActions()) {
         if (action) {
             desktopMenu->addAction(action);
@@ -573,6 +575,10 @@ void ContextMenu::addContainmentActions(QMenu *desktopMenu, QEvent *event)
                 act->menu()->windowHandle()->setTransientParent(m_latteView);
             }
         }
+    }
+
+    if (actions.count() > 0) {
+        desktopMenu->addSection(QString("Latte"));
     }
 
     desktopMenu->addActions(actions);
