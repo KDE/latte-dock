@@ -108,8 +108,8 @@ private slots:
     void initLayouts();
     void loadConfig();
     void saveConfig();
-    void storeColumnWidths();
-    void applyColumnWidths();
+    void storeColumnWidths(bool inMultipleMode);
+    void applyColumnWidths(bool storeValues = false);
 
     void onNameDuplicatedFrom(const QString &provenId,  const QString &trialId);
     void onLayoutAddedExternally(const Data::Layout &layout);

@@ -68,9 +68,6 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
     loadConfig();
     m_proxyModel->setSourceModel(m_model);
 
-    connect(m_model, &Model::Layouts::inMultipleModeChanged, this, &Layouts::applyColumnWidths);
-    connect(m_handler->corona()->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, &Layouts::applyColumnWidths);
-
     connect(m_handler->corona()->layoutsManager()->synchronizer(), &Latte::Layouts::Synchronizer::newLayoutAdded, this, &Layouts::onLayoutAddedExternally);
     connect(m_handler->corona()->layoutsManager()->synchronizer(), &Latte::Layouts::Synchronizer::layoutActivitiesChanged, this, &Layouts::onLayoutActivitiesChangedExternally);
 
@@ -87,6 +84,15 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
 
     initView();
     initLayouts();
+
+    //! connect them after initialization of the view
+    connect(m_model, &Model::Layouts::inMultipleModeChanged, this, [&]() {
+        applyColumnWidths(true);
+    });
+
+    connect(m_handler->corona()->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, [&]() {
+        applyColumnWidths(false);
+    });
 }
 
 Layouts::~Layouts()
@@ -151,7 +157,9 @@ void Layouts::initView()
     m_view->setItemDelegateForColumn(Model::Layouts::BORDERSCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     m_view->setItemDelegateForColumn(Model::Layouts::ACTIVITYCOLUMN, new Settings::Layout::Delegate::Activities(this));
 
-    connect(m_view, &QObject::destroyed, this, &Controller::Layouts::storeColumnWidths);
+    connect(m_view, &QObject::destroyed, this, [&]() {
+        storeColumnWidths(m_model->inMultipleMode());
+    });
 }
 
 bool Layouts::hasChangedData() const
@@ -227,8 +235,15 @@ void Layouts::setInMultipleMode(bool inMultiple)
     m_model->setInMultipleMode(inMultiple);
 }
 
-void Layouts::applyColumnWidths()
+void Layouts::applyColumnWidths(bool storeValues)
 {
+    bool isLastModeMultiple = !m_model->inMultipleMode();
+
+    //! save previous values
+    if (storeValues) {
+        storeColumnWidths(isLastModeMultiple);
+    }
+
     if (m_model->inMultipleMode()) {
         m_view->horizontalHeader()->setSectionResizeMode(Model::Layouts::ACTIVITYCOLUMN, QHeaderView::Stretch);
         m_view->horizontalHeader()->setSectionResizeMode(Model::Layouts::NAMECOLUMN, QHeaderView::Interactive);
@@ -262,8 +277,9 @@ void Layouts::applyColumnWidths()
             int currentColumn = Model::Layouts::BACKGROUNDCOLUMN+i;
 
             if ((currentColumn == Model::Layouts::BORDERSCOLUMN && !m_handler->corona()->universalSettings()->canDisableBorders())
-                    || (currentColumn == Model::Layouts::NAMECOLUMN && !m_model->inMultipleMode())
-                    || (currentColumn == Model::Layouts::ACTIVITYCOLUMN && !m_model->inMultipleMode())) {
+                    || (currentColumn == Model::Layouts::NAMECOLUMN && isLastModeMultiple)
+                    || (currentColumn == Model::Layouts::MENUCOLUMN && !isLastModeMultiple)
+                    || (currentColumn == Model::Layouts::ACTIVITYCOLUMN)) {
                 continue;
             }
 
@@ -789,7 +805,7 @@ void Layouts::save()
     emit dataChanged();
 }
 
-void Layouts::storeColumnWidths()
+void Layouts::storeColumnWidths(bool inMultipleMode)
 {   
     if (m_viewColumnWidths.isEmpty()) {
         m_viewColumnWidths << "" << "" << "" << "";
@@ -797,11 +813,13 @@ void Layouts::storeColumnWidths()
 
     m_viewColumnWidths[0] = QString::number(m_view->columnWidth(Model::Layouts::BACKGROUNDCOLUMN));
 
-    if (m_model->inMultipleMode()) {
+    if (inMultipleMode) {
         m_viewColumnWidths[1] = QString::number(m_view->columnWidth(Model::Layouts::NAMECOLUMN));
     }
 
-    m_viewColumnWidths[2] = QString::number(m_view->columnWidth(Model::Layouts::MENUCOLUMN));
+    if (!inMultipleMode) {
+        m_viewColumnWidths[2] = QString::number(m_view->columnWidth(Model::Layouts::MENUCOLUMN));
+    }
 
     if (m_handler->corona()->universalSettings()->canDisableBorders()) {
         m_viewColumnWidths[3] = QString::number(m_view->columnWidth(Model::Layouts::BORDERSCOLUMN));
