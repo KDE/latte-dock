@@ -43,7 +43,8 @@ Applets::Applets(QObject *parent)
         "org.kde.latte.plasmoid",
         "org.kde.windowtitle",
         "org.kde.windowbuttons",
-        "org.kde.windowappmenu"
+        "org.kde.windowappmenu",
+        "org.kde.plasma.marginsseparator"
     };
 }
 
