@@ -82,8 +82,9 @@ PlasmaComponents.ContextMenu {
         return tasksModel.data(modelIndex, modelProp)
     }
 
-    function show() {       
+    function show() {
         loadDynamicLaunchActions(visualParent.m.LauncherUrlWithoutIcon);
+        loadMyViewActions();
         // backend.ungrabMouse(visualParent);
         openRelative();
 
@@ -299,6 +300,23 @@ PlasmaComponents.ContextMenu {
         }
     }
 
+    function loadMyViewActions() {
+        if (!appletAbilities.myView.isReady) {
+            return;
+        }
+
+        var actionsCount = appletAbilities.myView.containmentActions.length;
+
+        for (var i=0; i<actionsCount; ++i) {
+            var item = newMenuItem(menu);
+            item.action = appletAbilities.myView.containmentActions[i];
+            item.visible = Qt.binding(function() {
+                return this.action.visible;
+            });
+            menu.addMenuItem(item, myViewActions);
+        }
+    }
+
     ///REMOVE
     function updateOnAllActivitiesLauncher(){
         //isOnAllActivitiesLauncher = ActivitiesTools.isOnAllActivities(visualParent.m.LauncherUrlWithoutIcon);
@@ -321,7 +339,7 @@ PlasmaComponents.ContextMenu {
     }
 
 
-    Component.onDestruction: {        
+    Component.onDestruction: {
         if (!changingLayout) {
             root.contextMenu = null;
             backend.ungrabMouse(visualParent);
@@ -817,13 +835,8 @@ PlasmaComponents.ContextMenu {
 
     //////END OF NEW ARCHITECTURE
 
-    /*PlasmaComponents.MenuItem {
-        separator: true
-        visible: root.inEditMode
-    }*/
-
     PlasmaComponents.MenuItem {
-        id: addInternalSeparatorItem       
+        id: addInternalSeparatorItem
         enabled: !visualParent.tailItemIsSeparator || !visualParent.headItemIsSeparator
         visible: visualParent.hasShownLauncher
         icon: "add"
@@ -879,100 +892,24 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        //text: i18n("Configure")
-        //section: true
+        id: myViewActions
         separator: true
-        visible: preferenceMenuItem.visible
-    }
-
-    /* PlasmaComponents.MenuItem {
-        separator: true
-        visible: root.inEditMode
-    }*/
-
-    PlasmaComponents.MenuItem {
-        text: "Latte"
-        section: true
-        visible: appletAbilities.myView.isReady
-    }
-
-    PlasmaComponents.MenuItem {
-        id: layoutsMenuItem
-        action: appletAbilities.myView.isReady ?  appletAbilities.myView.action("layouts") : plasmoid.action("configure")
-        enabled: visible
-    }
-
-    PlasmaComponents.MenuItem {
-        id: preferenceMenuItem
-        action: appletAbilities.myView.isReady ?  appletAbilities.myView.action("preferences") : plasmoid.action("configure")
-        visible: appletAbilities.myView.isReady
-    }
-
-    PlasmaComponents.MenuItem {
-        id: quitApplicationItem
-        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("quit latte") : plasmoid.action("configure")
-        visible: appletAbilities.myView.isReady
+        visible: false
     }
 
     PlasmaComponents.MenuItem {
         separator: true
-        visible: preferenceMenuItem.visible
+        visible: removePlasmoidInMyViewEditMode.visible
     }
 
     PlasmaComponents.MenuItem {
-        id: addWidgets
-        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("add latte widgets") : plasmoid.action("configure");
-        visible:  appletAbilities.myView.isReady && action.visible
-    }
-
-    PlasmaComponents.MenuItem {
-        id: duplicateItem
-        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("duplicate view") : plasmoid.action("configure")
-        visible:  appletAbilities.myView.isReady && action.visible
-    }
-
-    PlasmaComponents.MenuItem {
-        id: exportItem
-        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("export view") : plasmoid.action("configure")
-        visible:  appletAbilities.myView.isReady && action.visible
-    }
-
-    PlasmaComponents.MenuItem {
-        id: configureItem
-        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("edit view") : plasmoid.action("configure")
-        visible:  appletAbilities.myView.isReady && action.visible
-    }
-
-    PlasmaComponents.MenuItem {
-        id: removeItem
-        action: appletAbilities.myView.isReady ? appletAbilities.myView.action("remove view") : plasmoid.action("remove")
-        visible:  appletAbilities.myView.isReady && action.visible
-    }
-
-    //! BEGIN: Plasmoid actions when it isnt inside a Latte dock
-    PlasmaComponents.MenuItem {
-        id: configurePlasmoid
-        visible: !appletAbilities.myView.isReady && !plasmoid.immutable
-
-        text: plasmoid.action("configure").text
-        icon: plasmoid.action("configure").icon
-
-        onClicked: plasmoid.action("configure").trigger();
-    }
-    //! END: Plasmoid actions when it isnt inside a Latte dock
-
-    PlasmaComponents.MenuItem {
-        separator: true
-        visible: removePlasmoid.visible
-    }
-
-    PlasmaComponents.MenuItem {
-        id: removePlasmoid
-        visible: (appletAbilities.myView.isReady && appletAbilities.myView.inEditMode)
-                 || (!root.latteBridge && !plasmoid.immutable /*normal plasmoid in the desktop*/)
-
+        id: removePlasmoidInMyViewEditMode
+        //! Workaround: this is preferred compared to:
+        //!   action:plasmoid.action("remove")
+        //! which shows the action always and not dependent of myView.inEditMode flag
         text: plasmoid.action("remove").text
         icon: plasmoid.action("remove").icon
+        visible: appletAbilities.myView.isReady && appletAbilities.myView.inEditMode
 
         onClicked: plasmoid.action("remove").trigger();
     }

@@ -72,8 +72,9 @@ Menu::Menu(QObject *parent, const QVariantList &args)
 
 Menu::~Menu()
 {
-    m_separator1->deleteLater();
-    m_separator2->deleteLater();
+    m_sectionAction->deleteLater();
+    m_separator->deleteLater();
+
     m_addWidgetsAction->deleteLater();
     m_configureAction->deleteLater();
     m_printAction->deleteLater();
@@ -86,10 +87,12 @@ Menu::~Menu()
 
 void Menu::makeActions()
 {
-    m_separator1 = new QAction(this);
-    m_separator1->setSeparator(true);
-    m_separator2 = new QAction(this);
-    m_separator2->setSeparator(true);
+    m_sectionAction = new QAction(this);
+    m_sectionAction->setSeparator(true);
+    m_sectionAction->setText("Latte");
+
+    m_separator = new QAction(this);
+    m_separator->setSeparator(true);
 
     //! Print Message...
     m_printAction = new QAction(QIcon::fromTheme("edit"), "Print Message...", this);
@@ -202,13 +205,13 @@ QList<QAction *> Menu::contextualActions()
 {
     QList<QAction *> actions;
 
-    actions << m_separator1;
+    actions << m_sectionAction;
     //actions << m_printAction;
     actions << m_layoutsAction;
     actions << m_preferenceAction;
     actions << m_quitApplication;
 
-    actions << m_separator2;
+    actions << m_separator;
     actions << m_addWidgetsAction;
     actions << m_duplicateAction;
     actions << m_exportViewAction;

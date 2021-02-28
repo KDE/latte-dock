@@ -577,10 +577,6 @@ void ContextMenu::addContainmentActions(QMenu *desktopMenu, QEvent *event)
         }
     }
 
-    if (actions.count() > 0) {
-        desktopMenu->addSection(QString("Latte"));
-    }
-
     desktopMenu->addActions(actions);
 
     return;

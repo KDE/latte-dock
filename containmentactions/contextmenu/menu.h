@@ -55,8 +55,8 @@ private:
 
     QList<QAction *>m_actions;
 
-    QAction *m_separator1{nullptr};
-    QAction *m_separator2{nullptr};
+    QAction *m_sectionAction{nullptr};
+    QAction *m_separator{nullptr};
 
     QAction *m_addWidgetsAction{nullptr};
     QAction *m_configureAction{nullptr};
