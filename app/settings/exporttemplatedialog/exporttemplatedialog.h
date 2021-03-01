@@ -72,10 +72,12 @@ protected:
 private slots:
     void onCancel();
     void onDataChanged();
+    void onExportSucceeded();
     void onReset();
 
     void initButtons();
     void initExportButton(const QString &tooltip);
+    void initSignals();
 
 private:
     void init();

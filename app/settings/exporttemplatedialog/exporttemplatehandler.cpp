@@ -234,6 +234,8 @@ void ExportTemplateHandler::onExport()
                           KMessageWidget::Information,
                           false,
                           actions);
+
+        emit exportSucceeded();
     } else {
         showExportTemplateError(QFileInfo(c_filepath).baseName());
     }

@@ -43,7 +43,7 @@ ExportTemplateDialog::ExportTemplateDialog(SettingsDialog *parent, const QString
     initExportButton(i18n("Export your selected layout as template"));
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ExportTemplateHandler(this, layoutName, layoutId);
-    connect(m_handler, &Handler::ExportTemplateHandler::dataChanged, this, &ExportTemplateDialog::onDataChanged);
+    initSignals();
 }
 
 ExportTemplateDialog::ExportTemplateDialog(Latte::View *view)
@@ -56,7 +56,7 @@ ExportTemplateDialog::ExportTemplateDialog(Latte::View *view)
     initExportButton(i18n("Export your selected view as template"));
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ExportTemplateHandler(this, view);
-    connect(m_handler, &Handler::ExportTemplateHandler::dataChanged, this, &ExportTemplateDialog::onDataChanged);
+    initSignals();
 }
 
 ExportTemplateDialog::~ExportTemplateDialog()
@@ -102,6 +102,12 @@ void ExportTemplateDialog::initExportButton(const QString &tooltip)
     m_ui->buttonBox->addButton(m_exportButton, QDialogButtonBox::AcceptRole);
 }
 
+void ExportTemplateDialog::initSignals()
+{
+    connect(m_handler, &Handler::ExportTemplateHandler::dataChanged, this, &ExportTemplateDialog::onDataChanged);
+    connect(m_handler, &Handler::ExportTemplateHandler::exportSucceeded, this, &ExportTemplateDialog::onExportSucceeded);
+}
+
 QPushButton *ExportTemplateDialog::exportButton() const
 {
     return m_exportButton;
@@ -110,6 +116,11 @@ QPushButton *ExportTemplateDialog::exportButton() const
 void ExportTemplateDialog::onDataChanged()
 {
     m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(!m_handler->inDefaultValues());
+}
+
+void ExportTemplateDialog::onExportSucceeded()
+{
+    m_exportButton->setText(i18nc("export template", "Export Again"));
 }
 
 void ExportTemplateDialog::accept()

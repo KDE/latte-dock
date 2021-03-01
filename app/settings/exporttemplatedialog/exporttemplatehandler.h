@@ -80,6 +80,7 @@ public slots:
 
 signals:
     void filepathChanged();
+    void exportSucceeded();
 
 private:
     void init();
