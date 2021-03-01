@@ -72,9 +72,9 @@ ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *paren
 ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, Latte::View *view)
     : ExportTemplateHandler(parentDialog)
 {
-    QString name = (view->type() == Latte::Types::PanelView ? i18n("Panel") : i18n("Dock"));
+    QString type = (view->type() == Latte::Types::PanelView ? i18n("Panel") : i18n("Dock"));
     loadViewApplets(view);
-    o_filepath = parentDialog->corona()->templatesManager()->proposedTemplateAbsolutePath(name + ".view.latte");
+    o_filepath = parentDialog->corona()->templatesManager()->proposedTemplateAbsolutePath(view->layout()->name() + " " + type + ".view.latte");
     setFilepath(o_filepath);
 }
 
