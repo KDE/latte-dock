@@ -1179,6 +1179,14 @@ void Corona::exportViewTemplate(const uint &containmentId)
     }
 }
 
+void Corona::moveViewToLayout(const uint &containmentId, const QString &layoutName)
+{
+    auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);
+    if (view && !layoutName.isEmpty() && view->layout()->name() != layoutName) {
+        view->positioner()->hideDockDuringMovingToLayout(layoutName);
+    }
+}
+
 void Corona::removeView(const uint &containmentId)
 {
     auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);

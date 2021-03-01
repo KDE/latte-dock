@@ -51,6 +51,7 @@ const char DUPLICATEVIEWNAME[] = "duplicate view";
 const char EDITVIEWNAME[] = "edit view";
 const char EXPORTVIEWTEMPLATENAME[] = "export view";
 const char REMOVEVIEWNAME[] = "remove view";
+const char MOVEVIEWNAME[] = "move view";
 
 enum ViewType
 {
@@ -81,14 +82,18 @@ Menu::~Menu()
     m_sectionAction->deleteLater();
     m_separator->deleteLater();
 
+    //! sub-menus
+    m_switchLayoutsMenu->deleteLater();
+
+    //! actions
     m_addWidgetsAction->deleteLater();
     m_configureAction->deleteLater();
     m_printAction->deleteLater();
     m_switchLayoutsMenu->deleteLater();
-    m_layoutsAction->deleteLater();
+    m_moveAction->deleteLater();
     m_preferenceAction->deleteLater();
     m_removeAction->deleteLater();
-    m_quitApplication->deleteLater();
+    m_quitApplication->deleteLater();    
 }
 
 void Menu::makeActions()
@@ -141,6 +146,18 @@ void Menu::makeActions()
 
     connect(m_switchLayoutsMenu, &QMenu::aboutToShow, this, &Menu::populateLayouts);
     connect(m_switchLayoutsMenu, &QMenu::triggered, this, &Menu::switchToLayout);
+
+    //! Move submenu
+    m_moveToLayoutMenu = new QMenu;
+    m_moveAction = m_moveToLayoutMenu->menuAction();
+    m_moveAction->setVisible(containment()->isUserConfiguring());
+    m_moveAction->setText("Move To Layout");
+    m_moveAction->setIcon(QIcon::fromTheme("transform-move-horizontal"));
+    m_moveAction->setStatusTip(i18n("Move dock or panel to different layout"));
+    this->containment()->actions()->addAction(MOVEVIEWNAME, m_moveAction);
+
+    connect(m_moveToLayoutMenu, &QMenu::aboutToShow, this, &Menu::populateMoveToLayouts);
+    connect(m_moveToLayoutMenu, &QMenu::triggered, this, &Menu::moveToLayout);
 
     //! Configure Latte
     m_preferenceAction = new QAction(QIcon::fromTheme("configure"), i18nc("global settings window", "&Configure Latte..."), this);
@@ -221,6 +238,7 @@ QList<QAction *> Menu::contextualActions()
     actions << m_addWidgetsAction;
     actions << m_duplicateAction;
     actions << m_exportViewAction;
+    actions << m_moveAction;
     actions << m_configureAction;
     actions << m_removeAction;
 
@@ -244,6 +262,15 @@ QList<QAction *> Menu::contextualActions()
     const QString exportTemplateText = (viewType == DockView) ? i18n("E&xport Dock as Template") : i18n("E&xport Panel as Template");
     m_exportViewAction->setText(exportTemplateText);
 
+    QStringList activeNames = m_data[ACTIVELAYOUTSINDEX].split(";;");
+    if (activeNames.count() > 1 && containment()->isUserConfiguring()) {
+        m_moveAction->setVisible(true);
+        const QString moveText = (viewType == DockView) ? i18n("&Move Dock To Layout") : i18n("&Move Panel To Layout");
+        m_moveAction->setText(moveText);
+    } else {
+        m_moveAction->setVisible(false);
+    }
+
     const QString removeActionText = (viewType == DockView) ? i18n("&Remove Dock") : i18n("&Remove Panel");
     m_removeAction->setText(removeActionText);
 
@@ -262,6 +289,8 @@ QAction *Menu::action(const QString &name)
         return m_exportViewAction;
     } else if (name == LAYOUTSNAME) {
         return m_layoutsAction;
+    } else if (name == MOVEVIEWNAME) {
+        return m_moveAction;
     } else if (name == PREFERENCESNAME) {
         return m_preferenceAction;
     } else if (name == QUITLATTENAME) {
@@ -282,12 +311,14 @@ void Menu::onUserConfiguringChanged(const bool &configuring)
     m_configureAction->setVisible(!configuring);
     m_duplicateAction->setVisible(configuring);
     m_exportViewAction->setVisible(configuring);
+    m_moveAction->setVisible(configuring);
     m_removeAction->setVisible(configuring);
 
     // because sometimes they are disabled unexpectedly, we should reenable them
     m_configureAction->setEnabled(true);
     m_duplicateAction->setEnabled(true);
     m_exportViewAction->setEnabled(true);
+    m_moveAction->setEnabled(true);
     m_removeAction->setEnabled(true);
 }
 
@@ -349,6 +380,66 @@ void Menu::populateLayouts()
 
     QAction *editLayoutsAction = m_switchLayoutsMenu->addAction(i18n("Manage &Layouts..."));
     editLayoutsAction->setData(QStringLiteral(" _show_latte_settings_dialog_"));
+}
+
+void Menu::populateMoveToLayouts()
+{
+    m_moveToLayoutMenu->clear();
+
+    LayoutsMemoryUsage memoryUsage = static_cast<LayoutsMemoryUsage>((m_data[MEMORYINDEX]).toInt());
+
+    if (memoryUsage == LayoutsMemoryUsage::MultipleLayouts) {
+        QStringList activeNames = m_data[ACTIVELAYOUTSINDEX].split(";;");
+        QStringList currentNames = m_data[CURRENTLAYOUTSINDEX].split(";;");
+        QString viewLayoutName = m_data[VIEWLAYOUTINDEX];
+
+        bool hasActiveNoCurrentLayout{false};
+
+        if (memoryUsage == LayoutsMemoryUsage::MultipleLayouts) {
+            for (int i = 0; i<activeNames.count(); ++i) {
+                if (!currentNames.contains(activeNames[i])) {
+                    hasActiveNoCurrentLayout = true;
+                    break;
+                }
+            }
+        }
+
+        for(int i=0; i<activeNames.count(); ++i) {
+            QString layoutText = activeNames[i];
+
+            bool isCurrent = currentNames.contains(activeNames[i]);
+            bool isViewCurrentLayout = activeNames[i] == viewLayoutName;
+
+            if (isCurrent && hasActiveNoCurrentLayout) {
+                layoutText += QString(" " + i18nc("current layout", "[Current]"));
+            }
+
+            QAction *layoutAction = m_moveToLayoutMenu->addAction(layoutText);
+
+            layoutAction->setCheckable(true);
+            layoutAction->setChecked(isViewCurrentLayout);
+            layoutAction->setData(isViewCurrentLayout ? QString() : activeNames[i]);
+
+            if (isCurrent) {
+                QFont font = layoutAction->font();
+                font.setBold(true);
+                layoutAction->setFont(font);
+            }
+        }
+    }
+}
+
+void Menu::moveToLayout(QAction *action)
+{
+    const QString layoutName = action->data().toString();
+
+    QTimer::singleShot(400, [this, layoutName]() {
+        QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
+
+        if (iface.isValid()) {
+            iface.call("moveViewToLayout", containment()->id(), layoutName);
+        }
+    });
 }
 
 void Menu::switchToLayout(QAction *action)

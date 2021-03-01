@@ -21,6 +21,10 @@
     <method name="duplicateView">
         <arg name="containmentId" type="u" direction="in"/>
     </method>
+    <method name="moveViewToLayout">
+        <arg name="containmentId" type="u" direction="in"/>
+        <arg name="layoutName" type="s" direction="in"/>
+    </method>
     <method name="removeView">
         <arg name="containmentId" type="u" direction="in"/>
     </method>

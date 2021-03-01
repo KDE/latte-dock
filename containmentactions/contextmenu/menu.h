@@ -44,11 +44,13 @@ private Q_SLOTS:
     void makeActions();
     void onUserConfiguringChanged(const bool &configuring);
     void populateLayouts();
+    void populateMoveToLayouts();
     void quitApplication();
     void requestConfiguration();
     void requestWidgetExplorer();
-    void switchToLayout(QAction *action);
 
+    void moveToLayout(QAction *action);
+    void switchToLayout(QAction *action);
 
 private:
     QStringList m_data;
@@ -62,13 +64,15 @@ private:
     QAction *m_configureAction{nullptr};
     QAction *m_duplicateAction{nullptr};
     QAction *m_exportViewAction{nullptr};
-    QAction *m_printAction{nullptr};
     QAction *m_layoutsAction{nullptr};
+    QAction *m_moveAction{nullptr};
     QAction *m_preferenceAction{nullptr};
+    QAction *m_printAction{nullptr};
     QAction *m_removeAction{nullptr};
     QAction *m_quitApplication{nullptr};
 
     QMenu *m_switchLayoutsMenu{nullptr};
+    QMenu *m_moveToLayoutMenu{nullptr};
 };
 
 #endif

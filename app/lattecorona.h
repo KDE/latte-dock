@@ -168,6 +168,7 @@ public slots:
 
     void duplicateView(const uint &containmentId);
     void exportViewTemplate(const uint &containmentId);
+    void moveViewToLayout(const uint &containmentId, const QString &layoutName);
     void removeView(const uint &containmentId);
 
     void setBackgroundFromBroadcast(QString activity, QString screenName, QString filename);

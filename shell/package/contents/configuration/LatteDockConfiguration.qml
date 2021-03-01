@@ -551,9 +551,6 @@ Loader {
 
                             if (item && item.actionId === "new:") {
                                 latteView.layout.newView(item.templateId);
-                            } else if (item && item.actionId === "move:") {
-                                var layouts = actionsComboBtn.centralLayoutsNames;
-                                latteView.positioner.hideDockDuringMovingToLayout(layouts[index-1]);
                             }
 
                             actionsComboBtn.comboBox.currentIndex = -1;
@@ -566,11 +563,6 @@ Loader {
                                 actionsComboBtn.emptyModel();
                             }
                         }
-                    }
-
-                    Connections{
-                        target: latteView
-                        onLayoutChanged: actionsComboBtn.updateModel();
                     }
 
                     Connections{
@@ -589,29 +581,6 @@ Loader {
 
                     function updateModel() {
                         actionsModel.clear();
-
-                        var tempCentralLayouts = layoutsManager.centralLayoutsNames();
-
-                        if (tempCentralLayouts.length > 0) {
-                            var curIndex = tempCentralLayouts.indexOf(latteView.layout.name);
-                            if (curIndex >=0) {
-                                tempCentralLayouts.splice(curIndex,1);
-                            }
-
-                            centralLayoutsNames = tempCentralLayouts;
-                            var iconArrow = Qt.application.layoutDirection === Qt.RightToLeft ? 'arrow-left' : 'arrow-right';
-
-                            for(var i=0; i<centralLayoutsNames.length; ++i) {
-                                var layout = {
-                                    actionId: 'move:',
-                                    enabled: true,
-                                    name: i18n("Move to %0").arg(centralLayoutsNames[i]),
-                                    icon: iconArrow
-                                };
-                                actionsModel.append(layout);
-                            }
-                        }
-
                         var viewTemplateIds = layoutsManager.viewTemplateIds();
                         var viewTemplateNames = layoutsManager.viewTemplateNames();
 
