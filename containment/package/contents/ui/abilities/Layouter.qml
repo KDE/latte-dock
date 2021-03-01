@@ -29,7 +29,7 @@ Ability.LayouterPrivate {
 
     readonly property bool inNormalFillCalculationsState: animations.needBothAxis.count === 0
                                                           && animations.needThickness.count === 0
-                                                          && animations.needLength.count === 0
+                                                          && (animations.needLength.count === 0 || root.dragInfo.entered) /*update when the user drags a plasmoid on the view*/
                                                           && (!dragOverlay || (dragOverlay && !dragOverlay.pressed)) /*do not update during moving/dragging applets*/
                                                           && !appletsInParentChange
 
