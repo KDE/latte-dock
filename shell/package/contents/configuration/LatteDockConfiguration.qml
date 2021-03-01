@@ -590,7 +590,7 @@ Loader {
                                 actionId: 'add:',
                                 enabled: true,
                                 templateId: viewTemplateIds[i],
-                                name: i18n("Add %0").arg(viewTemplateNames[i]),
+                                name: viewTemplateNames[i],
                                 icon: 'list-add'
                             };
                             actionsModel.append(viewtemplate);
