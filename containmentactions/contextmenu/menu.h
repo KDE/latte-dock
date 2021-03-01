@@ -45,15 +45,18 @@ private Q_SLOTS:
     void onUserConfiguringChanged(const bool &configuring);
     void populateLayouts();
     void populateMoveToLayouts();
+    void populateViewTemplates();
     void quitApplication();
     void requestConfiguration();
     void requestWidgetExplorer();
 
+    void addView(QAction *action);
     void moveToLayout(QAction *action);
     void switchToLayout(QAction *action);
 
 private:
     QStringList m_data;
+    QStringList m_viewTemplates;
 
     QList<QAction *>m_actions;
 
@@ -68,6 +71,9 @@ private:
     QAction *m_printAction{nullptr};
     QAction *m_removeAction{nullptr};
     QAction *m_quitApplication{nullptr};
+
+    QAction *m_addViewAction{nullptr};
+    QMenu *m_addViewMenu{nullptr};
 
     QAction *m_layoutsAction{nullptr};
     QMenu *m_switchLayoutsMenu{nullptr};

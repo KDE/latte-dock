@@ -26,6 +26,7 @@
 #include "apptypes.h"
 #include "lattedockadaptor.h"
 #include "screenpool.h"
+#include "data/generictable.h"
 #include "declarativeimports/interfaces.h"
 #include "indicator/factory.h"
 #include "layout/abstractlayout.h"
@@ -1161,6 +1162,28 @@ QStringList Corona::contextMenuData(const uint &containmentId)
     data << (view ? view->layout()->name() : QString());   //Selected View layout*/
 
     return data;
+}
+
+QStringList Corona::viewTemplatesData()
+{
+    QStringList data;
+
+    Latte::Data::GenericTable<Data::Generic> viewtemplates = m_templatesManager->viewTemplates();
+
+    for(int i=0; i<viewtemplates.rowCount(); ++i) {
+        data << viewtemplates[i].name;
+        data << viewtemplates[i].id;
+    }
+
+    return data;
+}
+
+void Corona::addView(const uint &containmentId, const QString &templateId)
+{
+    auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);
+    if (view && view->layout() && !templateId.isEmpty()) {
+        view->layout()->newView(templateId);
+    }
 }
 
 void Corona::duplicateView(const uint &containmentId)

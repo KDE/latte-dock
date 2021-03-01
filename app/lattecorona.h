@@ -160,12 +160,14 @@ public:
     void showSettingsWindow(int page);
 
     QStringList contextMenuData(const uint &containmentId);
+    QStringList viewTemplatesData();
 
 public slots:
     void aboutApplication();
     void activateLauncherMenu();
     void loadDefaultLayout() override;
 
+    void addView(const uint &containmentId, const QString &templateId);
     void duplicateView(const uint &containmentId);
     void exportViewTemplate(const uint &containmentId);
     void moveViewToLayout(const uint &containmentId, const QString &layoutName);

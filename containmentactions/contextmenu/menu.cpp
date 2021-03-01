@@ -43,6 +43,7 @@ const int LAYOUTMENUINDEX = 3;
 const int VIEWTYPEINDEX = 4;
 const int VIEWLAYOUTINDEX = 5;
 
+const char ADDVIEWNAME[] = "add view";
 const char LAYOUTSNAME[] = "layouts";
 const char PREFERENCESNAME[] = "preferences";
 const char QUITLATTENAME[] = "quit latte";
@@ -83,6 +84,7 @@ Menu::~Menu()
     m_separator->deleteLater();
 
     //! sub-menus
+    m_addViewMenu->deleteLater();
     m_switchLayoutsMenu->deleteLater();
     m_moveToLayoutMenu->deleteLater();
 
@@ -147,6 +149,17 @@ void Menu::makeActions()
 
     connect(m_switchLayoutsMenu, &QMenu::aboutToShow, this, &Menu::populateLayouts);
     connect(m_switchLayoutsMenu, &QMenu::triggered, this, &Menu::switchToLayout);
+
+    //! Add View submenu
+    m_addViewMenu = new QMenu;
+    m_addViewAction = m_addViewMenu->menuAction();
+    m_addViewAction->setText(i18n("&Add Dock/Panel"));
+    m_addViewAction->setIcon(QIcon::fromTheme("list-add"));
+    m_addViewAction->setStatusTip(i18n("Add dock or panel based on specific template"));
+    this->containment()->actions()->addAction(ADDVIEWNAME, m_addViewAction);
+
+    connect(m_addViewMenu, &QMenu::aboutToShow, this, &Menu::populateViewTemplates);
+    connect(m_addViewMenu, &QMenu::triggered, this, &Menu::addView);
 
     //! Move submenu
     m_moveToLayoutMenu = new QMenu;
@@ -237,6 +250,7 @@ QList<QAction *> Menu::contextualActions()
 
     actions << m_separator;
     actions << m_addWidgetsAction;
+    actions << m_addViewAction;
     actions << m_duplicateAction;
     actions << m_moveAction;
     actions << m_exportViewAction;
@@ -244,12 +258,15 @@ QList<QAction *> Menu::contextualActions()
     actions << m_removeAction;
 
     m_data.clear();
+    m_viewTemplates.clear();
     QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
     if (iface.isValid()) {
-        QDBusReply<QStringList> replyData = iface.call("contextMenuData", containment()->id());
+        QDBusReply<QStringList> contextData = iface.call("contextMenuData", containment()->id());
+        m_data = contextData.value();
 
-        m_data = replyData.value();
+        QDBusReply<QStringList> templatesData = iface.call("viewTemplatesData");
+        m_viewTemplates = templatesData.value();
     }
 
     ViewType viewType{static_cast<ViewType>((m_data[VIEWTYPEINDEX]).toInt())};
@@ -280,7 +297,9 @@ QList<QAction *> Menu::contextualActions()
 
 QAction *Menu::action(const QString &name)
 {
-    if (name == ADDWIDGETSNAME) {
+    if (name == ADDVIEWNAME) {
+        return m_addViewAction;
+    } else if (name == ADDWIDGETSNAME) {
         return m_addWidgetsAction;
     } else if (name == DUPLICATEVIEWNAME) {
         return m_duplicateAction;
@@ -428,6 +447,34 @@ void Menu::populateMoveToLayouts()
             }
         }
     }
+}
+
+void Menu::populateViewTemplates()
+{
+    m_addViewMenu->clear();
+
+    for(int i=0; i<m_viewTemplates.count(); ++i) {
+        if (i % 2 == 1) {
+            //! even records are the templates ids and they have already been registered
+            continue;
+        }
+
+        QAction *templateAction = m_addViewMenu->addAction(m_viewTemplates[i]);
+        templateAction->setData(m_viewTemplates[i+1]);
+    }
+}
+
+void Menu::addView(QAction *action)
+{
+    const QString templateId = action->data().toString();
+
+    QTimer::singleShot(400, [this, templateId]() {
+        QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
+
+        if (iface.isValid()) {
+            iface.call("addView", containment()->id(), templateId);
+        }
+    });
 }
 
 void Menu::moveToLayout(QAction *action)

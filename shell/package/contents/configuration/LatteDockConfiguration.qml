@@ -519,7 +519,7 @@ Loader {
 
                     buttonEnabled: true
                     buttonIsTriggeringMenu: true
-                    buttonText: i18n("New...")
+                    buttonText: i18n("Add...")
                     buttonIconSource: "list-add"
                     buttonToolTip: i18n("Add new docks and panels from various templates")
 
@@ -549,7 +549,7 @@ Loader {
                         onActivated: {
                             var item = actionsModel.get(index);
 
-                            if (item && item.actionId === "new:") {
+                            if (item && item.actionId === "add:") {
                                 latteView.layout.newView(item.templateId);
                             }
 
@@ -587,10 +587,10 @@ Loader {
                         for(var i=viewTemplateIds.length-1; i>=0; --i) {
                             //! add view templates on reverse
                             var viewtemplate = {
-                                actionId: 'new:',
+                                actionId: 'add:',
                                 enabled: true,
                                 templateId: viewTemplateIds[i],
-                                name: i18n("New %0").arg(viewTemplateNames[i]),
+                                name: i18n("Add %0").arg(viewTemplateNames[i]),
                                 icon: 'list-add'
                             };
                             actionsModel.append(viewtemplate);
