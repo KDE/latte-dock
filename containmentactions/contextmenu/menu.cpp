@@ -84,16 +84,17 @@ Menu::~Menu()
 
     //! sub-menus
     m_switchLayoutsMenu->deleteLater();
+    m_moveToLayoutMenu->deleteLater();
 
     //! actions
     m_addWidgetsAction->deleteLater();
     m_configureAction->deleteLater();
-    m_printAction->deleteLater();
-    m_switchLayoutsMenu->deleteLater();
-    m_moveAction->deleteLater();
+    m_duplicateAction->deleteLater();
+    m_exportViewAction->deleteLater();
     m_preferenceAction->deleteLater();
+    m_printAction->deleteLater();    
     m_removeAction->deleteLater();
-    m_quitApplication->deleteLater();    
+    m_quitApplication->deleteLater();
 }
 
 void Menu::makeActions()
@@ -237,8 +238,8 @@ QList<QAction *> Menu::contextualActions()
     actions << m_separator;
     actions << m_addWidgetsAction;
     actions << m_duplicateAction;
-    actions << m_exportViewAction;
     actions << m_moveAction;
+    actions << m_exportViewAction;
     actions << m_configureAction;
     actions << m_removeAction;
 

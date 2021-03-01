@@ -64,14 +64,15 @@ private:
     QAction *m_configureAction{nullptr};
     QAction *m_duplicateAction{nullptr};
     QAction *m_exportViewAction{nullptr};
-    QAction *m_layoutsAction{nullptr};
-    QAction *m_moveAction{nullptr};
     QAction *m_preferenceAction{nullptr};
     QAction *m_printAction{nullptr};
     QAction *m_removeAction{nullptr};
     QAction *m_quitApplication{nullptr};
 
+    QAction *m_layoutsAction{nullptr};
     QMenu *m_switchLayoutsMenu{nullptr};
+
+    QAction *m_moveAction{nullptr};
     QMenu *m_moveToLayoutMenu{nullptr};
 };
 
