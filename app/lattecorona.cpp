@@ -1133,36 +1133,33 @@ void Corona::showSettingsWindow(int page)
     m_layoutsManager->showLatteSettingsDialog(p);
 }
 
-void Corona::setContextMenuView(int id)
-{
-    //! set context menu view id
-    m_contextMenuViewId = id;
-}
-
-QStringList Corona::contextMenuData()
+QStringList Corona::contextMenuData(const uint &containmentId)
 {
     QStringList data;
     Types::ViewType viewType{Types::DockView};
-    auto view = m_layoutsManager->synchronizer()->viewForContainment(m_contextMenuViewId);
+    auto view = m_layoutsManager->synchronizer()->viewForContainment(containmentId);
 
     if (view) {
         viewType = view->type();
     }
 
-    data << QString::number((int)m_layoutsManager->memoryUsage());
-    data << m_layoutsManager->synchronizer()->currentLayoutsNames().join(";;");
-    data << QString::number((int)viewType);
+    data << QString::number((int)m_layoutsManager->memoryUsage()); // Memory Usage
+    data << m_layoutsManager->centralLayoutsNames().join(";;"); // All Active layouts
+    data << m_layoutsManager->synchronizer()->currentLayoutsNames().join(";;"); // All Current layouts
+
+    QStringList layoutsmenu;
 
     for(const auto &layoutName : m_layoutsManager->synchronizer()->menuLayouts()) {
-        if (m_layoutsManager->synchronizer()->centralLayout(layoutName)) {
-            data << QString("1," + layoutName);
-        } else if (m_layoutsManager->memoryUsage() == Latte::MemoryUsage::SingleLayout) {
-            data << QString("0," + layoutName);
+        if (m_layoutsManager->synchronizer()->centralLayout(layoutName)
+                || m_layoutsManager->memoryUsage() == Latte::MemoryUsage::SingleLayout) {
+            layoutsmenu << layoutName;
         }
     }
 
-    //! reset context menu view id
-    m_contextMenuViewId = -1;
+    data << layoutsmenu.join(";;");
+    data << QString::number((int)viewType); //Selected View type
+    data << (view ? view->layout()->name() : QString());   //Selected View layout*/
+
     return data;
 }
 

@@ -36,7 +36,13 @@
 #include <Plasma/Corona>
 #include <Plasma/ServiceJob>
 
-const int LAYOUTSPOS = 3;
+const int MEMORYINDEX = 0;
+const int ACTIVELAYOUTSINDEX = 1;
+const int CURRENTLAYOUTSINDEX = 2;
+const int LAYOUTMENUINDEX = 3;
+const int VIEWTYPEINDEX = 4;
+const int VIEWLAYOUTINDEX = 5;
+
 const char LAYOUTSNAME[] = "layouts";
 const char PREFERENCESNAME[] = "preferences";
 const char QUITLATTENAME[] = "quit latte";
@@ -222,17 +228,12 @@ QList<QAction *> Menu::contextualActions()
     QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
     if (iface.isValid()) {
-        iface.call("setContextMenuView", (int)containment()->id());
-        QDBusReply<QStringList> replyData = iface.call("contextMenuData");
+        QDBusReply<QStringList> replyData = iface.call("contextMenuData", containment()->id());
 
         m_data = replyData.value();
     }
 
-    ViewType viewType{DockView};
-
-    if (m_data.size() >= LAYOUTSPOS + 1) {
-        viewType = static_cast<ViewType>((m_data[2]).toInt());
-    }
+    ViewType viewType{static_cast<ViewType>((m_data[VIEWTYPEINDEX]).toInt())};
 
     const QString configureActionText = (viewType == DockView) ? i18n("&Edit Dock...") : i18n("&Edit Panel...");
     m_configureAction->setText(configureActionText);
@@ -295,29 +296,29 @@ void Menu::populateLayouts()
 {
     m_switchLayoutsMenu->clear();
 
-    LayoutsMemoryUsage memoryUsage = static_cast<LayoutsMemoryUsage>((m_data[0]).toInt());
-    QStringList currentNames = m_data[1].split(";;");
+    LayoutsMemoryUsage memoryUsage = static_cast<LayoutsMemoryUsage>((m_data[MEMORYINDEX]).toInt());
+    QStringList activeNames = m_data[ACTIVELAYOUTSINDEX].split(";;");
+    QStringList currentNames = m_data[CURRENTLAYOUTSINDEX].split(";;");
+    QStringList layoutMenuNames = m_data[LAYOUTMENUINDEX].split(";;");
 
     bool hasActiveNoCurrentLayout{false};
 
     if (memoryUsage == LayoutsMemoryUsage::MultipleLayouts) {
-        for (int i = LAYOUTSPOS; i < m_data.size(); ++i) {
-            QString layout = m_data[i].right(m_data[i].length() - 2);
-            if (!currentNames.contains(layout)) {
+        for (int i = 0; i<activeNames.count(); ++i) {
+            if (!currentNames.contains(activeNames[i])) {
                 hasActiveNoCurrentLayout = true;
                 break;
             }
         }
     }
 
-    for (int i = LAYOUTSPOS; i < m_data.size(); ++i) {
-        bool isActive = m_data[i].startsWith("0") ? false : true;
+    for (int i = 0; i < layoutMenuNames.count(); ++i) {
+        bool isActive = activeNames.contains(layoutMenuNames[i]);
 
-        QString layout = m_data[i].right(m_data[i].length() - 2);
-        QString layoutText = layout;
+        QString layoutText = layoutMenuNames[i];
 
         bool isCurrent = ((memoryUsage == SingleLayout && isActive)
-                          || (memoryUsage == MultipleLayouts && currentNames.contains(layout)));
+                          || (memoryUsage == MultipleLayouts && currentNames.contains(layoutMenuNames[i])));
 
         if (isCurrent && hasActiveNoCurrentLayout) {
             layoutText += QString(" " + i18nc("current layout", "[Current]"));
@@ -335,7 +336,7 @@ void Menu::populateLayouts()
             }
         }
 
-        layoutAction->setData(layout);
+        layoutAction->setData(layoutMenuNames[i]);
 
         if (isCurrent) {
             QFont font = layoutAction->font();

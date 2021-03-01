@@ -158,8 +158,8 @@ public:
     void quitApplication();
     void switchToLayout(QString layout);
     void showSettingsWindow(int page);
-    void setContextMenuView(int id);
-    QStringList contextMenuData();
+
+    QStringList contextMenuData(const uint &containmentId);
 
 public slots:
     void aboutApplication();
@@ -224,8 +224,6 @@ private:
 
     //!it can be used on startup to change memory usage from command line
     int m_userSetMemoryUsage{ -1};
-
-    int m_contextMenuViewId{-1};
 
     QString m_layoutNameOnStartUp;
     QString m_importFullConfigurationFile;
