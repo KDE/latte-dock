@@ -93,7 +93,6 @@ public:
 public slots:
     Q_INVOKABLE void deactivateApplets();
     Q_INVOKABLE void toggleAppletExpanded(const int id);
-    Q_INVOKABLE void moveAppletsInJustifyAlignment(QQuickItem *start, QQuickItem *main, QQuickItem *end);
 
     Q_INVOKABLE bool appletIsExpandable(const int id);
     Q_INVOKABLE bool appletIsExpanded(const int id);

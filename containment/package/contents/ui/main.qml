@@ -872,13 +872,7 @@ Item {
 
     function moveAppletsBasedOnJustifyAlignment() {
         layouter.appletsInParentChange = true;
-
-        if (latteView) {
-            latteView.extendedInterface.moveAppletsInJustifyAlignment(layoutsContainer.startLayout,
-                                                                      layoutsContainer.mainLayout,
-                                                                      layoutsContainer.endLayout);
-        }
-
+        fastLayoutManager.moveAppletsInJustifyAlignment();
         layouter.appletsInParentChange = false;
     }
 
@@ -948,6 +942,12 @@ Item {
         id: colorScopePalette
     }
 
+    LatteContainment.LayoutManager{
+        id:fastLayoutManager
+        mainLayout: layoutsContainer.mainLayout
+        startLayout: layoutsContainer.startLayout
+        endLayout: layoutsContainer.endLayout
+    }
 
     ///////////////BEGIN UI elements
 
