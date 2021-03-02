@@ -19,8 +19,8 @@
 
 import QtQuick 2.8
 
-import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.core 0.2 as LatteCore
 
@@ -33,6 +33,7 @@ Item {
                                      && plasmoid.configuration.autoSizeEnabled
                                      && !root.containsOnlyPlasmaTasks
                                      && layouter.fillApplets<=0
+                                     && !(root.inConfigureAppletsMode && plasmoid.configuration.alignment === LatteCore.Types.Justify) /*block shrinking for justify splitters*/
                                      && latteView
                                      && latteView.visibility.mode !== LatteCore.Types.SidebarOnDemand
                                      && latteView.visibility.mode !== LatteCore.Types.SidebarAutoHide
