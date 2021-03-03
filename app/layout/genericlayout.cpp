@@ -840,10 +840,11 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
 
         //! explicit dock can not be added at explicit screen when that screen is the same with
         //! primary screen and that edge is already occupied by a primary dock
-        if (nextScreen == qGuiApp->primaryScreen() && primaryDockOccupyEdge(containment->location())) {
-            qDebug() << "Rejected : adding explicit view, primary dock occupies edge at screen ! : " << connector;
-            return;
-        }
+        //! CAN BE REMOVED because we now accept primary and explicit views on ACTIVE SCREENS at ALL CASES
+        //if (nextScreen == qGuiApp->primaryScreen() && primaryDockOccupyEdge(containment->location())) {
+        //    qDebug() << "Rejected : adding explicit view, primary dock occupies edge at screen ! : " << connector;
+        //    return;
+       // }
     }
 
     if (Layouts::Storage::isValid(id) && onPrimary) {
@@ -1244,12 +1245,20 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
             //! valid location
             Plasma::Types::Location location = containment->location();
 
-            if (onPrimary && (!occupiedMap || !(*occupiedMap)[prmScreenName].contains(location))) {
+            if (onPrimary) {
                 map[prmScreenName][location] << containment->id();
+            } else {
+                QString expScreenName = m_corona->screenPool()->connector(screenId);
+
+                if (m_corona->screenPool()->isScreenActive(screenId)) {
+                    map[expScreenName][location] << containment->id();
+                }
             }
         }
     }
 
+    /*
+    //! CAN BE REMOVED because we now accept primary and explicit views on ACTIVE SCREENS at ALL CASES
     Layout::ViewsMap explicitMap;
 
     //! second step: explicit docks must be placed in their screens if the screen edge is free
@@ -1294,7 +1303,7 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
         for(const Plasma::Types::Location &expLocation : explicitMap[expScreenName].keys()) {
             map[expScreenName][expLocation] << explicitMap[expScreenName][expLocation];
         }
-    }
+    }*/
 
     return map;
 }
