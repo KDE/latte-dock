@@ -311,6 +311,7 @@ signals:
     void extendedInterfaceChanged();
     void fontPixelSizeChanged();
     void forcedShown(); //[workaround] forced shown to avoid a KWin issue that hides windows when closing activities
+    void geometryChanged();
     void widthChanged();
     void headThicknessGapChanged();
     void heightChanged();

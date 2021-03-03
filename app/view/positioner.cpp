@@ -124,7 +124,7 @@ void Positioner::init()
 
     connect(this, &Positioner::showDockAfterLocationChangeFinished, this, &Positioner::syncLatteViews);
     connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::syncLatteViews);
-    connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::syncLatteViews);    
+    connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::syncLatteViews);
     connect(m_view, &Latte::View::onPrimaryChanged, this, &Positioner::syncLatteViews);
 
     connect(this, &Positioner::inSlideAnimationChanged, this, [&]() {
@@ -160,7 +160,7 @@ void Positioner::init()
     connect(m_view, &QQuickWindow::widthChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::heightChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::screenChanged, this, &Positioner::currentScreenChanged);
-    connect(m_view, &QQuickWindow::screenChanged, this, &Positioner::screenChanged);
+    connect(m_view, &QQuickWindow::screenChanged, this, &Positioner::onScreenChanged);
 
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Positioner::syncGeometry);
     connect(m_view, &Latte::View::maxThicknessChanged, this, &Positioner::syncGeometry);
@@ -210,8 +210,8 @@ void Positioner::init()
         }
     });
 
-    connect(qGuiApp, &QGuiApplication::screenAdded, this, &Positioner::screenChanged);
-    connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Positioner::screenChanged);
+    connect(qGuiApp, &QGuiApplication::screenAdded, this, &Positioner::onScreenChanged);
+    connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Positioner::onScreenChanged);
 
     connect(m_view, &Latte::View::visibilityChanged, this, &Positioner::initDelayedSignals);
 
@@ -444,7 +444,7 @@ void Positioner::reconsiderScreen()
     qDebug() << "reconsiderScreen() ended...";
 }
 
-void Positioner::screenChanged(QScreen *scr)
+void Positioner::onScreenChanged(QScreen *scr)
 {
     m_screenSyncTimer.start();
 
@@ -916,15 +916,16 @@ void Positioner::initSignalingForLocationChangeSliding()
     //! signals to handle the sliding-in/out during screen changes
     connect(this, &Positioner::hideDockDuringScreenChangeStarted, this, &Positioner::onHideWindowsForSlidingOut);
 
-    connect(this, &Positioner::currentScreenChanged, this, [&]() {
-        if (m_goToScreen) {
+    connect(m_view, &QQuickView::screenChanged, this, [&]() {
+        if (m_goToScreen
+                && m_goToScreen == m_view->screen()
+                && m_goToScreen->geometry().contains(m_view->geometry().center())) {
+            //! make sure that View has been repositioned properly in next screen and show view afterwards
             m_goToScreen = nullptr;
-            QTimer::singleShot(100, [this]() {
-                m_view->effects()->setAnimationsBlocked(false);
-                emit showDockAfterScreenChangeFinished();
-                m_view->showSettingsWindow();
-                emit edgeChanged();
-            });
+            m_view->effects()->setAnimationsBlocked(false);
+            emit showDockAfterScreenChangeFinished();
+            m_view->showSettingsWindow();
+            emit edgeChanged();
         }
     });
 
@@ -946,6 +947,7 @@ void Positioner::initSignalingForLocationChangeSliding()
             }
         }
     });
+
 
     //!    ----  both cases   ----  !//
     //! this is used for both location and screen change cases, this signal

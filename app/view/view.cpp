@@ -272,6 +272,11 @@ View::~View()
 
 void View::init(Plasma::Containment *plasma_containment)
 {
+    connect(this, &QQuickWindow::xChanged, this, &View::geometryChanged);
+    connect(this, &QQuickWindow::yChanged, this, &View::geometryChanged);
+    connect(this, &QQuickWindow::widthChanged, this, &View::geometryChanged);
+    connect(this, &QQuickWindow::heightChanged, this, &View::geometryChanged);
+
     connect(this, &QQuickWindow::xChanged, this, &View::xChanged);
     connect(this, &QQuickWindow::xChanged, this, &View::updateAbsoluteGeometry);
     connect(this, &QQuickWindow::yChanged, this, &View::yChanged);

@@ -137,7 +137,7 @@ signals:
     void isStickedOnBottomEdgeChanged();
 
 private slots:
-    void screenChanged(QScreen *screen);
+    void onScreenChanged(QScreen *screen);
     void onCurrentLayoutIsSwitching(const QString &layoutName);
 
     void validateDockGeometry();
