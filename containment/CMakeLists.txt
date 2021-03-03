@@ -4,6 +4,7 @@ configure_file(metadata.desktop.cmake ${CMAKE_CURRENT_SOURCE_DIR}/package/metada
 plasma_install_package(package org.kde.latte.containment)
 
 set(containment_SRCS
+    plugin/lattetypes.h
     plugin/types.cpp
     plugin/layoutmanager.cpp
     plugin/lattecontainmentplugin.cpp

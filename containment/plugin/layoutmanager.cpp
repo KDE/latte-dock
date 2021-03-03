@@ -20,7 +20,10 @@
 
 #include "layoutmanager.h"
 
-//! Plasma
+// local
+#include <plugin/lattetypes.h>
+
+// Plasma
 #include <Plasma>
 
 const int CHILDFOUNDID = 11;
@@ -138,6 +141,7 @@ void LayoutManager::insertBefore(QQuickItem *hoveredItem, QQuickItem *item)
 
     item->setParentItem(hoveredItem->parentItem());
     item->stackBefore(hoveredItem);
+
 }
 
 void LayoutManager::insertAfter(QQuickItem *hoveredItem, QQuickItem *item)
@@ -220,13 +224,11 @@ bool LayoutManager::insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *it
         }
     }
 
-    item->setParentItem(layout);
-
     if ((vertical && y < (hovered->y() + hovered->height()/2)) ||
             (horizontal && x < hovered->x() + hovered->width()/2)) {
-        item->stackBefore(hovered);
+        insertBefore(hovered, item);
     } else {
-        item->stackAfter(hovered);
+        insertAfter(hovered, item);
     }
 
     return true;
@@ -234,14 +236,22 @@ bool LayoutManager::insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *it
 
 void LayoutManager::insertAtCoordinates(QQuickItem *item, const int &x, const int &y)
 {
+    if (!m_configuration) {
+        return;
+    }
+
+    Latte::Types::Alignment alignment = static_cast<Latte::Types::Alignment>((*m_configuration)["alignment"].toInt());
+
     bool result{false};
 
-    QPointF startPos = m_startLayout->mapFromItem(m_rootItem, QPointF(x, y));
-    result = insertAtLayoutCoordinates(m_startLayout, item, startPos.x(), startPos.y());
+    if (alignment == Latte::Types::Justify) {
+        QPointF startPos = m_startLayout->mapFromItem(m_rootItem, QPointF(x, y));
+        result = insertAtLayoutCoordinates(m_startLayout, item, startPos.x(), startPos.y());
 
-    if (!result) {
-        QPointF endPos = m_endLayout->mapFromItem(m_rootItem, QPointF(x, y));
-        result = insertAtLayoutCoordinates(m_endLayout, item, endPos.x(), endPos.y());
+        if (!result) {
+            QPointF endPos = m_endLayout->mapFromItem(m_rootItem, QPointF(x, y));
+            result = insertAtLayoutCoordinates(m_endLayout, item, endPos.x(), endPos.y());
+        }
     }
 
     if (!result) {
