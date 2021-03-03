@@ -23,6 +23,7 @@
 
 //Qt
 #include <QObject>
+#include <QQmlPropertyMap>
 #include <QQuickItem>
 
 namespace Latte{
@@ -31,12 +32,23 @@ namespace Containment{
 class LayoutManager : public QObject
 {
   Q_OBJECT
+    Q_PROPERTY(QObject *plasmoidObj READ plasmoid() WRITE setPlasmoid NOTIFY plasmoidChanged)
+
+    Q_PROPERTY(QQuickItem *rootItem READ rootItem WRITE setRootItem NOTIFY rootItemChanged)
     Q_PROPERTY(QQuickItem *mainLayout READ mainLayout WRITE setMainLayout NOTIFY mainLayoutChanged)
     Q_PROPERTY(QQuickItem *startLayout READ startLayout WRITE setStartLayout NOTIFY startLayoutChanged)
     Q_PROPERTY(QQuickItem *endLayout READ endLayout WRITE setEndLayout NOTIFY endLayoutChanged)
 
+    Q_PROPERTY(QQuickItem *metrics READ metrics WRITE setMetrics NOTIFY metricsChanged)
+
 public:
     LayoutManager(QObject *parent = nullptr);
+
+    QObject *plasmoid() const;
+    void setPlasmoid(QObject *plasmoid);
+
+    QQuickItem *rootItem() const;
+    void setRootItem(QQuickItem *root);
 
     QQuickItem *mainLayout() const;
     void setMainLayout(QQuickItem *main);
@@ -47,19 +59,34 @@ public:
     QQuickItem *endLayout() const;
     void setEndLayout(QQuickItem *end);
 
+    QQuickItem *metrics() const;
+    void setMetrics(QQuickItem *metrics);
+
 public slots:
     Q_INVOKABLE void moveAppletsInJustifyAlignment();
+    Q_INVOKABLE void insertAtCoordinates(QQuickItem *item, const int &x, const int &y);
 
 signals:
+    void plasmoidChanged();
+    void rootItemChanged();
     void mainLayoutChanged();
+    void metricsChanged();
     void startLayoutChanged();
     void endLayoutChanged();
 
 private:
+    bool insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *item, int x, int y);
+
+private:
+    QQuickItem *m_rootItem{nullptr};
+
     QQuickItem *m_mainLayout{nullptr};
     QQuickItem *m_startLayout{nullptr};
     QQuickItem *m_endLayout{nullptr};
+    QQuickItem *m_metrics{nullptr};
 
+    QObject *m_plasmoid{nullptr};
+    QQmlPropertyMap *m_configuration{nullptr};
 };
 }
 }

@@ -944,9 +944,12 @@ Item {
 
     LatteContainment.LayoutManager{
         id:fastLayoutManager
+        plasmoidObj: plasmoid
+        rootItem: root
         mainLayout: layoutsContainer.mainLayout
         startLayout: layoutsContainer.startLayout
         endLayout: layoutsContainer.endLayout
+        metrics: _metrics
     }
 
     ///////////////BEGIN UI elements

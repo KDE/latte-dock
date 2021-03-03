@@ -146,7 +146,7 @@ DragDrop.DropArea {
             return;
         }
 
-        root.layoutManager().insertAtCoordinates2(dndSpacer, event.x, event.y)
+        fastLayoutManager.insertAtCoordinates(dndSpacer, event.x, event.y);
         dndSpacer.opacity = 1;
     }
 
@@ -164,7 +164,7 @@ DragDrop.DropArea {
             return;
         }
 
-        root.layoutManager().insertAtCoordinates2(dndSpacer, event.x, event.y)
+        fastLayoutManager.insertAtCoordinates(dndSpacer, event.x, event.y);
         dndSpacer.opacity = 1;
     }
 
