@@ -64,6 +64,8 @@ public:
 
 public slots:
     Q_INVOKABLE void moveAppletsInJustifyAlignment();
+    Q_INVOKABLE void insertBefore(QQuickItem *hoveredItem, QQuickItem *item);
+    Q_INVOKABLE void insertAfter(QQuickItem *hoveredItem, QQuickItem *item);
     Q_INVOKABLE void insertAtCoordinates(QQuickItem *item, const int &x, const int &y);
 
 signals:

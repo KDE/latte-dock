@@ -130,6 +130,27 @@ void LayoutManager::setMetrics(QQuickItem *metrics)
 
 //! Actions
 
+void LayoutManager::insertBefore(QQuickItem *hoveredItem, QQuickItem *item)
+{
+    if (!hoveredItem || !item) {
+        return;
+    }
+
+    item->setParentItem(hoveredItem->parentItem());
+    item->stackBefore(hoveredItem);
+}
+
+void LayoutManager::insertAfter(QQuickItem *hoveredItem, QQuickItem *item)
+{
+    if (!hoveredItem || !item) {
+        return;
+    }
+
+    item->setParentItem(hoveredItem->parentItem());
+    item->stackAfter(hoveredItem);
+}
+
+
 bool LayoutManager::insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *item, int x, int y)
 {
     if (!layout || !item || !m_plasmoid) {

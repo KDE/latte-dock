@@ -155,9 +155,9 @@ MouseArea {
 
                 if ((plasmoid.formFactor === PlasmaCore.Types.Vertical && posInItem.y < item.height/2) ||
                         (plasmoid.formFactor !== PlasmaCore.Types.Vertical && posInItem.x < item.width/2)) {
-                    root.layoutManagerInsertBefore(item, placeHolder);
+                    fastLayoutManager.insertBefore(item, placeHolder);
                 } else {
-                    root.layoutManagerInsertAfter(item, placeHolder);
+                    fastLayoutManager.insertAfter(item, placeHolder);
                 }
             }
 
@@ -226,7 +226,7 @@ MouseArea {
         placeHolder.height = currentApplet.height;
         handle.width = currentApplet.width;
         handle.height = currentApplet.height;
-        root.layoutManagerInsertBefore(currentApplet, placeHolder);
+        fastLayoutManager.insertBefore(currentApplet, placeHolder);
         currentApplet.parent = root;
         currentApplet.x = root.isHorizontal ? lastX - currentApplet.width/2 : lastX-appletX;
         currentApplet.y = root.isVertical ? lastY - currentApplet.height/2 : lastY-appletY;
@@ -253,7 +253,7 @@ MouseArea {
         configurationArea.isResizingLeft = false;
         configurationArea.isResizingRight = false;
 
-        root.layoutManagerInsertBefore(placeHolder, currentApplet);
+        fastLayoutManager.insertBefore(placeHolder, currentApplet);
         placeHolder.parent = configurationArea;
         currentApplet.z = 1;
 
