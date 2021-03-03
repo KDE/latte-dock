@@ -209,13 +209,11 @@ bool LayoutManager::insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *it
                  || (horizontal && ((x-neededspace) <= layout->width()) && (x>=0)))
              && layout->childItems().count()>0) {
             //! last item
-            qDebug() << "org.kde.latte << last item ..";
             hovered = layout->childItems()[layout->childItems().count()-1];
         } else if ( ((vertical && (y >= -neededspace) && (y<=neededspace)))
                      || (horizontal && (x >= -neededspace) && (x<=neededspace))
                  && layout->childItems().count()>0) {
             //! first item
-            qDebug() << "org.kde.latte << first item ..";
             hovered = layout->childItems()[0];
         } else {
             return false;

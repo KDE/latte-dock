@@ -638,12 +638,12 @@ Item {
         if ( (dndSpacer.parent === layoutsContainer.mainLayout)
                 || (dndSpacer.parent === layoutsContainer.startLayout)
                 || (dndSpacer.parent===layoutsContainer.endLayout)) {
-            LayoutManager.insertBeforeForLayout(dndSpacer.parent, dndSpacer, container);
+            fastLayoutManager.insertBefore(dndSpacer, container);
             dndSpacer.parent = root;
             return;
             // If the provided position is valid, use it.
         } else if (x >= 0 && y >= 0) {
-            var index = LayoutManager.insertAtCoordinates2(container, x , y);
+            var index = fastLayoutManager.insertAtCoordinates(container, x , y);
 
             // Fall through to determining an appropriate insert position.
         } else {
@@ -675,7 +675,7 @@ Item {
             }
 
             if (before) {
-                LayoutManager.insertBefore(before, container);
+                fastLayoutManager.insertBefore(before, container);
 
                 // Fall through to adding at the end.
             } else {
