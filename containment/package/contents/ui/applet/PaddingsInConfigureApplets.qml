@@ -29,13 +29,20 @@ Item {
         if ((appletItem.canFillThickness && !appletItem.isMarginsAreaSeparator && !communicator.indexerIsSupported)
                 || (appletItem.canFillScreenEdge && !communicator.indexerIsSupported) ) {
             return 1;
-        } else if (appletItem.inMarginsArea || appletItem.isMarginsAreaSeparator) {
+        } else if (appletItem.isMarginsAreaSeparator) {
+            return appletItem.metrics.marginsArea.marginThickness + maxMarginAreaSeparatorGap;
+        } else if (appletItem.inMarginsArea) {
             return appletItem.metrics.marginsArea.marginThickness;
         }
 
         return appletItem.metrics.margin.thickness;
     }
     readonly property int length: root.isHorizontal ? wrapper.width : wrapper.height
+
+    readonly property int parentThickness: root.isHorizontal ? wrapper.height : wrapper.width
+    readonly property int maxMarginAreaSeparatorCenteredRectLength: Math.max(0.6 * paddingsVisual.length, 4)
+    readonly property int marginAreaSeparatorFreeThickness: ((parentThickness - 2*appletItem.metrics.marginsArea.marginThickness - maxMarginAreaSeparatorCenteredRectLength - 10) / 2)
+    readonly property int maxMarginAreaSeparatorGap: Math.max(3, 0.5 * marginAreaSeparatorFreeThickness)
 
     property color color: "blue"
 
@@ -155,7 +162,7 @@ Item {
 
             Rectangle {
                 anchors.centerIn: parent
-                width: Math.max(0.6 * paddingsVisual.length, 4)
+                width: paddingsVisual.maxMarginAreaSeparatorCenteredRectLength
                 height: width
                 radius: 2
                 color: paddingsVisual.color
