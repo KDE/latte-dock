@@ -71,6 +71,21 @@ void LayoutManager::setRootItem(QQuickItem *root)
     emit rootItemChanged();
 }
 
+QQuickItem *LayoutManager::dndSpacer() const
+{
+    return m_dndSpacer;
+}
+
+void LayoutManager::setDndSpacer(QQuickItem *dnd)
+{
+    if (m_dndSpacer == dnd) {
+        return;
+    }
+
+    m_dndSpacer = dnd;
+    emit dndSpacerChanged();
+}
+
 QQuickItem *LayoutManager::mainLayout() const
 {
     return m_mainLayout;

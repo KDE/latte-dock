@@ -853,6 +853,7 @@ Item {
         id:fastLayoutManager
         plasmoidObj: plasmoid
         rootItem: root
+        dndSpacerItem: dndSpacer
         mainLayout: layoutsContainer.mainLayout
         startLayout: layoutsContainer.startLayout
         endLayout: layoutsContainer.endLayout

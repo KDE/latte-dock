@@ -39,6 +39,7 @@ class LayoutManager : public QObject
     Q_PROPERTY(QQuickItem *startLayout READ startLayout WRITE setStartLayout NOTIFY startLayoutChanged)
     Q_PROPERTY(QQuickItem *endLayout READ endLayout WRITE setEndLayout NOTIFY endLayoutChanged)
 
+    Q_PROPERTY(QQuickItem *dndSpacerItem READ dndSpacer WRITE setDndSpacer NOTIFY dndSpacerChanged)
     Q_PROPERTY(QQuickItem *metrics READ metrics WRITE setMetrics NOTIFY metricsChanged)
 
 public:
@@ -59,6 +60,9 @@ public:
     QQuickItem *endLayout() const;
     void setEndLayout(QQuickItem *end);
 
+    QQuickItem *dndSpacer() const;
+    void setDndSpacer(QQuickItem *dnd);
+
     QQuickItem *metrics() const;
     void setMetrics(QQuickItem *metrics);
 
@@ -72,6 +76,7 @@ public slots:
 signals:
     void plasmoidChanged();
     void rootItemChanged();
+    void dndSpacerChanged();
     void mainLayoutChanged();
     void metricsChanged();
     void startLayoutChanged();
@@ -82,6 +87,7 @@ private:
 
 private:
     QQuickItem *m_rootItem{nullptr};
+    QQuickItem *m_dndSpacer{nullptr};
 
     QQuickItem *m_mainLayout{nullptr};
     QQuickItem *m_startLayout{nullptr};
