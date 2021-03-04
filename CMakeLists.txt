@@ -1,5 +1,5 @@
 project(lattedock)
-cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 set(CMAKE_CXX_STANDARD 14)
 set(VERSION 0.10.75)
