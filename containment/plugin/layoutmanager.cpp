@@ -261,6 +261,42 @@ void LayoutManager::insertAtCoordinates(QQuickItem *item, const int &x, const in
     }
 }
 
+void LayoutManager::joinLayoutsToMainLayout()
+{
+    if (!m_startLayout || !m_mainLayout || !m_endLayout) {
+        return;
+    }
+
+    if (m_startLayout->childItems().count() > 0) {
+        int size = m_startLayout->childItems().count();
+        for (int i=size-1; i>=0; --i) {
+            QQuickItem *lastStartLayoutItem = m_startLayout->childItems()[i];
+            QQuickItem *firstMainLayoutItem = m_mainLayout->childItems().count() > 0 ? m_mainLayout->childItems()[0] : nullptr;
+
+            lastStartLayoutItem->setParentItem(m_mainLayout);
+
+            if (firstMainLayoutItem) {
+                lastStartLayoutItem->stackBefore(firstMainLayoutItem);
+            }
+        }
+    }
+
+    if (m_endLayout->childItems().count() > 0) {
+        int size = m_endLayout->childItems().count();
+        for (int i=0; i<size; ++i) {
+            QQuickItem *firstEndLayoutItem = m_endLayout->childItems()[0];
+            QQuickItem *lastMainLayoutItem = m_mainLayout->childItems().count() > 0 ? m_mainLayout->childItems()[m_mainLayout->childItems().count()-1] : nullptr;
+
+            firstEndLayoutItem->setParentItem(m_mainLayout);
+
+            if (lastMainLayoutItem) {
+                firstEndLayoutItem->stackAfter(lastMainLayoutItem);
+            }
+        }
+    }
+
+}
+
 void LayoutManager::moveAppletsInJustifyAlignment()
 {
     if (!m_startLayout || !m_mainLayout || !m_endLayout) {

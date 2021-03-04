@@ -831,33 +831,15 @@ Item {
 
     function moveAppletsBasedOnJustifyAlignment() {
         layouter.appletsInParentChange = true;
+        console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
         fastLayoutManager.moveAppletsInJustifyAlignment();
         layouter.appletsInParentChange = false;
     }
 
     function joinLayoutsToMainLayout() {
         layouter.appletsInParentChange = true;
-
         console.log("LAYOUTS: Moving applets from THREE to MAIN Layout mode...");
-        var totalChildren1 = layoutsContainer.mainLayout.children.length;
-        for (var i=totalChildren1-1; i>=0; --i) {
-            var item1 = layoutsContainer.mainLayout.children[0];
-            item1.parent = layoutsContainer.startLayout;
-        }
-
-        var totalChildren2 = layoutsContainer.endLayout.children.length;
-
-        for (var i=totalChildren2-1; i>=0; --i) {
-            var item2 = layoutsContainer.endLayout.children[0];
-            item2.parent = layoutsContainer.startLayout;
-        }
-
-        var totalChildrenL = layoutsContainer.startLayout.children.length;
-        for (var i=totalChildrenL-1; i>=0; --i) {
-            var itemL = layoutsContainer.startLayout.children[0];
-            itemL.parent = layoutsContainer.mainLayout;
-        }
-
+        fastLayoutManager.joinLayoutsToMainLayout();
         layouter.appletsInParentChange = false;
     }
 
