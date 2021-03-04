@@ -641,25 +641,12 @@ Item {
             // If the provided position is valid, use it.
             fastLayoutManager.insertAtCoordinates(appletItem, x , y);
         } else {
-            // Fall through to determining an appropriate insert position.
-            var before = null;
-            appletItem.animationsEnabled = false;
-
-            if (lastSpacer.parent === layoutsContainer.mainLayout) {
-                before = lastSpacer;
-            }
-
-            if (before) {
-                fastLayoutManager.insertBefore(before, appletItem);
-            } else {
-                // Fall through to adding at the end of main layout.
-                appletItem.parent = layoutsContainer.mainLayout;
-            }
+            // Fall through to adding at the end of main layout.
+            appletItem.parent = layoutsContainer.mainLayout;
         }
 
         //Important, removes the first children of the layoutsContainer.mainLayout after the first applet has been added
         lastSpacer.parent = root;
-
         updateIndexes();
     }
 
