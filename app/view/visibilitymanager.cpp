@@ -75,7 +75,8 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     connect(this, &VisibilityManager::enableKWinEdgesChanged, this, &VisibilityManager::updateKWinEdgesSupport);
     connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateKWinEdgesSupport);
-    connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateFloatingGapWindow);
+
+    connect(this, &VisibilityManager::isFloatingGapWindowEnabledChanged, this, &VisibilityManager::onIsFloatingGapWindowEnabledChanged);
 
     connect(this, &VisibilityManager::mustBeShown, this, [&]() {
         if (m_latteView && !m_latteView->isVisible()) {
@@ -85,9 +86,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
-        connect(m_latteView, &Latte::View::behaveAsPlasmaPanelChanged , this, &VisibilityManager::updateFloatingGapWindow);
         connect(m_latteView, &Latte::View::behaveAsPlasmaPanelChanged , this, &VisibilityManager::updateKWinEdgesSupport);
-        connect(m_latteView, &Latte::View::byPassWMChanged, this, &VisibilityManager::updateFloatingGapWindow);
         connect(m_latteView, &Latte::View::byPassWMChanged, this, &VisibilityManager::updateKWinEdgesSupport);
 
         connect(m_latteView, &Latte::View::inEditModeChanged, this, &VisibilityManager::initViewFlags);
@@ -123,12 +122,6 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
             publishFrameExtents(forceUpdate);
         });
 
-        connect(m_latteView, &Latte::View::screenEdgeMarginEnabledChanged, this, [&]() {
-            if (!m_latteView->screenEdgeMarginEnabled()) {
-                deleteFloatingGapWindow();
-            }
-        });
-
         connect(this, &VisibilityManager::modeChanged, this, [&]() {
             emit m_latteView->availableScreenRectChangedFrom(m_latteView);
         });
@@ -147,7 +140,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     });
     connect(&m_timerHide, &QTimer::timeout, this, [&]() {
         if (!hidingIsBlocked() && !m_isHidden && !m_isBelowLayer && !m_dragEnter) {
-            if (m_latteView->isFloatingPanel()) {
+            if (m_isFloatingGapWindowEnabled) {
                 //! first check if mouse is inside the floating gap
                 checkMouseInFloatingArea();
             } else {
@@ -505,6 +498,20 @@ bool VisibilityManager::hidingIsBlocked() const
     return (m_blockHidingEvents.count() > 0);
 }
 
+bool VisibilityManager::isFloatingGapWindowEnabled() const
+{
+    return m_isFloatingGapWindowEnabled;
+}
+
+void VisibilityManager::setIsFloatingGapWindowEnabled(bool enabled)
+{
+    if (m_isFloatingGapWindowEnabled == enabled) {
+        return;
+    }
+
+    m_isFloatingGapWindowEnabled = enabled;
+    emit isFloatingGapWindowEnabledChanged();
+}
 
 void VisibilityManager::addBlockHidingEvent(const QString &type)
 {
@@ -937,7 +944,7 @@ bool VisibilityManager::windowContainsMouse()
 
 void VisibilityManager::checkMouseInFloatingArea()
 {
-    if (m_latteView->isFloatingPanel()) {
+    if (m_isFloatingGapWindowEnabled) {
         if (!m_floatingGapWindow) {
             createFloatingGapWindow();
         }
@@ -1005,33 +1012,20 @@ void VisibilityManager::updateKWinEdgesSupport()
 
         if (m_enableKWinEdgesFromUser || m_latteView->behaveAsPlasmaPanel()) {
             createEdgeGhostWindow();
-            if (m_latteView->isFloatingPanel()) {
-                createFloatingGapWindow();
-            }
         } else if (!m_enableKWinEdgesFromUser) {
             deleteEdgeGhostWindow();
-            deleteFloatingGapWindow();
         }
     } else if (m_mode == Types::WindowsCanCover) {
         createEdgeGhostWindow();
     } else {
         deleteEdgeGhostWindow();
-        deleteFloatingGapWindow();
     }
 }
 
-void VisibilityManager::updateFloatingGapWindow()
+void VisibilityManager::onIsFloatingGapWindowEnabledChanged()
 {
-    if (m_latteView->isFloatingPanel() && !m_latteView->byPassWM()) {
-        if (m_mode == Types::AutoHide
-                || m_mode == Types::DodgeActive
-                || m_mode == Types::DodgeAllWindows
-                || m_mode == Types::DodgeMaximized
-                || m_mode == Types::SidebarAutoHide) {
-            createFloatingGapWindow();
-        } else {
-            deleteFloatingGapWindow();
-        }
+    if (m_isFloatingGapWindowEnabled) {
+        createFloatingGapWindow();
     } else {
         deleteFloatingGapWindow();
     }
@@ -1098,12 +1092,12 @@ void VisibilityManager::createFloatingGapWindow()
 
         connect(m_floatingGapWindow, &FloatingGapWindow::asyncContainsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
-                if (m_latteView->isFloatingPanel() && !m_isHidden) {
+                if (m_isFloatingGapWindowEnabled && !m_isHidden) {
                     //! immediate call after contains mouse checks for mouse in sensitive floating areas
                     updateHiddenState();
                 }
             } else {
-                if (m_latteView->isFloatingPanel() && !m_isHidden) {
+                if (m_isFloatingGapWindowEnabled && !m_isHidden) {
                     //! immediate call after contains mouse checks for mouse in sensitive floating areas
                     emit mustBeHide();
                 }

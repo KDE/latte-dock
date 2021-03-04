@@ -863,6 +863,7 @@ PlasmaComponents.Page {
                         text: i18n("Always use floating gap for user interaction")
                         tooltip: i18n("Floating gap is always used for applets and window interaction")
                         value: plasmoid.configuration.floatingInternalGapIsForced
+                        enabled: plasmoid.configuration.zoomLevel === 0
 
                         onClicked: {
                             plasmoid.configuration.floatingInternalGapIsForced = !plasmoid.configuration.floatingInternalGapIsForced;

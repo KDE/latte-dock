@@ -62,6 +62,10 @@ class VisibilityManager : public QObject
     Q_PROPERTY(bool isBelowLayer READ isBelowLayer NOTIFY isBelowLayerChanged)    
     Q_PROPERTY(bool containsMouse READ containsMouse NOTIFY containsMouseChanged)
 
+    //! Floating Gap Window to identify mouse between the screenEdge and the view when it does not accept any other
+    //! user input
+    Q_PROPERTY(bool isFloatingGapWindowEnabled READ isFloatingGapWindowEnabled WRITE setIsFloatingGapWindowEnabled NOTIFY isFloatingGapWindowEnabledChanged)
+
     //! KWin Edges Support Options
     Q_PROPERTY(bool enableKWinEdges READ enableKWinEdges WRITE setEnableKWinEdges NOTIFY enableKWinEdgesChanged)
     Q_PROPERTY(bool supportsKWinEdges READ supportsKWinEdges NOTIFY supportsKWinEdgesChanged)
@@ -97,6 +101,9 @@ public:
     bool hidingIsBlocked() const;
 
     bool containsMouse() const;
+
+    bool isFloatingGapWindowEnabled() const;
+    void setIsFloatingGapWindowEnabled(bool enabled);
 
     int timerShow() const;
     void setTimerShow(int msec);
@@ -143,6 +150,7 @@ signals:
     void raiseOnDesktopChanged();
     void raiseOnActivityChanged();
     void isBelowLayerChanged();
+    void isFloatingGapWindowEnabledChanged();
     void isHiddenChanged();
     void hidingIsBlockedChanged();
     void containsMouseChanged();
@@ -162,11 +170,10 @@ private slots:
 
     void onHeadThicknessChanged();
     void onHidingIsBlockedChanged();
+    void onIsFloatingGapWindowEnabledChanged();
 
     void publishFrameExtents(bool forceUpdate = false); //! direct
 
-    //! Floating Gap Helper window creation/removal
-    void updateFloatingGapWindow();
     //! KWin Edges Support functions
     void updateKWinEdgesSupport();
 
@@ -218,6 +225,7 @@ private:
 
     bool m_isBelowLayer{false};
     bool m_isHidden{false};
+    bool m_isFloatingGapWindowEnabled{false};
     bool m_dragEnter{false};
     bool m_containsMouse{false};
     bool m_raiseTemporarily{false};

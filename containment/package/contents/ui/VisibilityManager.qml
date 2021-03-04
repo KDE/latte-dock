@@ -319,6 +319,22 @@ Item{
         }
     }
 
+    Binding {
+        target: latteView && latteView.visibility ? latteView.visibility : null
+        property: "isFloatingGapWindowEnabled"
+        when: latteView && latteView.visibility
+        value: root.screenEdgeMarginEnabled
+               && !latteView.byPassWM
+               && !root.inConfigureAppletsMode
+               && !parabolic.isEnabled
+               && (root.behaveAsPlasmaPanel || (root.behaveAsDockWithMask && !root.floatingInternalGapIsForced))
+               && (latteView.visibility.mode === LatteCore.Types.AutoHide
+               || latteView.visibility.mode === LatteCore.Types.DodgeActive
+               || latteView.visibility.mode === LatteCore.Types.DodgeAllWindows
+               || latteView.visibility.mode === LatteCore.Types.DodgeMaximized
+               || latteView.visibility.mode === LatteCore.Types.SidebarAutoHide)
+    }
+
     //! View::WindowsTracker bindings
     Binding{
         target: latteView && latteView.windowsTracker ? latteView.windowsTracker : null
@@ -619,13 +635,25 @@ Item{
                 //! clear input mask
                 latteView.effects.inputMask = Qt.rect(0, 0, -1, -1);
             } else {
-                var inputThickness = latteView.visibility.isHidden ? metrics.mask.thickness.hidden : metrics.mask.screenEdge + metrics.totals.thickness;
+                var floatingInternalGapAcceptsInput = behaveAsDockWithMask && floatingInternalGapIsForced;
+                var inputThickness;
+
+                if (latteView.visibility.isHidden) {
+                    inputThickness = metrics.mask.thickness.hidden;
+                } else if (latteView.visibility.isFloatingGapWindowEnabled) {
+                    inputThickness = metrics.totals.thickness;
+                } else {
+                    inputThickness = metrics.mask.screenEdge + metrics.totals.thickness;
+                }
+
+                var subtractedScreenEdge = latteView.visibility.isFloatingGapWindowEnabled ? metrics.mask.screenEdge : 0;
+
                 var inputGeometry = Qt.rect(0, 0, root.width, root.height);
 
                 //!use view.localGeometry for length properties
                 if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                     inputGeometry.x = latteView.localGeometry.x;
-                    inputGeometry.y = 0;
+                    inputGeometry.y = subtractedScreenEdge;
 
                     inputGeometry.width = latteView.localGeometry.width;
                     inputGeometry.height = inputThickness ;
@@ -636,7 +664,7 @@ Item{
                     inputGeometry.width = latteView.localGeometry.width;
                     inputGeometry.height = inputThickness;
                 } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    inputGeometry.x = 0;
+                    inputGeometry.x = subtractedScreenEdge;
                     inputGeometry.y = latteView.localGeometry.y;
 
                     inputGeometry.width = inputThickness;
