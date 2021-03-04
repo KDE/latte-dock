@@ -45,7 +45,7 @@ Item {
     property int lastVisibleIndex: -1
 
     //! do not update during dragging/moving applets inConfigureAppletsMode
-    readonly property bool updateIsBlocked: false//  (root.dragOverlay && root.dragOverlay.pressed) || appletsInParentChange
+    readonly property bool updateIsBlocked:  appletsInParentChange //||  (root.dragOverlay && root.dragOverlay.pressed)
 
     Binding{
         target: appletsContainer

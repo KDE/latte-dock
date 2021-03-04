@@ -697,16 +697,8 @@ Item {
         }
     }
 
-    function addInternalViewSplitterInStart(pos){
-        addInternalViewSplitterInLayout(layoutsContainer.startLayout, pos);
-    }
-
     function addInternalViewSplitterInMain(pos){
         addInternalViewSplitterInLayout(layoutsContainer.mainLayout, pos);
-    }
-
-    function addInternalViewSplitterInEnd(pos){
-        addInternalViewSplitterInLayout(layoutsContainer.endLayout, pos);
     }
 
     function addInternalViewSplitterInLayout(area, pos){
@@ -753,31 +745,6 @@ Item {
         return false;
     }
 
-    function checkLastSpacer() {
-        lastSpacer.parent = root
-
-        var expands = false;
-
-        if (isHorizontal) {
-            for (var container in layoutsContainer.mainLayout.children) {
-                var item = layoutsContainer.mainLayout.children[container];
-                if (item.Layout && item.Layout.fillWidth) {
-                    expands = true;
-                }
-            }
-        } else {
-            for (var container in layoutsContainer.mainLayout.children) {
-                var item = layoutsContainer.mainLayout.children[container];
-                if (item.Layout && item.Layout.fillHeight) {
-                    expands = true;
-                }
-            }
-        }
-        if (!expands) {
-            lastSpacer.parent = layoutsContainer.mainLayout
-        }
-    }
-
     function internalViewSplittersCount(){
         var splitters = 0;
         for (var container in layoutsContainer.startLayout.children) {
@@ -806,14 +773,6 @@ Item {
 
     function layoutManager() {
         return LayoutManager;
-    }
-
-    function layoutManagerInsertBefore(place, item) {
-        LayoutManager.insertBefore(place, item);
-    }
-
-    function layoutManagerInsertAfter(place, item) {
-        LayoutManager.insertAfter(place, item);
     }
 
     function layoutManagerSave() {
