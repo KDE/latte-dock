@@ -614,13 +614,12 @@ Item {
 
     //////////////START OF FUNCTIONS
     function addApplet(applet, x, y) {
-        var appletItem = appletItemComponent.createObject(dndSpacer.parent)
+        var appletItem = appletItemComponent.createObject(dndSpacer.parent);
 
         appletItem.applet = applet;
         applet.parent = appletItem.appletWrapper;
         applet.anchors.fill = appletItem.appletWrapper;
         applet.visible = true;
-
 
         // don't show applet if it chooses to be hidden but still make it
         // accessible in the panelcontroller

@@ -110,21 +110,6 @@ MouseArea {
 
     onPositionChanged: {
         if (pressed) {
-            //! is this really needed ????
-            /*var padding = units.gridUnit * 3;
-            if (currentApplet && (mouse.x < -padding || mouse.y < -padding ||
-                                  mouse.x > width + padding || mouse.y > height + padding)) {
-
-                var newCont = plasmoid.containmentAt(mouse.x, mouse.y);
-
-                if (newCont && newCont != plasmoid) {
-                    var newPos = newCont.mapFromApplet(plasmoid, mouse.x, mouse.y);
-                    newCont.addApplet(currentApplet.applet, newPos.x, newPos.y);
-                    root.dragOverlay.currentApplet = null;
-                    return;
-                }
-            }*/
-
             if(currentApplet){
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                     currentApplet.y += (mouse.y - lastY);
