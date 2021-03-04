@@ -58,7 +58,8 @@ function restore() {
 
     //finally, restore the applets in the correct order
     for (var i in appletsOrder) {
-        root.addApplet(appletsOrder[i], -1, -1)
+        var appletItem = root.createAppletItem(appletsOrder[i]);
+        root.addAppletItemInLayout(appletItem, -1, -1);
     }
 
     if (plasmoid.configuration.alignment === 10 /*Justify*/) {

@@ -571,7 +571,8 @@ Item {
     }
 
     Containment.onAppletAdded: {
-        addApplet(applet, x, y);
+        var appletItem = createAppletItem(applet);
+        addAppletItemInLayout(appletItem, x, y);
         console.log(applet.pluginName);
         LayoutManager.save();
         updateIndexes();
@@ -613,21 +614,19 @@ Item {
     //////////////END OF CONNECTIONS
 
     //////////////START OF FUNCTIONS
-    function addApplet(applet, x, y) {
+    function createAppletItem(applet, x, y) {
         var appletItem = appletItemComponent.createObject(dndSpacer.parent);
-
         appletItem.applet = applet;
         applet.parent = appletItem.appletWrapper;
         applet.anchors.fill = appletItem.appletWrapper;
         applet.visible = true;
 
-        // don't show applet if it chooses to be hidden but still make it
-        // accessible in the panelcontroller
+        // don't show applet if it chooses to be hidden but still make it  accessible in the panelcontroller
         appletItem.visible = Qt.binding(function() {
             return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && root.inConfigureAppletsMode)
-        })
+        });
 
-        addAppletItemInLayout(appletItem, x, y);
+        return appletItem;
     }
 
     function addAppletItemInLayout(appletItem, x, y){
