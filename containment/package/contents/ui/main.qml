@@ -614,77 +614,52 @@ Item {
 
     //////////////START OF FUNCTIONS
     function addApplet(applet, x, y) {
-        var container = appletContainerComponent.createObject(dndSpacer.parent)
+        var appletItem = appletItemComponent.createObject(dndSpacer.parent)
 
-        container.applet = applet;
-        applet.parent = container.appletWrapper;
-
-        applet.anchors.fill = container.appletWrapper;
-
+        appletItem.applet = applet;
+        applet.parent = appletItem.appletWrapper;
+        applet.anchors.fill = appletItem.appletWrapper;
         applet.visible = true;
 
 
         // don't show applet if it chooses to be hidden but still make it
         // accessible in the panelcontroller
-        container.visible = Qt.binding(function() {
+        appletItem.visible = Qt.binding(function() {
             return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && root.inConfigureAppletsMode)
         })
 
-        addContainerInLayout(container, applet, x, y);
+        addAppletItemInLayout(appletItem, x, y);
     }
 
-    function addContainerInLayout(container, applet, x, y){
-        // Is there a DND placeholder? Replace it!
+    function addAppletItemInLayout(appletItem, x, y){
         if ( (dndSpacer.parent === layoutsContainer.mainLayout)
                 || (dndSpacer.parent === layoutsContainer.startLayout)
                 || (dndSpacer.parent===layoutsContainer.endLayout)) {
-            fastLayoutManager.insertBefore(dndSpacer, container);
+            // Is there a DND placeholder? Replace it!
+            fastLayoutManager.insertBefore(dndSpacer, appletItem);
             dndSpacer.parent = root;
             return;
-            // If the provided position is valid, use it.
         } else if (x >= 0 && y >= 0) {
-            var index = fastLayoutManager.insertAtCoordinates(container, x , y);
-
-            // Fall through to determining an appropriate insert position.
+            // If the provided position is valid, use it.
+            fastLayoutManager.insertAtCoordinates(appletItem, x , y);
         } else {
+            // Fall through to determining an appropriate insert position.
             var before = null;
-            container.animationsEnabled = false;
+            appletItem.animationsEnabled = false;
 
             if (lastSpacer.parent === layoutsContainer.mainLayout) {
                 before = lastSpacer;
             }
 
-            // Insert icons to the left of whatever is at the center (usually a Task Manager),
-            // if it exists.
-            // FIXME TODO: This is a real-world fix to produce a sensible initial position for
-            // launcher icons added by launcher menu applets. The basic approach has been used
-            // since Plasma 1. However, "add launcher to X" is a generic-enough concept and
-            // frequent-enough occurrence that we'd like to abstract it further in the future
-            // and get rid of the ugliness of parties external to the containment adding applets
-            // of a specific type, and the containment caring about the applet type. In a better
-            // system the containment would be informed of requested launchers, and determine by
-            // itself what it wants to do with that information.
-            if (applet.pluginName == "org.kde.plasma.icon") {
-                var middle = layoutsContainer.mainLayout.childAt(root.width / 2, root.height / 2);
-
-                if (middle) {
-                    before = middle;
-                }
-
-                // Otherwise if lastSpacer is here, enqueue before it.
-            }
-
             if (before) {
-                fastLayoutManager.insertBefore(before, container);
-
-                // Fall through to adding at the end.
+                fastLayoutManager.insertBefore(before, appletItem);
             } else {
-                container.parent = layoutsContainer.mainLayout;
+                // Fall through to adding at the end of main layout.
+                appletItem.parent = layoutsContainer.mainLayout;
             }
         }
 
-        //Important, removes the first children of the layoutsContainer.mainLayout after the first
-        //applet has been added
+        //Important, removes the first children of the layoutsContainer.mainLayout after the first applet has been added
         lastSpacer.parent = root;
 
         updateIndexes();
@@ -704,7 +679,7 @@ Item {
     function addInternalViewSplitterInLayout(area, pos){
         var splittersCount = internalViewSplittersCount();
         if(splittersCount<2){
-            var splitter = appletContainerComponent.createObject(root);
+            var splitter = appletItemComponent.createObject(root);
 
             splitter.internalSplitterId = splittersCount+1;
             splitter.visible = true;
@@ -854,7 +829,7 @@ Item {
 
     ///////////////BEGIN components
     Component {
-        id: appletContainerComponent
+        id: appletItemComponent
         Applet.AppletItem{
             animations: _animations
             debug: _debug
