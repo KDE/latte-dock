@@ -323,11 +323,7 @@ Item{
         target: latteView && latteView.visibility ? latteView.visibility : null
         property: "isFloatingGapWindowEnabled"
         when: latteView && latteView.visibility
-        value: root.screenEdgeMarginEnabled
-               && !latteView.byPassWM
-               && !root.inConfigureAppletsMode
-               && !parabolic.isEnabled
-               && (root.behaveAsPlasmaPanel || (root.behaveAsDockWithMask && !root.floatingInternalGapIsForced))
+        value: root.hasFloatingGapInputEventsDisabled
                && (latteView.visibility.mode === LatteCore.Types.AutoHide
                || latteView.visibility.mode === LatteCore.Types.DodgeActive
                || latteView.visibility.mode === LatteCore.Types.DodgeAllWindows
@@ -640,13 +636,13 @@ Item{
 
                 if (latteView.visibility.isHidden) {
                     inputThickness = metrics.mask.thickness.hidden;
-                } else if (latteView.visibility.isFloatingGapWindowEnabled) {
+                } else if (root.hasFloatingGapInputEventsDisabled) {
                     inputThickness = metrics.totals.thickness;
                 } else {
                     inputThickness = metrics.mask.screenEdge + metrics.totals.thickness;
                 }
 
-                var subtractedScreenEdge = latteView.visibility.isFloatingGapWindowEnabled ? metrics.mask.screenEdge : 0;
+                var subtractedScreenEdge = root.hasFloatingGapInputEventsDisabled ? metrics.mask.screenEdge : 0;
 
                 var inputGeometry = Qt.rect(0, 0, root.width, root.height);
 

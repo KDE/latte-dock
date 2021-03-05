@@ -57,7 +57,8 @@ Item {
         }
 
         if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-            return latteView.maxNormalThickness + ruler.thickness + headMargin * 2 - width/2 + height/2;
+            var screenEdge = latteView.behaveAsPlasmaPanel ? latteView.screenEdgeMargin : 0;
+            return screenEdge + latteView.maxNormalThickness + ruler.thickness + headMargin * 2 - width/2 + height/2;
         } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
             return headMargin - width/2 + height/2;
         }
