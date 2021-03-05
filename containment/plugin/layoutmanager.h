@@ -114,6 +114,7 @@ private:
 
     void setAppletOrder(const QString &order);
 
+    bool isValidApplet(const int &id);
     bool insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *item, int x, int y);
 
 private:

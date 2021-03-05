@@ -213,6 +213,25 @@ void LayoutManager::onRootItemChanged()
     qDebug() << "org.kde.latte :::: root item set methods....";
 }
 
+bool LayoutManager::isValidApplet(const int &id)
+{
+    //! should be loaded after m_plasmoid has been set properly
+    if (!m_plasmoid) {
+        return false;
+    }
+
+    QList<QObject *> applets = m_plasmoid->property("applets").value<QList<QObject *>>();
+
+    for(int i=0; i<applets.count(); ++i) {
+        uint appletid = applets[i]->property("id").toUInt();
+        if (appletid == id) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 //! Actions
 void LayoutManager::restore()
 {
@@ -228,11 +247,33 @@ void LayoutManager::restore()
         appletIdsOrder << appletStringIdsOrder[i].toInt();
     }
 
-    if (alignment==Latte::Types::Justify && splitterPosition!=-1 && splitterPosition2!=-1) {
-        appletIdsOrder.insert(splitterPosition-1, -1);
-        appletIdsOrder.insert(splitterPosition2-1, -1);
+    if (alignment==Latte::Types::Justify) {
+        if (splitterPosition!=-1 && splitterPosition2!=-1) {
+            appletIdsOrder.insert(splitterPosition-1, -1);
+            appletIdsOrder.insert(splitterPosition2-1, -1);
+        } else {
+            appletIdsOrder.insert(0, -1);
+            appletIdsOrder << -1;
+        }
     }
 
+    QList<int> invalidApplets;
+
+    //! track invalid applets, meaning applets that have not be loaded properly
+    for (int i=0; i<appletIdsOrder.count(); ++i) {
+        int aid = appletIdsOrder[i];
+
+        if (aid>0 && !isValidApplet(aid)) {
+            invalidApplets << aid;
+        }
+    }
+
+    //! remove invalid applets from the ids order
+    for (int i=0; i<invalidApplets.count(); ++i) {
+        appletIdsOrder.removeAll(invalidApplets[i]);
+    }
+
+    //! order valid applets based on the cleaned applet ids order
     QList<QObject *> orderedApplets;
 
     for (int i=0; i<appletIdsOrder.count(); ++i) {
@@ -252,6 +293,7 @@ void LayoutManager::restore()
     QStringList orphanedIds;
     for(int i=0; i<applets.count(); ++i) {
         uint id = applets[i]->property("id").toUInt();
+
         if (!appletIdsOrder.contains(id)) {
             orphanedIds << QString::number(id);
         }
@@ -268,8 +310,15 @@ void LayoutManager::restore()
         validateAppletsOrder << orderedApplets[i]->property("id").toUInt();
     }
 
+    for(int i=0; i<applets.count(); ++i) {
+        if (!orderedApplets.contains(applets[i])) {
+            //! after order has been loaded correctly all renaming applets that do not have specified position are added in the end
+            orderedApplets<<applets[i];
+        }
+    }
+
     qDebug() << "org.kde.latte ::: applets found :: " << applets.count() << " : " << appletIdsOrder << " :: " << splitterPosition << " : " << splitterPosition2 << " | " << alignment;
-    qDebug() << "org.kde.latte ::: applets orphaned :: " << orphanedIds.join(";");
+    qDebug() << "org.kde.latte ::: applets orphaned added in the end:: " << orphanedIds.join(";");
     qDebug() << "org.kde.latte ::: applets recorded order :: " << appletIdsOrder;
     qDebug() << "org.kde.latte ::: applets produced order ?? " << validateAppletsOrder;
 
@@ -395,6 +444,8 @@ void LayoutManager::save()
     //(*m_configuration)["appletOrder"] = appletIds.join(";");
 
     setAppletOrder(appletIds.join(";"));
+
+    qDebug() << "org.kde.latte saving applets:: " << appletOrder() << " :: " << splitterPosition() << " : " << splitterPosition2();
 }
 
 void LayoutManager::insertBefore(QQuickItem *hoveredItem, QQuickItem *item)

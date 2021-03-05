@@ -583,7 +583,6 @@ Item {
         addAppletItemInLayout(appletItem, x, y);
         console.log(applet.pluginName);
         fastLayoutManager.save();
-        plasmoid.configuration.appletOrder = fastLayoutManager.appletOrder;
         console.log("org.kde.latte configuration from qml appletOrder :: " + plasmoid.configuration.appletOrder + " :: " + fastLayoutManager.appletOrder);
         updateIndexes();
     }
@@ -867,7 +866,7 @@ Item {
 
         onAppletOrderChanged: plasmoid.configuration.appletOrder = fastLayoutManager.appletOrder;
         onSplitterPositionChanged: plasmoid.configuration.splitterPosition = fastLayoutManager.splitterPosition;
-        onSplitterPosition2Changed: plasmoid.configuration.splitterPosition = fastLayoutManager.splitterPosition2;
+        onSplitterPosition2Changed: plasmoid.configuration.splitterPosition2 = fastLayoutManager.splitterPosition2;
     }
 
     ///////////////BEGIN UI elements
