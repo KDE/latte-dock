@@ -22,9 +22,14 @@
 #define CONTAINMENTLAYOUTMANAGER_H
 
 //Qt
+#include <QMetaMethod>
 #include <QObject>
 #include <QQmlPropertyMap>
 #include <QQuickItem>
+
+namespace KDeclarative {
+class ConfigPropertyMap;
+}
 
 namespace Latte{
 namespace Containment{
@@ -42,8 +47,20 @@ class LayoutManager : public QObject
     Q_PROPERTY(QQuickItem *dndSpacerItem READ dndSpacer WRITE setDndSpacer NOTIFY dndSpacerChanged)
     Q_PROPERTY(QQuickItem *metrics READ metrics WRITE setMetrics NOTIFY metricsChanged)
 
+    //! this is the only way I have found to write their values properly in the configuration file in Multiple mode
+    //! if they are not used from qml side in the form of plasmoid.configuration..... then
+    //! appletsOrder is not stored when needed and applets additions/removals are not valid on next startup
+    Q_PROPERTY(int splitterPosition READ splitterPosition NOTIFY splitterPositionChanged)
+    Q_PROPERTY(int splitterPosition2 READ splitterPosition2 NOTIFY splitterPosition2Changed)
+    Q_PROPERTY(QString appletOrder READ appletOrder NOTIFY appletOrderChanged)
+
+
 public:
     LayoutManager(QObject *parent = nullptr);
+
+    int splitterPosition() const;
+    int splitterPosition2() const;
+    QString appletOrder() const;
 
     QObject *plasmoid() const;
     void setPlasmoid(QObject *plasmoid);
@@ -67,6 +84,9 @@ public:
     void setMetrics(QQuickItem *metrics);
 
 public slots:
+    Q_INVOKABLE void restore();
+    Q_INVOKABLE void save();
+
     Q_INVOKABLE void moveAppletsInJustifyAlignment();
     Q_INVOKABLE void joinLayoutsToMainLayout();
     Q_INVOKABLE void insertBefore(QQuickItem *hoveredItem, QQuickItem *item);
@@ -74,18 +94,33 @@ public slots:
     Q_INVOKABLE void insertAtCoordinates(QQuickItem *item, const int &x, const int &y);
 
 signals:
+    void appletOrderChanged();
     void plasmoidChanged();
     void rootItemChanged();
     void dndSpacerChanged();
     void mainLayoutChanged();
     void metricsChanged();
+    void splitterPositionChanged();
+    void splitterPosition2Changed();
     void startLayoutChanged();
     void endLayoutChanged();
 
+private slots:
+    void onRootItemChanged();
+
 private:
+    void setSplitterPosition(const int &position);
+    void setSplitterPosition2(const int &position);
+
+    void setAppletOrder(const QString &order);
+
     bool insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *item, int x, int y);
 
 private:
+    int m_splitterPosition{-1};
+    int m_splitterPosition2{-1};
+    QString m_appletOrder;
+
     QQuickItem *m_rootItem{nullptr};
     QQuickItem *m_dndSpacer{nullptr};
 
@@ -95,7 +130,10 @@ private:
     QQuickItem *m_metrics{nullptr};
 
     QObject *m_plasmoid{nullptr};
-    QQmlPropertyMap *m_configuration{nullptr};
+    KDeclarative::ConfigPropertyMap *m_configuration{nullptr};
+
+    QMetaMethod m_createAppletItemMethod;
+    QMetaMethod m_createJustifySplitterMethod;
 };
 }
 }

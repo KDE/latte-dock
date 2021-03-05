@@ -31,91 +31,11 @@ var inRestore=false;
 
 function restore() {
     inRestore = true;
-    var configString = String(plasmoid.configuration.appletOrder)
-
-    //array, a cell for encoded item order
-    var itemsArray = configString.split(";");
-
-    //map applet id->order in panel
-    var idsOrder = new Object();
-    //map order in panel -> applet pointer
-    var appletsOrder = new Object();
-
-    for (var i = 0; i < itemsArray.length; i++) {
-        //property name: applet id
-        //property value: order
-        idsOrder[itemsArray[i]] = i;
-    }
-
-    for (var i = 0; i < plasmoid.applets.length; ++i) {
-        if (idsOrder[plasmoid.applets[i].id] !== undefined) {
-            appletsOrder[idsOrder[plasmoid.applets[i].id]] = plasmoid.applets[i];
-            //ones that weren't saved in AppletOrder go to the end
-        } else {
-            appletsOrder["unordered"+i] = plasmoid.applets[i];
-        }
-    }
-
-    //finally, restore the applets in the correct order
-    for (var i in appletsOrder) {
-        var appletItem = root.createAppletItem(appletsOrder[i]);
-        root.addAppletItemInLayout(appletItem, -1, -1);
-    }
-
-    if (plasmoid.configuration.alignment === 10 /*Justify*/) {
-        // console.log("splitters restored:"+plasmoid.configuration.splitterPosition+ " - " + plasmoid.configuration.splitterPosition2);
-        //add the splitters in the correct position if they exist
-
-        var validSplitter1 = -1;
-
-        if(plasmoid.configuration.splitterPosition !== -1){
-            var missingApplets = 0;
-
-            for (var i=0; i<plasmoid.configuration.splitterPosition; ++i) {
-                if (appletsOrder[i] === undefined) {
-                    missingApplets = missingApplets + 1;
-                }
-            }
-
-            validSplitter1 = plasmoid.configuration.splitterPosition-missingApplets;
-
-            // console.log("INTERNAL SPLITTER 1 ::: " + plasmoid.configuration.splitterPosition);
-            // console.log("UNDEFINEDSPLITTER 1 ::: " + missingApplets);
-            // console.log("VALID    SPLITTER 1 ::: " + validSplitter1);
-
-            root.addInternalViewSplitterInMain(validSplitter1);
-        }
-
-        if(plasmoid.configuration.splitterPosition2 !== -1){
-            var missingApplets2 = 0;
-            var spacers = plasmoid.configuration.splitterPosition !== -1 ? 1 : 0;
-
-            for (var i=0; i<plasmoid.configuration.splitterPosition2-spacers; ++i) {
-                if (appletsOrder[i] === undefined) {
-                    missingApplets2 = missingApplets2 + 1;
-                }
-            }
-
-            var validSplitter2 = plasmoid.configuration.splitterPosition2-missingApplets2;
-
-            // console.log("INTERNAL SPLITTER 2 ::: " + plasmoid.configuration.splitterPosition2);
-            // console.log("UNDEFINEDSPLITTER 2 ::: " + missingApplets2);
-            // console.log("VALID    SPLITTER 2 ::: " + validSplitter2);
-
-            root.addInternalViewSplitterInMain(validSplitter2);
-        }
-    }
-
     //rewrite, so if in the orders there were now invalid ids or if some were missing creates a correct list instead
     save();
     restoreOptions();
-
     inRestore = false;
-
-    if (plasmoid.configuration.alignment === 10/*Justify*/) {
-        root.moveAppletsBasedOnJustifyAlignment();
-        root.updateIndexes();
-    }
+    root.updateIndexes();
 }
 
 function restoreOptions() {
@@ -151,57 +71,6 @@ function restoreOption(option) {
 }
 
 function save() {
-    var ids = new Array();
-    var splitterExists = false;
-    var splitterExists2 = false;
-
-    for (var i = 0; i < layoutS.children.length; ++i) {
-        var child = layoutS.children[i];
-
-        if (child.applet && !child.isInternalViewSplitter) {
-            ids.push(child.applet.id);
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && !splitterExists){
-            splitterExists = true;
-            plasmoid.configuration.splitterPosition = i;
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && splitterExists){
-            splitterExists2 = true;
-            plasmoid.configuration.splitterPosition2 = i;
-        }
-    }
-
-    for (var i = 0; i < layout.children.length; ++i) {
-        var child = layout.children[i];
-
-        if (child.applet && !child.isInternalViewSplitter) {
-            ids.push(child.applet.id);
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && !splitterExists){
-            splitterExists = true;
-            plasmoid.configuration.splitterPosition = i + layoutS.children.length;
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && splitterExists){
-            splitterExists2 = true;
-            plasmoid.configuration.splitterPosition2 = i + layoutS.children.length;
-        }
-    }
-
-    for (var i = 0; i < layoutE.children.length; ++i) {
-        var child = layoutE.children[i];
-
-        if (child.applet && !child.isInternalViewSplitter) {
-            ids.push(child.applet.id);
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && !splitterExists){
-            splitterExists = true;
-            plasmoid.configuration.splitterPosition = i + layoutS.children.length + layout.children.length;
-        } else if(child.isInternalViewSplitter && plasmoid.configuration.alignment === 10 && splitterExists){
-            splitterExists2 = true;
-            plasmoid.configuration.splitterPosition2 = i + layoutS.children.length + layout.children.length;
-        }
-    }
-
-    console.log("SAVING SPLITTERS :: " + plasmoid.configuration.splitterPosition + " _ " + plasmoid.configuration.splitterPosition2);
-
-    //console.log("splitters saved:"+plasmoid.configuration.splitterPosition+ " - " + plasmoid.configuration.splitterPosition2);
-
-    plasmoid.configuration.appletOrder = ids.join(';');
 }
 
 function saveOptions() {

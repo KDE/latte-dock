@@ -463,7 +463,7 @@ Item {
                 }
             }
 
-            LayoutManager.save();
+            fastLayoutManager.save();
             root.updateIndexes();
         }
     }
@@ -546,6 +546,7 @@ Item {
 
         upgrader_v010_alignment();
 
+        fastLayoutManager.restore();
         LayoutManager.restore();
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
@@ -557,6 +558,7 @@ Item {
         console.debug("Destroying Latte Dock Containment ui...");
 
         layouter.appletsInParentChange = true;
+        fastLayoutManager.save();
 
         if (latteView) {
             if (latteView.positioner) {
@@ -580,7 +582,9 @@ Item {
         var appletItem = createAppletItem(applet);
         addAppletItemInLayout(appletItem, x, y);
         console.log(applet.pluginName);
-        LayoutManager.save();
+        fastLayoutManager.save();
+        plasmoid.configuration.appletOrder = fastLayoutManager.appletOrder;
+        console.log("org.kde.latte configuration from qml appletOrder :: " + plasmoid.configuration.appletOrder + " :: " + fastLayoutManager.appletOrder);
         updateIndexes();
     }
 
@@ -600,8 +604,7 @@ Item {
             lastSpacer.parent = layoutsContainer.mainLayout;
         }
 
-        LayoutManager.save();
-
+        fastLayoutManager.save();
         updateIndexes();
     }
 
@@ -620,7 +623,7 @@ Item {
     //////////////END OF CONNECTIONS
 
     //////////////START OF FUNCTIONS
-    function createAppletItem(applet, x, y) {
+    function createAppletItem(applet) {
         var appletItem = appletItemComponent.createObject(dndSpacer.parent);
         appletItem.applet = applet;
         applet.parent = appletItem.appletWrapper;
@@ -633,6 +636,13 @@ Item {
         });
 
         return appletItem;
+    }
+
+    function createJustifySplitter() {
+        var splitter = appletItemComponent.createObject(root);
+        splitter.internalSplitterId = internalViewSplittersCount()+1;
+        splitter.visible = true;
+        return splitter;
     }
 
     function addAppletItemInLayout(appletItem, x, y){
@@ -739,10 +749,6 @@ Item {
 
     function layoutManager() {
         return LayoutManager;
-    }
-
-    function layoutManagerSave() {
-        LayoutManager.save();
     }
 
     function layoutManagerSaveOptions() {
@@ -858,6 +864,10 @@ Item {
         startLayout: layoutsContainer.startLayout
         endLayout: layoutsContainer.endLayout
         metrics: _metrics
+
+        onAppletOrderChanged: plasmoid.configuration.appletOrder = fastLayoutManager.appletOrder;
+        onSplitterPositionChanged: plasmoid.configuration.splitterPosition = fastLayoutManager.splitterPosition;
+        onSplitterPosition2Changed: plasmoid.configuration.splitterPosition = fastLayoutManager.splitterPosition2;
     }
 
     ///////////////BEGIN UI elements

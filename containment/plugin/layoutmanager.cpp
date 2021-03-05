@@ -23,8 +23,13 @@
 // local
 #include <plugin/lattetypes.h>
 
+// KDE
+#include <KDeclarative/ConfigPropertyMap>
+
 // Plasma
 #include <Plasma>
+
+
 
 const int CHILDFOUNDID = 11;
 
@@ -34,6 +39,52 @@ namespace Containment{
 LayoutManager::LayoutManager(QObject *parent)
     : QObject(parent)
 {
+    connect(this, &LayoutManager::rootItemChanged, this, &LayoutManager::onRootItemChanged);
+}
+
+int LayoutManager::splitterPosition() const
+{
+    return m_splitterPosition;
+}
+
+void LayoutManager::setSplitterPosition(const int &position)
+{
+    if (m_splitterPosition == position) {
+        return;
+    }
+
+    m_splitterPosition = position;
+    emit splitterPositionChanged();
+}
+
+int LayoutManager::splitterPosition2() const
+{
+    return m_splitterPosition2;
+}
+
+void LayoutManager::setSplitterPosition2(const int &position)
+{
+    if (m_splitterPosition2 == position) {
+        return;
+    }
+
+    m_splitterPosition2 = position;
+    emit splitterPosition2Changed();
+}
+
+QString LayoutManager::appletOrder() const
+{
+    return m_appletOrder;
+}
+
+void LayoutManager::setAppletOrder(const QString &order)
+{
+    if (m_appletOrder == order) {
+        return;
+    }
+
+    m_appletOrder = order;
+    emit appletOrderChanged();
 }
 
 QObject *LayoutManager::plasmoid() const
@@ -50,7 +101,7 @@ void LayoutManager::setPlasmoid(QObject *plasmoid)
     m_plasmoid = plasmoid;
 
     if (m_plasmoid) {
-        m_configuration = qobject_cast<QQmlPropertyMap *>(m_plasmoid->property("configuration").value<QObject *>());
+        m_configuration = qobject_cast<KDeclarative::ConfigPropertyMap *>(m_plasmoid->property("configuration").value<QObject *>());
     }
 
     emit plasmoidChanged();
@@ -146,7 +197,205 @@ void LayoutManager::setMetrics(QQuickItem *metrics)
     emit metricsChanged();
 }
 
+void LayoutManager::onRootItemChanged()
+{
+    if (!m_rootItem) {
+        return;
+    }
+
+    auto rootMetaObject = m_rootItem->metaObject();
+    int createAppletItemIndex = rootMetaObject->indexOfMethod("createAppletItem(QVariant)");
+    m_createAppletItemMethod = rootMetaObject->method(createAppletItemIndex);
+
+    int createJustifySplitterIndex = rootMetaObject->indexOfMethod("createJustifySplitter()");
+    m_createJustifySplitterMethod = rootMetaObject->method(createJustifySplitterIndex);
+
+    qDebug() << "org.kde.latte :::: root item set methods....";
+}
+
 //! Actions
+void LayoutManager::restore()
+{
+    QStringList appletStringIdsOrder = (*m_configuration)["appletOrder"].toString().split(";");
+    QList<QObject *> applets = m_plasmoid->property("applets").value<QList<QObject *>>();
+
+    Latte::Types::Alignment alignment = static_cast<Latte::Types::Alignment>((*m_configuration)["alignment"].toInt());
+    int splitterPosition = static_cast<Latte::Types::Alignment>((*m_configuration)["splitterPosition"].toInt());
+    int splitterPosition2 = static_cast<Latte::Types::Alignment>((*m_configuration)["splitterPosition2"].toInt());
+
+    QList<int> appletIdsOrder;
+    for (int i=0; i<appletStringIdsOrder.count(); ++i) {
+        appletIdsOrder << appletStringIdsOrder[i].toInt();
+    }
+
+    if (alignment==Latte::Types::Justify && splitterPosition!=-1 && splitterPosition2!=-1) {
+        appletIdsOrder.insert(splitterPosition-1, -1);
+        appletIdsOrder.insert(splitterPosition2-1, -1);
+    }
+
+    QList<QObject *> orderedApplets;
+
+    for (int i=0; i<appletIdsOrder.count(); ++i) {
+        if (appletIdsOrder[i] == -1) {
+            orderedApplets << nullptr;
+            continue;
+        }
+
+        for(int j=0; j<applets.count(); ++j) {
+            if (applets[j]->property("id").toUInt() == appletIdsOrder[i]) {
+                orderedApplets << applets[j];
+                break;
+            }
+        }
+    }
+
+    QStringList orphanedIds;
+    for(int i=0; i<applets.count(); ++i) {
+        uint id = applets[i]->property("id").toUInt();
+        if (!appletIdsOrder.contains(id)) {
+            orphanedIds << QString::number(id);
+        }
+    }
+
+    //Validator
+    QList<int> validateAppletsOrder;
+    for (int i=0; i<orderedApplets.count(); ++i) {
+        if (orderedApplets[i] == nullptr) {
+            validateAppletsOrder << -1;
+            continue;
+        }
+
+        validateAppletsOrder << orderedApplets[i]->property("id").toUInt();
+    }
+
+    qDebug() << "org.kde.latte ::: applets found :: " << applets.count() << " : " << appletIdsOrder << " :: " << splitterPosition << " : " << splitterPosition2 << " | " << alignment;
+    qDebug() << "org.kde.latte ::: applets orphaned :: " << orphanedIds.join(";");
+    qDebug() << "org.kde.latte ::: applets recorded order :: " << appletIdsOrder;
+    qDebug() << "org.kde.latte ::: applets produced order ?? " << validateAppletsOrder;
+
+    if (alignment != Latte::Types::Justify) {
+        for (int i=0; i<orderedApplets.count(); ++i) {
+            if (orderedApplets[i] == nullptr) {
+                continue;
+            }
+
+            QVariant appletItemVariant;
+            QVariant appletVariant; appletVariant.setValue(orderedApplets[i]);
+            m_createAppletItemMethod.invoke(m_rootItem, Q_RETURN_ARG(QVariant, appletItemVariant), Q_ARG(QVariant, appletVariant));
+            QQuickItem *appletItem = appletItemVariant.value<QQuickItem *>();
+            appletItem->setParentItem(m_mainLayout);
+        }
+    } else {
+        QQuickItem *parentlayout = m_startLayout;
+
+        for (int i=0; i<orderedApplets.count(); ++i) {
+            if (orderedApplets[i] == nullptr) {
+                QVariant splitterItemVariant;
+                m_createJustifySplitterMethod.invoke(m_rootItem, Q_RETURN_ARG(QVariant, splitterItemVariant));
+                QQuickItem *splitterItem = splitterItemVariant.value<QQuickItem *>();
+
+                if (parentlayout == m_startLayout) {
+                    //! first splitter as last child in startlayout
+                    splitterItem->setParentItem(parentlayout);
+                    parentlayout = m_mainLayout;
+                } else if (parentlayout == m_mainLayout) {
+                    //! second splitter as first child in endlayout
+                    parentlayout = m_endLayout;
+                    splitterItem->setParentItem(parentlayout);
+                }
+
+                continue;
+            }
+
+            QVariant appletItemVariant;
+            QVariant appletVariant; appletVariant.setValue(orderedApplets[i]);
+            m_createAppletItemMethod.invoke(m_rootItem, Q_RETURN_ARG(QVariant, appletItemVariant), Q_ARG(QVariant, appletVariant));
+            QQuickItem *appletItem = appletItemVariant.value<QQuickItem *>();
+            appletItem->setParentItem(parentlayout);
+        }
+    }
+
+    save();
+}
+
+void LayoutManager::save()
+{
+    QStringList appletIds;
+
+    int startChilds{0};
+    for(int i=0; i<m_startLayout->childItems().count(); ++i) {
+        QQuickItem *item = m_startLayout->childItems()[i];
+        bool isInternalSplitter = item->property("isInternalViewSplitter").toBool();
+        if (!isInternalSplitter) {
+            QVariant appletVariant = item->property("applet");
+            if (!appletVariant.isValid()) {
+                continue;
+            }
+
+            QObject *applet = appletVariant.value<QObject *>();
+            uint id = applet->property("id").toUInt();
+
+            if (id>0) {
+                startChilds++;
+                appletIds << QString::number(id);
+            }
+        }
+    }
+
+    int mainChilds{0};
+    for(int i=0; i<m_mainLayout->childItems().count(); ++i) {
+        QQuickItem *item = m_mainLayout->childItems()[i];
+        bool isInternalSplitter = item->property("isInternalViewSplitter").toBool();
+        if (!isInternalSplitter) {
+            QVariant appletVariant = item->property("applet");
+            if (!appletVariant.isValid()) {
+                continue;
+            }
+
+            QObject *applet = appletVariant.value<QObject *>();
+            uint id = applet->property("id").toUInt();
+
+            if (id>0) {
+                mainChilds++;
+                appletIds << QString::number(id);
+            }
+        }
+    }
+
+    int endChilds{0};
+    for(int i=0; i<m_endLayout->childItems().count(); ++i) {
+        QQuickItem *item = m_endLayout->childItems()[i];
+        bool isInternalSplitter = item->property("isInternalViewSplitter").toBool();
+        if (!isInternalSplitter) {
+            QVariant appletVariant = item->property("applet");
+            if (!appletVariant.isValid()) {
+                continue;
+            }
+
+            QObject *applet = appletVariant.value<QObject *>();
+            uint id = applet->property("id").toUInt();
+
+            if (id>0) {
+                endChilds++;
+                appletIds << QString::number(id);
+            }
+        }
+    }
+
+    Latte::Types::Alignment alignment = static_cast<Latte::Types::Alignment>((*m_configuration)["alignment"].toInt());
+
+    if (alignment == Latte::Types::Justify) {
+        setSplitterPosition(startChilds + 1);
+        setSplitterPosition2(startChilds + 1 + mainChilds + 1);
+    }
+
+    //! are not writing in config file for some cases mentioned in class header so they are not used
+    //(*m_configuration)["splitterPosition"] = QVariant(startChilds + 1);
+    //(*m_configuration)["splitterPosition2"] = QVariant(startChilds + 1 + mainChilds + 1);
+    //(*m_configuration)["appletOrder"] = appletIds.join(";");
+
+    setAppletOrder(appletIds.join(";"));
+}
 
 void LayoutManager::insertBefore(QQuickItem *hoveredItem, QQuickItem *item)
 {
@@ -225,13 +474,13 @@ bool LayoutManager::insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *it
         float neededspace = 1.5 * (m_metrics->property("iconSize").toFloat() + totals->property("lengthEdge").toFloat());
 
         if ( ((vertical && ((y-neededspace) <= layout->height()) && (y>=0))
-                 || (horizontal && ((x-neededspace) <= layout->width()) && (x>=0)))
+              || (horizontal && ((x-neededspace) <= layout->width()) && (x>=0)))
              && layout->childItems().count()>0) {
             //! last item
             hovered = layout->childItems()[layout->childItems().count()-1];
         } else if ( ((vertical && (y >= -neededspace) && (y<=neededspace)))
-                     || (horizontal && (x >= -neededspace) && (x<=neededspace))
-                 && layout->childItems().count()>0) {
+                    || (horizontal && (x >= -neededspace) && (x<=neededspace))
+                    && layout->childItems().count()>0) {
             //! first item
             hovered = layout->childItems()[0];
         } else {

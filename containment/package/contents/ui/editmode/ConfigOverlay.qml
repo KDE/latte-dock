@@ -246,12 +246,12 @@ MouseArea {
         handle.y = relevantLayout.y + currentApplet.y;
         //     handle.width = currentApplet.width;
         //    handle.height = currentApplet.height;
-        root.layoutManagerSave();
 
         if (root.myView.alignment === LatteCore.Types.Justify) {
             root.moveAppletsBasedOnJustifyAlignment();
         }
 
+        fastLayoutManager.save();
         layouter.updateSizeForAppletsInFill();
     }
 
