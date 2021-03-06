@@ -883,7 +883,7 @@ PlasmaComponents.Page {
 
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
-                        enabled: plasmoid.configuration.alignment === LatteCore.Types.Justify && plasmoid.configuration.hideFloatingGapForMaximized
+                        enabled: plasmoid.configuration.hideFloatingGapForMaximized
                         text: i18n("Delay floating gap hiding until mouse leaves")
                         tooltip: i18n("to avoid clicking on adjacent items accidentally in some cases")
                         value: plasmoid.configuration.floatingGapHidingWaitsMouse
