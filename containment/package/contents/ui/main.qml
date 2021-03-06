@@ -167,11 +167,7 @@ Item {
                                                           && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
                                                           && plasmoid.configuration.backgroundOnlyOnMaximized)
 
-    property bool hideThickScreenGap: screenEdgeMarginEnabled
-                                      && plasmoid.configuration.hideFloatingGapForMaximized
-                                      && latteView && latteView.windowsTracker
-                                      && latteView.windowsTracker.currentScreen.existsWindowMaximized
-
+    property bool hideThickScreenGap: false /*set through binding*/
     property bool hideLengthScreenGaps: false /*set through binding*/
 
     property bool mirrorScreenGap: screenEdgeMarginEnabled
@@ -400,6 +396,17 @@ Item {
 
     //////////////START OF BINDINGS
 
+    //! Wait until the mouse leaves the view
+    Binding {
+        target: root
+        property: "hideThickScreenGap"
+        when: !(plasmoid.configuration.floatingGapHidingWaitsMouse && dockContainsMouse)
+        value: screenEdgeMarginEnabled
+               && plasmoid.configuration.hideFloatingGapForMaximized
+               && latteView && latteView.windowsTracker
+               && latteView.windowsTracker.currentScreen.existsWindowMaximized
+    }
+
     //! Binding is needed in order for hideLengthScreenGaps to be activated or not only after
     //! View sliding in/out has finished. This way the animation is smoother for behaveAsPlasmaPanels
     Binding{
@@ -408,6 +415,7 @@ Item {
         when: latteView && latteView.positioner && latteView.visibility
               && ((root.behaveAsPlasmaPanel && latteView.positioner.slideOffset === 0)
                   || root.behaveAsDockWithMask)
+              && !(plasmoid.configuration.floatingGapHidingWaitsMouse && dockContainsMouse)
         value: (hideThickScreenGap
                 && (latteView.visibility.mode === LatteCore.Types.AlwaysVisible
                     || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow)
@@ -915,6 +923,14 @@ Item {
                     }
                 }
             ]
+        }
+    }
+
+    Behavior on maxLengthPerCentage {
+        enabled: root.behaveAsDockWithMask && plasmoid.configuration.floatingGapHidingWaitsMouse && dockContainsMouse
+        NumberAnimation {
+            duration: animations.duration.short
+            easing.type: Easing.InQuad
         }
     }
 

@@ -883,6 +883,18 @@ PlasmaComponents.Page {
 
                     LatteComponents.CheckBox {
                         Layout.maximumWidth: dialog.optionsWidth
+                        enabled: plasmoid.configuration.alignment === LatteCore.Types.Justify && plasmoid.configuration.hideFloatingGapForMaximized
+                        text: i18n("Delay floating gap hiding until mouse leaves")
+                        tooltip: i18n("to avoid clicking on adjacent items accidentally in some cases")
+                        value: plasmoid.configuration.floatingGapHidingWaitsMouse
+
+                        onClicked: {
+                            plasmoid.configuration.floatingGapHidingWaitsMouse = !plasmoid.configuration.floatingGapHidingWaitsMouse;
+                        }
+                    }
+
+                    LatteComponents.CheckBox {
+                        Layout.maximumWidth: dialog.optionsWidth
                         enabled: latteView.visibility.mode === LatteCore.Types.AlwaysVisible
                         text: i18n("Mirror floating gap when it is shown")
                         tooltip: i18n("Floating gap is mirrored when it is shown in Always Visible mode")

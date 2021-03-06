@@ -63,6 +63,10 @@
         <default>false</default>
         <label>floating gap is disabled when there are maximized windows</label>
     </entry>
+    <entry name="floatingGapHidingWaitsMouse" type="Bool">
+        <default>false</default>
+        <label>delay floating gap hiding until mouse leaves</label>
+    </entry>
     <entry name="floatingGapIsMirrored" type="Bool">
       <default>false</default>
       <label>floating gap is mirrored when it is shown in AlwaysVisible visibility mode</label>
