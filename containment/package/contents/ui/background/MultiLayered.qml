@@ -129,7 +129,7 @@ BackgroundProperties{
     }
 
     offset: {
-        if (behaveAsPlasmaPanel || !LatteCore.WindowSystem.compositingActive) {
+        if (behaveAsPlasmaPanel) {
             return 0;
         }
 
