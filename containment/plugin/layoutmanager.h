@@ -22,6 +22,7 @@
 #define CONTAINMENTLAYOUTMANAGER_H
 
 //Qt
+#include <QHash>
 #include <QMetaMethod>
 #include <QObject>
 #include <QQmlPropertyMap>
@@ -89,6 +90,9 @@ public:
 public slots:
     Q_INVOKABLE void restore();
     Q_INVOKABLE void save();
+    Q_INVOKABLE void saveOptions();
+
+    Q_INVOKABLE void removeAppletItem(QObject *applet);
 
     Q_INVOKABLE void addJustifySplittersInMainLayout();
     Q_INVOKABLE void moveAppletsBasedOnJustifyAlignment();
@@ -119,9 +123,8 @@ private slots:
 
 private:
     void restoreOptions();
-    void restoreOption(const QString &option);
-    void saveOptions();
-    void saveOption(const QString &option);
+    void restoreOption(const char *option);
+    void saveOption(const char *option);
 
     void setSplitterPosition(const int &position);
     void setSplitterPosition2(const int &position);
@@ -153,6 +156,10 @@ private:
 
     QMetaMethod m_createAppletItemMethod;
     QMetaMethod m_createJustifySplitterMethod;
+
+    //! first QString is the option in AppletItem
+    //! second QString is how the option is stored in
+    QHash<QString, QString> m_option;
 };
 }
 }

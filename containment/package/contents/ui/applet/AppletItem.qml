@@ -589,6 +589,9 @@ Item {
 
     onIsAutoFillAppletChanged: updateParabolicEffectIsSupported();
 
+    onLockZoomChanged: fastLayoutManager.saveOptions();
+    onUserBlocksColorizingChanged: fastLayoutManager.saveOptions();
+
     Component.onCompleted: {
         checkIndex();
         root.updateIndexes.connect(checkIndex);

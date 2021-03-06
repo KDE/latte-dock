@@ -42,7 +42,6 @@ import "editmode" as EditMode
 import "layouts" as Layouts
 import "./background" as Background
 import "./debugger" as Debugger
-import "../code/LayoutManager.js" as LayoutManager
 
 Item {
     id: root
@@ -539,18 +538,9 @@ Item {
     }
 
     Component.onCompleted: {
-        //  currentLayout.isLayoutHorizontal = isHorizontal
-        LayoutManager.plasmoid = plasmoid;
-        LayoutManager.root = root;
-        LayoutManager.layout = layoutsContainer.mainLayout;
-        LayoutManager.layoutS = layoutsContainer.startLayout;
-        LayoutManager.layoutE = layoutsContainer.endLayout;
-        LayoutManager.metrics = metrics;
-
         upgrader_v010_alignment();
 
         fastLayoutManager.restore();
-        LayoutManager.restore();
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
 
@@ -586,22 +576,10 @@ Item {
         addAppletItemInLayout(appletItem, x, y);
         console.log(applet.pluginName);
         fastLayoutManager.save();
-        console.log("org.kde.latte configuration from qml appletOrder :: " + plasmoid.configuration.appletOrder + " :: " + fastLayoutManager.appletOrder);
     }
 
     Containment.onAppletRemoved: {
-        LayoutManager.removeApplet(applet);
-        var flexibleFound = false;
-        for (var i = 0; i < layoutsContainer.mainLayout.children.length; ++i) {
-            var applet = layoutsContainer.mainLayout.children[i].applet;
-            if (applet && ((root.isHorizontal && applet.Layout.fillWidth) ||
-                           (!root.isHorizontal && applet.Layout.fillHeight)) &&
-                    applet.visible) {
-                flexibleFound = true;
-                break
-            }
-        }
-
+        fastLayoutManager.removeAppletItem(applet);
         fastLayoutManager.save();
     }
 
@@ -659,33 +637,6 @@ Item {
         }
     }
 
-    function addInternalViewSplittersInMainLayout(){
-        if (internalViewSplittersCount() === 0) {
-            addInternalViewSplitterInMain(plasmoid.configuration.splitterPosition);
-            addInternalViewSplitterInMain(plasmoid.configuration.splitterPosition2);
-        }
-    }
-
-    function addInternalViewSplitterInMain(pos){
-        addInternalViewSplitterInLayout(layoutsContainer.mainLayout, pos);
-    }
-
-    function addInternalViewSplitterInLayout(area, pos){
-        var splittersCount = internalViewSplittersCount();
-        if(splittersCount<2){
-            var splitter = appletItemComponent.createObject(root);
-
-            splitter.internalSplitterId = splittersCount+1;
-            splitter.visible = true;
-
-            if(pos>=0 ){
-                LayoutManager.insertAtIndex(area, splitter, pos);
-            } else {
-                LayoutManager.insertAtIndex(area, splitter, Math.floor(area.count / 2));
-            }
-        }
-    }
-
     //! it is used in order to check the right click position
     //! the only way to take into account the visual appearance
     //! of the applet (including its spacers)
@@ -738,14 +689,6 @@ Item {
         }
 
         return splitters;
-    }
-
-    function layoutManager() {
-        return LayoutManager;
-    }
-
-    function layoutManagerSaveOptions() {
-        LayoutManager.saveOptions();
     }
 
     function mouseInCanBeHoveredApplet(){

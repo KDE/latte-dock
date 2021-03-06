@@ -39,6 +39,9 @@ namespace Containment{
 LayoutManager::LayoutManager(QObject *parent)
     : QObject(parent)
 {
+    m_option["lockZoom"] = "lockedZoomApplets";
+    m_option["userBlocksColorizing"] = "userBlocksColorizingApplets";
+
     connect(this, &LayoutManager::rootItemChanged, this, &LayoutManager::onRootItemChanged);
 }
 
@@ -254,7 +257,7 @@ bool LayoutManager::isValidApplet(const int &id)
 
     for(int i=0; i<applets.count(); ++i) {
         uint appletid = applets[i]->property("id").toUInt();
-        if (appletid == id) {
+        if (id>0 && appletid == (uint)id) {
             return true;
         }
     }
@@ -313,7 +316,7 @@ void LayoutManager::restore()
         }
 
         for(int j=0; j<applets.count(); ++j) {
-            if (applets[j]->property("id").toUInt() == appletIdsOrder[i]) {
+            if (applets[j]->property("id").toInt() == appletIdsOrder[i]) {
                 orderedApplets << applets[j];
                 break;
             }
@@ -400,39 +403,34 @@ void LayoutManager::restore()
 
 void LayoutManager::restoreOptions()
 {
-    restoreOption("lockedZoomApplets");
-    restoreOption("userBlocksColorizingApplets");
+    restoreOption("lockZoom");
+    restoreOption("userBlocksColorizing");
 }
 
-void LayoutManager::restoreOption(const QString &option)
+void LayoutManager::restoreOption(const char *option)
 {
-    QStringList applets = (*m_configuration)[option].toString().split(";");
+    QStringList applets = (*m_configuration)[m_option[option]].toString().split(";");
 
     if (!m_startLayout || !m_mainLayout || !m_endLayout) {
         return;
     }
 
-    const char *optionchars = option.toLatin1().constData();
-
     for (int i=0; i<=2; ++i) {
         QQuickItem *layout = (i==0 ? m_startLayout : (i==1 ? m_mainLayout : m_endLayout));
 
-        if (layout->childItems().count() > 0) {
-            int size = layout->childItems().count();
-            for (int j=size-1; j>=0; --j) {
-                QQuickItem *item = layout->childItems()[j];
-                bool issplitter = item->property("isInternalViewSplitter").toBool();
-                if (!issplitter) {
-                    QVariant appletVariant = item->property("applet");
-                    if (!appletVariant.isValid()) {
-                        continue;
-                    }
-
-                    QObject *applet = appletVariant.value<QObject *>();
-                    uint id = applet->property("id").toUInt();
-
-                    item->setProperty(optionchars, applets.contains(QString::number(id)));
+        for (int j=layout->childItems().count()-1; j>=0; --j) {
+            QQuickItem *item = layout->childItems()[j];
+            bool issplitter = item->property("isInternalViewSplitter").toBool();
+            if (!issplitter) {
+                QVariant appletVariant = item->property("applet");
+                if (!appletVariant.isValid()) {
+                    continue;
                 }
+
+                QObject *applet = appletVariant.value<QObject *>();
+                uint id = applet->property("id").toUInt();
+
+                item->setProperty(option, applets.contains(QString::number(id)));
             }
         }
     }
@@ -507,6 +505,12 @@ void LayoutManager::save()
     if (alignment == Latte::Types::Justify) {
         setSplitterPosition(startChilds + 1);
         setSplitterPosition2(startChilds + 1 + mainChilds + 1);
+    } else {
+        int splitterPosition = static_cast<Latte::Types::Alignment>((*m_configuration)["splitterPosition"].toInt());
+        int splitterPosition2 = static_cast<Latte::Types::Alignment>((*m_configuration)["splitterPosition2"].toInt());
+
+        setSplitterPosition(splitterPosition);
+        setSplitterPosition2(splitterPosition2);
     }
 
     //! are not writing in config file for some cases mentioned in class header so they are not used
@@ -515,20 +519,19 @@ void LayoutManager::save()
     //(*m_configuration)["appletOrder"] = appletIds.join(";");
 
     setAppletOrder(appletIds.join(";"));
+    qDebug() << "org.kde.latte saving applets:: " << appletOrder() << " :: " << splitterPosition() << " : " << splitterPosition2();
 
     saveOptions();
-
-    qDebug() << "org.kde.latte saving applets:: " << appletOrder() << " :: " << splitterPosition() << " : " << splitterPosition2();
-    qDebug() << "org.kde.latte saving properties:: " << lockedZoomApplets() << " :: " << userBlocksColorizingApplets();
 }
 
 void LayoutManager::saveOptions()
 {
-    saveOption("lockedZoomApplets");
-    saveOption("userBlocksColorizingApplets");
+    saveOption("lockZoom");
+    saveOption("userBlocksColorizing");
+    qDebug() << "org.kde.latte saving properties:: " << lockedZoomApplets() << " :: " << userBlocksColorizingApplets();
 }
 
-void LayoutManager::saveOption(const QString &option)
+void LayoutManager::saveOption(const char *option)
 {
     if (!m_startLayout || !m_mainLayout || !m_endLayout) {
         return;
@@ -536,36 +539,34 @@ void LayoutManager::saveOption(const QString &option)
 
     QStringList applets;
 
-    const char *optionchars = option.toLatin1().constData();
-
     for (int i=0; i<=2; ++i) {
         QQuickItem *layout = (i==0 ? m_startLayout : (i==1 ? m_mainLayout : m_endLayout));
 
-        if (layout->childItems().count() > 0) {
-            int size = layout->childItems().count();
-            for (int j=size-1; j>=0; --j) {
-                QQuickItem *item = layout->childItems()[j];
-                bool issplitter = item->property("isInternalViewSplitter").toBool();
-                if (!issplitter) {
-                    bool enabled = item->property(optionchars).toBool();
-                    if (enabled) {
-                        QVariant appletVariant = item->property("applet");
-                        if (!appletVariant.isValid()) {
-                            continue;
-                        }
-                        QObject *applet = appletVariant.value<QObject *>();
-                        uint id = applet->property("id").toUInt();
+        for (int j=0; j<layout->childItems().count(); ++j) {
+            QQuickItem *item = layout->childItems()[j];
+            bool issplitter = item->property("isInternalViewSplitter").toBool();
 
-                        applets << QString::number(id);
-                    }
+            if (issplitter) {
+                continue;
+            }
+
+            bool enabled = item->property(option).toBool();
+
+            if (enabled) {
+                QVariant appletVariant = item->property("applet");
+                if (!appletVariant.isValid()) {
+                    continue;
                 }
+                QObject *applet = appletVariant.value<QObject *>();
+                uint id = applet->property("id").toUInt();
+                applets << QString::number(id);
             }
         }
     }
 
-    if (option == "lockedZoomApplets") {
+    if (option == "lockZoom") {
         setLockedZoomApplets(applets.join(";"));
-    } else if (option == "userBlocksColorizingApplets") {
+    } else if (option == "userBlocksColorizing") {
         setUserBlocksColorizingApplets(applets.join(";"));
     }
 }
@@ -695,6 +696,37 @@ void LayoutManager::insertAtCoordinates(QQuickItem *item, const int &x, const in
         QPointF mainPos = m_mainLayout->mapFromItem(m_rootItem, QPointF(x, y));
         //! in javascript direct insertAtCoordinates was usedd ???
         result = insertAtLayoutCoordinates(m_mainLayout, item, mainPos.x(), mainPos.y());
+    }
+}
+
+void LayoutManager::removeAppletItem(QObject *applet)
+{
+    if (!m_startLayout || !m_mainLayout || !m_endLayout) {
+        return;
+    }
+
+    for (int i=0; i<=2; ++i) {
+        QQuickItem *layout = (i==0 ? m_startLayout : (i==1 ? m_mainLayout : m_endLayout));
+
+        if (layout->childItems().count() > 0) {
+            int size = layout->childItems().count();
+            for (int j=size-1; j>=0; --j) {
+                QQuickItem *item = layout->childItems()[j];
+                bool issplitter = item->property("isInternalViewSplitter").toBool();
+                if (!issplitter) {
+                    QVariant appletVariant = item->property("applet");
+                    if (!appletVariant.isValid()) {
+                        continue;
+                    }
+                    QObject *currentapplet = appletVariant.value<QObject *>();
+
+                    if (currentapplet == applet) {
+                        item->deleteLater();
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -550,7 +550,6 @@ MouseArea {
 
                             onCheckedChanged: {
                                 currentApplet.userBlocksColorizing = !checked;
-                                root.layoutManagerSaveOptions();
                             }
                         }
 
@@ -562,7 +561,6 @@ MouseArea {
 
                             onCheckedChanged: {
                                 currentApplet.lockZoom = checked;
-                                root.layoutManagerSaveOptions();
                             }
                         }
 
