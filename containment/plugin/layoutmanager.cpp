@@ -87,6 +87,21 @@ void LayoutManager::setAppletOrder(const QString &order)
     emit appletOrderChanged();
 }
 
+QString LayoutManager::lockedZoomApplets() const
+{
+    return m_lockedZoomApplets;
+}
+
+void LayoutManager::setLockedZoomApplets(const QString &applets)
+{
+    if (m_lockedZoomApplets == applets) {
+        return;
+    }
+
+    m_lockedZoomApplets = applets;
+    emit lockedZoomAppletsChanged();
+}
+
 QObject *LayoutManager::plasmoid() const
 {
     return m_plasmoid;

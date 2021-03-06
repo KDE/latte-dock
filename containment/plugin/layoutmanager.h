@@ -53,7 +53,7 @@ class LayoutManager : public QObject
     Q_PROPERTY(int splitterPosition READ splitterPosition NOTIFY splitterPositionChanged)
     Q_PROPERTY(int splitterPosition2 READ splitterPosition2 NOTIFY splitterPosition2Changed)
     Q_PROPERTY(QString appletOrder READ appletOrder NOTIFY appletOrderChanged)
-
+    Q_PROPERTY(QString lockedZoomApplets READ lockedZoomApplets NOTIFY lockedZoomAppletsChanged)
 
 public:
     LayoutManager(QObject *parent = nullptr);
@@ -61,6 +61,7 @@ public:
     int splitterPosition() const;
     int splitterPosition2() const;
     QString appletOrder() const;
+    QString lockedZoomApplets() const;
 
     QObject *plasmoid() const;
     void setPlasmoid(QObject *plasmoid);
@@ -99,6 +100,7 @@ signals:
     void plasmoidChanged();
     void rootItemChanged();
     void dndSpacerChanged();
+    void lockedZoomAppletsChanged();
     void mainLayoutChanged();
     void metricsChanged();
     void splitterPositionChanged();
@@ -116,6 +118,7 @@ private:
     void setSplitterPosition2(const int &position);
 
     void setAppletOrder(const QString &order);
+    void setLockedZoomApplets(const QString &applets);
 
     bool isValidApplet(const int &id);
     bool insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *item, int x, int y);
@@ -124,6 +127,7 @@ private:
     int m_splitterPosition{-1};
     int m_splitterPosition2{-1};
     QString m_appletOrder;
+    QString m_lockedZoomApplets;
 
     QQuickItem *m_rootItem{nullptr};
     QQuickItem *m_dndSpacer{nullptr};

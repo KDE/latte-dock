@@ -849,6 +849,8 @@ Item {
             root.updateIndexes();
         }
 
+        onLockedZoomAppletsChanged: plasmoid.configuration.lockedZoomApplets = fastLayoutManager.lockedZoomApplets;
+
         onSplitterPositionChanged: {
             plasmoid.configuration.splitterPosition = fastLayoutManager.splitterPosition;
             root.updateIndexes();
