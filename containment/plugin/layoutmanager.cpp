@@ -242,8 +242,6 @@ void LayoutManager::onRootItemChanged()
 
     int createJustifySplitterIndex = rootMetaObject->indexOfMethod("createJustifySplitter()");
     m_createJustifySplitterMethod = rootMetaObject->method(createJustifySplitterIndex);
-
-    qDebug() << "org.kde.latte :::: root item set methods....";
 }
 
 bool LayoutManager::isValidApplet(const int &id)
@@ -519,7 +517,7 @@ void LayoutManager::save()
     //(*m_configuration)["appletOrder"] = appletIds.join(";");
 
     setAppletOrder(appletIds.join(";"));
-    qDebug() << "org.kde.latte saving applets:: " << appletOrder() << " :: " << splitterPosition() << " : " << splitterPosition2();
+    //qDebug() << "org.kde.latte saving applets:: " << appletOrder() << " :: " << splitterPosition() << " : " << splitterPosition2();
 
     saveOptions();
 }
@@ -528,7 +526,7 @@ void LayoutManager::saveOptions()
 {
     saveOption("lockZoom");
     saveOption("userBlocksColorizing");
-    qDebug() << "org.kde.latte saving properties:: " << lockedZoomApplets() << " :: " << userBlocksColorizingApplets();
+    //qDebug() << "org.kde.latte saving properties:: " << lockedZoomApplets() << " :: " << userBlocksColorizingApplets();
 }
 
 void LayoutManager::saveOption(const char *option)
