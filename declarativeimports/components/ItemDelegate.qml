@@ -28,17 +28,17 @@ import "private" as Private
 
 T.CheckDelegate {
     id: control
-
     implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
-    implicitHeight: Math.max(contentItem.implicitHeight,
-                             indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding
-    hoverEnabled: true
+    implicitHeight: isSeparator ? 1 : Math.max(contentItem.implicitHeight, indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding
+    hoverEnabled: !isSeparator
 
     topPadding: margin
     bottomPadding: margin
-    leftPadding: margin
-    rightPadding: margin
+    leftPadding: isSeparator ? 0 : margin
+    rightPadding: isSeparator ? 0 : margin
     spacing: units.smallSpacing
+
+    property bool isSeparator: false
 
     property bool blankSpaceForEmptyIcons: false
     property string icon
@@ -49,12 +49,12 @@ T.CheckDelegate {
     property int textHorizontalAlignment: Text.AlignLeft
 
     readonly property bool isHovered: hovered || iconMouseArea.containsMouse
-    readonly property int margin: 4
+    readonly property int margin: isSeparator ? 1 : 4
 
     contentItem: RowLayout {
-        Layout.leftMargin: control.mirrored ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
-        Layout.rightMargin: !control.mirrored ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
-        spacing: units.smallSpacing
+        Layout.leftMargin: control.mirrored && !isSeparator ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
+        Layout.rightMargin: !control.mirrored && !isSeparator ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
+        spacing: isSeparator ? 0 : units.smallSpacing
         enabled: control.enabled
 
         Rectangle {
@@ -62,7 +62,7 @@ T.CheckDelegate {
             Layout.maximumWidth: parent.height
             Layout.minimumHeight: parent.height
             Layout.maximumHeight: parent.height
-            visible: icon && (!control.iconOnlyWhenHovered || (control.iconOnlyWhenHovered && control.isHovered))
+            visible: !isSeparator && icon && (!control.iconOnlyWhenHovered || (control.iconOnlyWhenHovered && control.isHovered))
             color: control.iconToolTip && iconMouseArea.containsMouse ? theme.highlightColor : "transparent"
 
             PlasmaCore.IconItem {
@@ -93,7 +93,7 @@ T.CheckDelegate {
             //blank space when no icon is shown
             Layout.minimumHeight: parent.height
             Layout.minimumWidth: parent.height
-            visible: control.blankSpaceForEmptyIcons && (!icon || (control.iconOnlyWhenHovered && !control.isHovered) )
+            visible: !isSeparator && control.blankSpaceForEmptyIcons && (!icon || (control.iconOnlyWhenHovered && !control.isHovered) )
             color: "transparent"
         }
 
@@ -103,15 +103,23 @@ T.CheckDelegate {
             font: control.font
             color: theme.viewTextColor
             elide: Text.ElideRight
-            visible: control.text
+            visible: !isSeparator && control.text
             horizontalAlignment: control.textHorizontalAlignment
             verticalAlignment: Text.AlignVCenter
+        }
+
+        Rectangle {
+            width: parent.width
+            height: 1
+            color: theme.textColor
+            opacity: 0.25
+            visible: isSeparator
         }
     }
 
     //background: Private.DefaultListItemBackground {}
     background: Rectangle {
-        visible: control.ListView.view ? control.ListView.view.highlight === null : true
+        visible: isSeparator ? false : (control.ListView.view ? control.ListView.view.highlight === null : true)
         enabled: control.enabled
         opacity: {
             if (control.highlighted || control.pressed) {

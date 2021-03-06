@@ -59,6 +59,7 @@ Rectangle {
     property string comboBoxIconRole: ""
     property string comboBoxIconToolTipRole: ""
     property string comboBoxIconOnlyWhenHoveredRole: ""
+    property string comboBoxIsSeparatorRole: ""
 
     signal iconClicked(int index);
 
@@ -129,6 +130,7 @@ Rectangle {
         textRole: comboBoxTextRole
         iconToolTipRole: comboBoxIconToolTipRole
         iconOnlyWhenHoveredRole: comboBoxIconOnlyWhenHoveredRole
+        isSeparatorRole: comboBoxIsSeparatorRole
         buttonIsTransparent: comboBoxButtonIsTransparent
 
         blankSpaceForEmptyIcons: comboBoxBlankSpaceForEmptyIcons

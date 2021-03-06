@@ -186,7 +186,6 @@ void Menu::makeActions()
 
     //! Duplicate Action
     m_duplicateAction = new QAction(QIcon::fromTheme("edit-copy"), "Duplicate Dock as Template", this);
-    m_duplicateAction->setVisible(containment()->isUserConfiguring());
     connect(m_duplicateAction, &QAction::triggered, [=](){
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
@@ -251,7 +250,6 @@ QList<QAction *> Menu::contextualActions()
     actions << m_separator;
     actions << m_addWidgetsAction;
     actions << m_addViewAction;
-    actions << m_duplicateAction;
     actions << m_moveAction;
     actions << m_exportViewAction;
     actions << m_configureAction;
@@ -329,14 +327,12 @@ void Menu::onUserConfiguringChanged(const bool &configuring)
     }
 
     m_configureAction->setVisible(!configuring);
-    m_duplicateAction->setVisible(configuring);
     m_exportViewAction->setVisible(configuring);
     m_moveAction->setVisible(configuring);
     m_removeAction->setVisible(configuring);
 
     // because sometimes they are disabled unexpectedly, we should reenable them
     m_configureAction->setEnabled(true);
-    m_duplicateAction->setEnabled(true);
     m_exportViewAction->setEnabled(true);
     m_moveAction->setEnabled(true);
     m_removeAction->setEnabled(true);
@@ -460,8 +456,15 @@ void Menu::populateViewTemplates()
         }
 
         QAction *templateAction = m_addViewMenu->addAction(m_viewTemplates[i]);
+        templateAction->setIcon(QIcon::fromTheme("list-add"));
         templateAction->setData(m_viewTemplates[i+1]);
     }
+
+    QAction *templatesSeparatorAction = m_addViewMenu->addSeparator();
+    QAction *duplicateAction = m_addViewMenu->addAction(m_duplicateAction->text());
+    duplicateAction->setToolTip(m_duplicateAction->toolTip());
+    duplicateAction->setIcon(m_duplicateAction->icon());
+    connect(duplicateAction, &QAction::triggered, m_duplicateAction, &QAction::triggered);
 }
 
 void Menu::addView(QAction *action)

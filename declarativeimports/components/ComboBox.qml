@@ -59,22 +59,26 @@ T.ComboBox {
     property string iconRole
     property string iconToolTipRole
     property string iconOnlyWhenHoveredRole
+    property string isSeparatorRole
     property string toolTipRole
 
     signal iconClicked(int index);
 
     delegate: ItemDelegate {
         width: control.popup.width
-        enabled: control.enabledRole.length>0 ? (Array.isArray(control.model) ? modelData[control.enabledRole] : model[control.enabledRole]) : true
-        text: control.textRole.length>0 ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
-        icon: control.iconRole.length>0 ? (Array.isArray(control.model) ? modelData[control.iconRole] : model[control.iconRole]) : ''
-        iconToolTip: control.iconToolTipRole.length>0 ? (Array.isArray(control.model) ? modelData[control.iconToolTipRole] : model[control.iconToolTipRole]) : ''
-        iconOnlyWhenHovered: control.iconOnlyWhenHoveredRole.length>0 ? (Array.isArray(control.model) ? modelData[control.iconOnlyWhenHoveredRole] : model[control.iconOnlyWhenHoveredRole]) : ''
-        toolTip: control.toolTipRole.length>0 ? (Array.isArray(control.model) ? modelData[control.toolTipRole] : model[control.toolTipRole]) : ''
+        enabled: !isSeparator && (control.enabledRole.length>0 ? (isArray ? modelData[control.enabledRole] : model[control.enabledRole]) : true)
+        text: control.textRole.length>0 ? (isArray ? modelData[control.textRole] : model[control.textRole]) : modelData
+        icon: control.iconRole.length>0 ? (isArray ? modelData[control.iconRole] : model[control.iconRole]) : ''
+        iconToolTip: control.iconToolTipRole.length>0 ? (isArray ? modelData[control.iconToolTipRole] : model[control.iconToolTipRole]) : ''
+        iconOnlyWhenHovered: control.iconOnlyWhenHoveredRole.length>0 ? (isArray ? modelData[control.iconOnlyWhenHoveredRole] : model[control.iconOnlyWhenHoveredRole]) : ''
+        isSeparator: control.isSeparatorRole.length>0 ? (isArray ? modelData[control.isSeparatorRole] : model[control.isSeparatorRole]) : false
+        toolTip: control.toolTipRole.length>0 ? (isArray ? modelData[control.toolTipRole] : model[control.toolTipRole]) : ''
 
         highlighted: mouseArea.pressed ? listView.currentIndex == index : control.currentIndex == index
         blankSpaceForEmptyIcons: control.blankSpaceForEmptyIcons
         textHorizontalAlignment: popUpTextHorizontalAlignment
+
+        readonly property bool isArray: Array.isArray(control.model)
         property bool separatorVisible: false
 
         PlasmaComponents.Button {

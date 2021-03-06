@@ -529,6 +529,7 @@ Loader {
                     comboBoxEnabledRole: "enabled"
                     comboBoxTextRole: "name"
                     comboBoxIconRole: "icon"
+                    comboBoxIsSeparatorRole: "isSeparator"
                     comboBoxMinimumPopUpWidth: actionsModel.count > 1 ? dialog.width / 2 : 150
 
                     property var centralLayoutsNames: []
@@ -551,6 +552,8 @@ Loader {
 
                             if (item && item.actionId === "add:") {
                                 latteView.layout.newView(item.templateId);
+                            } else if (item && item.actionId === "duplicate:") {
+                                latteView.duplicateView();
                             }
 
                             actionsComboBtn.comboBox.currentIndex = -1;
@@ -574,6 +577,11 @@ Loader {
                         }
                     }
 
+                    Connections{
+                        target: latteView
+                        onTypeChanged: actionsComboBtn.updateDuplicateText();
+                    }
+
                     Connections {
                         target: layoutsManager
                         onViewTemplatesChanged: actionsComboBtn.updateModel();
@@ -581,6 +589,14 @@ Loader {
 
                     function updateModel() {
                         actionsModel.clear();
+
+                        var duplicate = {actionId: 'duplicate:', enabled: true, name: '', icon: 'edit-copy'};
+                        actionsModel.append(duplicate);
+                        updateDuplicateText();
+
+                        var separator = {isSeparator: true};
+                        actionsModel.append(separator);
+
                         var viewTemplateIds = layoutsManager.viewTemplateIds();
                         var viewTemplateNames = layoutsManager.viewTemplateNames();
 
@@ -603,6 +619,18 @@ Loader {
                         actionsModel.clear();
                         actionsComboBtn.comboBox.currentIndex = -1;
                     }
+
+                    function updateDuplicateText() {
+                        for (var i=0; i<actionsModel.count; ++i) {
+                            var item = actionsModel.get(i);
+                            if (item.actionId === "duplicate:") {
+                                var duplicateText = latteView.type === LatteCore.Types.DockView ? i18n("Duplicate Dock") : i18n("Duplicate Panel")
+                                item.name = duplicateText;
+                                break;
+                            }
+                        }
+                    }
+
                 }
 
                 PlasmaComponents.Button {
