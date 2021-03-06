@@ -576,6 +576,59 @@ void LayoutManager::insertAtCoordinates(QQuickItem *item, const int &x, const in
     }
 }
 
+void LayoutManager::addJustifySplittersInMainLayout()
+{
+    if (!m_configuration || !m_mainLayout) {
+        return;
+    }
+
+    destroyJustifySplitters();
+
+    int splitterPosition = static_cast<Latte::Types::Alignment>((*m_configuration)["splitterPosition"].toInt());
+    int splitterPosition2 = static_cast<Latte::Types::Alignment>((*m_configuration)["splitterPosition2"].toInt());
+
+    int splitterIndex = (splitterPosition >= 1 ? splitterPosition - 1 : -1);
+    int splitterIndex2 = (splitterPosition2 >= 1 ? splitterPosition2 - 1 : -1);
+
+    //! First Splitter
+    QVariant splitterItemVariant;
+    m_createJustifySplitterMethod.invoke(m_rootItem, Q_RETURN_ARG(QVariant, splitterItemVariant));
+    QQuickItem *splitterItem = splitterItemVariant.value<QQuickItem *>();
+
+    int size = m_mainLayout->childItems().count();
+
+    splitterItem->setParentItem(m_mainLayout);
+
+    if (size>0 && splitterIndex>=0) {
+        int validindex = (splitterIndex < size) ? splitterIndex : size-1;
+        QQuickItem *currentitem = m_mainLayout->childItems()[validindex];
+        splitterItem->stackAfter(currentitem);
+    } else if (size>0) {
+        //! add in first position
+        QQuickItem *currentitem = m_mainLayout->childItems()[0];
+        splitterItem->stackAfter(currentitem);
+    }
+
+    //! Second Splitter
+    QVariant splitterItemVariant2;
+    m_createJustifySplitterMethod.invoke(m_rootItem, Q_RETURN_ARG(QVariant, splitterItemVariant2));
+    QQuickItem *splitterItem2 = splitterItemVariant2.value<QQuickItem *>();
+
+    int size2 = m_mainLayout->childItems().count();
+
+    splitterItem2->setParentItem(m_mainLayout);
+
+    if (size2>0 && splitterIndex2>=0) {
+        int validindex2 = (splitterIndex2 < size2) ? splitterIndex2 : size2-1;
+        QQuickItem *currentitem2 = m_mainLayout->childItems()[validindex2];
+        splitterItem2->stackAfter(currentitem2);
+    } else if (size2>1){
+        //! add in last position
+        QQuickItem *currentitem2 = m_mainLayout->childItems()[size2-1];
+        splitterItem2->stackAfter(currentitem2);
+    }
+}
+
 void LayoutManager::destroyJustifySplitters()
 {
     if (!m_startLayout || !m_mainLayout || !m_endLayout) {
@@ -635,7 +688,7 @@ void LayoutManager::joinLayoutsToMainLayout()
     destroyJustifySplitters();
 }
 
-void LayoutManager::moveAppletsInJustifyAlignment()
+void LayoutManager::moveAppletsBasedOnJustifyAlignment()
 {
     if (!m_startLayout || !m_mainLayout || !m_endLayout) {
         return;

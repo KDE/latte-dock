@@ -455,8 +455,11 @@ Item {
 
             if (root.editMode){
                 if (root.myView.alignment===LatteCore.Types.Justify) {
-                    root.addInternalViewSplittersInMainLayout();
-                    root.moveAppletsBasedOnJustifyAlignment();
+                    layouter.appletsInParentChange = true;
+                    fastLayoutManager.addJustifySplittersInMainLayout();
+                    console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
+                    fastLayoutManager.moveAppletsBasedOnJustifyAlignment();
+                    layouter.appletsInParentChange = false;
                 } else {
                     layouter.appletsInParentChange = true;
                     console.log("LAYOUTS: Moving applets from THREE to MAIN Layout mode...");
@@ -797,13 +800,6 @@ Item {
         }
 
         return false;
-    }
-
-    function moveAppletsBasedOnJustifyAlignment() {
-        layouter.appletsInParentChange = true;
-        console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
-        fastLayoutManager.moveAppletsInJustifyAlignment();
-        layouter.appletsInParentChange = false;
     }
 
     function upgrader_v010_alignment() {

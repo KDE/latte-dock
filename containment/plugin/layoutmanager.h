@@ -87,7 +87,8 @@ public slots:
     Q_INVOKABLE void restore();
     Q_INVOKABLE void save();
 
-    Q_INVOKABLE void moveAppletsInJustifyAlignment();
+    Q_INVOKABLE void addJustifySplittersInMainLayout();
+    Q_INVOKABLE void moveAppletsBasedOnJustifyAlignment();
     Q_INVOKABLE void joinLayoutsToMainLayout();
     Q_INVOKABLE void insertBefore(QQuickItem *hoveredItem, QQuickItem *item);
     Q_INVOKABLE void insertAfter(QQuickItem *hoveredItem, QQuickItem *item);

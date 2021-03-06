@@ -248,7 +248,7 @@ MouseArea {
         //    handle.height = currentApplet.height;
 
         if (root.myView.alignment === LatteCore.Types.Justify) {
-            root.moveAppletsBasedOnJustifyAlignment();
+            fastLayoutManager.moveAppletsBasedOnJustifyAlignment();
         }
 
         fastLayoutManager.save();
