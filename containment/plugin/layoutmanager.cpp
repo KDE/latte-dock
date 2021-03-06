@@ -102,6 +102,21 @@ void LayoutManager::setLockedZoomApplets(const QString &applets)
     emit lockedZoomAppletsChanged();
 }
 
+QString LayoutManager::userBlocksColorizingApplets() const
+{
+    return m_userBlocksColorizingApplets;
+}
+
+void LayoutManager::setUserBlocksColorizingApplets(const QString &applets)
+{
+    if (m_userBlocksColorizingApplets == applets) {
+        return;
+    }
+
+    m_userBlocksColorizingApplets = applets;
+    emit userBlocksColorizingAppletsChanged();
+}
+
 QObject *LayoutManager::plasmoid() const
 {
     return m_plasmoid;
@@ -379,7 +394,48 @@ void LayoutManager::restore()
         }
     }
 
+    restoreOptions();
     save();
+}
+
+void LayoutManager::restoreOptions()
+{
+    restoreOption("lockedZoomApplets");
+    restoreOption("userBlocksColorizingApplets");
+}
+
+void LayoutManager::restoreOption(const QString &option)
+{
+    QStringList applets = (*m_configuration)[option].toString().split(";");
+
+    if (!m_startLayout || !m_mainLayout || !m_endLayout) {
+        return;
+    }
+
+    const char *optionchars = option.toLatin1().constData();
+
+    for (int i=0; i<=2; ++i) {
+        QQuickItem *layout = (i==0 ? m_startLayout : (i==1 ? m_mainLayout : m_endLayout));
+
+        if (layout->childItems().count() > 0) {
+            int size = layout->childItems().count();
+            for (int j=size-1; j>=0; --j) {
+                QQuickItem *item = layout->childItems()[j];
+                bool issplitter = item->property("isInternalViewSplitter").toBool();
+                if (!issplitter) {
+                    QVariant appletVariant = item->property("applet");
+                    if (!appletVariant.isValid()) {
+                        continue;
+                    }
+
+                    QObject *applet = appletVariant.value<QObject *>();
+                    uint id = applet->property("id").toUInt();
+
+                    item->setProperty(optionchars, applets.contains(QString::number(id)));
+                }
+            }
+        }
+    }
 }
 
 void LayoutManager::save()
@@ -461,6 +517,7 @@ void LayoutManager::save()
     setAppletOrder(appletIds.join(";"));
 
     qDebug() << "org.kde.latte saving applets:: " << appletOrder() << " :: " << splitterPosition() << " : " << splitterPosition2();
+    qDebug() << "org.kde.latte saving properties:: " << lockedZoomApplets() << " :: " << userBlocksColorizingApplets();
 }
 
 void LayoutManager::insertBefore(QQuickItem *hoveredItem, QQuickItem *item)

@@ -54,6 +54,7 @@ class LayoutManager : public QObject
     Q_PROPERTY(int splitterPosition2 READ splitterPosition2 NOTIFY splitterPosition2Changed)
     Q_PROPERTY(QString appletOrder READ appletOrder NOTIFY appletOrderChanged)
     Q_PROPERTY(QString lockedZoomApplets READ lockedZoomApplets NOTIFY lockedZoomAppletsChanged)
+    Q_PROPERTY(QString userBlocksColorizingApplets READ userBlocksColorizingApplets NOTIFY userBlocksColorizingAppletsChanged)
 
 public:
     LayoutManager(QObject *parent = nullptr);
@@ -62,6 +63,7 @@ public:
     int splitterPosition2() const;
     QString appletOrder() const;
     QString lockedZoomApplets() const;
+    QString userBlocksColorizingApplets() const;
 
     QObject *plasmoid() const;
     void setPlasmoid(QObject *plasmoid);
@@ -101,6 +103,8 @@ signals:
     void rootItemChanged();
     void dndSpacerChanged();
     void lockedZoomAppletsChanged();
+    void userBlocksColorizingAppletsChanged();
+
     void mainLayoutChanged();
     void metricsChanged();
     void splitterPositionChanged();
@@ -114,11 +118,15 @@ private slots:
     void destroyJustifySplitters();
 
 private:
+    void restoreOptions();
+    void restoreOption(const QString &option);
+
     void setSplitterPosition(const int &position);
     void setSplitterPosition2(const int &position);
 
     void setAppletOrder(const QString &order);
     void setLockedZoomApplets(const QString &applets);
+    void setUserBlocksColorizingApplets(const QString &applets);
 
     bool isValidApplet(const int &id);
     bool insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *item, int x, int y);
@@ -128,6 +136,7 @@ private:
     int m_splitterPosition2{-1};
     QString m_appletOrder;
     QString m_lockedZoomApplets;
+    QString m_userBlocksColorizingApplets;
 
     QQuickItem *m_rootItem{nullptr};
     QQuickItem *m_dndSpacer{nullptr};

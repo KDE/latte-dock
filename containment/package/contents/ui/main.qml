@@ -850,6 +850,7 @@ Item {
         }
 
         onLockedZoomAppletsChanged: plasmoid.configuration.lockedZoomApplets = fastLayoutManager.lockedZoomApplets;
+        onUserBlocksColorizingAppletsChanged: plasmoid.configuration.userBlocksColorizingApplets = fastLayoutManager.userBlocksColorizingApplets;
 
         onSplitterPositionChanged: {
             plasmoid.configuration.splitterPosition = fastLayoutManager.splitterPosition;
