@@ -844,13 +844,13 @@ Item {
         endLayout: layoutsContainer.endLayout
         metrics: _metrics
 
+        onLockedZoomAppletsChanged: plasmoid.configuration.lockedZoomApplets = fastLayoutManager.lockedZoomApplets;
+        onUserBlocksColorizingAppletsChanged: plasmoid.configuration.userBlocksColorizingApplets = fastLayoutManager.userBlocksColorizingApplets;
+
         onAppletOrderChanged: {
             plasmoid.configuration.appletOrder = fastLayoutManager.appletOrder;
             root.updateIndexes();
         }
-
-        onLockedZoomAppletsChanged: plasmoid.configuration.lockedZoomApplets = fastLayoutManager.lockedZoomApplets;
-        onUserBlocksColorizingAppletsChanged: plasmoid.configuration.userBlocksColorizingApplets = fastLayoutManager.userBlocksColorizingApplets;
 
         onSplitterPositionChanged: {
             plasmoid.configuration.splitterPosition = fastLayoutManager.splitterPosition;

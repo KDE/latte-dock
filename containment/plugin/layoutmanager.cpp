@@ -516,8 +516,58 @@ void LayoutManager::save()
 
     setAppletOrder(appletIds.join(";"));
 
+    saveOptions();
+
     qDebug() << "org.kde.latte saving applets:: " << appletOrder() << " :: " << splitterPosition() << " : " << splitterPosition2();
     qDebug() << "org.kde.latte saving properties:: " << lockedZoomApplets() << " :: " << userBlocksColorizingApplets();
+}
+
+void LayoutManager::saveOptions()
+{
+    saveOption("lockedZoomApplets");
+    saveOption("userBlocksColorizingApplets");
+}
+
+void LayoutManager::saveOption(const QString &option)
+{
+    if (!m_startLayout || !m_mainLayout || !m_endLayout) {
+        return;
+    }
+
+    QStringList applets;
+
+    const char *optionchars = option.toLatin1().constData();
+
+    for (int i=0; i<=2; ++i) {
+        QQuickItem *layout = (i==0 ? m_startLayout : (i==1 ? m_mainLayout : m_endLayout));
+
+        if (layout->childItems().count() > 0) {
+            int size = layout->childItems().count();
+            for (int j=size-1; j>=0; --j) {
+                QQuickItem *item = layout->childItems()[j];
+                bool issplitter = item->property("isInternalViewSplitter").toBool();
+                if (!issplitter) {
+                    bool enabled = item->property(optionchars).toBool();
+                    if (enabled) {
+                        QVariant appletVariant = item->property("applet");
+                        if (!appletVariant.isValid()) {
+                            continue;
+                        }
+                        QObject *applet = appletVariant.value<QObject *>();
+                        uint id = applet->property("id").toUInt();
+
+                        applets << QString::number(id);
+                    }
+                }
+            }
+        }
+    }
+
+    if (option == "lockedZoomApplets") {
+        setLockedZoomApplets(applets.join(";"));
+    } else if (option == "userBlocksColorizingApplets") {
+        setUserBlocksColorizingApplets(applets.join(";"));
+    }
 }
 
 void LayoutManager::insertBefore(QQuickItem *hoveredItem, QQuickItem *item)

@@ -120,6 +120,8 @@ private slots:
 private:
     void restoreOptions();
     void restoreOption(const QString &option);
+    void saveOptions();
+    void saveOption(const QString &option);
 
     void setSplitterPosition(const int &position);
     void setSplitterPosition2(const int &position);
