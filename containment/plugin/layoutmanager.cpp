@@ -30,9 +30,6 @@
 #include <Plasma>
 
 
-
-const int CHILDFOUNDID = 11;
-
 namespace Latte{
 namespace Containment{
 
