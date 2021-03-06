@@ -292,20 +292,8 @@ Item {
     property int lengthAppletFullMargin: 0
     property int lengthAppletFullMargins: 2 * lengthAppletFullMargin
 
-    property int internalWidthMargins: {
-        if (root.isVertical) {
-            return metrics.totals.thicknessEdges;
-        }
-        return 2 * lengthAppletPadding;
-    }
-
-    property int internalHeightMargins: {
-        if (root.isHorizontal) {
-            return root.metrics.totals.thicknessEdges;
-        }
-
-        return 2 * lengthAppletPadding;
-    }
+    property int internalWidthMargins: root.isVertical ? metrics.totals.thicknessEdges : 2 * lengthAppletPadding
+    property int internalHeightMargins: root.isHorizontal ? root.metrics.totals.thicknessEdges : 2 * lengthAppletPadding
 
     readonly property string pluginName: isInternalViewSplitter ? "org.kde.latte.splitter" : (applet ? applet.pluginName : "")
 

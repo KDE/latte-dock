@@ -29,7 +29,7 @@ AbilityHost.Indicators {
         target: _indicators.info
         onSvgPathsChanged: {
             if (_indicators.isEnabled) {
-                view.indicator.resources.setSvgImagePaths(svgPaths);
+                view.indicator.resources.setSvgImagePaths(_indicators.info.svgPaths);
             }
         }
     }

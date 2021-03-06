@@ -59,7 +59,7 @@ AbilityHost.Metrics {
         thicknessMargin: Math.max(indicators.info.minThicknessPadding, plasmoid.configuration.thickMargin / 100)
         lengthMargin: plasmoid.configuration.lengthExtMargin / 100
         lengthPadding: indicators.isEnabled ? indicators.padding : 0
-        lengthAppletPadding: indicators.infoLoaded ? indicators.info.appletLengthPadding : -1
+        lengthAppletPadding: indicators.isEnabled ? indicators.info.appletLengthPadding : -1
     }
 
     //! based on background / plasma theme minimum thickness requirements; behaveAsPlasmaPanel and floating is a good scenario for this
