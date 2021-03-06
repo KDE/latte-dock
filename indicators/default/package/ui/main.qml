@@ -37,8 +37,11 @@ LatteComponents.IndicatorItem{
 
     readonly property real factor: indicator.configuration.size
     readonly property int size: factor * indicator.currentIconSize
+    readonly property int thickLocalMargin: indicator.configuration.thickMargin * indicator.currentIconSize
 
     readonly property int screenEdgeMargin: plasmoid.location === PlasmaCore.Types.Floating || reversedEnabled ? 0 : indicator.screenEdgeMargin
+
+    readonly property int thicknessMargin: screenEdgeMargin + thickLocalMargin + 1
 
     property real textColorBrightness: colorBrightness(theme.textColor)
 
@@ -264,7 +267,7 @@ LatteComponents.IndicatorItem{
             }
             PropertyChanges{
                 target: grid
-                anchors.leftMargin: root.screenEdgeMargin + 1;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: root.thicknessMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -281,7 +284,7 @@ LatteComponents.IndicatorItem{
             }
             PropertyChanges{
                 target: grid
-                anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.screenEdgeMargin + 1;
+                anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.thicknessMargin;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -297,7 +300,7 @@ LatteComponents.IndicatorItem{
             }
             PropertyChanges{
                 target: grid
-                anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.screenEdgeMargin + 1;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.thicknessMargin;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -313,7 +316,7 @@ LatteComponents.IndicatorItem{
             }
             PropertyChanges{
                 target: grid
-                anchors.leftMargin: 0;    anchors.rightMargin: root.screenEdgeMargin + 1;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin: root.thicknessMargin;     anchors.topMargin:0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         }

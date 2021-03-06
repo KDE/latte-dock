@@ -123,7 +123,6 @@ ColumnLayout {
         }
     }
 
-
     RowLayout {
         Layout.fillWidth: true
         spacing: units.smallSpacing
@@ -161,6 +160,43 @@ ColumnLayout {
             readonly property int currentValue: lengthIntMarginSlider.value
         }
     }
+
+    RowLayout {
+        Layout.fillWidth: true
+        spacing: units.smallSpacing
+
+        PlasmaComponents.Label {
+            text: i18n("Margin")
+            horizontalAlignment: Text.AlignLeft
+        }
+
+        LatteComponents.Slider {
+            id: thickMarginSlider
+            Layout.fillWidth: true
+
+            value: Math.round(indicator.configuration.thickMargin * 100)
+            from: 0
+            to: 30
+            stepSize: 1
+            wheelEnabled: false
+
+            onPressedChanged: {
+                if (!pressed) {
+                    indicator.configuration.thickMargin = value / 100;
+                }
+            }
+        }
+
+        PlasmaComponents.Label {
+            text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(currentValue)
+            horizontalAlignment: Text.AlignRight
+            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+            readonly property int currentValue: thickMarginSlider.value
+        }
+    }
+
 
     LatteComponents.HeaderSwitch {
         id: glowEnabled

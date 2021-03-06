@@ -32,5 +32,6 @@ Item{
     readonly property bool glow3D: true
     readonly property real glowOpacity: 0.35
     readonly property real lengthPadding: 0.08
+    readonly property real thickMargin: 0.0
     readonly property bool reversed: false
 }

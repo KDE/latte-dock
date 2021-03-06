@@ -46,6 +46,9 @@
     <entry name="lengthPadding" type="Double">
        <default>0.08</default>
     </entry>
+    <entry name="thickMargin" type="Double">
+       <default>0.0</default>
+    </entry>
     <entry name="reversed" type="Bool">
        <default>false</default>
     </entry>
